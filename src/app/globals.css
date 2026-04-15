@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* AiBI brand palette — see Plans/aibi-designer-brief.html and CLAUDE.md */
+  --color-terra:        #b5512e;  /* Pillar C / CTAs / brand signal */
+  --color-terra-light:  #c96a43;  /* Hover states */
+  --color-terra-pale:   #f0c4ab;  /* Background tints */
+  --color-sage:         #4a6741;  /* Pillar A ONLY */
+  --color-cobalt:       #2d4a7a;  /* Pillar B / security contexts ONLY */
+  --color-ink:          #1e1a14;  /* Primary text */
+  --color-parch:        #f5f0e6;  /* Card backgrounds */
+  --color-linen:        #f9f6f0;  /* Page background */
+  --color-error:        #9b2226;  /* Error / Starting Point tier */
+
+  /* Typography tokens */
+  --font-serif: var(--font-cormorant), Georgia, serif;
+  --font-sans:  var(--font-dm-sans), -apple-system, system-ui, sans-serif;
+  --font-mono:  var(--font-dm-mono), ui-monospace, monospace;
+}
+
+html, body {
+  background: var(--color-linen);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-serif);
+  letter-spacing: -0.01em;
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+  .font-serif   { font-family: var(--font-serif); }
+  .font-sans    { font-family: var(--font-sans); }
+  .font-mono    { font-family: var(--font-mono); }
+}
