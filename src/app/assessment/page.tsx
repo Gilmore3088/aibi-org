@@ -16,7 +16,8 @@ import { ResultsView } from './_components/ResultsView';
 
 export default function AssessmentPage() {
   const state = useAssessment();
-  const [emailCaptured, setEmailCaptured] = useState(false);
+  const [capturedEmail, setCapturedEmail] = useState<string | null>(null);
+  const emailCaptured = capturedEmail !== null;
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -68,9 +69,8 @@ export default function AssessmentPage() {
               answers={state.answers}
               onCaptured={(email) => {
                 trackEvent('email_captured', { tier: state.tier?.id ?? 'unknown' });
-                setEmailCaptured(true);
+                setCapturedEmail(email);
                 state.advanceToResults();
-                void email;
               }}
             />
             <div className="text-center">
@@ -85,11 +85,12 @@ export default function AssessmentPage() {
           </div>
         )}
 
-        {state.phase === 'results' && state.tier && (
+        {state.phase === 'results' && state.tier && capturedEmail && (
           <ResultsView
             score={state.totalScore}
             tier={state.tier}
             answers={state.answers}
+            email={capturedEmail}
           />
         )}
       </div>

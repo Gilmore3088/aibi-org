@@ -3,18 +3,20 @@
 import { questions } from '@content/assessments/v1/questions';
 import type { Tier } from '@content/assessments/v1/scoring';
 import { ScoreRing } from './ScoreRing';
+import { NewsletterCTA } from './NewsletterCTA';
 
 interface ResultsViewProps {
   readonly score: number;
   readonly tier: Tier;
   readonly answers: readonly number[];
+  readonly email: string;
 }
 
 const CALENDLY_URL =
   process.env.NEXT_PUBLIC_CALENDLY_URL ??
   'https://calendly.com/aibi/executive-briefing';
 
-export function ResultsView({ score, tier, answers }: ResultsViewProps) {
+export function ResultsView({ score, tier, answers, email }: ResultsViewProps) {
   return (
     <div className="w-full max-w-3xl mx-auto space-y-16">
       <div className="flex flex-col items-center">
@@ -87,9 +89,11 @@ export function ResultsView({ score, tier, answers }: ResultsViewProps) {
           rel="noopener noreferrer"
           className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans font-medium tracking-wide hover:bg-[color:var(--color-terra-light)] transition-colors"
         >
-          Schedule my briefing
+          Request Executive Briefing
         </a>
       </section>
+
+      <NewsletterCTA email={email} />
     </div>
   );
 }

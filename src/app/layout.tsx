@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import Script from 'next/script';
 import { Cormorant_Garamond, DM_Sans, DM_Mono } from 'next/font/google';
+import { Header } from '@/components/Header';
+import { Footer } from '@/components/Footer';
 import './globals.css';
 
 const PLAUSIBLE_DOMAIN = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN;
@@ -56,8 +58,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           />
         )}
       </head>
-      <body className={`${cormorant.variable} ${dmSans.variable} ${dmMono.variable}`}>
-        {children}
+      <body className={`${cormorant.variable} ${dmSans.variable} ${dmMono.variable} flex flex-col min-h-screen`}>
+        <Header />
+        <div className="flex-1">{children}</div>
+        <Footer />
       </body>
     </html>
   );
