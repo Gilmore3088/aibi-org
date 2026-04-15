@@ -1,77 +1,12 @@
+import { certifications } from '@content/certifications/v1';
 import { InquiryForm } from './_components/InquiryForm';
-
-interface Certification {
-  readonly id: 'aibi-p' | 'aibi-s' | 'aibi-l';
-  readonly name: string;
-  readonly fullName: string;
-  readonly price: string;
-  readonly audience: string;
-  readonly learn: readonly string[];
-  readonly format: string;
-  readonly timeCommitment: string;
-  readonly accent: string;
-}
-
-const CERTS: readonly Certification[] = [
-  {
-    id: 'aibi-p',
-    name: 'AiBI-P',
-    fullName: 'Banking AI Practitioner',
-    price: '$295',
-    audience: 'All staff',
-    learn: [
-      'What Gen AI is and why it fails in banking contexts',
-      'Prompting for professional banking output (RTFC framework)',
-      'Safe use — what never goes in a public LLM',
-      'Five universal templates for banking roles',
-      'Identifying the highest-value AI use cases in your role',
-    ],
-    format: 'Assessed by a real work output — something they would actually submit to a supervisor.',
-    timeCommitment: 'Self-paced online',
-    accent: 'var(--color-terra)',
-  },
-  {
-    id: 'aibi-s',
-    name: 'AiBI-S',
-    fullName: 'Banking AI Specialist',
-    price: '$1,495',
-    audience: 'Department managers (5 role tracks: Operations, Lending, Compliance, Finance, Retail)',
-    learn: [
-      'Advanced prompt architecture for professional output',
-      'Workflow mapping and automation design',
-      'Power Automate and Copilot Studio for non-developers',
-      'AI vendor evaluation — 5 questions, scoring framework',
-      'Change management and staff adoption',
-    ],
-    format: 'Assessed by a submitted process improvement with measured time savings — not a test.',
-    timeCommitment: 'Live cohort',
-    accent: 'var(--color-cobalt)',
-  },
-  {
-    id: 'aibi-l',
-    name: 'AiBI-L',
-    fullName: 'Banking AI Leader',
-    price: '$2,800+ individual · $12,000 team of 8',
-    audience: 'C-suite and board',
-    learn: [
-      'AI through a leadership accountability lens',
-      'Efficiency ratio strategy — live modeling with your numbers',
-      '3-year AI roadmap development for board presentation',
-      'AI governance and examiner readiness',
-      'Vendor evaluation and concentration risk',
-    ],
-    format: '1-day in-person workshop.',
-    timeCommitment: '1 day (in-person)',
-    accent: 'var(--color-sage)',
-  },
-];
 
 export default function CertificationsPage() {
   return (
     <main>
       <section className="px-6 pt-20 pb-12 md:pt-28 md:pb-16">
         <div className="max-w-4xl mx-auto text-center space-y-6">
-          <p className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-terra)]">
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
             AiBI Certifications
           </p>
           <h1 className="font-serif text-5xl md:text-6xl text-[color:var(--color-ink)] leading-tight">
@@ -90,7 +25,7 @@ export default function CertificationsPage() {
 
       <section className="px-6 pb-20">
         <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8">
-          {CERTS.map((cert) => (
+          {certifications.map((cert) => (
             <article
               key={cert.id}
               className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 p-8 flex flex-col"
@@ -106,14 +41,14 @@ export default function CertificationsPage() {
                   {cert.price}
                 </span>
               </div>
-              <p className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-ink)]/60 mb-4">
-                {cert.fullName}
+              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60 mb-4">
+                {cert.credentialDisplay}
               </p>
               <p className="text-sm text-[color:var(--color-ink)]/80 mb-5 leading-relaxed">
                 <span className="font-medium">For:</span> {cert.audience}
               </p>
 
-              <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-ink)]/50 mb-2">
+              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/50 mb-2">
                 What you will learn
               </p>
               <ul className="space-y-2 mb-6 flex-1">
@@ -132,7 +67,7 @@ export default function CertificationsPage() {
               </ul>
 
               <div className="border-t border-[color:var(--color-ink)]/10 pt-4 space-y-1">
-                <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-ink)]/50">
+                <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/50">
                   Assessment
                 </p>
                 <p className="text-xs text-[color:var(--color-ink)]/70 leading-relaxed">

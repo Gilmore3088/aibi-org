@@ -14,13 +14,17 @@ export function Footer() {
       <div className="max-w-6xl mx-auto px-6 py-12">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-10">
           <div className="max-w-md">
-            <p className="font-serif text-xl text-[color:var(--color-ink)] mb-2">
+            <p className="font-serif text-xl text-[color:var(--color-ink)]">
               The AI Banking Institute
+            </p>
+            <p className="font-serif italic text-base text-[color:var(--color-terra)] mt-1 mb-4">
+              We turn your bankers into your builders.
             </p>
             <p className="text-sm text-[color:var(--color-ink)]/70 leading-relaxed">
               AI proficiency built exclusively for community banks and credit
-              unions. Aligned with SR 11-7, Interagency TPRM Guidance, and the
-              AIEOG AI Lexicon.
+              unions. Aligned with SR 11-7, Interagency TPRM Guidance, ECOA/Reg B,
+              and the AIEOG AI Lexicon. Serving FDIC-Insured Institutions and
+              NCUA-Chartered Credit Unions.
             </p>
           </div>
 
