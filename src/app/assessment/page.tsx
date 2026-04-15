@@ -6,9 +6,13 @@ import { trackEvent } from '@/lib/analytics/plausible';
 import { useAssessment, TOTAL_QUESTIONS } from './_lib/useAssessment';
 import { QuestionCard } from './_components/QuestionCard';
 import { ProgressBar } from './_components/ProgressBar';
-import { ScoreRing } from './_components/ScoreRing';
+import { TierPreview } from './_components/TierPreview';
 import { EmailGate } from './_components/EmailGate';
 import { ResultsView } from './_components/ResultsView';
+
+// Note: score reveal is gated behind email capture (decision 2026-04-15).
+// TierPreview shows only the tier label pre-email; full score + breakdown
+// render via ResultsView after capture.
 
 export default function AssessmentPage() {
   const state = useAssessment();
@@ -51,42 +55,24 @@ export default function AssessmentPage() {
           />
         )}
 
-        {state.phase === 'score' && state.tier && (
+        {state.phase === 'score' && state.tier && !emailCaptured && (
           <div className="max-w-3xl mx-auto space-y-12">
-            <div className="flex flex-col items-center">
-              <ScoreRing
-                score={state.totalScore}
-                minScore={8}
-                maxScore={32}
-                colorVar={state.tier.colorVar}
-                label={state.tier.label}
-              />
-              <h2 className="font-serif text-3xl md:text-4xl text-center mt-8 max-w-xl text-[color:var(--color-ink)]">
-                {state.tier.headline}
-              </h2>
-            </div>
-
-            {emailCaptured ? (
-              <ResultsView
-                score={state.totalScore}
-                tier={state.tier}
-                answers={state.answers}
-              />
-            ) : (
-              <EmailGate
-                score={state.totalScore}
-                tierId={state.tier.id}
-                tierLabel={state.tier.label}
-                answers={state.answers}
-                onCaptured={(email) => {
-                  trackEvent('email_captured', { tier: state.tier?.id ?? 'unknown' });
-                  setEmailCaptured(true);
-                  state.advanceToResults();
-                  void email;
-                }}
-              />
-            )}
-
+            <TierPreview
+              tierLabel={state.tier.label}
+              tierColorVar={state.tier.colorVar}
+            />
+            <EmailGate
+              score={state.totalScore}
+              tierId={state.tier.id}
+              tierLabel={state.tier.label}
+              answers={state.answers}
+              onCaptured={(email) => {
+                trackEvent('email_captured', { tier: state.tier?.id ?? 'unknown' });
+                setEmailCaptured(true);
+                state.advanceToResults();
+                void email;
+              }}
+            />
             <div className="text-center">
               <button
                 type="button"

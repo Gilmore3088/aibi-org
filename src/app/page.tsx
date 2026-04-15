@@ -4,9 +4,6 @@ export default function HomePage() {
   return (
     <main className="min-h-screen flex items-center justify-center px-6 py-24">
       <div className="max-w-2xl text-center space-y-8">
-        <p className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-terra)]">
-          The A-B-C of AI Banking
-        </p>
         <h1 className="text-5xl md:text-6xl font-serif leading-tight">
           AI proficiency, built for community banks.
         </h1>

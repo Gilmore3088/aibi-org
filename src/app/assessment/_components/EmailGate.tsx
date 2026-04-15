@@ -61,15 +61,15 @@ export function EmailGate({
   return (
     <div className="w-full max-w-xl mx-auto bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 p-8 md:p-10">
       <p className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-terra)] mb-4">
-        Unlock your dimension breakdown
+        See your full results
       </p>
       <h3 className="font-serif text-3xl leading-tight mb-4 text-[color:var(--color-ink)]">
-        Where should we send your full results?
+        Where should we send your score and breakdown?
       </h3>
       <p className="text-[color:var(--color-ink)]/70 mb-6 text-base leading-relaxed">
-        We will email your 8-dimension breakdown plus a brief interpretation of
-        what your tier means for the next 90 days. No marketing spam, and you can
-        unsubscribe with one click.
+        We will show your exact score, an 8-dimension breakdown, and email you a
+        brief interpretation of what your tier means for the next 90 days. No
+        marketing spam, and you can unsubscribe with one click.
       </p>
 
       <form onSubmit={handleSubmit} className="space-y-4">
