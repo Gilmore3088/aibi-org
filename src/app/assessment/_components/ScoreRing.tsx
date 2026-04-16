@@ -32,9 +32,13 @@ export function ScoreRing({ score, minScore, maxScore, colorVar, label }: ScoreR
   const dashOffset = CIRC * (1 - animatedPct);
 
   return (
-    <div className="flex flex-col items-center">
+    <div
+      className="flex flex-col items-center"
+      role="img"
+      aria-label={`Your AI readiness score is ${score} out of ${maxScore}, placing you in the ${label} tier.`}
+    >
       <div className="relative" style={{ width: SIZE, height: SIZE }}>
-        <svg width={SIZE} height={SIZE} className="-rotate-90">
+        <svg width={SIZE} height={SIZE} className="-rotate-90" aria-hidden="true">
           <circle
             cx={SIZE / 2}
             cy={SIZE / 2}

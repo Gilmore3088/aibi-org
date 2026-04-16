@@ -14,6 +14,7 @@ export function Header() {
       <div className="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
         <Link
           href="/"
+          aria-label="The AI Banking Institute — Home"
           className="flex items-center gap-3 text-[color:var(--color-ink)] group"
         >
           <span className="text-[color:var(--color-ink)] group-hover:text-[color:var(--color-terra)] transition-colors">
@@ -24,7 +25,7 @@ export function Header() {
           </span>
         </Link>
 
-        <nav className="flex items-center gap-6">
+        <nav aria-label="Primary" className="flex items-center gap-6">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}

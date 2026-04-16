@@ -33,10 +33,97 @@ h1, h2, h3 {
   letter-spacing: -0.01em;
 }
 
+/* Accessibility — visible focus rings on all interactive elements */
+*:focus-visible {
+  outline: 2px solid var(--color-terra);
+  outline-offset: 2px;
+}
+
+/* Screen-reader-only utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Skip-to-content link — visible on keyboard focus */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 1rem;
+  z-index: 100;
+  padding: 0.75rem 1.5rem;
+  background: var(--color-terra);
+  color: var(--color-linen);
+  text-decoration: none;
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  transition: top 150ms ease;
+}
+.skip-link:focus {
+  top: 1rem;
+}
+
 @layer utilities {
   .text-balance   { text-wrap: balance; }
   .font-serif     { font-family: var(--font-serif); }
   .font-serif-sc  { font-family: var(--font-serif-sc); letter-spacing: 0.04em; }
   .font-sans      { font-family: var(--font-sans); }
   .font-mono      { font-family: var(--font-mono); }
+}
+
+/* Print stylesheet — used for "Save as PDF" from the assessment results view */
+@media print {
+  html, body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  /* Hide non-essential chrome for print output */
+  header,
+  footer,
+  [data-print-hide="true"] {
+    display: none !important;
+  }
+
+  /* Prevent pages from being awkwardly cut */
+  .print-avoid-break {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  main {
+    padding: 0 !important;
+  }
+
+  /* Fix scaling of score ring and tier colors for print */
+  svg {
+    max-width: 100% !important;
+  }
+
+  a {
+    color: inherit !important;
+    text-decoration: none !important;
+  }
+
+  /* Print footer with brand line */
+  .print-footer {
+    display: block !important;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #cccccc;
+    font-size: 10pt;
+    color: #666666;
+  }
+}
+
+/* Hide print-only elements from screen */
+.print-footer {
+  display: none;
 }

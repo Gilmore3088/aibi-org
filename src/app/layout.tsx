@@ -105,8 +105,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body
         className={`${cormorant.variable} ${cormorantSC.variable} ${dmSans.variable} ${dmMono.variable} flex flex-col min-h-screen`}
       >
+        <a href="#main-content" className="skip-link">
+          Skip to main content
+        </a>
         <Header />
-        <div className="flex-1">{children}</div>
+        <div id="main-content" className="flex-1">
+          {children}
+        </div>
         <Footer />
       </body>
     </html>

@@ -4,6 +4,7 @@ import { questions } from '@content/assessments/v1/questions';
 import type { Tier } from '@content/assessments/v1/scoring';
 import { ScoreRing } from './ScoreRing';
 import { NewsletterCTA } from './NewsletterCTA';
+import { PrintButton } from './PrintButton';
 
 interface ResultsViewProps {
   readonly score: number;
@@ -19,7 +20,7 @@ const CALENDLY_URL =
 export function ResultsView({ score, tier, answers, email }: ResultsViewProps) {
   return (
     <div className="w-full max-w-3xl mx-auto space-y-16">
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center print-avoid-break">
         <ScoreRing
           score={score}
           minScore={8}
@@ -35,8 +36,8 @@ export function ResultsView({ score, tier, answers, email }: ResultsViewProps) {
         </p>
       </div>
 
-      <section>
-        <h3 className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-ink)]/60 mb-6">
+      <section className="print-avoid-break">
+        <h3 className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60 mb-6">
           Your 8-dimension breakdown
         </h3>
         <div className="space-y-4">
@@ -71,8 +72,11 @@ export function ResultsView({ score, tier, answers, email }: ResultsViewProps) {
         </div>
       </section>
 
-      <section className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 p-8 md:p-12 text-center">
-        <p className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-terra)] mb-3">
+      <section
+        data-print-hide="true"
+        className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 p-8 md:p-12 text-center"
+      >
+        <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
           Next step
         </p>
         <h3 className="font-serif text-3xl md:text-4xl mb-4 text-[color:var(--color-ink)]">
@@ -93,7 +97,20 @@ export function ResultsView({ score, tier, answers, email }: ResultsViewProps) {
         </a>
       </section>
 
-      <NewsletterCTA email={email} />
+      <div data-print-hide="true">
+        <NewsletterCTA email={email} />
+      </div>
+
+      <div className="text-center" data-print-hide="true">
+        <PrintButton />
+      </div>
+
+      {/* Print-only footer with brand line and source data */}
+      <div className="print-footer">
+        <p><strong>The AI Banking Institute</strong> &middot; Turning Bankers into Builders</p>
+        <p>Results generated for {email} &middot; Score: {score}/32 &middot; Tier: {tier.label}</p>
+        <p>aibankinginstitute.com &middot; Request an Executive Briefing to discuss your results.</p>
+      </div>
     </div>
   );
 }
