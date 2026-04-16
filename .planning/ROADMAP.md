@@ -13,7 +13,7 @@ Build the complete AiBI-P certification course within the existing Next.js 14 si
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation** - DB schema migrations and content architecture established
-- [ ] **Phase 2: Course Shell + Assessment Upgrade** - Browsable 9-module course shell and upgraded 12-question assessment
+- [x] **Phase 2: Course Shell + Assessment Upgrade** - Browsable 9-module course shell and upgraded 12-question assessment
 - [ ] **Phase 3: Stripe Checkout + Enrollment** - Payment flow, access gating, institution bundle model
 - [ ] **Phase 4: Onboarding Branch + Progress Tracking** - Survey routing, forward-only gating, resume functionality
 - [ ] **Phase 5: Modules 1-5 Activities + Artifacts** - Pillar A/B modules fully interactive with first three artifacts
