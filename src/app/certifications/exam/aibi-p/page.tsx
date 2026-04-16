@@ -230,10 +230,6 @@ export default function AiBIPExamPage() {
             </Link>
           </div>
 
-          <p className="font-mono text-[10px] text-center text-[color:var(--color-ink)]/40">
-            {exam.totalCorrect} of {exam.questions.length} correct &middot; 40+
-            question pool &middot; every retake draws different questions
-          </p>
         </div>
       </main>
     );
