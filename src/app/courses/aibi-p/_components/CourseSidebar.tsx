@@ -159,8 +159,8 @@ export function CourseSidebar({ completedModules, currentModule }: CourseSidebar
         ))}
       </nav>
 
-      {/* Resume button */}
-      <div className="p-6 border-t border-[color:var(--color-terra)]/10">
+      {/* Footer: Resume + Settings */}
+      <div className="p-6 border-t border-[color:var(--color-terra)]/10 space-y-3">
         <Link
           href={`/courses/aibi-p/${currentModule}`}
           className="w-full bg-[color:var(--color-terra)] hover:bg-[color:var(--color-terra-light)] text-[color:var(--color-linen)] py-3 px-4 rounded-sm font-bold transition-colors flex items-center justify-center gap-2 text-[10px] uppercase tracking-widest font-mono"
@@ -178,6 +178,25 @@ export function CourseSidebar({ completedModules, currentModule }: CourseSidebar
               clipRule="evenodd"
             />
           </svg>
+        </Link>
+        <Link
+          href="/courses/aibi-p/settings"
+          className="w-full flex items-center justify-center gap-2 py-2 px-4 rounded-sm transition-colors text-[10px] uppercase tracking-widest font-mono hover:bg-[color:var(--color-parch)]"
+          style={{ color: 'var(--color-ink)', opacity: 0.5 }}
+        >
+          <svg
+            className="w-3 h-3"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            aria-hidden="true"
+          >
+            <path
+              fillRule="evenodd"
+              d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"
+              clipRule="evenodd"
+            />
+          </svg>
+          Settings
         </Link>
       </div>
     </aside>
