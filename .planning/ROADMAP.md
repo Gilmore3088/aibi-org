@@ -95,10 +95,12 @@ Plans:
   3. After completing Module 4, the Platform Feature Reference Card PDF is available for download; Module 4's activity shows the learner's role-specific feature spotlight
   4. A keyboard-only user can complete every activity in Modules 1-5 without a mouse; color is never the sole indicator of correct/incorrect classification
   5. A learner on iPhone Safari (390px) completes all five modules without horizontal scrolling, with all text at 14pt minimum
-**Plans**: 2 plans
+**Plans**: 4 plans
 Plans:
-- [ ] 01-01-PLAN.md — Database schema (5 tables), RLS policies, indexes, TypeScript types, Supabase client
-- [ ] 01-02-PLAN.md — Content architecture: typed module content files for all 9 AiBI-P modules
+- [ ] 05-01-PLAN.md — Activity submission system: interactive ActivityForm, submit-activity API, module page wiring
+- [ ] 05-02-PLAN.md — Module-specific activities: subscription inventory (M2), classification drill (M5), Acceptable Use Card form (M5)
+- [ ] 05-03-PLAN.md — Artifacts: static PDFs (Regulatory Cheatsheet, Platform Reference Card), dynamic PDF (Acceptable Use Card via @react-pdf/renderer)
+- [ ] 05-04-PLAN.md — Accessibility audit (WCAG 2.1 AA), sales funnel CTAs, human verification checkpoint
 **UI hint**: yes
 
 ### Phase 6: Modules 6-9 Activities + Skill Builder
@@ -158,7 +160,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | 2. Course Shell + Assessment Upgrade | 0/4 | Not started | - |
 | 3. Stripe Checkout + Enrollment | 0/2 | Not started | - |
 | 4. Onboarding Branch + Progress Tracking | 0/2 | Not started | - |
-| 5. Modules 1-5 Activities + Artifacts | 0/TBD | Not started | - |
+| 5. Modules 1-5 Activities + Artifacts | 0/4 | Not started | - |
 | 6. Modules 6-9 Activities + Skill Builder | 0/TBD | Not started | - |
 | 7. Work Product + Reviewer Queue | 0/TBD | Not started | - |
 | 8. Certificate + Verification | 0/TBD | Not started | - |
