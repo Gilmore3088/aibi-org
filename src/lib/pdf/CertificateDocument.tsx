@@ -32,7 +32,6 @@ const PARCH = '#f5f0e6';
 const INK = '#1e1a14';
 const PRIMARY = '#9a4028';
 const MUTED = '#8a7060';
-const WHITE = '#ffffff';
 
 const styles = StyleSheet.create({
   page: {

@@ -215,17 +215,32 @@ export async function POST(request: Request): Promise<NextResponse> {
     );
   }
 
-  // REVW-08: If approved, mark trigger for Phase 8 certificate issuance.
-  // Phase 8 will wire actual certificate creation using triggerCertificate=true in the response.
-  // Enrollment ID for Phase 8: submission.enrollment_id
-  const triggerCertificate = reviewResult === 'approved';
+  // REVW-08 / CERT-01: If approved, trigger certificate generation (best-effort).
+  // Certificate API re-reads review_status before issuing — no premature issuance risk.
+  // Reviewer response is already saved; certificate failure does not fail this response.
+  let certificateGenerated = false;
+  if (reviewResult === 'approved') {
+    try {
+      const certUrl = new URL('/api/courses/generate-certificate', request.url);
+      const certResponse = await fetch(certUrl.toString(), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ enrollmentId: submission.enrollment_id }),
+      });
+      certificateGenerated = certResponse.ok || certResponse.status === 200 || certResponse.status === 201;
+    } catch {
+      // Best-effort: log failure but do not surface to reviewer
+      certificateGenerated = false;
+    }
+  }
 
   return NextResponse.json(
     {
       result: reviewResult,
       total,
       accuracyGateFailed,
-      triggerCertificate,
+      triggerCertificate: reviewResult === 'approved',
+      certificateGenerated,
       resubmissionExhausted,
     },
     { status: 200 },
