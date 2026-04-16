@@ -1,5 +1,12 @@
 import Link from 'next/link';
+import type { Metadata } from 'next';
 import { ServiceTierCards } from '@/components/sections/ServiceTierCards';
+
+export const metadata: Metadata = {
+  title: 'Services — Three ways we work with community banks',
+  description:
+    'Operational Quick Win Sprint, Efficiency & Process Audit, AI Transformation + AiBI fCAIO. Consulting engagements built for community banks and credit unions.',
+};
 
 export default function ServicesPage() {
   return (

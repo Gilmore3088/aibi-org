@@ -1,5 +1,12 @@
+import type { Metadata } from 'next';
 import { certifications } from '@content/certifications/v1';
 import { InquiryForm } from './_components/InquiryForm';
+
+export const metadata: Metadata = {
+  title: 'Certifications — AiBI-P, AiBI-S, AiBI-L',
+  description:
+    'Three AiBI credentials built for community banks: Practitioner for all staff, Specialist for department managers, Leader for C-suite and board.',
+};
 
 export default function CertificationsPage() {
   return (

@@ -162,10 +162,10 @@ export function ROICalculator() {
             </div>
 
             <div className="mt-10 pt-8 border-t border-[color:var(--color-ink)]/10">
-              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60 mb-3">
+              <p className="font-serif-sc text-[11px] uppercase tracking-[0.15em] text-[color:var(--color-ink)]/60 mb-3">
                 Estimated annual NIE reduction
               </p>
-              <p className="font-serif text-5xl md:text-6xl text-[color:var(--color-terra)] leading-none">
+              <p className="font-mono text-5xl md:text-6xl text-[color:var(--color-terra)] leading-none tabular-nums">
                 {formatCurrency(result.mid)}
               </p>
               <p className="font-mono text-xs text-[color:var(--color-ink)]/60 mt-3">

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Script from 'next/script';
-import { Cormorant_Garamond, DM_Sans, DM_Mono } from 'next/font/google';
+import { Cormorant_Garamond, Cormorant_SC, DM_Sans, DM_Mono } from 'next/font/google';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import './globals.css';
@@ -22,6 +22,13 @@ const cormorant = Cormorant_Garamond({
   display: 'swap',
 });
 
+const cormorantSC = Cormorant_SC({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-cormorant-sc',
+  display: 'swap',
+});
+
 const dmSans = DM_Sans({
   subsets: ['latin'],
   weight: ['400', '500', '700'],
@@ -36,10 +43,47 @@ const dmMono = DM_Mono({
   display: 'swap',
 });
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://aibankinginstitute.com';
+const SITE_NAME = 'The AI Banking Institute';
+const SITE_TAGLINE = 'We turn your bankers into your builders.';
+const DEFAULT_DESCRIPTION =
+  'AiBI helps community banks and credit unions build AI proficiency through assessment, certification, and transformation consulting. Accessible, boundary-safe, capable.';
+
 export const metadata: Metadata = {
-  title: 'The AI Banking Institute — AI Proficiency for Community Banks',
-  description:
-    'AiBI helps community banks and credit unions build AI proficiency through assessment, certification, and transformation consulting.',
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: `${SITE_NAME} — AI Proficiency for Community Banks`,
+    template: `%s — ${SITE_NAME}`,
+  },
+  description: DEFAULT_DESCRIPTION,
+  keywords: [
+    'AI banking',
+    'community bank AI',
+    'credit union AI',
+    'banking AI consulting',
+    'AI governance SR 11-7',
+    'AI readiness assessment',
+    'fCAIO',
+    'AiBI',
+  ],
+  authors: [{ name: SITE_NAME }],
+  openGraph: {
+    type: 'website',
+    url: SITE_URL,
+    siteName: SITE_NAME,
+    title: `${SITE_NAME} — ${SITE_TAGLINE}`,
+    description: DEFAULT_DESCRIPTION,
+    locale: 'en_US',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `${SITE_NAME} — ${SITE_TAGLINE}`,
+    description: DEFAULT_DESCRIPTION,
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -58,7 +102,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           />
         )}
       </head>
-      <body className={`${cormorant.variable} ${dmSans.variable} ${dmMono.variable} flex flex-col min-h-screen`}>
+      <body
+        className={`${cormorant.variable} ${cormorantSC.variable} ${dmSans.variable} ${dmMono.variable} flex flex-col min-h-screen`}
+      >
         <Header />
         <div className="flex-1">{children}</div>
         <Footer />

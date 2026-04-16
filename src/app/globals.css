@@ -15,9 +15,10 @@
   --color-error:        #9b2226;  /* Error / Starting Point tier */
 
   /* Typography tokens */
-  --font-serif: var(--font-cormorant), Georgia, serif;
-  --font-sans:  var(--font-dm-sans), -apple-system, system-ui, sans-serif;
-  --font-mono:  var(--font-dm-mono), ui-monospace, monospace;
+  --font-serif:    var(--font-cormorant), Georgia, serif;
+  --font-serif-sc: var(--font-cormorant-sc), Georgia, serif;
+  --font-sans:     var(--font-dm-sans), -apple-system, system-ui, sans-serif;
+  --font-mono:     var(--font-dm-mono), ui-monospace, monospace;
 }
 
 html, body {
@@ -33,8 +34,9 @@ h1, h2, h3 {
 }
 
 @layer utilities {
-  .text-balance { text-wrap: balance; }
-  .font-serif   { font-family: var(--font-serif); }
-  .font-sans    { font-family: var(--font-sans); }
-  .font-mono    { font-family: var(--font-mono); }
+  .text-balance   { text-wrap: balance; }
+  .font-serif     { font-family: var(--font-serif); }
+  .font-serif-sc  { font-family: var(--font-serif-sc); letter-spacing: 0.04em; }
+  .font-sans      { font-family: var(--font-sans); }
+  .font-mono      { font-family: var(--font-mono); }
 }

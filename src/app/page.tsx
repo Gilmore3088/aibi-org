@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { ROICalculator } from '@/components/sections/ROICalculator';
 import { ThreeFears } from '@/components/sections/ThreeFears';
 import { SecurityBand } from '@/components/sections/SecurityBand';
+import { WideningGap } from '@/components/sections/WideningGap';
 import { ServiceTierCards } from '@/components/sections/ServiceTierCards';
 import { CertificationCards } from '@/components/sections/CertificationCards';
 import { FinalCTABand } from '@/components/sections/FinalCTABand';
@@ -67,6 +68,12 @@ const PROOF_POINTS = [
   { stat: '55%', label: 'Have No AI Governance Framework' },
 ] as const;
 
+export const metadata = {
+  title: 'AI your people will actually use.',
+  description:
+    'The AI Banking Institute — AI proficiency built exclusively for community banks and credit unions. Free readiness assessment, consulting engagements, and three certification tiers.',
+};
+
 export default function HomePage() {
   return (
     <main>
@@ -110,10 +117,10 @@ export default function HomePage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {PROOF_POINTS.map((p) => (
               <div key={p.label}>
-                <p className="font-serif text-4xl md:text-5xl text-[color:var(--color-terra)] leading-none">
+                <p className="font-mono text-4xl md:text-5xl text-[color:var(--color-terra)] leading-none tabular-nums">
                   {p.stat}
                 </p>
-                <p className="font-mono text-[10px] md:text-xs uppercase tracking-[0.15em] text-[color:var(--color-ink)]/60 mt-3 leading-snug">
+                <p className="font-serif-sc text-[11px] md:text-xs uppercase text-[color:var(--color-ink)]/65 mt-4 leading-snug">
                   {p.label}
                 </p>
               </div>
@@ -183,6 +190,7 @@ export default function HomePage() {
       </section>
 
       <ThreeFears />
+      <WideningGap />
       <SecurityBand />
       <ROICalculator />
       <ServiceTierCards showHeader />
