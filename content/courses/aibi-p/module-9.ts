@@ -135,6 +135,54 @@ Is the skill well-constructed using the RTFC Framework? Does it produce consiste
   ],
   tables: [
     {
+      id: 'm9-rubric',
+      caption: 'AiBI-P Work Product Rubric — Five-Dimension Scoring Framework',
+      columns: [
+        { header: 'Dimension', key: 'dimension' },
+        { header: 'Type', key: 'type' },
+        { header: 'What It Measures', key: 'measures' },
+        { header: 'Passing Standard', key: 'passing' },
+        { header: 'Common Failure Mode', key: 'failureMode' },
+      ],
+      rows: [
+        {
+          dimension: 'Accuracy',
+          type: 'Hard Gate (pass/fail)',
+          measures: 'Factual correctness of all claims, numbers, citations, and regulatory references in the final output',
+          passing: 'Zero hallucinated data points, incorrect regulatory citations, or uncorrected factual errors',
+          failureMode: 'Using an AI-generated regulatory threshold or citation without verifying against the primary source — e.g., accepting a wrong CTR filing threshold from the AI output',
+        },
+        {
+          dimension: 'Completeness',
+          type: 'Scored 1–4',
+          measures: 'Whether all five required elements are present: skill file, redacted input, raw output, edited output, and practitioner annotation',
+          passing: 'Score of 3 or 4: no critical elements missing; annotation is sufficiently detailed',
+          failureMode: 'Missing the practitioner annotation entirely, or submitting a raw AI output without any editorial changes',
+        },
+        {
+          dimension: 'Tone',
+          type: 'Scored 1–4',
+          measures: 'Professional banking communication standards in the final output; appropriate formality for the use case; tone corrections made during editing',
+          passing: 'Score of 3 or 4: final output reads as professional institutional communication appropriate for its intended use',
+          failureMode: 'Submitting AI output with informal language, contractions, or colloquialisms not corrected during editing',
+        },
+        {
+          dimension: 'Judgment',
+          type: 'Scored 1–4',
+          measures: 'Quality of editorial decisions: did the practitioner catch errors, add value through editing, and demonstrate professional reasoning in the annotation?',
+          passing: 'Score of 3 or 4: annotation demonstrates that the practitioner made conscious, defensible editorial decisions rather than rubber-stamping the raw output',
+          failureMode: 'Annotation that only restates what the AI produced without explaining what the practitioner changed, why, or what regulatory or institutional consideration guided the decision',
+        },
+        {
+          dimension: 'Skill Quality',
+          type: 'Scored 1–4',
+          measures: 'Whether the submitted skill is well-constructed using the RTFC Framework: specific Role, clear Task, defined Format, meaningful Constraints',
+          passing: 'Score of 3 or 4: skill would produce consistent, useful outputs if applied to a new input of the same type',
+          failureMode: 'A skill with a generic Role ("helpful assistant"), vague Task ("analyze this"), no Format specification, and no Constraints — effectively an ad-hoc prompt, not a skill',
+        },
+      ],
+    },
+    {
       id: 'm9-automation-screening',
       caption: 'Automation Identification Framework — Screening Questions by Workflow Type',
       columns: [
