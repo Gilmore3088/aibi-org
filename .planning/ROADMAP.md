@@ -47,10 +47,12 @@ Plans:
   3. A non-enrolled visitor attempting to access a module page is redirected to the purchase page
   4. The free assessment at `/assessment` serves exactly 12 questions, shows "Question N of 12" throughout, and displays score and tier without requiring email entry
   5. The persistent left sidebar shows all modules grouped by pillar; completed modules show a checkmark; current module is highlighted; locked modules are visually distinct
-**Plans**: 2 plans
+**Plans**: 4 plans
 Plans:
-- [ ] 01-01-PLAN.md — Database schema (5 tables), RLS policies, indexes, TypeScript types, Supabase client
-- [ ] 01-02-PLAN.md — Content architecture: typed module content files for all 9 AiBI-P modules
+- [ ] 02-01-PLAN.md — Course layout shell: sidebar, overview page, pillar cards, module map, --color-amber
+- [ ] 02-02-PLAN.md — Dynamic module pages: content rendering, pillar header bands, activity form shells
+- [ ] 02-03-PLAN.md — Enrollment gating: Supabase enrollment check, server-side access rules, purchase page
+- [ ] 02-04-PLAN.md — Assessment v2: 48-question pool, Fisher-Yates rotation, 12-question sessions, new scoring
 **UI hint**: yes
 
 ### Phase 3: Stripe Checkout + Enrollment
@@ -153,7 +155,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 1/2 | In Progress|  |
-| 2. Course Shell + Assessment Upgrade | 0/TBD | Not started | - |
+| 2. Course Shell + Assessment Upgrade | 0/4 | Not started | - |
 | 3. Stripe Checkout + Enrollment | 0/TBD | Not started | - |
 | 4. Onboarding Branch + Progress Tracking | 0/TBD | Not started | - |
 | 5. Modules 1-5 Activities + Artifacts | 0/TBD | Not started | - |
