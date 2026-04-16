@@ -19,3 +19,19 @@ export const stripe = new Stripe(STRIPE_SECRET_KEY, {
     url: 'https://aibankinginstitute.com',
   },
 });
+
+// ============================================================
+// Shared metadata type — used by create-checkout and webhook handler
+// to ensure consistent key names and value shapes across both sides
+// of the Stripe Checkout session lifecycle.
+// ============================================================
+
+export interface CheckoutMetadata {
+  product: 'aibi-p';
+  mode: 'individual' | 'institution';
+  user_email?: string;
+  institution_name?: string;
+  /** Number of institution seats, serialised as a string (Stripe metadata values are strings). */
+  quantity?: string;
+  discount_applied?: 'institution_persistent';
+}
