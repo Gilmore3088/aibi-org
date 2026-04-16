@@ -34,7 +34,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   4. Activity responses written to `activity_responses` table are visible only to the owning enrolled user (RLS enforced)
 **Plans**: 2 plans
 Plans:
-- [ ] 01-01-PLAN.md — Database schema (5 tables), RLS policies, indexes, TypeScript types, Supabase client
+- [x] 01-01-PLAN.md — Database schema (5 tables), RLS policies, indexes, TypeScript types, Supabase client
 - [ ] 01-02-PLAN.md — Content architecture: typed module content files for all 9 AiBI-P modules
 
 ### Phase 2: Course Shell + Assessment Upgrade
@@ -152,7 +152,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 0/TBD | Not started | - |
+| 1. Foundation | 1/2 | In Progress|  |
 | 2. Course Shell + Assessment Upgrade | 0/TBD | Not started | - |
 | 3. Stripe Checkout + Enrollment | 0/TBD | Not started | - |
 | 4. Onboarding Branch + Progress Tracking | 0/TBD | Not started | - |

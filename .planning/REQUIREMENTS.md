@@ -175,18 +175,18 @@
 - [ ] **CONT-01**: All module content lives in `/content/courses/aibi-p/` — not hardcoded in .tsx component files
 - [ ] **CONT-02**: Content structure is Kajabi-migration-ready: module content can be extracted and migrated without rebuilding
 - [ ] **CONT-03**: Content references existing HTML mockups from `content/courses/AiBI-P v1/stitch_ai_banking_institute_course/` as design source of truth
-- [ ] **CONT-04**: Activity responses saved to learner profile in Supabase; activities cannot be re-submitted after advancing (except assessed work product resubmission)
+- [x] **CONT-04**: Activity responses saved to learner profile in Supabase; activities cannot be re-submitted after advancing (except assessed work product resubmission)
 - [ ] **CONT-05**: All free-text response fields have minimum character requirements as specified per activity in the PRD
 
 ### Database Schema (DB)
 
-- [ ] **DB-01**: `course_enrollments` table extended with: `onboarding_answers` (jsonb), `completed_modules` (integer array or jsonb), `current_module` (integer), `enrolled_at` (timestamptz)
-- [ ] **DB-02**: `activity_responses` table: id, enrollment_id, module_number, activity_id, response (jsonb), created_at
-- [ ] **DB-03**: `work_submissions` table: id, enrollment_id, skill_file_url, input_text, raw_output_text, edited_output_text, annotation_text, submitted_at, reviewer_id, review_scores (jsonb), review_feedback (text), review_status (pending/approved/failed/resubmitted), reviewed_at
-- [ ] **DB-04**: `certificates` table: id, enrollment_id, certificate_id (unique alphanumeric), holder_name, designation, issued_at
-- [ ] **DB-05**: `institution_enrollments` table: id, institution_name, seats_purchased, seats_used, stripe_session_id, discount_locked (boolean), created_at
-- [ ] **DB-06**: RLS policies on all new tables; wrap `auth.uid()` in SELECT for performance per CLAUDE.md pattern
-- [ ] **DB-07**: Indexes on all policy columns and foreign keys
+- [x] **DB-01**: `course_enrollments` table extended with: `onboarding_answers` (jsonb), `completed_modules` (integer array or jsonb), `current_module` (integer), `enrolled_at` (timestamptz)
+- [x] **DB-02**: `activity_responses` table: id, enrollment_id, module_number, activity_id, response (jsonb), created_at
+- [x] **DB-03**: `work_submissions` table: id, enrollment_id, skill_file_url, input_text, raw_output_text, edited_output_text, annotation_text, submitted_at, reviewer_id, review_scores (jsonb), review_feedback (text), review_status (pending/approved/failed/resubmitted), reviewed_at
+- [x] **DB-04**: `certificates` table: id, enrollment_id, certificate_id (unique alphanumeric), holder_name, designation, issued_at
+- [x] **DB-05**: `institution_enrollments` table: id, institution_name, seats_purchased, seats_used, stripe_session_id, discount_locked (boolean), created_at
+- [x] **DB-06**: RLS policies on all new tables; wrap `auth.uid()` in SELECT for performance per CLAUDE.md pattern
+- [x] **DB-07**: Indexes on all policy columns and foreign keys
 
 ### Accessibility (A11Y)
 
@@ -244,17 +244,17 @@ Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| DB-01 | Phase 1 | Pending |
-| DB-02 | Phase 1 | Pending |
-| DB-03 | Phase 1 | Pending |
-| DB-04 | Phase 1 | Pending |
-| DB-05 | Phase 1 | Pending |
-| DB-06 | Phase 1 | Pending |
-| DB-07 | Phase 1 | Pending |
+| DB-01 | Phase 1 | Complete |
+| DB-02 | Phase 1 | Complete |
+| DB-03 | Phase 1 | Complete |
+| DB-04 | Phase 1 | Complete |
+| DB-05 | Phase 1 | Complete |
+| DB-06 | Phase 1 | Complete |
+| DB-07 | Phase 1 | Complete |
 | CONT-01 | Phase 1 | Pending |
 | CONT-02 | Phase 1 | Pending |
 | CONT-03 | Phase 1 | Pending |
-| CONT-04 | Phase 1 | Pending |
+| CONT-04 | Phase 1 | Complete |
 | CONT-05 | Phase 1 | Pending |
 | SHELL-01 | Phase 2 | Pending |
 | SHELL-02 | Phase 2 | Pending |
