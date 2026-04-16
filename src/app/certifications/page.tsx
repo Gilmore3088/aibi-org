@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import { certifications } from '@content/certifications/v1';
+import { ChooseYourPath } from '@/components/sections/ChooseYourPath';
+import { SampleQuestion } from '@/components/sections/SampleQuestion';
 import { InquiryForm } from './_components/InquiryForm';
 
 export const metadata: Metadata = {
@@ -11,85 +13,131 @@ export const metadata: Metadata = {
 export default function CertificationsPage() {
   return (
     <main>
+      {/* Hero */}
       <section className="px-6 pt-20 pb-12 md:pt-28 md:pb-16">
         <div className="max-w-4xl mx-auto text-center space-y-6">
           <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
             Certifications
           </p>
           <h1 className="font-serif text-5xl md:text-6xl text-[color:var(--color-ink)] leading-tight">
-            Three credentials. One shared vocabulary.
+            Validate the capabilities that matter inside a regulated
+            institution.
           </h1>
           <p className="text-lg md:text-xl text-[color:var(--color-ink)]/75 max-w-2xl mx-auto leading-relaxed">
-            Credentials from The AI Banking Institute give your staff, your
-            managers, and your board the same framework for making AI
-            decisions &mdash; so your teller, your CFO, and your examiner are
-            speaking the same language.
-          </p>
-          <p className="font-mono text-xs text-[color:var(--color-ink)]/50 pt-2">
-            Cohort enrollment is by inquiry only during Phase 1.
+            Tools will change. The ability to deploy AI responsibly, adapt
+            workflows, and make judgment calls under compliance pressure will
+            not. Credentials from The AI Banking Institute prove your team has
+            the capabilities that endure.
           </p>
         </div>
       </section>
 
-      <section className="px-6 pb-20">
-        <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8">
-          {certifications.map((cert) => (
-            <article
-              key={cert.id}
-              className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 p-8 flex flex-col"
-            >
-              <div className="flex items-baseline justify-between mb-4">
-                <h2
-                  className="font-serif text-3xl leading-none"
-                  style={{ color: cert.accent }}
-                >
-                  {cert.name}
-                </h2>
-                <span className="font-mono text-xs text-[color:var(--color-ink)]/60">
-                  {cert.price}
-                </span>
-              </div>
-              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60 mb-4">
-                {cert.credentialDisplay}
-              </p>
-              <p className="text-sm text-[color:var(--color-ink)]/80 mb-5 leading-relaxed">
-                <span className="font-medium">For:</span> {cert.audience}
-              </p>
+      {/* Choose your path: Free vs Certified */}
+      <ChooseYourPath />
 
-              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/50 mb-2">
-                What you will learn
-              </p>
-              <ul className="space-y-2 mb-6 flex-1">
-                {cert.learn.map((item) => (
-                  <li
-                    key={item}
-                    className="text-sm text-[color:var(--color-ink)]/80 leading-snug pl-4 relative"
+      {/* Interactive sample question */}
+      <SampleQuestion />
+
+      {/* Certification tracks */}
+      <section id="certification-tracks" className="px-6 py-20 md:py-28">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-14">
+            <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60 mb-4">
+              Three tracks
+            </p>
+            <h2 className="font-serif text-4xl md:text-5xl text-[color:var(--color-ink)] leading-tight">
+              One credential for every level.
+            </h2>
+            <p className="text-lg text-[color:var(--color-ink)]/75 mt-5 max-w-2xl mx-auto leading-relaxed">
+              Whether you are building your own capability or developing your
+              team&rsquo;s, certification proves readiness to lead in the AI era.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {certifications.map((cert) => (
+              <article
+                key={cert.id}
+                className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 p-8 flex flex-col"
+              >
+                <div className="flex items-baseline justify-between mb-4">
+                  <h3
+                    className="font-serif text-3xl leading-none"
+                    style={{ color: cert.accent }}
                   >
-                    <span
-                      className="absolute left-0 top-2 w-2 h-[1px]"
-                      style={{ background: cert.accent }}
-                    />
-                    {item}
-                  </li>
-                ))}
-              </ul>
+                    {cert.name}
+                  </h3>
+                  <span className="font-mono text-xs text-[color:var(--color-ink)]/60 tabular-nums">
+                    {cert.price}
+                  </span>
+                </div>
+                <p className="font-serif-sc text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60 mb-4">
+                  {cert.credentialDisplay}
+                </p>
+                <p className="text-sm text-[color:var(--color-ink)]/80 mb-5 leading-relaxed">
+                  <span className="font-medium">For:</span> {cert.audience}
+                </p>
 
-              <div className="border-t border-[color:var(--color-ink)]/10 pt-4 space-y-1">
-                <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/50">
-                  Assessment
+                <p className="font-serif-sc text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/50 mb-2">
+                  What you will learn
                 </p>
-                <p className="text-xs text-[color:var(--color-ink)]/70 leading-relaxed">
-                  {cert.format}
-                </p>
-              </div>
-            </article>
-          ))}
+                <ul className="space-y-2 mb-6 flex-1">
+                  {cert.learn.map((item) => (
+                    <li
+                      key={item}
+                      className="text-sm text-[color:var(--color-ink)]/80 leading-snug pl-4 relative"
+                    >
+                      <span
+                        className="absolute left-0 top-2 w-2 h-[1px]"
+                        style={{ background: cert.accent }}
+                      />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="border-t border-[color:var(--color-ink)]/10 pt-4 space-y-1">
+                  <p className="font-serif-sc text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/50">
+                    Assessment
+                  </p>
+                  <p className="text-xs text-[color:var(--color-ink)]/70 leading-relaxed">
+                    {cert.format}
+                  </p>
+                </div>
+              </article>
+            ))}
+          </div>
         </div>
       </section>
 
-      <section className="px-6 pb-24">
+      {/* Inquiry form */}
+      <section id="inquiry-form" className="px-6 pb-20">
         <div className="max-w-2xl mx-auto">
           <InquiryForm />
+        </div>
+      </section>
+
+      {/* Enterprise / bulk CTA */}
+      <section className="px-6 pb-24">
+        <div className="max-w-3xl mx-auto border border-[color:var(--color-ink)]/10 bg-[color:var(--color-linen)] p-10 md:p-14 text-center">
+          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60 mb-3">
+            Team and institutional enrollment
+          </p>
+          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] mb-4">
+            Need team assessments or bulk certification?
+          </h2>
+          <p className="text-[color:var(--color-ink)]/75 max-w-xl mx-auto mb-6 leading-relaxed">
+            We offer institutional pricing for teams of 5 or more, with
+            cohort scheduling, group reporting, and a dedicated program lead.
+            The AiBI-L Leader certification is available as a 1-day on-site
+            workshop for up to 8 executives.
+          </p>
+          <a
+            href="#inquiry-form"
+            className="inline-block px-8 py-4 border border-[color:var(--color-terra)] text-[color:var(--color-terra)] font-sans font-medium tracking-wide hover:bg-[color:var(--color-terra)] hover:text-[color:var(--color-linen)] transition-colors"
+          >
+            Contact us for institutional solutions
+          </a>
         </div>
       </section>
     </main>
