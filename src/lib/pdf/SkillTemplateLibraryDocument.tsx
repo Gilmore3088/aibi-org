@@ -341,10 +341,7 @@ function TemplatePage({ template, index }: { template: typeof TEMPLATES[0]; inde
 
         <View style={styles.introSection}>
           <Text style={[styles.introText, { fontSize: 7.5, color: '#56423d' }]}>
-            Deploying this template: Copy the Role and Context into your AI platform's system prompt
-            field. Add Task, Format, and Constraints. Paste this skill into your next session to test.
-            Refine based on actual outputs. Download the full .md version from Module 7 for copy-paste
-            deployment.
+            {'Deploying this template: Copy the Role and Context into your AI platform\'s system prompt field. Add Task, Format, and Constraints. Paste this skill into your next session to test. Refine based on actual outputs. Download the full .md version from Module 7 for copy-paste deployment.'}
           </Text>
         </View>
       </View>
@@ -380,15 +377,7 @@ export function SkillTemplateLibraryDocument() {
           <View style={styles.introSection}>
             <Text style={styles.introTitle}>About This Library</Text>
             <Text style={styles.introText}>
-              The Skill Template Library contains five institution-grade banking AI skills across four
-              core functional areas: Operations, Compliance, Lending, and Marketing. Each template
-              contains all five components of a complete skill (Role, Context, Task, Format,
-              Constraints) and is formatted for immediate deployment in ChatGPT, Claude, Gemini, or
-              any AI platform with custom instruction capabilities.{'\n\n'}
-              These templates are starting points, not finished products. Adapt the Role to your
-              institution's specific context, modify the Task to match your workflow, and update
-              Constraints to reflect your institution's policies and risk tolerance. A skill that has
-              been adapted to your specific institution will consistently outperform a generic template.
+              {'The Skill Template Library contains five institution-grade banking AI skills across four core functional areas: Operations, Compliance, Lending, and Marketing. Each template contains all five components of a complete skill (Role, Context, Task, Format, Constraints) and is formatted for immediate deployment in ChatGPT, Claude, Gemini, or any AI platform with custom instruction capabilities.\n\nThese templates are starting points, not finished products. Adapt the Role to your institution\'s specific context, modify the Task to match your workflow, and update Constraints to reflect your institution\'s policies and risk tolerance. A skill adapted to your specific institution will consistently outperform a generic template.'}
             </Text>
           </View>
 
