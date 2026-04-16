@@ -1,0 +1,253 @@
+// AiBI-P Module 5: Safe Use Guardrails
+// Pillar: Understanding | Estimated: 40 minutes
+// Key Output: Acceptable Use Card (personalized, dynamic: true)
+
+import type { Module } from './types';
+
+export const module5: Module = {
+  number: 5,
+  id: 'm5-safe-use-guardrails',
+  title: 'Safe Use Guardrails',
+  pillar: 'understanding',
+  estimatedMinutes: 40,
+  keyOutput: 'Acceptable Use Card',
+  mockupRef: 'content/courses/AiBI-P v1/stitch_ai_banking_institute_course/m5_refined_safe_use_guardrails',
+  sections: [
+    {
+      id: 'm5-shadow-ai',
+      title: 'The Shadow AI Problem',
+      content: `Shadow AI is the use of AI tools by staff without institutional knowledge, approval, or governance. It is the community banking industry's most widespread AI compliance risk — and the one most institutions are least prepared for.
+
+The 2025 Gartner Peer Community survey (via Jack Henry & Associates) found that 57% of financial institutions report struggling with AI skill gaps, and 55% have no AI governance framework yet. These two statistics together describe the shadow AI condition: staff are using tools their institutions are not ready to govern.
+
+Shadow AI is not a moral failing — it is a structural gap. Staff who use consumer AI tools to do their jobs better are often the institution's most motivated performers. The solution is not prohibition — it is a governance framework that enables safe, compliant use.
+
+**The three sources of shadow AI risk in community banking:**
+
+1. **Consumer AI tools with institutional data:** Staff using free-tier ChatGPT, Claude, or Gemini with non-public institutional information — policy documents, customer queries, internal memos — without understanding the data training implications.
+
+2. **Vendor AI features without TPRM review:** Core banking vendors, document management platforms, and communication tools regularly add AI features that activate automatically or with one-click opt-in. Staff who enable these features without IT and compliance review are creating TPRM exposure.
+
+3. **AI outputs used without verification:** Staff who use AI-generated content in customer communications, compliance filings, or risk assessments without verifying accuracy. The hallucination problem is real — and in banking, an AI-generated compliance finding that traces to a hallucinated citation has regulatory consequences.`,
+    },
+    {
+      id: 'm5-data-classification',
+      title: 'Three-Tier Data Classification',
+      content: `The fundamental framework for all AI interactions at a community bank or credit union is three-tier data classification. Before sharing any information in an AI prompt, classify it. Your classification determines which tools and settings are permissible.
+
+**Tier 1 — Public Information**
+Definition: Information that is already public or would cause no harm if disclosed. Examples: marketing copy, general industry news, publicly available regulatory guidance, published interest rates, job postings.
+Usage protocol: Unrestricted. Can be used in free-tier consumer AI tools, public AI APIs, or any platform.
+
+**Tier 2 — Internal Only**
+Definition: Information that is not public but does not directly identify customers or contain sensitive institutional strategy. Examples: internal policy documents, employee training materials, process maps, internal memos, non-client-specific performance data, procedure guides.
+Usage protocol: Sandboxed use only. Requires a paid enterprise AI account with data training opt-out, OR your institution's approved sandboxed AI environment. Cannot be used in free-tier consumer tools.
+
+**Tier 3 — Highly Restricted**
+Definition: Personally identifiable information (PII), customer financial data, account numbers, credit decisions, strategic M&A details, SAR filings, and any data subject to specific regulatory protection.
+Usage protocol: Prohibited in AI tools. Do not paste Tier 3 data into any AI prompt, including enterprise-grade tools. If AI analysis of this data is required, it must be done through a formally reviewed, purpose-built integration with appropriate data governance controls.
+
+**The practical rule:** When in doubt, classify up. If you are unsure whether information is Tier 2 or Tier 3, treat it as Tier 3.`,
+    },
+    {
+      id: 'm5-hallucination-patterns',
+      title: 'Six Banking Hallucination Patterns',
+      content: `The AIEOG AI Lexicon (February 2026) defines hallucination as "an AI output that is factually incorrect, fabricated, or misleading, presented with apparent confidence." In banking, hallucination takes six specific forms that practitioners must recognize.
+
+**Pattern 1 — Prompt Blindness**
+As users become more familiar with an AI tool's fluency and confidence, they stop scrutinizing its outputs. The AI sounds authoritative — so the output gets used without verification. This is the most common failure pattern and the hardest to self-diagnose.
+*Mitigation:* Apply the same verification standard to AI outputs that you would apply to outputs from a junior staff member on their first day.
+
+**Pattern 2 — Data Exfiltration**
+Inadvertent disclosure of proprietary, non-public, or Tier 3 data into AI prompts that flow to a model provider's systems. This is not hallucination in the traditional sense — it is a data governance failure that the AI makes technically easy.
+*Mitigation:* Apply the three-tier classification before every prompt. Free-tier tools are public infrastructure.
+
+**Pattern 3 — Recursive Logic Bias**
+AI systems trained on historical banking data can amplify historical biases — particularly in lending and credit contexts where historical decisions already embedded discriminatory patterns. The AI does not hallucinate in the traditional sense; it accurately reflects a biased dataset. The output is internally consistent but institutionally dangerous.
+*Mitigation:* Never use AI outputs in credit decisions without human review by someone trained to identify disparate impact.
+
+**Pattern 4 — Prompt Injection**
+Malicious instructions embedded in content that gets fed to an AI system — a document, email, or web page that contains hidden instructions designed to manipulate the AI's behavior or extract information. In banking, this typically surfaces when AI is used to analyze external documents.
+*Mitigation:* When using AI to analyze externally-sourced documents (loan applications, vendor contracts, counterparty materials), be aware that the document itself could contain injected instructions.
+
+**Pattern 5 — Hallucination Drift**
+The AI generates confident, specific-sounding financial figures, regulatory citations, or case law references that do not exist. This is classic hallucination — the model produces plausible-sounding content that is fabricated. It is particularly dangerous in banking because the outputs (interest rates, regulatory requirements, precedent decisions) are the kinds of specific, citable information that staff want to use directly.
+*Mitigation:* Always verify any specific number, citation, regulation reference, or case name against primary sources. AI can help you find things; it cannot reliably guarantee they exist.
+
+**Pattern 6 — Over-Reliance on Confidence**
+AI systems express uncertainty poorly. When a model does not know something, it often generates a plausible-sounding answer rather than a clear admission of uncertainty. "I'm not sure, but..." followed by a confidently-stated fabrication is a common failure mode.
+*Mitigation:* Explicitly prompt the AI to express uncertainty: "If you are not confident about any part of this response, tell me." Then treat the uncertain portions as requiring independent verification.`,
+    },
+  ],
+  tables: [
+    {
+      id: 'm5-data-classification',
+      caption: 'Three-Tier Data Classification Framework for AI Use',
+      columns: [
+        { header: 'Tier', key: 'tier' },
+        { header: 'Description', key: 'description' },
+        { header: 'Examples', key: 'examples' },
+        { header: 'Usage Protocol', key: 'protocol' },
+        { header: 'Risk Level', key: 'risk' },
+      ],
+      rows: [
+        {
+          tier: 'Tier 1 — Public Information',
+          description: 'Information already public or causing no harm if disclosed',
+          examples: 'Marketing copy, general industry news, published regulatory guidance, public interest rates, job postings',
+          protocol: 'Unrestricted — can be used in any AI tool including free-tier consumer platforms',
+          risk: 'Low',
+        },
+        {
+          tier: 'Tier 2 — Internal Only',
+          description: 'Non-public information that does not identify customers or contain sensitive strategy',
+          examples: 'Internal policy documents, process maps, employee training materials, internal memos, general performance data',
+          protocol: 'Sandboxed use only — requires paid enterprise AI account with data training opt-out, or institution-approved AI environment',
+          risk: 'Moderate',
+        },
+        {
+          tier: 'Tier 3 — Highly Restricted',
+          description: 'PII, customer financial data, account details, credit decisions, SAR filings, strategic M&A information',
+          examples: 'Customer names + account numbers, loan applications, credit scores, SAR details, merger targets, individual performance reviews',
+          protocol: 'PROHIBITED in AI tools — requires purpose-built, formally reviewed integration with data governance controls if AI processing is required at all',
+          risk: 'Critical',
+        },
+      ],
+    },
+    {
+      id: 'm5-drill-scenarios',
+      caption: '20-Scenario Classification Drill — Sample Scenarios',
+      columns: [
+        { header: 'Scenario', key: 'scenario' },
+        { header: 'Correct Tier', key: 'tier' },
+        { header: 'Key Reasoning', key: 'reasoning' },
+      ],
+      rows: [
+        {
+          scenario: 'Draft a social media post about your institution\'s new CD rates',
+          tier: 'Tier 1 — Public',
+          reasoning: 'Rates are publicly advertised; content is marketing material',
+        },
+        {
+          scenario: 'Summarize your institution\'s BSA policy for new employee training',
+          tier: 'Tier 2 — Internal Only',
+          reasoning: 'Internal policy document — not public, but no customer PII',
+        },
+        {
+          scenario: 'Analyze Q3 risk management policy draft against last year\'s internal audit findings',
+          tier: 'Tier 2 — Internal Only',
+          reasoning: 'Internal documents — policy and audit findings are internal, not client-specific',
+        },
+        {
+          scenario: 'Review a specific customer\'s loan application and flag missing documentation',
+          tier: 'Tier 3 — Highly Restricted',
+          reasoning: 'Customer PII + loan application data = Tier 3 regardless of context',
+        },
+        {
+          scenario: 'Research federal funds rate history for a presentation to the board',
+          tier: 'Tier 1 — Public',
+          reasoning: 'Federal Reserve data is public information',
+        },
+        {
+          scenario: 'Draft a memo explaining the new remote work policy to staff',
+          tier: 'Tier 2 — Internal Only',
+          reasoning: 'Internal operational policy — not public, but no customer data',
+        },
+        {
+          scenario: 'Analyze a SAR filing narrative to improve future descriptions',
+          tier: 'Tier 3 — Highly Restricted',
+          reasoning: 'SAR content is legally restricted and contains sensitive investigation details',
+        },
+        {
+          scenario: 'Write a blog post about AI trends in community banking',
+          tier: 'Tier 1 — Public',
+          reasoning: 'Industry topic using only publicly available information',
+        },
+        {
+          scenario: 'Review your institution\'s core banking vendor contract for AI-related provisions',
+          tier: 'Tier 2 — Internal Only',
+          reasoning: 'Vendor contract is confidential/internal — not public, no customer data',
+        },
+        {
+          scenario: 'Summarize a meeting transcript from a department planning session',
+          tier: 'Tier 2 — Internal Only',
+          reasoning: 'Internal operations content — not public, but no customer PII if names are typical internal staff',
+        },
+      ],
+    },
+  ],
+  activities: [
+    {
+      id: '5.1',
+      title: '20-Second Classification Drill',
+      description: 'Classify 20 banking scenarios against the three-tier framework. The drill is timed — you have 20 seconds per scenario. Speed is intentional: real-world data classification decisions happen in the flow of work, not with time to deliberate. After the drill, you will see your accuracy and the reasoning for each correct answer.',
+      type: 'drill',
+      fields: [
+        {
+          id: 'drill-response',
+          label: 'Data classification drill response',
+          type: 'radio',
+          required: true,
+          options: [
+            { value: 'tier-1', label: 'Tier 1 — Public Information' },
+            { value: 'tier-2', label: 'Tier 2 — Internal Only' },
+            { value: 'tier-3', label: 'Tier 3 — Highly Restricted' },
+          ],
+        },
+      ],
+      completionTrigger: 'module-advance',
+    },
+    {
+      id: '5.2',
+      title: 'Acceptable Use Card Builder',
+      description: 'Build your personalized Acceptable Use Card by answering four questions about your role and AI use context. Your answers are used to generate a role-specific, one-page reference card you can keep at your workstation.',
+      type: 'builder',
+      fields: [
+        {
+          id: 'role-context',
+          label: 'What is your primary role and department?',
+          type: 'text',
+          minLength: 10,
+          required: true,
+          placeholder: 'e.g., Loan Officer, Commercial Lending Department',
+        },
+        {
+          id: 'primary-ai-tool',
+          label: 'What AI tool(s) does your institution permit you to use?',
+          type: 'text',
+          minLength: 5,
+          required: true,
+          placeholder: 'e.g., Microsoft 365 Copilot (institutional license), ChatGPT Plus (personal)',
+        },
+        {
+          id: 'highest-risk-scenario',
+          label: 'What is the highest-risk AI use scenario in your role — the one where data classification matters most?',
+          type: 'textarea',
+          minLength: 30,
+          required: true,
+          placeholder: 'Describe the specific scenario where you might be tempted to share sensitive information with an AI tool. This is used to write a specific guardrail on the front of your Acceptable Use Card.',
+        },
+        {
+          id: 'quick-win-use-case',
+          label: 'What is the Tier 1 (public) AI use case that would save you the most time in your role?',
+          type: 'textarea',
+          minLength: 20,
+          required: true,
+          placeholder: 'Describe a task you do regularly that involves only public information and could be accelerated with AI assistance. This becomes the "Start Here" use case on your Acceptable Use Card.',
+        },
+      ],
+      completionTrigger: 'artifact-download',
+      artifactId: 'acceptable-use-card',
+    },
+  ],
+  artifacts: [
+    {
+      id: 'acceptable-use-card',
+      title: 'Acceptable Use Card',
+      description: 'Personalized one-page reference card with your role context, permitted tools, top-tier use case, and highest-risk guardrail. Designed to be printed and kept at workstation.',
+      format: 'pdf',
+      triggeredBy: '5.2',
+      dynamic: true,
+    },
+  ],
+} as const;
