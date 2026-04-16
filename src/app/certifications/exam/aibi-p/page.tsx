@@ -22,14 +22,11 @@ export default function AiBIPExamPage() {
             How ready are you for the Practitioner credential?
           </h1>
           <p className="text-lg text-[color:var(--color-ink)]/75 leading-relaxed max-w-xl mx-auto">
-            A short proficiency assessment covering the five areas every
-            banking AI practitioner needs to understand: fundamentals,
-            prompting, safe use, use case identification, and measurement.
-          </p>
-          <p className="text-[color:var(--color-ink)]/60 leading-relaxed max-w-xl mx-auto">
-            Your result is a proficiency level &mdash; not a grade. It tells
-            you whether you are ready to pursue certification, or where to
-            focus your development first. Take it as many times as you like.
+            A short proficiency assessment covering fundamentals, prompting,
+            safe use, use case identification, and measurement. Your result
+            is a proficiency level &mdash; not a grade &mdash; that tells you
+            whether you are ready to pursue certification or where to focus
+            your development first. Take it as many times as you like.
           </p>
           <button
             type="button"
