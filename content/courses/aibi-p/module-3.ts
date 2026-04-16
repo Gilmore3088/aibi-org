@@ -65,6 +65,27 @@ The "your data trains the model" risk of free tiers creates a compliance exposur
 The ROI calculation is straightforward: if AI saves a staff member 30 minutes per day on drafting and research tasks, the $20-30/month subscription cost pays back in under two hours of saved time per month.`,
     },
     {
+      id: 'm3-it-query',
+      title: 'Confirming Your License Status',
+      content: `Before completing Activity 3.1, you need to know what you have access to. If you are unsure whether your institution has Microsoft 365 Copilot provisioned for your account, send this request to your IT administrator:
+
+> "I am participating in an AI proficiency program and need to confirm my license status for Microsoft 365 Copilot. Do we have the Enterprise SKU active, and is my account provisioned for the Copilot add-on?"
+
+This is a standard IT query — not an unusual request. Most IT administrators will be able to answer within one business day. If your institution does not have Copilot, that information is equally useful: it tells you to focus on the generalist AI path (ChatGPT, Claude, or Gemini) for this module.
+
+**What you are looking for in the IT response:**
+
+- Do we have Microsoft 365 E3, E5, or Business Premium?
+- Has the Copilot add-on been purchased?
+- Is my specific account licensed for Copilot?
+
+All three must be true for Copilot to work in your Outlook, Teams, and Word. A "yes" on the first question but "no" on the second means your institution has the eligible base license but has not yet purchased the add-on.
+
+**Pricing context (as of 2025):**
+
+The Microsoft 365 Copilot add-on is priced at $30 per user per month, billed through your institution's Microsoft account. The decision to purchase is an IT and finance decision — it is not within most staff members' authority to provision. Your role is to identify whether the capability exists and, if not, to document the gap so the institution can make an informed decision.`,
+    },
+    {
       id: 'm3-data-protection',
       title: 'A Note on Data Protection',
       content: `Every AI interaction creates a data residency question. Where does the prompt go? Who can see it? Does it become training data?
