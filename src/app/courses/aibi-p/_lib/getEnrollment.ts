@@ -33,11 +33,11 @@ export async function getEnrollment(): Promise<EnrollmentData | null> {
         current_module: 1,
         enrolled_at: new Date().toISOString(),
         onboarding_answers: {
-          m365: 'yes',
-          subscriptions: ['chatgpt-plus'],
-          role: 'executive',
+          uses_m365: 'yes',
+          personal_ai_subscriptions: ['chatgpt-plus'],
+          primary_role: 'executive',
         },
-      } as EnrollmentData;
+      } as unknown as EnrollmentData;
     }
     return null;
   }

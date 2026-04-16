@@ -2,7 +2,7 @@
 // Server component. Shows pending + resubmitted submissions, resubmissions first.
 // Auth is handled by layout.tsx — by the time this renders, reviewer is verified.
 
-import { createServiceRoleClient } from '@/lib/supabase/client';
+import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { SubmissionQueue } from './_components/SubmissionQueue';
 
 // Supabase returns related rows as an array even for to-one FK relations.
@@ -16,6 +16,14 @@ interface SubmissionRow {
 }
 
 export default async function ReviewerQueuePage() {
+  if (!isSupabaseConfigured()) {
+    return (
+      <div className="py-12 text-center">
+        <p className="font-sans text-gray-500">Reviewer queue requires Supabase configuration.</p>
+      </div>
+    );
+  }
+
   const serviceClient = createServiceRoleClient();
 
   // Fetch pending + resubmitted submissions, resubmissions first, oldest first within each group.

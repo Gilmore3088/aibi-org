@@ -3,7 +3,7 @@
 // Auth is handled by layout.tsx. Fetches submission by ID using service role.
 
 import { notFound } from 'next/navigation';
-import { createServiceRoleClient } from '@/lib/supabase/client';
+import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { getPublicUrl } from '@/lib/supabase/storage';
 import { RubricForm } from '../_components/RubricForm';
 import type { WorkSubmission } from '@/types/course';
@@ -19,6 +19,10 @@ interface SubmissionWithEmail extends WorkSubmission {
 
 export default async function ReviewDetailPage({ params }: ReviewDetailPageProps) {
   const { id } = params;
+
+  if (!isSupabaseConfigured()) {
+    notFound();
+  }
 
   const serviceClient = createServiceRoleClient();
 
