@@ -19,7 +19,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 5: Modules 1-5 Activities + Artifacts** - Pillar A/B modules fully interactive with first three artifacts
 - [x] **Phase 6: Modules 6-9 Activities + Skill Builder** - Pillar C/D modules, skill builder, My First Skill artifact
 - [x] **Phase 7: Work Product + Reviewer Queue** - 4-item submission, 5-dimension rubric, pass/fail workflow
-- [ ] **Phase 8: Certificate + Verification** - Certificate issuance, LinkedIn badge, public verification endpoint
+- [x] **Phase 8: Certificate + Verification** - Certificate issuance, LinkedIn badge, public verification endpoint
 
 ## Phase Details
 
