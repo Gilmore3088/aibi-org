@@ -5,7 +5,12 @@ import { useState, type FormEvent } from 'react';
 type Status = 'idle' | 'submitting' | 'success' | 'error';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const TRACKS = ['AiBI-P (Practitioner)', 'AiBI-S (Specialist)', 'AiBI-L (Leader)', 'Not sure yet'] as const;
+const TRACKS = [
+  'Banking AI Practitioner (AiBI-P)',
+  'Banking AI Specialist (AiBI-S)',
+  'Banking AI Leader (AiBI-L)',
+  'Not sure yet',
+] as const;
 
 export function InquiryForm() {
   const [name, setName] = useState('');
