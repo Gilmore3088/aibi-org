@@ -179,7 +179,7 @@ export const questions: readonly AssessmentQuestion[] = [
   {
     id: 'all-04',
     dimension: 'ai-literacy-level',
-    prompt: 'Can your operations staff identify at least one specific AI use case relevant to their own role?',
+    prompt: 'Can your staff identify at least one specific AI use case relevant to their own role?',
     options: [
       { label: 'Most cannot — AI feels abstract and distant from their daily tasks.', points: 1 },
       { label: 'Some can name a general use case (like writing assistance) but not something specific to their role.', points: 2 },
@@ -225,23 +225,23 @@ export const questions: readonly AssessmentQuestion[] = [
   {
     id: 'qwp-02',
     dimension: 'quick-win-potential',
-    prompt: 'What percentage of staff time in your institution is spent on tasks that involve copying, reformatting, or summarizing information?',
+    prompt: 'Has your institution identified a specific workflow — such as BSA/AML alert narratives, loan file checklists, or member correspondence — as a candidate for AI assistance?',
     options: [
-      { label: 'We have not measured this and have no estimate.', points: 1 },
-      { label: 'Anecdotally significant, but we have not quantified it.', points: 2 },
-      { label: 'We estimate 10–25% of total staff hours involve this type of work.', points: 3 },
-      { label: 'We have measured this and know specific workflows with the highest volume.', points: 4 },
+      { label: 'No specific workflows have been identified as candidates.', points: 1 },
+      { label: 'Staff have mentioned a few pain points informally, but nothing has been formally evaluated.', points: 2 },
+      { label: 'We have identified at least one specific workflow and discussed what AI assistance might look like.', points: 3 },
+      { label: 'We have a prioritized list of workflows with estimated time savings and a named owner for each.', points: 4 },
     ],
   },
   {
     id: 'qwp-03',
     dimension: 'quick-win-potential',
-    prompt: 'How would you describe the state of internal documentation and process guides at your institution?',
+    prompt: 'How would you describe the state of written procedures for high-volume tasks at your institution — things like new account opening, loan file assembly, or regulatory reporting prep?',
     options: [
-      { label: 'Most processes live in staff memory or email threads — documentation is sparse.', points: 1 },
-      { label: 'Some departments document processes, but coverage is inconsistent.', points: 2 },
-      { label: 'Core processes are documented, though some are outdated or stored inconsistently.', points: 3 },
-      { label: 'Processes are documented, maintained, and accessible — a strong base for AI-assisted enhancement.', points: 4 },
+      { label: 'Most procedures live in staff memory or email threads — written documentation is sparse.', points: 1 },
+      { label: 'Some departments maintain written procedures, but coverage and currency are inconsistent.', points: 2 },
+      { label: 'Core procedures are written down and reasonably current, though storage is sometimes scattered.', points: 3 },
+      { label: 'Procedures are documented, version-controlled, and accessible — a solid foundation for AI-assisted workflow improvements.', points: 4 },
     ],
   },
   {
@@ -418,12 +418,12 @@ export const questions: readonly AssessmentQuestion[] = [
   {
     id: 'ti-01',
     dimension: 'training-infrastructure',
-    prompt: "What is your institution's capacity for delivering staff training programs?",
+    prompt: "Beyond required compliance and BSA training, what is your institution's capacity to deliver new skill-building programs to staff?",
     options: [
-      { label: 'We rely on vendor-provided training as needed; we have no internal capacity.', points: 1 },
-      { label: 'We deliver compliance training but lack capacity for new skill programs.', points: 2 },
-      { label: 'We have a training function that can roll out new programs with advance planning.', points: 3 },
-      { label: 'We have an active learning function that regularly launches new skill programs.', points: 4 },
+      { label: 'We rely entirely on vendor or core provider training; there is no internal capacity for new programs.', points: 1 },
+      { label: 'A manager or HR contact can coordinate training, but only by pulling from existing schedules.', points: 2 },
+      { label: 'We have a designated training function or L&D lead who can build and roll out new programs with adequate lead time.', points: 3 },
+      { label: 'We have an active learning function with dedicated staff, a defined delivery process, and a track record of launching new programs institution-wide.', points: 4 },
     ],
   },
   {
