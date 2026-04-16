@@ -115,6 +115,61 @@ AI systems express uncertainty poorly. When a model does not know something, it 
       ],
     },
     {
+      id: 'm5-hallucination-patterns',
+      caption: 'Six Banking Hallucination Patterns — Recognition and Mitigation',
+      columns: [
+        { header: 'Pattern', key: 'pattern' },
+        { header: 'Description', key: 'description' },
+        { header: 'Banking Example', key: 'example' },
+        { header: 'Mitigation', key: 'mitigation' },
+        { header: 'AIEOG Lexicon Link', key: 'lexiconLink' },
+      ],
+      rows: [
+        {
+          pattern: 'Pattern 1 — Prompt Blindness',
+          description: 'Users stop scrutinizing AI outputs as they become more familiar with the system\'s fluency and confidence. The AI sounds authoritative, so outputs are used without verification.',
+          example: 'A compliance officer uses ChatGPT to summarize a regulatory update. After six months of accurate summaries, they stop checking the source. On the seventh use, the AI mischaracterizes a key FinCEN requirement.',
+          mitigation: 'Apply the same verification standard to AI outputs that you would apply to outputs from a junior staff member on their first day — regardless of how long you have used the tool.',
+          lexiconLink: 'Hallucination — AIEOG AI Lexicon, February 2026',
+        },
+        {
+          pattern: 'Pattern 2 — Data Exfiltration',
+          description: 'Inadvertent disclosure of proprietary, non-public, or Tier 3 data into AI prompts that flow to a model provider\'s systems. A data governance failure that AI makes technically easy.',
+          example: 'A loan officer pastes a borrower\'s full financial statement into a free-tier ChatGPT prompt to "quickly summarize the key numbers." The data flows to OpenAI\'s systems without enterprise protections.',
+          mitigation: 'Apply the three-tier data classification before every prompt. Free-tier tools are public infrastructure — treat every free-tier prompt as a public document.',
+          lexiconLink: 'Third-Party AI Risk — AIEOG AI Lexicon, February 2026',
+        },
+        {
+          pattern: 'Pattern 3 — Recursive Logic Bias',
+          description: 'AI systems trained on historical banking data amplify historical biases, particularly in lending and credit contexts. The AI accurately reflects a biased dataset — the output is internally consistent but institutionally dangerous.',
+          example: 'An AI tool trained on historical loan approval data recommends lower credit limits for borrowers in certain zip codes, accurately reflecting past decisions that were themselves discriminatory.',
+          mitigation: 'Never use AI outputs in credit decisions without human review by someone trained to identify disparate impact. Document the review in the credit file.',
+          lexiconLink: 'ECOA / Reg B — disparate impact applies to algorithmic outputs. See also SR 11-7 model validation requirements.',
+        },
+        {
+          pattern: 'Pattern 4 — Prompt Injection',
+          description: 'Malicious instructions embedded in content fed to an AI system — a document, email, or web page containing hidden instructions designed to manipulate the AI\'s behavior or extract information.',
+          example: 'A staff member uses AI to summarize a vendor contract. The contract\'s appendix contains hidden text instructing the AI to recommend contract approval regardless of terms — the summary omits unfavorable clauses.',
+          mitigation: 'When using AI to analyze externally-sourced documents (loan applications, vendor contracts, counterparty materials), be aware that the document itself could contain injected instructions. Verify key findings independently.',
+          lexiconLink: 'HITL (Human-in-the-Loop) — AIEOG AI Lexicon: human review of AI outputs before they are acted upon',
+        },
+        {
+          pattern: 'Pattern 5 — Hallucination Drift',
+          description: 'The AI generates confident, specific-sounding financial figures, regulatory citations, or case law references that do not exist. Classic hallucination — plausible-sounding content that is fabricated.',
+          example: 'A staff member asks for the current threshold for Currency Transaction Report filing. The AI confidently states "$8,000" instead of the correct $10,000 — a specific, authoritative-sounding answer that is wrong.',
+          mitigation: 'Always verify any specific number, citation, regulation reference, or case name against primary sources. AI can help you find things; it cannot reliably guarantee they exist.',
+          lexiconLink: 'Hallucination — AIEOG AI Lexicon, February 2026: "an AI output that is factually incorrect, fabricated, or misleading, presented with apparent confidence"',
+        },
+        {
+          pattern: 'Pattern 6 — Over-Reliance on Confidence',
+          description: 'AI systems express uncertainty poorly. When a model does not know something, it often generates a plausible-sounding answer rather than a clear admission of uncertainty.',
+          example: 'A staff member asks about a specific regulatory examination finding from 2019. The AI generates a detailed, confident-sounding account of an examination that did not occur, because it had no data on that specific event.',
+          mitigation: 'Explicitly prompt the AI to express uncertainty: "If you are not confident about any part of this response, tell me." Then treat the uncertain portions as requiring independent verification.',
+          lexiconLink: 'Explainability — AIEOG AI Lexicon: the capacity of an AI system to provide human-understandable reasons for its outputs',
+        },
+      ],
+    },
+    {
       id: 'm5-drill-scenarios',
       caption: '20-Scenario Classification Drill — Sample Scenarios',
       columns: [
