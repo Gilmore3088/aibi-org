@@ -66,8 +66,8 @@ Plans:
   4. A non-enrolled visitor who tries to access any module URL is redirected to the purchase page, not a 404
 **Plans**: 2 plans
 Plans:
-- [ ] 01-01-PLAN.md — Database schema (5 tables), RLS policies, indexes, TypeScript types, Supabase client
-- [ ] 01-02-PLAN.md — Content architecture: typed module content files for all 9 AiBI-P modules
+- [ ] 03-01-PLAN.md — Stripe SDK, create-checkout API route (individual + institution), purchase page Enroll button wiring
+- [ ] 03-02-PLAN.md — Stripe webhook handler: signature verification, enrollment provisioning, institution bundle tracking
 
 ### Phase 4: Onboarding Branch + Progress Tracking
 **Goal**: Enrolled learners complete a 3-question onboarding survey before Module 1, their platform context routes content throughout the course, and progress persists to Supabase so iOS tab kills cannot lose work
@@ -156,7 +156,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 |-------|----------------|--------|-----------|
 | 1. Foundation | 1/2 | In Progress|  |
 | 2. Course Shell + Assessment Upgrade | 0/4 | Not started | - |
-| 3. Stripe Checkout + Enrollment | 0/TBD | Not started | - |
+| 3. Stripe Checkout + Enrollment | 0/2 | Not started | - |
 | 4. Onboarding Branch + Progress Tracking | 0/TBD | Not started | - |
 | 5. Modules 1-5 Activities + Artifacts | 0/TBD | Not started | - |
 | 6. Modules 6-9 Activities + Skill Builder | 0/TBD | Not started | - |
