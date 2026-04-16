@@ -18,7 +18,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 4: Onboarding Branch + Progress Tracking** - Survey routing, forward-only gating, resume functionality
 - [x] **Phase 5: Modules 1-5 Activities + Artifacts** - Pillar A/B modules fully interactive with first three artifacts
 - [x] **Phase 6: Modules 6-9 Activities + Skill Builder** - Pillar C/D modules, skill builder, My First Skill artifact
-- [ ] **Phase 7: Work Product + Reviewer Queue** - 4-item submission, 5-dimension rubric, pass/fail workflow
+- [x] **Phase 7: Work Product + Reviewer Queue** - 4-item submission, 5-dimension rubric, pass/fail workflow
 - [ ] **Phase 8: Certificate + Verification** - Certificate issuance, LinkedIn badge, public verification endpoint
 
 ## Phase Details
@@ -131,8 +131,8 @@ Plans:
   5. A learner who failed receives actionable written feedback identifying specific dimensions and can resubmit exactly once; their resubmission appears at the top of the reviewer queue
 **Plans**: 2 plans
 Plans:
-- [ ] 01-01-PLAN.md — Database schema (5 tables), RLS policies, indexes, TypeScript types, Supabase client
-- [ ] 01-02-PLAN.md — Content architecture: typed module content files for all 9 AiBI-P modules
+- [ ] 07-01-PLAN.md — Work product submission form, Supabase Storage presigned upload, submit-work-product API
+- [ ] 07-02-PLAN.md — Reviewer dashboard, 5-dimension rubric scoring UI, review-submission API with Accuracy hard gate
 
 ### Phase 8: Certificate + Verification
 **Goal**: Reviewer approval triggers certificate record creation and PDF delivery, the certificate matches the specified design, a public verification endpoint returns holder details, and the learner sees their LinkedIn badge link on the completion page
@@ -162,5 +162,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | 4. Onboarding Branch + Progress Tracking | 0/2 | Not started | - |
 | 5. Modules 1-5 Activities + Artifacts | 0/4 | Not started | - |
 | 6. Modules 6-9 Activities + Skill Builder | 0/2 | Not started | - |
-| 7. Work Product + Reviewer Queue | 0/TBD | Not started | - |
+| 7. Work Product + Reviewer Queue | 0/2 | Not started | - |
 | 8. Certificate + Verification | 0/TBD | Not started | - |
