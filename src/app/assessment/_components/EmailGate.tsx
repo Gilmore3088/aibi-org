@@ -87,12 +87,12 @@ export function EmailGate({
               setMessage(null);
             }
           }}
-          className="w-full px-4 py-3 border border-[color:var(--color-ink)]/20 bg-[color:var(--color-linen)] text-[color:var(--color-ink)] font-sans text-base focus:outline-none focus:border-[color:var(--color-terra)]"
+          className="w-full px-4 py-3 border border-[color:var(--color-ink)]/20 rounded-[2px] bg-[color:var(--color-linen)] text-[color:var(--color-ink)] font-sans text-base focus:outline-none focus:border-[color:var(--color-terra)]"
         />
         <button
           type="submit"
           disabled={status === 'submitting'}
-          className="w-full px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors disabled:opacity-60"
+          className="w-full px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all disabled:opacity-60"
         >
           {status === 'submitting' ? 'Sending…' : 'Show my full results'}
         </button>

@@ -87,7 +87,7 @@ export function ChooseYourPath() {
                 </li>
               ))}
             </ul>
-            <span className="block text-center py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] group-hover:bg-[color:var(--color-terra-light)] transition-colors">
+            <span className="block text-center py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] group-hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all">
               View Certification Tracks
             </span>
           </a>

@@ -31,7 +31,7 @@ export default function AiBIPExamPage() {
           <button
             type="button"
             onClick={exam.start}
-            className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
+            className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
           >
             Begin Assessment
           </button>
@@ -128,7 +128,7 @@ export default function AiBIPExamPage() {
                 <button
                   type="button"
                   onClick={exam.next}
-                  className="px-6 py-2 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-sm font-medium hover:bg-[color:var(--color-terra-light)] transition-colors"
+                  className="px-6 py-2 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-sm font-medium hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
                 >
                   Next
                 </button>
@@ -136,7 +136,7 @@ export default function AiBIPExamPage() {
                 <button
                   type="button"
                   onClick={exam.finish}
-                  className="px-6 py-2 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-sm font-medium hover:bg-[color:var(--color-terra-light)] transition-colors"
+                  className="px-6 py-2 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-sm font-medium hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
                 >
                   Finish
                 </button>
@@ -224,7 +224,7 @@ export default function AiBIPExamPage() {
             </button>
             <Link
               href="/certifications#inquiry-form"
-              className="px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
+              className="px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
             >
               Inquire about certification
             </Link>

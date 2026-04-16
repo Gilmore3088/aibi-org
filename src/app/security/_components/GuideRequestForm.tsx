@@ -80,7 +80,7 @@ export function GuideRequestForm() {
             required
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="mt-1 w-full px-4 py-3 border border-[color:var(--color-linen)]/30 bg-transparent text-[color:var(--color-linen)] font-sans focus:outline-none focus:border-[color:var(--color-terra-pale)]"
+            className="mt-1 w-full px-4 py-3 border border-[color:var(--color-linen)]/30 rounded-[2px] bg-transparent text-[color:var(--color-linen)] font-sans focus:outline-none focus:border-[color:var(--color-terra-pale)]"
           />
         </label>
         <label className="block">
@@ -92,7 +92,7 @@ export function GuideRequestForm() {
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="mt-1 w-full px-4 py-3 border border-[color:var(--color-linen)]/30 bg-transparent text-[color:var(--color-linen)] font-sans focus:outline-none focus:border-[color:var(--color-terra-pale)]"
+            className="mt-1 w-full px-4 py-3 border border-[color:var(--color-linen)]/30 rounded-[2px] bg-transparent text-[color:var(--color-linen)] font-sans focus:outline-none focus:border-[color:var(--color-terra-pale)]"
           />
         </label>
       </div>
@@ -105,13 +105,13 @@ export function GuideRequestForm() {
           required
           value={institution}
           onChange={(e) => setInstitution(e.target.value)}
-          className="mt-1 w-full px-4 py-3 border border-[color:var(--color-linen)]/30 bg-transparent text-[color:var(--color-linen)] font-sans focus:outline-none focus:border-[color:var(--color-terra-pale)]"
+          className="mt-1 w-full px-4 py-3 border border-[color:var(--color-linen)]/30 rounded-[2px] bg-transparent text-[color:var(--color-linen)] font-sans focus:outline-none focus:border-[color:var(--color-terra-pale)]"
         />
       </label>
       <button
         type="submit"
         disabled={status === 'submitting'}
-        className="w-full px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors disabled:opacity-60"
+        className="w-full px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all disabled:opacity-60"
       >
         {status === 'submitting' ? 'Sending guide…' : 'Email me the guide'}
       </button>
