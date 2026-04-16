@@ -69,6 +69,9 @@ interface RequestBody {
 
 export async function POST(request: Request): Promise<NextResponse> {
   if (!isSupabaseConfigured()) {
+    if (process.env.NODE_ENV === 'development') {
+      return NextResponse.json({ success: true, dev: true });
+    }
     return NextResponse.json(
       { error: 'Service not configured.' },
       { status: 503 }
