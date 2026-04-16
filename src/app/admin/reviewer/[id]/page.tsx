@@ -12,11 +12,9 @@ interface ReviewDetailPageProps {
   params: { id: string };
 }
 
+// Supabase returns related rows as an array even for to-one FK relations.
 interface SubmissionWithEmail extends WorkSubmission {
-  course_enrollments: {
-    email: string;
-    id: string;
-  } | null;
+  course_enrollments: Array<{ email: string; id: string }> | null;
 }
 
 export default async function ReviewDetailPage({ params }: ReviewDetailPageProps) {
@@ -70,7 +68,7 @@ export default async function ReviewDetailPage({ params }: ReviewDetailPageProps
               className="font-serif text-xl text-gray-900"
               style={{ fontFamily: 'var(--font-cormorant, Georgia, serif)' }}
             >
-              {submission.course_enrollments?.email ?? 'Unknown Learner'}
+              {submission.course_enrollments?.[0]?.email ?? 'Unknown Learner'}
             </h2>
             <p className="mt-1 font-sans text-sm text-gray-500">
               Submitted {submittedDate} &middot; Status:{' '}

@@ -2,14 +2,13 @@
 // Renders a table of pending/resubmitted submissions for the reviewer.
 // Each row links to /admin/reviewer/[id].
 
+// Supabase returns related rows as an array even for to-one FK relations.
 interface SubmissionRow {
   id: string;
   review_status: string;
   submitted_at: string;
   enrollment_id: string;
-  course_enrollments: {
-    email: string;
-  } | null;
+  course_enrollments: Array<{ email: string }> | null;
 }
 
 interface SubmissionQueueProps {
@@ -76,7 +75,7 @@ export function SubmissionQueue({ submissions }: SubmissionQueueProps) {
                   )}
                 </td>
                 <td className="px-4 py-3 text-gray-900">
-                  {submission.course_enrollments?.email ?? (
+                  {submission.course_enrollments?.[0]?.email ?? (
                     <span className="text-gray-400">Unknown</span>
                   )}
                 </td>

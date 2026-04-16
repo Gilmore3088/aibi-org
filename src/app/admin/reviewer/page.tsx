@@ -5,18 +5,14 @@
 import { createServiceRoleClient } from '@/lib/supabase/client';
 import { SubmissionQueue } from './_components/SubmissionQueue';
 
+// Supabase returns related rows as an array even for to-one FK relations.
+// We treat course_enrollments as an array and access [0] when reading email.
 interface SubmissionRow {
   id: string;
   review_status: string;
   submitted_at: string;
   enrollment_id: string;
-  course_enrollments: {
-    email: string;
-  } | null;
-}
-
-interface ReviewedCountRow {
-  review_status: string;
+  course_enrollments: Array<{ email: string }> | null;
 }
 
 export default async function ReviewerQueuePage() {
