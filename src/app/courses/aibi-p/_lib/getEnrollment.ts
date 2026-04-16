@@ -9,7 +9,7 @@ import type { CourseEnrollment } from '@/types/course';
 
 export type EnrollmentData = Pick<
   CourseEnrollment,
-  'id' | 'user_id' | 'completed_modules' | 'current_module' | 'enrolled_at'
+  'id' | 'user_id' | 'completed_modules' | 'current_module' | 'enrolled_at' | 'onboarding_answers'
 >;
 
 /**
@@ -52,7 +52,7 @@ export async function getEnrollment(): Promise<EnrollmentData | null> {
 
   const { data, error } = await supabase
     .from('course_enrollments')
-    .select('id, user_id, completed_modules, current_module, enrolled_at')
+    .select('id, user_id, completed_modules, current_module, enrolled_at, onboarding_answers')
     .eq('user_id', user.id)
     .eq('product', 'aibi-p')
     .single();
