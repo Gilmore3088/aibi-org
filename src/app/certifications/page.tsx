@@ -14,7 +14,7 @@ export default function CertificationsPage() {
   return (
     <main>
       {/* Hero */}
-      <section className="px-6 pt-20 pb-12 md:pt-28 md:pb-16">
+      <section className="px-6 pt-14 pb-8 md:pt-20 md:pb-12">
         <div className="max-w-4xl mx-auto text-center space-y-6">
           <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
             Certifications
@@ -39,9 +39,9 @@ export default function CertificationsPage() {
       <SampleQuestion />
 
       {/* Certification tracks */}
-      <section id="certification-tracks" className="px-6 py-20 md:py-28">
+      <section id="certification-tracks" className="px-6 py-14 md:py-20">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-14">
+          <div className="text-center mb-10">
             <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60 mb-4">
               Three tracks
             </p>
@@ -120,7 +120,7 @@ export default function CertificationsPage() {
       </section>
 
       {/* Enterprise / bulk CTA */}
-      <section className="px-6 pb-24">
+      <section className="px-6 pb-16">
         <div className="max-w-3xl mx-auto border border-[color:var(--color-ink)]/10 bg-[color:var(--color-linen)] p-10 md:p-14 text-center">
           <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60 mb-3">
             Team and institutional enrollment

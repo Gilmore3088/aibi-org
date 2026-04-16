@@ -32,7 +32,7 @@ const STAT_CARDS = [
 
 export default function MembersWillSwitchArticle() {
   return (
-    <main className="px-6 py-20 md:py-28">
+    <main className="px-6 py-14 md:py-20">
       <article className="max-w-3xl mx-auto">
         <header className="mb-12">
           <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-4">

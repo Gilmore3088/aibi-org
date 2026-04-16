@@ -23,7 +23,7 @@ const SECURITY_POINTS = [
 
 export function SecurityBand() {
   return (
-    <section className="px-6 py-20 md:py-28 bg-[color:var(--color-cobalt)] text-[color:var(--color-linen)]">
+    <section className="px-6 py-14 md:py-20 bg-[color:var(--color-cobalt)] text-[color:var(--color-linen)]">
       <div className="max-w-6xl mx-auto grid md:grid-cols-5 gap-12 md:gap-16">
         <div className="md:col-span-2">
           <p className="font-mono text-xs uppercase tracking-[0.2em] text-[color:var(--color-linen)]/60 mb-4">

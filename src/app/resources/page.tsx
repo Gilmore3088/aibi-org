@@ -116,9 +116,9 @@ const PUBLICATIONS: readonly Publication[] = [
 
 export default function ResourcesPage() {
   return (
-    <main className="px-6 pt-20 pb-24 md:pt-28">
+    <main className="px-6 pt-20 pb-16 md:pt-28">
       <div className="max-w-5xl mx-auto">
-        <header className="text-center mb-16">
+        <header className="text-center mb-10">
           <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-4">
             Resources
           </p>

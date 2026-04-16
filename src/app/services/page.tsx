@@ -14,7 +14,7 @@ export default function ServicesPage() {
   return (
     <main>
       {/* Hero */}
-      <section className="px-6 pt-20 pb-12 md:pt-28 md:pb-16">
+      <section className="px-6 pt-14 pb-8 md:pt-20 md:pb-12">
         <div className="max-w-4xl mx-auto text-center space-y-6">
           <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
             Consulting engagements
@@ -43,7 +43,7 @@ export default function ServicesPage() {
       <TransformationScoreboard />
 
       {/* Closing CTA */}
-      <section className="px-6 pb-24">
+      <section className="px-6 pb-16">
         <div className="max-w-3xl mx-auto bg-[color:var(--color-ink)] text-[color:var(--color-linen)] p-10 md:p-14 text-center">
           <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra-pale)] mb-3">
             Not sure which tier fits?

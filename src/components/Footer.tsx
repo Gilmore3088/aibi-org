@@ -33,7 +33,7 @@ const FOOTER_GROUPS: readonly FooterGroup[] = [
 
 export function Footer() {
   return (
-    <footer className="border-t border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)] mt-24">
+    <footer className="border-t border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)] mt-16">
       <div className="max-w-6xl mx-auto px-6 py-12">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-10">
           <div className="max-w-md">

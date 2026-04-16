@@ -43,7 +43,7 @@ const GUIDE_CHAPTERS = [
 export default function SecurityPage() {
   return (
     <main>
-      <section className="px-6 py-20 md:py-28 bg-[color:var(--color-cobalt)] text-[color:var(--color-linen)]">
+      <section className="px-6 py-14 md:py-20 bg-[color:var(--color-cobalt)] text-[color:var(--color-linen)]">
         <div className="max-w-6xl mx-auto grid md:grid-cols-5 gap-12 md:gap-16 items-start">
           <div className="md:col-span-3">
             <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-linen)]/60 mb-4">
@@ -85,9 +85,9 @@ export default function SecurityPage() {
         </div>
       </section>
 
-      <section className="px-6 py-20 md:py-28">
+      <section className="px-6 py-14 md:py-20">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
+          <div className="text-center mb-10">
             <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60 mb-4">
               What is inside
             </p>
@@ -117,7 +117,7 @@ export default function SecurityPage() {
         </div>
       </section>
 
-      <section className="px-6 pb-24">
+      <section className="px-6 pb-16">
         <div className="max-w-3xl mx-auto bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 p-10 md:p-14 text-center">
           <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
             Not just a PDF

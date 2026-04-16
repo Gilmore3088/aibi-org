@@ -2,9 +2,9 @@ import Link from 'next/link';
 
 export function ChooseYourPath() {
   return (
-    <section className="px-6 py-20 md:py-28">
+    <section className="px-6 py-14 md:py-20">
       <div className="max-w-5xl mx-auto">
-        <div className="text-center mb-14">
+        <div className="text-center mb-10">
           <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60 mb-4">
             Choose your path
           </p>

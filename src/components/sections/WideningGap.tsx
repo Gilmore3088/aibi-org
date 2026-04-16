@@ -25,7 +25,7 @@ const GAP_STATS = [
 
 export function WideningGap() {
   return (
-    <section className="px-6 py-20 md:py-28 border-y border-[color:var(--color-ink)]/10">
+    <section className="px-6 py-14 md:py-20 border-y border-[color:var(--color-ink)]/10">
       <div className="max-w-6xl mx-auto">
         <div className="grid md:grid-cols-5 gap-12 md:gap-16 items-start">
           <div className="md:col-span-2">

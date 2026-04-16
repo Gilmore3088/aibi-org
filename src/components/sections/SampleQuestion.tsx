@@ -12,7 +12,7 @@ export function SampleQuestion() {
   const [selected, setSelected] = useState<number | null>(null);
 
   return (
-    <section className="px-6 py-20 md:py-28 bg-[color:var(--color-parch)]">
+    <section className="px-6 py-14 md:py-20 bg-[color:var(--color-parch)]">
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-10">
           <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60 mb-4">

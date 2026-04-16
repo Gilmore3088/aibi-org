@@ -54,9 +54,9 @@ const WEEKS: readonly Week[] = [
 
 export function MonthlyCadence() {
   return (
-    <section className="px-6 py-20 md:py-28 bg-[color:var(--color-parch)]">
+    <section className="px-6 py-14 md:py-20 bg-[color:var(--color-parch)]">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-14">
+        <div className="text-center mb-10">
           <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-4">
             The monthly operating system
           </p>

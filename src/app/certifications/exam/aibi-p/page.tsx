@@ -13,7 +13,7 @@ export default function AiBIPExamPage() {
   // ── Intro ──
   if (exam.phase === 'intro') {
     return (
-      <main className="px-6 py-20 md:py-28">
+      <main className="px-6 py-14 md:py-20">
         <div className="max-w-2xl mx-auto text-center space-y-8">
           <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
             Practitioner Proficiency Assessment
@@ -151,7 +151,7 @@ export default function AiBIPExamPage() {
   // ── Results ──
   if (exam.phase === 'results' && exam.proficiency) {
     return (
-      <main className="px-6 py-20 md:py-28">
+      <main className="px-6 py-14 md:py-20">
         <div className="max-w-3xl mx-auto space-y-16">
           {/* Score */}
           <div className="text-center">

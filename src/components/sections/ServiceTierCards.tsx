@@ -10,10 +10,10 @@ interface ServiceTierCardsProps {
 
 export function ServiceTierCards({ showHeader = false }: ServiceTierCardsProps) {
   return (
-    <section className="px-6 py-20 md:py-28">
+    <section className="px-6 py-14 md:py-20">
       <div className="max-w-6xl mx-auto">
         {showHeader && (
-          <div className="text-center mb-16">
+          <div className="text-center mb-10">
             <p className="font-mono text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-4">
               Engagement tiers
             </p>

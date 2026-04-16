@@ -88,7 +88,7 @@ export default function HomePage({ searchParams }: HomePageProps) {
       {useSplitHero ? (
         <HeroSplit />
       ) : (
-        <section className="px-6 pt-20 pb-24 md:pt-28 md:pb-32">
+        <section className="px-6 pt-14 pb-16 md:pt-20 md:pb-16">
           <div className="max-w-4xl mx-auto text-center space-y-6">
             <h1 className="font-serif text-5xl md:text-7xl leading-[1.05] text-[color:var(--color-ink)]">
               AI your people will actually use.
@@ -144,9 +144,9 @@ export default function HomePage({ searchParams }: HomePageProps) {
       </section>
 
       {/* Three pillars — described, not branded as A-B-C */}
-      <section className="px-6 py-20 md:py-28">
+      <section className="px-6 py-14 md:py-20">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
+          <div className="text-center mb-10">
             <p className="font-mono text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60 mb-4">
               The three pillars
             </p>

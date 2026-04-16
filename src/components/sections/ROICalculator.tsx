@@ -62,7 +62,7 @@ export function ROICalculator() {
   return (
     <section
       id="roi-calculator"
-      className="px-6 py-20 md:py-28 bg-[color:var(--color-linen)]"
+      className="px-6 py-14 md:py-20 bg-[color:var(--color-linen)]"
     >
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">

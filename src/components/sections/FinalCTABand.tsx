@@ -6,7 +6,7 @@ const CALENDLY_URL =
 
 export function FinalCTABand() {
   return (
-    <section className="px-6 py-20 md:py-28 bg-[color:var(--color-terra)] text-[color:var(--color-linen)]">
+    <section className="px-6 py-14 md:py-20 bg-[color:var(--color-terra)] text-[color:var(--color-linen)]">
       <div className="max-w-3xl mx-auto text-center">
         <h2 className="font-serif text-4xl md:text-6xl leading-tight">
           Start with accessible. End with capable.
