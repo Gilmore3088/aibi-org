@@ -26,19 +26,30 @@ export default function DashboardPage() {
             Dashboard
           </p>
           <h1 className="font-serif text-5xl md:text-6xl text-[color:var(--color-ink)] leading-tight">
-            Take the assessment to get started.
+            Your AI readiness dashboard.
           </h1>
           <p className="text-lg text-[color:var(--color-ink)]/75 leading-relaxed">
-            Your dashboard populates after you complete the free AI readiness
-            assessment. Eight questions, under three minutes. Your results,
-            recommendations, and learning path will appear here.
+            Complete the free AI readiness assessment to unlock your
+            personalized dashboard — your score, dimension breakdown,
+            proficiency tracking, and tier-specific recommendations all
+            in one place.
           </p>
-          <Link
-            href="/assessment"
-            className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
-          >
-            Take the Free Assessment
-          </Link>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
+            <Link
+              href="/assessment"
+              className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
+            >
+              Take the Free Assessment
+            </Link>
+          </div>
+          <div className="border-t border-[color:var(--color-ink)]/10 pt-6 mt-4">
+            <p className="text-sm text-[color:var(--color-slate)]">
+              Already completed the assessment?
+              Account login is coming soon. For now, your results are saved
+              in this browser. If you are on a new device, retake the
+              assessment &mdash; it takes under three minutes.
+            </p>
+          </div>
         </div>
       </main>
     );
