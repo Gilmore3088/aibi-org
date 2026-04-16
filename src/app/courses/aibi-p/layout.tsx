@@ -1,32 +1,36 @@
 // /courses/aibi-p layout — shared sidebar + main content area
-// Server Component: sidebar reads from hardcoded enrollment stub (wired in Plan 02-03)
+// Server Component: reads live enrollment from Supabase on every request (Plan 02-03)
 
 import type { ReactNode } from 'react';
 import { CourseSidebar } from './_components/CourseSidebar';
 import { MobileSidebarDrawer } from './_components/MobileSidebarDrawer';
+import { getEnrollment } from './_lib/getEnrollment';
 
 interface CourseLayoutProps {
   readonly children: ReactNode;
 }
 
-// TODO: Read from enrollment (Plan 02-03)
-const STUB_COMPLETED_MODULES: readonly number[] = [];
-const STUB_CURRENT_MODULE = 1;
+export default async function CourseLayout({ children }: CourseLayoutProps) {
+  // Fetch enrollment server-side. Returns null when Supabase is unconfigured or user
+  // is unauthenticated — overview page remains accessible; module pages redirect.
+  const enrollment = await getEnrollment();
 
-export default function CourseLayout({ children }: CourseLayoutProps) {
+  const completedModules: readonly number[] = enrollment?.completed_modules ?? [];
+  const currentModule: number = enrollment?.current_module ?? 1;
+
   return (
     <div className="min-h-screen bg-[color:var(--color-linen)]">
       {/* Desktop persistent sidebar — hidden below lg */}
       <CourseSidebar
-        completedModules={STUB_COMPLETED_MODULES}
-        currentModule={STUB_CURRENT_MODULE}
+        completedModules={completedModules}
+        currentModule={currentModule}
       />
 
       {/* Mobile header bar with hamburger — visible below lg */}
       <header className="lg:hidden fixed top-0 left-0 right-0 z-40 h-16 bg-[color:var(--color-linen)]/95 border-b border-[color:var(--color-terra)]/10 flex items-center px-4 gap-3">
         <MobileSidebarDrawer
-          completedModules={STUB_COMPLETED_MODULES}
-          currentModule={STUB_CURRENT_MODULE}
+          completedModules={completedModules}
+          currentModule={currentModule}
         />
         <div className="flex items-center gap-2">
           <div

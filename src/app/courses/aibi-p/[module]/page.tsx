@@ -1,8 +1,10 @@
 // Dynamic module page — /courses/aibi-p/[module]
 // Server Component: all content read from typed files at build time
 // T-02-03: parseInt + getModuleByNumber + notFound() guards invalid params
+// SHELL-12: Non-enrolled users redirected to purchase page server-side
+// SHELL-04/05: Locked module access redirected to current module server-side
 
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { modules, getModuleByNumber } from '@content/courses/aibi-p';
@@ -10,6 +12,8 @@ import { ModuleHeader } from '../_components/ModuleHeader';
 import { ContentSection } from '../_components/ContentSection';
 import { ContentTable } from '../_components/ContentTable';
 import { ActivityFormShell } from '../_components/ActivityFormShell';
+import { getEnrollment } from '../_lib/getEnrollment';
+import { canAccessModule } from '../_lib/courseProgress';
 
 interface ModulePageParams {
   readonly params: { module: string };
@@ -30,7 +34,7 @@ export async function generateMetadata({ params }: ModulePageParams): Promise<Me
   };
 }
 
-export default function ModulePage({ params }: ModulePageParams) {
+export default async function ModulePage({ params }: ModulePageParams) {
   const moduleNum = parseInt(params.module, 10);
 
   // T-02-03: Guard against invalid params (NaN, out of range, non-existent)
@@ -41,6 +45,17 @@ export default function ModulePage({ params }: ModulePageParams) {
   const mod = getModuleByNumber(moduleNum);
   if (!mod) {
     notFound();
+  }
+
+  // SHELL-12: Require enrollment — redirect unauthenticated / non-enrolled visitors
+  const enrollment = await getEnrollment();
+  if (!enrollment) {
+    redirect('/courses/aibi-p/purchase');
+  }
+
+  // SHELL-04/05: Forward-only enforcement — redirect to current module if locked
+  if (!canAccessModule(moduleNum, enrollment.completed_modules)) {
+    redirect(`/courses/aibi-p/${enrollment.current_module}`);
   }
 
   const isLastModule = mod.number === 9;
