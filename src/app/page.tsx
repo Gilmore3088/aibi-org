@@ -83,8 +83,8 @@ export default function HomePage() {
           <h1 className="font-serif text-5xl md:text-7xl leading-[1.05] text-[color:var(--color-ink)]">
             AI your people will actually use.
           </h1>
-          <p className="font-serif italic text-2xl md:text-3xl text-[color:var(--color-terra)]">
-            We turn your bankers into your builders.
+          <p className="font-serif-sc text-2xl md:text-3xl text-[color:var(--color-terra)] tracking-wide">
+            Turning Bankers into Builders
           </p>
           <p className="text-lg md:text-xl text-[color:var(--color-ink)]/75 max-w-3xl mx-auto leading-relaxed pt-2">
             AI proficiency built exclusively for community banks and credit

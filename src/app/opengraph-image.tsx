@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og';
 
 export const runtime = 'edge';
-export const alt = 'The AI Banking Institute — We turn your bankers into your builders.';
+export const alt = 'The AI Banking Institute — Turning Bankers into Builders';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -64,11 +64,12 @@ export default async function OpengraphImage() {
           <div
             style={{
               fontSize: 44,
-              fontStyle: 'italic',
               color: '#b5512e',
+              letterSpacing: 3,
+              textTransform: 'uppercase',
             }}
           >
-            We turn your bankers into your builders.
+            Turning Bankers into Builders
           </div>
         </div>
 
