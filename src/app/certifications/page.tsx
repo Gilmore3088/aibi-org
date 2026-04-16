@@ -60,20 +60,22 @@ export default function CertificationsPage() {
                 key={cert.id}
                 className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 p-8 flex flex-col"
               >
-                <div className="flex items-baseline justify-between mb-4">
+                <div className="mb-4">
                   <h3
-                    className="font-serif text-3xl leading-none"
+                    className="font-serif text-2xl md:text-3xl leading-tight"
                     style={{ color: cert.accent }}
                   >
-                    {cert.name}
+                    {cert.fullName}
                   </h3>
-                  <span className="font-mono text-xs text-[color:var(--color-ink)]/60 tabular-nums">
-                    {cert.price}
-                  </span>
+                  <div className="flex items-baseline justify-between mt-2">
+                    <p className="font-serif-sc text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60">
+                      {cert.credentialDisplay}
+                    </p>
+                    <span className="font-mono text-xs text-[color:var(--color-ink)]/60 tabular-nums">
+                      {cert.price}
+                    </span>
+                  </div>
                 </div>
-                <p className="font-serif-sc text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60 mb-4">
-                  {cert.credentialDisplay}
-                </p>
                 <p className="text-sm text-[color:var(--color-ink)]/80 mb-5 leading-relaxed">
                   <span className="font-medium">For:</span> {cert.audience}
                 </p>
