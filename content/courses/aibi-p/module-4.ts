@@ -59,6 +59,7 @@ This module maps eight features across the primary platforms and shows how each 
         { header: 'Claude', key: 'claude' },
         { header: 'Perplexity', key: 'perplexity' },
         { header: 'M365 Copilot', key: 'copilot' },
+        { header: 'NotebookLM', key: 'notebooklm' },
         { header: 'Best Banking Use', key: 'bankingUse' },
       ],
       rows: [
@@ -68,6 +69,7 @@ This module maps eight features across the primary platforms and shows how each 
           claude: 'Limited (no live web access by default)',
           perplexity: 'Native — all searches are web-grounded with citations',
           copilot: 'Bing-grounded search in some contexts',
+          notebooklm: 'No web search — queries limited to uploaded source documents',
           bankingUse: 'Regulatory research, market intelligence, competitive analysis',
         },
         {
@@ -76,6 +78,7 @@ This module maps eight features across the primary platforms and shows how each 
           claude: 'Upload PDFs and documents (Pro)',
           perplexity: 'Limited file analysis',
           copilot: 'Native SharePoint and OneDrive document access',
+          notebooklm: 'Core capability — upload up to 50 sources; semantic querying across all documents',
           bankingUse: 'Loan document QC, policy analysis, financial statement review',
         },
         {
@@ -84,6 +87,7 @@ This module maps eight features across the primary platforms and shows how each 
           claude: 'Not available',
           perplexity: 'Not available',
           copilot: 'Teams integration (transcription and summary)',
+          notebooklm: 'Audio Overview — generates a two-host podcast discussion of uploaded documents',
           bankingUse: 'Hands-free drafting, meeting transcription, on-the-go research',
         },
         {
@@ -92,6 +96,7 @@ This module maps eight features across the primary platforms and shows how each 
           claude: 'Custom system prompts in Projects (Pro)',
           perplexity: 'Spaces with custom instructions (Pro)',
           copilot: 'Not configurable at staff level',
+          notebooklm: 'Notebook instructions allow custom focus and response style per notebook',
           bankingUse: 'Persistent role context, brand voice, compliance constraints across sessions',
         },
         {
@@ -100,6 +105,7 @@ This module maps eight features across the primary platforms and shows how each 
           claude: 'Not available',
           perplexity: 'Not available',
           copilot: 'Image generation via Designer integration',
+          notebooklm: 'Not available',
           bankingUse: 'Marketing mockups, presentation graphics, training materials',
         },
         {
@@ -108,6 +114,7 @@ This module maps eight features across the primary platforms and shows how each 
           claude: 'Limited integrations',
           perplexity: 'Limited integrations',
           copilot: 'Native Outlook, Teams, Word, Excel, PowerPoint, SharePoint',
+          notebooklm: 'Google Workspace (Drive source sync in NotebookLM Plus)',
           bankingUse: 'Email drafting, meeting summaries, document creation in familiar tools',
         },
         {
@@ -116,6 +123,7 @@ This module maps eight features across the primary platforms and shows how each 
           claude: '200K tokens — industry-leading long context (Pro)',
           perplexity: 'Standard context',
           copilot: 'Context limited to specific document',
+          notebooklm: 'Up to 50 sources per notebook — optimized for document corpus querying',
           bankingUse: 'Processing lengthy regulatory documents, multi-file analysis',
         },
         {
@@ -124,6 +132,7 @@ This module maps eight features across the primary platforms and shows how each 
           claude: 'Strong code analysis (Pro)',
           perplexity: 'Limited',
           copilot: 'Excel Copilot for spreadsheet analysis',
+          notebooklm: 'Not available — document-focused tool only',
           bankingUse: 'Analyzing loan data spreadsheets, creating charts, automating Excel tasks',
         },
       ],
