@@ -81,8 +81,8 @@ Plans:
   5. A learner can update their onboarding platform selection from profile settings and the content routing updates on next page load
 **Plans**: 2 plans
 Plans:
-- [ ] 01-01-PLAN.md — Database schema (5 tables), RLS policies, indexes, TypeScript types, Supabase client
-- [ ] 01-02-PLAN.md — Content architecture: typed module content files for all 9 AiBI-P modules
+- [ ] 04-01-PLAN.md — Onboarding survey page (3 questions), save-onboarding API route
+- [ ] 04-02-PLAN.md — Progress persistence API, content routing helper, layout onboarding gate, settings page
 **UI hint**: yes
 
 ### Phase 5: Modules 1-5 Activities + Artifacts
@@ -157,7 +157,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | 1. Foundation | 1/2 | In Progress|  |
 | 2. Course Shell + Assessment Upgrade | 0/4 | Not started | - |
 | 3. Stripe Checkout + Enrollment | 0/2 | Not started | - |
-| 4. Onboarding Branch + Progress Tracking | 0/TBD | Not started | - |
+| 4. Onboarding Branch + Progress Tracking | 0/2 | Not started | - |
 | 5. Modules 1-5 Activities + Artifacts | 0/TBD | Not started | - |
 | 6. Modules 6-9 Activities + Skill Builder | 0/TBD | Not started | - |
 | 7. Work Product + Reviewer Queue | 0/TBD | Not started | - |
