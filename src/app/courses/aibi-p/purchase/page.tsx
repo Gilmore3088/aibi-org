@@ -1,9 +1,15 @@
 // /courses/aibi-p/purchase — Enrollment landing page
-// Server Component: static marketing content + disabled enroll button (Stripe wired in Phase 3)
+// Server Component: fetches auth session, checks existing enrollment, renders EnrollButton.
 // Redirect target for non-enrolled users attempting to access module pages (SHELL-12)
 
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
+import { cookies } from 'next/headers';
+import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
+import { getEnrollment } from '@/app/courses/aibi-p/_lib/getEnrollment';
+import { isSupabaseConfigured } from '@/lib/supabase/client';
+import { EnrollButton } from './EnrollButton';
 
 export const metadata: Metadata = {
   title: 'Enroll in AiBI-P | The AI Banking Institute',
@@ -20,7 +26,39 @@ const COURSE_FEATURES = [
   'Completable in under 5.5 hours on any device, including iPhone Safari',
 ] as const;
 
-export default function PurchasePage() {
+async function getUserEmail(): Promise<string | null> {
+  if (!isSupabaseConfigured()) return null;
+
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+
+  const cookieStore = cookies();
+
+  const supabase = ssrCreateServerClient(supabaseUrl, supabaseAnonKey, {
+    cookies: {
+      getAll() {
+        return cookieStore.getAll();
+      },
+      setAll() {},
+    },
+  });
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  return user?.email ?? null;
+}
+
+export default async function PurchasePage() {
+  // Already enrolled — send directly to course
+  const enrollment = await getEnrollment();
+  if (enrollment) {
+    redirect('/courses/aibi-p');
+  }
+
+  const userEmail = await getUserEmail();
+
   return (
     <div className="max-w-2xl mx-auto px-6 lg:px-8 py-16 lg:py-24">
 
@@ -63,19 +101,7 @@ export default function PurchasePage() {
           Institution pricing (5+ seats): approx. $63/seat — contact us.
         </p>
 
-        {/* Disabled enroll button — Stripe integration is Phase 3 */}
-        <button
-          type="button"
-          disabled
-          aria-disabled="true"
-          className="w-full bg-[color:var(--color-terra)]/40 text-[color:var(--color-linen)]/70 px-8 py-4 rounded-sm font-mono text-[10px] uppercase tracking-[0.15em] cursor-not-allowed"
-        >
-          Enrollment coming soon
-        </button>
-
-        <p className="mt-3 font-mono text-[10px] text-[color:var(--color-dust)] text-center">
-          Stripe checkout launches in a future release.
-        </p>
+        <EnrollButton userEmail={userEmail ?? undefined} />
       </div>
 
       {/* What is included */}
