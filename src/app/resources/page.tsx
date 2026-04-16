@@ -16,6 +16,14 @@ const FEATURED = [
       'The October 2025 Evident AI Index shows the top-10 global banks accelerating AI maturity 2.3× faster than the rest of the industry. Here is what that means for community banks and credit unions.',
     readTime: '8 min read',
   },
+  {
+    slug: 'members-will-switch',
+    eyebrow: 'Retention',
+    title: 'Members will switch. The question is to whom.',
+    dek:
+      '84% of consumers would switch financial institutions for AI-driven financial insights. 76% would switch for a better digital experience. The community bank retention story in 2026.',
+    readTime: '7 min read',
+  },
 ] as const;
 
 export default function ResourcesPage() {

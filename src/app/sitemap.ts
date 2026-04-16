@@ -7,8 +7,12 @@ const ROUTES = [
   { path: '/assessment', priority: 0.95, changeFrequency: 'monthly' as const },
   { path: '/services', priority: 0.9, changeFrequency: 'monthly' as const },
   { path: '/certifications', priority: 0.9, changeFrequency: 'monthly' as const },
+  { path: '/foundations', priority: 0.85, changeFrequency: 'monthly' as const },
+  { path: '/security', priority: 0.85, changeFrequency: 'monthly' as const },
+  { path: '/about', priority: 0.75, changeFrequency: 'monthly' as const },
   { path: '/resources', priority: 0.7, changeFrequency: 'weekly' as const },
   { path: '/resources/the-widening-ai-gap', priority: 0.8, changeFrequency: 'monthly' as const },
+  { path: '/resources/members-will-switch', priority: 0.8, changeFrequency: 'monthly' as const },
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

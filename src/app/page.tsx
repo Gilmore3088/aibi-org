@@ -3,9 +3,14 @@ import { ROICalculator } from '@/components/sections/ROICalculator';
 import { ThreeFears } from '@/components/sections/ThreeFears';
 import { SecurityBand } from '@/components/sections/SecurityBand';
 import { WideningGap } from '@/components/sections/WideningGap';
+import { HeroSplit } from '@/components/sections/HeroSplit';
 import { ServiceTierCards } from '@/components/sections/ServiceTierCards';
 import { CertificationCards } from '@/components/sections/CertificationCards';
 import { FinalCTABand } from '@/components/sections/FinalCTABand';
+
+interface HomePageProps {
+  readonly searchParams: { readonly hero?: string };
+}
 
 interface Pillar {
   readonly letter: 'A' | 'B' | 'C';
@@ -74,42 +79,48 @@ export const metadata = {
     'The AI Banking Institute — AI proficiency built exclusively for community banks and credit unions. Free readiness assessment, consulting engagements, and three certification tiers.',
 };
 
-export default function HomePage() {
+export default function HomePage({ searchParams }: HomePageProps) {
+  const useSplitHero = searchParams.hero === 'split';
+
   return (
     <main>
-      {/* Hero */}
-      <section className="px-6 pt-20 pb-24 md:pt-28 md:pb-32">
-        <div className="max-w-4xl mx-auto text-center space-y-6">
-          <h1 className="font-serif text-5xl md:text-7xl leading-[1.05] text-[color:var(--color-ink)]">
-            AI your people will actually use.
-          </h1>
-          <p className="font-serif-sc text-2xl md:text-3xl text-[color:var(--color-terra)] tracking-wide">
-            Turning Bankers into Builders
-          </p>
-          <p className="text-lg md:text-xl text-[color:var(--color-ink)]/75 max-w-3xl mx-auto leading-relaxed pt-2">
-            AI proficiency built exclusively for community banks and credit
-            unions. Accessible for every banker on your team. Boundary-safe
-            for your examiners. Capable of moving your efficiency ratio.
-          </p>
-          <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
-              href="/assessment"
-              className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans font-medium tracking-wide hover:bg-[color:var(--color-terra-light)] transition-colors"
-            >
-              Take the Free Assessment
-            </Link>
-            <Link
-              href="#roi-calculator"
-              className="inline-block px-8 py-4 border border-[color:var(--color-ink)]/30 text-[color:var(--color-ink)] font-sans font-medium tracking-wide hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)] transition-colors"
-            >
-              Model Your ROI
-            </Link>
+      {/* Hero — default centered, or split variant via /?hero=split */}
+      {useSplitHero ? (
+        <HeroSplit />
+      ) : (
+        <section className="px-6 pt-20 pb-24 md:pt-28 md:pb-32">
+          <div className="max-w-4xl mx-auto text-center space-y-6">
+            <h1 className="font-serif text-5xl md:text-7xl leading-[1.05] text-[color:var(--color-ink)]">
+              AI your people will actually use.
+            </h1>
+            <p className="font-serif-sc text-2xl md:text-3xl text-[color:var(--color-terra)] tracking-wide">
+              Turning Bankers into Builders
+            </p>
+            <p className="text-lg md:text-xl text-[color:var(--color-ink)]/75 max-w-3xl mx-auto leading-relaxed pt-2">
+              AI proficiency built exclusively for community banks and credit
+              unions. Accessible for every banker on your team. Boundary-safe
+              for your examiners. Capable of moving your efficiency ratio.
+            </p>
+            <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link
+                href="/assessment"
+                className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans font-medium tracking-wide hover:bg-[color:var(--color-terra-light)] transition-colors"
+              >
+                Take the Free Assessment
+              </Link>
+              <Link
+                href="#roi-calculator"
+                className="inline-block px-8 py-4 border border-[color:var(--color-ink)]/30 text-[color:var(--color-ink)] font-sans font-medium tracking-wide hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)] transition-colors"
+              >
+                Model Your ROI
+              </Link>
+            </div>
+            <p className="font-mono text-xs text-[color:var(--color-ink)]/50 pt-4">
+              8 questions &middot; under 3 minutes &middot; community banks only
+            </p>
           </div>
-          <p className="font-mono text-xs text-[color:var(--color-ink)]/50 pt-4">
-            8 questions &middot; under 3 minutes &middot; community banks only
-          </p>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Stats band */}
       <section className="border-y border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)]">
