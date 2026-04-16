@@ -13,6 +13,7 @@
 | `aibi-developer-spec.html` | Architecture, stack, component structure, assessment logic, integrations |
 | `aibi-designer-brief.html` | Visual identity, color system, typography, Do's/Don'ts |
 | `aibi-consultant-playbook.html` | Executive Briefing script, Quick Win Sprint methodology, delivery |
+| `feedback-v1-aibi-landing-page-prd.docx` | V1 landing page PRD feedback — tagline, stats band, 8-section homepage spec |
 
 **Assessment content lives in `content/assessments/<version>/`** — each version is a folder (questions, scoring, copy) so content can iterate without touching component code. Current version: `v1`.
 
@@ -25,8 +26,15 @@ The AI Banking Institute (AiBI, pronounced "AI-bee") is an AI proficiency and tr
 **The website is the sales funnel.** The assessment is the primary conversion mechanism. Every technical decision should be evaluated against whether it helps or hinders: assessment completion → email capture → Executive Briefing booking.
 
 **Domains:** AIBankingInstitute.com (primary) + AIBankingInstitute.org (registered)
-**Brand nickname:** AiBI | **Tagline:** "The A-B-C of AI Banking"
+**Brand nickname:** AiBI | **Tagline:** "Turning Bankers into Builders" (as of 2026-04-15)
 **Certifications:** AiBI-P (Practitioner) · AiBI-S (Specialist) · AiBI-L (Leader)
+
+> **Tagline history:** The original "A-B-C of AI Banking" tagline was retired
+> per the v1 landing page PRD feedback doc and superseded by "We turn your
+> bankers into your builders" (2026-04-15), which was further tightened to
+> "Turning Bankers into Builders" (same session). The three-pillar framework
+> (Accessible, Boundary-Safe, Capable) remains as internal curriculum
+> structure but is **described**, not branded as a trademarked acronym.
 
 ---
 
@@ -351,10 +359,22 @@ const event = stripe.webhooks.constructEvent(body, sig, process.env.STRIPE_WEBHO
 
 ### Correct Brand Usage
 
+**Name standard (2026-04-15):** In running prose, always use the full name
+**The AI Banking Institute** or **the Institute**. Do NOT hide behind the
+acronym. Bankers do not need another acronym. Reserve "AiBI" for:
+- Credential codes (AiBI-P, AiBI-S, AiBI-L)
+- The fCAIO program name (AiBI fCAIO)
+- The circular seal / wordmark logo
+- Credential display format: "AiBI-P · The AI Banking Institute"
+
+Never write "AiBI helps..." or "the AiBI approach..." in body copy. Use
+"The AI Banking Institute helps..." or "our approach..." instead.
+
 | Element | Correct |
 |---------|---------|
-| Institute name | The AI Banking Institute |
-| Brand nickname | AiBI (not AiBi, not AIBI) |
+| Institute name | The AI Banking Institute (use in prose) |
+| Informal reference | the Institute |
+| Brand nickname | AiBI (not AiBi, not AIBI) — reserved for credentials, seal, and compound program names |
 | Practitioner cert | AiBI-P |
 | Specialist cert | AiBI-S / AiBI-S/Ops / AiBI-S/Lending / etc. |
 | Leader cert | AiBI-L |
@@ -566,3 +586,75 @@ Run `/simplify` before committing. Skip for trivial one-liners.
 - Use `claude-opus-4-6` for complex reasoning tasks
 - TypeScript strict mode — no `any` without explicit justification
 - Prefer server components; minimize `'use client'` surface area
+
+---
+
+## Decisions Log
+
+Chronological record of overrides and direction changes. Add entries when
+overriding something in the plans so future sessions do not relitigate.
+
+**2026-04-15 — Score gated behind email capture.** PRD originally said "score
+visible without email gate" for conversion reasons. User override: capture
+every completer's email, even at the cost of completion rate. Tradeoff
+accepted. Committed in `d46d99b`.
+
+**2026-04-15 — Peer benchmarks deferred to Phase 1.5+.** User wanted
+"you rank Nth percentile" teasers; honest constraint is zero respondents yet.
+Parked in `tasks/todo.md` Phase 2 backlog until Supabase is wired and N >= 30
+per segment exists.
+
+**2026-04-15 — "A-B-C of AI Banking" retired as public tagline.** Per v1
+landing page PRD feedback doc. Replaced with "We turn your bankers into your
+builders" then tightened to "Turning Bankers into Builders" same day. The
+three pillars remain as curriculum framework but are described, not branded
+as an acronym. No "A-B-C" pills, badges, or labels anywhere on public site.
+
+**2026-04-15 — Upstash / rate limiting deferred.** Zero traffic; add the week
+before launch. Ship without rate limiting on `/api/capture-email` for now.
+
+**2026-04-15 — Kit vs Loops / HubSpot vs Attio undecided.** User to pick when
+creating accounts. Stubs in `src/lib/convertkit` and `src/lib/hubspot` are
+adapter-shaped either way — wiring is a 20-minute job per service once a
+vendor is selected.
+
+**2026-04-15 — Third-party integrations deferred for prototype phase.**
+User direction: focus on site-build work that requires no external accounts.
+Calendly, Supabase, Kit/Loops, HubSpot/Attio, Stripe, Kajabi, Upstash all
+deferred. When accounts exist, wire adapters in order: Supabase first (data
+capture), then ConvertKit or Loops (newsletter), then HubSpot or Attio
+(CRM), then Calendly (briefing booking), then Stripe + Kajabi (Phase 2
+monetization).
+
+---
+
+## Design Context
+
+Full design system documented in `.impeccable.md` (project root). Key
+principles summarized here for quick reference.
+
+**Source:** Plans/aibi-designer-brief.html (canonical)
+
+**Aesthetic:** "Ancient wisdom meets modern tech." Parchment and terracotta.
+Institutional authority. References: McKinsey, Oliver Wyman, The Economist.
+
+**Emotional goals:** Authority + Trust, Aspiration + Pride.
+
+**Accessibility:** WCAG 2.1 AA.
+
+**Color discipline:** Terra = brand signal. Sage = Pillar A ONLY.
+Cobalt = Pillar B / security ONLY. Non-negotiable.
+
+**Typography:** Cormorant (display), Cormorant SC (labels/designations),
+DM Sans (body/UI), DM Mono (ALL numbers). Italic Cormorant for warmth;
+never italicize DM Sans.
+
+**Design principles:**
+1. Content is the design — restraint over decoration
+2. Every number earns its place — sourced, DM Mono, tabular-nums
+3. Institutional, not promotional — consulting materials, not SaaS
+4. Pillar discipline is visual grammar — sage/cobalt/terra never interchange
+5. Accessible by default — WCAG 2.1 AA, focus rings, skip links
+
+**Never:** gradients, drop shadows, rounded corners >4px, emoji, icon
+libraries, stock photos, dark mode, "AI-powered" badges.
