@@ -10,7 +10,7 @@ const NAV_LINKS = [
 
 export function Header() {
   return (
-    <header className="border-b border-[color:var(--color-ink)]/10 bg-[color:var(--color-linen)]">
+    <header className="sticky top-0 z-50 border-b border-[color:var(--color-ink)]/10 bg-[color:var(--color-linen)]/[0.97] backdrop-blur-sm">
       <div className="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
         <Link
           href="/"
@@ -37,7 +37,7 @@ export function Header() {
           ))}
           <Link
             href="/assessment"
-            className="font-sans text-sm font-medium tracking-wide bg-[color:var(--color-terra)] text-[color:var(--color-linen)] px-4 py-2 hover:bg-[color:var(--color-terra-light)] transition-colors"
+            className="font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] bg-[color:var(--color-terra)] text-[color:var(--color-linen)] px-4 py-2 hover:bg-[color:var(--color-terra-light)] transition-colors"
           >
             Free Assessment
           </Link>

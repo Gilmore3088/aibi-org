@@ -19,13 +19,13 @@ export function FinalCTABand() {
             href={CALENDLY_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block px-8 py-4 bg-[color:var(--color-linen)] text-[color:var(--color-terra)] font-sans font-medium tracking-wide hover:bg-[color:var(--color-parch)] transition-colors"
+            className="inline-block px-8 py-4 bg-[color:var(--color-linen)] text-[color:var(--color-terra)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-parch)] transition-colors"
           >
             Request Executive Briefing
           </a>
           <Link
             href="#roi-calculator"
-            className="inline-block px-8 py-4 border border-[color:var(--color-linen)] text-[color:var(--color-linen)] font-sans font-medium tracking-wide hover:bg-[color:var(--color-linen)] hover:text-[color:var(--color-terra)] transition-colors"
+            className="inline-block px-8 py-4 border border-[color:var(--color-linen)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-linen)] hover:text-[color:var(--color-terra)] transition-colors"
           >
             Model Your ROI First
           </Link>

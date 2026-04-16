@@ -28,7 +28,7 @@ export function SampleQuestion() {
           </p>
         </div>
 
-        <div className="bg-[color:var(--color-linen)] border border-[color:var(--color-ink)]/10 p-8 md:p-10">
+        <div className="bg-[color:var(--color-linen)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-8 md:p-10">
           <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
             {SAMPLE.dimension}
           </p>
@@ -79,7 +79,7 @@ export function SampleQuestion() {
               </p>
               <Link
                 href="/assessment"
-                className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans font-medium tracking-wide hover:bg-[color:var(--color-terra-light)] transition-colors"
+                className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
               >
                 Take the Full Assessment
               </Link>

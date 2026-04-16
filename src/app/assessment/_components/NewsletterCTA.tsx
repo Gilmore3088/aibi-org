@@ -61,7 +61,7 @@ export function NewsletterCTA({ email }: NewsletterCTAProps) {
         type="button"
         onClick={handleSubscribe}
         disabled={status === 'submitting'}
-        className="inline-block px-6 py-3 border border-[color:var(--color-terra)] text-[color:var(--color-terra)] font-sans font-medium tracking-wide hover:bg-[color:var(--color-terra)] hover:text-[color:var(--color-linen)] transition-colors disabled:opacity-60"
+        className="inline-block px-6 py-3 border border-[color:var(--color-terra)] text-[color:var(--color-terra)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra)] hover:text-[color:var(--color-linen)] transition-colors disabled:opacity-60"
       >
         {status === 'submitting' ? 'Adding you…' : 'Add me to the Brief'}
       </button>

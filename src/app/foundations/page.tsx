@@ -97,7 +97,7 @@ export default function FoundationsPage() {
           {MODULES.map((mod) => (
             <article
               key={mod.number}
-              className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 p-8 md:p-10 flex gap-6"
+              className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-8 md:p-10 flex gap-6"
             >
               <div className="flex-shrink-0">
                 <span className="font-mono text-2xl text-[color:var(--color-terra)] tabular-nums">
@@ -145,7 +145,7 @@ export default function FoundationsPage() {
             </p>
             <Link
               href="/certifications"
-              className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans font-medium tracking-wide hover:bg-[color:var(--color-terra-light)] transition-colors"
+              className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
             >
               Request cohort information
             </Link>
@@ -168,7 +168,7 @@ export default function FoundationsPage() {
           </p>
           <Link
             href="/assessment"
-            className="inline-block px-8 py-4 border border-[color:var(--color-terra)] text-[color:var(--color-terra)] font-sans font-medium tracking-wide hover:bg-[color:var(--color-terra)] hover:text-[color:var(--color-linen)] transition-colors"
+            className="inline-block px-8 py-4 border border-[color:var(--color-terra)] text-[color:var(--color-terra)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra)] hover:text-[color:var(--color-linen)] transition-colors"
           >
             Take the Free Assessment
           </Link>

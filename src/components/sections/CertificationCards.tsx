@@ -28,7 +28,7 @@ export function CertificationCards({
           {certifications.map((cert) => (
             <article
               key={cert.id}
-              className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 p-8 flex flex-col"
+              className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-8 flex flex-col"
             >
               <div className="mb-4">
                 <h3
@@ -87,7 +87,7 @@ export function CertificationCards({
           <div className="text-center mt-12">
             <Link
               href="/certifications"
-              className="inline-block px-6 py-3 border border-[color:var(--color-terra)] text-[color:var(--color-terra)] font-sans font-medium tracking-wide hover:bg-[color:var(--color-terra)] hover:text-[color:var(--color-linen)] transition-colors"
+              className="inline-block px-6 py-3 border border-[color:var(--color-terra)] text-[color:var(--color-terra)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra)] hover:text-[color:var(--color-linen)] transition-colors"
             >
               See full certification details
             </Link>

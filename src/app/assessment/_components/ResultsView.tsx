@@ -45,7 +45,7 @@ export function ResultsView({ score, tier, answers, email }: ResultsViewProps) {
       </div>
 
       {/* What your score means — personalized interpretation */}
-      <section className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 p-8 md:p-10 print-avoid-break">
+      <section className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-8 md:p-10 print-avoid-break">
         <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-4">
           What your score means
         </p>

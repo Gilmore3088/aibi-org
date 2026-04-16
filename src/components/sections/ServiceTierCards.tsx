@@ -27,7 +27,7 @@ export function ServiceTierCards({ showHeader = false }: ServiceTierCardsProps) 
           {serviceTiers.map((tier) => (
             <article
               key={tier.id}
-              className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 p-8 flex flex-col"
+              className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-8 flex flex-col"
             >
               <p
                 className="font-mono text-[10px] uppercase tracking-[0.2em] mb-4"
@@ -63,7 +63,7 @@ export function ServiceTierCards({ showHeader = false }: ServiceTierCardsProps) 
                 href={CALENDLY_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block text-center px-6 py-3 border text-sm font-sans font-medium tracking-wide transition-colors"
+                className="block text-center px-6 py-3 border text-sm font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] transition-colors"
                 style={{
                   borderColor: tier.accent,
                   color: tier.accent,

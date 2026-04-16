@@ -74,7 +74,7 @@ export function MonthlyCadence() {
           {WEEKS.map((week) => (
             <article
               key={week.week}
-              className="bg-[color:var(--color-linen)] border border-[color:var(--color-ink)]/10 p-6 flex flex-col"
+              className="bg-[color:var(--color-linen)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-6 flex flex-col"
             >
               <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-slate)] mb-3">
                 {week.week}

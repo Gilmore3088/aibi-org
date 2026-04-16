@@ -62,7 +62,7 @@ export function InquiryForm() {
 
   if (status === 'success') {
     return (
-      <div className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 p-10 text-center">
+      <div className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-10 text-center">
         <p className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-sage)] mb-3">
           Inquiry received
         </p>
@@ -78,7 +78,7 @@ export function InquiryForm() {
   }
 
   return (
-    <div className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 p-8 md:p-10">
+    <div className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-8 md:p-10">
       <p className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-terra)] mb-3">
         Request cohort information
       </p>
@@ -160,7 +160,7 @@ export function InquiryForm() {
         <button
           type="submit"
           disabled={status === 'submitting'}
-          className="w-full px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans font-medium tracking-wide hover:bg-[color:var(--color-terra-light)] transition-colors disabled:opacity-60"
+          className="w-full px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors disabled:opacity-60"
         >
           {status === 'submitting' ? 'Sending…' : 'Submit inquiry'}
         </button>

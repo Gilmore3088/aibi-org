@@ -50,7 +50,7 @@ export function ChooseYourPath() {
                 </li>
               ))}
             </ul>
-            <span className="block text-center py-3 border border-[color:var(--color-sage)] text-[color:var(--color-sage)] font-sans text-sm font-medium tracking-wide group-hover:bg-[color:var(--color-sage)] group-hover:text-[color:var(--color-linen)] transition-colors">
+            <span className="block text-center py-3 border border-[color:var(--color-sage)] text-[color:var(--color-sage)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] group-hover:bg-[color:var(--color-sage)] group-hover:text-[color:var(--color-linen)] transition-colors">
               Start Free Assessment
             </span>
           </Link>
@@ -87,7 +87,7 @@ export function ChooseYourPath() {
                 </li>
               ))}
             </ul>
-            <span className="block text-center py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-sm font-medium tracking-wide group-hover:bg-[color:var(--color-terra-light)] transition-colors">
+            <span className="block text-center py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] group-hover:bg-[color:var(--color-terra-light)] transition-colors">
               View Certification Tracks
             </span>
           </a>

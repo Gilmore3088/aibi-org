@@ -130,7 +130,7 @@ export function NextStepCards({ tierId }: NextStepCardsProps) {
         {steps.map((step) => (
           <article
             key={step.title}
-            className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 p-8 flex flex-col"
+            className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-8 flex flex-col"
           >
             <p
               className="font-serif-sc text-[11px] uppercase tracking-[0.2em] mb-4"
@@ -150,7 +150,7 @@ export function NextStepCards({ tierId }: NextStepCardsProps) {
                 target="_blank"
                 rel="noopener noreferrer"
                 className={
-                  'block text-center px-6 py-3 font-sans text-sm font-medium tracking-wide transition-colors ' +
+                  'block text-center px-6 py-3 font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] transition-colors ' +
                   (step.primary
                     ? 'bg-[color:var(--color-terra)] text-[color:var(--color-linen)] hover:bg-[color:var(--color-terra-light)]'
                     : 'border border-[color:var(--color-ink)]/30 text-[color:var(--color-ink)] hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)]')
@@ -162,7 +162,7 @@ export function NextStepCards({ tierId }: NextStepCardsProps) {
               <Link
                 href={step.href}
                 className={
-                  'block text-center px-6 py-3 font-sans text-sm font-medium tracking-wide transition-colors ' +
+                  'block text-center px-6 py-3 font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] transition-colors ' +
                   (step.primary
                     ? 'bg-[color:var(--color-terra)] text-[color:var(--color-linen)] hover:bg-[color:var(--color-terra-light)]'
                     : 'border border-[color:var(--color-ink)]/30 text-[color:var(--color-ink)] hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)]')

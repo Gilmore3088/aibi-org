@@ -31,7 +31,7 @@ export default function AiBIPExamPage() {
           <button
             type="button"
             onClick={exam.start}
-            className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans font-medium tracking-wide hover:bg-[color:var(--color-terra-light)] transition-colors"
+            className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
           >
             Begin Assessment
           </button>
@@ -171,7 +171,7 @@ export default function AiBIPExamPage() {
           </div>
 
           {/* Interpretation */}
-          <section className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 p-8 md:p-10">
+          <section className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-8 md:p-10">
             <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-4">
               What your score means
             </p>
@@ -218,13 +218,13 @@ export default function AiBIPExamPage() {
             <button
               type="button"
               onClick={exam.retake}
-              className="px-8 py-4 border border-[color:var(--color-ink)]/30 text-[color:var(--color-ink)] font-sans font-medium tracking-wide hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)] transition-colors"
+              className="px-8 py-4 border border-[color:var(--color-ink)]/30 text-[color:var(--color-ink)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)] transition-colors"
             >
               Retake with new questions
             </button>
             <Link
               href="/certifications#inquiry-form"
-              className="px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans font-medium tracking-wide hover:bg-[color:var(--color-terra-light)] transition-colors"
+              className="px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
             >
               Inquire about certification
             </Link>

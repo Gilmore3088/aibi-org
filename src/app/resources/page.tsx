@@ -140,7 +140,7 @@ export default function ResourcesPage() {
             {GUIDES.map((guide) => (
               <article
                 key={guide.title}
-                className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 p-8 md:p-10"
+                className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-8 md:p-10"
               >
                 <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] leading-tight mb-4">
                   {guide.title}
@@ -169,7 +169,7 @@ export default function ResourcesPage() {
               <Link
                 key={article.slug}
                 href={`/resources/${article.slug}`}
-                className="block bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 p-8 md:p-10 hover:border-[color:var(--color-terra)] transition-colors group"
+                className="block bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-8 md:p-10 hover:border-[color:var(--color-terra)] transition-colors group"
               >
                 <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
                   {article.eyebrow} &middot; {article.readTime}
@@ -237,7 +237,7 @@ export default function ResourcesPage() {
           </p>
           <Link
             href="/assessment"
-            className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans font-medium tracking-wide hover:bg-[color:var(--color-terra-light)] transition-colors"
+            className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
           >
             Take the Free Assessment
           </Link>

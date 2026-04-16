@@ -111,7 +111,7 @@ export function GuideRequestForm() {
       <button
         type="submit"
         disabled={status === 'submitting'}
-        className="w-full px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans font-medium tracking-wide hover:bg-[color:var(--color-terra-light)] transition-colors disabled:opacity-60"
+        className="w-full px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors disabled:opacity-60"
       >
         {status === 'submitting' ? 'Sending guide…' : 'Email me the guide'}
       </button>

@@ -118,7 +118,7 @@ export default function SecurityPage() {
       </section>
 
       <section className="px-6 pb-16">
-        <div className="max-w-3xl mx-auto bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 p-10 md:p-14 text-center">
+        <div className="max-w-3xl mx-auto bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-10 md:p-14 text-center">
           <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
             Not just a PDF
           </p>
@@ -135,7 +135,7 @@ export default function SecurityPage() {
           </p>
           <a
             href="/services"
-            className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans font-medium tracking-wide hover:bg-[color:var(--color-terra-light)] transition-colors"
+            className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
           >
             See how we work
           </a>
