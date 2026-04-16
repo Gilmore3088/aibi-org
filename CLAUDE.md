@@ -625,3 +625,36 @@ deferred. When accounts exist, wire adapters in order: Supabase first (data
 capture), then ConvertKit or Loops (newsletter), then HubSpot or Attio
 (CRM), then Calendly (briefing booking), then Stripe + Kajabi (Phase 2
 monetization).
+
+---
+
+## Design Context
+
+Full design system documented in `.impeccable.md` (project root). Key
+principles summarized here for quick reference.
+
+**Source:** Plans/aibi-designer-brief.html (canonical)
+
+**Aesthetic:** "Ancient wisdom meets modern tech." Parchment and terracotta.
+Institutional authority. References: McKinsey, Oliver Wyman, The Economist.
+
+**Emotional goals:** Authority + Trust, Aspiration + Pride.
+
+**Accessibility:** WCAG 2.1 AA.
+
+**Color discipline:** Terra = brand signal. Sage = Pillar A ONLY.
+Cobalt = Pillar B / security ONLY. Non-negotiable.
+
+**Typography:** Cormorant (display), Cormorant SC (labels/designations),
+DM Sans (body/UI), DM Mono (ALL numbers). Italic Cormorant for warmth;
+never italicize DM Sans.
+
+**Design principles:**
+1. Content is the design — restraint over decoration
+2. Every number earns its place — sourced, DM Mono, tabular-nums
+3. Institutional, not promotional — consulting materials, not SaaS
+4. Pillar discipline is visual grammar — sage/cobalt/terra never interchange
+5. Accessible by default — WCAG 2.1 AA, focus rings, skip links
+
+**Never:** gradients, drop shadows, rounded corners >4px, emoji, icon
+libraries, stock photos, dark mode, "AI-powered" badges.
