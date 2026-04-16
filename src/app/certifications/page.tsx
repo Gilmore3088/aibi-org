@@ -58,7 +58,7 @@ export default function CertificationsPage() {
             {certifications.map((cert) => (
               <article
                 key={cert.id}
-                className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-8 flex flex-col"
+                className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-8 flex flex-col hover:-translate-y-1 hover:border-[color:var(--color-terra)]/30 transition-all duration-200"
               >
                 <div className="mb-4">
                   <h3

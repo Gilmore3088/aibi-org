@@ -27,7 +27,7 @@ export function ServiceTierCards({ showHeader = false }: ServiceTierCardsProps) 
           {serviceTiers.map((tier) => (
             <article
               key={tier.id}
-              className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-8 flex flex-col"
+              className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-8 flex flex-col hover:bg-[color:var(--color-parch-dark)] hover:border-[color:var(--color-ink)]/20 transition-all duration-200"
             >
               <p
                 className="font-mono text-[10px] uppercase tracking-[0.2em] mb-4"
