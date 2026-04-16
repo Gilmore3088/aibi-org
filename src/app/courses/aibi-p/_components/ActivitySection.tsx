@@ -6,6 +6,7 @@
 //   - Module 2, activity '2.1'  → SubscriptionInventory
 //   - Module 6, activity '6.1'  → SkillDiagnosis
 //   - Module 7, activity '7.1'  → SkillBuilder (with learnerRole prop)
+//   - type === 'iteration'       → IterationTracker (M8 Activity 8.1)
 //   - type === 'drill'           → ClassificationDrill (extracts scenarios from m5-drill-scenarios table)
 //   - type === 'builder' && moduleNumber === 5 → AcceptableUseCardForm
 //   - everything else            → ActivityForm (free-text and generic form types)
@@ -21,6 +22,7 @@ import { ClassificationDrill } from './ClassificationDrill';
 import { AcceptableUseCardForm } from './AcceptableUseCardForm';
 import { SkillDiagnosis } from './SkillDiagnosis';
 import { SkillBuilder } from './SkillBuilder';
+import { IterationTracker } from './IterationTracker';
 import { CompletionCTA } from './CompletionCTA';
 
 export interface ActivitySectionProps {
@@ -150,6 +152,20 @@ export function ActivitySection({
         if (moduleNumber === 2 && activity.id === '2.1') {
           return (
             <SubscriptionInventory
+              key={activity.id}
+              activity={activity}
+              enrollmentId={enrollmentId}
+              moduleNumber={moduleNumber}
+              existingResponse={existing}
+              onSubmitSuccess={handleActivitySubmitted}
+            />
+          );
+        }
+
+        // M8 Activity 8.1 — Iteration Tracker
+        if (activity.type === 'iteration') {
+          return (
+            <IterationTracker
               key={activity.id}
               activity={activity}
               enrollmentId={enrollmentId}
