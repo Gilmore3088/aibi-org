@@ -359,10 +359,22 @@ const event = stripe.webhooks.constructEvent(body, sig, process.env.STRIPE_WEBHO
 
 ### Correct Brand Usage
 
+**Name standard (2026-04-15):** In running prose, always use the full name
+**The AI Banking Institute** or **the Institute**. Do NOT hide behind the
+acronym. Bankers do not need another acronym. Reserve "AiBI" for:
+- Credential codes (AiBI-P, AiBI-S, AiBI-L)
+- The fCAIO program name (AiBI fCAIO)
+- The circular seal / wordmark logo
+- Credential display format: "AiBI-P · The AI Banking Institute"
+
+Never write "AiBI helps..." or "the AiBI approach..." in body copy. Use
+"The AI Banking Institute helps..." or "our approach..." instead.
+
 | Element | Correct |
 |---------|---------|
-| Institute name | The AI Banking Institute |
-| Brand nickname | AiBI (not AiBi, not AIBI) |
+| Institute name | The AI Banking Institute (use in prose) |
+| Informal reference | the Institute |
+| Brand nickname | AiBI (not AiBi, not AIBI) — reserved for credentials, seal, and compound program names |
 | Practitioner cert | AiBI-P |
 | Specialist cert | AiBI-S / AiBI-S/Ops / AiBI-S/Lending / etc. |
 | Leader cert | AiBI-L |

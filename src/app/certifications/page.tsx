@@ -3,9 +3,9 @@ import { certifications } from '@content/certifications/v1';
 import { InquiryForm } from './_components/InquiryForm';
 
 export const metadata: Metadata = {
-  title: 'Certifications — AiBI-P, AiBI-S, AiBI-L',
+  title: 'Certifications — Practitioner, Specialist, and Leader',
   description:
-    'Three AiBI credentials built for community banks: Practitioner for all staff, Specialist for department managers, Leader for C-suite and board.',
+    'Three credentials from The AI Banking Institute: Practitioner (AiBI-P) for all staff, Specialist (AiBI-S) for department managers, and Leader (AiBI-L) for C-suite and board.',
 };
 
 export default function CertificationsPage() {
@@ -13,16 +13,17 @@ export default function CertificationsPage() {
     <main>
       <section className="px-6 pt-20 pb-12 md:pt-28 md:pb-16">
         <div className="max-w-4xl mx-auto text-center space-y-6">
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
-            AiBI Certifications
+          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
+            Certifications
           </p>
           <h1 className="font-serif text-5xl md:text-6xl text-[color:var(--color-ink)] leading-tight">
             Three credentials. One shared vocabulary.
           </h1>
           <p className="text-lg md:text-xl text-[color:var(--color-ink)]/75 max-w-2xl mx-auto leading-relaxed">
-            AiBI credentials give your staff, your managers, and your board
-            the same framework for making AI decisions — so your teller,
-            your CFO, and your examiner are speaking the same language.
+            Credentials from The AI Banking Institute give your staff, your
+            managers, and your board the same framework for making AI
+            decisions &mdash; so your teller, your CFO, and your examiner are
+            speaking the same language.
           </p>
           <p className="font-mono text-xs text-[color:var(--color-ink)]/50 pt-2">
             Cohort enrollment is by inquiry only during Phase 1.

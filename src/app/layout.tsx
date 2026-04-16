@@ -47,7 +47,7 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://aibankinginstitute
 const SITE_NAME = 'The AI Banking Institute';
 const SITE_TAGLINE = 'Turning Bankers into Builders';
 const DEFAULT_DESCRIPTION =
-  'AiBI helps community banks and credit unions build AI proficiency through assessment, certification, and transformation consulting. Accessible, boundary-safe, capable.';
+  'The AI Banking Institute helps community banks and credit unions build AI proficiency through assessment, certification, and transformation consulting. Accessible, boundary-safe, capable.';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

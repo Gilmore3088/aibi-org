@@ -5,7 +5,7 @@ import { ServiceTierCards } from '@/components/sections/ServiceTierCards';
 export const metadata: Metadata = {
   title: 'Services — Three ways we work with community banks',
   description:
-    'Operational Quick Win Sprint, Efficiency & Process Audit, AI Transformation + AiBI fCAIO. Consulting engagements built for community banks and credit unions.',
+    'Consulting engagements from The AI Banking Institute: Operational Quick Win Sprint, Efficiency & Process Audit, and AI Transformation with the AiBI fCAIO program. Built for community banks and credit unions.',
 };
 
 export default function ServicesPage() {

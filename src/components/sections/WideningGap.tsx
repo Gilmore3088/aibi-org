@@ -49,7 +49,7 @@ export function WideningGap() {
               morning workflow of a five-person operations team.
             </p>
             <p className="text-lg text-[color:var(--color-ink)]/75 mt-4 leading-relaxed">
-              AiBI is how that happens.
+              The AI Banking Institute is how that happens.
             </p>
             <Link
               href="/resources/the-widening-ai-gap"

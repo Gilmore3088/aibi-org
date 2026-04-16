@@ -12,7 +12,7 @@ export function FinalCTABand() {
           Start with accessible. End with capable.
         </h2>
         <p className="text-lg md:text-xl text-[color:var(--color-linen)]/85 mt-6 leading-relaxed max-w-2xl mx-auto">
-          Every AiBI engagement begins with a free conversation. Forty-five minutes, your numbers, your questions.
+          Every engagement with The AI Banking Institute begins with a free conversation. Forty-five minutes, your numbers, your questions.
         </p>
         <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
           <a

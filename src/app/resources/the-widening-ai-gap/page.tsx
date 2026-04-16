@@ -146,17 +146,17 @@ export default function WideningGapArticle() {
           </p>
 
           <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] pt-6">
-            Where AiBI fits.
+            Where The AI Banking Institute fits.
           </h2>
           <p>
-            The AiBI approach is community-bank-scaled from the first
-            conversation. The Operational Quick Win Sprint implements three
-            measurable automations in four to six weeks, with a 90-day ROI
-            guarantee, priced between $5,000 and $15,000. The Efficiency and
-            Process Audit gives you the board-ready full-institution roadmap.
-            The AiBI fCAIO engagement installs a monthly operating system with
-            capability transfer baked in &mdash; so when the engagement ends, your
-            team runs AI transformation independently.
+            The Institute&rsquo;s approach is community-bank-scaled from the
+            first conversation. The Operational Quick Win Sprint implements
+            three measurable automations in four to six weeks, with a 90-day
+            ROI guarantee, priced between $5,000 and $15,000. The Efficiency
+            and Process Audit gives you the board-ready full-institution
+            roadmap. The AiBI fCAIO engagement installs a monthly operating
+            system with capability transfer baked in &mdash; so when the
+            engagement ends, your team runs AI transformation independently.
           </p>
           <p>
             None of this requires you to hire an AI engineer. It requires a

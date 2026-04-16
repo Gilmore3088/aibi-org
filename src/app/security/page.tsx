@@ -53,10 +53,11 @@ export default function SecurityPage() {
               AI governance built for institutions that get examined.
             </h1>
             <p className="text-xl text-[color:var(--color-linen)]/80 mt-6 leading-relaxed">
-              Every recommendation in the AiBI approach is grounded in the
-              shared vocabulary of the AIEOG AI Lexicon, published by the US
-              Treasury, FBIIC, and FSSCC in February 2026 &mdash; the first
-              official cross-agency vocabulary for financial AI governance.
+              Every recommendation from The AI Banking Institute is grounded
+              in the shared vocabulary of the AIEOG AI Lexicon, published by
+              the US Treasury, FBIIC, and FSSCC in February 2026 &mdash; the
+              first official cross-agency vocabulary for financial AI
+              governance.
             </p>
             <p className="text-xl text-[color:var(--color-linen)]/80 mt-4 leading-relaxed">
               If your board has been asking whether AI is safe for a regulated
@@ -126,10 +127,11 @@ export default function SecurityPage() {
             operationalized.
           </h2>
           <p className="text-[color:var(--color-ink)]/75 max-w-xl mx-auto mb-6 leading-relaxed">
-            A governance guide is not the same as a governance framework. The
-            AiBI engagement installs the framework inside your institution
-            &mdash; with named owners, a review cadence, and documented
-            alignment to every applicable regulatory reference.
+            A governance guide is not the same as a governance framework. An
+            engagement with The AI Banking Institute installs the framework
+            inside your institution &mdash; with named owners, a review
+            cadence, and documented alignment to every applicable regulatory
+            reference.
           </p>
           <a
             href="/services"

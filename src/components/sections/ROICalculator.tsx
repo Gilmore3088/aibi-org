@@ -5,33 +5,30 @@ import { useMemo, useState } from 'react';
 // ROI calculator — matches calcROI() spec in CLAUDE.md.
 // Client-side only. No server calls. Results are instant.
 
-interface ROIResult {
-  readonly mid: number;
-  readonly low: number;
-  readonly high: number;
-  readonly hoursPerYear: number;
-  readonly efficiencyPoints: string;
-}
-
 function calcROI(inputs: {
   fte: number;
   costPerFTE: number;
   loHours: number;
   hiHours: number;
-}): ROIResult {
+}): {
+  readonly mid: number;
+  readonly low: number;
+  readonly high: number;
+  readonly hoursPerYear: number;
+  readonly payrollRecaptured: string;
+} {
   const { fte, costPerFTE, loHours, hiHours } = inputs;
   const hourlyRate = costPerFTE / 2080;
   const midHours = (loHours + hiHours) / 2;
   const totalPayroll = fte * costPerFTE;
+  const midAnnual = fte * midHours * hourlyRate * 50;
   return {
-    mid: fte * midHours * hourlyRate * 50,
+    mid: midAnnual,
     low: fte * loHours * hourlyRate * 50,
     high: fte * hiHours * hourlyRate * 50,
     hoursPerYear: Math.round(fte * midHours * 50),
-    efficiencyPoints:
-      totalPayroll > 0
-        ? (((fte * midHours * hourlyRate * 50) / totalPayroll) * 100).toFixed(1)
-        : '0.0',
+    payrollRecaptured:
+      totalPayroll > 0 ? ((midAnnual / totalPayroll) * 100).toFixed(1) : '0.0',
   };
 }
 
@@ -69,16 +66,18 @@ export function ROICalculator() {
     >
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-4">
+          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-4">
             ROI Model
           </p>
           <h2 className="font-serif text-4xl md:text-5xl text-[color:var(--color-ink)] max-w-3xl mx-auto leading-tight">
             Run your own numbers.
           </h2>
           <p className="text-lg text-[color:var(--color-ink)]/70 max-w-2xl mx-auto mt-5 leading-relaxed">
-            The community bank median efficiency ratio is ~65% (FDIC CEIC data).
-            Top-performing peers operate in the mid-50s. An 8–12 point gap is
-            the prize. The math below is how AiBI engagements move it.
+            This calculator estimates the annual dollar value of staff hours
+            that AI automation can recapture inside your institution. It is
+            the starting point for every engagement The AI Banking Institute
+            runs &mdash; the labor reallocation math that every other outcome
+            follows from.
           </p>
         </div>
 
@@ -86,37 +85,38 @@ export function ROICalculator() {
           {/* Left: benchmark context */}
           <div className="md:col-span-2 space-y-6">
             <div className="border border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)] p-6">
-              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60 mb-3">
-                FDIC benchmark
+              <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60 mb-3">
+                Industry context
               </p>
               <dl className="space-y-3">
                 <div className="flex items-baseline justify-between">
                   <dt className="text-sm text-[color:var(--color-ink)]/80">
-                    Community bank median
+                    Community bank median efficiency ratio
                   </dt>
-                  <dd className="font-mono text-lg text-[color:var(--color-ink)]">~65%</dd>
+                  <dd className="font-mono text-lg text-[color:var(--color-ink)] tabular-nums">~65%</dd>
                 </div>
                 <div className="flex items-baseline justify-between">
                   <dt className="text-sm text-[color:var(--color-ink)]/80">
                     Industry-wide (Q4 2024)
                   </dt>
-                  <dd className="font-mono text-lg text-[color:var(--color-ink)]">~55.7%</dd>
-                </div>
-                <div className="flex items-baseline justify-between pt-3 border-t border-[color:var(--color-ink)]/10">
-                  <dt className="text-sm font-medium text-[color:var(--color-ink)]">
-                    The gap
-                  </dt>
-                  <dd className="font-mono text-lg text-[color:var(--color-terra)]">8–12 pp</dd>
+                  <dd className="font-mono text-lg text-[color:var(--color-ink)] tabular-nums">~55.7%</dd>
                 </div>
               </dl>
-              <p className="font-mono text-[10px] text-[color:var(--color-ink)]/40 mt-4">
-                Source: FDIC Quarterly Banking Profile &middot; CEIC 1992–2025
+              <p className="font-mono text-[10px] text-[color:var(--color-ink)]/45 mt-4 leading-snug">
+                Source: FDIC Quarterly Banking Profile &middot; CEIC 1992&ndash;2025
               </p>
             </div>
-            <p className="text-sm text-[color:var(--color-ink)]/70 leading-relaxed">
-              Closing that gap is not a technology problem. It is a labor
-              reallocation problem. The calculator below estimates how much of
-              that gap AI automation can recover inside your institution.
+            <p className="text-sm text-[color:var(--color-ink)]/75 leading-relaxed">
+              Top-performing peers run 8&ndash;12 percentage points below the
+              community bank median. Closing that gap is not a technology
+              problem. It is a labor reallocation problem &mdash; which is
+              exactly what the calculator on the right quantifies.
+            </p>
+            <p className="text-sm text-[color:var(--color-ink)]/75 leading-relaxed">
+              The result is not a projected efficiency ratio change. It is the
+              annual dollar value of the hours AI can give back to your staff,
+              based on your inputs. The efficiency ratio improvement follows
+              from how those recaptured hours are then reinvested.
             </p>
           </div>
 
@@ -163,15 +163,15 @@ export function ROICalculator() {
 
             <div className="mt-10 pt-8 border-t border-[color:var(--color-ink)]/10">
               <p className="font-serif-sc text-[11px] uppercase tracking-[0.15em] text-[color:var(--color-ink)]/60 mb-3">
-                Estimated annual NIE reduction
+                Estimated annual labor hours recaptured
               </p>
               <p className="font-mono text-5xl md:text-6xl text-[color:var(--color-terra)] leading-none tabular-nums">
                 {formatCurrency(result.mid)}
               </p>
-              <p className="font-mono text-xs text-[color:var(--color-ink)]/60 mt-3">
+              <p className="font-mono text-xs text-[color:var(--color-ink)]/60 mt-3 leading-snug">
                 Range: {formatCurrency(result.low)} &ndash; {formatCurrency(result.high)} &middot;{' '}
                 {formatNumber(result.hoursPerYear)} hours/year &middot;{' '}
-                ~{result.efficiencyPoints} efficiency points
+                ~{result.payrollRecaptured}% of payroll
               </p>
               <a
                 href={CALENDLY_URL}
