@@ -1,0 +1,55 @@
+'use client';
+
+// ModuleContentClient — top-level client wrapper for interactive module content.
+// Owns moduleComplete state shared between ActivitySection (setter) and ModuleNavigation (reader).
+// Rendered by the server ModulePage to bridge server-fetched data to client interactivity.
+
+import { useState } from 'react';
+import type { Activity } from '@content/courses/aibi-p';
+import { ActivitySection } from './ActivitySection';
+import { ModuleNavigation } from './ModuleNavigation';
+
+export interface ModuleContentClientProps {
+  readonly activities: readonly Activity[];
+  readonly enrollmentId: string;
+  readonly moduleNumber: number;
+  readonly existingResponses: Record<string, Record<string, string>>;
+  readonly isLastModule: boolean;
+  readonly isAlreadyCompleted: boolean;
+}
+
+export function ModuleContentClient({
+  activities,
+  enrollmentId,
+  moduleNumber,
+  existingResponses,
+  isLastModule,
+  isAlreadyCompleted,
+}: ModuleContentClientProps) {
+  const [moduleComplete, setModuleComplete] = useState(isAlreadyCompleted);
+
+  const handleAllActivitiesComplete = () => {
+    setModuleComplete(true);
+  };
+
+  return (
+    <>
+      {activities.length > 0 && (
+        <ActivitySection
+          activities={activities}
+          enrollmentId={enrollmentId}
+          moduleNumber={moduleNumber}
+          existingResponses={existingResponses}
+          isLastModule={isLastModule}
+          onAllActivitiesComplete={handleAllActivitiesComplete}
+        />
+      )}
+
+      <ModuleNavigation
+        moduleNumber={moduleNumber}
+        isLastModule={isLastModule}
+        moduleComplete={moduleComplete}
+      />
+    </>
+  );
+}

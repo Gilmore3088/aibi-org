@@ -6,14 +6,15 @@
 
 import { notFound, redirect } from 'next/navigation';
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { modules, getModuleByNumber } from '@content/courses/aibi-p';
 import { ModuleHeader } from '../_components/ModuleHeader';
 import { ContentSection } from '../_components/ContentSection';
 import { ContentTable } from '../_components/ContentTable';
-import { ActivityFormShell } from '../_components/ActivityFormShell';
+import { ModuleContentClient } from '../_components/ModuleContentClient';
 import { getEnrollment } from '../_lib/getEnrollment';
 import { canAccessModule } from '../_lib/courseProgress';
+import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
+import type { ActivityResponse } from '@/types/course';
 
 interface ModulePageParams {
   readonly params: { module: string };
@@ -59,6 +60,24 @@ export default async function ModulePage({ params }: ModulePageParams) {
   }
 
   const isLastModule = mod.number === 9;
+  const isAlreadyCompleted = enrollment.completed_modules.includes(moduleNum);
+
+  // Fetch existing activity responses for this enrollment + module (read-only, service role)
+  const existingResponses: Record<string, Record<string, string>> = {};
+  if (isSupabaseConfigured() && mod.activities.length > 0) {
+    const serviceClient = createServiceRoleClient();
+    const { data: responses } = await serviceClient
+      .from('activity_responses')
+      .select('activity_id, response')
+      .eq('enrollment_id', enrollment.id)
+      .eq('module_number', moduleNum);
+
+    if (responses) {
+      for (const row of responses as Pick<ActivityResponse, 'activity_id' | 'response'>[]) {
+        existingResponses[row.activity_id] = row.response as Record<string, string>;
+      }
+    }
+  }
 
   return (
     <>
@@ -88,54 +107,19 @@ export default async function ModulePage({ params }: ModulePageParams) {
           </div>
         )}
 
-        {/* Activities — at the bottom of the module */}
-        {mod.activities.length > 0 && (
-          <div className="mt-8">
-            <h2 className="font-serif text-2xl font-bold text-[color:var(--color-ink)] mb-6">
-              Activities
-            </h2>
-            {mod.activities.map((activity) => (
-              <ActivityFormShell key={activity.id} activity={activity} />
-            ))}
-          </div>
-        )}
-
-        {/* Module navigation footer */}
-        <div className="flex items-center justify-between mt-16 pt-8 border-t border-[color:var(--color-parch-dark)]">
-          <Link
-            href="/courses/aibi-p"
-            className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-dust)] hover:text-[color:var(--color-ink)] transition-colors"
-          >
-            Back to Overview
-          </Link>
-
-          {!isLastModule && (
-            <Link
-              href={`/courses/aibi-p/${mod.number + 1}`}
-              className="inline-flex items-center gap-2 bg-[color:var(--color-terra)] hover:bg-[color:var(--color-terra-light)] text-[color:var(--color-linen)] px-6 py-2.5 rounded-sm font-mono text-[11px] uppercase tracking-widest transition-colors"
-            >
-              Next Module
-              <svg
-                className="w-3 h-3"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                aria-hidden="true"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </Link>
-          )}
-
-          {isLastModule && (
-            <span className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-dust)]">
-              Course Complete
-            </span>
-          )}
-        </div>
+        {/*
+          ModuleContentClient — client boundary for interactive activities and navigation.
+          Owns moduleComplete state, renders ActivitySection + ModuleNavigation together.
+          Passes server-fetched existingResponses so previously submitted activities are read-only.
+        */}
+        <ModuleContentClient
+          activities={mod.activities}
+          enrollmentId={enrollment.id}
+          moduleNumber={moduleNum}
+          existingResponses={existingResponses}
+          isLastModule={isLastModule}
+          isAlreadyCompleted={isAlreadyCompleted}
+        />
       </article>
     </>
   );

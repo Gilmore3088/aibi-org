@@ -271,8 +271,8 @@ export function OnboardingSurvey({ enrollmentId }: OnboardingSurveyProps) {
                   opacity: 0.75,
                 }}
               >
-                "The Banking AI Practitioner certification bridges the gap
-                between institutional legacy and generative futures."
+                &ldquo;The Banking AI Practitioner certification bridges the gap
+                between institutional legacy and generative futures.&rdquo;
               </p>
             </div>
           </div>
