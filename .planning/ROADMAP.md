@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Foundation** - DB schema migrations and content architecture established
 - [x] **Phase 2: Course Shell + Assessment Upgrade** - Browsable 9-module course shell and upgraded 12-question assessment
 - [x] **Phase 3: Stripe Checkout + Enrollment** - Payment flow, access gating, institution bundle model
-- [ ] **Phase 4: Onboarding Branch + Progress Tracking** - Survey routing, forward-only gating, resume functionality
+- [x] **Phase 4: Onboarding Branch + Progress Tracking** - Survey routing, forward-only gating, resume functionality
 - [ ] **Phase 5: Modules 1-5 Activities + Artifacts** - Pillar A/B modules fully interactive with first three artifacts
 - [ ] **Phase 6: Modules 6-9 Activities + Skill Builder** - Pillar C/D modules, skill builder, My First Skill artifact
 - [ ] **Phase 7: Work Product + Reviewer Queue** - 4-item submission, 5-dimension rubric, pass/fail workflow
