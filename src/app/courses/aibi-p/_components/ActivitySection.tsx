@@ -16,6 +16,7 @@ import { ActivityFormShell } from './ActivityFormShell';
 import { SubscriptionInventory } from './SubscriptionInventory';
 import { ClassificationDrill } from './ClassificationDrill';
 import { AcceptableUseCardForm } from './AcceptableUseCardForm';
+import { CompletionCTA } from './CompletionCTA';
 
 export interface ActivitySectionProps {
   readonly activities: readonly Activity[];
@@ -185,6 +186,11 @@ export function ActivitySection({
             {isLastModule ? 'Complete Course' : 'Complete Module'}
           </button>
         </div>
+      )}
+
+      {/* CompletionCTA — shown after progress saved, contextual by module number */}
+      {progressSaved && (
+        <CompletionCTA moduleNumber={moduleNumber} isLastModule={isLastModule} />
       )}
     </div>
   );
