@@ -16,6 +16,8 @@
   --color-parch-dark:   #ede6d8;  /* Hover states, section bands */
   --color-linen:        #f9f6f0;  /* Page background */
   --color-error:        #9b2226;  /* Error / Starting Point tier */
+  --color-amber:        #c48820;  /* Creation pillar ONLY */
+  --color-amber-light:  #d4a032;  /* Creation pillar hover states */
 
   /* Typography tokens */
   --font-serif:    var(--font-cormorant), Georgia, serif;

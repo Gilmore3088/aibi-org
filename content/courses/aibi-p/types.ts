@@ -7,7 +7,7 @@ export type Pillar = 'awareness' | 'understanding' | 'creation' | 'application';
 export const PILLAR_META: Record<Pillar, { readonly label: string; readonly colorVar: string }> = {
   awareness:     { label: 'Awareness',     colorVar: 'var(--color-sage)' },
   understanding: { label: 'Understanding', colorVar: 'var(--color-cobalt)' },
-  creation:      { label: 'Creation',      colorVar: 'var(--color-terra-light)' },
+  creation:      { label: 'Creation',      colorVar: 'var(--color-amber)' },
   application:   { label: 'Application',   colorVar: 'var(--color-terra)' },
 } as const;
 
