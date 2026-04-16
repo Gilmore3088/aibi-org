@@ -13,8 +13,8 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import type Stripe from 'stripe';
-import { provisionEnrollment } from './route';
-import type { ProvisionResult, ProvisionError } from './route';
+import { provisionEnrollment } from '@/lib/stripe/provision-enrollment';
+import type { ProvisionResult, ProvisionError } from '@/lib/stripe/provision-enrollment';
 
 // ---------------------------------------------------------------------------
 // Helpers
