@@ -25,12 +25,6 @@ function renderField(field: ActivityField) {
     </label>
   );
 
-  const minLengthHint = field.minLength ? (
-    <p className="mt-1 text-[11px] font-mono text-[color:var(--color-dust)]">
-      Minimum {field.minLength} characters
-    </p>
-  ) : null;
-
   let input: React.ReactNode;
 
   switch (field.type) {
@@ -127,7 +121,6 @@ function renderField(field: ActivityField) {
           Minimum {field.minLength} characters
         </p>
       )}
-      {!field.minLength && minLengthHint}
     </div>
   );
 }
