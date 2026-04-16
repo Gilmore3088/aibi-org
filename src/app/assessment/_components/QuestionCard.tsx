@@ -1,15 +1,18 @@
 'use client';
 
-import type { AssessmentQuestion } from '@content/assessments/v1/questions';
+import type { AssessmentQuestion as V1Question } from '@content/assessments/v1/questions';
+import type { AssessmentQuestion as V2Question } from '@content/assessments/v2/types';
+
+type AnyAssessmentQuestion = V1Question | V2Question;
 
 interface QuestionCardProps {
-  readonly question: AssessmentQuestion;
+  readonly question: AnyAssessmentQuestion;
   readonly questionNumber: number;
   readonly totalQuestions: number;
   readonly selectedPoints: number | undefined;
   readonly onAnswer: (points: number) => void;
-  readonly onBack: () => void;
-  readonly canGoBack: boolean;
+  readonly onBack?: () => void;
+  readonly canGoBack?: boolean;
 }
 
 export function QuestionCard({
@@ -60,14 +63,17 @@ export function QuestionCard({
       </div>
 
       <div className="flex items-center justify-between mt-8">
-        <button
-          type="button"
-          onClick={onBack}
-          disabled={!canGoBack}
-          className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-ink)]/70 hover:text-[color:var(--color-terra)] disabled:opacity-30 disabled:cursor-not-allowed"
-        >
-          &larr; Back
-        </button>
+        {canGoBack && onBack ? (
+          <button
+            type="button"
+            onClick={onBack}
+            className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-ink)]/70 hover:text-[color:var(--color-terra)]"
+          >
+            &larr; Back
+          </button>
+        ) : (
+          <span />
+        )}
         <span className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-slate)]">
           Tap an answer to continue
         </span>
