@@ -173,6 +173,56 @@ AI systems express uncertainty poorly. When a model does not know something, it 
           tier: 'Tier 2 — Internal Only',
           reasoning: 'Internal operations content — not public, but no customer PII if names are typical internal staff',
         },
+        {
+          scenario: 'Compare publicly available mortgage rates across three competitor institutions',
+          tier: 'Tier 1 — Public',
+          reasoning: 'Competitor rate data posted publicly on institution websites is public information',
+        },
+        {
+          scenario: 'Prepare talking points about your institution\'s community reinvestment achievements using published CRA data',
+          tier: 'Tier 1 — Public',
+          reasoning: 'CRA performance evaluations are published by federal regulators and are public record',
+        },
+        {
+          scenario: 'Rewrite your department\'s AI acceptable use policy draft',
+          tier: 'Tier 2 — Internal Only',
+          reasoning: 'Internal governance document — not public, but contains no customer PII or sensitive financial data',
+        },
+        {
+          scenario: 'Generate an onboarding checklist for new tellers based on the internal training manual',
+          tier: 'Tier 2 — Internal Only',
+          reasoning: 'Internal training materials are confidential operational documents not intended for public distribution',
+        },
+        {
+          scenario: 'Summarize findings from an internal process improvement committee',
+          tier: 'Tier 2 — Internal Only',
+          reasoning: 'Internal committee findings are non-public institutional information with no customer data',
+        },
+        {
+          scenario: 'Draft a response to a customer complaint that references their specific account history',
+          tier: 'Tier 3 — Highly Restricted',
+          reasoning: 'Customer-specific account history is PII and financial data — Tier 3 regardless of the communication purpose',
+        },
+        {
+          scenario: 'Analyze transaction patterns for a customer flagged in your BSA monitoring system',
+          tier: 'Tier 3 — Highly Restricted',
+          reasoning: 'BSA monitoring involves potential SAR-adjacent data and customer financial records — strictly Tier 3',
+        },
+        {
+          scenario: 'Summarize a borrower\'s financial statements from their loan file',
+          tier: 'Tier 3 — Highly Restricted',
+          reasoning: 'Borrower financial statements contain personal financial data and are Tier 3 regardless of format',
+        },
+        {
+          scenario: 'Review an employee\'s performance evaluation to draft improvement plan talking points',
+          tier: 'Tier 3 — Highly Restricted',
+          reasoning: 'Individual employee performance data is personnel-sensitive PII — classified Tier 3',
+        },
+        {
+          scenario: 'Cross-reference customer deposit records against reported income on a loan application',
+          tier: 'Tier 3 — Highly Restricted',
+          reasoning: 'Customer deposit records and loan application income data are both Tier 3 financial PII',
+        },
       ],
     },
   ],
