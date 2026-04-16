@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useExam } from '../_lib/useExam';
+import { saveProficiencyResult } from '@/lib/user-data';
 
 export default function AiBIPExamPage() {
   const exam = useExam();
@@ -150,6 +151,20 @@ export default function AiBIPExamPage() {
 
   // ── Results ──
   if (exam.phase === 'results' && exam.proficiency) {
+    // Save proficiency result to localStorage for the dashboard
+    saveProficiencyResult({
+      pctCorrect: exam.pctCorrect,
+      levelId: exam.proficiency.id,
+      levelLabel: exam.proficiency.label,
+      topicScores: exam.topicScores.map((ts) => ({
+        topic: ts.topic,
+        label: ts.label,
+        correct: ts.correct,
+        total: ts.total,
+        pct: ts.pct,
+      })),
+    });
+
     return (
       <main className="px-6 py-14 md:py-20">
         <div className="max-w-3xl mx-auto space-y-16">

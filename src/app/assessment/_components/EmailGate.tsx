@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, type FormEvent } from 'react';
+import { saveReadinessResult } from '@/lib/user-data';
 
 interface EmailGateProps {
   readonly score: number;
@@ -51,6 +52,7 @@ export function EmailGate({
         const data = (await res.json().catch(() => ({}))) as { error?: string };
         throw new Error(data.error ?? 'Something went wrong. Please try again.');
       }
+      saveReadinessResult(trimmed, { score, tierId, tierLabel, answers });
       onCaptured(trimmed);
     } catch (err) {
       setStatus('error');
