@@ -5,7 +5,6 @@ import { examQuestions, TOPIC_LABELS, type ExamQuestion, type Topic } from '@con
 import { getProficiencyLevel, type ProficiencyLevel } from '@content/exams/aibi-p/scoring';
 
 const QUESTIONS_PER_EXAM = 12;
-const TIME_LIMIT_SECONDS = 15 * 60; // 15 minutes
 
 export type ExamPhase = 'intro' | 'questions' | 'results';
 
@@ -66,7 +65,6 @@ export interface ExamState {
   readonly questions: readonly ExamQuestion[];
   readonly currentIndex: number;
   readonly answers: ReadonlyMap<string, string>;
-  readonly secondsRemaining: number;
   readonly totalCorrect: number;
   readonly pctCorrect: number;
   readonly proficiency: ProficiencyLevel | null;
@@ -87,26 +85,6 @@ export function useExam(): ExamState & ExamActions {
   const [questions, setQuestions] = useState<ExamQuestion[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Map<string, string>>(new Map());
-  const [secondsRemaining, setSecondsRemaining] = useState(TIME_LIMIT_SECONDS);
-
-  // Timer
-  useEffect(() => {
-    if (phase !== 'questions') return;
-    if (secondsRemaining <= 0) {
-      setPhase('results');
-      return;
-    }
-    const id = setInterval(() => {
-      setSecondsRemaining((prev) => {
-        if (prev <= 1) {
-          setPhase('results');
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-    return () => clearInterval(id);
-  }, [phase, secondsRemaining]);
 
   const totalCorrect = useMemo(() => {
     let count = 0;
@@ -141,7 +119,6 @@ export function useExam(): ExamState & ExamActions {
     setQuestions(shuffleAndDraw(examQuestions, QUESTIONS_PER_EXAM));
     setCurrentIndex(0);
     setAnswers(new Map());
-    setSecondsRemaining(TIME_LIMIT_SECONDS);
     setPhase('questions');
   }, []);
 
@@ -174,7 +151,6 @@ export function useExam(): ExamState & ExamActions {
     questions,
     currentIndex,
     answers,
-    secondsRemaining,
     totalCorrect,
     pctCorrect,
     proficiency,

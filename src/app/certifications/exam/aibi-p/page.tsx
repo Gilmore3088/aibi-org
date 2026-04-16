@@ -4,12 +4,6 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useExam } from '../_lib/useExam';
 
-function formatTime(seconds: number): string {
-  const m = Math.floor(seconds / 60);
-  const s = seconds % 60;
-  return `${m}:${s.toString().padStart(2, '0')}`;
-}
-
 export default function AiBIPExamPage() {
   const exam = useExam();
   const [mounted, setMounted] = useState(false);
@@ -28,18 +22,14 @@ export default function AiBIPExamPage() {
             How ready are you for the Practitioner credential?
           </h1>
           <p className="text-lg text-[color:var(--color-ink)]/75 leading-relaxed max-w-xl mx-auto">
-            12 questions drawn randomly from a pool of 40+, covering five
-            topics: Gen AI Fundamentals, Prompting, Safe Use, Use Case
-            Identification, and Measurement. You have 15 minutes.
+            A short proficiency assessment covering the five areas every
+            banking AI practitioner needs to understand: fundamentals,
+            prompting, safe use, use case identification, and measurement.
           </p>
           <p className="text-[color:var(--color-ink)]/60 leading-relaxed max-w-xl mx-auto">
-            This is a proficiency assessment, not a pass/fail exam. Your result
-            is a proficiency level that tells you whether you are ready to
-            submit a work product for certification &mdash; or where to focus
-            your study first.
-          </p>
-          <p className="text-sm text-[color:var(--color-ink)]/50">
-            Every retake draws different questions from the pool.
+            Your result is a proficiency level &mdash; not a grade. It tells
+            you whether you are ready to pursue certification, or where to
+            focus your development first. Take it as many times as you like.
           </p>
           <button
             type="button"
@@ -60,7 +50,6 @@ export default function AiBIPExamPage() {
     const answeredCount = exam.answers.size;
     const total = exam.questions.length;
     const progress = ((exam.currentIndex + 1) / total) * 100;
-    const timeWarning = exam.secondsRemaining <= 120;
 
     return (
       <main className="min-h-screen">
@@ -79,15 +68,8 @@ export default function AiBIPExamPage() {
               <span className="font-mono text-xs text-[color:var(--color-ink)]/60">
                 Question {exam.currentIndex + 1} of {total}
               </span>
-              <span
-                className={
-                  'font-mono text-sm tabular-nums ' +
-                  (timeWarning
-                    ? 'text-[color:var(--color-error)]'
-                    : 'text-[color:var(--color-ink)]/60')
-                }
-              >
-                {formatTime(exam.secondsRemaining)}
+              <span className="font-mono text-xs text-[color:var(--color-ink)]/40">
+                {answeredCount} of {total} answered
               </span>
             </div>
 
@@ -145,9 +127,6 @@ export default function AiBIPExamPage() {
               >
                 &larr; Back
               </button>
-              <span className="font-mono text-[10px] text-[color:var(--color-ink)]/40">
-                {answeredCount} of {total} answered
-              </span>
               {exam.currentIndex < total - 1 ? (
                 <button
                   type="button"
