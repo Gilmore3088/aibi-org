@@ -5,7 +5,7 @@
 // Rendered by the server ModulePage to bridge server-fetched data to client interactivity.
 
 import { useState } from 'react';
-import type { Activity } from '@content/courses/aibi-p';
+import type { Activity, ContentTable } from '@content/courses/aibi-p';
 import { ActivitySection } from './ActivitySection';
 import { ModuleNavigation } from './ModuleNavigation';
 
@@ -16,6 +16,7 @@ export interface ModuleContentClientProps {
   readonly existingResponses: Record<string, Record<string, string>>;
   readonly isLastModule: boolean;
   readonly isAlreadyCompleted: boolean;
+  readonly tables?: readonly ContentTable[];
 }
 
 export function ModuleContentClient({
@@ -25,6 +26,7 @@ export function ModuleContentClient({
   existingResponses,
   isLastModule,
   isAlreadyCompleted,
+  tables,
 }: ModuleContentClientProps) {
   const [moduleComplete, setModuleComplete] = useState(isAlreadyCompleted);
 
@@ -42,6 +44,7 @@ export function ModuleContentClient({
           existingResponses={existingResponses}
           isLastModule={isLastModule}
           onAllActivitiesComplete={handleAllActivitiesComplete}
+          tables={tables}
         />
       )}
 

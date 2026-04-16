@@ -119,6 +119,7 @@ export default async function ModulePage({ params }: ModulePageParams) {
           existingResponses={existingResponses}
           isLastModule={isLastModule}
           isAlreadyCompleted={isAlreadyCompleted}
+          tables={mod.tables}
         />
       </article>
     </>

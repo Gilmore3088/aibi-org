@@ -2,12 +2,20 @@
 
 // ActivitySection — client wrapper that manages activity submission state and gates
 // the "Next Module" / "Complete Module" action behind all activity completions.
-// Rendered inside the server ModulePage component.
+// Routes each activity to its correct specialized component:
+//   - Module 2, activity '2.1'  → SubscriptionInventory
+//   - type === 'drill'           → ClassificationDrill (extracts scenarios from m5-drill-scenarios table)
+//   - type === 'builder'         → AcceptableUseCardForm
+//   - everything else            → ActivityForm (free-text and generic form types)
+// Rendered inside the server ModulePage component via ModuleContentClient.
 
 import { useState, useCallback } from 'react';
-import type { Activity } from '@content/courses/aibi-p';
+import type { Activity, ContentTable } from '@content/courses/aibi-p';
 import { ActivityForm } from './ActivityForm';
 import { ActivityFormShell } from './ActivityFormShell';
+import { SubscriptionInventory } from './SubscriptionInventory';
+import { ClassificationDrill } from './ClassificationDrill';
+import { AcceptableUseCardForm } from './AcceptableUseCardForm';
 
 export interface ActivitySectionProps {
   readonly activities: readonly Activity[];
@@ -16,11 +24,24 @@ export interface ActivitySectionProps {
   readonly existingResponses: Record<string, Record<string, string>>;
   readonly isLastModule: boolean;
   readonly onAllActivitiesComplete: () => void;
+  readonly tables?: readonly ContentTable[];
 }
 
-// Activities of these types are handled by specialized components (Plans 02-03).
-// Render as shells until those plans are executed.
-const SHELL_ONLY_TYPES = new Set(['drill', 'builder']);
+interface DrillScenario {
+  readonly scenario: string;
+  readonly tier: string;
+  readonly reasoning: string;
+}
+
+function extractDrillScenarios(tables: readonly ContentTable[] | undefined): DrillScenario[] {
+  const drillTable = tables?.find((t) => t.id === 'm5-drill-scenarios');
+  if (!drillTable) return [];
+  return drillTable.rows.map((row) => ({
+    scenario: row['scenario'] ?? '',
+    tier: row['tier'] ?? '',
+    reasoning: row['reasoning'] ?? '',
+  }));
+}
 
 export function ActivitySection({
   activities,
@@ -29,6 +50,7 @@ export function ActivitySection({
   existingResponses,
   isLastModule,
   onAllActivitiesComplete,
+  tables,
 }: ActivitySectionProps) {
   // Track which activities have been submitted this session
   const [submittedIds, setSubmittedIds] = useState<Set<string>>(() => {
@@ -43,22 +65,17 @@ export function ActivitySection({
 
   const [progressSaved, setProgressSaved] = useState(false);
 
-  // Count submittable activities (shells are never submitted via this form)
-  const submittableActivities = activities.filter((a) => !SHELL_ONLY_TYPES.has(a.type));
+  // All activities are now routable — no more shell-only types
   const allSubmitted =
-    submittableActivities.length > 0 &&
-    submittableActivities.every((a) => submittedIds.has(a.id));
+    activities.length > 0 && activities.every((a) => submittedIds.has(a.id));
 
-  const handleActivitySubmitted = useCallback(
-    (activityId: string) => {
-      setSubmittedIds((prev) => {
-        const next = new Set(prev);
-        next.add(activityId);
-        return next;
-      });
-    },
-    [],
-  );
+  const handleActivitySubmitted = useCallback((activityId: string) => {
+    setSubmittedIds((prev) => {
+      const next = new Set(prev);
+      next.add(activityId);
+      return next;
+    });
+  }, []);
 
   const handleSaveProgress = useCallback(async () => {
     try {
@@ -81,6 +98,8 @@ export function ActivitySection({
     return null;
   }
 
+  const drillScenarios = extractDrillScenarios(tables);
+
   return (
     <div className="mt-8">
       <h2 className="font-serif text-2xl font-bold text-[color:var(--color-ink)] mb-6">
@@ -88,23 +107,71 @@ export function ActivitySection({
       </h2>
 
       {activities.map((activity) => {
-        if (SHELL_ONLY_TYPES.has(activity.type)) {
-          return <ActivityFormShell key={activity.id} activity={activity} />;
+        const existing = existingResponses[activity.id] ?? null;
+
+        // M2 Activity 2.1 — Subscription Inventory
+        if (moduleNumber === 2 && activity.id === '2.1') {
+          return (
+            <SubscriptionInventory
+              key={activity.id}
+              activity={activity}
+              enrollmentId={enrollmentId}
+              moduleNumber={moduleNumber}
+              existingResponse={existing}
+              onSubmitSuccess={handleActivitySubmitted}
+            />
+          );
         }
 
+        // M5 Activity 5.1 — Classification Drill
+        if (activity.type === 'drill') {
+          // Drill scenarios must be present; fall back to shell if not available
+          if (drillScenarios.length === 0) {
+            return <ActivityFormShell key={activity.id} activity={activity} />;
+          }
+          return (
+            <ClassificationDrill
+              key={activity.id}
+              activity={activity}
+              enrollmentId={enrollmentId}
+              moduleNumber={moduleNumber}
+              scenarios={drillScenarios}
+              existingResponse={
+                existing ? (existing as unknown as Record<string, unknown>) : null
+              }
+              onSubmitSuccess={handleActivitySubmitted}
+            />
+          );
+        }
+
+        // M5 Activity 5.2 — Acceptable Use Card Builder
+        if (activity.type === 'builder') {
+          return (
+            <AcceptableUseCardForm
+              key={activity.id}
+              activity={activity}
+              enrollmentId={enrollmentId}
+              moduleNumber={moduleNumber}
+              existingResponse={existing}
+              onSubmitSuccess={handleActivitySubmitted}
+            />
+          );
+        }
+
+        // All other activities (free-text, form, iteration) — generic ActivityForm
         return (
           <ActivityForm
             key={activity.id}
             activity={activity}
             enrollmentId={enrollmentId}
             moduleNumber={moduleNumber}
-            existingResponse={existingResponses[activity.id] ?? null}
+            existingResponse={existing}
             onSubmitSuccess={handleActivitySubmitted}
           />
         );
       })}
 
-      {/* Progress save — only show when all submittable activities are done */}
+      {/* Progress save — only show when all activities are done */}
       {allSubmitted && !progressSaved && (
         <div className="mt-6 pt-6 border-t border-[color:var(--color-parch-dark)]">
           <p className="text-sm font-sans text-[color:var(--color-dust)] mb-4">
