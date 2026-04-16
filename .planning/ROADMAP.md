@@ -32,7 +32,10 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. A developer can open `/content/courses/aibi-p/` and find module content files separated from component code — no module prose is hardcoded in any `.tsx` file
   3. The content structure matches the existing `content/assessments/v1/` pattern — same folder conventions, same typed import pattern
   4. Activity responses written to `activity_responses` table are visible only to the owning enrolled user (RLS enforced)
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 01-01-PLAN.md — Database schema (5 tables), RLS policies, indexes, TypeScript types, Supabase client
+- [ ] 01-02-PLAN.md — Content architecture: typed module content files for all 9 AiBI-P modules
 
 ### Phase 2: Course Shell + Assessment Upgrade
 **Goal**: The 9-module course is fully browsable (real content, pillar color banding, activity form shells) and the free assessment serves 12 rotating questions from the expanded pool
@@ -44,7 +47,10 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. A non-enrolled visitor attempting to access a module page is redirected to the purchase page
   4. The free assessment at `/assessment` serves exactly 12 questions, shows "Question N of 12" throughout, and displays score and tier without requiring email entry
   5. The persistent left sidebar shows all modules grouped by pillar; completed modules show a checkmark; current module is highlighted; locked modules are visually distinct
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 01-01-PLAN.md — Database schema (5 tables), RLS policies, indexes, TypeScript types, Supabase client
+- [ ] 01-02-PLAN.md — Content architecture: typed module content files for all 9 AiBI-P modules
 **UI hint**: yes
 
 ### Phase 3: Stripe Checkout + Enrollment
@@ -56,7 +62,10 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. An institution buyer can purchase 5+ seats at the ~$63/seat price; the institution's discount persists for all future AiBI-P purchases without needing to requalify
   3. A learner who enrolls after their institution already has a discount pays $63 automatically
   4. A non-enrolled visitor who tries to access any module URL is redirected to the purchase page, not a 404
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 01-01-PLAN.md — Database schema (5 tables), RLS policies, indexes, TypeScript types, Supabase client
+- [ ] 01-02-PLAN.md — Content architecture: typed module content files for all 9 AiBI-P modules
 
 ### Phase 4: Onboarding Branch + Progress Tracking
 **Goal**: Enrolled learners complete a 3-question onboarding survey before Module 1, their platform context routes content throughout the course, and progress persists to Supabase so iOS tab kills cannot lose work
@@ -68,7 +77,10 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. A learner who closes their iPhone browser mid-module and returns hours later resumes at exactly the question they left — no data lost
   4. A learner cannot reach Module 2 content until Module 1's activity is submitted (forward-only enforced server-side, not just UI-disabled)
   5. A learner can update their onboarding platform selection from profile settings and the content routing updates on next page load
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 01-01-PLAN.md — Database schema (5 tables), RLS policies, indexes, TypeScript types, Supabase client
+- [ ] 01-02-PLAN.md — Content architecture: typed module content files for all 9 AiBI-P modules
 **UI hint**: yes
 
 ### Phase 5: Modules 1-5 Activities + Artifacts
@@ -81,7 +93,10 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. After completing Module 4, the Platform Feature Reference Card PDF is available for download; Module 4's activity shows the learner's role-specific feature spotlight
   4. A keyboard-only user can complete every activity in Modules 1-5 without a mouse; color is never the sole indicator of correct/incorrect classification
   5. A learner on iPhone Safari (390px) completes all five modules without horizontal scrolling, with all text at 14pt minimum
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 01-01-PLAN.md — Database schema (5 tables), RLS policies, indexes, TypeScript types, Supabase client
+- [ ] 01-02-PLAN.md — Content architecture: typed module content files for all 9 AiBI-P modules
 **UI hint**: yes
 
 ### Phase 6: Modules 6-9 Activities + Skill Builder
@@ -94,7 +109,10 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. The learner's completed skill is accessible for re-download from their profile at any time after Activity 7.1 completion (My First Skill artifact)
   4. Activity 8.1 guides the learner through four iterations with the one-change rule; the final iterated skill saves as a new .md file
   5. Module 9 presents the role-specific automation examples table (three tiers per role) and Module 9 completion unlocks the assessed work product submission form
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 01-01-PLAN.md — Database schema (5 tables), RLS policies, indexes, TypeScript types, Supabase client
+- [ ] 01-02-PLAN.md — Content architecture: typed module content files for all 9 AiBI-P modules
 **UI hint**: yes
 
 ### Phase 7: Work Product + Reviewer Queue
@@ -107,7 +125,10 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. A submission with a score of 1 on Accuracy is automatically failed regardless of total score — this check happens server-side before any status update
   4. A passing submission (score >= 14, Accuracy >= 3) transitions the enrollment to `approved` status; a failing submission sends the learner written feedback and opens the resubmission path
   5. A learner who failed receives actionable written feedback identifying specific dimensions and can resubmit exactly once; their resubmission appears at the top of the reviewer queue
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 01-01-PLAN.md — Database schema (5 tables), RLS policies, indexes, TypeScript types, Supabase client
+- [ ] 01-02-PLAN.md — Content architecture: typed module content files for all 9 AiBI-P modules
 
 ### Phase 8: Certificate + Verification
 **Goal**: Reviewer approval triggers certificate record creation and PDF delivery, the certificate matches the specified design, a public verification endpoint returns holder details, and the learner sees their LinkedIn badge link on the completion page
@@ -118,7 +139,10 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. The learner receives a certificate PDF by email within 24 hours of approval; the certificate displays the correct typography (Cormorant 28pt name, DM Mono 12pt date, DM Mono certificate ID) and AiBI circular seal watermark at 8% opacity
   3. Navigating to `/verify/[certificateID]` without logging in returns the holder name, designation, date issued, and issuing institution — and nothing else
   4. The certificate ID is a unique alphanumeric string; a second approval attempt for the same enrollment does not create a duplicate certificate
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 01-01-PLAN.md — Database schema (5 tables), RLS policies, indexes, TypeScript types, Supabase client
+- [ ] 01-02-PLAN.md — Content architecture: typed module content files for all 9 AiBI-P modules
 **UI hint**: yes
 
 ## Progress
