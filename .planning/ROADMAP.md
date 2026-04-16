@@ -145,14 +145,14 @@ Plans:
   4. The certificate ID is a unique alphanumeric string; a second approval attempt for the same enrollment does not create a duplicate certificate
 **Plans**: 2 plans
 Plans:
-- [ ] 01-01-PLAN.md — Database schema (5 tables), RLS policies, indexes, TypeScript types, Supabase client
-- [ ] 01-02-PLAN.md — Content architecture: typed module content files for all 9 AiBI-P modules
+- [ ] 08-01-PLAN.md — Certificate generation: CertificateDocument react-pdf, generate-certificate API, reviewer approval wiring, learner certificate page
+- [ ] 08-02-PLAN.md — Public verification page at /verify/[certificateId], end-to-end human verification
 **UI hint**: yes
 
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
@@ -163,4 +163,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | 5. Modules 1-5 Activities + Artifacts | 0/4 | Not started | - |
 | 6. Modules 6-9 Activities + Skill Builder | 0/2 | Not started | - |
 | 7. Work Product + Reviewer Queue | 0/2 | Not started | - |
-| 8. Certificate + Verification | 0/TBD | Not started | - |
+| 8. Certificate + Verification | 0/2 | Not started | - |
