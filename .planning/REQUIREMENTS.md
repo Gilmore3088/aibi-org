@@ -237,19 +237,156 @@
 | Mobile native app | Web-first, mobile responsive |
 | OAuth login | Email/password via Supabase Auth sufficient for v1 |
 
+
 ## Traceability
 
 Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| (populated by roadmapper) | | |
+| DB-01 | Phase 1 | Pending |
+| DB-02 | Phase 1 | Pending |
+| DB-03 | Phase 1 | Pending |
+| DB-04 | Phase 1 | Pending |
+| DB-05 | Phase 1 | Pending |
+| DB-06 | Phase 1 | Pending |
+| DB-07 | Phase 1 | Pending |
+| CONT-01 | Phase 1 | Pending |
+| CONT-02 | Phase 1 | Pending |
+| CONT-03 | Phase 1 | Pending |
+| CONT-04 | Phase 1 | Pending |
+| CONT-05 | Phase 1 | Pending |
+| SHELL-01 | Phase 2 | Pending |
+| SHELL-02 | Phase 2 | Pending |
+| SHELL-03 | Phase 2 | Pending |
+| SHELL-04 | Phase 2 | Pending |
+| SHELL-05 | Phase 2 | Pending |
+| SHELL-06 | Phase 2 | Pending |
+| SHELL-07 | Phase 2 | Pending |
+| SHELL-08 | Phase 2 | Pending |
+| SHELL-09 | Phase 2 | Pending |
+| SHELL-10 | Phase 2 | Pending |
+| SHELL-11 | Phase 2 | Pending |
+| SHELL-12 | Phase 2 | Pending |
+| ASMT-01 | Phase 2 | Pending |
+| ASMT-02 | Phase 2 | Pending |
+| ASMT-03 | Phase 2 | Pending |
+| ASMT-04 | Phase 2 | Pending |
+| ASMT-05 | Phase 2 | Pending |
+| ASMT-06 | Phase 2 | Pending |
+| ASMT-07 | Phase 2 | Pending |
+| ASMT-08 | Phase 2 | Pending |
+| ASMT-09 | Phase 2 | Pending |
+| ASMT-10 | Phase 2 | Pending |
+| ASMT-11 | Phase 2 | Pending |
+| PAY-01 | Phase 3 | Pending |
+| PAY-02 | Phase 3 | Pending |
+| PAY-03 | Phase 3 | Pending |
+| PAY-04 | Phase 3 | Pending |
+| PAY-05 | Phase 3 | Pending |
+| ONBD-01 | Phase 4 | Pending |
+| ONBD-02 | Phase 4 | Pending |
+| ONBD-03 | Phase 4 | Pending |
+| ONBD-04 | Phase 4 | Pending |
+| ONBD-05 | Phase 4 | Pending |
+| M1-01 | Phase 5 | Pending |
+| M1-02 | Phase 5 | Pending |
+| M1-03 | Phase 5 | Pending |
+| M1-04 | Phase 5 | Pending |
+| M1-05 | Phase 5 | Pending |
+| M1-06 | Phase 5 | Pending |
+| M1-07 | Phase 5 | Pending |
+| M2-01 | Phase 5 | Pending |
+| M2-02 | Phase 5 | Pending |
+| M2-03 | Phase 5 | Pending |
+| M2-04 | Phase 5 | Pending |
+| M2-05 | Phase 5 | Pending |
+| M2-06 | Phase 5 | Pending |
+| M2-07 | Phase 5 | Pending |
+| M3-01 | Phase 5 | Pending |
+| M3-02 | Phase 5 | Pending |
+| M3-03 | Phase 5 | Pending |
+| M3-04 | Phase 5 | Pending |
+| M3-05 | Phase 5 | Pending |
+| M3-06 | Phase 5 | Pending |
+| M4-01 | Phase 5 | Pending |
+| M4-02 | Phase 5 | Pending |
+| M4-03 | Phase 5 | Pending |
+| M4-04 | Phase 5 | Pending |
+| M4-05 | Phase 5 | Pending |
+| M5-01 | Phase 5 | Pending |
+| M5-02 | Phase 5 | Pending |
+| M5-03 | Phase 5 | Pending |
+| M5-04 | Phase 5 | Pending |
+| M5-05 | Phase 5 | Pending |
+| M5-06 | Phase 5 | Pending |
+| M5-07 | Phase 5 | Pending |
+| ARTF-01 | Phase 5 | Pending |
+| ARTF-02 | Phase 5 | Pending |
+| ARTF-05 | Phase 5 | Pending |
+| ARTF-06 | Phase 5 | Pending |
+| A11Y-01 | Phase 5 | Pending |
+| A11Y-02 | Phase 5 | Pending |
+| A11Y-03 | Phase 5 | Pending |
+| A11Y-04 | Phase 5 | Pending |
+| A11Y-05 | Phase 5 | Pending |
+| A11Y-06 | Phase 5 | Pending |
+| FUNL-01 | Phase 5 | Pending |
+| FUNL-02 | Phase 5 | Pending |
+| FUNL-03 | Phase 5 | Pending |
+| M6-01 | Phase 6 | Pending |
+| M6-02 | Phase 6 | Pending |
+| M6-03 | Phase 6 | Pending |
+| M6-04 | Phase 6 | Pending |
+| M6-05 | Phase 6 | Pending |
+| M6-06 | Phase 6 | Pending |
+| M6-07 | Phase 6 | Pending |
+| M7-01 | Phase 6 | Pending |
+| M7-02 | Phase 6 | Pending |
+| M7-03 | Phase 6 | Pending |
+| M7-04 | Phase 6 | Pending |
+| M7-05 | Phase 6 | Pending |
+| M7-06 | Phase 6 | Pending |
+| M7-07 | Phase 6 | Pending |
+| M7-08 | Phase 6 | Pending |
+| M8-01 | Phase 6 | Pending |
+| M8-02 | Phase 6 | Pending |
+| M8-03 | Phase 6 | Pending |
+| M8-04 | Phase 6 | Pending |
+| M8-05 | Phase 6 | Pending |
+| M9-01 | Phase 6 | Pending |
+| M9-02 | Phase 6 | Pending |
+| M9-03 | Phase 6 | Pending |
+| M9-04 | Phase 6 | Pending |
+| ARTF-03 | Phase 6 | Pending |
+| ARTF-04 | Phase 6 | Pending |
+| WORK-01 | Phase 7 | Pending |
+| WORK-02 | Phase 7 | Pending |
+| WORK-03 | Phase 7 | Pending |
+| WORK-04 | Phase 7 | Pending |
+| WORK-05 | Phase 7 | Pending |
+| REVW-01 | Phase 7 | Pending |
+| REVW-02 | Phase 7 | Pending |
+| REVW-03 | Phase 7 | Pending |
+| REVW-04 | Phase 7 | Pending |
+| REVW-05 | Phase 7 | Pending |
+| REVW-06 | Phase 7 | Pending |
+| REVW-07 | Phase 7 | Pending |
+| REVW-08 | Phase 7 | Pending |
+| CERT-01 | Phase 8 | Pending |
+| CERT-02 | Phase 8 | Pending |
+| CERT-03 | Phase 8 | Pending |
+| CERT-04 | Phase 8 | Pending |
+| CERT-05 | Phase 8 | Pending |
+| CERT-06 | Phase 8 | Pending |
 
 **Coverage:**
-- v1 requirements: 93 total
-- Mapped to phases: 0
-- Unmapped: 93
+- v1 requirements: 135 total
+- Mapped to phases: 135
+- Unmapped: 0
+
+**Note:** Requirements file contained 135 v1 requirements. Instructions referenced 93; actual count from file is 135. All 135 mapped.
 
 ---
 *Requirements defined: 2026-04-15*
-*Last updated: 2026-04-15 after initial definition*
+*Last updated: 2026-04-15 — traceability populated by roadmapper*
