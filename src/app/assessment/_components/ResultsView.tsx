@@ -22,7 +22,7 @@ export function ResultsView({ score, tier, answers, email }: ResultsViewProps) {
         <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-2">
           Your AI Readiness Results
         </p>
-        <p className="text-sm text-[color:var(--color-ink)]/60">
+        <p className="text-sm text-[color:var(--color-ink)]/70">
           Results delivered to {email}
         </p>
       </div>
@@ -46,7 +46,7 @@ export function ResultsView({ score, tier, answers, email }: ResultsViewProps) {
 
       {/* What your score means — personalized interpretation */}
       <section className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 p-8 md:p-10 print-avoid-break">
-        <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60 mb-4">
+        <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-4">
           What your score means
         </p>
         <ScoreInterpretation score={score} tierId={tier.id} />
@@ -54,7 +54,7 @@ export function ResultsView({ score, tier, answers, email }: ResultsViewProps) {
 
       {/* 8-dimension breakdown */}
       <section className="print-avoid-break">
-        <h3 className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60 mb-6">
+        <h3 className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-6">
           Your 8-dimension breakdown
         </h3>
         <div className="space-y-4">
@@ -66,7 +66,7 @@ export function ResultsView({ score, tier, answers, email }: ResultsViewProps) {
                   <span className="font-serif text-lg text-[color:var(--color-ink)]">
                     {q.dimension}
                   </span>
-                  <span className="font-mono text-xs text-[color:var(--color-ink)]/50 tabular-nums">
+                  <span className="font-mono text-xs text-[color:var(--color-slate)] tabular-nums">
                     {points} / 4
                   </span>
                 </div>
@@ -100,7 +100,7 @@ export function ResultsView({ score, tier, answers, email }: ResultsViewProps) {
       {/* Download */}
       <div className="text-center" data-print-hide="true">
         <PrintButton />
-        <p className="font-mono text-[10px] text-[color:var(--color-ink)]/40 mt-3">
+        <p className="font-mono text-[10px] text-[color:var(--color-slate)] mt-3">
           Use your browser&rsquo;s &ldquo;Save as PDF&rdquo; option from the
           print dialog to save a copy for your team.
         </p>

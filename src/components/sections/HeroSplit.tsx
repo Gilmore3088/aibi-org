@@ -45,13 +45,13 @@ export function HeroSplit() {
               Model Your ROI
             </Link>
           </div>
-          <p className="font-mono text-xs text-[color:var(--color-ink)]/50 pt-2">
+          <p className="font-mono text-xs text-[color:var(--color-slate)] pt-2">
             8 questions &middot; under 3 minutes &middot; community banks only
           </p>
         </div>
 
         <aside className="md:col-span-2 bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 p-8">
-          <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60 mb-4">
+          <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-4">
             Assessment tiers
           </p>
           <h2 className="font-serif text-2xl text-[color:var(--color-ink)] leading-tight mb-5">
@@ -74,7 +74,7 @@ export function HeroSplit() {
                 >
                   {tier.label}
                 </span>
-                <span className="font-mono text-xs text-[color:var(--color-ink)]/60 tabular-nums">
+                <span className="font-mono text-xs text-[color:var(--color-ink)]/70 tabular-nums">
                   {tier.range}
                 </span>
               </li>

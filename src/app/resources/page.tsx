@@ -133,7 +133,7 @@ export default function ResourcesPage() {
 
         {/* Guides */}
         <section className="mb-20">
-          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60 mb-6">
+          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-6">
             Guides
           </p>
           <div className="space-y-6">
@@ -161,7 +161,7 @@ export default function ResourcesPage() {
 
         {/* Articles */}
         <section className="mb-20">
-          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60 mb-6">
+          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-6">
             Articles
           </p>
           <div className="space-y-6">
@@ -190,7 +190,7 @@ export default function ResourcesPage() {
 
         {/* Other publications */}
         <section className="mb-20">
-          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60 mb-3">
+          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-3">
             Other publications we cite
           </p>
           <p className="text-[color:var(--color-ink)]/70 mb-8 max-w-2xl leading-relaxed">
@@ -223,7 +223,7 @@ export default function ResourcesPage() {
 
         {/* Newsletter teaser */}
         <section className="border-t border-[color:var(--color-ink)]/10 pt-16 text-center">
-          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60 mb-3">
+          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-3">
             Coming soon
           </p>
           <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] mb-4">

@@ -115,7 +115,7 @@ export default function HomePage({ searchParams }: HomePageProps) {
                 Model Your ROI
               </Link>
             </div>
-            <p className="font-mono text-xs text-[color:var(--color-ink)]/50 pt-4">
+            <p className="font-mono text-xs text-[color:var(--color-slate)] pt-4">
               8 questions &middot; under 3 minutes &middot; community banks only
             </p>
           </div>
@@ -131,13 +131,13 @@ export default function HomePage({ searchParams }: HomePageProps) {
                 <p className="font-mono text-4xl md:text-5xl text-[color:var(--color-terra)] leading-none tabular-nums">
                   {p.stat}
                 </p>
-                <p className="font-serif-sc text-[11px] md:text-xs uppercase text-[color:var(--color-ink)]/65 mt-4 leading-snug">
+                <p className="font-serif-sc text-[11px] md:text-xs uppercase text-[color:var(--color-ink)]/70 mt-4 leading-snug">
                   {p.label}
                 </p>
               </div>
             ))}
           </div>
-          <p className="font-mono text-[10px] text-center text-[color:var(--color-ink)]/40 mt-8">
+          <p className="font-mono text-[10px] text-center text-[color:var(--color-slate)] mt-8">
             Sources: FDIC Quarterly Banking Profile &middot; Bank Director 2024 Technology Survey &middot; Gartner (via Jack Henry)
           </p>
         </div>
@@ -147,7 +147,7 @@ export default function HomePage({ searchParams }: HomePageProps) {
       <section className="px-6 py-14 md:py-20">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-10">
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60 mb-4">
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-4">
               The three pillars
             </p>
             <h2 className="font-serif text-4xl md:text-5xl text-[color:var(--color-ink)] max-w-3xl mx-auto leading-tight">

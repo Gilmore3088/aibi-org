@@ -38,10 +38,10 @@ export function CertificationCards({
                   {cert.fullName}
                 </h3>
                 <div className="flex items-baseline justify-between mt-2">
-                  <p className="font-serif-sc text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60">
+                  <p className="font-serif-sc text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70">
                     {cert.credentialDisplay}
                   </p>
-                  <span className="font-mono text-xs text-[color:var(--color-ink)]/60 tabular-nums">
+                  <span className="font-mono text-xs text-[color:var(--color-ink)]/70 tabular-nums">
                     {cert.price.split(' ')[0]}
                   </span>
                 </div>
@@ -52,7 +52,7 @@ export function CertificationCards({
 
               {!compact && (
                 <>
-                  <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/50 mb-2">
+                  <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-slate)] mb-2">
                     What you will learn
                   </p>
                   <ul className="space-y-2 mb-6 flex-1">
@@ -70,7 +70,7 @@ export function CertificationCards({
                     ))}
                   </ul>
                   <div className="border-t border-[color:var(--color-ink)]/10 pt-4 mb-4 space-y-1">
-                    <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/50">
+                    <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-slate)]">
                       Assessment
                     </p>
                     <p className="text-xs text-[color:var(--color-ink)]/70 leading-relaxed">

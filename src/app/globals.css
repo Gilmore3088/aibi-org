@@ -10,7 +10,10 @@
   --color-sage:         #4a6741;  /* Pillar A ONLY */
   --color-cobalt:       #2d4a7a;  /* Pillar B / security contexts ONLY */
   --color-ink:          #1e1a14;  /* Primary text */
+  --color-slate:        #6b6355;  /* Secondary text — WCAG AA on linen (4.8:1) */
+  --color-dust:         #9b9085;  /* Captions, metadata — large text only (2.8:1) */
   --color-parch:        #f5f0e6;  /* Card backgrounds */
+  --color-parch-dark:   #ede6d8;  /* Hover states, section bands */
   --color-linen:        #f9f6f0;  /* Page background */
   --color-error:        #9b2226;  /* Error / Starting Point tier */
 
@@ -126,4 +129,16 @@ h1, h2, h3 {
 /* Hide print-only elements from screen */
 .print-footer {
   display: none;
+}
+
+/* Reduced motion — respect user preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

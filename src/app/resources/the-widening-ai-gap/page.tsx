@@ -187,7 +187,7 @@ export default function WideningGapArticle() {
         </aside>
 
         <footer className="mt-16 pt-8 border-t border-[color:var(--color-ink)]/10">
-          <p className="font-mono text-xs text-[color:var(--color-ink)]/60 leading-relaxed">
+          <p className="font-mono text-xs text-[color:var(--color-ink)]/70 leading-relaxed">
             <strong>Sources:</strong> Evident AI Index &mdash; Key Findings Report,
             October 2025 (Evident Insights Ltd, n=50 banks). FDIC Quarterly
             Banking Profile Q4 2024. Bank Director 2024 Technology Survey (via

@@ -76,7 +76,7 @@ export function MonthlyCadence() {
               key={week.week}
               className="bg-[color:var(--color-linen)] border border-[color:var(--color-ink)]/10 p-6 flex flex-col"
             >
-              <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/50 mb-3">
+              <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-slate)] mb-3">
                 {week.week}
               </p>
               <h3 className="font-serif text-xl text-[color:var(--color-ink)] leading-tight mb-3">
@@ -100,7 +100,7 @@ export function MonthlyCadence() {
           ))}
         </div>
 
-        <p className="font-mono text-[10px] text-center text-[color:var(--color-ink)]/45 mt-8">
+        <p className="font-mono text-[10px] text-center text-[color:var(--color-slate)] mt-8">
           Updated monthly with impact report delivery &middot; 90-day rolling
           roadmap &middot; Capability transfer built in
         </p>

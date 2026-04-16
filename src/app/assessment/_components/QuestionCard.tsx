@@ -23,7 +23,7 @@ export function QuestionCard({
 }: QuestionCardProps) {
   return (
     <div className="w-full max-w-2xl mx-auto">
-      <div className="flex items-center justify-between mb-8 font-mono text-xs uppercase tracking-widest text-[color:var(--color-ink)]/60">
+      <div className="flex items-center justify-between mb-8 font-mono text-xs uppercase tracking-widest text-[color:var(--color-ink)]/70">
         <span>
           Question {questionNumber} of {totalQuestions}
         </span>
@@ -42,6 +42,8 @@ export function QuestionCard({
               key={idx}
               type="button"
               onClick={() => onAnswer(option.points)}
+              aria-pressed={selected}
+              aria-label={`${option.label}${selected ? ' (selected)' : ''}`}
               className={
                 'w-full text-left px-5 py-4 border transition-colors ' +
                 (selected
@@ -62,11 +64,11 @@ export function QuestionCard({
           type="button"
           onClick={onBack}
           disabled={!canGoBack}
-          className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-ink)]/60 hover:text-[color:var(--color-terra)] disabled:opacity-30 disabled:cursor-not-allowed"
+          className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-ink)]/70 hover:text-[color:var(--color-terra)] disabled:opacity-30 disabled:cursor-not-allowed"
         >
           &larr; Back
         </button>
-        <span className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-ink)]/40">
+        <span className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-slate)]">
           Tap an answer to continue
         </span>
       </div>

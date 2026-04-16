@@ -47,7 +47,7 @@ export function NewsletterCTA({ email }: NewsletterCTAProps) {
 
   return (
     <div className="border border-[color:var(--color-ink)]/10 bg-[color:var(--color-linen)] p-6 md:p-8 text-center">
-      <p className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-ink)]/60 mb-3">
+      <p className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-ink)]/70 mb-3">
         Not ready for a conversation?
       </p>
       <h3 className="font-serif text-2xl md:text-3xl text-[color:var(--color-ink)] mb-3">

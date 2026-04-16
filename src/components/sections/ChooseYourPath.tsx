@@ -5,7 +5,7 @@ export function ChooseYourPath() {
     <section className="px-6 py-14 md:py-20">
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-10">
-          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60 mb-4">
+          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-4">
             Choose your path
           </p>
           <h2 className="font-serif text-4xl md:text-5xl text-[color:var(--color-ink)] leading-tight">

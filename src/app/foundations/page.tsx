@@ -155,7 +155,7 @@ export default function FoundationsPage() {
 
       <section className="px-6 pb-16">
         <div className="max-w-3xl mx-auto text-center">
-          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60 mb-3">
+          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-3">
             Not ready to enroll?
           </p>
           <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] mb-4">

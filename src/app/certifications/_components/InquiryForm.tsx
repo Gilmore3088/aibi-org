@@ -93,7 +93,7 @@ export function InquiryForm() {
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid md:grid-cols-2 gap-4">
           <label className="block">
-            <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-ink)]/60">
+            <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-ink)]/70">
               Your name
             </span>
             <input
@@ -105,7 +105,7 @@ export function InquiryForm() {
             />
           </label>
           <label className="block">
-            <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-ink)]/60">
+            <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-ink)]/70">
               Email
             </span>
             <input
@@ -118,7 +118,7 @@ export function InquiryForm() {
           </label>
         </div>
         <label className="block">
-          <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-ink)]/60">
+          <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-ink)]/70">
             Institution
           </span>
           <input
@@ -130,12 +130,13 @@ export function InquiryForm() {
           />
         </label>
         <label className="block">
-          <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-ink)]/60">
+          <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-ink)]/70">
             Interested in
           </span>
           <select
             value={track}
             onChange={(e) => setTrack(e.target.value as (typeof TRACKS)[number])}
+            aria-label="Certification track"
             className="mt-1 w-full px-4 py-3 border border-[color:var(--color-ink)]/20 bg-[color:var(--color-linen)] text-[color:var(--color-ink)] font-sans focus:outline-none focus:border-[color:var(--color-terra)]"
           >
             {TRACKS.map((t) => (
@@ -146,7 +147,7 @@ export function InquiryForm() {
           </select>
         </label>
         <label className="block">
-          <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-ink)]/60">
+          <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-ink)]/70">
             Anything else we should know (optional)
           </span>
           <textarea

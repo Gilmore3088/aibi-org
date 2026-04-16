@@ -15,7 +15,7 @@ export function SampleQuestion() {
     <section className="px-6 py-14 md:py-20 bg-[color:var(--color-parch)]">
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-10">
-          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60 mb-4">
+          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-4">
             Interactive preview
           </p>
           <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] leading-tight">
@@ -56,7 +56,7 @@ export function SampleQuestion() {
                       'flex-shrink-0 w-8 h-8 rounded-full border flex items-center justify-center font-mono text-xs mt-0.5 transition-colors ' +
                       (isSelected
                         ? 'border-[color:var(--color-terra)] bg-[color:var(--color-terra)] text-[color:var(--color-linen)]'
-                        : 'border-[color:var(--color-ink)]/30 text-[color:var(--color-ink)]/60')
+                        : 'border-[color:var(--color-ink)]/30 text-[color:var(--color-ink)]/70')
                     }
                   >
                     {String.fromCharCode(65 + idx)}

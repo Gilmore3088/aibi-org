@@ -76,7 +76,7 @@ export function WideningGap() {
           </dl>
         </div>
 
-        <p className="font-mono text-[10px] text-[color:var(--color-ink)]/40 mt-10 text-center">
+        <p className="font-mono text-[10px] text-[color:var(--color-slate)] mt-10 text-center">
           Source: Evident AI Index &mdash; Key Findings Report, October 2025 &middot;
           Evident Insights Ltd &middot; n=50 banks
         </p>

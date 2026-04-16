@@ -77,7 +77,7 @@ export default function AssessmentPage() {
               <button
                 type="button"
                 onClick={state.restart}
-                className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-ink)]/50 hover:text-[color:var(--color-terra)]"
+                className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-slate)] hover:text-[color:var(--color-terra)]"
               >
                 Start over
               </button>

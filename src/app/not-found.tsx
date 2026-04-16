@@ -26,7 +26,7 @@ export default function NotFound() {
         <p className="pt-4">
           <Link
             href="/"
-            className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-ink)]/60 hover:text-[color:var(--color-terra)]"
+            className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-ink)]/70 hover:text-[color:var(--color-terra)]"
           >
             &larr; Back to home
           </Link>

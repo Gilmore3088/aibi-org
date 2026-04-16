@@ -34,7 +34,7 @@ export function ThreeFears() {
     <section className="px-6 py-14 md:py-20">
       <div className="max-w-6xl mx-auto grid md:grid-cols-5 gap-12 md:gap-16">
         <div className="md:col-span-2">
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60 mb-4">
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-4">
             The three fears
           </p>
           <h2 className="font-serif italic text-4xl md:text-5xl text-[color:var(--color-ink)] leading-tight">

@@ -67,7 +67,7 @@ export function ScoreRing({ score, minScore, maxScore, colorVar, label }: ScoreR
           <span className="font-mono text-6xl text-[color:var(--color-ink)] leading-none tabular-nums">
             {score}
           </span>
-          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/50 mt-3">
+          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-slate)] mt-3">
             out of {maxScore}
           </span>
         </div>

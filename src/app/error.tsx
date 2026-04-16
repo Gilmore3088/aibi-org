@@ -29,7 +29,7 @@ export default function ErrorPage({
           or return to the home page and take the free assessment.
         </p>
         {error.digest && (
-          <p className="font-mono text-xs text-[color:var(--color-ink)]/40">
+          <p className="font-mono text-xs text-[color:var(--color-slate)]">
             Reference: {error.digest}
           </p>
         )}

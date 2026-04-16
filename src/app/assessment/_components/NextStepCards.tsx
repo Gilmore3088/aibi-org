@@ -123,7 +123,7 @@ export function NextStepCards({ tierId }: NextStepCardsProps) {
 
   return (
     <section data-print-hide="true">
-      <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60 mb-6">
+      <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-6">
         Choose your next step
       </p>
       <div className="grid md:grid-cols-2 gap-6">

@@ -42,7 +42,7 @@ export default function CertificationsPage() {
       <section id="certification-tracks" className="px-6 py-14 md:py-20">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-10">
-            <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60 mb-4">
+            <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-4">
               Three tracks
             </p>
             <h2 className="font-serif text-4xl md:text-5xl text-[color:var(--color-ink)] leading-tight">
@@ -68,10 +68,10 @@ export default function CertificationsPage() {
                     {cert.fullName}
                   </h3>
                   <div className="flex items-baseline justify-between mt-2">
-                    <p className="font-serif-sc text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60">
+                    <p className="font-serif-sc text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70">
                       {cert.credentialDisplay}
                     </p>
-                    <span className="font-mono text-xs text-[color:var(--color-ink)]/60 tabular-nums">
+                    <span className="font-mono text-xs text-[color:var(--color-ink)]/70 tabular-nums">
                       {cert.price}
                     </span>
                   </div>
@@ -80,7 +80,7 @@ export default function CertificationsPage() {
                   <span className="font-medium">For:</span> {cert.audience}
                 </p>
 
-                <p className="font-serif-sc text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/50 mb-2">
+                <p className="font-serif-sc text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-slate)] mb-2">
                   What you will learn
                 </p>
                 <ul className="space-y-2 mb-6 flex-1">
@@ -99,7 +99,7 @@ export default function CertificationsPage() {
                 </ul>
 
                 <div className="border-t border-[color:var(--color-ink)]/10 pt-4 space-y-1">
-                  <p className="font-serif-sc text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/50">
+                  <p className="font-serif-sc text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-slate)]">
                     Assessment
                   </p>
                   <p className="text-xs text-[color:var(--color-ink)]/70 leading-relaxed">
@@ -122,7 +122,7 @@ export default function CertificationsPage() {
       {/* Enterprise / bulk CTA */}
       <section className="px-6 pb-16">
         <div className="max-w-3xl mx-auto border border-[color:var(--color-ink)]/10 bg-[color:var(--color-linen)] p-10 md:p-14 text-center">
-          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60 mb-3">
+          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-3">
             Team and institutional enrollment
           </p>
           <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] mb-4">

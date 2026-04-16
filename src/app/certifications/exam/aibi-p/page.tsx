@@ -62,10 +62,10 @@ export default function AiBIPExamPage() {
           <div className="max-w-2xl mx-auto">
             {/* Header */}
             <div className="flex items-center justify-between mb-8">
-              <span className="font-mono text-xs text-[color:var(--color-ink)]/60">
+              <span className="font-mono text-xs text-[color:var(--color-ink)]/70">
                 Question {exam.currentIndex + 1} of {total}
               </span>
-              <span className="font-mono text-xs text-[color:var(--color-ink)]/40">
+              <span className="font-mono text-xs text-[color:var(--color-slate)]">
                 {answeredCount} of {total} answered
               </span>
             </div>
@@ -101,7 +101,7 @@ export default function AiBIPExamPage() {
                         'flex-shrink-0 w-8 h-8 rounded-full border flex items-center justify-center font-mono text-xs mt-0.5 transition-colors ' +
                         (selected
                           ? 'border-[color:var(--color-terra)] bg-[color:var(--color-terra)] text-[color:var(--color-linen)]'
-                          : 'border-[color:var(--color-ink)]/30 text-[color:var(--color-ink)]/60')
+                          : 'border-[color:var(--color-ink)]/30 text-[color:var(--color-ink)]/70')
                       }
                     >
                       {option.key.toUpperCase()}
@@ -120,7 +120,7 @@ export default function AiBIPExamPage() {
                 type="button"
                 onClick={exam.prev}
                 disabled={exam.currentIndex === 0}
-                className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-ink)]/60 hover:text-[color:var(--color-terra)] disabled:opacity-30 disabled:cursor-not-allowed"
+                className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-ink)]/70 hover:text-[color:var(--color-terra)] disabled:opacity-30 disabled:cursor-not-allowed"
               >
                 &larr; Back
               </button>
@@ -160,7 +160,7 @@ export default function AiBIPExamPage() {
             </p>
             <p className="font-mono text-6xl md:text-7xl tabular-nums leading-none" style={{ color: exam.proficiency.colorVar }}>
               {exam.pctCorrect}
-              <span className="text-3xl text-[color:var(--color-ink)]/40">/100</span>
+              <span className="text-3xl text-[color:var(--color-slate)]">/100</span>
             </p>
             <p
               className="font-serif-sc text-2xl md:text-3xl mt-4 uppercase"
@@ -172,7 +172,7 @@ export default function AiBIPExamPage() {
 
           {/* Interpretation */}
           <section className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 p-8 md:p-10">
-            <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60 mb-4">
+            <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-4">
               What your score means
             </p>
             <h2 className="font-serif text-3xl text-[color:var(--color-ink)] leading-tight mb-4">
@@ -188,7 +188,7 @@ export default function AiBIPExamPage() {
 
           {/* Topic breakdown */}
           <section>
-            <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60 mb-6">
+            <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-6">
               Score by topic
             </p>
             <div className="space-y-4">
@@ -198,7 +198,7 @@ export default function AiBIPExamPage() {
                     <span className="font-serif text-lg text-[color:var(--color-ink)]">
                       {ts.label}
                     </span>
-                    <span className="font-mono text-xs text-[color:var(--color-ink)]/50 tabular-nums">
+                    <span className="font-mono text-xs text-[color:var(--color-slate)] tabular-nums">
                       {ts.correct} / {ts.total} ({ts.pct}%)
                     </span>
                   </div>

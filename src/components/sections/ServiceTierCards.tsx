@@ -38,7 +38,7 @@ export function ServiceTierCards({ showHeader = false }: ServiceTierCardsProps) 
               <h3 className="font-serif text-2xl md:text-[1.65rem] text-[color:var(--color-ink)] leading-tight mb-4">
                 {tier.name}
               </h3>
-              <div className="space-y-1 mb-5 font-mono text-xs text-[color:var(--color-ink)]/60">
+              <div className="space-y-1 mb-5 font-mono text-xs text-[color:var(--color-ink)]/70">
                 <p>{tier.priceRange}</p>
                 <p>{tier.duration}</p>
               </div>

@@ -61,7 +61,7 @@ export function TransformationScoreboard() {
             <p className="font-mono text-sm text-[color:var(--color-ink)]/80">
               AI Transformation Dashboard
             </p>
-            <p className="font-mono text-[10px] text-[color:var(--color-ink)]/45">
+            <p className="font-mono text-[10px] text-[color:var(--color-slate)]">
               Sample report &middot; illustrative only
             </p>
           </div>
@@ -74,21 +74,21 @@ export function TransformationScoreboard() {
                     className="w-2 h-2 rounded-full"
                     style={{ background: metric.accent }}
                   />
-                  <span className="font-mono text-xs text-[color:var(--color-ink)]/60">
+                  <span className="font-mono text-xs text-[color:var(--color-ink)]/70">
                     {metric.sublabel}
                   </span>
                 </div>
                 <h3 className="font-serif text-lg text-[color:var(--color-ink)] leading-tight">
                   {metric.label}
                 </h3>
-                <p className="text-xs text-[color:var(--color-ink)]/65 leading-relaxed">
+                <p className="text-xs text-[color:var(--color-ink)]/70 leading-relaxed">
                   {metric.description}
                 </p>
               </div>
             ))}
           </div>
 
-          <div className="flex items-center justify-between mt-10 pt-4 border-t border-[color:var(--color-ink)]/10 text-[10px] font-mono text-[color:var(--color-ink)]/45">
+          <div className="flex items-center justify-between mt-10 pt-4 border-t border-[color:var(--color-ink)]/10 text-[10px] font-mono text-[color:var(--color-slate)]">
             <span>Updated monthly with impact report delivery</span>
             <span className="text-[color:var(--color-terra)]">Tracking active</span>
           </div>

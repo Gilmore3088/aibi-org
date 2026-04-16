@@ -104,7 +104,7 @@ export default function MembersWillSwitchArticle() {
               <dd className="text-sm text-[color:var(--color-ink)]/75 mt-3 leading-relaxed">
                 {stat.label}
               </dd>
-              <p className="font-mono text-[10px] text-[color:var(--color-ink)]/45 mt-3">
+              <p className="font-mono text-[10px] text-[color:var(--color-slate)] mt-3">
                 {stat.source}
               </p>
             </div>
@@ -195,7 +195,7 @@ export default function MembersWillSwitchArticle() {
         </aside>
 
         <footer className="mt-16 pt-8 border-t border-[color:var(--color-ink)]/10">
-          <p className="font-mono text-xs text-[color:var(--color-ink)]/60 leading-relaxed">
+          <p className="font-mono text-xs text-[color:var(--color-ink)]/70 leading-relaxed">
             <strong>Sources:</strong> Apiture, The Digital Loyalty Dividend
             (2025), citing Personetics 2025 consumer research and Motley Fool
             survey data. Apiture, Digital Transformation for Community Banks

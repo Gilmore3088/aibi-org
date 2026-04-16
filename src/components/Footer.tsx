@@ -54,7 +54,7 @@ export function Footer() {
           <nav className="grid grid-cols-2 md:grid-cols-3 gap-x-10 gap-y-6">
             {FOOTER_GROUPS.map((group) => (
               <div key={group.label}>
-                <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/50 mb-3">
+                <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-slate)] mb-3">
                   {group.label}
                 </p>
                 <ul className="space-y-2">
@@ -74,7 +74,7 @@ export function Footer() {
           </nav>
         </div>
 
-        <div className="border-t border-[color:var(--color-ink)]/10 mt-10 pt-6 flex flex-col md:flex-row md:items-center md:justify-between gap-3 text-xs text-[color:var(--color-ink)]/50 font-mono">
+        <div className="border-t border-[color:var(--color-ink)]/10 mt-10 pt-6 flex flex-col md:flex-row md:items-center md:justify-between gap-3 text-xs text-[color:var(--color-slate)] font-mono">
           <p>&copy; {new Date().getFullYear()} The AI Banking Institute. All rights reserved.</p>
           <p>AIBankingInstitute.com &middot; AIBankingInstitute.org</p>
         </div>

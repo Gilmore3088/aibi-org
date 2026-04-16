@@ -85,7 +85,7 @@ export function ROICalculator() {
           {/* Left: benchmark context */}
           <div className="md:col-span-2 space-y-6">
             <div className="border border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)] p-6">
-              <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60 mb-3">
+              <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-3">
                 Industry context
               </p>
               <dl className="space-y-3">
@@ -102,7 +102,7 @@ export function ROICalculator() {
                   <dd className="font-mono text-lg text-[color:var(--color-ink)] tabular-nums">~55.7%</dd>
                 </div>
               </dl>
-              <p className="font-mono text-[10px] text-[color:var(--color-ink)]/45 mt-4 leading-snug">
+              <p className="font-mono text-[10px] text-[color:var(--color-slate)] mt-4 leading-snug">
                 Source: FDIC Quarterly Banking Profile &middot; CEIC 1992&ndash;2025
               </p>
             </div>
@@ -162,13 +162,13 @@ export function ROICalculator() {
             </div>
 
             <div className="mt-10 pt-8 border-t border-[color:var(--color-ink)]/10">
-              <p className="font-serif-sc text-[11px] uppercase tracking-[0.15em] text-[color:var(--color-ink)]/60 mb-3">
+              <p className="font-serif-sc text-[11px] uppercase tracking-[0.15em] text-[color:var(--color-ink)]/70 mb-3">
                 Estimated annual labor hours recaptured
               </p>
               <p className="font-mono text-5xl md:text-6xl text-[color:var(--color-terra)] leading-none tabular-nums">
                 {formatCurrency(result.mid)}
               </p>
-              <p className="font-mono text-xs text-[color:var(--color-ink)]/60 mt-3 leading-snug">
+              <p className="font-mono text-xs text-[color:var(--color-ink)]/70 mt-3 leading-snug">
                 Range: {formatCurrency(result.low)} &ndash; {formatCurrency(result.high)} &middot;{' '}
                 {formatNumber(result.hoursPerYear)} hours/year &middot;{' '}
                 ~{result.payrollRecaptured}% of payroll
@@ -203,7 +203,7 @@ function Slider({ label, value, min, max, step, onChange, display }: SliderProps
   return (
     <div>
       <div className="flex items-baseline justify-between mb-2">
-        <label className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60">
+        <label className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70">
           {label}
         </label>
         <span className="font-mono text-base text-[color:var(--color-ink)]">
