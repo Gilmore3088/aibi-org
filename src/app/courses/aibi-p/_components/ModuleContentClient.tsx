@@ -6,6 +6,7 @@
 
 import { useState } from 'react';
 import type { Activity, ContentTable } from '@content/courses/aibi-p';
+import type { LearnerRole } from '@/types/course';
 import { ActivitySection } from './ActivitySection';
 import { ModuleNavigation } from './ModuleNavigation';
 
@@ -17,6 +18,7 @@ export interface ModuleContentClientProps {
   readonly isLastModule: boolean;
   readonly isAlreadyCompleted: boolean;
   readonly tables?: readonly ContentTable[];
+  readonly learnerRole?: LearnerRole;
 }
 
 export function ModuleContentClient({
@@ -27,6 +29,7 @@ export function ModuleContentClient({
   isLastModule,
   isAlreadyCompleted,
   tables,
+  learnerRole,
 }: ModuleContentClientProps) {
   const [moduleComplete, setModuleComplete] = useState(isAlreadyCompleted);
 
@@ -45,6 +48,7 @@ export function ModuleContentClient({
           isLastModule={isLastModule}
           onAllActivitiesComplete={handleAllActivitiesComplete}
           tables={tables}
+          learnerRole={learnerRole}
         />
       )}
 

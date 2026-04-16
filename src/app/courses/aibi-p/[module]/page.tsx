@@ -13,6 +13,7 @@ import { ContentTable } from '../_components/ContentTable';
 import { ModuleContentClient } from '../_components/ModuleContentClient';
 import { getEnrollment } from '../_lib/getEnrollment';
 import { canAccessModule } from '../_lib/courseProgress';
+import { getRoleSpotlight } from '../_lib/contentRouting';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import type { ActivityResponse } from '@/types/course';
 
@@ -120,6 +121,11 @@ export default async function ModulePage({ params }: ModulePageParams) {
           isLastModule={isLastModule}
           isAlreadyCompleted={isAlreadyCompleted}
           tables={mod.tables}
+          learnerRole={
+            enrollment.onboarding_answers
+              ? getRoleSpotlight(enrollment.onboarding_answers)
+              : 'other'
+          }
         />
       </article>
     </>

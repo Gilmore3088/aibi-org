@@ -4,18 +4,23 @@
 // the "Next Module" / "Complete Module" action behind all activity completions.
 // Routes each activity to its correct specialized component:
 //   - Module 2, activity '2.1'  → SubscriptionInventory
+//   - Module 6, activity '6.1'  → SkillDiagnosis
+//   - Module 7, activity '7.1'  → SkillBuilder (with learnerRole prop)
 //   - type === 'drill'           → ClassificationDrill (extracts scenarios from m5-drill-scenarios table)
-//   - type === 'builder'         → AcceptableUseCardForm
+//   - type === 'builder' && moduleNumber === 5 → AcceptableUseCardForm
 //   - everything else            → ActivityForm (free-text and generic form types)
 // Rendered inside the server ModulePage component via ModuleContentClient.
 
 import { useState, useCallback } from 'react';
 import type { Activity, ContentTable } from '@content/courses/aibi-p';
+import type { LearnerRole } from '@/types/course';
 import { ActivityForm } from './ActivityForm';
 import { ActivityFormShell } from './ActivityFormShell';
 import { SubscriptionInventory } from './SubscriptionInventory';
 import { ClassificationDrill } from './ClassificationDrill';
 import { AcceptableUseCardForm } from './AcceptableUseCardForm';
+import { SkillDiagnosis } from './SkillDiagnosis';
+import { SkillBuilder } from './SkillBuilder';
 import { CompletionCTA } from './CompletionCTA';
 
 export interface ActivitySectionProps {
@@ -26,6 +31,7 @@ export interface ActivitySectionProps {
   readonly isLastModule: boolean;
   readonly onAllActivitiesComplete: () => void;
   readonly tables?: readonly ContentTable[];
+  readonly learnerRole?: LearnerRole;
 }
 
 interface DrillScenario {
@@ -52,6 +58,7 @@ export function ActivitySection({
   isLastModule,
   onAllActivitiesComplete,
   tables,
+  learnerRole = 'other',
 }: ActivitySectionProps) {
   // Track which activities have been submitted this session
   const [submittedIds, setSubmittedIds] = useState<Set<string>>(() => {
@@ -110,6 +117,35 @@ export function ActivitySection({
       {activities.map((activity) => {
         const existing = existingResponses[activity.id] ?? null;
 
+        // M6 Activity 6.1 — Skill Diagnosis
+        if (moduleNumber === 6 && activity.id === '6.1') {
+          return (
+            <SkillDiagnosis
+              key={activity.id}
+              activity={activity}
+              enrollmentId={enrollmentId}
+              moduleNumber={moduleNumber}
+              existingResponse={existing}
+              onSubmitSuccess={handleActivitySubmitted}
+            />
+          );
+        }
+
+        // M7 Activity 7.1 — Skill Builder
+        if (moduleNumber === 7 && activity.id === '7.1') {
+          return (
+            <SkillBuilder
+              key={activity.id}
+              activity={activity}
+              enrollmentId={enrollmentId}
+              moduleNumber={moduleNumber}
+              existingResponse={existing}
+              onSubmitSuccess={handleActivitySubmitted}
+              learnerRole={learnerRole}
+            />
+          );
+        }
+
         // M2 Activity 2.1 — Subscription Inventory
         if (moduleNumber === 2 && activity.id === '2.1') {
           return (
@@ -146,7 +182,7 @@ export function ActivitySection({
         }
 
         // M5 Activity 5.2 — Acceptable Use Card Builder
-        if (activity.type === 'builder') {
+        if (activity.type === 'builder' && moduleNumber === 5) {
           return (
             <AcceptableUseCardForm
               key={activity.id}
