@@ -248,7 +248,7 @@ export function SubscriptionInventory({
               className="mt-4 text-sm font-sans text-[color:var(--color-error)] bg-[color:var(--color-error)]/5 border border-[color:var(--color-error)]/20 rounded-sm px-3 py-2"
               role="alert"
             >
-              {state.validationError}
+              Error: {state.validationError}
             </p>
           )}
 
@@ -257,7 +257,7 @@ export function SubscriptionInventory({
               className="mt-4 text-sm font-sans text-[color:var(--color-error)] bg-[color:var(--color-error)]/5 border border-[color:var(--color-error)]/20 rounded-sm px-3 py-2"
               role="alert"
             >
-              {state.serverError}
+              Error: {state.serverError}
             </p>
           )}
 

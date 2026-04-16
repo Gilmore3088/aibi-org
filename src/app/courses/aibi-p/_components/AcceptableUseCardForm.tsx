@@ -3,11 +3,11 @@
 // AcceptableUseCardForm — M5 Activity 5.2 specialized component.
 // Renders 4 role-specific fields from activity.fields, validates minLength requirements,
 // submits to /api/courses/submit-activity, then offers a "Generate Acceptable Use Card" button.
-// PDF generation route wired in Plan 03 — button is shown but gated with placeholder state.
-// A11Y-01: keyboard accessible with proper labels and focus rings.
-// A11Y-02: text error messages (not color-only).
+// PDF generation route wired in Plan 03 — download link uses plain <a href> anchor (A11Y-05).
+// A11Y-01: keyboard accessible with proper labels, focus rings, focus managed to success region.
+// A11Y-02: error messages prefixed with "Error:" (not color-only).
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import type { Activity, ActivityField } from '@content/courses/aibi-p';
 
 export interface AcceptableUseCardFormProps {
@@ -144,7 +144,7 @@ function InteractiveCardField({
           className="mt-1 text-[color:var(--color-error)] font-mono text-xs"
           role="alert"
         >
-          {error}
+          Error: {error}
         </p>
       )}
 
@@ -178,6 +178,14 @@ export function AcceptableUseCardForm({
     submitted: isReadOnly,
     serverError: null,
   });
+
+  // A11Y-01: Move focus to success region after submission
+  const successRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (state.submitted && !isReadOnly && successRef.current) {
+      successRef.current.focus();
+    }
+  }, [state.submitted, isReadOnly]);
 
   const handleChange = useCallback((fieldId: string, value: string) => {
     setState((prev) => ({
@@ -281,7 +289,12 @@ export function AcceptableUseCardForm({
 
       {/* Read-only view after submission */}
       {state.submitted ? (
-        <div>
+        <div
+          ref={successRef}
+          tabIndex={-1}
+          aria-live="polite"
+          aria-label="Acceptable Use Card submitted successfully"
+        >
           <div className="space-y-1">
             {activity.fields.map((field) => (
               <ReadOnlyField key={field.id} field={field} value={state.values[field.id] ?? ''} />

@@ -2,9 +2,11 @@
 
 // ActivityForm — Interactive activity form that replaces ActivityFormShell for enrolled learners.
 // Handles free-text and form-type activities with submission to /api/courses/submit-activity.
-// A11Y-01: keyboard accessible (focus rings), A11Y-02: text error messages (not color-only).
+// A11Y-01: keyboard accessible (focus rings, focus managed to success region on submit).
+// A11Y-02: text error messages with "Error:" prefix (not color-only).
+// A11Y-05: artifact download uses plain <a href download> anchor (no JS required).
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import type { Activity, ActivityField } from '@content/courses/aibi-p';
 
 export interface ActivityFormProps {
@@ -191,7 +193,7 @@ function InteractiveField({
             </div>
             {hasError && (
               <p id={errorId} className="mt-1 text-[color:var(--color-error)] font-mono text-xs" role="alert">
-                {error}
+                Error: {error}
               </p>
             )}
             {field.minLength && (
@@ -248,7 +250,7 @@ function InteractiveField({
       {input}
       {hasError && (
         <p id={errorId} className="mt-1 text-[color:var(--color-error)] font-mono text-xs" role="alert">
-          {error}
+          Error: {error}
         </p>
       )}
       {field.type === 'textarea' && field.minLength && (
@@ -281,6 +283,14 @@ export function ActivityForm({
     submitted: isReadOnly,
     serverError: null,
   });
+
+  // A11Y-01: Move focus to success region after submission so keyboard/SR users know outcome
+  const successRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (state.submitted && !isReadOnly && successRef.current) {
+      successRef.current.focus();
+    }
+  }, [state.submitted, isReadOnly]);
 
   const handleChange = useCallback((fieldId: string, value: string) => {
     setState((prev) => ({
@@ -397,7 +407,13 @@ export function ActivityForm({
 
       {/* Fields */}
       {state.submitted ? (
-        <div className="space-y-1">
+        <div
+          className="space-y-1"
+          ref={successRef}
+          tabIndex={-1}
+          aria-live="polite"
+          aria-label="Activity submitted successfully"
+        >
           {activity.fields.map((field) => (
             <ReadOnlyField key={field.id} field={field} value={state.values[field.id] ?? ''} />
           ))}

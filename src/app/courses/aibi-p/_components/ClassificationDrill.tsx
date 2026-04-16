@@ -4,6 +4,7 @@
 // Presents 20 timed scenarios (20s each) for data classification practice.
 // State machine: 'ready' | 'active' | 'review' | 'submitted'
 // A11Y-01: keyboard accessible radio groups; timer does not auto-advance mid-keyboard-navigation.
+//          Keyboard shortcuts 1/2/3 available during active drill (announced via sr-only hint).
 // A11Y-02: text labels for all correctness indicators (not color-only), timer urgency announced by text.
 
 import React, { useState, useCallback, useEffect, useRef } from 'react';
@@ -263,6 +264,8 @@ export function ClassificationDrill({
   // Track whether user is mid-keyboard-navigation so timer doesn't auto-advance
   const isNavigatingRef = useRef(false);
   const pendingAdvanceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // A11Y-01: ref for score reveal focus management
+  const scoreRevealRef = useRef<HTMLDivElement>(null);
 
   const totalScenarios = scenarios.length;
 
@@ -351,6 +354,32 @@ export function ClassificationDrill({
   const handleKeyBlur = useCallback(() => {
     isNavigatingRef.current = false;
   }, []);
+
+  // A11Y-01: Focus score reveal when transitioning to review phase
+  useEffect(() => {
+    if (phase === 'review' && scoreRevealRef.current) {
+      scoreRevealRef.current.focus();
+    }
+  }, [phase]);
+
+  // A11Y-01: Keyboard shortcuts 1/2/3 during active drill
+  useEffect(() => {
+    if (phase !== 'active') return;
+
+    const options = activity.fields[0]?.options ?? [];
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const idx = parseInt(e.key, 10) - 1;
+      if (idx >= 0 && idx < options.length) {
+        const opt = options[idx];
+        if (opt) {
+          handleSelection(opt.value);
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [phase, activity.fields, handleSelection]);
 
   const handleSubmitDrill = useCallback(async () => {
     const score = answers.filter((a) => a.selected === a.correct).length;
@@ -441,8 +470,11 @@ export function ClassificationDrill({
           <p className="font-sans text-sm text-[color:var(--color-dust)] mb-2">
             {totalScenarios} scenarios · 20 seconds each · score shown at end
           </p>
-          <p className="font-sans text-sm text-[color:var(--color-dust)] mb-8">
+          <p className="font-sans text-sm text-[color:var(--color-dust)] mb-4">
             Classify each scenario as Tier 1 (Public), Tier 2 (Internal Only), or Tier 3 (Highly Restricted).
+          </p>
+          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-dust)] mb-8">
+            Keyboard shortcut: press 1, 2, or 3 to select during the drill
           </p>
           <button
             type="button"
@@ -502,6 +534,7 @@ export function ClassificationDrill({
           <fieldset className="border-0 m-0 p-0">
             <legend className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-dust)] mb-3">
               Classify this scenario
+              <span className="sr-only"> — Press 1, 2, or 3 to select</span>
             </legend>
             <div className="flex flex-col gap-3">
               {(activity.fields[0]?.options ?? []).map((opt) => (
@@ -536,7 +569,12 @@ export function ClassificationDrill({
 
       {/* REVIEW phase */}
       {phase === 'review' && (
-        <div>
+        <div
+          ref={scoreRevealRef}
+          tabIndex={-1}
+          aria-live="polite"
+          aria-label={`Drill complete. Your score: ${score} out of ${answers.length}`}
+        >
           <ReadOnlyReview scenarios={scenarios} answers={answers} score={score} />
 
           {serverError && (
