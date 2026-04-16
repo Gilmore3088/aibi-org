@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { examQuestions, TOPIC_LABELS, type ExamQuestion, type Topic } from '@content/exams/aibi-p/questions';
 import { getProficiencyLevel, type ProficiencyLevel } from '@content/exams/aibi-p/scoring';
 
