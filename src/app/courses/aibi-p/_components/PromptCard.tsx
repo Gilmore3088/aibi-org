@@ -1,0 +1,122 @@
+'use client';
+
+// PromptCard — displays a single prompt with copy-to-clipboard functionality
+// Uses platform badge, role tag, monospace prompt box, expected output, and time estimate
+
+import { useState, useCallback } from 'react';
+import type { Prompt } from '@content/courses/aibi-p/prompt-library';
+import { PLATFORM_META, ROLE_LABELS, DIFFICULTY_LABELS } from '@content/courses/aibi-p/prompt-library';
+
+interface PromptCardProps {
+  readonly prompt: Prompt;
+}
+
+const COPY_RESET_MS = 2000;
+
+export function PromptCard({ prompt }: PromptCardProps) {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(prompt.promptText);
+      setCopied(true);
+      setTimeout(() => setCopied(false), COPY_RESET_MS);
+    } catch {
+      // Fallback for older browsers
+      const textarea = document.createElement('textarea');
+      textarea.value = prompt.promptText;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+      setCopied(true);
+      setTimeout(() => setCopied(false), COPY_RESET_MS);
+    }
+  }, [prompt.promptText]);
+
+  const platformMeta = PLATFORM_META[prompt.platform];
+  const roleLabel = ROLE_LABELS[prompt.role];
+  const difficultyLabel = DIFFICULTY_LABELS[prompt.difficulty];
+
+  return (
+    <article className="border border-[color:var(--color-parch-dark)] rounded-sm bg-[color:var(--color-parch)] p-6 space-y-4">
+      {/* Header: title + badges */}
+      <div className="space-y-3">
+        <h3 className="font-serif text-lg font-bold text-[color:var(--color-ink)] leading-snug">
+          {prompt.title}
+        </h3>
+
+        <div className="flex flex-wrap gap-2">
+          {/* Platform badge */}
+          <span
+            className="inline-flex items-center px-2.5 py-0.5 text-[10px] font-mono uppercase tracking-widest rounded-sm text-[color:var(--color-linen)]"
+            style={{ backgroundColor: platformMeta.colorVar }}
+          >
+            {platformMeta.label}
+          </span>
+
+          {/* Role tag */}
+          <span className="inline-flex items-center px-2.5 py-0.5 text-[10px] font-mono uppercase tracking-widest rounded-sm border border-[color:var(--color-ink)]/20 text-[color:var(--color-ink)]">
+            {roleLabel}
+          </span>
+
+          {/* Difficulty tag */}
+          <span className="inline-flex items-center px-2.5 py-0.5 text-[10px] font-mono uppercase tracking-widest rounded-sm border border-[color:var(--color-ink)]/10 text-[color:var(--color-dust)]">
+            {difficultyLabel}
+          </span>
+        </div>
+      </div>
+
+      {/* Prompt text in monospace box */}
+      <div className="relative">
+        <div className="bg-[color:var(--color-linen)] border border-[color:var(--color-parch-dark)] rounded-sm p-4 max-h-64 overflow-y-auto">
+          <pre className="font-mono text-[13px] leading-relaxed text-[color:var(--color-ink)] whitespace-pre-wrap break-words">
+            {prompt.promptText}
+          </pre>
+        </div>
+
+        <button
+          type="button"
+          onClick={handleCopy}
+          className="absolute top-2 right-2 px-3 py-1.5 text-[10px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-1"
+          style={{
+            backgroundColor: copied
+              ? 'var(--color-sage)'
+              : 'var(--color-terra)',
+            color: 'var(--color-linen)',
+          }}
+          aria-label={copied ? 'Copied to clipboard' : 'Copy prompt to clipboard'}
+        >
+          {copied ? 'Copied' : 'Copy'}
+        </button>
+      </div>
+
+      {/* What you'll get */}
+      <div className="space-y-1">
+        <p className="text-[11px] font-mono uppercase tracking-widest text-[color:var(--color-dust)]">
+          What you will get
+        </p>
+        <p className="font-sans text-sm text-[color:var(--color-ink)] leading-relaxed">
+          {prompt.expectedOutput}
+        </p>
+      </div>
+
+      {/* Footer: time estimate + encouragement */}
+      <div className="flex items-center justify-between pt-2 border-t border-[color:var(--color-parch-dark)]">
+        <span className="font-mono text-[12px] text-[color:var(--color-dust)]">
+          {prompt.timeEstimate}
+        </span>
+        <span className="font-sans text-[12px] italic text-[color:var(--color-terra)]">
+          Try it now — paste and see what you get.
+        </span>
+      </div>
+
+      {/* Module reference */}
+      <p className="text-[10px] font-mono uppercase tracking-widest text-[color:var(--color-dust)]">
+        Module {prompt.relatedModule}
+      </p>
+    </article>
+  );
+}
