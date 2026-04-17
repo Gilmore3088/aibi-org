@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { AibiSeal } from './AibiSeal';
 import { AuthButton } from './AuthButton';
+import { MobileNav } from './MobileNav';
 
 const NAV_LINKS = [
   { href: '/assessment', label: 'Assessment' },
@@ -39,11 +40,12 @@ export function Header() {
           ))}
           <Link
             href="/assessment"
-            className="font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] bg-[color:var(--color-terra)] text-[color:var(--color-linen)] px-4 py-2 hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
+            className="font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] bg-[color:var(--color-terra)] text-[color:var(--color-linen)] px-4 py-2 hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all hidden md:inline-block"
           >
             Free Assessment
           </Link>
           <AuthButton />
+          <MobileNav />
         </nav>
       </div>
     </header>
