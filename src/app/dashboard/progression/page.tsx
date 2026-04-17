@@ -457,7 +457,7 @@ export default function ProgressionPage() {
             Your certification journey.
           </h1>
           <p className="text-[color:var(--color-slate)] mt-2 text-base leading-relaxed max-w-2xl">
-            Track your progress from Practitioner through Specialist to Leader across The AI Banking Institute's full certification ladder.
+            Track your progress from Practitioner through Specialist to Leader across The AI Banking Institute&apos;s full certification ladder.
           </p>
         </header>
 

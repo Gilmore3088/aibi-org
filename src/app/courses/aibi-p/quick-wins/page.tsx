@@ -219,7 +219,7 @@ export default function QuickWinsPage() {
         </h1>
 
         <p className="font-sans text-base text-[color:var(--color-ink)]/80 leading-relaxed max-w-2xl">
-          Log every workflow you've automated. Each entry builds your professional
+          Log every workflow you&apos;ve automated. Each entry builds your professional
           record and proves the return on your AI Practitioner training.
         </p>
       </header>
