@@ -458,7 +458,7 @@ export function ActivityForm({
             Your artifact is ready
           </p>
           <a
-            href={`/public/artifacts/${activity.artifactId}.pdf`}
+            href={`/artifacts/${activity.artifactId}.pdf`}
             download
             className="inline-flex items-center gap-2 px-5 py-2 border border-[color:var(--color-terra)] text-[color:var(--color-terra)] hover:bg-[color:var(--color-terra)] hover:text-[color:var(--color-linen)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-2"
           >
