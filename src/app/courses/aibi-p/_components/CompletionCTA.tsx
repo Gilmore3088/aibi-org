@@ -7,6 +7,9 @@
 // M9 / isLastModule: work product submission CTA (Application pillar complete).
 // FUNL-01/02: funnel touchpoint for learners who have completed the Understanding pillar.
 // A11Y-01: keyboard accessible links with visible focus rings.
+// TimeSavingsCard is appended after each contextual message.
+
+import { TimeSavingsCard } from './TimeSavingsCard';
 
 interface CompletionCTAProps {
   readonly moduleNumber: number;
@@ -33,69 +36,75 @@ export function CompletionCTA({ moduleNumber, isLastModule }: CompletionCTAProps
   // M9 or final module — Application pillar complete, work product submission CTA
   if (moduleNumber === 9 || isLastModule) {
     return (
-      <div
-        className="mt-8 p-6 bg-[color:var(--color-parch)] border border-[color:var(--color-parch-dark)] border-l-4 rounded-sm"
-        style={{ borderLeftColor: 'var(--color-terra)' }}
-        aria-label="Course complete — next steps"
-      >
-        <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] mb-2">
-          All modules complete
-        </p>
-        <p className="font-serif text-lg font-bold text-[color:var(--color-ink)] mb-3">
-          Ready for your assessed work product.
-        </p>
-        <p className="font-sans text-sm text-[color:var(--color-dust)] leading-relaxed mb-5">
-          You have completed all nine modules of the AiBI-P course. Your final step is to
-          submit a four-item work product package demonstrating your professional AI capability.
-          This is not a test — it is a demonstration of the skills you have built throughout
-          this course.
-        </p>
-        <a
-          href="/courses/aibi-p/submit"
-          className="inline-flex items-center gap-2 px-5 py-2.5 bg-[color:var(--color-terra)] hover:bg-[color:var(--color-terra-light)] text-[color:var(--color-linen)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-2"
+      <>
+        <div
+          className="mt-8 p-6 bg-[color:var(--color-parch)] border border-[color:var(--color-parch-dark)] border-l-4 rounded-sm"
+          style={{ borderLeftColor: 'var(--color-terra)' }}
+          aria-label="Course complete — next steps"
         >
-          Begin Work Product Submission
-          <ArrowIcon />
-        </a>
-        <p className="mt-3 font-mono text-[10px] text-[color:var(--color-dust)]">
-          Four items required. Reviewed against a five-dimension rubric.
-        </p>
-      </div>
+          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] mb-2">
+            All modules complete
+          </p>
+          <p className="font-serif text-lg font-bold text-[color:var(--color-ink)] mb-3">
+            Ready for your assessed work product.
+          </p>
+          <p className="font-sans text-sm text-[color:var(--color-dust)] leading-relaxed mb-5">
+            You have completed all nine modules of the AiBI-P course. Your final step is to
+            submit a four-item work product package demonstrating your professional AI capability.
+            This is not a test — it is a demonstration of the skills you have built throughout
+            this course.
+          </p>
+          <a
+            href="/courses/aibi-p/submit"
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-[color:var(--color-terra)] hover:bg-[color:var(--color-terra-light)] text-[color:var(--color-linen)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-2"
+          >
+            Begin Work Product Submission
+            <ArrowIcon />
+          </a>
+          <p className="mt-3 font-mono text-[10px] text-[color:var(--color-dust)]">
+            Four items required. Reviewed against a five-dimension rubric.
+          </p>
+        </div>
+        <TimeSavingsCard moduleNumber={moduleNumber} />
+      </>
     );
   }
 
   // M5 — Understanding pillar complete, Executive Briefing CTA
   if (moduleNumber === 5) {
     return (
-      <div
-        className="mt-8 p-6 bg-[color:var(--color-parch)] border border-[color:var(--color-parch-dark)] border-l-4 rounded-sm"
-        style={{ borderLeftColor: 'var(--color-terra)' }}
-        aria-label="Module complete — next steps"
-      >
-        <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] mb-2">
-          Understanding pillar complete
-        </p>
-        <p className="font-serif text-lg font-bold text-[color:var(--color-ink)] mb-3">
-          You have the foundation. Now see the full picture.
-        </p>
-        <p className="font-sans text-sm text-[color:var(--color-dust)] leading-relaxed mb-5">
-          You now know how to classify data, recognise hallucination patterns, and build
-          your own Acceptable Use Card. An Executive Briefing maps that knowledge to your
-          institution&rsquo;s specific workflows, vendors, and risk profile.
-        </p>
-        <a
-          href={calendlyUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-5 py-2.5 bg-[color:var(--color-terra)] hover:bg-[color:var(--color-terra-light)] text-[color:var(--color-linen)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-2"
+      <>
+        <div
+          className="mt-8 p-6 bg-[color:var(--color-parch)] border border-[color:var(--color-parch-dark)] border-l-4 rounded-sm"
+          style={{ borderLeftColor: 'var(--color-terra)' }}
+          aria-label="Module complete — next steps"
         >
-          Book an Executive Briefing
-          <ArrowIcon />
-        </a>
-        <p className="mt-3 font-mono text-[10px] text-[color:var(--color-dust)]">
-          No obligation. 30 minutes. Specific to your institution.
-        </p>
-      </div>
+          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] mb-2">
+            Understanding pillar complete
+          </p>
+          <p className="font-serif text-lg font-bold text-[color:var(--color-ink)] mb-3">
+            You have the foundation. Now see the full picture.
+          </p>
+          <p className="font-sans text-sm text-[color:var(--color-dust)] leading-relaxed mb-5">
+            You now know how to classify data, recognise hallucination patterns, and build
+            your own Acceptable Use Card. An Executive Briefing maps that knowledge to your
+            institution&rsquo;s specific workflows, vendors, and risk profile.
+          </p>
+          <a
+            href={calendlyUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-[color:var(--color-terra)] hover:bg-[color:var(--color-terra-light)] text-[color:var(--color-linen)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-2"
+          >
+            Book an Executive Briefing
+            <ArrowIcon />
+          </a>
+          <p className="mt-3 font-mono text-[10px] text-[color:var(--color-dust)]">
+            No obligation. 30 minutes. Specific to your institution.
+          </p>
+        </div>
+        <TimeSavingsCard moduleNumber={moduleNumber} />
+      </>
     );
   }
 
@@ -114,11 +123,14 @@ export function CompletionCTA({ moduleNumber, isLastModule }: CompletionCTAProps
     encouragementByModule[moduleNumber] ?? `Module ${moduleNumber} complete. Keep going.`;
 
   return (
-    <div
-      className="mt-8 p-4 bg-[color:var(--color-parch)] border border-[color:var(--color-parch-dark)] rounded-sm"
-      aria-label="Module complete"
-    >
-      <p className="font-sans text-sm text-[color:var(--color-dust)] leading-relaxed">{message}</p>
-    </div>
+    <>
+      <div
+        className="mt-8 p-4 bg-[color:var(--color-parch)] border border-[color:var(--color-parch-dark)] rounded-sm"
+        aria-label="Module complete"
+      >
+        <p className="font-sans text-sm text-[color:var(--color-dust)] leading-relaxed">{message}</p>
+      </div>
+      <TimeSavingsCard moduleNumber={moduleNumber} />
+    </>
   );
 }
