@@ -43,7 +43,7 @@ export function ModuleMapItem({ module: mod, status }: ModuleMapItemProps) {
         </h4>
 
         {/* Key output */}
-        <p className="font-mono text-[9px] text-[color:var(--color-dust)] mb-2 uppercase tracking-wider leading-relaxed">
+        <p className="font-mono text-[10px] text-[color:var(--color-dust)] mb-2 uppercase tracking-wider leading-relaxed">
           {mod.keyOutput}
         </p>
 
@@ -65,20 +65,20 @@ export function ModuleMapItem({ module: mod, status }: ModuleMapItemProps) {
 
         {/* Status text */}
         {status === 'completed' && (
-          <p className="font-mono text-[9px] uppercase tracking-widest text-[color:var(--color-dust)]">
+          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-dust)]">
             Completed · {formatMinutes(mod.estimatedMinutes)}
           </p>
         )}
         {status === 'current' && (
           <p
-            className="font-mono text-[9px] uppercase tracking-widest font-bold"
+            className="font-mono text-[10px] uppercase tracking-widest font-bold"
             style={{ color: pillarMeta.colorVar }}
           >
             In Progress
           </p>
         )}
         {status === 'locked' && (
-          <p className="font-mono text-[9px] uppercase tracking-widest text-[color:var(--color-dust)]">
+          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-dust)]">
             Locked · {formatMinutes(mod.estimatedMinutes)}
           </p>
         )}

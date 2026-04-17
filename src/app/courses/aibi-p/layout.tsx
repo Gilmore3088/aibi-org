@@ -57,7 +57,7 @@ export default async function CourseLayout({ children }: CourseLayoutProps) {
         />
         <div className="flex items-center gap-2">
           <div
-            className="h-7 w-7 rounded-sm flex items-center justify-center text-[9px] font-mono font-bold text-[color:var(--color-terra)]"
+            className="h-7 w-7 rounded-sm flex items-center justify-center text-[10px] font-mono font-bold text-[color:var(--color-terra)]"
             style={{ border: '1.5px solid var(--color-terra)' }}
           >
             Ai

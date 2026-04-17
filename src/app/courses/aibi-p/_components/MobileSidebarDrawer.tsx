@@ -143,7 +143,7 @@ export function MobileSidebarDrawer({ completedModules, currentModule }: MobileS
           {modulesByPillar.map(({ pillar, meta, items }) => (
             <div key={pillar} className="mb-1">
               <div
-                className="px-6 py-2 text-[9px] uppercase font-mono tracking-[0.2em] font-bold"
+                className="px-6 py-2 text-[10px] uppercase font-mono tracking-[0.2em] font-bold"
                 style={{ color: meta.colorVar }}
               >
                 {meta.label}

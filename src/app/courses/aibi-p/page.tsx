@@ -101,7 +101,7 @@ export default async function CourseOverviewPage() {
             </p>
           </div>
           <span
-            className="font-mono text-[9px] tracking-[0.3em] text-[color:var(--color-dust)] hidden md:block"
+            className="font-mono text-[10px] tracking-[0.3em] text-[color:var(--color-dust)] hidden md:block"
             aria-hidden="true"
           >
             SCIENTIA POTENTIA EST

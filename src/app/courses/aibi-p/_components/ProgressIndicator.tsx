@@ -31,7 +31,7 @@ export function ProgressIndicator({ completedModules, totalModules }: ProgressIn
       </div>
 
       {/* Count label */}
-      <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-[color:var(--color-dust)]">
+      <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-dust)]">
         {completedCount} of {totalModules} modules complete
       </span>
     </div>

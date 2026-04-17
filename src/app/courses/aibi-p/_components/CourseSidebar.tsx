@@ -44,7 +44,7 @@ export function CourseSidebar({ completedModules, currentModule }: CourseSidebar
             <div className="text-[color:var(--color-ink)] font-bold text-sm font-serif leading-tight">
               AiBI-P
             </div>
-            <div className="text-[9px] uppercase font-mono tracking-[0.2em] text-[color:var(--color-dust)]">
+            <div className="text-[10px] uppercase font-mono tracking-[0.2em] text-[color:var(--color-dust)]">
               Banking AI Practitioner
             </div>
           </div>
@@ -57,7 +57,7 @@ export function CourseSidebar({ completedModules, currentModule }: CourseSidebar
           <div key={pillar} className="mb-1">
             {/* Pillar heading */}
             <div
-              className="px-6 py-2 text-[9px] uppercase font-mono tracking-[0.2em] font-bold"
+              className="px-6 py-2 text-[10px] uppercase font-mono tracking-[0.2em] font-bold"
               style={{ color: meta.colorVar }}
             >
               {meta.label}
