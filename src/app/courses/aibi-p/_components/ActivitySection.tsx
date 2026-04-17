@@ -16,7 +16,6 @@ import { useState, useCallback } from 'react';
 import type { Activity, ContentTable } from '@content/courses/aibi-p';
 import type { LearnerRole } from '@/types/course';
 import { ActivityForm } from './ActivityForm';
-import { ActivityFormShell } from './ActivityFormShell';
 import { SubscriptionInventory } from './SubscriptionInventory';
 import { ClassificationDrill } from './ClassificationDrill';
 import { AcceptableUseCardForm } from './AcceptableUseCardForm';
@@ -178,9 +177,13 @@ export function ActivitySection({
 
         // M5 Activity 5.1 — Classification Drill
         if (activity.type === 'drill') {
-          // Drill scenarios must be present; fall back to shell if not available
+          // Drill scenarios must be present
           if (drillScenarios.length === 0) {
-            return <ActivityFormShell key={activity.id} activity={activity} />;
+            return (
+              <p key={activity.id} className="text-sm text-[color:var(--color-slate)] italic">
+                Classification drill scenarios not available.
+              </p>
+            );
           }
           return (
             <ClassificationDrill

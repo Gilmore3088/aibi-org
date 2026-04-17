@@ -3,13 +3,13 @@
 
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { modules, PILLAR_META } from '@content/courses/aibi-p';
+import { modules, PILLAR_META, PILLAR_DESCRIPTIONS } from '@content/courses/aibi-p';
 import type { Pillar } from '@content/courses/aibi-p';
 import { PillarCard } from './_components/PillarCard';
-import type { PillarStatus } from './_components/PillarCard';
 import { ModuleMapItem } from './_components/ModuleMapItem';
-import type { ModuleStatus } from './_components/ModuleMapItem';
 import { ProgressIndicator } from './_components/ProgressIndicator';
+import { getEnrollment } from './_lib/getEnrollment';
+import { getModuleStatus, getPillarStatus } from './_lib/courseProgress';
 
 export const metadata: Metadata = {
   title: 'AiBI-P: Banking AI Practitioner | The AI Banking Institute',
@@ -17,41 +17,12 @@ export const metadata: Metadata = {
     'The Banking AI Practitioner course teaches every staff member at a community financial institution how to use AI tools safely, professionally, and with regulatory confidence.',
 };
 
-// TODO: Read from enrollment (Plan 02-03)
-const STUB_COMPLETED_MODULES: readonly number[] = [];
-const STUB_CURRENT_MODULE = 1;
-
-const PILLAR_DESCRIPTIONS: Record<Pillar, string> = {
-  awareness:
-    'Identifying AI opportunities and regulatory boundaries in retail banking operations. Covers the five governance frameworks, the AIEOG Lexicon, and the difference between governed and ungoverned AI use.',
-  understanding:
-    'Platform mastery and safe use guardrails. Covers what you already have access to, how to activate it, platform feature deep dives, and data classification rules every practitioner must follow.',
-  creation:
-    'Building skills that make AI output institutional-grade. Covers the anatomy of a repeatable skill, the five-component Skill Builder, and writing your first skill with real banking language.',
-  application:
-    'Real-world automation and the assessed work product. Covers testing and iterating a skill, building a complete automation workflow, and the capstone submission that earns your certification.',
-};
-
 const PILLAR_ORDER: Pillar[] = ['awareness', 'understanding', 'creation', 'application'];
 
-function getPillarStatus(pillar: Pillar, currentModule: number, completedModules: readonly number[]): PillarStatus {
-  const pillarModules = modules.filter((m) => m.pillar === pillar);
-  const pillarNumbers = pillarModules.map((m) => m.number);
-  const allComplete = pillarNumbers.every((n) => completedModules.includes(n));
-  if (allComplete) return 'completed';
-  const anyInPillar = pillarNumbers.includes(currentModule) ||
-    pillarNumbers.some((n) => completedModules.includes(n));
-  if (anyInPillar) return 'in-progress';
-  return 'locked';
-}
-
-function getModuleStatus(moduleNumber: number, currentModule: number, completedModules: readonly number[]): ModuleStatus {
-  if (completedModules.includes(moduleNumber)) return 'completed';
-  if (moduleNumber === currentModule) return 'current';
-  return 'locked';
-}
-
-export default function CourseOverviewPage() {
+export default async function CourseOverviewPage() {
+  const enrollment = await getEnrollment();
+  const completedModules = enrollment?.completed_modules ?? [];
+  const currentModule = enrollment?.current_module ?? 1;
   const pillarModuleCounts = PILLAR_ORDER.reduce<Record<Pillar, number>>(
     (acc, pillar) => {
       acc[pillar] = modules.filter((m) => m.pillar === pillar).length;
@@ -91,14 +62,14 @@ export default function CourseOverviewPage() {
 
         <div className="mb-10">
           <ProgressIndicator
-            completedModules={STUB_COMPLETED_MODULES}
+            completedModules={completedModules}
             totalModules={modules.length}
           />
         </div>
 
         <div className="flex flex-wrap gap-4">
           <Link
-            href={`/courses/aibi-p/${STUB_CURRENT_MODULE}`}
+            href={`/courses/aibi-p/${currentModule}`}
             className="bg-[color:var(--color-terra)] hover:bg-[color:var(--color-terra-light)] text-[color:var(--color-linen)] px-8 py-4 rounded-sm font-bold text-[10px] uppercase tracking-[0.15em] transition-colors flex items-center gap-3 font-mono"
           >
             Resume Course
@@ -141,7 +112,7 @@ export default function CourseOverviewPage() {
         >
           {PILLAR_ORDER.map((pillar) => {
             const meta = PILLAR_META[pillar];
-            const status = getPillarStatus(pillar, STUB_CURRENT_MODULE, STUB_COMPLETED_MODULES);
+            const status = getPillarStatus(pillar, modules, completedModules);
             return (
               <div key={pillar} role="listitem">
                 <PillarCard
@@ -182,7 +153,7 @@ export default function CourseOverviewPage() {
           aria-label="Course modules"
         >
           {modules.map((mod) => {
-            const status = getModuleStatus(mod.number, STUB_CURRENT_MODULE, STUB_COMPLETED_MODULES);
+            const status = getModuleStatus(mod.number, completedModules, currentModule);
             return (
               <div key={mod.id} role="listitem">
                 <ModuleMapItem module={mod} status={status} />

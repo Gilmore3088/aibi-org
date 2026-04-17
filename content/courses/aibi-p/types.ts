@@ -11,6 +11,17 @@ export const PILLAR_META: Record<Pillar, { readonly label: string; readonly colo
   application:   { label: 'Application',   colorVar: 'var(--color-terra)' },
 } as const;
 
+export const PILLAR_DESCRIPTIONS: Record<Pillar, string> = {
+  awareness:
+    'Identifying AI opportunities and regulatory boundaries in retail banking operations. Covers the five governance frameworks, the AIEOG Lexicon, and the difference between governed and ungoverned AI use.',
+  understanding:
+    'Platform mastery and safe use guardrails. Covers what you already have access to, how to activate it, platform feature deep dives, and data classification rules every practitioner must follow.',
+  creation:
+    'Building skills that make AI output institutional-grade. Covers the anatomy of a repeatable skill, the five-component Skill Builder, and writing your first skill with real banking language.',
+  application:
+    'Real-world automation and the assessed work product. Covers testing and iterating a skill, building a complete automation workflow, and the capstone submission that earns your certification.',
+} as const;
+
 export type ActivityType = 'free-text' | 'form' | 'drill' | 'builder' | 'iteration';
 
 export interface ActivityField {
