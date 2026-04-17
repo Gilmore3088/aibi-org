@@ -37,15 +37,16 @@ export function QuestionCard({
         {question.prompt}
       </h2>
 
-      <div className="space-y-3">
+      <div className="space-y-3" role="radiogroup" aria-label={question.prompt}>
         {question.options.map((option, idx) => {
           const selected = selectedPoints === option.points;
           return (
             <button
               key={idx}
               type="button"
+              role="radio"
               onClick={() => onAnswer(option.points)}
-              aria-pressed={selected}
+              aria-checked={selected}
               aria-label={`${option.label}${selected ? ' (selected)' : ''}`}
               className={
                 'w-full text-left px-5 py-4 border transition-colors ' +
