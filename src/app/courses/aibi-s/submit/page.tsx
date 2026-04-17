@@ -166,7 +166,7 @@ export default async function AiBISSubmitPage() {
                     <div className="flex items-center gap-2 mb-1">
                       <h3 className="font-serif font-bold text-[color:var(--color-ink)]">{item.label}</h3>
                       {!weekComplete && (
-                        <span className="font-mono text-[9px] uppercase tracking-widest text-[color:var(--color-dust)]">
+                        <span className="font-mono text-[9px] uppercase tracking-widest text-[color:var(--color-slate)]">
                           Complete Week {item.fromWeek} first
                         </span>
                       )}
@@ -229,7 +229,7 @@ export default async function AiBISSubmitPage() {
             <p className="font-sans text-base text-[color:var(--color-ink)] mb-2">
               Your capstone submission is under review.
             </p>
-            <p className="font-sans text-sm text-[color:var(--color-dust)]">
+            <p className="font-sans text-sm text-[color:var(--color-slate)]">
               Submitted{' '}
               {new Date(submission.submitted_at).toLocaleDateString('en-US', {
                 year: 'numeric',
@@ -255,7 +255,7 @@ export default async function AiBISSubmitPage() {
               {trackMeta ? `Your AiBI-S${trackMeta.code} credential has been issued.` : 'Your AiBI-S credential has been issued.'}
             </p>
             {submission.reviewed_at && (
-              <p className="font-sans text-sm text-[color:var(--color-dust)] mb-4">
+              <p className="font-sans text-sm text-[color:var(--color-slate)] mb-4">
                 Reviewed{' '}
                 {new Date(submission.reviewed_at).toLocaleDateString('en-US', {
                   year: 'numeric',
@@ -289,7 +289,7 @@ export default async function AiBISSubmitPage() {
             <blockquote className="font-sans text-sm text-[color:var(--color-slate)] leading-relaxed pl-4 border-l-2 border-[color:var(--color-cobalt)]/30 mb-4">
               {submission.review_feedback}
             </blockquote>
-            <p className="font-sans text-xs text-[color:var(--color-dust)]">
+            <p className="font-sans text-xs text-[color:var(--color-slate)]">
               Address the feedback in all five items and resubmit below. One resubmission is permitted per enrollment.
             </p>
           </div>
@@ -376,7 +376,7 @@ export default async function AiBISSubmitPage() {
                 {submission?.review_status === 'failed' ? 'Resubmit Capstone' : 'Submit Capstone'}
               </button>
 
-              <p className="font-mono text-[10px] text-[color:var(--color-dust)]">
+              <p className="font-mono text-[10px] text-[color:var(--color-slate)]">
                 Reviews are completed within 10 business days. You will be notified by email when your
                 submission is reviewed.
               </p>
@@ -388,7 +388,7 @@ export default async function AiBISSubmitPage() {
         <div className="mt-16 pt-8 border-t border-[color:var(--color-cobalt)]/10">
           <Link
             href="/courses/aibi-s"
-            className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-dust)] hover:text-[color:var(--color-ink)] transition-colors"
+            className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-slate)] hover:text-[color:var(--color-ink)] transition-colors"
           >
             Back to Course Overview
           </Link>

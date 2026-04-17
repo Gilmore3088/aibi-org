@@ -71,7 +71,7 @@ function ReadOnlyField({
       )}
       {field.type === 'textarea' ? (
         <div className="w-full border border-[color:var(--color-parch-dark)] rounded-sm px-3 py-2 text-sm font-sans bg-[color:var(--color-parch)] text-[color:var(--color-ink)] min-h-[80px] whitespace-pre-wrap">
-          {value || <span className="text-[color:var(--color-dust)] italic">No response</span>}
+          {value || <span className="text-[color:var(--color-slate)] italic">No response</span>}
         </div>
       ) : field.type === 'radio' ? (
         <fieldset className="mt-1">
@@ -101,7 +101,7 @@ function ReadOnlyField({
         </div>
       ) : (
         <div className="w-full border border-[color:var(--color-parch-dark)] rounded-sm px-3 py-2 text-sm font-sans bg-[color:var(--color-parch)] text-[color:var(--color-ink)]">
-          {value || <span className="text-[color:var(--color-dust)] italic">No response</span>}
+          {value || <span className="text-[color:var(--color-slate)] italic">No response</span>}
         </div>
       )}
     </div>
@@ -197,7 +197,7 @@ function InteractiveField({
               </p>
             )}
             {field.minLength && (
-              <p id={hintId} className="mt-1 text-[11px] font-mono text-[color:var(--color-dust)]">
+              <p id={hintId} className="mt-1 text-[11px] font-mono text-[color:var(--color-slate)]">
                 Minimum {field.minLength} characters
               </p>
             )}
@@ -254,12 +254,12 @@ function InteractiveField({
         </p>
       )}
       {field.type === 'textarea' && field.minLength && (
-        <p id={hintId} className="mt-1 text-[11px] font-mono text-[color:var(--color-dust)]">
+        <p id={hintId} className="mt-1 text-[11px] font-mono text-[color:var(--color-slate)]">
           {value.length}/{field.minLength} characters
         </p>
       )}
       {field.type !== 'textarea' && field.minLength && (
-        <p id={hintId} className="mt-1 text-[11px] font-mono text-[color:var(--color-dust)]">
+        <p id={hintId} className="mt-1 text-[11px] font-mono text-[color:var(--color-slate)]">
           Minimum {field.minLength} characters
         </p>
       )}
@@ -400,7 +400,7 @@ export function ActivityForm({
             </span>
           )}
         </div>
-        <p className="text-sm font-sans text-[color:var(--color-dust)] leading-relaxed">
+        <p className="text-sm font-sans text-[color:var(--color-slate)] leading-relaxed">
           {activity.description}
         </p>
       </div>
@@ -454,7 +454,7 @@ export function ActivityForm({
       {/* Artifact download — shown after successful submission */}
       {showArtifactDownload && (
         <div className="mt-6 pt-4 border-t border-[color:var(--color-parch-dark)]">
-          <p className="text-xs font-mono text-[color:var(--color-dust)] uppercase tracking-widest mb-2">
+          <p className="text-xs font-mono text-[color:var(--color-slate)] uppercase tracking-widest mb-2">
             Your artifact is ready
           </p>
           <a

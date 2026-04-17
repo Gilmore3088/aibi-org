@@ -153,7 +153,7 @@ export function WorkProductForm({
         <p className="font-sans text-base font-semibold text-[color:var(--color-ink)] mb-2">
           Your work product has been submitted.
         </p>
-        <p className="font-sans text-sm text-[color:var(--color-dust)]">
+        <p className="font-sans text-sm text-[color:var(--color-slate)]">
           You will receive feedback within five business days.
         </p>
       </div>
@@ -235,7 +235,7 @@ export function WorkProductForm({
             {submitting ? 'Submitting…' : isResubmission ? 'Submit Resubmission' : 'Submit Work Product'}
           </button>
           {!isValid && !submitting && (
-            <p className="mt-2 text-[11px] font-mono text-[color:var(--color-dust)]">
+            <p className="mt-2 text-[11px] font-mono text-[color:var(--color-slate)]">
               Complete all required fields to enable submission.
             </p>
           )}

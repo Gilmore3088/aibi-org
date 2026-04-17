@@ -175,10 +175,10 @@ export default async function WeekPage({ params }: WeekPageParams) {
                     </h3>
                   </div>
                   <div className="shrink-0 text-right">
-                    <p className="font-mono text-[9px] text-[color:var(--color-dust)] tabular-nums">
+                    <p className="font-mono text-[9px] text-[color:var(--color-slate)] tabular-nums">
                       {activity.estimatedMinutes} min
                     </p>
-                    <p className="font-mono text-[9px] text-[color:var(--color-dust)] uppercase tracking-widest mt-0.5">
+                    <p className="font-mono text-[9px] text-[color:var(--color-slate)] uppercase tracking-widest mt-0.5">
                       Due: {activity.dueBy}
                     </p>
                   </div>
@@ -284,7 +284,7 @@ export default async function WeekPage({ params }: WeekPageParams) {
                     >
                       Save Response
                     </button>
-                    <span className="font-mono text-[9px] text-[color:var(--color-dust)]">
+                    <span className="font-mono text-[9px] text-[color:var(--color-slate)]">
                       {activity.submissionFormat}
                     </span>
                   </div>
@@ -299,14 +299,14 @@ export default async function WeekPage({ params }: WeekPageParams) {
           {week.number > 1 ? (
             <a
               href={`/courses/aibi-s/${week.number - 1}`}
-              className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-dust)] hover:text-[color:var(--color-ink)] transition-colors"
+              className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-slate)] hover:text-[color:var(--color-ink)] transition-colors"
             >
               Week {week.number - 1}
             </a>
           ) : (
             <a
               href="/courses/aibi-s"
-              className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-dust)] hover:text-[color:var(--color-ink)] transition-colors"
+              className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-slate)] hover:text-[color:var(--color-ink)] transition-colors"
             >
               Overview
             </a>
@@ -325,7 +325,7 @@ export default async function WeekPage({ params }: WeekPageParams) {
               className={`flex items-center gap-2 px-6 py-3 rounded-sm font-mono text-[10px] uppercase tracking-[0.15em] transition-opacity focus:outline-none focus:ring-2 focus:ring-[color:var(--color-cobalt)] focus:ring-offset-2 ${
                 isCompleted
                   ? 'bg-[color:var(--color-cobalt)] hover:opacity-90 text-[color:var(--color-linen)]'
-                  : 'border border-[color:var(--color-cobalt)]/20 text-[color:var(--color-dust)] cursor-not-allowed opacity-50'
+                  : 'border border-[color:var(--color-cobalt)]/20 text-[color:var(--color-slate)] cursor-not-allowed opacity-50'
               }`}
               aria-disabled={!isCompleted}
             >

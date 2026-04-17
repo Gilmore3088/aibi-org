@@ -89,7 +89,7 @@ export function PromptLibraryClient({ userLevel = null }: PromptLibraryClientPro
           />
         </div>
 
-        <p className="mt-3 font-mono text-[11px] text-[color:var(--color-dust)]">
+        <p className="mt-3 font-mono text-[11px] text-[color:var(--color-slate)]">
           Showing {filtered.length} of {totalCount} prompts
           {filtered.some((p) => p.requiredLevel) && (
             <span className="ml-2" style={{ color: 'var(--color-terra)' }}>
@@ -102,7 +102,7 @@ export function PromptLibraryClient({ userLevel = null }: PromptLibraryClientPro
       {/* Results */}
       {filtered.length === 0 ? (
         <div className="text-center py-12">
-          <p className="font-sans text-sm text-[color:var(--color-dust)]">
+          <p className="font-sans text-sm text-[color:var(--color-slate)]">
             No prompts match the selected filters. Try adjusting your selection.
           </p>
         </div>
@@ -131,7 +131,7 @@ interface FilterSelectProps {
 function FilterSelect({ label, value, options, onChange }: FilterSelectProps) {
   return (
     <div className="space-y-1">
-      <label className="text-[10px] font-mono uppercase tracking-widest text-[color:var(--color-dust)]">
+      <label className="text-[10px] font-mono uppercase tracking-widest text-[color:var(--color-slate)]">
         {label}
       </label>
       <select

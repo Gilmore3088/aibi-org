@@ -108,7 +108,7 @@ function ResourceCard({ framework, meta, index }: ResourceCardProps) {
           </span>
         </div>
         <span
-          className="font-mono text-[9px] uppercase tracking-[0.2em] text-[color:var(--color-dust)] whitespace-nowrap"
+          className="font-mono text-[9px] uppercase tracking-[0.2em] text-[color:var(--color-slate)] whitespace-nowrap"
           aria-label={`Available from ${meta.prerequisiteLabel}`}
         >
           {meta.prerequisiteLabel}
@@ -140,7 +140,7 @@ function ResourceCard({ framework, meta, index }: ResourceCardProps) {
           },
         ].map(({ label, value }) => (
           <div key={label} className="flex items-baseline gap-1.5">
-            <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-[color:var(--color-dust)]">
+            <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-[color:var(--color-slate)]">
               {label}
             </span>
             <span className="font-mono text-[10px] text-[color:var(--color-cobalt)] tabular-nums">
@@ -161,7 +161,7 @@ function ResourceCard({ framework, meta, index }: ResourceCardProps) {
             className="flex items-baseline gap-2.5"
           >
             <span
-              className="font-mono text-[9px] tabular-nums text-[color:var(--color-dust)] w-4 shrink-0"
+              className="font-mono text-[9px] tabular-nums text-[color:var(--color-slate)] w-4 shrink-0"
               aria-hidden="true"
             >
               {sIdx + 1}.
@@ -230,7 +230,7 @@ export default async function AiBISResourcesPage() {
             className="h-px w-8 bg-[color:var(--color-cobalt)]/30"
             aria-hidden="true"
           />
-          <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--color-dust)]">
+          <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--color-slate)]">
             Advanced Resources
           </span>
         </div>
@@ -273,7 +273,7 @@ export default async function AiBISResourcesPage() {
             className="h-3 w-px bg-[color:var(--color-cobalt)]/20"
             aria-hidden="true"
           />
-          <span className="font-mono text-[10px] text-[color:var(--color-dust)]">
+          <span className="font-mono text-[10px] text-[color:var(--color-slate)]">
             All 5 frameworks unlocked
           </span>
         </div>
@@ -399,7 +399,7 @@ export default async function AiBISResourcesPage() {
       >
         <Link
           href="/courses/aibi-s"
-          className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-[color:var(--color-dust)] hover:text-[color:var(--color-cobalt)] transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-cobalt)] focus:ring-offset-2 rounded-sm"
+          className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-[color:var(--color-slate)] hover:text-[color:var(--color-cobalt)] transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-cobalt)] focus:ring-offset-2 rounded-sm"
         >
           <svg
             className="w-3 h-3"

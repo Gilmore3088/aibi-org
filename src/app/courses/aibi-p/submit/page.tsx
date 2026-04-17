@@ -105,7 +105,7 @@ export default async function SubmitPage() {
             <p className="font-sans text-base text-[color:var(--color-ink)] mb-2">
               Your submission is under review.
             </p>
-            <p className="font-sans text-sm text-[color:var(--color-dust)]">
+            <p className="font-sans text-sm text-[color:var(--color-slate)]">
               Submitted{' '}
               {new Date(submission.submitted_at).toLocaleDateString('en-US', {
                 year: 'numeric',

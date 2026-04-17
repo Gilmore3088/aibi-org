@@ -87,7 +87,7 @@ export default function WorkshopRequestPage() {
         <h1 className="font-serif text-4xl font-bold text-[color:var(--color-ink)] mb-6">
           Thank you, {form.name.split(' ')[0]}.
         </h1>
-        <p className="font-serif italic text-lg text-[color:var(--color-slate)] leading-relaxed mb-8">
+        <p className="font-serif italic text-lg text-[color:var(--color-dust)] leading-relaxed mb-8">
           The AI Banking Institute will respond within 2 business days
           with a planning call invitation to customize your workshop.
         </p>
@@ -116,8 +116,8 @@ export default function WorkshopRequestPage() {
           >
             AiBI-L
           </Link>
-          <span className="text-[color:var(--color-dust)]" aria-hidden="true">/</span>
-          <span className="text-[color:var(--color-dust)]">Request Workshop</span>
+          <span className="text-[color:var(--color-slate)]" aria-hidden="true">/</span>
+          <span className="text-[color:var(--color-slate)]">Request Workshop</span>
         </div>
       </nav>
 
@@ -125,7 +125,7 @@ export default function WorkshopRequestPage() {
         <h1 className="font-serif text-4xl sm:text-5xl font-bold text-[color:var(--color-ink)] mb-4 leading-tight">
           Request a <span className="italic text-[color:var(--color-sage)]">Workshop</span>
         </h1>
-        <p className="font-serif italic text-lg text-[color:var(--color-slate)] leading-relaxed">
+        <p className="font-serif italic text-lg text-[color:var(--color-dust)] leading-relaxed">
           The AI Banking Institute will respond within 2 business days with a planning call
           invitation to customize your workshop with your institution&apos;s data.
         </p>
@@ -135,7 +135,7 @@ export default function WorkshopRequestPage() {
         <div>
           <label
             htmlFor="name"
-            className="block font-mono text-[9px] uppercase tracking-[0.2em] text-[color:var(--color-dust)] mb-2"
+            className="block font-mono text-[9px] uppercase tracking-[0.2em] text-[color:var(--color-slate)] mb-2"
           >
             Full Name *
           </label>
@@ -154,7 +154,7 @@ export default function WorkshopRequestPage() {
         <div>
           <label
             htmlFor="email"
-            className="block font-mono text-[9px] uppercase tracking-[0.2em] text-[color:var(--color-dust)] mb-2"
+            className="block font-mono text-[9px] uppercase tracking-[0.2em] text-[color:var(--color-slate)] mb-2"
           >
             Email *
           </label>
@@ -173,7 +173,7 @@ export default function WorkshopRequestPage() {
         <div>
           <label
             htmlFor="title"
-            className="block font-mono text-[9px] uppercase tracking-[0.2em] text-[color:var(--color-dust)] mb-2"
+            className="block font-mono text-[9px] uppercase tracking-[0.2em] text-[color:var(--color-slate)] mb-2"
           >
             Title *
           </label>
@@ -192,7 +192,7 @@ export default function WorkshopRequestPage() {
         <div>
           <label
             htmlFor="institution"
-            className="block font-mono text-[9px] uppercase tracking-[0.2em] text-[color:var(--color-dust)] mb-2"
+            className="block font-mono text-[9px] uppercase tracking-[0.2em] text-[color:var(--color-slate)] mb-2"
           >
             Institution *
           </label>
@@ -211,7 +211,7 @@ export default function WorkshopRequestPage() {
         <div>
           <label
             htmlFor="teamSize"
-            className="block font-mono text-[9px] uppercase tracking-[0.2em] text-[color:var(--color-dust)] mb-2"
+            className="block font-mono text-[9px] uppercase tracking-[0.2em] text-[color:var(--color-slate)] mb-2"
           >
             Team Size *
           </label>
@@ -233,7 +233,7 @@ export default function WorkshopRequestPage() {
         <div>
           <label
             htmlFor="preferredDates"
-            className="block font-mono text-[9px] uppercase tracking-[0.2em] text-[color:var(--color-dust)] mb-2"
+            className="block font-mono text-[9px] uppercase tracking-[0.2em] text-[color:var(--color-slate)] mb-2"
           >
             Preferred Dates
           </label>
@@ -251,7 +251,7 @@ export default function WorkshopRequestPage() {
         <div>
           <label
             htmlFor="message"
-            className="block font-mono text-[9px] uppercase tracking-[0.2em] text-[color:var(--color-dust)] mb-2"
+            className="block font-mono text-[9px] uppercase tracking-[0.2em] text-[color:var(--color-slate)] mb-2"
           >
             Message
           </label>
@@ -280,7 +280,7 @@ export default function WorkshopRequestPage() {
           {status === 'submitting' ? 'Submitting...' : 'Request Workshop'}
         </button>
 
-        <p className="font-sans text-[11px] text-[color:var(--color-dust)] text-center leading-relaxed">
+        <p className="font-sans text-[11px] text-[color:var(--color-slate)] text-center leading-relaxed">
           This is not a purchase. The AI Banking Institute will contact you
           to schedule a planning call before confirming the workshop.
         </p>

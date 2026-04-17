@@ -243,7 +243,7 @@ export function WeekContent({ week, roleTrack }: WeekContentProps) {
           >
             Track <span className="italic">Examples</span>
           </h2>
-          <p className="font-sans text-xs text-[color:var(--color-dust)] mb-4">
+          <p className="font-sans text-xs text-[color:var(--color-slate)] mb-4">
             Concrete examples for the {trackMeta?.label} track
           </p>
           <ul className="space-y-3" role="list">

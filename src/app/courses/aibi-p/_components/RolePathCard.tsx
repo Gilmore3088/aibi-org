@@ -149,7 +149,7 @@ export function RolePathCard({ rolePath }: RolePathCardProps) {
         <div className="p-8">
           <h3
             className="font-mono text-[10px] uppercase tracking-[0.2em] mb-4"
-            style={{ color: 'var(--color-dust)' }}
+            style={{ color: 'var(--color-slate)' }}
           >
             Top 3 Tools for {rolePath.label}
           </h3>
@@ -171,7 +171,7 @@ export function RolePathCard({ rolePath }: RolePathCardProps) {
           <div>
             <h3
               className="font-mono text-[10px] uppercase tracking-[0.2em] mb-4"
-              style={{ color: 'var(--color-dust)' }}
+              style={{ color: 'var(--color-slate)' }}
             >
               Start Here
             </h3>
@@ -222,7 +222,7 @@ export function RolePathCard({ rolePath }: RolePathCardProps) {
           <div>
             <h3
               className="font-mono text-[10px] uppercase tracking-[0.2em] mb-4"
-              style={{ color: 'var(--color-dust)' }}
+              style={{ color: 'var(--color-slate)' }}
             >
               3 Quick Wins for {rolePath.label}
             </h3>

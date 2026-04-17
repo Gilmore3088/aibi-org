@@ -19,7 +19,7 @@ export default async function PromptLibraryPage() {
     <div className="max-w-6xl mx-auto px-4 sm:px-8 py-16">
       {/* Breadcrumb */}
       <nav className="mb-8" aria-label="Breadcrumb">
-        <ol className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-dust)]">
+        <ol className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">
           <li>
             <Link
               href="/courses/aibi-p"
@@ -40,7 +40,7 @@ export default async function PromptLibraryPage() {
             Reference
           </span>
           <div className="h-px w-8 bg-[color:var(--color-terra)]/30" aria-hidden="true" />
-          <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--color-dust)]">
+          <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--color-slate)]">
             Banking AI Prompts
           </span>
         </div>
@@ -56,7 +56,7 @@ export default async function PromptLibraryPage() {
           then paste into your AI tool and see what you get.
         </p>
 
-        <p className="font-sans text-sm text-[color:var(--color-dust)] mt-3 leading-relaxed max-w-2xl">
+        <p className="font-sans text-sm text-[color:var(--color-slate)] mt-3 leading-relaxed max-w-2xl">
           Every prompt includes constraints that prevent common AI pitfalls in banking:
           unsourced citations, compliance overreach, and confidential data exposure.
           Review all AI outputs before institutional use.

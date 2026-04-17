@@ -35,7 +35,7 @@ export function StepHeader({ number, label, description }: StepHeaderProps) {
           Step {number}: {label}
         </p>
       </div>
-      <p className="text-xs font-sans text-[color:var(--color-dust)] leading-relaxed ml-10">
+      <p className="text-xs font-sans text-[color:var(--color-slate)] leading-relaxed ml-10">
         {description}
       </p>
     </div>
@@ -57,7 +57,7 @@ export function ReadOnlyField({ field, value }: ReadOnlyFieldProps) {
         </p>
         <div className="w-full border border-[color:var(--color-parch-dark)] rounded-sm px-3 py-2 text-sm font-sans bg-[color:var(--color-parch)] text-[color:var(--color-ink)]">
           {selectedOption?.label ?? (
-            <span className="text-[color:var(--color-dust)] italic">No response</span>
+            <span className="text-[color:var(--color-slate)] italic">No response</span>
           )}
         </div>
       </div>
@@ -70,7 +70,7 @@ export function ReadOnlyField({ field, value }: ReadOnlyFieldProps) {
         {field.label}
       </p>
       <div className="w-full border border-[color:var(--color-parch-dark)] rounded-sm px-3 py-2 text-sm font-sans bg-[color:var(--color-parch)] text-[color:var(--color-ink)] min-h-[80px] whitespace-pre-wrap">
-        {value || <span className="text-[color:var(--color-dust)] italic">No response</span>}
+        {value || <span className="text-[color:var(--color-slate)] italic">No response</span>}
       </div>
     </div>
   );
@@ -167,7 +167,7 @@ export function InteractiveField({ field, value, error, onChange }: InteractiveF
         </p>
       )}
       {field.minLength && (
-        <p id={hintId} className="mt-1 text-[11px] font-mono text-[color:var(--color-dust)]">
+        <p id={hintId} className="mt-1 text-[11px] font-mono text-[color:var(--color-slate)]">
           {value.length}/{field.minLength} characters
         </p>
       )}

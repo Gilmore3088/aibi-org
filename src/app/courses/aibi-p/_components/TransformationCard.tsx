@@ -142,20 +142,20 @@ export function TransformationCard({
       >
         {/* Score */}
         <div>
-          <dt className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-dust)] mb-1">
+          <dt className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-1">
             Score
           </dt>
           <dd className="font-mono text-2xl tabular-nums" style={{ color: 'var(--color-ink)' }}>
             {preScore !== null ? (
               <>
-                <span className="text-[color:var(--color-dust)]">{preScore}</span>
-                {' '}<span className="text-base text-[color:var(--color-dust)]">→</span>{' '}
+                <span className="text-[color:var(--color-slate)]">{preScore}</span>
+                {' '}<span className="text-base text-[color:var(--color-slate)]">→</span>{' '}
                 <span style={{ color: postTierColorVar }}>{postScore}</span>
               </>
             ) : (
               <span style={{ color: postTierColorVar }}>{postScore}</span>
             )}
-            <span className="text-sm font-normal text-[color:var(--color-dust)]"> / 48</span>
+            <span className="text-sm font-normal text-[color:var(--color-slate)]"> / 48</span>
           </dd>
           {scoreImprovement && (
             <dd
@@ -169,7 +169,7 @@ export function TransformationCard({
 
         {/* Tier */}
         <div>
-          <dt className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-dust)] mb-1">
+          <dt className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-1">
             Tier
           </dt>
           <dd
@@ -177,7 +177,7 @@ export function TransformationCard({
             style={{ color: postTierColorVar }}
           >
             {tierChanged && preTierLabel && (
-              <span className="text-[color:var(--color-dust)] text-xs block normal-case tracking-normal font-normal mb-0.5">
+              <span className="text-[color:var(--color-slate)] text-xs block normal-case tracking-normal font-normal mb-0.5">
                 {preTierLabel} →
               </span>
             )}
@@ -187,7 +187,7 @@ export function TransformationCard({
 
         {/* Skills built */}
         <div>
-          <dt className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-dust)] mb-1">
+          <dt className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-1">
             Skills Built
           </dt>
           <dd className="font-mono text-2xl tabular-nums text-[color:var(--color-ink)]">
@@ -197,7 +197,7 @@ export function TransformationCard({
 
         {/* Hours saved */}
         <div>
-          <dt className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-dust)] mb-1">
+          <dt className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-1">
             Hrs Saved / Year
           </dt>
           <dd className="font-mono text-2xl tabular-nums text-[color:var(--color-ink)]">

@@ -28,7 +28,7 @@ export function ContentTable({ table }: ContentTableProps) {
                 <th
                   key={col.key}
                   scope="col"
-                  className="px-4 py-3 text-left font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-dust)] whitespace-nowrap"
+                  className="px-4 py-3 text-left font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] whitespace-nowrap"
                 >
                   {col.header}
                 </th>

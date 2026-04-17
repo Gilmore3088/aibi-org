@@ -230,7 +230,7 @@ export function ActivitySection({
       {/* Progress save — only show when all activities are done */}
       {allSubmitted && !progressSaved && (
         <div className="mt-6 pt-6 border-t border-[color:var(--color-parch-dark)]">
-          <p className="text-sm font-sans text-[color:var(--color-dust)] mb-4">
+          <p className="text-sm font-sans text-[color:var(--color-slate)] mb-4">
             All activities complete. Mark this module as done to continue.
           </p>
           <button

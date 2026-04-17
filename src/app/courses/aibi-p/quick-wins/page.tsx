@@ -188,7 +188,7 @@ export default function QuickWinsPage() {
 
       {/* Breadcrumb */}
       <nav className="mb-8" aria-label="Breadcrumb">
-        <ol className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-dust)]">
+        <ol className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">
           <li>
             <Link
               href="/courses/aibi-p"
@@ -209,7 +209,7 @@ export default function QuickWinsPage() {
             Post-Course
           </span>
           <div className="h-px w-8 bg-[color:var(--color-terra)]/30" aria-hidden="true" />
-          <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--color-dust)]">
+          <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--color-slate)]">
             Value Log
           </span>
         </div>
@@ -230,12 +230,12 @@ export default function QuickWinsPage() {
           className="bg-[color:var(--color-parch)] border border-[color:var(--color-terra)]/10 rounded-sm p-5"
           aria-label="Time saved this quarter"
         >
-          <div className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-dust)] mb-1">
+          <div className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-1">
             Saved this quarter
           </div>
           <div className="font-mono text-3xl font-bold text-[color:var(--color-terra)] tabular-nums">
             {totalQuarterlyHours.toFixed(1)}
-            <span className="text-base font-normal text-[color:var(--color-dust)] ml-1">hrs</span>
+            <span className="text-base font-normal text-[color:var(--color-slate)] ml-1">hrs</span>
           </div>
         </div>
 
@@ -243,7 +243,7 @@ export default function QuickWinsPage() {
           className="bg-[color:var(--color-parch)] border border-[color:var(--color-terra)]/10 rounded-sm p-5"
           aria-label="Quick wins logged"
         >
-          <div className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-dust)] mb-1">
+          <div className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-1">
             Wins logged
           </div>
           <div className="font-mono text-3xl font-bold text-[color:var(--color-ink)] tabular-nums">
@@ -321,7 +321,7 @@ export default function QuickWinsPage() {
           <div>
             <label
               htmlFor="qw-description"
-              className="block font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-dust)] mb-2"
+              className="block font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-2"
             >
               What did you automate?
             </label>
@@ -342,7 +342,7 @@ export default function QuickWinsPage() {
             <div>
               <label
                 htmlFor="qw-tool"
-                className="block font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-dust)] mb-2"
+                className="block font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-2"
               >
                 Which tool?
               </label>
@@ -365,7 +365,7 @@ export default function QuickWinsPage() {
             <div>
               <label
                 htmlFor="qw-skill"
-                className="block font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-dust)] mb-2"
+                className="block font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-2"
               >
                 Which skill?
               </label>
@@ -387,7 +387,7 @@ export default function QuickWinsPage() {
             <div>
               <label
                 htmlFor="qw-frequency"
-                className="block font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-dust)] mb-2"
+                className="block font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-2"
               >
                 How often?
               </label>
@@ -410,7 +410,7 @@ export default function QuickWinsPage() {
             <div>
               <label
                 htmlFor="qw-time"
-                className="block font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-dust)] mb-2"
+                className="block font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-2"
               >
                 Time saved per use
               </label>
@@ -435,7 +435,7 @@ export default function QuickWinsPage() {
           <div>
             <label
               htmlFor="qw-department"
-              className="block font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-dust)] mb-2"
+              className="block font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-2"
             >
               Department
             </label>
@@ -472,7 +472,7 @@ export default function QuickWinsPage() {
         </h2>
 
         {loading && (
-          <p className="font-sans text-sm text-[color:var(--color-dust)]">Loading...</p>
+          <p className="font-sans text-sm text-[color:var(--color-slate)]">Loading...</p>
         )}
 
         {!loading && wins.length === 0 && (
@@ -498,16 +498,16 @@ export default function QuickWinsPage() {
                 </div>
 
                 <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1">
-                  <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-dust)]">
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">
                     {toolLabel(win.tool)}
                   </span>
-                  <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-dust)]">
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">
                     {win.skill_name}
                   </span>
-                  <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-dust)]">
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">
                     {win.frequency}
                   </span>
-                  <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-dust)]">
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">
                     {win.department}
                   </span>
                 </div>

@@ -157,21 +157,21 @@ export function IterationTracker({
             </span>
           )}
         </div>
-        <p className="text-sm font-sans text-[color:var(--color-dust)] leading-relaxed">{activity.description}</p>
+        <p className="text-sm font-sans text-[color:var(--color-slate)] leading-relaxed">{activity.description}</p>
       </div>
 
       <div className="border-t border-[color:var(--color-parch-dark)] px-6 py-6">
         {!state.submitted && (
           <div className="mb-6 p-4 bg-[color:var(--color-parch)] border border-[color:var(--color-parch-dark)] rounded-sm">
-            <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-dust)] mb-1">Before you begin</p>
+            <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-1">Before you begin</p>
             {state.skillLoading ? (
-              <p className="text-sm font-sans text-[color:var(--color-dust)]">Loading your Module 7 skill...</p>
+              <p className="text-sm font-sans text-[color:var(--color-slate)]">Loading your Module 7 skill...</p>
             ) : state.originalSkillMd ? (
-              <p className="text-sm font-sans text-[color:var(--color-dust)] leading-relaxed">
+              <p className="text-sm font-sans text-[color:var(--color-slate)] leading-relaxed">
                 Your Module 7 skill file has been loaded. After submitting, an updated version (.md v1.1) with your iteration notes will download automatically.
               </p>
             ) : (
-              <p className="text-sm font-sans text-[color:var(--color-dust)] leading-relaxed">
+              <p className="text-sm font-sans text-[color:var(--color-slate)] leading-relaxed">
                 Open your Module 7 skill .md file alongside this activity for reference. Your iteration notes will be saved. To export an updated skill file, apply the changes you document below to your Module 7 .md file manually.
               </p>
             )}
@@ -189,8 +189,8 @@ export function IterationTracker({
               </div>
             ))}
             <div className="mt-4 pt-4 border-t border-[color:var(--color-parch-dark)]">
-              <p className="text-xs font-mono text-[color:var(--color-dust)] uppercase tracking-widest mb-2">Iteration complete</p>
-              <p className="text-sm font-sans text-[color:var(--color-dust)] leading-relaxed">
+              <p className="text-xs font-mono text-[color:var(--color-slate)] uppercase tracking-widest mb-2">Iteration complete</p>
+              <p className="text-sm font-sans text-[color:var(--color-slate)] leading-relaxed">
                 Your iteration notes have been saved. If your Module 7 skill file was available, an updated .md file (v1.1) was downloaded with your revision notes prepended. Otherwise, apply the changes documented above to your Module 7 .md file manually.
               </p>
             </div>
@@ -211,7 +211,7 @@ export function IterationTracker({
               </p>
             )}
             <div className="mt-4 pt-4 border-t border-[color:var(--color-parch-dark)]">
-              <p className="text-xs font-sans text-[color:var(--color-dust)] mb-3 leading-relaxed">
+              <p className="text-xs font-sans text-[color:var(--color-slate)] mb-3 leading-relaxed">
                 Submitting will save your iteration notes.{state.originalSkillMd ? ' An updated .md file (v1.1) with your revision notes will also download automatically.' : ''}
               </p>
               <button

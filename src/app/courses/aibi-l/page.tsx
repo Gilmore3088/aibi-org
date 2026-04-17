@@ -49,7 +49,7 @@ export default function AiBILOverviewPage() {
             AiBI-L
           </span>
           <div className="h-px w-8 bg-[color:var(--color-sage)]/30" aria-hidden="true" />
-          <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--color-dust)]">
+          <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--color-slate)]">
             Banking AI Leader
           </span>
         </div>
@@ -62,7 +62,7 @@ export default function AiBILOverviewPage() {
           <span className="text-[color:var(--color-sage)] italic">Leader</span>
         </h1>
 
-        <p className="font-serif italic text-xl sm:text-2xl text-[color:var(--color-slate)] max-w-2xl leading-relaxed mb-8">
+        <p className="font-serif italic text-xl sm:text-2xl text-[color:var(--color-dust)] max-w-2xl leading-relaxed mb-8">
           A 1-day in-person workshop for the executives who set strategy, approve budgets, and
           answer to examiners. Leave with a board-ready AI presentation built with your numbers.
         </p>
@@ -75,7 +75,7 @@ export default function AiBILOverviewPage() {
             { label: 'Prerequisite', value: 'Institutional relationship' },
           ].map(({ label, value }) => (
             <div key={label} className="flex items-center gap-2">
-              <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-[color:var(--color-dust)]">
+              <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-[color:var(--color-slate)]">
                 {label}
               </span>
               <span className="font-mono text-[9px] text-[color:var(--color-sage)] tabular-nums">
@@ -108,7 +108,7 @@ export default function AiBILOverviewPage() {
       <section className="mb-28" aria-labelledby="pricing-heading">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-[color:var(--color-sage)]/10 border border-[color:var(--color-sage)]/10 rounded-sm overflow-hidden">
           <div className="bg-[color:var(--color-linen)] p-10">
-            <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-[color:var(--color-dust)] mb-3">
+            <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-[color:var(--color-slate)] mb-3">
               Individual Executive
             </p>
             <p className="font-mono text-4xl tabular-nums text-[color:var(--color-ink)] mb-2">
@@ -119,7 +119,7 @@ export default function AiBILOverviewPage() {
             </p>
           </div>
           <div className="bg-[color:var(--color-linen)] p-10">
-            <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-[color:var(--color-dust)] mb-3">
+            <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-[color:var(--color-slate)] mb-3">
               Team of 8
             </p>
             <p className="font-mono text-4xl tabular-nums text-[color:var(--color-ink)] mb-2">
@@ -142,7 +142,7 @@ export default function AiBILOverviewPage() {
             Four <span className="italic">Sessions</span>
           </h2>
           <div className="w-12 h-px bg-[color:var(--color-sage)] mb-5" aria-hidden="true" />
-          <p className="font-serif italic text-lg text-[color:var(--color-slate)] max-w-xl">
+          <p className="font-serif italic text-lg text-[color:var(--color-dust)] max-w-xl">
             Each session builds on the previous. Every session produces a deliverable you keep.
           </p>
         </div>
@@ -162,10 +162,10 @@ export default function AiBILOverviewPage() {
                       S{session.number}
                     </span>
                     <div className="h-px flex-1 max-w-[3rem] bg-[color:var(--color-sage)]/20" aria-hidden="true" />
-                    <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-[color:var(--color-dust)] tabular-nums">
+                    <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-[color:var(--color-slate)] tabular-nums">
                       {session.durationMinutes} min
                     </span>
-                    <span className="font-mono text-[9px] text-[color:var(--color-dust)]">
+                    <span className="font-mono text-[9px] text-[color:var(--color-slate)]">
                       {session.startTime}
                     </span>
                   </div>
@@ -221,7 +221,7 @@ export default function AiBILOverviewPage() {
                   {label}
                 </span>
                 {duration && (
-                  <span className="font-mono text-[9px] text-[color:var(--color-dust)] tabular-nums shrink-0">
+                  <span className="font-mono text-[9px] text-[color:var(--color-slate)] tabular-nums shrink-0">
                     {duration}
                   </span>
                 )}

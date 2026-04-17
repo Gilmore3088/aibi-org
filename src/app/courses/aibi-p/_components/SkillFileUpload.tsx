@@ -87,7 +87,7 @@ export function SkillFileUpload({
           *
         </span>
       </label>
-      <p className="font-sans text-xs text-[color:var(--color-dust)] mb-2">
+      <p className="font-sans text-xs text-[color:var(--color-slate)] mb-2">
         Upload the completed skill template you built during the course.
       </p>
 
@@ -102,12 +102,12 @@ export function SkillFileUpload({
         className="block w-full text-sm font-sans text-[color:var(--color-ink)] file:mr-4 file:py-2 file:px-4 file:rounded-sm file:border file:border-[color:var(--color-terra)] file:text-[11px] file:font-mono file:uppercase file:tracking-widest file:text-[color:var(--color-terra)] file:bg-transparent hover:file:bg-[color:var(--color-terra)] hover:file:text-[color:var(--color-linen)] file:cursor-pointer file:transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-2 rounded-sm"
       />
 
-      <p id="skill-file-hint" className="mt-1 text-[11px] font-mono text-[color:var(--color-dust)]">
+      <p id="skill-file-hint" className="mt-1 text-[11px] font-mono text-[color:var(--color-slate)]">
         Accepted formats: .md, .txt
       </p>
 
       {uploadStatus === 'uploading' && (
-        <p className="mt-2 text-[11px] font-mono text-[color:var(--color-dust)]" aria-live="polite">
+        <p className="mt-2 text-[11px] font-mono text-[color:var(--color-slate)]" aria-live="polite">
           Uploading{uploadedFilename ? ` ${uploadedFilename}` : ''}…
         </p>
       )}

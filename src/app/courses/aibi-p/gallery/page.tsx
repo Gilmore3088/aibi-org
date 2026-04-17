@@ -19,7 +19,7 @@ export default async function OutputGalleryPage() {
     <div className="max-w-4xl mx-auto px-4 sm:px-8 py-16">
       {/* Breadcrumb */}
       <nav className="mb-8" aria-label="Breadcrumb">
-        <ol className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-dust)]">
+        <ol className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">
           <li>
             <Link
               href="/courses/aibi-p"
@@ -40,7 +40,7 @@ export default async function OutputGalleryPage() {
             Reference
           </span>
           <div className="h-px w-8 bg-[color:var(--color-terra)]/30" aria-hidden="true" />
-          <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--color-dust)]">
+          <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--color-slate)]">
             Exemplary Outputs
           </span>
         </div>
@@ -55,7 +55,7 @@ export default async function OutputGalleryPage() {
           loan file checklists to board memos to SAR narrative drafts.
         </p>
 
-        <p className="font-sans text-sm text-[color:var(--color-dust)] mt-3 leading-relaxed max-w-2xl">
+        <p className="font-sans text-sm text-[color:var(--color-slate)] mt-3 leading-relaxed max-w-2xl">
           Each example was produced using the skills, platforms, and prompting patterns
           taught in AiBI-P. Study the quality markers — they are the same criteria your
           capstone submission will be evaluated against.

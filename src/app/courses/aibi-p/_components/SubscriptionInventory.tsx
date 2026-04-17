@@ -168,7 +168,7 @@ export function SubscriptionInventory({
             </span>
           )}
         </div>
-        <p className="text-sm font-sans text-[color:var(--color-dust)] leading-relaxed">
+        <p className="text-sm font-sans text-[color:var(--color-slate)] leading-relaxed">
           {activity.description}
         </p>
       </div>
@@ -187,7 +187,7 @@ export function SubscriptionInventory({
                 <span className="font-sans text-sm font-semibold text-[color:var(--color-ink)] sm:w-52 shrink-0">
                   {PLATFORM_LABELS[field.id] ?? field.label}
                 </span>
-                <span className="font-sans text-sm text-[color:var(--color-dust)]">
+                <span className="font-sans text-sm text-[color:var(--color-slate)]">
                   {selectedOption?.label ?? getAccessLabel(field.id, value) ?? (
                     <em>No selection</em>
                   )}

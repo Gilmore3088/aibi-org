@@ -20,7 +20,7 @@ const COPY_RESET_MS = 2000;
 
 function SectionLabel({ children }: { readonly children: React.ReactNode }) {
   return (
-    <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-dust)] mb-1">
+    <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-1">
       {children}
     </p>
   );
@@ -141,7 +141,7 @@ export function ToolGuide({ guide }: ToolGuideProps) {
                 href={guide.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-dust)] hover:text-[color:var(--color-terra)] transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-1 rounded-sm"
+                className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] hover:text-[color:var(--color-terra)] transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-1 rounded-sm"
               >
                 {guide.url.replace('https://', '')} ↗
               </a>
@@ -283,7 +283,7 @@ export function ToolGuide({ guide }: ToolGuideProps) {
               )}
             </>
           ) : (
-            <p className="font-sans text-sm text-[color:var(--color-dust)] italic">
+            <p className="font-sans text-sm text-[color:var(--color-slate)] italic">
               Custom instructions are not available on this platform.
             </p>
           )}

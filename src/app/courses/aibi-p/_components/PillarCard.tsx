@@ -42,7 +42,7 @@ const PILLAR_ICONS: Record<Pillar, React.ReactElement> = {
 function StatusBadge({ status, colorVar }: { status: PillarStatus; colorVar: string }) {
   if (status === 'locked') {
     return (
-      <span className="font-mono text-[10px] uppercase tracking-wider text-[color:var(--color-dust)]">
+      <span className="font-mono text-[10px] uppercase tracking-wider text-[color:var(--color-slate)]">
         Locked
       </span>
     );
@@ -99,7 +99,7 @@ export function PillarCard({
       </p>
 
       {/* Module count */}
-      <p className="font-mono text-[10px] text-[color:var(--color-dust)] mb-4 uppercase tracking-wider">
+      <p className="font-mono text-[10px] text-[color:var(--color-slate)] mb-4 uppercase tracking-wider">
         {moduleCount} {moduleCount === 1 ? 'module' : 'modules'}
       </p>
 

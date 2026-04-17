@@ -160,7 +160,7 @@ export function MobileSidebarDrawer({ completedModules, currentModule }: MobileS
                       className="flex items-center gap-3 px-6 py-2.5 opacity-40 cursor-not-allowed"
                       aria-label={`Module ${mod.number}: ${mod.title} — locked`}
                     >
-                      <span className="font-mono text-[10px] w-5 text-[color:var(--color-dust)]">
+                      <span className="font-mono text-[10px] w-5 text-[color:var(--color-slate)]">
                         {formattedNumber}
                       </span>
                       <span className="font-serif text-xs text-[color:var(--color-ink)] flex-1 leading-tight">
@@ -212,7 +212,7 @@ export function MobileSidebarDrawer({ completedModules, currentModule }: MobileS
                     onClick={close}
                     className="flex items-center gap-3 px-6 py-2.5 hover:bg-[color:var(--color-parch)] transition-colors"
                   >
-                    <span className="font-mono text-[10px] w-5 text-[color:var(--color-dust)]">
+                    <span className="font-mono text-[10px] w-5 text-[color:var(--color-slate)]">
                       {formattedNumber}
                     </span>
                     <span className="font-serif text-xs text-[color:var(--color-ink)] flex-1 leading-tight">

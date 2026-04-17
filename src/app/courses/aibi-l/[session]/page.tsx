@@ -84,8 +84,8 @@ export default async function SessionPage({ params }: SessionPageParams) {
           >
             AiBI-L
           </Link>
-          <span className="text-[color:var(--color-dust)]" aria-hidden="true">/</span>
-          <span className="text-[color:var(--color-dust)]">
+          <span className="text-[color:var(--color-slate)]" aria-hidden="true">/</span>
+          <span className="text-[color:var(--color-slate)]">
             Session {workshopSession.number}
           </span>
         </div>
@@ -98,10 +98,10 @@ export default async function SessionPage({ params }: SessionPageParams) {
             S{workshopSession.number}
           </span>
           <div className="h-px w-8 bg-[color:var(--color-sage)]/30" aria-hidden="true" />
-          <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-[color:var(--color-dust)] tabular-nums">
+          <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-[color:var(--color-slate)] tabular-nums">
             {workshopSession.durationMinutes} min
           </span>
-          <span className="font-mono text-[9px] text-[color:var(--color-dust)]">
+          <span className="font-mono text-[9px] text-[color:var(--color-slate)]">
             {workshopSession.startTime}
           </span>
         </div>
@@ -110,7 +110,7 @@ export default async function SessionPage({ params }: SessionPageParams) {
           {workshopSession.title}
         </h1>
 
-        <p className="font-serif italic text-lg text-[color:var(--color-slate)] leading-relaxed mb-6 max-w-xl">
+        <p className="font-serif italic text-lg text-[color:var(--color-dust)] leading-relaxed mb-6 max-w-xl">
           {workshopSession.coreQuestion}
         </p>
 
@@ -136,7 +136,7 @@ export default async function SessionPage({ params }: SessionPageParams) {
             Facilitated Activity
           </span>
           <div className="h-px flex-1 bg-[color:var(--color-sage)]/15" aria-hidden="true" />
-          <span className="font-mono text-[9px] tabular-nums text-[color:var(--color-dust)]">
+          <span className="font-mono text-[9px] tabular-nums text-[color:var(--color-slate)]">
             {workshopSession.activity.estimatedMinutes} min
           </span>
         </div>
@@ -170,7 +170,7 @@ export default async function SessionPage({ params }: SessionPageParams) {
         >
           <h2
             id="sources-heading"
-            className="font-mono text-[9px] uppercase tracking-[0.3em] text-[color:var(--color-dust)] mb-4"
+            className="font-mono text-[9px] uppercase tracking-[0.3em] text-[color:var(--color-slate)] mb-4"
           >
             Sources
           </h2>
@@ -180,7 +180,7 @@ export default async function SessionPage({ params }: SessionPageParams) {
                 <p className="font-sans text-xs text-[color:var(--color-slate)]">
                   {stat.value}
                 </p>
-                <span className="font-mono text-[9px] text-[color:var(--color-dust)]">
+                <span className="font-mono text-[9px] text-[color:var(--color-slate)]">
                   {stat.source} ({stat.year})
                 </span>
               </div>

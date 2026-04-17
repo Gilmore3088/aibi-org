@@ -61,7 +61,7 @@ function DimensionBar({ dimension, delta }: DimensionBarProps) {
         <span className="font-sans text-sm text-[color:var(--color-ink)]">{label}</span>
         <span
           className="font-mono text-xs tabular-nums"
-          style={{ color: improved ? 'var(--color-terra)' : 'var(--color-dust)' }}
+          style={{ color: improved ? 'var(--color-terra)' : 'var(--color-slate)' }}
           aria-label={`${improvementLabel} points`}
         >
           {improvementLabel}
@@ -93,7 +93,7 @@ function DimensionBar({ dimension, delta }: DimensionBarProps) {
       </div>
 
       <div className="flex items-center justify-between mt-1">
-        <span className="font-mono text-[10px] tabular-nums text-[color:var(--color-dust)]">
+        <span className="font-mono text-[10px] tabular-nums text-[color:var(--color-slate)]">
           {preScore !== null ? `${preScore} → ` : ''}
           <span style={{ color: 'var(--color-ink)' }}>{postScore}</span>
           {' '}/ {maxScore}
@@ -154,10 +154,10 @@ export function GrowthComparison({
             role="status"
             aria-label={`Tier advanced from ${preTierLabel} to ${postTierLabel}`}
           >
-            <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-dust)]">
+            <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">
               {preTierLabel}
             </span>
-            <span className="font-mono text-[10px] text-[color:var(--color-dust)]" aria-hidden="true">
+            <span className="font-mono text-[10px] text-[color:var(--color-slate)]" aria-hidden="true">
               →
             </span>
             <span
@@ -183,7 +183,7 @@ export function GrowthComparison({
       {preScore !== null && (
         <div className="grid grid-cols-2 gap-4 mb-8 p-4 bg-[color:var(--color-linen)] border border-[color:var(--color-ink)]/8 rounded-sm">
           <div>
-            <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-dust)] mb-1">
+            <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-1">
               Before Course
             </p>
             <p className="font-mono text-3xl tabular-nums text-[color:var(--color-dust)]">
@@ -206,7 +206,7 @@ export function GrowthComparison({
       {/* Dimension breakdown */}
       {sortedDimensions.length > 0 && (
         <div>
-          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-dust)] mb-4">
+          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-4">
             By Dimension
           </p>
           <div>
@@ -215,7 +215,7 @@ export function GrowthComparison({
             ))}
           </div>
           {preScore !== null && (
-            <p className="font-sans text-xs text-[color:var(--color-dust)] mt-4 leading-relaxed">
+            <p className="font-sans text-xs text-[color:var(--color-slate)] mt-4 leading-relaxed">
               Ghost bars reflect your pre-course scores. Solid bars are post-course.
               Each session draws from different questions, so per-dimension scores
               reflect the questions served in that session.

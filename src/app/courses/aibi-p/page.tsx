@@ -65,7 +65,7 @@ export default async function CourseOverviewPage() {
             AiBI-P
           </span>
           <div className="h-px w-8 bg-[color:var(--color-terra)]/30" aria-hidden="true" />
-          <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--color-dust)]">
+          <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--color-slate)]">
             Banking AI Practitioner
           </span>
         </div>
@@ -78,7 +78,7 @@ export default async function CourseOverviewPage() {
           <span className="text-[color:var(--color-terra)] italic">Practitioner</span>
         </h1>
 
-        <p className="font-serif italic text-lg text-[color:var(--color-slate)] max-w-xl leading-relaxed mb-6">
+        <p className="font-serif italic text-lg text-[color:var(--color-dust)] max-w-xl leading-relaxed mb-6">
           Nine modules across four pillars. Every community bank and credit union staff member who
           completes this course earns the AiBI-P credential — not for memorizing definitions, but for
           demonstrating real proficiency.
@@ -128,7 +128,7 @@ export default async function CourseOverviewPage() {
             </p>
           </div>
           <span
-            className="font-mono text-[10px] tracking-[0.3em] text-[color:var(--color-dust)] hidden md:block"
+            className="font-mono text-[10px] tracking-[0.3em] text-[color:var(--color-slate)] hidden md:block"
             aria-hidden="true"
           >
             SCIENTIA POTENTIA EST

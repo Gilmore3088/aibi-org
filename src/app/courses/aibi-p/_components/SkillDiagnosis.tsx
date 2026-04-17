@@ -179,14 +179,14 @@ export function SkillDiagnosis({
             </span>
           )}
         </div>
-        <p className="text-sm font-sans text-[color:var(--color-dust)] leading-relaxed">
+        <p className="text-sm font-sans text-[color:var(--color-slate)] leading-relaxed">
           {activity.description}
         </p>
       </div>
 
       {/* Weak prompt callout */}
       <div className="mb-6 rounded-sm border border-[color:var(--color-parch-dark)] bg-[color:var(--color-parch)] px-5 py-4">
-        <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-dust)] mb-2">
+        <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-2">
           The prompt to evaluate
         </p>
         <blockquote className="font-sans text-[15px] text-[color:var(--color-ink)] leading-relaxed italic border-l-2 border-[color:var(--color-terra)] pl-4">
@@ -208,7 +208,7 @@ export function SkillDiagnosis({
               {missingComponentField?.label ?? 'Missing component selected'}
             </p>
             <div className="w-full border border-[color:var(--color-parch-dark)] rounded-sm px-3 py-2 text-sm font-sans bg-[color:var(--color-parch)] text-[color:var(--color-ink)]">
-              {selectedOption || <span className="text-[color:var(--color-dust)] italic">No response</span>}
+              {selectedOption || <span className="text-[color:var(--color-slate)] italic">No response</span>}
             </div>
           </div>
           <div>
@@ -217,7 +217,7 @@ export function SkillDiagnosis({
             </p>
             <div className="w-full border border-[color:var(--color-parch-dark)] rounded-sm px-3 py-2 text-sm font-sans bg-[color:var(--color-parch)] text-[color:var(--color-ink)] min-h-[80px] whitespace-pre-wrap">
               {state.improvedSkill || (
-                <span className="text-[color:var(--color-dust)] italic">No response</span>
+                <span className="text-[color:var(--color-slate)] italic">No response</span>
               )}
             </div>
           </div>
@@ -324,7 +324,7 @@ export function SkillDiagnosis({
                 Error: {state.errors['improved-skill']}
               </p>
             )}
-            <p id="improved-skill-hint" className="mt-1 text-[11px] font-mono text-[color:var(--color-dust)]">
+            <p id="improved-skill-hint" className="mt-1 text-[11px] font-mono text-[color:var(--color-slate)]">
               {state.improvedSkill.length}/{MIN_LENGTH} characters
             </p>
           </div>
@@ -354,13 +354,13 @@ export function SkillDiagnosis({
       {/* Artifact downloads — shown after successful submission */}
       {state.submitted && (
         <div className="mt-6 pt-5 border-t border-[color:var(--color-parch-dark)]">
-          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-dust)] mb-1">
+          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-1">
             Your artifact is ready
           </p>
           <h4 className="font-serif text-base font-bold text-[color:var(--color-ink)] mb-1">
             Skill Template Library
           </h4>
-          <p className="text-sm font-sans text-[color:var(--color-dust)] mb-4 leading-relaxed">
+          <p className="text-sm font-sans text-[color:var(--color-slate)] mb-4 leading-relaxed">
             Five institution-grade banking AI skills across Operations, Compliance, Lending, and
             Marketing — formatted for immediate deployment in ChatGPT, Claude, or Gemini.
           </p>
@@ -379,7 +379,7 @@ export function SkillDiagnosis({
 
           {/* Individual .md template links */}
           <div className="mt-5">
-            <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-dust)] mb-3">
+            <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-3">
               Individual skill templates (.md)
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">

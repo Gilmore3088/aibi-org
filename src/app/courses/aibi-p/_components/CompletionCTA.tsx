@@ -50,7 +50,7 @@ export function CompletionCTA({ moduleNumber, isLastModule }: CompletionCTAProps
           <p className="font-serif text-lg font-bold text-[color:var(--color-ink)] mb-3">
             Ready for your assessed work product.
           </p>
-          <p className="font-sans text-sm text-[color:var(--color-dust)] leading-relaxed mb-5">
+          <p className="font-sans text-sm text-[color:var(--color-slate)] leading-relaxed mb-5">
             You have completed all nine modules of the AiBI-P course. Your final step is to
             submit a four-item work product package demonstrating your professional AI capability.
             This is not a test — it is a demonstration of the skills you have built throughout
@@ -63,7 +63,7 @@ export function CompletionCTA({ moduleNumber, isLastModule }: CompletionCTAProps
             Begin Work Product Submission
             <ArrowIcon />
           </a>
-          <p className="mt-3 font-mono text-[10px] text-[color:var(--color-dust)]">
+          <p className="mt-3 font-mono text-[10px] text-[color:var(--color-slate)]">
             Four items required. Reviewed against a five-dimension rubric.
           </p>
         </div>
@@ -73,13 +73,13 @@ export function CompletionCTA({ moduleNumber, isLastModule }: CompletionCTAProps
           className="mt-4 p-5 bg-[color:var(--color-linen)] border border-[color:var(--color-ink)]/10 rounded-sm"
           aria-label="Measure your growth"
         >
-          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-dust)] mb-2">
+          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-2">
             Optional — Measure Your Growth
           </p>
           <p className="font-sans text-sm text-[color:var(--color-ink)] mb-1">
             See how far you&rsquo;ve come.
           </p>
-          <p className="font-sans text-xs text-[color:var(--color-dust)] leading-relaxed mb-4">
+          <p className="font-sans text-xs text-[color:var(--color-slate)] leading-relaxed mb-4">
             Take the same readiness assessment you completed before the course. The side-by-side
             comparison shows your AI readiness improvement — dimension by dimension.
           </p>
@@ -117,7 +117,7 @@ export function CompletionCTA({ moduleNumber, isLastModule }: CompletionCTAProps
           <p className="font-serif text-lg font-bold text-[color:var(--color-ink)] mb-3">
             You have the foundation. Now see the full picture.
           </p>
-          <p className="font-sans text-sm text-[color:var(--color-dust)] leading-relaxed mb-5">
+          <p className="font-sans text-sm text-[color:var(--color-slate)] leading-relaxed mb-5">
             You now know how to classify data, recognise hallucination patterns, and build
             your own Acceptable Use Card. An Executive Briefing maps that knowledge to your
             institution&rsquo;s specific workflows, vendors, and risk profile.
@@ -131,7 +131,7 @@ export function CompletionCTA({ moduleNumber, isLastModule }: CompletionCTAProps
             Book an Executive Briefing
             <ArrowIcon />
           </a>
-          <p className="mt-3 font-mono text-[10px] text-[color:var(--color-dust)]">
+          <p className="mt-3 font-mono text-[10px] text-[color:var(--color-slate)]">
             No obligation. 30 minutes. Specific to your institution.
           </p>
         </div>
@@ -160,7 +160,7 @@ export function CompletionCTA({ moduleNumber, isLastModule }: CompletionCTAProps
         className="mt-8 p-4 bg-[color:var(--color-parch)] border border-[color:var(--color-parch-dark)] rounded-sm"
         aria-label="Module complete"
       >
-        <p className="font-sans text-sm text-[color:var(--color-dust)] leading-relaxed">{message}</p>
+        <p className="font-sans text-sm text-[color:var(--color-slate)] leading-relaxed">{message}</p>
       </div>
       <TimeSavingsCard moduleNumber={moduleNumber} />
     </>

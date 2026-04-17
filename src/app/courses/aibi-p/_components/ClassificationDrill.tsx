@@ -193,18 +193,18 @@ export function ClassificationDrill({
             </span>
           )}
         </div>
-        <p className="text-sm font-sans text-[color:var(--color-dust)] leading-relaxed">{activity.description}</p>
+        <p className="text-sm font-sans text-[color:var(--color-slate)] leading-relaxed">{activity.description}</p>
       </div>
 
       {phase === 'ready' && (
         <div className="text-center py-8">
-          <p className="font-sans text-sm text-[color:var(--color-dust)] mb-2">
+          <p className="font-sans text-sm text-[color:var(--color-slate)] mb-2">
             {totalScenarios} scenarios · 20 seconds each · score shown at end
           </p>
-          <p className="font-sans text-sm text-[color:var(--color-dust)] mb-4">
+          <p className="font-sans text-sm text-[color:var(--color-slate)] mb-4">
             Classify each scenario as Tier 1 (Public), Tier 2 (Internal Only), or Tier 3 (Highly Restricted).
           </p>
-          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-dust)] mb-8">
+          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-8">
             Keyboard shortcut: press 1, 2, or 3 to select during the drill
           </p>
           <button

@@ -76,7 +76,7 @@ export default async function PurchasePage() {
           AiBI-P
         </span>
         <div className="h-px w-8 bg-[color:var(--color-terra)]/30" aria-hidden="true" />
-        <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--color-dust)]">
+        <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--color-slate)]">
           Banking AI Practitioner
         </span>
       </div>
@@ -87,7 +87,7 @@ export default async function PurchasePage() {
         <span className="text-[color:var(--color-terra)] italic">AiBI-P</span>
       </h1>
 
-      <p className="font-serif italic text-lg text-[color:var(--color-slate)] leading-relaxed mb-10">
+      <p className="font-serif italic text-lg text-[color:var(--color-dust)] leading-relaxed mb-10">
         The Banking AI Practitioner course prepares every staff member at a community bank
         or credit union to use AI tools safely, professionally, and with regulatory confidence.
       </p>
@@ -101,7 +101,7 @@ export default async function PurchasePage() {
           >
             $79
           </span>
-          <span className="font-mono text-sm text-[color:var(--color-dust)] uppercase tracking-widest">
+          <span className="font-mono text-sm text-[color:var(--color-slate)] uppercase tracking-widest">
             per seat
           </span>
         </div>
@@ -139,7 +139,7 @@ export default async function PurchasePage() {
       <div className="pt-6 border-t border-[color:var(--color-terra)]/10">
         <Link
           href="/courses/aibi-p"
-          className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-dust)] hover:text-[color:var(--color-ink)] transition-colors"
+          className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-slate)] hover:text-[color:var(--color-ink)] transition-colors"
         >
           Back to Course Overview
         </Link>

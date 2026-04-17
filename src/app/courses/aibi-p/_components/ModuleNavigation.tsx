@@ -20,7 +20,7 @@ export function ModuleNavigation({
     <div className="flex items-center justify-between mt-16 pt-8 border-t border-[color:var(--color-parch-dark)]">
       <Link
         href="/courses/aibi-p"
-        className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-dust)] hover:text-[color:var(--color-ink)] transition-colors"
+        className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-slate)] hover:text-[color:var(--color-ink)] transition-colors"
       >
         Back to Overview
       </Link>
@@ -47,7 +47,7 @@ export function ModuleNavigation({
           </Link>
         ) : (
           <span
-            className="inline-flex items-center gap-2 bg-[color:var(--color-parch-dark)] text-[color:var(--color-dust)] px-6 py-2.5 rounded-sm font-mono text-[11px] uppercase tracking-widest cursor-not-allowed"
+            className="inline-flex items-center gap-2 bg-[color:var(--color-parch-dark)] text-[color:var(--color-slate)] px-6 py-2.5 rounded-sm font-mono text-[11px] uppercase tracking-widest cursor-not-allowed"
             role="button"
             aria-disabled="true"
             aria-label="Complete all activities to unlock the next module"
@@ -71,7 +71,7 @@ export function ModuleNavigation({
       )}
 
       {isLastModule && (
-        <span className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-dust)]">
+        <span className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-slate)]">
           Course Complete
         </span>
       )}

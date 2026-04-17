@@ -24,7 +24,7 @@ export function ResubmissionBanner({ reviewFeedback }: ResubmissionBannerProps) 
       )}
 
       <div className="mb-6">
-        <p className="font-sans text-sm text-[color:var(--color-dust)] italic">
+        <p className="font-sans text-sm text-[color:var(--color-slate)] italic">
           Address the reviewer&#39;s feedback above, then resubmit your updated work product below.
           You may resubmit once.
         </p>

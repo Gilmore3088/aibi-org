@@ -31,7 +31,7 @@ export default async function CertificatePage() {
           <h1 className="text-2xl font-bold text-[var(--color-ink)] mb-4">
             Service Unavailable
           </h1>
-          <p className="text-[var(--color-dust)]">
+          <p className="text-[var(--color-slate)]">
             The certificate service is not configured. Please contact support.
           </p>
         </div>
@@ -64,7 +64,7 @@ export default async function CertificatePage() {
       <div className="max-w-3xl mx-auto">
         {/* Page header */}
         <div className="mb-10 text-center">
-          <p className="text-xs uppercase tracking-widest text-[var(--color-dust)] mb-2 font-sans">
+          <p className="text-xs uppercase tracking-widest text-[var(--color-slate)] mb-2 font-sans">
             The AI Banking Institute
           </p>
           <h1
@@ -74,7 +74,7 @@ export default async function CertificatePage() {
             {certificate ? 'Your Certificate' : 'Certificate Pending'}
           </h1>
           {certificate && (
-            <p className="text-[var(--color-dust)] font-sans text-sm">
+            <p className="text-[var(--color-slate)] font-sans text-sm">
               Awarded to{' '}
               <span className="text-[var(--color-ink)] font-semibold">{certificate.holder_name}</span>{' '}
               on {formatDate(certificate.issued_at)}
@@ -95,7 +95,7 @@ export default async function CertificatePage() {
 
               <div className="text-center relative z-10">
                 <p
-                  className="text-sm italic text-[var(--color-dust)] mb-2"
+                  className="text-sm italic text-[var(--color-slate)] mb-2"
                   style={{ fontFamily: 'Cormorant, Georgia, serif' }}
                 >
                   AI Banking Institute Presents
@@ -110,7 +110,7 @@ export default async function CertificatePage() {
                 <div className="w-16 h-px bg-[var(--color-terra)] opacity-40 mx-auto mb-6" />
 
                 <p
-                  className="text-sm italic text-[var(--color-dust)] mb-3"
+                  className="text-sm italic text-[var(--color-slate)] mb-3"
                   style={{ fontFamily: 'Cormorant, Georgia, serif' }}
                 >
                   This honors the distinguished performance of
@@ -131,7 +131,7 @@ export default async function CertificatePage() {
                   AiBI-P &middot; Banking AI Practitioner
                 </p>
                 <p
-                  className="text-sm font-bold text-[var(--color-dust)] uppercase tracking-wider mt-1"
+                  className="text-sm font-bold text-[var(--color-slate)] uppercase tracking-wider mt-1"
                   style={{ fontFamily: 'Cormorant SC, Cormorant, Georgia, serif' }}
                 >
                   The AI Banking Institute
@@ -140,7 +140,7 @@ export default async function CertificatePage() {
 
               <div className="mt-8 pt-6 border-t border-[color-mix(in srgb, var(--color-terra) 15%, transparent)] grid grid-cols-2 gap-4 text-sm relative z-10">
                 <div>
-                  <p className="text-xs uppercase tracking-widest text-[var(--color-dust)] font-sans mb-1">
+                  <p className="text-xs uppercase tracking-widest text-[var(--color-slate)] font-sans mb-1">
                     Issue Date
                   </p>
                   <p
@@ -151,7 +151,7 @@ export default async function CertificatePage() {
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs uppercase tracking-widest text-[var(--color-dust)] font-sans mb-1">
+                  <p className="text-xs uppercase tracking-widest text-[var(--color-slate)] font-sans mb-1">
                     Certificate ID
                   </p>
                   <p
@@ -167,7 +167,7 @@ export default async function CertificatePage() {
                 <div className="mt-4 text-center relative z-10">
                   <a
                     href={verificationUrl}
-                    className="text-[var(--color-dust)] hover:text-[var(--color-terra)] transition-colors"
+                    className="text-[var(--color-slate)] hover:text-[var(--color-terra)] transition-colors"
                     style={{
                       fontFamily: 'DM Mono, Courier New, monospace',
                       fontSize: '10px',
@@ -190,7 +190,7 @@ export default async function CertificatePage() {
                   <h3 className="font-bold text-[var(--color-ink)] font-sans mb-2 text-sm">
                     Add to LinkedIn
                   </h3>
-                  <p className="text-xs text-[var(--color-dust)] font-sans leading-relaxed mb-3">
+                  <p className="text-xs text-[var(--color-slate)] font-sans leading-relaxed mb-3">
                     LinkedIn badge integration coming soon. In the meantime, you can reference
                     your credential as:
                   </p>
@@ -228,7 +228,7 @@ export default async function CertificatePage() {
                   <h3 className="font-bold text-[var(--color-ink)] font-sans mb-2 text-sm">
                     Download PDF
                   </h3>
-                  <p className="text-xs text-[var(--color-dust)] font-sans leading-relaxed mb-4">
+                  <p className="text-xs text-[var(--color-slate)] font-sans leading-relaxed mb-4">
                     High-resolution vector format suitable for institutional framing.
                   </p>
                   <a
@@ -290,7 +290,7 @@ export default async function CertificatePage() {
             >
               Your Certificate Is Being Generated
             </h2>
-            <p className="text-[var(--color-dust)] font-sans text-sm mb-6 max-w-md mx-auto">
+            <p className="text-[var(--color-slate)] font-sans text-sm mb-6 max-w-md mx-auto">
               Your submission has been reviewed and approved. Your certificate will
               appear here shortly. Please refresh this page in a moment.
             </p>

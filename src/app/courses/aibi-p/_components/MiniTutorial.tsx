@@ -26,7 +26,7 @@ export function MiniTutorial({ tutorial }: MiniTutorialProps) {
           >
             {platformMeta.label}
           </span>
-          <span className="font-mono text-[11px] text-[color:var(--color-dust)]">
+          <span className="font-mono text-[11px] text-[color:var(--color-slate)]">
             {tutorial.timeEstimate}
           </span>
         </div>
@@ -65,7 +65,7 @@ export function MiniTutorial({ tutorial }: MiniTutorialProps) {
                 {/* Screenshot placeholder */}
                 {step.screenshotPlaceholder && (
                   <div className="mt-3 border border-dashed border-[color:var(--color-parch-dark)] rounded-sm bg-[color:var(--color-parch)] px-4 py-6 text-center">
-                    <p className="font-mono text-[11px] text-[color:var(--color-dust)] uppercase tracking-widest">
+                    <p className="font-mono text-[11px] text-[color:var(--color-slate)] uppercase tracking-widest">
                       [{step.screenshotPlaceholder}]
                     </p>
                   </div>
@@ -77,7 +77,7 @@ export function MiniTutorial({ tutorial }: MiniTutorialProps) {
 
         {/* Embedded prompt */}
         <div className="pt-4 border-t border-[color:var(--color-parch-dark)]">
-          <p className="text-[11px] font-mono uppercase tracking-widest text-[color:var(--color-dust)] mb-3">
+          <p className="text-[11px] font-mono uppercase tracking-widest text-[color:var(--color-slate)] mb-3">
             The prompt
           </p>
           <PromptCard prompt={tutorial.prompt} />

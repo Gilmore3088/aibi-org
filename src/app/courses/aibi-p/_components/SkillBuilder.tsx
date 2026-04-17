@@ -211,7 +211,7 @@ export function SkillBuilder({
             </span>
           )}
         </div>
-        <p className="text-sm font-sans text-[color:var(--color-dust)] leading-relaxed">
+        <p className="text-sm font-sans text-[color:var(--color-slate)] leading-relaxed">
           {activity.description}
         </p>
       </div>
@@ -240,7 +240,7 @@ export function SkillBuilder({
                   <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] mb-2">
                     RTFC Framework
                   </p>
-                  <p className="text-xs font-sans text-[color:var(--color-dust)] leading-relaxed">
+                  <p className="text-xs font-sans text-[color:var(--color-slate)] leading-relaxed">
                     Complete all four components: Role, Task, Format, and Constraints. Each field
                     maps to a component of the RTFC Framework taught in Module 6.
                   </p>
@@ -267,7 +267,7 @@ export function SkillBuilder({
                     </p>
                   )}
                   <div className="mt-4 pt-4 border-t border-[color:var(--color-parch-dark)]">
-                    <p className="text-xs font-sans text-[color:var(--color-dust)] mb-3 leading-relaxed">
+                    <p className="text-xs font-sans text-[color:var(--color-slate)] mb-3 leading-relaxed">
                       Submitting will save your skill and automatically download a .md file to your
                       device for deployment in your AI platform.
                     </p>

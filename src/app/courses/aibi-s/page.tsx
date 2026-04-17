@@ -57,7 +57,7 @@ export default async function AiBISOverviewPage() {
             AiBI-S
           </span>
           <div className="h-px w-8 bg-[color:var(--color-cobalt)]/30" aria-hidden="true" />
-          <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--color-dust)]">
+          <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--color-slate)]">
             Banking AI Specialist
           </span>
         </div>
@@ -70,7 +70,7 @@ export default async function AiBISOverviewPage() {
           <span className="text-[color:var(--color-cobalt)] italic">Specialist</span>
         </h1>
 
-        <p className="font-serif italic text-lg text-[color:var(--color-slate)] max-w-xl leading-relaxed mb-6">
+        <p className="font-serif italic text-lg text-[color:var(--color-dust)] max-w-xl leading-relaxed mb-6">
           Six weeks. Live cohort. Department managers at community banks and credit unions who complete
           this course deploy governed, measured AI automation to their teams — and earn the AiBI-S credential.
         </p>
@@ -84,7 +84,7 @@ export default async function AiBISOverviewPage() {
             { label: 'Prerequisite', value: 'AiBI-P certification' },
           ].map(({ label, value }) => (
             <div key={label} className="flex items-center gap-2">
-              <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-[color:var(--color-dust)]">
+              <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-[color:var(--color-slate)]">
                 {label}
               </span>
               <span
@@ -150,7 +150,7 @@ export default async function AiBISOverviewPage() {
             </p>
           </div>
           <span
-            className="font-mono text-[10px] tracking-[0.3em] text-[color:var(--color-dust)] hidden md:block"
+            className="font-mono text-[10px] tracking-[0.3em] text-[color:var(--color-slate)] hidden md:block"
             aria-hidden="true"
           >
             6 WEEKS · LIVE COHORT
@@ -192,7 +192,7 @@ export default async function AiBISOverviewPage() {
                 <h3 className="font-serif text-xl font-bold text-[color:var(--color-ink)] mb-2">
                   {meta.label}
                 </h3>
-                <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-[color:var(--color-dust)] mb-4">
+                <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-[color:var(--color-slate)] mb-4">
                   Weeks {meta.weeks[0]}–{meta.weeks[meta.weeks.length - 1]}
                 </p>
                 <p className="font-serif italic text-sm text-[color:var(--color-slate)] leading-relaxed mb-4">
@@ -264,7 +264,7 @@ export default async function AiBISOverviewPage() {
                   {meta.description}
                 </p>
                 <div>
-                  <p className="font-mono text-[9px] uppercase tracking-[0.15em] text-[color:var(--color-dust)] mb-1.5">
+                  <p className="font-mono text-[9px] uppercase tracking-[0.15em] text-[color:var(--color-slate)] mb-1.5">
                     Primary Platforms
                   </p>
                   <div className="flex flex-wrap gap-1.5">
@@ -351,7 +351,7 @@ export default async function AiBISOverviewPage() {
                       {week.title}
                     </h3>
                     <span
-                      className="shrink-0 font-mono text-[9px] uppercase tracking-widest text-[color:var(--color-dust)]"
+                      className="shrink-0 font-mono text-[9px] uppercase tracking-widest text-[color:var(--color-slate)]"
                       style={{ color: phaseMeta.colorVar }}
                     >
                       {phaseMeta.label}
@@ -361,10 +361,10 @@ export default async function AiBISOverviewPage() {
                     {week.keyOutput}
                   </p>
                   <div className="flex items-center gap-4 mt-2">
-                    <span className="font-mono text-[9px] text-[color:var(--color-dust)] tabular-nums">
+                    <span className="font-mono text-[9px] text-[color:var(--color-slate)] tabular-nums">
                       {week.estimatedLiveMinutes} min live
                     </span>
-                    <span className="font-mono text-[9px] text-[color:var(--color-dust)] tabular-nums">
+                    <span className="font-mono text-[9px] text-[color:var(--color-slate)] tabular-nums">
                       {week.estimatedAssignmentMinutes} min assignment
                     </span>
                   </div>

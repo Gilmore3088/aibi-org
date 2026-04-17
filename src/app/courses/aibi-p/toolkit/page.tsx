@@ -193,7 +193,7 @@ function SectionCard({
 
 function EmptyState({ message }: { readonly message: string }) {
   return (
-    <p className="font-sans text-sm text-[color:var(--color-dust)] italic">{message}</p>
+    <p className="font-sans text-sm text-[color:var(--color-slate)] italic">{message}</p>
   );
 }
 
@@ -290,7 +290,7 @@ export default async function ToolkitPage() {
                         })()
                       : 'Banking AI Skill v1.0'}
                   </p>
-                  <p className="font-sans text-xs text-[color:var(--color-dust)]">
+                  <p className="font-sans text-xs text-[color:var(--color-slate)]">
                     {m7SkillMd
                       ? 'Five-component RTFC skill built during Module 7. Ready to paste into ChatGPT, Claude, or Gemini.'
                       : m7Complete
@@ -307,7 +307,7 @@ export default async function ToolkitPage() {
                 ) : (
                   <Link
                     href="/courses/aibi-p/7"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[color:var(--color-parch-dark)] text-[color:var(--color-dust)] text-[10px] font-mono uppercase tracking-widest rounded-sm"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[color:var(--color-parch-dark)] text-[color:var(--color-slate)] text-[10px] font-mono uppercase tracking-widest rounded-sm"
                     aria-label="Go to Module 7 to build your skill"
                   >
                     Go to Module 7
@@ -331,7 +331,7 @@ export default async function ToolkitPage() {
                         })()
                       : 'Banking AI Skill v1.1'}
                   </p>
-                  <p className="font-sans text-xs text-[color:var(--color-dust)]">
+                  <p className="font-sans text-xs text-[color:var(--color-slate)]">
                     {m8IteratedMd
                       ? 'Stress-tested and revised version of your Module 7 skill with iteration log embedded.'
                       : m8Complete
@@ -355,7 +355,7 @@ export default async function ToolkitPage() {
                 ) : (
                   <Link
                     href="/courses/aibi-p/8"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[color:var(--color-parch-dark)] text-[color:var(--color-dust)] text-[10px] font-mono uppercase tracking-widest rounded-sm"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[color:var(--color-parch-dark)] text-[color:var(--color-slate)] text-[10px] font-mono uppercase tracking-widest rounded-sm"
                     aria-label="Go to Module 8 to iterate your skill"
                   >
                     Go to Module 8
@@ -400,7 +400,7 @@ export default async function ToolkitPage() {
                     <p className="font-sans text-sm font-semibold text-[color:var(--color-ink)] mb-0.5">
                       {artifact.title}
                     </p>
-                    <p className="font-sans text-xs text-[color:var(--color-dust)] leading-relaxed">
+                    <p className="font-sans text-xs text-[color:var(--color-slate)] leading-relaxed">
                       {artifact.description}
                     </p>
                   </div>
@@ -421,7 +421,7 @@ export default async function ToolkitPage() {
                   ) : (
                     <Link
                       href={`/courses/aibi-p/${artifact.module}`}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[color:var(--color-parch-dark)] text-[color:var(--color-dust)] text-[10px] font-mono uppercase tracking-widest rounded-sm"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[color:var(--color-parch-dark)] text-[color:var(--color-slate)] text-[10px] font-mono uppercase tracking-widest rounded-sm"
                       aria-label={`Go to Module ${artifact.module} to unlock this artifact`}
                     >
                       Locked
@@ -441,7 +441,7 @@ export default async function ToolkitPage() {
         >
           {inventoryResponse ? (
             <div className="space-y-2">
-              <p className="font-sans text-xs text-[color:var(--color-dust)] mb-4 leading-relaxed">
+              <p className="font-sans text-xs text-[color:var(--color-slate)] mb-4 leading-relaxed">
                 Recorded during Module 2. Update by revisiting{' '}
                 <Link
                   href="/courses/aibi-p/2"
@@ -463,7 +463,7 @@ export default async function ToolkitPage() {
                       <span className="font-sans text-sm font-semibold text-[color:var(--color-ink)] sm:w-56 shrink-0">
                         {platformName}
                       </span>
-                      <span className="font-sans text-sm text-[color:var(--color-dust)]">
+                      <span className="font-sans text-sm text-[color:var(--color-slate)]">
                         {displayValue || <em>No selection recorded</em>}
                       </span>
                     </div>
@@ -484,7 +484,7 @@ export default async function ToolkitPage() {
         >
           {m8Response && m7SkillMd ? (
             <div className="space-y-4">
-              <p className="font-sans text-xs text-[color:var(--color-dust)] leading-relaxed mb-4">
+              <p className="font-sans text-xs text-[color:var(--color-slate)] leading-relaxed mb-4">
                 Summary of your Module 9 capstone: the workflow you automated, the quality
                 standard your work product was built to meet, and the iteration path that
                 got you there.
@@ -501,7 +501,7 @@ export default async function ToolkitPage() {
                     return match ? match[1].trim() : 'Banking AI Skill';
                   })()}{' '}
                   {m8Response['sharing-ladder-level'] ? (
-                    <span className="text-[color:var(--color-dust)]">
+                    <span className="text-[color:var(--color-slate)]">
                       — Sharing level:{' '}
                       {
                         {
@@ -587,7 +587,7 @@ export default async function ToolkitPage() {
                 <p className="font-sans text-sm font-semibold text-[color:var(--color-ink)] mb-1">
                   AiBI-P Transformation Report
                 </p>
-                <p className="font-sans text-xs text-[color:var(--color-dust)] leading-relaxed">
+                <p className="font-sans text-xs text-[color:var(--color-slate)] leading-relaxed">
                   Five-page PDF summarising your pre/post assessment comparison, skills built,
                   estimated annual time savings, quick wins logged, and course completion
                   status. The document a learner shows their manager.

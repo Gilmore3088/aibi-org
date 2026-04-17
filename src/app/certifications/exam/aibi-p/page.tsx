@@ -175,7 +175,7 @@ export default function AiBIPExamPage() {
             </p>
             <p className="font-mono text-6xl md:text-7xl tabular-nums leading-none" style={{ color: exam.proficiency.colorVar }}>
               {exam.pctCorrect}
-              <span className="text-3xl text-[color:var(--color-slate)]">/100</span>
+              <span className="text-3xl text-[color:var(--color-dust)]">/100</span>
             </p>
             <p
               className="font-serif-sc text-2xl md:text-3xl mt-4 uppercase"

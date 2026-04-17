@@ -50,7 +50,7 @@ export function RTFCPanel() {
       <h3 className="font-serif text-lg font-bold text-[color:var(--color-ink)] mb-1 leading-snug">
         The Four Components of a Banking AI Skill
       </h3>
-      <p className="text-xs font-sans text-[color:var(--color-dust)] mb-6 leading-relaxed">
+      <p className="text-xs font-sans text-[color:var(--color-slate)] mb-6 leading-relaxed">
         Every field in the builder maps to a component of the RTFC Framework. Completing all four
         produces a skill file you can deploy immediately in any AI platform.
       </p>
@@ -69,7 +69,7 @@ export function RTFCPanel() {
               <p className="font-sans text-sm font-semibold text-[color:var(--color-ink)] mb-1">
                 {item.label}
               </p>
-              <p className="text-xs font-sans text-[color:var(--color-dust)] leading-relaxed">
+              <p className="text-xs font-sans text-[color:var(--color-slate)] leading-relaxed">
                 {item.description}
               </p>
             </div>
@@ -78,7 +78,7 @@ export function RTFCPanel() {
       </div>
 
       <div className="mt-6 pt-4 border-t border-[color:var(--color-parch-dark)]">
-        <p className="text-xs font-sans text-[color:var(--color-dust)] leading-relaxed">
+        <p className="text-xs font-sans text-[color:var(--color-slate)] leading-relaxed">
           Context is embedded in your Role field. Adding institutional context directly to the Role
           definition produces a more coherent skill than separating it into a dedicated Context field.
         </p>
@@ -96,10 +96,10 @@ interface StarterSelectorProps {
 export function StarterSelector({ starters, selectedId, onSelect }: StarterSelectorProps) {
   return (
     <div className="mb-6 p-4 bg-[color:var(--color-parch)] border border-[color:var(--color-parch-dark)] rounded-sm">
-      <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-dust)] mb-2">
+      <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-2">
         Skill Starters
       </p>
-      <p className="text-xs font-sans text-[color:var(--color-dust)] mb-3 leading-relaxed">
+      <p className="text-xs font-sans text-[color:var(--color-slate)] mb-3 leading-relaxed">
         Select a pre-built skill for your role to auto-fill all fields. Edit freely once loaded.
       </p>
       <div className="flex flex-wrap gap-2" role="group" aria-label="Skill starter options">
@@ -122,7 +122,7 @@ export function StarterSelector({ starters, selectedId, onSelect }: StarterSelec
           <button
             type="button"
             onClick={() => onSelect(null)}
-            className="px-3 py-1.5 text-[11px] font-mono rounded-sm border border-[color:var(--color-parch-dark)] text-[color:var(--color-dust)] hover:text-[color:var(--color-ink)] transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-1"
+            className="px-3 py-1.5 text-[11px] font-mono rounded-sm border border-[color:var(--color-parch-dark)] text-[color:var(--color-slate)] hover:text-[color:var(--color-ink)] transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-1"
             aria-label="Clear starter selection"
           >
             Clear
@@ -236,12 +236,12 @@ export function FormField({
       )}
 
       {type === 'textarea' && minLength && (
-        <p id={hintId} className="mt-1 text-[11px] font-mono text-[color:var(--color-dust)]">
+        <p id={hintId} className="mt-1 text-[11px] font-mono text-[color:var(--color-slate)]">
           {value.length}/{minLength} characters
         </p>
       )}
       {type !== 'textarea' && type !== 'select' && minLength && (
-        <p id={hintId} className="mt-1 text-[11px] font-mono text-[color:var(--color-dust)]">
+        <p id={hintId} className="mt-1 text-[11px] font-mono text-[color:var(--color-slate)]">
           Minimum {minLength} characters
         </p>
       )}
@@ -276,7 +276,7 @@ export function ReadOnlyView({ values }: ReadOnlyViewProps) {
           </p>
           <div className="w-full border border-[color:var(--color-parch-dark)] rounded-sm px-3 py-2 text-sm font-sans bg-[color:var(--color-parch)] text-[color:var(--color-ink)] min-h-[40px] whitespace-pre-wrap">
             {field.value || (
-              <span className="text-[color:var(--color-dust)] italic">No response</span>
+              <span className="text-[color:var(--color-slate)] italic">No response</span>
             )}
           </div>
         </div>

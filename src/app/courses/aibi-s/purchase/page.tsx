@@ -99,7 +99,7 @@ export default async function AiBISPurchasePage() {
           AiBI-S
         </span>
         <div className="h-px w-8 bg-[color:var(--color-cobalt)]/30" aria-hidden="true" />
-        <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--color-dust)]">
+        <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--color-slate)]">
           Banking AI Specialist
         </span>
       </div>
@@ -110,7 +110,7 @@ export default async function AiBISPurchasePage() {
         <span className="text-[color:var(--color-cobalt)] italic">AiBI-S</span>
       </h1>
 
-      <p className="font-serif italic text-lg text-[color:var(--color-slate)] leading-relaxed mb-10">
+      <p className="font-serif italic text-lg text-[color:var(--color-dust)] leading-relaxed mb-10">
         The Banking AI Specialist course is for department managers who are ready to move from personal
         AI proficiency to departmental AI capability — deployed, measured, and governed.
       </p>
@@ -151,7 +151,7 @@ export default async function AiBISPurchasePage() {
           >
             $1,495
           </span>
-          <span className="font-mono text-sm text-[color:var(--color-dust)] uppercase tracking-widest">
+          <span className="font-mono text-sm text-[color:var(--color-slate)] uppercase tracking-widest">
             per seat
           </span>
         </div>
@@ -240,7 +240,7 @@ export default async function AiBISPurchasePage() {
             { label: 'Format', value: 'Live Zoom + weekly asynchronous assignment' },
           ].map(({ label, value }) => (
             <div key={label} className="flex items-start gap-3">
-              <span className="shrink-0 font-mono text-[10px] uppercase tracking-[0.12em] text-[color:var(--color-dust)] w-36">
+              <span className="shrink-0 font-mono text-[10px] uppercase tracking-[0.12em] text-[color:var(--color-slate)] w-36">
                 {label}
               </span>
               <span className="font-sans text-sm text-[color:var(--color-slate)]">{value}</span>
@@ -276,7 +276,7 @@ export default async function AiBISPurchasePage() {
       <div className="pt-6 border-t border-[color:var(--color-cobalt)]/10">
         <Link
           href="/courses/aibi-s"
-          className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-dust)] hover:text-[color:var(--color-ink)] transition-colors"
+          className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-slate)] hover:text-[color:var(--color-ink)] transition-colors"
         >
           Back to Course Overview
         </Link>

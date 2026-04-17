@@ -67,7 +67,7 @@ export function PromptCard({ prompt, userLevel = null }: PromptCardProps) {
           </span>
 
           {/* Difficulty tag */}
-          <span className="inline-flex items-center px-2.5 py-0.5 text-[10px] font-mono uppercase tracking-widest rounded-sm border border-[color:var(--color-ink)]/10 text-[color:var(--color-dust)]">
+          <span className="inline-flex items-center px-2.5 py-0.5 text-[10px] font-mono uppercase tracking-widest rounded-sm border border-[color:var(--color-ink)]/10 text-[color:var(--color-slate)]">
             {difficultyLabel}
           </span>
         </div>
@@ -99,7 +99,7 @@ export function PromptCard({ prompt, userLevel = null }: PromptCardProps) {
 
       {/* What you'll get */}
       <div className="space-y-1">
-        <p className="text-[11px] font-mono uppercase tracking-widest text-[color:var(--color-dust)]">
+        <p className="text-[11px] font-mono uppercase tracking-widest text-[color:var(--color-slate)]">
           What you will get
         </p>
         <p className="font-sans text-sm text-[color:var(--color-ink)] leading-relaxed">
@@ -109,7 +109,7 @@ export function PromptCard({ prompt, userLevel = null }: PromptCardProps) {
 
       {/* Footer: time estimate + open platform link */}
       <div className="flex items-center justify-between pt-2 border-t border-[color:var(--color-parch-dark)]">
-        <span className="font-mono text-[12px] text-[color:var(--color-dust)]">
+        <span className="font-mono text-[12px] text-[color:var(--color-slate)]">
           {prompt.timeEstimate}
         </span>
         {prompt.platform in PLATFORM_URLS && (
@@ -125,7 +125,7 @@ export function PromptCard({ prompt, userLevel = null }: PromptCardProps) {
       </div>
 
       {/* Module reference */}
-      <p className="text-[10px] font-mono uppercase tracking-widest text-[color:var(--color-dust)]">
+      <p className="text-[10px] font-mono uppercase tracking-widest text-[color:var(--color-slate)]">
         Module {prompt.relatedModule}
       </p>
     </article>

@@ -31,7 +31,7 @@ export default function ToolGuidesPage() {
 
       {/* Breadcrumb */}
       <nav className="mb-8" aria-label="Breadcrumb">
-        <ol className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-dust)]">
+        <ol className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">
           <li>
             <Link
               href="/courses/aibi-p"
@@ -52,7 +52,7 @@ export default function ToolGuidesPage() {
             Deep Dive
           </span>
           <div className="h-px w-8 bg-[color:var(--color-terra)]/30" aria-hidden="true" />
-          <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--color-dust)]">
+          <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--color-slate)]">
             Platform Reference
           </span>
         </div>
@@ -68,7 +68,7 @@ export default function ToolGuidesPage() {
           pro tips from banking practitioners.
         </p>
 
-        <p className="font-sans text-sm text-[color:var(--color-dust)] mt-3 leading-relaxed max-w-2xl">
+        <p className="font-sans text-sm text-[color:var(--color-slate)] mt-3 leading-relaxed max-w-2xl">
           These guides complement Module 4 (Platform Features Deep Dive) and Module 3
           (First Try tutorials). Use them as reference when you encounter a new platform or
           want to go beyond the basics covered in the module.
@@ -80,7 +80,7 @@ export default function ToolGuidesPage() {
         className="flex flex-wrap gap-2 mb-10 p-4 bg-[color:var(--color-parch)] border border-[color:var(--color-parch-dark)] rounded-sm"
         aria-label="Jump to platform"
       >
-        <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-dust)] self-center mr-2">
+        <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] self-center mr-2">
           Jump to:
         </span>
         {PLATFORMS.map((p) => (

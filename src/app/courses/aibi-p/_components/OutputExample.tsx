@@ -84,7 +84,7 @@ export function OutputExampleCard({ example, userLevel = null }: OutputExamplePr
 
             {/* Skill pill (if applicable) */}
             {example.skillUsed && (
-              <span className="font-mono text-[9px] text-[color:var(--color-dust)] truncate max-w-xs">
+              <span className="font-mono text-[9px] text-[color:var(--color-slate)] truncate max-w-xs">
                 {example.skillUsed}
               </span>
             )}
@@ -145,7 +145,7 @@ export function OutputExampleCard({ example, userLevel = null }: OutputExamplePr
           {/* Quality markers — what the learner should notice */}
           <div className="px-6 pb-6 pt-2">
             <div className="bg-[color:var(--color-parch)] border border-[color:var(--color-parch-dark)] rounded-sm p-4">
-              <div className="text-[10px] font-mono uppercase tracking-[0.25em] text-[color:var(--color-dust)] mb-3">
+              <div className="text-[10px] font-mono uppercase tracking-[0.25em] text-[color:var(--color-slate)] mb-3">
                 What to Notice
               </div>
               <ul className="space-y-2">

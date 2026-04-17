@@ -44,7 +44,7 @@ export function CourseSidebar({ completedModules, currentModule }: CourseSidebar
             <div className="text-[color:var(--color-ink)] font-bold text-sm font-serif leading-tight">
               AiBI-P
             </div>
-            <div className="text-[10px] uppercase font-mono tracking-[0.2em] text-[color:var(--color-dust)]">
+            <div className="text-[10px] uppercase font-mono tracking-[0.2em] text-[color:var(--color-slate)]">
               Banking AI Practitioner
             </div>
           </div>
@@ -76,7 +76,7 @@ export function CourseSidebar({ completedModules, currentModule }: CourseSidebar
                     aria-label={`Module ${mod.number}: ${mod.title} — locked`}
                   >
                     <span
-                      className="font-mono text-[10px] w-5 text-[color:var(--color-dust)]"
+                      className="font-mono text-[10px] w-5 text-[color:var(--color-slate)]"
                       aria-hidden="true"
                     >
                       {formattedNumber}
@@ -131,7 +131,7 @@ export function CourseSidebar({ completedModules, currentModule }: CourseSidebar
                   className="flex items-center gap-3 px-6 py-2.5 hover:bg-[color:var(--color-parch)] transition-colors"
                 >
                   <span
-                    className="font-mono text-[10px] w-5 text-[color:var(--color-dust)]"
+                    className="font-mono text-[10px] w-5 text-[color:var(--color-slate)]"
                     aria-hidden="true"
                   >
                     {formattedNumber}

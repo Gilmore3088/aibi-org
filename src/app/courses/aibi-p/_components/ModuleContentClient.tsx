@@ -82,7 +82,7 @@ export function ModuleContentClient({
       {/* Activity-less module completion (e.g. M9) */}
       {hasNoActivities && !moduleComplete && (
         <div className="mt-8 pt-6 border-t border-[color:var(--color-parch-dark)]">
-          <p className="text-sm font-sans text-[color:var(--color-dust)] mb-4 leading-relaxed">
+          <p className="text-sm font-sans text-[color:var(--color-slate)] mb-4 leading-relaxed">
             You have reviewed all content in this module. Mark it complete to continue.
           </p>
           <button

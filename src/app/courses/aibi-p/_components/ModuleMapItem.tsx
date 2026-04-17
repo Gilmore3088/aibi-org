@@ -29,7 +29,7 @@ export function ModuleMapItem({ module: mod, status }: ModuleMapItemProps) {
       {/* Module number */}
       <div
         className="font-mono text-sm font-bold mt-1 w-6 shrink-0"
-        style={{ color: isLocked ? 'var(--color-dust)' : pillarMeta.colorVar }}
+        style={{ color: isLocked ? 'var(--color-slate)' : pillarMeta.colorVar }}
         aria-hidden="true"
       >
         {formattedNumber}
@@ -43,7 +43,7 @@ export function ModuleMapItem({ module: mod, status }: ModuleMapItemProps) {
         </h4>
 
         {/* Key output */}
-        <p className="font-mono text-[10px] text-[color:var(--color-dust)] mb-2 uppercase tracking-wider leading-relaxed">
+        <p className="font-mono text-[10px] text-[color:var(--color-slate)] mb-2 uppercase tracking-wider leading-relaxed">
           {mod.keyOutput}
         </p>
 
@@ -65,7 +65,7 @@ export function ModuleMapItem({ module: mod, status }: ModuleMapItemProps) {
 
         {/* Status text */}
         {status === 'completed' && (
-          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-dust)]">
+          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">
             Completed · {formatMinutes(mod.estimatedMinutes)}
           </p>
         )}
@@ -78,7 +78,7 @@ export function ModuleMapItem({ module: mod, status }: ModuleMapItemProps) {
           </p>
         )}
         {status === 'locked' && (
-          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-dust)]">
+          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">
             Locked · {formatMinutes(mod.estimatedMinutes)}
           </p>
         )}

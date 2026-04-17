@@ -39,7 +39,7 @@ export function DrillActivePhase({
       {/* Timer bar */}
       <div className="mb-4">
         <div className="flex items-center justify-between mb-1">
-          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-dust)]">
+          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">
             Scenario {currentIndex + 1} of {totalScenarios}
           </p>
           <p
@@ -73,7 +73,7 @@ export function DrillActivePhase({
 
       {/* Classification options */}
       <fieldset className="border-0 m-0 p-0">
-        <legend className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-dust)] mb-3">
+        <legend className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-3">
           Classify this scenario
           <span className="sr-only"> — Press 1, 2, or 3 to select</span>
         </legend>

@@ -44,7 +44,7 @@ export function OutputGalleryClient({ userLevel = null }: OutputGalleryClientPro
         role="group"
         aria-label="Filter by role"
       >
-        <div className="text-[10px] font-mono uppercase tracking-widest text-[color:var(--color-dust)] mb-3">
+        <div className="text-[10px] font-mono uppercase tracking-widest text-[color:var(--color-slate)] mb-3">
           Filter by Role
         </div>
         <div className="flex flex-wrap gap-2">
@@ -82,7 +82,7 @@ export function OutputGalleryClient({ userLevel = null }: OutputGalleryClientPro
           })}
         </div>
 
-        <p className="mt-3 font-mono text-[11px] text-[color:var(--color-dust)]">
+        <p className="mt-3 font-mono text-[11px] text-[color:var(--color-slate)]">
           Showing {filtered.length} of {totalCount} examples
           {filtered.some((ex) => ex.requiredLevel) && (
             <span className="ml-2" style={{ color: 'var(--color-terra)' }}>
@@ -95,7 +95,7 @@ export function OutputGalleryClient({ userLevel = null }: OutputGalleryClientPro
       {/* Results */}
       {filtered.length === 0 ? (
         <div className="text-center py-12">
-          <p className="font-sans text-sm text-[color:var(--color-dust)]">
+          <p className="font-sans text-sm text-[color:var(--color-slate)]">
             No examples match the selected filter.
           </p>
         </div>

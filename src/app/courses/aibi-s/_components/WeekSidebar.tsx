@@ -48,7 +48,7 @@ export function WeekSidebar({ completedWeeks, currentWeek }: WeekSidebarProps) {
             <div className="text-[color:var(--color-ink)] font-bold text-sm font-serif leading-tight">
               AiBI-S
             </div>
-            <div className="text-[10px] uppercase font-mono tracking-[0.2em] text-[color:var(--color-dust)]">
+            <div className="text-[10px] uppercase font-mono tracking-[0.2em] text-[color:var(--color-slate)]">
               Banking AI Specialist
             </div>
           </div>
@@ -80,7 +80,7 @@ export function WeekSidebar({ completedWeeks, currentWeek }: WeekSidebarProps) {
                     aria-label={`Week ${week.number}: ${week.title} — locked`}
                   >
                     <span
-                      className="font-mono text-[10px] w-6 text-[color:var(--color-dust)] shrink-0"
+                      className="font-mono text-[10px] w-6 text-[color:var(--color-slate)] shrink-0"
                       aria-hidden="true"
                     >
                       {formattedNumber}
@@ -134,7 +134,7 @@ export function WeekSidebar({ completedWeeks, currentWeek }: WeekSidebarProps) {
                   className="flex items-center gap-3 px-6 py-2.5 hover:bg-[color:var(--color-parch)] transition-colors"
                 >
                   <span
-                    className="font-mono text-[10px] w-6 text-[color:var(--color-dust)] shrink-0"
+                    className="font-mono text-[10px] w-6 text-[color:var(--color-slate)] shrink-0"
                     aria-hidden="true"
                   >
                     {formattedNumber}

@@ -225,7 +225,7 @@ export function PostAssessmentClient({ enrollmentId }: PostAssessmentClientProps
               <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] mb-2">
                 AiBI-P · Measure Your Growth
               </p>
-              <p className="font-sans text-sm text-[color:var(--color-dust)] leading-relaxed">
+              <p className="font-sans text-sm text-[color:var(--color-slate)] leading-relaxed">
                 You have completed all nine modules. Answer these questions honestly —
                 the same way you did before the course. The comparison shows your transformation.
               </p>
@@ -292,7 +292,7 @@ export function PostAssessmentClient({ enrollmentId }: PostAssessmentClientProps
             </div>
 
             {saving && (
-              <p className="font-mono text-xs text-[color:var(--color-dust)]" aria-live="polite">
+              <p className="font-mono text-xs text-[color:var(--color-slate)]" aria-live="polite">
                 Saving your result...
               </p>
             )}

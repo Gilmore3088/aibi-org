@@ -67,13 +67,13 @@ export function DrillReadOnlyReview({
     <div className="space-y-6">
       {/* Score summary */}
       <div className="text-center py-6 bg-[color:var(--color-parch)] rounded-sm">
-        <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-dust)] mb-1">
+        <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-1">
           Drill Score
         </p>
         <p className="font-serif text-5xl font-bold text-[color:var(--color-ink)]">
           {score}/{answers.length}
         </p>
-        <p className="font-mono text-sm text-[color:var(--color-dust)] mt-1">{pct}% correct</p>
+        <p className="font-mono text-sm text-[color:var(--color-slate)] mt-1">{pct}% correct</p>
       </div>
 
       {/* Tier breakdown */}
@@ -87,7 +87,7 @@ export function DrillReadOnlyReview({
             key={t.label}
             className="text-center py-3 px-2 bg-[color:var(--color-parch)] rounded-sm border border-[color:var(--color-parch-dark)]"
           >
-            <p className="font-mono text-[10px] text-[color:var(--color-dust)] mb-1 leading-tight">
+            <p className="font-mono text-[10px] text-[color:var(--color-slate)] mb-1 leading-tight">
               {t.label}
             </p>
             <p className="font-mono text-xl font-bold text-[color:var(--color-ink)]">
@@ -146,7 +146,7 @@ export function DrillReadOnlyReview({
                     </>
                   )}
                 </div>
-                <p className="text-[10px] font-mono text-[color:var(--color-dust)] leading-tight">
+                <p className="text-[10px] font-mono text-[color:var(--color-slate)] leading-tight">
                   Scenario {a.scenarioIndex + 1} of {answers.length}
                 </p>
               </div>
@@ -157,19 +157,19 @@ export function DrillReadOnlyReview({
 
               {!isCorrect && (
                 <div className="mt-3 pt-3 border-t border-current/10 space-y-1">
-                  <p className="text-xs font-mono text-[color:var(--color-dust)]">
+                  <p className="text-xs font-mono text-[color:var(--color-slate)]">
                     Your answer:{' '}
                     <span className="text-[color:var(--color-ink)]">
                       {valueToLabel(a.selected)}
                     </span>
                   </p>
-                  <p className="text-xs font-mono text-[color:var(--color-dust)]">
+                  <p className="text-xs font-mono text-[color:var(--color-slate)]">
                     Correct answer:{' '}
                     <span className="font-semibold text-[color:var(--color-ink)]">
                       {valueToLabel(correctValue)}
                     </span>
                   </p>
-                  <p className="text-xs font-sans text-[color:var(--color-dust)] mt-2">
+                  <p className="text-xs font-sans text-[color:var(--color-slate)] mt-2">
                     {sc.reasoning}
                   </p>
                 </div>
