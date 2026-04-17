@@ -5,11 +5,14 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { modules, PILLAR_META, PILLAR_DESCRIPTIONS } from '@content/courses/aibi-p';
 import type { Pillar } from '@content/courses/aibi-p';
+import { getRolePath } from '@content/courses/aibi-p/role-paths';
 import { PillarCard } from './_components/PillarCard';
 import { ModuleMapItem } from './_components/ModuleMapItem';
 import { ProgressIndicator } from './_components/ProgressIndicator';
+import { RolePathCard } from './_components/RolePathCard';
 import { getEnrollment } from './_lib/getEnrollment';
 import { getModuleStatus, getPillarStatus } from './_lib/courseProgress';
+import { getRoleSpotlight } from './_lib/contentRouting';
 
 export const metadata: Metadata = {
   title: 'AiBI-P: Banking AI Practitioner | The AI Banking Institute',
@@ -23,6 +26,13 @@ export default async function CourseOverviewPage() {
   const enrollment = await getEnrollment();
   const completedModules = enrollment?.completed_modules ?? [];
   const currentModule = enrollment?.current_module ?? 1;
+
+  const learnerRole =
+    enrollment?.onboarding_answers
+      ? getRoleSpotlight(enrollment.onboarding_answers)
+      : null;
+  const rolePath = learnerRole ? getRolePath(learnerRole) : null;
+
   const pillarModuleCounts = PILLAR_ORDER.reduce<Record<Pillar, number>>(
     (acc, pillar) => {
       acc[pillar] = modules.filter((m) => m.pillar === pillar).length;
@@ -85,6 +95,9 @@ export default async function CourseOverviewPage() {
           </a>
         </div>
       </section>
+
+      {/* Role-specific learning path — only shown when onboarding role is captured */}
+      {rolePath && <RolePathCard rolePath={rolePath} />}
 
       {/* Four Pillars */}
       <section className="mb-24" aria-labelledby="pillars-heading">
