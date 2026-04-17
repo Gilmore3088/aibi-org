@@ -8,6 +8,7 @@ export function ProgressBar({ progress }: ProgressBarProps) {
     <div
       className="w-full h-[2px] bg-[color:var(--color-ink)]/10"
       role="progressbar"
+      aria-label="Assessment progress"
       aria-valuenow={Math.round(pct)}
       aria-valuemin={0}
       aria-valuemax={100}

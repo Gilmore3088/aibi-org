@@ -101,7 +101,7 @@ export default function AssessmentPage() {
               )}
 
               {/* Secondary navigation — always visible */}
-              <div className="flex flex-wrap items-center justify-center gap-6 mt-2">
+              <nav aria-label="Related pages" className="flex flex-wrap items-center justify-center gap-6 mt-2">
                 <a
                   href="/courses"
                   className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/60 hover:text-[color:var(--color-terra)] transition-colors"
@@ -114,7 +114,7 @@ export default function AssessmentPage() {
                 >
                   Go to dashboard
                 </a>
-              </div>
+              </nav>
             </div>
 
             {/* ASMT-07: Email gate only for dimension breakdown */}
