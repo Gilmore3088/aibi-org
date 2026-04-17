@@ -4,6 +4,7 @@ import { ThreeFears } from '@/components/sections/ThreeFears';
 import { SecurityBand } from '@/components/sections/SecurityBand';
 import { WideningGap } from '@/components/sections/WideningGap';
 import { HeroSplit } from '@/components/sections/HeroSplit';
+import { HeroRotating } from '@/components/sections/HeroRotating';
 import { ServiceTierCards } from '@/components/sections/ServiceTierCards';
 import { CertificationCards } from '@/components/sections/CertificationCards';
 import { FinalCTABand } from '@/components/sections/FinalCTABand';
@@ -84,45 +85,11 @@ export default function HomePage({ searchParams }: HomePageProps) {
 
   return (
     <main>
-      {/* Hero — default centered, or split variant via /?hero=split */}
-      {useSplitHero ? (
-        <HeroSplit />
-      ) : (
-        <section className="px-6 pt-14 pb-16 md:pt-20 md:pb-16">
-          <div className="max-w-4xl mx-auto text-center space-y-6">
-            <h1 className="font-serif text-5xl md:text-7xl leading-[1.05] text-[color:var(--color-ink)]">
-              AI your people will actually use.
-            </h1>
-            <p className="font-serif-sc text-2xl md:text-3xl text-[color:var(--color-terra)] tracking-wide">
-              Turning Bankers into Builders
-            </p>
-            <p className="text-lg md:text-xl text-[color:var(--color-ink)]/75 max-w-3xl mx-auto leading-relaxed pt-2">
-              AI proficiency built exclusively for community banks and credit
-              unions. Accessible for every banker on your team. Boundary-safe
-              for your examiners. Capable of moving your efficiency ratio.
-            </p>
-            <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link
-                href="/assessment"
-                className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
-              >
-                Take the Free Assessment
-              </Link>
-              <Link
-                href="#roi-calculator"
-                className="inline-block px-8 py-4 border border-[color:var(--color-ink)]/30 text-[color:var(--color-ink)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)] transition-colors"
-              >
-                Model Your ROI
-              </Link>
-            </div>
-            <p className="font-mono text-xs text-[color:var(--color-slate)] pt-4">
-              8 questions &middot; under 3 minutes &middot; community banks only
-            </p>
-          </div>
-        </section>
-      )}
+      {/* Hero — rotating headlines or split variant via /?hero=split */}
+      {useSplitHero ? <HeroSplit /> : <HeroRotating />}
 
-      {/* Stats band */}
+      {/* ── ACT 1: THE PROBLEM ── */}
+      {/* Stats band — the industry is moving */}
       <section className="border-y border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)]">
         <div className="max-w-6xl mx-auto px-6 py-10">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
@@ -143,7 +110,14 @@ export default function HomePage({ searchParams }: HomePageProps) {
         </div>
       </section>
 
-      {/* Three pillars — described, not branded as A-B-C */}
+      {/* The gap is widening — competitive urgency */}
+      <WideningGap />
+
+      {/* Every CEO is thinking these three things — validate their anxiety */}
+      <ThreeFears />
+
+      {/* ── ACT 2: THE FRAMEWORK ── */}
+      {/* Three pillars — how we attack it */}
       <section className="px-6 py-14 md:py-20">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-14">
@@ -196,12 +170,20 @@ export default function HomePage({ searchParams }: HomePageProps) {
         </div>
       </section>
 
-      <ThreeFears />
-      <WideningGap />
+      {/* Regulatory credibility — we've read the guidance */}
       <SecurityBand />
+
+      {/* ── ACT 3: THE PROOF ── */}
+      {/* ROI calculator — model your own savings */}
       <ROICalculator />
-      <ServiceTierCards showHeader />
+
+      {/* Certification tracks — three levels of engagement */}
       <CertificationCards showHeader compact />
+
+      {/* Consulting tiers — or we come to you */}
+      <ServiceTierCards showHeader />
+
+      {/* ── ACT 4: THE ASK ── */}
       <FinalCTABand />
     </main>
   );
