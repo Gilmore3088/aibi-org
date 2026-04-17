@@ -4,18 +4,20 @@
 // Uses platform badge, role tag, monospace prompt box, expected output, and time estimate
 
 import { useState, useCallback } from 'react';
-import type { Prompt } from '@content/courses/aibi-p/prompt-library';
+import type { Prompt, ContentLevel } from '@content/courses/aibi-p/prompt-library';
 import { PLATFORM_META, ROLE_LABELS, DIFFICULTY_LABELS } from '@content/courses/aibi-p/prompt-library';
 import { getPlatformUrl, PLATFORM_URLS } from '@/lib/utm';
 import type { PlatformId } from '@/lib/utm';
+import { ContentGate } from './ContentGate';
 
 interface PromptCardProps {
   readonly prompt: Prompt;
+  readonly userLevel?: ContentLevel | null;
 }
 
 const COPY_RESET_MS = 2000;
 
-export function PromptCard({ prompt }: PromptCardProps) {
+export function PromptCard({ prompt, userLevel = null }: PromptCardProps) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = useCallback(async () => {
@@ -42,7 +44,7 @@ export function PromptCard({ prompt }: PromptCardProps) {
   const roleLabel = ROLE_LABELS[prompt.role];
   const difficultyLabel = DIFFICULTY_LABELS[prompt.difficulty];
 
-  return (
+  const card = (
     <article className="border border-[color:var(--color-parch-dark)] rounded-sm bg-[color:var(--color-parch)] p-6 space-y-4">
       {/* Header: title + badges */}
       <div className="space-y-3">
@@ -127,5 +129,19 @@ export function PromptCard({ prompt }: PromptCardProps) {
         Module {prompt.relatedModule}
       </p>
     </article>
+  );
+
+  if (!prompt.requiredLevel) {
+    return card;
+  }
+
+  return (
+    <ContentGate
+      requiredLevel={prompt.requiredLevel}
+      userLevel={userLevel}
+      previewDescription={`Advanced ${ROLE_LABELS[prompt.role]} prompt — ${prompt.timeEstimate}`}
+    >
+      {card}
+    </ContentGate>
   );
 }

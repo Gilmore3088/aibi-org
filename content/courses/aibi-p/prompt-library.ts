@@ -22,6 +22,8 @@ export type PromptRole =
 
 export type PromptDifficulty = 'beginner' | 'intermediate' | 'advanced';
 
+export type ContentLevel = 'p' | 's' | 'l';
+
 export interface Prompt {
   readonly id: string;
   readonly title: string;
@@ -33,6 +35,7 @@ export interface Prompt {
   readonly timeEstimate: string;
   readonly relatedModule: number;
   readonly tags?: readonly string[];
+  readonly requiredLevel?: ContentLevel;
 }
 
 export interface MiniTutorialStep {
@@ -436,6 +439,7 @@ Constraints:
 - Do not make loan approval recommendations. This is a documentation completeness tool, not a credit decision tool.
 - Flag any item marked "Expired" with the staleness threshold (e.g., "PFS older than 90 days").`,
     tags: ['skill-builder', 'loan-documentation', 'checklist', 'RTFC'],
+    requiredLevel: 's',
   },
   {
     id: 'm7-operations-exception-report',
@@ -515,6 +519,7 @@ Constraints:
 - Write in third person, past tense. Do not use "we" or "our bank."
 - Do not cite specific criminal statutes. Describe behavior patterns; let law enforcement determine applicable statutes.`,
     tags: ['skill-builder', 'SAR', 'BSA-AML', 'compliance', 'RTFC'],
+    requiredLevel: 's',
   },
   {
     id: 'm7-finance-variance-analysis',
@@ -558,6 +563,7 @@ Constraints:
 - Do not recommend budget adjustments. Variance analysis describes what happened; budget revision is a management decision.
 - If provision for loan losses shows a material variance, always flag it as "[ALLL REVIEW — discuss with Chief Credit Officer]" regardless of direction.`,
     tags: ['skill-builder', 'variance-analysis', 'board-reporting', 'RTFC'],
+    requiredLevel: 's',
   },
   {
     id: 'm7-marketing-campaign-copy',
@@ -610,6 +616,7 @@ Constraints:
 - Mark any claim that needs compliance verification with "[COMPLIANCE CHECK]."
 - No exclamation points. No emojis. Community bank institutional tone.`,
     tags: ['skill-builder', 'campaign-copy', 'marketing', 'RTFC'],
+    requiredLevel: 's',
   },
 ] as const;
 
@@ -707,6 +714,224 @@ Constraints:
 - Include a question about the vendor's own use of customer data for model training — this is the single most important data privacy question for banking AI vendors.
 - Do not reference specific vendor names or products. Keep the questionnaire generic enough to reuse across vendors.`,
     tags: ['vendor-management', 'TPRM', 'due-diligence', 'IT-risk'],
+    requiredLevel: 's',
+  },
+] as const;
+
+// ---------------------------------------------------------------------------
+// S-level gated prompts — visible to AiBI-P completers but unlocked at AiBI-S
+// ---------------------------------------------------------------------------
+
+const sLevelPrompts: readonly Prompt[] = [
+  {
+    id: 's-departmental-workflow-orchestration',
+    title: 'Departmental Workflow Orchestration',
+    platform: 'claude',
+    role: 'operations',
+    difficulty: 'advanced',
+    relatedModule: 7,
+    timeEstimate: '30 minutes',
+    expectedOutput: 'A three-stage orchestration plan that chains a document-intake skill, an exception-detection skill, and a routing-and-notification skill into a single department workflow — with handoff logic and error conditions defined at each stage.',
+    promptText: `You are an Operations Transformation Specialist at a community bank designing a multi-stage AI workflow for the deposit operations team.
+
+Context: The team currently runs three separate AI skills in isolation:
+1. Document Intake Classifier — routes inbound documents (wires, ACH exceptions, account maintenance) to the correct queue
+2. Exception Analyzer — prioritizes each day's exception report by regulatory urgency and dollar exposure
+3. Routing and Notification Composer — drafts triage assignments and supervisor alerts
+
+Task: Design a workflow orchestration spec that chains all three skills into a single morning operations routine, running sequentially with defined handoffs.
+
+For each stage, specify:
+- Input: what data enters the stage (source, format, any conditioning required)
+- Processing: what the AI skill does and what constraints apply
+- Output: what leaves this stage and what triggers the next
+- Error condition: what happens if the stage produces an ambiguous or incomplete result
+
+Then produce:
+- A decision tree for the routing stage (which exceptions go to which staff member, by category and dollar threshold)
+- A supervisor escalation trigger (conditions that bypass normal routing and go directly to the manager)
+- A daily time estimate for the full orchestrated workflow vs. the current manual process
+
+Constraints:
+- No customer PII in any stage output — use account masking throughout
+- CTR review flag (transactions over $10,000) must be preserved through all three stages; it cannot be cleared by the workflow
+- The orchestration must be executable by a non-technical operations manager — no code, no API calls, no automation platforms required
+- Each stage must be independently testable before the full chain is deployed`,
+    tags: ['workflow-orchestration', 'multi-skill', 'operations', 'advanced'],
+    requiredLevel: 's',
+  },
+  {
+    id: 's-vendor-ai-evaluation-scorecard',
+    title: 'Vendor AI Evaluation Scorecard',
+    platform: 'claude',
+    role: 'it',
+    difficulty: 'advanced',
+    relatedModule: 4,
+    timeEstimate: '25 minutes',
+    expectedOutput: 'A structured 5-question scoring framework that produces a 0–100 vendor score across data security, regulatory alignment, explainability, vendor stability, and total cost — with a recommendation threshold and a hard stop on fair lending failures.',
+    promptText: `You are a Senior IT Risk Officer at a community bank ($600M in assets) evaluating an AI vendor for a specific use case: [DESCRIBE USE CASE — e.g., AI-assisted underwriting support, AI document extraction, AI customer service routing].
+
+Your institution follows SR 11-7 model risk management guidance, interagency TPRM principles (OCC Bulletin 2023-17), and the AIEOG AI Lexicon definitions for explainability and human-in-the-loop controls.
+
+Task: Produce a 5-question scoring framework — one master question per domain — that yields a 100-point vendor evaluation score. Each question must:
+
+1. State the evaluation criterion in plain language
+2. Define a 4-tier response scale with specific point values (0 / partial / full / exceeds)
+3. Specify what documentary evidence the vendor must provide to support each score
+4. Identify the regulatory citation that makes this criterion non-negotiable
+
+The five domains are:
+1. Customer data handling and PII controls (25 points)
+2. Regulatory alignment — SR 11-7, ECOA/Reg B, UDAP (20 points)
+3. Explainability and human-in-the-loop controls per AIEOG Lexicon (20 points)
+4. Vendor financial stability and community banking references (15 points)
+5. All-in pricing and exit provisions (20 points)
+
+After the scorecard, produce:
+- A scoring matrix (table: domain, max points, actual points, evidence collected)
+- Recommendation thresholds: 75+ = Proceed, 60-74 = Conditional, below 60 = Do not proceed
+- One hard-stop criterion: if the ECOA/Reg B explainability score is zero, the vendor is disqualified from any credit-decision use case regardless of total score
+- A one-paragraph recommendation narrative template for the board risk committee
+
+Constraints:
+- All regulatory citations must be specific and correct. Use "SR 11-7" not "Fed guidance." Use "AIEOG AI Lexicon" not "industry definitions."
+- The HITL definition must match the AIEOG Lexicon: a human with appropriate authority, information, and time to intervene before the AI decision takes effect
+- Do not create criteria that a vendor can satisfy with marketing materials alone. Evidence must be documentary (SOC 2, validation reports, contract language)`,
+    tags: ['vendor-evaluation', 'TPRM', 'scorecard', 'IT-risk', 'advanced'],
+    requiredLevel: 's',
+  },
+  {
+    id: 's-team-skill-library-template',
+    title: 'Team Skill Library Template',
+    platform: 'chatgpt',
+    role: 'executive',
+    difficulty: 'advanced',
+    relatedModule: 8,
+    timeEstimate: '25 minutes',
+    expectedOutput: 'A department-level skill library template with a standardized skill registry format, a skill submission and review process, a quarterly audit checklist, and a skill deprecation policy — ready for a department head to adopt and manage.',
+    promptText: `You are an AI Transformation Lead at a community bank helping a department head build and manage a sustainable skill library for their team.
+
+Context: The department has completed AiBI-P and individual staff have built 6-12 skills. Skills are currently stored inconsistently (some in personal ChatGPT Projects, some in shared drives, some only in individuals' heads). The goal is to create a department-level skill library that:
+- Makes skills discoverable and usable by any qualified team member
+- Ensures skills are reviewed, approved, and compliant before shared use
+- Identifies skills that are stale, superseded, or no longer compliant
+
+Task: Produce a complete Team Skill Library management template with four components:
+
+1. SKILL REGISTRY FORMAT
+A standardized one-page skill record for each skill in the library. Include fields for: skill name, use case description, platform, author, review date, compliance status, data classification tier(s), known limitations, and version number.
+
+2. SKILL SUBMISSION AND REVIEW PROCESS
+A 4-step process for submitting a new skill to the department library. Include: submission requirements, who reviews (role, not name), review criteria (what makes a skill library-ready vs. individual-use only), and approval documentation.
+
+3. QUARTERLY AUDIT CHECKLIST
+A checklist the department head runs every quarter to verify: skills are current with any regulatory changes, platform changes have not broken skill behavior, data classification tiers are still appropriate, and skills built around a specific vendor tool remain valid if the tool has changed.
+
+4. SKILL DEPRECATION POLICY
+Criteria for retiring a skill from the library: trigger conditions, notification process, and archival procedure (skills should be archived, not deleted — they may be useful for audit trail purposes).
+
+Constraints:
+- The template must be usable by a department head with no IT support. No automation, no databases, no code.
+- All compliance language must reference the three-tier data classification framework (Tier 1 public / Tier 2 internal / Tier 3 restricted)
+- Include a field for "last tested against current platform version" — platforms update frequently and skills degrade without maintenance
+- Do not create a bureaucratic process that discourages skill sharing. The review step should take under 30 minutes for a standard skill`,
+    tags: ['skill-management', 'team-library', 'department-operations', 'advanced'],
+    requiredLevel: 's',
+  },
+] as const;
+
+// ---------------------------------------------------------------------------
+// L-level gated prompts — visible to AiBI-S completers but unlocked at AiBI-L
+// ---------------------------------------------------------------------------
+
+const lLevelPrompts: readonly Prompt[] = [
+  {
+    id: 'l-board-ai-strategy-deck-generator',
+    title: 'Board AI Strategy Deck Generator',
+    platform: 'claude',
+    role: 'executive',
+    difficulty: 'advanced',
+    relatedModule: 9,
+    timeEstimate: '35 minutes',
+    expectedOutput: 'A complete 10-slide board presentation outline with speaker notes, data placeholders keyed to FDIC BankFind Suite and Jack Henry research, risk disclosures, and a board resolution template for AI governance policy adoption.',
+    promptText: `You are an AI Strategy Advisor preparing a board-level presentation for a community bank CEO. The audience is a 7-person board of directors with mixed technical backgrounds: 2 former bankers, 2 business owners, 1 attorney, 1 CPA, and 1 technology executive.
+
+The bank's profile: $[ASSET SIZE]M in assets, $[FTE COUNT] FTE, efficiency ratio of [EFFICIENCY RATIO]% (source: FDIC BankFind Suite). The board has not received a formal AI strategy presentation before.
+
+Task: Produce a complete 10-slide board presentation outline. For each slide, provide:
+- Slide title
+- Three to five bullet points (the actual content, not placeholders)
+- Speaker notes (2-3 sentences the CEO can use verbatim)
+- Any data that should appear on the slide, with source citations
+
+Slide structure:
+1. Why AI, Why Now — market context using sourced statistics
+2. What Our Peers Are Doing — community bank AI adoption data (cite Jack Henry 2025 report)
+3. What We Are Already Doing — current AI tool inventory (use [TOOL LIST] placeholder)
+4. The Efficiency Opportunity — ROI model using institution's own FTE count and efficiency ratio
+5. Regulatory Landscape — what examiners are looking for (SR 11-7, TPRM, AIEOG Lexicon)
+6. Our Governance Framework — three-layer model: policy, oversight, training
+7. Risk Assessment — what we are managing, what we are watching, what we are avoiding
+8. The 12-Month Roadmap — three phases with named owners and success metrics
+9. Resource Requirements — budget, staffing, and training investment
+10. Board Resolution — formal adoption of AI governance policy
+
+After the outline, produce a draft board resolution (two paragraphs) authorizing the bank's AI governance framework and designating an AI oversight committee.
+
+Constraints:
+- All statistics must cite named sources. Use Jack Henry 2025, FDIC Quarterly Banking Profile Q4 2024, and Gartner via Jack Henry where applicable. Do not fabricate benchmarks.
+- The efficiency ratio slide must use the institution's actual FDIC-reported figure, not an industry average. Insert [FDIC EFFICIENCY RATIO] as a placeholder if not provided.
+- Do not use "AI-powered," "cutting-edge," or "revolutionary." Directors have seen too many technology presentations that overpromised.
+- The risk slide must include regulatory risk of inaction (operating without a governance framework while staff use consumer AI) — not just risk of action
+- Speaker notes must be in plain language. Assume the CEO is not a technologist.`,
+    tags: ['board-presentation', 'AI-strategy', 'governance', 'executive', 'advanced'],
+    requiredLevel: 'l',
+  },
+  {
+    id: 'l-efficiency-ratio-scenario-modeling',
+    title: 'Efficiency Ratio Scenario Modeling',
+    platform: 'chatgpt',
+    role: 'finance',
+    difficulty: 'advanced',
+    relatedModule: 9,
+    timeEstimate: '30 minutes',
+    expectedOutput: 'A three-scenario efficiency ratio model (conservative / base / optimistic) showing projected impact of AI-driven productivity gains on the institution\'s efficiency ratio over 24 months, using FDIC BankFind Suite baseline data and sourced productivity assumptions.',
+    promptText: `You are a Financial Strategy Analyst at a community bank building a 24-month AI productivity model for the CFO and board.
+
+Institution data (pull from FDIC BankFind Suite at banks.data.fdic.gov):
+- Current efficiency ratio: [FDIC EFFICIENCY RATIO]%
+- Total non-interest expense: $[NIE]M
+- Total revenue (NII + non-interest income): $[REVENUE]M
+- Total FTE: [FTE COUNT]
+- Average cost per FTE (burdened): $[COST PER FTE]
+
+Community bank median efficiency ratio: ~65% (FDIC CEIC data, 1992-2025)
+Industry-wide efficiency ratio: ~55.7% (FDIC Quarterly Banking Profile Q4 2024)
+
+Task: Produce a three-scenario efficiency ratio model showing projected impact of AI adoption on the institution's efficiency ratio over 24 months.
+
+For each scenario (Conservative / Base / Optimistic), model:
+1. Productivity assumption: hours saved per FTE per week (Conservative: 1.5 hrs, Base: 3 hrs, Optimistic: 5 hrs) — source: Jack Henry 2025 Getting Started in AI
+2. Dollar value of productivity gain: FTE count × hours/week × burdened hourly rate × 50 working weeks
+3. Projected non-interest expense reduction (assume 60% of productivity gain flows to NIE reduction in Year 1, 80% in Year 2 as processes are restructured)
+4. Projected efficiency ratio at 12 months and 24 months
+5. Basis points of improvement vs. current ratio
+6. Gap to community bank median (65%) and industry benchmark (55.7%)
+
+Format output as:
+- A summary table (scenario × metric × Year 1 × Year 2)
+- Narrative paragraph for CFO (3 sentences, suitable for board report)
+- Key assumption list with citations
+- Sensitivity note: what has to be true for the Optimistic scenario to materialize
+
+Constraints:
+- All productivity assumptions must cite a source. Use Jack Henry 2025 or Gartner via Jack Henry.
+- The model must show the gap to peer benchmarks — the goal is not just improvement but convergence toward the industry median
+- Do not present cost reduction as guaranteed. Frame as "projected under stated assumptions" throughout.
+- Include a VERIFY placeholder wherever institution-specific data is required: [VERIFY: pull from FDIC BankFind Suite]
+- Do not model revenue growth — this model is limited to expense-side productivity only. Revenue impact of AI is a separate analysis.`,
+    tags: ['efficiency-ratio', 'scenario-modeling', 'FDIC', 'finance', 'board-reporting', 'advanced'],
+    requiredLevel: 'l',
   },
 ] as const;
 
@@ -719,6 +944,8 @@ export const ALL_PROMPTS: readonly Prompt[] = [
   ...m4Prompts,
   ...m7Prompts,
   ...additionalPrompts,
+  ...sLevelPrompts,
+  ...lLevelPrompts,
 ] as const;
 
 // ---------------------------------------------------------------------------

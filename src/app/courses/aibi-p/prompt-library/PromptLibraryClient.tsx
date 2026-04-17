@@ -8,6 +8,7 @@ import type {
   PromptPlatform,
   PromptRole,
   PromptDifficulty,
+  ContentLevel,
 } from '@content/courses/aibi-p/prompt-library';
 import {
   ALL_PROMPTS,
@@ -44,7 +45,11 @@ const DIFFICULTY_OPTIONS: readonly { value: FilterValue<PromptDifficulty>; label
   })),
 ];
 
-export function PromptLibraryClient() {
+interface PromptLibraryClientProps {
+  readonly userLevel?: ContentLevel | null;
+}
+
+export function PromptLibraryClient({ userLevel = null }: PromptLibraryClientProps) {
   const [platform, setPlatform] = useState<FilterValue<PromptPlatform>>('all');
   const [role, setRole] = useState<FilterValue<PromptRole>>('all');
   const [difficulty, setDifficulty] = useState<FilterValue<PromptDifficulty>>('all');
@@ -86,6 +91,11 @@ export function PromptLibraryClient() {
 
         <p className="mt-3 font-mono text-[11px] text-[color:var(--color-dust)]">
           Showing {filtered.length} of {totalCount} prompts
+          {filtered.some((p) => p.requiredLevel) && (
+            <span className="ml-2" style={{ color: 'var(--color-terra)' }}>
+              · {filtered.filter((p) => p.requiredLevel).length} require higher certification
+            </span>
+          )}
         </p>
       </div>
 
@@ -99,7 +109,7 @@ export function PromptLibraryClient() {
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {filtered.map((prompt) => (
-            <PromptCard key={prompt.id} prompt={prompt} />
+            <PromptCard key={prompt.id} prompt={prompt} userLevel={userLevel} />
           ))}
         </div>
       )}

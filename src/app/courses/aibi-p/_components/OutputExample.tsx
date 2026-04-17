@@ -10,18 +10,21 @@ import {
   OUTPUT_PLATFORM_META,
   OUTPUT_ROLE_META,
 } from '@content/courses/aibi-p/output-examples';
+import type { ContentLevel } from '@content/courses/aibi-p/prompt-library';
+import { ContentGate } from './ContentGate';
 
 interface OutputExampleProps {
   readonly example: OutputExample;
+  readonly userLevel?: ContentLevel | null;
 }
 
-export function OutputExampleCard({ example }: OutputExampleProps) {
+export function OutputExampleCard({ example, userLevel = null }: OutputExampleProps) {
   const [expanded, setExpanded] = useState(false);
 
   const platformMeta = OUTPUT_PLATFORM_META[example.platform];
   const roleMeta = OUTPUT_ROLE_META[example.role];
 
-  return (
+  const card = (
     <article
       className="border border-[color:var(--color-parch-dark)] rounded-sm overflow-hidden"
       aria-label={example.title}
@@ -164,5 +167,19 @@ export function OutputExampleCard({ example }: OutputExampleProps) {
         </div>
       )}
     </article>
+  );
+
+  if (!example.requiredLevel) {
+    return card;
+  }
+
+  return (
+    <ContentGate
+      requiredLevel={example.requiredLevel}
+      userLevel={userLevel}
+      previewDescription={`Advanced ${roleMeta.label} output example — ${example.skillUsed ?? 'specialist skill'}`}
+    >
+      {card}
+    </ContentGate>
   );
 }

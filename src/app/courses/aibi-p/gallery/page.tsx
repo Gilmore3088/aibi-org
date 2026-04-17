@@ -4,6 +4,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { OutputGalleryClient } from './OutputGalleryClient';
+import { resolveUserLevel } from '@/lib/credentials';
 
 export const metadata: Metadata = {
   title: 'Output Gallery | AiBI-P | The AI Banking Institute',
@@ -11,7 +12,9 @@ export const metadata: Metadata = {
     'See what excellent AI outputs look like in every banking department. Role-specific examples from lending, operations, compliance, finance, marketing, and IT. Part of the AiBI-P course.',
 };
 
-export default function OutputGalleryPage() {
+export default async function OutputGalleryPage() {
+  const userLevel = await resolveUserLevel();
+
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-8 py-16">
       {/* Breadcrumb */}
@@ -74,7 +77,7 @@ export default function OutputGalleryPage() {
       </header>
 
       {/* Client-side filtered gallery */}
-      <OutputGalleryClient />
+      <OutputGalleryClient userLevel={userLevel} />
     </div>
   );
 }

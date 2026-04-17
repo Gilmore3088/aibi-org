@@ -2,7 +2,7 @@
 // These show learners what EXCELLENCE looks like in their department.
 // Each example is realistic, banking-specific, and drawn from real skill workflows.
 
-import type { PromptRole, PromptPlatform } from './prompt-library';
+import type { PromptRole, PromptPlatform, ContentLevel } from './prompt-library';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -22,6 +22,7 @@ export interface OutputExample {
   readonly outputText: string;        // the actual AI output (realistic, full text)
   readonly whatMakesItEffective: readonly OutputQualityMarker[];
   readonly qualityMarkers: readonly string[];  // what the learner should notice
+  readonly requiredLevel?: ContentLevel;
 }
 
 // ---------------------------------------------------------------------------
@@ -283,6 +284,7 @@ use in credit decisions. This brief is a research starting point, not a credit o
       'VERIFY and RISK FLAG markers are calibrated (not applied to every sentence) — only genuinely uncertain or consequential items are flagged',
       'Tenant mix shift section is granular enough to affect lease rollover stress testing',
     ],
+    requiredLevel: 's',
   },
 
   // -------------------------------------------------------------------------
@@ -573,6 +575,7 @@ filing, you must:
       'Legal citation (31 USC 5318(g)(2)) is accurate and specific — not a vague reference to "bank secrecy rules"',
       'The guidance section at the bottom is numbered and actionable — it is a checklist, not a disclaimer',
     ],
+    requiredLevel: 's',
   },
 
   // -------------------------------------------------------------------------
@@ -901,6 +904,7 @@ formal board action are noted under Recommendation above.`,
       'Board notification determination is stated explicitly at the end — the CFO has done the work of assessing materiality',
       'The reputational note about external communications is proactive governance guidance, not requested but relevant',
     ],
+    requiredLevel: 's',
   },
 
   // -------------------------------------------------------------------------
@@ -1486,6 +1490,233 @@ indemnification language.]`,
       'HITL (human-in-the-loop) uses the AIEOG Lexicon definition, which is the official regulatory terminology',
       'The exit provision criterion (Section 4) is often overlooked in vendor evaluations — its inclusion here reflects real operational risk awareness',
     ],
+    requiredLevel: 's',
+  },
+
+  // -------------------------------------------------------------------------
+  // L-LEVEL — Example 1: Board AI strategy deck excerpt
+  // -------------------------------------------------------------------------
+  {
+    id: 'l-board-ai-strategy-deck-excerpt',
+    role: 'executive',
+    title: 'Board AI Strategy Presentation — Slides 4 and 5 Excerpt',
+    platform: 'claude',
+    skillUsed: 'Board Deck Generator (AiBI-L)',
+    outputText: `BOARD OF DIRECTORS BRIEFING
+The AI Banking Institute · Executive Strategy Series
+Prepared for: [INSTITUTION NAME] Board of Directors
+Date: April 2026 | Presenter: President/CEO
+
+---
+
+SLIDE 4 — THE EFFICIENCY OPPORTUNITY
+
+Current Performance
+- Efficiency ratio: [FDIC EFFICIENCY RATIO]% (FDIC BankFind Suite, Q4 2025)
+- Community bank peer median: ~65% (FDIC CEIC data, 1992–2025)
+- Industry-wide benchmark: ~55.7% (FDIC Quarterly Banking Profile, Q4 2024)
+- Gap to peer median: [CALCULATE: current ratio minus 65%] basis points
+
+What the Gap Means
+A $500M community bank with a 72% efficiency ratio and 120 FTE spends
+approximately $0.72 on operations for every $1.00 it earns. Moving to the
+peer median of 65% would free $[CALCULATE] annually for reinvestment,
+capital, or competitive rate positioning.
+
+The AI Productivity Lever
+- Conservative: 1.5 hours saved per FTE per week
+  Source: Jack Henry & Associates, Getting Started in AI, 2025
+- Base case: 3 hours saved per FTE per week
+  Source: Jack Henry & Associates, Getting Started in AI, 2025
+- At base case, 120 FTE × 3 hrs/week × $[BURDENED HOURLY RATE] × 50 weeks
+  = $[CALCULATE] annually in productivity value
+  [VERIFY: pull burdened hourly rate from HR cost model before presenting]
+
+Trajectory: Year 1 target — reduce efficiency ratio by 200–400 basis points
+through expense-side productivity gains. Revenue impact modeled separately.
+
+SPEAKER NOTE: The board will ask "how do you know this is achievable?" The
+answer is: we are not projecting elimination of positions. We are projecting
+that existing staff spend 3 fewer hours per week on tasks AI handles faster
+and more accurately. That is a conservative target — our best performers
+already demonstrate it individually.
+
+---
+
+SLIDE 5 — THE REGULATORY LANDSCAPE
+
+Where We Stand
+Examiners are paying attention. Per GAO-25-107197 (May 2025), there is
+currently no comprehensive federal AI-specific banking framework, but
+existing guidance applies directly:
+
+  SR 11-7 (Federal Reserve, 2011) — Model risk management. Applies to
+  any AI used in credit, fraud, BSA, or pricing decisions. Requires
+  validation, documentation, and ongoing monitoring.
+
+  Interagency TPRM Guidance (OCC Bulletin 2023-17) — Third-party risk.
+  Applies to every AI vendor relationship. Requires due diligence,
+  contract controls, and ongoing oversight.
+
+  ECOA / Regulation B — Fair lending. Applies to any AI model that
+  touches a credit decision. Requires explainability and adverse action
+  notice capability.
+
+  AIEOG AI Lexicon (US Treasury / FBIIC / FSSCC, Feb 2026) — Official
+  definitions for AI governance terms. Examiners will use this vocabulary.
+
+The Risk of Inaction
+Operating without an AI Acceptable Use Policy while staff use consumer AI
+tools is itself a regulatory risk. If an examiner finds undocumented AI use
+in a supervised function, the institution cannot demonstrate control.
+[RISK FLAG: This is the most important point on this slide. Do not soften it.]
+
+What We Are Doing
+- Phase 1 (Q2 2026): Adopt AI Acceptable Use Policy — board approval requested
+- Phase 2 (Q3 2026): Complete vendor AI inventory and TPRM documentation
+- Phase 3 (Q4 2026): Staff certification program — AiBI-P for first 30 users
+
+SPEAKER NOTE: Some directors will want to wait for clearer federal guidance.
+The response: the guidance is already here — SR 11-7, TPRM, ECOA. We are not
+waiting for new rules; we are implementing the ones that already apply.`,
+    whatMakesItEffective: [
+      {
+        heading: 'Every statistic is sourced in-line with publication name and date',
+        detail: 'No slide says "industry data shows." Every figure cites its origin: FDIC BankFind Suite, Jack Henry 2025, GAO-25-107197. A board member or examiner can trace every number to its source.',
+      },
+      {
+        heading: 'CALCULATE placeholders require the presenter to do the math for their institution',
+        detail: 'The deck does not invent efficiency ratio improvement projections. It provides the formula and requires the CFO to populate it with actual FDIC-reported figures. This prevents the most common board presentation failure: plausible-sounding numbers that are not institution-specific.',
+      },
+      {
+        heading: 'The risk of inaction is stated as a regulatory fact, not a persuasion tactic',
+        detail: 'The RISK FLAG on Slide 5 is not a sales argument. It is a compliance observation: operating without documented AI governance while staff use AI is a real examination risk. The speaker note reinforces this.',
+      },
+      {
+        heading: 'Speaker notes give the CEO exact language for the hardest questions',
+        detail: 'Both speaker notes anticipate board objections — "how do you know this is achievable?" and "should we wait for clearer guidance?" — and provide responses that are factual, not defensive.',
+      },
+    ],
+    qualityMarkers: [
+      'FDIC BankFind Suite is cited as the source for the efficiency ratio — not a generic industry average',
+      'The base-case productivity assumption (3 hours/week/FTE) cites Jack Henry 2025, not an invented number',
+      'GAO-25-107197 is cited correctly — it specifically addresses the absence of a comprehensive AI framework',
+      'The RISK FLAG instruction ("Do not soften it") is a quality marker: the AI understood that board risk communication requires directness',
+    ],
+    requiredLevel: 'l',
+  },
+
+  // -------------------------------------------------------------------------
+  // L-LEVEL — Example 2: Efficiency ratio scenario model output
+  // -------------------------------------------------------------------------
+  {
+    id: 'l-efficiency-ratio-scenario-model',
+    role: 'finance',
+    title: 'Efficiency Ratio Scenario Model — 24-Month AI Productivity Projection',
+    platform: 'chatgpt',
+    skillUsed: 'Efficiency Ratio Scenario Modeling (AiBI-L)',
+    outputText: `EFFICIENCY RATIO SCENARIO MODEL
+Institution: [INSTITUTION NAME — complete before distributing]
+Baseline Data Source: FDIC BankFind Suite (banks.data.fdic.gov)
+Model Date: April 2026 | Prepared by: CFO Office
+Purpose: Estimate productivity-driven efficiency ratio improvement over 24 months
+
+[VERIFY ALL INSTITUTION-SPECIFIC FIGURES AGAINST FDIC BANKFIND SUITE BEFORE PRESENTING]
+
+---
+
+BASELINE INPUTS
+
+Total FTE: [FTE COUNT — VERIFY]
+Burdened cost per FTE: $[COST PER FTE — VERIFY from HR cost model]
+Burdened hourly rate: $[COST PER FTE] ÷ 2,080 = $[HOURLY RATE]
+Total non-interest expense (NIE): $[NIE]M — FDIC BankFind Suite Q4 2025
+Total revenue (NII + non-interest income): $[REVENUE]M — FDIC BankFind Suite Q4 2025
+Current efficiency ratio: [NIE ÷ REVENUE × 100]% — FDIC BankFind Suite Q4 2025
+Community bank peer median: ~65% (FDIC CEIC data, 1992–2025)
+Industry-wide benchmark: ~55.7% (FDIC Quarterly Banking Profile, Q4 2024)
+
+---
+
+PRODUCTIVITY ASSUMPTIONS (source: Jack Henry & Associates, Getting Started in AI, 2025)
+
+Conservative: 1.5 hours saved per FTE per week
+Base case:    3.0 hours saved per FTE per week
+Optimistic:   5.0 hours saved per FTE per week
+
+Annual productivity value formula:
+FTE × hours/week × burdened hourly rate × 50 working weeks
+
+---
+
+SCENARIO SUMMARY TABLE
+
+| Scenario     | Hrs/Wk | Annual Value | NIE Reduction Y1 (60%) | NIE Reduction Y2 (80%) | Efficiency Ratio Y1 | Efficiency Ratio Y2 | Δ vs. Peer Median |
+|--------------|--------|--------------|------------------------|------------------------|---------------------|---------------------|-------------------|
+| Conservative | 1.5    | $[CALC]      | $[CALC]                | $[CALC]                | [CALC]%             | [CALC]%             | [CALC] bps        |
+| Base Case    | 3.0    | $[CALC]      | $[CALC]                | $[CALC]                | [CALC]%             | [CALC]%             | [CALC] bps        |
+| Optimistic   | 5.0    | $[CALC]      | $[CALC]                | $[CALC]                | [CALC]%             | [CALC]%             | [CALC] bps        |
+
+Notes:
+- NIE reduction assumes 60% of productivity value flows to expense reduction in Year 1
+  (remaining 40% = learning curve, partial-year ramp, redeployment of reclaimed time)
+- Year 2 increases to 80% as processes are restructured around AI workflows
+- Revenue held constant — this model is limited to expense-side productivity only
+- These are projections under stated assumptions, not guarantees
+
+---
+
+CFO COMMENTARY (for board report)
+
+Under the base-case assumption of 3 hours saved per FTE per week — consistent with
+Jack Henry's 2025 community banking AI research — the institution projects a reduction
+in non-interest expense of approximately $[CALC] in Year 1 and $[CALC] in Year 2,
+yielding an efficiency ratio of approximately [CALC]% by end of 2027. This would
+reduce the current gap to the community bank peer median of ~65% by approximately
+[CALC] basis points. The conservative scenario (1.5 hours/week) still produces
+meaningful improvement; the optimistic scenario (5 hours/week) requires sustained
+adoption at scale and is not recommended as a planning target.
+
+[VERIFY: Populate all CALC fields with institution-specific figures before board distribution.
+Cross-check efficiency ratio baseline against FDIC BankFind Suite Q4 2025 report.]
+
+---
+
+SENSITIVITY NOTE — WHAT MUST BE TRUE FOR THE OPTIMISTIC SCENARIO
+
+1. Adoption rate: 80%+ of eligible FTE actively using AI tools within 12 months
+2. Training completion: All adopters have completed structured AI training (AiBI-P minimum)
+3. Process restructuring: At least 3 high-volume workflows redesigned around AI assistance
+4. Management reinforcement: Department heads actively measure and report time savings
+5. Platform stability: No major AI platform disruptions or compliance restrictions on core tools
+
+If any of these conditions is not met, the base case is the appropriate planning assumption.
+The optimistic scenario is achievable — it is not the right number to put in a budget.`,
+    whatMakesItEffective: [
+      {
+        heading: 'Every input is a VERIFY placeholder tied to a named source',
+        detail: 'The model does not invent the institution\'s efficiency ratio, FTE count, or burdened cost. It specifies exactly where to get each number — FDIC BankFind Suite for financial data, the HR cost model for burdened rate — and marks every instance for verification before distribution.',
+      },
+      {
+        heading: 'Productivity assumptions are sourced, not assumed',
+        detail: 'The 1.5 / 3.0 / 5.0 hours-per-week figures cite Jack Henry\'s Getting Started in AI (2025). An examiner or board member can verify these are published estimates from a credible industry source, not numbers the CFO invented.',
+      },
+      {
+        heading: 'The NIE flow-through percentages (60% / 80%) are explained',
+        detail: 'The note explains why only 60% of productivity value flows to expense reduction in Year 1: learning curve, partial-year ramp, and redeployment of reclaimed time. This prevents the model from looking like it assumes instant, frictionless savings.',
+      },
+      {
+        heading: 'The sensitivity note is the most important section',
+        detail: 'The five conditions for the optimistic scenario are specific and testable. A CFO presenting this to the board can answer "what has to be true?" with a concrete list — not a vague assertion that adoption will happen.',
+      },
+    ],
+    qualityMarkers: [
+      'FDIC BankFind Suite is cited as the baseline source — the model cannot be populated without it',
+      'The CFO commentary is written in board-ready language: no jargon, specific figures, stated assumptions',
+      'Revenue is explicitly excluded from the model scope — this prevents inflating the projection with speculative income benefits',
+      'The optimistic scenario includes an explicit caution: "not recommended as a planning target." The AI did not just produce numbers — it assessed their reliability.',
+    ],
+    requiredLevel: 'l',
   },
 
 ] as const;

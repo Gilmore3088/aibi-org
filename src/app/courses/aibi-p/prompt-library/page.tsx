@@ -4,6 +4,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { PromptLibraryClient } from './PromptLibraryClient';
+import { resolveUserLevel } from '@/lib/credentials';
 
 export const metadata: Metadata = {
   title: 'Prompt Library | AiBI-P | The AI Banking Institute',
@@ -11,7 +12,9 @@ export const metadata: Metadata = {
     'Copy-paste-ready AI prompts for community banking professionals. Organized by platform, role, and difficulty. Part of the AiBI-P Banking AI Practitioner course.',
 };
 
-export default function PromptLibraryPage() {
+export default async function PromptLibraryPage() {
+  const userLevel = await resolveUserLevel();
+
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-8 py-16">
       {/* Breadcrumb */}
@@ -61,7 +64,7 @@ export default function PromptLibraryPage() {
       </header>
 
       {/* Filterable prompt grid */}
-      <PromptLibraryClient />
+      <PromptLibraryClient userLevel={userLevel} />
 
       {/* Footer guidance */}
       <footer className="mt-16 pt-8 border-t border-[color:var(--color-parch-dark)]">
@@ -72,13 +75,13 @@ export default function PromptLibraryPage() {
             </h2>
             <ol className="font-sans text-sm text-[color:var(--color-ink)]/80 leading-relaxed space-y-2 list-decimal list-inside">
               <li>Choose a prompt that matches your role and platform</li>
-              <li>Click "Copy" to copy the full prompt text</li>
+              <li>Click &ldquo;Copy&rdquo; to copy the full prompt text</li>
               <li>
                 Paste into your AI tool (ChatGPT, Claude, Gemini, Copilot, or
                 Perplexity)
               </li>
               <li>Replace any [PLACEHOLDER] values with your specific details</li>
-              <li>Review the output against the "What you will get" description</li>
+              <li>Review the output against the &ldquo;What you will get&rdquo; description</li>
               <li>
                 Iterate: if the output misses something, refine the prompt and try
                 again
