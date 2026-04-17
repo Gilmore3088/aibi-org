@@ -176,6 +176,20 @@ export function CourseSidebar({ completedModules, currentModule }: CourseSidebar
           My Toolkit
         </Link>
         <Link
+          href="/courses/aibi-p/gallery"
+          className="w-full flex items-center justify-center gap-2 py-2 px-4 rounded-sm border border-[color:var(--color-terra)]/30 hover:bg-[color:var(--color-parch)] transition-colors text-[10px] uppercase tracking-widest font-mono text-[color:var(--color-terra)]"
+        >
+          <svg
+            className="w-3 h-3"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            aria-hidden="true"
+          >
+            <path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" />
+          </svg>
+          Output Gallery
+        </Link>
+        <Link
           href={`/courses/aibi-p/${currentModule}`}
           className="w-full bg-[color:var(--color-terra)] hover:bg-[color:var(--color-terra-light)] text-[color:var(--color-linen)] py-3 px-4 rounded-sm font-bold transition-colors flex items-center justify-center gap-2 text-[10px] uppercase tracking-widest font-mono"
         >
