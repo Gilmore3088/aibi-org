@@ -22,23 +22,25 @@ export type EnrollmentData = Pick<
  * Uses getAll/setAll cookie pattern (recommended by @supabase/ssr 0.5+).
  */
 export async function getEnrollment(): Promise<EnrollmentData | null> {
-  // Dev bypass — return mock enrollment when Supabase is not configured
-  // so the course is browsable locally without a database
+  // Dev bypass — return mock enrollment in development so the course is
+  // browsable locally without authentication. Set SKIP_DEV_BYPASS=true
+  // to test real Supabase auth in development.
+  if (process.env.NODE_ENV === 'development' && process.env.SKIP_DEV_BYPASS !== 'true') {
+    return {
+      id: 'dev-mock-enrollment',
+      user_id: 'dev-user',
+      completed_modules: [],
+      current_module: 1,
+      enrolled_at: new Date().toISOString(),
+      onboarding_answers: {
+        uses_m365: 'yes',
+        personal_ai_subscriptions: ['chatgpt-plus'],
+        primary_role: 'executive',
+      },
+    } as unknown as EnrollmentData;
+  }
+
   if (!isSupabaseConfigured()) {
-    if (process.env.NODE_ENV === 'development') {
-      return {
-        id: 'dev-mock-enrollment',
-        user_id: 'dev-user',
-        completed_modules: [],
-        current_module: 1,
-        enrolled_at: new Date().toISOString(),
-        onboarding_answers: {
-          uses_m365: 'yes',
-          personal_ai_subscriptions: ['chatgpt-plus'],
-          primary_role: 'executive',
-        },
-      } as unknown as EnrollmentData;
-    }
     return null;
   }
 

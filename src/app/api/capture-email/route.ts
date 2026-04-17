@@ -25,11 +25,12 @@ function isValidPayload(p: CapturePayload): p is {
   answers: number[];
 } {
   if (typeof p.email !== 'string' || !EMAIL_RE.test(p.email)) return false;
-  if (typeof p.score !== 'number' || p.score < 8 || p.score > 32) return false;
+  if (typeof p.score !== 'number' || p.score < 8 || p.score > 48) return false;
   if (typeof p.tier !== 'string' || p.tier.length === 0) return false;
   if (typeof p.tierLabel !== 'string' || p.tierLabel.length === 0) return false;
   if (!Array.isArray(p.answers)) return false;
-  if (!p.answers.every((n) => typeof n === 'number' && n >= 1 && n <= 4)) return false;
+  if (p.answers.length < 8 || p.answers.length > 12) return false;
+  if (!p.answers.every((n: unknown) => typeof n === 'number' && n >= 1 && n <= 4)) return false;
   return true;
 }
 
