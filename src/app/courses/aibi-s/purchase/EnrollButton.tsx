@@ -28,7 +28,7 @@ export function EnrollButton({ userEmail, roleTrack, cohortId }: EnrollButtonPro
           You must be signed in to enroll.
         </p>
         <Link
-          href="/sign-in"
+          href="/auth/login?next=/courses/aibi-s/purchase"
           className="inline-block w-full bg-[color:var(--color-cobalt)] text-[color:var(--color-linen)] px-8 py-4 rounded-sm font-mono text-[10px] uppercase tracking-[0.15em] text-center hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-[color:var(--color-cobalt)] focus:ring-offset-2"
         >
           Sign in to enroll
