@@ -85,8 +85,47 @@ export default function HomePage({ searchParams }: HomePageProps) {
 
   return (
     <main>
-      {/* Hero — rotating headlines or split variant via /?hero=split */}
-      {useSplitHero ? <HeroSplit /> : <HeroRotating />}
+      {/* Hero */}
+      {useSplitHero ? (
+        <HeroSplit />
+      ) : (
+        <section className="px-6 pt-16 pb-16 md:pt-24 md:pb-20">
+          <div className="max-w-4xl mx-auto text-center space-y-6">
+            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl leading-[1.1] text-[color:var(--color-ink)]">
+              The big banks are spending billions on AI.{' '}
+              <span className="text-[color:var(--color-terra)] italic">
+                Your advantage is your people.
+              </span>
+            </h1>
+            <p className="text-base md:text-lg text-[color:var(--color-ink)]/75 max-w-2xl mx-auto leading-relaxed pt-2">
+              We train community bankers to use AI — safely, professionally,
+              and without a six-figure budget. Every loan officer, teller, and
+              compliance analyst who learns these tools becomes a builder who
+              makes your institution faster, sharper, and harder to outcompete.
+            </p>
+            <p className="font-serif-sc text-lg md:text-xl text-[color:var(--color-terra)] tracking-wide">
+              Turning Bankers into Builders
+            </p>
+            <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link
+                href="/assessment"
+                className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
+              >
+                Take the Free Assessment
+              </Link>
+              <Link
+                href="#roi-calculator"
+                className="inline-block px-8 py-4 border border-[color:var(--color-ink)]/30 text-[color:var(--color-ink)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)] transition-colors"
+              >
+                Model Your ROI
+              </Link>
+            </div>
+            <p className="font-mono text-xs text-[color:var(--color-slate)] pt-2">
+              8 questions &middot; under 3 minutes &middot; community banks only
+            </p>
+          </div>
+        </section>
+      )}
 
       {/* ── ACT 1: THE PROBLEM ── */}
       {/* Stats band — the industry is moving */}
