@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { AibiSeal } from './AibiSeal';
+import { AuthButton } from './AuthButton';
 
 const NAV_LINKS = [
   { href: '/assessment', label: 'Assessment' },
@@ -41,6 +42,7 @@ export function Header() {
           >
             Free Assessment
           </Link>
+          <AuthButton />
         </nav>
       </div>
     </header>
