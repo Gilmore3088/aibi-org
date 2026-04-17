@@ -81,6 +81,34 @@ export function createServerClient(cookieStore: {
 }
 
 /**
+ * Server client using the getAll/setAll cookie pattern — use in Server Components,
+ * Route Handlers, and Server Actions that need to read the auth session.
+ *
+ * This accepts the ReadonlyRequestCookies object returned by next/headers `cookies()`.
+ * Prefer this over `createServerClient` for auth-sensitive code (login, session checks).
+ *
+ * Usage:
+ *   import { cookies } from 'next/headers';
+ *   const supabase = createServerClientWithCookies(await cookies());
+ */
+export function createServerClientWithCookies(cookieStore: {
+  getAll(): Array<{ name: string; value: string }>;
+}) {
+  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+    throw new Error(MISSING_CONFIG_MSG);
+  }
+  return ssrCreateServerClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+    cookies: {
+      getAll() {
+        return cookieStore.getAll();
+      },
+      // setAll is intentionally omitted — session is kept alive by middleware.
+      // Auth callbacks that need to set cookies use the full middleware pattern.
+    },
+  });
+}
+
+/**
  * Service role client — bypasses RLS.
  * Use ONLY in server-side code (Route Handlers, Server Actions, webhooks).
  * Never expose or use in Client Components.
