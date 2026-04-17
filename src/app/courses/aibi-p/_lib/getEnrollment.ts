@@ -29,7 +29,7 @@ export async function getEnrollment(): Promise<EnrollmentData | null> {
     return {
       id: 'dev-mock-enrollment',
       user_id: 'dev-user',
-      completed_modules: [1, 2, 3, 4, 5, 6, 7, 8],
+      completed_modules: [1, 2, 3, 4, 5, 6, 7, 8, 9],
       current_module: 9,
       enrolled_at: new Date().toISOString(),
       onboarding_answers: {
