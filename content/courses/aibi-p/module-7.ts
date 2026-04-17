@@ -108,6 +108,142 @@ A skill that produces multi-channel campaign copy (direct mail, email, branch fl
 All five skill prompts are available in the [Prompt Library](/courses/aibi-p/prompt-library). Each prompt follows the RTFC Framework from Module 6: Role, Task, Format, Constraint.`,
     },
     {
+      id: 'm7-context-binding',
+      title: 'Context Binding: What Goes Inside vs. Outside the Skill',
+      content: `One of the most common skill-building mistakes is context placement — putting information in the wrong location. The rule is simple once you internalize it.
+
+**The Context Binding Rule**
+
+Ask one question about every piece of context you consider including:
+
+- Is this context *about the skill* — specific to this task, traveling with this skill, used only in this context? If yes, put it inside the skill.
+- Is this context *about you or your organization* — shared across multiple skills, maintained separately, or likely to change independently? If yes, point to it externally (a shared reference file, a project-level document, your CLAUDE.md or equivalent project context).
+
+**Inside the skill (context specific to this skill):**
+- The output template for this specific document type
+- The regulatory rubric applicable to this specific task
+- The persona or expert framing needed for this specific job
+- The example inputs and outputs that calibrate this skill's behavior
+- The failure patterns documented in the Gotcha Section
+
+**Outside the skill (context about your institution):**
+- Your institution's standard data classification rules (used across all skills)
+- Your staff directory or stakeholder list (changes independently)
+- Your institution's general AI acceptable use policy (applies to all AI work)
+- Your project-level instructions or CLAUDE.md that every skill in the project inherits
+
+**Why this matters in practice:**
+
+A Compliance skill that embeds your institution's entire acceptable use policy as part of its instructions will produce a bloated, hard-to-maintain skill file. More importantly, when the policy updates, you have to find and update every skill that embedded it. If the policy lives externally and is referenced by the skill, a single update propagates everywhere.
+
+Conversely, a Loan QC skill that references an external checklist file — and the checklist gets moved or renamed — will silently fail. The checklist is specific to that skill and should travel with it.
+
+The rule of thumb: "about the skill" = inside. "About you or your org" = outside.`,
+    },
+    {
+      id: 'm7-scoping-rule',
+      title: 'The Scoping Rule: One Clear Job Per Skill',
+      content: `**One clear job per skill. If you cannot describe what the skill does in a single sentence, it is probably two skills.**
+
+This is the most important structural rule in skill design. Violating it produces skills that are inconsistent, hard to debug, and difficult to maintain.
+
+**What scope creep looks like in banking skills:**
+
+A Lending staff member builds a "Loan File Skill" that starts as a documentation checklist — then gains a risk narrative section, then a comparative market analysis component, then a borrower financial summary, then a rate sensitivity analysis. Each addition seems incremental. The result is a 700-line skill file that does five different jobs, fails differently on different inputs, and is impossible to diagnose when something goes wrong.
+
+**The one-sentence test:**
+
+Write one sentence describing what this skill does. If the sentence requires "and" to be accurate — "it checks documentation and generates risk narratives and summarizes borrower financials" — that is three skills, not one.
+
+**Correct scope in banking:**
+- "This skill checks a loan file package against the 22-item documentation checklist and produces a gap analysis." — One job.
+- "This skill takes a completed gap analysis and generates a credit risk narrative for the underwriter's file." — One job.
+- "This skill takes a credit risk narrative and formats it for the loan committee memo template." — One job.
+
+**The benefit of narrow skills:**
+
+Three narrow skills are easier to maintain than one broad skill. Each can be tested independently. Each can be improved without breaking the others. Each can be shared selectively — a Loan Processor may need the checklist skill but not the narrative skill. The narrow scope also makes the skill easier to explain to a colleague who wants to use it.
+
+When two skills consistently run in sequence — checklist output feeds narrative input — that is a candidate for skill chaining, an advanced pattern covered in the AiBI-S curriculum. For now, build them separately and run them manually in sequence.`,
+    },
+    {
+      id: 'm7-four-starter-skills',
+      title: 'Four Universal Starter Skills for Community Bankers',
+      content: `These four skills work for any role in community banking. They are starting points — not finished tools. Each is designed to be built in 15-20 minutes and immediately useful, with clear paths to refinement as you learn what your specific workflow requires.
+
+**Starter Skill 1: Research with Confidence**
+
+Purpose: Structured research with confidence scoring and cross-source verification. Forces the AI to surface uncertainty rather than paper over it.
+
+Why it matters in banking: Regulatory research, competitor analysis, and market condition summaries are high-stakes. A model that confidently states an incorrect regulatory threshold can create real compliance risk. This skill makes confidence levels explicit and requires citation for every material claim.
+
+Core constraint to include: "For every factual claim, assign a confidence level: [HIGH] — multiple sources agree; [MED] — single source or inference; [LOW] — uncertain or conflicting. Flag any [LOW] item for human verification before use."
+
+Banking adaptations: Regulatory change monitoring (SR letters, CFPB rule updates, FDIC guidance); peer institution competitive analysis using public FDIC call report data; market conditions research for ALCO rate environment summaries.
+
+---
+
+**Starter Skill 2: Devil's Advocate**
+
+Purpose: Identify hidden assumptions, construct the strongest possible counter-argument, and surface blind spots in a proposal or decision.
+
+Why it matters in banking: Loan committee and ALCO decisions benefit from structured challenge. The AI can simulate the most skeptical examiner, the most cautious board member, or the most risk-aware credit officer — stress-testing a proposal before it faces real scrutiny.
+
+Core constraint to include: "Your job is to find weaknesses, not to evaluate overall merit. Produce the three strongest arguments against the proposal, regardless of whether the proposal is ultimately sound."
+
+Banking adaptations: Credit exception review — build the strongest case for denial before the exception is approved; strategic initiative stress-testing — surface the three most likely failure modes before the initiative goes to the board; policy draft review — identify the three interpretations of ambiguous language that could create examination findings.
+
+---
+
+**Starter Skill 3: Morning Briefing**
+
+Purpose: Structured daily brief synthesizing calendar, outstanding items, and priorities into a single actionable summary.
+
+Why it matters in banking: Branch managers, department heads, and executive staff at community institutions manage high-variety days with frequent context-switching. A Morning Briefing skill eliminates the cognitive overhead of triaging inputs from multiple sources each morning.
+
+Core constraint to include: "Organize output into three sections only: [MUST DO TODAY] — items with hard deadlines or regulatory implications; [FOLLOW UP] — items requiring action but not today; [WATCH] — items to monitor that require no action yet. Do not include items that fit none of these categories."
+
+Banking adaptations: Branch manager daily prep synthesizing overnight exception reports, maturing CDs, and scheduled member appointments; department head brief synthesizing pending regulatory deadlines, open audit items, and staff scheduling; executive morning brief synthesizing board action items, rate environment changes, and key operational metrics.
+
+---
+
+**Starter Skill 4: Board of Advisors**
+
+Purpose: Multi-perspective review from expert archetypes who evaluate a decision or proposal from distinct professional vantage points.
+
+Why it matters in banking: Decisions that look sound from one perspective often reveal problems when viewed through a different professional lens. A credit-strong loan may have operational processing gaps. A compliance-clean policy may create operational inefficiency. Simulating multiple expert perspectives before a decision is finalized reduces the chance of one-dimensional analysis.
+
+Core constraint to include: "Each advisor speaks in first person, from their professional frame only. They do not agree with each other to be polite. The Strategist does not validate the Operator's concerns unless they are genuinely aligned. Produce each advisor's view as a distinct, candid section."
+
+Banking adaptations: Loan committee simulation — Strategist (growth opportunity), Operator (processing and documentation risk), Risk Officer (credit and concentration risk), Compliance Officer (regulatory exposure); ALCO scenario analysis — CFO, Chief Risk Officer, Chief Lending Officer each assessing the same rate environment scenario; new product launch review — member experience, compliance, and operations perspectives before product committee approval.`,
+    },
+    {
+      id: 'm7-reuse-vs-create',
+      title: 'Reuse vs. Create: How to Approach Your First Skills',
+      content: `There is a reasonable question at the start of any skill-building effort: should you build your own skills, or adapt and reuse skills that others have built?
+
+The answer for your first skills is clear: **build your own.**
+
+**Why building your own first skills matters:**
+
+The act of building is the learning. Writing a Role definition forces you to articulate exactly what expertise this task requires. Writing a Constraint list forces you to think through what could go wrong. Writing a Gotcha Section after your first test run forces you to observe AI failure modes rather than assume competence.
+
+A banker who downloads a pre-built Compliance skill and uses it without building their own first cannot diagnose why it fails on an unusual input. A banker who built their own skill — even an imperfect one — has the mental model to debug any skill they encounter.
+
+**When reuse makes sense:**
+
+After you have built and iterated your first two or three skills, reuse becomes a legitimate accelerant. The Skill Template Library from Module 6 contains 12 pre-built templates across four banking roles. These are well-constructed starting points — not finished skills. They still require you to:
+
+- Add the institutional context specific to your bank or credit union
+- Populate the Output Format section with your institution's actual templates
+- Build a Gotcha Section from your own observed failure patterns (the template's Gotcha Section is a placeholder)
+- Adjust Constraints to match your institution's specific regulatory exposure and risk tolerance
+
+**The rule of thumb:**
+
+Reuse structure. Own the content. A borrowed template with your institution's real context, your actual output templates, and your observed failure patterns is a better skill than a from-scratch build that lacks those specifics. But you need to have built from scratch once to know what "from scratch" requires.`,
+    },
+    {
       id: 'm7-export-and-deploy',
       title: 'Exporting and Deploying Your Skill',
       content: `When you complete the Skill Builder form, the system generates a Markdown file (.md) with all five components assembled in the correct format for loading into AI platforms.
@@ -141,6 +277,66 @@ All five skill prompts are available in the [Prompt Library](/courses/aibi-p/pro
 Copilot does not have staff-level custom instructions in the same way. Contact your IT department about institutional-level Copilot configuration options. In the interim, paste your skill content as the opening message in any new Copilot conversation.
 
 **The .md file:** Your exported skill file is human-readable and version-controllable. Consider saving it to your OneDrive or SharePoint so you can share it with colleagues and update it as your skill improves.`,
+    },
+  ],
+  tables: [
+    {
+      id: 'm7-context-binding',
+      caption: 'Context Binding Rule — Inside the Skill vs. External Reference',
+      columns: [
+        { header: 'Put Inside the Skill When...', key: 'inside' },
+        { header: 'Point Externally When...', key: 'outside' },
+      ],
+      rows: [
+        {
+          inside: 'Context is specific to this skill and travels with it: the output template for this document type, the regulatory rubric for this task, the persona framing needed here',
+          outside: 'Context is shared across multiple skills: institution-wide data classification rules, acceptable use policy, staff directory, project-level instructions',
+        },
+        {
+          inside: 'Example inputs and outputs that calibrate this skill\'s behavior for this specific job',
+          outside: 'Reference documents that change independently of the skill: regulatory guidance that updates quarterly, stakeholder lists, rate sheets',
+        },
+        {
+          inside: 'Failure patterns in the Gotcha Section — observations specific to how this skill behaves on this type of input',
+          outside: 'General AI guidelines your institution has established for all AI use — these belong in a project-level context file, not repeated in every skill',
+        },
+      ],
+    },
+    {
+      id: 'm7-four-starter-skills',
+      caption: 'Four Universal Starter Skills — Banking Adaptations',
+      columns: [
+        { header: 'Skill', key: 'skill' },
+        { header: 'Core Purpose', key: 'purpose' },
+        { header: 'Community Banking Use Cases', key: 'useCases' },
+        { header: 'Key Constraint to Include', key: 'constraint' },
+      ],
+      rows: [
+        {
+          skill: 'Research with Confidence',
+          purpose: 'Multi-source research with explicit confidence scoring and cross-source fact verification',
+          useCases: 'Regulatory change monitoring (SR letters, CFPB updates); peer institution competitive analysis via FDIC call report data; ALCO rate environment summaries',
+          constraint: '"Assign [HIGH] / [MED] / [LOW] confidence to every factual claim. Flag any [LOW] item for human verification before use."',
+        },
+        {
+          skill: 'Devil\'s Advocate',
+          purpose: 'Identify hidden assumptions, construct strongest counter-arguments, surface blind spots',
+          useCases: 'Credit exception review — build the strongest case for denial before approval; strategic initiative stress-testing; policy draft review for ambiguous language that could create examination findings',
+          constraint: '"Produce the three strongest arguments against the proposal regardless of overall merit. Do not evaluate whether the proposal is sound — find weaknesses only."',
+        },
+        {
+          skill: 'Morning Briefing',
+          purpose: 'Structured daily brief synthesizing calendar, outstanding items, and priorities',
+          useCases: 'Branch manager daily prep from overnight exception reports and scheduled appointments; department head brief for pending regulatory deadlines and open audit items; executive brief for board action items and rate environment changes',
+          constraint: '"Three sections only: [MUST DO TODAY], [FOLLOW UP], [WATCH]. Omit any item that fits none of these categories."',
+        },
+        {
+          skill: 'Board of Advisors',
+          purpose: 'Multi-perspective review from expert archetypes who evaluate from distinct professional vantage points',
+          useCases: 'Loan committee simulation (Strategist, Operator, Risk Officer, Compliance Officer); ALCO scenario analysis from CFO, CRO, and CLO perspectives; new product launch review before product committee approval',
+          constraint: '"Each advisor speaks in first person from their frame only. They do not agree to be polite. Produce each view as a distinct, candid section."',
+        },
+      ],
     },
   ],
   activities: [
