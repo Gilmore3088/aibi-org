@@ -156,24 +156,23 @@ export default function HomePage({ searchParams }: HomePageProps) {
           </div>
 
           <div className="grid md:grid-cols-3 gap-10">
-            {PILLARS.map((pillar) => (
+            {PILLARS.map((pillar, idx) => (
               <article key={pillar.letter} className="space-y-5">
-                <div
-                  className="w-14 h-14 rounded-full border-2 flex items-center justify-center font-serif text-2xl"
-                  style={{
-                    borderColor: pillar.colorVar,
-                    color: pillar.colorVar,
-                  }}
-                  aria-hidden
-                >
-                  {pillar.letter}
+                <div className="flex items-center gap-3">
+                  <span
+                    className="font-mono text-sm tabular-nums"
+                    style={{ color: pillar.colorVar }}
+                  >
+                    {idx + 1}
+                  </span>
+                  <div className="h-px flex-1 max-w-[2rem]" style={{ backgroundColor: pillar.colorVar, opacity: 0.3 }} aria-hidden="true" />
+                  <span
+                    className="font-serif-sc text-sm uppercase tracking-[0.15em]"
+                    style={{ color: pillar.colorVar }}
+                  >
+                    {pillar.label}
+                  </span>
                 </div>
-                <p
-                  className="font-mono text-xs uppercase tracking-[0.2em]"
-                  style={{ color: pillar.colorVar }}
-                >
-                  {pillar.label}
-                </p>
                 <h3 className="font-serif text-2xl text-[color:var(--color-ink)] leading-snug">
                   {pillar.headline}
                 </h3>
