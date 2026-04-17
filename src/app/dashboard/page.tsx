@@ -2,21 +2,24 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { getUserData, type UserData } from '@/lib/user-data';
+import { getUserDataWithSupabaseFallback, type UserData } from '@/lib/user-data';
 import { getTier } from '@content/assessments/v1/scoring';
 import { questions } from '@content/assessments/v1/questions';
 import { RadarChart } from './_components/RadarChart';
 
 export default function DashboardPage() {
   const [user, setUser] = useState<UserData | null>(null);
-  const [mounted, setMounted] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setMounted(true);
-    setUser(getUserData());
+    // Load from localStorage immediately for a fast first render,
+    // then upgrade with Supabase data (cross-device persistence).
+    getUserDataWithSupabaseFallback()
+      .then(setUser)
+      .finally(() => setLoading(false));
   }, []);
 
-  if (!mounted) return null;
+  if (loading) return null;
 
   if (!user) {
     return (
@@ -44,10 +47,10 @@ export default function DashboardPage() {
           </div>
           <div className="border-t border-[color:var(--color-ink)]/10 pt-6 mt-4">
             <p className="text-sm text-[color:var(--color-slate)]">
-              Already completed the assessment?
-              Account login is coming soon. For now, your results are saved
-              in this browser. If you are on a new device, retake the
-              assessment &mdash; it takes under three minutes.
+              Already completed the assessment on another device?
+              Enter the same email you used and your results will load
+              automatically. Results are also saved in this browser as a
+              local backup.
             </p>
           </div>
         </div>

@@ -1,11 +1,12 @@
 // POST /api/capture-email
-// MVP implementation: validate input, log on server, return ok.
-// ConvertKit/HubSpot/Supabase wiring added when accounts are provisioned.
+// Validates input, fires ConvertKit/HubSpot adapters, and persists the
+// readiness result to Supabase user_profiles (when configured).
 
 import { NextResponse } from 'next/server';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
 import { subscribeToAssessmentForm } from '@/lib/convertkit';
 import { upsertContact } from '@/lib/hubspot';
+import { upsertReadinessResult } from '@/lib/supabase/user-profiles';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -48,17 +49,7 @@ export async function POST(request: Request) {
 
   const { email, score, tier, tierLabel, answers } = body;
 
-  // Structured log — Vercel + local console pick this up.
-  // Replace with Supabase insert once account is provisioned.
-  console.info('[capture-email]', {
-    email,
-    score,
-    tier,
-    tierLabel,
-    answers,
-    supabaseConfigured: isSupabaseConfigured(),
-    at: new Date().toISOString(),
-  });
+  const completedAt = new Date().toISOString();
 
   // Best-effort adapters — these are no-ops until keys are set.
   await subscribeToAssessmentForm({ email, tags: [`tier:${tier}`] }).catch((err) =>
@@ -69,6 +60,19 @@ export async function POST(request: Request) {
     assessmentScore: score,
     scoreTier: tierLabel,
   }).catch((err) => console.warn('[capture-email] hubspot skip', err));
+
+  // Persist to Supabase user_profiles when configured.
+  // Best-effort: a Supabase failure must not block the response — the
+  // localStorage write in EmailGate.tsx is the fallback.
+  if (isSupabaseConfigured()) {
+    await upsertReadinessResult(email, {
+      score,
+      tierId: tier,
+      tierLabel,
+      answers,
+      completedAt,
+    }).catch((err) => console.warn('[capture-email] supabase skip', err));
+  }
 
   return NextResponse.json({ ok: true });
 }
