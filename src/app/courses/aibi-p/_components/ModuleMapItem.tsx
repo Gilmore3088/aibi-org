@@ -1,6 +1,7 @@
 // ModuleMapItem — single row in the 9-module course map
 // Server Component: pure display
 
+import Link from 'next/link';
 import type { Module } from '@content/courses/aibi-p';
 import { PILLAR_META } from '@content/courses/aibi-p';
 
@@ -23,8 +24,8 @@ export function ModuleMapItem({ module: mod, status }: ModuleMapItemProps) {
   const pillarMeta = PILLAR_META[mod.pillar];
   const isLocked = status === 'locked';
 
-  return (
-    <div className={`flex gap-4 items-start ${isLocked ? 'opacity-40' : ''}`}>
+  const content = (
+    <>
       {/* Module number */}
       <div
         className="font-mono text-sm font-bold mt-1 w-6 shrink-0"
@@ -82,6 +83,23 @@ export function ModuleMapItem({ module: mod, status }: ModuleMapItemProps) {
           </p>
         )}
       </div>
-    </div>
+    </>
+  );
+
+  if (isLocked) {
+    return (
+      <div className="flex gap-4 items-start opacity-40">
+        {content}
+      </div>
+    );
+  }
+
+  return (
+    <Link
+      href={`/courses/aibi-p/${mod.number}`}
+      className="flex gap-4 items-start group hover:translate-x-1 transition-transform duration-200 focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-2 rounded-sm"
+    >
+      {content}
+    </Link>
   );
 }

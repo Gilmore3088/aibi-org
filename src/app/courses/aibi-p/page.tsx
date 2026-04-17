@@ -70,16 +70,19 @@ export default async function CourseOverviewPage() {
         <div className="flex flex-wrap gap-4">
           <Link
             href={`/courses/aibi-p/${currentModule}`}
-            className="bg-[color:var(--color-terra)] hover:bg-[color:var(--color-terra-light)] text-[color:var(--color-linen)] px-8 py-4 rounded-sm font-bold text-[10px] uppercase tracking-[0.15em] transition-colors flex items-center gap-3 font-mono"
+            className="bg-[color:var(--color-terra)] hover:bg-[color:var(--color-terra-light)] text-[color:var(--color-linen)] px-8 py-4 rounded-sm font-bold text-[10px] uppercase tracking-[0.15em] transition-colors flex items-center gap-3 font-mono focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-2"
           >
             Resume Course
             <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
               <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
             </svg>
           </Link>
-          <button className="border border-[color:var(--color-terra)]/20 text-[color:var(--color-ink)] px-8 py-4 rounded-sm font-bold text-[10px] uppercase tracking-[0.15em] hover:bg-[color:var(--color-parch)] transition-colors font-mono">
+          <a
+            href="#module-map-heading"
+            className="border border-[color:var(--color-terra)]/20 text-[color:var(--color-ink)] px-8 py-4 rounded-sm font-bold text-[10px] uppercase tracking-[0.15em] hover:bg-[color:var(--color-parch)] transition-colors font-mono focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-2"
+          >
             View Syllabus
-          </button>
+          </a>
         </div>
       </section>
 
