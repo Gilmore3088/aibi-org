@@ -4,16 +4,12 @@
  *   1. public/artifacts/regulatory-cheatsheet.pdf  (ARTF-01)
  *   2. public/artifacts/platform-feature-reference-card.pdf (ARTF-05)
  *
- * Typography: Helvetica (headings/body), Courier (mono/numbers) — PDF built-ins
+ * Typography: Cormorant (headings), DM Sans (body), DM Mono (numbers)
  * Brand system: Terracotta #b5512e, Parchment #f5f0e6, Ink #1e1a14
  *
  * Run: node scripts/generate-static-artifacts.mjs
  *
- * NOTE on fonts: @react-pdf/renderer uses PDF built-in fonts (Helvetica,
- * Helvetica-Bold, Courier) which require no network fetch and embed cleanly
- * in all PDF viewers. Custom fonts require full (non-subset) font files.
- * To upgrade to Cormorant/DM Sans: place full .ttf files in public/fonts/
- * and update the Font.register calls below.
+ * Fonts: Full .ttf files in public/fonts/ registered via Font.register().
  */
 
 import { writeFileSync, mkdirSync } from 'fs';
@@ -40,6 +36,42 @@ mkdirSync(OUT_DIR, { recursive: true });
 Font.registerHyphenationCallback((word) => [word]);
 
 // ---------------------------------------------------------------------------
+// Brand fonts — full .ttf files in public/fonts/
+// ---------------------------------------------------------------------------
+const FONTS_DIR = join(ROOT, 'public', 'fonts');
+
+Font.register({
+  family: 'Cormorant',
+  fonts: [
+    { src: join(FONTS_DIR, 'Cormorant-Variable.ttf'), fontWeight: 400 },
+    { src: join(FONTS_DIR, 'Cormorant-Variable.ttf'), fontWeight: 700 },
+    { src: join(FONTS_DIR, 'Cormorant-Italic-Variable.ttf'), fontStyle: 'italic', fontWeight: 400 },
+  ],
+});
+
+Font.register({
+  family: 'CormorantSC',
+  fonts: [
+    { src: join(FONTS_DIR, 'CormorantSC-Bold.ttf'), fontWeight: 700 },
+  ],
+});
+
+Font.register({
+  family: 'DMSans',
+  fonts: [
+    { src: join(FONTS_DIR, 'DMSans-Variable.ttf'), fontWeight: 400 },
+    { src: join(FONTS_DIR, 'DMSans-Variable.ttf'), fontWeight: 700 },
+  ],
+});
+
+Font.register({
+  family: 'DMMono',
+  fonts: [
+    { src: join(FONTS_DIR, 'DMMono-Regular.ttf'), fontWeight: 400 },
+  ],
+});
+
+// ---------------------------------------------------------------------------
 // Brand constants
 // ---------------------------------------------------------------------------
 const TERRA = '#b5512e';
@@ -54,11 +86,11 @@ const WHITE = '#ffffff';
 const BORDER = '#d9cfc0';
 const INK_MID = '#56423d';
 
-// Typography — PDF built-in families
-const FONT_HEADING = 'Helvetica-Bold';
-const FONT_BODY = 'Helvetica';
-const FONT_BOLD = 'Helvetica-Bold';
-const FONT_MONO = 'Courier';
+// Typography — brand fonts (Cormorant for headings, DMSans for body, DMMono for numbers)
+const FONT_HEADING = 'Cormorant';
+const FONT_BODY = 'DMSans';
+const FONT_BOLD = 'Cormorant';
+const FONT_MONO = 'DMMono';
 
 const VERSION = 'v1.0';
 const VERSION_DATE = 'April 2026';
