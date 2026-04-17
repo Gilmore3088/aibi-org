@@ -173,7 +173,7 @@ export default async function CoursesPage() {
                         {track.code}
                       </span>
                       <span
-                        className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/40"
+                        className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/50"
                       >
                         {track.credential}
                       </span>
@@ -206,10 +206,10 @@ export default async function CoursesPage() {
                         { label: 'Investment', value: track.price },
                       ].map(({ label, value }) => (
                         <div key={label} className="flex items-center gap-1.5">
-                          <span className="font-mono text-[9px] uppercase tracking-[0.15em] text-[color:var(--color-ink)]/40">
+                          <span className="font-mono text-[9px] uppercase tracking-[0.15em] text-[color:var(--color-ink)]/50">
                             {label}
                           </span>
-                          <span className="font-mono text-[9px] tabular-nums text-[color:var(--color-ink)]/70">
+                          <span className="font-mono text-[9px] tabular-nums text-[color:var(--color-ink)]/75">
                             {value}
                           </span>
                         </div>
@@ -218,7 +218,7 @@ export default async function CoursesPage() {
 
                     {/* Prerequisite note */}
                     {track.prerequisite && (
-                      <p className="mt-3 font-mono text-[9px] uppercase tracking-[0.15em] text-[color:var(--color-ink)]/40">
+                      <p className="mt-3 font-mono text-[9px] uppercase tracking-[0.15em] text-[color:var(--color-ink)]/50">
                         Prerequisite: {track.prerequisite} certification
                       </p>
                     )}

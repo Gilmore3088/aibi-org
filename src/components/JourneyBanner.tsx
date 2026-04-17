@@ -55,7 +55,7 @@ export function JourneyBanner({ from }: JourneyBannerProps) {
   return (
     <div
       className="rounded-[3px] border p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4"
-      style={{ borderColor: step.accent + '40', backgroundColor: step.accentBg + '18' }}
+      style={{ borderColor: step.accentBg, backgroundColor: step.accentBg }}
     >
       <div className="flex-1 min-w-0">
         <p
