@@ -1,13 +1,16 @@
 'use client';
 
 import { useState, type FormEvent } from 'react';
-import { saveReadinessResult } from '@/lib/user-data';
+import { saveReadinessResult, type DimensionScoreSerialized } from '@/lib/user-data';
 
 interface EmailGateProps {
   readonly score: number;
   readonly tierId: string;
   readonly tierLabel: string;
   readonly answers: readonly number[];
+  readonly version?: 'v1' | 'v2';
+  readonly maxScore?: number;
+  readonly dimensionBreakdown?: Record<string, DimensionScoreSerialized>;
   readonly onCaptured: (email: string) => void;
 }
 
@@ -20,6 +23,9 @@ export function EmailGate({
   tierId,
   tierLabel,
   answers,
+  version,
+  maxScore,
+  dimensionBreakdown,
   onCaptured,
 }: EmailGateProps) {
   const [email, setEmail] = useState('');
@@ -46,13 +52,24 @@ export function EmailGate({
           tier: tierId,
           tierLabel,
           answers,
+          version,
+          maxScore,
+          dimensionBreakdown,
         }),
       });
       if (!res.ok) {
         const data = (await res.json().catch(() => ({}))) as { error?: string };
         throw new Error(data.error ?? 'Something went wrong. Please try again.');
       }
-      saveReadinessResult(trimmed, { score, tierId, tierLabel, answers });
+      saveReadinessResult(trimmed, {
+        score,
+        tierId,
+        tierLabel,
+        answers,
+        ...(version ? { version } : {}),
+        ...(maxScore !== undefined ? { maxScore } : {}),
+        ...(dimensionBreakdown ? { dimensionBreakdown } : {}),
+      });
       onCaptured(trimmed);
     } catch (err) {
       setStatus('error');

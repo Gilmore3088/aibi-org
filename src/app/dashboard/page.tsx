@@ -4,8 +4,40 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { getUserDataWithSupabaseFallback, type UserData } from '@/lib/user-data';
 import { getTier } from '@content/assessments/v1/scoring';
+import { getTierV2 } from '@content/assessments/v2/scoring';
 import { questions } from '@content/assessments/v1/questions';
 import { RadarChart } from './_components/RadarChart';
+
+// Derive the tier + display max for a ReadinessResult, handling both V1 (max 32)
+// and V2 (max 48) persisted shapes. Without this branching a V2 score of 36 was
+// rendered against V1's hardcoded /32 denominator (impossible "36/32").
+function getReadinessDisplay(readiness: NonNullable<UserData['readiness']>) {
+  // Detect V2 via explicit marker, then by maxScore, then by answers length
+  // (12 questions = V2, 8 = V1). The answers-length heuristic is the fallback
+  // for users whose localStorage was written before the version marker existed.
+  const isV2 =
+    readiness.version === 'v2' ||
+    readiness.maxScore === 48 ||
+    readiness.answers.length === 12;
+  const maxScore = readiness.maxScore ?? (isV2 ? 48 : 32);
+  try {
+    const tier = isV2 ? getTierV2(readiness.score) : getTier(readiness.score);
+    return { tier, maxScore, isV2 };
+  } catch {
+    // Score outside the known range (e.g., V1 getTier called with a V2 score
+    // that lacked a version marker). Fall back to the persisted tier label.
+    return {
+      tier: {
+        id: readiness.tierId,
+        label: readiness.tierLabel,
+        colorVar: 'var(--color-terra)',
+        headline: '',
+      } as const,
+      maxScore,
+      isV2,
+    };
+  }
+}
 
 export default function DashboardPage() {
   const [user, setUser] = useState<UserData | null>(null);
@@ -58,7 +90,9 @@ export default function DashboardPage() {
     );
   }
 
-  const tier = user.readiness ? getTier(user.readiness.score) : null;
+  const display = user.readiness ? getReadinessDisplay(user.readiness) : null;
+  const tier = display?.tier ?? null;
+  const maxScore = display?.maxScore ?? 32;
 
   return (
     <main className="px-6 py-14 md:py-20">
@@ -92,7 +126,7 @@ export default function DashboardPage() {
                   {tier.label}
                 </p>
                 <p className="font-mono text-lg tabular-nums text-[color:var(--color-ink)]">
-                  {user.readiness.score}/32
+                  {user.readiness.score}/{maxScore}
                 </p>
                 <p className="text-sm text-[color:var(--color-slate)] mt-3 leading-relaxed">
                   {tier.headline}
@@ -170,34 +204,64 @@ export default function DashboardPage() {
                 Your 8-dimension readiness breakdown
               </p>
               <div className="space-y-4">
-                {questions.map((q, idx) => {
-                  const points = user.readiness!.answers[idx] ?? 0;
-                  return (
-                    <div key={q.id} className="space-y-2">
-                      <div className="flex items-baseline justify-between">
-                        <span className="font-serif text-base text-[color:var(--color-ink)]">
-                          {q.dimension}
-                        </span>
-                        <span className="font-mono text-xs text-[color:var(--color-slate)] tabular-nums">
-                          {points} / 4
-                        </span>
-                      </div>
-                      <div className="flex gap-1">
-                        {[1, 2, 3, 4].map((bar) => (
-                          <div
-                            key={bar}
-                            className={
-                              'h-2 flex-1 rounded-[1px] ' +
-                              (bar <= points
-                                ? 'bg-[color:var(--color-terra)]'
-                                : 'bg-[color:var(--color-ink)]/10')
-                            }
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  );
-                })}
+                {user.readiness.dimensionBreakdown
+                  ? Object.entries(user.readiness.dimensionBreakdown).map(([dim, data]) => {
+                      const pct = data.maxScore > 0 ? data.score / data.maxScore : 0;
+                      const filledBars = Math.round(pct * 4);
+                      return (
+                        <div key={dim} className="space-y-2">
+                          <div className="flex items-baseline justify-between">
+                            <span className="font-serif text-base text-[color:var(--color-ink)]">
+                              {data.label}
+                            </span>
+                            <span className="font-mono text-xs text-[color:var(--color-slate)] tabular-nums">
+                              {data.score} / {data.maxScore}
+                            </span>
+                          </div>
+                          <div className="flex gap-1">
+                            {[1, 2, 3, 4].map((bar) => (
+                              <div
+                                key={bar}
+                                className={
+                                  'h-2 flex-1 rounded-[1px] ' +
+                                  (bar <= filledBars
+                                    ? 'bg-[color:var(--color-terra)]'
+                                    : 'bg-[color:var(--color-ink)]/10')
+                                }
+                              />
+                            ))}
+                          </div>
+                        </div>
+                      );
+                    })
+                  : questions.map((q, idx) => {
+                      const points = user.readiness!.answers[idx] ?? 0;
+                      return (
+                        <div key={q.id} className="space-y-2">
+                          <div className="flex items-baseline justify-between">
+                            <span className="font-serif text-base text-[color:var(--color-ink)]">
+                              {q.dimension}
+                            </span>
+                            <span className="font-mono text-xs text-[color:var(--color-slate)] tabular-nums">
+                              {points} / 4
+                            </span>
+                          </div>
+                          <div className="flex gap-1">
+                            {[1, 2, 3, 4].map((bar) => (
+                              <div
+                                key={bar}
+                                className={
+                                  'h-2 flex-1 rounded-[1px] ' +
+                                  (bar <= points
+                                    ? 'bg-[color:var(--color-terra)]'
+                                    : 'bg-[color:var(--color-ink)]/10')
+                                }
+                              />
+                            ))}
+                          </div>
+                        </div>
+                      );
+                    })}
               </div>
             </div>
           </section>

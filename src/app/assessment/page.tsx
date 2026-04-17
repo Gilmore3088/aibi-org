@@ -108,6 +108,9 @@ export default function AssessmentPage() {
                 tierId={state.tier.id}
                 tierLabel={state.tier.label}
                 answers={state.answers}
+                version="v2"
+                maxScore={48}
+                dimensionBreakdown={state.getDimensionBreakdown()}
                 onCaptured={(email) => {
                   trackEvent('email_captured', { tier: state.tier?.id ?? 'unknown' });
                   setCapturedEmail(email);

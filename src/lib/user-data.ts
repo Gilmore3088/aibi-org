@@ -5,12 +5,22 @@
 
 const STORAGE_KEY = 'aibi-user';
 
+export interface DimensionScoreSerialized {
+  readonly score: number;
+  readonly maxScore: number;
+  readonly label: string;
+}
+
 export interface ReadinessResult {
   readonly score: number;
   readonly tierId: string;
   readonly tierLabel: string;
   readonly answers: readonly number[];
   readonly completedAt: string;
+  // v2 additions (optional for backward compat with v1-shaped persisted data)
+  readonly version?: 'v1' | 'v2';
+  readonly maxScore?: number;
+  readonly dimensionBreakdown?: Record<string, DimensionScoreSerialized>;
 }
 
 export interface TopicScore {
