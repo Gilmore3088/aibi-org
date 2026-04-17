@@ -34,6 +34,7 @@ export function RadarChart({ scores, size = 280 }: RadarChartProps) {
   }
 
   return (
+    <>
     <svg width={size} height={size} className="mx-auto" aria-hidden="true">
       {/* Grid rings */}
       {GRID_LEVELS.map((level) => (
@@ -114,5 +115,27 @@ export function RadarChart({ scores, size = 280 }: RadarChartProps) {
         );
       })}
     </svg>
+    <div className="sr-only">
+      <table>
+        <caption>Proficiency skill breakdown</caption>
+        <thead>
+          <tr>
+            <th scope="col">Topic</th>
+            <th scope="col">Score</th>
+            <th scope="col">Correct/Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {scores.map((score) => (
+            <tr key={score.topic}>
+              <td>{score.label}</td>
+              <td>{score.pct}%</td>
+              <td>{score.correct}/{score.total}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    </>
   );
 }
