@@ -106,7 +106,11 @@ If you have Microsoft 365 Copilot, use it in Outlook to draft a rate change noti
 
 Upload a policy document (Tier 1 or Tier 2 data only — see Module 5) and paste the analysis prompt (ID: m3-first-claude). Claude's long context window makes it strong for multi-page documents. The structured table output is immediately usable in committee settings.
 
-Visit the [Prompt Library](/courses/aibi-p/prompt-library) to copy these prompts, or scroll to the Activities section below.`,
+Visit the [Prompt Library](/courses/aibi-p/prompt-library) to copy these prompts, or scroll to the Activities section below.
+
+**Deep Dive: Platform Guides**
+
+For step-by-step walkthroughs of NotebookLM and Perplexity — including getting started instructions, free vs. paid decisions, five banking use cases with copy-paste prompts, and data safety guidance — visit the [Platform Deep Dive Guides](/courses/aibi-p/tool-guides).`,
     },
     {
       id: 'm3-data-protection',

@@ -79,7 +79,11 @@ Open Gemini Advanced and paste the social media prompt (ID: m4-marketing-gemini)
 
 Open NotebookLM and follow the step-by-step setup in the prompt (ID: m4-it-notebooklm). Upload five policy documents to create a searchable knowledge base that answers natural-language questions grounded only in your actual documents. This is the foundation for an institutional AI reference system.
 
-All prompts are available in the [Prompt Library](/courses/aibi-p/prompt-library) for easy copying.`,
+All prompts are available in the [Prompt Library](/courses/aibi-p/prompt-library) for easy copying.
+
+**Deep Dive: Platform Guides**
+
+For comprehensive, step-by-step guides on NotebookLM and Perplexity — including getting started walkthroughs, free vs. paid breakdowns, five banking use cases with copy-paste prompts, custom instruction templates, and data safety guidance for banking use — visit the [Platform Deep Dive Guides](/courses/aibi-p/tool-guides).`,
     },
   ],
   tables: [
