@@ -52,15 +52,17 @@ export function SkillFileUpload({
           path: string;
         };
 
-        // Step 2: Upload directly to Supabase Storage
-        const uploadRes = await fetch(signedUrl, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/octet-stream' },
-          body: file,
-        });
+        // Step 2: Upload directly to Supabase Storage (skip in dev mode)
+        if (!signedUrl.startsWith('data:')) {
+          const uploadRes = await fetch(signedUrl, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/octet-stream' },
+            body: file,
+          });
 
-        if (!uploadRes.ok) {
-          throw new Error('File upload to storage failed. Please try again.');
+          if (!uploadRes.ok) {
+            throw new Error('File upload to storage failed. Please try again.');
+          }
         }
 
         setUploadStatus('uploaded');
