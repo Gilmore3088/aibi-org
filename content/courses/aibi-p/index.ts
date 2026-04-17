@@ -12,3 +12,4 @@ export { module6 } from './module-6';
 export { module7 } from './module-7';
 export { module8 } from './module-8';
 export { module9 } from './module-9';
+export * from './prompt-library';
