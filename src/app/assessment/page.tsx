@@ -80,13 +80,13 @@ export default function AssessmentPage() {
             <div className="flex flex-col items-center gap-4">
               {isLowerTier ? (
                 <a
-                  href="/courses/aibi-p/purchase"
+                  href="/courses/aibi-p"
                   onClick={() =>
                     trackEvent('purchase_initiated', { product: 'aibi-p' })
                   }
                   className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
                 >
-                  Start Your AI Journey &mdash; AiBI-P Course $79
+                  Explore the Practitioner Course
                 </a>
               ) : (
                 <a
@@ -99,6 +99,22 @@ export default function AssessmentPage() {
                   Book Your Executive Briefing
                 </a>
               )}
+
+              {/* Secondary navigation — always visible */}
+              <div className="flex flex-wrap items-center justify-center gap-6 mt-2">
+                <a
+                  href="/courses"
+                  className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/60 hover:text-[color:var(--color-terra)] transition-colors"
+                >
+                  Browse all courses
+                </a>
+                <a
+                  href="/dashboard"
+                  className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/60 hover:text-[color:var(--color-terra)] transition-colors"
+                >
+                  Go to dashboard
+                </a>
+              </div>
             </div>
 
             {/* ASMT-07: Email gate only for dimension breakdown */}
