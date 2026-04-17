@@ -130,7 +130,7 @@ export function NextStepCards({ tierId }: NextStepCardsProps) {
         {steps.map((step) => (
           <article
             key={step.title}
-            className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-8 flex flex-col hover:border-[color:var(--color-terra)]/30 transition-all duration-200"
+            className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-6 md:p-8 flex flex-col hover:border-[color:var(--color-terra)]/30 transition-all duration-200"
           >
             <p
               className="font-serif-sc text-[11px] uppercase tracking-[0.2em] mb-4"
@@ -176,16 +176,16 @@ export function NextStepCards({ tierId }: NextStepCardsProps) {
       </div>
 
       {/* Secondary navigation */}
-      <div className="flex flex-wrap items-center justify-center gap-6 mt-8">
+      <div className="flex flex-wrap items-center justify-center gap-4 mt-8">
         <Link
           href="/courses"
-          className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] border-b border-[color:var(--color-terra)] pb-0.5 hover:opacity-70 transition-opacity"
+          className="py-2 px-1 font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] border-b border-[color:var(--color-terra)] hover:opacity-70 transition-opacity"
         >
           Browse all courses
         </Link>
         <Link
           href="/dashboard"
-          className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/60 border-b border-[color:var(--color-ink)]/20 pb-0.5 hover:text-[color:var(--color-terra)] hover:border-[color:var(--color-terra)] transition-colors"
+          className="py-2 px-1 font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/60 border-b border-[color:var(--color-ink)]/20 hover:text-[color:var(--color-terra)] hover:border-[color:var(--color-terra)] transition-colors"
         >
           Go to your dashboard
         </Link>

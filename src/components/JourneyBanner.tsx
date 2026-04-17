@@ -73,7 +73,7 @@ export function JourneyBanner({ from }: JourneyBannerProps) {
       </div>
       <Link
         href={step.href}
-        className="shrink-0 inline-flex items-center gap-2 px-6 py-3 font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] text-[color:var(--color-linen)] hover:opacity-90 active:scale-[0.98] transition-all"
+        className="shrink-0 inline-flex items-center justify-center gap-2 w-full md:w-auto px-6 py-3.5 md:py-3 font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] text-[color:var(--color-linen)] hover:opacity-90 active:scale-[0.98] transition-all"
         style={{ backgroundColor: step.accent }}
       >
         {step.cta}

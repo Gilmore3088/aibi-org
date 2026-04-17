@@ -160,7 +160,7 @@ export default async function CoursesPage() {
               <Link
                 key={track.code}
                 href={track.href}
-                className="group block bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-8 hover:border-[color:var(--color-ink)]/20 transition-all duration-200"
+                className="group block bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-6 md:p-8 hover:border-[color:var(--color-ink)]/20 transition-all duration-200"
               >
                 <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
                   {/* Left: course info */}
@@ -225,7 +225,7 @@ export default async function CoursesPage() {
                   </div>
 
                   {/* Right: progress or CTA */}
-                  <div className="shrink-0 flex flex-col items-end gap-3 md:min-w-[160px]">
+                  <div className="shrink-0 flex flex-col items-start md:items-end gap-3 md:min-w-[160px]">
                     {track.isEnrolled && pct !== null ? (
                       <>
                         <div className="text-right">
