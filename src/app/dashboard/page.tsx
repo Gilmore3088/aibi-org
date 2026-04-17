@@ -331,6 +331,40 @@ export default function DashboardPage() {
           </section>
         )}
 
+        {/* Certification Journey */}
+        <section className="mb-12">
+          <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-6">
+            Your certification journey
+          </p>
+          <Link
+            href="/dashboard/progression"
+            className="group flex flex-col md:flex-row md:items-center md:justify-between gap-6 bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-6 hover:border-[color:var(--color-terra)]/30 transition-all duration-200"
+          >
+            <div className="flex-1">
+              <h3 className="font-serif text-2xl text-[color:var(--color-ink)] leading-tight mb-2 group-hover:text-[color:var(--color-terra)] transition-colors">
+                Track your full certification ladder
+              </h3>
+              <p className="text-sm text-[color:var(--color-slate)] leading-relaxed max-w-lg">
+                See your complete journey across AiBI-P, AiBI-S, and AiBI-L — credentials earned, impact metrics, and recommended next steps.
+              </p>
+            </div>
+            <div className="flex items-center gap-4 shrink-0">
+              {(['var(--color-terra)', 'var(--color-cobalt)', 'var(--color-sage)'] as const).map((color, idx) => (
+                <div
+                  key={idx}
+                  className="w-8 h-8 rounded-full border-2 opacity-80 group-hover:opacity-100 transition-opacity"
+                  style={{ borderColor: color, backgroundColor: color + '18' }}
+                />
+              ))}
+              <span
+                className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] border-b border-[color:var(--color-terra)] pb-0.5 ml-2"
+              >
+                View journey
+              </span>
+            </div>
+          </Link>
+        </section>
+
         {/* Resources */}
         <section>
           <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-6">
