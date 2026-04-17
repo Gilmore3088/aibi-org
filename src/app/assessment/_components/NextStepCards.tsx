@@ -23,11 +23,11 @@ function getStepsForTier(tierId: Tier['id']): readonly NextStep[] {
       return [
         {
           label: 'Recommended',
-          title: 'Start with AI Foundations',
+          title: 'Start with the Practitioner course',
           description:
-            'The $97 self-paced course that builds baseline AI literacy across your entire staff. Five modules, five universal templates, and the safe-use guidelines every banker needs before touching a production workflow.',
-          href: '/foundations',
-          cta: 'Explore AI Foundations',
+            'Nine self-paced modules that build hands-on AI proficiency for every staff member. Earn the AiBI-P credential with a real work product — not a multiple-choice test.',
+          href: '/courses/aibi-p',
+          cta: 'Explore AiBI-P',
           accent: 'var(--color-terra)',
           primary: true,
         },
@@ -46,21 +46,21 @@ function getStepsForTier(tierId: Tier['id']): readonly NextStep[] {
       return [
         {
           label: 'Recommended',
-          title: 'Book an Executive Briefing',
+          title: 'Earn the Practitioner credential',
           description:
-            'Your institution is experimenting but not yet coordinated. A free 45-minute briefing will show you how to convert isolated experiments into a structured program with governance and measured outcomes.',
-          href: CALENDLY_URL,
-          cta: 'Request Executive Briefing',
+            'Your institution has early adopters. Give them the tools to lead with confidence. The AiBI-P course builds governed, repeatable AI skills across nine self-paced modules.',
+          href: '/courses/aibi-p',
+          cta: 'Explore AiBI-P',
           accent: 'var(--color-terra)',
           primary: true,
         },
         {
-          label: 'Build the foundation',
-          title: 'Explore certifications',
+          label: 'Get guidance',
+          title: 'Book an Executive Briefing',
           description:
-            'Give your early adopters the Practitioner credential so they can lead with confidence. Give your managers the Specialist track so they can scale what works.',
-          href: '/certifications',
-          cta: 'See certification tracks',
+            'A free 45-minute conversation to convert scattered experiments into a coordinated program with governance and measured outcomes.',
+          href: CALENDLY_URL,
+          cta: 'Request Executive Briefing',
           accent: 'var(--color-ink)',
         },
       ];
@@ -69,22 +69,22 @@ function getStepsForTier(tierId: Tier['id']): readonly NextStep[] {
       return [
         {
           label: 'Recommended',
-          title: 'Explore the Operational Quick Win Sprint',
+          title: 'Advance to the Specialist track',
           description:
-            'You have traction. The next step is proof. A Quick Win Sprint implements three automations in 4\u20136 weeks with a documented ROI report and a 90-day guarantee. $5,000\u2013$15,000.',
-          href: '/services',
-          cta: 'See engagement details',
-          accent: 'var(--color-terra)',
+            'You have traction. The AiBI-S course is a 6-week live cohort for department managers — deploy governed AI automation across your team with peer accountability and measured outcomes.',
+          href: '/courses/aibi-s',
+          cta: 'Explore AiBI-S',
+          accent: 'var(--color-cobalt)',
           primary: true,
         },
         {
-          label: 'Strengthen your governance',
-          title: 'Download the Safe AI Use Guide',
+          label: 'Prove ROI now',
+          title: 'Explore the Quick Win Sprint',
           description:
-            'Six chapters your compliance officer will actually read. Maps directly to SR 11-7 and the AIEOG AI Lexicon. Free.',
-          href: '/security',
-          cta: 'Get the guide',
-          accent: 'var(--color-cobalt)',
+            'Three automations implemented in 4\u20136 weeks with a documented ROI report and a 90-day guarantee. $5,000\u2013$15,000.',
+          href: '/services',
+          cta: 'See engagement details',
+          accent: 'var(--color-terra)',
         },
       ];
 
@@ -92,22 +92,22 @@ function getStepsForTier(tierId: Tier['id']): readonly NextStep[] {
       return [
         {
           label: 'Recommended',
-          title: 'Talk to us about the AiBI fCAIO program',
+          title: 'The Banking AI Leader workshop',
           description:
-            'Your institution is ready for a structured monthly operating system. The AI Transformation engagement installs a 90-day rolling roadmap with capability transfer built in. Your team drives it independently when the engagement ends.',
-          href: '/services',
-          cta: 'See how we work',
-          accent: 'var(--color-terra)',
+            'A 1-day in-person workshop for C-suite and board. Efficiency ratio modeling with your numbers, a 3-year AI roadmap, and a board-ready presentation you leave with. From $2,800.',
+          href: '/courses/aibi-l',
+          cta: 'Explore AiBI-L',
+          accent: 'var(--color-sage)',
           primary: true,
         },
         {
-          label: 'Credential your leaders',
-          title: 'Explore the Leader certification',
+          label: 'Scale further',
+          title: 'The AI Transformation program',
           description:
-            'A 1-day in-person workshop for C-suite and board. Efficiency ratio modeling with your numbers, a 3-year AI roadmap, and examiner readiness. $2,800+ individual or $12,000 for a team of 8.',
-          href: '/certifications',
-          cta: 'See certification details',
-          accent: 'var(--color-sage)',
+            'A structured monthly operating system that installs capability transfer from day one. Your team runs the program independently when the engagement ends.',
+          href: '/services',
+          cta: 'See how we work',
+          accent: 'var(--color-terra)',
         },
       ];
   }
@@ -173,6 +173,22 @@ export function NextStepCards({ tierId }: NextStepCardsProps) {
             )}
           </article>
         ))}
+      </div>
+
+      {/* Secondary navigation */}
+      <div className="flex flex-wrap items-center justify-center gap-6 mt-8">
+        <Link
+          href="/courses"
+          className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] border-b border-[color:var(--color-terra)] pb-0.5 hover:opacity-70 transition-opacity"
+        >
+          Browse all courses
+        </Link>
+        <Link
+          href="/dashboard"
+          className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/60 border-b border-[color:var(--color-ink)]/20 pb-0.5 hover:text-[color:var(--color-terra)] hover:border-[color:var(--color-terra)] transition-colors"
+        >
+          Go to your dashboard
+        </Link>
       </div>
     </section>
   );
