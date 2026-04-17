@@ -92,31 +92,39 @@ export function EmailGate({
       </p>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          type="email"
-          inputMode="email"
-          autoComplete="email"
-          required
-          placeholder="name@yourbank.com"
-          value={email}
-          onChange={(e) => {
-            setEmail(e.target.value);
-            if (status === 'error') {
-              setStatus('idle');
-              setMessage(null);
-            }
-          }}
-          className="w-full px-4 py-3 border border-[color:var(--color-ink)]/20 rounded-[2px] bg-[color:var(--color-linen)] text-[color:var(--color-ink)] font-sans text-base focus:outline-none focus:border-[color:var(--color-terra)]"
-        />
+        <div>
+          <label htmlFor="email-gate" className="sr-only">
+            Work email address
+          </label>
+          <input
+            id="email-gate"
+            type="email"
+            inputMode="email"
+            autoComplete="email"
+            required
+            placeholder="name@yourbank.com"
+            value={email}
+            aria-describedby={message ? 'email-gate-error' : undefined}
+            aria-invalid={status === 'error' ? true : undefined}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              if (status === 'error') {
+                setStatus('idle');
+                setMessage(null);
+              }
+            }}
+            className="w-full px-4 py-3 border border-[color:var(--color-ink)]/20 rounded-[2px] bg-[color:var(--color-linen)] text-[color:var(--color-ink)] font-sans text-base focus:outline-none focus:border-[color:var(--color-terra)]"
+          />
+        </div>
         <button
           type="submit"
           disabled={status === 'submitting'}
           className="w-full px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all disabled:opacity-60"
         >
-          {status === 'submitting' ? 'Sending…' : 'Show my full results'}
+          {status === 'submitting' ? 'Sending\u2026' : 'Show my full results'}
         </button>
         {message && (
-          <p className="text-sm text-[color:var(--color-error)]" role="alert">
+          <p id="email-gate-error" className="text-sm text-[color:var(--color-error)]" role="alert">
             {message}
           </p>
         )}
