@@ -77,6 +77,37 @@ Best practice: Write constraints as "never" or "always" statements. "Never provi
 After building your first skill, you can build additional skills for any task in your workflow — the platform is not limited to your onboarding role's defaults.`,
     },
     {
+      id: 'm7-starter-skill-tutorials',
+      title: 'Starter Skills: Five Complete Walk-Throughs',
+      content: `The RTFC Framework makes sense conceptually. These five tutorials make it practical.
+
+Each tutorial below is a complete walk-through for a specific banking role: the prompt, what it produces, how to deploy it, and how to improve it. You will build one real skill that you can use immediately in your daily work.
+
+**Choose the tutorial that matches your role.** Complete it before the Activity 7.1 Skill Builder exercise below — it will give you a concrete model for how a well-built skill looks and performs.
+
+**1. Loan File Completeness Checker (Lending)**
+
+A skill that checks any commercial loan file against a 22-item documentation checklist and produces a gap analysis table with priority ratings. Uses ChatGPT with a Project-based Custom Instruction. The prompt embeds the full checklist so nothing gets missed — even items that experienced loan officers might overlook through familiarity. Time saved: 15-20 minutes per file review. Tutorial ID: tut-m7-loan-checklist.
+
+**2. Daily Exception Report Analyzer (Operations)**
+
+A skill that transforms a raw exception report export into a categorized, prioritized triage plan with pattern detection. Uses Claude with a Project-based system prompt. The skill groups exceptions by category, sorts by dollar amount, flags BSA threshold transactions, and recommends a morning triage sequence. Time saved: 10-15 minutes per daily triage. Tutorial ID: tut-m7-exception-report.
+
+**3. SAR Narrative Drafting Assistant (Compliance)**
+
+A skill that produces structured SAR narrative drafts following FinCEN's five required elements (who, what, when, where, why). Uses Claude with heavy constraints: third person, past tense, "appears inconsistent with" language, and clear DRAFT labeling. The BSA Officer Review Flags section is the most valuable output — it tells the reviewer exactly where human judgment is needed. Time saved: 30 minutes per narrative draft. Tutorial ID: tut-m7-sar-narrative.
+
+**4. Monthly Variance Commentary Generator (Finance)**
+
+A skill that takes income statement data and produces board-ready variance commentary with dual materiality thresholds (both percentage AND dollar amount must be exceeded). Uses ChatGPT with Code Interpreter for Excel file analysis. Classifies each variance as timing, trend, or anomaly. Generates a three-sentence CFO commentary paragraph. Time saved: 20-30 minutes per monthly report. Tutorial ID: tut-m7-variance-analysis.
+
+**5. Product Campaign Copy Writer (Marketing)**
+
+A skill that produces multi-channel campaign copy (direct mail, email, branch flyer) with built-in UDAP/UDAAP and Reg DD compliance awareness. Uses Gemini with a Gem-based persistent instruction. Includes headline options, channel-specific body copy, and a required disclosures section. The "[COMPLIANCE CHECK]" flags create a productive workflow between marketing and compliance. Time saved: 1-2 hours per campaign package. Tutorial ID: tut-m7-campaign-copy.
+
+All five skill prompts are available in the [Prompt Library](/courses/aibi-p/prompt-library). Each prompt follows the RTFC Framework from Module 6: Role, Task, Format, Constraint.`,
+    },
+    {
       id: 'm7-export-and-deploy',
       title: 'Exporting and Deploying Your Skill',
       content: `When you complete the Skill Builder form, the system generates a Markdown file (.md) with all five components assembled in the correct format for loading into AI platforms.

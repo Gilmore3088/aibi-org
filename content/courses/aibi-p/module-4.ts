@@ -49,6 +49,40 @@ This module maps eight features across the primary platforms and shows how each 
 **Marketing:** Precise image generation for campaign mockups (using ChatGPT with DALL-E or Midjourney via institutional account) and brand voice preservation via Custom Instructions in ChatGPT Projects or Claude Projects. The key discipline is maintaining institutional tone — AI-generated marketing copy must be reviewed against brand standards before use.`,
     },
   ],
+    {
+      id: 'm4-feature-discovery-tutorials',
+      title: 'Feature Discovery: Role-Specific Tutorials',
+      content: `Each role in a community bank benefits from different platform features. The tutorials below match a specific advanced feature to a real banking task — and give you the exact prompt to try it.
+
+**Pick the tutorial that matches your department.** If none is an exact match, choose the one closest to your daily work. The goal is to use one advanced feature you have not tried before and see what it produces on a real task.
+
+**Lending: CRE Market Intelligence via Deep Research**
+
+Open ChatGPT with Deep Research mode enabled (requires Plus subscription). Paste the CRE lending trends prompt (ID: m4-lending-deep-research) and replace [YOUR STATE/REGION] with your market. Deep Research will spend several minutes browsing current sources and produce a cited market intelligence brief suitable for a loan committee presentation. This is the difference between "I searched online" and "I have a sourced market brief."
+
+**Compliance: Regulatory Research via Perplexity**
+
+Open Perplexity and paste the CFPB overdraft guidance prompt (ID: m4-compliance-perplexity). Perplexity grounds every response in cited web sources — making it the strongest platform for regulatory research where citation is non-negotiable. Every claim in the response will have a linked source you can verify.
+
+**Operations: Meeting Summary Custom Instructions**
+
+Open ChatGPT Settings and paste the meeting summary Custom Instruction (ID: m4-operations-custom-instructions). This creates a persistent format that applies to every conversation — turning ChatGPT into a dedicated meeting documentation tool. Test it by pasting notes from a recent meeting (with customer names removed) and see the structured output.
+
+**Finance: Balance Sheet Variance Analysis via File Upload**
+
+Open ChatGPT with Code Interpreter enabled. Paste the variance analysis prompt (ID: m4-finance-file-upload) and upload two periods of balance sheet data. The AI will produce a variance table with materiality flags and plain-language explanations — the kind of output that goes directly into a board report.
+
+**Marketing: Social Media Campaign via Gemini**
+
+Open Gemini Advanced and paste the social media prompt (ID: m4-marketing-gemini). Replace the [PLACEHOLDER] values with a real or planned product. Gemini will produce five posts across two channels with built-in compliance constraints — no superlatives, no competitor comparisons, required regulatory disclosures included.
+
+**IT / Executive: Policy Knowledge Base via NotebookLM**
+
+Open NotebookLM and follow the step-by-step setup in the prompt (ID: m4-it-notebooklm). Upload five policy documents to create a searchable knowledge base that answers natural-language questions grounded only in your actual documents. This is the foundation for an institutional AI reference system.
+
+All prompts are available in the [Prompt Library](/courses/aibi-p/prompt-library) for easy copying.`,
+    },
+  ],
   tables: [
     {
       id: 'm4-feature-matrix',

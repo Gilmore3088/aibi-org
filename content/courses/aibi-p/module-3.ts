@@ -86,6 +86,29 @@ All three must be true for Copilot to work in your Outlook, Teams, and Word. A "
 The Microsoft 365 Copilot add-on is priced at $30 per user per month, billed through your institution's Microsoft account. The decision to purchase is an IT and finance decision — it is not within most staff members' authority to provision. Your role is to identify whether the capability exists and, if not, to document the gap so the institution can make an informed decision.`,
     },
     {
+      id: 'm3-first-try-tutorials',
+      title: 'First Try: Hands-On Tutorials',
+      content: `The concepts above become real when you use them. The three tutorials below walk you through your first interaction with three different AI platforms — each using a structured, banking-specific prompt.
+
+**These are not demonstrations. They are exercises.** Copy the prompt, paste it into the platform, and see what the AI produces. The goal is not perfection — it is your first data point on what a structured prompt produces compared to a vague question.
+
+Each tutorial takes under 10 minutes. Complete at least one before moving to Module 4.
+
+**Tutorial 1: Your First ChatGPT Banking Query**
+
+Open ChatGPT and paste the regulatory summary prompt from the Prompt Library (prompt ID: m3-first-chatgpt). This prompt asks the AI to summarize a regulatory development for a compliance committee audience. Notice how specifying the audience, format, and constraints shapes every aspect of the response. Pay particular attention to the "[verify citation]" flags — this teaches the AI to be honest about its uncertainty.
+
+**Tutorial 2: Your First Copilot Email Draft**
+
+If you have Microsoft 365 Copilot, use it in Outlook to draft a rate change notification. If not, paste the same prompt into ChatGPT or Claude. The prompt (ID: m3-first-copilot) demonstrates how constraints like "no exclamation points" and "no marketing language" produce professional service communications rather than sales emails.
+
+**Tutorial 3: Your First Claude Document Analysis**
+
+Upload a policy document (Tier 1 or Tier 2 data only — see Module 5) and paste the analysis prompt (ID: m3-first-claude). Claude's long context window makes it strong for multi-page documents. The structured table output is immediately usable in committee settings.
+
+Visit the [Prompt Library](/courses/aibi-p/prompt-library) to copy these prompts, or scroll to the Activities section below.`,
+    },
+    {
       id: 'm3-data-protection',
       title: 'A Note on Data Protection',
       content: `Every AI interaction creates a data residency question. Where does the prompt go? Who can see it? Does it become training data?
