@@ -155,22 +155,26 @@ export default function DashboardPage() {
 
           {/* Courses card */}
           <div className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-6">
-            <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-sage)] mb-4">
+            <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-4">
               Courses
             </p>
             <h3 className="font-serif text-2xl text-[color:var(--color-ink)] leading-tight mb-3">
-              AI Foundations
+              Certification Tracks
             </h3>
             <p className="text-sm text-[color:var(--color-slate)] leading-relaxed">
               {tier?.id === 'starting-point'
-                ? 'Recommended for your tier. Build baseline AI literacy before pursuing certification.'
-                : 'Self-paced starter course. Five modules, five universal templates, and safe-use guidelines.'}
+                ? 'Start with the Practitioner course to build baseline AI proficiency across your team.'
+                : tier?.id === 'early-stage'
+                  ? 'The Practitioner credential is your next step — hands-on skills with regulatory confidence.'
+                  : tier?.id === 'building-momentum'
+                    ? 'Ready for departmental automation? Explore the Specialist track.'
+                    : 'Three tracks from individual proficiency to institution-wide strategy.'}
             </p>
             <Link
-              href="/foundations"
-              className="inline-block mt-4 font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-sage)] border-b border-[color:var(--color-sage)] pb-0.5 hover:opacity-80 transition-colors"
+              href="/courses"
+              className="inline-block mt-4 font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] border-b border-[color:var(--color-terra)] pb-0.5 hover:opacity-80 transition-colors"
             >
-              Explore course
+              Browse courses
             </Link>
           </div>
 
@@ -414,9 +418,9 @@ function getRecommendations(tierId: string): Recommendation[] {
       return [
         {
           label: 'Recommended',
-          title: 'Start with AI Foundations',
-          description: 'Build baseline AI literacy across your team with the $97 self-paced course.',
-          href: '/foundations',
+          title: 'Start with the Practitioner course',
+          description: 'Nine modules of hands-on AI skills for every staff member. Earn the AiBI-P credential.',
+          href: '/courses/aibi-p',
           accent: 'var(--color-terra)',
         },
         {
@@ -431,16 +435,16 @@ function getRecommendations(tierId: string): Recommendation[] {
       return [
         {
           label: 'Recommended',
-          title: 'Request an Executive Briefing',
-          description: 'A free 45-minute conversation about converting scattered experiments into a coordinated program.',
-          href: '/services',
+          title: 'Earn the Practitioner credential',
+          description: 'Give your early adopters the tools to lead AI adoption with confidence. Nine self-paced modules.',
+          href: '/courses/aibi-p',
           accent: 'var(--color-terra)',
         },
         {
-          label: 'Build capability',
-          title: 'Explore the Practitioner credential',
-          description: 'Give your early adopters the tools to lead AI adoption with confidence.',
-          href: '/certifications',
+          label: 'Get guidance',
+          title: 'Request an Executive Briefing',
+          description: 'A free 45-minute conversation about converting scattered experiments into a coordinated program.',
+          href: '/services',
           accent: 'var(--color-cobalt)',
         },
       ];
@@ -448,34 +452,34 @@ function getRecommendations(tierId: string): Recommendation[] {
       return [
         {
           label: 'Recommended',
+          title: 'Advance to the Specialist track',
+          description: 'Six-week live cohort for department managers. Deploy governed AI automation across your team.',
+          href: '/courses/aibi-s',
+          accent: 'var(--color-cobalt)',
+        },
+        {
+          label: 'Accelerate',
           title: 'Explore the Quick Win Sprint',
           description: 'Three automations in 4\u20136 weeks with a 90-day ROI guarantee. $5,000\u2013$15,000.',
           href: '/services',
           accent: 'var(--color-terra)',
-        },
-        {
-          label: 'Prove readiness',
-          title: 'Take the Practitioner assessment',
-          description: 'See if your team is ready for the Banking AI Practitioner credential.',
-          href: '/certifications/exam/aibi-p',
-          accent: 'var(--color-sage)',
         },
       ];
     case 'ready-to-scale':
       return [
         {
           label: 'Recommended',
+          title: 'The Banking AI Leader workshop',
+          description: '1-day in-person workshop. Efficiency ratio modeling, AI roadmap, and a board-ready presentation built with your numbers.',
+          href: '/courses/aibi-l',
+          accent: 'var(--color-sage)',
+        },
+        {
+          label: 'Scale further',
           title: 'The AI Transformation program',
           description: 'A monthly operating system with capability transfer. Your team runs it independently when we leave.',
           href: '/services',
           accent: 'var(--color-terra)',
-        },
-        {
-          label: 'Credential your leaders',
-          title: 'The Banking AI Leader workshop',
-          description: '1-day in-person. Efficiency ratio modeling, AI roadmap, examiner readiness.',
-          href: '/certifications',
-          accent: 'var(--color-sage)',
         },
       ];
     default:
