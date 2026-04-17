@@ -34,6 +34,7 @@ export function CompletionCTA({ moduleNumber, isLastModule }: CompletionCTAProps
     'https://calendly.com/aibankinginstitute/executive-briefing';
 
   // M9 or final module — Application pillar complete, work product submission CTA
+  // and post-course assessment CTA (measure transformation).
   if (moduleNumber === 9 || isLastModule) {
     return (
       <>
@@ -65,6 +66,31 @@ export function CompletionCTA({ moduleNumber, isLastModule }: CompletionCTAProps
             Four items required. Reviewed against a five-dimension rubric.
           </p>
         </div>
+
+        {/* Post-course assessment CTA — measure transformation */}
+        <div
+          className="mt-4 p-5 bg-[color:var(--color-linen)] border border-[color:var(--color-ink)]/10 rounded-sm"
+          aria-label="Measure your growth"
+        >
+          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-dust)] mb-2">
+            Optional — Measure Your Growth
+          </p>
+          <p className="font-sans text-sm text-[color:var(--color-ink)] mb-1">
+            See how far you&rsquo;ve come.
+          </p>
+          <p className="font-sans text-xs text-[color:var(--color-dust)] leading-relaxed mb-4">
+            Take the same readiness assessment you completed before the course. The side-by-side
+            comparison shows your AI readiness improvement — dimension by dimension.
+          </p>
+          <a
+            href="/courses/aibi-p/post-assessment"
+            className="inline-flex items-center gap-2 px-4 py-2 border border-[color:var(--color-terra)]/30 hover:border-[color:var(--color-terra)] text-[color:var(--color-ink)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-2"
+          >
+            Measure Your Growth
+            <ArrowIcon />
+          </a>
+        </div>
+
         <TimeSavingsCard moduleNumber={moduleNumber} />
       </>
     );
