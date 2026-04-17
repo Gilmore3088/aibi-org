@@ -17,6 +17,7 @@ import Link from 'next/link';
 import { getEnrollment } from '../_lib/getEnrollment';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { DownloadSkillButton } from './DownloadSkillButton';
+import { DownloadReportButton } from './DownloadReportButton';
 import {
   generateIteratedMarkdown,
   buildIteratedFilename,
@@ -569,6 +570,32 @@ export default async function ToolkitPage() {
           ) : (
             <EmptyState message="Complete Modules 7 and 8 to see your capstone automation summary here." />
           )}
+        </SectionCard>
+
+        {/* 5 — Transformation Report */}
+        <SectionCard
+          title="Transformation Report"
+          label="Course Report"
+          labelColor="var(--color-terra)"
+        >
+          <div className="border border-[color:var(--color-parch-dark)] rounded-sm p-4 bg-white/30">
+            <div className="flex items-start justify-between gap-4 flex-wrap">
+              <div className="flex-1 min-w-0">
+                <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] mb-1">
+                  AiBI-P Complete
+                </p>
+                <p className="font-sans text-sm font-semibold text-[color:var(--color-ink)] mb-1">
+                  AiBI-P Transformation Report
+                </p>
+                <p className="font-sans text-xs text-[color:var(--color-dust)] leading-relaxed">
+                  Five-page PDF summarising your pre/post assessment comparison, skills built,
+                  estimated annual time savings, quick wins logged, and course completion
+                  status. The document a learner shows their manager.
+                </p>
+              </div>
+              <DownloadReportButton enrollmentId={enrollment.id} />
+            </div>
+          </div>
         </SectionCard>
 
       </article>
