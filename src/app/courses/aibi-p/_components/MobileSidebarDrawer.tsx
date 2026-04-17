@@ -63,7 +63,7 @@ export function MobileSidebarDrawer({ completedModules, currentModule }: MobileS
       {/* Hamburger trigger — visible only below lg */}
       <button
         onClick={() => setIsOpen(true)}
-        className="lg:hidden p-2 text-[color:var(--color-ink)] hover:text-[color:var(--color-terra)] transition-colors"
+        className="lg:hidden p-2.5 min-h-[44px] min-w-[44px] flex items-center justify-center text-[color:var(--color-ink)] hover:text-[color:var(--color-terra)] transition-colors"
         aria-label="Open course navigation"
         aria-expanded={isOpen}
         aria-controls="mobile-course-nav"
