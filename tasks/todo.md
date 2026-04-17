@@ -50,6 +50,25 @@ Last updated: 2026-04-15
 - [x] CLAUDE.md decisions log (7 session decisions documented)
 - [x] Build + typecheck green (21 routes, all under 111 kB first-load)
 
+### Done (AiBI-P course milestone)
+
+- [x] Assessment upgraded to v2 — 12 questions drawn from 48-question pool,
+      8 dimensions, new scoring range 12–48
+- [x] Full AiBI-P course built — 9 modules, in-module activities, skill
+      builder exercises, and downloadable artifacts per module
+- [x] Stripe checkout code ready — `/api/create-checkout` route and
+      `/api/webhooks/stripe` handler with signature verification
+- [x] Supabase schema created — 5 tables (`assessment_responses`,
+      `course_enrollments`, `work_product_submissions`, `certificates`,
+      `reviewer_queue`), RLS policies, and indexes
+- [x] Supabase project linked and environment variables configured
+- [x] Certificate generation built — programmatic PDF/page at `/certificates/[id]`
+- [x] `/verify` endpoint built — public certificate verification by ID
+- [x] Reviewer queue built — 5-dimension rubric, reviewer assignment, status
+      tracking for work product grading
+- [x] Work product submission built — presigned S3/Storage uploads,
+      submission status page
+
 ### Next session — immediate priorities
 
 1. [ ] **Fill in founder bio** on `/about` — replace `[founder bio placeholder]`
@@ -58,10 +77,11 @@ Last updated: 2026-04-15
        all pages readable, touch targets, no horizontal scroll
 3. [ ] **Decide hero layout** — visit `/?hero=split` vs `/` on desktop and
        mobile, pick one, delete the other
-4. [ ] **Sign up for Supabase** → wire `src/lib/supabase/client.ts` with real
-       URL + keys → persist assessment results + exam results to database
-5. [ ] **Wire dashboard auth** — replace localStorage with Supabase Auth so
-       dashboard works across devices (magic link or email/password)
+4. [ ] **Test full course flow with real Supabase auth** — set
+       `SKIP_DEV_BYPASS=true`, run end-to-end from enrollment → module
+       completion → work product submission → certificate generation
+5. [ ] **Create work-products Storage bucket policies** — Supabase Storage
+       RLS so enrolled users can upload, only reviewers can download
 6. [ ] **Sign up for Calendly** → set `NEXT_PUBLIC_CALENDLY_URL` in .env.local
        → all "Request Executive Briefing" CTAs become real booking links
 7. [ ] **Sign up for Plausible** → set `NEXT_PUBLIC_PLAUSIBLE_DOMAIN` → analytics
@@ -72,20 +92,27 @@ Last updated: 2026-04-15
        CRM contact creation on email capture + inquiry form
 10. [ ] **Connect Vercel** to GitHub repo → deploy to AIBankingInstitute.com
 11. [ ] **DNS + SSL** for AIBankingInstitute.com
-12. [ ] **Rate limiting** on `/api/capture-email` — Upstash or Vercel KV,
+12. [ ] **Create Stripe products** — $79 individual license and ~$63 institution
+        bundle price → copy Price IDs into env vars
+        (`STRIPE_FOUNDATIONS_PRICE_ID`, `STRIPE_PRACTITIONER_PRICE_ID`)
+13. [ ] **Supabase Auth setup** — user signup/login flow (magic link or
+        email/password), wire to `/dashboard` so it works across devices
+14. [ ] **Rate limiting** on `/api/capture-email` — Upstash or Vercel KV,
         add the week before launch (zero traffic currently)
 
 ### Known prototype limitations
 
 - Dashboard only works in the same browser (localStorage, not server-side)
+  until Supabase Auth is wired
 - "Request Executive Briefing" links go to placeholder Calendly URL
 - Email capture logs to console, not to any database or CRM
 - Newsletter subscribe is a no-op until ConvertKit/Loops is wired
 - Safe AI Use Guide download form logs intent but doesn't deliver a PDF
-- No user accounts / authentication
-- No Stripe checkout (Phase 2)
-- Assessment questions are still being refined (content in content/assessments/v1/)
-- Proficiency exam is AiBI-P only (no AiBI-S or AiBI-L question pools yet)
+- Course flow uses dev bypass (`SKIP_DEV_BYPASS`) — not tested with real auth
+- Work-products Storage bucket has no RLS policies yet (upload will fail for
+  real users)
+- Stripe checkout code is built but no live Price IDs set; do not ship
+  without provisioning path (CLAUDE.md rule)
 
 ## Phase 1.5 — Data loop (after first 50 respondents)
 
@@ -94,7 +121,6 @@ Last updated: 2026-04-15
 - [ ] Compute aggregates: median score by tier, asset_size, charter type
 - [ ] Add "sourced peer stat" teaser to TierPreview pre-email using real data
 - [ ] Assessment results emailed to the user (needs email service wired)
-- [ ] Downloadable branded PDF certificate (post-proficiency assessment)
 
 ## Phase 2 — Real peer benchmarks (needs ~200 respondents)
 
@@ -105,10 +131,8 @@ Last updated: 2026-04-15
 
 ## Phase 2 — Monetization (Stripe + Kajabi)
 
-- [ ] Stripe Checkout for $97 AI Foundations
-- [ ] Stripe Checkout for $295 AiBI-P
-- [ ] `/api/webhooks/stripe` with signature verification
-- [ ] Zapier/Make automation → Kajabi user provisioning
+- [ ] Stripe checkout is code-complete — wire live Price IDs and test end-to-end
+- [ ] Zapier/Make automation → Kajabi user provisioning on payment.success
 - [ ] DO NOT ship checkout without provisioning path (CLAUDE.md rule)
 
 ## Backlog / Ideas
@@ -124,6 +148,7 @@ Last updated: 2026-04-15
 - [ ] Email signature template (HTML)
 - [ ] Engagement report cover template (board-presentable)
 - [ ] AiBI-P/S/L certificate design (print-ready PDF, per designer brief)
+- [ ] Set up Accredible account for LinkedIn badge sharing (v2 — post-launch)
 
 ## Reference documents in /Plans/
 
