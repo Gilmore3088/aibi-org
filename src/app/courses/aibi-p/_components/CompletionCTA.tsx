@@ -10,6 +10,7 @@
 // TimeSavingsCard is appended after each contextual message.
 
 import { TimeSavingsCard } from './TimeSavingsCard';
+import { JourneyBanner } from '@/components/JourneyBanner';
 
 interface CompletionCTAProps {
   readonly moduleNumber: number;
@@ -92,6 +93,11 @@ export function CompletionCTA({ moduleNumber, isLastModule }: CompletionCTAProps
         </div>
 
         <TimeSavingsCard moduleNumber={moduleNumber} />
+
+        {/* Cross-course journey banner — continue to AiBI-S */}
+        <div className="mt-6">
+          <JourneyBanner from="aibi-p" />
+        </div>
       </>
     );
   }

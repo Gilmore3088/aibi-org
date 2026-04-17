@@ -44,6 +44,20 @@ export default async function CourseOverviewPage() {
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-8 py-16">
 
+      {/* Breadcrumb */}
+      <nav aria-label="Breadcrumb" className="mb-8">
+        <Link
+          href="/courses"
+          className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/50 hover:text-[color:var(--color-terra)] transition-colors"
+        >
+          Courses
+        </Link>
+        <span className="mx-2 text-[color:var(--color-ink)]/20">/</span>
+        <span className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-terra)]">
+          AiBI-P
+        </span>
+      </nav>
+
       {/* Hero section */}
       <section className="mb-24" aria-labelledby="course-heading">
         <div className="flex items-center gap-3 mb-6">
