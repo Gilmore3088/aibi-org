@@ -238,8 +238,23 @@ export function MobileSidebarDrawer({ completedModules, currentModule }: MobileS
           ))}
         </nav>
 
-        {/* Footer: Resume + Settings */}
+        {/* Footer: My Toolkit + Resume + Settings */}
         <div className="p-6 border-t border-[color:var(--color-terra)]/10 space-y-3">
+          <Link
+            href="/courses/aibi-p/toolkit"
+            onClick={close}
+            className="w-full flex items-center justify-center gap-2 py-2 px-4 rounded-sm border border-[color:var(--color-terra)]/30 hover:bg-[color:var(--color-parch)] transition-colors text-[10px] uppercase tracking-widest font-mono text-[color:var(--color-terra)]"
+          >
+            <svg
+              className="w-3 h-3"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              aria-hidden="true"
+            >
+              <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z" />
+            </svg>
+            My Toolkit
+          </Link>
           <Link
             href={`/courses/aibi-p/${currentModule}`}
             onClick={close}

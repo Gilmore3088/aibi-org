@@ -159,8 +159,22 @@ export function CourseSidebar({ completedModules, currentModule }: CourseSidebar
         ))}
       </nav>
 
-      {/* Footer: Resume + Settings */}
+      {/* Footer: My Toolkit + Resume + Settings */}
       <div className="p-6 border-t border-[color:var(--color-terra)]/10 space-y-3">
+        <Link
+          href="/courses/aibi-p/toolkit"
+          className="w-full flex items-center justify-center gap-2 py-2 px-4 rounded-sm border border-[color:var(--color-terra)]/30 hover:bg-[color:var(--color-parch)] transition-colors text-[10px] uppercase tracking-widest font-mono text-[color:var(--color-terra)]"
+        >
+          <svg
+            className="w-3 h-3"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            aria-hidden="true"
+          >
+            <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z" />
+          </svg>
+          My Toolkit
+        </Link>
         <Link
           href={`/courses/aibi-p/${currentModule}`}
           className="w-full bg-[color:var(--color-terra)] hover:bg-[color:var(--color-terra-light)] text-[color:var(--color-linen)] py-3 px-4 rounded-sm font-bold transition-colors flex items-center justify-center gap-2 text-[10px] uppercase tracking-widest font-mono"
@@ -178,6 +192,25 @@ export function CourseSidebar({ completedModules, currentModule }: CourseSidebar
               clipRule="evenodd"
             />
           </svg>
+        </Link>
+        <Link
+          href="/courses/aibi-p/quick-wins"
+          className="w-full flex items-center justify-center gap-2 py-2 px-4 rounded-sm transition-colors text-[10px] uppercase tracking-widest font-mono hover:bg-[color:var(--color-parch)]"
+          style={{ color: 'var(--color-ink)', opacity: 0.6 }}
+        >
+          <svg
+            className="w-3 h-3"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            aria-hidden="true"
+          >
+            <path
+              fillRule="evenodd"
+              d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"
+              clipRule="evenodd"
+            />
+          </svg>
+          Quick Wins
         </Link>
         <Link
           href="/courses/aibi-p/settings"
