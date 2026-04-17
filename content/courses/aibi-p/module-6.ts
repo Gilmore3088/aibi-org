@@ -82,6 +82,112 @@ The guardrails and "never-do" rules. Constraints are the safety layer of a skill
 A well-constructed constraint list is specific and behavioral: "Do not use bullet points in the final output," "Always flag any finding that has a regulatory implication with [REQUIRES REVIEW]," "Never provide a definitive compliance determination — provide analysis and flag for counsel review."`,
     },
     {
+      id: 'm6-skill-types',
+      title: 'Capability Uplift vs. Encoded Preference',
+      content: `Not all skills serve the same purpose. Understanding the distinction between the two fundamental skill types helps you decide where to invest your build time.
+
+**Capability Uplift Skills**
+
+A capability uplift skill enables a function the AI model cannot perform well on its own without structured guidance. The skill compensates for a known gap in the base model's behavior — usually around domain specificity, output format precision, or institutional context.
+
+Examples in community banking:
+- A Loan QC Skill that checks file packages against your institution's exact 22-item documentation checklist (the model has no knowledge of your specific checklist without instruction)
+- A SAR Narrative Skill that enforces FinCEN's five required narrative elements in the correct legal tone (without instruction, the model uses general prose conventions)
+- A Complaint Triage Skill that classifies member complaints against UDAAP and Reg E categories (without instruction, the model applies general categorization logic, not regulatory framework logic)
+
+Capability uplift skills are valuable now. Their durability, however, is uncertain — as AI models improve, some of the gaps they fill will narrow or close without any action on your part.
+
+**Encoded Preference Skills**
+
+An encoded preference skill sequences existing AI capabilities according to your specific workflow, institutional standards, and professional judgment. The model could, in principle, do each individual step — but without instruction, it would not do them in your order, using your format, with your priorities.
+
+Examples in community banking:
+- A Morning Brief Skill that surfaces your branch's top three operational priorities based on your exception report, your calendar, and your outstanding items in that specific sequence
+- A Board Update Skill that formats ALCO analysis using your board's standard three-column presentation template with your institution's threshold language
+- A Credit Exception Memo Skill that structures exceptions using your policy's exact approval language and flags using your internal exception code taxonomy
+
+Encoded preference skills get more valuable over time. Every iteration makes them a more precise reflection of how your team works. Unlike capability uplift skills, they cannot be surpassed by a model update — a better model will simply execute your preferences more accurately.
+
+**Where to invest your build time:** Spend most effort on preference skills. They encode institutional knowledge that lives nowhere else. A well-built preference skill is a form of organizational IP — it makes your workflows portable, trainable, and consistent across staff changes.`,
+    },
+    {
+      id: 'm6-extended-anatomy',
+      title: 'Extended Skill Anatomy: The Full Component Set',
+      content: `The five-component framework introduced in this module (Role, Context, Task, Format, Constraints) is the foundation. As your skills grow more sophisticated, two additional components become important: the Output Format template and the Gotcha Section.
+
+**Output Format — Show, Don't Describe**
+
+The Format component in a basic skill tells the AI what type of output to produce. The extended Output Format component shows the AI exactly what the output should look like by providing a literal template.
+
+Instead of: "Produce a table with three columns: Risk Factor, Severity, and Recommended Action."
+
+Use: A fully populated example table with sample data, headers, and cell formatting exactly as you want it. The AI will pattern-match against the example rather than interpreting your description.
+
+This is especially valuable for:
+- Regulatory memo formats your institution uses for exam responses
+- Board committee report templates
+- Standard loan decision letters where formatting precision matters
+- Member correspondence that must comply with Reg Z or Reg E disclosure requirements
+
+**The Gotcha Section — Your Most Valuable Component**
+
+The Gotcha Section is where you document every failure you have observed from this skill and the specific instruction that prevents it from recurring.
+
+It is not a warning list. It is a failure log converted into binding instructions. Each entry represents something you discovered by watching the skill run on real inputs — and fixed by adding a precise instruction.
+
+Format each entry as: "Do not [specific failure behavior]. Instead, [correct behavior]."
+
+Examples from banking skills in production:
+- "Do not infer regulatory applicability from the document text. Apply only the regulations listed in the Context section."
+- "Do not produce a compliance determination. Produce an analysis and flag the determination point with [DETERMINATION REQUIRED — HUMAN REVIEW]."
+- "Do not round dollar amounts. Report exact figures as they appear in the source document."
+- "Do not produce any output if the input contains member Social Security numbers or account numbers. Respond: [PII DETECTED — REMOVE BEFORE RESUBMITTING]."
+
+The Gotcha Section is where the institutional knowledge lives. A new team member deploying your skill inherits everything you learned the hard way. Treat it as the highest-value section of any skill you build.
+
+**Skip the Role/Identity Section in Legacy Skills**
+
+You may encounter older skill templates — from prompting guides, online tutorials, or early AI consulting materials — that include a "Role/Identity" component asking the AI to adopt a persona: "You are named Alex. You are friendly, professional, and helpful."
+
+This is a legacy pattern. Current AI models do not need a persona name or personality description to perform well. What they need is task-specific expertise framing ("You are a Senior BSA/AML Officer...") — which is the Role component already covered in the five-component framework.
+
+When reviewing or updating old skills: keep the expertise framing, discard the identity persona. Adding persona instructions wastes tokens and adds no functional value.`,
+    },
+    {
+      id: 'm6-progressive-disclosure',
+      title: 'Progressive Disclosure: How a Skill Loads',
+      content: `Understanding how AI platforms load skill content helps you write skills that are efficient as well as effective. Skills are not loaded all at once — they use a three-layer progressive disclosure model.
+
+**Layer 1 — The Description (Always Loaded)**
+
+The description is approximately 100 tokens that live in the system prompt at all times. It determines whether the skill activates for a given input. This is the trigger — the AI reads it on every interaction to decide whether to engage the full skill.
+
+Write your description as a trigger condition, not a summary. "Use when a loan officer uploads a file for QC review" is a trigger. "This skill reviews loan files" is a summary. Summaries describe. Triggers activate.
+
+In platforms that surface skill descriptions to users (like Claude's project skills), the description also functions as documentation — it tells a colleague when to use this skill and what it will do.
+
+**Layer 2 — The Skill Body (Loaded on Trigger)**
+
+The full skill instructions — Role, Context, Task, Output Format, Gotcha Section, Constraints — load when the description triggers the skill. This is where your detailed instructions live. It is consumed by the model only when the skill is actually being used, which keeps system prompt token usage manageable.
+
+Keep the skill body under 500 lines of Markdown. If a skill file is growing beyond this, it is usually doing more than one job. Split it into two focused skills rather than expanding one skill indefinitely.
+
+**Layer 3 — Folder Contents (Loaded When Needed)**
+
+Advanced skills can reference separate files: a regulatory reference document, a sample output template, a data dictionary, a standard checklist. These are loaded only when the skill specifically calls for them — not on every use.
+
+This is useful for banking skills that reference institution-specific documents: your loan policy excerpts, your internal procedure manuals, your standard reporting templates. Keeping them as separate files means you can update the reference document without touching the skill instructions.
+
+**Practical implication:** The description is your skill's first impression. Write it last — after you have built the full skill body — so it accurately reflects what the skill actually does.`,
+    },
+    {
+      id: 'm6-five-killers',
+      title: 'The 5 Skill Killers',
+      content: `Anti-pattern teaching is more memorable than rules. These five killers account for the majority of skill failures observed in practice. Recognizing them in your own drafts is faster than checking against a design checklist.
+
+The table below describes each killer, why it degrades skill performance, and the specific fix. Review it before finalizing any skill you build.`,
+    },
+    {
       id: 'm6-good-vs-mediocre',
       title: 'Good vs. Mediocre Skills',
       content: `The gap between a mediocre AI skill and a good one is almost always in Role specificity and Constraint completeness.
@@ -100,6 +206,143 @@ This skill will produce consistent, institution-grade outputs every time it enco
     },
   ],
   tables: [
+    {
+      id: 'm6-five-skill-killers',
+      caption: 'The 5 Skill Killers — Anti-Patterns That Degrade Skill Performance',
+      columns: [
+        { header: '#', key: 'number' },
+        { header: 'Killer', key: 'killer' },
+        { header: 'Problem', key: 'problem' },
+        { header: 'Fix', key: 'fix' },
+      ],
+      rows: [
+        {
+          number: '1',
+          killer: 'Description does not trigger properly',
+          problem: 'The description is too vague ("helps with loan analysis"), too narrow ("only for 22-item checklist reviews"), or written in first person rather than third. The AI mis-fires — activating the skill when it should not, or failing to activate it when it should.',
+          fix: 'Write in third person. Use a specific trigger condition. Format: "Use when [actor] [action] [object]." Example: "Use when a loan officer uploads a document package for pre-closing QC review."',
+        },
+        {
+          number: '2',
+          killer: 'Over-defining the process',
+          problem: 'The instructions micromanage every reasoning step. This railroads the AI through a rigid sequence when the task calls for adaptive judgment — producing brittle outputs that break on inputs that do not match the expected pattern exactly.',
+          fix: 'Set degrees of freedom deliberately. Tight constraints for compliance and operational tasks where variance is a liability. Loose constraints for research, drafting, and analysis tasks where adaptive judgment adds value.',
+        },
+        {
+          number: '3',
+          killer: 'Stating the obvious',
+          problem: 'The skill explains what the AI already knows — "be professional," "read the document carefully," "organize your response logically." These instructions waste tokens and add no functional value. In long skills, they dilute the instructions that actually matter.',
+          fix: 'Challenge every paragraph with: "Does the model already know this without instruction?" If yes, delete it. Reserve instruction space for banking-specific knowledge, institutional context, and constraints the model could not infer on its own.',
+        },
+        {
+          number: '4',
+          killer: 'Missing Gotcha Section',
+          problem: 'The skill has no record of observed failure patterns. When the skill produces a bad output, there is no institutional memory of what went wrong — so the same failure recurs on every similar input.',
+          fix: 'Add a Gotcha Section and populate it after every real-world test run. Document every failure you have seen and the specific instruction that prevents it. This section is where the skill\'s institutional value accumulates over time.',
+        },
+        {
+          number: '5',
+          killer: 'Monolithic blob',
+          problem: 'Everything is packed into one overlong skill file — the instructions, the reference documents, the output templates, the regulatory citations. The file exceeds 500 lines and is impossible to maintain or debug.',
+          fix: 'Keep the SKILL.md body under 500 lines. Move reference documents, regulatory excerpts, and output templates to separate files in the skill folder. Reference them from the skill body rather than embedding them inline.',
+        },
+      ],
+    },
+    {
+      id: 'm6-skill-types',
+      caption: 'Capability Uplift vs. Encoded Preference — Know Where to Invest Build Time',
+      columns: [
+        { header: 'Type', key: 'type' },
+        { header: 'What It Does', key: 'what' },
+        { header: 'Banking Example', key: 'example' },
+        { header: 'Durability', key: 'durability' },
+      ],
+      rows: [
+        {
+          type: 'Capability Uplift',
+          what: 'Enables a function the model cannot perform well without structured domain guidance',
+          example: 'Loan QC Skill that checks against your institution\'s specific 22-item checklist; SAR Narrative Skill enforcing FinCEN\'s five required elements in legal-tone prose',
+          durability: 'Valuable now. May become partially obsolete as base model capabilities improve. Review quarterly.',
+        },
+        {
+          type: 'Encoded Preference',
+          what: 'Sequences existing AI capabilities according to your specific workflow, formats, and institutional standards',
+          example: 'Morning Brief Skill that surfaces branch priorities in your exact triage sequence; Board Update Skill that formats ALCO analysis using your board\'s three-column template',
+          durability: 'Gets more valuable over time. A better model executes your preferences more accurately — it does not make your preferences irrelevant.',
+        },
+      ],
+    },
+    {
+      id: 'm6-extended-anatomy',
+      caption: 'Extended Skill Anatomy — All Six Components',
+      columns: [
+        { header: 'Component', key: 'component' },
+        { header: 'What It Does', key: 'what' },
+        { header: 'Banking Adaptation', key: 'banking' },
+      ],
+      rows: [
+        {
+          component: 'name',
+          what: 'Lowercase, hyphens, max 64 characters. Use gerund form (verb-ing) to reflect the skill\'s action.',
+          banking: 'loan-file-completeness-check, sar-narrative-drafter, exception-report-triage',
+        },
+        {
+          component: 'description',
+          what: 'A trigger condition, not a summary. Written in third person. Format: "Use when [actor] [action] [object]."',
+          banking: '"Use when a loan officer uploads a file package for pre-closing QC review."',
+        },
+        {
+          component: 'Instructions',
+          what: 'The core task logic. Numbered steps or bullet lists over prose. Tight for compliance tasks, loose for research and drafting.',
+          banking: 'Numbered steps for SAR narrative structure; loose bullet guidance for competitive research analysis',
+        },
+        {
+          component: 'Output Format',
+          what: 'Show, do not describe. Include a literal template with sample data so the AI pattern-matches against a concrete example.',
+          banking: 'Include the exact memo format your institution uses for exam responses, not a description of what the memo should contain',
+        },
+        {
+          component: 'Gotcha Section',
+          what: 'The highest-signal content. Documents every observed failure and the specific instruction that prevents recurrence.',
+          banking: '"Do not cite regulatory statutes without a [VERIFY] flag. Do not produce a SAR filing recommendation — produce analysis only."',
+        },
+        {
+          component: 'Constraints',
+          what: 'What NOT to do. Sharp, specific, behavioral. Written as "never" or "always" statements.',
+          banking: '"Never include member PII in output. Always flag any dollar amount exceeding $10,000 with [CTR THRESHOLD] regardless of transaction type."',
+        },
+      ],
+    },
+    {
+      id: 'm6-progressive-disclosure',
+      caption: 'Progressive Disclosure — Three Layers of a Skill',
+      columns: [
+        { header: 'Layer', key: 'layer' },
+        { header: 'What Loads', key: 'loads' },
+        { header: 'Token Cost', key: 'tokens' },
+        { header: 'Write It To...', key: 'writeTo' },
+      ],
+      rows: [
+        {
+          layer: '1. Description',
+          loads: '~100 tokens in the system prompt — read on every interaction to determine whether the skill activates',
+          tokens: 'Always loaded, every session',
+          writeTo: 'Trigger the skill precisely. Use "Use when..." format. Write this last, after the full body is built.',
+        },
+        {
+          layer: '2. SKILL.md body',
+          loads: 'Full Role, Context, Task, Output Format, Gotcha Section, Constraints — consumed only when the skill is triggered',
+          tokens: 'Loaded on trigger only',
+          writeTo: 'Deliver all task-specific instructions. Keep under 500 lines. Split into two skills if it grows larger.',
+        },
+        {
+          layer: '3. Folder contents',
+          loads: 'Separate reference files — regulatory excerpts, output templates, checklists — loaded only when the skill calls for them',
+          tokens: 'Loaded on demand only',
+          writeTo: 'Hold reference material that changes independently of the skill logic. Update documents without touching skill instructions.',
+        },
+      ],
+    },
     {
       id: 'm6-five-components',
       caption: 'The Five Core Elements of a Banking AI Skill',
