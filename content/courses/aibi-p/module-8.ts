@@ -25,6 +25,35 @@ The Module 8 objective is to take the skill you built in Module 7 and put it thr
 The first version of any skill is built from intuition — what you think the AI needs to know to do the task well. The second version is built from evidence — what you learned from watching the AI's actual outputs on real inputs. The gap between version 1.0 and version 1.2 is almost always the difference between an AI tool that occasionally disappoints and one that reliably performs.`,
     },
     {
+      id: 'm8-litmus-test',
+      title: 'The Litmus Test',
+      content: `> **If you find yourself editing the output after the skill runs — correcting, restructuring, or rewriting — stop. The skill needs improvement, not the output.**
+
+This is the single most important principle in skill iteration. It reframes the question.
+
+When a skill produces output that requires manual correction, the instinct is to fix the output and move on. The correct response is to treat the need for correction as a diagnostic signal: something in the skill is underspecified, missing, or wrong. Fix the skill so the next run produces output you can use directly.
+
+**Why this matters in banking operations:**
+
+A BSA analyst who runs a SAR Narrative Skill and then spends 20 minutes editing the output has not saved 30 minutes — they have saved 10. And they are encoding a false impression of the skill's performance: it appears to be working because the final output is good, but the good output required significant human labor that the skill was supposed to eliminate.
+
+More importantly: the editing is invisible. The next analyst who uses the same skill will face the same 20 minutes of correction work without knowing it is coming.
+
+The Litmus Test makes skill quality visible. If you are editing outputs, the skill has a defect. Find which component is producing the defective output — Role, Context, Task, Output Format, or Constraints — and fix that component specifically. Then test again.
+
+**Applying the Litmus Test in practice:**
+
+After every skill run, ask one question: "Did I use this output directly, or did I modify it?"
+
+- Used directly: the skill is performing well for this input type.
+- Modified formatting: likely an Output Format failure. Show a more precise template.
+- Modified content: likely a Task failure (underspecified deliverable) or Gotcha Section gap (failure pattern not yet documented).
+- Added caveats or removed inappropriate content: likely a Constraints failure. Make the guardrail explicit.
+- Rewrote from scratch: the Role or Context is too generic. The skill is not grounded in the right expertise or institutional setting.
+
+Document every correction in the Gotcha Section as a binding instruction. This is how a skill learns.`,
+    },
+    {
       id: 'm8-iteration-protocol',
       title: 'The Iteration Protocol',
       content: `The Iteration Protocol is a structured process for improving AI skills based on observed outputs. It has three steps.
@@ -55,6 +84,65 @@ Version numbering convention: major.minor (e.g., 1.0 → 1.1 for small improveme
 Re-test after each revision to verify the fix worked and did not introduce new failures.`,
     },
     {
+      id: 'm8-degrees-of-freedom',
+      title: 'Degrees of Freedom: Calibrating Constraint Tightness',
+      content: `One of the most consequential design decisions in any skill is how tightly to constrain the AI's behavior. The answer is not "as tight as possible" — it is "tight where variance is a liability, loose where judgment adds value."
+
+**Tight constraints — compliance and operational tasks**
+
+When a skill handles tasks where deviation from a defined output has regulatory, credit, or operational consequences, constraints should be tight. The AI should have minimal latitude to vary its approach, format, or language.
+
+Indicators that tight constraints are warranted:
+- The output will be used in a regulatory filing, exam response, or compliance determination
+- The output format is specified by an external standard (FinCEN, FDIC, FFIEC) or internal policy
+- Multiple staff members will use this skill and consistency across users is required
+- The output will be reviewed by an examiner, auditor, or board member
+
+Examples: SAR narrative drafting (tight — FinCEN elements, legal tone, specific language requirements); loan committee memo formatting (tight — institutional template, defined approval language); exception report triage (tight — categories and escalation thresholds are defined by policy).
+
+**Loose constraints — research and advisory tasks**
+
+When a skill handles tasks where the AI's analytical judgment improves the output, over-constraining reduces quality. Tight process constraints on a research task tell the AI exactly how to think — which eliminates the adaptive reasoning that makes research valuable.
+
+Indicators that loose constraints are appropriate:
+- The output is a first draft or input to a human decision, not a final determination
+- The value of the output comes from surfacing unexpected connections or perspectives
+- The task type is creative, analytical, or exploratory rather than procedural
+- You want the AI to challenge assumptions, not confirm them
+
+Examples: Competitive landscape research (loose — you want unexpected observations, not just confirmation of known facts); strategic scenario analysis (loose — the value is in surfacing risks you had not considered); Devil's Advocate skill (loose by design — constraining the challenge response defeats the purpose).
+
+**The calibration question:**
+
+For every constraint you write, ask: "Am I preventing a genuine failure mode, or am I constraining out of anxiety about what the AI might do?" Constraints written from anxiety produce brittle skills that break on legitimate inputs. Constraints written from observed failure patterns produce skills that get consistently better.`,
+    },
+    {
+      id: 'm8-ab-testing',
+      title: 'A/B Testing Your Skill: Is Version 2 Actually Better?',
+      content: `When you revise a skill based on observed failure, it is tempting to assume the revision fixed the problem. This assumption is often wrong. The revision may have fixed one failure while introducing a subtler one — or it may have produced outputs that feel better on casual inspection without actually performing better on the inputs that matter.
+
+**The A/B test for skill iteration:**
+
+Before retiring version 1 of a skill, run both versions against the same set of inputs — ideally the ones that prompted the revision in the first place, plus at least two inputs that were working well before.
+
+Questions to evaluate:
+- Does version 2 fix the specific failure that prompted the revision?
+- Does version 2 maintain the performance that version 1 had on inputs that were working?
+- Is version 2 producing genuinely better outputs, or merely different outputs?
+
+The last question is the hardest to answer objectively. "Different" is not the same as "better." A version 2 output that reads more formally is not necessarily more useful than a version 1 output that was clearer and more actionable. Evaluate against the actual use case: will this output require less manual correction? Does it match the required format more precisely? Does it flag the right items for human review?
+
+**The difference between better and different:**
+
+A BSA analyst revises their SAR Narrative Skill to produce longer, more detailed outputs. The version 2 outputs are more thorough — but they also require more editing before submission because they exceed the recommended narrative length guidelines. Version 2 is longer and different. It is not better.
+
+A lending analyst revises their Loan QC Skill to flag missing items with [PRIORITY: HIGH] / [PRIORITY: STANDARD] labels instead of a flat list. The version 2 outputs require less interpretation from the reviewer and surface the two or three critical gaps immediately. Version 2 is different and demonstrably better for the workflow it serves.
+
+**Practical A/B testing in community banking:**
+
+Run both versions on the same three to five real work inputs from the past week. Do not use invented or idealized examples — use the actual messy, variable inputs your workflow produces. Score each output on one criterion only: how much manual correction did it require? The version requiring less correction is better.`,
+    },
+    {
       id: 'm8-skill-portability',
       title: 'Skill Portability Across Platforms',
       content: `One of the most important properties of a well-written Markdown skill is portability. A skill written for ChatGPT Custom Instructions should work in Claude's Project system prompt with minimal modification. This is not accidental — it is a property of plain-language instruction that does not depend on platform-specific syntax.
@@ -74,6 +162,13 @@ Re-test after each revision to verify the fix worked and did not introduce new f
 A well-built skill has value beyond the individual who created it. A Loan QC Skill built by your most experienced credit analyst represents institutional knowledge that can be shared with every lending staff member. A Compliance Narrative Skill built by your BSA Officer captures regulatory interpretation expertise that would otherwise exist only in that officer's head.
 
 Skills are institutional knowledge made portable and repeatable. The Sharing Ladder in the activity below formalizes this progression from personal tool to institutional asset.`,
+    },
+    {
+      id: 'm8-when-to-reevaluate',
+      title: 'When to Re-evaluate Your Skills',
+      content: `Skills are not fire-and-forget. Certain events — both internal and external — are reliable signals that a skill needs review, even if it appears to be working. The table below defines the five triggers and the appropriate response to each.
+
+A skill that passes all five review triggers without changes is a healthy skill. A skill that has not been reviewed in over a year has almost certainly drifted — either because the institution's context has changed, the platform has changed, or the underlying model's capabilities have evolved past what the skill was designed to compensate for.`,
     },
     {
       id: 'm8-margin-of-error-progression',
@@ -99,6 +194,74 @@ Verification protocol: Full independent verification against primary sources. Hu
 Examples: BSA/AML determinations, credit decisions, final compliance assessments, exam responses.
 Error consequence: Regulatory, legal, or credit risk impact if wrong.
 Verification protocol: AI provides supporting analysis only. The determination is made entirely by a qualified human. The AI output is cited as a research input in the work file, not as the basis for the decision.`,
+    },
+  ],
+  tables: [
+    {
+      id: 'm8-when-to-reevaluate',
+      caption: 'When to Re-evaluate Your Skills — Five Triggers and Appropriate Responses',
+      columns: [
+        { header: 'Trigger', key: 'trigger' },
+        { header: 'What to Do', key: 'action' },
+      ],
+      rows: [
+        {
+          trigger: 'Model change — the AI platform you rely on releases a significant model update',
+          action: 'Re-run your three most-used skills against the same test inputs used in the previous version check. Your Gotcha Section may contain instructions that solved problems the new model no longer has — these can often be removed, simplifying the skill. Conversely, the new model may behave differently on edge cases — test those specifically.',
+        },
+        {
+          trigger: 'Tool change — you or your institution moves from one AI platform to another',
+          action: 'Skills are portable but platform behaviors differ. Validate every skill on the new platform before distributing it to colleagues. Pay particular attention to format fidelity — tables, numbered lists, and structured headers render differently across platforms.',
+        },
+        {
+          trigger: 'Results degrade — outputs that were consistent begin requiring more manual correction',
+          action: 'Before assuming the model changed, ask: did your institutional context change? Did your templates, regulatory focus, or workflow change since the skill was built? Degrading results are often caused by stale context, not model regression. Audit the Context section first.',
+        },
+        {
+          trigger: 'Before scaling — you are about to share a skill with more than 10 colleagues or make it an institution-wide standard',
+          action: 'Run structured evaluation across a representative set of real inputs — at minimum 10 examples covering normal cases, edge cases, and the failure patterns documented in the Gotcha Section. A skill that performs well for its original builder may behave differently when used by colleagues with different input patterns and workflow contexts.',
+        },
+        {
+          trigger: 'Quarterly review — no specific event, but the skill has not been reviewed in 90 days',
+          action: 'Even if nothing appears broken, run a brief review. Capability uplift skills in particular may have been surpassed by the base model — if the model now handles the task well without the skill\'s scaffolding, the skill may be obsolete or reducible. Encoded preference skills rarely become obsolete but may need context updates as your institution\'s workflows evolve.',
+        },
+      ],
+    },
+    {
+      id: 'm8-degrees-of-freedom',
+      caption: 'Degrees of Freedom — Calibrating Constraint Tightness by Task Type',
+      columns: [
+        { header: 'Task Type', key: 'taskType' },
+        { header: 'Appropriate Constraint Level', key: 'level' },
+        { header: 'Banking Examples', key: 'examples' },
+        { header: 'Risk of Getting It Wrong', key: 'risk' },
+      ],
+      rows: [
+        {
+          taskType: 'Compliance and regulatory tasks — outputs used in filings, exam responses, or determinations',
+          level: 'Tight — minimal AI latitude. Specify format, language, required elements, and explicit prohibitions.',
+          examples: 'SAR narrative drafting, ECOA adverse action notice drafting, BSA alert dispositions, exam response summaries',
+          risk: 'Under-constrained: AI produces outputs that look professional but contain determinations, unsupported conclusions, or incorrect legal tone — requiring significant rework and creating compliance risk if used without careful review.',
+        },
+        {
+          taskType: 'Operational tasks — outputs used in defined workflows with specified formats',
+          level: 'Tight on format and output structure. Moderate latitude on analytical sequencing.',
+          examples: 'Loan file documentation checklist, exception report triage, daily branch operations summary, variance commentary generation',
+          risk: 'Under-constrained on format: inconsistent outputs across staff make the skill unusable as an institutional standard. Over-constrained on process: rigid sequencing produces brittle outputs on inputs that deviate from the expected pattern.',
+        },
+        {
+          taskType: 'Research and analysis tasks — outputs that inform human decisions',
+          level: 'Loose — give the AI latitude to surface unexpected observations and challenge assumptions.',
+          examples: 'Regulatory change monitoring, competitive landscape research, ALCO rate scenario analysis, strategic initiative research',
+          risk: 'Over-constrained: the AI confirms what you already know rather than surfacing what you do not. Tight process constraints on research tasks eliminate the adaptive reasoning that makes AI research valuable.',
+        },
+        {
+          taskType: 'Creative and drafting tasks — first-draft outputs reviewed and refined by humans',
+          level: 'Loose on content and structure. Tight on brand voice, compliance flags, and channel-specific requirements.',
+          examples: 'Member communication drafting, campaign copy development, board presentation narratives, training material development',
+          risk: 'Over-constrained: outputs are technically correct but generic and require as much rewriting as writing from scratch. Under-constrained on compliance: AI produces outputs without appropriate regulatory disclosure flags, creating risk when distributed without review.',
+        },
+      ],
     },
   ],
   activities: [
