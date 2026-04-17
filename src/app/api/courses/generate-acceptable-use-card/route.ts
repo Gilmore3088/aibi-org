@@ -147,6 +147,13 @@ function pdfResponse(buffer: Buffer): Response {
 // GET — re-download from saved activity_response
 // ---------------------------------------------------------------------------
 export async function GET(request: Request): Promise<Response> {
+  if (process.env.NODE_ENV === 'development' && process.env.SKIP_DEV_BYPASS !== 'true') {
+    return new Response(JSON.stringify({ dev: true, data: null }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
   if (!isSupabaseConfigured()) {
     return new Response(JSON.stringify({ error: 'Service not configured.' }), {
       status: 503,
@@ -220,6 +227,13 @@ interface PostBody {
 }
 
 export async function POST(request: Request): Promise<Response> {
+  if (process.env.NODE_ENV === 'development' && process.env.SKIP_DEV_BYPASS !== 'true') {
+    return new Response(JSON.stringify({ success: true, dev: true }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
   if (!isSupabaseConfigured()) {
     return new Response(JSON.stringify({ error: 'Service not configured.' }), {
       status: 503,

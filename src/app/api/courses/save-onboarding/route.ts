@@ -68,14 +68,12 @@ interface RequestBody {
 }
 
 export async function POST(request: Request): Promise<NextResponse> {
+  if (process.env.NODE_ENV === 'development' && process.env.SKIP_DEV_BYPASS !== 'true') {
+    return NextResponse.json({ success: true, dev: true });
+  }
+
   if (!isSupabaseConfigured()) {
-    if (process.env.NODE_ENV === 'development') {
-      return NextResponse.json({ success: true, dev: true });
-    }
-    return NextResponse.json(
-      { error: 'Service not configured.' },
-      { status: 503 }
-    );
+    return NextResponse.json({ error: 'Service not configured.' }, { status: 503 });
   }
 
   // --- Parse body ---
