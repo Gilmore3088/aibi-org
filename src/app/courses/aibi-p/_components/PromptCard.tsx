@@ -6,6 +6,8 @@
 import { useState, useCallback } from 'react';
 import type { Prompt } from '@content/courses/aibi-p/prompt-library';
 import { PLATFORM_META, ROLE_LABELS, DIFFICULTY_LABELS } from '@content/courses/aibi-p/prompt-library';
+import { getPlatformUrl, PLATFORM_URLS } from '@/lib/utm';
+import type { PlatformId } from '@/lib/utm';
 
 interface PromptCardProps {
   readonly prompt: Prompt;
@@ -103,14 +105,21 @@ export function PromptCard({ prompt }: PromptCardProps) {
         </p>
       </div>
 
-      {/* Footer: time estimate + encouragement */}
+      {/* Footer: time estimate + open platform link */}
       <div className="flex items-center justify-between pt-2 border-t border-[color:var(--color-parch-dark)]">
         <span className="font-mono text-[12px] text-[color:var(--color-dust)]">
           {prompt.timeEstimate}
         </span>
-        <span className="font-sans text-[12px] italic text-[color:var(--color-terra)]">
-          Try it now — paste and see what you get.
-        </span>
+        {prompt.platform in PLATFORM_URLS && (
+          <a
+            href={getPlatformUrl(prompt.platform as PlatformId, prompt.relatedModule)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-sans text-[12px] italic text-[color:var(--color-terra)] hover:underline focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-1 rounded-sm"
+          >
+            Open in {platformMeta.label}
+          </a>
+        )}
       </div>
 
       {/* Module reference */}
