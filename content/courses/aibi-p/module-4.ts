@@ -48,7 +48,6 @@ This module maps eight features across the primary platforms and shows how each 
 
 **Marketing:** Precise image generation for campaign mockups (using ChatGPT with DALL-E or Midjourney via institutional account) and brand voice preservation via Custom Instructions in ChatGPT Projects or Claude Projects. The key discipline is maintaining institutional tone — AI-generated marketing copy must be reviewed against brand standards before use.`,
     },
-  ],
     {
       id: 'm4-feature-discovery-tutorials',
       title: 'Feature Discovery: Role-Specific Tutorials',
