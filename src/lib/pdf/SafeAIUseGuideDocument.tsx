@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities, @typescript-eslint/no-unused-vars */
 // SafeAIUseGuideDocument — React PDF document component for the Safe AI Use Guide.
 // Rendered server-side via @react-pdf/renderer renderToBuffer().
 // Pillar B artifact: cobalt (#2d4a7a) primary, terracotta accents, parchment backgrounds.
