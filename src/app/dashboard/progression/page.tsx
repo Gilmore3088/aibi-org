@@ -26,14 +26,14 @@ const CERT_LEVELS: readonly CertLevel[] = [
     code: 'aibi-s',
     label: 'AiBI-S',
     color: 'var(--color-cobalt)',
-    colorBg: '#dce6f5',
+    colorBg: 'var(--color-cobalt-pale)',
     product: 'Specialist',
   },
   {
     code: 'aibi-l',
     label: 'AiBI-L',
     color: 'var(--color-sage)',
-    colorBg: '#d8e8d5',
+    colorBg: 'var(--color-sage-pale)',
     product: 'Leader',
   },
 ] as const;

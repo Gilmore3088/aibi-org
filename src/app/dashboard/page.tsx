@@ -158,9 +158,9 @@ export default function DashboardPage() {
             <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-4">
               Courses
             </p>
-            <h3 className="font-serif text-2xl text-[color:var(--color-ink)] leading-tight mb-3">
+            <h2 className="font-serif text-2xl text-[color:var(--color-ink)] leading-tight mb-3">
               Certification Tracks
-            </h3>
+            </h2>
             <p className="text-sm text-[color:var(--color-slate)] leading-relaxed">
               {tier?.id === 'starting-point'
                 ? 'Start with the Practitioner course to build baseline AI proficiency across your team.'
@@ -183,9 +183,9 @@ export default function DashboardPage() {
             <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-cobalt)] mb-4">
               Certifications
             </p>
-            <h3 className="font-serif text-2xl text-[color:var(--color-ink)] leading-tight mb-3">
+            <h2 className="font-serif text-2xl text-[color:var(--color-ink)] leading-tight mb-3">
               Practitioner Assessment
-            </h3>
+            </h2>
             <p className="text-sm text-[color:var(--color-slate)] leading-relaxed">
               {user.proficiency
                 ? `Last result: ${user.proficiency.levelLabel} (${user.proficiency.pctCorrect}/100)`
@@ -203,7 +203,7 @@ export default function DashboardPage() {
         {/* Readiness dimension breakdown */}
         {user.readiness && tier && (
           <section className="mb-12">
-            <div className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-8 md:p-10">
+            <div className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-8 md:p-12">
               <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-6">
                 Your 8-dimension readiness breakdown
               </p>
@@ -274,7 +274,7 @@ export default function DashboardPage() {
         {/* Proficiency skill breakdown with radar chart */}
         {user.proficiency && (
           <section className="mb-12">
-            <div className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-8 md:p-10">
+            <div className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-8 md:p-12">
               <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-6">
                 Your proficiency skill breakdown
               </p>

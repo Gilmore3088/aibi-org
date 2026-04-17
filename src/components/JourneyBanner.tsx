@@ -26,7 +26,7 @@ const JOURNEY_STEPS: Record<string, JourneyStep> = {
     href: '/courses/aibi-s',
     cta: 'Explore AiBI-S',
     accent: 'var(--color-cobalt)',
-    accentBg: '#dce6f5',
+    accentBg: 'var(--color-cobalt-pale)',
   },
   'aibi-s': {
     label: 'Next in your journey',
@@ -35,7 +35,7 @@ const JOURNEY_STEPS: Record<string, JourneyStep> = {
     href: '/courses/aibi-l',
     cta: 'Explore AiBI-L',
     accent: 'var(--color-sage)',
-    accentBg: '#d8e8d5',
+    accentBg: 'var(--color-sage-pale)',
   },
   'aibi-l': {
     label: 'Full certification ladder complete',
