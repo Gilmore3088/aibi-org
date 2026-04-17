@@ -55,9 +55,18 @@ export const tiers: readonly Tier[] = [
 ] as const;
 
 export function getTier(totalScore: number): Tier {
+  // Support both v1 (8-32) and v2 (12-48) score ranges
   const match = tiers.find((t) => totalScore >= t.min && totalScore <= t.max);
-  if (!match) {
-    throw new Error(`Score ${totalScore} is outside the valid range of 8-32.`);
+  if (match) return match;
+
+  // V2 scores fall outside v1 ranges — map them to the closest v1 tier
+  if (totalScore > 32) {
+    // V2 high scores map to v1 top tiers
+    if (totalScore >= 41) return tiers[3]; // Ready to Scale
+    if (totalScore >= 33) return tiers[2]; // Building Momentum
+    return tiers[1]; // Early Stage
   }
-  return match;
+  if (totalScore < 8) return tiers[0]; // Starting Point
+
+  return tiers[0]; // Fallback
 }
