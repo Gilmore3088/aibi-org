@@ -44,26 +44,43 @@ export function GuideRequestForm() {
         throw new Error(data.error ?? 'Something went wrong.');
       }
       setStatus('success');
+      // Trigger PDF download immediately after successful email capture
+      triggerPdfDownload();
     } catch (err) {
       setStatus('error');
       setMessage(err instanceof Error ? err.message : 'Unexpected error.');
     }
   }
 
+  function triggerPdfDownload() {
+    const link = document.createElement('a');
+    link.href = '/api/guides/safe-ai-use';
+    link.download = 'AiBI-Safe-AI-Use-Guide.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
   if (status === 'success') {
     return (
       <div className="border border-[color:var(--color-linen)]/30 bg-[color:var(--color-linen)]/10 p-8 text-center">
         <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra-pale)] mb-3">
-          Guide requested
+          Downloading now
         </p>
         <h3 className="font-serif text-3xl text-[color:var(--color-linen)] mb-3">
-          Check your inbox.
+          Your guide is ready.
         </h3>
-        <p className="text-[color:var(--color-linen)]/80 leading-relaxed">
-          We will email the Safe AI Use Guide to you within the next few
-          minutes, along with a brief on how it maps to SR 11-7 and the AIEOG
-          AI Lexicon.
+        <p className="text-[color:var(--color-linen)]/80 leading-relaxed mb-4">
+          The Safe AI Use Guide should be downloading now. If it did not
+          start automatically, use the button below.
         </p>
+        <button
+          type="button"
+          onClick={triggerPdfDownload}
+          className="inline-block px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
+        >
+          Download guide
+        </button>
       </div>
     );
   }
