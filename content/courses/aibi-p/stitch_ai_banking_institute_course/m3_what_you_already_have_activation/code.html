@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>M3: What You Already Have + Activation | The Digital Curator</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=DM+Sans:ital,wght@0,100..1000;1,100..1000&amp;family=DM+Mono:ital,wght@0,300;0,400;0,500&amp;family=Work+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-background": "#1b1c19",
+                      "surface": "#fbf9f4",
+                      "tertiary": "#47624c",
+                      "tertiary-container": "#607b63",
+                      "secondary-fixed-dim": "#a7c8ff",
+                      "on-surface": "#1b1c19",
+                      "on-tertiary": "#ffffff",
+                      "on-error": "#ffffff",
+                      "inverse-on-surface": "#f2f1ec",
+                      "surface-container-low": "#f5f3ee",
+                      "on-surface-variant": "#56423d",
+                      "on-primary-fixed-variant": "#7e2b16",
+                      "on-primary-container": "#fffbff",
+                      "on-primary": "#ffffff",
+                      "surface-container-lowest": "#ffffff",
+                      "primary-fixed": "#ffdbd2",
+                      "on-tertiary-fixed": "#07200f",
+                      "error-container": "#ffdad6",
+                      "on-primary-fixed": "#3c0800",
+                      "surface-container-high": "#eae8e3",
+                      "primary": "#9a4028",
+                      "surface-container-highest": "#e4e2dd",
+                      "outline": "#89726c",
+                      "error": "#ba1a1a",
+                      "primary-container": "#b9573e",
+                      "on-secondary-fixed": "#001c3b",
+                      "on-error-container": "#93000a",
+                      "tertiary-fixed": "#cceace",
+                      "on-tertiary-container": "#f6fff3",
+                      "inverse-surface": "#30312e",
+                      "surface-dim": "#dbdad5",
+                      "secondary-fixed": "#d5e3ff",
+                      "primary-fixed-dim": "#ffb4a2",
+                      "on-tertiary-fixed-variant": "#334d38",
+                      "tertiary-fixed-dim": "#b0ceb2",
+                      "surface-tint": "#9d422b",
+                      "on-secondary": "#ffffff",
+                      "on-secondary-fixed-variant": "#1e477b",
+                      "outline-variant": "#dcc0ba",
+                      "inverse-primary": "#ffb4a2",
+                      "surface-bright": "#fbf9f4",
+                      "background": "#fbf9f4",
+                      "surface-variant": "#e4e2dd",
+                      "secondary-container": "#9ec2fe",
+                      "secondary": "#395f94",
+                      "surface-container": "#f0eee9",
+                      "on-secondary-container": "#284f83"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "fontFamily": {
+                      "headline": ["Newsreader", "serif"],
+                      "body": ["Work Sans", "sans-serif"],
+                      "label": ["DM Sans", "sans-serif"],
+                      "mono": ["DM Mono", "monospace"]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Work Sans', sans-serif; }
+        h1, h2, h3, .serif-heading { font-family: 'Newsreader', serif; }
+        .mono-text { font-family: 'DM Mono', monospace; }
+        .label-text { font-family: 'DM Sans', sans-serif; letter-spacing: -0.01em; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- SideNavBar -->
+<aside class="flex flex-col h-screen fixed left-0 top-0 py-8 z-40 bg-[#f5f3ee] dark:bg-[#151613] border-r border-[#1b1c19]/10 dark:border-[#fbf9f4]/10 shadow-[20px_0_40px_rgba(27,28,25,0.02)] w-72">
+<div class="px-8 mb-12">
+<div class="flex items-center gap-3 mb-6">
+<div class="w-10 h-10 bg-primary-container flex items-center justify-center rounded-sm">
+<span class="material-symbols-outlined text-surface" style="font-variation-settings: 'FILL' 1;">account_balance</span>
+</div>
+<div>
+<div class="font-serif italic text-lg text-[#1b1c19] dark:text-[#fbf9f4]">The Digital Curator</div>
+<div class="text-[10px] uppercase tracking-[0.2em] opacity-60 font-bold">Banking AI Practitioner</div>
+</div>
+</div>
+<div class="pt-6 pb-2">
+<div class="text-xs font-mono uppercase tracking-widest text-primary mb-1">Module 3</div>
+<h3 class="text-xl serif-heading leading-tight">The Understanding Pillar</h3>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<!-- Navigation Items Mapping -->
+<a class="flex items-center gap-4 px-8 py-3 text-[#1b1c19]/70 dark:text-[#fbf9f4]/70 hover:bg-[#fbf9f4] dark:hover:bg-[#1b1c19] hover:text-[#9a4028] transition-colors" href="#">
+<span class="material-symbols-outlined text-lg">eco</span>
+<span class="label-text text-sm font-medium">Sustainability</span>
+</a>
+<!-- Active Tab: Stability (Mapping to 'Understanding' / Module 3 context) -->
+<a class="flex items-center gap-4 px-8 py-3 text-[#c25e44] bg-[#fbf9f4] dark:bg-[#1b1c19] font-bold border-l-4 border-[#c25e44] translate-x-1 transition-transform" href="#">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">security</span>
+<span class="label-text text-sm">Stability</span>
+</a>
+<a class="flex items-center gap-4 px-8 py-3 text-[#1b1c19]/70 dark:text-[#fbf9f4]/70 hover:bg-[#fbf9f4] dark:hover:bg-[#1b1c19] hover:text-[#9a4028] transition-colors" href="#">
+<span class="material-symbols-outlined text-lg">account_balance</span>
+<span class="label-text text-sm font-medium">Heritage</span>
+</a>
+<a class="flex items-center gap-4 px-8 py-3 text-[#1b1c19]/70 dark:text-[#fbf9f4]/70 hover:bg-[#fbf9f4] dark:hover:bg-[#1b1c19] hover:text-[#9a4028] transition-colors" href="#">
+<span class="material-symbols-outlined text-lg">rocket_launch</span>
+<span class="label-text text-sm font-medium">Innovation</span>
+</a>
+<a class="flex items-center gap-4 px-8 py-3 text-[#1b1c19]/70 dark:text-[#fbf9f4]/70 hover:bg-[#fbf9f4] dark:hover:bg-[#1b1c19] hover:text-[#9a4028] transition-colors" href="#">
+<span class="material-symbols-outlined text-lg">settings</span>
+<span class="label-text text-sm font-medium">Settings</span>
+</a>
+</nav>
+<div class="px-6 mt-auto">
+<button class="w-full bg-primary text-surface py-3 px-4 rounded-md text-sm font-medium flex items-center justify-center gap-2 hover:bg-primary-container transition-all">
+<span>Begin M365 Activation</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+<div class="mt-6 flex justify-between px-2">
+<button class="text-xs opacity-50 hover:opacity-100 transition-opacity flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">help</span> Support
+                </button>
+<button class="text-xs opacity-50 hover:opacity-100 transition-opacity flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">logout</span> Logout
+                </button>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-72 min-h-screen">
+<!-- TopAppBar (From Shared JSON) -->
+<header class="flex justify-between items-center w-full px-8 py-4 max-w-full sticky top-0 bg-[#fbf9f4] z-30 transition-all duration-300">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-serif text-[#1b1c19] dark:text-[#fbf9f4] tracking-tighter">The Digital Curator</span>
+<nav class="hidden md:flex gap-6 text-sm font-medium">
+<a class="text-[#1b1c19]/60 hover:text-[#9a4028] transition-colors" href="#">Curriculum</a>
+<a class="text-[#9a4028] font-semibold border-b-2 border-[#9a4028]" href="#">Archive</a>
+<a class="text-[#1b1c19]/60 hover:text-[#9a4028] transition-colors" href="#">Institutional Records</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">search</span>
+<input class="pl-10 pr-4 py-2 bg-surface-container border-none text-sm w-64 rounded-sm focus:ring-1 focus:ring-primary" placeholder="Search Archives..." type="text"/>
+</div>
+<button class="material-symbols-outlined p-2 text-outline hover:text-primary">account_balance</button>
+<button class="material-symbols-outlined p-2 text-outline hover:text-primary">history_edu</button>
+<div class="w-8 h-8 rounded-full overflow-hidden bg-surface-container-high ml-2 border border-outline-variant/30">
+<img alt="Learner profile avatar" data-alt="professional headshot of a mature bank executive with a kind expression and scholarly demeanor in soft lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWT51bsqe0KLadEgRK7QtESNhAiLkgDQsW3Knf4OSWPutsO-AiXhec22xKtRpSB1r_FUPZ7v11LS06ypJAAauVnOLzYq98p-l13WOIPdhEyQp7NLu8ywFIi8tL0SX4qpDT_1O_1wU17NHLImK4rFtRQ3_Ukb6pX4PnHy4NXuRjkyafcmO91SV_Ic_65pjkW47bax_EpwB6poyiwTdy8lZU5WMNRVTr60kY-tcsORK-FMSB8mVj2ikEDWxzkOa0XDyCQBWKRWwNK9Y"/>
+</div>
+</div>
+</header>
+<!-- Hero Section -->
+<section class="px-12 py-16 max-w-6xl mx-auto">
+<div class="flex flex-col lg:flex-row gap-16 items-start">
+<div class="flex-1">
+<div class="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-sm mb-6">
+<span class="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
+<span class="text-[10px] font-mono uppercase tracking-widest text-primary font-bold">Module 3 of 9</span>
+</div>
+<h1 class="text-7xl font-headline tracking-tighter leading-[0.9] text-on-surface mb-8">
+                        What You Already Have <span class="italic text-primary">+</span> Activation.
+                    </h1>
+<p class="text-xl text-on-surface-variant font-light leading-relaxed max-w-xl">
+                        A critical inventory of your existing institutional toolkit. Before innovating, we must audit the foundations of your M365 ecosystem and activate the dormant AI capabilities within.
+                    </p>
+</div>
+<div class="w-full lg:w-1/3">
+<div class="bg-surface-container-lowest p-1 rounded-sm border-l-4 border-primary">
+<img alt="Tech stack visual" class="grayscale brightness-90 contrast-125" data-alt="minimalist macro shot of high-tech circuit traces on parchment paper with soft shadows and technical precision" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNbE5nf1KGS_BaitIsRwdJYWQupI6gC8fVy8rqypPFotLjemhHoILfJZ36Tz8PErn04ommZ2apPMlD3Ty9pJhYcn4WL6MCYpzepSpere9IBR2pkfoK8uRq1rps0f5FHPR5_0CnHsW0IYCj4-KdP-fojzTSLlnw3CLoPMMg7SwXr8Qy8xkQxRWSvquraqO7PjPp-XOjSMxBKiIWPUJr-wWIxwTPRMBmjT-twnQzHHGHhPoX1-KvNl8_BaMCTrM8EQMUWyWGD43hA84"/>
+<div class="p-6">
+<h4 class="text-sm font-mono text-primary font-bold mb-2">FOUNDATION PILLAR</h4>
+<p class="text-xs leading-relaxed opacity-70">The stability of an AI strategy is measured by the readiness of its host environment.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- M365 Copilot Activation Path -->
+<section class="bg-surface-container-low px-12 py-20">
+<div class="max-w-6xl mx-auto">
+<div class="flex justify-between items-end mb-12">
+<div>
+<h2 class="text-4xl serif-heading mb-4">M365 Copilot Activation Path</h2>
+<p class="text-on-surface-variant">The institutional map for departmental rollouts.</p>
+</div>
+<span class="text-[10px] font-mono text-primary uppercase tracking-[0.3em]">Confidential Protocol</span>
+</div>
+<div class="overflow-hidden border-t border-[#1b1c19]/10">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="text-[10px] uppercase tracking-[0.2em] font-bold text-on-surface-variant/60">
+<th class="py-6 px-4">M365 Plan</th>
+<th class="py-6 px-4">Copilot Availability</th>
+<th class="py-6 px-4">Institutional Action Required</th>
+</tr>
+</thead>
+<tbody class="text-sm divide-y divide-[#1b1c19]/5">
+<tr class="hover:bg-surface-container transition-colors">
+<td class="py-8 px-4 mono-text font-medium text-primary">M365 E3 / E5</td>
+<td class="py-8 px-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary-container" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                                    Full Integration Ready
+                                </td>
+<td class="py-8 px-4 text-on-surface-variant leading-relaxed">
+                                    Apply add-on license via Admin Center. <br/>
+<span class="text-xs italic">Requires Global Admin permissions.</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container transition-colors">
+<td class="py-8 px-4 mono-text font-medium text-primary">M365 Business Standard</td>
+<td class="py-8 px-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-amber-600" style="font-variation-settings: 'FILL' 1;">info</span>
+                                    Limited Capacity
+                                </td>
+<td class="py-8 px-4 text-on-surface-variant leading-relaxed">
+                                    Upgrade to Business Premium recommended for <br/>Advanced Data Protection (ADP).
+                                </td>
+</tr>
+<tr class="hover:bg-surface-container transition-colors">
+<td class="py-8 px-4 mono-text font-medium text-primary">Office 365 (Legacy)</td>
+<td class="py-8 px-4 flex items-center gap-2 text-error">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">cancel</span>
+                                    Incompatible
+                                </td>
+<td class="py-8 px-4 text-on-surface-variant leading-relaxed">
+                                    Migrate to Microsoft 365 infrastructure <br/>to unlock architectural hooks.
+                                </td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<!-- Free vs. Paid & First Open Activity (Asymmetric Bento) -->
+<section class="px-12 py-20 max-w-6xl mx-auto">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Comparison Table (Left Side) -->
+<div class="lg:col-span-7 bg-surface-container-lowest p-10 border-l border-t border-[#1b1c19]/5">
+<h3 class="text-3xl serif-heading mb-8">The Economic Shift: Free vs. Paid</h3>
+<div class="space-y-8">
+<div class="grid grid-cols-2 gap-8">
+<div>
+<h5 class="text-[10px] uppercase font-bold tracking-widest text-primary mb-4">Feature Set</h5>
+<div class="space-y-6">
+<div>
+<div class="font-semibold text-sm mb-1">Standard AI</div>
+<p class="text-xs text-on-surface-variant">General knowledge, public web browsing, basic drafting.</p>
+</div>
+<div>
+<div class="font-semibold text-sm mb-1">Graph Integration</div>
+<p class="text-xs text-on-surface-variant">Access to your emails, calendar, and institutional documents.</p>
+</div>
+</div>
+</div>
+<div>
+<h5 class="text-[10px] uppercase font-bold tracking-widest text-primary mb-4">The Impact</h5>
+<div class="space-y-6">
+<div class="flex gap-3">
+<span class="material-symbols-outlined text-primary text-lg">trending_up</span>
+<p class="text-xs italic leading-snug">Increases general productivity by up to 20% in research tasks.</p>
+</div>
+<div class="flex gap-3">
+<span class="material-symbols-outlined text-primary text-lg">verified_user</span>
+<p class="text-xs italic leading-snug">The true transformation: AI understands your specific role and bank context.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="p-6 bg-primary-fixed/20 border-l-2 border-primary">
+<p class="text-sm font-medium">Why It Matters to Banking:</p>
+<p class="text-xs text-on-primary-fixed-variant mt-1">Paid tiers offer <span class="font-bold underline decoration-primary/30">Enterprise Grade Security</span>, ensuring your prompts never train the global model.</p>
+</div>
+</div>
+</div>
+<!-- First Open Activity (Right Side) -->
+<div class="lg:col-span-5 bg-primary text-surface p-10 flex flex-col justify-between">
+<div>
+<div class="inline-block px-2 py-1 border border-surface/30 text-[10px] font-mono uppercase tracking-widest mb-6">Activity 3.1</div>
+<h3 class="text-4xl serif-heading leading-tight mb-6">Your First Activation Discovery</h3>
+<p class="text-surface/80 text-sm font-light mb-8 italic">
+                            "Hello, I work at a community bank. Based on my recent emails, what are the three most urgent loan applications I need to review today?"
+                        </p>
+</div>
+<div class="space-y-4">
+<label class="text-[10px] uppercase font-bold tracking-widest opacity-60">Paste your AI's response discovery here</label>
+<textarea class="w-full bg-white/10 border-b border-surface/20 border-t-0 border-l-0 border-r-0 focus:ring-0 focus:border-surface placeholder:text-surface/30 text-sm" placeholder="What did the AI identify that surprised you?" rows="4"></textarea>
+<button class="w-full bg-surface text-primary font-bold py-4 text-xs uppercase tracking-widest hover:bg-surface-container-high transition-all">
+                            Log to Institutional Record
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Data Protection Note Block -->
+<section class="px-12 pb-24 max-w-6xl mx-auto">
+<div class="border-y border-primary/20 py-12 flex flex-col md:flex-row gap-12 items-center">
+<div class="md:w-1/4 flex flex-col items-center text-center">
+<span class="material-symbols-outlined text-primary text-6xl mb-4" style="font-variation-settings: 'wght' 200;">shield_person</span>
+<h4 class="text-[10px] uppercase font-bold tracking-[0.4em] text-primary">Institutional Shield</h4>
+</div>
+<div class="flex-1 space-y-4">
+<h3 class="text-2xl serif-heading">A Note on Data Protection</h3>
+<p class="text-sm text-on-surface-variant leading-relaxed">
+                        Every interaction within the AiBI-P environment is protected by the <span class="mono-text font-bold text-primary">SEC-M3-PROTOCOL</span>. In this module, remember that data residency remains within your tenant boundaries. When you "Activate," you are not opening your doors to the world; you are turning on the lights in a room only you can enter.
+                    </p>
+<div class="flex gap-6 pt-4">
+<div class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider opacity-60">
+<span class="material-symbols-outlined text-sm">lock</span> No Model Training
+                        </div>
+<div class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider opacity-60">
+<span class="material-symbols-outlined text-sm">gpp_maybe</span> Zero External Leaks
+                        </div>
+<div class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider opacity-60">
+<span class="material-symbols-outlined text-sm">verified</span> SOC2 Compliant
+                        </div>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer / Navigation -->
+<footer class="bg-on-background text-surface px-12 py-10 mt-12">
+<div class="max-w-6xl mx-auto flex justify-between items-center">
+<div class="flex gap-4">
+<div class="text-[10px] uppercase tracking-widest font-bold opacity-40">Previous: Module 2</div>
+<div class="text-[10px] uppercase tracking-widest font-bold text-primary">Next: Module 4</div>
+</div>
+<div class="text-[10px] font-mono opacity-20">
+                    © AI BANKING INSTITUTE - CURATORIAL DIVISION 2024
+                </div>
+</div>
+</footer>
+</main>
+</body></html>

@@ -27,27 +27,35 @@ const COURSE_FEATURES = [
 ] as const;
 
 async function getUserEmail(): Promise<string | null> {
+  // Dev bypass — skip Supabase auth in development
+  if (process.env.NODE_ENV === 'development' && process.env.SKIP_DEV_BYPASS !== 'true') {
+    return 'dev@example.com';
+  }
   if (!isSupabaseConfigured()) return null;
 
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+  try {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
-  const cookieStore = cookies();
+    const cookieStore = cookies();
 
-  const supabase = ssrCreateServerClient(supabaseUrl, supabaseAnonKey, {
-    cookies: {
-      getAll() {
-        return cookieStore.getAll();
+    const supabase = ssrCreateServerClient(supabaseUrl, supabaseAnonKey, {
+      cookies: {
+        getAll() {
+          return cookieStore.getAll();
+        },
+        setAll() {},
       },
-      setAll() {},
-    },
-  });
+    });
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
-  return user?.email ?? null;
+    return user?.email ?? null;
+  } catch {
+    return null;
+  }
 }
 
 export default async function PurchasePage() {
