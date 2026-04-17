@@ -44,6 +44,34 @@ const ARTICLES: readonly Article[] = [
     dek: '84% of consumers would switch financial institutions for AI-driven financial insights. 76% would switch for a better digital experience. The community bank retention story in 2026.',
     readTime: '7 min read',
   },
+  {
+    slug: 'six-ways-ai-fails-in-banking',
+    eyebrow: 'Risk & Governance',
+    title: 'Six ways AI fails in banking — and what to do about each one.',
+    dek: 'The AIEOG AI Lexicon defines six hallucination patterns that surface specifically in banking workflows. Prompt Blindness, Data Exfiltration, Recursive Logic Bias, Prompt Injection, Hallucination Drift, and Over-Reliance on Confidence. Here is what each looks like and how to defend against it.',
+    readTime: '10 min read',
+  },
+  {
+    slug: 'ai-governance-without-the-jargon',
+    eyebrow: 'Regulatory Guidance',
+    title: 'AI governance without the jargon.',
+    dek: 'Five regulatory frameworks govern AI use at community banks today: SR 11-7, TPRM, ECOA/Reg B, BSA/AML, and the AIEOG AI Lexicon. Here is what each one actually means for your daily work — in plain language, without a law degree.',
+    readTime: '9 min read',
+  },
+  {
+    slug: 'what-your-efficiency-ratio-is-hiding',
+    eyebrow: 'Financial Performance',
+    title: 'What your efficiency ratio is hiding.',
+    dek: 'Community bank median efficiency ratio: ~65%. Industry-wide: ~55.7% (FDIC Q4 2024). The nine-point gap is not fate — it is a measurement of where the opportunity lives. Here is where AI can move the needle, and how to calculate what it is worth to your institution.',
+    readTime: '9 min read',
+  },
+  {
+    slug: 'the-skill-not-the-prompt',
+    eyebrow: 'Practitioner Guide',
+    title: 'The skill, not the prompt.',
+    dek: 'Prompting is a one-time act. A skill is a persistent, reusable, institution-grade AI instruction that executes reliably every time you need it. Here is why the distinction matters for community banks — and how to build your first one in 20 minutes.',
+    readTime: '8 min read',
+  },
 ];
 
 const GUIDES: readonly Guide[] = [
