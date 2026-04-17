@@ -146,28 +146,25 @@ export default function HomePage({ searchParams }: HomePageProps) {
       {/* Three pillars — described, not branded as A-B-C */}
       <section className="px-6 py-14 md:py-20">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-10">
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-4">
-              The three pillars
-            </p>
+          <div className="text-center mb-14">
             <h2 className="font-serif text-4xl md:text-5xl text-[color:var(--color-ink)] max-w-3xl mx-auto leading-tight">
-              Accessible. Boundary-Safe. Capable.
+              The Three Pillars
             </h2>
           </div>
 
           <div className="grid md:grid-cols-3 gap-10">
             {PILLARS.map((pillar, idx) => (
               <article key={pillar.letter} className="space-y-5">
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 mb-1">
                   <span
-                    className="font-mono text-sm tabular-nums"
+                    className="font-mono text-lg tabular-nums"
                     style={{ color: pillar.colorVar }}
                   >
                     {idx + 1}
                   </span>
-                  <div className="h-px flex-1 max-w-[2rem]" style={{ backgroundColor: pillar.colorVar, opacity: 0.3 }} aria-hidden="true" />
+                  <div className="h-px w-6" style={{ backgroundColor: pillar.colorVar, opacity: 0.3 }} aria-hidden="true" />
                   <span
-                    className="font-serif-sc text-sm uppercase tracking-[0.15em]"
+                    className="font-serif-sc text-base uppercase tracking-[0.15em]"
                     style={{ color: pillar.colorVar }}
                   >
                     {pillar.label}
