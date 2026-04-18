@@ -2,7 +2,7 @@ import Anthropic from '@anthropic-ai/sdk';
 import type { RawMessageStreamEvent } from '@anthropic-ai/sdk/resources/messages/messages';
 
 const DEFAULT_MODEL = 'claude-haiku-4-5-20251001';
-const DEFAULT_MAX_TOKENS = 2000;
+const DEFAULT_MAX_TOKENS = 4096;
 
 /**
  * Streams a Claude response as a Web ReadableStream of UTF-8 text chunks.

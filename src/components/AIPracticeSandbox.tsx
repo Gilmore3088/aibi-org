@@ -284,7 +284,7 @@ export function AIPracticeSandbox({
           moduleId,
           product,
           systemPrompt: dataContent
-            ? `${sandboxConfig.systemPrompt}\n\n---\n\nThe following sample data has been pre-loaded for this exercise. The learner can reference it directly without pasting it. Treat it as already provided.\n\n### ${selectedData.label}\n\n${dataContent}`
+            ? `${sandboxConfig.systemPrompt}\n\n---\n\nIMPORTANT RESPONSE GUIDELINES: Keep responses focused and complete. Aim for 300-600 words. Use concise tables (5-8 rows max). Do not produce exhaustive analyses — give the learner actionable insight they can use immediately. If the question spans multiple items, summarize in a comparison table rather than analyzing each one in depth. Always finish your response — never cut off mid-thought.\n\n---\n\nThe following sample data has been pre-loaded for this exercise. The learner can reference it directly without pasting it. Treat it as already provided.\n\n### ${selectedData.label}\n\n${dataContent}`
             : sandboxConfig.systemPrompt,
         }),
       });
