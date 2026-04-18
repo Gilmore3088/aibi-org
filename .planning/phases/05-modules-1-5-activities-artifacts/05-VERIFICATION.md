@@ -1,9 +1,9 @@
 ---
 phase: "05-modules-1-5-activities-artifacts"
 verified: 2026-04-18
-status: human_needed
+status: gaps_found
 auditor: claude
-note: "All 5 success criteria implemented across 4 plans; 3 require a human to drive activity flows in-browser (timed drill, focus management, iPhone 390px rendering)."
+note: "Live UAT on 2026-04-18 (see 05-UAT.md): SC1 + SC2 + SC3 code-paths verified; 2 UX bugs surfaced in AcceptableUseCardForm.tsx (disabled button on fresh submit; stale 'Plan 03' dev comment leaking to prod UI). SC4 color and SC5 iPhone 390px remain untested."
 ---
 
 # Phase 5: Modules 1-5 Activities + Artifacts — Verification Report (Retroactive)
