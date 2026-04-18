@@ -32,7 +32,6 @@ const PILLARS: readonly Pillar[] = [
       'Personal experimentation before production deployment',
       'Role-based prompt libraries for ops, lending, finance, retail',
       'Five universal templates every banker can use on day one',
-      'Confidence first. Capability second.',
     ],
     colorVar: 'var(--color-sage)',
   },
