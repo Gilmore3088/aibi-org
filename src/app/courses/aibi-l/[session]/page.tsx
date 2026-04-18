@@ -6,10 +6,11 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { sessions, getSessionByNumber } from '@content/courses/aibi-l';
-import type { ContentSection } from '@content/courses/aibi-l';
 import MaturityScorecard from '../_components/MaturityScorecard';
 import { ROICalculator } from '../_components/ROICalculator';
 import { CourseTabs } from '@/components/CourseTabs';
+import { CourseHeader } from '@/components/courses/CourseHeader';
+import { LearnSection } from '@/components/courses/LearnSection';
 
 interface SessionPageParams {
   readonly params: Promise<{ session: string }>;
@@ -32,33 +33,6 @@ export async function generateMetadata({ params }: SessionPageParams): Promise<M
   };
 }
 
-function SectionBlock({ section, depth = 0 }: { section: ContentSection; depth?: number }) {
-  const HeadingTag = depth === 0 ? 'h3' : 'h4';
-  const headingClass = depth === 0
-    ? 'font-serif text-xl font-bold text-[color:var(--color-ink)] mb-3'
-    : 'font-serif text-base font-bold text-[color:var(--color-ink)] mb-2';
-
-  return (
-    <div className={depth === 0 ? 'mb-10' : 'mb-6'}>
-      <div className="flex items-center gap-3 mb-2">
-        <span className="font-mono text-[10px] tabular-nums text-[color:var(--color-sage)]">
-          {section.id}
-        </span>
-        <div className="h-px flex-1 max-w-[2rem] bg-[color:var(--color-sage)]/15" aria-hidden="true" />
-      </div>
-      <HeadingTag className={headingClass}>{section.title}</HeadingTag>
-      <p className="font-sans text-sm text-[color:var(--color-slate)] leading-relaxed">
-        {section.content}
-      </p>
-      {section.subsections?.map((sub) => (
-        <div key={sub.id} className="mt-4 ml-4 pl-4 border-l border-[color:var(--color-sage)]/10">
-          <SectionBlock section={sub} depth={depth + 1} />
-        </div>
-      ))}
-    </div>
-  );
-}
-
 export default async function SessionPage({ params }: SessionPageParams) {
   const { session } = await params;
   const sessionNum = parseInt(session, 10);
@@ -76,10 +50,9 @@ export default async function SessionPage({ params }: SessionPageParams) {
   const nextSession = sessionNum < 4 ? getSessionByNumber(sessionNum + 1) : null;
 
   return (
-    <div className="mx-auto px-8 lg:px-16 py-20">
-
+    <>
       {/* Breadcrumb */}
-      <nav className="mb-10" aria-label="Breadcrumb">
+      <nav className="mx-auto px-8 lg:px-16 pt-6 mb-2" aria-label="Breadcrumb">
         <div className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.2em]">
           <Link
             href="/courses/aibi-l"
@@ -94,76 +67,67 @@ export default async function SessionPage({ params }: SessionPageParams) {
         </div>
       </nav>
 
-      {/* Session header */}
-      <header className="mb-16">
-        <div className="flex items-center gap-3 mb-6">
-          <span className="font-mono text-[11px] tabular-nums text-[color:var(--color-sage)]">
-            S{workshopSession.number}
-          </span>
-          <div className="h-px w-8 bg-[color:var(--color-sage)]/30" aria-hidden="true" />
-          <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-[color:var(--color-slate)] tabular-nums">
-            {workshopSession.durationMinutes} min
-          </span>
-          <span className="font-mono text-[9px] text-[color:var(--color-slate)]">
-            {workshopSession.startTime}
-          </span>
-        </div>
-
-        <h1 className="font-serif text-4xl sm:text-5xl font-bold leading-[1.1] mb-6 text-[color:var(--color-ink)]">
-          {workshopSession.title}
-        </h1>
-
-        <p className="font-serif italic text-lg text-[color:var(--color-dust)] leading-relaxed mb-6 max-w-xl">
-          {workshopSession.coreQuestion}
-        </p>
-
-        <p className="font-sans text-sm text-[color:var(--color-slate)] leading-relaxed">
-          {workshopSession.purpose}
-        </p>
-      </header>
-
-      <CourseTabs
-        storagePrefix="aibi-l-s"
-        segmentNumber={sessionNum}
+      {/* Compact sticky header */}
+      <CourseHeader
+        unitLabel="Session"
+        unitNumber={workshopSession.number}
+        title={workshopSession.title}
         accentColor="var(--color-sage)"
-        learnContent={
-          <>
-            {/* Content sections */}
-            <div className="mb-16">
-              {workshopSession.sections.map((section) => (
-                <SectionBlock key={section.id} section={section} />
-              ))}
-            </div>
+        meta={[
+          { label: 'duration', value: `${workshopSession.durationMinutes} min` },
+          { label: 'time', value: workshopSession.startTime },
+        ]}
+      />
 
-            {/* Sourced statistics (if any) */}
-            {workshopSession.statistics && workshopSession.statistics.length > 0 && (
-              <section
-                className="mb-16 border-t border-[color:var(--color-sage)]/10 pt-8"
-                aria-labelledby="sources-heading"
-              >
-                <h2
-                  id="sources-heading"
-                  className="font-mono text-[9px] uppercase tracking-[0.3em] text-[color:var(--color-slate)] mb-4"
+      {/* Content area */}
+      <article className="mx-auto px-8 lg:px-16 py-4">
+        <CourseTabs
+          storagePrefix="aibi-l-s"
+          segmentNumber={sessionNum}
+          accentColor="var(--color-sage)"
+          learnContent={
+            <>
+              {/* Core question */}
+              <p className="font-serif italic text-lg text-[color:var(--color-slate)] leading-relaxed mb-8 max-w-xl">
+                {workshopSession.coreQuestion}
+              </p>
+
+              {/* Collapsible sections */}
+              <LearnSection
+                sections={workshopSession.sections}
+                accentColor="var(--color-sage)"
+                unitLabel="session"
+              />
+
+              {/* Sourced statistics */}
+              {workshopSession.statistics && workshopSession.statistics.length > 0 && (
+                <section
+                  className="mb-16 border-t border-[color:var(--color-sage)]/10 pt-8"
+                  aria-labelledby="sources-heading"
                 >
-                  Sources
-                </h2>
-                <div className="space-y-2">
-                  {workshopSession.statistics.map((stat) => (
-                    <div key={stat.value} className="flex items-baseline gap-3">
-                      <p className="font-sans text-xs text-[color:var(--color-slate)]">
-                        {stat.value}
-                      </p>
-                      <span className="font-mono text-[9px] text-[color:var(--color-slate)]">
-                        {stat.source} ({stat.year})
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </section>
-            )}
-          </>
-        }
-        practiceContent={
+                  <h2
+                    id="sources-heading"
+                    className="font-mono text-[9px] uppercase tracking-[0.3em] text-[color:var(--color-slate)] mb-4"
+                  >
+                    Sources
+                  </h2>
+                  <div className="space-y-2">
+                    {workshopSession.statistics.map((stat) => (
+                      <div key={stat.value} className="flex items-baseline gap-3">
+                        <p className="font-sans text-xs text-[color:var(--color-slate)]">
+                          {stat.value}
+                        </p>
+                        <span className="font-mono text-[9px] text-[color:var(--color-slate)]">
+                          {stat.source} ({stat.year})
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              )}
+            </>
+          }
+          practiceContent={
           sessionNum === 1 ? (
             <section aria-labelledby="exercise-heading-1">
               <h2
@@ -272,7 +236,8 @@ export default async function SessionPage({ params }: SessionPageParams) {
             </nav>
           </>
         }
-      />
-    </div>
+        />
+      </article>
+    </>
   );
 }
