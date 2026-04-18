@@ -96,36 +96,65 @@ Last updated: 2026-04-15
       with PII scanning, injection filtering, streaming, sample data,
       markdown rendering, message rate limiting
 
-### Next session — immediate priorities
+### Next session — "Polish & Parity" sprint
 
-1. [ ] **Fill in founder bio** on `/about` — replace `[founder bio placeholder]`
-       with real background, institutions served, personal story
-2. [ ] **Mobile QA on real iPhone Safari** — full assessment in <3 minutes,
-       all pages readable, touch targets, no horizontal scroll
-3. [ ] **Decide hero layout** — visit `/?hero=split` vs `/` on desktop and
-       mobile, pick one, delete the other
-4. [ ] **Test full course flow with real Supabase auth** — set
-       `SKIP_DEV_BYPASS=true`, run end-to-end from enrollment → module
-       completion → work product submission → certificate generation
-5. [ ] **Create work-products Storage bucket policies** — Supabase Storage
-       RLS so enrolled users can upload, only reviewers can download
-6. [ ] **Sign up for Calendly** → set `NEXT_PUBLIC_CALENDLY_URL` in .env.local
-       → all "Request Executive Briefing" CTAs become real booking links
-7. [ ] **Sign up for Plausible** → set `NEXT_PUBLIC_PLAUSIBLE_DOMAIN` → analytics
-       go live on assessment_start, assessment_complete, email_captured events
-8. [ ] **Sign up for ConvertKit or Loops** → wire `src/lib/convertkit/` adapter
-       → assessment email capture + newsletter subscribe become real
-9. [ ] **Sign up for HubSpot or Attio** → wire `src/lib/hubspot/` adapter →
-       CRM contact creation on email capture + inquiry form
-10. [ ] **Connect Vercel** to GitHub repo → deploy to AIBankingInstitute.com
-11. [ ] **DNS + SSL** for AIBankingInstitute.com
-12. [ ] **Create Stripe products** — $79 individual license and ~$63 institution
-        bundle price → copy Price IDs into env vars
-        (`STRIPE_FOUNDATIONS_PRICE_ID`, `STRIPE_PRACTITIONER_PRICE_ID`)
-13. [ ] **Supabase Auth setup** — user signup/login flow (magic link or
-        email/password), wire to `/dashboard` so it works across devices
-14. [ ] **Rate limiting** on `/api/capture-email` — Upstash or Vercel KV,
-        add the week before launch (zero traffic currently)
+**Course UX parity (apply AiBI-P patterns to S and L):**
+
+1. [ ] **Apply LearnSection to AiBI-S weeks** — replace WeekContent dump
+       with collapsible accordion, mini TOC, reading time per section
+2. [ ] **Apply LearnSection to AiBI-L sessions** — replace SectionBlock dump
+       with same interactive format
+3. [ ] **Compact sticky headers for AiBI-S/L** — match the AiBI-P module
+       header pattern (single-row, sticky, cobalt/sage accent)
+4. [ ] **Add key takeaways to all 9 AiBI-P modules** — 3-4 bullet "After
+       this module" box at top of each Learn tab
+5. [ ] **Add key takeaways to AiBI-S weeks and AiBI-L sessions**
+
+**Content & media enhancements:**
+
+6. [ ] **Regulatory framework table links** — make regulation names
+       clickable to official sources (SR 11-7, ECOA, GLBA, etc.)
+7. [ ] **MediaEmbed component** — placeholder for video, images, or
+       interactive elements within Learn sections (ready for content)
+8. [ ] **"Try this" callout boxes** — embedded in Learn content where
+       theory meets practice, bridging to the Practice tab
+9. [ ] **Module 2 ecosystem table** — further polish on the card grid
+
+**Sandbox Phase 2 (multi-provider):**
+
+10. [ ] **OpenAI adapter** — install SDK, wire into API route
+11. [ ] **Gemini adapter** — install SDK, wire into API route
+12. [ ] **Enable provider switching** — remove "Coming soon" from tabs
+13. [ ] **Recharts integration** — render chart code blocks as visuals
+
+**Sandbox Phase 3 (AiBI-S + AiBI-L exercises):**
+
+14. [ ] **Build AiBI-S sandbox configs** — W1-W6 exercises (Dept Scanner,
+        Workspace Architect, Automation Builder, Impact Calculator,
+        Training Script Generator, Playbook Drafter)
+15. [ ] **Build AiBI-L sandbox configs** — S1-S4 exercises (Maturity
+        Sandbox, Policy Drafter, Financial Narrative, Board Q&A Simulator)
+16. [ ] **Role-track sample data** — 5 variants per AiBI-S exercise
+
+**Remaining from prior sessions:**
+
+17. [ ] **Fill in founder bio** on `/about`
+18. [ ] **Mobile QA on real iPhone Safari**
+19. [ ] **Delete HeroSplit variant** — hero decision is made (static hero)
+20. [ ] **Test full course flow with real Supabase auth**
+21. [ ] **Supabase Auth setup** — signup/login flow
+22. [ ] **Create work-products Storage bucket policies**
+
+**External service wiring (when accounts are created):**
+
+23. [ ] Sign up for Calendly → wire Executive Briefing links
+24. [ ] Sign up for Plausible → wire analytics events
+25. [ ] Sign up for ConvertKit or Loops → wire email capture
+26. [ ] Sign up for HubSpot or Attio → wire CRM
+27. [ ] Connect Vercel → deploy to AIBankingInstitute.com
+28. [ ] DNS + SSL for AIBankingInstitute.com
+29. [ ] Create Stripe products → wire Price IDs
+30. [ ] Rate limiting on `/api/capture-email`
 
 ### Known prototype limitations
 
