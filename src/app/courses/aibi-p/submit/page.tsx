@@ -60,7 +60,7 @@ export default async function SubmitPage() {
     <>
       {/* Terra-colored header band matching module page pattern */}
       <div className="bg-[color:var(--color-terra)] text-[color:var(--color-linen)] py-10 px-6">
-        <div className="max-w-4xl mx-auto">
+        <div className="mx-auto px-8 lg:px-16">
           <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra-pale)] mb-2">
             AiBI-P Certification
           </p>
@@ -73,7 +73,7 @@ export default async function SubmitPage() {
         </div>
       </div>
 
-      <article className="max-w-4xl mx-auto px-6 lg:px-8 py-10">
+      <article className="mx-auto px-8 lg:px-16 px-6 lg:px-8 py-10">
 
         {/* Module completion gate */}
         {!modulesComplete && (

@@ -27,7 +27,7 @@ const PLATFORMS = ALL_TOOL_GUIDES.map((g) => ({
 
 export default function ToolGuidesPage() {
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-8 py-16">
+    <div className="mx-auto px-8 lg:px-16 py-16">
 
       {/* Breadcrumb */}
       <nav className="mb-8" aria-label="Breadcrumb">

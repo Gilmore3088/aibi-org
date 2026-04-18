@@ -16,7 +16,7 @@ export default async function PromptLibraryPage() {
   const userLevel = await resolveUserLevel();
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-8 py-16">
+    <div className="mx-auto px-8 lg:px-16 py-16">
       {/* Breadcrumb */}
       <nav className="mb-8" aria-label="Breadcrumb">
         <ol className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">

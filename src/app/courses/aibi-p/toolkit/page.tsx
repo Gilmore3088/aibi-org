@@ -256,7 +256,7 @@ export default async function ToolkitPage() {
     <>
       {/* Page header band */}
       <div className="bg-[color:var(--color-terra)] text-[color:var(--color-linen)] py-10 px-6">
-        <div className="max-w-4xl mx-auto">
+        <div className="mx-auto px-8 lg:px-16">
           <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra-pale)] mb-2">
             AiBI-P Course
           </p>
@@ -269,7 +269,7 @@ export default async function ToolkitPage() {
         </div>
       </div>
 
-      <article className="max-w-4xl mx-auto px-6 lg:px-8 py-8">
+      <article className="mx-auto px-8 lg:px-16 px-6 lg:px-8 py-8">
 
         {/* 1 — My Skills */}
         <SectionCard title="My Skills" label="Skills" labelColor="var(--color-amber)">

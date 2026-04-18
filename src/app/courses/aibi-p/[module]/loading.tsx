@@ -1,6 +1,6 @@
 export default function ModuleLoading() {
   return (
-    <div className="max-w-4xl mx-auto px-6 lg:px-8 py-8 animate-pulse">
+    <div className="mx-auto px-8 lg:px-16 py-8 animate-pulse">
       {/* Header skeleton */}
       <div className="h-32 bg-[color:var(--color-parch-dark)] rounded-sm mb-8" />
 
