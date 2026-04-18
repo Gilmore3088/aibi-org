@@ -1,8 +1,6 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { ServiceTierCards } from '@/components/sections/ServiceTierCards';
-import { MonthlyCadence } from '@/components/sections/MonthlyCadence';
-import { TransformationScoreboard } from '@/components/sections/TransformationScoreboard';
 
 export const metadata: Metadata = {
   title: 'Services — Three ways we work with community banks',
@@ -36,11 +34,6 @@ export default function ServicesPage() {
       {/* Tier cards */}
       <ServiceTierCards />
 
-      {/* Monthly cadence (fCAIO detail) */}
-      <MonthlyCadence />
-
-      {/* Transformation scoreboard */}
-      <TransformationScoreboard />
 
       {/* Closing CTA */}
       <section className="px-6 pb-16">
