@@ -187,3 +187,189 @@ Plans:
   - Verify domain swing to Vercel + SSL provisioning
   - Document the GoDaddy gotcha in CLAUDE.md so future sessions skip the
     "why isn't my A record working" troubleshooting cycle
+
+### Phase 999.2: Stripe end-to-end activation (BACKLOG)
+
+**Goal:** [Captured for future planning]
+**Requirements:** PAY-01, PAY-02, PAY-03 (from Phase 03)
+**Plans:** 0 plans
+
+Context captured 2026-04-18: Stripe code is shipped (466 lines across
+stripe.ts, create-checkout/route.ts, EnrollButton.tsx, webhook handler +
+provision-enrollment.ts) but zero Stripe env vars are set in production.
+Nobody can buy the course; revenue pipeline is $0 until this closes.
+
+Plans:
+- [ ] TBD
+  - Create Stripe account + verify business
+  - Create products in Stripe Dashboard: AiBI-P $79 individual, AiBI-P $63.20 institution (5-seat min)
+  - Capture 5 env vars: STRIPE_SECRET_KEY, NEXT_PUBLIC_STRIPE_KEY, STRIPE_WEBHOOK_SECRET, STRIPE_AIBIP_PRICE_ID, STRIPE_AIBIP_INSTITUTION_PRICE_ID
+  - Push env vars to Vercel production via `vercel env add`
+  - Configure Stripe webhook pointing at /api/webhooks/stripe
+  - Test end-to-end purchase with Stripe test card
+  - Backfill 03-01-SUMMARY.md finalization + promote 03-VERIFICATION.md from blocked_external to passed
+
+### Phase 999.3: ConvertKit + Resend custom domain wiring (BACKLOG)
+
+**Goal:** [Captured for future planning]
+**Requirements:** TBD
+**Plans:** 0 plans
+
+Context captured 2026-04-18: ConvertKit account exists, Resend account exists with
+onboarding@resend.dev sender. Both services are connected to Supabase Auth for
+transactional email, but:
+- ConvertKit not wired: `src/lib/convertkit/index.ts` is a stub; no API key
+  or form IDs in env; `/api/capture-email` silently no-ops against Kit
+- Resend can only send to hello@aibankinginstitute.com (unverified domain
+  restricts to the Resend account's own email)
+
+Plans:
+- [ ] TBD
+  - Create 2 forms in ConvertKit (assessment capture + newsletter)
+  - Capture API secret + 2 form IDs
+  - Replace src/lib/convertkit stub with real REST implementation
+  - Add CONVERTKIT_API_KEY, CONVERTKIT_ASSESSMENT_FORM_ID, CONVERTKIT_NEWSLETTER_FORM_ID to local + Vercel env
+  - Verify aibankinginstitute.com domain in Resend (add 3 DNS records at GoDaddy)
+  - Switch Supabase Auth SMTP sender to noreply@aibankinginstitute.com
+  - Test assessment completion → ConvertKit form submission end-to-end
+
+### Phase 999.4: Post-UAT polish bundle (BACKLOG)
+
+**Goal:** [Captured for future planning]
+**Requirements:** TBD
+**Plans:** 0 plans
+
+Four small findings from Phase 04/05 UAT that don't block the milestone
+but deserve cleanup:
+
+Plans:
+- [ ] TBD
+  - Add `updated_at` column + trigger to `course_enrollments` (Phase 04 UAT finding)
+  - Defensive `Math.max(1, current_module)` in Start Course link href (Phase 04 UAT finding — breaks when current_module=0)
+  - Reconcile Phase 06 IterationTracker: ROADMAP says "four iterations" but ships as 3-step flow. Pick: update ROADMAP to match UX, or add a 4th step.
+  - Phase 08 certificate PDF: register Cormorant + DM Mono TTFs via Font.register (brand parity). Currently uses Helvetica-Bold + Courier defaults.
+
+### Phase 999.5: Accessibility + mobile audit (BACKLOG)
+
+**Goal:** [Captured for future planning]
+**Requirements:** WCAG 2.1 AA compliance across all interactive surfaces
+**Plans:** 0 plans
+
+Phase 05 UAT left SC4 (color-not-sole-indicator) and SC5 (iPhone 390px)
+untested. Broader audit needed.
+
+Plans:
+- [ ] TBD
+  - Run axe-core scan across homepage, assessment, /education, every /courses/aibi-p/[1-9]
+  - Manual screen reader pass (VoiceOver) on assessment + onboarding + module activities
+  - iPhone Safari 390px viewport walkthrough — confirm no horizontal scroll, text ≥14pt, tap targets ≥44px
+  - Color-indicator audit: find places where red/green/etc. convey meaning without text or icon backup
+  - Focus-ring visibility pass on terra-on-linen hover states
+
+### Phase 999.6: Reviewer queue activation (BACKLOG)
+
+**Goal:** [Captured for future planning]
+**Requirements:** REVW-01 through REVW-07 (from Phase 07)
+**Plans:** 0 plans
+
+Phase 07 code is shipped but reviewer identity is gated. `REVIEWER_EMAILS`
+env var allowlist is the shipped model (per reviewerAuth.ts) but no emails
+are set in Vercel prod. Reviewer confirmation + feedback emails are still
+TODO stubs waiting on ConvertKit/Loops decision (now resolved to ConvertKit
+per 2026-04-18 decision — see Phase 999.3).
+
+Plans:
+- [ ] TBD
+  - Set REVIEWER_EMAILS in Vercel production (comma-separated list)
+  - Design reviewer-facing email templates (submission received, approved, feedback)
+  - Wire actual email sends in review-submission/route.ts (currently TODO comments)
+  - End-to-end test: reviewer logs in, sees queue, reviews, learner gets notification
+  - Promote 07-VERIFICATION.md from blocked_external to passed
+
+### Phase 999.7: Course page visual normalization (BACKLOG)
+
+**Goal:** [Captured for future planning]
+**Requirements:** Consistency + dynamic data (no hardcoded cohort dates)
+**Plans:** 0 plans
+
+Phase 11 audit (retroactive) surfaced three visual/data inconsistencies
+across AiBI-P/S/L course overview pages:
+
+Plans:
+- [ ] TBD
+  - AiBI-P, AiBI-S, AiBI-L use different hero patterns (P tight/terra/3xl, S tall/cobalt/5xl+kicker, L tall/sage/5xl+kicker). Pick gold standard (user called AiBI-P that earlier) and normalize.
+  - Container max-widths differ (`max-w-none px-8`, `max-w-6xl px-4`, `max-w-5xl px-4`). Standardize.
+  - CTA button geometry differs (px-5 py-2.5 vs px-8 py-4 vs px-10 py-5; text-[11px] vs text-[10px]). Standardize.
+  - AiBI-S `COHORT_INFO` hardcodes "May 5, 2026" dates. Move to database table or content file with dynamic upcoming-cohort logic.
+
+### Phase 999.8: Human UAT for Phases 02, 06, 08 (BACKLOG)
+
+**Goal:** [Captured for future planning]
+**Requirements:** TBD
+**Plans:** 0 plans
+
+Three phases remain at `human_needed` after the retroactive verification
+audit. Same approach as Phase 04/05 UAT: walk through in browser with
+agent-browser + Supabase MCP, verify each success criterion, fix any
+bugs surfaced, promote VERIFICATION.md status.
+
+Plans:
+- [ ] TBD
+  - Phase 02 UAT: 12-question assessment v2 + all Phase 2 course shell features (read the 02-CONTEXT.md for SC list)
+  - Phase 06 UAT: Modules 6-9 activities + Skill Builder + IterationTracker. Requires Modules 1-5 completed first (seed via DB).
+  - Phase 08 UAT: Certificate generation + public verification at /verify/[certificateId]. Requires full pipeline (Stripe → enrollment → modules → work submission → reviewer approval). May require Phase 999.2 + 999.6 done first, or a test-only shortcut.
+
+### Phase 999.9: Analytics consolidation decision (BACKLOG)
+
+**Goal:** [Captured for future planning]
+**Requirements:** One analytics platform
+**Plans:** 0 plans
+
+Both Plausible and Vercel Analytics are currently active in the layout.
+2026-04-18 decisions log captured this as "deferred until both are running
+and we can compare data quality." Vercel Analytics is free, integrated,
+zero-setup. Plausible is EU-privacy-friendly, already has deferred-queue
+pattern wired, and matches CLAUDE.md's documented vendor.
+
+Plans:
+- [ ] TBD
+  - Run both for 2-4 weeks; compare traffic numbers and event fidelity
+  - Pick one; remove the other from `src/app/layout.tsx`
+  - Update CLAUDE.md decisions log + env vars
+  - Test that custom events (assessment_complete, email_captured, briefing_booked, purchase_initiated) still fire on the surviving platform
+
+### Phase 999.10: Founder bio scaffold (BACKLOG)
+
+**Goal:** [Captured for future planning]
+**Requirements:** TBD
+**Plans:** 0 plans
+
+User has founder bio content ready ("i have this already" — 2026-04-18).
+Need the content pasted/shared so the /about page section can be scaffolded.
+
+Plans:
+- [ ] TBD
+  - User provides: founder bio copy (300-500 words), headshot photo, LinkedIn URL, short pull-quote
+  - Create /about page (currently doesn't exist or is placeholder)
+  - Scaffold bio section matching /education hero + card style
+  - Link from Footer "Institute" group (already wired)
+  - Include founder's credential display per CLAUDE.md brand rules
+
+### Phase 999.11: Supabase Auth dashboard hardening (BACKLOG)
+
+**Goal:** [Captured for future planning]
+**Requirements:** Security best-practices
+**Plans:** 0 plans
+
+Three items flagged during Phase 03 activation but gated on Supabase
+dashboard UI (not MCP-addressable):
+
+Plans:
+- [ ] TBD
+  - Toggle ON "Prevent use of leaked passwords" (Authentication → Policies → Password Strength)
+  - Whitelist redirect URLs in Authentication → URL Configuration:
+    - http://localhost:3000/auth/callback, /reset-password
+    - https://aibankinginstitute.com/auth/callback, /reset-password
+    - https://aibi-org.vercel.app/auth/callback, /reset-password
+    - https://staging.aibankinginstitute.com/auth/callback, /reset-password (if staging is set up)
+  - Brand auth email templates (confirmation, magic link, password reset) with The AI Banking Institute logo + sender name
