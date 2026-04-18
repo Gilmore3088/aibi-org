@@ -49,5 +49,3 @@ export default async function AiBISLayout({ children }: CourseLayoutProps) {
     </div>
   );
 }
-
-export { ENROLLMENT_EXEMPT_SUFFIXES };

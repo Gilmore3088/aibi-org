@@ -301,50 +301,24 @@ export function AcceptableUseCardForm({
             ))}
           </div>
 
-          {/* PDF download — Plan 03 wires the actual route */}
-          {isReadOnly ? (
-            <div className="mt-6 pt-4 border-t border-[color:var(--color-parch-dark)]">
-              <p className="text-xs font-mono text-[color:var(--color-slate)] uppercase tracking-widest mb-2">
-                Your artifact
-              </p>
-              <a
-                href={`/api/courses/generate-acceptable-use-card?enrollmentId=${enrollmentId}`}
-                className="inline-flex items-center gap-2 px-5 py-2 border border-[color:var(--color-terra)] text-[color:var(--color-terra)] hover:bg-[color:var(--color-terra)] hover:text-[color:var(--color-linen)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-2"
-              >
-                <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                  <path
-                    fillRule="evenodd"
-                    d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                Download Acceptable Use Card
-              </a>
-            </div>
-          ) : (
-            <div className="mt-6 pt-4 border-t border-[color:var(--color-parch-dark)]">
-              <p className="text-xs font-mono text-[color:var(--color-slate)] uppercase tracking-widest mb-2">
-                Your artifact
-              </p>
-              <button
-                type="button"
-                disabled
-                className="inline-flex items-center gap-2 px-5 py-2 border border-[color:var(--color-parch-dark)] text-[color:var(--color-slate)] text-[11px] font-mono uppercase tracking-widest rounded-sm cursor-not-allowed"
-                aria-label="PDF generation available after setup"
-                title="PDF generation route available in Plan 03"
-              >
-                <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                  <path
-                    fillRule="evenodd"
-                    d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                Generate Acceptable Use Card
-                <span className="ml-1 text-[10px] normal-case tracking-normal">(PDF generation available after setup)</span>
-              </button>
-            </div>
-          )}
+          <div className="mt-6 pt-4 border-t border-[color:var(--color-parch-dark)]">
+            <p className="text-xs font-mono text-[color:var(--color-slate)] uppercase tracking-widest mb-2">
+              Your artifact
+            </p>
+            <a
+              href={`/api/courses/generate-acceptable-use-card?enrollmentId=${enrollmentId}`}
+              className="inline-flex items-center gap-2 px-5 py-2 border border-[color:var(--color-terra)] text-[color:var(--color-terra)] hover:bg-[color:var(--color-terra)] hover:text-[color:var(--color-linen)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-2"
+            >
+              <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                <path
+                  fillRule="evenodd"
+                  d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              Download Acceptable Use Card
+            </a>
+          </div>
         </div>
       ) : (
         // Interactive form

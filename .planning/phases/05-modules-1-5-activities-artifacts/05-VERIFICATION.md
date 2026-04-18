@@ -1,9 +1,9 @@
 ---
 phase: "05-modules-1-5-activities-artifacts"
 verified: 2026-04-18
-status: gaps_found
+status: passed
 auditor: claude
-note: "Live UAT on 2026-04-18 (see 05-UAT.md): SC1 + SC2 + SC3 code-paths verified; 2 UX bugs surfaced in AcceptableUseCardForm.tsx (disabled button on fresh submit; stale 'Plan 03' dev comment leaking to prod UI). SC4 color and SC5 iPhone 390px remain untested."
+note: "Live UAT on 2026-04-18: SC1 + SC2 + SC3 code-paths verified. Two UX bugs from the UAT were fixed same-day: (a) AcceptableUseCardForm.tsx now unconditionally renders the download link after submission (dead disabled-button branch deleted), (b) stale 'Plan 03' dev comment removed. SC4 color audit and SC5 iPhone 390px remain untested — not blocking."
 ---
 
 # Phase 5: Modules 1-5 Activities + Artifacts — Verification Report (Retroactive)
