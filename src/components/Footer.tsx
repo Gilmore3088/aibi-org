@@ -10,23 +10,24 @@ const FOOTER_GROUPS: readonly FooterGroup[] = [
     label: 'Start here',
     links: [
       { href: '/assessment', label: 'Free Assessment' },
+      { href: '/education', label: 'Education' },
       { href: '/services', label: 'Services' },
-      { href: '/certifications', label: 'Certifications' },
     ],
   },
   {
     label: 'Programs',
     links: [
-      { href: '/foundations', label: 'AI Foundations' },
-      { href: '/security', label: 'Security & Governance' },
-      { href: '/resources', label: 'Resources' },
+      { href: '/courses/aibi-p', label: 'AiBI-P · Practitioner' },
+      { href: '/courses/aibi-s', label: 'AiBI-S · Specialist' },
+      { href: '/courses/aibi-l', label: 'AiBI-L · Leader' },
     ],
   },
   {
     label: 'Institute',
     links: [
       { href: '/about', label: 'About' },
-      { href: '/resources/the-widening-ai-gap', label: 'The Widening AI Gap' },
+      { href: '/security', label: 'Security & Governance' },
+      { href: '/resources', label: 'Resources' },
     ],
   },
 ] as const;

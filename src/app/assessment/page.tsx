@@ -103,10 +103,10 @@ export default function AssessmentPage() {
               {/* Secondary navigation — always visible */}
               <nav aria-label="Related pages" className="flex flex-wrap items-center justify-center gap-6 mt-2">
                 <a
-                  href="/courses"
+                  href="/education"
                   className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/60 hover:text-[color:var(--color-terra)] transition-colors"
                 >
-                  Browse all courses
+                  Browse education
                 </a>
                 <a
                   href="/dashboard"

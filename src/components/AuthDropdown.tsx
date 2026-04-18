@@ -15,8 +15,7 @@ interface Props {
 
 const MENU_LINKS = [
   { href: '/dashboard', label: 'Dashboard' },
-  { href: '/courses', label: 'My Courses' },
-  { href: '/certifications', label: 'Certifications' },
+  { href: '/education', label: 'Education' },
 ] as const;
 
 export function AuthDropdown({ email, displayName }: Props) {

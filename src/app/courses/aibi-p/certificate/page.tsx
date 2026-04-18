@@ -257,10 +257,10 @@ export default async function CertificatePage() {
                   Explore AiBI-S to deepen your expertise in your functional area.
                 </p>
                 <a
-                  href="/certifications"
+                  href="/education"
                   className="inline-block text-center bg-[var(--color-parch)] text-[var(--color-terra)] text-xs font-bold font-sans py-2.5 px-4 rounded-sm hover:bg-white transition-colors"
                 >
-                  Explore Certifications
+                  Explore Education
                 </a>
               </div>
             </div>

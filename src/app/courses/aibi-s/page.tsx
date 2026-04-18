@@ -39,10 +39,10 @@ export default async function AiBISOverviewPage() {
       {/* Breadcrumb */}
       <nav aria-label="Breadcrumb" className="mb-8">
         <Link
-          href="/courses"
+          href="/education"
           className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/50 hover:text-[color:var(--color-cobalt)] transition-colors"
         >
-          Courses
+          Education
         </Link>
         <span className="mx-2 text-[color:var(--color-ink)]/20">/</span>
         <span className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-cobalt)]">

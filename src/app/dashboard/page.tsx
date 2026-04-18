@@ -153,10 +153,10 @@ export default function DashboardPage() {
             )}
           </div>
 
-          {/* Courses card */}
+          {/* Education card */}
           <div className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-6">
             <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-4">
-              Courses
+              Education
             </p>
             <h2 className="font-serif text-2xl text-[color:var(--color-ink)] leading-tight mb-3">
               Certification Tracks
@@ -171,10 +171,10 @@ export default function DashboardPage() {
                     : 'Three tracks from individual proficiency to institution-wide strategy.'}
             </p>
             <Link
-              href="/courses"
+              href="/education"
               className="inline-block mt-4 font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] border-b border-[color:var(--color-terra)] pb-0.5 hover:opacity-80 transition-colors"
             >
-              Browse courses
+              Browse education
             </Link>
           </div>
 

@@ -5,9 +5,11 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://aibankinginstitute
 const ROUTES = [
   { path: '/', priority: 1.0, changeFrequency: 'weekly' as const },
   { path: '/assessment', priority: 0.95, changeFrequency: 'monthly' as const },
+  { path: '/education', priority: 0.9, changeFrequency: 'monthly' as const },
   { path: '/services', priority: 0.9, changeFrequency: 'monthly' as const },
-  { path: '/certifications', priority: 0.9, changeFrequency: 'monthly' as const },
-  { path: '/foundations', priority: 0.85, changeFrequency: 'monthly' as const },
+  { path: '/courses/aibi-p', priority: 0.85, changeFrequency: 'monthly' as const },
+  { path: '/courses/aibi-s', priority: 0.85, changeFrequency: 'monthly' as const },
+  { path: '/courses/aibi-l', priority: 0.85, changeFrequency: 'monthly' as const },
   { path: '/security', priority: 0.85, changeFrequency: 'monthly' as const },
   { path: '/about', priority: 0.75, changeFrequency: 'monthly' as const },
   { path: '/resources', priority: 0.7, changeFrequency: 'weekly' as const },

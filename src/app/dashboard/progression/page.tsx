@@ -361,8 +361,8 @@ function NextStepBanner({ enrollments }: { enrollments: readonly MockEnrollment[
     accent = 'var(--color-sage)';
     heading = "You've completed the full certification ladder";
     body = 'AiBI-P · AiBI-S · AiBI-L earned. You are now equipped to lead AI transformation across your institution.';
-    href = '/certifications';
-    cta = 'View certifications';
+    href = '/education';
+    cta = 'View education';
   } else if (hasP && hasS) {
     accent = 'var(--color-sage)';
     heading = 'Lead the transformation — AiBI-L workshop';

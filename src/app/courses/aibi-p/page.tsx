@@ -39,8 +39,8 @@ export default async function CourseOverviewPage() {
 
       {/* Breadcrumb */}
       <nav aria-label="Breadcrumb" className="mb-6">
-        <Link href="/courses" className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/50 hover:text-[color:var(--color-terra)] transition-colors">
-          Courses
+        <Link href="/education" className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/50 hover:text-[color:var(--color-terra)] transition-colors">
+          Education
         </Link>
         <span className="mx-2 text-[color:var(--color-ink)]/20">/</span>
         <span className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-terra)]">AiBI-P</span>
