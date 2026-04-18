@@ -10,68 +10,83 @@ interface ServiceTierCardsProps {
 
 export function ServiceTierCards({ showHeader = false }: ServiceTierCardsProps) {
   return (
-    <section className="px-6 py-14 md:py-20">
-      <div className="max-w-6xl mx-auto">
+    <section className="px-6 py-14 md:py-20 bg-[color:var(--color-parch)]">
+      <div className="max-w-5xl mx-auto">
         {showHeader && (
-          <div className="text-center mb-10">
+          <div className="mb-12">
             <p className="font-mono text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-4">
-              Engagement tiers
+              Consulting
             </p>
-            <h2 className="font-serif text-4xl md:text-5xl text-[color:var(--color-ink)] max-w-2xl mx-auto leading-tight">
-              Three ways we work with community banks.
+            <h2 className="font-serif text-4xl md:text-5xl text-[color:var(--color-ink)] leading-tight max-w-2xl">
+              We meet you where you are.
             </h2>
+            <p className="text-base text-[color:var(--color-ink)]/75 mt-4 max-w-xl leading-relaxed">
+              Every engagement starts with a free Executive Briefing.
+              What comes next depends on what you need.
+            </p>
           </div>
         )}
 
-        <div className="grid md:grid-cols-3 gap-8">
-          {serviceTiers.map((tier) => (
-            <article
+        {/* Stacked timeline layout — not a 3-card grid */}
+        <div className="space-y-0">
+          {serviceTiers.map((tier, idx) => (
+            <div
               key={tier.id}
-              className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-8 flex flex-col hover:bg-[color:var(--color-parch-dark)] hover:border-[color:var(--color-ink)]/20 transition-all duration-200"
+              className="flex gap-6 md:gap-8"
             >
-              <p
-                className="font-mono text-[10px] uppercase tracking-[0.2em] mb-4"
-                style={{ color: tier.accent }}
-              >
-                {tier.phaseLabel}
-              </p>
-              <h3 className="font-serif text-2xl md:text-[1.65rem] text-[color:var(--color-ink)] leading-tight mb-4">
-                {tier.name}
-              </h3>
-              <div className="space-y-1 mb-5 font-mono text-xs text-[color:var(--color-ink)]/70">
-                <p>{tier.priceRange}</p>
-                <p>{tier.duration}</p>
+              {/* Timeline track */}
+              <div className="flex flex-col items-center shrink-0 w-8">
+                <div
+                  className="w-3 h-3 rounded-full border-2 shrink-0"
+                  style={{ borderColor: tier.accent, backgroundColor: idx === 0 ? tier.accent : 'transparent' }}
+                />
+                {idx < serviceTiers.length - 1 && (
+                  <div className="w-px flex-1 bg-[color:var(--color-ink)]/10" />
+                )}
               </div>
-              <p className="text-[color:var(--color-ink)]/75 leading-relaxed mb-6 flex-1 text-sm">
-                {tier.summary}
-              </p>
-              <ul className="space-y-2 mb-6">
-                {tier.included.map((item) => (
-                  <li
-                    key={item}
-                    className="text-sm text-[color:var(--color-ink)]/80 leading-snug pl-4 relative"
+
+              {/* Content */}
+              <div className="flex-1 pb-12">
+                <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1 mb-3">
+                  <h3
+                    className="font-serif text-xl md:text-2xl text-[color:var(--color-ink)] leading-tight"
                   >
+                    {tier.name}
+                  </h3>
+                  <span className="font-mono text-xs tabular-nums text-[color:var(--color-slate)]">
+                    {tier.priceRange}
+                  </span>
+                  <span className="font-mono text-[10px] uppercase tracking-wider text-[color:var(--color-slate)]">
+                    {tier.duration}
+                  </span>
+                </div>
+
+                <p className="text-sm text-[color:var(--color-ink)]/75 leading-relaxed mb-4 max-w-xl">
+                  {tier.summary}
+                </p>
+
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {tier.included.slice(0, 4).map((item) => (
                     <span
-                      className="absolute left-0 top-2 w-2 h-[1px]"
-                      style={{ background: tier.accent }}
-                    />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <a
-                href={CALENDLY_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block text-center px-6 py-3 border text-sm font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] transition-colors"
-                style={{
-                  borderColor: tier.accent,
-                  color: tier.accent,
-                }}
-              >
-                Request Executive Briefing
-              </a>
-            </article>
+                      key={item}
+                      className="font-mono text-[9px] uppercase tracking-wider px-2 py-1 rounded-[2px] border border-[color:var(--color-ink)]/10 text-[color:var(--color-ink)]/70"
+                    >
+                      {item}
+                    </span>
+                  ))}
+                </div>
+
+                <a
+                  href={CALENDLY_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block font-serif-sc text-[11px] uppercase tracking-[0.18em] border-b pb-0.5 hover:opacity-70 transition-opacity"
+                  style={{ color: tier.accent, borderColor: tier.accent }}
+                >
+                  Learn more
+                </a>
+              </div>
+            </div>
           ))}
         </div>
       </div>

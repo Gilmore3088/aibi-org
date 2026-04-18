@@ -19,7 +19,7 @@ export function CertificationCards({
               Certifications
             </p>
             <h2 className="font-serif text-4xl md:text-5xl text-[color:var(--color-ink)] max-w-2xl mx-auto leading-tight">
-              Three credentials. One shared vocabulary.
+              Credentials that prove capability.
             </h2>
           </div>
         )}
