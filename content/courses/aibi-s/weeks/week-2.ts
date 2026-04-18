@@ -16,6 +16,12 @@ export const week2: CohortWeek = {
 
 The other purpose of this week is scale. In AiBI-P, learners set up personal Custom Instructions or Projects. In AiBI-S, the same concept scales to the department. A departmental workspace pre-loads institutional context so that any authorized team member gets output calibrated to the institution, not just to the person who configured it.`,
 
+  keyTakeaways: [
+    'Configure a departmental AI workspace with all six required context blocks',
+    'Write a one-page setup guide a colleague can follow without assistance',
+    'Apply the naming convention [Institution]-[Department]-[Function] to shared workspaces',
+  ],
+
   learningGoals: [
     'Configure a departmental AI workspace with all six required context blocks',
     'Achieve deep proficiency in the platforms most relevant to their role track',

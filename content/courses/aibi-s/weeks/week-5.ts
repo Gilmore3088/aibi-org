@@ -16,6 +16,12 @@ export const week5: CohortWeek = {
 
 The 5-stage organizational skill process from the AIDB pedagogy provides the framework. The learner has already completed stages 1 through 3 without naming them: Discovery happened in Week 1 (work audit), Curation happened in Weeks 1-3 (workflow selection and build), and Validation happened in Weeks 3-4 (deployment and measurement). Week 5 focuses on stages 4 and 5: Bundling and Ownership. These two stages are what transform a collection of experiments into a departmental asset.`,
 
+  keyTakeaways: [
+    'Build a 3-skill library with consistent naming conventions and ownership assignments',
+    'Create one-page training guides that enable handoff to non-builder team members',
+    'Apply change management countermeasures to overcome the five adoption barriers',
+  ],
+
   learningGoals: [
     'Apply the 5-stage organizational skill process to systematize the work done in Weeks 1-4',
     'Build a 3-skill departmental library using consistent naming conventions, categories, and structure',

@@ -15,6 +15,12 @@ export const week1: CohortWeek = {
 
 The organizing question of Week 1 is not "what can AI do?" — every AiBI-P graduate already knows the answer to that. The question is "what changes when other people depend on what I build?" Governance, documentation, versioning, ownership, and measurement each answer a different part of that question. The work audit grounds all of it in the learner's actual department.`,
 
+  keyTakeaways: [
+    'Distinguish a personal AI skill from an institutional asset across six governance dimensions',
+    'Complete a departmental work audit scoring 10+ workflows by automation potential',
+    'Identify the top 3 automation candidates in your department ranked by hours saved',
+  ],
+
   learningGoals: [
     'Distinguish between a personal AI skill and an institutional AI asset across six governance dimensions',
     'Apply the work decomposition framework to identify the highest-value automation candidates in their department',

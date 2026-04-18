@@ -18,6 +18,12 @@ Community bank leaders are skeptical of AI ROI claims for a good reason: most cl
 
 This week is also where many learners discover their first automation needs refinement. The output may be good enough for personal use but not for the team. The evaluation methodology provides the framework for identifying and closing that gap.`,
 
+  keyTakeaways: [
+    'Measure actual time savings with 3+ timed before/after data points per workflow',
+    'Apply the four-level output quality framework to assess automation reliability',
+    'Produce a one-paragraph board-presentable executive summary of measured results',
+  ],
+
   learningGoals: [
     'Measure actual time savings from the Week 3 deployment using real before/after data — not estimates',
     'Apply the four-level output quality framework to assess automation reliability consistently',

@@ -16,6 +16,12 @@ export const week3: CohortWeek = {
 
 The week also introduces advanced skill patterns that were not covered in AiBI-P: multi-step skills, skill chaining, and context engineering at institutional scale. These patterns are what separate a personal productivity tool from a departmental asset.`,
 
+  keyTakeaways: [
+    'Build and deploy one institutional-grade skill with gotcha section and data classification',
+    'Select the correct multi-step pattern for your workflow from four architecture options',
+    'Verify at least one colleague can run your automation and get consistent output',
+  ],
+
   learningGoals: [
     'Build a complete institutional-grade skill using the extended skill anatomy with gotcha section and data classification enforcement',
     'Apply multi-step skill architecture patterns appropriate to the workflow being automated',

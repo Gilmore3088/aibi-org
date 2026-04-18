@@ -16,6 +16,12 @@ export const week6: CohortWeek = {
 
 The cross-department sharing session in Week 6 is one of the most valuable components of the entire AiBI-S cohort. A compliance officer presenting their regulatory change monitor to operations managers and lending officers creates cross-functional awareness that no individual course module can replicate. Learners consistently report that the ideas they take from other tracks are as valuable as the skills they built in their own. The cohort format was designed for this moment.`,
 
+  keyTakeaways: [
+    'Assemble all six weeks of work into a 7-component board-presentable package',
+    'Deliver a 10-minute capstone presentation covering problem, solution, and results',
+    'Write a 500-word reflection identifying what worked, what failed, and one recommendation',
+  ],
+
   learningGoals: [
     'Assemble all six weeks of work into a cohesive, board-presentable process improvement package',
     'Present a 10-minute capstone to the cohort covering problem, solution, results, library, handoff, and reflection',
