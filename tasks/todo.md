@@ -186,23 +186,54 @@ scanning, injection filtering, sample data, and streaming.
 - [ ] **Monthly spend monitoring** — track API costs per provider, alert
       at configurable threshold
 
-## AI Practice Sandbox — Phase 3 (Full Coverage)
+## AI Practice Sandbox — Phase 3 (AiBI-S + AiBI-L Coverage)
 
-- [ ] **Sandbox exercises for all AiBI-P modules** — add sandbox configs
-      with module-specific system prompts, sample data, and suggested
-      prompts for modules 2-4, 6-9
+AiBI-P sandbox is COMPLETE (all 9 modules shipped with exercises).
+
+### AiBI-S Sandbox Exercises (6 weeks)
+
+- [ ] **W1 Department Scanner** — load sample department workflow data,
+      AI identifies top 5 automation candidates ranked by hours saved
+- [ ] **W2 Workspace Architect** — learner describes dept tools/workflows,
+      AI generates recommended AI workspace configuration
+- [ ] **W3 Automation Builder** — load sample workflow (e.g., monthly
+      exception report), build automation prompt with AI coaching
+- [ ] **W4 Impact Calculator** — load before/after data, AI generates
+      formatted ROI report with charts
+- [ ] **W5 Training Script Generator** — describe team roles/comfort,
+      AI drafts 30-min training script customized to department
+- [ ] **W6 Playbook Drafter** — AI assembles complete department AI
+      playbook: governed use cases, owners, measurement, escalation
+
+### AiBI-L Sandbox Exercises (4 sessions)
+
+- [ ] **S1 Maturity Sandbox** — after MaturityScorecard, ask AI "Given
+      our maturity level, what should our 90-day priorities be?"
+- [ ] **S2 Policy Drafter** — load governance framework outline, AI
+      expands specific sections with examiner-ready language
+- [ ] **S3 Financial Narrative** — after ROI Calculator, paste numbers,
+      AI drafts the financial narrative for the board deck
+- [ ] **S4 Board Q&A Simulator** — AI plays skeptical board member,
+      learner practices answering, AI scores and suggests improvements
+
+### Shared Infrastructure
+
 - [ ] **Role-track-specific sample data** — Operations/Lending/Compliance/
-      Finance/Retail variants for each exercise (5x sample datasets)
-- [ ] **AiBI-S sandbox exercises** — 6 weeks of department-manager-level
-      exercises with cobalt accent and role-track filtering
-- [ ] **AiBI-L workshop sandbox** — live facilitator-guided exercises
-      using institution-specific data (pre-loaded from planning call)
+      Finance/Retail variants for each AiBI-S exercise (5x datasets)
 - [ ] **Sample document library** — vendor contracts, compliance policies,
-      board memos, audit findings, BSA/AML policies per role track
-- [ ] **Contract analysis mode** — system prompt variant for analyzing
-      vendor agreements, flagging risk clauses with severity ratings
-- [ ] **Process automation mode** — system prompt variant for workflow
-      analysis, identifying automation candidates, estimating ROI
+      board memos, audit findings per role track
+- [ ] **Contract analysis mode** — system prompt for vendor agreement review
+- [ ] **Process automation mode** — system prompt for workflow analysis
+- [ ] **Wire AiBI-S tabbed layout** — Learn/Practice/Apply tabs for weeks
+- [ ] **Wire AiBI-L tabbed layout** — Learn/Practice/Apply tabs for sessions
+
+### Remaining wiring from this session
+
+- [ ] **Wire AiBI-S new components** — import ActivityForm, WeekCompletionCTA,
+      PromptCard into week pages
+- [ ] **Wire AiBI-L worksheets** — import MaturityScorecard into Session 1
+      page, ROI Calculator into Session 3 page
+- [ ] **Module 2 ecosystem table** — visual redesign (currently one big table)
 
 ## Backlog / Ideas
 
