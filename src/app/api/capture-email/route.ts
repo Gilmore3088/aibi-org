@@ -26,12 +26,17 @@ function isValidPayload(p: CapturePayload): p is {
   answers: number[];
 } {
   if (typeof p.email !== 'string' || !EMAIL_RE.test(p.email)) return false;
-  if (typeof p.score !== 'number' || p.score < 8 || p.score > 48) return false;
+  if (typeof p.score !== 'number') return false;
   if (typeof p.tier !== 'string' || p.tier.length === 0) return false;
   if (typeof p.tierLabel !== 'string' || p.tierLabel.length === 0) return false;
   if (!Array.isArray(p.answers)) return false;
-  if (p.answers.length < 8 || p.answers.length > 12) return false;
-  if (!p.answers.every((n: unknown) => typeof n === 'number' && n >= 1 && n <= 4)) return false;
+  // v1 has 8 questions, v2 has 12. Reject any other shape.
+  if (p.answers.length !== 8 && p.answers.length !== 12) return false;
+  if (!p.answers.every((n: unknown) => typeof n === 'number' && Number.isInteger(n) && n >= 1 && n <= 4)) return false;
+  // Score must equal the sum of answers so an attacker can't persist an
+  // inconsistent score that later crashes getTierV2() / getTier().
+  const expectedSum = (p.answers as number[]).reduce((acc, n) => acc + n, 0);
+  if (p.score !== expectedSum) return false;
   return true;
 }
 
