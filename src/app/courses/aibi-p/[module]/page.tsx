@@ -8,14 +8,13 @@ import { notFound, redirect } from 'next/navigation';
 import type { Metadata } from 'next';
 import { modules, getModuleByNumber } from '@content/courses/aibi-p';
 import { ModuleHeader } from '../_components/ModuleHeader';
-import { ContentSection } from '../_components/ContentSection';
 import { ContentTable } from '../_components/ContentTable';
+import { LearnSection } from '../_components/LearnSection';
 import { ModuleContentClient } from '../_components/ModuleContentClient';
 import { CourseTabs } from '@/components/CourseTabs';
 import { getEnrollment } from '../_lib/getEnrollment';
 import { canAccessModule } from '../_lib/courseProgress';
 import { getRoleSpotlight } from '../_lib/contentRouting';
-import { isDeepDiveModule, getDeepDiveFocus, getRolePath } from '@content/courses/aibi-p/role-paths';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import type { ActivityResponse } from '@/types/course';
 import { AIPracticeSandbox } from '@/components/AIPracticeSandbox';
@@ -67,15 +66,6 @@ export default async function ModulePage({ params }: ModulePageParams) {
   const isLastModule = mod.number === 9;
   const isAlreadyCompleted = enrollment.completed_modules.includes(moduleNum);
 
-  const learnerRole = enrollment.onboarding_answers
-    ? getRoleSpotlight(enrollment.onboarding_answers)
-    : null;
-  const deepDiveFocus =
-    learnerRole && isDeepDiveModule(learnerRole, moduleNum)
-      ? getDeepDiveFocus(learnerRole, moduleNum)
-      : null;
-  const rolePath = learnerRole ? getRolePath(learnerRole) : null;
-
   // Fetch existing activity responses for this enrollment + module (read-only, service role)
   const existingResponses: Record<string, Record<string, string>> = {};
   if (isSupabaseConfigured() && mod.activities.length > 0) {
@@ -111,11 +101,12 @@ export default async function ModulePage({ params }: ModulePageParams) {
           segmentNumber={moduleNum}
           learnContent={
             <>
-              {mod.sections.map((section) => (
-                <ContentSection key={section.id} section={section} />
-              ))}
+              <LearnSection
+                sections={mod.sections}
+                moduleNumber={moduleNum}
+              />
               {mod.tables && mod.tables.length > 0 && (
-                <div className="mt-4">
+                <div className="mt-6">
                   {mod.tables.map((table) => (
                     <ContentTable key={table.id} table={table} />
                   ))}

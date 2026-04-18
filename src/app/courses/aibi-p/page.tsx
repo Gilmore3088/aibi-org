@@ -28,12 +28,6 @@ function StatusIndicator({ status }: { readonly status: ModuleStatus }) {
   }
 }
 
-const VALUE_PROPS = [
-  { stat: '9', label: 'Hands-on modules', detail: 'with AI sandbox exercises in every lesson' },
-  { stat: '4', label: 'Competency pillars', detail: 'Awareness, Understanding, Creation, Application' },
-  { stat: '1', label: 'Real credential', detail: 'earned by demonstrating proficiency, not passing a test' },
-] as const;
-
 export default async function CourseOverviewPage() {
   const enrollment = await getEnrollment();
   const completedModules = enrollment?.completed_modules ?? [];
