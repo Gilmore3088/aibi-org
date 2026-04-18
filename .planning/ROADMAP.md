@@ -164,3 +164,14 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 | 6. Modules 6-9 Activities + Skill Builder | 0/2 | Not started | - |
 | 7. Work Product + Reviewer Queue | 0/2 | Not started | - |
 | 8. Certificate + Verification | 0/2 | Not started | - |
+
+## Backlog
+
+### Phase 999.1: Review Claude skills community research for development and training (BACKLOG)
+
+**Goal:** Review https://www.reddit.com/r/ClaudeAI/comments/1ok9v3d/i_tested_30_community_claude_skills_for_a_week/ for insights on Claude skill design, community patterns, and training workflow improvements applicable to AiBI development.
+**Requirements:** TBD
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (promote with /gsd-review-backlog when ready)
