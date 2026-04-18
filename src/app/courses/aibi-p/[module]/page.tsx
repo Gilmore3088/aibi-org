@@ -11,7 +11,7 @@ import { ModuleHeader } from '../_components/ModuleHeader';
 import { ContentSection } from '../_components/ContentSection';
 import { ContentTable } from '../_components/ContentTable';
 import { ModuleContentClient } from '../_components/ModuleContentClient';
-import { ModuleTabs } from '../_components/ModuleTabs';
+import { CourseTabs } from '@/components/CourseTabs';
 import { getEnrollment } from '../_lib/getEnrollment';
 import { canAccessModule } from '../_lib/courseProgress';
 import { getRoleSpotlight } from '../_lib/contentRouting';
@@ -143,8 +143,9 @@ export default async function ModulePage({ params }: ModulePageParams) {
           </div>
         )}
 
-        <ModuleTabs
-          moduleNumber={moduleNum}
+        <CourseTabs
+          storagePrefix="aibi-p-m"
+          segmentNumber={moduleNum}
           learnContent={
             <>
               {mod.sections.map((section) => (
