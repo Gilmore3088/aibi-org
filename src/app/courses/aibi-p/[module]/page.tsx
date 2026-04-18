@@ -103,7 +103,6 @@ export default async function ModulePage({ params }: ModulePageParams) {
             <>
               <LearnSection
                 sections={mod.sections}
-                moduleNumber={moduleNum}
               />
               {mod.tables && mod.tables.length > 0 && (
                 <div className="mt-6">
