@@ -8,9 +8,6 @@
 //   - Auth session required — unauthenticated requests return 401.
 //   - Enrollment ownership verified — enrollment.user_id must match authenticated user.
 //   - User text rendered via @react-pdf/renderer Text components — no HTML injection.
-//
-// Dev bypass: returns a sample PDF with placeholder data when
-//   NODE_ENV === 'development' && SKIP_DEV_BYPASS is not set.
 
 import { cookies } from 'next/headers';
 import { createServerClient as createSupabaseServerClient } from '@supabase/ssr';
@@ -263,20 +260,6 @@ function pdfResponse(buffer: Buffer): Response {
 // ── GET ───────────────────────────────────────────────────────────────────────
 
 export async function GET(request: Request): Promise<Response> {
-  // Dev bypass — return sample PDF with placeholder data
-  if (process.env.NODE_ENV === 'development' && process.env.SKIP_DEV_BYPASS !== 'true') {
-    try {
-      const buffer = await generatePdf(buildSampleProps());
-      return pdfResponse(buffer);
-    } catch (err) {
-      console.error('[generate-transformation-report] Dev PDF error:', err);
-      return new Response(JSON.stringify({ error: 'PDF generation failed in dev mode.' }), {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' },
-      });
-    }
-  }
-
   if (!isSupabaseConfigured()) {
     return new Response(JSON.stringify({ error: 'Service not configured.' }), {
       status: 503,

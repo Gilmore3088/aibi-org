@@ -27,10 +27,6 @@ const COURSE_FEATURES = [
 ] as const;
 
 async function getUserEmail(): Promise<string | null> {
-  // Dev bypass — skip Supabase auth in development
-  if (process.env.NODE_ENV === 'development' && process.env.SKIP_DEV_BYPASS !== 'true') {
-    return 'dev@example.com';
-  }
   if (!isSupabaseConfigured()) return null;
 
   try {

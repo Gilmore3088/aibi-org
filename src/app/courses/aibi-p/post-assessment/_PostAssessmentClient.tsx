@@ -6,9 +6,6 @@
 // is already authenticated. Saves result to course_enrollments via API.
 // Uses a separate sessionStorage key so it never collides with the
 // public readiness assessment (STORAGE_KEY = 'aibi-post-assessment-v2').
-//
-// Dev bypass: SKIP_DEV_BYPASS unset → API call returns { dev: true },
-// results page renders with mock pre-score from localStorage.
 
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { questions as questionPool } from '@content/assessments/v2/questions';

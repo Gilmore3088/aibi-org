@@ -32,11 +32,6 @@ const COURSE_FEATURES = [
 const ROLE_TRACK_ORDER: RoleTrack[] = ['operations', 'lending', 'compliance', 'finance', 'retail'];
 
 async function getUserData(): Promise<{ email: string | null; hasAiBIP: boolean }> {
-  // Dev bypass
-  if (process.env.NODE_ENV === 'development' && process.env.SKIP_DEV_BYPASS !== 'true') {
-    return { email: 'dev@example.com', hasAiBIP: true };
-  }
-
   if (!isSupabaseConfigured()) {
     return { email: null, hasAiBIP: false };
   }

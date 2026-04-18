@@ -5,8 +5,6 @@
 //   - Requires valid Supabase auth session
 //   - Verifies enrollment.user_id === authenticated user before any write/read
 //   - Service role client used for writes; anon client for auth resolution only
-//
-// Dev mode: returns stub data without hitting Supabase.
 
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
@@ -30,32 +28,6 @@ interface QuickWinBody {
   department?: unknown;
 }
 
-// --- Dev stub data ---
-const DEV_STUB_WINS = [
-  {
-    id: 'dev-win-1',
-    enrollment_id: 'dev-mock-enrollment',
-    description: 'Weekly exception report analysis',
-    tool: 'chatgpt',
-    skill_name: 'RTFC Prompt Framework',
-    frequency: 'weekly',
-    time_saved_minutes: 60,
-    department: 'Compliance',
-    created_at: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-  },
-  {
-    id: 'dev-win-2',
-    enrollment_id: 'dev-mock-enrollment',
-    description: 'Board meeting minutes summarization',
-    tool: 'claude',
-    skill_name: 'Document Summarization',
-    frequency: 'monthly',
-    time_saved_minutes: 30,
-    department: 'Executive',
-    created_at: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(),
-  },
-];
-
 function buildAnonClient() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
@@ -75,10 +47,6 @@ function buildAnonClient() {
 
 // --- GET ---
 export async function GET(): Promise<NextResponse> {
-  if (process.env.NODE_ENV === 'development' && process.env.SKIP_DEV_BYPASS !== 'true') {
-    return NextResponse.json({ wins: DEV_STUB_WINS });
-  }
-
   if (!isSupabaseConfigured()) {
     return NextResponse.json({ error: 'Service not configured.' }, { status: 503 });
   }
@@ -126,29 +94,6 @@ export async function GET(): Promise<NextResponse> {
 
 // --- POST ---
 export async function POST(request: Request): Promise<NextResponse> {
-  if (process.env.NODE_ENV === 'development' && process.env.SKIP_DEV_BYPASS !== 'true') {
-    let body: QuickWinBody;
-    try {
-      body = (await request.json()) as QuickWinBody;
-    } catch {
-      return NextResponse.json({ error: 'Invalid JSON body.' }, { status: 400 });
-    }
-
-    const newWin = {
-      id: `dev-win-${Date.now()}`,
-      enrollment_id: 'dev-mock-enrollment',
-      description: String(body.description ?? ''),
-      tool: String(body.tool ?? ''),
-      skill_name: String(body.skillName ?? ''),
-      frequency: String(body.frequency ?? ''),
-      time_saved_minutes: Number(body.timeSavedMinutes ?? 0),
-      department: String(body.department ?? ''),
-      created_at: new Date().toISOString(),
-    };
-
-    return NextResponse.json({ success: true, win: newWin, dev: true });
-  }
-
   if (!isSupabaseConfigured()) {
     return NextResponse.json({ error: 'Service not configured.' }, { status: 503 });
   }

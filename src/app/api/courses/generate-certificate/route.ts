@@ -147,13 +147,6 @@ async function buildPdfBuffer(cert: CertificateRow): Promise<Buffer> {
 // Body: { enrollmentId: string }
 // ============================================================
 export async function POST(request: Request): Promise<Response> {
-  if (process.env.NODE_ENV === 'development' && process.env.SKIP_DEV_BYPASS !== 'true') {
-    return new Response(JSON.stringify({ dev: true, data: null }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
-    });
-  }
-
   if (!isSupabaseConfigured()) {
     return jsonError('Service not configured.', 503);
   }
@@ -271,13 +264,6 @@ export async function POST(request: Request): Promise<Response> {
 // Query: ?enrollmentId=...
 // ============================================================
 export async function GET(request: Request): Promise<Response> {
-  if (process.env.NODE_ENV === 'development' && process.env.SKIP_DEV_BYPASS !== 'true') {
-    return new Response(JSON.stringify({ dev: true, data: null }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
-    });
-  }
-
   if (!isSupabaseConfigured()) {
     return jsonError('Service not configured.', 503);
   }

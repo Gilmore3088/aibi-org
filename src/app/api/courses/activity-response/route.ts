@@ -16,10 +16,6 @@ import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/cl
 const ACTIVITY_ID_PATTERN = /^\d+\.\d+$/;
 
 export async function GET(request: Request): Promise<NextResponse> {
-  if (process.env.NODE_ENV === 'development' && process.env.SKIP_DEV_BYPASS !== 'true') {
-    return NextResponse.json({ dev: true, data: null });
-  }
-
   if (!isSupabaseConfigured()) {
     return NextResponse.json({ error: 'Service not configured.' }, { status: 503 });
   }

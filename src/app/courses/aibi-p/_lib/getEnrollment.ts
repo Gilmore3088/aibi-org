@@ -15,31 +15,13 @@ export type EnrollmentData = Pick<
 /**
  * Look up the current user's AiBI-P enrollment from Supabase.
  *
- * Graceful fallback: returns null when Supabase is not configured (local dev)
- * or when the request has no valid auth session. Callers should treat null as
- * "not enrolled" and redirect to /courses/aibi-p/purchase accordingly.
+ * Returns null when Supabase is not configured or when the request has no
+ * valid auth session. Callers should treat null as "not enrolled" and
+ * redirect to /courses/aibi-p/purchase accordingly.
  *
  * Uses getAll/setAll cookie pattern (recommended by @supabase/ssr 0.5+).
  */
 export async function getEnrollment(): Promise<EnrollmentData | null> {
-  // Dev bypass — return mock enrollment in development so the course is
-  // browsable locally without authentication. Set SKIP_DEV_BYPASS=true
-  // to test real Supabase auth in development.
-  if (process.env.NODE_ENV === 'development' && process.env.SKIP_DEV_BYPASS !== 'true') {
-    return {
-      id: 'dev-mock-enrollment',
-      user_id: 'dev-user',
-      completed_modules: [1, 2, 3, 4, 5, 6, 7, 8, 9],
-      current_module: 9,
-      enrolled_at: new Date().toISOString(),
-      onboarding_answers: {
-        uses_m365: 'yes',
-        personal_ai_subscriptions: ['chatgpt-plus'],
-        primary_role: 'executive',
-      },
-    } as unknown as EnrollmentData;
-  }
-
   if (!isSupabaseConfigured()) {
     return null;
   }

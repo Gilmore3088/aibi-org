@@ -24,15 +24,8 @@ const LEVEL_ORDER: Record<ContentLevel, number> = { p: 1, s: 2, l: 3 };
  *   's' — user has AiBI-S enrollment (but not L)
  *   'p' — user has AiBI-P enrollment only
  *   null — unauthenticated, unconfigured, or no enrollment found
- *
- * Dev bypass: in development (without SKIP_DEV_BYPASS=true), returns 'p'
- * so the course is browsable and gates are visible without Supabase auth.
  */
 export async function resolveUserLevel(): Promise<ContentLevel | null> {
-  if (process.env.NODE_ENV === 'development' && process.env.SKIP_DEV_BYPASS !== 'true') {
-    return 'p';
-  }
-
   if (!isSupabaseConfigured()) {
     return null;
   }

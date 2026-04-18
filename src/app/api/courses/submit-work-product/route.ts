@@ -97,20 +97,6 @@ async function verifyEnrollmentOwnership(
 }
 
 export async function POST(request: Request): Promise<NextResponse> {
-  if (process.env.NODE_ENV === 'development' && process.env.SKIP_DEV_BYPASS !== 'true') {
-    const { searchParams: devParams } = new URL(request.url);
-    if (devParams.get('action') === 'presign') {
-      // Return a fake presign response so the file upload component works in dev
-      const body = await request.json().catch(() => ({})) as Record<string, unknown>;
-      const filename = typeof body.filename === 'string' ? body.filename : 'skill.md';
-      return NextResponse.json({
-        signedUrl: 'data:text/plain,dev-mode-upload',
-        path: `dev-mock-enrollment/${filename}`,
-      });
-    }
-    return NextResponse.json({ success: true, dev: true });
-  }
-
   if (!isSupabaseConfigured()) {
     return NextResponse.json({ error: 'Service not configured.' }, { status: 503 });
   }

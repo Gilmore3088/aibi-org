@@ -27,10 +27,6 @@ interface EnrollmentRow {
 }
 
 export async function POST(request: Request): Promise<NextResponse> {
-  if (process.env.NODE_ENV === 'development' && process.env.SKIP_DEV_BYPASS !== 'true') {
-    return NextResponse.json({ success: true, dev: true });
-  }
-
   if (!isSupabaseConfigured()) {
     return NextResponse.json({ error: 'Service not configured.' }, { status: 503 });
   }
