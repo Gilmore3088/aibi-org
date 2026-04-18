@@ -626,6 +626,52 @@ capture), then ConvertKit or Loops (newsletter), then HubSpot or Attio
 (CRM), then Calendly (briefing booking), then Stripe + Kajabi (Phase 2
 monetization).
 
+**2026-04-17 — Supabase activation reverses prior deferral.** Connected
+Supabase MCP, applied 7-table schema (already present), added security-
+hardening migration (00004) for `set_updated_at` search_path and
+`institution_enrollments` deny-all policy. Auth verified end-to-end
+(signup → email confirm → /dashboard). Branch:
+`feature/supabase-activation`.
+
+**2026-04-17 — Dev bypass mocks removed entirely.** The `SKIP_DEV_BYPASS`
+escape hatch in 17 server-side files was returning hardcoded mock data
+in development, hiding the fact that every dev login showed the same
+"user." Removed all 18 bypass blocks (-203 lines) instead of toggling
+via env var. Real auth now required in dev (matches production behavior).
+
+**2026-04-17 — Resend chosen for transactional email.** Replaces
+Supabase's throttled built-in email service (~3-4 emails/hour limit).
+Configured via Custom SMTP in Supabase Auth Settings using `smtp.resend.com:465`,
+sender `onboarding@resend.dev` (interim — needs custom domain verification
+on `aibankinginstitute.com` before production). Free tier: 100/day, 3,000/month.
+
+**2026-04-17 — ConvertKit (Kit) chosen over Loops.** Resolves the
+2026-04-15 Kit vs Loops decision. ConvertKit handles marketing email
+(newsletter, drip campaigns, sequences). Resend handles transactional
+(auth confirmations, password resets). Wiring pending API key + form IDs.
+
+**2026-04-17 — `/courses` and `/certifications` merged into `/education`.**
+User direction: reduce nav clutter. New IA: Education hub has two
+sections — Classes (free entry points: assessment + newsletter +
+future short videos) and Certifications (paid AiBI-P/S/L tracks).
+Top nav reduced from 5 items to 4 (removed Courses + Certifications,
+added Education). Old URLs redirect via `next.config.mjs`. Sub-routes
+preserved: `/courses/aibi-p`, `/courses/aibi-s`, `/courses/aibi-l`,
+`/certifications/exam/*`.
+
+**2026-04-17 — Foundations folded into Education hub.** Foundations
+($97 5-module course) was already retired (redirected to /courses/aibi-p
+due to pricing inversion: Foundations cost more than AiBI-P). Now
+redirects to `/education` instead. Future free "Class" content can fill
+the slot Foundations vacated.
+
+**2026-04-17 — Vercel Analytics added alongside Plausible.** Vercel
+Analytics installed and wired in root layout for the upcoming Vercel
+deploy. Plausible setup remains in place. Open question: keep both,
+or drop one. Vercel Analytics is free and built-in; Plausible has a
+better privacy story for non-US visitors. Decision deferred until
+both are running and we can compare data quality.
+
 ---
 
 ## Design Context

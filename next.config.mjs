@@ -5,6 +5,16 @@ const nextConfig = {
     // not be bundled by webpack — mark as external for server components/routes.
     serverComponentsExternalPackages: ['@react-pdf/renderer'],
   },
+  // Decision log: 2026-04-17 — /courses and /certifications merged into /education
+  // to reduce nav clutter. Exact-match redirects preserve sub-route access:
+  // /courses/aibi-p, /courses/aibi-s, /courses/aibi-l remain the course pages,
+  // and /certifications/exam remains the sample exam.
+  async redirects() {
+    return [
+      { source: '/courses', destination: '/education', permanent: true },
+      { source: '/certifications', destination: '/education', permanent: true },
+    ];
+  },
 };
 
 export default nextConfig;
