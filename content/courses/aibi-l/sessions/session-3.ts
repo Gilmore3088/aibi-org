@@ -12,6 +12,11 @@ export const session3: WorkshopSession = {
     'What is the financial case for AI at our institution?',
   purpose:
     'Participants leave with a 3-year AI roadmap that includes department-by-department ROI projections using their institution\'s actual financial data. This is the business case the board can approve.',
+  keyTakeaways: [
+    'Model efficiency ratio improvement scenarios using your institution\'s actual financial data',
+    'Calculate department-by-department ROI projections with FTE counts and automatable hours',
+    'Build a phased 3-year AI roadmap calibrated to your maturity scorecard level',
+  ],
   sections: [
     {
       id: '3.1',

@@ -11,6 +11,11 @@ export const session4: WorkshopSession = {
   coreQuestion: 'How do we present this to our board?',
   purpose:
     'Participants leave with a board-ready AI strategy presentation assembled from Sessions 1-3, practiced in a simulated board/examiner scenario, and ready to deliver at their next board meeting.',
+  keyTakeaways: [
+    'Assemble a six-section board deck from your Sessions 1-3 deliverables',
+    'Practice presenting under simulated board and examiner challenge questions',
+    'Define your specific board ask and confirm the quarterly check-in schedule',
+  ],
   sections: [
     {
       id: '4.1',

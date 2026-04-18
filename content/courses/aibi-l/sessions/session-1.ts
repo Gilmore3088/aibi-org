@@ -12,6 +12,11 @@ export const session1: WorkshopSession = {
     'Where is AI heading in community banking, and where does our institution stand?',
   purpose:
     'Participants leave with a data-driven understanding of the AI opportunity in community banking and a completed AI Maturity Scorecard that quantifies their current position.',
+  keyTakeaways: [
+    'Quantify the efficiency ratio opportunity for your institution using FDIC benchmark data',
+    'Complete your AI Maturity Scorecard across six readiness dimensions',
+    'Identify where your institution stands relative to peer adoption patterns',
+  ],
   sections: [
     {
       id: '1.1',

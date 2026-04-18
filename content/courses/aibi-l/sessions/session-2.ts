@@ -12,6 +12,11 @@ export const session2: WorkshopSession = {
     'What governance framework do we need, and what will examiners ask?',
   purpose:
     'Participants leave with a working AI governance framework draft, an understanding of examiner expectations for AI, and a started AI use case inventory.',
+  keyTakeaways: [
+    'Draft an AI governance framework with ownership, approval workflow, and monitoring cadence',
+    'Build an AI use case inventory with risk classification and data tier for each tool',
+    'Prepare responses for the six categories of examiner questions about AI governance',
+  ],
   sections: [
     {
       id: '2.1',
