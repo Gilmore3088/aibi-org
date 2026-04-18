@@ -12,6 +12,11 @@ export const module9: Module = {
   pillar: 'application',
   estimatedMinutes: 60,
   keyOutput: 'Assessed Work Product (skill + input + output + annotation)',
+  keyTakeaways: [
+    'Screen any workflow for AI automation using the three-question identification framework',
+    'Assemble a five-part capstone work product that meets the AiBI-P quality rubric',
+    'Annotate your curation decisions to demonstrate professional judgment under the five dimensions',
+  ],
   mockupRef: 'content/courses/AiBI-P v1/stitch_ai_banking_institute_course/m9_final_capstone_submission',
   roleSpecific: true,
   sections: [

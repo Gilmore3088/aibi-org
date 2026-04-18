@@ -12,6 +12,11 @@ export const module4: Module = {
   pillar: 'understanding',
   estimatedMinutes: 30,
   keyOutput: 'Platform Feature Reference Card',
+  keyTakeaways: [
+    'Select the right advanced feature for a given banking task from the eight-feature matrix',
+    'Apply role-specific feature clusters to accelerate workflows in your department',
+    'Build a Platform Feature Reference Card mapping your tools to their highest-value uses',
+  ],
   mockupRef: 'content/courses/AiBI-P v1/stitch_ai_banking_institute_course/m4_platform_features_deep_dive',
   roleSpecific: true,
   sections: [

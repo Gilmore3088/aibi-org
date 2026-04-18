@@ -11,6 +11,11 @@ export const module6: Module = {
   pillar: 'creation',
   estimatedMinutes: 35,
   keyOutput: 'Skill Template Library',
+  keyTakeaways: [
+    'Construct a banking AI skill using all five components: Role, Context, Task, Format, Constraints',
+    'Diagnose a weak prompt by identifying which components are missing or underspecified',
+    'Distinguish capability uplift from encoded preference skills to prioritize build time',
+  ],
   mockupRef: 'content/courses/AiBI-P v1/stitch_ai_banking_institute_course/m6_anatomy_of_a_skill',
   sections: [
     {

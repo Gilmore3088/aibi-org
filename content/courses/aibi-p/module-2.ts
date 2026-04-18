@@ -11,6 +11,11 @@ export const module2: Module = {
   pillar: 'awareness',
   estimatedMinutes: 20,
   keyOutput: 'Subscription Inventory',
+  keyTakeaways: [
+    'Match each of seven AI platforms to its primary strength and banking use case',
+    'Audit your current AI subscriptions and identify gaps between free and paid tiers',
+    'Complete a Subscription Inventory documenting your access level across all platforms',
+  ],
   mockupRef: 'content/courses/AiBI-P v1/stitch_ai_banking_institute_course/m2_the_expanded_ai_ecosystem',
   sections: [
     {

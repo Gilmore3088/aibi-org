@@ -12,6 +12,11 @@ export const module7: Module = {
   pillar: 'creation',
   estimatedMinutes: 45,
   keyOutput: 'My First Skill',
+  keyTakeaways: [
+    'Write a complete skill using the RTFC Framework and export it as a portable Markdown file',
+    'Apply the context binding rule to decide what belongs inside vs. outside the skill',
+    'Deploy your skill to ChatGPT, Claude, or Gemini and verify it produces consistent output',
+  ],
   mockupRef: 'content/courses/AiBI-P v1/stitch_ai_banking_institute_course/m7_refined_skill_builder',
   roleSpecific: true,
   sections: [

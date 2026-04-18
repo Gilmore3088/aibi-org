@@ -11,6 +11,11 @@ export const module8: Module = {
   pillar: 'application',
   estimatedMinutes: 35,
   keyOutput: 'Iterated skill with version notes',
+  keyTakeaways: [
+    'Apply the Litmus Test to determine whether a skill or its output needs improvement',
+    'Run the three-step Iteration Protocol: stress test, diagnose by component, revise and version',
+    'Calibrate constraint tightness based on whether the task is compliance, operational, or research',
+  ],
   mockupRef: 'content/courses/AiBI-P v1/stitch_ai_banking_institute_course/m8_test_iterate_share',
   sections: [
     {

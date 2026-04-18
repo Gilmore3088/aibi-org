@@ -11,6 +11,11 @@ export const module5: Module = {
   pillar: 'understanding',
   estimatedMinutes: 40,
   keyOutput: 'Acceptable Use Card',
+  keyTakeaways: [
+    'Classify any banking data scenario into the correct tier within 20 seconds',
+    'Recognize all six hallucination patterns and apply the specific mitigation for each',
+    'Build a personalized Acceptable Use Card with your role context and highest-risk guardrail',
+  ],
   mockupRef: 'content/courses/AiBI-P v1/stitch_ai_banking_institute_course/m5_refined_safe_use_guardrails',
   sections: [
     {

@@ -12,6 +12,11 @@ export const module3: Module = {
   pillar: 'understanding',
   estimatedMinutes: 30,
   keyOutput: 'First Open discovery log',
+  keyTakeaways: [
+    'Identify which AI capabilities your institution already has through existing M365 licenses',
+    'Evaluate whether a paid AI subscription is justified for your role using the ROI framework',
+    'Execute your first structured banking prompt and log the results in a discovery entry',
+  ],
   mockupRef: 'content/courses/AiBI-P v1/stitch_ai_banking_institute_course/m3_what_you_already_have_activation',
   roleSpecific: true,
   sections: [

@@ -11,6 +11,11 @@ export const module1: Module = {
   pillar: 'awareness',
   estimatedMinutes: 25,
   keyOutput: 'Regulatory Cheatsheet',
+  keyTakeaways: [
+    'Name the five regulatory frameworks that apply to AI in community banking and explain when each triggers',
+    'Distinguish governed from ungoverned AI use and apply the distinction to your daily workflows',
+    'Complete a Regulatory Cheatsheet mapping your current AI tools to the frameworks that govern them',
+  ],
   mockupRef: 'content/courses/AiBI-P v1/stitch_ai_banking_institute_course/m1_refined_regulatory_landscape',
   sections: [
     {
