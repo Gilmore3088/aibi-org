@@ -18,7 +18,7 @@ import { isDeepDiveModule, getDeepDiveFocus, getRolePath } from '@content/course
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import type { ActivityResponse } from '@/types/course';
 import { AIPracticeSandbox } from '@/components/AIPracticeSandbox';
-import { module5SandboxConfig } from '@content/sandbox-data/aibi-p/module-5/config';
+import { SANDBOX_CONFIGS } from '@content/sandbox-data/aibi-p';
 
 interface ModulePageParams {
   readonly params: { module: string };
@@ -156,13 +156,13 @@ export default async function ModulePage({ params }: ModulePageParams) {
           </div>
         )}
 
-        {/* AI Practice Sandbox — Module 5 only (Phase 1) */}
-        {moduleNum === 5 && (
+        {/* AI Practice Sandbox — renders for any module with a sandbox config */}
+        {SANDBOX_CONFIGS[moduleNum] && (
           <div className="mb-12">
             <AIPracticeSandbox
               moduleId={`aibi-p-module-${moduleNum}`}
               product="aibi-p"
-              sandboxConfig={module5SandboxConfig}
+              sandboxConfig={SANDBOX_CONFIGS[moduleNum]!}
             />
           </div>
         )}
