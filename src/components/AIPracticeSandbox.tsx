@@ -170,7 +170,7 @@ export function AIPracticeSandbox({
   const [piiWarning, setPiiWarning] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const chatEndRef = useRef<HTMLDivElement>(null);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const remainingMessages = MAX_MESSAGES - messageCount;
@@ -209,7 +209,10 @@ export function AIPracticeSandbox({
   // -------------------------------------------------------------------------
 
   useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    const container = chatContainerRef.current;
+    if (container) {
+      container.scrollTop = container.scrollHeight;
+    }
   }, [messages]);
 
   // -------------------------------------------------------------------------
@@ -538,6 +541,7 @@ export function AIPracticeSandbox({
 
       {/* Chat area */}
       <div
+        ref={chatContainerRef}
         className="mb-4 min-h-[200px] max-h-[400px] overflow-y-auto rounded-[2px] border border-[color:var(--color-ink)]/10 bg-[color:var(--color-linen)] p-4"
         role="log"
         aria-label="Conversation history"
@@ -581,7 +585,6 @@ export function AIPracticeSandbox({
             )}
           </div>
         )}
-        <div ref={chatEndRef} />
       </div>
 
       {/* Error display */}
