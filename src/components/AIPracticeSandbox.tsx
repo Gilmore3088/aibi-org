@@ -54,11 +54,12 @@ export function AIPracticeSandbox({
   const selectedData = sandboxConfig.sampleData[selectedDataIndex];
 
   // -------------------------------------------------------------------------
-  // Fetch sample data
+  // Fetch sample data — loaded eagerly so it can be injected into the
+  // system prompt. The AI already has the data; learner just asks questions.
   // -------------------------------------------------------------------------
 
   useEffect(() => {
-    if (!dataExpanded || dataContent !== null) return;
+    if (dataContent !== null) return;
 
     const dataId = sandboxConfig.sampleData[selectedDataIndex].id;
     const ext = sandboxConfig.sampleData[selectedDataIndex].type === 'csv' ? 'csv' : 'md';
@@ -73,7 +74,7 @@ export function AIPracticeSandbox({
       })
       .then(setDataContent)
       .catch(() => setDataContent('Error loading sample data.'));
-  }, [dataExpanded, dataContent, selectedDataIndex, sandboxConfig.sampleData, product, moduleId]);
+  }, [dataContent, selectedDataIndex, sandboxConfig.sampleData, product, moduleId]);
 
   // Reset data content when switching datasets
   useEffect(() => {
@@ -156,7 +157,9 @@ export function AIPracticeSandbox({
           messages: updatedMessages,
           moduleId,
           product,
-          systemPrompt: sandboxConfig.systemPrompt,
+          systemPrompt: dataContent
+            ? `${sandboxConfig.systemPrompt}\n\n---\n\nThe following sample data has been pre-loaded for this exercise. The learner can reference it directly without pasting it. Treat it as already provided.\n\n### ${selectedData.label}\n\n${dataContent}`
+            : sandboxConfig.systemPrompt,
         }),
       });
 
