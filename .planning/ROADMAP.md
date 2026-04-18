@@ -371,3 +371,31 @@ Plans:
     - https://aibi-org.vercel.app/auth/callback, /reset-password
     - https://staging.aibankinginstitute.com/auth/callback, /reset-password (if staging is set up)
   - Brand auth email templates (confirmation, magic link, password reset) with The AI Banking Institute logo + sender name
+
+### Phase 999.12: Update Vercel DNS records to new IP range (BACKLOG)
+
+**Goal:** [Captured for future planning]
+**Requirements:** TBD
+**Plans:** 0 plans
+
+Context captured 2026-04-18: Vercel Domains panel shows "DNS Change
+Recommended" warnings for both `aibankinginstitute.com` and
+`www.aibankinginstitute.com`. Cause is Vercel's planned IP-range expansion
+— old records (`76.76.21.21` and `cname.vercel-dns.com`) continue to work,
+so this is NOT a broken state. Both domains currently show "Production"
+status with blue checkmarks. Likely supersedes Phase 999.1 (which captured
+the earlier "site shows GoDaddy parking page" problem — that appears
+resolved given the current production status).
+
+Plans:
+- [ ] TBD (promote with /gsd-review-backlog when ready)
+  - In GoDaddy DNS for aibankinginstitute.com: update A record `@`
+    from `76.76.21.21` → `216.198.79.1`
+  - Update CNAME `www` from `cname.vercel-dns.com` →
+    `24b1a70c1ba52050.vercel-dns-017.com.`
+  - Wait for DNS propagation (minutes to hours)
+  - Click Refresh in Vercel Domains panel for each domain to clear the
+    "DNS Change Recommended" warning
+  - Confirm both domains still show "Valid Configuration" after the
+    swap (no regression in HTTPS / SSL / routing)
+  - Confirm Phase 999.1 can be closed at the same time
