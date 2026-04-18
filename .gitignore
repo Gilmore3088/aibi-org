@@ -40,3 +40,7 @@ next-env.d.ts
 .env.local
 .env.production
 /.vscode
+
+# Claude Code / MCP session state (local-only, never commit)
+.claude/
+.mcp.json
