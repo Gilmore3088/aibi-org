@@ -221,7 +221,7 @@ export function AIPracticeSandbox({
     if (!ta) return;
     ta.style.height = 'auto';
     const lineHeight = 20;
-    const maxHeight = lineHeight * 4;
+    const maxHeight = lineHeight * 12; // expand up to 12 lines to show full prompt
     ta.style.height = `${Math.min(ta.scrollHeight, maxHeight)}px`;
   }, []);
 
