@@ -13,7 +13,7 @@ import { getEnrollment as getSEnrollment } from './aibi-s/_lib/getEnrollment';
 export const metadata: Metadata = {
   title: 'Courses | The AI Banking Institute',
   description:
-    'Three certification tracks for community banks and credit unions. From individual practitioner skills to department-wide automation to institution-level AI strategy.',
+    'Certification tracks for community banks and credit unions. From individual practitioner skills to department-wide automation to institution-level AI strategy.',
 };
 
 interface TrackCard {
@@ -83,7 +83,7 @@ export default async function CoursesPage() {
       subtitle: 'Institution-level AI strategy for executives',
       audience: 'C-suite and board',
       format: '1-day in-person workshop',
-      duration: `${sessions.length} sessions`,
+      duration: '4 sessions',
       price: 'From $2,800',
       colorVar: 'var(--color-sage)',
       colorBg: 'var(--color-sage-pale)',
@@ -106,50 +106,16 @@ export default async function CoursesPage() {
             Courses
           </p>
           <h1 className="font-serif text-4xl md:text-5xl text-[color:var(--color-ink)] leading-tight mb-4">
-            Three levels. One transformation.
+            From individual skills to institutional strategy.
           </h1>
           <p className="text-base text-[color:var(--color-slate)] leading-relaxed">
-            Each certification builds on the previous — from personal proficiency to
-            departmental automation to institution-wide strategy. Start where you are,
+            Each certification builds on the previous. Start where you are,
             advance when you are ready.
           </p>
         </header>
 
-        {/* Progression arrow bar */}
-        <div className="flex items-center gap-0 mb-12" aria-hidden="true">
-          {tracks.map((track, idx) => (
-            <div key={track.code} className="flex items-center flex-1 min-w-0">
-              <div
-                className="flex items-center justify-center w-10 h-10 rounded-full border-2 shrink-0"
-                style={{
-                  borderColor: track.colorVar,
-                  backgroundColor: track.isEnrolled ? track.colorBg : 'transparent',
-                }}
-              >
-                <span
-                  className="font-serif-sc text-[9px] font-semibold tracking-wider"
-                  style={{ color: track.colorVar }}
-                >
-                  {track.code.split('-')[1]}
-                </span>
-              </div>
-              {idx < tracks.length - 1 && (
-                <div
-                  className="h-px flex-1 mx-2"
-                  style={{
-                    backgroundColor: tracks[idx + 1].isEnrolled
-                      ? tracks[idx + 1].colorVar
-                      : 'var(--color-ink)',
-                    opacity: tracks[idx + 1].isEnrolled ? 0.4 : 0.1,
-                  }}
-                />
-              )}
-            </div>
-          ))}
-        </div>
-
-        {/* Track cards */}
-        <div className="space-y-6">
+        {/* Track cards — each visually distinct with pillar accent */}
+        <div className="space-y-8">
           {tracks.map((track) => {
             const pct = track.totalUnits > 0 && track.isEnrolled
               ? Math.round((track.completedUnits / track.totalUnits) * 100)
@@ -160,117 +126,123 @@ export default async function CoursesPage() {
               <Link
                 key={track.code}
                 href={track.href}
-                className="group block bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-6 md:p-8 hover:border-[color:var(--color-ink)]/20 transition-all duration-200"
+                className="group block rounded-[3px] border border-[color:var(--color-ink)]/10 hover:border-[color:var(--color-ink)]/20 transition-all duration-200 overflow-hidden"
               >
-                <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
-                  {/* Left: course info */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-3 mb-3">
-                      <span
-                        className="font-serif-sc text-[11px] uppercase tracking-[0.2em]"
-                        style={{ color: track.colorVar }}
-                      >
-                        {track.code}
-                      </span>
-                      <span
-                        className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/50"
-                      >
-                        {track.credential}
-                      </span>
-                      {track.isEnrolled && (
-                        <span
-                          className="font-mono text-[9px] uppercase tracking-widest px-2 py-0.5 rounded-sm"
-                          style={{
-                            color: track.colorVar,
-                            backgroundColor: track.colorBg,
-                          }}
-                        >
-                          {isComplete ? 'Complete' : 'Enrolled'}
-                        </span>
-                      )}
-                    </div>
+                <div className="flex">
+                  {/* Pillar accent bar */}
+                  <div
+                    className="w-1.5 shrink-0"
+                    style={{ backgroundColor: track.colorVar }}
+                  />
 
-                    <h2 className="font-serif text-2xl md:text-3xl text-[color:var(--color-ink)] leading-tight mb-2 group-hover:text-[color:var(--color-terra)] transition-colors">
-                      {track.title}
-                    </h2>
-                    <p className="font-serif italic text-sm text-[color:var(--color-slate)] leading-relaxed mb-4">
-                      {track.subtitle}
-                    </p>
-
-                    {/* Meta strip */}
-                    <div className="flex flex-wrap gap-x-6 gap-y-1.5">
-                      {[
-                        { label: 'Audience', value: track.audience },
-                        { label: 'Format', value: track.format },
-                        { label: 'Duration', value: track.duration },
-                        { label: 'Investment', value: track.price },
-                      ].map(({ label, value }) => (
-                        <div key={label} className="flex items-center gap-1.5">
-                          <span className="font-mono text-[9px] uppercase tracking-[0.15em] text-[color:var(--color-ink)]/50">
-                            {label}
-                          </span>
-                          <span className="font-mono text-[9px] tabular-nums text-[color:var(--color-ink)]/75">
-                            {value}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Prerequisite note */}
-                    {track.prerequisite && (
-                      <p className="mt-3 font-mono text-[9px] uppercase tracking-[0.15em] text-[color:var(--color-ink)]/50">
-                        Prerequisite: {track.prerequisite} certification
-                      </p>
-                    )}
-                  </div>
-
-                  {/* Right: progress or CTA */}
-                  <div className="shrink-0 flex flex-col items-start md:items-end gap-3 md:min-w-[160px]">
-                    {track.isEnrolled && pct !== null ? (
-                      <>
-                        <div className="text-right">
-                          <p
-                            className="font-mono text-2xl tabular-nums leading-none"
+                  {/* Content */}
+                  <div className="flex-1 bg-[color:var(--color-parch)] p-6 md:p-8">
+                    <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
+                      {/* Left: course info */}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-3 mb-3">
+                          <span
+                            className="font-serif-sc text-[11px] uppercase tracking-[0.2em]"
                             style={{ color: track.colorVar }}
                           >
-                            {pct}%
-                          </p>
-                          <p className="font-mono text-[9px] text-[color:var(--color-slate)] mt-1 tabular-nums">
-                            {track.completedUnits}/{track.totalUnits} {track.unitLabel}
-                          </p>
-                        </div>
-                        <div className="w-full h-1.5 bg-[color:var(--color-ink)]/10 rounded-full overflow-hidden">
+                            {track.code}
+                          </span>
                           <div
-                            className="h-full rounded-full transition-all duration-500"
-                            style={{
-                              width: `${pct}%`,
-                              backgroundColor: track.colorVar,
-                            }}
+                            className="h-px w-4"
+                            style={{ backgroundColor: track.colorVar, opacity: 0.3 }}
+                            aria-hidden="true"
                           />
+                          <span
+                            className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/50"
+                          >
+                            {track.credential}
+                          </span>
+                          {track.isEnrolled && (
+                            <span
+                              className="font-mono text-[9px] uppercase tracking-widest px-2 py-0.5 rounded-sm"
+                              style={{
+                                color: track.colorVar,
+                                backgroundColor: track.colorBg,
+                              }}
+                            >
+                              {isComplete ? 'Complete' : 'Enrolled'}
+                            </span>
+                          )}
                         </div>
-                        <span
-                          className="font-serif-sc text-[11px] uppercase tracking-[0.18em] border-b pb-0.5"
-                          style={{ color: track.colorVar, borderColor: track.colorVar }}
-                        >
-                          {isComplete ? 'Review' : 'Continue'}
-                        </span>
-                      </>
-                    ) : (
-                      <>
-                        <span
-                          className="font-mono text-xl tabular-nums"
-                          style={{ color: track.colorVar }}
-                        >
-                          {track.price}
-                        </span>
-                        <span
-                          className="font-serif-sc text-[11px] uppercase tracking-[0.18em] border-b pb-0.5 group-hover:opacity-80 transition-opacity"
-                          style={{ color: track.colorVar, borderColor: track.colorVar }}
-                        >
-                          Learn more
-                        </span>
-                      </>
-                    )}
+
+                        <h2 className="font-serif text-2xl md:text-3xl text-[color:var(--color-ink)] leading-tight mb-2 group-hover:text-[color:var(--color-terra)] transition-colors">
+                          {track.title}
+                        </h2>
+                        <p className="font-serif italic text-sm text-[color:var(--color-slate)] leading-relaxed mb-4">
+                          {track.subtitle}
+                        </p>
+
+                        {/* Meta strip */}
+                        <div className="flex flex-wrap gap-x-6 gap-y-1.5">
+                          {[
+                            { label: 'Audience', value: track.audience },
+                            { label: 'Format', value: track.format },
+                            { label: 'Duration', value: track.duration },
+                          ].map(({ label, value }) => (
+                            <div key={label} className="flex items-center gap-1.5">
+                              <span className="font-mono text-[9px] uppercase tracking-[0.15em] text-[color:var(--color-ink)]/50">
+                                {label}
+                              </span>
+                              <span className="font-mono text-[9px] tabular-nums text-[color:var(--color-ink)]/75">
+                                {value}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+
+                        {track.prerequisite && (
+                          <p className="mt-3 font-mono text-[9px] uppercase tracking-[0.15em] text-[color:var(--color-ink)]/50">
+                            Prerequisite: {track.prerequisite}
+                          </p>
+                        )}
+                      </div>
+
+                      {/* Right: progress or CTA */}
+                      <div className="shrink-0 flex flex-col items-start md:items-end gap-3 md:min-w-[140px]">
+                        {track.isEnrolled && pct !== null ? (
+                          <>
+                            <div className="md:text-right">
+                              <p
+                                className="font-mono text-2xl tabular-nums leading-none"
+                                style={{ color: track.colorVar }}
+                              >
+                                {pct}%
+                              </p>
+                              <p className="font-mono text-[9px] text-[color:var(--color-slate)] mt-1 tabular-nums">
+                                {track.completedUnits}/{track.totalUnits} {track.unitLabel}
+                              </p>
+                            </div>
+                            <div className="w-full h-1.5 bg-[color:var(--color-ink)]/10 rounded-full overflow-hidden">
+                              <div
+                                className="h-full rounded-full transition-all duration-500"
+                                style={{
+                                  width: `${pct}%`,
+                                  backgroundColor: track.colorVar,
+                                }}
+                              />
+                            </div>
+                            <span
+                              className="font-serif-sc text-[11px] uppercase tracking-[0.18em] border-b pb-0.5"
+                              style={{ color: track.colorVar, borderColor: track.colorVar }}
+                            >
+                              {isComplete ? 'Review' : 'Continue'}
+                            </span>
+                          </>
+                        ) : (
+                          <span
+                            className="font-serif-sc text-[11px] uppercase tracking-[0.18em] border-b pb-0.5 group-hover:opacity-80 transition-opacity"
+                            style={{ color: track.colorVar, borderColor: track.colorVar }}
+                          >
+                            Learn more
+                          </span>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </Link>
