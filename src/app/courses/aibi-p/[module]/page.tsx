@@ -105,7 +105,7 @@ export default async function ModulePage({ params }: ModulePageParams) {
       />
 
       {/* Content area — tabbed: Learn / Practice / Apply */}
-      <article className="max-w-6xl mx-auto px-6 lg:px-8 py-8">
+      <article className="mx-auto px-8 lg:px-16 py-8">
 
         {/* Role-specific deep-dive callout — shown above tabs */}
         {deepDiveFocus && rolePath && (
