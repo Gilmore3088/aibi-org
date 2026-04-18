@@ -164,3 +164,26 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 | 6. Modules 6-9 Activities + Skill Builder | 0/2 | Not started | - |
 | 7. Work Product + Reviewer Queue | 0/2 | Not started | - |
 | 8. Certificate + Verification | 0/2 | Not started | - |
+
+## Backlog
+
+### Phase 999.1: DNS records (BACKLOG)
+
+**Goal:** [Captured for future planning]
+**Requirements:** TBD
+**Plans:** 0 plans
+
+Context captured 2026-04-18: aibankinginstitute.com DNS at GoDaddy.
+Vercel project `aibi-org` is deployed and live at aibi-org.vercel.app, but
+the custom domain still serves the GoDaddy "Launching Soon" parking page.
+A record `@ → 76.76.21.21` was added correctly; CNAME `www →
+aibankinginstitute.org.` is wrong (points to a different domain). The root
+issue is GoDaddy Website Builder / Forwarding overriding the DNS records.
+
+Plans:
+- [ ] TBD (promote with /gsd-review-backlog when ready)
+  - Disable GoDaddy Website Builder / Forwarding for aibankinginstitute.com
+  - Fix `CNAME www` to point to `aibankinginstitute.com.` (not .org)
+  - Verify domain swing to Vercel + SSL provisioning
+  - Document the GoDaddy gotcha in CLAUDE.md so future sessions skip the
+    "why isn't my A record working" troubleshooting cycle
