@@ -17,6 +17,8 @@ import { getRoleSpotlight } from '../_lib/contentRouting';
 import { isDeepDiveModule, getDeepDiveFocus, getRolePath } from '@content/courses/aibi-p/role-paths';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import type { ActivityResponse } from '@/types/course';
+import { AIPracticeSandbox } from '@/components/AIPracticeSandbox';
+import { module5SandboxConfig } from '@content/sandbox-data/aibi-p/module-5/config';
 
 interface ModulePageParams {
   readonly params: { module: string };
@@ -151,6 +153,17 @@ export default async function ModulePage({ params }: ModulePageParams) {
             {mod.tables.map((table) => (
               <ContentTable key={table.id} table={table} />
             ))}
+          </div>
+        )}
+
+        {/* AI Practice Sandbox — Module 5 only (Phase 1) */}
+        {moduleNum === 5 && (
+          <div className="mb-12">
+            <AIPracticeSandbox
+              moduleId={`aibi-p-module-${moduleNum}`}
+              product="aibi-p"
+              sandboxConfig={module5SandboxConfig}
+            />
           </div>
         )}
 

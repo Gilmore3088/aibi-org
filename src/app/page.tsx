@@ -4,7 +4,6 @@ import { ThreeFears } from '@/components/sections/ThreeFears';
 import { SecurityBand } from '@/components/sections/SecurityBand';
 import { WideningGap } from '@/components/sections/WideningGap';
 import { HeroSplit } from '@/components/sections/HeroSplit';
-import { HeroRotating } from '@/components/sections/HeroRotating';
 import { ServiceTierCards } from '@/components/sections/ServiceTierCards';
 import { CertificationCards } from '@/components/sections/CertificationCards';
 import { FinalCTABand } from '@/components/sections/FinalCTABand';

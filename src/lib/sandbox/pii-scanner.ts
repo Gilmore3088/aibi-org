@@ -55,7 +55,7 @@ function detectSSN(text: string): string | null {
   // 9 consecutive digits that are NOT part of a longer digit string.
   const nineDigits = /(?<!\d)(\d{9})(?!\d)/g;
   while ((m = nineDigits.exec(text)) !== null) {
-    const digits = m[1];
+    const _digits = m[1];
     // Exclude if embedded in a dollar amount context (preceded by $ or
     // followed by common currency/percent indicators).
     const before = text.slice(Math.max(0, m.index - 1), m.index);
