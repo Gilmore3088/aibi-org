@@ -83,11 +83,23 @@ function SampleDataViewer({
   const sections = content.split(/^## /m).filter(Boolean);
 
   if (sections.length <= 1) {
-    // No headings found — show as plain text (shorter docs)
+    // No headings found — show a compact preview with first few lines
+    const lines = content.trim().split('\n').filter(Boolean);
+    const previewLines = lines.slice(0, 4);
+    const remaining = lines.length - previewLines.length;
     return (
-      <pre className="max-h-48 overflow-y-auto rounded-[2px] bg-[color:var(--color-parch)] p-3 font-mono text-xs text-[color:var(--color-ink)]">
-        {content}
-      </pre>
+      <div className="rounded-[2px] bg-[color:var(--color-parch)] p-4 space-y-2">
+        {previewLines.map((line, i) => (
+          <p key={i} className="font-sans text-xs text-[color:var(--color-ink)]/80 leading-relaxed truncate">
+            {line.replace(/[#*_`]/g, '')}
+          </p>
+        ))}
+        {remaining > 0 && (
+          <p className="font-mono text-[9px] text-[color:var(--color-slate)] uppercase tracking-wider mt-2">
+            + {remaining} more lines loaded into AI context
+          </p>
+        )}
+      </div>
     );
   }
 
