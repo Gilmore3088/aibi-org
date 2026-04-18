@@ -42,7 +42,7 @@ export default async function CourseOverviewPage() {
   );
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-8 py-16">
+    <div className="mx-auto px-8 lg:px-16 py-16">
 
       {/* Breadcrumb */}
       <nav aria-label="Breadcrumb" className="mb-8">
