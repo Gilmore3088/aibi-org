@@ -12,6 +12,7 @@ import {
 } from '@content/courses/aibi-p/output-examples';
 import type { ContentLevel } from '@content/courses/aibi-p/prompt-library';
 import { ContentGate } from './ContentGate';
+import { MarkdownRenderer } from './MarkdownRenderer';
 
 interface OutputExampleProps {
   readonly example: OutputExample;
@@ -110,12 +111,7 @@ export function OutputExampleCard({ example, userLevel = null }: OutputExamplePr
             <div
               className="bg-[color:var(--color-parch)] border border-[color:var(--color-parch-dark)] rounded-sm p-5"
             >
-              <pre
-                className="font-serif text-sm text-[color:var(--color-ink)] leading-relaxed whitespace-pre-wrap break-words"
-                style={{ fontFamily: 'var(--font-serif)' }}
-              >
-                {example.outputText}
-              </pre>
+              <MarkdownRenderer content={example.outputText} />
             </div>
           </div>
 
