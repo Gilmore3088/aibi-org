@@ -120,11 +120,13 @@ export function ModuleTabs({
         </div>
       </div>
 
-      {/* Tab panels */}
+      {/* Tab panels — scrollable within remaining viewport height */}
       <div
         role="tabpanel"
         id={`panel-${activeTab}`}
         aria-labelledby={`tab-${activeTab}`}
+        className="overflow-y-auto"
+        style={{ maxHeight: 'calc(100vh - 280px)' }}
       >
         {activeTab === 'learn' && learnContent}
         {activeTab === 'practice' && practiceContent}
