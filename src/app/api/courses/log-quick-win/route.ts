@@ -19,7 +19,6 @@ type Tool = (typeof VALID_TOOLS)[number];
 type Frequency = (typeof VALID_FREQUENCIES)[number];
 
 interface QuickWinBody {
-  enrollmentId?: unknown;
   description?: unknown;
   tool?: unknown;
   skillName?: unknown;
@@ -105,12 +104,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     return NextResponse.json({ error: 'Invalid JSON body.' }, { status: 400 });
   }
 
-  const { enrollmentId, description, tool, skillName, frequency, timeSavedMinutes, department } =
-    body;
-
-  if (typeof enrollmentId !== 'string' || enrollmentId.trim().length === 0) {
-    return NextResponse.json({ error: 'enrollmentId is required.' }, { status: 400 });
-  }
+  const { description, tool, skillName, frequency, timeSavedMinutes, department } = body;
 
   if (typeof description !== 'string' || description.trim().length === 0) {
     return NextResponse.json({ error: 'description is required.' }, { status: 400 });
@@ -148,17 +142,17 @@ export async function POST(request: Request): Promise<NextResponse> {
 
   const serviceClient = createServiceRoleClient();
 
-  // Verify enrollment ownership
+  // Look up the user's AiBI-P enrollment (one per user, per RLS policy)
   const { data: enrollment, error: enrollmentError } = await serviceClient
     .from('course_enrollments')
     .select('id')
-    .eq('id', enrollmentId)
     .eq('user_id', user.id)
+    .eq('product', 'aibi-p')
     .single();
 
   if (enrollmentError || !enrollment) {
     return NextResponse.json(
-      { error: 'Enrollment not found or access denied.' },
+      { error: 'No AiBI-P enrollment found for this account.' },
       { status: 403 },
     );
   }
@@ -166,7 +160,7 @@ export async function POST(request: Request): Promise<NextResponse> {
   const { data: win, error: insertError } = await serviceClient
     .from('quick_wins')
     .insert({
-      enrollment_id: enrollmentId,
+      enrollment_id: enrollment.id,
       description: description.trim(),
       tool: tool as Tool,
       skill_name: skillName.trim(),

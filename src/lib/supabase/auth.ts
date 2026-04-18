@@ -36,10 +36,13 @@ export async function signUp(
   if (!isSupabaseConfigured()) {
     return { error: 'Auth is not configured. Set Supabase environment variables.' };
   }
+  const origin =
+    typeof window !== 'undefined' ? window.location.origin : 'https://aibankinginstitute.com';
   const { error } = await client().auth.signUp({
     email,
     password,
     options: {
+      emailRedirectTo: `${origin}/auth/callback?next=${encodeURIComponent('/dashboard')}`,
       data: {
         full_name: metadata.fullName,
         institution_name: metadata.institutionName ?? '',

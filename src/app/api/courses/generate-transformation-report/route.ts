@@ -185,53 +185,6 @@ function buildSkills(activityResponses: ActivityResponseRow[]): SkillEntry[] {
   return skills;
 }
 
-// ── Build sample/dev PDF props ────────────────────────────────────────────────
-
-function buildSampleProps(): TransformationReportProps {
-  return {
-    learnerName: 'Jane Banker',
-    institution: 'First Community Bank',
-    reportDate: formatDate(new Date()),
-    preScore: 18,
-    postScore: 34,
-    preTierLabel: 'Early Stage',
-    postTierLabel: 'Building Momentum',
-    dimensions: [
-      { label: 'Governance & Risk', preScore: 2, postScore: 4, maxScore: 6 },
-      { label: 'Tool Proficiency', preScore: 3, postScore: 6, maxScore: 6 },
-      { label: 'Skill Building', preScore: 2, postScore: 5, maxScore: 6 },
-      { label: 'Data Handling', preScore: 4, postScore: 6, maxScore: 6 },
-      { label: 'Workflow Automation', preScore: 2, postScore: 5, maxScore: 6 },
-      { label: 'Regulatory Awareness', preScore: 5, postScore: 8, maxScore: 9 },
-    ],
-    skills: [
-      {
-        name: 'Compliance Officer FAQ Generator',
-        role: 'You are a senior compliance officer at a community bank with expertise in BSA/AML regulations and staff training.',
-        annualHoursSaved: 87,
-      },
-      {
-        name: 'Weekly Exception Report Analyzer',
-        role: 'Automated exception report analysis for the Operations team.',
-        annualHoursSaved: 52,
-      },
-    ],
-    totalAnnualHoursSaved: TOTAL_ANNUAL_HOURS,
-    workflowsAutomated: 3,
-    quickWins: [
-      { description: 'Automated weekly exception report summary', tool: 'Claude', timeSavedMinutes: 60 },
-      { description: 'BSA regulatory FAQ draft for frontline staff', tool: 'ChatGPT', timeSavedMinutes: 30 },
-      { description: 'Vendor due diligence checklist generation', tool: 'Claude', timeSavedMinutes: 45 },
-    ],
-    modulesCompleted: 9,
-    totalModules: 9,
-    workProductSubmitted: true,
-    workProductReviewed: true,
-    verificationUrl: 'https://aibankinginstitute.com/verify/AIBI-P-SAMPLE-2025',
-    enrollmentId: 'dev-mock-enrollment',
-  };
-}
-
 // ── Generate PDF buffer ───────────────────────────────────────────────────────
 
 async function generatePdf(props: TransformationReportProps): Promise<Buffer> {

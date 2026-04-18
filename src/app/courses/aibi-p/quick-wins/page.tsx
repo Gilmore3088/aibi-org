@@ -157,7 +157,6 @@ export default function QuickWinsPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          enrollmentId: 'dev-mock-enrollment',
           description: form.description,
           tool: form.tool,
           skillName: form.skillName,
