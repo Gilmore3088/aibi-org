@@ -20,6 +20,9 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 6: Modules 6-9 Activities + Skill Builder** - Pillar C/D modules, skill builder, My First Skill artifact
 - [x] **Phase 7: Work Product + Reviewer Queue** - 4-item submission, 5-dimension rubric, pass/fail workflow
 - [x] **Phase 8: Certificate + Verification** - Certificate issuance, LinkedIn badge, public verification endpoint
+- [ ] **Phase 9: Post-UAT Polish Bundle** - Four small findings from Phase 04/05/06/08 UAT cleanup
+- [ ] **Phase 10: Accessibility + Mobile Audit** - WCAG 2.1 AA sweep across all interactive surfaces
+- [ ] **Phase 11: Course Page Visual Normalization** - Unify AiBI-P/S/L heroes, CTAs, container widths, dynamic cohort data
 
 ## Phase Details
 
@@ -149,10 +152,45 @@ Plans:
 - [ ] 08-02-PLAN.md — Public verification page at /verify/[certificateId], end-to-end human verification
 **UI hint**: yes
 
+### Phase 9: Post-UAT Polish Bundle
+**Goal**: Four small findings from Phase 04/05/06/08 UAT that don't block the milestone but deserve cleanup are resolved
+**Depends on**: Phase 8
+**Requirements**: TBD
+**Success Criteria** (what must be TRUE):
+  1. `course_enrollments` has an `updated_at` column and trigger (Phase 04 UAT finding)
+  2. Start Course link uses `Math.max(1, current_module)` so it does not break when `current_module=0` (Phase 04 UAT finding)
+  3. Phase 06 IterationTracker reconciled: either ROADMAP updated to "three iterations" or a fourth step added so UX matches the spec
+  4. Phase 08 certificate PDF registers Cormorant + DM Mono TTFs via `Font.register` — no Helvetica-Bold / Courier fallbacks in the generated certificate
+**Plans**: 0 plans (to be planned via /gsd-plan-phase)
+
+### Phase 10: Accessibility + Mobile Audit
+**Goal**: WCAG 2.1 AA compliance verified across homepage, assessment, /education, and every /courses/aibi-p/[1-9] module page with Phase 05 UAT gaps (SC4 color-not-sole-indicator, SC5 iPhone 390px) closed
+**Depends on**: Phase 8
+**Requirements**: WCAG 2.1 AA compliance across all interactive surfaces
+**Success Criteria** (what must be TRUE):
+  1. axe-core scan passes with zero Critical/Serious violations across homepage, assessment, /education, and all 9 AiBI-P module pages
+  2. VoiceOver pass confirmed on assessment, onboarding survey, and at least one module activity per pillar — all interactions reachable and announced correctly
+  3. iPhone Safari 390px viewport: no horizontal scroll, all text ≥14pt, all tap targets ≥44px
+  4. Color-indicator audit: every place where red/green/etc. conveys meaning also carries text or an icon
+  5. Focus-ring visibility confirmed on terra-on-linen hover states (3:1 contrast minimum)
+**Plans**: 0 plans (to be planned via /gsd-plan-phase)
+
+### Phase 11: Course Page Visual Normalization
+**Goal**: AiBI-P / AiBI-S / AiBI-L course overview pages present a unified hero, CTA geometry, and container width, and the AiBI-S cohort dates are sourced from a database table or content file instead of hardcoded strings
+**Depends on**: Phase 8
+**Requirements**: Consistency + dynamic data (no hardcoded cohort dates)
+**Success Criteria** (what must be TRUE):
+  1. All three course overview pages use the same hero pattern (gold standard: AiBI-P's tight / terra / 3xl treatment per user direction)
+  2. Container max-widths are identical across AiBI-P, AiBI-S, AiBI-L overview pages
+  3. CTA button geometry (padding, text size, tracking) is identical across the three pages
+  4. AiBI-S `COHORT_INFO` no longer hardcodes "May 5, 2026" — upcoming cohort dates come from a database table or content file with dynamic next-cohort logic
+**Plans**: 0 plans (to be planned via /gsd-plan-phase)
+**UI hint**: yes
+
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10 -> 11
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
@@ -164,6 +202,9 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 | 6. Modules 6-9 Activities + Skill Builder | 0/2 | Not started | - |
 | 7. Work Product + Reviewer Queue | 0/2 | Not started | - |
 | 8. Certificate + Verification | 0/2 | Not started | - |
+| 9. Post-UAT Polish Bundle | 0/0 | Not started | - |
+| 10. Accessibility + Mobile Audit | 0/0 | Not started | - |
+| 11. Course Page Visual Normalization | 0/0 | Not started | - |
 
 ## Backlog
 
@@ -233,39 +274,6 @@ Plans:
   - Switch Supabase Auth SMTP sender to noreply@aibankinginstitute.com
   - Test assessment completion → ConvertKit form submission end-to-end
 
-### Phase 999.4: Post-UAT polish bundle (BACKLOG)
-
-**Goal:** [Captured for future planning]
-**Requirements:** TBD
-**Plans:** 0 plans
-
-Four small findings from Phase 04/05 UAT that don't block the milestone
-but deserve cleanup:
-
-Plans:
-- [ ] TBD
-  - Add `updated_at` column + trigger to `course_enrollments` (Phase 04 UAT finding)
-  - Defensive `Math.max(1, current_module)` in Start Course link href (Phase 04 UAT finding — breaks when current_module=0)
-  - Reconcile Phase 06 IterationTracker: ROADMAP says "four iterations" but ships as 3-step flow. Pick: update ROADMAP to match UX, or add a 4th step.
-  - Phase 08 certificate PDF: register Cormorant + DM Mono TTFs via Font.register (brand parity). Currently uses Helvetica-Bold + Courier defaults.
-
-### Phase 999.5: Accessibility + mobile audit (BACKLOG)
-
-**Goal:** [Captured for future planning]
-**Requirements:** WCAG 2.1 AA compliance across all interactive surfaces
-**Plans:** 0 plans
-
-Phase 05 UAT left SC4 (color-not-sole-indicator) and SC5 (iPhone 390px)
-untested. Broader audit needed.
-
-Plans:
-- [ ] TBD
-  - Run axe-core scan across homepage, assessment, /education, every /courses/aibi-p/[1-9]
-  - Manual screen reader pass (VoiceOver) on assessment + onboarding + module activities
-  - iPhone Safari 390px viewport walkthrough — confirm no horizontal scroll, text ≥14pt, tap targets ≥44px
-  - Color-indicator audit: find places where red/green/etc. convey meaning without text or icon backup
-  - Focus-ring visibility pass on terra-on-linen hover states
-
 ### Phase 999.6: Reviewer queue activation (BACKLOG)
 
 **Goal:** [Captured for future planning]
@@ -285,22 +293,6 @@ Plans:
   - Wire actual email sends in review-submission/route.ts (currently TODO comments)
   - End-to-end test: reviewer logs in, sees queue, reviews, learner gets notification
   - Promote 07-VERIFICATION.md from blocked_external to passed
-
-### Phase 999.7: Course page visual normalization (BACKLOG)
-
-**Goal:** [Captured for future planning]
-**Requirements:** Consistency + dynamic data (no hardcoded cohort dates)
-**Plans:** 0 plans
-
-Phase 11 audit (retroactive) surfaced three visual/data inconsistencies
-across AiBI-P/S/L course overview pages:
-
-Plans:
-- [ ] TBD
-  - AiBI-P, AiBI-S, AiBI-L use different hero patterns (P tight/terra/3xl, S tall/cobalt/5xl+kicker, L tall/sage/5xl+kicker). Pick gold standard (user called AiBI-P that earlier) and normalize.
-  - Container max-widths differ (`max-w-none px-8`, `max-w-6xl px-4`, `max-w-5xl px-4`). Standardize.
-  - CTA button geometry differs (px-5 py-2.5 vs px-8 py-4 vs px-10 py-5; text-[11px] vs text-[10px]). Standardize.
-  - AiBI-S `COHORT_INFO` hardcodes "May 5, 2026" dates. Move to database table or content file with dynamic upcoming-cohort logic.
 
 ### Phase 999.8: Human UAT for Phases 02, 06, 08 (BACKLOG)
 
