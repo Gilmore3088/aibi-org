@@ -10,6 +10,7 @@ import { WeekContent } from '../_components/WeekContent';
 import { WeekCompletionCTA } from '../_components/WeekCompletionCTA';
 import { RoleTrackBadge } from '../_components/RoleTrackBadge';
 import { CourseTabs } from '@/components/CourseTabs';
+import { CourseHeader } from '@/components/courses/CourseHeader';
 import { getEnrollment } from '../_lib/getEnrollment';
 
 interface WeekPageParams {
@@ -30,13 +31,6 @@ export async function generateMetadata({ params }: WeekPageParams): Promise<Meta
     title: `Week ${week.number}: ${week.title} | AiBI-S`,
   };
 }
-
-// Phase color map for the header band
-const PHASE_COLORS: Record<string, string> = {
-  foundation:           'var(--color-cobalt)',
-  'first-build':        'var(--color-cobalt)',
-  'scale-and-orchestrate': 'var(--color-cobalt)',
-} as const;
 
 export default async function WeekPage({ params }: WeekPageParams) {
   const weekNum = parseInt(params.week, 10);
@@ -66,90 +60,39 @@ export default async function WeekPage({ params }: WeekPageParams) {
   const isLastWeek = week.number === 6;
   const isCompleted = enrollment.completed_modules.includes(weekNum);
 
-  const phaseLabelMap: Record<string, string> = {
-    foundation:             'Foundation',
-    'first-build':          'First Build',
-    'scale-and-orchestrate': 'Scale and Orchestrate',
-  };
-
   return (
     <>
-      {/* Cobalt header band */}
-      <div
-        className="text-[color:var(--color-linen)] py-10 px-6"
-        style={{ backgroundColor: PHASE_COLORS[week.phase] ?? 'var(--color-cobalt)' }}
-      >
-        <div className="max-w-4xl mx-auto">
-          <div className="flex items-center gap-3 mb-3">
-            <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-[color:var(--color-linen)]/60">
-              AiBI-S
-            </span>
-            <span className="font-mono text-[9px] text-[color:var(--color-linen)]/40" aria-hidden="true">·</span>
-            <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-[color:var(--color-linen)]/60">
-              {phaseLabelMap[week.phase]}
-            </span>
-          </div>
+      {/* Compact sticky header */}
+      <CourseHeader
+        unitLabel="Week"
+        unitNumber={week.number}
+        title={week.title}
+        accentColor="var(--color-cobalt)"
+        meta={[
+          { label: 'live', value: `${week.estimatedLiveMinutes} min` },
+          { label: 'assignment', value: `${week.estimatedAssignmentMinutes} min` },
+          { label: 'output', value: week.keyOutput },
+        ]}
+      />
 
-          <div className="flex items-start justify-between gap-4">
-            <div>
-              <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--color-linen)]/60 mb-2">
-                Week {week.number}
-              </p>
-              <h1 className="font-serif text-3xl font-bold mb-2">{week.title}</h1>
-              <p className="font-sans text-sm text-[color:var(--color-linen)]/75 leading-relaxed max-w-2xl">
-                {week.whyThisWeekExists.split('\n')[0]}
-              </p>
-            </div>
-
-            {roleTrack && (
-              <div className="shrink-0 mt-1">
-                <RoleTrackBadge track={roleTrack} size="sm" />
-              </div>
-            )}
-          </div>
-
-          {/* Stats strip */}
-          <div className="flex flex-wrap gap-6 mt-6 pt-6 border-t border-[color:var(--color-linen)]/15">
-            <div>
-              <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-[color:var(--color-linen)]/50 mb-0.5">
-                Live session
-              </p>
-              <p className="font-mono text-sm font-bold tabular-nums">
-                {week.estimatedLiveMinutes} min
-              </p>
-            </div>
-            <div>
-              <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-[color:var(--color-linen)]/50 mb-0.5">
-                Assignment
-              </p>
-              <p className="font-mono text-sm font-bold tabular-nums">
-                {week.estimatedAssignmentMinutes} min
-              </p>
-            </div>
-            <div>
-              <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-[color:var(--color-linen)]/50 mb-0.5">
-                Key output
-              </p>
-              <p className="font-sans text-xs text-[color:var(--color-linen)]/75 max-w-xs">
-                {week.keyOutput}
-              </p>
-            </div>
+      {/* Content area */}
+      <article className="mx-auto px-8 lg:px-16 py-4">
+        {/* Role track badge + completion indicator */}
+        {(roleTrack || isCompleted) && (
+          <div className="flex items-center justify-between mb-4">
+            {roleTrack ? <RoleTrackBadge track={roleTrack} size="sm" /> : <div />}
             {isCompleted && (
-              <div className="flex items-center gap-2 ml-auto">
-                <svg className="w-4 h-4 text-[color:var(--color-linen)]/75" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+              <div className="flex items-center gap-2">
+                <svg className="w-4 h-4 text-[color:var(--color-cobalt)]" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                   <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                 </svg>
-                <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-linen)]/75">
+                <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-cobalt)]">
                   Completed
                 </span>
               </div>
             )}
           </div>
-        </div>
-      </div>
-
-      {/* Content area */}
-      <article className="mx-auto px-8 lg:px-16 py-10">
+        )}
         <CourseTabs
           storagePrefix="aibi-s-w"
           segmentNumber={weekNum}
