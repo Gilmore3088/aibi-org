@@ -69,6 +69,33 @@ Last updated: 2026-04-15
 - [x] Work product submission built — presigned S3/Storage uploads,
       submission status page
 
+### Done (session 2026-04-17)
+
+- [x] `/courses` landing page — three-track hub for P/S/L with enrollment
+      status, progress bars, pricing, prerequisite notes
+- [x] Dashboard courses card + tier recommendations rewired to actual courses
+- [x] Assessment next-step cards route to course pages (not /foundations)
+- [x] Cross-course navigation — header "Courses" link, breadcrumbs on all
+      3 course overview pages, JourneyBanner at P completion → S
+- [x] Mobile navigation drawer — hamburger menu with slide-out, focus trap,
+      Escape key, focus restoration (was completely missing)
+- [x] Fixed broken /sign-in links in both EnrollButtons → /auth/login
+- [x] A11Y hardening: MobileNav focus trap, EmailGate labels + aria,
+      QuestionCard radio semantics, RadarChart sr-only data table,
+      ProgressBar aria-label, semantic nav wrappers
+- [x] --color-dust contrast fix — 254 occurrences replaced with --color-slate
+      across 56 files for WCAG AA compliance
+- [x] Design system normalization — added cobalt-pale/sage-pale CSS vars,
+      fixed heading hierarchy (h1→h3 skip), spacing scale (p-10→p-12)
+- [x] Homepage narrative reorder: problem→fears→framework→proof→ask
+- [x] Homepage hero rewritten: "The big banks are spending billions..."
+- [x] Pillar section: removed redundant A/B/C circles, numbered inline labels
+- [x] AiBI-S: 3 new components (ActivityForm, WeekCompletionCTA, PromptCard)
+- [x] AiBI-L: 2 new workshop tools (MaturityScorecard, ROI Calculator)
+- [x] AI Practice Sandbox Phase 1 — Claude-only inline sandbox in Module 5
+      with PII scanning, injection filtering, streaming, sample data,
+      markdown rendering, message rate limiting
+
 ### Next session — immediate priorities
 
 1. [ ] **Fill in founder bio** on `/about` — replace `[founder bio placeholder]`
@@ -134,6 +161,48 @@ Last updated: 2026-04-15
 - [ ] Stripe checkout is code-complete — wire live Price IDs and test end-to-end
 - [ ] Zapier/Make automation → Kajabi user provisioning on payment.success
 - [ ] DO NOT ship checkout without provisioning path (CLAUDE.md rule)
+
+## AI Practice Sandbox — Phase 2
+
+Phase 1 shipped (2026-04-17): Claude-only sandbox in Module 5 with PII
+scanning, injection filtering, sample data, and streaming.
+
+- [ ] **OpenAI adapter** — `src/lib/sandbox/providers/openai.ts`, install
+      `openai` SDK, wire into API route provider switch
+- [ ] **Gemini adapter** — `src/lib/sandbox/providers/gemini.ts`, install
+      `@google/generative-ai` SDK, wire into API route provider switch
+- [ ] **Enable provider switching in UI** — remove "Coming soon" from
+      ChatGPT/Gemini tabs, wire provider selection to API calls
+- [ ] **Recharts integration** — install `recharts`, detect `chart` code
+      blocks in AI responses, render as bar/pie/line charts styled to
+      design system (sage/cobalt/terra, DM Mono labels)
+- [ ] **PDF export on responses** — "Download as PDF" button on rich AI
+      responses, client-side PDF generation from rendered output
+- [ ] **Copy to clipboard** on individual AI responses (formatted markdown)
+- [ ] **Production rate limiting** — move message counters from in-memory
+      Map to Supabase or Redis; persist across server restarts
+- [ ] **Production auth validation** — wire Supabase auth check in API
+      route (currently dev bypass only)
+- [ ] **Monthly spend monitoring** — track API costs per provider, alert
+      at configurable threshold
+
+## AI Practice Sandbox — Phase 3 (Full Coverage)
+
+- [ ] **Sandbox exercises for all AiBI-P modules** — add sandbox configs
+      with module-specific system prompts, sample data, and suggested
+      prompts for modules 2-4, 6-9
+- [ ] **Role-track-specific sample data** — Operations/Lending/Compliance/
+      Finance/Retail variants for each exercise (5x sample datasets)
+- [ ] **AiBI-S sandbox exercises** — 6 weeks of department-manager-level
+      exercises with cobalt accent and role-track filtering
+- [ ] **AiBI-L workshop sandbox** — live facilitator-guided exercises
+      using institution-specific data (pre-loaded from planning call)
+- [ ] **Sample document library** — vendor contracts, compliance policies,
+      board memos, audit findings, BSA/AML policies per role track
+- [ ] **Contract analysis mode** — system prompt variant for analyzing
+      vendor agreements, flagging risk clauses with severity ratings
+- [ ] **Process automation mode** — system prompt variant for workflow
+      analysis, identifying automation candidates, estimating ROI
 
 ## Backlog / Ideas
 
