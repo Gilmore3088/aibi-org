@@ -161,7 +161,9 @@ Plans:
   2. Start Course link uses `Math.max(1, current_module)` so it does not break when `current_module=0` (Phase 04 UAT finding)
   3. Phase 06 IterationTracker reconciled: either ROADMAP updated to "three iterations" or a fourth step added so UX matches the spec
   4. Phase 08 certificate PDF registers Cormorant + DM Mono TTFs via `Font.register` — no Helvetica-Bold / Courier fallbacks in the generated certificate
-**Plans**: 0 plans (to be planned via /gsd-plan-phase)
+**Plans**: 1 plan
+Plans:
+- [ ] 09-01-PLAN.md — 4 post-UAT fixes: updated_at trigger, Math.max guard, IterationTracker reconciliation (human decision), certificate fonts
 
 ### Phase 10: Accessibility + Mobile Audit
 **Goal**: WCAG 2.1 AA compliance verified across homepage, assessment, /education, and every /courses/aibi-p/[1-9] module page with Phase 05 UAT gaps (SC4 color-not-sole-indicator, SC5 iPhone 390px) closed
@@ -173,7 +175,9 @@ Plans:
   3. iPhone Safari 390px viewport: no horizontal scroll, all text ≥14pt, all tap targets ≥44px
   4. Color-indicator audit: every place where red/green/etc. conveys meaning also carries text or an icon
   5. Focus-ring visibility confirmed on terra-on-linen hover states (3:1 contrast minimum)
-**Plans**: 0 plans (to be planned via /gsd-plan-phase)
+**Plans**: 1 plan
+Plans:
+- [ ] 10-01-PLAN.md — axe-core Playwright audit script, remediation pass, 390px mobile checks, VoiceOver manual pass, color-indicator audit, focus-ring contrast
 
 ### Phase 11: Course Page Visual Normalization
 **Goal**: AiBI-P / AiBI-S / AiBI-L course overview pages present a unified hero, CTA geometry, and container width, and the AiBI-S cohort dates are sourced from a database table or content file instead of hardcoded strings
@@ -184,7 +188,9 @@ Plans:
   2. Container max-widths are identical across AiBI-P, AiBI-S, AiBI-L overview pages
   3. CTA button geometry (padding, text size, tracking) is identical across the three pages
   4. AiBI-S `COHORT_INFO` no longer hardcodes "May 5, 2026" — upcoming cohort dates come from a database table or content file with dynamic next-cohort logic
-**Plans**: 0 plans (to be planned via /gsd-plan-phase)
+**Plans**: 1 plan
+Plans:
+- [ ] 11-01-PLAN.md — Normalize AiBI-S + AiBI-L hero/container/CTA to AiBI-P gold standard; move COHORT_INFO to content file + getUpcomingCohort helper
 **UI hint**: yes
 
 ## Progress
@@ -202,9 +208,9 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 | 6. Modules 6-9 Activities + Skill Builder | 0/2 | Not started | - |
 | 7. Work Product + Reviewer Queue | 0/2 | Not started | - |
 | 8. Certificate + Verification | 0/2 | Not started | - |
-| 9. Post-UAT Polish Bundle | 0/0 | Not started | - |
-| 10. Accessibility + Mobile Audit | 0/0 | Not started | - |
-| 11. Course Page Visual Normalization | 0/0 | Not started | - |
+| 9. Post-UAT Polish Bundle | 0/1 | Not started | - |
+| 10. Accessibility + Mobile Audit | 0/1 | Not started | - |
+| 11. Course Page Visual Normalization | 0/1 | Not started | - |
 
 ## Backlog
 
