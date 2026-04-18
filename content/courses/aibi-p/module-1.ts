@@ -23,6 +23,7 @@ The US Government Accountability Office confirmed in its May 2025 report (GAO-25
 > This is not a temporary gap. The regulatory environment will remain framework-dependent for the foreseeable future.
 
 Your job as a practitioner is to understand which framework applies to each AI use case you encounter — and what it means for how you must document, test, and communicate about that use case.`,
+      tryThis: 'Pull up your last vendor risk review or new-tool intake form. Identify which of the five frameworks (SR 11-7, TPRM, ECOA/Reg B, BSA/AML, AIEOG) would apply if that vendor turned on an AI feature tomorrow. If the answer is "more than one," note which one carries the strictest documentation burden.',
     },
     {
       id: 'm1-governed-vs-ungoverned',
@@ -40,6 +41,7 @@ Your job as a practitioner is to understand which framework applies to each AI u
 > Shadow AI — staff using AI tools without institutional knowledge — is the most common source of ungoverned use.
 
 Module 5 covers the specific data classification framework for managing this risk.`,
+      tryThis: 'At your next team huddle, ask: "Has anyone pasted member data, loan tape rows, or board materials into a consumer AI tool in the last 30 days?" Track the honest answers. Every "yes" is an ungoverned use case that needs to be either retired or moved into the institution\'s sanctioned platform.',
     },
     {
       id: 'm1-aieog',
@@ -61,6 +63,7 @@ Module 5 covers the specific data classification framework for managing this ris
 - **Third-Party AI Risk**: Risks arising from AI systems operated by vendors or service providers. TPRM guidance has been extended to require the same risk assessment rigor for AI-enabled vendor tools as for any other critical third party.
 
 - **Explainability**: The capacity of an AI system to provide human-understandable reasons for its outputs. SR 11-7 requires conceptual soundness and transparency for model outputs used in decisions.`,
+      tryThis: 'Open your institution\'s current AI policy, acceptable-use guidance, or vendor questionnaire. Search it for the six AIEOG terms (hallucination, AI governance, AI use case inventory, HITL, third-party AI risk, explainability). Note which terms are missing — those are the gaps an examiner will find first.',
     },
   ],
   tables: [

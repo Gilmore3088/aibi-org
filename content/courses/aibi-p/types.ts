@@ -49,6 +49,7 @@ export interface Section {
   readonly title: string;
   readonly content: string;         // Markdown prose — rendered by a shared Markdown component
   readonly subsections?: readonly Section[];
+  readonly tryThis?: string;        // Optional practice prompt — short, concrete, applies what the section just taught
 }
 
 export interface TableColumn {

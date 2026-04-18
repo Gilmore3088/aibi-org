@@ -115,6 +115,21 @@ export function LearnSection({ sections, keyTakeaways }: LearnSectionProps) {
                 <div className="px-5 py-6 bg-[color:var(--color-linen)]">
                   <MarkdownRenderer content={section.content} />
 
+                  {/* Try-this callout — practical exercise tied to this section */}
+                  {section.tryThis && (
+                    <aside
+                      className="mt-5 border-l-2 border-[color:var(--color-terra)] bg-[color:var(--color-parch)] px-5 py-4 rounded-r-[3px]"
+                      aria-label="Try this practice prompt"
+                    >
+                      <p className="font-serif-sc text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-2">
+                        Try this
+                      </p>
+                      <p className="font-sans text-sm text-[color:var(--color-ink)]/85 leading-relaxed">
+                        {section.tryThis}
+                      </p>
+                    </aside>
+                  )}
+
                   {/* Subsections */}
                   {section.subsections && section.subsections.length > 0 && (
                     <div className="mt-6 space-y-6 border-l-2 border-[color:var(--color-parch-dark)] pl-5">
