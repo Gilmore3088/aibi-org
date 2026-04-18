@@ -12,9 +12,6 @@ interface CourseLayoutProps {
   readonly children: ReactNode;
 }
 
-// Paths that must never trigger enrollment redirect
-const ENROLLMENT_EXEMPT_SUFFIXES = ['/purchase', '/submit'];
-
 export default async function AiBISLayout({ children }: CourseLayoutProps) {
   const enrollment = await getEnrollment();
 
