@@ -1,8 +1,9 @@
-// ModuleHeader — compact sticky pillar-colored header band
+// ModuleHeader — AiBI-P wrapper around shared CourseHeader
 // Server Component: no interactivity needed
 
 import { PILLAR_META } from '@content/courses/aibi-p';
 import type { Pillar } from '@content/courses/aibi-p';
+import { CourseHeader } from '@/components/courses/CourseHeader';
 
 interface ModuleHeaderProps {
   readonly moduleNumber: number;
@@ -20,35 +21,18 @@ export function ModuleHeader({
   keyOutput,
 }: ModuleHeaderProps) {
   const meta = PILLAR_META[pillar];
-  const formattedNumber = String(moduleNumber).padStart(2, '0');
 
   return (
-    <header
-      className="sticky top-[70px] z-40 w-full px-8 py-4"
-      style={{ backgroundColor: meta.colorVar }}
-    >
-      <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
-        <div className="flex items-baseline gap-3">
-          <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-white/70">
-            Module {formattedNumber}
-          </span>
-          <h1 className="font-serif italic text-2xl lg:text-3xl text-white leading-tight">
-            {title}
-          </h1>
-        </div>
-
-        <div className="flex items-center gap-6">
-          <span className="font-mono text-[10px] tracking-widest text-white/60 uppercase">
-            {estimatedMinutes} min
-          </span>
-          <span className="font-mono text-[10px] tracking-widest text-white/60 uppercase">
-            {keyOutput}
-          </span>
-          <span className="font-mono text-[10px] tracking-widest text-white/60 uppercase">
-            {meta.label}
-          </span>
-        </div>
-      </div>
-    </header>
+    <CourseHeader
+      unitLabel="Module"
+      unitNumber={moduleNumber}
+      title={title}
+      accentColor={meta.colorVar}
+      meta={[
+        { label: 'time', value: `${estimatedMinutes} min` },
+        { label: 'output', value: keyOutput },
+        { label: 'pillar', value: meta.label },
+      ]}
+    />
   );
 }
