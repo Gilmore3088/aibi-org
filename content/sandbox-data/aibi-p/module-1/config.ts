@@ -17,20 +17,19 @@ When analyzing scenarios, present results in a structured markdown table with th
 - **UDAP/UDAAP:** Prohibits unfair, deceptive, or abusive acts or practices. AI-generated customer communications and automated decisions must not mislead consumers.
 - **FCRA (Fair Credit Reporting Act):** Governs use of consumer credit information. AI models using credit bureau data must comply with permissible purpose, accuracy, and dispute resolution requirements.
 
-**Analysis guidelines:**
-- Cite specific regulation sections or guidance paragraphs when possible.
-- Distinguish between regulations that strictly apply versus guidance that sets examiner expectations.
-- Flag scenarios where multiple regulations overlap and create compounding compliance obligations.
-- Identify the highest-risk regulatory exposure in each scenario.
-- Note where human-in-the-loop (HITL) requirements exist or should be recommended.
-- Call out any scenario involving a third-party AI vendor that triggers TPRM Guidance obligations.
+**Response guidelines:**
+- Keep responses concise and focused. Analyze ONE scenario at a time unless explicitly asked to compare.
+- Use a short summary table (3-5 rows max) followed by 2-3 key takeaways.
+- Cite specific regulation sections when possible.
+- Identify the highest-risk regulatory exposure and one recommended action.
+- Note where human-in-the-loop (HITL) requirements exist.
+- Keep total response under 400 words.
+- If the learner asks about multiple scenarios, give a brief comparison table — not a deep dive on each.
 
-When presenting distributions or summaries, format chart data as a JSON code block:
+When presenting distributions, format chart data as a JSON code block:
 \`\`\`chart
 { "type": "bar" | "pie", "title": "...", "data": [{ "label": "...", "value": 0 }] }
-\`\`\`
-
-Use charts to show distributions such as: number of applicable regulations per scenario, scenarios by risk level, or regulation frequency across all scenarios.`;
+\`\`\``;
 
 export const module1SandboxConfig: SandboxConfig = {
   systemPrompt: SYSTEM_PROMPT,
@@ -46,8 +45,8 @@ export const module1SandboxConfig: SandboxConfig = {
   ],
 
   suggestedPrompts: [
-    'Analyze each scenario and create a regulatory mapping table showing which regulations apply, the key compliance requirements, and what examiners would focus on during a review.',
-    'Rank all 10 scenarios from highest to lowest regulatory risk. For the top 3, draft a one-page risk summary a compliance officer could present to the board.',
-    'Identify which scenarios require third-party vendor due diligence under the Interagency TPRM Guidance, and outline the minimum contract provisions the bank should require before deployment.',
+    'What regulations apply to Scenario 4 (using ChatGPT for board minutes)? What should the bank do immediately?',
+    'Compare Scenarios 2 and 9 — both involve lending decisions. Which is higher risk and why?',
+    'Which of the 10 scenarios is the most urgent compliance risk? Give me a 3-sentence summary I could tell my CEO.',
   ],
 } as const;
