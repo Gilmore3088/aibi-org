@@ -101,6 +101,7 @@ export function WeekContent({ week, roleTrack }: WeekContentProps) {
       {/* Core sections — collapsible accordion */}
       <LearnSection
         sections={week.sections}
+        keyTakeaways={week.keyTakeaways}
         accentColor="var(--color-cobalt)"
         unitLabel="week"
       />

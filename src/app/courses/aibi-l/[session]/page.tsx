@@ -95,6 +95,7 @@ export default async function SessionPage({ params }: SessionPageParams) {
               {/* Collapsible sections */}
               <LearnSection
                 sections={workshopSession.sections}
+                keyTakeaways={workshopSession.keyTakeaways}
                 accentColor="var(--color-sage)"
                 unitLabel="session"
               />

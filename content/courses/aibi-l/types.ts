@@ -68,6 +68,7 @@ export interface WorkshopSession {
   readonly startTime: string;
   readonly coreQuestion: string;
   readonly purpose: string;
+  readonly keyTakeaways?: readonly string[];
   readonly sections: readonly ContentSection[];
   readonly activity: FacilitatedActivity;
   readonly deliverable: string;

@@ -151,6 +151,7 @@ export interface CohortWeek {
   readonly estimatedAssignmentMinutes: number;
   readonly learningGoals: readonly string[];
   readonly whyThisWeekExists: string;   // Rationale for the week's design
+  readonly keyTakeaways?: readonly string[];
   readonly sections: readonly Section[];
   readonly tables?: readonly ContentTable[];
   readonly activities: readonly Activity[];

@@ -79,6 +79,7 @@ export interface Module {
   readonly pillar: Pillar;
   readonly estimatedMinutes: number;
   readonly keyOutput: string;        // one-line description of what learner produces
+  readonly keyTakeaways?: readonly string[];
   readonly sections: readonly Section[];
   readonly tables?: readonly ContentTable[];
   readonly activities: readonly Activity[];
