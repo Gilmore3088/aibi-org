@@ -1,0 +1,21 @@
+scenario_id,department,data_description,contains_pii,regulatory_reference,current_handling
+DC-001,Retail,Branch hours and holiday schedule posted on website,No,None,Published on public website and social media
+DC-002,Finance,Quarterly earnings press release approved by board,No,SEC Regulation FD,Published via PR Newswire and investor relations page
+DC-003,Retail,Current rate sheet for deposit accounts and CDs,No,Truth in Savings (Reg DD),Posted in branches and on website
+DC-004,HR,Internal staff shift schedule for Q3,No,None,Shared via internal email distribution list
+DC-005,Operations,Internal memo on new check processing cutoff times,No,None,Posted on employee intranet with no access controls
+DC-006,HR,Employee training completion records for BSA/AML courses,No,BSA/AML (31 CFR 1020),Stored in HR system with manager access only
+DC-007,IT,Vendor performance scorecards for core banking provider,No,Interagency TPRM Guidance (OCC 2013-29),Shared via email among IT leadership
+DC-008,Compliance,Board meeting minutes discussing CRA exam findings,No,Community Reinvestment Act (Reg BB),Stored in board portal with director-level access
+DC-009,Finance,Three-year strategic plan with branch expansion targets,No,None,Stored on shared drive with senior management access
+DC-010,Compliance,Due diligence evaluation of prospective fintech partner,No,Interagency TPRM Guidance (OCC 2013-29),Circulated to ALCO and compliance committee via email
+DC-011,Lending,Completed loan application with borrower SSN and income,Yes,GLBA (Reg P) / ECOA (Reg B),Stored in loan origination system with role-based access
+DC-012,Operations,Customer account numbers and routing numbers for ACH batch,Yes,NACHA Operating Rules / UCC Article 4A,Transmitted via encrypted SFTP to Federal Reserve
+DC-013,Compliance,Suspicious Activity Report filed with FinCEN,Yes,BSA/AML (31 USC 5318(g)),Filed via BSA E-Filing system; no disclosure permitted
+DC-014,Lending,Consumer credit report pulled for mortgage application,Yes,FCRA (15 USC 1681),Stored in LOS with 2-year retention per FCRA permissible purpose
+DC-015,Retail,Customer complaint log with names and account details,Yes,UDAAP / CFPB Complaint procedures,Maintained in CRM system with branch manager access
+DC-016,HR,Applicant resumes and background check results,Yes,FCRA / EEOC guidelines,Stored in HR applicant tracking system
+DC-017,IT,System vulnerability scan results for online banking platform,No,FFIEC IT Examination Handbook,Restricted to CISO and IT security team via encrypted share
+DC-018,Finance,Wire transfer records with originator and beneficiary details,Yes,BSA/AML / OFAC sanctions screening,Stored in wire transfer system with dual-control access
+DC-019,Operations,Internal process map for new account opening workflow,No,CIP (31 CFR 1020.220),Stored on departmental SharePoint site
+DC-020,Compliance,M&A due diligence file for potential acquisition target,No,Bank Merger Act / FDIC approval requirements,Stored in external counsel data room with NDA-controlled access

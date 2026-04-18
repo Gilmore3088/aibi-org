@@ -62,7 +62,9 @@ export function AIPracticeSandbox({
 
     const dataId = sandboxConfig.sampleData[selectedDataIndex].id;
     const ext = sandboxConfig.sampleData[selectedDataIndex].type === 'csv' ? 'csv' : 'md';
-    const path = `/sandbox-data/${product}/${moduleId}/${dataId}.${ext}`;
+    // moduleId is "aibi-p-module-5" — extract "module-5" for the public path
+    const moduleDir = moduleId.replace(/^aibi-[psl]-/, '');
+    const path = `/sandbox-data/${product}/${moduleDir}/${dataId}.${ext}`;
 
     fetch(path)
       .then((res) => {
