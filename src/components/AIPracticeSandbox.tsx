@@ -507,14 +507,14 @@ export function AIPracticeSandbox({
         )}
       </div>
 
-      {/* Suggested prompts */}
-      {messages.length === 0 && (
+      {/* Suggested prompts — hidden when data viewer is expanded (cards have their own "Ask AI" buttons) */}
+      {messages.length === 0 && !dataExpanded && (
         <div className="mb-4">
           <p className="mb-2 font-serif-sc text-[11px] uppercase tracking-[1.2px] text-[color:var(--color-slate)]">
-            Suggested Prompts
+            Get started
           </p>
           <div className="flex flex-wrap gap-2">
-            {sandboxConfig.suggestedPrompts.map((prompt, idx) => (
+            {sandboxConfig.suggestedPrompts.slice(0, 2).map((prompt, idx) => (
               <button
                 key={idx}
                 onClick={() => handlePromptClick(prompt)}
@@ -530,7 +530,6 @@ export function AIPracticeSandbox({
                 onMouseLeave={(e) => {
                   e.currentTarget.style.borderColor = '';
                 }}
-                aria-label={`Use prompt: ${prompt.slice(0, 60)}...`}
               >
                 {prompt}
               </button>
