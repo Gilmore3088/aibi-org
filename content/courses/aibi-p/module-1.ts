@@ -20,12 +20,14 @@ export const module1: Module = {
 
 The US Government Accountability Office confirmed in its May 2025 report (GAO-25-107197) that there is no comprehensive AI-specific banking regulation yet. What exists is a patchwork of extensions: SR 11-7 applied to AI models, TPRM guidance extended to AI vendors, ECOA enforced against algorithmic lending decisions, BSA/AML standards applied to AI-driven transaction monitoring, and the AIEOG AI Lexicon providing shared vocabulary across regulators.
 
-This is not a temporary gap. The regulatory environment will remain framework-dependent for the foreseeable future. Your job as a practitioner is to understand which framework applies to each AI use case you encounter — and what it means for how you must document, test, and communicate about that use case.`,
+> This is not a temporary gap. The regulatory environment will remain framework-dependent for the foreseeable future.
+
+Your job as a practitioner is to understand which framework applies to each AI use case you encounter — and what it means for how you must document, test, and communicate about that use case.`,
     },
     {
       id: 'm1-governed-vs-ungoverned',
       title: 'Governed vs. Ungoverned AI Use',
-      content: `The most important distinction in community banking AI practice is not "good AI vs. bad AI" — it is **governed AI vs. ungoverned AI**.
+      content: `> The most important distinction in community banking AI practice is not "good AI vs. bad AI" — it is governed AI vs. ungoverned AI.
 
 **Governed AI** is use that has been:
 - Reviewed against applicable regulatory frameworks
@@ -35,12 +37,16 @@ This is not a temporary gap. The regulatory environment will remain framework-de
 
 **Ungoverned AI** is use where these elements are absent. This includes the informal use of consumer AI tools (ChatGPT, Claude, Gemini) with institutional data that has not been assessed for data classification compliance, vendor AI features enabled without third-party risk review, and automated outputs used in credit or compliance decisions without validation.
 
-Shadow AI — staff using AI tools without institutional knowledge — is the most common source of ungoverned use. Module 5 covers the specific data classification framework for managing this risk.`,
+> Shadow AI — staff using AI tools without institutional knowledge — is the most common source of ungoverned use.
+
+Module 5 covers the specific data classification framework for managing this risk.`,
     },
     {
       id: 'm1-aieog',
       title: 'The AIEOG AI Lexicon',
-      content: `In February 2026, the US Treasury, FBIIC, and FSSCC jointly published the AIEOG AI Lexicon — the first cross-regulator glossary for AI in financial services. Understanding these definitions matters because regulators will use them.
+      content: `In February 2026, the US Treasury, FBIIC, and FSSCC jointly published the AIEOG AI Lexicon — the first cross-regulator glossary for AI in financial services.
+
+> Understanding these definitions matters because regulators will use them.
 
 **Key terms from the AIEOG Lexicon:**
 

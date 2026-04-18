@@ -20,33 +20,51 @@ export const module4: Module = {
       title: 'Beyond the Chat Box',
       content: `Most banking practitioners who describe themselves as "using AI" are using one feature: the chat interface. They type a question, read a response, and move on.
 
-Professional banking AI practice requires understanding the full feature surface of the platforms your institution deploys. The difference between a staff member who uses the chat box and a staff member who uses deep research, file analysis, custom instructions, and voice mode is the difference between occasional productivity gains and systematic workflow transformation.
+> The difference between a staff member who uses the chat box and a staff member who uses deep research, file analysis, custom instructions, and voice mode is the difference between occasional productivity gains and systematic workflow transformation.
 
-This module maps eight features across the primary platforms and shows how each maps to specific banking workflows. The goal is not to use every feature — it is to know which feature to reach for when you encounter a specific task.`,
+Professional banking AI practice requires understanding the full feature surface of the platforms your institution deploys. This module maps eight features across the primary platforms and shows how each maps to specific banking workflows. The goal is not to use every feature — it is to know which feature to reach for when you encounter a specific task.`,
     },
     {
       id: 'm4-feature-principles',
       title: 'Feature Selection Principles',
       content: `Choosing the right feature is a professional judgment, not a technical skill. Apply these principles:
 
-**Match feature to output type:** Deep Research produces cited, synthesis-heavy outputs. File Analysis works with uploaded documents. Voice Mode enables hands-free interaction. Custom Instructions shape every conversation. Knowing which feature produces which output type eliminates wasted prompting attempts.
+**Match feature to output type:**
 
-**Match platform to workflow:** ChatGPT's Deep Research is optimized for broad synthesis. Claude's extended context is best for long documents. Perplexity's search grounding is best for cited regulatory research. Microsoft 365 Copilot's value is in its integration with your institutional data — Outlook, Teams, SharePoint. The same task may produce meaningfully different outputs on different platforms.
+Deep Research produces cited, synthesis-heavy outputs. File Analysis works with uploaded documents. Voice Mode enables hands-free interaction. Custom Instructions shape every conversation. Knowing which feature produces which output type eliminates wasted prompting attempts.
 
-**Respect data classification:** File Analysis requires uploading a document to the AI platform. Before doing so, apply the three-tier data classification framework from Module 5. Do not upload Tier 3 (Highly Restricted) documents to any consumer AI platform, regardless of the platform's enterprise commitments.`,
+**Match platform to workflow:**
+
+ChatGPT's Deep Research is optimized for broad synthesis. Claude's extended context is best for long documents. Perplexity's search grounding is best for cited regulatory research. Microsoft 365 Copilot's value is in its integration with your institutional data — Outlook, Teams, SharePoint. The same task may produce meaningfully different outputs on different platforms.
+
+**Respect data classification:**
+
+File Analysis requires uploading a document to the AI platform. Before doing so, apply the three-tier data classification framework from Module 5.
+
+> Do not upload Tier 3 (Highly Restricted) documents to any consumer AI platform, regardless of the platform's enterprise commitments.`,
     },
     {
       id: 'm4-role-spotlights',
       title: 'Role-Specific Feature Clusters',
       content: `The following spotlights map platform features to the four primary staff roles in community banking. Your onboarding role selection activates the relevant spotlight in the course interface.
 
-**Lending:** Focus on File Analysis for loan document quality control and real-time web search for sectoral market research. ChatGPT's file upload for analyzing loan files, and Perplexity for citing comparable market conditions, are the two highest-ROI features for lending staff.
+**Lending:**
 
-**Compliance:** Use Perplexity for deep, cited regulatory research and NotebookLM for semantic querying of policy documents. The principle for compliance use is "cited logic only" — every AI-generated compliance finding must trace to a named source. Never use AI-generated compliance content without verifying the citation.
+Focus on File Analysis for loan document quality control and real-time web search for sectoral market research. ChatGPT's file upload for analyzing loan files, and Perplexity for citing comparable market conditions, are the two highest-ROI features for lending staff.
 
-**Operations:** Meeting summary generation (Microsoft 365 Copilot in Teams or ChatGPT with transcript upload) and exception report analysis are the highest-value operations use cases. The objective is reducing administrative latency — time spent on meeting notes, report formatting, and routine correspondence.
+**Compliance:**
 
-**Marketing:** Precise image generation for campaign mockups (using ChatGPT with DALL-E or Midjourney via institutional account) and brand voice preservation via Custom Instructions in ChatGPT Projects or Claude Projects. The key discipline is maintaining institutional tone — AI-generated marketing copy must be reviewed against brand standards before use.`,
+Use Perplexity for deep, cited regulatory research and NotebookLM for semantic querying of policy documents.
+
+> The principle for compliance use is "cited logic only" — every AI-generated compliance finding must trace to a named source. Never use AI-generated compliance content without verifying the citation.
+
+**Operations:**
+
+Meeting summary generation (Microsoft 365 Copilot in Teams or ChatGPT with transcript upload) and exception report analysis are the highest-value operations use cases. The objective is reducing administrative latency — time spent on meeting notes, report formatting, and routine correspondence.
+
+**Marketing:**
+
+Precise image generation for campaign mockups (using ChatGPT with DALL-E or Midjourney via institutional account) and brand voice preservation via Custom Instructions in ChatGPT Projects or Claude Projects. The key discipline is maintaining institutional tone — AI-generated marketing copy must be reviewed against brand standards before use.`,
     },
     {
       id: 'm4-feature-discovery-tutorials',
@@ -57,27 +75,41 @@ This module maps eight features across the primary platforms and shows how each 
 
 **Lending: CRE Market Intelligence via Deep Research**
 
-Open ChatGPT with Deep Research mode enabled (requires Plus subscription). Paste the CRE lending trends prompt (ID: m4-lending-deep-research) and replace [YOUR STATE/REGION] with your market. Deep Research will spend several minutes browsing current sources and produce a cited market intelligence brief suitable for a loan committee presentation. This is the difference between "I searched online" and "I have a sourced market brief."
+1. Open ChatGPT with Deep Research mode enabled (requires Plus subscription).
+2. Paste the CRE lending trends prompt (ID: m4-lending-deep-research) and replace [YOUR STATE/REGION] with your market.
+3. Deep Research will spend several minutes browsing current sources and produce a cited market intelligence brief suitable for a loan committee presentation.
+
+> This is the difference between "I searched online" and "I have a sourced market brief."
 
 **Compliance: Regulatory Research via Perplexity**
 
-Open Perplexity and paste the CFPB overdraft guidance prompt (ID: m4-compliance-perplexity). Perplexity grounds every response in cited web sources — making it the strongest platform for regulatory research where citation is non-negotiable. Every claim in the response will have a linked source you can verify.
+1. Open Perplexity and paste the CFPB overdraft guidance prompt (ID: m4-compliance-perplexity).
+2. Perplexity grounds every response in cited web sources — making it the strongest platform for regulatory research where citation is non-negotiable.
+3. Every claim in the response will have a linked source you can verify.
 
 **Operations: Meeting Summary Custom Instructions**
 
-Open ChatGPT Settings and paste the meeting summary Custom Instruction (ID: m4-operations-custom-instructions). This creates a persistent format that applies to every conversation — turning ChatGPT into a dedicated meeting documentation tool. Test it by pasting notes from a recent meeting (with customer names removed) and see the structured output.
+1. Open ChatGPT Settings and paste the meeting summary Custom Instruction (ID: m4-operations-custom-instructions).
+2. This creates a persistent format that applies to every conversation — turning ChatGPT into a dedicated meeting documentation tool.
+3. Test it by pasting notes from a recent meeting (with customer names removed) and see the structured output.
 
 **Finance: Balance Sheet Variance Analysis via File Upload**
 
-Open ChatGPT with Code Interpreter enabled. Paste the variance analysis prompt (ID: m4-finance-file-upload) and upload two periods of balance sheet data. The AI will produce a variance table with materiality flags and plain-language explanations — the kind of output that goes directly into a board report.
+1. Open ChatGPT with Code Interpreter enabled.
+2. Paste the variance analysis prompt (ID: m4-finance-file-upload) and upload two periods of balance sheet data.
+3. The AI will produce a variance table with materiality flags and plain-language explanations — the kind of output that goes directly into a board report.
 
 **Marketing: Social Media Campaign via Gemini**
 
-Open Gemini Advanced and paste the social media prompt (ID: m4-marketing-gemini). Replace the [PLACEHOLDER] values with a real or planned product. Gemini will produce five posts across two channels with built-in compliance constraints — no superlatives, no competitor comparisons, required regulatory disclosures included.
+1. Open Gemini Advanced and paste the social media prompt (ID: m4-marketing-gemini).
+2. Replace the [PLACEHOLDER] values with a real or planned product.
+3. Gemini will produce five posts across two channels with built-in compliance constraints — no superlatives, no competitor comparisons, required regulatory disclosures included.
 
 **IT / Executive: Policy Knowledge Base via NotebookLM**
 
-Open NotebookLM and follow the step-by-step setup in the prompt (ID: m4-it-notebooklm). Upload five policy documents to create a searchable knowledge base that answers natural-language questions grounded only in your actual documents. This is the foundation for an institutional AI reference system.
+1. Open NotebookLM and follow the step-by-step setup in the prompt (ID: m4-it-notebooklm).
+2. Upload five policy documents to create a searchable knowledge base that answers natural-language questions grounded only in your actual documents.
+3. This is the foundation for an institutional AI reference system.
 
 All prompts are available in the [Prompt Library](/courses/aibi-p/prompt-library) for easy copying.
 

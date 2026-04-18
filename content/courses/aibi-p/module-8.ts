@@ -22,7 +22,9 @@ The Module 8 objective is to take the skill you built in Module 7 and put it thr
 
 **Why iteration matters:**
 
-The first version of any skill is built from intuition — what you think the AI needs to know to do the task well. The second version is built from evidence — what you learned from watching the AI's actual outputs on real inputs. The gap between version 1.0 and version 1.2 is almost always the difference between an AI tool that occasionally disappoints and one that reliably performs.`,
+> The first version of any skill is built from intuition. The second version is built from evidence.
+
+The gap between version 1.0 and version 1.2 is almost always the difference between an AI tool that occasionally disappoints and one that reliably performs.`,
     },
     {
       id: 'm8-litmus-test',
@@ -51,7 +53,7 @@ After every skill run, ask one question: "Did I use this output directly, or did
 - Added caveats or removed inappropriate content: likely a Constraints failure. Make the guardrail explicit.
 - Rewrote from scratch: the Role or Context is too generic. The skill is not grounded in the right expertise or institutional setting.
 
-Document every correction in the Gotcha Section as a binding instruction. This is how a skill learns.`,
+> Document every correction in the Gotcha Section as a binding instruction. This is how a skill learns.`,
     },
     {
       id: 'm8-iteration-protocol',
@@ -63,17 +65,18 @@ Document every correction in the Gotcha Section as a binding instruction. This i
 Run your skill against at least three real inputs from your actual workflow. Do not use ideal, clean examples — use messy, incomplete, or edge-case inputs that represent what you actually encounter. Observe the outputs carefully.
 
 Questions to ask of each output:
-- Did the AI follow the Role specification? Did it produce expert-level outputs or generic ones?
-- Did the Task get executed precisely? Were the specific deliverables produced?
-- Was the Format correct? Did the output match the specified structure?
-- Were the Constraints respected? Did anything appear that the constraints should have prevented?
-- What did the output contain that surprised you — positively or negatively?
+
+1. Did the AI follow the Role specification? Did it produce expert-level outputs or generic ones?
+2. Did the Task get executed precisely? Were the specific deliverables produced?
+3. Was the Format correct? Did the output match the specified structure?
+4. Were the Constraints respected? Did anything appear that the constraints should have prevented?
+5. What did the output contain that surprised you — positively or negatively?
 
 **Step 2: Diagnose**
 
 Categorize each failure or unexpected output by component. "The AI produced bullets when I asked for a table" is a Format failure. "The AI made a compliance determination instead of flagging for review" is a Constraint failure. "The output didn't account for the specific risk framework I work with" is a Context failure.
 
-This categorization step matters because it prevents the common mistake of patching symptoms rather than root causes. Adding another sentence to a bloated system prompt is often less effective than identifying the specific component that failed and rewriting it precisely.
+> Categorize by component to fix root causes, not symptoms. Adding another sentence to a bloated system prompt is often less effective than rewriting the specific component that failed.
 
 **Step 3: Revise and Version**
 
@@ -86,7 +89,9 @@ Re-test after each revision to verify the fix worked and did not introduce new f
     {
       id: 'm8-degrees-of-freedom',
       title: 'Degrees of Freedom: Calibrating Constraint Tightness',
-      content: `One of the most consequential design decisions in any skill is how tightly to constrain the AI's behavior. The answer is not "as tight as possible" — it is "tight where variance is a liability, loose where judgment adds value."
+      content: `One of the most consequential design decisions in any skill is how tightly to constrain the AI's behavior.
+
+> The answer is not "as tight as possible" — it is "tight where variance is a liability, loose where judgment adds value."
 
 **Tight constraints — compliance and operational tasks**
 
@@ -114,7 +119,9 @@ Examples: Competitive landscape research (loose — you want unexpected observat
 
 **The calibration question:**
 
-For every constraint you write, ask: "Am I preventing a genuine failure mode, or am I constraining out of anxiety about what the AI might do?" Constraints written from anxiety produce brittle skills that break on legitimate inputs. Constraints written from observed failure patterns produce skills that get consistently better.`,
+> For every constraint you write, ask: "Am I preventing a genuine failure mode, or am I constraining out of anxiety about what the AI might do?"
+
+Constraints written from anxiety produce brittle skills that break on legitimate inputs. Constraints written from observed failure patterns produce skills that get consistently better.`,
     },
     {
       id: 'm8-ab-testing',
@@ -126,9 +133,10 @@ For every constraint you write, ask: "Am I preventing a genuine failure mode, or
 Before retiring version 1 of a skill, run both versions against the same set of inputs — ideally the ones that prompted the revision in the first place, plus at least two inputs that were working well before.
 
 Questions to evaluate:
-- Does version 2 fix the specific failure that prompted the revision?
-- Does version 2 maintain the performance that version 1 had on inputs that were working?
-- Is version 2 producing genuinely better outputs, or merely different outputs?
+
+1. Does version 2 fix the specific failure that prompted the revision?
+2. Does version 2 maintain the performance that version 1 had on inputs that were working?
+3. Is version 2 producing genuinely better outputs, or merely different outputs?
 
 The last question is the hardest to answer objectively. "Different" is not the same as "better." A version 2 output that reads more formally is not necessarily more useful than a version 1 output that was clearer and more actionable. Evaluate against the actual use case: will this output require less manual correction? Does it match the required format more precisely? Does it flag the right items for human review?
 
@@ -140,7 +148,9 @@ A lending analyst revises their Loan QC Skill to flag missing items with [PRIORI
 
 **Practical A/B testing in community banking:**
 
-Run both versions on the same three to five real work inputs from the past week. Do not use invented or idealized examples — use the actual messy, variable inputs your workflow produces. Score each output on one criterion only: how much manual correction did it require? The version requiring less correction is better.`,
+Run both versions on the same three to five real work inputs from the past week. Do not use invented or idealized examples — use the actual messy, variable inputs your workflow produces.
+
+> Score each output on one criterion only: how much manual correction did it require? The version requiring less correction is better.`,
     },
     {
       id: 'm8-skill-portability',
@@ -150,18 +160,17 @@ Run both versions on the same three to five real work inputs from the past week.
 **Cross-platform compatibility rules:**
 
 1. **Write in plain language, not prompt syntax.** Avoid platform-specific constructs like ChatGPT's special tags or Claude's XML-style formatting. Plain, instructional prose works across all major platforms.
-
 2. **Test on your primary platform first.** Optimize for the platform you use daily. Cross-platform compatibility is a bonus, not a first-order requirement.
-
 3. **Store skills as .md files.** Markdown is the universal format. A skill stored as a .md file can be pasted into any platform's configuration interface without conversion.
-
 4. **Version-track your skills.** As platforms update, skill behavior can shift. Keeping version notes and re-testing periodically catches platform-driven regressions.
 
 **Skills as institutional assets:**
 
 A well-built skill has value beyond the individual who created it. A Loan QC Skill built by your most experienced credit analyst represents institutional knowledge that can be shared with every lending staff member. A Compliance Narrative Skill built by your BSA Officer captures regulatory interpretation expertise that would otherwise exist only in that officer's head.
 
-Skills are institutional knowledge made portable and repeatable. The Sharing Ladder in the activity below formalizes this progression from personal tool to institutional asset.`,
+> Skills are institutional knowledge made portable and repeatable.
+
+The Sharing Ladder in the activity below formalizes this progression from personal tool to institutional asset.`,
     },
     {
       id: 'm8-when-to-reevaluate',
@@ -173,26 +182,40 @@ A skill that passes all five review triggers without changes is a healthy skill.
     {
       id: 'm8-margin-of-error-progression',
       title: 'The Margin of Error Progression Framework',
-      content: `Not all AI use cases carry the same consequence if the AI makes an error. The Margin of Error Progression Framework categorizes banking AI use cases by their consequence of failure — and recommends different verification protocols accordingly.
+      content: `> Not all AI use cases carry the same consequence if the AI makes an error.
+
+The Margin of Error Progression Framework categorizes banking AI use cases by their consequence of failure — and recommends different verification protocols accordingly.
 
 **Category A — Low Consequence (First Draft)**
+
 Examples: Drafting internal communications, creating meeting agendas, formatting reports, brainstorming ideas, creating training materials.
+
 Error consequence: Easily corrected by a human reviewer. An error in a draft internal memo is caught before it goes anywhere.
+
 Verification protocol: Single review by the author. Check for factual accuracy and tone. No secondary review required.
 
 **Category B — Moderate Consequence (Verify Before Use)**
+
 Examples: Customer-facing communications drafts, policy summaries, research synthesis, competitive analysis.
+
 Error consequence: Reaches a customer or external audience if uncaught. A hallucinated fact in a member newsletter creates trust risk.
+
 Verification protocol: Author review plus one additional check against primary sources for any specific claims. Primary source verification for any cited statistics or regulatory references.
 
 **Category C — High Consequence (Requires Validation)**
+
 Examples: Compliance findings, risk assessments, credit analysis inputs, SAR narrative elements.
+
 Error consequence: May influence a regulatory filing, credit decision, or risk management action.
+
 Verification protocol: Full independent verification against primary sources. Human expert review before use. AI output treated as a first-draft research input, not a final determination.
 
 **Category D — Critical (AI Assistance Only)**
+
 Examples: BSA/AML determinations, credit decisions, final compliance assessments, exam responses.
+
 Error consequence: Regulatory, legal, or credit risk impact if wrong.
+
 Verification protocol: AI provides supporting analysis only. The determination is made entirely by a qualified human. The AI output is cited as a research input in the work file, not as the basis for the decision.`,
     },
   ],

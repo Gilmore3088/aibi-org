@@ -24,27 +24,33 @@ Microsoft 365 is the dominant productivity suite in community banking. If your i
 
 This module maps what you already have, what requires activation, and what requires budget. Before any institution adopts a paid third-party AI subscription, this inventory should be completed.
 
-**The stability principle:** The most durable AI strategy is built on tools your institution already controls, has assessed for data protection, and has vendor relationships with. Layering new tools on top of an unassessed foundation creates compounding risk.`,
+**The stability principle:**
+
+> The most durable AI strategy is built on tools your institution already controls, has assessed for data protection, and has vendor relationships with. Layering new tools on top of an unassessed foundation creates compounding risk.`,
     },
     {
       id: 'm3-m365-path',
       title: 'The M365 Copilot Activation Path',
       content: `Microsoft 365 Copilot is an institutional-grade AI add-on that integrates directly with Outlook, Teams, Word, Excel, PowerPoint, and SharePoint. It operates entirely within your Microsoft tenant — your data does not leave your organization's environment.
 
-**Critical data protection note:** When you use Microsoft 365 Copilot with your institutional account, your prompts do not train the global Microsoft model. Data stays within your tenant boundary. This is the fundamental difference between an institutional AI deployment and a consumer AI tool — and it is the reason TPRM review of M365 Copilot has a different risk profile than consumer ChatGPT.
+**Critical data protection note:**
+
+> When you use Microsoft 365 Copilot with your institutional account, your prompts do not train the global Microsoft model. Data stays within your tenant boundary. This is the fundamental difference between an institutional AI deployment and a consumer AI tool.
+
+This is the reason TPRM review of M365 Copilot has a different risk profile than consumer ChatGPT.
 
 **Activation requires:**
-- An eligible Microsoft 365 license (E3, E5, or Business Premium)
-- Purchase of the Copilot add-on license ($30/user/month as of 2025)
-- Global Admin provisioning via the Microsoft Admin Center
-- Optional but recommended: Microsoft Purview data governance review before rollout
+1. An eligible Microsoft 365 license (E3, E5, or Business Premium)
+2. Purchase of the Copilot add-on license ($30/user/month as of 2025)
+3. Global Admin provisioning via the Microsoft Admin Center
+4. Optional but recommended: Microsoft Purview data governance review before rollout
 
 For institutions on legacy Office 365 plans, Copilot is not available — migration to Microsoft 365 infrastructure is required first.`,
     },
     {
       id: 'm3-free-vs-paid',
       title: 'The Free vs. Paid Decision',
-      content: `The choice between free and paid AI tiers is not a cost question — it is a capability and compliance question.
+      content: `> The choice between free and paid AI tiers is not a cost question — it is a capability and compliance question.
 
 **What free tiers give you:**
 - Access to the model for general-purpose tasks
@@ -60,9 +66,10 @@ For institutions on legacy Office 365 plans, Copilot is not available — migrat
 - Priority access during high-demand periods
 
 **Why banking staff specifically need paid tiers:**
+
 The "your data trains the model" risk of free tiers creates a compliance exposure for anything beyond Tier 1 (public) data. If you are using AI for any task involving internal documents, policy language, or work-related context, the paid enterprise-grade commitment is necessary for compliant use under your institution's data governance framework.
 
-The ROI calculation is straightforward: if AI saves a staff member 30 minutes per day on drafting and research tasks, the $20-30/month subscription cost pays back in under two hours of saved time per month.`,
+> The ROI calculation is straightforward: if AI saves a staff member 30 minutes per day on drafting and research tasks, the $20-30/month subscription cost pays back in under two hours of saved time per month.`,
     },
     {
       id: 'm3-it-query',
@@ -75,9 +82,9 @@ This is a standard IT query — not an unusual request. Most IT administrators w
 
 **What you are looking for in the IT response:**
 
-- Do we have Microsoft 365 E3, E5, or Business Premium?
-- Has the Copilot add-on been purchased?
-- Is my specific account licensed for Copilot?
+1. Do we have Microsoft 365 E3, E5, or Business Premium?
+2. Has the Copilot add-on been purchased?
+3. Is my specific account licensed for Copilot?
 
 All three must be true for Copilot to work in your Outlook, Teams, and Word. A "yes" on the first question but "no" on the second means your institution has the eligible base license but has not yet purchased the add-on.
 
@@ -90,7 +97,9 @@ The Microsoft 365 Copilot add-on is priced at $30 per user per month, billed thr
       title: 'First Try: Hands-On Tutorials',
       content: `The concepts above become real when you use them. The three tutorials below walk you through your first interaction with three different AI platforms — each using a structured, banking-specific prompt.
 
-**These are not demonstrations. They are exercises.** Copy the prompt, paste it into the platform, and see what the AI produces. The goal is not perfection — it is your first data point on what a structured prompt produces compared to a vague question.
+> These are not demonstrations. They are exercises. The goal is not perfection — it is your first data point on what a structured prompt produces compared to a vague question.
+
+Copy the prompt, paste it into the platform, and see what the AI produces.
 
 Each tutorial takes under 10 minutes. Complete at least one before moving to Module 4.
 
@@ -128,7 +137,9 @@ For consumer AI tools (ChatGPT free, Claude free, Gemini free), the answers are 
 - Enterprise security commitments require a paid business account
 - Data handling policies vary by provider and may change
 
-The practical rule for any banking staff member: **treat every free-tier consumer AI prompt as a public document.** Only share information through that interface that you would be comfortable posting publicly.`,
+**The practical rule for any banking staff member:**
+
+> Treat every free-tier consumer AI prompt as a public document. Only share information through that interface that you would be comfortable posting publicly.`,
     },
   ],
   tables: [

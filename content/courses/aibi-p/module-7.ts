@@ -18,7 +18,7 @@ export const module7: Module = {
     {
       id: 'm7-opening',
       title: 'Precision is Engineered, Not Accidental',
-      content: `Precision in banking AI is not accidental — it is engineered.
+      content: `> Precision in banking AI is not accidental — it is engineered.
 
 The practitioners who get the most from AI tools are not the ones who have "figured out prompting." They are the ones who have invested 20-30 minutes building skills that make consistent performance automatic.
 
@@ -45,7 +45,7 @@ Best practice: Start with "You are a [specific expertise]..." and add 1-2 senten
 
 State the objective explicitly and completely. What does this skill need to do? What inputs will it receive? What constitutes a successful output?
 
-Best practice: Use action verbs. "Analyze," "Extract," "Draft," "Identify," "Flag," "Compare." Avoid passive or vague language: "help," "review," "look at."
+Best practice: Use action verbs — "Analyze," "Extract," "Draft," "Identify," "Flag," "Compare." Avoid passive or vague language: "help," "review," "look at."
 
 **F — Format**
 
@@ -57,7 +57,7 @@ Best practice: Name the format and specify the structure. "A Markdown table with
 
 List the guardrails. What should the skill never do? What boundaries must every output respect?
 
-Best practice: Write constraints as "never" or "always" statements. "Never provide a definitive regulatory determination — flag for human review." "Always cite the specific policy section when referencing internal procedures."`,
+> Write constraints as "never" or "always" statements. "Never provide a definitive regulatory determination — flag for human review." "Always cite the specific policy section when referencing internal procedures."`,
     },
     {
       id: 'm7-role-specific-placeholders',
@@ -114,7 +114,7 @@ All five skill prompts are available in the [Prompt Library](/courses/aibi-p/pro
 
 **The Context Binding Rule**
 
-Ask one question about every piece of context you consider including:
+> Ask one question about every piece of context: is it about the skill, or about you and your organization?
 
 - Is this context *about the skill* — specific to this task, traveling with this skill, used only in this context? If yes, put it inside the skill.
 - Is this context *about you or your organization* — shared across multiple skills, maintained separately, or likely to change independently? If yes, point to it externally (a shared reference file, a project-level document, your CLAUDE.md or equivalent project context).
@@ -138,12 +138,12 @@ A Compliance skill that embeds your institution's entire acceptable use policy a
 
 Conversely, a Loan QC skill that references an external checklist file — and the checklist gets moved or renamed — will silently fail. The checklist is specific to that skill and should travel with it.
 
-The rule of thumb: "about the skill" = inside. "About you or your org" = outside.`,
+> "About the skill" = inside. "About you or your org" = outside.`,
     },
     {
       id: 'm7-scoping-rule',
       title: 'The Scoping Rule: One Clear Job Per Skill',
-      content: `**One clear job per skill. If you cannot describe what the skill does in a single sentence, it is probably two skills.**
+      content: `> One clear job per skill. If you cannot describe what the skill does in a single sentence, it is probably two skills.
 
 This is the most important structural rule in skill design. Violating it produces skills that are inconsistent, hard to debug, and difficult to maintain.
 
@@ -164,7 +164,7 @@ Write one sentence describing what this skill does. If the sentence requires "an
 
 Three narrow skills are easier to maintain than one broad skill. Each can be tested independently. Each can be improved without breaking the others. Each can be shared selectively — a Loan Processor may need the checklist skill but not the narrative skill. The narrow scope also makes the skill easier to explain to a colleague who wants to use it.
 
-When two skills consistently run in sequence — checklist output feeds narrative input — that is a candidate for skill chaining, an advanced pattern covered in the AiBI-S curriculum. For now, build them separately and run them manually in sequence.`,
+> When two skills consistently run in sequence, that is a candidate for skill chaining — an advanced pattern covered in the AiBI-S curriculum. For now, build them separately and run them manually in sequence.`,
     },
     {
       id: 'm7-four-starter-skills',
@@ -226,7 +226,9 @@ The answer for your first skills is clear: **build your own.**
 
 **Why building your own first skills matters:**
 
-The act of building is the learning. Writing a Role definition forces you to articulate exactly what expertise this task requires. Writing a Constraint list forces you to think through what could go wrong. Writing a Gotcha Section after your first test run forces you to observe AI failure modes rather than assume competence.
+> The act of building is the learning.
+
+Writing a Role definition forces you to articulate exactly what expertise this task requires. Writing a Constraint list forces you to think through what could go wrong. Writing a Gotcha Section after your first test run forces you to observe AI failure modes rather than assume competence.
 
 A banker who downloads a pre-built Compliance skill and uses it without building their own first cannot diagnose why it fails on an unusual input. A banker who built their own skill — even an imperfect one — has the mental model to debug any skill they encounter.
 
@@ -241,7 +243,9 @@ After you have built and iterated your first two or three skills, reuse becomes 
 
 **The rule of thumb:**
 
-Reuse structure. Own the content. A borrowed template with your institution's real context, your actual output templates, and your observed failure patterns is a better skill than a from-scratch build that lacks those specifics. But you need to have built from scratch once to know what "from scratch" requires.`,
+> Reuse structure. Own the content.
+
+A borrowed template with your institution's real context, your actual output templates, and your observed failure patterns is a better skill than a from-scratch build that lacks those specifics. But you need to have built from scratch once to know what "from scratch" requires.`,
     },
     {
       id: 'm7-export-and-deploy',
@@ -251,32 +255,39 @@ Reuse structure. Own the content. A borrowed template with your institution's re
 **How to deploy your skill:**
 
 **ChatGPT (Custom Instructions):**
+
 1. Open ChatGPT and navigate to Settings > Custom Instructions
 2. Paste your skill content into the "What would you like ChatGPT to know?" field
 3. Click Save — the skill now applies to every ChatGPT conversation
 
 **ChatGPT (Project):**
+
 1. Create a new Project in ChatGPT
 2. Open Project Settings
 3. Paste your skill content into the Custom Instructions field for the Project
 4. All conversations within this Project will use this skill
 
 **Claude (Project):**
+
 1. Create a new Project in Claude
 2. Open Project Settings (gear icon)
 3. Paste your skill content into the Project Instructions field
 4. All conversations within this Project will use this skill
 
 **Gemini (Gem):**
+
 1. Open Gem Manager in Gemini Advanced
 2. Create a new Gem
 3. Paste your skill content into the instructions field
 4. Save and name your Gem for future use
 
 **Microsoft 365 Copilot:**
+
 Copilot does not have staff-level custom instructions in the same way. Contact your IT department about institutional-level Copilot configuration options. In the interim, paste your skill content as the opening message in any new Copilot conversation.
 
-**The .md file:** Your exported skill file is human-readable and version-controllable. Consider saving it to your OneDrive or SharePoint so you can share it with colleagues and update it as your skill improves.`,
+**The .md file:**
+
+Your exported skill file is human-readable and version-controllable. Consider saving it to your OneDrive or SharePoint so you can share it with colleagues and update it as your skill improves.`,
     },
   ],
   tables: [

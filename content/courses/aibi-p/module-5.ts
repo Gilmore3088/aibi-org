@@ -20,7 +20,7 @@ export const module5: Module = {
 
 The 2025 Gartner Peer Community survey (via Jack Henry & Associates) found that 57% of financial institutions report struggling with AI skill gaps, and 55% have no AI governance framework yet. These two statistics together describe the shadow AI condition: staff are using tools their institutions are not ready to govern.
 
-Shadow AI is not a moral failing — it is a structural gap. Staff who use consumer AI tools to do their jobs better are often the institution's most motivated performers. The solution is not prohibition — it is a governance framework that enables safe, compliant use.
+> Shadow AI is not a moral failing — it is a structural gap. Staff who use consumer AI tools to do their jobs better are often the institution's most motivated performers. The solution is not prohibition — it is a governance framework that enables safe, compliant use.
 
 **The three sources of shadow AI risk in community banking:**
 
@@ -36,46 +36,66 @@ Shadow AI is not a moral failing — it is a structural gap. Staff who use consu
       content: `The fundamental framework for all AI interactions at a community bank or credit union is three-tier data classification. Before sharing any information in an AI prompt, classify it. Your classification determines which tools and settings are permissible.
 
 **Tier 1 — Public Information**
+
 Definition: Information that is already public or would cause no harm if disclosed. Examples: marketing copy, general industry news, publicly available regulatory guidance, published interest rates, job postings.
+
 Usage protocol: Unrestricted. Can be used in free-tier consumer AI tools, public AI APIs, or any platform.
 
 **Tier 2 — Internal Only**
+
 Definition: Information that is not public but does not directly identify customers or contain sensitive institutional strategy. Examples: internal policy documents, employee training materials, process maps, internal memos, non-client-specific performance data, procedure guides.
+
 Usage protocol: Sandboxed use only. Requires a paid enterprise AI account with data training opt-out, OR your institution's approved sandboxed AI environment. Cannot be used in free-tier consumer tools.
 
 **Tier 3 — Highly Restricted**
+
 Definition: Personally identifiable information (PII), customer financial data, account numbers, credit decisions, strategic M&A details, SAR filings, and any data subject to specific regulatory protection.
+
 Usage protocol: Prohibited in AI tools. Do not paste Tier 3 data into any AI prompt, including enterprise-grade tools. If AI analysis of this data is required, it must be done through a formally reviewed, purpose-built integration with appropriate data governance controls.
 
-**The practical rule:** When in doubt, classify up. If you are unsure whether information is Tier 2 or Tier 3, treat it as Tier 3.`,
+> When in doubt, classify up. If you are unsure whether information is Tier 2 or Tier 3, treat it as Tier 3.`,
     },
     {
       id: 'm5-hallucination-patterns',
       title: 'Six Banking Hallucination Patterns',
       content: `The AIEOG AI Lexicon (February 2026) defines hallucination as "an AI output that is factually incorrect, fabricated, or misleading, presented with apparent confidence." In banking, hallucination takes six specific forms that practitioners must recognize.
 
+> Apply the same verification standard to AI outputs that you would apply to outputs from a junior staff member on their first day.
+
 **Pattern 1 — Prompt Blindness**
+
 As users become more familiar with an AI tool's fluency and confidence, they stop scrutinizing its outputs. The AI sounds authoritative — so the output gets used without verification. This is the most common failure pattern and the hardest to self-diagnose.
+
 *Mitigation:* Apply the same verification standard to AI outputs that you would apply to outputs from a junior staff member on their first day.
 
 **Pattern 2 — Data Exfiltration**
+
 Inadvertent disclosure of proprietary, non-public, or Tier 3 data into AI prompts that flow to a model provider's systems. This is not hallucination in the traditional sense — it is a data governance failure that the AI makes technically easy.
+
 *Mitigation:* Apply the three-tier classification before every prompt. Free-tier tools are public infrastructure.
 
 **Pattern 3 — Recursive Logic Bias**
+
 AI systems trained on historical banking data can amplify historical biases — particularly in lending and credit contexts where historical decisions already embedded discriminatory patterns. The AI does not hallucinate in the traditional sense; it accurately reflects a biased dataset. The output is internally consistent but institutionally dangerous.
+
 *Mitigation:* Never use AI outputs in credit decisions without human review by someone trained to identify disparate impact.
 
 **Pattern 4 — Prompt Injection**
+
 Malicious instructions embedded in content that gets fed to an AI system — a document, email, or web page that contains hidden instructions designed to manipulate the AI's behavior or extract information. In banking, this typically surfaces when AI is used to analyze external documents.
+
 *Mitigation:* When using AI to analyze externally-sourced documents (loan applications, vendor contracts, counterparty materials), be aware that the document itself could contain injected instructions.
 
 **Pattern 5 — Hallucination Drift**
+
 The AI generates confident, specific-sounding financial figures, regulatory citations, or case law references that do not exist. This is classic hallucination — the model produces plausible-sounding content that is fabricated. It is particularly dangerous in banking because the outputs (interest rates, regulatory requirements, precedent decisions) are the kinds of specific, citable information that staff want to use directly.
+
 *Mitigation:* Always verify any specific number, citation, regulation reference, or case name against primary sources. AI can help you find things; it cannot reliably guarantee they exist.
 
 **Pattern 6 — Over-Reliance on Confidence**
+
 AI systems express uncertainty poorly. When a model does not know something, it often generates a plausible-sounding answer rather than a clear admission of uncertainty. "I'm not sure, but..." followed by a confidently-stated fabrication is a common failure mode.
+
 *Mitigation:* Explicitly prompt the AI to express uncertainty: "If you are not confident about any part of this response, tell me." Then treat the uncertain portions as requiring independent verification.`,
     },
   ],

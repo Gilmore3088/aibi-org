@@ -18,25 +18,23 @@ export const module9: Module = {
     {
       id: 'm9-opening',
       title: 'Transition from Student to Practitioner',
-      content: `The AiBI-P credential is not awarded for completing coursework. It is awarded for demonstrating professional capability.
+      content: `> The AiBI-P credential is not awarded for completing coursework. It is awarded for demonstrating professional capability.
 
 Your capstone work product is not a test — it is a professional document that you would be prepared to show to your manager, your compliance officer, or your examiner as evidence that you can use AI tools safely, skillfully, and in alignment with your institution's regulatory obligations.
 
 **What you will submit:**
 
 1. **Your Skill File (.md):** The skill you built and iterated in Modules 7 and 8. This is evidence of your ability to engineer precise AI instructions for banking use cases.
-
 2. **Redacted Input Data:** The real-world input you used to test your skill. All Tier 3 data must be redacted — replaced with placeholder text that describes the data type. This demonstrates your data classification competence.
-
 3. **Raw AI Output:** The unedited first response from the AI when you applied your skill to your input. This is preserved as evidence of the gap between raw AI output and production-ready output.
-
 4. **Final Edited Output:** Your curated, production-ready version. The difference between the raw output and the final version demonstrates your judgment — where you accepted the AI's work and where you improved or corrected it.
-
 5. **Practitioner Annotation (4-6 sentences):** Your explanation of the curation decisions you made. Why did you accept certain outputs? What did you change, and why? What regulatory or institutional consideration guided your choices?
 
 **The quality standard:**
 
-Your work product is reviewed against a five-dimension rubric. Accuracy is a hard gate — any work product with hallucinated data, incorrect regulatory citations, or factual errors that were not caught and corrected will not pass. The other dimensions (Completeness, Tone, Judgment, Skill Quality) are scored on a 1-4 scale. A passing work product demonstrates that you can produce AI-assisted banking output that is ready for use in a professional institutional context.`,
+Your work product is reviewed against a five-dimension rubric. Accuracy is a hard gate — any work product with hallucinated data, incorrect regulatory citations, or factual errors that were not caught and corrected will not pass. The other dimensions (Completeness, Tone, Judgment, Skill Quality) are scored on a 1-4 scale.
+
+> A passing work product demonstrates that you can produce AI-assisted banking output that is ready for use in a professional institutional context.`,
     },
     {
       id: 'm9-automation-identification',
@@ -47,23 +45,23 @@ Your work product is reviewed against a five-dimension rubric. Accuracy is a har
 
 Repetitive means the task follows the same pattern every time it is performed, even if the inputs vary. Drafting member response letters is repetitive — the format, tone, and structure are consistent even though the specific issue changes each time. A credit committee presentation that is unique each quarter is not structurally repetitive in the same way.
 
-High AI ROI: Tasks that are structurally repetitive with variable inputs.
-Low AI ROI: Tasks that require significant creative or strategic judgment each time.
+- High AI ROI: Tasks that are structurally repetitive with variable inputs.
+- Low AI ROI: Tasks that require significant creative or strategic judgment each time.
 
 **Question 2: Is accuracy verifiable?**
 
 AI automation is most appropriate where a human can efficiently verify the output's accuracy. A meeting summary can be verified by the meeting participants in under two minutes. A regulatory compliance determination may take a legal review to verify — making AI-only generation more risky.
 
-High AI ROI: Tasks where output accuracy is quickly and reliably verifiable.
-Low AI ROI: Tasks where output verification requires expertise or time comparable to doing the task manually.
+- High AI ROI: Tasks where output accuracy is quickly and reliably verifiable.
+- Low AI ROI: Tasks where output verification requires expertise or time comparable to doing the task manually.
 
 **Question 3: Is the data classification risk manageable?**
 
 Every AI automation touches data. Some automations are blocked by data classification — no amount of efficiency gain justifies pasting Tier 3 data into an unsanctioned AI tool. The question is whether the automation can be designed to work with Tier 1 or Tier 2 data only, or whether it requires an institutional-grade integration with appropriate data governance.
 
-High AI ROI: Tasks that operate on Tier 1 or Tier 2 data.
-Conditional: Tasks requiring Tier 3 data that can be handled through a formally reviewed, institution-approved AI integration.
-Block: Tasks requiring Tier 3 data that cannot be handled without an approved integration.`,
+- High AI ROI: Tasks that operate on Tier 1 or Tier 2 data.
+- Conditional: Tasks requiring Tier 3 data that can be handled through a formally reviewed, institution-approved AI integration.
+- Block: Tasks requiring Tier 3 data that cannot be handled without an approved integration.`,
     },
     {
       id: 'm9-role-specific-examples',
@@ -111,25 +109,30 @@ These automations have high potential value but require formal IT and compliance
     {
       id: 'm9-quality-standard',
       title: 'The Quality Standard',
-      content: `The AiBI-P credential represents a demonstrated capability standard, not a course completion certificate. The distinction matters.
+      content: `> The AiBI-P credential represents a demonstrated capability standard, not a course completion certificate.
 
 Anyone can watch videos and pass a quiz. The AiBI-P work product requirement exists because community banking AI proficiency is a professional capability — and professional capabilities are demonstrated through work, not through test scores.
 
 **The five-dimension rubric:**
 
 **Accuracy (Hard Gate)**
+
 The work product must be factually accurate. Any hallucinated data, incorrect regulatory citations, or factual errors that were not caught in the editing process result in automatic non-qualification. The rubric score of 1 on Accuracy is a hard gate regardless of scores on other dimensions. This reflects the non-negotiable standard for banking output: accuracy is not a nice-to-have.
 
 **Completeness**
+
 Does the work product address all the required elements? Is the skill complete (all five components present and functional)? Is the annotation sufficiently detailed? Is the editing process documented? A score of 3 or 4 on Completeness means nothing critical is missing.
 
 **Tone**
+
 Does the work product reflect professional banking communication standards? Is the AI output's tone appropriate for the use case? Did the practitioner correct tone issues in editing? A score of 3 or 4 on Tone means the final output reads as professional institutional communication.
 
 **Judgment**
+
 Did the practitioner make good editorial decisions? Did they catch and correct the AI's errors? Did they add value through their editing, or did they rubber-stamp the raw output? A score of 3 or 4 on Judgment means the annotation demonstrates thoughtful professional reasoning.
 
 **Skill Quality**
+
 Is the skill well-constructed using the RTFC Framework? Does it produce consistent, useful outputs? A score of 3 or 4 on Skill Quality means the skill is an asset the practitioner can use in their daily work — not just an exercise.`,
     },
   ],
