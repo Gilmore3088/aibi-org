@@ -47,19 +47,11 @@ export function ServiceTierCards({ showHeader = false }: ServiceTierCardsProps) 
 
               {/* Content */}
               <div className="flex-1 pb-12">
-                <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1 mb-3">
-                  <h3
-                    className="font-serif text-xl md:text-2xl text-[color:var(--color-ink)] leading-tight"
-                  >
-                    {tier.name}
-                  </h3>
-                  <span className="font-mono text-xs tabular-nums text-[color:var(--color-slate)]">
-                    {tier.priceRange}
-                  </span>
-                  <span className="font-mono text-[10px] uppercase tracking-wider text-[color:var(--color-slate)]">
-                    {tier.duration}
-                  </span>
-                </div>
+                <h3
+                  className="font-serif text-xl md:text-2xl text-[color:var(--color-ink)] leading-tight mb-3"
+                >
+                  {tier.name}
+                </h3>
 
                 <p className="text-sm text-[color:var(--color-ink)]/75 leading-relaxed mb-4 max-w-xl">
                   {tier.summary}
