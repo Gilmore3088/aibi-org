@@ -11,6 +11,7 @@ import { ModuleHeader } from '../_components/ModuleHeader';
 import { ContentSection } from '../_components/ContentSection';
 import { ContentTable } from '../_components/ContentTable';
 import { ModuleContentClient } from '../_components/ModuleContentClient';
+import { ModuleTabs } from '../_components/ModuleTabs';
 import { getEnrollment } from '../_lib/getEnrollment';
 import { canAccessModule } from '../_lib/courseProgress';
 import { getRoleSpotlight } from '../_lib/contentRouting';
@@ -103,13 +104,13 @@ export default async function ModulePage({ params }: ModulePageParams) {
         keyOutput={mod.keyOutput}
       />
 
-      {/* Content area */}
+      {/* Content area — tabbed: Learn / Practice / Apply */}
       <article className="max-w-4xl mx-auto px-6 lg:px-8 py-8">
 
-        {/* Role-specific deep-dive callout — shown only when this module is high-value for the learner's role */}
+        {/* Role-specific deep-dive callout — shown above tabs */}
         {deepDiveFocus && rolePath && (
           <div
-            className="mb-10 flex items-start gap-4 rounded-sm px-6 py-5"
+            className="mb-8 flex items-start gap-4 rounded-sm px-6 py-5"
             style={{
               backgroundColor: 'var(--color-parch)',
               border: '1px solid rgba(181,81,46,0.2)',
@@ -142,48 +143,46 @@ export default async function ModulePage({ params }: ModulePageParams) {
           </div>
         )}
 
-        {/* Sections */}
-        {mod.sections.map((section) => (
-          <ContentSection key={section.id} section={section} />
-        ))}
-
-        {/* Tables — supplementary data after prose sections */}
-        {mod.tables && mod.tables.length > 0 && (
-          <div className="mt-4 mb-16">
-            {mod.tables.map((table) => (
-              <ContentTable key={table.id} table={table} />
-            ))}
-          </div>
-        )}
-
-        {/* AI Practice Sandbox — renders for any module with a sandbox config */}
-        {SANDBOX_CONFIGS[moduleNum] && (
-          <div className="mb-12">
-            <AIPracticeSandbox
-              moduleId={`aibi-p-module-${moduleNum}`}
-              product="aibi-p"
-              sandboxConfig={SANDBOX_CONFIGS[moduleNum]!}
-            />
-          </div>
-        )}
-
-        {/*
-          ModuleContentClient — client boundary for interactive activities and navigation.
-          Owns moduleComplete state, renders ActivitySection + ModuleNavigation together.
-          Passes server-fetched existingResponses so previously submitted activities are read-only.
-        */}
-        <ModuleContentClient
-          activities={mod.activities}
-          enrollmentId={enrollment.id}
+        <ModuleTabs
           moduleNumber={moduleNum}
-          existingResponses={existingResponses}
-          isLastModule={isLastModule}
-          isAlreadyCompleted={isAlreadyCompleted}
-          tables={mod.tables}
-          learnerRole={
-            enrollment.onboarding_answers
-              ? getRoleSpotlight(enrollment.onboarding_answers)
-              : 'other'
+          learnContent={
+            <>
+              {mod.sections.map((section) => (
+                <ContentSection key={section.id} section={section} />
+              ))}
+              {mod.tables && mod.tables.length > 0 && (
+                <div className="mt-4">
+                  {mod.tables.map((table) => (
+                    <ContentTable key={table.id} table={table} />
+                  ))}
+                </div>
+              )}
+            </>
+          }
+          practiceContent={
+            SANDBOX_CONFIGS[moduleNum] ? (
+              <AIPracticeSandbox
+                moduleId={`aibi-p-module-${moduleNum}`}
+                product="aibi-p"
+                sandboxConfig={SANDBOX_CONFIGS[moduleNum]!}
+              />
+            ) : null
+          }
+          applyContent={
+            <ModuleContentClient
+              activities={mod.activities}
+              enrollmentId={enrollment.id}
+              moduleNumber={moduleNum}
+              existingResponses={existingResponses}
+              isLastModule={isLastModule}
+              isAlreadyCompleted={isAlreadyCompleted}
+              tables={mod.tables}
+              learnerRole={
+                enrollment.onboarding_answers
+                  ? getRoleSpotlight(enrollment.onboarding_answers)
+                  : 'other'
+              }
+            />
           }
         />
       </article>
