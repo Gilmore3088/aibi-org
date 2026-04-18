@@ -32,7 +32,7 @@ export function WeekSidebar({ completedWeeks, currentWeek }: WeekSidebarProps) {
 
   return (
     <aside
-      className="fixed left-0 top-0 h-full w-72 bg-[color:var(--color-linen)] border-r border-[color:var(--color-cobalt)]/10 hidden lg:flex flex-col pt-16 z-40"
+      className="fixed left-0 top-[70px] h-[calc(100vh-70px)] w-72 bg-[color:var(--color-linen)] border-r border-[color:var(--color-cobalt)]/10 hidden lg:flex flex-col pt-4 z-30"
       aria-label="Course weeks"
     >
       {/* Brand area */}

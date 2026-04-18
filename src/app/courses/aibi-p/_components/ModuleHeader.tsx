@@ -1,4 +1,4 @@
-// ModuleHeader — full-width pillar-colored header band
+// ModuleHeader — compact sticky pillar-colored header band
 // Server Component: no interactivity needed
 
 import { PILLAR_META } from '@content/courses/aibi-p';
@@ -24,38 +24,29 @@ export function ModuleHeader({
 
   return (
     <header
-      className="w-full px-8 py-8 lg:py-10"
+      className="sticky top-[70px] z-40 w-full px-8 py-4"
       style={{ backgroundColor: meta.colorVar }}
     >
-      {/* Accent line */}
-      <div
-        className="w-8 h-px mb-4 bg-white/40"
-        aria-hidden="true"
-      />
-
-      {/* Module number */}
-      <div className="font-mono text-[11px] uppercase tracking-[0.25em] text-white/70 mb-3">
-        Module {formattedNumber}
-      </div>
-
-      {/* Title */}
-      <h1 className="font-serif italic text-3xl lg:text-4xl text-white leading-tight mb-4">
-        {title}
-      </h1>
-
-      {/* Meta row */}
-      <div className="flex flex-wrap items-center gap-6">
-        <div className="font-mono text-[11px] tracking-widest text-white/70 uppercase">
-          <span className="text-white/50 mr-1">Time</span>
-          {estimatedMinutes} min
+      <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+        <div className="flex items-baseline gap-3">
+          <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-white/70">
+            Module {formattedNumber}
+          </span>
+          <h1 className="font-serif italic text-2xl lg:text-3xl text-white leading-tight">
+            {title}
+          </h1>
         </div>
-        <div className="font-mono text-[11px] tracking-widest text-white/70 uppercase">
-          <span className="text-white/50 mr-1">Output</span>
-          {keyOutput}
-        </div>
-        <div className="font-mono text-[11px] tracking-widest text-white/70 uppercase">
-          <span className="text-white/50 mr-1">Pillar</span>
-          {meta.label}
+
+        <div className="flex items-center gap-6">
+          <span className="font-mono text-[10px] tracking-widest text-white/60 uppercase">
+            {estimatedMinutes} min
+          </span>
+          <span className="font-mono text-[10px] tracking-widest text-white/60 uppercase">
+            {keyOutput}
+          </span>
+          <span className="font-mono text-[10px] tracking-widest text-white/60 uppercase">
+            {meta.label}
+          </span>
         </div>
       </div>
     </header>

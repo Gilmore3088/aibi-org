@@ -60,9 +60,9 @@ export function CourseTabs({
 
   return (
     <div>
-      {/* Tab bar */}
+      {/* Tab bar — sticky below module header */}
       <div
-        className="border-b border-[color:var(--color-ink)]/10 mb-8"
+        className="sticky top-[120px] z-30 bg-[color:var(--color-linen)] border-b border-[color:var(--color-ink)]/10 mb-6"
         role="tablist"
         aria-label="Course sections"
       >
