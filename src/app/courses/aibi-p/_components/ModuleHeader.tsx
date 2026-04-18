@@ -24,12 +24,12 @@ export function ModuleHeader({
 
   return (
     <header
-      className="w-full px-8 py-12 lg:py-16"
+      className="w-full px-8 py-8 lg:py-10"
       style={{ backgroundColor: meta.colorVar }}
     >
       {/* Accent line */}
       <div
-        className="w-8 h-px mb-6 bg-white/40"
+        className="w-8 h-px mb-4 bg-white/40"
         aria-hidden="true"
       />
 
@@ -39,7 +39,7 @@ export function ModuleHeader({
       </div>
 
       {/* Title */}
-      <h1 className="font-serif italic text-4xl lg:text-5xl text-white leading-tight mb-6">
+      <h1 className="font-serif italic text-3xl lg:text-4xl text-white leading-tight mb-4">
         {title}
       </h1>
 
