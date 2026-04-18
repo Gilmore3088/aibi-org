@@ -28,6 +28,129 @@ interface AIPracticeSandboxProps {
 }
 
 // ---------------------------------------------------------------------------
+// SampleDataViewer — renders sample data as browsable cards instead of
+// a raw text dump. Detects markdown headings (## Scenario N:) and splits
+// into collapsible cards. CSV data renders as a scrollable table.
+// ---------------------------------------------------------------------------
+
+function SampleDataViewer({
+  content,
+  type,
+  accentColor,
+  onSendToChat,
+}: {
+  content: string;
+  type: 'csv' | 'document';
+  accentColor: string;
+  onSendToChat: (text: string) => void;
+}) {
+  const [expandedCard, setExpandedCard] = useState<number | null>(null);
+
+  if (type === 'csv') {
+    // Render CSV as a scrollable table
+    const lines = content.trim().split('\n');
+    const headers = lines[0]?.split(',') ?? [];
+    const rows = lines.slice(1).map((line) => line.split(','));
+    return (
+      <div className="max-h-64 overflow-auto rounded-[2px] border border-[color:var(--color-ink)]/10">
+        <table className="w-full text-left">
+          <thead className="sticky top-0 bg-[color:var(--color-parch)]">
+            <tr>
+              {headers.map((h, i) => (
+                <th key={i} className="px-3 py-2 font-mono text-[9px] uppercase tracking-wider text-[color:var(--color-slate)] border-b border-[color:var(--color-ink)]/10 whitespace-nowrap">
+                  {h.trim()}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((row, i) => (
+              <tr key={i} className="border-b border-[color:var(--color-ink)]/5 hover:bg-[color:var(--color-parch)]/50">
+                {row.map((cell, j) => (
+                  <td key={j} className="px-3 py-2 font-sans text-xs text-[color:var(--color-ink)] whitespace-nowrap">
+                    {cell.trim()}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+
+  // Document type: split on ## headings into cards
+  const sections = content.split(/^## /m).filter(Boolean);
+
+  if (sections.length <= 1) {
+    // No headings found — show as plain text (shorter docs)
+    return (
+      <pre className="max-h-48 overflow-y-auto rounded-[2px] bg-[color:var(--color-parch)] p-3 font-mono text-xs text-[color:var(--color-ink)]">
+        {content}
+      </pre>
+    );
+  }
+
+  // Parse each section into title + body
+  const cards = sections.map((section) => {
+    const firstNewline = section.indexOf('\n');
+    const title = firstNewline > -1 ? section.slice(0, firstNewline).trim() : section.trim();
+    const body = firstNewline > -1 ? section.slice(firstNewline).trim() : '';
+    return { title, body };
+  });
+
+  return (
+    <div className="space-y-2 max-h-72 overflow-y-auto pr-1">
+      {cards.map((card, idx) => {
+        const isExpanded = expandedCard === idx;
+        return (
+          <div
+            key={idx}
+            className="rounded-[2px] border border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)] overflow-hidden"
+          >
+            <button
+              type="button"
+              onClick={() => setExpandedCard(isExpanded ? null : idx)}
+              className="w-full flex items-center justify-between gap-3 px-4 py-3 text-left hover:bg-[color:var(--color-parch-dark)] transition-colors"
+              aria-expanded={isExpanded}
+            >
+              <span className="font-sans text-sm font-medium text-[color:var(--color-ink)] leading-snug">
+                {card.title}
+              </span>
+              <svg
+                className="w-3 h-3 shrink-0 transition-transform duration-200"
+                style={{ color: accentColor, transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)' }}
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                aria-hidden="true"
+              >
+                <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+              </svg>
+            </button>
+
+            {isExpanded && card.body && (
+              <div className="px-4 pb-3 border-t border-[color:var(--color-ink)]/5">
+                <p className="font-sans text-xs text-[color:var(--color-ink)]/75 leading-relaxed mt-2 mb-3">
+                  {card.body}
+                </p>
+                <button
+                  type="button"
+                  onClick={() => onSendToChat(`Analyze Scenario: ${card.title}\n\n${card.body}`)}
+                  className="font-sans text-[10px] font-semibold uppercase tracking-[1.2px] rounded-[2px] px-3 py-1.5 transition-colors hover:opacity-80"
+                  style={{ color: 'var(--color-linen)', backgroundColor: accentColor }}
+                >
+                  Ask AI about this
+                </button>
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Component
 // ---------------------------------------------------------------------------
 
@@ -363,9 +486,21 @@ export function AIPracticeSandbox({
         </div>
 
         {dataExpanded && (
-          <pre className="mt-3 max-h-48 overflow-y-auto rounded-[2px] bg-[color:var(--color-parch)] p-3 font-mono text-xs text-[color:var(--color-ink)]">
-            {dataContent ?? 'Loading...'}
-          </pre>
+          <div className="mt-3">
+            {dataContent ? (
+              <SampleDataViewer
+                content={dataContent}
+                type={selectedData.type}
+                accentColor={accentColor}
+                onSendToChat={(text) => {
+                  setInput((prev) => prev ? `${prev}\n\n${text}` : text);
+                  textareaRef.current?.focus();
+                }}
+              />
+            ) : (
+              <p className="font-mono text-xs text-[color:var(--color-slate)] p-3">Loading...</p>
+            )}
+          </div>
         )}
       </div>
 
