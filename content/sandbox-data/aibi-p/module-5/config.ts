@@ -44,8 +44,8 @@ export const module5SandboxConfig: SandboxConfig = {
   ],
 
   suggestedPrompts: [
-    'Classify each row in the dataset by data tier and explain your reasoning. Flag any rows where the current handling is inadequate for the assigned tier.',
-    'Analyze this vendor agreement for data handling risks. Identify clauses that would concern a compliance officer at a community bank, and suggest specific language improvements.',
-    'Based on the classified dataset, create a data classification policy recommendation that includes handling procedures for each tier and a decision tree for borderline cases.',
+    'Using the data classification scenarios in the sample data, classify each row by data tier and explain your reasoning. Flag any rows where the current handling is inadequate for the assigned tier.',
+    'Review the NovusAI vendor agreement in the sample data for data handling risks. Identify clauses that would concern a compliance officer at a community bank, and suggest specific language improvements.',
+    'Based on the classification scenarios and the vendor agreement in the sample data, create a data classification policy recommendation that includes handling procedures for each tier and a decision tree for borderline cases.',
   ],
 } as const;

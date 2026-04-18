@@ -40,8 +40,8 @@ export const module8SandboxConfig: SandboxConfig = {
   ],
 
   suggestedPrompts: [
-    'Stress test this exception report skill against all 6 failure modes.',
-    'The skill failed on incomplete data. How should I modify the prompt to handle missing fields?',
-    'Generate a stress test report card with Pass/Fail ratings and recommended fixes.',
+    'Using the sample RTFC prompt and the edge case test scenarios provided, stress test the exception report skill against all 6 failure modes.',
+    'Run the incomplete data scenario from the sample edge cases against the loaded RTFC prompt. How should I modify it to handle missing fields?',
+    'Using all six edge case inputs in the sample data, generate a stress test report card with Pass/Fail ratings and recommended fixes for the exception report skill.',
   ],
 } as const;

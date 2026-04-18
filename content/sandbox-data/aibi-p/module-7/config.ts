@@ -38,8 +38,8 @@ export const module7SandboxConfig: SandboxConfig = {
   ],
 
   suggestedPrompts: [
-    'I want to build a skill for summarizing monthly exception reports. Coach me step by step.',
-    'Here is my first attempt at a prompt for loan pre-screening narratives. Score it and help me improve.',
-    'Show me what a 5/5 RTFC prompt looks like for board financial narrative generation.',
+    'Using the skill-building scenarios in the sample data, I want to start with the exception report task. Coach me step by step.',
+    'Pick one of the scenarios from the sample data and show me what a 5/5 RTFC prompt looks like for it.',
+    'Walk me through the lending scenario from the sample data. Help me build a prompt for loan pre-screening narratives.',
   ],
 } as const;

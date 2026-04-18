@@ -74,8 +74,8 @@ export const module4SandboxConfig: SandboxConfig = {
   ],
 
   suggestedPrompts: [
-    'Grade both loan review summaries using the 5-point quality rubric. Which is institutional-grade and why?',
-    'Rewrite the weaker summary to make it institutional-grade. Show what you changed.',
-    'Create a quality checklist a loan officer could use to evaluate any AI-generated review.',
+    'Using the two loan review summaries in the sample data, grade both using the 5-point quality rubric. Which is institutional-grade and why?',
+    'Take the weaker loan review from the sample data and rewrite it to be institutional-grade. Show what you changed.',
+    'Based on the quality differences between the two sample loan reviews, create a checklist a loan officer could use to evaluate any AI-generated review.',
   ],
 } as const;

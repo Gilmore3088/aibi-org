@@ -38,8 +38,8 @@ export const module9SandboxConfig: SandboxConfig = {
   ],
 
   suggestedPrompts: [
-    'I automated the monthly exception report for my operations team. Help me write the narrative.',
-    'Review my draft narrative and tell me where claims need stronger evidence.',
-    'What would make this work product stand out? What is missing?',
+    'Using the portfolio template and strong example in the sample data, help me write a narrative for a skill I built — I automated the monthly exception report for my operations team.',
+    'Review the strong portfolio example in the sample data. What makes it effective, and how can I apply those patterns to my own narrative?',
+    'Using the four-section template from the sample data, walk me through what each section needs. What would make a work product stand out?',
   ],
 } as const;

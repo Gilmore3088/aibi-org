@@ -46,8 +46,8 @@ export const module2SandboxConfig: SandboxConfig = {
   ],
 
   suggestedPrompts: [
-    'Summarize this board memo into 5 bullet points for the CEO\'s morning briefing',
-    'Draft a professional response to this member complaint',
-    'Review this AI acceptable use policy draft and identify missing sections',
+    'Using the Q3 board memo in the sample data, summarize it into 5 bullet points for the CEO\'s morning briefing',
+    'Using the member complaint email in the sample data, draft a professional response that acknowledges their concerns about the NSF fees and proposes a resolution',
+    'Using the AI acceptable use policy draft in the sample data, review it and identify all missing sections with specific recommendations for each gap',
   ],
 } as const;

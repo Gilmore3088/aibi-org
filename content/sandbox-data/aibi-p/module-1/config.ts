@@ -45,8 +45,8 @@ export const module1SandboxConfig: SandboxConfig = {
   ],
 
   suggestedPrompts: [
-    'What regulations apply to Scenario 4 (using ChatGPT for board minutes)? What should the bank do immediately?',
-    'Compare Scenarios 2 and 9 — both involve lending decisions. Which is higher risk and why?',
-    'Which of the 10 scenarios is the most urgent compliance risk? Give me a 3-sentence summary I could tell my CEO.',
+    'Using the AI deployment scenarios in the sample data, what regulations apply to Scenario 4 (using ChatGPT for board minutes)? What should the bank do immediately?',
+    'From the loaded deployment scenarios, compare Scenarios 2 and 9 — both involve lending decisions. Which is higher risk and why?',
+    'Looking at all 10 scenarios in the sample data, which is the most urgent compliance risk? Give me a 3-sentence summary I could tell my CEO.',
   ],
 } as const;

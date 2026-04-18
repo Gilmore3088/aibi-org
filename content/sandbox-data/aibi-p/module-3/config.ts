@@ -52,8 +52,8 @@ export const module3SandboxConfig: SandboxConfig = {
   ],
 
   suggestedPrompts: [
-    'Fact-check this compliance summary. Identify any claims that appear fabricated or incorrect.',
-    'Compare these two AI outputs. Which contains hallucinations and which is factually sound?',
-    'What verification steps should a banker take before sharing AI-generated regulatory content with their board or examiners?',
+    'Using the AI compliance summary in the sample data, fact-check it line by line. Identify any claims that appear fabricated or incorrect.',
+    'Compare the two AI outputs in the sample data — the compliance summary and the governance best practices document. Which contains hallucinations and which is factually sound?',
+    'Based on the hallucinations you found in the sample compliance summary, what verification steps should a banker take before sharing AI-generated regulatory content with their board or examiners?',
   ],
 } as const;

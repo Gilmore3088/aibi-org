@@ -43,8 +43,8 @@ export const module6SandboxConfig: SandboxConfig = {
   ],
 
   suggestedPrompts: [
-    'Diagnose each prompt using the RTFC Framework. What\'s missing?',
-    'Rewrite all three prompts to be institutional-grade. Show before/after with reasoning.',
-    'Which prompt is closest to effective? What one change would make the biggest improvement?',
+    'Using the three weak prompts in the sample data, diagnose each one using the RTFC Framework. What\'s missing?',
+    'Take all three prompts from the sample data and rewrite them to be institutional-grade. Show before/after with reasoning.',
+    'Looking at the three sample prompts, which is closest to effective? What one change would make the biggest improvement?',
   ],
 } as const;
