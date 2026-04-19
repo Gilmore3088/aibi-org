@@ -7,9 +7,11 @@ import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import './globals.css';
 
-// Routes that render WITHOUT the global Header/Footer chrome.
-// Currently only the coming-soon takedown page; remove from this list to
-// restore the normal layout for that route.
+// Routes that render WITHOUT the global Header/Footer chrome — but only
+// when the coming-soon takedown is active. When COMING_SOON is off, every
+// route gets the normal Header/Footer (including /coming-soon if anyone
+// visits it directly). The chromeless treatment exists for the takedown.
+const COMING_SOON_MODE = process.env.COMING_SOON === 'true';
 const CHROMELESS_PATHS: readonly string[] = ['/coming-soon'];
 
 const PLAUSIBLE_DOMAIN = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN;
@@ -95,9 +97,11 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const pathname = (await headers()).get('x-pathname') ?? '/';
-  const chromeless = CHROMELESS_PATHS.some(
-    (path) => pathname === path || pathname.startsWith(`${path}/`),
-  );
+  const chromeless =
+    COMING_SOON_MODE &&
+    CHROMELESS_PATHS.some(
+      (path) => pathname === path || pathname.startsWith(`${path}/`),
+    );
 
   return (
     <html lang="en">
