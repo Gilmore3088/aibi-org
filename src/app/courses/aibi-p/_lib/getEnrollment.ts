@@ -22,6 +22,25 @@ export type EnrollmentData = Pick<
  * Uses getAll/setAll cookie pattern (recommended by @supabase/ssr 0.5+).
  */
 export async function getEnrollment(): Promise<EnrollmentData | null> {
+  // Dev-only enrollment bypass.
+  // Activates ONLY when NODE_ENV !== 'production' AND SKIP_ENROLLMENT_GATE === 'true'.
+  // Returns a synthetic enrolled record so testers can access course content
+  // without a real Supabase enrollment row. Never fires in production — the
+  // NODE_ENV guard is hard-coded and cannot be overridden by env vars.
+  if (
+    process.env.NODE_ENV !== 'production' &&
+    process.env.SKIP_ENROLLMENT_GATE === 'true'
+  ) {
+    return {
+      id: 'dev-bypass',
+      user_id: 'dev-bypass',
+      completed_modules: [],
+      current_module: 1,
+      enrolled_at: new Date().toISOString(),
+      onboarding_answers: null,
+    };
+  }
+
   if (!isSupabaseConfigured()) {
     return null;
   }
