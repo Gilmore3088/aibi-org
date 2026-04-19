@@ -1,12 +1,12 @@
 'use client';
 
 import { useEffect, useReducer } from 'react';
-import type { Unit, UnitLearnerState, ChatTurn, RubricScore, BeatContent } from '../../../../../../../lib/aibi-s/types';
+import type { Unit, UnitLearnerState, ChatTurn, RubricScore } from '../../../../../../../lib/aibi-s/types';
 import { advance, initialState, canAdvance, type Action } from '../../../../../../../lib/aibi-s/beat-state';
 import { loadUnitState, saveUnitState, clearUnitState } from '../../../../../../../lib/aibi-s/persist';
-import { ModuleHeader } from '../../../../_components/ModuleHeader';
+import { CourseItemHeader } from '@/lib/course-harness/CourseItemHeader';
 import { CourseTabs } from '@/lib/course-harness/CourseTabs';
-import type { TabDef } from '@/lib/course-harness/types';
+import type { TabDef, ResolvedCourseItem, ResolvedCourseSection, CourseConfig } from '@/lib/course-harness/types';
 import { LearnBeat } from './LearnBeat';
 import { PracticeBeat } from './PracticeBeat';
 import { ApplyBeat } from './ApplyBeat';
@@ -18,7 +18,14 @@ function reducer(state: UnitLearnerState, action: { unit: Unit; action: Action }
   return advance(action.unit, state, action.action);
 }
 
-export function UnitRenderer({ unit }: { readonly unit: Unit }) {
+interface UnitRendererProps {
+  readonly unit: Unit;
+  readonly resolvedItem: ResolvedCourseItem;
+  readonly resolvedSection: ResolvedCourseSection;
+  readonly config: CourseConfig;
+}
+
+export function UnitRenderer({ unit, resolvedItem, resolvedSection, config }: UnitRendererProps) {
   const saved = typeof window !== 'undefined' ? loadUnitState(unit.id) : null;
   const [state, dispatch] = useReducer(reducer, saved ?? initialState(unit));
 
@@ -37,10 +44,10 @@ export function UnitRenderer({ unit }: { readonly unit: Unit }) {
 
   return (
     <div>
-      <ModuleHeader
-        moduleNumber={1}
-        title={unit.title}
-        pillar="awareness"
+      <CourseItemHeader
+        item={resolvedItem}
+        section={resolvedSection}
+        config={config}
         estimatedMinutes={45}
         keyOutput="AI Governance Policy"
       />
