@@ -3,17 +3,34 @@
 // Must NOT be imported in Client Components — PDF renderer is server-only.
 //
 // Typography per CERT-02 (non-negotiable):
-//   Recipient name: Helvetica-Bold (Cormorant proxy), 28pt
-//   Designation:    Helvetica-Bold uppercase + letterSpacing (Cormorant SC proxy), 18pt
-//   Institution:    Helvetica-Bold uppercase + letterSpacing, 14pt
-//   Date issued:    Courier (DM Mono proxy), 12pt
-//   Certificate ID: Courier, 10pt
-//   Verify URL:     Courier, 10pt
-//   Assessment note: Helvetica-Oblique (DM Sans italic proxy), 10pt
+//   Recipient name: Cormorant Bold, 28pt
+//   Designation:    Cormorant Bold uppercase + letterSpacing, 18pt
+//   Institution:    Cormorant Bold uppercase + letterSpacing, 14pt
+//   Date issued:    DM Mono, 12pt
+//   Certificate ID: DM Mono, 10pt
+//   Verify URL:     DM Mono, 10pt
+//   Assessment note: Cormorant Italic, 10pt
 //   AiBI seal watermark: 8% opacity text-based seal (no image dependency)
 
 import React from 'react';
-import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+import path from 'node:path';
+import { Document, Page, Text, View, StyleSheet, Font } from '@react-pdf/renderer';
+
+// Register brand fonts once at module load (safe at module scope for Next.js serverless).
+Font.register({
+  family: 'Cormorant',
+  fonts: [
+    { src: path.join(process.cwd(), 'public/fonts/Cormorant-Regular.ttf') },
+    { src: path.join(process.cwd(), 'public/fonts/Cormorant-Bold.ttf'), fontWeight: 'bold' },
+    { src: path.join(process.cwd(), 'public/fonts/Cormorant-Italic.ttf'), fontStyle: 'italic' },
+  ],
+});
+Font.register({
+  family: 'DM Mono',
+  fonts: [
+    { src: path.join(process.cwd(), 'public/fonts/DMMono-Regular.ttf') },
+  ],
+});
 
 export interface CertificateDocumentProps {
   readonly holderName: string;
@@ -36,7 +53,7 @@ const MUTED = '#8a7060';
 const styles = StyleSheet.create({
   page: {
     backgroundColor: PARCH,
-    fontFamily: 'Helvetica',
+    fontFamily: 'Cormorant',
     color: INK,
     padding: 0,
   },
@@ -95,13 +112,14 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   sealWatermarkText: {
-    fontFamily: 'Helvetica-Bold',
+    fontFamily: 'Cormorant',
+    fontWeight: 'bold',
     fontSize: 72,
     color: INK,
     letterSpacing: 4,
   },
   sealWatermarkSubtext: {
-    fontFamily: 'Helvetica',
+    fontFamily: 'Cormorant',
     fontSize: 14,
     color: INK,
     textTransform: 'uppercase',
@@ -115,13 +133,15 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   presentsText: {
-    fontFamily: 'Helvetica-Oblique',
+    fontFamily: 'Cormorant',
+    fontStyle: 'italic',
     fontSize: 14,
     color: PRIMARY,
     marginBottom: 8,
   },
   certificateTitle: {
-    fontFamily: 'Helvetica-Bold',
+    fontFamily: 'Cormorant',
+    fontWeight: 'bold',
     fontSize: 36,
     color: INK,
     textTransform: 'uppercase',
@@ -141,20 +161,22 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
   },
   honorsText: {
-    fontFamily: 'Helvetica-Oblique',
+    fontFamily: 'Cormorant',
+    fontStyle: 'italic',
     fontSize: 12,
     color: MUTED,
     marginBottom: 12,
   },
   holderName: {
-    fontFamily: 'Helvetica-Bold',
+    fontFamily: 'Cormorant',
+    fontWeight: 'bold',
     fontSize: 28,
     color: PRIMARY,
     marginBottom: 14,
     textAlign: 'center',
   },
   curriculumLabel: {
-    fontFamily: 'Helvetica',
+    fontFamily: 'Cormorant',
     fontSize: 9,
     color: INK,
     textTransform: 'uppercase',
@@ -162,7 +184,8 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   designation: {
-    fontFamily: 'Helvetica-Bold',
+    fontFamily: 'Cormorant',
+    fontWeight: 'bold',
     fontSize: 18,
     color: INK,
     textTransform: 'uppercase',
@@ -170,7 +193,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   institution: {
-    fontFamily: 'Helvetica-Bold',
+    fontFamily: 'Cormorant',
+    fontWeight: 'bold',
     fontSize: 14,
     color: MUTED,
     textTransform: 'uppercase',
@@ -201,7 +225,7 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   metadataLabel: {
-    fontFamily: 'Helvetica',
+    fontFamily: 'Cormorant',
     fontSize: 7,
     color: MUTED,
     textTransform: 'uppercase',
@@ -209,12 +233,12 @@ const styles = StyleSheet.create({
     marginBottom: 3,
   },
   metadataDate: {
-    fontFamily: 'Courier',
+    fontFamily: 'DM Mono',
     fontSize: 12,
     color: INK,
   },
   metadataCertId: {
-    fontFamily: 'Courier',
+    fontFamily: 'DM Mono',
     fontSize: 10,
     color: INK,
   },
@@ -245,12 +269,14 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   sealText: {
-    fontFamily: 'Helvetica-BoldOblique',
+    fontFamily: 'Cormorant',
+    fontWeight: 'bold',
+    fontStyle: 'italic',
     fontSize: 20,
     color: PRIMARY,
   },
   sealSubtext: {
-    fontFamily: 'Helvetica',
+    fontFamily: 'Cormorant',
     fontSize: 6,
     color: MUTED,
     textTransform: 'uppercase',
@@ -268,7 +294,9 @@ const styles = StyleSheet.create({
     maxWidth: 160,
   },
   signatureName: {
-    fontFamily: 'Helvetica-BoldOblique',
+    fontFamily: 'Cormorant',
+    fontWeight: 'bold',
+    fontStyle: 'italic',
     fontSize: 16,
     color: INK,
     marginBottom: 4,
@@ -282,7 +310,7 @@ const styles = StyleSheet.create({
     opacity: 0.4,
   },
   signatureTitle: {
-    fontFamily: 'Helvetica',
+    fontFamily: 'Cormorant',
     fontSize: 7,
     color: MUTED,
     textTransform: 'uppercase',
@@ -299,14 +327,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   footerVerifyUrl: {
-    fontFamily: 'Courier',
+    fontFamily: 'DM Mono',
     fontSize: 10,
     color: MUTED,
     opacity: 0.7,
     textAlign: 'center',
   },
   assessmentNote: {
-    fontFamily: 'Helvetica-Oblique',
+    fontFamily: 'Cormorant',
+    fontStyle: 'italic',
     fontSize: 10,
     color: MUTED,
     opacity: 0.8,
