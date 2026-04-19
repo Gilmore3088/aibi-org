@@ -1,8 +1,10 @@
-import Anthropic from '@anthropic-ai/sdk';
-import { NextRequest, NextResponse } from 'next/server';
-import { canContinueChat } from '../../../../../lib/aibi-s/chat-limiter';
-import type { ChatTurn } from '../../../../../lib/aibi-s/types';
-import { opsUnit1_1 } from '../../../../../content/courses/aibi-s/ops/unit-1-1';
+import type { NextRequest } from 'next/server';
+import { createFeatureHandler } from '@/lib/ai-harness/feature-handler';
+import type { ChatRequest, Message } from '@/lib/ai-harness/types';
+import type { ChatTurn } from '@/../lib/aibi-s/types';
+import { aibiSConfig } from '@/../content/courses/aibi-s/course.config';
+import { canContinueChat } from '@/../lib/aibi-s/chat-limiter';
+import { opsUnit1_1 } from '@/../content/courses/aibi-s/ops/unit-1-1';
 
 export const runtime = 'nodejs';
 export const maxDuration = 30;
@@ -14,69 +16,77 @@ interface ChatRequestBody {
   readonly turns: readonly ChatTurn[];
 }
 
-interface ChatResponseBody {
+interface ChatResponseShape {
   readonly personaTurn: ChatTurn;
   readonly allowMoreTurns: boolean;
 }
 
-export async function POST(req: NextRequest): Promise<NextResponse<ChatResponseBody | { error: string }>> {
-  const body = (await req.json()) as ChatRequestBody;
+// Stash per-request context between buildRequest and shapeResponse via a
+// symbol-keyed property on the NextRequest object (avoids module-level state).
+const CTX = Symbol('chat-ctx');
 
-  if (body.unitId !== '1.1' || body.trackCode !== 'ops') {
-    return NextResponse.json({ error: 'Unit/track not supported in prototype' }, { status: 400 });
-  }
-
-  const defendBeat = opsUnit1_1.beats.find((b) => b.kind === 'defend');
-  if (!defendBeat || defendBeat.kind !== 'defend') {
-    return NextResponse.json({ error: 'Defend beat not found' }, { status: 500 });
-  }
-  const persona = defendBeat.persona;
-
-  const continuation = canContinueChat(body.turns, persona.maxChatTurns);
-  if (!continuation.allowed || continuation.nextRole !== 'persona') {
-    return NextResponse.json({ error: 'Chat exhausted' }, { status: 409 });
-  }
-
-  const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-
-  const messages: Anthropic.MessageParam[] = [];
-  messages.push({
-    role: 'user',
-    content: `This is the learner's written rebuttal to your challenge memo:\n\n---\n${body.rebuttal}\n---`,
-  });
-  for (const turn of body.turns) {
-    messages.push({
-      role: turn.role === 'persona' ? 'assistant' : 'user',
-      content: turn.content,
-    });
-  }
-
-  const resp = await anthropic.messages.create({
-    model: 'claude-opus-4-6',
-    max_tokens: 400,
-    system: persona.chatSystemPrompt,
-    messages,
-  });
-
-  const textBlock = resp.content.find((b) => b.type === 'text');
-  const content = textBlock && textBlock.type === 'text' ? textBlock.text : '';
-
-  const nextIndex = body.turns.length + 1;
-  const personaTurn: ChatTurn = {
-    role: 'persona',
-    content,
-    turnIndex: nextIndex,
-  };
-
-  const hypothetical: ChatTurn[] = [
-    ...body.turns,
-    personaTurn,
-    { role: 'learner', turnIndex: nextIndex + 1, content: '' },
-  ];
-  const afterLearnerContinuation = canContinueChat(hypothetical, persona.maxChatTurns);
-
-  return NextResponse.json({
-    personaTurn,
-    allowMoreTurns: afterLearnerContinuation.allowed,
-  });
+interface ChatCtx {
+  turns: readonly ChatTurn[];
+  maxTurns: number;
+  nextIndex: number;
 }
+
+export const { POST } = createFeatureHandler<ChatResponseShape>({
+  config: aibiSConfig,
+  featureId: 'personaDefense',
+  buildRequest: async (req: NextRequest, featureDef): Promise<ChatRequest> => {
+    const body = (await req.json()) as ChatRequestBody;
+    if (body.unitId !== '1.1' || body.trackCode !== 'ops') {
+      throw new Error('Unit/track not supported in prototype');
+    }
+    const defendBeat = opsUnit1_1.beats.find((b) => b.kind === 'defend');
+    if (!defendBeat || defendBeat.kind !== 'defend') {
+      throw new Error('Defend beat not found');
+    }
+    const persona = defendBeat.persona;
+    const continuation = canContinueChat(body.turns, persona.maxChatTurns);
+    if (!continuation.allowed || continuation.nextRole !== 'persona') {
+      throw new Error('Chat exhausted');
+    }
+
+    (req as unknown as Record<symbol, ChatCtx>)[CTX] = {
+      turns: body.turns,
+      maxTurns: persona.maxChatTurns,
+      nextIndex: body.turns.length + 1,
+    };
+
+    const messages: Message[] = [];
+    messages.push({
+      role: 'user',
+      content: `This is the learner's written rebuttal to your challenge memo:\n\n---\n${body.rebuttal}\n---`,
+    });
+    for (const turn of body.turns) {
+      messages.push({
+        role: turn.role === 'persona' ? 'assistant' : 'user',
+        content: turn.content,
+      });
+    }
+
+    return {
+      model: featureDef.model,
+      maxTokens: featureDef.maxTokens,
+      system: persona.chatSystemPrompt,
+      messages,
+    };
+  },
+  shapeResponse: (resp, req): ChatResponseShape => {
+    const ctx = (req as unknown as Record<symbol, ChatCtx>)[CTX];
+    const personaTurn: ChatTurn = {
+      role: 'persona',
+      content: resp.text,
+      turnIndex: ctx.nextIndex,
+    };
+    const hypothetical: ChatTurn[] = [
+      ...ctx.turns,
+      personaTurn,
+      { role: 'learner', turnIndex: ctx.nextIndex + 1, content: '' },
+    ];
+    const after = canContinueChat(hypothetical, ctx.maxTurns);
+    return { personaTurn, allowMoreTurns: after.allowed };
+  },
+});

@@ -1,8 +1,10 @@
-import Anthropic from '@anthropic-ai/sdk';
-import { NextRequest, NextResponse } from 'next/server';
-import { buildJudgePrompt, parseRubricResponse } from '../../../../../lib/aibi-s/rubric';
-import type { ChatTurn, RubricScore } from '../../../../../lib/aibi-s/types';
-import { opsUnit1_1 } from '../../../../../content/courses/aibi-s/ops/unit-1-1';
+import type { NextRequest } from 'next/server';
+import { createFeatureHandler } from '@/lib/ai-harness/feature-handler';
+import type { ChatRequest } from '@/lib/ai-harness/types';
+import { buildJudgePrompt, parseRubricResponse } from '@/../lib/aibi-s/rubric';
+import type { ChatTurn, RubricScore, Rubric } from '@/../lib/aibi-s/types';
+import { aibiSConfig } from '@/../content/courses/aibi-s/course.config';
+import { opsUnit1_1 } from '@/../content/courses/aibi-s/ops/unit-1-1';
 
 export const runtime = 'nodejs';
 export const maxDuration = 30;
@@ -14,38 +16,35 @@ interface GradeRequestBody {
   readonly turns: readonly ChatTurn[];
 }
 
-export async function POST(req: NextRequest): Promise<NextResponse<RubricScore | { error: string }>> {
-  const body = (await req.json()) as GradeRequestBody;
+const RUBRIC = Symbol('grade-rubric');
 
-  if (body.unitId !== '1.1' || body.trackCode !== 'ops') {
-    return NextResponse.json({ error: 'Unit/track not supported in prototype' }, { status: 400 });
-  }
+export const { POST } = createFeatureHandler<RubricScore>({
+  config: aibiSConfig,
+  featureId: 'defenseGrader',
+  buildRequest: async (req: NextRequest, featureDef): Promise<ChatRequest> => {
+    const body = (await req.json()) as GradeRequestBody;
+    if (body.unitId !== '1.1' || body.trackCode !== 'ops') {
+      throw new Error('Unit/track not supported in prototype');
+    }
+    const defendBeat = opsUnit1_1.beats.find((b) => b.kind === 'defend');
+    if (!defendBeat || defendBeat.kind !== 'defend') {
+      throw new Error('Defend beat not found');
+    }
 
-  const defendBeat = opsUnit1_1.beats.find((b) => b.kind === 'defend');
-  if (!defendBeat || defendBeat.kind !== 'defend') {
-    return NextResponse.json({ error: 'Defend beat not found' }, { status: 500 });
-  }
+    (req as unknown as Record<symbol, Rubric>)[RUBRIC] = defendBeat.persona.rubric;
 
-  const transcript = body.turns.map((t) => `${t.role}: ${t.content}`);
-  const prompt = buildJudgePrompt(defendBeat.persona.rubric, body.rebuttal, transcript);
+    const transcript = body.turns.map((t) => `${t.role}: ${t.content}`);
+    const prompt = buildJudgePrompt(defendBeat.persona.rubric, body.rebuttal, transcript);
 
-  const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-  const resp = await anthropic.messages.create({
-    model: 'claude-opus-4-6',
-    max_tokens: 1000,
-    system: 'You are a strict but fair grader. Respond ONLY with the requested JSON.',
-    messages: [{ role: 'user', content: prompt }],
-  });
-
-  const textBlock = resp.content.find((b) => b.type === 'text');
-  const raw = textBlock && textBlock.type === 'text' ? textBlock.text : '';
-
-  let score: RubricScore;
-  try {
-    score = parseRubricResponse(raw, defendBeat.persona.rubric);
-  } catch (err) {
-    return NextResponse.json({ error: `Grading parse failed: ${(err as Error).message}` }, { status: 502 });
-  }
-
-  return NextResponse.json(score);
-}
+    return {
+      model: featureDef.model,
+      maxTokens: featureDef.maxTokens,
+      system: 'You are a strict but fair grader. Respond ONLY with the requested JSON.',
+      messages: [{ role: 'user', content: prompt }],
+    };
+  },
+  shapeResponse: (resp, req): RubricScore => {
+    const rubric = (req as unknown as Record<symbol, Rubric>)[RUBRIC];
+    return parseRubricResponse(resp.text, rubric);
+  },
+});
