@@ -163,7 +163,7 @@ Plans:
   4. Phase 08 certificate PDF registers Cormorant + DM Mono TTFs via `Font.register` — no Helvetica-Bold / Courier fallbacks in the generated certificate
 **Plans**: 1 plan
 Plans:
-- [ ] 09-01-PLAN.md — 4 post-UAT fixes: updated_at trigger, Math.max guard, IterationTracker reconciliation (human decision), certificate fonts
+- [x] 09-01-PLAN.md — 4 post-UAT fixes: updated_at trigger, Math.max guard, IterationTracker reconciliation (human decision), certificate fonts
 
 ### Phase 10: Accessibility + Mobile Audit
 **Goal**: WCAG 2.1 AA compliance verified across homepage, assessment, /education, and every /courses/aibi-p/[1-9] module page with Phase 05 UAT gaps (SC4 color-not-sole-indicator, SC5 iPhone 390px) closed
