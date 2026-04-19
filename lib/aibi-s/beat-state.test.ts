@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { initialState, canAdvance, advance, type Action } from './beat-state';
+import { initialState, canAdvance, advance } from './beat-state';
 import type { Unit } from './types';
 
 const fixtureUnit: Unit = {
@@ -105,7 +105,7 @@ describe('beat-state', () => {
 
   it('advance is a no-op when canAdvance is false', () => {
     const s0 = initialState(fixtureUnit);
-    let s = advance(fixtureUnit, s0, { type: 'advance' });
+    const s = advance(fixtureUnit, s0, { type: 'advance' });
     const s2 = advance(fixtureUnit, s, { type: 'advance' });
     expect(s2.currentBeatIndex).toBe(1);
   });
