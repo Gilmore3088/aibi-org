@@ -31,7 +31,7 @@ function StatusIndicator({ status }: { readonly status: ModuleStatus }) {
 export default async function CourseOverviewPage() {
   const enrollment = await getEnrollment();
   const completedModules = enrollment?.completed_modules ?? [];
-  const currentModule = enrollment?.current_module ?? 1;
+  const currentModule = Math.max(1, enrollment?.current_module ?? 1);
   const completedCount = completedModules.length;
 
   return (

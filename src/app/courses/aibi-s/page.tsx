@@ -29,7 +29,7 @@ const COHORT_INFO = {
 export default async function AiBISOverviewPage() {
   const enrollment = await getEnrollment();
   const completedWeeks = enrollment?.completed_modules ?? [];
-  const currentWeek = enrollment?.current_module ?? 1;
+  const currentWeek = Math.max(1, enrollment?.current_module ?? 1);
   const roleTrack = (enrollment?.role_track as RoleTrack | null) ?? null;
   const isEnrolled = enrollment !== null;
 
