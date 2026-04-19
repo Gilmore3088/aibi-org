@@ -23,6 +23,11 @@ Font.register({
     { src: path.join(process.cwd(), 'public/fonts/Cormorant-Regular.ttf') },
     { src: path.join(process.cwd(), 'public/fonts/Cormorant-Bold.ttf'), fontWeight: 'bold' },
     { src: path.join(process.cwd(), 'public/fonts/Cormorant-Italic.ttf'), fontStyle: 'italic' },
+    {
+      src: path.join(process.cwd(), 'public/fonts/Cormorant-BoldItalic.ttf'),
+      fontWeight: 'bold',
+      fontStyle: 'italic',
+    },
   ],
 });
 Font.register({
