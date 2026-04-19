@@ -22,23 +22,23 @@ export const aibiSConfig: CourseConfig = {
       label: 'Phase I — Foundation',
       items: [
         { id: 'u-1.1', number: '1.1', title: 'From Personal Skills to Institutional Assets', href: '/courses/aibi-s/ops/unit/1.1', estimatedMinutes: 45 },
-        { id: 'u-1.2', number: '1.2', title: 'Work Decomposition for Banking Workflows', href: '#', estimatedMinutes: 45, isComingSoon: true },
+        { id: 'u-1.2', number: '1.2', title: 'Work Decomposition for Banking Workflows',     href: '/courses/aibi-s/ops/unit/1.2', estimatedMinutes: 45 },
       ],
     },
     {
       id: 'first-build',
       label: 'Phase II — First Build',
       items: [
-        { id: 'u-2.1', number: '2.1', title: 'Build Your First Departmental Automation', href: '#', estimatedMinutes: 60, isComingSoon: true },
-        { id: 'u-2.2', number: '2.2', title: 'Measure and Evaluate', href: '#', estimatedMinutes: 45, isComingSoon: true },
+        { id: 'u-2.1', number: '2.1', title: 'Build Your First Departmental Automation',      href: '/courses/aibi-s/ops/unit/2.1', estimatedMinutes: 60 },
+        { id: 'u-2.2', number: '2.2', title: 'Measure and Evaluate',                           href: '/courses/aibi-s/ops/unit/2.2', estimatedMinutes: 45 },
       ],
     },
     {
       id: 'scale',
       label: 'Phase III — Scale',
       items: [
-        { id: 'u-3.1', number: '3.1', title: 'Build Your Departmental Skill Library', href: '#', estimatedMinutes: 60, isComingSoon: true },
-        { id: 'u-3.2', number: '3.2', title: 'Capstone and Certification', href: '#', estimatedMinutes: 60, isComingSoon: true },
+        { id: 'u-3.1', number: '3.1', title: 'Build Your Departmental Skill Library',          href: '/courses/aibi-s/ops/unit/3.1', estimatedMinutes: 60 },
+        { id: 'u-3.2', number: '3.2', title: 'Capstone and Certification',                     href: '/courses/aibi-s/ops/unit/3.2', estimatedMinutes: 60 },
       ],
     },
   ],
