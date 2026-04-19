@@ -5,7 +5,8 @@ import type { Unit, UnitLearnerState, ChatTurn, RubricScore, BeatContent } from 
 import { advance, initialState, canAdvance, type Action } from '../../../../../../../lib/aibi-s/beat-state';
 import { loadUnitState, saveUnitState, clearUnitState } from '../../../../../../../lib/aibi-s/persist';
 import { ModuleHeader } from '../../../../_components/ModuleHeader';
-import { CourseTabsS } from '../../../../_components/CourseTabsS';
+import { CourseTabs } from '@/lib/course-harness/CourseTabs';
+import type { TabDef } from '@/lib/course-harness/types';
 import { LearnBeat } from './LearnBeat';
 import { PracticeBeat } from './PracticeBeat';
 import { ApplyBeat } from './ApplyBeat';
@@ -45,77 +46,94 @@ export function UnitRenderer({ unit }: { readonly unit: Unit }) {
       />
 
       <article className="mx-auto px-8 lg:px-16 py-4">
-        <CourseTabsS
-          storagePrefix="aibi-s-u"
-          segmentNumber={1}
-          learnContent={
-            <div className="space-y-8">
-              {learnBeat && learnBeat.kind === 'learn' && (
-                <LearnBeat beat={learnBeat} onAdvance={() => doAction({ type: 'advance' })} />
-              )}
-            </div>
-          }
-          buildContent={
-            <div className="space-y-12">
-              {practiceBeat && practiceBeat.kind === 'practice' && (
-                <PracticeBeat
-                  beat={practiceBeat}
-                  selectedOptionId={state.practiceChoice}
-                  onChoose={(id) => doAction({ type: 'practiceChoose', optionId: id })}
-                  onAdvance={() => doAction({ type: 'advance' })}
-                />
-              )}
-              {applyBeat && applyBeat.kind === 'apply' && (
-                <ApplyBeat
-                  beat={applyBeat}
-                  value={state.applyResponse}
-                  onChange={(v) => doAction({ type: 'applyWrite', text: v })}
-                  onAdvance={() => doAction({ type: 'advance' })}
-                  canAdvance={mayAdvance}
-                />
-              )}
-              {defendBeat && defendBeat.kind === 'defend' && (
-                <DefendBeat
-                  beat={defendBeat}
-                  rebuttal={state.rebuttal}
-                  onRebuttalChange={(v) => doAction({ type: 'rebuttalWrite', text: v })}
-                  turns={state.chatTurns}
-                  onAppendTurn={(t: ChatTurn) => doAction({ type: 'chatAppend', turn: t })}
-                  score={state.rubricScore}
-                  onScore={(s: RubricScore) => doAction({ type: 'rubricScore', score: s })}
-                  onAdvance={() => doAction({ type: 'advance' })}
-                />
-              )}
-            </div>
-          }
-          strategizeContent={
-            <div className="space-y-12">
-              {refineBeat && refineBeat.kind === 'refine' && state.rubricScore && (
-                <RefineBeat
-                  beat={refineBeat}
-                  originalRebuttal={state.rebuttal}
-                  score={state.rubricScore}
-                  refined={state.refinedRebuttal}
-                  onRefine={(v) => doAction({ type: 'refineWrite', text: v })}
-                  onAdvance={() => doAction({ type: 'advance' })}
-                  canAdvance={mayAdvance}
-                />
-              )}
-              {refineBeat && refineBeat.kind === 'refine' && !state.rubricScore && (
-                <p className="italic text-sm text-[color:var(--color-ink)]/60">
-                  Complete the Build phase first — you&apos;ll refine your defended artifact here once graded.
-                </p>
-              )}
-              {captureBeat && captureBeat.kind === 'capture' && (
-                <CaptureBeat
-                  beat={captureBeat}
-                  state={state}
-                  onCapture={() => doAction({ type: 'capture' })}
-                  captured={state.capturedAt !== null}
-                />
-              )}
-            </div>
-          }
+        <CourseTabs
+          storageKey="aibi-s-u-1.1"
+          accentColor="var(--color-cobalt)"
+          tabs={[
+            {
+              id: 'learn',
+              label: 'Learn',
+              sublabel: 'Read the material',
+              content: (
+                <div className="space-y-8">
+                  {learnBeat && learnBeat.kind === 'learn' && (
+                    <LearnBeat beat={learnBeat} onAdvance={() => doAction({ type: 'advance' })} />
+                  )}
+                </div>
+              ),
+            },
+            {
+              id: 'build',
+              label: 'Build',
+              sublabel: 'Practice, apply, defend',
+              content: (
+                <div className="space-y-12">
+                  {practiceBeat && practiceBeat.kind === 'practice' && (
+                    <PracticeBeat
+                      beat={practiceBeat}
+                      selectedOptionId={state.practiceChoice}
+                      onChoose={(id) => doAction({ type: 'practiceChoose', optionId: id })}
+                      onAdvance={() => doAction({ type: 'advance' })}
+                    />
+                  )}
+                  {applyBeat && applyBeat.kind === 'apply' && (
+                    <ApplyBeat
+                      beat={applyBeat}
+                      value={state.applyResponse}
+                      onChange={(v) => doAction({ type: 'applyWrite', text: v })}
+                      onAdvance={() => doAction({ type: 'advance' })}
+                      canAdvance={mayAdvance}
+                    />
+                  )}
+                  {defendBeat && defendBeat.kind === 'defend' && (
+                    <DefendBeat
+                      beat={defendBeat}
+                      rebuttal={state.rebuttal}
+                      onRebuttalChange={(v) => doAction({ type: 'rebuttalWrite', text: v })}
+                      turns={state.chatTurns}
+                      onAppendTurn={(t: ChatTurn) => doAction({ type: 'chatAppend', turn: t })}
+                      score={state.rubricScore}
+                      onScore={(s: RubricScore) => doAction({ type: 'rubricScore', score: s })}
+                      onAdvance={() => doAction({ type: 'advance' })}
+                    />
+                  )}
+                </div>
+              ),
+            },
+            {
+              id: 'strategize',
+              label: 'Strategize',
+              sublabel: 'Refine and capture',
+              content: (
+                <div className="space-y-12">
+                  {refineBeat && refineBeat.kind === 'refine' && state.rubricScore && (
+                    <RefineBeat
+                      beat={refineBeat}
+                      originalRebuttal={state.rebuttal}
+                      score={state.rubricScore}
+                      refined={state.refinedRebuttal}
+                      onRefine={(v) => doAction({ type: 'refineWrite', text: v })}
+                      onAdvance={() => doAction({ type: 'advance' })}
+                      canAdvance={mayAdvance}
+                    />
+                  )}
+                  {refineBeat && refineBeat.kind === 'refine' && !state.rubricScore && (
+                    <p className="italic text-sm text-[color:var(--color-ink)]/60">
+                      Complete the Build phase first — you&apos;ll refine your defended artifact here once graded.
+                    </p>
+                  )}
+                  {captureBeat && captureBeat.kind === 'capture' && (
+                    <CaptureBeat
+                      beat={captureBeat}
+                      state={state}
+                      onCapture={() => doAction({ type: 'capture' })}
+                      captured={state.capturedAt !== null}
+                    />
+                  )}
+                </div>
+              ),
+            },
+          ] satisfies TabDef[]}
         />
 
         <footer className="pt-8 mt-8 border-t border-[color:var(--color-ink)]/10">
