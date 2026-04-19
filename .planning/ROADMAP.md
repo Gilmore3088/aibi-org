@@ -20,7 +20,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 6: Modules 6-9 Activities + Skill Builder** - Pillar C/D modules, skill builder, My First Skill artifact
 - [x] **Phase 7: Work Product + Reviewer Queue** - 4-item submission, 5-dimension rubric, pass/fail workflow
 - [x] **Phase 8: Certificate + Verification** - Certificate issuance, LinkedIn badge, public verification endpoint
-- [ ] **Phase 9: Post-UAT Polish Bundle** - Four small findings from Phase 04/05/06/08 UAT cleanup
+- [x] **Phase 9: Post-UAT Polish Bundle** - Four small findings from Phase 04/05/06/08 UAT cleanup ✅ Completed 2026-04-19
 - [ ] **Phase 10: Accessibility + Mobile Audit** - WCAG 2.1 AA sweep across all interactive surfaces
 - [ ] **Phase 11: Course Page Visual Normalization** - Unify AiBI-P/S/L heroes, CTAs, container widths, dynamic cohort data
 
@@ -399,3 +399,48 @@ Plans:
   - Confirm both domains still show "Valid Configuration" after the
     swap (no regression in HTTPS / SSL / routing)
   - Confirm Phase 999.1 can be closed at the same time
+
+### Phase 999.13: AiBI-S write-path branching in checkout + provisioning (BACKLOG)
+
+**Goal:** Make the AiBI-S enrollment write path actually work end-to-end.
+**Requirements:** TBD
+**Plans:** 0 plans
+
+Context captured 2026-04-18 (ultrareview bug_008): Phase 09 migration 00007
+unblocked the AiBI-S READ path (the SELECT crash on `role_track`/`cohort_*`
+columns), but the WRITE path is still 100% broken:
+
+1. `src/app/api/create-checkout/route.ts` rejects the AiBI-S `EnrollButton`
+   payload — `EnrollButton.tsx:48-53` POSTs `{product:'aibi-s', role_track,
+   cohort_id}` with no `mode` field, and the route returns 400 without
+   `mode`. Even if it accepted, lines 153 and 178 hardcode
+   `product:'aibi-p'` into Stripe session metadata and silently drop
+   `role_track` / `cohort_id`.
+2. `src/lib/stripe/provision-enrollment.ts:103-112` hardcodes
+   `product:'aibi-p'` on insert and never destructures `role_track` /
+   `cohort_id` from metadata.
+
+Today this has zero user impact because Stripe is not live (see Phase 999.2).
+The first day Stripe goes live, every AiBI-S purchase silently provisions
+an AiBI-P row with no `role_track` / `cohort_id`, and the AiBI-S learner
+gets bounced back to `/courses/aibi-s/purchase` because the
+`.eq('product','aibi-s')` filter rejects the new row.
+
+Plans:
+- [ ] TBD (promote with /gsd-review-backlog when ready, ideally bundled
+      with or sequenced before 999.2 Stripe activation)
+  - `EnrollButton.tsx` — send `mode:'payment'` (or whatever AiBI-S
+    Stripe price requires) so the create-checkout schema validates
+  - `api/create-checkout/route.ts` — accept `product:'aibi-s'`, route to
+    a separate Stripe price ID, validate `role_track` against the
+    `course_enrollments_role_track_valid` CHECK enum, pass `product` /
+    `role_track` / `cohort_id` through in session metadata
+  - `lib/stripe/provision-enrollment.ts` — destructure `role_track` /
+    `cohort_id` from metadata, branch the insert on `metadata.product`,
+    write all three new columns when product is `'aibi-s'`
+  - End-to-end test: an AiBI-S purchase produces an `aibi-s` row whose
+    `getEnrollment()` returns non-null and whose `role_track` matches
+    the form selection
+  - Revisit whether `cohort_id` / `cohort_start_date` are still needed
+    given the self-paced direction; if not, this is the natural moment
+    to drop those columns and form fields
