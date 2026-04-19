@@ -1,8 +1,9 @@
-// Clean layout for the AiBI-S prototype — no cohort sidebar, includes a cross-course nav strip.
-// Mirrors the AiBI brand but is intentionally minimal; only used for the self-paced prototype.
+// AiBI-S preview layout — persistent sidebar + mobile drawer, cobalt branding
+// Server Component: static prototype layout, mirrors /courses/aibi-p/layout.tsx structure
 
 import type { ReactNode } from 'react';
-import Link from 'next/link';
+import { PreviewSidebar } from './_components/PreviewSidebar';
+import { PreviewMobileDrawer } from './_components/PreviewMobileDrawer';
 
 interface PreviewLayoutProps {
   readonly children: ReactNode;
@@ -11,22 +12,29 @@ interface PreviewLayoutProps {
 export default function AiBISPreviewLayout({ children }: PreviewLayoutProps) {
   return (
     <div className="min-h-screen bg-[color:var(--color-linen)]">
-      <nav className="border-b border-[color:var(--color-ink)]/10 bg-white">
-        <div className="max-w-4xl mx-auto px-4 h-12 flex items-center justify-between">
-          <Link href="/aibi-s-preview" className="font-mono text-xs uppercase tracking-wider text-[color:var(--color-cobalt)]">
-            AiBI-S · Prototype
-          </Link>
-          <div className="flex items-center gap-4 text-xs">
-            <Link href="/courses/aibi-p" className="text-[color:var(--color-ink)]/60 hover:text-[color:var(--color-ink)]">
-              → AiBI-P
-            </Link>
-            <Link href="/courses/aibi-s" className="text-[color:var(--color-ink)]/60 hover:text-[color:var(--color-ink)]">
-              → AiBI-S cohort landing
-            </Link>
+      {/* Desktop persistent sidebar — hidden below lg */}
+      <PreviewSidebar />
+
+      {/* Mobile header bar with hamburger — visible below lg */}
+      <header className="lg:hidden fixed top-0 left-0 right-0 z-40 h-16 bg-[color:var(--color-linen)]/95 border-b border-[color:var(--color-cobalt)]/10 flex items-center px-4 gap-3">
+        <PreviewMobileDrawer />
+        <div className="flex items-center gap-2">
+          <div
+            className="h-7 w-7 rounded-sm flex items-center justify-center text-[10px] font-mono font-bold text-[color:var(--color-cobalt)]"
+            style={{ border: '1.5px solid var(--color-cobalt)' }}
+          >
+            Ai
           </div>
+          <span className="font-serif italic text-sm font-bold text-[color:var(--color-ink)]">
+            AiBI-S
+          </span>
         </div>
-      </nav>
-      <main>{children}</main>
+      </header>
+
+      {/* Main content area — offset for sidebar on desktop, header on mobile */}
+      <main className="lg:ml-72 pt-16 min-h-screen">
+        {children}
+      </main>
     </div>
   );
 }
