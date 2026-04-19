@@ -15,10 +15,7 @@ export function CourseShell({ view, children }: CourseShellProps) {
   const accent = view.config.brand.accentColorVar;
 
   return (
-    <div className="min-h-screen bg-[color:var(--color-linen)]">
-      {/* Desktop persistent sidebar — hidden below lg */}
-      <CourseSidebar view={view} />
-
+    <div className="bg-[color:var(--color-linen)]">
       {/* Mobile header bar with hamburger — visible below lg */}
       <header
         className="lg:hidden fixed top-0 left-0 right-0 z-40 h-16 bg-[color:var(--color-linen)]/95 border-b flex items-center px-4 gap-3"
@@ -38,10 +35,15 @@ export function CourseShell({ view, children }: CourseShellProps) {
         </div>
       </header>
 
-      {/* Main content area — offset for sidebar on desktop, header on mobile */}
-      <main className="lg:ml-72 pt-16 min-h-screen">
-        {children}
-      </main>
+      {/* Desktop layout: sticky sidebar + flex main. Sticky so it respects the
+          parent height and doesn't overlap the site-wide footer that renders
+          after this shell. */}
+      <div className="lg:flex">
+        <CourseSidebar view={view} />
+        <main className="flex-1 min-w-0 pt-16">
+          {children}
+        </main>
+      </div>
     </div>
   );
 }

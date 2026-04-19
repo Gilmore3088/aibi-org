@@ -130,7 +130,7 @@ export function CourseSidebar({ view }: CourseSidebarProps) {
 
   return (
     <aside
-      className="fixed left-0 top-[70px] h-[calc(100vh-70px)] w-72 bg-[color:var(--color-linen)] border-r hidden lg:flex flex-col pt-4 z-30"
+      className="sticky top-[70px] h-[calc(100vh-70px)] w-72 shrink-0 bg-[color:var(--color-linen)] border-r hidden lg:flex flex-col pt-4 z-30"
       style={{ borderColor: `${accent}/10` }}
     >
       {/* Brand area */}
