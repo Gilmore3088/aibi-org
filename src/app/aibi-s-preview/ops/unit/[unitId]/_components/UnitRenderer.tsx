@@ -5,7 +5,7 @@ import type { Unit, UnitLearnerState, ChatTurn, RubricScore } from '../../../../
 import { advance, initialState, canAdvance, type Action } from '../../../../../../../lib/aibi-s/beat-state';
 import { loadUnitState, saveUnitState, clearUnitState } from '../../../../../../../lib/aibi-s/persist';
 import { phaseProgressFor, PHASE_DESCRIPTIONS } from '../../../../../../../lib/aibi-s/phases';
-import { UnitHeader } from '../../../../_components/UnitHeader';
+import { ModuleHeader } from '../../../../_components/ModuleHeader';
 import { LearnBeat } from './LearnBeat';
 import { PracticeBeat } from './PracticeBeat';
 import { ApplyBeat } from './ApplyBeat';
@@ -31,12 +31,10 @@ export function UnitRenderer({ unit }: { readonly unit: Unit }) {
 
   return (
     <div>
-      <UnitHeader
-        trackCode="ops"
-        phase={1}
-        phaseName="Foundation"
-        unitId={unit.id}
+      <ModuleHeader
+        moduleNumber={1}
         title={unit.title}
+        pillar="awareness"
         estimatedMinutes={45}
         keyOutput="AI Governance Policy"
       />
