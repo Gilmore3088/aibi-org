@@ -62,5 +62,10 @@ export async function getEnrollment(): Promise<SEnrollmentData | null> {
     return null;
   }
 
-  return data as SEnrollmentData;
+  // Normalize current_module so URL-bound consumers never see 0.
+  // See comment in aibi-p/_lib/getEnrollment.ts for rationale.
+  return {
+    ...data,
+    current_module: Math.max(1, data.current_module ?? 1),
+  } as SEnrollmentData;
 }

@@ -60,5 +60,14 @@ export async function getEnrollment(): Promise<EnrollmentData | null> {
     return null;
   }
 
-  return data as EnrollmentData;
+  // Normalize current_module so URL-bound consumers never see 0.
+  // The DB allows current_module=0 (means "enrolled, not started"), but every
+  // UI consumer that builds a /courses/aibi-p/{N} URL needs N >= 1. Coercing
+  // here keeps page.tsx, layout.tsx, and the [module] redirect aligned.
+  // Server-side validators (api/courses/submit-activity, save-progress) use
+  // a separate query and continue to see the raw value.
+  return {
+    ...data,
+    current_module: Math.max(1, data.current_module ?? 1),
+  } as EnrollmentData;
 }
