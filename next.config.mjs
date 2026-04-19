@@ -13,6 +13,15 @@ const nextConfig = {
     return [
       { source: '/courses', destination: '/education', permanent: true },
       { source: '/certifications', destination: '/education', permanent: true },
+      // Retire the AiBI-S cohort scaffolding — self-serve prototype takes over.
+      // Purchase/submit/resources sub-routes intentionally left in place.
+      { source: '/courses/aibi-s', destination: '/aibi-s-preview', permanent: false },
+      { source: '/courses/aibi-s/1', destination: '/aibi-s-preview', permanent: false },
+      { source: '/courses/aibi-s/2', destination: '/aibi-s-preview', permanent: false },
+      { source: '/courses/aibi-s/3', destination: '/aibi-s-preview', permanent: false },
+      { source: '/courses/aibi-s/4', destination: '/aibi-s-preview', permanent: false },
+      { source: '/courses/aibi-s/5', destination: '/aibi-s-preview', permanent: false },
+      { source: '/courses/aibi-s/6', destination: '/aibi-s-preview', permanent: false },
     ];
   },
 };

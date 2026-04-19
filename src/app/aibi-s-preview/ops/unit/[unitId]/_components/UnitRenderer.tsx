@@ -1,11 +1,11 @@
 'use client';
 
 import { useEffect, useReducer } from 'react';
-import type { Unit, UnitLearnerState, ChatTurn, RubricScore } from '../../../../../../../lib/aibi-s/types';
+import type { Unit, UnitLearnerState, ChatTurn, RubricScore, BeatContent } from '../../../../../../../lib/aibi-s/types';
 import { advance, initialState, canAdvance, type Action } from '../../../../../../../lib/aibi-s/beat-state';
 import { loadUnitState, saveUnitState, clearUnitState } from '../../../../../../../lib/aibi-s/persist';
-import { phaseProgressFor, PHASE_DESCRIPTIONS } from '../../../../../../../lib/aibi-s/phases';
 import { ModuleHeader } from '../../../../_components/ModuleHeader';
+import { CourseTabsS } from '../../../../_components/CourseTabsS';
 import { LearnBeat } from './LearnBeat';
 import { PracticeBeat } from './PracticeBeat';
 import { ApplyBeat } from './ApplyBeat';
@@ -23,11 +23,16 @@ export function UnitRenderer({ unit }: { readonly unit: Unit }) {
 
   useEffect(() => { saveUnitState(state); }, [state]);
 
-  const beat = unit.beats[state.currentBeatIndex];
   const mayAdvance = canAdvance(unit, state);
-  const progress = phaseProgressFor(unit.beats, state.currentBeatIndex);
-
   const doAction = (a: Action) => dispatch({ unit, action: a });
+
+  // Group beats by phase (Learn / Build / Strategize)
+  const learnBeat = unit.beats.find((b) => b.kind === 'learn');
+  const practiceBeat = unit.beats.find((b) => b.kind === 'practice');
+  const applyBeat = unit.beats.find((b) => b.kind === 'apply');
+  const defendBeat = unit.beats.find((b) => b.kind === 'defend');
+  const refineBeat = unit.beats.find((b) => b.kind === 'refine');
+  const captureBeat = unit.beats.find((b) => b.kind === 'capture');
 
   return (
     <div>
@@ -39,96 +44,89 @@ export function UnitRenderer({ unit }: { readonly unit: Unit }) {
         keyOutput="AI Governance Policy"
       />
 
-      <div className="mx-auto px-8 lg:px-16 py-4 space-y-8">
-      {/* Phase progress sub-band */}
-      <div className="flex items-center gap-3 border-b border-[color:var(--color-ink)]/10 pb-4 pt-2">
-        <div className="flex items-center gap-2">
-          {(['Learn', 'Build', 'Strategize'] as const).map((p) => (
-            <span
-              key={p}
-              className={`text-xs font-mono uppercase tracking-wider px-2 py-1 rounded-sm ${
-                progress.phase === p
-                  ? 'bg-[color:var(--color-cobalt)] text-white'
-                  : 'text-[color:var(--color-ink)]/40'
-              }`}
-            >
-              {p}
-            </span>
-          ))}
-        </div>
-        <span className="text-xs font-mono text-[color:var(--color-ink)]/50">
-          · {progress.phase} step {progress.stepInPhase} of {progress.stepsInPhase}
-        </span>
-        <span className="ml-auto text-xs font-mono text-[color:var(--color-ink)]/40">
-          Beat {state.currentBeatIndex + 1} / {unit.beats.length}
-        </span>
-      </div>
+      <article className="mx-auto px-8 lg:px-16 py-4">
+        <CourseTabsS
+          storagePrefix="aibi-s-u"
+          segmentNumber={1}
+          learnContent={
+            <div className="space-y-8">
+              {learnBeat && learnBeat.kind === 'learn' && (
+                <LearnBeat beat={learnBeat} onAdvance={() => doAction({ type: 'advance' })} />
+              )}
+            </div>
+          }
+          buildContent={
+            <div className="space-y-12">
+              {practiceBeat && practiceBeat.kind === 'practice' && (
+                <PracticeBeat
+                  beat={practiceBeat}
+                  selectedOptionId={state.practiceChoice}
+                  onChoose={(id) => doAction({ type: 'practiceChoose', optionId: id })}
+                  onAdvance={() => doAction({ type: 'advance' })}
+                />
+              )}
+              {applyBeat && applyBeat.kind === 'apply' && (
+                <ApplyBeat
+                  beat={applyBeat}
+                  value={state.applyResponse}
+                  onChange={(v) => doAction({ type: 'applyWrite', text: v })}
+                  onAdvance={() => doAction({ type: 'advance' })}
+                  canAdvance={mayAdvance}
+                />
+              )}
+              {defendBeat && defendBeat.kind === 'defend' && (
+                <DefendBeat
+                  beat={defendBeat}
+                  rebuttal={state.rebuttal}
+                  onRebuttalChange={(v) => doAction({ type: 'rebuttalWrite', text: v })}
+                  turns={state.chatTurns}
+                  onAppendTurn={(t: ChatTurn) => doAction({ type: 'chatAppend', turn: t })}
+                  score={state.rubricScore}
+                  onScore={(s: RubricScore) => doAction({ type: 'rubricScore', score: s })}
+                  onAdvance={() => doAction({ type: 'advance' })}
+                />
+              )}
+            </div>
+          }
+          strategizeContent={
+            <div className="space-y-12">
+              {refineBeat && refineBeat.kind === 'refine' && state.rubricScore && (
+                <RefineBeat
+                  beat={refineBeat}
+                  originalRebuttal={state.rebuttal}
+                  score={state.rubricScore}
+                  refined={state.refinedRebuttal}
+                  onRefine={(v) => doAction({ type: 'refineWrite', text: v })}
+                  onAdvance={() => doAction({ type: 'advance' })}
+                  canAdvance={mayAdvance}
+                />
+              )}
+              {refineBeat && refineBeat.kind === 'refine' && !state.rubricScore && (
+                <p className="italic text-sm text-[color:var(--color-ink)]/60">
+                  Complete the Build phase first — you&apos;ll refine your defended artifact here once graded.
+                </p>
+              )}
+              {captureBeat && captureBeat.kind === 'capture' && (
+                <CaptureBeat
+                  beat={captureBeat}
+                  state={state}
+                  onCapture={() => doAction({ type: 'capture' })}
+                  captured={state.capturedAt !== null}
+                />
+              )}
+            </div>
+          }
+        />
 
-      <p className="text-sm text-[color:var(--color-ink)]/70 italic -mt-4">
-        {PHASE_DESCRIPTIONS[progress.phase]}
-      </p>
-
-      {beat.kind === 'learn' && (
-        <LearnBeat beat={beat} onAdvance={() => doAction({ type: 'advance' })} />
-      )}
-      {beat.kind === 'practice' && (
-        <PracticeBeat
-          beat={beat}
-          selectedOptionId={state.practiceChoice}
-          onChoose={(id) => doAction({ type: 'practiceChoose', optionId: id })}
-          onAdvance={() => doAction({ type: 'advance' })}
-        />
-      )}
-      {beat.kind === 'apply' && (
-        <ApplyBeat
-          beat={beat}
-          value={state.applyResponse}
-          onChange={(v) => doAction({ type: 'applyWrite', text: v })}
-          onAdvance={() => doAction({ type: 'advance' })}
-          canAdvance={mayAdvance}
-        />
-      )}
-      {beat.kind === 'defend' && (
-        <DefendBeat
-          beat={beat}
-          rebuttal={state.rebuttal}
-          onRebuttalChange={(v) => doAction({ type: 'rebuttalWrite', text: v })}
-          turns={state.chatTurns}
-          onAppendTurn={(t: ChatTurn) => doAction({ type: 'chatAppend', turn: t })}
-          score={state.rubricScore}
-          onScore={(s: RubricScore) => doAction({ type: 'rubricScore', score: s })}
-          onAdvance={() => doAction({ type: 'advance' })}
-        />
-      )}
-      {beat.kind === 'refine' && state.rubricScore && (
-        <RefineBeat
-          beat={beat}
-          originalRebuttal={state.rebuttal}
-          score={state.rubricScore}
-          refined={state.refinedRebuttal}
-          onRefine={(v) => doAction({ type: 'refineWrite', text: v })}
-          onAdvance={() => doAction({ type: 'advance' })}
-          canAdvance={mayAdvance}
-        />
-      )}
-      {beat.kind === 'capture' && (
-        <CaptureBeat
-          beat={beat}
-          state={state}
-          onCapture={() => doAction({ type: 'capture' })}
-          captured={state.capturedAt !== null}
-        />
-      )}
-
-      <footer className="pt-8 border-t border-[color:var(--color-ink)]/10">
-        <button
-          onClick={() => { if (confirm('Clear your progress for this unit?')) { clearUnitState(unit.id); window.location.reload(); } }}
-          className="text-xs text-[color:var(--color-ink)]/50 hover:underline"
-        >
-          Reset unit progress (prototype only)
-        </button>
-      </footer>
-      </div>
+        <footer className="pt-8 mt-8 border-t border-[color:var(--color-ink)]/10">
+          <button
+            onClick={() => { if (confirm('Clear your progress for this unit?')) { clearUnitState(unit.id); window.location.reload(); } }}
+            className="text-xs text-[color:var(--color-ink)]/50 hover:underline"
+          >
+            Reset unit progress (prototype only)
+          </button>
+        </footer>
+      </article>
     </div>
   );
 }
