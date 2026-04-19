@@ -114,7 +114,7 @@ Plans:
   1. After completing Activity 6.1 (three-skill diagnosis), the Skill Template Library artifact downloads — a PDF plus five .md starter files
   2. A learner can complete all five fields of the skill builder with role-specific placeholder examples visible; on submission, a .md file named `[Role]-[Task]-Skill-v1.md` downloads to their device
   3. The learner's completed skill is accessible for re-download from their profile at any time after Activity 7.1 completion (My First Skill artifact)
-  4. Activity 8.1 guides the learner through four iterations with the one-change rule; the final iterated skill saves as a new .md file
+  4. Activity 8.1 guides the learner through a three-step iteration flow (Stress Test → Diagnose → Revise) that applies the one-change rule per revise; the final iterated skill saves as a new .md file
   5. Module 9 presents the role-specific automation examples table (three tiers per role) and Module 9 completion unlocks the assessed work product submission form
 **Plans**: 2 plans
 Plans:
