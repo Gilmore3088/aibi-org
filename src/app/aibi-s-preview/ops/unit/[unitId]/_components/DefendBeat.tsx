@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import type { DefendBeatContent, ChatTurn, RubricScore } from '../../../../../../../../lib/aibi-s/types';
+import type { DefendBeatContent, ChatTurn, RubricScore } from '../../../../../../../lib/aibi-s/types';
 import { PersonaMemo } from './PersonaMemo';
 import { RebuttalEditor } from './RebuttalEditor';
 import { PersonaChat } from './PersonaChat';

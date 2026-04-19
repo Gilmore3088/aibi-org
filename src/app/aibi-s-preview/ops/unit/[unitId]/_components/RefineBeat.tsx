@@ -1,6 +1,6 @@
 'use client';
 
-import type { RefineBeatContent, RubricScore } from '../../../../../../../../lib/aibi-s/types';
+import type { RefineBeatContent, RubricScore } from '../../../../../../../lib/aibi-s/types';
 
 export function RefineBeat({
   beat,

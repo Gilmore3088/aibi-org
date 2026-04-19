@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { opsUnits } from '../../../../../../../content/courses/aibi-s/ops';
+import { opsUnits } from '../../../../../../content/courses/aibi-s/ops';
 import { UnitRenderer } from './_components/UnitRenderer';
 
 interface UnitPageProps {

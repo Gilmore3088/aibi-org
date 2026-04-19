@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { opsUnits } from '../../../../../content/courses/aibi-s/ops';
+import { opsUnits } from '../../../../content/courses/aibi-s/ops';
 
 export default function OpsTrackPage() {
   return (
@@ -19,7 +19,7 @@ export default function OpsTrackPage() {
         <ul className="space-y-3">
           {Object.entries(opsUnits).map(([id, unit]) => (
             <li key={id} className="border rounded p-4 hover:border-[color:var(--color-cobalt)] transition">
-              <Link href={`/courses/aibi-s/ops/unit/${id}`} className="block">
+              <Link href={`/aibi-s-preview/ops/unit/${id}`} className="block">
                 <p className="font-mono text-xs text-[color:var(--color-ink)]/60 mb-1">Unit {id}</p>
                 <p className="font-serif text-xl">{unit.title}</p>
                 <p className="text-sm mt-2">{unit.summary}</p>

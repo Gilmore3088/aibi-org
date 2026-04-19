@@ -1,10 +1,10 @@
-// AiBI-S prototype landing — routed at /courses/aibi-s/prototype
+// AiBI-S prototype landing — routed at /aibi-s-preview
 // Standalone route — does NOT replace /courses/aibi-s. The cohort-format
 // landing at /courses/aibi-s remains the working version; this page is a
 // separate demo surface for the self-paced prototype.
 
 import Link from 'next/link';
-import type { TrackCode } from '../../../../../lib/aibi-s/types';
+import type { TrackCode } from '../../../lib/aibi-s/types';
 
 interface TrackMeta {
   readonly code: TrackCode;
@@ -41,7 +41,7 @@ export default function AiBISPrototypeLanding() {
           <li key={t.code}>
             {t.active ? (
               <Link
-                href={`/courses/aibi-s/${t.code}`}
+                href={`/aibi-s-preview/${t.code}`}
                 className="block border-2 border-[color:var(--color-cobalt)] p-6 rounded hover:bg-[color:var(--color-parch)] transition"
               >
                 <p className="font-mono text-xs mb-1">AiBI-S/{t.code}</p>

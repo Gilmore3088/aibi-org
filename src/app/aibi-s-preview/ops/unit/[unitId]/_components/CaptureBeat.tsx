@@ -1,6 +1,6 @@
 'use client';
 
-import type { CaptureBeatContent, UnitLearnerState } from '../../../../../../../../lib/aibi-s/types';
+import type { CaptureBeatContent, UnitLearnerState } from '../../../../../../../lib/aibi-s/types';
 
 export function CaptureBeat({
   beat,
@@ -34,7 +34,7 @@ export function CaptureBeat({
         </button>
       ) : (
         <p className="text-[color:var(--color-sage)] font-semibold">
-          ✓ Captured at {state.capturedAt}
+          Captured at {state.capturedAt}
         </p>
       )}
     </section>

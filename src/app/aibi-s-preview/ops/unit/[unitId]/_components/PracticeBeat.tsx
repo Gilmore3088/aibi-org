@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import type { PracticeBeatContent } from '../../../../../../../../lib/aibi-s/types';
+import type { PracticeBeatContent } from '../../../../../../../lib/aibi-s/types';
 import { FrameworkHooks } from './FrameworkHooks';
 
 export function PracticeBeat({

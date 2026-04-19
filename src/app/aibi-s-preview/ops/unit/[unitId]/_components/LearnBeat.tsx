@@ -1,6 +1,6 @@
 'use client';
 
-import type { LearnBeatContent } from '../../../../../../../../lib/aibi-s/types';
+import type { LearnBeatContent } from '../../../../../../../lib/aibi-s/types';
 import { FrameworkHooks } from './FrameworkHooks';
 
 export function LearnBeat({

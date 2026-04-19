@@ -1,6 +1,6 @@
 'use client';
 
-import type { ApplyBeatContent } from '../../../../../../../../lib/aibi-s/types';
+import type { ApplyBeatContent } from '../../../../../../../lib/aibi-s/types';
 
 export function ApplyBeat({
   beat,
