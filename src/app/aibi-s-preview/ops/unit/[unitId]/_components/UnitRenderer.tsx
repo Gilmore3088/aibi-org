@@ -37,10 +37,8 @@ export function UnitRenderer({ unit }: { readonly unit: Unit }) {
         phaseName="Foundation"
         unitId={unit.id}
         title={unit.title}
-        summary={unit.summary}
-        pillarLetter="B"
-        frameworks={['AIEOG']}
-        dataTiers={[2]}
+        estimatedMinutes={45}
+        keyOutput="AI Governance Policy"
       />
 
       <div className="mx-auto px-8 lg:px-16 py-4 space-y-8">
