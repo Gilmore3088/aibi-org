@@ -1,10 +1,18 @@
 import type { Metadata } from 'next';
 import Script from 'next/script';
+import { headers } from 'next/headers';
 import { Cormorant_Garamond, Cormorant_SC, DM_Sans, DM_Mono } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import './globals.css';
+
+// Routes that render WITHOUT the global Header/Footer chrome — but only
+// when the coming-soon takedown is active. When COMING_SOON is off, every
+// route gets the normal Header/Footer (including /coming-soon if anyone
+// visits it directly). The chromeless treatment exists for the takedown.
+const COMING_SOON_MODE = process.env.COMING_SOON === 'true';
+const CHROMELESS_PATHS: readonly string[] = ['/coming-soon'];
 
 const PLAUSIBLE_DOMAIN = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN;
 
@@ -87,7 +95,14 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const pathname = (await headers()).get('x-pathname') ?? '/';
+  const chromeless =
+    COMING_SOON_MODE &&
+    CHROMELESS_PATHS.some(
+      (path) => pathname === path || pathname.startsWith(`${path}/`),
+    );
+
   return (
     <html lang="en">
       <head>
@@ -106,14 +121,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body
         className={`${cormorant.variable} ${cormorantSC.variable} ${dmSans.variable} ${dmMono.variable} flex flex-col min-h-screen`}
       >
-        <a href="#main-content" className="skip-link">
-          Skip to main content
-        </a>
-        <Header />
+        {!chromeless && (
+          <a href="#main-content" className="skip-link">
+            Skip to main content
+          </a>
+        )}
+        {!chromeless && <Header />}
         <div id="main-content" className="flex-1">
           {children}
         </div>
-        <Footer />
+        {!chromeless && <Footer />}
         <Analytics />
       </body>
     </html>
