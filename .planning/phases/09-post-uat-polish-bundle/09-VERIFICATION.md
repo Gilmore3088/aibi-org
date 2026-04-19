@@ -1,18 +1,14 @@
 ---
 phase: 09-post-uat-polish-bundle
 verified: 2026-04-18T19:00:00Z
-status: gaps_found
-score: 5/6 must-haves verified
+status: passed
+score: 6/6 must-haves verified
 overrides_applied: 0
-gaps:
+resolved_gaps:
   - truth: "IterationTracker ships as 3 steps and ROADMAP language reflects that (Option A was taken)"
-    status: failed
-    reason: "Commit 36570b2 correctly updated Phase 6 SC #4 to 'three-step iteration flow' but the subsequent orchestrator commit 41b6af5 used the same pre-change base index (5437b98) and silently reverted the text change while only preserving the checkbox. HEAD now reads 'four iterations with the one-change rule' — the old language."
-    artifacts:
-      - path: ".planning/ROADMAP.md"
-        issue: "Line 117 still reads 'Activity 8.1 guides the learner through four iterations with the one-change rule' — should read 'through a three-step iteration flow (Stress Test → Diagnose → Revise) that applies the one-change rule per revise'"
-    missing:
-      - "Re-apply the SC #4 text change from commit 36570b2 to current HEAD: replace 'four iterations with the one-change rule' with 'a three-step iteration flow (Stress Test → Diagnose → Revise) that applies the one-change rule per revise'"
+    original_status: failed
+    resolution: "Re-applied the SC #4 text change in commit 6e3cb38. ROADMAP.md line 117 now reads 'a three-step iteration flow (Stress Test → Diagnose → Revise) that applies the one-change rule per revise' as required."
+    root_cause: "The orchestrator's worktree-merge protection script restored ROADMAP.md from the pre-merge HEAD snapshot, which silently discarded Task 3's text change while preserving the checkbox tick. Future phases should either commit ROADMAP edits before the worktree merge or carve out a per-line restoration policy."
 ---
 
 # Phase 09: Post-UAT Polish Bundle Verification Report
