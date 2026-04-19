@@ -39,44 +39,44 @@ export default async function OpsTrackOverviewPage() {
     allItems.find((i) => !i.isComingSoon)?.href ?? '/courses/aibi-s';
 
   return (
-    <div className="mx-auto px-8 lg:px-16 py-8">
+    <div>
+      {/* Track-colored hero band — matches CourseItemHeader treatment on unit pages */}
+      <header
+        className="w-full px-8 lg:px-16 py-8"
+        style={{ backgroundColor: accentColor }}
+      >
+        {/* Breadcrumb on the band */}
+        <nav aria-label="Breadcrumb" className="mb-4">
+          <Link
+            href="/education"
+            className="font-serif-sc text-[11px] uppercase tracking-[0.25em] text-white/60 hover:text-white transition-colors"
+          >
+            Education
+          </Link>
+          <span className="mx-2 text-white/30">/</span>
+          <Link
+            href="/courses/aibi-s"
+            className="font-serif-sc text-[11px] uppercase tracking-[0.25em] text-white/60 hover:text-white transition-colors"
+          >
+            AiBI-S
+          </Link>
+          <span className="mx-2 text-white/30">/</span>
+          <span className="font-serif-sc text-[11px] uppercase tracking-[0.25em] text-white">
+            /Ops
+          </span>
+        </nav>
 
-      {/* Breadcrumb */}
-      <nav aria-label="Breadcrumb" className="mb-6">
-        <Link
-          href="/education"
-          className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/50 hover:text-[color:var(--color-cobalt)] transition-colors"
-        >
-          Education
-        </Link>
-        <span className="mx-2 text-[color:var(--color-ink)]/20">/</span>
-        <Link
-          href="/courses/aibi-s"
-          className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/50 hover:text-[color:var(--color-cobalt)] transition-colors"
-        >
-          AiBI-S
-        </Link>
-        <span className="mx-2 text-[color:var(--color-ink)]/20">/</span>
-        <span
-          className="font-serif-sc text-[11px] uppercase tracking-[0.18em]"
-          style={{ color: accentColor }}
-        >
-          /Ops
-        </span>
-      </nav>
-
-      {/* Hero */}
-      <section className="mb-8">
-        <h1 className="font-serif text-3xl font-bold leading-tight text-[color:var(--color-ink)] mb-2">
-          Banking AI{' '}
-          <span className="italic" style={{ color: accentColor }}>
-            Specialist
-          </span>{' '}
-          — Operations
+        <h1 className="font-serif italic text-3xl lg:text-4xl font-bold leading-tight text-white mb-2">
+          Banking AI Specialist — Operations
         </h1>
-        <p className="text-sm text-[color:var(--color-ink)]/75 mb-4 max-w-xl">
+        <p className="font-sans text-sm text-white/80 max-w-xl">
           Deploy AI to your department. Measure it. Defend it under pressure from your Department Head, Compliance Liaison, and peers.
         </p>
+      </header>
+
+      <div className="mx-auto px-8 lg:px-16 py-8">
+      {/* Hero CTA + stats row (now below the colored band) */}
+      <section className="mb-8">
         <div className="flex flex-wrap items-center gap-4 mb-6">
           <Link
             href={firstLiveHref}
@@ -180,6 +180,7 @@ export default async function OpsTrackOverviewPage() {
           })}
         </div>
       </section>
+      </div>
     </div>
   );
 }
