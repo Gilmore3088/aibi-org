@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import type { ChatTurn, DefendBeatPersona } from '../../../../../../../lib/aibi-s/types';
-import { canContinueChat } from '../../../../../../../lib/aibi-s/chat-limiter';
+import type { ChatTurn, DefendBeatPersona } from '../../../../../../../../lib/aibi-s/types';
+import { canContinueChat } from '../../../../../../../../lib/aibi-s/chat-limiter';
 
 export function PersonaChat({
   persona,

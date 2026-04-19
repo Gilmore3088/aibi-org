@@ -1,4 +1,4 @@
-// /aibi-s-preview/ops — Track overview page
+// /courses/aibi-s/ops — Track overview page
 // Derives all structure from aibiSConfig; no hardcoded UNITS array.
 
 import type { Metadata } from 'next';
@@ -36,7 +36,7 @@ export default async function OpsTrackOverviewPage() {
   const allItems = view.sections.flatMap((s) => s.items);
   const completedCount = view.completedCount;
   const firstLiveHref =
-    allItems.find((i) => !i.isComingSoon)?.href ?? '/aibi-s-preview';
+    allItems.find((i) => !i.isComingSoon)?.href ?? '/courses/aibi-s';
 
   return (
     <div className="mx-auto px-8 lg:px-16 py-8">
@@ -51,7 +51,7 @@ export default async function OpsTrackOverviewPage() {
         </Link>
         <span className="mx-2 text-[color:var(--color-ink)]/20">/</span>
         <Link
-          href="/aibi-s-preview"
+          href="/courses/aibi-s"
           className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/50 hover:text-[color:var(--color-cobalt)] transition-colors"
         >
           AiBI-S

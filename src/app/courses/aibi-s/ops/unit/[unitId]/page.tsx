@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { opsUnits } from '../../../../../../content/courses/aibi-s/ops';
+import { opsUnits } from '../../../../../../../content/courses/aibi-s/ops';
 import { aibiSConfig } from '@/../content/courses/aibi-s/course.config';
 import { mergeProgress } from '@/lib/course-harness/merge';
 import { findItem, findSectionOf } from '@/lib/course-harness/lookup';

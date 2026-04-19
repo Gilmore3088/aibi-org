@@ -1,4 +1,4 @@
-import type { UnitFrameworkHooks } from '../../../../../../../lib/aibi-s/types';
+import type { UnitFrameworkHooks } from '../../../../../../../../lib/aibi-s/types';
 
 export function FrameworkHooks({ hooks }: { readonly hooks: UnitFrameworkHooks }) {
   return (

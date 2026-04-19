@@ -21,7 +21,7 @@ export const aibiSConfig: CourseConfig = {
       id: 'foundation',
       label: 'Phase I — Foundation',
       items: [
-        { id: 'u-1.1', number: '1.1', title: 'From Personal Skills to Institutional Assets', href: '/aibi-s-preview/ops/unit/1.1', estimatedMinutes: 45 },
+        { id: 'u-1.1', number: '1.1', title: 'From Personal Skills to Institutional Assets', href: '/courses/aibi-s/ops/unit/1.1', estimatedMinutes: 45 },
         { id: 'u-1.2', number: '1.2', title: 'Work Decomposition for Banking Workflows', href: '#', estimatedMinutes: 45, isComingSoon: true },
       ],
     },

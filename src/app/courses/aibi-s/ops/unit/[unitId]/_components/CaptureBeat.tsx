@@ -1,6 +1,6 @@
 'use client';
 
-import type { CaptureBeatContent, UnitLearnerState } from '../../../../../../../lib/aibi-s/types';
+import type { CaptureBeatContent, UnitLearnerState } from '../../../../../../../../lib/aibi-s/types';
 
 export function CaptureBeat({
   beat,
