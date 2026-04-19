@@ -52,11 +52,16 @@ export const aibiSConfig: CourseConfig = {
       model: 'claude-opus-4-6',
       maxTokens: 400,
       maxTurns: 3,
+      rateLimit: { perLearnerDaily: 50 },
     },
     defenseGrader: {
       provider: 'anthropic',
       model: 'claude-opus-4-6',
       maxTokens: 1000,
+      rateLimit: { perLearnerDaily: 20 },
     },
+  },
+  aiBudget: {
+    perCourseDailyCents: 2000,  // $20/day across all AiBI-S learners
   },
 };

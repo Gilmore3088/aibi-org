@@ -43,6 +43,9 @@ export interface AIFeatureDef {
   readonly model: string;
   readonly maxTokens: number;
   readonly maxTurns?: number;
+  readonly rateLimit?: {
+    readonly perLearnerDaily?: number;
+  };
 }
 
 export interface CourseConfig {
@@ -52,6 +55,9 @@ export interface CourseConfig {
   readonly sections: readonly CourseSection[];
   readonly crossCourseNav?: readonly CrossCourseLink[];
   readonly aiFeatures?: Readonly<Record<string, AIFeatureDef>>;
+  readonly aiBudget?: {
+    readonly perCourseDailyCents?: number;
+  };
 }
 
 // ================= RUNTIME STATE (per user, per request) =================
