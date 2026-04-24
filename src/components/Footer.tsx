@@ -28,6 +28,9 @@ const FOOTER_GROUPS: readonly FooterGroup[] = [
       { href: '/about', label: 'About' },
       { href: '/security', label: 'Security & Governance' },
       { href: '/resources', label: 'Resources' },
+      { href: '/privacy', label: 'Privacy' },
+      { href: '/terms', label: 'Terms' },
+      { href: '/ai-use-disclaimer', label: 'AI Use Disclaimer' },
     ],
   },
 ] as const;

@@ -23,6 +23,20 @@ export type PromptRole =
 export type PromptDifficulty = 'beginner' | 'intermediate' | 'advanced';
 
 export type ContentLevel = 'p' | 's' | 'l';
+export type PromptTaskType =
+  | 'email'
+  | 'summary'
+  | 'policy'
+  | 'board'
+  | 'lending'
+  | 'complaint'
+  | 'meeting'
+  | 'report'
+  | 'verification'
+  | 'sanitization'
+  | 'workflow';
+
+export type PromptSafetyLevel = 'green' | 'yellow' | 'red';
 
 export interface Prompt {
   readonly id: string;
@@ -34,6 +48,12 @@ export interface Prompt {
   readonly expectedOutput: string;
   readonly timeEstimate: string;
   readonly relatedModule: number;
+  readonly taskType?: PromptTaskType;
+  readonly safetyLevel?: PromptSafetyLevel;
+  readonly whenToUse?: string;
+  readonly whatToPaste?: string;
+  readonly whatNotToPaste?: string;
+  readonly exampleOutput?: string;
   readonly tags?: readonly string[];
   readonly requiredLevel?: ContentLevel;
 }
@@ -92,6 +112,82 @@ export const DIFFICULTY_LABELS: Record<PromptDifficulty, string> = {
   intermediate: 'Intermediate',
   advanced:     'Advanced',
 } as const;
+
+export const TASK_TYPE_LABELS: Record<PromptTaskType, string> = {
+  email: 'Email',
+  summary: 'Summary',
+  policy: 'Policy',
+  board: 'Board',
+  lending: 'Lending',
+  complaint: 'Complaint',
+  meeting: 'Meeting',
+  report: 'Report',
+  verification: 'Verification',
+  sanitization: 'Sanitization',
+  workflow: 'Workflow',
+} as const;
+
+export const SAFETY_LEVEL_LABELS: Record<PromptSafetyLevel, string> = {
+  green: 'Green',
+  yellow: 'Yellow',
+  red: 'Red',
+} as const;
+
+export function getPromptTaskType(prompt: Prompt): PromptTaskType {
+  if (prompt.taskType) return prompt.taskType;
+  const haystack = [
+    prompt.title,
+    prompt.expectedOutput,
+    prompt.promptText,
+    ...(prompt.tags ?? []),
+  ].join(' ').toLowerCase();
+
+  if (haystack.includes('complaint')) return 'complaint';
+  if (haystack.includes('email')) return 'email';
+  if (haystack.includes('board')) return 'board';
+  if (haystack.includes('loan') || haystack.includes('lending') || haystack.includes('credit')) return 'lending';
+  if (haystack.includes('meeting')) return 'meeting';
+  if (haystack.includes('policy')) return 'policy';
+  if (haystack.includes('verify') || haystack.includes('citation') || haystack.includes('hallucination')) return 'verification';
+  if (haystack.includes('sanitize') || haystack.includes('pii') || haystack.includes('sensitive')) return 'sanitization';
+  if (haystack.includes('report') || haystack.includes('memo')) return 'report';
+  if (haystack.includes('summary') || haystack.includes('summar')) return 'summary';
+  return 'workflow';
+}
+
+export function getPromptSafetyLevel(prompt: Prompt): PromptSafetyLevel {
+  if (prompt.safetyLevel) return prompt.safetyLevel;
+  const haystack = [
+    prompt.title,
+    prompt.expectedOutput,
+    prompt.promptText,
+    ...(prompt.tags ?? []),
+  ].join(' ').toLowerCase();
+
+  if (
+    haystack.includes('customer data') ||
+    haystack.includes('pii') ||
+    haystack.includes('credit decision') ||
+    haystack.includes('account number')
+  ) {
+    return 'red';
+  }
+  if (
+    haystack.includes('policy') ||
+    haystack.includes('compliance') ||
+    haystack.includes('customer') ||
+    haystack.includes('board') ||
+    haystack.includes('loan')
+  ) {
+    return 'yellow';
+  }
+  return 'green';
+}
+
+export function getPromptTimeMinutes(prompt: Prompt): number {
+  const match = prompt.timeEstimate.match(/\d+/);
+  return match ? Number(match[0]) : 10;
+}
 
 // ---------------------------------------------------------------------------
 // Module 3 — "First Try" prompts
@@ -1262,12 +1358,31 @@ export function filterPrompts(filters: {
   readonly role?: PromptRole;
   readonly difficulty?: PromptDifficulty;
   readonly module?: number;
+  readonly taskType?: PromptTaskType;
+  readonly maxMinutes?: number;
+  readonly query?: string;
 }): readonly Prompt[] {
+  const normalizedQuery = filters.query?.trim().toLowerCase();
   return ALL_PROMPTS.filter((p) => {
     if (filters.platform && p.platform !== filters.platform) return false;
     if (filters.role && p.role !== filters.role) return false;
     if (filters.difficulty && p.difficulty !== filters.difficulty) return false;
     if (filters.module && p.relatedModule !== filters.module) return false;
+    if (filters.taskType && getPromptTaskType(p) !== filters.taskType) return false;
+    if (filters.maxMinutes && getPromptTimeMinutes(p) > filters.maxMinutes) return false;
+    if (normalizedQuery) {
+      const haystack = [
+        p.title,
+        p.expectedOutput,
+        p.promptText,
+        PLATFORM_META[p.platform].label,
+        ROLE_LABELS[p.role],
+        DIFFICULTY_LABELS[p.difficulty],
+        TASK_TYPE_LABELS[getPromptTaskType(p)],
+        ...(p.tags ?? []),
+      ].join(' ').toLowerCase();
+      if (!haystack.includes(normalizedQuery)) return false;
+    }
     return true;
   });
 }

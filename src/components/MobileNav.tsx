@@ -11,8 +11,8 @@ import { usePathname } from 'next/navigation';
 
 const NAV_LINKS = [
   { href: '/assessment', label: 'Assessment' },
-  { href: '/education', label: 'Education' },
-  { href: '/services', label: 'Services' },
+  { href: '/courses/aibi-p', label: 'Practitioner Course' },
+  { href: '/services', label: 'For Institutions' },
   { href: '/resources', label: 'Resources' },
   { href: '/dashboard', label: 'Dashboard' },
 ] as const;
@@ -168,7 +168,7 @@ export function MobileNav() {
                 href="/assessment"
                 className="block w-full text-center py-3 px-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
               >
-                Free Assessment
+                Take Assessment
               </Link>
             </div>
           </nav>

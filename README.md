@@ -1,36 +1,125 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# The AI Banking Institute LMS
 
-## Getting Started
+Next.js application for the AI Banking Institute learning platform. AiBI-P is
+the first course and the reference implementation for a reusable LMS pattern:
 
-First, run the development server:
+`Assessment -> Personalized Path -> Short Lesson -> Practice Rep -> Useful Artifact -> Progress -> Certification`
+
+## Local Development
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Useful checks:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run test
+npm run build
+```
 
-## Learn More
+## Core Product Surfaces
 
-To learn more about Next.js, take a look at the following resources:
+- `/` - buyer-aware homepage and free assessment CTA.
+- `/assessment` - 12-question AI readiness assessment with email-gated detail.
+- `/dashboard` - learner command center with next action, practice, progress, prompts, and artifacts.
+- `/courses/aibi-p` - AiBI-P course overview.
+- `/courses/aibi-p/[module]` - Learn / Practice / Apply module shell.
+- `/courses/aibi-p/prompt-library` - searchable and filterable prompt library.
+- `/admin/reviewer` - work product review queue.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Reusable Course Model
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Shared LMS primitives live in `src/types/lms.ts`.
 
-## Deploy on Vercel
+AiBI-P course configuration lives in:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `content/courses/aibi-p/course-config.ts`
+- `content/courses/aibi-p/modules.ts`
+- `content/practice-reps/aibi-p.ts`
+- `content/courses/aibi-p/prompt-library.ts`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Future courses should reuse the same shape: course config, modules, practice
+reps/simulations, prompts, artifacts, progress, and certificate requirements.
+
+## Environment Variables
+
+Create `.env.local` with the values needed for the features you are testing.
+
+```bash
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
+
+STRIPE_SECRET_KEY=
+STRIPE_WEBHOOK_SECRET=
+NEXT_PUBLIC_STRIPE_PRICE_AIBI_P=
+
+NEXT_PUBLIC_CALENDLY_URL=
+NEXT_PUBLIC_PLAUSIBLE_DOMAIN=
+REVIEWER_EMAILS=
+
+# Local course access bypass only. Never use in production.
+SKIP_ENROLLMENT_GATE=true
+```
+
+## Supabase
+
+Run migrations in order from `supabase/migrations`.
+
+Important tables:
+
+- `user_profiles` - readiness and proficiency results keyed by email.
+- `course_enrollments` - enrollment, onboarding, current module, completed modules.
+- `activity_responses` - module activity submissions.
+- `work_submissions` - final practical assessment packages.
+- `certificates` - issued credentials.
+- `quick_wins` - post-course impact entries.
+- `practice_rep_completions` - reusable practice rep completion state.
+- `saved_prompts` - learner prompt library saves.
+- `user_artifacts` - optional artifact state across courses.
+
+## Stripe
+
+Stripe checkout provisions AiBI-P enrollment through
+`src/app/api/webhooks/stripe/route.ts` and
+`src/lib/stripe/provision-enrollment.ts`.
+
+Before launch, confirm:
+
+- Product metadata uses `product=aibi-p`.
+- Webhook secret is configured in production.
+- Checkout success and cancel URLs route back into the app.
+- Test purchase creates a `course_enrollments` row.
+
+## AI Safety Policy
+
+Learners should follow the SAFE rule:
+
+- Strip sensitive data.
+- Ask clearly.
+- Fact-check outputs.
+- Escalate risky decisions.
+
+Do not paste customer PII, account numbers, credit decisions, SAR information,
+or sensitive financial records into public AI tools or course practice fields.
+
+## Beta Launch QA
+
+Minimum viable learning loop:
+
+1. Understand the product from the homepage.
+2. Take the assessment.
+3. See score, top gaps, and a recommendation.
+4. Enter email and access dashboard.
+5. Start AiBI-P.
+6. Complete Module 1.
+7. Complete one practice exercise.
+8. Save or download one artifact.
+9. Return later and continue.
+
+Also verify privacy, terms, AI disclaimer, loading states, empty states, mobile
+spacing, analytics events, and support/contact paths before inviting beta users.

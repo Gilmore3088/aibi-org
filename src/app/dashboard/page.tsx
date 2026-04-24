@@ -1,40 +1,36 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import Link from 'next/link';
 import { getUserDataWithSupabaseFallback, type UserData } from '@/lib/user-data';
 import { getTier } from '@content/assessments/v1/scoring';
 import { getTierV2 } from '@content/assessments/v2/scoring';
-import { questions } from '@content/assessments/v1/questions';
-import { RadarChart } from './_components/RadarChart';
+import { modules } from '@content/courses/aibi-p';
+import {
+  AIBI_P_ARTIFACTS,
+  AIBI_P_CERTIFICATE_REQUIREMENTS,
+  getDailyPracticeRep,
+} from '@content/practice-reps/aibi-p';
 
-// Derive the tier + display max for a ReadinessResult, handling both V1 (max 32)
-// and V2 (max 48) persisted shapes. Without this branching a V2 score of 36 was
-// rendered against V1's hardcoded /32 denominator (impossible "36/32").
 function getReadinessDisplay(readiness: NonNullable<UserData['readiness']>) {
-  // Detect V2 via explicit marker, then by maxScore, then by answers length
-  // (12 questions = V2, 8 = V1). The answers-length heuristic is the fallback
-  // for users whose localStorage was written before the version marker existed.
   const isV2 =
     readiness.version === 'v2' ||
     readiness.maxScore === 48 ||
     readiness.answers.length === 12;
   const maxScore = readiness.maxScore ?? (isV2 ? 48 : 32);
+
   try {
     const tier = isV2 ? getTierV2(readiness.score) : getTier(readiness.score);
-    return { tier, maxScore, isV2 };
+    return { tier, maxScore };
   } catch {
-    // Score outside the known range (e.g., V1 getTier called with a V2 score
-    // that lacked a version marker). Fall back to the persisted tier label.
     return {
       tier: {
         id: readiness.tierId,
         label: readiness.tierLabel,
         colorVar: 'var(--color-terra)',
-        headline: '',
-      } as const,
+        headline: 'Your readiness result is saved.',
+      },
       maxScore,
-      isV2,
     };
   }
 }
@@ -44,12 +40,12 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Load from localStorage immediately for a fast first render,
-    // then upgrade with Supabase data (cross-device persistence).
     getUserDataWithSupabaseFallback()
       .then(setUser)
       .finally(() => setLoading(false));
   }, []);
+
+  const dailyRep = useMemo(() => getDailyPracticeRep(), []);
 
   if (loading) return null;
 
@@ -58,33 +54,21 @@ export default function DashboardPage() {
       <main className="px-6 py-14 md:py-20">
         <div className="max-w-2xl mx-auto text-center space-y-8">
           <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
-            Dashboard
+            Learner Dashboard
           </p>
           <h1 className="font-serif text-5xl md:text-6xl text-[color:var(--color-ink)] leading-tight">
-            Your AI readiness dashboard.
+            Start with your AI readiness score.
           </h1>
           <p className="text-lg text-[color:var(--color-ink)]/75 leading-relaxed">
-            Complete the free AI readiness assessment to unlock your
-            personalized dashboard — your score, dimension breakdown,
-            proficiency tracking, and tier-specific recommendations all
-            in one place.
+            Take the assessment to unlock a practical next step, your first
+            practice rep, and the AiBI-P learning path.
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
-            <Link
-              href="/assessment"
-              className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
-            >
-              Take the Free Assessment
-            </Link>
-          </div>
-          <div className="border-t border-[color:var(--color-ink)]/10 pt-6 mt-4">
-            <p className="text-sm text-[color:var(--color-slate)]">
-              Already completed the assessment on another device?
-              Enter the same email you used and your results will load
-              automatically. Results are also saved in this browser as a
-              local backup.
-            </p>
-          </div>
+          <Link
+            href="/assessment"
+            className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
+          >
+            Take the Free Assessment
+          </Link>
         </div>
       </main>
     );
@@ -92,40 +76,126 @@ export default function DashboardPage() {
 
   const display = user.readiness ? getReadinessDisplay(user.readiness) : null;
   const tier = display?.tier ?? null;
-  const maxScore = display?.maxScore ?? 32;
+  const maxScore = display?.maxScore ?? 48;
+  const completedModules = 0;
+  const currentModule = modules[0];
+  const progressPct = Math.round((completedModules / modules.length) * 100);
 
   return (
-    <main className="px-6 py-14 md:py-20">
-      <div className="max-w-5xl mx-auto">
-        {/* Welcome */}
-        <header className="mb-12">
-          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
-            Dashboard
-          </p>
-          <h1 className="font-serif text-4xl md:text-5xl text-[color:var(--color-ink)] leading-tight">
-            Welcome back.
-          </h1>
-          <p className="text-[color:var(--color-slate)] mt-2">
-            {user.email}
-          </p>
+    <main className="px-6 py-10 md:py-14">
+      <div className="max-w-6xl mx-auto space-y-10">
+        <header className="grid lg:grid-cols-[1.4fr_0.8fr] gap-8 items-end border-b border-[color:var(--color-ink)]/10 pb-8">
+          <div>
+            <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
+              Learner Command Center
+            </p>
+            <h1 className="font-serif text-4xl md:text-5xl text-[color:var(--color-ink)] leading-tight">
+              Welcome back.
+            </h1>
+            <p className="text-[color:var(--color-slate)] mt-2">{user.email}</p>
+            <p className="text-base text-[color:var(--color-ink)]/75 mt-5 max-w-2xl leading-relaxed">
+              You are currently at Module {currentModule.number}:{' '}
+              {currentModule.title}. Your next win is a short lesson, one
+              practice rep, and one useful artifact.
+            </p>
+          </div>
+          <div className="flex flex-col sm:flex-row lg:flex-col gap-3 lg:items-stretch">
+            <Link
+              href={`/courses/aibi-p/${currentModule.number}`}
+              className="text-center px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
+            >
+              Continue Lesson
+            </Link>
+            <Link
+              href="/courses/aibi-p"
+              className="text-center px-6 py-3 border border-[color:var(--color-ink)]/25 text-[color:var(--color-ink)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)] transition-colors"
+            >
+              Practice for 5 Minutes
+            </Link>
+          </div>
         </header>
 
-        {/* Three pathway cards */}
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
-          {/* Readiness card */}
-          <div className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-6">
+        <section className="grid lg:grid-cols-[1.1fr_0.9fr] gap-6">
+          <article className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-6 md:p-8">
             <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-4">
-              AI Readiness
+              Today&apos;s AI Rep
             </p>
+            <h2 className="font-serif text-3xl text-[color:var(--color-ink)] leading-tight">
+              {dailyRep.title}
+            </h2>
+            <p className="text-sm text-[color:var(--color-ink)]/75 mt-3 leading-relaxed">
+              {dailyRep.scenario}
+            </p>
+            <div className="grid sm:grid-cols-3 gap-4 mt-6">
+              <MiniMetric label="Skill" value={dailyRep.skill} />
+              <MiniMetric label="Time" value={`${dailyRep.timeEstimateMinutes} min`} />
+              <MiniMetric label="Safety" value={dailyRep.safetyLevel.toUpperCase()} />
+            </div>
+            <div className="mt-6 border-t border-[color:var(--color-ink)]/10 pt-5">
+              <p className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-slate)] mb-2">
+                Starter prompt
+              </p>
+              <p className="font-mono text-sm leading-relaxed text-[color:var(--color-ink)] bg-[color:var(--color-linen)] border border-[color:var(--color-ink)]/10 rounded-[2px] p-4">
+                {dailyRep.starterPrompt}
+              </p>
+            </div>
+          </article>
+
+          <article className="border border-[color:var(--color-ink)]/10 rounded-[3px] p-6 md:p-8">
+            <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-4">
+              Course Progress
+            </p>
+            <div className="flex items-end justify-between gap-4">
+              <div>
+                <h2 className="font-serif text-3xl text-[color:var(--color-ink)]">
+                  AiBI-P
+                </h2>
+                <p className="text-sm text-[color:var(--color-slate)] mt-1">
+                  Banking AI Practitioner
+                </p>
+              </div>
+              <p className="font-mono text-xl text-[color:var(--color-terra)] tabular-nums">
+                {completedModules}/{modules.length}
+              </p>
+            </div>
+            <div className="mt-6 h-2 bg-[color:var(--color-ink)]/10 rounded-[1px] overflow-hidden">
+              <div
+                className="h-full bg-[color:var(--color-terra)]"
+                style={{ width: `${progressPct}%` }}
+              />
+            </div>
+            <ul className="mt-6 space-y-3">
+              {AIBI_P_CERTIFICATE_REQUIREMENTS.map((requirement, idx) => (
+                <li
+                  key={requirement.id}
+                  className="flex items-start gap-3 text-sm text-[color:var(--color-ink)]/75"
+                >
+                  <span className="mt-1 h-2 w-2 rounded-sm bg-[color:var(--color-ink)]/20" />
+                  <span>
+                    <span className="font-medium text-[color:var(--color-ink)]">
+                      {idx === 0 ? 'Next: ' : ''}
+                      {requirement.label}
+                    </span>
+                    {' - '}
+                    {requirement.description}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </article>
+        </section>
+
+        <section className="grid md:grid-cols-3 gap-6">
+          <DashboardPanel title="Your AI Readiness">
             {user.readiness && tier ? (
               <>
                 <p
-                  className="font-serif text-3xl leading-none mb-1"
+                  className="font-serif text-3xl leading-none"
                   style={{ color: tier.colorVar }}
                 >
                   {tier.label}
                 </p>
-                <p className="font-mono text-lg tabular-nums text-[color:var(--color-ink)]">
+                <p className="font-mono text-sm tabular-nums text-[color:var(--color-ink)] mt-2">
                   {user.readiness.score}/{maxScore}
                 </p>
                 <p className="text-sm text-[color:var(--color-slate)] mt-3 leading-relaxed">
@@ -133,270 +203,107 @@ export default function DashboardPage() {
                 </p>
                 <Link
                   href="/assessment"
-                  className="inline-block mt-4 font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] border-b border-[color:var(--color-terra)] pb-0.5 hover:text-[color:var(--color-terra-light)] hover:border-[color:var(--color-terra-light)] transition-colors"
+                  className="inline-block mt-4 font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] border-b border-[color:var(--color-terra)]"
                 >
                   Retake assessment
                 </Link>
               </>
             ) : (
-              <>
-                <p className="text-sm text-[color:var(--color-slate)] leading-relaxed">
-                  Complete the readiness assessment to see your tier and score.
-                </p>
-                <Link
-                  href="/assessment"
-                  className="inline-block mt-4 px-4 py-2 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
-                >
-                  Start
-                </Link>
-              </>
-            )}
-          </div>
-
-          {/* Education card */}
-          <div className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-6">
-            <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-4">
-              Education
-            </p>
-            <h2 className="font-serif text-2xl text-[color:var(--color-ink)] leading-tight mb-3">
-              Certification Tracks
-            </h2>
-            <p className="text-sm text-[color:var(--color-slate)] leading-relaxed">
-              {tier?.id === 'starting-point'
-                ? 'Start with the Practitioner course to build baseline AI proficiency across your team.'
-                : tier?.id === 'early-stage'
-                  ? 'The Practitioner credential is your next step — hands-on skills with regulatory confidence.'
-                  : tier?.id === 'building-momentum'
-                    ? 'Ready for departmental automation? Explore the Specialist track.'
-                    : 'Three tracks from individual proficiency to institution-wide strategy.'}
-            </p>
-            <Link
-              href="/education"
-              className="inline-block mt-4 font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] border-b border-[color:var(--color-terra)] pb-0.5 hover:opacity-80 transition-colors"
-            >
-              Browse education
-            </Link>
-          </div>
-
-          {/* Certifications card */}
-          <div className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-6">
-            <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-cobalt)] mb-4">
-              Certifications
-            </p>
-            <h2 className="font-serif text-2xl text-[color:var(--color-ink)] leading-tight mb-3">
-              Practitioner Assessment
-            </h2>
-            <p className="text-sm text-[color:var(--color-slate)] leading-relaxed">
-              {user.proficiency
-                ? `Last result: ${user.proficiency.levelLabel} (${user.proficiency.pctCorrect}/100)`
-                : 'Take the proficiency assessment to see if you are ready for the Practitioner credential.'}
-            </p>
-            <Link
-              href="/certifications/exam/aibi-p"
-              className="inline-block mt-4 font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-cobalt)] border-b border-[color:var(--color-cobalt)] pb-0.5 hover:opacity-80 transition-colors"
-            >
-              {user.proficiency ? 'Retake assessment' : 'Begin assessment'}
-            </Link>
-          </div>
-        </div>
-
-        {/* Readiness dimension breakdown */}
-        {user.readiness && tier && (
-          <section className="mb-12">
-            <div className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-8 md:p-12">
-              <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-6">
-                Your 8-dimension readiness breakdown
-              </p>
-              <div className="space-y-4">
-                {user.readiness.dimensionBreakdown
-                  ? Object.entries(user.readiness.dimensionBreakdown).map(([dim, data]) => {
-                      const pct = data.maxScore > 0 ? data.score / data.maxScore : 0;
-                      const filledBars = Math.round(pct * 4);
-                      return (
-                        <div key={dim} className="space-y-2">
-                          <div className="flex items-baseline justify-between">
-                            <span className="font-serif text-base text-[color:var(--color-ink)]">
-                              {data.label}
-                            </span>
-                            <span className="font-mono text-xs text-[color:var(--color-slate)] tabular-nums">
-                              {data.score} / {data.maxScore}
-                            </span>
-                          </div>
-                          <div className="flex gap-1">
-                            {[1, 2, 3, 4].map((bar) => (
-                              <div
-                                key={bar}
-                                className={
-                                  'h-2 flex-1 rounded-[1px] ' +
-                                  (bar <= filledBars
-                                    ? 'bg-[color:var(--color-terra)]'
-                                    : 'bg-[color:var(--color-ink)]/10')
-                                }
-                              />
-                            ))}
-                          </div>
-                        </div>
-                      );
-                    })
-                  : questions.map((q, idx) => {
-                      const points = user.readiness!.answers[idx] ?? 0;
-                      return (
-                        <div key={q.id} className="space-y-2">
-                          <div className="flex items-baseline justify-between">
-                            <span className="font-serif text-base text-[color:var(--color-ink)]">
-                              {q.dimension}
-                            </span>
-                            <span className="font-mono text-xs text-[color:var(--color-slate)] tabular-nums">
-                              {points} / 4
-                            </span>
-                          </div>
-                          <div className="flex gap-1">
-                            {[1, 2, 3, 4].map((bar) => (
-                              <div
-                                key={bar}
-                                className={
-                                  'h-2 flex-1 rounded-[1px] ' +
-                                  (bar <= points
-                                    ? 'bg-[color:var(--color-terra)]'
-                                    : 'bg-[color:var(--color-ink)]/10')
-                                }
-                              />
-                            ))}
-                          </div>
-                        </div>
-                      );
-                    })}
-              </div>
-            </div>
-          </section>
-        )}
-
-        {/* Proficiency skill breakdown with radar chart */}
-        {user.proficiency && (
-          <section className="mb-12">
-            <div className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-8 md:p-12">
-              <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-6">
-                Your proficiency skill breakdown
-              </p>
-
-              <div className="grid md:grid-cols-2 gap-8 items-center">
-                <RadarChart scores={user.proficiency.topicScores} />
-
-                <div className="space-y-5">
-                  {user.proficiency.topicScores.map((ts) => (
-                    <div key={ts.topic}>
-                      <div className="flex items-baseline justify-between mb-1">
-                        <span className="font-serif text-base text-[color:var(--color-ink)]">
-                          {ts.label}
-                        </span>
-                        <span className="font-mono text-sm text-[color:var(--color-terra)] tabular-nums">
-                          {ts.pct}%
-                        </span>
-                      </div>
-                      <p className="text-xs text-[color:var(--color-slate)]">
-                        {ts.correct} of {ts.total} correct
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </section>
-        )}
-
-        {/* Tier-specific recommendations */}
-        {tier && (
-          <section className="mb-12">
-            <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-6">
-              Recommended for your tier
-            </p>
-            <div className="grid md:grid-cols-2 gap-6">
-              {getRecommendations(tier.id).map((rec) => (
-                <Link
-                  key={rec.href}
-                  href={rec.href}
-                  className="group bg-[color:var(--color-linen)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-6 hover:border-[color:var(--color-terra)]/30 transition-all duration-200"
-                >
-                  <p
-                    className="font-serif-sc text-[11px] uppercase tracking-[0.2em] mb-3"
-                    style={{ color: rec.accent }}
-                  >
-                    {rec.label}
-                  </p>
-                  <h3 className="font-serif text-xl text-[color:var(--color-ink)] leading-tight mb-2 group-hover:text-[color:var(--color-terra)] transition-colors">
-                    {rec.title}
-                  </h3>
-                  <p className="text-sm text-[color:var(--color-slate)] leading-relaxed">
-                    {rec.description}
-                  </p>
-                </Link>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* Certification Journey */}
-        <section className="mb-12">
-          <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-6">
-            Your certification journey
-          </p>
-          <Link
-            href="/dashboard/progression"
-            className="group flex flex-col md:flex-row md:items-center md:justify-between gap-6 bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-6 hover:border-[color:var(--color-terra)]/30 transition-all duration-200"
-          >
-            <div className="flex-1">
-              <h3 className="font-serif text-2xl text-[color:var(--color-ink)] leading-tight mb-2 group-hover:text-[color:var(--color-terra)] transition-colors">
-                Track your full certification ladder
-              </h3>
-              <p className="text-sm text-[color:var(--color-slate)] leading-relaxed max-w-lg">
-                See your complete journey across AiBI-P, AiBI-S, and AiBI-L — credentials earned, impact metrics, and recommended next steps.
-              </p>
-            </div>
-            <div className="flex items-center gap-4 shrink-0">
-              {(['var(--color-terra)', 'var(--color-cobalt)', 'var(--color-sage)'] as const).map((color, idx) => (
-                <div
-                  key={idx}
-                  className="w-8 h-8 rounded-full border-2 opacity-80 group-hover:opacity-100 transition-opacity"
-                  style={{ borderColor: color, backgroundColor: color + '18' }}
-                />
-              ))}
-              <span
-                className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] border-b border-[color:var(--color-terra)] pb-0.5 ml-2"
+              <Link
+                href="/assessment"
+                className="inline-block px-4 py-2 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px]"
               >
-                View journey
-              </span>
-            </div>
-          </Link>
+                Take assessment
+              </Link>
+            )}
+          </DashboardPanel>
+
+          <DashboardPanel title="Saved Prompts">
+            <p className="font-serif text-xl text-[color:var(--color-ink)]">
+              Start with role prompts
+            </p>
+            <p className="text-sm text-[color:var(--color-slate)] mt-3 leading-relaxed">
+              Save reusable prompts from the library as you build your personal
+              AI toolkit.
+            </p>
+            <Link
+              href="/courses/aibi-p/prompt-library"
+              className="inline-block mt-4 font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] border-b border-[color:var(--color-terra)]"
+            >
+              Open prompt library
+            </Link>
+          </DashboardPanel>
+
+          <DashboardPanel title="Recommended Path">
+            <p className="font-serif text-xl text-[color:var(--color-ink)]">
+              Begin with a practical win
+            </p>
+            <p className="text-sm text-[color:var(--color-slate)] mt-3 leading-relaxed">
+              Complete Module 1, then do the rewrite-for-clarity rep and save
+              your first prompt template.
+            </p>
+            <Link
+              href="/courses/aibi-p/1"
+              className="inline-block mt-4 font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] border-b border-[color:var(--color-terra)]"
+            >
+              Start Module 1
+            </Link>
+          </DashboardPanel>
         </section>
 
-        {/* Resources */}
         <section>
-          <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-6">
-            Recommended reading
+          <div className="flex items-end justify-between gap-4 mb-5">
+            <div>
+              <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-2">
+                Artifacts
+              </p>
+              <h2 className="font-serif text-3xl text-[color:var(--color-ink)]">
+                Useful outputs you can revisit
+              </h2>
+            </div>
+            <Link
+              href="/courses/aibi-p/toolkit"
+              className="hidden sm:inline-block font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] border-b border-[color:var(--color-terra)]"
+            >
+              Open toolkit
+            </Link>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {AIBI_P_ARTIFACTS.map((artifact, idx) => (
+              <article
+                key={artifact.id}
+                className="border border-[color:var(--color-ink)]/10 rounded-[3px] p-5 bg-[color:var(--color-linen)]"
+              >
+                <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-3">
+                  {idx === 0 ? 'Available' : idx === 1 ? 'In progress' : 'Upcoming'} · Module {artifact.moduleNumber}
+                </p>
+                <h3 className="font-serif text-lg text-[color:var(--color-ink)] leading-tight">
+                  {artifact.title}
+                </h3>
+                <p className="text-xs text-[color:var(--color-slate)] mt-3 leading-relaxed">
+                  {artifact.description}
+                </p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="border-t border-[color:var(--color-ink)]/10 pt-8">
+          <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-4">
+            SAFE Rule
           </p>
-          <div className="grid md:grid-cols-2 gap-6">
-            <Link
-              href="/resources/the-widening-ai-gap"
-              className="group border border-[color:var(--color-ink)]/10 rounded-[3px] p-6 hover:border-[color:var(--color-terra)]/30 transition-all duration-200"
-            >
-              <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-2">
-                Industry Analysis
-              </p>
-              <h3 className="font-serif text-lg text-[color:var(--color-ink)] leading-tight group-hover:text-[color:var(--color-terra)] transition-colors">
-                The widening AI gap
-              </h3>
-            </Link>
-            <Link
-              href="/resources/members-will-switch"
-              className="group border border-[color:var(--color-ink)]/10 rounded-[3px] p-6 hover:border-[color:var(--color-terra)]/30 transition-all duration-200"
-            >
-              <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-2">
-                Retention
-              </p>
-              <h3 className="font-serif text-lg text-[color:var(--color-ink)] leading-tight group-hover:text-[color:var(--color-terra)] transition-colors">
-                Members will switch
-              </h3>
-            </Link>
+          <div className="grid md:grid-cols-4 gap-4">
+            {[
+              ['Strip sensitive data', 'Remove customer and account details before prompting.'],
+              ['Ask clearly', 'Give AI a role, task, format, and constraints.'],
+              ['Fact-check outputs', 'Verify citations, claims, numbers, and policy language.'],
+              ['Escalate risky decisions', 'Keep credit, legal, compliance, and PII decisions with humans.'],
+            ].map(([title, body]) => (
+              <div key={title} className="border-l-2 border-[color:var(--color-terra)] pl-4">
+                <h3 className="font-serif text-lg text-[color:var(--color-ink)]">{title}</h3>
+                <p className="text-xs text-[color:var(--color-slate)] mt-2 leading-relaxed">{body}</p>
+              </div>
+            ))}
           </div>
         </section>
       </div>
@@ -404,85 +311,32 @@ export default function DashboardPage() {
   );
 }
 
-interface Recommendation {
-  readonly label: string;
-  readonly title: string;
-  readonly description: string;
-  readonly href: string;
-  readonly accent: string;
+function MiniMetric({ label, value }: { readonly label: string; readonly value: string }) {
+  return (
+    <div>
+      <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">
+        {label}
+      </p>
+      <p className="font-serif text-base text-[color:var(--color-ink)] mt-1 leading-tight">
+        {value}
+      </p>
+    </div>
+  );
 }
 
-function getRecommendations(tierId: string): Recommendation[] {
-  switch (tierId) {
-    case 'starting-point':
-      return [
-        {
-          label: 'Recommended',
-          title: 'Start with the Practitioner course',
-          description: 'Nine modules of hands-on AI skills for every staff member. Earn the AiBI-P credential.',
-          href: '/courses/aibi-p',
-          accent: 'var(--color-terra)',
-        },
-        {
-          label: 'Learn more',
-          title: 'Download the Safe AI Use Guide',
-          description: 'Six chapters on governance, safe use, and examiner readiness. Free.',
-          href: '/security',
-          accent: 'var(--color-cobalt)',
-        },
-      ];
-    case 'early-stage':
-      return [
-        {
-          label: 'Recommended',
-          title: 'Earn the Practitioner credential',
-          description: 'Give your early adopters the tools to lead AI adoption with confidence. Nine self-paced modules.',
-          href: '/courses/aibi-p',
-          accent: 'var(--color-terra)',
-        },
-        {
-          label: 'Get guidance',
-          title: 'Request an Executive Briefing',
-          description: 'A free 45-minute conversation about converting scattered experiments into a coordinated program.',
-          href: '/services',
-          accent: 'var(--color-cobalt)',
-        },
-      ];
-    case 'building-momentum':
-      return [
-        {
-          label: 'Recommended',
-          title: 'Advance to the Specialist track',
-          description: 'Six-week live cohort for department managers. Deploy governed AI automation across your team.',
-          href: '/courses/aibi-s',
-          accent: 'var(--color-cobalt)',
-        },
-        {
-          label: 'Accelerate',
-          title: 'Explore the Quick Win Sprint',
-          description: 'Three automations in 4\u20136 weeks with a 90-day ROI guarantee. $5,000\u2013$15,000.',
-          href: '/services',
-          accent: 'var(--color-terra)',
-        },
-      ];
-    case 'ready-to-scale':
-      return [
-        {
-          label: 'Recommended',
-          title: 'The Banking AI Leader workshop',
-          description: '1-day in-person workshop. Efficiency ratio modeling, AI roadmap, and a board-ready presentation built with your numbers.',
-          href: '/courses/aibi-l',
-          accent: 'var(--color-sage)',
-        },
-        {
-          label: 'Scale further',
-          title: 'The AI Transformation program',
-          description: 'A monthly operating system with capability transfer. Your team runs it independently when we leave.',
-          href: '/services',
-          accent: 'var(--color-terra)',
-        },
-      ];
-    default:
-      return [];
-  }
+function DashboardPanel({
+  title,
+  children,
+}: {
+  readonly title: string;
+  readonly children: ReactNode;
+}) {
+  return (
+    <article className="border border-[color:var(--color-ink)]/10 rounded-[3px] p-6 bg-[color:var(--color-parch)]">
+      <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-4">
+        {title}
+      </p>
+      {children}
+    </article>
+  );
 }

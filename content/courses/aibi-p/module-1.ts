@@ -1,16 +1,16 @@
-// AiBI-P Module 1: The Regulatory Landscape
+// AiBI-P Module 1: AI for Your Workday
 // Pillar: Awareness | Estimated: 25 minutes
-// Key Output: Regulatory Cheatsheet
+// Key Output: Rewritten Email
 
 import type { Module } from './types';
 
 export const module1: Module = {
   number: 1,
   id: 'm1-regulatory-landscape',
-  title: 'Navigating the Regulatory Landscape',
+  title: 'AI for Your Workday',
   pillar: 'awareness',
   estimatedMinutes: 25,
-  keyOutput: 'Regulatory Cheatsheet',
+  keyOutput: 'Rewritten Email',
   mockupRef: 'content/courses/AiBI-P v1/stitch_ai_banking_institute_course/m1_refined_regulatory_landscape',
   sections: [
     {

@@ -1,16 +1,16 @@
-// AiBI-P Module 2: The Expanded AI Ecosystem
+// AiBI-P Module 2: Safe Prompting Basics
 // Pillar: Awareness | Estimated: 20 minutes
-// Key Output: Subscription Inventory
+// Key Output: Safe Prompt Rewrite
 
 import type { Module } from './types';
 
 export const module2: Module = {
   number: 2,
   id: 'm2-ai-ecosystem',
-  title: 'The Tools Landscape',
+  title: 'Safe Prompting Basics',
   pillar: 'awareness',
   estimatedMinutes: 20,
-  keyOutput: 'Subscription Inventory',
+  keyOutput: 'Safe Prompt Rewrite',
   mockupRef: 'content/courses/AiBI-P v1/stitch_ai_banking_institute_course/m2_the_expanded_ai_ecosystem',
   sections: [
     {

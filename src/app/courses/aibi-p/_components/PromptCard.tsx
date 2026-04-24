@@ -4,8 +4,18 @@
 // Uses platform badge, role tag, monospace prompt box, expected output, and time estimate
 
 import { useState, useCallback } from 'react';
+import Link from 'next/link';
 import type { Prompt, ContentLevel } from '@content/courses/aibi-p/prompt-library';
-import { PLATFORM_META, ROLE_LABELS, DIFFICULTY_LABELS } from '@content/courses/aibi-p/prompt-library';
+import {
+  PLATFORM_META,
+  ROLE_LABELS,
+  DIFFICULTY_LABELS,
+  SAFETY_LEVEL_LABELS,
+  TASK_TYPE_LABELS,
+  getPromptSafetyLevel,
+  getPromptTaskType,
+  getPromptTimeMinutes,
+} from '@content/courses/aibi-p/prompt-library';
 import { getPlatformUrl, PLATFORM_URLS } from '@/lib/utm';
 import type { PlatformId } from '@/lib/utm';
 import { ContentGate } from './ContentGate';
@@ -19,6 +29,7 @@ const COPY_RESET_MS = 2000;
 
 export function PromptCard({ prompt, userLevel = null }: PromptCardProps) {
   const [copied, setCopied] = useState(false);
+  const [saved, setSaved] = useState(false);
 
   const handleCopy = useCallback(async () => {
     try {
@@ -43,6 +54,24 @@ export function PromptCard({ prompt, userLevel = null }: PromptCardProps) {
   const platformMeta = PLATFORM_META[prompt.platform];
   const roleLabel = ROLE_LABELS[prompt.role];
   const difficultyLabel = DIFFICULTY_LABELS[prompt.difficulty];
+  const taskType = getPromptTaskType(prompt);
+  const safetyLevel = getPromptSafetyLevel(prompt);
+  const timeMinutes = getPromptTimeMinutes(prompt);
+
+  const handleSave = useCallback(() => {
+    try {
+      const key = 'aibi-saved-prompts';
+      const raw = localStorage.getItem(key);
+      const existing = raw ? (JSON.parse(raw) as string[]) : [];
+      const next = existing.includes(prompt.id)
+        ? existing.filter((id) => id !== prompt.id)
+        : [...existing, prompt.id];
+      localStorage.setItem(key, JSON.stringify(next));
+      setSaved(next.includes(prompt.id));
+    } catch {
+      setSaved((current) => !current);
+    }
+  }, [prompt.id]);
 
   const card = (
     <article className="border border-[color:var(--color-parch-dark)] rounded-sm bg-[color:var(--color-parch)] p-6 space-y-4">
@@ -70,6 +99,34 @@ export function PromptCard({ prompt, userLevel = null }: PromptCardProps) {
           <span className="inline-flex items-center px-2.5 py-0.5 text-[10px] font-mono uppercase tracking-widest rounded-sm border border-[color:var(--color-ink)]/10 text-[color:var(--color-slate)]">
             {difficultyLabel}
           </span>
+
+          <span className="inline-flex items-center px-2.5 py-0.5 text-[10px] font-mono uppercase tracking-widest rounded-sm border border-[color:var(--color-ink)]/10 text-[color:var(--color-slate)]">
+            {TASK_TYPE_LABELS[taskType]}
+          </span>
+
+          <span className="inline-flex items-center px-2.5 py-0.5 text-[10px] font-mono uppercase tracking-widest rounded-sm border border-[color:var(--color-terra)]/20 text-[color:var(--color-terra)]">
+            {SAFETY_LEVEL_LABELS[safetyLevel]} use
+          </span>
+        </div>
+      </div>
+
+      <div className="grid sm:grid-cols-2 gap-3 text-xs text-[color:var(--color-slate)]">
+        <div>
+          <p className="font-mono uppercase tracking-widest text-[10px] mb-1">
+            When to use it
+          </p>
+          <p className="leading-relaxed">
+            {prompt.whenToUse ?? prompt.expectedOutput}
+          </p>
+        </div>
+        <div>
+          <p className="font-mono uppercase tracking-widest text-[10px] mb-1">
+            What not to paste
+          </p>
+          <p className="leading-relaxed">
+            {prompt.whatNotToPaste ??
+              'Do not paste customer PII, account numbers, credit decisions, SAR details, or sensitive financial records.'}
+          </p>
         </div>
       </div>
 
@@ -110,24 +167,34 @@ export function PromptCard({ prompt, userLevel = null }: PromptCardProps) {
       {/* Footer: time estimate + open platform link */}
       <div className="flex items-center justify-between pt-2 border-t border-[color:var(--color-parch-dark)]">
         <span className="font-mono text-[12px] text-[color:var(--color-slate)]">
-          {prompt.timeEstimate}
+          {timeMinutes} min · Module {prompt.relatedModule}
         </span>
-        {prompt.platform in PLATFORM_URLS && (
-          <a
-            href={getPlatformUrl(prompt.platform as PlatformId, prompt.relatedModule)}
-            target="_blank"
-            rel="noopener noreferrer"
+        <div className="flex flex-wrap justify-end gap-3">
+          <button
+            type="button"
+            onClick={handleSave}
             className="font-sans text-[12px] italic text-[color:var(--color-terra)] hover:underline focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-1 rounded-sm"
           >
-            Open in {platformMeta.label}
-          </a>
-        )}
+            {saved ? 'Saved' : 'Save'}
+          </button>
+          <Link
+            href={`/courses/aibi-p/${prompt.relatedModule}`}
+            className="font-sans text-[12px] italic text-[color:var(--color-terra)] hover:underline focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-1 rounded-sm"
+          >
+            Open in practice
+          </Link>
+          {prompt.platform in PLATFORM_URLS && (
+            <a
+              href={getPlatformUrl(prompt.platform as PlatformId, prompt.relatedModule)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-sans text-[12px] italic text-[color:var(--color-terra)] hover:underline focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-1 rounded-sm"
+            >
+              Open in {platformMeta.label}
+            </a>
+          )}
+        </div>
       </div>
-
-      {/* Module reference */}
-      <p className="text-[10px] font-mono uppercase tracking-widest text-[color:var(--color-slate)]">
-        Module {prompt.relatedModule}
-      </p>
     </article>
   );
 

@@ -1,6 +1,6 @@
-// AiBI-P Module 3: What You Already Have + Activation
+// AiBI-P Module 3: First Practical Prompt
 // Pillar: Understanding | Estimated: 30 minutes
-// Key Output: First Open discovery log
+// Key Output: Role-Based Prompt
 // roleSpecific: true — M365 activation path varies by license tier
 
 import type { Module } from './types';
@@ -8,10 +8,10 @@ import type { Module } from './types';
 export const module3: Module = {
   number: 3,
   id: 'm3-activation',
-  title: 'What You Already Have + Activation',
+  title: 'First Practical Prompt',
   pillar: 'understanding',
   estimatedMinutes: 30,
-  keyOutput: 'First Open discovery log',
+  keyOutput: 'Role-Based Prompt',
   mockupRef: 'content/courses/AiBI-P v1/stitch_ai_banking_institute_course/m3_what_you_already_have_activation',
   roleSpecific: true,
   sections: [

@@ -68,31 +68,33 @@ const PROOF_POINTS = [
 ] as const;
 
 export const metadata = {
-  title: 'AI your people will actually use.',
+  title: 'AI training built for community bankers.',
   description:
-    'The AI Banking Institute — AI proficiency built exclusively for community banks and credit unions. Free readiness assessment, consulting engagements, and three certification tiers.',
+    'The AI Banking Institute teaches community bank and credit union employees how to use AI safely, confidently, and practically.',
 };
 
 export default function HomePage() {
   return (
     <main>
       {/* Hero */}
-      <section className="px-6 pt-16 pb-16 md:pt-24 md:pb-20">
+      <section className="px-6 pt-16 pb-14 md:pt-24 md:pb-20">
         <div className="max-w-4xl mx-auto text-center space-y-6">
+          <p className="font-serif-sc text-xs uppercase tracking-[0.22em] text-[color:var(--color-terra)]">
+            For community banks and credit unions
+          </p>
           <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl leading-[1.1] text-[color:var(--color-ink)]">
-            The big banks are spending billions on AI.{' '}
-            <span className="text-[color:var(--color-terra)] italic">
-              Your advantage is your people.
-            </span>
+            AI training built for community bankers.
           </h1>
-          <p className="text-base md:text-lg text-[color:var(--color-ink)]/75 max-w-2xl mx-auto leading-relaxed pt-2">
-            We train community bankers to use AI — safely, professionally,
-            and without a six-figure budget. Every loan officer, teller, and
-            compliance analyst who learns these tools becomes a builder who
-            makes your institution faster, sharper, and harder to outcompete.
+          <p className="text-base md:text-xl text-[color:var(--color-ink)]/75 max-w-2xl mx-auto leading-relaxed pt-2">
+            Teach every employee how to use AI safely, confidently, and
+            practically without turning them into technologists.
+          </p>
+          <p className="text-sm md:text-base text-[color:var(--color-ink)]/70 max-w-2xl mx-auto leading-relaxed">
+            Start with a free AI readiness assessment, then follow a practical
+            learning path built for real banking workflows.
           </p>
           <p className="font-serif-sc text-lg md:text-xl text-[color:var(--color-terra)] tracking-wide">
-            Turning Bankers into Builders
+            Assessment &rarr; learning path &rarr; practice reps &rarr; useful artifacts
           </p>
           <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
@@ -102,15 +104,23 @@ export default function HomePage() {
               Take the Free Assessment
             </Link>
             <Link
-              href="#roi-calculator"
+              href="/courses/aibi-p"
               className="inline-block px-8 py-4 border border-[color:var(--color-ink)]/30 text-[color:var(--color-ink)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)] transition-colors"
             >
-              Model Your ROI
+              Preview the Practitioner Course
             </Link>
           </div>
           <p className="font-mono text-xs text-[color:var(--color-slate)] pt-2">
-            8 questions &middot; under 3 minutes &middot; community banks only
+            12 questions &middot; under 3 minutes &middot; built for regulated financial institutions
           </p>
+          <div className="max-w-3xl mx-auto pt-8 border-t border-[color:var(--color-ink)]/10">
+            <p className="font-serif text-2xl md:text-3xl leading-tight text-[color:var(--color-ink)]">
+              The big banks are spending billions on AI.{' '}
+              <span className="text-[color:var(--color-terra)] italic">
+                Your advantage is your people.
+              </span>
+            </p>
+          </div>
         </div>
       </section>
 

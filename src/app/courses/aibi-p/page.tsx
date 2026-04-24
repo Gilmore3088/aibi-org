@@ -3,7 +3,7 @@
 
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { modules, PILLAR_META } from '@content/courses/aibi-p';
+import { modules, PILLAR_META, aibiPCourseConfig } from '@content/courses/aibi-p';
 import type { Pillar } from '@content/courses/aibi-p';
 import { getEnrollment } from './_lib/getEnrollment';
 import { getModuleStatus } from './_lib/courseProgress';
@@ -16,6 +16,22 @@ export const metadata: Metadata = {
 };
 
 const PILLAR_ORDER: Pillar[] = ['awareness', 'understanding', 'creation', 'application'];
+
+const LEARNER_OUTCOMES = [
+  'Write safer, clearer prompts for daily banking work',
+  'Summarize banking documents responsibly',
+  'Review AI outputs for errors and unsupported claims',
+  'Avoid entering sensitive data into public tools',
+  'Use AI for communication, meetings, policy review, and productivity',
+] as const;
+
+const COURSE_PHASES = [
+  'Understand AI at work',
+  'Use AI safely',
+  'Practice daily workflows',
+  'Apply AI to your role',
+  'Earn your credential',
+] as const;
 
 function StatusIndicator({ status }: { readonly status: ModuleStatus }) {
   switch (status) {
@@ -52,8 +68,10 @@ export default async function CourseOverviewPage() {
         <h1 className="font-serif text-3xl font-bold leading-tight text-[color:var(--color-ink)] mb-2">
           Banking AI <span className="text-[color:var(--color-terra)] italic">Practitioner</span>
         </h1>
-        <p className="text-sm text-[color:var(--color-ink)]/75 mb-4 max-w-xl">
-          Hands-on AI skills for every staff member. Build a real skill, earn a real credential.
+        <p className="text-sm text-[color:var(--color-ink)]/75 mb-4 max-w-2xl">
+          {aibiPCourseConfig.promise} In less than two weeks, learn how to
+          write better, summarize faster, think clearer, and avoid risky AI
+          mistakes.
         </p>
         <div className="flex flex-wrap items-center gap-4 mb-6">
           <Link
@@ -69,13 +87,77 @@ export default async function CourseOverviewPage() {
             9 modules
           </span>
           <span className="font-mono text-[10px] text-[color:var(--color-slate)] uppercase tracking-wider">
-            AI sandbox in every lesson
+            Learn / Practice / Apply
+          </span>
+          <span className="font-mono text-[10px] text-[color:var(--color-slate)] uppercase tracking-wider">
+            {aibiPCourseConfig.estimatedMinutes} min total
           </span>
           {completedCount > 0 && (
             <span className="font-mono text-[10px] text-[color:var(--color-terra)] uppercase tracking-wider tabular-nums">
               {completedCount}/{modules.length} complete
             </span>
           )}
+        </div>
+      </section>
+
+      <section className="grid lg:grid-cols-[1fr_0.9fr] gap-8 mb-8">
+        <div className="border border-[color:var(--color-ink)]/10 rounded-[3px] p-6">
+          <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-4">
+            What you will be able to do
+          </p>
+          <ul className="space-y-3">
+            {LEARNER_OUTCOMES.map((outcome) => (
+              <li key={outcome} className="flex gap-3 text-sm text-[color:var(--color-ink)]/75 leading-relaxed">
+                <span className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-terra)] shrink-0" />
+                <span>{outcome}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="border border-[color:var(--color-ink)]/10 rounded-[3px] p-6 bg-[color:var(--color-parch)]">
+          <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-4">
+            Required outputs
+          </p>
+          <div className="space-y-3">
+            {aibiPCourseConfig.artifacts.map((artifact) => (
+              <div key={artifact.id}>
+                <h3 className="font-serif text-base text-[color:var(--color-ink)]">
+                  {artifact.title}
+                </h3>
+                <p className="text-xs text-[color:var(--color-slate)] leading-relaxed">
+                  {artifact.description}
+                </p>
+              </div>
+            ))}
+            <div>
+              <h3 className="font-serif text-base text-[color:var(--color-ink)]">
+                Final practical assessment
+              </h3>
+              <p className="text-xs text-[color:var(--color-slate)] leading-relaxed">
+                Submit a reviewed work product package that demonstrates safe,
+                practical AI use.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="mb-8 border-y border-[color:var(--color-ink)]/10 py-5">
+        <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60 mb-3">
+          Course phases
+        </p>
+        <div className="grid sm:grid-cols-5 gap-3">
+          {COURSE_PHASES.map((phase, idx) => (
+            <div key={phase} className="flex sm:block items-baseline gap-3">
+              <p className="font-mono text-[11px] text-[color:var(--color-terra)] tabular-nums">
+                {String(idx + 1).padStart(2, '0')}
+              </p>
+              <p className="font-serif text-sm text-[color:var(--color-ink)] leading-tight">
+                {phase}
+              </p>
+            </div>
+          ))}
         </div>
       </section>
 

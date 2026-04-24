@@ -1,6 +1,6 @@
-// AiBI-P Module 4: Platform Features Deep Dive
+// AiBI-P Module 4: AI Mistakes and Human Review
 // Pillar: Understanding | Estimated: 30 minutes
-// Key Output: Platform Feature Reference Card
+// Key Output: AI Output Review Worksheet
 // roleSpecific: true — role-specific spotlights vary by department
 
 import type { Module } from './types';
@@ -8,10 +8,10 @@ import type { Module } from './types';
 export const module4: Module = {
   number: 4,
   id: 'm4-platform-features',
-  title: 'Platform Features Deep Dive',
+  title: 'AI Mistakes and Human Review',
   pillar: 'understanding',
   estimatedMinutes: 30,
-  keyOutput: 'Platform Feature Reference Card',
+  keyOutput: 'AI Output Review Worksheet',
   mockupRef: 'content/courses/AiBI-P v1/stitch_ai_banking_institute_course/m4_platform_features_deep_dive',
   roleSpecific: true,
   sections: [

@@ -1,16 +1,16 @@
-// AiBI-P Module 5: Safe Use Guardrails
+// AiBI-P Module 5: Banking Boundaries and Governance
 // Pillar: Understanding | Estimated: 40 minutes
-// Key Output: Acceptable Use Card (personalized, dynamic: true)
+// Key Output: Red / Yellow / Green Use Card (personalized, dynamic: true)
 
 import type { Module } from './types';
 
 export const module5: Module = {
   number: 5,
   id: 'm5-safe-use-guardrails',
-  title: 'Safe Use Guardrails',
+  title: 'Banking Boundaries and Governance',
   pillar: 'understanding',
   estimatedMinutes: 40,
-  keyOutput: 'Acceptable Use Card',
+  keyOutput: 'Red / Yellow / Green Use Card',
   mockupRef: 'content/courses/AiBI-P v1/stitch_ai_banking_institute_course/m5_refined_safe_use_guardrails',
   sections: [
     {
