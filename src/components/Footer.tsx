@@ -11,7 +11,7 @@ const FOOTER_GROUPS: readonly FooterGroup[] = [
     links: [
       { href: '/assessment', label: 'Free Assessment' },
       { href: '/education', label: 'Education' },
-      { href: '/services', label: 'Services' },
+      { href: '/for-institutions', label: 'For Institutions' },
     ],
   },
   {

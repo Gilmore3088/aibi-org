@@ -441,10 +441,10 @@ function getRecommendations(tierId: string): Recommendation[] {
           accent: 'var(--color-terra)',
         },
         {
-          label: 'Get guidance',
-          title: 'Request an Executive Briefing',
-          description: 'A free 45-minute conversation about converting scattered experiments into a coordinated program.',
-          href: '/services',
+          label: 'Enroll your team',
+          title: 'Run a cohort for your institution',
+          description: 'Enroll a department together, or build an institution-wide capability program. Team pricing and shared reporting.',
+          href: '/for-institutions',
           accent: 'var(--color-cobalt)',
         },
       ];
@@ -458,10 +458,10 @@ function getRecommendations(tierId: string): Recommendation[] {
           accent: 'var(--color-cobalt)',
         },
         {
-          label: 'Accelerate',
-          title: 'Explore the Quick Win Sprint',
-          description: 'Three automations in 4\u20136 weeks with a 90-day ROI guarantee. $5,000\u2013$15,000.',
-          href: '/services',
+          label: 'Enroll your team',
+          title: 'Run a Specialist cohort',
+          description: 'Five to 25 managers go through the Specialist track together. Shared kickoff, group reporting, team pricing.',
+          href: '/for-institutions',
           accent: 'var(--color-terra)',
         },
       ];
@@ -475,10 +475,10 @@ function getRecommendations(tierId: string): Recommendation[] {
           accent: 'var(--color-sage)',
         },
         {
-          label: 'Scale further',
-          title: 'The AI Transformation program',
-          description: 'A monthly operating system with capability transfer. Your team runs it independently when we leave.',
-          href: '/services',
+          label: 'Build enduring capability',
+          title: 'Institution-wide capability program',
+          description: 'A recurring cohort cadence so every banker has a path to proficiency. Leadership Advisory for your AI leader.',
+          href: '/for-institutions',
           accent: 'var(--color-terra)',
         },
       ];

@@ -12,7 +12,7 @@ import { usePathname } from 'next/navigation';
 const NAV_LINKS = [
   { href: '/assessment', label: 'Assessment' },
   { href: '/education', label: 'Education' },
-  { href: '/services', label: 'Services' },
+  { href: '/for-institutions', label: 'For Institutions' },
   { href: '/resources', label: 'Resources' },
   { href: '/dashboard', label: 'Dashboard' },
 ] as const;

@@ -6,7 +6,7 @@ import { MobileNav } from './MobileNav';
 const NAV_LINKS = [
   { href: '/assessment', label: 'Assessment' },
   { href: '/education', label: 'Education' },
-  { href: '/services', label: 'Services' },
+  { href: '/for-institutions', label: 'For Institutions' },
   { href: '/resources', label: 'Resources' },
 ] as const;
 

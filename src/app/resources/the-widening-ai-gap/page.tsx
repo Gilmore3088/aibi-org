@@ -150,13 +150,12 @@ export default function WideningGapArticle() {
           </h2>
           <p>
             The Institute&rsquo;s approach is community-bank-scaled from the
-            first conversation. The Operational Quick Win Sprint implements
-            three measurable automations in four to six weeks, with a 90-day
-            ROI guarantee, priced between $5,000 and $15,000. The Efficiency
-            and Process Audit gives you the board-ready full-institution
-            roadmap. The AiBI fCAIO engagement installs a monthly operating
-            system with capability transfer baked in &mdash; so when the
-            engagement ends, your team runs AI transformation independently.
+            first conversation. Bankers earn certifications that travel with
+            them; institutions enroll a department or build a recurring
+            cohort cadence that every new hire inherits. When a team wants
+            a coach alongside the program, three optional Advisory shapes
+            pair with certification &mdash; never replace it. Your bankers
+            stay the builders.
           </p>
           <p>
             None of this requires you to hire an AI engineer. It requires a

@@ -78,12 +78,12 @@ function getStepsForTier(tierId: Tier['id']): readonly NextStep[] {
           primary: true,
         },
         {
-          label: 'Prove ROI now',
-          title: 'Explore the Quick Win Sprint',
+          label: 'Enroll your team',
+          title: 'Run a Specialist cohort with your department',
           description:
-            'Three automations implemented in 4\u20136 weeks with a documented ROI report and a 90-day guarantee. $5,000\u2013$15,000.',
-          href: '/services',
-          cta: 'See engagement details',
+            'Five to 25 managers from one institution go through the Specialist track together. Shared kickoff, group reporting, and team pricing. Leave with a prioritized automation roadmap your team owns.',
+          href: '/for-institutions',
+          cta: 'See enrollment options',
           accent: 'var(--color-terra)',
         },
       ];
@@ -101,12 +101,12 @@ function getStepsForTier(tierId: Tier['id']): readonly NextStep[] {
           primary: true,
         },
         {
-          label: 'Scale further',
-          title: 'The AI Transformation program',
+          label: 'Build enduring capability',
+          title: 'Institution-wide capability program',
           description:
-            'A structured monthly operating system that installs capability transfer from day one. Your team runs the program independently when the engagement ends.',
-          href: '/services',
-          cta: 'See how we work',
+            'A recurring cohort cadence — Practitioner, Specialist, and Leader — scheduled so every banker, new or tenured, has a path to proficiency. Leadership Advisory available alongside for your AI leader.',
+          href: '/for-institutions',
+          cta: 'See enrollment options',
           accent: 'var(--color-terra)',
         },
       ];

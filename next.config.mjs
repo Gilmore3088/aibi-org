@@ -9,10 +9,15 @@ const nextConfig = {
   // to reduce nav clutter. Exact-match redirects preserve sub-route access:
   // /courses/aibi-p, /courses/aibi-s, /courses/aibi-l remain the course pages,
   // and /certifications/exam remains the sample exam.
+  //
+  // Decision log: 2026-04-24 — /services reworked to /for-institutions with
+  // an education-first positioning. The old consulting page is replaced; the
+  // three advisory tiers live at /for-institutions/advisory.
   async redirects() {
     return [
       { source: '/courses', destination: '/education', permanent: true },
       { source: '/certifications', destination: '/education', permanent: true },
+      { source: '/services', destination: '/for-institutions', permanent: true },
     ];
   },
 };
