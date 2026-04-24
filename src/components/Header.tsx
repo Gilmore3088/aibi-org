@@ -5,7 +5,7 @@ import { MobileNav } from './MobileNav';
 
 const NAV_LINKS = [
   { href: '/assessment', label: 'Assessment' },
-  { href: '/courses/aibi-p', label: 'Practitioner Course' },
+  { href: '/courses/aibi-p', label: 'For Learners' },
   { href: '/services', label: 'For Institutions' },
   { href: '/resources', label: 'Resources' },
 ] as const;

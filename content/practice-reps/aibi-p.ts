@@ -368,3 +368,7 @@ export function getDailyPracticeRep(seed = new Date().toISOString().slice(0, 10)
   const dayTotal = Array.from(seed).reduce((total, char) => total + char.charCodeAt(0), 0);
   return AIBI_P_PRACTICE_REPS[dayTotal % AIBI_P_PRACTICE_REPS.length];
 }
+
+export function getPracticeRepById(repId: string): PracticeRep | undefined {
+  return AIBI_P_PRACTICE_REPS.find((rep) => rep.id === repId);
+}

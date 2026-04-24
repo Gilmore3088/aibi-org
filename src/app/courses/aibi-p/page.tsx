@@ -26,11 +26,20 @@ const LEARNER_OUTCOMES = [
 ] as const;
 
 const COURSE_PHASES = [
-  'Understand AI at work',
-  'Use AI safely',
-  'Practice daily workflows',
-  'Apply AI to your role',
-  'Earn your credential',
+  'AI for your workday',
+  'Prompt basics',
+  'Mistakes and safe use',
+  'Workflows and role use',
+  'Final assessment',
+] as const;
+
+const FOUNDATIONS = [
+  'AI tools landscape',
+  'What an LLM does',
+  'Agents and MCP basics',
+  'File-based workflows',
+  'Context and memory',
+  'Regulatory boundaries',
 ] as const;
 
 function StatusIndicator({ status }: { readonly status: ModuleStatus }) {
@@ -156,6 +165,20 @@ export default async function CourseOverviewPage() {
               <p className="font-serif text-sm text-[color:var(--color-ink)] leading-tight">
                 {phase}
               </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="mb-8 border border-[color:var(--color-ink)]/10 rounded-[3px] p-6">
+        <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-4">
+          Foundations included
+        </p>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {FOUNDATIONS.map((foundation) => (
+            <div key={foundation} className="flex gap-3 text-sm text-[color:var(--color-ink)]/75">
+              <span className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-terra)] shrink-0" />
+              <span>{foundation}</span>
             </div>
           ))}
         </div>

@@ -1,4 +1,4 @@
-// AiBI-P Module 5: Banking Boundaries and Governance
+// AiBI-P Module 5: Safe Use
 // Pillar: Understanding | Estimated: 40 minutes
 // Key Output: Red / Yellow / Green Use Card (personalized, dynamic: true)
 
@@ -7,7 +7,7 @@ import type { Module } from './types';
 export const module5: Module = {
   number: 5,
   id: 'm5-safe-use-guardrails',
-  title: 'Banking Boundaries and Governance',
+  title: 'Safe Use',
   pillar: 'understanding',
   estimatedMinutes: 40,
   keyOutput: 'Red / Yellow / Green Use Card',

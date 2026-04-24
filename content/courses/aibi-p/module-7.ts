@@ -1,4 +1,4 @@
-// AiBI-P Module 7: Skill Builder
+// AiBI-P Module 7: Role-Based AI Use
 // Pillar: Creation | Estimated: 45 minutes
 // Key Output: My First Skill (.md, dynamic: true)
 // roleSpecific: true — role-specific placeholders in builder fields
@@ -8,7 +8,7 @@ import type { Module } from './types';
 export const module7: Module = {
   number: 7,
   id: 'm7-skill-builder',
-  title: 'Write Your First Skill',
+  title: 'Role-Based AI Use',
   pillar: 'creation',
   estimatedMinutes: 45,
   keyOutput: 'My First Skill',

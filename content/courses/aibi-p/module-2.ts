@@ -1,4 +1,4 @@
-// AiBI-P Module 2: Safe Prompting Basics
+// AiBI-P Module 2: Prompt Basics
 // Pillar: Awareness | Estimated: 20 minutes
 // Key Output: Safe Prompt Rewrite
 
@@ -7,7 +7,7 @@ import type { Module } from './types';
 export const module2: Module = {
   number: 2,
   id: 'm2-ai-ecosystem',
-  title: 'Safe Prompting Basics',
+  title: 'Prompt Basics',
   pillar: 'awareness',
   estimatedMinutes: 20,
   keyOutput: 'Safe Prompt Rewrite',

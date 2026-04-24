@@ -3,7 +3,7 @@
 // PromptCard — displays a single prompt with copy-to-clipboard functionality
 // Uses platform badge, role tag, monospace prompt box, expected output, and time estimate
 
-import { useState, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import type { Prompt, ContentLevel } from '@content/courses/aibi-p/prompt-library';
 import {
@@ -30,6 +30,17 @@ const COPY_RESET_MS = 2000;
 export function PromptCard({ prompt, userLevel = null }: PromptCardProps) {
   const [copied, setCopied] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [savingPrompt, setSavingPrompt] = useState(false);
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem('aibi-saved-prompts');
+      const existing = raw ? (JSON.parse(raw) as string[]) : [];
+      setSaved(existing.includes(prompt.id));
+    } catch {
+      setSaved(false);
+    }
+  }, [prompt.id]);
 
   const handleCopy = useCallback(async () => {
     try {
@@ -58,20 +69,37 @@ export function PromptCard({ prompt, userLevel = null }: PromptCardProps) {
   const safetyLevel = getPromptSafetyLevel(prompt);
   const timeMinutes = getPromptTimeMinutes(prompt);
 
-  const handleSave = useCallback(() => {
+  const handleSave = useCallback(async () => {
+    setSavingPrompt(true);
+    const nextSaved = !saved;
     try {
-      const key = 'aibi-saved-prompts';
-      const raw = localStorage.getItem(key);
-      const existing = raw ? (JSON.parse(raw) as string[]) : [];
-      const next = existing.includes(prompt.id)
-        ? existing.filter((id) => id !== prompt.id)
-        : [...existing, prompt.id];
-      localStorage.setItem(key, JSON.stringify(next));
-      setSaved(next.includes(prompt.id));
+      const response = await fetch('/api/prompts/save', {
+        method: nextSaved ? 'POST' : 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ courseId: 'aibi-p', promptId: prompt.id }),
+      });
+
+      if (!response.ok && response.status !== 401 && response.status !== 503) {
+        throw new Error('Failed to save prompt');
+      }
     } catch {
-      setSaved((current) => !current);
+      // Unauthenticated preview users still get a local saved prompt list.
+    } finally {
+      try {
+        const key = 'aibi-saved-prompts';
+        const raw = localStorage.getItem(key);
+        const existing = raw ? (JSON.parse(raw) as string[]) : [];
+        const next = nextSaved
+          ? Array.from(new Set([...existing, prompt.id]))
+          : existing.filter((id) => id !== prompt.id);
+        localStorage.setItem(key, JSON.stringify(next));
+      } catch {
+        // Ignore local persistence failure; visual state still updates.
+      }
+      setSaved(nextSaved);
+      setSavingPrompt(false);
     }
-  }, [prompt.id]);
+  }, [prompt.id, saved]);
 
   const card = (
     <article className="border border-[color:var(--color-parch-dark)] rounded-sm bg-[color:var(--color-parch)] p-6 space-y-4">
@@ -173,9 +201,10 @@ export function PromptCard({ prompt, userLevel = null }: PromptCardProps) {
           <button
             type="button"
             onClick={handleSave}
+            disabled={savingPrompt}
             className="font-sans text-[12px] italic text-[color:var(--color-terra)] hover:underline focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-1 rounded-sm"
           >
-            {saved ? 'Saved' : 'Save'}
+            {savingPrompt ? 'Saving' : saved ? 'Saved' : 'Save'}
           </button>
           <Link
             href={`/courses/aibi-p/${prompt.relatedModule}`}

@@ -9,8 +9,37 @@ import { modules } from '@content/courses/aibi-p';
 import {
   AIBI_P_ARTIFACTS,
   AIBI_P_CERTIFICATE_REQUIREMENTS,
+  AIBI_P_PRACTICE_REPS,
   getDailyPracticeRep,
 } from '@content/practice-reps/aibi-p';
+import type { ArtifactStatus } from '@/types/lms';
+
+interface LearnerDashboardState {
+  readonly enrollment: {
+    readonly id: string;
+    readonly completedModules: readonly number[];
+    readonly currentModule: number;
+    readonly enrolledAt: string;
+  } | null;
+  readonly practice: {
+    readonly completedRepIds: readonly string[];
+    readonly completedCount: number;
+  };
+  readonly prompts: {
+    readonly savedPromptIds: readonly string[];
+    readonly savedCount: number;
+  };
+  readonly artifacts: ReadonlyArray<{
+    readonly id: string;
+    readonly moduleNumber?: number;
+    readonly title: string;
+    readonly description: string;
+    readonly format: string;
+    readonly sourceActivityId: string;
+    readonly downloadHref?: string;
+    readonly status: ArtifactStatus;
+  }>;
+}
 
 function getReadinessDisplay(readiness: NonNullable<UserData['readiness']>) {
   const isV2 =
@@ -37,11 +66,22 @@ function getReadinessDisplay(readiness: NonNullable<UserData['readiness']>) {
 
 export default function DashboardPage() {
   const [user, setUser] = useState<UserData | null>(null);
+  const [dashboard, setDashboard] = useState<LearnerDashboardState | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getUserDataWithSupabaseFallback()
-      .then(setUser)
+      .then(async (loadedUser) => {
+        setUser(loadedUser);
+        try {
+          const response = await fetch('/api/dashboard/learner', { cache: 'no-store' });
+          if (response.ok) {
+            setDashboard((await response.json()) as LearnerDashboardState);
+          }
+        } catch {
+          // Local assessment-only users still get a useful dashboard fallback.
+        }
+      })
       .finally(() => setLoading(false));
   }, []);
 
@@ -77,9 +117,18 @@ export default function DashboardPage() {
   const display = user.readiness ? getReadinessDisplay(user.readiness) : null;
   const tier = display?.tier ?? null;
   const maxScore = display?.maxScore ?? 48;
-  const completedModules = 0;
-  const currentModule = modules[0];
+  const completedModules = dashboard?.enrollment?.completedModules.length ?? 0;
+  const currentModuleNumber = dashboard?.enrollment?.currentModule ?? 1;
+  const currentModule = modules.find((mod) => mod.number === currentModuleNumber) ?? modules[0];
   const progressPct = Math.round((completedModules / modules.length) * 100);
+  const completedRepIds = dashboard?.practice.completedRepIds ?? [];
+  const currentRep = completedRepIds.includes(dailyRep.id)
+    ? AIBI_P_PRACTICE_REPS.find((rep) => !completedRepIds.includes(rep.id)) ?? dailyRep
+    : dailyRep;
+  const artifacts = dashboard?.artifacts ?? AIBI_P_ARTIFACTS.map((artifact) => ({
+    ...artifact,
+    status: 'available' as const,
+  }));
 
   return (
     <main className="px-6 py-10 md:py-14">
@@ -107,7 +156,7 @@ export default function DashboardPage() {
               Continue Lesson
             </Link>
             <Link
-              href="/courses/aibi-p"
+              href={`/practice/${currentRep.id}`}
               className="text-center px-6 py-3 border border-[color:var(--color-ink)]/25 text-[color:var(--color-ink)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)] transition-colors"
             >
               Practice for 5 Minutes
@@ -121,22 +170,28 @@ export default function DashboardPage() {
               Today&apos;s AI Rep
             </p>
             <h2 className="font-serif text-3xl text-[color:var(--color-ink)] leading-tight">
-              {dailyRep.title}
+              {currentRep.title}
             </h2>
             <p className="text-sm text-[color:var(--color-ink)]/75 mt-3 leading-relaxed">
-              {dailyRep.scenario}
+              {currentRep.scenario}
             </p>
             <div className="grid sm:grid-cols-3 gap-4 mt-6">
-              <MiniMetric label="Skill" value={dailyRep.skill} />
-              <MiniMetric label="Time" value={`${dailyRep.timeEstimateMinutes} min`} />
-              <MiniMetric label="Safety" value={dailyRep.safetyLevel.toUpperCase()} />
+              <MiniMetric label="Skill" value={currentRep.skill} />
+              <MiniMetric label="Time" value={`${currentRep.timeEstimateMinutes} min`} />
+              <MiniMetric label="Safety" value={currentRep.safetyLevel.toUpperCase()} />
             </div>
+            <Link
+              href={`/practice/${currentRep.id}`}
+              className="inline-block mt-6 px-5 py-2.5 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
+            >
+              Start Rep
+            </Link>
             <div className="mt-6 border-t border-[color:var(--color-ink)]/10 pt-5">
               <p className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-slate)] mb-2">
                 Starter prompt
               </p>
               <p className="font-mono text-sm leading-relaxed text-[color:var(--color-ink)] bg-[color:var(--color-linen)] border border-[color:var(--color-ink)]/10 rounded-[2px] p-4">
-                {dailyRep.starterPrompt}
+                {currentRep.starterPrompt}
               </p>
             </div>
           </article>
@@ -165,6 +220,15 @@ export default function DashboardPage() {
               />
             </div>
             <ul className="mt-6 space-y-3">
+              <li className="flex items-start gap-3 text-sm text-[color:var(--color-ink)]/75">
+                <span className="mt-1 h-2 w-2 rounded-sm bg-[color:var(--color-terra)]" />
+                <span>
+                  <span className="font-medium text-[color:var(--color-ink)]">
+                    Practice reps:
+                  </span>{' '}
+                  {dashboard?.practice.completedCount ?? 0} complete
+                </span>
+              </li>
               {AIBI_P_CERTIFICATE_REQUIREMENTS.map((requirement, idx) => (
                 <li
                   key={requirement.id}
@@ -224,7 +288,7 @@ export default function DashboardPage() {
             </p>
             <p className="text-sm text-[color:var(--color-slate)] mt-3 leading-relaxed">
               Save reusable prompts from the library as you build your personal
-              AI toolkit.
+              AI toolkit. {dashboard?.prompts.savedCount ?? 0} saved so far.
             </p>
             <Link
               href="/courses/aibi-p/prompt-library"
@@ -269,13 +333,13 @@ export default function DashboardPage() {
             </Link>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {AIBI_P_ARTIFACTS.map((artifact, idx) => (
+            {artifacts.map((artifact) => (
               <article
                 key={artifact.id}
                 className="border border-[color:var(--color-ink)]/10 rounded-[3px] p-5 bg-[color:var(--color-linen)]"
               >
                 <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-3">
-                  {idx === 0 ? 'Available' : idx === 1 ? 'In progress' : 'Upcoming'} · Module {artifact.moduleNumber}
+                  {artifact.status.replace('-', ' ')} · Module {artifact.moduleNumber}
                 </p>
                 <h3 className="font-serif text-lg text-[color:var(--color-ink)] leading-tight">
                   {artifact.title}
@@ -283,6 +347,21 @@ export default function DashboardPage() {
                 <p className="text-xs text-[color:var(--color-slate)] mt-3 leading-relaxed">
                   {artifact.description}
                 </p>
+                {artifact.downloadHref ? (
+                  <a
+                    href={artifact.downloadHref}
+                    className="inline-block mt-4 font-serif-sc text-[10px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] border-b border-[color:var(--color-terra)]"
+                  >
+                    Download
+                  </a>
+                ) : (
+                  <Link
+                    href={`/practice/${artifact.sourceActivityId}`}
+                    className="inline-block mt-4 font-serif-sc text-[10px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] border-b border-[color:var(--color-terra)]"
+                  >
+                    Open activity
+                  </Link>
+                )}
               </article>
             ))}
           </div>

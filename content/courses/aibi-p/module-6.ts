@@ -1,4 +1,4 @@
-// AiBI-P Module 6: Anatomy of a Skill
+// AiBI-P Module 6: AI Workflows
 // Pillar: Creation | Estimated: 35 minutes
 // Key Output: Skill Template Library
 
@@ -7,7 +7,7 @@ import type { Module } from './types';
 export const module6: Module = {
   number: 6,
   id: 'm6-anatomy-of-a-skill',
-  title: 'Anatomy of a Skill',
+  title: 'AI Workflows',
   pillar: 'creation',
   estimatedMinutes: 35,
   keyOutput: 'Skill Template Library',

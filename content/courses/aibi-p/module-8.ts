@@ -1,4 +1,4 @@
-// AiBI-P Module 8: Test, Iterate, Share
+// AiBI-P Module 8: Summarization and Communication
 // Pillar: Application | Estimated: 35 minutes
 // Key Output: Iterated skill version with improvement notes
 
@@ -7,7 +7,7 @@ import type { Module } from './types';
 export const module8: Module = {
   number: 8,
   id: 'm8-test-iterate-share',
-  title: 'Test, Iterate, Share',
+  title: 'Summarization and Communication',
   pillar: 'application',
   estimatedMinutes: 35,
   keyOutput: 'Iterated skill with version notes',

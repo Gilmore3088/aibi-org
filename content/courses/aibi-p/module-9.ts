@@ -1,4 +1,4 @@
-// AiBI-P Module 9: Final Capstone Application
+// AiBI-P Module 9: Final Practical Assessment
 // Pillar: Application | Estimated: 60 minutes
 // Key Output: Assessed work product submission (no activity — work product submission handled separately)
 // roleSpecific: true — role-specific automation examples vary by department
@@ -8,7 +8,7 @@ import type { Module } from './types';
 export const module9: Module = {
   number: 9,
   id: 'm9-final-capstone',
-  title: 'Final Capstone Application',
+  title: 'Final Practical Assessment',
   pillar: 'application',
   estimatedMinutes: 60,
   keyOutput: 'Assessed Work Product (skill + input + output + annotation)',
