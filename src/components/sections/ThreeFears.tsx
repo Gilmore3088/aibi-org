@@ -28,7 +28,7 @@ const FEARS: readonly Fear[] = [
   {
     fear: 'I cannot justify the cost.',
     answer:
-      'Every engagement leads with the math. The Quick Win Sprint carries a 90-day ROI guarantee \u2014 if three implemented automations do not deliver measured time savings within a quarter, we refund the engagement fee.',
+      'Every engagement leads with the math. Certification per seat is bounded and measurable; team cohorts include a documented before-and-after so leadership sees where the hours went. Advisory is scoped to the use cases your team picks, not open-ended implementation.',
     accent: 'var(--color-terra)',
   },
 ];

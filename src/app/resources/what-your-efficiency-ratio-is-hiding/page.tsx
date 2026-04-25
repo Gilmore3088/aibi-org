@@ -255,7 +255,7 @@ export default function EfficiencyRatioArticle() {
               Run the ROI Calculator
             </Link>
             <Link
-              href="/services"
+              href="/for-institutions"
               className="inline-block px-8 py-4 border border-[color:var(--color-ink)]/20 text-[color:var(--color-ink)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)] active:scale-[0.98] transition-all"
             >
               Book an Executive Briefing

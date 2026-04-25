@@ -3,7 +3,7 @@ import { ROICalculator } from '@/components/sections/ROICalculator';
 import { ThreeFears } from '@/components/sections/ThreeFears';
 import { SecurityBand } from '@/components/sections/SecurityBand';
 import { WideningGap } from '@/components/sections/WideningGap';
-import { ServiceTierCards } from '@/components/sections/ServiceTierCards';
+import { InstitutionsTeaser } from '@/components/sections/InstitutionsTeaser';
 import { CertificationCards } from '@/components/sections/CertificationCards';
 import { FinalCTABand } from '@/components/sections/FinalCTABand';
 
@@ -53,7 +53,7 @@ const PILLARS: readonly Pillar[] = [
     bullets: [
       'Workflow mapping and automation design',
       'Power Automate and Copilot Studio for non-developers',
-      '90-day ROI guarantee on every Quick Win Sprint',
+      'Coaching that pairs bankers with their own real use cases',
       'Measured impact: hours recaptured, NIE reduced, efficiency ratio moved',
     ],
     colorVar: 'var(--color-terra)',
@@ -200,8 +200,8 @@ export default function HomePage() {
       {/* Certification tracks — three levels of engagement */}
       <CertificationCards showHeader compact />
 
-      {/* Consulting tiers — or we come to you */}
-      <ServiceTierCards showHeader />
+      {/* For Institutions — enrollment at three scales */}
+      <InstitutionsTeaser />
 
       {/* ── ACT 4: THE ASK ── */}
       <FinalCTABand />
