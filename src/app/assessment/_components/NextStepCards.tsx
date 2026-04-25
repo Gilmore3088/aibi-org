@@ -69,11 +69,11 @@ function getStepsForTier(tierId: Tier['id']): readonly NextStep[] {
       return [
         {
           label: 'Recommended',
-          title: 'Advance to the Specialist track',
+          title: 'Join the Specialist waitlist',
           description:
-            'You have traction. The AiBI-S course is a 6-week live cohort for department managers — deploy governed AI automation across your team with peer accountability and measured outcomes.',
-          href: '/courses/aibi-s',
-          cta: 'Explore AiBI-S',
+            'You have traction. AiBI-S will focus on workflow automation, agents, internal AI systems, and team-level rollout after Practitioner is validated.',
+          href: '/coming-soon?interest=specialist',
+          cta: 'Join AiBI-S Waitlist',
           accent: 'var(--color-cobalt)',
           primary: true,
         },
@@ -92,11 +92,11 @@ function getStepsForTier(tierId: Tier['id']): readonly NextStep[] {
       return [
         {
           label: 'Recommended',
-          title: 'The Banking AI Leader workshop',
+          title: 'Join the Leader waitlist',
           description:
-            'A 1-day in-person workshop for C-suite and board. Efficiency ratio modeling with your numbers, a 3-year AI roadmap, and a board-ready presentation you leave with. From $2,800.',
-          href: '/courses/aibi-l',
-          cta: 'Explore AiBI-L',
+            'AiBI-L will focus on executive confidence, governance, rollout, and institution-level AI leadership after the Practitioner loop is validated.',
+          href: '/coming-soon?interest=leader',
+          cta: 'Join AiBI-L Waitlist',
           accent: 'var(--color-sage)',
           primary: true,
         },

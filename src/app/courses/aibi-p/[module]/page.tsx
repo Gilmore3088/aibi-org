@@ -6,7 +6,12 @@
 
 import { notFound, redirect } from 'next/navigation';
 import type { Metadata } from 'next';
-import { modules, getModuleByNumber } from '@content/courses/aibi-p';
+import {
+  modules,
+  getModuleByNumber,
+  V4_AIBIP_MODULE_BY_NUMBER,
+} from '@content/courses/aibi-p';
+import type { Activity, ExpandedModule } from '@content/courses/aibi-p';
 import { ModuleHeader } from '../_components/ModuleHeader';
 import { ContentTable } from '../_components/ContentTable';
 import { LearnSection } from '../_components/LearnSection';
@@ -43,7 +48,7 @@ export default async function ModulePage({ params }: ModulePageParams) {
   const moduleNum = parseInt(params.module, 10);
 
   // T-02-03: Guard against invalid params (NaN, out of range, non-existent)
-  if (isNaN(moduleNum) || moduleNum < 1 || moduleNum > 9) {
+  if (isNaN(moduleNum) || moduleNum < 1 || moduleNum > modules.length) {
     notFound();
   }
 
@@ -63,12 +68,15 @@ export default async function ModulePage({ params }: ModulePageParams) {
     redirect(`/courses/aibi-p/${enrollment.current_module}`);
   }
 
-  const isLastModule = mod.number === 9;
+  const isLastModule = mod.number === modules.length;
   const isAlreadyCompleted = enrollment.completed_modules.includes(moduleNum);
+  const expandedModule = V4_AIBIP_MODULE_BY_NUMBER.get(moduleNum);
+  const moduleActivities = expandedModule ? [buildV4Activity(expandedModule)] : mod.activities;
+  const moduleTables = expandedModule ? undefined : mod.tables;
 
   // Fetch existing activity responses for this enrollment + module (read-only, service role)
   const existingResponses: Record<string, Record<string, string>> = {};
-  if (isSupabaseConfigured() && mod.activities.length > 0) {
+  if (isSupabaseConfigured() && moduleActivities.length > 0) {
     const serviceClient = createServiceRoleClient();
     const { data: responses } = await serviceClient
       .from('activity_responses')
@@ -102,12 +110,14 @@ export default async function ModulePage({ params }: ModulePageParams) {
           learnContent={
             <>
               <LearnSection
-                sections={mod.sections}
+                sections={expandedModule?.sections ?? mod.sections}
+                keyTakeaways={expandedModule?.takeaways}
                 moduleNumber={moduleNum}
               />
-              {mod.tables && mod.tables.length > 0 && (
+              <BankingBoundary moduleNumber={moduleNum} />
+              {moduleTables && moduleTables.length > 0 && (
                 <div className="mt-6">
-                  {mod.tables.map((table) => (
+                  {moduleTables.map((table) => (
                     <ContentTable key={table.id} table={table} />
                   ))}
                 </div>
@@ -125,13 +135,13 @@ export default async function ModulePage({ params }: ModulePageParams) {
           }
           applyContent={
             <ModuleContentClient
-              activities={mod.activities}
+              activities={moduleActivities}
               enrollmentId={enrollment.id}
               moduleNumber={moduleNum}
               existingResponses={existingResponses}
               isLastModule={isLastModule}
               isAlreadyCompleted={isAlreadyCompleted}
-              tables={mod.tables}
+              tables={moduleTables}
               learnerRole={
                 enrollment.onboarding_answers
                   ? getRoleSpotlight(enrollment.onboarding_answers)
@@ -144,3 +154,83 @@ export default async function ModulePage({ params }: ModulePageParams) {
     </>
   );
 }
+
+function buildV4Activity(module: ExpandedModule): Activity {
+  return {
+    id: `${module.number}.1`,
+    title: module.practice,
+    description: `Complete the practice, capture the useful output, and save the artifact: ${module.artifact}`,
+    type: 'free-text',
+    fields: [
+      {
+        id: 'practice-response',
+        label: 'Paste or write your practice response here.',
+        type: 'textarea',
+        minLength: 20,
+        required: true,
+        placeholder: module.practice,
+      },
+      {
+        id: 'review-notes',
+        label: 'What did you change, verify, or decide before using the output?',
+        type: 'textarea',
+        minLength: 20,
+        required: true,
+        placeholder: 'Note the human review step, safety boundary, or improvement you made.',
+      },
+    ],
+    completionTrigger: 'save-response',
+  };
+}
+
+function BankingBoundary({ moduleNumber }: { readonly moduleNumber: number }) {
+  const boundary = BANKING_BOUNDARIES[moduleNumber] ?? BANKING_BOUNDARIES.default;
+
+  return (
+    <section className="mt-8 border border-[color:var(--color-ink)]/10 rounded-[3px] bg-[color:var(--color-parch)] p-6">
+      <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-4">
+        Banking Boundary
+      </p>
+      <div className="grid md:grid-cols-3 gap-5">
+        {boundary.map(([title, body]) => (
+          <div key={title}>
+            <h2 className="font-serif text-lg text-[color:var(--color-ink)]">
+              {title}
+            </h2>
+            <p className="text-sm text-[color:var(--color-slate)] leading-relaxed mt-2">
+              {body}
+            </p>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+const BANKING_BOUNDARIES: Record<string | number, readonly (readonly [string, string])[]> = {
+  1: [
+    ['Do not paste', 'Customer data, account details, or confidential internal reports.'],
+    ['Human review', 'Any customer-facing draft, numbers, policy claims, or procedural instruction.'],
+    ['Escalate', 'Credit, legal, compliance, privacy, or complaint decisions.'],
+  ],
+  2: [
+    ['Do not assume', 'AI confidence is not evidence. Treat unsupported claims as review items.'],
+    ['Human review', 'Citations, dates, policy interpretations, and regulatory statements.'],
+    ['Escalate', 'Anything that could change customer treatment or institutional risk.'],
+  ],
+  4: [
+    ['Do not paste', 'PII, NPI, customer records, account numbers, or transaction-level detail.'],
+    ['Human review', 'All yellow-zone drafts before they leave an approved internal workflow.'],
+    ['Escalate', 'Red-zone use cases or any use requiring approved systems and controls.'],
+  ],
+  8: [
+    ['Do not include', 'Customer data, private employee information, passwords, or confidential records.'],
+    ['Human review', 'Voice profiles, examples, reusable prompts, and do-not-do boundaries.'],
+    ['Escalate', 'Any system file that would affect customer treatment, credit, legal, or compliance decisions.'],
+  ],
+  default: [
+    ['Do not paste', 'Sensitive customer, employee, financial, or confidential bank data.'],
+    ['Human review', 'Facts, numbers, policy language, recommendations, and external-facing outputs.'],
+    ['Escalate', 'Legal, compliance, credit, privacy, or high-impact operational decisions.'],
+  ],
+};

@@ -9,7 +9,7 @@ const FOOTER_GROUPS: readonly FooterGroup[] = [
   {
     label: 'Start here',
     links: [
-      { href: '/assessment', label: 'Free Assessment' },
+      { href: '/assessment/start', label: 'Free Assessment' },
       { href: '/education', label: 'Education' },
       { href: '/for-institutions', label: 'For Institutions' },
     ],
@@ -18,8 +18,8 @@ const FOOTER_GROUPS: readonly FooterGroup[] = [
     label: 'Programs',
     links: [
       { href: '/courses/aibi-p', label: 'AiBI-P · Practitioner' },
-      { href: '/courses/aibi-s', label: 'AiBI-S · Specialist' },
-      { href: '/courses/aibi-l', label: 'AiBI-L · Leader' },
+      { href: '/coming-soon?interest=specialist', label: 'AiBI-S · Specialist · Coming Soon' },
+      { href: '/coming-soon?interest=leader', label: 'AiBI-L · Leader · Coming Soon' },
     ],
   },
   {

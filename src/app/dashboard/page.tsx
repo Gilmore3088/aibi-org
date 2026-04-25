@@ -12,6 +12,7 @@ import {
   AIBI_P_PRACTICE_REPS,
   getDailyPracticeRep,
 } from '@content/practice-reps/aibi-p';
+import { ALL_PROMPTS, type Prompt } from '@content/courses/aibi-p/prompt-library';
 import type { ArtifactStatus } from '@/types/lms';
 
 interface LearnerDashboardState {
@@ -67,6 +68,8 @@ function getReadinessDisplay(readiness: NonNullable<UserData['readiness']>) {
 export default function DashboardPage() {
   const [user, setUser] = useState<UserData | null>(null);
   const [dashboard, setDashboard] = useState<LearnerDashboardState | null>(null);
+  const [localCompletedRepIds, setLocalCompletedRepIds] = useState<readonly string[]>([]);
+  const [localSavedPromptIds, setLocalSavedPromptIds] = useState<readonly string[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -82,7 +85,11 @@ export default function DashboardPage() {
           // Local assessment-only users still get a useful dashboard fallback.
         }
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setLocalCompletedRepIds(readLocalCompletedRepIds());
+        setLocalSavedPromptIds(readLocalSavedPromptIds());
+        setLoading(false);
+      });
   }, []);
 
   const dailyRep = useMemo(() => getDailyPracticeRep(), []);
@@ -104,7 +111,7 @@ export default function DashboardPage() {
             practice rep, and the AiBI-P learning path.
           </p>
           <Link
-            href="/assessment"
+            href="/assessment/start"
             className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
           >
             Take the Free Assessment
@@ -121,81 +128,105 @@ export default function DashboardPage() {
   const currentModuleNumber = dashboard?.enrollment?.currentModule ?? 1;
   const currentModule = modules.find((mod) => mod.number === currentModuleNumber) ?? modules[0];
   const progressPct = Math.round((completedModules / modules.length) * 100);
-  const completedRepIds = dashboard?.practice.completedRepIds ?? [];
+  const completedRepIds = Array.from(new Set([
+    ...(dashboard?.practice.completedRepIds ?? []),
+    ...localCompletedRepIds,
+  ]));
   const currentRep = completedRepIds.includes(dailyRep.id)
     ? AIBI_P_PRACTICE_REPS.find((rep) => !completedRepIds.includes(rep.id)) ?? dailyRep
     : dailyRep;
-  const artifacts = dashboard?.artifacts ?? AIBI_P_ARTIFACTS.map((artifact) => ({
+  const artifacts = (dashboard?.artifacts ?? AIBI_P_ARTIFACTS.map((artifact) => ({
     ...artifact,
-    status: 'available' as const,
+    status: artifact.moduleNumber && artifact.moduleNumber > 1
+      ? 'locked' as const
+      : 'available' as const,
+  }))).map((artifact) => ({
+    ...artifact,
+    status: completedRepIds.includes(artifact.sourceActivityId)
+      ? 'completed' as const
+      : artifact.status,
   }));
+  const savedPromptIds = Array.from(new Set([
+    ...(dashboard?.prompts.savedPromptIds ?? []),
+    ...localSavedPromptIds,
+  ]));
+  const savedPrompts = savedPromptIds
+    .map((promptId) => ALL_PROMPTS.find((prompt) => prompt.id === promptId))
+    .filter((prompt): prompt is Prompt => Boolean(prompt));
+  const artifactsByStatus = groupArtifactsByStatus(artifacts);
 
   return (
     <main className="px-6 py-10 md:py-14">
       <div className="max-w-6xl mx-auto space-y-10">
-        <header className="grid lg:grid-cols-[1.4fr_0.8fr] gap-8 items-end border-b border-[color:var(--color-ink)]/10 pb-8">
-          <div>
-            <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
-              Learner Command Center
-            </p>
-            <h1 className="font-serif text-4xl md:text-5xl text-[color:var(--color-ink)] leading-tight">
-              Welcome back.
-            </h1>
-            <p className="text-[color:var(--color-slate)] mt-2">{user.email}</p>
-            <p className="text-base text-[color:var(--color-ink)]/75 mt-5 max-w-2xl leading-relaxed">
-              You are currently at Module {currentModule.number}:{' '}
-              {currentModule.title}. Your next win is a short lesson, one
-              practice rep, and one useful artifact.
-            </p>
-          </div>
-          <div className="flex flex-col sm:flex-row lg:flex-col gap-3 lg:items-stretch">
-            <Link
-              href={`/courses/aibi-p/${currentModule.number}`}
-              className="text-center px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
-            >
-              Continue Lesson
-            </Link>
-            <Link
-              href={`/practice/${currentRep.id}`}
-              className="text-center px-6 py-3 border border-[color:var(--color-ink)]/25 text-[color:var(--color-ink)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)] transition-colors"
-            >
-              Practice for 5 Minutes
-            </Link>
-          </div>
-        </header>
-
-        <section className="grid lg:grid-cols-[1.1fr_0.9fr] gap-6">
-          <article className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-6 md:p-8">
-            <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-4">
-              Today&apos;s AI Rep
-            </p>
-            <h2 className="font-serif text-3xl text-[color:var(--color-ink)] leading-tight">
-              {currentRep.title}
-            </h2>
-            <p className="text-sm text-[color:var(--color-ink)]/75 mt-3 leading-relaxed">
-              {currentRep.scenario}
-            </p>
-            <div className="grid sm:grid-cols-3 gap-4 mt-6">
-              <MiniMetric label="Skill" value={currentRep.skill} />
-              <MiniMetric label="Time" value={`${currentRep.timeEstimateMinutes} min`} />
-              <MiniMetric label="Safety" value={currentRep.safetyLevel.toUpperCase()} />
-            </div>
-            <Link
-              href={`/practice/${currentRep.id}`}
-              className="inline-block mt-6 px-5 py-2.5 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
-            >
-              Start Rep
-            </Link>
-            <div className="mt-6 border-t border-[color:var(--color-ink)]/10 pt-5">
-              <p className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-slate)] mb-2">
-                Starter prompt
+        <section className="border-b border-[color:var(--color-ink)]/10 pb-8">
+          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
+            Next Action
+          </p>
+          <div className="grid lg:grid-cols-[1.15fr_0.85fr] gap-6 items-stretch">
+            <article className="border border-[color:var(--color-ink)]/10 rounded-[3px] p-6 md:p-8">
+              <p className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-slate)]">
+                Current module
               </p>
-              <p className="font-mono text-sm leading-relaxed text-[color:var(--color-ink)] bg-[color:var(--color-linen)] border border-[color:var(--color-ink)]/10 rounded-[2px] p-4">
-                {currentRep.starterPrompt}
-              </p>
-            </div>
-          </article>
+              <h1 className="font-serif text-3xl md:text-5xl text-[color:var(--color-ink)] leading-tight mt-3">
+                Module {currentModule.number}: {currentModule.title}
+              </h1>
+              <div className="mt-6">
+                <div className="flex items-baseline justify-between gap-4">
+                  <p className="text-sm text-[color:var(--color-slate)]">
+                    Course progress
+                  </p>
+                  <p className="font-mono text-xl text-[color:var(--color-terra)] tabular-nums">
+                    {progressPct}%
+                  </p>
+                </div>
+                <div className="mt-3 h-2 bg-[color:var(--color-ink)]/10 rounded-[1px] overflow-hidden">
+                  <div
+                    className="h-full bg-[color:var(--color-terra)]"
+                    style={{ width: `${progressPct}%` }}
+                  />
+                </div>
+              </div>
+              <div className="mt-6 flex flex-col sm:flex-row gap-3">
+                <Link
+                  href={`/courses/aibi-p/${currentModule.number}`}
+                  className="text-center px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
+                >
+                  Continue Lesson
+                </Link>
+                <Link
+                  href={`/practice/${currentRep.id}`}
+                  className="text-center px-6 py-3 border border-[color:var(--color-ink)]/25 text-[color:var(--color-ink)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)] transition-colors"
+                >
+                  Practice for 5 Minutes
+                </Link>
+              </div>
+            </article>
 
+            <article className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-6 md:p-8">
+              <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-4">
+                Today&apos;s AI Rep
+              </p>
+              <h2 className="font-serif text-3xl text-[color:var(--color-ink)] leading-tight">
+                {currentRep.title}
+              </h2>
+              <p className="text-sm text-[color:var(--color-ink)]/75 mt-3 leading-relaxed">
+                {currentRep.scenario}
+              </p>
+              <div className="grid sm:grid-cols-3 gap-4 mt-6">
+                <MiniMetric label="Skill" value={currentRep.skill} />
+                <MiniMetric label="Time" value={`${currentRep.timeEstimateMinutes} min`} />
+                <MiniMetric label="Safety" value={currentRep.safetyLevel.toUpperCase()} />
+              </div>
+              {currentRep.promptStrategy && (
+                <p className="mt-4 font-mono text-[10px] uppercase tracking-[0.16em] text-[color:var(--color-terra)]">
+                  Prompt strategy: {formatPromptStrategy(currentRep.promptStrategy)}
+                </p>
+              )}
+            </article>
+          </div>
+        </section>
+
+        <section>
           <article className="border border-[color:var(--color-ink)]/10 rounded-[3px] p-6 md:p-8">
             <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-4">
               Course Progress
@@ -226,7 +257,7 @@ export default function DashboardPage() {
                   <span className="font-medium text-[color:var(--color-ink)]">
                     Practice reps:
                   </span>{' '}
-                  {dashboard?.practice.completedCount ?? 0} complete
+                  {completedRepIds.length} complete
                 </span>
               </li>
               {AIBI_P_CERTIFICATE_REQUIREMENTS.map((requirement, idx) => (
@@ -249,68 +280,35 @@ export default function DashboardPage() {
           </article>
         </section>
 
-        <section className="grid md:grid-cols-3 gap-6">
-          <DashboardPanel title="Your AI Readiness">
-            {user.readiness && tier ? (
-              <>
-                <p
-                  className="font-serif text-3xl leading-none"
-                  style={{ color: tier.colorVar }}
-                >
-                  {tier.label}
-                </p>
-                <p className="font-mono text-sm tabular-nums text-[color:var(--color-ink)] mt-2">
-                  {user.readiness.score}/{maxScore}
-                </p>
-                <p className="text-sm text-[color:var(--color-slate)] mt-3 leading-relaxed">
-                  {tier.headline}
-                </p>
-                <Link
-                  href="/assessment"
-                  className="inline-block mt-4 font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] border-b border-[color:var(--color-terra)]"
-                >
-                  Retake assessment
-                </Link>
-              </>
-            ) : (
-              <Link
-                href="/assessment"
-                className="inline-block px-4 py-2 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px]"
-              >
-                Take assessment
-              </Link>
-            )}
-          </DashboardPanel>
-
+        <section>
           <DashboardPanel title="Saved Prompts">
-            <p className="font-serif text-xl text-[color:var(--color-ink)]">
-              Start with role prompts
-            </p>
-            <p className="text-sm text-[color:var(--color-slate)] mt-3 leading-relaxed">
-              Save reusable prompts from the library as you build your personal
-              AI toolkit. {dashboard?.prompts.savedCount ?? 0} saved so far.
-            </p>
+            {savedPrompts.length > 0 ? (
+              <div className="grid md:grid-cols-3 gap-4">
+                {savedPrompts.slice(0, 6).map((prompt) => (
+                  <article key={prompt.id} className="border border-[color:var(--color-ink)]/10 rounded-[3px] bg-[color:var(--color-linen)] p-4">
+                    <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">
+                      {prompt.role} · {prompt.platform}
+                    </p>
+                    <h3 className="font-serif text-lg text-[color:var(--color-ink)] mt-2">
+                      {prompt.title}
+                    </h3>
+                    <p className="text-xs text-[color:var(--color-slate)] mt-2 leading-relaxed">
+                      {prompt.whenToUse ?? prompt.expectedOutput}
+                    </p>
+                  </article>
+                ))}
+              </div>
+            ) : (
+              <p className="text-sm text-[color:var(--color-slate)] leading-relaxed">
+                No saved prompts yet. Save reusable prompts from the library as
+                you build your personal AI toolkit.
+              </p>
+            )}
             <Link
               href="/courses/aibi-p/prompt-library"
               className="inline-block mt-4 font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] border-b border-[color:var(--color-terra)]"
             >
               Open prompt library
-            </Link>
-          </DashboardPanel>
-
-          <DashboardPanel title="Recommended Path">
-            <p className="font-serif text-xl text-[color:var(--color-ink)]">
-              Begin with a practical win
-            </p>
-            <p className="text-sm text-[color:var(--color-slate)] mt-3 leading-relaxed">
-              Complete Module 1, then do the rewrite-for-clarity rep and save
-              your first prompt template.
-            </p>
-            <Link
-              href="/courses/aibi-p/1"
-              className="inline-block mt-4 font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] border-b border-[color:var(--color-terra)]"
-            >
-              Start Module 1
             </Link>
           </DashboardPanel>
         </section>
@@ -332,39 +330,75 @@ export default function DashboardPage() {
               Open toolkit
             </Link>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {artifacts.map((artifact) => (
-              <article
-                key={artifact.id}
-                className="border border-[color:var(--color-ink)]/10 rounded-[3px] p-5 bg-[color:var(--color-linen)]"
-              >
-                <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-3">
-                  {artifact.status.replace('-', ' ')} · Module {artifact.moduleNumber}
-                </p>
-                <h3 className="font-serif text-lg text-[color:var(--color-ink)] leading-tight">
-                  {artifact.title}
-                </h3>
-                <p className="text-xs text-[color:var(--color-slate)] mt-3 leading-relaxed">
-                  {artifact.description}
-                </p>
-                {artifact.downloadHref ? (
-                  <a
-                    href={artifact.downloadHref}
-                    className="inline-block mt-4 font-serif-sc text-[10px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] border-b border-[color:var(--color-terra)]"
-                  >
-                    Download
-                  </a>
-                ) : (
-                  <Link
-                    href={`/practice/${artifact.sourceActivityId}`}
-                    className="inline-block mt-4 font-serif-sc text-[10px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] border-b border-[color:var(--color-terra)]"
-                  >
-                    Open activity
-                  </Link>
-                )}
-              </article>
+          <div className="space-y-6">
+            {(['completed', 'in-progress', 'available', 'locked'] as const).map((status) => (
+              artifactsByStatus[status].length > 0 && (
+                <div key={status}>
+                  <h3 className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-slate)] mb-3">
+                    {formatStatus(status)}
+                  </h3>
+                  <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    {artifactsByStatus[status].map((artifact) => (
+                      <article
+                        key={artifact.id}
+                        className="border border-[color:var(--color-ink)]/10 rounded-[3px] p-5 bg-[color:var(--color-linen)]"
+                      >
+                        <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-3">
+                          Module {artifact.moduleNumber ?? 'N/A'} · {artifact.format}
+                        </p>
+                        <h4 className="font-serif text-lg text-[color:var(--color-ink)] leading-tight">
+                          {artifact.title}
+                        </h4>
+                        <p className="text-xs text-[color:var(--color-slate)] mt-3 leading-relaxed">
+                          {artifact.description}
+                        </p>
+                        <Link
+                          href={`/courses/aibi-p/artifacts/${artifact.id}`}
+                          className="inline-block mt-4 font-serif-sc text-[10px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] border-b border-[color:var(--color-terra)]"
+                        >
+                          View Detail
+                        </Link>
+                      </article>
+                    ))}
+                  </div>
+                </div>
+              )
             ))}
           </div>
+        </section>
+
+        <section>
+          <DashboardPanel title="Readiness Score">
+            {user.readiness && tier ? (
+              <>
+                <p
+                  className="font-serif text-3xl leading-none"
+                  style={{ color: tier.colorVar }}
+                >
+                  {tier.label}
+                </p>
+                <p className="font-mono text-sm tabular-nums text-[color:var(--color-ink)] mt-2">
+                  {user.readiness.score}/{maxScore}
+                </p>
+                <p className="text-sm text-[color:var(--color-slate)] mt-3 leading-relaxed">
+                  {tier.headline}
+                </p>
+                <Link
+                  href="/assessment/start"
+                  className="inline-block mt-4 font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] border-b border-[color:var(--color-terra)]"
+                >
+                  Retake assessment
+                </Link>
+              </>
+            ) : (
+              <Link
+                href="/assessment/start"
+                className="inline-block px-4 py-2 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px]"
+              >
+                Take assessment
+              </Link>
+            )}
+          </DashboardPanel>
         </section>
 
         <section className="border-t border-[color:var(--color-ink)]/10 pt-8">
@@ -418,4 +452,54 @@ function DashboardPanel({
       {children}
     </article>
   );
+}
+
+function groupArtifactsByStatus<T extends { readonly status: ArtifactStatus }>(
+  artifacts: readonly T[],
+): Record<ArtifactStatus, T[]> {
+  return artifacts.reduce<Record<ArtifactStatus, T[]>>(
+    (groups, artifact) => {
+      groups[artifact.status].push(artifact);
+      return groups;
+    },
+    {
+      locked: [],
+      available: [],
+      'in-progress': [],
+      completed: [],
+    },
+  );
+}
+
+function formatStatus(status: ArtifactStatus): string {
+  return status.replace('-', ' ');
+}
+
+function formatPromptStrategy(strategy: NonNullable<(typeof AIBI_P_PRACTICE_REPS)[number]['promptStrategy']>) {
+  return strategy
+    .split('-')
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join('-');
+}
+
+function readLocalCompletedRepIds(): readonly string[] {
+  try {
+    return AIBI_P_PRACTICE_REPS
+      .filter((rep) => localStorage.getItem(`aibi-practice-${rep.id}`))
+      .map((rep) => rep.id);
+  } catch {
+    return [];
+  }
+}
+
+function readLocalSavedPromptIds(): readonly string[] {
+  try {
+    const raw = localStorage.getItem('aibi-saved-prompts');
+    const parsed = raw ? (JSON.parse(raw) as unknown) : [];
+    return Array.isArray(parsed)
+      ? parsed.filter((item): item is string => typeof item === 'string')
+      : [];
+  } catch {
+    return [];
+  }
 }

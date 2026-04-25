@@ -48,7 +48,7 @@ interface MockEnrollment {
   readonly certificate_id?: string;
 }
 
-// Dev bypass — AiBI-P completed, AiBI-S in progress, AiBI-L not started
+// Dev bypass — V4 is locked to AiBI-P only.
 const DEV_ENROLLMENTS: readonly MockEnrollment[] = [
   {
     product: 'aibi-p',
@@ -57,13 +57,6 @@ const DEV_ENROLLMENTS: readonly MockEnrollment[] = [
     enrolled_at: '2026-02-10T09:00:00.000Z',
     completed_at: '2026-03-18T14:22:00.000Z',
     certificate_id: 'AIBI-P-2026-0042',
-  },
-  {
-    product: 'aibi-s',
-    completed_modules: [1, 2, 3],
-    total_modules: 8,
-    enrolled_at: '2026-03-25T10:00:00.000Z',
-    role_track: 'operations',
   },
 ];
 
@@ -326,7 +319,13 @@ function CredentialCard({
 
       <div className="flex items-center gap-3 pt-3 border-t border-[color:var(--color-ink)]/8">
         <Link
-          href={`/courses/${level.code}`}
+          href={
+            level.code === 'aibi-p'
+              ? '/courses/aibi-p'
+              : level.code === 'aibi-s'
+                ? '/coming-soon?interest=specialist'
+                : '/coming-soon?interest=leader'
+          }
           className="font-serif-sc text-[11px] uppercase tracking-[0.18em] border-b pb-0.5 hover:opacity-70 transition-opacity"
           style={{ color: level.color, borderColor: level.color }}
         >
@@ -367,8 +366,8 @@ function NextStepBanner({ enrollments }: { enrollments: readonly MockEnrollment[
     accent = 'var(--color-sage)';
     heading = 'Lead the transformation — AiBI-L workshop';
     body = 'You have built personal and departmental AI capability. The Leader workshop gives you the strategic tools to drive institution-wide change.';
-    href = '/courses/aibi-l';
-    cta = 'Explore AiBI-L';
+    href = '/coming-soon?interest=leader';
+    cta = 'Join AiBI-L Waitlist';
   } else if (hasP) {
     const roleLabel = sEnrollment?.role_track
       ? roleTrackLabel(sEnrollment.role_track)
@@ -376,8 +375,8 @@ function NextStepBanner({ enrollments }: { enrollments: readonly MockEnrollment[
     accent = 'var(--color-cobalt)';
     heading = `Ready for AiBI-S? Your ${roleLabel} track is waiting.`;
     body = 'You have demonstrated personal AI proficiency. The Specialist level expands that capability across your entire department.';
-    href = '/courses/aibi-s';
-    cta = 'Explore AiBI-S';
+    href = '/coming-soon?interest=specialist';
+    cta = 'Join AiBI-S Waitlist';
   }
 
   return (
@@ -599,7 +598,7 @@ export default function ProgressionPage() {
 
               <div className="mt-4">
                 <Link
-                  href="/assessment"
+                  href="/assessment/start"
                   className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] border-b border-[color:var(--color-terra)] pb-0.5 hover:opacity-70 transition-opacity"
                 >
                   Retake assessment
@@ -620,7 +619,7 @@ export default function ProgressionPage() {
                 Complete the free AI readiness assessment to establish your baseline and track how your score improves as you progress through each certification level.
               </p>
               <Link
-                href="/assessment"
+                href="/assessment/start"
                 className="inline-block px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
               >
                 Take the free assessment

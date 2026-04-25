@@ -80,22 +80,25 @@ export async function GET(): Promise<NextResponse> {
   const userArtifacts = (artifactsResult.data ?? []) as UserArtifactRow[];
 
   const completedRepIds = practiceCompletions.map((row) => row.rep_id);
+  const currentModule = Math.max(1, enrollment?.current_module ?? 1);
+  const completedModules = enrollment?.completed_modules ?? [];
   const artifactRows = AIBI_P_ARTIFACTS.map((artifact) => {
     const persisted = userArtifacts.find((row) => row.artifact_id === artifact.id);
     const sourceRepComplete = completedRepIds.includes(artifact.sourceActivityId);
-    const completedModules = enrollment?.completed_modules ?? [];
     const moduleComplete = artifact.moduleNumber
       ? completedModules.includes(artifact.moduleNumber)
       : false;
+    const derivedStatus = sourceRepComplete || moduleComplete
+      ? 'completed'
+      : artifact.moduleNumber && artifact.moduleNumber > currentModule
+        ? 'locked'
+        : artifact.moduleNumber === currentModule
+          ? 'in-progress'
+          : 'available';
 
     return {
       ...artifact,
-      status: persisted?.status ??
-        (sourceRepComplete || moduleComplete
-          ? 'completed'
-          : artifact.moduleNumber === (enrollment?.current_module ?? 1)
-            ? 'in-progress'
-            : 'available'),
+      status: persisted?.status ?? derivedStatus,
       updatedAt: persisted?.updated_at ?? null,
     };
   });
@@ -106,7 +109,7 @@ export async function GET(): Promise<NextResponse> {
       ? {
           id: enrollment.id,
           completedModules: enrollment.completed_modules ?? [],
-          currentModule: Math.max(1, enrollment.current_module ?? 1),
+          currentModule,
           enrolledAt: enrollment.enrolled_at,
           onboardingAnswers: enrollment.onboarding_answers,
         }

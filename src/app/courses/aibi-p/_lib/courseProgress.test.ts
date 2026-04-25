@@ -62,8 +62,8 @@ suite('canAccessModule', () => {
   assert(canAccessModule(3, [2]) === false, 'module 3 locked when module 1 missing (even if 2 present)');
   assert(canAccessModule(5, [1, 2, 3, 4]) === true, 'module 5 accessible when all prior completed');
   assert(canAccessModule(5, [1, 2, 4]) === false, 'module 5 locked when module 3 missing (gap)');
-  assert(canAccessModule(9, [1, 2, 3, 4, 5, 6, 7, 8]) === true, 'module 9 accessible when all prior completed');
-  assert(canAccessModule(9, [1, 2, 3, 4, 5, 6, 7]) === false, 'module 9 locked when module 8 missing');
+  assert(canAccessModule(12, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]) === true, 'module 12 accessible when all prior completed');
+  assert(canAccessModule(12, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]) === false, 'module 12 locked when module 11 missing');
 });
 
 // ---------------------------------------------------------------------------
@@ -77,7 +77,7 @@ suite('getModuleStatus', () => {
   assert(getModuleStatus(5, [1, 2], 3) === 'locked', 'module beyond current → locked');
   assert(getModuleStatus(1, [], 1) === 'current', 'module 1 is current when nothing completed');
   assert(getModuleStatus(2, [], 1) === 'locked', 'module 2 locked when nothing completed');
-  assert(getModuleStatus(9, [1, 2, 3, 4, 5, 6, 7, 8, 9], 9) === 'completed', 'module 9 completed when in array');
+  assert(getModuleStatus(12, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], 12) === 'completed', 'module 12 completed when in array');
 });
 
 // ---------------------------------------------------------------------------

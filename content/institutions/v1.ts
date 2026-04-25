@@ -32,7 +32,7 @@ export const enrollmentTiers: readonly EnrollmentTier[] = [
   {
     id: 'team',
     name: 'Team cohort',
-    scaleLabel: '5 – 25 bankers',
+    scaleLabel: '10+ bankers',
     tagline: 'One department, one kickoff, one shared outcome.',
     summary:
       'A group from one institution moves through a track together. Shared kickoff, an internal champion, group reporting for the executive sponsor, and team pricing that scales with headcount.',

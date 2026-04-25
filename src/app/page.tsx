@@ -1,96 +1,87 @@
 import Link from 'next/link';
 import { ROICalculator } from '@/components/sections/ROICalculator';
-import { ThreeFears } from '@/components/sections/ThreeFears';
-import { SecurityBand } from '@/components/sections/SecurityBand';
-import { WideningGap } from '@/components/sections/WideningGap';
-import { InstitutionsTeaser } from '@/components/sections/InstitutionsTeaser';
-import { CertificationCards } from '@/components/sections/CertificationCards';
-import { FinalCTABand } from '@/components/sections/FinalCTABand';
+import { InteractiveSkillsPreview } from '@/components/sections/InteractiveSkillsPreview';
 
-interface Pillar {
-  readonly letter: 'A' | 'B' | 'C';
-  readonly label: string;
-  readonly headline: string;
-  readonly description: string;
-  readonly bullets: readonly string[];
-  readonly colorVar: string;
-}
-
-const PILLARS: readonly Pillar[] = [
+const HOW_IT_WORKS = [
   {
-    letter: 'A',
-    label: 'Accessible',
-    headline: 'Built for bankers, not technologists.',
-    description:
-      'Your compliance officer, your tellers, your branch managers — they do not need to understand how AI works. They need to experience what it does for their Tuesday morning.',
-    bullets: [
-      'Personal experimentation before production deployment',
-      'Role-based prompt libraries for ops, lending, finance, retail',
-      'Five universal templates every banker can use on day one',
-    ],
-    colorVar: 'var(--color-sage)',
+    label: 'Assess',
+    body: 'See your readiness level and top gaps.',
+    icon: 'score',
   },
   {
-    letter: 'B',
-    label: 'Boundary-Safe',
-    headline: 'Every recommendation assumes a regulated institution.',
-    description:
-      'The question your board will ask is not "can we use AI?" It is "is it safe?" We answer it before they ask — with specific frameworks, not general reassurances.',
-    bullets: [
-      'Aligned with SR 11-7, Interagency TPRM Guidance, ECOA/Reg B',
-      'References the AIEOG AI Lexicon (US Treasury, February 2026)',
-      'PII never touches a public LLM — private inference for sensitive work',
-      'Vendor evaluation: a five-question scoring framework',
-    ],
-    colorVar: 'var(--color-cobalt)',
+    label: 'Learn',
+    body: 'Take short lessons built for banking work.',
+    icon: 'book',
   },
   {
-    letter: 'C',
-    label: 'Capable',
-    headline: 'Every banker becomes a builder and problem-solver.',
-    description:
-      'You never know who has the best idea in the room. A teller who has been frustrated by a manual process for three years might build the automation that saves the operations team ten hours a week.',
-    bullets: [
-      'Workflow mapping and automation design',
-      'Power Automate and Copilot Studio for non-developers',
-      'Coaching that pairs bankers with their own real use cases',
-      'Measured impact: hours recaptured, NIE reduced, efficiency ratio moved',
-    ],
-    colorVar: 'var(--color-terra)',
+    label: 'Practice',
+    body: 'Complete short reps that build safe habits.',
+    icon: 'practice',
   },
-];
+  {
+    label: 'Apply',
+    body: 'Save prompts and artifacts you can reuse.',
+    icon: 'artifact',
+  },
+] as const;
 
-const PROOF_POINTS = [
-  { stat: '~65%', label: 'Community Bank Median Efficiency Ratio' },
-  { stat: '66%', label: 'Discussing AI Budget in 2024' },
-  { stat: '57%', label: 'Cite AI Skill Gaps as #1 Blocker' },
-  { stat: '55%', label: 'Have No AI Governance Framework' },
+const PRODUCT_PATHS = [
+  {
+    label: 'Individual',
+    title: 'Practitioner',
+    body: 'AiBI-P foundation course.',
+    href: '/courses/aibi-p',
+    cta: 'Explore Course',
+  },
+  {
+    label: 'Teams',
+    title: 'Training',
+    body: 'Staff baseline and rollout support.',
+    href: '/education',
+    cta: 'View Training',
+  },
+  {
+    label: 'Institutions',
+    title: 'Consulting',
+    body: 'Readiness, governance, and ROI planning.',
+    href: '/for-institutions',
+    cta: 'For Institutions',
+  },
+] as const;
+
+const TRUST_POINTS = [
+  'No PII required',
+  'Human review required',
+  'Designed for real workflows, not experiments',
+  'Aligned with banking expectations',
 ] as const;
 
 export const metadata = {
-  title: 'AI training built for community bankers.',
+  title: 'Teach Your Team How to Use AI Safely at Work | The AI Banking Institute',
   description:
-    'The AI Banking Institute teaches community bank and credit union employees how to use AI safely, confidently, and practically.',
+    'Practical AI training for community banks and credit unions, built around assessment, short lessons, practice reps, and useful artifacts.',
 };
 
 export default function HomePage() {
   return (
     <main>
-      {/* Hero */}
-      <section className="px-6 pt-16 pb-14 md:pt-24 md:pb-20">
-        <div className="max-w-4xl mx-auto text-center space-y-6">
+      <section className="px-6 pt-16 pb-14 md:pt-24 md:pb-20 bg-[color:var(--color-linen)] border-b border-[color:var(--color-ink)]/10">
+        <div className="max-w-4xl mx-auto text-center">
           <p className="font-serif-sc text-xs uppercase tracking-[0.22em] text-[color:var(--color-terra)]">
             For community banks and credit unions
           </p>
-          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl leading-[1.1] text-[color:var(--color-ink)]">
+          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl leading-[1.08] text-[color:var(--color-ink)] mt-5">
             Teach your team how to use AI safely at work.
           </h1>
-          <p className="text-base md:text-xl text-[color:var(--color-ink)]/75 max-w-2xl mx-auto leading-relaxed pt-2">
+          <p className="font-serif-sc text-base md:text-lg tracking-[0.08em] text-[color:var(--color-terra)] mt-5">
+            Turning bankers into builders.
+          </p>
+          <p className="text-base md:text-xl text-[color:var(--color-ink)]/75 max-w-2xl mx-auto leading-relaxed mt-5">
             Practical AI training for community banks and credit unions.
           </p>
-          <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
-              href="/assessment"
+              href="/assessment/start"
               className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
             >
               Take the Assessment
@@ -102,109 +93,165 @@ export default function HomePage() {
               Explore Course
             </Link>
           </div>
-          <p className="font-mono text-xs text-[color:var(--color-slate)] pt-2">
-            12 questions &middot; under 3 minutes &middot; built for regulated financial institutions
-          </p>
         </div>
       </section>
 
-      {/* ── ACT 1: THE PROBLEM ── */}
-      {/* Stats band — the industry is moving */}
-      <section className="border-y border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)]">
-        <div className="max-w-6xl mx-auto px-6 py-10">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            {PROOF_POINTS.map((p) => (
-              <div key={p.label}>
-                <p className="font-mono text-4xl md:text-5xl text-[color:var(--color-terra)] leading-none tabular-nums">
-                  {p.stat}
-                </p>
-                <p className="font-serif-sc text-[11px] md:text-xs uppercase text-[color:var(--color-ink)]/70 mt-4 leading-snug">
-                  {p.label}
-                </p>
-              </div>
-            ))}
-          </div>
-          <p className="font-mono text-[10px] text-center text-[color:var(--color-slate)] mt-8">
-            Sources: FDIC Quarterly Banking Profile &middot; Bank Director 2024 Technology Survey &middot; Gartner (via Jack Henry)
-          </p>
-        </div>
-      </section>
-
-      {/* The gap is widening — competitive urgency */}
-      <WideningGap />
-
-      {/* Every CEO is thinking these three things — validate their anxiety */}
-      <ThreeFears />
-
-      {/* ── ACT 2: THE FRAMEWORK ── */}
-      {/* Three pillars — how we attack it */}
-      <section className="px-6 py-14 md:py-20">
+      <section className="px-6 py-12 md:py-16 border-y border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)]">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-14">
-            <h2 className="font-serif text-4xl md:text-5xl text-[color:var(--color-ink)] max-w-3xl mx-auto leading-tight">
-              The Three Pillars
-            </h2>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-10">
-            {PILLARS.map((pillar, idx) => (
-              <article key={pillar.letter} className="space-y-5">
-                <div className="flex items-center gap-3 mb-1">
-                  <span
-                    className="font-mono text-lg tabular-nums"
-                    style={{ color: pillar.colorVar }}
-                  >
-                    {idx + 1}
-                  </span>
-                  <div className="h-px w-6" style={{ backgroundColor: pillar.colorVar, opacity: 0.3 }} aria-hidden="true" />
-                  <span
-                    className="font-serif-sc text-base uppercase tracking-[0.15em]"
-                    style={{ color: pillar.colorVar }}
-                  >
-                    {pillar.label}
-                  </span>
-                </div>
-                <h3 className="font-serif text-2xl text-[color:var(--color-ink)] leading-snug">
-                  {pillar.headline}
-                </h3>
-                <p className="text-[color:var(--color-ink)]/75 leading-relaxed">
-                  {pillar.description}
+          <SectionIntro
+            eyebrow="How it works"
+            title="A simple learning loop."
+            body="Assess, learn, practice, and apply without losing the thread."
+          />
+          <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-[color:var(--color-ink)]/10 border border-[color:var(--color-ink)]/10">
+            {HOW_IT_WORKS.map((step, index) => (
+              <article key={step.label} className="bg-[color:var(--color-parch)] p-6">
+                <StepIcon name={step.icon} />
+                <p className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-terra)] mt-5">
+                  {String(index + 1).padStart(2, '0')}
                 </p>
-                <ul className="space-y-2 pt-2">
-                  {pillar.bullets.map((b) => (
-                    <li
-                      key={b}
-                      className="text-sm text-[color:var(--color-ink)]/75 leading-snug pl-4 relative"
-                    >
-                      <span
-                        className="absolute left-0 top-2 w-2 h-[1px]"
-                        style={{ background: pillar.colorVar }}
-                      />
-                      {b}
-                    </li>
-                  ))}
-                </ul>
+                <h2 className="font-serif text-2xl text-[color:var(--color-ink)] mt-2">
+                  {step.label}
+                </h2>
+                <p className="text-sm text-[color:var(--color-slate)] leading-relaxed mt-2">
+                  {step.body}
+                </p>
               </article>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Regulatory credibility — we've read the guidance */}
-      <SecurityBand />
+      <InteractiveSkillsPreview />
 
-      {/* ── ACT 3: THE PROOF ── */}
-      {/* ROI calculator — model your own savings */}
       <ROICalculator />
 
-      {/* Certification tracks — three levels of engagement */}
-      <CertificationCards showHeader compact />
+      <section className="px-6 py-14 md:py-20 bg-[color:var(--color-linen)] border-b border-[color:var(--color-ink)]/10">
+        <div className="max-w-6xl mx-auto">
+          <SectionIntro
+            eyebrow="Product path"
+            title="Start small. Scale when ready."
+            body="Choose the path that matches the decision in front of you today."
+          />
+          <div className="mt-10 grid lg:grid-cols-3 gap-px bg-[color:var(--color-ink)]/10 border border-[color:var(--color-ink)]/10">
+            {PRODUCT_PATHS.map((path) => (
+              <article key={path.label} className="bg-[color:var(--color-parch)] p-7">
+                <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
+                  {path.label}
+                </p>
+                <h2 className="font-serif text-3xl text-[color:var(--color-ink)] mt-4">
+                  {path.title}
+                </h2>
+                <p className="text-sm text-[color:var(--color-slate)] leading-relaxed mt-4">
+                  {path.body}
+                </p>
+                <Link
+                  href={path.href}
+                  className="inline-block mt-6 font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] border-b border-[color:var(--color-terra)]"
+                >
+                  {path.cta}
+                </Link>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
 
-      {/* For Institutions — enrollment at three scales */}
-      <InstitutionsTeaser />
+      <section className="px-6 py-12 md:py-16 bg-[color:var(--color-parch)] border-b border-[color:var(--color-ink)]/10">
+        <div className="max-w-6xl mx-auto grid lg:grid-cols-[0.85fr_1.15fr] gap-10 lg:gap-16 items-start">
+          <SectionIntro
+            eyebrow="Trust"
+            title="Built for regulated institutions."
+            body="Compliance stays in the product as a guardrail, not as a lecture."
+          />
+          <div className="grid sm:grid-cols-2 gap-x-8 gap-y-5">
+            {TRUST_POINTS.map((point) => (
+              <div key={point} className="border-l-2 border-[color:var(--color-terra)] pl-4">
+                <p className="font-serif text-xl text-[color:var(--color-ink)]">
+                  {point}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-      {/* ── ACT 4: THE ASK ── */}
-      <FinalCTABand />
+      <section className="px-6 py-16 md:py-24 bg-[color:var(--color-terra)] text-[color:var(--color-linen)]">
+        <div className="max-w-3xl mx-auto text-center">
+          <p className="font-serif-sc text-xs uppercase tracking-[0.22em] text-[color:var(--color-linen)]/80">
+            Ready when you are
+          </p>
+          <h2 className="font-serif text-4xl md:text-6xl text-[color:var(--color-linen)] leading-tight mt-5">
+            Start with the assessment.
+          </h2>
+          <p className="text-base md:text-lg text-[color:var(--color-linen)]/85 leading-relaxed mt-5">
+            In a few minutes, you will know your readiness level, your top gaps,
+            and the first practical exercise to complete.
+          </p>
+          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link
+              href="/assessment/start"
+              className="inline-block px-8 py-4 bg-[color:var(--color-linen)] text-[color:var(--color-terra)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-parch)] active:scale-[0.98] transition-all"
+            >
+              Take the Assessment
+            </Link>
+            <Link
+              href="/courses/aibi-p"
+              className="inline-block px-8 py-4 border border-[color:var(--color-linen)]/60 text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-linen)] hover:text-[color:var(--color-terra)] transition-colors"
+            >
+              Explore Course
+            </Link>
+          </div>
+        </div>
+      </section>
     </main>
+  );
+}
+
+function SectionIntro({
+  eyebrow,
+  title,
+  body,
+}: {
+  readonly eyebrow: string;
+  readonly title: string;
+  readonly body: string;
+}) {
+  return (
+    <div>
+      <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-4">
+        {eyebrow}
+      </p>
+      <h2 className="font-serif text-4xl md:text-5xl text-[color:var(--color-ink)] leading-tight">
+        {title}
+      </h2>
+      <p className="text-base text-[color:var(--color-ink)]/70 leading-relaxed mt-5 max-w-xl">
+        {body}
+      </p>
+    </div>
+  );
+}
+
+function StepIcon({ name }: { readonly name: string }) {
+  const paths: Record<string, string> = {
+    score: 'M5 17h14M7 13l3 3 7-8',
+    book: 'M5 5h8a4 4 0 0 1 4 4v10H9a4 4 0 0 0-4 4V5z',
+    practice: 'M12 5v14M5 12h14M7 7l10 10',
+    artifact: 'M7 3h7l5 5v13H7V3zM14 3v6h5',
+  };
+
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      className="h-9 w-9 text-[color:var(--color-terra)]"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d={paths[name] ?? paths.score} />
+    </svg>
   );
 }

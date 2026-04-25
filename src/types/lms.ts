@@ -20,6 +20,14 @@ export type CourseActivityKind =
 export type ArtifactStatus = 'available' | 'in-progress' | 'completed' | 'locked';
 export type ArtifactFormat = 'pdf' | 'md' | 'doc' | 'worksheet' | 'prompt-card';
 export type SafetyLevel = 'green' | 'yellow' | 'red';
+export type PromptStrategyType =
+  | 'structured'
+  | 'transformation'
+  | 'analysis'
+  | 'thinking'
+  | 'template'
+  | 'sanitization'
+  | 'multi-step';
 export type PromptTaskType =
   | 'email'
   | 'summary'
@@ -74,6 +82,7 @@ export interface PracticeRep {
   readonly moduleNumber?: number;
   readonly title: string;
   readonly skill: string;
+  readonly promptStrategy?: PromptStrategyType;
   readonly role: LearnerRole | 'all';
   readonly timeEstimateMinutes: number;
   readonly scenario: string;

@@ -51,9 +51,9 @@ export default async function PromptLibraryPage() {
 
         <p className="font-sans text-base text-[color:var(--color-ink)]/80 leading-relaxed max-w-2xl">
           Copy-paste-ready prompts for community banking professionals. Each prompt
-          is designed to produce institutional-grade output using the RTFC Framework
-          from Module 6. Filter by your platform, department, or experience level,
-          then paste into your AI tool and see what you get.
+          uses clear role, task, context, format, and constraint guidance. Filter
+          by your platform, department, or experience level, then paste into your
+          AI tool and see what you get.
         </p>
 
         <p className="font-sans text-sm text-[color:var(--color-slate)] mt-3 leading-relaxed max-w-2xl">
@@ -95,11 +95,11 @@ export default async function PromptLibraryPage() {
             </h2>
             <p className="font-sans text-sm text-[color:var(--color-ink)]/80 leading-relaxed">
               Before pasting any institutional data into an AI prompt, apply the
-              three-tier data classification framework from Module 5. Tier 1
-              (public) data can be used freely. Tier 2 (internal) requires a paid
-              enterprise account with data protection commitments. Tier 3 (highly
-              restricted) data — including PII, investigation files, and examination
-              materials — should never be entered into any external AI tool.
+              SAFE rule and the red/yellow/green boundaries from Module 9. Public
+              information is lower risk. Internal policy or customer-facing drafts
+              need approved tools and human review. Customer PII, credit decisions,
+              SAR details, and sensitive financial records should never be entered
+              into public AI tools.
             </p>
           </div>
         </div>

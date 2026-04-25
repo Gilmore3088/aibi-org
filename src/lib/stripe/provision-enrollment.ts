@@ -147,7 +147,7 @@ export async function provisionEnrollment(
     }
 
     // discount_locked=true is set immediately on creation — all future per-learner
-    // purchases associated with this institution get the ~$63 institution price (PAY-03).
+    // purchases associated with this institution get the $79 team price (PAY-03).
     const { error: insertErr } = await supabase.from('institution_enrollments').insert({
       institution_name,
       seats_purchased: seatsPurchased,

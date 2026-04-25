@@ -1,16 +1,16 @@
-// AiBI-P Module 2: Prompt Basics
+// AiBI-P Module 2: What AI Is and Is Not
 // Pillar: Awareness | Estimated: 20 minutes
-// Key Output: Safe Prompt Rewrite
+// Key Output: AI Claim Review
 
 import type { Module } from './types';
 
 export const module2: Module = {
   number: 2,
   id: 'm2-ai-ecosystem',
-  title: 'Prompt Basics',
+  title: 'What AI Is and Is Not',
   pillar: 'awareness',
   estimatedMinutes: 20,
-  keyOutput: 'Safe Prompt Rewrite',
+  keyOutput: 'AI Claim Review',
   mockupRef: 'content/courses/AiBI-P v1/stitch_ai_banking_institute_course/m2_the_expanded_ai_ecosystem',
   sections: [
     {

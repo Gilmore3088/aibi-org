@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import type { PracticeRep } from '@/types/lms';
 
 interface PracticeRepClientProps {
@@ -9,17 +10,22 @@ interface PracticeRepClientProps {
 }
 
 export function PracticeRepClient({ rep }: PracticeRepClientProps) {
+  const router = useRouter();
   const storageKey = useMemo(() => `aibi-practice-${rep.id}`, [rep.id]);
   const [response, setResponse] = useState('');
-  const [submitted, setSubmitted] = useState(false);
+  const [feedbackVisible, setFeedbackVisible] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saveState, setSaveState] = useState<'idle' | 'saved' | 'local' | 'error'>('idle');
 
   async function handleSubmit() {
     if (response.trim().length < 20) return;
+    setFeedbackVisible(true);
+    setSaveState('idle');
+  }
 
+  async function handleComplete() {
+    if (response.trim().length < 20) return;
     setSaving(true);
-    setSubmitted(true);
     setSaveState('idle');
 
     try {
@@ -35,12 +41,14 @@ export function PracticeRepClient({ rep }: PracticeRepClientProps) {
 
       if (apiResponse.ok) {
         setSaveState('saved');
+        router.push('/dashboard');
       } else if (apiResponse.status === 401 || apiResponse.status === 503) {
         localStorage.setItem(storageKey, JSON.stringify({
           response,
           completedAt: new Date().toISOString(),
         }));
         setSaveState('local');
+        router.push('/dashboard');
       } else {
         setSaveState('error');
       }
@@ -50,6 +58,7 @@ export function PracticeRepClient({ rep }: PracticeRepClientProps) {
         completedAt: new Date().toISOString(),
       }));
       setSaveState('local');
+      router.push('/dashboard');
     } finally {
       setSaving(false);
     }
@@ -79,7 +88,8 @@ export function PracticeRepClient({ rep }: PracticeRepClientProps) {
             {rep.title}
           </h1>
           <p className="text-base text-[color:var(--color-ink)]/75 mt-4 max-w-2xl leading-relaxed">
-            {rep.skill}
+            Role: {rep.role} · Skill: {rep.skill}
+            {rep.promptStrategy ? ` · Strategy: ${formatStrategy(rep.promptStrategy)}` : ''}
           </p>
         </header>
 
@@ -124,10 +134,10 @@ export function PracticeRepClient({ rep }: PracticeRepClientProps) {
               <button
                 type="button"
                 onClick={handleSubmit}
-                disabled={response.trim().length < 20 || saving}
+                disabled={response.trim().length < 20}
                 className="px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] disabled:opacity-40 disabled:cursor-not-allowed font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
               >
-                {saving ? 'Saving...' : 'Submit Rep'}
+                Submit Practice Rep
               </button>
               {saveState !== 'idle' && (
                 <p className="text-xs text-[color:var(--color-slate)]">
@@ -142,36 +152,64 @@ export function PracticeRepClient({ rep }: PracticeRepClientProps) {
           </section>
         </section>
 
-        {submitted && (
-          <section className="grid lg:grid-cols-2 gap-6">
-            <article className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-6">
-              <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
-                Model answer
-              </p>
-              <p className="text-sm text-[color:var(--color-ink)]/80 leading-relaxed">
-                {rep.modelAnswer}
-              </p>
-            </article>
-            <article className="border border-[color:var(--color-ink)]/10 rounded-[3px] p-6">
-              <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
-                Feedback
-              </p>
-              <ul className="space-y-2">
-                {rep.feedback.map((item) => (
-                  <li key={item} className="text-sm text-[color:var(--color-ink)]/75 leading-relaxed">
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <p className="mt-5 font-serif text-xl text-[color:var(--color-ink)] leading-snug">
-                {rep.reflectionQuestion}
-              </p>
+        {feedbackVisible && (
+          <section className="space-y-6">
+            <div className="grid lg:grid-cols-2 gap-6">
+              <article className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-6">
+                <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
+                  Model answer
+                </p>
+                <p className="text-sm text-[color:var(--color-ink)]/80 leading-relaxed">
+                  {rep.modelAnswer}
+                </p>
+              </article>
+              <article className="border border-[color:var(--color-ink)]/10 rounded-[3px] p-6">
+                <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
+                  What good looks like
+                </p>
+                <ul className="space-y-2">
+                  {rep.feedback.map((item) => (
+                    <li key={item} className="text-sm text-[color:var(--color-ink)]/75 leading-relaxed">
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+                <p className="mt-5 font-serif text-xl text-[color:var(--color-ink)] leading-snug">
+                  {rep.reflectionQuestion}
+                </p>
+              </article>
+            </div>
+            <article className="border border-[color:var(--color-terra)]/25 rounded-[3px] bg-[color:var(--color-parch)] p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <div>
+                <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-2">
+                  Completion
+                </p>
+                <p className="text-sm text-[color:var(--color-ink)]/75 leading-relaxed">
+                  Mark this rep complete when your response is saved and you are
+                  ready for your dashboard to update.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={handleComplete}
+                disabled={saving}
+                className="px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] disabled:opacity-40 disabled:cursor-not-allowed font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
+              >
+                {saving ? 'Saving...' : 'Mark Complete'}
+              </button>
             </article>
           </section>
         )}
       </div>
     </main>
   );
+}
+
+function formatStrategy(strategy: NonNullable<PracticeRep['promptStrategy']>) {
+  return strategy
+    .split('-')
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join('-');
 }
 
 function InfoBlock({

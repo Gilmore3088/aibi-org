@@ -40,7 +40,7 @@ Your job as a practitioner is to understand which framework applies to each AI u
 
 > Shadow AI — staff using AI tools without institutional knowledge — is the most common source of ungoverned use.
 
-Module 5 covers the specific data classification framework for managing this risk.`,
+Module 9 covers the specific SAFE and red/yellow/green boundary framework for managing this risk.`,
       tryThis: 'At your next team huddle, ask: "Has anyone pasted member data, loan tape rows, or board materials into a consumer AI tool in the last 30 days?" Track the honest answers. Every "yes" is an ungoverned use case that needs to be either retired or moved into the institution\'s sanctioned platform.',
     },
     {

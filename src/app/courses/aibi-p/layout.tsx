@@ -42,7 +42,7 @@ export default async function CourseLayout({ children }: CourseLayoutProps) {
   const currentModule: number = enrollment?.current_module ?? 1;
 
   return (
-    <div className="min-h-screen bg-[color:var(--color-linen)]">
+    <div className="min-h-screen bg-[color:var(--color-linen)] lg:grid lg:grid-cols-[18rem_minmax(0,1fr)]">
       {/* Desktop persistent sidebar — hidden below lg */}
       <CourseSidebar
         completedModules={completedModules}
@@ -69,7 +69,7 @@ export default async function CourseLayout({ children }: CourseLayoutProps) {
       </header>
 
       {/* Main content area — offset for sidebar on desktop, header on mobile */}
-      <main className="lg:ml-72 pt-16 min-h-screen">
+      <main className="pt-16 lg:pt-0 min-h-screen min-w-0">
         {children}
       </main>
     </div>

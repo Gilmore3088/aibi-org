@@ -56,8 +56,8 @@ export function getAssessmentNextStep(tierId: Tier['id']): AssessmentNextStep {
         title: 'Move From Usage to Measured Wins',
         description:
           'Your next step is documenting use cases, practice habits, and outcomes that leaders can trust.',
-        href: '/courses/aibi-s',
-        cta: 'Explore Specialist Track',
+        href: '/coming-soon?interest=specialist',
+        cta: 'Join Specialist Waitlist',
       };
     case 'ready-to-scale':
       return {

@@ -21,7 +21,7 @@ export function ChooseYourPath() {
         <div className="grid md:grid-cols-2 gap-8">
           {/* Free path */}
           <Link
-            href="/assessment"
+            href="/assessment/start"
             className="group block border-2 border-[color:var(--color-sage)]/40 bg-[color:var(--color-linen)] p-8 md:p-10 hover:border-[color:var(--color-sage)] transition-colors"
           >
             <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-sage)] mb-6">

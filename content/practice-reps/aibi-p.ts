@@ -7,6 +7,7 @@ export const AIBI_P_PRACTICE_REPS: readonly PracticeRep[] = [
     moduleNumber: 1,
     title: 'Rewrite for Clarity',
     skill: 'Tone control and clear writing',
+    promptStrategy: 'transformation',
     role: 'all',
     timeEstimateMinutes: 5,
     scenario:
@@ -32,9 +33,10 @@ export const AIBI_P_PRACTICE_REPS: readonly PracticeRep[] = [
   {
     id: 'safe-prompt-conversion',
     courseId: 'aibi-p',
-    moduleNumber: 2,
+    moduleNumber: 9,
     title: 'Convert a Risky Prompt',
     skill: 'Data safety and prompt sanitization',
+    promptStrategy: 'sanitization',
     role: 'all',
     timeEstimateMinutes: 6,
     scenario:
@@ -63,6 +65,7 @@ export const AIBI_P_PRACTICE_REPS: readonly PracticeRep[] = [
     moduleNumber: 3,
     title: 'Build Your First Role Prompt',
     skill: 'Reusable prompt construction',
+    promptStrategy: 'structured',
     role: 'all',
     timeEstimateMinutes: 7,
     scenario:
@@ -88,9 +91,10 @@ export const AIBI_P_PRACTICE_REPS: readonly PracticeRep[] = [
   {
     id: 'spot-the-hallucination',
     courseId: 'aibi-p',
-    moduleNumber: 4,
+    moduleNumber: 2,
     title: 'Spot the Unsupported Claim',
     skill: 'Verification and human review',
+    promptStrategy: 'analysis',
     role: 'all',
     timeEstimateMinutes: 6,
     scenario:
@@ -116,9 +120,10 @@ export const AIBI_P_PRACTICE_REPS: readonly PracticeRep[] = [
   {
     id: 'classify-the-ai-use-case',
     courseId: 'aibi-p',
-    moduleNumber: 5,
+    moduleNumber: 9,
     title: 'Classify the Use Case',
     skill: 'Risk classification',
+    promptStrategy: 'analysis',
     role: 'all',
     timeEstimateMinutes: 5,
     scenario:
@@ -147,6 +152,7 @@ export const AIBI_P_PRACTICE_REPS: readonly PracticeRep[] = [
     moduleNumber: 6,
     title: 'Summarize a Policy for Frontline Staff',
     skill: 'Summarization and audience targeting',
+    promptStrategy: 'transformation',
     role: 'operations',
     timeEstimateMinutes: 7,
     scenario:
@@ -172,9 +178,10 @@ export const AIBI_P_PRACTICE_REPS: readonly PracticeRep[] = [
   {
     id: 'customer-complaint-response',
     courseId: 'aibi-p',
-    moduleNumber: 7,
+    moduleNumber: 10,
     title: 'Draft a Complaint Response',
     skill: 'Empathy with risk boundaries',
+    promptStrategy: 'structured',
     role: 'retail',
     timeEstimateMinutes: 7,
     scenario:
@@ -204,6 +211,7 @@ export const AIBI_P_PRACTICE_REPS: readonly PracticeRep[] = [
     moduleNumber: 8,
     title: 'Turn Notes into Next Steps',
     skill: 'Meeting summarization',
+    promptStrategy: 'transformation',
     role: 'all',
     timeEstimateMinutes: 6,
     scenario:
@@ -227,11 +235,41 @@ export const AIBI_P_PRACTICE_REPS: readonly PracticeRep[] = [
     safetyLevel: 'green',
   },
   {
+    id: 'build-ai-personal-system',
+    courseId: 'aibi-p',
+    moduleNumber: 4,
+    title: 'Build Your AI Personal System',
+    skill: 'Reusable AI context setup',
+    promptStrategy: 'template',
+    role: 'all',
+    timeEstimateMinutes: 7,
+    scenario:
+      'You want AI to understand your role, voice, project context, examples, and boundaries without rewriting the same setup every time.',
+    task:
+      'Draft a safe starter outline for your AI Personal System files.',
+    constraints: [
+      'Do not include customer data, passwords, or confidential records.',
+      'Use placeholders for role, projects, examples, and boundaries.',
+      'Include a do-not-do file that keeps human review visible.',
+    ],
+    starterPrompt:
+      'Help me create a safe AI Personal System for banking work. Draft outlines for about-me.md, voice-profile.md, project-brief.md, prompt-library.md, output-examples.md, and do-not-do.md using placeholders only.',
+    modelAnswer:
+      'A strong starter system includes role context, preferred tone, current project scope, reusable prompt patterns, approved example outputs, and explicit boundaries such as no customer data, no credit decisions, and human review for external-facing work.',
+    feedback: [
+      'Good system files make repeated AI work faster without adding sensitive data.',
+      'The do-not-do file is as important as the prompt library because it preserves banking boundaries.',
+    ],
+    reflectionQuestion: 'Which file would save you the most setup time this week?',
+    safetyLevel: 'green',
+  },
+  {
     id: 'board-summary',
     courseId: 'aibi-p',
-    moduleNumber: 9,
+    moduleNumber: 10,
     title: 'Board-Ready Summary',
     skill: 'Executive summary drafting',
+    promptStrategy: 'structured',
     role: 'executive',
     timeEstimateMinutes: 7,
     scenario:
@@ -257,9 +295,10 @@ export const AIBI_P_PRACTICE_REPS: readonly PracticeRep[] = [
   {
     id: 'sanitize-before-upload',
     courseId: 'aibi-p',
-    moduleNumber: 5,
+    moduleNumber: 9,
     title: 'Sanitize Before Upload',
     skill: 'Pre-prompt data review',
+    promptStrategy: 'sanitization',
     role: 'all',
     timeEstimateMinutes: 5,
     scenario:
@@ -282,6 +321,122 @@ export const AIBI_P_PRACTICE_REPS: readonly PracticeRep[] = [
     reflectionQuestion: 'What information felt useful but unnecessary for the AI task?',
     safetyLevel: 'red',
   },
+  {
+    id: 'project-brief-builder',
+    courseId: 'aibi-p',
+    moduleNumber: 5,
+    title: 'Build a Project Brief',
+    skill: 'Reusable project context',
+    promptStrategy: 'thinking',
+    role: 'all',
+    timeEstimateMinutes: 6,
+    scenario:
+      'You have a recurring project that needs the same background context every time you ask AI for help.',
+    task:
+      'Create a sanitized project brief with goal, audience, source material, constraints, and review owner.',
+    constraints: [
+      'Use placeholders for confidential details.',
+      'Do not include customer or account data.',
+      'Name the human reviewer for final output.',
+    ],
+    starterPrompt:
+      'Create a reusable project brief for this banking project using placeholders only. Include goal, audience, source material, constraints, output format, and review owner: [DESCRIBE PROJECT]',
+    modelAnswer:
+      'A strong project brief gives AI enough context to help without exposing sensitive data. It names the goal, audience, allowed sources, constraints, output format, and review owner.',
+    feedback: [
+      'Good context improves output quality without requiring sensitive details.',
+      'A review owner keeps accountability visible.',
+    ],
+    reflectionQuestion: 'Which project context can be reused safely?',
+    safetyLevel: 'green',
+  },
+  {
+    id: 'choose-the-right-tool',
+    courseId: 'aibi-p',
+    moduleNumber: 7,
+    title: 'Choose the Right Tool',
+    skill: 'Tool selection',
+    promptStrategy: 'thinking',
+    role: 'all',
+    timeEstimateMinutes: 5,
+    scenario:
+      'A banker has three tasks: draft an email, summarize a source document, and research a public topic.',
+    task:
+      'Match each task to the safest AI tool category and explain the data boundary.',
+    constraints: [
+      'Separate public research from internal document work.',
+      'Do not assume personal accounts are approved for bank data.',
+      'Name the approval or data question before use.',
+    ],
+    starterPrompt:
+      'For each task, recommend the safest AI tool category and the data boundary to check first: [PASTE TASKS]',
+    modelAnswer:
+      'Use chat for low-risk drafting, file-grounded tools for approved document summaries, and search-answer tools for public research. Approval and data classification decide final use.',
+    feedback: [
+      'Tool choice starts with task and data, not brand familiarity.',
+      'Approved access matters more than capability.',
+    ],
+    reflectionQuestion: 'Which task requires approval before trying it?',
+    safetyLevel: 'yellow',
+  },
+  {
+    id: 'save-three-prompts',
+    courseId: 'aibi-p',
+    moduleNumber: 11,
+    title: 'Save Three Reusable Prompts',
+    skill: 'Prompt library building',
+    promptStrategy: 'template',
+    role: 'all',
+    timeEstimateMinutes: 7,
+    scenario:
+      'You want a small prompt library for the tasks you repeat most often.',
+    task:
+      'Save three reusable prompts with when-to-use and what-not-to-paste notes.',
+    constraints: [
+      'Use placeholders instead of real customer information.',
+      'Include one safety note per prompt.',
+      'Organize prompts by task type.',
+    ],
+    starterPrompt:
+      'Help me turn these recurring tasks into three reusable banking prompts. Add when-to-use and what-not-to-paste notes for each: [PASTE TASKS]',
+    modelAnswer:
+      'A useful prompt library includes the prompt text, task category, role, output format, safety note, and examples of data that should not be pasted.',
+    feedback: [
+      'Reusable prompts reduce setup time.',
+      'Safety notes make the prompt usable later without forgetting the boundary.',
+    ],
+    reflectionQuestion: 'Which prompt will you use first this week?',
+    safetyLevel: 'green',
+  },
+  {
+    id: 'final-practitioner-lab-plan',
+    courseId: 'aibi-p',
+    moduleNumber: 12,
+    title: 'Plan Your Final Lab',
+    skill: 'Final work product preparation',
+    promptStrategy: 'multi-step',
+    role: 'all',
+    timeEstimateMinutes: 7,
+    scenario:
+      'You need to choose one safe, useful workflow for your final practitioner lab.',
+    task:
+      'Define the workflow, prompt, source context, output, review step, and artifact evidence.',
+    constraints: [
+      'Choose a low-risk workflow.',
+      'Use sanitized or approved context.',
+      'Document the human review step.',
+    ],
+    starterPrompt:
+      'Help me plan a final AI practitioner lab for this workflow. Include prompt, context, output, review step, artifact evidence, and safety boundary: [DESCRIBE WORKFLOW]',
+    modelAnswer:
+      'A strong final lab package includes sanitized context, a structured prompt, raw AI output, human review notes, final edited output, and the artifact created.',
+    feedback: [
+      'The lab demonstrates judgment, not just prompting.',
+      'The review notes are evidence that the learner stayed accountable.',
+    ],
+    reflectionQuestion: 'What will prove that your final output was reviewed by a human?',
+    safetyLevel: 'yellow',
+  },
 ] as const;
 
 export const AIBI_P_SIMULATIONS: readonly Simulation[] = AIBI_P_PRACTICE_REPS.map((rep) => ({
@@ -293,7 +448,7 @@ export const AIBI_P_ARTIFACTS: readonly Artifact[] = [
   {
     id: 'safe-ai-use-checklist',
     courseId: 'aibi-p',
-    moduleNumber: 2,
+    moduleNumber: 9,
     title: 'Safe AI Use Checklist',
     description: 'A quick reference for what to strip, what to verify, and when to escalate.',
     format: 'pdf',
@@ -312,9 +467,19 @@ export const AIBI_P_ARTIFACTS: readonly Artifact[] = [
     countsTowardCertificate: true,
   },
   {
+    id: 'prompt-strategy-cheat-sheet',
+    courseId: 'aibi-p',
+    moduleNumber: 3,
+    title: 'Prompt Strategy Cheat Sheet',
+    description: 'A quick guide for choosing structured, transformation, analysis, thinking, template, or sanitization prompts.',
+    format: 'worksheet',
+    sourceActivityId: 'first-role-prompt',
+    countsTowardCertificate: true,
+  },
+  {
     id: 'ai-output-review-worksheet',
     courseId: 'aibi-p',
-    moduleNumber: 4,
+    moduleNumber: 2,
     title: 'AI Output Review Worksheet',
     description: 'A structured review checklist for unsupported claims, missing sources, and risky language.',
     format: 'worksheet',
@@ -324,12 +489,22 @@ export const AIBI_P_ARTIFACTS: readonly Artifact[] = [
   {
     id: 'red-yellow-green-use-card',
     courseId: 'aibi-p',
-    moduleNumber: 5,
+    moduleNumber: 9,
     title: 'Red / Yellow / Green Use Card',
     description: 'A plain-English AI use boundary guide for regulated banking work.',
     format: 'pdf',
     sourceActivityId: 'classify-the-ai-use-case',
     downloadHref: '/artifacts/red-yellow-green-use-card.pdf',
+    countsTowardCertificate: true,
+  },
+  {
+    id: 'ai-personal-system-pack',
+    courseId: 'aibi-p',
+    moduleNumber: 4,
+    title: 'AI Personal System Pack',
+    description: 'A starter set of reusable context files for safer daily AI work.',
+    format: 'md',
+    sourceActivityId: 'build-ai-personal-system',
     countsTowardCertificate: true,
   },
 ];
@@ -339,7 +514,7 @@ export const AIBI_P_CERTIFICATE_REQUIREMENTS: readonly CertificateRequirement[] 
     id: 'modules-complete',
     label: 'Complete all modules',
     description: 'Finish every AiBI-P module in order.',
-    requiredCount: 9,
+    requiredCount: 12,
   },
   {
     id: 'required-activities',

@@ -8,10 +8,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { modules } from '@content/courses/aibi-p';
-import { weeks } from '@content/courses/aibi-s';
-import { sessions } from '@content/courses/aibi-l';
 import { getEnrollment as getPEnrollment } from '@/app/courses/aibi-p/_lib/getEnrollment';
-import { getEnrollment as getSEnrollment } from '@/app/courses/aibi-s/_lib/getEnrollment';
 import { SampleQuestion } from '@/components/sections/SampleQuestion';
 import { InquiryForm } from '@/app/certifications/_components/InquiryForm';
 
@@ -38,6 +35,7 @@ interface CertificationTrack {
   readonly completedUnits: number;
   readonly isEnrolled: boolean;
   readonly prerequisite: string | null;
+  readonly comingSoon: boolean;
 }
 
 interface FreeClass {
@@ -51,15 +49,13 @@ interface FreeClass {
 export default async function EducationPage() {
   // Resolve enrollment status for logged-in learners (null when unauthenticated).
   const pEnrollment = await getPEnrollment();
-  const sEnrollment = await getSEnrollment();
-
   const freeClasses: readonly FreeClass[] = [
     {
       title: 'AI Readiness Assessment',
       subtitle:
         'Eight questions, three minutes. Get your readiness score and a tailored next-step recommendation.',
       cta: 'Take the assessment',
-      href: '/assessment',
+      href: '/assessment/start',
       available: true,
     },
     {
@@ -88,8 +84,8 @@ export default async function EducationPage() {
       subtitle: 'Personal AI proficiency for every staff member',
       audience: 'All staff',
       format: 'Self-paced online',
-      duration: '9 modules',
-      price: '$79/seat',
+      duration: '12 modules',
+      price: '$99',
       colorVar: 'var(--color-terra)',
       colorBg: 'var(--color-terra-pale)',
       href: '/courses/aibi-p',
@@ -98,42 +94,45 @@ export default async function EducationPage() {
       completedUnits: pEnrollment?.completed_modules?.length ?? 0,
       isEnrolled: pEnrollment !== null,
       prerequisite: null,
+      comingSoon: false,
     },
     {
       code: 'AiBI-S',
       credential: 'Specialist',
       title: 'Banking AI Specialist',
-      subtitle: 'Department-wide AI automation for managers',
+      subtitle: 'Advanced workflows, agents, and internal AI systems',
       audience: 'Department managers',
       format: '6-week live cohort',
       duration: '6 weeks',
-      price: '$1,495/seat',
+      price: 'Coming soon',
       colorVar: 'var(--color-cobalt)',
       colorBg: 'var(--color-cobalt-pale)',
-      href: '/courses/aibi-s',
-      totalUnits: weeks.length,
-      unitLabel: 'weeks',
-      completedUnits: sEnrollment?.completed_modules?.length ?? 0,
-      isEnrolled: sEnrollment !== null,
+      href: '/coming-soon?interest=specialist',
+      totalUnits: 0,
+      unitLabel: 'units',
+      completedUnits: 0,
+      isEnrolled: false,
       prerequisite: 'AiBI-P',
+      comingSoon: true,
     },
     {
       code: 'AiBI-L',
       credential: 'Leader',
       title: 'Banking AI Leader',
-      subtitle: 'Institution-level AI strategy for executives',
+      subtitle: 'Team-level rollout and executive AI leadership',
       audience: 'C-suite and board',
       format: '1-day in-person workshop',
       duration: '4 sessions',
-      price: 'From $2,800',
+      price: 'Coming soon',
       colorVar: 'var(--color-sage)',
       colorBg: 'var(--color-sage-pale)',
-      href: '/courses/aibi-l',
-      totalUnits: sessions.length,
+      href: '/coming-soon?interest=leader',
+      totalUnits: 0,
       unitLabel: 'sessions',
       completedUnits: 0,
       isEnrolled: false,
       prerequisite: 'AiBI-S',
+      comingSoon: true,
     },
   ];
 
@@ -151,7 +150,8 @@ export default async function EducationPage() {
           <p className="text-lg md:text-xl text-[color:var(--color-ink)]/75 max-w-2xl mx-auto leading-relaxed">
             Tools change. The judgment to deploy AI responsibly inside a
             regulated institution does not. Start free, then earn the
-            credentials that prove your team is ready.
+            Practitioner is active now. Specialist and Leader are coming after
+            the foundation loop is validated.
           </p>
         </div>
       </section>
@@ -295,6 +295,17 @@ export default async function EducationPage() {
                                 {isComplete ? 'Complete' : 'Enrolled'}
                               </span>
                             )}
+                            {track.comingSoon && (
+                              <span
+                                className="font-mono text-[9px] uppercase tracking-widest px-2 py-0.5 rounded-sm"
+                                style={{
+                                  color: track.colorVar,
+                                  backgroundColor: track.colorBg,
+                                }}
+                              >
+                                Coming Soon
+                              </span>
+                            )}
                           </div>
 
                           <h3 className="font-serif text-2xl md:text-3xl text-[color:var(--color-ink)] leading-tight mb-2 group-hover:text-[color:var(--color-terra)] transition-colors">
@@ -375,7 +386,7 @@ export default async function EducationPage() {
                                 borderColor: track.colorVar,
                               }}
                             >
-                              Learn more
+                              {track.comingSoon ? 'Join waitlist' : 'Learn more'}
                             </span>
                           )}
                         </div>
@@ -424,10 +435,9 @@ export default async function EducationPage() {
             Need team certification or executive workshops?
           </h2>
           <p className="text-[color:var(--color-ink)]/75 max-w-xl mx-auto mb-6 leading-relaxed">
-            Institutional pricing for teams of 5 or more, with cohort
-            scheduling, group reporting, and a dedicated program lead. The
-            AiBI-L Leader certification is available as a 1-day on-site
-            workshop for up to 8 executives.
+            AiBI-P team pricing starts at 10 seats. Advanced Specialist and
+            Leader programs are coming after Practitioner is validated with
+            real learners.
           </p>
           <a
             href="#inquiry-form"

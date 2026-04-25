@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { createServerClientWithCookies, isSupabaseConfigured } from '@/lib/supabase/client';
+import { AIBI_P_ARTIFACTS } from '@content/practice-reps/aibi-p';
 
 interface CompletePracticeRepBody {
   readonly courseId?: unknown;
@@ -51,6 +52,37 @@ export async function POST(request: Request): Promise<NextResponse> {
 
   if (error) {
     return NextResponse.json({ error: 'Failed to save practice rep.' }, { status: 500 });
+  }
+
+  const linkedArtifacts = AIBI_P_ARTIFACTS.filter(
+    (artifact) =>
+      artifact.courseId === body.courseId &&
+      artifact.sourceActivityId === body.repId,
+  );
+
+  if (linkedArtifacts.length > 0) {
+    const { error: artifactError } = await supabase.from('user_artifacts').upsert(
+      linkedArtifacts.map((artifact) => ({
+        user_id: user.id,
+        course_id: body.courseId as string,
+        artifact_id: artifact.id,
+        status: 'completed',
+        source_activity_id: artifact.sourceActivityId,
+        metadata: {
+          completedBy: body.repId,
+          completedAt: new Date().toISOString(),
+        },
+        updated_at: new Date().toISOString(),
+      })),
+      { onConflict: 'user_id,course_id,artifact_id' },
+    );
+
+    if (artifactError) {
+      return NextResponse.json(
+        { error: 'Practice rep saved, but artifact status could not be updated.' },
+        { status: 500 },
+      );
+    }
   }
 
   return NextResponse.json({ success: true });

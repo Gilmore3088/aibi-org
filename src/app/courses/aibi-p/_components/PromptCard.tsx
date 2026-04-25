@@ -19,28 +19,30 @@ import {
 import { getPlatformUrl, PLATFORM_URLS } from '@/lib/utm';
 import type { PlatformId } from '@/lib/utm';
 import { ContentGate } from './ContentGate';
+import { AIBI_P_PRACTICE_REPS } from '@content/practice-reps/aibi-p';
 
 interface PromptCardProps {
   readonly prompt: Prompt;
   readonly userLevel?: ContentLevel | null;
+  readonly initiallySaved?: boolean;
+  readonly onSavedChange?: (promptId: string, saved: boolean) => void;
 }
 
 const COPY_RESET_MS = 2000;
 
-export function PromptCard({ prompt, userLevel = null }: PromptCardProps) {
+export function PromptCard({
+  prompt,
+  userLevel = null,
+  initiallySaved = false,
+  onSavedChange,
+}: PromptCardProps) {
   const [copied, setCopied] = useState(false);
-  const [saved, setSaved] = useState(false);
+  const [saved, setSaved] = useState(initiallySaved);
   const [savingPrompt, setSavingPrompt] = useState(false);
 
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem('aibi-saved-prompts');
-      const existing = raw ? (JSON.parse(raw) as string[]) : [];
-      setSaved(existing.includes(prompt.id));
-    } catch {
-      setSaved(false);
-    }
-  }, [prompt.id]);
+    setSaved(initiallySaved);
+  }, [initiallySaved]);
 
   const handleCopy = useCallback(async () => {
     try {
@@ -68,6 +70,9 @@ export function PromptCard({ prompt, userLevel = null }: PromptCardProps) {
   const taskType = getPromptTaskType(prompt);
   const safetyLevel = getPromptSafetyLevel(prompt);
   const timeMinutes = getPromptTimeMinutes(prompt);
+  const relatedRep = AIBI_P_PRACTICE_REPS.find(
+    (rep) => rep.moduleNumber === prompt.relatedModule,
+  );
 
   const handleSave = useCallback(async () => {
     setSavingPrompt(true);
@@ -97,9 +102,10 @@ export function PromptCard({ prompt, userLevel = null }: PromptCardProps) {
         // Ignore local persistence failure; visual state still updates.
       }
       setSaved(nextSaved);
+      onSavedChange?.(prompt.id, nextSaved);
       setSavingPrompt(false);
     }
-  }, [prompt.id, saved]);
+  }, [onSavedChange, prompt.id, saved]);
 
   const card = (
     <article className="border border-[color:var(--color-parch-dark)] rounded-sm bg-[color:var(--color-parch)] p-6 space-y-4">
@@ -207,7 +213,7 @@ export function PromptCard({ prompt, userLevel = null }: PromptCardProps) {
             {savingPrompt ? 'Saving' : saved ? 'Saved' : 'Save'}
           </button>
           <Link
-            href={`/courses/aibi-p/${prompt.relatedModule}`}
+            href={relatedRep ? `/practice/${relatedRep.id}` : `/courses/aibi-p/${prompt.relatedModule}`}
             className="font-sans text-[12px] italic text-[color:var(--color-terra)] hover:underline focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-1 rounded-sm"
           >
             Open in practice

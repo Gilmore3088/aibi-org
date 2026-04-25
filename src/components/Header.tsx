@@ -4,7 +4,7 @@ import { AuthButton } from './AuthButton';
 import { MobileNav } from './MobileNav';
 
 const NAV_LINKS = [
-  { href: '/assessment', label: 'Assessment' },
+  { href: '/assessment/start', label: 'Assessment' },
   { href: '/courses/aibi-p', label: 'For Learners' },
   { href: '/for-institutions', label: 'For Institutions' },
   { href: '/resources', label: 'Resources' },
@@ -38,7 +38,7 @@ export function Header() {
             </Link>
           ))}
           <Link
-            href="/assessment"
+            href="/assessment/start"
             className="font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] bg-[color:var(--color-terra)] text-[color:var(--color-linen)] px-4 py-2 hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all hidden md:inline-block"
           >
             Take Assessment

@@ -62,6 +62,29 @@ export async function POST(request: Request): Promise<NextResponse> {
   return NextResponse.json({ success: true });
 }
 
+export async function GET(): Promise<NextResponse> {
+  if (!isSupabaseConfigured()) {
+    return NextResponse.json({ error: 'Service not configured.' }, { status: 503 });
+  }
+
+  const { supabase, user } = await getAuthedClient();
+  if (!user) return NextResponse.json({ error: 'Not authenticated.' }, { status: 401 });
+
+  const { data, error } = await supabase
+    .from('saved_prompts')
+    .select('prompt_id')
+    .eq('user_id', user.id)
+    .eq('course_id', 'aibi-p');
+
+  if (error) {
+    return NextResponse.json({ error: 'Failed to load saved prompts.' }, { status: 500 });
+  }
+
+  return NextResponse.json({
+    savedPromptIds: (data ?? []).map((row) => row.prompt_id as string),
+  });
+}
+
 export async function DELETE(request: Request): Promise<NextResponse> {
   if (!isSupabaseConfigured()) {
     return NextResponse.json({ error: 'Service not configured.' }, { status: 503 });

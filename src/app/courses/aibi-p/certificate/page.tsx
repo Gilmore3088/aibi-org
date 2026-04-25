@@ -253,14 +253,14 @@ export default async function CertificatePage() {
                   Continue Your Journey
                 </h3>
                 <p className="text-xs leading-relaxed mb-5 opacity-90 font-sans">
-                  Your AiBI-P credential opens the door to the Specialist track.
-                  Explore AiBI-S to deepen your expertise in your functional area.
+                  Your AiBI-P credential will open the door to the Specialist
+                  track when advanced training launches.
                 </p>
                 <a
-                  href="/education"
+                  href="/coming-soon?interest=specialist"
                   className="inline-block text-center bg-[var(--color-parch)] text-[var(--color-terra)] text-xs font-bold font-sans py-2.5 px-4 rounded-sm hover:bg-white transition-colors"
                 >
-                  Explore Education
+                  Join Specialist Waitlist
                 </a>
               </div>
             </div>

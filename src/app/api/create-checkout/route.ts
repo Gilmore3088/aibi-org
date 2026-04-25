@@ -1,8 +1,8 @@
 // POST /api/create-checkout
 // Creates a Stripe Checkout Session for AiBI-P course purchase.
 //
-// Individual mode: $79/seat (STRIPE_AIBIP_PRICE_ID)
-// Institution mode: ~$63/seat x quantity (STRIPE_AIBIP_INSTITUTION_PRICE_ID), min 5 seats
+// Individual mode: $99/seat (STRIPE_AIBIP_PRICE_ID)
+// Institution/team mode: $79/seat x quantity (STRIPE_AIBIP_INSTITUTION_PRICE_ID), min 10 seats
 //
 // Persistent discount: if an individual buyer's email is associated with an institution
 // that has discount_locked=true, they get the institution price automatically (PAY-03).
@@ -90,9 +90,9 @@ export async function POST(request: Request) {
   // Validate institution-specific fields
   if (mode === 'institution') {
     const quantity = typeof body.quantity === 'number' ? body.quantity : NaN;
-    if (!Number.isInteger(quantity) || quantity < 5) {
+    if (!Number.isInteger(quantity) || quantity < 10) {
       return NextResponse.json(
-        { error: 'Institution purchases require quantity >= 5 (integer).' },
+        { error: 'Team purchases require quantity >= 10 (integer).' },
         { status: 400 }
       );
     }
@@ -152,6 +152,7 @@ export async function POST(request: Request) {
         metadata: {
           product: 'aibi-p',
           mode: 'individual',
+          tier: 'individual',
           ...(userEmail ? { user_email: userEmail } : {}),
           ...(discountApplied ? { discount_applied: discountApplied } : {}),
         },
@@ -177,6 +178,7 @@ export async function POST(request: Request) {
       metadata: {
         product: 'aibi-p',
         mode: 'institution',
+        tier: 'team',
         institution_name: institutionName,
         quantity: String(quantity),
         ...(userEmail ? { user_email: userEmail } : {}),

@@ -30,7 +30,7 @@ export function CourseSidebar({ completedModules, currentModule }: CourseSidebar
   }));
 
   return (
-    <aside className="fixed left-0 top-[70px] h-[calc(100vh-70px)] w-72 bg-[color:var(--color-linen)] border-r border-[color:var(--color-terra)]/10 hidden lg:flex flex-col pt-4 z-30">
+    <aside className="sticky top-[70px] h-[calc(100vh-70px)] w-72 bg-[color:var(--color-linen)] border-r border-[color:var(--color-terra)]/10 hidden lg:flex flex-col pt-4 z-30 self-start">
       {/* Brand area */}
       <div className="px-6 py-5 border-b border-[color:var(--color-terra)]/10">
         <div className="flex items-center gap-3 mb-1">

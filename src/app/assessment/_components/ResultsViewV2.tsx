@@ -32,6 +32,19 @@ export function ResultsViewV2({
   const topGaps = getTopAssessmentGaps(dimensionBreakdown);
   const nextStep = getAssessmentNextStep(tierId);
   const firstPractice = getFirstPracticeRecommendation(tierId);
+  const shouldStartPractice =
+    tierId === 'starting-point' || tierId === 'early-stage';
+  const primaryAction = shouldStartPractice
+    ? {
+        title: 'Start your first AI practice rep',
+        description:
+          'Turn this score into a small win now. The first rep takes about five minutes and helps you practice safe, practical AI use.',
+        href: tierId === 'early-stage'
+          ? '/practice/safe-prompt-conversion'
+          : '/practice/rewrite-for-clarity',
+        cta: 'Start Your First AI Practice Rep',
+      }
+    : nextStep;
 
   return (
     <div className="w-full max-w-3xl mx-auto space-y-16">
@@ -109,17 +122,27 @@ export function ResultsViewV2({
           Recommended next step
         </p>
         <h3 className="font-serif text-3xl text-[color:var(--color-ink)] leading-tight mb-3">
-          {nextStep.title}
+          {primaryAction.title}
         </h3>
         <p className="text-sm text-[color:var(--color-ink)]/75 leading-relaxed max-w-2xl mb-6">
-          {nextStep.description}
+          {primaryAction.description}
         </p>
-        <a
-          href={nextStep.href}
-          className="inline-block px-7 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
-        >
-          {nextStep.cta}
-        </a>
+        <div className="flex flex-col sm:flex-row gap-3">
+          <a
+            href={primaryAction.href}
+            className="inline-block text-center px-7 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
+          >
+            {primaryAction.cta}
+          </a>
+          {shouldStartPractice && (
+            <a
+              href="/dashboard"
+              className="inline-block text-center px-7 py-3 border border-[color:var(--color-ink)]/25 text-[color:var(--color-ink)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)] transition-colors"
+            >
+              View Full Dashboard
+            </a>
+          )}
+        </div>
       </section>
 
       {/* First practice recommendation */}

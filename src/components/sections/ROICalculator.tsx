@@ -9,7 +9,7 @@ export function ROICalculator() {
   return (
     <section
       id="roi-calculator"
-      className="px-6 py-14 md:py-20 bg-[color:var(--color-linen)]"
+      className="px-6 py-14 md:py-20 bg-[color:var(--color-parch)] border-y border-[color:var(--color-ink)]/10"
     >
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
@@ -20,49 +20,27 @@ export function ROICalculator() {
             Run your own numbers.
           </h2>
           <p className="text-lg text-[color:var(--color-ink)]/70 max-w-2xl mx-auto mt-5 leading-relaxed">
-            This calculator estimates the annual dollar value of staff hours
-            that AI automation can recapture inside your institution &mdash;
-            the labor reallocation math behind every efficiency-ratio
-            conversation.
+            Estimate the annual value of staff hours AI can give back to your
+            institution.
           </p>
         </div>
 
         <div className="grid md:grid-cols-5 gap-8 md:gap-12">
-          {/* Left: benchmark context */}
           <div className="md:col-span-2 space-y-6">
-            <div className="border border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)] p-6">
+            <div className="border border-[color:var(--color-ink)]/10 bg-[color:var(--color-linen)] p-6">
               <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-3">
-                Industry context
+                What this models
               </p>
-              <dl className="space-y-3">
-                <div className="flex items-baseline justify-between">
-                  <dt className="text-sm text-[color:var(--color-ink)]/80">
-                    Community bank median efficiency ratio
-                  </dt>
-                  <dd className="font-mono text-lg text-[color:var(--color-ink)] tabular-nums">~65%</dd>
-                </div>
-                <div className="flex items-baseline justify-between">
-                  <dt className="text-sm text-[color:var(--color-ink)]/80">
-                    Industry-wide (Q4 2024)
-                  </dt>
-                  <dd className="font-mono text-lg text-[color:var(--color-ink)] tabular-nums">~55.7%</dd>
-                </div>
-              </dl>
-              <p className="font-mono text-[10px] text-[color:var(--color-slate)] mt-4 leading-snug">
-                Source: FDIC Quarterly Banking Profile &middot; CEIC 1992&ndash;2025
-              </p>
+              <ul className="space-y-3 text-sm text-[color:var(--color-ink)]/75 leading-relaxed">
+                <li>Staff count</li>
+                <li>Loaded employee cost</li>
+                <li>Conservative weekly hours saved</li>
+              </ul>
             </div>
             <p className="text-sm text-[color:var(--color-ink)]/75 leading-relaxed">
-              Top-performing peers run 8&ndash;12 percentage points below the
-              community bank median. Closing that gap is not a technology
-              problem. It is a labor reallocation problem &mdash; which is
-              exactly what the calculator on the right quantifies.
-            </p>
-            <p className="text-sm text-[color:var(--color-ink)]/75 leading-relaxed">
-              The result is not a projected efficiency ratio change. It is the
-              annual dollar value of the hours AI can give back to your staff,
-              based on your inputs. The efficiency ratio improvement follows
-              from how those recaptured hours are then reinvested.
+              This is not a promise or a forecast. It is a quick way to frame
+              the value of better daily workflows before making a bigger AI
+              investment.
             </p>
           </div>
 

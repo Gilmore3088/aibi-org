@@ -8,14 +8,17 @@ import {
 
 const PHASE_BY_MODULE: Record<number, CourseModule['phase']> = {
   1: 'understand',
-  2: 'safe-use',
+  2: 'understand',
   3: 'daily-workflows',
   4: 'safe-use',
-  5: 'safe-use',
+  5: 'understand',
   6: 'daily-workflows',
-  7: 'role-application',
+  7: 'daily-workflows',
   8: 'role-application',
-  9: 'credential',
+  9: 'safe-use',
+  10: 'role-application',
+  11: 'daily-workflows',
+  12: 'credential',
 };
 
 export const aibiPReusableModules: readonly CourseModule[] = modules.map((mod) => {

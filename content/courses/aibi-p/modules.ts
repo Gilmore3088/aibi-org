@@ -11,10 +11,14 @@ import { module6 } from './module-6';
 import { module7 } from './module-7';
 import { module8 } from './module-8';
 import { module9 } from './module-9';
+import { module10 } from './module-10';
+import { module11 } from './module-11';
+import { module12 } from './module-12';
 
 export const modules: readonly Module[] = [
   module1, module2, module3, module4, module5,
-  module6, module7, module8, module9,
+  module6, module7, module8, module9, module10,
+  module11, module12,
 ] as const;
 
 export function getModuleByNumber(n: number): Module | undefined {

@@ -43,6 +43,7 @@ describe('provisionEnrollment', () => {
       metadata: {
         product: 'aibi-p',
         mode: 'individual',
+        tier: 'individual',
         user_email: 'teller@firstcommunity.bank',
       },
     });
@@ -76,6 +77,7 @@ describe('provisionEnrollment', () => {
       metadata: {
         product: 'aibi-p',
         mode: 'institution',
+        tier: 'team',
         institution_name: 'First Community Bank',
         quantity: '10',
         user_email: 'admin@firstcommunity.bank',
@@ -159,7 +161,7 @@ describe('provisionEnrollment', () => {
       metadata: {
         product: 'aibi-p',
         mode: 'institution',
-        quantity: '5',
+        quantity: '10',
         // deliberately omit institution_name
       },
     });

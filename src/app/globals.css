@@ -85,6 +85,26 @@ h1, h2, h3 {
   .font-mono      { font-family: var(--font-mono); }
 }
 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Print stylesheet — used for "Save as PDF" from the assessment results view */
 @media print {
   html, body {

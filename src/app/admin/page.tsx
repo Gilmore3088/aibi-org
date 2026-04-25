@@ -3,6 +3,8 @@ import { redirect } from 'next/navigation';
 import { verifyReviewer } from '@/lib/auth/reviewerAuth';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 
+const AIBIP_TOTAL_MODULES = 12;
+
 interface EnrollmentRow {
   readonly id: string;
   readonly email: string;
@@ -64,7 +66,7 @@ export default async function AdminPage() {
     ? Math.round(readinessScores.reduce((sum, score) => sum + score, 0) / readinessScores.length)
     : null;
   const activeUsers = enrollments.filter((row) => row.completed_modules.length > 0).length;
-  const completedUsers = enrollments.filter((row) => row.completed_modules.length >= 9).length;
+  const completedUsers = enrollments.filter((row) => row.completed_modules.length >= AIBIP_TOTAL_MODULES).length;
 
   return (
     <main className="px-6 py-10 md:py-14">
@@ -126,7 +128,7 @@ export default async function AdminPage() {
                       {profile?.readiness_tier_label ?? 'Not taken'}
                     </td>
                     <td className="px-4 py-3 font-mono text-[color:var(--color-terra)]">
-                      {row.completed_modules.length}/9
+                      {row.completed_modules.length}/{AIBIP_TOTAL_MODULES}
                     </td>
                     <td className="px-4 py-3 text-[color:var(--color-slate)]">
                       Module {row.current_module || 1}

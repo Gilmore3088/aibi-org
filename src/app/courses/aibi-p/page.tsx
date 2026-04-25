@@ -3,7 +3,12 @@
 
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { modules, PILLAR_META, aibiPCourseConfig } from '@content/courses/aibi-p';
+import {
+  modules,
+  PILLAR_META,
+  aibiPCourseConfig,
+  V4_AIBIP_MODULE_BY_NUMBER,
+} from '@content/courses/aibi-p';
 import type { Pillar } from '@content/courses/aibi-p';
 import { getEnrollment } from './_lib/getEnrollment';
 import { getModuleStatus } from './_lib/courseProgress';
@@ -18,6 +23,7 @@ export const metadata: Metadata = {
 const PILLAR_ORDER: Pillar[] = ['awareness', 'understanding', 'creation', 'application'];
 
 const LEARNER_OUTCOMES = [
+  'Choose the right prompt strategy for the job',
   'Write safer, clearer prompts for daily banking work',
   'Summarize banking documents responsibly',
   'Review AI outputs for errors and unsupported claims',
@@ -27,18 +33,27 @@ const LEARNER_OUTCOMES = [
 
 const COURSE_PHASES = [
   'AI for your workday',
-  'Prompt basics',
-  'Mistakes and safe use',
-  'Workflows and role use',
-  'Final assessment',
+  'What AI is and is not',
+  'Prompting fundamentals',
+  'AI work profile',
+  'Projects and context',
+  'Files and document workflows',
+  'AI tools landscape',
+  'Agents and workflow thinking',
+  'Safe AI use in banking',
+  'Role-based use cases',
+  'Personal prompt library',
+  'Final practitioner lab',
 ] as const;
 
 const FOUNDATIONS = [
+  'Six prompt strategies',
   'AI tools landscape',
   'What an LLM does',
-  'Agents and MCP basics',
+  'Simple agents concept',
   'File-based workflows',
   'Context and memory',
+  'AI personal system',
   'Regulatory boundaries',
 ] as const;
 
@@ -93,7 +108,7 @@ export default async function CourseOverviewPage() {
             </svg>
           </Link>
           <span className="font-mono text-[10px] text-[color:var(--color-slate)] uppercase tracking-wider">
-            9 modules
+            12 modules
           </span>
           <span className="font-mono text-[10px] text-[color:var(--color-slate)] uppercase tracking-wider">
             Learn / Practice / Apply
@@ -106,6 +121,45 @@ export default async function CourseOverviewPage() {
               {completedCount}/{modules.length} complete
             </span>
           )}
+        </div>
+      </section>
+
+      <section className="grid md:grid-cols-[0.8fr_1.2fr] gap-6 mb-8 border border-[color:var(--color-terra)]/20 bg-[color:var(--color-parch)] rounded-[3px] p-6">
+        <div>
+          <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
+            Pricing
+          </p>
+          <h2 className="font-serif text-3xl text-[color:var(--color-ink)] leading-tight">
+            AiBI-P Practitioner
+          </h2>
+          <div className="mt-4 space-y-2">
+            <p className="font-mono text-sm text-[color:var(--color-ink)] tabular-nums">
+              $99 per individual
+            </p>
+            <p className="font-mono text-sm text-[color:var(--color-ink)] tabular-nums">
+              $79 per user for 10+ seats
+            </p>
+          </div>
+        </div>
+        <div>
+          <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60 mb-3">
+            Includes
+          </p>
+          <div className="grid sm:grid-cols-2 gap-3">
+            {[
+              '12 modules',
+              'Practice reps',
+              'Prompt library',
+              'Artifacts',
+              'Certification path',
+              'AiBI-S / AiBI-L coming soon',
+            ].map((item) => (
+              <div key={item} className="flex gap-3 text-sm text-[color:var(--color-ink)]/75">
+                <span className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-terra)] shrink-0" />
+                <span>{item}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -156,7 +210,7 @@ export default async function CourseOverviewPage() {
         <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60 mb-3">
           Course phases
         </p>
-        <div className="grid sm:grid-cols-5 gap-3">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {COURSE_PHASES.map((phase, idx) => (
             <div key={phase} className="flex sm:block items-baseline gap-3">
               <p className="font-mono text-[11px] text-[color:var(--color-terra)] tabular-nums">
@@ -184,7 +238,7 @@ export default async function CourseOverviewPage() {
         </div>
       </section>
 
-      {/* Course Structure — unified pillar + module listing */}
+      {/* Course Structure — expanded V4 foundation module listing */}
       <section
         id="course-structure"
         className="bg-[color:var(--color-parch)] p-6 sm:p-8 border border-[color:var(--color-ink)]/10 rounded-[3px]"
@@ -193,7 +247,7 @@ export default async function CourseOverviewPage() {
           Course Structure
         </h2>
 
-        <div className="space-y-6">
+        <div className="space-y-8">
           {PILLAR_ORDER.map((pillar) => {
             const meta = PILLAR_META[pillar];
             const pillarModules = modules.filter((m) => m.pillar === pillar);
@@ -207,24 +261,77 @@ export default async function CourseOverviewPage() {
                   </h3>
                 </div>
 
-                <div className="space-y-0.5" role="list">
+                <div className="grid gap-4" role="list">
                   {pillarModules.map((mod) => {
                     const status = getModuleStatus(mod.number, completedModules, currentModule);
                     const isAccessible = status !== 'locked';
+                    const expanded = V4_AIBIP_MODULE_BY_NUMBER.get(mod.number);
 
                     const row = (
                       <div
-                        className={`flex items-center gap-3 px-3 py-2.5 rounded-[2px] transition-colors ${
-                          isAccessible ? 'hover:bg-[color:var(--color-linen)]' : 'opacity-40'
+                        className={`border border-[color:var(--color-ink)]/10 bg-[color:var(--color-linen)] rounded-[3px] p-5 transition-colors ${
+                          isAccessible ? 'hover:border-[color:var(--color-terra)]/40' : ''
                         }`}
                         role="listitem"
                       >
-                        <span className="w-4 shrink-0"><StatusIndicator status={status} /></span>
-                        <span className="font-mono text-[10px] text-[color:var(--color-slate)] shrink-0">{mod.number}.</span>
-                        <span className={`font-serif text-sm ${status === 'current' ? 'text-[color:var(--color-terra)] font-semibold' : 'text-[color:var(--color-ink)]'}`}>
-                          {mod.title}
-                        </span>
-                        <span className="font-mono text-[9px] text-[color:var(--color-slate)] ml-auto hidden sm:block">{mod.estimatedMinutes} min</span>
+                        <div className="flex flex-wrap items-start gap-3">
+                          <span className="w-4 shrink-0 pt-1"><StatusIndicator status={status} /></span>
+                          <div className="min-w-0 flex-1">
+                            <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                              <span className="font-mono text-[10px] text-[color:var(--color-slate)] shrink-0">
+                                Module {mod.number}
+                              </span>
+                              <h4 className={`font-serif text-xl leading-tight ${status === 'current' ? 'text-[color:var(--color-terra)] font-semibold' : 'text-[color:var(--color-ink)]'}`}>
+                                {mod.title}
+                              </h4>
+                              <span className="font-mono text-[9px] text-[color:var(--color-slate)] uppercase tracking-wider">
+                                {mod.estimatedMinutes} min
+                              </span>
+                            </div>
+                            <p className="mt-2 text-sm text-[color:var(--color-ink)]/75 leading-relaxed">
+                              {expanded?.goal ?? mod.keyOutput}
+                            </p>
+                          </div>
+                        </div>
+
+                        {expanded && (
+                          <div className="mt-5 grid lg:grid-cols-[1.1fr_0.9fr] gap-5">
+                            <div>
+                              <p className="font-serif-sc text-[10px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] mb-3">
+                                Includes
+                              </p>
+                              <div className="grid sm:grid-cols-2 gap-2">
+                                {expanded.includes.map((item) => (
+                                  <div key={item} className="flex gap-2 text-xs text-[color:var(--color-ink)]/70 leading-relaxed">
+                                    <span className="mt-1.5 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-terra)]/70 shrink-0" />
+                                    <span>{item}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+
+                            <div className="space-y-3 text-xs text-[color:var(--color-slate)] leading-relaxed">
+                              <div>
+                                <p className="font-serif-sc text-[10px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/55 mb-1">
+                                  Practice
+                                </p>
+                                <p>{expanded.practice}</p>
+                              </div>
+                              <div>
+                                <p className="font-serif-sc text-[10px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/55 mb-1">
+                                  Artifact
+                                </p>
+                                <p>{expanded.artifact}</p>
+                              </div>
+                              <div>
+                                <p className="font-serif-sc text-[10px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/55 mb-1">
+                                  Banking Boundary
+                                </p>
+                                <p>{expanded.bankingBoundary}</p>
+                              </div>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     );
 
