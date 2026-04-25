@@ -66,9 +66,9 @@ const sampleLibrary: readonly SampleResource[] = [
     title: 'Efficiency ratio workbook',
     description:
       'Model your institution’s automation ceiling with your own FTE, cost, and hours estimates. Same math we walk through in an Executive Briefing.',
-    cta: 'Coming soon',
-    href: '#',
-    available: false,
+    cta: 'Open the workbook',
+    href: '/for-institutions/samples/efficiency-ratio-workbook',
+    available: true,
   },
 ];
 
