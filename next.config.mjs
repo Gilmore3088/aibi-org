@@ -18,6 +18,7 @@ const nextConfig = {
       { source: '/courses', destination: '/education', permanent: true },
       { source: '/certifications', destination: '/education', permanent: true },
       { source: '/services', destination: '/for-institutions', permanent: true },
+      { source: '/foundations', destination: '/education', permanent: true },
     ];
   },
 };
