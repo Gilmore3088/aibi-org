@@ -62,7 +62,7 @@ export default function AiBILOverviewPage() {
           <span className="text-[color:var(--color-cobalt)] italic">Leader</span>
         </h1>
 
-        <p className="font-serif italic text-xl sm:text-2xl text-[color:var(--color-dust)] max-w-2xl leading-relaxed mb-8">
+        <p className="font-serif italic text-xl sm:text-2xl text-[color:var(--color-slate)] max-w-2xl leading-relaxed mb-8">
           A 1-day in-person workshop for the executives who set strategy, approve budgets, and
           answer to examiners. Leave with a board-ready AI presentation built with your numbers.
         </p>
@@ -112,7 +112,7 @@ export default function AiBILOverviewPage() {
               Individual Executive
             </p>
             <p className="font-mono text-4xl tabular-nums text-[color:var(--color-ink)] mb-2">
-              $2,800<span className="text-lg text-[color:var(--color-dust)]">+</span>
+              $2,800<span className="text-lg text-[color:var(--color-slate)]">+</span>
             </p>
             <p className="font-sans text-xs text-[color:var(--color-slate)] leading-relaxed">
               Single executive attending a scheduled multi-institution workshop
@@ -142,7 +142,7 @@ export default function AiBILOverviewPage() {
             Four <span className="italic">Sessions</span>
           </h2>
           <div className="w-12 h-px bg-[color:var(--color-cobalt)] mb-5" aria-hidden="true" />
-          <p className="font-serif italic text-lg text-[color:var(--color-dust)] max-w-xl">
+          <p className="font-serif italic text-lg text-[color:var(--color-slate)] max-w-xl">
             Each session builds on the previous. Every session produces a deliverable you keep.
           </p>
         </div>

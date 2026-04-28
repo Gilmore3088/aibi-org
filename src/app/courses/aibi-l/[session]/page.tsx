@@ -113,7 +113,7 @@ export default async function SessionPage({ params }: SessionPageParams) {
           {workshopSession.title}
         </h1>
 
-        <p className="font-serif italic text-lg text-[color:var(--color-dust)] leading-relaxed mb-6 max-w-xl">
+        <p className="font-serif italic text-lg text-[color:var(--color-slate)] leading-relaxed mb-6 max-w-xl">
           {workshopSession.coreQuestion}
         </p>
 

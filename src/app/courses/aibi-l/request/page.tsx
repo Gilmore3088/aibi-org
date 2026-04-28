@@ -87,7 +87,7 @@ export default function WorkshopRequestPage() {
         <h1 className="font-serif text-4xl font-bold text-[color:var(--color-ink)] mb-6">
           Thank you, {form.name.split(' ')[0]}.
         </h1>
-        <p className="font-serif italic text-lg text-[color:var(--color-dust)] leading-relaxed mb-8">
+        <p className="font-serif italic text-lg text-[color:var(--color-slate)] leading-relaxed mb-8">
           The AI Banking Institute will respond within 2 business days
           with a planning call invitation to customize your workshop.
         </p>
@@ -125,7 +125,7 @@ export default function WorkshopRequestPage() {
         <h1 className="font-serif text-4xl sm:text-5xl font-bold text-[color:var(--color-ink)] mb-4 leading-tight">
           Request a <span className="italic text-[color:var(--color-cobalt)]">Workshop</span>
         </h1>
-        <p className="font-serif italic text-lg text-[color:var(--color-dust)] leading-relaxed">
+        <p className="font-serif italic text-lg text-[color:var(--color-slate)] leading-relaxed">
           The AI Banking Institute will respond within 2 business days with a planning call
           invitation to customize your workshop with your institution&apos;s data.
         </p>

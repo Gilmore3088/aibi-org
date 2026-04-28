@@ -105,7 +105,7 @@ export default async function AiBISPurchasePage() {
         <span className="text-[color:var(--color-cobalt)] italic">AiBI-S</span>
       </h1>
 
-      <p className="font-serif italic text-lg text-[color:var(--color-dust)] leading-relaxed mb-10">
+      <p className="font-serif italic text-lg text-[color:var(--color-slate)] leading-relaxed mb-10">
         The Banking AI Specialist course is for department managers who are ready to move from personal
         AI proficiency to departmental AI capability — deployed, measured, and governed.
       </p>
