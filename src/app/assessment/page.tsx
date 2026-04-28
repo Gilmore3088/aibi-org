@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { trackEvent } from '@/lib/analytics/plausible';
 import { useAssessmentV2, QUESTIONS_PER_SESSION } from './_lib/useAssessmentV2';
 import { QuestionCard } from './_components/QuestionCard';
@@ -9,13 +9,17 @@ import { EmailGate } from './_components/EmailGate';
 import { ResultsViewV2 } from './_components/ResultsViewV2';
 import { ScoreRing } from './_components/ScoreRing';
 
-const CALENDLY_URL = process.env.NEXT_PUBLIC_CALENDLY_URL ?? '#';
+// If the Calendly URL is unset (e.g. preview/dev), fall back to the advisory
+// page so the briefing CTA is never silently dead. Never use '#'.
+const BRIEFING_URL =
+  process.env.NEXT_PUBLIC_CALENDLY_URL ?? '/for-institutions/advisory';
 
 export default function AssessmentPage() {
   const state = useAssessmentV2();
   const [capturedEmail, setCapturedEmail] = useState<string | null>(null);
   const emailCaptured = capturedEmail !== null;
   const [mounted, setMounted] = useState(false);
+  const scoreHeadingRef = useRef<HTMLHeadingElement | null>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -28,12 +32,18 @@ export default function AssessmentPage() {
         score: state.totalScore,
         tier: state.tier?.id ?? 'unknown',
       });
+      // Move focus to the score heading so screen readers announce the
+      // transition and keyboard users land somewhere meaningful instead of
+      // on the now-unmounted last answer button.
+      requestAnimationFrame(() => scoreHeadingRef.current?.focus());
     }
   }, [state.isComplete, state.phase, state.totalScore, state.tier]);
 
   if (!mounted) {
-    // Avoid SSR flash — sessionStorage-aware state must be read client-side.
-    return null;
+    // Pre-hydration skeleton — sessionStorage-aware state must be read client-
+    // side, but a blank screen reads as broken on slow phones. Render a
+    // shape-only placeholder that matches the question card layout.
+    return <AssessmentSkeleton />;
   }
 
   const isLowerTier =
@@ -51,6 +61,8 @@ export default function AssessmentPage() {
             totalQuestions={QUESTIONS_PER_SESSION}
             selectedPoints={state.answers[state.currentQuestion]}
             onAnswer={state.answer}
+            onBack={state.goBack}
+            canGoBack={state.currentQuestion > 0}
           />
         )}
 
@@ -68,7 +80,11 @@ export default function AssessmentPage() {
                 colorVar={state.tier.colorVar}
                 label={state.tier.label}
               />
-              <h2 className="font-serif text-3xl md:text-4xl text-center mt-8 max-w-xl text-[color:var(--color-ink)]">
+              <h2
+                ref={scoreHeadingRef}
+                tabIndex={-1}
+                className="font-serif text-3xl md:text-4xl text-center mt-8 max-w-xl text-[color:var(--color-ink)] focus:outline-none"
+              >
                 {state.tier.headline}
               </h2>
               <p className="text-lg text-[color:var(--color-ink)]/75 text-center mt-4 max-w-2xl leading-relaxed">
@@ -90,7 +106,7 @@ export default function AssessmentPage() {
                 </a>
               ) : (
                 <a
-                  href={CALENDLY_URL}
+                  href={BRIEFING_URL}
                   onClick={() =>
                     trackEvent('briefing_booked', { source: 'assessment' })
                   }
@@ -156,6 +172,35 @@ export default function AssessmentPage() {
             tierId={state.tier.id}
           />
         )}
+      </div>
+    </main>
+  );
+}
+
+// Pre-hydration skeleton — purely shape, no copy. Matches the QuestionCard
+// layout (label row + heading + 4 option rows) so the layout doesn't jump
+// when real content swaps in.
+function AssessmentSkeleton() {
+  return (
+    <main className="min-h-screen" aria-hidden="true">
+      <div className="h-1 bg-[color:var(--color-ink)]/10" />
+      <div className="px-6 py-12 md:py-20">
+        <div className="w-full max-w-2xl mx-auto animate-pulse">
+          <div className="flex items-center justify-between mb-8">
+            <div className="h-3 w-32 bg-[color:var(--color-ink)]/10 rounded-sm" />
+            <div className="h-3 w-24 bg-[color:var(--color-ink)]/10 rounded-sm" />
+          </div>
+          <div className="h-10 w-full bg-[color:var(--color-ink)]/10 rounded-sm mb-3" />
+          <div className="h-10 w-3/4 bg-[color:var(--color-ink)]/10 rounded-sm mb-10" />
+          <div className="space-y-3">
+            {[0, 1, 2, 3].map((i) => (
+              <div
+                key={i}
+                className="h-16 w-full border border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)] rounded-sm"
+              />
+            ))}
+          </div>
+        </div>
       </div>
     </main>
   );

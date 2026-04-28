@@ -30,6 +30,7 @@ export interface AssessmentState {
 
 export interface AssessmentActions {
   answer: (points: number) => void;
+  goBack: () => void;
   restart: () => void;
   advanceToResults: () => void;
   getDimensionBreakdown: () => Record<Dimension, DimensionScore>;
@@ -130,6 +131,12 @@ export function useAssessmentV2(): AssessmentState & AssessmentActions {
     [currentQuestion]
   );
 
+  // goBack: step to the previous question without losing the answer for that question.
+  // Available only on the questions phase; ignored if already at the first question.
+  const goBack = useCallback(() => {
+    setCurrentQuestion((prev) => (prev > 0 ? prev - 1 : prev));
+  }, []);
+
   const restart = useCallback(() => {
     setAnswers([]);
     setCurrentQuestion(0);
@@ -158,6 +165,7 @@ export function useAssessmentV2(): AssessmentState & AssessmentActions {
     progress,
     selectedQuestions,
     answer,
+    goBack,
     restart,
     advanceToResults,
     getDimensionBreakdown,
