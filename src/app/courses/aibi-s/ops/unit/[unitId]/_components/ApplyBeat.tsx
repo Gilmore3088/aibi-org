@@ -31,7 +31,7 @@ export function ApplyBeat({
       <p className="text-sm text-[color:var(--color-ink)]/60">
         {words} / {beat.minWords} words minimum
       </p>
-      <p className="text-sm italic">{beat.guidance}</p>
+      <p className="text-sm text-[color:var(--color-slate)]">{beat.guidance}</p>
       <button
         disabled={!canAdvance}
         onClick={onAdvance}

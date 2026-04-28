@@ -276,7 +276,7 @@ export function ReadOnlyView({ values }: ReadOnlyViewProps) {
           </p>
           <div className="w-full border border-[color:var(--color-parch-dark)] rounded-sm px-3 py-2 text-sm font-sans bg-[color:var(--color-parch)] text-[color:var(--color-ink)] min-h-[40px] whitespace-pre-wrap">
             {field.value || (
-              <span className="text-[color:var(--color-slate)] italic">No response</span>
+              <span className="text-[color:var(--color-slate)]">No response</span>
             )}
           </div>
         </div>

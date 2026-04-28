@@ -85,7 +85,7 @@ export function DefendBeat({
         />
       )}
 
-      {phase === 'grading' && <p className="italic">Grading your defense…</p>}
+      {phase === 'grading' && <p className="text-[color:var(--color-slate)]">Grading your defense…</p>}
 
       {err && <p className="text-[color:var(--color-error)]">{err}</p>}
 

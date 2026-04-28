@@ -208,7 +208,7 @@ export function SkillDiagnosis({
               {missingComponentField?.label ?? 'Missing component selected'}
             </p>
             <div className="w-full border border-[color:var(--color-parch-dark)] rounded-sm px-3 py-2 text-sm font-sans bg-[color:var(--color-parch)] text-[color:var(--color-ink)]">
-              {selectedOption || <span className="text-[color:var(--color-slate)] italic">No response</span>}
+              {selectedOption || <span className="text-[color:var(--color-slate)]">No response</span>}
             </div>
           </div>
           <div>
@@ -217,7 +217,7 @@ export function SkillDiagnosis({
             </p>
             <div className="w-full border border-[color:var(--color-parch-dark)] rounded-sm px-3 py-2 text-sm font-sans bg-[color:var(--color-parch)] text-[color:var(--color-ink)] min-h-[80px] whitespace-pre-wrap">
               {state.improvedSkill || (
-                <span className="text-[color:var(--color-slate)] italic">No response</span>
+                <span className="text-[color:var(--color-slate)]">No response</span>
               )}
             </div>
           </div>

@@ -95,7 +95,7 @@ export default async function CertificatePage() {
 
               <div className="text-center relative z-10">
                 <p
-                  className="text-sm italic text-[var(--color-slate)] mb-2"
+                  className="font-serif text-sm italic text-[var(--color-slate)] mb-2"
                   style={{ fontFamily: 'Cormorant, Georgia, serif' }}
                 >
                   AI Banking Institute Presents
@@ -110,7 +110,7 @@ export default async function CertificatePage() {
                 <div className="w-16 h-px bg-[var(--color-terra)] opacity-40 mx-auto mb-6" />
 
                 <p
-                  className="text-sm italic text-[var(--color-slate)] mb-3"
+                  className="font-serif text-sm italic text-[var(--color-slate)] mb-3"
                   style={{ fontFamily: 'Cormorant, Georgia, serif' }}
                 >
                   This honors the distinguished performance of

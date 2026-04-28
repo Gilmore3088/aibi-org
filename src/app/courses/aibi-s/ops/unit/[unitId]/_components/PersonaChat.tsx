@@ -109,7 +109,7 @@ export function PersonaChat({
         </div>
       )}
 
-      {loading && <p className="text-sm italic">…thinking</p>}
+      {loading && <p className="text-sm text-[color:var(--color-slate)]">…thinking</p>}
 
       {exhausted && (
         <button
