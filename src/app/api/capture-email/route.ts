@@ -16,6 +16,29 @@ interface CapturePayload {
   tier?: unknown;
   tierLabel?: unknown;
   answers?: unknown;
+  version?: unknown;
+  maxScore?: unknown;
+  dimensionBreakdown?: unknown;
+}
+
+interface DimensionEntry {
+  score: number;
+  maxScore: number;
+  label: string;
+}
+
+type DimensionBreakdown = Record<string, DimensionEntry>;
+
+function isDimensionBreakdown(value: unknown): value is DimensionBreakdown {
+  if (typeof value !== 'object' || value === null) return false;
+  for (const entry of Object.values(value as Record<string, unknown>)) {
+    if (typeof entry !== 'object' || entry === null) return false;
+    const e = entry as Record<string, unknown>;
+    if (typeof e.score !== 'number') return false;
+    if (typeof e.maxScore !== 'number') return false;
+    if (typeof e.label !== 'string') return false;
+  }
+  return true;
 }
 
 function isValidPayload(p: CapturePayload): p is {
@@ -24,6 +47,9 @@ function isValidPayload(p: CapturePayload): p is {
   tier: string;
   tierLabel: string;
   answers: number[];
+  version?: 'v1' | 'v2';
+  maxScore?: number;
+  dimensionBreakdown?: DimensionBreakdown;
 } {
   if (typeof p.email !== 'string' || !EMAIL_RE.test(p.email)) return false;
   if (typeof p.score !== 'number' || p.score < 8 || p.score > 48) return false;
@@ -32,6 +58,9 @@ function isValidPayload(p: CapturePayload): p is {
   if (!Array.isArray(p.answers)) return false;
   if (p.answers.length < 8 || p.answers.length > 12) return false;
   if (!p.answers.every((n: unknown) => typeof n === 'number' && n >= 1 && n <= 4)) return false;
+  if (p.version !== undefined && p.version !== 'v1' && p.version !== 'v2') return false;
+  if (p.maxScore !== undefined && (typeof p.maxScore !== 'number' || p.maxScore < 8 || p.maxScore > 48)) return false;
+  if (p.dimensionBreakdown !== undefined && !isDimensionBreakdown(p.dimensionBreakdown)) return false;
   return true;
 }
 
@@ -47,7 +76,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Invalid payload.' }, { status: 400 });
   }
 
-  const { email, score, tier, tierLabel, answers } = body;
+  const { email, score, tier, tierLabel, answers, version, maxScore, dimensionBreakdown } = body;
 
   const completedAt = new Date().toISOString();
 
@@ -71,6 +100,9 @@ export async function POST(request: Request) {
       tierLabel,
       answers,
       completedAt,
+      ...(version ? { version } : {}),
+      ...(maxScore !== undefined ? { maxScore } : {}),
+      ...(dimensionBreakdown ? { dimensionBreakdown } : {}),
     }).catch((err) => console.warn('[capture-email] supabase skip', err));
   }
 

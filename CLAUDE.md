@@ -469,7 +469,7 @@ The post-conference email goes out when ALL items are checked:
 - [ ] AIBankingInstitute.com DNS live, SSL active *(domains registered ✓)*
 - [ ] Home page rendering correctly desktop + mobile
 - [ ] Assessment: 8 questions functional, scoring correct
-- [ ] Assessment: **score visible WITHOUT email gate**
+- [ ] Assessment: **score + tier visible WITHOUT email gate; dimension breakdown + starter artifact gated** (see 2026-04-27 decision)
 - [ ] Assessment: sessionStorage persistence working (test by refreshing mid-assessment on iPhone)
 - [ ] Assessment: /api/capture-email with rate limiting active
 - [ ] ConvertKit: form configured, Day 0/3/7 sequences active
@@ -596,7 +596,7 @@ overriding something in the plans so future sessions do not relitigate.
 **2026-04-15 — Score gated behind email capture.** PRD originally said "score
 visible without email gate" for conversion reasons. User override: capture
 every completer's email, even at the cost of completion rate. Tradeoff
-accepted. Committed in `d46d99b`.
+accepted. Committed in `d46d99b`. **Superseded 2026-04-27** — see entry below.
 
 **2026-04-15 — Peer benchmarks deferred to Phase 1.5+.** User wanted
 "you rank Nth percentile" teasers; honest constraint is zero respondents yet.
@@ -690,6 +690,20 @@ uses listed earlier in this file) is discontinued. Leadership Advisory
 is the new name; "fractional Chief AI Officer" remains available as a
 descriptor in prose where it clarifies shape. Credential codes
 (AiBI-P/S/L) and the circular seal are unaffected.
+
+**2026-04-27 — Email gate is partly-gated with substantive value.**
+Supersedes the 2026-04-15 full-gate decision. The current shape:
+**score + tier visible without email** (the headline diagnostic the
+PRD originally promised); **dimension breakdown + tailored starter
+artifact gated behind email capture**. Rationale: a thin gate ("just
+ask for the email") feels extractive; a substantive gate ("you handed
+us your email, here's a real artifact you can take to your team this
+week") earns the conversion. Eight dimension-keyed starter artifacts
+live in `content/assessments/v2/starter-artifacts.ts` — one per
+lowest-scoring dimension. Server-side persistence of dimension
+breakdown added in migration `00011_readiness_dimension_columns.sql`.
+Resend transactional email is deferred — the artifact is on-screen,
+copy-to-clipboard, and download-as-md only for now.
 
 ---
 
