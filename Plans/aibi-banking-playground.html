@@ -1,0 +1,2508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Banking AI Playground · AI Banking Institute</title>
+<meta name="description" content="A playground and skill builder for banking and credit union professionals. Build, test, and deploy reusable AI workflows." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700,100&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --paper:#F7F3EB;--paper-2:#FBF8F1;--paper-3:#FFFDF7;
+  --ink:#1A2332;--ink-soft:#2D3B4D;--ink-2:#38465A;
+  --slate:#6B7785;--slate-lt:#97A0AE;
+  --rule:#E0D8C7;--rule-lt:#ECE5D5;
+  --burgundy:#7A2A38;--burgundy-2:#9C3445;--burgundy-tint:#F5EBE9;
+  --gold:#B8924D;--gold-tint:#F4ECD6;--gold-deep:#7D6437;
+  --green:#4A7C59;--green-tint:#E5EFE7;
+  --blue:#3D5A7A;--blue-tint:#E5EAF1;
+  --red:#9C3434;--red-tint:#F5E5E5;
+  --serif:'Fraunces',Georgia,serif;
+  --sans:'Plus Jakarta Sans',-apple-system,sans-serif;
+  --mono:'JetBrains Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);font-feature-settings:"ss01","kern";-webkit-font-smoothing:antialiased}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0.07 0 0 0 0 0.07 0 0 0 0 0.07 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");opacity:.4;pointer-events:none;z-index:1}
+.wrap{position:relative;z-index:2;min-height:100vh;display:flex;flex-direction:column}
+::selection{background:var(--burgundy);color:var(--paper-3)}
+
+/* ─── HEADER ─── */
+.masthead{background:var(--paper-2);border-bottom:1.5px solid var(--ink);padding:14px 40px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.brand-mark{font-family:var(--serif);font-weight:600;font-size:22px;letter-spacing:-.02em;color:var(--ink);font-variation-settings:"opsz" 144}
+.brand-mark em{font-style:italic;font-weight:400;color:var(--burgundy);font-variation-settings:"opsz" 144,"SOFT" 100}
+.crumbs{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--slate);font-weight:600;border-left:1px solid var(--rule);padding-left:16px}
+.crumbs span{color:var(--slate-lt)}
+.crumbs strong{color:var(--ink);font-weight:700}
+.header-right{display:flex;gap:12px;align-items:center}
+.api-status{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);font-weight:700;padding:5px 10px;background:var(--green-tint);border:1px solid rgba(74,124,89,.3)}
+.api-status::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 2px rgba(74,124,89,.2)}
+.api-status.offline{color:var(--slate);background:var(--paper-3);border-color:var(--rule)}
+.api-status.offline::before{background:var(--slate-lt);box-shadow:none}
+.premium-badge{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-deep);background:var(--gold-tint);border:1px solid var(--gold);padding:5px 10px;font-weight:700}
+.premium-badge::before{content:'◆';color:var(--gold);font-size:11px;line-height:1}
+
+/* ─── TABS ─── */
+.tabs-bar{background:var(--ink);position:sticky;top:0;z-index:100;border-bottom:4px solid var(--burgundy)}
+.tabs-inner{max-width:1240px;margin:0 auto;padding:0 40px;display:flex;overflow-x:auto;scrollbar-width:none}
+.tabs-inner::-webkit-scrollbar{display:none}
+.tab-btn{font-family:var(--sans);font-size:13px;font-weight:500;padding:18px 22px;border:none;background:transparent;color:rgba(255,255,255,.55);cursor:pointer;transition:color .15s;position:relative;white-space:nowrap;display:flex;align-items:center;gap:8px;letter-spacing:.005em}
+.tab-btn:hover{color:rgba(255,255,255,.95)}
+.tab-btn.active{color:#fff;background:linear-gradient(to bottom,rgba(184,146,77,.14),transparent)}
+.tab-btn.active::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:4px;background:var(--gold)}
+.tab-icon{font-family:var(--serif);font-style:italic;font-size:16px;color:var(--gold);font-variation-settings:"opsz" 144,"SOFT" 100}
+.tab-count{font-family:var(--mono);font-size:10px;background:var(--burgundy);color:#fff;padding:2px 7px;border-radius:10px;font-weight:600;margin-left:4px}
+
+.view{display:none}.view.active{display:block}
+.container{max-width:1240px;margin:0 auto;padding:48px 40px 80px;flex:1;width:100%}
+.container.narrow{max-width:880px}
+
+/* ─── INTRO BLOCKS ─── */
+.intro-block{margin-bottom:48px}
+.eyebrow{display:inline-flex;align-items:center;gap:12px;font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--burgundy);font-weight:600;margin-bottom:20px}
+.eyebrow::before{content:'';width:28px;height:1.5px;background:var(--burgundy)}
+.intro-h{font-family:var(--serif);font-weight:400;font-size:clamp(34px,5vw,52px);line-height:1.05;letter-spacing:-.024em;color:var(--ink);margin-bottom:18px;max-width:880px;font-variation-settings:"opsz" 144,"SOFT" 30}
+.intro-h em{font-style:italic;font-weight:300;color:var(--burgundy);font-variation-settings:"opsz" 144,"SOFT" 100}
+.intro-lede{font-family:var(--serif);font-size:18px;line-height:1.55;font-weight:300;color:var(--ink-soft);max-width:720px;letter-spacing:-.005em}
+
+/* ─── WHAT IS A SKILL? Mini explainer ─── */
+.explainer{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border:1px solid var(--rule);background:var(--paper-3);margin-bottom:48px;position:relative}
+.explainer::before{content:'What is a skill?';position:absolute;top:-10px;left:24px;font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--burgundy);background:var(--paper);padding:0 12px;font-weight:700}
+.exp-step{padding:28px 26px;border-right:1px solid var(--rule)}
+.exp-step:last-child{border-right:none}
+.exp-num{font-family:var(--serif);font-style:italic;font-weight:300;font-size:32px;color:var(--burgundy);line-height:1;margin-bottom:10px;font-variation-settings:"opsz" 144,"SOFT" 100}
+.exp-title{font-family:var(--serif);font-weight:500;font-size:17px;color:var(--ink);margin-bottom:6px;letter-spacing:-.01em}
+.exp-desc{font-family:var(--serif);font-size:13.5px;font-weight:300;color:var(--slate);line-height:1.55;font-style:italic;margin-bottom:10px}
+.exp-demo{font-family:var(--mono);font-size:11px;background:var(--ink);color:var(--gold);padding:6px 10px;display:inline-block;font-weight:500}
+
+/* ─── BUTTONS ─── */
+.btn{font-family:var(--sans);font-size:14px;font-weight:600;padding:13px 26px;background:var(--ink);color:#fff;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:10px;transition:background .15s;letter-spacing:.005em}
+.btn:hover{background:var(--burgundy)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn .arrow{font-family:var(--serif);font-style:italic;font-size:18px;font-variation-settings:"opsz" 144,"SOFT" 100}
+.btn-outline{background:transparent;color:var(--ink);border:1.5px solid var(--ink)}
+.btn-outline:hover{background:var(--ink);color:#fff}
+.btn-burgundy{background:var(--burgundy)}
+.btn-burgundy:hover{background:var(--ink)}
+.btn-success{background:var(--green)}
+.btn-success:hover{background:var(--green)}
+.btn-sm{font-size:12px;padding:9px 18px}
+
+/* ─── COOKBOOK ─── */
+.cookbook-hero{display:grid;grid-template-columns:1.5fr 1fr;gap:48px;align-items:center;margin-bottom:56px}
+@media (max-width:900px){.cookbook-hero{grid-template-columns:1fr}}
+.cookbook-cta-card{background:linear-gradient(135deg,var(--ink) 0%,var(--ink-soft) 100%);color:#fff;padding:32px 36px;border:1px solid var(--ink)}
+.cookbook-cta-card h3{font-family:var(--serif);font-weight:400;font-size:24px;line-height:1.2;margin-bottom:10px;letter-spacing:-.012em}
+.cookbook-cta-card h3 em{font-style:italic;color:var(--gold);font-weight:300}
+.cookbook-cta-card p{font-family:var(--serif);font-size:14.5px;font-weight:300;line-height:1.55;color:rgba(255,255,255,.75);margin-bottom:20px;font-style:italic}
+.cookbook-cta-card .actions{display:flex;gap:10px;flex-wrap:wrap}
+.cookbook-cta-card .btn{background:var(--gold);color:var(--ink)}
+.cookbook-cta-card .btn:hover{background:#D9AC5E}
+.cookbook-cta-card .btn-outline{background:transparent;color:#fff;border-color:rgba(255,255,255,.4)}
+.cookbook-cta-card .btn-outline:hover{background:rgba(255,255,255,.1);color:#fff;border-color:#fff}
+
+.role-picker{background:var(--blue-tint);border:1px solid rgba(61,90,122,.2);padding:18px 22px;margin-bottom:32px;display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;flex-wrap:wrap}
+@media (max-width:700px){.role-picker{grid-template-columns:1fr}}
+.role-picker-icon{font-family:var(--serif);font-style:italic;font-size:24px;color:var(--blue);font-variation-settings:"opsz" 144,"SOFT" 100}
+.role-picker-text h3{font-family:var(--serif);font-weight:500;font-size:17px;color:var(--ink);margin-bottom:2px;letter-spacing:-.012em}
+.role-picker-text p{font-family:var(--serif);font-style:italic;font-size:13px;color:var(--slate);font-weight:300}
+.role-picker select{font-family:var(--sans);font-size:13px;padding:9px 12px;border:1.5px solid var(--rule);background:#fff;color:var(--ink);cursor:pointer;font-weight:500;outline:none;min-width:220px}
+
+.filter-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--rule);align-items:center}
+.f-label{font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--slate);margin-right:12px;font-weight:600}
+.f-chip{font-family:var(--sans);font-size:12px;font-weight:500;padding:6px 13px;border:1px solid var(--rule);background:transparent;color:var(--slate);cursor:pointer;transition:all .15s}
+.f-chip:hover{border-color:var(--ink);color:var(--ink)}
+.f-chip.active{background:var(--ink);border-color:var(--ink);color:#fff}
+
+.t-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:18px}
+.t-card{background:var(--paper-3);border:1px solid var(--rule);padding:22px 24px 18px;display:flex;flex-direction:column;gap:10px;transition:all .15s;cursor:pointer;position:relative}
+.t-card:hover{border-color:var(--burgundy);transform:translateY(-2px)}
+.t-card.recommended{border-color:var(--gold);background:linear-gradient(to bottom,var(--gold-tint) 0%,var(--paper-3) 50%)}
+.t-card.recommended::before{content:'★ Recommended';position:absolute;top:-1px;right:-1px;font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;background:var(--gold);color:#fff;padding:4px 10px;font-weight:700}
+.tc-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.tc-cmd{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--burgundy);background:var(--burgundy-tint);padding:3px 9px;border-radius:2px}
+.tc-diff{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;margin-left:auto}
+.tc-diff .dots{display:inline-flex;gap:3px}
+.tc-diff .dots span{width:5px;height:5px;border-radius:50%;background:var(--rule)}
+.tc-diff.beginner{color:var(--green)}.tc-diff.beginner .dots span:nth-child(1){background:var(--green)}
+.tc-diff.intermediate{color:var(--gold-deep)}.tc-diff.intermediate .dots span:nth-child(-n+2){background:var(--gold)}
+.tc-diff.advanced{color:var(--burgundy)}.tc-diff.advanced .dots span:nth-child(-n+3){background:var(--burgundy)}
+.tc-name{font-family:var(--serif);font-weight:500;font-size:21px;line-height:1.2;color:var(--ink);letter-spacing:-.014em}
+.tc-desc{font-family:var(--serif);font-size:14px;font-weight:300;line-height:1.55;color:var(--ink-soft);flex:1}
+.tc-meta{display:flex;gap:16px;font-family:var(--mono);font-size:10px;color:var(--slate);padding-top:10px;border-top:1px solid var(--rule-lt);flex-wrap:wrap}
+.tc-meta span strong{color:var(--ink);font-weight:600;display:block;font-size:9px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:1px}
+.tc-actions{display:flex;gap:8px;margin-top:6px}
+.tc-action{flex:1;font-family:var(--sans);font-size:12px;font-weight:600;padding:9px 12px;border:1px solid var(--rule);background:transparent;color:var(--ink);cursor:pointer;transition:all .15s;text-align:center}
+.tc-action:hover{border-color:var(--ink)}
+.tc-action.primary{background:var(--burgundy);color:#fff;border-color:var(--burgundy)}
+.tc-action.primary:hover{background:var(--ink);border-color:var(--ink)}
+/* ─── WIZARD (Build view) ─── */
+.wiz{max-width:840px}
+.wiz-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;flex-wrap:wrap;gap:16px}
+.wiz-progress{flex:1;min-width:280px;display:flex;align-items:center;gap:14px}
+.wiz-progress-bar{flex:1;display:flex;gap:5px}
+.wiz-pstep{flex:1;height:3px;background:var(--rule-lt);transition:background .25s}
+.wiz-pstep.complete{background:var(--burgundy)}
+.wiz-pstep.current{background:var(--gold)}
+.wiz-progress-label{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--slate);font-weight:600;white-space:nowrap}
+.wiz-mode-toggle{display:flex;background:var(--paper-3);border:1px solid var(--rule);padding:3px}
+.wiz-mode-toggle button{font-family:var(--sans);font-size:12px;font-weight:500;padding:8px 16px;background:transparent;color:var(--slate);border:none;cursor:pointer}
+.wiz-mode-toggle button.active{background:var(--ink);color:#fff}
+
+.wiz-step{display:none}.wiz-step.active{display:block}
+.wiz-stepnum{font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--burgundy);font-weight:700;margin-bottom:14px}
+.wiz-q{font-family:var(--serif);font-weight:400;font-size:30px;line-height:1.2;letter-spacing:-.018em;color:var(--ink);margin-bottom:10px;font-variation-settings:"opsz" 144,"SOFT" 30}
+.wiz-q em{font-style:italic;color:var(--burgundy);font-weight:300;font-variation-settings:"opsz" 144,"SOFT" 100}
+.wiz-help{font-family:var(--serif);font-size:16px;font-weight:300;color:var(--slate);font-style:italic;margin-bottom:32px;line-height:1.55}
+
+.wiz-options{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.wiz-opt{background:var(--paper-3);border:1.5px solid var(--rule);padding:16px 20px;cursor:pointer;transition:all .15s;display:flex;flex-direction:column;gap:4px;text-align:left}
+.wiz-opt:hover{border-color:var(--ink)}
+.wiz-opt.selected{border-color:var(--burgundy);background:var(--burgundy-tint)}
+.wiz-opt-title{font-family:var(--serif);font-weight:500;font-size:16px;color:var(--ink);letter-spacing:-.01em}
+.wiz-opt-sub{font-family:var(--sans);font-size:12px;color:var(--slate)}
+
+.wiz-actions{display:flex;gap:12px;margin-top:36px;padding-top:24px;border-top:1px solid var(--rule);flex-wrap:wrap;align-items:center}
+.wiz-actions .right{margin-left:auto;display:flex;gap:10px}
+
+/* Form fields shared with wizard */
+.fields{display:flex;flex-direction:column;gap:22px}
+.fr{display:flex;flex-direction:column;gap:6px}
+.fr label{font-family:var(--sans);font-size:13px;font-weight:600;color:var(--ink)}
+.fr label .req{color:var(--burgundy);margin-left:3px}
+.fr label .opt{font-style:italic;font-family:var(--serif);color:var(--slate-lt);font-weight:400;margin-left:6px;font-size:12px}
+.fr .helper{font-family:var(--serif);font-style:italic;font-size:13px;color:var(--slate);font-weight:300;line-height:1.5}
+.fr input[type=text],.fr textarea,.fr select{font-family:var(--sans);font-size:14px;color:var(--ink);background:var(--paper-3);border:1.5px solid var(--rule);padding:11px 14px;outline:none;transition:border-color .15s;resize:vertical;width:100%;font-weight:400}
+.fr input:focus,.fr textarea:focus,.fr select:focus{border-color:var(--burgundy)}
+.fr.mono input,.fr.mono textarea{font-family:var(--mono);font-size:13px}
+.fr-grid{display:grid;gap:18px}
+.fr-grid.cols-2{grid-template-columns:1fr 1fr}
+.fr-grid.cols-3{grid-template-columns:1fr 1fr 1fr}
+@media (max-width:700px){.fr-grid.cols-2,.fr-grid.cols-3{grid-template-columns:1fr}}
+
+.ex-link{font-family:var(--sans);font-size:12px;color:var(--burgundy);background:none;border:none;border-bottom:1px dashed currentColor;padding:0;cursor:pointer;font-weight:500;align-self:flex-start;margin-top:-2px}
+.ex-shown{font-family:var(--serif);font-style:italic;font-size:13px;color:var(--slate);background:var(--gold-tint);border-left:2px solid var(--gold);padding:8px 14px;margin-top:4px;display:none;line-height:1.5;font-weight:300}
+.ex-shown.shown{display:block}
+.ex-shown strong{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-deep);display:block;font-style:normal;margin-bottom:4px;font-weight:700}
+
+/* Repeater */
+.rep{display:flex;flex-direction:column;gap:5px;margin-bottom:6px}
+.rep-row{display:grid;grid-template-columns:28px 1fr auto;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--rule-lt)}
+.rn{font-family:var(--mono);font-size:11px;color:var(--burgundy);font-weight:600;text-align:right}
+.rep-row input{font-family:var(--sans);font-size:14px;color:var(--ink);background:transparent;border:none;outline:none;width:100%;padding:4px 0}
+.rep-row input::placeholder{color:var(--slate-lt);font-style:italic}
+.rm-btn{background:none;border:none;color:var(--rule);cursor:pointer;font-size:16px;padding:4px 8px}
+.rm-btn:hover{color:var(--burgundy)}
+.add-btn{display:inline-flex;align-items:center;gap:6px;font-family:var(--sans);font-size:12px;font-weight:600;color:var(--burgundy);background:none;border:none;border-bottom:1px solid var(--burgundy);padding:5px 0;cursor:pointer;margin-top:4px}
+
+.cg{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-family:var(--sans);font-size:12px;font-weight:500;padding:6px 12px;border:1px solid var(--rule);background:var(--paper-3);color:var(--slate);cursor:pointer;transition:all .15s}
+.chip:hover{border-color:var(--ink);color:var(--ink)}
+.chip.selected{background:var(--ink);border-color:var(--ink);color:#fff}
+
+.gg{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+@media (max-width:700px){.gg{grid-template-columns:1fr}}
+.gi{display:grid;grid-template-columns:20px 1fr;gap:11px;padding:11px 13px;border:1px solid var(--rule);cursor:pointer;transition:all .15s;background:var(--paper-3);align-items:flex-start}
+.gi:hover{border-color:var(--ink)}
+.gi.selected{border-color:var(--burgundy);background:var(--burgundy-tint)}
+.gc{width:16px;height:16px;border:1.5px solid var(--rule);background:#fff;margin-top:1px;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;color:transparent}
+.gi.selected .gc{border-color:var(--burgundy);background:var(--burgundy);color:#fff}
+.gi.selected .gc::before{content:'✓'}
+.gt{font-family:var(--sans);font-size:13px;font-weight:500;color:var(--ink);line-height:1.4}
+.gs{font-family:var(--serif);font-style:italic;font-size:12px;color:var(--slate);margin-top:3px;line-height:1.4;font-weight:300}
+
+.collapse{display:flex;align-items:center;gap:10px;font-family:var(--sans);font-size:13px;font-weight:600;color:var(--burgundy);cursor:pointer;padding:13px 18px;background:var(--gold-tint);border-left:3px solid var(--gold);margin-top:18px;margin-bottom:8px;transition:background .15s;user-select:none}
+.collapse:hover{background:#ECE2C8}
+.collapse .icon{font-family:var(--mono);font-size:16px;transition:transform .2s}
+.collapse.open .icon{transform:rotate(45deg)}
+.collapse-content{display:none;padding:16px 0 6px}
+.collapse-content.open{display:block}
+
+.tip{background:var(--blue-tint);border-left:3px solid var(--blue);padding:14px 22px;margin:16px 0;font-family:var(--serif);font-size:14px;font-style:italic;color:var(--ink-soft);line-height:1.6;font-weight:300}
+.tip strong{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--blue);display:block;font-style:normal;margin-bottom:6px;font-weight:700}
+
+/* ─── PLAYGROUND (Test view) ─── */
+.play-empty{text-align:center;padding:80px 40px;background:var(--paper-3);border:1.5px dashed var(--rule)}
+.play-empty-icon{font-family:var(--serif);font-style:italic;font-size:56px;color:var(--gold);font-weight:300;margin-bottom:16px;display:block;line-height:1;font-variation-settings:"opsz" 144,"SOFT" 100}
+.play-empty h2{font-family:var(--serif);font-weight:400;font-size:28px;color:var(--ink);margin-bottom:10px;letter-spacing:-.014em}
+.play-empty h2 em{font-style:italic;color:var(--burgundy);font-weight:300}
+.play-empty p{font-family:var(--serif);font-size:16px;font-weight:300;color:var(--slate);margin-bottom:24px;font-style:italic;max-width:520px;margin-left:auto;margin-right:auto;line-height:1.55}
+.play-empty .actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+
+.play-grid{display:grid;grid-template-columns:340px 1fr;gap:24px;align-items:start}
+@media (max-width:1000px){.play-grid{grid-template-columns:1fr}}
+
+.play-aside{background:var(--paper-3);border:1px solid var(--rule);padding:24px;position:sticky;top:80px}
+@media (max-width:1000px){.play-aside{position:static}}
+.play-aside-h{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--slate);font-weight:700;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--rule)}
+.play-skill-cmd{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--burgundy);background:var(--burgundy-tint);padding:4px 10px;border-radius:2px;display:inline-block;margin-bottom:8px}
+.play-skill-name{font-family:var(--serif);font-weight:500;font-size:20px;color:var(--ink);letter-spacing:-.014em;line-height:1.2;margin-bottom:8px;font-variation-settings:"opsz" 144,"SOFT" 30}
+.play-skill-desc{font-family:var(--serif);font-size:13px;font-weight:300;line-height:1.55;color:var(--ink-soft);margin-bottom:14px;font-style:italic}
+.play-aside-rows{display:flex;flex-direction:column;gap:12px;padding-top:12px;border-top:1px solid var(--rule)}
+.par{display:flex;flex-direction:column;gap:3px}
+.par-label{font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--slate-lt);font-weight:700}
+.par-value{font-family:var(--serif);font-size:13px;color:var(--ink);font-weight:400;line-height:1.4}
+.par-value.tag{font-family:var(--mono);font-size:11.5px;color:var(--burgundy);background:var(--burgundy-tint);padding:2px 7px;align-self:flex-start;border-radius:2px}
+
+.play-aside-actions{display:flex;flex-direction:column;gap:8px;margin-top:18px;padding-top:18px;border-top:1px solid var(--rule)}
+.play-aside-btn{font-family:var(--sans);font-size:12px;font-weight:600;padding:10px 14px;background:transparent;color:var(--ink);border:1px solid var(--rule);cursor:pointer;text-align:left;display:flex;align-items:center;gap:10px;transition:all .15s}
+.play-aside-btn:hover{border-color:var(--ink);background:var(--paper-2)}
+.play-aside-btn .ico{font-family:var(--serif);font-style:italic;color:var(--burgundy);font-size:15px;font-variation-settings:"opsz" 144,"SOFT" 100}
+.play-aside-btn.primary{background:var(--ink);color:#fff;border-color:var(--ink);justify-content:center}
+.play-aside-btn.primary:hover{background:var(--burgundy);border-color:var(--burgundy)}
+.play-aside-btn.primary .ico{color:var(--gold)}
+
+.play-main{display:flex;flex-direction:column;gap:18px}
+
+.play-input-card{background:var(--paper-3);border:1px solid var(--rule);padding:24px}
+.play-input-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px}
+.play-input-h .label{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--burgundy);font-weight:700}
+.play-input-h .hint{font-family:var(--serif);font-style:italic;font-size:13px;color:var(--slate);font-weight:300}
+.play-input{width:100%;font-family:var(--sans);font-size:14px;color:var(--ink);background:#fff;border:1.5px solid var(--rule);padding:14px 16px;outline:none;resize:vertical;min-height:90px;line-height:1.55}
+.play-input:focus{border-color:var(--burgundy)}
+
+.sample-prompts{margin-top:14px}
+.sp-label{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--slate);font-weight:700;margin-bottom:8px}
+.sp-chips{display:flex;flex-wrap:wrap;gap:6px}
+.sp-chip{font-family:var(--sans);font-size:12px;font-weight:500;padding:6px 12px;border:1px solid var(--rule);background:var(--paper-2);color:var(--ink-soft);cursor:pointer;transition:all .15s;text-align:left}
+.sp-chip:hover{border-color:var(--burgundy);color:var(--burgundy);background:var(--burgundy-tint)}
+.sp-chip.active{background:var(--burgundy);color:#fff;border-color:var(--burgundy)}
+.sp-chip.active:hover{background:var(--ink);border-color:var(--ink);color:#fff}
+
+.play-run-row{display:flex;gap:12px;margin-top:18px;align-items:center;flex-wrap:wrap}
+.run-btn{font-family:var(--sans);font-size:14px;font-weight:700;padding:13px 28px;background:var(--burgundy);color:#fff;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:10px;transition:background .15s;letter-spacing:.01em}
+.run-btn:hover{background:var(--ink)}
+.run-btn:disabled{opacity:.5;cursor:not-allowed;background:var(--slate)}
+.run-btn .ico{font-family:var(--serif);font-style:italic;font-size:18px;color:var(--gold)}
+.run-meta{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;color:var(--slate);font-weight:600;text-transform:uppercase}
+
+/* Conversation thread (replaces single output card) */
+.play-conv-card{background:var(--paper-3);border:1px solid var(--rule);overflow:hidden;display:flex;flex-direction:column}
+.play-conv-header{padding:12px 22px;background:var(--paper-2);border-bottom:1px solid var(--rule);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.conv-label{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--burgundy);font-weight:700;display:flex;align-items:center;gap:8px}
+.conv-label::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 2px rgba(74,124,89,.2)}
+.conv-actions{display:flex;gap:6px}
+.po-btn{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;padding:6px 11px;background:transparent;color:var(--slate);border:1px solid var(--rule);cursor:pointer;font-weight:600;transition:all .15s}
+.po-btn:hover{border-color:var(--burgundy);color:var(--burgundy)}
+.po-btn.dark{background:rgba(255,255,255,.08);color:rgba(255,255,255,.7);border-color:rgba(255,255,255,.15)}
+.po-btn.dark:hover{background:rgba(255,255,255,.15);color:#fff;border-color:rgba(255,255,255,.3)}
+
+.play-thread{min-height:240px;max-height:560px;overflow-y:auto;padding:22px 24px;display:flex;flex-direction:column;gap:18px;background:var(--paper-3)}
+.thread-empty{text-align:center;padding:40px 20px;display:flex;flex-direction:column;align-items:center;gap:10px}
+.thread-empty-icon{font-family:var(--serif);font-style:italic;font-size:48px;color:var(--gold);font-weight:300;line-height:1;font-variation-settings:"opsz" 144,"SOFT" 100}
+.thread-empty h3{font-family:var(--serif);font-weight:500;font-size:21px;color:var(--ink);letter-spacing:-.014em}
+.thread-empty h3 em{font-style:italic;color:var(--burgundy);font-weight:300}
+.thread-empty p{font-family:var(--serif);font-size:14px;font-weight:300;color:var(--slate);font-style:italic;max-width:420px;line-height:1.55}
+
+.msg{display:flex;flex-direction:column;gap:6px;animation:msgIn .25s ease-out}
+@keyframes msgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.msg-label{font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;display:flex;align-items:center;gap:8px}
+.msg-user .msg-label{color:var(--blue)}
+.msg-claude .msg-label{color:var(--burgundy)}
+.msg-claude .msg-label::before{content:'◆';color:var(--burgundy);font-size:11px}
+.msg-user .msg-label::before{content:'›';color:var(--blue);font-size:14px;font-weight:700}
+.msg-body{font-family:var(--sans);font-size:14px;line-height:1.7;padding:16px 20px;white-space:normal;word-break:break-word;border-radius:2px}
+.msg-user .msg-body{background:var(--blue-tint);border-left:3px solid var(--blue);color:var(--ink);white-space:pre-wrap}
+.msg-claude .msg-body{background:var(--ink);color:rgba(255,255,255,.92);border-left:3px solid var(--burgundy)}
+
+/* Markdown rendering inside Claude messages */
+.msg-claude .msg-body h1{font-family:var(--serif);font-weight:500;font-size:22px;color:#fff;margin:18px 0 10px;letter-spacing:-.014em;line-height:1.25;font-variation-settings:"opsz" 144,"SOFT" 30}
+.msg-claude .msg-body h1:first-child{margin-top:0}
+.msg-claude .msg-body h2{font-family:var(--serif);font-weight:500;font-size:18px;color:var(--gold);margin:18px 0 10px;letter-spacing:-.012em;padding-bottom:6px;border-bottom:1px solid rgba(255,255,255,.1);font-variation-settings:"opsz" 144}
+.msg-claude .msg-body h2:first-child{margin-top:2px}
+.msg-claude .msg-body h3{font-family:var(--serif);font-weight:600;font-size:15.5px;color:rgba(255,255,255,.96);margin:14px 0 6px;letter-spacing:-.008em}
+.msg-claude .msg-body h3:first-child{margin-top:0}
+.msg-claude .msg-body h4{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--gold);margin:12px 0 4px;text-transform:uppercase;letter-spacing:.12em}
+.msg-claude .msg-body p{margin:0 0 10px;line-height:1.7}
+.msg-claude .msg-body p:last-child{margin-bottom:0}
+.msg-claude .msg-body ul,.msg-claude .msg-body ol{margin:0 0 10px;padding-left:22px}
+.msg-claude .msg-body li{margin-bottom:4px;line-height:1.6}
+.msg-claude .msg-body li::marker{color:var(--gold)}
+.msg-claude .msg-body blockquote{border-left:3px solid var(--gold);padding:10px 16px;margin:12px 0;background:rgba(184,146,77,.08);font-style:italic;color:rgba(255,255,255,.85);border-radius:0 2px 2px 0}
+.msg-claude .msg-body hr{border:none;border-top:1px solid rgba(255,255,255,.18);margin:18px 0}
+.msg-claude .msg-body a{color:var(--gold);text-decoration:underline;text-decoration-style:dotted;text-underline-offset:2px}
+.msg-claude .msg-body a:hover{color:#D9AC5E}
+.msg-claude .msg-body table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px;border:1px solid rgba(255,255,255,.12)}
+.msg-claude .msg-body th{background:rgba(184,146,77,.12);color:var(--gold);padding:9px 12px;text-align:left;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;border-bottom:1px solid rgba(255,255,255,.15)}
+.msg-claude .msg-body td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.08);vertical-align:top;color:rgba(255,255,255,.88)}
+.msg-claude .msg-body tr:last-child td{border-bottom:none}
+.msg-claude .msg-body pre{background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.1);padding:12px 14px;overflow-x:auto;margin:10px 0;border-radius:2px}
+.msg-claude .msg-body pre code{background:transparent;color:rgba(255,255,255,.92);padding:0;font-size:12px;line-height:1.6;font-family:var(--mono)}
+.msg-claude .msg-body strong{color:var(--gold);font-weight:600}
+.msg-claude .msg-body em{font-style:italic;color:rgba(255,255,255,.94)}
+.msg-claude .msg-body code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.1);color:var(--gold);padding:1px 6px;border-radius:2px}
+.msg-actions{display:flex;gap:6px;margin-top:4px}
+.msg-act{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;padding:4px 9px;background:transparent;color:var(--slate-lt);border:1px solid var(--rule);cursor:pointer;font-weight:600;transition:all .15s}
+.msg-act:hover{border-color:var(--ink);color:var(--ink)}
+
+.msg-loading{display:flex;align-items:center;gap:10px;padding:14px 18px;background:var(--ink);border-left:3px solid var(--burgundy);color:rgba(255,255,255,.55);font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600}
+.msg-error{padding:12px 16px;background:var(--red-tint);border-left:3px solid var(--red);color:var(--red);font-family:var(--sans);font-size:13px;line-height:1.55}
+.msg-error strong{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;display:block;margin-bottom:4px;font-weight:700}
+.spinner{width:14px;height:14px;border:2px solid rgba(255,255,255,.2);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.play-input-area{padding:14px 22px;border-top:1px solid var(--rule);background:var(--paper-2)}
+.play-input-area textarea{width:100%;font-family:var(--sans);font-size:14px;color:var(--ink);background:#fff;border:1.5px solid var(--rule);padding:12px 14px;outline:none;resize:vertical;min-height:60px;line-height:1.55}
+.play-input-area textarea:focus{border-color:var(--burgundy)}
+.play-input-bar{display:flex;justify-content:space-between;align-items:center;margin-top:10px;flex-wrap:wrap;gap:10px}
+
+.demo-note{background:var(--gold-tint);border-left:3px solid var(--gold);padding:12px 18px;margin-top:14px;font-family:var(--serif);font-style:italic;font-size:13px;color:var(--ink-soft);line-height:1.55;font-weight:300}
+.demo-note strong{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-deep);display:block;font-style:normal;margin-bottom:4px;font-weight:700}
+
+/* MD viewer (collapsible) */
+.md-toggle{display:flex;align-items:center;gap:10px;font-family:var(--sans);font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;padding:13px 20px;background:var(--paper-3);border:1px solid var(--rule);transition:background .15s;user-select:none;width:100%;text-align:left}
+.md-toggle:hover{background:var(--paper-2)}
+.md-toggle .icon{font-family:var(--mono);font-size:14px;color:var(--burgundy);transition:transform .2s;margin-left:auto}
+.md-toggle.open .icon{transform:rotate(90deg)}
+.md-panel{display:none;background:var(--ink);border:1px solid var(--ink);border-top:none}
+.md-panel.open{display:block}
+.md-panel-h{background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.1);padding:12px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.md-panel-h .label{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.4);font-weight:700}
+.md-panel-h .file{font-family:var(--mono);font-size:11px;color:var(--gold);font-weight:500}
+.md-panel-actions{display:flex;gap:6px}
+.md-body{padding:20px 24px;overflow-x:auto;max-height:480px;overflow-y:auto}
+.md-body pre{font-family:var(--mono);font-size:11.5px;line-height:1.7;color:rgba(255,255,255,.86);white-space:pre-wrap;word-break:break-word}
+.md-body .yaml{color:var(--gold)}.md-body .key{color:#B8C4D6}
+.md-body .h1{color:#fff;font-weight:700}.md-body .h2{color:var(--gold);font-weight:600}
+.md-body .comment{color:rgba(255,255,255,.36);font-style:italic}
+.md-body .bullet{color:var(--gold)}
+
+/* ─── TOOLBOX ─── */
+.tb-header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:24px;padding-bottom:16px;border-bottom:2px solid var(--ink);position:relative;flex-wrap:wrap;gap:12px}
+.tb-header::after{content:'';position:absolute;left:0;bottom:-2px;width:56px;height:4px;background:var(--burgundy)}
+.tb-title{font-family:var(--serif);font-weight:400;font-size:28px;letter-spacing:-.018em;color:var(--ink)}
+.tb-title em{font-style:italic;color:var(--burgundy);font-weight:300}
+.tb-meta{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--slate);font-weight:600}
+
+.tb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
+.saved{background:var(--paper-3);border:1px solid var(--rule);padding:20px 22px 16px;display:flex;flex-direction:column;gap:10px;transition:all .15s}
+.saved:hover{border-color:var(--burgundy);transform:translateY(-1px)}
+.saved-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.saved-cmd{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--burgundy);background:var(--burgundy-tint);padding:3px 9px;border-radius:2px}
+.saved-mat{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;font-weight:700}
+.saved-mat::before{content:'';width:7px;height:7px;border-radius:50%}
+.saved-mat.draft{color:var(--slate)}.saved-mat.draft::before{background:var(--slate-lt)}
+.saved-mat.pilot{color:var(--gold-deep)}.saved-mat.pilot::before{background:var(--gold)}
+.saved-mat.production{color:var(--green)}.saved-mat.production::before{background:var(--green)}
+.saved-name{font-family:var(--serif);font-weight:500;font-size:18px;line-height:1.25;color:var(--ink);letter-spacing:-.014em}
+.saved-meta{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--slate);font-weight:600}
+.saved-desc{font-family:var(--serif);font-size:13.5px;font-weight:300;line-height:1.5;color:var(--ink-soft);flex:1;font-style:italic}
+.saved-actions{display:flex;gap:6px;margin-top:auto;padding-top:10px;border-top:1px solid var(--rule-lt);flex-wrap:wrap}
+.s-btn{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;padding:6px 11px;background:transparent;color:var(--slate);border:1px solid var(--rule);cursor:pointer;font-weight:600;transition:all .15s}
+.s-btn:hover{border-color:var(--ink);color:var(--ink)}
+.s-btn.primary{background:var(--ink);color:#fff;border-color:var(--ink)}
+.s-btn.primary:hover{background:var(--burgundy);border-color:var(--burgundy)}
+.s-btn.danger:hover{border-color:var(--burgundy);color:var(--burgundy)}
+
+/* ─── GUIDE ─── */
+/* ─── JOURNEY DIAGRAM (Guide launch pad) ─── */
+.journey{background:var(--paper-3);border:1px solid var(--rule);padding:32px 32px 28px;margin-bottom:48px;position:relative}
+.journey-h{margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid var(--rule-lt)}
+.journey-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--burgundy);font-weight:700;margin-bottom:8px}
+.journey-sub{font-family:var(--serif);font-style:italic;font-size:14.5px;color:var(--slate);font-weight:300;line-height:1.55}
+.journey-steps{display:grid;grid-template-columns:1fr 16px 1fr 16px 1fr 16px 1fr 16px 1fr;gap:0;align-items:stretch}
+@media (max-width:900px){
+  .journey-steps{grid-template-columns:1fr;gap:8px}
+  .journey-steps .js-arrow{display:none}
+}
+.js-step{background:var(--paper-2);border:1.5px solid var(--rule);padding:18px 16px 14px;text-align:left;cursor:pointer;transition:all .15s;display:flex;flex-direction:column;gap:6px;font-family:var(--sans);position:relative;min-height:160px}
+.js-step:hover:not(.active){border-color:var(--burgundy);transform:translateY(-2px);background:#fff}
+.js-step.active{background:var(--burgundy);border-color:var(--burgundy);cursor:default}
+.js-step.active .js-num{color:var(--gold)}
+.js-step.active .js-label{color:#fff}
+.js-step.active .js-desc{color:rgba(255,255,255,.8)}
+.js-num{font-family:var(--serif);font-style:italic;font-weight:300;font-size:24px;color:var(--burgundy);line-height:1;font-variation-settings:"opsz" 144,"SOFT" 100}
+.js-label{font-family:var(--serif);font-weight:500;font-size:17px;color:var(--ink);letter-spacing:-.012em}
+.js-desc{font-family:var(--serif);font-style:italic;font-size:13px;font-weight:300;color:var(--slate);line-height:1.5;flex:1}
+.js-cta{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--burgundy);font-weight:700;margin-top:auto;padding-top:6px;border-top:1px solid var(--rule-lt)}
+.js-step:hover .js-cta{color:var(--ink)}
+.js-marker{font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-top:auto;padding-top:6px;border-top:1px solid rgba(255,255,255,.2)}
+.js-arrow{font-family:var(--serif);font-style:italic;font-size:20px;color:var(--gold);align-self:center;text-align:center;font-variation-settings:"opsz" 144,"SOFT" 100}
+
+/* ─── Where to next CTA cards (end of Guide) ─── */
+.next-cta-section{margin:56px 0 24px;padding:36px 32px;background:linear-gradient(135deg,var(--ink) 0%,var(--ink-soft) 100%);color:#fff;border:1px solid var(--ink)}
+.next-cta-h{font-family:var(--serif);font-weight:400;font-size:28px;line-height:1.15;letter-spacing:-.018em;margin-bottom:8px;font-variation-settings:"opsz" 144,"SOFT" 30}
+.next-cta-h em{font-style:italic;color:var(--gold);font-weight:300;font-variation-settings:"opsz" 144,"SOFT" 100}
+.next-cta-sub{font-family:var(--serif);font-style:italic;font-size:15px;font-weight:300;color:rgba(255,255,255,.7);margin-bottom:24px;line-height:1.55}
+.next-cta-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media (max-width:800px){.next-cta-cards{grid-template-columns:1fr}}
+.ncc{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);padding:22px 22px 20px;text-align:left;cursor:pointer;transition:all .15s;display:flex;flex-direction:column;gap:8px;font-family:var(--sans);min-height:200px}
+.ncc:hover{background:rgba(255,255,255,.12);border-color:var(--gold);transform:translateY(-2px)}
+.ncc-eyebrow{font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:700}
+.ncc-h{font-family:var(--serif);font-weight:500;font-size:20px;color:#fff;letter-spacing:-.014em;line-height:1.2;font-variation-settings:"opsz" 144,"SOFT" 30}
+.ncc-h em{font-style:italic;font-weight:300;color:var(--gold);font-variation-settings:"opsz" 144,"SOFT" 100}
+.ncc-desc{font-family:var(--serif);font-style:italic;font-size:13.5px;font-weight:300;color:rgba(255,255,255,.72);line-height:1.55;flex:1}
+.ncc-cta{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-top:auto;padding-top:10px;border-top:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:space-between}
+.ncc-cta .arrow{font-family:var(--serif);font-style:italic;font-size:16px;font-variation-settings:"opsz" 144,"SOFT" 100;transition:transform .15s}
+.ncc:hover .ncc-cta .arrow{transform:translateX(4px)}
+
+/* ─── Cross-section CTA strip (end of Cookbook, etc.) ─── */
+.next-strip{margin-top:48px;padding:24px 28px;background:var(--paper-3);border-left:3px solid var(--burgundy);display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center}
+@media (max-width:700px){.next-strip{grid-template-columns:1fr}}
+.next-strip-text h3{font-family:var(--serif);font-weight:500;font-size:18px;color:var(--ink);letter-spacing:-.012em;margin-bottom:4px}
+.next-strip-text h3 em{font-style:italic;color:var(--burgundy);font-weight:400}
+.next-strip-text p{font-family:var(--serif);font-style:italic;font-size:14px;color:var(--slate);font-weight:300;line-height:1.55}
+.next-strip-actions{display:flex;gap:10px;flex-wrap:wrap}
+
+.gsec{margin-bottom:56px}
+.gsec h2{font-family:var(--serif);font-weight:400;font-size:30px;letter-spacing:-.018em;color:var(--ink);margin-bottom:14px;padding-bottom:14px;border-bottom:1.5px solid var(--ink);position:relative}
+.gsec h2::after{content:'';position:absolute;bottom:-2px;left:0;width:56px;height:4px;background:var(--burgundy)}
+.gsec h2 em{font-style:italic;color:var(--burgundy);font-weight:300}
+.gp{font-family:var(--serif);font-size:16px;line-height:1.7;font-weight:300;color:var(--ink-soft);max-width:720px;margin-bottom:16px;letter-spacing:-.005em}
+.gp strong{color:var(--ink);font-weight:500;font-style:italic}
+.gp:first-of-type::first-letter{font-family:var(--serif);font-weight:700;font-size:60px;line-height:.85;float:left;margin:6px 12px 0 0;color:var(--burgundy)}
+
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:0;border-top:1px solid var(--rule);border-left:1px solid var(--rule);margin-top:24px}
+.pri{padding:24px 26px;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);background:var(--paper-3)}
+.pri-num{font-family:var(--serif);font-style:italic;font-weight:300;font-size:30px;color:var(--burgundy);margin-bottom:6px;font-variation-settings:"opsz" 144,"SOFT" 100}
+.pri-t{font-family:var(--serif);font-weight:500;font-size:18px;color:var(--ink);letter-spacing:-.012em;margin-bottom:6px}
+.pri-t em{font-style:italic;color:var(--burgundy);font-weight:400}
+.pri-b{font-family:var(--serif);font-size:14px;font-weight:300;line-height:1.55;color:var(--ink-soft)}
+
+.rtable{width:100%;border-collapse:collapse;margin-top:14px}
+.rtable tr{border-bottom:1px solid var(--rule-lt)}
+.rtable td{padding:10px 0;font-size:13px;vertical-align:top;line-height:1.5}
+.rtable td:first-child{font-family:var(--mono);font-size:10.5px;color:var(--burgundy);font-weight:700;width:120px;letter-spacing:.04em;padding-right:14px}
+.rtable td:last-child{color:var(--ink-soft)}
+.rtable td:last-child strong{color:var(--ink);font-weight:500;display:block;margin-bottom:2px;font-family:var(--serif);font-size:14px}
+
+.tree{font-family:var(--mono);font-size:12px;line-height:1.85;color:var(--ink-soft);background:var(--paper-3);border:1px solid var(--rule);padding:20px 26px;margin-top:14px}
+.tree .dir{color:var(--burgundy);font-weight:600}
+.tree .annot{color:var(--slate);font-family:var(--serif);font-style:italic;font-size:12px;margin-left:8px;font-weight:300}
+
+/* ─── FOOTER ─── */
+.foot{border-top:2px solid var(--ink);padding:32px 40px;background:var(--paper-2);text-align:center}
+.foot-text{font-family:var(--serif);font-style:italic;font-size:13.5px;color:var(--slate);font-weight:300;max-width:640px;margin:0 auto 10px;line-height:1.6}
+.foot-text strong{color:var(--ink);font-weight:500;font-style:italic}
+.foot-meta{font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--slate);font-weight:600}
+
+/* ─── TOAST ─── */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--ink);color:#fff;padding:14px 24px;font-family:var(--sans);font-size:13px;font-weight:500;display:flex;align-items:center;gap:10px;z-index:200;transition:transform .25s;box-shadow:0 4px 24px rgba(0,0,0,.15);border-left:4px solid var(--green)}
+.toast.shown{transform:translateX(-50%) translateY(0)}
+.toast .icon{color:var(--green);font-family:var(--serif);font-style:italic;font-size:18px}
+.toast.error{border-left-color:var(--red)}
+.toast.error .icon{color:var(--red)}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width:600px){
+  .masthead,.container,.foot{padding-left:20px;padding-right:20px}
+  .tabs-inner{padding:0 8px}
+  .tab-btn{padding:14px 12px;font-size:12px}
+  .crumbs{display:none}
+  .premium-badge{display:none}
+  .explainer{grid-template-columns:1fr}
+  .exp-step{border-right:none;border-bottom:1px solid var(--rule)}
+  .exp-step:last-child{border-bottom:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ═══════════════════════════════════ -->
+<!-- HEADER                              -->
+<!-- ═══════════════════════════════════ -->
+<header class="masthead">
+  <div class="brand">
+    <div class="brand-mark">AI <em>Banking</em> Institute</div>
+    <div class="crumbs"><span>Toolbox</span> › <strong>Banking AI Playground</strong></div>
+  </div>
+  <div class="header-right">
+    <div class="api-status" id="api-status">API · Ready</div>
+    <div class="premium-badge">Premium · Module</div>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════ -->
+<!-- TABS                                -->
+<!-- ═══════════════════════════════════ -->
+<nav class="tabs-bar">
+  <div class="tabs-inner">
+    <button class="tab-btn active" onclick="showView('guide',this)"><span class="tab-icon">i.</span>Start Here</button>
+    <button class="tab-btn" onclick="showView('cookbook',this)"><span class="tab-icon">ii.</span>Cookbook</button>
+    <button class="tab-btn" onclick="showView('build',this)"><span class="tab-icon">iii.</span>Build</button>
+    <button class="tab-btn" onclick="showView('test',this)"><span class="tab-icon">iv.</span>Playground</button>
+    <button class="tab-btn" onclick="showView('toolbox',this)"><span class="tab-icon">v.</span>My Toolbox<span class="tab-count" id="tb-count" style="display:none">0</span></button>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════ -->
+<!-- I. COOKBOOK (default landing)       -->
+<!-- ═══════════════════════════════════ -->
+<div class="view" id="view-cookbook">
+<div class="container">
+
+  <div class="cookbook-hero">
+    <div class="intro-block">
+      <div class="eyebrow">Banking AI Cookbook · A Practitioner's Library</div>
+      <h1 class="intro-h">Reusable AI workflows for <em>banks &amp; credit unions</em>,<br/>ready to test and deploy.</h1>
+      <p class="intro-lede">A <strong>skill</strong> is a saved set of instructions Claude reads when you ask for a recurring task — a credit memo, an exam summary, a member-complaint response. Browse the library, try one in the playground, then customize it for your institution and save it to your Toolbox.</p>
+    </div>
+    <div class="cookbook-cta-card">
+      <h3>New here? <em>Read the Guide first</em>.</h3>
+      <p>Two minutes will save you twenty. The Guide explains what a skill is, how this module flows, and the six operating principles for institutional AI.</p>
+      <div class="actions">
+        <button class="btn btn-sm" onclick="showView('guide')">Read the Guide</button>
+        <button class="btn btn-outline btn-sm" onclick="filterTemplates('beginner', document.querySelectorAll('.f-chip')[1])">Show beginner skills</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- What is a skill explainer -->
+  <div class="explainer">
+    <div class="exp-step">
+      <div class="exp-num">1.</div>
+      <div class="exp-title">Trigger phrase</div>
+      <p class="exp-desc">A short shortcut you'll type or say to start the task.</p>
+      <div class="exp-demo">/credit-memo</div>
+    </div>
+    <div class="exp-step">
+      <div class="exp-num">2.</div>
+      <div class="exp-title">Claude asks the right questions</div>
+      <p class="exp-desc">The skill's clarifying questions run before any work.</p>
+      <div class="exp-demo">"Borrower? Amount? Collateral?"</div>
+    </div>
+    <div class="exp-step">
+      <div class="exp-num">3.</div>
+      <div class="exp-title">You get the finished work</div>
+      <p class="exp-desc">In your bank's format, citing your policies, with guardrails enforced.</p>
+      <div class="exp-demo">credit-memo.docx</div>
+    </div>
+  </div>
+
+  <!-- Role picker -->
+  <div class="role-picker">
+    <div class="role-picker-icon">↳</div>
+    <div class="role-picker-text">
+      <h3>Tell us your role</h3>
+      <p>We'll mark templates that match your day-to-day with a gold star.</p>
+    </div>
+    <select id="role-picker" onchange="filterByRole(this.value)">
+      <option value="">Select your role...</option>
+      <option value="Compliance">Compliance / BSA</option>
+      <option value="Lending">Commercial Lender / Underwriter</option>
+      <option value="Relationship">Relationship Manager</option>
+      <option value="Treasury">CFO / Treasurer / ALCO</option>
+      <option value="Operations">Branch / Retail Operations</option>
+      <option value="Risk">Risk / Vendor Manager</option>
+      <option value="Marketing">Marketing / Member Experience</option>
+      <option value="Executive">Executive / Board Reporter</option>
+    </select>
+  </div>
+
+  <div class="filter-bar">
+    <span class="f-label">Difficulty</span>
+    <button class="f-chip active" onclick="filterTemplates('all',this)">All Skills</button>
+    <button class="f-chip" onclick="filterTemplates('beginner',this)">Beginner</button>
+    <button class="f-chip" onclick="filterTemplates('intermediate',this)">Intermediate</button>
+    <button class="f-chip" onclick="filterTemplates('advanced',this)">Advanced</button>
+  </div>
+
+  <div class="t-grid" id="t-grid"></div>
+
+  <!-- What's next strip -->
+  <div class="next-strip">
+    <div class="next-strip-text">
+      <h3>Don't see exactly what you need?</h3>
+      <p>The Cookbook covers the most common banking workflows, but every institution is different. Build a custom skill for your specific recurring task in five steps.</p>
+    </div>
+    <div class="next-strip-actions">
+      <button class="btn" onclick="showView('build')">Build a custom skill <span class="arrow">→</span></button>
+      <button class="btn btn-outline" onclick="showView('guide')">Re-read the Guide</button>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- II. BUILD (unified wizard)          -->
+<!-- ═══════════════════════════════════ -->
+<div class="view" id="view-build">
+<div class="container narrow">
+
+  <div class="intro-block">
+    <div class="eyebrow">Build a Skill · Guided Wizard</div>
+    <h1 class="intro-h">Build a <em>new skill</em> in five steps.</h1>
+    <p class="intro-lede">The wizard walks through the five questions every good skill needs to answer. Skip ahead by loading a template from the Cookbook, or build from scratch here.</p>
+  </div>
+
+  <div class="wiz" id="wiz">
+
+    <div class="wiz-header">
+      <div class="wiz-progress">
+        <div class="wiz-progress-bar">
+          <div class="wiz-pstep current" id="wp-1"></div>
+          <div class="wiz-pstep" id="wp-2"></div>
+          <div class="wiz-pstep" id="wp-3"></div>
+          <div class="wiz-pstep" id="wp-4"></div>
+          <div class="wiz-pstep" id="wp-5"></div>
+        </div>
+        <span class="wiz-progress-label" id="wiz-progress-label">Step 1 of 5</span>
+      </div>
+    </div>
+
+    <!-- Step 1: Identity -->
+    <div class="wiz-step active" id="ws-1">
+      <div class="wiz-stepnum">Step 1 · Identity</div>
+      <h2 class="wiz-q">Let's give your skill a <em>name and a shortcut</em>.</h2>
+      <p class="wiz-help">The shortcut is what you'll type to trigger this skill. Think /credit-memo or /exam-prep — short, lowercase, hyphenated.</p>
+      <div class="fields">
+        <div class="fr-grid cols-2">
+          <div class="fr mono">
+            <label>Trigger shortcut<span class="req">*</span></label>
+            <input type="text" id="f-cmd" placeholder="/credit-memo" />
+            <span class="helper">Lowercase, hyphenated, no spaces.</span>
+          </div>
+          <div class="fr">
+            <label>Skill name<span class="req">*</span></label>
+            <input type="text" id="f-name" placeholder="Commercial Credit Memo" />
+            <span class="helper">A friendly title for your Toolbox.</span>
+          </div>
+        </div>
+        <div class="fr-grid cols-2">
+          <div class="fr">
+            <label>Department</label>
+            <select id="f-role">
+              <option value="">Select...</option>
+              <option>Compliance &amp; BSA/AML</option>
+              <option>Lending &amp; Underwriting</option>
+              <option>Relationship Management</option>
+              <option>Finance &amp; Treasury</option>
+              <option>Operations &amp; Retail Banking</option>
+              <option>Risk &amp; Vendor Management</option>
+              <option>Marketing &amp; Member Experience</option>
+              <option>Executive &amp; Board Reporting</option>
+            </select>
+          </div>
+          <div class="fr">
+            <label>How often will you use it?</label>
+            <select id="f-frequency">
+              <option value="">Select...</option>
+              <option>Daily</option><option>Weekly</option><option>Monthly</option>
+              <option>Quarterly</option><option>Ad hoc</option><option>Per event</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="wiz-actions">
+        <button class="btn btn-outline" disabled>← Back</button>
+        <button class="btn" onclick="wizardNext(1)">Continue <span class="arrow">→</span></button>
+        <span class="run-meta right">Required fields marked *</span>
+      </div>
+    </div>
+
+    <!-- Step 2: Purpose & Goal -->
+    <div class="wiz-step" id="ws-2">
+      <div class="wiz-stepnum">Step 2 · Purpose</div>
+      <h2 class="wiz-q">What does your skill <em>actually do</em>?</h2>
+      <p class="wiz-help">Describe the end-to-end task in plain English. The clearer the purpose, the better Claude calibrates.</p>
+      <div class="fields">
+        <div class="fr">
+          <label>What does this skill do?<span class="req">*</span></label>
+          <textarea id="f-purpose" rows="3" placeholder="Reads the borrower's financial statements, calculates underwriting ratios, compares them to our lending policy thresholds, and drafts a complete credit memo with risk rating and recommendation."></textarea>
+          <button class="ex-link" onclick="toggleEx('ex-purpose')">See an example →</button>
+          <div class="ex-shown" id="ex-purpose"><strong>Good purpose statements</strong>One paragraph, plain English, end-to-end. Names what's read, what's done, what's produced.</div>
+        </div>
+        <div class="fr">
+          <label>What does success look like?<span class="opt">recommended</span></label>
+          <textarea id="f-success" rows="2" placeholder="A 2-3 page Word memo with executive summary, financial analysis, risk rating with justification, and conditioned recommendation. All policy exceptions flagged."></textarea>
+          <span class="helper">A concrete description of the perfect deliverable. Anchors the quality bar.</span>
+        </div>
+      </div>
+      <div class="wiz-actions">
+        <button class="btn btn-outline" onclick="wizardBack(2)">← Back</button>
+        <button class="btn" onclick="wizardNext(2)">Continue <span class="arrow">→</span></button>
+      </div>
+    </div>
+
+    <!-- Step 3: Context & Questions -->
+    <div class="wiz-step" id="ws-3">
+      <div class="wiz-stepnum">Step 3 · Context</div>
+      <h2 class="wiz-q">What should Claude <em>read and ask</em> first?</h2>
+      <p class="wiz-help">List the documents Claude needs and the questions it should ask before doing any work. Five clarifying questions prevent ninety percent of rework.</p>
+      <div class="fields">
+        <div class="fr">
+          <label>Files &amp; folders to read</label>
+          <span class="helper" style="margin-bottom:8px">Specific documents or folders. Use forward-slash paths.</span>
+          <div class="rep" id="files-rep">
+            <div class="rep-row"><span class="rn">i.</span><input type="text" placeholder="/policies/lending-policy.pdf  —  underwriting standards" /><button class="rm-btn" onclick="rmRow(this)">×</button></div>
+            <div class="rep-row"><span class="rn">ii.</span><input type="text" placeholder="/templates/credit-memo.docx  —  output format" /><button class="rm-btn" onclick="rmRow(this)">×</button></div>
+          </div>
+          <button class="add-btn" onclick="addRow('files-rep','/data/...  —  describe what this contains')">+ Add file or folder</button>
+        </div>
+
+        <div class="fr">
+          <label>Connected apps<span class="opt">if any</span></label>
+          <span class="helper" style="margin-bottom:8px">Live data sources Claude can pull from. These need to be wired up by your IT team.</span>
+          <div class="cg" id="conn-group">
+            <div class="chip" onclick="this.classList.toggle('selected')">Gmail</div>
+            <div class="chip" onclick="this.classList.toggle('selected')">Outlook</div>
+            <div class="chip" onclick="this.classList.toggle('selected')">Google Drive</div>
+            <div class="chip" onclick="this.classList.toggle('selected')">SharePoint</div>
+            <div class="chip" onclick="this.classList.toggle('selected')">Slack</div>
+            <div class="chip" onclick="this.classList.toggle('selected')">CRM</div>
+            <div class="chip" onclick="this.classList.toggle('selected')">Core Banking</div>
+            <div class="chip" onclick="this.classList.toggle('selected')">Loan Origination</div>
+            <div class="chip" onclick="this.classList.toggle('selected')">Web Search</div>
+          </div>
+        </div>
+
+        <div class="fr">
+          <label>Questions to ask before starting<span class="req">*</span></label>
+          <textarea id="f-questions" rows="5" placeholder="What is the borrower entity name and loan ID?
+What is the loan amount, structure, and purpose?
+What collateral is offered, at what valuation?
+What is the relationship history with this borrower?
+Any known concerns to flag?"></textarea>
+          <span class="helper">One question per line. Claude asks all of them before any work — even if your prompt seems complete.</span>
+        </div>
+      </div>
+      <div class="tip"><strong>Why this matters</strong>The skill that doesn't ask is the skill that produces a memo for the wrong borrower. Five questions are the cheapest insurance you'll buy.</div>
+      <div class="wiz-actions">
+        <button class="btn btn-outline" onclick="wizardBack(3)">← Back</button>
+        <button class="btn" onclick="wizardNext(3)">Continue <span class="arrow">→</span></button>
+      </div>
+    </div>
+
+    <!-- Step 4: Workflow & Output -->
+    <div class="wiz-step" id="ws-4">
+      <div class="wiz-stepnum">Step 4 · Workflow &amp; Output</div>
+      <h2 class="wiz-q">What should Claude <em>do, and produce</em>?</h2>
+      <p class="wiz-help">List the steps Claude follows after the questions are answered, and specify the format of the final deliverable.</p>
+      <div class="fields">
+        <div class="fr">
+          <label>Workflow steps<span class="req">*</span></label>
+          <span class="helper" style="margin-bottom:8px">Each step is one discrete action. Be specific.</span>
+          <div class="rep" id="steps-rep">
+            <div class="rep-row"><span class="rn">1.</span><input type="text" placeholder="Read all financial statements provided." /><button class="rm-btn" onclick="rmRow(this)">×</button></div>
+            <div class="rep-row"><span class="rn">2.</span><input type="text" placeholder="Calculate DSCR, LTV, DTI, current ratio." /><button class="rm-btn" onclick="rmRow(this)">×</button></div>
+            <div class="rep-row"><span class="rn">3.</span><input type="text" placeholder="Compare to policy thresholds; flag exceptions." /><button class="rm-btn" onclick="rmRow(this)">×</button></div>
+            <div class="rep-row"><span class="rn">4.</span><input type="text" placeholder="Draft memo with recommendation and conditions." /><button class="rm-btn" onclick="rmRow(this)">×</button></div>
+          </div>
+          <button class="add-btn" onclick="addRow('steps-rep','Next step...')">+ Add step</button>
+        </div>
+
+        <div class="fr-grid cols-3">
+          <div class="fr">
+            <label>Output format<span class="req">*</span></label>
+            <select id="f-output">
+              <option value="">Select...</option>
+              <option>Word Doc (.docx)</option>
+              <option>Spreadsheet (.xlsx)</option>
+              <option>Slide Deck (.pptx)</option>
+              <option>PDF</option>
+              <option>Email Draft</option>
+              <option>Chat Reply</option>
+              <option>Markdown (.md)</option>
+            </select>
+          </div>
+          <div class="fr">
+            <label>Tone</label>
+            <select id="f-tone">
+              <option value="">Select...</option>
+              <option>Board / Executive</option>
+              <option>Regulatory / Formal</option>
+              <option>Professional</option>
+              <option>Member-facing / Plain</option>
+              <option>Internal / Casual</option>
+            </select>
+          </div>
+          <div class="fr">
+            <label>Length</label>
+            <select id="f-length">
+              <option value="">Select...</option>
+              <option>One Page</option>
+              <option>2–3 Pages</option>
+              <option>Full Detail</option>
+              <option>Bullets Only</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="collapse" onclick="toggleCol(this)">
+          <span class="icon">+</span>Add quality checkpoints &amp; escalation triggers
+          <span style="font-weight:400;color:var(--slate);font-style:italic;margin-left:auto">optional</span>
+        </div>
+        <div class="collapse-content">
+          <div class="fr">
+            <label>Quality checkpoints</label>
+            <textarea id="f-quality" rows="2" placeholder="• After Step 2: Pause and present calculated ratios for verification.
+• Before Step 4: Confirm format alignment."></textarea>
+            <span class="helper">Pause points where Claude must stop and confirm before continuing.</span>
+          </div>
+          <div class="fr" style="margin-top:14px">
+            <label>Escalation triggers</label>
+            <textarea id="f-escalation" rows="2" placeholder="• Any policy exception >10% deviation → automatic credit committee escalation.
+• Borrower with prior charge-off → CCO must approve before circulation."></textarea>
+            <span class="helper">When the skill should hand off to a human instead of continuing.</span>
+          </div>
+        </div>
+      </div>
+      <div class="wiz-actions">
+        <button class="btn btn-outline" onclick="wizardBack(4)">← Back</button>
+        <button class="btn" onclick="wizardNext(4)">Continue <span class="arrow">→</span></button>
+      </div>
+    </div>
+
+    <!-- Step 5: Rules & Save -->
+    <div class="wiz-step" id="ws-5">
+      <div class="wiz-stepnum">Step 5 · Rules &amp; Save</div>
+      <h2 class="wiz-q">What must Claude <em>never do</em>?</h2>
+      <p class="wiz-help">Pick the rules that apply. In a regulated institution, this is what separates a useful tool from a liability.</p>
+      <div class="fields">
+        <div class="gg" id="g-grid">
+          <div class="gi" onclick="this.classList.toggle('selected')"><div class="gc"></div><div><div class="gt">Never make final decisions</div><div class="gs">All output is recommendation only.</div></div></div>
+          <div class="gi" onclick="this.classList.toggle('selected')"><div class="gc"></div><div><div class="gt">Cite only my policy files</div><div class="gs">Reference our policies, not training data.</div></div></div>
+          <div class="gi" onclick="this.classList.toggle('selected')"><div class="gc"></div><div><div class="gt">Flag missing data</div><div class="gs">Stop and ask. Never assume.</div></div></div>
+          <div class="gi" onclick="this.classList.toggle('selected')"><div class="gc"></div><div><div class="gt">Anonymize member &amp; PII</div><div class="gs">No account numbers or names in shared output.</div></div></div>
+          <div class="gi" onclick="this.classList.toggle('selected')"><div class="gc"></div><div><div class="gt">Never approve or deny credit</div><div class="gs">Recommendations only. Decisions stay with the credit officer.</div></div></div>
+          <div class="gi" onclick="this.classList.toggle('selected')"><div class="gc"></div><div><div class="gt">No prohibited basis factors</div><div class="gs">No race, religion, national origin, sex, age, marital status.</div></div></div>
+          <div class="gi" onclick="this.classList.toggle('selected')"><div class="gc"></div><div><div class="gt">Always ask the questions</div><div class="gs">Even if the prompt seems complete.</div></div></div>
+          <div class="gi" onclick="this.classList.toggle('selected')"><div class="gc"></div><div><div class="gt">Use our terminology</div><div class="gs">"Members" not "customers." Our voice.</div></div></div>
+          <div class="gi" onclick="this.classList.toggle('selected')"><div class="gc"></div><div><div class="gt">Never send anything externally</div><div class="gs">Drafts only. No outbound without human send-off.</div></div></div>
+          <div class="gi" onclick="this.classList.toggle('selected')"><div class="gc"></div><div><div class="gt">Disclose AI involvement</div><div class="gs">If output goes to members or regulators.</div></div></div>
+        </div>
+
+        <div class="collapse" onclick="toggleCol(this)">
+          <span class="icon">+</span>Add custom rules &amp; governance
+          <span style="font-weight:400;color:var(--slate);font-style:italic;margin-left:auto">optional</span>
+        </div>
+        <div class="collapse-content">
+          <div class="fr">
+            <label>Custom rules for your institution</label>
+            <textarea id="f-customg" rows="2" placeholder="• Use loan ID (LN-XXXX), never borrower name.
+• Flag policy exceptions per §4.2."></textarea>
+          </div>
+          <div class="fr-grid cols-3" style="margin-top:14px">
+            <div class="fr">
+              <label>Skill owner</label>
+              <input type="text" id="f-owner" placeholder="VP Compliance" />
+              <span class="helper">A role, not a person.</span>
+            </div>
+            <div class="fr">
+              <label>Maturity</label>
+              <select id="f-maturity">
+                <option value="draft">Just started (Draft)</option>
+                <option value="pilot">Testing it out (Pilot)</option>
+                <option value="production">Ready to use (Production)</option>
+              </select>
+            </div>
+            <div class="fr">
+              <label>Version</label>
+              <input type="text" id="f-version" placeholder="1.0" value="1.0" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wiz-actions">
+        <button class="btn btn-outline" onclick="wizardBack(5)">← Back</button>
+        <button class="btn btn-burgundy" onclick="finishWizard('test')">Test it in the Playground <span class="arrow">→</span></button>
+        <div class="right">
+          <button class="btn btn-outline" onclick="finishWizard('save')">Save to Toolbox</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- III. TEST / PLAYGROUND              -->
+<!-- ═══════════════════════════════════ -->
+<div class="view" id="view-test">
+<div class="container">
+
+  <div class="intro-block">
+    <div class="eyebrow">Playground · Live Skill Testing</div>
+    <h1 class="intro-h">Run your skill against <em>Claude — live</em>.</h1>
+    <p class="intro-lede">Load a skill from the Cookbook or your Toolbox, type a test prompt, and see exactly how Claude will respond when the skill is invoked. Iterate until it works the way you want, then save and deploy.</p>
+  </div>
+
+  <!-- Empty state when no skill loaded -->
+  <div id="play-empty" class="play-empty">
+    <span class="play-empty-icon">▶</span>
+    <h2>Pick a skill to <em>test-drive</em>.</h2>
+    <p>Load a template from the Cookbook to see how it works, build a new skill from scratch, or reopen one you've saved.</p>
+    <div class="actions">
+      <button class="btn" onclick="showView('cookbook')">Browse Cookbook <span class="arrow">→</span></button>
+      <button class="btn btn-outline" onclick="showView('build')">Build a new skill</button>
+    </div>
+  </div>
+
+  <!-- Active state -->
+  <div id="play-active" class="play-grid" style="display:none">
+
+    <aside class="play-aside">
+      <div class="play-aside-h">Active Skill</div>
+      <div class="play-skill-cmd" id="play-cmd">/skill</div>
+      <h3 class="play-skill-name" id="play-name">Skill Name</h3>
+      <p class="play-skill-desc" id="play-desc">Skill description goes here.</p>
+
+      <div class="play-aside-rows">
+        <div class="par">
+          <div class="par-label">Department</div>
+          <div class="par-value" id="play-dept">—</div>
+        </div>
+        <div class="par">
+          <div class="par-label">Output</div>
+          <div class="par-value" id="play-output">—</div>
+        </div>
+        <div class="par">
+          <div class="par-label">Tone</div>
+          <div class="par-value" id="play-tone">—</div>
+        </div>
+        <div class="par">
+          <div class="par-label">Status</div>
+          <div class="par-value tag" id="play-mat">draft</div>
+        </div>
+      </div>
+
+      <div class="play-aside-actions">
+        <button class="play-aside-btn primary" onclick="saveActiveSkill()" id="save-skill-btn">
+          <span class="ico">▸</span>Save to Toolbox
+        </button>
+        <button class="play-aside-btn" onclick="editActiveSkill()">
+          <span class="ico">✎</span>Edit in Builder
+        </button>
+        <button class="play-aside-btn" onclick="downloadActive()">
+          <span class="ico">↓</span>Download .md
+        </button>
+        <button class="play-aside-btn" onclick="copyActiveMd()">
+          <span class="ico">⎘</span>Copy for GitHub
+        </button>
+      </div>
+    </aside>
+
+    <div class="play-main">
+
+      <!-- Conversation thread -->
+      <div class="play-conv-card">
+        <div class="play-conv-header">
+          <span class="conv-label" id="conv-label">Live · Conversation with Claude</span>
+          <div class="conv-actions">
+            <button class="po-btn" onclick="resetConversation()">↺ Reset</button>
+          </div>
+        </div>
+        <div class="play-thread" id="play-thread">
+          <div class="thread-empty" id="thread-empty">
+            <span class="thread-empty-icon">▶</span>
+            <h3>Start the <em>conversation</em>.</h3>
+            <p>Type a prompt below — Claude will follow this skill's instructions, ask its clarifying questions, then complete the work.</p>
+          </div>
+        </div>
+        <div class="play-input-area">
+          <textarea id="play-input" rows="2" placeholder="Type a message — Enter to send, Shift+Enter for a new line"></textarea>
+          <div class="play-input-bar">
+            <span class="run-meta" id="run-meta">Sends to Claude · model: claude-sonnet-4</span>
+            <button class="run-btn" onclick="sendMessage()" id="run-btn">
+              <span class="ico">▶</span>Send
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sample prompts -->
+      <div class="play-input-card" id="sample-prompts" style="padding:18px 22px;display:none">
+        <div class="play-input-h" style="margin-bottom:10px">
+          <span class="label">Pre-loaded scenarios</span>
+          <span class="hint">First scenario is loaded — hit Send, or click another to switch</span>
+        </div>
+        <div class="sp-chips" id="sp-chips"></div>
+      </div>
+
+      <!-- MD viewer (collapsed by default) -->
+      <div>
+        <button class="md-toggle" onclick="toggleMdPanel(this)">
+          <span class="icon">▸</span>View the skill file (.md format)
+          <span style="margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--slate);font-weight:600;text-transform:uppercase;letter-spacing:.12em">GitHub-ready</span>
+        </button>
+        <div class="md-panel" id="md-panel">
+          <div class="md-panel-h">
+            <span class="label">Skill File</span>
+            <span class="file" id="md-filename">skill.md</span>
+            <div class="md-panel-actions">
+              <button class="po-btn dark" onclick="copyActiveMd()">⎘ Copy</button>
+              <button class="po-btn dark" onclick="downloadActive()">↓ Download</button>
+            </div>
+          </div>
+          <div class="md-body"><pre id="md-content"></pre></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- IV. TOOLBOX                         -->
+<!-- ═══════════════════════════════════ -->
+<div class="view" id="view-toolbox">
+<div class="container">
+
+  <div class="intro-block">
+    <div class="eyebrow">My Toolbox · Saved Skills</div>
+    <h1 class="intro-h">The skills <em>you've saved</em>.</h1>
+    <p class="intro-lede">Saved skills live here. Run them in the Playground anytime, edit them as your policies evolve, or export them as .md files for your GitHub repo.</p>
+  </div>
+
+  <div class="tb-header">
+    <h2 class="tb-title">Your <em>Toolbox</em></h2>
+    <span class="tb-meta" id="tb-meta">No skills saved yet</span>
+  </div>
+
+  <div id="tb-content"></div>
+
+</div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- V. GUIDE                            -->
+<!-- ═══════════════════════════════════ -->
+<div class="view active" id="view-guide">
+<div class="container narrow">
+
+  <div class="intro-block">
+    <div class="eyebrow">Start Here · The AIBI Skill Builder</div>
+    <h1 class="intro-h">Build durable AI workflows for <em>banks &amp; credit unions</em>.</h1>
+    <p class="intro-lede">This module walks you from concept to working skill in five connected stages. Read the brief orientation below, then pick a starting point — the rest of the journey flows naturally from there.</p>
+  </div>
+
+  <!-- Journey diagram -->
+  <div class="journey">
+    <div class="journey-h">
+      <div class="journey-eyebrow">How this module works</div>
+      <p class="journey-sub">Five stages, one connected workflow. Each stage hands off to the next — but you can jump in anywhere.</p>
+    </div>
+    <div class="journey-steps">
+      <button class="js-step active" onclick="event.stopPropagation()">
+        <div class="js-num">i.</div>
+        <div class="js-label">Start Here</div>
+        <div class="js-desc">Understand what skills are and how they fit your work.</div>
+        <div class="js-marker">YOU ARE HERE</div>
+      </button>
+      <div class="js-arrow">→</div>
+      <button class="js-step" onclick="showView('cookbook')">
+        <div class="js-num">ii.</div>
+        <div class="js-label">Cookbook</div>
+        <div class="js-desc">Browse 15 banking templates organized by role.</div>
+        <div class="js-cta">Browse →</div>
+      </button>
+      <div class="js-arrow">→</div>
+      <button class="js-step" onclick="showView('build')">
+        <div class="js-num">iii.</div>
+        <div class="js-label">Build</div>
+        <div class="js-desc">A 5-step wizard to define your own skill.</div>
+        <div class="js-cta">Build →</div>
+      </button>
+      <div class="js-arrow">→</div>
+      <button class="js-step" onclick="showView('test')">
+        <div class="js-num">iv.</div>
+        <div class="js-label">Playground</div>
+        <div class="js-desc">Test the skill against Claude with realistic scenarios.</div>
+        <div class="js-cta">Test →</div>
+      </button>
+      <div class="js-arrow">→</div>
+      <button class="js-step" onclick="showView('toolbox')">
+        <div class="js-num">v.</div>
+        <div class="js-label">Toolbox</div>
+        <div class="js-desc">Your saved skills — edit, run, or export to GitHub.</div>
+        <div class="js-cta" id="toolbox-cta">View saved →</div>
+      </button>
+    </div>
+  </div>
+
+  <div class="gsec">
+    <h2>What is a <em>skill</em>?</h2>
+    <p class="gp">Most institutions encountering Claude do so through chat — a compliance officer pastes a regulation, a credit analyst types a question, an operations manager drafts a memo. The conversations are useful. But they are also fleeting. Every chat starts from zero. Every prompt is reinvented.</p>
+    <p class="gp">A skill is the discipline of writing it down once. It's a single instruction file Claude reads when invoked by a trigger phrase. Saved in your Toolbox, the skill becomes part of how the institution works — auditable, transferable, governed. <strong>Used this way, Claude becomes less of a clever assistant and more of an institutional capability.</strong></p>
+    <p class="gp">Skills are saved as <code style="font-family:var(--mono);font-size:14px;background:var(--paper-3);border:1px solid var(--rule);padding:1px 6px">.md</code> (markdown) files with structured metadata. They can be deployed in any Claude-based interface that supports them — including Anthropic's Cowork desktop product, custom integrations through the API, or your bank's internal AI tools.</p>
+  </div>
+
+  <div class="gsec">
+    <h2>Six <em>operating principles</em>.</h2>
+    <p class="gp">A useful prompt is improvisation. A useful skill is engineering.</p>
+    <div class="pgrid">
+      <div class="pri"><div class="pri-num">i.</div><div class="pri-t">A skill <em>has an owner</em>.</div><p class="pri-b">Every skill is assigned to a single role. Unowned skills are abandoned skills.</p></div>
+      <div class="pri"><div class="pri-num">ii.</div><div class="pri-t">A skill is <em>versioned</em>.</div><p class="pri-b">Track version, created date, last reviewed. When a regulation changes, the version increments.</p></div>
+      <div class="pri"><div class="pri-num">iii.</div><div class="pri-t">A skill <em>asks first</em>.</div><p class="pri-b">The clarifying questions are non-negotiable. Five questions prevent ninety percent of rework.</p></div>
+      <div class="pri"><div class="pri-num">iv.</div><div class="pri-t">A skill <em>never invents citations</em>.</div><p class="pri-b">Skills don't reason from general knowledge. They cite documents they've actually read. URLs, guidance numbers, examiner names — if the source isn't provided, the skill says so explicitly rather than fabricating one that looks real.</p></div>
+      <div class="pri"><div class="pri-num">v.</div><div class="pri-t">A skill <em>knows when to stop</em>.</div><p class="pri-b">Every skill has explicit escalation triggers — conditions to hand off to a human.</p></div>
+      <div class="pri"><div class="pri-num">vi.</div><div class="pri-t">A skill is <em>piloted</em>.</div><p class="pri-b">No skill enters production on day one. One user runs it for two weeks and revises it.</p></div>
+    </div>
+  </div>
+
+  <div class="gsec">
+    <h2><em>Regulatory</em> index for guardrails.</h2>
+    <p class="gp">Most-cited authorities when building skill rules. Not legal advice — shared vocabulary for compliance review.</p>
+    <table class="rtable">
+      <tr><td>12 CFR 1002</td><td><strong>Reg B · ECOA</strong>Equal Credit Opportunity. Adverse action notices, prohibited basis factors.</td></tr>
+      <tr><td>12 CFR 1005</td><td><strong>Reg E · EFTA</strong>Electronic Fund Transfer. Member dispute timelines (10/45/90 days).</td></tr>
+      <tr><td>12 CFR 1016</td><td><strong>Reg P · GLBA</strong>Privacy of consumer financial information. PII handling.</td></tr>
+      <tr><td>12 CFR 1024</td><td><strong>Reg X · RESPA</strong>Real Estate Settlement. Mortgage servicing, escrow.</td></tr>
+      <tr><td>12 CFR 1026</td><td><strong>Reg Z · TILA</strong>Truth in Lending. APR disclosures, advertising.</td></tr>
+      <tr><td>12 CFR 1030</td><td><strong>Reg DD · TISA</strong>Truth in Savings. Deposit account disclosures.</td></tr>
+      <tr><td>31 CFR 1020</td><td><strong>BSA · AML</strong>Bank Secrecy Act. CTR, SAR, customer ID.</td></tr>
+      <tr><td>15 USC 1681</td><td><strong>FCRA</strong>Fair Credit Reporting. Credit reporting, adverse action.</td></tr>
+      <tr><td>UDAAP</td><td><strong>Dodd-Frank §1031, §1036</strong>Unfair, deceptive, abusive acts. Marketing &amp; consumer skills.</td></tr>
+      <tr><td>OCC 2013-29</td><td><strong>Third-Party Risk</strong>OCC Bulletin on vendor risk management.</td></tr>
+    </table>
+  </div>
+
+  <div class="gsec">
+    <h2>Recommended <em>folder structure</em>.</h2>
+    <p class="gp">For institutions deploying skills via Anthropic's Cowork or a similar local-folder integration, this is a starting layout. The same structure works as a GitHub repository for your skills library.</p>
+    <div class="tree">
+<span class="dir">/your-bank-skills/</span><br/>
+├─ README.md <span class="annot">overview, deployment notes</span><br/>
+├─ <span class="dir">about-me/</span><br/>
+│&nbsp;&nbsp;├─ about-me.md <span class="annot">role, institution, preferences</span><br/>
+│&nbsp;&nbsp;└─ institution.md <span class="annot">products, members, branches</span><br/>
+├─ <span class="dir">skills/</span> <span class="annot">your saved .md skill files</span><br/>
+│&nbsp;&nbsp;├─ credit-memo.md<br/>
+│&nbsp;&nbsp;├─ exam-prep.md<br/>
+│&nbsp;&nbsp;└─ …<br/>
+├─ <span class="dir">policies/</span> <span class="annot">institutional policies</span><br/>
+├─ <span class="dir">templates/</span> <span class="annot">document &amp; deck templates</span><br/>
+├─ <span class="dir">data/</span> <span class="annot">CSVs, exports, reference</span><br/>
+└─ <span class="dir">outputs/</span> <span class="annot">where Claude saves work</span>
+    </div>
+  </div>
+
+  <div class="gsec">
+    <h2><em>Glossary</em>.</h2>
+    <table class="rtable">
+      <tr><td>Skill</td><td><strong>A saved instruction file</strong>A markdown document Claude reads when invoked by a trigger phrase.</td></tr>
+      <tr><td>Toolbox</td><td><strong>Your saved skills library</strong>Where every skill you build lives. Edit, run, or export from here.</td></tr>
+      <tr><td>Trigger phrase</td><td><strong>The shortcut</strong>A short command (typically /skill-name) that invokes a skill.</td></tr>
+      <tr><td>Cookbook</td><td><strong>The example library</strong>Pre-built skill templates organized by banking workflow.</td></tr>
+      <tr><td>Cowork</td><td><strong>Anthropic's autonomous mode</strong>One deployment path for skills — runs against a local folder over minutes to hours.</td></tr>
+      <tr><td>Connector</td><td><strong>Live data integration</strong>Real-time pull from systems like Gmail, Drive, your CRM.</td></tr>
+      <tr><td>Guardrail</td><td><strong>A rule Claude won't violate</strong>The "never do this" rules that make a skill safe.</td></tr>
+      <tr><td>Maturity</td><td><strong>Skill lifecycle stage</strong>Draft (just started), Pilot (testing), or Production (ready to use).</td></tr>
+    </table>
+  </div>
+
+  <!-- Where to next CTAs — Guide finale -->
+  <div class="next-cta-section">
+    <h2 class="next-cta-h">Now you've got the <em>concept</em>.<br/>Where do you want to start?</h2>
+    <p class="next-cta-sub">Three paths into the module. There's no wrong choice — you can move between them freely.</p>
+    <div class="next-cta-cards">
+      <button class="ncc" onclick="showView('cookbook')">
+        <div class="ncc-eyebrow">Most popular</div>
+        <div class="ncc-h">Browse the <em>Cookbook</em></div>
+        <div class="ncc-desc">Start from one of 15 banking templates — credit memos, SAR narratives, board packages, exam prep. Test it as-is, or customize for your institution.</div>
+        <div class="ncc-cta"><span>15 templates</span><span class="arrow">→</span></div>
+      </button>
+      <button class="ncc" onclick="showView('build')">
+        <div class="ncc-eyebrow">For a custom workflow</div>
+        <div class="ncc-h">Build from <em>scratch</em></div>
+        <div class="ncc-desc">Have a specific recurring task in mind? Walk through the 5-step wizard — purpose, context, workflow, output, rules — and Claude will execute it in the Playground.</div>
+        <div class="ncc-cta"><span>5-step wizard</span><span class="arrow">→</span></div>
+      </button>
+      <button class="ncc" onclick="showView('toolbox')" id="ncc-toolbox">
+        <div class="ncc-eyebrow">Returning users</div>
+        <div class="ncc-h">Open <em>My Toolbox</em></div>
+        <div class="ncc-desc" id="ncc-toolbox-desc">Pick up where you left off. Run a saved skill in the Playground, edit one for the next quarter, or export the .md file to your institution's GitHub.</div>
+        <div class="ncc-cta"><span id="ncc-toolbox-count">Your saved skills</span><span class="arrow">→</span></div>
+      </button>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- TOAST                               -->
+<!-- ═══════════════════════════════════ -->
+<div class="toast" id="toast"><span class="icon" id="toast-icon">✓</span><span id="toast-msg"></span></div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- FOOTER                              -->
+<!-- ═══════════════════════════════════ -->
+<footer class="foot">
+  <p class="foot-text">The <strong>Banking AI Playground</strong> is part of the <em>AI Banking Institute Toolbox</em> — a premium learning module for members building durable AI workflows inside their institutions.</p>
+  <div class="foot-meta">© AI Banking Institute · Toolbox Module v2.0 · Premium Feature</div>
+</footer>
+
+</div><!-- /wrap -->
+
+<script>
+// ═══════════════════════════════════════════════════════════════════
+// BANKING AI PLAYGROUND — Skill Builder Module
+// AI Banking Institute · Toolbox · v2.0
+//
+// This module is designed to be embedded in the AIBI LMS.
+// API endpoints, storage, and GitHub integration are configured below.
+// ═══════════════════════════════════════════════════════════════════
+
+// ─── CONFIGURATION ─────────────────────────────────────────────────
+const CONFIG = {
+  // Anthropic Messages API. In production, route through your backend
+  // to keep API keys server-side. For this module, calls go direct.
+  apiEndpoint: "https://api.anthropic.com/v1/messages",
+  apiModel: "claude-sonnet-4-20250514",
+  maxTokens: 8192,
+
+  // Storage key for persistent toolbox (window.storage API)
+  storageKey: "aibi-toolbox-skills",
+
+  // GitHub integration (for future deployment — wire up at backend)
+  githubRepoTemplate: "https://github.com/your-org/banking-skills/blob/main/skills/",
+
+  // Module metadata
+  moduleVersion: "2.0",
+  module: "Banking AI Playground"
+};
+
+// ─── DATA: 15 banking skill templates ──────────────────────────────
+// Each template includes role mapping that matches the dropdown values
+const TEMPLATES = [
+{id:'exam-prep',cmd:'/exam-prep',name:'Regulatory Exam Preparation',dept:'Compliance',deptFull:'Compliance & BSA/AML',difficulty:'intermediate',timeSaved:'~6 hr',cadence:'Per exam',
+desc:'Reads policy library and prior exam findings, identifies open issues, produces a regulator-ready summary.',
+purpose:'Reads our policy library and prior exam findings, identifies open compliance issues, and produces a regulator-ready summary package with recommended pre-exam actions ranked by urgency.',
+success:'A 1-page Word executive summary listing strengths, open findings, and three recommended actions with owners and deadlines.',
+files:['/about-me/about-me.md','/policies/  —  all institutional policies','/exams/prior-findings.docx','/templates/exam-summary.docx'],
+connectors:['Google Drive'],
+questions:'What is the exam date and the agency (NCUA, OCC, FDIC, State)?\nWhich regulations are in scope?\nAre there findings from the prior exam still marked open?\nWho is the lead examiner?\nAny focus areas requested in the entry letter?',
+steps:['Read every document in /policies/ and map regulations to policies.','Cross-reference /exams/prior-findings.docx; flag items still open.','Identify policy gaps for in-scope regulations.','Draft summary with sections: Coverage, Open Items, Recommended Actions.','Format using template; save to /outputs/exam-prep/'],
+output:'Word Doc (.docx)',tone:'Regulatory / Formal',length:'2–3 Pages',
+guardrails:['Never make final decisions','Cite only my policy files','Flag missing data','Always ask the questions'],
+customGuard:'Never assert "compliant" — frame as "policy in place" or "control documented." Only the examiner makes that determination.',
+owner:'VP Compliance',maturity:'production',
+samples:[{"title": "NCUA exam, 7 weeks out", "prompt": "Exam date: June 15, 2026 (7 weeks out)\nAgency: NCUA Region IV\nLead examiner: Sarah Chen (worked with us last cycle)\n\nRegulations in scope: BSA/AML (31 CFR 1020), Reg E (12 CFR 1005), Reg DD (12 CFR 1030), Member Business Lending\n\nPrior exam findings still open:\n1. BSA training documentation gaps — 60% remediated; board-level training attestations still pending\n2. Overdraft fee disclosure language deemed potentially confusing — new language drafted, not yet deployed to all members\n\nEntry letter focus areas:\n- BSA program effectiveness post-officer transition\n- MBL portfolio concentration risk\n- IT general controls and cybersecurity\n\nContext: First major exam since CEO change in January. New BSA Officer (Tom Reyes) started 6 months ago. CRE portfolio grew 22% YoY.\n\nPrepare the regulator-ready summary package."},{"title": "OCC safety & soundness", "prompt": "Exam date: August 1-15, 2026\nAgency: OCC Northeast District\nLead examiner: David Park\n\nRegulations in scope: Standard CAMELS — capital adequacy, asset quality, management, earnings, liquidity, sensitivity to market risk.\n\nPrior exam findings: All 3 findings from last cycle closed and verified. Prior CAMELS: 2-2-2-2-2-2, composite 2.\n\nEntry letter requests:\n- Detailed CRE concentration analysis (now 285% of capital, up from 240%)\n- ALLL methodology documentation\n- Cyber incident response testing records\n\nContext: Strong liquidity (LCR 142%). NIM compressed 12 bps YoY. Two new branches opened in Q1.\n\nPrepare the pre-exam summary package."}]},
+
+{id:'sar-narrative',cmd:'/sar-narrative',name:'SAR Narrative Drafting',dept:'Compliance',deptFull:'Compliance & BSA/AML',difficulty:'advanced',timeSaved:'~2 hr',cadence:'Per case',
+desc:'Drafts a Suspicious Activity Report narrative in FinCEN 5W format using transaction data.',
+purpose:'Drafts a SAR narrative in FinCEN 5W format (Who, What, When, Where, Why) for BSA officer review prior to filing.',
+success:'A complete narrative addressing all five W elements with no speculation beyond documented facts.',
+files:['/policies/bsa-policy.pdf','/templates/sar-template.md','/typologies/'],
+connectors:['Core Banking'],
+questions:'What is the case identifier (do not use member name)?\nWhat transaction period is under review?\nWhat suspicious typology applies?\nIs there a prior SAR on this subject?\nIs the investigation file complete?',
+steps:['Read transaction data; identify relevant transactions.','Compare patterns to typologies; confirm red flags.','Structure narrative in 5W format.','Confirm no speculation beyond evidence.','Format per template; return to BSA officer for review.'],
+output:'Markdown (.md)',tone:'Regulatory / Formal',length:'Full Detail',
+guardrails:['Never make final decisions','Anonymize member & PII','Flag missing data','Never send anything externally'],
+customGuard:'Use case identifier (CASE-XXXX), never the subject\'s name. Never speculate about intent. Never disclose SAR filing status per 31 CFR 1020.320(e).',
+owner:'BSA Officer',maturity:'production',
+samples:[{"title": "Structuring case CASE-2026-0142", "prompt": "Case ID: CASE-2026-0142\nTransaction period: January 15 – March 31, 2026\nSubject: Member since 2018, runs a small landscaping business\n\nSuspicious typology: Structuring\n- 27 cash deposits across 4 branches over 10 weeks\n- Each deposit $9,200–$9,800 (just under the $10K reporting threshold)\n- Total deposited: $264,500\n- Historical pattern was $3K–$5K weekly deposits\n\nPrior SARs: One prior SAR filed 2024-08-15 on similar pattern (FinCEN closed, no action).\n\nInvestigation file: Complete — transaction records indexed, branch logs collected, business registration verified, member due diligence file pulled.\n\nAdditional facts:\n- Recent address change (business address → residential)\n- No prior law enforcement contacts\n- Subject's stated explanation: \"saving for equipment purchase\"\n\nDraft the FinCEN 5W narrative for BSA officer review."},{"title": "Elder financial exploitation", "prompt": "Case ID: CASE-2026-0167\nTransaction period: October 1, 2025 – April 1, 2026\nSubject: Member age 84, joined 1998\n\nSuspicious typology: Elder financial exploitation\n- New \"advisor\" added as joint signer in October 2025\n- 14 wire transfers totaling $187,000 to one beneficiary in Texas\n- Member's typical activity prior: pension deposits and monthly bills only\n- New beneficiary identified as romantic interest met online\n\nPrior SARs: None on this member.\n\nInvestigation file: Complete. Branch staff first flagged in February. Adult Protective Services contacted (case open). Daughter (POA) alerted and requesting filing.\n\nAdditional facts:\n- Member appears cognitively diminished per branch staff observations\n- Member refuses to discuss the wires when asked\n- Daughter has documentation of unusual recent contacts\n\nDraft the SAR narrative."}]},
+
+{id:'reg-change',cmd:'/reg-change-brief',name:'Regulatory Change Brief',dept:'Compliance',deptFull:'Compliance & BSA/AML',difficulty:'beginner',timeSaved:'~3 hr',cadence:'Weekly',
+desc:'Reads new regulatory guidance, summarizes changes, maps to current policies, estimates implementation effort.',
+purpose:'Reads new regulatory guidance, identifies what changed, maps to affected policies and products, estimates implementation lift.',
+success:'A 1-page brief: source citation, summary, affected policies/products, required updates, implementation estimate.',
+files:['/policies/','/products/','/templates/reg-brief.docx'],
+connectors:['Web Search','Google Drive'],
+questions:'What is the source authority?\nWhat is the effective date?\nProvide URL of the guidance.\nDo we have products in scope?\nIs this final, proposed, or interpretive?',
+steps:['Fetch full guidance text.','Summarize what changed.','Search /policies/ for affected documents.','List required updates with owners.','Estimate effort; flag legal review items.','Format and save.'],
+output:'Word Doc (.docx)',tone:'Regulatory / Formal',length:'One Page',
+guardrails:['Cite only my policy files','Flag missing data','Never make final decisions'],
+customGuard:'Always cite source authority with publication date. Flag interpretive ambiguity for legal review.',
+owner:'Compliance Analyst',maturity:'production',
+samples:[{"title": "CFPB overdraft amendments", "prompt": "Source authority: CFPB\nStatus: Final rule\nEffective date: October 1, 2026 (5 months out)\nCitation: 12 CFR 1005 (Reg E) amendments\nSource link: [provided in agency notification]\n\nWhat changed: New Schumer-box-style fee summary required at account opening; restrictions on certain overdraft fee structures; new opt-in/opt-out workflow for ATM and one-time debit overdraft coverage.\n\nOur products in scope: All consumer checking accounts (12 product variants), our courtesy pay program, member-facing online and mobile banking disclosures.\n\nContext: 47,000 active checking accounts. Courtesy pay revenue last year: $2.3M.\n\nBrief the implementation lift."},{"title": "NCUA cybersecurity letter", "prompt": "Source authority: NCUA\nStatus: Letter to Credit Unions (LCU 26-CU-04)\nEffective date: Immediate; examiner attention 90 days\nSource link: [provided in agency notification]\n\nWhat changed: Heightened expectations for IRT testing frequency, ransomware-specific tabletop exercises, third-party vendor cyber attestations, and member notification timelines for incidents.\n\nOur products/systems in scope: All systems holding NPI; online and mobile banking; vendor management program.\n\nContext: Last cyber tabletop was 8 months ago. We have 23 critical vendors; 4 lack current SOC 2 Type II.\n\nBrief the gap analysis."}]},
+
+{id:'credit-memo',cmd:'/credit-memo',name:'Commercial Credit Memo',dept:'Lending',deptFull:'Lending & Underwriting',difficulty:'advanced',timeSaved:'~4 hr',cadence:'Per loan',
+desc:'Calculates ratios, compares to policy thresholds, drafts a credit memo with risk rating and recommendation.',
+purpose:'Reads borrower financials, calculates underwriting ratios, compares to lending policy, drafts a complete credit memo.',
+success:'A 2-3 page Word memo: executive summary, financial analysis, collateral, risk rating, conditioned recommendation.',
+files:['/policies/lending-policy.pdf','/policies/risk-rating-matrix.pdf','/templates/credit-memo.docx'],
+connectors:['Loan Origination'],
+questions:'What is the borrower entity and loan ID (use LN-XXXX)?\nLoan amount, structure, purpose?\nCollateral and valuation?\nRelationship history?\nKnown concerns to flag?',
+steps:['Read all financial statements.','Calculate DSCR, LTV, DTI, current ratio, global cash flow.','Compare to policy thresholds; flag exceptions.','Analyze 3-year trend.','Summarize collateral and lien priority.','Assign risk rating with justification.','Draft recommendation with conditions.'],
+output:'Word Doc (.docx)',tone:'Regulatory / Formal',length:'2–3 Pages',
+guardrails:['Never approve or deny credit','No prohibited basis factors','Cite only my policy files','Flag missing data','Anonymize member & PII'],
+customGuard:'Use loan ID (LN-XXXX), never borrower name. Show all calculations. Flag policy exceptions per §4.2.',
+owner:'VP Commercial Lending',maturity:'production',
+samples:[{"title": "Westside Industrial — $2.4M CRE acquisition", "prompt": "Loan ID: LN-2026-0419\nBorrower: Westside Industrial Properties LLC (single-purpose entity)\nPersonal Guarantor: Michael Westbrook (75% member)\n\nRequest: $2,400,000 CRE acquisition loan\nStructure: 25-year amortization, 7-year balloon, fixed rate\nLTV: 75%\nUse of proceeds: Acquisition of 28,000 sq ft industrial warehouse, Tacoma WA\n\nCollateral: First lien on subject property; appraised value $3,200,000 (Smith Appraisal Services, 03/2026); assignment of rents.\n\nProperty financials (CY2024 audited):\n- NOI: $387,000\n- DSCR at proposed terms: 1.42x\n- Occupancy: 92% across 4 tenants\n\nGuarantor (Westbrook) personal:\n- Net worth: $4.2M (50% liquid)\n- DTI: 31%\n- FICO: 762\n\nRelationship: Member since 2019, three prior loans paid as agreed, current $1.8M aggregate exposure across two performing CRE loans.\n\nConcerns to flag:\n1. One tenant (32% of NOI) has lease expiring in 18 months\n2. Guarantor's liquidity concentrated in single-stock position ($2.1M MSFT)\n\nDraft the credit memo."},{"title": "Pacific NW Manufacturing — $500K WC line", "prompt": "Loan ID: LN-2026-0420\nBorrower: Pacific Northwest Manufacturing Inc (operating company)\nPersonal Guarantors: Sandra Chen (60%) and Robert Chen (40%) — jointly and severally\n\nRequest: $500,000 revolving working capital line\nStructure: 12-month term, renewable; interest only monthly; secured by AR/inventory\nUse of proceeds: Seasonal working capital needs, inventory build\n\nCollateral: Blanket UCC-1 on all business assets; AR aging 95% under 60 days; inventory turnover 8.2x.\n\nBorrower financials (CY2025 reviewed):\n- Revenue: $8.4M\n- EBITDA: $1.1M\n- Working capital: $1.8M\n- Debt service coverage: 2.1x\n\nGuarantors combined net worth: $3.4M, DTI 28%, FICOs 745/731.\n\nRelationship: 12-year member, deposit relationship $480K average, no prior commercial credit. Strong personal banking history.\n\nConcerns: Concentration — top 3 customers represent 64% of revenue. One customer (32%) recently restructured.\n\nDraft the credit memo."}]},
+
+{id:'covenant-watch',cmd:'/covenant-watch',name:'Covenant Compliance Monitoring',dept:'Lending',deptFull:'Lending & Underwriting',difficulty:'intermediate',timeSaved:'~2 hr',cadence:'Quarterly',
+desc:'Calculates each covenant ratio, flags violations or approaching triggers, drafts borrower notification.',
+purpose:'Reads quarterly borrower financials; calculates covenant ratios; flags violations or covenants approaching trigger.',
+success:'Updated Excel covenant tracker plus Word memo to RM if any covenant is in violation.',
+files:['/loans/[loan-id]/loan-agreement.pdf','/templates/covenant-tracking.xlsx'],
+connectors:['Loan Origination'],
+questions:'Loan ID and reporting period?\nFinancials final or draft?\nPrior period results?\nWaivers in effect?',
+steps:['Extract every covenant with threshold.','Calculate each ratio for current period.','Mark: Compliant, Approaching, Violation.','Update tracker.','Draft RM memo if violation.'],
+output:'Spreadsheet (.xlsx)',tone:'Professional',length:'2–3 Pages',
+guardrails:['Never send anything externally','Flag missing data','Never make final decisions'],
+customGuard:'Never communicate to borrower without RM approval. Show every calculation. Note draft financials prominently.',
+owner:'Portfolio Manager',maturity:'production',
+samples:[{"title": "Bauer Manufacturing — Q1 final financials", "prompt": "Loan ID: LN-2024-0312\nBorrower: Bauer Manufacturing Inc\nReporting period: Q1 2026 (March 31, 2026)\nFinancials: Final, audited by Sterling CPA Group, received 04/22/2026\nPrior period (Q4 2025): All compliant; DSCR 1.38x, leverage 2.7x\n\nActive covenants per loan agreement:\n1. Minimum DSCR: 1.25x (quarterly)\n2. Maximum total leverage: 3.5x (quarterly)\n3. Minimum tangible net worth: $4.5M (annual)\n4. Maximum CapEx: $750K/year (annual)\n5. No material adverse change\n\nQ1 2026 financials provided:\n- Revenue: $8.2M (+3.8% YoY)\n- EBITDA: $1.1M\n- Annual debt service: $920K (calculated)\n- Total funded debt: $4.1M\n- TNW: $5.2M (audited 12/31/2025)\n\nActive waivers: None.\n\nRun the covenant analysis."},{"title": "Riverside Multifamily — approaching trigger", "prompt": "Loan ID: LN-2025-0089\nBorrower: Riverside Multifamily LP (124-unit apartment property)\nReporting period: Q1 2026\nFinancials: Draft (T-12 financials, sponsor-prepared)\nPrior period (Q4 2025): DSCR 1.27x — APPROACHING trigger of 1.25x\n\nActive covenants:\n1. Minimum DSCR: 1.25x (quarterly)\n2. Minimum occupancy: 90% (quarterly)\n3. Annual property tax current\n\nQ1 2026 financials:\n- Effective gross income: $1,082,000\n- Operating expenses: $548,000\n- NOI: $534,000\n- Annual debt service: $432,000\n- Occupancy as of 03/31: 88% (down from 91% Q4)\n- Property taxes: paid current\n\nActive waivers: One on annual operating budget submission (sponsor 60 days late, waived through 06/30/2026).\n\nRun the covenant analysis."}]},
+
+{id:'loan-decision',cmd:'/loan-decision',name:'Loan Decision Documentation',dept:'Lending',deptFull:'Lending & Underwriting',difficulty:'intermediate',timeSaved:'~1 hr',cadence:'Per decision',
+desc:'Documents credit decisions, prepares ECOA-compliant adverse action notices for declined applications.',
+purpose:'Documents formal decision rationale and drafts ECOA-compliant adverse action notice for declined applications.',
+success:'A decision memo plus, if applicable, a Reg B-compliant adverse action notice within ECOA timing.',
+files:['/credit-memos/[loan-id]-memo.docx','/policies/lending-policy.pdf','/templates/adverse-action.docx'],
+connectors:['Loan Origination'],
+questions:'Loan ID and decision (approve/decline/counter)?\nVote breakdown?\nConditions added?\nIf declined, what reasons (must be ECOA-permissible)?\nApplication date for ECOA timing?',
+steps:['Read credit memo.','Document decision: outcome, vote, date, authority.','For approvals: list conditions with owners.','For declines: identify ECOA-permissible reasons only.','If adverse action: draft notice with required disclosures.','Save to credit file.'],
+output:'Word Doc (.docx)',tone:'Regulatory / Formal',length:'One Page',
+guardrails:['Never approve or deny credit','No prohibited basis factors','Cite only my policy files','Disclose AI involvement'],
+customGuard:'Reasons must come from ECOA-permissible bases only. Notice delivered within 30 days per Reg B 1002.9.',
+owner:'Chief Credit Officer',maturity:'production',
+samples:[{"title": "Westside — approval with conditions", "prompt": "Loan ID: LN-2026-0419 (Westside Industrial Properties)\nApplication date: March 15, 2026\nDecision: APPROVED\nVote: 4-1 (CCO Davis dissented citing tenant concentration)\n\nApproving authority: Loan Committee\nLoan officer: Jennifer Park, VP Commercial Lending\n\nConditions imposed (5):\n1. Personal guaranty from Michael Westbrook (75% member), unlimited\n2. Subordination of any related-party loans\n3. Annual personal financial statement required\n4. Deposit relationship: maintain minimum $250K balance throughout loan term\n5. Property tax escrow required\n\nDocument the formal decision rationale."},{"title": "Bayside Restaurant — decline + adverse action", "prompt": "Loan ID: LN-2026-0421\nBorrower: Bayside Restaurant Group LLC\nApplication date: April 1, 2026 (today is April 25 — 5 days remaining for adverse action notice per Reg B 1002.9)\nDecision: DECLINED\nVote: 5-0 unanimous\n\nECOA-permissible decline reasons:\n1. Insufficient cash flow — calculated DSCR 0.92x, below policy minimum 1.25x\n2. Excessive obligations relative to income — DTI 64%\n3. Length of credit history insufficient — business operating <12 months\n\nDocument the decision and draft the Reg B-compliant adverse action notice."}]},
+
+{id:'pipeline-review',cmd:'/pipeline-review',name:'Loan Pipeline Review',dept:'Relationship',deptFull:'Relationship Management',difficulty:'beginner',timeSaved:'~3 hr/wk',cadence:'Weekly',
+desc:'Summarizes pipeline by stage, flags stalled deals, surfaces deals approaching close, recommends next actions.',
+purpose:'Reads pipeline export, groups by stage, flags stalled deals, identifies deals closing soon, recommends next actions.',
+success:'A 2-page report with pipeline by stage, stalled deals (14+ days), deals closing in 30 days, next action per stalled deal.',
+files:['/data/pipeline.xlsx','/templates/pipeline-report.docx'],
+connectors:['CRM','Gmail'],
+questions:'What time period?\nProduct line or all?\nWhat counts as stalled (default 14 days)?\nFor a meeting?',
+steps:['Read pipeline; group by stage.','Calculate days since last activity; flag 14+ stalled.','Identify 30-day close deals; surface blockers.','Scan recent emails for top 5 stalled.','Draft next action per stalled deal.','Format report.'],
+output:'Word Doc (.docx)',tone:'Professional',length:'2–3 Pages',
+guardrails:['Anonymize member & PII','Flag missing data','Never send anything externally'],
+customGuard:'Use loan IDs in shared output. Member names only in officer-only sections.',
+owner:'SVP Commercial',maturity:'production',
+samples:[{"title": "Weekly review for team meeting", "prompt": "Time period: Week of April 21–25, 2026\nProduct line: All commercial loan pipeline\nStalled threshold: 14 days no activity (default)\nFor: Thursday May 1 commercial team meeting\n\nPipeline summary (47 active deals, $117M aggregate):\n\nBy stage:\n- Application: 12 deals, $28M\n- Underwriting: 15 deals, $42M\n- Approval: 8 deals, $18M\n- Documentation: 7 deals, $21M\n- Funding: 5 deals, $8M\n\nStalled deals (14+ days no activity): 9 total\n- 4 in Application (waiting on financials)\n- 3 in Underwriting (analyst capacity)\n- 2 in Documentation (legal review)\n\nClosing in next 30 days: 11 deals, $28M total\n\nRun the pipeline review report."},{"title": "End-of-quarter push", "prompt": "Time period: Q2 2026 to date (April through May 1)\nProduct line: All commercial\nStalled threshold: 21 days (extended for quarter-end)\nFor: SVP Commercial Friday meeting\n\nPipeline data:\n- 62 active deals, $156M aggregate\n- 18 already closed YTD ($43M)\n- Q2 closing target: $52M\n- Currently at $34M closed/in-funding\n\nStalled deals: 14, totaling $38M\nTop blockers: legal review backlog (6 deals), documentation requests outstanding (5 deals).\n\nClosing 30 days: 16 deals, $42M.\n\nGenerate the report focused on what we can pull forward to hit Q2 targets."}]},
+
+{id:'pre-call-prep',cmd:'/pre-call-prep',name:'Pre-Call Preparation Sheet',dept:'Relationship',deptFull:'Relationship Management',difficulty:'beginner',timeSaved:'~30 min',cadence:'Ad hoc',
+desc:'One-page brief before any client meeting — relationship history, talking points, recommended ask.',
+purpose:'Produces a one-page brief covering relationship history, recent touchpoints, three talking points, and one recommended ask.',
+success:'A focused one-page brief reviewable in five minutes before walking into a meeting.',
+files:['/clients/[client-name]/'],
+connectors:['Gmail','CRM'],
+questions:'Who is the meeting with?\nWhat is the purpose?\nMost important outcome?\nDuration?',
+steps:['Pull emails from last 90 days.','Pull last 3 meeting notes.','Identify open commitments and unresolved issues.','Draft three talking points and one ask.','Format as one-page brief.'],
+output:'Chat Reply',tone:'Internal / Casual',length:'One Page',
+guardrails:['Anonymize member & PII','Always ask the questions','Never send anything externally'],
+customGuard:'Treat relationship history as confidential. Never reference financial detail in shared documents.',
+owner:'Relationship Manager',maturity:'production',
+samples:[{"title": "Eastside Construction — treasury renewal", "prompt": "Meeting: Tomorrow (April 26) at 2:00 PM\nWith: Lisa Mendoza, CFO of Eastside Construction Corp\nLocation: Their offices\nDuration: 60 minutes\nPurpose: Annual treasury services renewal review\nMost important outcome: Secure 3-year contract renewal with expanded fee structure\n\nRelationship facts:\n- Member since 2018\n- Annual treasury revenue: $48K\n- Average deposit balance: $3.2M (up from $2.8M last year)\n- Lending: $2.1M term loan (closed 2022, performing), $1.5M line (50% utilized)\n- Last 90 days touchpoints: 3 emails, 2 calls (mostly operational issues)\n\nOpen commitments:\n- We promised to deliver new ACH origination pricing by 4/15 (delivered 4/18 — 3 days late)\n- They asked about positive pay onboarding (we sent demo 4/10)\n\nRecent context: Their CFO mentioned in March they're evaluating two competitors. Their AR/AP volume is up 40% YoY.\n\nGenerate the pre-call brief."},{"title": "Thompson Logistics — prospect first meeting", "prompt": "Meeting: Friday May 2 at 12:00 PM\nWith: Marcus Thompson, Owner of Thompson Logistics LLC\nLocation: Lunch at Bella Vista\nDuration: 75 minutes\nPurpose: Prospect discovery — referred by John Davis (existing member)\nMost important outcome: Understand banking needs, secure follow-up meeting with team\n\nProspect facts (from referral):\n- 8-year-old logistics company, ~30 trucks\n- Estimated $12M revenue\n- Currently with regional bank (frustrated with service)\n- Owner active in Toastmasters with our referrer\n\nWhat we don't know yet: current loan structure, treasury volume, decision timeline, full team structure.\n\nGenerate the pre-call brief."}]},
+
+{id:'rate-memo',cmd:'/rate-memo',name:'Rate Change Memo',dept:'Treasury',deptFull:'Finance & Treasury',difficulty:'intermediate',timeSaved:'~2 hr',cadence:'Monthly',
+desc:'Board-ready rate change memo with market context, margin impact, competitive positioning, recommendation.',
+purpose:'Drafts a board-ready rate change memo with market context, margin impact analysis, and clear recommendation.',
+success:'A one-page memo to ALCO standard with proposed rate, margin impact, competitive position, and single recommendation.',
+files:['/data/rate-history.xlsx','/data/competitor-rates.xlsx','/templates/alco-rate-memo.docx'],
+connectors:['Web Search','Google Drive'],
+questions:'Which products?\nProposed rate and effective date?\nDriving factor?\nALCO or full board?\nNext meeting date?',
+steps:['Search Fed rate, FOMC, 2-yr Treasury.','Read rate history; calculate 12-mo NIM trend.','Position against competitors.','Build before/after impact table.','Draft memo with all sections.','Format and save.'],
+output:'Word Doc (.docx)',tone:'Board / Executive',length:'One Page',
+guardrails:['Cite only my policy files','Flag missing data','Never make final decisions'],
+customGuard:'Show NIM impact methodology. Never assert competitor will/won\'t match. Cite Fed rate as of specific date.',
+owner:'Treasurer',maturity:'production',
+samples:[{"title": "12-month CD rate increase", "prompt": "Product affected: 12-month Certificate of Deposit\nProposed change: Increase APY from 4.25% to 4.75% (50 bps)\nEffective date: June 1, 2026\nDriving factor: Liquidity needs + competitive pressure\nFor: ALCO meeting May 10, 2026\n\nCurrent market context:\n- Fed Funds: 5.25–5.50% (last move September 2025)\n- 1-yr Treasury: 4.62%\n- Major regional competitor (NorthBank): 12-mo CD at 4.85%\n- Direct local credit union (United Heritage): 12-mo CD at 4.65%\n\nOur position:\n- 12-mo CD balances: $284M (12% of total deposits, target 14%)\n- NIM trend: 3.42% YTD (down from 3.61% prior year)\n- Loan/Deposit ratio: 92% (target 85–90%)\n\nEstimated impact:\n- New money: +$22M projected over 90 days\n- Cost: ~+$110K annualized at proposed rate\n- NIM impact: -3 bps in Q3\n\nDraft the ALCO rate change memo."},{"title": "CRE 5-yr fixed — +25 bps", "prompt": "Product affected: Commercial CRE rate (5-year fixed)\nProposed change: Increase by 25 bps (from 6.50% to 6.75%)\nEffective date: May 15, 2026\nDriving factor: FOMC indicating no near-term cut + portfolio yield optimization\nFor: Full board meeting May 17, 2026\n\nCurrent market:\n- Fed Funds: 5.25–5.50%\n- 5-yr Treasury: 4.31%\n- Our current spread: 219 bps over 5-yr Treasury\n- Competitor avg: 6.85%\n\nOur position:\n- CRE portfolio: $487M (38% of loan book)\n- Weighted avg yield: 5.92% (well below new originations)\n- Q1 originations: $42M at average 6.50%\n- Prepayment rates: 18% annualized\n- New construction pipeline: $38M\n\nEstimated impact:\n- Volume risk: estimate -10% origination volume (-$4M Q3)\n- Yield improvement: +25 bps on $42M annual originations = +$105K\n- Net: positive at proposed rate per analysis\n\nDraft the rate change memo for the board."}]},
+
+{id:'board-package',cmd:'/board-package',name:'Board Package Generator',dept:'Executive',deptFull:'Executive & Board Reporting',difficulty:'advanced',timeSaved:'~8 hr',cadence:'Monthly',
+desc:'Pulls financials, drafts variance narratives, assembles committee reports into a complete board package.',
+purpose:'Assembles a board package: financial dashboard, variance narratives, committee reports, executive summary.',
+success:'A board-ready PowerPoint plus Word executive summary, all figures verified, narratives in board voice.',
+files:['/financials/','/strategic-plan/','/templates/board-deck.pptx','/data/budget.xlsx'],
+connectors:['Google Drive','SharePoint'],
+questions:'Meeting date and reporting period?\nWhich committees reporting?\nSpecial agenda items?\nBoard chair detail preference?',
+steps:['Pull current financial statements.','Compare to budget and prior year.','Flag variances >10% or >$50K.','Draft variance narrative in board voice.','Pull committee report inputs.','Build executive summary.','Format and save.'],
+output:'Slide Deck (.pptx)',tone:'Board / Executive',length:'Full Detail',
+guardrails:['Flag missing data','Cite only my policy files','Never make final decisions'],
+customGuard:'Never present unverified projections as fact. Always show budget vs actual. Flag restatements explicitly.',
+owner:'Corporate Secretary',maturity:'pilot',
+samples:[{"title": "May board — April month-end", "prompt": "Meeting: May 15, 2026\nReporting period: April 2026 (month-end financials)\nReporting committees: Finance, Audit, Risk, Compensation\n\nSpecial agenda items:\n- Q1 Strategic Plan progress check-in\n- Executive compensation review (annual cycle)\n- Cybersecurity incident response policy update (proposed)\n\nBoard chair preference: Detailed memos preferred; financial dashboard with explanations.\n\nFinancial highlights (April 2026):\n- Total assets: $2.84B (+1.2% MoM, +6.8% YoY)\n- Net income MTD: $4.2M (vs budget $3.9M, +8%)\n- ROA: 0.59% (target 0.55%)\n- NIM: 3.38% (vs prior year 3.61% — down 23 bps)\n- Loan growth YTD: +4.2%\n- Deposit growth YTD: +3.1%\n- Allowance for credit losses: $18.4M (1.42% of loans)\n\nVariances to flag:\n- Non-interest income +14% MoM (mortgage refis up)\n- Operating expenses +6% MoM (one-time IT modernization charge $480K)\n- NPLs at 0.42% (up from 0.38% — small uptick on one CRE relationship)\n\nBuild the board package."},{"title": "Q1 quarterly board review", "prompt": "Meeting: April 17, 2026 (already happened — this is for follow-up reporting)\nReporting period: Q1 2026\nReporting committees: All\n\nSpecial agenda items:\n- Q1 results vs budget\n- 5-year strategic plan annual refresh\n- New branch grand opening review (Pacific Heights, opened February)\n\nFinancial highlights Q1 2026:\n- Net income: $11.8M (budget $11.2M, +5%)\n- ROA: 0.62%, ROE: 8.4%\n- Asset growth: +1.8% Q1\n- Loan growth: +2.1%, Deposit growth: +1.4%\n- Net charge-offs: $480K (annualized 0.04%)\n- Capital: Tier 1 11.4%, Total 13.2% (well-capitalized)\n\nStrategic plan progress (4 of 12 initiatives):\n- ON TRACK: digital banking modernization, branch expansion (1 of 2 completed)\n- AT RISK: commercial deposit growth (-3% vs target)\n- COMPLETED: vendor consolidation project\n\nBuild the comprehensive Q1 board package."}]},
+
+{id:'member-complaint',cmd:'/member-complaint',name:'Member Complaint Resolution',dept:'Operations',deptFull:'Operations & Retail Banking',difficulty:'beginner',timeSaved:'~45 min',cadence:'Per complaint',
+desc:'Categorizes complaints, drafts member response, creates log entry meeting tracking requirements.',
+purpose:'Structures a complaint, identifies owner, drafts member response, creates log entry.',
+success:'Member response email drafted in plain language plus log entry with all tracking fields.',
+files:['/policies/complaint-policy.pdf','/templates/complaint-log.xlsx'],
+connectors:['Gmail','Core Banking'],
+questions:'Nature of complaint?\nProduct or service?\nMember already contacted?\nRegulatory flag (UDAAP, Reg E, FCRA)?\nDate received?',
+steps:['Categorize by type and product.','Check policy for response timeframe.','Identify owner.','Draft response in plain language.','Create log entry with regulatory flags.','Escalate UDAAP/Reg E/FCRA items.'],
+output:'Email Draft',tone:'Member-facing / Plain',length:'Bullets Only',
+guardrails:['Anonymize member & PII','Use our terminology','Flag missing data','Never send anything externally'],
+customGuard:'Member response is draft only. Never commit to specific outcomes — only timeline. Reg E disputes flagged for 10/45/90 day tracking.',
+owner:'Member Service Manager',maturity:'production',
+samples:[{"title": "Reg E unauthorized ATM", "prompt": "Complaint received: Today (April 25, 2026)\nFrom: Sarah Mitchell (Member ID: M-0087423)\nChannel: Phone call to branch manager\nMember status: Member since 2014, no prior complaints\n\nNature of complaint: Member reports unauthorized ATM withdrawal of $300 on April 23, 2026 at 3:42 PM at our Northgate branch ATM. Member states card was in their possession at time of withdrawal and they did not authorize the transaction.\n\nProduct/service: Debit card / ATM (Reg E applies)\nRegulatory implications: Reg E unauthorized transaction — must investigate within 10 business days, provisional credit if not resolved by then. 45 days for full investigation.\n\nAvailable facts:\n- ATM video footage: requested, expected by EOD tomorrow\n- Other recent transactions: normal pattern\n- Card status: still active, not previously reported lost/stolen\n- Member states they were at work that afternoon (can provide proof)\n\nProcess the complaint."},{"title": "Overdraft fee + notification claim", "prompt": "Complaint received: Yesterday (April 24, 2026)\nFrom: David Park (Member ID: M-0156789)\nChannel: Email to memberservice@ourcu.org\nMember status: Member since 2019, one prior complaint (2022, resolved)\n\nNature of complaint: Member assessed $35 overdraft fee on April 22, 2026 for a $42 grocery purchase. Claims he never received the low-balance notification email that should have arrived per his alert settings. Demands fee refund plus apology.\n\nProduct/service: Checking account / Courtesy Pay program\nRegulatory implications:\n- Possible UDAAP angle (notification failure could be deceptive practice)\n- Reg DD disclosures (we promote the alert system)\n- Not a Reg E dispute (member acknowledges he made the purchase)\n\nAvailable facts:\n- Member's alert settings: confirmed enabled for \"balance below $50\"\n- Email logs (IT pulled): notification sent 4/22 at 11:42 AM, not bounced\n- Member's previous OD notifications: 6 in past 12 months, all received\n- Possibly went to spam (member to check)\n- Amount: $35 fee, $42 transaction, account at -$22 after\n\nProcess the complaint."}]},
+
+{id:'branch-perf',cmd:'/branch-performance',name:'Branch Performance Scorecard',dept:'Operations',deptFull:'Operations & Retail Banking',difficulty:'intermediate',timeSaved:'~3 hr',cadence:'Monthly',
+desc:'Pulls production by branch, calculates against goals, identifies top/bottom performers, drafts narrative.',
+purpose:'Generates branch performance scorecard with production vs goal, outliers, narrative for retail leadership.',
+success:'Excel scorecard ranked by goal attainment plus Word narrative explaining outliers and trends.',
+files:['/branches/','/goals/branch-goals.xlsx','/templates/scorecard.xlsx'],
+connectors:['Core Banking','CRM'],
+questions:'Reporting period?\nWhich metrics?\nComparison basis?\nFor leadership only or branch managers?',
+steps:['Pull production data by branch.','Compare to goal and prior period.','Normalize for branch size.','Rank by goal attainment.','Identify top/bottom performers.','Draft narrative — branches not individuals.','Format and save.'],
+output:'Spreadsheet (.xlsx)',tone:'Professional',length:'Full Detail',
+guardrails:['Anonymize member & PII','Flag missing data'],
+customGuard:'Branches only — never single out individual staff. Always normalize for branch size. Flag data quality issues.',
+owner:'SVP Retail',maturity:'production',
+samples:[{"title": "April monthly scorecard", "prompt": "Reporting period: April 2026 (month-end)\nBranches included: All 14 branches\nMetrics: New checking, new savings, deposit growth, loan referrals to commercial team, member acquisition\nComparison basis: vs goal, vs prior month, vs prior year same period\nAudience: Retail leadership team meeting, Wednesday May 7\n\nApril production summary:\n- Total new checking accounts: 247 (goal 240, +3%)\n- Total new savings: 189 (goal 195, -3%)\n- Net deposit growth: $14.2M (goal $12M, +18%)\n- Loan referrals: 47 (goal 42, +12%)\n- New members: 156 (goal 150, +4%)\n\nBranch-level highlights:\n- Top performer (% of goal): Pacific Heights (new branch, opened Feb)\n- Bottom performer: Downtown (legacy branch, 87% of goal)\n- 3 branches missed deposit goal due to large business member moves\n- Branch sizes range from 4 FTE to 12 FTE\n\nGenerate the scorecard."},{"title": "Q1 wrap with deposit focus", "prompt": "Reporting period: Q1 2026 (Jan–Mar)\nBranches: All 14\nMetrics focus: Deposit growth, member retention, cross-sell ratio\nComparison basis: vs Q1 2025, vs annual plan\nAudience: SVP Retail and CEO\n\nQ1 highlights:\n- Network deposit growth: +$38M (annualized 5.4%)\n- Goal was +$32M, ahead of plan\n- Member retention: 94.2% (target 93%)\n- Cross-sell ratio: 2.4 (target 2.5)\n\nBranch-level:\n- 4 branches exceeded all metrics\n- 3 branches missed deposit goal\n- New Pacific Heights branch hit 142% of opening-quarter goal\n- 2 branches showing concerning member retention (under 91%)\n\nGenerate the Q1 scorecard with retention deep-dive."}]},
+
+{id:'campaign-compliance',cmd:'/campaign-compliance',name:'Marketing Campaign Compliance Review',dept:'Marketing',deptFull:'Marketing & Member Experience',difficulty:'intermediate',timeSaved:'~2 hr',cadence:'Per campaign',
+desc:'Reviews materials against required disclosures, checks UDAAP, produces annotated review.',
+purpose:'Reviews marketing campaign drafts against required disclosures and UDAAP standards.',
+success:'Annotated review with every required disclosure verified or missing, UDAAP risks flagged, required edits.',
+files:['/policies/advertising-policy.pdf','/policies/disclosure-library.pdf','/campaigns/draft/'],
+connectors:['Google Drive','SharePoint'],
+questions:'What channel?\nWhat product?\nTarget audience and geography?\nPromotional rate?\nLaunch date?',
+steps:['Read campaign material.','For credit: verify Reg Z disclosures.','For deposits: verify Reg DD disclosures.','Verify NCUSIF/FDIC notice.','Scan for UDAAP risk language.','Check fair lending implications.','Produce annotated review.','Flag for compliance officer.'],
+output:'Word Doc (.docx)',tone:'Regulatory / Formal',length:'2–3 Pages',
+guardrails:['Cite only my policy files','Never make final decisions','Flag missing data'],
+customGuard:'Compliance officer must approve final launch. Never approve "guaranteed" or "best in market" without substantiation.',
+owner:'Marketing Compliance',maturity:'production',
+samples:[{"title": "High-yield savings email blast", "prompt": "Channel: Email blast to existing members\nProduct: New \"Premium High-Yield Savings\" account\nTarget audience: All checking members with savings <$10K\nGeographic scope: All states we operate (WA, OR, ID)\nPromotional rate: 4.50% APY for first 12 months on balances $5K–$100K\nStandard rate: 3.75% APY thereafter\nLaunch date: June 1, 2026\nExpected reach: 18,400 members\n\nCampaign creative provided:\n- Subject line: \"Your money deserves more — 4.50% APY\"\n- Hero copy: \"Earn 4.50% APY on your savings. Open an account in 5 minutes. FDIC insured.\"\n- CTA: \"Open now — limited time offer\"\n- Footer disclosure: APY accurate as of [DATE]; minimum opening deposit $500; promotional rate for 12 months on balances $5K–$100K; rates may change\n\nRun the compliance review."},{"title": "HELOC direct mail postcard", "prompt": "Channel: Direct mail (postcard)\nProduct: Home Equity Line of Credit\nTarget audience: Homeowners with primary residence in our footprint\nGeographic scope: Pierce, King, Snohomish counties (WA)\nPromotional offering: Variable rate Prime + 0.50% (currently 9.00%); $500 closing cost credit if drawn $25K+ within 30 days\nLaunch date: May 15, 2026\nExpected reach: 25,000 mailings\n\nCampaign creative provided:\n- Front: \"Your home's value, your money — HELOC at Prime + 0.50%\"\n- Reverse: \"Up to $250,000 line. As low as 9.00% APR. $500 closing cost credit. Apply by July 1.\"\n- Disclosure block: Standard Reg Z box (rate, fees, payments examples)\n\nRun the compliance review."}]},
+
+{id:'vendor-risk',cmd:'/vendor-risk',name:'Third-Party Risk Assessment',dept:'Risk',deptFull:'Risk & Vendor Management',difficulty:'advanced',timeSaved:'~4 hr',cadence:'Per onboarding',
+desc:'Categorizes vendor criticality, assesses data sensitivity, reviews security docs, identifies gaps per FFIEC.',
+purpose:'Conducts third-party risk assessment per FFIEC and OCC 2013-29: criticality, data sensitivity, security review.',
+success:'Complete vendor risk assessment with criticality tier, data classification, SOC 2 gap analysis, mitigations.',
+files:['/policies/vendor-management.pdf','/templates/vendor-risk.docx','/vendors/[vendor]/'],
+connectors:['Google Drive','SharePoint'],
+questions:'Vendor name and service?\nWhat data accessed?\nContract value and term?\nNew or renewal?\nSOC 2 Type II provided?\nRecovery time tolerance?',
+steps:['Categorize criticality by RTO.','Classify data sensitivity.','Review SOC 2; identify gaps.','Check required documentation.','Identify gaps.','Draft risk rating with justification.','List required mitigations.'],
+output:'Word Doc (.docx)',tone:'Regulatory / Formal',length:'2–3 Pages',
+guardrails:['Never make final decisions','Cite only my policy files','Flag missing data'],
+customGuard:'Assessment only — never approves onboarding. Critical-tier vendors must escalate to executive review. Flag SOC 2 qualified opinions.',
+owner:'CISO',maturity:'production',
+samples:[{"title": "NorthStar — new core banking vendor", "prompt": "Vendor: NorthStar Banking Systems Inc\nService: Core banking platform replacement (deposit and loan systems)\nContract value: $480,000/year, 5-year term, $2.4M total contract value\nStatus: New onboarding (replacing 22-year-old legacy system)\n\nData accessed:\n- All member NPI (names, SSN, account numbers, balances)\n- Transaction history\n- Loan documents and payment records\n- Employee access credentials\n\nRecovery time tolerance: 4 hours (mission critical)\n\nSOC 2 Type II: Provided (one qualified opinion regarding network segmentation — vendor remediated, awaiting next audit)\n\nOther documentation:\n- Cyber insurance: $50M (sufficient)\n- BCM/DR documentation: provided\n- Penetration test results: most recent 8 months ago\n- Subcontractors: 4 critical (AWS, Snowflake, Twilio, Auth0)\n\nContext: 18-month implementation, parallel run for 6 months, full cutover Q3 2027.\n\nRun the risk assessment."},{"title": "Pacific Print — statement vendor renewal", "prompt": "Vendor: Pacific Print Solutions\nService: Member statement printing and mailing\nContract value: $185,000/year, 3-year renewal\nStatus: Renewal (current vendor 7 years)\n\nData accessed:\n- Member names and addresses\n- Account numbers (masked)\n- Statement balances\n- No SSN or full account number access\n\nRecovery time tolerance: 5 business days (statements have flex)\n\nSOC 2 Type II: Provided (clean opinion)\n\nOther documentation:\n- Cyber insurance: $10M\n- BCM/DR: tested annually\n- Subcontractors: 1 (USPS for mailing)\n- Prior issues: none in 7 years; 99.7% on-time delivery\n\nRun the risk assessment."}]},
+
+{id:'strategic-update',cmd:'/strategic-update',name:'Strategic Initiative Status',dept:'Executive',deptFull:'Executive & Board Reporting',difficulty:'intermediate',timeSaved:'~3 hr',cadence:'Monthly',
+desc:'Pulls initiative status, compares to milestones, identifies risks, recommends resource changes.',
+purpose:'Generates monthly strategic initiative status report comparing actual to milestones for ELT or board.',
+success:'1-page Word executive update with each initiative status, milestone progress, blockers, resource needs.',
+files:['/strategic-plan/','/initiatives/','/templates/exec-update.docx'],
+connectors:['Google Drive','CRM'],
+questions:'Reporting period and meeting date?\nKey audience?\nInitiatives needing decisions?\nNew initiatives this period?',
+steps:['Read each initiative folder.','Compare to planned milestones.','Categorize: On Track, At Risk, Off Track.','Identify resource needs and blockers.','Draft summary.','Format and save.'],
+output:'Word Doc (.docx)',tone:'Board / Executive',length:'One Page',
+guardrails:['Cite only my policy files','Flag missing data','Never make final decisions'],
+customGuard:'Never present at-risk initiatives as on-track. Always include resource needs explicitly.',
+owner:'Chief Strategy Officer',maturity:'production',
+samples:[{"title": "May ELT update", "prompt": "Reporting period: April 2026 (month-end)\nMeeting: ELT, Wednesday May 8, 2026\nKey audience: CEO and direct reports (12 people)\n\nInitiatives needing decisions:\n1. Digital lending platform — vendor selection (RFP scoring complete)\n2. Branch consolidation in declining markets (2 branches under review)\n\nNew initiatives this period: None\n\n12 active initiatives:\n\nDigital Banking Modernization (1 of 4 sub-initiatives complete; on track)\n- Mobile app refresh: completed March\n- Online banking: in pilot, 30% complete\n- API platform: in design\n- Business banking online: not started\n\nCommercial Deposit Growth (off track)\n- Q1 deposit growth: +1% vs goal of +4%\n- Treasury services pricing review: pending\n- New commercial deposit RM: open req\n\nMember Acquisition (on track)\n- New member growth: +3.2% YTD vs goal +3%\n- Pacific Heights branch: ahead of pro forma\n- Digital acquisition: 18% of new members (was 12%)\n\nTalent & Culture (on track)\n- Engagement score: 4.2/5 (up from 3.9)\n- Retention rate: 88% (target 85%)\n\nGenerate the strategic update."},{"title": "Q1 board strategic check-in", "prompt": "Reporting period: Q1 2026\nMeeting: Board strategic session May 22, 2026\nKey audience: Full board (9 directors)\n\nInitiatives needing decisions:\n1. M&A opportunity — small thrift in adjacent market ($350M assets, $4M offer)\n2. New branch market entry (King County north — opportunity vs cost)\n\nNew initiatives this period: One (Member Financial Wellness program — board-approved March)\n\n12 initiatives status:\n- 7 ON TRACK\n- 3 AT RISK (commercial deposit growth, IT modernization timeline, fee income diversification)\n- 2 OFF TRACK (digital lending platform, vendor consolidation)\n- 1 NEW (financial wellness program)\n\nResource needs:\n- Digital lending: $400K incremental Q3 spend to recover timeline\n- IT modernization: extension to Q1 2027 (was Q4 2026)\n- Vendor consolidation: 2 FTE deferred 6 months\n\nCritical risks:\n- NIM compression (-23 bps YoY) impacting initiative funding\n- Regulatory exam preparation consuming capacity\n- 2 senior leaders retiring Q3\n\nGenerate the strategic update."}]}
+];
+
+// ─── STATE ────────────────────────────────────────────────────────
+let savedSkills = [];
+let activeSkill = null;        // currently loaded in playground/build
+let activeFilter = 'all';
+let activeRole = '';
+let wizardStep = 1;
+let wizardData = null;          // skill being built in wizard
+let conversation = [];          // multi-turn message history for playground
+
+// ─── STORAGE: Robust abstraction ──────────────────────────────────
+// Tries window.storage (Anthropic artifact runtime), then localStorage
+// (deployed in LMS / standalone), then in-memory (last-resort fallback).
+const Storage = {
+  _memory: {},
+  _mode: null,
+
+  async init() {
+    // Try window.storage first
+    if (typeof window.storage !== 'undefined' && window.storage && typeof window.storage.set === 'function') {
+      try {
+        await window.storage.set('__probe__', '1');
+        this._mode = 'window';
+        return;
+      } catch (e) {}
+    }
+    // Try localStorage
+    try {
+      const k = '__aibi_probe__';
+      localStorage.setItem(k, '1');
+      localStorage.removeItem(k);
+      this._mode = 'local';
+      return;
+    } catch (e) {}
+    this._mode = 'memory';
+    console.warn('[Toolbox] No persistent storage available — using in-memory only.');
+  },
+
+  async get(key) {
+    if (this._mode === 'window') {
+      try { const r = await window.storage.get(key); return r ? r.value : null; } catch (e) { return null; }
+    }
+    if (this._mode === 'local') {
+      try { return localStorage.getItem(key); } catch (e) { return null; }
+    }
+    return this._memory[key] || null;
+  },
+
+  async set(key, value) {
+    if (this._mode === 'window') {
+      try { await window.storage.set(key, value); return true; } catch (e) { return false; }
+    }
+    if (this._mode === 'local') {
+      try { localStorage.setItem(key, value); return true; } catch (e) { return false; }
+    }
+    this._memory[key] = value;
+    return true;
+  }
+};
+
+async function loadToolbox() {
+  await Storage.init();
+  const raw = await Storage.get(CONFIG.storageKey);
+  try {
+    savedSkills = raw ? JSON.parse(raw) : [];
+  } catch (e) {
+    savedSkills = [];
+  }
+  renderToolbox();
+  updateTabCount();
+}
+
+async function saveToolbox() {
+  const ok = await Storage.set(CONFIG.storageKey, JSON.stringify(savedSkills));
+  if (!ok) showToast('Could not save — storage unavailable in this context', 'error');
+  return ok;
+}
+
+// ─── CLIPBOARD: Robust copy with fallback ─────────────────────────
+async function copyToClipboard(text, successMsg) {
+  // Try modern API first (only works in secure contexts)
+  if (navigator.clipboard && window.isSecureContext) {
+    try {
+      await navigator.clipboard.writeText(text);
+      showToast(successMsg || 'Copied to clipboard');
+      return true;
+    } catch (e) { /* fall through */ }
+  }
+  // Fallback: hidden textarea + execCommand
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.setAttribute('readonly', '');
+  ta.style.position = 'fixed';
+  ta.style.left = '-9999px';
+  ta.style.top = '0';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  let ok = false;
+  try { ok = document.execCommand('copy'); } catch (e) {}
+  document.body.removeChild(ta);
+  if (ok) {
+    showToast(successMsg || 'Copied to clipboard');
+    return true;
+  }
+  showToast('Could not copy — please select the text manually', 'error');
+  return false;
+}
+
+// ─── DOWNLOAD: Robust file download ───────────────────────────────
+function downloadFile(filename, content, mimeType) {
+  try {
+    const blob = new Blob([content], { type: mimeType || 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.style.display = 'none';
+    document.body.appendChild(a);  // Required in Firefox / some browsers
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    showToast('Downloaded ' + filename);
+    return true;
+  } catch (e) {
+    console.error('Download failed:', e);
+    showToast('Download failed — ' + e.message, 'error');
+    return false;
+  }
+}
+
+// ─── API: Live skill testing via Anthropic Messages API ────────────
+// Takes the full conversation array — supports multi-turn back-and-forth.
+async function callClaudeAPI(skill, messages) {
+  const systemPrompt = buildSystemPrompt(skill);
+
+  try {
+    const response = await fetch(CONFIG.apiEndpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: CONFIG.apiModel,
+        max_tokens: CONFIG.maxTokens,
+        system: systemPrompt,
+        messages: messages
+      })
+    });
+
+    if (!response.ok) {
+      const errBody = await response.text().catch(() => '');
+      throw new Error(`API ${response.status}: ${errBody.substring(0, 200)}`);
+    }
+
+    const data = await response.json();
+    const text = data.content
+      .filter(b => b.type === 'text')
+      .map(b => b.text)
+      .join('\n\n');
+    return { success: true, text };
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+}
+
+function buildSystemPrompt(skill) {
+  const guardrails = [
+    ...(skill.guardrails || []),
+    ...(skill.customGuard ? [skill.customGuard] : [])
+  ];
+
+  return `You are an AI assistant for a U.S. community bank or credit union, executing a specific institutional skill.
+
+SKILL: ${skill.name}
+TRIGGER: ${skill.cmd}
+DEPARTMENT: ${skill.deptFull || skill.dept || 'General'}
+
+PURPOSE
+${skill.purpose || skill.desc || ''}
+
+CLARIFYING QUESTIONS THIS SKILL NORMALLY ASKS:
+${skill.questions || ''}
+
+WORKFLOW STEPS:
+${(skill.steps || []).map((s, i) => `${i + 1}. ${s}`).join('\n')}
+
+OUTPUT SPECIFICATION
+- Format: ${skill.output || 'Markdown'}
+- Tone: ${skill.tone || 'Professional'}
+- Length: ${skill.length || 'Concise'}
+
+RULES — NEVER VIOLATE
+${guardrails.map(g => `• ${g}`).join('\n')}
+
+═══ DEMO MODE — CRITICAL INSTRUCTIONS ═══
+
+This is a learning playground inside the AI Banking Institute LMS. The user wants to SEE the polished deliverable this skill produces — not a meta-document explaining what would happen in production.
+
+TREAT THE USER'S MESSAGE AS GROUND TRUTH. The fabricated scenario they provide IS your source of truth. Pretend you have already read every policy, template, prior memo, and reference file the workflow mentions, because in production you would have. Where the scenario doesn't specify a value, supply a realistic and plausible one consistent with U.S. community bank/credit union practice.
+
+SKIP THE CLARIFYING QUESTIONS. The user has front-loaded the answers. Proceed directly to producing the workflow's final deliverable.
+
+╔═══ ANTI-HALLUCINATION RULES — NEVER VIOLATE ═══╗
+
+This module is teaching financial institutions to use AI responsibly in a regulated environment. Hallucinated citations would contradict the entire lesson. Therefore:
+
+NEVER invent or fabricate any of the following — even to make the deliverable look more polished:
+• URLs (do not invent links to regulator websites, internal pages, vendor sites, or any other URL)
+• Specific guidance letter numbers, bulletin IDs, or document IDs not provided in the scenario
+• Court cases, legal opinions, or specific case citations
+• Phone numbers, email addresses, or contact details
+• Specific examiner names, vendor names, or personnel names beyond what the scenario provides
+• Specific dollar amounts, dates, ratios, or metrics the scenario didn't supply (use ranges or "approximately" where calculation is needed)
+• Internal file paths beyond the ones the skill references
+
+WHEN A FACT WOULD NORMALLY HAVE A SOURCE BUT WASN'T PROVIDED:
+• Reference it generically: "the agency's official guidance," "the bulletin cited above," "the institution's lending policy §X" (using a plausible section number is OK)
+• Tell the user: "[source citation to be added on filing]" or "[link to be inserted]" — these are EXPECTED in working drafts and are NOT the same as [DATA REQUIRED] flags banned above
+
+REGULATORY CITATIONS YOU MAY USE — ONLY THESE STANDARDS:
+• Real, well-known regulation citations are fine: 12 CFR 1002 (Reg B), 12 CFR 1005 (Reg E), 12 CFR 1026 (Reg Z), 31 CFR 1020 (BSA), Dodd-Frank §1031/§1036 (UDAAP), OCC Bulletin 2013-29, FFIEC IT Handbook, NCUA Rules and Regulations Part 723, etc.
+• If the scenario provides a specific citation, use exactly that.
+• Do NOT invent specific subsection numbers (e.g., "12 CFR 1005.11(c)(2)(iii)") unless you are certain they exist as written. When in doubt, cite the broader section.
+
+╚═══════════════════════════════════════════════╝
+
+DO NOT INCLUDE in your response:
+• [DATA REQUIRED], [TBD], [PLACEHOLDER], [INSERT ___], or similar bracket flags for SCENARIO data
+• "Workflow Transparency Notes" or any meta-commentary about being in a testing environment
+• Disclaimers like "in production this would..." or "since I don't have access to..."
+• Apologies about file access, system access, or data limitations
+• Suggestions to "verify before sending" tacked onto every section
+
+Citation placeholders like "[link to be inserted]" or "[examiner name to be confirmed]" ARE allowed for things you legitimately should not invent — these are professional, expected, and different from the [DATA REQUIRED] floods that defeat the demo's purpose.
+
+PRODUCE the actual finished deliverable as polished markdown. Use specific numbers, names, dates, and regulatory citations from the scenario. Keep the regulatory rigor (Reg cites, guardrails, escalation flags where the workflow calls for them) — those ARE part of the work product. Just deliver the work, not the apology.
+
+If the user follows up to refine, expand, or alter the deliverable, do so in the same direct style. If they ask off-topic questions, answer briefly and offer to refine the deliverable.`;
+}
+
+// ─── UI: Tab switching ─────────────────────────────────────────────
+function showView(name, btn) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  const viewEl = document.getElementById('view-' + name);
+  if (viewEl) viewEl.classList.add('active');
+  // If btn wasn't passed, find the tab whose onclick references this view
+  if (!btn) {
+    btn = [...document.querySelectorAll('.tab-btn')].find(t =>
+      (t.getAttribute('onclick') || '').includes(`showView('${name}'`)
+    );
+  }
+  if (btn) btn.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateTabCount() {
+  const c = document.getElementById('tb-count');
+  if (savedSkills.length > 0) {
+    c.textContent = savedSkills.length;
+    c.style.display = 'inline-block';
+  } else {
+    c.style.display = 'none';
+  }
+  // Sync the CTA card and journey label
+  const cccount = document.getElementById('ncc-toolbox-count');
+  if (cccount) {
+    cccount.textContent = savedSkills.length === 0 ? 'Your saved skills' :
+      savedSkills.length + (savedSkills.length === 1 ? ' skill saved' : ' skills saved');
+  }
+  const tbCta = document.getElementById('toolbox-cta');
+  if (tbCta) {
+    tbCta.textContent = savedSkills.length === 0 ? 'View saved →' :
+      `${savedSkills.length} saved →`;
+  }
+}
+
+// ─── COOKBOOK: Render templates ────────────────────────────────────
+function renderTemplates() {
+  const g = document.getElementById('t-grid');
+  let f = TEMPLATES;
+  if (activeFilter !== 'all') f = f.filter(t => t.difficulty === activeFilter);
+  if (activeRole) f = f.sort((a, b) => (a.dept === activeRole ? 0 : 1) - (b.dept === activeRole ? 0 : 1));
+  g.innerHTML = f.map(t => `
+    <div class="t-card ${activeRole && t.dept === activeRole ? 'recommended' : ''}">
+      <div class="tc-top">
+        <span class="tc-cmd">${t.cmd}</span>
+        <span class="tc-diff ${t.difficulty}"><span class="dots"><span></span><span></span><span></span></span>${t.difficulty}</span>
+      </div>
+      <div class="tc-name">${t.name}</div>
+      <div class="tc-desc">${t.desc}</div>
+      <div class="tc-meta">
+        <span><strong>For</strong>${t.deptFull}</span>
+        <span><strong>Saves</strong>${t.timeSaved}</span>
+      </div>
+      <div class="tc-actions">
+        <button class="tc-action primary" onclick="loadIntoPlayground('${t.id}')">▶ Try in Playground</button>
+        <button class="tc-action" onclick="editTemplate('${t.id}')">Customize</button>
+      </div>
+    </div>`).join('');
+}
+
+function filterByRole(role) {
+  activeRole = role;
+  renderTemplates();
+}
+
+function filterTemplates(level, btn) {
+  activeFilter = level;
+  document.querySelectorAll('.f-chip').forEach(c => c.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  // Switch to cookbook view if not already there
+  if (!document.getElementById('view-cookbook').classList.contains('active')) {
+    showView('cookbook');
+  }
+  renderTemplates();
+}
+
+function loadIntoPlayground(id) {
+  const t = TEMPLATES.find(x => x.id === id);
+  if (!t) return;
+  activeSkill = JSON.parse(JSON.stringify(t));
+  activeSkill.id = activeSkill.id || ('skl_' + Date.now());
+  renderPlayground();
+  showView('test');
+}
+
+function editTemplate(id) {
+  const t = TEMPLATES.find(x => x.id === id);
+  if (!t) return;
+  loadWizardFromTemplate(t);
+  showView('build');
+}
+
+// ─── BUILD: Wizard logic ───────────────────────────────────────────
+function showWizardStep(n) {
+  wizardStep = n;
+  document.querySelectorAll('.wiz-step').forEach(s => s.classList.remove('active'));
+  document.getElementById('ws-' + n).classList.add('active');
+  for (let i = 1; i <= 5; i++) {
+    const el = document.getElementById('wp-' + i);
+    el.classList.remove('current', 'complete');
+    if (i < n) el.classList.add('complete');
+    else if (i === n) el.classList.add('current');
+  }
+  document.getElementById('wiz-progress-label').textContent = `Step ${n} of 5`;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function wizardNext(step) {
+  // Validate required fields
+  if (step === 1) {
+    if (!document.getElementById('f-cmd').value.trim() || !document.getElementById('f-name').value.trim()) {
+      showToast('Please fill in the trigger shortcut and skill name', 'error');
+      return;
+    }
+  }
+  if (step === 2 && !document.getElementById('f-purpose').value.trim()) {
+    showToast('Please describe what this skill does', 'error');
+    return;
+  }
+  if (step === 3 && !document.getElementById('f-questions').value.trim()) {
+    showToast('Please add at least one clarifying question', 'error');
+    return;
+  }
+  if (step === 4) {
+    const hasSteps = [...document.querySelectorAll('#steps-rep input')].some(i => i.value.trim());
+    if (!hasSteps || !document.getElementById('f-output').value) {
+      showToast('Please add workflow steps and select an output format', 'error');
+      return;
+    }
+  }
+  showWizardStep(step + 1);
+}
+
+function wizardBack(step) {
+  showWizardStep(step - 1);
+}
+
+function loadWizardFromTemplate(t) {
+  document.getElementById('f-cmd').value = t.cmd || '';
+  document.getElementById('f-name').value = t.name || '';
+  document.getElementById('f-role').value = t.deptFull || '';
+  document.getElementById('f-frequency').value = t.cadence || '';
+  document.getElementById('f-purpose').value = t.purpose || '';
+  document.getElementById('f-success').value = t.success || '';
+  document.getElementById('f-questions').value = t.questions || '';
+  document.getElementById('f-quality').value = (t.qualityGates || []).join('\n');
+  document.getElementById('f-escalation').value = t.escalation || '';
+  document.getElementById('f-output').value = t.output || '';
+  document.getElementById('f-tone').value = t.tone || '';
+  document.getElementById('f-length').value = t.length || '';
+  document.getElementById('f-customg').value = t.customGuard || '';
+  document.getElementById('f-owner').value = t.owner || '';
+  document.getElementById('f-maturity').value = t.maturity || 'draft';
+  document.getElementById('f-version').value = t.version || '1.0';
+
+  // Files
+  const fr = document.getElementById('files-rep');
+  fr.innerHTML = '';
+  (t.files || []).forEach((f, i) => {
+    const row = document.createElement('div');
+    row.className = 'rep-row';
+    row.innerHTML = `<span class="rn">${toRoman(i + 1)}.</span><input type="text" value="${escapeAttr(f)}" /><button class="rm-btn" onclick="rmRow(this)">×</button>`;
+    fr.appendChild(row);
+  });
+  if (fr.children.length === 0) {
+    fr.innerHTML = `<div class="rep-row"><span class="rn">i.</span><input type="text" placeholder="/policies/  —  describe what this contains" /><button class="rm-btn" onclick="rmRow(this)">×</button></div>`;
+  }
+
+  // Steps
+  const sr = document.getElementById('steps-rep');
+  sr.innerHTML = '';
+  (t.steps || []).forEach((s, i) => {
+    const row = document.createElement('div');
+    row.className = 'rep-row';
+    row.innerHTML = `<span class="rn">${i + 1}.</span><input type="text" value="${escapeAttr(s)}" /><button class="rm-btn" onclick="rmRow(this)">×</button>`;
+    sr.appendChild(row);
+  });
+  if (sr.children.length === 0) {
+    sr.innerHTML = `<div class="rep-row"><span class="rn">1.</span><input type="text" placeholder="First step..." /><button class="rm-btn" onclick="rmRow(this)">×</button></div>`;
+  }
+
+  // Connectors
+  document.querySelectorAll('#conn-group .chip').forEach(c =>
+    c.classList.toggle('selected', (t.connectors || []).includes(c.textContent.trim()))
+  );
+
+  // Guardrails
+  document.querySelectorAll('#g-grid .gi').forEach(it => {
+    const tx = it.querySelector('.gt').textContent.trim();
+    it.classList.toggle('selected', (t.guardrails || []).some(g => normGuard(g) === normGuard(tx)));
+  });
+
+  showWizardStep(1);
+}
+
+function normGuard(s) { return s.replace(/&amp;/g, '&').toLowerCase().substring(0, 30); }
+
+function readWizardForm() {
+  return {
+    id: (activeSkill && activeSkill.id) || ('skl_' + Date.now()),
+    cmd: ensureSlash(document.getElementById('f-cmd').value.trim()),
+    name: document.getElementById('f-name').value.trim(),
+    deptFull: document.getElementById('f-role').value,
+    dept: (document.getElementById('f-role').value.split(' ')[0]) || '',
+    cadence: document.getElementById('f-frequency').value,
+    purpose: document.getElementById('f-purpose').value,
+    success: document.getElementById('f-success').value,
+    files: [...document.querySelectorAll('#files-rep input')].map(i => i.value.trim()).filter(Boolean),
+    connectors: [...document.querySelectorAll('#conn-group .chip.selected')].map(c => c.textContent.trim()),
+    questions: document.getElementById('f-questions').value,
+    steps: [...document.querySelectorAll('#steps-rep input')].map(i => i.value.trim()).filter(Boolean),
+    qualityGates: document.getElementById('f-quality').value.split('\n').filter(Boolean),
+    escalation: document.getElementById('f-escalation').value,
+    output: document.getElementById('f-output').value,
+    tone: document.getElementById('f-tone').value,
+    length: document.getElementById('f-length').value,
+    guardrails: [...document.querySelectorAll('#g-grid .gi.selected')].map(it => it.querySelector('.gt').textContent.trim()),
+    customGuard: document.getElementById('f-customg').value,
+    owner: document.getElementById('f-owner').value,
+    maturity: document.getElementById('f-maturity').value || 'draft',
+    version: document.getElementById('f-version').value || '1.0',
+    created: (activeSkill && activeSkill.created) || new Date().toISOString(),
+    modified: new Date().toISOString()
+  };
+}
+
+async function finishWizard(action) {
+  const skill = readWizardForm();
+  if (!skill.cmd || !skill.name) {
+    showToast('Skill needs a trigger and name', 'error');
+    return;
+  }
+  activeSkill = skill;
+
+  if (action === 'save') {
+    await saveActiveSkill();
+    showView('toolbox');
+  } else {
+    // Test it — go to playground
+    renderPlayground();
+    showView('test');
+  }
+}
+
+function ensureSlash(s) { return s.startsWith('/') ? s : '/' + s; }
+function escapeAttr(s) { return String(s).replace(/"/g, '&quot;'); }
+const ROMAN = ['', 'i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii', 'viii', 'ix', 'x', 'xi', 'xii', 'xiii', 'xiv', 'xv'];
+function toRoman(n) { return ROMAN[n] || String(n); }
+
+function toggleEx(id) { document.getElementById(id).classList.toggle('shown'); }
+function toggleCol(el) { el.classList.toggle('open'); el.nextElementSibling.classList.toggle('open'); }
+
+function addRow(rid, p) {
+  const r = document.getElementById(rid);
+  const n = r.querySelectorAll('.rep-row').length + 1;
+  const isFiles = rid === 'files-rep';
+  const ns = isFiles ? toRoman(n) + '.' : n + '.';
+  const row = document.createElement('div');
+  row.className = 'rep-row';
+  row.innerHTML = `<span class="rn">${ns}</span><input type="text" placeholder="${p}" /><button class="rm-btn" onclick="rmRow(this)">×</button>`;
+  r.appendChild(row);
+}
+
+function rmRow(btn) {
+  const row = btn.closest('.rep-row'), rep = row.parentElement;
+  if (rep.querySelectorAll('.rep-row').length > 1) {
+    row.remove();
+    const isFiles = rep.id === 'files-rep';
+    rep.querySelectorAll('.rn').forEach((n, i) => {
+      n.textContent = isFiles ? toRoman(i + 1) + '.' : (i + 1) + '.';
+    });
+  }
+}
+
+// ─── PLAYGROUND: Active skill, test runs ───────────────────────────
+function renderPlayground() {
+  if (!activeSkill) {
+    document.getElementById('play-empty').style.display = 'block';
+    document.getElementById('play-active').style.display = 'none';
+    return;
+  }
+  document.getElementById('play-empty').style.display = 'none';
+  document.getElementById('play-active').style.display = 'grid';
+
+  document.getElementById('play-cmd').textContent = activeSkill.cmd;
+  document.getElementById('play-name').textContent = activeSkill.name;
+  document.getElementById('play-desc').textContent = activeSkill.desc || activeSkill.purpose || '';
+  document.getElementById('play-dept').textContent = activeSkill.deptFull || activeSkill.dept || '—';
+  document.getElementById('play-output').textContent = activeSkill.output || '—';
+  document.getElementById('play-tone').textContent = activeSkill.tone || '—';
+  const m = document.getElementById('play-mat');
+  m.textContent = activeSkill.maturity || 'draft';
+  m.className = 'par-value tag';
+
+  // Reset conversation when a new skill loads
+  conversation = [];
+  renderThread();
+
+  // Sample prompts (now fully-loaded scenarios)
+  const samples = activeSkill.samples || [];
+  const spWrap = document.getElementById('sample-prompts');
+  const spChips = document.getElementById('sp-chips');
+  if (samples.length > 0) {
+    spChips.innerHTML = samples.map((s, i) => {
+      const title = typeof s === 'string' ? s : (s.title || 'Scenario ' + (i + 1));
+      return `<button class="sp-chip" data-idx="${i}" onclick="loadScenario(${i})">${escapeHtml(title)}</button>`;
+    }).join('');
+    spWrap.style.display = 'block';
+    // Auto-load the first scenario into the input so it's immediately runnable
+    loadScenario(0);
+  } else {
+    spWrap.style.display = 'none';
+    document.getElementById('play-input').value = '';
+  }
+
+  // MD content
+  document.getElementById('md-filename').textContent = activeSkill.cmd.replace('/', '') + '.md';
+  document.getElementById('md-content').innerHTML = highlightMd(generateMd(activeSkill));
+
+  // Save button state
+  const inToolbox = savedSkills.find(s => s.id === activeSkill.id);
+  const sb = document.getElementById('save-skill-btn');
+  if (inToolbox) {
+    sb.innerHTML = '<span class="ico">✓</span>Saved to Toolbox';
+  } else {
+    sb.innerHTML = '<span class="ico">▸</span>Save to Toolbox';
+  }
+}
+
+function usePrompt(p) {
+  const inp = document.getElementById('play-input');
+  inp.value = p;
+  // Auto-grow textarea to fit content
+  inp.style.height = 'auto';
+  inp.style.height = Math.min(inp.scrollHeight + 4, 280) + 'px';
+  inp.focus();
+  // Scroll input into view
+  inp.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function loadScenario(i) {
+  if (!activeSkill || !activeSkill.samples) return;
+  const s = activeSkill.samples[i];
+  if (!s) return;
+  // Support both legacy string format and new {title, prompt} format
+  usePrompt(typeof s === 'string' ? s : s.prompt);
+  // Highlight the active chip
+  document.querySelectorAll('.sp-chip').forEach(c => c.classList.remove('active'));
+  const active = document.querySelector(`.sp-chip[data-idx="${i}"]`);
+  if (active) active.classList.add('active');
+}
+
+async function sendMessage() {
+  if (!activeSkill) {
+    showToast('Load a skill first', 'error');
+    return;
+  }
+  const inputEl = document.getElementById('play-input');
+  const text = inputEl.value.trim();
+  if (!text) {
+    showToast('Type a message first', 'error');
+    return;
+  }
+
+  // Add user message to conversation
+  conversation.push({ role: 'user', content: text });
+  inputEl.value = '';
+  renderThread();
+
+  // Show loading state
+  const thread = document.getElementById('play-thread');
+  const loadingEl = document.createElement('div');
+  loadingEl.className = 'msg-loading';
+  loadingEl.id = 'msg-loading-temp';
+  loadingEl.innerHTML = '<div class="spinner"></div>Claude is thinking...';
+  thread.appendChild(loadingEl);
+  thread.scrollTop = thread.scrollHeight;
+
+  // Disable send button
+  const runBtn = document.getElementById('run-btn');
+  runBtn.disabled = true;
+  runBtn.innerHTML = '<span class="ico">⟳</span>Sending...';
+
+  // Call API with full conversation
+  const result = await callClaudeAPI(activeSkill, conversation);
+
+  // Remove loading
+  const loadingNow = document.getElementById('msg-loading-temp');
+  if (loadingNow) loadingNow.remove();
+
+  // Re-enable button
+  runBtn.disabled = false;
+  runBtn.innerHTML = '<span class="ico">▶</span>Send';
+
+  if (result.success) {
+    conversation.push({ role: 'assistant', content: result.text });
+    renderThread();
+  } else {
+    const errEl = document.createElement('div');
+    errEl.className = 'msg-error';
+    errEl.innerHTML = '<strong>API Error</strong>Could not reach Claude: ' + escapeHtml(result.error) + '<br/><br/>This usually means your deployment\'s API endpoint is unreachable, rate-limited, or not configured. Check CONFIG.apiEndpoint at the top of the script.';
+    thread.appendChild(errEl);
+    thread.scrollTop = thread.scrollHeight;
+  }
+  inputEl.focus();
+}
+
+function renderThread() {
+  const thread = document.getElementById('play-thread');
+  const empty = document.getElementById('thread-empty');
+
+  if (conversation.length === 0) {
+    if (empty) empty.style.display = 'flex';
+    // Remove any messages
+    thread.querySelectorAll('.msg, .msg-loading, .msg-error').forEach(n => n.remove());
+    return;
+  }
+
+  if (empty) empty.style.display = 'none';
+
+  // Render messages (replace whole thread innerHTML for simplicity)
+  const html = conversation.map((m, idx) => {
+    const isUser = m.role === 'user';
+    const label = isUser ? 'You' : 'Claude';
+    const cls = isUser ? 'msg-user' : 'msg-claude';
+    const actions = isUser ? '' : `<div class="msg-actions">
+      <button class="msg-act" onclick="copyMessage(${idx})">Copy</button>
+    </div>`;
+    const body = isUser ? escapeHtml(m.content) : renderMarkdown(m.content);
+    return `<div class="msg ${cls}">
+      <div class="msg-label">${label}</div>
+      <div class="msg-body">${body}</div>
+      ${actions}
+    </div>`;
+  }).join('');
+
+  // Preserve empty state element, replace messages
+  thread.querySelectorAll('.msg, .msg-loading, .msg-error').forEach(n => n.remove());
+  thread.insertAdjacentHTML('beforeend', html);
+  thread.scrollTop = thread.scrollHeight;
+}
+
+function resetConversation() {
+  if (conversation.length > 0 && !confirm('Reset the conversation? This will clear all messages.')) return;
+  conversation = [];
+  renderThread();
+  document.getElementById('play-input').value = '';
+  document.getElementById('play-input').focus();
+}
+
+function copyMessage(idx) {
+  const m = conversation[idx];
+  if (!m) return;
+  copyToClipboard(m.content, 'Message copied');
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[<>&]/g, c => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;' }[c]));
+}
+
+// ─── MARKDOWN RENDERER ────────────────────────────────────────────
+// Lightweight markdown → HTML for Claude responses in the conversation
+// thread. Supports headers, tables, lists, blockquotes, bold, italic,
+// inline code, fenced code blocks, hr, and http(s) links. HTML is
+// escaped first; code blocks are extracted and replaced with
+// placeholders so inline markdown inside them doesn't get processed.
+function renderMarkdown(text) {
+  let html = String(text).replace(/[<>&]/g, c => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;' }[c]));
+
+  // Extract fenced code blocks first (placeholder them out)
+  const codeBlocks = [];
+  html = html.replace(/```([\s\S]*?)```/g, (m, code) => {
+    codeBlocks.push(code);
+    return '\x00CB' + (codeBlocks.length - 1) + '\x00';
+  });
+
+  // Extract inline code
+  const inlineCode = [];
+  html = html.replace(/`([^`\n]+)`/g, (m, code) => {
+    inlineCode.push(code);
+    return '\x00IC' + (inlineCode.length - 1) + '\x00';
+  });
+
+  // Tables: lines that start and end with |, with a separator row second
+  html = html.replace(/((?:^\|.*\|[ \t]*\n?){2,})/gm, (m) => {
+    const lines = m.trim().split('\n');
+    if (lines.length < 2) return m;
+    const sep = lines[1].trim();
+    if (!/^\|[\s\-|:]+\|$/.test(sep)) return m;
+    const headers = lines[0].split('|').slice(1, -1).map(c => c.trim());
+    const rows = lines.slice(2).map(l => l.split('|').slice(1, -1).map(c => c.trim()));
+    let table = '<table><thead><tr>';
+    headers.forEach(h => table += '<th>' + h + '</th>');
+    table += '</tr></thead><tbody>';
+    rows.forEach(r => {
+      table += '<tr>';
+      r.forEach(c => table += '<td>' + c + '</td>');
+      table += '</tr>';
+    });
+    return table + '</tbody></table>';
+  });
+
+  // Headers (process h4/h3/h2/h1 in that order so longer prefix wins)
+  html = html.replace(/^#### (.+)$/gm, '<h4>$1</h4>');
+  html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+  html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+  html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
+
+  // Horizontal rule
+  html = html.replace(/^---+$/gm, '<hr>');
+  html = html.replace(/^\*\*\*+$/gm, '<hr>');
+
+  // Blockquotes (combine consecutive > lines)
+  html = html.replace(/(?:^&gt;[ \t]?.*\n?)+/gm, m => {
+    const lines = m.trim().split('\n').map(l => l.replace(/^&gt;[ \t]?/, ''));
+    return '<blockquote>' + lines.join('<br>') + '</blockquote>';
+  });
+
+  // Unordered lists
+  html = html.replace(/(?:^[ \t]*[\-\*•] .+\n?)+/gm, m => {
+    const items = m.trim().split('\n').map(l => l.replace(/^[ \t]*[\-\*•] /, ''));
+    return '<ul>' + items.map(i => '<li>' + i + '</li>').join('') + '</ul>';
+  });
+
+  // Ordered lists
+  html = html.replace(/(?:^\d+\. .+\n?)+/gm, m => {
+    const items = m.trim().split('\n').map(l => l.replace(/^\d+\. /, ''));
+    return '<ol>' + items.map(i => '<li>' + i + '</li>').join('') + '</ol>';
+  });
+
+  // Bold then italic
+  html = html.replace(/\*\*([^\*\n]+?)\*\*/g, '<strong>$1</strong>');
+  html = html.replace(/(?:^|[^\*])\*([^\*\n]+?)\*(?:[^\*]|$)/g, (m, p1) => {
+    // Preserve the surrounding char so we don't eat it
+    const before = m.startsWith('*') ? '' : m[0];
+    const after = m.endsWith('*') ? '' : m[m.length - 1];
+    return before + '<em>' + p1 + '</em>' + after;
+  });
+
+  // Links — http/https only, target=_blank
+  html = html.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (m, txt, url) => {
+    if (!/^https?:\/\//i.test(url)) return txt;
+    return '<a href="' + url + '" target="_blank" rel="noopener">' + txt + '</a>';
+  });
+
+  // Paragraphs: split on blank lines, wrap text-blocks in <p>, leave block elements
+  const blocks = html.split(/\n\n+/);
+  html = blocks.map(b => {
+    b = b.trim();
+    if (!b) return '';
+    if (/^<(h[1-4]|ul|ol|table|pre|blockquote|hr)/i.test(b)) return b;
+    return '<p>' + b.replace(/\n/g, '<br>') + '</p>';
+  }).filter(Boolean).join('\n');
+
+  // Restore code blocks and inline code
+  html = html.replace(/\x00CB(\d+)\x00/g, (m, i) =>
+    '<pre><code>' + codeBlocks[parseInt(i, 10)].trim() + '</code></pre>');
+  html = html.replace(/\x00IC(\d+)\x00/g, (m, i) =>
+    '<code>' + inlineCode[parseInt(i, 10)] + '</code>');
+
+  return html;
+}
+
+function toggleMdPanel(el) {
+  el.classList.toggle('open');
+  document.getElementById('md-panel').classList.toggle('open');
+}
+
+async function saveActiveSkill() {
+  if (!activeSkill) return;
+  const existing = savedSkills.findIndex(s => s.id === activeSkill.id);
+  if (existing >= 0) {
+    savedSkills[existing] = activeSkill;
+  } else {
+    savedSkills.push(activeSkill);
+  }
+  const ok = await saveToolbox();
+  if (ok) {
+    renderToolbox();
+    updateTabCount();
+    renderPlayground();
+    showToast(existing >= 0 ? 'Skill updated in your Toolbox' : 'Saved to your Toolbox');
+  }
+}
+
+function editActiveSkill() {
+  if (!activeSkill) return;
+  loadWizardFromTemplate(activeSkill);
+  showView('build');
+}
+
+function downloadActive() {
+  if (!activeSkill) { showToast('No skill loaded', 'error'); return; }
+  const filename = activeSkill.cmd.replace('/', '') + '.md';
+  downloadFile(filename, generateMd(activeSkill), 'text/markdown');
+}
+
+async function copyActiveMd() {
+  if (!activeSkill) { showToast('No skill loaded', 'error'); return; }
+  await copyToClipboard(generateMd(activeSkill), 'Skill .md copied — paste into your repo');
+}
+
+// ─── TOOLBOX: Saved skills ─────────────────────────────────────────
+function renderToolbox() {
+  const c = document.getElementById('tb-content');
+  const m = document.getElementById('tb-meta');
+  m.textContent = savedSkills.length === 0 ? 'No skills saved yet' : `${savedSkills.length} skill${savedSkills.length === 1 ? '' : 's'} saved`;
+
+  if (savedSkills.length === 0) {
+    c.innerHTML = `<div class="play-empty">
+      <span class="play-empty-icon">∅</span>
+      <h2>Your toolbox is <em>empty</em>.</h2>
+      <p>Build your first skill — it takes about five minutes. Pick a template from the Cookbook, customize it, and save it here.</p>
+      <div class="actions">
+        <button class="btn" onclick="showView('cookbook')">Browse Cookbook <span class="arrow">→</span></button>
+        <button class="btn btn-outline" onclick="showView('build')">Build from scratch</button>
+      </div>
+    </div>`;
+  } else {
+    c.innerHTML = `<div class="tb-grid">${savedSkills.map(s => `
+      <div class="saved">
+        <div class="saved-top">
+          <span class="saved-cmd">${s.cmd}</span>
+          <span class="saved-mat ${s.maturity}">${s.maturity === 'draft' ? 'Draft' : s.maturity === 'pilot' ? 'Pilot' : 'Production'}</span>
+        </div>
+        <div class="saved-name">${escapeHtml(s.name)}</div>
+        <div class="saved-desc">${escapeHtml((s.purpose || s.desc || '').substring(0, 110))}${(s.purpose || s.desc || '').length > 110 ? '…' : ''}</div>
+        <div class="saved-meta">${s.deptFull || s.dept || 'Uncategorized'} · Saved ${formatDate(s.created)}</div>
+        <div class="saved-actions">
+          <button class="s-btn primary" onclick="openSavedInPlayground('${s.id}')">▶ Run</button>
+          <button class="s-btn" onclick="openSavedInBuilder('${s.id}')">Edit</button>
+          <button class="s-btn" onclick="downloadSavedSkill('${s.id}')">Download</button>
+          <button class="s-btn danger" onclick="deleteSavedSkill('${s.id}')">Delete</button>
+        </div>
+      </div>`).join('')}</div>`;
+  }
+}
+
+function formatDate(iso) {
+  if (!iso) return 'recently';
+  const d = new Date(iso), now = new Date(), diff = Math.floor((now - d) / 86400000);
+  if (diff === 0) return 'today';
+  if (diff === 1) return 'yesterday';
+  if (diff < 7) return diff + ' days ago';
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+
+function openSavedInPlayground(id) {
+  const s = savedSkills.find(x => x.id === id);
+  if (!s) return;
+  activeSkill = JSON.parse(JSON.stringify(s));
+  renderPlayground();
+  showView('test');
+}
+
+function openSavedInBuilder(id) {
+  const s = savedSkills.find(x => x.id === id);
+  if (!s) return;
+  activeSkill = JSON.parse(JSON.stringify(s));
+  loadWizardFromTemplate(s);
+  showView('build');
+}
+
+function downloadSavedSkill(id) {
+  const s = savedSkills.find(x => x.id === id);
+  if (!s) return;
+  downloadFile(s.cmd.replace('/', '') + '.md', generateMd(s), 'text/markdown');
+}
+
+async function deleteSavedSkill(id) {
+  if (!confirm('Delete this skill from your Toolbox? This cannot be undone.')) return;
+  savedSkills = savedSkills.filter(s => s.id !== id);
+  await saveToolbox();
+  renderToolbox();
+  updateTabCount();
+  showToast('Skill deleted');
+}
+
+// ─── MD GENERATION ─────────────────────────────────────────────────
+function generateMd(s) {
+  const today = new Date().toISOString().split('T')[0];
+  const slug = s.cmd.replace('/', '');
+  let md = '---\n';
+  md += `name: ${slug}\n`;
+  md += `command: ${s.cmd}\n`;
+  md += `title: ${s.name}\n`;
+  md += `description: ${(s.purpose || s.desc || '').split('.')[0]}.\n`;
+  md += `version: ${s.version || '1.0'}\n`;
+  md += `owner: ${s.owner || 'Unassigned'}\n`;
+  md += `maturity: ${s.maturity || 'draft'}\n`;
+  md += `department: ${s.deptFull || s.dept || 'Not specified'}\n`;
+  md += `cadence: ${s.cadence || 'Ad hoc'}\n`;
+  md += `created: ${(s.created || today).split('T')[0]}\n`;
+  md += '---\n\n';
+  md += `# ${s.name}\n\n`;
+  md += `> Trigger this skill by typing \`${s.cmd}\` in any compatible Claude interface.\n\n`;
+  md += `## Purpose\n\n${s.purpose || s.desc || '[Purpose]'}\n\n`;
+  if (s.success) md += `## Definition of Done\n\n${s.success}\n\n`;
+  md += '## Required Context\n\n';
+  if (s.files && s.files.length) {
+    md += '### Files & Folders\n\n';
+    s.files.forEach(f => md += `- \`${f}\`\n`);
+    md += '\n';
+  }
+  if (s.connectors && s.connectors.length) {
+    md += '### Connected Apps\n\n';
+    s.connectors.forEach(c => md += `- ${c}\n`);
+    md += '\n';
+  }
+  md += '## Before Starting — Required Questions\n\nDo not begin work until these are answered:\n\n';
+  if (s.questions) s.questions.split('\n').filter(Boolean).forEach(q => md += `1. ${q.replace(/^[•\-\*\d\.\s]+/, '').trim()}\n`);
+  md += '\n## Workflow\n\n';
+  if (s.steps && s.steps.length) s.steps.forEach((st, i) => md += `${i + 1}. ${st}\n`);
+  md += '\n';
+  if (s.qualityGates && s.qualityGates.length) {
+    md += '### Quality Checkpoints\n\n';
+    s.qualityGates.forEach(q => md += `- ${q.replace(/^[•\-\*]\s*/, '').trim()}\n`);
+    md += '\n';
+  }
+  if (s.escalation) {
+    md += '### Escalation Triggers\n\n';
+    s.escalation.split('\n').filter(Boolean).forEach(e => md += `- ${e.replace(/^[•\-\*]\s*/, '').trim()}\n`);
+    md += '\n';
+  }
+  md += '## Output\n\n| Field | Specification |\n|-------|---------------|\n';
+  md += `| **Format** | ${s.output || 'Not specified'} |\n`;
+  if (s.tone) md += `| **Tone** | ${s.tone} |\n`;
+  if (s.length) md += `| **Length** | ${s.length} |\n`;
+  md += '\n## Rules — Never Do These\n\n';
+  if (s.guardrails && s.guardrails.length) s.guardrails.forEach(g => md += `- ${g.replace(/&amp;/g, '&')}\n`);
+  if (s.customGuard) {
+    md += '\n### Custom Rules\n\n';
+    s.customGuard.split('\n').filter(Boolean).forEach(g => md += `- ${g.replace(/^[•\-\*]\s*/, '').trim()}\n`);
+  }
+  md += '\n---\n\n*Generated via the AI Banking Institute Banking AI Playground · Toolbox v' + CONFIG.moduleVersion + '*\n';
+  return md;
+}
+
+function highlightMd(md) {
+  let o = md.replace(/[<>&]/g, c => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;' }[c]));
+  o = o.replace(/^(---)$/gm, '<span class="yaml">$1</span>');
+  o = o.replace(/^(\w+): (.+)$/gm, (m, k, v) => m.startsWith('# ') ? m : `<span class="key">${k}:</span> ${v}`);
+  o = o.replace(/^(# .+)$/gm, '<span class="h1">$1</span>');
+  o = o.replace(/^(## .+)$/gm, '<span class="h2">$1</span>');
+  o = o.replace(/^(### .+)$/gm, '<span class="h2">$1</span>');
+  o = o.replace(/^(\*[^*]+\*)$/gm, '<span class="comment">$1</span>');
+  o = o.replace(/^(&gt;\s.+)$/gm, '<span class="comment">$1</span>');
+  o = o.replace(/^(-\s)/gm, '<span class="bullet">$1</span>');
+  o = o.replace(/^(\d+\.\s)/gm, '<span class="bullet">$1</span>');
+  return o;
+}
+
+// ─── TOAST notifications ───────────────────────────────────────────
+let toastTimeout;
+function showToast(msg, type) {
+  clearTimeout(toastTimeout);
+  const t = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  document.getElementById('toast-icon').textContent = type === 'error' ? '!' : '✓';
+  t.classList.toggle('error', type === 'error');
+  t.classList.add('shown');
+  toastTimeout = setTimeout(() => t.classList.remove('shown'), 3000);
+}
+
+// ─── INIT ──────────────────────────────────────────────────────────
+renderTemplates();
+loadToolbox();
+renderPlayground(); // shows empty state
+
+// Enter-to-send for the playground input (Shift+Enter = newline)
+document.addEventListener('DOMContentLoaded', wireUpKeyboard);
+if (document.readyState !== 'loading') wireUpKeyboard();
+
+function wireUpKeyboard() {
+  const inp = document.getElementById('play-input');
+  if (inp && !inp._wired) {
+    inp.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+    inp._wired = true;
+  }
+}
+</script>
+</body>
+</html>

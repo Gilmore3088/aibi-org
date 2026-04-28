@@ -107,6 +107,14 @@ export default async function CourseOverviewPage() {
               <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
             </svg>
           </Link>
+          {enrollment && (
+            <Link
+              href="/toolbox?tab=guide"
+              className="border border-[color:var(--color-ink)]/25 px-5 py-2.5 rounded-[2px] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] text-[color:var(--color-ink)] hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)] transition-colors"
+            >
+              Open Toolbox
+            </Link>
+          )}
           <span className="font-mono text-[10px] text-[color:var(--color-slate)] uppercase tracking-wider">
             12 modules
           </span>

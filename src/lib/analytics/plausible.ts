@@ -12,7 +12,10 @@ export type PlausibleEventName =
   | 'assessment_complete'
   | 'email_captured'
   | 'briefing_booked'
-  | 'purchase_initiated';
+  | 'purchase_initiated'
+  | 'toolbox_skill_saved'
+  | 'toolbox_scenario_run'
+  | 'toolbox_skill_exported';
 
 export function trackEvent(
   name: PlausibleEventName,
