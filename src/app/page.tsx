@@ -25,30 +25,6 @@ const HOW_IT_WORKS = [
   },
 ] as const;
 
-const PRODUCT_PATHS = [
-  {
-    label: 'Individual',
-    title: 'Practitioner',
-    body: 'AiBI-P foundation course.',
-    href: '/courses/aibi-p',
-    cta: 'Explore Course',
-  },
-  {
-    label: 'Teams',
-    title: 'Training',
-    body: 'Staff baseline and rollout support.',
-    href: '/education',
-    cta: 'View Training',
-  },
-  {
-    label: 'Institutions',
-    title: 'Consulting',
-    body: 'Readiness, governance, and ROI planning.',
-    href: '/for-institutions',
-    cta: 'For Institutions',
-  },
-] as const;
-
 const TRUST_POINTS = [
   'No PII required',
   'Human review required',
@@ -77,9 +53,10 @@ export default function HomePage() {
             Turning bankers into builders.
           </p>
           <p className="text-base md:text-xl text-[color:var(--color-ink)]/75 max-w-2xl mx-auto leading-relaxed mt-5">
-            Practical AI training for community banks and credit unions.
+            In three minutes, see your readiness level, your top gaps, and the
+            first practical exercise to complete.
           </p>
-          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="mt-8 flex flex-col items-center justify-center gap-3">
             <Link
               href="/assessment/start"
               className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
@@ -88,9 +65,9 @@ export default function HomePage() {
             </Link>
             <Link
               href="/courses/aibi-p"
-              className="inline-block px-8 py-4 border border-[color:var(--color-ink)]/30 text-[color:var(--color-ink)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)] transition-colors"
+              className="font-serif-sc text-[12px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/70 hover:text-[color:var(--color-terra)] transition-colors"
             >
-              Explore Course
+              Or explore the Practitioner course →
             </Link>
           </div>
         </div>
@@ -101,7 +78,7 @@ export default function HomePage() {
           <SectionIntro
             eyebrow="How it works"
             title="A simple learning loop."
-            body="Assess, learn, practice, and apply without losing the thread."
+            body="Assess, learn, practice, apply."
           />
           <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-[color:var(--color-ink)]/10 border border-[color:var(--color-ink)]/10">
             {HOW_IT_WORKS.map((step, index) => (
@@ -125,37 +102,6 @@ export default function HomePage() {
       <InteractiveSkillsPreview />
 
       <ROICalculator />
-
-      <section className="px-6 py-14 md:py-20 bg-[color:var(--color-linen)] border-b border-[color:var(--color-ink)]/10">
-        <div className="max-w-6xl mx-auto">
-          <SectionIntro
-            eyebrow="Product path"
-            title="Start small. Scale when ready."
-            body="Choose the path that matches the decision in front of you today."
-          />
-          <div className="mt-10 grid lg:grid-cols-3 gap-px bg-[color:var(--color-ink)]/10 border border-[color:var(--color-ink)]/10">
-            {PRODUCT_PATHS.map((path) => (
-              <article key={path.label} className="bg-[color:var(--color-parch)] p-7">
-                <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
-                  {path.label}
-                </p>
-                <h2 className="font-serif text-3xl text-[color:var(--color-ink)] mt-4">
-                  {path.title}
-                </h2>
-                <p className="text-sm text-[color:var(--color-slate)] leading-relaxed mt-4">
-                  {path.body}
-                </p>
-                <Link
-                  href={path.href}
-                  className="inline-block mt-6 font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] border-b border-[color:var(--color-terra)]"
-                >
-                  {path.cta}
-                </Link>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
 
       <section className="px-6 py-12 md:py-16 bg-[color:var(--color-parch)] border-b border-[color:var(--color-ink)]/10">
         <div className="max-w-6xl mx-auto grid lg:grid-cols-[0.85fr_1.15fr] gap-10 lg:gap-16 items-start">
@@ -188,18 +134,12 @@ export default function HomePage() {
             In a few minutes, you will know your readiness level, your top gaps,
             and the first practical exercise to complete.
           </p>
-          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="mt-8 flex justify-center">
             <Link
               href="/assessment/start"
-              className="inline-block px-8 py-4 bg-[color:var(--color-linen)] text-[color:var(--color-terra)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-parch)] active:scale-[0.98] transition-all"
+              className="inline-block px-10 py-4 bg-[color:var(--color-linen)] text-[color:var(--color-terra)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-parch)] active:scale-[0.98] transition-all"
             >
               Take the Assessment
-            </Link>
-            <Link
-              href="/courses/aibi-p"
-              className="inline-block px-8 py-4 border border-[color:var(--color-linen)]/60 text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-linen)] hover:text-[color:var(--color-terra)] transition-colors"
-            >
-              Explore Course
             </Link>
           </div>
         </div>
