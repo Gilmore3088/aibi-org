@@ -337,6 +337,9 @@ function GuidePanel({ savedCount, setTab }: { readonly savedCount: number; reado
           Skills are reusable Markdown instruction files with an owner, version, required questions, workflow, output rules, and escalation triggers.
         </p>
         <div className="mt-8 flex flex-wrap gap-3">
+          <Link href="/prompt-cards" className="border border-[color:var(--color-ink)]/25 px-5 py-3 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-ink)]">
+            Prompt Cards
+          </Link>
           <button type="button" onClick={() => setTab('cookbook')} className="bg-[color:var(--color-terra)] px-5 py-3 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-linen)]">
             Browse Cookbook
           </button>

@@ -5,6 +5,7 @@ import { MobileNav } from './MobileNav';
 
 const NAV_LINKS = [
   { href: '/assessment/start', label: 'Assessment' },
+  { href: '/prompt-cards', label: 'Prompt Cards' },
   { href: '/courses/aibi-p', label: 'For Learners' },
   { href: '/for-institutions', label: 'For Institutions' },
   { href: '/resources', label: 'Resources' },
