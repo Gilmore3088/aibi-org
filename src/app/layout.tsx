@@ -72,8 +72,8 @@ export const metadata: Metadata = {
     'banking AI consulting',
     'AI governance SR 11-7',
     'AI readiness assessment',
-    'fCAIO',
-    'AiBI',
+    'AI proficiency training',
+    'community bank AI training',
   ],
   authors: [{ name: SITE_NAME }],
   openGraph: {
