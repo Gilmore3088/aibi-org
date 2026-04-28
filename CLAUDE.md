@@ -21,7 +21,7 @@
 
 ## What This Project Is
 
-The AI Banking Institute (AiBI, pronounced "AI-bee") is an AI proficiency and transformation firm built exclusively for community banks and credit unions (~8,400 US institutions). The business model is built around a free AI readiness assessment that leads to certifications (AiBI-P, AiBI-S, AiBI-L) and consulting engagements (Quick Win Sprint → Process Audit → AI Transformation + fCAIO).
+The AI Banking Institute (AiBI, pronounced "AI-bee") is an AI proficiency and education company built exclusively for community banks and credit unions (~8,400 US institutions). The business model is built around a free AI readiness assessment that leads to certifications (AiBI-P, AiBI-S, AiBI-L) and optional coaching advisory for institutions running cohorts. See the 2026-04-24 entry in the Decisions Log for the shift from implementation-led consulting to education-first positioning.
 
 **The website is the sales funnel.** The assessment is the primary conversion mechanism. Every technical decision should be evaluated against whether it helps or hinders: assessment completion → email capture → Executive Briefing booking.
 
@@ -363,7 +363,6 @@ const event = stripe.webhooks.constructEvent(body, sig, process.env.STRIPE_WEBHO
 **The AI Banking Institute** or **the Institute**. Do NOT hide behind the
 acronym. Bankers do not need another acronym. Reserve "AiBI" for:
 - Credential codes (AiBI-P, AiBI-S, AiBI-L)
-- The fCAIO program name (AiBI fCAIO)
 - The circular seal / wordmark logo
 - Credential display format: "AiBI-P · The AI Banking Institute"
 
@@ -378,7 +377,7 @@ Never write "AiBI helps..." or "the AiBI approach..." in body copy. Use
 | Practitioner cert | AiBI-P |
 | Specialist cert | AiBI-S / AiBI-S/Ops / AiBI-S/Lending / etc. |
 | Leader cert | AiBI-L |
-| Consulting program | AiBI fCAIO |
+| Advisory engagement | Leadership Advisory (describe as "fractional Chief AI Officer" when shape matters) |
 | Credential display | "AiBI-P · The AI Banking Institute" |
 
 ### Phrases That Must Never Appear in the Codebase or Copy
@@ -671,6 +670,26 @@ deploy. Plausible setup remains in place. Open question: keep both,
 or drop one. Vercel Analytics is free and built-in; Plausible has a
 better privacy story for non-US visitors. Decision deferred until
 both are running and we can compare data quality.
+
+**2026-04-24 — `/services` reworked to `/for-institutions`; education-first
+positioning.** The old consulting page led with three implementation tiers
+(Quick Win Sprint / Audit / Transformation), which contradicted the
+"Turning Bankers into Builders" tagline. Rebuilt as `/for-institutions`
+with three *enrollment* tiers (Individual / Team cohort / Institution-wide
+capability program) plus a free self-serve sample library. The three
+consulting engagements were reframed as coaching that pairs with a
+cohort and moved to `/for-institutions/advisory` (Pilot · Program ·
+Leadership Advisory). Old `/services` URL 301s to `/for-institutions`;
+top nav relabelled "For Institutions". Prices removed from advisory
+tiers until case studies exist. The "Quick Win Sprint" phrase was
+retired across the codebase.
+
+**2026-04-24 — `AiBI fCAIO` retired as a public product name.** The
+reserved use of "AiBI" for the fCAIO program (one of the four canonical
+uses listed earlier in this file) is discontinued. Leadership Advisory
+is the new name; "fractional Chief AI Officer" remains available as a
+descriptor in prose where it clarifies shape. Credential codes
+(AiBI-P/S/L) and the circular seal are unaffected.
 
 ---
 

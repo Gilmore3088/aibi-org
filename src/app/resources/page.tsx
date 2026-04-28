@@ -264,7 +264,7 @@ export default function ResourcesPage() {
             assessment to reserve a spot on the list.
           </p>
           <Link
-            href="/assessment"
+            href="/assessment/start"
             className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
           >
             Take the Free Assessment

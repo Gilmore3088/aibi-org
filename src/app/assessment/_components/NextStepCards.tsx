@@ -69,21 +69,21 @@ function getStepsForTier(tierId: Tier['id']): readonly NextStep[] {
       return [
         {
           label: 'Recommended',
-          title: 'Advance to the Specialist track',
+          title: 'Join the Specialist waitlist',
           description:
-            'You have traction. The AiBI-S course is a 6-week live cohort for department managers — deploy governed AI automation across your team with peer accountability and measured outcomes.',
-          href: '/courses/aibi-s',
-          cta: 'Explore AiBI-S',
+            'You have traction. AiBI-S will focus on workflow automation, agents, internal AI systems, and team-level rollout after Practitioner is validated.',
+          href: '/coming-soon?interest=specialist',
+          cta: 'Join AiBI-S Waitlist',
           accent: 'var(--color-cobalt)',
           primary: true,
         },
         {
-          label: 'Prove ROI now',
-          title: 'Explore the Quick Win Sprint',
+          label: 'Enroll your team',
+          title: 'Run a Specialist cohort with your department',
           description:
-            'Three automations implemented in 4\u20136 weeks with a documented ROI report and a 90-day guarantee. $5,000\u2013$15,000.',
-          href: '/services',
-          cta: 'See engagement details',
+            'Five to 25 managers from one institution go through the Specialist track together. Shared kickoff, group reporting, and team pricing. Leave with a prioritized automation roadmap your team owns.',
+          href: '/for-institutions',
+          cta: 'See enrollment options',
           accent: 'var(--color-terra)',
         },
       ];
@@ -92,21 +92,21 @@ function getStepsForTier(tierId: Tier['id']): readonly NextStep[] {
       return [
         {
           label: 'Recommended',
-          title: 'The Banking AI Leader workshop',
+          title: 'Join the Leader waitlist',
           description:
-            'A 1-day in-person workshop for C-suite and board. Efficiency ratio modeling with your numbers, a 3-year AI roadmap, and a board-ready presentation you leave with. From $2,800.',
-          href: '/courses/aibi-l',
-          cta: 'Explore AiBI-L',
+            'AiBI-L will focus on executive confidence, governance, rollout, and institution-level AI leadership after the Practitioner loop is validated.',
+          href: '/coming-soon?interest=leader',
+          cta: 'Join AiBI-L Waitlist',
           accent: 'var(--color-sage)',
           primary: true,
         },
         {
-          label: 'Scale further',
-          title: 'The AI Transformation program',
+          label: 'Build enduring capability',
+          title: 'Institution-wide capability program',
           description:
-            'A structured monthly operating system that installs capability transfer from day one. Your team runs the program independently when the engagement ends.',
-          href: '/services',
-          cta: 'See how we work',
+            'A recurring cohort cadence — Practitioner, Specialist, and Leader — scheduled so every banker, new or tenured, has a path to proficiency. Leadership Advisory available alongside for your AI leader.',
+          href: '/for-institutions',
+          cta: 'See enrollment options',
           accent: 'var(--color-terra)',
         },
       ];

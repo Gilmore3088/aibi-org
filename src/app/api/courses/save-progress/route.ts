@@ -12,7 +12,7 @@ import { cookies } from 'next/headers';
 import { createServerClient } from '@supabase/ssr';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 
-const LAST_MODULE = 9;
+const LAST_MODULE = 12;
 
 interface RequestBody {
   enrollmentId?: unknown;
@@ -118,7 +118,7 @@ export async function POST(request: Request): Promise<NextResponse> {
 
   // --- Write completion ---
   // Append moduleNumber to completed_modules and advance current_module.
-  // If this is the last module, hold current_module at LAST_MODULE (do not set to 10).
+  // If this is the last module, hold current_module at LAST_MODULE.
   const nextModule = moduleNumber === LAST_MODULE ? LAST_MODULE : moduleNumber + 1;
   const updatedCompleted = Array.from(new Set([...completed_modules, moduleNumber]));
 

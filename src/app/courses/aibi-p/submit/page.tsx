@@ -5,7 +5,7 @@
 //
 // Access rules:
 //   - Unauthenticated / not enrolled → redirect to /courses/aibi-p/purchase
-//   - Enrolled but not all 9 modules complete → show completion gate message
+//   - Enrolled but not all 12 modules complete → show completion gate message
 //   - Submission pending or under re-review → show "under review" message
 //   - Submission approved → show "approved" message with certificate link
 //   - Submission failed (no prior resubmission) → form in resubmission mode
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   title: 'Work Product Submission | AiBI-P',
 };
 
-const ALL_MODULES = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+const ALL_MODULES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 function allModulesComplete(completedModules: readonly number[]): boolean {
   return ALL_MODULES.every((m) => completedModules.includes(m));
@@ -83,7 +83,7 @@ export default async function SubmitPage() {
               Course Incomplete
             </p>
             <p className="font-sans text-base text-[color:var(--color-ink)] mb-4">
-              Complete all nine modules before submitting your work product.
+              Complete all 12 modules before submitting your work product.
             </p>
             <a
               href="/courses/aibi-p"

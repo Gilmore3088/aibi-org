@@ -28,8 +28,8 @@ const LEVEL_DESCRIPTIONS: Record<ContentLevel, string> = {
 
 const COURSE_PATHS: Record<ContentLevel, string> = {
   p: '/courses/aibi-p/purchase',
-  s: '/courses/aibi-s/purchase',
-  l: '/education',
+  s: '/coming-soon?interest=specialist',
+  l: '/coming-soon?interest=leader',
 } as const;
 
 // ---------------------------------------------------------------------------

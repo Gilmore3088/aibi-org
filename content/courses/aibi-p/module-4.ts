@@ -1,17 +1,17 @@
-// AiBI-P Module 4: Platform Features Deep Dive
+// AiBI-P Module 4: Your AI Work Profile
 // Pillar: Understanding | Estimated: 30 minutes
-// Key Output: Platform Feature Reference Card
+// Key Output: AI Work Profile
 // roleSpecific: true — role-specific spotlights vary by department
 
 import type { Module } from './types';
 
 export const module4: Module = {
   number: 4,
-  id: 'm4-platform-features',
-  title: 'Platform Features Deep Dive',
+  id: 'm4-ai-work-profile',
+  title: 'Your AI Work Profile',
   pillar: 'understanding',
   estimatedMinutes: 30,
-  keyOutput: 'Platform Feature Reference Card',
+  keyOutput: 'AI Work Profile',
   mockupRef: 'content/courses/AiBI-P v1/stitch_ai_banking_institute_course/m4_platform_features_deep_dive',
   roleSpecific: true,
   sections: [
@@ -39,7 +39,7 @@ ChatGPT's Deep Research is optimized for broad synthesis. Claude's extended cont
 
 **Respect data classification:**
 
-File Analysis requires uploading a document to the AI platform. Before doing so, apply the three-tier data classification framework from Module 5.
+File analysis requires uploading or pasting a document into the AI platform. Before doing so, apply the SAFE rule and red/yellow/green boundaries from Module 9.
 
 > Do not upload Tier 3 (Highly Restricted) documents to any consumer AI platform, regardless of the platform's enterprise commitments.`,
     },

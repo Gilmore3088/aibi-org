@@ -9,17 +9,17 @@ const FOOTER_GROUPS: readonly FooterGroup[] = [
   {
     label: 'Start here',
     links: [
-      { href: '/assessment', label: 'Free Assessment' },
+      { href: '/assessment/start', label: 'Free Assessment' },
       { href: '/education', label: 'Education' },
-      { href: '/services', label: 'Services' },
+      { href: '/for-institutions', label: 'For Institutions' },
     ],
   },
   {
     label: 'Programs',
     links: [
       { href: '/courses/aibi-p', label: 'AiBI-P · Practitioner' },
-      { href: '/courses/aibi-s', label: 'AiBI-S · Specialist' },
-      { href: '/courses/aibi-l', label: 'AiBI-L · Leader' },
+      { href: '/coming-soon?interest=specialist', label: 'AiBI-S · Specialist · Coming Soon' },
+      { href: '/coming-soon?interest=leader', label: 'AiBI-L · Leader · Coming Soon' },
     ],
   },
   {
@@ -28,6 +28,9 @@ const FOOTER_GROUPS: readonly FooterGroup[] = [
       { href: '/about', label: 'About' },
       { href: '/security', label: 'Security & Governance' },
       { href: '/resources', label: 'Resources' },
+      { href: '/privacy', label: 'Privacy' },
+      { href: '/terms', label: 'Terms' },
+      { href: '/ai-use-disclaimer', label: 'AI Use Disclaimer' },
     ],
   },
 ] as const;

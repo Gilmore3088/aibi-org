@@ -223,7 +223,7 @@ export function PostAssessmentClient({ enrollmentId }: PostAssessmentClientProps
                 AiBI-P · Measure Your Growth
               </p>
               <p className="font-sans text-sm text-[color:var(--color-slate)] leading-relaxed">
-                You have completed all nine modules. Answer these questions honestly —
+                You have completed all 12 modules. Answer these questions honestly —
                 the same way you did before the course. The comparison shows your transformation.
               </p>
             </div>

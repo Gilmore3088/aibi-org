@@ -3,7 +3,7 @@
 //
 // Security model:
 //   - Requires valid Supabase auth session; verifies enrollment.user_id === user.id
-//   - Only accepts a result when all 9 modules are completed (forward-only guard)
+//   - Only accepts a result when all 12 modules are completed (forward-only guard)
 //   - Service role client used for the write after manual ownership verification
 //
 // Stores: post_assessment_score, post_assessment_tier_id, post_assessment_tier_label,
@@ -17,7 +17,7 @@ import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/cl
 import { getTierV2, getDimensionScores } from '@content/assessments/v2/scoring';
 import type { AssessmentQuestion } from '@content/assessments/v2/types';
 
-const REQUIRED_MODULES = 9;
+const REQUIRED_MODULES = 12;
 
 interface RequestBody {
   enrollmentId?: unknown;
@@ -94,7 +94,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     return NextResponse.json({ error: 'Forbidden.' }, { status: 403 });
   }
 
-  // ── Completion guard — all 9 modules must be done ───────────────────────────
+  // ── Completion guard — all 12 modules must be done ──────────────────────────
   const completed: number[] = enrollment.completed_modules ?? [];
   const allComplete = Array.from({ length: REQUIRED_MODULES }, (_, i) => i + 1).every((n) =>
     completed.includes(n),

@@ -29,6 +29,7 @@ export const stripe = new Stripe(STRIPE_SECRET_KEY, {
 export interface CheckoutMetadata {
   product: 'aibi-p';
   mode: 'individual' | 'institution';
+  tier?: 'individual' | 'team';
   user_email?: string;
   institution_name?: string;
   /** Number of institution seats, serialised as a string (Stripe metadata values are strings). */

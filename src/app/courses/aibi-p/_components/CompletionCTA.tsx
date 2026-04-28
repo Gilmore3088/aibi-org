@@ -51,7 +51,7 @@ export function CompletionCTA({ moduleNumber, isLastModule }: CompletionCTAProps
             Ready for your assessed work product.
           </p>
           <p className="font-sans text-sm text-[color:var(--color-slate)] leading-relaxed mb-5">
-            You have completed all nine modules of the AiBI-P course. Your final step is to
+            You have completed all 12 modules of the AiBI-P course. Your final step is to
             submit a four-item work product package demonstrating your professional AI capability.
             This is not a test — it is a demonstration of the skills you have built throughout
             this course.
@@ -140,15 +140,20 @@ export function CompletionCTA({ moduleNumber, isLastModule }: CompletionCTAProps
     );
   }
 
-  // M1-4, M6-8 — brief encouragement
+  // Brief learner-facing encouragement after each module.
   const encouragementByModule: Record<number, string> = {
-    1: 'Module 1 complete. You understand the regulatory landscape — the foundation everything else builds on.',
-    2: 'Module 2 complete. Your AI subscription inventory is the first step toward a governance-ready toolkit.',
-    3: 'Module 3 complete. Knowing hallucination patterns protects you and your institution from costly errors.',
-    4: 'Module 4 complete. You can now evaluate AI outputs with the same rigour you apply to any vendor claim.',
-    6: 'Module 6 complete. You can now dissect any AI skill and identify what makes it effective. Your Skill Template Library is ready to use.',
-    7: 'Module 7 complete. You have built your first institutional-grade AI skill. It is saved and ready to deploy in your primary AI platform.',
-    8: 'Module 8 complete. Your skill has been stress-tested and iterated. The version-controlled approach you practiced scales to every skill you build.',
+    1: 'Module 1 complete. You have a first practical view of how AI can help your workday.',
+    2: 'Module 2 complete. You understand what AI is, what it is not, and why human review matters.',
+    3: 'Module 3 complete. You can now structure a prompt with role, task, context, format, and constraints.',
+    4: 'Module 4 complete. Your AI work profile gives you reusable context without exposing sensitive data.',
+    5: 'Module 5 complete. You can brief AI on a project without making it guess or overreach.',
+    6: 'Module 6 complete. You can use approved documents for summaries, extraction, and reviewable workflows.',
+    7: 'Module 7 complete. You can choose the right tool category for the task and data boundary.',
+    8: 'Module 8 complete. You can map an AI workflow with clear human checkpoints.',
+    9: 'Module 9 complete. You can classify AI uses with the SAFE rule and red/yellow/green boundaries.',
+    10: 'Module 10 complete. You have identified a practical role-based AI use case.',
+    11: 'Module 11 complete. Your personal prompt library is becoming a reusable work asset.',
+    12: 'Module 12 complete. You are ready to submit your final practitioner lab package.',
   };
 
   const message =

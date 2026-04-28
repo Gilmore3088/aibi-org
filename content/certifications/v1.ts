@@ -20,7 +20,7 @@ export const certifications: readonly Certification[] = [
     name: 'AiBI-P',
     fullName: 'Banking AI Practitioner',
     credentialDisplay: 'AiBI-P · The AI Banking Institute',
-    price: '$295',
+    price: '$99',
     audience: 'All staff',
     learn: [
       'What Gen AI is and why it fails in banking contexts',
@@ -36,9 +36,9 @@ export const certifications: readonly Certification[] = [
   {
     id: 'aibi-s',
     name: 'AiBI-S',
-    fullName: 'Banking AI Specialist',
-    credentialDisplay: 'AiBI-S · The AI Banking Institute',
-    price: '$1,495',
+    fullName: 'Banking AI Specialist (Coming Soon)',
+    credentialDisplay: 'AiBI-S · Specialist · Coming Soon',
+    price: 'Coming Soon',
     audience: 'Department managers (5 role tracks: Operations, Lending, Compliance, Finance, Retail)',
     learn: [
       'Advanced prompt architecture for professional output',
@@ -54,9 +54,9 @@ export const certifications: readonly Certification[] = [
   {
     id: 'aibi-l',
     name: 'AiBI-L',
-    fullName: 'Banking AI Leader',
-    credentialDisplay: 'AiBI-L · The AI Banking Institute',
-    price: '$2,800+ individual · $12,000 team of 8',
+    fullName: 'Banking AI Leader (Coming Soon)',
+    credentialDisplay: 'AiBI-L · Leader · Coming Soon',
+    price: 'Coming Soon',
     audience: 'C-suite and board',
     learn: [
       'AI through a leadership accountability lens',

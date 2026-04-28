@@ -189,10 +189,10 @@ function ScoreInterpretation({
             recaptured, dollars saved, processes eliminated.
           </p>
           <p className="font-medium text-[color:var(--color-ink)]">
-            Our recommendation: an Operational Quick Win Sprint. Three
-            automations, implemented in 4–6 weeks, with a documented
-            before-and-after impact report. $5,000–$15,000 with a 90-day ROI
-            guarantee.
+            Our recommendation: run a Specialist cohort for a department.
+            Your managers work through real automation candidates together,
+            with optional Pilot Advisory coaching alongside. You leave with
+            documented before-and-after impact, not a deck.
           </p>
         </div>
       );
@@ -212,10 +212,11 @@ function ScoreInterpretation({
             works fast enough to compound the advantage.
           </p>
           <p className="font-medium text-[color:var(--color-ink)]">
-            Our recommendation: a conversation about the AiBI fCAIO program — a
-            structured monthly operating system that installs capability
-            transfer from day one. Your team runs the program independently
-            when we leave.
+            Our recommendation: an institution-wide capability program. A
+            recurring cohort cadence so every banker — new or tenured — has a
+            path to proficiency, with Leadership Advisory coaching for your AI
+            leader. The capability lives inside the institution, not in a
+            vendor relationship.
           </p>
         </div>
       );

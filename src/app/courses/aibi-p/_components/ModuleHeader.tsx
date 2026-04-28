@@ -49,6 +49,9 @@ export function ModuleHeader({
           </span>
         </div>
       </div>
+      <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.18em] text-white/65">
+        SAFE: Strip sensitive data · Ask clearly · Fact-check outputs · Escalate risky decisions
+      </p>
     </header>
   );
 }

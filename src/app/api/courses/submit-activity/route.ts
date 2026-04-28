@@ -13,7 +13,7 @@ import { createServerClient } from '@supabase/ssr';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { getModuleByNumber } from '@content/courses/aibi-p';
 
-const LAST_MODULE = 9;
+const LAST_MODULE = 12;
 
 // Pattern: N.N (e.g. "1.1", "5.2")
 const ACTIVITY_ID_PATTERN = /^\d+\.\d+$/;

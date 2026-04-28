@@ -7,7 +7,11 @@ import type { Dimension } from '@content/assessments/v2/types';
 import { ScoreRing } from './ScoreRing';
 import { NewsletterCTA } from './NewsletterCTA';
 import { PrintButton } from './PrintButton';
-import { NextStepCards } from './NextStepCards';
+import {
+  getAssessmentNextStep,
+  getFirstPracticeRecommendation,
+  getTopAssessmentGaps,
+} from '@/lib/lms/assessment-recommendations';
 
 interface ResultsViewV2Props {
   readonly score: number;
@@ -25,6 +29,22 @@ export function ResultsViewV2({
   email,
 }: ResultsViewV2Props) {
   const dimensions = Object.entries(dimensionBreakdown) as [Dimension, DimensionScore][];
+  const topGaps = getTopAssessmentGaps(dimensionBreakdown);
+  const nextStep = getAssessmentNextStep(tierId);
+  const firstPractice = getFirstPracticeRecommendation(tierId);
+  const shouldStartPractice =
+    tierId === 'starting-point' || tierId === 'early-stage';
+  const primaryAction = shouldStartPractice
+    ? {
+        title: 'Start your first AI practice rep',
+        description:
+          'Turn this score into a small win now. The first rep takes about five minutes and helps you practice safe, practical AI use.',
+        href: tierId === 'early-stage'
+          ? '/practice/safe-prompt-conversion'
+          : '/practice/rewrite-for-clarity',
+        cta: 'Start Your First AI Practice Rep',
+      }
+    : nextStep;
 
   return (
     <div className="w-full max-w-3xl mx-auto space-y-16">
@@ -61,6 +81,78 @@ export function ResultsViewV2({
           What your score means
         </p>
         <ScoreInterpretation score={score} tierId={tierId} />
+      </section>
+
+      {/* Top gaps */}
+      <section className="print-avoid-break">
+        <h3 className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-6">
+          Your top 3 gaps
+        </h3>
+        <div className="grid gap-4">
+          {topGaps.map((gap) => (
+            <div
+              key={gap.id}
+              className="border border-[color:var(--color-ink)]/10 rounded-[3px] p-5 bg-[color:var(--color-linen)]"
+            >
+              <div className="flex items-baseline justify-between gap-4">
+                <p className="font-serif text-xl text-[color:var(--color-ink)]">
+                  {gap.label}
+                </p>
+                <p className="font-mono text-xs text-[color:var(--color-slate)] tabular-nums">
+                  {gap.score}/{gap.maxScore}
+                </p>
+              </div>
+              <div className="mt-3 h-2 bg-[color:var(--color-ink)]/10 rounded-[1px] overflow-hidden">
+                <div
+                  className="h-full bg-[color:var(--color-terra)]"
+                  style={{ width: `${Math.round(gap.pct * 100)}%` }}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* One primary next step */}
+      <section
+        className="bg-[color:var(--color-parch)] border border-[color:var(--color-terra)]/25 rounded-[3px] p-8 md:p-10"
+        data-print-hide="true"
+      >
+        <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-4">
+          Recommended next step
+        </p>
+        <h3 className="font-serif text-3xl text-[color:var(--color-ink)] leading-tight mb-3">
+          {primaryAction.title}
+        </h3>
+        <p className="text-sm text-[color:var(--color-ink)]/75 leading-relaxed max-w-2xl mb-6">
+          {primaryAction.description}
+        </p>
+        <div className="flex flex-col sm:flex-row gap-3">
+          <a
+            href={primaryAction.href}
+            className="inline-block text-center px-7 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
+          >
+            {primaryAction.cta}
+          </a>
+          {shouldStartPractice && (
+            <a
+              href="/dashboard"
+              className="inline-block text-center px-7 py-3 border border-[color:var(--color-ink)]/25 text-[color:var(--color-ink)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)] transition-colors"
+            >
+              View Full Dashboard
+            </a>
+          )}
+        </div>
+      </section>
+
+      {/* First practice recommendation */}
+      <section className="border-l-2 border-[color:var(--color-terra)] pl-5 print-avoid-break">
+        <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-3">
+          First practice recommendation
+        </p>
+        <p className="font-serif text-2xl text-[color:var(--color-ink)] leading-snug">
+          {firstPractice}
+        </p>
       </section>
 
       {/* Dimension breakdown */}
@@ -102,9 +194,6 @@ export function ResultsViewV2({
           })}
         </div>
       </section>
-
-      {/* Tier-specific next steps */}
-      <NextStepCards tierId={tierId} />
 
       {/* Newsletter */}
       <div data-print-hide="true">
@@ -206,10 +295,10 @@ function ScoreInterpretation({
             recaptured, dollars saved, processes eliminated.
           </p>
           <p className="font-medium text-[color:var(--color-ink)]">
-            Our recommendation: an Operational Quick Win Sprint. Three
-            automations, implemented in 4&ndash;6 weeks, with a documented
-            before-and-after impact report. $5,000&ndash;$15,000 with a 90-day
-            ROI guarantee.
+            Our recommendation: run a Specialist cohort for a department.
+            Your managers work through real automation candidates together,
+            with optional Pilot Advisory coaching alongside. You leave with
+            documented before-and-after impact, not a deck.
           </p>
         </div>
       );
@@ -230,10 +319,11 @@ function ScoreInterpretation({
             works fast enough to compound the advantage.
           </p>
           <p className="font-medium text-[color:var(--color-ink)]">
-            Our recommendation: a conversation about the AiBI fCAIO program —
-            a structured monthly operating system that installs capability
-            transfer from day one. Your team runs the program independently
-            when we leave.
+            Our recommendation: an institution-wide capability program. A
+            recurring cohort cadence so every banker — new or tenured — has a
+            path to proficiency, with Leadership Advisory coaching for your AI
+            leader. The capability lives inside the institution, not in a
+            vendor relationship.
           </p>
         </div>
       );

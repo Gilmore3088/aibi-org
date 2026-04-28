@@ -74,7 +74,7 @@ export interface ArtifactDefinition {
 }
 
 export interface Module {
-  readonly number: number;           // 1-9
+  readonly number: number;           // module sequence number
   readonly id: string;               // e.g. "m1-regulatory-landscape"
   readonly title: string;
   readonly pillar: Pillar;
