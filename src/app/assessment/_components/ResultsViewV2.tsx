@@ -7,6 +7,8 @@ import type { Dimension } from '@content/assessments/v2/types';
 import { ScoreRing } from './ScoreRing';
 import { NewsletterCTA } from './NewsletterCTA';
 import { PrintButton } from './PrintButton';
+import { StarterArtifactCard } from './StarterArtifactCard';
+import { getStarterArtifact } from '@content/assessments/v2/starter-artifacts';
 import {
   getAssessmentNextStep,
   getFirstPracticeRecommendation,
@@ -30,6 +32,13 @@ export function ResultsViewV2({
 }: ResultsViewV2Props) {
   const dimensions = Object.entries(dimensionBreakdown) as [Dimension, DimensionScore][];
   const topGaps = getTopAssessmentGaps(dimensionBreakdown);
+  // The top gap drives which starter artifact the banker takes home.
+  // getTopAssessmentGaps is sorted lowest-percentile-first, so [0] is
+  // the dimension where they have the most to gain by acting.
+  const topGap = topGaps[0];
+  const starterArtifact = topGap
+    ? getStarterArtifact(topGap.id as Dimension)
+    : null;
   const nextStep = getAssessmentNextStep(tierId);
   const firstPractice = getFirstPracticeRecommendation(tierId);
   const shouldStartPractice =
@@ -112,6 +121,15 @@ export function ResultsViewV2({
           ))}
         </div>
       </section>
+
+      {/* Tailored starter artifact — banker-facing markdown they can take to a colleague this week. */}
+      {starterArtifact && topGap && (
+        <StarterArtifactCard
+          artifact={starterArtifact}
+          tierLabel={tier.label}
+          topGapLabel={topGap.label}
+        />
+      )}
 
       {/* One primary next step */}
       <section

@@ -1,0 +1,94 @@
+'use client';
+
+import { useState } from 'react';
+import { MarkdownRenderer } from '@/app/courses/aibi-p/_components/MarkdownRenderer';
+import type { StarterArtifact } from '@content/assessments/v2/starter-artifacts';
+
+interface StarterArtifactCardProps {
+  readonly artifact: StarterArtifact;
+  readonly tierLabel: string;
+  readonly topGapLabel: string;
+}
+
+// Banker-facing post-assessment artifact. Renders the markdown body inline
+// and offers two actions: copy to clipboard, download as .md. No analytics
+// gating, no email gate beyond the one already passed — this content is
+// the legitimate value the banker earned by handing over their email.
+export function StarterArtifactCard({
+  artifact,
+  tierLabel,
+  topGapLabel,
+}: StarterArtifactCardProps) {
+  const [copied, setCopied] = useState(false);
+  const [downloaded, setDownloaded] = useState(false);
+
+  async function handleCopy() {
+    try {
+      await navigator.clipboard.writeText(artifact.body);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Clipboard API can fail in non-secure contexts. The download button
+      // remains available as a fallback.
+    }
+  }
+
+  function handleDownload() {
+    const blob = new Blob([artifact.body], { type: 'text/markdown' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = artifact.filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    setDownloaded(true);
+    setTimeout(() => setDownloaded(false), 2000);
+  }
+
+  return (
+    <section className="border border-[color:var(--color-terra)]/30 bg-[color:var(--color-parch)] rounded-[3px] p-8 md:p-10 print-avoid-break">
+      <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
+        Your starter artifact
+      </p>
+      <p className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-slate)] mb-6">
+        Tailored to your top gap: {topGapLabel} · {tierLabel}
+      </p>
+
+      <h3 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] leading-tight mb-3">
+        {artifact.title}
+      </h3>
+      <p className="text-base text-[color:var(--color-ink)]/75 leading-relaxed mb-8 max-w-2xl">
+        {artifact.subtitle}
+      </p>
+
+      <div className="flex flex-wrap items-center gap-3 mb-8" data-print-hide="true">
+        <button
+          type="button"
+          onClick={handleCopy}
+          className="inline-block px-5 py-2.5 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
+        >
+          {copied ? 'Copied' : 'Copy to clipboard'}
+        </button>
+        <button
+          type="button"
+          onClick={handleDownload}
+          className="inline-block px-5 py-2.5 border border-[color:var(--color-ink)]/25 text-[color:var(--color-ink)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)] transition-colors"
+        >
+          {downloaded ? 'Downloaded' : `Download .md`}
+        </button>
+        <span className="font-mono text-[10px] text-[color:var(--color-slate)]">
+          {artifact.filename}
+        </span>
+      </div>
+
+      <div className="border-t border-[color:var(--color-ink)]/10 pt-8">
+        <MarkdownRenderer
+          content={artifact.body}
+          className="text-[color:var(--color-ink)]"
+        />
+      </div>
+    </section>
+  );
+}
