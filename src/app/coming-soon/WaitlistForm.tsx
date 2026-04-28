@@ -75,7 +75,7 @@ export function WaitlistForm({ initialInterest }: WaitlistFormProps) {
         ))}
       </div>
       {status === 'saved' && (
-        <p className="mt-3 text-xs text-[color:var(--color-sage)]">
+        <p className="mt-3 text-xs text-[color:var(--color-terra)]">
           You are on the list.
         </p>
       )}

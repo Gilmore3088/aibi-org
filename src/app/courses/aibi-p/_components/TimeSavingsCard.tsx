@@ -183,7 +183,7 @@ export function TimeSavingsCard({ moduleNumber }: TimeSavingsCardProps) {
         )}
 
         {savings.mode === 'ongoing' && savings.perUseMinutes === 0 && (
-          <p className="font-sans text-sm text-[color:var(--color-slate)] italic">
+          <p className="font-sans text-sm text-[color:var(--color-slate)]">
             {savings.usageLabel}
           </p>
         )}

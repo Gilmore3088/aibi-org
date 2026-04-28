@@ -41,7 +41,7 @@ export function renderInline(text: string): ReactNode[] {
       );
     } else if (match[6]) {
       parts.push(
-        <em key={parts.length} className="italic">
+        <em key={parts.length} className="font-serif italic">
           {match[6]}
         </em>,
       );

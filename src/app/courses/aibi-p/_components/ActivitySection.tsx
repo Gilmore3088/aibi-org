@@ -180,7 +180,7 @@ export function ActivitySection({
           // Drill scenarios must be present
           if (drillScenarios.length === 0) {
             return (
-              <p key={activity.id} className="text-sm text-[color:var(--color-slate)] italic">
+              <p key={activity.id} className="text-sm text-[color:var(--color-slate)]">
                 Classification drill scenarios not available.
               </p>
             );

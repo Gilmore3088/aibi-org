@@ -559,7 +559,7 @@ export function AIPracticeSandbox({
         aria-live="polite"
       >
         {messages.length === 0 && !streaming ? (
-          <p className="py-8 text-center font-sans text-sm italic text-[color:var(--color-slate)]">
+          <p className="py-8 text-center font-sans text-sm text-[color:var(--color-slate)]">
             Select a suggested prompt or type your own message to begin.
           </p>
         ) : (
