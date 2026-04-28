@@ -21,15 +21,22 @@ export function StarterArtifactCard({
 }: StarterArtifactCardProps) {
   const [copied, setCopied] = useState(false);
   const [downloaded, setDownloaded] = useState(false);
+  const [copyFailed, setCopyFailed] = useState(false);
 
   async function handleCopy() {
+    setCopyFailed(false);
     try {
+      // navigator.clipboard requires a secure context (https or localhost).
+      // Some embedded webviews and older Safari builds reject the call.
+      if (!navigator.clipboard?.writeText) throw new Error('Clipboard unavailable');
       await navigator.clipboard.writeText(artifact.body);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      // Clipboard API can fail in non-secure contexts. The download button
-      // remains available as a fallback.
+      // Surface the failure visibly so the banker knows to use Download
+      // instead — silent failure feels broken.
+      setCopyFailed(true);
+      setTimeout(() => setCopyFailed(false), 4000);
     }
   }
 
@@ -81,6 +88,14 @@ export function StarterArtifactCard({
         <span className="font-mono text-[10px] text-[color:var(--color-slate)]">
           {artifact.filename}
         </span>
+        {copyFailed && (
+          <span
+            role="alert"
+            className="font-mono text-[10px] text-[color:var(--color-error)]"
+          >
+            Copy unavailable in this browser — use Download instead.
+          </span>
+        )}
       </div>
 
       <div className="border-t border-[color:var(--color-ink)]/10 pt-8">
