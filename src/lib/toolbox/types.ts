@@ -87,11 +87,13 @@ export interface ToolboxTemplateSkill extends ToolboxSkillCommon {
 export type ToolboxSkill = ToolboxWorkflowSkill | ToolboxTemplateSkill;
 
 // Templates are workflow-kind only in v1 (the file-based seed set is all
-// workflow). Plan C will widen this to allow either kind in the DB-backed
+// workflow). The `id` here is a content slug (e.g., 'exam-prep') — distinct
+// from the UUID assigned when a learner forks a template into their personal
+// toolbox. Plan C will widen this to allow either kind in the DB-backed
 // Library.
 export type ToolboxSkillTemplate = Omit<
   ToolboxWorkflowSkill,
-  'id' | 'created' | 'modified' | 'templateId'
+  'created' | 'modified' | 'templateId'
 >;
 
 export interface ToolboxMessage {
