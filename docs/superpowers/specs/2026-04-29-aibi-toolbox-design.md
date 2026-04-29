@@ -511,6 +511,9 @@ These do not block the design — they are launch-time calibrations or Phase 2 d
 6. **PII heuristic library** — pick a specific regex set + optional NER library in implementation. Keep conservative; better to false-positive than miss.
 7. **Synthetic dataset count for first-N-sessions safety mode** — start at N=5 sessions; tune from telemetry.
 8. **RLS implementation choice** — SQL function vs. JWT claim (see §7.3); implementation plan picks one.
+9. **Session-count source for synthetic-only mode** — implementation plan picks: either `count(*) from toolbox_playground_sessions where user_id = ...`, or add a denormalized `playground_sessions_count` column to a profile/entitlement row. Latter is cheaper at read time; former has zero schema cost.
+10. **Entitlements reconciliation method** — recommended: **trigger on `course_enrollments` insert/update** (no signup-to-Toolbox-access lag). A cron reconcile job is the fallback if trigger ergonomics are messy in Supabase, but the lag risk makes it the second choice.
+11. **Content authoring capacity** — 70–85h estimate in §11 assumes a single dedicated author. Single author = ~2–3 weeks of focused work; if the work must share calendar with code review, instructional design, or other content production, plan multiplier accordingly. Confirm capacity with the named owner (§11 C1) before kickoff.
 
 ---
 
