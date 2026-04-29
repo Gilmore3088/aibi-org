@@ -1,6 +1,6 @@
 # AiBI Toolbox — Design Spec v1
 
-**Status:** Design approved — pending user review before implementation planning
+**Status:** Design v1.1 — incorporates user review feedback 2026-04-29; pending final approval before implementation planning
 **Author:** Claude (brainstorming session with James Gilmore)
 **Date:** 2026-04-29
 **Branch:** `feature/toolbox`
@@ -186,22 +186,44 @@ A safe, sandboxed AI chat environment for testing Skills and prompts.
 
 Opus deferred (cost). Compare Mode (side-by-side multi-model output) deferred to Phase 2.
 
-**Safety rules:**
+**Safety rules (revised — PII detection is necessary but not sufficient):**
 
-- **PII detection and warning:** automatic detection of likely SSN, account numbers, full names with addresses, etc. Blocks send with a warning + "edit" or "send anyway after redaction" choice. (Detection only — not bulletproof; learners are taught this is a learning tool, not a production tool.)
-- **Conversations are not used for training** — confirmed via provider API settings; surfaced to learners in the Playground UI.
-- **Disclaimer banner:** "This is a learning sandbox. Do not enter real customer data. Output is for educational purposes only."
-- Skills can be invoked directly in the Playground (drop-down: "Run with skill: ..." pre-loads system prompt and template).
-- Session-only by default; learner can save a transcript or refined prompt to their Toolbox as a Skill.
+PII regex/NER detection misses obvious combos (first name + last name + ZIP is identifiable but trips no SSN regex). Detection alone, with a "send anyway" escape hatch, is not a real control — the disclaimer ends up doing all the work. v1 layered approach:
 
-**Quota model (Locked at concept; numbers TBD):**
+1. **Synthetic-only mode for the first N sessions (default: first 5).** New learners can only send prompts that reference one of a curated set of synthetic example datasets surfaced in a side panel ("Sample Loan Application — fictional," "Sample Customer Complaint — fictional"). This gates experimentation onto safe data while learners build habits. Toggle off available after N sessions or after the learner explicitly acknowledges the policy.
+2. **Typed confirmation on first free-form send per session.** Once free-form mode is unlocked, the first send each session requires the learner to type the literal phrase **"no real customer data"** before the request fires. Friction is the point.
+3. **Heuristic detection layer.** Regex/pattern checks for SSN-shape, account-number-shape, full address-shape on every send. On hit: blocking modal with "edit" or "send anyway." The "send anyway" path is **telemetered** — if it's clicked >X% of the time, the framing isn't working and we revisit the design.
+4. **Server-side classifier (optional v1.1).** A lightweight second-pass classifier on the input. Track for v1.1 if heuristic miss rate is high in QA.
+5. **Disclaimer banner** persists on the Playground at all times: *"This is a learning sandbox. Do not enter real customer data. Output is for educational purposes only."*
+6. **Conversations are not used for training** — see §5.3a below for per-provider specifics.
+7. Skills can be invoked directly in the Playground (drop-down: "Run with skill: ..." pre-loads system prompt and template).
+8. Session-only by default; learner can save a transcript or refined prompt to their Toolbox as a Skill.
+
+#### 5.3a Provider data-handling stance (audit-grade wording)
+
+Per-provider terms drift over time and the wording on each provider's page changes. Lock the spec to a verifiable claim with a review cadence rather than a blanket "not used for training":
+
+> **As of [date verified] for the specific API tier in use:** Anthropic API (paid) does not train on customer prompts/completions by default; OpenAI API (paid, post-March 2023 default) does not train on API inputs; Google Gemini API (paid tier) does not use prompts for training under current terms. Verified at: [provider URL] for each. **Reviewed quarterly** by the engineering owner; date and link to provider terms recorded in `docs/compliance/llm-data-handling.md`.
+
+Surface a learner-facing version in the Playground UI ("Last verified: 2026-MM-DD · Details") that links to the compliance doc. This converts a vague claim into an audit trail.
+
+**Quota model (Locked at concept; numbers TBD via instrumentation):**
 
 - Track in **dollars of cost**, not tokens (because cost varies wildly by model — Sonnet is 15x GPT-4o-mini for output).
 - Each enrolled learner gets a **daily AI budget** and **monthly ceiling**.
-- Placeholder defaults (TBD calibration before launch): **$0.50/day, $10/month**
+- **Placeholder defaults are illustrative only — the real numbers come from measured usage.** A 1K-input / 800-output Sonnet call is roughly $0.015; at $0.50/day a learner gets ~33 Sonnet calls and will likely hit the cap in a single comparison-style session. With six models on the picker and learners doing comparison-style experimentation, the placeholder is too low. **Calibration plan:** before broader QA, an internal tester runs a representative learner exercise (4–6 prompts) on each of the 6 models, logs total cost, and we set caps from that data — not from feel. Implementation MUST land cost tracking with the first provider call (see §11) so calibration data is captured during build, not added later.
 - Playground UI shows a thin "$0.31 / $0.50 today" meter
 - Friendly warning at 80% utilization
 - Hard cutoff at 100% with reset at midnight (daily) or first of month (monthly)
+- Per-model caps optional in v2 if comparison usage skews spend toward expensive models
+
+**Per-request rate limiting (required, separate from cost cap):**
+
+The dollar cap alone is not enough — a script holding a session token can drain the daily cap in seconds and burn real provider dollars. Use the `@upstash/ratelimit` pattern from CLAUDE.md (already imported elsewhere in the project):
+
+- **Per-user:** 10 requests/minute, 200 requests/day to `/api/toolbox/playground/run`
+- **Per-IP:** 20 requests/minute (catches shared-credential abuse)
+- 429 with `Retry-After` header on cap hit; surfaced in Playground UI as "slow down" message, not error
 
 **Required environment variables (new):**
 
@@ -331,19 +353,36 @@ toolbox_library_skills (
   created_at timestamptz default now()
 );
 
--- Cookbook recipes
+-- Library skill versions (immutable; recipes pin to a version)
+toolbox_library_skill_versions (
+  id uuid primary key default gen_random_uuid(),
+  library_skill_id uuid not null references toolbox_library_skills(id) on delete cascade,
+  version integer not null,
+  -- snapshot of all content fields at time of publish
+  content jsonb not null,
+  published_at timestamptz default now(),
+  unique (library_skill_id, version)
+);
+-- Library originals are versioned: editing publishes a new row here. The
+-- toolbox_library_skills row tracks the "current" pointer; recipes pin a
+-- specific version_id so narrative stays aligned with the prompt content.
+
+-- Cookbook recipes (recipe steps pin to a Skill VERSION, not just a slug)
 toolbox_recipes (
   id uuid primary key default gen_random_uuid(),
   slug text unique not null,
   title text not null,
   overview text not null,
-  steps jsonb not null,           -- array of { skill_slug, narrative, notes }
+  steps jsonb not null,           -- array of { skill_slug, skill_version_id, narrative, notes }
   pillar char(1) not null check (pillar in ('A','B','C')),
   category text not null,
   compliance_notes text,
   published boolean default false,
   created_at timestamptz default now()
 );
+-- Note: steps[].skill_version_id is REQUIRED (not nullable in the JSONB shape).
+-- When a Library Skill is updated, existing recipes continue pointing at the
+-- prior version. Recipe authors can opt-in to upgrade by editing the recipe.
 
 -- Playground usage tracking (cost-based quota)
 toolbox_playground_usage (
@@ -369,13 +408,24 @@ toolbox_playground_sessions (
 );
 ```
 
-**RLS:** standard pattern from CLAUDE.md — wrap `auth.uid()` in `(select auth.uid())`, index policy columns. Library and Cookbook tables are world-readable for entitled users (gated at the API layer); skills/usage/sessions tables are owner-only.
+**RLS (revised — defense in depth, not API-layer-only):**
+
+API-layer gating alone fails defense-in-depth: a misconfigured client using the Supabase anon key would expose Library/Cookbook content. v1 RLS policy:
+
+- `toolbox_skills`, `toolbox_playground_usage`, `toolbox_playground_sessions`: owner-only (`(select auth.uid()) = owner_id` or `user_id`).
+- `toolbox_library_skills`, `toolbox_library_skill_versions`, `toolbox_recipes`: **read requires authenticated user AND active Toolbox entitlement at the row level.** Implemented either as:
+  - (a) a SQL function `has_toolbox_access(user_id uuid) returns boolean` called from the policy, OR
+  - (b) a JWT claim `toolbox_entitled = true` set at sign-in via Supabase auth hook, checked in the policy as `(auth.jwt() ->> 'toolbox_entitled')::boolean`
+- All policies follow CLAUDE.md performance pattern: wrap `auth.uid()` in `(select auth.uid())`; index policy columns (`owner_id`, `user_id`).
+- Implementation plan picks (a) vs (b); (b) is faster at read time, (a) is simpler to keep consistent with `lib/entitlements.ts`.
 
 ### 7.4 Provider abstraction
 
-A thin `lib/playground/providers/` module with one adapter per provider (Anthropic, OpenAI, Google), returning a normalized `{ output, usage: { input_tokens, output_tokens, cost_usd } }` shape. The `/api/toolbox/playground/run` endpoint dispatches to the adapter based on selected model.
+A thin `lib/playground/providers/` module with one adapter per provider (Anthropic, OpenAI, Google), returning a normalized `{ output, usage: { input_tokens, output_tokens, cost_usd } }` shape plus a streaming variant. The `/api/toolbox/playground/run` endpoint dispatches to the adapter based on selected model.
 
-### 7.5 Entitlement check (new)
+**Streaming responses (required for v1):** Sonnet/GPT-4o/Gemini Pro on multi-paragraph outputs takes 4–8 seconds. Without streaming the Playground feels broken. Use the Vercel AI SDK (`ai` package) `streamText`/`streamObject` affordances — it normalizes streaming across all three providers and is a small lift, not a heavy one. Cost is recorded on stream completion.
+
+### 7.5 Entitlement check (Locked: real entitlements table from v1)
 
 A single `lib/entitlements.ts` exposing:
 
@@ -384,7 +434,25 @@ async function hasToolboxAccess(userId: string): Promise<boolean>
 async function getActiveEntitlements(userId: string): Promise<Entitlement[]>
 ```
 
-Backed by an `entitlements` table (or derived from existing `course_enrollments` + Stripe customer state — to be settled in the implementation plan). Used as a gate in middleware for `/dashboard/toolbox/*` and at the top of every Toolbox API route.
+**Backed by a dedicated `entitlements` table from v1**, not derived ad-hoc from `course_enrollments`. Rationale: Phase 2 standalone Toolbox subscribers will not have a `course_enrollments` row, so derived entitlements would require a refactor as soon as Phase 2 ships. Building it now is cheaper than rebuilding in 6 months.
+
+```sql
+entitlements (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  product text not null,                    -- 'aibi-p' | 'aibi-s' | 'aibi-l' | 'toolbox-only'
+  source text not null,                     -- 'course_enrollment' | 'subscription' | 'manual'
+  source_ref text,                          -- enrollment_id, stripe_subscription_id, admin_note
+  active boolean not null default true,
+  granted_at timestamptz not null default now(),
+  expires_at timestamptz,
+  revoked_at timestamptz,
+  created_at timestamptz default now()
+);
+create index idx_entitlements_user_active on entitlements (user_id) where active = true;
+```
+
+A reconciliation job (or trigger on `course_enrollments` insert/update) writes a corresponding `entitlements` row. Used as a gate in middleware for `/dashboard/toolbox/*` and at the top of every Toolbox API route.
 
 ---
 
@@ -396,52 +464,100 @@ Backed by an `entitlements` table (or derived from existing `course_enrollments`
 | **Phase 2** (~6 mo post-launch) | Standalone subscription: Skill Builder + Library only | TBD ($19–$49/mo range) |
 | **Phase 3** | Team/institution plans, Compare Mode, sharing, analytics | TBD |
 
+**Phase 2 caveat — author-and-export, not author-and-test:** standalone Phase 2 subscribers do not get Playground access in the v1 model of Phase 2. That means subscribers can build Skills but cannot test them inside the Toolbox; they must copy the rendered prompt out to their institutional AI tool to verify behavior. This is a real product gap and the marketing for Phase 2 must position the Toolbox accordingly: *"Author and export your prompts. Test them in the AI tool you already use."* If this gap kills conversion in early Phase 2, options are (a) add a small Playground budget for subscribers (~$2/month), or (b) move Playground access into a higher subscription tier. Track conversion data and revisit at Phase 2 launch.
+
 ---
 
 ## 9. Success Metrics
+
+Targets:
 
 - **Engagement:** ≥ 70% of paid enrollees create at least 3 custom skills during their course
 - **Retention:** ≥ 50% of enrollees log into the Toolbox at least once 30+ days after course completion
 - **Save-to-Toolbox uptake:** ≥ 60% of enrollees use the Save to Toolbox button at least once during the course
 - **Cost discipline:** average per-learner Playground spend stays under daily/monthly caps; <5% of learners hit hard cutoff
+- **Safety signal:** "send anyway after PII warning" rate <10% of warnings — higher means the framing isn't working and we revisit the design
 - **Phase 2 conversion:** ≥ 10% of completed-but-unsubscribed enrollees convert to standalone Toolbox subscription within 6 months of launch
+
+**Instrumentation (required, wired at the API layer not the client):**
+
+Plausible custom events follow the deferred-call pattern from CLAUDE.md. Server-side events fire from API routes; client events fire from UI interactions where no API call is involved.
+
+| Event | Layer | Props |
+|---|---|---|
+| `toolbox_paywall_shown` | client | `{ source: 'direct' | 'course-link' | 'dashboard' }` |
+| `skill_created` | server (POST /api/toolbox/skills) | `{ source, pillar, category }` |
+| `skill_forked_from_library` | server | `{ library_skill_slug, library_skill_version_id }` |
+| `save_to_toolbox_clicked` | server (POST /api/toolbox/save) | `{ origin: 'course' | 'playground' | 'library' | 'cookbook', source_ref }` |
+| `playground_run` | server | `{ provider, model, input_tokens, output_tokens, cost_usd, used_skill_id }` |
+| `playground_pii_warning_shown` | server | `{ pattern_matched }` |
+| `playground_pii_send_anyway` | server | `{ pattern_matched }` |
+| `playground_quota_warning_80` | server | `{ scope: 'daily' | 'monthly' }` |
+| `playground_quota_blocked` | server | `{ scope: 'daily' | 'monthly' }` |
+| `library_skill_viewed` | client | `{ slug, version_id }` |
+| `cookbook_recipe_viewed` | client | `{ slug }` |
 
 ---
 
 ## 10. Open Questions / TBD
 
-These do not block the design — they are launch-time calibrations or Phase 2 decisions.
+These do not block the design — they are launch-time calibrations or Phase 2 decisions. Items resolved during user review have been moved to §12.
 
-1. **Daily/monthly Playground cost caps** — placeholder $0.50/day, $10/month. Calibrate before launch with real usage data; configurable via env or admin setting.
-2. **Phase 2 standalone subscription price** — defer.
-3. **Compare Mode** — deferred to Phase 2.
-4. **Free Class entitlement** — v1 says no Toolbox for free Classes. Revisit if Free Classes launch and adoption is poor.
-5. **Entitlement table vs. derived entitlements** — implementation plan to settle whether we add a new `entitlements` table or derive access from `course_enrollments` + active Stripe state.
-6. **PII detection library** — pick a specific library/regex set in implementation. Keep it conservative; better to false-positive a warning than miss real PII.
+1. **Daily/monthly Playground cost caps** — placeholder $0.50/day, $10/month is illustrative only. Calibrate from real usage data captured during build (cost tracking lands with first provider call — see §11).
+2. **Phase 2 standalone subscription price.**
+3. **Phase 2 Playground access for subscribers** — see §8 caveat. Decide based on conversion data after Phase 2 launch.
+4. **Compare Mode** — deferred to Phase 2.
+5. **Free Class entitlement** — v1 says no Toolbox for free Classes. Revisit if Free Classes launch and adoption is poor.
+6. **PII heuristic library** — pick a specific regex set + optional NER library in implementation. Keep conservative; better to false-positive than miss.
+7. **Synthetic dataset count for first-N-sessions safety mode** — start at N=5 sessions; tune from telemetry.
+8. **RLS implementation choice** — SQL function vs. JWT claim (see §7.3); implementation plan picks one.
 
 ---
 
 ## 11. Implementation Phasing
 
-Suggested build order for the implementation plan (writing-plans will refine this):
+Build order for the implementation plan (writing-plans will refine this). Two parallel tracks: Engineering and Content.
 
-1. **Foundation:** entitlement check, gated `/dashboard/toolbox` shell, paywall page, navigation
-2. **Skill schema + storage:** tables, RLS, CRUD API
-3. **Skill Builder UI:** create/edit flow
-4. **Library:** seed 25 harvested Skills, read-only browse + fork
-5. **Playground v1:** Anthropic-only first (already have key), single-model
-6. **Playground v2:** OpenAI + Google adapters, model picker
-7. **Cost tracking + quota meter**
-8. **PII detection + safety banner**
-9. **Save to Toolbox** capture button: course-content integration
-10. **Cookbook:** schema, seeding 5–8 recipes, browse + detail
-11. **Polish, accessibility pass, mobile QA**
+### Engineering track
+
+1. **Foundation:** `entitlements` table + `lib/entitlements.ts`, gated `/dashboard/toolbox` shell, paywall page, navigation deep-link affordances.
+2. **Skill schema + storage:** all toolbox tables (skills, library_skills, library_skill_versions, recipes, playground_usage, playground_sessions), RLS policies (defense-in-depth per §7.3), Skill CRUD API.
+3. **Skill Builder UI:** create/edit flow.
+4. **Library v1 (read path):** read-only browse + fork from seeded data; filters by department/pillar/complexity.
+5. **Playground v1 — Anthropic, with cost tracking and rate limiting from day one.** Anthropic adapter, streaming responses (Vercel AI SDK), cost recorded on stream completion, `@upstash/ratelimit` per-user and per-IP, dollar-cap meter wired in. Cost data captured during this phase IS the calibration data for §10.1.
+6. **PII safety layer:** synthetic-only mode, typed-confirmation gate, heuristic detection, telemetered "send anyway" path, persistent disclaimer banner.
+7. **Save to Toolbox capture:** course-content integration, provenance backlinks. Universal capture button surfaces in course modules, Playground, Library, Cookbook.
+8. **Playground v2 — multi-provider:** OpenAI + Google adapters, model picker, per-provider streaming, normalized cost.
+9. **Cookbook:** browse + detail, version-pinned recipe steps.
+10. **Provider data-handling page** (`docs/compliance/llm-data-handling.md`) + Playground UI link to it. Quarterly review reminder set.
+11. **Polish, accessibility pass, mobile QA, instrumentation verification.**
+
+### Content track (PARALLEL — must run alongside engineering, not after)
+
+This is undercounted in any spec that lists "seed 25 Skills" as a single bullet. Each Library Skill at the §5.2 quality bar (≥4 best-practice patterns, teaching annotations, regulatory citation, prompt review) is realistically **1–2 hours of authoring**, plus review. Each Cookbook recipe is **3–5 hours**. Total content authoring load:
+
+- 25 Library Skills × 1.5h avg = ~37 hours
+- 5–8 Cookbook recipes × 4h avg = ~20–32 hours
+- Prompt review pass (second human eye) = ~10–15 hours
+- **Total: roughly 70–85 hours of content work**
+
+**Without seeded content, the Toolbox launches empty and fails its core value promise.**
+
+Content track owners and deliverables:
+
+- **C1.** Confirm content authoring owner(s). Without a named owner this work does not happen on the engineering timeline.
+- **C2.** Author 25 Library Skills (harvested from existing course content but RE-AUTHORED to the Skill schema with system_prompt / user_prompt_template / variables / teaching_annotations — this is not a copy-paste exercise).
+- **C3.** Author 5–8 Cookbook recipes choreographing 3–4 Skills each.
+- **C4.** Prompt-review pass on every Library and Cookbook entry before publish.
+- **C5.** Provider data-handling stance verified and recorded in `docs/compliance/llm-data-handling.md` (cross-cuts with engineering step 10).
+
+Content track must be 50%+ complete before engineering step 4 ships, otherwise the Library page is a stub.
 
 ---
 
-## 12. Decisions Locked During Brainstorming
+## 12. Decisions Locked
 
-For traceability and to prevent relitigation in future sessions:
+### During brainstorming
 
 | # | Decision | Choice |
 |---|---|---|
@@ -455,3 +571,20 @@ For traceability and to prevent relitigation in future sessions:
 | 8 | Worktree | New `feature/toolbox` branch in `~/Projects/aibi-toolbox` |
 | 9 | Free Classes | Not entitled to Toolbox in v1 |
 | 10 | "Save to Toolbox" | Named first-class feature; required everywhere prompts appear in course content |
+
+### During v1.1 user review (this revision)
+
+| # | Decision | Choice |
+|---|---|---|
+| 11 | Content authoring | Tracked as a parallel track in §11, not an engineering step. Owner must be named before kickoff. ~70–85 hours of work. |
+| 12 | Cost cap calibration | Placeholder is illustrative only. Real numbers come from instrumented usage during build, not from feel. |
+| 13 | RLS posture | Defense-in-depth: row-level entitlement check on Library/Cookbook tables, not API-layer-only. |
+| 14 | PII control layering | Synthetic-only mode (first N sessions) + typed confirmation + heuristic detection + telemetered "send anyway" + persistent disclaimer. Detection alone is not a control. |
+| 15 | Provider data-handling | Audit-grade wording in `docs/compliance/llm-data-handling.md`, reviewed quarterly, surfaced in Playground UI. |
+| 16 | Phase 2 Playground gap | Phase 2 standalone subscription is author-and-export only (no Playground). Marketing must position accordingly. |
+| 17 | Recipe → Skill version pinning | Library Skills are versioned (`toolbox_library_skill_versions`); recipes pin to a `version_id`, not a slug. |
+| 18 | Rate limiting | `@upstash/ratelimit` per-user (10/min, 200/day) and per-IP (20/min) on `/api/toolbox/playground/run`, in addition to dollar cap. |
+| 19 | Streaming responses | Required in v1 via Vercel AI SDK; cost recorded on stream completion. |
+| 20 | Instrumentation | Server-side Plausible events for skill_created, save_to_toolbox_clicked, playground_run, PII warning/bypass, quota events; not client-only. |
+| 21 | Entitlements model | Real `entitlements` table from v1 (not derived from `course_enrollments`); reconciliation job/trigger from enrollment events. |
+| 22 | Phasing reorder | Cost tracking + rate limiting land WITH the first provider call, not after Playground v1/v2 ship. |
