@@ -168,17 +168,27 @@ export function WelcomeFirstPrompt({ onContinue }: WelcomeFirstPromptProps) {
         )}
 
         {phase === 'error' && (
-          <div className="text-center space-y-3">
-            <p className="text-sm text-[color:var(--color-ink)]/70">
-              You can skip this welcome moment and continue to the survey.
+          <div className="text-center space-y-4">
+            <p className="text-sm text-[color:var(--color-ink)]/70 max-w-md mx-auto">
+              The AI sandbox didn&rsquo;t respond this time. Try again, or skip
+              the welcome and continue to your survey.
             </p>
-            <button
-              type="button"
-              onClick={onContinue}
-              className="font-serif-sc text-xs uppercase tracking-[0.18em] text-[color:var(--color-ink)]/70 hover:text-[color:var(--color-terra)] transition-colors"
-            >
-              Skip to survey →
-            </button>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+              <button
+                type="button"
+                onClick={runPrompt}
+                className="inline-block px-8 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
+              >
+                Try again
+              </button>
+              <button
+                type="button"
+                onClick={onContinue}
+                className="font-serif-sc text-xs uppercase tracking-[0.18em] text-[color:var(--color-ink)]/70 hover:text-[color:var(--color-terra)] transition-colors"
+              >
+                Skip to survey →
+              </button>
+            </div>
           </div>
         )}
 

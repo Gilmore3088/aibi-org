@@ -103,6 +103,47 @@ export default function HomePage() {
 
       <ROICalculator />
 
+      {/* Sourced industry stats — every figure traces to a named publication */}
+      <section className="px-6 py-12 md:py-16 bg-[color:var(--color-linen)] border-b border-[color:var(--color-ink)]/10">
+        <div className="max-w-6xl mx-auto">
+          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-4">
+            Where the industry is
+          </p>
+          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] leading-tight max-w-3xl mb-10">
+            The numbers behind why we built this — every one with a named source.
+          </h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-[color:var(--color-ink)]/10 border border-[color:var(--color-ink)]/10">
+            <div className="bg-[color:var(--color-linen)] p-6 md:p-7">
+              <p className="font-mono text-3xl md:text-4xl tabular-nums text-[color:var(--color-terra)]">66%</p>
+              <p className="font-serif text-base text-[color:var(--color-ink)] mt-3 leading-snug">
+                of community banks are discussing AI in their budget.
+              </p>
+              <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-[color:var(--color-slate)] mt-3">
+                Bank Director, 2024 Technology Survey (via Jack Henry, 2025)
+              </p>
+            </div>
+            <div className="bg-[color:var(--color-linen)] p-6 md:p-7">
+              <p className="font-mono text-3xl md:text-4xl tabular-nums text-[color:var(--color-terra)]">57%</p>
+              <p className="font-serif text-base text-[color:var(--color-ink)] mt-3 leading-snug">
+                of financial institutions struggle with AI skill gaps.
+              </p>
+              <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-[color:var(--color-slate)] mt-3">
+                Gartner Peer Community (via Jack Henry, 2025)
+              </p>
+            </div>
+            <div className="bg-[color:var(--color-linen)] p-6 md:p-7">
+              <p className="font-mono text-3xl md:text-4xl tabular-nums text-[color:var(--color-terra)]">~65%</p>
+              <p className="font-serif text-base text-[color:var(--color-ink)] mt-3 leading-snug">
+                community-bank median efficiency ratio — vs. ~55.7% industry-wide.
+              </p>
+              <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-[color:var(--color-slate)] mt-3">
+                FDIC Quarterly Banking Profile, Q4 2024
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="px-6 py-12 md:py-16 bg-[color:var(--color-parch)] border-b border-[color:var(--color-ink)]/10">
         <div className="max-w-6xl mx-auto grid lg:grid-cols-[0.85fr_1.15fr] gap-10 lg:gap-16 items-start">
           <SectionIntro

@@ -3,8 +3,10 @@ import { AibiSeal } from './AibiSeal';
 import { AuthButton } from './AuthButton';
 import { MobileNav } from './MobileNav';
 
+// Nav-link "Assessment" was removed: it duplicated the right-rail "Take Assessment"
+// pill button (both route to /assessment/start). The pill is the primary CTA;
+// the nav links are secondary destinations only.
 const NAV_LINKS = [
-  { href: '/assessment/start', label: 'Assessment' },
   { href: '/prompt-cards', label: 'Prompt Cards' },
   { href: '/courses/aibi-p', label: 'For Learners' },
   { href: '/for-institutions', label: 'For Institutions' },
