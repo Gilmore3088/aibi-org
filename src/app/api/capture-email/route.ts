@@ -7,6 +7,10 @@ import { isSupabaseConfigured } from '@/lib/supabase/client';
 import { subscribeToAssessmentForm } from '@/lib/convertkit';
 import { upsertContact } from '@/lib/hubspot';
 import { upsertReadinessResult } from '@/lib/supabase/user-profiles';
+import { sendAssessmentBreakdown } from '@/lib/resend';
+import { getTierV2 } from '@content/assessments/v2/scoring';
+import { getStarterArtifact } from '@content/assessments/v2/starter-artifacts';
+import type { Dimension } from '@content/assessments/v2/types';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -109,6 +113,31 @@ export async function POST(request: Request) {
       ...(maxScore !== undefined ? { maxScore } : {}),
       ...(dimensionBreakdown ? { dimensionBreakdown } : {}),
     }).catch((err) => console.warn('[capture-email] supabase skip', err));
+  }
+
+  // Send the breakdown email via Resend (best-effort, non-blocking).
+  // Only fires for v2 assessments with a dimension breakdown — v1 doesn't
+  // produce the per-dimension data the email's substance depends on.
+  if (version === 'v2' && dimensionBreakdown) {
+    const tierData = getTierV2(score);
+    // Pick the lowest-scoring dimension for the starter artifact pointer.
+    const lowest = Object.entries(dimensionBreakdown)
+      .map(([id, d]) => ({ id, pct: d.maxScore > 0 ? d.score / d.maxScore : 0 }))
+      .sort((a, b) => a.pct - b.pct)[0];
+    const artifact = lowest ? getStarterArtifact(lowest.id as Dimension) : null;
+
+    sendAssessmentBreakdown({
+      email,
+      score,
+      maxScore: maxScore ?? 48,
+      tierId: tier,
+      tierLabel,
+      tierHeadline: tierData.headline,
+      tierSummary: tierData.summary,
+      dimensionBreakdown,
+      starterArtifactTitle: artifact?.title,
+      starterArtifactBody: artifact?.body,
+    }).catch((err) => console.warn('[capture-email] resend skip', err));
   }
 
   return NextResponse.json({ ok: true });

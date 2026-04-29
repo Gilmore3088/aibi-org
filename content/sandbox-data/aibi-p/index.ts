@@ -11,6 +11,9 @@ import { module6SandboxConfig } from './module-6/config';
 import { module7SandboxConfig } from './module-7/config';
 import { module8SandboxConfig } from './module-8/config';
 import { module9SandboxConfig } from './module-9/config';
+import { module10SandboxConfig } from './module-10/config';
+import { module11SandboxConfig } from './module-11/config';
+import { module12SandboxConfig } from './module-12/config';
 
 export const SANDBOX_CONFIGS: Partial<Record<number, SandboxConfig>> = {
   1: module1SandboxConfig,
@@ -22,4 +25,7 @@ export const SANDBOX_CONFIGS: Partial<Record<number, SandboxConfig>> = {
   7: module7SandboxConfig,
   8: module8SandboxConfig,
   9: module9SandboxConfig,
+  10: module10SandboxConfig,
+  11: module11SandboxConfig,
+  12: module12SandboxConfig,
 };

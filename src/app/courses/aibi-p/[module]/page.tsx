@@ -25,6 +25,10 @@ import type { ActivityResponse } from '@/types/course';
 import { AIPracticeSandbox } from '@/components/AIPracticeSandbox';
 import { SANDBOX_CONFIGS } from '@content/sandbox-data/aibi-p';
 import { AIBI_P_ARTIFACTS } from '@content/practice-reps/aibi-p';
+import {
+  getModuleActivitySpec,
+  buildModuleActivity,
+} from '@content/courses/aibi-p/module-activities';
 
 interface ModulePageParams {
   readonly params: { module: string };
@@ -72,7 +76,15 @@ export default async function ModulePage({ params }: ModulePageParams) {
   const isLastModule = mod.number === modules.length;
   const isAlreadyCompleted = enrollment.completed_modules.includes(moduleNum);
   const expandedModule = V4_AIBIP_MODULE_BY_NUMBER.get(moduleNum);
-  const moduleActivities = expandedModule ? [buildV4Activity(expandedModule)] : mod.activities;
+  // 2026-04-29: per-module structured Apply activities replace the generic
+  // V4 textarea form. Each spec drives both the form fields and the
+  // downloadable artifact .md served by /api/courses/generate-module-artifact.
+  const moduleSpec = getModuleActivitySpec(moduleNum);
+  const moduleActivities = moduleSpec
+    ? [buildModuleActivity(moduleSpec)]
+    : expandedModule
+      ? [buildV4Activity(expandedModule)]
+      : mod.activities;
   const moduleTables = expandedModule ? undefined : mod.tables;
 
   // Fetch existing activity responses for this enrollment + module (read-only, service role)
