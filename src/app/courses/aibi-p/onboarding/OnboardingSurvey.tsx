@@ -3,12 +3,22 @@
 // ONBD-01, ONBD-02: Three-question onboarding survey.
 // Two-column layout on lg (left: branding/progress, right: form).
 // Submits to /api/courses/save-onboarding, then routes to Module 1.
+//
+// 2026-04-29: prefixed with the WelcomeFirstPrompt module — a first-prompt-
+// in-90-seconds value moment. Banker sees real AI output before the form.
+// localStorage flag prevents the welcome from re-showing on refresh.
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import type { OnboardingAnswers, LearnerRole } from '@/types/course';
 import { SurveyBranding } from './SurveyBranding';
 import { SurveyStepContent } from './SurveyStepContent';
+import { WelcomeFirstPrompt } from './WelcomeFirstPrompt';
+
+// localStorage key — namespaced by enrollment to support multiple bankers
+// sharing a browser (rare, but possible at a branch).
+const WELCOME_DONE_KEY = (enrollmentId: string) =>
+  `aibi-p-welcome-done-${enrollmentId}`;
 
 const TOTAL_STEPS = 3;
 
@@ -36,6 +46,25 @@ export function OnboardingSurvey({ enrollmentId }: OnboardingSurveyProps) {
   const [form, setForm] = useState<FormState>(INITIAL_FORM_STATE);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  // Welcome moment runs once per enrollment. Default to 'unknown' to avoid
+  // SSR flash; on mount we read localStorage and pick 'welcome' or 'survey'.
+  const [welcomePhase, setWelcomePhase] = useState<'welcome' | 'survey' | 'unknown'>(
+    'unknown',
+  );
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const done = window.localStorage.getItem(WELCOME_DONE_KEY(enrollmentId));
+    setWelcomePhase(done === 'true' ? 'survey' : 'welcome');
+  }, [enrollmentId]);
+
+  const handleWelcomeContinue = useCallback(() => {
+    if (typeof window !== 'undefined') {
+      window.localStorage.setItem(WELCOME_DONE_KEY(enrollmentId), 'true');
+    }
+    setWelcomePhase('survey');
+  }, [enrollmentId]);
 
   const handleM365Select = useCallback(
     (value: OnboardingAnswers['uses_m365']) => {
@@ -121,6 +150,16 @@ export function OnboardingSurvey({ enrollmentId }: OnboardingSurveyProps) {
       setIsSubmitting(false);
     }
   };
+
+  if (welcomePhase === 'unknown') {
+    // Pre-mount; render nothing to avoid SSR flashing the survey before the
+    // welcome decision is read from localStorage.
+    return null;
+  }
+
+  if (welcomePhase === 'welcome') {
+    return <WelcomeFirstPrompt onContinue={handleWelcomeContinue} />;
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center px-6 py-20">
