@@ -32,7 +32,7 @@ describe('getPaidToolboxAccess (reads from entitlements)', () => {
     vi.clearAllMocks();
     process.env.NEXT_PUBLIC_SUPABASE_URL = 'http://localhost:54321';
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'test-anon';
-    process.env.NODE_ENV = 'test';
+    vi.stubEnv('NODE_ENV', 'test');
     delete process.env.SKIP_ENROLLMENT_GATE;
   });
 
@@ -68,7 +68,7 @@ describe('getPaidToolboxAccess (reads from entitlements)', () => {
   });
 
   it('honors SKIP_ENROLLMENT_GATE in non-production', async () => {
-    process.env.NODE_ENV = 'development';
+    vi.stubEnv('NODE_ENV', 'development');
     process.env.SKIP_ENROLLMENT_GATE = 'true';
     const result = await getPaidToolboxAccess();
     expect(result).not.toBeNull();

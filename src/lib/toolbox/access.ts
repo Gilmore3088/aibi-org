@@ -7,7 +7,7 @@ export interface PaidAccess {
   readonly products: readonly string[];
 }
 
-const PAID_PRODUCTS = ['aibi-p', 'aibi-s', 'aibi-l'] as const;
+const PAID_PRODUCTS = ['aibi-p', 'aibi-s', 'aibi-l', 'toolbox-only'] as const;
 
 export async function getPaidToolboxAccess(): Promise<PaidAccess | null> {
   if (
@@ -39,16 +39,19 @@ export async function getPaidToolboxAccess(): Promise<PaidAccess | null> {
   if (!user) return null;
 
   const { data, error } = await supabase
-    .from('course_enrollments')
+    .from('entitlements')
     .select('product')
     .eq('user_id', user.id)
-    .in('product', [...PAID_PRODUCTS]);
+    .eq('active', true);
 
   if (error || !data || data.length === 0) return null;
 
-  return {
-    userId: user.id,
-    products: data.map((row) => String(row.product)),
-  };
+  const products = data
+    .map((row) => String(row.product))
+    .filter((p) => (PAID_PRODUCTS as readonly string[]).includes(p));
+
+  if (products.length === 0) return null;
+
+  return { userId: user.id, products };
 }
 
