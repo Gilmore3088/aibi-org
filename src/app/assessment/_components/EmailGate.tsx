@@ -86,9 +86,10 @@ export function EmailGate({
         Where should we send your score and breakdown?
       </h3>
       <p className="text-[color:var(--color-ink)]/70 mb-6 text-base leading-relaxed">
-        We will show your exact score, an 8-dimension breakdown, and email you a
-        brief interpretation of what your tier means for the next 90 days. No
-        marketing spam, and you can unsubscribe with one click.
+        We will show your full 8-dimension breakdown and a tailored starter
+        artifact you can take to your team this week. A copy is also emailed to
+        the address below. No marketing list, no sales follow-up unless you
+        ask.
       </p>
 
       <form onSubmit={handleSubmit} className="space-y-4">
