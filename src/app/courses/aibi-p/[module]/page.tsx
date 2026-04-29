@@ -24,6 +24,7 @@ import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/cl
 import type { ActivityResponse } from '@/types/course';
 import { AIPracticeSandbox } from '@/components/AIPracticeSandbox';
 import { SANDBOX_CONFIGS } from '@content/sandbox-data/aibi-p';
+import { AIBI_P_ARTIFACTS } from '@content/practice-reps/aibi-p';
 
 interface ModulePageParams {
   readonly params: { module: string };
@@ -156,6 +157,8 @@ export default async function ModulePage({ params }: ModulePageParams) {
 }
 
 function buildV4Activity(module: ExpandedModule): Activity {
+  const artifact = AIBI_P_ARTIFACTS.find((item) => item.moduleNumber === module.number);
+
   return {
     id: `${module.number}.1`,
     title: module.practice,
@@ -180,6 +183,7 @@ function buildV4Activity(module: ExpandedModule): Activity {
       },
     ],
     completionTrigger: 'save-response',
+    artifactId: artifact?.id,
   };
 }
 
