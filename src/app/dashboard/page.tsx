@@ -70,6 +70,7 @@ export default function DashboardPage() {
   const [dashboard, setDashboard] = useState<LearnerDashboardState | null>(null);
   const [localCompletedRepIds, setLocalCompletedRepIds] = useState<readonly string[]>([]);
   const [localSavedPromptIds, setLocalSavedPromptIds] = useState<readonly string[]>([]);
+  const [toolboxEntitled, setToolboxEntitled] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -77,9 +78,16 @@ export default function DashboardPage() {
       .then(async (loadedUser) => {
         setUser(loadedUser);
         try {
-          const response = await fetch('/api/dashboard/learner', { cache: 'no-store' });
-          if (response.ok) {
-            setDashboard((await response.json()) as LearnerDashboardState);
+          const [learnerRes, toolboxRes] = await Promise.all([
+            fetch('/api/dashboard/learner', { cache: 'no-store' }),
+            fetch('/api/dashboard/toolbox-access', { cache: 'no-store' }),
+          ]);
+          if (learnerRes.ok) {
+            setDashboard((await learnerRes.json()) as LearnerDashboardState);
+          }
+          if (toolboxRes.ok) {
+            const { entitled } = (await toolboxRes.json()) as { entitled: boolean };
+            setToolboxEntitled(Boolean(entitled));
           }
         } catch {
           // Local assessment-only users still get a useful dashboard fallback.
@@ -312,6 +320,24 @@ export default function DashboardPage() {
             </Link>
           </DashboardPanel>
         </section>
+
+        {toolboxEntitled && (
+          <section>
+            <DashboardPanel title="Your Toolbox">
+              <p className="text-sm text-[color:var(--color-slate)] leading-relaxed">
+                Build reusable AI skills with guardrails, test them in the
+                Playground, and export them to your institutional AI tool.
+                Included with your enrollment.
+              </p>
+              <Link
+                href="/dashboard/toolbox"
+                className="inline-block mt-4 font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] border-b border-[color:var(--color-terra)]"
+              >
+                Open Toolbox
+              </Link>
+            </DashboardPanel>
+          </section>
+        )}
 
         <section>
           <div className="flex items-end justify-between gap-4 mb-5">
