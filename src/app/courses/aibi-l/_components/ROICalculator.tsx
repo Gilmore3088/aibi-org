@@ -4,7 +4,7 @@ import { useMemo, useState, useCallback } from 'react';
 
 // AiBI-L Session 3: Department-by-Department ROI Calculator
 // Live calculator — no submit button, no server calls.
-// All numbers: font-mono tabular-nums. Accent: sage only.
+// All numbers: font-mono tabular-nums. Accent: cobalt only.
 
 // ---------------------------------------------------------------------------
 // Types
@@ -143,7 +143,7 @@ function NumberInput({
           min={min}
           max={max}
           step={step}
-          className="w-full font-mono text-sm tabular-nums text-[color:var(--color-ink)] bg-white border border-[color:var(--color-ink)]/10 px-3 py-2 rounded-[2px] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-sage)] focus:ring-offset-1"
+          className="w-full font-mono text-sm tabular-nums text-[color:var(--color-ink)] bg-white border border-[color:var(--color-ink)]/10 px-3 py-2 rounded-[2px] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-cobalt)] focus:ring-offset-1"
         />
         {suffix && (
           <span className="font-mono text-sm text-[color:var(--color-ink)]/50">
@@ -178,7 +178,7 @@ function SavingsBarChart({
               {fmtDollars(val)}
             </span>
             <div
-              className="w-full bg-[color:var(--color-sage)] rounded-[2px] transition-all duration-300"
+              className="w-full bg-[color:var(--color-cobalt)] rounded-[2px] transition-all duration-300"
               style={{ height: `${heightPct}%` }}
               role="img"
               aria-label={`${labels[i]}: ${fmtDollars(val)}`}
@@ -215,7 +215,7 @@ function EfficiencyComparison({
             className={`w-full rounded-[2px] transition-all duration-300 ${
               item.label === 'Current'
                 ? 'bg-[color:var(--color-ink)]/20'
-                : 'bg-[color:var(--color-sage)]'
+                : 'bg-[color:var(--color-cobalt)]'
             }`}
             style={{ height: `${Math.max(item.value, 2)}%` }}
             role="img"
@@ -314,17 +314,17 @@ export function ROICalculator() {
 
   return (
     <section
-      className="bg-[color:var(--color-parch)] border border-[color:var(--color-sage)]/15 rounded-sm"
+      className="bg-[color:var(--color-parch)] border border-[color:var(--color-cobalt)]/15 rounded-sm"
       aria-labelledby="roi-calculator-heading"
     >
       {/* Header */}
       <div className="px-6 sm:px-10 pt-8 sm:pt-10 pb-6">
         <div className="flex items-center gap-2 mb-4">
-          <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-[color:var(--color-sage)]">
+          <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-[color:var(--color-cobalt)]">
             Interactive Worksheet
           </span>
           <div
-            className="h-px flex-1 bg-[color:var(--color-sage)]/15"
+            className="h-px flex-1 bg-[color:var(--color-cobalt)]/15"
             aria-hidden="true"
           />
         </div>
@@ -387,7 +387,7 @@ export function ROICalculator() {
           <div className="hidden sm:block overflow-x-auto">
             <table className="w-full text-left">
               <thead>
-                <tr className="border-b border-[color:var(--color-sage)]/15">
+                <tr className="border-b border-[color:var(--color-cobalt)]/15">
                   <th className="font-mono text-[9px] uppercase tracking-[0.15em] text-[color:var(--color-ink)]/60 py-2 pr-4">
                     Department
                   </th>
@@ -406,7 +406,7 @@ export function ROICalculator() {
                 {departments.map((dept, i) => (
                   <tr
                     key={dept.name}
-                    className="border-b border-[color:var(--color-sage)]/8"
+                    className="border-b border-[color:var(--color-cobalt)]/8"
                   >
                     <td className="font-serif text-sm text-[color:var(--color-ink)] py-3 pr-4">
                       {dept.name}
@@ -420,7 +420,7 @@ export function ROICalculator() {
                           const v = parseInt(e.target.value.replace(/[^0-9]/g, ''), 10);
                           if (!isNaN(v)) updateDept(i, 'ftes', v);
                         }}
-                        className="w-20 font-mono text-sm tabular-nums text-[color:var(--color-ink)] bg-white border border-[color:var(--color-ink)]/10 px-2 py-1.5 rounded-[2px] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-sage)] focus:ring-offset-1"
+                        className="w-20 font-mono text-sm tabular-nums text-[color:var(--color-ink)] bg-white border border-[color:var(--color-ink)]/10 px-2 py-1.5 rounded-[2px] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-cobalt)] focus:ring-offset-1"
                         aria-label={`${dept.name} FTEs`}
                       />
                     </td>
@@ -437,7 +437,7 @@ export function ROICalculator() {
                             const v = parseInt(e.target.value.replace(/[^0-9]/g, ''), 10);
                             if (!isNaN(v)) updateDept(i, 'costPerFTE', v);
                           }}
-                          className="w-28 font-mono text-sm tabular-nums text-[color:var(--color-ink)] bg-white border border-[color:var(--color-ink)]/10 px-2 py-1.5 rounded-[2px] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-sage)] focus:ring-offset-1"
+                          className="w-28 font-mono text-sm tabular-nums text-[color:var(--color-ink)] bg-white border border-[color:var(--color-ink)]/10 px-2 py-1.5 rounded-[2px] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-cobalt)] focus:ring-offset-1"
                           aria-label={`${dept.name} cost per FTE`}
                         />
                       </div>
@@ -451,7 +451,7 @@ export function ROICalculator() {
                           const v = parseInt(e.target.value.replace(/[^0-9]/g, ''), 10);
                           if (!isNaN(v)) updateDept(i, 'automatableHours', v);
                         }}
-                        className="w-16 font-mono text-sm tabular-nums text-[color:var(--color-ink)] bg-white border border-[color:var(--color-ink)]/10 px-2 py-1.5 rounded-[2px] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-sage)] focus:ring-offset-1"
+                        className="w-16 font-mono text-sm tabular-nums text-[color:var(--color-ink)] bg-white border border-[color:var(--color-ink)]/10 px-2 py-1.5 rounded-[2px] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-cobalt)] focus:ring-offset-1"
                         aria-label={`${dept.name} automatable hours per week`}
                       />
                     </td>
@@ -466,7 +466,7 @@ export function ROICalculator() {
             {departments.map((dept, i) => (
               <div
                 key={dept.name}
-                className="border border-[color:var(--color-sage)]/10 bg-white p-4 rounded-[2px]"
+                className="border border-[color:var(--color-cobalt)]/10 bg-white p-4 rounded-[2px]"
               >
                 <p className="font-serif text-sm font-bold text-[color:var(--color-ink)] mb-3">
                   {dept.name}
@@ -484,7 +484,7 @@ export function ROICalculator() {
                         const v = parseInt(e.target.value.replace(/[^0-9]/g, ''), 10);
                         if (!isNaN(v)) updateDept(i, 'ftes', v);
                       }}
-                      className="w-full font-mono text-sm tabular-nums text-[color:var(--color-ink)] bg-white border border-[color:var(--color-ink)]/10 px-2 py-1.5 rounded-[2px] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-sage)] focus:ring-offset-1"
+                      className="w-full font-mono text-sm tabular-nums text-[color:var(--color-ink)] bg-white border border-[color:var(--color-ink)]/10 px-2 py-1.5 rounded-[2px] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-cobalt)] focus:ring-offset-1"
                       aria-label={`${dept.name} FTEs`}
                     />
                   </div>
@@ -500,7 +500,7 @@ export function ROICalculator() {
                         const v = parseInt(e.target.value.replace(/[^0-9]/g, ''), 10);
                         if (!isNaN(v)) updateDept(i, 'costPerFTE', v);
                       }}
-                      className="w-full font-mono text-sm tabular-nums text-[color:var(--color-ink)] bg-white border border-[color:var(--color-ink)]/10 px-2 py-1.5 rounded-[2px] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-sage)] focus:ring-offset-1"
+                      className="w-full font-mono text-sm tabular-nums text-[color:var(--color-ink)] bg-white border border-[color:var(--color-ink)]/10 px-2 py-1.5 rounded-[2px] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-cobalt)] focus:ring-offset-1"
                       aria-label={`${dept.name} cost per FTE`}
                     />
                   </div>
@@ -516,7 +516,7 @@ export function ROICalculator() {
                         const v = parseInt(e.target.value.replace(/[^0-9]/g, ''), 10);
                         if (!isNaN(v)) updateDept(i, 'automatableHours', v);
                       }}
-                      className="w-full font-mono text-sm tabular-nums text-[color:var(--color-ink)] bg-white border border-[color:var(--color-ink)]/10 px-2 py-1.5 rounded-[2px] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-sage)] focus:ring-offset-1"
+                      className="w-full font-mono text-sm tabular-nums text-[color:var(--color-ink)] bg-white border border-[color:var(--color-ink)]/10 px-2 py-1.5 rounded-[2px] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-cobalt)] focus:ring-offset-1"
                       aria-label={`${dept.name} automatable hours per week`}
                     />
                   </div>
@@ -539,8 +539,8 @@ export function ROICalculator() {
                 key={key}
                 className={`flex items-center gap-2 px-4 py-2.5 border rounded-[2px] cursor-pointer transition-colors ${
                   scenario === key
-                    ? 'border-[color:var(--color-sage)] bg-[color:var(--color-sage)]/10'
-                    : 'border-[color:var(--color-ink)]/10 bg-white hover:border-[color:var(--color-sage)]/40'
+                    ? 'border-[color:var(--color-cobalt)] bg-[color:var(--color-cobalt)]/10'
+                    : 'border-[color:var(--color-ink)]/10 bg-white hover:border-[color:var(--color-cobalt)]/40'
                 }`}
               >
                 <input
@@ -549,7 +549,7 @@ export function ROICalculator() {
                   value={key}
                   checked={scenario === key}
                   onChange={() => setScenario(key)}
-                  className="accent-[color:var(--color-sage)]"
+                  className="accent-[color:var(--color-cobalt)]"
                 />
                 <span className="font-sans text-sm text-[color:var(--color-ink)]">
                   {SCENARIO_LABELS[key]}
@@ -591,7 +591,7 @@ export function ROICalculator() {
         {/* ----------------------------------------------------------------- */}
         {/* Section 5: Results */}
         {/* ----------------------------------------------------------------- */}
-        <div className="border-t border-[color:var(--color-sage)]/15 pt-8 space-y-8">
+        <div className="border-t border-[color:var(--color-cobalt)]/15 pt-8 space-y-8">
           <h3 className="font-serif text-lg font-bold text-[color:var(--color-ink)]">
             Projected Results
           </h3>
@@ -604,7 +604,7 @@ export function ROICalculator() {
             <div className="overflow-x-auto">
               <table className="w-full text-left">
                 <thead>
-                  <tr className="border-b border-[color:var(--color-sage)]/15">
+                  <tr className="border-b border-[color:var(--color-cobalt)]/15">
                     <th className="font-mono text-[9px] uppercase tracking-[0.15em] text-[color:var(--color-ink)]/60 py-2 pr-4">
                       Department
                     </th>
@@ -623,7 +623,7 @@ export function ROICalculator() {
                   {departments.map((dept, i) => (
                     <tr
                       key={dept.name}
-                      className="border-b border-[color:var(--color-sage)]/8"
+                      className="border-b border-[color:var(--color-cobalt)]/8"
                     >
                       <td className="font-serif text-sm text-[color:var(--color-ink)] py-2 pr-4">
                         {dept.name}
@@ -638,7 +638,7 @@ export function ROICalculator() {
                       ))}
                     </tr>
                   ))}
-                  <tr className="border-t-2 border-[color:var(--color-sage)]/30">
+                  <tr className="border-t-2 border-[color:var(--color-cobalt)]/30">
                     <td className="font-serif text-sm font-bold text-[color:var(--color-ink)] py-2 pr-4">
                       Total
                     </td>
@@ -658,30 +658,30 @@ export function ROICalculator() {
 
           {/* Headline numbers */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            <div className="border border-[color:var(--color-sage)]/15 bg-white p-5 rounded-[2px]">
+            <div className="border border-[color:var(--color-cobalt)]/15 bg-white p-5 rounded-[2px]">
               <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-[color:var(--color-ink)]/60 mb-2">
                 3-Year Cumulative Savings
               </p>
-              <p className="font-mono text-4xl tabular-nums text-[color:var(--color-sage)] leading-none">
+              <p className="font-mono text-4xl tabular-nums text-[color:var(--color-cobalt)] leading-none">
                 {fmtDollars(calculations.cumulative)}
               </p>
             </div>
-            <div className="border border-[color:var(--color-sage)]/15 bg-white p-5 rounded-[2px]">
+            <div className="border border-[color:var(--color-cobalt)]/15 bg-white p-5 rounded-[2px]">
               <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-[color:var(--color-ink)]/60 mb-2">
                 Hours Reclaimed / Year
               </p>
-              <p className="font-mono text-4xl tabular-nums text-[color:var(--color-sage)] leading-none">
+              <p className="font-mono text-4xl tabular-nums text-[color:var(--color-cobalt)] leading-none">
                 {fmtNumber(calculations.totalHoursReclaimed)}
               </p>
               <p className="font-mono text-[10px] tabular-nums text-[color:var(--color-ink)]/50 mt-1">
                 at full adoption
               </p>
             </div>
-            <div className="border border-[color:var(--color-sage)]/15 bg-white p-5 rounded-[2px]">
+            <div className="border border-[color:var(--color-cobalt)]/15 bg-white p-5 rounded-[2px]">
               <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-[color:var(--color-ink)]/60 mb-2">
                 Efficiency Ratio Improvement
               </p>
-              <p className="font-mono text-4xl tabular-nums text-[color:var(--color-sage)] leading-none">
+              <p className="font-mono text-4xl tabular-nums text-[color:var(--color-cobalt)] leading-none">
                 {fmtPct(efficiencyRatio - calculations.newEfficiencyRatio)}
               </p>
               <p className="font-mono text-[10px] tabular-nums text-[color:var(--color-ink)]/50 mt-1">
@@ -694,7 +694,7 @@ export function ROICalculator() {
           {/* Section 6: Visual Output */}
           {/* ----------------------------------------------------------------- */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-            <div className="border border-[color:var(--color-sage)]/15 bg-white p-5 rounded-[2px]">
+            <div className="border border-[color:var(--color-cobalt)]/15 bg-white p-5 rounded-[2px]">
               <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-[color:var(--color-ink)]/60 mb-4">
                 Annual Savings by Year
               </p>
@@ -703,7 +703,7 @@ export function ROICalculator() {
                 labels={['Year 1', 'Year 2', 'Year 3']}
               />
             </div>
-            <div className="border border-[color:var(--color-sage)]/15 bg-white p-5 rounded-[2px]">
+            <div className="border border-[color:var(--color-cobalt)]/15 bg-white p-5 rounded-[2px]">
               <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-[color:var(--color-ink)]/60 mb-4">
                 Efficiency Ratio Comparison
               </p>
@@ -715,7 +715,7 @@ export function ROICalculator() {
           </div>
 
           {/* Methodology note */}
-          <div className="border-t border-[color:var(--color-sage)]/10 pt-4">
+          <div className="border-t border-[color:var(--color-cobalt)]/10 pt-4">
             <p className="font-mono text-[9px] text-[color:var(--color-slate)] leading-relaxed">
               Methodology: Annual Savings = FTEs x Automatable Hours/Week x (Cost per FTE / 2,080) x 50 weeks x Adoption Rate.
               Efficiency ratio improvement based on {SCENARIO_LABELS[scenario].toLowerCase()} scenario

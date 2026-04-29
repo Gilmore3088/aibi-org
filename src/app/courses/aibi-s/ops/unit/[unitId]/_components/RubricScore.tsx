@@ -29,7 +29,7 @@ export function RubricScore({
           );
         })}
       </ul>
-      <p className="italic text-sm">{score.feedback}</p>
+      <p className="text-sm text-[color:var(--color-slate)]">{score.feedback}</p>
       <button
         onClick={onContinue}
         className="px-6 py-3 bg-[color:var(--color-cobalt)] text-white rounded"

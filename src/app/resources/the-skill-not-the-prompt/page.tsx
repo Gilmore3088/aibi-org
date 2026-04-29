@@ -156,7 +156,7 @@ export default function TheSkillNotThePromptArticle() {
                   <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-[color:var(--color-ink)]/50 mb-2">
                     Mediocre
                   </p>
-                  <p className="text-sm text-[color:var(--color-ink)]/70 italic leading-relaxed">
+                  <p className="font-serif text-base text-[color:var(--color-ink)]/70 italic leading-relaxed">
                     {c.bad}
                   </p>
                 </div>

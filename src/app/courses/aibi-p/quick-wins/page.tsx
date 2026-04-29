@@ -475,7 +475,7 @@ export default function QuickWinsPage() {
         )}
 
         {!loading && wins.length === 0 && (
-          <p className="font-sans text-sm text-[color:var(--color-ink)]/60 italic">
+          <p className="font-sans text-sm text-[color:var(--color-ink)]/60">
             No quick wins logged yet. Use the form above to add your first one.
           </p>
         )}

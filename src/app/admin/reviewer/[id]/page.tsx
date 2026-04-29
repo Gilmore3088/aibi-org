@@ -173,7 +173,7 @@ export default async function ReviewDetailPage({ params }: ReviewDetailPageProps
           </pre>
           {submission.annotation_text && (
             <pre
-              className="mt-2 max-h-48 overflow-y-auto whitespace-pre-wrap rounded border border-gray-200 px-4 py-3 font-mono text-sm text-gray-700 italic"
+              className="mt-2 max-h-48 overflow-y-auto whitespace-pre-wrap rounded border border-[color:var(--color-parch-dark)] px-4 py-3 font-mono text-sm text-[color:var(--color-ink)]/70"
               style={{ backgroundColor: 'var(--color-parch, #f5f0e6)' }}
             >
               {submission.annotation_text}

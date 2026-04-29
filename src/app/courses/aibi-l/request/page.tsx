@@ -80,20 +80,20 @@ export default function WorkshopRequestPage() {
     return (
       <div className="max-w-xl mx-auto px-4 sm:px-8 py-20 text-center">
         <div className="mb-8">
-          <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--color-sage)]">
+          <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--color-cobalt)]">
             Request Received
           </span>
         </div>
         <h1 className="font-serif text-4xl font-bold text-[color:var(--color-ink)] mb-6">
           Thank you, {form.name.split(' ')[0]}.
         </h1>
-        <p className="font-serif italic text-lg text-[color:var(--color-dust)] leading-relaxed mb-8">
+        <p className="font-serif italic text-lg text-[color:var(--color-slate)] leading-relaxed mb-8">
           The AI Banking Institute will respond within 2 business days
           with a planning call invitation to customize your workshop.
         </p>
         <Link
           href="/courses/aibi-l"
-          className="inline-flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.15em] text-[color:var(--color-sage)] hover:opacity-70 transition-opacity"
+          className="inline-flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.15em] text-[color:var(--color-cobalt)] hover:opacity-70 transition-opacity"
         >
           <svg className="w-3 h-3 rotate-180" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
             <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
@@ -112,7 +112,7 @@ export default function WorkshopRequestPage() {
         <div className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.2em]">
           <Link
             href="/courses/aibi-l"
-            className="text-[color:var(--color-sage)] hover:opacity-70 transition-opacity"
+            className="text-[color:var(--color-cobalt)] hover:opacity-70 transition-opacity"
           >
             AiBI-L
           </Link>
@@ -123,9 +123,9 @@ export default function WorkshopRequestPage() {
 
       <header className="mb-12">
         <h1 className="font-serif text-4xl sm:text-5xl font-bold text-[color:var(--color-ink)] mb-4 leading-tight">
-          Request a <span className="italic text-[color:var(--color-sage)]">Workshop</span>
+          Request a <span className="italic text-[color:var(--color-cobalt)]">Workshop</span>
         </h1>
-        <p className="font-serif italic text-lg text-[color:var(--color-dust)] leading-relaxed">
+        <p className="font-serif italic text-lg text-[color:var(--color-slate)] leading-relaxed">
           The AI Banking Institute will respond within 2 business days with a planning call
           invitation to customize your workshop with your institution&apos;s data.
         </p>
@@ -146,7 +146,7 @@ export default function WorkshopRequestPage() {
             required
             value={form.name}
             onChange={handleChange}
-            className="w-full bg-[color:var(--color-parch)] border border-[color:var(--color-sage)]/15 rounded-sm px-4 py-3 font-sans text-sm text-[color:var(--color-ink)] placeholder:text-[color:var(--color-dust)] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-sage)] focus:border-transparent"
+            className="w-full bg-[color:var(--color-parch)] border border-[color:var(--color-cobalt)]/15 rounded-sm px-4 py-3 font-sans text-sm text-[color:var(--color-ink)] placeholder:text-[color:var(--color-dust)] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-cobalt)] focus:border-transparent"
             placeholder="Jane Smith"
           />
         </div>
@@ -165,7 +165,7 @@ export default function WorkshopRequestPage() {
             required
             value={form.email}
             onChange={handleChange}
-            className="w-full bg-[color:var(--color-parch)] border border-[color:var(--color-sage)]/15 rounded-sm px-4 py-3 font-sans text-sm text-[color:var(--color-ink)] placeholder:text-[color:var(--color-dust)] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-sage)] focus:border-transparent"
+            className="w-full bg-[color:var(--color-parch)] border border-[color:var(--color-cobalt)]/15 rounded-sm px-4 py-3 font-sans text-sm text-[color:var(--color-ink)] placeholder:text-[color:var(--color-dust)] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-cobalt)] focus:border-transparent"
             placeholder="jsmith@firstnational.bank"
           />
         </div>
@@ -184,7 +184,7 @@ export default function WorkshopRequestPage() {
             required
             value={form.title}
             onChange={handleChange}
-            className="w-full bg-[color:var(--color-parch)] border border-[color:var(--color-sage)]/15 rounded-sm px-4 py-3 font-sans text-sm text-[color:var(--color-ink)] placeholder:text-[color:var(--color-dust)] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-sage)] focus:border-transparent"
+            className="w-full bg-[color:var(--color-parch)] border border-[color:var(--color-cobalt)]/15 rounded-sm px-4 py-3 font-sans text-sm text-[color:var(--color-ink)] placeholder:text-[color:var(--color-dust)] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-cobalt)] focus:border-transparent"
             placeholder="CEO, CFO, COO, Board Chair, etc."
           />
         </div>
@@ -203,7 +203,7 @@ export default function WorkshopRequestPage() {
             required
             value={form.institution}
             onChange={handleChange}
-            className="w-full bg-[color:var(--color-parch)] border border-[color:var(--color-sage)]/15 rounded-sm px-4 py-3 font-sans text-sm text-[color:var(--color-ink)] placeholder:text-[color:var(--color-dust)] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-sage)] focus:border-transparent"
+            className="w-full bg-[color:var(--color-parch)] border border-[color:var(--color-cobalt)]/15 rounded-sm px-4 py-3 font-sans text-sm text-[color:var(--color-ink)] placeholder:text-[color:var(--color-dust)] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-cobalt)] focus:border-transparent"
             placeholder="First National Bank"
           />
         </div>
@@ -221,7 +221,7 @@ export default function WorkshopRequestPage() {
             required
             value={form.teamSize}
             onChange={handleChange}
-            className="w-full bg-[color:var(--color-parch)] border border-[color:var(--color-sage)]/15 rounded-sm px-4 py-3 font-sans text-sm text-[color:var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-sage)] focus:border-transparent"
+            className="w-full bg-[color:var(--color-parch)] border border-[color:var(--color-cobalt)]/15 rounded-sm px-4 py-3 font-sans text-sm text-[color:var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-cobalt)] focus:border-transparent"
           >
             <option value="">Select team size</option>
             {TEAM_SIZE_OPTIONS.map(({ value, label }) => (
@@ -243,7 +243,7 @@ export default function WorkshopRequestPage() {
             type="text"
             value={form.preferredDates}
             onChange={handleChange}
-            className="w-full bg-[color:var(--color-parch)] border border-[color:var(--color-sage)]/15 rounded-sm px-4 py-3 font-sans text-sm text-[color:var(--color-ink)] placeholder:text-[color:var(--color-dust)] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-sage)] focus:border-transparent"
+            className="w-full bg-[color:var(--color-parch)] border border-[color:var(--color-cobalt)]/15 rounded-sm px-4 py-3 font-sans text-sm text-[color:var(--color-ink)] placeholder:text-[color:var(--color-dust)] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-cobalt)] focus:border-transparent"
             placeholder="e.g., Q3 2026, or specific dates"
           />
         </div>
@@ -261,7 +261,7 @@ export default function WorkshopRequestPage() {
             rows={4}
             value={form.message}
             onChange={handleChange}
-            className="w-full bg-[color:var(--color-parch)] border border-[color:var(--color-sage)]/15 rounded-sm px-4 py-3 font-sans text-sm text-[color:var(--color-ink)] placeholder:text-[color:var(--color-dust)] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-sage)] focus:border-transparent resize-none"
+            className="w-full bg-[color:var(--color-parch)] border border-[color:var(--color-cobalt)]/15 rounded-sm px-4 py-3 font-sans text-sm text-[color:var(--color-ink)] placeholder:text-[color:var(--color-dust)] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-cobalt)] focus:border-transparent resize-none"
             placeholder="Any context about your institution, goals, or questions"
           />
         </div>
@@ -275,7 +275,7 @@ export default function WorkshopRequestPage() {
         <button
           type="submit"
           disabled={status === 'submitting'}
-          className="w-full bg-[color:var(--color-sage)] hover:opacity-90 text-[color:var(--color-linen)] px-8 py-4 rounded-sm font-bold text-[10px] uppercase tracking-[0.15em] transition-opacity font-mono focus:outline-none focus:ring-2 focus:ring-[color:var(--color-sage)] focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full bg-[color:var(--color-cobalt)] hover:opacity-90 text-[color:var(--color-linen)] px-8 py-4 rounded-sm font-bold text-[10px] uppercase tracking-[0.15em] transition-opacity font-mono focus:outline-none focus:ring-2 focus:ring-[color:var(--color-cobalt)] focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {status === 'submitting' ? 'Submitting...' : 'Request Workshop'}
         </button>

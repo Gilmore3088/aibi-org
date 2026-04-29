@@ -125,7 +125,7 @@ export function UnitRenderer({ unit, resolvedItem, resolvedSection, config }: Un
                     />
                   )}
                   {refineBeat && refineBeat.kind === 'refine' && !state.rubricScore && (
-                    <p className="italic text-sm text-[color:var(--color-ink)]/60">
+                    <p className="text-sm text-[color:var(--color-ink)]/60">
                       Complete the Build phase first — you&apos;ll refine your defended artifact here once graded.
                     </p>
                   )}

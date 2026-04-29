@@ -208,13 +208,13 @@ export function PromptCard({
             type="button"
             onClick={handleSave}
             disabled={savingPrompt}
-            className="font-sans text-[12px] italic text-[color:var(--color-terra)] hover:underline focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-1 rounded-sm"
+            className="font-sans text-[12px] text-[color:var(--color-terra)] hover:underline focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-1 rounded-sm"
           >
             {savingPrompt ? 'Saving' : saved ? 'Saved' : 'Save'}
           </button>
           <Link
             href={relatedRep ? `/practice/${relatedRep.id}` : `/courses/aibi-p/${prompt.relatedModule}`}
-            className="font-sans text-[12px] italic text-[color:var(--color-terra)] hover:underline focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-1 rounded-sm"
+            className="font-sans text-[12px] text-[color:var(--color-terra)] hover:underline focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-1 rounded-sm"
           >
             Open in practice
           </Link>
@@ -223,7 +223,7 @@ export function PromptCard({
               href={getPlatformUrl(prompt.platform as PlatformId, prompt.relatedModule)}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-sans text-[12px] italic text-[color:var(--color-terra)] hover:underline focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-1 rounded-sm"
+              className="font-sans text-[12px] text-[color:var(--color-terra)] hover:underline focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-1 rounded-sm"
             >
               Open in {platformMeta.label}
             </a>

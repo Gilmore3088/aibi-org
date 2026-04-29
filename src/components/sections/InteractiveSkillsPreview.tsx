@@ -212,7 +212,7 @@ export function InteractiveSkillsPreview() {
                   : 'opacity-0 translate-y-2 pointer-events-none'
               } ${
                 copiedSkillId === activeSkill.id
-                  ? 'bg-[color:var(--color-sage)] border-[color:var(--color-sage)] text-[color:var(--color-linen)]'
+                  ? 'bg-[color:var(--color-terra)] border-[color:var(--color-terra)] text-[color:var(--color-linen)]'
                   : 'border-[color:var(--color-terra)] text-[color:var(--color-terra)] hover:bg-[color:var(--color-terra)] hover:text-[color:var(--color-linen)]'
               }`}
             >

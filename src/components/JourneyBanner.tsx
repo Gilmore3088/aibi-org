@@ -25,8 +25,8 @@ const JOURNEY_STEPS: Record<string, JourneyStep> = {
     body: 'AiBI-S is coming after Practitioner is validated. It will focus on workflow automation, agents, internal AI systems, and team-level rollout.',
     href: '/coming-soon?interest=specialist',
     cta: 'Join AiBI-S Waitlist',
-    accent: 'var(--color-cobalt)',
-    accentBg: 'var(--color-cobalt-pale)',
+    accent: 'var(--color-amber)',
+    accentBg: 'var(--color-terra-pale)',
   },
   'aibi-s': {
     label: 'Next in your journey',
@@ -34,8 +34,8 @@ const JOURNEY_STEPS: Record<string, JourneyStep> = {
     body: 'AiBI-L is coming after Practitioner is validated. It will focus on executive confidence, governance, rollout, and institution-level AI leadership.',
     href: '/coming-soon?interest=leader',
     cta: 'Join AiBI-L Waitlist',
-    accent: 'var(--color-sage)',
-    accentBg: 'var(--color-sage-pale)',
+    accent: 'var(--color-cobalt)',
+    accentBg: 'var(--color-cobalt-pale)',
   },
   'aibi-l': {
     label: 'Full certification ladder complete',

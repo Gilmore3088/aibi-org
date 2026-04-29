@@ -71,7 +71,7 @@ function ReadOnlyField({
       )}
       {field.type === 'textarea' ? (
         <div className="w-full border border-[color:var(--color-parch-dark)] rounded-sm px-3 py-2 text-sm font-sans bg-[color:var(--color-parch)] text-[color:var(--color-ink)] min-h-[80px] whitespace-pre-wrap">
-          {value || <span className="text-[color:var(--color-slate)] italic">No response</span>}
+          {value || <span className="text-[color:var(--color-slate)]">No response</span>}
         </div>
       ) : field.type === 'radio' ? (
         <fieldset className="mt-1">
@@ -101,7 +101,7 @@ function ReadOnlyField({
         </div>
       ) : (
         <div className="w-full border border-[color:var(--color-parch-dark)] rounded-sm px-3 py-2 text-sm font-sans bg-[color:var(--color-parch)] text-[color:var(--color-ink)]">
-          {value || <span className="text-[color:var(--color-slate)] italic">No response</span>}
+          {value || <span className="text-[color:var(--color-slate)]">No response</span>}
         </div>
       )}
     </div>

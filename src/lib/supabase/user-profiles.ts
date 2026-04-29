@@ -48,6 +48,12 @@ export async function upsertReadinessResult(
       readiness_tier_label: result.tierLabel,
       readiness_answers: result.answers,
       readiness_at: result.completedAt,
+      // v2 additions — guarded so existing rows do not lose data on rewrite.
+      ...(result.version ? { readiness_version: result.version } : {}),
+      ...(result.maxScore !== undefined ? { readiness_max_score: result.maxScore } : {}),
+      ...(result.dimensionBreakdown
+        ? { readiness_dimension_breakdown: result.dimensionBreakdown }
+        : {}),
     },
     { onConflict: 'email' },
   );
@@ -107,6 +113,9 @@ export async function getProfileByEmail(email: string): Promise<UserProfileRow |
         'readiness_tier_label',
         'readiness_answers',
         'readiness_at',
+        'readiness_version',
+        'readiness_max_score',
+        'readiness_dimension_breakdown',
         'proficiency_pct',
         'proficiency_level_id',
         'proficiency_level_label',
@@ -136,6 +145,20 @@ export async function getProfileByEmail(email: string): Promise<UserProfileRow |
           tierLabel: row.readiness_tier_label,
           answers: row.readiness_answers as number[],
           completedAt: row.readiness_at,
+          ...(typeof row.readiness_version === 'string' &&
+          (row.readiness_version === 'v1' || row.readiness_version === 'v2')
+            ? { version: row.readiness_version as 'v1' | 'v2' }
+            : {}),
+          ...(typeof row.readiness_max_score === 'number'
+            ? { maxScore: row.readiness_max_score }
+            : {}),
+          ...(row.readiness_dimension_breakdown &&
+          typeof row.readiness_dimension_breakdown === 'object'
+            ? {
+                dimensionBreakdown:
+                  row.readiness_dimension_breakdown as ReadinessResult['dimensionBreakdown'],
+              }
+            : {}),
         }
       : undefined;
 

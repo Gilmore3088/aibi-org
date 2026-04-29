@@ -263,7 +263,7 @@ export default function AIGovernanceWithoutJargonArticle() {
               <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-[color:var(--color-ink)]/50 mb-3">
                 {f.body} &middot; {f.level}
               </p>
-              <p className="text-sm text-[color:var(--color-ink)]/75 leading-relaxed italic">
+              <p className="font-serif text-base text-[color:var(--color-ink)]/75 leading-relaxed italic">
                 &ldquo;{f.oneLiner}&rdquo;
               </p>
             </div>

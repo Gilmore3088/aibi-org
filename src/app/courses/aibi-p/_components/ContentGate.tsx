@@ -130,7 +130,7 @@ export function ContentGate({
         {/* Optional preview description */}
         {previewDescription && (
           <p
-            className="font-sans text-sm leading-relaxed mb-4 max-w-xs italic"
+            className="font-sans text-sm leading-relaxed mb-4 max-w-xs"
             style={{ color: 'var(--color-ink)', opacity: 0.65 }}
           >
             {previewDescription}

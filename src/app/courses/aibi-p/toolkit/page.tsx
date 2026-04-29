@@ -193,7 +193,7 @@ function SectionCard({
 
 function EmptyState({ message }: { readonly message: string }) {
   return (
-    <p className="font-sans text-sm text-[color:var(--color-slate)] italic">{message}</p>
+    <p className="font-sans text-sm text-[color:var(--color-slate)]">{message}</p>
   );
 }
 

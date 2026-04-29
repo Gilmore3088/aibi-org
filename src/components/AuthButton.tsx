@@ -30,10 +30,13 @@ export async function AuthButton() {
 }
 
 function SignInLink() {
+  // Plain text link to avoid competing with the primary "Take Assessment"
+  // CTA button in the same right rail. Matches the eyebrow style of the
+  // other nav items.
   return (
     <Link
       href="/auth/login"
-      className="font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] border border-[color:var(--color-ink)]/25 text-[color:var(--color-ink)]/75 px-4 py-2 hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)] transition-colors"
+      className="font-serif-sc text-xs uppercase text-[color:var(--color-ink)]/75 hover:text-[color:var(--color-terra)] transition-colors hidden md:inline"
     >
       Sign In
     </Link>

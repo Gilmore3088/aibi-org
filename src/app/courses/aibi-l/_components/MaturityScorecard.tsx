@@ -93,7 +93,7 @@ function DimensionRow({
   readonly onChange: (score: number) => void;
 }) {
   return (
-    <div className="py-6 border-b border-[color:var(--color-sage)]/10 last:border-b-0">
+    <div className="py-6 border-b border-[color:var(--color-cobalt)]/10 last:border-b-0">
       <div className="mb-1">
         <span className="font-serif text-lg text-[color:var(--color-ink)]">
           {name}
@@ -124,11 +124,11 @@ function DimensionRow({
                 flex flex-col items-center justify-center
                 min-w-[4rem] px-3 py-2
                 rounded-sm border transition-colors
-                focus:outline-none focus:ring-2 focus:ring-[color:var(--color-sage)] focus:ring-offset-2
+                focus:outline-none focus:ring-2 focus:ring-[color:var(--color-cobalt)] focus:ring-offset-2
                 ${
                   isSelected
-                    ? 'bg-[color:var(--color-sage)] border-[color:var(--color-sage)] text-[color:var(--color-linen)]'
-                    : 'bg-[color:var(--color-linen)] border-[color:var(--color-sage)]/20 text-[color:var(--color-ink)] hover:border-[color:var(--color-sage)]/50'
+                    ? 'bg-[color:var(--color-cobalt)] border-[color:var(--color-cobalt)] text-[color:var(--color-linen)]'
+                    : 'bg-[color:var(--color-linen)] border-[color:var(--color-cobalt)]/20 text-[color:var(--color-ink)] hover:border-[color:var(--color-cobalt)]/50'
                 }
               `}
             >
@@ -160,9 +160,9 @@ function DimensionBar({
       <span className="font-sans text-xs text-[color:var(--color-slate)] w-[11rem] shrink-0 text-right">
         {name}
       </span>
-      <div className="flex-1 h-2 bg-[color:var(--color-sage)]/10 rounded-sm overflow-hidden">
+      <div className="flex-1 h-2 bg-[color:var(--color-cobalt)]/10 rounded-sm overflow-hidden">
         <div
-          className="h-full bg-[color:var(--color-sage)] transition-all duration-300 rounded-sm"
+          className="h-full bg-[color:var(--color-cobalt)] transition-all duration-300 rounded-sm"
           style={{ width: `${percentage}%` }}
         />
       </div>
@@ -192,16 +192,16 @@ export default function MaturityScorecard() {
 
   return (
     <section
-      className="bg-[color:var(--color-parch)] border border-[color:var(--color-sage)]/15 rounded-sm"
+      className="bg-[color:var(--color-parch)] border border-[color:var(--color-cobalt)]/15 rounded-sm"
       aria-labelledby="scorecard-heading"
     >
       {/* Header */}
       <div className="px-8 pt-8 pb-4 sm:px-10 sm:pt-10">
         <div className="flex items-center gap-2 mb-4">
-          <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-[color:var(--color-sage)]">
+          <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-[color:var(--color-cobalt)]">
             Workshop Activity
           </span>
-          <div className="h-px flex-1 bg-[color:var(--color-sage)]/15" aria-hidden="true" />
+          <div className="h-px flex-1 bg-[color:var(--color-cobalt)]/15" aria-hidden="true" />
         </div>
         <h2
           id="scorecard-heading"
@@ -230,9 +230,9 @@ export default function MaturityScorecard() {
 
       {/* Score summary — visible only when all dimensions scored */}
       {allScored && maturity && (
-        <div className="px-8 pb-8 pt-6 sm:px-10 sm:pb-10 mt-4 border-t border-[color:var(--color-sage)]/10">
+        <div className="px-8 pb-8 pt-6 sm:px-10 sm:pb-10 mt-4 border-t border-[color:var(--color-cobalt)]/10">
           <div className="flex items-baseline gap-3 mb-6">
-            <span className="font-mono text-4xl tabular-nums text-[color:var(--color-sage)]">
+            <span className="font-mono text-4xl tabular-nums text-[color:var(--color-cobalt)]">
               {total}
             </span>
             <span className="font-mono text-lg tabular-nums text-[color:var(--color-slate)]">
@@ -244,7 +244,7 @@ export default function MaturityScorecard() {
                 px-3 py-1 rounded-sm border
                 ${
                   maturity.level === 'Advanced' || maturity.level === 'Developing'
-                    ? `text-[color:var(--color-sage)] border-[color:var(--color-sage)]/30 ${
+                    ? `text-[color:var(--color-cobalt)] border-[color:var(--color-cobalt)]/30 ${
                         maturity.level === 'Developing' ? 'opacity-60' : ''
                       }`
                     : 'text-[color:var(--color-slate)] border-[color:var(--color-slate)]/30'
@@ -263,7 +263,7 @@ export default function MaturityScorecard() {
           </div>
 
           {/* Interpretation */}
-          <p className="font-serif italic text-sm text-[color:var(--color-slate)] leading-relaxed border-t border-[color:var(--color-sage)]/10 pt-4">
+          <p className="font-serif italic text-sm text-[color:var(--color-slate)] leading-relaxed border-t border-[color:var(--color-cobalt)]/10 pt-4">
             {maturity.interpretation}
           </p>
         </div>

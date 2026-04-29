@@ -11,7 +11,7 @@ function parseInline(text: string): string {
   return text
     .replace(/`([^`]+)`/g, '<code class="font-mono text-[0.85em] bg-[color:var(--color-parch-dark)] px-1 py-0.5 rounded-sm">$1</code>')
     .replace(/\*\*([^*]+)\*\*/g, '<strong class="font-semibold">$1</strong>')
-    .replace(/\*([^*]+)\*/g, '<em class="italic">$1</em>');
+    .replace(/\*([^*]+)\*/g, '<em class="font-serif italic">$1</em>');
 }
 
 function renderBlock(block: string): string {

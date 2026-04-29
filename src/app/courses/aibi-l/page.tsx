@@ -1,6 +1,6 @@
 // /courses/aibi-l — Workshop overview page
 // Server Component: static content, no enrollment state
-// Sage accent color throughout (AiBI-L uses --color-sage)
+// Cobalt accent color throughout (AiBI-L = governance / Pillar B)
 
 import type { Metadata } from 'next';
 import Link from 'next/link';
@@ -32,12 +32,12 @@ export default function AiBILOverviewPage() {
       <nav aria-label="Breadcrumb" className="mb-8">
         <Link
           href="/education"
-          className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/50 hover:text-[color:var(--color-sage)] transition-colors"
+          className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/50 hover:text-[color:var(--color-cobalt)] transition-colors"
         >
           Education
         </Link>
         <span className="mx-2 text-[color:var(--color-ink)]/20">/</span>
-        <span className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-sage)]">
+        <span className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-cobalt)]">
           AiBI-L
         </span>
       </nav>
@@ -45,10 +45,10 @@ export default function AiBILOverviewPage() {
       {/* Hero */}
       <section className="mb-28" aria-labelledby="workshop-heading">
         <div className="flex items-center gap-3 mb-8">
-          <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--color-sage)]">
+          <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--color-cobalt)]">
             AiBI-L
           </span>
-          <div className="h-px w-8 bg-[color:var(--color-sage)]/30" aria-hidden="true" />
+          <div className="h-px w-8 bg-[color:var(--color-cobalt)]/30" aria-hidden="true" />
           <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--color-slate)]">
             Banking AI Leader
           </span>
@@ -59,10 +59,10 @@ export default function AiBILOverviewPage() {
           className="font-serif text-5xl sm:text-6xl lg:text-7xl font-bold leading-[1.05] mb-10 text-[color:var(--color-ink)]"
         >
           Banking AI<br />
-          <span className="text-[color:var(--color-sage)] italic">Leader</span>
+          <span className="text-[color:var(--color-cobalt)] italic">Leader</span>
         </h1>
 
-        <p className="font-serif italic text-xl sm:text-2xl text-[color:var(--color-dust)] max-w-2xl leading-relaxed mb-8">
+        <p className="font-serif italic text-xl sm:text-2xl text-[color:var(--color-slate)] max-w-2xl leading-relaxed mb-8">
           A 1-day in-person workshop for the executives who set strategy, approve budgets, and
           answer to examiners. Leave with a board-ready AI presentation built with your numbers.
         </p>
@@ -78,7 +78,7 @@ export default function AiBILOverviewPage() {
               <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-[color:var(--color-slate)]">
                 {label}
               </span>
-              <span className="font-mono text-[9px] text-[color:var(--color-sage)] tabular-nums">
+              <span className="font-mono text-[9px] text-[color:var(--color-cobalt)] tabular-nums">
                 {value}
               </span>
             </div>
@@ -88,7 +88,7 @@ export default function AiBILOverviewPage() {
         <div className="flex flex-wrap gap-4">
           <Link
             href="/courses/aibi-l/request"
-            className="bg-[color:var(--color-sage)] hover:opacity-90 text-[color:var(--color-linen)] px-10 py-5 rounded-sm font-bold text-[10px] uppercase tracking-[0.15em] transition-opacity flex items-center gap-3 font-mono focus:outline-none focus:ring-2 focus:ring-[color:var(--color-sage)] focus:ring-offset-2"
+            className="bg-[color:var(--color-cobalt)] hover:opacity-90 text-[color:var(--color-linen)] px-10 py-5 rounded-sm font-bold text-[10px] uppercase tracking-[0.15em] transition-opacity flex items-center gap-3 font-mono focus:outline-none focus:ring-2 focus:ring-[color:var(--color-cobalt)] focus:ring-offset-2"
           >
             Request Workshop
             <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
@@ -97,7 +97,7 @@ export default function AiBILOverviewPage() {
           </Link>
           <a
             href="#sessions-heading"
-            className="border border-[color:var(--color-sage)]/20 text-[color:var(--color-ink)] px-10 py-5 rounded-sm font-bold text-[10px] uppercase tracking-[0.15em] hover:bg-[color:var(--color-parch)] transition-colors font-mono focus:outline-none focus:ring-2 focus:ring-[color:var(--color-sage)] focus:ring-offset-2"
+            className="border border-[color:var(--color-cobalt)]/20 text-[color:var(--color-ink)] px-10 py-5 rounded-sm font-bold text-[10px] uppercase tracking-[0.15em] hover:bg-[color:var(--color-parch)] transition-colors font-mono focus:outline-none focus:ring-2 focus:ring-[color:var(--color-cobalt)] focus:ring-offset-2"
           >
             View Sessions
           </a>
@@ -106,13 +106,13 @@ export default function AiBILOverviewPage() {
 
       {/* Pricing */}
       <section className="mb-28" aria-labelledby="pricing-heading">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-[color:var(--color-sage)]/10 border border-[color:var(--color-sage)]/10 rounded-sm overflow-hidden">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-[color:var(--color-cobalt)]/10 border border-[color:var(--color-cobalt)]/10 rounded-sm overflow-hidden">
           <div className="bg-[color:var(--color-linen)] p-10">
             <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-[color:var(--color-slate)] mb-3">
               Individual Executive
             </p>
             <p className="font-mono text-4xl tabular-nums text-[color:var(--color-ink)] mb-2">
-              $2,800<span className="text-lg text-[color:var(--color-dust)]">+</span>
+              $2,800<span className="text-lg text-[color:var(--color-slate)]">+</span>
             </p>
             <p className="font-sans text-xs text-[color:var(--color-slate)] leading-relaxed">
               Single executive attending a scheduled multi-institution workshop
@@ -141,8 +141,8 @@ export default function AiBILOverviewPage() {
           >
             Four <span className="italic">Sessions</span>
           </h2>
-          <div className="w-12 h-px bg-[color:var(--color-sage)] mb-5" aria-hidden="true" />
-          <p className="font-serif italic text-lg text-[color:var(--color-dust)] max-w-xl">
+          <div className="w-12 h-px bg-[color:var(--color-cobalt)] mb-5" aria-hidden="true" />
+          <p className="font-serif italic text-lg text-[color:var(--color-slate)] max-w-xl">
             Each session builds on the previous. Every session produces a deliverable you keep.
           </p>
         </div>
@@ -153,15 +153,15 @@ export default function AiBILOverviewPage() {
               key={session.number}
               href={`/courses/aibi-l/${session.number}`}
               role="listitem"
-              className="block bg-[color:var(--color-parch)] border border-[color:var(--color-sage)]/10 rounded-sm p-8 hover:border-[color:var(--color-sage)]/30 transition-colors group focus:outline-none focus:ring-2 focus:ring-[color:var(--color-sage)] focus:ring-offset-2"
+              className="block bg-[color:var(--color-parch)] border border-[color:var(--color-cobalt)]/10 rounded-sm p-8 hover:border-[color:var(--color-cobalt)]/30 transition-colors group focus:outline-none focus:ring-2 focus:ring-[color:var(--color-cobalt)] focus:ring-offset-2"
             >
               <div className="flex items-start justify-between gap-6">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-3 mb-3">
-                    <span className="font-mono text-[11px] tabular-nums text-[color:var(--color-sage)]">
+                    <span className="font-mono text-[11px] tabular-nums text-[color:var(--color-cobalt)]">
                       S{session.number}
                     </span>
-                    <div className="h-px flex-1 max-w-[3rem] bg-[color:var(--color-sage)]/20" aria-hidden="true" />
+                    <div className="h-px flex-1 max-w-[3rem] bg-[color:var(--color-cobalt)]/20" aria-hidden="true" />
                     <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-[color:var(--color-slate)] tabular-nums">
                       {session.durationMinutes} min
                     </span>
@@ -176,14 +176,14 @@ export default function AiBILOverviewPage() {
                     {session.coreQuestion}
                   </p>
                   <p className="font-sans text-xs text-[color:var(--color-slate)]">
-                    <span className="font-mono text-[9px] uppercase tracking-[0.15em] text-[color:var(--color-sage)]">
+                    <span className="font-mono text-[9px] uppercase tracking-[0.15em] text-[color:var(--color-cobalt)]">
                       Deliverable:
                     </span>{' '}
                     {session.deliverable}
                   </p>
                 </div>
                 <svg
-                  className="w-4 h-4 text-[color:var(--color-sage)] opacity-0 group-hover:opacity-100 transition-opacity shrink-0 mt-2"
+                  className="w-4 h-4 text-[color:var(--color-cobalt)] opacity-0 group-hover:opacity-100 transition-opacity shrink-0 mt-2"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                   aria-hidden="true"
@@ -198,23 +198,23 @@ export default function AiBILOverviewPage() {
 
       {/* Day Schedule */}
       <section className="mb-28" aria-labelledby="schedule-heading">
-        <div className="bg-[color:var(--color-parch)] p-8 sm:p-12 border border-[color:var(--color-sage)]/10 rounded-sm">
+        <div className="bg-[color:var(--color-parch)] p-8 sm:p-12 border border-[color:var(--color-cobalt)]/10 rounded-sm">
           <h2
             id="schedule-heading"
             className="font-serif text-3xl font-bold mb-2 text-[color:var(--color-ink)]"
           >
             The Day
           </h2>
-          <div className="w-12 h-px bg-[color:var(--color-sage)] mb-8" aria-hidden="true" />
+          <div className="w-12 h-px bg-[color:var(--color-cobalt)] mb-8" aria-hidden="true" />
 
           <div className="space-y-0" role="list" aria-label="Day schedule">
             {SCHEDULE.map(({ time, label, duration }) => (
               <div
                 key={time}
                 role="listitem"
-                className="flex items-baseline gap-4 py-3 border-b border-[color:var(--color-sage)]/8 last:border-b-0"
+                className="flex items-baseline gap-4 py-3 border-b border-[color:var(--color-cobalt)]/8 last:border-b-0"
               >
-                <span className="font-mono text-xs tabular-nums text-[color:var(--color-sage)] w-20 shrink-0">
+                <span className="font-mono text-xs tabular-nums text-[color:var(--color-cobalt)] w-20 shrink-0">
                   {time}
                 </span>
                 <span className="font-sans text-sm text-[color:var(--color-ink)] flex-1">
@@ -240,7 +240,7 @@ export default function AiBILOverviewPage() {
           >
             What You <span className="italic">Leave With</span>
           </h2>
-          <div className="w-12 h-px bg-[color:var(--color-sage)] mb-5" aria-hidden="true" />
+          <div className="w-12 h-px bg-[color:var(--color-cobalt)] mb-5" aria-hidden="true" />
         </div>
 
         <div
@@ -252,10 +252,10 @@ export default function AiBILOverviewPage() {
             <div
               key={deliverable.id}
               role="listitem"
-              className="bg-[color:var(--color-parch)] border border-[color:var(--color-sage)]/10 rounded-sm p-6"
+              className="bg-[color:var(--color-parch)] border border-[color:var(--color-cobalt)]/10 rounded-sm p-6"
             >
               <div className="flex items-center gap-2 mb-3">
-                <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-[color:var(--color-sage)]">
+                <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-[color:var(--color-cobalt)]">
                   Session {deliverable.producedInSession}
                 </span>
               </div>
@@ -284,7 +284,7 @@ export default function AiBILOverviewPage() {
         </p>
         <Link
           href="/courses/aibi-l/request"
-          className="inline-flex items-center gap-3 bg-[color:var(--color-sage)] hover:opacity-90 text-[color:var(--color-linen)] px-10 py-5 rounded-sm font-bold text-[10px] uppercase tracking-[0.15em] transition-opacity font-mono focus:outline-none focus:ring-2 focus:ring-[color:var(--color-sage)] focus:ring-offset-2"
+          className="inline-flex items-center gap-3 bg-[color:var(--color-cobalt)] hover:opacity-90 text-[color:var(--color-linen)] px-10 py-5 rounded-sm font-bold text-[10px] uppercase tracking-[0.15em] transition-opacity font-mono focus:outline-none focus:ring-2 focus:ring-[color:var(--color-cobalt)] focus:ring-offset-2"
         >
           Request Workshop
           <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">

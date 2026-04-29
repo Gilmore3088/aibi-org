@@ -41,17 +41,17 @@ function SectionBlock({ section, depth = 0 }: { section: ContentSection; depth?:
   return (
     <div className={depth === 0 ? 'mb-10' : 'mb-6'}>
       <div className="flex items-center gap-3 mb-2">
-        <span className="font-mono text-[10px] tabular-nums text-[color:var(--color-sage)]">
+        <span className="font-mono text-[10px] tabular-nums text-[color:var(--color-cobalt)]">
           {section.id}
         </span>
-        <div className="h-px flex-1 max-w-[2rem] bg-[color:var(--color-sage)]/15" aria-hidden="true" />
+        <div className="h-px flex-1 max-w-[2rem] bg-[color:var(--color-cobalt)]/15" aria-hidden="true" />
       </div>
       <HeadingTag className={headingClass}>{section.title}</HeadingTag>
       <p className="font-sans text-sm text-[color:var(--color-slate)] leading-relaxed">
         {section.content}
       </p>
       {section.subsections?.map((sub) => (
-        <div key={sub.id} className="mt-4 ml-4 pl-4 border-l border-[color:var(--color-sage)]/10">
+        <div key={sub.id} className="mt-4 ml-4 pl-4 border-l border-[color:var(--color-cobalt)]/10">
           <SectionBlock section={sub} depth={depth + 1} />
         </div>
       ))}
@@ -83,7 +83,7 @@ export default async function SessionPage({ params }: SessionPageParams) {
         <div className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.2em]">
           <Link
             href="/courses/aibi-l"
-            className="text-[color:var(--color-sage)] hover:opacity-70 transition-opacity"
+            className="text-[color:var(--color-cobalt)] hover:opacity-70 transition-opacity"
           >
             AiBI-L
           </Link>
@@ -97,10 +97,10 @@ export default async function SessionPage({ params }: SessionPageParams) {
       {/* Session header */}
       <header className="mb-16">
         <div className="flex items-center gap-3 mb-6">
-          <span className="font-mono text-[11px] tabular-nums text-[color:var(--color-sage)]">
+          <span className="font-mono text-[11px] tabular-nums text-[color:var(--color-cobalt)]">
             S{workshopSession.number}
           </span>
-          <div className="h-px w-8 bg-[color:var(--color-sage)]/30" aria-hidden="true" />
+          <div className="h-px w-8 bg-[color:var(--color-cobalt)]/30" aria-hidden="true" />
           <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-[color:var(--color-slate)] tabular-nums">
             {workshopSession.durationMinutes} min
           </span>
@@ -113,7 +113,7 @@ export default async function SessionPage({ params }: SessionPageParams) {
           {workshopSession.title}
         </h1>
 
-        <p className="font-serif italic text-lg text-[color:var(--color-dust)] leading-relaxed mb-6 max-w-xl">
+        <p className="font-serif italic text-lg text-[color:var(--color-slate)] leading-relaxed mb-6 max-w-xl">
           {workshopSession.coreQuestion}
         </p>
 
@@ -125,7 +125,7 @@ export default async function SessionPage({ params }: SessionPageParams) {
       <CourseTabs
         storagePrefix="aibi-l-s"
         segmentNumber={sessionNum}
-        accentColor="var(--color-sage)"
+        accentColor="var(--color-cobalt)"
         learnContent={
           <>
             {/* Content sections */}
@@ -138,7 +138,7 @@ export default async function SessionPage({ params }: SessionPageParams) {
             {/* Sourced statistics (if any) */}
             {workshopSession.statistics && workshopSession.statistics.length > 0 && (
               <section
-                className="mb-16 border-t border-[color:var(--color-sage)]/10 pt-8"
+                className="mb-16 border-t border-[color:var(--color-cobalt)]/10 pt-8"
                 aria-labelledby="sources-heading"
               >
                 <h2
@@ -190,14 +190,14 @@ export default async function SessionPage({ params }: SessionPageParams) {
           <>
             {/* Activity / Deliverable */}
             <section
-              className="bg-[color:var(--color-parch)] border border-[color:var(--color-sage)]/15 rounded-sm p-8 sm:p-10 mb-16"
+              className="bg-[color:var(--color-parch)] border border-[color:var(--color-cobalt)]/15 rounded-sm p-8 sm:p-10 mb-16"
               aria-labelledby="activity-heading"
             >
               <div className="flex items-center gap-2 mb-4">
-                <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-[color:var(--color-sage)]">
+                <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-[color:var(--color-cobalt)]">
                   Facilitated Activity
                 </span>
-                <div className="h-px flex-1 bg-[color:var(--color-sage)]/15" aria-hidden="true" />
+                <div className="h-px flex-1 bg-[color:var(--color-cobalt)]/15" aria-hidden="true" />
                 <span className="font-mono text-[9px] tabular-nums text-[color:var(--color-slate)]">
                   {workshopSession.activity.estimatedMinutes} min
                 </span>
@@ -214,8 +214,8 @@ export default async function SessionPage({ params }: SessionPageParams) {
                 {workshopSession.activity.description}
               </p>
 
-              <div className="border-t border-[color:var(--color-sage)]/10 pt-4">
-                <p className="font-mono text-[9px] uppercase tracking-[0.15em] text-[color:var(--color-sage)] mb-1">
+              <div className="border-t border-[color:var(--color-cobalt)]/10 pt-4">
+                <p className="font-mono text-[9px] uppercase tracking-[0.15em] text-[color:var(--color-cobalt)] mb-1">
                   Deliverable
                 </p>
                 <p className="font-serif text-base font-bold text-[color:var(--color-ink)]">
@@ -225,11 +225,11 @@ export default async function SessionPage({ params }: SessionPageParams) {
             </section>
 
             {/* Navigation */}
-            <nav className="flex items-center justify-between pt-8 border-t border-[color:var(--color-sage)]/10">
+            <nav className="flex items-center justify-between pt-8 border-t border-[color:var(--color-cobalt)]/10">
               {prevSession ? (
                 <Link
                   href={`/courses/aibi-l/${prevSession.number}`}
-                  className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.15em] text-[color:var(--color-sage)] hover:opacity-70 transition-opacity focus:outline-none focus:ring-2 focus:ring-[color:var(--color-sage)] focus:ring-offset-2 rounded-sm"
+                  className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.15em] text-[color:var(--color-cobalt)] hover:opacity-70 transition-opacity focus:outline-none focus:ring-2 focus:ring-[color:var(--color-cobalt)] focus:ring-offset-2 rounded-sm"
                 >
                   <svg className="w-3 h-3 rotate-180" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                     <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
@@ -239,7 +239,7 @@ export default async function SessionPage({ params }: SessionPageParams) {
               ) : (
                 <Link
                   href="/courses/aibi-l"
-                  className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.15em] text-[color:var(--color-sage)] hover:opacity-70 transition-opacity focus:outline-none focus:ring-2 focus:ring-[color:var(--color-sage)] focus:ring-offset-2 rounded-sm"
+                  className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.15em] text-[color:var(--color-cobalt)] hover:opacity-70 transition-opacity focus:outline-none focus:ring-2 focus:ring-[color:var(--color-cobalt)] focus:ring-offset-2 rounded-sm"
                 >
                   <svg className="w-3 h-3 rotate-180" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                     <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
@@ -251,7 +251,7 @@ export default async function SessionPage({ params }: SessionPageParams) {
               {nextSession ? (
                 <Link
                   href={`/courses/aibi-l/${nextSession.number}`}
-                  className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.15em] text-[color:var(--color-sage)] hover:opacity-70 transition-opacity focus:outline-none focus:ring-2 focus:ring-[color:var(--color-sage)] focus:ring-offset-2 rounded-sm"
+                  className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.15em] text-[color:var(--color-cobalt)] hover:opacity-70 transition-opacity focus:outline-none focus:ring-2 focus:ring-[color:var(--color-cobalt)] focus:ring-offset-2 rounded-sm"
                 >
                   S{nextSession.number}: {nextSession.title}
                   <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
@@ -261,7 +261,7 @@ export default async function SessionPage({ params }: SessionPageParams) {
               ) : (
                 <Link
                   href="/courses/aibi-l/request"
-                  className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.15em] text-[color:var(--color-sage)] hover:opacity-70 transition-opacity focus:outline-none focus:ring-2 focus:ring-[color:var(--color-sage)] focus:ring-offset-2 rounded-sm"
+                  className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.15em] text-[color:var(--color-cobalt)] hover:opacity-70 transition-opacity focus:outline-none focus:ring-2 focus:ring-[color:var(--color-cobalt)] focus:ring-offset-2 rounded-sm"
                 >
                   Request Workshop
                   <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">

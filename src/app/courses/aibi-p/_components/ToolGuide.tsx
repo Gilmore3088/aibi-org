@@ -107,7 +107,7 @@ function CopyablePrompt({ text }: { readonly text: string }) {
         onClick={handleCopy}
         className="absolute top-2 right-2 px-3 py-1.5 text-[10px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-1"
         style={{
-          backgroundColor: copied ? 'var(--color-sage)' : 'var(--color-terra)',
+          backgroundColor: copied ? 'var(--color-terra-light)' : 'var(--color-terra)',
           color: 'var(--color-linen)',
         }}
         aria-label={copied ? 'Copied to clipboard' : 'Copy prompt to clipboard'}
@@ -283,7 +283,7 @@ export function ToolGuide({ guide }: ToolGuideProps) {
               )}
             </>
           ) : (
-            <p className="font-sans text-sm text-[color:var(--color-slate)] italic">
+            <p className="font-sans text-sm text-[color:var(--color-slate)]">
               Custom instructions are not available on this platform.
             </p>
           )}

@@ -86,7 +86,7 @@ function CheckmarkIcon() {
       strokeWidth={2.5}
       strokeLinecap="round"
       strokeLinejoin="round"
-      style={{ width: '32px', height: '32px', color: 'var(--color-sage)' }}
+      style={{ width: '32px', height: '32px', color: 'var(--color-terra)' }}
     >
       <path d="M20 6L9 17l-5-5" />
     </svg>
@@ -157,8 +157,8 @@ function NotFoundPage() {
           style={{
             width: '48px',
             height: '48px',
-            background: '#fef2f2',
-            border: '1px solid #fecaca',
+            background: 'var(--color-parch-dark)',
+            border: '1px solid var(--color-error)',
             borderRadius: '50%',
             display: 'flex',
             alignItems: 'center',
@@ -297,8 +297,8 @@ export default async function CertificateVerificationPage({ params }: PageProps)
               style={{
                 width: '48px',
                 height: '48px',
-                background: '#f0faf0',
-                border: '1px solid #c3e6cb',
+                background: 'var(--color-terra-pale)',
+                border: '1px solid var(--color-terra)',
                 borderRadius: '50%',
                 display: 'flex',
                 alignItems: 'center',
