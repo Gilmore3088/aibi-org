@@ -18,12 +18,20 @@ export function ModuleNavigation({
 }: ModuleNavigationProps) {
   return (
     <div className="flex items-center justify-between mt-16 pt-8 border-t border-[color:var(--color-parch-dark)]">
-      <Link
-        href="/courses/aibi-p"
-        className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-slate)] hover:text-[color:var(--color-ink)] transition-colors"
-      >
-        Back to Overview
-      </Link>
+      <div className="flex flex-wrap items-center gap-4">
+        <Link
+          href="/courses/aibi-p"
+          className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-slate)] hover:text-[color:var(--color-ink)] transition-colors"
+        >
+          Back to Overview
+        </Link>
+        <Link
+          href="/toolbox?tab=cookbook"
+          className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-terra)] hover:text-[color:var(--color-ink)] transition-colors"
+        >
+          Open Toolbox
+        </Link>
+      </div>
 
       {!isLastModule && (
         moduleComplete ? (

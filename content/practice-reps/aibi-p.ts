@@ -451,9 +451,9 @@ export const AIBI_P_ARTIFACTS: readonly Artifact[] = [
     moduleNumber: 9,
     title: 'Safe AI Use Checklist',
     description: 'A quick reference for what to strip, what to verify, and when to escalate.',
-    format: 'pdf',
+    format: 'md',
     sourceActivityId: 'safe-prompt-conversion',
-    downloadHref: '/artifacts/safe-ai-use-checklist.pdf',
+    downloadHref: '/artifacts/safe-ai-use-checklist.md',
     countsTowardCertificate: true,
   },
   {
@@ -492,9 +492,9 @@ export const AIBI_P_ARTIFACTS: readonly Artifact[] = [
     moduleNumber: 9,
     title: 'Red / Yellow / Green Use Card',
     description: 'A plain-English AI use boundary guide for regulated banking work.',
-    format: 'pdf',
+    format: 'md',
     sourceActivityId: 'classify-the-ai-use-case',
-    downloadHref: '/artifacts/red-yellow-green-use-card.pdf',
+    downloadHref: '/artifacts/red-yellow-green-use-card.md',
     countsTowardCertificate: true,
   },
   {

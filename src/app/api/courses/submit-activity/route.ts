@@ -11,7 +11,12 @@ import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { createServerClient } from '@supabase/ssr';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
-import { getModuleByNumber } from '@content/courses/aibi-p';
+import {
+  V4_AIBIP_MODULE_BY_NUMBER,
+  getModuleByNumber,
+} from '@content/courses/aibi-p';
+import { AIBI_P_ARTIFACTS } from '@content/practice-reps/aibi-p';
+import type { Activity, ActivityField } from '@content/courses/aibi-p';
 
 const LAST_MODULE = 12;
 
@@ -30,6 +35,65 @@ interface EnrollmentRow {
   user_id: string;
   completed_modules: number[];
   current_module: number;
+}
+
+function getV4Activity(moduleNumber: number): Activity | null {
+  const expandedModule = V4_AIBIP_MODULE_BY_NUMBER.get(moduleNumber);
+  if (!expandedModule) return null;
+
+  const artifact = AIBI_P_ARTIFACTS.find((item) => item.moduleNumber === expandedModule.number);
+
+  return {
+    id: `${expandedModule.number}.1`,
+    title: expandedModule.practice,
+    description: `Complete the practice, capture the useful output, and save the artifact: ${expandedModule.artifact}`,
+    type: 'free-text',
+    fields: [
+      {
+        id: 'practice-response',
+        label: 'Paste or write your practice response here.',
+        type: 'textarea',
+        minLength: 20,
+        required: true,
+        placeholder: expandedModule.practice,
+      },
+      {
+        id: 'review-notes',
+        label: 'What did you change, verify, or decide before using the output?',
+        type: 'textarea',
+        minLength: 20,
+        required: true,
+        placeholder: 'Note the human review step, safety boundary, or improvement you made.',
+      },
+    ],
+    completionTrigger: 'save-response',
+    artifactId: artifact?.id,
+  };
+}
+
+function validateActivityFields(
+  fields: readonly ActivityField[],
+  response: Record<string, unknown>,
+): Record<string, string> {
+  const fieldErrors: Record<string, string> = {};
+
+  for (const field of fields) {
+    const value = typeof response[field.id] === 'string'
+      ? (response[field.id] as string)
+      : '';
+
+    if (field.required && value.trim().length === 0) {
+      fieldErrors[field.id] = `${field.label} is required.`;
+      continue;
+    }
+
+    if (field.minLength && value.length < field.minLength) {
+      fieldErrors[field.id] =
+        `${field.label} must be at least ${field.minLength} characters (currently ${value.length}).`;
+    }
+  }
+
+  return fieldErrors;
 }
 
 export async function POST(request: Request): Promise<NextResponse> {
@@ -155,27 +219,16 @@ export async function POST(request: Request): Promise<NextResponse> {
   }
 
   // --- Server-side minLength validation (T-05-02, CONT-05) ---
+  const v4Activity = getV4Activity(moduleNumber);
   const mod = getModuleByNumber(moduleNumber);
+  let submittedActivity: Activity | undefined =
+    v4Activity?.id === activityId ? v4Activity : undefined;
+
   if (mod) {
-    const activity = mod.activities.find((a) => a.id === activityId);
+    const activity = submittedActivity ?? mod.activities.find((a) => a.id === activityId);
     if (activity) {
-      const fieldErrors: Record<string, string> = {};
-
-      for (const field of activity.fields) {
-        const value = typeof response[field.id] === 'string'
-          ? (response[field.id] as string)
-          : '';
-
-        if (field.required && value.trim().length === 0) {
-          fieldErrors[field.id] = `${field.label} is required.`;
-          continue;
-        }
-
-        if (field.minLength && value.length < field.minLength) {
-          fieldErrors[field.id] =
-            `${field.label} must be at least ${field.minLength} characters (currently ${value.length}).`;
-        }
-      }
+      submittedActivity = activity;
+      const fieldErrors = validateActivityFields(activity.fields, response);
 
       if (Object.keys(fieldErrors).length > 0) {
         return NextResponse.json(
@@ -200,6 +253,26 @@ export async function POST(request: Request): Promise<NextResponse> {
     return NextResponse.json(
       { error: 'Failed to save activity response. Please try again.' },
       { status: 500 }
+    );
+  }
+
+  if (submittedActivity?.artifactId) {
+    const artifact = AIBI_P_ARTIFACTS.find((item) => item.id === submittedActivity?.artifactId);
+    await serviceClient.from('user_artifacts').upsert(
+      {
+        user_id: user.id,
+        course_id: 'aibi-p',
+        artifact_id: submittedActivity.artifactId,
+        status: 'completed',
+        source_activity_id: activityId,
+        metadata: {
+          moduleNumber,
+          activityId,
+          title: artifact?.title ?? submittedActivity.title,
+        },
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: 'user_id,course_id,artifact_id' },
     );
   }
 

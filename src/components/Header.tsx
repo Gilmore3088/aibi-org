@@ -5,6 +5,7 @@ import { MobileNav } from './MobileNav';
 
 const NAV_LINKS = [
   { href: '/assessment/start', label: 'Assessment' },
+  { href: '/prompt-cards', label: 'Prompt Cards' },
   { href: '/courses/aibi-p', label: 'For Learners' },
   { href: '/for-institutions', label: 'For Institutions' },
   { href: '/resources', label: 'Resources' },
@@ -27,19 +28,19 @@ export function Header() {
           </span>
         </Link>
 
-        <nav aria-label="Primary" className="flex items-center gap-6">
+        <nav aria-label="Primary" className="flex items-center gap-3 lg:gap-5">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="font-serif-sc text-xs uppercase text-[color:var(--color-ink)]/75 hover:text-[color:var(--color-terra)] transition-colors hidden md:inline"
+              className="font-serif-sc text-xs uppercase text-[color:var(--color-ink)]/75 hover:text-[color:var(--color-terra)] transition-colors hidden lg:inline"
             >
               {link.label}
             </Link>
           ))}
           <Link
             href="/assessment/start"
-            className="font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] bg-[color:var(--color-terra)] text-[color:var(--color-linen)] px-4 py-2 hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all hidden md:inline-block"
+            className="font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] bg-[color:var(--color-terra)] text-[color:var(--color-linen)] px-4 py-2 hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all hidden xl:inline-block"
           >
             Take Assessment
           </Link>
