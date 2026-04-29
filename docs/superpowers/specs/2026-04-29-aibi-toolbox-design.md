@@ -88,30 +88,66 @@ hasToolboxAccess(user) =
 
 A guided UI for creating, editing, and managing personal Skills.
 
-**A "Skill" is (Locked: Option B):** a reusable AI instruction packet with the following schema:
+**A "Skill" comes in two kinds (amended 2026-04-29 — see decision #23):**
+
+- **`workflow`** — a multi-turn skill where the AI is given a role, a clarifying-questions script, a step-by-step workflow, and an output spec. The user has a conversation with the skill in the Playground; the AI runs the workflow against the user's specific scenario. Best for analytical or compositional banking work: credit memo drafting, denial-letter authoring, complaint-response composition.
+- **`template`** — a single-shot prompt template with named `{{variable}}` blanks. The user fills the variables, sends once, gets one output. Best for short repeatable patterns AND for teaching prompt structure (the variables are the lesson).
+
+Both kinds are first-class throughout the Toolbox. Library entries, Save-to-Toolbox capture, and Cookbook recipe steps may reference either kind.
 
 ```typescript
-interface Skill {
+interface SkillBase {
   id: string;
   owner_id: string;             // user who owns this skill (null for Library originals)
+  kind: 'workflow' | 'template';
   source: 'library' | 'course' | 'user' | 'forked';
   source_ref?: string;          // e.g., "aibi-p/module-3/lesson-2" or parent skill id
 
+  // Common metadata
   title: string;                // "Draft a loan denial letter (ECOA-compliant)"
   description: string;          // 1-2 sentences on when to use it
-  system_prompt: string;        // 100-300 words establishing role, rules, constraints
-  user_prompt_template: string; // with {{variable}} placeholders
-  variables: Variable[];        // typed list of fillable blanks
-  example?: { input: Record<string, string>; output: string };
-
-  pillar: 'A' | 'B' | 'C';      // Accessible / Boundary-Safe / Capable
+  pillar?: 'A' | 'B' | 'C';     // Accessible / Boundary-Safe / Capable
   category: string;             // 'Lending' | 'Operations' | 'Compliance' | 'Marketing' | 'Executive'
   compliance_notes?: string;    // "Aligned with ECOA/Reg B §1002.9"
   teaching_annotations?: TeachingAnnotation[]; // "Why this works" callouts shown in UI
 
+  // Output formatting (applies to both kinds)
+  output_format?: string;       // 'Markdown' | 'JSON' | etc.
+  tone?: string;                // 'Professional' | 'Plain language' | etc.
+  length?: string;              // 'Concise' | 'Detailed' | etc.
+
+  // Provenance / lifecycle
+  maturity?: 'draft' | 'pilot' | 'production';
+  owner_label?: string;         // 'Role owner' (display string, not auth)
+  version: string;              // '1.0'
   created_at: string;
   updated_at: string;
 }
+
+interface WorkflowSkill extends SkillBase {
+  kind: 'workflow';
+  // The workflow definition — AI generates its own system_prompt from these.
+  purpose: string;              // What the skill produces
+  questions: string;            // Newline-delimited clarifying questions to ask
+  steps: string[];              // The workflow the AI should follow
+  files?: string[];             // Required context files
+  connectors?: string[];        // Required apps / data sources
+  guardrails?: string[];        // "Never do X" rules
+  custom_guard?: string;        // Free-text escalation triggers
+  samples?: { title: string; prompt: string }[];  // Example scenarios
+  // Optional override — if set, skips the generated system_prompt:
+  system_prompt_override?: string;
+}
+
+interface TemplateSkill extends SkillBase {
+  kind: 'template';
+  system_prompt: string;        // 100-300 words establishing role, rules, constraints
+  user_prompt_template: string; // with {{variable}} placeholders
+  variables: Variable[];        // typed list of fillable blanks
+  example?: { input: Record<string, string>; output: string };
+}
+
+type Skill = WorkflowSkill | TemplateSkill;
 
 interface Variable {
   name: string;       // 'applicant_name'
@@ -123,16 +159,24 @@ interface Variable {
 }
 
 interface TeachingAnnotation {
-  anchor: 'system_prompt' | 'user_template' | 'variables' | 'example';
+  // Workflow anchors target the workflow fields; template anchors target the template fields.
+  anchor:
+    | 'purpose' | 'questions' | 'steps' | 'guardrails'    // workflow
+    | 'system_prompt' | 'user_template' | 'variables' | 'example'; // template
   pattern: string;    // e.g., 'role-and-context', 'explicit-constraints', 'output-format-spec'
   explanation: string; // why this prompting pattern was used here
 }
 ```
 
+**System prompt generation (workflow kind):** the existing `buildToolboxSystemPrompt()` helper composes a system prompt from `purpose / questions / steps / guardrails / output_format / tone / length` (plus a regulatory-discipline boilerplate). For workflow skills, this generated prompt is what the Playground sends to the LLM. If `system_prompt_override` is set, it replaces the generated value entirely.
+
 **Skill Builder UI:**
 
-- Step-by-step guided creation flow (title → role/system prompt → user template → variables → example → tags)
-- Edit mode for existing Skills
+- **Kind picker** as the first step: "Workflow skill" or "Template with variables" — with one-line guidance on when to use each
+- Step-by-step guided creation flow, branching by kind:
+  - **Workflow:** title → purpose → clarifying questions → workflow steps → output spec → guardrails → samples → tags
+  - **Template:** title → role/system prompt → user template → variables → example → tags
+- Edit mode for existing Skills (kind is fixed after creation; switch requires re-author)
 - "Test in Playground" button that pre-loads the Skill into the Playground
 - "Fork from Library" entry point that pre-fills from a Library template
 
@@ -141,6 +185,8 @@ interface TeachingAnnotation {
 **v1 sourcing (Locked):** 25 launch Skills harvested directly from existing course content (AiBI-P modules). The Library is a curated, polished subset of prompts already living in lessons.
 
 **Library entries are read-only originals.** Learners "fork" them into their personal Toolbox, which creates an editable copy with a `source: 'library'` provenance pointer back to the original.
+
+**Both Skill kinds are eligible for the Library** (per decision #23). A Library entry may be a `workflow` skill OR a `template` skill — the authoring standard below applies to both, with kind-specific anchor mapping for teaching annotations.
 
 **Authoring Standard (Locked, applies to Library AND Cookbook):**
 
@@ -156,7 +202,9 @@ Every Library/Cookbook entry must demonstrate **good prompting habits** because 
    - Compliance/boundary notes (no PII, no invented citations, no legal advice)
    - Source citations (SR 11-7, ECOA §X, FDIC, etc.) where regulatory framing is relevant
 
-2. **Include teaching annotations** — "Why this works" callouts visible in the UI as expandable elements next to the relevant section of the prompt
+2. **Include teaching annotations** — "Why this works" callouts visible in the UI as expandable elements next to the relevant section. Anchor mapping by kind:
+   - **Workflow skills:** annotate `purpose`, `questions`, `steps`, `guardrails`, and the output spec.
+   - **Template skills:** annotate `system_prompt`, `user_template`, `variables`, and `example`.
 
 3. **Cite a regulatory or research source** where applicable (must follow CLAUDE.md citation rules — no unsourced statistics)
 
@@ -312,43 +360,69 @@ Same as rest of project: Next.js 14 App Router · TypeScript strict · Tailwind 
 ### 7.3 New database tables (Supabase)
 
 ```sql
--- Personal skills owned by a user
+-- Personal skills owned by a user.
+--
+-- The 00012 migration shipped with a narrower shape: id, user_id (= owner),
+-- template_id, command, name, maturity, skill (jsonb blob). Plan B amends
+-- via ALTER TABLE rather than DROP/CREATE — production has zero rows but the
+-- table is referenced by 4 live API routes. Decision #23 introduces the kind
+-- discriminator so workflow-style and template-style skills coexist as
+-- variants of one Skill.
+--
+-- After Plan B amendments, the column set is:
 toolbox_skills (
+  -- Existing (00012)
   id uuid primary key default gen_random_uuid(),
-  owner_id uuid not null references auth.users(id) on delete cascade,
-  source text not null check (source in ('library','course','user','forked')),
-  source_ref text,
-  title text not null,
-  description text,
-  system_prompt text not null,
-  user_prompt_template text not null,
-  variables jsonb not null default '[]',
-  example jsonb,
-  pillar char(1) not null check (pillar in ('A','B','C')),
-  category text not null,
-  compliance_notes text,
-  teaching_annotations jsonb default '[]',
+  user_id uuid not null references auth.users(id) on delete cascade, -- = owner_id
+  template_id text,
+  command text not null,           -- '/credit-memo' (workflow trigger)
+  name text not null,              -- title
+  maturity text not null default 'draft' check (maturity in ('draft','pilot','production')),
+  skill jsonb not null default '{}',  -- legacy blob; remaining workflow-specific fields live here
   created_at timestamptz default now(),
-  updated_at timestamptz default now()
+  updated_at timestamptz default now(),
+
+  -- Added by Plan B (decision #23)
+  kind text not null default 'workflow' check (kind in ('workflow','template')),
+  system_prompt text,                -- explicit override (template) or null (workflow auto-generates)
+  user_prompt_template text,         -- template kind only
+  variables jsonb default '[]',      -- template kind only
+  pillar char(1) check (pillar in ('A','B','C')),
+  teaching_annotations jsonb default '[]',
+  source text default 'user' check (source in ('library','course','user','forked')),
+  source_ref text,
+
+  unique (user_id, command)
 );
 
--- Read-only template library (originals)
+-- Indexes added in Plan B for entitlement-and-list queries:
+create index idx_toolbox_skills_user_kind on toolbox_skills (user_id, kind);
+create index idx_toolbox_skills_pillar on toolbox_skills (pillar) where pillar is not null;
+create index idx_toolbox_skills_source on toolbox_skills (source);
+
+-- Read-only template library (originals). Like personal skills, library entries
+-- can be either kind. Same fields as the personal table; the per-row "kind"
+-- discriminator drives validation and rendering.
 toolbox_library_skills (
   id uuid primary key default gen_random_uuid(),
   slug text unique not null,
-  -- same content fields as toolbox_skills, no owner_id
+  kind text not null check (kind in ('workflow','template')),
   title text not null,
   description text,
-  system_prompt text not null,
-  user_prompt_template text not null,
-  variables jsonb not null default '[]',
+  -- Workflow-kind fields (nullable; required only when kind='workflow')
+  workflow_definition jsonb,         -- { purpose, questions, steps, files, connectors, guardrails, custom_guard, samples, output_format, tone, length }
+  -- Template-kind fields (nullable; required only when kind='template')
+  system_prompt text,
+  user_prompt_template text,
+  variables jsonb default '[]',
   example jsonb,
-  pillar char(1) not null check (pillar in ('A','B','C')),
+  -- Common
+  pillar char(1) check (pillar in ('A','B','C')),
   category text not null,
   compliance_notes text,
   teaching_annotations jsonb default '[]',
   complexity text check (complexity in ('beginner','intermediate','advanced')),
-  course_source_ref text,  -- where in the course this skill was harvested from
+  course_source_ref text,
   published boolean default false,
   created_at timestamptz default now()
 );
@@ -591,3 +665,9 @@ Content track must be 50%+ complete before engineering step 4 ships, otherwise t
 | 20 | Instrumentation | Server-side Plausible events for skill_created, save_to_toolbox_clicked, playground_run, PII warning/bypass, quota events; not client-only. |
 | 21 | Entitlements model | Real `entitlements` table from v1 (not derived from `course_enrollments`); reconciliation job/trigger from enrollment events. |
 | 22 | Phasing reorder | Cost tracking + rate limiting land WITH the first provider call, not after Playground v1/v2 ship. |
+
+### Plan B amendment (2026-04-29 — pre-Plan-B reconciliation with existing code)
+
+| # | Decision | Choice |
+|---|---|---|
+| 23 | Skill kind discriminator | Workflow-style and template-style skills coexist as variants of one Skill, distinguished by `kind: 'workflow' \| 'template'`. Both kinds are first-class throughout Library, Save-to-Toolbox, and Cookbook. The existing 23-field workflow schema (cmd/purpose/questions/steps/guardrails/samples) is preserved as the workflow variant; the template variant adds `system_prompt` + `user_prompt_template` + `variables` + `example`. Schema is amended via `ALTER TABLE` on the existing `toolbox_skills` (production has 0 rows; no data migration needed). See §5.1 for the unified schema and §7.3 for the DDL. |
