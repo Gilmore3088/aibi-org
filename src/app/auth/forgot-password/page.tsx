@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { resetPassword } from '@/lib/supabase/auth';
+import { trackEvent } from '@/lib/analytics/plausible';
 
 export default function ForgotPasswordPage() {
   const [state, setState] = useState<'idle' | 'sent' | 'error'>('idle');
@@ -25,6 +26,7 @@ export default function ForgotPasswordPage() {
       setState('error');
       return;
     }
+    trackEvent('password_reset_requested');
     setState('sent');
   }
 

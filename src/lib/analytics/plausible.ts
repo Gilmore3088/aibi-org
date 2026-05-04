@@ -22,7 +22,18 @@ export type PlausibleEventName =
   | 'prompt_card_prompt_copy'
   | 'prompt_card_expand_click'
   | 'prompt_card_pdf_download'
-  | 'prompt_card_course_click';
+  | 'prompt_card_course_click'
+  // Auth funnel — added in feature/auth-audit (2026-05-01) so we can see
+  // sign-up completion rate, sign-in success rate, and password recovery
+  // usage. Failures are intentionally NOT tracked here: they're a noisy
+  // security signal that belongs in server logs, not the marketing funnel.
+  | 'signup_initiated'
+  | 'signup_completed'
+  | 'signin_succeeded'
+  | 'magic_link_sent'
+  | 'signout'
+  | 'password_reset_requested'
+  | 'password_reset_completed';
 
 export function trackEvent(
   name: PlausibleEventName,

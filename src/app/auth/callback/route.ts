@@ -21,8 +21,21 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
   // `next` carries the post-auth redirect destination set by the caller.
   const next = searchParams.get('next') ?? '/dashboard';
 
-  // Guard: sanitize `next` — only allow relative paths to prevent open redirect.
-  const safeNext = next.startsWith('/') ? next : '/dashboard';
+  // Sanitize `next` against open-redirect attacks. `startsWith('/')` alone
+  // is insufficient: protocol-relative URLs like `//evil.com` and `/\evil.com`
+  // both pass that check, then redirect to attacker-controlled origins.
+  // Parse against the request origin and only accept paths that resolve to
+  // the same origin; otherwise fall back to /dashboard.
+  function safePath(candidate: string): string {
+    try {
+      const resolved = new URL(candidate, origin);
+      if (resolved.origin !== origin) return '/dashboard';
+      return `${resolved.pathname}${resolved.search}${resolved.hash}` || '/dashboard';
+    } catch {
+      return '/dashboard';
+    }
+  }
+  const safeNext = safePath(next);
 
   if (!isSupabaseConfigured()) {
     return NextResponse.redirect(`${origin}/auth/login?error=not_configured`);

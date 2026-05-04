@@ -4,24 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { signIn, signInWithMagicLink } from '@/lib/supabase/auth';
-
-// ── Dev bypass ───────────────────────────────────────────────────────────────
-// Only available in development. Sets a flag so protected pages can short-circuit.
-function DevSkipButton() {
-  if (process.env.NODE_ENV !== 'development') return null;
-  return (
-    <button
-      type="button"
-      onClick={() => {
-        sessionStorage.setItem('aibi-dev-auth', 'true');
-        window.location.href = '/dashboard';
-      }}
-      className="w-full py-2 px-4 border border-dashed border-[color:var(--color-slate)]/40 text-[color:var(--color-slate)] text-sm font-sans rounded-[2px] hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)] transition-colors"
-    >
-      Dev: Skip Login
-    </button>
-  );
-}
+import { trackEvent } from '@/lib/analytics/plausible';
 
 // ── Password form ─────────────────────────────────────────────────────────────
 
@@ -46,6 +29,7 @@ function PasswordForm({ redirectTo }: { redirectTo: string }) {
       setError(result.error);
       return;
     }
+    trackEvent('signin_succeeded', { method: 'password' });
     router.push(redirectTo);
     router.refresh();
   }
@@ -124,6 +108,7 @@ function MagicLinkForm({ redirectTo }: { redirectTo: string }) {
       setState('error');
       return;
     }
+    trackEvent('magic_link_sent');
     setState('sent');
   }
 
@@ -237,8 +222,6 @@ export default function LoginPage() {
           ) : (
             <MagicLinkForm redirectTo={redirectTo} />
           )}
-
-          <DevSkipButton />
         </div>
 
         {/* Footer link */}

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { updatePassword } from '@/lib/supabase/auth';
+import { trackEvent } from '@/lib/analytics/plausible';
 
 const MIN_PASSWORD_LENGTH = 8;
 
@@ -37,6 +38,7 @@ export default function ResetPasswordPage() {
       setError(result.error);
       return;
     }
+    trackEvent('password_reset_completed');
     router.push('/dashboard');
     router.refresh();
   }

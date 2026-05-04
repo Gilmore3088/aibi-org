@@ -95,7 +95,13 @@ export async function POST(request: Request): Promise<NextResponse> {
     );
   }
 
-  const { completed_modules, current_module } = enrollment as EnrollmentRow;
+  const { completed_modules, current_module: rawCurrentModule } = enrollment as EnrollmentRow;
+  // Normalize current_module=0 (DB default for "enrolled, not started") to 1
+  // so the comparison below matches the UI in getEnrollment.ts:90, which routes
+  // such users to /courses/aibi-p/1. Without this coercion the user can land
+  // on module 1 from the UI but every save-progress POST returns 400 with no
+  // way out. See feature/auth-audit findings (2026-05-01).
+  const current_module = Math.max(1, rawCurrentModule ?? 1);
 
   // --- Forward-only enforcement (T-04-04) ---
   // Rule 1: moduleNumber must equal current_module (cannot skip ahead or re-submit past modules)

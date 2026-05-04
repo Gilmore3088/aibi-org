@@ -7,6 +7,7 @@ import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { signOut } from '@/lib/supabase/auth';
+import { trackEvent } from '@/lib/analytics/plausible';
 
 interface Props {
   readonly email: string;
@@ -47,6 +48,7 @@ export function AuthDropdown({ email, displayName }: Props) {
   async function handleSignOut() {
     setSigningOut(true);
     await signOut();
+    trackEvent('signout');
     router.push('/');
     router.refresh();
   }

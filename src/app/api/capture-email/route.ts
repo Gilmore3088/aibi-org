@@ -8,6 +8,7 @@ import { subscribeToAssessmentForm } from '@/lib/convertkit';
 import { upsertContact } from '@/lib/hubspot';
 import { upsertReadinessResult } from '@/lib/supabase/user-profiles';
 import { sendAssessmentBreakdown } from '@/lib/resend';
+import { checkRateLimit, clientIpFromHeaders } from '@/lib/rate-limit/sliding-window';
 import { getTierV2 } from '@content/assessments/v2/scoring';
 import { getStarterArtifact } from '@content/assessments/v2/starter-artifacts';
 import type { Dimension } from '@content/assessments/v2/types';
@@ -74,6 +75,27 @@ function isValidPayload(p: CapturePayload): p is {
 }
 
 export async function POST(request: Request) {
+  // Rate limit before parsing so a flood of garbage bodies still
+  // gets blocked. 5 per IP per hour is generous for a real assessment
+  // taker (one or two retries on a slow connection) but stops scripted
+  // abuse cold. Falls open if Supabase is unreachable — see
+  // src/lib/rate-limit/sliding-window.ts for rationale.
+  const rate = await checkRateLimit({
+    scope: 'capture-email',
+    key: clientIpFromHeaders(request.headers),
+    max: 5,
+    windowSeconds: 60 * 60,
+  });
+  if (!rate.ok) {
+    return NextResponse.json(
+      { error: 'Too many requests. Please try again later.' },
+      {
+        status: 429,
+        headers: { 'Retry-After': String(rate.retryAfterSeconds) },
+      }
+    );
+  }
+
   let body: CapturePayload;
   try {
     body = (await request.json()) as CapturePayload;

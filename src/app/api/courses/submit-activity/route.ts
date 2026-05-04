@@ -195,7 +195,11 @@ export async function POST(request: Request): Promise<NextResponse> {
     );
   }
 
-  const { current_module } = enrollment as EnrollmentRow;
+  const { current_module: rawCurrentModule } = enrollment as EnrollmentRow;
+  // Normalize current_module=0 (DB default for "enrolled, not started") to 1
+  // to match getEnrollment.ts:90 and save-progress/route.ts. See
+  // feature/auth-audit findings (2026-05-01).
+  const current_module = Math.max(1, rawCurrentModule ?? 1);
 
   // --- Forward-only enforcement (M1-06) ---
   // moduleNumber must equal current_module (cannot submit activities for past or future modules)

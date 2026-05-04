@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { signUp } from '@/lib/supabase/auth';
+import { trackEvent } from '@/lib/analytics/plausible';
 
 const MIN_PASSWORD_LENGTH = 8;
 
@@ -45,6 +46,7 @@ export default function SignupPage() {
     }
 
     setPending(true);
+    trackEvent('signup_initiated');
     const result = await signUp(email, password, {
       fullName: fullName.trim(),
       institutionName: institutionName.trim() || undefined,
@@ -55,6 +57,7 @@ export default function SignupPage() {
       setError(result.error);
       return;
     }
+    trackEvent('signup_completed');
     setDone(true);
   }
 

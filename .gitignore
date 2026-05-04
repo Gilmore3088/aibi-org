@@ -44,3 +44,8 @@ next-env.d.ts
 # Claude Code / MCP session state (local-only, never commit)
 .claude/
 .mcp.json
+
+# Supabase CLI local state — project link, ports, generated types
+supabase/.temp/
+supabase/.branches/
+src/types/supabase.ts
