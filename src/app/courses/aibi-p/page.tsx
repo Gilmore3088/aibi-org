@@ -79,7 +79,7 @@ export default async function CourseOverviewPage() {
         {fetchFailed && (
           <p className="mt-6 border-l-2 border-[color:var(--color-error)] bg-[color:var(--color-error)]/5 px-4 py-3 text-sm text-[color:var(--color-ink)]">
             Couldn&apos;t load your progress right now.{' '}
-            <Link href="/login" className="underline">Sign in</Link> to resume,
+            <Link href="/auth/login" className="underline">Sign in</Link> to resume,
             or refresh the page in a moment.
           </p>
         )}

@@ -8,9 +8,23 @@ import { subscribeToAssessmentForm } from '@/lib/convertkit';
 import { upsertContact } from '@/lib/hubspot';
 import { upsertReadinessResult } from '@/lib/supabase/user-profiles';
 import { sendAssessmentBreakdown } from '@/lib/resend';
+import {
+  checkEmailCaptureLimit,
+  hashIp,
+  logEmailCapture,
+} from '@/lib/email-capture/rate-limit';
 import { getTierV2 } from '@content/assessments/v2/scoring';
 import { getStarterArtifact } from '@content/assessments/v2/starter-artifacts';
 import type { Dimension } from '@content/assessments/v2/types';
+
+// 5 submissions per IP per hour matches the launch-gate spec in CLAUDE.md.
+const RATE_LIMIT_PER_IP_PER_HOUR = 5;
+
+function getRequestIp(request: Request): string {
+  const xff = request.headers.get('x-forwarded-for');
+  if (xff) return xff.split(',')[0].trim();
+  return request.headers.get('x-real-ip') ?? 'unknown';
+}
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -84,6 +98,27 @@ export async function POST(request: Request) {
   if (!isValidPayload(body)) {
     return NextResponse.json({ error: 'Invalid payload.' }, { status: 400 });
   }
+
+  // Per-IP rate limit. Hashed IP only — never store raw.
+  const ipHash = hashIp(getRequestIp(request));
+  const decision = await checkEmailCaptureLimit(ipHash, {
+    perIpPerHour: RATE_LIMIT_PER_IP_PER_HOUR,
+  });
+  if (!decision.allowed) {
+    return NextResponse.json(
+      { error: 'Too many requests. Please try again in an hour.' },
+      {
+        status: 429,
+        headers: decision.retryAfterSeconds
+          ? { 'Retry-After': String(decision.retryAfterSeconds) }
+          : undefined,
+      },
+    );
+  }
+
+  // Log the attempt before doing any side-effect work so the rate limit
+  // counts even if downstream adapters fail.
+  await logEmailCapture(ipHash);
 
   const { email, score, tier, tierLabel, answers, version, maxScore, dimensionBreakdown } = body;
 
