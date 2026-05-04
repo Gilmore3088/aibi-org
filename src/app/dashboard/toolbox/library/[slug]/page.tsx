@@ -1,8 +1,8 @@
 // src/app/dashboard/toolbox/library/[slug]/page.tsx
 //
 // Plan C — Library detail page. SSR. Renders the current version's content
-// with kind-aware sections (workflow vs template). Includes a Fork button
-// that posts to /api/toolbox/library/[slug]/fork.
+// with kind-aware sections (workflow vs template). Includes a Save button
+// that posts to /api/toolbox/save with origin='library' (Plan F).
 
 import type { Metadata } from 'next';
 import Link from 'next/link';
@@ -79,7 +79,7 @@ export default async function LibrarySkillPage({
               {skill.description}
             </p>
           )}
-          <ForkButton slug={skill.slug} />
+          <ForkButton librarySkillId={skill.id} versionId={currentVersion.id} />
         </div>
       </div>
 

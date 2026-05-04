@@ -119,6 +119,8 @@ export interface ForkLibrarySkillResult {
  * preserving everything; the workflow-specific fields stay in the same shape
  * because Plan B's toolbox_skills schema is a superset of the legacy template
  * shape (decision #23).
+ *
+ * @deprecated Use /api/toolbox/save with origin='library' instead.
  */
 export async function forkLibrarySkill(
   opts: ForkLibrarySkillOpts
