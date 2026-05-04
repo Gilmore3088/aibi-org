@@ -25,12 +25,10 @@ const PILLAR_COLOR: Record<ToolboxPillar, string> = {
 };
 
 interface SearchParams {
-  pillar?: string;
   category?: string;
   kind?: string;
 }
 
-const VALID_PILLARS: ReadonlyArray<ToolboxPillar> = ['A', 'B', 'C'];
 const VALID_KINDS: ReadonlyArray<ToolboxKind> = ['workflow', 'template'];
 
 export default async function LibraryPage({
@@ -42,17 +40,13 @@ export default async function LibraryPage({
   if (!access) return <Paywall />;
 
   const sp = await searchParams;
-  const pillar =
-    sp.pillar && VALID_PILLARS.includes(sp.pillar as ToolboxPillar)
-      ? (sp.pillar as ToolboxPillar)
-      : undefined;
   const kind =
     sp.kind && VALID_KINDS.includes(sp.kind as ToolboxKind)
       ? (sp.kind as ToolboxKind)
       : undefined;
   const category = sp.category || undefined;
 
-  const skills = await listLibrarySkills({ pillar, category, kind });
+  const skills = await listLibrarySkills({ category, kind });
 
   const categories = Array.from(new Set(skills.map((s) => s.category))).sort();
 
@@ -81,7 +75,7 @@ export default async function LibraryPage({
       </div>
 
       <div className="mx-auto max-w-7xl px-6 py-8 lg:px-10">
-        <FilterBar pillar={pillar} category={category} kind={kind} categories={categories} />
+        <FilterBar category={category} kind={kind} categories={categories} />
 
         {skills.length === 0 ? (
           <p className="mt-12 text-sm text-[color:var(--color-slate)]">
@@ -131,12 +125,10 @@ export default async function LibraryPage({
 }
 
 function FilterBar({
-  pillar,
   category,
   kind,
   categories,
 }: {
-  pillar?: ToolboxPillar;
   category?: string;
   kind?: ToolboxKind;
   categories: string[];
@@ -148,8 +140,7 @@ function FilterBar({
 
   const buildHref = (params: Partial<SearchParams>) => {
     const next = new URLSearchParams();
-    const merged = { pillar, category, kind, ...params };
-    if (merged.pillar) next.set('pillar', merged.pillar);
+    const merged = { category, kind, ...params };
     if (merged.category) next.set('category', merged.category);
     if (merged.kind) next.set('kind', merged.kind);
     const qs = next.toString();
@@ -158,13 +149,6 @@ function FilterBar({
 
   return (
     <div className="flex flex-wrap items-center gap-x-6 gap-y-3 border-b border-[color:var(--color-ink)]/10 pb-6">
-      <FilterGroup label="Pillar">
-        {(['A', 'B', 'C'] as const).map((p) => (
-          <Link key={p} href={buildHref({ pillar: pillar === p ? undefined : p })} className={pillar === p ? activeClass : baseClass}>
-            {PILLAR_LABEL[p]}
-          </Link>
-        ))}
-      </FilterGroup>
       <FilterGroup label="Category">
         {categories.map((c) => (
           <Link key={c} href={buildHref({ category: category === c ? undefined : c })} className={category === c ? activeClass : baseClass}>

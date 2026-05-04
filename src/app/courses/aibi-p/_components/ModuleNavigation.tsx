@@ -26,7 +26,7 @@ export function ModuleNavigation({
           Back to Overview
         </Link>
         <Link
-          href="/toolbox?tab=library"
+          href="/dashboard/toolbox?tab=library"
           className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-terra)] hover:text-[color:var(--color-ink)] transition-colors"
         >
           Open Toolbox

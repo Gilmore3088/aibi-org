@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { HomeContextStrip } from '@/components/sections/HomeContextStrip';
 import { ROICalculator } from '@/components/sections/ROICalculator';
 import { InteractiveSkillsPreview } from '@/components/sections/InteractiveSkillsPreview';
 
@@ -41,6 +42,7 @@ export const metadata = {
 export default function HomePage() {
   return (
     <main>
+      <HomeContextStrip />
       <section className="px-6 pt-16 pb-14 md:pt-24 md:pb-20 bg-[color:var(--color-linen)] border-b border-[color:var(--color-ink)]/10">
         <div className="max-w-4xl mx-auto text-center">
           <p className="font-serif-sc text-xs uppercase tracking-[0.22em] text-[color:var(--color-terra)]">
