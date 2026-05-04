@@ -14,6 +14,7 @@ export type PlausibleEventName =
   | 'briefing_booked'
   | 'purchase_initiated'
   | 'toolbox_skill_saved'
+  | 'save_to_toolbox_clicked'
   | 'toolbox_scenario_run'
   | 'toolbox_skill_exported'
   | 'prompt_cards_page_view'

@@ -72,9 +72,13 @@ const TIME_OPTIONS: readonly { value: string; label: string }[] = [
 
 interface PromptLibraryClientProps {
   readonly userLevel?: ContentLevel | null;
+  readonly canSaveToToolbox?: boolean;
 }
 
-export function PromptLibraryClient({ userLevel = null }: PromptLibraryClientProps) {
+export function PromptLibraryClient({
+  userLevel = null,
+  canSaveToToolbox = false,
+}: PromptLibraryClientProps) {
   const [platform, setPlatform] = useState<FilterValue<PromptPlatform>>('all');
   const [role, setRole] = useState<FilterValue<PromptRole>>('all');
   const [difficulty, setDifficulty] = useState<FilterValue<PromptDifficulty>>('all');
@@ -208,6 +212,7 @@ export function PromptLibraryClient({ userLevel = null }: PromptLibraryClientPro
               key={prompt.id}
               prompt={prompt}
               userLevel={userLevel}
+              canSaveToToolbox={canSaveToToolbox}
               initiallySaved={savedPromptIds.includes(prompt.id)}
               onSavedChange={(promptId, isSaved) => {
                 setSavedPromptIds((current) => {

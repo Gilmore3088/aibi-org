@@ -18,6 +18,7 @@ import {
 import { renderMarkdown } from '@/lib/sandbox/markdown-renderer';
 import { KindPicker } from './_components/KindPicker';
 import { ModelPicker, type ModelSelection } from './_components/ModelPicker';
+import { SourceBacklink } from './_components/SourceBacklink';
 import { TemplateBuilder } from './_components/TemplateBuilder';
 import { UsageMeter, useUsage } from './_components/UsageMeter';
 
@@ -120,6 +121,7 @@ export function ToolboxApp() {
   const safeTab = TABS.some((tab) => tab.id === currentTab) ? currentTab : 'guide';
 
   const [skills, setSkills] = useState<ToolboxSkill[]>([]);
+  const [librarySlugMap, setLibrarySlugMap] = useState<Record<string, string>>({});
   const [activeSkill, setActiveSkill] = useState<ToolboxSkill | null>(null);
   const [draftSkill, setDraftSkill] = useState<ToolboxWorkflowSkill>(EMPTY_WORKFLOW_SKILL);
   const [templateSkill, setTemplateSkill] = useState<ToolboxTemplateSkill>(EMPTY_TEMPLATE_SKILL);
@@ -129,6 +131,7 @@ export function ToolboxApp() {
   const [messages, setMessages] = useState<ToolboxMessage[]>([]);
   const [input, setInput] = useState('');
   const [running, setRunning] = useState(false);
+  const [playgroundSaveState, setPlaygroundSaveState] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
   const [notice, setNotice] = useState<string | null>(null);
   const [modelSelection, setModelSelection] = useState<ModelSelection>({
     provider: 'anthropic',
@@ -146,7 +149,10 @@ export function ToolboxApp() {
   useEffect(() => {
     fetch('/api/toolbox/skills', { cache: 'no-store' })
       .then((res) => res.ok ? res.json() : Promise.reject())
-      .then((data: { skills: ToolboxSkill[] }) => setSkills(data.skills ?? []))
+      .then((data: { skills: ToolboxSkill[]; librarySlugMap?: Record<string, string> }) => {
+        setSkills(data.skills ?? []);
+        setLibrarySlugMap(data.librarySlugMap ?? {});
+      })
       .catch(() => setNotice('Saved Toolbox skills could not be loaded.'));
   }, []);
 
@@ -284,6 +290,21 @@ export function ToolboxApp() {
       ]);
     } finally {
       setRunning(false);
+    }
+  }
+
+  async function handleSavePlayground() {
+    if (!activeSkill || messages.length === 0 || playgroundSaveState === 'saving') return;
+    setPlaygroundSaveState('saving');
+    try {
+      const res = await fetch('/api/toolbox/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ origin: 'playground', payload: { skill: activeSkill, messages } }),
+      });
+      setPlaygroundSaveState(res.ok ? 'saved' : 'error');
+    } catch {
+      setPlaygroundSaveState('error');
     }
   }
 
@@ -452,12 +473,15 @@ export function ToolboxApp() {
           onEdit={() => activeSkill && loadSkill(activeSkill, 'build')}
           onBrowse={() => setTab('cookbook')}
           onReset={() => setMessages([])}
+          onSavePlayground={handleSavePlayground}
+          playgroundSaveState={playgroundSaveState}
         />
       )}
 
       {safeTab === 'toolbox' && (
         <ToolboxPanel
           skills={skills}
+          librarySlugMap={librarySlugMap}
           onRun={(skill) => loadSkill(skill, 'playground')}
           onEdit={(skill) => loadSkill(skill, 'build')}
           onExport={exportSkill}
@@ -624,6 +648,8 @@ function PlaygroundPanel(props: {
   readonly onEdit: () => void;
   readonly onBrowse: () => void;
   readonly onReset: () => void;
+  readonly onSavePlayground: () => void;
+  readonly playgroundSaveState: 'idle' | 'saving' | 'saved' | 'error';
 }) {
   if (!props.activeSkill) {
     return (
@@ -686,7 +712,20 @@ function PlaygroundPanel(props: {
           <textarea value={props.input} onChange={(event) => props.setInput(event.target.value)} rows={5} placeholder="Type a test prompt..." className="w-full resize-y border border-[color:var(--color-ink)]/10 bg-white px-3 py-2 text-sm" />
           <div className="mt-3 flex flex-wrap justify-between gap-3">
             <button type="button" onClick={props.onReset} className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">Reset conversation</button>
-            <button type="button" disabled={props.running || !props.input.trim()} onClick={props.onRun} className="bg-[color:var(--color-terra)] px-5 py-2.5 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-linen)] disabled:opacity-50">Run with Claude</button>
+            <div className="flex flex-wrap gap-3">
+              <button
+                type="button"
+                disabled={props.messages.length === 0 || props.playgroundSaveState === 'saving'}
+                onClick={() => {
+                  if (props.messages.length === 0) return;
+                  props.onSavePlayground();
+                }}
+                className="border border-[color:var(--color-ink)]/20 px-5 py-2.5 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-ink)] disabled:opacity-50"
+              >
+                {props.playgroundSaveState === 'saving' ? 'Saving…' : props.playgroundSaveState === 'saved' ? 'Saved to Toolbox' : props.playgroundSaveState === 'error' ? 'Save failed' : 'Save to Toolbox'}
+              </button>
+              <button type="button" disabled={props.running || !props.input.trim()} onClick={props.onRun} className="bg-[color:var(--color-terra)] px-5 py-2.5 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-linen)] disabled:opacity-50">Run with Claude</button>
+            </div>
           </div>
         </div>
       </div>
@@ -694,8 +733,9 @@ function PlaygroundPanel(props: {
   );
 }
 
-function ToolboxPanel({ skills, onRun, onEdit, onExport, onDelete, onBrowse, onBuild }: {
+function ToolboxPanel({ skills, librarySlugMap, onRun, onEdit, onExport, onDelete, onBrowse, onBuild }: {
   readonly skills: readonly ToolboxSkill[];
+  readonly librarySlugMap: Readonly<Record<string, string>>;
   readonly onRun: (skill: ToolboxSkill) => void;
   readonly onEdit: (skill: ToolboxSkill) => void;
   readonly onExport: (skill: ToolboxSkill) => void;
@@ -734,6 +774,9 @@ function ToolboxPanel({ skills, onRun, onEdit, onExport, onDelete, onBrowse, onB
             </div>
             <h3 className="mt-4 font-serif text-2xl leading-tight">{skill.name}</h3>
             <p className="mt-3 min-h-[64px] text-sm leading-relaxed text-[color:var(--color-slate)]">{skill.desc || (isWorkflowSkill(skill) ? skill.purpose : '')}</p>
+            <div className="mt-3">
+              <SourceBacklink source={skill.source} sourceRef={skill.sourceRef} librarySlugMap={librarySlugMap} />
+            </div>
             <div className="mt-4 grid grid-cols-2 gap-2">
               <button type="button" onClick={() => onRun(skill)} className="bg-[color:var(--color-terra)] px-3 py-2 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-linen)]">Run</button>
               <button type="button" onClick={() => onEdit(skill)} className="border border-[color:var(--color-ink)]/20 px-3 py-2 font-mono text-[10px] uppercase tracking-widest">Edit</button>

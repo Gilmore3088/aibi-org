@@ -5,6 +5,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { PromptLibraryClient } from './PromptLibraryClient';
 import { resolveUserLevel } from '@/lib/credentials';
+import { getPaidToolboxAccess } from '@/lib/toolbox/access';
 
 export const metadata: Metadata = {
   title: 'Prompt Library | AiBI-P | The AI Banking Institute',
@@ -14,6 +15,8 @@ export const metadata: Metadata = {
 
 export default async function PromptLibraryPage() {
   const userLevel = await resolveUserLevel();
+  const toolboxAccess = await getPaidToolboxAccess();
+  const canSaveToToolbox = toolboxAccess !== null;
 
   return (
     <div className="mx-auto px-8 lg:px-16 py-16">
@@ -64,7 +67,7 @@ export default async function PromptLibraryPage() {
       </header>
 
       {/* Filterable prompt grid */}
-      <PromptLibraryClient userLevel={userLevel} />
+      <PromptLibraryClient userLevel={userLevel} canSaveToToolbox={canSaveToToolbox} />
 
       {/* Footer guidance */}
       <footer className="mt-16 pt-8 border-t border-[color:var(--color-parch-dark)]">

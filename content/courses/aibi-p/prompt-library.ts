@@ -1044,6 +1044,10 @@ export const ALL_PROMPTS: readonly Prompt[] = [
   ...lLevelPrompts,
 ] as const;
 
+export function getPromptById(id: string): Prompt | null {
+  return ALL_PROMPTS.find((p) => p.id === id) ?? null;
+}
+
 // ---------------------------------------------------------------------------
 // Module 3 — Mini Tutorials
 // ---------------------------------------------------------------------------
