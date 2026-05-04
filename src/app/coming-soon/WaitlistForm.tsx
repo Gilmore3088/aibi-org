@@ -11,9 +11,9 @@ const INTEREST_OPTIONS: ReadonlyArray<{
   readonly hint: string;
 }> = [
   { value: 'assessment', label: 'Readiness assessment', hint: 'Free 3-min diagnostic' },
-  { value: 'course', label: 'AiBI-P Practitioner', hint: 'Twelve-module course' },
+  { value: 'course', label: 'Practitioner education', hint: 'Twelve self-paced modules' },
   { value: 'newsletter', label: 'AI Banking Brief', hint: 'Weekly editorial' },
-  { value: 'institutional', label: 'Institutional rollout', hint: 'For our team' },
+  { value: 'institutional', label: 'Institutional counsel', hint: 'For our whole team' },
 ];
 
 interface WaitlistFormProps {

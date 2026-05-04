@@ -35,16 +35,16 @@ const ENTRIES: ReadonlyArray<{
   },
   {
     numeral: 'II',
-    title: 'AiBI-P Practitioner',
+    title: 'Practitioner Education',
     body:
-      'Twelve modules on practical AI use for daily banking work. Hands-on practice, role-applied artifacts, regulatory boundaries built in. Self-paced, designed for builders.',
+      'Twelve self-paced modules on practical AI use for daily banking work. Hands-on practice, role-applied artifacts, regulatory boundaries built in. The AiBI-P credential sits on top.',
     meta: 'Twelve modules · self-paced',
   },
   {
     numeral: 'III',
-    title: 'Institutional Rollout',
+    title: 'Institutional Counsel',
     body:
-      'For executives bringing AI capability to a whole branch network or back office. Cohort enrollment, leadership advisory, and a measurable readiness program with regulator-ready artifacts.',
+      'For executives building AI capability across a whole branch network or back office. Cohort enrollment, leadership advisory, regulator-ready artifacts, and a measurable readiness program your board can defend.',
     meta: 'Cohort · advisory · measurable',
   },
 ];
@@ -120,9 +120,9 @@ export default async function ComingSoonPage({ searchParams }: ComingSoonPagePro
               className="cs-rise mt-7 max-w-xl text-[16px] md:text-[17px] leading-[1.6] text-[color:var(--color-ink)]/75"
               style={{ animationDelay: '300ms' }}
             >
-              A free readiness diagnostic, a hands-on Practitioner course, and an
-              institutional rollout program — in active build for community-bank
-              workflows and the regulators who supervise them. Tell us what you
+              Three things, in active build for community-bank workflows and the
+              regulators who supervise them: a free readiness assessment,
+              practitioner education, and institutional counsel. Tell us what you
               are looking for and we will write the moment it opens.
             </p>
 
