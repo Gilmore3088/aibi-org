@@ -13,7 +13,7 @@ vi.mock('@/lib/supabase/client', () => ({
   isSupabaseConfigured: () => true,
 }));
 
-import { getRecipes, getRecipeBySlug } from './recipes';
+import { getRecipes, getRecipeBySlug, getRecipesUsingSkill } from './recipes';
 
 beforeEach(() => {
   fromMock.mockReset();
@@ -125,5 +125,34 @@ describe('getRecipeBySlug', () => {
     const out = await getRecipeBySlug('r1');
 
     expect(out?.steps[0].skillSnapshot).toBeNull();
+  });
+});
+
+describe('getRecipesUsingSkill', () => {
+  it('returns rows when the chained query resolves with data', async () => {
+    const select = vi.fn().mockReturnThis();
+    const eq = vi.fn().mockReturnThis();
+    const filter = vi.fn().mockResolvedValueOnce({
+      data: [
+        { slug: 'recipe-a', title: 'Recipe A' },
+        { slug: 'recipe-b', title: 'Recipe B' },
+      ],
+      error: null,
+    });
+    fromMock.mockReturnValueOnce({ select, eq, filter });
+
+    const list = await getRecipesUsingSkill('classify');
+
+    expect(list).toEqual([
+      { slug: 'recipe-a', title: 'Recipe A' },
+      { slug: 'recipe-b', title: 'Recipe B' },
+    ]);
+    expect(fromMock).toHaveBeenCalledWith('toolbox_recipes');
+    expect(eq).toHaveBeenCalledWith('published', true);
+    expect(filter).toHaveBeenCalledWith(
+      'steps',
+      'cs',
+      JSON.stringify([{ skill_slug: 'classify' }]),
+    );
   });
 });

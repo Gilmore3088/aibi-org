@@ -77,3 +77,17 @@ export async function getRecipeBySlug(slug: string): Promise<Recipe | null> {
 
   return { ...recipeRow, steps };
 }
+
+export async function getRecipesUsingSkill(
+  slug: string,
+): Promise<Array<{ slug: string; title: string }>> {
+  if (!isSupabaseConfigured()) return [];
+  const client = createServiceRoleClient();
+  const { data, error } = await client
+    .from('toolbox_recipes')
+    .select('slug,title')
+    .eq('published', true)
+    .filter('steps', 'cs', JSON.stringify([{ skill_slug: slug }]));
+  if (error || !data) return [];
+  return data as Array<{ slug: string; title: string }>;
+}
