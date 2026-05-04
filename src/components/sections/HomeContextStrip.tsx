@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { getUserDataWithSupabaseFallback, type UserData } from '@/lib/user-data';
+import { createBrowserClient, isSupabaseConfigured } from '@/lib/supabase/client';
+import { getUserDataWithSupabaseFallback } from '@/lib/user-data';
 
 interface LearnerSnapshot {
   readonly enrollment: {
@@ -13,6 +14,7 @@ interface LearnerSnapshot {
 
 type Mode =
   | { kind: 'hidden' }
+  | { kind: 'signed-in'; displayName: string }
   | { kind: 'assessment-only'; tierLabel: string; score: number; maxScore: number }
   | { kind: 'enrolled'; currentModule: number; completedCount: number; totalModules: number };
 
@@ -25,9 +27,7 @@ export function HomeContextStrip() {
     let cancelled = false;
 
     async function load() {
-      const user = await getUserDataWithSupabaseFallback();
-      if (cancelled) return;
-
+      // 1. Check enrollment first — strongest signal, gives the most useful CTA.
       let enrollment: LearnerSnapshot['enrollment'] = null;
       try {
         const res = await fetch('/api/dashboard/learner', { cache: 'no-store' });
@@ -36,7 +36,7 @@ export function HomeContextStrip() {
           enrollment = data.enrollment;
         }
       } catch {
-        /* silently fall back to assessment-only or hidden */
+        /* fall through to lower-priority states */
       }
       if (cancelled) return;
 
@@ -50,8 +50,12 @@ export function HomeContextStrip() {
         return;
       }
 
+      // 2. Check assessment localStorage state next.
+      const user = await getUserDataWithSupabaseFallback();
+      if (cancelled) return;
       if (user?.readiness) {
-        const maxScore = user.readiness.maxScore ?? (user.readiness.answers.length === 12 ? 48 : 32);
+        const maxScore =
+          user.readiness.maxScore ?? (user.readiness.answers.length === 12 ? 48 : 32);
         setMode({
           kind: 'assessment-only',
           tierLabel: user.readiness.tierLabel,
@@ -59,6 +63,26 @@ export function HomeContextStrip() {
           maxScore,
         });
         return;
+      }
+
+      // 3. Last resort: signed-in but no progress. Acknowledge them by name.
+      if (isSupabaseConfigured()) {
+        try {
+          const supabase = createBrowserClient();
+          const {
+            data: { user: authUser },
+          } = await supabase.auth.getUser();
+          if (cancelled) return;
+          if (authUser) {
+            const displayName =
+              (authUser.user_metadata?.full_name as string | undefined) ??
+              authUser.email?.split('@')[0] ??
+              'there';
+            setMode({ kind: 'signed-in', displayName });
+          }
+        } catch {
+          /* anonymous experience is the right fallback */
+        }
       }
     }
 
@@ -90,18 +114,35 @@ export function HomeContextStrip() {
     );
   }
 
+  if (mode.kind === 'assessment-only') {
+    return (
+      <ContextBand>
+        <p className="text-sm text-[color:var(--color-slate)]">
+          Welcome back. Your readiness:{' '}
+          <span className="text-[color:var(--color-ink)]">{mode.tierLabel}</span>{' '}
+          <span className="font-mono tabular-nums">({mode.score}/{mode.maxScore})</span>.
+        </p>
+        <Link
+          href="/courses/aibi-p"
+          className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] hover:text-[color:var(--color-ink)]"
+        >
+          Explore the Practitioner course →
+        </Link>
+      </ContextBand>
+    );
+  }
+
   return (
     <ContextBand>
       <p className="text-sm text-[color:var(--color-slate)]">
-        Welcome back. Your readiness:{' '}
-        <span className="text-[color:var(--color-ink)]">{mode.tierLabel}</span>{' '}
-        <span className="font-mono tabular-nums">({mode.score}/{mode.maxScore})</span>.
+        Welcome back, <span className="text-[color:var(--color-ink)]">{mode.displayName}</span>.
+        Take the readiness assessment to see your starting point.
       </p>
       <Link
-        href="/courses/aibi-p"
+        href="/assessment/start"
         className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] hover:text-[color:var(--color-ink)]"
       >
-        Explore the Practitioner course →
+        Take the assessment →
       </Link>
     </ContextBand>
   );

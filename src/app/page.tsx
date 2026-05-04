@@ -58,18 +58,12 @@ export default function HomePage() {
             In three minutes, see your readiness level, your top gaps, and the
             first practical exercise to complete.
           </p>
-          <div className="mt-8 flex flex-col items-center justify-center gap-3">
+          <div className="mt-8 flex justify-center">
             <Link
               href="/assessment/start"
               className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
             >
               Take the Assessment
-            </Link>
-            <Link
-              href="/courses/aibi-p"
-              className="font-serif-sc text-[12px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/70 hover:text-[color:var(--color-terra)] transition-colors"
-            >
-              Or explore the Practitioner course →
             </Link>
           </div>
         </div>
