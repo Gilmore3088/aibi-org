@@ -3,28 +3,41 @@
 import { useId, useState } from 'react';
 import type { FormEvent } from 'react';
 
-export type WaitlistInterest = 'assessment' | 'course' | 'newsletter' | 'institutional';
+export type WaitlistInterest = 'assessment' | 'course' | 'institutional' | 'consulting';
 
 const INTEREST_OPTIONS: ReadonlyArray<{
   readonly value: WaitlistInterest;
   readonly label: string;
-  readonly hint: string;
 }> = [
-  { value: 'assessment', label: 'Readiness assessment', hint: 'Free 3-min diagnostic' },
-  { value: 'course', label: 'Practitioner education', hint: 'Twelve self-paced modules' },
-  { value: 'newsletter', label: 'AI Banking Brief', hint: 'Weekly editorial' },
-  { value: 'institutional', label: 'Institutional counsel', hint: 'For our whole team' },
+  { value: 'assessment', label: 'Readiness assessment' },
+  { value: 'course', label: 'Education / course' },
+  { value: 'institutional', label: 'Enterprise rollout' },
+  { value: 'consulting', label: 'Advisory / consulting' },
 ];
+
+const SELECTED_LABEL: Record<WaitlistInterest, string> = {
+  assessment: 'the assessment',
+  course: 'the course',
+  institutional: 'enterprise rollout',
+  consulting: 'advisory',
+};
 
 interface WaitlistFormProps {
   readonly initialInterest: WaitlistInterest;
 }
 
 export function WaitlistForm({ initialInterest }: WaitlistFormProps) {
-  const emailId = useId();
   const headingId = useId();
+  const emailId = useId();
+  const firstNameId = useId();
+  const institutionId = useId();
+  const newsletterId = useId();
+
   const [email, setEmail] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [institutionName, setInstitutionName] = useState('');
   const [interest, setInterest] = useState<WaitlistInterest>(initialInterest);
+  const [marketingOptIn, setMarketingOptIn] = useState(false);
   const [status, setStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
 
   function resetStatusOnEdit() {
@@ -41,7 +54,13 @@ export function WaitlistForm({ initialInterest }: WaitlistFormProps) {
       const response = await fetch('/api/waitlist', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, interest }),
+        body: JSON.stringify({
+          email,
+          interest,
+          firstName,
+          institutionName,
+          marketingOptIn,
+        }),
       });
 
       setStatus(response.ok ? 'saved' : 'error');
@@ -55,81 +74,86 @@ export function WaitlistForm({ initialInterest }: WaitlistFormProps) {
       onSubmit={handleSubmit}
       aria-labelledby={headingId}
       aria-busy={status === 'saving'}
-      className="relative bg-[color:var(--color-parch)] border-t-[3px] border-t-[color:var(--color-terra)] border-x border-b border-[color:var(--color-ink)]/15 p-6 md:p-7 shadow-[0_1px_0_rgba(30,26,20,0.04)]"
+      className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/15 p-6 md:p-7"
     >
       <h2
         id={headingId}
-        className="font-serif-sc text-[11px] tracking-[0.28em] uppercase text-[color:var(--color-terra)] mb-5"
+        className="font-serif-sc text-[11px] tracking-[0.22em] uppercase text-[color:var(--color-terra)]"
       >
-        Reserve Your Place
+        Get notified
       </h2>
 
-      <p className="font-serif italic text-[15px] leading-snug text-[color:var(--color-ink)]/85 mb-5">
-        We will write only when there is something real to share — the moment your
-        track opens, and not before.
-      </p>
-
-      <fieldset>
-        <legend className="font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55 mb-3">
-          What you are looking for
+      <fieldset className="mt-5">
+        <legend className="font-serif-sc text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60">
+          What are you looking for?
         </legend>
-        <ul className="divide-y divide-[color:var(--color-ink)]/10 border-y border-[color:var(--color-ink)]/10">
-          {INTEREST_OPTIONS.map(({ value, label, hint }, idx) => {
-            const checked = interest === value;
-            return (
-              <li key={value}>
-                <label
-                  className={`flex items-baseline gap-3 py-3 cursor-pointer min-h-[44px] transition-colors ${
-                    checked
-                      ? 'bg-[color:var(--color-terra-pale)]/30'
-                      : 'hover:bg-[color:var(--color-linen)]/60'
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    name="interest"
-                    value={value}
-                    checked={checked}
-                    onChange={() => {
-                      setInterest(value);
-                      resetStatusOnEdit();
-                    }}
-                    className="sr-only peer"
-                  />
-                  <span
-                    aria-hidden
-                    className={`font-mono text-[11px] tracking-[0.18em] tabular-nums shrink-0 w-6 ${
-                      checked ? 'text-[color:var(--color-terra)]' : 'text-[color:var(--color-ink)]/45'
-                    }`}
-                  >
-                    {String(idx + 1).padStart(2, '0')}
-                  </span>
-                  <span className="flex-1">
-                    <span className="block font-serif text-[16px] leading-tight text-[color:var(--color-ink)]">
-                      {label}
-                    </span>
-                    <span className="block mt-0.5 font-sans text-[12px] text-[color:var(--color-ink)]/60">
-                      {hint}
-                    </span>
-                  </span>
-                  <span
-                    aria-hidden
-                    className={`shrink-0 mt-1 h-3 w-3 rounded-full border transition ${
-                      checked
-                        ? 'bg-[color:var(--color-terra)] border-[color:var(--color-terra)]'
-                        : 'bg-transparent border-[color:var(--color-ink)]/35'
-                    }`}
-                  />
-                </label>
-              </li>
-            );
-          })}
-        </ul>
+        <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-1">
+          {INTEREST_OPTIONS.map(({ value, label }) => (
+            <label
+              key={value}
+              className="flex items-center gap-2 py-2 min-h-[44px] cursor-pointer text-[14px] text-[color:var(--color-ink)]/85"
+            >
+              <input
+                type="radio"
+                name="interest"
+                value={value}
+                checked={interest === value}
+                onChange={() => {
+                  setInterest(value);
+                  resetStatusOnEdit();
+                }}
+                className="shrink-0 accent-[color:var(--color-terra)]"
+              />
+              <span>{label}</span>
+            </label>
+          ))}
+        </div>
       </fieldset>
+
+      <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label
+            htmlFor={firstNameId}
+            className="block font-serif-sc text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60"
+          >
+            First name <span className="text-[color:var(--color-ink)]/35 normal-case tracking-normal">(optional)</span>
+          </label>
+          <input
+            id={firstNameId}
+            type="text"
+            value={firstName}
+            onChange={(event) => {
+              setFirstName(event.target.value);
+              resetStatusOnEdit();
+            }}
+            autoComplete="given-name"
+            className="mt-2 w-full bg-[color:var(--color-linen)] border border-[color:var(--color-ink)]/15 px-3 py-2.5 text-[14px] text-[color:var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)]"
+          />
+        </div>
+        <div>
+          <label
+            htmlFor={institutionId}
+            className="block font-serif-sc text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60"
+          >
+            Institution <span className="text-[color:var(--color-ink)]/35 normal-case tracking-normal">(optional)</span>
+          </label>
+          <input
+            id={institutionId}
+            type="text"
+            value={institutionName}
+            onChange={(event) => {
+              setInstitutionName(event.target.value);
+              resetStatusOnEdit();
+            }}
+            autoComplete="organization"
+            className="mt-2 w-full bg-[color:var(--color-linen)] border border-[color:var(--color-ink)]/15 px-3 py-2.5 text-[14px] text-[color:var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)]"
+          />
+        </div>
+      </div>
 
       <label
         htmlFor={emailId}
-        className="mt-5 block font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55"
+        className="mt-4 block font-serif-sc text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60"
       >
         Work email
       </label>
@@ -142,30 +166,45 @@ export function WaitlistForm({ initialInterest }: WaitlistFormProps) {
           setEmail(event.target.value);
           resetStatusOnEdit();
         }}
+        autoComplete="email"
         placeholder="you@bank.com"
-        className="mt-2 w-full bg-transparent border-0 border-b-2 border-[color:var(--color-ink)]/25 px-0 py-3 font-serif text-[18px] text-[color:var(--color-ink)] placeholder:text-[color:var(--color-ink)]/35 focus:outline-none focus:border-[color:var(--color-terra)] transition-colors"
+        className="mt-2 w-full bg-[color:var(--color-linen)] border border-[color:var(--color-ink)]/15 px-3 py-2.5 text-[14px] text-[color:var(--color-ink)] placeholder:text-[color:var(--color-ink)]/35 focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)]"
       />
+
+      <label
+        htmlFor={newsletterId}
+        className="mt-4 flex items-start gap-2 text-[13px] text-[color:var(--color-ink)]/75 cursor-pointer leading-snug"
+      >
+        <input
+          id={newsletterId}
+          type="checkbox"
+          checked={marketingOptIn}
+          onChange={(event) => {
+            setMarketingOptIn(event.target.checked);
+            resetStatusOnEdit();
+          }}
+          className="mt-0.5 shrink-0 accent-[color:var(--color-terra)]"
+        />
+        <span>Also send the AI Banking Brief — weekly, short, easy to unsubscribe.</span>
+      </label>
 
       <button
         type="submit"
         disabled={status === 'saving'}
-        className="group mt-6 w-full flex items-center justify-between bg-[color:var(--color-ink)] text-[color:var(--color-linen)] disabled:opacity-50 px-5 py-4 font-serif-sc text-[12px] uppercase tracking-[0.24em] hover:bg-[color:var(--color-terra)] transition-colors duration-300"
+        className="mt-6 w-full bg-[color:var(--color-terra)] text-[color:var(--color-linen)] disabled:opacity-50 px-5 py-3 font-sans text-[12px] font-semibold uppercase tracking-[1.2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
       >
-        <span>{status === 'saving' ? 'Reserving…' : 'Notify me when it opens'}</span>
-        <span aria-hidden className="font-mono text-[14px] transition-transform duration-300 group-hover:translate-x-1">
-          →
-        </span>
+        {status === 'saving' ? 'Saving…' : 'Notify me'}
       </button>
 
       <div role="status" aria-live="polite" className="mt-3 min-h-[1.25rem]">
         {status === 'saved' && (
-          <p className="font-serif italic text-[14px] text-[color:var(--color-terra)]">
-            Reserved. We will write when it opens.
+          <p className="text-[13px] text-[color:var(--color-terra)]">
+            Thanks. We will email you when {SELECTED_LABEL[interest]} opens.
           </p>
         )}
         {status === 'error' && (
           <p className="text-[13px] text-[color:var(--color-error)]">
-            Could not save. Try again, or write{' '}
+            Could not save. Try again, or email{' '}
             <a
               href="mailto:hello@aibankinginstitute.com"
               className="underline decoration-[color:var(--color-error)]/40 underline-offset-2"
