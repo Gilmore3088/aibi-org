@@ -1,12 +1,24 @@
 import { NextResponse } from 'next/server';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
+import {
+  checkEmailCaptureLimit,
+  hashIp,
+  logEmailCapture,
+} from '@/lib/email-capture/rate-limit';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const VALID_INTERESTS = new Set(['assessment', 'course', 'newsletter', 'institutional']);
+const RATE_LIMIT_PER_IP_PER_HOUR = 5;
 
 interface WaitlistBody {
   readonly email?: unknown;
   readonly interest?: unknown;
+}
+
+function getRequestIp(request: Request): string {
+  const xff = request.headers.get('x-forwarded-for');
+  if (xff) return xff.split(',')[0].trim();
+  return request.headers.get('x-real-ip') ?? 'unknown';
 }
 
 export async function POST(request: Request): Promise<NextResponse> {
@@ -26,7 +38,19 @@ export async function POST(request: Request): Promise<NextResponse> {
     return NextResponse.json({ error: 'interest must be assessment, course, newsletter, or institutional.' }, { status: 400 });
   }
 
+  const ipHash = await hashIp(getRequestIp(request));
+  const decision = await checkEmailCaptureLimit(ipHash, {
+    perIpPerHour: RATE_LIMIT_PER_IP_PER_HOUR,
+  });
+  if (!decision.allowed) {
+    return NextResponse.json(
+      { error: 'Too many requests. Please try again in an hour.' },
+      { status: 429, headers: { 'Retry-After': String(decision.retryAfterSeconds ?? 3600) } },
+    );
+  }
+
   if (!isSupabaseConfigured()) {
+    await logEmailCapture(ipHash);
     return NextResponse.json({ ok: true, stored: false });
   }
 
@@ -48,5 +72,6 @@ export async function POST(request: Request): Promise<NextResponse> {
     return NextResponse.json({ error: 'Could not save waitlist entry.' }, { status: 500 });
   }
 
+  await logEmailCapture(ipHash);
   return NextResponse.json({ ok: true, stored: true });
 }

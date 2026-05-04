@@ -3,7 +3,7 @@ import { AibiSeal } from '@/components/AibiSeal';
 import { WaitlistForm, type WaitlistInterest } from './WaitlistForm';
 
 export const metadata: Metadata = {
-  title: { absolute: 'AI Banking Institute — Coming Soon' },
+  title: { absolute: 'The AI Banking Institute — Coming Soon' },
   description:
     'AI proficiency for community banks and credit unions. Sign up to be notified the moment the readiness assessment, Practitioner course, or institutional rollout opens.',
   robots: { index: false, follow: false },
@@ -14,6 +14,7 @@ interface ComingSoonPageProps {
 }
 
 function getInterest(value: string | undefined): WaitlistInterest {
+  // Case-sensitive match by design — anything unrecognized falls back to assessment.
   if (value === 'assessment' || value === 'course' || value === 'newsletter' || value === 'institutional') {
     return value;
   }
@@ -46,10 +47,7 @@ export default async function ComingSoonPage({ searchParams }: ComingSoonPagePro
   const interest = getInterest(sp?.interest);
 
   return (
-    <main
-      role="main"
-      className="min-h-screen bg-[color:var(--color-linen)] flex items-center justify-center px-6 py-20 md:py-24"
-    >
+    <main className="min-h-screen bg-[color:var(--color-linen)] flex items-center justify-center px-6 py-20 md:py-24">
       <div className="max-w-3xl mx-auto">
         <div className="flex justify-center mb-8 text-[color:var(--color-ink)]">
           <AibiSeal size={72} />
@@ -74,10 +72,10 @@ export default async function ComingSoonPage({ searchParams }: ComingSoonPagePro
               key={offering.title}
               className="border border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)] p-5"
             >
-              <h2 className="font-serif text-xl text-[color:var(--color-ink)] leading-tight">
+              <h3 className="font-serif text-xl text-[color:var(--color-ink)] leading-tight">
                 {offering.title}
-              </h2>
-              <p className="text-sm text-[color:var(--color-slate)] leading-relaxed mt-2">
+              </h3>
+              <p className="text-sm text-[color:var(--color-ink)]/75 leading-relaxed mt-2">
                 {offering.body}
               </p>
             </article>
@@ -92,7 +90,7 @@ export default async function ComingSoonPage({ searchParams }: ComingSoonPagePro
           {TRUST_POINTS.map((point) => (
             <li
               key={point}
-              className="flex gap-3 text-sm text-[color:var(--color-slate)] leading-relaxed"
+              className="flex gap-3 text-sm text-[color:var(--color-ink)]/75 leading-relaxed"
             >
               <span className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-terra)] shrink-0" />
               <span>{point}</span>
