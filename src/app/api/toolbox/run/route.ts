@@ -1,21 +1,25 @@
 import { NextResponse } from 'next/server';
 import { createLLMClient } from '@/lib/ai-harness/client';
 import { checkRateLimit, logUsage } from '@/lib/ai-harness/rate-limit';
+import { LLMError, type ProviderName } from '@/lib/ai-harness/types';
 import { scanForInjection } from '@/lib/sandbox/injection-filter';
 import { scanForPII } from '@/lib/sandbox/pii-scanner';
 import { getPaidToolboxAccess } from '@/lib/toolbox/access';
 import { buildToolboxSystemPrompt } from '@/lib/toolbox/markdown';
+import { isAllowedModel } from '@/lib/toolbox/playground-models';
 import type { ToolboxMessage, ToolboxSkill } from '@/lib/toolbox/types';
-import { LLMError } from '@/lib/ai-harness/types';
 
-const MODEL = process.env.TOOLBOX_ANTHROPIC_MODEL ?? 'claude-sonnet-4-20250514';
 const MAX_TOKENS = 8192;
 const MAX_MESSAGES = 20;
 const MAX_MESSAGE_LENGTH = 12000;
 
+const ALLOWED_PROVIDERS: readonly ProviderName[] = ['anthropic', 'openai', 'gemini'];
+
 interface RunBody {
   readonly skill?: unknown;
   readonly messages?: unknown;
+  readonly provider?: unknown;
+  readonly model?: unknown;
 }
 
 function isMessageList(value: unknown): value is ToolboxMessage[] {
@@ -34,6 +38,10 @@ function isSkill(value: unknown): value is ToolboxSkill {
     typeof (value as ToolboxSkill).name === 'string';
 }
 
+function isProviderName(value: unknown): value is ProviderName {
+  return typeof value === 'string' && (ALLOWED_PROVIDERS as readonly string[]).includes(value);
+}
+
 export async function POST(request: Request): Promise<NextResponse> {
   const access = await getPaidToolboxAccess();
   if (!access) return NextResponse.json({ error: 'Paid access required.' }, { status: 403 });
@@ -48,6 +56,15 @@ export async function POST(request: Request): Promise<NextResponse> {
   if (!isSkill(body.skill) || !isMessageList(body.messages)) {
     return NextResponse.json({ error: 'Missing or invalid skill/messages.' }, { status: 400 });
   }
+  if (!isProviderName(body.provider) || typeof body.model !== 'string') {
+    return NextResponse.json({ error: 'Missing or invalid provider/model.' }, { status: 400 });
+  }
+  if (!isAllowedModel(body.provider, body.model)) {
+    return NextResponse.json({ error: 'Model not on the Playground v1 menu.' }, { status: 400 });
+  }
+
+  const provider: ProviderName = body.provider;
+  const model: string = body.model;
 
   const latestUser = [...body.messages].reverse().find((message) => message.role === 'user');
   if (!latestUser) return NextResponse.json({ error: 'Messages must include a user turn.' }, { status: 400 });
@@ -73,8 +90,8 @@ export async function POST(request: Request): Promise<NextResponse> {
       userId: access.userId,
       courseSlug: 'toolbox',
       featureId: 'toolbox-playground',
-      provider: 'anthropic',
-      model: MODEL,
+      provider,
+      model,
       status: 'rate-limited',
     });
     return NextResponse.json(
@@ -84,9 +101,9 @@ export async function POST(request: Request): Promise<NextResponse> {
   }
 
   try {
-    const client = createLLMClient('anthropic');
+    const client = createLLMClient(provider);
     const result = await client.chat({
-      model: MODEL,
+      model,
       maxTokens: MAX_TOKENS,
       temperature: 0.2,
       system: buildToolboxSystemPrompt(body.skill),
@@ -97,8 +114,8 @@ export async function POST(request: Request): Promise<NextResponse> {
       userId: access.userId,
       courseSlug: 'toolbox',
       featureId: 'toolbox-playground',
-      provider: 'anthropic',
-      model: MODEL,
+      provider,
+      model,
       inputTokens: result.usage.inputTokens,
       outputTokens: result.usage.outputTokens,
       status: 'succeeded',
@@ -110,16 +127,15 @@ export async function POST(request: Request): Promise<NextResponse> {
       userId: access.userId,
       courseSlug: 'toolbox',
       featureId: 'toolbox-playground',
-      provider: 'anthropic',
-      model: MODEL,
+      provider,
+      model,
       status: 'errored',
       errorKind: error instanceof LLMError ? error.kind : 'unknown',
     });
 
     return NextResponse.json(
-      { error: 'Claude is temporarily unavailable. Please try again.' },
+      { error: 'The selected model is temporarily unavailable. Please try again or pick another model.' },
       { status: error instanceof LLMError && error.kind === 'rate-limit' ? 429 : 500 },
     );
   }
 }
-
