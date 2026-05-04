@@ -39,6 +39,14 @@ export default async function ToolboxPage() {
             Back to coursework
           </Link>
         </div>
+        <div className="mx-auto max-w-7xl px-6 pb-6 lg:px-10">
+          <Link
+            href="/dashboard/toolbox/library"
+            className="inline-flex items-center gap-2 border border-[color:var(--color-ink)]/15 bg-white px-4 py-2 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-ink)] transition-colors hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)]"
+          >
+            Browse Library →
+          </Link>
+        </div>
       </div>
       <ToolboxApp />
     </main>
