@@ -23,7 +23,8 @@ export type PlausibleEventName =
   | 'prompt_card_prompt_copy'
   | 'prompt_card_expand_click'
   | 'prompt_card_pdf_download'
-  | 'prompt_card_course_click';
+  | 'prompt_card_course_click'
+  | 'cookbook_recipe_viewed';
 
 export function trackEvent(
   name: PlausibleEventName,

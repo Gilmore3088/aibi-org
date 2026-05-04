@@ -13,6 +13,7 @@ import { getPaidToolboxAccess } from '@/lib/toolbox/access';
 import { getRecipeBySlug } from '@/lib/toolbox/recipes';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { RecipeStep } from '../_components/RecipeStep';
+import { TrackRecipeView } from '../_components/TrackRecipeView';
 
 interface PageProps {
   readonly params: { slug: string };
@@ -66,6 +67,7 @@ export default async function CookbookRecipePage({ params }: PageProps) {
 
   return (
     <main className="mx-auto max-w-3xl px-6 py-12">
+      <TrackRecipeView slug={recipe.slug} />
       <header className="mb-10">
         <div className="flex items-center gap-2">
           <span
