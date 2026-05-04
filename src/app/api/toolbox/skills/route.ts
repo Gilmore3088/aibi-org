@@ -20,10 +20,23 @@ function normalizeSkill(row: ToolboxSkillRow): ToolboxSkill {
   } as ToolboxSkill;
 }
 
+const LIBRARY_REF_PATTERN = /^library:([0-9a-f-]{36})@/i;
+
+function extractLibraryIds(skills: readonly ToolboxSkill[]): string[] {
+  const ids = new Set<string>();
+  for (const skill of skills) {
+    if ((skill.source === 'library' || skill.source === 'forked') && skill.sourceRef) {
+      const match = LIBRARY_REF_PATTERN.exec(skill.sourceRef);
+      if (match) ids.add(match[1]);
+    }
+  }
+  return Array.from(ids);
+}
+
 export async function GET(): Promise<NextResponse> {
   const access = await getPaidToolboxAccess();
   if (!access) return NextResponse.json({ error: 'Paid access required.' }, { status: 403 });
-  if (!isSupabaseConfigured()) return NextResponse.json({ skills: [] });
+  if (!isSupabaseConfigured()) return NextResponse.json({ skills: [], librarySlugMap: {} });
 
   const client = createServiceRoleClient();
   const { data, error } = await client
@@ -36,9 +49,21 @@ export async function GET(): Promise<NextResponse> {
     return NextResponse.json({ error: 'Could not load Toolbox skills.' }, { status: 500 });
   }
 
-  return NextResponse.json({
-    skills: ((data ?? []) as ToolboxSkillRow[]).map(normalizeSkill),
-  });
+  const skills = ((data ?? []) as ToolboxSkillRow[]).map(normalizeSkill);
+
+  const librarySlugMap: Record<string, string> = {};
+  const libraryIds = extractLibraryIds(skills);
+  if (libraryIds.length > 0) {
+    const { data: libRows } = await client
+      .from('toolbox_library_skills')
+      .select('id, slug')
+      .in('id', libraryIds);
+    for (const row of (libRows ?? []) as Array<{ id: string; slug: string }>) {
+      librarySlugMap[row.id] = row.slug;
+    }
+  }
+
+  return NextResponse.json({ skills, librarySlugMap });
 }
 
 export async function POST(request: Request): Promise<NextResponse> {
