@@ -37,7 +37,13 @@ interface CapturePayload {
   version?: unknown;
   maxScore?: unknown;
   dimensionBreakdown?: unknown;
+  firstName?: unknown;
+  institutionName?: unknown;
+  marketingOptIn?: unknown;
 }
+
+const NAME_MAX_LEN = 80;
+const INSTITUTION_MAX_LEN = 120;
 
 interface DimensionEntry {
   score: number;
@@ -68,6 +74,9 @@ function isValidPayload(p: CapturePayload): p is {
   version?: 'v1' | 'v2';
   maxScore?: number;
   dimensionBreakdown?: DimensionBreakdown;
+  firstName?: string;
+  institutionName?: string;
+  marketingOptIn?: boolean;
 } {
   if (typeof p.email !== 'string' || !EMAIL_RE.test(p.email)) return false;
   if (typeof p.score !== 'number') return false;
@@ -84,6 +93,10 @@ function isValidPayload(p: CapturePayload): p is {
   if (p.version !== undefined && p.version !== 'v1' && p.version !== 'v2') return false;
   if (p.maxScore !== undefined && (typeof p.maxScore !== 'number' || p.maxScore < 8 || p.maxScore > 48)) return false;
   if (p.dimensionBreakdown !== undefined && !isDimensionBreakdown(p.dimensionBreakdown)) return false;
+  // Optional profile fields — bounded length so an attacker can't dump megabytes.
+  if (p.firstName !== undefined && (typeof p.firstName !== 'string' || p.firstName.length > NAME_MAX_LEN)) return false;
+  if (p.institutionName !== undefined && (typeof p.institutionName !== 'string' || p.institutionName.length > INSTITUTION_MAX_LEN)) return false;
+  if (p.marketingOptIn !== undefined && typeof p.marketingOptIn !== 'boolean') return false;
   return true;
 }
 
@@ -120,18 +133,41 @@ export async function POST(request: Request) {
   // counts even if downstream adapters fail.
   await logEmailCapture(ipHash);
 
-  const { email, score, tier, tierLabel, answers, version, maxScore, dimensionBreakdown } = body;
+  const {
+    email,
+    score,
+    tier,
+    tierLabel,
+    answers,
+    version,
+    maxScore,
+    dimensionBreakdown,
+    firstName,
+    institutionName,
+    marketingOptIn,
+  } = body;
 
   const completedAt = new Date().toISOString();
+  const trimmedFirstName = firstName?.trim() || undefined;
+  const trimmedInstitution = institutionName?.trim() || undefined;
 
-  // Best-effort adapters — these are no-ops until keys are set.
-  await subscribeToAssessmentForm({ email, tags: [`tier:${tier}`] }).catch((err) =>
-    console.warn('[capture-email] convertkit skip', err)
-  );
+  // ConvertKit fires only when the user explicitly opted in to marketing.
+  // Without consent the email is treated as transactional only — assessment
+  // results, no nurture sequence.
+  if (marketingOptIn === true) {
+    await subscribeToAssessmentForm({
+      email,
+      tags: [`tier:${tier}`],
+      ...(trimmedFirstName ? { firstName: trimmedFirstName } : {}),
+    }).catch((err) => console.warn('[capture-email] convertkit skip', err));
+  }
+
+  // HubSpot always fires (CRM contact tracking is operational, not marketing).
   await upsertContact({
     email,
     assessmentScore: score,
     scoreTier: tierLabel,
+    ...(trimmedInstitution ? { institutionName: trimmedInstitution } : {}),
   }).catch((err) => console.warn('[capture-email] hubspot skip', err));
 
   // Persist to Supabase user_profiles when configured.
