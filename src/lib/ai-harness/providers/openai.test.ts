@@ -8,7 +8,6 @@ vi.mock('openai', () => ({
 }));
 
 import { createOpenAIClient } from './openai';
-import { LLMError } from '../types';
 
 describe('createOpenAIClient', () => {
   beforeEach(() => {
@@ -70,10 +69,31 @@ describe('createOpenAIClient', () => {
       .rejects.toMatchObject({ kind: 'server', retryable: true });
   });
 
-  it('stream() still throws (Plan E)', async () => {
+  it('stream() yields text chunks and a final stop with usage', async () => {
+    const mockStream = (async function* () {
+      yield { choices: [{ delta: { content: 'hel' }, finish_reason: null }] };
+      yield { choices: [{ delta: { content: 'lo' }, finish_reason: null }] };
+      yield {
+        choices: [{ delta: {}, finish_reason: 'stop' }],
+        usage: { prompt_tokens: 5, completion_tokens: 2 },
+      };
+    })();
+    createMock.mockResolvedValueOnce(mockStream);
+
     const client = createOpenAIClient('test-key');
-    const it = client.stream({ model: 'gpt-4o', maxTokens: 10, messages: [{ role: 'user', content: 'x' }] });
-    await expect((async () => { for await (const _ of it) { /* drain */ } })()).rejects.toBeInstanceOf(LLMError);
+    const chunks: any[] = [];
+    for await (const chunk of client.stream({
+      model: 'gpt-4o-mini',
+      maxTokens: 100,
+      messages: [{ role: 'user', content: 'hi' }],
+    })) {
+      chunks.push(chunk);
+    }
+    const textChunks = chunks.filter((c) => c.type === 'text').map((c) => c.text).join('');
+    expect(textChunks).toBe('hello');
+    const stopChunk = chunks.find((c) => c.type === 'stop');
+    expect(stopChunk).toBeTruthy();
+    expect(stopChunk.usage).toEqual({ inputTokens: 5, outputTokens: 2 });
   });
 
   afterEach(() => {

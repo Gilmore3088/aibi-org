@@ -32,6 +32,7 @@ export interface StreamChunk {
   readonly text?: string;
   readonly stopReason?: StopReason;
   readonly error?: Error;
+  readonly usage?: ChatUsage;
 }
 
 export type LLMErrorKind =
