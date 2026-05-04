@@ -1,20 +1,20 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
 import { getPaidToolboxAccess } from '@/lib/toolbox/access';
 import { ToolboxApp } from './ToolboxApp';
+import { Paywall } from './_components/Paywall';
 
 export const metadata: Metadata = {
   title: 'AI Banking Toolbox | The AI Banking Institute',
   description:
-    'A paid-user Toolbox for building, testing, saving, and exporting banking AI skills.',
+    'Build, test, save, and export banking AI skills. Included with every paid enrollment.',
 };
 
 export default async function ToolboxPage() {
   const access = await getPaidToolboxAccess();
 
   if (!access) {
-    redirect('/courses/aibi-p/purchase');
+    return <Paywall />;
   }
 
   return (
