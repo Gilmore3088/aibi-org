@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const VALID_INTERESTS = new Set(['practitioner', 'specialist', 'leader']);
+const VALID_INTERESTS = new Set(['assessment', 'course', 'newsletter', 'institutional']);
 
 interface WaitlistBody {
   readonly email?: unknown;
@@ -23,7 +23,7 @@ export async function POST(request: Request): Promise<NextResponse> {
   }
 
   if (typeof body.interest !== 'string' || !VALID_INTERESTS.has(body.interest)) {
-    return NextResponse.json({ error: 'interest must be practitioner, specialist, or leader.' }, { status: 400 });
+    return NextResponse.json({ error: 'interest must be assessment, course, newsletter, or institutional.' }, { status: 400 });
   }
 
   if (!isSupabaseConfigured()) {

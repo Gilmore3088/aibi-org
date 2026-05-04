@@ -3,12 +3,13 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 
-export type WaitlistInterest = 'practitioner' | 'specialist' | 'leader';
+export type WaitlistInterest = 'assessment' | 'course' | 'newsletter' | 'institutional';
 
 const INTEREST_OPTIONS: ReadonlyArray<{ readonly value: WaitlistInterest; readonly label: string }> = [
-  { value: 'practitioner', label: 'AiBI-P Practitioner' },
-  { value: 'specialist', label: 'AiBI-S Specialist' },
-  { value: 'leader', label: 'AiBI-L Leader' },
+  { value: 'assessment', label: 'Free readiness assessment' },
+  { value: 'course', label: 'Practitioner course (AiBI-P)' },
+  { value: 'newsletter', label: 'AI Banking Brief newsletter' },
+  { value: 'institutional', label: 'Rollout for our team' },
 ];
 
 interface WaitlistFormProps {
@@ -43,15 +44,39 @@ export function WaitlistForm({ initialInterest }: WaitlistFormProps) {
       className="mx-auto max-w-xl border border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)] p-5 md:p-6 text-left"
     >
       <label className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
-        Join the waitlist
+        Tell us what you&apos;re looking for
       </label>
-      <div className="grid sm:grid-cols-[1fr_auto] gap-3 mt-4">
+
+      <fieldset className="mt-4">
+        <legend className="sr-only">What are you interested in?</legend>
+        <div className="grid sm:grid-cols-2 gap-x-5 gap-y-2">
+          {INTEREST_OPTIONS.map(({ value, label }) => (
+            <label
+              key={value}
+              className="flex items-start gap-2 text-sm text-[color:var(--color-ink)]/85 cursor-pointer leading-snug"
+            >
+              <input
+                type="radio"
+                name="interest"
+                value={value}
+                checked={interest === value}
+                onChange={() => setInterest(value)}
+                className="mt-0.5 shrink-0 accent-[color:var(--color-terra)]"
+              />
+              {label}
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      <div className="grid sm:grid-cols-[1fr_auto] gap-3 mt-5">
         <input
           type="email"
           required
           value={email}
           onChange={(event) => setEmail(event.target.value)}
           placeholder="you@bank.com"
+          aria-label="Work email"
           className="w-full rounded-[2px] border border-[color:var(--color-ink)]/15 bg-[color:var(--color-linen)] px-4 py-3 text-sm text-[color:var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)]"
         />
         <button
@@ -59,30 +84,13 @@ export function WaitlistForm({ initialInterest }: WaitlistFormProps) {
           disabled={status === 'saving'}
           className="px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] disabled:opacity-50 font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
         >
-          {status === 'saving' ? 'Saving...' : 'Join'}
+          {status === 'saving' ? 'Saving...' : 'Notify me'}
         </button>
       </div>
-      <fieldset className="mt-4">
-        <legend className="sr-only">Which track are you interested in?</legend>
-        <div className="flex flex-wrap gap-x-5 gap-y-2">
-          {INTEREST_OPTIONS.map(({ value, label }) => (
-            <label key={value} className="flex items-center gap-2 text-xs text-[color:var(--color-ink)]/75 cursor-pointer">
-              <input
-                type="radio"
-                name="interest"
-                value={value}
-                checked={interest === value}
-                onChange={() => setInterest(value)}
-                className="accent-[color:var(--color-terra)]"
-              />
-              {label}
-            </label>
-          ))}
-        </div>
-      </fieldset>
+
       {status === 'saved' && (
         <p className="mt-3 text-xs text-[color:var(--color-terra)]">
-          You are on the list.
+          You are on the list. We will be in touch.
         </p>
       )}
       {status === 'error' && (
