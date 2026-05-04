@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 const generateContentMock = vi.fn();
-const getGenerativeModelMock = vi.fn(() => ({ generateContent: generateContentMock }));
+const getGenerativeModelMock = vi.fn<(...args: unknown[]) => unknown>(() => ({ generateContent: generateContentMock }));
 
 vi.mock('@google/generative-ai', () => ({
   GoogleGenerativeAI: vi.fn().mockImplementation(function (this: { getGenerativeModel: unknown }) {
@@ -10,7 +10,6 @@ vi.mock('@google/generative-ai', () => ({
 }));
 
 import { createGeminiClient } from './gemini';
-import { LLMError } from '../types';
 
 describe('createGeminiClient', () => {
   beforeEach(() => {
@@ -87,10 +86,36 @@ describe('createGeminiClient', () => {
       .rejects.toMatchObject({ kind: 'rate-limit', retryable: true });
   });
 
-  it('stream() still throws (Plan E)', async () => {
+  it('stream() yields text chunks and a final stop with usage', async () => {
+    const mockChunks = [
+      { text: () => 'hel' },
+      { text: () => 'lo' },
+    ];
+    const mockStream = (async function* () { for (const c of mockChunks) yield c; })();
+    const finalResponse = {
+      candidates: [{ finishReason: 'STOP' }],
+      usageMetadata: { promptTokenCount: 4, candidatesTokenCount: 2 },
+    };
+
+    const generateContentStreamMock = vi.fn(() => ({
+      stream: mockStream,
+      response: Promise.resolve(finalResponse),
+    }));
+    getGenerativeModelMock.mockReturnValueOnce({ generateContentStream: generateContentStreamMock });
+
     const client = createGeminiClient('test-key');
-    const it = client.stream({ model: 'gemini-2.5-flash', maxTokens: 10, messages: [{ role: 'user', content: 'x' }] });
-    await expect((async () => { for await (const _ of it) { /* drain */ } })()).rejects.toBeInstanceOf(LLMError);
+    const chunks: any[] = [];
+    for await (const chunk of client.stream({
+      model: 'gemini-2.5-flash',
+      maxTokens: 100,
+      messages: [{ role: 'user', content: 'hi' }],
+    })) {
+      chunks.push(chunk);
+    }
+    const textChunks = chunks.filter((c) => c.type === 'text').map((c) => c.text).join('');
+    expect(textChunks).toBe('hello');
+    const stopChunk = chunks.find((c) => c.type === 'stop');
+    expect(stopChunk.usage).toEqual({ inputTokens: 4, outputTokens: 2 });
   });
 
   afterEach(() => {

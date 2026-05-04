@@ -1,5 +1,5 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import type { LLMClient, ChatRequest, ChatResponse, StopReason } from '../types';
+import type { LLMClient, ChatRequest, ChatResponse, StopReason, StreamChunk } from '../types';
 import { LLMError } from '../types';
 
 function mapStopReason(raw: string | undefined): StopReason {
@@ -72,9 +72,40 @@ export function createGeminiClient(apiKey: string): LLMClient {
       }
     },
 
-    async *stream(): AsyncIterable<never> {
-      // Plan E fills this in.
-      throw new LLMError('gemini', 'unknown', 'Gemini streaming not implemented yet (Plan E)', false);
+    async *stream(req: ChatRequest): AsyncIterable<StreamChunk> {
+      try {
+        const model = genAI.getGenerativeModel({
+          model: req.model,
+          systemInstruction: req.system,
+        });
+        const contents = req.messages.map((m) => ({
+          role: m.role === 'assistant' ? 'model' : 'user',
+          parts: [{ text: m.content }],
+        }));
+        const { stream, response } = await model.generateContentStream({
+          contents,
+          generationConfig: {
+            maxOutputTokens: req.maxTokens,
+            temperature: req.temperature,
+          },
+        });
+        for await (const chunk of stream) {
+          const text = chunk.text();
+          if (text) yield { type: 'text', text };
+        }
+        const final = await response;
+        const finishReason = final.candidates?.[0]?.finishReason;
+        yield {
+          type: 'stop',
+          stopReason: mapStopReason(finishReason),
+          usage: {
+            inputTokens: final.usageMetadata?.promptTokenCount ?? 0,
+            outputTokens: final.usageMetadata?.candidatesTokenCount ?? 0,
+          },
+        };
+      } catch (err) {
+        yield { type: 'error', error: toLLMError(err) };
+      }
     },
   };
 }
