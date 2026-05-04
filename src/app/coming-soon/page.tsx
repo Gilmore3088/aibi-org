@@ -3,7 +3,7 @@ import { AibiSeal } from '@/components/AibiSeal';
 import { WaitlistForm, type WaitlistInterest } from './WaitlistForm';
 
 export const metadata: Metadata = {
-  title: { absolute: 'The AI Banking Institute — Founding Notice' },
+  title: { absolute: 'The AI Banking Institute — Coming Soon' },
   description:
     'AI proficiency for community banks and credit unions. The readiness assessment, Practitioner course, and institutional rollout are in active build. Reserve your place.',
   robots: { index: false, follow: false },
@@ -81,15 +81,8 @@ export default async function ComingSoonPage({ searchParams }: ComingSoonPagePro
             The AI Banking Institute
           </span>
         </div>
-        <div className="hidden sm:flex items-center gap-4 font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/65">
-          <span>Vol. 01</span>
-          <span aria-hidden className="h-3 w-px bg-[color:var(--color-ink)]/25" />
-          <span>Founding Notice</span>
-          <span aria-hidden className="h-3 w-px bg-[color:var(--color-ink)]/25" />
-          <span>Spring 2026</span>
-        </div>
-        <div className="sm:hidden font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/65">
-          Vol. 01
+        <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/65">
+          In active build
         </div>
       </header>
 
@@ -100,7 +93,7 @@ export default async function ComingSoonPage({ searchParams }: ComingSoonPagePro
               className="cs-rise font-serif-sc text-[11px] md:text-xs tracking-[0.28em] uppercase text-[color:var(--color-terra)]"
               style={{ animationDelay: '120ms' }}
             >
-              Founding Notice
+              Pre-launch · Reserve your place
             </p>
 
             <h1
@@ -126,13 +119,6 @@ export default async function ComingSoonPage({ searchParams }: ComingSoonPagePro
               are looking for and we will write the moment it opens.
             </p>
 
-            <div
-              className="cs-rise mt-8 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55"
-              style={{ animationDelay: '380ms' }}
-            >
-              <span aria-hidden className="h-px w-8 bg-[color:var(--color-terra)]" />
-              <span>Established 2026 · Charlotte, NC</span>
-            </div>
           </div>
 
           <div
@@ -213,7 +199,7 @@ export default async function ComingSoonPage({ searchParams }: ComingSoonPagePro
             <span className="font-serif text-sm">The AI Banking Institute</span>
           </div>
           <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55">
-            AIBankingInstitute.com · Volume 01 · Founding Notice
+            AIBankingInstitute.com
           </div>
         </div>
         <div className="h-[3px] bg-[color:var(--color-terra)]" />
