@@ -57,18 +57,12 @@ export function WaitlistForm({ initialInterest }: WaitlistFormProps) {
       aria-busy={status === 'saving'}
       className="relative bg-[color:var(--color-parch)] border-t-[3px] border-t-[color:var(--color-terra)] border-x border-b border-[color:var(--color-ink)]/15 p-6 md:p-7 shadow-[0_1px_0_rgba(30,26,20,0.04)]"
     >
-      {/* Editorial top line */}
-      <div className="flex items-baseline justify-between mb-5">
-        <h2
-          id={headingId}
-          className="font-serif-sc text-[11px] tracking-[0.28em] uppercase text-[color:var(--color-terra)]"
-        >
-          Reserve Your Place
-        </h2>
-        <span className="font-mono text-[9px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/50">
-          No. 01
-        </span>
-      </div>
+      <h2
+        id={headingId}
+        className="font-serif-sc text-[11px] tracking-[0.28em] uppercase text-[color:var(--color-terra)] mb-5"
+      >
+        Reserve Your Place
+      </h2>
 
       <p className="font-serif italic text-[15px] leading-snug text-[color:var(--color-ink)]/85 mb-5">
         We will write only when there is something real to share — the moment your
