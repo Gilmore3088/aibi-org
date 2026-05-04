@@ -60,13 +60,34 @@ export default async function ComingSoonPage({ searchParams }: ComingSoonPagePro
 
 
             <div className="mt-8 pt-6 border-t border-[color:var(--color-ink)]/15">
-              <p className="font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55 mb-3">
-                Built for
+              <p className="font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55 mb-4">
+                Why this is different
               </p>
-              <p className="text-[14px] leading-[1.55] text-[color:var(--color-ink)]/75">
-                Community banks and credit unions. Aligned with SR 11-7,
-                Interagency TPRM Guidance, ECOA/Reg B, and the AIEOG AI Lexicon.
-                No PII required; human review by default.
+              <ul className="space-y-3">
+                <li className="flex gap-3 text-[14px] leading-[1.5] text-[color:var(--color-ink)]/85">
+                  <span aria-hidden className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-terra)] shrink-0" />
+                  <span>
+                    <span className="font-serif text-[15px]">Built for community banks</span>
+                    <span className="text-[color:var(--color-ink)]/65"> — not retrofitted enterprise content.</span>
+                  </span>
+                </li>
+                <li className="flex gap-3 text-[14px] leading-[1.5] text-[color:var(--color-ink)]/85">
+                  <span aria-hidden className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-terra)] shrink-0" />
+                  <span>
+                    <span className="font-serif text-[15px]">Regulator-ready outputs</span>
+                    <span className="text-[color:var(--color-ink)]/65"> — artifacts your compliance team can defend.</span>
+                  </span>
+                </li>
+                <li className="flex gap-3 text-[14px] leading-[1.5] text-[color:var(--color-ink)]/85">
+                  <span aria-hidden className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-terra)] shrink-0" />
+                  <span>
+                    <span className="font-serif text-[15px]">Skills, not principles</span>
+                    <span className="text-[color:var(--color-ink)]/65"> — bankers leave with things they use Monday.</span>
+                  </span>
+                </li>
+              </ul>
+              <p className="mt-5 text-[12px] leading-[1.55] text-[color:var(--color-ink)]/55">
+                Aligned with SR 11-7, Interagency TPRM Guidance, ECOA/Reg B, and the AIEOG AI Lexicon.
               </p>
             </div>
           </div>
