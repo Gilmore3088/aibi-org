@@ -3,7 +3,13 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 
-export type WaitlistInterest = 'specialist' | 'leader';
+export type WaitlistInterest = 'practitioner' | 'specialist' | 'leader';
+
+const INTEREST_OPTIONS: ReadonlyArray<{ readonly value: WaitlistInterest; readonly label: string }> = [
+  { value: 'practitioner', label: 'AiBI-P Practitioner' },
+  { value: 'specialist', label: 'AiBI-S Specialist' },
+  { value: 'leader', label: 'AiBI-L Leader' },
+];
 
 interface WaitlistFormProps {
   readonly initialInterest: WaitlistInterest;
@@ -56,24 +62,24 @@ export function WaitlistForm({ initialInterest }: WaitlistFormProps) {
           {status === 'saving' ? 'Saving...' : 'Join'}
         </button>
       </div>
-      <div className="mt-4 flex flex-wrap gap-3">
-        {[
-          ['specialist', 'AiBI-S Specialist'],
-          ['leader', 'AiBI-L Leader'],
-        ].map(([value, label]) => (
-          <label key={value} className="flex items-center gap-2 text-xs text-[color:var(--color-ink)]/75">
-            <input
-              type="radio"
-              name="interest"
-              value={value}
-              checked={interest === value}
-              onChange={() => setInterest(value as WaitlistInterest)}
-              className="accent-[color:var(--color-terra)]"
-            />
-            {label}
-          </label>
-        ))}
-      </div>
+      <fieldset className="mt-4">
+        <legend className="sr-only">Which track are you interested in?</legend>
+        <div className="flex flex-wrap gap-x-5 gap-y-2">
+          {INTEREST_OPTIONS.map(({ value, label }) => (
+            <label key={value} className="flex items-center gap-2 text-xs text-[color:var(--color-ink)]/75 cursor-pointer">
+              <input
+                type="radio"
+                name="interest"
+                value={value}
+                checked={interest === value}
+                onChange={() => setInterest(value)}
+                className="accent-[color:var(--color-terra)]"
+              />
+              {label}
+            </label>
+          ))}
+        </div>
+      </fieldset>
       {status === 'saved' && (
         <p className="mt-3 text-xs text-[color:var(--color-terra)]">
           You are on the list.

@@ -20,7 +20,7 @@ import { KindPicker } from './_components/KindPicker';
 import { ModelPicker, type ModelSelection } from './_components/ModelPicker';
 import { SourceBacklink } from './_components/SourceBacklink';
 import { TemplateBuilder } from './_components/TemplateBuilder';
-import { UsageMeter, useUsage } from './_components/UsageMeter';
+import { useUsage } from './_components/UsageMeter';
 
 type TabId = 'guide' | 'library' | 'build' | 'playground' | 'toolbox';
 
