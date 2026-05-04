@@ -5,7 +5,7 @@ import { WaitlistForm, type WaitlistInterest } from './WaitlistForm';
 export const metadata: Metadata = {
   title: { absolute: 'AI Banking Institute — Coming Soon' },
   description:
-    'Three certifications for community banks and credit unions, in active development. Join the waitlist to be notified at launch.',
+    'AI proficiency for community banks and credit unions. Sign up to be notified the moment the readiness assessment, Practitioner course, or institutional rollout opens.',
   robots: { index: false, follow: false },
 };
 
@@ -14,24 +14,24 @@ interface ComingSoonPageProps {
 }
 
 function getInterest(value: string | undefined): WaitlistInterest {
-  if (value === 'practitioner') return 'practitioner';
-  if (value === 'specialist') return 'specialist';
-  if (value === 'leader') return 'leader';
-  return 'practitioner';
+  if (value === 'assessment' || value === 'course' || value === 'newsletter' || value === 'institutional') {
+    return value;
+  }
+  return 'assessment';
 }
 
-const TRACKS: ReadonlyArray<{ readonly title: string; readonly body: string }> = [
+const OFFERINGS: ReadonlyArray<{ readonly title: string; readonly body: string }> = [
   {
-    title: 'AiBI-P Practitioner',
-    body: 'Practical AI use for daily banking work. Twelve modules, hands-on practice, role-applied artifacts.',
+    title: 'Free readiness assessment',
+    body: 'Three-minute diagnostic for community-bank executives. Score your institution across eight dimensions, get a tailored starter artifact you can take to your team this week.',
   },
   {
-    title: 'AiBI-S Specialist',
-    body: 'Specialist tracks for Operations, Lending, and BSA/AML — deeper workflows, sector-specific guardrails.',
+    title: 'AiBI-P Practitioner course',
+    body: 'Twelve modules on practical AI use for daily banking work. Hands-on practice, role-applied artifacts, regulatory boundaries built in.',
   },
   {
-    title: 'AiBI-L Leader',
-    body: 'For executives leading institution-wide AI capability. Governance, vendor risk, board-level oversight.',
+    title: 'Institutional rollout',
+    body: 'For executives bringing AI capability to a whole branch network or back office. Cohort enrollment, leadership advisory, and a measurable readiness program.',
   },
 ];
 
@@ -56,28 +56,29 @@ export default async function ComingSoonPage({ searchParams }: ComingSoonPagePro
         </div>
 
         <p className="font-serif-sc text-xs md:text-sm tracking-[0.22em] text-[color:var(--color-terra)] uppercase text-center mb-5">
-          In development
+          Launching soon
         </p>
         <h1 className="font-serif text-4xl md:text-5xl leading-tight text-[color:var(--color-ink)] text-center max-w-2xl mx-auto">
-          AI training built for community banks and credit unions.
+          AI proficiency for community banks and credit unions.
         </h1>
         <p className="font-sans text-base md:text-lg leading-relaxed text-[color:var(--color-ink)]/75 max-w-xl mx-auto text-center mt-5">
-          Three certifications — Practitioner, Specialist, and Leader — in active
-          development. Join the waitlist for the track that matches your role and
-          we will tell you the moment it opens.
+          A free readiness diagnostic, a hands-on Practitioner course, and an
+          institutional rollout program — all built for community-bank workflows
+          and the regulators who supervise them. Tell us what you&apos;re looking
+          for and we will let you know the moment it opens.
         </p>
 
         <div className="grid sm:grid-cols-3 gap-4 mt-12">
-          {TRACKS.map((track) => (
+          {OFFERINGS.map((offering) => (
             <article
-              key={track.title}
+              key={offering.title}
               className="border border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)] p-5"
             >
-              <h2 className="font-serif text-xl text-[color:var(--color-ink)]">
-                {track.title}
+              <h2 className="font-serif text-xl text-[color:var(--color-ink)] leading-tight">
+                {offering.title}
               </h2>
               <p className="text-sm text-[color:var(--color-slate)] leading-relaxed mt-2">
-                {track.body}
+                {offering.body}
               </p>
             </article>
           ))}
