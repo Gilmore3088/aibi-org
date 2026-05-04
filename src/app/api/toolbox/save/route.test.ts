@@ -2,9 +2,19 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { POST } from './route';
 
 const insertMock = vi.fn();
-const fromMock = vi.fn(() => ({
-  insert: insertMock,
-}));
+const librarySingleMock = vi.fn();
+const fromMock = vi.fn((table: string) => {
+  if (table === 'toolbox_library_skills') {
+    return {
+      select: () => ({
+        eq: () => ({
+          single: librarySingleMock,
+        }),
+      }),
+    };
+  }
+  return { insert: insertMock };
+});
 
 vi.mock('@/lib/supabase/client', () => ({
   createServiceRoleClient: () => ({ from: fromMock }),
@@ -85,6 +95,46 @@ describe('POST /api/toolbox/save', () => {
   it('rejects an unknown origin', async () => {
     const res = await POST(req({ origin: 'cookbook', payload: {} }));
     expect(res.status).toBe(400);
+  });
+
+  it('records recipeSourceRef as source_ref on library-origin save', async () => {
+    librarySingleMock.mockResolvedValueOnce({
+      data: {
+        id: 'lib-1',
+        slug: 'denial-letter',
+        kind: 'template',
+        title: 'Denial Letter',
+        description: 'd',
+        system_prompt: 'sp',
+        user_prompt_template: 'tmpl',
+        variables: [],
+        pillar: 'B',
+        category: 'Lending',
+      },
+      error: null,
+    });
+    let captured: { source_ref?: string | null } | null = null;
+    insertMock.mockImplementationOnce((payload: { source_ref?: string | null }) => {
+      captured = payload;
+      return {
+        select: () => ({
+          single: async () => ({ data: { id: 'new-id' }, error: null }),
+        }),
+      };
+    });
+    const res = await POST(
+      req({
+        origin: 'library',
+        payload: {
+          librarySkillId: 'lib-1',
+          versionId: 'ver-7',
+          recipeSourceRef: 'cookbook:loan-memo#step-2',
+        },
+      }),
+    );
+    expect(res.status).toBe(200);
+    expect(captured).not.toBeNull();
+    expect(captured!.source_ref).toBe('cookbook:loan-memo#step-2');
   });
 
   it('rejects a course payload pointing at a missing prompt', async () => {

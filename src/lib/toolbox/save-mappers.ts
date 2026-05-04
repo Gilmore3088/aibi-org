@@ -113,6 +113,7 @@ export function libraryEntryToToolboxSkill(
   entry: LibraryEntry,
   userId: string,
   versionId: string,
+  recipeSourceRef?: string,
 ): ToolboxSkill {
   const { id, cmd, owner } = freshIds(userId, `/${entry.slug}`);
   const common = {
@@ -130,7 +131,7 @@ export function libraryEntryToToolboxSkill(
     version: '1.0',
     pillar: entry.pillar,
     source: 'forked' as const,
-    sourceRef: `library:${entry.id}@${versionId}`,
+    sourceRef: recipeSourceRef ?? `library:${entry.id}@${versionId}`,
   };
 
   if (entry.kind === 'workflow') {
