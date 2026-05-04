@@ -65,12 +65,32 @@ export function createAnthropicClient(apiKey: string): LLMClient {
           temperature: req.temperature,
           messages: req.messages.map((m) => ({ role: m.role, content: m.content })),
         });
+        let inputTokens = 0;
+        let outputTokens = 0;
+        let stopReason: StopReason = 'end_turn';
+        let sawStop = false;
         for await (const event of stream) {
-          if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') {
+          if (event.type === 'message_start') {
+            const ev = event as { message?: { usage?: { input_tokens?: number; output_tokens?: number } } };
+            if (ev.message?.usage?.input_tokens !== undefined) inputTokens = ev.message.usage.input_tokens;
+            if (ev.message?.usage?.output_tokens !== undefined) outputTokens = ev.message.usage.output_tokens;
+          } else if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') {
             yield { type: 'text', text: event.delta.text };
-          } else if (event.type === 'message_delta' && event.delta.stop_reason) {
-            yield { type: 'stop', stopReason: mapStopReason(event.delta.stop_reason) };
+          } else if (event.type === 'message_delta') {
+            const ev = event as {
+              usage?: { output_tokens?: number; input_tokens?: number };
+              delta: { stop_reason?: string | null };
+            };
+            if (ev.usage?.output_tokens !== undefined) outputTokens = ev.usage.output_tokens;
+            if (ev.usage?.input_tokens !== undefined) inputTokens = ev.usage.input_tokens;
+            if (ev.delta.stop_reason) {
+              stopReason = mapStopReason(ev.delta.stop_reason);
+              sawStop = true;
+            }
           }
+        }
+        if (sawStop || inputTokens > 0 || outputTokens > 0) {
+          yield { type: 'stop', stopReason, usage: { inputTokens, outputTokens } };
         }
       } catch (err) {
         yield { type: 'error', error: toLLMError(err) };
