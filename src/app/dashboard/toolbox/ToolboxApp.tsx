@@ -129,6 +129,7 @@ export function ToolboxApp() {
   const [messages, setMessages] = useState<ToolboxMessage[]>([]);
   const [input, setInput] = useState('');
   const [running, setRunning] = useState(false);
+  const [playgroundSaveState, setPlaygroundSaveState] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
   const [notice, setNotice] = useState<string | null>(null);
   const [modelSelection, setModelSelection] = useState<ModelSelection>({
     provider: 'anthropic',
@@ -284,6 +285,21 @@ export function ToolboxApp() {
       ]);
     } finally {
       setRunning(false);
+    }
+  }
+
+  async function handleSavePlayground() {
+    if (!activeSkill || messages.length === 0 || playgroundSaveState === 'saving') return;
+    setPlaygroundSaveState('saving');
+    try {
+      const res = await fetch('/api/toolbox/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ origin: 'playground', payload: { skill: activeSkill, messages } }),
+      });
+      setPlaygroundSaveState(res.ok ? 'saved' : 'error');
+    } catch {
+      setPlaygroundSaveState('error');
     }
   }
 
@@ -452,6 +468,8 @@ export function ToolboxApp() {
           onEdit={() => activeSkill && loadSkill(activeSkill, 'build')}
           onBrowse={() => setTab('cookbook')}
           onReset={() => setMessages([])}
+          onSavePlayground={handleSavePlayground}
+          playgroundSaveState={playgroundSaveState}
         />
       )}
 
@@ -624,6 +642,8 @@ function PlaygroundPanel(props: {
   readonly onEdit: () => void;
   readonly onBrowse: () => void;
   readonly onReset: () => void;
+  readonly onSavePlayground: () => void;
+  readonly playgroundSaveState: 'idle' | 'saving' | 'saved' | 'error';
 }) {
   if (!props.activeSkill) {
     return (
@@ -686,7 +706,20 @@ function PlaygroundPanel(props: {
           <textarea value={props.input} onChange={(event) => props.setInput(event.target.value)} rows={5} placeholder="Type a test prompt..." className="w-full resize-y border border-[color:var(--color-ink)]/10 bg-white px-3 py-2 text-sm" />
           <div className="mt-3 flex flex-wrap justify-between gap-3">
             <button type="button" onClick={props.onReset} className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">Reset conversation</button>
-            <button type="button" disabled={props.running || !props.input.trim()} onClick={props.onRun} className="bg-[color:var(--color-terra)] px-5 py-2.5 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-linen)] disabled:opacity-50">Run with Claude</button>
+            <div className="flex flex-wrap gap-3">
+              <button
+                type="button"
+                disabled={props.messages.length === 0 || props.playgroundSaveState === 'saving'}
+                onClick={() => {
+                  if (props.messages.length === 0) return;
+                  props.onSavePlayground();
+                }}
+                className="border border-[color:var(--color-ink)]/20 px-5 py-2.5 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-ink)] disabled:opacity-50"
+              >
+                {props.playgroundSaveState === 'saving' ? 'Saving…' : props.playgroundSaveState === 'saved' ? 'Saved to Toolbox' : props.playgroundSaveState === 'error' ? 'Save failed' : 'Save to Toolbox'}
+              </button>
+              <button type="button" disabled={props.running || !props.input.trim()} onClick={props.onRun} className="bg-[color:var(--color-terra)] px-5 py-2.5 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-linen)] disabled:opacity-50">Run with Claude</button>
+            </div>
           </div>
         </div>
       </div>
