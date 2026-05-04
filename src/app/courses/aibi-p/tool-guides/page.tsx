@@ -172,10 +172,10 @@ export default function ToolGuidesPage() {
               </li>
               <li>
                 <Link
-                  href="/courses/aibi-p/prompt-library"
+                  href="/dashboard/toolbox/library"
                   className="font-sans text-sm text-[color:var(--color-terra)] hover:underline underline-offset-2 focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-1 rounded-sm"
                 >
-                  Prompt Library
+                  Toolbox Library
                 </Link>
               </li>
             </ul>

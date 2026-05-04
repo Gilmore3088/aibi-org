@@ -268,7 +268,7 @@ export function OnboardingSurvey({ enrollmentId }: OnboardingSurveyProps) {
                       ['--tw-ring-color' as any]: 'var(--color-terra)',
                     }}
                   >
-                    {isSubmitting ? 'Saving...' : <>Begin Your Journey &rarr;</>}
+                    {isSubmitting ? 'Saving...' : <>Start Module 1 &rarr;</>}
                   </button>
                 )}
               </div>

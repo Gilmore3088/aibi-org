@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getPaidToolboxAccess } from '@/lib/toolbox/access';
 import { ToolboxApp } from './ToolboxApp';
+import { ContextStrip } from './_components/ContextStrip';
 import { Paywall } from './_components/Paywall';
 
 export const metadata: Metadata = {
@@ -47,6 +48,7 @@ export default async function ToolboxPage() {
             Browse Library →
           </Link>
         </div>
+        <ContextStrip />
       </div>
       <ToolboxApp />
     </main>

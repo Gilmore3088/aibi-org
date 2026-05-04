@@ -12,7 +12,6 @@ import {
   AIBI_P_PRACTICE_REPS,
   getDailyPracticeRep,
 } from '@content/practice-reps/aibi-p';
-import { ALL_PROMPTS, type Prompt } from '@content/courses/aibi-p/prompt-library';
 import type { ArtifactStatus } from '@/types/lms';
 
 interface LearnerDashboardState {
@@ -69,7 +68,6 @@ export default function DashboardPage() {
   const [user, setUser] = useState<UserData | null>(null);
   const [dashboard, setDashboard] = useState<LearnerDashboardState | null>(null);
   const [localCompletedRepIds, setLocalCompletedRepIds] = useState<readonly string[]>([]);
-  const [localSavedPromptIds, setLocalSavedPromptIds] = useState<readonly string[]>([]);
   const [toolboxEntitled, setToolboxEntitled] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -95,7 +93,6 @@ export default function DashboardPage() {
       })
       .finally(() => {
         setLocalCompletedRepIds(readLocalCompletedRepIds());
-        setLocalSavedPromptIds(readLocalSavedPromptIds());
         setLoading(false);
       });
   }, []);
@@ -154,13 +151,6 @@ export default function DashboardPage() {
       ? 'completed' as const
       : artifact.status,
   }));
-  const savedPromptIds = Array.from(new Set([
-    ...(dashboard?.prompts.savedPromptIds ?? []),
-    ...localSavedPromptIds,
-  ]));
-  const savedPrompts = savedPromptIds
-    .map((promptId) => ALL_PROMPTS.find((prompt) => prompt.id === promptId))
-    .filter((prompt): prompt is Prompt => Boolean(prompt));
   const artifactsByStatus = groupArtifactsByStatus(artifacts);
 
   return (
@@ -286,39 +276,6 @@ export default function DashboardPage() {
               ))}
             </ul>
           </article>
-        </section>
-
-        <section>
-          <DashboardPanel title="Saved Prompts">
-            {savedPrompts.length > 0 ? (
-              <div className="grid md:grid-cols-3 gap-4">
-                {savedPrompts.slice(0, 6).map((prompt) => (
-                  <article key={prompt.id} className="border border-[color:var(--color-ink)]/10 rounded-[3px] bg-[color:var(--color-linen)] p-4">
-                    <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">
-                      {prompt.role} · {prompt.platform}
-                    </p>
-                    <h3 className="font-serif text-lg text-[color:var(--color-ink)] mt-2">
-                      {prompt.title}
-                    </h3>
-                    <p className="text-xs text-[color:var(--color-slate)] mt-2 leading-relaxed">
-                      {prompt.whenToUse ?? prompt.expectedOutput}
-                    </p>
-                  </article>
-                ))}
-              </div>
-            ) : (
-              <p className="text-sm text-[color:var(--color-slate)] leading-relaxed">
-                No saved prompts yet. Save reusable prompts from the library as
-                you build your personal AI toolkit.
-              </p>
-            )}
-            <Link
-              href="/courses/aibi-p/prompt-library"
-              className="inline-block mt-4 font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] border-b border-[color:var(--color-terra)]"
-            >
-              Open prompt library
-            </Link>
-          </DashboardPanel>
         </section>
 
         {toolboxEntitled && (
@@ -518,14 +475,3 @@ function readLocalCompletedRepIds(): readonly string[] {
   }
 }
 
-function readLocalSavedPromptIds(): readonly string[] {
-  try {
-    const raw = localStorage.getItem('aibi-saved-prompts');
-    const parsed = raw ? (JSON.parse(raw) as unknown) : [];
-    return Array.isArray(parsed)
-      ? parsed.filter((item): item is string => typeof item === 'string')
-      : [];
-  } catch {
-    return [];
-  }
-}

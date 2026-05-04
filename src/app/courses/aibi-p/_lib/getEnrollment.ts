@@ -21,7 +21,19 @@ export type EnrollmentData = Pick<
  *
  * Uses getAll/setAll cookie pattern (recommended by @supabase/ssr 0.5+).
  */
-export async function getEnrollment(): Promise<EnrollmentData | null> {
+export type EnrollmentResult = EnrollmentData | { error: 'fetch_failed' } | null;
+
+export function isFetchError(
+  result: EnrollmentResult,
+): result is { error: 'fetch_failed' } {
+  return result !== null && 'error' in result && result.error === 'fetch_failed';
+}
+
+// Variant that exposes the fetch_failed branch for callers that want to render
+// a distinct "couldn't load progress" state. Most callers should keep using
+// getEnrollment(), which collapses the error case back to null for backwards
+// compatibility.
+export async function getEnrollmentResult(): Promise<EnrollmentResult> {
   // Dev-only enrollment bypass.
   // Activates ONLY when NODE_ENV !== 'production' AND SKIP_ENROLLMENT_GATE === 'true'.
   // Returns a synthetic enrolled record so testers can access course content
@@ -75,7 +87,15 @@ export async function getEnrollment(): Promise<EnrollmentData | null> {
     .eq('product', 'aibi-p')
     .single();
 
-  if (error || !data) {
+  // PGRST116 = "no rows returned" — user is signed in but not enrolled.
+  // Any other error code means the fetch itself failed; surface that distinctly
+  // so the page can show "Couldn't load progress" instead of pretending the
+  // user has no enrollment.
+  if (error && error.code !== 'PGRST116') {
+    console.error('[getEnrollment] supabase error:', error);
+    return { error: 'fetch_failed' } as const;
+  }
+  if (!data) {
     return null;
   }
 
@@ -89,4 +109,14 @@ export async function getEnrollment(): Promise<EnrollmentData | null> {
     ...data,
     current_module: Math.max(1, data.current_module ?? 1),
   } as EnrollmentData;
+}
+
+/**
+ * Back-compat wrapper. Collapses the fetch_failed branch to null so existing
+ * callers keep working. Logs the error for monitoring; new callers that want
+ * to render a distinct error state should use getEnrollmentResult().
+ */
+export async function getEnrollment(): Promise<EnrollmentData | null> {
+  const result = await getEnrollmentResult();
+  return isFetchError(result) ? null : result;
 }

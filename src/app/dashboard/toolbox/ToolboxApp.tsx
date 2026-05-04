@@ -329,28 +329,26 @@ export function ToolboxApp() {
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-6 lg:px-10">
-      <nav className="sticky top-[81px] z-30 -mx-6 mb-8 flex items-center justify-between gap-4 border-b border-[color:var(--color-ink)]/10 bg-[color:var(--color-linen)]/95 px-6 backdrop-blur lg:-mx-10 lg:px-10" aria-label="Toolbox sections">
-        <div className="flex gap-1 overflow-x-auto">
-          {TABS.map((tab) => (
-            <Link
-              key={tab.id}
-              href={`/toolbox?tab=${tab.id}`}
-              className={`whitespace-nowrap border-b-2 px-4 py-4 font-mono text-[10px] uppercase tracking-widest transition-colors ${
-                safeTab === tab.id
-                  ? 'border-[color:var(--color-terra)] text-[color:var(--color-terra)]'
-                  : 'border-transparent text-[color:var(--color-slate)] hover:text-[color:var(--color-ink)]'
-              }`}
-            >
-              {tab.label}
-              {tab.id === 'toolbox' && skills.length > 0 ? ` (${skills.length})` : ''}
-            </Link>
-          ))}
-        </div>
+      <nav className="sticky top-[81px] z-30 -mx-6 mb-8 flex items-center gap-1 overflow-x-auto border-b border-[color:var(--color-ink)]/10 bg-[color:var(--color-linen)]/95 px-6 backdrop-blur lg:-mx-10 lg:px-10" aria-label="Toolbox sections">
+        {TABS.map((tab) => (
+          <Link
+            key={tab.id}
+            href={`/dashboard/toolbox?tab=${tab.id}`}
+            className={`whitespace-nowrap border-b-2 px-4 py-4 font-mono text-[10px] uppercase tracking-widest transition-colors ${
+              safeTab === tab.id
+                ? 'border-[color:var(--color-terra)] text-[color:var(--color-terra)]'
+                : 'border-transparent text-[color:var(--color-slate)] hover:text-[color:var(--color-ink)]'
+            }`}
+          >
+            {tab.label}
+            {tab.id === 'toolbox' && skills.length > 0 ? ` (${skills.length})` : ''}
+          </Link>
+        ))}
         <Link
           href="/dashboard/toolbox/cookbook"
-          className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)]"
+          className="whitespace-nowrap border-b-2 border-transparent px-4 py-4 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] transition-colors hover:text-[color:var(--color-ink)]"
         >
-          Cookbook →
+          Cookbook
         </Link>
       </nav>
 
@@ -370,43 +368,71 @@ export function ToolboxApp() {
 
       {safeTab === 'library' && (
         <section className="space-y-6">
+          <FirstRunHint
+            skills={skills}
+            templates={TOOLBOX_TEMPLATES}
+            onTry={(template) => loadSkill(toSkill(template), 'playground')}
+          />
           <div className="flex flex-col gap-4 border-b border-[color:var(--color-ink)]/10 pb-6 lg:flex-row lg:items-end lg:justify-between">
             <div>
               <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
                 Library
               </p>
               <h2 className="mt-2 font-serif text-4xl text-[color:var(--color-ink)]">
-                Fifteen tested banking skill starters.
+                Pre-built playbooks for common banking AI tasks.
               </h2>
+              <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[color:var(--color-slate)]">
+                Pick one, run it as-is in the Playground, or edit it for your institution.
+              </p>
             </div>
-            <div className="flex flex-wrap gap-2">
-              <select value={roleFilter} onChange={(event) => setRoleFilter(event.target.value)} className="border border-[color:var(--color-ink)]/15 bg-white px-3 py-2 text-sm">
-                {roles.map((role) => <option key={role} value={role}>{role === 'all' ? 'All roles' : role}</option>)}
-              </select>
-              <select value={difficultyFilter} onChange={(event) => setDifficultyFilter(event.target.value)} className="border border-[color:var(--color-ink)]/15 bg-white px-3 py-2 text-sm">
-                <option value="all">All levels</option>
-                <option value="beginner">Beginner</option>
-                <option value="intermediate">Intermediate</option>
-                <option value="advanced">Advanced</option>
-              </select>
+            <div className="flex flex-wrap gap-3">
+              <label className="flex flex-col gap-1">
+                <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">Role</span>
+                <select value={roleFilter} onChange={(event) => setRoleFilter(event.target.value)} className="border border-[color:var(--color-ink)]/15 bg-white px-3 py-2 text-sm">
+                  {roles.map((role) => <option key={role} value={role}>{role === 'all' ? 'All roles' : role}</option>)}
+                </select>
+              </label>
+              <label className="flex flex-col gap-1">
+                <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">Difficulty</span>
+                <select value={difficultyFilter} onChange={(event) => setDifficultyFilter(event.target.value)} className="border border-[color:var(--color-ink)]/15 bg-white px-3 py-2 text-sm">
+                  <option value="all">All levels</option>
+                  <option value="beginner">Beginner</option>
+                  <option value="intermediate">Intermediate</option>
+                  <option value="advanced">Advanced</option>
+                </select>
+              </label>
             </div>
           </div>
-          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-            {filteredTemplates.map((template) => (
-              <TemplateCard
-                key={template.id}
-                template={template}
-                onTry={() => loadSkill(toSkill(template), 'playground')}
-                onCustomize={() => {
-                  const skill = toSkill(template);
-                  setDraftSkill(skill);
-                  setActiveSkill(skill);
-                  setBuildKind('workflow');
-                  setTab('build');
-                }}
-              />
-            ))}
-          </div>
+          {filteredTemplates.length === 0 ? (
+            <div className="border border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)] px-6 py-10 text-center">
+              <p className="font-serif text-2xl text-[color:var(--color-ink)]">No playbooks match these filters.</p>
+              <p className="mt-2 text-sm text-[color:var(--color-slate)]">Try clearing the role or difficulty filter.</p>
+              <button
+                type="button"
+                onClick={() => { setRoleFilter('all'); setDifficultyFilter('all'); }}
+                className="mt-5 border border-[color:var(--color-ink)]/20 px-4 py-2 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-ink)] hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)]"
+              >
+                Show all playbooks
+              </button>
+            </div>
+          ) : (
+            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+              {filteredTemplates.map((template) => (
+                <TemplateCard
+                  key={template.id}
+                  template={template}
+                  onTry={() => loadSkill(toSkill(template), 'playground')}
+                  onCustomize={() => {
+                    const skill = toSkill(template);
+                    setDraftSkill(skill);
+                    setActiveSkill(skill);
+                    setBuildKind('workflow');
+                    setTab('build');
+                  }}
+                />
+              ))}
+            </div>
+          )}
         </section>
       )}
 
@@ -512,68 +538,170 @@ export function ToolboxApp() {
   );
 }
 
-function GuidePanel({ savedCount, setTab }: { readonly savedCount: number; readonly setTab: (tab: TabId) => void }) {
+const FIRST_RUN_DISMISSED_KEY = 'aibi-toolbox-first-run-hint-dismissed';
+const RECOMMENDED_STARTER_ID = 'exam-prep';
+
+function FirstRunHint({
+  skills,
+  templates,
+  onTry,
+}: {
+  readonly skills: readonly ToolboxSkill[];
+  readonly templates: readonly ToolboxSkillTemplate[];
+  readonly onTry: (template: ToolboxSkillTemplate) => void;
+}) {
+  const [dismissed, setDismissed] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    setDismissed(window.localStorage.getItem(FIRST_RUN_DISMISSED_KEY) === 'true');
+  }, []);
+
+  // Only show for users who haven't saved any skills and haven't dismissed.
+  if (dismissed || skills.length > 0) return null;
+
+  const starter = templates.find((t) => t.id === RECOMMENDED_STARTER_ID) ?? templates[0];
+  if (!starter) return null;
+
+  const handleDismiss = () => {
+    if (typeof window !== 'undefined') {
+      window.localStorage.setItem(FIRST_RUN_DISMISSED_KEY, 'true');
+    }
+    setDismissed(true);
+  };
+
   return (
-    <section className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
-      <div>
-        <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
-          Operating Model
-        </p>
-        <h2 className="mt-3 font-serif text-5xl leading-tight text-[color:var(--color-ink)]">
-          A useful prompt is improvisation. A useful skill is engineering.
-        </h2>
-        <p className="mt-5 text-base leading-relaxed text-[color:var(--color-slate)]">
-          Skills are reusable Markdown instruction files with an owner, version, required questions, workflow, output rules, and escalation triggers.
-        </p>
-        <div className="mt-8 flex flex-wrap gap-3">
-          <Link href="/prompt-cards" className="border border-[color:var(--color-ink)]/25 px-5 py-3 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-ink)]">
-            Prompt Cards
-          </Link>
-          <button type="button" onClick={() => setTab('library')} className="bg-[color:var(--color-terra)] px-5 py-3 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-linen)]">
-            Browse Library
-          </button>
-          <button type="button" onClick={() => setTab('build')} className="border border-[color:var(--color-ink)]/25 px-5 py-3 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-ink)]">
-            Build from scratch
+    <div className="border border-[color:var(--color-terra)]/30 bg-[color:var(--color-parch)] p-5">
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
+            New here? Start with this one.
+          </p>
+          <h3 className="mt-2 font-serif text-2xl text-[color:var(--color-ink)]">
+            {starter.name}
+          </h3>
+          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[color:var(--color-slate)]">
+            {starter.desc} It runs in the Playground in under a minute against a
+            fabricated scenario — no real data needed.
+          </p>
+          <button
+            type="button"
+            onClick={() => {
+              onTry(starter);
+              handleDismiss();
+            }}
+            className="mt-4 bg-[color:var(--color-terra)] px-5 py-2.5 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-linen)]"
+          >
+            Try it now
           </button>
         </div>
+        <button
+          type="button"
+          onClick={handleDismiss}
+          aria-label="Dismiss tip"
+          className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] hover:text-[color:var(--color-ink)]"
+        >
+          Dismiss
+        </button>
       </div>
-      <div className="border-l border-[color:var(--color-ink)]/10 pl-8">
-        {[
-          ['i.', 'Start Here', 'Understand the skill model and safety rules.'],
-          ['ii.', 'Library', 'Load one of 15 banking templates.'],
-          ['iii.', 'Build', 'Adapt a skill for your recurring workflow.'],
-          ['iv.', 'Playground', 'Run fabricated scenarios against Claude.'],
-          ['v.', 'My Toolbox', `${savedCount} saved skill${savedCount === 1 ? '' : 's'} in your account.`],
-        ].map(([num, title, body]) => (
-          <div key={title} className="grid grid-cols-[44px_1fr] gap-4 border-b border-[color:var(--color-ink)]/10 py-5">
-            <p className="font-serif text-2xl italic text-[color:var(--color-terra)]">{num}</p>
-            <div>
-              <h3 className="font-serif text-2xl text-[color:var(--color-ink)]">{title}</h3>
-              <p className="mt-1 text-sm text-[color:var(--color-slate)]">{body}</p>
-            </div>
-          </div>
-        ))}
+    </div>
+  );
+}
+
+function GuidePanel({ setTab }: { readonly savedCount: number; readonly setTab: (tab: TabId) => void }) {
+  return (
+    <section className="py-6">
+      <h2 className="font-serif text-5xl leading-tight text-[color:var(--color-ink)]">
+        Your space to experiment with banking AI.
+      </h2>
+      <p className="mt-5 text-base leading-relaxed text-[color:var(--color-slate)]">
+        A safe sandbox to try AI on real banking work — without putting member data,
+        regulator findings, or institutional decisions at risk. Run pre-built playbooks
+        against fabricated scenarios, customize them for your institution, and save the
+        ones you trust.
+      </p>
+
+      <dl className="mt-10 grid gap-6 border-t border-[color:var(--color-ink)]/10 pt-8 sm:grid-cols-2">
+        <div>
+          <dt className="font-serif text-xl text-[color:var(--color-ink)]">Library</dt>
+          <dd className="mt-1 text-sm leading-relaxed text-[color:var(--color-slate)]">
+            Fifteen pre-built playbooks for exam prep, SAR drafting, board memos, member complaints, and more.
+          </dd>
+        </div>
+        <div>
+          <dt className="font-serif text-xl text-[color:var(--color-ink)]">Playground</dt>
+          <dd className="mt-1 text-sm leading-relaxed text-[color:var(--color-slate)]">
+            Run any playbook against a fabricated scenario. Pick your model, watch the response stream, see the cost.
+          </dd>
+        </div>
+        <div>
+          <dt className="font-serif text-xl text-[color:var(--color-ink)]">Build</dt>
+          <dd className="mt-1 text-sm leading-relaxed text-[color:var(--color-slate)]">
+            Adapt a starter playbook for your workflow, or write a new one from scratch with versioning and guardrails built in.
+          </dd>
+        </div>
+        <div>
+          <dt className="font-serif text-xl text-[color:var(--color-ink)]">My Toolbox</dt>
+          <dd className="mt-1 text-sm leading-relaxed text-[color:var(--color-slate)]">
+            Your saved playbooks. Re-run, edit, or download as Markdown to share with your team.
+          </dd>
+        </div>
+      </dl>
+
+      <div className="mt-10 flex flex-wrap items-center gap-6">
+        <button
+          type="button"
+          onClick={() => setTab('library')}
+          className="bg-[color:var(--color-terra)] px-6 py-3 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-linen)]"
+        >
+          Browse playbooks
+        </button>
+        <button
+          type="button"
+          onClick={() => setTab('build')}
+          className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] hover:text-[color:var(--color-ink)]"
+        >
+          Or build your own →
+        </button>
       </div>
+
+      <aside className="mt-12 border-t border-[color:var(--color-ink)]/10 pt-8">
+        <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
+          New to this?
+        </p>
+        <p className="mt-3 font-serif text-2xl text-[color:var(--color-ink)]">
+          See a worked example end-to-end.
+        </p>
+        <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[color:var(--color-slate)]">
+          The Cookbook walks through how a real banker uses these tools on a real workflow — start to finish, with the prompts, the outputs, and the gotchas.
+        </p>
+        <Link
+          href="/dashboard/toolbox/cookbook"
+          className="mt-4 inline-block font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] border-b border-[color:var(--color-terra)] hover:text-[color:var(--color-ink)] hover:border-[color:var(--color-ink)]"
+        >
+          Read the Cookbook →
+        </Link>
+      </aside>
     </section>
   );
 }
 
 function TemplateCard({ template, onTry, onCustomize }: { readonly template: ToolboxSkillTemplate; readonly onTry: () => void; readonly onCustomize: () => void }) {
+  const cadenceLabel = template.cadence?.toLowerCase().replace(/^per\s+/, '') ?? 'use';
   return (
     <article className="border border-[color:var(--color-ink)]/10 bg-white/45 p-5 transition-colors hover:border-[color:var(--color-terra)]/50">
       <div className="flex items-start justify-between gap-3">
-        <span className="bg-[color:var(--color-parch)] px-2 py-1 font-mono text-[11px] text-[color:var(--color-terra)]">{template.cmd}</span>
+        <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)]">{template.deptFull}</span>
         <span className="font-mono text-[9px] uppercase tracking-widest text-[color:var(--color-slate)]">{template.difficulty}</span>
       </div>
       <h3 className="mt-4 font-serif text-2xl leading-tight text-[color:var(--color-ink)]">{template.name}</h3>
       <p className="mt-3 min-h-[64px] text-sm leading-relaxed text-[color:var(--color-slate)]">{template.desc}</p>
-      <div className="mt-5 flex items-center justify-between border-t border-[color:var(--color-ink)]/10 pt-4 text-[11px] text-[color:var(--color-slate)]">
-        <span>{template.deptFull}</span>
-        <span>{template.timeSaved}</span>
+      <div className="mt-5 border-t border-[color:var(--color-ink)]/10 pt-4 text-[11px] text-[color:var(--color-slate)]">
+        Saves {template.timeSaved} per {cadenceLabel}
       </div>
       <div className="mt-4 grid grid-cols-2 gap-2">
-        <button type="button" onClick={onTry} className="bg-[color:var(--color-terra)] px-3 py-2 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-linen)]">Try</button>
-        <button type="button" onClick={onCustomize} className="border border-[color:var(--color-ink)]/20 px-3 py-2 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-ink)]">Customize</button>
+        <button type="button" onClick={onTry} className="bg-[color:var(--color-terra)] px-3 py-2 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-linen)]">Run it now</button>
+        <button type="button" onClick={onCustomize} className="border border-[color:var(--color-ink)]/20 px-3 py-2 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-ink)]">Edit and run</button>
       </div>
     </article>
   );
@@ -668,65 +796,142 @@ function PlaygroundPanel(props: {
   if (!props.activeSkill) {
     return (
       <section className="mx-auto max-w-2xl py-20 text-center">
-        <h2 className="font-serif text-4xl text-[color:var(--color-ink)]">Pick a skill to test.</h2>
-        <p className="mt-3 text-sm text-[color:var(--color-slate)]">Load a Library template or reopen a saved skill from your Toolbox.</p>
+        <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
+          Playground
+        </p>
+        <h2 className="mt-3 font-serif text-4xl text-[color:var(--color-ink)]">
+          Try a playbook against a fabricated scenario.
+        </h2>
+        <p className="mt-4 text-sm leading-relaxed text-[color:var(--color-slate)]">
+          The Playground runs any playbook through your selected model
+          (Claude, GPT, or Gemini) against test data you supply. <span className="text-[color:var(--color-ink)]">Never enter real member data here</span> — these
+          requests leave our servers.
+        </p>
+        <p className="mt-3 text-sm leading-relaxed text-[color:var(--color-slate)]">
+          Pick a starter from the Library to see how it works.
+        </p>
         <button type="button" onClick={props.onBrowse} className="mt-6 bg-[color:var(--color-terra)] px-5 py-3 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-linen)]">Browse Library</button>
       </section>
     );
   }
 
+  const providerLabel =
+    props.modelSelection.provider === 'anthropic'
+      ? 'Claude'
+      : props.modelSelection.provider === 'openai'
+        ? 'GPT'
+        : 'Gemini';
+
+  const copyMessage = (content: string) => {
+    navigator.clipboard.writeText(content).catch(() => {
+      /* clipboard may be unavailable; user can still select-copy */
+    });
+  };
+
+  const saveRunLabel =
+    props.playgroundSaveState === 'saving'
+      ? 'Saving…'
+      : props.playgroundSaveState === 'saved'
+        ? 'Saved'
+        : props.playgroundSaveState === 'error'
+          ? 'Save failed'
+          : 'Save this run';
+
   return (
     <section className="grid gap-6 lg:grid-cols-[320px_1fr]">
       <aside className="h-fit border border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)] p-5 lg:sticky lg:top-40">
-        <p className="inline-block bg-white px-2 py-1 font-mono text-[11px] text-[color:var(--color-terra)]">{props.activeSkill.cmd}</p>
-        <h2 className="mt-4 font-serif text-3xl leading-tight">{props.activeSkill.name}</h2>
+        <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)]">
+          {props.activeSkill.deptFull || props.activeSkill.dept || 'Playbook'}
+        </p>
+        <h2 className="mt-2 font-serif text-3xl leading-tight">{props.activeSkill.name}</h2>
+        <p className="mt-1 font-mono text-[10px] text-[color:var(--color-slate)]">{props.activeSkill.cmd}</p>
         <p className="mt-3 text-sm leading-relaxed text-[color:var(--color-slate)]">{props.activeSkill.desc || (isWorkflowSkill(props.activeSkill) ? props.activeSkill.purpose : '')}</p>
-        <div className="mt-5 grid gap-3 border-t border-[color:var(--color-ink)]/10 pt-4 text-xs text-[color:var(--color-slate)]">
-          <p><strong className="text-[color:var(--color-ink)]">Owner:</strong> {props.activeSkill.owner}</p>
-          <p><strong className="text-[color:var(--color-ink)]">Output:</strong> {props.activeSkill.output}</p>
-          <p><strong className="text-[color:var(--color-ink)]">Maturity:</strong> {props.activeSkill.maturity}</p>
+        <div className="mt-5 grid gap-2 border-t border-[color:var(--color-ink)]/10 pt-4 text-xs text-[color:var(--color-slate)]">
+          <p><span className="text-[color:var(--color-ink)]">Owner:</span> {props.activeSkill.owner}</p>
+          <p><span className="text-[color:var(--color-ink)]">Output:</span> {props.activeSkill.output}</p>
+          <p><span className="text-[color:var(--color-ink)]">Maturity:</span> {props.activeSkill.maturity}</p>
         </div>
-        <div className="mt-5 grid gap-2">
-          <button type="button" onClick={props.onSave} className="bg-[color:var(--color-terra)] px-3 py-2 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-linen)]">Save to Toolbox</button>
-          <button type="button" onClick={props.onEdit} className="border border-[color:var(--color-ink)]/20 px-3 py-2 font-mono text-[10px] uppercase tracking-widest">Edit in Builder</button>
-          <button type="button" onClick={props.onExport} className="border border-[color:var(--color-ink)]/20 px-3 py-2 font-mono text-[10px] uppercase tracking-widest">Download .md</button>
-          <button type="button" onClick={props.onCopy} className="border border-[color:var(--color-ink)]/20 px-3 py-2 font-mono text-[10px] uppercase tracking-widest">Copy Markdown</button>
+        <div className="mt-5 grid gap-3">
+          <button type="button" onClick={props.onSave} className="bg-[color:var(--color-terra)] px-3 py-2 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-linen)]">
+            Save playbook changes
+          </button>
+          <div className="flex flex-wrap gap-x-4 gap-y-2 text-xs">
+            <button type="button" onClick={props.onEdit} className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] hover:text-[color:var(--color-ink)]">
+              Edit in Builder
+            </button>
+            <button type="button" onClick={props.onExport} className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] hover:text-[color:var(--color-ink)]">
+              Download .md
+            </button>
+            <button type="button" onClick={props.onCopy} className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] hover:text-[color:var(--color-ink)]">
+              Copy Markdown
+            </button>
+          </div>
         </div>
       </aside>
       <div className="min-w-0">
-        <div ref={props.threadRef} className="min-h-[420px] max-h-[620px] overflow-y-auto border border-[color:var(--color-ink)]/10 bg-white p-4">
-          {props.messages.length === 0 ? (
-            <div className="flex h-[380px] items-center justify-center text-center text-sm text-[color:var(--color-slate)]">
-              Run a fabricated scenario or type your own test prompt. Do not enter real member data.
-            </div>
-          ) : props.messages.map((message, idx) => (
-            <div key={idx} className={`mb-4 border-l-2 p-3 ${message.role === 'user' ? 'border-[color:var(--color-cobalt)] bg-[color:var(--color-cobalt-pale)]/35' : 'border-[color:var(--color-terra)] bg-[color:var(--color-parch)]'}`}>
-              <p className="mb-2 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">{message.role === 'user' ? 'You' : 'Claude'}</p>
-              <div className="text-sm leading-relaxed">{message.role === 'assistant' ? renderMarkdown(message.content) : <pre className="whitespace-pre-wrap font-sans">{message.content}</pre>}</div>
-            </div>
-          ))}
-          {props.running && <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)]">Claude is thinking...</p>}
-        </div>
-        {isWorkflowSkill(props.activeSkill) && props.activeSkill.samples.length > 0 && (
-          <div className="mt-3 flex flex-wrap gap-2">
-            {props.activeSkill.samples.map((sample) => (
-              <button key={sample.title} type="button" onClick={() => props.setInput(sample.prompt)} className="border border-[color:var(--color-ink)]/15 px-3 py-1.5 text-xs text-[color:var(--color-ink)] hover:border-[color:var(--color-terra)]">
-                {sample.title}
-              </button>
-            ))}
+        {/* Input panel — primary surface, always at top. Banker types here first. */}
+        <div className="border border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)] p-4">
+          {/* Compact meta strip: safety + model + usage in one row */}
+          <div className="mb-3 flex flex-wrap items-center justify-between gap-3 border-b border-[color:var(--color-ink)]/10 pb-3">
+            <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-error)]">
+              Sandbox · No real member data
+            </p>
+            {props.usage && (
+              <p className="font-mono text-[10px] tabular-nums text-[color:var(--color-slate)]">
+                ${(props.usage.todayCents / 100).toFixed(2)} / ${(props.usage.dailyCapCents / 100).toFixed(2)} today
+              </p>
+            )}
           </div>
-        )}
-        <div className="mt-4 space-y-3 border border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)] p-3">
-          {props.usage && (
+
+          {isWorkflowSkill(props.activeSkill) && props.activeSkill.samples.length > 0 && props.input.trim() === '' && props.messages.length === 0 && (
             <div className="mb-3">
-              <UsageMeter todayCents={props.usage.todayCents} dailyCapCents={props.usage.dailyCapCents} />
+              <p className="mb-2 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">
+                Or try a sample scenario
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {props.activeSkill.samples.map((sample) => (
+                  <button key={sample.title} type="button" onClick={() => props.setInput(sample.prompt)} className="border border-[color:var(--color-terra)]/40 bg-white px-3 py-1.5 text-xs text-[color:var(--color-ink)] hover:border-[color:var(--color-terra)] hover:bg-[color:var(--color-parch)]">
+                    {sample.title}
+                  </button>
+                ))}
+              </div>
             </div>
           )}
-          <ModelPicker value={props.modelSelection} onChange={props.setModelSelection} disabled={props.running} />
-          <textarea value={props.input} onChange={(event) => props.setInput(event.target.value)} rows={5} placeholder="Type a test prompt..." className="w-full resize-y border border-[color:var(--color-ink)]/10 bg-white px-3 py-2 text-sm" />
-          <div className="mt-3 flex flex-wrap justify-between gap-3">
-            <button type="button" onClick={props.onReset} className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">Reset conversation</button>
-            <div className="flex flex-wrap gap-3">
+
+          <div className="relative">
+            <textarea
+              value={props.input}
+              onChange={(event) => props.setInput(event.target.value)}
+              onKeyDown={(event) => {
+                if ((event.metaKey || event.ctrlKey) && event.key === 'Enter') {
+                  event.preventDefault();
+                  if (!props.running && props.input.trim()) props.onRun();
+                }
+              }}
+              rows={props.messages.length === 0 ? 8 : 5}
+              placeholder={`Paste a fabricated banking scenario here. Press ⌘ Enter to run with ${providerLabel}.`}
+              className="w-full resize-y border border-[color:var(--color-ink)]/15 bg-white px-3 py-2 pr-36 text-sm leading-relaxed focus:border-[color:var(--color-terra)] focus:outline-none"
+            />
+            <button
+              type="button"
+              disabled={props.running || !props.input.trim()}
+              onClick={props.onRun}
+              className="absolute bottom-3 right-3 bg-[color:var(--color-terra)] px-5 py-2.5 font-mono text-[10px] font-semibold uppercase tracking-widest text-[color:var(--color-linen)] hover:bg-[color:var(--color-terra-light)] disabled:opacity-40"
+            >
+              {props.running ? `${providerLabel} running…` : `Run ⌘↵`}
+            </button>
+          </div>
+
+          <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
+            <div className="flex-1 min-w-[180px] max-w-xs">
+              <ModelPicker value={props.modelSelection} onChange={props.setModelSelection} disabled={props.running} />
+            </div>
+            <div className="flex flex-wrap gap-4">
+              {props.messages.length > 0 && (
+                <button type="button" onClick={props.onReset} className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] hover:text-[color:var(--color-terra)]">
+                  Reset
+                </button>
+              )}
               <button
                 type="button"
                 disabled={props.messages.length === 0 || props.playgroundSaveState === 'saving'}
@@ -734,14 +939,40 @@ function PlaygroundPanel(props: {
                   if (props.messages.length === 0) return;
                   props.onSavePlayground();
                 }}
-                className="border border-[color:var(--color-ink)]/20 px-5 py-2.5 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-ink)] disabled:opacity-50"
+                className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] hover:text-[color:var(--color-ink)] disabled:opacity-30"
               >
-                {props.playgroundSaveState === 'saving' ? 'Saving…' : props.playgroundSaveState === 'saved' ? 'Saved to Toolbox' : props.playgroundSaveState === 'error' ? 'Save failed' : 'Save to Toolbox'}
+                {saveRunLabel} →
               </button>
-              <button type="button" disabled={props.running || !props.input.trim()} onClick={props.onRun} className="bg-[color:var(--color-terra)] px-5 py-2.5 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-linen)] disabled:opacity-50">Run with Claude</button>
             </div>
           </div>
         </div>
+
+        {/* Thread — only renders when there's something to show. No empty-state ghost. */}
+        {(props.messages.length > 0 || props.running) && (
+          <div ref={props.threadRef} className="mt-4 max-h-[640px] overflow-y-auto border border-[color:var(--color-ink)]/10 bg-white p-4">
+            {props.messages.map((message, idx) => (
+              <div key={idx} className={`group mb-4 border-l-2 p-3 ${message.role === 'user' ? 'border-[color:var(--color-cobalt)] bg-[color:var(--color-cobalt-pale)]/35' : 'border-[color:var(--color-terra)] bg-[color:var(--color-parch)]'}`}>
+                <div className="mb-2 flex items-center justify-between gap-3">
+                  <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">
+                    {message.role === 'user' ? 'You' : providerLabel}
+                  </p>
+                  {message.role === 'assistant' && message.content && (
+                    <button
+                      type="button"
+                      onClick={() => copyMessage(message.content)}
+                      className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] opacity-0 transition-opacity group-hover:opacity-100 hover:text-[color:var(--color-terra)]"
+                      aria-label="Copy response"
+                    >
+                      Copy
+                    </button>
+                  )}
+                </div>
+                <div className="text-sm leading-relaxed">{message.role === 'assistant' ? renderMarkdown(message.content) : <pre className="whitespace-pre-wrap font-sans">{message.content}</pre>}</div>
+              </div>
+            ))}
+            {props.running && <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)]">{providerLabel} is thinking…</p>}
+          </div>
+        )}
       </div>
     </section>
   );

@@ -253,9 +253,10 @@ export const TOOLBOX_TEMPLATES = [
     "guardrails": [
       "Never send anything externally",
       "Flag missing data",
-      "Never make final decisions"
+      "Never make final decisions",
+      "Use plain-text status markers (COMPLIANT / VIOLATION / APPROACHING / DATA MISSING) — never emojis or pictographs"
     ],
-    "customGuard": "Never communicate to borrower without RM approval. Show every calculation. Note draft financials prominently.",
+    "customGuard": "Never communicate to borrower without RM approval. Show every calculation. Note draft financials prominently. If RM name or report date is not provided, write 'not specified — RM to fill' rather than leaving template brackets like [System Date].",
     "owner": "Portfolio Manager",
     "maturity": "production",
     "samples": [
