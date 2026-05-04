@@ -58,10 +58,6 @@ export default async function ComingSoonPage({ searchParams }: ComingSoonPagePro
               practitioner education, enterprise rollout, and advisory.
             </p>
 
-            <p className="mt-4 text-[15px] leading-[1.6] text-[color:var(--color-ink)]/70">
-              Each piece is in active build. Tell us what you are looking for and
-              we will email you when it opens.
-            </p>
 
             <div className="mt-8 pt-6 border-t border-[color:var(--color-ink)]/15">
               <p className="font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55 mb-3">
