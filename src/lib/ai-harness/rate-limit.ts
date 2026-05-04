@@ -2,8 +2,61 @@
 // checkRateLimit is called BEFORE the AI call.
 // logUsage is called AFTER (on success, error, or rate-limit rejection).
 
+import { createHash } from 'node:crypto';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import type { ProviderName, LLMErrorKind } from './types';
+
+export function hashIp(ip: string): string {
+  const salt = process.env.TOOLBOX_IP_HASH_SALT ?? '';
+  return createHash('sha256').update(`${salt}:${ip}`).digest('hex');
+}
+
+export interface PerMinuteLimits {
+  readonly perUserPerMinute: number;
+  readonly perIpPerMinute: number;
+}
+
+export interface PerMinuteDecision {
+  readonly allowed: boolean;
+  readonly reason?: 'per-user-per-minute-exceeded' | 'per-ip-per-minute-exceeded';
+  readonly retryAfterSeconds?: number;
+}
+
+function sixtySecondsAgoIso(): string {
+  return new Date(Date.now() - 60_000).toISOString();
+}
+
+export async function checkPerMinuteLimits(params: {
+  readonly userId: string;
+  readonly ipHash: string;
+  readonly limits: PerMinuteLimits;
+}): Promise<PerMinuteDecision> {
+  if (!isSupabaseConfigured()) return { allowed: true };
+  const client = createServiceRoleClient();
+  const since = sixtySecondsAgoIso();
+
+  const { count: userCount, error: userErr } = await client
+    .from('ai_usage_log')
+    .select('id', { count: 'exact', head: true })
+    .eq('user_id', params.userId)
+    .gte('created_at', since);
+  if (userErr) return { allowed: true };
+  if ((userCount ?? 0) >= params.limits.perUserPerMinute) {
+    return { allowed: false, reason: 'per-user-per-minute-exceeded', retryAfterSeconds: 60 };
+  }
+
+  const { count: ipCount, error: ipErr } = await client
+    .from('ai_usage_log')
+    .select('id', { count: 'exact', head: true })
+    .eq('ip_hash', params.ipHash)
+    .gte('created_at', since);
+  if (ipErr) return { allowed: true };
+  if ((ipCount ?? 0) >= params.limits.perIpPerMinute) {
+    return { allowed: false, reason: 'per-ip-per-minute-exceeded', retryAfterSeconds: 60 };
+  }
+
+  return { allowed: true };
+}
 
 export interface RateLimits {
   readonly perLearnerDaily?: number;      // max calls per user per UTC day
@@ -108,6 +161,7 @@ export async function logUsage(params: {
   readonly costCents?: number;
   readonly status: 'succeeded' | 'rate-limited' | 'errored';
   readonly errorKind?: LLMErrorKind;
+  readonly ipHash?: string;
 }): Promise<void> {
   if (!isSupabaseConfigured()) return;
   const client = createServiceRoleClient();
@@ -122,6 +176,7 @@ export async function logUsage(params: {
     cost_cents: params.costCents ?? null,
     status: params.status,
     error_kind: params.errorKind ?? null,
+    ip_hash: params.ipHash ?? null,
   });
   if (error) {
     console.error('[rate-limit] logUsage insert failed:', error);

@@ -8,6 +8,8 @@ vi.mock('@/lib/sandbox/pii-scanner', () => ({ scanForPII: vi.fn(() => ({ safe: t
 vi.mock('@/lib/sandbox/injection-filter', () => ({ scanForInjection: vi.fn(() => ({ safe: true })) }));
 vi.mock('@/lib/ai-harness/rate-limit', () => ({
   checkRateLimit: vi.fn(async () => ({ allowed: true })),
+  checkPerMinuteLimits: vi.fn(async () => ({ allowed: true })),
+  hashIp: vi.fn(() => 'hash-stub'),
   logUsage: vi.fn(async () => {}),
 }));
 
@@ -16,7 +18,7 @@ vi.mock('@/lib/ai-harness/client', () => ({
   createLLMClient: vi.fn(() => ({ name: 'openai', chat: vi.fn(), stream: streamMock })),
 }));
 
-import { logUsage } from '@/lib/ai-harness/rate-limit';
+import { checkPerMinuteLimits, logUsage } from '@/lib/ai-harness/rate-limit';
 
 beforeEach(() => {
   streamMock.mockImplementation(async function* () {
@@ -80,5 +82,15 @@ describe('POST /api/toolbox/run/stream', () => {
   it('rejects unknown provider with 400 (no stream body)', async () => {
     const res = await POST(req({ ...body, provider: 'mistral' }));
     expect(res.status).toBe(400);
+  });
+
+  it('returns 429 with Retry-After when per-minute limit trips', async () => {
+    (checkPerMinuteLimits as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
+      allowed: false, reason: 'per-ip-per-minute-exceeded', retryAfterSeconds: 30,
+    });
+    const res = await POST(req(body));
+    expect(res.status).toBe(429);
+    expect(res.headers.get('retry-after')).toBe('30');
+    expect(streamMock).not.toHaveBeenCalled();
   });
 });

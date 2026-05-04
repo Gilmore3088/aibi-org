@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createLLMClient } from '@/lib/ai-harness/client';
-import { checkRateLimit, logUsage } from '@/lib/ai-harness/rate-limit';
+import { checkPerMinuteLimits, checkRateLimit, hashIp, logUsage } from '@/lib/ai-harness/rate-limit';
 import { LLMError, type ProviderName } from '@/lib/ai-harness/types';
 import { scanForInjection } from '@/lib/sandbox/injection-filter';
 import { scanForPII } from '@/lib/sandbox/pii-scanner';
@@ -72,6 +72,25 @@ export async function POST(request: Request): Promise<NextResponse> {
     return NextResponse.json({ error: `Message exceeds ${MAX_MESSAGE_LENGTH} characters.` }, { status: 400 });
   }
 
+  const ip = (request.headers.get('x-forwarded-for') ?? 'unknown').split(',')[0].trim();
+  const ipHash = hashIp(ip);
+
+  const perMinute = await checkPerMinuteLimits({
+    userId: access.userId,
+    ipHash,
+    limits: { perUserPerMinute: 10, perIpPerMinute: 20 },
+  });
+  if (!perMinute.allowed) {
+    return NextResponse.json(
+      {
+        error: perMinute.reason === 'per-user-per-minute-exceeded'
+          ? 'You are sending requests too quickly. Slow down.'
+          : 'Too many requests from your network. Slow down.',
+      },
+      { status: 429, headers: { 'retry-after': String(perMinute.retryAfterSeconds ?? 60) } },
+    );
+  }
+
   const pii = scanForPII(latestUser.content);
   if (!pii.safe) return NextResponse.json({ error: pii.reason }, { status: 422 });
 
@@ -93,6 +112,7 @@ export async function POST(request: Request): Promise<NextResponse> {
       provider,
       model,
       status: 'rate-limited',
+      ipHash,
     });
     return NextResponse.json(
       { error: 'Daily Toolbox AI limit reached. Please try again tomorrow.' },
@@ -119,6 +139,7 @@ export async function POST(request: Request): Promise<NextResponse> {
       inputTokens: result.usage.inputTokens,
       outputTokens: result.usage.outputTokens,
       status: 'succeeded',
+      ipHash,
     });
 
     return NextResponse.json({ text: result.text, usage: result.usage });
@@ -131,6 +152,7 @@ export async function POST(request: Request): Promise<NextResponse> {
       model,
       status: 'errored',
       errorKind: error instanceof LLMError ? error.kind : 'unknown',
+      ipHash,
     });
 
     return NextResponse.json(
