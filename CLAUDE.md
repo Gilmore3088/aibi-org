@@ -158,6 +158,15 @@ NEXT_PUBLIC_CALENDLY_URL=https://calendly.com/[handle]/executive-briefing
 
 # Staging only — suppresses live ConvertKit calls
 SKIP_CONVERTKIT=true
+
+# Owner allowlist — comma-separated emails that auto-provision a free
+# enrollment for AiBI-P/S, get full toolbox access, and can test the
+# signed-in flow on any environment without paying. See
+# src/lib/auth/owner-access.ts. Defaults to jlgilmore2@gmail.com if unset.
+# Requires real Supabase auth (sign in with the allowlisted email);
+# never bypasses authentication itself. Replaces the retired
+# SKIP_ENROLLMENT_GATE env var.
+OWNER_EMAILS=jlgilmore2@gmail.com
 ```
 
 ---
@@ -704,6 +713,20 @@ lowest-scoring dimension. Server-side persistence of dimension
 breakdown added in migration `00011_readiness_dimension_columns.sql`.
 Resend transactional email is deferred — the artifact is on-screen,
 copy-to-clipboard, and download-as-md only for now.
+
+**2026-05-01 — `SKIP_ENROLLMENT_GATE` retired in favour of an email
+allowlist.** The non-prod env var that returned synthetic `dev-bypass`
+enrollment data (in two `getEnrollment.ts` files and `lib/toolbox/
+access.ts`) survived the 2026-04-17 dev-bypass purge. Now removed.
+Replaced by `OWNER_EMAILS` (comma-separated, defaults to
+`jlgilmore2@gmail.com`) plus `src/lib/auth/owner-access.ts`. Owners
+must sign in with a real Supabase session; on first request the
+helper auto-provisions a real `course_enrollments` row so every
+downstream code path (save-progress, submit-activity, certificate
+generation) treats the owner identically to a paying user. Works in
+production — staging and prod can be tested end-to-end without buying
+a course. See also: feature/auth-audit branch (audit + 3 bug fixes +
+rate limiting + auth telemetry).
 
 ---
 

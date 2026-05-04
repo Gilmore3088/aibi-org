@@ -4,13 +4,17 @@
 
 import { cookies } from 'next/headers';
 import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
-import { isSupabaseConfigured } from '@/lib/supabase/client';
+import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
+import { ensureOwnerEnrollment, isOwnerEmail } from '@/lib/auth/owner-access';
 import type { CourseEnrollment } from '@/types/course';
 
 export type EnrollmentData = Pick<
   CourseEnrollment,
   'id' | 'user_id' | 'completed_modules' | 'current_module' | 'enrolled_at' | 'onboarding_answers'
 >;
+
+const SELECT_COLUMNS =
+  'id, user_id, completed_modules, current_module, enrolled_at, onboarding_answers';
 
 /**
  * Look up the current user's AiBI-P enrollment from Supabase.
@@ -19,28 +23,14 @@ export type EnrollmentData = Pick<
  * valid auth session. Callers should treat null as "not enrolled" and
  * redirect to /courses/aibi-p/purchase accordingly.
  *
+ * Owners (per OWNER_EMAILS env var; see src/lib/auth/owner-access.ts) get
+ * an auto-provisioned enrollment row the first time they hit this — so the
+ * project owner can test the full signed-in flow on any environment without
+ * buying. Replaces the retired SKIP_ENROLLMENT_GATE escape hatch.
+ *
  * Uses getAll/setAll cookie pattern (recommended by @supabase/ssr 0.5+).
  */
 export async function getEnrollment(): Promise<EnrollmentData | null> {
-  // Dev-only enrollment bypass.
-  // Activates ONLY when NODE_ENV !== 'production' AND SKIP_ENROLLMENT_GATE === 'true'.
-  // Returns a synthetic enrolled record so testers can access course content
-  // without a real Supabase enrollment row. Never fires in production — the
-  // NODE_ENV guard is hard-coded and cannot be overridden by env vars.
-  if (
-    process.env.NODE_ENV !== 'production' &&
-    process.env.SKIP_ENROLLMENT_GATE === 'true'
-  ) {
-    return {
-      id: 'dev-bypass',
-      user_id: 'dev-bypass',
-      completed_modules: [],
-      current_module: 1,
-      enrolled_at: new Date().toISOString(),
-      onboarding_answers: null,
-    };
-  }
-
   if (!isSupabaseConfigured()) {
     return null;
   }
@@ -68,14 +58,37 @@ export async function getEnrollment(): Promise<EnrollmentData | null> {
     return null;
   }
 
-  const { data, error } = await supabase
+  const initial = await supabase
     .from('course_enrollments')
-    .select('id, user_id, completed_modules, current_module, enrolled_at, onboarding_answers')
+    .select(SELECT_COLUMNS)
     .eq('user_id', user.id)
     .eq('product', 'aibi-p')
-    .single();
+    .maybeSingle();
 
-  if (error || !data) {
+  let row = initial.data ?? null;
+
+  // Owner allowlist auto-provision. If the signed-in user is on OWNER_EMAILS
+  // and has no enrollment yet, create one and re-fetch. Owners go through the
+  // same downstream code paths (save-progress, submit-activity, certificate
+  // generation) as paying users — no special-case branching elsewhere.
+  if (!row && user.email && isOwnerEmail(user.email)) {
+    const provisioned = await ensureOwnerEnrollment(createServiceRoleClient(), {
+      userId: user.id,
+      email: user.email,
+      product: 'aibi-p',
+    });
+    if (provisioned) {
+      const refetch = await supabase
+        .from('course_enrollments')
+        .select(SELECT_COLUMNS)
+        .eq('user_id', user.id)
+        .eq('product', 'aibi-p')
+        .maybeSingle();
+      row = refetch.data ?? null;
+    }
+  }
+
+  if (!row) {
     return null;
   }
 
@@ -83,10 +96,10 @@ export async function getEnrollment(): Promise<EnrollmentData | null> {
   // The DB allows current_module=0 (means "enrolled, not started"), but every
   // UI consumer that builds a /courses/aibi-p/{N} URL needs N >= 1. Coercing
   // here keeps page.tsx, layout.tsx, and the [module] redirect aligned.
-  // Server-side validators (api/courses/submit-activity, save-progress) use
-  // a separate query and continue to see the raw value.
+  // The API routes apply the same normalization on read so server-side
+  // forward-only enforcement matches what the UI shows.
   return {
-    ...data,
-    current_module: Math.max(1, data.current_module ?? 1),
+    ...row,
+    current_module: Math.max(1, row.current_module ?? 1),
   } as EnrollmentData;
 }

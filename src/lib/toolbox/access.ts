@@ -1,6 +1,7 @@
 import { cookies } from 'next/headers';
 import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
+import { isOwnerEmail } from '@/lib/auth/owner-access';
 
 export interface PaidAccess {
   readonly userId: string;
@@ -10,13 +11,6 @@ export interface PaidAccess {
 const PAID_PRODUCTS = ['aibi-p', 'aibi-s', 'aibi-l'] as const;
 
 export async function getPaidToolboxAccess(): Promise<PaidAccess | null> {
-  if (
-    process.env.NODE_ENV !== 'production' &&
-    process.env.SKIP_ENROLLMENT_GATE === 'true'
-  ) {
-    return { userId: 'dev-bypass', products: ['dev-bypass'] };
-  }
-
   if (!isSupabaseConfigured()) return null;
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -44,11 +38,18 @@ export async function getPaidToolboxAccess(): Promise<PaidAccess | null> {
     .eq('user_id', user.id)
     .in('product', [...PAID_PRODUCTS]);
 
-  if (error || !data || data.length === 0) return null;
+  if (error) return null;
 
-  return {
-    userId: user.id,
-    products: data.map((row) => String(row.product)),
-  };
+  const products = (data ?? []).map((row) => String(row.product));
+
+  // Owner allowlist (OWNER_EMAILS env var; see src/lib/auth/owner-access.ts)
+  // grants full toolbox access without requiring a paid enrollment.
+  // Replaces the retired SKIP_ENROLLMENT_GATE escape hatch.
+  if (products.length === 0 && isOwnerEmail(user.email)) {
+    return { userId: user.id, products: [...PAID_PRODUCTS] };
+  }
+
+  if (products.length === 0) return null;
+
+  return { userId: user.id, products };
 }
-

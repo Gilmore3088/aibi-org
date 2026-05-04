@@ -4,13 +4,17 @@
 
 import { cookies } from 'next/headers';
 import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
-import { isSupabaseConfigured } from '@/lib/supabase/client';
+import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
+import { ensureOwnerEnrollment, isOwnerEmail } from '@/lib/auth/owner-access';
 import type { CourseEnrollment } from '@/types/course';
 
 export type EnrollmentData = Pick<
   CourseEnrollment,
   'id' | 'user_id' | 'completed_modules' | 'current_module' | 'enrolled_at' | 'onboarding_answers'
 >;
+
+const SELECT_COLUMNS =
+  'id, user_id, completed_modules, current_module, enrolled_at, onboarding_answers';
 
 /**
  * Look up the current user's AiBI-S enrollment from Supabase.
@@ -19,23 +23,13 @@ export type EnrollmentData = Pick<
  * valid auth session. Callers should treat null as "not enrolled" and
  * redirect to /courses/aibi-s/purchase accordingly.
  *
+ * Owners (per OWNER_EMAILS env var; see src/lib/auth/owner-access.ts) get
+ * an auto-provisioned enrollment row the first time they hit this. Replaces
+ * the retired SKIP_ENROLLMENT_GATE escape hatch.
+ *
  * Uses getAll/setAll cookie pattern (recommended by @supabase/ssr 0.5+).
  */
 export async function getEnrollment(): Promise<EnrollmentData | null> {
-  if (
-    process.env.NODE_ENV !== 'production' &&
-    process.env.SKIP_ENROLLMENT_GATE === 'true'
-  ) {
-    return {
-      id: 'dev-bypass',
-      user_id: 'dev-bypass',
-      completed_modules: [],
-      current_module: 1,
-      enrolled_at: new Date().toISOString(),
-      onboarding_answers: null,
-    };
-  }
-
   if (!isSupabaseConfigured()) {
     return null;
   }
@@ -62,16 +56,35 @@ export async function getEnrollment(): Promise<EnrollmentData | null> {
     return null;
   }
 
-  const { data, error } = await supabase
+  const initial = await supabase
     .from('course_enrollments')
-    .select('id, user_id, completed_modules, current_module, enrolled_at, onboarding_answers')
+    .select(SELECT_COLUMNS)
     .eq('user_id', user.id)
     .eq('product', 'aibi-s')
-    .single();
+    .maybeSingle();
 
-  if (error || !data) {
+  let row = initial.data ?? null;
+
+  if (!row && user.email && isOwnerEmail(user.email)) {
+    const provisioned = await ensureOwnerEnrollment(createServiceRoleClient(), {
+      userId: user.id,
+      email: user.email,
+      product: 'aibi-s',
+    });
+    if (provisioned) {
+      const refetch = await supabase
+        .from('course_enrollments')
+        .select(SELECT_COLUMNS)
+        .eq('user_id', user.id)
+        .eq('product', 'aibi-s')
+        .maybeSingle();
+      row = refetch.data ?? null;
+    }
+  }
+
+  if (!row) {
     return null;
   }
 
-  return data as EnrollmentData;
+  return row as EnrollmentData;
 }
