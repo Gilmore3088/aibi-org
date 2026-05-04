@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { getPaidToolboxAccess } from '@/lib/toolbox/access';
 import type { ToolboxSkill } from '@/lib/toolbox/types';
+import { validateSkill } from '../validateSkill';
 
 interface RouteParams {
   readonly params: { readonly skillId: string };
@@ -17,17 +18,18 @@ export async function PATCH(request: Request, { params }: RouteParams): Promise<
   if (!isSupabaseConfigured()) return NextResponse.json({ error: 'Toolbox storage is not configured.' }, { status: 503 });
   if (!validId(params.skillId)) return NextResponse.json({ error: 'Invalid skill id.' }, { status: 400 });
 
-  let body: { skill?: ToolboxSkill };
+  let body: { skill?: unknown };
   try {
-    body = (await request.json()) as { skill?: ToolboxSkill };
+    body = (await request.json()) as { skill?: unknown };
   } catch {
     return NextResponse.json({ error: 'Invalid JSON body.' }, { status: 400 });
   }
-  if (!body.skill || typeof body.skill.name !== 'string' || typeof body.skill.cmd !== 'string') {
-    return NextResponse.json({ error: 'Invalid skill payload.' }, { status: 400 });
-  }
 
-  const skill = { ...body.skill, id: params.skillId };
+  const validated = validateSkill(body.skill);
+  if (!validated) return NextResponse.json({ error: 'Invalid skill payload.' }, { status: 400 });
+
+  const skill: ToolboxSkill = { ...validated, id: params.skillId } as ToolboxSkill;
+
   const client = createServiceRoleClient();
   const { data, error } = await client
     .from('toolbox_skills')
@@ -37,6 +39,20 @@ export async function PATCH(request: Request, { params }: RouteParams): Promise<
       name: skill.name,
       maturity: skill.maturity,
       skill,
+      kind: skill.kind,
+      system_prompt:
+        skill.kind === 'template'
+          ? skill.systemPrompt
+          : skill.kind === 'workflow' && skill.systemPromptOverride
+            ? skill.systemPromptOverride
+            : null,
+      user_prompt_template:
+        skill.kind === 'template' ? skill.userPromptTemplate : null,
+      variables: skill.kind === 'template' ? skill.variables : [],
+      pillar: skill.pillar ?? null,
+      teaching_annotations: skill.teachingAnnotations ?? [],
+      source: skill.source ?? 'user',
+      source_ref: skill.sourceRef ?? null,
       updated_at: new Date().toISOString(),
     })
     .eq('id', params.skillId)
@@ -75,4 +91,3 @@ export async function DELETE(_request: Request, { params }: RouteParams): Promis
 
   return NextResponse.json({ ok: true });
 }
-

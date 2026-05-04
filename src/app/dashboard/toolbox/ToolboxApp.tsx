@@ -6,8 +6,18 @@ import { useCallback, useEffect, useMemo, useRef, useState, type RefObject } fro
 import { TOOLBOX_TEMPLATES } from '@/content/toolbox/templates';
 import { trackEvent } from '@/lib/analytics/plausible';
 import { generateToolboxMarkdown } from '@/lib/toolbox/markdown';
-import type { ToolboxMessage, ToolboxSkill, ToolboxSkillTemplate } from '@/lib/toolbox/types';
+import {
+  isWorkflowSkill,
+  type ToolboxKind,
+  type ToolboxMessage,
+  type ToolboxSkill,
+  type ToolboxSkillTemplate,
+  type ToolboxTemplateSkill,
+  type ToolboxWorkflowSkill,
+} from '@/lib/toolbox/types';
 import { renderMarkdown } from '@/lib/sandbox/markdown-renderer';
+import { KindPicker } from './_components/KindPicker';
+import { TemplateBuilder } from './_components/TemplateBuilder';
 
 type TabId = 'guide' | 'cookbook' | 'build' | 'playground' | 'toolbox';
 
@@ -19,7 +29,8 @@ const TABS: readonly { id: TabId; label: string }[] = [
   { id: 'toolbox', label: 'My Toolbox' },
 ];
 
-const EMPTY_SKILL: ToolboxSkill = {
+const EMPTY_WORKFLOW_SKILL: ToolboxWorkflowSkill = {
+  kind: 'workflow',
   id: '',
   cmd: '/new-skill',
   name: 'New Banking Skill',
@@ -46,7 +57,35 @@ const EMPTY_SKILL: ToolboxSkill = {
   samples: [],
 };
 
-function toSkill(template: ToolboxSkillTemplate): ToolboxSkill {
+const EMPTY_TEMPLATE_SKILL: ToolboxTemplateSkill = {
+  kind: 'template',
+  id: '',
+  cmd: '/new-template',
+  name: 'New Prompt Template',
+  dept: 'General',
+  deptFull: 'General',
+  difficulty: 'beginner',
+  timeSaved: 'Varies',
+  cadence: 'As needed',
+  desc: 'A short prompt template with fillable variables.',
+  owner: 'Role owner',
+  maturity: 'draft',
+  version: '1.0',
+  systemPrompt:
+    'You are a community-bank assistant. Use plain language at an 8th-grade reading level. ' +
+    'Cite sources only when provided; never invent regulatory citations.',
+  userPromptTemplate: 'Write a {{kind_of_output}} for {{recipient}}.\n\nContext:\n{{context}}',
+  variables: [
+    { name: 'kind_of_output', label: 'Kind of output', type: 'text', required: true },
+    { name: 'recipient', label: 'Recipient', type: 'text', required: true },
+    { name: 'context', label: 'Context', type: 'textarea', required: true },
+  ],
+  output: 'Markdown',
+  tone: 'Professional',
+  length: 'Concise',
+};
+
+function toSkill(template: ToolboxSkillTemplate): ToolboxWorkflowSkill {
   return {
     ...template,
     id: '',
@@ -80,7 +119,9 @@ export function ToolboxApp() {
 
   const [skills, setSkills] = useState<ToolboxSkill[]>([]);
   const [activeSkill, setActiveSkill] = useState<ToolboxSkill | null>(null);
-  const [draftSkill, setDraftSkill] = useState<ToolboxSkill>(EMPTY_SKILL);
+  const [draftSkill, setDraftSkill] = useState<ToolboxWorkflowSkill>(EMPTY_WORKFLOW_SKILL);
+  const [templateSkill, setTemplateSkill] = useState<ToolboxTemplateSkill>(EMPTY_TEMPLATE_SKILL);
+  const [buildKind, setBuildKind] = useState<ToolboxKind | null>(null);
   const [roleFilter, setRoleFilter] = useState('all');
   const [difficultyFilter, setDifficultyFilter] = useState('all');
   const [messages, setMessages] = useState<ToolboxMessage[]>([]);
@@ -118,9 +159,16 @@ export function ToolboxApp() {
 
   function loadSkill(skill: ToolboxSkill, tab: TabId = 'playground') {
     setActiveSkill(skill);
-    setDraftSkill(skill);
+    if (isWorkflowSkill(skill)) {
+      setDraftSkill(skill);
+      setBuildKind('workflow');
+      setInput(skill.samples[0]?.prompt ?? '');
+    } else {
+      setTemplateSkill(skill);
+      setBuildKind('template');
+      setInput('');
+    }
     setMessages([]);
-    setInput(skill.samples[0]?.prompt ?? '');
     setTab(tab);
   }
 
@@ -141,7 +189,11 @@ export function ToolboxApp() {
       ? prev.map((item) => item.id === saved.id ? saved : item)
       : [saved, ...prev]);
     setActiveSkill(saved);
-    setDraftSkill(saved);
+    if (isWorkflowSkill(saved)) {
+      setDraftSkill(saved);
+    } else {
+      setTemplateSkill(saved);
+    }
     setNotice('Skill saved to your Toolbox.');
     trackEvent('toolbox_skill_saved', { maturity: saved.maturity, source: saved.templateId ? 'template' : 'custom' });
     return saved;
@@ -267,6 +319,7 @@ export function ToolboxApp() {
                   const skill = toSkill(template);
                   setDraftSkill(skill);
                   setActiveSkill(skill);
+                  setBuildKind('workflow');
                   setTab('build');
                 }}
               />
@@ -275,16 +328,63 @@ export function ToolboxApp() {
         </section>
       )}
 
-      {safeTab === 'build' && (
-        <BuilderPanel
-          skill={draftSkill}
-          setSkill={setDraftSkill}
-          onNew={() => setDraftSkill({ ...EMPTY_SKILL })}
-          onSave={async () => {
-            const saved = await saveSkill(draftSkill);
-            if (saved) loadSkill(saved, 'playground');
-          }}
-        />
+      {safeTab === 'build' && buildKind === null && (
+        <div className="mx-auto max-w-3xl py-6">
+          <KindPicker value={null} onChange={(k) => setBuildKind(k)} />
+        </div>
+      )}
+
+      {safeTab === 'build' && buildKind === 'workflow' && (
+        <>
+          <button
+            type="button"
+            onClick={() => setBuildKind(null)}
+            className="mb-6 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] hover:text-[color:var(--color-terra)]"
+          >
+            ← Choose a different kind
+          </button>
+          <BuilderPanel
+            skill={draftSkill}
+            setSkill={setDraftSkill}
+            onNew={() => setDraftSkill({ ...EMPTY_WORKFLOW_SKILL })}
+            onSave={async () => {
+              const saved = await saveSkill(draftSkill);
+              if (saved) loadSkill(saved, 'playground');
+            }}
+          />
+        </>
+      )}
+
+      {safeTab === 'build' && buildKind === 'template' && (
+        <div className="mx-auto max-w-3xl">
+          <button
+            type="button"
+            onClick={() => setBuildKind(null)}
+            className="mb-6 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] hover:text-[color:var(--color-terra)]"
+          >
+            ← Choose a different kind
+          </button>
+          <TemplateBuilder skill={templateSkill} onChange={setTemplateSkill} />
+          <div className="mt-8 flex gap-3">
+            <button
+              type="button"
+              onClick={() => setTemplateSkill({ ...EMPTY_TEMPLATE_SKILL })}
+              className="border border-[color:var(--color-ink)]/20 px-4 py-2 font-mono text-[10px] uppercase tracking-widest"
+            >
+              New template
+            </button>
+            <button
+              type="button"
+              onClick={async () => {
+                const saved = await saveSkill(templateSkill);
+                if (saved) loadSkill(saved, 'playground');
+              }}
+              className="bg-[color:var(--color-terra)] px-4 py-2 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-linen)]"
+            >
+              Save and test
+            </button>
+          </div>
+        </div>
       )}
 
       {safeTab === 'playground' && (
@@ -314,7 +414,8 @@ export function ToolboxApp() {
           onDelete={deleteSkill}
           onBrowse={() => setTab('cookbook')}
           onBuild={() => {
-            setDraftSkill({ ...EMPTY_SKILL });
+            setDraftSkill({ ...EMPTY_WORKFLOW_SKILL });
+            setBuildKind(null);
             setTab('build');
           }}
         />
@@ -391,13 +492,13 @@ function TemplateCard({ template, onTry, onCustomize }: { readonly template: Too
 }
 
 function BuilderPanel({ skill, setSkill, onNew, onSave }: {
-  readonly skill: ToolboxSkill;
-  readonly setSkill: (skill: ToolboxSkill) => void;
+  readonly skill: ToolboxWorkflowSkill;
+  readonly setSkill: (skill: ToolboxWorkflowSkill) => void;
   readonly onNew: () => void;
   readonly onSave: () => void;
 }) {
-  const update = (patch: Partial<ToolboxSkill>) => setSkill({ ...skill, ...patch, modified: new Date().toISOString() });
-  const updateLines = (key: 'files' | 'connectors' | 'steps' | 'guardrails', value: string) => update({ [key]: value.split('\n').map((line) => line.trim()).filter(Boolean) } as Partial<ToolboxSkill>);
+  const update = (patch: Partial<ToolboxWorkflowSkill>) => setSkill({ ...skill, ...patch, modified: new Date().toISOString() });
+  const updateLines = (key: 'files' | 'connectors' | 'steps' | 'guardrails', value: string) => update({ [key]: value.split('\n').map((line) => line.trim()).filter(Boolean) } as Partial<ToolboxWorkflowSkill>);
 
   return (
     <section className="grid gap-8 lg:grid-cols-[0.75fr_1.25fr]">
@@ -486,7 +587,7 @@ function PlaygroundPanel(props: {
       <aside className="h-fit border border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)] p-5 lg:sticky lg:top-40">
         <p className="inline-block bg-white px-2 py-1 font-mono text-[11px] text-[color:var(--color-terra)]">{props.activeSkill.cmd}</p>
         <h2 className="mt-4 font-serif text-3xl leading-tight">{props.activeSkill.name}</h2>
-        <p className="mt-3 text-sm leading-relaxed text-[color:var(--color-slate)]">{props.activeSkill.desc || props.activeSkill.purpose}</p>
+        <p className="mt-3 text-sm leading-relaxed text-[color:var(--color-slate)]">{props.activeSkill.desc || (isWorkflowSkill(props.activeSkill) ? props.activeSkill.purpose : '')}</p>
         <div className="mt-5 grid gap-3 border-t border-[color:var(--color-ink)]/10 pt-4 text-xs text-[color:var(--color-slate)]">
           <p><strong className="text-[color:var(--color-ink)]">Owner:</strong> {props.activeSkill.owner}</p>
           <p><strong className="text-[color:var(--color-ink)]">Output:</strong> {props.activeSkill.output}</p>
@@ -513,7 +614,7 @@ function PlaygroundPanel(props: {
           ))}
           {props.running && <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)]">Claude is thinking...</p>}
         </div>
-        {props.activeSkill.samples.length > 0 && (
+        {isWorkflowSkill(props.activeSkill) && props.activeSkill.samples.length > 0 && (
           <div className="mt-3 flex flex-wrap gap-2">
             {props.activeSkill.samples.map((sample) => (
               <button key={sample.title} type="button" onClick={() => props.setInput(sample.prompt)} className="border border-[color:var(--color-ink)]/15 px-3 py-1.5 text-xs text-[color:var(--color-ink)] hover:border-[color:var(--color-terra)]">
@@ -573,7 +674,7 @@ function ToolboxPanel({ skills, onRun, onEdit, onExport, onDelete, onBrowse, onB
               <span className="font-mono text-[9px] uppercase tracking-widest text-[color:var(--color-slate)]">{skill.maturity}</span>
             </div>
             <h3 className="mt-4 font-serif text-2xl leading-tight">{skill.name}</h3>
-            <p className="mt-3 min-h-[64px] text-sm leading-relaxed text-[color:var(--color-slate)]">{skill.desc || skill.purpose}</p>
+            <p className="mt-3 min-h-[64px] text-sm leading-relaxed text-[color:var(--color-slate)]">{skill.desc || (isWorkflowSkill(skill) ? skill.purpose : '')}</p>
             <div className="mt-4 grid grid-cols-2 gap-2">
               <button type="button" onClick={() => onRun(skill)} className="bg-[color:var(--color-terra)] px-3 py-2 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-linen)]">Run</button>
               <button type="button" onClick={() => onEdit(skill)} className="border border-[color:var(--color-ink)]/20 px-3 py-2 font-mono text-[10px] uppercase tracking-widest">Edit</button>

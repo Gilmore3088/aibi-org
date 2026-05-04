@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { getPaidToolboxAccess } from '@/lib/toolbox/access';
 import type { ToolboxSkill } from '@/lib/toolbox/types';
+import { validateSkill } from './validateSkill';
 
 interface ToolboxSkillRow {
   readonly id: string;
@@ -16,43 +17,7 @@ function normalizeSkill(row: ToolboxSkillRow): ToolboxSkill {
     id: row.id,
     created: row.skill.created ?? row.created_at,
     modified: row.updated_at,
-  };
-}
-
-function validateSkill(input: unknown): ToolboxSkill | null {
-  if (typeof input !== 'object' || input === null || Array.isArray(input)) return null;
-  const skill = input as Partial<ToolboxSkill>;
-  if (typeof skill.cmd !== 'string' || !skill.cmd.startsWith('/')) return null;
-  if (typeof skill.name !== 'string' || skill.name.trim().length < 2) return null;
-  if (typeof skill.purpose !== 'string' && typeof skill.desc !== 'string') return null;
-
-  return {
-    id: typeof skill.id === 'string' ? skill.id : '',
-    templateId: typeof skill.templateId === 'string' ? skill.templateId : undefined,
-    cmd: skill.cmd.trim(),
-    name: skill.name.trim(),
-    dept: skill.dept ?? 'General',
-    deptFull: skill.deptFull ?? skill.dept ?? 'General',
-    difficulty: skill.difficulty ?? 'beginner',
-    timeSaved: skill.timeSaved ?? 'Varies',
-    cadence: skill.cadence ?? 'As needed',
-    desc: skill.desc ?? skill.purpose ?? '',
-    purpose: skill.purpose ?? skill.desc ?? '',
-    success: skill.success ?? '',
-    files: Array.isArray(skill.files) ? skill.files.map(String) : [],
-    connectors: Array.isArray(skill.connectors) ? skill.connectors.map(String) : [],
-    questions: skill.questions ?? '',
-    steps: Array.isArray(skill.steps) ? skill.steps.map(String) : [],
-    output: skill.output ?? 'Markdown (.md)',
-    tone: skill.tone ?? 'Professional',
-    length: skill.length ?? 'Concise',
-    guardrails: Array.isArray(skill.guardrails) ? skill.guardrails.map(String) : [],
-    customGuard: skill.customGuard ?? '',
-    owner: skill.owner ?? 'Unassigned',
-    maturity: skill.maturity ?? 'draft',
-    version: skill.version ?? '1.0',
-    samples: Array.isArray(skill.samples) ? skill.samples : [],
-  };
+  } as ToolboxSkill;
 }
 
 export async function GET(): Promise<NextResponse> {
@@ -96,15 +61,35 @@ export async function POST(request: Request): Promise<NextResponse> {
   const client = createServiceRoleClient();
   const { data, error } = await client
     .from('toolbox_skills')
-    .upsert({
-      user_id: access.userId,
-      template_id: skill.templateId ?? null,
-      command: skill.cmd,
-      name: skill.name,
-      maturity: skill.maturity,
-      skill,
-      updated_at: new Date().toISOString(),
-    }, { onConflict: 'user_id,command' })
+    .upsert(
+      {
+        user_id: access.userId,
+        template_id: skill.templateId ?? null,
+        command: skill.cmd,
+        name: skill.name,
+        maturity: skill.maturity,
+        // Preserve full skill blob in the JSONB column for back-compat with
+        // existing reads (normalizeSkill reads from row.skill).
+        skill,
+        // New explicit columns (Plan B / decision #23):
+        kind: skill.kind,
+        system_prompt:
+          skill.kind === 'template'
+            ? skill.systemPrompt
+            : skill.kind === 'workflow' && skill.systemPromptOverride
+              ? skill.systemPromptOverride
+              : null,
+        user_prompt_template:
+          skill.kind === 'template' ? skill.userPromptTemplate : null,
+        variables: skill.kind === 'template' ? skill.variables : [],
+        pillar: skill.pillar ?? null,
+        teaching_annotations: skill.teachingAnnotations ?? [],
+        source: skill.source ?? 'user',
+        source_ref: skill.sourceRef ?? null,
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: 'user_id,command' },
+    )
     .select('id, skill, created_at, updated_at')
     .single();
 

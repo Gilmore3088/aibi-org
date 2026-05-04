@@ -2,6 +2,8 @@ import type { ToolboxSkillTemplate } from '@/lib/toolbox/types';
 
 export const TOOLBOX_TEMPLATES = [
   {
+    "kind": "workflow",
+    "version": "1.0",
     "id": "exam-prep",
     "cmd": "/exam-prep",
     "name": "Regulatory Exam Preparation",
@@ -54,6 +56,8 @@ export const TOOLBOX_TEMPLATES = [
     ]
   },
   {
+    "kind": "workflow",
+    "version": "1.0",
     "id": "sar-narrative",
     "cmd": "/sar-narrative",
     "name": "SAR Narrative Drafting",
@@ -105,6 +109,8 @@ export const TOOLBOX_TEMPLATES = [
     ]
   },
   {
+    "kind": "workflow",
+    "version": "1.0",
     "id": "reg-change",
     "cmd": "/reg-change-brief",
     "name": "Regulatory Change Brief",
@@ -157,6 +163,8 @@ export const TOOLBOX_TEMPLATES = [
     ]
   },
   {
+    "kind": "workflow",
+    "version": "1.0",
     "id": "credit-memo",
     "cmd": "/credit-memo",
     "name": "Commercial Credit Memo",
@@ -211,6 +219,8 @@ export const TOOLBOX_TEMPLATES = [
     ]
   },
   {
+    "kind": "workflow",
+    "version": "1.0",
     "id": "covenant-watch",
     "cmd": "/covenant-watch",
     "name": "Covenant Compliance Monitoring",
@@ -260,6 +270,8 @@ export const TOOLBOX_TEMPLATES = [
     ]
   },
   {
+    "kind": "workflow",
+    "version": "1.0",
     "id": "loan-decision",
     "cmd": "/loan-decision",
     "name": "Loan Decision Documentation",
@@ -312,6 +324,8 @@ export const TOOLBOX_TEMPLATES = [
     ]
   },
   {
+    "kind": "workflow",
+    "version": "1.0",
     "id": "pipeline-review",
     "cmd": "/pipeline-review",
     "name": "Loan Pipeline Review",
@@ -363,6 +377,8 @@ export const TOOLBOX_TEMPLATES = [
     ]
   },
   {
+    "kind": "workflow",
+    "version": "1.0",
     "id": "pre-call-prep",
     "cmd": "/pre-call-prep",
     "name": "Pre-Call Preparation Sheet",
@@ -412,6 +428,8 @@ export const TOOLBOX_TEMPLATES = [
     ]
   },
   {
+    "kind": "workflow",
+    "version": "1.0",
     "id": "rate-memo",
     "cmd": "/rate-memo",
     "name": "Rate Change Memo",
@@ -464,6 +482,8 @@ export const TOOLBOX_TEMPLATES = [
     ]
   },
   {
+    "kind": "workflow",
+    "version": "1.0",
     "id": "board-package",
     "cmd": "/board-package",
     "name": "Board Package Generator",
@@ -518,6 +538,8 @@ export const TOOLBOX_TEMPLATES = [
     ]
   },
   {
+    "kind": "workflow",
+    "version": "1.0",
     "id": "member-complaint",
     "cmd": "/member-complaint",
     "name": "Member Complaint Resolution",
@@ -570,6 +592,8 @@ export const TOOLBOX_TEMPLATES = [
     ]
   },
   {
+    "kind": "workflow",
+    "version": "1.0",
     "id": "branch-perf",
     "cmd": "/branch-performance",
     "name": "Branch Performance Scorecard",
@@ -622,6 +646,8 @@ export const TOOLBOX_TEMPLATES = [
     ]
   },
   {
+    "kind": "workflow",
+    "version": "1.0",
     "id": "campaign-compliance",
     "cmd": "/campaign-compliance",
     "name": "Marketing Campaign Compliance Review",
@@ -676,6 +702,8 @@ export const TOOLBOX_TEMPLATES = [
     ]
   },
   {
+    "kind": "workflow",
+    "version": "1.0",
     "id": "vendor-risk",
     "cmd": "/vendor-risk",
     "name": "Third-Party Risk Assessment",
@@ -729,6 +757,8 @@ export const TOOLBOX_TEMPLATES = [
     ]
   },
   {
+    "kind": "workflow",
+    "version": "1.0",
     "id": "strategic-update",
     "cmd": "/strategic-update",
     "name": "Strategic Initiative Status",

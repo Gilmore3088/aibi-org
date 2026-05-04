@@ -1,4 +1,9 @@
-import type { ToolboxSkill } from './types';
+import {
+  isTemplateSkill,
+  isWorkflowSkill,
+  type ToolboxSkill,
+  type ToolboxWorkflowSkill,
+} from './types';
 
 function yaml(value: string): string {
   return JSON.stringify(value ?? '');
@@ -10,11 +15,19 @@ function list(items: readonly string[]): string {
 }
 
 export function generateToolboxMarkdown(skill: ToolboxSkill): string {
+  if (isTemplateSkill(skill)) {
+    return generateTemplateMarkdown(skill);
+  }
+  return generateWorkflowMarkdown(skill);
+}
+
+function generateWorkflowMarkdown(skill: ToolboxWorkflowSkill): string {
   const today = new Date().toISOString().split('T')[0];
 
   let md = '---\n';
   md += `name: ${yaml(skill.cmd.replace(/^\//, ''))}\n`;
   md += `command: ${yaml(skill.cmd)}\n`;
+  md += `kind: workflow\n`;
   md += `title: ${yaml(skill.name)}\n`;
   md += `description: ${yaml(skill.desc || skill.purpose)}\n`;
   md += `version: ${yaml(skill.version || '1.0')}\n`;
@@ -45,7 +58,8 @@ export function generateToolboxMarkdown(skill: ToolboxSkill): string {
     ? questions.map((question, idx) => `${idx + 1}. ${question}`).join('\n') + '\n\n'
     : '1. What context is missing before this work can begin?\n\n';
   md += '## Workflow\n\n';
-  md += (skill.steps ?? []).map((step, idx) => `${idx + 1}. ${step}`).join('\n') || '1. Complete the task using the provided context.';
+  md += (skill.steps ?? []).map((step, idx) => `${idx + 1}. ${step}`).join('\n')
+    || '1. Complete the task using the provided context.';
   md += '\n\n';
   if (skill.customGuard) {
     md += '### Escalation Triggers\n\n';
@@ -67,7 +81,58 @@ export function generateToolboxMarkdown(skill: ToolboxSkill): string {
   return md;
 }
 
+function generateTemplateMarkdown(skill: ToolboxSkill): string {
+  if (!isTemplateSkill(skill)) return '';
+  const today = new Date().toISOString().split('T')[0];
+
+  let md = '---\n';
+  md += `name: ${yaml(skill.cmd.replace(/^\//, ''))}\n`;
+  md += `command: ${yaml(skill.cmd)}\n`;
+  md += `kind: template\n`;
+  md += `title: ${yaml(skill.name)}\n`;
+  md += `description: ${yaml(skill.desc)}\n`;
+  md += `version: ${yaml(skill.version || '1.0')}\n`;
+  md += `created: ${yaml(skill.created || today)}\n`;
+  md += '---\n\n';
+
+  md += `# ${skill.name}\n\n`;
+  md += `${skill.desc}\n\n`;
+  md += '## System Prompt\n\n';
+  md += '```\n' + skill.systemPrompt + '\n```\n\n';
+  md += '## User Prompt Template\n\n';
+  md += '```\n' + skill.userPromptTemplate + '\n```\n\n';
+  md += '## Variables\n\n';
+  if (skill.variables.length === 0) {
+    md += '- None\n\n';
+  } else {
+    md += '| Name | Label | Type | Required |\n| --- | --- | --- | --- |\n';
+    for (const v of skill.variables) {
+      md += `| \`${v.name}\` | ${v.label} | ${v.type} | ${v.required ? 'yes' : 'no'} |\n`;
+    }
+    md += '\n';
+  }
+  if (skill.example) {
+    md += '## Example\n\n';
+    md += '**Input:**\n\n```json\n' + JSON.stringify(skill.example.input, null, 2) + '\n```\n\n';
+    md += '**Output:**\n\n```\n' + skill.example.output + '\n```\n\n';
+  }
+  md += '\n---\n\n';
+  md += '*Generated via the AI Banking Institute Toolbox.*\n';
+  return md;
+}
+
 export function buildToolboxSystemPrompt(skill: ToolboxSkill): string {
+  if (isTemplateSkill(skill)) {
+    return skill.systemPrompt;
+  }
+  if (skill.systemPromptOverride) {
+    return skill.systemPromptOverride;
+  }
+  return composeWorkflowSystemPrompt(skill);
+}
+
+function composeWorkflowSystemPrompt(skill: ToolboxWorkflowSkill): string {
+  if (!isWorkflowSkill(skill)) return '';
   const guardrails = [
     ...(skill.guardrails ?? []),
     ...(skill.customGuard ? [skill.customGuard] : []),
@@ -105,4 +170,3 @@ Do not fabricate URLs, guidance letter numbers, bulletin IDs, court cases, conta
 SAFETY
 Do not approve credit, legal, compliance, employment, or customer-impacting decisions. Frame recommendations as draft work for human review.`;
 }
-
