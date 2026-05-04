@@ -19,6 +19,7 @@ import { renderMarkdown } from '@/lib/sandbox/markdown-renderer';
 import { KindPicker } from './_components/KindPicker';
 import { ModelPicker, type ModelSelection } from './_components/ModelPicker';
 import { TemplateBuilder } from './_components/TemplateBuilder';
+import { UsageMeter, useUsage } from './_components/UsageMeter';
 
 type TabId = 'guide' | 'cookbook' | 'build' | 'playground' | 'toolbox';
 
@@ -134,6 +135,7 @@ export function ToolboxApp() {
     model: 'claude-sonnet-4-6',
   });
   const threadRef = useRef<HTMLDivElement>(null);
+  const { usage, refresh: refreshUsage } = useUsage();
 
   const setTab = useCallback((tab: TabId) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -224,7 +226,7 @@ export function ToolboxApp() {
     setRunning(true);
     trackEvent('toolbox_scenario_run', { source: activeSkill.templateId ? 'template' : 'custom' });
     try {
-      const res = await fetch('/api/toolbox/run', {
+      const res = await fetch('/api/toolbox/run/stream', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -234,12 +236,47 @@ export function ToolboxApp() {
           model: modelSelection.model,
         }),
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error ?? 'Claude run failed.');
-      setMessages([...nextMessages, { role: 'assistant', content: data.text }]);
+      if (!res.ok || !res.body) {
+        const json = await res.json().catch(() => ({ error: 'Unknown error.' }));
+        setMessages((prev) => [...prev, { role: 'assistant', content: `Error: ${json.error ?? res.statusText}` }]);
+        setRunning(false);
+        return;
+      }
+
+      setMessages((prev) => [...prev, { role: 'assistant', content: '' }]);
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() ?? '';
+        for (const line of lines) {
+          if (!line) continue;
+          try {
+            const obj = JSON.parse(line) as { type: string; text?: string };
+            if (obj.type === 'text' && obj.text) {
+              setMessages((prev) => {
+                const last = prev[prev.length - 1];
+                if (!last || last.role !== 'assistant') return prev;
+                return [...prev.slice(0, -1), { role: 'assistant', content: last.content + obj.text }];
+              });
+            } else if (obj.type === 'done') {
+              refreshUsage();
+            } else if (obj.type === 'error') {
+              setMessages((prev) => [...prev, { role: 'assistant', content: 'Stream error. Please try again.' }]);
+            }
+          } catch {
+            /* ignore malformed line */
+          }
+        }
+      }
     } catch (error) {
-      setMessages([
-        ...nextMessages,
+      setMessages((prev) => [
+        ...prev,
         {
           role: 'assistant',
           content: `**API Error**\n\n${error instanceof Error ? error.message : 'Claude is temporarily unavailable.'}`,
@@ -407,6 +444,7 @@ export function ToolboxApp() {
           threadRef={threadRef}
           modelSelection={modelSelection}
           setModelSelection={setModelSelection}
+          usage={usage}
           onRun={runSkill}
           onSave={() => activeSkill && saveSkill(activeSkill)}
           onExport={() => activeSkill && exportSkill(activeSkill)}
@@ -578,6 +616,7 @@ function PlaygroundPanel(props: {
   readonly threadRef: RefObject<HTMLDivElement>;
   readonly modelSelection: ModelSelection;
   readonly setModelSelection: (next: ModelSelection) => void;
+  readonly usage: { todayCents: number; dailyCapCents: number } | null;
   readonly onRun: () => void;
   readonly onSave: () => void;
   readonly onExport: () => void;
@@ -638,6 +677,11 @@ function PlaygroundPanel(props: {
           </div>
         )}
         <div className="mt-4 space-y-3 border border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)] p-3">
+          {props.usage && (
+            <div className="mb-3">
+              <UsageMeter todayCents={props.usage.todayCents} dailyCapCents={props.usage.dailyCapCents} />
+            </div>
+          )}
           <ModelPicker value={props.modelSelection} onChange={props.setModelSelection} disabled={props.running} />
           <textarea value={props.input} onChange={(event) => props.setInput(event.target.value)} rows={5} placeholder="Type a test prompt..." className="w-full resize-y border border-[color:var(--color-ink)]/10 bg-white px-3 py-2 text-sm" />
           <div className="mt-3 flex flex-wrap justify-between gap-3">

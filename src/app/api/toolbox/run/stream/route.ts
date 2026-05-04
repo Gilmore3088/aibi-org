@@ -12,7 +12,6 @@ import type { ToolboxMessage, ToolboxSkill } from '@/lib/toolbox/types';
 const MAX_TOKENS = 8192;
 const MAX_MESSAGES = 20;
 const MAX_MESSAGE_LENGTH = 12000;
-
 const ALLOWED_PROVIDERS: readonly ProviderName[] = ['anthropic', 'openai', 'gemini'];
 
 interface RunBody {
@@ -23,26 +22,20 @@ interface RunBody {
 }
 
 function isMessageList(value: unknown): value is ToolboxMessage[] {
-  return Array.isArray(value) && value.length > 0 && value.length <= MAX_MESSAGES && value.every((item) => (
-    typeof item === 'object' &&
-    item !== null &&
+  return Array.isArray(value) && value.length > 0 && value.length <= MAX_MESSAGES && value.every((item) =>
+    typeof item === 'object' && item !== null &&
     ((item as ToolboxMessage).role === 'user' || (item as ToolboxMessage).role === 'assistant') &&
-    typeof (item as ToolboxMessage).content === 'string'
-  ));
+    typeof (item as ToolboxMessage).content === 'string',
+  );
+}
+function isSkill(v: unknown): v is ToolboxSkill {
+  return typeof v === 'object' && v !== null && typeof (v as ToolboxSkill).cmd === 'string' && typeof (v as ToolboxSkill).name === 'string';
+}
+function isProviderName(v: unknown): v is ProviderName {
+  return typeof v === 'string' && (ALLOWED_PROVIDERS as readonly string[]).includes(v);
 }
 
-function isSkill(value: unknown): value is ToolboxSkill {
-  return typeof value === 'object' &&
-    value !== null &&
-    typeof (value as ToolboxSkill).cmd === 'string' &&
-    typeof (value as ToolboxSkill).name === 'string';
-}
-
-function isProviderName(value: unknown): value is ProviderName {
-  return typeof value === 'string' && (ALLOWED_PROVIDERS as readonly string[]).includes(value);
-}
-
-export async function POST(request: Request): Promise<NextResponse> {
+export async function POST(request: Request): Promise<Response> {
   const access = await getPaidToolboxAccess();
   if (!access) return NextResponse.json({ error: 'Paid access required.' }, { status: 403 });
 
@@ -52,21 +45,16 @@ export async function POST(request: Request): Promise<NextResponse> {
   } catch {
     return NextResponse.json({ error: 'Invalid JSON body.' }, { status: 400 });
   }
-
   if (!isSkill(body.skill) || !isMessageList(body.messages)) {
     return NextResponse.json({ error: 'Missing or invalid skill/messages.' }, { status: 400 });
   }
-  if (!isProviderName(body.provider) || typeof body.model !== 'string') {
-    return NextResponse.json({ error: 'Missing or invalid provider/model.' }, { status: 400 });
-  }
-  if (!isAllowedModel(body.provider, body.model)) {
-    return NextResponse.json({ error: 'Model not on the Playground v1 menu.' }, { status: 400 });
+  if (!isProviderName(body.provider) || typeof body.model !== 'string' || !isAllowedModel(body.provider, body.model)) {
+    return NextResponse.json({ error: 'Invalid provider or model.' }, { status: 400 });
   }
 
-  const provider: ProviderName = body.provider;
-  const model: string = body.model;
-
-  const latestUser = [...body.messages].reverse().find((message) => message.role === 'user');
+  const provider = body.provider;
+  const model = body.model;
+  const latestUser = [...body.messages].reverse().find((m) => m.role === 'user');
   if (!latestUser) return NextResponse.json({ error: 'Messages must include a user turn.' }, { status: 400 });
   if (latestUser.content.length > MAX_MESSAGE_LENGTH) {
     return NextResponse.json({ error: `Message exceeds ${MAX_MESSAGE_LENGTH} characters.` }, { status: 400 });
@@ -93,7 +81,6 @@ export async function POST(request: Request): Promise<NextResponse> {
 
   const pii = scanForPII(latestUser.content);
   if (!pii.safe) return NextResponse.json({ error: pii.reason }, { status: 422 });
-
   const injection = scanForInjection(latestUser.content);
   if (!injection.safe) return NextResponse.json({ error: injection.reason }, { status: 422 });
 
@@ -103,61 +90,61 @@ export async function POST(request: Request): Promise<NextResponse> {
     featureId: 'toolbox-playground',
     limits: { perLearnerDaily: 40, perCourseDailyCents: 10000 },
   });
-
   if (!limit.allowed) {
     await logUsage({
-      userId: access.userId,
-      courseSlug: 'toolbox',
-      featureId: 'toolbox-playground',
-      provider,
-      model,
-      status: 'rate-limited',
-      ipHash,
+      userId: access.userId, courseSlug: 'toolbox', featureId: 'toolbox-playground',
+      provider, model, status: 'rate-limited', ipHash,
     });
-    return NextResponse.json(
-      { error: 'Daily Toolbox AI limit reached. Please try again tomorrow.' },
-      { status: 429 },
-    );
+    return NextResponse.json({ error: 'Daily Toolbox AI limit reached.' }, { status: 429 });
   }
 
-  try {
-    const client = createLLMClient(provider);
-    const result = await client.chat({
-      model,
-      maxTokens: MAX_TOKENS,
-      temperature: 0.2,
-      system: buildToolboxSystemPrompt(body.skill),
-      messages: body.messages,
-    });
+  const skill = body.skill;
+  const messages = body.messages;
+  const userId = access.userId;
+  const encoder = new TextEncoder();
 
-    await logUsage({
-      userId: access.userId,
-      courseSlug: 'toolbox',
-      featureId: 'toolbox-playground',
-      provider,
-      model,
-      inputTokens: result.usage.inputTokens,
-      outputTokens: result.usage.outputTokens,
-      status: 'succeeded',
-      ipHash,
-    });
+  const stream = new ReadableStream<Uint8Array>({
+    async start(controller) {
+      const write = (obj: unknown) => controller.enqueue(encoder.encode(JSON.stringify(obj) + '\n'));
+      let inputTokens = 0;
+      let outputTokens = 0;
+      let errored = false;
+      try {
+        const client = createLLMClient(provider);
+        for await (const chunk of client.stream({
+          model,
+          maxTokens: MAX_TOKENS,
+          temperature: 0.2,
+          system: buildToolboxSystemPrompt(skill),
+          messages,
+        })) {
+          if (chunk.type === 'text') write({ type: 'text', text: chunk.text });
+          else if (chunk.type === 'stop') {
+            inputTokens = chunk.usage?.inputTokens ?? 0;
+            outputTokens = chunk.usage?.outputTokens ?? 0;
+            write({ type: 'done', usage: { inputTokens, outputTokens } });
+          } else if (chunk.type === 'error') {
+            errored = true;
+            write({ type: 'error', message: 'stream error' });
+          }
+        }
+      } catch (err) {
+        errored = true;
+        write({ type: 'error', message: err instanceof LLMError ? err.kind : 'unknown' });
+      } finally {
+        await logUsage({
+          userId, courseSlug: 'toolbox', featureId: 'toolbox-playground',
+          provider, model,
+          inputTokens, outputTokens,
+          status: errored ? 'errored' : 'succeeded',
+          ipHash,
+        });
+        controller.close();
+      }
+    },
+  });
 
-    return NextResponse.json({ text: result.text, usage: result.usage });
-  } catch (error) {
-    await logUsage({
-      userId: access.userId,
-      courseSlug: 'toolbox',
-      featureId: 'toolbox-playground',
-      provider,
-      model,
-      status: 'errored',
-      errorKind: error instanceof LLMError ? error.kind : 'unknown',
-      ipHash,
-    });
-
-    return NextResponse.json(
-      { error: 'The selected model is temporarily unavailable. Please try again or pick another model.' },
-      { status: error instanceof LLMError && error.kind === 'rate-limit' ? 429 : 500 },
-    );
-  }
+  return new Response(stream, {
+    headers: { 'content-type': 'application/x-ndjson; charset=utf-8' },
+  });
 }

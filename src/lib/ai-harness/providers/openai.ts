@@ -1,5 +1,5 @@
 import { OpenAI } from 'openai';
-import type { LLMClient, ChatRequest, ChatResponse, StopReason } from '../types';
+import type { LLMClient, ChatRequest, ChatResponse, StopReason, StreamChunk } from '../types';
 import { LLMError } from '../types';
 
 function mapStopReason(raw: string | null | undefined): StopReason {
@@ -60,9 +60,42 @@ export function createOpenAIClient(apiKey: string): LLMClient {
       }
     },
 
-    async *stream(): AsyncIterable<never> {
-      // Plan E fills this in.
-      throw new LLMError('openai', 'unknown', 'OpenAI streaming not implemented yet (Plan E)', false);
+    async *stream(req: ChatRequest): AsyncIterable<StreamChunk> {
+      try {
+        const messages = req.system
+          ? [{ role: 'system' as const, content: req.system }, ...req.messages.map((m) => ({ role: m.role, content: m.content }))]
+          : req.messages.map((m) => ({ role: m.role, content: m.content }));
+
+        const stream = await client.chat.completions.create({
+          model: req.model,
+          messages,
+          max_tokens: req.maxTokens,
+          temperature: req.temperature,
+          stream: true,
+          stream_options: { include_usage: true },
+        });
+
+        let inputTokens = 0;
+        let outputTokens = 0;
+        let stopReason: StopReason = 'end_turn';
+
+        for await (const part of stream as AsyncIterable<{
+          choices?: Array<{ delta?: { content?: string }; finish_reason?: string | null }>;
+          usage?: { prompt_tokens?: number; completion_tokens?: number };
+        }>) {
+          const delta = part.choices?.[0]?.delta?.content;
+          if (delta) yield { type: 'text', text: delta };
+          const finish = part.choices?.[0]?.finish_reason;
+          if (finish) stopReason = mapStopReason(finish);
+          if (part.usage) {
+            inputTokens = part.usage.prompt_tokens ?? 0;
+            outputTokens = part.usage.completion_tokens ?? 0;
+          }
+        }
+        yield { type: 'stop', stopReason, usage: { inputTokens, outputTokens } };
+      } catch (err) {
+        yield { type: 'error', error: toLLMError(err) };
+      }
     },
   };
 }

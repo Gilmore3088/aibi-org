@@ -13,6 +13,8 @@ vi.mock('@/lib/sandbox/injection-filter', () => ({
 }));
 vi.mock('@/lib/ai-harness/rate-limit', () => ({
   checkRateLimit: vi.fn(async () => ({ allowed: true })),
+  checkPerMinuteLimits: vi.fn(async () => ({ allowed: true })),
+  hashIp: vi.fn(() => 'hash-stub'),
   logUsage: vi.fn(async () => {}),
 }));
 
@@ -26,7 +28,7 @@ vi.mock('@/lib/ai-harness/client', () => ({
 }));
 
 import { createLLMClient } from '@/lib/ai-harness/client';
-import { logUsage } from '@/lib/ai-harness/rate-limit';
+import { checkPerMinuteLimits, logUsage } from '@/lib/ai-harness/rate-limit';
 import { scanForPII } from '@/lib/sandbox/pii-scanner';
 import { scanForInjection } from '@/lib/sandbox/injection-filter';
 
@@ -100,6 +102,16 @@ describe('POST /api/toolbox/run dispatcher', () => {
     expect(logUsage).toHaveBeenCalledWith(
       expect.objectContaining({ provider: 'openai', model: 'gpt-4o', status: 'succeeded' }),
     );
+  });
+
+  it('returns 429 with Retry-After when per-minute limit trips', async () => {
+    (checkPerMinuteLimits as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
+      allowed: false, reason: 'per-user-per-minute-exceeded', retryAfterSeconds: 42,
+    });
+    const res = await POST(reqBody({ skill: minimalSkill, messages, provider: 'anthropic', model: 'claude-sonnet-4-6' }));
+    expect(res.status).toBe(429);
+    expect(res.headers.get('retry-after')).toBe('42');
+    expect(chatMock).not.toHaveBeenCalled();
   });
 
   it('logs the chosen provider and model on error', async () => {
