@@ -10,9 +10,10 @@ import { PromptCard } from './PromptCard';
 
 interface MiniTutorialProps {
   readonly tutorial: MiniTutorialData;
+  readonly canSaveToToolbox?: boolean;
 }
 
-export function MiniTutorial({ tutorial }: MiniTutorialProps) {
+export function MiniTutorial({ tutorial, canSaveToToolbox = false }: MiniTutorialProps) {
   const platformMeta = PLATFORM_META[tutorial.platform];
 
   return (
@@ -80,7 +81,7 @@ export function MiniTutorial({ tutorial }: MiniTutorialProps) {
           <p className="text-[11px] font-mono uppercase tracking-widest text-[color:var(--color-slate)] mb-3">
             The prompt
           </p>
-          <PromptCard prompt={tutorial.prompt} />
+          <PromptCard prompt={tutorial.prompt} canSaveToToolbox={canSaveToToolbox} />
         </div>
       </div>
 

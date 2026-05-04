@@ -26,7 +26,10 @@ interface PromptCardProps {
   readonly userLevel?: ContentLevel | null;
   readonly initiallySaved?: boolean;
   readonly onSavedChange?: (promptId: string, saved: boolean) => void;
+  readonly canSaveToToolbox?: boolean;
 }
+
+type ToolboxState = 'idle' | 'saving' | 'saved' | 'error';
 
 const COPY_RESET_MS = 2000;
 
@@ -35,10 +38,13 @@ export function PromptCard({
   userLevel = null,
   initiallySaved = false,
   onSavedChange,
+  canSaveToToolbox = false,
 }: PromptCardProps) {
   const [copied, setCopied] = useState(false);
   const [saved, setSaved] = useState(initiallySaved);
   const [savingPrompt, setSavingPrompt] = useState(false);
+  const [toolboxState, setToolboxState] = useState<ToolboxState>('idle');
+  const [toolboxSkillId, setToolboxSkillId] = useState<string | null>(null);
 
   useEffect(() => {
     setSaved(initiallySaved);
@@ -106,6 +112,41 @@ export function PromptCard({
       setSavingPrompt(false);
     }
   }, [onSavedChange, prompt.id, saved]);
+
+  const handleSaveToToolbox = useCallback(async () => {
+    setToolboxState('saving');
+    try {
+      const response = await fetch('/api/toolbox/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          origin: 'course',
+          payload: {
+            promptId: prompt.id,
+            courseSlug: 'aibi-p',
+            moduleNumber: prompt.relatedModule,
+          },
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to save to toolbox');
+      }
+
+      const data: unknown = await response.json();
+      const id =
+        data && typeof data === 'object' && 'id' in data
+          ? String((data as { id: unknown }).id)
+          : null;
+      if (!id) {
+        throw new Error('Missing id in response');
+      }
+      setToolboxSkillId(id);
+      setToolboxState('saved');
+    } catch {
+      setToolboxState('error');
+    }
+  }, [prompt.id, prompt.relatedModule]);
 
   const card = (
     <article className="border border-[color:var(--color-parch-dark)] rounded-sm bg-[color:var(--color-parch)] p-6 space-y-4">
@@ -212,6 +253,33 @@ export function PromptCard({
           >
             {savingPrompt ? 'Saving' : saved ? 'Saved' : 'Save'}
           </button>
+          {canSaveToToolbox && toolboxState === 'saved' && toolboxSkillId ? (
+            <Link
+              href={`/dashboard/toolbox?skill=${toolboxSkillId}`}
+              className="font-sans text-[12px] text-[color:var(--color-sage)] hover:underline focus:outline-none focus:ring-2 focus:ring-[color:var(--color-sage)] focus:ring-offset-1 rounded-sm"
+            >
+              View in Toolbox →
+            </Link>
+          ) : canSaveToToolbox ? (
+            <button
+              type="button"
+              onClick={handleSaveToToolbox}
+              disabled={toolboxState === 'saving'}
+              className="font-sans text-[12px] hover:underline focus:outline-none focus:ring-2 focus:ring-offset-1 rounded-sm"
+              style={{
+                color:
+                  toolboxState === 'error'
+                    ? 'var(--color-error)'
+                    : 'var(--color-terra)',
+              }}
+            >
+              {toolboxState === 'saving'
+                ? 'Saving…'
+                : toolboxState === 'error'
+                  ? 'Save failed'
+                  : 'Save to Toolbox'}
+            </button>
+          ) : null}
           <Link
             href={relatedRep ? `/practice/${relatedRep.id}` : `/courses/aibi-p/${prompt.relatedModule}`}
             className="font-sans text-[12px] text-[color:var(--color-terra)] hover:underline focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-1 rounded-sm"
