@@ -55,7 +55,6 @@ export interface Prompt {
   readonly whatNotToPaste?: string;
   readonly exampleOutput?: string;
   readonly tags?: readonly string[];
-  readonly requiredLevel?: ContentLevel;
 }
 
 export interface MiniTutorialStep {
@@ -535,7 +534,6 @@ Constraints:
 - Do not make loan approval recommendations. This is a documentation completeness tool, not a credit decision tool.
 - Flag any item marked "Expired" with the staleness threshold (e.g., "PFS older than 90 days").`,
     tags: ['skill-builder', 'loan-documentation', 'checklist', 'RTFC'],
-    requiredLevel: 's',
   },
   {
     id: 'm7-operations-exception-report',
@@ -615,7 +613,6 @@ Constraints:
 - Write in third person, past tense. Do not use "we" or "our bank."
 - Do not cite specific criminal statutes. Describe behavior patterns; let law enforcement determine applicable statutes.`,
     tags: ['skill-builder', 'SAR', 'BSA-AML', 'compliance', 'RTFC'],
-    requiredLevel: 's',
   },
   {
     id: 'm7-finance-variance-analysis',
@@ -659,7 +656,6 @@ Constraints:
 - Do not recommend budget adjustments. Variance analysis describes what happened; budget revision is a management decision.
 - If provision for loan losses shows a material variance, always flag it as "[ALLL REVIEW — discuss with Chief Credit Officer]" regardless of direction.`,
     tags: ['skill-builder', 'variance-analysis', 'board-reporting', 'RTFC'],
-    requiredLevel: 's',
   },
   {
     id: 'm7-marketing-campaign-copy',
@@ -712,7 +708,6 @@ Constraints:
 - Mark any claim that needs compliance verification with "[COMPLIANCE CHECK]."
 - No exclamation points. No emojis. Community bank institutional tone.`,
     tags: ['skill-builder', 'campaign-copy', 'marketing', 'RTFC'],
-    requiredLevel: 's',
   },
 ] as const;
 
@@ -810,7 +805,6 @@ Constraints:
 - Include a question about the vendor's own use of customer data for model training — this is the single most important data privacy question for banking AI vendors.
 - Do not reference specific vendor names or products. Keep the questionnaire generic enough to reuse across vendors.`,
     tags: ['vendor-management', 'TPRM', 'due-diligence', 'IT-risk'],
-    requiredLevel: 's',
   },
 ] as const;
 
@@ -854,7 +848,6 @@ Constraints:
 - The orchestration must be executable by a non-technical operations manager — no code, no API calls, no automation platforms required
 - Each stage must be independently testable before the full chain is deployed`,
     tags: ['workflow-orchestration', 'multi-skill', 'operations', 'advanced'],
-    requiredLevel: 's',
   },
   {
     id: 's-vendor-ai-evaluation-scorecard',
@@ -894,7 +887,6 @@ Constraints:
 - The HITL definition must match the AIEOG Lexicon: a human with appropriate authority, information, and time to intervene before the AI decision takes effect
 - Do not create criteria that a vendor can satisfy with marketing materials alone. Evidence must be documentary (SOC 2, validation reports, contract language)`,
     tags: ['vendor-evaluation', 'TPRM', 'scorecard', 'IT-risk', 'advanced'],
-    requiredLevel: 's',
   },
   {
     id: 's-team-skill-library-template',
@@ -932,7 +924,6 @@ Constraints:
 - Include a field for "last tested against current platform version" — platforms update frequently and skills degrade without maintenance
 - Do not create a bureaucratic process that discourages skill sharing. The review step should take under 30 minutes for a standard skill`,
     tags: ['skill-management', 'team-library', 'department-operations', 'advanced'],
-    requiredLevel: 's',
   },
 ] as const;
 
@@ -981,7 +972,6 @@ Constraints:
 - The risk slide must include regulatory risk of inaction (operating without a governance framework while staff use consumer AI) — not just risk of action
 - Speaker notes must be in plain language. Assume the CEO is not a technologist.`,
     tags: ['board-presentation', 'AI-strategy', 'governance', 'executive', 'advanced'],
-    requiredLevel: 'l',
   },
   {
     id: 'l-efficiency-ratio-scenario-modeling',
@@ -1027,7 +1017,6 @@ Constraints:
 - Include a VERIFY placeholder wherever institution-specific data is required: [VERIFY: pull from FDIC BankFind Suite]
 - Do not model revenue growth — this model is limited to expense-side productivity only. Revenue impact of AI is a separate analysis.`,
     tags: ['efficiency-ratio', 'scenario-modeling', 'FDIC', 'finance', 'board-reporting', 'advanced'],
-    requiredLevel: 'l',
   },
 ] as const;
 
