@@ -4,7 +4,7 @@
 // Allows filtering by banking role. Renders OutputExampleCard for each result.
 
 import { useState, useMemo } from 'react';
-import type { PromptRole, ContentLevel } from '@content/courses/aibi-p/prompt-library';
+import type { PromptRole } from '@content/courses/aibi-p/prompt-library';
 import {
   OUTPUT_EXAMPLES,
   OUTPUT_ROLE_META,
@@ -23,11 +23,7 @@ const ROLE_FILTER_OPTIONS: readonly { value: RoleFilter; label: string }[] = [
   })),
 ];
 
-interface OutputGalleryClientProps {
-  readonly userLevel?: ContentLevel | null;
-}
-
-export function OutputGalleryClient({ userLevel = null }: OutputGalleryClientProps) {
+export function OutputGalleryClient() {
   const [activeRole, setActiveRole] = useState<RoleFilter>('all');
 
   const filtered = useMemo(() => {
@@ -84,11 +80,6 @@ export function OutputGalleryClient({ userLevel = null }: OutputGalleryClientPro
 
         <p className="mt-3 font-mono text-[11px] text-[color:var(--color-slate)]">
           Showing {filtered.length} of {totalCount} examples
-          {filtered.some((ex) => ex.requiredLevel) && (
-            <span className="ml-2" style={{ color: 'var(--color-terra)' }}>
-              · {filtered.filter((ex) => ex.requiredLevel).length} require higher certification
-            </span>
-          )}
         </p>
       </div>
 
@@ -102,7 +93,7 @@ export function OutputGalleryClient({ userLevel = null }: OutputGalleryClientPro
       ) : (
         <div className="space-y-4">
           {filtered.map((example) => (
-            <OutputExampleCard key={example.id} example={example} userLevel={userLevel} />
+            <OutputExampleCard key={example.id} example={example} />
           ))}
         </div>
       )}

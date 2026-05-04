@@ -2,7 +2,7 @@
 // These show learners what EXCELLENCE looks like in their department.
 // Each example is realistic, banking-specific, and drawn from real skill workflows.
 
-import type { PromptRole, PromptPlatform, ContentLevel } from './prompt-library';
+import type { PromptRole, PromptPlatform } from './prompt-library';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -22,7 +22,6 @@ export interface OutputExample {
   readonly outputText: string;        // the actual AI output (realistic, full text)
   readonly whatMakesItEffective: readonly OutputQualityMarker[];
   readonly qualityMarkers: readonly string[];  // what the learner should notice
-  readonly requiredLevel?: ContentLevel;
 }
 
 // ---------------------------------------------------------------------------
@@ -284,7 +283,6 @@ use in credit decisions. This brief is a research starting point, not a credit o
       'VERIFY and RISK FLAG markers are calibrated (not applied to every sentence) — only genuinely uncertain or consequential items are flagged',
       'Tenant mix shift section is granular enough to affect lease rollover stress testing',
     ],
-    requiredLevel: 's',
   },
 
   // -------------------------------------------------------------------------
@@ -575,7 +573,6 @@ filing, you must:
       'Legal citation (31 USC 5318(g)(2)) is accurate and specific — not a vague reference to "bank secrecy rules"',
       'The guidance section at the bottom is numbered and actionable — it is a checklist, not a disclaimer',
     ],
-    requiredLevel: 's',
   },
 
   // -------------------------------------------------------------------------
@@ -904,7 +901,6 @@ formal board action are noted under Recommendation above.`,
       'Board notification determination is stated explicitly at the end — the CFO has done the work of assessing materiality',
       'The reputational note about external communications is proactive governance guidance, not requested but relevant',
     ],
-    requiredLevel: 's',
   },
 
   // -------------------------------------------------------------------------
@@ -1490,7 +1486,6 @@ indemnification language.]`,
       'HITL (human-in-the-loop) uses the AIEOG Lexicon definition, which is the official regulatory terminology',
       'The exit provision criterion (Section 4) is often overlooked in vendor evaluations — its inclusion here reflects real operational risk awareness',
     ],
-    requiredLevel: 's',
   },
 
   // -------------------------------------------------------------------------
@@ -1603,7 +1598,6 @@ waiting for new rules; we are implementing the ones that already apply.`,
       'GAO-25-107197 is cited correctly — it specifically addresses the absence of a comprehensive AI framework',
       'The RISK FLAG instruction ("Do not soften it") is a quality marker: the AI understood that board risk communication requires directness',
     ],
-    requiredLevel: 'l',
   },
 
   // -------------------------------------------------------------------------
@@ -1716,7 +1710,6 @@ The optimistic scenario is achievable — it is not the right number to put in a
       'Revenue is explicitly excluded from the model scope — this prevents inflating the projection with speculative income benefits',
       'The optimistic scenario includes an explicit caution: "not recommended as a planning target." The AI did not just produce numbers — it assessed their reliability.',
     ],
-    requiredLevel: 'l',
   },
 
 ] as const;
