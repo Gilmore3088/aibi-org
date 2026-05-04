@@ -105,28 +105,6 @@ h1, h2, h3 {
   }
 }
 
-/* Editorial reveal — used by /coming-soon hero stack */
-@keyframes csRise {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.cs-rise {
-  animation: csRise 700ms cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .cs-rise {
-    animation: none;
-  }
-}
-
 /* Print stylesheet — used for "Save as PDF" from the assessment results view */
 @media print {
   html, body {
