@@ -10,6 +10,7 @@ vi.mock('@google/generative-ai', () => ({
 }));
 
 import { createGeminiClient } from './gemini';
+import type { StreamChunk } from '../types';
 
 describe('createGeminiClient', () => {
   beforeEach(() => {
@@ -104,7 +105,7 @@ describe('createGeminiClient', () => {
     getGenerativeModelMock.mockReturnValueOnce({ generateContentStream: generateContentStreamMock });
 
     const client = createGeminiClient('test-key');
-    const chunks: any[] = [];
+    const chunks: StreamChunk[] = [];
     for await (const chunk of client.stream({
       model: 'gemini-2.5-flash',
       maxTokens: 100,
@@ -115,7 +116,8 @@ describe('createGeminiClient', () => {
     const textChunks = chunks.filter((c) => c.type === 'text').map((c) => c.text).join('');
     expect(textChunks).toBe('hello');
     const stopChunk = chunks.find((c) => c.type === 'stop');
-    expect(stopChunk.usage).toEqual({ inputTokens: 4, outputTokens: 2 });
+    expect(stopChunk).toBeTruthy();
+    expect(stopChunk?.usage).toEqual({ inputTokens: 4, outputTokens: 2 });
   });
 
   afterEach(() => {

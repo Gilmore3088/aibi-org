@@ -8,6 +8,7 @@ vi.mock('openai', () => ({
 }));
 
 import { createOpenAIClient } from './openai';
+import type { StreamChunk } from '../types';
 
 describe('createOpenAIClient', () => {
   beforeEach(() => {
@@ -81,7 +82,7 @@ describe('createOpenAIClient', () => {
     createMock.mockResolvedValueOnce(mockStream);
 
     const client = createOpenAIClient('test-key');
-    const chunks: any[] = [];
+    const chunks: StreamChunk[] = [];
     for await (const chunk of client.stream({
       model: 'gpt-4o-mini',
       maxTokens: 100,
@@ -93,7 +94,7 @@ describe('createOpenAIClient', () => {
     expect(textChunks).toBe('hello');
     const stopChunk = chunks.find((c) => c.type === 'stop');
     expect(stopChunk).toBeTruthy();
-    expect(stopChunk.usage).toEqual({ inputTokens: 5, outputTokens: 2 });
+    expect(stopChunk?.usage).toEqual({ inputTokens: 5, outputTokens: 2 });
   });
 
   afterEach(() => {
