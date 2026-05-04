@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getPaidToolboxAccess } from '@/lib/toolbox/access';
 import { getLibrarySkill } from '@/lib/toolbox/library';
+import { getRecipesUsingSkill } from '@/lib/toolbox/recipes';
 import { Paywall } from '../../_components/Paywall';
 import { ForkButton } from './ForkButton';
 import type { ToolboxPillar } from '@/lib/toolbox/types';
@@ -50,6 +51,7 @@ export default async function LibrarySkillPage({
 
   const { skill, currentVersion } = detail;
   const content = currentVersion.content as Record<string, unknown>;
+  const usedInRecipes = await getRecipesUsingSkill(skill.slug);
 
   return (
     <main className="min-h-screen bg-[color:var(--color-linen)]">
@@ -94,6 +96,26 @@ export default async function LibrarySkillPage({
           <p className="mt-12 border-t border-[color:var(--color-ink)]/10 pt-6 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">
             Sourced from {skill.course_source_ref}
           </p>
+        )}
+
+        {usedInRecipes.length > 0 && (
+          <section className="mt-12 border-t border-[color:var(--color-ink)]/10 pt-6">
+            <h2 className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-slate)]">
+              Used in recipes
+            </h2>
+            <ul className="mt-3 space-y-2">
+              {usedInRecipes.map((r) => (
+                <li key={r.slug}>
+                  <Link
+                    href={`/dashboard/toolbox/cookbook/${r.slug}`}
+                    className="text-base text-[color:var(--color-ink)] underline decoration-[color:var(--color-ink)]/20 underline-offset-4 hover:text-[color:var(--color-terra)] hover:decoration-[color:var(--color-terra)]"
+                  >
+                    {r.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
         )}
       </article>
     </main>

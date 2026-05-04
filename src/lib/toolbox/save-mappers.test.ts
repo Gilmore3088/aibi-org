@@ -130,4 +130,23 @@ describe('libraryEntryToToolboxSkill', () => {
     expect(out.kind).toBe('template');
     expect(out.owner).toBe('u1');
   });
+
+  it('honors recipeSourceRef override when provided', () => {
+    const entry = {
+      id: 'lib-1',
+      slug: 'denial-letter',
+      kind: 'template',
+      title: 'Denial Letter',
+      description: 'd',
+      systemPrompt: 'sp',
+      userPromptTemplate: 'tmpl',
+      variables: [],
+      pillar: 'B',
+      category: 'Lending',
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any;
+    const out = libraryEntryToToolboxSkill(entry, 'u1', 'ver-7', 'cookbook:loan-memo#step-2');
+    expect(out.source).toBe('forked');
+    expect(out.sourceRef).toBe('cookbook:loan-memo#step-2');
+  });
 });

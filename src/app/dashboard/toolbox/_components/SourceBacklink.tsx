@@ -8,6 +8,7 @@ import type { ToolboxSource } from '@/lib/toolbox/types';
 
 const COURSE_REF_PATTERN = /^aibi-p\/module-(\d+)\/[^/]+$/;
 const LIBRARY_REF_PATTERN = /^library:([0-9a-f-]{36})@/i;
+const COOKBOOK_REF_PATTERN = /^cookbook:([^#]+)#step-(\d+)$/;
 
 interface SourceBacklinkProps {
   readonly source?: ToolboxSource;
@@ -32,6 +33,17 @@ function resolveTarget(
     return {
       label: `AiBI-P · Module ${moduleNumber}`,
       href: `/courses/aibi-p/${moduleNumber}`,
+    };
+  }
+  // Cookbook branch must precede the library branch: a cookbook source_ref
+  // (`cookbook:<slug>#step-<n>`) is not library-prefixed, but keeping this
+  // ordering explicit prevents a future edit from reversing it.
+  const cookbookMatch = COOKBOOK_REF_PATTERN.exec(sourceRef);
+  if (cookbookMatch) {
+    const [, slug, step] = cookbookMatch;
+    return {
+      label: `Cookbook recipe · step ${step}`,
+      href: `/dashboard/toolbox/cookbook/${slug}`,
     };
   }
   if (source === 'library' || source === 'forked') {

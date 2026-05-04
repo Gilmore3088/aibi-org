@@ -25,7 +25,7 @@ interface PlaygroundPayload {
 }
 interface LibraryPayload {
   origin: 'library';
-  payload: { librarySkillId: string; versionId: string };
+  payload: { librarySkillId: string; versionId: string; recipeSourceRef?: string };
 }
 type SaveBody = CoursePayload | PlaygroundPayload | LibraryPayload;
 
@@ -119,6 +119,7 @@ export async function POST(request: Request): Promise<NextResponse> {
       libraryRowToEntry(entry as LibraryRow),
       access.userId,
       body.payload.versionId,
+      body.payload.recipeSourceRef,
     );
     sourceRef = skill.sourceRef;
   }

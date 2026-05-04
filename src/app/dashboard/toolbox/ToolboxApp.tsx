@@ -22,11 +22,11 @@ import { SourceBacklink } from './_components/SourceBacklink';
 import { TemplateBuilder } from './_components/TemplateBuilder';
 import { UsageMeter, useUsage } from './_components/UsageMeter';
 
-type TabId = 'guide' | 'cookbook' | 'build' | 'playground' | 'toolbox';
+type TabId = 'guide' | 'library' | 'build' | 'playground' | 'toolbox';
 
 const TABS: readonly { id: TabId; label: string }[] = [
   { id: 'guide', label: 'Start Here' },
-  { id: 'cookbook', label: 'Cookbook' },
+  { id: 'library', label: 'Library' },
   { id: 'build', label: 'Build' },
   { id: 'playground', label: 'Playground' },
   { id: 'toolbox', label: 'My Toolbox' },
@@ -144,6 +144,14 @@ export function ToolboxApp() {
     const params = new URLSearchParams(searchParams.toString());
     params.set('tab', tab);
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+  }, [pathname, router, searchParams]);
+
+  useEffect(() => {
+    if (searchParams.get('tab') === 'cookbook') {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set('tab', 'library');
+      router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+    }
   }, [pathname, router, searchParams]);
 
   useEffect(() => {
@@ -321,7 +329,7 @@ export function ToolboxApp() {
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-6 lg:px-10">
-      <nav className="sticky top-[81px] z-30 -mx-6 mb-8 border-b border-[color:var(--color-ink)]/10 bg-[color:var(--color-linen)]/95 px-6 backdrop-blur lg:-mx-10 lg:px-10" aria-label="Toolbox sections">
+      <nav className="sticky top-[81px] z-30 -mx-6 mb-8 flex items-center justify-between gap-4 border-b border-[color:var(--color-ink)]/10 bg-[color:var(--color-linen)]/95 px-6 backdrop-blur lg:-mx-10 lg:px-10" aria-label="Toolbox sections">
         <div className="flex gap-1 overflow-x-auto">
           {TABS.map((tab) => (
             <Link
@@ -338,6 +346,12 @@ export function ToolboxApp() {
             </Link>
           ))}
         </div>
+        <Link
+          href="/dashboard/toolbox/cookbook"
+          className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)]"
+        >
+          Cookbook →
+        </Link>
       </nav>
 
       {notice && (
@@ -354,12 +368,12 @@ export function ToolboxApp() {
         <GuidePanel savedCount={skills.length} setTab={setTab} />
       )}
 
-      {safeTab === 'cookbook' && (
+      {safeTab === 'library' && (
         <section className="space-y-6">
           <div className="flex flex-col gap-4 border-b border-[color:var(--color-ink)]/10 pb-6 lg:flex-row lg:items-end lg:justify-between">
             <div>
               <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
-                Cookbook
+                Library
               </p>
               <h2 className="mt-2 font-serif text-4xl text-[color:var(--color-ink)]">
                 Fifteen tested banking skill starters.
@@ -471,7 +485,7 @@ export function ToolboxApp() {
           onExport={() => activeSkill && exportSkill(activeSkill)}
           onCopy={() => activeSkill && copySkill(activeSkill)}
           onEdit={() => activeSkill && loadSkill(activeSkill, 'build')}
-          onBrowse={() => setTab('cookbook')}
+          onBrowse={() => setTab('library')}
           onReset={() => setMessages([])}
           onSavePlayground={handleSavePlayground}
           playgroundSaveState={playgroundSaveState}
@@ -486,7 +500,7 @@ export function ToolboxApp() {
           onEdit={(skill) => loadSkill(skill, 'build')}
           onExport={exportSkill}
           onDelete={deleteSkill}
-          onBrowse={() => setTab('cookbook')}
+          onBrowse={() => setTab('library')}
           onBuild={() => {
             setDraftSkill({ ...EMPTY_WORKFLOW_SKILL });
             setBuildKind(null);
@@ -515,8 +529,8 @@ function GuidePanel({ savedCount, setTab }: { readonly savedCount: number; reado
           <Link href="/prompt-cards" className="border border-[color:var(--color-ink)]/25 px-5 py-3 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-ink)]">
             Prompt Cards
           </Link>
-          <button type="button" onClick={() => setTab('cookbook')} className="bg-[color:var(--color-terra)] px-5 py-3 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-linen)]">
-            Browse Cookbook
+          <button type="button" onClick={() => setTab('library')} className="bg-[color:var(--color-terra)] px-5 py-3 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-linen)]">
+            Browse Library
           </button>
           <button type="button" onClick={() => setTab('build')} className="border border-[color:var(--color-ink)]/25 px-5 py-3 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-ink)]">
             Build from scratch
@@ -526,7 +540,7 @@ function GuidePanel({ savedCount, setTab }: { readonly savedCount: number; reado
       <div className="border-l border-[color:var(--color-ink)]/10 pl-8">
         {[
           ['i.', 'Start Here', 'Understand the skill model and safety rules.'],
-          ['ii.', 'Cookbook', 'Load one of 15 banking templates.'],
+          ['ii.', 'Library', 'Load one of 15 banking templates.'],
           ['iii.', 'Build', 'Adapt a skill for your recurring workflow.'],
           ['iv.', 'Playground', 'Run fabricated scenarios against Claude.'],
           ['v.', 'My Toolbox', `${savedCount} saved skill${savedCount === 1 ? '' : 's'} in your account.`],
@@ -655,8 +669,8 @@ function PlaygroundPanel(props: {
     return (
       <section className="mx-auto max-w-2xl py-20 text-center">
         <h2 className="font-serif text-4xl text-[color:var(--color-ink)]">Pick a skill to test.</h2>
-        <p className="mt-3 text-sm text-[color:var(--color-slate)]">Load a Cookbook template or reopen a saved skill from your Toolbox.</p>
-        <button type="button" onClick={props.onBrowse} className="mt-6 bg-[color:var(--color-terra)] px-5 py-3 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-linen)]">Browse Cookbook</button>
+        <p className="mt-3 text-sm text-[color:var(--color-slate)]">Load a Library template or reopen a saved skill from your Toolbox.</p>
+        <button type="button" onClick={props.onBrowse} className="mt-6 bg-[color:var(--color-terra)] px-5 py-3 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-linen)]">Browse Library</button>
       </section>
     );
   }
@@ -747,9 +761,9 @@ function ToolboxPanel({ skills, librarySlugMap, onRun, onEdit, onExport, onDelet
     return (
       <section className="mx-auto max-w-2xl py-20 text-center">
         <h2 className="font-serif text-4xl text-[color:var(--color-ink)]">Your toolbox is empty.</h2>
-        <p className="mt-3 text-sm text-[color:var(--color-slate)]">Start from a Cookbook template or build the first custom skill for your recurring work.</p>
+        <p className="mt-3 text-sm text-[color:var(--color-slate)]">Start from a Library template or build the first custom skill for your recurring work.</p>
         <div className="mt-6 flex justify-center gap-3">
-          <button type="button" onClick={onBrowse} className="bg-[color:var(--color-terra)] px-5 py-3 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-linen)]">Browse Cookbook</button>
+          <button type="button" onClick={onBrowse} className="bg-[color:var(--color-terra)] px-5 py-3 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-linen)]">Browse Library</button>
           <button type="button" onClick={onBuild} className="border border-[color:var(--color-ink)]/20 px-5 py-3 font-mono text-[10px] uppercase tracking-widest">Build from scratch</button>
         </div>
       </section>
