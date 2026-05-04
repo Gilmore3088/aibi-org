@@ -17,6 +17,7 @@ import {
 } from '@/lib/toolbox/types';
 import { renderMarkdown } from '@/lib/sandbox/markdown-renderer';
 import { KindPicker } from './_components/KindPicker';
+import { ModelPicker, type ModelSelection } from './_components/ModelPicker';
 import { TemplateBuilder } from './_components/TemplateBuilder';
 
 type TabId = 'guide' | 'cookbook' | 'build' | 'playground' | 'toolbox';
@@ -128,6 +129,10 @@ export function ToolboxApp() {
   const [input, setInput] = useState('');
   const [running, setRunning] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
+  const [modelSelection, setModelSelection] = useState<ModelSelection>({
+    provider: 'anthropic',
+    model: 'claude-sonnet-4-6',
+  });
   const threadRef = useRef<HTMLDivElement>(null);
 
   const setTab = useCallback((tab: TabId) => {
@@ -222,7 +227,12 @@ export function ToolboxApp() {
       const res = await fetch('/api/toolbox/run', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ skill: activeSkill, messages: nextMessages }),
+        body: JSON.stringify({
+          skill: activeSkill,
+          messages: nextMessages,
+          provider: modelSelection.provider,
+          model: modelSelection.model,
+        }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? 'Claude run failed.');
@@ -395,6 +405,8 @@ export function ToolboxApp() {
           messages={messages}
           running={running}
           threadRef={threadRef}
+          modelSelection={modelSelection}
+          setModelSelection={setModelSelection}
           onRun={runSkill}
           onSave={() => activeSkill && saveSkill(activeSkill)}
           onExport={() => activeSkill && exportSkill(activeSkill)}
@@ -564,6 +576,8 @@ function PlaygroundPanel(props: {
   readonly messages: readonly ToolboxMessage[];
   readonly running: boolean;
   readonly threadRef: RefObject<HTMLDivElement>;
+  readonly modelSelection: ModelSelection;
+  readonly setModelSelection: (next: ModelSelection) => void;
   readonly onRun: () => void;
   readonly onSave: () => void;
   readonly onExport: () => void;
@@ -623,7 +637,8 @@ function PlaygroundPanel(props: {
             ))}
           </div>
         )}
-        <div className="mt-4 border border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)] p-3">
+        <div className="mt-4 space-y-3 border border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)] p-3">
+          <ModelPicker value={props.modelSelection} onChange={props.setModelSelection} disabled={props.running} />
           <textarea value={props.input} onChange={(event) => props.setInput(event.target.value)} rows={5} placeholder="Type a test prompt..." className="w-full resize-y border border-[color:var(--color-ink)]/10 bg-white px-3 py-2 text-sm" />
           <div className="mt-3 flex flex-wrap justify-between gap-3">
             <button type="button" onClick={props.onReset} className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">Reset conversation</button>
