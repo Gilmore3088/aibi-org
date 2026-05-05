@@ -130,7 +130,11 @@ export function PdfDownloadButton({ profileId, email }: PdfDownloadButtonProps) 
         )}
       </div>
       {state.kind === 'auth-prompt' && (
-        <SignupModal email={email} onClose={() => setState({ kind: 'ready' })} />
+        <SignupModal
+          email={email}
+          profileId={profileId}
+          onClose={() => setState({ kind: 'ready' })}
+        />
       )}
     </>
   );

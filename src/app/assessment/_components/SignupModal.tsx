@@ -5,10 +5,11 @@ import { signInWithMagicLink } from '@/lib/supabase/auth';
 
 interface SignupModalProps {
   readonly email: string;
+  readonly profileId: string | null;
   readonly onClose: () => void;
 }
 
-export function SignupModal({ email, onClose }: SignupModalProps) {
+export function SignupModal({ email, profileId, onClose }: SignupModalProps) {
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -16,8 +17,9 @@ export function SignupModal({ email, onClose }: SignupModalProps) {
     setStatus('sending');
     setErrorMessage(null);
     try {
-      const next =
-        typeof window !== 'undefined'
+      const next = profileId
+        ? `/results/${profileId}`
+        : typeof window !== 'undefined'
           ? window.location.pathname + window.location.search
           : '/assessment';
       const result = await signInWithMagicLink(email, next);
