@@ -36,31 +36,36 @@ export interface UserProfileRow {
 export async function upsertReadinessResult(
   email: string,
   result: ReadinessResult,
-): Promise<void> {
-  if (SKIP || !isSupabaseConfigured()) return;
+): Promise<{ id: string | null }> {
+  if (SKIP || !isSupabaseConfigured()) return { id: null };
 
   const client = createServiceRoleClient();
-  const { error } = await client.from('user_profiles').upsert(
-    {
-      email,
-      readiness_score: result.score,
-      readiness_tier_id: result.tierId,
-      readiness_tier_label: result.tierLabel,
-      readiness_answers: result.answers,
-      readiness_at: result.completedAt,
-      // v2 additions — guarded so existing rows do not lose data on rewrite.
-      ...(result.version ? { readiness_version: result.version } : {}),
-      ...(result.maxScore !== undefined ? { readiness_max_score: result.maxScore } : {}),
-      ...(result.dimensionBreakdown
-        ? { readiness_dimension_breakdown: result.dimensionBreakdown }
-        : {}),
-    },
-    { onConflict: 'email' },
-  );
+  const { data, error } = await client
+    .from('user_profiles')
+    .upsert(
+      {
+        email,
+        readiness_score: result.score,
+        readiness_tier_id: result.tierId,
+        readiness_tier_label: result.tierLabel,
+        readiness_answers: result.answers,
+        readiness_at: result.completedAt,
+        // v2 additions — guarded so existing rows do not lose data on rewrite.
+        ...(result.version ? { readiness_version: result.version } : {}),
+        ...(result.maxScore !== undefined ? { readiness_max_score: result.maxScore } : {}),
+        ...(result.dimensionBreakdown
+          ? { readiness_dimension_breakdown: result.dimensionBreakdown }
+          : {}),
+      },
+      { onConflict: 'email' },
+    )
+    .select('id')
+    .single();
 
   if (error) {
     throw new Error(`[user-profiles] upsertReadinessResult failed: ${error.message}`);
   }
+  return { id: (data?.id as string | undefined) ?? null };
 }
 
 /**

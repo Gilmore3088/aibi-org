@@ -1,0 +1,73 @@
+/* Print stylesheet — applies only to the /assessment/results/print route.
+ * US Letter sizing (8.5 x 11), 0.75" margins.
+ * Page-break utilities for per-section <article> blocks.
+ */
+@page {
+  size: letter;
+  margin: 0.75in;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #ffffff;
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.pdf-page {
+  page-break-after: always;
+  page-break-inside: avoid;
+  min-height: calc(11in - 1.5in);
+  display: flex;
+  flex-direction: column;
+}
+
+.pdf-page:last-child {
+  page-break-after: auto;
+}
+
+.pdf-page-footer {
+  margin-top: auto;
+  padding-top: 0.5in;
+  font-family: var(--font-mono);
+  font-size: 9pt;
+  color: var(--color-slate);
+  border-top: 0.5pt solid var(--color-ink);
+  display: flex;
+  justify-content: space-between;
+}
+
+.pdf-eyebrow {
+  font-family: var(--font-serif-sc);
+  font-size: 10pt;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-terra);
+  margin: 0;
+}
+
+.pdf-h1 {
+  font-family: var(--font-serif);
+  font-size: 36pt;
+  line-height: 1.1;
+  margin: 0;
+  color: var(--color-ink);
+}
+
+.pdf-h2 {
+  font-family: var(--font-serif);
+  font-size: 22pt;
+  line-height: 1.15;
+  margin: 0;
+  color: var(--color-ink);
+}
+
+.pdf-body {
+  font-family: var(--font-sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--color-ink);
+}

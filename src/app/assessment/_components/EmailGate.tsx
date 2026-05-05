@@ -13,7 +13,11 @@ interface EmailGateProps {
   readonly dimensionBreakdown?: Record<string, DimensionScoreSerialized>;
   readonly onCaptured: (
     email: string,
-    extras: { readonly firstName?: string; readonly institutionName?: string },
+    extras: {
+      readonly firstName?: string;
+      readonly institutionName?: string;
+      readonly profileId?: string | null;
+    },
   ) => void;
 }
 
@@ -66,8 +70,11 @@ export function EmailGate({
           marketingOptIn,
         }),
       });
+      const data = (await res.json().catch(() => ({}))) as {
+        error?: string;
+        profileId?: string | null;
+      };
       if (!res.ok) {
-        const data = (await res.json().catch(() => ({}))) as { error?: string };
         throw new Error(data.error ?? 'Something went wrong. Please try again.');
       }
       saveReadinessResult(trimmedEmail, {
@@ -82,6 +89,7 @@ export function EmailGate({
       onCaptured(trimmedEmail, {
         firstName: firstName.trim() || undefined,
         institutionName: institutionName.trim() || undefined,
+        profileId: data.profileId ?? null,
       });
     } catch (err) {
       setStatus('error');

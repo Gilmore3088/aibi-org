@@ -1,10 +1,23 @@
 # Assessment Results — Spec 2: PDF Download (Advocacy)
 
 **Date:** 2026-05-04
+**Amended:** 2026-05-05 — see "Plan-time corrections" below.
 **Status:** Draft (awaiting user review)
 **Owner:** James Gilmore
 **Parent:** `docs/superpowers/specs/2026-05-04-assessment-results-four-surfaces.md`
 **Position:** Surface 2 of 4. Ships after Spec 1 (on-screen reshape) merges.
+
+---
+
+## Plan-time corrections (2026-05-05)
+
+The original spec referenced an `assessment_responses` table throughout the Architecture and Acceptance Criteria sections. **No such table exists** in the codebase. Plan-time grep against `src/` and `supabase/migrations/` confirmed:
+
+- The actual persistent row is `public.user_profiles`, with `readiness_*` columns added in migration 00011.
+- `user_profiles.id` is a UUID that defaults to `gen_random_uuid()` for anonymous rows. After a magic-link signup with matching email, the row is rebound to the new `auth.users.id` via the `back-fill-profile.ts` helper introduced in Phase E of the implementation plan.
+- The capture-email flow upserts onto `user_profiles` keyed by email (`onConflict: 'email'`); it does NOT currently create a Supabase Auth user. The auth gate at PDF download click is the first moment a real auth user is created in the assessment journey.
+
+This document below has not been rewritten in full to substitute every `assessment_responses` mention — it would be churn for no reader benefit. Treat any remaining `assessment_responses` reference as `user_profiles`. The plan at `docs/superpowers/plans/2026-05-04-assessment-pdf-download.md` uses the corrected schema throughout.
 
 ---
 
