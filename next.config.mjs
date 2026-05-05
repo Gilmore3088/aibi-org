@@ -1,3 +1,19 @@
+// Production guard: SKIP_CONVERTKIT=true must never reach prod, or every
+// real user opt-in silently skips the CK call and the nurture sequence
+// never fires. The staging suppression flag is only for staging/preview.
+//
+// Refs: docs/superpowers/specs/2026-05-04-assessment-results-spec-3-email.md
+if (
+  process.env.NODE_ENV === 'production' &&
+  process.env.VERCEL_ENV === 'production' &&
+  process.env.SKIP_CONVERTKIT === 'true'
+) {
+  throw new Error(
+    '[next.config] SKIP_CONVERTKIT=true detected in production environment. ' +
+      'This flag is for staging only. Remove it from Vercel production env vars before deploying.',
+  );
+}
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {

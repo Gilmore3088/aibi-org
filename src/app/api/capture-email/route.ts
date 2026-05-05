@@ -6,7 +6,16 @@ import { NextResponse } from 'next/server';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
 import { subscribeToAssessmentForm } from '@/lib/convertkit';
 import { upsertContact } from '@/lib/hubspot';
-import { upsertReadinessResult } from '@/lib/supabase/user-profiles';
+import {
+  upsertReadinessResult,
+  getReadinessTierByEmail,
+  markConvertKitTagged,
+} from '@/lib/supabase/user-profiles';
+import {
+  tagAssessmentTier,
+  removeAssessmentTier,
+  type TierId,
+} from '@/lib/convertkit/sequences';
 import { sendAssessmentBreakdown } from '@/lib/resend';
 import {
   checkEmailCaptureLimit,
@@ -173,6 +182,13 @@ export async function POST(request: Request) {
   // Persist to Supabase user_profiles when configured.
   // Best-effort: a Supabase failure must not block the response — the
   // localStorage write in EmailGate.tsx is the fallback.
+  // Read the prior tier BEFORE the upsert so we know whether to remove
+  // a stale CK tag on retake. Captured here even if upsert fails — we
+  // still want to fix CK state if it drifted.
+  const priorTierId = isSupabaseConfigured()
+    ? await getReadinessTierByEmail(email)
+    : null;
+
   let profileId: string | null = null;
   if (isSupabaseConfigured()) {
     const result = await upsertReadinessResult(email, {
@@ -189,6 +205,48 @@ export async function POST(request: Request) {
       return { id: null as string | null };
     });
     profileId = result.id;
+  }
+
+  // ConvertKit tier-sequence routing. Honors marketing_opt_in only.
+  // Retake re-route: if the prior tier differs, remove its tag first so
+  // the user lands cleanly in the new tier's sequence.
+  const VALID_TIERS: ReadonlySet<string> = new Set([
+    'starting-point',
+    'early-stage',
+    'building-momentum',
+    'ready-to-scale',
+  ]);
+  let convertkitTagged = false;
+  if (marketingOptIn === true && VALID_TIERS.has(tier)) {
+    const newTier = tier as TierId;
+
+    if (priorTierId && priorTierId !== newTier && VALID_TIERS.has(priorTierId)) {
+      const removed = await removeAssessmentTier({
+        email,
+        tierId: priorTierId as TierId,
+      });
+      if (removed.status === 'failed') {
+        console.warn(
+          '[capture-email] CK retake unsubscribe failed:',
+          removed.reason,
+        );
+      }
+    }
+
+    const added = await tagAssessmentTier({
+      email,
+      tierId: newTier,
+      ...(trimmedFirstName ? { firstName: trimmedFirstName } : {}),
+    });
+
+    if (added.status === 'tagged') {
+      convertkitTagged = true;
+      if (profileId) {
+        await markConvertKitTagged(profileId);
+      }
+    } else if (added.status === 'failed') {
+      console.warn('[capture-email] CK tier tag failed:', added.reason);
+    }
   }
 
   // Send the breakdown email via Resend (best-effort, non-blocking).
@@ -216,5 +274,9 @@ export async function POST(request: Request) {
     }).catch((err) => console.warn('[capture-email] resend skip', err));
   }
 
-  return NextResponse.json({ ok: true, profileId });
+  return NextResponse.json({
+    ok: true,
+    profileId,
+    convertkitTagAdded: convertkitTagged,
+  });
 }

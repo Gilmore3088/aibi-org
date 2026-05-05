@@ -73,6 +73,7 @@ export function EmailGate({
       const data = (await res.json().catch(() => ({}))) as {
         error?: string;
         profileId?: string | null;
+        convertkitTagAdded?: boolean;
       };
       if (!res.ok) {
         throw new Error(data.error ?? 'Something went wrong. Please try again.');
@@ -86,6 +87,15 @@ export function EmailGate({
         ...(maxScore !== undefined ? { maxScore } : {}),
         ...(dimensionBreakdown ? { dimensionBreakdown } : {}),
       });
+      if (
+        data.convertkitTagAdded &&
+        typeof window !== 'undefined' &&
+        typeof window.plausible === 'function'
+      ) {
+        window.plausible('convertkit_tag_added', {
+          props: { tier: tierId, opt_in: marketingOptIn },
+        });
+      }
       onCaptured(trimmedEmail, {
         firstName: firstName.trim() || undefined,
         institutionName: institutionName.trim() || undefined,

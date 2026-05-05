@@ -188,3 +188,48 @@ export async function getProfileByEmail(email: string): Promise<UserProfileRow |
     proficiency,
   };
 }
+
+/**
+ * Read just the prior readiness_tier_id for an email. Used by capture-email
+ * BEFORE the upsert overwrites the row, so retake re-routing knows which
+ * old tier tag to remove from ConvertKit.
+ *
+ * Returns null when no row exists, when SKIP_SUPABASE_PROFILES=true,
+ * or when Supabase is not configured.
+ */
+export async function getReadinessTierByEmail(
+  email: string,
+): Promise<string | null> {
+  if (SKIP || !isSupabaseConfigured()) return null;
+
+  const client = createServiceRoleClient();
+  const { data, error } = await client
+    .from('user_profiles')
+    .select('readiness_tier_id')
+    .eq('email', email)
+    .maybeSingle();
+
+  if (error) {
+    console.warn('[user-profiles] getReadinessTierByEmail failed:', error.message);
+    return null;
+  }
+  return (data?.readiness_tier_id as string | null) ?? null;
+}
+
+/**
+ * Stamp the user_profiles row to record when the ConvertKit tier-sequence
+ * tag was added. Best-effort — capture-email logs and continues on failure.
+ */
+export async function markConvertKitTagged(profileId: string): Promise<void> {
+  if (SKIP || !isSupabaseConfigured()) return;
+
+  const client = createServiceRoleClient();
+  const { error } = await client
+    .from('user_profiles')
+    .update({ readiness_convertkit_tier_tagged_at: new Date().toISOString() })
+    .eq('id', profileId);
+
+  if (error) {
+    console.warn('[user-profiles] markConvertKitTagged failed:', error.message);
+  }
+}
