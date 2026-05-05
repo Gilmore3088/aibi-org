@@ -1,12 +1,26 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { AibiSeal } from '@/components/AibiSeal';
 import { WaitlistForm, type WaitlistInterest } from './WaitlistForm';
 
 export const metadata: Metadata = {
-  title: { absolute: 'The AI Banking Institute — Coming Soon' },
+  title: { absolute: 'The AI Banking Institute — Pre-launch' },
   description:
-    'The AI Banking Institute helps community banks and credit unions adopt AI safely and put it to work. Tell us what you are looking for and we will let you know when it opens.',
+    'AI is already in your bank. Your team just isn\'t trained to use it safely. Get your 3-minute AI Readiness Score for free.',
   robots: { index: false, follow: false },
+  openGraph: {
+    title: 'The AI Banking Institute',
+    description:
+      'Regulator-aligned AI training for community banks and credit unions. Get your 3-minute Readiness Score.',
+    type: 'website',
+    siteName: 'The AI Banking Institute',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'The AI Banking Institute',
+    description:
+      'Regulator-aligned AI training for community banks and credit unions.',
+  },
 };
 
 interface ComingSoonPageProps {
@@ -22,15 +36,72 @@ function getInterest(value: string | undefined): WaitlistInterest {
   ) {
     return value;
   }
-  return 'assessment';
+  return 'course';
 }
+
+const TENSION_POINTS: ReadonlyArray<{ readonly title: string; readonly body: string }> = [
+  {
+    title: 'Your staff are already using AI.',
+    body:
+      'Without permission, without policy, without a paper trail your examiner will accept. The risk is not whether AI enters your bank — it already has.',
+  },
+  {
+    title: 'Your compliance team is behind.',
+    body:
+      'Vendor documentation is not a workflow. A policy paragraph is not training. Audit-ready under SR 11-7 and the AIEOG Lexicon is a different question, and most institutions cannot answer it yet.',
+  },
+  {
+    title: 'Policies do not survive contact with reality.',
+    body:
+      'A line in your AI policy does not tell a loan officer how to safely summarize a member email on Monday. The gap between policy and practice is where risk and adoption both live.',
+  },
+];
+
+const DELIVERABLES: ReadonlyArray<{ readonly title: string; readonly body: string }> = [
+  {
+    title: 'A safe AI workflow for your role',
+    body:
+      'Concrete examples — rewriting a messy internal email, summarizing a policy without leaking PII, drafting a compliant member response. Useful in your next workday.',
+  },
+  {
+    title: 'A reusable prompt system',
+    body:
+      'Not one-off prompts. A system you apply across tasks, with structure your team can audit and improve. Built on the SAFE framework.',
+  },
+  {
+    title: 'A documented review process compliance can support',
+    body:
+      'Every artifact you produce comes with the review log, the human checkpoints, and the regulatory rationale. Hand it to your audit team without translation.',
+  },
+];
+
+const ROADMAP: ReadonlyArray<{ readonly code: string; readonly name: string; readonly status: string; readonly note: string }> = [
+  {
+    code: 'AiBI-P',
+    name: 'Practitioner',
+    status: 'First cohort opening',
+    note: 'Twelve modules · self-paced · 5–7 minute reps · regulator-aligned artifacts',
+  },
+  {
+    code: 'AiBI-S',
+    name: 'Specialist',
+    status: 'After Practitioner',
+    note: 'Sector tracks: Operations · Lending · BSA/AML',
+  },
+  {
+    code: 'AiBI-L',
+    name: 'Leader',
+    status: 'After Specialist',
+    note: 'For executives building institution-wide AI capability',
+  },
+];
 
 export default async function ComingSoonPage({ searchParams }: ComingSoonPageProps) {
   const sp = await searchParams;
   const interest = getInterest(sp?.interest);
 
   return (
-    <main className="min-h-screen bg-[color:var(--color-linen)] text-[color:var(--color-ink)] flex flex-col">
+    <main className="min-h-screen bg-[color:var(--color-linen)] text-[color:var(--color-ink)]">
       <div className="h-[3px] bg-[color:var(--color-terra)]" />
 
       <header className="mx-auto w-full max-w-5xl flex items-center justify-between px-6 md:px-10 py-5 border-b border-[color:var(--color-ink)]/15">
@@ -41,64 +112,202 @@ export default async function ComingSoonPage({ searchParams }: ComingSoonPagePro
           </span>
         </div>
         <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/60">
-          Coming soon
+          Pre-launch
         </span>
       </header>
 
-      <section className="flex-1 mx-auto w-full max-w-5xl px-6 md:px-10 py-12 md:py-16">
-        <div className="grid gap-12 md:gap-16 md:grid-cols-12">
-          <div className="md:col-span-6 md:pr-4">
-            <h1 className="font-serif text-[36px] leading-[1.08] md:text-[48px] md:leading-[1.05] tracking-[-0.01em]">
-              AI proficiency for community banks and credit unions.
-            </h1>
+      {/* HERO — tension headline + single primary CTA */}
+      <section className="mx-auto w-full max-w-5xl px-6 md:px-10 pt-14 md:pt-20 pb-16 md:pb-24">
+        <p className="font-serif-sc text-[11px] tracking-[0.28em] uppercase text-[color:var(--color-terra)]">
+          Regulator-aligned AI training · For community banks
+        </p>
+        <h1 className="mt-5 font-serif text-[40px] leading-[1.05] md:text-[64px] md:leading-[1.02] tracking-[-0.015em] max-w-4xl">
+          AI is already in your bank.
+          <br />
+          <span className="text-[color:var(--color-terra)]">Your team just isn&apos;t trained to use it safely.</span>
+        </h1>
 
-            <p className="mt-6 text-[16px] md:text-[17px] leading-[1.6] text-[color:var(--color-ink)]/80">
-              The AI Banking Institute helps community banks and credit unions
-              adopt AI safely and put it to work — readiness assessment,
-              practitioner education, enterprise rollout, and advisory.
-            </p>
+        <p className="mt-7 max-w-2xl text-[17px] md:text-[18px] leading-[1.6] text-[color:var(--color-ink)]/80">
+          The AI Banking Institute helps community banks and credit unions
+          adopt AI with regulator-ready frameworks, practical training, and
+          real workflows. Built specifically for the institutions FDIC, NCUA,
+          and the Federal Reserve supervise — not retrofitted enterprise content.
+        </p>
 
+        <div className="mt-10 flex flex-col sm:flex-row gap-4 sm:items-center">
+          <Link
+            href="/assessment"
+            className="inline-flex items-center justify-between gap-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] px-6 py-4 font-sans text-[13px] font-semibold uppercase tracking-[1.4px] hover:bg-[color:var(--color-terra-light)] transition-colors group"
+          >
+            <span>Get your 3-minute AI Readiness Score</span>
+            <span aria-hidden className="font-mono text-[15px] transition-transform duration-200 group-hover:translate-x-1">→</span>
+          </Link>
 
-            <div className="mt-8 pt-6 border-t border-[color:var(--color-ink)]/15">
-              <p className="font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55 mb-4">
-                Why this is different
-              </p>
-              <ul className="space-y-3">
-                <li className="flex gap-3 text-[14px] leading-[1.5] text-[color:var(--color-ink)]/85">
-                  <span aria-hidden className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-terra)] shrink-0" />
-                  <span>
-                    <span className="font-serif text-[15px]">Built for community banks</span>
-                    <span className="text-[color:var(--color-ink)]/65"> — not retrofitted enterprise content.</span>
-                  </span>
-                </li>
-                <li className="flex gap-3 text-[14px] leading-[1.5] text-[color:var(--color-ink)]/85">
-                  <span aria-hidden className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-terra)] shrink-0" />
-                  <span>
-                    <span className="font-serif text-[15px]">Regulator-ready outputs</span>
-                    <span className="text-[color:var(--color-ink)]/65"> — artifacts your compliance team can defend.</span>
-                  </span>
-                </li>
-                <li className="flex gap-3 text-[14px] leading-[1.5] text-[color:var(--color-ink)]/85">
-                  <span aria-hidden className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-terra)] shrink-0" />
-                  <span>
-                    <span className="font-serif text-[15px]">Skills, not principles</span>
-                    <span className="text-[color:var(--color-ink)]/65"> — bankers leave with things they use Monday.</span>
-                  </span>
-                </li>
-              </ul>
-              <p className="mt-5 text-[12px] leading-[1.55] text-[color:var(--color-ink)]/55">
-                Aligned with SR 11-7, Interagency TPRM Guidance, ECOA/Reg B, and the AIEOG AI Lexicon.
-              </p>
-            </div>
-          </div>
+          <a
+            href="#practitioner-waitlist"
+            className="inline-flex items-center gap-2 text-[14px] font-sans text-[color:var(--color-ink)]/75 hover:text-[color:var(--color-terra)] underline underline-offset-4 decoration-[color:var(--color-ink)]/20 hover:decoration-[color:var(--color-terra)] transition-colors"
+          >
+            Or join the first practitioner cohort
+            <span aria-hidden className="font-mono text-[12px]">↓</span>
+          </a>
+        </div>
 
-          <div className="md:col-span-6 md:pl-4">
-            <WaitlistForm initialInterest={interest} />
+        <p className="mt-5 font-mono text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/55">
+          Free · 8 dimensions · Score on screen · Starter artifact emailed
+        </p>
+      </section>
+
+      {/* THE SHIFT — three tension panels */}
+      <section className="bg-[color:var(--color-parch)] border-y border-[color:var(--color-ink)]/10">
+        <div className="mx-auto w-full max-w-5xl px-6 md:px-10 py-16 md:py-20">
+          <p className="font-serif-sc text-[11px] tracking-[0.28em] uppercase text-[color:var(--color-terra)]">
+            Why now
+          </p>
+          <h2 className="mt-3 font-serif text-[28px] md:text-[36px] leading-[1.15] tracking-[-0.01em] max-w-3xl">
+            AI did not wait for your AI policy. It is already in branch operations, lending, and member service.
+          </h2>
+
+          <div className="mt-12 grid gap-10 md:grid-cols-3">
+            {TENSION_POINTS.map((point, i) => (
+              <div key={point.title}>
+                <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-terra)]">
+                  {String(i + 1).padStart(2, '0')}
+                </p>
+                <h3 className="mt-3 font-serif text-[20px] md:text-[22px] leading-[1.2] text-[color:var(--color-ink)]">
+                  {point.title}
+                </h3>
+                <p className="mt-3 text-[14px] leading-[1.6] text-[color:var(--color-ink)]/75">
+                  {point.body}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      <footer className="mx-auto w-full max-w-5xl px-6 md:px-10 py-6 border-t border-[color:var(--color-ink)]/15 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+      {/* WHAT YOU ACTUALLY GET — outcomes, not features */}
+      <section className="mx-auto w-full max-w-5xl px-6 md:px-10 py-16 md:py-24">
+        <div className="grid gap-10 md:grid-cols-12">
+          <div className="md:col-span-5">
+            <p className="font-serif-sc text-[11px] tracking-[0.28em] uppercase text-[color:var(--color-terra)]">
+              What you leave with
+            </p>
+            <h2 className="mt-3 font-serif text-[28px] md:text-[40px] leading-[1.1] tracking-[-0.01em]">
+              You don&apos;t just learn AI. You leave with systems your team uses Monday morning.
+            </h2>
+            <p className="mt-5 text-[15px] leading-[1.6] text-[color:var(--color-ink)]/75">
+              Most AI training stops at concepts. Practitioner training stops when you have a workflow your compliance team will sign off on and your front-line staff will actually use.
+            </p>
+            <p className="mt-6 font-mono text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/55">
+              12 modules · 5–7 min reps · SAFE framework · regulator-aligned
+            </p>
+          </div>
+
+          <ul className="md:col-span-7 md:pl-8 space-y-8 md:border-l md:border-[color:var(--color-ink)]/10">
+            {DELIVERABLES.map((d, i) => (
+              <li key={d.title} className="md:pl-8 relative">
+                <span
+                  aria-hidden
+                  className="md:absolute md:-left-[7px] md:top-1.5 inline-block h-3 w-3 rounded-full bg-[color:var(--color-terra)] mb-3 md:mb-0"
+                />
+                <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55">
+                  {String(i + 1).padStart(2, '0')}
+                </p>
+                <h3 className="mt-2 font-serif text-[22px] md:text-[24px] leading-[1.2]">
+                  {d.title}
+                </h3>
+                <p className="mt-2 text-[15px] leading-[1.6] text-[color:var(--color-ink)]/75">
+                  {d.body}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* PROOF — concrete examples */}
+      <section className="bg-[color:var(--color-parch)] border-y border-[color:var(--color-ink)]/10">
+        <div className="mx-auto w-full max-w-5xl px-6 md:px-10 py-14 md:py-16">
+          <p className="font-serif-sc text-[11px] tracking-[0.28em] uppercase text-[color:var(--color-terra)]">
+            Concrete reps · not abstract concepts
+          </p>
+          <div className="mt-6 grid gap-6 md:grid-cols-3">
+            <div className="border border-[color:var(--color-ink)]/15 bg-[color:var(--color-linen)] p-5">
+              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-terra)]">Module 03 · 6 min</p>
+              <p className="mt-3 font-serif text-[18px] leading-[1.25]">Rewrite a messy internal email</p>
+              <p className="mt-2 text-[13px] leading-[1.55] text-[color:var(--color-ink)]/70">Without leaking customer PII or violating Reg E disclosures.</p>
+            </div>
+            <div className="border border-[color:var(--color-ink)]/15 bg-[color:var(--color-linen)] p-5">
+              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-terra)]">Module 06 · 7 min</p>
+              <p className="mt-3 font-serif text-[18px] leading-[1.25]">Summarize a policy safely</p>
+              <p className="mt-2 text-[13px] leading-[1.55] text-[color:var(--color-ink)]/70">With the human checkpoint and audit log your compliance team needs.</p>
+            </div>
+            <div className="border border-[color:var(--color-ink)]/15 bg-[color:var(--color-linen)] p-5">
+              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-terra)]">Module 09 · 5 min</p>
+              <p className="mt-3 font-serif text-[18px] leading-[1.25]">Draft a compliant member response</p>
+              <p className="mt-2 text-[13px] leading-[1.55] text-[color:var(--color-ink)]/70">Aligned with ECOA/Reg B and your institution&apos;s tone of voice.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ROADMAP — three credentials, light tease */}
+      <section className="mx-auto w-full max-w-5xl px-6 md:px-10 py-16 md:py-20">
+        <p className="font-serif-sc text-[11px] tracking-[0.28em] uppercase text-[color:var(--color-terra)]">
+          The path
+        </p>
+        <h2 className="mt-3 font-serif text-[28px] md:text-[36px] leading-[1.1] tracking-[-0.01em] max-w-2xl">
+          Three credentials. One progression.
+        </h2>
+
+        <ol className="mt-10 divide-y divide-[color:var(--color-ink)]/10 border-y border-[color:var(--color-ink)]/15">
+          {ROADMAP.map((item) => (
+            <li key={item.code} className="grid grid-cols-[auto_1fr_auto] gap-x-6 md:gap-x-10 py-6 items-baseline">
+              <span className="font-mono text-[12px] tracking-[0.22em] uppercase text-[color:var(--color-terra)] tabular-nums">
+                {item.code}
+              </span>
+              <div>
+                <h3 className="font-serif text-[22px] leading-tight">{item.name}</h3>
+                <p className="mt-1 text-[13px] leading-[1.5] text-[color:var(--color-ink)]/65">{item.note}</p>
+              </div>
+              <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55 text-right">
+                {item.status}
+              </span>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      {/* SECONDARY CTA — practitioner waitlist */}
+      <section
+        id="practitioner-waitlist"
+        className="bg-[color:var(--color-parch)] border-y border-[color:var(--color-ink)]/15 scroll-mt-8"
+      >
+        <div className="mx-auto w-full max-w-5xl px-6 md:px-10 py-16 md:py-20">
+          <div className="grid gap-12 md:grid-cols-12">
+            <div className="md:col-span-6">
+              <p className="font-serif-sc text-[11px] tracking-[0.28em] uppercase text-[color:var(--color-terra)]">
+                For when you&apos;re ready for the course
+              </p>
+              <h2 className="mt-3 font-serif text-[28px] md:text-[36px] leading-[1.1] tracking-[-0.01em]">
+                Join the first practitioner cohort.
+              </h2>
+              <p className="mt-5 text-[15px] leading-[1.6] text-[color:var(--color-ink)]/75">
+                The first AiBI-P cohort opens soon. We&apos;ll email you when it does — and only then. No drip sequence, no list rental, no sales call.
+              </p>
+              <p className="mt-5 text-[14px] leading-[1.55] text-[color:var(--color-ink)]/65">
+                Not ready for the course yet? Pick another option below — assessment, enterprise rollout, or advisory.
+              </p>
+            </div>
+
+            <div className="md:col-span-6">
+              <WaitlistForm initialInterest={interest} />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer className="mx-auto w-full max-w-5xl px-6 md:px-10 py-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-t border-[color:var(--color-ink)]/15">
         <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55">
           AIBankingInstitute.com
         </span>

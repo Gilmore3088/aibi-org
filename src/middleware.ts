@@ -31,6 +31,9 @@ const COMING_SOON_BYPASS_PREFIXES: readonly string[] = [
   '/admin',
   '/dashboard',
   '/coming-soon',
+  // The readiness assessment is the public lead magnet during pre-launch —
+  // the /coming-soon hero links to it as the primary CTA.
+  '/assessment',
 ];
 
 export async function middleware(request: NextRequest): Promise<NextResponse> {
