@@ -60,37 +60,6 @@ export const BIG_INSIGHT: Record<Tier['id'], string> = {
 };
 
 // ---------------------------------------------------------------------------
-// SECTION 3 — "What This Means" — concrete operational signals per tier.
-// ---------------------------------------------------------------------------
-
-export const TIER_INSIGHTS: Record<Tier['id'], readonly string[]> = {
-  'starting-point': [
-    'Staff experimenting with AI individually, without shared standards',
-    'Inconsistent output quality across teams',
-    'No clear rules for what is safe to input or generate',
-    'Time savings happening occasionally—but not systematically',
-  ],
-  'early-stage': [
-    'Pockets of activity exist on individual teams, but wins do not get shared',
-    'A use policy exists in some form, but it has not become daily workflow',
-    'Leadership is aware AI matters; nobody clearly owns the program',
-    'Audit trails are uneven, and the question of "what tool, what data, who approved" cannot be answered consistently',
-  ],
-  'building-momentum': [
-    'Multiple teams use AI tools with documented (if uneven) review processes',
-    'Governance exists; the audit-readiness question is mostly answered',
-    'The harder question now is measuring outcomes rigorously enough to defend the program',
-    'Training quality varies team to team — onboarding new staff into the AI program is still expensive',
-  ],
-  'ready-to-scale': [
-    'AI is integrated into daily workflows across departments',
-    'Governance, training, and review operate as a coordinated program',
-    'The advantage now compounds—every new hire enters a system, not a vacuum',
-    'The remaining risk is complacency: institutions at this tier lose ground when they stop investing in the next wave of capability',
-  ],
-};
-
-// ---------------------------------------------------------------------------
 // SECTION 4 — Gap content. Per dimension: explanation · impacts · what good
 // looks like. Drives the rich gap cards.
 // ---------------------------------------------------------------------------
@@ -512,18 +481,6 @@ export const SEVEN_DAY_PLAN: ReadonlyArray<{ readonly day: number; readonly acti
 ];
 
 // ---------------------------------------------------------------------------
-// SECTION 8 — What "Good" Looks Like (generic).
-// ---------------------------------------------------------------------------
-
-export const FUTURE_VISION: ReadonlyArray<string> = [
-  'Staff use AI for internal workflows daily',
-  'Prompts follow consistent, reusable patterns',
-  'Outputs are reviewed before use',
-  'Sensitive data is never exposed',
-  'At least 1–3 workflows produce measurable time savings',
-];
-
-// ---------------------------------------------------------------------------
 // Implications for Financial Professionals — tier-keyed exec-translation
 // across the three lenses a banker reads through.
 // ---------------------------------------------------------------------------
@@ -570,26 +527,51 @@ export const FINANCIAL_IMPLICATIONS: Record<Tier['id'], FinancialImplications> =
 };
 
 // ---------------------------------------------------------------------------
-// SECTION 9 — Recommended Path mistake intro per tier.
+// Closing CTA — tier-keyed single-card replacement for the cut Next-Steps trio.
+// One card renders at the bottom of the on-screen brief, varying content by
+// tier. Drives /courses/aibi-p (Starting Point + Early Stage) or
+// /for-institutions/advisory (Building Momentum + Ready to Scale).
 // ---------------------------------------------------------------------------
 
-export const RECOMMENDED_PATH_INTRO: Record<Tier['id'], string> = {
-  'starting-point':
-    'Most institutions at your stage make the same mistake: they explore tools before training their team. The fastest path forward is building staff capability first.',
-  'early-stage':
-    'Most institutions at your stage make the same mistake: they let isolated experiments stay isolated. The fastest path forward is converting those wins into a coordinated program with shared prompt patterns and a documented review step.',
-  'building-momentum':
-    'Most institutions at your stage make the same mistake: they assume the program will sustain itself. The fastest path forward is measuring outcomes rigorously and codifying the patterns that already work, so the program survives staff turnover.',
-  'ready-to-scale':
-    'Most institutions at your stage make the same mistake: they slow down because the early wins are visible. The fastest path forward is replicating capability across every new hire — turning today\'s advantage into a compounding one.',
-};
+export interface TierClosingCta {
+  readonly eyebrow: string;
+  readonly headline: string;
+  readonly body: string;
+  readonly ctaLabel: string;
+  readonly ctaHref: string;
+}
 
-// ---------------------------------------------------------------------------
-// SECTION 10 — Footer Close (generic).
-// ---------------------------------------------------------------------------
-
-export const FOOTER_CLOSE: { readonly headline: string; readonly body: string } = {
-  headline: 'AI adoption is not a technology problem.',
-  body:
-    "It's a training and workflow problem. The institutions that move early—and safely—create a measurable advantage.",
+export const TIER_CLOSING_CTA: Record<Tier['id'], TierClosingCta> = {
+  'starting-point': {
+    eyebrow: 'Your next move',
+    headline: 'Get your team trained on AI fundamentals.',
+    body:
+      'Skills come first. AiBI-P teaches working AI use to bankers in 12 short modules — your team can start this week.',
+    ctaLabel: 'Enroll your team in AiBI-P',
+    ctaHref: '/courses/aibi-p',
+  },
+  'early-stage': {
+    eyebrow: 'Your next move',
+    headline: 'Get your team trained on AI fundamentals.',
+    body:
+      'You have momentum. Lock it in with AiBI-P — your bankers learn the same patterns repeatable across the institution.',
+    ctaLabel: 'Enroll your team in AiBI-P',
+    ctaHref: '/courses/aibi-p',
+  },
+  'building-momentum': {
+    eyebrow: 'Your next move',
+    headline: 'Walk through these results with us.',
+    body:
+      "You're ready for a roadmap conversation, not a course. An Executive Briefing translates this report into a phased plan with leadership at the table.",
+    ctaLabel: 'Request an Executive Briefing',
+    ctaHref: '/for-institutions/advisory',
+  },
+  'ready-to-scale': {
+    eyebrow: 'Your next move',
+    headline: 'Talk to us about Leadership Advisory.',
+    body:
+      "You don't need foundations — you need ongoing AI judgment at the leadership level. Leadership Advisory is fractional CAIO work for institutions with internal momentum.",
+    ctaLabel: 'Request a conversation',
+    ctaHref: '/for-institutions/advisory',
+  },
 };

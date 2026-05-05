@@ -6,22 +6,18 @@ import { DIMENSION_LABELS } from '@content/assessments/v2/types';
 import type { Dimension } from '@content/assessments/v2/types';
 import { ScoreRing } from './ScoreRing';
 import { NewsletterCTA } from './NewsletterCTA';
-import { PrintButton } from './PrintButton';
 import { StarterArtifactCard } from './StarterArtifactCard';
 import { StarterPrompt } from './StarterPrompt';
 import { getStarterArtifact } from '@content/assessments/v2/starter-artifacts';
 import {
   PERSONAS,
   BIG_INSIGHT,
-  TIER_INSIGHTS,
   GAP_CONTENT,
   RECOMMENDATIONS,
   STARTER_PROMPTS,
   SEVEN_DAY_PLAN,
-  FUTURE_VISION,
-  RECOMMENDED_PATH_INTRO,
-  FOOTER_CLOSE,
   FINANCIAL_IMPLICATIONS,
+  TIER_CLOSING_CTA,
 } from '@content/assessments/v2/personalization';
 
 const BRIEFING_DATE_FORMATTER = new Intl.DateTimeFormat('en-US', {
@@ -92,17 +88,19 @@ export function ResultsViewV2({
   const fastestRoi = focusGap ? RECOMMENDATIONS[focusGap.id] : null;
   const starterPrompt = focusGap ? STARTER_PROMPTS[focusGap.id] : null;
   const starterArtifact = focusGap ? getStarterArtifact(focusGap.id) : null;
-  const insightBullets = TIER_INSIGHTS[tierId];
 
   return (
     <div className="w-full max-w-3xl mx-auto">
       {/* Executive briefing header */}
-      <header className="mb-14 border-b border-[color:var(--color-ink)]/15 pb-8">
-        <div className="flex items-baseline justify-between gap-4 mb-3">
+      <header
+        className="mb-14 border-b border-[color:var(--color-ink)]/15 pb-8"
+        style={{ animation: 'fadeInUp 600ms cubic-bezier(0.22, 1, 0.36, 1) both' }}
+      >
+        <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 mb-3">
           <p className="font-serif-sc text-xs uppercase tracking-[0.22em] text-[color:var(--color-terra)]">
             AI Readiness Briefing
           </p>
-          <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55">
+          <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55 shrink-0">
             {BRIEFING_DATE_FORMATTER.format(new Date())}
           </p>
         </div>
@@ -111,17 +109,21 @@ export function ResultsViewV2({
             ? `${firstName.trim()}, here is your assessment in brief.`
             : 'Your assessment, in brief.'}
         </h1>
-        <p className="mt-3 text-[15px] leading-[1.6] text-[color:var(--color-ink)]/75 max-w-2xl">
-          This briefing distills your AI Readiness Assessment into a concise overview for decision makers in financial institutions: your current stage, the implications, the most critical gaps, and the highest-impact next steps.
-        </p>
-        <p className="mt-3 text-[12px] text-[color:var(--color-ink)]/55" data-print-hide="true">
-          Delivered to {email}
+        <p
+          className="mt-4 font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55"
+          data-print-hide="true"
+        >
+          A 5-minute read
         </p>
       </header>
 
       {/* SECTION 1 — Diagnosis */}
       <SectionAnchor id="section-1" />
-      <section aria-labelledby="section-1-heading" className="space-y-8">
+      <section
+        aria-labelledby="section-1-heading"
+        className="space-y-8"
+        style={{ animation: 'fadeInUp 700ms cubic-bezier(0.22, 1, 0.36, 1) 200ms both' }}
+      >
         <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
           Diagnosis
         </p>
@@ -138,26 +140,12 @@ export function ResultsViewV2({
             <p className="mt-5 text-base md:text-lg text-[color:var(--color-ink)]/75 leading-relaxed max-w-xl">
               {persona.oneLine}
             </p>
-            <div className="mt-6 inline-flex items-baseline gap-3 border border-[color:var(--color-ink)]/15 bg-[color:var(--color-parch)] px-4 py-3 rounded-[2px]">
-              <span className="font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55">
-                AI Readiness Score
-              </span>
-              <span className="font-mono text-lg tabular-nums text-[color:var(--color-ink)]">
-                {score} / 48
-              </span>
-              <span
-                className="font-serif-sc text-[10px] uppercase tracking-[0.22em]"
-                style={{ color: tier.colorVar }}
-              >
-                {tier.label}
-              </span>
-            </div>
           </div>
           <div className="md:flex-shrink-0">
             <ScoreRing score={score} minScore={12} maxScore={48} colorVar={tier.colorVar} label={tier.label} />
           </div>
         </div>
-        <ContinueLink to="section-2" label="Continue" />
+        <ContinueLink to="section-2" label="The big insight" />
       </section>
 
       {/* SECTION 2 — Big Insight */}
@@ -185,59 +173,34 @@ export function ResultsViewV2({
           id="section-2b-heading"
           className="font-serif text-3xl md:text-4xl leading-tight text-[color:var(--color-ink)]"
         >
-          What this translates to in operating terms.
+          In operating terms.
         </h2>
-        <div className="grid gap-5 md:grid-cols-3">
-          <ImplicationCard
+        <dl className="border-t border-[color:var(--color-ink)]/15">
+          <ImplicationRow
             label="Operational efficiency"
             body={FINANCIAL_IMPLICATIONS[tierId].operational}
           />
-          <ImplicationCard
+          <ImplicationRow
             label="Risk management"
             body={FINANCIAL_IMPLICATIONS[tierId].risk}
           />
-          <ImplicationCard
+          <ImplicationRow
             label="Cost & dependency"
             body={FINANCIAL_IMPLICATIONS[tierId].cost}
           />
-        </div>
-        <ContinueLink to="section-3" label="What this means in practice" />
-      </section>
-
-      {/* SECTION 3 — What this means */}
-      <SectionAnchor id="section-3" />
-      <section className="space-y-8" aria-labelledby="section-3-heading">
-        <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
-          What this means
-        </p>
-        <h2 id="section-3-heading" className="font-serif text-3xl md:text-4xl leading-tight text-[color:var(--color-ink)]">
-          In practice, this typically shows up as:
-        </h2>
-        <ul className="space-y-4 border-l-2 border-[color:var(--color-terra)] pl-6">
-          {insightBullets.map((bullet) => (
-            <li
-              key={bullet}
-              className="text-base md:text-lg text-[color:var(--color-ink)]/85 leading-relaxed flex gap-3"
-            >
-              <span aria-hidden className="mt-2.5 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-terra)] shrink-0" />
-              <span>{bullet}</span>
-            </li>
-          ))}
-        </ul>
-        <ContinueLink to="section-4" label="Show me where I am exposed" />
+        </dl>
+        <ContinueLink to="section-4" label="Where you're strong vs exposed" />
       </section>
 
       {/* SECTION 4 — Strengths vs Gaps */}
       <SectionAnchor id="section-4" />
       <section className="space-y-10" aria-labelledby="section-4-heading">
-        <div>
-          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
-            Strengths and gaps
-          </p>
-          <h2 id="section-4-heading" className="mt-3 font-serif text-3xl md:text-4xl leading-tight text-[color:var(--color-ink)]">
-            Where you&apos;re strong vs exposed.
-          </h2>
-        </div>
+        <h2
+          id="section-4-heading"
+          className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]"
+        >
+          Strengths and gaps
+        </h2>
 
         {grouped.critical.length > 0 && (
           <div>
@@ -263,10 +226,10 @@ export function ResultsViewV2({
               {grouped.developing.map((dim) => (
                 <li
                   key={dim.id}
-                  className="flex items-baseline justify-between border border-[color:var(--color-ink)]/10 rounded-[3px] px-4 py-3 bg-[color:var(--color-linen)]"
+                  className="flex items-baseline justify-between gap-4 border border-[color:var(--color-ink)]/10 rounded-[3px] px-4 py-3 bg-[color:var(--color-linen)]"
                 >
-                  <span className="font-serif text-lg text-[color:var(--color-ink)]">{dim.label}</span>
-                  <span className="font-mono text-xs text-[color:var(--color-slate)] tabular-nums">
+                  <span className="min-w-0 font-serif text-lg text-[color:var(--color-ink)] break-words">{dim.label}</span>
+                  <span className="font-mono text-xs text-[color:var(--color-slate)] tabular-nums shrink-0">
                     {dim.score}/{dim.maxScore}
                   </span>
                 </li>
@@ -277,32 +240,27 @@ export function ResultsViewV2({
 
         {grouped.strong.length > 0 && (
           <div>
-            <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-sage)] mb-5 flex items-center gap-2">
-              <span aria-hidden className="inline-block h-2 w-2 rounded-full bg-[color:var(--color-sage)]" />
+            <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/65 mb-5 flex items-center gap-2">
+              <span aria-hidden className="inline-block h-2 w-2 rounded-full bg-[color:var(--color-ink)]/40" />
               Where you&apos;re strong
             </p>
             <ul className="grid gap-3">
               {grouped.strong.map((strength) => (
                 <li
                   key={strength.id}
-                  className="border border-[color:var(--color-sage)]/25 rounded-[3px] px-4 py-3 bg-[color:var(--color-sage)]/5"
+                  className="flex items-baseline justify-between gap-4 border border-[color:var(--color-ink)]/15 rounded-[3px] px-4 py-3 bg-[color:var(--color-parch)]"
                 >
-                  <div className="flex items-baseline justify-between mb-1">
-                    <span className="font-serif text-lg text-[color:var(--color-ink)]">{strength.label}</span>
-                    <span className="font-mono text-xs text-[color:var(--color-slate)] tabular-nums">
-                      {strength.score}/{strength.maxScore}
-                    </span>
-                  </div>
-                  <p className="text-sm text-[color:var(--color-ink)]/70 leading-relaxed">
-                    You already have a foundation here. This will accelerate adoption once the rest is in place.
-                  </p>
+                  <span className="min-w-0 font-serif text-lg text-[color:var(--color-ink)] break-words">{strength.label}</span>
+                  <span className="font-mono text-xs text-[color:var(--color-slate)] tabular-nums shrink-0">
+                    {strength.score}/{strength.maxScore}
+                  </span>
                 </li>
               ))}
             </ul>
           </div>
         )}
 
-        <ContinueLink to="section-5" label="Give me my first move" />
+        <ContinueLink to="section-5" label="Your first move" />
       </section>
 
       {/* SECTION 5 — Fastest ROI */}
@@ -323,7 +281,7 @@ export function ResultsViewV2({
               Start with {fastestRoi.title.toLowerCase()}.
             </h2>
 
-            <div className="bg-[color:var(--color-parch)] border-2 border-[color:var(--color-terra)]/40 rounded-[3px] p-7 md:p-9 space-y-7">
+            <div className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/15 rounded-[3px] p-7 md:p-9 space-y-7">
               <div>
                 <p className="font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55">
                   Why this is the right starting point
@@ -392,7 +350,7 @@ export function ResultsViewV2({
             <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55">
               Surfaced by your weakest dimension: {focusGap.label}
             </p>
-            <ContinueLink to="section-6" label="Give me the template" />
+            <ContinueLink to="section-6" label="Starter prompt" />
           </section>
         </>
       )}
@@ -426,14 +384,14 @@ export function ResultsViewV2({
                 </div>
               </details>
             )}
-            <ContinueLink to="section-7" label="What to do this week" />
+            <ContinueLink to="section-7" label="Your 7-day plan" />
           </section>
         </>
       )}
 
       {/* SECTION 7 — 7-Day Plan */}
       <SectionAnchor id="section-7" />
-      <section className="space-y-6" aria-labelledby="section-7-heading">
+      <section className="space-y-6 mb-20" aria-labelledby="section-7-heading">
         <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
           Your 7-day AI activation plan
         </p>
@@ -458,152 +416,42 @@ export function ResultsViewV2({
             </li>
           ))}
         </ol>
-        <ContinueLink to="section-8" label="What good looks like" />
       </section>
 
-      {/* SECTION 8 — Future Vision */}
-      <SectionAnchor id="section-8" />
-      <section className="space-y-6" aria-labelledby="section-8-heading">
-        <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
-          What good looks like
-        </p>
-        <h2 id="section-8-heading" className="font-serif text-3xl md:text-4xl leading-tight text-[color:var(--color-ink)]">
-          A Practitioner-Ready institution.
-        </h2>
-        <ul className="grid gap-3 bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-7 md:p-9">
-          {FUTURE_VISION.map((item) => (
-            <li
-              key={item}
-              className="flex gap-3 text-[15px] leading-[1.55] text-[color:var(--color-ink)]/85"
-            >
-              <span aria-hidden className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-terra)] shrink-0" />
-              <span>{item}</span>
-            </li>
-          ))}
-        </ul>
-        <ContinueLink to="section-9" label="How to move forward" />
-      </section>
-
-      {/* SECTION 9 — Next Steps (Training · Strategic Planning · Governance) */}
+      {/* SECTION 9 — Closing CTA (tier-keyed, single card) */}
       <SectionAnchor id="section-9" />
-      <section className="space-y-8" aria-labelledby="section-9-heading">
+      <section aria-labelledby="section-9-heading" className="space-y-6">
         <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
-          Next steps
+          {TIER_CLOSING_CTA[tierId].eyebrow}
         </p>
         <h2
           id="section-9-heading"
           className="font-serif text-3xl md:text-4xl leading-tight text-[color:var(--color-ink)]"
         >
-          {RECOMMENDED_PATH_INTRO[tierId]}
+          {TIER_CLOSING_CTA[tierId].headline}
         </h2>
-
-        <div className="grid gap-5 md:grid-cols-3">
-          {/* Training — primary CTA */}
-          <article className="border-2 border-[color:var(--color-terra)] rounded-[3px] p-6 bg-[color:var(--color-linen)] flex flex-col">
-            <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-terra)]">
-              01 · Training
-            </p>
-            <h3 className="mt-2 font-serif text-xl md:text-2xl text-[color:var(--color-ink)] leading-tight">
-              AiBI-P Practitioner
-            </h3>
-            <p className="mt-3 text-[14px] leading-[1.55] text-[color:var(--color-ink)]/80">
-              Enroll relevant staff to build foundational skills inside a safe, repeatable framework.
-            </p>
-            <ul className="mt-4 space-y-1.5">
-              {[
-                '12 short modules focused on real work',
-                'Reusable prompt systems',
-                'SAFE framework',
-              ].map((item) => (
-                <li key={item} className="text-[14px] text-[color:var(--color-ink)]/85 flex gap-3">
-                  <span aria-hidden className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-terra)] shrink-0" />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-            <p className="mt-4 text-[13px] leading-[1.55] text-[color:var(--color-ink)]/75 italic">
-              Outcome: your team can safely use AI in daily work within 2 weeks.
-            </p>
-            <a
-              href="/courses/aibi-p"
-              data-print-hide="true"
-              className="mt-auto pt-6 block text-center px-5 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
-            >
-              Start Practitioner Training
-            </a>
-          </article>
-
-          {/* Strategic Planning — secondary CTA */}
-          <article className="border border-[color:var(--color-ink)]/20 rounded-[3px] p-6 bg-[color:var(--color-linen)] flex flex-col">
-            <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55">
-              02 · Strategic planning
-            </p>
-            <h3 className="mt-2 font-serif text-xl md:text-2xl text-[color:var(--color-ink)] leading-tight">
-              Executive Briefing
-            </h3>
-            <p className="mt-3 text-[14px] leading-[1.55] text-[color:var(--color-ink)]/80">
-              Align leadership on priorities and define a roadmap for scaling AI responsibly across the institution.
-            </p>
-            <ul className="mt-4 space-y-1.5">
-              {[
-                'Walk through your results with leadership',
-                'Define a phased adoption roadmap',
-                'Identify the right first cohort',
-              ].map((item) => (
-                <li key={item} className="text-[14px] text-[color:var(--color-ink)]/85 flex gap-3">
-                  <span aria-hidden className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-ink)]/40 shrink-0" />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-            <a
-              href="/for-institutions/advisory"
-              data-print-hide="true"
-              className="mt-auto pt-6 block text-center px-5 py-3 border border-[color:var(--color-ink)]/30 text-[color:var(--color-ink)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)] transition-colors"
-            >
-              Request Briefing
-            </a>
-          </article>
-
-          {/* Governance — describes the work, no CTA */}
-          <article className="border border-[color:var(--color-ink)]/20 rounded-[3px] p-6 bg-[color:var(--color-linen)] flex flex-col">
-            <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55">
-              03 · Governance
-            </p>
-            <h3 className="mt-2 font-serif text-xl md:text-2xl text-[color:var(--color-ink)] leading-tight">
-              AI Use Policy
-            </h3>
-            <p className="mt-3 text-[14px] leading-[1.55] text-[color:var(--color-ink)]/80">
-              Document tool usage, data handling, and accountability so your audit team can defend the program.
-            </p>
-            <ul className="mt-4 space-y-1.5">
-              {[
-                'Approved tools and data classes',
-                'Mandatory human review steps',
-                'Retention and incident procedures',
-              ].map((item) => (
-                <li key={item} className="text-[14px] text-[color:var(--color-ink)]/85 flex gap-3">
-                  <span aria-hidden className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-ink)]/40 shrink-0" />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-            <p className="mt-auto pt-6 text-[12px] text-[color:var(--color-ink)]/55 italic">
-              Aligned with SR 11-7 model risk guidance and the AIEOG AI Lexicon.
-            </p>
-          </article>
-        </div>
-      </section>
-
-      {/* SECTION 10 — Footer Close */}
-      <SectionAnchor id="section-10" />
-      <section className="border-t border-[color:var(--color-ink)]/15 pt-12 text-center print-avoid-break">
-        <p className="font-serif text-2xl md:text-3xl text-[color:var(--color-ink)] leading-tight">
-          {FOOTER_CLOSE.headline}
-        </p>
-        <p className="mt-4 text-[16px] leading-[1.6] text-[color:var(--color-ink)]/75 max-w-2xl mx-auto">
-          {FOOTER_CLOSE.body}
-        </p>
+        <article className="border-2 border-[color:var(--color-terra)] rounded-[3px] p-6 md:p-8 bg-[color:var(--color-linen)]">
+          <p className="text-[15px] leading-[1.6] text-[color:var(--color-ink)]/85">
+            {TIER_CLOSING_CTA[tierId].body}
+          </p>
+          <a
+            href={TIER_CLOSING_CTA[tierId].ctaHref}
+            data-print-hide="true"
+            onClick={() => {
+              if (typeof window !== 'undefined' && typeof window.plausible === 'function') {
+                window.plausible('closing_cta_click', {
+                  props: {
+                    tier: tierId,
+                    destination: TIER_CLOSING_CTA[tierId].ctaHref,
+                  },
+                });
+              }
+            }}
+            className="mt-6 inline-block px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
+          >
+            {TIER_CLOSING_CTA[tierId].ctaLabel}
+          </a>
+        </article>
       </section>
 
       {/* APPENDIX — full diagnostic + newsletter + PDF */}
@@ -617,11 +465,11 @@ export function ResultsViewV2({
             const filledBars = Math.round(dim.pct * 4);
             return (
               <div key={dim.id} className="space-y-2">
-                <div className="flex items-baseline justify-between">
-                  <span className="font-serif text-lg text-[color:var(--color-ink)]">
+                <div className="flex items-baseline justify-between gap-4">
+                  <span className="min-w-0 font-serif text-lg text-[color:var(--color-ink)] break-words">
                     {dim.label}
                   </span>
-                  <span className="font-mono text-xs text-[color:var(--color-slate)] tabular-nums">
+                  <span className="font-mono text-xs text-[color:var(--color-slate)] tabular-nums shrink-0">
                     {dim.score} / {dim.maxScore}
                   </span>
                 </div>
@@ -647,29 +495,6 @@ export function ResultsViewV2({
       <div className="mt-12" data-print-hide="true">
         <NewsletterCTA email={email} />
       </div>
-
-      <div className="mt-12 text-center" data-print-hide="true">
-        <PrintButton />
-        <p className="font-mono text-[10px] text-[color:var(--color-slate)] mt-3">
-          Save your results as a PDF using your browser&rsquo;s print dialog.
-        </p>
-      </div>
-
-      {/* Print-only footer */}
-      <div className="print-footer">
-        <p>
-          <strong>The AI Banking Institute</strong> &middot; Turning Bankers
-          into Builders
-        </p>
-        <p>
-          Results generated for {email} &middot; Score: {score}/48 &middot;
-          Tier: {tier.label}
-        </p>
-        <p>
-          aibankinginstitute.com &middot; Request an Executive Briefing to
-          discuss your results.
-        </p>
-      </div>
     </div>
   );
 }
@@ -679,8 +504,11 @@ export function ResultsViewV2({
 // ---------------------------------------------------------------------------
 
 // Anchor target with breathing room above so smooth-scroll lands cleanly.
+// tabIndex={-1} makes the element programmatically focusable so hash-nav from
+// ContinueLink moves screen-reader focus into the new section — without it,
+// keyboard / SR users hear nothing when Continue is clicked.
 function SectionAnchor({ id }: { readonly id: string }) {
-  return <span id={id} aria-hidden className="block scroll-mt-12 -mt-12 pt-12 first:mt-0 first:pt-0" />;
+  return <span id={id} tabIndex={-1} className="block scroll-mt-16 outline-none" />;
 }
 
 // One-section spacer + Continue button. Anchor link drives the smooth scroll
@@ -704,28 +532,28 @@ function ContinueLink({ to, label }: { readonly to: string; readonly label: stri
 // Gap card (rich)
 // ---------------------------------------------------------------------------
 
-function ImplicationCard({ label, body }: { readonly label: string; readonly body: string }) {
+function ImplicationRow({ label, body }: { readonly label: string; readonly body: string }) {
   return (
-    <article className="border-l-2 border-[color:var(--color-terra)] bg-[color:var(--color-parch)] rounded-[3px] p-5">
-      <p className="font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-terra)]">
+    <div className="grid gap-3 md:grid-cols-[200px_1fr] md:gap-8 py-5 border-b border-[color:var(--color-ink)]/15">
+      <dt className="font-serif-sc text-[11px] uppercase tracking-[0.22em] text-[color:var(--color-terra)] md:pt-1">
         {label}
-      </p>
-      <p className="mt-3 text-[14px] leading-[1.6] text-[color:var(--color-ink)]/85">
+      </dt>
+      <dd className="text-[15px] leading-[1.6] text-[color:var(--color-ink)]/85">
         {body}
-      </p>
-    </article>
+      </dd>
+    </div>
   );
 }
 
 function GapCard({ gap }: { readonly gap: RankedDimension }) {
   const content = GAP_CONTENT[gap.id];
   return (
-    <article className="border-l-4 border-[color:var(--color-error)] bg-[color:var(--color-linen)] rounded-[3px] p-6">
+    <article className="border-l-2 border-[color:var(--color-error)] bg-[color:var(--color-linen)] rounded-[3px] p-6">
       <header className="flex items-baseline justify-between gap-4">
-        <h3 className="font-serif text-xl md:text-2xl text-[color:var(--color-ink)]">
+        <h3 className="min-w-0 font-serif text-xl md:text-2xl text-[color:var(--color-ink)] break-words">
           {gap.label}
         </h3>
-        <span className="font-mono text-xs text-[color:var(--color-slate)] tabular-nums">
+        <span className="font-mono text-xs text-[color:var(--color-slate)] tabular-nums shrink-0">
           {gap.score}/{gap.maxScore}
         </span>
       </header>
@@ -733,7 +561,7 @@ function GapCard({ gap }: { readonly gap: RankedDimension }) {
         {content.explanation}
       </p>
       <div className="mt-5">
-        <p className="font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-error)]">
+        <p className="font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55">
           What this leads to
         </p>
         <ul className="mt-2 space-y-1.5">
@@ -742,14 +570,14 @@ function GapCard({ gap }: { readonly gap: RankedDimension }) {
               key={impact}
               className="text-[14px] leading-[1.55] text-[color:var(--color-ink)]/85 flex gap-3"
             >
-              <span aria-hidden className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-error)] shrink-0" />
+              <span aria-hidden className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-ink)]/30 shrink-0" />
               <span>{impact}</span>
             </li>
           ))}
         </ul>
       </div>
       <div className="mt-5">
-        <p className="font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-sage)]">
+        <p className="font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-terra)]">
           What good looks like
         </p>
         <ul className="mt-2 space-y-1.5">
@@ -758,7 +586,7 @@ function GapCard({ gap }: { readonly gap: RankedDimension }) {
               key={vision}
               className="text-[14px] leading-[1.55] text-[color:var(--color-ink)]/85 flex gap-3"
             >
-              <span aria-hidden className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-sage)] shrink-0" />
+              <span aria-hidden className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-terra)] shrink-0" />
               <span>{vision}</span>
             </li>
           ))}
