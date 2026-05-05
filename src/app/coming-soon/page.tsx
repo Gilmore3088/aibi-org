@@ -28,17 +28,17 @@ const TENSION_POINTS: ReadonlyArray<{ readonly title: string; readonly body: str
   {
     title: 'Your staff are already using AI.',
     body:
-      'Without permission, without policy, without a paper trail your examiner will accept. The risk is not whether AI enters your bank — it already has.',
+      'ChatGPT, Copilot, and Gemini are running through staff browsers right now. Every prompt is a data-handling decision your compliance team would want to know about — and most of them happen with no audit trail at all.',
   },
   {
     title: 'Your compliance team is behind.',
     body:
-      'Vendor documentation is not a workflow. A policy paragraph is not training. Audit-ready under SR 11-7 and the AIEOG Lexicon is a different question, and most institutions cannot answer it yet.',
+      'A vendor PDF tells you what the model can do. Your team needs to know what they should do — under SR 11-7, the AIEOG Lexicon, and the regulator that examines you. That answer takes more than a policy memo.',
   },
   {
-    title: 'Policies do not survive contact with reality.',
+    title: 'Policy lives on paper. Risk lives in workflow.',
     body:
-      'A line in your AI policy does not tell a loan officer how to safely summarize a member email on Monday. The gap between policy and practice is where risk and adoption both live.',
+      'A loan officer summarizing a member email on Monday needs steps, examples, and a review process — not a paragraph from the AI policy. The gap between what is written and what is done is where both risk and adoption live.',
   },
 ];
 
@@ -108,7 +108,7 @@ export default async function ComingSoonPage({ searchParams }: ComingSoonPagePro
           The AI Banking Institute helps community banks and credit unions
           adopt AI with regulator-ready frameworks, practical training, and
           real workflows. Built specifically for the institutions FDIC, NCUA,
-          and the Federal Reserve supervise — not retrofitted enterprise content.
+          and the Federal Reserve supervise.
         </p>
 
         <div className="mt-10 flex flex-col sm:flex-row gap-4 sm:items-center">
@@ -159,10 +159,10 @@ export default async function ComingSoonPage({ searchParams }: ComingSoonPagePro
               What you leave with
             </p>
             <h2 className="mt-3 font-serif text-[28px] md:text-[40px] leading-[1.1] tracking-[-0.01em]">
-              You don&apos;t just learn AI. You leave with systems your team uses Monday morning.
+              You leave with systems your team uses Monday morning.
             </h2>
             <p className="mt-5 text-[15px] leading-[1.6] text-[color:var(--color-ink)]/75">
-              Most AI training stops at concepts. Practitioner training stops when you have a workflow your compliance team will sign off on and your front-line staff will actually use.
+              Practitioner training is finished when you have a workflow your compliance team will sign off on and your front-line staff will actually use.
             </p>
             <p className="mt-6 font-mono text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/55">
               12 modules · 5–7 min reps · SAFE framework · regulator-aligned
@@ -195,7 +195,7 @@ export default async function ComingSoonPage({ searchParams }: ComingSoonPagePro
       <section className="bg-[color:var(--color-parch)] border-y border-[color:var(--color-ink)]/10">
         <div className="mx-auto w-full max-w-5xl px-6 md:px-10 py-14 md:py-16">
           <p className="font-serif-sc text-[11px] tracking-[0.28em] uppercase text-[color:var(--color-terra)]">
-            Concrete reps · not abstract concepts
+            Concrete reps from the curriculum
           </p>
           <div className="mt-6 grid gap-6 md:grid-cols-3">
             <div className="border border-[color:var(--color-ink)]/15 bg-[color:var(--color-linen)] p-5">
