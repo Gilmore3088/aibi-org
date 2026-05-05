@@ -19,7 +19,15 @@ export const metadata: Metadata = {
 };
 
 interface PageProps {
-  readonly searchParams: { token?: string | string[] };
+  readonly searchParams: {
+    token?: string | string[];
+    session?: string | string[];
+    from?: string | string[];
+  };
+}
+
+function pickOne(v: string | string[] | undefined): string | undefined {
+  return Array.isArray(v) ? v[0] : v;
 }
 
 function InvalidInvite() {
@@ -42,8 +50,25 @@ function InvalidInvite() {
 }
 
 export default async function TakeAssessmentPage({ searchParams }: PageProps) {
-  const tokenParam = searchParams?.token;
-  const token = Array.isArray(tokenParam) ? tokenParam[0] : tokenParam;
+  let token = pickOne(searchParams?.token);
+  const sessionId = pickOne(searchParams?.session);
+
+  // Post-checkout entry: Stripe redirects individual buyers here with
+  // ?session={CHECKOUT_SESSION_ID} (no token, since the webhook generates it
+  // out-of-band). Look up the row by stripe_session_id and 302 to ?token=...
+  // so the buyer can start their assessment immediately without waiting for
+  // the invite email to arrive.
+  if (!token && sessionId) {
+    const supabase = createServiceRoleClient();
+    const { data: row } = await supabase
+      .from('indepth_assessment_takers')
+      .select('invite_token')
+      .eq('stripe_session_id', sessionId)
+      .maybeSingle();
+    if (row?.invite_token) {
+      redirect(`/assessment/in-depth/take?token=${encodeURIComponent(row.invite_token)}`);
+    }
+  }
 
   if (!token || !isValidInviteToken(token)) {
     return <InvalidInvite />;
