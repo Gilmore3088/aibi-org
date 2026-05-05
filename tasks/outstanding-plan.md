@@ -1,6 +1,6 @@
 # Outstanding Plan — Master Document
 
-**Created:** 2026-05-05 · **Last reviewed:** 2026-05-05
+**Created:** 2026-05-05 · **Last reviewed:** 2026-05-04
 
 Single source of truth for what's left across the project. Replaces ad-hoc scattering across `tasks/todo.md`, the four-surface specs, and PR descriptions. When in doubt: read this file first.
 
@@ -136,17 +136,9 @@ Conservative is fine for v1. James decides next session.
 
 **Blockers:** **§3.1 must ship first.** Otherwise it's a degenerate page (one row).
 
-### 3.3 Phase 1.5+ — Re-PDF on return-trip past retention
+### 3.3 Phase 1.5+ — Re-PDF on return-trip past retention ✅ Shipped 2026-05-04 (`66e5ba4`)
 
-**Job:** when a user clicks Download PDF on `/results/[id]` and the PDF was deleted by the 30-day cleanup cron, regenerate it on demand.
-
-**Scope:**
-- Update `PdfDownloadButton` state machine: if `/api/assessment/pdf/warm` returns `pdf-not-ready` from the download endpoint, automatically POST `/warm` again, then retry download.
-- Or: change `warm` to be a no-op when PDF exists, regen when missing — single code path covers both paths.
-
-**Effort estimate:** 1–2 hours. Code is small; testing the storage-deletion path is what takes time.
-
-**Blockers:** none. Can ship anytime. Low priority until users are actually returning past 30 days.
+`PdfDownloadButton` now re-warms once and retries when the download endpoint returns `pdf-not-ready`. Storage-deletion-path testing still pending real return visit past 30 days.
 
 ### 3.4 Phase 3 — AI Practice Sandbox AiBI-S + AiBI-L coverage
 
@@ -211,10 +203,10 @@ Shared infra: role-track sample data (5 variants), document library, system prom
 
 ### 4.2 Outstanding small items
 
-- **`src/types/course.ts:39`** — `kajabi_user_id` field still declared. Mark deprecated comment or schedule §2.3 migration.
-- **`tasks/todo.md` housekeeping** — line 55–98 has Phase-1-MVP backlog from 2026-04-15. Most of that is shipped per the 4 PR merges this week. Worth a pass to mark items done and trim.
-- **CLAUDE.md `/api/capture-email` row** — the Page Routes table at line 177 says "MVP". Specs 1–4 elevated this route significantly. Worth updating the description.
-- **HubSpot custom property auto-create script** — write a one-shot Node script that uses the HubSpot API to create the 5 custom properties. Saves James's time during weekend setup. Half-hour build, dependency on HubSpot key (operator must provide).
+- ✅ **`src/types/course.ts:39`** — `kajabi_user_id` deprecation comment landed (`edd1763`).
+- ✅ **`tasks/todo.md` housekeeping** — 2026-04-15 backlog trimmed; "Known prototype limitations" refreshed (`edd1763`).
+- ✅ **CLAUDE.md `/api/capture-email` row** — updated to Shipped with current surface area (`edd1763`).
+- ✅ **HubSpot custom property auto-create script** — `scripts/hubspot-create-properties.mjs` + `npm run hubspot:create-properties[:dry]` (`02578d3`).
 - **`.env.local.example` audit** — drift-prone. Schedule quarterly review.
 
 ---
@@ -242,6 +234,9 @@ Items the user community will demand or the data will support. Not buildable tod
 - `85c3787` — vitest coverage for loadAssessmentResponse (10 tests)
 - `bec53d7` — `docs/manual-verification-runbook.md`
 - `5c6b7a5` — Real ConvertKit form-subscribe adapter + newsletter route fix + 8 vitest tests
+- `edd1763` — docs cleanup: todo.md / CLAUDE.md / kajabi_user_id deprecation
+- `66e5ba4` — re-warm + retry on expired PDF (closes §3.3)
+- `02578d3` — HubSpot property auto-create script + npm scripts
 
 **Outstanding categories:**
 - §1 — operator weekend work (you, this weekend)
