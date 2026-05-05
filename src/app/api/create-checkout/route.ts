@@ -48,6 +48,24 @@ function badRequest(error: string): NextResponse {
   return NextResponse.json({ error }, { status: 400 });
 }
 
+type InstitutionValidation =
+  | { ok: true; quantity: number; institutionName: string }
+  | { ok: false; response: NextResponse };
+
+function validateInstitutionFields(body: CheckoutBody): InstitutionValidation {
+  const quantity = typeof body.quantity === 'number' ? body.quantity : Number(body.quantity);
+  if (!Number.isInteger(quantity) || quantity < MIN_INSTITUTION_QUANTITY) {
+    return {
+      ok: false,
+      response: badRequest(`Team purchases require quantity >= ${MIN_INSTITUTION_QUANTITY} (integer).`),
+    };
+  }
+  if (typeof body.institution_name !== 'string' || body.institution_name.trim().length === 0) {
+    return { ok: false, response: badRequest('institution_name is required for institution purchases.') };
+  }
+  return { ok: true, quantity, institutionName: body.institution_name.trim() };
+}
+
 /**
  * Check whether the given email belongs to an institution with discount_locked=true.
  * Returns true if a persistent discount applies.
@@ -110,14 +128,13 @@ async function handleAibiP(body: CheckoutBody, request: Request): Promise<NextRe
     return badRequest('mode must be "individual" or "institution".');
   }
 
+  let aibipQuantity: number | undefined;
+  let aibipInstitutionName: string | undefined;
   if (mode === 'institution') {
-    const quantity = typeof body.quantity === 'number' ? body.quantity : NaN;
-    if (!Number.isInteger(quantity) || quantity < MIN_INSTITUTION_QUANTITY) {
-      return badRequest('Team purchases require quantity >= 10 (integer).');
-    }
-    if (typeof body.institution_name !== 'string' || body.institution_name.trim().length === 0) {
-      return badRequest('institution_name is required for institution purchases.');
-    }
+    const validation = validateInstitutionFields(body);
+    if (!validation.ok) return validation.response;
+    aibipQuantity = validation.quantity;
+    aibipInstitutionName = validation.institutionName;
   }
 
   if (body.user_email !== undefined && body.user_email !== null) {
@@ -176,8 +193,8 @@ async function handleAibiP(body: CheckoutBody, request: Request): Promise<NextRe
     }
 
     // Institution mode (PAY-02)
-    const quantity = body.quantity as number;
-    const institutionName = (body.institution_name as string).trim();
+    const quantity = aibipQuantity as number;
+    const institutionName = aibipInstitutionName as string;
 
     if (!STRIPE_AIBIP_INSTITUTION_PRICE_ID) {
       return NextResponse.json({ error: 'Payment system not configured.' }, { status: 503 });
@@ -227,15 +244,10 @@ async function handleIndepth(body: CheckoutBody, request: Request): Promise<Next
   let quantity = 1;
 
   if (mode === 'institution') {
-    const q = typeof body.quantity === 'number' ? body.quantity : NaN;
-    if (!Number.isInteger(q) || q < MIN_INSTITUTION_QUANTITY) {
-      return badRequest('Institution mode requires quantity >= 10 (integer).');
-    }
-    if (typeof body.institution_name !== 'string' || body.institution_name.trim().length === 0) {
-      return badRequest('institution_name is required for institution purchases.');
-    }
-    quantity = q;
-    institutionName = body.institution_name.trim();
+    const validation = validateInstitutionFields(body);
+    if (!validation.ok) return validation.response;
+    quantity = validation.quantity;
+    institutionName = validation.institutionName;
   }
 
   const priceId =
@@ -244,9 +256,11 @@ async function handleIndepth(body: CheckoutBody, request: Request): Promise<Next
       : process.env.STRIPE_INDEPTH_ASSESSMENT_VOLUME_PRICE_ID;
 
   if (!priceId) {
-    console.error(
-      `[create-checkout] STRIPE_INDEPTH_ASSESSMENT_${mode === 'individual' ? '' : 'VOLUME_'}PRICE_ID is not set.`
-    );
+    const varName =
+      mode === 'individual'
+        ? 'STRIPE_INDEPTH_ASSESSMENT_PRICE_ID'
+        : 'STRIPE_INDEPTH_ASSESSMENT_VOLUME_PRICE_ID';
+    console.error(`[create-checkout] ${varName} is not set.`);
     return NextResponse.json({ error: 'Payment system not configured.' }, { status: 503 });
   }
 
