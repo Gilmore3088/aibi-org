@@ -443,7 +443,7 @@ export default function ProgressionPage() {
   // legacy v1 8-question shape is detected.
   const assessmentMax =
     user?.readiness?.maxScore ??
-    (user?.readiness?.answers.length === 8 ? 32 : 48);
+    (user?.readiness?.answers?.length === 8 ? 32 : 48);
 
   return (
     <main className="px-6 py-14 md:py-20">
