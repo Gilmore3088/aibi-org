@@ -6,6 +6,7 @@ import { DIMENSION_LABELS } from '@content/assessments/v2/types';
 import type { Dimension } from '@content/assessments/v2/types';
 import { ScoreRing } from './ScoreRing';
 import { NewsletterCTA } from './NewsletterCTA';
+import { PdfDownloadButton } from './PdfDownloadButton';
 import { StarterArtifactCard } from './StarterArtifactCard';
 import { StarterPrompt } from './StarterPrompt';
 import { getStarterArtifact } from '@content/assessments/v2/starter-artifacts';
@@ -34,6 +35,7 @@ interface ResultsViewV2Props {
   readonly email: string;
   readonly firstName?: string | null;
   readonly institutionName?: string | null;
+  readonly profileId: string | null;
 }
 
 interface RankedDimension {
@@ -79,6 +81,7 @@ export function ResultsViewV2({
   email,
   firstName,
   institutionName,
+  profileId,
 }: ResultsViewV2Props) {
   const persona = PERSONAS[tierId];
   const subjectName = institutionName?.trim() || 'Your institution';
@@ -495,6 +498,8 @@ export function ResultsViewV2({
       <div className="mt-12" data-print-hide="true">
         <NewsletterCTA email={email} />
       </div>
+
+      {profileId ? <PdfDownloadButton profileId={profileId} email={email} /> : null}
     </div>
   );
 }
