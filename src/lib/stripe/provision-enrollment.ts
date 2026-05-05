@@ -241,15 +241,12 @@ async function provisionIndepthIndividual(
   } catch (err) {
     console.warn('[webhook] sendIndepthIndividualInvite error:', err);
   }
-  try {
-    await tagSubscriberByEnv({
-      email: leaderEmail,
-      tagIdEnv: 'CONVERTKIT_TAG_ID_INDEPTH_INDIVIDUAL',
-      tagName: 'indepth-assessment-individual',
-    });
-  } catch (err) {
-    console.warn('[webhook] tagSubscriberByEnv(indepth-individual) error:', err);
-  }
+  // tagSubscriberByEnv is contractually never-throws — no try/catch needed.
+  await tagSubscriberByEnv({
+    email: leaderEmail,
+    tagIdEnv: 'CONVERTKIT_TAG_ID_INDEPTH_INDIVIDUAL',
+    tagName: 'indepth-assessment-individual',
+  });
 
   return { action: 'created', type: 'indepth-individual' };
 }
@@ -307,15 +304,12 @@ async function provisionIndepthInstitution(
   }
 
   // Best-effort tag — leader gets the leader-tier sequence.
-  try {
-    await tagSubscriberByEnv({
-      email: leaderEmail,
-      tagIdEnv: 'CONVERTKIT_TAG_ID_INDEPTH_LEADER',
-      tagName: 'indepth-assessment-leader',
-    });
-  } catch (err) {
-    console.warn('[webhook] tagSubscriberByEnv(indepth-leader) error:', err);
-  }
+  // tagSubscriberByEnv is contractually never-throws — no try/catch needed.
+  await tagSubscriberByEnv({
+    email: leaderEmail,
+    tagIdEnv: 'CONVERTKIT_TAG_ID_INDEPTH_LEADER',
+    tagName: 'indepth-assessment-leader',
+  });
 
   // Note: invite-driven taker rows are NOT generated here. The leader
   // creates them via the dashboard / Task 13 invite API.
