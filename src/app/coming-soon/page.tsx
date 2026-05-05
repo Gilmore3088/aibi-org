@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { AibiSeal } from '@/components/AibiSeal';
+import { ROICalculatorBody } from '@/components/sections/ROICalculatorBody';
 import { WaitlistForm, type WaitlistInterest } from './WaitlistForm';
 
 export const metadata: Metadata = {
@@ -212,6 +213,35 @@ export default async function ComingSoonPage({ searchParams }: ComingSoonPagePro
               <p className="mt-3 font-serif text-[18px] leading-[1.25]">Draft a compliant member response</p>
               <p className="mt-2 text-[13px] leading-[1.55] text-[color:var(--color-ink)]/70">Aligned with ECOA/Reg B and your institution&apos;s tone of voice.</p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ROI — quantify the gap with the visitor's own numbers */}
+      <section className="mx-auto w-full max-w-5xl px-6 md:px-10 py-16 md:py-24">
+        <div className="grid gap-10 md:gap-14 md:grid-cols-12">
+          <div className="md:col-span-5">
+            <p className="font-serif-sc text-[11px] tracking-[0.28em] uppercase text-[color:var(--color-terra)]">
+              Run your own numbers
+            </p>
+            <h2 className="mt-3 font-serif text-[28px] md:text-[40px] leading-[1.08] tracking-[-0.01em]">
+              How many staff hours could AI give your institution back?
+            </h2>
+            <p className="mt-5 text-[15px] leading-[1.6] text-[color:var(--color-ink)]/75">
+              Conservative model: staff count × loaded cost × weekly hours
+              recovered. Not a forecast — a way to frame the value of better
+              daily workflows before a bigger AI investment.
+            </p>
+            <p className="mt-6 font-mono text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/55">
+              Math matches CLAUDE.md spec · numbers stay on your device
+            </p>
+          </div>
+
+          <div className="md:col-span-7">
+            <ROICalculatorBody
+              ctaLabel="Save my analysis"
+              ctaHref="#waitlist"
+            />
           </div>
         </div>
       </section>

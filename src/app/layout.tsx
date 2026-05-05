@@ -13,6 +13,10 @@ import './globals.css';
 // visits it directly). The chromeless treatment exists for the takedown.
 const COMING_SOON_MODE = process.env.COMING_SOON === 'true';
 const CHROMELESS_PATHS: readonly string[] = ['/coming-soon'];
+// During coming-soon, the assessment is the only deep link the placeholder
+// promotes. We render it without site nav so visitors can't click "Education"
+// in a header and bounce back into the takedown.
+const CHROMELESS_PATHS_DURING_TAKEDOWN: readonly string[] = ['/assessment'];
 
 const PLAUSIBLE_DOMAIN = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN;
 
@@ -99,7 +103,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const pathname = (await headers()).get('x-pathname') ?? '/';
   const chromeless =
     COMING_SOON_MODE &&
-    CHROMELESS_PATHS.some(
+    [...CHROMELESS_PATHS, ...CHROMELESS_PATHS_DURING_TAKEDOWN].some(
       (path) => pathname === path || pathname.startsWith(`${path}/`),
     );
 
