@@ -11,6 +11,7 @@
 import { NextResponse } from 'next/server';
 import { createServiceRoleClient } from '@/lib/supabase/client';
 import { questions } from '@content/assessments/v2/questions';
+import { getTierV2 } from '@content/assessments/v2/scoring';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -91,7 +92,8 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'persist failed' }, { status: 500 });
   }
 
-  // Best-effort: tag for completion sequence. Never blocks success.
+  // Best-effort: send completion email + tag for completion sequence.
+  // Never blocks success. Both side effects share a single email fetch.
   try {
     const { data: row } = await supabase
       .from('indepth_assessment_takers')
@@ -99,15 +101,33 @@ export async function POST(request: Request) {
       .eq('id', takerId)
       .single();
     if (row?.invite_email) {
-      const { tagSubscriberByEnv } = await import('@/lib/convertkit/sequences');
-      await tagSubscriberByEnv({
-        email: row.invite_email,
-        tagIdEnv: 'CONVERTKIT_TAG_ID_INDEPTH_COMPLETER',
-        tagName: 'indepth-assessment-completer',
-      });
+      const tier = getTierV2(total);
+      const origin =
+        process.env.NEXT_PUBLIC_SITE_URL ?? 'https://aibankinginstitute.com';
+      const resultsUrl = `${origin}/results/in-depth/${takerId}`;
+
+      const [{ sendIndepthIndividualResults }, { tagSubscriberByEnv }] =
+        await Promise.all([
+          import('@/lib/resend'),
+          import('@/lib/convertkit/sequences'),
+        ]);
+
+      await Promise.allSettled([
+        sendIndepthIndividualResults({
+          email: row.invite_email,
+          resultsUrl,
+          score: total,
+          tierLabel: tier.label,
+        }),
+        tagSubscriberByEnv({
+          email: row.invite_email,
+          tagIdEnv: 'CONVERTKIT_TAG_ID_INDEPTH_COMPLETER',
+          tagName: 'indepth-assessment-completer',
+        }),
+      ]);
     }
   } catch {
-    // swallow — completion succeeds even if tagging fails
+    // swallow — completion succeeds even if email/tagging fails
   }
 
   return NextResponse.json({ ok: true, takerId, score: total });
