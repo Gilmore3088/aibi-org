@@ -439,7 +439,11 @@ export default function ProgressionPage() {
   // Readiness score history for growth chart (using assessment data if present)
   const assessmentScore = user?.readiness?.score ?? null;
   const assessmentDate = user?.readiness?.completedAt ?? null;
-  const assessmentMax = user?.readiness?.maxScore ?? 32;
+  // v2 (12-question, max 48) is the default; fall back to 32 only when the
+  // legacy v1 8-question shape is detected.
+  const assessmentMax =
+    user?.readiness?.maxScore ??
+    (user?.readiness?.answers.length === 8 ? 32 : 48);
 
   return (
     <main className="px-6 py-14 md:py-20">
