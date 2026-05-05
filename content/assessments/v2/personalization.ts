@@ -593,3 +593,53 @@ export const FOOTER_CLOSE: { readonly headline: string; readonly body: string } 
   body:
     "It's a training and workflow problem. The institutions that move early—and safely—create a measurable advantage.",
 };
+
+// ---------------------------------------------------------------------------
+// Closing CTA — tier-keyed single-card replacement for the cut Next-Steps trio.
+// One card renders at the bottom of the on-screen brief, varying content by
+// tier. Drives /courses/aibi-p (Starting Point + Early Stage) or
+// /for-institutions/advisory (Building Momentum + Ready to Scale).
+// ---------------------------------------------------------------------------
+
+export interface TierClosingCta {
+  readonly eyebrow: string;
+  readonly headline: string;
+  readonly body: string;
+  readonly ctaLabel: string;
+  readonly ctaHref: string;
+}
+
+export const TIER_CLOSING_CTA: Record<Tier['id'], TierClosingCta> = {
+  'starting-point': {
+    eyebrow: 'Your next move',
+    headline: 'Get your team trained on AI fundamentals.',
+    body:
+      'Skills come first. AiBI-P teaches working AI use to bankers in 12 short modules — your team can start this week.',
+    ctaLabel: 'Enroll your team in AiBI-P',
+    ctaHref: '/courses/aibi-p',
+  },
+  'early-stage': {
+    eyebrow: 'Your next move',
+    headline: 'Get your team trained on AI fundamentals.',
+    body:
+      'You have momentum. Lock it in with AiBI-P — your bankers learn the same patterns repeatable across the institution.',
+    ctaLabel: 'Enroll your team in AiBI-P',
+    ctaHref: '/courses/aibi-p',
+  },
+  'building-momentum': {
+    eyebrow: 'Your next move',
+    headline: 'Walk through these results with us.',
+    body:
+      "You're ready for a roadmap conversation, not a course. An Executive Briefing translates this report into a phased plan with leadership at the table.",
+    ctaLabel: 'Request an Executive Briefing',
+    ctaHref: '/for-institutions/advisory',
+  },
+  'ready-to-scale': {
+    eyebrow: 'Your next move',
+    headline: 'Talk to us about Leadership Advisory.',
+    body:
+      "You don't need foundations — you need ongoing AI judgment at the leadership level. Leadership Advisory is fractional CAIO work for institutions with internal momentum.",
+    ctaLabel: 'Request a conversation',
+    ctaHref: '/for-institutions/advisory',
+  },
+};
