@@ -6,7 +6,6 @@ import { DIMENSION_LABELS } from '@content/assessments/v2/types';
 import type { Dimension } from '@content/assessments/v2/types';
 import { ScoreRing } from './ScoreRing';
 import { NewsletterCTA } from './NewsletterCTA';
-import { PrintButton } from './PrintButton';
 import { StarterArtifactCard } from './StarterArtifactCard';
 import { StarterPrompt } from './StarterPrompt';
 import { getStarterArtifact } from '@content/assessments/v2/starter-artifacts';
@@ -489,29 +488,6 @@ export function ResultsViewV2({
 
       <div className="mt-12" data-print-hide="true">
         <NewsletterCTA email={email} />
-      </div>
-
-      <div className="mt-12 text-center" data-print-hide="true">
-        <PrintButton />
-        <p className="font-mono text-[10px] text-[color:var(--color-slate)] mt-3">
-          Save your results as a PDF using your browser&rsquo;s print dialog.
-        </p>
-      </div>
-
-      {/* Print-only footer */}
-      <div className="print-footer">
-        <p>
-          <strong>The AI Banking Institute</strong> &middot; Turning Bankers
-          into Builders
-        </p>
-        <p>
-          Results generated for {email} &middot; Score: {score}/48 &middot;
-          Tier: {tier.label}
-        </p>
-        <p>
-          aibankinginstitute.com &middot; Request an Executive Briefing to
-          discuss your results.
-        </p>
       </div>
     </div>
   );
