@@ -19,6 +19,7 @@ export default function AssessmentPage() {
   const [capturedEmail, setCapturedEmail] = useState<string | null>(null);
   const [capturedFirstName, setCapturedFirstName] = useState<string | null>(null);
   const [capturedInstitution, setCapturedInstitution] = useState<string | null>(null);
+  const [capturedProfileId, setCapturedProfileId] = useState<string | null>(null);
   const emailCaptured = capturedEmail !== null;
   const [mounted, setMounted] = useState(false);
   const scoreHeadingRef = useRef<HTMLHeadingElement | null>(null);
@@ -150,6 +151,7 @@ export default function AssessmentPage() {
                   setCapturedEmail(email);
                   setCapturedFirstName(extras.firstName ?? null);
                   setCapturedInstitution(extras.institutionName ?? null);
+                  setCapturedProfileId(extras.profileId ?? null);
                   state.advanceToResults();
                 }}
               />
@@ -176,6 +178,7 @@ export default function AssessmentPage() {
             tierId={state.tier.id}
             firstName={capturedFirstName}
             institutionName={capturedInstitution}
+            profileId={capturedProfileId}
           />
         )}
       </div>

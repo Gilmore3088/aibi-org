@@ -173,8 +173,9 @@ export async function POST(request: Request) {
   // Persist to Supabase user_profiles when configured.
   // Best-effort: a Supabase failure must not block the response — the
   // localStorage write in EmailGate.tsx is the fallback.
+  let profileId: string | null = null;
   if (isSupabaseConfigured()) {
-    await upsertReadinessResult(email, {
+    const result = await upsertReadinessResult(email, {
       score,
       tierId: tier,
       tierLabel,
@@ -183,7 +184,11 @@ export async function POST(request: Request) {
       ...(version ? { version } : {}),
       ...(maxScore !== undefined ? { maxScore } : {}),
       ...(dimensionBreakdown ? { dimensionBreakdown } : {}),
-    }).catch((err) => console.warn('[capture-email] supabase skip', err));
+    }).catch((err) => {
+      console.warn('[capture-email] supabase skip', err);
+      return { id: null as string | null };
+    });
+    profileId = result.id;
   }
 
   // Send the breakdown email via Resend (best-effort, non-blocking).
@@ -211,5 +216,5 @@ export async function POST(request: Request) {
     }).catch((err) => console.warn('[capture-email] resend skip', err));
   }
 
-  return NextResponse.json({ ok: true });
+  return NextResponse.json({ ok: true, profileId });
 }
