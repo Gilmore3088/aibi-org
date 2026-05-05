@@ -14,6 +14,11 @@ import {
   getFirstPracticeRecommendation,
   getTopAssessmentGaps,
 } from '@/lib/lms/assessment-recommendations';
+import {
+  PERSONAS,
+  RECOMMENDATIONS,
+  TIER_INSIGHTS,
+} from '@content/assessments/v2/personalization';
 
 interface ResultsViewV2Props {
   readonly score: number;
@@ -21,6 +26,8 @@ interface ResultsViewV2Props {
   readonly tierId: Tier['id'];
   readonly dimensionBreakdown: Record<Dimension, DimensionScore>;
   readonly email: string;
+  readonly firstName?: string | null;
+  readonly institutionName?: string | null;
 }
 
 export function ResultsViewV2({
@@ -29,9 +36,17 @@ export function ResultsViewV2({
   tierId,
   dimensionBreakdown,
   email,
+  firstName,
+  institutionName,
 }: ResultsViewV2Props) {
   const dimensions = Object.entries(dimensionBreakdown) as [Dimension, DimensionScore][];
   const topGaps = getTopAssessmentGaps(dimensionBreakdown);
+  const persona = PERSONAS[tierId];
+  const subjectName = institutionName?.trim() || 'Your institution';
+  const insightBullets = TIER_INSIGHTS[tierId];
+  const fastestRoi = topGaps[0]
+    ? RECOMMENDATIONS[topGaps[0].id as Dimension]
+    : null;
   // The top gap drives which starter artifact the banker takes home.
   // getTopAssessmentGaps is sorted lowest-percentile-first, so [0] is
   // the dimension where they have the most to gain by acting.
@@ -60,29 +75,97 @@ export function ResultsViewV2({
       {/* Confirmation header */}
       <div className="text-center" data-print-hide="true">
         <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-2">
-          Your AI Readiness Results
+          {firstName ? `${firstName.trim()}, your AI Readiness Results` : 'Your AI Readiness Results'}
         </p>
         <p className="text-sm text-[color:var(--color-ink)]/70">
           Results delivered to {email}
         </p>
       </div>
 
-      {/* Score ring + tier interpretation */}
-      <div className="flex flex-col items-center print-avoid-break">
-        <ScoreRing
-          score={score}
-          minScore={12}
-          maxScore={48}
-          colorVar={tier.colorVar}
-          label={tier.label}
-        />
-        <h2 className="font-serif text-3xl md:text-4xl text-center mt-8 max-w-xl text-[color:var(--color-ink)]">
-          {tier.headline}
-        </h2>
-        <p className="text-lg text-[color:var(--color-ink)]/75 text-center mt-4 max-w-2xl leading-relaxed">
-          {tier.summary}
+      {/* Diagnosis hero — persona + score, side-by-side on desktop */}
+      <section className="grid gap-8 md:gap-12 md:grid-cols-[1fr_auto] md:items-center print-avoid-break">
+        <div>
+          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
+            Diagnosis
+          </p>
+          <h2 className="font-serif text-3xl md:text-4xl leading-tight text-[color:var(--color-ink)] mt-3">
+            {subjectName} is in the{' '}
+            <span className="text-[color:var(--color-terra)]">{persona.label}</span>{' '}
+            phase.
+          </h2>
+          <p className="text-base md:text-lg text-[color:var(--color-ink)]/75 leading-relaxed mt-4 max-w-xl">
+            {persona.oneLine}
+          </p>
+        </div>
+        <div className="md:order-last md:flex-shrink-0">
+          <ScoreRing
+            score={score}
+            minScore={12}
+            maxScore={48}
+            colorVar={tier.colorVar}
+            label={tier.label}
+          />
+        </div>
+      </section>
+
+      {/* What this means — three tier-specific insight bullets */}
+      <section className="border-l-2 border-[color:var(--color-terra)] pl-5 print-avoid-break">
+        <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-4">
+          What this means
         </p>
-      </div>
+        <ul className="space-y-3">
+          {insightBullets.map((bullet) => (
+            <li
+              key={bullet}
+              className="text-base text-[color:var(--color-ink)]/80 leading-relaxed flex gap-3"
+            >
+              <span aria-hidden className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-terra)] shrink-0" />
+              <span>{bullet}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      {/* Fastest ROI opportunity — driven by the bottom-ranked dimension */}
+      {fastestRoi && topGaps[0] && (
+        <section
+          className="bg-[color:var(--color-parch)] border-2 border-[color:var(--color-terra)]/40 rounded-[3px] p-8 md:p-10 print-avoid-break"
+          aria-label="Your fastest ROI opportunity"
+        >
+          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
+            Your fastest ROI opportunity
+          </p>
+          <h3 className="font-serif text-2xl md:text-3xl text-[color:var(--color-ink)] leading-tight">
+            {fastestRoi.title}
+          </h3>
+          <p className="mt-4 text-base text-[color:var(--color-ink)]/80 leading-relaxed max-w-2xl">
+            {fastestRoi.explanation}
+          </p>
+          <dl className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
+            <div className="border-l border-[color:var(--color-ink)]/15 pl-4">
+              <dt className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/55">
+                Risk
+              </dt>
+              <dd className="mt-1 text-[color:var(--color-ink)]">{fastestRoi.riskLevel}</dd>
+            </div>
+            <div className="border-l border-[color:var(--color-ink)]/15 pl-4">
+              <dt className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/55">
+                Time saved
+              </dt>
+              <dd className="mt-1 text-[color:var(--color-ink)]">{fastestRoi.timeSaved}</dd>
+            </div>
+            <div className="border-l border-[color:var(--color-ink)]/15 pl-4">
+              <dt className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/55">
+                Owner
+              </dt>
+              <dd className="mt-1 text-[color:var(--color-ink)]">{fastestRoi.owner}</dd>
+            </div>
+          </dl>
+          <p className="mt-5 font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/55">
+            Surfaced by your weakest dimension: {topGaps[0].label}
+          </p>
+        </section>
+      )}
 
       {/* Score interpretation */}
       <section className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-8 md:p-10 print-avoid-break">
