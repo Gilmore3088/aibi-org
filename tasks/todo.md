@@ -1,6 +1,6 @@
 # AiBI — Persistent To-Do / Backlog
 
-Last updated: 2026-04-15
+Last updated: 2026-05-04
 
 ## Phase 1 — MVP Launch Gate
 
@@ -145,30 +145,18 @@ Last updated: 2026-04-15
 21. [ ] **Supabase Auth setup** — signup/login flow
 22. [ ] **Create work-products Storage bucket policies**
 
-**External service wiring (when accounts are created):**
+**External service wiring — see `tasks/weekend-env-setup.md` and `tasks/outstanding-plan.md`**
 
-23. [ ] Sign up for Calendly → wire Executive Briefing links
-24. [ ] Sign up for Plausible → wire analytics events
-25. [ ] Sign up for ConvertKit or Loops → wire email capture
-26. [ ] Sign up for HubSpot or Attio → wire CRM
-27. [ ] Connect Vercel → deploy to AIBankingInstitute.com
-28. [ ] DNS + SSL for AIBankingInstitute.com
-29. [ ] Create Stripe products → wire Price IDs
-30. [ ] Rate limiting on `/api/capture-email`
+ConvertKit adapter, Plausible deferred queue, Vercel deploy, Resend SMTP, and rate limiting all shipped or scheduled. Remaining operator-side env wiring lives in `weekend-env-setup.md`. Stripe price IDs land via Stripe MCP next session per `outstanding-plan.md` Build A.
 
-### Known prototype limitations
+### Known prototype limitations (2026-05-04)
 
-- Dashboard only works in the same browser (localStorage, not server-side)
-  until Supabase Auth is wired
-- "Request Executive Briefing" links go to placeholder Calendly URL
-- Email capture logs to console, not to any database or CRM
-- Newsletter subscribe is a no-op until ConvertKit/Loops is wired
-- Safe AI Use Guide download form logs intent but doesn't deliver a PDF
-- Course flow uses dev bypass (`SKIP_DEV_BYPASS`) — not tested with real auth
-- Work-products Storage bucket has no RLS policies yet (upload will fail for
-  real users)
-- Stripe checkout code is built but no live Price IDs set; do not ship
-  without provisioning path (CLAUDE.md rule)
+- Dev bypass removed (2026-04-17). Real Supabase Auth required everywhere.
+- ConvertKit adapter live; assessment + newsletter calls real `/v3/forms/{id}/subscribe`. Suppressed on staging via `SKIP_CONVERTKIT=true`. Sequence tagging shipped (Spec 3).
+- "Request Executive Briefing" still uses placeholder Calendly URL until `NEXT_PUBLIC_CALENDLY_URL` is set in Vercel.
+- Safe AI Use Guide download form logs intent but doesn't deliver a PDF.
+- Work-products Storage bucket RLS policies still TODO.
+- Stripe checkout code is built; provisioning path (webhook → `course_enrollments` → entitlement gate) is built. **Do not ship checkout** until Stripe MCP creates products, price IDs land in env, and end-to-end test is run (see `outstanding-plan.md` Build A).
 
 ## Phase 1.5 — Data loop (after first 50 respondents)
 

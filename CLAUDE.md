@@ -174,7 +174,7 @@ SKIP_CONVERTKIT=true
 | `/security` | SSR | Phase 2 | Pillar B landing. Free guide download + email gate. |
 | `/about` | SSR | Phase 3 | Founder story. |
 | `/resources` | SSR | Phase 3 | AI Banking Brief archive + newsletter. |
-| `/api/capture-email` | API | MVP | ConvertKit + HubSpot. Rate limited. Suppressed on staging. |
+| `/api/capture-email` | API | Shipped | ConvertKit assessment-form subscribe + tier sequence tagging + HubSpot upsert. Suppressed on staging via `SKIP_CONVERTKIT=true`. Rate limiting deferred (see 2026-04-15 Decisions Log). |
 | `/api/create-checkout` | API | Phase 2 | Stripe Checkout Session. |
 | `/api/webhooks/stripe` | API | Phase 2 | payment.success → insert into `course_enrollments` → ConvertKit welcome tag. |
 

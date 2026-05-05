@@ -36,6 +36,7 @@ export interface CourseEnrollment {
   readonly email: string;
   readonly product: string;
   readonly stripe_session_id: string | null;
+  /** @deprecated Kajabi dropped 2026-05-05 in favor of in-house LMS; column kept for back-compat, always null. */
   readonly kajabi_user_id: string | null;
   readonly onboarding_answers: OnboardingAnswers | null;
   readonly completed_modules: readonly number[];
