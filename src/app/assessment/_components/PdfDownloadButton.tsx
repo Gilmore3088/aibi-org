@@ -17,37 +17,32 @@ interface PdfDownloadButtonProps {
   readonly email: string;
 }
 
+async function warmPdf(profileId: string): Promise<{ ok: true } | { ok: false; message: string }> {
+  try {
+    const res = await fetch('/api/assessment/pdf/warm', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ profileId }),
+    });
+    const body = await res.json();
+    if (res.ok && body.status === 'ready') return { ok: true };
+    if (body.status === 'skipped')
+      return { ok: false, message: 'PDF generation suppressed in this environment.' };
+    return { ok: false, message: body.error ?? 'warm-failed' };
+  } catch (err) {
+    return { ok: false, message: err instanceof Error ? err.message : 'warm-failed' };
+  }
+}
+
 export function PdfDownloadButton({ profileId, email }: PdfDownloadButtonProps) {
   const [state, setState] = useState<State>({ kind: 'warming' });
 
   useEffect(() => {
     let cancelled = false;
     (async () => {
-      try {
-        const res = await fetch('/api/assessment/pdf/warm', {
-          method: 'POST',
-          headers: { 'content-type': 'application/json' },
-          body: JSON.stringify({ profileId }),
-        });
-        const body = await res.json();
-        if (cancelled) return;
-        if (res.ok && body.status === 'ready') {
-          setState({ kind: 'ready' });
-        } else if (body.status === 'skipped') {
-          setState({
-            kind: 'error',
-            message: 'PDF generation suppressed in this environment.',
-          });
-        } else {
-          setState({ kind: 'error', message: body.error ?? 'warm-failed' });
-        }
-      } catch (err) {
-        if (cancelled) return;
-        setState({
-          kind: 'error',
-          message: err instanceof Error ? err.message : 'warm-failed',
-        });
-      }
+      const result = await warmPdf(profileId);
+      if (cancelled) return;
+      setState(result.ok ? { kind: 'ready' } : { kind: 'error', message: result.message });
     })();
     return () => {
       cancelled = true;
@@ -69,10 +64,25 @@ export function PdfDownloadButton({ profileId, email }: PdfDownloadButtonProps) 
 
     setState({ kind: 'downloading' });
     try {
-      const res = await fetch(
+      let res = await fetch(
         `/api/assessment/pdf/download?profileId=${encodeURIComponent(profileId)}`,
       );
-      const body = await res.json();
+      let body = await res.json();
+      // Returning visitor past 30-day retention: PDF was cleaned up.
+      // Re-warm once and retry the download before giving up.
+      if (res.status === 404 && body.error === 'pdf-not-ready') {
+        setState({ kind: 'warming' });
+        const rewarm = await warmPdf(profileId);
+        if (!rewarm.ok) {
+          setState({ kind: 'error', message: rewarm.message });
+          return;
+        }
+        setState({ kind: 'downloading' });
+        res = await fetch(
+          `/api/assessment/pdf/download?profileId=${encodeURIComponent(profileId)}`,
+        );
+        body = await res.json();
+      }
       if (!res.ok || !body.url) {
         setState({ kind: 'error', message: body.error ?? 'download-failed' });
         return;
