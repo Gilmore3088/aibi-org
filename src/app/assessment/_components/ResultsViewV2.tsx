@@ -117,7 +117,7 @@ export function ResultsViewV2({
           className="mt-4 font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55"
           data-print-hide="true"
         >
-          A 5-minute read · Save or print at the bottom
+          A 5-minute read
         </p>
       </header>
 
