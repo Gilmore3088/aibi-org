@@ -138,12 +138,16 @@ These are the non-Spec-3 surfaces that are also degraded right now.
 
 - [ ] In HubSpot dashboard → Settings → Integrations → Private Apps → create or open existing app → copy access token.
 - [ ] Vercel Production: set `HUBSPOT_API_KEY`.
-- [ ] Per CLAUDE.md, verify these custom contact properties exist in HubSpot **before** the next real capture (the API silently ignores unknown properties):
-  - `assessment_score` (Number)
-  - `score_tier` (Single-line text)
-  - `institution_name` (Single-line text)
-  - `asset_size` (Dropdown: <$100M / $100–500M / $500M–$1B / $1B+)
-  - `lead_source` (Dropdown: assessment / referral / linkedin / conference)
+- [ ] Auto-create the 5 custom contact properties:
+  ```bash
+  HUBSPOT_API_KEY=pat-... npm run hubspot:create-properties:dry  # preview
+  HUBSPOT_API_KEY=pat-... npm run hubspot:create-properties      # apply
+  ```
+  Script lives at `scripts/hubspot-create-properties.mjs`. Idempotent —
+  re-running skips properties that already exist. Creates: `assessment_score`
+  (Number), `score_tier`, `institution_name` (text), `asset_size` and
+  `lead_source` (dropdowns). Verify in HubSpot UI under Settings → Properties
+  → Contact properties → "AiBI Assessment" group.
 
 ### 2C. Calendly
 

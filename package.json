@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "hubspot:create-properties": "node scripts/hubspot-create-properties.mjs",
+    "hubspot:create-properties:dry": "node scripts/hubspot-create-properties.mjs --dry-run"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.90.0",
