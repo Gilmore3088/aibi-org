@@ -23,22 +23,6 @@ export const metadata: Metadata = {
   },
 };
 
-interface ComingSoonPageProps {
-  readonly searchParams?: Promise<{ readonly interest?: string }>;
-}
-
-function getInterest(value: string | undefined): WaitlistInterest {
-  if (
-    value === 'assessment' ||
-    value === 'course' ||
-    value === 'institutional' ||
-    value === 'consulting'
-  ) {
-    return value;
-  }
-  return 'course';
-}
-
 const TENSION_POINTS: ReadonlyArray<{ readonly title: string; readonly body: string }> = [
   {
     title: 'Your staff are already using AI.',
@@ -75,26 +59,21 @@ const DELIVERABLES: ReadonlyArray<{ readonly title: string; readonly body: strin
   },
 ];
 
-const ROADMAP: ReadonlyArray<{ readonly code: string; readonly name: string; readonly status: string; readonly note: string }> = [
-  {
-    code: 'AiBI-P',
-    name: 'Practitioner',
-    status: 'First cohort opening',
-    note: 'Twelve modules · self-paced · 5–7 minute reps · regulator-aligned artifacts',
-  },
-  {
-    code: 'AiBI-S',
-    name: 'Specialist',
-    status: 'After Practitioner',
-    note: 'Sector tracks: Operations · Lending · BSA/AML',
-  },
-  {
-    code: 'AiBI-L',
-    name: 'Leader',
-    status: 'After Specialist',
-    note: 'For executives building institution-wide AI capability',
-  },
-];
+interface ComingSoonPageProps {
+  readonly searchParams?: Promise<{ readonly interest?: string }>;
+}
+
+function getInterest(value: string | undefined): WaitlistInterest {
+  if (
+    value === 'assessment' ||
+    value === 'course' ||
+    value === 'institutional' ||
+    value === 'consulting'
+  ) {
+    return value;
+  }
+  return 'course';
+}
 
 export default async function ComingSoonPage({ searchParams }: ComingSoonPageProps) {
   const sp = await searchParams;
@@ -111,9 +90,6 @@ export default async function ComingSoonPage({ searchParams }: ComingSoonPagePro
             The AI Banking Institute
           </span>
         </div>
-        <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/60">
-          Pre-launch
-        </span>
       </header>
 
       {/* HERO — tension headline + single primary CTA */}
@@ -143,18 +119,7 @@ export default async function ComingSoonPage({ searchParams }: ComingSoonPagePro
             <span aria-hidden className="font-mono text-[15px] transition-transform duration-200 group-hover:translate-x-1">→</span>
           </Link>
 
-          <a
-            href="#practitioner-waitlist"
-            className="inline-flex items-center gap-2 text-[14px] font-sans text-[color:var(--color-ink)]/75 hover:text-[color:var(--color-terra)] underline underline-offset-4 decoration-[color:var(--color-ink)]/20 hover:decoration-[color:var(--color-terra)] transition-colors"
-          >
-            Or join the first practitioner cohort
-            <span aria-hidden className="font-mono text-[12px]">↓</span>
-          </a>
         </div>
-
-        <p className="mt-5 font-mono text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/55">
-          Free · 8 dimensions · Score on screen · Starter artifact emailed
-        </p>
       </section>
 
       {/* THE SHIFT — three tension panels */}
@@ -251,52 +216,29 @@ export default async function ComingSoonPage({ searchParams }: ComingSoonPagePro
         </div>
       </section>
 
-      {/* ROADMAP — three credentials, light tease */}
-      <section className="mx-auto w-full max-w-5xl px-6 md:px-10 py-16 md:py-20">
-        <p className="font-serif-sc text-[11px] tracking-[0.28em] uppercase text-[color:var(--color-terra)]">
-          The path
-        </p>
-        <h2 className="mt-3 font-serif text-[28px] md:text-[36px] leading-[1.1] tracking-[-0.01em] max-w-2xl">
-          Three credentials. One progression.
-        </h2>
-
-        <ol className="mt-10 divide-y divide-[color:var(--color-ink)]/10 border-y border-[color:var(--color-ink)]/15">
-          {ROADMAP.map((item) => (
-            <li key={item.code} className="grid grid-cols-[auto_1fr_auto] gap-x-6 md:gap-x-10 py-6 items-baseline">
-              <span className="font-mono text-[12px] tracking-[0.22em] uppercase text-[color:var(--color-terra)] tabular-nums">
-                {item.code}
-              </span>
-              <div>
-                <h3 className="font-serif text-[22px] leading-tight">{item.name}</h3>
-                <p className="mt-1 text-[13px] leading-[1.5] text-[color:var(--color-ink)]/65">{item.note}</p>
-              </div>
-              <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55 text-right">
-                {item.status}
-              </span>
-            </li>
-          ))}
-        </ol>
-      </section>
-
-      {/* SECONDARY CTA — practitioner waitlist */}
+      {/* SECONDARY CTA — generic waitlist for any of the four entry points */}
       <section
-        id="practitioner-waitlist"
+        id="waitlist"
         className="bg-[color:var(--color-parch)] border-y border-[color:var(--color-ink)]/15 scroll-mt-8"
       >
         <div className="mx-auto w-full max-w-5xl px-6 md:px-10 py-16 md:py-20">
           <div className="grid gap-12 md:grid-cols-12">
             <div className="md:col-span-6">
               <p className="font-serif-sc text-[11px] tracking-[0.28em] uppercase text-[color:var(--color-terra)]">
-                For when you&apos;re ready for the course
+                Not the assessment
               </p>
               <h2 className="mt-3 font-serif text-[28px] md:text-[36px] leading-[1.1] tracking-[-0.01em]">
-                Join the first practitioner cohort.
+                Tell us what you&apos;re waiting for.
               </h2>
               <p className="mt-5 text-[15px] leading-[1.6] text-[color:var(--color-ink)]/75">
-                The first AiBI-P cohort opens soon. We&apos;ll email you when it does — and only then. No drip sequence, no list rental, no sales call.
+                Different entry points open at different times. Pick the one
+                that matches what you need — assessment, course, enterprise
+                rollout, or advisory — and we&apos;ll email you the moment it&apos;s
+                ready.
               </p>
-              <p className="mt-5 text-[14px] leading-[1.55] text-[color:var(--color-ink)]/65">
-                Not ready for the course yet? Pick another option below — assessment, enterprise rollout, or advisory.
+              <p className="mt-4 text-[14px] leading-[1.55] text-[color:var(--color-ink)]/65">
+                One email when your thing opens. No drip sequence, no list
+                rental, no sales call.
               </p>
             </div>
 
