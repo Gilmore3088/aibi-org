@@ -494,17 +494,6 @@ export function ResultsViewV2({
         </article>
       </section>
 
-      {/* SECTION 10 — Footer Close */}
-      <SectionAnchor id="section-10" />
-      <section className="border-t border-[color:var(--color-ink)]/15 pt-12 text-center print-avoid-break">
-        <p className="font-serif text-2xl md:text-3xl text-[color:var(--color-ink)] leading-tight">
-          {FOOTER_CLOSE.headline}
-        </p>
-        <p className="mt-4 text-[16px] leading-[1.6] text-[color:var(--color-ink)]/75 max-w-2xl mx-auto">
-          {FOOTER_CLOSE.body}
-        </p>
-      </section>
-
       {/* APPENDIX — full diagnostic + newsletter + PDF */}
       <details className="mt-16 border-t border-[color:var(--color-ink)]/15 pt-6 group">
         <summary className="cursor-pointer list-none flex items-center justify-between font-serif-sc text-[11px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/65 hover:text-[color:var(--color-terra)]">
