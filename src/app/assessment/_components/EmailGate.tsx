@@ -11,7 +11,10 @@ interface EmailGateProps {
   readonly version?: 'v1' | 'v2';
   readonly maxScore?: number;
   readonly dimensionBreakdown?: Record<string, DimensionScoreSerialized>;
-  readonly onCaptured: (email: string) => void;
+  readonly onCaptured: (
+    email: string,
+    extras: { readonly firstName?: string; readonly institutionName?: string },
+  ) => void;
 }
 
 type Status = 'idle' | 'submitting' | 'error';
@@ -76,7 +79,10 @@ export function EmailGate({
         ...(maxScore !== undefined ? { maxScore } : {}),
         ...(dimensionBreakdown ? { dimensionBreakdown } : {}),
       });
-      onCaptured(trimmedEmail);
+      onCaptured(trimmedEmail, {
+        firstName: firstName.trim() || undefined,
+        institutionName: institutionName.trim() || undefined,
+      });
     } catch (err) {
       setStatus('error');
       setMessage(err instanceof Error ? err.message : 'Unexpected error.');

@@ -17,6 +17,8 @@ const BRIEFING_URL =
 export default function AssessmentPage() {
   const state = useAssessmentV2();
   const [capturedEmail, setCapturedEmail] = useState<string | null>(null);
+  const [capturedFirstName, setCapturedFirstName] = useState<string | null>(null);
+  const [capturedInstitution, setCapturedInstitution] = useState<string | null>(null);
   const emailCaptured = capturedEmail !== null;
   const [mounted, setMounted] = useState(false);
   const scoreHeadingRef = useRef<HTMLHeadingElement | null>(null);
@@ -143,9 +145,11 @@ export default function AssessmentPage() {
                 version="v2"
                 maxScore={48}
                 dimensionBreakdown={state.getDimensionBreakdown()}
-                onCaptured={(email) => {
+                onCaptured={(email, extras) => {
                   trackEvent('email_captured', { tier: state.tier?.id ?? 'unknown' });
                   setCapturedEmail(email);
+                  setCapturedFirstName(extras.firstName ?? null);
+                  setCapturedInstitution(extras.institutionName ?? null);
                   state.advanceToResults();
                 }}
               />
@@ -170,6 +174,8 @@ export default function AssessmentPage() {
             dimensionBreakdown={state.getDimensionBreakdown()}
             email={capturedEmail}
             tierId={state.tier.id}
+            firstName={capturedFirstName}
+            institutionName={capturedInstitution}
           />
         )}
       </div>
