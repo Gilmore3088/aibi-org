@@ -216,6 +216,7 @@ export async function POST(request: Request) {
     'building-momentum',
     'ready-to-scale',
   ]);
+  let convertkitTagged = false;
   if (marketingOptIn === true && VALID_TIERS.has(tier)) {
     const newTier = tier as TierId;
 
@@ -238,8 +239,11 @@ export async function POST(request: Request) {
       ...(trimmedFirstName ? { firstName: trimmedFirstName } : {}),
     });
 
-    if (added.status === 'tagged' && profileId) {
-      await markConvertKitTagged(profileId);
+    if (added.status === 'tagged') {
+      convertkitTagged = true;
+      if (profileId) {
+        await markConvertKitTagged(profileId);
+      }
     } else if (added.status === 'failed') {
       console.warn('[capture-email] CK tier tag failed:', added.reason);
     }
@@ -273,6 +277,6 @@ export async function POST(request: Request) {
   return NextResponse.json({
     ok: true,
     profileId,
-    convertkitTagAdded: marketingOptIn === true,
+    convertkitTagAdded: convertkitTagged,
   });
 }

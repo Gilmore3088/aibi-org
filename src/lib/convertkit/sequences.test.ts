@@ -9,6 +9,7 @@ describe('convertkit/sequences', () => {
     process.env = { ...ORIGINAL_ENV };
     delete process.env.SKIP_CONVERTKIT;
     process.env.CONVERTKIT_API_KEY = 'test-key';
+    process.env.CONVERTKIT_API_SECRET = 'test-secret';
     process.env.CONVERTKIT_TAG_ID_STARTING_POINT = '1001';
     fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue(
       new Response(JSON.stringify({ subscription: {} }), { status: 200 }),
@@ -86,5 +87,26 @@ describe('convertkit/sequences', () => {
     expect(result.status).toBe('tagged');
     const [url] = fetchSpy.mock.calls[0] as [string, RequestInit];
     expect(url).toBe('https://api.convertkit.com/v3/tags/1001/unsubscribe');
+  });
+
+  it('removeAssessmentTier sends api_secret in body', async () => {
+    await removeAssessmentTier({
+      email: 'a@example.com',
+      tierId: 'starting-point',
+    });
+    const [, init] = fetchSpy.mock.calls[0] as [string, RequestInit];
+    const body = JSON.parse(init.body as string);
+    expect(body.api_secret).toBe('test-secret');
+    expect(body.email).toBe('a@example.com');
+  });
+
+  it('removeAssessmentTier skips when api_secret is missing', async () => {
+    delete process.env.CONVERTKIT_API_SECRET;
+    const result = await removeAssessmentTier({
+      email: 'a@example.com',
+      tierId: 'starting-point',
+    });
+    expect(result.status).toBe('skipped');
+    expect(result.reason).toBe('no-api-secret');
   });
 });

@@ -38,6 +38,10 @@ function getApiKey(): string | null {
   return process.env.CONVERTKIT_API_KEY ?? null;
 }
 
+function getApiSecret(): string | null {
+  return process.env.CONVERTKIT_API_SECRET ?? null;
+}
+
 function getTagIdForTier(tier: TierId): string | null {
   const envName = TIER_TO_TAG_ENV[tier];
   return process.env[envName] ?? null;
@@ -111,9 +115,9 @@ export async function removeAssessmentTier(input: TagInput): Promise<TagResult> 
   if (isStaging()) {
     return { status: 'skipped', reason: 'staging-suppression' };
   }
-  const apiKey = getApiKey();
-  if (!apiKey) {
-    return { status: 'skipped', reason: 'no-api-key' };
+  const apiSecret = getApiSecret();
+  if (!apiSecret) {
+    return { status: 'skipped', reason: 'no-api-secret' };
   }
   const tagId = getTagIdForTier(input.tierId);
   if (!tagId) {
@@ -125,7 +129,7 @@ export async function removeAssessmentTier(input: TagInput): Promise<TagResult> 
       method: 'POST',
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({
-        api_secret: apiKey,
+        api_secret: apiSecret,
         email: input.email,
       }),
     });
