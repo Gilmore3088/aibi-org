@@ -1,16 +1,15 @@
-// Dynamic Assessment Results — Phase 1 personalization data.
+// Dynamic Assessment Results — Phase 1.5 + 2 + 3 personalization data.
 // Spec: docs/superpowers/specs/2026-05-04-dynamic-assessment-results.md
-//
-// Three lookups:
-//   1. tier → persona label (the User Profile Object's `persona`)
-//   2. dimension → recommendation (one fastest-ROI move per gap)
-//   3. tier → gap-aware insight bullet templates
-//
-// All copy is template-based (Option A from the spec). Phase 3 swaps
-// these for LLM-generated content per assessment.
+// Production copy authored by user 2026-05-04 with tier variants written
+// to match the same voice for the three higher tiers (the user's draft was
+// calibrated to Starting Point).
 
 import type { Tier } from './scoring';
 import type { Dimension } from './types';
+
+// ---------------------------------------------------------------------------
+// PERSONAS — tier id → persona label + one-liner.
+// ---------------------------------------------------------------------------
 
 export interface Persona {
   readonly id: Tier['id'];
@@ -21,39 +20,199 @@ export interface Persona {
 export const PERSONAS: Record<Tier['id'], Persona> = {
   'starting-point': {
     id: 'starting-point',
-    label: 'Unstructured Explorer',
+    label: 'Unstructured AI',
     oneLine:
-      'Staff are curious but unguarded. There is no playbook, no policy, and no shared workflow yet.',
+      'AI is already being used inside your organization—but without consistent training, structure, or safeguards. This creates uneven results, missed efficiency gains, and unnecessary risk.',
   },
   'early-stage': {
     id: 'early-stage',
-    label: 'Coordinated Experimenter',
+    label: 'Coordinated Experimentation',
     oneLine:
-      'Pockets of activity exist but they are not coordinated. Wins stay trapped inside individual teams.',
+      'AI is in use across some teams, but adoption is uneven and outcomes are inconsistent. The institutions that pull ahead from here are the ones that systematize the wins, not the ones that buy more tools.',
   },
   'building-momentum': {
     id: 'building-momentum',
-    label: 'Program Builder',
+    label: 'Program Building',
     oneLine:
-      'AI is in production across multiple teams. The next move is documented outcomes that compound.',
+      'AI is producing real value across multiple teams—but the program is fragile. Without measured outcomes and codified workflows, leadership support erodes faster than capability builds.',
   },
   'ready-to-scale': {
     id: 'ready-to-scale',
-    label: 'Capability Leader',
+    label: 'Capability Leadership',
     oneLine:
-      'AI is operating as a strategic capability. The opportunity now is institution-wide replication.',
+      'AI is operating as a strategic capability inside your institution. The opportunity now is replication speed: how fast you codify what works for the next wave of staff.',
   },
 };
 
-// One fastest-ROI recommendation per dimension. The bottom-ranked dimension
-// drives which recommendation surfaces. Copy is intentionally specific to
-// community-bank workflows.
+// ---------------------------------------------------------------------------
+// SECTION 2 — BIG INSIGHT (the hook). Single sentence per tier.
+// ---------------------------------------------------------------------------
+
+export const BIG_INSIGHT: Record<Tier['id'], string> = {
+  'starting-point':
+    'You are capable of quick AI wins—but currently lack the structure to use AI safely and consistently.',
+  'early-stage':
+    'You have the people and curiosity. What you lack is a coordinated program that turns isolated wins into institutional capability.',
+  'building-momentum':
+    'You have working AI workflows. What you need next is the discipline to measure outcomes well enough to defend the program with leadership.',
+  'ready-to-scale':
+    'You have a working program. The compounding question now is whether you can replicate it across every new hire fast enough to stay ahead.',
+};
+
+// ---------------------------------------------------------------------------
+// SECTION 3 — "What This Means" — concrete operational signals per tier.
+// ---------------------------------------------------------------------------
+
+export const TIER_INSIGHTS: Record<Tier['id'], readonly string[]> = {
+  'starting-point': [
+    'Staff experimenting with AI individually, without shared standards',
+    'Inconsistent output quality across teams',
+    'No clear rules for what is safe to input or generate',
+    'Time savings happening occasionally—but not systematically',
+  ],
+  'early-stage': [
+    'Pockets of activity exist on individual teams, but wins do not get shared',
+    'A use policy exists in some form, but it has not become daily workflow',
+    'Leadership is aware AI matters; nobody clearly owns the program',
+    'Audit trails are uneven, and the question of "what tool, what data, who approved" cannot be answered consistently',
+  ],
+  'building-momentum': [
+    'Multiple teams use AI tools with documented (if uneven) review processes',
+    'Governance exists; the audit-readiness question is mostly answered',
+    'The harder question now is measuring outcomes rigorously enough to defend the program',
+    'Training quality varies team to team — onboarding new staff into the AI program is still expensive',
+  ],
+  'ready-to-scale': [
+    'AI is integrated into daily workflows across departments',
+    'Governance, training, and review operate as a coordinated program',
+    'The advantage now compounds—every new hire enters a system, not a vacuum',
+    'The remaining risk is complacency: institutions at this tier lose ground when they stop investing in the next wave of capability',
+  ],
+};
+
+// ---------------------------------------------------------------------------
+// SECTION 4 — Gap content. Per dimension: explanation · impacts · what good
+// looks like. Drives the rich gap cards.
+// ---------------------------------------------------------------------------
+
+export interface GapContent {
+  readonly explanation: string;
+  readonly impacts: readonly [string, string];
+  readonly whatGoodLooksLike: readonly [string, string];
+}
+
+export const GAP_CONTENT: Record<Dimension, GapContent> = {
+  'current-ai-usage': {
+    explanation:
+      'AI tools are not yet embedded in repeating workflows. Use is sporadic, individual, and invisible to managers — which means time savings are real but not measurable.',
+    impacts: [
+      'Productivity gains stay locked inside individual desks',
+      'No baseline exists to measure what AI is or is not doing for your institution',
+    ],
+    whatGoodLooksLike: [
+      'At least one workflow per department where AI is used the same way every time',
+      'Managers can name which tasks have been moved to AI and what they cost before',
+    ],
+  },
+  'experimentation-culture': {
+    explanation:
+      'There is no shared place where staff can try, share, and improve AI use. Without that, every learning has to be rediscovered by the next person.',
+    impacts: [
+      'The same prompt gets re-invented across teams instead of refined',
+      'Wins go silent — leadership never hears about them',
+    ],
+    whatGoodLooksLike: [
+      'A monthly forum where staff demonstrate one prompt that saved them time',
+      'A shared library of reusable prompts your team trusts',
+    ],
+  },
+  'ai-literacy-level': {
+    explanation:
+      'Staff have not yet been through structured training on safe and effective AI use. The gap shows up as cautious avoidance from some staff and unsafe enthusiasm from others.',
+    impacts: [
+      'Two failure modes coexist: paralysis (afraid to use it) and oversharing (PII into public tools)',
+      'Compliance risk grows faster than productivity gain',
+    ],
+    whatGoodLooksLike: [
+      'Every staff member can articulate when to use AI, when not to, and how to review output',
+      'Onboarding includes an AI module by default',
+    ],
+  },
+  'quick-win-potential': {
+    explanation:
+      'No low-risk workflow has been identified where AI can immediately save time. Without a beachhead, the program never gets started.',
+    impacts: [
+      'Conversations stay theoretical instead of producing measurable savings',
+      'Skeptics inside the institution stay skeptical because nothing concrete has happened yet',
+    ],
+    whatGoodLooksLike: [
+      'One named workflow where AI saves a measurable amount of time every week',
+      'A second workflow lined up to start once the first is stable',
+    ],
+  },
+  'leadership-buy-in': {
+    explanation:
+      'Senior leadership has not committed to AI as a strategic priority. Without that air cover, the program lives or dies by individual sponsors.',
+    impacts: [
+      'Budget conversations stall — AI is treated as IT spend, not capability investment',
+      'Compliance and risk teams default to "no" without a counterweight',
+    ],
+    whatGoodLooksLike: [
+      'A named executive sponsor with AI on their performance objectives',
+      'AI capability appears in the strategic plan, not just the IT roadmap',
+    ],
+  },
+  'security-posture': {
+    explanation:
+      'Your AI security posture is not yet documented in a way your examiner would accept. Staff may be doing the right things, but you cannot prove it.',
+    impacts: [
+      'Examiner asks for the AI workflow inventory — you cannot produce one',
+      'A single staff prompt with PII becomes a reportable incident',
+    ],
+    whatGoodLooksLike: [
+      'A documented AI use policy with examples, not just principles',
+      'An inventory of which tools are approved, for which data, with which review steps',
+    ],
+  },
+  'training-infrastructure': {
+    explanation:
+      'There is no recurring practice cadence for AI skills. One-off training fades within a quarter; without a place where practice lives, capability does not compound.',
+    impacts: [
+      'Skills decay between training events; new hires arrive into a vacuum',
+      'Leadership keeps paying for kickoff sessions that never produce durable capability',
+    ],
+    whatGoodLooksLike: [
+      'A weekly or biweekly cadence where staff practice one new AI workflow',
+      'A library of recorded reps that new hires can step into during onboarding',
+    ],
+  },
+  'builder-potential': {
+    explanation:
+      'There is not yet a named internal builder — the analyst or operations person who turns AI tools into working processes for everyone else. Without one, capability stays vendor-shaped.',
+    impacts: [
+      'Every workflow improvement requires consultant or vendor work',
+      'The institution remains dependent on external expertise indefinitely',
+    ],
+    whatGoodLooksLike: [
+      'At least one person inside the institution who builds and refines workflows for others',
+      'A pipeline of analysts and ops people who can graduate into builder roles',
+    ],
+  },
+};
+
+// ---------------------------------------------------------------------------
+// SECTION 5 — Recommendations (existing).
+// ---------------------------------------------------------------------------
+
 export interface Recommendation {
   readonly title: string;
   readonly riskLevel: 'Low' | 'Moderate' | 'Higher';
   readonly timeSaved: string;
   readonly owner: string;
   readonly explanation: string;
+  readonly whyRightNow: readonly string[];
+  readonly inPractice: string;
+  readonly worksBestFor: readonly string[];
 }
 
 export const RECOMMENDATIONS: Record<Dimension, Recommendation> = {
@@ -64,14 +223,38 @@ export const RECOMMENDATIONS: Record<Dimension, Recommendation> = {
     owner: 'Ops / Admin',
     explanation:
       'Pick one recurring meeting. Use a shared prompt to turn the recording or transcript into action items, owners, and dates. Same prompt every week, same review step every week.',
+    whyRightNow: [
+      'Directly addresses your gap in Current AI Usage',
+      'Low operational risk',
+      'Produces immediate, visible time savings',
+    ],
+    inPractice:
+      'Convert a 60–90 minute internal meeting into a one-page summary with decisions, owners, and next steps in under five minutes.',
+    worksBestFor: [
+      'Committee meetings',
+      'Internal project updates',
+      'Recurring team syncs',
+    ],
   },
   'experimentation-culture': {
     title: 'Run a 30-minute "show your prompt" lunch',
     riskLevel: 'Low',
-    timeSaved: '~3 hours/week recovered across the team',
+    timeSaved: '~3 hours per week recovered across the team',
     owner: 'Department lead',
     explanation:
       'Three staff members each share one prompt that saved them time this month, plus the review step they use. Document what worked. Repeat monthly. This is how isolated experiments become institutional knowledge.',
+    whyRightNow: [
+      'Directly addresses your gap in Experimentation Culture',
+      'Costs nothing — uses time you already have',
+      'Builds the prompt library you will need for the next stage',
+    ],
+    inPractice:
+      'Three short demos. Each one shows: the prompt, the workflow it improved, and the review step. Notes go into a shared doc.',
+    worksBestFor: [
+      'Operations teams',
+      'Lending departments',
+      'Marketing and member service',
+    ],
   },
   'ai-literacy-level': {
     title: 'Run AiBI-P Module 01 with one team',
@@ -80,6 +263,18 @@ export const RECOMMENDATIONS: Record<Dimension, Recommendation> = {
     owner: 'Department lead + L&D',
     explanation:
       'Five-to-seven minute reps on safe prompting basics. The team that goes through it together stops asking the AI policy team theoretical questions and starts asking workflow questions instead.',
+    whyRightNow: [
+      'Directly addresses your gap in AI Literacy Level',
+      'Lowers compliance risk before it materializes',
+      'Establishes the shared vocabulary the rest of the program needs',
+    ],
+    inPractice:
+      'One team — eight to twelve people — works through Module 01 together over two weeks. They emerge with a common framework and the confidence to try the next workflow.',
+    worksBestFor: [
+      'Operations teams',
+      'BSA/AML and compliance',
+      'Front-line member service',
+    ],
   },
   'quick-win-potential': {
     title: 'Rewrite a messy internal email',
@@ -88,6 +283,18 @@ export const RECOMMENDATIONS: Record<Dimension, Recommendation> = {
     owner: 'Front-line manager',
     explanation:
       'Pick the kind of email your team rewrites three times a week — a policy reminder, a status update, a meeting recap. Use a single prompt with a documented review step. The first rep takes ten minutes; the tenth takes one.',
+    whyRightNow: [
+      'Directly addresses your gap in Quick Win Potential',
+      'Low operational risk',
+      'Produces immediate, visible time savings',
+    ],
+    inPractice:
+      'Take one email type. Write a prompt that turns the messy draft into a clear, branded version. Review every output the first month, then sample weekly.',
+    worksBestFor: [
+      'Internal policy reminders',
+      'Project status updates',
+      'Member communications drafts (with review)',
+    ],
   },
   'leadership-buy-in': {
     title: 'Present one ROI estimate to leadership',
@@ -96,6 +303,18 @@ export const RECOMMENDATIONS: Record<Dimension, Recommendation> = {
     owner: 'AI lead + finance',
     explanation:
       'Use the conservative ROI model from this assessment with your real staff numbers. Present one slide: hours recovered, dollars equivalent, where the time went. Leadership commits to programs that have a number attached.',
+    whyRightNow: [
+      'Directly addresses your gap in Leadership Buy-In',
+      'Converts an abstract conversation into a budget conversation',
+      'Forces specificity — you cannot bluff a number',
+    ],
+    inPractice:
+      'A single slide with three numbers: hours recovered per week, equivalent loaded-cost dollars per year, and what those hours could be redirected toward.',
+    worksBestFor: [
+      'Board updates',
+      'Annual planning sessions',
+      'Budget renewal conversations',
+    ],
   },
   'security-posture': {
     title: 'Document one approved AI workflow end-to-end',
@@ -104,6 +323,18 @@ export const RECOMMENDATIONS: Record<Dimension, Recommendation> = {
     owner: 'Compliance + Ops',
     explanation:
       'One workflow, written down: which tool, what data goes in, what review happens, who signs off. This is the artifact your examiner wants to see, and the artifact your team needs to scale safely. Start with the workflow you already trust.',
+    whyRightNow: [
+      'Directly addresses your gap in Security Posture',
+      'Becomes the template for every workflow that follows',
+      'Closes a documented audit risk',
+    ],
+    inPractice:
+      'Pick the workflow staff already use safely. Write the standard operating procedure: tool, inputs, review, sign-off, retention. Two pages, with a screenshot.',
+    worksBestFor: [
+      'Compliance review processes',
+      'Member-facing draft generation',
+      'Internal summary workflows',
+    ],
   },
   'training-infrastructure': {
     title: 'Pilot a 12-week practice cadence with one cohort',
@@ -112,6 +343,18 @@ export const RECOMMENDATIONS: Record<Dimension, Recommendation> = {
     owner: 'L&D + Department lead',
     explanation:
       'Five-to-seven minute reps, weekly, in a shared space. The training infrastructure problem is not "who teaches" — it is "where does practice live after the kickoff session?" Make the cadence the answer.',
+    whyRightNow: [
+      'Directly addresses your gap in Training Infrastructure',
+      'Builds the muscle that makes every later investment compound',
+      'Provides the practice surface new hires step into',
+    ],
+    inPractice:
+      'One cohort of eight to twelve. Weekly thirty-minute session. One workflow per week with a take-home rep. Twelve weeks later, you have a documented pattern other departments can copy.',
+    worksBestFor: [
+      'Operations teams',
+      'BSA/AML',
+      'Front-line lending and member service',
+    ],
   },
   'builder-potential': {
     title: 'Identify your first internal builder',
@@ -120,64 +363,178 @@ export const RECOMMENDATIONS: Record<Dimension, Recommendation> = {
     owner: 'AI lead',
     explanation:
       'Look for the analyst or operations person who already automates spreadsheets without being asked. Give them one workflow and one prompt system. Builders convert tools into capability faster than committees do.',
+    whyRightNow: [
+      'Directly addresses your gap in Builder Potential',
+      'Reduces vendor dependence',
+      'Sets up the internal pipeline that scales the program',
+    ],
+    inPractice:
+      'One named person, one workflow, one review cadence with their manager. The deliverable is not a deck — it is a working prompt system another team can adopt.',
+    worksBestFor: [
+      'Operations analysts',
+      'Lending operations',
+      'Compliance specialists',
+    ],
   },
 };
 
-// Tier-specific insight bullets that surface what the score "means" in
-// concrete terms. Three bullets per tier — keep terse, scannable.
-export const TIER_INSIGHTS: Record<Tier['id'], readonly string[]> = {
-  'starting-point': [
-    'Staff are likely experimenting through public AI tools without guardrails',
-    'No formal training, governance, or shared prompt patterns yet',
-    'AI usage is producing inconsistent or invisible time savings',
-  ],
-  'early-stage': [
-    'Early adopters exist on individual teams but their wins are not shared',
-    'A written use policy exists in some form, but it has not become workflow',
-    'Leadership is aware AI matters; nobody owns the program yet',
-  ],
-  'building-momentum': [
-    'Multiple teams use AI tools with documented (if uneven) review processes',
-    'Governance exists; the audit-readiness question is mostly answered',
-    'The next bottleneck is measuring outcomes rigorously enough to defend the program',
-  ],
-  'ready-to-scale': [
-    'AI is integrated into daily workflows across departments',
-    'Governance, training, and review are operating as a coordinated program',
-    'The advantage now compounds — codifying what works pays back across every new hire',
-  ],
+// ---------------------------------------------------------------------------
+// SECTION 6 — Starter prompts (Section 6 / Interactive Prompt Block).
+// One per dimension; the prompt the visitor leaves with depends on their
+// bottom-ranked dimension.
+// ---------------------------------------------------------------------------
+
+export interface StarterPrompt {
+  readonly label: string;
+  readonly prompt: string;
+}
+
+export const STARTER_PROMPTS: Record<Dimension, StarterPrompt> = {
+  'current-ai-usage': {
+    label: 'Meeting summary starter',
+    prompt: `I want to summarize an internal meeting into a clear, professional summary.
+
+Please structure the output with:
+- Key decisions
+- Action items (with owner and deadline)
+- Open questions
+
+Keep it concise and formatted for internal distribution.
+
+Do not include any sensitive or customer-specific information.`,
+  },
+  'experimentation-culture': {
+    label: 'Prompt-share lunch starter',
+    prompt: `I am hosting a 30-minute internal session where three staff members each demonstrate one prompt that has saved them time this month.
+
+For each prompt, capture:
+- The exact prompt text
+- The workflow it improved
+- The review step the presenter uses to verify output
+- One example before-and-after (without any sensitive data)
+
+Format the output as a single-page handout teams can take back to their desks.`,
+  },
+  'ai-literacy-level': {
+    label: 'Safe-prompt training starter',
+    prompt: `I am running a 60-minute internal training on safe AI use for our staff.
+
+Generate a session outline with:
+- Three concrete dos and three concrete don'ts for prompting
+- One worked example showing a safe prompt and an unsafe one (using fictional data)
+- A two-question check-for-understanding at the end
+
+Tone should be practical and free of hype. Audience: community-bank or credit-union staff who have not used generative AI in their work before.`,
+  },
+  'quick-win-potential': {
+    label: 'Email rewrite starter',
+    prompt: `I need to rewrite a draft internal email so it is clear, professional, and ready for distribution.
+
+Please:
+- Keep all factual information unchanged
+- Improve clarity and tone
+- Use short paragraphs and bullet points where appropriate
+- Flag anything that looks like it needs a manager review before sending
+
+Do not include any customer-specific information or PII in the rewrite.`,
+  },
+  'leadership-buy-in': {
+    label: 'ROI slide starter',
+    prompt: `Help me draft a single slide for an executive update on our AI program.
+
+The slide should answer:
+- How many staff hours per week have we recovered through AI workflows?
+- What is the equivalent loaded-cost dollars per year?
+- Where could those hours be redirected to create new value?
+
+Keep the language plain, conservative, and free of vendor jargon. No projections beyond what we can defend with current data.`,
+  },
+  'security-posture': {
+    label: 'Workflow documentation starter',
+    prompt: `Help me document one approved AI workflow end-to-end.
+
+Capture:
+- The tool used (and the version, if relevant)
+- The data that goes in
+- The review step before output is used
+- The person who signs off
+- The retention rule for the output
+
+Format as a two-page standard operating procedure that a compliance reviewer or examiner could read in five minutes.`,
+  },
+  'training-infrastructure': {
+    label: '12-week cadence starter',
+    prompt: `I am setting up a 12-week practice cadence for one cohort of eight to twelve staff.
+
+Each week needs:
+- One specific workflow to practice
+- A five-to-seven minute exercise
+- A take-home rep
+- A reflection question for the next session
+
+Order the twelve weeks from lowest-risk and highest-frequency workflows toward more involved ones. Match the cadence to community-bank operations: ops, lending, member service.`,
+  },
+  'builder-potential': {
+    label: 'First-builder kickoff starter',
+    prompt: `I am giving one internal staff member responsibility for building and refining one AI workflow that other teams will adopt.
+
+Help me draft:
+- A one-paragraph charter for the role
+- The first workflow they will own
+- The review cadence with their manager
+- The deliverable in 30 days (a working prompt system, not a deck)
+
+The person is an operations analyst, not a technical specialist.`,
+  },
 };
 
-// Decide which post-results CTA to surface based on the takedown state.
-// During COMING_SOON we route everyone into the waitlist with the right
-// interest pre-selected. Once the takedown is lifted, we route to the
-// real product surface.
-export function getRecommendedAction(
-  tierId: Tier['id'],
-  comingSoonMode: boolean,
-): {
-  readonly title: string;
-  readonly description: string;
-  readonly cta: string;
-  readonly href: string;
-} {
-  const isFoundational = tierId === 'starting-point' || tierId === 'early-stage';
+// ---------------------------------------------------------------------------
+// SECTION 7 — 7-Day Activation Plan (generic, applies to all tiers).
+// ---------------------------------------------------------------------------
 
-  if (isFoundational) {
-    return {
-      title: 'Start with AiBI-P Practitioner training.',
-      description:
-        'Twelve self-paced modules. Five-to-seven minute reps. Real workflows your team can apply Monday morning, with the review processes your compliance team can sign off on.',
-      cta: comingSoonMode ? 'Reserve your seat in the first cohort' : 'Start practitioner training',
-      href: comingSoonMode ? '/coming-soon?interest=course' : '/courses/aibi-p',
-    };
-  }
+export const SEVEN_DAY_PLAN: ReadonlyArray<{ readonly day: number; readonly action: string }> = [
+  { day: 1, action: 'Choose one internal workflow to test (start with your recommended use case).' },
+  { day: 2, action: 'Run the workflow manually using AI.' },
+  { day: 3, action: 'Review the output for clarity, accuracy, and tone.' },
+  { day: 4, action: 'Refine your prompt and test again.' },
+  { day: 5, action: 'Measure time saved versus your current process.' },
+  { day: 6, action: 'Share results with one colleague or manager.' },
+  { day: 7, action: 'Decide whether to expand or formalize the workflow.' },
+];
 
-  return {
-    title: 'Talk to us about scaling this institution-wide.',
-    description:
-      'Your tier is unusual. Most institutions at this stage benefit from a tailored conversation about codifying what is already working — cohort cadence, leadership advisory, and measurable replication across teams.',
-    cta: comingSoonMode ? 'Get on the advisory list' : 'Book an Executive Briefing',
-    href: comingSoonMode ? '/coming-soon?interest=consulting' : '/for-institutions/advisory',
-  };
-}
+// ---------------------------------------------------------------------------
+// SECTION 8 — What "Good" Looks Like (generic).
+// ---------------------------------------------------------------------------
+
+export const FUTURE_VISION: ReadonlyArray<string> = [
+  'Staff use AI for internal workflows daily',
+  'Prompts follow consistent, reusable patterns',
+  'Outputs are reviewed before use',
+  'Sensitive data is never exposed',
+  'At least 1–3 workflows produce measurable time savings',
+];
+
+// ---------------------------------------------------------------------------
+// SECTION 9 — Recommended Path mistake intro per tier.
+// ---------------------------------------------------------------------------
+
+export const RECOMMENDED_PATH_INTRO: Record<Tier['id'], string> = {
+  'starting-point':
+    'Most institutions at your stage make the same mistake: they explore tools before training their team. The fastest path forward is building staff capability first.',
+  'early-stage':
+    'Most institutions at your stage make the same mistake: they let isolated experiments stay isolated. The fastest path forward is converting those wins into a coordinated program with shared prompt patterns and a documented review step.',
+  'building-momentum':
+    'Most institutions at your stage make the same mistake: they assume the program will sustain itself. The fastest path forward is measuring outcomes rigorously and codifying the patterns that already work, so the program survives staff turnover.',
+  'ready-to-scale':
+    'Most institutions at your stage make the same mistake: they slow down because the early wins are visible. The fastest path forward is replicating capability across every new hire — turning today\'s advantage into a compounding one.',
+};
+
+// ---------------------------------------------------------------------------
+// SECTION 10 — Footer Close (generic).
+// ---------------------------------------------------------------------------
+
+export const FOOTER_CLOSE: { readonly headline: string; readonly body: string } = {
+  headline: 'AI adoption is not a technology problem.',
+  body:
+    "It's a training and workflow problem. The institutions that move early—and safely—create a measurable advantage.",
+};

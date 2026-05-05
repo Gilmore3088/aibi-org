@@ -8,16 +8,19 @@ import { ScoreRing } from './ScoreRing';
 import { NewsletterCTA } from './NewsletterCTA';
 import { PrintButton } from './PrintButton';
 import { StarterArtifactCard } from './StarterArtifactCard';
+import { StarterPrompt } from './StarterPrompt';
+import { SevenDayPlan } from './SevenDayPlan';
+import { FutureVision } from './FutureVision';
+import { FooterClose } from './FooterClose';
 import { getStarterArtifact } from '@content/assessments/v2/starter-artifacts';
 import {
-  getAssessmentNextStep,
-  getFirstPracticeRecommendation,
-  getTopAssessmentGaps,
-} from '@/lib/lms/assessment-recommendations';
-import {
   PERSONAS,
-  RECOMMENDATIONS,
+  BIG_INSIGHT,
   TIER_INSIGHTS,
+  GAP_CONTENT,
+  RECOMMENDATIONS,
+  STARTER_PROMPTS,
+  RECOMMENDED_PATH_INTRO,
 } from '@content/assessments/v2/personalization';
 
 interface ResultsViewV2Props {
@@ -30,6 +33,42 @@ interface ResultsViewV2Props {
   readonly institutionName?: string | null;
 }
 
+interface RankedDimension {
+  readonly id: Dimension;
+  readonly label: string;
+  readonly score: number;
+  readonly maxScore: number;
+  readonly pct: number;
+}
+
+// Group every dimension by performance — Critical (<50%), Developing (50–74%),
+// Strong (≥75%). Sorted within each bucket low→high so the most actionable
+// items lead. Matches the spec's Section 3 grouping.
+function groupDimensions(
+  dimensionBreakdown: Record<Dimension, DimensionScore>,
+): {
+  readonly critical: readonly RankedDimension[];
+  readonly developing: readonly RankedDimension[];
+  readonly strong: readonly RankedDimension[];
+} {
+  const ranked: RankedDimension[] = (Object.entries(dimensionBreakdown) as [Dimension, DimensionScore][])
+    .filter(([, data]) => data.maxScore > 0)
+    .map(([id, data]) => ({
+      id,
+      label: DIMENSION_LABELS[id],
+      score: data.score,
+      maxScore: data.maxScore,
+      pct: data.score / data.maxScore,
+    }))
+    .sort((a, b) => a.pct - b.pct);
+
+  return {
+    critical: ranked.filter((d) => d.pct < 0.5),
+    developing: ranked.filter((d) => d.pct >= 0.5 && d.pct < 0.75),
+    strong: ranked.filter((d) => d.pct >= 0.75),
+  };
+}
+
 export function ResultsViewV2({
   score,
   tier,
@@ -40,35 +79,20 @@ export function ResultsViewV2({
   institutionName,
 }: ResultsViewV2Props) {
   const dimensions = Object.entries(dimensionBreakdown) as [Dimension, DimensionScore][];
-  const topGaps = getTopAssessmentGaps(dimensionBreakdown);
   const persona = PERSONAS[tierId];
   const subjectName = institutionName?.trim() || 'Your institution';
+  const grouped = groupDimensions(dimensionBreakdown);
+  // Top critical gap drives the recommendation, the starter prompt, and the
+  // starter artifact. Fall back to the lowest dimension if no critical gaps.
+  const focusGap =
+    grouped.critical[0] ??
+    grouped.developing[0] ??
+    grouped.strong[grouped.strong.length - 1] ??
+    null;
+  const fastestRoi = focusGap ? RECOMMENDATIONS[focusGap.id] : null;
+  const starterPrompt = focusGap ? STARTER_PROMPTS[focusGap.id] : null;
+  const starterArtifact = focusGap ? getStarterArtifact(focusGap.id) : null;
   const insightBullets = TIER_INSIGHTS[tierId];
-  const fastestRoi = topGaps[0]
-    ? RECOMMENDATIONS[topGaps[0].id as Dimension]
-    : null;
-  // The top gap drives which starter artifact the banker takes home.
-  // getTopAssessmentGaps is sorted lowest-percentile-first, so [0] is
-  // the dimension where they have the most to gain by acting.
-  const topGap = topGaps[0];
-  const starterArtifact = topGap
-    ? getStarterArtifact(topGap.id as Dimension)
-    : null;
-  const nextStep = getAssessmentNextStep(tierId);
-  const firstPractice = getFirstPracticeRecommendation(tierId);
-  const shouldStartPractice =
-    tierId === 'starting-point' || tierId === 'early-stage';
-  const primaryAction = shouldStartPractice
-    ? {
-        title: 'Start your first AI practice rep',
-        description:
-          'Turn this score into a small win now. The first rep takes about five minutes and helps you practice safe, practical AI use.',
-        href: tierId === 'early-stage'
-          ? '/practice/safe-prompt-conversion'
-          : '/practice/rewrite-for-clarity',
-        cta: 'Start Your First AI Practice Rep',
-      }
-    : nextStep;
 
   return (
     <div className="w-full max-w-3xl mx-auto space-y-16">
@@ -82,7 +106,7 @@ export function ResultsViewV2({
         </p>
       </div>
 
-      {/* Diagnosis hero — persona + score, side-by-side on desktop */}
+      {/* SECTION 1 — Hero Diagnosis */}
       <section className="grid gap-8 md:gap-12 md:grid-cols-[1fr_auto] md:items-center print-avoid-break">
         <div>
           <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
@@ -96,6 +120,20 @@ export function ResultsViewV2({
           <p className="text-base md:text-lg text-[color:var(--color-ink)]/75 leading-relaxed mt-4 max-w-xl">
             {persona.oneLine}
           </p>
+          <div className="mt-5 inline-flex items-baseline gap-3 border border-[color:var(--color-ink)]/15 bg-[color:var(--color-parch)] px-4 py-3 rounded-[2px]">
+            <span className="font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55">
+              AI Readiness Score
+            </span>
+            <span className="font-mono text-lg tabular-nums text-[color:var(--color-ink)]">
+              {score} / 48
+            </span>
+            <span
+              className="font-serif-sc text-[10px] uppercase tracking-[0.22em]"
+              style={{ color: tier.colorVar }}
+            >
+              {tier.label}
+            </span>
+          </div>
         </div>
         <div className="md:order-last md:flex-shrink-0">
           <ScoreRing
@@ -108,16 +146,29 @@ export function ResultsViewV2({
         </div>
       </section>
 
-      {/* What this means — three tier-specific insight bullets */}
+      {/* SECTION 2 — Big Insight (the hook) */}
+      <section className="bg-[color:var(--color-ink)] text-[color:var(--color-linen)] rounded-[3px] p-8 md:p-10 print-avoid-break">
+        <p className="font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-terra-pale)] mb-4">
+          The big insight
+        </p>
+        <p className="font-serif text-2xl md:text-3xl leading-snug">
+          {BIG_INSIGHT[tierId]}
+        </p>
+      </section>
+
+      {/* SECTION 3 — What This Means */}
       <section className="border-l-2 border-[color:var(--color-terra)] pl-5 print-avoid-break">
         <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-4">
           What this means
+        </p>
+        <p className="text-[color:var(--color-ink)]/80 mb-4">
+          In practice, this typically shows up as:
         </p>
         <ul className="space-y-3">
           {insightBullets.map((bullet) => (
             <li
               key={bullet}
-              className="text-base text-[color:var(--color-ink)]/80 leading-relaxed flex gap-3"
+              className="text-base text-[color:var(--color-ink)]/85 leading-relaxed flex gap-3"
             >
               <span aria-hidden className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-terra)] shrink-0" />
               <span>{bullet}</span>
@@ -126,8 +177,82 @@ export function ResultsViewV2({
         </ul>
       </section>
 
-      {/* Fastest ROI opportunity — driven by the bottom-ranked dimension */}
-      {fastestRoi && topGaps[0] && (
+      {/* SECTION 4 — Where You're Strong vs Exposed */}
+      <section className="space-y-10 print-avoid-break">
+        <h2 className="font-serif text-3xl text-[color:var(--color-ink)] leading-tight">
+          Where you&apos;re strong vs exposed.
+        </h2>
+
+        {grouped.critical.length > 0 && (
+          <div>
+            <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-error)] mb-5 flex items-center gap-2">
+              <span aria-hidden className="inline-block h-2 w-2 rounded-full bg-[color:var(--color-error)]" />
+              Your biggest gaps · focus here
+            </p>
+            <div className="grid gap-5">
+              {grouped.critical.map((gap) => (
+                <GapCard key={gap.id} gap={gap} />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {grouped.developing.length > 0 && (
+          <div>
+            <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-5 flex items-center gap-2">
+              <span aria-hidden className="inline-block h-2 w-2 rounded-full bg-[color:var(--color-terra)]" />
+              Developing
+            </p>
+            <ul className="grid gap-3">
+              {grouped.developing.map((dim) => (
+                <li
+                  key={dim.id}
+                  className="flex items-baseline justify-between border border-[color:var(--color-ink)]/10 rounded-[3px] px-4 py-3 bg-[color:var(--color-linen)]"
+                >
+                  <span className="font-serif text-lg text-[color:var(--color-ink)]">
+                    {dim.label}
+                  </span>
+                  <span className="font-mono text-xs text-[color:var(--color-slate)] tabular-nums">
+                    {dim.score}/{dim.maxScore}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {grouped.strong.length > 0 && (
+          <div>
+            <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-sage)] mb-5 flex items-center gap-2">
+              <span aria-hidden className="inline-block h-2 w-2 rounded-full bg-[color:var(--color-sage)]" />
+              Where you&apos;re strong
+            </p>
+            <ul className="grid gap-3">
+              {grouped.strong.map((strength) => (
+                <li
+                  key={strength.id}
+                  className="border border-[color:var(--color-sage)]/25 rounded-[3px] px-4 py-3 bg-[color:var(--color-sage)]/5"
+                >
+                  <div className="flex items-baseline justify-between mb-1">
+                    <span className="font-serif text-lg text-[color:var(--color-ink)]">
+                      {strength.label}
+                    </span>
+                    <span className="font-mono text-xs text-[color:var(--color-slate)] tabular-nums">
+                      {strength.score}/{strength.maxScore}
+                    </span>
+                  </div>
+                  <p className="text-sm text-[color:var(--color-ink)]/70 leading-relaxed">
+                    You already have a foundation here. This will accelerate your ability to adopt AI once the rest of the structure is in place.
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </section>
+
+      {/* SECTION 5 — Fastest ROI Opportunity */}
+      {fastestRoi && focusGap && (
         <section
           className="bg-[color:var(--color-parch)] border-2 border-[color:var(--color-terra)]/40 rounded-[3px] p-8 md:p-10 print-avoid-break"
           aria-label="Your fastest ROI opportunity"
@@ -135,138 +260,181 @@ export function ResultsViewV2({
           <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
             Your fastest ROI opportunity
           </p>
-          <h3 className="font-serif text-2xl md:text-3xl text-[color:var(--color-ink)] leading-tight">
-            {fastestRoi.title}
-          </h3>
-          <p className="mt-4 text-base text-[color:var(--color-ink)]/80 leading-relaxed max-w-2xl">
-            {fastestRoi.explanation}
+          <p className="font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55 mb-2">
+            Your first AI move
           </p>
-          <dl className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
-            <div className="border-l border-[color:var(--color-ink)]/15 pl-4">
+          <h3 className="font-serif text-2xl md:text-3xl text-[color:var(--color-ink)] leading-tight">
+            Start with {fastestRoi.title}.
+          </h3>
+
+          <p className="mt-5 font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55">
+            Why this is the right starting point
+          </p>
+          <ul className="mt-2 space-y-1.5">
+            {fastestRoi.whyRightNow.map((reason) => (
+              <li
+                key={reason}
+                className="text-[15px] leading-[1.55] text-[color:var(--color-ink)]/85 flex gap-3"
+              >
+                <span aria-hidden className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-terra)] shrink-0" />
+                <span>{reason}</span>
+              </li>
+            ))}
+          </ul>
+
+          <div className="mt-6 border-l-2 border-[color:var(--color-ink)]/20 pl-5">
+            <p className="font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55">
+              What this looks like in practice
+            </p>
+            <p className="mt-2 text-[15px] leading-[1.6] text-[color:var(--color-ink)]/85">
+              {fastestRoi.inPractice}
+            </p>
+          </div>
+
+          <p className="mt-5 font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55">
+            Where this works best
+          </p>
+          <ul className="mt-2 grid gap-1 sm:grid-cols-3">
+            {fastestRoi.worksBestFor.map((useCase) => (
+              <li
+                key={useCase}
+                className="text-[14px] text-[color:var(--color-ink)]/75 flex gap-2"
+              >
+                <span aria-hidden className="font-mono text-[color:var(--color-terra)]">·</span>
+                <span>{useCase}</span>
+              </li>
+            ))}
+          </ul>
+
+          <dl className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4 pt-5 border-t border-[color:var(--color-ink)]/10 text-sm">
+            <div>
               <dt className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/55">
                 Risk
               </dt>
               <dd className="mt-1 text-[color:var(--color-ink)]">{fastestRoi.riskLevel}</dd>
             </div>
-            <div className="border-l border-[color:var(--color-ink)]/15 pl-4">
+            <div>
               <dt className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/55">
                 Time saved
               </dt>
               <dd className="mt-1 text-[color:var(--color-ink)]">{fastestRoi.timeSaved}</dd>
             </div>
-            <div className="border-l border-[color:var(--color-ink)]/15 pl-4">
+            <div>
               <dt className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/55">
                 Owner
               </dt>
               <dd className="mt-1 text-[color:var(--color-ink)]">{fastestRoi.owner}</dd>
             </div>
           </dl>
-          <p className="mt-5 font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/55">
-            Surfaced by your weakest dimension: {topGaps[0].label}
-          </p>
         </section>
       )}
 
-      {/* Score interpretation */}
-      <section className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-8 md:p-10 print-avoid-break">
-        <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-4">
-          What your score means
-        </p>
-        <ScoreInterpretation score={score} tierId={tierId} />
-      </section>
-
-      {/* Top gaps */}
-      <section className="print-avoid-break">
-        <h3 className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-6">
-          Your top 3 gaps
-        </h3>
-        <div className="grid gap-4">
-          {topGaps.map((gap) => (
-            <div
-              key={gap.id}
-              className="border border-[color:var(--color-ink)]/10 rounded-[3px] p-5 bg-[color:var(--color-linen)]"
-            >
-              <div className="flex items-baseline justify-between gap-4">
-                <p className="font-serif text-xl text-[color:var(--color-ink)]">
-                  {gap.label}
-                </p>
-                <p className="font-mono text-xs text-[color:var(--color-slate)] tabular-nums">
-                  {gap.score}/{gap.maxScore}
-                </p>
-              </div>
-              <div className="mt-3 h-2 bg-[color:var(--color-ink)]/10 rounded-[1px] overflow-hidden">
-                <div
-                  className="h-full bg-[color:var(--color-terra)]"
-                  style={{ width: `${Math.round(gap.pct * 100)}%` }}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      {/* SECTION 6 — Interactive Starter Prompt */}
+      {starterPrompt && <StarterPrompt prompt={starterPrompt} />}
 
       {/* Tailored starter artifact — banker-facing markdown they can take to a colleague this week. */}
-      {starterArtifact && topGap && (
+      {starterArtifact && focusGap && (
         <StarterArtifactCard
           artifact={starterArtifact}
           tierLabel={tier.label}
-          topGapLabel={topGap.label}
+          topGapLabel={focusGap.label}
         />
       )}
 
-      {/* One primary next step */}
+      {/* SECTION 7 — 7-Day Activation Plan */}
+      <SevenDayPlan />
+
+      {/* SECTION 8 — What Good Looks Like */}
+      <FutureVision />
+
+      {/* SECTION 9 — Recommended Path (Conversion) */}
       <section
-        className="bg-[color:var(--color-parch)] border border-[color:var(--color-terra)]/25 rounded-[3px] p-8 md:p-10"
+        className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/15 rounded-[3px] p-8 md:p-10"
         data-print-hide="true"
+        aria-labelledby="recommended-path-heading"
       >
-        <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-4">
-          Recommended next step
+        <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
+          How to move forward from here
         </p>
-        <h3 className="font-serif text-3xl text-[color:var(--color-ink)] leading-tight mb-3">
-          {primaryAction.title}
+        <h3
+          id="recommended-path-heading"
+          className="font-serif text-2xl md:text-3xl text-[color:var(--color-ink)] leading-tight"
+        >
+          {RECOMMENDED_PATH_INTRO[tierId]}
         </h3>
-        <p className="text-sm text-[color:var(--color-ink)]/75 leading-relaxed max-w-2xl mb-6">
-          {primaryAction.description}
-        </p>
-        <div className="flex flex-col sm:flex-row gap-3">
-          <a
-            href={primaryAction.href}
-            className="inline-block text-center px-7 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
-          >
-            {primaryAction.cta}
-          </a>
-          {shouldStartPractice && (
+
+        <div className="mt-8 grid gap-6 md:grid-cols-[3fr_2fr]">
+          {/* Primary CTA — Education */}
+          <div className="border-2 border-[color:var(--color-terra)] rounded-[3px] p-6 bg-[color:var(--color-linen)]">
+            <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-terra)] mb-2">
+              Primary path
+            </p>
+            <h4 className="font-serif text-xl md:text-2xl text-[color:var(--color-ink)] leading-tight">
+              AiBI-P: Banking AI Practitioner
+            </h4>
+            <p className="mt-3 text-[14px] leading-[1.55] text-[color:var(--color-ink)]/80">
+              A practical training program designed for institutions at your stage.
+            </p>
+            <p className="mt-5 font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55">
+              What you get
+            </p>
+            <ul className="mt-2 space-y-1.5">
+              {[
+                '12 short modules focused on real work',
+                'Reusable prompt systems',
+                'Safe AI usage framework (SAFE)',
+                'Hands-on workflows your team can use immediately',
+              ].map((item) => (
+                <li
+                  key={item}
+                  className="text-[14px] text-[color:var(--color-ink)]/85 flex gap-3"
+                >
+                  <span aria-hidden className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-terra)] shrink-0" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-5 text-[14px] leading-[1.55] text-[color:var(--color-ink)]/85 italic">
+              Outcome: your team can safely use AI in daily work within 2 weeks.
+            </p>
             <a
-              href="/dashboard"
-              className="inline-block text-center px-7 py-3 border border-[color:var(--color-ink)]/25 text-[color:var(--color-ink)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)] transition-colors"
+              href="/courses/aibi-p"
+              className="mt-6 inline-block w-full text-center px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
             >
-              View Full Dashboard
+              Start Practitioner Training
             </a>
-          )}
+          </div>
+
+          {/* Secondary CTA — Advisory */}
+          <div className="border border-[color:var(--color-ink)]/20 rounded-[3px] p-6 bg-[color:var(--color-linen)]">
+            <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55 mb-2">
+              Prefer a guided approach?
+            </p>
+            <h4 className="font-serif text-xl text-[color:var(--color-ink)] leading-tight">
+              Executive Briefing
+            </h4>
+            <p className="mt-3 text-[14px] leading-[1.55] text-[color:var(--color-ink)]/80">
+              We can walk through your results with your leadership team and define a structured AI rollout plan.
+            </p>
+            <a
+              href="/for-institutions/advisory"
+              className="mt-6 inline-block w-full text-center px-6 py-3 border border-[color:var(--color-ink)]/30 text-[color:var(--color-ink)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)] transition-colors"
+            >
+              Request Executive Briefing
+            </a>
+          </div>
         </div>
       </section>
 
-      {/* First practice recommendation */}
-      <section className="border-l-2 border-[color:var(--color-terra)] pl-5 print-avoid-break">
-        <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-3">
-          First practice recommendation
-        </p>
-        <p className="font-serif text-2xl text-[color:var(--color-ink)] leading-snug">
-          {firstPractice}
-        </p>
-      </section>
-
-      {/* Dimension breakdown */}
+      {/* Dimension breakdown — full transparency */}
       <section className="print-avoid-break">
         <h3 className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-6">
-          Your dimension breakdown
+          Your full dimension breakdown
         </h3>
         <div className="space-y-4">
           {dimensions.map(([dim, data]) => {
             const pct = data.maxScore > 0 ? data.score / data.maxScore : 0;
-            const filledBars = data.maxScore > 0
-              ? Math.round(pct * 4)
-              : 0;
+            const filledBars = data.maxScore > 0 ? Math.round(pct * 4) : 0;
             return (
               <div key={dim} className="space-y-2">
                 <div className="flex items-baseline justify-between">
@@ -295,6 +463,9 @@ export function ResultsViewV2({
           })}
         </div>
       </section>
+
+      {/* SECTION 10 — Footer Close */}
+      <FooterClose />
 
       {/* Newsletter */}
       <div data-print-hide="true">
@@ -329,104 +500,59 @@ export function ResultsViewV2({
   );
 }
 
-function ScoreInterpretation({
-  score,
-  tierId,
-}: {
-  score: number;
-  tierId: Tier['id'];
-}) {
-  switch (tierId) {
-    case 'starting-point':
-      return (
-        <div className="space-y-3 text-[color:var(--color-ink)]/80 leading-relaxed">
-          <p>
-            Based on your score of{' '}
-            <strong className="font-mono tabular-nums">{score}/48</strong>:
-            your institution is at the beginning of its AI journey. Most staff
-            have limited exposure to AI tools, and there is no formal governance
-            or training in place.
-          </p>
-          <p>
-            This is not a problem. It is a starting position. The institutions
-            that move fastest from here are the ones that start with staff
-            literacy — not with a vendor purchase or a committee.
-          </p>
-          <p className="font-medium text-[color:var(--color-ink)]">
-            Our recommendation: build foundational AI literacy across your team
-            before investing in tools or automation. The AiBI-P course is
-            designed exactly for this moment.
-          </p>
-        </div>
-      );
-    case 'early-stage':
-      return (
-        <div className="space-y-3 text-[color:var(--color-ink)]/80 leading-relaxed">
-          <p>
-            Based on your score of{' '}
-            <strong className="font-mono tabular-nums">{score}/48</strong>:
-            your institution has early adopters experimenting with AI, but
-            adoption is uneven and governance is informal or absent.
-          </p>
-          <p>
-            The risk at this stage is not that your people will fail with AI.
-            It is that the experiments stay isolated — that the teller who saves
-            90 minutes a week never tells the operations team, and the operations
-            team never tells the board.
-          </p>
-          <p className="font-medium text-[color:var(--color-ink)]">
-            Our recommendation: a free Executive Briefing to map the pockets of
-            activity already happening inside your institution and design a path
-            from scattered experiments to a coordinated program.
-          </p>
-        </div>
-      );
-    case 'building-momentum':
-      return (
-        <div className="space-y-3 text-[color:var(--color-ink)]/80 leading-relaxed">
-          <p>
-            Based on your score of{' '}
-            <strong className="font-mono tabular-nums">{score}/48</strong>:
-            your institution has real traction. Multiple teams are using AI,
-            leadership is aware, and governance exists in some form.
-          </p>
-          <p>
-            The next challenge is proving ROI. Leadership support will erode
-            unless the early wins are documented with hard numbers — hours
-            recaptured, dollars saved, processes eliminated.
-          </p>
-          <p className="font-medium text-[color:var(--color-ink)]">
-            Our recommendation: run a Specialist cohort for a department.
-            Your managers work through real automation candidates together,
-            with optional Pilot Advisory coaching alongside. You leave with
-            documented before-and-after impact, not a deck.
-          </p>
-        </div>
-      );
-    case 'ready-to-scale':
-      return (
-        <div className="space-y-3 text-[color:var(--color-ink)]/80 leading-relaxed">
-          <p>
-            Based on your score of{' '}
-            <strong className="font-mono tabular-nums">{score}/48</strong>:
-            your institution is positioned to lead its peer group. You have the
-            culture, governance, and leadership commitment to operate AI as a
-            strategic capability.
-          </p>
-          <p>
-            The opportunity now is compounding. The institutions at your tier
-            are the ones that will set the standard for what community bank AI
-            looks like in two years. The question is whether you codify what
-            works fast enough to compound the advantage.
-          </p>
-          <p className="font-medium text-[color:var(--color-ink)]">
-            Our recommendation: an institution-wide capability program. A
-            recurring cohort cadence so every banker — new or tenured — has a
-            path to proficiency, with Leadership Advisory coaching for your AI
-            leader. The capability lives inside the institution, not in a
-            vendor relationship.
-          </p>
-        </div>
-      );
-  }
+interface GapCardProps {
+  readonly gap: RankedDimension;
+}
+
+function GapCard({ gap }: GapCardProps) {
+  const content = GAP_CONTENT[gap.id];
+  return (
+    <article className="border-l-4 border-[color:var(--color-error)] bg-[color:var(--color-linen)] rounded-[3px] p-6">
+      <header className="flex items-baseline justify-between gap-4">
+        <h3 className="font-serif text-xl md:text-2xl text-[color:var(--color-ink)]">
+          {gap.label}
+        </h3>
+        <span className="font-mono text-xs text-[color:var(--color-slate)] tabular-nums">
+          {gap.score}/{gap.maxScore}
+        </span>
+      </header>
+      <p className="mt-3 text-[15px] leading-[1.6] text-[color:var(--color-ink)]/80">
+        {content.explanation}
+      </p>
+
+      <div className="mt-5">
+        <p className="font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-error)]">
+          What this leads to
+        </p>
+        <ul className="mt-2 space-y-1.5">
+          {content.impacts.map((impact) => (
+            <li
+              key={impact}
+              className="text-[14px] leading-[1.55] text-[color:var(--color-ink)]/85 flex gap-3"
+            >
+              <span aria-hidden className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-error)] shrink-0" />
+              <span>{impact}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="mt-5">
+        <p className="font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-sage)]">
+          What good looks like
+        </p>
+        <ul className="mt-2 space-y-1.5">
+          {content.whatGoodLooksLike.map((vision) => (
+            <li
+              key={vision}
+              className="text-[14px] leading-[1.55] text-[color:var(--color-ink)]/85 flex gap-3"
+            >
+              <span aria-hidden className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-sage)] shrink-0" />
+              <span>{vision}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </article>
+  );
 }
