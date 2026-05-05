@@ -1,7 +1,19 @@
 import { notFound } from 'next/navigation';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { getTierV2 } from '@content/assessments/v2/scoring';
+import type { DimensionScore } from '@content/assessments/v2/scoring';
+import type { Dimension } from '@content/assessments/v2/types';
 import { Cover } from '../_components/Cover';
+import { ExecSummary } from '../_components/ExecSummary';
+import { LensedImplications } from '../_components/LensedImplications';
+import { StrengthsAndGaps } from '../_components/StrengthsAndGaps';
+import { GapDetail } from '../_components/GapDetail';
+import { FirstMove } from '../_components/FirstMove';
+import { StarterPromptAndPlan } from '../_components/StarterPromptAndPlan';
+import { FutureVisionPage } from '../_components/FutureVisionPage';
+import { NextStepsTrio } from '../_components/NextStepsTrio';
+import { GovernanceCitations } from '../_components/GovernanceCitations';
+import { BackCover } from '../_components/BackCover';
 import '../print.css';
 
 export const dynamic = 'force-dynamic';
@@ -9,6 +21,27 @@ export const runtime = 'nodejs';
 
 interface PrintPageProps {
   readonly params: { readonly id: string };
+}
+
+interface RankedDim {
+  readonly id: Dimension;
+  readonly score: number;
+  readonly maxScore: number;
+  readonly pct: number;
+}
+
+function rankWeakest(
+  breakdown: Record<Dimension, DimensionScore>,
+): ReadonlyArray<RankedDim> {
+  return (Object.entries(breakdown) as [Dimension, DimensionScore][])
+    .filter(([, d]) => d.maxScore > 0)
+    .map(([id, d]) => ({
+      id,
+      score: d.score,
+      maxScore: d.maxScore,
+      pct: d.score / d.maxScore,
+    }))
+    .sort((a, b) => a.pct - b.pct);
 }
 
 export default async function PrintPage({ params }: PrintPageProps) {
@@ -25,14 +58,15 @@ export default async function PrintPage({ params }: PrintPageProps) {
 
   if (error || !profile) notFound();
   if (!profile.readiness_tier_id) notFound();
+  if (!profile.readiness_dimension_breakdown) notFound();
 
   const tier = getTierV2(profile.readiness_score ?? 0);
   const generatedAt = new Date();
+  const breakdown = profile.readiness_dimension_breakdown as Record<Dimension, DimensionScore>;
+  const ranked = rankWeakest(breakdown);
+  const topTwoCriticalGaps = ranked.slice(0, 2);
+  const focusGapId = ranked[0]?.id;
 
-  // first_name + institution_name are not persisted on user_profiles
-  // currently; they live only in client-side state during the
-  // assessment flow. The PDF currently renders without them. Phase F
-  // adds persistence + back-fill.
   return (
     <main>
       <Cover
@@ -44,9 +78,33 @@ export default async function PrintPage({ params }: PrintPageProps) {
         institutionName={null}
         generatedAt={generatedAt}
       />
-      {/* Subsequent tasks add ExecSummary, LensedImplications, Strengths,
-          GapDetail, FirstMove, StarterPromptAndPlan, FutureVisionPage,
-          NextStepsTrio, GovernanceCitations, BackCover. */}
+      <ExecSummary
+        tier={tier}
+        tierId={profile.readiness_tier_id}
+        score={profile.readiness_score ?? 0}
+        maxScore={profile.readiness_max_score ?? 48}
+      />
+      <LensedImplications tierId={profile.readiness_tier_id} />
+      <StrengthsAndGaps dimensionBreakdown={breakdown} />
+      {topTwoCriticalGaps.map((dim, idx) => (
+        <GapDetail
+          key={dim.id}
+          dimensionId={dim.id}
+          score={dim.score}
+          maxScore={dim.maxScore}
+          pageNumber={5 + idx}
+        />
+      ))}
+      {focusGapId ? (
+        <>
+          <FirstMove focusGapId={focusGapId} />
+          <StarterPromptAndPlan focusGapId={focusGapId} />
+        </>
+      ) : null}
+      <FutureVisionPage />
+      <NextStepsTrio tierId={profile.readiness_tier_id} />
+      <GovernanceCitations />
+      <BackCover />
     </main>
   );
 }
