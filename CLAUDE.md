@@ -96,7 +96,7 @@ The user is not a developer. Before implementing anything proposed:
 - **CRM:** HubSpot free tier — contact tracking, deal pipeline
 - **Analytics:** Plausible (privacy-first, custom events — see deferred call pattern below)
 - **Scheduling:** Calendly (popup or inline embed — Executive Briefing link)
-- **LMS (Phase 2):** Kajabi — provisioned via Zapier/Make triggered by Stripe webhook, NOT directly from ConvertKit tag
+- **LMS (Phase 2):** In-house — `src/lib/lms/`, `src/lib/course-harness/`, `src/lib/certificates/`. Course content + entitlements live in Supabase (`course_enrollments` table). No third-party LMS, no Kajabi, no Zapier.
 
 ### Git Worktree Layout
 
@@ -176,7 +176,7 @@ SKIP_CONVERTKIT=true
 | `/resources` | SSR | Phase 3 | AI Banking Brief archive + newsletter. |
 | `/api/capture-email` | API | MVP | ConvertKit + HubSpot. Rate limited. Suppressed on staging. |
 | `/api/create-checkout` | API | Phase 2 | Stripe Checkout Session. |
-| `/api/webhooks/stripe` | API | Phase 2 | payment.success → Zapier → Kajabi. |
+| `/api/webhooks/stripe` | API | Phase 2 | payment.success → insert into `course_enrollments` → ConvertKit welcome tag. |
 
 ---
 
@@ -308,20 +308,27 @@ The API silently ignores unknown properties. **Create these in HubSpot dashboard
 
 ---
 
-## Kajabi Provisioning — Phase 2
+## Course Provisioning — Phase 2 (In-House LMS)
 
-A ConvertKit tag alone does NOT provision Kajabi access. The chain:
+Course delivery is in-house — no third-party LMS, no Zapier, no Kajabi
+(decision 2026-05-05). Existing pieces in `src/lib/lms/`,
+`src/lib/course-harness/`, `src/lib/certificates/`. Course content lives
+in `public/AiBI-P/` HTML mockups + `src/app/courses/`. The chain:
 
 ```
 Stripe payment.success webhook
   → /api/webhooks/stripe (verify signature)
-  → Write enrollment to Supabase
-  → Trigger Zapier/Make automation
-  → Create Kajabi user + grant product access
-  → Tag ConvertKit contact (for email sequence)
+  → Insert row into Supabase `course_enrollments`
+  → Tag ConvertKit contact (for welcome / drip sequence)
+  → User logs in with their existing Supabase Auth account
+  → /courses/aibi-p reads `course_enrollments` to gate access
 ```
 
-Until this automation is built and tested, manually fulfill Phase 2 purchases. Do not ship a checkout with no provisioning path.
+No external user provisioning, no automation glue. Single auth surface
+(Supabase Auth from Spec 2), single DB (Supabase), full design control.
+
+Until the Stripe webhook handler is built and tested, manually insert
+`course_enrollments` rows for any pre-launch sales.
 
 ---
 
@@ -441,7 +448,7 @@ course_enrollments (
   email text not null,
   product text not null,  -- 'foundations' | 'aibi-p' | 'aibi-s' | 'aibi-l'
   stripe_session_id text,
-  kajabi_user_id text,
+  user_id uuid references auth.users(id),  -- bound on first login
   created_at timestamptz default now()
 );
 ```
@@ -619,11 +626,11 @@ vendor is selected.
 
 **2026-04-15 — Third-party integrations deferred for prototype phase.**
 User direction: focus on site-build work that requires no external accounts.
-Calendly, Supabase, Kit/Loops, HubSpot/Attio, Stripe, Kajabi, Upstash all
+Calendly, Supabase, Kit/Loops, HubSpot/Attio, Stripe, Upstash all
 deferred. When accounts exist, wire adapters in order: Supabase first (data
 capture), then ConvertKit or Loops (newsletter), then HubSpot or Attio
-(CRM), then Calendly (briefing booking), then Stripe + Kajabi (Phase 2
-monetization).
+(CRM), then Calendly (briefing booking), then Stripe (Phase 2
+monetization). Course delivery is in-house — see 2026-05-05 entry.
 
 **2026-04-17 — Supabase activation reverses prior deferral.** Connected
 Supabase MCP, applied 7-table schema (already present), added security-
@@ -704,6 +711,32 @@ lowest-scoring dimension. Server-side persistence of dimension
 breakdown added in migration `00011_readiness_dimension_columns.sql`.
 Resend transactional email is deferred — the artifact is on-screen,
 copy-to-clipboard, and download-as-md only for now.
+
+**2026-05-04 — Four-surface assessment results program shipped.**
+Brainstormed and shipped over a single sprint: Spec 1 (briefing
+reshape, PR #40), Spec 2 (PDF download, PR #41), Spec 3 (ConvertKit
+tier sequences, PR #42), Spec 4 (owner-bound `/results/{id}` URL,
+PR #43). All four merged to main. Operator setup remaining: Vercel
+env vars (CRON_SECRET, four CONVERTKIT_TAG_ID_*, CONVERTKIT_API_SECRET,
+RESEND_API_KEY, HUBSPOT_API_KEY, NEXT_PUBLIC_PLAUSIBLE_DOMAIN,
+NEXT_PUBLIC_CALENDLY_URL, AI keys) plus four ConvertKit Tags +
+four Sequences with 12 emails authored. Tracked at
+`tasks/weekend-env-setup.md`.
+
+**2026-05-05 — Kajabi and Zapier dropped from Phase 2 architecture.**
+The original CLAUDE.md plan routed `Stripe payment.success → Zapier
+→ Kajabi` for course delivery. User decision: drop both. Course
+delivery is in-house using existing `src/lib/lms/`,
+`src/lib/course-harness/`, `src/lib/certificates/` modules and the
+HTML mockups in `public/AiBI-P/`. Reasons: avoid the ~$199/mo Kajabi
+fee, keep a single auth surface (Supabase Auth from Spec 2), keep
+a single DB (Supabase), maintain full design control. New chain:
+`Stripe payment.success → /api/webhooks/stripe → insert
+course_enrollments row → ConvertKit welcome tag → user logs in
+with existing Supabase Auth → /courses/aibi-p reads
+course_enrollments to gate access`. The `course_enrollments`
+schema lost its `kajabi_user_id` column; gained `user_id` referencing
+`auth.users(id)` (bound on first login).
 
 ---
 

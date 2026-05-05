@@ -185,11 +185,15 @@ Last updated: 2026-04-15
 - [ ] Segment by core vendor, asset size, charter type (N >= 30 per segment)
 - [ ] Opt-in "benchmark me quarterly" newsletter segment
 
-## Phase 2 — Monetization (Stripe + Kajabi)
+## Phase 2 — Monetization (Stripe + In-House LMS)
 
-- [ ] Stripe checkout is code-complete — wire live Price IDs and test end-to-end
-- [ ] Zapier/Make automation → Kajabi user provisioning on payment.success
-- [ ] DO NOT ship checkout without provisioning path (CLAUDE.md rule)
+Per 2026-05-05 decision: course delivery is in-house. No Kajabi, no Zapier.
+
+- [ ] Stripe checkout — create Foundations + AiBI-P products via Stripe MCP, paste price IDs into env vars
+- [ ] `/api/webhooks/stripe` — verify signature, insert `course_enrollments` row, tag ConvertKit welcome
+- [ ] `/courses/aibi-p` — read `course_enrollments` to gate access; redirect to checkout if no entitlement
+- [ ] Migration: extend `course_enrollments` with `user_id uuid references auth.users(id)`; bind on first login
+- [ ] DO NOT ship checkout until the webhook handler + entitlement gate are tested end-to-end
 
 ## AI Practice Sandbox — Phase 2
 

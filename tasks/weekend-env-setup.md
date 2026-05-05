@@ -178,7 +178,7 @@ Don't worry about these this weekend unless you're shipping the AiBI-P Stripe fl
 - [ ] `STRIPE_FOUNDATIONS_PRICE_ID=`
 - [ ] `STRIPE_PRACTITIONER_PRICE_ID=`
 
-Plus the Zapier/Make Stripe → Kajabi automation per CLAUDE.md ("Until this automation is built and tested, manually fulfill Phase 2 purchases").
+Plus the in-house Stripe webhook handler (`/api/webhooks/stripe`) that verifies the signature and inserts a `course_enrollments` row. Per 2026-05-05 decision, no Kajabi, no Zapier. Until the webhook handler is built and tested, manually insert `course_enrollments` rows for any pre-launch sales.
 
 ---
 
