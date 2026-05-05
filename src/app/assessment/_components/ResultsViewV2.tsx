@@ -22,6 +22,7 @@ import {
   RECOMMENDED_PATH_INTRO,
   FOOTER_CLOSE,
   FINANCIAL_IMPLICATIONS,
+  TIER_CLOSING_CTA,
 } from '@content/assessments/v2/personalization';
 
 const BRIEFING_DATE_FORMATTER = new Intl.DateTimeFormat('en-US', {
@@ -467,115 +468,30 @@ export function ResultsViewV2({
         </ul>
       </section>
 
-      {/* SECTION 9 — Next Steps (Training · Strategic Planning · Governance) */}
+      {/* SECTION 9 — Closing CTA (tier-keyed, single card) */}
       <SectionAnchor id="section-9" />
-      <section className="space-y-8" aria-labelledby="section-9-heading">
+      <section aria-labelledby="section-9-heading" className="space-y-6">
         <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
-          Next steps
+          {TIER_CLOSING_CTA[tierId].eyebrow}
         </p>
         <h2
           id="section-9-heading"
           className="font-serif text-3xl md:text-4xl leading-tight text-[color:var(--color-ink)]"
         >
-          {RECOMMENDED_PATH_INTRO[tierId]}
+          {TIER_CLOSING_CTA[tierId].headline}
         </h2>
-
-        <div className="grid gap-5 md:grid-cols-3">
-          {/* Training — primary CTA */}
-          <article className="border-2 border-[color:var(--color-terra)] rounded-[3px] p-6 bg-[color:var(--color-linen)] flex flex-col">
-            <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-terra)]">
-              01 · Training
-            </p>
-            <h3 className="mt-2 font-serif text-xl md:text-2xl text-[color:var(--color-ink)] leading-tight">
-              AiBI-P Practitioner
-            </h3>
-            <p className="mt-3 text-[14px] leading-[1.55] text-[color:var(--color-ink)]/80">
-              Enroll relevant staff to build foundational skills inside a safe, repeatable framework.
-            </p>
-            <ul className="mt-4 space-y-1.5">
-              {[
-                '12 short modules focused on real work',
-                'Reusable prompt systems',
-                'SAFE framework',
-              ].map((item) => (
-                <li key={item} className="text-[14px] text-[color:var(--color-ink)]/85 flex gap-3">
-                  <span aria-hidden className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-terra)] shrink-0" />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-            <p className="mt-4 text-[13px] leading-[1.55] text-[color:var(--color-ink)]/75 italic">
-              Outcome: your team can safely use AI in daily work within 2 weeks.
-            </p>
-            <a
-              href="/courses/aibi-p"
-              data-print-hide="true"
-              className="mt-auto pt-6 block text-center px-5 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
-            >
-              Start Practitioner Training
-            </a>
-          </article>
-
-          {/* Strategic Planning — secondary CTA */}
-          <article className="border border-[color:var(--color-ink)]/20 rounded-[3px] p-6 bg-[color:var(--color-linen)] flex flex-col">
-            <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55">
-              02 · Strategic planning
-            </p>
-            <h3 className="mt-2 font-serif text-xl md:text-2xl text-[color:var(--color-ink)] leading-tight">
-              Executive Briefing
-            </h3>
-            <p className="mt-3 text-[14px] leading-[1.55] text-[color:var(--color-ink)]/80">
-              Align leadership on priorities and define a roadmap for scaling AI responsibly across the institution.
-            </p>
-            <ul className="mt-4 space-y-1.5">
-              {[
-                'Walk through your results with leadership',
-                'Define a phased adoption roadmap',
-                'Identify the right first cohort',
-              ].map((item) => (
-                <li key={item} className="text-[14px] text-[color:var(--color-ink)]/85 flex gap-3">
-                  <span aria-hidden className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-ink)]/40 shrink-0" />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-            <a
-              href="/for-institutions/advisory"
-              data-print-hide="true"
-              className="mt-auto pt-6 block text-center px-5 py-3 border border-[color:var(--color-ink)]/30 text-[color:var(--color-ink)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)] transition-colors"
-            >
-              Request Briefing
-            </a>
-          </article>
-
-          {/* Governance — describes the work, no CTA */}
-          <article className="border border-[color:var(--color-ink)]/20 rounded-[3px] p-6 bg-[color:var(--color-linen)] flex flex-col">
-            <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55">
-              03 · Governance
-            </p>
-            <h3 className="mt-2 font-serif text-xl md:text-2xl text-[color:var(--color-ink)] leading-tight">
-              AI Use Policy
-            </h3>
-            <p className="mt-3 text-[14px] leading-[1.55] text-[color:var(--color-ink)]/80">
-              Document tool usage, data handling, and accountability so your audit team can defend the program.
-            </p>
-            <ul className="mt-4 space-y-1.5">
-              {[
-                'Approved tools and data classes',
-                'Mandatory human review steps',
-                'Retention and incident procedures',
-              ].map((item) => (
-                <li key={item} className="text-[14px] text-[color:var(--color-ink)]/85 flex gap-3">
-                  <span aria-hidden className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-ink)]/40 shrink-0" />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-            <p className="mt-auto pt-6 text-[12px] text-[color:var(--color-ink)]/55 italic">
-              Aligned with SR 11-7 model risk guidance and the AIEOG AI Lexicon.
-            </p>
-          </article>
-        </div>
+        <article className="border-2 border-[color:var(--color-terra)] rounded-[3px] p-6 md:p-8 bg-[color:var(--color-linen)]">
+          <p className="text-[15px] leading-[1.6] text-[color:var(--color-ink)]/85">
+            {TIER_CLOSING_CTA[tierId].body}
+          </p>
+          <a
+            href={TIER_CLOSING_CTA[tierId].ctaHref}
+            data-print-hide="true"
+            className="mt-6 inline-block px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
+          >
+            {TIER_CLOSING_CTA[tierId].ctaLabel}
+          </a>
+        </article>
       </section>
 
       {/* SECTION 10 — Footer Close */}
