@@ -54,6 +54,11 @@ const nextConfig = {
       { source: '/courses/aibi-l', destination: '/education', permanent: false },
       { source: '/courses/aibi-s/:path*', destination: '/education', permanent: false },
       { source: '/courses/aibi-l/:path*', destination: '/education', permanent: false },
+      // Decision log: 2026-05-05 — Advisory tiers (Pilot/Program/Leadership Advisory)
+      // removed pending case studies. Custom engagements offered via mailto stub on
+      // /for-institutions until case-study content exists.
+      { source: '/for-institutions/advisory', destination: '/for-institutions', permanent: false },
+      { source: '/for-institutions/advisory/:path*', destination: '/for-institutions', permanent: false },
     ];
   },
 };

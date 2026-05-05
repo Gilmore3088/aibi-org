@@ -260,35 +260,33 @@ export default function ForInstitutionsPage() {
         </div>
       </section>
 
-      {/* Advisory — quiet secondary option */}
+      {/* Custom engagements — contact stub (2026-05-05: replaces advisory tiers) */}
       <section
-        aria-labelledby="advisory-heading"
-        className="px-6 py-14 md:py-20 border-t border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)]"
+        aria-labelledby="custom-engagements-heading"
+        className="px-6 py-14 md:py-20 border-t border-[color:var(--color-ink)]/10"
       >
-        <div className="max-w-3xl mx-auto">
-          <div className="rounded-[3px] border border-[color:var(--color-ink)]/10 bg-[color:var(--color-linen)] p-8 md:p-10">
-            <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60 mb-3">
-              Advisory · Optional
-            </p>
-            <h2
-              id="advisory-heading"
-              className="font-serif text-2xl md:text-3xl text-[color:var(--color-ink)] leading-tight mb-4"
+        <div className="max-w-2xl mx-auto text-center">
+          <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
+            Custom engagements
+          </p>
+          <h2
+            id="custom-engagements-heading"
+            className="font-serif text-2xl md:text-3xl text-[color:var(--color-ink)] leading-tight"
+          >
+            Tailored advisory work
+          </h2>
+          <p className="mt-4 text-base text-[color:var(--color-ink)]/80 leading-relaxed">
+            For institution-wide enablement programs or custom advisory engagements,
+            please reach out:
+          </p>
+          <p className="mt-4 font-mono text-sm">
+            <a
+              href="mailto:hello@aibankinginstitute.com"
+              className="text-[color:var(--color-terra)] hover:text-[color:var(--color-terra-light)] underline underline-offset-4"
             >
-              Want a coach alongside the cohort?
-            </h2>
-            <p className="text-base text-[color:var(--color-ink)]/75 leading-relaxed mb-6">
-              Some institutions want hands-on coaching while their team is in
-              the program. We offer three advisory engagements that pair with
-              certification — never replace it. Your bankers are always the
-              builders. We’re the coach.
-            </p>
-            <Link
-              href="/for-institutions/advisory"
-              className="inline-block font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] border-b border-[color:var(--color-terra)] pb-0.5 hover:opacity-70 transition-opacity"
-            >
-              See advisory options
-            </Link>
-          </div>
+              hello@aibankinginstitute.com
+            </a>
+          </p>
         </div>
       </section>
 

@@ -9,10 +9,11 @@ import { EmailGate } from './_components/EmailGate';
 import { ResultsViewV2 } from './_components/ResultsViewV2';
 import { ScoreRing } from './_components/ScoreRing';
 
-// If the Calendly URL is unset (e.g. preview/dev), fall back to the advisory
-// page so the briefing CTA is never silently dead. Never use '#'.
+// If the Calendly URL is unset (e.g. preview/dev), fall back to the
+// /for-institutions page so the briefing CTA is never silently dead.
+// Never use '#'. (2026-05-05: /for-institutions/advisory retired.)
 const BRIEFING_URL =
-  process.env.NEXT_PUBLIC_CALENDLY_URL ?? '/for-institutions/advisory';
+  process.env.NEXT_PUBLIC_CALENDLY_URL ?? '/for-institutions';
 
 export default function AssessmentPage() {
   const state = useAssessmentV2();
