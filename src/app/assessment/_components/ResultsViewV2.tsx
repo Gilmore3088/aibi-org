@@ -12,14 +12,10 @@ import { getStarterArtifact } from '@content/assessments/v2/starter-artifacts';
 import {
   PERSONAS,
   BIG_INSIGHT,
-  TIER_INSIGHTS,
   GAP_CONTENT,
   RECOMMENDATIONS,
   STARTER_PROMPTS,
   SEVEN_DAY_PLAN,
-  FUTURE_VISION,
-  RECOMMENDED_PATH_INTRO,
-  FOOTER_CLOSE,
   FINANCIAL_IMPLICATIONS,
   TIER_CLOSING_CTA,
 } from '@content/assessments/v2/personalization';
