@@ -214,7 +214,7 @@ function ScoreInterpretation({
           <p className="font-medium text-[color:var(--color-ink)]">
             Our recommendation: an institution-wide capability program. A
             recurring cohort cadence so every banker — new or tenured — has a
-            path to proficiency, with Leadership Advisory coaching for your AI
+            path to proficiency, with custom advisory available for your AI
             leader. The capability lives inside the institution, not in a
             vendor relationship.
           </p>

@@ -97,7 +97,7 @@ function getStepsForTier(tierId: Tier['id']): readonly NextStep[] {
           label: 'Recommended',
           title: 'Institution-wide capability program',
           description:
-            'A recurring Practitioner cohort cadence scheduled so every banker, new or tenured, has a path to proficiency. Leadership Advisory available alongside for your AI leader.',
+            'A recurring Practitioner cohort cadence scheduled so every banker, new or tenured, has a path to proficiency. Custom advisory available alongside for your AI leader.',
           href: '/for-institutions',
           cta: 'See enrollment options',
           accent: 'var(--color-terra)',
