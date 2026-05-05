@@ -17,9 +17,15 @@ if (
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
-    // @react-pdf/renderer uses native Node.js modules (canvas, etc.) that must
-    // not be bundled by webpack — mark as external for server components/routes.
-    serverComponentsExternalPackages: ['@react-pdf/renderer'],
+    // Native-binary packages that must not be bundled by webpack.
+    //   @react-pdf/renderer  — uses native canvas modules
+    //   @sparticuz/chromium  — bundles Chromium binary for Vercel serverless
+    //   puppeteer-core       — peer of @sparticuz/chromium; same exclusion needed
+    serverComponentsExternalPackages: [
+      '@react-pdf/renderer',
+      '@sparticuz/chromium',
+      'puppeteer-core',
+    ],
   },
   // Decision log: 2026-04-17 — /courses and /certifications merged into /education
   // to reduce nav clutter. Exact-match redirects preserve sub-route access:
