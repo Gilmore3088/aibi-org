@@ -32,6 +32,10 @@ export async function checkEmailCaptureLimit(
   ipHash: string,
   limits: EmailCaptureLimits,
 ): Promise<EmailCaptureDecision> {
+  // Bypass in non-production environments so local testing of the assessment
+  // flow is not blocked after a handful of iterations. Production stays
+  // protected.
+  if (process.env.NODE_ENV !== 'production') return { allowed: true };
   if (!isSupabaseConfigured()) return { allowed: true };
 
   const client = createServiceRoleClient();
