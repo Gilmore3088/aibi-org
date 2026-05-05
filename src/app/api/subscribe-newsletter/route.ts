@@ -1,9 +1,10 @@
 // POST /api/subscribe-newsletter
-// MVP: validate, log, stub adapters. Real ConvertKit (or Loops) wiring
-// added when CONVERTKIT_NEWSLETTER_FORM_ID is configured.
+// Validates, logs, and subscribes the visitor to the newsletter form.
+// No-op when CONVERTKIT_NEWSLETTER_FORM_ID is unset (returns ok=true
+// so the UI does not block on missing config).
 
 import { NextResponse } from 'next/server';
-import { subscribeToAssessmentForm } from '@/lib/convertkit';
+import { subscribeToNewsletterForm } from '@/lib/convertkit';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -33,7 +34,7 @@ export async function POST(request: Request) {
     at: new Date().toISOString(),
   });
 
-  await subscribeToAssessmentForm({ email, tags: ['newsletter', `source:${source}`] }).catch(
+  await subscribeToNewsletterForm({ email, tags: ['newsletter', `source:${source}`] }).catch(
     (err) => console.warn('[subscribe-newsletter] skip', err)
   );
 
