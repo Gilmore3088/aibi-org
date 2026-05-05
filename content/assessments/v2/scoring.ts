@@ -19,7 +19,7 @@ export const tiers: readonly Tier[] = [
     id: 'starting-point',
     label: 'Starting Point',
     min: 12,
-    max: 22,
+    max: 20,
     colorVar: 'var(--color-error)',
     headline: 'You are at the beginning of your AI journey.',
     summary:
@@ -28,8 +28,8 @@ export const tiers: readonly Tier[] = [
   {
     id: 'early-stage',
     label: 'Early Stage',
-    min: 23,
-    max: 32,
+    min: 21,
+    max: 29,
     colorVar: 'var(--color-terra)',
     headline: 'You are experimenting but not yet coordinated.',
     summary:
@@ -38,8 +38,8 @@ export const tiers: readonly Tier[] = [
   {
     id: 'building-momentum',
     label: 'Building Momentum',
-    min: 33,
-    max: 40,
+    min: 30,
+    max: 38,
     colorVar: 'var(--color-terra-light)',
     headline: 'You have real traction. The next step is scale.',
     summary:
@@ -48,7 +48,7 @@ export const tiers: readonly Tier[] = [
   {
     id: 'ready-to-scale',
     label: 'Ready to Scale',
-    min: 41,
+    min: 39,
     max: 48,
     colorVar: 'var(--color-sage)',
     headline: 'You are positioned to lead your peer group.',
