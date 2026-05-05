@@ -437,6 +437,16 @@ export function ResultsViewV2({
           <a
             href={TIER_CLOSING_CTA[tierId].ctaHref}
             data-print-hide="true"
+            onClick={() => {
+              if (typeof window !== 'undefined' && typeof window.plausible === 'function') {
+                window.plausible('closing_cta_click', {
+                  props: {
+                    tier: tierId,
+                    destination: TIER_CLOSING_CTA[tierId].ctaHref,
+                  },
+                });
+              }
+            }}
             className="mt-6 inline-block px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
           >
             {TIER_CLOSING_CTA[tierId].ctaLabel}
