@@ -1,11 +1,15 @@
 // POST /api/create-checkout
-// Creates a Stripe Checkout Session for AiBI-P course purchase.
+// Creates a Stripe Checkout Session for a supported product.
 //
-// Individual mode: $295/seat (STRIPE_AIBIP_PRICE_ID)
-// Institution/team mode: $199/seat x quantity (STRIPE_AIBIP_INSTITUTION_PRICE_ID), min 10 seats
-//
-// Persistent discount: if an individual buyer's email is associated with an institution
-// that has discount_locked=true, they get the institution price automatically (PAY-03).
+// Dispatches on `product` in the request body:
+//   - 'aibi-p' (default if absent for backwards compatibility) — AiBI-P course
+//       individual: $295/seat (STRIPE_AIBIP_PRICE_ID)
+//       institution: $199/seat × N (STRIPE_AIBIP_INSTITUTION_PRICE_ID), min 10
+//       persistent discount via discount_locked institutions (PAY-03)
+//   - 'indepth-assessment' — paid In-Depth Assessment
+//       individual: $99 single seat (STRIPE_INDEPTH_ASSESSMENT_PRICE_ID)
+//       institution: $79/seat × N (STRIPE_INDEPTH_ASSESSMENT_VOLUME_PRICE_ID), min 10
+//       leader_email always required; allow_promotion_codes always true
 //
 // Returns: { url: string } — the Stripe-hosted Checkout URL for client-side redirect.
 // Errors: 400 for validation, 503 for missing config, 500 for Stripe errors.
@@ -21,12 +25,15 @@ async function getStripe() {
 }
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const MIN_INSTITUTION_QUANTITY = 10;
 
 interface CheckoutBody {
+  product?: unknown;
   mode?: unknown;
   quantity?: unknown;
   institution_name?: unknown;
   user_email?: unknown;
+  leader_email?: unknown;
 }
 
 type CheckoutMode = 'individual' | 'institution';
@@ -35,6 +42,10 @@ function getOrigin(request: Request): string {
   const host = request.headers.get('host') ?? 'aibankinginstitute.com';
   const proto = request.headers.get('x-forwarded-proto') ?? 'https';
   return `${proto}://${host}`;
+}
+
+function badRequest(error: string): NextResponse {
+  return NextResponse.json({ error }, { status: 400 });
 }
 
 /**
@@ -74,44 +85,47 @@ export async function POST(request: Request) {
   try {
     body = (await request.json()) as CheckoutBody;
   } catch {
-    return NextResponse.json({ error: 'Invalid JSON body.' }, { status: 400 });
+    return badRequest('Invalid JSON body.');
   }
 
+  // Default product to 'aibi-p' for backwards compatibility — pre-existing
+  // callers (the AiBI-P purchase page, server actions, etc.) post without a
+  // `product` field and must keep working unchanged.
+  const product = body.product === undefined ? 'aibi-p' : body.product;
+
+  if (product === 'aibi-p') return handleAibiP(body, request);
+  if (product === 'indepth-assessment') return handleIndepth(body, request);
+
+  return badRequest('product must be "aibi-p" or "indepth-assessment".');
+}
+
+// ---------------------------------------------------------------------------
+// AiBI-P handler — preserves prior route behavior verbatim
+// ---------------------------------------------------------------------------
+
+async function handleAibiP(body: CheckoutBody, request: Request): Promise<NextResponse> {
   const mode = body.mode as CheckoutMode | undefined;
 
-  // Validate mode
   if (mode !== 'individual' && mode !== 'institution') {
-    return NextResponse.json(
-      { error: 'mode must be "individual" or "institution".' },
-      { status: 400 }
-    );
+    return badRequest('mode must be "individual" or "institution".');
   }
 
-  // Validate institution-specific fields
   if (mode === 'institution') {
     const quantity = typeof body.quantity === 'number' ? body.quantity : NaN;
-    if (!Number.isInteger(quantity) || quantity < 10) {
-      return NextResponse.json(
-        { error: 'Team purchases require quantity >= 10 (integer).' },
-        { status: 400 }
-      );
+    if (!Number.isInteger(quantity) || quantity < MIN_INSTITUTION_QUANTITY) {
+      return badRequest('Team purchases require quantity >= 10 (integer).');
     }
     if (typeof body.institution_name !== 'string' || body.institution_name.trim().length === 0) {
-      return NextResponse.json(
-        { error: 'institution_name is required for institution purchases.' },
-        { status: 400 }
-      );
+      return badRequest('institution_name is required for institution purchases.');
     }
   }
 
-  // Validate user_email format when provided
   if (body.user_email !== undefined && body.user_email !== null) {
     if (typeof body.user_email !== 'string' || !EMAIL_RE.test(body.user_email)) {
-      return NextResponse.json({ error: 'user_email must be a valid email address.' }, { status: 400 });
+      return badRequest('user_email must be a valid email address.');
     }
   }
 
-  // Check required environment variables
   const { STRIPE_AIBIP_PRICE_ID, STRIPE_AIBIP_INSTITUTION_PRICE_ID } = process.env;
 
   if (!STRIPE_AIBIP_PRICE_ID) {
@@ -131,8 +145,7 @@ export async function POST(request: Request) {
     const stripe = await getStripe();
 
     if (mode === 'individual') {
-      // PAY-03: persistent discount check — if this user is associated with a
-      // discount-locked institution, apply institution pricing automatically.
+      // PAY-03: persistent discount check.
       let priceId = STRIPE_AIBIP_PRICE_ID;
       let discountApplied: string | undefined;
 
@@ -189,6 +202,81 @@ export async function POST(request: Request) {
     return NextResponse.json({ url: session.url });
   } catch (err) {
     console.error('[create-checkout] Stripe error:', err);
+    return NextResponse.json({ error: 'Payment error. Please try again.' }, { status: 500 });
+  }
+}
+
+// ---------------------------------------------------------------------------
+// In-Depth Assessment handler
+// ---------------------------------------------------------------------------
+
+async function handleIndepth(body: CheckoutBody, request: Request): Promise<NextResponse> {
+  // leader_email is always required for indepth-assessment (used for token issuance,
+  // results email, and metadata for provisioning in the webhook).
+  if (typeof body.leader_email !== 'string' || !EMAIL_RE.test(body.leader_email)) {
+    return badRequest('leader_email is required and must be a valid email address.');
+  }
+  const leaderEmail = body.leader_email;
+
+  const mode = body.mode as CheckoutMode | undefined;
+  if (mode !== 'individual' && mode !== 'institution') {
+    return badRequest('mode must be "individual" or "institution".');
+  }
+
+  let institutionName: string | undefined;
+  let quantity = 1;
+
+  if (mode === 'institution') {
+    const q = typeof body.quantity === 'number' ? body.quantity : NaN;
+    if (!Number.isInteger(q) || q < MIN_INSTITUTION_QUANTITY) {
+      return badRequest('Institution mode requires quantity >= 10 (integer).');
+    }
+    if (typeof body.institution_name !== 'string' || body.institution_name.trim().length === 0) {
+      return badRequest('institution_name is required for institution purchases.');
+    }
+    quantity = q;
+    institutionName = body.institution_name.trim();
+  }
+
+  const priceId =
+    mode === 'individual'
+      ? process.env.STRIPE_INDEPTH_ASSESSMENT_PRICE_ID
+      : process.env.STRIPE_INDEPTH_ASSESSMENT_VOLUME_PRICE_ID;
+
+  if (!priceId) {
+    console.error(
+      `[create-checkout] STRIPE_INDEPTH_ASSESSMENT_${mode === 'individual' ? '' : 'VOLUME_'}PRICE_ID is not set.`
+    );
+    return NextResponse.json({ error: 'Payment system not configured.' }, { status: 503 });
+  }
+
+  const origin = getOrigin(request);
+
+  try {
+    const stripe = await getStripe();
+
+    const session = await stripe.checkout.sessions.create({
+      mode: 'payment',
+      line_items: [{ price: priceId, quantity }],
+      allow_promotion_codes: true,
+      customer_email: leaderEmail,
+      success_url:
+        mode === 'institution'
+          ? `${origin}/assessment/in-depth/dashboard?session={CHECKOUT_SESSION_ID}`
+          : `${origin}/assessment/in-depth/take?from=checkout&session={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${origin}/assessment/in-depth`,
+      metadata: {
+        product: 'indepth-assessment',
+        mode,
+        quantity: String(quantity),
+        leader_email: leaderEmail,
+        ...(institutionName ? { institution_name: institutionName } : {}),
+      },
+    });
+
+    return NextResponse.json({ url: session.url });
+  } catch (err) {
+    console.error('[create-checkout] Stripe error (indepth-assessment):', err);
     return NextResponse.json({ error: 'Payment error. Please try again.' }, { status: 500 });
   }
 }
