@@ -446,28 +446,6 @@ export function ResultsViewV2({
         </ol>
       </section>
 
-      {/* SECTION 8 — Future Vision */}
-      <SectionAnchor id="section-8" />
-      <section className="space-y-6 mb-20" aria-labelledby="section-8-heading">
-        <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
-          What good looks like
-        </p>
-        <h2 id="section-8-heading" className="font-serif text-3xl md:text-4xl leading-tight text-[color:var(--color-ink)]">
-          A Practitioner-Ready institution.
-        </h2>
-        <ul className="grid gap-3 bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-7 md:p-9">
-          {FUTURE_VISION.map((item) => (
-            <li
-              key={item}
-              className="flex gap-3 text-[15px] leading-[1.55] text-[color:var(--color-ink)]/85"
-            >
-              <span aria-hidden className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-terra)] shrink-0" />
-              <span>{item}</span>
-            </li>
-          ))}
-        </ul>
-      </section>
-
       {/* SECTION 9 — Closing CTA (tier-keyed, single card) */}
       <SectionAnchor id="section-9" />
       <section aria-labelledby="section-9-heading" className="space-y-6">
