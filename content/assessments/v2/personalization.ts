@@ -524,6 +524,52 @@ export const FUTURE_VISION: ReadonlyArray<string> = [
 ];
 
 // ---------------------------------------------------------------------------
+// Implications for Financial Professionals — tier-keyed exec-translation
+// across the three lenses a banker reads through.
+// ---------------------------------------------------------------------------
+
+export interface FinancialImplications {
+  readonly operational: string;
+  readonly risk: string;
+  readonly cost: string;
+}
+
+export const FINANCIAL_IMPLICATIONS: Record<Tier['id'], FinancialImplications> = {
+  'starting-point': {
+    operational:
+      'Time savings exist on individual desks but never aggregate to a measurable efficiency gain at the institution level. Without sanctioned workflows, the program cannot be staffed or budgeted with confidence.',
+    risk:
+      'Staff use of public AI tools without policy or audit trail creates compliance exposure under SR 11-7 and the AIEOG Lexicon. The risk question your examiner will ask cannot yet be answered with documentation.',
+    cost:
+      'Every workflow improvement requires consultant or vendor involvement. There is no internal capability accumulating, so spend keeps repeating instead of compounding into capability.',
+  },
+  'early-stage': {
+    operational:
+      'Uneven adoption means efficiency gains are not realized across the organization. Isolated wins cannot scale without process alignment, and the gap between top-performing teams and the rest widens.',
+    risk:
+      'Absence of a program increases compliance risk. Audit trails are inconsistent, raising questions about what tools are used, what data is exposed, and who is approving usage at the institution level.',
+    cost:
+      'Reliance on vendors or consultants for every workflow improvement can become expensive and delays internal capability. Building internal skills reduces long-term costs and reduces vendor lock-in.',
+  },
+  'building-momentum': {
+    operational:
+      'Multiple teams are producing measurable savings, but the program lacks the documented outcomes leadership needs to defend continued investment. Inconsistent measurement obscures which workflows are actually moving the efficiency ratio.',
+    risk:
+      'Governance exists but is uneven. Examiner-grade documentation needs to be standardized across teams before staff turnover or a single incident creates exposure.',
+    cost:
+      'The program survives on individual sponsorship rather than institutional investment. Without measured ROI, budget conversations stall and capability that should compound stays linear.',
+  },
+  'ready-to-scale': {
+    operational:
+      'AI is producing measurable, repeatable efficiency gains across departments. The risk now is not adoption — it is replication speed. Institutions that codify their program can extend the advantage; institutions that do not lose ground when staff turn over.',
+    risk:
+      'Mature governance reduces incident risk to acceptable levels. The remaining risk is complacency: programs that stop investing in the next wave of capability fall behind faster than they realize.',
+    cost:
+      'Internal capability has reduced vendor dependence and extended the productive life of staff hours. The next investment is not in tools — it is in the practice cadence that compounds capability across every new hire.',
+  },
+};
+
+// ---------------------------------------------------------------------------
 // SECTION 9 — Recommended Path mistake intro per tier.
 // ---------------------------------------------------------------------------
 
