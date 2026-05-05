@@ -181,6 +181,20 @@ export function AIPracticeSandbox({
   const [dataContent, setDataContent] = useState<string | null>(null);
   const [piiWarning, setPiiWarning] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [copiedIdx, setCopiedIdx] = useState<number | null>(null);
+
+  const handleCopy = useCallback(async (text: string, idx: number) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedIdx(idx);
+      setTimeout(() => {
+        setCopiedIdx((current) => (current === idx ? null : current));
+      }, 1800);
+    } catch {
+      // Older browsers / iframe sandboxes block clipboard. Fail silent —
+      // the user can still select-and-copy by hand.
+    }
+  }, []);
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -577,9 +591,21 @@ export function AIPracticeSandbox({
                   }`}
                 >
                   {msg.role === 'assistant' && (
-                    <span className="mb-1 block font-mono text-[9px] uppercase tracking-[1.2px] text-[color:var(--color-slate)]">
-                      Claude
-                    </span>
+                    <div className="mb-1 flex items-center justify-between gap-3">
+                      <span className="font-mono text-[9px] uppercase tracking-[1.2px] text-[color:var(--color-slate)]">
+                        Claude
+                      </span>
+                      {msg.content && (
+                        <button
+                          type="button"
+                          onClick={() => handleCopy(msg.content, idx)}
+                          className="font-mono text-[9px] uppercase tracking-[1.2px] text-[color:var(--color-slate)] hover:text-[color:var(--color-terra)] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-1 rounded-[2px]"
+                          aria-label={copiedIdx === idx ? 'Copied to clipboard' : 'Copy response to clipboard'}
+                        >
+                          {copiedIdx === idx ? 'Copied' : 'Copy'}
+                        </button>
+                      )}
+                    </div>
                   )}
                   <div className="text-sm font-sans text-[color:var(--color-ink)]">
                     {msg.role === 'assistant' ? renderMarkdown(msg.content) : msg.content}
