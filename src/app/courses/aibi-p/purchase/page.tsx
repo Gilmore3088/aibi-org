@@ -147,8 +147,8 @@ export default async function PurchasePage() {
         </h2>
         <p className="text-sm text-[color:var(--color-slate)] leading-relaxed">
           Team purchases use a single checkout with manual onboarding follow-up.
-          Advanced AiBI-S and AiBI-L tracks are coming later; this checkout only
-          enrolls learners in AiBI-P.
+          This checkout enrolls learners in AiBI-P; additional advanced tracks
+          are in development.
         </p>
       </section>
 

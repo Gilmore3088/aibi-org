@@ -19,13 +19,15 @@ interface JourneyStep {
 }
 
 const JOURNEY_STEPS: Record<string, JourneyStep> = {
+  // 2026-05-05: AiBI-S waitlist CTA replaced. AiBI-S/AiBI-L are soft-hidden
+  // pending readiness; advanced track CTAs return when those products relaunch.
   'aibi-p': {
     label: 'Next in your journey',
     heading: 'Ready to scale your skills across a department?',
-    body: 'AiBI-S is coming after Practitioner is validated. It will focus on workflow automation, agents, internal AI systems, and team-level rollout.',
-    href: '/coming-soon?interest=specialist',
-    cta: 'Join AiBI-S Waitlist',
-    accent: 'var(--color-amber)',
+    body: 'Bring AiBI-P to your team or institution. Group enrollment, shared kickoff, and team pricing are available now. Additional advanced certifications are in development.',
+    href: '/for-institutions',
+    cta: 'See enrollment options',
+    accent: 'var(--color-terra)',
     accentBg: 'var(--color-terra-pale)',
   },
   'aibi-s': {

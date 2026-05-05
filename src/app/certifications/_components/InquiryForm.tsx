@@ -5,10 +5,10 @@ import { useState, type FormEvent } from 'react';
 type Status = 'idle' | 'submitting' | 'success' | 'error';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+// 2026-05-05: AiBI-S and AiBI-L track options removed (soft-hidden pending readiness).
 const TRACKS = [
   'Banking AI Practitioner (AiBI-P)',
-  'Banking AI Specialist (AiBI-S)',
-  'Banking AI Leader (AiBI-L)',
+  'Institution-wide enrollment',
   'Not sure yet',
 ] as const;
 

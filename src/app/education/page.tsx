@@ -15,7 +15,7 @@ import { InquiryForm } from '@/app/certifications/_components/InquiryForm';
 export const metadata: Metadata = {
   title: 'Education | The AI Banking Institute',
   description:
-    'Free classes and three certification tracks for community banks and credit unions. Start with the AI Readiness Assessment, then earn AiBI-P, AiBI-S, or AiBI-L credentials.',
+    'Free classes and certification tracks for community banks and credit unions. Start with the AI Readiness Assessment, then earn the AiBI-P Practitioner credential.',
 };
 
 interface CertificationTrack {
@@ -76,6 +76,8 @@ export default async function EducationPage() {
     },
   ];
 
+  // 2026-05-05: AiBI-S and AiBI-L hidden pending readiness. To restore, re-add
+  // the entries (preserved in git history) and remove redirects from next.config.mjs.
   const tracks: readonly CertificationTrack[] = [
     {
       code: 'AiBI-P',
@@ -96,44 +98,6 @@ export default async function EducationPage() {
       prerequisite: null,
       comingSoon: false,
     },
-    {
-      code: 'AiBI-S',
-      credential: 'Specialist',
-      title: 'Banking AI Specialist',
-      subtitle: 'Advanced workflows, agents, and internal AI systems',
-      audience: 'Department managers',
-      format: '6-week live cohort',
-      duration: '6 weeks',
-      price: 'Coming soon',
-      colorVar: 'var(--color-cobalt)',
-      colorBg: 'var(--color-cobalt-pale)',
-      href: '/coming-soon?interest=specialist',
-      totalUnits: 0,
-      unitLabel: 'units',
-      completedUnits: 0,
-      isEnrolled: false,
-      prerequisite: 'AiBI-P',
-      comingSoon: true,
-    },
-    {
-      code: 'AiBI-L',
-      credential: 'Leader',
-      title: 'Banking AI Leader',
-      subtitle: 'Team-level rollout and executive AI leadership',
-      audience: 'C-suite and board',
-      format: '1-day in-person workshop',
-      duration: '4 sessions',
-      price: 'Coming soon',
-      colorVar: 'var(--color-sage)',
-      colorBg: 'var(--color-sage-pale)',
-      href: '/coming-soon?interest=leader',
-      totalUnits: 0,
-      unitLabel: 'sessions',
-      completedUnits: 0,
-      isEnrolled: false,
-      prerequisite: 'AiBI-S',
-      comingSoon: true,
-    },
   ];
 
   return (
@@ -150,8 +114,8 @@ export default async function EducationPage() {
           <p className="text-lg md:text-xl text-[color:var(--color-ink)]/75 max-w-2xl mx-auto leading-relaxed">
             Tools change. The judgment to deploy AI responsibly inside a
             regulated institution does not. Start free, then earn the
-            Practitioner is active now. Specialist and Leader are coming after
-            the foundation loop is validated.
+            Practitioner credential. Additional certifications are in
+            development.
           </p>
         </div>
       </section>
@@ -435,9 +399,8 @@ export default async function EducationPage() {
             Need team certification or executive workshops?
           </h2>
           <p className="text-[color:var(--color-ink)]/75 max-w-xl mx-auto mb-6 leading-relaxed">
-            AiBI-P team pricing starts at 10 seats. Advanced Specialist and
-            Leader programs are coming after Practitioner is validated with
-            real learners.
+            AiBI-P team pricing starts at 10 seats. Additional advanced
+            programs are in development.
           </p>
           <a
             href="#inquiry-form"

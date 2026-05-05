@@ -47,6 +47,13 @@ const nextConfig = {
       { source: '/foundations', destination: '/education', permanent: true },
       { source: '/toolbox', destination: '/dashboard/toolbox', permanent: true },
       { source: '/toolbox/:path*', destination: '/dashboard/toolbox/:path*', permanent: true },
+      // Decision log: 2026-05-05 — AiBI-S and AiBI-L soft-hidden until ready.
+      // Reactivation: remove these 4 entries, re-add cards in src/app/education/page.tsx,
+      // flip products to active=true in Stripe Dashboard.
+      { source: '/courses/aibi-s', destination: '/education', permanent: false },
+      { source: '/courses/aibi-l', destination: '/education', permanent: false },
+      { source: '/courses/aibi-s/:path*', destination: '/education', permanent: false },
+      { source: '/courses/aibi-l/:path*', destination: '/education', permanent: false },
     ];
   },
 };

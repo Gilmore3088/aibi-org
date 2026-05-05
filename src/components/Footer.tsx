@@ -18,8 +18,7 @@ const FOOTER_GROUPS: readonly FooterGroup[] = [
     label: 'Programs',
     links: [
       { href: '/courses/aibi-p', label: 'AiBI-P · Practitioner' },
-      { href: '/coming-soon?interest=specialist', label: 'AiBI-S · Specialist · Coming Soon' },
-      { href: '/coming-soon?interest=leader', label: 'AiBI-L · Leader · Coming Soon' },
+      // 2026-05-05: AiBI-S and AiBI-L footer links removed (soft-hidden pending readiness).
     ],
   },
   {

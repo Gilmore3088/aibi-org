@@ -279,7 +279,7 @@ export default async function CourseOverviewPage() {
         </div>
 
         <p className="mt-8 text-xs text-[color:var(--color-slate)]">
-          More certifications launching soon: AiBI-S (Specialist) and AiBI-L (Leader).
+          Additional advanced certifications are in development.
         </p>
       </section>
     </div>

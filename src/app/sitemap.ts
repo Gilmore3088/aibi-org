@@ -11,8 +11,7 @@ const ROUTES = [
   { path: '/for-institutions/advisory', priority: 0.75, changeFrequency: 'monthly' as const },
   { path: '/for-institutions/samples/efficiency-ratio-workbook', priority: 0.7, changeFrequency: 'monthly' as const },
   { path: '/courses/aibi-p', priority: 0.85, changeFrequency: 'monthly' as const },
-  { path: '/courses/aibi-s', priority: 0.85, changeFrequency: 'monthly' as const },
-  { path: '/courses/aibi-l', priority: 0.85, changeFrequency: 'monthly' as const },
+  // 2026-05-05: AiBI-S and AiBI-L sitemap entries removed (soft-hidden via redirect).
   { path: '/security', priority: 0.85, changeFrequency: 'monthly' as const },
   { path: '/about', priority: 0.75, changeFrequency: 'monthly' as const },
   { path: '/resources', priority: 0.7, changeFrequency: 'weekly' as const },

@@ -65,26 +65,29 @@ function getStepsForTier(tierId: Tier['id']): readonly NextStep[] {
         },
       ];
 
+    // 2026-05-05: AiBI-S and AiBI-L hidden pending readiness. Higher tiers
+    // now point at Practitioner + institutional enrollment until Task 18
+    // wires the In-Depth Assessment CTA.
     case 'building-momentum':
       return [
         {
           label: 'Recommended',
-          title: 'Join the Specialist waitlist',
+          title: 'Earn the Practitioner credential',
           description:
-            'You have traction. AiBI-S will focus on workflow automation, agents, internal AI systems, and team-level rollout after Practitioner is validated.',
-          href: '/coming-soon?interest=specialist',
-          cta: 'Join AiBI-S Waitlist',
-          accent: 'var(--color-cobalt)',
+            'You have traction. The AiBI-P course gives your team a shared foundation of governed, repeatable AI skills before you scale to workflow automation and team-level rollout.',
+          href: '/courses/aibi-p',
+          cta: 'Explore AiBI-P',
+          accent: 'var(--color-terra)',
           primary: true,
         },
         {
           label: 'Enroll your team',
-          title: 'Run a Specialist cohort with your department',
+          title: 'Institutional enrollment options',
           description:
-            'Five to 25 managers from one institution go through the Specialist track together. Shared kickoff, group reporting, and team pricing. Leave with a prioritized automation roadmap your team owns.',
+            'Bring AiBI-P to your department or institution with team pricing, shared kickoff, and group reporting. Leave with a coordinated path to AI proficiency your team owns.',
           href: '/for-institutions',
           cta: 'See enrollment options',
-          accent: 'var(--color-terra)',
+          accent: 'var(--color-ink)',
         },
       ];
 
@@ -92,22 +95,22 @@ function getStepsForTier(tierId: Tier['id']): readonly NextStep[] {
       return [
         {
           label: 'Recommended',
-          title: 'Join the Leader waitlist',
-          description:
-            'AiBI-L will focus on executive confidence, governance, rollout, and institution-level AI leadership after the Practitioner loop is validated.',
-          href: '/coming-soon?interest=leader',
-          cta: 'Join AiBI-L Waitlist',
-          accent: 'var(--color-sage)',
-          primary: true,
-        },
-        {
-          label: 'Build enduring capability',
           title: 'Institution-wide capability program',
           description:
-            'A recurring cohort cadence — Practitioner, Specialist, and Leader — scheduled so every banker, new or tenured, has a path to proficiency. Leadership Advisory available alongside for your AI leader.',
+            'A recurring Practitioner cohort cadence scheduled so every banker, new or tenured, has a path to proficiency. Leadership Advisory available alongside for your AI leader.',
           href: '/for-institutions',
           cta: 'See enrollment options',
           accent: 'var(--color-terra)',
+          primary: true,
+        },
+        {
+          label: 'Talk to us',
+          title: 'Request an Executive Briefing',
+          description:
+            'A free 45-minute conversation to design the right rollout cadence for your institution and identify where AI can deliver measured outcomes first.',
+          href: CALENDLY_URL,
+          cta: 'Request Executive Briefing',
+          accent: 'var(--color-ink)',
         },
       ];
   }
