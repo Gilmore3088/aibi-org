@@ -9,6 +9,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { cookies } from 'next/headers';
 import { createServerClient } from '@supabase/ssr';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
+import { backFillProfile } from '@/lib/auth/back-fill-profile';
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
@@ -45,18 +46,26 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
   // PKCE flow — magic link and OAuth
   if (code) {
-    const { error } = await supabase.auth.exchangeCodeForSession(code);
+    const { data, error } = await supabase.auth.exchangeCodeForSession(code);
     if (error) {
       return NextResponse.redirect(
         `${origin}/auth/login?error=${encodeURIComponent(error.message)}`,
       );
+    }
+    const user = data.session?.user;
+    if (user?.email) {
+      try {
+        await backFillProfile(user.id, user.email);
+      } catch (err) {
+        console.warn('[auth/callback] back-fill failed:', err);
+      }
     }
     return NextResponse.redirect(`${origin}${safeNext}`);
   }
 
   // Token hash flow — email confirmation, password reset invite
   if (tokenHash && type) {
-    const { error } = await supabase.auth.verifyOtp({ token_hash: tokenHash, type: type as never });
+    const { data, error } = await supabase.auth.verifyOtp({ token_hash: tokenHash, type: type as never });
     if (error) {
       return NextResponse.redirect(
         `${origin}/auth/login?error=${encodeURIComponent(error.message)}`,
@@ -65,6 +74,14 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     // Password reset: redirect to the form so user can set a new password.
     if (type === 'recovery') {
       return NextResponse.redirect(`${origin}/auth/reset-password`);
+    }
+    const user = data.session?.user ?? data.user;
+    if (user?.email) {
+      try {
+        await backFillProfile(user.id, user.email);
+      } catch (err) {
+        console.warn('[auth/callback] back-fill failed:', err);
+      }
     }
     return NextResponse.redirect(`${origin}${safeNext}`);
   }
