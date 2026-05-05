@@ -148,3 +148,66 @@ export async function removeAssessmentTier(input: TagInput): Promise<TagResult> 
     return { status: 'failed', reason: message };
   }
 }
+
+/**
+ * Generic tag-add by env-var-named tag id. Used for non-tier tags such as
+ * In-Depth Assessment buyer tags ('indepth-assessment-individual',
+ * 'indepth-assessment-leader'). The tag id is read from `tagIdEnv`; the
+ * `tagName` argument is for log/debug context only — ConvertKit's API
+ * tags by numeric id, not by name.
+ *
+ * Returns 'skipped' (not an error) when:
+ *   - SKIP_CONVERTKIT=true (staging)
+ *   - CONVERTKIT_API_KEY missing
+ *   - the tag id env var is unset
+ *
+ * Never throws — call sites in the Stripe webhook must not block on CK.
+ */
+export interface TagByEnvInput {
+  readonly email: string;
+  readonly tagIdEnv: string;
+  readonly tagName: string;
+  readonly firstName?: string;
+}
+
+export async function tagSubscriberByEnv(input: TagByEnvInput): Promise<TagResult> {
+  if (isStaging()) {
+    return { status: 'skipped', reason: 'staging-suppression' };
+  }
+  const apiKey = getApiKey();
+  if (!apiKey) {
+    return { status: 'skipped', reason: 'no-api-key' };
+  }
+  const tagId = process.env[input.tagIdEnv];
+  if (!tagId) {
+    return { status: 'skipped', reason: `no-tag-id-for-${input.tagName}` };
+  }
+
+  try {
+    const res = await fetch(`${CK_API_BASE}/tags/${tagId}/subscribe`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        api_key: apiKey,
+        email: input.email,
+        ...(input.firstName ? { first_name: input.firstName } : {}),
+      }),
+    });
+
+    if (!res.ok) {
+      const detail = await res.text().catch(() => 'unknown');
+      console.warn(
+        `[convertkit/sequences] tagSubscriberByEnv(${input.tagName}) failed: ${res.status} ${detail}`,
+      );
+      return { status: 'failed', reason: `${res.status}` };
+    }
+    return { status: 'tagged' };
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'unknown';
+    console.warn(
+      `[convertkit/sequences] tagSubscriberByEnv(${input.tagName}) error:`,
+      message,
+    );
+    return { status: 'failed', reason: message };
+  }
+}

@@ -5,10 +5,17 @@
 import type Stripe from 'stripe';
 import { createServiceRoleClient } from '@/lib/supabase/client';
 import type { CheckoutMetadata } from '@/lib/stripe';
+import { generateInviteToken } from '@/lib/indepth/tokens';
+import { sendIndepthIndividualInvite } from '@/lib/resend';
+import { tagSubscriberByEnv } from '@/lib/convertkit/sequences';
+
+// Institution per-seat price for the In-Depth Assessment, in cents.
+// Used to record amount_paid_cents on the institutions row.
+const INDEPTH_INSTITUTION_SEAT_CENTS = 7900;
 
 export interface ProvisionResult {
   action: 'created' | 'skipped';
-  type: 'individual' | 'institution';
+  type: 'individual' | 'institution' | 'indepth-individual' | 'indepth-institution';
 }
 
 export interface ProvisionError {
@@ -58,6 +65,15 @@ export async function provisionEnrollment(
   const supabase = createServiceRoleClient();
   const sessionId = session.id;
   const email = session.customer_details?.email ?? user_email ?? null;
+
+  // ---- In-Depth Assessment branches (must match before legacy AiBI-P
+  //       branches, which are product-agnostic on the mode discriminator). --
+  if (product === 'indepth-assessment' && mode === 'individual') {
+    return provisionIndepthIndividual(session, metadata, supabase);
+  }
+  if (product === 'indepth-assessment' && mode === 'institution') {
+    return provisionIndepthInstitution(session, metadata, supabase);
+  }
 
   // ---- Individual enrollment (PAY-04) ----------------------------
   if (mode === 'individual') {
@@ -165,4 +181,144 @@ export async function provisionEnrollment(
   }
 
   return { error: `Unrecognised mode: ${mode as string}`, code: 'missing_metadata' };
+}
+
+// ============================================================
+// In-Depth Assessment branches
+// ============================================================
+
+async function provisionIndepthIndividual(
+  session: Pick<Stripe.Checkout.Session, 'id' | 'customer_details' | 'metadata'>,
+  metadata: Partial<CheckoutMetadata>,
+  supabase: ReturnType<typeof createServiceRoleClient>,
+): Promise<ProvisionResult | ProvisionError> {
+  const sessionId = session.id;
+
+  // Idempotency: skip if this session was already processed.
+  const { data: existing, error: existingErr } = await supabase
+    .from('indepth_assessment_takers')
+    .select('id')
+    .eq('stripe_session_id', sessionId)
+    .limit(1);
+
+  if (existingErr) {
+    console.error('[webhook] indepth-individual lookup failed:', existingErr);
+    return { error: 'Database lookup failed', code: 'db_error' };
+  }
+  if (existing && existing.length > 0) {
+    return { action: 'skipped', type: 'indepth-individual' };
+  }
+
+  const leaderEmail = metadata.leader_email ?? session.customer_details?.email ?? null;
+  if (!leaderEmail) {
+    return { error: 'No email available for indepth-individual', code: 'missing_metadata' };
+  }
+
+  const token = generateInviteToken();
+
+  const { error: insertErr } = await supabase.from('indepth_assessment_takers').insert({
+    institution_id: null,
+    invite_email: leaderEmail,
+    invite_token: token,
+    stripe_session_id: sessionId,
+  });
+
+  if (insertErr) {
+    // Postgres unique-violation — race condition on a duplicate webhook delivery.
+    if ((insertErr as { code?: string }).code === '23505') {
+      return { action: 'skipped', type: 'indepth-individual' };
+    }
+    console.error('[webhook] indepth_assessment_takers insert error:', insertErr);
+    return { error: 'Failed to create indepth taker record', code: 'db_error' };
+  }
+
+  // Best-effort: send the invite email and apply the CK tag. Failures here
+  // must not block the success response — the row is already persisted.
+  const origin = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://aibankinginstitute.com';
+  const takeUrl = `${origin}/assessment/in-depth/take?token=${token}`;
+  try {
+    await sendIndepthIndividualInvite({ email: leaderEmail, takeUrl });
+  } catch (err) {
+    console.warn('[webhook] sendIndepthIndividualInvite error:', err);
+  }
+  try {
+    await tagSubscriberByEnv({
+      email: leaderEmail,
+      tagIdEnv: 'CONVERTKIT_TAG_ID_INDEPTH_INDIVIDUAL',
+      tagName: 'indepth-assessment-individual',
+    });
+  } catch (err) {
+    console.warn('[webhook] tagSubscriberByEnv(indepth-individual) error:', err);
+  }
+
+  return { action: 'created', type: 'indepth-individual' };
+}
+
+async function provisionIndepthInstitution(
+  session: Pick<Stripe.Checkout.Session, 'id' | 'customer_details' | 'metadata'>,
+  metadata: Partial<CheckoutMetadata>,
+  supabase: ReturnType<typeof createServiceRoleClient>,
+): Promise<ProvisionResult | ProvisionError> {
+  const sessionId = session.id;
+
+  const { data: existing, error: existingErr } = await supabase
+    .from('indepth_assessment_institutions')
+    .select('id')
+    .eq('stripe_session_id', sessionId)
+    .limit(1);
+
+  if (existingErr) {
+    console.error('[webhook] indepth-institution lookup failed:', existingErr);
+    return { error: 'Database lookup failed', code: 'db_error' };
+  }
+  if (existing && existing.length > 0) {
+    return { action: 'skipped', type: 'indepth-institution' };
+  }
+
+  const leaderEmail = metadata.leader_email ?? session.customer_details?.email ?? null;
+  const seats = metadata.quantity ? parseInt(metadata.quantity, 10) : NaN;
+  const instName = (metadata.institution_name ?? '').trim();
+
+  if (!leaderEmail) {
+    return { error: 'No leader email available for indepth-institution', code: 'missing_metadata' };
+  }
+  if (!instName) {
+    return { error: 'Missing institution_name for indepth-institution', code: 'missing_metadata' };
+  }
+  if (!Number.isFinite(seats) || seats < 10) {
+    return { error: 'Invalid seat quantity for indepth-institution (min 10)', code: 'missing_metadata' };
+  }
+
+  const { error: insertErr } = await supabase.from('indepth_assessment_institutions').insert({
+    institution_name: instName,
+    leader_email: leaderEmail,
+    leader_user_id: null,
+    seats_purchased: seats,
+    stripe_session_id: sessionId,
+    amount_paid_cents: seats * INDEPTH_INSTITUTION_SEAT_CENTS,
+  });
+
+  if (insertErr) {
+    if ((insertErr as { code?: string }).code === '23505') {
+      return { action: 'skipped', type: 'indepth-institution' };
+    }
+    console.error('[webhook] indepth_assessment_institutions insert error:', insertErr);
+    return { error: 'Failed to create indepth institution record', code: 'db_error' };
+  }
+
+  // Best-effort tag — leader gets the leader-tier sequence.
+  try {
+    await tagSubscriberByEnv({
+      email: leaderEmail,
+      tagIdEnv: 'CONVERTKIT_TAG_ID_INDEPTH_LEADER',
+      tagName: 'indepth-assessment-leader',
+    });
+  } catch (err) {
+    console.warn('[webhook] tagSubscriberByEnv(indepth-leader) error:', err);
+  }
+
+  // Note: invite-driven taker rows are NOT generated here. The leader
+  // creates them via the dashboard / Task 13 invite API.
+
+  return { action: 'created', type: 'indepth-institution' };
 }
