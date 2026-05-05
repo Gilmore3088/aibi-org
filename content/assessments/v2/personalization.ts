@@ -96,6 +96,7 @@ export const TIER_INSIGHTS: Record<Tier['id'], readonly string[]> = {
 // ---------------------------------------------------------------------------
 
 export interface GapContent {
+  readonly oneLine: string;
   readonly explanation: string;
   readonly impacts: readonly [string, string];
   readonly whatGoodLooksLike: readonly [string, string];
@@ -103,6 +104,7 @@ export interface GapContent {
 
 export const GAP_CONTENT: Record<Dimension, GapContent> = {
   'current-ai-usage': {
+    oneLine: 'AI tools are not embedded in repeating workflows. Use is sporadic and invisible to managers.',
     explanation:
       'AI tools are not yet embedded in repeating workflows. Use is sporadic, individual, and invisible to managers — which means time savings are real but not measurable.',
     impacts: [
@@ -115,6 +117,7 @@ export const GAP_CONTENT: Record<Dimension, GapContent> = {
     ],
   },
   'experimentation-culture': {
+    oneLine: 'AI usage is happening — but not shared or improving across your team.',
     explanation:
       'There is no shared place where staff can try, share, and improve AI use. Without that, every learning has to be rediscovered by the next person.',
     impacts: [
@@ -127,6 +130,7 @@ export const GAP_CONTENT: Record<Dimension, GapContent> = {
     ],
   },
   'ai-literacy-level': {
+    oneLine: 'Skills are not compounding. Every employee is figuring this out alone.',
     explanation:
       'Staff have not yet been through structured training on safe and effective AI use. The gap shows up as cautious avoidance from some staff and unsafe enthusiasm from others.',
     impacts: [
@@ -139,6 +143,7 @@ export const GAP_CONTENT: Record<Dimension, GapContent> = {
     ],
   },
   'quick-win-potential': {
+    oneLine: 'No first workflow has been identified. The program never gets started.',
     explanation:
       'No low-risk workflow has been identified where AI can immediately save time. Without a beachhead, the program never gets started.',
     impacts: [
@@ -151,6 +156,7 @@ export const GAP_CONTENT: Record<Dimension, GapContent> = {
     ],
   },
   'leadership-buy-in': {
+    oneLine: 'Leadership has not committed. The program lives or dies by individual sponsors.',
     explanation:
       'Senior leadership has not committed to AI as a strategic priority. Without that air cover, the program lives or dies by individual sponsors.',
     impacts: [
@@ -163,6 +169,7 @@ export const GAP_CONTENT: Record<Dimension, GapContent> = {
     ],
   },
   'security-posture': {
+    oneLine: 'Staff may be doing the right things, but you cannot prove it to an examiner.',
     explanation:
       'Your AI security posture is not yet documented in a way your examiner would accept. Staff may be doing the right things, but you cannot prove it.',
     impacts: [
@@ -175,6 +182,7 @@ export const GAP_CONTENT: Record<Dimension, GapContent> = {
     ],
   },
   'training-infrastructure': {
+    oneLine: 'No training system. Skills decay between events; new hires arrive into a vacuum.',
     explanation:
       'There is no recurring practice cadence for AI skills. One-off training fades within a quarter; without a place where practice lives, capability does not compound.',
     impacts: [
@@ -187,6 +195,7 @@ export const GAP_CONTENT: Record<Dimension, GapContent> = {
     ],
   },
   'builder-potential': {
+    oneLine: 'No internal builder. Every workflow improvement requires consultant or vendor work.',
     explanation:
       'There is not yet a named internal builder — the analyst or operations person who turns AI tools into working processes for everyone else. Without one, capability stays vendor-shaped.',
     impacts: [
