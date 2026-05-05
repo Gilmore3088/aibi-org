@@ -26,13 +26,17 @@ export const stripe = new Stripe(STRIPE_SECRET_KEY, {
 // of the Stripe Checkout session lifecycle.
 // ============================================================
 
+export type CheckoutProduct = 'aibi-p' | 'indepth-assessment';
+
 export interface CheckoutMetadata {
-  product: 'aibi-p';
+  product: CheckoutProduct;
   mode: 'individual' | 'institution';
   tier?: 'individual' | 'team';
   user_email?: string;
   institution_name?: string;
-  /** Number of institution seats, serialised as a string (Stripe metadata values are strings). */
+  /** Captured at Checkout for indepth-assessment buyers (individual or leader). Always present for that product. */
+  leader_email?: string;
+  /** Number of seats, serialised as a string (Stripe metadata values are strings). */
   quantity?: string;
   discount_applied?: 'institution_persistent';
 }
