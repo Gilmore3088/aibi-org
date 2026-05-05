@@ -55,6 +55,9 @@ export function PdfDownloadButton({ profileId, email }: PdfDownloadButtonProps) 
   }, [profileId]);
 
   const handleDownload = async () => {
+    if (typeof window !== 'undefined' && typeof window.plausible === 'function') {
+      window.plausible('pdf_download_clicked', { props: { profileId } });
+    }
     const supabase = createBrowserClient();
     const {
       data: { user },
