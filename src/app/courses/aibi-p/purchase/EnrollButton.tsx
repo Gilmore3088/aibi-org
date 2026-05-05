@@ -77,7 +77,7 @@ export function EnrollButton({ userEmail }: EnrollButtonProps) {
             : 'bg-[color:var(--color-terra)] text-[color:var(--color-linen)] hover:bg-[color:var(--color-terra-light)] cursor-pointer',
         ].join(' ')}
       >
-        {loading ? 'Redirecting to checkout\u2026' : 'Enroll Now \u2014 $99'}
+        {loading ? 'Redirecting to checkout\u2026' : 'Enroll Now \u2014 $295'}
       </button>
 
       {error && (

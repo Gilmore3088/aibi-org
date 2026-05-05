@@ -51,8 +51,8 @@ Each module should answer:
 
 ## Pricing
 
-- **$99 per individual**
-- **$79 per user for 10+ seats**
+- **$295 per individual**
+- **$199 per seat for 10+ seats**
 
 Advanced products are future-facing:
 

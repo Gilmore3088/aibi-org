@@ -85,7 +85,7 @@ export default async function EducationPage() {
       audience: 'All staff',
       format: 'Self-paced online',
       duration: '12 modules',
-      price: '$99',
+      price: '$295',
       colorVar: 'var(--color-terra)',
       colorBg: 'var(--color-terra-pale)',
       href: '/courses/aibi-p',

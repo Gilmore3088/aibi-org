@@ -1,8 +1,8 @@
 // POST /api/create-checkout
 // Creates a Stripe Checkout Session for AiBI-P course purchase.
 //
-// Individual mode: $99/seat (STRIPE_AIBIP_PRICE_ID)
-// Institution/team mode: $79/seat x quantity (STRIPE_AIBIP_INSTITUTION_PRICE_ID), min 10 seats
+// Individual mode: $295/seat (STRIPE_AIBIP_PRICE_ID)
+// Institution/team mode: $199/seat x quantity (STRIPE_AIBIP_INSTITUTION_PRICE_ID), min 10 seats
 //
 // Persistent discount: if an individual buyer's email is associated with an institution
 // that has discount_locked=true, they get the institution price automatically (PAY-03).
