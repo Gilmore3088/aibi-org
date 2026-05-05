@@ -270,5 +270,9 @@ export async function POST(request: Request) {
     }).catch((err) => console.warn('[capture-email] resend skip', err));
   }
 
-  return NextResponse.json({ ok: true, profileId });
+  return NextResponse.json({
+    ok: true,
+    profileId,
+    convertkitTagAdded: marketingOptIn === true,
+  });
 }
