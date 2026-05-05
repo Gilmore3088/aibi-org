@@ -93,7 +93,6 @@ export function ResultsViewV2({
   const fastestRoi = focusGap ? RECOMMENDATIONS[focusGap.id] : null;
   const starterPrompt = focusGap ? STARTER_PROMPTS[focusGap.id] : null;
   const starterArtifact = focusGap ? getStarterArtifact(focusGap.id) : null;
-  const insightBullets = TIER_INSIGHTS[tierId];
 
   return (
     <div className="w-full max-w-3xl mx-auto">
@@ -195,29 +194,7 @@ export function ResultsViewV2({
             body={FINANCIAL_IMPLICATIONS[tierId].cost}
           />
         </dl>
-        <ContinueLink to="section-3" label="What this means in practice" />
-      </section>
-
-      {/* SECTION 3 — What this means */}
-      <SectionAnchor id="section-3" />
-      <section className="space-y-8 mb-20" aria-labelledby="section-3-heading">
-        <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
-          What this means
-        </p>
-        <h2 id="section-3-heading" className="font-serif text-3xl md:text-4xl leading-tight text-[color:var(--color-ink)]">
-          In practice:
-        </h2>
-        <ul className="space-y-4 border-l-2 border-[color:var(--color-terra)] pl-6">
-          {insightBullets.map((bullet) => (
-            <li
-              key={bullet}
-              className="text-base md:text-lg text-[color:var(--color-ink)]/85 leading-relaxed flex gap-3"
-            >
-              <span aria-hidden className="mt-2.5 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-terra)] shrink-0" />
-              <span>{bullet}</span>
-            </li>
-          ))}
-        </ul>
+        <ContinueLink to="section-4" label="Where you're strong vs exposed" />
       </section>
 
       {/* SECTION 4 — Strengths vs Gaps */}
