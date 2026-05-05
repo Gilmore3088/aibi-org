@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import type { Tier } from '@content/assessments/v2/scoring';
 import type { DimensionScore } from '@content/assessments/v2/scoring';
 import { DIMENSION_LABELS } from '@content/assessments/v2/types';
@@ -391,6 +392,33 @@ export function ResultsViewV2({
           </section>
         </>
       )}
+
+      {/* In-Depth Assessment soft CTA */}
+      <aside
+        aria-labelledby="indepth-cta-heading"
+        className="mt-12 border border-[color:var(--color-terra)]/30 bg-[color:var(--color-parch)] p-8 rounded-[3px]"
+      >
+        <p className="font-serif-sc text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
+          Want the full picture?
+        </p>
+        <h3
+          id="indepth-cta-heading"
+          className="font-serif text-xl text-[color:var(--color-ink)] leading-tight"
+        >
+          The In-Depth Assessment is 48 questions across all 8 dimensions
+        </h3>
+        <p className="mt-3 font-sans text-sm text-[color:var(--color-ink)]/80 leading-relaxed">
+          The same diagnostic, full depth — every dimension scored independently,
+          with peer comparison and a 30-day action plan keyed to your lowest-scoring
+          dimensions. $99 individual, $79 per seat for institutions of 10+.
+        </p>
+        <Link
+          href="/assessment/in-depth"
+          className="mt-5 inline-block px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-mono text-[10px] uppercase tracking-[0.15em] hover:bg-[color:var(--color-terra-light)] transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-2"
+        >
+          See the In-Depth Assessment →
+        </Link>
+      </aside>
 
       {/* SECTION 7 — 7-Day Plan */}
       <SectionAnchor id="section-7" />
