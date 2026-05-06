@@ -23,7 +23,7 @@ const taker = (
   invite_email: 'x@b.test',
   invite_consumed_at: '2026-05-05T00:00:00Z',
   completed_at: '2026-05-05T00:00:00Z',
-  score_total: 30,
+  score_total: 120,
   score_per_dimension: fullDim(),
   ...overrides,
 });
@@ -67,17 +67,17 @@ describe('computeAggregate', () => {
   it('unlocks at MIN_RESPONSES (3) with overall + dimension data populated', () => {
     const t1 = taker({
       invite_email: 'a@b.test',
-      score_total: 24,
+      score_total: 96,
       score_per_dimension: fullDim(8),
     });
     const t2 = taker({
       invite_email: 'b@b.test',
-      score_total: 30,
+      score_total: 120,
       score_per_dimension: fullDim(12),
     });
     const t3 = taker({
       invite_email: 'c@b.test',
-      score_total: 36,
+      score_total: 144,
       score_per_dimension: fullDim(16),
     });
     const result = computeAggregate({
@@ -86,7 +86,7 @@ describe('computeAggregate', () => {
       takers: [t1, t2, t3],
     });
     expect(result.unlocked).toBe(true);
-    expect(result.overall?.average_score).toBe(30);
+    expect(result.overall?.average_score).toBe(120);
     expect(result.overall?.tier_label).toBe('Building Momentum');
     expect(result.dimensions).toHaveLength(8);
     expect(result.responsesReceived).toBe(3);
@@ -99,21 +99,21 @@ describe('computeAggregate', () => {
     const result = computeAggregate({
       institutionName: 'X',
       seatsPurchased: 10,
-      takers: [t(30, 'a@b.test'), t(32, 'b@b.test'), t(35, 'c@b.test')],
+      takers: [t(120, 'a@b.test'), t(128, 'b@b.test'), t(140, 'c@b.test')],
     });
     expect(result.champions).toHaveLength(0);
-    expect(CHAMPION_THRESHOLD).toBe(39);
+    expect(CHAMPION_THRESHOLD).toBe(156);
   });
 
-  it('returns top-2 champions only when score >= CHAMPION_THRESHOLD (39)', () => {
+  it('returns top-2 champions only when score >= CHAMPION_THRESHOLD (156)', () => {
     const result = computeAggregate({
       institutionName: 'X',
       seatsPurchased: 10,
       takers: [
-        taker({ invite_email: 'a@b.test', score_total: 45 }),
-        taker({ invite_email: 'b@b.test', score_total: 42 }),
-        taker({ invite_email: 'c@b.test', score_total: 38 }), // below
-        taker({ invite_email: 'd@b.test', score_total: 30 }),
+        taker({ invite_email: 'a@b.test', score_total: 168 }),
+        taker({ invite_email: 'b@b.test', score_total: 160 }),
+        taker({ invite_email: 'c@b.test', score_total: 152 }), // below
+        taker({ invite_email: 'd@b.test', score_total: 120 }),
       ],
     });
     expect(result.champions.map((c) => c.email)).toEqual([
@@ -127,10 +127,10 @@ describe('computeAggregate', () => {
       institutionName: 'X',
       seatsPurchased: 10,
       takers: [
-        taker({ invite_email: 'a@b.test', score_total: 48 }),
-        taker({ invite_email: 'b@b.test', score_total: 45 }),
-        taker({ invite_email: 'c@b.test', score_total: 42 }),
-        taker({ invite_email: 'd@b.test', score_total: 40 }),
+        taker({ invite_email: 'a@b.test', score_total: 180 }),
+        taker({ invite_email: 'b@b.test', score_total: 172 }),
+        taker({ invite_email: 'c@b.test', score_total: 164 }),
+        taker({ invite_email: 'd@b.test', score_total: 158 }),
       ],
     });
     expect(result.champions).toHaveLength(2);
@@ -143,9 +143,9 @@ describe('computeAggregate', () => {
       institutionName: 'X',
       seatsPurchased: 10,
       takers: [
-        taker({ invite_email: 'a@b.test', score_total: 24 }),
-        taker({ invite_email: 'b@b.test', score_total: 30 }),
-        taker({ invite_email: 'c@b.test', score_total: 36 }),
+        taker({ invite_email: 'a@b.test', score_total: 96 }),
+        taker({ invite_email: 'b@b.test', score_total: 120 }),
+        taker({ invite_email: 'c@b.test', score_total: 144 }),
       ],
     });
     const json = JSON.stringify(result);
@@ -167,17 +167,17 @@ describe('computeAggregate', () => {
     };
     const t1 = taker({
       invite_email: 'a@b.test',
-      score_total: 24,
+      score_total: 108,
       score_per_dimension: skewed,
     });
     const t2 = taker({
       invite_email: 'b@b.test',
-      score_total: 24,
+      score_total: 108,
       score_per_dimension: skewed,
     });
     const t3 = taker({
       invite_email: 'c@b.test',
-      score_total: 24,
+      score_total: 108,
       score_per_dimension: skewed,
     });
     const result = computeAggregate({
@@ -201,17 +201,17 @@ describe('computeAggregate', () => {
     // low: <8, mid: <16, high: >=16
     const lowT = taker({
       invite_email: 'l@b.test',
-      score_total: 24,
+      score_total: 96,
       score_per_dimension: fullDim(4),
     });
     const midT = taker({
       invite_email: 'm@b.test',
-      score_total: 30,
+      score_total: 120,
       score_per_dimension: fullDim(12),
     });
     const highT = taker({
       invite_email: 'h@b.test',
-      score_total: 36,
+      score_total: 144,
       score_per_dimension: fullDim(20),
     });
     const result = computeAggregate({
@@ -235,11 +235,11 @@ describe('computeAggregate', () => {
       takers: [
         taker({
           invite_email: 'a@b.test',
-          score_total: 45,
+          score_total: 168,
           score_per_dimension: dim,
         }),
-        taker({ invite_email: 'b@b.test', score_total: 30 }),
-        taker({ invite_email: 'c@b.test', score_total: 30 }),
+        taker({ invite_email: 'b@b.test', score_total: 120 }),
+        taker({ invite_email: 'c@b.test', score_total: 120 }),
       ],
     });
     expect(result.champions[0].strongest_dimension).toBe('Leadership Buy-In');

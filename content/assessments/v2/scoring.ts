@@ -1,5 +1,13 @@
 // AiBI Readiness Assessment — v2 Scoring Rubric
-// Score range: 12 (all 1s across 12 questions) to 48 (all 4s across 12 questions).
+//
+// Two products draw from the same 48-question pool but score against
+// different totals:
+//   - Free assessment: 12 questions × 1-4 points = 12-48 range
+//   - In-Depth Assessment: all 48 questions × 1-4 points = 48-192 range
+//
+// Tier bands are defined on the canonical 12-48 scale. Callers with a
+// different max pass `maxScore`; the function normalizes proportionally
+// before bucketing.
 
 import type { Dimension } from './types';
 import type { AssessmentQuestion } from './types';
@@ -57,10 +65,39 @@ export const tiers: readonly Tier[] = [
   },
 ] as const;
 
-export function getTierV2(totalScore: number): Tier {
-  const match = tiers.find((t) => totalScore >= t.min && totalScore <= t.max);
+/**
+ * Returns the tier for a given total score.
+ *
+ * For the free 12-question assessment, call `getTierV2(score)` — the default
+ * `maxScore=48` matches that range and the score is bucketed directly.
+ *
+ * For the In-Depth 48-question assessment, call `getTierV2(score, 192)` —
+ * the score is proportionally normalized to the 12-48 scale before bucketing
+ * so a 75% score on either product lands in the same tier.
+ *
+ * Throws if the score is outside `[maxScore/4, maxScore]` (the achievable
+ * range given each question contributes 1-4 points).
+ */
+export function getTierV2(totalScore: number, maxScore: number = 48): Tier {
+  const minPossible = maxScore / 4;
+  if (totalScore < minPossible || totalScore > maxScore) {
+    throw new Error(
+      `Score ${totalScore} is outside the valid range ${minPossible}-${maxScore}.`,
+    );
+  }
+
+  // Normalize to the 12-48 scale on which tier bands are defined.
+  // For maxScore=48 this is the identity transform (no rounding noise).
+  const normalizedScore =
+    maxScore === 48
+      ? totalScore
+      : Math.round(12 + ((totalScore - minPossible) / (maxScore - minPossible)) * 36);
+
+  const match = tiers.find((t) => normalizedScore >= t.min && normalizedScore <= t.max);
   if (!match) {
-    throw new Error(`Score ${totalScore} is outside the valid range of 12-48.`);
+    throw new Error(
+      `Normalized score ${normalizedScore} (from ${totalScore}/${maxScore}) did not match any tier.`,
+    );
   }
   return match;
 }

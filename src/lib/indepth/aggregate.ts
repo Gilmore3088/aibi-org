@@ -17,7 +17,11 @@ import { DIMENSION_LABELS, type Dimension } from '@content/assessments/v2/types'
 import { getTierV2, tiers } from '@content/assessments/v2/scoring';
 
 export const MIN_RESPONSES = 3;
-export const CHAMPION_THRESHOLD = 39;
+export const INDEPTH_MAX_SCORE = 192; // 48 questions × 4 max points
+// Champion = top scorers AND in the "Ready to Scale" tier or above. The free
+// tier scale uses 39 as the threshold; In-Depth scores are 48-192, so we
+// scale proportionally: 39/48 ≈ 81.25% → 0.8125 × 192 = 156.
+export const CHAMPION_THRESHOLD = 156;
 export const CHAMPION_LIMIT = 2;
 export const MAX_PER_DIMENSION = 24; // 6 questions per dimension × 4 points
 export const WEAKEST_STRONGEST_COUNT = 2;
@@ -136,9 +140,9 @@ export function computeAggregate(input: AggregateInput): Aggregate {
   const distribution: Record<string, number> = {};
   for (const tier of tiers) distribution[tier.id] = 0;
   for (const total of totals) {
-    distribution[getTierV2(total).id] += 1;
+    distribution[getTierV2(total, INDEPTH_MAX_SCORE).id] += 1;
   }
-  const overallTier = getTierV2(Math.round(averageScore));
+  const overallTier = getTierV2(Math.round(averageScore), INDEPTH_MAX_SCORE);
 
   // Dimensions: compute average per dim
   const dimAverages = new Map<Dimension, number>();

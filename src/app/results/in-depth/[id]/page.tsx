@@ -25,6 +25,7 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 const MAX_PER_DIMENSION = 24; // 6 questions per dimension × 4 max points
+const INDEPTH_MAX_SCORE = 192; // 48 questions × 4 max points
 const ALL_DIMENSIONS: readonly Dimension[] = [
   'current-ai-usage',
   'experimentation-culture',
@@ -63,7 +64,9 @@ export default async function InDepthResultsPage({ params }: ResultsPageProps) {
     notFound();
   }
 
-  const tier = getTierV2(row.score_total);
+  // In-Depth uses all 48 questions × max 4 points = 192. getTierV2 normalizes
+  // to the canonical 12-48 tier scale.
+  const tier = getTierV2(row.score_total, INDEPTH_MAX_SCORE);
   const perDim = (row.score_per_dimension ?? {}) as Partial<Record<Dimension, number>>;
 
   const ranked: RankedDimension[] = ALL_DIMENSIONS.map((id) => {

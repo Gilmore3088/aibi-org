@@ -101,7 +101,8 @@ export async function POST(request: Request) {
       .eq('id', takerId)
       .single();
     if (row?.invite_email) {
-      const tier = getTierV2(total);
+      // In-Depth max = 48 questions × 4 = 192; getTierV2 normalizes to 12-48 scale.
+      const tier = getTierV2(total, 192);
       const origin =
         process.env.NEXT_PUBLIC_SITE_URL ?? 'https://aibankinginstitute.com';
       const resultsUrl = `${origin}/results/in-depth/${takerId}`;
