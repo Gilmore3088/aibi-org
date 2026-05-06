@@ -44,3 +44,8 @@ next-env.d.ts
 # Claude Code / MCP session state (local-only, never commit)
 .claude/
 .mcp.json
+
+# Playwright e2e artifacts
+/test-results/
+/playwright-report/
+/playwright/.cache/
