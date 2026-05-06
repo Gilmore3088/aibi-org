@@ -20,6 +20,7 @@ import { getTierV2 } from '@content/assessments/v2/scoring';
 import { DIMENSION_LABELS } from '@content/assessments/v2/types';
 import type { Dimension } from '@content/assessments/v2/types';
 import { getStarterArtifact } from '@content/assessments/v2/starter-artifacts';
+import ReactMarkdown from 'react-markdown';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -170,10 +171,71 @@ export default async function InDepthResultsPage({ params }: ResultsPageProps) {
             <p className="text-base leading-relaxed text-[color:var(--color-ink)]/80 mb-6 max-w-2xl">
               {starterArtifact.subtitle}
             </p>
-            <article className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/15 rounded-[3px] p-6 md:p-8">
-              <div className="whitespace-pre-wrap font-sans text-sm leading-relaxed text-[color:var(--color-ink)]/90">
+            <article className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/15 rounded-[3px] p-6 md:p-10 indepth-artifact">
+              <ReactMarkdown
+                components={{
+                  h1: ({ children }) => (
+                    <h3 className="font-serif text-2xl md:text-3xl text-[color:var(--color-ink)] leading-tight mb-5 first:mt-0">
+                      {children}
+                    </h3>
+                  ),
+                  h2: ({ children }) => (
+                    <h4 className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mt-8 mb-3">
+                      {children}
+                    </h4>
+                  ),
+                  h3: ({ children }) => (
+                    <h5 className="font-serif text-lg text-[color:var(--color-ink)] mt-6 mb-2">
+                      {children}
+                    </h5>
+                  ),
+                  p: ({ children }) => (
+                    <p className="font-sans text-base leading-relaxed text-[color:var(--color-ink)]/85 mb-4">
+                      {children}
+                    </p>
+                  ),
+                  ul: ({ children }) => (
+                    <ul className="list-disc pl-5 space-y-2 mb-5 marker:text-[color:var(--color-terra)]">
+                      {children}
+                    </ul>
+                  ),
+                  ol: ({ children }) => (
+                    <ol className="list-decimal pl-5 space-y-2 mb-5 marker:font-mono marker:text-[color:var(--color-terra)] marker:tabular-nums">
+                      {children}
+                    </ol>
+                  ),
+                  li: ({ children }) => (
+                    <li className="font-sans text-base leading-relaxed text-[color:var(--color-ink)]/85 pl-1">
+                      {children}
+                    </li>
+                  ),
+                  hr: () => (
+                    <hr className="my-6 border-0 border-t border-[color:var(--color-ink)]/15" />
+                  ),
+                  strong: ({ children }) => (
+                    <strong className="font-semibold text-[color:var(--color-ink)]">
+                      {children}
+                    </strong>
+                  ),
+                  em: ({ children }) => (
+                    <em className="italic text-[color:var(--color-ink)]/80">
+                      {children}
+                    </em>
+                  ),
+                  code: ({ children }) => (
+                    <code className="font-mono text-[13px] bg-[color:var(--color-linen)] border border-[color:var(--color-ink)]/15 rounded-sm px-1.5 py-0.5">
+                      {children}
+                    </code>
+                  ),
+                  blockquote: ({ children }) => (
+                    <blockquote className="border-l-2 border-[color:var(--color-terra)] pl-4 italic text-[color:var(--color-ink)]/75 my-5">
+                      {children}
+                    </blockquote>
+                  ),
+                }}
+              >
                 {starterArtifact.body}
-              </div>
+              </ReactMarkdown>
             </article>
             <p className="mt-4 font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55">
               Surfaced by your weakest dimension: {focusGap.label} ({focusGap.score}/

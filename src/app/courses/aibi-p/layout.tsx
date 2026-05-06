@@ -13,8 +13,17 @@ interface CourseLayoutProps {
   readonly children: ReactNode;
 }
 
-// Paths that must never trigger the onboarding redirect (avoids infinite loop).
-const ONBOARDING_EXEMPT_SUFFIXES = ['/onboarding', '/settings', '/purchase'];
+// Paths that must never trigger the onboarding redirect.
+// Exempt: the onboarding survey itself, settings (lets the learner edit
+// their answers), purchase (non-enrolled), and the bare overview page —
+// "For Learners" in the global nav lands here and must be browsable
+// regardless of onboarding completion.
+const ONBOARDING_EXEMPT_SUFFIXES = [
+  '/onboarding',
+  '/settings',
+  '/purchase',
+  '/courses/aibi-p',
+];
 
 export default async function CourseLayout({ children }: CourseLayoutProps) {
   // Fetch enrollment server-side. Returns null when Supabase is unconfigured or user

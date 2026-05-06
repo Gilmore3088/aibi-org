@@ -110,11 +110,9 @@ export function PdfDownloadButton({ profileId, email }: PdfDownloadButtonProps) 
   return (
     <>
       <div className="mt-12 text-center" data-print-hide="true">
-        {state.kind === 'warming' && (
-          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/55">
-            Preparing your brief&hellip;
-          </p>
-        )}
+        {/* warming: render nothing — the button quietly appears once the
+            PDF is ready, instead of advertising background work the
+            visitor did not ask about. */}
         {state.kind === 'ready' && (
           <button
             onClick={handleDownload}

@@ -69,17 +69,19 @@ function readPersisted(pool: readonly AssessmentQuestion[]): {
     if (restored.length !== QUESTIONS_PER_SESSION) return null;
 
     const answers = cleanAnswers.slice(0, QUESTIONS_PER_SESSION);
-    // If the persisted state represents a completed take, restore the
-    // user to the score view instead of dropping them back into the
-    // last question (where their next click would just re-trigger the
-    // score transition with no apparent new question answered).
-    const isComplete = answers.length === QUESTIONS_PER_SESSION;
-    const persistedPhase: AssessmentPhase | undefined = parsed.phase;
-    const phase: AssessmentPhase = isComplete
-      ? persistedPhase === 'results'
-        ? 'results'
-        : 'score'
-      : 'questions';
+
+    // If the persisted state represents a *completed* take, drop it.
+    // Returning visitors should get a fresh assessment, not a stale score
+    // they can no longer interact with. Their result is preserved
+    // server-side via /api/capture-email if they captured email.
+    if (answers.length === QUESTIONS_PER_SESSION) {
+      try {
+        window.sessionStorage.removeItem(STORAGE_KEY);
+      } catch {
+        // ignore
+      }
+      return null;
+    }
 
     return {
       questions: restored,
@@ -88,7 +90,7 @@ function readPersisted(pool: readonly AssessmentQuestion[]): {
         Math.max(parsed.currentQuestion, 0),
         QUESTIONS_PER_SESSION - 1,
       ),
-      phase,
+      phase: 'questions',
     };
   } catch {
     return null;
