@@ -107,11 +107,17 @@ export async function POST(request: Request) {
         process.env.NEXT_PUBLIC_SITE_URL ?? 'https://aibankinginstitute.com';
       const resultsUrl = `${origin}/results/in-depth/${takerId}`;
 
-      const [{ sendIndepthIndividualResults }, { tagSubscriberByEnv }] =
-        await Promise.all([
-          import('@/lib/resend'),
-          import('@/lib/convertkit/sequences'),
-        ]);
+      const [
+        { sendIndepthIndividualResults },
+        { tagSubscriberByEnv },
+        { getTierPreface },
+      ] = await Promise.all([
+        import('@/lib/resend'),
+        import('@/lib/convertkit/sequences'),
+        import('@content/assessments/v2/starter-artifacts'),
+      ]);
+
+      const tierPreface = getTierPreface(tier.id);
 
       await Promise.allSettled([
         sendIndepthIndividualResults({
@@ -119,6 +125,7 @@ export async function POST(request: Request) {
           resultsUrl,
           score: total,
           tierLabel: tier.label,
+          tierPreface,
         }),
         tagSubscriberByEnv({
           email: row.invite_email,

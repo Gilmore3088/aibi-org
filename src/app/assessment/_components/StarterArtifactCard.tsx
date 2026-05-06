@@ -30,13 +30,20 @@ export function StarterArtifactCard({
   const [downloaded, setDownloaded] = useState(false);
   const [copyFailed, setCopyFailed] = useState(false);
 
+  // The downloadable / copyable body includes the tier preface as a
+  // blockquote at the top so the framing travels with the artifact when
+  // the banker shares it with colleagues. Stripped of HTML — pure markdown.
+  const exportBody = preface
+    ? `> **${preface.headline}** _(For ${tierLabel} institutions)_\n>\n> ${preface.body}\n\n${artifact.body}`
+    : artifact.body;
+
   async function handleCopy() {
     setCopyFailed(false);
     try {
       // navigator.clipboard requires a secure context (https or localhost).
       // Some embedded webviews and older Safari builds reject the call.
       if (!navigator.clipboard?.writeText) throw new Error('Clipboard unavailable');
-      await navigator.clipboard.writeText(artifact.body);
+      await navigator.clipboard.writeText(exportBody);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
@@ -48,7 +55,7 @@ export function StarterArtifactCard({
   }
 
   function handleDownload() {
-    const blob = new Blob([artifact.body], { type: 'text/markdown' });
+    const blob = new Blob([exportBody], { type: 'text/markdown' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;

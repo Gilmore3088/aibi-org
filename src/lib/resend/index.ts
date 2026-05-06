@@ -436,6 +436,9 @@ export interface IndepthIndividualResultsPayload {
   readonly resultsUrl: string;
   readonly score: number;
   readonly tierLabel: string;
+  /** Optional tier-keyed framing surfaced on the results page; mirrored
+   *  here so the email recipient sees the same context. */
+  readonly tierPreface?: { readonly headline: string; readonly body: string };
 }
 
 export async function sendIndepthIndividualResults(
@@ -447,6 +450,15 @@ export async function sendIndepthIndividualResults(
   const subject = 'Your In-Depth AI Readiness Assessment results';
   const heading = 'Your results are ready';
   const tier = escape(payload.tierLabel);
+  const prefaceBlock = payload.tierPreface
+    ? `<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;background-color:${BRAND.linen};border-left:3px solid ${BRAND.terra};width:100%;margin:16px 0;">
+<tr><td style="padding:18px 22px;">
+<p style="font-family:Georgia,serif;font-size:10px;color:${BRAND.terra};letter-spacing:0.22em;text-transform:uppercase;margin:0 0 8px;">For ${tier} institutions</p>
+<p style="font-family:Georgia,serif;font-style:italic;font-size:18px;color:${BRAND.ink};line-height:1.35;margin:0 0 8px;">${escape(payload.tierPreface.headline)}</p>
+<p style="font-family:'DM Sans',Arial,sans-serif;font-size:14px;line-height:1.55;color:${BRAND.ink}cc;margin:0;">${escape(payload.tierPreface.body)}</p>
+</td></tr>
+</table>`
+    : '';
   const body = `<p style="font-family:'DM Sans',Arial,sans-serif;font-size:16px;line-height:1.6;color:${BRAND.ink};margin:0 0 16px;">You have completed the In-Depth AI Readiness Assessment. Your full breakdown &mdash; dimension scores, narrative interpretation, and tailored next steps &mdash; is on your results page.</p>
 <table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;background-color:${BRAND.parch};border:1px solid ${BRAND.ink}1a;border-radius:3px;width:100%;margin:16px 0;">
 <tr><td style="padding:24px;">
@@ -455,16 +467,20 @@ export async function sendIndepthIndividualResults(
 <p style="font-family:'DM Sans',Arial,sans-serif;font-size:14px;color:${BRAND.slate};margin:0;">${tier}</p>
 </td></tr>
 </table>
+${prefaceBlock}
 ${ctaButton(payload.resultsUrl, 'Open my full results')}
 <p style="font-family:'DM Sans',Arial,sans-serif;font-size:13px;line-height:1.5;color:${BRAND.slate};margin:0 0 8px;">If the button does not work, paste this link into your browser:<br><a href="${payload.resultsUrl}" style="color:${BRAND.terra};text-decoration:underline;word-break:break-all;">${payload.resultsUrl}</a></p>`;
 
   const html = emailShell({ title: subject, heading, body });
+  const prefaceText = payload.tierPreface
+    ? `\nFor ${payload.tierLabel} institutions: ${payload.tierPreface.headline}\n${payload.tierPreface.body}\n`
+    : '';
   const text = `Your In-Depth AI Readiness Assessment results
 ${'-'.repeat(40)}
 
 Score: ${payload.score}
 Tier:  ${payload.tierLabel}
-
+${prefaceText}
 Open your full results:
 ${payload.resultsUrl}
 
