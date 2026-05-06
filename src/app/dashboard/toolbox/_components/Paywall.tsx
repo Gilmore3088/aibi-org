@@ -35,7 +35,7 @@ export function Paywall() {
           Browse Courses
         </Link>
         <Link
-          href="/assessment/start"
+          href="/assessment"
           className="inline-flex items-center justify-center rounded-[2px] border border-[color:var(--color-ink)]/20 px-6 py-3 font-sans text-[11px] font-semibold uppercase tracking-[1.2px] text-[color:var(--color-ink)] hover:border-[color:var(--color-ink)]/40"
         >
           Start with the free assessment

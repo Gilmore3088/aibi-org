@@ -139,7 +139,7 @@ export function HomeContextStrip() {
         Take the readiness assessment to see your starting point.
       </p>
       <Link
-        href="/assessment/start"
+        href="/assessment"
         className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] hover:text-[color:var(--color-ink)]"
       >
         Take the assessment →

@@ -48,7 +48,7 @@ export function ROICalculator() {
           <div className="md:col-span-3">
             <ROICalculatorBody
               ctaLabel="Take the Assessment"
-              ctaHref="/assessment/start"
+              ctaHref="/assessment"
             />
           </div>
         </div>

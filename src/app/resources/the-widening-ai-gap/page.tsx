@@ -178,7 +178,7 @@ export default function WideningGapArticle() {
             next move for the next 90 days.
           </p>
           <Link
-            href="/assessment/start"
+            href="/assessment"
             className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
           >
             Take the Free Assessment

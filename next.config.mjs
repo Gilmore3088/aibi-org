@@ -59,6 +59,11 @@ const nextConfig = {
       // /for-institutions until case-study content exists.
       { source: '/for-institutions/advisory', destination: '/for-institutions', permanent: false },
       { source: '/for-institutions/advisory/:path*', destination: '/for-institutions', permanent: false },
+      // Decision log: 2026-05-06 — /assessment/start interstitial removed.
+      // The assessment now lives at a single URL (/assessment) with an inline
+      // intro panel rendered above Q1 (Plans/refactor-momentum-first-ux-restructure.md).
+      // External bookmarks + ConvertKit drip emails redirect transparently.
+      { source: '/assessment/start', destination: '/assessment', permanent: true },
     ];
   },
 };

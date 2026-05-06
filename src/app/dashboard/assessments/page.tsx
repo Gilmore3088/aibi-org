@@ -160,7 +160,7 @@ export default async function AssessmentsPage() {
               title="You have not taken the free readiness assessment."
               body="Three minutes, eight dimensions, an immediate score. A useful warm-up before the In-Depth."
               cta="Take the assessment"
-              href="/assessment/start"
+              href="/assessment"
             />
           ) : (
             <ul className="space-y-3">

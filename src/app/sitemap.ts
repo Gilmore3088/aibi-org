@@ -4,7 +4,7 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://aibankinginstitute
 
 const ROUTES = [
   { path: '/', priority: 1.0, changeFrequency: 'weekly' as const },
-  { path: '/assessment/start', priority: 0.95, changeFrequency: 'monthly' as const },
+  { path: '/assessment', priority: 0.95, changeFrequency: 'monthly' as const },
   { path: '/assessment', priority: 0.75, changeFrequency: 'monthly' as const },
   { path: '/education', priority: 0.9, changeFrequency: 'monthly' as const },
   { path: '/for-institutions', priority: 0.9, changeFrequency: 'monthly' as const },

@@ -116,7 +116,7 @@ export default function DashboardPage() {
             practice rep, and the AiBI-P learning path.
           </p>
           <Link
-            href="/assessment/start"
+            href="/assessment"
             className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
           >
             Take the Free Assessment
@@ -367,7 +367,7 @@ export default function DashboardPage() {
                   {tier.headline}
                 </p>
                 <Link
-                  href="/assessment/start"
+                  href="/assessment"
                   className="inline-block mt-4 font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] border-b border-[color:var(--color-terra)]"
                 >
                   Retake assessment
@@ -375,7 +375,7 @@ export default function DashboardPage() {
               </>
             ) : (
               <Link
-                href="/assessment/start"
+                href="/assessment"
                 className="inline-block px-4 py-2 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px]"
               >
                 Take assessment

@@ -602,7 +602,7 @@ export default function ProgressionPage() {
 
               <div className="mt-4">
                 <Link
-                  href="/assessment/start"
+                  href="/assessment"
                   className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] border-b border-[color:var(--color-terra)] pb-0.5 hover:opacity-70 transition-opacity"
                 >
                   Retake assessment
@@ -623,7 +623,7 @@ export default function ProgressionPage() {
                 Complete the free AI readiness assessment to establish your baseline and track how your score improves as you progress through each certification level.
               </p>
               <Link
-                href="/assessment/start"
+                href="/assessment"
                 className="inline-block px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
               >
                 Take the free assessment

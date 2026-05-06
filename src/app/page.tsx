@@ -60,7 +60,7 @@ export default function HomePage() {
           </p>
           <div className="mt-8 flex justify-center">
             <Link
-              href="/assessment/start"
+              href="/assessment"
               className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
             >
               Take the Assessment
@@ -173,7 +173,7 @@ export default function HomePage() {
           </p>
           <div className="mt-8 flex justify-center">
             <Link
-              href="/assessment/start"
+              href="/assessment"
               className="inline-block px-10 py-4 bg-[color:var(--color-linen)] text-[color:var(--color-terra)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-parch)] active:scale-[0.98] transition-all"
             >
               Take the Assessment

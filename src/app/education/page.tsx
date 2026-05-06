@@ -55,7 +55,7 @@ export default async function EducationPage() {
       subtitle:
         'Eight questions, three minutes. Get your readiness score and a tailored next-step recommendation.',
       cta: 'Take the assessment',
-      href: '/assessment/start',
+      href: '/assessment',
       available: true,
     },
     {
