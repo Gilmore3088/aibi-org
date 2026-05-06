@@ -109,17 +109,18 @@ export default function DashboardPage() {
             Today
           </p>
           <h1 className="font-serif text-5xl md:text-6xl text-[color:var(--color-ink)] leading-tight">
-            Start with your AI readiness score.
+            Become the AI person at your institution.
           </h1>
           <p className="text-lg text-[color:var(--color-ink)]/75 leading-relaxed">
-            Take the assessment to unlock a practical next step, your first
-            practice rep, and the AiBI-P learning path.
+            Start with the 3-minute assessment. You will see where you
+            stand, what to fix first, and how to earn your AiBI-P
+            Practitioner credential.
           </p>
           <Link
             href="/assessment"
             className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
           >
-            Take the Free Assessment
+            See where you stand
           </Link>
         </div>
       </main>
@@ -171,7 +172,7 @@ export default function DashboardPage() {
               <div className="mt-6">
                 <div className="flex items-baseline justify-between gap-4">
                   <p className="text-sm text-[color:var(--color-slate)]">
-                    Course progress
+                    Toward your AiBI-P credential
                   </p>
                   <p className="font-mono text-xl text-[color:var(--color-terra)] tabular-nums">
                     {progressPct}%

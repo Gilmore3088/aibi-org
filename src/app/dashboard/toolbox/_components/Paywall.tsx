@@ -19,7 +19,7 @@ export function Paywall() {
         Banking AI Playbooks
       </p>
       <h1 className="mt-3 font-serif text-4xl text-[color:var(--color-ink)] md:text-5xl">
-        Included with any paid course
+        Begins when you join AiBI-P
       </h1>
       <p className="mt-6 text-lg leading-relaxed text-[color:var(--color-ink)]/80">
         Banking AI Playbooks — Skill Builder, Template Library, multi-provider
