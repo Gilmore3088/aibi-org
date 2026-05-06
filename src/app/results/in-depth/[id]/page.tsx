@@ -100,14 +100,14 @@ export default async function InDepthResultsPage({ params }: ResultsPageProps) {
           <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-4">
             Your score
           </p>
-          <div className="flex flex-wrap items-baseline gap-x-6 gap-y-2">
+          <div className="flex flex-col md:flex-row md:flex-wrap md:items-baseline gap-x-6 gap-y-3">
             <span
               className="font-mono tabular-nums text-6xl md:text-7xl"
               style={{ color: tier.colorVar }}
             >
               {row.score_total}
             </span>
-            <span className="font-mono text-sm text-[color:var(--color-ink)]/55">
+            <span className="font-mono text-base text-[color:var(--color-ink)]/55">
               / {INDEPTH_MAX_SCORE}
             </span>
             <span className="font-serif text-2xl md:text-3xl text-[color:var(--color-ink)]">
@@ -167,13 +167,13 @@ export default async function InDepthResultsPage({ params }: ResultsPageProps) {
             >
               {starterArtifact.title}
             </h2>
-            <p className="text-[15px] leading-[1.6] text-[color:var(--color-ink)]/80 mb-6 max-w-2xl">
+            <p className="text-base leading-relaxed text-[color:var(--color-ink)]/80 mb-6 max-w-2xl">
               {starterArtifact.subtitle}
             </p>
             <article className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/15 rounded-[3px] p-6 md:p-8">
-              <pre className="whitespace-pre-wrap font-sans text-[14px] leading-[1.7] text-[color:var(--color-ink)]/90">
+              <div className="whitespace-pre-wrap font-sans text-sm leading-relaxed text-[color:var(--color-ink)]/90">
                 {starterArtifact.body}
-              </pre>
+              </div>
             </article>
             <p className="mt-4 font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55">
               Surfaced by your weakest dimension: {focusGap.label} ({focusGap.score}/

@@ -74,7 +74,7 @@ const STATUS_LABEL: Record<RosterStatus, string> = {
 const STATUS_COLOR: Record<RosterStatus, string> = {
   pending: 'var(--color-slate)',
   'in-progress': 'var(--color-terra)',
-  complete: 'var(--color-terra)',
+  complete: 'var(--color-sage)',
 };
 
 function parseEmails(raw: string): string[] {
@@ -91,7 +91,9 @@ export default function DashboardClient({
   initialRoster,
 }: DashboardClientProps) {
   const router = useRouter();
-  const [roster] = useState<readonly RosterEntry[]>(initialRoster);
+  // Read roster directly from props so router.refresh() server-rerenders
+  // pull through to the client without needing a setter.
+  const roster = initialRoster;
   const [emailsText, setEmailsText] = useState('');
   const [sending, setSending] = useState(false);
   const [lastResult, setLastResult] = useState<InviteResult | null>(null);
@@ -103,6 +105,33 @@ export default function DashboardClient({
 
   const invitedCount = roster.length;
   const remainingSeats = Math.max(0, seatsPurchased - invitedCount);
+  const pastedCount = useMemo(() => parseEmails(emailsText).length, [emailsText]);
+  const overCap = pastedCount > remainingSeats;
+  const [resendingEmail, setResendingEmail] = useState<string | null>(null);
+  const [resendError, setResendError] = useState<string | null>(null);
+  const [resendSuccess, setResendSuccess] = useState<string | null>(null);
+
+  async function handleResend(email: string) {
+    setResendError(null);
+    setResendSuccess(null);
+    setResendingEmail(email);
+    try {
+      const res = await fetch('/api/indepth/resend', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ institutionId, email }),
+      });
+      if (!res.ok) {
+        const data = (await res.json().catch(() => ({}))) as { error?: string };
+        throw new Error(data.error ?? `Resend failed (${res.status})`);
+      }
+      setResendSuccess(email);
+    } catch (err) {
+      setResendError(err instanceof Error ? err.message : 'Resend failed');
+    } finally {
+      setResendingEmail(null);
+    }
+  }
 
   useEffect(() => {
     let cancelled = false;
@@ -140,6 +169,20 @@ export default function DashboardClient({
     const emails = parseEmails(emailsText);
     if (emails.length === 0) {
       setSendError('Add at least one email.');
+      return;
+    }
+    if (emails.length > remainingSeats) {
+      setSendError(
+        `You pasted ${emails.length} emails but only have ${remainingSeats} seats remaining.`,
+      );
+      return;
+    }
+    if (
+      typeof window !== 'undefined' &&
+      !window.confirm(
+        `Send ${emails.length} invite${emails.length === 1 ? '' : 's'}?`,
+      )
+    ) {
       return;
     }
     setSending(true);
@@ -217,8 +260,21 @@ export default function DashboardClient({
                 rows={5}
                 disabled={sending || remainingSeats === 0}
                 placeholder="alex@bank.com&#10;jordan@bank.com"
-                className="w-full font-mono text-sm bg-[color:var(--color-linen)] border border-[color:var(--color-ink)]/20 rounded-[2px] p-3 focus:outline-none focus:border-[color:var(--color-terra)] focus:ring-2 focus:ring-[color:var(--color-terra)]/30 disabled:opacity-60"
+                aria-invalid={overCap}
+                className={`w-full font-mono text-sm bg-[color:var(--color-linen)] border rounded-[2px] p-3 focus:outline-none focus:ring-2 disabled:opacity-60 ${
+                  overCap
+                    ? 'border-[color:var(--color-error)] focus:border-[color:var(--color-error)] focus:ring-[color:var(--color-error)]/30'
+                    : 'border-[color:var(--color-ink)]/20 focus:border-[color:var(--color-terra)] focus:ring-[color:var(--color-terra)]/30'
+                }`}
               />
+              <p
+                className={`mt-2 font-mono text-xs tabular-nums ${
+                  overCap ? 'text-[color:var(--color-error)]' : 'text-[color:var(--color-slate)]'
+                }`}
+                aria-live="polite"
+              >
+                {pastedCount} pasted · {remainingSeats} seat{remainingSeats === 1 ? '' : 's'} remaining
+              </p>
               <div className="mt-4 flex items-center gap-4">
                 <button
                   type="submit"
@@ -237,7 +293,7 @@ export default function DashboardClient({
                 )}
               </div>
 
-              <div className="mt-3 min-h-[1.5rem]" aria-live="polite">
+              <div className="mt-3 min-h-6" aria-live="polite">
                 {lastResult && (
                   <p className="font-sans text-sm text-[color:var(--color-slate)]">
                     Invited{' '}
@@ -270,11 +326,14 @@ export default function DashboardClient({
               <table className="w-full">
                 <thead>
                   <tr className="bg-[color:var(--color-linen)]">
-                    <th className="text-left font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/60 px-4 py-3">
+                    <th className="text-left font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60 px-4 py-3">
                       Email
                     </th>
-                    <th className="text-right font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/60 px-4 py-3">
+                    <th className="text-right font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60 px-4 py-3">
                       Status
+                    </th>
+                    <th className="text-right font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60 px-4 py-3">
+                      <span className="sr-only">Actions</span>
                     </th>
                   </tr>
                 </thead>
@@ -292,15 +351,39 @@ export default function DashboardClient({
                         {r.invite_email}
                       </td>
                       <td
-                        className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-right px-4 py-3"
+                        className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-right px-4 py-3"
                         style={{ color: STATUS_COLOR[r.status] }}
                       >
                         {STATUS_LABEL[r.status]}
+                      </td>
+                      <td className="text-right px-4 py-3">
+                        {r.status !== 'complete' && (
+                          <button
+                            type="button"
+                            onClick={() => handleResend(r.invite_email)}
+                            disabled={resendingEmail === r.invite_email}
+                            className="font-serif-sc text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] hover:text-[color:var(--color-terra-light)] disabled:opacity-50"
+                          >
+                            {resendingEmail === r.invite_email
+                              ? 'Sending…'
+                              : resendSuccess === r.invite_email
+                                ? 'Sent ✓'
+                                : 'Resend'}
+                          </button>
+                        )}
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+              {resendError && (
+                <p
+                  role="alert"
+                  className="font-sans text-sm text-[color:var(--color-error)] px-4 py-2 bg-[color:var(--color-linen)]"
+                >
+                  {resendError}
+                </p>
+              )}
             </div>
           ) : (
             <p className="text-sm text-[color:var(--color-slate)] italic">
@@ -382,7 +465,7 @@ function ProgressTile({ label, value }: { label: string; value: number }) {
       <p className="font-mono text-2xl tabular-nums text-[color:var(--color-ink)] leading-none mb-2">
         {value}
       </p>
-      <p className="font-serif-sc text-[10px] uppercase tracking-[0.18em] text-[color:var(--color-slate)]">
+      <p className="font-serif-sc text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-slate)]">
         {label}
       </p>
     </div>
@@ -414,7 +497,7 @@ function UnlockedAggregate({ aggregate }: { aggregate: AggregateResponse }) {
             <p className="font-mono text-4xl tabular-nums text-[color:var(--color-terra)]">
               {overall.average_score.toFixed(1)}
               <span className="text-base text-[color:var(--color-slate)] ml-1">
-                / 48
+                / 192
               </span>
             </p>
           </div>
@@ -454,20 +537,20 @@ function UnlockedAggregate({ aggregate }: { aggregate: AggregateResponse }) {
               {aggregate.champions.map((c) => (
                 <li
                   key={c.email}
-                  className="flex flex-col md:flex-row md:items-baseline md:justify-between gap-1 pb-3 border-b border-[color:var(--color-ink)]/8 last:border-0 last:pb-0"
+                  className="flex flex-col md:flex-row md:items-baseline md:justify-between gap-1 pb-3 border-b border-[color:var(--color-ink)]/10 last:border-0 last:pb-0"
                 >
                   <div>
                     <p className="font-mono text-sm text-[color:var(--color-ink)] break-all">
                       {c.email}
                     </p>
-                    <p className="font-serif-sc text-[10px] uppercase tracking-[0.18em] text-[color:var(--color-slate)] mt-1">
+                    <p className="font-serif-sc text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-slate)] mt-1">
                       Strongest: {c.strongest_dimension}
                     </p>
                   </div>
                   <p className="font-mono text-lg tabular-nums text-[color:var(--color-terra)] shrink-0">
                     {c.overall_score}
                     <span className="text-xs text-[color:var(--color-slate)] ml-1">
-                      / 48
+                      / 192
                     </span>
                   </p>
                 </li>
@@ -497,8 +580,16 @@ function DimensionCard({ dim }: { dim: DimensionAggregate }) {
 
   return (
     <div
-      className="bg-[color:var(--color-parch)] border rounded-[3px] p-5"
-      style={{ borderColor: dim.weakest_areas || dim.strongest_areas ? accent + '40' : 'rgba(0,0,0,0.08)' }}
+      className={`bg-[color:var(--color-parch)] border rounded-[3px] p-5 ${
+        dim.weakest_areas || dim.strongest_areas
+          ? ''
+          : 'border-[color:var(--color-ink)]/10'
+      }`}
+      style={
+        dim.weakest_areas || dim.strongest_areas
+          ? { borderColor: `color-mix(in srgb, ${accent} 25%, transparent)` }
+          : undefined
+      }
     >
       <div className="flex items-start justify-between mb-3">
         <h4 className="font-serif text-base text-[color:var(--color-ink)] leading-snug pr-2">
@@ -506,7 +597,7 @@ function DimensionCard({ dim }: { dim: DimensionAggregate }) {
         </h4>
         {tag && (
           <span
-            className="font-serif-sc text-[10px] uppercase tracking-[0.18em] shrink-0"
+            className="font-serif-sc text-[10px] uppercase tracking-[0.2em] shrink-0"
             style={{ color: accent }}
           >
             {tag}
@@ -533,7 +624,7 @@ function DimensionCard({ dim }: { dim: DimensionAggregate }) {
             aria-label={`${dim.distribution.low} low`}
           />
           <div
-            className="bg-[color:var(--color-terra)]/40"
+            className="bg-[color:var(--color-ink)]/30"
             style={{ width: `${(dim.distribution.mid / total) * 100}%` }}
             aria-label={`${dim.distribution.mid} mid`}
           />

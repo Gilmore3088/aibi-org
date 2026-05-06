@@ -5,7 +5,7 @@
 // final submit, posts to /api/indepth/submit-answers and redirects to the
 // results page.
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import type { AssessmentQuestion, Dimension } from '@content/assessments/v2/types';
 import { DIMENSION_LABELS } from '@content/assessments/v2/types';
 
@@ -29,6 +29,7 @@ export default function TakeClient({ takerId, questions }: TakeClientProps) {
   const [hydrated, setHydrated] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const submitPanelRef = useRef<HTMLDivElement | null>(null);
 
   // Restore on mount.
   useEffect(() => {
@@ -65,6 +66,16 @@ export default function TakeClient({ takerId, questions }: TakeClientProps) {
       // localStorage may be unavailable; degrade to in-memory state
     }
   }, [hydrated, takerId, answers, currentIndex]);
+
+  // Scroll the submit panel into view the first time the user finishes
+  // every question, so they don't miss the submit button.
+  useEffect(() => {
+    if (!hydrated) return;
+    const allAnswered = Object.keys(answers).length === questions.length;
+    if (allAnswered && submitPanelRef.current) {
+      submitPanelRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, [hydrated, answers, questions.length]);
 
   const totalQuestions = questions.length;
   const answeredCount = useMemo(
@@ -131,10 +142,13 @@ export default function TakeClient({ takerId, questions }: TakeClientProps) {
     <main className="min-h-screen bg-[color:var(--color-linen)] px-6 py-12 md:py-16">
       <div className="w-full max-w-2xl mx-auto">
         <header className="mb-10 flex items-center justify-between">
-          <span className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-ink)]/70 tabular-nums">
-            Question {currentIndex + 1} of {totalQuestions}
+          <span className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70">
+            Question{' '}
+            <span className="font-mono tabular-nums">{currentIndex + 1}</span>
+            {' of '}
+            <span className="font-mono tabular-nums">{totalQuestions}</span>
           </span>
-          <span className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-terra)]">
+          <span className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
             {dimensionLabel}
           </span>
         </header>
@@ -171,12 +185,23 @@ export default function TakeClient({ takerId, questions }: TakeClientProps) {
                 aria-checked={selected}
                 onClick={() => selectAnswer(option.points)}
                 className={
-                  'w-full text-left px-5 py-4 border transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-terra)] ' +
+                  'w-full text-left px-5 py-4 border-l-4 border-y border-r transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-terra)] flex items-start gap-3 ' +
                   (selected
-                    ? 'border-[color:var(--color-terra)] bg-[color:var(--color-terra-pale)]/40 text-[color:var(--color-ink)]'
-                    : 'border-[color:var(--color-ink)]/15 bg-[color:var(--color-parch)] hover:border-[color:var(--color-terra)] hover:bg-[color:var(--color-terra-pale)]/20 text-[color:var(--color-ink)]')
+                    ? 'border-l-[color:var(--color-terra)] border-y-[color:var(--color-terra)] border-r-[color:var(--color-terra)] bg-[color:var(--color-terra-pale)]/40 text-[color:var(--color-ink)]'
+                    : 'border-l-transparent border-y-[color:var(--color-ink)]/15 border-r-[color:var(--color-ink)]/15 bg-[color:var(--color-parch)] hover:border-l-[color:var(--color-terra)]/40 hover:border-y-[color:var(--color-terra)] hover:border-r-[color:var(--color-terra)] hover:bg-[color:var(--color-terra-pale)]/20 text-[color:var(--color-ink)]')
                 }
               >
+                <span
+                  aria-hidden="true"
+                  className={
+                    'font-mono text-base leading-snug shrink-0 ' +
+                    (selected
+                      ? 'text-[color:var(--color-terra)]'
+                      : 'text-[color:var(--color-ink)]/30')
+                  }
+                >
+                  {selected ? '✓' : '○'}
+                </span>
                 <span className="font-sans text-base md:text-lg leading-snug">
                   {option.label}
                 </span>
@@ -190,17 +215,23 @@ export default function TakeClient({ takerId, questions }: TakeClientProps) {
             type="button"
             onClick={goBack}
             disabled={currentIndex === 0}
-            className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-ink)]/70 hover:text-[color:var(--color-terra)] disabled:opacity-30 disabled:cursor-not-allowed"
+            className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 hover:text-[color:var(--color-terra)] disabled:opacity-30 disabled:cursor-not-allowed"
           >
             &larr; Back
           </button>
-          <span className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-ink)]/60 tabular-nums">
-            {answeredCount} / {totalQuestions} answered
+          <span className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60">
+            <span className="font-mono tabular-nums">{answeredCount}</span>
+            {' / '}
+            <span className="font-mono tabular-nums">{totalQuestions}</span>
+            {' answered'}
           </span>
         </div>
 
         {allAnswered && (
-          <div className="mt-12 border-t border-[color:var(--color-ink)]/15 pt-10">
+          <div
+            ref={submitPanelRef}
+            className="mt-12 border-t border-[color:var(--color-ink)]/15 pt-10"
+          >
             <h2 className="font-serif text-2xl text-[color:var(--color-ink)] mb-4">
               You have answered all {totalQuestions} questions.
             </h2>
@@ -212,14 +243,14 @@ export default function TakeClient({ takerId, questions }: TakeClientProps) {
                 type="button"
                 onClick={handleSubmit}
                 disabled={submitting}
-                className="px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-mono text-xs uppercase tracking-widest hover:bg-[color:var(--color-terra-light)] disabled:opacity-60 disabled:cursor-not-allowed"
+                className="px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 {submitting ? 'Submitting...' : 'Submit my answers'}
               </button>
               <button
                 type="button"
                 onClick={() => jumpTo(0)}
-                className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-ink)]/70 hover:text-[color:var(--color-terra)]"
+                className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 hover:text-[color:var(--color-terra)]"
               >
                 Review from start
               </button>
