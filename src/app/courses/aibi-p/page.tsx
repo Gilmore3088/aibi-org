@@ -31,6 +31,70 @@ const LEARNER_OUTCOMES = [
   'Use AI for communication, meetings, policy review, and productivity',
 ] as const;
 
+interface PillarCardProps {
+  readonly label: string;
+  readonly description: string;
+  readonly progress: string;
+  readonly href: string;
+  readonly ctaLabel: string;
+  readonly isPrimary?: boolean;
+}
+
+function PillarCard({
+  label,
+  description,
+  progress,
+  href,
+  ctaLabel,
+  isPrimary = false,
+}: PillarCardProps) {
+  return (
+    <Link
+      href={href}
+      className={`group block h-full rounded-[3px] border p-5 transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-2 ${
+        isPrimary
+          ? 'bg-[color:var(--color-terra)] text-[color:var(--color-linen)] border-[color:var(--color-terra)] hover:bg-[color:var(--color-terra-light)]'
+          : 'bg-[color:var(--color-linen)] border-[color:var(--color-ink)]/15 hover:border-[color:var(--color-terra)]/40'
+      }`}
+    >
+      <p
+        className={`font-serif-sc text-[10px] uppercase tracking-[0.22em] mb-2 ${
+          isPrimary
+            ? 'text-[color:var(--color-linen)]/85'
+            : 'text-[color:var(--color-terra)]'
+        }`}
+      >
+        {label}
+      </p>
+      <p
+        className={`font-serif text-lg leading-tight mb-3 ${
+          isPrimary ? 'text-[color:var(--color-linen)]' : 'text-[color:var(--color-ink)]'
+        }`}
+      >
+        {description}
+      </p>
+      <p
+        className={`font-mono text-[11px] tabular-nums ${
+          isPrimary
+            ? 'text-[color:var(--color-linen)]/80'
+            : 'text-[color:var(--color-slate)]'
+        }`}
+      >
+        {progress}
+      </p>
+      <p
+        className={`mt-4 font-serif-sc text-[11px] uppercase tracking-[0.22em] ${
+          isPrimary
+            ? 'text-[color:var(--color-linen)]'
+            : 'text-[color:var(--color-terra)]'
+        }`}
+      >
+        {ctaLabel} <span className="font-mono">→</span>
+      </p>
+    </Link>
+  );
+}
+
 function StatusIndicator({ status }: { readonly status: ModuleStatus }) {
   switch (status) {
     case 'completed':
@@ -110,6 +174,56 @@ export default async function CourseOverviewPage() {
             </>
           )}
         </p>
+      </section>
+
+      {/* Four-pillar home base.
+          Re-groups the AiBI-P ecosystem into the four functional pillars
+          (Lessons / Drills / Your Work / Mastery) so the learner sees one
+          coherent system instead of a flat module list. URLs unchanged
+          per the reviewer-cut plan; this is purely a re-grouping. */}
+      <section aria-labelledby="pillars-heading" className="mb-12">
+        <h2 id="pillars-heading" className="sr-only">
+          Your AiBI-P home base
+        </h2>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <PillarCard
+            label="Lessons"
+            description="Twelve modules — read, watch, complete."
+            progress={
+              completedCount > 0
+                ? `${completedCount} of ${modules.length} complete`
+                : `${modules.length} modules`
+            }
+            href={`/courses/aibi-p/${currentModule}`}
+            ctaLabel={completedCount > 0 ? 'Continue' : 'Start'}
+            isPrimary
+          />
+          <PillarCard
+            label="Drills"
+            description="Practice reps, prompts, quick wins."
+            progress="Open library"
+            href="/courses/aibi-p/quick-wins"
+            ctaLabel="Open"
+          />
+          <PillarCard
+            label="Your Work"
+            description="Skills, artifacts, and prompts you've authored."
+            progress="Open toolkit"
+            href="/courses/aibi-p/toolkit"
+            ctaLabel="Open"
+          />
+          <PillarCard
+            label="Mastery"
+            description="Post-assessment + Practitioner credential."
+            progress={
+              completedCount === modules.length
+                ? 'Earn your credential'
+                : 'Available after final lesson'
+            }
+            href="/courses/aibi-p/post-assessment"
+            ctaLabel="View"
+          />
+        </div>
       </section>
 
       {/* Outcomes + Required outputs */}
