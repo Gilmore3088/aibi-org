@@ -25,7 +25,13 @@ function DevSkipButton() {
 
 // ── Password form ─────────────────────────────────────────────────────────────
 
-function PasswordForm({ redirectTo }: { redirectTo: string }) {
+function PasswordForm({
+  redirectTo,
+  defaultEmail,
+}: {
+  redirectTo: string;
+  defaultEmail?: string;
+}) {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
@@ -67,6 +73,7 @@ function PasswordForm({ redirectTo }: { redirectTo: string }) {
           type="email"
           autoComplete="email"
           required
+          defaultValue={defaultEmail}
           className="w-full px-3 py-2.5 bg-[color:var(--color-linen)] border border-[color:var(--color-ink)]/20 rounded-[2px] font-sans text-sm text-[color:var(--color-ink)] placeholder:text-[color:var(--color-slate)]/60 focus:outline-none focus:border-[color:var(--color-terra)] focus:ring-1 focus:ring-[color:var(--color-terra)] transition-colors"
           placeholder="you@yourbank.com"
         />
@@ -103,7 +110,13 @@ function PasswordForm({ redirectTo }: { redirectTo: string }) {
 
 // ── Magic link form ───────────────────────────────────────────────────────────
 
-function MagicLinkForm({ redirectTo }: { redirectTo: string }) {
+function MagicLinkForm({
+  redirectTo,
+  defaultEmail,
+}: {
+  redirectTo: string;
+  defaultEmail?: string;
+}) {
   const [state, setState] = useState<'idle' | 'sent' | 'error'>('idle');
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
@@ -157,6 +170,7 @@ function MagicLinkForm({ redirectTo }: { redirectTo: string }) {
           type="email"
           autoComplete="email"
           required
+          defaultValue={defaultEmail}
           className="w-full px-3 py-2.5 bg-[color:var(--color-linen)] border border-[color:var(--color-ink)]/20 rounded-[2px] font-sans text-sm text-[color:var(--color-ink)] placeholder:text-[color:var(--color-slate)]/60 focus:outline-none focus:border-[color:var(--color-terra)] focus:ring-1 focus:ring-[color:var(--color-terra)] transition-colors"
           placeholder="you@yourbank.com"
         />
@@ -178,8 +192,17 @@ export default function LoginPage() {
   const searchParams = useSearchParams();
   const redirectTo = searchParams.get('next') ?? '/dashboard';
   const urlError = searchParams.get('error');
+  // Optional ?email=… hint (e.g., from the In-Depth take-page redirect for
+  // a buyer who has not yet created an account). Prefills the email field
+  // so the buyer doesn't retype the address Stripe already collected.
+  const defaultEmail = searchParams.get('email') ?? undefined;
+  // When arriving from an in-depth take redirect, default to magic-link —
+  // most buyers don't have a password yet.
+  const startInMagic = redirectTo.startsWith('/assessment/in-depth/take');
 
-  const [mode, setMode] = useState<'password' | 'magic'>('password');
+  const [mode, setMode] = useState<'password' | 'magic'>(
+    startInMagic ? 'magic' : 'password',
+  );
 
   return (
     <main className="flex-1 flex items-start justify-center px-6 py-14 md:py-20">
@@ -232,10 +255,18 @@ export default function LoginPage() {
             </button>
           </div>
 
+          {startInMagic && (
+            <p className="text-sm text-[color:var(--color-ink)]/80 leading-relaxed">
+              Sign in to start your In-Depth Assessment. New here? Use Magic
+              Link — we&rsquo;ll email you a one-click sign-in link, no
+              password required.
+            </p>
+          )}
+
           {mode === 'password' ? (
-            <PasswordForm redirectTo={redirectTo} />
+            <PasswordForm redirectTo={redirectTo} defaultEmail={defaultEmail} />
           ) : (
-            <MagicLinkForm redirectTo={redirectTo} />
+            <MagicLinkForm redirectTo={redirectTo} defaultEmail={defaultEmail} />
           )}
 
           <DevSkipButton />

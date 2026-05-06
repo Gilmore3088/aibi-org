@@ -93,51 +93,68 @@ export default async function TakeAssessmentPage({ searchParams }: PageProps) {
     redirect(`/results/in-depth/${taker.id}`);
   }
 
-  // First-authed-visit binding: if the taker is signed in and the row is
-  // unbound, attach the auth user. Mirrors the institution leader binding
-  // pattern. Also grants the starter toolkit entitlement so individual
-  // buyers who completed checkout BEFORE creating an account get access on
-  // first sign-in.
+  // Auth gate (Phase 2): Individual buyers (institution_id = null) must
+  // be signed in to take their assessment so the result is tied to their
+  // account. Institution invitees stay token-only — the leader paid and
+  // not every staffer has an account yet; their results are visible to
+  // them via the magic-link in their email.
+  let authedUser: { id: string; email: string | null } | null = null;
   try {
     const supabaseAuth = createServerClientWithCookies(cookies());
     const {
       data: { user },
     } = await supabaseAuth.auth.getUser();
+    authedUser = user
+      ? { id: user.id, email: user.email ?? null }
+      : null;
+  } catch {
+    // Auth lookup failure: treat as unauthenticated.
+  }
 
-    if (user && !taker.user_id && user.email === taker.invite_email) {
+  if (taker.institution_id === null && !authedUser) {
+    const next = encodeURIComponent(
+      `/assessment/in-depth/take?token=${encodeURIComponent(token)}`,
+    );
+    const emailHint = encodeURIComponent(taker.invite_email);
+    redirect(`/auth/login?next=${next}&email=${emailHint}`);
+  }
+
+  // First-authed-visit binding: if the row is unbound and the auth user's
+  // email matches the invite_email, attach the auth user. Also grants the
+  // starter toolkit entitlement so individual buyers who completed
+  // checkout BEFORE creating an account get access on first sign-in.
+  if (
+    authedUser &&
+    !taker.user_id &&
+    authedUser.email === taker.invite_email
+  ) {
+    await supabase
+      .from('indepth_assessment_takers')
+      .update({ user_id: authedUser.id })
+      .eq('id', taker.id)
+      .then(
+        () => undefined,
+        () => undefined,
+      );
+
+    if (taker.institution_id === null) {
       await supabase
-        .from('indepth_assessment_takers')
-        .update({ user_id: user.id })
-        .eq('id', taker.id)
+        .from('entitlements')
+        .upsert(
+          {
+            user_id: authedUser.id,
+            product: 'indepth-starter-toolkit',
+            source: 'subscription',
+            source_ref: taker.id,
+            active: true,
+          },
+          { onConflict: 'user_id,product,source,source_ref' },
+        )
         .then(
           () => undefined,
           () => undefined,
         );
-
-      // Best-effort entitlement upsert. Only individual buyers
-      // (institution_id = null) get the toolkit via this path; institution
-      // leaders are granted by the webhook against the leader_email.
-      if (taker.institution_id === null) {
-        await supabase
-          .from('entitlements')
-          .upsert(
-            {
-              user_id: user.id,
-              product: 'indepth-starter-toolkit',
-              source: 'subscription',
-              source_ref: taker.id,
-              active: true,
-            },
-            { onConflict: 'user_id,product,source,source_ref' },
-          )
-          .then(
-            () => undefined,
-            () => undefined,
-          );
-      }
     }
-  } catch {
-    // Auth or binding failure must not block the take.
   }
 
   if (!taker.invite_consumed_at) {
