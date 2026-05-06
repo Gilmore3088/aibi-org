@@ -117,7 +117,17 @@ export async function POST(request: Request) {
         import('@content/assessments/v2/starter-artifacts'),
       ]);
 
-      const tierPreface = getTierPreface(tier.id);
+      // Identify the lowest-scoring (out of 24) dimension so the email
+      // preface body can speak to the same focus area as the on-page card.
+      const focusDim = (Object.entries(perDim) as Array<[string, number]>)
+        .reduce<{ id: string; score: number } | null>((best, [id, score]) => {
+          if (best === null || score < best.score) return { id, score };
+          return best;
+        }, null);
+      const tierPreface = getTierPreface(
+        tier.id,
+        focusDim?.id as Parameters<typeof getTierPreface>[1],
+      );
 
       await Promise.allSettled([
         sendIndepthIndividualResults({

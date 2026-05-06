@@ -4,15 +4,17 @@ import { useState } from 'react';
 import { MarkdownRenderer } from '@/app/courses/aibi-p/_components/MarkdownRenderer';
 import {
   type StarterArtifact,
-  TIER_PREFACES,
+  getTierPreface,
 } from '@content/assessments/v2/starter-artifacts';
 import type { Tier } from '@content/assessments/v2/scoring';
+import type { Dimension } from '@content/assessments/v2/types';
 
 interface StarterArtifactCardProps {
   readonly artifact: StarterArtifact;
   readonly tierLabel: string;
   readonly tierId?: Tier['id']; // optional for backward compat — falls back to no preface if absent
   readonly topGapLabel: string;
+  readonly topGapId?: Dimension; // when provided, preface body is dimension-specific
 }
 
 // Banker-facing post-assessment artifact. Renders the markdown body inline
@@ -24,8 +26,9 @@ export function StarterArtifactCard({
   tierLabel,
   tierId,
   topGapLabel,
+  topGapId,
 }: StarterArtifactCardProps) {
-  const preface = tierId ? TIER_PREFACES[tierId] : null;
+  const preface = tierId ? getTierPreface(tierId, topGapId) : null;
   const [copied, setCopied] = useState(false);
   const [downloaded, setDownloaded] = useState(false);
   const [copyFailed, setCopyFailed] = useState(false);

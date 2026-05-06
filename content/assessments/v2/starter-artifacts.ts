@@ -532,6 +532,108 @@ export const TIER_PREFACES: Record<Tier['id'], TierPreface> = {
   },
 };
 
-export function getTierPreface(tierId: Tier['id']): TierPreface {
-  return TIER_PREFACES[tierId];
+// Per-dimension override of the preface BODY. The headline stays
+// tier-keyed (4 strings) because it speaks to posture; the body becomes
+// dimension+tier specific (32 strings) because the actual work changes
+// by dimension. When a caller passes both tier and dimension, we render
+// the tier-keyed headline plus the dimension-specific body.
+//
+// 8 dimensions × 4 tier bands = 32 body strings.
+const DIMENSION_TIER_BODIES: Record<Dimension, Record<Tier['id'], string>> = {
+  'current-ai-usage': {
+    'starting-point':
+      'AI use exists in your bank already; you just have not seen it. The 30-day map is a sanitized observation exercise — collect first, decide later. Step 1 is not optional.',
+    'early-stage':
+      'You know AI is happening. The map turns informal awareness into a written artifact you can show examiners or the board. Step 1 may surface tools you forgot about.',
+    'building-momentum':
+      'Your registry probably exists in someone’s head. Step 1 is the formalization. Bring step 3’s leadership presentation as a quarterly cadence, not a one-off.',
+    'ready-to-scale':
+      'You already have an AI tool inventory. Use this artifact to standardize the format so it survives staff turnover and travels to peer institutions on request.',
+  },
+  'experimentation-culture': {
+    'starting-point':
+      'Experimentation has to feel safe before it can be useful. Step 1 picks one workflow with a clear before/after; step 3 protects whoever ran it from blame if it fails. Without step 3, step 1 never happens.',
+    'early-stage':
+      'You have one or two experiments in flight. Step 1 will tell you which deserve real measurement. Resist the urge to scale before you can describe the result in numbers.',
+    'building-momentum':
+      'Your team experiments without permission already. Step 1 makes the experiment fund formal so it scales. Step 3 ensures findings reach beyond the team that ran them.',
+    'ready-to-scale':
+      'Experiments are routine for you. The risk now is parallel teams running unconnected pilots. Step 3 becomes a quarterly synthesis — what is worth keeping, what is not.',
+  },
+  'ai-literacy-level': {
+    'starting-point':
+      'Most staff cannot distinguish "AI got it wrong" from "I prompted it wrong." Step 1 is hands-on, not a slide deck. Skip the lecture format for the live tool walkthrough.',
+    'early-stage':
+      'Some staff are confident; most are guessing. Step 1 separates the two so training targets the right group. Build the curriculum around the gaps step 1 surfaces.',
+    'building-momentum':
+      'You have pockets of strong literacy. Step 1 is now an audit, not a baseline survey — find who could mentor others. Step 3 turns those people into the training engine.',
+    'ready-to-scale':
+      'Literacy is broadly good. Step 1 stress-tests the edges: brand-new hires, board members, customer-facing roles in regulated channels. The weakest link is now the metric.',
+  },
+  'quick-win-potential': {
+    'starting-point':
+      'Pick one workflow. Just one. Step 1 tells you which. The temptation will be to pick the most exciting; step 3 says pick the most repetitive.',
+    'early-stage':
+      'You have candidate workflows but have not committed. Step 1 picks based on volume × pain × low-risk-on-error. Anything else is premature.',
+    'building-momentum':
+      'Quick wins are landing. Step 3 protects against scope creep — the win has to be ship-able in 30 days or it is a project, not a quick win.',
+    'ready-to-scale':
+      'Quick-win selection is mature. The risk is decision fatigue at scale. Step 3 becomes a per-team quota so leadership does not have to triage every candidate.',
+  },
+  'leadership-buy-in': {
+    'starting-point':
+      'Leadership cannot endorse what they have not seen working. Step 1 is small enough to demonstrate without budget; step 3 turns the demo into a capability ask.',
+    'early-stage':
+      'Leadership is curious. Step 1 builds the narrative they will repeat to the board. Without step 3, curiosity becomes a one-time experiment.',
+    'building-momentum':
+      'You have leadership attention. Step 3 is the cadence — quarterly, written, board-shareable. Without that rhythm, attention reverts to the next priority.',
+    'ready-to-scale':
+      'Leadership is fully behind it. Step 3 becomes succession planning — who carries this if the sponsor leaves? Documented support survives staff turnover.',
+  },
+  'security-posture': {
+    'starting-point':
+      'Security posture is the highest-cost dimension to fix late. Start at step 1 — observation, not policy. Resist the urge to write rules before you know what people are actually doing.',
+    'early-stage':
+      'You have a draft posture. Step 1 finds the gaps between draft and practice. Step 3 turns the gaps into a sequenced remediation plan, not a wall of red flags.',
+    'building-momentum':
+      'Posture is real but uneven across departments. Step 1 audits the laggards; step 3 creates the cross-department review cadence.',
+    'ready-to-scale':
+      'Your posture is the peer benchmark. Step 3 turns it into shareable artifacts — vendor questionnaires, AUC templates — that travel to peer institutions and earn examiner respect.',
+  },
+  'training-infrastructure': {
+    'starting-point':
+      'Training has to outlive the trainer. Step 1 builds a 30-minute onboarding video, not a course. Step 3 makes it required reading, not optional.',
+    'early-stage':
+      'You have ad-hoc training. Step 1 turns it into a documented artifact someone other than you can run. Step 3 schedules it; otherwise it never happens.',
+    'building-momentum':
+      'Training cadence exists. Step 1 is the audit — who has not completed it? Step 3 closes the loop with a refresh cycle.',
+    'ready-to-scale':
+      'Training is institutional. Step 3 becomes the certification track — internal credentials that staff can put on their LinkedIn, which anchors retention.',
+  },
+  'builder-potential': {
+    'starting-point':
+      'Most institutions have one or two latent builders — staff who already automate things in Excel. Step 1 finds them. Step 3 protects their time so they can build something.',
+    'early-stage':
+      'You have identified your builders. Step 1 gives them one real problem; step 3 connects them to leadership so the builds become institutional, not personal.',
+    'building-momentum':
+      'Builders are productive. Step 1 audits what they have shipped; step 3 turns the best work into reusable templates for non-builders.',
+    'ready-to-scale':
+      'Builders are a known asset. Step 3 turns their work into a hiring/retention asset — show prospects what builders ship here.',
+  },
+};
+
+/**
+ * Returns the tier preface — when a dimension is provided, the body is
+ * dimension-specific; otherwise falls back to the generic tier-keyed body.
+ * The headline is always tier-keyed (4 strings, by design).
+ */
+export function getTierPreface(
+  tierId: Tier['id'],
+  dimension?: Dimension,
+): TierPreface {
+  const headline = TIER_PREFACES[tierId].headline;
+  const body = dimension
+    ? DIMENSION_TIER_BODIES[dimension][tierId]
+    : TIER_PREFACES[tierId].body;
+  return { headline, body };
 }

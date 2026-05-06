@@ -82,7 +82,7 @@ export default async function InDepthResultsPage({ params }: ResultsPageProps) {
 
   const focusGap = ranked[0];
   const starterArtifact = focusGap ? getStarterArtifact(focusGap.id) : null;
-  const tierPreface = getTierPreface(tier.id);
+  const tierPreface = getTierPreface(tier.id, focusGap?.id);
 
   return (
     <main className="min-h-screen bg-[color:var(--color-linen)] py-12 px-4">
