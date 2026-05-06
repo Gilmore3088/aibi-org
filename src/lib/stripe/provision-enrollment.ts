@@ -47,6 +47,44 @@ async function resolveUserId(
 }
 
 /**
+ * Best-effort: grants the In-Depth Starter Toolkit entitlement to a user
+ * if (a) the user already exists and (b) they don't already hold the row.
+ * If no Supabase user matches yet, the grant is deferred — the take-page
+ * binding will write the row on first authed visit instead.
+ *
+ * Failure is logged but never blocks webhook success — Stripe must always
+ * see a 2xx for a paid session.
+ */
+async function grantStarterToolkitEntitlement(
+  email: string,
+  sessionId: string,
+  supabase: ReturnType<typeof createServiceRoleClient>,
+): Promise<void> {
+  try {
+    const userId = await resolveUserId(email, supabase);
+    if (!userId) return; // Will be backfilled on first authed visit.
+
+    const { error } = await supabase
+      .from('entitlements')
+      .upsert(
+        {
+          user_id: userId,
+          product: 'indepth-starter-toolkit',
+          source: 'subscription',
+          source_ref: sessionId,
+          active: true,
+        },
+        { onConflict: 'user_id,product,source,source_ref' },
+      );
+    if (error) {
+      console.warn('[webhook] starter-toolkit entitlement upsert failed:', error);
+    }
+  } catch (err) {
+    console.warn('[webhook] starter-toolkit entitlement error:', err);
+  }
+}
+
+/**
  * Provisions an enrollment for a completed Stripe Checkout Session.
  * Uses the service role client to bypass RLS for both tables.
  *
@@ -248,6 +286,8 @@ async function provisionIndepthIndividual(
     tagName: 'indepth-assessment-individual',
   });
 
+  await grantStarterToolkitEntitlement(leaderEmail, sessionId, supabase);
+
   return { action: 'created', type: 'indepth-individual' };
 }
 
@@ -313,6 +353,8 @@ async function provisionIndepthInstitution(
 
   // Note: invite-driven taker rows are NOT generated here. The leader
   // creates them via the dashboard / Task 13 invite API.
+
+  await grantStarterToolkitEntitlement(leaderEmail, sessionId, supabase);
 
   return { action: 'created', type: 'indepth-institution' };
 }

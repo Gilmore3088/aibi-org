@@ -24,6 +24,13 @@ import { useUsage } from './_components/UsageMeter';
 
 type TabId = 'guide' | 'library' | 'build' | 'playground' | 'toolbox';
 
+type ToolboxTier = 'full' | 'starter';
+
+// Starter tier (granted by In-Depth Assessment purchase) sees only the
+// read-only surfaces. Build / Playground / My Toolbox require save / API
+// proxy access reserved for full-tier (AiBI-P / S / L / toolbox-only).
+const STARTER_TABS: readonly TabId[] = ['guide', 'library'];
+
 const TABS: readonly { id: TabId; label: string }[] = [
   { id: 'guide', label: 'Start Here' },
   { id: 'library', label: 'Library' },
@@ -113,12 +120,23 @@ function slugFromCommand(cmd: string): string {
   return cmd.replace(/^\//, '').replace(/[^a-z0-9-]+/gi, '-').toLowerCase() || 'skill';
 }
 
-export function ToolboxApp() {
+interface ToolboxAppProps {
+  readonly tier?: ToolboxTier;
+}
+
+export function ToolboxApp({ tier = 'full' }: ToolboxAppProps = {}) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const visibleTabs = useMemo(
+    () =>
+      tier === 'starter'
+        ? TABS.filter((t) => (STARTER_TABS as readonly TabId[]).includes(t.id))
+        : TABS,
+    [tier],
+  );
   const currentTab = (searchParams.get('tab') as TabId | null) ?? 'guide';
-  const safeTab = TABS.some((tab) => tab.id === currentTab) ? currentTab : 'guide';
+  const safeTab = visibleTabs.some((tab) => tab.id === currentTab) ? currentTab : 'guide';
 
   const [skills, setSkills] = useState<ToolboxSkill[]>([]);
   const [librarySlugMap, setLibrarySlugMap] = useState<Record<string, string>>({});
@@ -330,7 +348,7 @@ export function ToolboxApp() {
   return (
     <div className="mx-auto max-w-7xl px-6 py-6 lg:px-10">
       <nav className="sticky top-[81px] z-30 -mx-6 mb-8 flex items-center gap-1 overflow-x-auto border-b border-[color:var(--color-ink)]/10 bg-[color:var(--color-linen)]/95 px-6 backdrop-blur lg:-mx-10 lg:px-10" aria-label="Toolbox sections">
-        {TABS.map((tab) => (
+        {visibleTabs.map((tab) => (
           <Link
             key={tab.id}
             href={`/dashboard/toolbox?tab=${tab.id}`}
