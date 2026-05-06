@@ -59,7 +59,7 @@ interface InviteResult {
 }
 
 interface DashboardClientProps {
-  institutionId: string;
+  cohortId: string;
   institutionName: string;
   seatsPurchased: number;
   initialRoster: readonly RosterEntry[];
@@ -85,7 +85,7 @@ function parseEmails(raw: string): string[] {
 }
 
 export default function DashboardClient({
-  institutionId,
+  cohortId,
   institutionName,
   seatsPurchased,
   initialRoster,
@@ -119,7 +119,7 @@ export default function DashboardClient({
       const res = await fetch('/api/indepth/resend', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ institutionId, email }),
+        body: JSON.stringify({ cohortId, email }),
       });
       if (!res.ok) {
         const data = (await res.json().catch(() => ({}))) as { error?: string };
@@ -140,7 +140,7 @@ export default function DashboardClient({
       setAggregateError(null);
       try {
         const res = await fetch(
-          `/api/indepth/aggregate?institutionId=${encodeURIComponent(institutionId)}`,
+          `/api/indepth/aggregate?cohortId=${encodeURIComponent(cohortId)}`,
           { cache: 'no-store' },
         );
         if (!res.ok) {
@@ -162,7 +162,7 @@ export default function DashboardClient({
     return () => {
       cancelled = true;
     };
-  }, [institutionId]);
+  }, [cohortId]);
 
   async function handleSend(e: React.FormEvent) {
     e.preventDefault();
@@ -192,7 +192,7 @@ export default function DashboardClient({
       const res = await fetch('/api/indepth/invite', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ institutionId, emails }),
+        body: JSON.stringify({ cohortId, emails }),
       });
       if (!res.ok) {
         const data = (await res.json().catch(() => ({}))) as { error?: string };

@@ -79,26 +79,11 @@ Empty states surface CTAs back to `/assessment/in-depth` and `/assessment/start`
 
 ## 3. New DB schema
 
-### 3.1 Migration `00028_indepth_assessment_tables.sql`
+### 3.1 Migration `00028_indepth_assessment_tables.sql` (superseded by 00030)
 
-```
-indepth_assessment_institutions (
-  id, institution_name, leader_email, leader_user_id (nullable),
-  seats_purchased, amount_paid_cents, stripe_session_id (unique),
-  created_at
-)
-
-indepth_assessment_takers (
-  id, institution_id (nullable — null for individual buyers),
-  invite_email, invite_token (unique), invite_sent_at,
-  invite_consumed_at, completed_at,
-  score_total, score_per_dimension, answers,
-  stripe_session_id (unique nullable)
-)
-```
-
-RLS enabled on both. Service-role client used everywhere — RLS is
-defense-in-depth, not the primary access control.
+The original two-table design (institutions + takers) is preserved in
+the migration history but **no longer exists in the live schema**;
+00030 collapsed it into a single `indepth_takes` table. See §3.3.
 
 ### 3.2 Migration `00029_indepth_user_id_and_starter_toolkit.sql`
 
@@ -114,14 +99,47 @@ ALTER TABLE entitlements ADD CONSTRAINT entitlements_product_check
   ));
 ```
 
-**Production status (verified 2026-05-06):** `00028` is already applied
-to the linked Supabase project; only `00029` still needs to run before
-deploy. Staging/preview branches that don't yet have `00028` need both.
-The code on the branch will throw if the columns / CHECK aren't there.
+**Production status (verified 2026-05-06):** 00028 + 00029 + 00030 all
+applied to production. Staging/preview branches need all three.
 
-Squashing 00028 + 00029 was considered (Kieran review) but rejected
-because 00028 has already been applied to production — squashing would
-require dropping/recreating live tables.
+### 3.3 Migration `00030_collapse_indepth_schema.sql`
+
+Post-launch review (simplicity reviewer) flagged the two-table split
+as over-normalized. 00030 collapses both tables into one
+`indepth_takes`:
+
+```
+indepth_takes (
+  id, cohort_id (self-ref, NULL for individual buyers),
+  is_leader (bool — TRUE on cohort owner row),
+  invite_email, invite_token (unique), invite_sent_at,
+  invite_consumed_at, completed_at,
+  score_total, score_per_dimension, answers,
+  user_id (auth.uid; NULL until first authed visit),
+
+  -- Institution / leader fields (NULL for individual buyers;
+  -- denormalized to invitee rows for fast cohort queries)
+  institution_name, leader_email, leader_user_id,
+  seats_purchased (NULL on invitee rows),
+  amount_paid_cents (NULL on invitee rows),
+
+  stripe_session_id (unique nullable),
+  created_at
+)
+```
+
+Backfill at migration time: each existing `indepth_assessment_institutions`
+row became an `is_leader=TRUE` row; existing invitee takers had
+their `cohort_id` rewritten and institution-level fields denormalized.
+Production at the time of collapse held 0 institutions and 2
+individual takers; backfill was a no-op for the institution path.
+
+RLS on `indepth_takes`: a signed-in user sees rows where
+`user_id = auth.uid()` (their own take) or `leader_user_id = auth.uid()`
+(any row in a cohort they lead).
+
+Squashing 00028 + 00029 was considered but rejected because 00028 was
+already applied to production at the time of review.
 
 ---
 

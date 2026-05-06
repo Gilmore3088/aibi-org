@@ -3,8 +3,7 @@
 // The leader calls this from the dashboard's per-row "Resend" button when a
 // staffer cannot find their original invite email. It looks up the existing
 // invite_token (no new row) and triggers the same Resend email used at first
-// invite. Auth is identical to /api/indepth/invite: caller must be the bound
-// leader of the institution.
+// invite. Auth: caller must be the bound leader of the cohort.
 
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
@@ -30,39 +29,45 @@ export async function POST(request: Request): Promise<Response> {
   }
 
   const body = (await request.json().catch(() => null)) as
-    | { institutionId?: unknown; email?: unknown }
+    | { cohortId?: unknown; institutionId?: unknown; email?: unknown }
     | null;
-  if (!body || typeof body.institutionId !== 'string') {
-    return NextResponse.json({ error: 'institutionId required' }, { status: 400 });
+  const cohortId =
+    typeof body?.cohortId === 'string'
+      ? body.cohortId
+      : typeof body?.institutionId === 'string'
+        ? body.institutionId
+        : null;
+  if (!cohortId) {
+    return NextResponse.json({ error: 'cohortId required' }, { status: 400 });
   }
-  if (typeof body.email !== 'string' || !EMAIL_RE.test(body.email.trim())) {
+  if (typeof body?.email !== 'string' || !EMAIL_RE.test(body.email.trim())) {
     return NextResponse.json({ error: 'valid email required' }, { status: 400 });
   }
 
-  const institutionId = body.institutionId;
   const email = body.email.trim();
   const supabase = createServiceRoleClient();
 
-  const { data: inst } = await supabase
-    .from('indepth_assessment_institutions')
+  const { data: leader } = await supabase
+    .from('indepth_takes')
     .select('id, institution_name, leader_user_id')
-    .eq('id', institutionId)
+    .eq('id', cohortId)
+    .eq('is_leader', true)
     .maybeSingle();
 
-  if (!inst) {
-    return NextResponse.json({ error: 'institution not found' }, { status: 404 });
+  if (!leader) {
+    return NextResponse.json({ error: 'cohort not found' }, { status: 404 });
   }
-  if (inst.leader_user_id !== user.id) {
+  if (leader.leader_user_id !== user.id) {
     return NextResponse.json(
-      { error: 'forbidden — not the institution leader' },
+      { error: 'forbidden — not the cohort leader' },
       { status: 403 },
     );
   }
 
   const { data: taker } = await supabase
-    .from('indepth_assessment_takers')
+    .from('indepth_takes')
     .select('invite_token, completed_at')
-    .eq('institution_id', inst.id)
+    .eq('cohort_id', leader.id)
     .eq('invite_email', email)
     .maybeSingle();
 
@@ -84,7 +89,7 @@ export async function POST(request: Request): Promise<Response> {
     await sendIndepthInstitutionInvite({
       inviteeEmail: email,
       leaderName,
-      institutionName: inst.institution_name,
+      institutionName: leader.institution_name ?? '',
       takeUrl: `${origin}/assessment/in-depth/take?token=${taker.invite_token}`,
     });
   } catch {

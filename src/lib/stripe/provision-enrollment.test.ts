@@ -8,14 +8,17 @@ vi.mock('@/lib/supabase/client', () => {
   // test can stage existing-row vs insert behavior independently.
   const tableState: Record<
     string,
-    { selectResult: { data: unknown[] | null; error: unknown }; insertResult: { error: unknown } }
+    {
+      selectResult: { data: unknown[] | null; error: unknown };
+      insertResult: { error: unknown; data?: unknown };
+    }
   > = {};
 
   function getState(name: string) {
     if (!tableState[name]) {
       tableState[name] = {
         selectResult: { data: [], error: null },
-        insertResult: { error: null },
+        insertResult: { error: null, data: { id: `row-${name}` } },
       };
     }
     return tableState[name];
@@ -24,10 +27,31 @@ vi.mock('@/lib/supabase/client', () => {
   const from = vi.fn((tableName: string) => {
     const state = getState(tableName);
     const limit = vi.fn(() => Promise.resolve(state.selectResult));
-    const eq = vi.fn(() => ({ limit }));
-    const select = vi.fn(() => ({ eq, limit }));
-    const insert = vi.fn(() => Promise.resolve(state.insertResult));
-    return { select, insert, eq, limit };
+    const eq = vi.fn(() => ({ limit, eq, maybeSingle: () => Promise.resolve({ data: null, error: null }) }));
+    const select = vi.fn(() => ({
+      eq,
+      limit,
+      single: () =>
+        Promise.resolve({
+          data: state.insertResult.data ?? { id: `row-${tableName}` },
+          error: state.insertResult.error,
+        }),
+    }));
+    const insert = vi.fn(() => ({
+      ...Promise.resolve(state.insertResult),
+      select: () => ({
+        single: () =>
+          Promise.resolve({
+            data: state.insertResult.data ?? { id: `row-${tableName}` },
+            error: state.insertResult.error,
+          }),
+      }),
+      then: (resolve: (v: { error: unknown }) => unknown) =>
+        Promise.resolve(state.insertResult).then(resolve),
+    }));
+    const updateEq = vi.fn(() => Promise.resolve({ error: null }));
+    const update = vi.fn(() => ({ eq: updateEq }));
+    return { select, insert, update, eq, limit };
   });
 
   const listUsers = vi.fn(() => Promise.resolve({ data: { users: [] } }));
@@ -131,7 +155,7 @@ describe('provisionEnrollment — indepth-assessment / individual', () => {
     const result = await provisionEnrollment(session);
 
     expect(result).toEqual({ action: 'created', type: 'indepth-individual' });
-    expect(supaMock.from).toHaveBeenCalledWith('indepth_assessment_takers');
+    expect(supaMock.from).toHaveBeenCalledWith('indepth_takes');
     expect(resend.sendIndepthIndividualInvite).toHaveBeenCalledTimes(1);
     expect(ckSeq.tagSubscriberByEnv).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -165,20 +189,20 @@ describe('provisionEnrollment — indepth-assessment / individual', () => {
   });
 
   it('returns skipped (idempotent) when stripe_session_id row already exists', async () => {
-    setSelect('indepth_assessment_takers', [{ id: 'existing-id' }]);
+    setSelect('indepth_takes', [{ id: 'existing-id' }]);
     const result = await provisionEnrollment(buildSession(baseMeta));
     expect(result).toEqual({ action: 'skipped', type: 'indepth-individual' });
     expect(resend.sendIndepthIndividualInvite).not.toHaveBeenCalled();
   });
 
   it('treats a 23505 unique-violation on insert as skipped (race idempotency)', async () => {
-    setInsertError('indepth_assessment_takers', { code: '23505', message: 'unique violation' });
+    setInsertError('indepth_takes', { code: '23505', message: 'unique violation' });
     const result = await provisionEnrollment(buildSession(baseMeta));
     expect(result).toEqual({ action: 'skipped', type: 'indepth-individual' });
   });
 
   it('returns db_error on non-unique insert failure', async () => {
-    setInsertError('indepth_assessment_takers', { code: '42P01', message: 'oops' });
+    setInsertError('indepth_takes', { code: '42P01', message: 'oops' });
     const result = await provisionEnrollment(buildSession(baseMeta));
     expect(result).toMatchObject({ code: 'db_error' });
   });
@@ -195,20 +219,18 @@ describe('provisionEnrollment — indepth-assessment / institution', () => {
     quantity: '15',
   };
 
-  it('creates an institutions row and tags the leader', async () => {
+  it('creates a leader row and tags the leader', async () => {
     const session = buildSession(baseMeta);
     const result = await provisionEnrollment(session);
 
     expect(result).toEqual({ action: 'created', type: 'indepth-institution' });
-    expect(supaMock.from).toHaveBeenCalledWith('indepth_assessment_institutions');
+    expect(supaMock.from).toHaveBeenCalledWith('indepth_takes');
     expect(ckSeq.tagSubscriberByEnv).toHaveBeenCalledWith(
       expect.objectContaining({
         tagIdEnv: 'CONVERTKIT_TAG_ID_INDEPTH_LEADER',
         tagName: 'indepth-assessment-leader',
       }),
     );
-    // No taker rows for institution buyers — leader generates those at the dashboard.
-    expect(supaMock.from).not.toHaveBeenCalledWith('indepth_assessment_takers');
     // No individual-invite email for institution buyers.
     expect(resend.sendIndepthIndividualInvite).not.toHaveBeenCalled();
   });
@@ -231,14 +253,14 @@ describe('provisionEnrollment — indepth-assessment / institution', () => {
   });
 
   it('returns skipped when stripe_session_id row already exists', async () => {
-    setSelect('indepth_assessment_institutions', [{ id: 'existing' }]);
+    setSelect('indepth_takes', [{ id: 'existing' }]);
     const result = await provisionEnrollment(buildSession(baseMeta));
     expect(result).toEqual({ action: 'skipped', type: 'indepth-institution' });
     expect(ckSeq.tagSubscriberByEnv).not.toHaveBeenCalled();
   });
 
   it('treats 23505 unique-violation on insert as skipped', async () => {
-    setInsertError('indepth_assessment_institutions', {
+    setInsertError('indepth_takes', {
       code: '23505',
       message: 'unique violation',
     });
@@ -247,7 +269,7 @@ describe('provisionEnrollment — indepth-assessment / institution', () => {
   });
 
   it('returns db_error on non-unique insert failure', async () => {
-    setInsertError('indepth_assessment_institutions', { code: '42P01', message: 'oops' });
+    setInsertError('indepth_takes', { code: '42P01', message: 'oops' });
     const result = await provisionEnrollment(buildSession(baseMeta));
     expect(result).toMatchObject({ code: 'db_error' });
   });

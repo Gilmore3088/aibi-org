@@ -65,7 +65,7 @@ export default async function TakeAssessmentPage({ searchParams }: PageProps) {
   if (!token && sessionId) {
     const supabase = createServiceRoleClient();
     const { data: row } = await supabase
-      .from('indepth_assessment_takers')
+      .from('indepth_takes')
       .select('invite_token')
       .eq('stripe_session_id', sessionId)
       .maybeSingle();
@@ -80,8 +80,8 @@ export default async function TakeAssessmentPage({ searchParams }: PageProps) {
 
   const supabase = createServiceRoleClient();
   const { data: taker, error } = await supabase
-    .from('indepth_assessment_takers')
-    .select('id, invite_email, invite_consumed_at, completed_at, user_id, institution_id')
+    .from('indepth_takes')
+    .select('id, invite_email, invite_consumed_at, completed_at, user_id, cohort_id, is_leader')
     .eq('invite_token', token)
     .maybeSingle();
 
@@ -93,11 +93,14 @@ export default async function TakeAssessmentPage({ searchParams }: PageProps) {
     redirect(`/results/in-depth/${taker.id}?t=${encodeURIComponent(token)}`);
   }
 
-  // Auth gate (Phase 2): Individual buyers (institution_id = null) must
-  // be signed in to take their assessment so the result is tied to their
-  // account. Institution invitees stay token-only — the leader paid and
-  // not every staffer has an account yet; their results are visible to
-  // them via the magic-link in their email.
+  // Auth gate: individual buyers (cohort_id = null) and institution
+  // leaders (is_leader = true) must be signed in so their result is tied
+  // to their account / their cohort dashboard. Institution invitees
+  // (is_leader = false AND cohort_id IS NOT NULL) stay token-only — the
+  // leader paid and not every staffer has an account yet; their results
+  // are visible to them via the magic-link in their email.
+  const isInvitee = taker.cohort_id !== null && taker.is_leader === false;
+
   let authedUser: { id: string; email: string | null } | null = null;
   try {
     const supabaseAuth = createServerClientWithCookies(cookies());
@@ -111,7 +114,7 @@ export default async function TakeAssessmentPage({ searchParams }: PageProps) {
     // Auth lookup failure: treat as unauthenticated.
   }
 
-  if (taker.institution_id === null && !authedUser) {
+  if (!isInvitee && !authedUser) {
     const next = encodeURIComponent(
       `/assessment/in-depth/take?token=${encodeURIComponent(token)}`,
     );
@@ -119,17 +122,15 @@ export default async function TakeAssessmentPage({ searchParams }: PageProps) {
     redirect(`/auth/login?next=${next}&email=${emailHint}`);
   }
 
-  // First-authed-visit binding: if the row is unbound and the auth user's
-  // email matches the invite_email, attach the auth user. Also grants the
-  // starter toolkit entitlement so individual buyers who completed
-  // checkout BEFORE creating an account get access on first sign-in.
+  // First-authed-visit binding: attach auth user.id, grant starter
+  // toolkit (individuals only), and bind leader_user_id (leaders only).
   if (
     authedUser &&
     !taker.user_id &&
     authedUser.email === taker.invite_email
   ) {
     await supabase
-      .from('indepth_assessment_takers')
+      .from('indepth_takes')
       .update({ user_id: authedUser.id })
       .eq('id', taker.id)
       .then(
@@ -137,7 +138,35 @@ export default async function TakeAssessmentPage({ searchParams }: PageProps) {
         () => undefined,
       );
 
-    if (taker.institution_id === null) {
+    if (taker.cohort_id === null) {
+      // Individual buyer — grant starter toolkit entitlement.
+      await supabase
+        .from('entitlements')
+        .upsert(
+          {
+            user_id: authedUser.id,
+            product: 'indepth-starter-toolkit',
+            source: 'subscription',
+            source_ref: taker.id,
+            active: true,
+          },
+          { onConflict: 'user_id,product,source,source_ref' },
+        )
+        .then(
+          () => undefined,
+          () => undefined,
+        );
+    } else if (taker.is_leader) {
+      // Cohort leader — bind leader_user_id across the entire cohort
+      // (denormalized on every member row) and grant starter toolkit.
+      await supabase
+        .from('indepth_takes')
+        .update({ leader_user_id: authedUser.id })
+        .eq('cohort_id', taker.cohort_id)
+        .then(
+          () => undefined,
+          () => undefined,
+        );
       await supabase
         .from('entitlements')
         .upsert(
@@ -160,7 +189,7 @@ export default async function TakeAssessmentPage({ searchParams }: PageProps) {
   if (!taker.invite_consumed_at) {
     // Best-effort consumption marker — failures here must not block the take.
     await supabase
-      .from('indepth_assessment_takers')
+      .from('indepth_takes')
       .update({ invite_consumed_at: new Date().toISOString() })
       .eq('id', taker.id)
       .then(

@@ -41,7 +41,7 @@ test.beforeAll(async () => {
   for (let i = 0; i < 48; i++) answers[`q${i}`] = 3;
 
   await supabase
-    .from('indepth_assessment_takers')
+    .from('indepth_takes')
     .update({
       completed_at: new Date().toISOString(),
       score_total: 144,

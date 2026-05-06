@@ -1,6 +1,6 @@
 // Magic-link invite tokens for the In-Depth Assessment.
 // Tokens are random 32-byte values, base64url-encoded.
-// Stored in indepth_assessment_takers.invite_token (UNIQUE).
+// Stored in indepth_takes.invite_token (UNIQUE).
 // Token validity is enforced by lookup in the DB, not by signing —
 // a stolen token is a stolen seat. Tokens are one-shot:
 // invite_consumed_at marks first redemption.

@@ -1,13 +1,13 @@
 // POST /api/indepth/invite — leader-only invite endpoint.
 //
-// The institution leader (the buyer of a 10+ seat indepth_assessment_institutions
-// row) calls this to send magic-link invitations to staff. On the first call,
-// if leader_user_id is null and the authenticated user's email matches
-// leader_email, the row is bound to that user.id. Subsequent calls require the
-// caller to BE that user.
+// The institution leader (the buyer who triggered an `is_leader=true`
+// row in indepth_takes) calls this to send magic-link invitations to
+// staff. On the first call, if leader_user_id is null and the
+// authenticated user's email matches leader_email, the leader row + any
+// existing invitee rows in the cohort are bound to that user.id.
 //
-// Per-email work is best-effort: a row insert that hits the
-// (institution_id, invite_email) unique constraint reports "already invited"
+// Per-email work is best-effort: an insert that hits the
+// (cohort_id, invite_email) unique constraint reports "already invited"
 // in the errors[] payload rather than failing the whole request.
 
 import { NextResponse } from 'next/server';
@@ -40,71 +40,93 @@ export async function POST(request: Request): Promise<Response> {
     return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
   }
 
-  // 2. Body validation
+  // 2. Body validation. `cohortId` is the new canonical name; `institutionId`
+  //    is accepted as an alias for older clients that haven't been
+  //    redeployed yet.
   const body = (await request.json().catch(() => null)) as
-    | { institutionId?: unknown; emails?: unknown }
+    | { cohortId?: unknown; institutionId?: unknown; emails?: unknown }
     | null;
-  if (!body || typeof body.institutionId !== 'string') {
+  const cohortIdRaw =
+    typeof body?.cohortId === 'string'
+      ? body.cohortId
+      : typeof body?.institutionId === 'string'
+        ? body.institutionId
+        : null;
+  if (!cohortIdRaw) {
     return NextResponse.json(
-      { error: 'institutionId required' },
+      { error: 'cohortId required' },
       { status: 400 },
     );
   }
-  if (!Array.isArray(body.emails) || body.emails.length === 0) {
+  if (!Array.isArray(body?.emails) || body.emails.length === 0) {
     return NextResponse.json(
       { error: 'emails required (non-empty array)' },
       { status: 400 },
     );
   }
 
-  const institutionId = body.institutionId;
+  const cohortId = cohortIdRaw;
   const emails = body.emails as unknown[];
   const supabase = createServiceRoleClient();
 
-  // 3. Load institution row
-  const { data: inst, error: instErr } = await supabase
-    .from('indepth_assessment_institutions')
+  // 3. Load leader row (cohort owner)
+  const { data: leader, error: leaderErr } = await supabase
+    .from('indepth_takes')
     .select('id, institution_name, leader_user_id, leader_email, seats_purchased')
-    .eq('id', institutionId)
+    .eq('id', cohortId)
+    .eq('is_leader', true)
     .maybeSingle();
 
-  if (instErr || !inst) {
-    return NextResponse.json({ error: 'institution not found' }, { status: 404 });
+  if (leaderErr || !leader) {
+    return NextResponse.json({ error: 'cohort not found' }, { status: 404 });
   }
 
   // 4. Ownership check / first-call binding
-  if (inst.leader_user_id && inst.leader_user_id !== user.id) {
+  if (leader.leader_user_id && leader.leader_user_id !== user.id) {
     return NextResponse.json(
-      { error: 'forbidden — not the institution leader' },
+      { error: 'forbidden — not the cohort leader' },
       { status: 403 },
     );
   }
-  if (!inst.leader_user_id) {
-    if (inst.leader_email !== user.email) {
+  if (!leader.leader_user_id) {
+    if (leader.leader_email !== user.email) {
       return NextResponse.json(
         { error: 'forbidden — leader email mismatch' },
         { status: 403 },
       );
     }
+    // Bind on the leader row AND on any pre-existing invitee rows that
+    // already point at this cohort (denormalized leader_user_id).
     const { error: bindErr } = await supabase
-      .from('indepth_assessment_institutions')
+      .from('indepth_takes')
       .update({ leader_user_id: user.id })
-      .eq('id', inst.id);
+      .eq('cohort_id', leader.id);
     if (bindErr) {
       return NextResponse.json(
         { error: 'failed to bind leader' },
         { status: 500 },
       );
     }
+    // The leader row itself has cohort_id=self after backfill/provisioning,
+    // so the previous update covered it. Belt-and-braces:
+    await supabase
+      .from('indepth_takes')
+      .update({ leader_user_id: user.id })
+      .eq('id', leader.id);
   }
 
-  // 5. Seat capacity
+  // 5. Seat capacity (count invitee rows; leader's own row counts too if
+  //    they intend to take it themselves)
   const { count: usedCount } = await supabase
-    .from('indepth_assessment_takers')
+    .from('indepth_takes')
     .select('id', { count: 'exact', head: true })
-    .eq('institution_id', inst.id);
+    .eq('cohort_id', leader.id);
 
-  const remaining = inst.seats_purchased - (usedCount ?? 0);
+  // The leader row itself counts as one of the seats — they can take their
+  // own assessment from it. Subtract 1 from used for the seat math? No:
+  // seats_purchased includes the leader. If a leader bought 10 seats,
+  // they get 10 takers including themselves.
+  const remaining = (leader.seats_purchased ?? 0) - (usedCount ?? 0);
   if (emails.length > remaining) {
     return NextResponse.json(
       {
@@ -134,11 +156,15 @@ export async function POST(request: Request): Promise<Response> {
 
     const token = generateInviteToken();
     const { error: insertErr } = await supabase
-      .from('indepth_assessment_takers')
+      .from('indepth_takes')
       .insert({
-        institution_id: inst.id,
+        cohort_id: leader.id,
+        is_leader: false,
         invite_email: email,
         invite_token: token,
+        institution_name: leader.institution_name,
+        leader_email: leader.leader_email,
+        leader_user_id: user.id,
       });
 
     if (insertErr) {
@@ -155,7 +181,7 @@ export async function POST(request: Request): Promise<Response> {
       await sendIndepthInstitutionInvite({
         inviteeEmail: email,
         leaderName,
-        institutionName: inst.institution_name,
+        institutionName: leader.institution_name ?? '',
         takeUrl: `${origin}/assessment/in-depth/take?token=${token}`,
       });
     } catch {

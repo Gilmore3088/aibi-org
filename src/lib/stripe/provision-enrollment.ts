@@ -234,7 +234,7 @@ async function provisionIndepthIndividual(
 
   // Idempotency: skip if this session was already processed.
   const { data: existing, error: existingErr } = await supabase
-    .from('indepth_assessment_takers')
+    .from('indepth_takes')
     .select('id')
     .eq('stripe_session_id', sessionId)
     .limit(1);
@@ -254,11 +254,12 @@ async function provisionIndepthIndividual(
 
   const token = generateInviteToken();
 
-  const { error: insertErr } = await supabase.from('indepth_assessment_takers').insert({
-    institution_id: null,
+  const { error: insertErr } = await supabase.from('indepth_takes').insert({
     invite_email: leaderEmail,
     invite_token: token,
     stripe_session_id: sessionId,
+    is_leader: false,
+    cohort_id: null,
   });
 
   if (insertErr) {
@@ -266,7 +267,7 @@ async function provisionIndepthIndividual(
     if ((insertErr as { code?: string }).code === '23505') {
       return { action: 'skipped', type: 'indepth-individual' };
     }
-    console.error('[webhook] indepth_assessment_takers insert error:', insertErr);
+    console.error('[webhook] indepth_takes individual insert error:', insertErr);
     return { error: 'Failed to create indepth taker record', code: 'db_error' };
   }
 
@@ -299,7 +300,7 @@ async function provisionIndepthInstitution(
   const sessionId = session.id;
 
   const { data: existing, error: existingErr } = await supabase
-    .from('indepth_assessment_institutions')
+    .from('indepth_takes')
     .select('id')
     .eq('stripe_session_id', sessionId)
     .limit(1);
@@ -326,21 +327,44 @@ async function provisionIndepthInstitution(
     return { error: 'Invalid seat quantity for indepth-institution (min 10)', code: 'missing_metadata' };
   }
 
-  const { error: insertErr } = await supabase.from('indepth_assessment_institutions').insert({
-    institution_name: instName,
-    leader_email: leaderEmail,
-    leader_user_id: null,
-    seats_purchased: seats,
-    stripe_session_id: sessionId,
-    amount_paid_cents: seats * INDEPTH_INSTITUTION_SEAT_CENTS,
-  });
+  // Leader row: holds institution-level fields. The leader can take the
+  // assessment from this same row (the invite_token + invite_email are
+  // theirs); they're treated as one of the cohort takers, not a separate
+  // record. cohort_id self-points so the leader's own answers show up in
+  // their aggregate.
+  const leaderToken = generateInviteToken();
+  const { data: insertedLeader, error: insertErr } = await supabase
+    .from('indepth_takes')
+    .insert({
+      is_leader: true,
+      invite_email: leaderEmail,
+      invite_token: leaderToken,
+      institution_name: instName,
+      leader_email: leaderEmail,
+      leader_user_id: null,
+      seats_purchased: seats,
+      amount_paid_cents: seats * INDEPTH_INSTITUTION_SEAT_CENTS,
+      stripe_session_id: sessionId,
+    })
+    .select('id')
+    .single();
 
-  if (insertErr) {
-    if ((insertErr as { code?: string }).code === '23505') {
+  if (insertErr || !insertedLeader) {
+    if ((insertErr as { code?: string } | null)?.code === '23505') {
       return { action: 'skipped', type: 'indepth-institution' };
     }
-    console.error('[webhook] indepth_assessment_institutions insert error:', insertErr);
-    return { error: 'Failed to create indepth institution record', code: 'db_error' };
+    console.error('[webhook] indepth_takes leader insert error:', insertErr);
+    return { error: 'Failed to create indepth leader record', code: 'db_error' };
+  }
+
+  // Self-cohort: the leader row points cohort_id at itself so all members
+  // of the cohort (including the leader) share a discriminator.
+  const { error: cohortErr } = await supabase
+    .from('indepth_takes')
+    .update({ cohort_id: insertedLeader.id })
+    .eq('id', insertedLeader.id);
+  if (cohortErr) {
+    console.warn('[webhook] indepth_takes leader self-cohort failed:', cohortErr);
   }
 
   // Best-effort tag — leader gets the leader-tier sequence.

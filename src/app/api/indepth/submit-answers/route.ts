@@ -79,7 +79,7 @@ export async function POST(request: Request) {
 
   const supabase = createServiceRoleClient();
   const { error } = await supabase
-    .from('indepth_assessment_takers')
+    .from('indepth_takes')
     .update({
       completed_at: new Date().toISOString(),
       score_total: total,
@@ -96,7 +96,7 @@ export async function POST(request: Request) {
   // Never blocks success. Both side effects share a single email fetch.
   try {
     const { data: row } = await supabase
-      .from('indepth_assessment_takers')
+      .from('indepth_takes')
       .select('invite_email, invite_token')
       .eq('id', takerId)
       .single();

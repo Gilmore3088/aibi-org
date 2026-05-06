@@ -4,7 +4,7 @@
 
 import { expect, test } from '@playwright/test';
 import {
-  cleanupInstitution,
+  cleanupCohort,
   seedInstitutionInvitee,
   type SeededInvitee,
 } from './_helpers/seed';
@@ -17,7 +17,7 @@ test.beforeAll(async () => {
 });
 
 test.afterAll(async () => {
-  if (seeded) await cleanupInstitution(seeded.institutionId);
+  if (seeded) await cleanupCohort(seeded.cohortId);
 });
 
 test('invitee can open take page with token (no auth)', async ({ page }) => {
@@ -56,7 +56,7 @@ test('completed invitee result requires token; valid token renders', async ({ pa
     'builder-potential': 18,
   };
   await supabase
-    .from('indepth_assessment_takers')
+    .from('indepth_takes')
     .update({
       completed_at: new Date().toISOString(),
       score_total: 144,

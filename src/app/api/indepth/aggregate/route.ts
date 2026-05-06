@@ -1,9 +1,9 @@
-// GET /api/indepth/aggregate?institutionId=...
+// GET /api/indepth/aggregate?cohortId=...
 //
 // Returns the anonymized aggregate report for an institution leader.
-// Auth-gated: caller must be the leader_user_id bound to the institution.
-// All anonymization rules live in computeAggregate (pure-logic, well-tested).
-// This route only loads rows and delegates.
+// Auth-gated: caller must be the leader_user_id bound to the leader row
+// of the cohort. All anonymization rules live in computeAggregate
+// (pure-logic, well-tested). This route only loads rows and delegates.
 
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
@@ -18,13 +18,11 @@ export const dynamic = 'force-dynamic';
 
 export async function GET(request: Request): Promise<Response> {
   const url = new URL(request.url);
-  const institutionId = url.searchParams.get('institutionId');
+  const cohortId =
+    url.searchParams.get('cohortId') ?? url.searchParams.get('institutionId');
 
-  if (!institutionId) {
-    return NextResponse.json(
-      { error: 'institutionId required' },
-      { status: 400 }
-    );
+  if (!cohortId) {
+    return NextResponse.json({ error: 'cohortId required' }, { status: 400 });
   }
 
   // 1. Auth — confirm a logged-in user
@@ -41,39 +39,41 @@ export async function GET(request: Request): Promise<Response> {
   //    role keeps the API simple and the leader-binding check explicit).
   const supabase = createServiceRoleClient();
 
-  const { data: inst, error: instErr } = await supabase
-    .from('indepth_assessment_institutions')
+  const { data: leader, error: leaderErr } = await supabase
+    .from('indepth_takes')
     .select('id, institution_name, leader_user_id, seats_purchased')
-    .eq('id', institutionId)
+    .eq('id', cohortId)
+    .eq('is_leader', true)
     .maybeSingle();
 
-  if (instErr) {
+  if (leaderErr) {
     return NextResponse.json({ error: 'load failed' }, { status: 500 });
   }
-  if (!inst) {
-    return NextResponse.json(
-      { error: 'institution not found' },
-      { status: 404 }
-    );
+  if (!leader) {
+    return NextResponse.json({ error: 'cohort not found' }, { status: 404 });
   }
-  if (inst.leader_user_id !== user.id) {
+  if (leader.leader_user_id !== user.id) {
     return NextResponse.json({ error: 'forbidden' }, { status: 403 });
   }
 
+  // Pull every member of the cohort. The leader row carries cohort_id =
+  // self.id after provisioning, so this query covers them too — and if
+  // the leader took the assessment from their own row, their answers
+  // contribute to the aggregate.
   const { data: takers, error: takersErr } = await supabase
-    .from('indepth_assessment_takers')
+    .from('indepth_takes')
     .select(
       'invite_email, invite_consumed_at, completed_at, score_total, score_per_dimension'
     )
-    .eq('institution_id', institutionId);
+    .eq('cohort_id', leader.id);
 
   if (takersErr) {
     return NextResponse.json({ error: 'load failed' }, { status: 500 });
   }
 
   const aggregate = computeAggregate({
-    institutionName: inst.institution_name,
-    seatsPurchased: inst.seats_purchased,
+    institutionName: leader.institution_name ?? '',
+    seatsPurchased: leader.seats_purchased ?? 0,
     takers: takers ?? [],
   });
 

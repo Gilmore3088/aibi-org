@@ -2,8 +2,8 @@
 //
 // Server component:
 //   1. Auth-gates (redirects to /auth/login on miss)
-//   2. Resolves the institution row from ?session= (Stripe checkout id)
-//      or ?institutionId=
+//   2. Resolves the leader row from ?session= (Stripe checkout id) or
+//      ?cohortId= (the leader row id; legacy alias: institutionId)
 //   3. Binds leader_user_id on first visit when leader_email matches
 //   4. Loads the roster server-side and hands it to the client component
 //
@@ -26,13 +26,18 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 interface PageProps {
-  searchParams: { session?: string; institutionId?: string };
+  searchParams: {
+    session?: string;
+    cohortId?: string;
+    institutionId?: string;
+  };
 }
 
 function buildLoginNext(params: PageProps['searchParams']): string {
   const qs = new URLSearchParams();
   if (params.session) qs.set('session', params.session);
-  if (params.institutionId) qs.set('institutionId', params.institutionId);
+  if (params.cohortId) qs.set('cohortId', params.cohortId);
+  else if (params.institutionId) qs.set('cohortId', params.institutionId);
   const tail = qs.toString();
   const path = `/assessment/in-depth/dashboard${tail ? `?${tail}` : ''}`;
   return `/auth/login?next=${encodeURIComponent(path)}`;
@@ -63,7 +68,6 @@ function NotFoundShell({ title, body }: { title: string; body: string }) {
 }
 
 export default async function DashboardPage({ searchParams }: PageProps) {
-  // 1. Auth
   const auth = createServerClientWithCookies(cookies());
   const {
     data: { user },
@@ -74,29 +78,30 @@ export default async function DashboardPage({ searchParams }: PageProps) {
 
   const supabase = createServiceRoleClient();
 
-  // 2. Resolve institution row
-  let institutionId = searchParams.institutionId ?? null;
+  // Resolve cohort id (== leader row id). cohortId is canonical;
+  // institutionId stays as an alias for older bookmarks.
+  let cohortId = searchParams.cohortId ?? searchParams.institutionId ?? null;
 
-  if (!institutionId && searchParams.session) {
+  if (!cohortId && searchParams.session) {
     const { data: row } = await supabase
-      .from('indepth_assessment_institutions')
+      .from('indepth_takes')
       .select('id, leader_user_id, leader_email')
       .eq('stripe_session_id', searchParams.session)
+      .eq('is_leader', true)
       .maybeSingle();
 
     if (row) {
-      institutionId = row.id;
-      // First-visit binding
+      cohortId = row.id;
       if (!row.leader_user_id && row.leader_email === user.email) {
         await supabase
-          .from('indepth_assessment_institutions')
+          .from('indepth_takes')
           .update({ leader_user_id: user.id })
-          .eq('id', row.id);
+          .eq('cohort_id', row.id);
       }
     }
   }
 
-  if (!institutionId) {
+  if (!cohortId) {
     return (
       <NotFoundShell
         title="No institution found"
@@ -105,14 +110,14 @@ export default async function DashboardPage({ searchParams }: PageProps) {
     );
   }
 
-  // 3. Verify caller is the bound leader (with one rebind opportunity)
-  const { data: institution } = await supabase
-    .from('indepth_assessment_institutions')
+  const { data: leader } = await supabase
+    .from('indepth_takes')
     .select('id, institution_name, leader_user_id, leader_email, seats_purchased')
-    .eq('id', institutionId)
+    .eq('id', cohortId)
+    .eq('is_leader', true)
     .maybeSingle();
 
-  if (!institution) {
+  if (!leader) {
     return (
       <NotFoundShell
         title="Institution not found"
@@ -121,15 +126,15 @@ export default async function DashboardPage({ searchParams }: PageProps) {
     );
   }
 
-  if (!institution.leader_user_id && institution.leader_email === user.email) {
+  if (!leader.leader_user_id && leader.leader_email === user.email) {
     await supabase
-      .from('indepth_assessment_institutions')
+      .from('indepth_takes')
       .update({ leader_user_id: user.id })
-      .eq('id', institution.id);
-    institution.leader_user_id = user.id;
+      .eq('cohort_id', leader.id);
+    leader.leader_user_id = user.id;
   }
 
-  if (institution.leader_user_id !== user.id) {
+  if (leader.leader_user_id !== user.id) {
     return (
       <NotFoundShell
         title="Not authorized"
@@ -138,27 +143,31 @@ export default async function DashboardPage({ searchParams }: PageProps) {
     );
   }
 
-  // 4. Load the roster
+  // Load the roster — every member of the cohort except the leader's own
+  // header row (we show the leader as a roster entry only if they took
+  // the assessment from their row, which is implicit in the answers).
   const { data: takers } = await supabase
-    .from('indepth_assessment_takers')
-    .select('invite_email, invite_consumed_at, completed_at, invite_sent_at')
-    .eq('institution_id', institution.id)
+    .from('indepth_takes')
+    .select('invite_email, invite_consumed_at, completed_at, invite_sent_at, is_leader')
+    .eq('cohort_id', leader.id)
     .order('invite_sent_at', { ascending: true });
 
-  const roster: RosterEntry[] = (takers ?? []).map((t) => ({
-    invite_email: t.invite_email,
-    status: t.completed_at
-      ? 'complete'
-      : t.invite_consumed_at
-        ? 'in-progress'
-        : 'pending',
-  }));
+  const roster: RosterEntry[] = (takers ?? [])
+    .filter((t) => !t.is_leader)
+    .map((t) => ({
+      invite_email: t.invite_email,
+      status: t.completed_at
+        ? 'complete'
+        : t.invite_consumed_at
+          ? 'in-progress'
+          : 'pending',
+    }));
 
   return (
     <DashboardClient
-      institutionId={institution.id}
-      institutionName={institution.institution_name}
-      seatsPurchased={institution.seats_purchased}
+      cohortId={leader.id}
+      institutionName={leader.institution_name ?? ''}
+      seatsPurchased={leader.seats_purchased ?? 0}
       initialRoster={roster}
     />
   );

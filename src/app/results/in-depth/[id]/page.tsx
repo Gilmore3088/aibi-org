@@ -2,7 +2,7 @@
 //
 // Renders the dimension breakdown, tier label, and a tailored next-step
 // recommendation for a completed 48Q in-depth assessment. The data shape
-// is the persisted DB row (indepth_assessment_takers), not in-flight
+// is the persisted DB row (indepth_takes), not in-flight
 // session state — the page is the destination for the completion email
 // link.
 //
@@ -62,7 +62,7 @@ function tokensMatch(provided: string, stored: string): boolean {
 
 interface AccessRow {
   readonly user_id: string | null;
-  readonly institution_id: string | null;
+  readonly leader_user_id: string | null;
   readonly invite_token: string | null;
 }
 
@@ -88,16 +88,7 @@ async function isAuthorized(row: AccessRow, providedToken: string | undefined): 
   if (!authedUserId) return false;
 
   if (row.user_id && row.user_id === authedUserId) return true;
-
-  if (row.institution_id) {
-    const supabase = createServiceRoleClient();
-    const { data: inst } = await supabase
-      .from('indepth_assessment_institutions')
-      .select('leader_user_id')
-      .eq('id', row.institution_id)
-      .maybeSingle();
-    if (inst?.leader_user_id === authedUserId) return true;
-  }
+  if (row.leader_user_id && row.leader_user_id === authedUserId) return true;
 
   return false;
 }
@@ -119,9 +110,9 @@ export default async function InDepthResultsPage({
 }: ResultsPageProps) {
   const supabase = createServiceRoleClient();
   const { data: row } = await supabase
-    .from('indepth_assessment_takers')
+    .from('indepth_takes')
     .select(
-      'id, completed_at, score_total, score_per_dimension, invite_email, user_id, institution_id, invite_token',
+      'id, completed_at, score_total, score_per_dimension, invite_email, user_id, leader_user_id, invite_token',
     )
     .eq('id', params.id)
     .maybeSingle();
@@ -134,7 +125,7 @@ export default async function InDepthResultsPage({
   const allowed = await isAuthorized(
     {
       user_id: row.user_id,
-      institution_id: row.institution_id,
+      leader_user_id: row.leader_user_id,
       invite_token: row.invite_token,
     },
     providedToken,

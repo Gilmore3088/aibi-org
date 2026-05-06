@@ -1,7 +1,7 @@
-// Test fixtures: seed indepth_assessment rows directly via service role.
+// Test fixtures: seed indepth_takes rows directly via service role.
 // Bypasses Stripe checkout. Each helper returns the fields a test needs
 // to walk the magic-link path; cleanup is owner-keyed by stripe_session_id
-// so reruns don't collide.
+// or cohort_id so reruns don't collide.
 
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 import { randomBytes } from 'crypto';
@@ -33,9 +33,10 @@ export async function seedIndividualTaker(): Promise<SeededIndividual> {
   const stripeSessionId = `cs_test_e2e_${Date.now()}`;
 
   const { data, error } = await supabase
-    .from('indepth_assessment_takers')
+    .from('indepth_takes')
     .insert({
-      institution_id: null,
+      cohort_id: null,
+      is_leader: false,
       invite_email: inviteEmail,
       invite_token: inviteToken,
       stripe_session_id: stripeSessionId,
@@ -51,7 +52,7 @@ export async function seedIndividualTaker(): Promise<SeededIndividual> {
 }
 
 export interface SeededInvitee {
-  readonly institutionId: string;
+  readonly cohortId: string;
   readonly takerId: string;
   readonly inviteToken: string;
   readonly inviteEmail: string;
@@ -63,10 +64,15 @@ export async function seedInstitutionInvitee(): Promise<SeededInvitee> {
   const leaderEmail = `e2e-leader-${stamp}@example.test`;
   const inviteEmail = `e2e-invitee-${stamp}@example.test`;
   const inviteToken = token();
+  const leaderToken = token();
 
-  const { data: inst, error: instErr } = await supabase
-    .from('indepth_assessment_institutions')
+  // Insert leader row first; cohort_id self-points after the second update.
+  const { data: leader, error: leaderErr } = await supabase
+    .from('indepth_takes')
     .insert({
+      is_leader: true,
+      invite_email: leaderEmail,
+      invite_token: leaderToken,
       institution_name: `E2E Bank ${stamp}`,
       leader_email: leaderEmail,
       seats_purchased: 10,
@@ -76,16 +82,25 @@ export async function seedInstitutionInvitee(): Promise<SeededInvitee> {
     .select('id')
     .single();
 
-  if (instErr || !inst) {
-    throw new Error(`seedInstitution failed: ${instErr?.message ?? 'no row'}`);
+  if (leaderErr || !leader) {
+    throw new Error(`seedLeader failed: ${leaderErr?.message ?? 'no row'}`);
   }
 
+  await supabase
+    .from('indepth_takes')
+    .update({ cohort_id: leader.id })
+    .eq('id', leader.id);
+
+  // Now invitee row pointing at the leader.
   const { data: taker, error: takerErr } = await supabase
-    .from('indepth_assessment_takers')
+    .from('indepth_takes')
     .insert({
-      institution_id: inst.id,
+      cohort_id: leader.id,
+      is_leader: false,
       invite_email: inviteEmail,
       invite_token: inviteToken,
+      institution_name: `E2E Bank ${stamp}`,
+      leader_email: leaderEmail,
     })
     .select('id')
     .single();
@@ -94,22 +109,21 @@ export async function seedInstitutionInvitee(): Promise<SeededInvitee> {
     throw new Error(`seedInvitee failed: ${takerErr?.message ?? 'no row'}`);
   }
 
-  return { institutionId: inst.id, takerId: taker.id, inviteToken, inviteEmail };
+  return { cohortId: leader.id, takerId: taker.id, inviteToken, inviteEmail };
 }
 
 export async function cleanupTaker(takerId: string): Promise<void> {
   const supabase = service();
-  await supabase.from('indepth_assessment_takers').delete().eq('id', takerId);
+  await supabase.from('indepth_takes').delete().eq('id', takerId);
 }
 
-export async function cleanupInstitution(institutionId: string): Promise<void> {
+export async function cleanupCohort(cohortId: string): Promise<void> {
   const supabase = service();
+  // Delete invitees first, then leader.
   await supabase
-    .from('indepth_assessment_takers')
+    .from('indepth_takes')
     .delete()
-    .eq('institution_id', institutionId);
-  await supabase
-    .from('indepth_assessment_institutions')
-    .delete()
-    .eq('id', institutionId);
+    .eq('cohort_id', cohortId)
+    .neq('id', cohortId);
+  await supabase.from('indepth_takes').delete().eq('id', cohortId);
 }

@@ -2,8 +2,8 @@
 //
 // Shows two sources side-by-side:
 //   1. Free 12-question readiness — read from user_profiles by email match.
-//   2. In-Depth 48-question takes — read from indepth_assessment_takers by
-//      user_id (bound at first authed take-page visit; see take/page.tsx).
+//   2. In-Depth 48-question takes — read from indepth_takes by user_id
+//      (bound at first authed take-page visit; see take/page.tsx).
 //
 // Auth-required. Empty state surfaces both products as CTAs.
 
@@ -28,7 +28,8 @@ interface IndepthRow {
   readonly id: string;
   readonly completed_at: string | null;
   readonly score_total: number | null;
-  readonly institution_id: string | null;
+  readonly cohort_id: string | null;
+  readonly is_leader: boolean;
 }
 
 interface ReadinessRow {
@@ -69,8 +70,8 @@ export default async function AssessmentsPage() {
 
   const [indepthRes, readinessRes] = await Promise.all([
     supabase
-      .from('indepth_assessment_takers')
-      .select('id, completed_at, score_total, institution_id')
+      .from('indepth_takes')
+      .select('id, completed_at, score_total, cohort_id, is_leader')
       .eq('user_id', user.id)
       .order('completed_at', { ascending: false }),
     user.email
@@ -126,7 +127,11 @@ export default async function AssessmentsPage() {
                     </p>
                     <p className="font-mono text-xs text-[color:var(--color-slate)] mt-1">
                       Completed {fmtDate(t.completed_at)}
-                      {t.institution_id ? ' · institution invitee' : ' · individual'}
+                      {t.is_leader
+                        ? ' · cohort leader'
+                        : t.cohort_id
+                          ? ' · institution invitee'
+                          : ' · individual'}
                     </p>
                   </div>
                   <div className="flex items-baseline gap-4">
