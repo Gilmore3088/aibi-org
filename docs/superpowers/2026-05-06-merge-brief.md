@@ -114,8 +114,14 @@ ALTER TABLE entitlements ADD CONSTRAINT entitlements_product_check
   ));
 ```
 
-**Both migrations must run before deploying the branch** — the code on
-the branch will throw if the columns / CHECK aren't there.
+**Production status (verified 2026-05-06):** `00028` is already applied
+to the linked Supabase project; only `00029` still needs to run before
+deploy. Staging/preview branches that don't yet have `00028` need both.
+The code on the branch will throw if the columns / CHECK aren't there.
+
+Squashing 00028 + 00029 was considered (Kieran review) but rejected
+because 00028 has already been applied to production — squashing would
+require dropping/recreating live tables.
 
 ---
 
