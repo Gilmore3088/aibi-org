@@ -68,7 +68,7 @@ export default function DashboardPage() {
   const [user, setUser] = useState<UserData | null>(null);
   const [dashboard, setDashboard] = useState<LearnerDashboardState | null>(null);
   const [localCompletedRepIds, setLocalCompletedRepIds] = useState<readonly string[]>([]);
-  const [toolboxEntitled, setToolboxEntitled] = useState(false);
+  const [toolboxTier, setToolboxTier] = useState<'full' | 'starter' | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -84,8 +84,10 @@ export default function DashboardPage() {
             setDashboard((await learnerRes.json()) as LearnerDashboardState);
           }
           if (toolboxRes.ok) {
-            const { entitled } = (await toolboxRes.json()) as { entitled: boolean };
-            setToolboxEntitled(Boolean(entitled));
+            const { tier } = (await toolboxRes.json()) as {
+              tier: 'full' | 'starter' | null;
+            };
+            setToolboxTier(tier ?? null);
           }
         } catch {
           // Local assessment-only users still get a useful dashboard fallback.
@@ -279,7 +281,7 @@ export default function DashboardPage() {
           </article>
         </section>
 
-        {toolboxEntitled && (
+        {toolboxTier === 'full' && (
           <section>
             <DashboardPanel title="Your Playbooks">
               <p className="text-sm text-[color:var(--color-slate)] leading-relaxed">
@@ -292,6 +294,23 @@ export default function DashboardPage() {
                 className="inline-block mt-4 font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] border-b border-[color:var(--color-terra)]"
               >
                 Open Playbooks
+              </Link>
+            </DashboardPanel>
+          </section>
+        )}
+
+        {toolboxTier === 'starter' && (
+          <section>
+            <DashboardPanel title="AI Starter Toolkit">
+              <p className="text-sm text-[color:var(--color-slate)] leading-relaxed">
+                Browse the curated banking AI playbook library. Read-only;
+                building, testing, and saving unlock with course enrollment.
+              </p>
+              <Link
+                href="/dashboard/toolbox/starter"
+                className="inline-block mt-4 font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] border-b border-[color:var(--color-terra)]"
+              >
+                Open Starter Toolkit
               </Link>
             </DashboardPanel>
           </section>

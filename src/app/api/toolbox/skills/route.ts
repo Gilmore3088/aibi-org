@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
-import { getPaidToolboxAccess } from '@/lib/toolbox/access';
+import { getPaidToolboxAccess, hasFullToolboxAccess } from '@/lib/toolbox/access';
 import type { ToolboxSkill } from '@/lib/toolbox/types';
 import { validateSkill } from './validateSkill';
 
@@ -35,7 +35,9 @@ function extractLibraryIds(skills: readonly ToolboxSkill[]): string[] {
 
 export async function GET(): Promise<NextResponse> {
   const access = await getPaidToolboxAccess();
-  if (!access) return NextResponse.json({ error: 'Paid access required.' }, { status: 403 });
+  if (!hasFullToolboxAccess(access)) {
+    return NextResponse.json({ error: 'Paid access required.' }, { status: 403 });
+  }
   if (!isSupabaseConfigured()) return NextResponse.json({ skills: [], librarySlugMap: {} });
 
   const client = createServiceRoleClient();
@@ -68,7 +70,9 @@ export async function GET(): Promise<NextResponse> {
 
 export async function POST(request: Request): Promise<NextResponse> {
   const access = await getPaidToolboxAccess();
-  if (!access) return NextResponse.json({ error: 'Paid access required.' }, { status: 403 });
+  if (!hasFullToolboxAccess(access)) {
+    return NextResponse.json({ error: 'Paid access required.' }, { status: 403 });
+  }
   if (!isSupabaseConfigured()) {
     return NextResponse.json({ error: 'Server-side Toolbox storage is not configured.' }, { status: 503 });
   }

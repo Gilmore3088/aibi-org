@@ -2,7 +2,11 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { POST } from './route';
 
 vi.mock('@/lib/toolbox/access', () => ({
-  getPaidToolboxAccess: vi.fn(async () => ({ userId: 'u1' })),
+  getPaidToolboxAccess: vi.fn(async () => ({ userId: 'u1', products: ['aibi-p'] })),
+  hasFullToolboxAccess: vi.fn(
+    (access: { products?: string[] } | null) =>
+      !!access && Array.isArray(access.products) && access.products.includes('aibi-p'),
+  ),
 }));
 vi.mock('@/lib/sandbox/pii-scanner', () => ({ scanForPII: vi.fn(() => ({ safe: true })) }));
 vi.mock('@/lib/sandbox/injection-filter', () => ({ scanForInjection: vi.fn(() => ({ safe: true })) }));
