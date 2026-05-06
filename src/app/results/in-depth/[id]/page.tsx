@@ -19,7 +19,7 @@ import { createServiceRoleClient } from '@/lib/supabase/client';
 import { getTierV2 } from '@content/assessments/v2/scoring';
 import { DIMENSION_LABELS } from '@content/assessments/v2/types';
 import type { Dimension } from '@content/assessments/v2/types';
-import { getStarterArtifact } from '@content/assessments/v2/starter-artifacts';
+import { getStarterArtifact, getTierPreface } from '@content/assessments/v2/starter-artifacts';
 import ReactMarkdown from 'react-markdown';
 
 export const runtime = 'nodejs';
@@ -82,6 +82,7 @@ export default async function InDepthResultsPage({ params }: ResultsPageProps) {
 
   const focusGap = ranked[0];
   const starterArtifact = focusGap ? getStarterArtifact(focusGap.id) : null;
+  const tierPreface = getTierPreface(tier.id);
 
   return (
     <main className="min-h-screen bg-[color:var(--color-linen)] py-12 px-4">
@@ -172,6 +173,25 @@ export default async function InDepthResultsPage({ params }: ResultsPageProps) {
               {starterArtifact.subtitle}
             </p>
             <article className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/15 rounded-[3px] p-6 md:p-10 indepth-artifact">
+              {/* Tier-keyed preface — same artifact body across all 4 tier
+                  bands, but the framing changes by readiness posture. */}
+              <aside
+                aria-label={`Framing for ${tier.label} institutions`}
+                className="mb-8 pb-6 border-b-2 border-[color:var(--color-terra)]/40"
+              >
+                <p
+                  className="font-serif-sc text-[10px] uppercase tracking-[0.22em] mb-2"
+                  style={{ color: tier.colorVar }}
+                >
+                  For {tier.label} institutions
+                </p>
+                <p className="font-serif italic text-xl md:text-2xl text-[color:var(--color-ink)] leading-snug mb-3">
+                  {tierPreface.headline}
+                </p>
+                <p className="font-sans text-base leading-relaxed text-[color:var(--color-ink)]/80">
+                  {tierPreface.body}
+                </p>
+              </aside>
               <ReactMarkdown
                 components={{
                   h1: ({ children }) => (

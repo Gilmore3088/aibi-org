@@ -2,11 +2,16 @@
 
 import { useState } from 'react';
 import { MarkdownRenderer } from '@/app/courses/aibi-p/_components/MarkdownRenderer';
-import type { StarterArtifact } from '@content/assessments/v2/starter-artifacts';
+import {
+  type StarterArtifact,
+  TIER_PREFACES,
+} from '@content/assessments/v2/starter-artifacts';
+import type { Tier } from '@content/assessments/v2/scoring';
 
 interface StarterArtifactCardProps {
   readonly artifact: StarterArtifact;
   readonly tierLabel: string;
+  readonly tierId?: Tier['id']; // optional for backward compat — falls back to no preface if absent
   readonly topGapLabel: string;
 }
 
@@ -17,8 +22,10 @@ interface StarterArtifactCardProps {
 export function StarterArtifactCard({
   artifact,
   tierLabel,
+  tierId,
   topGapLabel,
 }: StarterArtifactCardProps) {
+  const preface = tierId ? TIER_PREFACES[tierId] : null;
   const [copied, setCopied] = useState(false);
   const [downloaded, setDownloaded] = useState(false);
   const [copyFailed, setCopyFailed] = useState(false);
@@ -97,6 +104,23 @@ export function StarterArtifactCard({
           </span>
         )}
       </div>
+
+      {preface && (
+        <aside
+          aria-label={`Framing for ${tierLabel} institutions`}
+          className="mb-8 pb-6 border-b-2 border-[color:var(--color-terra)]/40"
+        >
+          <p className="font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-terra)] mb-2">
+            For {tierLabel} institutions
+          </p>
+          <p className="font-serif italic text-xl md:text-2xl text-[color:var(--color-ink)] leading-snug mb-3">
+            {preface.headline}
+          </p>
+          <p className="font-sans text-base leading-relaxed text-[color:var(--color-ink)]/80">
+            {preface.body}
+          </p>
+        </aside>
+      )}
 
       <div className="border-t border-[color:var(--color-ink)]/10 pt-8">
         <MarkdownRenderer

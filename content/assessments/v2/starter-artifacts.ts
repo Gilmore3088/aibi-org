@@ -493,3 +493,45 @@ unnamed budget every time.
 export function getStarterArtifact(dimension: Dimension): StarterArtifact {
   return ARTIFACTS[dimension];
 }
+
+// ── Tier-keyed prefaces ─────────────────────────────────────────────────────
+//
+// The artifact body is identical across all four tier bands — "what to do" is
+// the same regardless of where you are. What changes is HOW the reader should
+// receive the work: a Starting Point bank treats the artifact as a foundation;
+// a Ready-to-Scale bank treats it as a codification instrument.
+//
+// Rendered as a small callout above the markdown body on /results/in-depth/[id]
+// and inside the downloadable starter-artifact card on the free-results page.
+// Generic by design — a single preface works for any of the 8 dimension
+// artifacts because it speaks to the reader's posture, not the dimension.
+
+import type { Tier } from './scoring';
+
+export interface TierPreface {
+  readonly headline: string;
+  readonly body: string;
+}
+
+export const TIER_PREFACES: Record<Tier['id'], TierPreface> = {
+  'starting-point': {
+    headline: 'Start at step 1.',
+    body: 'These three actions are written for institutions just beginning to think about AI. Nothing is in place yet, and that is fine. The value is in the order — do not try to skip to step 3.',
+  },
+  'early-stage': {
+    headline: 'Treat step 1 as a checkpoint.',
+    body: 'You are past the "should we?" stage. Some of step 1 may feel familiar — use it to confirm what you already suspect rather than discover it. The harder work, and the leverage, begins in step 2.',
+  },
+  'building-momentum': {
+    headline: 'This is your audit instrument.',
+    body: 'You have real traction. Run steps 1–2 quickly to surface what is NOT yet documented. The institution-wide leverage is in step 3 — bring it to leadership as a structured artifact, not a status update.',
+  },
+  'ready-to-scale': {
+    headline: 'Codify what already works.',
+    body: 'You are operating ahead of your peer group. Use this artifact to formalize the practices that got you here so the next cohort inherits them. Step 3 becomes a board reporting cadence, not a one-off action.',
+  },
+};
+
+export function getTierPreface(tierId: Tier['id']): TierPreface {
+  return TIER_PREFACES[tierId];
+}
