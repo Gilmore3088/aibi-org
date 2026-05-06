@@ -108,7 +108,7 @@ export default async function InDepthResultsPage({ params }: ResultsPageProps) {
               {row.score_total}
             </span>
             <span className="font-mono text-sm text-[color:var(--color-ink)]/55">
-              / 48
+              / {INDEPTH_MAX_SCORE}
             </span>
             <span className="font-serif text-2xl md:text-3xl text-[color:var(--color-ink)]">
               {tier.label}
