@@ -52,7 +52,7 @@ export function CourseSidebar({ completedModules, currentModule }: CourseSidebar
       </div>
 
       {/* Module navigation grouped by pillar */}
-      <nav className="flex-1 overflow-y-auto py-2" aria-label="Course modules">
+      <nav className="flex-1 overflow-y-auto py-2" aria-label="Course lessons">
         {modulesByPillar.map(({ pillar, meta, items }) => (
           <div key={pillar} className="mb-1">
             {/* Pillar heading */}
@@ -73,7 +73,7 @@ export function CourseSidebar({ completedModules, currentModule }: CourseSidebar
                   <div
                     key={mod.id}
                     className="flex items-center gap-3 px-6 py-2.5 opacity-40 cursor-not-allowed"
-                    aria-label={`Module ${mod.number}: ${mod.title} — locked`}
+                    aria-label={`Lesson ${mod.number}: ${mod.title} — locked`}
                   >
                     <span
                       className="font-mono text-[10px] w-5 text-[color:var(--color-slate)]"
@@ -173,7 +173,7 @@ export function CourseSidebar({ completedModules, currentModule }: CourseSidebar
           >
             <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z" />
           </svg>
-          My Toolkit
+          Your Work
         </Link>
         <Link
           href="/courses/aibi-p/gallery"

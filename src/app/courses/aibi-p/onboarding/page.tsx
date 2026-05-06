@@ -7,7 +7,7 @@ import { getEnrollment } from '../_lib/getEnrollment';
 import { OnboardingSurvey } from './OnboardingSurvey';
 
 export const metadata = {
-  title: 'Onboarding | AiBI-P',
+  title: 'Welcome | AiBI-P',
 };
 
 export default async function OnboardingPage() {

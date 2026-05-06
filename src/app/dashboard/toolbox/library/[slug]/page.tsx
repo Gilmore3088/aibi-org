@@ -28,11 +28,11 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const access = await getPaidToolboxAccess();
-  if (!access) return { title: 'Toolbox Library | The AI Banking Institute' };
+  if (!access) return { title: 'Playbooks Library | The AI Banking Institute' };
   const detail = await getLibrarySkill(slug);
   if (!detail) return { title: 'Library Skill not found | The AI Banking Institute' };
   return {
-    title: `${detail.skill.title} — Toolbox Library | The AI Banking Institute`,
+    title: `${detail.skill.title} — Playbooks Library | The AI Banking Institute`,
     description: detail.skill.description ?? undefined,
   };
 }

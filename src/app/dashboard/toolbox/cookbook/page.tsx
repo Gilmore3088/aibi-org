@@ -12,7 +12,7 @@ import { getRecipes } from '@/lib/toolbox/recipes';
 import type { RecipeRow } from '@/lib/toolbox/recipes';
 
 export const metadata: Metadata = {
-  title: 'Cookbook · AiBI Toolbox',
+  title: 'Recipes · Banking AI Playbooks',
   description:
     'Multi-step recipes that compose Library skills into end-to-end workflows for community bank teams.',
 };
@@ -41,7 +41,7 @@ export default async function CookbookPage() {
         <div className="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-6 lg:flex-row lg:items-end lg:justify-between lg:px-10">
           <div>
             <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
-              Toolbox · Cookbook
+              Playbooks · Recipes
             </p>
             <h1 className="mt-2 font-serif text-4xl leading-tight text-[color:var(--color-ink)] md:text-5xl">
               Cookbook
@@ -55,7 +55,7 @@ export default async function CookbookPage() {
             href="/dashboard/toolbox"
             className="inline-flex w-fit items-center border border-[color:var(--color-ink)]/20 px-4 py-2 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-ink)] transition-colors hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)]"
           >
-            Back to Toolbox
+            Back to Playbooks
           </Link>
         </div>
       </div>

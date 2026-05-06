@@ -30,7 +30,7 @@ export function ModuleHeader({
       <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
         <div className="flex items-baseline gap-3">
           <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-white/70">
-            Module {formattedNumber}
+            Lesson {formattedNumber}
           </span>
           <h1 className="font-serif italic text-2xl lg:text-3xl text-white leading-tight">
             {title}

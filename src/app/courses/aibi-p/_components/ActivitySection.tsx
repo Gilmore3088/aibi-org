@@ -238,7 +238,7 @@ export function ActivitySection({
             onClick={handleSaveProgress}
             className="px-6 py-2.5 bg-[color:var(--color-terra)] hover:bg-[color:var(--color-terra-light)] text-[color:var(--color-linen)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-2"
           >
-            {isLastModule ? 'Complete Course' : 'Complete Module'}
+            {isLastModule ? 'Complete Course' : 'Complete Lesson'}
           </button>
         </div>
       )}

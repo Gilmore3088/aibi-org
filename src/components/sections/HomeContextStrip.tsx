@@ -100,7 +100,7 @@ export function HomeContextStrip() {
         <p className="text-sm text-[color:var(--color-slate)]">
           Welcome back. You&apos;re on{' '}
           <span className="text-[color:var(--color-ink)]">
-            Module {mode.currentModule} of {mode.totalModules}
+            Lesson {mode.currentModule} of {mode.totalModules}
           </span>{' '}
           ({mode.completedCount} complete).
         </p>

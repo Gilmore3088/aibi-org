@@ -45,7 +45,7 @@ export function CompletionCTA({ moduleNumber, isLastModule }: CompletionCTAProps
           aria-label="Course complete — next steps"
         >
           <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] mb-2">
-            All modules complete
+            All lessons complete
           </p>
           <p className="font-serif text-lg font-bold text-[color:var(--color-ink)] mb-3">
             Ready for your assessed work product.
@@ -109,7 +109,7 @@ export function CompletionCTA({ moduleNumber, isLastModule }: CompletionCTAProps
         <div
           className="mt-8 p-6 bg-[color:var(--color-parch)] border border-[color:var(--color-parch-dark)] border-l-4 rounded-sm"
           style={{ borderLeftColor: 'var(--color-terra)' }}
-          aria-label="Module complete — next steps"
+          aria-label="Lesson complete — next steps"
         >
           <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] mb-2">
             Understanding pillar complete
@@ -142,28 +142,28 @@ export function CompletionCTA({ moduleNumber, isLastModule }: CompletionCTAProps
 
   // Brief learner-facing encouragement after each module.
   const encouragementByModule: Record<number, string> = {
-    1: 'Module 1 complete. You have a first practical view of how AI can help your workday.',
-    2: 'Module 2 complete. You understand what AI is, what it is not, and why human review matters.',
-    3: 'Module 3 complete. You can now structure a prompt with role, task, context, format, and constraints.',
-    4: 'Module 4 complete. Your AI work profile gives you reusable context without exposing sensitive data.',
-    5: 'Module 5 complete. You can brief AI on a project without making it guess or overreach.',
-    6: 'Module 6 complete. You can use approved documents for summaries, extraction, and reviewable workflows.',
-    7: 'Module 7 complete. You can choose the right tool category for the task and data boundary.',
-    8: 'Module 8 complete. You can map an AI workflow with clear human checkpoints.',
-    9: 'Module 9 complete. You can classify AI uses with the SAFE rule and red/yellow/green boundaries.',
-    10: 'Module 10 complete. You have identified a practical role-based AI use case.',
-    11: 'Module 11 complete. Your personal prompt library is becoming a reusable work asset.',
-    12: 'Module 12 complete. You are ready to submit your final practitioner lab package.',
+    1: 'Lesson 1 complete. You have a first practical view of how AI can help your workday.',
+    2: 'Lesson 2 complete. You understand what AI is, what it is not, and why human review matters.',
+    3: 'Lesson 3 complete. You can now structure a prompt with role, task, context, format, and constraints.',
+    4: 'Lesson 4 complete. Your AI work profile gives you reusable context without exposing sensitive data.',
+    5: 'Lesson 5 complete. You can brief AI on a project without making it guess or overreach.',
+    6: 'Lesson 6 complete. You can use approved documents for summaries, extraction, and reviewable workflows.',
+    7: 'Lesson 7 complete. You can choose the right tool category for the task and data boundary.',
+    8: 'Lesson 8 complete. You can map an AI workflow with clear human checkpoints.',
+    9: 'Lesson 9 complete. You can classify AI uses with the SAFE rule and red/yellow/green boundaries.',
+    10: 'Lesson 10 complete. You have identified a practical role-based AI use case.',
+    11: 'Lesson 11 complete. Your personal prompt library is becoming a reusable work asset.',
+    12: 'Lesson 12 complete. You are ready to submit your final practitioner lab package.',
   };
 
   const message =
-    encouragementByModule[moduleNumber] ?? `Module ${moduleNumber} complete. Keep going.`;
+    encouragementByModule[moduleNumber] ?? `Lesson ${moduleNumber} complete. Keep going.`;
 
   return (
     <>
       <div
         className="mt-8 p-4 bg-[color:var(--color-parch)] border border-[color:var(--color-parch-dark)] rounded-sm"
-        aria-label="Module complete"
+        aria-label="Lesson complete"
       >
         <p className="font-sans text-sm text-[color:var(--color-slate)] leading-relaxed">{message}</p>
       </div>

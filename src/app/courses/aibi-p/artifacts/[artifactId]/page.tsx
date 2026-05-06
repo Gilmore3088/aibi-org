@@ -45,7 +45,7 @@ export default function ArtifactDetailPage({ params }: ArtifactPageProps) {
 
         <header className="border-b border-[color:var(--color-ink)]/10 pb-8">
           <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
-            Module {artifact.moduleNumber} · {artifact.format}
+            Lesson {artifact.moduleNumber} · {artifact.format}
           </p>
           <h1 className="font-serif text-4xl md:text-5xl text-[color:var(--color-ink)] leading-tight">
             {artifact.title}

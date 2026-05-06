@@ -106,7 +106,7 @@ export default function DashboardPage() {
       <main className="px-6 py-14 md:py-20">
         <div className="max-w-2xl mx-auto text-center space-y-8">
           <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
-            Learner Dashboard
+            Today
           </p>
           <h1 className="font-serif text-5xl md:text-6xl text-[color:var(--color-ink)] leading-tight">
             Start with your AI readiness score.
@@ -163,10 +163,10 @@ export default function DashboardPage() {
           <div className="grid lg:grid-cols-[1.15fr_0.85fr] gap-6 items-stretch">
             <article className="border border-[color:var(--color-ink)]/10 rounded-[3px] p-6 md:p-8">
               <p className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-slate)]">
-                Current module
+                Current lesson
               </p>
               <h1 className="font-serif text-3xl md:text-5xl text-[color:var(--color-ink)] leading-tight mt-3">
-                Module {currentModule.number}: {currentModule.title}
+                Lesson {currentModule.number}: {currentModule.title}
               </h1>
               <div className="mt-6">
                 <div className="flex items-baseline justify-between gap-4">
@@ -280,7 +280,7 @@ export default function DashboardPage() {
 
         {toolboxEntitled && (
           <section>
-            <DashboardPanel title="Your Toolbox">
+            <DashboardPanel title="Your Playbooks">
               <p className="text-sm text-[color:var(--color-slate)] leading-relaxed">
                 Build reusable AI skills with guardrails, test them in the
                 Playground, and export them to your institutional AI tool.
@@ -290,7 +290,7 @@ export default function DashboardPage() {
                 href="/dashboard/toolbox"
                 className="inline-block mt-4 font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] border-b border-[color:var(--color-terra)]"
               >
-                Open Toolbox
+                Open Playbooks
               </Link>
             </DashboardPanel>
           </section>
@@ -327,7 +327,7 @@ export default function DashboardPage() {
                         className="border border-[color:var(--color-ink)]/10 rounded-[3px] p-5 bg-[color:var(--color-linen)]"
                       >
                         <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-3">
-                          Module {artifact.moduleNumber ?? 'N/A'} · {artifact.format}
+                          Lesson {artifact.moduleNumber ?? 'N/A'} · {artifact.format}
                         </p>
                         <h4 className="font-serif text-lg text-[color:var(--color-ink)] leading-tight">
                           {artifact.title}

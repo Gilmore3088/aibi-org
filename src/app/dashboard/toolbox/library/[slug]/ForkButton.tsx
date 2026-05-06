@@ -51,7 +51,7 @@ export function ForkButton({ librarySkillId, versionId }: ForkButtonProps) {
         disabled={pending}
         className="inline-flex items-center bg-[color:var(--color-terra)] px-5 py-2.5 font-mono text-[11px] uppercase tracking-widest text-white transition-colors hover:bg-[color:var(--color-terra-light)] disabled:opacity-60"
       >
-        {pending ? 'Saving…' : 'Save to Toolbox'}
+        {pending ? 'Saving…' : 'Save to Playbooks'}
       </button>
       {error && (
         <p role="alert" className="text-xs text-[color:var(--color-error)]">

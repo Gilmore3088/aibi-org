@@ -29,7 +29,7 @@ export function ModuleNavigation({
           href="/dashboard/toolbox?tab=library"
           className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-terra)] hover:text-[color:var(--color-ink)] transition-colors"
         >
-          Open Toolbox
+          Open Playbooks
         </Link>
       </div>
 
@@ -39,7 +39,7 @@ export function ModuleNavigation({
             href={`/courses/aibi-p/${moduleNumber + 1}`}
             className="inline-flex items-center gap-2 bg-[color:var(--color-terra)] hover:bg-[color:var(--color-terra-light)] text-[color:var(--color-linen)] px-6 py-2.5 rounded-sm font-mono text-[11px] uppercase tracking-widest transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-2"
           >
-            Next Module
+            Next Lesson
             <svg
               className="w-3 h-3"
               fill="currentColor"
@@ -58,10 +58,10 @@ export function ModuleNavigation({
             className="inline-flex items-center gap-2 bg-[color:var(--color-parch-dark)] text-[color:var(--color-slate)] px-6 py-2.5 rounded-sm font-mono text-[11px] uppercase tracking-widest cursor-not-allowed"
             role="button"
             aria-disabled="true"
-            aria-label="Complete all activities to unlock the next module"
+            aria-label="Complete all activities to unlock the next lesson"
             title="Complete all activities to unlock"
           >
-            Next Module
+            Next Lesson
             <svg
               className="w-3 h-3"
               fill="currentColor"

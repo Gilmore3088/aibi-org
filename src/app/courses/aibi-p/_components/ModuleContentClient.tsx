@@ -91,7 +91,7 @@ export function ModuleContentClient({
             disabled={saving}
             className="px-6 py-2.5 bg-[color:var(--color-terra)] hover:bg-[color:var(--color-terra-light)] disabled:bg-[color:var(--color-parch-dark)] disabled:text-[color:var(--color-dust)] text-[color:var(--color-linen)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-2"
           >
-            {saving ? 'Saving…' : isLastModule ? 'Complete Course' : 'Mark Module Complete'}
+            {saving ? 'Saving…' : isLastModule ? 'Complete Course' : 'Mark Lesson Complete'}
           </button>
         </div>
       )}

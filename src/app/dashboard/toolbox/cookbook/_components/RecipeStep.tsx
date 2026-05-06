@@ -76,10 +76,10 @@ export function RecipeStep({ index, recipeSlug, step, librarySkillId }: Props) {
     state === 'saving'
       ? 'Saving…'
       : state === 'saved'
-        ? 'Saved to Toolbox'
+        ? 'Saved to Playbooks'
         : state === 'error'
           ? 'Save failed'
-          : 'Save to my Toolbox';
+          : 'Save to my Playbooks';
 
   return (
     <article className="border border-[color:var(--color-ink)]/15 bg-[color:var(--color-parch)] p-6">

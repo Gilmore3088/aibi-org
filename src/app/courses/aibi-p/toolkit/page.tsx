@@ -25,7 +25,7 @@ import {
 import type { ActivityResponse } from '@/types/course';
 
 export const metadata: Metadata = {
-  title: 'My Toolkit | AiBI-P',
+  title: 'Your Work | AiBI-P',
 };
 
 // ---- Artifact definitions pulled from module data (mirrors module-*.ts entries) ----
@@ -260,7 +260,7 @@ export default async function ToolkitPage() {
           <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra-pale)] mb-2">
             AiBI-P Course
           </p>
-          <h1 className="font-serif text-3xl font-bold mb-2">My AI Toolkit</h1>
+          <h1 className="font-serif text-3xl font-bold mb-2">Your Work</h1>
           <p className="font-sans text-sm text-[color:var(--color-terra-pale)] leading-relaxed max-w-2xl">
             Your accumulated course assets in one place — skills, artifacts, subscription
             inventory, and capstone summary. Everything you built during AiBI-P is here to
@@ -385,7 +385,7 @@ export default async function ToolkitPage() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1 flex-wrap">
                       <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-cobalt)]">
-                        Module {artifact.module}
+                        Lesson {artifact.module}
                       </p>
                       <span
                         className="font-mono text-[9px] uppercase tracking-widest px-1.5 py-0.5 rounded-sm border"

@@ -6,7 +6,7 @@ import { ContextStrip } from './_components/ContextStrip';
 import { Paywall } from './_components/Paywall';
 
 export const metadata: Metadata = {
-  title: 'AI Banking Toolbox | The AI Banking Institute',
+  title: 'Banking AI Playbooks | The AI Banking Institute',
   description:
     'Build, test, save, and export banking AI skills. Included with every paid enrollment.',
 };
@@ -26,10 +26,10 @@ export default async function ToolboxPage() {
         <div className="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-6 lg:flex-row lg:items-end lg:justify-between lg:px-10">
           <div>
             <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
-              {isStarter ? 'AI Starter Toolkit' : 'Paid Learner Toolbox'}
+              {isStarter ? 'AI Starter Toolkit' : 'Banking AI Playbooks'}
             </p>
             <h1 className="mt-2 font-serif text-4xl leading-tight text-[color:var(--color-ink)] md:text-5xl">
-              Banking AI Toolbox
+              Banking AI Playbooks
             </h1>
             <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[color:var(--color-slate)]">
               {isStarter

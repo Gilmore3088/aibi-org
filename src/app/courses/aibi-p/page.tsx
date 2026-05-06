@@ -96,7 +96,7 @@ export default async function CourseOverviewPage() {
               href="/dashboard/toolbox?tab=guide"
               className="border border-[color:var(--color-ink)]/25 px-6 py-3 rounded-[2px] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] text-[color:var(--color-ink)] hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)] transition-colors"
             >
-              Open Toolbox
+              Open Playbooks
             </Link>
           )}
         </div>

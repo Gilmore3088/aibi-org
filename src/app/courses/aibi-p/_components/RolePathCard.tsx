@@ -191,7 +191,7 @@ export function RolePathCard({ rolePath }: RolePathCardProps) {
                     className="font-mono text-[9px] uppercase tracking-[0.2em] mb-1"
                     style={{ color: 'var(--color-terra)' }}
                   >
-                    Module {rolePath.startHereModule} — Highest Value for {rolePath.label}
+                    Lesson {rolePath.startHereModule} — Highest Value for {rolePath.label}
                   </p>
                   <p
                     className="font-serif text-base font-bold mb-2"

@@ -36,7 +36,7 @@ const TABS: readonly { id: TabId; label: string }[] = [
   { id: 'library', label: 'Library' },
   { id: 'build', label: 'Build' },
   { id: 'playground', label: 'Playground' },
-  { id: 'toolbox', label: 'My Toolbox' },
+  { id: 'toolbox', label: 'My Playbooks' },
 ];
 
 const EMPTY_WORKFLOW_SKILL: ToolboxWorkflowSkill = {
@@ -179,7 +179,7 @@ export function ToolboxApp({ tier = 'full' }: ToolboxAppProps = {}) {
         setSkills(data.skills ?? []);
         setLibrarySlugMap(data.librarySlugMap ?? {});
       })
-      .catch(() => setNotice('Saved Toolbox skills could not be loaded.'));
+      .catch(() => setNotice('Saved Playbook skills could not be loaded.'));
   }, []);
 
   useEffect(() => {
@@ -233,13 +233,13 @@ export function ToolboxApp({ tier = 'full' }: ToolboxAppProps = {}) {
     } else {
       setTemplateSkill(saved);
     }
-    setNotice('Skill saved to your Toolbox.');
+    setNotice('Skill saved to your Playbooks.');
     trackEvent('toolbox_skill_saved', { maturity: saved.maturity, source: saved.templateId ? 'template' : 'custom' });
     return saved;
   }
 
   async function deleteSkill(skillId: string) {
-    if (!window.confirm('Delete this skill from your Toolbox?')) return;
+    if (!window.confirm('Delete this skill from your Playbooks?')) return;
     const res = await fetch(`/api/toolbox/skills/${skillId}`, { method: 'DELETE' });
     if (!res.ok) {
       setNotice('Could not delete skill.');
@@ -347,7 +347,7 @@ export function ToolboxApp({ tier = 'full' }: ToolboxAppProps = {}) {
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-6 lg:px-10">
-      <nav className="sticky top-[81px] z-30 -mx-6 mb-8 flex items-center gap-1 overflow-x-auto border-b border-[color:var(--color-ink)]/10 bg-[color:var(--color-linen)]/95 px-6 backdrop-blur lg:-mx-10 lg:px-10" aria-label="Toolbox sections">
+      <nav className="sticky top-[81px] z-30 -mx-6 mb-8 flex items-center gap-1 overflow-x-auto border-b border-[color:var(--color-ink)]/10 bg-[color:var(--color-linen)]/95 px-6 backdrop-blur lg:-mx-10 lg:px-10" aria-label="Playbooks sections">
         {visibleTabs.map((tab) => (
           <Link
             key={tab.id}
@@ -659,7 +659,7 @@ function GuidePanel({ setTab }: { readonly savedCount: number; readonly setTab: 
           </dd>
         </div>
         <div>
-          <dt className="font-serif text-xl text-[color:var(--color-ink)]">My Toolbox</dt>
+          <dt className="font-serif text-xl text-[color:var(--color-ink)]">My Playbooks</dt>
           <dd className="mt-1 text-sm leading-relaxed text-[color:var(--color-slate)]">
             Your saved playbooks. Re-run, edit, or download as Markdown to share with your team.
           </dd>
@@ -1023,7 +1023,7 @@ function ToolboxPanel({ skills, librarySlugMap, onRun, onEdit, onExport, onDelet
     <section>
       <div className="mb-6 flex items-end justify-between border-b border-[color:var(--color-ink)]/10 pb-5">
         <div>
-          <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)]">My Toolbox</p>
+          <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)]">My Playbooks</p>
           <h2 className="mt-2 font-serif text-4xl">{skills.length} saved skill{skills.length === 1 ? '' : 's'}</h2>
         </div>
         <button type="button" onClick={onBuild} className="border border-[color:var(--color-ink)]/20 px-4 py-2 font-mono text-[10px] uppercase tracking-widest">New skill</button>

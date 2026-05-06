@@ -139,7 +139,7 @@ export function PromptCardsExperience() {
               {unlocked ? 'All 20 workflow cards' : 'Preview cards'}
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-[color:var(--color-slate)]">
-              Prompt Cards are for structured external use. The paid Toolbox adds account storage, Claude testing, and Markdown skill export.
+              Prompt Cards are for structured external use. The paid Playbooks add account storage, Claude testing, and Markdown skill export.
             </p>
             {unlocked ? (
               <a
@@ -231,7 +231,7 @@ export function PromptCardsExperience() {
             </p>
             <h2 className="mt-2 font-serif text-4xl leading-tight">Ready for the full AiBI Method?</h2>
             <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[color:var(--color-linen)]/75">
-              Practitioner turns these habits into training. Toolbox turns the method into saved, tested, exportable workflows.
+              Practitioner turns these habits into training. Playbooks turn the method into saved, tested, exportable workflows.
             </p>
           </div>
           <Link

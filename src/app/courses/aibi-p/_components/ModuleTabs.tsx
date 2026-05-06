@@ -62,7 +62,7 @@ export function ModuleTabs({
       <div
         className="border-b border-[color:var(--color-ink)]/10 mb-8"
         role="tablist"
-        aria-label="Module sections"
+        aria-label="Lesson sections"
       >
         <div className="flex gap-0">
           {visibleTabs.map((tab, idx) => {

@@ -5,28 +5,41 @@ interface FooterGroup {
   readonly links: readonly { readonly href: string; readonly label: string }[];
 }
 
+// Four-verb spine. Each group surfaces the platform-level destinations
+// for that verb. Mirrors the Header nav.
 const FOOTER_GROUPS: readonly FooterGroup[] = [
   {
-    label: 'Start here',
+    label: 'Assess',
     links: [
-      { href: '/assessment/start', label: 'Free Assessment' },
-      { href: '/education', label: 'Education' },
-      { href: '/for-institutions', label: 'For Institutions' },
+      { href: '/assessment', label: 'Free Assessment' },
+      { href: '/assessment/in-depth', label: 'In-Depth Assessment' },
     ],
   },
   {
-    label: 'Programs',
+    label: 'Learn',
     links: [
       { href: '/courses/aibi-p', label: 'AiBI-P · Practitioner' },
-      // 2026-05-05: AiBI-S and AiBI-L footer links removed (soft-hidden pending readiness).
+      { href: '/education', label: 'Education hub' },
+    ],
+  },
+  {
+    label: 'Apply',
+    links: [
+      { href: '/dashboard/toolbox', label: 'Banking AI Playbooks' },
+      { href: '/resources', label: 'Resources' },
+    ],
+  },
+  {
+    label: 'Lead',
+    links: [
+      { href: '/for-institutions', label: 'For Institutions' },
+      { href: '/security', label: 'Security & Governance' },
     ],
   },
   {
     label: 'Institute',
     links: [
       { href: '/about', label: 'About' },
-      { href: '/security', label: 'Security & Governance' },
-      { href: '/resources', label: 'Resources' },
       { href: '/privacy', label: 'Privacy' },
       { href: '/terms', label: 'Terms' },
       { href: '/ai-use-disclaimer', label: 'AI Use Disclaimer' },

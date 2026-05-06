@@ -78,7 +78,7 @@ describe('RecipeStep', () => {
         librarySkillId="lib-1"
       />,
     );
-    fireEvent.click(screen.getByRole('button', { name: /save to my toolbox/i }));
+    fireEvent.click(screen.getByRole('button', { name: /save to my playbooks/i }));
 
     await waitFor(() => {
       expect(fetchMock).toHaveBeenCalledTimes(1);
@@ -97,7 +97,7 @@ describe('RecipeStep', () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByRole('button', { name: /saved to toolbox/i })).toBeTruthy();
+      expect(screen.getByRole('button', { name: /saved to playbooks/i })).toBeTruthy();
     });
 
     fetchMock.mockRestore();
@@ -107,7 +107,7 @@ describe('RecipeStep', () => {
     render(
       <RecipeStep index={1} recipeSlug="r1" step={templateStep} librarySkillId={undefined} />,
     );
-    const button = screen.getByRole('button', { name: /save to my toolbox/i }) as HTMLButtonElement;
+    const button = screen.getByRole('button', { name: /save to my playbooks/i }) as HTMLButtonElement;
     expect(button.disabled).toBe(true);
   });
 });

@@ -14,7 +14,7 @@ interface Props {
 }
 
 const MENU_LINKS = [
-  { href: '/dashboard', label: 'Dashboard' },
+  { href: '/dashboard', label: 'Today' },
   { href: '/education', label: 'Education' },
 ] as const;
 

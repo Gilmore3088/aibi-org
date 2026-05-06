@@ -3,13 +3,14 @@ import { AibiSeal } from './AibiSeal';
 import { AuthButton } from './AuthButton';
 import { MobileNav } from './MobileNav';
 
-// Nav-link "Assessment" was removed: it duplicated the right-rail "Take Assessment"
-// pill button (both route to /assessment/start). The pill is the primary CTA;
-// the nav links are secondary destinations only.
+// Four-verb platform spine — each verb maps to its primary product surface.
+// Replaces the previous "For Learners / For Institutions / Resources" model
+// per the 2026-05-06 momentum-first restructure plan.
 const NAV_LINKS = [
-  { href: '/courses/aibi-p', label: 'For Learners' },
-  { href: '/for-institutions', label: 'For Institutions' },
-  { href: '/resources', label: 'Resources' },
+  { href: '/assessment', label: 'Assess' },
+  { href: '/courses/aibi-p', label: 'Learn' },
+  { href: '/dashboard/toolbox', label: 'Apply' },
+  { href: '/for-institutions', label: 'Lead' },
 ] as const;
 
 export function Header() {
@@ -40,10 +41,10 @@ export function Header() {
             </Link>
           ))}
           <Link
-            href="/assessment/start"
+            href="/assessment"
             className="font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] bg-[color:var(--color-terra)] text-[color:var(--color-linen)] px-4 py-2 hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all hidden xl:inline-block"
           >
-            Take Assessment
+            See where you stand
           </Link>
           <AuthButton />
           <MobileNav />
