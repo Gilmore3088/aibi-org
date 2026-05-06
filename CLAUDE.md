@@ -738,6 +738,26 @@ course_enrollments to gate access`. The `course_enrollments`
 schema lost its `kajabi_user_id` column; gained `user_id` referencing
 `auth.users(id)` (bound on first login).
 
+**2026-05-05 — Product menu simplified to four tiers.** Public site
+reduced to: free assessment, In-Depth Assessment ($99 / $79 at 10+),
+AiBI-P course ($295 / $199 at 10+), and a "custom engagements —
+contact us" stub. AiBI-S and AiBI-L soft-hidden (route redirects to
+/education, products deactivated in Stripe — reversible by toggle).
+Advisory tiers (Pilot/Program/Leadership Advisory) removed pending
+case-study content; replaced by a mailto stub on /for-institutions.
+The 48 questions in `content/assessments/v2/questions.ts` now back
+two products: the existing free 12-question rotation, and a new paid
+48-question In-Depth Assessment with hybrid individual/institution
+flow plus an anonymized aggregate report for institution leaders.
+Tier thresholds rebalanced from 8-32 to 12-48 scale (equal-spaced
+9-point bands: 12-20 Starting Point, 21-29 Early Stage, 30-38
+Building Momentum, 39-48 Ready to Scale). Champion threshold for
+aggregate dashboards is overall ≥ 39, top 2 emails surfaced.
+Plans/ canonical specs left unchanged — site intentionally diverges
+from plans for tiers being held back. Decision drivers + design
+discussion in
+`docs/superpowers/specs/2026-05-05-product-simplification-and-indepth-assessment-design.md`.
+
 ---
 
 ## Design Context

@@ -31,6 +31,21 @@ The tagline anchors everything: **Turning Bankers into Builders.** The report sh
 
 The free 12Q result is a **trailer**. The in-depth report is the **feature film**. The free result must give enough operational value to be respectable on its own, and must make the upgrade feel necessary (Bucket D).
 
+## Design Bar (applies to every wave)
+
+The deliverable must read as a **professional consulting document a banker could hand to a partner at McKinsey, Oliver Wyman, or Cornerstone Advisors without embarrassment.** Not a SaaS report. Not a marketing PDF. A consulting deliverable.
+
+Concretely, this means:
+
+- **Information density without clutter.** Every page earns its space. No decorative filler.
+- **Typographic discipline.** Cormorant for display, DM Sans for body, DM Mono for every number (per `.impeccable.md`). Italic Cormorant only for warmth callouts.
+- **Visual restraint.** No gradients. No drop shadows. No rounded corners >4px. No icon library. The visual interest comes from data treatment, not chrome.
+- **Numbers earn their place.** Every figure is sourced or framed as self-reported. DM Mono with tabular-nums.
+- **Pillar discipline holds.** Sage = Pillar A only. Cobalt = Pillar B / governance only. Terra = Pillar C + brand. The governance strip (C.3) uses cobalt because it is governance.
+- **The PDF is the gold standard.** If a banker prints the in-depth PDF and walks into a board meeting, it should hold its own next to a Big Four deliverable.
+
+When in doubt during implementation: choose the more restrained, more institutional, more typographically disciplined option.
+
 ## Non-Goals
 
 - Not rebuilding the four delivery surfaces themselves (they shipped in PRs #40–#43)
