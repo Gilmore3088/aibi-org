@@ -15,6 +15,7 @@ interface PersistedState {
   readonly selectedQuestionIds: readonly string[];
   readonly answers: readonly number[];
   readonly currentQuestion: number;
+  readonly phase?: AssessmentPhase;
 }
 
 export interface AssessmentState {
@@ -40,6 +41,7 @@ function readPersisted(pool: readonly AssessmentQuestion[]): {
   questions: AssessmentQuestion[];
   answers: number[];
   currentQuestion: number;
+  phase: AssessmentPhase;
 } | null {
   if (typeof window === 'undefined') return null;
   try {
@@ -50,6 +52,14 @@ function readPersisted(pool: readonly AssessmentQuestion[]): {
     if (!Array.isArray(parsed.answers)) return null;
     if (typeof parsed.currentQuestion !== 'number') return null;
 
+    // Per-element validation: scores must be integers 1-4 (matches the
+    // free assessment's MIN/MAX). Anything else means corrupted state.
+    const cleanAnswers = parsed.answers.filter(
+      (n): n is number =>
+        typeof n === 'number' && Number.isInteger(n) && n >= 1 && n <= 4,
+    );
+    if (cleanAnswers.length !== parsed.answers.length) return null;
+
     // Rebuild selected questions from IDs to preserve order
     const poolById = new Map(pool.map((q) => [q.id, q]));
     const restored = parsed.selectedQuestionIds
@@ -58,13 +68,27 @@ function readPersisted(pool: readonly AssessmentQuestion[]): {
 
     if (restored.length !== QUESTIONS_PER_SESSION) return null;
 
+    const answers = cleanAnswers.slice(0, QUESTIONS_PER_SESSION);
+    // If the persisted state represents a completed take, restore the
+    // user to the score view instead of dropping them back into the
+    // last question (where their next click would just re-trigger the
+    // score transition with no apparent new question answered).
+    const isComplete = answers.length === QUESTIONS_PER_SESSION;
+    const persistedPhase: AssessmentPhase | undefined = parsed.phase;
+    const phase: AssessmentPhase = isComplete
+      ? persistedPhase === 'results'
+        ? 'results'
+        : 'score'
+      : 'questions';
+
     return {
       questions: restored,
-      answers: parsed.answers.slice(0, QUESTIONS_PER_SESSION),
+      answers,
       currentQuestion: Math.min(
         Math.max(parsed.currentQuestion, 0),
-        QUESTIONS_PER_SESSION - 1
+        QUESTIONS_PER_SESSION - 1,
       ),
+      phase,
     };
   } catch {
     return null;
@@ -85,6 +109,7 @@ export function useAssessmentV2(): AssessmentState & AssessmentActions {
       setSelectedQuestions(persisted.questions);
       setAnswers(persisted.answers);
       setCurrentQuestion(persisted.currentQuestion);
+      setPhase(persisted.phase);
     } else {
       setSelectedQuestions(selectQuestions(questionPool));
     }
@@ -102,9 +127,10 @@ export function useAssessmentV2(): AssessmentState & AssessmentActions {
       selectedQuestionIds: selectedQuestions.map((q) => q.id),
       answers,
       currentQuestion,
+      phase,
     };
     window.sessionStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
-  }, [answers, currentQuestion, selectedQuestions, hydrated]);
+  }, [answers, currentQuestion, selectedQuestions, phase, hydrated]);
 
   const totalScore = answers.reduce((sum, n) => sum + n, 0);
   const isComplete = answers.length === QUESTIONS_PER_SESSION;

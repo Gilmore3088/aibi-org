@@ -12,8 +12,12 @@ interface CheckoutResponse {
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export default function BuyForMyselfCard() {
-  const [email, setEmail] = useState('');
+interface BuyForMyselfCardProps {
+  readonly defaultEmail?: string | null;
+}
+
+export default function BuyForMyselfCard({ defaultEmail }: BuyForMyselfCardProps = {}) {
+  const [email, setEmail] = useState(defaultEmail ?? '');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 

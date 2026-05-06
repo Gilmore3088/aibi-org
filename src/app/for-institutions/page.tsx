@@ -194,6 +194,38 @@ export default function ForInstitutionsPage() {
         </div>
       </section>
 
+      {/* In-Depth Assessment — institution-wide diagnostic */}
+      <section
+        aria-labelledby="indepth-heading"
+        className="px-6 py-14 md:py-20 border-t border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)]"
+      >
+        <div className="max-w-4xl mx-auto">
+          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
+            In-Depth Assessment · For institutions
+          </p>
+          <h2
+            id="indepth-heading"
+            className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] leading-tight mb-4"
+          >
+            Where does your bench actually stand?
+          </h2>
+          <p className="text-base md:text-lg text-[color:var(--color-ink)]/80 leading-relaxed mb-6 max-w-2xl">
+            48 questions across 8 dimensions, taken by 10+ team members.
+            Individual results stay private; the leader sees an anonymized
+            aggregate report once at least three respondents finish.
+          </p>
+          <p className="font-mono text-sm text-[color:var(--color-terra)] mb-6">
+            $79 per seat · 10-seat minimum
+          </p>
+          <Link
+            href="/assessment/in-depth"
+            className="inline-block px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
+          >
+            See the In-Depth Assessment
+          </Link>
+        </div>
+      </section>
+
       {/* Free self-serve sample library */}
       <section
         aria-labelledby="samples-heading"

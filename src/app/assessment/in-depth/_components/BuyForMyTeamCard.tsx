@@ -14,8 +14,14 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PRICE_PER_SEAT = 79;
 const MIN_SEATS = 10;
 
-export default function BuyForMyTeamCard() {
-  const [email, setEmail] = useState('');
+interface BuyForMyTeamCardProps {
+  readonly defaultEmail?: string | null;
+}
+
+export default function BuyForMyTeamCard({
+  defaultEmail,
+}: BuyForMyTeamCardProps = {}) {
+  const [email, setEmail] = useState(defaultEmail ?? '');
   const [institution, setInstitution] = useState('');
   const [quantity, setQuantity] = useState<number>(MIN_SEATS);
   const [loading, setLoading] = useState(false);

@@ -1,10 +1,22 @@
 // /assessment/in-depth — marketing/sales page for the In-Depth AI Readiness Assessment.
 // Server component. Two CTAs (individual $99, institution $79/seat × 10+) live in
 // client components; the rest is pure render.
+//
+// For authenticated visitors we resolve the email server-side and pass it into
+// the purchase cards as a default — buyers should not have to type their email
+// when Supabase already knows who they are.
 
 import type { Metadata } from 'next';
+import { cookies } from 'next/headers';
 import BuyForMyselfCard from './_components/BuyForMyselfCard';
 import BuyForMyTeamCard from './_components/BuyForMyTeamCard';
+import {
+  createServerClientWithCookies,
+  isSupabaseConfigured,
+} from '@/lib/supabase/client';
+
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
 
 export const metadata: Metadata = {
   title: 'In-Depth AI Readiness Assessment | The AI Banking Institute',
@@ -40,7 +52,21 @@ const VALUE_PROPS: readonly ValueProp[] = [
   },
 ];
 
-export default function InDepthAssessmentPage() {
+async function resolveDefaultEmail(): Promise<string | null> {
+  if (!isSupabaseConfigured()) return null;
+  try {
+    const supabase = createServerClientWithCookies(cookies());
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    return user?.email ?? null;
+  } catch {
+    return null;
+  }
+}
+
+export default async function InDepthAssessmentPage() {
+  const defaultEmail = await resolveDefaultEmail();
   return (
     <main>
       {/* Hero */}
@@ -123,8 +149,8 @@ export default function InDepthAssessmentPage() {
           </div>
 
           <div className="grid md:grid-cols-2 gap-6 items-stretch">
-            <BuyForMyselfCard />
-            <BuyForMyTeamCard />
+            <BuyForMyselfCard defaultEmail={defaultEmail} />
+            <BuyForMyTeamCard defaultEmail={defaultEmail} />
           </div>
         </div>
       </section>

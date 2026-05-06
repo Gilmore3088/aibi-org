@@ -23,6 +23,20 @@ const DEFAULT_FROM_NAME = 'The AI Banking Institute';
 
 const REPLY_TO = 'hello@aibankinginstitute.com';
 
+// Whether to surface skip-warnings to stderr. Off in tests so the suite stays
+// quiet; on everywhere else so local dev sees that emails were silently
+// dropped instead of mistaking the no-op for success.
+const VERBOSE_SKIPS =
+  process.env.NODE_ENV !== 'test' && process.env.RESEND_QUIET !== 'true';
+
+function warnSkip(fn: string, to: string, reason: string): void {
+  if (!VERBOSE_SKIPS) return;
+  console.warn(
+    `[resend] ${fn} skipped — ${reason}. Recipient: ${to}. ` +
+      `Set RESEND_API_KEY to enable, or set RESEND_QUIET=true to silence.`,
+  );
+}
+
 export interface AssessmentBreakdownEmailPayload {
   readonly email: string;
   readonly score: number;
@@ -51,11 +65,13 @@ export async function sendAssessmentBreakdown(
   payload: AssessmentBreakdownEmailPayload,
 ): Promise<ResendResult> {
   if (process.env.SKIP_RESEND === 'true') {
+    warnSkip('sendAssessmentBreakdown', payload.email, 'SKIP_RESEND env flag');
     return { skipped: true, reason: 'SKIP_RESEND env flag' };
   }
 
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
+    warnSkip('sendAssessmentBreakdown', payload.email, 'RESEND_API_KEY not configured');
     return { skipped: true, reason: 'RESEND_API_KEY not configured' };
   }
 
@@ -275,11 +291,13 @@ async function postResendEmail(args: {
   }
 }
 
-function indepthEnvCheck(): ResendResult | null {
+function indepthEnvCheck(fn: string, to: string): ResendResult | null {
   if (process.env.SKIP_RESEND === 'true') {
+    warnSkip(fn, to, 'SKIP_RESEND env flag');
     return { skipped: true, reason: 'SKIP_RESEND env flag' };
   }
   if (!process.env.RESEND_API_KEY) {
+    warnSkip(fn, to, 'RESEND_API_KEY not configured');
     return { skipped: true, reason: 'RESEND_API_KEY not configured' };
   }
   return null;
@@ -327,7 +345,7 @@ export interface IndepthIndividualInvitePayload {
 export async function sendIndepthIndividualInvite(
   payload: IndepthIndividualInvitePayload,
 ): Promise<ResendResult> {
-  const skip = indepthEnvCheck();
+  const skip = indepthEnvCheck('sendIndepthIndividualInvite', payload.email);
   if (skip) return skip;
 
   const subject = 'Your In-Depth AI Readiness Assessment is ready';
@@ -370,7 +388,7 @@ export interface IndepthInstitutionInvitePayload {
 export async function sendIndepthInstitutionInvite(
   payload: IndepthInstitutionInvitePayload,
 ): Promise<ResendResult> {
-  const skip = indepthEnvCheck();
+  const skip = indepthEnvCheck('sendIndepthInstitutionInvite', payload.inviteeEmail);
   if (skip) return skip;
 
   const leader = escape(payload.leaderName);
@@ -423,7 +441,7 @@ export interface IndepthIndividualResultsPayload {
 export async function sendIndepthIndividualResults(
   payload: IndepthIndividualResultsPayload,
 ): Promise<ResendResult> {
-  const skip = indepthEnvCheck();
+  const skip = indepthEnvCheck('sendIndepthIndividualResults', payload.email);
   if (skip) return skip;
 
   const subject = 'Your In-Depth AI Readiness Assessment results';

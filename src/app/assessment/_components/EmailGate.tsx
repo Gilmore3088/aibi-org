@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, type FormEvent } from 'react';
+import { useEffect, useState, type FormEvent } from 'react';
 import { saveReadinessResult, type DimensionScoreSerialized } from '@/lib/user-data';
 
 interface EmailGateProps {
@@ -41,6 +41,25 @@ export function EmailGate({
   const [marketingOptIn, setMarketingOptIn] = useState(false);
   const [status, setStatus] = useState<Status>('idle');
   const [message, setMessage] = useState<string | null>(null);
+
+  // Prefill the email field from the Supabase Auth session if the visitor
+  // is already signed in. Best-effort and silent — failure leaves the field
+  // empty and the user types it themselves, the existing flow.
+  useEffect(() => {
+    let cancelled = false;
+    fetch('/api/auth/me')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data: { email?: string | null } | null) => {
+        if (cancelled) return;
+        if (data?.email) {
+          setEmail((current) => current || data.email!);
+        }
+      })
+      .catch(() => undefined);
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();

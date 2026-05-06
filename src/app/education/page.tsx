@@ -183,6 +183,54 @@ export default async function EducationPage() {
         </div>
       </section>
 
+      {/* Diagnostics — paid assessments */}
+      <section
+        id="diagnostics"
+        aria-labelledby="diagnostics-heading"
+        className="px-6 py-12 md:py-16 border-t border-[color:var(--color-ink)]/10"
+      >
+        <div className="max-w-5xl mx-auto">
+          <div className="mb-10 max-w-2xl">
+            <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-3">
+              Diagnostics · Paid
+            </p>
+            <h2
+              id="diagnostics-heading"
+              className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] leading-tight mb-3"
+            >
+              The full picture, on demand.
+            </h2>
+            <p className="text-base text-[color:var(--color-slate)] leading-relaxed">
+              When the free assessment surfaces a question the leadership team
+              wants answered with depth and rigor.
+            </p>
+          </div>
+
+          <Link
+            href="/assessment/in-depth"
+            className="block bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-6 md:p-8 hover:border-[color:var(--color-terra)]/40 transition-colors"
+          >
+            <div className="flex flex-wrap items-baseline justify-between gap-4 mb-3">
+              <h3 className="font-serif text-2xl text-[color:var(--color-ink)] leading-tight">
+                In-Depth AI Readiness Assessment
+              </h3>
+              <p className="font-mono text-sm tabular-nums text-[color:var(--color-terra)]">
+                $99 · $79 / seat at 10+
+              </p>
+            </div>
+            <p className="text-base text-[color:var(--color-ink)]/75 leading-relaxed mb-5 max-w-2xl">
+              All 48 questions across all 8 dimensions, individual or
+              institution-wide. Comes with a tailored 30-day starter artifact
+              and — for institutions — an anonymized aggregate report that
+              unlocks once three or more team members have completed.
+            </p>
+            <span className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] border-b border-[color:var(--color-terra)] pb-0.5">
+              See the In-Depth Assessment →
+            </span>
+          </Link>
+        </div>
+      </section>
+
       {/* Certifications section */}
       <section
         id="certifications"

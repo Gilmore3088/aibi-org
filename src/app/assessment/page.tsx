@@ -59,15 +59,36 @@ export default function AssessmentPage() {
 
       <div className="px-6 py-12 md:py-20">
         {state.phase === 'questions' && state.selectedQuestions.length > 0 && (
-          <QuestionCard
-            question={state.selectedQuestions[state.currentQuestion]}
-            questionNumber={state.currentQuestion + 1}
-            totalQuestions={QUESTIONS_PER_SESSION}
-            selectedPoints={state.answers[state.currentQuestion]}
-            onAnswer={state.answer}
-            onBack={state.goBack}
-            canGoBack={state.currentQuestion > 0}
-          />
+          <>
+            <QuestionCard
+              question={state.selectedQuestions[state.currentQuestion]}
+              questionNumber={state.currentQuestion + 1}
+              totalQuestions={QUESTIONS_PER_SESSION}
+              selectedPoints={state.answers[state.currentQuestion]}
+              onAnswer={state.answer}
+              onBack={state.goBack}
+              canGoBack={state.currentQuestion > 0}
+            />
+            {state.answers.length > 0 && (
+              <div className="max-w-3xl mx-auto mt-8 text-center">
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (
+                      window.confirm(
+                        'Discard your current answers and start a fresh assessment?',
+                      )
+                    ) {
+                      state.restart();
+                    }
+                  }}
+                  className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/55 hover:text-[color:var(--color-terra)] transition-colors"
+                >
+                  Start over
+                </button>
+              </div>
+            )}
+          </>
         )}
 
         {state.phase === 'score' && state.tier && (

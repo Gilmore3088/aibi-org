@@ -414,7 +414,7 @@ export function ResultsViewV2({
         </p>
         <Link
           href="/assessment/in-depth"
-          className="mt-5 inline-block px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-mono text-[10px] uppercase tracking-[0.15em] hover:bg-[color:var(--color-terra-light)] transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-2"
+          className="mt-5 inline-block px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-2"
         >
           See the In-Depth Assessment →
         </Link>
