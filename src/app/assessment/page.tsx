@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 import { trackEvent } from '@/lib/analytics/plausible';
 import { useAssessmentV2, QUESTIONS_PER_SESSION } from './_lib/useAssessmentV2';
 import { QuestionCard } from './_components/QuestionCard';
@@ -23,12 +24,25 @@ export default function AssessmentPage() {
   const [capturedProfileId, setCapturedProfileId] = useState<string | null>(null);
   const emailCaptured = capturedEmail !== null;
   const [mounted, setMounted] = useState(false);
+  // Whether the user has explicitly chosen to start the free assessment.
+  // Combined with hydrated state below to decide between chooser vs runtime.
+  const [chooserDismissed, setChooserDismissed] = useState(false);
   const scoreHeadingRef = useRef<HTMLHeadingElement | null>(null);
+
+  // Returning visitors with in-flight progress skip the chooser and
+  // resume their take. Detected client-side after sessionStorage hydration.
+  const hasInflightState =
+    state.answers.length > 0 || state.phase !== 'questions';
+  const showChooser = !chooserDismissed && !hasInflightState;
 
   useEffect(() => {
     setMounted(true);
-    trackEvent('assessment_start');
-  }, []);
+    if (!showChooser) {
+      trackEvent('assessment_start');
+    }
+    // The chooser fires its own event on click instead of assessment_start
+    // — see the chooser onClick handler below.
+  }, [showChooser]);
 
   useEffect(() => {
     if (state.isComplete && state.phase === 'score') {
@@ -52,6 +66,87 @@ export default function AssessmentPage() {
 
   const isLowerTier =
     state.tier?.id === 'starting-point' || state.tier?.id === 'early-stage';
+
+  if (showChooser) {
+    return (
+      <main className="min-h-screen px-6 py-14 md:py-20">
+        <div className="max-w-4xl mx-auto">
+          {/* Header */}
+          <header className="mb-12 text-center">
+            <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
+              Assess
+            </p>
+            <h1 className="font-serif text-4xl md:text-5xl text-[color:var(--color-ink)] leading-tight">
+              See where you stand.
+            </h1>
+            <p className="mt-4 text-base md:text-lg text-[color:var(--color-ink)]/75 max-w-2xl mx-auto leading-relaxed">
+              Two assessments — one short, one in depth. Most bankers start
+              with the free 12-question version.
+            </p>
+          </header>
+
+          {/* Two cards */}
+          <div className="grid md:grid-cols-2 gap-6 items-stretch">
+            {/* Free card */}
+            <article className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-6 md:p-8 flex flex-col">
+              <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
+                Free · 3 minutes
+              </p>
+              <h2 className="font-serif text-2xl md:text-3xl text-[color:var(--color-ink)] leading-tight mb-3">
+                Free Readiness Assessment
+              </h2>
+              <p className="font-mono text-sm text-[color:var(--color-slate)] tabular-nums mb-5">
+                12 questions · no signup
+              </p>
+              <p className="text-sm text-[color:var(--color-ink)]/75 leading-relaxed mb-6 flex-1">
+                Get your readiness score and a tailored next-step
+                recommendation. Your score is yours immediately — email is
+                requested after, only if you want the full dimension breakdown.
+              </p>
+              <button
+                type="button"
+                onClick={() => {
+                  trackEvent('assessment_start');
+                  setChooserDismissed(true);
+                }}
+                className="w-full px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
+              >
+                Begin
+              </button>
+            </article>
+
+            {/* In-Depth card */}
+            <article className="bg-[color:var(--color-linen)] border border-[color:var(--color-ink)]/15 rounded-[3px] p-6 md:p-8 flex flex-col">
+              <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
+                Paid · 15–20 minutes
+              </p>
+              <h2 className="font-serif text-2xl md:text-3xl text-[color:var(--color-ink)] leading-tight mb-3">
+                In-Depth Assessment
+              </h2>
+              <p className="font-mono text-sm text-[color:var(--color-slate)] tabular-nums mb-5">
+                48 questions · $99 individual · $79 / seat at 10+
+              </p>
+              <p className="text-sm text-[color:var(--color-ink)]/75 leading-relaxed mb-6 flex-1">
+                The full diagnostic across all 8 dimensions. For yourself,
+                or for your team — institution leaders see an anonymized
+                aggregate report once 3+ team members complete.
+              </p>
+              <Link
+                href="/assessment/in-depth"
+                className="w-full inline-block text-center px-6 py-3 bg-transparent border border-[color:var(--color-terra)] text-[color:var(--color-terra)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra)] hover:text-[color:var(--color-linen)] active:scale-[0.98] transition-all"
+              >
+                See the In-Depth Assessment
+              </Link>
+            </article>
+          </div>
+
+          <p className="mt-10 text-center font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/55">
+            Not sure? Start with the free version. It takes 3 minutes.
+          </p>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen">
