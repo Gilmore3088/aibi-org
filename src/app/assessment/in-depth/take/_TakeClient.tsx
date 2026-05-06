@@ -12,6 +12,7 @@ import { DIMENSION_LABELS } from '@content/assessments/v2/types';
 interface TakeClientProps {
   readonly takerId: string;
   readonly questions: readonly AssessmentQuestion[];
+  readonly inviteToken: string;
 }
 
 interface PersistedState {
@@ -23,7 +24,7 @@ function storageKey(takerId: string): string {
   return `aibi-indepth-${takerId}`;
 }
 
-export default function TakeClient({ takerId, questions }: TakeClientProps) {
+export default function TakeClient({ takerId, questions, inviteToken }: TakeClientProps) {
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [currentIndex, setCurrentIndex] = useState(0);
   const [hydrated, setHydrated] = useState(false);
@@ -125,7 +126,7 @@ export default function TakeClient({ takerId, questions }: TakeClientProps) {
       } catch {
         // ignore
       }
-      window.location.href = `/results/in-depth/${takerId}`;
+      window.location.href = `/results/in-depth/${takerId}?t=${encodeURIComponent(inviteToken)}`;
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Submit failed';
       setSubmitError(message);

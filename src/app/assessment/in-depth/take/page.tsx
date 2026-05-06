@@ -90,7 +90,7 @@ export default async function TakeAssessmentPage({ searchParams }: PageProps) {
   }
 
   if (taker.completed_at) {
-    redirect(`/results/in-depth/${taker.id}`);
+    redirect(`/results/in-depth/${taker.id}?t=${encodeURIComponent(token)}`);
   }
 
   // Auth gate (Phase 2): Individual buyers (institution_id = null) must
@@ -169,5 +169,11 @@ export default async function TakeAssessmentPage({ searchParams }: PageProps) {
       );
   }
 
-  return <TakeClient takerId={taker.id} questions={[...questions]} />;
+  return (
+    <TakeClient
+      takerId={taker.id}
+      questions={[...questions]}
+      inviteToken={token}
+    />
+  );
 }

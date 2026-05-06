@@ -97,7 +97,7 @@ export async function POST(request: Request) {
   try {
     const { data: row } = await supabase
       .from('indepth_assessment_takers')
-      .select('invite_email')
+      .select('invite_email, invite_token')
       .eq('id', takerId)
       .single();
     if (row?.invite_email) {
@@ -105,7 +105,10 @@ export async function POST(request: Request) {
       const tier = getTierV2(total, 192);
       const origin =
         process.env.NEXT_PUBLIC_SITE_URL ?? 'https://aibankinginstitute.com';
-      const resultsUrl = `${origin}/results/in-depth/${takerId}`;
+      const tokenQuery = row.invite_token
+        ? `?t=${encodeURIComponent(row.invite_token)}`
+        : '';
+      const resultsUrl = `${origin}/results/in-depth/${takerId}${tokenQuery}`;
 
       const [
         { sendIndepthIndividualResults },

@@ -6,16 +6,22 @@
 // session state — the page is the destination for the completion email
 // link.
 //
-// This is a server-rendered page. We deliberately keep it client-free:
-// no scroll-spy, no print button — the in-depth flow ships PDF/return
-// URL separately. Owner-binding is intentionally NOT enforced here yet
-// (the link is shared via email); the takerId is a UUID and acts as the
-// access token. Tighten with auth if/when leader dashboards expose it.
-//
-// Refs: Task 12 — /results/in-depth/{id} results page + completion email.
+// Authorization: a UUID is not a capability. Access requires one of:
+//   1. ?t=<invite_token> matching the row's invite_token (the magic-link
+//      path used by institution invitees who never sign in).
+//   2. A signed-in Supabase Auth user whose id matches row.user_id.
+//   3. A signed-in Supabase Auth user who is the leader_user_id of the
+//      row's parent institution (leader viewing one of their staff).
+// All denial paths collapse to notFound() so existence isn't disclosed.
 
 import { notFound } from 'next/navigation';
-import { createServiceRoleClient } from '@/lib/supabase/client';
+import { cookies } from 'next/headers';
+import { timingSafeEqual } from 'crypto';
+import {
+  createServerClientWithCookies,
+  createServiceRoleClient,
+} from '@/lib/supabase/client';
+import { isValidInviteToken } from '@/lib/indepth/tokens';
 import { getTierV2 } from '@content/assessments/v2/scoring';
 import { DIMENSION_LABELS } from '@content/assessments/v2/types';
 import type { Dimension } from '@content/assessments/v2/types';
@@ -40,6 +46,60 @@ const ALL_DIMENSIONS: readonly Dimension[] = [
 
 interface ResultsPageProps {
   readonly params: { readonly id: string };
+  readonly searchParams: { readonly t?: string | string[] };
+}
+
+function pickOne(v: string | string[] | undefined): string | undefined {
+  return Array.isArray(v) ? v[0] : v;
+}
+
+function tokensMatch(provided: string, stored: string): boolean {
+  const a = Buffer.from(provided);
+  const b = Buffer.from(stored);
+  if (a.length !== b.length) return false;
+  return timingSafeEqual(a, b);
+}
+
+interface AccessRow {
+  readonly user_id: string | null;
+  readonly institution_id: string | null;
+  readonly invite_token: string | null;
+}
+
+async function isAuthorized(row: AccessRow, providedToken: string | undefined): Promise<boolean> {
+  if (
+    providedToken &&
+    isValidInviteToken(providedToken) &&
+    row.invite_token &&
+    tokensMatch(providedToken, row.invite_token)
+  ) {
+    return true;
+  }
+
+  let authedUserId: string | null = null;
+  try {
+    const supabaseAuth = createServerClientWithCookies(cookies());
+    const { data } = await supabaseAuth.auth.getUser();
+    authedUserId = data.user?.id ?? null;
+  } catch {
+    return false;
+  }
+
+  if (!authedUserId) return false;
+
+  if (row.user_id && row.user_id === authedUserId) return true;
+
+  if (row.institution_id) {
+    const supabase = createServiceRoleClient();
+    const { data: inst } = await supabase
+      .from('indepth_assessment_institutions')
+      .select('leader_user_id')
+      .eq('id', row.institution_id)
+      .maybeSingle();
+    if (inst?.leader_user_id === authedUserId) return true;
+  }
+
+  return false;
 }
 
 interface RankedDimension {
@@ -53,15 +113,33 @@ function calendlyHref(): string {
   return process.env.NEXT_PUBLIC_CALENDLY_URL ?? '/for-institutions';
 }
 
-export default async function InDepthResultsPage({ params }: ResultsPageProps) {
+export default async function InDepthResultsPage({
+  params,
+  searchParams,
+}: ResultsPageProps) {
   const supabase = createServiceRoleClient();
   const { data: row } = await supabase
     .from('indepth_assessment_takers')
-    .select('id, completed_at, score_total, score_per_dimension, invite_email')
+    .select(
+      'id, completed_at, score_total, score_per_dimension, invite_email, user_id, institution_id, invite_token',
+    )
     .eq('id', params.id)
     .maybeSingle();
 
   if (!row || !row.completed_at || typeof row.score_total !== 'number') {
+    notFound();
+  }
+
+  const providedToken = pickOne(searchParams?.t);
+  const allowed = await isAuthorized(
+    {
+      user_id: row.user_id,
+      institution_id: row.institution_id,
+      invite_token: row.invite_token,
+    },
+    providedToken,
+  );
+  if (!allowed) {
     notFound();
   }
 
