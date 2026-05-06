@@ -95,61 +95,77 @@ export function ResultsViewV2({
 
   return (
     <div className="w-full max-w-3xl mx-auto">
-      {/* Executive briefing header */}
-      <header
-        className="mb-14 border-b border-[color:var(--color-ink)]/15 pb-8"
+      {/* Quick Read — score + tier + ONE sentence + ONE CTA above the fold.
+          Replaces the previous multi-section "executive briefing" preamble.
+          The full briefing remains below for visitors who want depth. */}
+      <section
+        aria-labelledby="quick-read-heading"
+        className="mb-14 pb-10 border-b border-[color:var(--color-ink)]/15"
         style={{ animation: 'fadeInUp 600ms cubic-bezier(0.22, 1, 0.36, 1) both' }}
       >
-        <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 mb-3">
-          <p className="font-serif-sc text-xs uppercase tracking-[0.22em] text-[color:var(--color-terra)]">
-            AI Readiness Briefing
-          </p>
-          <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55 shrink-0">
-            {BRIEFING_DATE_FORMATTER.format(new Date())}
-          </p>
-        </div>
-        <h1 className="font-serif text-2xl md:text-3xl text-[color:var(--color-ink)] leading-tight">
-          {firstName
-            ? `${firstName.trim()}, here is your assessment in brief.`
-            : 'Your assessment, in brief.'}
-        </h1>
-        <p
-          className="mt-4 font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55"
-          data-print-hide="true"
-        >
-          A 5-minute read
+        <p className="font-serif-sc text-xs uppercase tracking-[0.22em] text-[color:var(--color-terra)] mb-3">
+          AI Readiness · {BRIEFING_DATE_FORMATTER.format(new Date())}
         </p>
-      </header>
 
-      {/* SECTION 1 — Diagnosis */}
-      <SectionAnchor id="section-1" />
-      <section
-        aria-labelledby="section-1-heading"
-        className="space-y-8"
-        style={{ animation: 'fadeInUp 700ms cubic-bezier(0.22, 1, 0.36, 1) 200ms both' }}
-      >
-        <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
-          Diagnosis
-        </p>
-        <div className="grid gap-8 md:grid-cols-[1fr_auto] md:items-center">
+        <div className="grid gap-10 md:grid-cols-[1fr_auto] md:items-center mb-8">
           <div>
-            <h2
-              id="section-1-heading"
+            <h1
+              id="quick-read-heading"
               className="font-serif text-3xl md:text-5xl leading-[1.05] tracking-[-0.01em] text-[color:var(--color-ink)]"
             >
-              {subjectName} is in the{' '}
+              {firstName ? `${firstName.trim()}, ` : ''}
+              {subjectName.toLowerCase() === 'your institution' ? 'your institution' : subjectName}{' '}
+              is in the{' '}
               <span className="text-[color:var(--color-terra)]">{persona.label}</span>{' '}
               phase.
-            </h2>
+            </h1>
             <p className="mt-5 text-base md:text-lg text-[color:var(--color-ink)]/75 leading-relaxed max-w-xl">
               {persona.oneLine}
             </p>
           </div>
-          <div className="md:flex-shrink-0">
-            <ScoreRing score={score} minScore={12} maxScore={48} colorVar={tier.colorVar} label={tier.label} />
+          <div className="md:flex-shrink-0 md:order-last">
+            <ScoreRing
+              score={score}
+              minScore={12}
+              maxScore={48}
+              colorVar={tier.colorVar}
+              label={tier.label}
+            />
           </div>
         </div>
-        <ContinueLink to="section-2" label="The big insight" />
+
+        {/* Single primary CTA — the tier-keyed closing action.
+            Section 9 below repeats it in context for visitors who scroll
+            through the full briefing. */}
+        <a
+          href={TIER_CLOSING_CTA[tierId].ctaHref}
+          data-print-hide="true"
+          onClick={() => {
+            if (typeof window !== 'undefined' && typeof window.plausible === 'function') {
+              window.plausible('quick_read_cta_click', {
+                props: {
+                  tier: tierId,
+                  destination: TIER_CLOSING_CTA[tierId].ctaHref,
+                },
+              });
+            }
+          }}
+          className="inline-block px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
+        >
+          {TIER_CLOSING_CTA[tierId].ctaLabel}
+        </a>
+
+        <p
+          className="mt-6 font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/55"
+          data-print-hide="true"
+        >
+          <a
+            href="#section-2"
+            className="hover:text-[color:var(--color-terra)] transition-colors"
+          >
+            See the full briefing ↓ <span className="font-mono">5 min</span>
+          </a>
+        </p>
       </section>
 
       {/* SECTION 2 — Big Insight */}
