@@ -103,7 +103,7 @@ export default async function CourseOverviewPage() {
 
         <p className="mt-6 font-mono text-[11px] text-[color:var(--color-slate)] tabular-nums">
           12 modules &middot; {aibiPCourseConfig.estimatedMinutes} min total &middot;{' '}
-          $99 per seat &middot; $79 per seat for 10+
+          $295 per seat &middot; $199 per seat for 10+
           {completedCount > 0 && (
             <>
               {' '}&middot; <span className="text-[color:var(--color-terra)]">{completedCount}/{modules.length} complete</span>

@@ -115,10 +115,10 @@ export default async function PurchasePage() {
           </h2>
           <div className="mt-4 space-y-2">
             <p className="font-mono text-sm text-[color:var(--color-ink)] tabular-nums">
-              $99 per individual
+              $295 per individual
             </p>
             <p className="font-mono text-sm text-[color:var(--color-ink)] tabular-nums">
-              $79 per user for 10+ seats
+              $199 per user for 10+ seats
             </p>
           </div>
         </div>
