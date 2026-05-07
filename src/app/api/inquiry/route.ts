@@ -4,6 +4,7 @@
 import { NextResponse } from 'next/server';
 import { upsertContact } from '@/lib/hubspot';
 import { sendInquiryAck } from '@/lib/resend';
+import { ensureAuthUser } from '@/lib/supabase/auth-admin';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -56,6 +57,13 @@ export async function POST(request: Request) {
     scoreTier: 'inquiry-only',
     institutionName: body.institution,
   }).catch((err) => console.warn('[inquiry] hubspot skip', err));
+
+  // Provision a Supabase Auth account for the inquirer so they have a
+  // real identity if they later take the assessment or buy a course.
+  // Idempotent and non-blocking.
+  ensureAuthUser(body.email).catch((err) =>
+    console.warn('[inquiry] auth-admin skip', err),
+  );
 
   // Acknowledgement email — fire-and-forget, never blocks the response.
   sendInquiryAck({

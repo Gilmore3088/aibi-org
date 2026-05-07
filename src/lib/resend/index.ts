@@ -99,17 +99,21 @@ export interface AssessmentBreakdownEmailPayload {
   readonly starterArtifactTitle?: string;
   readonly starterArtifactBody?: string;
   readonly profileId?: string | null;
+  /** Caller-provided override (typically a magic-link signin URL). */
+  readonly resultsUrl?: string;
 }
 
 export function sendAssessmentBreakdown(
   payload: AssessmentBreakdownEmailPayload,
 ): Promise<ResendResult> {
-  // Prefer the owner-bound /results/{id} URL so the recipient lands on
-  // their own results, not a fresh assessment. Falls back to /assessment
-  // only when profile creation failed upstream.
-  const resultsUrl = payload.profileId
-    ? `https://aibankinginstitute.com/results/${payload.profileId}`
-    : 'https://aibankinginstitute.com/assessment';
+  // Caller-supplied URL wins (magic link with redirectTo). Otherwise build
+  // /results/{profileId} which will redirect to /auth/login. Final fallback
+  // is /assessment when profile creation failed upstream.
+  const resultsUrl =
+    payload.resultsUrl ??
+    (payload.profileId
+      ? `https://aibankinginstitute.com/results/${payload.profileId}`
+      : 'https://aibankinginstitute.com/assessment');
 
   return sendTemplate({
     to: payload.email,

@@ -5,6 +5,7 @@ import {
   hashIp,
   logEmailCapture,
 } from '@/lib/email-capture/rate-limit';
+import { ensureAuthUser } from '@/lib/supabase/auth-admin';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const VALID_INTERESTS = new Set([
@@ -97,6 +98,13 @@ export async function POST(request: Request): Promise<NextResponse> {
     console.error('[waitlist] insert failed:', error);
     return NextResponse.json({ error: 'Could not save waitlist entry.' }, { status: 500 });
   }
+
+  // Provision a Supabase Auth account for this email. Idempotent,
+  // non-blocking — waitlist signups become real users so they can log in
+  // when the gated feature ships.
+  ensureAuthUser(body.email.toLowerCase()).catch((err) =>
+    console.warn('[waitlist] auth-admin skip', err),
+  );
 
   await logEmailCapture(ipHash);
   return NextResponse.json({ ok: true, stored: true });

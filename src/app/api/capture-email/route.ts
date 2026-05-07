@@ -17,6 +17,7 @@ import {
   type TierId,
 } from '@/lib/convertkit/sequences';
 import { sendAssessmentBreakdown } from '@/lib/resend';
+import { ensureAuthUser, generateMagicLink } from '@/lib/supabase/auth-admin';
 import {
   checkEmailCaptureLimit,
   hashIp,
@@ -189,18 +190,35 @@ export async function POST(request: Request) {
     ? await getReadinessTierByEmail(email)
     : null;
 
+  // Ensure a Supabase Auth user exists for this email. Idempotent — returns
+  // the existing user's id when one is already on file. The userId becomes
+  // the canonical identity for /results/{userId} and is linked into
+  // user_profiles.user_id for ownership lookups.
+  let authUserId: string | null = null;
+  if (isSupabaseConfigured()) {
+    const result = await ensureAuthUser(email);
+    authUserId = result.userId;
+    if (result.created) {
+      console.log(`[capture-email] auth user provisioned for ${email}`);
+    }
+  }
+
   let profileId: string | null = null;
   if (isSupabaseConfigured()) {
-    const result = await upsertReadinessResult(email, {
-      score,
-      tierId: tier,
-      tierLabel,
-      answers,
-      completedAt,
-      ...(version ? { version } : {}),
-      ...(maxScore !== undefined ? { maxScore } : {}),
-      ...(dimensionBreakdown ? { dimensionBreakdown } : {}),
-    }).catch((err) => {
+    const result = await upsertReadinessResult(
+      email,
+      {
+        score,
+        tierId: tier,
+        tierLabel,
+        answers,
+        completedAt,
+        ...(version ? { version } : {}),
+        ...(maxScore !== undefined ? { maxScore } : {}),
+        ...(dimensionBreakdown ? { dimensionBreakdown } : {}),
+      },
+      authUserId,
+    ).catch((err) => {
       console.warn('[capture-email] supabase skip', err);
       return { id: null as string | null };
     });
@@ -260,6 +278,20 @@ export async function POST(request: Request) {
       .sort((a, b) => a.pct - b.pct)[0];
     const artifact = lowest ? getStarterArtifact(lowest.id as Dimension) : null;
 
+    // Build the email's "Open my full results" URL. Prefer a magic link
+    // that signs the recipient in and lands them on /results/{authUserId}.
+    // Fall back to /results/{authUserId} (will redirect to login) and
+    // ultimately to /assessment if neither is possible.
+    let resultsUrl: string | undefined;
+    if (authUserId) {
+      const targetPath = `/results/${authUserId}`;
+      const magicLink = await generateMagicLink(
+        email,
+        `https://aibankinginstitute.com${targetPath}`,
+      ).catch(() => null);
+      resultsUrl = magicLink ?? `https://aibankinginstitute.com${targetPath}`;
+    }
+
     sendAssessmentBreakdown({
       email,
       score,
@@ -272,6 +304,7 @@ export async function POST(request: Request) {
       starterArtifactTitle: artifact?.title,
       starterArtifactBody: artifact?.body,
       profileId,
+      resultsUrl,
     }).catch((err) => console.warn('[capture-email] resend skip', err));
   }
 

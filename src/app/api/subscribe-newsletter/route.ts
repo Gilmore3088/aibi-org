@@ -5,6 +5,7 @@
 
 import { NextResponse } from 'next/server';
 import { subscribeToNewsletterForm } from '@/lib/convertkit';
+import { ensureAuthUser } from '@/lib/supabase/auth-admin';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -33,6 +34,13 @@ export async function POST(request: Request) {
     source,
     at: new Date().toISOString(),
   });
+
+  // Provision a Supabase Auth account for this email so newsletter
+  // subscribers have a real identity if they later take the assessment,
+  // log in, or buy a course. Idempotent and non-blocking.
+  ensureAuthUser(email).catch((err) =>
+    console.warn('[subscribe-newsletter] auth-admin skip', err),
+  );
 
   await subscribeToNewsletterForm({ email, tags: ['newsletter', `source:${source}`] }).catch(
     (err) => console.warn('[subscribe-newsletter] skip', err)
