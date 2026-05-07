@@ -15,7 +15,7 @@ import { getModuleStatus } from './_lib/courseProgress';
 import type { ModuleStatus } from './_lib/courseProgress';
 
 export const metadata: Metadata = {
-  title: 'AiBI-P: Banking AI Practitioner | The AI Banking Institute',
+  title: 'AiBI-Practitioner — Banking AI Practitioner | The AI Banking Institute',
   description:
     'The Banking AI Practitioner course teaches every staff member at a community financial institution how to use AI tools safely, professionally, and with regulatory confidence.',
 };
@@ -60,7 +60,7 @@ export default async function CourseOverviewPage() {
           Education
         </Link>
         <span className="mx-2 text-[color:var(--color-ink)]/20">/</span>
-        <span className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-terra)]">AiBI-P</span>
+        <span className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-terra)]">AiBI-Practitioner</span>
       </nav>
 
       {/* Hero */}

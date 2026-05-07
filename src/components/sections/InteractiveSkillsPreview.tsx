@@ -143,7 +143,7 @@ export function InteractiveSkillsPreview() {
             </h2>
             <p className="text-base text-[color:var(--color-ink)]/70 leading-relaxed mt-5 max-w-xl">
               Preview the kinds of banking tasks learners practice inside
-              AiBI-P.
+              AiBI-Practitioner.
             </p>
           </div>
           <Link
@@ -245,7 +245,7 @@ export function InteractiveSkillsPreview() {
 
         <div className="mt-7 flex flex-col gap-4 border-t border-[color:var(--color-ink)]/10 pt-7 sm:flex-row sm:items-center sm:justify-between">
           <p className="font-serif text-xl text-[color:var(--color-ink)] leading-snug">
-            These are the kinds of practical reps included in AiBI-P.
+            These are the kinds of practical reps included in AiBI-Practitioner.
           </p>
           <Link
             href="/courses/aibi-p"

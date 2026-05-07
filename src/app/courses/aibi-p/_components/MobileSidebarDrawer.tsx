@@ -113,7 +113,7 @@ export function MobileSidebarDrawer({ completedModules, currentModule }: MobileS
               Ai
             </div>
             <div className="text-[color:var(--color-ink)] font-bold text-sm font-serif leading-tight">
-              AiBI-P
+              AiBI-Practitioner
             </div>
           </div>
           <button

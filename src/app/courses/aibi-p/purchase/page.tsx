@@ -13,9 +13,9 @@ import { EnrollButton } from './EnrollButton';
 import { aibiPCourseConfig } from '@content/courses/aibi-p';
 
 export const metadata: Metadata = {
-  title: 'Enroll in AiBI-P | The AI Banking Institute',
+  title: 'Enroll in AiBI-Practitioner | The AI Banking Institute',
   description:
-    'Enroll in the Banking AI Practitioner course. Twelve modules, practical artifacts, and the AiBI-P credential upon completion.',
+    'Enroll in the Banking AI Practitioner course. Twelve modules, practical artifacts, and the AiBI-Practitioner credential upon completion.',
 };
 
 const COURSE_FEATURES = [
@@ -71,7 +71,7 @@ export default async function PurchasePage() {
         </Link>
         <span className="mx-2 text-[color:var(--color-ink)]/20">/</span>
         <Link href="/courses/aibi-p" className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] hover:opacity-80 transition-opacity">
-          AiBI-P
+          AiBI-Practitioner
         </Link>
         <span className="mx-2 text-[color:var(--color-ink)]/20">/</span>
         <span className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/50">
@@ -111,7 +111,7 @@ export default async function PurchasePage() {
             Pricing
           </p>
           <h2 className="font-serif text-3xl text-[color:var(--color-ink)] leading-tight">
-            AiBI-P Practitioner
+            AiBI-Practitioner
           </h2>
           <div className="mt-4 space-y-2">
             <p className="font-mono text-sm text-[color:var(--color-ink)] tabular-nums">
@@ -148,7 +148,7 @@ export default async function PurchasePage() {
         <p className="text-sm text-[color:var(--color-slate)] leading-relaxed">
           Team purchases use a single checkout with manual onboarding follow-up.
           Advanced AiBI-S and AiBI-L tracks are coming later; this checkout only
-          enrolls learners in AiBI-P.
+          enrolls learners in AiBI-Practitioner.
         </p>
       </section>
 

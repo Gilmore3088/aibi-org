@@ -24,7 +24,7 @@ export function Paywall() {
       <p className="mt-6 text-lg leading-relaxed text-[color:var(--color-ink)]/80">
         The AiBI Toolbox — Skill Builder, Template Library, multi-provider
         Playground, and Cookbook — is bundled with every paid enrollment in
-        AiBI-P, AiBI-S, or AiBI-L. Enroll in any course and your access
+        AiBI-Practitioner, AiBI-S, or AiBI-L. Enroll in any course and your access
         turns on automatically.
       </p>
       <div className="mt-10 flex flex-col gap-4 sm:flex-row">

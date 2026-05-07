@@ -15,8 +15,8 @@ export function generateMetadata({ params }: ArtifactPageProps) {
   const artifact = AIBI_P_ARTIFACTS.find((item) => item.id === params.artifactId);
   return {
     title: artifact
-      ? `${artifact.title} | AiBI-P Artifact`
-      : 'Artifact Not Found | AiBI-P',
+      ? `${artifact.title} | AiBI-Practitioner Artifact`
+      : 'Artifact Not Found | AiBI-Practitioner',
   };
 }
 
@@ -60,7 +60,7 @@ export default function ArtifactDetailPage({ params }: ArtifactPageProps) {
           <DetailBlock title="Source activity" body={artifact.sourceActivityId} />
           <DetailBlock
             title="Certification evidence"
-            body={artifact.countsTowardCertificate ? 'Counts toward AiBI-P certification.' : 'Practice artifact only.'}
+            body={artifact.countsTowardCertificate ? 'Counts toward AiBI-Practitioner certification.' : 'Practice artifact only.'}
           />
         </section>
 

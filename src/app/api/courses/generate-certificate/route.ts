@@ -17,6 +17,7 @@ import { cookies } from 'next/headers';
 import { createServerClient as createSupabaseServerClient } from '@supabase/ssr';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { generateCertificateId } from '@/lib/certificates/generateId';
+import { sendCertificateIssued } from '@/lib/resend';
 import React from 'react';
 import type { DocumentProps } from '@react-pdf/renderer';
 import { renderToBuffer } from '@react-pdf/renderer';
@@ -60,7 +61,7 @@ function pdfResponse(buffer: Buffer, certificateId: string, status: number, alre
     status,
     headers: {
       'Content-Type': 'application/pdf',
-      'Content-Disposition': `attachment; filename="AiBI-P-Certificate-${certificateId}.pdf"`,
+      'Content-Disposition': `attachment; filename="AiBI-Practitioner-Certificate-${certificateId}.pdf"`,
       'Content-Length': String(buffer.length),
       'Cache-Control': 'no-store',
       'X-Certificate-Id': certificateId,
@@ -133,7 +134,7 @@ async function buildPdfBuffer(cert: CertificateRow): Promise<Buffer> {
   // a <Document> root so the cast is safe.
   const element = React.createElement(CertificateDocument, {
     holderName: cert.holder_name,
-    designation: 'AiBI-P -- Banking AI Practitioner',
+    designation: 'AiBI-Practitioner',
     issuingInstitution: 'The AI Banking Institute',
     issuedDate: formatDate(cert.issued_at),
     certificateId: cert.certificate_id,
@@ -224,7 +225,7 @@ export async function POST(request: Request): Promise<Response> {
       enrollment_id: enrollmentId,
       certificate_id: certificateId,
       holder_name: holderName,
-      designation: 'AiBI-P',
+      designation: 'AiBI-Practitioner',
       issued_at: issuedAt,
     })
     .select('id, certificate_id, holder_name, designation, issued_at, enrollment_id')
@@ -256,6 +257,18 @@ export async function POST(request: Request): Promise<Response> {
 
   const cert = insertedCert as CertificateRow;
   const pdfBuffer = await buildPdfBuffer(cert);
+
+  // Fire-and-forget transactional email — only on first issuance, not on
+  // race-condition / idempotent retrieval branches above.
+  sendCertificateIssued({
+    email: enrollment.email,
+    holderName: cert.holder_name,
+    designation: 'AiBI-Practitioner — The AI Banking Institute',
+    certificateId: cert.certificate_id,
+    issuedDate: formatDate(cert.issued_at),
+    enrollmentId: cert.enrollment_id,
+  }).catch((err) => console.warn('[certificate] resend skip', err));
+
   return pdfResponse(pdfBuffer, cert.certificate_id, 201, false);
 }
 

@@ -3,6 +3,7 @@
 
 import { NextResponse } from 'next/server';
 import { upsertContact } from '@/lib/hubspot';
+import { sendInquiryAck } from '@/lib/resend';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -55,6 +56,14 @@ export async function POST(request: Request) {
     scoreTier: 'inquiry-only',
     institutionName: body.institution,
   }).catch((err) => console.warn('[inquiry] hubspot skip', err));
+
+  // Acknowledgement email — fire-and-forget, never blocks the response.
+  sendInquiryAck({
+    email: body.email,
+    name: body.name.split(' ')[0] ?? body.name,
+    institution: body.institution,
+    track: body.track || 'AiBI',
+  }).catch((err) => console.warn('[inquiry] resend skip', err));
 
   return NextResponse.json({ ok: true });
 }

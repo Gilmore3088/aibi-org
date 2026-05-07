@@ -6,7 +6,7 @@ import type { ReactNode } from 'react';
 
 export interface CourseBrand {
   readonly name: string;              // 'Banking AI Practitioner'
-  readonly shortCode: string;         // 'AiBI-P'
+  readonly shortCode: string;         // 'AiBI-Practitioner'
   readonly wordmark: string;          // displayed in sidebar
   readonly accentColorVar: string;    // 'var(--color-terra)' | 'var(--color-cobalt)' | ...
 }
