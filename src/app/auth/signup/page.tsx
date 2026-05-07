@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
-import { signUp } from '@/lib/supabase/auth';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { signIn } from '@/lib/supabase/auth';
 
 const MIN_PASSWORD_LENGTH = 8;
 
@@ -12,12 +12,12 @@ function passwordsMatch(a: string, b: string): boolean {
 }
 
 export default function SignupPage() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const redirectTo = searchParams.get('next') ?? '/dashboard';
 
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
-  const [done, setDone] = useState(false);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -45,46 +45,44 @@ export default function SignupPage() {
     }
 
     setPending(true);
-    const result = await signUp(email, password, {
-      fullName: fullName.trim(),
-      institutionName: institutionName.trim() || undefined,
-    });
-    setPending(false);
 
-    if (result.error) {
-      setError(result.error);
+    // Server-side admin createUser bypasses Supabase's hosted SMTP entirely
+    // (email is auto-confirmed). The browser then signs in with the password
+    // they just chose to establish the session cookie.
+    try {
+      const res = await fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          password,
+          fullName: fullName.trim(),
+          institutionName: institutionName.trim() || undefined,
+        }),
+      });
+      if (!res.ok) {
+        const data = (await res.json().catch(() => ({}))) as { error?: string };
+        setPending(false);
+        setError(data.error ?? `Signup failed (${res.status}).`);
+        return;
+      }
+    } catch (err) {
+      setPending(false);
+      setError(err instanceof Error ? err.message : 'Signup request failed.');
       return;
     }
-    setDone(true);
-  }
 
-  if (done) {
-    return (
-      <main className="flex-1 flex items-start justify-center px-6 py-14 md:py-20">
-        <div className="w-full max-w-sm space-y-8">
-          <div className="text-center space-y-2">
-            <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
-              The AI Banking Institute
-            </p>
-            <h1 className="font-serif text-3xl text-[color:var(--color-ink)]">Check Your Inbox</h1>
-          </div>
-          <div className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[2px] p-7 space-y-4 text-center">
-            <p className="font-sans text-sm text-[color:var(--color-ink)]">
-              We sent a confirmation link to your email. Click it to activate your account.
-            </p>
-            <p className="font-sans text-xs text-[color:var(--color-slate)]">
-              The link expires in 24 hours. Check your spam folder if you don&apos;t see it.
-            </p>
-          </div>
-          <p className="text-center font-sans text-sm text-[color:var(--color-slate)]">
-            Already confirmed?{' '}
-            <Link href="/auth/login" className="text-[color:var(--color-terra)] hover:underline font-semibold">
-              Sign in
-            </Link>
-          </p>
-        </div>
-      </main>
-    );
+    const signInResult = await signIn(email, password);
+    setPending(false);
+    if (signInResult.error) {
+      setError(
+        `Account created, but sign-in failed: ${signInResult.error}. Try signing in manually.`,
+      );
+      return;
+    }
+
+    router.push(redirectTo);
+    router.refresh();
   }
 
   return (
