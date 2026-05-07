@@ -19,10 +19,13 @@ export interface EssayArchiveItem {
   readonly date: string;
   readonly category?: string;
   readonly readMinutes?: number;
+  /** Per-item href. Overrides basePath. Used by legacy essays at /resources/<slug>. */
+  readonly href?: string;
 }
 
 export interface EssayArchiveProps {
   readonly items: readonly EssayArchiveItem[];
+  /** Default base path for essays without an explicit href. */
   readonly basePath?: string;
   readonly className?: string;
 }
@@ -33,7 +36,7 @@ export function EssayArchive({ items, basePath = "/research", className }: Essay
       {items.map((item) => (
         <li key={item.slug} className="border-b border-hairline">
           <Link
-            href={`${basePath}/${item.slug}`}
+            href={item.href ?? `${basePath}/${item.slug}`}
             className="grid gap-s4 grid-cols-[1fr_auto] md:grid-cols-[110px_1fr_80px_30px] items-baseline py-s5 hover:bg-parch transition-colors duration-fast"
           >
             <EssayMeta date={item.date} className="hidden md:block" />

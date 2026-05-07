@@ -60,8 +60,9 @@ const nextConfig = {
       { source: '/foundations', destination: '/education', permanent: true },
       { source: '/toolbox', destination: '/dashboard/toolbox', permanent: true },
       { source: '/toolbox/:path*', destination: '/dashboard/toolbox/:path*', permanent: true },
+      // /resources root → /research; individual essays remain at /resources/<slug>
+      // until Phase 07 migration ports each essay to MDX in content/essays/.
       { source: '/resources', destination: '/research', permanent: true },
-      { source: '/resources/:path*', destination: '/research/:path*', permanent: true },
       { source: '/courses/aibi-p', destination: '/education/practitioner', permanent: true },
       { source: '/courses/aibi-p/:path*', destination: '/education/practitioner/:path*', permanent: true },
       { source: '/courses/aibi-s', destination: '/education/specialist', permanent: true },

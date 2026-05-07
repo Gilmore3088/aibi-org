@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { MarketingPage } from "@/components/system/templates";
 import { Section, SectionHeader, EssayArchive, NewsletterCard } from "@/components/system";
 import { BRAND, CTAS } from "@content/copy";
-import { listEssayMeta } from "@content/essays/_lib/registry";
+import { listAllEssays } from "@content/essays/_lib/registry";
 
 export const metadata: Metadata = {
   title: `Research — The AI Banking Brief`,
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ResearchPage() {
-  const essays = await listEssayMeta();
+  const essays = await listAllEssays();
   const featured = essays[0];
 
   return (
@@ -46,7 +46,7 @@ export default async function ResearchPage() {
           )}
           <div className="mt-s6">
             <a
-              href={`/research/${featured.slug}`}
+              href={featured.href}
               className="text-terra border-b border-terra pb-[2px] font-medium"
             >
               Read the full essay →
