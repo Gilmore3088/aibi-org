@@ -278,17 +278,16 @@ export async function POST(request: Request) {
       .sort((a, b) => a.pct - b.pct)[0];
     const artifact = lowest ? getStarterArtifact(lowest.id as Dimension) : null;
 
-    // Build the email's "Open my full results" URL. Prefer a magic link
-    // that signs the recipient in and lands them on /results/{authUserId}.
-    // Fall back to /results/{authUserId} (will redirect to login) and
-    // ultimately to /assessment if neither is possible.
+    // Build the email's "Open my full results" URL. The magic link's
+    // redirect target MUST go through /auth/callback so the PKCE code is
+    // exchanged for a session on aibankinginstitute.com — otherwise the
+    // session lives on supabase.co and the recipient's browser shows no
+    // logged-in user when it lands on /results/{id}.
     let resultsUrl: string | undefined;
     if (authUserId) {
       const targetPath = `/results/${authUserId}`;
-      const magicLink = await generateMagicLink(
-        email,
-        `https://aibankinginstitute.com${targetPath}`,
-      ).catch(() => null);
+      const callbackUrl = `https://aibankinginstitute.com/auth/callback?next=${encodeURIComponent(targetPath)}`;
+      const magicLink = await generateMagicLink(email, callbackUrl).catch(() => null);
       resultsUrl = magicLink ?? `https://aibankinginstitute.com${targetPath}`;
     }
 
