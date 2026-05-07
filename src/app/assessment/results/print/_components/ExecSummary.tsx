@@ -1,5 +1,7 @@
 import type { Tier } from '@content/assessments/v2/scoring';
 import { PERSONAS, FINANCIAL_IMPLICATIONS } from '@content/assessments/v2/personalization';
+import { getTierMaturity } from '@content/assessments/v2/maturity';
+import { SCORE_AUTHORITY } from '@content/assessments/v2/scoring-authority';
 
 interface ExecSummaryProps {
   readonly tier: Tier;
@@ -11,6 +13,7 @@ interface ExecSummaryProps {
 export function ExecSummary({ tier, tierId, score, maxScore }: ExecSummaryProps) {
   const persona = PERSONAS[tierId];
   const impl = FINANCIAL_IMPLICATIONS[tierId];
+  const maturity = getTierMaturity(tierId);
 
   return (
     <article className="pdf-page" data-pdf-page="exec-summary">
@@ -45,12 +48,54 @@ export function ExecSummary({ tier, tierId, score, maxScore }: ExecSummaryProps)
         </span>
       </div>
 
+      <p
+        style={{
+          marginTop: '0.12in',
+          fontFamily: 'var(--font-serif-sc)',
+          fontSize: '10pt',
+          letterSpacing: '0.18em',
+          textTransform: 'uppercase',
+          color: 'var(--color-ink)',
+          opacity: 0.55,
+        }}
+      >
+        {maturity.stageName}
+      </p>
+
       <h2 className="pdf-h2" style={{ marginTop: '0.4in' }}>
         {persona.label}.
       </h2>
       <p className="pdf-body" style={{ marginTop: '0.2in', maxWidth: '5in' }}>
         {persona.oneLine}
       </p>
+
+      {maturity.blockerToNext && (
+        <div
+          style={{
+            marginTop: '0.3in',
+            maxWidth: '5in',
+            padding: '0.18in 0.22in',
+            borderLeft: '2pt solid var(--color-terra)',
+            background: 'rgba(0, 0, 0, 0.02)',
+          }}
+        >
+          <p
+            style={{
+              margin: 0,
+              fontFamily: 'var(--font-serif-sc)',
+              fontSize: '9pt',
+              letterSpacing: '0.18em',
+              textTransform: 'uppercase',
+              color: 'var(--color-terra)',
+            }}
+          >
+            What’s holding you here
+          </p>
+          <p className="pdf-body" style={{ margin: '0.12in 0 0 0', fontSize: '10.5pt' }}>
+            {maturity.blockerToNext}
+          </p>
+        </div>
+      )}
 
       <div style={{ marginTop: '0.5in', borderTop: '0.5pt solid var(--color-ink)', paddingTop: '0.3in' }}>
         <p
@@ -94,6 +139,54 @@ export function ExecSummary({ tier, tierId, score, maxScore }: ExecSummaryProps)
           ))}
         </dl>
       </div>
+
+      <aside
+        style={{
+          marginTop: '0.45in',
+          paddingTop: '0.2in',
+          borderTop: '0.25pt solid var(--color-ink)',
+          opacity: 0.7,
+        }}
+      >
+        <p
+          style={{
+            margin: 0,
+            fontFamily: 'var(--font-serif-sc)',
+            fontSize: '8.5pt',
+            letterSpacing: '0.18em',
+            textTransform: 'uppercase',
+            color: 'var(--color-ink)',
+          }}
+        >
+          About this score
+        </p>
+        <p className="pdf-body" style={{ margin: '0.1in 0 0 0', fontSize: '9pt', maxWidth: '5.5in' }}>
+          {SCORE_AUTHORITY.scaleMeaning}
+        </p>
+        <p
+          className="pdf-body"
+          style={{
+            margin: '0.15in 0 0.05in 0',
+            fontSize: '8.5pt',
+            fontWeight: 500,
+            color: 'var(--color-ink)',
+            opacity: 0.85,
+          }}
+        >
+          This score does not claim:
+        </p>
+        <ul style={{ margin: 0, paddingLeft: '0.2in', listStyle: 'disc' }}>
+          {SCORE_AUTHORITY.whatItDoesNotClaim.map((claim, i) => (
+            <li
+              key={i}
+              className="pdf-body"
+              style={{ fontSize: '8.5pt', margin: '0.04in 0', maxWidth: '5.5in' }}
+            >
+              {claim}
+            </li>
+          ))}
+        </ul>
+      </aside>
 
       <div className="pdf-page-footer">
         <span>Page 2</span>
