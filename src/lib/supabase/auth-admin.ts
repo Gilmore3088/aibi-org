@@ -113,9 +113,13 @@ export async function generateMagicLink(
     return null;
   }
 
+  // type=email is what supabase.auth.verifyOtp({ token_hash, type })
+  // expects for magic-link verification. The Supabase docs explicitly
+  // demonstrate this pattern even when the token came from
+  // generateLink({ type: 'magiclink' }).
   const url = new URL('https://aibankinginstitute.com/auth/callback');
   url.searchParams.set('token_hash', tokenHash);
-  url.searchParams.set('type', 'magiclink');
+  url.searchParams.set('type', 'email');
   url.searchParams.set('next', nextPath);
   return url.toString();
 }

@@ -48,6 +48,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
   if (code) {
     const { data, error } = await supabase.auth.exchangeCodeForSession(code);
     if (error) {
+      console.error('[auth/callback] exchangeCodeForSession failed:', error.message);
       return NextResponse.redirect(
         `${origin}/auth/login?error=${encodeURIComponent(error.message)}`,
       );
@@ -63,14 +64,19 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     return NextResponse.redirect(`${origin}${safeNext}`);
   }
 
-  // Token hash flow — email confirmation, password reset invite
+  // Token hash flow — email confirmation, password reset invite, magic link
   if (tokenHash && type) {
+    console.log(`[auth/callback] verifyOtp type=${type} tokenHashPrefix=${tokenHash.slice(0, 12)}…`);
     const { data, error } = await supabase.auth.verifyOtp({ token_hash: tokenHash, type: type as never });
     if (error) {
+      console.error(
+        `[auth/callback] verifyOtp failed type=${type} error=${error.message} status=${error.status ?? 'unknown'}`,
+      );
       return NextResponse.redirect(
         `${origin}/auth/login?error=${encodeURIComponent(error.message)}`,
       );
     }
+    console.log(`[auth/callback] verifyOtp success — userId=${data.session?.user?.id ?? data.user?.id ?? 'unknown'}`);
     // Password reset: redirect to the form so user can set a new password.
     if (type === 'recovery') {
       return NextResponse.redirect(`${origin}/auth/reset-password`);
