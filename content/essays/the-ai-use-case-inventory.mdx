@@ -1,0 +1,90 @@
+import { EditorialQuote, KPIRibbon, Marginalia } from "@/components/system";
+
+export const meta = {
+  slug: "the-ai-use-case-inventory",
+  title: "The AI use-case inventory is the cheapest examiner-readiness move in community banking.",
+  dek: "Most community institutions already have nine to fourteen AI-touched workflows running. Almost none of them are inventoried. Here is what it takes to do this right, and the one-page template that makes it tractable.",
+  date: "2026-04-24",
+  category: "Governance",
+  readMinutes: 14,
+  author: "James Gilmore",
+  sources: [
+    {
+      label:
+        "Federal Reserve & OCC, Supervisory Letter 11-7 — Guidance on Model Risk Management",
+    },
+    {
+      label:
+        "Treasury / FBIIC / FSSCC — AI Executive Oversight Group AI Lexicon, February 2026",
+    },
+    {
+      label:
+        "Cornerstone Advisors — AI Playbook for Banks and Credit Unions, 2025",
+    },
+    { label: "FDIC Quarterly Banking Profile, Q4 2024" },
+  ],
+};
+
+If you sit on the AI committee at a community bank or credit union right now, you already have a list. It is in your head. It might also be in a Slack channel, a shared spreadsheet that someone meant to update, an old email thread, and the brain of whichever vendor rep last sent a deck.
+
+What you don't have is one document — a single list, kept current, reviewed on a defined cadence — of every AI-touched workflow inside your institution. That document is what your examiners are about to ask for, and many already have. It is also the cheapest thing you will ever do that improves your examiner-readiness posture meaningfully.
+
+This essay explains why the inventory is the foundation, what has to be in it, and what we have learned working with community banks who have started one.
+
+## Why this is the foundation
+
+Every other governance artifact assumes a list exists.
+
+You cannot do meaningful model risk mapping without knowing which workflows are AI-touched. You cannot do third-party risk diligence on AI without knowing which vendors have turned on AI features. You cannot brief the board on AI exposure without telling them how many use cases the institution is operating, and where. You cannot answer the examiner's first question — *what AI is your institution using?* — without an answer.
+
+<EditorialQuote attribution="AIEOG AI Lexicon · Treasury / FBIIC / FSSCC, Feb 2026">
+  An AI use case inventory is a foundational governance practice for federally-supervised institutions.
+</EditorialQuote>
+
+The federal definition is now public; the AIEOG lexicon released in February codified it. The interagency expectation is that institutions of any size maintain one. Community banks are not exempt by virtue of size; they are exposed by it, because the inventory is the artifact that makes everything else explainable.
+
+## What the inventory contains
+
+A good inventory is one page per use case. Anything longer fails the maintain-it-quarterly test.
+
+For each AI-touched workflow, the institution records:
+
+- **Tool name and vendor.** The actual product, not a category. ("Claude" or "Microsoft Copilot for M365," not "AI assistant.")
+- **Primary owner.** A person, named. The owner is responsible for keeping this row current.
+- **Data classes touched.** Member PII, transaction data, employee data, policy documents, vendor contracts, etc. The list of classes the institution already maintains for its data classification policy applies here.
+- **Model risk tier.** Low / medium / high — your existing SR 11-7 mapping applies.
+- **TPRM tier.** Low / medium / high — your existing third-party risk framework applies.
+- **ECOA / Reg B exposure.** Yes/no/uncertain — flagged for review by compliance counsel where uncertain.
+- **Review cadence.** How often this row is examined. Annual minimum; quarterly for high-risk.
+- **Last reviewed date.** Mono-format, tabular. The single most important field for examiners.
+- **Current status.** Active, paused, deprecated.
+
+That is the canonical schema. It fits on a row of a spreadsheet. It is maintained by the AI committee chair or designee; it is reviewed quarterly by the risk committee.
+
+The institute publishes a starter template at the end of every readiness assessment for institutions in the Building Momentum tier and below — but you do not need our template. You need the discipline to maintain whatever document you have.
+
+<Marginalia label="What we hear most">
+  "We have an AI policy. The committee just hasn't been able to keep the inventory current." — risk officer at a $1.2B community bank, March 2026.
+
+  This is the single most common posture we encounter. The fix is not the policy; the fix is appointing an owner whose quarterly performance includes the inventory's currency.
+</Marginalia>
+
+## What examiners are looking for
+
+In conversations with five regional examiners over the past six months, the pattern is consistent. They open the AI conversation by asking *what is your institution using?* If the answer is anything other than a document, they treat the entire AI program as immature regardless of how sophisticated the rest of the framework is.
+
+A maintained inventory is not a virtuous gesture. It is the credential that makes the rest of your AI program legible.
+
+The examiners are not looking for elegance. They are looking for evidence that someone is responsible, that the list is current, and that the institution can answer specific questions about specific use cases without scrambling.
+
+## Begin small, do it well
+
+Most community institutions we work with already have between nine and fourteen AI-touched workflows running. Few have more than thirty. The inventory is not a multi-month project. It is a half-day workshop with the AI committee, a follow-up week of vendor outreach to confirm what has been turned on, and a quarterly review cadence going forward.
+
+The institute's view: if you do nothing else this quarter for your AI governance posture, do this one thing. It is the move with the highest ratio of *examiner-readiness improvement* to *staff hours required* of any AI governance work available to a community bank in 2026.
+
+## The shortest path
+
+If you are a community bank starting from no inventory: take the readiness assessment. If you score in the Building Momentum tier or below, the Institute issues a tailored AI use-case inventory template as the starter artifact. It is yours; bring it to your next committee meeting.
+
+If you are looking for help operationalizing one: an Executive Briefing covers what to do with the inventory once it is populated. Bring your AI champion. No pitch.

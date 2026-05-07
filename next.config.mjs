@@ -1,3 +1,5 @@
+import createMDX from '@next/mdx';
+
 // Production guard: SKIP_CONVERTKIT=true must never reach prod, or every
 // real user opt-in silently skips the CK call and the nurture sequence
 // never fires. The staging suppression flag is only for staging/preview.
@@ -14,8 +16,14 @@ if (
   );
 }
 
+const withMDX = createMDX({
+  // No remark/rehype plugins for now — design-system MDX components are
+  // imported explicitly by each essay rather than auto-injected.
+});
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
   experimental: {
     // Native-binary packages that must not be bundled by webpack.
     //   @react-pdf/renderer  — uses native canvas modules
@@ -39,6 +47,11 @@ const nextConfig = {
   // Decision log: 2026-04-29 — /toolbox moved under /dashboard per spec §4.3
   // (paid Toolbox surface lives under /dashboard). Both exact and sub-path
   // redirects preserve any existing course-content deep links.
+  //
+  // Decision log: 2026-05-07 — design-2.0 IA: /resources → /research,
+  // /courses/* → /education/<program>/*. Old routes preserved here as
+  // permanent redirects so internal links and external references still
+  // resolve while the migration completes in Phase 07.
   async redirects() {
     return [
       { source: '/courses', destination: '/education', permanent: true },
@@ -47,8 +60,17 @@ const nextConfig = {
       { source: '/foundations', destination: '/education', permanent: true },
       { source: '/toolbox', destination: '/dashboard/toolbox', permanent: true },
       { source: '/toolbox/:path*', destination: '/dashboard/toolbox/:path*', permanent: true },
+      { source: '/resources', destination: '/research', permanent: true },
+      { source: '/resources/:path*', destination: '/research/:path*', permanent: true },
+      { source: '/courses/aibi-p', destination: '/education/practitioner', permanent: true },
+      { source: '/courses/aibi-p/:path*', destination: '/education/practitioner/:path*', permanent: true },
+      { source: '/courses/aibi-s', destination: '/education/specialist', permanent: true },
+      { source: '/courses/aibi-s/:path*', destination: '/education/specialist/:path*', permanent: true },
+      { source: '/courses/aibi-l', destination: '/education/leader', permanent: true },
+      { source: '/courses/aibi-l/:path*', destination: '/education/leader/:path*', permanent: true },
+      { source: '/certifications/exam/aibi-p', destination: '/education/practitioner/exam', permanent: true },
     ];
   },
 };
 
-export default nextConfig;
+export default withMDX(nextConfig);
