@@ -74,15 +74,24 @@ export async function ensureAuthUser(email: string): Promise<EnsureAuthUserResul
 }
 
 /**
- * Generates a one-time magic-link signin URL for the given email. Clicking
- * the URL establishes a Supabase Auth session and redirects to redirectTo.
+ * Generates a one-time magic-link signin URL for the given email.
  *
- * Returns null when Supabase is not configured or generation fails — caller
- * should fall back to a non-authenticated URL.
+ * Returns a URL pointing at our own /auth/callback route with a token_hash
+ * query param. The callback handler calls supabase.auth.verifyOtp() to
+ * exchange the hash for a session, sets cookies on aibankinginstitute.com,
+ * and redirects to nextPath.
+ *
+ * We deliberately do NOT use the action_link returned by generateLink —
+ * that URL targets Supabase's /auth/v1/verify endpoint and uses the
+ * implicit flow (tokens in the URL fragment), which a server route handler
+ * cannot read. The hashed_token + verifyOtp path keeps everything
+ * server-visible.
+ *
+ * Returns null on failure — caller should fall back to an unauthenticated URL.
  */
 export async function generateMagicLink(
   email: string,
-  redirectTo: string,
+  nextPath: string,
 ): Promise<string | null> {
   if (!isSupabaseConfigured()) return null;
 
@@ -91,7 +100,6 @@ export async function generateMagicLink(
   const { data, error } = await supabase.auth.admin.generateLink({
     type: 'magiclink',
     email,
-    options: { redirectTo },
   });
 
   if (error) {
@@ -99,5 +107,15 @@ export async function generateMagicLink(
     return null;
   }
 
-  return data?.properties?.action_link ?? null;
+  const tokenHash = data?.properties?.hashed_token;
+  if (!tokenHash) {
+    console.warn('[auth-admin] generateMagicLink: no hashed_token in response');
+    return null;
+  }
+
+  const url = new URL('https://aibankinginstitute.com/auth/callback');
+  url.searchParams.set('token_hash', tokenHash);
+  url.searchParams.set('type', 'magiclink');
+  url.searchParams.set('next', nextPath);
+  return url.toString();
 }
