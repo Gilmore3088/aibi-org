@@ -13,7 +13,9 @@ export interface TierMaturity {
   readonly tierId: Tier['id'];
   /** Maturity-stage label (e.g. "Individual Experimentation"). Internal frame; not a public rebrand. */
   readonly stageName: string;
-  /** One-paragraph "what is true at this stage" — banker-direct, present tense. */
+  /** One-paragraph "what is true at this stage" — banker-direct, present tense.
+   *  Authored in Wave 1; rendered in Wave B as the "Current State" section
+   *  opener of the six-stage journey arc. */
   readonly whatIsTrue: string;
   /** The single named blocker holding the institution at this stage. Null only at the top tier. */
   readonly blockerToNext: string | null;
