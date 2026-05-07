@@ -1,7 +1,6 @@
 import type { Tier } from '@content/assessments/v2/scoring';
 import { PERSONAS, FINANCIAL_IMPLICATIONS } from '@content/assessments/v2/personalization';
 import { getTierMaturity } from '@content/assessments/v2/maturity';
-import { SCORE_AUTHORITY } from '@content/assessments/v2/scoring-authority';
 
 interface ExecSummaryProps {
   readonly tier: Tier;
@@ -139,54 +138,6 @@ export function ExecSummary({ tier, tierId, score, maxScore }: ExecSummaryProps)
           ))}
         </dl>
       </div>
-
-      <aside
-        style={{
-          marginTop: '0.45in',
-          paddingTop: '0.2in',
-          borderTop: '0.25pt solid var(--color-ink)',
-          opacity: 0.7,
-        }}
-      >
-        <p
-          style={{
-            margin: 0,
-            fontFamily: 'var(--font-serif-sc)',
-            fontSize: '8.5pt',
-            letterSpacing: '0.18em',
-            textTransform: 'uppercase',
-            color: 'var(--color-ink)',
-          }}
-        >
-          About this score
-        </p>
-        <p className="pdf-body" style={{ margin: '0.1in 0 0 0', fontSize: '9pt', maxWidth: '5.5in' }}>
-          {SCORE_AUTHORITY.scaleMeaning}
-        </p>
-        <p
-          className="pdf-body"
-          style={{
-            margin: '0.15in 0 0.05in 0',
-            fontSize: '8.5pt',
-            fontWeight: 500,
-            color: 'var(--color-ink)',
-            opacity: 0.85,
-          }}
-        >
-          This score does not claim:
-        </p>
-        <ul style={{ margin: 0, paddingLeft: '0.2in', listStyle: 'disc' }}>
-          {SCORE_AUTHORITY.whatItDoesNotClaim.map((claim, i) => (
-            <li
-              key={i}
-              className="pdf-body"
-              style={{ fontSize: '8.5pt', margin: '0.04in 0', maxWidth: '5.5in' }}
-            >
-              {claim}
-            </li>
-          ))}
-        </ul>
-      </aside>
 
       <div className="pdf-page-footer">
         <span>Page 2</span>

@@ -13,6 +13,7 @@ import { StarterPromptAndPlan } from '../_components/StarterPromptAndPlan';
 import { FutureVisionPage } from '../_components/FutureVisionPage';
 import { NextStepsTrio } from '../_components/NextStepsTrio';
 import { GovernanceCitations } from '../_components/GovernanceCitations';
+import { MethodologyPage } from '../_components/MethodologyPage';
 import { BackCover } from '../_components/BackCover';
 import '../print.css';
 
@@ -104,6 +105,7 @@ export default async function PrintPage({ params }: PrintPageProps) {
       <FutureVisionPage />
       <NextStepsTrio tierId={profile.readiness_tier_id} />
       <GovernanceCitations />
+      <MethodologyPage />
       <BackCover />
     </main>
   );
