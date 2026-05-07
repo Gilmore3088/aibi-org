@@ -250,32 +250,38 @@ export async function POST(request: Request) {
   }
 
   // Send the breakdown email via Resend (best-effort, non-blocking).
-  // Only fires for v2 assessments with a dimension breakdown — v1 doesn't
-  // produce the per-dimension data the email's substance depends on.
+  // Wrapped in try/catch so any synchronous throw before the call cannot
+  // kill the route. Logs are loud so any failure shows up in Vercel logs.
+  console.log(
+    `[capture-email] reached email gate version=${version ?? 'unset'} hasBreakdown=${Boolean(dimensionBreakdown)}`,
+  );
   if (version === 'v2' && dimensionBreakdown) {
-    const tierData = getTierV2(score);
-    // Pick the lowest-scoring dimension for the starter artifact pointer.
-    const lowest = Object.entries(dimensionBreakdown)
-      .map(([id, d]) => ({ id, pct: d.maxScore > 0 ? d.score / d.maxScore : 0 }))
-      .sort((a, b) => a.pct - b.pct)[0];
-    const artifact = lowest ? getStarterArtifact(lowest.id as Dimension) : null;
+    try {
+      const tierData = getTierV2(score);
+      const lowest = Object.entries(dimensionBreakdown)
+        .map(([id, d]) => ({ id, pct: d.maxScore > 0 ? d.score / d.maxScore : 0 }))
+        .sort((a, b) => a.pct - b.pct)[0];
+      const artifact = lowest ? getStarterArtifact(lowest.id as Dimension) : null;
 
-    // The email's "Open my full results" URL goes to /results/{profileId}.
-    // The UUID is a bearer token — the page loads results without an
-    // auth check. No magic link, no callback round-trip.
-    sendAssessmentBreakdown({
-      email,
-      score,
-      maxScore: maxScore ?? 48,
-      tierId: tier,
-      tierLabel,
-      tierHeadline: tierData.headline,
-      tierSummary: tierData.summary,
-      dimensionBreakdown,
-      starterArtifactTitle: artifact?.title,
-      starterArtifactBody: artifact?.body,
-      profileId,
-    }).catch((err) => console.warn('[capture-email] resend skip', err));
+      console.log(`[capture-email] firing sendAssessmentBreakdown to=${email} profileId=${profileId ?? 'null'}`);
+      sendAssessmentBreakdown({
+        email,
+        score,
+        maxScore: maxScore ?? 48,
+        tierId: tier,
+        tierLabel,
+        tierHeadline: tierData.headline,
+        tierSummary: tierData.summary,
+        dimensionBreakdown,
+        starterArtifactTitle: artifact?.title,
+        starterArtifactBody: artifact?.body,
+        profileId,
+      }).catch((err) => console.warn('[capture-email] resend skip', err));
+    } catch (err) {
+      console.error('[capture-email] email-prep threw:', err);
+    }
+  } else {
+    console.log('[capture-email] email-send guard rejected — not sending');
   }
 
   return NextResponse.json({
