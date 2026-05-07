@@ -31,7 +31,7 @@ or strategic. Document everything for morning review.
 - Recreated permanent `~/Projects/aibi-staging` worktree tracking
   `origin/staging` per CLAUDE.md spec; `.env.local` symlinked.
 
-### Two PR-ready feature branches pushed for morning review
+### Three PR-ready feature branches pushed for morning review
 
 #### `fix/pdf-libnss3` — Fix `/api/assessment/pdf/warm` libnss3.so missing
 - Bumped `@sparticuz/chromium` 121.0.0 → ^148.0.0
@@ -56,6 +56,33 @@ or strategic. Document everything for morning review.
 - **Needs:** `OPENAI_API_KEY` + `GEMINI_API_KEY` in env to actually exercise.
   UI tabs still labelled "coming soon" — that's a separate UI follow-up
 - **Open PR:** `https://github.com/Gilmore3088/aibi-org/pull/new/feature/sandbox-multi-provider`
+
+#### `feature/stripe-indepth-checkout` — In-Depth Assessment $99 checkout
+Wires the Stripe MCP-confirmed price (`price_1TTm5fRy9NIFjtIILoSrp1So`)
+into a real purchase flow.
+- New `/api/checkout/in-depth` route (individual mode only — institution
+  bulk pricing intentionally returns 503 with an email nudge until the
+  seat-grant semantics for the assessment are designed)
+- `provisionEnrollment` recognises `metadata.product='in-depth-assessment'`
+  and inserts a `course_enrollments` row keyed off that product slug
+- Webhook handler dispatches to `sendIndepthAssessmentPurchase` (new
+  helper, alias `in-depth-assessment-purchase`) instead of the AiBI-P
+  course email when the product matches
+- `/assessment/in-depth` landing page CTA flips from "Get notified" to
+  "Buy now — $99", with a secondary mailto for bulk inquiries; renders
+  a "Purchase confirmed" banner when Stripe returns to `?purchased=true`
+- New Resend template **`in-depth-assessment-purchase`** authored +
+  published via Resend MCP (terra accent rule, round AiBI badge,
+  three-bullet "what's in your report" block, hairline footer — matches
+  the existing brand pattern)
+- `.env.local.example` — STRIPE_INDEPTH_PRICE_ID and
+  STRIPE_INDEPTH_INSTITUTION_PRICE_ID added; AiBI-P price IDs surfaced
+  too (they were silently expected by /api/create-checkout)
+- Build + typecheck green
+- **Needs:** `STRIPE_INDEPTH_PRICE_ID` in Vercel env, plus a Stripe
+  webhook endpoint registered in dashboard pointing at
+  `/api/webhooks/stripe` for prod
+- **Open PR:** `https://github.com/Gilmore3088/aibi-org/pull/new/feature/stripe-indepth-checkout`
 
 ### Read-only inventory work (no production state changed)
 

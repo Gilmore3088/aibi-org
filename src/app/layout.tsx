@@ -7,16 +7,10 @@ import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import './globals.css';
 
-// Routes that render WITHOUT the global Header/Footer chrome — but only
-// when the coming-soon takedown is active. When COMING_SOON is off, every
-// route gets the normal Header/Footer (including /coming-soon if anyone
-// visits it directly). The chromeless treatment exists for the takedown.
-const COMING_SOON_MODE = process.env.COMING_SOON === 'true';
+// Routes that render WITHOUT the global Header/Footer chrome. /coming-soon
+// is the only one — it provides its own internal brand lockup, so showing
+// the global Header on top would produce a duplicate logo.
 const CHROMELESS_PATHS: readonly string[] = ['/coming-soon'];
-// During coming-soon, the assessment is the only deep link the placeholder
-// promotes. We render it without site nav so visitors can't click "Education"
-// in a header and bounce back into the takedown.
-const CHROMELESS_PATHS_DURING_TAKEDOWN: readonly string[] = ['/assessment'];
 
 const PLAUSIBLE_DOMAIN = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN;
 
@@ -101,18 +95,9 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const pathname = (await headers()).get('x-pathname') ?? '/';
-  // /coming-soon ALWAYS renders chromeless — the page provides its own
-  // brand header internally, so showing the global Header on top of it
-  // produces a duplicate logo lockup. The takedown-only paths only go
-  // chromeless when COMING_SOON_MODE is active.
-  const chromeless =
-    CHROMELESS_PATHS.some(
-      (path) => pathname === path || pathname.startsWith(`${path}/`),
-    ) ||
-    (COMING_SOON_MODE &&
-      CHROMELESS_PATHS_DURING_TAKEDOWN.some(
-        (path) => pathname === path || pathname.startsWith(`${path}/`),
-      ));
+  const chromeless = CHROMELESS_PATHS.some(
+    (path) => pathname === path || pathname.startsWith(`${path}/`),
+  );
 
   return (
     <html lang="en">
