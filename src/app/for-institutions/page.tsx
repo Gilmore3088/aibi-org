@@ -141,7 +141,7 @@ export default function ForInstitutionsPage() {
           number="02"
           label="What your bankers will use, and leave knowing how to do"
           title="The tools and skills inside the engagement."
-          subtitle="Vendor-named tools. Verb-stated skills. No abstractions."
+          subtitle="Vendor-named tools. Verb-stated skills. Each one ties back to a specific module of the curriculum."
         />
         <div className="grid md:grid-cols-2 gap-s10 mt-s6 border-t border-strong pt-s6">
           <div>
@@ -160,8 +160,15 @@ export default function ForInstitutionsPage() {
                   <span>
                     <strong className="font-serif text-body-md text-ink block">
                       {tool.name}
+                      <span className="font-sans text-body-sm font-normal text-slate ml-s2">
+                        · {tool.vendor}
+                      </span>
                     </strong>
                     <span className="text-body-sm text-slate">{tool.note}</span>
+                    <span className="block font-mono text-label-sm uppercase tracking-widest text-dust mt-s1">
+                      Modules{" "}
+                      {tool.modules.map((m) => String(m).padStart(2, "0")).join(" · ")}
+                    </span>
                   </span>
                 </li>
               ))}
@@ -185,6 +192,10 @@ export default function ForInstitutionsPage() {
                       {skill.verb}
                     </strong>
                     <span className="text-body-sm text-slate">{skill.note}</span>
+                    <span className="block font-mono text-label-sm uppercase tracking-widest text-dust mt-s1">
+                      Modules{" "}
+                      {skill.modules.map((m) => String(m).padStart(2, "0")).join(" · ")}
+                    </span>
                   </span>
                 </li>
               ))}

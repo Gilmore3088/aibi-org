@@ -1,46 +1,82 @@
 /**
- * AI tools the institute's curriculum teaches bankers to use.
+ * Tools the AiBI-Practitioner curriculum teaches.
  *
- * Vendor-named, role-relevant. Surfaced on program pages and the
- * for-institutions sales surface.
+ * Bound to the actual tool guides in
+ *   content/courses/aibi-p/tool-guides.ts                  (ChatGPT, Claude)
+ *   content/courses/aibi-p/tool-guides-copilot-gemini.ts   (Copilot, Gemini)
+ *   content/courses/aibi-p/tool-guides-notebooklm-perplexity.ts (NotebookLM, Perplexity)
+ *
+ * If a tool is added to the course, add it here too. Pages that surface the
+ * "tools your bankers will use" list (e.g. /for-institutions, /education)
+ * read from this module.
+ *
+ * Module 7 of the curriculum covers tool comparison; this list reflects the
+ * platforms the curriculum walks the practitioner through using.
  */
+
+export type ToolCategory =
+  | "general-llm"      // ChatGPT, Claude — general-purpose chat models
+  | "office-suite"     // Copilot, Gemini — embedded in Microsoft / Google productivity
+  | "research"         // Perplexity — search-grounded LLM
+  | "documents";       // NotebookLM — document-grounded LLM
 
 export interface CurriculumTool {
   readonly slug: string;
   readonly name: string;
-  readonly category: "general" | "office" | "vendor" | "internal" | "gateway";
+  readonly vendor: string;
+  readonly category: ToolCategory;
   readonly note: string;
+  /** Modules where this tool is taught. Sourced from the course content. */
+  readonly modules: readonly number[];
 }
 
 export const TOOLS: readonly CurriculumTool[] = [
   {
+    slug: "chatgpt",
+    name: "ChatGPT",
+    vendor: "OpenAI",
+    category: "general-llm",
+    note: "General-purpose drafting, summarization, and decision support. Module 7 covers free vs. paid tier tradeoffs.",
+    modules: [3, 7],
+  },
+  {
     slug: "claude",
-    name: "Claude (Anthropic) or ChatGPT",
-    category: "general",
-    note: "For drafting, structured analysis, and decisioning support — with verifiable-output patterns.",
+    name: "Claude",
+    vendor: "Anthropic",
+    category: "general-llm",
+    note: "Long-context reading and policy-grounded analysis. Strong on careful reasoning over uploaded documents.",
+    modules: [3, 6, 7],
   },
   {
-    slug: "ms-copilot",
-    name: "Microsoft Copilot for M365",
-    category: "office",
-    note: "Inside Outlook, Excel, Word, Teams — the workflows your bank already runs.",
+    slug: "copilot",
+    name: "Microsoft Copilot",
+    vendor: "Microsoft",
+    category: "office-suite",
+    note: "Embedded in Outlook, Word, Excel, Teams. The path of least resistance for institutions on Microsoft 365.",
+    modules: [7],
   },
   {
-    slug: "ai-gateway",
-    name: "Your bank's approved AI gateway",
-    category: "gateway",
-    note: "Or compliance-aligned interface, if you have one. We meet your stack where it is.",
+    slug: "gemini",
+    name: "Google Gemini",
+    vendor: "Google",
+    category: "office-suite",
+    note: "Embedded in Gmail, Docs, Sheets, Meet. Equivalent path of least resistance for Google Workspace shops.",
+    modules: [7],
   },
   {
-    slug: "vendor-ai",
-    name: "Vendor AI in core, LOS, fraud",
-    category: "vendor",
-    note: "How to evaluate, configure, and govern AI features your existing vendors are turning on.",
+    slug: "notebooklm",
+    name: "NotebookLM",
+    vendor: "Google",
+    category: "documents",
+    note: "Document-grounded notebook for source-bounded Q&A across uploaded policies, bulletins, and memos.",
+    modules: [6, 7],
   },
   {
-    slug: "use-case-inventory",
-    name: "The use-case inventory tool",
-    category: "internal",
-    note: "A practical artifact — the inventory examiners ask for, in a form your committee can maintain.",
+    slug: "perplexity",
+    name: "Perplexity",
+    vendor: "Perplexity AI",
+    category: "research",
+    note: "Search-grounded LLM with citations. Useful for regulatory research where source attribution matters.",
+    modules: [6, 7],
   },
 ] as const;
