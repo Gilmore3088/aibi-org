@@ -102,15 +102,11 @@ export function getTierMaturity(tierId: Tier['id']): TierMaturity {
  * Uses the same equal-spaced 9-point logic as overall scoring, normalized
  * to whatever maxScore the dimension actually has in this session.
  *
- * For the in-depth 48Q assessment a dimension's maxScore is typically 24
- * (6 questions × 4 points). For the free 12Q rotation it's typically 4
- * (1 question × 4 points).
+ * Pass the dimension's actual maxScore — typically 24 (6 questions × 4 points)
+ * for the in-depth 48Q assessment, or 4 (1 question × 4 points) for the
+ * free 12Q rotation.
  */
-export function getDimensionTier(
-  _dimension: Dimension,
-  score: number,
-  maxScore: number
-): Tier['id'] {
+export function scoreToTier(score: number, maxScore: number): Tier['id'] {
   if (maxScore <= 0) return 'starting-point';
   const ratio = score / maxScore;
   if (ratio >= 0.875) return 'ready-to-scale';

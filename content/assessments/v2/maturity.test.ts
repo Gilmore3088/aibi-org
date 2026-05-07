@@ -1,7 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import {
   getTierMaturity,
-  getDimensionTier,
+  scoreToTier,
+  getDimensionTierMeaning,
   BANKING_ROLES,
   type TierMaturity,
 } from './maturity';
@@ -25,18 +26,24 @@ describe('getTierMaturity', () => {
   });
 });
 
-describe('getDimensionTier', () => {
+describe('scoreToTier', () => {
   it('returns starting-point when dimension scored at minimum', () => {
-    expect(getDimensionTier('governance' as never, 0, 4)).toBe('starting-point');
+    expect(scoreToTier(0, 4)).toBe('starting-point');
   });
 
   it('returns ready-to-scale when dimension scored at maximum', () => {
-    expect(getDimensionTier('security-posture', 4, 4)).toBe('ready-to-scale');
+    expect(scoreToTier(4, 4)).toBe('ready-to-scale');
   });
 
   it('handles fractional coverage (free 12Q has 1 question per dimension)', () => {
-    expect(getDimensionTier('leadership-buy-in', 4, 4)).toBe('ready-to-scale');
-    expect(getDimensionTier('leadership-buy-in', 1, 4)).toBe('starting-point');
+    expect(scoreToTier(4, 4)).toBe('ready-to-scale');
+    expect(scoreToTier(1, 4)).toBe('starting-point');
+  });
+});
+
+describe('getDimensionTierMeaning (empty ladder)', () => {
+  it('returns undefined while DIMENSION_TIER_LADDER is empty (Task 1 baseline state)', () => {
+    expect(getDimensionTierMeaning('security-posture', 'building-momentum')).toBeUndefined();
   });
 });
 
