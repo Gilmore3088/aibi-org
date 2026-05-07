@@ -1,42 +1,23 @@
-// /education — Unified education hub
-// Replaces /courses and /certifications with a single page covering both
-// free entry points ("Classes") and the paid certification tracks.
-//
-// Decision log: 2026-04-17 — Merged /courses + /certifications into /education
-// to reduce nav clutter and clarify the free → paid funnel.
-
-import type { Metadata } from 'next';
-import Link from 'next/link';
-import { modules } from '@content/courses/aibi-p';
-import { getEnrollment as getPEnrollment } from '@/app/courses/aibi-p/_lib/getEnrollment';
-import { SampleQuestion } from '@/components/sections/SampleQuestion';
-import { InquiryForm } from '@/app/certifications/_components/InquiryForm';
+import type { Metadata } from "next";
+import { MarketingPage } from "@/components/system/templates";
+import {
+  Section,
+  SectionHeader,
+  CertificationLadder,
+  Cta,
+  Marginalia,
+} from "@/components/system";
+import { SampleQuestion } from "@/components/sections/SampleQuestion";
+import { InquiryForm } from "@/app/certifications/_components/InquiryForm";
+import { modules } from "@content/courses/aibi-p";
+import { getEnrollment as getPEnrollment } from "@/app/courses/aibi-p/_lib/getEnrollment";
+import { CTAS } from "@content/copy";
 
 export const metadata: Metadata = {
-  title: 'Education | The AI Banking Institute',
+  title: "Education | The AI Banking Institute",
   description:
-    'Free classes and three certification tracks for community banks and credit unions. Start with the AI Readiness Assessment, then earn AiBI-Practitioner, AiBI-S, or AiBI-L credentials.',
+    "Free classes and three certification tracks for community banks and credit unions. Start with the AI Readiness Assessment, then earn AiBI-Practitioner, AiBI-S, or AiBI-L credentials.",
 };
-
-interface CertificationTrack {
-  readonly code: string;
-  readonly credential: string;
-  readonly title: string;
-  readonly subtitle: string;
-  readonly audience: string;
-  readonly format: string;
-  readonly duration: string;
-  readonly price: string;
-  readonly colorVar: string;
-  readonly colorBg: string;
-  readonly href: string;
-  readonly totalUnits: number;
-  readonly unitLabel: string;
-  readonly completedUnits: number;
-  readonly isEnrolled: boolean;
-  readonly prerequisite: string | null;
-  readonly comingSoon: boolean;
-}
 
 interface FreeClass {
   readonly title: string;
@@ -47,406 +28,203 @@ interface FreeClass {
 }
 
 export default async function EducationPage() {
-  // Resolve enrollment status for logged-in learners (null when unauthenticated).
   const pEnrollment = await getPEnrollment();
+  const completedCount = pEnrollment?.completed_modules?.length ?? 0;
+  const isPEnrolled = pEnrollment !== null;
+
   const freeClasses: readonly FreeClass[] = [
     {
-      title: 'AI Readiness Assessment',
+      title: "AI Readiness Assessment",
       subtitle:
-        'Eight questions, three minutes. Get your readiness score and a tailored next-step recommendation.',
-      cta: 'Take the assessment',
-      href: '/assessment/start',
+        "Eight questions, three minutes. Get your readiness score and a tailored next-step recommendation.",
+      cta: "Take the assessment",
+      href: "/assessment/start",
       available: true,
     },
     {
-      title: 'The AI Banking Brief',
+      title: "The AI Banking Brief",
       subtitle:
-        'Weekly digest of regulatory updates, vendor moves, and practical AI use cases for community FIs.',
-      cta: 'Subscribe',
-      href: '/resources',
+        "Fortnightly research on regulatory updates, vendor moves, and practical AI use cases for community FIs.",
+      cta: "Subscribe",
+      href: "/research",
       available: true,
     },
     {
-      title: 'Short-form classes',
+      title: "Short-form classes",
       subtitle:
-        'Five-minute video lessons on regulatory framing, vendor evaluation, and Acceptable Use practices.',
-      cta: 'Coming soon',
-      href: '#',
+        "Five-minute video lessons on regulatory framing, vendor evaluation, and Acceptable Use practices.",
+      cta: "Coming soon",
+      href: "#",
       available: false,
     },
   ];
 
-  const tracks: readonly CertificationTrack[] = [
-    {
-      code: 'AiBI-Practitioner',
-      credential: 'Practitioner',
-      title: 'Banking AI Practitioner',
-      subtitle: 'Personal AI proficiency for every staff member',
-      audience: 'All staff',
-      format: 'Self-paced online',
-      duration: '12 modules',
-      price: '$99',
-      colorVar: 'var(--color-terra)',
-      colorBg: 'var(--color-terra-pale)',
-      href: '/courses/aibi-p',
-      totalUnits: modules.length,
-      unitLabel: 'modules',
-      completedUnits: pEnrollment?.completed_modules?.length ?? 0,
-      isEnrolled: pEnrollment !== null,
-      prerequisite: null,
-      comingSoon: false,
-    },
-    {
-      code: 'AiBI-S',
-      credential: 'Specialist',
-      title: 'Banking AI Specialist',
-      subtitle: 'Advanced workflows, agents, and internal AI systems',
-      audience: 'Department managers',
-      format: '6-week live cohort',
-      duration: '6 weeks',
-      price: 'Coming soon',
-      colorVar: 'var(--color-cobalt)',
-      colorBg: 'var(--color-cobalt-pale)',
-      href: '/coming-soon?interest=specialist',
-      totalUnits: 0,
-      unitLabel: 'units',
-      completedUnits: 0,
-      isEnrolled: false,
-      prerequisite: 'AiBI-Practitioner',
-      comingSoon: true,
-    },
-    {
-      code: 'AiBI-L',
-      credential: 'Leader',
-      title: 'Banking AI Leader',
-      subtitle: 'Team-level rollout and executive AI leadership',
-      audience: 'C-suite and board',
-      format: '1-day in-person workshop',
-      duration: '4 sessions',
-      price: 'Coming soon',
-      colorVar: 'var(--color-sage)',
-      colorBg: 'var(--color-sage-pale)',
-      href: '/coming-soon?interest=leader',
-      totalUnits: 0,
-      unitLabel: 'sessions',
-      completedUnits: 0,
-      isEnrolled: false,
-      prerequisite: 'AiBI-S',
-      comingSoon: true,
-    },
-  ];
-
   return (
-    <main>
-      {/* Hero */}
-      <section className="px-6 pt-14 pb-10 md:pt-20 md:pb-14">
-        <div className="max-w-4xl mx-auto text-center space-y-6">
-          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
-            Education
-          </p>
-          <h1 className="font-serif text-5xl md:text-6xl text-[color:var(--color-ink)] leading-tight">
-            Build the capability that endures.
-          </h1>
-          <p className="text-lg md:text-xl text-[color:var(--color-ink)]/75 max-w-2xl mx-auto leading-relaxed">
-            Tools change. The judgment to deploy AI responsibly inside a
-            regulated institution does not. Start free, then earn the
-            Practitioner is active now. Specialist and Leader are coming after
-            the foundation loop is validated.
-          </p>
-        </div>
-      </section>
-
-      {/* Free Classes section */}
-      <section
-        id="classes"
-        aria-labelledby="classes-heading"
-        className="px-6 py-12 md:py-16 border-t border-[color:var(--color-ink)]/10"
-      >
-        <div className="max-w-5xl mx-auto">
-          <div className="mb-10 max-w-2xl">
-            <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-3">
-              Classes · Free
+    <MarketingPage
+      hero={{
+        eyebrow: "Education",
+        title: <>Build the capability that endures.</>,
+        lede: (
+          <>
+            Tools change. The judgment to deploy AI responsibly inside a regulated
+            institution does not. Start free; earn the Practitioner credential when you&rsquo;re
+            ready. Specialist and Leader programs are coming after the foundation loop is
+            validated.
+          </>
+        ),
+        primaryCta: CTAS.beginAssessment,
+        aside: isPEnrolled ? (
+          <Marginalia label="Your progress">
+            <h4 className="font-serif text-display-xs leading-snug">
+              {completedCount}/{modules.length} modules complete
+            </h4>
+            <p className="font-serif italic text-body-sm text-slate mt-s1 mb-s4">
+              AiBI-Practitioner · in progress
             </p>
-            <h2
-              id="classes-heading"
-              className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] leading-tight mb-3"
+            <Cta href="/courses/aibi-p" variant="secondary">
+              Resume the program →
+            </Cta>
+          </Marginalia>
+        ) : undefined,
+      }}
+    >
+      {/* §01 — Free Classes */}
+      <Section variant="parch" padding="default">
+        <SectionHeader
+          number="01"
+          label="Classes · Free"
+          title="Start where you are."
+          subtitle="Short, free entry points. No purchase required. Designed to give you a clear answer in under five minutes."
+        />
+        <div className="grid sm:grid-cols-3 gap-px bg-hairline border-y border-strong mt-s6">
+          {freeClasses.map((cls) => (
+            <article
+              key={cls.title}
+              className="bg-linen p-s6 flex flex-col"
             >
-              Start where you are.
-            </h2>
-            <p className="text-base text-[color:var(--color-slate)] leading-relaxed">
-              Short, free entry points. No purchase required. Designed to give
-              you a clear answer in under five minutes.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-6">
-            {freeClasses.map((cls) => {
-              const card = (
-                <article
-                  className={`h-full bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-6 flex flex-col ${
-                    cls.available
-                      ? 'hover:border-[color:var(--color-terra)]/40 transition-colors'
-                      : 'opacity-70'
-                  }`}
-                >
-                  <h3 className="font-serif text-xl text-[color:var(--color-ink)] leading-tight mb-3">
-                    {cls.title}
-                  </h3>
-                  <p className="text-sm text-[color:var(--color-ink)]/75 leading-relaxed flex-1 mb-5">
-                    {cls.subtitle}
-                  </p>
-                  <span
-                    className={`font-serif-sc text-[11px] uppercase tracking-[0.18em] border-b pb-0.5 self-start ${
-                      cls.available
-                        ? 'text-[color:var(--color-terra)] border-[color:var(--color-terra)]'
-                        : 'text-[color:var(--color-ink)]/40 border-[color:var(--color-ink)]/20'
-                    }`}
-                  >
-                    {cls.cta}
-                  </span>
-                </article>
-              );
-
-              return cls.available ? (
-                <Link key={cls.title} href={cls.href} className="block">
-                  {card}
-                </Link>
+              <h3 className="font-serif text-display-xs leading-snug mb-s3">{cls.title}</h3>
+              <p className="text-body-sm leading-relaxed text-ink/80 flex-1 mb-s5">
+                {cls.subtitle}
+              </p>
+              {cls.available ? (
+                <Cta variant="secondary" href={cls.href}>
+                  {cls.cta} →
+                </Cta>
               ) : (
-                <div key={cls.title}>{card}</div>
-              );
-            })}
-          </div>
+                <span className="font-serif-sc text-mono-sm uppercase tracking-widest text-ink/40 border-b border-hairline pb-[1px] self-start">
+                  {cls.cta}
+                </span>
+              )}
+            </article>
+          ))}
         </div>
-      </section>
+      </Section>
 
-      {/* Certifications section */}
-      <section
-        id="certifications"
-        aria-labelledby="certifications-heading"
-        className="px-6 py-14 md:py-20 border-t border-[color:var(--color-ink)]/10"
-      >
-        <div className="max-w-5xl mx-auto">
-          <div className="mb-10 max-w-2xl">
-            <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
-              Certifications · Paid
-            </p>
-            <h2
-              id="certifications-heading"
-              className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] leading-tight mb-3"
-            >
-              Three credentials, one ladder.
-            </h2>
-            <p className="text-base text-[color:var(--color-slate)] leading-relaxed">
-              Each certification builds on the previous. Earn the credential
-              that matches your role today and advance when you are ready.
-            </p>
-          </div>
+      {/* §02 — Certification ladder */}
+      <Section variant="linen" padding="default">
+        <SectionHeader
+          number="02"
+          label="Certifications · Paid"
+          title="Three credentials, one ladder."
+          subtitle="Each certification builds on the previous. Earn the credential that matches your role today and advance when you are ready."
+        />
+        <CertificationLadder
+          className="mt-s6"
+          rungs={[
+            {
+              level: "Foundational",
+              stepLabel: "01",
+              code: "AiBI-Practitioner",
+              title: "Banking AI Practitioner",
+              designation: "Personal AI proficiency for every staff member",
+              pillar: "application",
+              facts: [
+                { label: "Audience", value: "All staff" },
+                { label: "Format", value: "Self-paced online" },
+                { label: "Effort", value: `${modules.length} modules`, mono: true },
+                { label: "Tuition", value: "$295 · $199/seat at 10+", mono: true },
+              ],
+              blurb:
+                "For everyone in the bank: tellers, lenders, ops, compliance, executive support. Ends with a portfolio of three reviewed AI artifacts.",
+              href: "/courses/aibi-p",
+            },
+            {
+              level: "Specialist",
+              stepLabel: "02",
+              code: "AiBI-S",
+              title: "Banking AI Specialist",
+              designation: "Advanced workflows, agents, and internal AI systems",
+              pillar: "understanding",
+              facts: [
+                { label: "Audience", value: "Department managers" },
+                { label: "Format", value: "Self-paced, role-tracked" },
+                { label: "Effort", value: "~25 hrs", mono: true },
+                { label: "Tuition", value: "Coming soon" },
+              ],
+              blurb:
+                "Role-specific tracks: Ops, Lending, Compliance, Risk. For practitioners ready to lead AI within a function.",
+              href: "/coming-soon?interest=specialist",
+              comingSoon: true,
+            },
+            {
+              level: "Leader",
+              stepLabel: "03",
+              code: "AiBI-L",
+              title: "Banking AI Leader",
+              designation: "Team-level rollout and executive AI leadership",
+              pillar: "awareness",
+              facts: [
+                { label: "Audience", value: "C-suite & board" },
+                { label: "Format", value: "Cohort-supported" },
+                { label: "Effort", value: "~40 hrs", mono: true },
+                { label: "Tuition", value: "Coming soon" },
+              ],
+              blurb:
+                "Governance, vendor risk, AI strategy, and the SR 11-7 stack. Optional fractional Chief AI Officer engagement.",
+              href: "/coming-soon?interest=leader",
+              comingSoon: true,
+            },
+          ]}
+        />
+      </Section>
 
-          <div className="space-y-6">
-            {tracks.map((track) => {
-              const pct =
-                track.totalUnits > 0 && track.isEnrolled
-                  ? Math.round((track.completedUnits / track.totalUnits) * 100)
-                  : null;
-              const isComplete = pct === 100;
-
-              return (
-                <Link
-                  key={track.code}
-                  href={track.href}
-                  className="group block rounded-[3px] border border-[color:var(--color-ink)]/10 hover:border-[color:var(--color-ink)]/20 transition-all duration-200 overflow-hidden"
-                >
-                  <div className="flex">
-                    <div
-                      className="w-1.5 shrink-0"
-                      style={{ backgroundColor: track.colorVar }}
-                      aria-hidden="true"
-                    />
-                    <div className="flex-1 bg-[color:var(--color-parch)] p-6 md:p-8">
-                      <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
-                        {/* Left: track info */}
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center flex-wrap gap-3 mb-3">
-                            <span
-                              className="font-serif-sc text-[11px] uppercase tracking-[0.2em]"
-                              style={{ color: track.colorVar }}
-                            >
-                              {track.code}
-                            </span>
-                            <div
-                              className="h-px w-4"
-                              style={{
-                                backgroundColor: track.colorVar,
-                                opacity: 0.3,
-                              }}
-                              aria-hidden="true"
-                            />
-                            <span className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/50">
-                              {track.credential}
-                            </span>
-                            {track.isEnrolled && (
-                              <span
-                                className="font-mono text-[9px] uppercase tracking-widest px-2 py-0.5 rounded-sm"
-                                style={{
-                                  color: track.colorVar,
-                                  backgroundColor: track.colorBg,
-                                }}
-                              >
-                                {isComplete ? 'Complete' : 'Enrolled'}
-                              </span>
-                            )}
-                            {track.comingSoon && (
-                              <span
-                                className="font-mono text-[9px] uppercase tracking-widest px-2 py-0.5 rounded-sm"
-                                style={{
-                                  color: track.colorVar,
-                                  backgroundColor: track.colorBg,
-                                }}
-                              >
-                                Coming Soon
-                              </span>
-                            )}
-                          </div>
-
-                          <h3 className="font-serif text-2xl md:text-3xl text-[color:var(--color-ink)] leading-tight mb-2 group-hover:text-[color:var(--color-terra)] transition-colors">
-                            {track.title}
-                          </h3>
-                          <p className="font-serif italic text-sm text-[color:var(--color-slate)] leading-relaxed mb-4">
-                            {track.subtitle}
-                          </p>
-
-                          <div className="flex flex-wrap gap-x-6 gap-y-1.5">
-                            {[
-                              { label: 'Audience', value: track.audience },
-                              { label: 'Format', value: track.format },
-                              { label: 'Duration', value: track.duration },
-                              { label: 'Price', value: track.price },
-                            ].map(({ label, value }) => (
-                              <div
-                                key={label}
-                                className="flex items-center gap-1.5"
-                              >
-                                <span className="font-mono text-[9px] uppercase tracking-[0.15em] text-[color:var(--color-ink)]/50">
-                                  {label}
-                                </span>
-                                <span className="font-mono text-[9px] tabular-nums text-[color:var(--color-ink)]/75">
-                                  {value}
-                                </span>
-                              </div>
-                            ))}
-                          </div>
-
-                          {track.prerequisite && (
-                            <p className="mt-3 font-mono text-[9px] uppercase tracking-[0.15em] text-[color:var(--color-ink)]/50">
-                              Prerequisite: {track.prerequisite}
-                            </p>
-                          )}
-                        </div>
-
-                        {/* Right: progress or CTA */}
-                        <div className="shrink-0 flex flex-col items-start md:items-end gap-3 md:min-w-[140px]">
-                          {track.isEnrolled && pct !== null ? (
-                            <>
-                              <div className="md:text-right">
-                                <p
-                                  className="font-mono text-2xl tabular-nums leading-none"
-                                  style={{ color: track.colorVar }}
-                                >
-                                  {pct}%
-                                </p>
-                                <p className="font-mono text-[9px] text-[color:var(--color-slate)] mt-1 tabular-nums">
-                                  {track.completedUnits}/{track.totalUnits}{' '}
-                                  {track.unitLabel}
-                                </p>
-                              </div>
-                              <div className="w-full h-1.5 bg-[color:var(--color-ink)]/10 rounded-full overflow-hidden">
-                                <div
-                                  className="h-full rounded-full transition-all duration-500"
-                                  style={{
-                                    width: `${pct}%`,
-                                    backgroundColor: track.colorVar,
-                                  }}
-                                />
-                              </div>
-                              <span
-                                className="font-serif-sc text-[11px] uppercase tracking-[0.18em] border-b pb-0.5"
-                                style={{
-                                  color: track.colorVar,
-                                  borderColor: track.colorVar,
-                                }}
-                              >
-                                {isComplete ? 'Review' : 'Continue'}
-                              </span>
-                            </>
-                          ) : (
-                            <span
-                              className="font-serif-sc text-[11px] uppercase tracking-[0.18em] border-b pb-0.5 group-hover:opacity-80 transition-opacity"
-                              style={{
-                                color: track.colorVar,
-                                borderColor: track.colorVar,
-                              }}
-                            >
-                              {track.comingSoon ? 'Join waitlist' : 'Learn more'}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Sample question — try a real exam item */}
+      {/* §03 — Sample question */}
       <SampleQuestion />
 
-      {/* Inquiry form */}
-      <section
-        id="inquiry-form"
-        aria-labelledby="inquiry-heading"
-        className="px-6 py-16 md:py-20 border-t border-[color:var(--color-ink)]/10"
-      >
-        <div className="max-w-2xl mx-auto">
-          <div className="mb-8 text-center">
-            <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-3">
-              Talk to us
-            </p>
-            <h2
-              id="inquiry-heading"
-              className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] leading-tight"
-            >
-              Questions before you commit?
-            </h2>
-          </div>
+      {/* §04 — Inquiry */}
+      <Section variant="parch" padding="default" container="narrow" id="inquiry-form">
+        <SectionHeader
+          number="04"
+          label="Talk to us"
+          title="Questions before you commit?"
+        />
+        <div className="mt-s6">
           <InquiryForm />
         </div>
-      </section>
+      </Section>
 
-      {/* Enterprise / bulk CTA */}
-      <section className="px-6 pb-20">
-        <div className="max-w-3xl mx-auto border border-[color:var(--color-ink)]/10 bg-[color:var(--color-linen)] p-10 md:p-14 text-center">
-          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-3">
-            Team and institutional enrollment
-          </p>
-          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] mb-4">
-            Need team certification or executive workshops?
-          </h2>
-          <p className="text-[color:var(--color-ink)]/75 max-w-xl mx-auto mb-6 leading-relaxed">
-            AiBI-Practitioner team pricing starts at 10 seats. Advanced Specialist and
-            Leader programs are coming after Practitioner is validated with
-            real learners.
-          </p>
-          <a
-            href="#inquiry-form"
-            className="inline-block px-8 py-4 border border-[color:var(--color-terra)] text-[color:var(--color-terra)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra)] hover:text-[color:var(--color-linen)] transition-colors"
-          >
-            Contact us for institutional solutions
-          </a>
+      {/* §05 — Team / institutional CTA */}
+      <Section variant="dark" divider="none" padding="default">
+        <div className="grid md:grid-cols-[1.4fr_1fr] gap-s10 items-center">
+          <div>
+            <p className="font-serif-sc text-label-md uppercase tracking-widest text-amber-light mb-s3">
+              Team and institutional enrollment
+            </p>
+            <h2 className="font-serif text-display-md text-bone leading-tight">
+              Need team certification or executive workshops?
+            </h2>
+            <p className="text-body-md text-cream mt-s4 leading-relaxed max-w-narrow">
+              AiBI-Practitioner team pricing starts at 10 seats. Specialist and Leader
+              programs are coming after the Practitioner is validated with real learners.
+            </p>
+          </div>
+          <div>
+            <Cta href="/for-institutions" tone="dark">
+              Read the institutional engagement page →
+            </Cta>
+          </div>
         </div>
-      </section>
-    </main>
+      </Section>
+    </MarketingPage>
   );
 }
