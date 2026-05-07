@@ -1,321 +1,243 @@
-import Link from 'next/link';
-import type { Metadata } from 'next';
-import { enrollmentTiers } from '@content/institutions/v1';
+import type { Metadata } from "next";
+import { MarketingPage } from "@/components/system/templates";
+import { Section, SectionHeader, PillarCard, Cta } from "@/components/system";
+import { enrollmentTiers } from "@content/institutions/v1";
+import { TOOLS } from "@content/curriculum/tools";
+import { SKILLS } from "@content/curriculum/skills";
+import { CTAS } from "@content/copy";
+import type { Pillar } from "@/lib/design-system/tokens";
 
 export const metadata: Metadata = {
-  title: 'For Institutions | The AI Banking Institute',
+  title: "For Institutions | The AI Banking Institute",
   description:
-    'Certify your team in AI proficiency at the scale that fits — individual enrollment, team cohorts, or an institution-wide capability program. The AI Banking Institute builds the people who build AI inside community banks and credit unions.',
+    "Three ways to bring AiBI capability into your bank — without buying a platform. Coached cohort · institution-wide program · leadership advisory.",
 };
 
-const CALENDLY_URL =
-  process.env.NEXT_PUBLIC_CALENDLY_URL ??
-  'https://calendly.com/aibi/executive-briefing';
-
-interface SampleResource {
-  readonly title: string;
-  readonly description: string;
-  readonly cta: string;
-  readonly href: string;
-  readonly available: boolean;
-  readonly external?: boolean;
-}
-
-const sampleLibrary: readonly SampleResource[] = [
-  {
-    title: 'Safe AI Use Guide',
-    description:
-      'Six chapters on acceptable use, vendor evaluation, SR 11-7 mapping, shadow-AI discovery, and examiner readiness. The governance brief we hand every cohort.',
-    cta: 'Download the guide',
-    href: '/security',
-    available: true,
-  },
-  {
-    title: 'AI Readiness Assessment',
-    description:
-      'Eight questions, three minutes. The same instrument we use to scope a team cohort. Take it yourself to see what we measure.',
-    cta: 'Take the assessment',
-    href: '/assessment',
-    available: true,
-  },
-  {
-    title: 'Sample exam question',
-    description:
-      'See a real Practitioner exam item with the scoring rubric. Judgment under constraint, not multiple choice.',
-    cta: 'View sample question',
-    href: '/education#certifications',
-    available: true,
-  },
-  {
-    title: 'Sample curriculum module',
-    description:
-      'A full Practitioner module — readings, exercises, assessment — shared openly so you can evaluate depth before committing a team.',
-    cta: 'Coming soon',
-    href: '#',
-    available: false,
-  },
-  {
-    title: 'Cohort kickoff agenda',
-    description:
-      'The first meeting: structure, artifacts, questions for the executive sponsor, and what the internal champion owns. Everything you need to run one yourself.',
-    cta: 'Coming soon',
-    href: '#',
-    available: false,
-  },
-  {
-    title: 'Efficiency ratio workbook',
-    description:
-      'Model your institution’s automation ceiling with your own FTE, cost, and hours estimates. Same math we walk through in an Executive Briefing.',
-    cta: 'Open the workbook',
-    href: '/for-institutions/samples/efficiency-ratio-workbook',
-    available: true,
-  },
-];
+const TIER_PILLAR: Record<typeof enrollmentTiers[number]["id"], Pillar> = {
+  individual: "application",
+  team: "understanding",
+  "institution-wide": "awareness",
+};
 
 export default function ForInstitutionsPage() {
   return (
-    <main>
-      {/* Hero */}
-      <section className="px-6 pt-14 pb-10 md:pt-20 md:pb-14">
-        <div className="max-w-4xl mx-auto text-center space-y-6">
-          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
-            For institutions
-          </p>
-          <h1 className="font-serif text-5xl md:text-6xl text-[color:var(--color-ink)] leading-tight">
-            Turn your bankers into<br />
-            <span className="text-[color:var(--color-terra)]">
-              your builders.
-            </span>
-          </h1>
-          <p className="text-lg md:text-xl text-[color:var(--color-ink)]/75 max-w-2xl mx-auto leading-relaxed">
-            The AI Banking Institute is an education company. We don’t build AI
-            for your institution — we build the people who will. Three ways to
-            enroll, one free briefing to find the right fit.
-          </p>
-        </div>
-      </section>
-
-      {/* Enrollment tiers */}
-      <section
-        aria-labelledby="enrollment-heading"
-        className="px-6 py-14 md:py-20 border-t border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)]"
-      >
-        <div className="max-w-5xl mx-auto">
-          <div className="mb-10 max-w-2xl">
-            <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
-              Enrollment · Pick your scale
-            </p>
-            <h2
-              id="enrollment-heading"
-              className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] leading-tight mb-3"
-            >
-              Start with one banker or every banker.
-            </h2>
-            <p className="text-base text-[color:var(--color-ink)]/75 leading-relaxed">
-              Every tier uses the same curriculum. What changes is scale,
-              pacing, and the amount of support wrapped around the cohort.
-            </p>
-          </div>
-
-          <div className="space-y-6">
-            {enrollmentTiers.map((tier) => {
-              const ctaHref =
-                tier.cta.href === 'calendly' ? CALENDLY_URL : tier.cta.href;
-              const isExternal = ctaHref.startsWith('http');
-              return (
-                <article
-                  key={tier.id}
-                  className="rounded-[3px] border border-[color:var(--color-ink)]/10 overflow-hidden bg-[color:var(--color-linen)]"
-                >
-                  <div className="flex">
-                    <div
-                      className="w-1.5 shrink-0"
-                      style={{ backgroundColor: tier.accent }}
-                      aria-hidden="true"
-                    />
-                    <div className="flex-1 p-6 md:p-8">
-                      <div className="flex items-center flex-wrap gap-3 mb-3">
-                        <span
-                          className="font-serif-sc text-[11px] uppercase tracking-[0.2em]"
-                          style={{ color: tier.accent }}
-                        >
-                          {tier.scaleLabel}
-                        </span>
-                      </div>
-                      <h3 className="font-serif text-2xl md:text-3xl text-[color:var(--color-ink)] leading-tight mb-2">
-                        {tier.name}
-                      </h3>
-                      <p className="font-serif italic text-sm text-[color:var(--color-slate)] leading-relaxed mb-4">
-                        {tier.tagline}
-                      </p>
-                      <p className="text-sm text-[color:var(--color-ink)]/75 leading-relaxed mb-5 max-w-2xl">
-                        {tier.summary}
-                      </p>
-                      <ul className="space-y-1.5 mb-6">
-                        {tier.included.map((item) => (
-                          <li
-                            key={item}
-                            className="text-sm text-[color:var(--color-ink)]/75 leading-snug pl-4 relative"
-                          >
-                            <span
-                              className="absolute left-0 top-2 w-2 h-[1px]"
-                              style={{ background: tier.accent }}
-                              aria-hidden="true"
-                            />
-                            {item}
-                          </li>
-                        ))}
-                      </ul>
-                      {isExternal ? (
-                        <a
-                          href={ctaHref}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-block font-serif-sc text-[11px] uppercase tracking-[0.18em] border-b pb-0.5 hover:opacity-70 transition-opacity"
-                          style={{ color: tier.accent, borderColor: tier.accent }}
-                        >
-                          {tier.cta.label}
-                        </a>
-                      ) : (
-                        <Link
-                          href={ctaHref}
-                          className="inline-block font-serif-sc text-[11px] uppercase tracking-[0.18em] border-b pb-0.5 hover:opacity-70 transition-opacity"
-                          style={{ color: tier.accent, borderColor: tier.accent }}
-                        >
-                          {tier.cta.label}
-                        </Link>
-                      )}
-                    </div>
-                  </div>
-                </article>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Free self-serve sample library */}
-      <section
-        aria-labelledby="samples-heading"
-        className="px-6 py-14 md:py-20 border-t border-[color:var(--color-ink)]/10"
-      >
-        <div className="max-w-5xl mx-auto">
-          <div className="mb-10 max-w-2xl">
-            <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-3">
-              Samples · Free
-            </p>
-            <h2
-              id="samples-heading"
-              className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] leading-tight mb-3"
-            >
-              See how we think before you spend a dollar.
-            </h2>
-            <p className="text-base text-[color:var(--color-slate)] leading-relaxed">
-              We’d rather give you the method and earn the engagement than sell
-              you a deck. Everything below is free.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {sampleLibrary.map((resource) => {
-              const card = (
-                <article
-                  className={`h-full bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-6 flex flex-col ${
-                    resource.available
-                      ? 'hover:border-[color:var(--color-terra)]/40 transition-colors'
-                      : 'opacity-70'
-                  }`}
-                >
-                  <h3 className="font-serif text-lg text-[color:var(--color-ink)] leading-tight mb-3">
-                    {resource.title}
-                  </h3>
-                  <p className="text-sm text-[color:var(--color-ink)]/75 leading-relaxed flex-1 mb-5">
-                    {resource.description}
-                  </p>
-                  <span
-                    className={`font-serif-sc text-[11px] uppercase tracking-[0.18em] border-b pb-0.5 self-start ${
-                      resource.available
-                        ? 'text-[color:var(--color-terra)] border-[color:var(--color-terra)]'
-                        : 'text-[color:var(--color-ink)]/40 border-[color:var(--color-ink)]/20'
-                    }`}
-                  >
-                    {resource.cta}
-                  </span>
-                </article>
-              );
-
-              return resource.available ? (
-                <Link
-                  key={resource.title}
-                  href={resource.href}
-                  className="block"
-                >
-                  {card}
-                </Link>
-              ) : (
-                <div key={resource.title}>{card}</div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Advisory — quiet secondary option */}
-      <section
-        aria-labelledby="advisory-heading"
-        className="px-6 py-14 md:py-20 border-t border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)]"
-      >
-        <div className="max-w-3xl mx-auto">
-          <div className="rounded-[3px] border border-[color:var(--color-ink)]/10 bg-[color:var(--color-linen)] p-8 md:p-10">
-            <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60 mb-3">
-              Advisory · Optional
-            </p>
-            <h2
-              id="advisory-heading"
-              className="font-serif text-2xl md:text-3xl text-[color:var(--color-ink)] leading-tight mb-4"
-            >
-              Want a coach alongside the cohort?
-            </h2>
-            <p className="text-base text-[color:var(--color-ink)]/75 leading-relaxed mb-6">
-              Some institutions want hands-on coaching while their team is in
-              the program. We offer three advisory engagements that pair with
-              certification — never replace it. Your bankers are always the
-              builders. We’re the coach.
-            </p>
-            <Link
-              href="/for-institutions/advisory"
-              className="inline-block font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] border-b border-[color:var(--color-terra)] pb-0.5 hover:opacity-70 transition-opacity"
-            >
-              See advisory options
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Closing Executive Briefing CTA */}
-      <section id="inquiry" className="px-6 py-14 md:py-20">
-        <div className="max-w-3xl mx-auto bg-[color:var(--color-ink)] text-[color:var(--color-linen)] p-10 md:p-14 text-center">
-          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra-pale)] mb-3">
-            Not sure which fits?
-          </p>
-          <h2 className="font-serif text-3xl md:text-4xl mb-4">
-            Start with a free Executive Briefing.
-          </h2>
-          <p className="text-[color:var(--color-linen)]/75 max-w-xl mx-auto mb-6 leading-relaxed">
-            Thirty minutes. We’ll ask about your team, your timeline, and what
-            you’re trying to build, then recommend the right starting point. No
-            pitch, no obligation.
-          </p>
-          <a
-            href={CALENDLY_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
+    <MarketingPage
+      hero={{
+        eyebrow: "For Banks & Credit Unions",
+        title: (
+          <>
+            Capability,{" "}
+            <em className="not-italic text-terra">not a platform.</em>
+          </>
+        ),
+        lede: (
+          <>
+            An education engagement for community banks and credit unions. Your bankers
+            leave with reviewed AI workflows; your leadership leaves with a readiness
+            baseline and a governance plan; your examiners see a defensible posture.
+            Nothing to install. No vendor lock-in. Just capability that compounds.
+          </>
+        ),
+        primaryCta: CTAS.requestPilot,
+        secondaryCta: CTAS.beginAssessment,
+      }}
+    >
+      {/* Value prop band — what your institution actually gets */}
+      <div className="grid sm:grid-cols-2 lg:grid-cols-4 bg-parch-dark border-y border-strong">
+        {[
+          {
+            label: "Practitioner output",
+            value: "3 reviewed artifacts / banker",
+            desc: "Real workflows your examiners can see, your peers can review, your bank can ship.",
+          },
+          {
+            label: "Readiness baseline",
+            value: "Institutional diagnostic",
+            desc: "8 dimensions, regulator-aligned, run before and after the engagement.",
+          },
+          {
+            label: "Governance posture",
+            value: "Inventory + policy stack",
+            desc: "The artifact examiners ask for, drafted by the people who will maintain it.",
+          },
+          {
+            label: "Cost discipline",
+            value: "$0 platform cost",
+            desc: "No software seats, no vendor lock-in. The Institute is the engagement, not a SaaS bill.",
+          },
+        ].map((card) => (
+          <div
+            key={card.label}
+            className="p-s6 border-l border-hairline first:border-l-0 sm:[&:nth-child(3)]:border-l-0 sm:[&:nth-child(3)]:border-t lg:[&:nth-child(3)]:border-t-0 lg:[&:nth-child(3)]:border-l"
           >
-            Book an Executive Briefing
-          </a>
+            <p className="font-serif-sc text-label-sm uppercase tracking-widest text-slate mb-s2">
+              {card.label}
+            </p>
+            <p className="font-serif text-display-xs text-ink leading-snug mb-s2">
+              {card.value}
+            </p>
+            <p className="text-body-sm text-ink/80 leading-relaxed">{card.desc}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* §01 — Three engagement tiles */}
+      <Section variant="linen" padding="default">
+        <SectionHeader
+          number="01"
+          label="Engagement"
+          title="Three ways to enroll, one free briefing to find the right fit."
+        />
+        <div className="grid md:grid-cols-3 gap-px bg-hairline border-y border-strong mt-s6">
+          {enrollmentTiers.map((tier) => {
+            const pillar = TIER_PILLAR[tier.id];
+            const isCalendly = tier.cta.href === "calendly";
+            const ctaHref = isCalendly
+              ? process.env.NEXT_PUBLIC_CALENDLY_URL ?? "#"
+              : tier.cta.href;
+            return (
+              <PillarCard
+                key={tier.id}
+                pillar={pillar}
+                stripe
+                surface="linen"
+                className="border-l-0 border-r-0 border-t-0 border-b-0"
+              >
+                <p className="font-mono text-label-sm uppercase tracking-widest text-terra mb-s2">
+                  {tier.scaleLabel}
+                </p>
+                <PillarCard.Title level={3}>{tier.name}</PillarCard.Title>
+                <PillarCard.Designation>{tier.tagline}</PillarCard.Designation>
+                <p className="text-body-sm text-ink/80 leading-relaxed mb-s4">
+                  {tier.summary}
+                </p>
+                <div className="bg-parch p-s4 mb-s4 border-l-2 border-l-terra">
+                  <p className="font-mono text-label-sm uppercase tracking-widest text-slate mb-s2">
+                    What&rsquo;s included
+                  </p>
+                  <ul className="space-y-s1 text-body-sm">
+                    {tier.included.map((item) => (
+                      <li key={item} className="grid grid-cols-[12px_1fr] gap-s2">
+                        <span aria-hidden="true" className="font-mono text-terra">
+                          —
+                        </span>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <Cta variant="secondary" href={ctaHref}>
+                  {tier.cta.label} →
+                </Cta>
+              </PillarCard>
+            );
+          })}
         </div>
-      </section>
-    </main>
+      </Section>
+
+      {/* §02 — Tools & skills */}
+      <Section variant="parch" padding="default">
+        <SectionHeader
+          number="02"
+          label="What your bankers will use, and leave knowing how to do"
+          title="The tools and skills inside the engagement."
+          subtitle="Vendor-named tools. Verb-stated skills. No abstractions."
+        />
+        <div className="grid md:grid-cols-2 gap-s10 mt-s6 border-t border-strong pt-s6">
+          <div>
+            <h3 className="font-mono text-label-md uppercase tracking-widest text-terra mb-s4">
+              Tools your bankers will use
+            </h3>
+            <ul className="space-y-0">
+              {TOOLS.map((tool, idx) => (
+                <li
+                  key={tool.slug}
+                  className="border-b border-hairline py-s3 grid grid-cols-[28px_1fr] gap-s3 items-baseline text-body-sm"
+                >
+                  <span className="font-mono text-mono-sm tabular-nums text-slate">
+                    {String(idx + 1).padStart(2, "0")}
+                  </span>
+                  <span>
+                    <strong className="font-serif text-body-md text-ink block">
+                      {tool.name}
+                    </strong>
+                    <span className="text-body-sm text-slate">{tool.note}</span>
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h3 className="font-mono text-label-md uppercase tracking-widest text-terra mb-s4">
+              Skills your bankers will leave with
+            </h3>
+            <ul className="space-y-0">
+              {SKILLS.map((skill, idx) => (
+                <li
+                  key={skill.slug}
+                  className="border-b border-hairline py-s3 grid grid-cols-[28px_1fr] gap-s3 items-baseline text-body-sm"
+                >
+                  <span className="font-mono text-mono-sm tabular-nums text-slate">
+                    {String(idx + 1).padStart(2, "0")}
+                  </span>
+                  <span>
+                    <strong className="font-serif text-body-md text-ink block">
+                      {skill.verb}
+                    </strong>
+                    <span className="text-body-sm text-slate">{skill.note}</span>
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </Section>
+
+      {/* §03 — Pilot CTA */}
+      <Section variant="dark" divider="none" padding="default" id="inquiry">
+        <div className="grid md:grid-cols-[1.4fr_1fr] gap-s10 items-center">
+          <div>
+            <p className="font-serif-sc text-label-md uppercase tracking-widest text-amber-light mb-s3">
+              Begin where it makes sense
+            </p>
+            <h2 className="font-serif text-display-md text-bone leading-tight">
+              Start with a coached cohort. Scale on what works.
+            </h2>
+            <p className="text-body-md text-cream mt-s4 leading-relaxed">
+              The fastest way to see the Institute&rsquo;s shape inside your bank is a 10-seat
+              coached cohort over eight weeks. Practitioners ship reviewed AI workflows;
+              leadership gets the readiness data to plan the next step. No platform
+              purchase. No vendor lock-in.
+            </p>
+          </div>
+          <div className="border-l border-cream/20 pl-s8">
+            <p className="font-mono text-label-md uppercase tracking-widest text-cream mb-s4">
+              What&rsquo;s included
+            </p>
+            <ul className="space-y-s2 text-body-sm text-cream">
+              {[
+                "10 AiBI-Practitioner seats",
+                "Weekly coaching for 8 weeks",
+                "Institutional readiness diagnostic",
+                "Aggregate dashboard for your champion",
+                "Capstone artifact review by an instructor",
+              ].map((item) => (
+                <li key={item} className="grid grid-cols-[12px_1fr] gap-s2">
+                  <span aria-hidden="true" className="font-mono text-amber-light">
+                    —
+                  </span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-s5">
+              <Cta href={CTAS.contactInstitute.href} tone="dark">
+                {CTAS.contactInstitute.label}
+              </Cta>
+            </div>
+          </div>
+        </div>
+      </Section>
+    </MarketingPage>
   );
 }
