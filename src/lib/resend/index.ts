@@ -439,6 +439,11 @@ export interface IndepthIndividualResultsPayload {
   /** Optional tier-keyed framing surfaced on the results page; mirrored
    *  here so the email recipient sees the same context. */
   readonly tierPreface?: { readonly headline: string; readonly body: string };
+  /** Optional Supabase magic-link URL. When present, this is the primary
+   *  CTA: clicking signs the buyer in (creating their auth.users row on
+   *  first click) and redirects to the results page. resultsUrl is then
+   *  shown as a sign-in-free fallback. */
+  readonly magicLinkUrl?: string;
 }
 
 export async function sendIndepthIndividualResults(
@@ -468,22 +473,36 @@ export async function sendIndepthIndividualResults(
 </td></tr>
 </table>
 ${prefaceBlock}
-${ctaButton(payload.resultsUrl, 'Open my full results')}
-<p style="font-family:'DM Sans',Arial,sans-serif;font-size:13px;line-height:1.5;color:${BRAND.slate};margin:0 0 8px;">If the button does not work, paste this link into your browser:<br><a href="${payload.resultsUrl}" style="color:${BRAND.terra};text-decoration:underline;word-break:break-all;">${payload.resultsUrl}</a></p>`;
+${
+  payload.magicLinkUrl
+    ? `${ctaButton(payload.magicLinkUrl, 'View results & claim your account')}
+<p style="font-family:'DM Sans',Arial,sans-serif;font-size:13px;line-height:1.5;color:${BRAND.slate};margin:0 0 8px;">One click signs you in and unlocks the AI Starter Toolkit included with your purchase. The link expires in 1 hour.</p>
+<p style="font-family:'DM Sans',Arial,sans-serif;font-size:13px;line-height:1.5;color:${BRAND.slate};margin:16px 0 8px;">Prefer not to sign in? <a href="${payload.resultsUrl}" style="color:${BRAND.terra};text-decoration:underline;">View your results without an account</a> &mdash; same link, just no toolkit access.</p>`
+    : `${ctaButton(payload.resultsUrl, 'Open my full results')}
+<p style="font-family:'DM Sans',Arial,sans-serif;font-size:13px;line-height:1.5;color:${BRAND.slate};margin:0 0 8px;">If the button does not work, paste this link into your browser:<br><a href="${payload.resultsUrl}" style="color:${BRAND.terra};text-decoration:underline;word-break:break-all;">${payload.resultsUrl}</a></p>`
+}`;
 
   const html = emailShell({ title: subject, heading, body });
   const prefaceText = payload.tierPreface
     ? `\nFor ${payload.tierLabel} institutions: ${payload.tierPreface.headline}\n${payload.tierPreface.body}\n`
     : '';
+  const claimBlock = payload.magicLinkUrl
+    ? `View results & claim your account (1-click sign-in, expires in 1 hour):
+${payload.magicLinkUrl}
+
+Prefer not to sign in? View results without an account:
+${payload.resultsUrl}
+`
+    : `Open your full results:
+${payload.resultsUrl}
+`;
   const text = `Your In-Depth AI Readiness Assessment results
 ${'-'.repeat(40)}
 
 Score: ${payload.score}
 Tier:  ${payload.tierLabel}
 ${prefaceText}
-Open your full results:
-${payload.resultsUrl}
-
+${claimBlock}
 — The AI Banking Institute
 ${REPLY_TO} · aibankinginstitute.com
 `;

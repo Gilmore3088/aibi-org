@@ -13,6 +13,13 @@
 //   3. A signed-in Supabase Auth user who is the leader_user_id of the
 //      row's parent institution (leader viewing one of their staff).
 // All denial paths collapse to notFound() so existence isn't disclosed.
+//
+// First-authed-visit binding: when an authed user lands here for the
+// first time and their email matches the row, we bind user_id, grant
+// the starter toolkit entitlement (individuals) or set leader_user_id
+// across the cohort (leaders). The binding used to live on the take
+// page; moving it here matches the new "magic link in completion email"
+// flow where authed users only show up post-quiz.
 
 import { notFound } from 'next/navigation';
 import { cookies } from 'next/headers';
@@ -112,7 +119,7 @@ export default async function InDepthResultsPage({
   const { data: row } = await supabase
     .from('indepth_takes')
     .select(
-      'id, completed_at, score_total, score_per_dimension, invite_email, user_id, leader_user_id, invite_token',
+      'id, completed_at, score_total, score_per_dimension, invite_email, user_id, leader_user_id, invite_token, cohort_id, is_leader',
     )
     .eq('id', params.id)
     .maybeSingle();
@@ -132,6 +139,78 @@ export default async function InDepthResultsPage({
   );
   if (!allowed) {
     notFound();
+  }
+
+  // First-authed-visit binding. Best-effort: failures must not block
+  // rendering the results. Idempotent — only fires when the row is
+  // unbound and the auth user's email matches.
+  try {
+    const supabaseAuth = createServerClientWithCookies(cookies());
+    const { data: authData } = await supabaseAuth.auth.getUser();
+    const authedUser = authData.user;
+    if (
+      authedUser &&
+      !row.user_id &&
+      authedUser.email === row.invite_email
+    ) {
+      await supabase
+        .from('indepth_takes')
+        .update({ user_id: authedUser.id })
+        .eq('id', row.id)
+        .then(
+          () => undefined,
+          () => undefined,
+        );
+
+      if (row.cohort_id === null) {
+        // Individual buyer — grant starter toolkit.
+        await supabase
+          .from('entitlements')
+          .upsert(
+            {
+              user_id: authedUser.id,
+              product: 'indepth-starter-toolkit',
+              source: 'subscription',
+              source_ref: row.id,
+              active: true,
+            },
+            { onConflict: 'user_id,product,source,source_ref' },
+          )
+          .then(
+            () => undefined,
+            () => undefined,
+          );
+      } else if (row.is_leader) {
+        // Cohort leader — denormalize leader_user_id across the cohort
+        // and grant starter toolkit.
+        await supabase
+          .from('indepth_takes')
+          .update({ leader_user_id: authedUser.id })
+          .eq('cohort_id', row.cohort_id)
+          .then(
+            () => undefined,
+            () => undefined,
+          );
+        await supabase
+          .from('entitlements')
+          .upsert(
+            {
+              user_id: authedUser.id,
+              product: 'indepth-starter-toolkit',
+              source: 'subscription',
+              source_ref: row.id,
+              active: true,
+            },
+            { onConflict: 'user_id,product,source,source_ref' },
+          )
+          .then(
+            () => undefined,
+            () => undefined,
+          );
+      }
+    }
+  } catch {
+    // best-effort; never blocks render
   }
 
   // In-Depth uses all 48 questions × max 4 points = 192. getTierV2 normalizes

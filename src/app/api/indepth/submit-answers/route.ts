@@ -132,10 +132,32 @@ export async function POST(request: Request) {
         focusDim?.id as Parameters<typeof getTierPreface>[1],
       );
 
+      // Generate a Supabase magic link so the buyer can sign in (creating
+      // their auth.users row on first click) and land authed on the
+      // results page. The supabase admin client returns an action_link
+      // that ALREADY redirects to our intended URL after auth — we just
+      // pass the resultsUrl as redirectTo. If generation fails, the email
+      // gracefully degrades to the token-only resultsUrl.
+      let magicLinkUrl: string | undefined;
+      try {
+        const { data: linkData, error: linkErr } =
+          await supabase.auth.admin.generateLink({
+            type: 'magiclink',
+            email: row.invite_email,
+            options: { redirectTo: resultsUrl },
+          });
+        if (!linkErr && linkData?.properties?.action_link) {
+          magicLinkUrl = linkData.properties.action_link;
+        }
+      } catch {
+        // swallow — fall back to token-only resultsUrl
+      }
+
       await Promise.allSettled([
         sendIndepthIndividualResults({
           email: row.invite_email,
           resultsUrl,
+          magicLinkUrl,
           score: total,
           tierLabel: tier.label,
           tierPreface,
