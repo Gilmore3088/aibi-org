@@ -29,17 +29,25 @@ interface SendTemplateInput {
 }
 
 async function sendTemplate(input: SendTemplateInput): Promise<ResendResult> {
+  const tag = `[resend:${input.templateAlias}]`;
+
   if (process.env.SKIP_RESEND === 'true') {
+    console.warn(`${tag} SKIPPED — SKIP_RESEND env flag set`);
     return { skipped: true, reason: 'SKIP_RESEND env flag' };
   }
 
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
+    console.warn(`${tag} SKIPPED — RESEND_API_KEY not configured in this environment`);
     return { skipped: true, reason: 'RESEND_API_KEY not configured' };
   }
 
   const fromAddress = process.env.RESEND_FROM ?? DEFAULT_FROM;
   const fromName = process.env.RESEND_FROM_NAME ?? DEFAULT_FROM_NAME;
+
+  console.log(
+    `${tag} sending to=${input.to} subject="${input.subject}" key-prefix=${apiKey.slice(0, 8)}…`,
+  );
 
   try {
     const response = await fetch(RESEND_API_URL, {
@@ -62,19 +70,18 @@ async function sendTemplate(input: SendTemplateInput): Promise<ResendResult> {
 
     if (!response.ok) {
       const body = await response.text().catch(() => '');
-      return {
-        ok: false,
-        error: `Resend API ${response.status}: ${body.slice(0, 200)}`,
-      };
+      const error = `Resend API ${response.status}: ${body.slice(0, 400)}`;
+      console.error(`${tag} FAILED — ${error}`);
+      return { ok: false, error };
     }
 
     const json = (await response.json().catch(() => ({}))) as { id?: string };
+    console.log(`${tag} SENT — id=${json.id ?? 'unknown'}`);
     return { ok: true, id: json.id ?? 'unknown' };
   } catch (err) {
-    return {
-      ok: false,
-      error: err instanceof Error ? err.message : 'Unexpected error',
-    };
+    const error = err instanceof Error ? err.message : 'Unexpected error';
+    console.error(`${tag} EXCEPTION — ${error}`);
+    return { ok: false, error };
   }
 }
 
