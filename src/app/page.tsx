@@ -7,9 +7,10 @@ import {
   CertificationLadder,
   Cta,
 } from "@/components/system";
-import { ROICalculator } from "@/components/sections/ROICalculator";
+import { ROIDossier } from "@/components/sections/ROIDossier";
+import { cn } from "@/lib/utils/cn";
 import { BRAND, CTAS } from "@content/copy";
-import { citationAsKPI } from "@content/citations";
+import { citation } from "@content/citations";
 
 export const metadata: Metadata = {
   title: `${BRAND.name} — ${BRAND.tagline}`,
@@ -38,6 +39,7 @@ export default function HomePage() {
         ),
         primaryCta: CTAS.beginAssessment,
         secondaryCta: CTAS.viewCurriculum,
+        aside: <HeroFactsPlate />,
       }}
       kpis={[
         {
@@ -132,49 +134,13 @@ export default function HomePage() {
         />
       </Section>
 
-      {/* §02 — Modeled value: ROI calculator owns its own section frame */}
-      <ROICalculator />
+      {/* §02 — Modeled value: editorial ROI dossier */}
+      <ROIDossier />
 
-      {/* §03 — Industry context: sourced statistics */}
-      <Section variant="parch" padding="default">
-        <SectionHeader
-          number="03"
-          label="Where the industry is"
-          title="The numbers behind why we built this — every figure with a named source."
-        />
-        <div className="grid sm:grid-cols-3 gap-px bg-hairline border border-hairline mt-s6">
-          {(
-            [
-              ["Budget", "bank-director-budget"],
-              ["Skills gap", "gartner-skills-gap"],
-              ["Efficiency", "fdic-community-bank-efficiency-ratio"],
-            ] as const
-          ).map(([label, slug]) => {
-            const k = citationAsKPI(slug, label);
-            return (
-              <div key={slug} className="bg-linen p-s6">
-                <p className="font-mono text-label-sm uppercase tracking-widest text-slate mb-s3">
-                  {label}
-                </p>
-                <p className="font-mono text-display-md tabular-nums text-terra leading-none">
-                  {k.value}
-                </p>
-                <p className="font-serif text-body-md text-ink mt-s3 leading-snug">
-                  {k.desc}
-                </p>
-                <p className="font-mono text-label-sm uppercase tracking-widest text-dust mt-s3">
-                  {k.source}
-                </p>
-              </div>
-            );
-          })}
-        </div>
-      </Section>
-
-      {/* §04 — Credentials: certification ladder */}
+      {/* §03 — Credentials: certification ladder */}
       <Section variant="linen" padding="default">
         <SectionHeader
-          number="04"
+          number="03"
           label="Credentials"
           title="Three certifications. One ladder."
           subtitle="A defined progression from individual capability to institutional leadership."
@@ -244,5 +210,69 @@ export default function HomePage() {
         </div>
       </Section>
     </MarketingPage>
+  );
+}
+
+/**
+ * Hero "facts plate" — sourced industry statistics that anchor the hero's
+ * brand promise. Treated like the masthead-side data plate of an annual
+ * report: one large monumental number on top, two smaller stats beneath
+ * it as a 2-column row, framed with hairlines and a parch-dark wash.
+ */
+function HeroFactsPlate() {
+  const lead = citation("personetics-switch-for-ai");
+  const skill = citation("gartner-skills-gap");
+  const gov = citation("gartner-no-governance");
+
+  return (
+    <aside
+      aria-label="Industry context"
+      className="bg-parch-dark border border-strong"
+    >
+      <div className="px-s5 py-s3 border-b border-strong flex items-baseline justify-between bg-ink text-bone">
+        <p className="font-mono text-label-md uppercase tracking-widest">
+          Industry · at a glance
+        </p>
+        <p className="font-mono text-label-sm uppercase tracking-widest text-cream/70">
+          Sourced
+        </p>
+      </div>
+
+      {/* Lead statistic */}
+      <div className="px-s6 py-s5 border-b border-hairline">
+        <p className="font-mono text-display-xl tabular-nums text-terra leading-none">
+          {lead.value}
+        </p>
+        <p className="font-serif text-body-md text-ink leading-snug mt-s3">
+          {lead.claim}
+        </p>
+        <p className="font-mono text-label-sm uppercase tracking-widest text-dust mt-s3">
+          {lead.short}
+        </p>
+      </div>
+
+      {/* Two supporting statistics */}
+      <div className="grid grid-cols-2">
+        {[skill, gov].map((c, i) => (
+          <div
+            key={c.slug}
+            className={cn(
+              "px-s5 py-s4",
+              i === 1 && "border-l border-hairline"
+            )}
+          >
+            <p className="font-mono text-display-sm tabular-nums text-ink leading-none">
+              {c.value}
+            </p>
+            <p className="text-body-sm text-ink/85 leading-snug mt-s2">
+              {c.claim}
+            </p>
+            <p className="font-mono text-label-sm uppercase tracking-widest text-dust mt-s2">
+              {c.short}
+            </p>
+          </div>
+        ))}
+      </div>
+    </aside>
   );
 }
