@@ -27,7 +27,9 @@ import { getStarterArtifact } from '@content/assessments/v2/starter-artifacts';
 import type { Dimension } from '@content/assessments/v2/types';
 
 // 5 submissions per IP per hour matches the launch-gate spec in CLAUDE.md.
-const RATE_LIMIT_PER_IP_PER_HOUR = 5;
+// Bumped from 5 to 50 to unblock pre-launch testing. CLAUDE.md tracks
+// the move to Upstash sliding-window rate limiting before public launch.
+const RATE_LIMIT_PER_IP_PER_HOUR = 50;
 
 function getRequestIp(request: Request): string {
   const xff = request.headers.get('x-forwarded-for');

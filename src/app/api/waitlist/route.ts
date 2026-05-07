@@ -15,7 +15,9 @@ const VALID_INTERESTS = new Set([
   'institutional',
   'consulting',
 ]);
-const RATE_LIMIT_PER_IP_PER_HOUR = 5;
+// Bumped from 5 to 50 to unblock pre-launch testing. CLAUDE.md tracks
+// the move to Upstash sliding-window rate limiting before public launch.
+const RATE_LIMIT_PER_IP_PER_HOUR = 50;
 const MAX_NAME_LEN = 120;
 
 interface WaitlistBody {
