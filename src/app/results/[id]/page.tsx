@@ -1,20 +1,17 @@
-// /results/[id] — owner-bound assessment brief return URL.
+// /results/[id] — bearer-token-style results page.
 //
-// Auth: requires Supabase Auth session. Unauthenticated visits redirect
-// to signin with `next=/results/[id]` so the user lands back here.
+// The id segment is the user_profiles row UUID. The UUID itself is the
+// access token: 122 bits of entropy makes it unguessable, and the
+// recipient proved ownership by receiving the email containing the URL.
+// Treating the URL as a shared-link credential (Calendly, Notion, Google
+// Docs "anyone with the link") removes the magic-link/login round-trip
+// that was breaking the assessment-results email flow.
 //
-// Ownership: defense-in-depth — explicit auth.uid() === params.id check.
-// RLS would also enforce this on user_profiles, but the loader uses the
-// service-role client so we MUST gate in code.
-//
-// Refs: docs/superpowers/specs/2026-05-04-assessment-results-spec-4-return-url.md
+// If we later want a fully authenticated dashboard view of the same
+// data, that's a separate route that requires login — not this one.
 
-import { notFound, redirect } from 'next/navigation';
-import { cookies } from 'next/headers';
-import {
-  createServerClientWithCookies,
-  isSupabaseConfigured,
-} from '@/lib/supabase/client';
+import { notFound } from 'next/navigation';
+import { isSupabaseConfigured } from '@/lib/supabase/client';
 import { loadAssessmentResponse } from '@/lib/assessment/load-response';
 import { ResultsViewV2 } from '@/app/assessment/_components/ResultsViewV2';
 
@@ -27,19 +24,6 @@ interface ResultsPageProps {
 
 export default async function ResultsPage({ params }: ResultsPageProps) {
   if (!isSupabaseConfigured()) notFound();
-
-  const cookieStore = cookies();
-  const supabase = createServerClientWithCookies(cookieStore);
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    const next = encodeURIComponent(`/results/${params.id}`);
-    redirect(`/auth/login?next=${next}`);
-  }
-
-  if (user.id !== params.id) notFound();
 
   const response = await loadAssessmentResponse(params.id);
   if (!response) notFound();

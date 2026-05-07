@@ -30,29 +30,16 @@ export async function loadAssessmentResponse(
   if (!isSupabaseConfigured()) return null;
   if (!/^[0-9a-f-]{36}$/i.test(id)) return null;
 
-  // The id parameter is the Supabase Auth user id (auth.uid()) coming from
-  // /results/[id]. We look up the profile row by user_id, with a fallback
-  // to id for legacy rows that pre-date the auth-account provisioning step.
+  // The id parameter is user_profiles.id, used as a bearer token. The
+  // UUID is unguessable; possessing the URL is the access credential.
   const client = createServiceRoleClient();
-  let { data, error } = await client
+  const { data, error } = await client
     .from('user_profiles')
     .select(
       'id, email, readiness_score, readiness_max_score, readiness_tier_id, readiness_dimension_breakdown, readiness_at',
     )
-    .eq('user_id', id)
+    .eq('id', id)
     .maybeSingle();
-
-  if (!data && !error) {
-    const fallback = await client
-      .from('user_profiles')
-      .select(
-        'id, email, readiness_score, readiness_max_score, readiness_tier_id, readiness_dimension_breakdown, readiness_at',
-      )
-      .eq('id', id)
-      .maybeSingle();
-    data = fallback.data;
-    error = fallback.error;
-  }
 
   if (error || !data) return null;
   if (data.readiness_tier_id == null) return null;

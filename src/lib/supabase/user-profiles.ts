@@ -36,7 +36,6 @@ export interface UserProfileRow {
 export async function upsertReadinessResult(
   email: string,
   result: ReadinessResult,
-  userId?: string | null,
 ): Promise<{ id: string | null }> {
   if (SKIP || !isSupabaseConfigured()) return { id: null };
 
@@ -51,9 +50,6 @@ export async function upsertReadinessResult(
         readiness_tier_label: result.tierLabel,
         readiness_answers: result.answers,
         readiness_at: result.completedAt,
-        // Link the profile row to the auth user when one exists. Stays
-        // null on rows where account provisioning was skipped or failed.
-        ...(userId ? { user_id: userId } : {}),
         // v2 additions — guarded so existing rows do not lose data on rewrite.
         ...(result.version ? { readiness_version: result.version } : {}),
         ...(result.maxScore !== undefined ? { readiness_max_score: result.maxScore } : {}),
