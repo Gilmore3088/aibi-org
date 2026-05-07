@@ -64,9 +64,11 @@ export default function ForInstitutionsPage() {
         ),
       }}
     >
-      {/* Value prop band — what your institution actually gets */}
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 bg-parch-dark border-y border-strong">
-        {[
+      {/* Value prop band — what your institution actually gets.
+          Contained to max-w-wide so it matches the rest of the page. */}
+      <div className="px-s7 py-s8">
+        <div className="mx-auto max-w-wide grid sm:grid-cols-2 lg:grid-cols-4 bg-parch-dark border border-strong">
+          {[
           {
             label: "Practitioner output",
             value: "3 reviewed artifacts / banker",
@@ -101,6 +103,7 @@ export default function ForInstitutionsPage() {
             <p className="text-body-sm text-ink/80 leading-relaxed">{card.desc}</p>
           </div>
         ))}
+        </div>
       </div>
 
       {/* §01 — Three engagement tiles */}

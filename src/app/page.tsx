@@ -183,7 +183,7 @@ export default function HomePage() {
           className="mt-s6"
           rungs={[
             {
-              level: "Foundational",
+              level: "Practitioner",
               stepLabel: "01",
               code: "AiBI-Practitioner",
               title: "AiBI-Practitioner",
@@ -191,48 +191,48 @@ export default function HomePage() {
               pillar: "application",
               facts: [
                 { label: "Format", value: "Self-paced" },
-                { label: "Effort", value: "9 modules · ~12 hrs", mono: true },
+                { label: "Effort", value: "12 modules", mono: true },
                 { label: "Outcome", value: "Working AI literacy" },
                 { label: "Tuition", value: "$295 · $199/seat at 10+", mono: true },
               ],
               blurb:
-                "For everyone in the bank: tellers, lenders, ops, compliance. Ends with a portfolio of three usable AI artifacts.",
-              href: "/education/practitioner",
+                "For everyone in the bank: tellers, lenders, ops, compliance. Ends with a portfolio of reviewed AI artifacts.",
+              href: "/courses/aibi-p",
             },
             {
               level: "Specialist",
               stepLabel: "02",
-              code: "AiBI-S",
+              code: "AiBI-Specialist",
               title: "AiBI-Specialist",
               designation: "Banking AI Specialist · The AI Banking Institute",
               pillar: "understanding",
               facts: [
                 { label: "Format", value: "Self-paced, role-tracked" },
-                { label: "Effort", value: "Track-dependent · ~25 hrs", mono: true },
+                { label: "Effort", value: "Track-dependent", mono: true },
                 { label: "Outcome", value: "Domain-deep AI capability" },
-                { label: "Tuition", value: "Forthcoming" },
+                { label: "Tuition", value: "Coming soon" },
               ],
               blurb:
                 "Role-specific tracks: Ops, Lending, Compliance, Risk. For practitioners ready to lead AI within a function.",
-              href: "/education/specialist",
+              href: "/coming-soon?interest=specialist",
               comingSoon: true,
             },
             {
               level: "Leader",
               stepLabel: "03",
-              code: "AiBI-L",
+              code: "AiBI-Leader",
               title: "AiBI-Leader",
               designation: "Banking AI Leader · The AI Banking Institute",
               pillar: "awareness",
               facts: [
                 { label: "Format", value: "Cohort-supported" },
-                { label: "Effort", value: "~40 hrs · capstone", mono: true },
+                { label: "Effort", value: "Capstone", mono: true },
                 { label: "Outcome", value: "Enterprise AI strategy" },
-                { label: "Tuition", value: "Forthcoming" },
+                { label: "Tuition", value: "Coming soon" },
               ],
               blurb:
                 "For executives and board members. Governance, vendor risk, AI strategy, and the SR 11-7 stack.",
-              href: "/education/leader",
+              href: "/coming-soon?interest=leader",
               comingSoon: true,
             },
           ]}

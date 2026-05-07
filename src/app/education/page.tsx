@@ -132,7 +132,7 @@ export default async function EducationPage() {
           className="mt-s6"
           rungs={[
             {
-              level: "Foundational",
+              level: "Practitioner",
               stepLabel: "01",
               code: "AiBI-Practitioner",
               title: "Banking AI Practitioner",
@@ -145,20 +145,20 @@ export default async function EducationPage() {
                 { label: "Tuition", value: "$295 · $199/seat at 10+", mono: true },
               ],
               blurb:
-                "For everyone in the bank: tellers, lenders, ops, compliance, executive support. Ends with a portfolio of three reviewed AI artifacts.",
+                "For everyone in the bank: tellers, lenders, ops, compliance, executive support. Ends with a portfolio of reviewed AI artifacts.",
               href: "/courses/aibi-p",
             },
             {
               level: "Specialist",
               stepLabel: "02",
-              code: "AiBI-S",
+              code: "AiBI-Specialist",
               title: "Banking AI Specialist",
               designation: "Advanced workflows, agents, and internal AI systems",
               pillar: "understanding",
               facts: [
                 { label: "Audience", value: "Department managers" },
                 { label: "Format", value: "Self-paced, role-tracked" },
-                { label: "Effort", value: "~25 hrs", mono: true },
+                { label: "Effort", value: "Track-dependent", mono: true },
                 { label: "Tuition", value: "Coming soon" },
               ],
               blurb:
@@ -169,14 +169,14 @@ export default async function EducationPage() {
             {
               level: "Leader",
               stepLabel: "03",
-              code: "AiBI-L",
+              code: "AiBI-Leader",
               title: "Banking AI Leader",
               designation: "Team-level rollout and executive AI leadership",
               pillar: "awareness",
               facts: [
                 { label: "Audience", value: "C-suite & board" },
                 { label: "Format", value: "Cohort-supported" },
-                { label: "Effort", value: "~40 hrs", mono: true },
+                { label: "Effort", value: "Capstone", mono: true },
                 { label: "Tuition", value: "Coming soon" },
               ],
               blurb:
