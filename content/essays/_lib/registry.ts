@@ -24,12 +24,13 @@ export interface EssayEntry {
   readonly importer: () => Promise<EssayModule>;
 }
 
-export const ESSAYS: readonly EssayEntry[] = [
-  {
-    slug: "the-ai-use-case-inventory",
-    importer: () => import("../the-ai-use-case-inventory.mdx"),
-  },
-] as const;
+// The MDX system demo essay (`the-ai-use-case-inventory.mdx`) is intentionally
+// NOT registered here. It exists in the repo to demonstrate the MDX content
+// pattern — registering it would publish it as a real essay, but it contains
+// fabricated specifics ("five regional examiners", invented sample sizes)
+// drafted before any real essay content was provided. Add a real essay file +
+// register it here when actual content is ready.
+export const ESSAYS: readonly EssayEntry[] = [] as const;
 
 /**
  * Essays still living as bespoke pages at /resources/<slug>.

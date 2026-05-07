@@ -31,12 +31,14 @@ export default function AboutPage() {
         aside: (
           <Marginalia label="Founder">
             <h4 className="font-serif text-display-xs leading-snug">{BRAND.founder.name}</h4>
-            <p className="font-serif italic text-body-sm text-slate mt-s1 mb-s4">
+            <p className="font-serif italic text-body-sm text-slate mt-s1">
               {BRAND.founder.role}
             </p>
-            <p className="text-body-sm leading-relaxed border-t border-hairline pt-s3">
-              {BRAND.founder.bio}
-            </p>
+            {BRAND.founder.bio && (
+              <p className="text-body-sm leading-relaxed border-t border-hairline pt-s3 mt-s4">
+                {BRAND.founder.bio}
+              </p>
+            )}
           </Marginalia>
         ),
       }}

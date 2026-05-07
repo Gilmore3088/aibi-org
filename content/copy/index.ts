@@ -18,7 +18,9 @@ export const BRAND = {
   founder: {
     name: "James Gilmore",
     role: "Founder · The AI Banking Institute",
-    bio: "Twenty years working alongside community-bank operators on technology, risk, and member experience. Founded the Institute after watching the same team try to absorb four AI vendor pitches in a quarter and lose the plot.",
+    // Bio intentionally empty until founder provides real copy.
+    // Pages that render BRAND.founder.bio should treat empty as "hide the bio block."
+    bio: "",
   },
   emails: {
     contact: "hello@aibankinginstitute.com",

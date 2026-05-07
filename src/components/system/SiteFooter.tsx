@@ -75,9 +75,8 @@ export function SiteFooter({ showNewsletter = true }: SiteFooterProps = {}) {
             </p>
             {showNewsletter && (
               <NewsletterCard
-                heading="Read by AI champions and committee members."
-                blurb="The AI Banking Brief — fortnightly. Sourced commentary, no marketing."
-                proof="Subscribers at 340+ US community institutions"
+                heading="The AI Banking Brief."
+                blurb="Fortnightly research on community-bank AI adoption. Sourced commentary, no marketing."
               />
             )}
           </div>

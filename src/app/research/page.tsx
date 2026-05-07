@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { MarketingPage } from "@/components/system/templates";
 import { Section, SectionHeader, EssayArchive, NewsletterCard } from "@/components/system";
-import { BRAND, CTAS } from "@content/copy";
+import { CTAS } from "@content/copy";
 import { listAllEssays } from "@content/essays/_lib/registry";
 
 export const metadata: Metadata = {
@@ -29,8 +29,8 @@ export default async function ResearchPage() {
         primaryCta: CTAS.beginAssessment,
         aside: (
           <NewsletterCard
-            heading="Join the operator list."
-            blurb={`Read by AI champions, examiners, and committee members at ${BRAND.audience}.`}
+            heading="The AI Banking Brief."
+            blurb="Fortnightly research on community-bank AI adoption. Sourced commentary, no marketing."
             proof="No tracking pixels · one-click unsubscribe"
           />
         ),
