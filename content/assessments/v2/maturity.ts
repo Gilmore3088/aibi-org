@@ -94,7 +94,87 @@ export const BANKING_ROLES: readonly BankingRole[] = [
 ] as const;
 
 /** 32-cell ladder. Populated in Task 3. */
-export const DIMENSION_TIER_LADDER: readonly DimensionTierMeaning[] = [];
+export const DIMENSION_TIER_LADDER: readonly DimensionTierMeaning[] = [
+  // current-ai-usage
+  { dimension: 'current-ai-usage', tierId: 'starting-point',
+    meaning: 'AI use, if it exists, is private and invisible — a few staff using free tools on personal devices for tasks management never sees the inputs or outputs of.' },
+  { dimension: 'current-ai-usage', tierId: 'early-stage',
+    meaning: 'AI use has surfaced inside one or two teams. Time savings are real but inconsistent and not yet documented anywhere a manager can find them.' },
+  { dimension: 'current-ai-usage', tierId: 'building-momentum',
+    meaning: 'AI is embedded in two or three repeating workflows. The bank can name which seats use which tools for which tasks, and someone owns each one.' },
+  { dimension: 'current-ai-usage', tierId: 'ready-to-scale',
+    meaning: 'AI is a routine part of how work gets done across multiple departments. Workflows are documented, owned, and survive turnover.' },
+
+  // experimentation-culture
+  { dimension: 'experimentation-culture', tierId: 'starting-point',
+    meaning: 'Trying new tools is treated as personal time. There is no forum where staff can share what worked, and no signal that experimentation is welcome.' },
+  { dimension: 'experimentation-culture', tierId: 'early-stage',
+    meaning: 'A handful of curious staff experiment in side channels. Wins stay verbal; nothing is captured in a place the next person can find.' },
+  { dimension: 'experimentation-culture', tierId: 'building-momentum',
+    meaning: 'Experimentation is sanctioned and lightly structured — a shared prompt library, a monthly demo, or a small budget for tool trials with a named owner.' },
+  { dimension: 'experimentation-culture', tierId: 'ready-to-scale',
+    meaning: 'Experimentation is a managed pipeline: ideas are captured, scored, piloted, and either operationalized or retired on a known cadence.' },
+
+  // ai-literacy-level
+  { dimension: 'ai-literacy-level', tierId: 'starting-point',
+    meaning: 'Most staff cannot articulate what generative AI is, what it is bad at, or where the bank\'s sensitive data is at risk when using it.' },
+  { dimension: 'ai-literacy-level', tierId: 'early-stage',
+    meaning: 'A few power users have working intuition for AI. The rest of the institution has heard the buzzwords but not had any structured exposure.' },
+  { dimension: 'ai-literacy-level', tierId: 'building-momentum',
+    meaning: 'A baseline literacy program has been delivered to a meaningful share of staff. Frontline managers can answer basic questions about acceptable use without escalating.' },
+  { dimension: 'ai-literacy-level', tierId: 'ready-to-scale',
+    meaning: 'AI literacy is treated as a job skill — onboarded into new-hire training, refreshed annually, and tested in role-relevant context.' },
+
+  // quick-win-potential
+  { dimension: 'quick-win-potential', tierId: 'starting-point',
+    meaning: 'Repeating workflows that would benefit from AI have not been mapped or named. The bank cannot answer "where would we even start" without a discovery exercise.' },
+  { dimension: 'quick-win-potential', tierId: 'early-stage',
+    meaning: 'One or two obvious candidate workflows have been identified informally. No one has yet committed to running a structured pilot with a measured before/after.' },
+  { dimension: 'quick-win-potential', tierId: 'building-momentum',
+    meaning: 'A short list of candidate workflows is being worked, with at least one pilot in flight that has a baseline measurement and a named owner.' },
+  { dimension: 'quick-win-potential', tierId: 'ready-to-scale',
+    meaning: 'Quick-win identification is a managed backlog. New candidates are surfaced from frontline staff and prioritized against measurable institutional impact.' },
+
+  // leadership-buy-in
+  { dimension: 'leadership-buy-in', tierId: 'starting-point',
+    meaning: 'Leadership has not made a public statement about AI. Staff infer the position from silence — usually as "do not bring it up."' },
+  { dimension: 'leadership-buy-in', tierId: 'early-stage',
+    meaning: 'A senior leader has signaled openness to AI in a meeting or two, but no budget, owner, or written direction has followed.' },
+  { dimension: 'leadership-buy-in', tierId: 'building-momentum',
+    meaning: 'AI is a named line item — an executive sponsor exists, a budget exists, and AI updates appear on at least a quarterly leadership agenda.' },
+  { dimension: 'leadership-buy-in', tierId: 'ready-to-scale',
+    meaning: 'AI capability is treated as a strategic objective with board-level visibility, defended in budget cycles, and tracked alongside other operational KPIs.' },
+
+  // security-posture
+  { dimension: 'security-posture', tierId: 'starting-point',
+    meaning: 'There is no written acceptable-use policy for AI tools. Staff using free chat tools may be pasting non-public information without anyone reviewing the exposure.' },
+  { dimension: 'security-posture', tierId: 'early-stage',
+    meaning: 'Verbal guardrails exist ("don\'t paste customer data") but nothing is written, tested, or auditable. Compliance has not yet been brought into the conversation.' },
+  { dimension: 'security-posture', tierId: 'building-momentum',
+    meaning: 'A written AI acceptable-use policy exists, a use-case inventory is maintained, and named owners are accountable for AI risk inside the institution.' },
+  { dimension: 'security-posture', tierId: 'ready-to-scale',
+    meaning: 'AI risk is integrated into existing third-party and model risk programs (SR 11-7, TPRM). Reviews happen on schedule. Examiner questions have defensible answers.' },
+
+  // training-infrastructure
+  { dimension: 'training-infrastructure', tierId: 'starting-point',
+    meaning: 'No AI-specific training exists. New hires receive no orientation on what tools they may or may not use, or on what good prompting looks like.' },
+  { dimension: 'training-infrastructure', tierId: 'early-stage',
+    meaning: 'Training, if it exists, is one-off — a lunch-and-learn, a forwarded webinar. Nothing is required, repeatable, or refreshed.' },
+  { dimension: 'training-infrastructure', tierId: 'building-momentum',
+    meaning: 'A baseline AI literacy module is part of onboarding for at least one role family. Refresh cadence is defined even if not yet fully operationalized.' },
+  { dimension: 'training-infrastructure', tierId: 'ready-to-scale',
+    meaning: 'AI training is role-specific, sustained, and measured. New hires arrive prepared; existing staff are kept current as tools and policy evolve.' },
+
+  // builder-potential
+  { dimension: 'builder-potential', tierId: 'starting-point',
+    meaning: 'No staff have been identified as candidates to build bank-specific AI workflows. The institution is in pure tool-consumer mode.' },
+  { dimension: 'builder-potential', tierId: 'early-stage',
+    meaning: 'A few staff have shown aptitude for prompt engineering or workflow design but have no time, mandate, or path to develop the skill further.' },
+  { dimension: 'builder-potential', tierId: 'building-momentum',
+    meaning: 'One or two staff have been informally designated as "the AI person" for their team. They are building reusable prompts, agents, or small workflows.' },
+  { dimension: 'builder-potential', tierId: 'ready-to-scale',
+    meaning: 'The bank has a defined builder track — staff who design, ship, and maintain bank-specific AI workflows as a recognized part of their role.' },
+];
 
 // ---------------------------------------------------------------------------
 // RESOLVERS — pure, total functions

@@ -4,9 +4,11 @@ import {
   scoreToTier,
   getDimensionTierMeaning,
   BANKING_ROLES,
+  DIMENSION_TIER_LADDER,
   type TierMaturity,
 } from './maturity';
 import { tiers } from './scoring';
+import { DIMENSION_LABELS } from './types';
 
 describe('getTierMaturity', () => {
   it('returns substance for every tier id', () => {
@@ -41,9 +43,33 @@ describe('scoreToTier', () => {
   });
 });
 
-describe('getDimensionTierMeaning (empty ladder)', () => {
-  it('returns undefined while DIMENSION_TIER_LADDER is empty (Task 1 baseline state)', () => {
-    expect(getDimensionTierMeaning('security-posture', 'building-momentum')).toBeUndefined();
+describe('DIMENSION_TIER_LADDER', () => {
+  it('has exactly 32 cells (8 dimensions × 4 tiers)', () => {
+    expect(DIMENSION_TIER_LADDER).toHaveLength(32);
+  });
+
+  it('every dimension × tier combination is present exactly once', () => {
+    const dimensions = Object.keys(DIMENSION_LABELS) as (keyof typeof DIMENSION_LABELS)[];
+    for (const dim of dimensions) {
+      for (const tier of tiers) {
+        const matches = DIMENSION_TIER_LADDER.filter(
+          (c) => c.dimension === dim && c.tierId === tier.id
+        );
+        expect(matches, `missing or duplicate cell for ${dim} × ${tier.id}`).toHaveLength(1);
+      }
+    }
+  });
+
+  it('every cell has non-empty meaning copy', () => {
+    for (const cell of DIMENSION_TIER_LADDER) {
+      expect(cell.meaning.length, `${cell.dimension} × ${cell.tierId}`).toBeGreaterThan(40);
+    }
+  });
+
+  it('getDimensionTierMeaning returns the matching cell', () => {
+    const cell = getDimensionTierMeaning('security-posture', 'building-momentum');
+    expect(cell).toBeDefined();
+    expect(cell?.meaning).toMatch(/.+/);
   });
 });
 
