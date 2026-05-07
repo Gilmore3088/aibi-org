@@ -20,6 +20,7 @@ import {
   FINANCIAL_IMPLICATIONS,
   TIER_CLOSING_CTA,
 } from '@content/assessments/v2/personalization';
+import { getTierMaturity } from '@content/assessments/v2/maturity';
 
 const BRIEFING_DATE_FORMATTER = new Intl.DateTimeFormat('en-US', {
   month: 'long',
@@ -143,6 +144,22 @@ export function ResultsViewV2({
             <p className="mt-5 text-base md:text-lg text-[color:var(--color-ink)]/75 leading-relaxed max-w-xl">
               {persona.oneLine}
             </p>
+            {(() => {
+              const m = getTierMaturity(tierId);
+              return (
+                <div className="mt-6 max-w-xl">
+                  <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/55">
+                    {m.stageName}
+                  </p>
+                  {m.blockerToNext && (
+                    <p className="mt-3 text-sm md:text-base text-[color:var(--color-ink)]/80 leading-relaxed">
+                      <span className="font-medium text-[color:var(--color-ink)]">What’s holding you here:</span>{' '}
+                      {m.blockerToNext}
+                    </p>
+                  )}
+                </div>
+              );
+            })()}
           </div>
           <div className="md:flex-shrink-0">
             <ScoreRing score={score} minScore={12} maxScore={48} colorVar={tier.colorVar} label={tier.label} />
