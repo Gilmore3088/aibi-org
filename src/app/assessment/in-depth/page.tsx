@@ -27,34 +27,10 @@ const HIGHLIGHTS = [
   'One free retake within 12 months',
 ] as const;
 
-interface SearchParams {
-  readonly purchased?: string;
-}
-
-export default function InDepthAssessmentPage({
-  searchParams,
-}: {
-  readonly searchParams?: SearchParams;
-}) {
-  const purchased = searchParams?.purchased === 'true';
+export default function InDepthAssessmentPage() {
   return (
     <main className="px-6 py-12 md:py-20">
       <div className="mx-auto max-w-3xl">
-        {purchased && (
-          <div
-            role="status"
-            className="mb-8 border border-[color:var(--color-terra)]/30 bg-[color:var(--color-terra-pale)]/40 rounded-[3px] p-5"
-          >
-            <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-2">
-              Purchase confirmed
-            </p>
-            <p className="text-sm text-[color:var(--color-ink)]/85 leading-relaxed">
-              Thanks for your order. A receipt is on its way. The 48-question
-              In-Depth Assessment opens for you over email shortly — keep an
-              eye on the inbox you used at checkout.
-            </p>
-          </div>
-        )}
         <nav aria-label="Breadcrumb" className="mb-6">
           <Link
             href="/education"

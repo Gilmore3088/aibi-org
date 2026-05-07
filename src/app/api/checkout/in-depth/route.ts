@@ -86,7 +86,7 @@ export async function POST(request: Request) {
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
       line_items: [{ price: STRIPE_INDEPTH_PRICE_ID, quantity: 1 }],
-      success_url: `${origin}/assessment/in-depth?purchased=true`,
+      success_url: `${origin}/assessment/in-depth/purchased`,
       cancel_url: `${origin}/assessment/in-depth`,
       metadata: {
         product: 'in-depth-assessment',

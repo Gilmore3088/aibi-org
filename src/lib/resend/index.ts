@@ -177,7 +177,7 @@ export function sendIndepthAssessmentPurchase(
     subject: 'Your In-Depth AI Readiness Assessment is unlocked',
     variables: {
       AMOUNT_PAID: payload.amountPaid,
-      ASSESSMENT_URL: 'https://aibankinginstitute.com/assessment/in-depth',
+      ASSESSMENT_URL: 'https://aibankinginstitute.com/assessment/in-depth/purchased',
     },
   });
 }
