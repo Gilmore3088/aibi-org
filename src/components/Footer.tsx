@@ -17,7 +17,7 @@ const FOOTER_GROUPS: readonly FooterGroup[] = [
   {
     label: 'Programs',
     links: [
-      { href: '/courses/aibi-p', label: 'AiBI-P · Practitioner' },
+      { href: '/courses/aibi-p', label: 'AiBI-Practitioner · Practitioner' },
       { href: '/coming-soon?interest=specialist', label: 'AiBI-S · Specialist · Coming Soon' },
       { href: '/coming-soon?interest=leader', label: 'AiBI-L · Leader · Coming Soon' },
     ],

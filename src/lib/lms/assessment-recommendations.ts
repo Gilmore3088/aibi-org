@@ -49,7 +49,7 @@ export function getAssessmentNextStep(tierId: Tier['id']): AssessmentNextStep {
         description:
           'Turn isolated experimentation into a shared staff baseline with practical exercises and artifacts.',
         href: '/courses/aibi-p',
-        cta: 'Preview AiBI-P',
+        cta: 'Preview AiBI-Practitioner',
       };
     case 'building-momentum':
       return {

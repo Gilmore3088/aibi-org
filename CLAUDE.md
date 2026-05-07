@@ -21,13 +21,13 @@
 
 ## What This Project Is
 
-The AI Banking Institute (AiBI, pronounced "AI-bee") is an AI proficiency and education company built exclusively for community banks and credit unions (~8,400 US institutions). The business model is built around a free AI readiness assessment that leads to certifications (AiBI-P, AiBI-S, AiBI-L) and optional coaching advisory for institutions running cohorts. See the 2026-04-24 entry in the Decisions Log for the shift from implementation-led consulting to education-first positioning.
+The AI Banking Institute (AiBI, pronounced "AI-bee") is an AI proficiency and education company built exclusively for community banks and credit unions (~8,400 US institutions). The business model is built around a free AI readiness assessment that leads to certifications (AiBI-Practitioner, AiBI-S, AiBI-L) and optional coaching advisory for institutions running cohorts. See the 2026-04-24 entry in the Decisions Log for the shift from implementation-led consulting to education-first positioning.
 
 **The website is the sales funnel.** The assessment is the primary conversion mechanism. Every technical decision should be evaluated against whether it helps or hinders: assessment completion → email capture → Executive Briefing booking.
 
 **Domains:** AIBankingInstitute.com (primary) + AIBankingInstitute.org (registered)
 **Brand nickname:** AiBI | **Tagline:** "Turning Bankers into Builders" (as of 2026-04-15)
-**Certifications:** AiBI-P (Practitioner) · AiBI-S (Specialist) · AiBI-L (Leader)
+**Certifications:** AiBI-Practitioner · AiBI-S (Specialist) · AiBI-L (Leader)
 
 > **Tagline history:** The original "A-B-C of AI Banking" tagline was retired
 > per the v1 landing page PRD feedback doc and superseded by "We turn your
@@ -151,7 +151,7 @@ STRIPE_SECRET_KEY=sk_live_...
 STRIPE_WEBHOOK_SECRET=whsec_...
 NEXT_PUBLIC_STRIPE_KEY=pk_live_...
 STRIPE_FOUNDATIONS_PRICE_ID=           # $97 AI Foundations
-STRIPE_PRACTITIONER_PRICE_ID=          # $295 AiBI-P
+STRIPE_PRACTITIONER_PRICE_ID=          # $295 AiBI-Practitioner
 
 NEXT_PUBLIC_PLAUSIBLE_DOMAIN=aibankinginstitute.com
 NEXT_PUBLIC_CALENDLY_URL=https://calendly.com/[handle]/executive-briefing
@@ -369,9 +369,9 @@ const event = stripe.webhooks.constructEvent(body, sig, process.env.STRIPE_WEBHO
 **Name standard (2026-04-15):** In running prose, always use the full name
 **The AI Banking Institute** or **the Institute**. Do NOT hide behind the
 acronym. Bankers do not need another acronym. Reserve "AiBI" for:
-- Credential codes (AiBI-P, AiBI-S, AiBI-L)
+- Credential codes (AiBI-Practitioner, AiBI-S, AiBI-L)
 - The circular seal / wordmark logo
-- Credential display format: "AiBI-P · The AI Banking Institute"
+- Credential display format: "AiBI-Practitioner · The AI Banking Institute"
 
 Never write "AiBI helps..." or "the AiBI approach..." in body copy. Use
 "The AI Banking Institute helps..." or "our approach..." instead.
@@ -381,11 +381,11 @@ Never write "AiBI helps..." or "the AiBI approach..." in body copy. Use
 | Institute name | The AI Banking Institute (use in prose) |
 | Informal reference | the Institute |
 | Brand nickname | AiBI (not AiBi, not AIBI) — reserved for credentials, seal, and compound program names |
-| Practitioner cert | AiBI-P |
+| Practitioner cert | AiBI-Practitioner |
 | Specialist cert | AiBI-S / AiBI-S/Ops / AiBI-S/Lending / etc. |
 | Leader cert | AiBI-L |
 | Advisory engagement | Leadership Advisory (describe as "fractional Chief AI Officer" when shape matters) |
-| Credential display | "AiBI-P · The AI Banking Institute" |
+| Credential display | "AiBI-Practitioner · The AI Banking Institute" |
 
 ### Phrases That Must Never Appear in the Codebase or Copy
 
@@ -393,7 +393,8 @@ Never write "AiBI helps..." or "the AiBI approach..." in body copy. Use
 |-----------|-------------|
 | `FFIEC-aware training` | "Aligned with SR 11-7, Interagency TPRM Guidance, ECOA/Reg B, and the AIEOG AI Lexicon" |
 | `AI-enabled peers at 58.1%` | "Community bank median ~65% efficiency ratio (FDIC); industry-wide ~55.7% (Q4 2024)" |
-| `BAI-P / BAI-S / BAI-L` | `AiBI-P / AiBI-S / AiBI-L` |
+| `BAI-P / BAI-S / BAI-L` | `AiBI-Practitioner / AiBI-S / AiBI-L` |
+| `AiBI-P` (in user-facing copy) | `AiBI-Practitioner` (see 2026-05-06 Decisions Log) |
 | `AiBi` | `AiBI` |
 | Any unsourced statistic | Named source + year + publication |
 
@@ -647,9 +648,10 @@ via env var. Real auth now required in dev (matches production behavior).
 
 **2026-04-17 — Resend chosen for transactional email.** Replaces
 Supabase's throttled built-in email service (~3-4 emails/hour limit).
-Configured via Custom SMTP in Supabase Auth Settings using `smtp.resend.com:465`,
-sender `onboarding@resend.dev` (interim — needs custom domain verification
-on `aibankinginstitute.com` before production). Free tier: 100/day, 3,000/month.
+Configured via Custom SMTP in Supabase Auth Settings using `smtp.resend.com:465`.
+Domain `aibankinginstitute.com` verified in Resend on 2026-04-18; sender
+swapped to `hello@aibankinginstitute.com` on 2026-05-06 (see entry below).
+Free tier: 100/day, 3,000/month.
 
 **2026-04-17 — ConvertKit (Kit) chosen over Loops.** Resolves the
 2026-04-15 Kit vs Loops decision. ConvertKit handles marketing email
@@ -740,7 +742,7 @@ schema lost its `kajabi_user_id` column; gained `user_id` referencing
 
 **2026-05-05 — Product menu simplified to four tiers.** Public site
 reduced to: free assessment, In-Depth Assessment ($99 / $79 at 10+),
-AiBI-P course ($295 / $199 at 10+), and a "custom engagements —
+AiBI-Practitioner course ($295 / $199 at 10+), and a "custom engagements —
 contact us" stub. AiBI-S and AiBI-L soft-hidden (route redirects to
 /education, products deactivated in Stripe — reversible by toggle).
 Advisory tiers (Pilot/Program/Leadership Advisory) removed pending
@@ -757,6 +759,32 @@ Plans/ canonical specs left unchanged — site intentionally diverges
 from plans for tiers being held back. Decision drivers + design
 discussion in
 `docs/superpowers/specs/2026-05-05-product-simplification-and-indepth-assessment-design.md`.
+
+**2026-05-06 — Five Resend transactional email templates +
+AiBI-P → AiBI-Practitioner rename.** Authored five Resend Templates
+in the dashboard so non-developers can edit copy without a code
+deploy: `assessment-results-breakdown`, `course-purchase-individual`,
+`course-purchase-institution`, `certificate-issued`, `inquiry-ack`.
+Refactored `src/lib/resend/index.ts` to a generic `sendTemplate`
+helper plus five named wrappers; wired the wrappers into
+`/api/webhooks/stripe` (purchase emails, individual + institution),
+`/api/courses/generate-certificate` POST (cert-issued email on
+first issuance only — not idempotent retrieval), and `/api/inquiry`
+(ack email). Swapped Resend sender from `onboarding@resend.dev` to
+`hello@aibankinginstitute.com` (domain verified 2026-04-18). All
+sends are best-effort, non-blocking, and no-op when
+`RESEND_API_KEY` is unset. Renamed `AiBI-P` → `AiBI-Practitioner`
+across user-facing copy (web pages, certificate PDF designation
+and filename, transformation report, skill template library,
+emails). Internal identifiers preserved: route `/courses/aibi-p`,
+DB `product='aibi-p'`, file path `public/AiBI-P/`, env vars,
+Stripe metadata, Resend template aliases — all kept short to avoid
+URL/DB/integration churn. ConvertKit (marketing sequences,
+newsletter) is unchanged. Auth emails (signup/reset/magic link) go
+through Supabase Custom SMTP using Resend as transport — they are
+configured in the Supabase Auth dashboard, NOT in Resend Templates;
+their sender `From` field also needs swapping in the Supabase
+dashboard (not yet done — manual step).
 
 ---
 

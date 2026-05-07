@@ -142,7 +142,7 @@ export async function POST(request: Request): Promise<NextResponse> {
 
   const serviceClient = createServiceRoleClient();
 
-  // Look up the user's AiBI-P enrollment (one per user, per RLS policy)
+  // Look up the user's AiBI-Practitioner enrollment (one per user, per RLS policy)
   const { data: enrollment, error: enrollmentError } = await serviceClient
     .from('course_enrollments')
     .select('id')
@@ -152,7 +152,7 @@ export async function POST(request: Request): Promise<NextResponse> {
 
   if (enrollmentError || !enrollment) {
     return NextResponse.json(
-      { error: 'No AiBI-P enrollment found for this account.' },
+      { error: 'No AiBI-Practitioner enrollment found for this account.' },
       { status: 403 },
     );
   }

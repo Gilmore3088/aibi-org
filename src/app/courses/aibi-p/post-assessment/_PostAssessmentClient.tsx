@@ -220,7 +220,7 @@ export function PostAssessmentClient({ enrollmentId }: PostAssessmentClientProps
             {/* Context header */}
             <div className="max-w-2xl mx-auto mb-10">
               <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] mb-2">
-                AiBI-P · Measure Your Growth
+                AiBI-Practitioner · Measure Your Growth
               </p>
               <p className="font-sans text-sm text-[color:var(--color-slate)] leading-relaxed">
                 You have completed all 12 modules. Answer these questions honestly —
@@ -281,7 +281,7 @@ export function PostAssessmentClient({ enrollmentId }: PostAssessmentClientProps
           <div className="max-w-3xl mx-auto space-y-8">
             <div>
               <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] mb-2">
-                AiBI-P · Measure Your Growth
+                AiBI-Practitioner · Measure Your Growth
               </p>
               <h1 className="font-serif text-4xl sm:text-5xl font-bold text-[color:var(--color-ink)] leading-tight">
                 Your Transformation

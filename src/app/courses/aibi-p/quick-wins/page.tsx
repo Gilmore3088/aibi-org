@@ -193,7 +193,7 @@ export default function QuickWinsPage() {
               href="/courses/aibi-p"
               className="hover:text-[color:var(--color-terra)] transition-colors"
             >
-              AiBI-P
+              AiBI-Practitioner
             </Link>
           </li>
           <li aria-hidden="true">/</li>

@@ -81,7 +81,7 @@ export async function GET(request: NextRequest) {
   const name =
     (enrollment as unknown as { user_full_name?: string | null }).user_full_name ??
     (enrollment as unknown as { user_email?: string | null }).user_email ??
-    'AiBI-P learner';
+    'AiBI-Practitioner learner';
 
   const merged = spec.artifactTemplate
     .replace(/\{\{date\}\}/g, today)

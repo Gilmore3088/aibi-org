@@ -1,7 +1,7 @@
 'use client';
 
 // CourseTabs — shared three-tab layout for course content: Learn / Practice / Apply.
-// Used by AiBI-P modules, AiBI-S weeks, and AiBI-L sessions.
+// Used by AiBI-Practitioner modules, AiBI-S weeks, and AiBI-L sessions.
 // Tab state persists in sessionStorage so refreshing keeps the learner's place.
 
 import { useState, useEffect, type ReactNode } from 'react';

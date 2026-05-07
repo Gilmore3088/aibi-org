@@ -83,7 +83,7 @@ export function TransformationCard({
       const objectUrl = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = objectUrl;
-      a.download = 'AiBI-P-Transformation-Report.pdf';
+      a.download = 'AiBI-Practitioner-Transformation-Report.pdf';
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -103,7 +103,7 @@ export function TransformationCard({
   const tierChanged = preTierLabel !== null && preTierLabel !== postTierLabel;
 
   const shareSummary = [
-    'AiBI-P: Banking AI Practitioner — Course Complete',
+    'AiBI-Practitioner — Banking AI Practitioner — Course Complete',
     '',
     scoreImprovement
       ? `AI Readiness: ${preScore} → ${postScore} (${scoreImprovement})`
@@ -132,7 +132,7 @@ export function TransformationCard({
       aria-label="Transformation summary"
     >
       <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] mb-4">
-        AiBI-P Complete
+        AiBI-Practitioner Complete
       </p>
 
       {/* Stat grid */}

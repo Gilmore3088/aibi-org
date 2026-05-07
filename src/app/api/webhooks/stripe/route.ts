@@ -1,5 +1,5 @@
 // POST /api/webhooks/stripe
-// Handles Stripe webhook events for AiBI-P course enrollment provisioning.
+// Handles Stripe webhook events for AiBI-Practitioner course enrollment provisioning.
 //
 // Security: Every request is verified via stripe.webhooks.constructEvent before
 // any processing occurs. Unverified requests are rejected with 400.
@@ -14,6 +14,20 @@
 import { NextRequest, NextResponse } from 'next/server';
 import type Stripe from 'stripe';
 import { provisionEnrollment } from '@/lib/stripe/provision-enrollment';
+import {
+  sendCoursePurchaseIndividual,
+  sendCoursePurchaseInstitution,
+} from '@/lib/resend';
+
+function formatAmount(amountCents: number | null | undefined, currency: string | null | undefined): string {
+  if (typeof amountCents !== 'number') return '—';
+  const amount = amountCents / 100;
+  const code = (currency ?? 'usd').toUpperCase();
+  if (code === 'USD') {
+    return `$${amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  }
+  return `${amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${code}`;
+}
 
 // Webhook needs raw body access; nodejs runtime required.
 export const runtime = 'nodejs';
@@ -63,6 +77,30 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     const status = result.code === 'missing_metadata' ? 400 : 500;
     console.error(`[webhook] Provisioning failed (${result.code}):`, result.error);
     return NextResponse.json({ error: result.error }, { status });
+  }
+
+  // Send transactional email — only on first-time creation, not idempotent dupes.
+  if (result.action === 'created') {
+    const email = session.customer_details?.email ?? session.metadata?.user_email ?? null;
+    const amountPaid = formatAmount(session.amount_total, session.currency);
+
+    if (email && result.type === 'individual') {
+      sendCoursePurchaseIndividual({
+        email,
+        amountPaid,
+      }).catch((err) => console.warn('[webhook] resend individual skip', err));
+    } else if (email && result.type === 'institution') {
+      const institutionName = session.metadata?.institution_name ?? 'Your institution';
+      const seatsPurchased = session.metadata?.quantity
+        ? parseInt(session.metadata.quantity, 10)
+        : 0;
+      sendCoursePurchaseInstitution({
+        email,
+        institutionName,
+        seatsPurchased,
+        amountPaid,
+      }).catch((err) => console.warn('[webhook] resend institution skip', err));
+    }
   }
 
   return NextResponse.json({ received: true, ...result });

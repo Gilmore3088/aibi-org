@@ -15,7 +15,7 @@ import { InquiryForm } from '@/app/certifications/_components/InquiryForm';
 export const metadata: Metadata = {
   title: 'Education | The AI Banking Institute',
   description:
-    'Free classes and three certification tracks for community banks and credit unions. Start with the AI Readiness Assessment, then earn AiBI-P, AiBI-S, or AiBI-L credentials.',
+    'Free classes and three certification tracks for community banks and credit unions. Start with the AI Readiness Assessment, then earn AiBI-Practitioner, AiBI-S, or AiBI-L credentials.',
 };
 
 interface CertificationTrack {
@@ -78,7 +78,7 @@ export default async function EducationPage() {
 
   const tracks: readonly CertificationTrack[] = [
     {
-      code: 'AiBI-P',
+      code: 'AiBI-Practitioner',
       credential: 'Practitioner',
       title: 'Banking AI Practitioner',
       subtitle: 'Personal AI proficiency for every staff member',
@@ -112,7 +112,7 @@ export default async function EducationPage() {
       unitLabel: 'units',
       completedUnits: 0,
       isEnrolled: false,
-      prerequisite: 'AiBI-P',
+      prerequisite: 'AiBI-Practitioner',
       comingSoon: true,
     },
     {
@@ -435,7 +435,7 @@ export default async function EducationPage() {
             Need team certification or executive workshops?
           </h2>
           <p className="text-[color:var(--color-ink)]/75 max-w-xl mx-auto mb-6 leading-relaxed">
-            AiBI-P team pricing starts at 10 seats. Advanced Specialist and
+            AiBI-Practitioner team pricing starts at 10 seats. Advanced Specialist and
             Leader programs are coming after Practitioner is validated with
             real learners.
           </p>

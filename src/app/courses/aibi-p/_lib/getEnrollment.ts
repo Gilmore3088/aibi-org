@@ -13,7 +13,7 @@ export type EnrollmentData = Pick<
 >;
 
 /**
- * Look up the current user's AiBI-P enrollment from Supabase.
+ * Look up the current user's AiBI-Practitioner enrollment from Supabase.
  *
  * Returns null when Supabase is not configured or when the request has no
  * valid auth session. Callers should treat null as "not enrolled" and
