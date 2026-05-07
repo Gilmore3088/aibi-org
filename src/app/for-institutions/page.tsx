@@ -278,10 +278,41 @@ export default function ForInstitutionsPage() {
             </h2>
             <p className="text-base text-[color:var(--color-ink)]/75 leading-relaxed mb-6">
               Some institutions want hands-on coaching while their team is in
-              the program. We offer three advisory engagements that pair with
-              certification — never replace it. Your bankers are always the
-              builders. We’re the coach.
+              the program. Three engagements pair with certification — never
+              replace it. Your bankers stay the builders.
             </p>
+            <ul className="space-y-3 mb-6">
+              {[
+                {
+                  name: 'Pilot',
+                  body: 'A single high-value workflow scoped, built, and shipped alongside one staff member, end to end.',
+                },
+                {
+                  name: 'Program',
+                  body: 'A 90-day capability build for a department — governance, vendor posture, and a backlog of vetted use cases.',
+                },
+                {
+                  name: 'Leadership Advisory',
+                  body: 'Fractional Chief AI Officer cadence for the executive team — board reporting, examiner readiness, and roadmap.',
+                },
+              ].map((item) => (
+                <li
+                  key={item.name}
+                  className="flex gap-3 text-sm text-[color:var(--color-ink)]/85 leading-relaxed"
+                >
+                  <span
+                    className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-terra)] shrink-0"
+                    aria-hidden="true"
+                  />
+                  <span>
+                    <span className="font-serif-sc uppercase tracking-[0.15em] text-[color:var(--color-ink)]">
+                      {item.name}.
+                    </span>{' '}
+                    {item.body}
+                  </span>
+                </li>
+              ))}
+            </ul>
             <Link
               href="/for-institutions/advisory"
               className="inline-block font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] border-b border-[color:var(--color-terra)] pb-0.5 hover:opacity-70 transition-opacity"

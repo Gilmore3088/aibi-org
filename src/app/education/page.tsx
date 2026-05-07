@@ -53,7 +53,7 @@ export default async function EducationPage() {
     {
       title: 'AI Readiness Assessment',
       subtitle:
-        'Eight questions, three minutes. Get your readiness score and a tailored next-step recommendation.',
+        'Twelve questions, three minutes. Returns a readiness tier, your weakest dimension, and a copy-paste artifact your team can use this week.',
       cta: 'Take the assessment',
       href: '/assessment/start',
       available: true,
@@ -61,7 +61,7 @@ export default async function EducationPage() {
     {
       title: 'The AI Banking Brief',
       subtitle:
-        'Weekly digest of regulatory updates, vendor moves, and practical AI use cases for community FIs.',
+        'Weekly read for community-bank and credit-union leaders. Examiner-relevant regulatory updates, vendor moves we have vetted, and one workflow to try inside your institution.',
       cta: 'Subscribe',
       href: '/resources',
       available: true,
@@ -69,7 +69,7 @@ export default async function EducationPage() {
     {
       title: 'Short-form classes',
       subtitle:
-        'Five-minute video lessons on regulatory framing, vendor evaluation, and Acceptable Use practices.',
+        'Five-minute video primers on the never-paste list, vendor scoring against SR 11-7, and writing an Acceptable Use policy bankers will actually follow.',
       cta: 'Coming soon',
       href: '#',
       available: false,
@@ -102,8 +102,8 @@ export default async function EducationPage() {
       title: 'Banking AI Specialist',
       subtitle: 'Advanced workflows, agents, and internal AI systems',
       audience: 'Department managers',
-      format: '6-week live cohort',
-      duration: '6 weeks',
+      format: 'Self-paced online',
+      duration: '8 modules',
       price: 'Coming soon',
       colorVar: 'var(--color-cobalt)',
       colorBg: 'var(--color-cobalt-pale)',
@@ -150,8 +150,9 @@ export default async function EducationPage() {
           <p className="text-lg md:text-xl text-[color:var(--color-ink)]/75 max-w-2xl mx-auto leading-relaxed">
             Tools change. The judgment to deploy AI responsibly inside a
             regulated institution does not. Start free, then earn the
-            Practitioner is active now. Specialist and Leader are coming after
-            the foundation loop is validated.
+            credential that matches your role. AiBI-Practitioner is active
+            now; Specialist and Leader open after the Practitioner loop is
+            validated with real cohorts.
           </p>
         </div>
       </section>
@@ -427,24 +428,46 @@ export default async function EducationPage() {
 
       {/* Enterprise / bulk CTA */}
       <section className="px-6 pb-20">
-        <div className="max-w-3xl mx-auto border border-[color:var(--color-ink)]/10 bg-[color:var(--color-linen)] p-10 md:p-14 text-center">
-          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-3">
-            Team and institutional enrollment
-          </p>
-          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] mb-4">
-            Need team certification or executive workshops?
-          </h2>
-          <p className="text-[color:var(--color-ink)]/75 max-w-xl mx-auto mb-6 leading-relaxed">
-            AiBI-Practitioner team pricing starts at 10 seats. Advanced Specialist and
-            Leader programs are coming after Practitioner is validated with
-            real learners.
-          </p>
-          <a
-            href="#inquiry-form"
-            className="inline-block px-8 py-4 border border-[color:var(--color-terra)] text-[color:var(--color-terra)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra)] hover:text-[color:var(--color-linen)] transition-colors"
-          >
-            Contact us for institutional solutions
-          </a>
+        <div className="max-w-3xl mx-auto border border-[color:var(--color-ink)]/10 bg-[color:var(--color-linen)] p-10 md:p-14">
+          <div className="text-center">
+            <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-3">
+              Team and institutional enrollment
+            </p>
+            <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] mb-4">
+              Need team certification or executive workshops?
+            </h2>
+            <p className="text-[color:var(--color-ink)]/75 max-w-xl mx-auto mb-8 leading-relaxed">
+              AiBI-Practitioner team pricing starts at 10 seats. A 30-minute
+              Executive Briefing is the fastest way to scope the right shape
+              for your institution.
+            </p>
+          </div>
+          <ul className="max-w-xl mx-auto space-y-3 mb-8 text-left">
+            {[
+              'Team pricing at $199/seat for 10+ enrollments — same curriculum, same self-paced format.',
+              'Aggregate readiness dashboard so the executive sponsor can see where the cohort actually lands.',
+              'Optional advisory pairing — Pilot, Program, or Leadership Advisory — when you want a coach alongside the cohort.',
+            ].map((line) => (
+              <li
+                key={line}
+                className="flex gap-3 text-sm text-[color:var(--color-ink)]/85 leading-relaxed"
+              >
+                <span
+                  className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-terra)] shrink-0"
+                  aria-hidden="true"
+                />
+                <span>{line}</span>
+              </li>
+            ))}
+          </ul>
+          <div className="text-center">
+            <a
+              href="#inquiry-form"
+              className="inline-block px-8 py-4 border border-[color:var(--color-terra)] text-[color:var(--color-terra)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra)] hover:text-[color:var(--color-linen)] transition-colors"
+            >
+              Contact us for institutional solutions
+            </a>
+          </div>
         </div>
       </section>
     </main>

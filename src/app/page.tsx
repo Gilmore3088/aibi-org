@@ -6,31 +6,49 @@ import { InteractiveSkillsPreview } from '@/components/sections/InteractiveSkill
 const HOW_IT_WORKS = [
   {
     label: 'Assess',
-    body: 'See your readiness level and top gaps.',
+    body: 'Twelve questions return a readiness score, tier, and your lowest-scoring dimension.',
     icon: 'score',
   },
   {
     label: 'Learn',
-    body: 'Take short lessons built for banking work.',
+    body: 'Twelve self-paced modules built around AI Use Cards, not generic prompt theory.',
     icon: 'book',
   },
   {
     label: 'Practice',
-    body: 'Complete short reps that build safe habits.',
+    body: 'Short reps inside the work you already do — refusal habits, redaction, escalation.',
     icon: 'practice',
   },
   {
     label: 'Apply',
-    body: 'Save prompts and artifacts you can reuse.',
+    body: 'A prompt library and AI Use Cards you keep, reuse, and hand to the next teammate.',
     icon: 'artifact',
   },
 ] as const;
 
 const TRUST_POINTS = [
-  'No PII required',
-  'Human review required',
-  'Designed for real workflows, not experiments',
-  'Aligned with banking expectations',
+  {
+    headline: 'No PII required',
+    body: 'Every exercise runs on synthetic data. Customer information never leaves your institution.',
+  },
+  {
+    headline: 'Human review required',
+    body: 'Every Use Card includes a refusal threshold and a named human reviewer before action is taken.',
+  },
+  {
+    headline: 'Designed for real workflows',
+    body: 'Lending memos, exam prep, vendor reviews. Not chatbot demos and not science experiments.',
+  },
+  {
+    headline: 'Aligned with banking expectations',
+    body: 'SR 11-7, Interagency TPRM Guidance, ECOA/Reg B, and the AIEOG AI Lexicon are baked into the curriculum.',
+  },
+] as const;
+
+const HERO_PROMISES = [
+  'Your readiness tier in plain language — Starting Point, Early Stage, Building Momentum, or Ready to Scale.',
+  'The one dimension dragging your score down, with a copy-paste artifact you can use this week.',
+  'A clear next step — free, no credit card, no sales call.',
 ] as const;
 
 export const metadata = {
@@ -55,9 +73,23 @@ export default function HomePage() {
             Turning bankers into builders.
           </p>
           <p className="text-base md:text-xl text-[color:var(--color-ink)]/75 max-w-2xl mx-auto leading-relaxed mt-5">
-            In three minutes, see your readiness level, your top gaps, and the
-            first practical exercise to complete.
+            Twelve questions, three minutes, no signup before you see your
+            score. Here&rsquo;s what comes back:
           </p>
+          <ul className="mt-6 max-w-xl mx-auto space-y-3 text-left">
+            {HERO_PROMISES.map((line) => (
+              <li
+                key={line}
+                className="flex gap-3 text-sm md:text-base text-[color:var(--color-ink)]/85 leading-relaxed"
+              >
+                <span
+                  className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-terra)] shrink-0"
+                  aria-hidden="true"
+                />
+                <span>{line}</span>
+              </li>
+            ))}
+          </ul>
           <div className="mt-8 flex justify-center">
             <Link
               href="/assessment/start"
@@ -149,9 +181,12 @@ export default function HomePage() {
           />
           <div className="grid sm:grid-cols-2 gap-x-8 gap-y-5">
             {TRUST_POINTS.map((point) => (
-              <div key={point} className="border-l-2 border-[color:var(--color-terra)] pl-4">
+              <div key={point.headline} className="border-l-2 border-[color:var(--color-terra)] pl-4">
                 <p className="font-serif text-xl text-[color:var(--color-ink)]">
-                  {point}
+                  {point.headline}
+                </p>
+                <p className="text-sm text-[color:var(--color-slate)] leading-relaxed mt-2">
+                  {point.body}
                 </p>
               </div>
             ))}
