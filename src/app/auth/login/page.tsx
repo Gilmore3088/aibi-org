@@ -6,15 +6,29 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { signIn, signInWithMagicLink } from '@/lib/supabase/auth';
 
 // ── Dev bypass ───────────────────────────────────────────────────────────────
-// Only available in development. Sets a flag so protected pages can short-circuit.
-function DevSkipButton() {
+// Only rendered in development. Hits /api/dev/skip-login which generates a
+// real Supabase magic-link action_link for DEV_LOGIN_EMAIL (or a typed-in
+// email) — the link writes proper auth cookies before redirecting to the
+// destination. Replaces the old sessionStorage-flag pattern, which never
+// actually authenticated the user.
+function DevSkipButton({ redirectTo }: { redirectTo: string }) {
   if (process.env.NODE_ENV !== 'development') return null;
   return (
     <button
       type="button"
       onClick={() => {
-        sessionStorage.setItem('aibi-dev-auth', 'true');
-        window.location.href = '/dashboard';
+        const stored =
+          (typeof window !== 'undefined' &&
+            window.localStorage.getItem('aibi-dev-skip-email')) ||
+          '';
+        const email = window.prompt(
+          'Dev sign-in email (creates session via Supabase magic-link):',
+          stored,
+        );
+        if (!email) return;
+        window.localStorage.setItem('aibi-dev-skip-email', email);
+        const params = new URLSearchParams({ email, next: redirectTo });
+        window.location.href = `/api/dev/skip-login?${params.toString()}`;
       }}
       className="w-full py-2 px-4 border border-dashed border-[color:var(--color-slate)]/40 text-[color:var(--color-slate)] text-sm font-sans rounded-[2px] hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)] transition-colors"
     >
@@ -269,7 +283,7 @@ export default function LoginPage() {
             <MagicLinkForm redirectTo={redirectTo} defaultEmail={defaultEmail} />
           )}
 
-          <DevSkipButton />
+          <DevSkipButton redirectTo={redirectTo} />
         </div>
 
         {/* Footer link */}
