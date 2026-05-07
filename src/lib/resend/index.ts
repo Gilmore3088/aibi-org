@@ -206,6 +206,28 @@ export function sendCertificateIssued(
   });
 }
 
+// ── Email 6: Waitlist confirmation ──────────────────────────────────────────
+
+export interface WaitlistConfirmationPayload {
+  readonly email: string;
+  readonly interestLabel: string;
+  readonly institution?: string;
+}
+
+export function sendWaitlistConfirmation(
+  payload: WaitlistConfirmationPayload,
+): Promise<ResendResult> {
+  return sendTemplate({
+    to: payload.email,
+    templateAlias: 'waitlist-confirmation',
+    subject: `You're on the list — ${payload.interestLabel}`,
+    variables: {
+      INTEREST_LABEL: payload.interestLabel,
+      INSTITUTION: payload.institution ?? 'your institution',
+    },
+  });
+}
+
 // ── Email 5: Inquiry acknowledgement ────────────────────────────────────────
 
 export interface InquiryAckPayload {

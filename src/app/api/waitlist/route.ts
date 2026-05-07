@@ -6,6 +6,17 @@ import {
   logEmailCapture,
 } from '@/lib/email-capture/rate-limit';
 import { ensureAuthUser } from '@/lib/supabase/auth-admin';
+import { sendWaitlistConfirmation } from '@/lib/resend';
+
+// Human-readable label per interest slug — used as the email subject and
+// body line. Keep in sync with VALID_INTERESTS below.
+const INTEREST_LABELS: Record<string, string> = {
+  assessment: 'the AI readiness assessment',
+  course: 'AiBI-Practitioner',
+  newsletter: 'the AI Banking Brief newsletter',
+  institutional: 'institutional cohort enrollment',
+  consulting: 'leadership advisory engagement',
+};
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const VALID_INTERESTS = new Set([
@@ -107,6 +118,14 @@ export async function POST(request: Request): Promise<NextResponse> {
   ensureAuthUser(body.email.toLowerCase()).catch((err) =>
     console.warn('[waitlist] auth-admin skip', err),
   );
+
+  // Confirmation email — fire-and-forget, never blocks the response.
+  const interestLabel = INTEREST_LABELS[body.interest] ?? body.interest;
+  sendWaitlistConfirmation({
+    email: body.email.toLowerCase(),
+    interestLabel,
+    institution: institutionName ?? undefined,
+  }).catch((err) => console.warn('[waitlist] resend skip', err));
 
   await logEmailCapture(ipHash);
   return NextResponse.json({ ok: true, stored: true });

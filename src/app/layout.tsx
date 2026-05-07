@@ -101,11 +101,18 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const pathname = (await headers()).get('x-pathname') ?? '/';
+  // /coming-soon ALWAYS renders chromeless — the page provides its own
+  // brand header internally, so showing the global Header on top of it
+  // produces a duplicate logo lockup. The takedown-only paths only go
+  // chromeless when COMING_SOON_MODE is active.
   const chromeless =
-    COMING_SOON_MODE &&
-    [...CHROMELESS_PATHS, ...CHROMELESS_PATHS_DURING_TAKEDOWN].some(
+    CHROMELESS_PATHS.some(
       (path) => pathname === path || pathname.startsWith(`${path}/`),
-    );
+    ) ||
+    (COMING_SOON_MODE &&
+      CHROMELESS_PATHS_DURING_TAKEDOWN.some(
+        (path) => pathname === path || pathname.startsWith(`${path}/`),
+      ));
 
   return (
     <html lang="en">
