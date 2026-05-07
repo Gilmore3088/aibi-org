@@ -41,6 +41,18 @@ describe('scoreToTier', () => {
     expect(scoreToTier(4, 4)).toBe('ready-to-scale');
     expect(scoreToTier(1, 4)).toBe('starting-point');
   });
+
+  it('matches overall ladder bands at typical maxScore values', () => {
+    // At maxScore=4 (1-question free dim): minScore=1, range=3, bands at 1.75 / 2.5 / 3.25
+    expect(scoreToTier(2, 4)).toBe('early-stage');       // position 0.33
+    expect(scoreToTier(3, 4)).toBe('building-momentum'); // position 0.67
+
+    // At maxScore=24 (6-question in-depth dim): minScore=6, range=18, bands at 10.5 / 15 / 19.5
+    expect(scoreToTier(6, 24)).toBe('starting-point');     // position 0
+    expect(scoreToTier(11, 24)).toBe('early-stage');       // position 0.28
+    expect(scoreToTier(15, 24)).toBe('building-momentum'); // position 0.50 (boundary)
+    expect(scoreToTier(20, 24)).toBe('ready-to-scale');    // position 0.78
+  });
 });
 
 describe('DIMENSION_TIER_LADDER', () => {
