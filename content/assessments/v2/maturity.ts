@@ -82,15 +82,24 @@ export const TIER_MATURITY: Record<Tier['id'], TierMaturity> = {
 };
 
 export const BANKING_ROLES: readonly BankingRole[] = [
-  { id: 'deposit-operations', label: 'Deposit Operations', contextLine: 'TODO: authored in Task 4' },
-  { id: 'loan-operations', label: 'Loan Operations / Underwriting Support', contextLine: 'TODO: authored in Task 4' },
-  { id: 'bsa-aml', label: 'BSA / AML Support', contextLine: 'TODO: authored in Task 4' },
-  { id: 'treasury-management', label: 'Treasury Management', contextLine: 'TODO: authored in Task 4' },
-  { id: 'branch-leadership', label: 'Branch Leadership', contextLine: 'TODO: authored in Task 4' },
-  { id: 'compliance-review', label: 'Compliance Review', contextLine: 'TODO: authored in Task 4' },
-  { id: 'marketing', label: 'Marketing', contextLine: 'TODO: authored in Task 4' },
-  { id: 'collections', label: 'Collections', contextLine: 'TODO: authored in Task 4' },
-  { id: 'card-operations', label: 'Card Operations', contextLine: 'TODO: authored in Task 4' },
+  { id: 'deposit-operations', label: 'Deposit Operations',
+    contextLine: 'Account exception research, document review, customer correspondence drafting, and procedure summarization — high-volume, structured work where written language and lookups dominate the day.' },
+  { id: 'loan-operations', label: 'Loan Operations / Underwriting Support',
+    contextLine: 'Credit memo drafting, condition tracking, loan file review, and policy lookup — work where summarization and structured-document handling consume hours that compound across the pipeline.' },
+  { id: 'bsa-aml', label: 'BSA / AML Support',
+    contextLine: 'Alert narrative drafting, SAR support, news adverse-media review, and policy interpretation — tasks where written reasoning and source synthesis are the bottleneck.' },
+  { id: 'treasury-management', label: 'Treasury Management',
+    contextLine: 'RFP responses, onboarding documentation, customer education materials, and product comparison memos — long-form written work that scales poorly with relationship-manager headcount.' },
+  { id: 'branch-leadership', label: 'Branch Leadership',
+    contextLine: 'Coaching notes, performance summaries, customer escalations, and procedure interpretation — the management overhead between customer-facing time and reporting upward.' },
+  { id: 'compliance-review', label: 'Compliance Review',
+    contextLine: 'Regulatory change tracking, policy gap analysis, exam prep, and procedure update drafting — reading-heavy work where AI shifts the bottleneck from intake to judgment.' },
+  { id: 'marketing', label: 'Marketing',
+    contextLine: 'Email drafting, social copy, segment analysis, and brand-consistent content production — a department where AI adoption is usually furthest along and policy needs to catch up.' },
+  { id: 'collections', label: 'Collections',
+    contextLine: 'Account-history summarization, customer correspondence, and call-prep notes — structured, repeatable communication tasks that benefit from drafting acceleration with human review on the send.' },
+  { id: 'card-operations', label: 'Card Operations',
+    contextLine: 'Dispute documentation, fraud-case narrative drafting, network rule lookup, and customer correspondence — procedure-heavy work where the right answer is buried in long documents.' },
 ] as const;
 
 /** 32-cell ladder. Populated in Task 3. */

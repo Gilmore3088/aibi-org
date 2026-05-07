@@ -88,4 +88,11 @@ describe('BANKING_ROLES', () => {
       'card-operations',
     ]);
   });
+
+  it('every role has a non-trivial contextLine', () => {
+    for (const role of BANKING_ROLES) {
+      expect(role.contextLine.length, role.id).toBeGreaterThan(40);
+      expect(role.contextLine, role.id).not.toMatch(/TODO/);
+    }
+  });
 });
