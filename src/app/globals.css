@@ -1,184 +1,29 @@
+/* AiBI global stylesheet — modular composition.
+ *
+ * Token contract:    docs/superpowers/design-system/03-tokens.md
+ * Token CSS source:  src/styles/tokens.css
+ * Base styles:       src/styles/base.css
+ * Print styles:      src/styles/print.css
+ *
+ * This file is the only entry point that Next.js loads. It imports the
+ * three modular pieces above plus the Tailwind directives.
+ */
+
+@import "../styles/tokens.css";
+@import "../styles/base.css";
+@import "../styles/print.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  /* AiBI brand palette — see Plans/aibi-designer-brief.html and CLAUDE.md */
-  --color-terra:        #b5512e;  /* Pillar C / CTAs / brand signal */
-  --color-terra-light:  #c96a43;  /* Hover states */
-  --color-terra-pale:   #f0c4ab;  /* Background tints */
-  --color-sage:         #4a6741;  /* Pillar A ONLY */
-  --color-cobalt:       #2d4a7a;  /* Pillar B / security contexts ONLY */
-  --color-cobalt-pale:  #dce6f5;  /* Cobalt background tint */
-  --color-sage-pale:    #d8e8d5;  /* Sage background tint */
-  --color-ink:          #1e1a14;  /* Primary text */
-  --color-slate:        #6b6355;  /* Secondary text — WCAG AA on linen (4.8:1) */
-  --color-dust:         #9b9085;  /* Captions, metadata — large text only (2.8:1) */
-  --color-parch:        #f5f0e6;  /* Card backgrounds */
-  --color-parch-dark:   #ede6d8;  /* Hover states, section bands */
-  --color-linen:        #f9f6f0;  /* Page background */
-  --color-error:        #9b2226;  /* Error / Starting Point tier */
-  --color-amber:        #c48820;  /* Creation pillar ONLY */
-  --color-amber-light:  #d4a032;  /* Creation pillar hover states */
-
-  /* Typography tokens */
-  --font-serif:    var(--font-cormorant), Georgia, serif;
-  --font-serif-sc: var(--font-cormorant-sc), Georgia, serif;
-  --font-sans:     var(--font-dm-sans), -apple-system, system-ui, sans-serif;
-  --font-mono:     var(--font-dm-mono), ui-monospace, monospace;
-}
-
-html, body {
-  background: var(--color-linen);
-  color: var(--color-ink);
-  font-family: var(--font-sans);
-  -webkit-font-smoothing: antialiased;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-h1, h2, h3 {
-  font-family: var(--font-serif);
-  letter-spacing: -0.01em;
-}
-
-/* Accessibility — visible focus rings on all interactive elements */
-*:focus-visible {
-  outline: 2px solid var(--color-terra);
-  outline-offset: 2px;
-}
-
-/* Screen-reader-only utility */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
-/* Skip-to-content link — visible on keyboard focus */
-.skip-link {
-  position: absolute;
-  top: -100px;
-  left: 1rem;
-  z-index: 100;
-  padding: 0.75rem 1.5rem;
-  background: var(--color-terra);
-  color: var(--color-linen);
-  text-decoration: none;
-  font-family: var(--font-sans);
-  font-size: 0.875rem;
-  transition: top 150ms ease;
-}
-.skip-link:focus {
-  top: 1rem;
-}
+/* ---- Brand utility classes (small set; rest live in Tailwind theme) ---- */
 
 @layer utilities {
-  .text-balance   { text-wrap: balance; }
-  .font-serif     { font-family: var(--font-serif); }
-  .font-serif-sc  { font-family: var(--font-serif-sc); letter-spacing: 0.04em; }
-  .font-sans      { font-family: var(--font-sans); }
-  .font-mono      { font-family: var(--font-mono); }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Print stylesheet — used for "Save as PDF" from the assessment results view */
-@media print {
-  html, body {
-    background: #ffffff !important;
-    color: #000000 !important;
-  }
-
-  /* Hide non-essential chrome for print output. Scoped to direct body
-   * children so content-level <header>/<footer> elements (e.g. the
-   * assessment briefing header, /resources article headers/footers)
-   * still print. */
-  body > header,
-  body > footer,
-  [data-print-hide="true"] {
-    display: none !important;
-  }
-
-  /* Disable entrance animations for print so content always shows in its
-   * settled state regardless of when the print dialog is invoked. */
-  *,
-  *::before,
-  *::after {
-    animation: none !important;
-    transition: none !important;
-  }
-
-  /* Prevent pages from being awkwardly cut */
-  .print-avoid-break {
-    break-inside: avoid;
-    page-break-inside: avoid;
-  }
-
-  main {
-    padding: 0 !important;
-  }
-
-  /* Fix scaling of score ring and tier colors for print */
-  svg {
-    max-width: 100% !important;
-  }
-
-  a {
-    color: inherit !important;
-    text-decoration: none !important;
-  }
-
-  /* Print footer with brand line */
-  .print-footer {
-    display: block !important;
-    margin-top: 2rem;
-    padding-top: 1rem;
-    border-top: 1px solid #cccccc;
-    font-size: 10pt;
-    color: #666666;
-  }
-}
-
-/* Hide print-only elements from screen */
-.print-footer {
-  display: none;
-}
-
-/* Reduced motion — respect user preference */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
+  .text-balance    { text-wrap: balance; }
+  .font-serif      { font-family: var(--font-serif); }
+  .font-serif-sc   { font-family: var(--font-serif-sc); letter-spacing: 0.04em; }
+  .font-sans       { font-family: var(--font-sans); }
+  .font-mono       { font-family: var(--font-mono); }
+  .tabular-nums    { font-variant-numeric: tabular-nums; }
 }

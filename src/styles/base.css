@@ -1,0 +1,83 @@
+/* AiBI base styles — html/body resets, focus, skip-link.
+ * Sits on top of tokens.css. Imported by globals.css.
+ */
+
+html, body {
+  background: var(--color-linen);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Default headings use serif at tight letter-spacing. */
+h1, h2, h3, h4 {
+  font-family: var(--font-serif);
+  letter-spacing: var(--tracking-tight);
+  font-weight: 400;
+}
+
+/* Visible focus ring on all interactive elements. Always terra, always 2px. */
+*:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+/* Screen-reader-only utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Skip-to-content link — visible on keyboard focus only. */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: var(--space-4);
+  z-index: var(--z-skip);
+  padding: var(--space-3) var(--space-6);
+  background: var(--color-terra);
+  color: var(--color-linen);
+  text-decoration: none;
+  font-family: var(--font-sans);
+  font-size: var(--text-body-sm);
+  border-radius: var(--radius-sharp);
+  transition: top var(--motion-fast) var(--ease-default);
+}
+.skip-link:focus {
+  top: var(--space-4);
+}
+
+/* Reduced motion — respect user preference. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Page-load fade utility — used sparingly by hero compositions. */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

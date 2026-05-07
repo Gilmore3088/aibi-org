@@ -1,0 +1,63 @@
+/* AiBI print stylesheet — used for "Save as PDF" of the assessment results
+ * view and any other printable surface (certificate, report).
+ */
+
+@media print {
+  html, body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  /* Hide non-essential chrome for print output. Scoped to direct body
+   * children so content-level <header>/<footer> elements (e.g. the
+   * assessment briefing header, /research article headers/footers)
+   * still print. */
+  body > header,
+  body > footer,
+  [data-print-hide="true"] {
+    display: none !important;
+  }
+
+  /* Disable entrance animations for print so content always shows in its
+   * settled state regardless of when the print dialog is invoked. */
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  /* Prevent page-internal break inside marked blocks. */
+  .print-avoid-break {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  main {
+    padding: 0 !important;
+  }
+
+  svg {
+    max-width: 100% !important;
+  }
+
+  a {
+    color: inherit !important;
+    text-decoration: none !important;
+  }
+
+  /* Print footer with brand line. */
+  .print-footer {
+    display: block !important;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #cccccc;
+    font-size: 10pt;
+    color: #666666;
+  }
+}
+
+/* Hide print-only elements from screen. */
+.print-footer {
+  display: none;
+}
