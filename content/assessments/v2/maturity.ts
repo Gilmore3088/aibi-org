@@ -51,25 +51,32 @@ export const TIER_MATURITY: Record<Tier['id'], TierMaturity> = {
   'starting-point': {
     tierId: 'starting-point',
     stageName: 'Individual Experimentation',
-    whatIsTrue: 'TODO: authored in Task 2',
-    blockerToNext: 'TODO: authored in Task 2',
+    whatIsTrue:
+      'A handful of staff are using AI tools — usually a free chat tool, usually on personal devices, usually for tasks they were going to do anyway. Nothing is shared. Nothing is documented. Leadership is either unaware or has not signaled whether this is allowed.',
+    blockerToNext:
+      'There is no leadership signal that AI use is sanctioned, no shared place where what works can be captured, and no permission to bring AI use onto bank work without ambiguity about policy.',
   },
   'early-stage': {
     tierId: 'early-stage',
     stageName: 'Team Adoption',
-    whatIsTrue: 'TODO: authored in Task 2',
-    blockerToNext: 'TODO: authored in Task 2',
+    whatIsTrue:
+      'AI use has spread inside one or two teams — often Marketing, Operations, or a single curious branch. Informal best practices are emerging in the form of shared prompts and side-channel chatter. Most use is still unsanctioned by formal policy and invisible to compliance.',
+    blockerToNext:
+      'No written governance frame, no measurement of what AI use is producing, and no named executive sponsor to convert isolated team wins into an institutional program.',
   },
   'building-momentum': {
     tierId: 'building-momentum',
     stageName: 'Program Building',
-    whatIsTrue: 'TODO: authored in Task 2',
-    blockerToNext: 'TODO: authored in Task 2',
+    whatIsTrue:
+      'AI use is sanctioned. A written acceptable-use policy exists, a use-case inventory is being maintained, and at least one named owner is accountable for AI risk. Real workflows are running in real seats — but the program is fragile because most institutional knowledge still lives in three or four individuals.',
+    blockerToNext:
+      'Measurement is not yet defensible to leadership or examiners, security and compliance review was bolted on rather than built in, and the program has not yet survived the loss of a key person.',
   },
   'ready-to-scale': {
     tierId: 'ready-to-scale',
     stageName: 'Operational Integration',
-    whatIsTrue: 'TODO: authored in Task 2',
+    whatIsTrue:
+      'AI is part of how work gets done across multiple departments. Governance is operating, not theoretical — the policy is enforced, the inventory is current, and reviews happen on a schedule. Measurement produces budget-defensible numbers, and the next move is the builder move: building bank-specific tools rather than only adopting vendor tools.',
     blockerToNext: null,
   },
 };
