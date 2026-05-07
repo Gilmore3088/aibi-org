@@ -34,6 +34,14 @@ const COMING_SOON_BYPASS_PREFIXES: readonly string[] = [
   // The readiness assessment is the public lead magnet during pre-launch —
   // the /coming-soon hero links to it as the primary CTA.
   '/assessment',
+  // Magic-link landing targets — recipients of transactional emails must
+  // be able to reach these routes regardless of coming-soon state. Without
+  // this, every email link bounces visitors to /coming-soon.
+  '/results',
+  '/verify',
+  '/education',
+  '/for-institutions',
+  '/courses',
 ];
 
 export async function middleware(request: NextRequest): Promise<NextResponse> {
