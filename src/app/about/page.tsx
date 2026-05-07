@@ -1,84 +1,131 @@
-import type { Metadata } from 'next';
-import Link from 'next/link';
+import type { Metadata } from "next";
+import { MarketingPage } from "@/components/system/templates";
+import { Section, SectionHeader, EditorialQuote, Marginalia } from "@/components/system";
+import { BRAND, PRINCIPLES, CTAS } from "@content/copy";
 
 export const metadata: Metadata = {
-  title: 'About — The AI Banking Institute',
+  title: `About — ${BRAND.name}`,
   description:
-    'The AI Banking Institute exists for the community banks and credit unions that anchor towns and neighborhoods — not for the twenty largest banks. Here is why.',
+    "The AI Banking Institute exists for the community banks and credit unions that anchor towns and neighborhoods — not for the twenty largest banks. Here is why.",
 };
 
 export default function AboutPage() {
   return (
-    <main className="px-6 py-14 md:py-20">
-      <article className="max-w-3xl mx-auto">
-        <header className="mb-12">
-          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-4">
-            About the Institute
-          </p>
-          <h1 className="font-serif text-5xl md:text-6xl text-[color:var(--color-ink)] leading-[1.05]">
-            There is a banker somewhere right now who has been doing the same
-            thing every Tuesday morning for six years.
-          </h1>
-        </header>
-
-        <section className="space-y-6 text-[color:var(--color-ink)]/85 leading-relaxed text-lg">
-          <p>
-            It takes two and a half hours. She knows it is inefficient. She
-            has mentioned it in three different meetings. Nothing has changed.
-          </p>
-          <p>
-            That banker could fix it herself in an afternoon. She just does not
-            know that yet.
-          </p>
-          <p className="font-serif italic text-2xl md:text-3xl text-[color:var(--color-terra)] pt-4">
+    <MarketingPage
+      hero={{
+        eyebrow: "About the Institute",
+        title: (
+          <>
+            There is a banker somewhere right now who has been doing the same thing every
+            Tuesday morning for <em className="not-italic text-terra">six years.</em>
+          </>
+        ),
+        lede: (
+          <>
+            It takes two and a half hours. She knows it is inefficient. She has mentioned
+            it in three different meetings. Nothing has changed. That banker could fix it
+            herself in an afternoon. She just does not know that yet.
+          </>
+        ),
+        primaryCta: CTAS.beginAssessment,
+        aside: (
+          <Marginalia label="Founder">
+            <h4 className="font-serif text-display-xs leading-snug">{BRAND.founder.name}</h4>
+            <p className="font-serif italic text-body-sm text-slate mt-s1 mb-s4">
+              {BRAND.founder.role}
+            </p>
+            <p className="text-body-sm leading-relaxed border-t border-hairline pt-s3">
+              {BRAND.founder.bio}
+            </p>
+          </Marginalia>
+        ),
+      }}
+    >
+      {/* Mission narrative — the original About voice, preserved */}
+      <Section variant="parchDark" padding="default" container="narrow">
+        <div className="space-y-s6 text-body-lg leading-relaxed text-ink/85">
+          <p className="font-serif italic text-display-sm text-terra">
             The AI Banking Institute exists for her.
           </p>
-          <p className="pt-4">
-            Not for the twenty largest banks in the country, who have the
-            budgets and the teams and the consultants. For the community banks
-            and credit unions that anchor towns and neighborhoods and small
-            businesses &mdash; the ones that remember your name, that lend to
-            people an algorithm would have rejected, that show up when it
-            matters.
+          <p>
+            Not for the twenty largest banks in the country, who have the budgets and the
+            teams and the consultants. For the community banks and credit unions that
+            anchor towns and neighborhoods and small businesses — the ones that remember
+            your name, that lend to people an algorithm would have rejected, that show up
+            when it matters.
           </p>
           <p>
-            Those institutions have something the large banks do not: people
-            who are deeply, personally invested in the community they serve.
-            They have passion. They have institutional knowledge. They have
-            relationships no technology can replicate.
+            Those institutions have something the large banks do not: people who are
+            deeply, personally invested in the community they serve. They have passion.
+            They have institutional knowledge. They have relationships no technology can
+            replicate.
           </p>
           <p>
-            What they have not had, until now, is a framework that puts AI in
-            their hands &mdash; not the hands of a vendor, not the hands of a
-            hired expert, but their own hands.
+            What they have not had, until now, is a framework that puts AI in their
+            hands — not the hands of a vendor, not the hands of a hired expert, but their
+            own hands.
           </p>
+        </div>
+      </Section>
 
-          <p className="font-serif-sc text-2xl md:text-3xl text-[color:var(--color-terra)] pt-6 tracking-wide">
-            We turn bankers into builders.
-          </p>
+      {/* Editorial pull quote — the mission rendered as content */}
+      <Section variant="dark" padding="default" container="narrow">
+        <EditorialQuote variant="dark" size="lg" attribution="Mission · The AI Banking Institute">
+          We turn bankers into builders. Not efficiency ratios, though we improve those.
+          Not compliance readiness, though we build that too. Those are the outcomes. The
+          mission is something more human: giving people who care deeply about their work
+          a new set of tools and watching what they build with them.
+        </EditorialQuote>
+      </Section>
 
-          <p className="pt-2">
-            That is the mission. Not efficiency ratios, though we improve
-            those. Not compliance readiness, though we build that too. Those
-            are the outcomes. The mission is something more human: giving
-            people who care deeply about their work a new set of tools and
-            watching what they build with them.
-          </p>
-          <p>
-            Take the free assessment. Find out where your institution is. We
-            will take it from there.
-          </p>
-        </section>
+      {/* §01 — Principles */}
+      <Section variant="linen" padding="default">
+        <SectionHeader
+          number="01"
+          label="How we work"
+          title="Six principles, applied without exception."
+          subtitle="Internal rules, made public."
+        />
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-hairline border-y border-strong mt-s6">
+          {PRINCIPLES.map((p) => (
+            <div key={p.number} className="bg-linen p-s6">
+              <p className="font-mono text-mono-sm uppercase tracking-wider text-terra mb-s2">
+                {p.number}
+              </p>
+              <h3 className="font-serif text-display-xs leading-snug mb-s2">{p.title}</h3>
+              <p className="text-body-sm text-ink/80 leading-relaxed">{p.body}</p>
+            </div>
+          ))}
+        </div>
+      </Section>
 
-        <aside className="mt-16 bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-8 md:p-10 text-center">
-          <Link
-            href="/assessment/start"
-            className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
-          >
-            Take the Free Assessment
-          </Link>
-        </aside>
-      </article>
-    </main>
+      {/* §02 — Contact */}
+      <Section variant="dark" padding="default" divider="none">
+        <div className="grid md:grid-cols-[1.4fr_1fr] gap-s10 items-center">
+          <div>
+            <p className="font-serif-sc text-label-md uppercase tracking-widest text-amber-light mb-s3">
+              Talk to the Institute
+            </p>
+            <h2 className="font-serif text-display-md text-bone leading-tight">
+              Press, partnerships, examiner inquiries, or program questions.
+            </h2>
+            <p className="text-body-md text-cream mt-s4 leading-relaxed">
+              We respond within one business day.
+            </p>
+          </div>
+          <div className="md:text-right">
+            <p className="font-mono text-label-md uppercase tracking-widest text-cream/70 mb-s2">
+              Mail
+            </p>
+            <a
+              href={`mailto:${BRAND.emails.contact}`}
+              className="font-serif text-display-xs text-amber-light border-b border-amber-light hover:text-bone hover:border-bone pb-[2px]"
+            >
+              {BRAND.emails.contact}
+            </a>
+          </div>
+        </div>
+      </Section>
+    </MarketingPage>
   );
 }

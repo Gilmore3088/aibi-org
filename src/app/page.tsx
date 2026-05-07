@@ -1,234 +1,259 @@
-import Link from 'next/link';
-import { HomeContextStrip } from '@/components/sections/HomeContextStrip';
-import { ROICalculator } from '@/components/sections/ROICalculator';
-import { InteractiveSkillsPreview } from '@/components/sections/InteractiveSkillsPreview';
+import type { Metadata } from "next";
+import { MarketingPage } from "@/components/system/templates";
+import {
+  Section,
+  SectionHeader,
+  TransformationArc,
+  CertificationLadder,
+  Cta,
+} from "@/components/system";
+import { ROICalculator } from "@/components/sections/ROICalculator";
+import { BRAND, CTAS } from "@content/copy";
+import { citationAsKPI } from "@content/citations";
 
-const HOW_IT_WORKS = [
-  {
-    label: 'Assess',
-    body: 'See your readiness level and top gaps.',
-    icon: 'score',
-  },
-  {
-    label: 'Learn',
-    body: 'Take short lessons built for banking work.',
-    icon: 'book',
-  },
-  {
-    label: 'Practice',
-    body: 'Complete short reps that build safe habits.',
-    icon: 'practice',
-  },
-  {
-    label: 'Apply',
-    body: 'Save prompts and artifacts you can reuse.',
-    icon: 'artifact',
-  },
-] as const;
-
-const TRUST_POINTS = [
-  'No PII required',
-  'Human review required',
-  'Designed for real workflows, not experiments',
-  'Aligned with banking expectations',
-] as const;
-
-export const metadata = {
-  title: 'Teach Your Team How to Use AI Safely at Work | The AI Banking Institute',
+export const metadata: Metadata = {
+  title: `${BRAND.name} — ${BRAND.tagline}`,
   description:
-    'Practical AI training for community banks and credit unions, built around assessment, short lessons, practice reps, and useful artifacts.',
+    "An education company for community banks and credit unions. Begin with an eight-question readiness diagnostic. Continue through three certifications aligned with the regulators' criteria.",
 };
 
 export default function HomePage() {
   return (
-    <main>
-      <HomeContextStrip />
-      <section className="px-6 pt-16 pb-14 md:pt-24 md:pb-20 bg-[color:var(--color-linen)] border-b border-[color:var(--color-ink)]/10">
-        <div className="max-w-4xl mx-auto text-center">
-          <p className="font-serif-sc text-xs uppercase tracking-[0.22em] text-[color:var(--color-terra)]">
-            For community banks and credit unions
-          </p>
-          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl leading-[1.08] text-[color:var(--color-ink)] mt-5">
-            Teach your team how to use AI safely at work.
-          </h1>
-          <p className="font-serif-sc text-base md:text-lg tracking-[0.08em] text-[color:var(--color-terra)] mt-5">
-            Turning bankers into builders.
-          </p>
-          <p className="text-base md:text-xl text-[color:var(--color-ink)]/75 max-w-2xl mx-auto leading-relaxed mt-5">
-            In three minutes, see your readiness level, your top gaps, and the
-            first practical exercise to complete.
-          </p>
-          <div className="mt-8 flex justify-center">
-            <Link
-              href="/assessment/start"
-              className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
-            >
-              Take the Assessment
-            </Link>
-          </div>
-        </div>
-      </section>
+    <MarketingPage
+      hero={{
+        eyebrow: "A Proficiency Standard for Community Banking",
+        title: (
+          <>
+            Turning bankers into <em className="not-italic text-terra">builders.</em>
+          </>
+        ),
+        lede: (
+          <>
+            An education company for community banks and credit unions. Begin with an
+            eight-question readiness diagnostic. Continue through three certifications —
+            from working AI literacy to enterprise leadership — aligned with the
+            regulators&rsquo; criteria. Built for the people inside your bank, not the
+            vendors selling to it.
+          </>
+        ),
+        primaryCta: CTAS.beginAssessment,
+        secondaryCta: CTAS.viewCurriculum,
+      }}
+      kpis={[
+        {
+          label: "Curriculum",
+          value: "9 modules",
+          delta: "~12 hrs, self-paced",
+          desc: "From AI literacy to a working portfolio",
+        },
+        {
+          label: "Practitioner output",
+          value: "3 artifacts",
+          delta: "peer & instructor reviewed",
+          desc: "Real workflows shipped during the program",
+        },
+        {
+          label: "Roles served",
+          value: "Bank-wide",
+          delta: "tellers → executives",
+          desc: "Ops, lending, compliance, risk, executive",
+        },
+        {
+          label: "Frameworks aligned",
+          value: "4",
+          delta: "SR 11-7 · TPRM · ECOA · AIEOG",
+          desc: "Examiner-ready by design, not by accident",
+        },
+      ]}
+      closing={{
+        eyebrow: "Begin where you are",
+        title: "Start with the readiness assessment.",
+        body: "Eight questions, three minutes on a phone. You'll know your readiness level, your top gaps, and the first practical exercise to complete.",
+        cta: CTAS.takeAssessment,
+      }}
+    >
+      {/* §01 — The Path: transformation arc */}
+      <Section variant="linen" padding="default">
+        <SectionHeader
+          number="01"
+          label="The Path"
+          title="From the work bankers do today, to the work AI lets them do."
+          subtitle="Three stages, one banker. The institution gains capability because its people gained capability."
+        />
+        <TransformationArc
+          stages={[
+            {
+              stageLabel: "Stage 01 · Today",
+              title: "The banker",
+              body: (
+                <>
+                  Skilled at the work. AI feels adjacent — either hyped, restricted, or
+                  both. Curiosity is real; permission is unclear.
+                </>
+              ),
+              attributes: [
+                "Domain expertise",
+                "Manual or partial workflows",
+                "Risk-aware, AI-uncertain",
+              ],
+            },
+            {
+              stageLabel: "Stage 02 · The Path",
+              title: "The practitioner",
+              body: (
+                <>
+                  Working AI literacy, role-relevant artifacts, examiner-ready posture.
+                  Permission becomes operational.
+                </>
+              ),
+              attributes: [
+                "Three reviewed AI artifacts",
+                "Regulator-aligned guardrails",
+                "AiBI-Practitioner credential",
+              ],
+            },
+            {
+              stageLabel: "Stage 03 · In a year",
+              title: "The builder",
+              body: (
+                <>
+                  The banker who turns institution-specific problems into AI-native
+                  workflows the bank actually uses, with leadership a path away.
+                </>
+              ),
+              attributes: [
+                "Functional AI ownership",
+                "AiBI-S specialist track",
+                "Path to AiBI-L leadership",
+              ],
+            },
+          ]}
+          className="mt-s6"
+        />
+      </Section>
 
-      <section className="px-6 py-12 md:py-16 border-y border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)]">
-        <div className="max-w-6xl mx-auto">
-          <SectionIntro
-            eyebrow="How it works"
-            title="A simple learning loop."
-            body="Assess, learn, practice, apply."
-          />
-          <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-[color:var(--color-ink)]/10 border border-[color:var(--color-ink)]/10">
-            {HOW_IT_WORKS.map((step, index) => (
-              <article key={step.label} className="bg-[color:var(--color-parch)] p-6">
-                <StepIcon name={step.icon} />
-                <p className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-terra)] mt-5">
-                  {String(index + 1).padStart(2, '0')}
+      {/* §02 — Modeled value: ROI calculator (legacy component, dark frame) */}
+      <Section variant="dark" padding="default">
+        <SectionHeader
+          number="02"
+          label="Modeled value"
+          title="What practitioner capability is worth, by the hour."
+          subtitle="Conservative math. Sourced inputs. Your numbers, not ours."
+          tone="dark"
+        />
+        <div className="mt-s6">
+          <ROICalculator />
+        </div>
+      </Section>
+
+      {/* §03 — Industry context: sourced statistics */}
+      <Section variant="parch" padding="default">
+        <SectionHeader
+          number="03"
+          label="Where the industry is"
+          title="The numbers behind why we built this — every figure with a named source."
+        />
+        <div className="grid sm:grid-cols-3 gap-px bg-hairline border border-hairline mt-s6">
+          {(
+            [
+              ["Budget", "bank-director-budget"],
+              ["Skills gap", "gartner-skills-gap"],
+              ["Efficiency", "fdic-community-bank-efficiency-ratio"],
+            ] as const
+          ).map(([label, slug]) => {
+            const k = citationAsKPI(slug, label);
+            return (
+              <div key={slug} className="bg-linen p-s6">
+                <p className="font-mono text-label-sm uppercase tracking-widest text-slate mb-s3">
+                  {label}
                 </p>
-                <h2 className="font-serif text-2xl text-[color:var(--color-ink)] mt-2">
-                  {step.label}
-                </h2>
-                <p className="text-sm text-[color:var(--color-slate)] leading-relaxed mt-2">
-                  {step.body}
+                <p className="font-mono text-display-md tabular-nums text-terra leading-none">
+                  {k.value}
                 </p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <InteractiveSkillsPreview />
-
-      <ROICalculator />
-
-      {/* Sourced industry stats — every figure traces to a named publication */}
-      <section className="px-6 py-12 md:py-16 bg-[color:var(--color-linen)] border-b border-[color:var(--color-ink)]/10">
-        <div className="max-w-6xl mx-auto">
-          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-4">
-            Where the industry is
-          </p>
-          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] leading-tight max-w-3xl mb-10">
-            The numbers behind why we built this — every one with a named source.
-          </h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-[color:var(--color-ink)]/10 border border-[color:var(--color-ink)]/10">
-            <div className="bg-[color:var(--color-linen)] p-6 md:p-7">
-              <p className="font-mono text-3xl md:text-4xl tabular-nums text-[color:var(--color-terra)]">66%</p>
-              <p className="font-serif text-base text-[color:var(--color-ink)] mt-3 leading-snug">
-                of community banks are discussing AI in their budget.
-              </p>
-              <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-[color:var(--color-slate)] mt-3">
-                Bank Director, 2024 Technology Survey (via Jack Henry, 2025)
-              </p>
-            </div>
-            <div className="bg-[color:var(--color-linen)] p-6 md:p-7">
-              <p className="font-mono text-3xl md:text-4xl tabular-nums text-[color:var(--color-terra)]">57%</p>
-              <p className="font-serif text-base text-[color:var(--color-ink)] mt-3 leading-snug">
-                of financial institutions struggle with AI skill gaps.
-              </p>
-              <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-[color:var(--color-slate)] mt-3">
-                Gartner Peer Community (via Jack Henry, 2025)
-              </p>
-            </div>
-            <div className="bg-[color:var(--color-linen)] p-6 md:p-7">
-              <p className="font-mono text-3xl md:text-4xl tabular-nums text-[color:var(--color-terra)]">~65%</p>
-              <p className="font-serif text-base text-[color:var(--color-ink)] mt-3 leading-snug">
-                community-bank median efficiency ratio — vs. ~55.7% industry-wide.
-              </p>
-              <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-[color:var(--color-slate)] mt-3">
-                FDIC Quarterly Banking Profile, Q4 2024
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="px-6 py-12 md:py-16 bg-[color:var(--color-parch)] border-b border-[color:var(--color-ink)]/10">
-        <div className="max-w-6xl mx-auto grid lg:grid-cols-[0.85fr_1.15fr] gap-10 lg:gap-16 items-start">
-          <SectionIntro
-            eyebrow="Trust"
-            title="Built for regulated institutions."
-            body="Compliance stays in the product as a guardrail, not as a lecture."
-          />
-          <div className="grid sm:grid-cols-2 gap-x-8 gap-y-5">
-            {TRUST_POINTS.map((point) => (
-              <div key={point} className="border-l-2 border-[color:var(--color-terra)] pl-4">
-                <p className="font-serif text-xl text-[color:var(--color-ink)]">
-                  {point}
+                <p className="font-serif text-body-md text-ink mt-s3 leading-snug">
+                  {k.desc}
+                </p>
+                <p className="font-mono text-label-sm uppercase tracking-widest text-dust mt-s3">
+                  {k.source}
                 </p>
               </div>
-            ))}
-          </div>
+            );
+          })}
         </div>
-      </section>
+      </Section>
 
-      <section className="px-6 py-16 md:py-24 bg-[color:var(--color-terra)] text-[color:var(--color-linen)]">
-        <div className="max-w-3xl mx-auto text-center">
-          <p className="font-serif-sc text-xs uppercase tracking-[0.22em] text-[color:var(--color-linen)]/80">
-            Ready when you are
-          </p>
-          <h2 className="font-serif text-4xl md:text-6xl text-[color:var(--color-linen)] leading-tight mt-5">
-            Start with the assessment.
-          </h2>
-          <p className="text-base md:text-lg text-[color:var(--color-linen)]/85 leading-relaxed mt-5">
-            In a few minutes, you will know your readiness level, your top gaps,
-            and the first practical exercise to complete.
-          </p>
-          <div className="mt-8 flex justify-center">
-            <Link
-              href="/assessment/start"
-              className="inline-block px-10 py-4 bg-[color:var(--color-linen)] text-[color:var(--color-terra)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-parch)] active:scale-[0.98] transition-all"
-            >
-              Take the Assessment
-            </Link>
-          </div>
+      {/* §04 — Credentials: certification ladder */}
+      <Section variant="linen" padding="default">
+        <SectionHeader
+          number="04"
+          label="Credentials"
+          title="Three certifications. One ladder."
+          subtitle="A defined progression from individual capability to institutional leadership."
+        />
+        <CertificationLadder
+          className="mt-s6"
+          rungs={[
+            {
+              level: "Foundational",
+              stepLabel: "01",
+              code: "AiBI-Practitioner",
+              title: "AiBI-Practitioner",
+              designation: "Banking AI Practitioner · The AI Banking Institute",
+              pillar: "application",
+              facts: [
+                { label: "Format", value: "Self-paced" },
+                { label: "Effort", value: "9 modules · ~12 hrs", mono: true },
+                { label: "Outcome", value: "Working AI literacy" },
+                { label: "Tuition", value: "$295 · $199/seat at 10+", mono: true },
+              ],
+              blurb:
+                "For everyone in the bank: tellers, lenders, ops, compliance. Ends with a portfolio of three usable AI artifacts.",
+              href: "/education/practitioner",
+            },
+            {
+              level: "Specialist",
+              stepLabel: "02",
+              code: "AiBI-S",
+              title: "AiBI-Specialist",
+              designation: "Banking AI Specialist · The AI Banking Institute",
+              pillar: "understanding",
+              facts: [
+                { label: "Format", value: "Self-paced, role-tracked" },
+                { label: "Effort", value: "Track-dependent · ~25 hrs", mono: true },
+                { label: "Outcome", value: "Domain-deep AI capability" },
+                { label: "Tuition", value: "Forthcoming" },
+              ],
+              blurb:
+                "Role-specific tracks: Ops, Lending, Compliance, Risk. For practitioners ready to lead AI within a function.",
+              href: "/education/specialist",
+              comingSoon: true,
+            },
+            {
+              level: "Leader",
+              stepLabel: "03",
+              code: "AiBI-L",
+              title: "AiBI-Leader",
+              designation: "Banking AI Leader · The AI Banking Institute",
+              pillar: "awareness",
+              facts: [
+                { label: "Format", value: "Cohort-supported" },
+                { label: "Effort", value: "~40 hrs · capstone", mono: true },
+                { label: "Outcome", value: "Enterprise AI strategy" },
+                { label: "Tuition", value: "Forthcoming" },
+              ],
+              blurb:
+                "For executives and board members. Governance, vendor risk, AI strategy, and the SR 11-7 stack.",
+              href: "/education/leader",
+              comingSoon: true,
+            },
+          ]}
+        />
+        <div className="mt-s8 text-center">
+          <Cta variant="secondary" href="/education">
+            View the full education catalog →
+          </Cta>
         </div>
-      </section>
-    </main>
-  );
-}
-
-function SectionIntro({
-  eyebrow,
-  title,
-  body,
-}: {
-  readonly eyebrow: string;
-  readonly title: string;
-  readonly body: string;
-}) {
-  return (
-    <div>
-      <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-4">
-        {eyebrow}
-      </p>
-      <h2 className="font-serif text-4xl md:text-5xl text-[color:var(--color-ink)] leading-tight">
-        {title}
-      </h2>
-      <p className="text-base text-[color:var(--color-ink)]/70 leading-relaxed mt-5 max-w-xl">
-        {body}
-      </p>
-    </div>
-  );
-}
-
-function StepIcon({ name }: { readonly name: string }) {
-  const paths: Record<string, string> = {
-    score: 'M5 17h14M7 13l3 3 7-8',
-    book: 'M5 5h8a4 4 0 0 1 4 4v10H9a4 4 0 0 0-4 4V5z',
-    practice: 'M12 5v14M5 12h14M7 7l10 10',
-    artifact: 'M7 3h7l5 5v13H7V3zM14 3v6h5',
-  };
-
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-      className="h-9 w-9 text-[color:var(--color-terra)]"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d={paths[name] ?? paths.score} />
-    </svg>
+      </Section>
+    </MarketingPage>
   );
 }

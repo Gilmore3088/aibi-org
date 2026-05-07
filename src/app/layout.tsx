@@ -3,14 +3,14 @@ import Script from 'next/script';
 import { headers } from 'next/headers';
 import { Cormorant_Garamond, Cormorant_SC, DM_Sans, DM_Mono } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
-import { Header } from '@/components/Header';
-import { Footer } from '@/components/Footer';
+import { SiteNav, SiteFooter } from '@/components/system';
+import { BRAND } from '@content/copy';
 import './globals.css';
 
 // Routes that render WITHOUT the global Header/Footer chrome — but only
 // when the coming-soon takedown is active. When COMING_SOON is off, every
-// route gets the normal Header/Footer (including /coming-soon if anyone
-// visits it directly). The chromeless treatment exists for the takedown.
+// route gets the normal chrome (including /coming-soon if anyone visits it
+// directly). The chromeless treatment exists for the takedown.
 const COMING_SOON_MODE = process.env.COMING_SOON === 'true';
 const CHROMELESS_PATHS: readonly string[] = ['/coming-soon'];
 // During coming-soon, the assessment is the only deep link the placeholder
@@ -56,41 +56,38 @@ const dmMono = DM_Mono({
   display: 'swap',
 });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://aibankinginstitute.com';
-const SITE_NAME = 'The AI Banking Institute';
-const SITE_TAGLINE = 'Turning Bankers into Builders';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? `https://${BRAND.domains.primary}`;
 const DEFAULT_DESCRIPTION =
-  'The AI Banking Institute helps community banks and credit unions build AI proficiency through assessment, certification, and transformation consulting. Accessible, boundary-safe, capable.';
+  'The AI Banking Institute helps community banks and credit unions build AI proficiency through assessment, certification, and curriculum aligned with SR 11-7, TPRM, ECOA / Reg B, and the AIEOG AI Lexicon.';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: `${SITE_NAME} — AI Proficiency for Community Banks`,
-    template: `%s — ${SITE_NAME}`,
+    default: `${BRAND.name} — ${BRAND.tagline}`,
+    template: `%s — ${BRAND.name}`,
   },
   description: DEFAULT_DESCRIPTION,
   keywords: [
     'AI banking',
     'community bank AI',
     'credit union AI',
-    'banking AI consulting',
     'AI governance SR 11-7',
     'AI readiness assessment',
     'AI proficiency training',
     'community bank AI training',
   ],
-  authors: [{ name: SITE_NAME }],
+  authors: [{ name: BRAND.name }],
   openGraph: {
     type: 'website',
     url: SITE_URL,
-    siteName: SITE_NAME,
-    title: `${SITE_NAME} — ${SITE_TAGLINE}`,
+    siteName: BRAND.name,
+    title: `${BRAND.name} — ${BRAND.tagline}`,
     description: DEFAULT_DESCRIPTION,
     locale: 'en_US',
   },
   twitter: {
     card: 'summary_large_image',
-    title: `${SITE_NAME} — ${SITE_TAGLINE}`,
+    title: `${BRAND.name} — ${BRAND.tagline}`,
     description: DEFAULT_DESCRIPTION,
   },
   robots: {
@@ -101,10 +98,6 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const pathname = (await headers()).get('x-pathname') ?? '/';
-  // /coming-soon ALWAYS renders chromeless — the page provides its own
-  // brand header internally, so showing the global Header on top of it
-  // produces a duplicate logo lockup. The takedown-only paths only go
-  // chromeless when COMING_SOON_MODE is active.
   const chromeless =
     CHROMELESS_PATHS.some(
       (path) => pathname === path || pathname.startsWith(`${path}/`),
@@ -137,11 +130,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             Skip to main content
           </a>
         )}
-        {!chromeless && <Header />}
+        {!chromeless && <SiteNav />}
         <div id="main-content" className="flex-1">
           {children}
         </div>
-        {!chromeless && <Footer />}
+        {!chromeless && <SiteFooter />}
         <Analytics />
       </body>
     </html>
