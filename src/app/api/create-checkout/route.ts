@@ -147,7 +147,7 @@ export async function POST(request: Request) {
       const session = await stripe.checkout.sessions.create({
         mode: 'payment',
         line_items: [{ price: priceId, quantity: 1 }],
-        success_url: `${origin}/courses/aibi-p?enrolled=true`,
+        success_url: `${origin}/courses/aibi-p/purchased`,
         cancel_url: `${origin}/courses/aibi-p/purchase`,
         metadata: {
           product: 'aibi-p',
