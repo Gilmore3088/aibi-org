@@ -228,6 +228,32 @@ export function sendWaitlistConfirmation(
   });
 }
 
+// ── Email 7: Assessment options (waitlist signed up for "assessment") ──────
+
+export interface AssessmentOptionsPayload {
+  readonly email: string;
+  readonly institution?: string;
+}
+
+/**
+ * When a visitor signs up for the "assessment" waitlist, the assessment is
+ * already live — we don't make them wait. This email gives them the free
+ * 12-question version and the paid 48-question In-Depth version side by
+ * side, both with direct links.
+ */
+export function sendAssessmentOptions(
+  payload: AssessmentOptionsPayload,
+): Promise<ResendResult> {
+  return sendTemplate({
+    to: payload.email,
+    templateAlias: 'assessment-options',
+    subject: 'The AI readiness assessment is ready when you are',
+    variables: {
+      INSTITUTION: payload.institution ?? 'your institution',
+    },
+  });
+}
+
 // ── Email 5: Inquiry acknowledgement ────────────────────────────────────────
 
 export interface InquiryAckPayload {

@@ -6,7 +6,7 @@ import {
   logEmailCapture,
 } from '@/lib/email-capture/rate-limit';
 import { ensureAuthUser } from '@/lib/supabase/auth-admin';
-import { sendWaitlistConfirmation } from '@/lib/resend';
+import { sendWaitlistConfirmation, sendAssessmentOptions } from '@/lib/resend';
 
 // Human-readable label per interest slug — used as the email subject and
 // body line. Keep in sync with VALID_INTERESTS below.
@@ -120,12 +120,21 @@ export async function POST(request: Request): Promise<NextResponse> {
   );
 
   // Confirmation email — fire-and-forget, never blocks the response.
-  const interestLabel = INTEREST_LABELS[body.interest] ?? body.interest;
-  sendWaitlistConfirmation({
-    email: body.email.toLowerCase(),
-    interestLabel,
-    institution: institutionName ?? undefined,
-  }).catch((err) => console.warn('[waitlist] resend skip', err));
+  // Special case: interest=assessment redirects to the assessment-options
+  // template because the assessment is already live (no waiting needed).
+  if (body.interest === 'assessment') {
+    sendAssessmentOptions({
+      email: body.email.toLowerCase(),
+      institution: institutionName ?? undefined,
+    }).catch((err) => console.warn('[waitlist] resend skip (assessment-options)', err));
+  } else {
+    const interestLabel = INTEREST_LABELS[body.interest] ?? body.interest;
+    sendWaitlistConfirmation({
+      email: body.email.toLowerCase(),
+      interestLabel,
+      institution: institutionName ?? undefined,
+    }).catch((err) => console.warn('[waitlist] resend skip', err));
+  }
 
   await logEmailCapture(ipHash);
   return NextResponse.json({ ok: true, stored: true });
