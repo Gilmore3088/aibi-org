@@ -13,55 +13,7 @@ import { createServerClient } from '@supabase/ssr';
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-// Coming-soon takedown — controlled by the COMING_SOON env var.
-//   COMING_SOON=true  → rewrite all public routes to /coming-soon
-//   COMING_SOON unset/false → real site is live, no rewrite happens
-//
-// Internal routes (auth, admin, dashboard, API) always bypass the rewrite
-// so we can still log in and operate the site even with takedown active.
-//
-// To LAUNCH (turn the real site back on): set COMING_SOON=false in the
-// Vercel env vars (or delete the variable entirely) and redeploy.
-// No code change required.
-const COMING_SOON_MODE = process.env.COMING_SOON === 'true';
-const COMING_SOON_PATH = '/coming-soon';
-const COMING_SOON_BYPASS_PREFIXES: readonly string[] = [
-  '/api',
-  '/auth',
-  '/admin',
-  '/dashboard',
-  '/coming-soon',
-  // The readiness assessment is the public lead magnet during pre-launch —
-  // the /coming-soon hero links to it as the primary CTA.
-  '/assessment',
-  // Magic-link landing targets — recipients of transactional emails must
-  // be able to reach these routes regardless of coming-soon state. Without
-  // this, every email link bounces visitors to /coming-soon.
-  '/results',
-  '/verify',
-  '/education',
-  '/for-institutions',
-  '/courses',
-];
-
 export async function middleware(request: NextRequest): Promise<NextResponse> {
-  const { pathname } = request.nextUrl;
-
-  // Coming-soon mode: rewrite public routes to /coming-soon.
-  // The browser URL stays the same; the user sees the placeholder.
-  if (COMING_SOON_MODE) {
-    const isBypassed = COMING_SOON_BYPASS_PREFIXES.some(
-      (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
-    );
-    if (!isBypassed) {
-      const rewriteUrl = request.nextUrl.clone();
-      rewriteUrl.pathname = COMING_SOON_PATH;
-      const rewriteResponse = NextResponse.rewrite(rewriteUrl);
-      rewriteResponse.headers.set('x-pathname', COMING_SOON_PATH);
-      return rewriteResponse;
-    }
-  }
-
   // Start with a mutable response so we can write cookies onto it.
   let response = NextResponse.next({
     request: { headers: request.headers },
