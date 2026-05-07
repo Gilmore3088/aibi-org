@@ -282,13 +282,13 @@ function ResultCell({ label, amount, tone }: ResultCellProps) {
   return (
     <div
       className={cn(
-        "p-s5 border-l border-hairline first:border-l-0",
+        "p-s4 lg:p-s5 border-l border-hairline first:border-l-0 min-w-0",
         isPrimary && "bg-parch"
       )}
     >
       <p
         className={cn(
-          "font-mono text-label-sm uppercase tracking-widest mb-s2",
+          "font-mono text-label-sm uppercase tracking-widest mb-s3",
           isPrimary ? "text-terra" : "text-slate"
         )}
       >
@@ -296,10 +296,13 @@ function ResultCell({ label, amount, tone }: ResultCellProps) {
       </p>
       <p
         className={cn(
-          "font-mono tabular-nums leading-none transition-all duration-fast",
-          isPrimary
-            ? "text-display-md md:text-display-lg text-ink"
-            : "text-display-sm md:text-display-md text-ink/70"
+          "font-mono tabular-nums leading-none whitespace-nowrap",
+          // Uniform display-sm across all three cells. Mid-case emphasis
+          // comes from parch wash + terra label, not from a size jump —
+          // a size jump overflowed into adjacent cells at typical 3-col
+          // result-tableau widths.
+          "text-display-xs md:text-display-sm",
+          isPrimary ? "text-ink" : "text-ink/65"
         )}
       >
         {fmtCurrency(amount)}
