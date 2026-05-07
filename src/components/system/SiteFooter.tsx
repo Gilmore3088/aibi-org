@@ -10,7 +10,6 @@
  */
 
 import Link from "next/link";
-import { TrustStrip } from "./TrustStrip";
 import { NewsletterCard } from "./NewsletterCard";
 
 interface LinkGroup {
@@ -59,8 +58,6 @@ export function SiteFooter({ showNewsletter = true }: SiteFooterProps = {}) {
 
   return (
     <footer className="border-t border-hairline mt-s16">
-      <TrustStrip prefix="Curriculum aligned with" />
-
       <div className="bg-parch px-s7 py-s12">
         <div className="max-w-wide mx-auto grid gap-s12 md:grid-cols-[1.4fr_2fr] md:gap-s16">
           <div>

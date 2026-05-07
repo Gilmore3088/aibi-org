@@ -132,19 +132,8 @@ export default function HomePage() {
         />
       </Section>
 
-      {/* §02 — Modeled value: ROI calculator (legacy component, dark frame) */}
-      <Section variant="dark" padding="default">
-        <SectionHeader
-          number="02"
-          label="Modeled value"
-          title="What practitioner capability is worth, by the hour."
-          subtitle="Conservative math. Sourced inputs. Your numbers, not ours."
-          tone="dark"
-        />
-        <div className="mt-s6">
-          <ROICalculator />
-        </div>
-      </Section>
+      {/* §02 — Modeled value: ROI calculator owns its own section frame */}
+      <ROICalculator />
 
       {/* §03 — Industry context: sourced statistics */}
       <Section variant="parch" padding="default">
