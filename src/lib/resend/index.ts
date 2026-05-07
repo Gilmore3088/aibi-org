@@ -24,8 +24,8 @@ export type ResendResult =
 interface SendTemplateInput {
   readonly to: string;
   readonly templateAlias: string;
-  readonly data: Record<string, string | number>;
-  readonly subject?: string;
+  readonly subject: string;
+  readonly variables: Record<string, string | number>;
 }
 
 async function sendTemplate(input: SendTemplateInput): Promise<ResendResult> {
@@ -52,9 +52,11 @@ async function sendTemplate(input: SendTemplateInput): Promise<ResendResult> {
         from: `${fromName} <${fromAddress}>`,
         to: [input.to],
         reply_to: REPLY_TO,
-        template: input.templateAlias,
-        data: input.data,
-        ...(input.subject ? { subject: input.subject } : {}),
+        subject: input.subject,
+        template: {
+          id: input.templateAlias,
+          variables: input.variables,
+        },
       }),
     });
 
@@ -97,7 +99,8 @@ export function sendAssessmentBreakdown(
   return sendTemplate({
     to: payload.email,
     templateAlias: 'assessment-results-breakdown',
-    data: {
+    subject: `Your AI readiness score — ${payload.tierLabel}`,
+    variables: {
       SCORE: payload.score,
       MAX_SCORE: payload.maxScore,
       TIER_LABEL: payload.tierLabel,
@@ -120,11 +123,13 @@ export interface CoursePurchaseIndividualPayload {
 export function sendCoursePurchaseIndividual(
   payload: CoursePurchaseIndividualPayload,
 ): Promise<ResendResult> {
+  const courseName = payload.courseName ?? 'AiBI-Practitioner';
   return sendTemplate({
     to: payload.email,
     templateAlias: 'course-purchase-individual',
-    data: {
-      COURSE_NAME: payload.courseName ?? 'AiBI-Practitioner',
+    subject: `Welcome to the ${courseName} program`,
+    variables: {
+      COURSE_NAME: courseName,
       COURSE_URL: payload.courseUrl ?? 'https://aibankinginstitute.com/courses/aibi-p',
       AMOUNT_PAID: payload.amountPaid,
       RECEIPT_URL: 'https://aibankinginstitute.com/dashboard',
@@ -147,7 +152,8 @@ export function sendCoursePurchaseInstitution(
   return sendTemplate({
     to: payload.email,
     templateAlias: 'course-purchase-institution',
-    data: {
+    subject: `${payload.institutionName} — your AiBI-Practitioner seats are ready`,
+    variables: {
       INSTITUTION_NAME: payload.institutionName,
       SEATS_PURCHASED: payload.seatsPurchased,
       AMOUNT_PAID: payload.amountPaid,
@@ -174,7 +180,8 @@ export function sendCertificateIssued(
   return sendTemplate({
     to: payload.email,
     templateAlias: 'certificate-issued',
-    data: {
+    subject: `Your AiBI-Practitioner certificate is ready, ${payload.holderName}`,
+    variables: {
       HOLDER_NAME: payload.holderName,
       DESIGNATION: payload.designation,
       CERTIFICATE_ID: payload.certificateId,
@@ -198,7 +205,8 @@ export function sendInquiryAck(payload: InquiryAckPayload): Promise<ResendResult
   return sendTemplate({
     to: payload.email,
     templateAlias: 'inquiry-ack',
-    data: {
+    subject: `We received your inquiry — ${payload.track}`,
+    variables: {
       NAME: payload.name,
       INSTITUTION: payload.institution,
       TRACK: payload.track,
