@@ -98,11 +98,19 @@ export interface AssessmentBreakdownEmailPayload {
   readonly dimensionBreakdown?: Record<string, DimensionScoreSerialized>;
   readonly starterArtifactTitle?: string;
   readonly starterArtifactBody?: string;
+  readonly profileId?: string | null;
 }
 
 export function sendAssessmentBreakdown(
   payload: AssessmentBreakdownEmailPayload,
 ): Promise<ResendResult> {
+  // Prefer the owner-bound /results/{id} URL so the recipient lands on
+  // their own results, not a fresh assessment. Falls back to /assessment
+  // only when profile creation failed upstream.
+  const resultsUrl = payload.profileId
+    ? `https://aibankinginstitute.com/results/${payload.profileId}`
+    : 'https://aibankinginstitute.com/assessment';
+
   return sendTemplate({
     to: payload.email,
     templateAlias: 'assessment-results-breakdown',
@@ -113,7 +121,7 @@ export function sendAssessmentBreakdown(
       TIER_LABEL: payload.tierLabel,
       TIER_HEADLINE: payload.tierHeadline,
       TIER_SUMMARY: payload.tierSummary,
-      RESULTS_URL: 'https://aibankinginstitute.com/assessment',
+      RESULTS_URL: resultsUrl,
     },
   });
 }

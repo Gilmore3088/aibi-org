@@ -271,6 +271,7 @@ export async function POST(request: Request) {
       dimensionBreakdown,
       starterArtifactTitle: artifact?.title,
       starterArtifactBody: artifact?.body,
+      profileId,
     }).catch((err) => console.warn('[capture-email] resend skip', err));
   }
 
