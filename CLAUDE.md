@@ -760,6 +760,57 @@ from plans for tiers being held back. Decision drivers + design
 discussion in
 `docs/superpowers/specs/2026-05-05-product-simplification-and-indepth-assessment-design.md`.
 
+**2026-05-06 — End-of-day state after long debug session.**
+Outstanding follow-ups for next session:
+- Rotate `SUPABASE_SERVICE_ROLE_KEY` and mark Sensitive in Vercel
+  (currently flagged by Vercel as plaintext-readable). Steps in
+  /Users/jgmbp/Projects/TheAiBankingInstitute punch list.
+- Clean `+aliasN@gmail.com` test rows from `auth.users`,
+  `user_profiles`, `course_enrollments`. Multiple test users
+  pollute the DB; intentional, will clean once flow is stable.
+- Author 12 ConvertKit emails across 4 tier sequences + create
+  the matching Tags. Only the code-side hooks are wired.
+- End-to-end test the Stripe webhook: real $295 Checkout →
+  payment → webhook → enrollment row + course-purchase email.
+- Decide whether to fully kill `COMING_SOON=true` env var (current
+  bypass list covers /assessment, /results, /verify, /education,
+  /for-institutions, /courses, /dashboard, /admin, /auth, /api).
+- PDF generation route `/api/assessment/pdf/warm` 500s with
+  `libnss3.so missing` on Vercel serverless — pre-existing.
+- Gitignore `.superpowers/brainstorm/` runtime state (got
+  accidentally committed in `f0232a5`).
+
+**2026-05-06 — Email + auth pipeline rebuild.** Started as a Resend
+template wire-up, escalated when /results auth gate kept breaking
+the magic-link round-trip. Final architecture:
+- All transactional email runs through 5 published Resend Templates
+  with sender `hello@aibankinginstitute.com` (domain verified
+  2026-04-18). Helpers in `src/lib/resend/index.ts`.
+- Supabase Auth emails (signup confirm, password reset, magic
+  link, email change) go through Custom SMTP (Resend) with the
+  `aibi-supabase-smtp` full-access key. Sender must be exact-case
+  lowercase `hello@aibankinginstitute.com` — Resend's verified-domain
+  check is case-sensitive.
+- Email templates in Supabase Auth dashboard rewritten to use
+  `{{ .TokenHash }}` and route through `/auth/callback?token_hash=
+  ...&type=...&next=...` (PKCE flow). The default
+  `{{ .ConfirmationURL }}` was rejected by verifyOtp.
+- `/results/[id]` is a bearer-token URL — UUID is the access
+  credential, no auth gate. `loadAssessmentResponse` queries
+  `user_profiles` by `id` directly. This eliminated the
+  magic-link round-trip that was the source of most pain.
+- `EmailGate` auto-skips for logged-in users by reading
+  `supabase.auth.getUser()` on mount and auto-submitting with
+  the session email.
+- `/courses/aibi-p/purchase` shows a clear "already enrolled"
+  state instead of silently redirecting.
+- Stripe env vars `STRIPE_AIBIP_PRICE_ID` ($295) and
+  `STRIPE_AIBIP_INSTITUTION_PRICE_ID` ($199) live in Vercel
+  Production scope.
+- Coming-soon middleware bypasses `/results`, `/verify`,
+  `/education`, `/for-institutions`, `/courses` so transactional
+  email recipients aren't bounced to the placeholder.
+
 **2026-05-06 — Five Resend transactional email templates +
 AiBI-P → AiBI-Practitioner rename.** Authored five Resend Templates
 in the dashboard so non-developers can edit copy without a code
