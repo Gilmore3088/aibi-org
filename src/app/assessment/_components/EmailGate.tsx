@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, type FormEvent } from 'react';
+import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { saveReadinessResult, type DimensionScoreSerialized } from '@/lib/user-data';
+import { createBrowserClient, isSupabaseConfigured } from '@/lib/supabase/client';
 
 interface EmailGateProps {
   readonly score: number;
@@ -42,14 +43,33 @@ export function EmailGate({
   const [status, setStatus] = useState<Status>('idle');
   const [message, setMessage] = useState<string | null>(null);
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const trimmedEmail = email.trim();
-    if (!EMAIL_RE.test(trimmedEmail)) {
-      setStatus('error');
-      setMessage('Please enter a valid work email.');
-      return;
-    }
+  // Auto-skip the gate if the visitor is already signed in. We re-use their
+  // auth-session email instead of asking them for it again — the most common
+  // UX complaint from logged-in users completing the assessment.
+  const autoSubmittedRef = useRef(false);
+  useEffect(() => {
+    if (autoSubmittedRef.current) return;
+    if (!isSupabaseConfigured()) return;
+    const supabase = createBrowserClient();
+    let cancelled = false;
+    void (async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (cancelled || autoSubmittedRef.current) return;
+      const sessionEmail = user?.email;
+      if (!sessionEmail || !EMAIL_RE.test(sessionEmail)) return;
+      autoSubmittedRef.current = true;
+      setEmail(sessionEmail);
+      void submit(sessionEmail);
+    })();
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  async function submit(emailToUse: string): Promise<void> {
     setStatus('submitting');
     setMessage(null);
     try {
@@ -57,7 +77,7 @@ export function EmailGate({
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          email: trimmedEmail,
+          email: emailToUse,
           score,
           tier: tierId,
           tierLabel,
@@ -78,7 +98,7 @@ export function EmailGate({
       if (!res.ok) {
         throw new Error(data.error ?? 'Something went wrong. Please try again.');
       }
-      saveReadinessResult(trimmedEmail, {
+      saveReadinessResult(emailToUse, {
         score,
         tierId,
         tierLabel,
@@ -96,7 +116,7 @@ export function EmailGate({
           props: { tier: tierId, opt_in: marketingOptIn },
         });
       }
-      onCaptured(trimmedEmail, {
+      onCaptured(emailToUse, {
         firstName: firstName.trim() || undefined,
         institutionName: institutionName.trim() || undefined,
         profileId: data.profileId ?? null,
@@ -105,6 +125,17 @@ export function EmailGate({
       setStatus('error');
       setMessage(err instanceof Error ? err.message : 'Unexpected error.');
     }
+  }
+
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const trimmedEmail = email.trim();
+    if (!EMAIL_RE.test(trimmedEmail)) {
+      setStatus('error');
+      setMessage('Please enter a valid work email.');
+      return;
+    }
+    await submit(trimmedEmail);
   }
 
   return (
