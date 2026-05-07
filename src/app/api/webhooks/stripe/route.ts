@@ -17,6 +17,7 @@ import { provisionEnrollment } from '@/lib/stripe/provision-enrollment';
 import {
   sendCoursePurchaseIndividual,
   sendCoursePurchaseInstitution,
+  sendIndepthAssessmentPurchase,
 } from '@/lib/resend';
 
 function formatAmount(amountCents: number | null | undefined, currency: string | null | undefined): string {
@@ -84,11 +85,22 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     const email = session.customer_details?.email ?? session.metadata?.user_email ?? null;
     const amountPaid = formatAmount(session.amount_total, session.currency);
 
+    const product = session.metadata?.product;
+
     if (email && result.type === 'individual') {
-      sendCoursePurchaseIndividual({
-        email,
-        amountPaid,
-      }).catch((err) => console.warn('[webhook] resend individual skip', err));
+      if (product === 'in-depth-assessment') {
+        sendIndepthAssessmentPurchase({
+          email,
+          amountPaid,
+        }).catch((err) =>
+          console.warn('[webhook] resend in-depth-assessment skip', err),
+        );
+      } else {
+        sendCoursePurchaseIndividual({
+          email,
+          amountPaid,
+        }).catch((err) => console.warn('[webhook] resend individual skip', err));
+      }
     } else if (email && result.type === 'institution') {
       const institutionName = session.metadata?.institution_name ?? 'Your institution';
       const seatsPurchased = session.metadata?.quantity

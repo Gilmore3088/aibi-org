@@ -151,6 +151,37 @@ export function sendCoursePurchaseIndividual(
   });
 }
 
+// ── Email 2.5: In-Depth Assessment purchase ────────────────────────────────
+
+export interface IndepthAssessmentPurchasePayload {
+  readonly email: string;
+  readonly amountPaid: string;
+}
+
+/**
+ * Sent after a successful $99 In-Depth Assessment purchase. Distinct from
+ * `course-purchase-individual` because the buyer is signing up for a
+ * 48-question diagnostic, not a 12-module course.
+ *
+ * Template alias must be published in the Resend dashboard before this
+ * helper resolves to an actual email send. Until the template exists,
+ * this helper logs the skip and returns silently — the purchase still
+ * succeeds.
+ */
+export function sendIndepthAssessmentPurchase(
+  payload: IndepthAssessmentPurchasePayload,
+): Promise<ResendResult> {
+  return sendTemplate({
+    to: payload.email,
+    templateAlias: 'in-depth-assessment-purchase',
+    subject: 'Your In-Depth AI Readiness Assessment is unlocked',
+    variables: {
+      AMOUNT_PAID: payload.amountPaid,
+      ASSESSMENT_URL: 'https://aibankinginstitute.com/assessment/in-depth',
+    },
+  });
+}
+
 // ── Email 3: Course purchase — institution bundle ───────────────────────────
 
 export interface CoursePurchaseInstitutionPayload {

@@ -11,6 +11,7 @@
 
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { PurchaseButton } from './_components/PurchaseButton';
 
 export const metadata: Metadata = {
   title: 'In-Depth AI Readiness Assessment | The AI Banking Institute',
@@ -26,10 +27,34 @@ const HIGHLIGHTS = [
   'One free retake within 12 months',
 ] as const;
 
-export default function InDepthAssessmentPage() {
+interface SearchParams {
+  readonly purchased?: string;
+}
+
+export default function InDepthAssessmentPage({
+  searchParams,
+}: {
+  readonly searchParams?: SearchParams;
+}) {
+  const purchased = searchParams?.purchased === 'true';
   return (
     <main className="px-6 py-12 md:py-20">
       <div className="mx-auto max-w-3xl">
+        {purchased && (
+          <div
+            role="status"
+            className="mb-8 border border-[color:var(--color-terra)]/30 bg-[color:var(--color-terra-pale)]/40 rounded-[3px] p-5"
+          >
+            <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-2">
+              Purchase confirmed
+            </p>
+            <p className="text-sm text-[color:var(--color-ink)]/85 leading-relaxed">
+              Thanks for your order. A receipt is on its way. The 48-question
+              In-Depth Assessment opens for you over email shortly — keep an
+              eye on the inbox you used at checkout.
+            </p>
+          </div>
+        )}
         <nav aria-label="Breadcrumb" className="mb-6">
           <Link
             href="/education"
@@ -98,23 +123,28 @@ export default function InDepthAssessmentPage() {
 
         <div className="border-t border-[color:var(--color-ink)]/10 pt-8">
           <p className="text-sm text-[color:var(--color-ink)]/75 mb-5">
-            The In-Depth Assessment launches shortly. Tell us you&rsquo;re
-            interested and we&rsquo;ll email you the moment it opens.
+            Pay once, take the 48-question diagnostic, receive your 20-page
+            personalized report. One free retake within 12 months.
           </p>
-          <div className="flex flex-wrap gap-4">
-            <Link
-              href="/coming-soon?interest=assessment"
-              className="inline-block bg-[color:var(--color-terra)] text-[color:var(--color-linen)] px-8 py-3 rounded-sm font-mono text-[10px] uppercase tracking-[0.15em] hover:bg-[color:var(--color-terra-light)] transition-colors"
-            >
-              Get notified
-            </Link>
+          <div className="flex flex-wrap gap-4 items-start">
+            <PurchaseButton />
             <Link
               href="/assessment"
               className="inline-block border border-[color:var(--color-ink)]/20 text-[color:var(--color-ink)] px-8 py-3 rounded-sm font-mono text-[10px] uppercase tracking-[0.15em] hover:bg-[color:var(--color-parch)] transition-colors"
             >
-              Take the free assessment now
+              Take the free 12-question version
             </Link>
           </div>
+          <p className="text-xs text-[color:var(--color-ink)]/55 mt-5">
+            Bulk orders for 10+ seats at $79/seat are coming soon — email{' '}
+            <a
+              href="mailto:hello@aibankinginstitute.com"
+              className="underline hover:text-[color:var(--color-terra)]"
+            >
+              hello@aibankinginstitute.com
+            </a>{' '}
+            for institutional pricing today.
+          </p>
         </div>
       </div>
     </main>
