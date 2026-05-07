@@ -161,44 +161,98 @@ export default function DashboardPage() {
             Next Action
           </p>
           <div className="grid lg:grid-cols-[1.15fr_0.85fr] gap-6 items-stretch">
-            <article className="border border-[color:var(--color-ink)]/10 rounded-[3px] p-6 md:p-8">
-              <p className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-slate)]">
-                Current module
-              </p>
-              <h1 className="font-serif text-3xl md:text-5xl text-[color:var(--color-ink)] leading-tight mt-3">
-                Module {currentModule.number}: {currentModule.title}
-              </h1>
-              <div className="mt-6">
-                <div className="flex items-baseline justify-between gap-4">
-                  <p className="text-sm text-[color:var(--color-slate)]">
-                    Course progress
-                  </p>
-                  <p className="font-mono text-xl text-[color:var(--color-terra)] tabular-nums">
-                    {progressPct}%
-                  </p>
+            {dashboard?.enrollment ? (
+              <article className="border border-[color:var(--color-ink)]/10 rounded-[3px] p-6 md:p-8">
+                <p className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-slate)]">
+                  Current module
+                </p>
+                <h1 className="font-serif text-3xl md:text-5xl text-[color:var(--color-ink)] leading-tight mt-3">
+                  Module {currentModule.number}: {currentModule.title}
+                </h1>
+                <div className="mt-6">
+                  <div className="flex items-baseline justify-between gap-4">
+                    <p className="text-sm text-[color:var(--color-slate)]">
+                      Course progress
+                    </p>
+                    <p className="font-mono text-xl text-[color:var(--color-terra)] tabular-nums">
+                      {progressPct}%
+                    </p>
+                  </div>
+                  <div className="mt-3 h-2 bg-[color:var(--color-ink)]/10 rounded-[1px] overflow-hidden">
+                    <div
+                      className="h-full bg-[color:var(--color-terra)]"
+                      style={{ width: `${progressPct}%` }}
+                    />
+                  </div>
                 </div>
-                <div className="mt-3 h-2 bg-[color:var(--color-ink)]/10 rounded-[1px] overflow-hidden">
-                  <div
-                    className="h-full bg-[color:var(--color-terra)]"
-                    style={{ width: `${progressPct}%` }}
-                  />
+                <div className="mt-6 flex flex-col sm:flex-row gap-3">
+                  <Link
+                    href={`/courses/aibi-p/${currentModule.number}`}
+                    className="text-center px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
+                  >
+                    Continue Lesson
+                  </Link>
+                  <Link
+                    href={`/practice/${currentRep.id}`}
+                    className="text-center px-6 py-3 border border-[color:var(--color-ink)]/25 text-[color:var(--color-ink)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)] transition-colors"
+                  >
+                    Practice for 5 Minutes
+                  </Link>
                 </div>
-              </div>
-              <div className="mt-6 flex flex-col sm:flex-row gap-3">
-                <Link
-                  href={`/courses/aibi-p/${currentModule.number}`}
-                  className="text-center px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
-                >
-                  Continue Lesson
-                </Link>
-                <Link
-                  href={`/practice/${currentRep.id}`}
-                  className="text-center px-6 py-3 border border-[color:var(--color-ink)]/25 text-[color:var(--color-ink)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)] transition-colors"
-                >
-                  Practice for 5 Minutes
-                </Link>
-              </div>
-            </article>
+              </article>
+            ) : user.readiness ? (
+              <article className="border border-[color:var(--color-ink)]/10 rounded-[3px] p-6 md:p-8">
+                <p className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-slate)]">
+                  Your next step
+                </p>
+                <h1 className="font-serif text-3xl md:text-5xl text-[color:var(--color-ink)] leading-tight mt-3">
+                  Enroll in AiBI-Practitioner.
+                </h1>
+                {tier && (
+                  <p className="mt-4 text-sm text-[color:var(--color-ink)]/75 leading-relaxed">
+                    Your readiness tier is <strong className="text-[color:var(--color-terra)]">{tier.label}</strong>.
+                    The Practitioner program turns the diagnostic into hands-on
+                    skills your team can apply this week.
+                  </p>
+                )}
+                <div className="mt-6 flex flex-col sm:flex-row gap-3">
+                  <Link
+                    href="/courses/aibi-p/purchase"
+                    className="text-center px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
+                  >
+                    Enroll — $295
+                  </Link>
+                  <Link
+                    href="/courses/aibi-p"
+                    className="text-center px-6 py-3 border border-[color:var(--color-ink)]/25 text-[color:var(--color-ink)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)] transition-colors"
+                  >
+                    Preview the program
+                  </Link>
+                </div>
+              </article>
+            ) : (
+              <article className="border border-[color:var(--color-ink)]/10 rounded-[3px] p-6 md:p-8">
+                <p className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-slate)]">
+                  Start here
+                </p>
+                <h1 className="font-serif text-3xl md:text-5xl text-[color:var(--color-ink)] leading-tight mt-3">
+                  Take the AI readiness assessment.
+                </h1>
+                <p className="mt-4 text-sm text-[color:var(--color-ink)]/75 leading-relaxed">
+                  Twelve questions, three minutes. You&apos;ll get a tier, a
+                  dimension breakdown, and a starter artifact you can take
+                  to your team this week.
+                </p>
+                <div className="mt-6">
+                  <Link
+                    href="/assessment/start"
+                    className="inline-block px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
+                  >
+                    Begin the assessment
+                  </Link>
+                </div>
+              </article>
+            )}
 
             <article className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-6 md:p-8">
               <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-4">

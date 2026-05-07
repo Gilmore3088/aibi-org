@@ -6,8 +6,11 @@ import { MobileNav } from './MobileNav';
 // Nav-link "Assessment" was removed: it duplicated the right-rail "Take Assessment"
 // pill button (both route to /assessment/start). The pill is the primary CTA;
 // the nav links are secondary destinations only.
+//
+// 2026-05-07: "For Learners" → "Education" relabel matches the IA from
+// CLAUDE.md 2026-04-17 (courses + certifications merged into /education).
 const NAV_LINKS = [
-  { href: '/courses/aibi-p', label: 'For Learners' },
+  { href: '/education', label: 'Education' },
   { href: '/for-institutions', label: 'For Institutions' },
   { href: '/resources', label: 'Resources' },
 ] as const;

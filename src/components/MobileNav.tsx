@@ -11,7 +11,7 @@ import { usePathname } from 'next/navigation';
 
 const NAV_LINKS = [
   { href: '/assessment/start', label: 'Assessment' },
-  { href: '/courses/aibi-p', label: 'For Learners' },
+  { href: '/education', label: 'Education' },
   { href: '/for-institutions', label: 'For Institutions' },
   { href: '/resources', label: 'Resources' },
   { href: '/dashboard', label: 'Dashboard' },
