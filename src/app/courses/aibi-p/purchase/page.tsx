@@ -4,7 +4,6 @@
 
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
 import { getEnrollment } from '@/app/courses/aibi-p/_lib/getEnrollment';
@@ -55,13 +54,40 @@ async function getUserEmail(): Promise<string | null> {
 }
 
 export default async function PurchasePage() {
-  // Already enrolled — send directly to course
   const enrollment = await getEnrollment();
-  if (enrollment) {
-    redirect('/courses/aibi-p');
-  }
-
   const userEmail = await getUserEmail();
+
+  // Already enrolled — show clear state, not a silent redirect.
+  if (enrollment) {
+    return (
+      <div className="mx-auto max-w-3xl px-8 lg:px-16 py-16">
+        <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
+          Already enrolled
+        </p>
+        <h1 className="font-serif text-3xl md:text-4xl font-bold leading-tight text-[color:var(--color-ink)] mb-4">
+          You&rsquo;re in the AiBI-Practitioner program.
+        </h1>
+        <p className="text-base text-[color:var(--color-ink)]/75 mb-8 max-w-2xl">
+          Your enrollment is active and your access is permanent. Pick up where
+          you left off, or jump back to the course overview.
+        </p>
+        <div className="flex flex-wrap gap-4">
+          <Link
+            href="/courses/aibi-p"
+            className="inline-block bg-[color:var(--color-terra)] text-[color:var(--color-linen)] px-8 py-3 rounded-sm font-mono text-[10px] uppercase tracking-[0.15em] hover:bg-[color:var(--color-terra-light)] transition-colors"
+          >
+            Continue the course
+          </Link>
+          <Link
+            href="/dashboard"
+            className="inline-block border border-[color:var(--color-ink)]/20 text-[color:var(--color-ink)] px-8 py-3 rounded-sm font-mono text-[10px] uppercase tracking-[0.15em] hover:bg-[color:var(--color-parch)] transition-colors"
+          >
+            Go to dashboard
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="mx-auto px-8 lg:px-16 py-8">
