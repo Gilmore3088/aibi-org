@@ -255,7 +255,7 @@ export default async function ComingSoonPage({ searchParams }: ComingSoonPagePro
           <div className="grid gap-12 md:grid-cols-12">
             <div className="md:col-span-6">
               <p className="font-serif-sc text-[11px] tracking-[0.28em] uppercase text-[color:var(--color-terra)]">
-                Save your spot
+                Get notified
               </p>
               <h2 className="mt-3 font-serif text-[28px] md:text-[36px] leading-[1.1] tracking-[-0.01em]">
                 We&apos;ll email when your track opens.

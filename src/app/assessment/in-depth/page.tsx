@@ -98,15 +98,15 @@ export default function InDepthAssessmentPage() {
 
         <div className="border-t border-[color:var(--color-ink)]/10 pt-8">
           <p className="text-sm text-[color:var(--color-ink)]/75 mb-5">
-            The In-Depth Assessment launches shortly. Save your spot and
-            we&rsquo;ll email you the moment it opens.
+            The In-Depth Assessment launches shortly. Tell us you&rsquo;re
+            interested and we&rsquo;ll email you the moment it opens.
           </p>
           <div className="flex flex-wrap gap-4">
             <Link
               href="/coming-soon?interest=assessment"
               className="inline-block bg-[color:var(--color-terra)] text-[color:var(--color-linen)] px-8 py-3 rounded-sm font-mono text-[10px] uppercase tracking-[0.15em] hover:bg-[color:var(--color-terra-light)] transition-colors"
             >
-              Notify me when it opens
+              Get notified
             </Link>
             <Link
               href="/assessment"
