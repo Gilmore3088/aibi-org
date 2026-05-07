@@ -6,6 +6,8 @@ import { NextResponse } from 'next/server';
 import { scanForPII } from '@/lib/sandbox/pii-scanner';
 import { scanForInjection } from '@/lib/sandbox/injection-filter';
 import { streamClaude } from '@/lib/sandbox/providers/claude';
+import { streamOpenAI } from '@/lib/sandbox/providers/openai';
+import { streamGemini } from '@/lib/sandbox/providers/gemini';
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -13,7 +15,7 @@ import { streamClaude } from '@/lib/sandbox/providers/claude';
 
 const MAX_MESSAGE_LENGTH = 4000;
 const MAX_MESSAGES = 20;
-const VALID_PROVIDERS = ['claude'] as const;
+const VALID_PROVIDERS = ['claude', 'openai', 'gemini'] as const;
 const VALID_PRODUCTS = ['aibi-p', 'aibi-s', 'aibi-l'] as const;
 
 type Provider = (typeof VALID_PROVIDERS)[number];
@@ -52,6 +54,21 @@ function isValidProduct(v: unknown): v is Product {
   return typeof v === 'string' && VALID_PRODUCTS.includes(v as Product);
 }
 
+function dispatchProvider(
+  provider: Provider,
+  systemPrompt: string,
+  messages: ChatMessage[],
+): Promise<ReadableStream<Uint8Array>> {
+  switch (provider) {
+    case 'claude':
+      return streamClaude(systemPrompt, messages);
+    case 'openai':
+      return streamOpenAI(systemPrompt, messages);
+    case 'gemini':
+      return streamGemini(systemPrompt, messages);
+  }
+}
+
 function isValidMessages(v: unknown): v is ChatMessage[] {
   if (!Array.isArray(v) || v.length === 0) return false;
   return v.every((m: unknown) => {
@@ -87,10 +104,10 @@ export async function POST(request: Request) {
     );
   }
 
-  // 2b. Provider check (Phase 1: Claude only)
+  // 2b. Provider check
   if (!isValidProvider(provider)) {
     return NextResponse.json(
-      { error: "Invalid provider. Phase 1 supports 'claude' only." },
+      { error: 'Invalid provider. Supported: claude, openai, gemini.' },
       { status: 400 },
     );
   }
@@ -175,7 +192,11 @@ export async function POST(request: Request) {
 
   // 9. Call provider
   try {
-    const stream = await streamClaude(systemPrompt as string, messages);
+    const stream = await dispatchProvider(
+      provider,
+      systemPrompt as string,
+      messages,
+    );
     return new Response(stream, {
       headers: {
         'Content-Type': 'text/plain; charset=utf-8',
