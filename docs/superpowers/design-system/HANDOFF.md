@@ -1,8 +1,8 @@
 # HANDOFF — Read this first
 
 **For:** the next session that picks up `design-2.0`.
-**Last commit:** `e456005` — *aggressive text cuts; visual replacements (Wave 1)*
-**Last context:** ~65% used; we paused mid-direction-shift after the user said "WAY TOO MUCH TEXT" and chose Path 3 (typographic + data-viz richness, no stock photos).
+**Last commit:** `dc580c8` — *UI-REVIEW.md from /gsd-ui-review audit (19/24)*
+**Last context:** end of 2026-05-09 session. User signed off on the homepage simplification, /assessment/start rebuild, and footer 4-column cleanup. **Wave 2 of text-cuts is effectively complete** — the public surfaces (`/`, `/about`, `/education`, `/for-institutions`, `/security` partial, `/assessment/start`) all read on the new aesthetic. Branch is **46 commits ahead of main**, local-only.
 
 ---
 
@@ -20,35 +20,85 @@ Dev:       cd ~/Projects/aibi-design-2.0 && npm run dev → localhost:3000
 
 ---
 
-## What just happened (last 5 commits)
+## What just happened (2026-05-09 session — 26 commits)
 
-| Commit | Summary |
-|---|---|
-| `e456005` | Wave 1 of text-cuts pass: new `TransformationFlow`, `ToolGrid`, `SkillGrid` primitives. Replaced the homepage `<TransformationArc>` paragraph stack and `/for-institutions` tools/skills paragraph lists. Cut cert-ladder blurbs ~70%. |
-| `bbbd429` | `STATUS.md` snapshot doc. |
-| `bff985f` | Fixed ROI dossier result-cell number overflow (mid case at display-lg overflowed into adjacent cells). Uniform display-sm sizing now. |
-| `2413283` | Editorial `QuestionCard` rebuild for `/assessment`. |
-| `52aa103` | Hero "facts plate" aside + new `ROIDossier` replacing the homepage `ROICalculator`. |
+The session pivoted from "Wave 2 visual primitives" to a more focused
+"simple and powerful landing pages" direction once the user saw the
+text-heavy state. Net delta: dramatic compositional simplification of
+every public page, ~600 lines net code removed, no new tokens.
+
+| Commit | Surface | Summary |
+|---|---|---|
+| `dc580c8` | docs | UI-REVIEW.md (19/24); BLOCKER on amber-light pillar discipline violation |
+| `00cb173` | footer | Newsletter becomes its own column — 4-up layout |
+| `247e21b` | footer | Mission cut, broken Programs links dropped, legal links to bottom |
+| `ba15698` | /assessment/start | Body paragraph → em-dash deliverables list |
+| `3e6a35a` | /assessment/start | Audience eyebrows: 'Best for individuals' / 'Best for teams or groups' |
+| `f861bcd` | /assessment/start | Hero + two-tile split rebuild |
+| `6b7c7c6` | /  ROIDossier | Slider label+value consolidated, larger type, dynamic CTA pinned to result.low |
+| `ec62a26` | /  ROIDossier | Editorial sidebar dropped (-95 lines) |
+| `f2bdff2` | / | Dark band + closing hero dropped; ROIDossier remounted |
+| `bec5249` | / | Simplified composition: hero + 2-tile + dark band + closing |
+| `b4251c8` | InteractiveSkillsPreview | Demos rewritten to SELL automation (5 capabilities) |
+| `deff8d1` | InteractiveSkillsPreview | Vertical 1×1 layout restored |
+| `66b8b2f` | / and /education | InteractiveSkillsPreview rebuilt around Tools/Prompts/Skills/Agents/More |
+| `f5598ee` | cert ladder | Blurb sentences dropped from every rung |
+| `f3fcc0f` | /education | Hero+payload merge — single band, not two |
+| `344070c` | /education | Dual hero consolidated into one assessment-led entry |
+| `2c23c15` | ToolGrid/SkillGrid + /education | Unaudited module footnotes dropped; 'free' surfaced on tile |
+| `5218ed5` | /for-institutions | Custom SVG glyphs on the 4 value-prop cards |
+| `0955a33` | / and /for-institutions | Magazine affectations dropped (Diagnostic, Marginalia, etc.) |
+| `c1037eb` | SectionHeader | § pilcrow dropped |
+| `8f06245` | /education | Two-assessment catalog + In-Depth secondary CTA |
+| `77975d6` | /about | Hero rewrite + per-principle SVG glyphs |
+| `35dc2cc` | /about | 8,400 stat monument + card glyphs |
+| `25156c2` | /about | Founder narrative cut to monument + 3-card distillation |
 
 ---
 
 ## Active direction (the one that matters)
 
-The user pivoted yesterday from "editorial-institutional research-publication" to **"Raymond James + Monzo level visual richness, way less text."** Three options were on the table; user picked **Path 3 — typographic + data-viz richness, no stock photos**. Constraints from CLAUDE.md still apply: no stock photos, no SaaS gradients, no AI-powered badges.
+Direction shifted again on 2026-05-09 from "Wave 2 visual primitives" to
+**"simple and powerful landing pages, modeled on restraint."** User
+referenced clean editorial mocks (gold/navy aesthetic) but explicitly
+clarified: composition + restraint, not palette. Existing terra/parch/ink
+tokens stay.
 
-**Wave 1 done** (commit e456005): homepage transformation arc, /for-institutions tools + skills, cert-ladder blurbs.
+The pattern that emerged on the homepage and now propagates:
+  - Hero: punctuated serif headline with one italic-terra accent word
+  - Two-tile split (linen + parch halves, hairline center divider)
+  - Dynamic / sourced / interactive payload
+  - No closing dark band on most pages
 
-**Wave 2 — pick up here:**
+Pages on the new aesthetic:
+  ✓ /                   hero + two-tile + ROIDossier (savings calc)
+  ✓ /about              hero + monument + 3 cards + 6 principles glyphs
+  ✓ /education          consolidated hero+payload + free classes + ladder
+  ✓ /for-institutions   hero + value-prop glyphs + tools/skills/tiers
+  ✓ /assessment/start   hero + two-tile (Free / In-Depth) + trust strip
+  ✓ /security           Pillar B cobalt hero (untouched today)
+  ✓ Footer              4-column layout, newsletter as own column
 
-1. **`/about`** — still has the long founder narrative paragraph stack ("There is a banker somewhere right now…" → ~6 paragraphs). Keep the headline. Cut the body 50%+. Add a typographic monument + cards.
-2. **`/education`** — cert ladder rungs still have body paragraphs. Same cuts as homepage already shipped.
-3. **`/security`** — six-chapter grid still text-heavy. Convert to icon/typography tile grid.
-4. **Homepage product-preview block** — add a "What you'll see" section with SVG mockups of the assessment Q + score ring + certificate. The visual showcase of what the institution gets. New component: `src/components/system/ProductPreview.tsx`.
-5. **Wave 2 visual primitives to build:**
-   - `<PillarWheel>` — 4-segment circle showing Awareness/Understanding/Creation/Application. Used on homepage and program pages.
-   - `<DimensionalSpider>` — radar chart for the 8 readiness dimensions. Used on results page.
-   - `<CertificateMockup>` — SVG-rendered certificate showcase.
-   - `<MonumentNumber>` — full-bleed oversized statistic block (e.g. `12 modules`, `$0 platform cost`).
+**Pick up here next session:**
+
+1. **Top BLOCKER from /gsd-ui-review audit (UI-REVIEW.md): `text-amber-light`
+   used as generic dark-band accent.** Violates pillar discipline (amber =
+   Pillar C only). 8 occurrences across MarketingPage.tsx:111,
+   ProgramPage.tsx:202, ResultsPage.tsx:202, and four pages. Either
+   remove from templates or introduce a new neutral dark-accent token.
+2. **`/education` paid pill `bg-amber-light text-ink`** — same violation,
+   needs the editorial-pill treatment that the FREE pill already uses.
+3. **`/for-institutions` further refinement** — user just asked about
+   updating it on session-end. Likely apply the same cuts: tighter hero,
+   trim the engagement-tier 'three ways to enroll' section, simplify the
+   tools/skills sections.
+4. **`/assessment/in-depth` route** — exists on main but not on
+   design-2.0. Wave C work. Migrating + design-system rebuild needed
+   before merge so /education and /assessment/start tile links resolve.
+5. **Wave D LMS tree migration** — `/courses/aibi-p` → `/education/practitioner`,
+   ~14 sub-routes. Permanent redirects already in `next.config.mjs`;
+   pages not yet moved.
+6. **Wave E essay MDX conversions** — 6 essays still on `/resources/<slug>`.
 
 **After Wave 2 visuals, return to Phase 07 migration:**
 - Wave C finish: migrate `ResultsViewV2` (602 LOC) and `EmailGate` (376 LOC) to design-system templates.
