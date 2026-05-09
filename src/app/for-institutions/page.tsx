@@ -56,27 +56,73 @@ export default function ForInstitutionsPage() {
             label: "Practitioner output",
             value: "3 reviewed artifacts / banker",
             desc: "Real workflows your examiners can see, your peers can review, your bank can ship.",
+            glyph: (
+              <svg viewBox="0 0 36 36" aria-hidden="true" stroke="currentColor" strokeWidth="1.25" fill="none" className="w-9 h-9">
+                <rect x="4" y="14" width="20" height="14" />
+                <rect x="8" y="10" width="20" height="14" />
+                <rect x="12" y="6" width="20" height="14" />
+                <path d="M16 13 L19 16 L26 9" strokeWidth="1.75" strokeLinecap="square" />
+              </svg>
+            ),
           },
           {
             label: "Readiness baseline",
             value: "Institutional diagnostic",
             desc: "8 dimensions, regulator-aligned, run before and after the engagement.",
+            glyph: (
+              <svg viewBox="0 0 36 36" aria-hidden="true" className="w-9 h-9">
+                <g stroke="currentColor" strokeWidth="0.75" opacity="0.55">
+                  <line x1="18" y1="18" x2="18" y2="4" />
+                  <line x1="18" y1="18" x2="28" y2="8" />
+                  <line x1="18" y1="18" x2="32" y2="18" />
+                  <line x1="18" y1="18" x2="28" y2="28" />
+                  <line x1="18" y1="18" x2="18" y2="32" />
+                  <line x1="18" y1="18" x2="8" y2="28" />
+                  <line x1="18" y1="18" x2="4" y2="18" />
+                  <line x1="18" y1="18" x2="8" y2="8" />
+                </g>
+                <polygon
+                  points="18,4 28,8 32,18 28,28 18,32 8,28 4,18 8,8"
+                  stroke="currentColor"
+                  strokeWidth="1.25"
+                  fill="none"
+                />
+                <circle cx="18" cy="18" r="1.75" fill="currentColor" />
+              </svg>
+            ),
           },
           {
             label: "Governance posture",
             value: "Inventory + policy stack",
             desc: "The artifact examiners ask for, drafted by the people who will maintain it.",
+            glyph: (
+              <svg viewBox="0 0 36 36" aria-hidden="true" stroke="currentColor" strokeWidth="1.25" fill="none" className="w-9 h-9">
+                <rect x="5" y="22" width="26" height="7" />
+                <rect x="5" y="14" width="26" height="7" />
+                <rect x="5" y="6" width="26" height="7" />
+                <rect x="8" y="8.5" width="3" height="2" fill="currentColor" stroke="none" />
+                <rect x="8" y="16.5" width="3" height="2" fill="currentColor" stroke="none" />
+                <rect x="8" y="24.5" width="3" height="2" fill="currentColor" stroke="none" />
+              </svg>
+            ),
           },
           {
             label: "Cost discipline",
             value: "$0 platform cost",
             desc: "No software seats, no vendor lock-in. The Institute is the engagement, not a SaaS bill.",
+            glyph: (
+              <svg viewBox="0 0 36 36" aria-hidden="true" stroke="currentColor" strokeWidth="1.5" fill="none" className="w-9 h-9">
+                <circle cx="18" cy="18" r="13" />
+                <line x1="9" y1="27" x2="27" y2="9" strokeLinecap="square" />
+              </svg>
+            ),
           },
         ].map((card) => (
           <div
             key={card.label}
             className="p-s6 border-l border-hairline first:border-l-0 sm:[&:nth-child(3)]:border-l-0 sm:[&:nth-child(3)]:border-t lg:[&:nth-child(3)]:border-t-0 lg:[&:nth-child(3)]:border-l"
           >
+            <span className="text-terra block mb-s4">{card.glyph}</span>
             <p className="font-serif-sc text-label-sm uppercase tracking-widest text-slate mb-s2">
               {card.label}
             </p>
