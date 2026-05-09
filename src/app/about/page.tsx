@@ -44,13 +44,31 @@ export default function AboutPage() {
     >
       {/* Mission monument + three-card distillation */}
       <Section variant="parchDark" padding="default">
-        <div className="max-w-narrow mx-auto">
-          <p className="font-serif italic text-display-lg leading-[1.05] text-terra">
+        <div className="grid md:grid-cols-[1fr_auto] gap-s10 items-center">
+          <p className="font-serif italic text-display-lg leading-[1.02] text-terra max-w-narrow">
             For the institutions that anchor towns.
           </p>
+          {/* Stat monument — sourced */}
+          <div className="md:text-right border-l md:border-l border-hairline md:pl-s10">
+            <p className="font-mono text-[clamp(4rem,12vw,9rem)] leading-none tabular-nums text-ink tracking-tight">
+              8,400
+            </p>
+            <p className="font-serif-sc text-label-md uppercase tracking-widest text-ink/60 mt-s3">
+              Community banks &amp; credit unions
+            </p>
+            <p className="font-mono text-mono-xs uppercase tracking-wider text-ink/45 mt-s1">
+              FDIC + NCUA · 2025
+            </p>
+          </div>
         </div>
+
         <div className="grid md:grid-cols-3 gap-px bg-hairline border-y border-strong mt-s10">
           <div className="bg-parch p-s6">
+            {/* Glyph — single tall column = the few towers */}
+            <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true" className="text-terra mb-s4">
+              <rect x="18" y="4" width="4" height="32" fill="currentColor" />
+              <line x1="4" y1="36" x2="36" y2="36" stroke="currentColor" strokeWidth="1" />
+            </svg>
             <p className="font-serif-sc text-label-md uppercase tracking-widest text-terra mb-s3">
               Not for
             </p>
@@ -61,7 +79,18 @@ export default function AboutPage() {
               They have the budgets, the teams, the consultants.
             </p>
           </div>
+
           <div className="bg-parch p-s6">
+            {/* Glyph — row of varied bars = the many community institutions */}
+            <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true" className="text-terra mb-s4">
+              {[
+                [4, 20], [9, 14], [14, 22], [19, 12],
+                [24, 18], [29, 16], [34, 24],
+              ].map(([x, h], i) => (
+                <rect key={i} x={x} y={36 - h} width="2" height={h} fill="currentColor" />
+              ))}
+              <line x1="2" y1="36" x2="38" y2="36" stroke="currentColor" strokeWidth="1" />
+            </svg>
             <p className="font-serif-sc text-label-md uppercase tracking-widest text-terra mb-s3">
               Built for
             </p>
@@ -73,7 +102,13 @@ export default function AboutPage() {
               no technology can replicate.
             </p>
           </div>
+
           <div className="bg-parch p-s6">
+            {/* Glyph — open framework holding a tool inside */}
+            <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true" className="text-terra mb-s4">
+              <rect x="4" y="4" width="32" height="32" stroke="currentColor" strokeWidth="1" fill="none" />
+              <rect x="14" y="14" width="12" height="12" fill="currentColor" />
+            </svg>
             <p className="font-serif-sc text-label-md uppercase tracking-widest text-terra mb-s3">
               What was missing
             </p>
