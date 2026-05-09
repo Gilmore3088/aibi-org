@@ -72,23 +72,14 @@ export default function HomePage() {
             dimension dragging you down, and a copy-paste artifact you can
             use this week.
           </p>
-          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
+          <div className="mt-8 flex justify-center">
             <Link
               href="/assessment/start"
               className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
             >
-              Take the free assessment
-            </Link>
-            <Link
-              href="/assessment/in-depth"
-              className="inline-block px-8 py-4 border border-[color:var(--color-ink)]/20 text-[color:var(--color-ink)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-parch)] active:scale-[0.98] transition-all"
-            >
-              In-Depth Assessment · $99
+              Take the assessment
             </Link>
           </div>
-          <p className="mt-5 font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-ink)]/55">
-            48 questions · 20-page report · for institutions ready to act
-          </p>
         </div>
       </section>
 
