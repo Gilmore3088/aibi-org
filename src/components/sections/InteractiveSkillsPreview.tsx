@@ -3,6 +3,21 @@
 import Link from 'next/link';
 import type { ReactNode } from 'react';
 import { useEffect, useState } from 'react';
+import { TOOLS, type CurriculumTool } from '@content/curriculum/tools';
+
+const PLATFORM_CATEGORY_LABEL: Record<CurriculumTool['category'], string> = {
+  'general-llm': 'General',
+  'office-suite': 'Office',
+  documents: 'Documents',
+  research: 'Research',
+};
+
+const PLATFORM_CATEGORY_ORDER: readonly CurriculumTool['category'][] = [
+  'general-llm',
+  'office-suite',
+  'documents',
+  'research',
+];
 
 type Capability = {
   readonly id: string;
@@ -249,77 +264,141 @@ export function InteractiveSkillsPreview({
             })}
           </ul>
 
-          {/* Right column — stacked Sample Prompt + AI-Assisted Result */}
-          <div
-            id="capability-panel"
-            role="tabpanel"
-            key={active.id}
-            aria-live="polite"
-            className="grid grid-rows-[auto_auto] gap-s5 lg:gap-s6 animate-[fadeIn_220ms_ease-out]"
-          >
-            {/* Sample Prompt panel */}
-            <article className="bg-parch border border-hairline">
-              <header className="flex items-center justify-between px-s5 md:px-s6 py-s4 border-b border-hairline">
-                <p className="font-serif-sc text-label-sm uppercase tracking-widest text-terra">
-                  Sample prompt
-                </p>
-                <p className="font-mono text-mono-xs uppercase tracking-wider text-ink/40 tabular-nums">
-                  {String(CAPABILITIES.findIndex((c) => c.id === active.id) + 1).padStart(2, '0')}
-                  <span className="opacity-50"> / {String(CAPABILITIES.length).padStart(2, '0')}</span>
-                </p>
-              </header>
-              <div className="px-s5 md:px-s6 py-s5">
-                <p className="font-mono text-body-sm leading-relaxed text-ink/85">
-                  {active.prompt}
-                </p>
-                <button
-                  type="button"
-                  onClick={copyPrompt}
-                  className={`mt-s5 inline-flex items-center font-serif-sc text-mono-sm uppercase tracking-widest border-b pb-[2px] transition-colors ${
-                    copied
-                      ? 'text-ink border-ink'
-                      : 'text-terra border-terra hover:text-terra-light hover:border-terra-light'
-                  }`}
-                >
-                  {copied ? 'Copied' : 'Copy prompt'}
-                </button>
-              </div>
-            </article>
-
-            {/* AI-Assisted Result panel */}
-            <article className="bg-parch border border-hairline">
-              <header className="flex items-center justify-between px-s5 md:px-s6 py-s4 border-b border-hairline">
-                <p className="font-serif-sc text-label-sm uppercase tracking-widest text-terra">
-                  AI-assisted result
-                </p>
-                {!animationComplete ? (
-                  <span className="inline-flex items-center gap-1" aria-label="Generating">
-                    <span className="h-1.5 w-1.5 rounded-full bg-terra/70 animate-pulse" />
-                    <span className="h-1.5 w-1.5 rounded-full bg-terra/50 animate-pulse [animation-delay:120ms]" />
-                    <span className="h-1.5 w-1.5 rounded-full bg-terra/30 animate-pulse [animation-delay:240ms]" />
-                  </span>
-                ) : (
-                  <p className="font-mono text-mono-xs uppercase tracking-wider text-ink/40">
-                    Verify before you ship
+          {/* Right column — Tools tab gets a platforms panel; other tabs
+              get the stacked Sample Prompt + AI-Assisted Result demo. */}
+          {active.id === 'tools' ? (
+            <div
+              id="capability-panel"
+              role="tabpanel"
+              key={active.id}
+              aria-live="polite"
+              className="animate-[fadeIn_220ms_ease-out]"
+            >
+              <PlatformsPanel />
+            </div>
+          ) : (
+            <div
+              id="capability-panel"
+              role="tabpanel"
+              key={active.id}
+              aria-live="polite"
+              className="grid grid-rows-[auto_auto] gap-s5 lg:gap-s6 animate-[fadeIn_220ms_ease-out]"
+            >
+              {/* Sample Prompt panel */}
+              <article className="bg-parch border border-hairline">
+                <header className="flex items-center justify-between px-s5 md:px-s6 py-s4 border-b border-hairline">
+                  <p className="font-serif-sc text-label-sm uppercase tracking-widest text-terra">
+                    Sample prompt
                   </p>
-                )}
-              </header>
-              <div className="px-s5 md:px-s6 py-s5 min-h-[12rem]">
-                <div className="space-y-s2">
-                  {active.output.slice(0, visibleLines).map((line) => (
-                    <p
-                      key={line}
-                      className="text-body-sm leading-relaxed text-ink/85 animate-[fadeInUp_240ms_ease-out]"
-                    >
-                      {line}
-                    </p>
-                  ))}
+                  <p className="font-mono text-mono-xs uppercase tracking-wider text-ink/40 tabular-nums">
+                    {String(CAPABILITIES.findIndex((c) => c.id === active.id) + 1).padStart(2, '0')}
+                    <span className="opacity-50"> / {String(CAPABILITIES.length).padStart(2, '0')}</span>
+                  </p>
+                </header>
+                <div className="px-s5 md:px-s6 py-s5">
+                  <p className="font-mono text-body-sm leading-relaxed text-ink/85">
+                    {active.prompt}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={copyPrompt}
+                    className={`mt-s5 inline-flex items-center font-serif-sc text-mono-sm uppercase tracking-widest border-b pb-[2px] transition-colors ${
+                      copied
+                        ? 'text-ink border-ink'
+                        : 'text-terra border-terra hover:text-terra-light hover:border-terra-light'
+                    }`}
+                  >
+                    {copied ? 'Copied' : 'Copy prompt'}
+                  </button>
                 </div>
-              </div>
-            </article>
-          </div>
+              </article>
+
+              {/* AI-Assisted Result panel */}
+              <article className="bg-parch border border-hairline">
+                <header className="flex items-center justify-between px-s5 md:px-s6 py-s4 border-b border-hairline">
+                  <p className="font-serif-sc text-label-sm uppercase tracking-widest text-terra">
+                    AI-assisted result
+                  </p>
+                  {!animationComplete ? (
+                    <span className="inline-flex items-center gap-1" aria-label="Generating">
+                      <span className="h-1.5 w-1.5 rounded-full bg-terra/70 animate-pulse" />
+                      <span className="h-1.5 w-1.5 rounded-full bg-terra/50 animate-pulse [animation-delay:120ms]" />
+                      <span className="h-1.5 w-1.5 rounded-full bg-terra/30 animate-pulse [animation-delay:240ms]" />
+                    </span>
+                  ) : (
+                    <p className="font-mono text-mono-xs uppercase tracking-wider text-ink/40">
+                      Verify before you ship
+                    </p>
+                  )}
+                </header>
+                <div className="px-s5 md:px-s6 py-s5 min-h-[12rem]">
+                  <div className="space-y-s2">
+                    {active.output.slice(0, visibleLines).map((line) => (
+                      <p
+                        key={line}
+                        className="text-body-sm leading-relaxed text-ink/85 animate-[fadeInUp_240ms_ease-out]"
+                      >
+                        {line}
+                      </p>
+                    ))}
+                  </div>
+                </div>
+              </article>
+            </div>
+          )}
         </div>
       </div>
     </section>
+  );
+}
+
+/**
+ * <PlatformsPanel> — replaces the prompt + result demo on the Tools tab.
+ * A clean grouped reference of the six platforms taught in the curriculum,
+ * grouped by category. No prompt, no AI demo — just a peek at what we use.
+ */
+function PlatformsPanel() {
+  const grouped = PLATFORM_CATEGORY_ORDER.map((cat) => ({
+    category: cat,
+    label: PLATFORM_CATEGORY_LABEL[cat],
+    items: TOOLS.filter((t) => t.category === cat),
+  })).filter((g) => g.items.length > 0);
+
+  return (
+    <article className="bg-parch border border-hairline">
+      <header className="flex items-center justify-between px-s5 md:px-s6 py-s4 border-b border-hairline">
+        <p className="font-serif-sc text-label-sm uppercase tracking-widest text-terra">
+          Platforms we teach
+        </p>
+        <p className="font-mono text-mono-xs uppercase tracking-wider text-ink/40 tabular-nums">
+          {String(TOOLS.length).padStart(2, '0')}
+        </p>
+      </header>
+      <dl className="divide-y divide-hairline">
+        {grouped.map((group) => (
+          <div
+            key={group.category}
+            className="grid grid-cols-[7rem_1fr] gap-s5 px-s5 md:px-s6 py-s4 items-baseline"
+          >
+            <dt className="font-mono text-label-md uppercase tracking-widest text-terra">
+              {group.label}
+            </dt>
+            <dd className="font-serif text-body-lg text-ink leading-snug">
+              {group.items.map((t, i) => (
+                <span key={t.slug} className="whitespace-nowrap">
+                  {t.name}
+                  <span className="font-mono text-label-sm uppercase tracking-widest text-slate ml-s2">
+                    {t.vendor}
+                  </span>
+                  {i < group.items.length - 1 && (
+                    <span aria-hidden="true" className="mx-s3 text-ink/30">·</span>
+                  )}
+                </span>
+              ))}
+            </dd>
+          </div>
+        ))}
+      </dl>
+    </article>
   );
 }
