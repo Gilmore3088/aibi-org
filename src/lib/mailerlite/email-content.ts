@@ -7,6 +7,23 @@
 // "AI-powered" buzzwords, DM Mono numbers via inline span where
 // emphasis matters, no emoji, no gradients, no rounded buttons >4px.
 //
+// Style decisions documented after the 2026-05-08 every-style-editor
+// audit:
+//   1. Subject lines are the headline (full Every title-case treatment
+//      may be applied if desired). H1s inside the body are subheads —
+//      sentence case, no terminal period.
+//   2. Em dashes carry no surrounding spaces ("X—Y", never "X — Y").
+//   3. <strong> is reserved for visual labels (table cells, bullet
+//      lead-ins). It is NOT used for emphasis in running prose; the
+//      Every guide reserves emphasis for italics.
+//   4. Percentages stay in DM Mono spans (e.g. <span ...>55%</span>).
+//      This conflicts with Every's "X percent" rule but matches the
+//      brand's "DM Mono for ALL numbers" rule, which takes precedence
+//      inside the Institute's own materials.
+//   5. Quoted strings inside copy use double quotes ("); single quotes
+//      are reserved for quotes within quotes.
+//   6. No semicolons in email copy (Every hard rule).
+//
 // The HTML uses minimal inline styles compatible with MailerLite's
 // editor. The dashboard editor will let an operator polish typography
 // and brand colors before activation. Automations are created PAUSED;
@@ -58,13 +75,13 @@ export const NEWSLETTER_WELCOME: EmailDraft = {
   preheader: 'Practitioner-grade AI insight for community banks and credit unions.',
   html: wrap(`
 <h1 style="font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:32px;line-height:1.2;margin:0 0 16px 0;color:#1e1a14;">
-Welcome to the AI Banking Brief.
+Welcome to the AI Banking Brief
 </h1>
 <p>You will receive one email roughly every two weeks. The format is fixed:</p>
 <ul style="padding-left:20px;">
-  <li><strong>One regulatory update</strong> — what just changed (FDIC, OCC, Federal Reserve, AIEOG)</li>
-  <li><strong>One practical lever</strong> — one tool, prompt, or workflow you can put into a pilot this week</li>
-  <li><strong>One peer signal</strong> — what other community banks and credit unions are actually doing</li>
+  <li><strong>One regulatory update</strong>—what just changed (FDIC, OCC, Federal Reserve, AIEOG)</li>
+  <li><strong>One practical lever</strong>—one tool, prompt, or workflow you can put into a pilot this week</li>
+  <li><strong>One peer signal</strong>—what other community banks and credit unions are doing</li>
 </ul>
 <p>No vendor pitches. No "AI-powered" headlines. No unsourced statistics.</p>
 <p>If you have not yet taken the free AI readiness assessment, that is the
@@ -75,7 +92,7 @@ fastest way to see where your institution sits relative to peers:</p>
 Take the 12-question assessment &rarr;
 </a>
 </p>
-<p>It takes about 3 minutes on a phone, costs nothing, and gives you a
+<p>It takes about three minutes on a phone, costs nothing, and gives you a
 sourced one-page result you can bring to your next leadership meeting.</p>
 `),
 };
@@ -91,7 +108,7 @@ const STARTING_POINT_EMAILS: readonly EmailDraft[] = [
     preheader: 'You are not behind. You are at a starting line that 4 in 10 community banks share.',
     html: wrap(`
 <h1 style="font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:30px;line-height:1.2;margin:0 0 16px 0;">
-You scored Starting Point. Here is what that means.
+You scored Starting Point. Here is what that means
 </h1>
 <p>Starting Point is the band where most community banks and credit unions
 sit today. Per Gartner Peer Community data <em>(via Jack Henry, 2025)</em>:</p>
@@ -100,17 +117,17 @@ sit today. Per Gartner Peer Community data <em>(via Jack Henry, 2025)</em>:</p>
   <li><span style="font-family:'DM Mono',monospace;">57%</span> report AI skill gaps at the team level</li>
   <li><span style="font-family:'DM Mono',monospace;">48%</span> say leadership lacks clarity on business impact</li>
 </ul>
-<p>You are not late. You are early — which is the right time to be
+<p>You are not late. You are early—which is the right time to be
 deliberate about the next move.</p>
 <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:22px;margin:32px 0 12px 0;">The single move for week one</h2>
 <p><strong>Build a one-page AI use-case registry.</strong> Send one question
 to every department head: <em>"Are you, or anyone on your team, using any
-AI tool — paid or free, sanctioned or not — for work? List what, who, and
+AI tool—paid or free, sanctioned or not—for work? List what, who, and
 how often."</em></p>
 <p>You cannot govern what you cannot see. The AIEOG AI Lexicon
-<em>(US Treasury / FBIIC / FSSCC, Feb 2026)</em> explicitly names an "AI
-use case inventory" as a baseline expectation. Building it before an exam
-is easier than building it during one.</p>
+<em>(US Treasury, FBIIC, and FSSCC, February 2026)</em> explicitly names an
+"AI use case inventory" as a baseline expectation. Building it before an
+exam is easier than building it during one.</p>
 <p>Your full results page (with the starter artifact for your lowest-scoring
 dimension) is here:</p>
 <p><a href="https://aibankinginstitute.com/results" style="color:#b5512e;font-weight:500;">View your full results &rarr;</a></p>
@@ -121,7 +138,7 @@ dimension) is here:</p>
     preheader: 'One person. One hour. One real piece of bank work.',
     html: wrap(`
 <h1 style="font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:28px;line-height:1.2;margin:0 0 16px 0;">
-The cheapest pilot in banking.
+The cheapest pilot in banking
 </h1>
 <p>If your team is at Starting Point, the temptation is to plan a strategy
 session. Resist it. The fastest path to grounded leadership conversation
@@ -129,11 +146,11 @@ is one banker, one hour, one piece of real work.</p>
 <p>Pick one of the following. Each works on free-tier ChatGPT or Claude.
 Each uses zero customer PII.</p>
 <ol style="padding-left:20px;">
-  <li><strong>Summarize a credit memo</strong> — paste a non-PII redacted
+  <li><strong>Summarize a credit memo.</strong> Paste a non-PII redacted
       memo, ask for a 200-word executive summary plus three risk flags.</li>
-  <li><strong>Draft a procedure update</strong> — paste an old procedure,
+  <li><strong>Draft a procedure update.</strong> Paste an old procedure,
       ask for a redline that aligns it to current FFIEC guidance language.</li>
-  <li><strong>Compare two vendor proposals</strong> — paste both, ask for
+  <li><strong>Compare two vendor proposals.</strong> Paste both, ask for
       a side-by-side decision matrix on cost, integration, and exit clauses.</li>
 </ol>
 <p>The goal is not the output. The goal is what the banker says afterward:
@@ -150,20 +167,20 @@ focus first, the Executive Briefing is free and runs 30 minutes:</p>
     preheader: 'Bank Director 2024 Tech Survey, Gartner Peer Community, FDIC data.',
     html: wrap(`
 <h1 style="font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:28px;line-height:1.2;margin:0 0 16px 0;">
-The sourced picture of community-bank AI spend.
+The sourced picture of community-bank AI spend
 </h1>
 <p>If you are presenting an AI plan to your board, the three numbers
 worth memorizing are these:</p>
 <ul style="padding-left:20px;">
   <li><span style="font-family:'DM Mono',monospace;">66%</span> of banks
-      are actively discussing AI budget allocation
+      are discussing AI budget allocation
       <em>(Bank Director 2024 Technology Survey, via Jack Henry)</em></li>
   <li><span style="font-family:'DM Mono',monospace;">~65%</span> is the
       median efficiency ratio for community banks
       <em>(FDIC CEIC data, 1992–2025)</em></li>
   <li><span style="font-family:'DM Mono',monospace;">~55.7%</span> is the
       industry-wide efficiency ratio <em>(FDIC Quarterly Banking Profile,
-      Q4 2024)</em></li>
+      fourth quarter of 2024)</em></li>
 </ul>
 <p>The gap between <span style="font-family:'DM Mono',monospace;">~65%</span>
 and <span style="font-family:'DM Mono',monospace;">55.7%</span> is the
@@ -189,9 +206,9 @@ const EARLY_STAGE_EMAILS: readonly EmailDraft[] = [
     preheader: 'You have started. The next move is choosing one tool to standardize on.',
     html: wrap(`
 <h1 style="font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:30px;line-height:1.2;margin:0 0 16px 0;">
-You scored Early Stage. The next move is convergence.
+You scored Early Stage. The next move is convergence
 </h1>
-<p>Early Stage means experimentation is happening — usually informally,
+<p>Early Stage means experimentation is happening—usually informally,
 often without governance. The risk at this band is not too little
 activity. It is sprawl: ten people using ten different tools, none of
 them sanctioned, none of them documented.</p>
@@ -200,18 +217,18 @@ them sanctioned, none of them documented.</p>
 the institution.</strong></p>
 <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:22px;margin:28px 0 12px 0;">What to evaluate</h2>
 <p>For most community banks, the decision is between Microsoft 365 Copilot
-(if you already run M365) and ChatGPT Enterprise / Claude for Work
+(if you already run M365) and ChatGPT Enterprise or Claude for Work
 (if you do not). Three criteria, in order:</p>
 <ol style="padding-left:20px;">
-  <li><strong>Data residency &amp; training opt-out</strong> — your
-      provider must contractually exclude your prompts from model
-      training. SS&amp;C's 2025 hybrid-cloud guidance is explicit:
-      PII never goes into public LLMs.</li>
-  <li><strong>SSO + audit log</strong> — every prompt should be tied
+  <li><strong>Data residency and training opt-out.</strong> Your provider
+      must contractually exclude your prompts from model training.
+      SS&amp;C's 2025 hybrid-cloud guidance is explicit: PII never goes
+      into public LLMs.</li>
+  <li><strong>SSO and audit log.</strong> Every prompt should be tied
       to a named user. This is what an examiner asks for first.</li>
-  <li><strong>Integration with existing workflow</strong> — pick the
-      tool your bankers will actually open. The best tool is the one
-      they use; the second-best one collects dust.</li>
+  <li><strong>Integration with existing workflow.</strong> Pick the tool
+      your bankers will open. The best tool is the one they use. The
+      second-best one collects dust.</li>
 </ol>
 <p>Your full results page (with the starter artifact for your lowest-scoring
 dimension) is here:</p>
@@ -223,28 +240,29 @@ dimension) is here:</p>
     preheader: 'A template you can adapt in 60 minutes, not 60 days.',
     html: wrap(`
 <h1 style="font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:28px;line-height:1.2;margin:0 0 16px 0;">
-A one-page AI governance memo.
+A one-page AI governance memo
 </h1>
 <p>You do not need a 40-page AI policy. You need a one-page memo that
 your board can read, your compliance officer can defend, and your
-front-line bankers will actually remember.</p>
+front-line bankers will remember.</p>
 <p>The shape:</p>
 <ul style="padding-left:20px;">
-  <li><strong>What is allowed</strong> — sanctioned tool(s), with named
-      data classifications (e.g. "public information only", "internal
-      non-PII", "do not paste customer PII into any AI tool, ever").</li>
-  <li><strong>Who owns oversight</strong> — one named person (often the
+  <li><strong>What is allowed.</strong> Sanctioned tool or tools, with
+      named data classifications (e.g. "public information only",
+      "internal non-PII", "do not paste customer PII into any AI tool,
+      ever").</li>
+  <li><strong>Who owns oversight.</strong> One named person (often the
       CIO or CRO) is the AI accountable executive. Not a committee.</li>
-  <li><strong>How exceptions get approved</strong> — single-page request
+  <li><strong>How exceptions get approved.</strong> Single-page request
       form, one approver, 5-day SLA.</li>
-  <li><strong>What gets logged</strong> — every use case enters the
+  <li><strong>What gets logged.</strong> Every use case enters the
       use-case inventory before going live. The AIEOG AI Lexicon's
-      "AI use case inventory" expectation maps directly to this.</li>
+      "AI use case inventory" expectation maps to this.</li>
 </ul>
 <p>The relevant regulatory anchors are SR 11-7 (model risk management),
 the Interagency TPRM Guidance (third-party risk), ECOA/Reg B (fair
 lending if any AI touches credit), and the AIEOG AI Lexicon
-<em>(US Treasury / FBIIC / FSSCC, Feb 2026)</em>.</p>
+<em>(US Treasury, FBIIC, and FSSCC, February 2026)</em>.</p>
 <p>If you would like a structured walk-through with a working memo
 template, the Executive Briefing is the fastest path:</p>
 <p><a href="https://aibankinginstitute.com/for-institutions" style="color:#b5512e;font-weight:500;">Book an Executive Briefing &rarr;</a></p>
@@ -255,7 +273,7 @@ template, the Executive Briefing is the fastest path:</p>
     preheader: 'Three milestones that move the needle and a credential that codifies them.',
     html: wrap(`
 <h1 style="font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:28px;line-height:1.2;margin:0 0 16px 0;">
-The 90-day arc to Building Momentum.
+The 90-day arc to Building Momentum
 </h1>
 <p>Across the community banks and credit unions we have advised, the
 shortest credible path from Early Stage to Building Momentum looks like
@@ -268,8 +286,8 @@ this:</p>
   <tr><td style="padding:8px 0;border-bottom:1px solid #e6dfd1;font-family:'DM Mono',monospace;">Day 90</td>
       <td style="padding:8px 0;border-bottom:1px solid #e6dfd1;">First impact metric reported to leadership: hours saved, error rate, or cycle-time reduction. Decision: scale, hold, or kill.</td></tr>
 </table>
-<p>If you want to put a credentialed framework against this — and have
-a named banker on your team certified to lead the next 90 days — the
+<p>If you want to put a credentialed framework against this—and have
+a named banker on your team certified to lead the next 90 days—the
 Practitioner credential is the most direct route:</p>
 <p><a href="https://aibankinginstitute.com/courses/aibi-p" style="color:#b5512e;font-weight:500;">AiBI-Practitioner &rarr; $295 ($199 at 10+)</a></p>
 `),
@@ -287,7 +305,7 @@ const BUILDING_MOMENTUM_EMAILS: readonly EmailDraft[] = [
     preheader: 'You are in the top quartile. Here is what separates Building Momentum from Ready to Scale.',
     html: wrap(`
 <h1 style="font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:30px;line-height:1.2;margin:0 0 16px 0;">
-You scored Building Momentum.
+You scored Building Momentum
 </h1>
 <p>Institutions in this band have moved past "should we use AI?" to
 "how do we scale it responsibly?" Three patterns separate Building
@@ -297,7 +315,7 @@ Momentum from Ready to Scale:</p>
       on the team is the AI-credentialed practitioner, the AI-credentialed
       specialist, and (eventually) the AI-credentialed leader.</li>
   <li><strong>An impact ledger.</strong> Every use case has a hours-saved,
-      cycle-time, or error-rate number tied to it — not a vendor's
+      cycle-time, or error-rate number tied to it—not a vendor's
       marketing claim.</li>
   <li><strong>Live governance.</strong> The use-case inventory is reviewed
       monthly. Sunset reviews are scheduled. Exception requests are
@@ -310,29 +328,29 @@ dimension) is here:</p>
   },
   {
     subject: 'A capability ladder that maps to your institution',
-    preheader: 'Practitioner, Specialist, Leader — what each role actually does.',
+    preheader: 'Practitioner, Specialist, Leader — what each role does.',
     html: wrap(`
 <h1 style="font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:28px;line-height:1.2;margin:0 0 16px 0;">
-The three rungs of the AI capability ladder.
+The three rungs of the AI capability ladder
 </h1>
 <p>For a community bank or credit union, the capability ladder does not
 need to be complicated. Three rungs handle most institutions through
-$5B in assets:</p>
+$5 billion in assets:</p>
 <table style="width:100%;border-collapse:collapse;margin:16px 0;">
   <tr style="border-bottom:1px solid #e6dfd1;">
-    <td style="padding:12px 8px 12px 0;font-family:'Cormorant SC',Georgia,serif;font-size:14px;letter-spacing:0.5px;">PRACTITIONER</td>
-    <td style="padding:12px 0;">Every banker who touches workflow improvement. Knows the sanctioned tool, the data rules, the use-case inventory process, and the prompt patterns that work. <strong>Target: 1 in 5 of your team within 12 months.</strong></td>
+    <td style="padding:12px 8px 12px 0;font-family:'Cormorant SC',Georgia,serif;font-size:14px;letter-spacing:0.5px;">Practitioner</td>
+    <td style="padding:12px 0;">Every banker who touches workflow improvement. Knows the sanctioned tool, the data rules, the use-case inventory process, and the prompt patterns that work. <strong>Target: one in five of your team within 12 months.</strong></td>
   </tr>
   <tr style="border-bottom:1px solid #e6dfd1;">
-    <td style="padding:12px 8px 12px 0;font-family:'Cormorant SC',Georgia,serif;font-size:14px;letter-spacing:0.5px;">SPECIALIST</td>
-    <td style="padding:12px 0;">Domain leads in operations, lending, deposits, or compliance who own end-to-end use-case design and the impact ledger for their function. <strong>Target: 1 per major function.</strong></td>
+    <td style="padding:12px 8px 12px 0;font-family:'Cormorant SC',Georgia,serif;font-size:14px;letter-spacing:0.5px;">Specialist</td>
+    <td style="padding:12px 0;">Domain leads in operations, lending, deposits, or compliance who own end-to-end use-case design and the impact ledger for their function. <strong>Target: one per major function.</strong></td>
   </tr>
   <tr>
-    <td style="padding:12px 8px 12px 0;font-family:'Cormorant SC',Georgia,serif;font-size:14px;letter-spacing:0.5px;">LEADER</td>
-    <td style="padding:12px 0;">The named accountable executive (often the COO or CIO) who owns governance, vendor selection, and the board-level conversation. <strong>Target: 1 per institution.</strong></td>
+    <td style="padding:12px 8px 12px 0;font-family:'Cormorant SC',Georgia,serif;font-size:14px;letter-spacing:0.5px;">Leader</td>
+    <td style="padding:12px 0;">The named accountable executive (often the COO or CIO) who owns governance, vendor selection, and the board-level conversation. <strong>Target: one per institution.</strong></td>
   </tr>
 </table>
-<p>Our credential program is designed against exactly this ladder
+<p>Our credential program is designed against this ladder
 (AiBI-Practitioner, AiBI-S, AiBI-L). The Practitioner credential is
 self-paced, $295 individual or $199 at 10+ seats:</p>
 <p><a href="https://aibankinginstitute.com/courses/aibi-p" style="color:#b5512e;font-weight:500;">AiBI-Practitioner &rarr;</a></p>
@@ -343,7 +361,7 @@ self-paced, $295 individual or $199 at 10+ seats:</p>
     preheader: 'Three operating habits, observed across the cohort.',
     html: wrap(`
 <h1 style="font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:28px;line-height:1.2;margin:0 0 16px 0;">
-The habits of Ready to Scale.
+The habits of Ready to Scale
 </h1>
 <p>The institutions that score in the Ready to Scale band share three
 operating habits that Building Momentum institutions usually do not:</p>
@@ -351,14 +369,14 @@ operating habits that Building Momentum institutions usually do not:</p>
   <li><strong>Quarterly impact-ledger review at the board level.</strong>
       Not a vendor demo. A one-page summary of every active use case,
       its measured impact, and its sunset date. The board asks
-      questions; the AI accountable executive answers them.</li>
+      questions. The AI accountable executive answers them.</li>
   <li><strong>A bench of two named successors per credentialed leader.</strong>
       No single point of failure. If the CIO leaves, AI capability
       does not leave with them.</li>
   <li><strong>Active customer-facing AI with explicit explainability.</strong>
       Per Personetics 2025 (via Apiture):
       <span style="font-family:'DM Mono',monospace;">84%</span> of
-      consumers would switch FIs for AI-driven financial insights —
+      consumers would switch FIs for AI-driven financial insights—
       and explainability is what makes those features compliant under
       ECOA/Reg B.</li>
 </ol>
@@ -380,18 +398,18 @@ const READY_TO_SCALE_EMAILS: readonly EmailDraft[] = [
     preheader: 'You scored in the top quartile. The conversation now is leadership, not catch-up.',
     html: wrap(`
 <h1 style="font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:30px;line-height:1.2;margin:0 0 16px 0;">
-You scored Ready to Scale.
+You scored Ready to Scale
 </h1>
 <p>Institutions in this band are operating at a maturity that most of
 the community banking sector will not reach for another 24 months.
-The question is no longer "are we doing AI?" — it is "are we leading
+The question is no longer "are we doing AI?"—it is "are we leading
 the conversation in our market?"</p>
 <p>Three things to consider in the next quarter:</p>
 <ul style="padding-left:20px;">
   <li><strong>Peer leadership.</strong> Your board, your trade
       association, and your regulator all benefit when an institution
-      at your maturity tells the story publicly. The community
-      benefits; your reputation compounds.</li>
+      at your maturity tells the story. The community benefits. Your
+      reputation compounds.</li>
   <li><strong>Talent pipeline.</strong> Your bench of credentialed
       practitioners is your moat. The gap between your team and the
       median community bank is what makes your AI program durable.</li>
@@ -411,26 +429,26 @@ the conversation in our market?"</p>
     preheader: 'AiBI-Practitioner at scale — the bench pattern that protects your AI program.',
     html: wrap(`
 <h1 style="font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:28px;line-height:1.2;margin:0 0 16px 0;">
-Train the bench, not just the leadership.
+Train the bench, not the leadership
 </h1>
 <p>The single largest institutional risk in a Ready to Scale AI program
 is concentration. If three people on your team hold all the AI
 capability, the program is one resignation away from a setback.</p>
 <p>The pattern that works:</p>
 <ul style="padding-left:20px;">
-  <li><strong>One credentialed Practitioner per branch or major function</strong> —
-      typically <span style="font-family:'DM Mono',monospace;">10–25</span>
+  <li><strong>One credentialed Practitioner per branch or major function.</strong>
+      Typically <span style="font-family:'DM Mono',monospace;">10–25</span>
       credentialed bankers across an institution your size.</li>
-  <li><strong>One credentialed Specialist per business line</strong> —
-      operations, lending, deposits, compliance.</li>
-  <li><strong>The accountable executive credentialed at Leader</strong> —
-      the named owner who can speak to the board and the regulator
+  <li><strong>One credentialed Specialist per business line.</strong>
+      Operations, lending, deposits, compliance.</li>
+  <li><strong>The accountable executive credentialed at Leader.</strong>
+      The named owner who can speak to the board and the regulator
       with equal fluency.</li>
 </ul>
-<p>Our institutional pricing for AiBI-Practitioner is
+<p>Institutional pricing for AiBI-Practitioner is
 <span style="font-family:'DM Mono',monospace;">$199</span> per seat at
-<span style="font-family:'DM Mono',monospace;">10+</span> bankers,
-delivered self-paced over 90 days, with credentialing on completion.</p>
+<span style="font-family:'DM Mono',monospace;">10+</span> bankers.
+Self-paced over 90 days, with credentialing on completion.</p>
 <p><a href="https://aibankinginstitute.com/for-institutions" style="color:#b5512e;font-weight:500;">For Institutions &rarr;</a></p>
 `),
   },
@@ -439,22 +457,22 @@ delivered self-paced over 90 days, with credentialing on completion.</p>
     preheader: 'For Ready to Scale institutions wanting a fractional Chief AI Officer.',
     html: wrap(`
 <h1 style="font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:28px;line-height:1.2;margin:0 0 16px 0;">
-A standing invitation.
+A standing invitation
 </h1>
 <p>Most institutions in the Ready to Scale band do not need a full-time
 Chief AI Officer. The market does not yet have a standard role
 definition, and the cost of getting the hire wrong at this maturity is
 high.</p>
-<p>What they often do need is a fractional Chief AI Officer — someone
+<p>What they often do need is a fractional Chief AI Officer—someone
 with sector-specific depth who joins the leadership cadence, sits in
 on governance reviews, and is the named external advisor on AI
 strategy and regulatory posture.</p>
 <p>This is what The Institute's Leadership Advisory engagement is
 designed for. Quarterly cadence, retainer-based, no software fees.
-Tied to the same A-B-C framework as our credential program so the
-language inside the institution stays consistent.</p>
+Tied to the same three-pillar curriculum as our credential program so
+the language inside the institution stays consistent.</p>
 <p>If this is the conversation worth having, the Executive Briefing is
-the right starting point — 30 minutes, no slides, no pitch:</p>
+the right starting point. Thirty minutes, no slides, no pitch.</p>
 <p><a href="https://aibankinginstitute.com/for-institutions" style="color:#b5512e;font-weight:500;">Book an Executive Briefing &rarr;</a></p>
 `),
   },

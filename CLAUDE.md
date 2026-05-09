@@ -771,9 +771,19 @@ in prose, AiBI only for credentials, sourced statistics with citations,
 DM Mono numbers, no buzzwords) and live in
 `src/lib/mailerlite/email-content.ts` as the version-controlled source of
 truth — operators may polish in dashboard but the canonical copy is in the
-repo. Automations dashboard ids: Newsletter `186964341311932221`,
-Starting Point `186964394318497533`, Early Stage `186964441944819359`,
-Building Momentum `186964483769370074`, Ready to Scale `186964529254499553`.
+repo. After the every-style-editor audit pass, all 5 Automations were
+deleted and recreated with corrected copy (drop H1 terminal periods,
+remove em-dash spaces, replace single quotes with doubles, eliminate
+semicolons, drop retired "A-B-C framework" reference, spell out
+February 2026, replace alternative slashes with "and"/"or"). Final
+automation ids: Newsletter `186965438418126829`, Starting Point
+`186965478342657970`, Early Stage `186965527420208336`, Building Momentum
+`186965564883732340`, Ready to Scale `186965601924679393`. Project-level
+style decisions documented in the email-content.ts header: subject =
+headline (title case OK), H1 = subhead (sentence case, no period); bold
+reserved for visual labels not prose emphasis; percentages stay in DM
+Mono (`X%`) per brand rule, overriding Every's "X percent"; no semicolons
+in email copy.
 
 **Manual steps remaining before activation:** (1) authenticate sender
 `hello@aibankinginstitute.com` in MailerLite Settings → Domains so the
