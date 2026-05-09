@@ -760,6 +760,33 @@ from plans for tiers being held back. Decision drivers + design
 discussion in
 `docs/superpowers/specs/2026-05-05-product-simplification-and-indepth-assessment-design.md`.
 
+**2026-05-08 — MailerLite e2e setup complete.** Five Automations created
+in production MailerLite (account `2331976`, sender
+`hello@aibankinginstitute.com`): one Newsletter welcome bound to the
+Newsletter group, plus four assessment tier sequences (Starting Point /
+Early Stage / Building Momentum / Ready to Scale), each triggered on
+"subscriber joins group" with a Day 0 / Day 3 / Day 7 cadence. All thirteen
+emails authored against brand voice (full name "The AI Banking Institute"
+in prose, AiBI only for credentials, sourced statistics with citations,
+DM Mono numbers, no buzzwords) and live in
+`src/lib/mailerlite/email-content.ts` as the version-controlled source of
+truth — operators may polish in dashboard but the canonical copy is in the
+repo. Automations dashboard ids: Newsletter `186964341311932221`,
+Starting Point `186964394318497533`, Early Stage `186964441944819359`,
+Building Momentum `186964483769370074`, Ready to Scale `186964529254499553`.
+
+**Manual steps remaining before activation:** (1) authenticate sender
+`hello@aibankinginstitute.com` in MailerLite Settings → Domains so the
+"Sender email must be authenticated" config error clears on each email
+step; (2) review each automation in the dashboard and toggle from Draft
+to Active. End-to-end verified locally: a `marketingOptIn=true` POST to
+`/api/capture-email` with tier `starting-point` lands the subscriber in
+both `Tier · Starting Point` and `AI Readiness Assessment` groups via
+the `tagAssessmentTier` upsert path (subscriber `186964712064288484`).
+The route does NOT subscribe non-opted-in users to MailerLite — they
+still get transactional Resend emails (assessment breakdown), but no
+nurture sequence. This honors marketing-consent expectations.
+
 **2026-05-06 — End-of-day state after long debug session.**
 Outstanding follow-ups for next session:
 - Rotate `SUPABASE_SERVICE_ROLE_KEY` and mark Sensitive in Vercel
