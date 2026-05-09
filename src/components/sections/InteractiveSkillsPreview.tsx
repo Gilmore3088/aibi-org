@@ -17,17 +17,16 @@ const CAPABILITIES: readonly Capability[] = [
     id: 'tools',
     title: 'Tools',
     subtitle:
-      'ChatGPT, Claude, Microsoft Copilot, Google Gemini, NotebookLM, Perplexity. Match the platform to the task — drop a 60-page bulletin in, get the summary, deadlines, and training plan in ninety seconds.',
+      'ChatGPT, Claude, Microsoft Copilot, Google Gemini, NotebookLM, Perplexity. Match the platform to the task — and know which data should never go near each one.',
     prompt:
-      'You are a community bank compliance analyst. Read CFPB Bulletin 2025-04 below. In 250 words: (1) what changes for banks under $10B, (2) what staff training is required, (3) the three deadlines we cannot miss. Cite section numbers. Flag anything ambiguous as ⚠ for follow-up.',
+      'You are a community bank ops manager. Compare ChatGPT, Claude, Microsoft Copilot, Google Gemini, NotebookLM, and Perplexity for our team. For each: one task it does well, one weakness, one type of data we should never paste in. Return a six-row table.',
     output: [
-      'Summary — §4.2 amends UDAAP fee disclosure for banks under $10B. Customer-facing menus must list trigger event, dollar amount, and annualized comparable for any fee charged more than twice in 12 months.',
-      'Training required — tellers, branch managers, customer service. Topics: new disclosure language, the three trigger events, customer-complaint escalation path (§5.1).',
-      'Deadlines:',
-      '01 — Sep 1, 2025: board-approved policy update on file',
-      '02 — Oct 15, 2025: staff training complete (HMDA-aligned attestation)',
-      '03 — Jan 1, 2026: customer disclosures live on all channels',
-      '⚠ Verify §4.2 effective date — bulletin uses "no later than 60 days post-publication."',
+      'ChatGPT (OpenAI) — best: rewriting policy in plain English · weak: live regulatory citations · never paste: PII, internal memos.',
+      'Claude (Anthropic) — best: long-document analysis with citations · weak: real-time data · never paste: confidential examination findings.',
+      'Microsoft Copilot — best: drafting Outlook replies inside the inbox · weak: long policy analysis · never paste: customer SSN, account numbers.',
+      'Google Gemini — best: research and quick lookups inside Workspace · weak: deep policy reasoning · never paste: PII, internal data.',
+      'NotebookLM (Google) — best: source-grounded Q&A across uploaded policies · weak: open-ended chat · never paste: PII before scrubbing.',
+      'Perplexity — best: regulatory research with citations · weak: drafting structured outputs · never paste: client identifiers.',
     ],
   },
   {
