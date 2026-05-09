@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 interface AssessmentTile {
   readonly audience: string;
   readonly title: React.ReactNode;
-  readonly body: string;
+  readonly deliverables: readonly string[];
   readonly facts: readonly { readonly label: string; readonly value: string }[];
   readonly cta: { readonly href: string; readonly label: string };
   readonly surface: "linen" | "parch";
@@ -26,8 +26,11 @@ const TILES: readonly AssessmentTile[] = [
         AI <em className="text-terra">Readiness</em> Assessment
       </>
     ),
-    body:
-      "Twelve questions, three minutes. A score, a tier, and a tailored starter artifact you can take to your team this week.",
+    deliverables: [
+      "Your readiness score",
+      "Your tier band",
+      "A tailored starter artifact for your team",
+    ],
     facts: [
       { label: "Questions", value: "12" },
       { label: "Time", value: "3 min" },
@@ -44,8 +47,11 @@ const TILES: readonly AssessmentTile[] = [
         <em className="text-terra">In-Depth</em> Assessment
       </>
     ),
-    body:
-      "Forty-eight questions across eight readiness dimensions. An individual report, plus an anonymized aggregate dashboard for institution leaders.",
+    deliverables: [
+      "Score across eight readiness dimensions",
+      "A full individual report",
+      "An anonymized aggregate dashboard for institution leaders",
+    ],
     facts: [
       { label: "Questions", value: "48" },
       { label: "Time", value: "20 min" },
@@ -96,9 +102,24 @@ export default function AssessmentStartPage() {
                 <h2 className="font-serif text-display-lg md:text-display-xl text-ink leading-[1.05] tracking-tightish max-w-[14ch]">
                   {tile.title}
                 </h2>
-                <p className="text-body-lg text-ink/80 leading-relaxed mt-s6 max-w-[40ch]">
-                  {tile.body}
-                </p>
+                <div className="mt-s8 max-w-[40ch]">
+                  <p className="font-mono text-label-md uppercase tracking-widest text-slate mb-s4">
+                    What you get
+                  </p>
+                  <ul className="space-y-s3">
+                    {tile.deliverables.map((d) => (
+                      <li
+                        key={d}
+                        className="grid grid-cols-[1.25rem_1fr] gap-s2 items-start font-serif text-body-lg text-ink leading-snug"
+                      >
+                        <span aria-hidden="true" className="text-terra pt-[2px]">
+                          —
+                        </span>
+                        <span>{d}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
                 <dl className="grid grid-cols-2 gap-y-s4 gap-x-s5 border-t border-hairline pt-s6 mt-s8 max-w-[40ch]">
                   {tile.facts.map((f) => (
                     <div key={f.label}>
