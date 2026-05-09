@@ -132,6 +132,8 @@ export interface CoursePurchaseIndividualPayload {
   readonly courseName?: string;
   readonly courseUrl?: string;
   readonly amountPaid: string;
+  /** One-click magic-link login URL — buyer clicks to land in an authed session. */
+  readonly magicLinkUrl?: string;
 }
 
 export function sendCoursePurchaseIndividual(
@@ -144,7 +146,13 @@ export function sendCoursePurchaseIndividual(
     subject: `Welcome to the ${courseName} program`,
     variables: {
       COURSE_NAME: courseName,
-      COURSE_URL: payload.courseUrl ?? 'https://aibankinginstitute.com/courses/aibi-p',
+      // COURSE_URL is what the email's primary CTA points at. When a magic
+      // link is available, prefer it so guest buyers get a one-click login;
+      // fall back to the public course page for returning users.
+      COURSE_URL:
+        payload.magicLinkUrl ??
+        payload.courseUrl ??
+        'https://aibankinginstitute.com/courses/aibi-p',
       AMOUNT_PAID: payload.amountPaid,
       RECEIPT_URL: 'https://aibankinginstitute.com/dashboard',
     },
@@ -156,6 +164,7 @@ export function sendCoursePurchaseIndividual(
 export interface IndepthAssessmentPurchasePayload {
   readonly email: string;
   readonly amountPaid: string;
+  readonly magicLinkUrl?: string;
 }
 
 /**
@@ -177,7 +186,9 @@ export function sendIndepthAssessmentPurchase(
     subject: 'Your In-Depth AI Readiness Assessment is unlocked',
     variables: {
       AMOUNT_PAID: payload.amountPaid,
-      ASSESSMENT_URL: 'https://aibankinginstitute.com/assessment/in-depth/purchased',
+      ASSESSMENT_URL:
+        payload.magicLinkUrl ??
+        'https://aibankinginstitute.com/assessment/in-depth/purchased',
     },
   });
 }
@@ -189,6 +200,7 @@ export interface CoursePurchaseInstitutionPayload {
   readonly institutionName: string;
   readonly seatsPurchased: number;
   readonly amountPaid: string;
+  readonly magicLinkUrl?: string;
 }
 
 export function sendCoursePurchaseInstitution(
@@ -202,7 +214,8 @@ export function sendCoursePurchaseInstitution(
       INSTITUTION_NAME: payload.institutionName,
       SEATS_PURCHASED: payload.seatsPurchased,
       AMOUNT_PAID: payload.amountPaid,
-      ADMIN_URL: 'https://aibankinginstitute.com/admin',
+      ADMIN_URL:
+        payload.magicLinkUrl ?? 'https://aibankinginstitute.com/admin',
       COURSE_URL: 'https://aibankinginstitute.com/courses/aibi-p',
     },
   });

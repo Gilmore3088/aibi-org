@@ -17,6 +17,7 @@ import {
   type TierId,
 } from '@/lib/convertkit/sequences';
 import { sendAssessmentBreakdown } from '@/lib/resend';
+import { ensureAuthUser } from '@/lib/supabase/auth-admin';
 import {
   checkEmailCaptureLimit,
   hashIp,
@@ -172,6 +173,13 @@ export async function POST(request: Request) {
       ...(trimmedFirstName ? { firstName: trimmedFirstName } : {}),
     }).catch((err) => console.warn('[capture-email] convertkit skip', err));
   }
+
+  // Provision a Supabase Auth account for this email (idempotent, fire-and-
+  // forget). Lets the assessment-taker log into /dashboard later without a
+  // separate sign-up step.
+  ensureAuthUser(email).catch((err) =>
+    console.warn('[capture-email] auth-admin skip', err),
+  );
 
   // HubSpot always fires (CRM contact tracking is operational, not marketing).
   await upsertContact({
