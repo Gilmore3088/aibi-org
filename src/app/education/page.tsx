@@ -65,14 +65,14 @@ export default async function EducationPage() {
     {
       tag: "Free",
       tagTone: "free",
-      title: "AI Readiness Assessment",
+      title: "Free AI Readiness Assessment",
       subtitle:
         "A quick diagnostic for your institution. Score, tier, and a tailored starter artifact you can take to your team this week.",
       facts: [
         { label: "Questions", value: "12" },
         { label: "Time", value: "3 min" },
         { label: "Format", value: "Self-serve · mobile-ready" },
-        { label: "Tuition", value: "Free" },
+        { label: "Tuition", value: "Free — no email gate to see your score" },
       ],
       cta: "Take the free assessment →",
       href: "/assessment/start",
@@ -107,8 +107,8 @@ export default async function EducationPage() {
             validated.
           </>
         ),
-        primaryCta: CTAS.beginAssessment,
-        secondaryCta: { href: "/assessment/in-depth", label: "Or take the In-Depth ($99)" },
+        primaryCta: { href: "/assessment/start", label: "Take the free readiness assessment" },
+        secondaryCta: { href: "/assessment/in-depth", label: "Or the In-Depth ($99)" },
         aside: isPEnrolled ? (
           <Marginalia label="Your progress">
             <h4 className="font-serif text-display-xs leading-snug">

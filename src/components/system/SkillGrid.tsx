@@ -36,10 +36,6 @@ export function SkillGrid({ skills = SKILLS, className }: SkillGridProps) {
           <p className="font-serif text-body-lg md:text-display-xs leading-snug text-ink">
             {skill.verb}
           </p>
-          <p className="font-mono text-label-sm uppercase tracking-widest text-dust pt-s3 border-t border-hairline">
-            Modules{" "}
-            {skill.modules.map((m) => String(m).padStart(2, "0")).join(" · ")}
-          </p>
         </article>
       ))}
     </div>

@@ -48,10 +48,6 @@ export function ToolGrid({ tools = TOOLS, className }: ToolGridProps) {
           <p className="font-mono text-label-md uppercase tracking-widest text-slate mt-s3">
             {tool.vendor}
           </p>
-          <p className="font-mono text-label-sm uppercase tracking-widest text-dust mt-s4 pt-s3 border-t border-hairline">
-            Modules{" "}
-            {tool.modules.map((m) => String(m).padStart(2, "0")).join(" · ")}
-          </p>
         </article>
       ))}
     </div>
