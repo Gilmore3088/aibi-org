@@ -99,12 +99,7 @@ export default async function EducationPage() {
       hero={{
         eyebrow: "Education",
         title: <>Use our assessments to measure you or your team&rsquo;s readiness.</>,
-        lede: (
-          <>
-            Start free; the In-Depth Assessment is for institutions that need a
-            defensible, eight-dimension picture before committing to a program.
-          </>
-        ),
+        divider: "hairline",
         aside: isPEnrolled ? (
           <Marginalia label="Your progress">
             <h4 className="font-serif text-display-xs leading-snug">
@@ -118,45 +113,44 @@ export default async function EducationPage() {
             </Cta>
           </Marginalia>
         ) : undefined,
+        payload: (
+          <div className="grid md:grid-cols-2 gap-px bg-hairline border-y border-strong">
+            {assessments.map((a) => (
+              <article key={a.title} className="bg-linen p-s8 lg:p-s10 flex flex-col">
+                <div className="flex items-center mb-s5">
+                  <span
+                    className={
+                      a.tagTone === "free"
+                        ? "font-serif-sc text-mono-sm uppercase tracking-widest text-terra border border-terra px-s3 py-[3px]"
+                        : "font-serif-sc text-mono-sm uppercase tracking-widest text-ink bg-amber-light px-s3 py-[3px]"
+                    }
+                  >
+                    {a.tag}
+                  </span>
+                </div>
+                <h3 className="font-serif text-display-sm leading-snug mb-s3">{a.title}</h3>
+                <p className="text-body-md leading-relaxed text-ink/80 mb-s6">{a.subtitle}</p>
+                <dl className="grid grid-cols-2 gap-y-s3 gap-x-s5 border-t border-hairline pt-s5 mb-s6">
+                  {a.facts.map((f) => (
+                    <div key={f.label}>
+                      <dt className="font-serif-sc text-mono-xs uppercase tracking-wider text-ink/50 mb-[2px]">
+                        {f.label}
+                      </dt>
+                      <dd className="font-mono text-body-sm tabular-nums text-ink">{f.value}</dd>
+                    </div>
+                  ))}
+                </dl>
+                <div className="mt-auto">
+                  <Cta variant="secondary" href={a.href}>
+                    {a.cta}
+                  </Cta>
+                </div>
+              </article>
+            ))}
+          </div>
+        ),
       }}
     >
-      {/* Assessments — the hero's payload */}
-      <Section variant="linen" padding="default" divider="none">
-        <div className="grid md:grid-cols-2 gap-px bg-hairline border-y border-strong">
-          {assessments.map((a) => (
-            <article key={a.title} className="bg-linen p-s8 lg:p-s10 flex flex-col">
-              <div className="flex items-center mb-s5">
-                <span
-                  className={
-                    a.tagTone === "free"
-                      ? "font-serif-sc text-mono-sm uppercase tracking-widest text-terra border border-terra px-s3 py-[3px]"
-                      : "font-serif-sc text-mono-sm uppercase tracking-widest text-ink bg-amber-light px-s3 py-[3px]"
-                  }
-                >
-                  {a.tag}
-                </span>
-              </div>
-              <h3 className="font-serif text-display-sm leading-snug mb-s3">{a.title}</h3>
-              <p className="text-body-md leading-relaxed text-ink/80 mb-s6">{a.subtitle}</p>
-              <dl className="grid grid-cols-2 gap-y-s3 gap-x-s5 border-t border-hairline pt-s5 mb-s6">
-                {a.facts.map((f) => (
-                  <div key={f.label}>
-                    <dt className="font-serif-sc text-mono-xs uppercase tracking-wider text-ink/50 mb-[2px]">
-                      {f.label}
-                    </dt>
-                    <dd className="font-mono text-body-sm tabular-nums text-ink">{f.value}</dd>
-                  </div>
-                ))}
-              </dl>
-              <div className="mt-auto">
-                <Cta variant="secondary" href={a.href}>
-                  {a.cta}
-                </Cta>
-              </div>
-            </article>
-          ))}
-        </div>
-      </Section>
 
       {/* Free Classes */}
       <Section variant="parch" padding="default">

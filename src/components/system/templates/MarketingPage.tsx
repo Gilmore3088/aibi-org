@@ -25,11 +25,20 @@ export interface MarketingHero {
   readonly title: ReactNode;
   /** Optional sub-title in italic serif under the H1. */
   readonly tagline?: string;
-  readonly lede: ReactNode;
+  readonly lede?: ReactNode;
   readonly primaryCta?: { readonly href: string; readonly label: string };
   readonly secondaryCta?: { readonly href: string; readonly label: string };
   /** Optional aside content (marginalia, quote, founder card). */
   readonly aside?: ReactNode;
+  /**
+   * Optional content rendered INSIDE the hero Section, full-width,
+   * below the title/lede/CTAs row. Use when the hero's payload is
+   * tiles, a chart, or any block that should read as part of the
+   * hero band (no divider, no second Section).
+   */
+  readonly payload?: ReactNode;
+  /** Override the hero Section's bottom divider. Defaults to "strong". */
+  readonly divider?: "strong" | "hairline" | "none";
 }
 
 export interface MarketingClose {
@@ -52,7 +61,7 @@ export function MarketingPage({ hero, kpis, closing, children, className }: Mark
   const hasAside = Boolean(hero.aside);
   return (
     <main className={className}>
-      <Section variant="linen" divider="strong" padding="hero">
+      <Section variant="linen" divider={hero.divider ?? "strong"} padding="hero">
         <div className={cn("grid gap-s10", hasAside && "lg:grid-cols-[1.5fr_1fr] lg:items-end")}>
           <div>
             {hero.eyebrow && (
@@ -66,9 +75,11 @@ export function MarketingPage({ hero, kpis, closing, children, className }: Mark
             {hero.tagline && (
               <p className="font-serif italic text-body-lg text-terra mt-s4">{hero.tagline}</p>
             )}
-            <p className="text-body-lg text-ink/80 leading-relaxed mt-s5 max-w-narrow">
-              {hero.lede}
-            </p>
+            {hero.lede && (
+              <p className="text-body-lg text-ink/80 leading-relaxed mt-s5 max-w-narrow">
+                {hero.lede}
+              </p>
+            )}
             {(hero.primaryCta || hero.secondaryCta) && (
               <div className="mt-s8 flex flex-wrap items-center gap-s6">
                 {hero.primaryCta && <Cta href={hero.primaryCta.href}>{hero.primaryCta.label}</Cta>}
@@ -82,6 +93,7 @@ export function MarketingPage({ hero, kpis, closing, children, className }: Mark
           </div>
           {hero.aside && <div>{hero.aside}</div>}
         </div>
+        {hero.payload && <div className="mt-s10">{hero.payload}</div>}
       </Section>
 
       {kpis && kpis.length > 0 && (
