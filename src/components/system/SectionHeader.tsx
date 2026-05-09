@@ -1,7 +1,7 @@
 /**
  * <SectionHeader> — the canonical section opener.
  *
- * Composition: mono "§ NN · LABEL" prefix → serif H2 → optional italic subhead.
+ * Composition: mono "NN · LABEL" prefix → serif H2 → optional italic subhead.
  * Used at the top of every section that introduces a new topic.
  *
  *   <SectionHeader number="01" label="The Path" title="From the work bankers do today, to the work AI lets them do." subtitle="Three stages, one banker." />
@@ -44,7 +44,7 @@ export function SectionHeader({
     <div className={cn("mb-s6", className)}>
       {showPrefix && (
         <p className={cn("font-mono text-mono-sm uppercase tracking-wider mb-s2", prefixColor)}>
-          {number ? `§ ${number}` : null}
+          {number ? <span className="tabular-nums">{number}</span> : null}
           {number && label ? <span className="mx-s2 opacity-60">·</span> : null}
           {label}
         </p>
