@@ -253,7 +253,7 @@ export default async function EducationPage() {
       <Section variant="parch" padding="default">
         <SectionHeader
           label="Tools"
-          title="Six platforms. No abstractions."
+          title="Cross-platform — find the best for your needs."
         />
         <ToolGrid className="mt-s8" />
       </Section>

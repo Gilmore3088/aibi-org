@@ -50,16 +50,24 @@ export function ToolGrid({ tools = TOOLS, className }: ToolGridProps) {
             </p>
           </div>
 
-          {/* Logo well — centered, generous, reads as the visual anchor */}
+          {/* Logo well — centered, generous, reads as the visual anchor.
+              <object> renders its child fallback automatically when the
+              SVG file is missing, so empty wells stay typographic instead
+              of showing browser broken-image icons. */}
           <div className="flex items-center justify-center px-s6 py-s8 lg:py-s10 min-h-[7rem]">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={`/tool-logos/${tool.slug}.svg`}
-              alt={`${tool.name} logo`}
-              className="max-h-12 w-auto max-w-[60%] object-contain"
-              loading="lazy"
-              decoding="async"
-            />
+            <object
+              data={`/tool-logos/${tool.slug}.svg`}
+              type="image/svg+xml"
+              aria-label={`${tool.name} logo`}
+              className="max-h-12 w-auto max-w-[60%] pointer-events-none"
+            >
+              <span
+                aria-hidden="true"
+                className="font-serif text-[3rem] leading-none text-ink/25 tracking-tight"
+              >
+                {tool.name.charAt(0)}
+              </span>
+            </object>
           </div>
 
           {/* Footer — name + vendor, hairline-divided */}
