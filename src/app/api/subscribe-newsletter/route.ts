@@ -1,10 +1,10 @@
 // POST /api/subscribe-newsletter
-// Validates, logs, and subscribes the visitor to the newsletter form.
-// No-op when CONVERTKIT_NEWSLETTER_FORM_ID is unset (returns ok=true
+// Validates, logs, and subscribes the visitor to the newsletter group.
+// No-op when MAILERLITE_GROUP_ID_NEWSLETTER is unset (returns ok=true
 // so the UI does not block on missing config).
 
 import { NextResponse } from 'next/server';
-import { subscribeToNewsletterForm } from '@/lib/convertkit';
+import { subscribeToNewsletterForm } from '@/lib/mailerlite';
 import { ensureAuthUser } from '@/lib/supabase/auth-admin';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -42,7 +42,7 @@ export async function POST(request: Request) {
     console.warn('[subscribe-newsletter] auth-admin skip', err),
   );
 
-  await subscribeToNewsletterForm({ email, tags: ['newsletter', `source:${source}`] }).catch(
+  await subscribeToNewsletterForm({ email, fields: { source } }).catch(
     (err) => console.warn('[subscribe-newsletter] skip', err)
   );
 

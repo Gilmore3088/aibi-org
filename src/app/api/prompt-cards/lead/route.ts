@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { subscribeToAssessmentForm } from '@/lib/convertkit';
+import { subscribeToAssessmentForm } from '@/lib/mailerlite';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -33,8 +33,8 @@ export async function POST(request: Request): Promise<NextResponse> {
 
   await subscribeToAssessmentForm({
     email,
-    tags: ['prompt-cards', `role:${body.role}`],
-  }).catch((err) => console.warn('[prompt-cards/lead] convertkit skip', err));
+    fields: { source: 'prompt-cards', role: body.role },
+  }).catch((err) => console.warn('[prompt-cards/lead] mailerlite skip', err));
 
   if (isSupabaseConfigured()) {
     const client = createServiceRoleClient();

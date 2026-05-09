@@ -1,15 +1,13 @@
-// Production guard: SKIP_CONVERTKIT=true must never reach prod, or every
-// real user opt-in silently skips the CK call and the nurture sequence
-// never fires. The staging suppression flag is only for staging/preview.
-//
-// Refs: docs/superpowers/specs/2026-05-04-assessment-results-spec-3-email.md
+// Production guard: SKIP_MAILERLITE=true must never reach prod, or every
+// real user opt-in silently skips the MailerLite call and the nurture
+// automation never fires. The suppression flag is only for staging/preview.
 if (
   process.env.NODE_ENV === 'production' &&
   process.env.VERCEL_ENV === 'production' &&
-  process.env.SKIP_CONVERTKIT === 'true'
+  process.env.SKIP_MAILERLITE === 'true'
 ) {
   throw new Error(
-    '[next.config] SKIP_CONVERTKIT=true detected in production environment. ' +
+    '[next.config] SKIP_MAILERLITE=true detected in production environment. ' +
       'This flag is for staging only. Remove it from Vercel production env vars before deploying.',
   );
 }

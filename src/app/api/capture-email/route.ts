@@ -4,7 +4,7 @@
 
 import { NextResponse } from 'next/server';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
-import { subscribeToAssessmentForm } from '@/lib/convertkit';
+import { subscribeToAssessmentForm } from '@/lib/mailerlite';
 import { upsertContact } from '@/lib/hubspot';
 import {
   upsertReadinessResult,
@@ -15,7 +15,7 @@ import {
   tagAssessmentTier,
   removeAssessmentTier,
   type TierId,
-} from '@/lib/convertkit/sequences';
+} from '@/lib/mailerlite/sequences';
 import { sendAssessmentBreakdown } from '@/lib/resend';
 import { ensureAuthUser } from '@/lib/supabase/auth-admin';
 import {
@@ -163,15 +163,15 @@ export async function POST(request: Request) {
   const trimmedFirstName = firstName?.trim() || undefined;
   const trimmedInstitution = institutionName?.trim() || undefined;
 
-  // ConvertKit fires only when the user explicitly opted in to marketing.
+  // MailerLite fires only when the user explicitly opted in to marketing.
   // Without consent the email is treated as transactional only — assessment
   // results, no nurture sequence.
   if (marketingOptIn === true) {
     await subscribeToAssessmentForm({
       email,
-      tags: [`tier:${tier}`],
+      fields: { tier },
       ...(trimmedFirstName ? { firstName: trimmedFirstName } : {}),
-    }).catch((err) => console.warn('[capture-email] convertkit skip', err));
+    }).catch((err) => console.warn('[capture-email] mailerlite skip', err));
   }
 
   // Provision a Supabase Auth account for this email (idempotent, fire-and-
@@ -217,16 +217,16 @@ export async function POST(request: Request) {
     profileId = result.id;
   }
 
-  // ConvertKit tier-sequence routing. Honors marketing_opt_in only.
-  // Retake re-route: if the prior tier differs, remove its tag first so
-  // the user lands cleanly in the new tier's sequence.
+  // MailerLite tier-routing. Honors marketing_opt_in only.
+  // Retake re-route: if the prior tier differs, remove its group first so
+  // the user lands cleanly in the new tier's automation.
   const VALID_TIERS: ReadonlySet<string> = new Set([
     'starting-point',
     'early-stage',
     'building-momentum',
     'ready-to-scale',
   ]);
-  let convertkitTagged = false;
+  let mailerliteTagged = false;
   if (marketingOptIn === true && VALID_TIERS.has(tier)) {
     const newTier = tier as TierId;
 
@@ -237,7 +237,7 @@ export async function POST(request: Request) {
       });
       if (removed.status === 'failed') {
         console.warn(
-          '[capture-email] CK retake unsubscribe failed:',
+          '[capture-email] mailerlite retake un-group failed:',
           removed.reason,
         );
       }
@@ -250,12 +250,12 @@ export async function POST(request: Request) {
     });
 
     if (added.status === 'tagged') {
-      convertkitTagged = true;
+      mailerliteTagged = true;
       if (profileId) {
         await markConvertKitTagged(profileId);
       }
     } else if (added.status === 'failed') {
-      console.warn('[capture-email] CK tier tag failed:', added.reason);
+      console.warn('[capture-email] mailerlite tier add failed:', added.reason);
     }
   }
 
@@ -297,6 +297,6 @@ export async function POST(request: Request) {
   return NextResponse.json({
     ok: true,
     profileId,
-    convertkitTagAdded: convertkitTagged,
+    mailerliteTagAdded: mailerliteTagged,
   });
 }
