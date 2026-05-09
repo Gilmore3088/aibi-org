@@ -124,18 +124,15 @@ export default async function EducationPage() {
         ) : undefined,
       }}
     >
-      {/* §01 — Two assessments */}
+      {/* Assessments */}
       <Section variant="linen" padding="default">
         <SectionHeader
-          number="01"
-          label="Assessments"
-          title="Two ways to measure readiness."
-          subtitle="Start with the free three-minute diagnostic. Move to the In-Depth when you need a defensible institution-wide picture."
+          title="Use our assessments to measure you or your team’s readiness."
         />
         <div className="grid md:grid-cols-2 gap-px bg-hairline border-y border-strong mt-s6">
           {assessments.map((a) => (
             <article key={a.title} className="bg-linen p-s8 lg:p-s10 flex flex-col">
-              <div className="flex items-center justify-between mb-s5">
+              <div className="flex items-center mb-s5">
                 <span
                   className={
                     a.tagTone === "free"
@@ -144,9 +141,6 @@ export default async function EducationPage() {
                   }
                 >
                   {a.tag}
-                </span>
-                <span className="font-mono text-mono-xs uppercase tracking-wider text-ink/40 tabular-nums">
-                  Diagnostic
                 </span>
               </div>
               <h3 className="font-serif text-display-sm leading-snug mb-s3">{a.title}</h3>

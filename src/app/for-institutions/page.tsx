@@ -5,7 +5,6 @@ import {
   SectionHeader,
   PillarCard,
   Cta,
-  Marginalia,
   ToolGrid,
   SkillGrid,
 } from "@/components/system";
@@ -46,28 +45,6 @@ export default function ForInstitutionsPage() {
         ),
         primaryCta: CTAS.requestPilot,
         secondaryCta: CTAS.beginAssessment,
-        aside: (
-          <Marginalia label="The engagement, in four lines">
-            <ul className="space-y-s3 text-body-sm leading-relaxed">
-              <li>
-                <span className="font-mono text-mono-sm tabular-nums text-terra mr-s2">01</span>
-                A coached cohort, an institution-wide program, or a leadership advisory.
-              </li>
-              <li>
-                <span className="font-mono text-mono-sm tabular-nums text-terra mr-s2">02</span>
-                Practitioners ship reviewed AI artifacts. Leadership gets a readiness baseline.
-              </li>
-              <li>
-                <span className="font-mono text-mono-sm tabular-nums text-terra mr-s2">03</span>
-                Aligned with SR 11-7, TPRM, ECOA / Reg B, and the AIEOG Lexicon.
-              </li>
-              <li>
-                <span className="font-mono text-mono-sm tabular-nums text-terra mr-s2">04</span>
-                No platform purchase. No vendor lock-in.
-              </li>
-            </ul>
-          </Marginalia>
-        ),
       }}
     >
       {/* Value prop band — what your institution actually gets.

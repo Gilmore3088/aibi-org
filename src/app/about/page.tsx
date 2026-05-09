@@ -139,7 +139,7 @@ export default function AboutPage() {
               <rect x="14" y="14" width="12" height="12" fill="currentColor" />
             </svg>
             <p className="font-serif-sc text-label-md uppercase tracking-widest text-terra mb-s3">
-              What was missing
+              What we built
             </p>
             <p className="font-serif text-display-xs leading-snug text-ink">
               A framework that puts AI in their hands.
