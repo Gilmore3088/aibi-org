@@ -69,6 +69,14 @@ export interface TagInput {
   readonly email: string;
   readonly tierId: TierId;
   readonly firstName?: string;
+  /** Supabase user_profiles.id — used by the email merge tag for /results/{id}. */
+  readonly profileId?: string;
+  /** Numeric score (1–48 scale on v2). */
+  readonly score?: number;
+  /** Human-readable tier (e.g. "Starting Point"). */
+  readonly tierLabel?: string;
+  /** Lowest-scoring dimension id (e.g. "current-ai-usage"). */
+  readonly lowestDimension?: string;
 }
 
 /**
@@ -93,6 +101,15 @@ export async function tagAssessmentTier(input: TagInput): Promise<TagResult> {
     return { status: 'skipped', reason: `no-group-id-for-${input.tierId}` };
   }
 
+  // Build the fields object once. Only set keys whose values are present so
+  // we never overwrite existing per-banker data with undefined on retake.
+  const fields: Record<string, string | number> = {};
+  if (input.firstName) fields.name = input.firstName;
+  if (input.profileId) fields.profile_id = input.profileId;
+  if (typeof input.score === 'number') fields.score = input.score;
+  if (input.tierLabel) fields.tier_label = input.tierLabel;
+  if (input.lowestDimension) fields.lowest_dimension = input.lowestDimension;
+
   try {
     const res = await fetch(`${ML_API_BASE}/subscribers`, {
       method: 'POST',
@@ -104,7 +121,7 @@ export async function tagAssessmentTier(input: TagInput): Promise<TagResult> {
       body: JSON.stringify({
         email: input.email,
         groups: [groupId],
-        ...(input.firstName ? { fields: { name: input.firstName } } : {}),
+        ...(Object.keys(fields).length > 0 ? { fields } : {}),
       }),
     });
 
