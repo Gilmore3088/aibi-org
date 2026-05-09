@@ -34,14 +34,6 @@ export default async function EducationPage() {
 
   const freeClasses: readonly FreeClass[] = [
     {
-      title: "AI Readiness Assessment",
-      subtitle:
-        "Eight questions, three minutes. Get your readiness score and a tailored next-step recommendation.",
-      cta: "Take the assessment",
-      href: "/assessment/start",
-      available: true,
-    },
-    {
       title: "The AI Banking Brief",
       subtitle:
         "Fortnightly research on regulatory updates, vendor moves, and practical AI use cases for community FIs.",
@@ -59,6 +51,49 @@ export default async function EducationPage() {
     },
   ];
 
+  interface AssessmentTile {
+    readonly tag: string;
+    readonly tagTone: "free" | "paid";
+    readonly title: string;
+    readonly subtitle: string;
+    readonly facts: readonly { readonly label: string; readonly value: string }[];
+    readonly cta: string;
+    readonly href: string;
+  }
+
+  const assessments: readonly AssessmentTile[] = [
+    {
+      tag: "Free",
+      tagTone: "free",
+      title: "AI Readiness Assessment",
+      subtitle:
+        "A quick diagnostic for your institution. Score, tier, and a tailored starter artifact you can take to your team this week.",
+      facts: [
+        { label: "Questions", value: "12" },
+        { label: "Time", value: "3 min" },
+        { label: "Format", value: "Self-serve · mobile-ready" },
+        { label: "Tuition", value: "Free" },
+      ],
+      cta: "Take the free assessment →",
+      href: "/assessment/start",
+    },
+    {
+      tag: "$99 · $79 at 10+",
+      tagTone: "paid",
+      title: "In-Depth Assessment",
+      subtitle:
+        "Forty-eight questions across eight readiness dimensions. Individual report, plus an anonymized aggregate dashboard for institution leaders.",
+      facts: [
+        { label: "Questions", value: "48" },
+        { label: "Time", value: "20 min" },
+        { label: "Format", value: "Individual + institution rollup" },
+        { label: "Tuition", value: "$99 · $79/seat at 10+" },
+      ],
+      cta: "Begin the In-Depth Assessment →",
+      href: "/assessment/in-depth",
+    },
+  ];
+
   return (
     <MarketingPage
       hero={{
@@ -73,6 +108,7 @@ export default async function EducationPage() {
           </>
         ),
         primaryCta: CTAS.beginAssessment,
+        secondaryCta: { href: "/assessment/in-depth", label: "Or take the In-Depth ($99)" },
         aside: isPEnrolled ? (
           <Marginalia label="Your progress">
             <h4 className="font-serif text-display-xs leading-snug">
@@ -88,15 +124,62 @@ export default async function EducationPage() {
         ) : undefined,
       }}
     >
-      {/* §01 — Free Classes */}
-      <Section variant="parch" padding="default">
+      {/* §01 — Two assessments */}
+      <Section variant="linen" padding="default">
         <SectionHeader
           number="01"
-          label="Classes · Free"
-          title="Start where you are."
-          subtitle="Short, free entry points. No purchase required. Designed to give you a clear answer in under five minutes."
+          label="Assessments"
+          title="Two ways to measure readiness."
+          subtitle="Start with the free three-minute diagnostic. Move to the In-Depth when you need a defensible institution-wide picture."
         />
-        <div className="grid sm:grid-cols-3 gap-px bg-hairline border-y border-strong mt-s6">
+        <div className="grid md:grid-cols-2 gap-px bg-hairline border-y border-strong mt-s6">
+          {assessments.map((a) => (
+            <article key={a.title} className="bg-linen p-s8 lg:p-s10 flex flex-col">
+              <div className="flex items-center justify-between mb-s5">
+                <span
+                  className={
+                    a.tagTone === "free"
+                      ? "font-serif-sc text-mono-sm uppercase tracking-widest text-terra border border-terra px-s3 py-[3px]"
+                      : "font-serif-sc text-mono-sm uppercase tracking-widest text-ink bg-amber-light px-s3 py-[3px]"
+                  }
+                >
+                  {a.tag}
+                </span>
+                <span className="font-mono text-mono-xs uppercase tracking-wider text-ink/40 tabular-nums">
+                  Diagnostic
+                </span>
+              </div>
+              <h3 className="font-serif text-display-sm leading-snug mb-s3">{a.title}</h3>
+              <p className="text-body-md leading-relaxed text-ink/80 mb-s6">{a.subtitle}</p>
+              <dl className="grid grid-cols-2 gap-y-s3 gap-x-s5 border-t border-hairline pt-s5 mb-s6">
+                {a.facts.map((f) => (
+                  <div key={f.label}>
+                    <dt className="font-serif-sc text-mono-xs uppercase tracking-wider text-ink/50 mb-[2px]">
+                      {f.label}
+                    </dt>
+                    <dd className="font-mono text-body-sm tabular-nums text-ink">{f.value}</dd>
+                  </div>
+                ))}
+              </dl>
+              <div className="mt-auto">
+                <Cta variant="secondary" href={a.href}>
+                  {a.cta}
+                </Cta>
+              </div>
+            </article>
+          ))}
+        </div>
+      </Section>
+
+      {/* §02 — Free Classes */}
+      <Section variant="parch" padding="default">
+        <SectionHeader
+          number="02"
+          label="Classes · Free"
+          title="Other free entry points."
+          subtitle="Subscribe to the Brief, watch a five-minute class. No purchase required."
+        />
+        <div className="grid sm:grid-cols-2 gap-px bg-hairline border-y border-strong mt-s6">
           {freeClasses.map((cls) => (
             <article
               key={cls.title}
@@ -120,10 +203,10 @@ export default async function EducationPage() {
         </div>
       </Section>
 
-      {/* §02 — Certification ladder */}
+      {/* §03 — Certification ladder */}
       <Section variant="linen" padding="default">
         <SectionHeader
-          number="02"
+          number="03"
           label="Certifications · Paid"
           title="Three credentials, one ladder."
           subtitle="Each certification builds on the previous. Earn the credential that matches your role today and advance when you are ready."
@@ -191,10 +274,10 @@ export default async function EducationPage() {
       {/* §03 — Sample question */}
       <SampleQuestion />
 
-      {/* §04 — Inquiry */}
+      {/* §05 — Inquiry */}
       <Section variant="parch" padding="default" container="narrow" id="inquiry-form">
         <SectionHeader
-          number="04"
+          number="05"
           label="Talk to us"
           title="Questions before you commit?"
         />
