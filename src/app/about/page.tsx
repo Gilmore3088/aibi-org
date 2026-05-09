@@ -22,9 +22,8 @@ export default function AboutPage() {
         ),
         lede: (
           <>
-            It takes two and a half hours. She knows it is inefficient. She has mentioned
-            it in three different meetings. Nothing has changed. That banker could fix it
-            herself in an afternoon. She just does not know that yet.
+            It takes two and a half hours. She knows it is inefficient. She could fix it
+            herself in an afternoon — she just does not know that yet.
           </>
         ),
         primaryCta: CTAS.beginAssessment,
@@ -43,30 +42,48 @@ export default function AboutPage() {
         ),
       }}
     >
-      {/* Mission narrative — the original About voice, preserved */}
-      <Section variant="parchDark" padding="default" container="narrow">
-        <div className="space-y-s6 text-body-lg leading-relaxed text-ink/85">
-          <p className="font-serif italic text-display-sm text-terra">
-            The AI Banking Institute exists for her.
+      {/* Mission monument + three-card distillation */}
+      <Section variant="parchDark" padding="default">
+        <div className="max-w-narrow mx-auto">
+          <p className="font-serif italic text-display-lg leading-[1.05] text-terra">
+            The Institute exists for her.
           </p>
-          <p>
-            Not for the twenty largest banks in the country, who have the budgets and the
-            teams and the consultants. For the community banks and credit unions that
-            anchor towns and neighborhoods and small businesses — the ones that remember
-            your name, that lend to people an algorithm would have rejected, that show up
-            when it matters.
-          </p>
-          <p>
-            Those institutions have something the large banks do not: people who are
-            deeply, personally invested in the community they serve. They have passion.
-            They have institutional knowledge. They have relationships no technology can
-            replicate.
-          </p>
-          <p>
-            What they have not had, until now, is a framework that puts AI in their
-            hands — not the hands of a vendor, not the hands of a hired expert, but their
-            own hands.
-          </p>
+        </div>
+        <div className="grid md:grid-cols-3 gap-px bg-hairline border-y border-strong mt-s10">
+          <div className="bg-parch p-s6">
+            <p className="font-serif-sc text-label-md uppercase tracking-widest text-terra mb-s3">
+              Not for
+            </p>
+            <p className="font-serif text-display-xs leading-snug text-ink">
+              The twenty largest banks.
+            </p>
+            <p className="text-body-sm text-ink/75 leading-relaxed mt-s3">
+              They have the budgets, the teams, the consultants.
+            </p>
+          </div>
+          <div className="bg-parch p-s6">
+            <p className="font-serif-sc text-label-md uppercase tracking-widest text-terra mb-s3">
+              Built for
+            </p>
+            <p className="font-serif text-display-xs leading-snug text-ink">
+              The institutions that anchor towns.
+            </p>
+            <p className="text-body-sm text-ink/75 leading-relaxed mt-s3">
+              Community banks and credit unions with passion, knowledge, and relationships
+              no technology can replicate.
+            </p>
+          </div>
+          <div className="bg-parch p-s6">
+            <p className="font-serif-sc text-label-md uppercase tracking-widest text-terra mb-s3">
+              What was missing
+            </p>
+            <p className="font-serif text-display-xs leading-snug text-ink">
+              A framework that puts AI in their hands.
+            </p>
+            <p className="text-body-sm text-ink/75 leading-relaxed mt-s3">
+              Not the vendor's. Not a hired expert's. Theirs.
+            </p>
+          </div>
         </div>
       </Section>
 
