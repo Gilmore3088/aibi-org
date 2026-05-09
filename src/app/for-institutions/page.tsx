@@ -38,8 +38,8 @@ export default function ForInstitutionsPage() {
             No software seats. No vendor lock-in.
           </span>
         ),
-        primaryCta: CTAS.requestPilot,
-        secondaryCta: CTAS.beginAssessment,
+        primaryCta: CTAS.beginAssessment,
+        secondaryCta: CTAS.requestPilot,
         divider: "hairline",
       }}
     >
