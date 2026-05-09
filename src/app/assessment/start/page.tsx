@@ -9,6 +9,7 @@ export const metadata: Metadata = {
 };
 
 interface AssessmentTile {
+  readonly audience: string;
   readonly title: React.ReactNode;
   readonly body: string;
   readonly facts: readonly { readonly label: string; readonly value: string }[];
@@ -19,6 +20,7 @@ interface AssessmentTile {
 const TILES: readonly AssessmentTile[] = [
   {
     surface: "linen",
+    audience: "Best for individuals",
     title: (
       <>
         AI <em className="text-terra">Readiness</em> Assessment
@@ -36,6 +38,7 @@ const TILES: readonly AssessmentTile[] = [
   },
   {
     surface: "parch",
+    audience: "Best for teams or groups",
     title: (
       <>
         <em className="text-terra">In-Depth</em> Assessment
@@ -87,6 +90,9 @@ export default function AssessmentStartPage() {
                 key={tile.cta.href}
                 className={`${surfaceClass} px-s7 py-s12 md:py-s14 ${sideClass} flex flex-col`}
               >
+                <p className="font-mono text-label-md uppercase tracking-widest text-terra mb-s5">
+                  {tile.audience}
+                </p>
                 <h2 className="font-serif text-display-lg md:text-display-xl text-ink leading-[1.05] tracking-tightish max-w-[14ch]">
                   {tile.title}
                 </h2>
