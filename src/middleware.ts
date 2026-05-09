@@ -42,7 +42,16 @@ const COMING_SOON_BYPASS_PREFIXES: readonly string[] = [
   '/education',
   '/for-institutions',
   '/courses',
+  // design-2.0 canonical surfaces — added so the new design refresh can
+  // be reviewed end-to-end while COMING_SOON=true is still set.
+  '/about',
+  '/research',
+  '/security',
 ];
+
+// Exact-match bypass — for paths where prefix-matching would over-match
+// (notably "/", whose prefix would match every path on the site).
+const COMING_SOON_BYPASS_EXACT: readonly string[] = ['/'];
 
 export async function middleware(request: NextRequest): Promise<NextResponse> {
   const { pathname } = request.nextUrl;
@@ -50,9 +59,11 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
   // Coming-soon mode: rewrite public routes to /coming-soon.
   // The browser URL stays the same; the user sees the placeholder.
   if (COMING_SOON_MODE) {
-    const isBypassed = COMING_SOON_BYPASS_PREFIXES.some(
-      (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
-    );
+    const isBypassed =
+      COMING_SOON_BYPASS_EXACT.includes(pathname) ||
+      COMING_SOON_BYPASS_PREFIXES.some(
+        (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
+      );
     if (!isBypassed) {
       const rewriteUrl = request.nextUrl.clone();
       rewriteUrl.pathname = COMING_SOON_PATH;
