@@ -4,6 +4,7 @@ import Link from 'next/link';
 import type { ReactNode } from 'react';
 import { useEffect, useState } from 'react';
 import { TOOLS, type CurriculumTool } from '@content/curriculum/tools';
+import { SKILLS } from '@content/curriculum/skills';
 
 const PLATFORM_CATEGORY_LABEL: Record<CurriculumTool['category'], string> = {
   'general-llm': 'General',
@@ -71,7 +72,7 @@ const CAPABILITIES: readonly Capability[] = [
     id: 'skills',
     title: 'Skills',
     subtitle:
-      'AI sounds confident. The citation might be invented. The dollar figure might be wrong. Catch it before it leaves the bank.',
+      'Eleven verb-stated capabilities your team can demonstrate on day one — from spotting daily AI wins to shipping a reviewed workflow.',
     prompt:
       'Review this AI-drafted compliance response. Flag every regulatory citation, dollar threshold, deadline, and named person. For each, mark: ✓ verified against source, ⚠ likely correct but unverified, ✗ possible hallucination. Rewrite using only ✓ items.',
     output: [
@@ -264,8 +265,9 @@ export function InteractiveSkillsPreview({
             })}
           </ul>
 
-          {/* Right column — Tools tab gets a platforms panel; other tabs
-              get the stacked Sample Prompt + AI-Assisted Result demo. */}
+          {/* Right column — Tools and Skills tabs render curriculum-data
+              panels (no demo, just the list). Other tabs get the stacked
+              Sample Prompt + AI-Assisted Result demo. */}
           {active.id === 'tools' ? (
             <div
               id="capability-panel"
@@ -275,6 +277,16 @@ export function InteractiveSkillsPreview({
               className="animate-[fadeIn_220ms_ease-out]"
             >
               <PlatformsPanel />
+            </div>
+          ) : active.id === 'skills' ? (
+            <div
+              id="capability-panel"
+              role="tabpanel"
+              key={active.id}
+              aria-live="polite"
+              className="animate-[fadeIn_220ms_ease-out]"
+            >
+              <SkillsPanel />
             </div>
           ) : (
             <div
@@ -399,6 +411,42 @@ function PlatformsPanel() {
           </div>
         ))}
       </dl>
+    </article>
+  );
+}
+
+/**
+ * <SkillsPanel> — replaces the prompt + result demo on the Skills tab.
+ * Renders the curriculum's verb-stated skills (content/curriculum/skills.ts)
+ * as a numbered list. No prompt, no AI demo — the actual list of
+ * capabilities a practitioner leaves with.
+ */
+function SkillsPanel() {
+  return (
+    <article className="bg-parch border border-hairline">
+      <header className="flex items-center justify-between px-s5 md:px-s6 py-s4 border-b border-hairline">
+        <p className="font-serif-sc text-label-sm uppercase tracking-widest text-terra">
+          Skills you leave with
+        </p>
+        <p className="font-mono text-mono-xs uppercase tracking-wider text-ink/40 tabular-nums">
+          {String(SKILLS.length).padStart(2, '0')}
+        </p>
+      </header>
+      <ol className="divide-y divide-hairline">
+        {SKILLS.map((skill, idx) => (
+          <li
+            key={skill.slug}
+            className="grid grid-cols-[2.5rem_1fr] gap-s4 px-s5 md:px-s6 py-s3 items-baseline"
+          >
+            <span className="font-mono text-mono-sm tabular-nums text-terra">
+              {String(idx + 1).padStart(2, '0')}
+            </span>
+            <span className="font-serif text-body-md text-ink leading-snug">
+              {skill.verb}
+            </span>
+          </li>
+        ))}
+      </ol>
     </article>
   );
 }
