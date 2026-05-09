@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { MarketingPage } from "@/components/system/templates";
-import { Section, SectionHeader, EditorialQuote, Marginalia } from "@/components/system";
+import { Section, SectionHeader, EditorialQuote } from "@/components/system";
 import { BRAND, PRINCIPLES, CTAS } from "@content/copy";
 
 export const metadata: Metadata = {
@@ -27,19 +27,6 @@ export default function AboutPage() {
           </>
         ),
         primaryCta: CTAS.beginAssessment,
-        aside: (
-          <Marginalia label="Founder">
-            <h4 className="font-serif text-display-xs leading-snug">{BRAND.founder.name}</h4>
-            <p className="font-serif italic text-body-sm text-slate mt-s1">
-              {BRAND.founder.role}
-            </p>
-            {BRAND.founder.bio && (
-              <p className="text-body-sm leading-relaxed border-t border-hairline pt-s3 mt-s4">
-                {BRAND.founder.bio}
-              </p>
-            )}
-          </Marginalia>
-        ),
       }}
     >
       {/* Mission monument + three-card distillation */}
