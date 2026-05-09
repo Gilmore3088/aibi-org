@@ -20,7 +20,7 @@ export interface LadderRung {
   readonly title: string;
   readonly designation: string;
   readonly facts: readonly DefinitionListItem[];
-  readonly blurb: string;
+  readonly blurb?: string;
   readonly href: string;
   readonly pillar: Pillar;
   readonly comingSoon?: boolean;
@@ -51,7 +51,9 @@ export function CertificationLadder({ rungs, className }: CertificationLadderPro
           <PillarCard.Title level={3}>{rung.code}</PillarCard.Title>
           <PillarCard.Designation>{rung.designation}</PillarCard.Designation>
           <DefinitionList items={rung.facts} className="my-s4" />
-          <p className="text-body-sm leading-relaxed text-ink/80 mb-s4">{rung.blurb}</p>
+          {rung.blurb && (
+            <p className="text-body-sm leading-relaxed text-ink/80 mb-s4">{rung.blurb}</p>
+          )}
           <Link
             href={rung.href}
             className="text-terra border-b border-terra pb-[1px] text-body-sm font-medium hover:text-terra-light hover:border-terra-light transition-colors"

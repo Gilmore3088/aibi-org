@@ -206,8 +206,6 @@ export default async function EducationPage() {
                 { label: "Effort", value: `${modules.length} modules`, mono: true },
                 { label: "Tuition", value: "$295 · $199/seat at 10+", mono: true },
               ],
-              blurb:
-                "For everyone in the bank: tellers, lenders, ops, compliance, executive support. Ends with a portfolio of reviewed AI artifacts.",
               href: "/courses/aibi-p",
             },
             {
@@ -223,8 +221,6 @@ export default async function EducationPage() {
                 { label: "Effort", value: "Track-dependent", mono: true },
                 { label: "Tuition", value: "Coming soon" },
               ],
-              blurb:
-                "Role-specific tracks: Ops, Lending, Compliance, Risk. For practitioners ready to lead AI within a function.",
               href: "/coming-soon?interest=specialist",
               comingSoon: true,
             },
@@ -241,8 +237,6 @@ export default async function EducationPage() {
                 { label: "Effort", value: "Capstone", mono: true },
                 { label: "Tuition", value: "Coming soon" },
               ],
-              blurb:
-                "Governance, vendor risk, AI strategy, and the SR 11-7 stack. Optional fractional Chief AI Officer engagement.",
               href: "/coming-soon?interest=leader",
               comingSoon: true,
             },

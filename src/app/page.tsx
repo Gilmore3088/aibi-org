@@ -118,7 +118,6 @@ export default function HomePage() {
                 { label: "Outcome", value: "Working AI literacy" },
                 { label: "Tuition", value: "$295 · $199/seat at 10+", mono: true },
               ],
-              blurb: "For everyone in the bank. Three reviewed AI artifacts.",
               href: "/courses/aibi-p",
             },
             {
@@ -134,7 +133,6 @@ export default function HomePage() {
                 { label: "Outcome", value: "Domain-deep AI capability" },
                 { label: "Tuition", value: "Coming soon" },
               ],
-              blurb: "Role tracks: Ops, Lending, Compliance, Risk.",
               href: "/coming-soon?interest=specialist",
               comingSoon: true,
             },
@@ -151,7 +149,6 @@ export default function HomePage() {
                 { label: "Outcome", value: "Enterprise AI strategy" },
                 { label: "Tuition", value: "Coming soon" },
               ],
-              blurb: "Executives, the board, and the SR 11-7 stack.",
               href: "/coming-soon?interest=leader",
               comingSoon: true,
             },
