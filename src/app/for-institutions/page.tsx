@@ -1,9 +1,15 @@
 import type { Metadata } from "next";
 import { MarketingPage } from "@/components/system/templates";
-import { Section, SectionHeader, PillarCard, Cta, Marginalia } from "@/components/system";
+import {
+  Section,
+  SectionHeader,
+  PillarCard,
+  Cta,
+  Marginalia,
+  ToolGrid,
+  SkillGrid,
+} from "@/components/system";
 import { enrollmentTiers } from "@content/institutions/v1";
-import { TOOLS } from "@content/curriculum/tools";
-import { SKILLS } from "@content/curriculum/skills";
 import { CTAS } from "@content/copy";
 import type { Pillar } from "@/lib/design-system/tokens";
 
@@ -133,24 +139,16 @@ export default function ForInstitutionsPage() {
                 </p>
                 <PillarCard.Title level={3}>{tier.name}</PillarCard.Title>
                 <PillarCard.Designation>{tier.tagline}</PillarCard.Designation>
-                <p className="text-body-sm text-ink/80 leading-relaxed mb-s4">
-                  {tier.summary}
-                </p>
-                <div className="bg-parch p-s4 mb-s4 border-l-2 border-l-terra">
-                  <p className="font-mono text-label-sm uppercase tracking-widest text-slate mb-s2">
-                    What&rsquo;s included
-                  </p>
-                  <ul className="space-y-s1 text-body-sm">
-                    {tier.included.map((item) => (
-                      <li key={item} className="grid grid-cols-[12px_1fr] gap-s2">
-                        <span aria-hidden="true" className="font-mono text-terra">
-                          —
-                        </span>
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                <ul className="border-y border-hairline py-s3 my-s4 space-y-s1 text-body-sm">
+                  {tier.included.map((item) => (
+                    <li key={item} className="grid grid-cols-[12px_1fr] gap-s2">
+                      <span aria-hidden="true" className="font-mono text-terra">
+                        —
+                      </span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
                 <Cta variant="secondary" href={ctaHref}>
                   {tier.cta.label} →
                 </Cta>
@@ -160,73 +158,24 @@ export default function ForInstitutionsPage() {
         </div>
       </Section>
 
-      {/* §02 — Tools & skills */}
+      {/* §02 — Tools, named */}
       <Section variant="parch" padding="default">
         <SectionHeader
           number="02"
-          label="What your bankers will use, and leave knowing how to do"
-          title="The tools and skills inside the engagement."
-          subtitle="Vendor-named tools. Verb-stated skills. Each one ties back to a specific module of the curriculum."
+          label="Tools, named"
+          title="Six platforms. No abstractions."
         />
-        <div className="grid md:grid-cols-2 gap-s10 mt-s6 border-t border-strong pt-s6">
-          <div>
-            <h3 className="font-mono text-label-md uppercase tracking-widest text-terra mb-s4">
-              Tools your bankers will use
-            </h3>
-            <ul className="space-y-0">
-              {TOOLS.map((tool, idx) => (
-                <li
-                  key={tool.slug}
-                  className="border-b border-hairline py-s3 grid grid-cols-[28px_1fr] gap-s3 items-baseline text-body-sm"
-                >
-                  <span className="font-mono text-mono-sm tabular-nums text-slate">
-                    {String(idx + 1).padStart(2, "0")}
-                  </span>
-                  <span>
-                    <strong className="font-serif text-body-md text-ink block">
-                      {tool.name}
-                      <span className="font-sans text-body-sm font-normal text-slate ml-s2">
-                        · {tool.vendor}
-                      </span>
-                    </strong>
-                    <span className="text-body-sm text-slate">{tool.note}</span>
-                    <span className="block font-mono text-label-sm uppercase tracking-widest text-dust mt-s1">
-                      Modules{" "}
-                      {tool.modules.map((m) => String(m).padStart(2, "0")).join(" · ")}
-                    </span>
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h3 className="font-mono text-label-md uppercase tracking-widest text-terra mb-s4">
-              Skills your bankers will leave with
-            </h3>
-            <ul className="space-y-0">
-              {SKILLS.map((skill, idx) => (
-                <li
-                  key={skill.slug}
-                  className="border-b border-hairline py-s3 grid grid-cols-[28px_1fr] gap-s3 items-baseline text-body-sm"
-                >
-                  <span className="font-mono text-mono-sm tabular-nums text-slate">
-                    {String(idx + 1).padStart(2, "0")}
-                  </span>
-                  <span>
-                    <strong className="font-serif text-body-md text-ink block">
-                      {skill.verb}
-                    </strong>
-                    <span className="text-body-sm text-slate">{skill.note}</span>
-                    <span className="block font-mono text-label-sm uppercase tracking-widest text-dust mt-s1">
-                      Modules{" "}
-                      {skill.modules.map((m) => String(m).padStart(2, "0")).join(" · ")}
-                    </span>
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
+        <ToolGrid className="mt-s8" />
+      </Section>
+
+      {/* §03 — Skills, verb-stated */}
+      <Section variant="linen" padding="default">
+        <SectionHeader
+          number="03"
+          label="Skills, verb-stated"
+          title="What practitioners can do on day one."
+        />
+        <SkillGrid className="mt-s8" />
       </Section>
 
       {/* §03 — Pilot CTA */}

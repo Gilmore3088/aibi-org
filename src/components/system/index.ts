@@ -44,6 +44,15 @@ export type { CtaProps } from "./Cta";
 export { TransformationArc } from "./TransformationArc";
 export type { ArcStage, TransformationArcProps } from "./TransformationArc";
 
+export { TransformationFlow } from "./TransformationFlow";
+export type { FlowStage, TransformationFlowProps } from "./TransformationFlow";
+
+export { ToolGrid } from "./ToolGrid";
+export type { ToolGridProps } from "./ToolGrid";
+
+export { SkillGrid } from "./SkillGrid";
+export type { SkillGridProps } from "./SkillGrid";
+
 export { CertificationLadder } from "./CertificationLadder";
 export type { LadderRung, CertificationLadderProps } from "./CertificationLadder";
 

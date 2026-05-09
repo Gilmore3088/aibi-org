@@ -3,7 +3,7 @@ import { MarketingPage } from "@/components/system/templates";
 import {
   Section,
   SectionHeader,
-  TransformationArc,
+  TransformationFlow,
   CertificationLadder,
   Cta,
 } from "@/components/system";
@@ -74,63 +74,20 @@ export default function HomePage() {
         cta: CTAS.takeAssessment,
       }}
     >
-      {/* §01 — The Path: transformation arc */}
-      <Section variant="linen" padding="default">
+      {/* §01 — The Path: visual flow, minimal text */}
+      <Section variant="linen" padding="hero">
         <SectionHeader
           number="01"
           label="The Path"
-          title="From the work bankers do today, to the work AI lets them do."
-          subtitle="Three stages, one banker. The institution gains capability because its people gained capability."
+          title="One banker. Three stages."
         />
-        <TransformationArc
+        <TransformationFlow
+          className="mt-s12 mb-s10"
           stages={[
-            {
-              stageLabel: "Stage 01 · Today",
-              title: "The banker",
-              body: (
-                <>
-                  Skilled at the work. AI feels adjacent — either hyped, restricted, or
-                  both. Curiosity is real; permission is unclear.
-                </>
-              ),
-              attributes: [
-                "Domain expertise",
-                "Manual or partial workflows",
-                "Risk-aware, AI-uncertain",
-              ],
-            },
-            {
-              stageLabel: "Stage 02 · The Path",
-              title: "The practitioner",
-              body: (
-                <>
-                  Working AI literacy, role-relevant artifacts, examiner-ready posture.
-                  Permission becomes operational.
-                </>
-              ),
-              attributes: [
-                "Three reviewed AI artifacts",
-                "Regulator-aligned guardrails",
-                "AiBI-Practitioner credential",
-              ],
-            },
-            {
-              stageLabel: "Stage 03 · In a year",
-              title: "The builder",
-              body: (
-                <>
-                  The banker who turns institution-specific problems into AI-native
-                  workflows the bank actually uses, with leadership a path away.
-                </>
-              ),
-              attributes: [
-                "Functional AI ownership",
-                "AiBI-S specialist track",
-                "Path to AiBI-L leadership",
-              ],
-            },
+            { index: "01", stage: "Today", title: "The banker", tagline: "Skilled at the work. AI feels adjacent." },
+            { index: "02", stage: "The Path", title: "The practitioner", tagline: "Working AI literacy. Examiner-ready posture." },
+            { index: "03", stage: "In a year", title: "The builder", tagline: "AI-native workflows the institution uses." },
           ]}
-          className="mt-s6"
         />
       </Section>
 
@@ -161,8 +118,7 @@ export default function HomePage() {
                 { label: "Outcome", value: "Working AI literacy" },
                 { label: "Tuition", value: "$295 · $199/seat at 10+", mono: true },
               ],
-              blurb:
-                "For everyone in the bank: tellers, lenders, ops, compliance. Ends with a portfolio of reviewed AI artifacts.",
+              blurb: "For everyone in the bank. Three reviewed AI artifacts.",
               href: "/courses/aibi-p",
             },
             {
@@ -178,8 +134,7 @@ export default function HomePage() {
                 { label: "Outcome", value: "Domain-deep AI capability" },
                 { label: "Tuition", value: "Coming soon" },
               ],
-              blurb:
-                "Role-specific tracks: Ops, Lending, Compliance, Risk. For practitioners ready to lead AI within a function.",
+              blurb: "Role tracks: Ops, Lending, Compliance, Risk.",
               href: "/coming-soon?interest=specialist",
               comingSoon: true,
             },
@@ -196,8 +151,7 @@ export default function HomePage() {
                 { label: "Outcome", value: "Enterprise AI strategy" },
                 { label: "Tuition", value: "Coming soon" },
               ],
-              blurb:
-                "For executives and board members. Governance, vendor risk, AI strategy, and the SR 11-7 stack.",
+              blurb: "Executives, the board, and the SR 11-7 stack.",
               href: "/coming-soon?interest=leader",
               comingSoon: true,
             },
