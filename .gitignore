@@ -47,3 +47,6 @@ next-env.d.ts
 
 # Superpowers brainstorm session runtime state
 .superpowers/brainstorm/
+
+# Local-only audit viewers (generated alongside their .md source)
+docs/superpowers/design-system/ui-review.html
