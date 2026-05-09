@@ -4,184 +4,196 @@ import Link from 'next/link';
 import type { ReactNode } from 'react';
 import { useEffect, useState } from 'react';
 
-type SkillPreview = {
+type Capability = {
   readonly id: string;
   readonly title: string;
+  readonly subtitle: string;
   readonly before: string;
   readonly prompt: string;
   readonly output: readonly string[];
-  readonly cta: string;
 };
 
-const SKILLS: readonly SkillPreview[] = [
+const CAPABILITIES: readonly Capability[] = [
   {
-    id: 'emails',
-    title: 'Write better emails',
+    id: 'tools',
+    title: 'Tools',
+    subtitle: 'The platforms',
     before:
-      'Customer is upset about a fee. Need to respond without promising a refund.',
+      'Microsoft Copilot is rolled out bank-wide. Staff do not know when to use it vs ChatGPT vs Claude.',
     prompt:
-      'Draft a professional response to a customer upset about a fee. Keep the tone empathetic, do not promise a refund, and offer to review the account by phone.',
+      'Compare Microsoft Copilot, ChatGPT, and Claude for a community bank operations team. For each: one task it does well, one it does poorly, one type of data that should never be pasted in. Three-row table.',
     output: [
-      'Thanks for reaching out.',
-      'I understand why this fee is frustrating.',
-      'I would be happy to review the account activity with you and walk through what happened.',
-      'Please call me at [PHONE] or reply with a convenient time.',
+      'Copilot — best: drafting Outlook replies inside the inbox. Weak: long policy analysis. Never paste: customer SSN, account numbers.',
+      'ChatGPT — best: rewriting policy in plain English. Weak: live regulatory citations. Never paste: PII, internal memos.',
+      'Claude — best: long-document analysis with citations. Weak: real-time data. Never paste: confidential examination findings.',
     ],
-    cta: 'Copy sample prompt',
-  },
-  {
-    id: 'policies',
-    title: 'Summarize policies',
-    before:
-      'A five-page procedure needs to become branch-ready instructions.',
-    prompt:
-      'Summarize this policy for frontline banking staff. Separate required actions, background context, and items that need supervisor review.',
-    output: [
-      'Required actions:',
-      '1. Use the updated checklist for every new account.',
-      '2. Confirm documentation before account opening.',
-      '3. Escalate exceptions to Operations.',
-    ],
-    cta: 'Copy sample prompt',
-  },
-  {
-    id: 'review',
-    title: 'Review AI safely',
-    before:
-      'AI gave a confident answer, but some claims may be unsupported.',
-    prompt:
-      'Review this AI-generated response. Identify unsupported claims, mark anything that needs review, and rewrite using only verified facts.',
-    output: [
-      'Needs review:',
-      '- Specific regulatory citation',
-      '- Effective date',
-      '- Claim that all community banks are exempt',
-    ],
-    cta: 'Copy sample prompt',
   },
   {
     id: 'prompts',
-    title: 'Build reusable prompts',
+    title: 'Prompts',
+    subtitle: 'Reusable patterns',
     before:
-      'You repeat the same weekly reporting task and keep rewriting the instructions.',
+      'You repeat the same weekly reporting task and rewrite the instructions every time.',
     prompt:
-      'Turn this recurring task into a reusable prompt with role, task, audience, output format, and review constraints.',
+      'Turn this recurring task into a reusable prompt. Include role, audience, output format, and review checkpoints so any teammate can run it.',
     output: [
       'Reusable prompt:',
       'You are a banking operations assistant.',
-      'Summarize [REPORT] for [AUDIENCE] in a table with key changes, risks, and follow-up items.',
+      'Summarize [REPORT] for [AUDIENCE].',
+      'Output a table: changes, risks, follow-up items.',
+      'Flag anything that needs supervisor review.',
     ],
-    cta: 'Copy sample prompt',
   },
   {
-    id: 'hours',
-    title: 'Save hours every week',
+    id: 'skills',
+    title: 'Skills',
+    subtitle: 'Verify before you trust',
     before:
-      'Meeting notes are messy and no one knows the decisions, owners, or next steps.',
+      'AI gave a confident answer about a regulatory citation. Some of it might be wrong.',
     prompt:
-      'Turn these meeting notes into decisions, action items, owners, deadlines, and open questions. Do not invent missing owners or dates.',
+      'Review this AI-generated response. Identify unsupported claims, mark anything that needs verification against the source, and rewrite using only verified facts.',
     output: [
-      'Action items:',
-      '- Operations: update checklist by Friday',
-      '- Branch managers: confirm team review',
-      '- Open question: who owns exception tracking?',
+      'Needs review:',
+      '— Specific regulatory citation (verify section)',
+      '— Effective date (cited as 2024 — confirm)',
+      '— Claim that all community banks under $10B are exempt (overbroad)',
     ],
-    cta: 'Copy sample prompt',
+  },
+  {
+    id: 'agents',
+    title: 'Agents',
+    subtitle: 'Workflow thinking',
+    before:
+      'You want to automate vendor risk reviews. Each touches three systems and two compliance frameworks.',
+    prompt:
+      'Map this workflow before automating. List every step, every decision, every human checkpoint. Mark which steps AI can draft and which require a human signoff.',
+    output: [
+      'Step 1 — Vendor questionnaire intake. AI: summarize. Human signoff: no.',
+      'Step 2 — Initial risk classification. AI: draft. Human signoff: REQUIRED (model risk officer).',
+      'Step 3 — Compliance mapping (SR 11-7, TPRM). AI: cross-reference. Human signoff: REQUIRED.',
+      'Step 4 — Final approval. Human only. AI not in the loop.',
+    ],
+  },
+  {
+    id: 'more',
+    title: 'More',
+    subtitle: 'The SAFE rule',
+    before:
+      'A customer just emailed asking to dispute a wire transfer. You are tempted to paste it into ChatGPT.',
+    prompt:
+      'Apply the SAFE rule to this email before any AI use. Classify what is sensitive, what is fine to paste, and what should be redacted before drafting a response.',
+    output: [
+      'S — Sensitive: customer name, account number, wire amount → redact',
+      'A — Approved tools only: Copilot inside the bank’s M365 tenant; not personal ChatGPT',
+      'F — Facts to verify: dispute deadline, Regulation E timeline',
+      'E — Escalate: ops manager + compliance before sending',
+    ],
   },
 ] as const;
 
-export function InteractiveSkillsPreview() {
-  const [activeSkillId, setActiveSkillId] = useState<string>(SKILLS[0].id);
-  const [copiedSkillId, setCopiedSkillId] = useState<string | null>(null);
+export interface InteractiveSkillsPreviewProps {
+  /** Section eyebrow above the heading. Defaults to "Inside the course". */
+  readonly eyebrow?: string;
+  /** Main heading. Defaults to a homepage-friendly framing. */
+  readonly heading?: string;
+  /** Subhead below the heading. Defaults to a one-liner. */
+  readonly subhead?: string;
+}
+
+export function InteractiveSkillsPreview({
+  eyebrow = 'Inside the course',
+  heading = 'Learn these capabilities in AiBI-Practitioner.',
+  subhead = 'Tools, prompts, skills, agents — and the judgment to use them inside a regulated institution.',
+}: InteractiveSkillsPreviewProps = {}) {
+  const [activeId, setActiveId] = useState<string>(CAPABILITIES[0].id);
+  const [copied, setCopied] = useState(false);
   const [visibleLines, setVisibleLines] = useState(0);
 
-  const activeSkill = SKILLS.find((skill) => skill.id === activeSkillId) ?? SKILLS[0];
-  const animationComplete = visibleLines >= activeSkill.output.length;
+  const active = CAPABILITIES.find((c) => c.id === activeId) ?? CAPABILITIES[0];
+  const animationComplete = visibleLines >= active.output.length;
 
   useEffect(() => {
     setVisibleLines(0);
-    const timers = activeSkill.output.map((_, index) =>
-      window.setTimeout(() => {
-        setVisibleLines(index + 1);
-      }, 420 + index * 360)
+    const timers = active.output.map((_, index) =>
+      window.setTimeout(() => setVisibleLines(index + 1), 360 + index * 320)
     );
+    return () => timers.forEach(window.clearTimeout);
+  }, [activeId, active.output]);
 
-    return () => {
-      timers.forEach(window.clearTimeout);
-    };
-  }, [activeSkillId, activeSkill.output]);
-
-  async function copyPrompt(skill: SkillPreview) {
+  async function copyPrompt() {
     try {
-      await navigator.clipboard.writeText(skill.prompt);
+      await navigator.clipboard.writeText(active.prompt);
     } catch {
-      const textarea = document.createElement('textarea');
-      textarea.value = skill.prompt;
-      textarea.setAttribute('readonly', '');
-      textarea.style.position = 'fixed';
-      textarea.style.left = '-9999px';
-      document.body.appendChild(textarea);
-      textarea.select();
+      const ta = document.createElement('textarea');
+      ta.value = active.prompt;
+      ta.style.position = 'fixed';
+      ta.style.left = '-9999px';
+      document.body.appendChild(ta);
+      ta.select();
       document.execCommand('copy');
-      document.body.removeChild(textarea);
+      document.body.removeChild(ta);
     }
-
-    setCopiedSkillId(skill.id);
-    window.setTimeout(() => setCopiedSkillId(null), 1800);
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 1800);
   }
 
   return (
-    <section className="px-6 py-14 md:py-20 bg-[color:var(--color-linen)] border-b border-[color:var(--color-ink)]/10">
-      <div className="max-w-6xl mx-auto">
-        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
-          <div className="max-w-3xl">
-            <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-4">
-              Skills preview
+    <section className="px-s7 py-s12 md:py-s14 bg-linen border-y border-hairline">
+      <div className="max-w-wide mx-auto">
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-s6">
+          <div className="max-w-narrow">
+            <p className="font-serif-sc text-label-md uppercase tracking-widest text-terra mb-s4">
+              {eyebrow}
             </p>
-            <h2 className="font-serif text-4xl md:text-5xl text-[color:var(--color-ink)] leading-tight">
-              Practical reps, not abstract AI theory.
+            <h2 className="font-serif text-display-md md:text-display-lg text-ink leading-tight">
+              {heading}
             </h2>
-            <p className="text-base text-[color:var(--color-ink)]/70 leading-relaxed mt-5 max-w-xl">
-              Preview the kinds of banking tasks learners practice inside
-              AiBI-Practitioner.
+            <p className="text-body-md text-ink/75 leading-relaxed mt-s4">
+              {subhead}
             </p>
           </div>
           <Link
             href="/courses/aibi-p"
-            className="inline-flex w-fit items-center justify-center px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
+            className="inline-flex w-fit items-center gap-s2 font-serif-sc text-mono-sm uppercase tracking-widest text-terra border-b border-terra pb-[2px] hover:text-terra-light hover:border-terra-light transition-colors"
           >
-            Explore the Practitioner Course
+            View the curriculum →
           </Link>
         </div>
 
-        <div className="mt-10 overflow-x-auto border-y border-[color:var(--color-ink)]/10">
-          <div className="grid min-w-[760px] grid-cols-5 gap-px bg-[color:var(--color-ink)]/10">
-            {SKILLS.map((skill, index) => {
-              const isActive = skill.id === activeSkillId;
+        {/* Tabs */}
+        <div className="mt-s10 overflow-x-auto border-y border-hairline">
+          <div
+            role="tablist"
+            aria-label="Capability categories"
+            className="grid min-w-[760px] grid-cols-5 gap-px bg-hairline"
+          >
+            {CAPABILITIES.map((cap, index) => {
+              const isActive = cap.id === activeId;
               return (
                 <button
-                  key={skill.id}
+                  key={cap.id}
                   type="button"
-                  aria-pressed={isActive}
-                  onClick={() => setActiveSkillId(skill.id)}
-                  className={`group min-h-[132px] bg-[color:var(--color-linen)] p-5 text-left transition-all hover:bg-[color:var(--color-parch)] ${
-                    isActive
-                      ? 'shadow-[inset_0_3px_0_var(--color-terra)]'
-                      : 'shadow-[inset_0_0_0_transparent]'
+                  role="tab"
+                  aria-selected={isActive}
+                  aria-controls={`panel-${cap.id}`}
+                  onClick={() => setActiveId(cap.id)}
+                  className={`group min-h-[120px] bg-linen p-s5 text-left transition-colors hover:bg-parch ${
+                    isActive ? 'shadow-[inset_0_2px_0_var(--color-terra)]' : ''
                   }`}
                 >
                   <span
                     aria-hidden="true"
-                    className={`font-mono text-sm transition-transform duration-200 group-hover:translate-x-1 ${
-                      isActive
-                        ? 'text-[color:var(--color-terra)]'
-                        : 'text-[color:var(--color-ink)]/35'
+                    className={`font-mono text-mono-sm tabular-nums ${
+                      isActive ? 'text-terra' : 'text-ink/35'
                     }`}
                   >
-                    / {String(index + 1).padStart(2, '0')}
+                    {String(index + 1).padStart(2, '0')}
                   </span>
-                  <span className="mt-6 block font-serif text-2xl text-[color:var(--color-ink)] leading-tight transition-transform duration-200 group-hover:translate-x-1">
-                    {skill.title}
+                  <span className="mt-s4 block font-serif text-display-xs text-ink leading-tight">
+                    {cap.title}
+                  </span>
+                  <span className="mt-s1 block font-serif italic text-body-sm text-ink/60 leading-snug">
+                    {cap.subtitle}
                   </span>
                 </button>
               );
@@ -189,51 +201,54 @@ export function InteractiveSkillsPreview() {
           </div>
         </div>
 
+        {/* Panels */}
         <div
-          key={activeSkill.id}
-          className="mt-8 grid gap-px bg-[color:var(--color-ink)]/10 border border-[color:var(--color-ink)]/10 lg:grid-cols-[0.8fr_1fr_1fr] animate-[fadeIn_220ms_ease-out]"
+          id={`panel-${active.id}`}
+          role="tabpanel"
+          key={active.id}
+          className="mt-s8 grid gap-px bg-hairline border border-hairline lg:grid-cols-[0.8fr_1fr_1fr] animate-[fadeIn_220ms_ease-out]"
         >
           <PreviewPanel label="Before">
-            <p className="font-serif text-2xl leading-snug text-[color:var(--color-ink)]">
-              {activeSkill.before}
+            <p className="font-serif text-display-xs leading-snug text-ink">
+              {active.before}
             </p>
           </PreviewPanel>
 
           <PreviewPanel label="Sample prompt">
-            <p className="font-mono text-sm leading-relaxed text-[color:var(--color-ink)]/80">
-              {activeSkill.prompt}
+            <p className="font-mono text-body-sm leading-relaxed text-ink/85">
+              {active.prompt}
             </p>
             <button
               type="button"
-              onClick={() => copyPrompt(activeSkill)}
-              className={`mt-6 inline-flex items-center justify-center px-5 py-3 border font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] transition-all ${
+              onClick={copyPrompt}
+              className={`mt-s5 inline-flex items-center font-serif-sc text-mono-sm uppercase tracking-widest border-b pb-[2px] transition-colors ${
                 animationComplete
-                  ? 'opacity-100 translate-y-0'
-                  : 'opacity-0 translate-y-2 pointer-events-none'
+                  ? 'opacity-100'
+                  : 'opacity-0 pointer-events-none'
               } ${
-                copiedSkillId === activeSkill.id
-                  ? 'bg-[color:var(--color-terra)] border-[color:var(--color-terra)] text-[color:var(--color-linen)]'
-                  : 'border-[color:var(--color-terra)] text-[color:var(--color-terra)] hover:bg-[color:var(--color-terra)] hover:text-[color:var(--color-linen)]'
+                copied
+                  ? 'text-ink border-ink'
+                  : 'text-terra border-terra hover:text-terra-light hover:border-terra-light'
               }`}
             >
-              {copiedSkillId === activeSkill.id ? 'Prompt Copied' : activeSkill.cta}
+              {copied ? 'Copied' : 'Copy prompt'}
             </button>
           </PreviewPanel>
 
           <PreviewPanel label="AI-assisted result">
-            <div className="min-h-[174px]">
-              {!animationComplete ? (
-                <div className="inline-flex gap-1 py-1" aria-label="AI is typing">
-                  <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--color-terra)]/70 animate-pulse" />
-                  <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--color-terra)]/50 animate-pulse [animation-delay:120ms]" />
-                  <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--color-terra)]/30 animate-pulse [animation-delay:240ms]" />
+            <div className="min-h-[170px]">
+              {!animationComplete && (
+                <div className="inline-flex gap-1 py-1" aria-label="Generating">
+                  <span className="h-1.5 w-1.5 rounded-full bg-terra/70 animate-pulse" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-terra/50 animate-pulse [animation-delay:120ms]" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-terra/30 animate-pulse [animation-delay:240ms]" />
                 </div>
-              ) : null}
-              <div className="space-y-2">
-                {activeSkill.output.slice(0, visibleLines).map((line) => (
+              )}
+              <div className="space-y-s2">
+                {active.output.slice(0, visibleLines).map((line) => (
                   <p
                     key={line}
-                    className="text-sm leading-relaxed text-[color:var(--color-ink)]/80 animate-[fadeInUp_240ms_ease-out]"
+                    className="text-body-sm leading-relaxed text-ink/85 animate-[fadeInUp_240ms_ease-out]"
                   >
                     {line}
                   </p>
@@ -241,18 +256,6 @@ export function InteractiveSkillsPreview() {
               </div>
             </div>
           </PreviewPanel>
-        </div>
-
-        <div className="mt-7 flex flex-col gap-4 border-t border-[color:var(--color-ink)]/10 pt-7 sm:flex-row sm:items-center sm:justify-between">
-          <p className="font-serif text-xl text-[color:var(--color-ink)] leading-snug">
-            These are the kinds of practical reps included in AiBI-Practitioner.
-          </p>
-          <Link
-            href="/courses/aibi-p"
-            className="inline-flex w-fit items-center justify-center px-6 py-3 border border-[color:var(--color-ink)]/25 text-[color:var(--color-ink)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)] transition-colors"
-          >
-            Try this in the Practitioner Course
-          </Link>
         </div>
       </div>
     </section>
@@ -267,8 +270,8 @@ function PreviewPanel({
   readonly children: ReactNode;
 }) {
   return (
-    <div className="bg-[color:var(--color-parch)] p-5 md:p-6">
-      <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-4">
+    <div className="bg-parch p-s5 md:p-s6">
+      <p className="font-serif-sc text-label-sm uppercase tracking-widest text-terra mb-s4">
         {label}
       </p>
       {children}

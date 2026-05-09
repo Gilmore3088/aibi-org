@@ -7,7 +7,7 @@ import {
   Cta,
   Marginalia,
 } from "@/components/system";
-import { SampleQuestion } from "@/components/sections/SampleQuestion";
+import { InteractiveSkillsPreview } from "@/components/sections/InteractiveSkillsPreview";
 import { InquiryForm } from "@/app/certifications/_components/InquiryForm";
 import { modules } from "@content/courses/aibi-p";
 import { getEnrollment as getPEnrollment } from "@/app/courses/aibi-p/_lib/getEnrollment";
@@ -245,7 +245,7 @@ export default async function EducationPage() {
       </Section>
 
       {/* §03 — Sample question */}
-      <SampleQuestion />
+      <InteractiveSkillsPreview />
 
       {/* Inquiry */}
       <Section variant="parch" padding="default" container="narrow" id="inquiry-form">

@@ -8,6 +8,7 @@ import {
   Cta,
 } from "@/components/system";
 import { ROIDossier } from "@/components/sections/ROIDossier";
+import { InteractiveSkillsPreview } from "@/components/sections/InteractiveSkillsPreview";
 import { cn } from "@/lib/utils/cn";
 import { BRAND, CTAS } from "@content/copy";
 import { citation } from "@content/citations";
@@ -93,6 +94,13 @@ export default function HomePage() {
 
       {/* §02 — Modeled value: editorial ROI dossier */}
       <ROIDossier />
+
+      {/* Capabilities preview — what learners actually do in the course */}
+      <InteractiveSkillsPreview
+        eyebrow="Inside the course"
+        heading="Learn these tools in our course."
+        subhead="Tools, prompts, skills, agents — the practical reps inside AiBI-Practitioner. Click a category to see a sample prompt and the kind of result your bankers will produce."
+      />
 
       {/* §03 — Credentials: certification ladder */}
       <Section variant="linen" padding="default">
