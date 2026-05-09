@@ -199,7 +199,7 @@ export function ResultsPage({
                 >
                   <a
                     href={d.href}
-                    className="grid grid-cols-[44px_1fr] gap-s3 text-body-sm text-amber-light hover:text-bone"
+                    className="grid grid-cols-[44px_1fr] gap-s3 text-body-sm text-bone hover:text-cream"
                   >
                     <span className="font-mono text-label-md uppercase tracking-wide text-cream/70">
                       {d.type}

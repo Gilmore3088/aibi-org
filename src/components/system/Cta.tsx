@@ -40,7 +40,7 @@ export function Cta({ href, variant = "primary", tone = "default", className, ch
   } else {
     visual =
       tone === "dark"
-        ? "text-amber-light border-b border-amber-light pb-[2px] text-body-md hover:text-bone hover:border-bone"
+        ? "text-bone border-b border-bone pb-[2px] text-body-md hover:text-cream hover:border-cream"
         : "text-terra border-b border-terra pb-[2px] text-body-md hover:text-terra-light hover:border-terra-light";
   }
 

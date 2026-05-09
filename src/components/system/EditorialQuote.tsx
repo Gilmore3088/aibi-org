@@ -5,7 +5,7 @@
  *   - light  → inline pull quote on parch/linen surface
  *   - dark   → quote on ink surface (used in About, Research, Results)
  *
- * Quotation marks are drawn in terra (or amber-light on dark) — this is
+ * Quotation marks are drawn in terra (or cream on dark) — this is
  * the only place curly quotes are styled colorfully.
  *
  *   <EditorialQuote attribution="From the founder's notes · April 2026">
@@ -34,7 +34,7 @@ export function EditorialQuote({
 }: EditorialQuoteProps) {
   const isDark = variant === "dark";
   const bg = isDark ? "bg-ink text-bone" : "bg-transparent text-ink";
-  const accent = isDark ? "text-amber-light" : "text-terra";
+  const accent = isDark ? "text-cream" : "text-terra";
   const attrColor = isDark ? "text-cream" : "text-slate";
   const sizeClass = size === "lg" ? "text-display-xs md:text-display-sm" : "text-body-lg";
 

@@ -68,7 +68,7 @@ export function ProgressStrip({
           <div className="md:text-right">
             <Link
               href={resumeHref}
-              className="font-sans text-body-sm text-amber-light border-b border-amber-light pb-[1px] hover:text-bone hover:border-bone transition-colors duration-fast"
+              className="font-sans text-body-sm text-bone border-b border-bone pb-[1px] hover:text-cream hover:border-cream transition-colors duration-fast"
             >
               {resumeLabel} →
             </Link>

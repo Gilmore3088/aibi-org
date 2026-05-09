@@ -199,7 +199,7 @@ export function ProgramPage({
         <div className="grid md:grid-cols-3 gap-s6 mt-s6">
           {artifacts.map((art, idx) => (
             <article key={art.slug} className="border border-cream/20 p-s5">
-              <p className="font-mono text-mono-sm uppercase tracking-wider text-amber-light mb-s3">
+              <p className="font-mono text-mono-sm uppercase tracking-wider text-cream mb-s3">
                 0{idx + 1} / {art.slug}
               </p>
               <h3 className="font-serif text-display-xs text-bone leading-snug mb-s2">

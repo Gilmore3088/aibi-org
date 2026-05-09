@@ -123,7 +123,7 @@ export default async function EducationPage() {
                     className={
                       a.tagTone === "free"
                         ? "font-serif-sc text-mono-sm uppercase tracking-widest text-terra border border-terra px-s3 py-[3px]"
-                        : "font-serif-sc text-mono-sm uppercase tracking-widest text-ink bg-amber-light px-s3 py-[3px]"
+                        : "font-serif-sc text-mono-sm uppercase tracking-widest text-terra bg-parch-dark border border-terra px-s3 py-[3px]"
                     }
                   >
                     {a.tag}
@@ -272,7 +272,7 @@ export default async function EducationPage() {
       <Section variant="dark" divider="none" padding="default">
         <div className="grid md:grid-cols-[1.4fr_1fr] gap-s10 items-center">
           <div>
-            <p className="font-serif-sc text-label-md uppercase tracking-widest text-amber-light mb-s3">
+            <p className="font-serif-sc text-label-md uppercase tracking-widest text-cream mb-s3">
               Team and institutional enrollment
             </p>
             <h2 className="font-serif text-display-md text-bone leading-tight">

@@ -108,7 +108,7 @@ export function MarketingPage({ hero, kpis, closing, children, className }: Mark
         <Section variant="dark" divider="none" padding="hero">
           <div className="max-w-narrow text-center mx-auto">
             {closing.eyebrow && (
-              <p className="font-serif-sc text-label-md uppercase tracking-widest text-amber-light mb-s3">
+              <p className="font-serif-sc text-label-md uppercase tracking-widest text-cream mb-s3">
                 {closing.eyebrow}
               </p>
             )}

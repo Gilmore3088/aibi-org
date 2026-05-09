@@ -69,7 +69,7 @@ export default function SecurityPage() {
             </p>
           </div>
           <aside className="border border-bone/20 bg-bone/[0.05] p-s7">
-            <p className="font-serif-sc text-label-md uppercase tracking-widest text-amber-light mb-s2">
+            <p className="font-serif-sc text-label-md uppercase tracking-widest text-cream mb-s2">
               Free download
             </p>
             <h2 className="font-serif text-display-xs text-bone leading-tight mb-s4">

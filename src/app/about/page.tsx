@@ -191,7 +191,7 @@ export default function AboutPage() {
       <Section variant="dark" padding="default" divider="none">
         <div className="grid md:grid-cols-[1.4fr_1fr] gap-s10 items-center">
           <div>
-            <p className="font-serif-sc text-label-md uppercase tracking-widest text-amber-light mb-s3">
+            <p className="font-serif-sc text-label-md uppercase tracking-widest text-cream mb-s3">
               Talk to the Institute
             </p>
             <h2 className="font-serif text-display-md text-bone leading-tight">
@@ -207,7 +207,7 @@ export default function AboutPage() {
             </p>
             <a
               href={`mailto:${BRAND.emails.contact}`}
-              className="font-serif text-display-xs text-amber-light border-b border-amber-light hover:text-bone hover:border-bone pb-[2px]"
+              className="font-serif text-display-xs text-bone border-b border-bone/60 hover:text-cream hover:border-cream pb-[2px]"
             >
               {BRAND.emails.contact}
             </a>
