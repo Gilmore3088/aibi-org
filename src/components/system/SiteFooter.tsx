@@ -54,47 +54,52 @@ export function SiteFooter({ showNewsletter = true }: SiteFooterProps = {}) {
   return (
     <footer className="border-t border-hairline mt-s16">
       <div className="bg-parch px-s7 py-s12">
-        <div className="max-w-wide mx-auto grid gap-s12 md:grid-cols-[1.4fr_2fr] md:gap-s16">
+        <div
+          className={
+            showNewsletter
+              ? "max-w-wide mx-auto grid gap-s10 md:gap-s12 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1.4fr]"
+              : "max-w-wide mx-auto grid gap-s10 md:gap-s12 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr]"
+          }
+        >
+          {/* Brand column */}
           <div>
             <p className="font-serif text-display-xs text-ink">The AI Banking Institute</p>
             <p className="font-serif-sc text-body-md text-terra mt-s1 mb-s5">
               Turning Bankers into Builders
             </p>
-            <p className="text-body-sm text-ink/70 leading-relaxed mb-s6 max-w-[44ch]">
+            <p className="text-body-sm text-ink/70 leading-relaxed max-w-[36ch]">
               An education company for community banks and credit unions.
             </p>
-            {showNewsletter && (
-              <NewsletterCard
-                heading="The AI Banking Brief."
-                blurb="Fortnightly research, no marketing."
-              />
-            )}
           </div>
 
-          <nav
-            aria-label="Footer"
-            className="grid grid-cols-2 gap-x-s10 gap-y-s8"
-          >
-            {LINK_GROUPS.map((group) => (
-              <div key={group.label}>
-                <p className="font-mono text-label-sm uppercase tracking-widest text-slate mb-s3">
-                  {group.label}
-                </p>
-                <ul className="space-y-s2">
-                  {group.links.map((link) => (
-                    <li key={link.href}>
-                      <Link
-                        href={link.href}
-                        className="text-body-sm text-ink/75 hover:text-terra transition-colors duration-fast"
-                      >
-                        {link.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </nav>
+          {/* Nav columns */}
+          {LINK_GROUPS.map((group) => (
+            <nav key={group.label} aria-label={group.label}>
+              <p className="font-mono text-label-sm uppercase tracking-widest text-slate mb-s3">
+                {group.label}
+              </p>
+              <ul className="space-y-s2">
+                {group.links.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="text-body-sm text-ink/75 hover:text-terra transition-colors duration-fast"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          ))}
+
+          {/* Newsletter column */}
+          {showNewsletter && (
+            <NewsletterCard
+              heading="The AI Banking Brief."
+              blurb="Fortnightly research, no marketing."
+            />
+          )}
         </div>
 
         <div className="max-w-wide mx-auto border-t border-hairline mt-s10 pt-s6 flex flex-col md:flex-row md:items-center md:justify-between gap-s3 font-mono text-mono-sm text-slate">
