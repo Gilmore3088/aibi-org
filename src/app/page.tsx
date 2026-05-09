@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { MarketingPage } from "@/components/system/templates";
 import { Section, Cta } from "@/components/system";
-import { BRAND, CTAS } from "@content/copy";
+import { ROIDossier } from "@/components/sections/ROIDossier";
+import { BRAND } from "@content/copy";
 
 export const metadata: Metadata = {
   title: `${BRAND.name} — ${BRAND.tagline}`,
@@ -67,41 +68,8 @@ export default function HomePage() {
         </div>
       </Section>
 
-      {/* Dark band — single CTA, single sentence */}
-      <Section variant="dark" padding="hero" divider="none">
-        <div className="max-w-narrow mx-auto text-center">
-          <p className="font-serif text-display-md md:text-display-lg text-bone leading-tight">
-            Or earn the AiBI-Practitioner credential.
-          </p>
-          <p className="font-mono text-mono-sm uppercase tracking-widest text-cream/65 mt-s4 tabular-nums">
-            $295 · $199 / seat at 10+
-          </p>
-          <div className="mt-s8">
-            <Cta href="/courses/aibi-p" tone="dark">
-              Enroll
-            </Cta>
-          </div>
-        </div>
-      </Section>
-
-      {/* Closing hero on cream — mirrors the opening */}
-      <Section variant="linen" padding="hero" divider="none">
-        <div className="max-w-narrow mx-auto text-center">
-          <h2 className="font-serif text-display-lg md:text-display-xl text-ink leading-[1.05] tracking-tightish">
-            Begin where <em className="text-terra">you stand.</em>
-          </h2>
-          <p className="font-serif italic text-body-lg text-ink/80 leading-relaxed mt-s6 max-w-[44ch] mx-auto">
-            Twelve questions, three minutes. You will know your readiness level
-            and your top gaps.
-          </p>
-          <div className="mt-s8 flex flex-wrap justify-center items-center gap-s6">
-            <Cta href={CTAS.beginAssessment.href}>{CTAS.beginAssessment.label}</Cta>
-            <Cta variant="secondary" href={`mailto:${BRAND.emails.contact}`}>
-              Talk to the Institute
-            </Cta>
-          </div>
-        </div>
-      </Section>
+      {/* Savings calculator — the closing payload */}
+      <ROIDossier />
     </MarketingPage>
   );
 }
