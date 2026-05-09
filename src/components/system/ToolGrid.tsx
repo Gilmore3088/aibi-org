@@ -1,15 +1,16 @@
 /**
- * <ToolGrid> — vendor logo + wordmark grid.
+ * <ToolGrid> — vendor monogram + wordmark grid.
  *
- * Each tile shows a vendor logo (loaded from /public/tool-logos/<slug>.svg)
- * as the visual anchor, with a hairline-divided footer carrying tool name +
- * vendor in serif and mono. Reads as a curriculum spec sheet, not a
- * paragraph list.
+ * Each tile shows a typeset Cormorant monogram (the tool name's first
+ * letter, terra) inside a hairline-bordered square, with the tool name
+ * and vendor in the hairline-divided footer below. Treats all six
+ * vendors uniformly — same monogram treatment, different letter — so
+ * the grid reads as a typeset ticker, not as missing logos.
  *
- * Logo files: drop official SVGs into `public/tool-logos/`. See
- * `public/tool-logos/README.md` for each vendor's official brand page.
- * Missing files render gracefully — the layout reserves logo space and
- * falls back to the tool name in serif at logo size.
+ * Trademark / brand-policy note: real vendor logos are gated by each
+ * vendor's brand guidelines (Microsoft and Google explicitly require
+ * licensing, others require press-kit review). The monogram treatment
+ * is policy-safe, on-brand, and cohesive across all tiles.
  */
 
 import { TOOLS, type CurriculumTool } from "@content/curriculum/tools";
@@ -37,50 +38,43 @@ export function ToolGrid({ tools = TOOLS, className }: ToolGridProps) {
       role="list"
       aria-label="Tools the curriculum teaches"
     >
-      {tools.map((tool) => (
-        <article
-          key={tool.slug}
-          role="listitem"
-          className="bg-linen flex flex-col transition-colors duration-fast hover:bg-parch"
-        >
-          {/* Category eyebrow */}
-          <div className="px-s6 pt-s5">
-            <p className="font-mono text-label-sm uppercase tracking-widest text-terra">
-              {CATEGORY_LABEL[tool.category]}
-            </p>
-          </div>
+      {tools.map((tool) => {
+        const initial = tool.name.charAt(0);
+        return (
+          <article
+            key={tool.slug}
+            role="listitem"
+            className="bg-linen flex flex-col transition-colors duration-fast hover:bg-parch"
+          >
+            {/* Category eyebrow */}
+            <div className="px-s6 pt-s5">
+              <p className="font-mono text-label-sm uppercase tracking-widest text-terra">
+                {CATEGORY_LABEL[tool.category]}
+              </p>
+            </div>
 
-          {/* Logo well — centered, generous, reads as the visual anchor.
-              <object> renders its child fallback automatically when the
-              SVG file is missing, so empty wells stay typographic instead
-              of showing browser broken-image icons. */}
-          <div className="flex items-center justify-center px-s6 py-s8 lg:py-s10 min-h-[7rem]">
-            <object
-              data={`/tool-logos/${tool.slug}.svg`}
-              type="image/svg+xml"
-              aria-label={`${tool.name} logo`}
-              className="max-h-12 w-auto max-w-[60%] pointer-events-none"
-            >
+            {/* Monogram well — typeset Cormorant initial in a hairline square */}
+            <div className="flex items-center justify-center px-s6 py-s8 lg:py-s10 min-h-[7rem]">
               <span
                 aria-hidden="true"
-                className="font-serif text-[3rem] leading-none text-ink/25 tracking-tight"
+                className="flex items-center justify-center w-20 h-20 lg:w-24 lg:h-24 border border-hairline bg-parch font-serif text-[3.25rem] lg:text-[4rem] leading-none text-terra select-none"
               >
-                {tool.name.charAt(0)}
+                {initial}
               </span>
-            </object>
-          </div>
+            </div>
 
-          {/* Footer — name + vendor, hairline-divided */}
-          <div className="border-t border-hairline px-s6 py-s5 mt-auto">
-            <p className="font-serif text-display-xs leading-none text-ink">
-              {tool.name}
-            </p>
-            <p className="font-mono text-label-md uppercase tracking-widest text-slate mt-s2">
-              {tool.vendor}
-            </p>
-          </div>
-        </article>
-      ))}
+            {/* Footer — tool name + vendor */}
+            <div className="border-t border-hairline px-s6 py-s5 mt-auto">
+              <p className="font-serif text-display-xs leading-none text-ink">
+                {tool.name}
+              </p>
+              <p className="font-mono text-label-md uppercase tracking-widest text-slate mt-s2">
+                {tool.vendor}
+              </p>
+            </div>
+          </article>
+        );
+      })}
     </div>
   );
 }

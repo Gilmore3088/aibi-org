@@ -1,30 +1,30 @@
-# Tool logos
+# Tool logos — currently unused
 
-`<ToolGrid>` renders a vendor logo from this directory. Each file is loaded by slug:
+`<ToolGrid>` renders typeset Cormorant monograms, not vendor logos. This directory is reserved for the future case where formal logo licensing is obtained.
 
-| Slug | Expected file | Tool | Vendor |
-|---|---|---|---|
-| `chatgpt` | `chatgpt.svg` | ChatGPT | OpenAI |
-| `claude` | `claude.svg` | Claude | Anthropic |
-| `copilot` | `copilot.svg` | Microsoft Copilot | Microsoft |
-| `gemini` | `gemini.svg` | Google Gemini | Google |
-| `notebooklm` | `notebooklm.svg` | NotebookLM | Google |
-| `perplexity` | `perplexity.svg` | Perplexity | Perplexity AI |
+## Why monograms, not logos
 
-Source each SVG from the vendor's official brand page (nominative fair use applies for educational reference). Each vendor publishes its press / brand resources at:
+After reviewing each vendor's brand policy (2026-05-09):
+
+- **Microsoft** — explicit license required for any logo use; no self-serve path. Educational use does not get a special exemption.
+- **Google** — brand resource center is partner-gated. Non-partners directed to general Brand Standards only.
+- **Anthropic** — press kit downloadable; specifics require review of the included guidelines.
+- **OpenAI / Perplexity** — public brand pages were not retrievable; policies need direct confirmation.
+
+Three of the six vendors clearly gate logo usage behind formal licensing. Mixing real logos for some tiles with fallbacks for others would read as inconsistent design, so the entire grid uses a uniform monogram treatment instead.
+
+## If/when licensing is obtained
+
+To swap the monogram for a real logo on a per-tool basis:
+
+1. Drop the official SVG into `public/tool-logos/<slug>.svg`. Slugs:
+   `chatgpt` · `claude` · `copilot` · `gemini` · `notebooklm` · `perplexity`
+2. Edit `src/components/system/ToolGrid.tsx` to render an `<img>` (or `<object>` with monogram fallback) for tools where a logo file exists.
+
+Vendor brand pages (for the licensing conversation):
 
 - OpenAI — https://openai.com/brand
-- Anthropic — https://www.anthropic.com (look for the press / brand kit link in the footer)
-- Microsoft — https://www.microsoft.com/en-us/legal/intellectualproperty/Trademarks/UsageGuidelines (strict — read before use)
-- Google — https://about.google/brand-resource-center/
-- Perplexity — https://www.perplexity.ai (request via their press contact if no direct download)
-
-## Constraints
-
-- Square or short-aspect SVGs render best (the tile reserves `max-h-12 max-w-[60%]`).
-- Drop in the original SVG; the component does not apply color filters by default. If a logo conflicts with the parch palette and you want it monochromed, add a `class` to the `<img>` (e.g. `[filter:grayscale(1)_brightness(0)]`) in `ToolGrid.tsx`.
-- Do not redraw or modify the vendor's logo. Use the official mark verbatim.
-
-## Missing files
-
-The component renders the `<img>` regardless. If the file is missing, the alt text appears in place of the logo (or a broken-image icon, depending on browser). Add the file to fix.
+- Anthropic — https://www.anthropic.com/press-kit
+- Microsoft — https://www.microsoft.com/en-us/legal/intellectualproperty/Trademarks (email trademarks@microsoft.com)
+- Google — https://about.google/brand-resource-center → partner application
+- Perplexity — press contact via perplexity.ai
