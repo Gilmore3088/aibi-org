@@ -6,6 +6,18 @@ import { useEffect, useState } from 'react';
 import { TOOLS, type CurriculumTool } from '@content/curriculum/tools';
 import { AI_SKILLS, type AiSkillDept } from '@content/curriculum/ai-skills';
 import { AI_AGENTS, type AiAgentDept } from '@content/curriculum/ai-agents';
+import { AI_PROMPTS, type AiPromptRole } from '@content/curriculum/ai-prompts';
+
+const PROMPT_ROLE_ORDER: readonly AiPromptRole[] = [
+  'Lending',
+  'Compliance',
+  'Finance',
+  'Executive',
+  'IT',
+  'Operations',
+  'Marketing',
+  'Retail',
+];
 
 const SKILL_DEPT_ORDER: readonly AiSkillDept[] = [
   'Lending',
@@ -67,24 +79,9 @@ const CAPABILITIES: readonly Capability[] = [
     id: 'prompts',
     title: 'Prompts',
     subtitle:
-      'Twelve customers, the same fee complaint. One prompt drafts twelve personalized responses with your tone preserved, every action flagged for review.',
-    prompt:
-      'Draft personalized responses to the 12 customers below who emailed about the September service fee. Each has a different account type and tenure — adjust tone but keep policy consistent. Do not promise a refund. Offer a phone review for any relationship over 5 years. Output: subject, body, suggested action (refund / no refund / escalate).',
-    output: [
-      '12 drafts ready · 8 standard · 3 phone-review offers · 1 escalate',
-      '',
-      '#1 Linda K. (8-yr CD customer, $42K)',
-      'Subject: Your September CD service fee — let’s review',
-      'Body: Thanks for reaching out, Linda. Your CD has been with us since 2017, and that is a relationship I want to honor. I cannot remove the fee, but I would like to walk through your account activity by phone…',
-      'Action: Phone review (>5-yr customer)',
-      '',
-      '#2 Carlos M. (3-month checking, $1,200)',
-      'Subject: Re: Service fee question',
-      'Body: Hi Carlos — thanks for the note. The September fee was triggered by…',
-      'Action: Standard reply · no refund',
-      '',
-      '… 10 more drafts. Total review time: ~6 minutes.',
-    ],
+      'A Prompt is a single, focused, reusable instruction template — copy, paste, edit. The course publishes a banking-specific library and teaches your team to grow it.',
+    prompt: '',
+    output: [],
   },
   {
     id: 'skills',
@@ -296,6 +293,16 @@ export function InteractiveSkillsPreview({
               className="animate-[fadeIn_220ms_ease-out]"
             >
               <AgentsPanel />
+            </div>
+          ) : active.id === 'prompts' ? (
+            <div
+              id="capability-panel"
+              role="tabpanel"
+              key={active.id}
+              aria-live="polite"
+              className="animate-[fadeIn_220ms_ease-out]"
+            >
+              <PromptsPanel />
             </div>
           ) : (
             <div
@@ -518,6 +525,62 @@ function AgentsPanel() {
                     </p>
                     <p className="text-body-sm text-ink/75 leading-snug mt-[2px] max-w-[44ch]">
                       {agent.summary}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </dd>
+          </div>
+        ))}
+      </dl>
+    </article>
+  );
+}
+
+/**
+ * <PromptsPanel> — replaces the prompt + result demo on the Prompts tab.
+ * Renders flagship prompts (content/curriculum/ai-prompts.ts) — single,
+ * reusable instruction templates from the course's prompt library —
+ * grouped by role. Title + platform tag + summary. Full prompt text
+ * stays in content/courses/aibi-p/prompt-library.ts.
+ */
+function PromptsPanel() {
+  const grouped = PROMPT_ROLE_ORDER.map((role) => ({
+    role,
+    items: AI_PROMPTS.filter((p) => p.role === role),
+  })).filter((g) => g.items.length > 0);
+
+  return (
+    <article className="bg-parch border border-hairline">
+      <header className="flex items-center justify-between px-s5 md:px-s6 py-s4 border-b border-hairline">
+        <p className="font-serif-sc text-label-sm uppercase tracking-widest text-terra">
+          Flagship Prompts
+        </p>
+        <p className="font-mono text-mono-xs uppercase tracking-wider text-ink/40 tabular-nums">
+          {String(AI_PROMPTS.length).padStart(2, '0')} of many
+        </p>
+      </header>
+      <dl className="divide-y divide-hairline">
+        {grouped.map((group) => (
+          <div
+            key={group.role}
+            className="grid grid-cols-[6rem_1fr] gap-s5 px-s5 md:px-s6 py-s4"
+          >
+            <dt className="font-mono text-label-md uppercase tracking-widest text-terra pt-s1">
+              {group.role}
+            </dt>
+            <dd>
+              <ul className="space-y-s3">
+                {group.items.map((prompt) => (
+                  <li key={prompt.libraryId}>
+                    <p className="font-serif text-body-md text-ink leading-snug">
+                      {prompt.title}
+                      <span className="ml-s2 font-mono text-label-sm uppercase tracking-widest text-slate">
+                        {prompt.platform}
+                      </span>
+                    </p>
+                    <p className="text-body-sm text-ink/75 leading-snug mt-[2px] max-w-[44ch]">
+                      {prompt.summary}
                     </p>
                   </li>
                 ))}
