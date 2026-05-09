@@ -111,30 +111,6 @@ const CAPABILITIES: readonly Capability[] = [
     prompt: '',
     output: [],
   },
-  {
-    id: 'more',
-    title: 'More',
-    subtitle:
-      'Twenty-eight overnight emails. AI sorts what needs you, what routes to ops, and what is a one-tap reply you can send from your phone.',
-    prompt:
-      'Triage these 28 overnight emails. For each: sender, category (URGENT / OPS / QUICK_REPLY / FYI / SPAM), one-line summary. For QUICK_REPLY, draft a 2-sentence response. Output as a sortable list.',
-    output: [
-      'Triaged in 2:14 · 3 urgent · 7 ops · 11 quick · 5 FYI · 2 spam',
-      '',
-      '⚠ URGENT — needs you within 2 hours (3):',
-      '    Sarah Chen — Wire dispute, $12K, Reg E clock running',
-      '    Robert Diaz — Account closure threat, 14-yr customer',
-      '    Pat Mukherjee — Examiner inquiry forwarded, deadline today',
-      '',
-      'OPS — forwarded to ops@ (7):',
-      '    4 password resets · 2 statement re-issues · 1 ACH stop',
-      '',
-      'QUICK_REPLY — drafts ready for one-tap send (11):',
-      '    "Yes, branch is open Saturday." [send]',
-      '    "Annual fee is $0 on free checking." [send]',
-      '    … 9 more.',
-    ],
-  },
 ] as const;
 
 export interface InteractiveSkillsPreviewProps {
