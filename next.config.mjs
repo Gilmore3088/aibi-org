@@ -63,13 +63,16 @@ const nextConfig = {
       // /resources root → /research; individual essays remain at /resources/<slug>
       // until Phase 07 migration ports each essay to MDX in content/essays/.
       { source: '/resources', destination: '/research', permanent: true },
-      { source: '/courses/aibi-p', destination: '/education/practitioner', permanent: true },
-      { source: '/courses/aibi-p/:path*', destination: '/education/practitioner/:path*', permanent: true },
-      { source: '/courses/aibi-s', destination: '/education/specialist', permanent: true },
-      { source: '/courses/aibi-s/:path*', destination: '/education/specialist/:path*', permanent: true },
-      { source: '/courses/aibi-l', destination: '/education/leader', permanent: true },
-      { source: '/courses/aibi-l/:path*', destination: '/education/leader/:path*', permanent: true },
-      { source: '/certifications/exam/aibi-p', destination: '/education/practitioner/exam', permanent: true },
+      // Wave D inverse: until /education/<program> ships as a real page,
+      // those routes redirect BACK to the working /courses/aibi-* routes.
+      // Use temporary (302) so we can flip when Wave D migrates the pages.
+      { source: '/education/practitioner', destination: '/courses/aibi-p', permanent: false },
+      { source: '/education/practitioner/:path*', destination: '/courses/aibi-p/:path*', permanent: false },
+      { source: '/education/specialist', destination: '/coming-soon?interest=specialist', permanent: false },
+      { source: '/education/specialist/:path*', destination: '/coming-soon?interest=specialist', permanent: false },
+      { source: '/education/leader', destination: '/coming-soon?interest=leader', permanent: false },
+      { source: '/education/leader/:path*', destination: '/coming-soon?interest=leader', permanent: false },
+      { source: '/certifications/exam/aibi-p', destination: '/courses/aibi-p/exam', permanent: true },
     ];
   },
 };
