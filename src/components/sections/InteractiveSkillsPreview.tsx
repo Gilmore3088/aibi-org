@@ -18,75 +18,100 @@ const SKILLS: readonly SkillPreview[] = [
     id: 'emails',
     title: 'Write better emails',
     before:
-      'Customer is upset about a fee. Need to respond without promising a refund.',
+      'Customer is upset about a $35 NSF fee. Need to respond without promising a refund or admitting fault.',
     prompt:
-      'Draft a professional response to a customer upset about a fee. Keep the tone empathetic, do not promise a refund, and offer to review the account by phone.',
+      'You are a community bank customer service officer. Draft a 3-paragraph response to the email below. Constraints: empathetic tone, do not promise a refund, do not admit bank error, do not cite specific regulations. Structure: (1) acknowledge the frustration without apology, (2) state what you can do (review account activity together by phone), (3) provide a callback path. Close with the rep\'s direct line. Flag for supervisor review if the customer mentions legal action, ADA, or fair lending.\n\nCUSTOMER EMAIL:\n[paste here]',
     output: [
-      'Thanks for reaching out.',
-      'I understand why this fee is frustrating.',
-      'I would be happy to review the account activity with you and walk through what happened.',
-      'Please call me at [PHONE] or reply with a convenient time.',
+      'Dear [CUSTOMER NAME],',
+      'I appreciate you taking the time to write — fees are frustrating, and I want to make sure I understand what happened on your account.',
+      'I can\'t reverse the charge by email, but I can pull up the activity around the date in question and walk you through it. That conversation usually surfaces options.',
+      'Please call me at (555) 555-0142, weekdays 9–5, or reply with a window that works and I will call you. Asking for me directly will route the call right through.',
+      '— [REP NAME], [TITLE]',
     ],
-    cta: 'Copy sample prompt',
+    cta: 'Copy prompt',
   },
   {
     id: 'policies',
     title: 'Summarize policies',
     before:
-      'A five-page procedure needs to become branch-ready instructions.',
+      'A 12-page CIP procedure update needs to become a one-page branch-ready quick reference.',
     prompt:
-      'Summarize this policy for frontline banking staff. Separate required actions, background context, and items that need supervisor review.',
+      'You are a compliance translator for a community bank. Summarize the policy below for frontline branch staff. Keep regulatory citations verbatim — do not paraphrase any section reference. Output exactly four sections in this order: REQUIRED ACTIONS (numbered, imperative voice, max 5), THIS REPLACES (bullet what changes from prior version), ESCALATE TO SUPERVISOR (bullet trigger conditions), QUESTIONS TO ASK CUSTOMER (bullet, plain language). Hard cap: 250 words total. If any required field is unclear, write "TBD: [field] — confirm with Compliance" rather than guessing.\n\nPOLICY:\n[paste here]',
     output: [
-      'Required actions:',
-      '1. Use the updated checklist for every new account.',
-      '2. Confirm documentation before account opening.',
-      '3. Escalate exceptions to Operations.',
+      'REQUIRED ACTIONS',
+      '1. Verify government-issued ID matches the application before account opening.',
+      '2. Run OFAC + 314(a) check on every new signer (12 CFR 1020.220).',
+      '3. Capture beneficial ownership for non-personal accounts ≥25%.',
+      '4. Document any exception with the dual-control approval form.',
+      'THIS REPLACES',
+      '· Single-step OFAC check (now run again at first deposit)',
+      'ESCALATE TO SUPERVISOR',
+      '· ID expired or non-photo · address mismatch with credit bureau · cash deposit ≥ $10K at opening',
     ],
-    cta: 'Copy sample prompt',
+    cta: 'Copy prompt',
   },
   {
     id: 'review',
     title: 'Review AI safely',
     before:
-      'AI gave a confident answer, but some claims may be unsupported.',
+      'An AI tool gave a confident answer about overdraft policy. Need to verify before sending it to a customer.',
     prompt:
-      'Review this AI-generated response. Identify unsupported claims, mark anything that needs review, and rewrite using only verified facts.',
+      'You are a model-risk reviewer at a community bank. Review the AI response below before it reaches a customer or examiner. Output exactly three sections: VERIFIED (claims backed by named source — list each), NEEDS REVIEW (claims plausible but unsourced — list each + what would verify), UNSUPPORTED (do-not-send claims — list each + why). Specifically flag: dollar figures, regulatory citations, effective dates, percentages, "all" or "every" claims, and any claim about competitor banks. Do not rewrite the response — annotate only. End with a one-line GO / HOLD recommendation.\n\nAI RESPONSE:\n[paste here]',
     output: [
-      'Needs review:',
-      '- Specific regulatory citation',
-      '- Effective date',
-      '- Claim that all community banks are exempt',
+      'VERIFIED',
+      '· Reg E error-resolution timeline (10 business days) — 12 CFR 1005.11',
+      'NEEDS REVIEW',
+      '· "Most community banks waive the first NSF fee" — no source. Verify against ICBA 2025 fee survey before sending.',
+      '· Effective date "January 2026" — confirm with internal policy log.',
+      'UNSUPPORTED',
+      '· "All banks are required to refund overdrafts under $5" — false. Do not send.',
+      'HOLD — three claims need verification before customer reply.',
     ],
-    cta: 'Copy sample prompt',
+    cta: 'Copy prompt',
   },
   {
     id: 'prompts',
     title: 'Build reusable prompts',
     before:
-      'You repeat the same weekly reporting task and keep rewriting the instructions.',
+      'You rewrite the weekly fraud-review summary every Friday. Time to turn it into a saved skill.',
     prompt:
-      'Turn this recurring task into a reusable prompt with role, task, audience, output format, and review constraints.',
+      'You are a prompt engineer for a community bank operations team. Turn the recurring task below into a reusable prompt that any teammate can run. Output the prompt using these exact section headers: ROLE, TASK, INPUTS (bracketed placeholders), CONSTRAINTS (named, including any banking-specific guardrails — no PII pasting, human review threshold, refusal trigger), OUTPUT FORMAT (sections + length cap), REVIEW (who signs off + what they check). End with VERSION (date + author initials) so the team can track changes.\n\nRECURRING TASK:\n[paste here]',
     output: [
-      'Reusable prompt:',
-      'You are a banking operations assistant.',
-      'Summarize [REPORT] for [AUDIENCE] in a table with key changes, risks, and follow-up items.',
+      'ROLE: Fraud-ops analyst summarizing weekly exception report.',
+      'TASK: Convert raw [FRAUD_LOG_CSV] into Friday memo for [BRANCH_MANAGER].',
+      'INPUTS: [FRAUD_LOG_CSV] · [WEEK_RANGE] · [PRIOR_WEEK_BASELINE]',
+      'CONSTRAINTS:',
+      '· Strip account numbers and SSNs before processing — do not paste PII.',
+      '· Flag any case ≥ $10K for human review before sending.',
+      '· Refuse if log contains an active investigation marker.',
+      'OUTPUT FORMAT: 3 sections (Top 3 by dollar volume · Pattern shifts vs prior week · Items needing escalation). Hard cap 300 words.',
+      'REVIEW: Branch manager sign-off; checks dollar accuracy + escalation column.',
+      'VERSION: 2026-05-08 · [INITIALS]',
     ],
-    cta: 'Copy sample prompt',
+    cta: 'Copy prompt',
   },
   {
     id: 'hours',
     title: 'Save hours every week',
     before:
-      'Meeting notes are messy and no one knows the decisions, owners, or next steps.',
+      'Weekly ops meeting notes are messy and no one knows decisions, owners, or next steps.',
     prompt:
-      'Turn these meeting notes into decisions, action items, owners, deadlines, and open questions. Do not invent missing owners or dates.',
+      'You are an operations lead capturing decisions from the meeting transcript below. Output exactly four sections in this order: DECISIONS (what was agreed, present tense), ACTION ITEMS (owner — task — deadline, one per line), OPEN QUESTIONS (unresolved items needing follow-up), PARKING LOT (out-of-scope items raised). Do not invent missing owners or deadlines — write "TBD: owner needed" or "TBD: deadline needed" so the gap is visible. If a decision was made without a clear owner, list it under OPEN QUESTIONS with the prompt "who owns this?". End with NEXT MEETING: [date if mentioned].\n\nMEETING NOTES:\n[paste here]',
     output: [
-      'Action items:',
-      '- Operations: update checklist by Friday',
-      '- Branch managers: confirm team review',
-      '- Open question: who owns exception tracking?',
+      'DECISIONS',
+      '· Move to monthly checklist refresh starting June.',
+      '· Add dual-control on wire approvals over $25K.',
+      'ACTION ITEMS',
+      '· Operations — update checklist template — Friday 5/16',
+      '· Branch managers — confirm team training completion — TBD: deadline needed',
+      '· Compliance — review wire policy draft — Tuesday 5/13',
+      'OPEN QUESTIONS',
+      '· Who owns ongoing exception tracking after the rollout?',
+      'PARKING LOT',
+      '· Vendor evaluation for new core integration (defer to Q3 review)',
+      'NEXT MEETING: Friday 5/16, 10am.',
     ],
-    cta: 'Copy sample prompt',
+    cta: 'Copy prompt',
   },
 ] as const;
 
@@ -226,17 +251,17 @@ export function InteractiveSkillsPreview() {
               <button
                 type="button"
                 onClick={() => copyPrompt(activeSkill)}
-                className={`mt-6 inline-flex items-center justify-center px-5 py-3 border font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] transition-all ${
+                className={`mt-5 inline-flex items-center font-mono text-[10px] font-semibold uppercase tracking-[0.18em] border-b pb-0.5 transition-all ${
                   animationComplete
                     ? 'opacity-100 translate-y-0'
-                    : 'opacity-0 translate-y-2 pointer-events-none'
+                    : 'opacity-0 translate-y-1 pointer-events-none'
                 } ${
                   copiedSkillId === activeSkill.id
-                    ? 'bg-[color:var(--color-terra)] border-[color:var(--color-terra)] text-[color:var(--color-linen)]'
-                    : 'border-[color:var(--color-terra)] text-[color:var(--color-terra)] hover:bg-[color:var(--color-terra)] hover:text-[color:var(--color-linen)]'
+                    ? 'border-[color:var(--color-terra)] text-[color:var(--color-terra)]'
+                    : 'border-[color:var(--color-terra)] text-[color:var(--color-terra)] hover:opacity-70'
                 }`}
               >
-                {copiedSkillId === activeSkill.id ? 'Prompt Copied' : activeSkill.cta}
+                {copiedSkillId === activeSkill.id ? '✓ Copied' : activeSkill.cta}
               </button>
             </PreviewPanel>
 
