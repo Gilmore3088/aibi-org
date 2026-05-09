@@ -4,7 +4,15 @@ import Link from 'next/link';
 import type { ReactNode } from 'react';
 import { useEffect, useState } from 'react';
 import { TOOLS, type CurriculumTool } from '@content/curriculum/tools';
-import { SKILLS } from '@content/curriculum/skills';
+import { AI_SKILLS, type AiSkillDept } from '@content/curriculum/ai-skills';
+
+const SKILL_DEPT_ORDER: readonly AiSkillDept[] = [
+  'Lending',
+  'Compliance',
+  'Retail',
+  'Executive',
+  'Research',
+];
 
 const PLATFORM_CATEGORY_LABEL: Record<CurriculumTool['category'], string> = {
   'general-llm': 'General',
@@ -72,7 +80,7 @@ const CAPABILITIES: readonly Capability[] = [
     id: 'skills',
     title: 'Skills',
     subtitle:
-      'Eleven verb-stated capabilities your team can demonstrate on day one — from spotting daily AI wins to shipping a reviewed workflow.',
+      'A Skill is a packaged, named, reusable AI capability — invoked by slash command. The course teaches your team to build them, refine them, and ship them.',
     prompt:
       'Review this AI-drafted compliance response. Flag every regulatory citation, dollar threshold, deadline, and named person. For each, mark: ✓ verified against source, ⚠ likely correct but unverified, ✗ possible hallucination. Rewrite using only ✓ items.',
     output: [
@@ -417,36 +425,54 @@ function PlatformsPanel() {
 
 /**
  * <SkillsPanel> — replaces the prompt + result demo on the Skills tab.
- * Renders the curriculum's verb-stated skills (content/curriculum/skills.ts)
- * as a numbered list. No prompt, no AI demo — the actual list of
- * capabilities a practitioner leaves with.
+ * Renders the flagship AI Skills (content/curriculum/ai-skills.ts) —
+ * named, reusable capabilities invoked by slash command — grouped by
+ * department. Not a list of curriculum learnings; a sample of the
+ * Toolbox library a practitioner builds and ships from inside the
+ * course.
  */
 function SkillsPanel() {
+  const grouped = SKILL_DEPT_ORDER.map((dept) => ({
+    dept,
+    items: AI_SKILLS.filter((s) => s.dept === dept),
+  })).filter((g) => g.items.length > 0);
+
   return (
     <article className="bg-parch border border-hairline">
       <header className="flex items-center justify-between px-s5 md:px-s6 py-s4 border-b border-hairline">
         <p className="font-serif-sc text-label-sm uppercase tracking-widest text-terra">
-          Skills you leave with
+          Flagship Skills
         </p>
         <p className="font-mono text-mono-xs uppercase tracking-wider text-ink/40 tabular-nums">
-          {String(SKILLS.length).padStart(2, '0')}
+          {String(AI_SKILLS.length).padStart(2, '0')} of many
         </p>
       </header>
-      <ol className="divide-y divide-hairline">
-        {SKILLS.map((skill, idx) => (
-          <li
-            key={skill.slug}
-            className="grid grid-cols-[2.5rem_1fr] gap-s4 px-s5 md:px-s6 py-s3 items-baseline"
+      <dl className="divide-y divide-hairline">
+        {grouped.map((group) => (
+          <div
+            key={group.dept}
+            className="grid grid-cols-[6rem_1fr] gap-s5 px-s5 md:px-s6 py-s4"
           >
-            <span className="font-mono text-mono-sm tabular-nums text-terra">
-              {String(idx + 1).padStart(2, '0')}
-            </span>
-            <span className="font-serif text-body-md text-ink leading-snug">
-              {skill.verb}
-            </span>
-          </li>
+            <dt className="font-mono text-label-md uppercase tracking-widest text-terra pt-s1">
+              {group.dept}
+            </dt>
+            <dd>
+              <ul className="space-y-s3">
+                {group.items.map((skill) => (
+                  <li key={skill.cmd}>
+                    <p className="font-mono text-mono-sm tabular-nums text-ink">
+                      {skill.cmd}
+                    </p>
+                    <p className="text-body-sm text-ink/75 leading-snug mt-[2px] max-w-[44ch]">
+                      {skill.summary}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </dd>
+          </div>
         ))}
-      </ol>
+      </dl>
     </article>
   );
 }
