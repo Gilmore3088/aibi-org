@@ -6,7 +6,6 @@ import {
   CertificationLadder,
   Cta,
   Marginalia,
-  ToolGrid,
   SkillGrid,
 } from "@/components/system";
 import { InteractiveSkillsPreview } from "@/components/sections/InteractiveSkillsPreview";
@@ -248,15 +247,6 @@ export default async function EducationPage() {
 
       {/* Capabilities preview — interactive tabs */}
       <InteractiveSkillsPreview />
-
-      {/* Tools — the platforms taught in the curriculum */}
-      <Section variant="parch" padding="default">
-        <SectionHeader
-          label="Tools"
-          title="Cross-platform — find the best for your needs."
-        />
-        <ToolGrid className="mt-s8" />
-      </Section>
 
       {/* Skills — what practitioners can do on day one */}
       <Section variant="linen" padding="default">

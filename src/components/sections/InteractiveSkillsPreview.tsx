@@ -17,7 +17,7 @@ const CAPABILITIES: readonly Capability[] = [
     id: 'tools',
     title: 'Tools',
     subtitle:
-      'Drop a 60-page CFPB bulletin into the right platform. Get the community-bank summary, the deadlines, and a staff training plan — in ninety seconds.',
+      'ChatGPT, Claude, Microsoft Copilot, Google Gemini, NotebookLM, Perplexity. Match the platform to the task — drop a 60-page bulletin in, get the summary, deadlines, and training plan in ninety seconds.',
     prompt:
       'You are a community bank compliance analyst. Read CFPB Bulletin 2025-04 below. In 250 words: (1) what changes for banks under $10B, (2) what staff training is required, (3) the three deadlines we cannot miss. Cite section numbers. Flag anything ambiguous as ⚠ for follow-up.',
     output: [

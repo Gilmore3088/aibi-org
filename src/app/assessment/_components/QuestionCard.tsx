@@ -4,8 +4,10 @@
  * QuestionCard — single-question chrome for /assessment.
  *
  * Rebuilt on the design-2.0 token system. Editorial treatment with mono
- * "§ NN · DIMENSION" header, serif display prompt, and hairline-ruled
- * answer rows with mono score numbers on the left.
+ * "NN / NN" question counter, dimension label, serif display prompt,
+ * and hairline-ruled answer rows. The internal point value (1–4) is
+ * not surfaced in the UI — answers are differentiated by label only,
+ * not by visible score.
  *
  * UX preserved verbatim:
  *   - Auto-advance on option click (no separate Continue button)
@@ -73,11 +75,11 @@ export function QuestionCard({
 
   return (
     <div className="w-full max-w-3xl mx-auto">
-      {/* Editorial header — § NN · DIMENSION */}
+      {/* Editorial header — NN / NN · DIMENSION */}
       <div className="flex items-baseline justify-between mb-s8">
         <p className="font-mono text-mono-sm tabular-nums uppercase tracking-wider text-slate">
           <span className="text-terra">
-            § {String(questionNumber).padStart(2, "0")}
+            {String(questionNumber).padStart(2, "0")}
           </span>
           <span className="mx-s2 text-dust">/</span>
           <span>{String(totalQuestions).padStart(2, "0")}</span>
@@ -126,22 +128,14 @@ export function QuestionCard({
               aria-checked={selected}
               aria-label={`${option.label}${selected ? " (selected)" : ""}`}
               className={cn(
-                "w-full text-left grid grid-cols-[44px_1fr_28px] gap-s4 items-baseline",
-                "px-s2 py-s4 border-b border-hairline transition-colors duration-fast",
+                "w-full text-left grid grid-cols-[1fr_28px] gap-s4 items-baseline",
+                "px-s4 py-s4 border-b border-hairline transition-colors duration-fast",
                 "focus-visible:outline-none focus-visible:bg-parch",
                 selected
                   ? "bg-parch"
                   : "hover:bg-parch/60"
               )}
             >
-              <span
-                className={cn(
-                  "font-mono text-mono-md tabular-nums uppercase tracking-wider",
-                  selected ? "text-terra" : "text-slate"
-                )}
-              >
-                {String(option.points).padStart(2, "0")}
-              </span>
               <span className="font-serif text-body-lg md:text-display-xs leading-snug text-ink">
                 {option.label}
               </span>
