@@ -21,18 +21,10 @@ const LINK_GROUPS: readonly LinkGroup[] = [
   {
     label: "Start here",
     links: [
-      { href: "/assessment/start", label: "Free Assessment" },
+      { href: "/assessment/start", label: "Take the assessment" },
       { href: "/education", label: "Education" },
-      { href: "/for-institutions", label: "For Institutions" },
+      { href: "/for-institutions", label: "For institutions" },
       { href: "/research", label: "Research" },
-    ],
-  },
-  {
-    label: "Programs",
-    links: [
-      { href: "/education/practitioner", label: "AiBI-Practitioner" },
-      { href: "/education/specialist", label: "AiBI-Specialist · Coming soon" },
-      { href: "/education/leader", label: "AiBI-Leader · Coming soon" },
     ],
   },
   {
@@ -40,13 +32,16 @@ const LINK_GROUPS: readonly LinkGroup[] = [
     links: [
       { href: "/about", label: "About" },
       { href: "/security", label: "Security & Governance" },
-      { href: "/verify", label: "Verify a Credential" },
-      { href: "/privacy", label: "Privacy" },
-      { href: "/terms", label: "Terms" },
-      { href: "/ai-use-disclaimer", label: "AI Use Disclaimer" },
+      { href: "/verify", label: "Verify a credential" },
     ],
   },
 ] as const;
+
+const LEGAL_LINKS: readonly { readonly href: string; readonly label: string }[] = [
+  { href: "/privacy", label: "Privacy" },
+  { href: "/terms", label: "Terms" },
+  { href: "/ai-use-disclaimer", label: "AI Use Disclaimer" },
+];
 
 export interface SiteFooterProps {
   /** Show the newsletter signup card. Defaults to true. */
@@ -62,25 +57,23 @@ export function SiteFooter({ showNewsletter = true }: SiteFooterProps = {}) {
         <div className="max-w-wide mx-auto grid gap-s12 md:grid-cols-[1.4fr_2fr] md:gap-s16">
           <div>
             <p className="font-serif text-display-xs text-ink">The AI Banking Institute</p>
-            <p className="font-serif-sc text-body-md text-terra mt-s1 mb-s4">
+            <p className="font-serif-sc text-body-md text-terra mt-s1 mb-s5">
               Turning Bankers into Builders
             </p>
-            <p className="text-body-sm text-ink/70 leading-relaxed mb-s6">
-              An education company for community banks and credit unions. Aligned with SR 11-7,
-              Interagency TPRM Guidance, ECOA / Reg B, and the AIEOG AI Lexicon. Serving FDIC-insured
-              banks and NCUA-chartered credit unions.
+            <p className="text-body-sm text-ink/70 leading-relaxed mb-s6 max-w-[44ch]">
+              An education company for community banks and credit unions.
             </p>
             {showNewsletter && (
               <NewsletterCard
                 heading="The AI Banking Brief."
-                blurb="Fortnightly research on community-bank AI adoption. Sourced commentary, no marketing."
+                blurb="Fortnightly research, no marketing."
               />
             )}
           </div>
 
           <nav
             aria-label="Footer"
-            className="grid grid-cols-2 md:grid-cols-3 gap-x-s10 gap-y-s8"
+            className="grid grid-cols-2 gap-x-s10 gap-y-s8"
           >
             {LINK_GROUPS.map((group) => (
               <div key={group.label}>
@@ -105,8 +98,19 @@ export function SiteFooter({ showNewsletter = true }: SiteFooterProps = {}) {
         </div>
 
         <div className="max-w-wide mx-auto border-t border-hairline mt-s10 pt-s6 flex flex-col md:flex-row md:items-center md:justify-between gap-s3 font-mono text-mono-sm text-slate">
-          <p>© {year} The AI Banking Institute. All rights reserved.</p>
-          <p>AIBankingInstitute.com · AIBankingInstitute.org</p>
+          <p>© {year} The AI Banking Institute · aibankinginstitute.com</p>
+          <ul className="flex items-center gap-s5">
+            {LEGAL_LINKS.map((link) => (
+              <li key={link.href}>
+                <Link
+                  href={link.href}
+                  className="text-slate hover:text-terra transition-colors duration-fast"
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </footer>
