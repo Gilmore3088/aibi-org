@@ -70,31 +70,51 @@ ${FOOTER}
 // Newsletter — AI Banking Brief welcome (single email, sent on signup)
 // =====================================================================
 
+// Welcome email v3 — author-direct, menu-of-three structure, reply-back ask.
+// Diverges intentionally from the wrap() helper because the design is more
+// open (no big H1, no boxed CTA button, conversational opening). Kept as
+// a single inline-styled HTML string so paste-into-MailerLite still works.
 export const NEWSLETTER_WELCOME: EmailDraft = {
-  subject: 'Welcome to the AI Banking Brief',
-  preheader: 'Practitioner-grade AI insight for community banks and credit unions.',
-  html: wrap(`
-<h1 style="font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:32px;line-height:1.2;margin:0 0 16px 0;color:#1e1a14;">
-Welcome to the AI Banking Brief
-</h1>
-<p>You will receive one email roughly every two weeks. The format is fixed:</p>
-<ul style="padding-left:20px;">
-  <li><strong>One regulatory update</strong>—what just changed (FDIC, OCC, Federal Reserve, AIEOG)</li>
-  <li><strong>One practical lever</strong>—one tool, prompt, or workflow you can put into a pilot this week</li>
-  <li><strong>One peer signal</strong>—what other community banks and credit unions are doing</li>
-</ul>
-<p>No vendor pitches. No "AI-powered" headlines. No unsourced statistics.</p>
-<p>If you have not yet taken the free AI readiness assessment, that is the
-fastest way to see where your institution sits relative to peers:</p>
-<p>
-<a href="https://aibankinginstitute.com/assessment/start"
-   style="display:inline-block;padding:14px 24px;background:#b5512e;color:#ffffff;text-decoration:none;font-weight:500;border-radius:2px;">
-Take the 12-question assessment &rarr;
-</a>
+  subject: 'Welcome to The AI Banking Institute',
+  preheader: 'Three paths inside, in case any of them fits where you are right now.',
+  html: `
+<div style="font-family:'DM Sans',Helvetica,Arial,sans-serif;color:#1e1a14;line-height:1.7;max-width:600px;margin:0 auto;padding:32px 24px;background:#f9f6f0;">
+
+<p style="margin-top:0;">Thanks for signing up.</p>
+
+<p>AiBI's premise &mdash; <em>we turn your bankers into your builders</em> &mdash; runs through everything we make. The brief is one piece of that. Three more, in case any of them fits where you are right now:</p>
+
+<div style="margin:28px 0;padding:20px 0;border-top:1px solid #e6dfd1;">
+  <p style="margin:0 0 8px 0;"><strong style="font-size:17px;">The AI Readiness Assessment</strong></p>
+  <p style="margin:0 0 12px 0;">Twelve questions, three minutes, no cost. You'll get a sourced one-page result you can bring to your next leadership meeting &mdash; useful whether you're starting from zero or validating what your team already thinks.</p>
+  <p style="margin:0;"><a href="https://aibankinginstitute.com/assessment/start" style="color:#b5512e;text-decoration:none;font-weight:500;">Take the assessment &rarr;</a></p>
+</div>
+
+<div style="margin:0 0 28px 0;padding:20px 0;border-top:1px solid #e6dfd1;">
+  <p style="margin:0 0 8px 0;"><strong style="font-size:17px;">The AiBI Practitioner Course</strong></p>
+  <p style="margin:0 0 12px 0;">For institutions that have decided AI capability needs to live inside the team, not be rented from vendors. Built around four pillars &mdash; awareness, understanding, creation, application &mdash; with a margin-of-error framework so your bankers know when to trust the output and when to push back.</p>
+  <p style="margin:0;"><a href="https://aibankinginstitute.com/practitioner" style="color:#b5512e;text-decoration:none;font-weight:500;">See the curriculum &rarr;</a></p>
+</div>
+
+<div style="margin:0 0 28px 0;padding:20px 0;border-top:1px solid #e6dfd1;border-bottom:1px solid #e6dfd1;">
+  <p style="margin:0 0 8px 0;"><strong style="font-size:17px;">AiBI Consulting</strong></p>
+  <p style="margin:0 0 12px 0;">Direct work on a specific decision in front of you &mdash; a vendor evaluation, a pilot scope, a board memo, an internal AI policy. Not a generic engagement; a defined deliverable.</p>
+  <p style="margin:0;"><a href="https://aibankinginstitute.com/consulting" style="color:#b5512e;text-decoration:none;font-weight:500;">Talk to us &rarr;</a></p>
+</div>
+
+<p>One favor before the first issue lands: hit reply and tell me the single AI question you most want answered in the next 90 days. I read every reply, and yours will shape what runs.</p>
+
+<p style="margin:32px 0 0 0;line-height:1.6;">
+&mdash; James<br/>
+<span style="color:#6b6357;font-size:14px;">James Gilmore, Founder &middot; <a href="https://aibankinginstitute.com" style="color:#b5512e;">The AI Banking Institute</a></span>
 </p>
-<p>It takes about three minutes on a phone, costs nothing, and gives you a
-sourced one-page result you can bring to your next leadership meeting.</p>
-`),
+
+<hr style="border:none;border-top:1px solid #e6dfd1;margin:40px 0 16px 0;"/>
+<p style="margin:0;color:#6b6357;font-size:13px;line-height:1.5;">
+You are receiving this because you completed our AI readiness assessment or subscribed to the AI Banking Brief. <a href="{$unsubscribe}" style="color:#6b6357;">Unsubscribe</a>.
+</p>
+
+</div>`,
 };
 
 // =====================================================================

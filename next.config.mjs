@@ -37,6 +37,11 @@ const nextConfig = {
   // Decision log: 2026-04-29 — /toolbox moved under /dashboard per spec §4.3
   // (paid Toolbox surface lives under /dashboard). Both exact and sub-path
   // redirects preserve any existing course-content deep links.
+  //
+  // Decision log: 2026-05-09 — friendly short URLs added for email and
+  // print copy: /practitioner → /courses/aibi-p, /consulting →
+  // /for-institutions/advisory. Lets author copy use memorable paths
+  // without having to know the canonical routes.
   async redirects() {
     return [
       { source: '/courses', destination: '/education', permanent: true },
@@ -45,6 +50,8 @@ const nextConfig = {
       { source: '/foundations', destination: '/education', permanent: true },
       { source: '/toolbox', destination: '/dashboard/toolbox', permanent: true },
       { source: '/toolbox/:path*', destination: '/dashboard/toolbox/:path*', permanent: true },
+      { source: '/practitioner', destination: '/courses/aibi-p', permanent: true },
+      { source: '/consulting', destination: '/for-institutions/advisory', permanent: true },
     ];
   },
 };
