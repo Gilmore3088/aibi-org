@@ -72,11 +72,11 @@ function RangeField({
 }: RangeFieldProps) {
   return (
     <label className="block">
-      <div className="flex items-baseline justify-between mb-s2">
+      <div className="flex items-baseline gap-s4 mb-s3">
         <span className="font-mono text-label-md uppercase tracking-widest text-slate">
           {label}
         </span>
-        <span className="font-mono tabular-nums text-mono-md text-ink">
+        <span className="font-mono tabular-nums text-display-xs text-ink leading-none">
           {displayValue}
         </span>
       </div>
@@ -87,7 +87,7 @@ function RangeField({
         step={step}
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="w-full h-[2px] appearance-none bg-hairline accent-terra cursor-pointer"
+        className="w-full h-[3px] appearance-none bg-hairline accent-terra cursor-pointer"
       />
     </label>
   );
@@ -173,14 +173,26 @@ export function ROIDossier() {
           </div>
         </div>
 
-        {/* CTA — single button, centered */}
-        <div className="mt-s8 text-center">
-          <Link
-            href="/assessment/start"
-            className="inline-block font-sans text-mono-sm font-medium uppercase tracking-wider rounded-sharp bg-terra text-linen px-s8 py-s4 hover:bg-terra-light transition-colors duration-fast"
-          >
-            Take the Assessment →
-          </Link>
+        {/* CTA — pinned to the conservative number */}
+        <div className="mt-s10 text-center">
+          <p className="font-serif text-display-sm md:text-display-md text-ink leading-snug max-w-[40ch] mx-auto">
+            What if we could save you{" "}
+            <span className="font-mono tabular-nums text-terra">
+              {fmtCurrency(result.low)}
+            </span>
+            ?
+          </p>
+          <p className="font-mono text-label-sm uppercase tracking-widest text-slate mt-s2">
+            Conservative estimate
+          </p>
+          <div className="mt-s6">
+            <Link
+              href="/assessment/start"
+              className="inline-block font-sans text-mono-md font-medium uppercase tracking-wider rounded-sharp bg-terra text-linen px-s8 py-s4 hover:bg-terra-light transition-colors duration-fast"
+            >
+              Start your free assessment →
+            </Link>
+          </div>
         </div>
       </div>
     </Section>
@@ -194,11 +206,11 @@ interface FactCellProps {
 
 function FactCell({ label, value }: FactCellProps) {
   return (
-    <div className="flex flex-col">
-      <span className="font-mono text-label-sm uppercase tracking-widest text-slate">
+    <div className="flex flex-col py-s2">
+      <span className="font-mono text-label-md uppercase tracking-widest text-slate">
         {label}
       </span>
-      <span className="font-mono tabular-nums text-mono-md text-ink mt-s1">
+      <span className="font-mono tabular-nums text-display-xs text-ink mt-s2 leading-none">
         {value}
       </span>
     </div>
