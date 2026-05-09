@@ -154,93 +154,114 @@ export function InteractiveSkillsPreview() {
           </Link>
         </div>
 
-        <div className="mt-10 overflow-x-auto border-y border-[color:var(--color-ink)]/10">
-          <div className="grid min-w-[760px] grid-cols-5 gap-px bg-[color:var(--color-ink)]/10">
+        <div className="mt-12 grid gap-px bg-[color:var(--color-ink)]/10 border border-[color:var(--color-ink)]/10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
+          {/* Left column: 5-skill accordion. Each row expands to reveal the
+              "Before" framing inline; the right column then becomes the
+              focused stage for the prompt + AI-assisted result. */}
+          <ul role="tablist" aria-label="Banking skills" className="bg-[color:var(--color-parch)]">
             {SKILLS.map((skill, index) => {
               const isActive = skill.id === activeSkillId;
               return (
-                <button
+                <li
                   key={skill.id}
-                  type="button"
-                  aria-pressed={isActive}
-                  onClick={() => setActiveSkillId(skill.id)}
-                  className={`group min-h-[132px] bg-[color:var(--color-linen)] p-5 text-left transition-all hover:bg-[color:var(--color-parch)] ${
-                    isActive
-                      ? 'shadow-[inset_0_3px_0_var(--color-terra)]'
-                      : 'shadow-[inset_0_0_0_transparent]'
+                  className={`border-b border-[color:var(--color-ink)]/10 last:border-b-0 ${
+                    isActive ? 'bg-[color:var(--color-linen)]' : ''
                   }`}
                 >
-                  <span
-                    aria-hidden="true"
-                    className={`font-mono text-sm transition-transform duration-200 group-hover:translate-x-1 ${
-                      isActive
-                        ? 'text-[color:var(--color-terra)]'
-                        : 'text-[color:var(--color-ink)]/35'
-                    }`}
+                  <button
+                    type="button"
+                    role="tab"
+                    aria-selected={isActive}
+                    aria-controls={`skill-panel-${skill.id}`}
+                    id={`skill-tab-${skill.id}`}
+                    onClick={() => setActiveSkillId(skill.id)}
+                    className="group flex w-full items-start gap-5 p-6 md:p-7 text-left transition-colors hover:bg-[color:var(--color-linen)]"
                   >
-                    / {String(index + 1).padStart(2, '0')}
-                  </span>
-                  <span className="mt-6 block font-serif text-2xl text-[color:var(--color-ink)] leading-tight transition-transform duration-200 group-hover:translate-x-1">
-                    {skill.title}
-                  </span>
-                </button>
+                    <span
+                      aria-hidden="true"
+                      className={`font-mono text-sm tabular-nums shrink-0 mt-1 ${
+                        isActive
+                          ? 'text-[color:var(--color-terra)]'
+                          : 'text-[color:var(--color-ink)]/35'
+                      }`}
+                    >
+                      / {String(index + 1).padStart(2, '0')}
+                    </span>
+                    <span className="flex-1 min-w-0">
+                      <span
+                        className={`block font-serif text-xl md:text-2xl leading-tight transition-colors ${
+                          isActive
+                            ? 'text-[color:var(--color-ink)]'
+                            : 'text-[color:var(--color-ink)]/85 group-hover:text-[color:var(--color-ink)]'
+                        }`}
+                      >
+                        {skill.title}
+                      </span>
+                      {isActive && (
+                        <span
+                          className="mt-3 block font-serif italic text-base leading-snug text-[color:var(--color-ink)]/70 animate-[fadeIn_220ms_ease-out]"
+                        >
+                          {skill.before}
+                        </span>
+                      )}
+                    </span>
+                  </button>
+                </li>
               );
             })}
-          </div>
-        </div>
+          </ul>
 
-        <div
-          key={activeSkill.id}
-          className="mt-8 grid gap-px bg-[color:var(--color-ink)]/10 border border-[color:var(--color-ink)]/10 lg:grid-cols-[0.8fr_1fr_1fr] animate-[fadeIn_220ms_ease-out]"
-        >
-          <PreviewPanel label="Before">
-            <p className="font-serif text-2xl leading-snug text-[color:var(--color-ink)]">
-              {activeSkill.before}
-            </p>
-          </PreviewPanel>
+          {/* Right column: prompt (top) + AI-assisted result (bottom). */}
+          <div
+            key={activeSkill.id}
+            role="tabpanel"
+            id={`skill-panel-${activeSkill.id}`}
+            aria-labelledby={`skill-tab-${activeSkill.id}`}
+            className="grid gap-px bg-[color:var(--color-ink)]/10 grid-rows-[auto_auto] animate-[fadeIn_220ms_ease-out]"
+          >
+            <PreviewPanel label="Sample prompt">
+              <p className="font-mono text-sm leading-relaxed text-[color:var(--color-ink)]/80">
+                {activeSkill.prompt}
+              </p>
+              <button
+                type="button"
+                onClick={() => copyPrompt(activeSkill)}
+                className={`mt-6 inline-flex items-center justify-center px-5 py-3 border font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] transition-all ${
+                  animationComplete
+                    ? 'opacity-100 translate-y-0'
+                    : 'opacity-0 translate-y-2 pointer-events-none'
+                } ${
+                  copiedSkillId === activeSkill.id
+                    ? 'bg-[color:var(--color-terra)] border-[color:var(--color-terra)] text-[color:var(--color-linen)]'
+                    : 'border-[color:var(--color-terra)] text-[color:var(--color-terra)] hover:bg-[color:var(--color-terra)] hover:text-[color:var(--color-linen)]'
+                }`}
+              >
+                {copiedSkillId === activeSkill.id ? 'Prompt Copied' : activeSkill.cta}
+              </button>
+            </PreviewPanel>
 
-          <PreviewPanel label="Sample prompt">
-            <p className="font-mono text-sm leading-relaxed text-[color:var(--color-ink)]/80">
-              {activeSkill.prompt}
-            </p>
-            <button
-              type="button"
-              onClick={() => copyPrompt(activeSkill)}
-              className={`mt-6 inline-flex items-center justify-center px-5 py-3 border font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] transition-all ${
-                animationComplete
-                  ? 'opacity-100 translate-y-0'
-                  : 'opacity-0 translate-y-2 pointer-events-none'
-              } ${
-                copiedSkillId === activeSkill.id
-                  ? 'bg-[color:var(--color-terra)] border-[color:var(--color-terra)] text-[color:var(--color-linen)]'
-                  : 'border-[color:var(--color-terra)] text-[color:var(--color-terra)] hover:bg-[color:var(--color-terra)] hover:text-[color:var(--color-linen)]'
-              }`}
-            >
-              {copiedSkillId === activeSkill.id ? 'Prompt Copied' : activeSkill.cta}
-            </button>
-          </PreviewPanel>
-
-          <PreviewPanel label="AI-assisted result">
-            <div className="min-h-[174px]">
-              {!animationComplete ? (
-                <div className="inline-flex gap-1 py-1" aria-label="AI is typing">
-                  <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--color-terra)]/70 animate-pulse" />
-                  <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--color-terra)]/50 animate-pulse [animation-delay:120ms]" />
-                  <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--color-terra)]/30 animate-pulse [animation-delay:240ms]" />
+            <PreviewPanel label="AI-assisted result">
+              <div className="min-h-[174px]">
+                {!animationComplete ? (
+                  <div className="inline-flex gap-1 py-1" aria-label="AI is typing">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--color-terra)]/70 animate-pulse" />
+                    <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--color-terra)]/50 animate-pulse [animation-delay:120ms]" />
+                    <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--color-terra)]/30 animate-pulse [animation-delay:240ms]" />
+                  </div>
+                ) : null}
+                <div className="space-y-2">
+                  {activeSkill.output.slice(0, visibleLines).map((line) => (
+                    <p
+                      key={line}
+                      className="text-sm leading-relaxed text-[color:var(--color-ink)]/80 animate-[fadeInUp_240ms_ease-out]"
+                    >
+                      {line}
+                    </p>
+                  ))}
                 </div>
-              ) : null}
-              <div className="space-y-2">
-                {activeSkill.output.slice(0, visibleLines).map((line) => (
-                  <p
-                    key={line}
-                    className="text-sm leading-relaxed text-[color:var(--color-ink)]/80 animate-[fadeInUp_240ms_ease-out]"
-                  >
-                    {line}
-                  </p>
-                ))}
               </div>
-            </div>
-          </PreviewPanel>
+            </PreviewPanel>
+          </div>
         </div>
 
         <div className="mt-7 flex flex-col gap-4 border-t border-[color:var(--color-ink)]/10 pt-7 sm:flex-row sm:items-center sm:justify-between">
