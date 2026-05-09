@@ -1,76 +1,138 @@
-import Link from 'next/link';
+import type { Metadata } from "next";
+import { MarketingPage } from "@/components/system/templates";
+import { Section, Cta } from "@/components/system";
 
-const OUTCOMES = [
-  ['Your AI readiness score', 'A simple score that shows where your team stands today.'],
-  ['Your top 3 gaps', 'The clearest places to improve confidence, safety, and usefulness.'],
-  ['A recommended learning path', 'A practical next step based on your readiness level.'],
-  ['Your first practical AI exercise', 'A short rep that turns the result into action.'],
-] as const;
-
-const TRUST_POINTS = [
-  'No customer data.',
-  'No technical knowledge required.',
-  'Built for regulated financial institutions.',
-] as const;
-
-export const metadata = {
-  title: 'Start the AI Readiness Assessment | The AI Banking Institute',
+export const metadata: Metadata = {
+  title: "Start the AI Readiness Assessment | The AI Banking Institute",
   description:
-    'A short AI readiness assessment for community banks and credit unions.',
+    "Two assessments for community banks and credit unions. The free three-minute readiness diagnostic, or the institutional-grade In-Depth Assessment.",
 };
+
+interface AssessmentTile {
+  readonly title: React.ReactNode;
+  readonly body: string;
+  readonly facts: readonly { readonly label: string; readonly value: string }[];
+  readonly cta: { readonly href: string; readonly label: string };
+  readonly surface: "linen" | "parch";
+}
+
+const TILES: readonly AssessmentTile[] = [
+  {
+    surface: "linen",
+    title: (
+      <>
+        AI <em className="text-terra">Readiness</em> Assessment
+      </>
+    ),
+    body:
+      "Twelve questions, three minutes. A score, a tier, and a tailored starter artifact you can take to your team this week.",
+    facts: [
+      { label: "Questions", value: "12" },
+      { label: "Time", value: "3 min" },
+      { label: "Format", value: "Self-serve · mobile-ready" },
+      { label: "Tuition", value: "Free" },
+    ],
+    cta: { href: "/assessment", label: "Begin the free assessment →" },
+  },
+  {
+    surface: "parch",
+    title: (
+      <>
+        <em className="text-terra">In-Depth</em> Assessment
+      </>
+    ),
+    body:
+      "Forty-eight questions across eight readiness dimensions. An individual report, plus an anonymized aggregate dashboard for institution leaders.",
+    facts: [
+      { label: "Questions", value: "48" },
+      { label: "Time", value: "20 min" },
+      { label: "Format", value: "Individual + institution rollup" },
+      { label: "Tuition", value: "$99 · $79/seat at 10+" },
+    ],
+    cta: { href: "/assessment/in-depth", label: "Begin the In-Depth Assessment →" },
+  },
+];
 
 export default function AssessmentStartPage() {
   return (
-    <main className="px-6 py-14 md:py-20">
-      <section className="max-w-5xl mx-auto">
-        <div className="max-w-3xl">
-          <p className="font-serif-sc text-xs uppercase tracking-[0.22em] text-[color:var(--color-terra)] mb-4">
-            AI Readiness Assessment
-          </p>
-          <h1 className="font-serif text-4xl md:text-6xl text-[color:var(--color-ink)] leading-tight">
-            See how ready your team is to use AI safely.
-          </h1>
-          <p className="text-lg text-[color:var(--color-ink)]/75 leading-relaxed mt-5 max-w-2xl">
-            A short readiness assessment for community banks and credit unions.
-            No customer data required.
-          </p>
+    <MarketingPage
+      hero={{
+        eyebrow: "Two assessments",
+        title: (
+          <>
+            How ready is your <em className="text-terra">bank?</em>
+          </>
+        ),
+        lede: (
+          <span className="font-serif italic">
+            Three minutes free, or twenty for the institutional-grade In-Depth
+            Assessment.
+          </span>
+        ),
+        divider: "hairline",
+      }}
+    >
+      {/* Two-tile split — same composition as the homepage */}
+      <Section variant="linen" padding="default" divider="none">
+        <div className="grid md:grid-cols-2 -mx-s7">
+          {TILES.map((tile, idx) => {
+            const surfaceClass =
+              tile.surface === "parch" ? "bg-parch" : "bg-linen";
+            const sideClass =
+              idx === 0
+                ? "md:pr-s10 border-r border-hairline"
+                : "md:pl-s10";
+            return (
+              <article
+                key={tile.cta.href}
+                className={`${surfaceClass} px-s7 py-s12 md:py-s14 ${sideClass} flex flex-col`}
+              >
+                <h2 className="font-serif text-display-lg md:text-display-xl text-ink leading-[1.05] tracking-tightish max-w-[14ch]">
+                  {tile.title}
+                </h2>
+                <p className="text-body-lg text-ink/80 leading-relaxed mt-s6 max-w-[40ch]">
+                  {tile.body}
+                </p>
+                <dl className="grid grid-cols-2 gap-y-s4 gap-x-s5 border-t border-hairline pt-s6 mt-s8 max-w-[40ch]">
+                  {tile.facts.map((f) => (
+                    <div key={f.label}>
+                      <dt className="font-mono text-label-sm uppercase tracking-widest text-slate">
+                        {f.label}
+                      </dt>
+                      <dd className="font-mono tabular-nums text-body-md text-ink mt-s1">
+                        {f.value}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+                <div className="mt-s8">
+                  <Cta variant="secondary" href={tile.cta.href}>
+                    {tile.cta.label}
+                  </Cta>
+                </div>
+              </article>
+            );
+          })}
         </div>
+      </Section>
 
-        <div className="grid md:grid-cols-4 gap-4 mt-10">
-          {OUTCOMES.map(([title, body]) => (
-            <article
-              key={title}
-              className="border border-[color:var(--color-ink)]/10 rounded-[3px] bg-[color:var(--color-parch)] p-5"
+      {/* Single trust line — no boxed chrome, just a hairline-divided strip */}
+      <Section variant="linen" padding="default" divider="none">
+        <div className="max-w-default mx-auto border-y border-hairline py-s5 grid sm:grid-cols-3 gap-s4">
+          {[
+            "No customer data required",
+            "No technical knowledge required",
+            "Built for regulated institutions",
+          ].map((point) => (
+            <p
+              key={point}
+              className="font-mono text-label-md uppercase tracking-widest text-slate text-center"
             >
-              <h2 className="font-serif text-xl text-[color:var(--color-ink)] leading-snug">
-                {title}
-              </h2>
-              <p className="text-sm text-[color:var(--color-slate)] leading-relaxed mt-3">
-                {body}
-              </p>
-            </article>
+              {point}
+            </p>
           ))}
         </div>
-
-        <div className="mt-10 grid lg:grid-cols-[1fr_auto] gap-6 items-center border border-[color:var(--color-ink)]/10 rounded-[3px] p-6 md:p-8">
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-6">
-            {TRUST_POINTS.map((point) => (
-              <p
-                key={point}
-                className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-slate)]"
-              >
-                {point}
-              </p>
-            ))}
-          </div>
-          <Link
-            href="/assessment"
-            className="inline-block text-center px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
-          >
-            Start Assessment
-          </Link>
-        </div>
-      </section>
-    </main>
+      </Section>
+    </MarketingPage>
   );
 }
