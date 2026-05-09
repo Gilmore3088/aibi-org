@@ -5,12 +5,22 @@ import type { ReactNode } from 'react';
 import { useEffect, useState } from 'react';
 import { TOOLS, type CurriculumTool } from '@content/curriculum/tools';
 import { AI_SKILLS, type AiSkillDept } from '@content/curriculum/ai-skills';
+import { AI_AGENTS, type AiAgentDept } from '@content/curriculum/ai-agents';
 
 const SKILL_DEPT_ORDER: readonly AiSkillDept[] = [
   'Lending',
   'Compliance',
   'Retail',
   'Executive',
+  'Research',
+];
+
+const AGENT_DEPT_ORDER: readonly AiAgentDept[] = [
+  'Lending',
+  'Compliance',
+  'Executive',
+  'Strategy',
+  'Retail',
   'Research',
 ];
 
@@ -100,28 +110,9 @@ const CAPABILITIES: readonly Capability[] = [
     id: 'agents',
     title: 'Agents',
     subtitle:
-      'An agent walks a vendor risk review end-to-end — SOC 2, classification, SR 11-7 + TPRM mapping, board memo. Stops at every human signoff.',
-    prompt:
-      'Run the vendor risk intake workflow for Acme Software. (1) Summarize their SOC 2 + DPA. (2) Classify per our risk matrix. (3) Map to SR 11-7 + Interagency TPRM where applicable. (4) Draft the board memo. (5) STOP at the model risk officer signoff. Do not auto-approve.',
-    output: [
-      '⏱ 04:12 — Workflow complete · 4 of 5 steps run · 1 stopped for review',
-      '',
-      '01 — SOC 2 + DPA summary (auto)',
-      '    SOC 2 Type II since 2023. Subprocessors: AWS us-east-1, Twilio, Stripe.',
-      '    Data residency: US-only. No findings last cycle. ✓',
-      '',
-      '02 — Risk classification (auto)',
-      '    MEDIUM. Handles non-public customer data. No model deployment. TPRM tier 2.',
-      '',
-      '03 — Regulatory mapping (auto)',
-      '    Not subject to SR 11-7 (no model). Subject to Interagency TPRM §III.B.',
-      '',
-      '04 — Board memo drafted',
-      '    280 words · saved to /vendor-reviews/2026-Q1/acme.md · awaiting review',
-      '',
-      '05 — Model risk officer signoff — STOPPED',
-      '    Awaiting J. Patel. Estimated review: 12 min.',
-    ],
+      'An Agent is a multi-step workflow that chains Skills, decision logic, and human checkpoints. Map every step before you automate any of it.',
+    prompt: '',
+    output: [],
   },
   {
     id: 'more',
@@ -296,6 +287,16 @@ export function InteractiveSkillsPreview({
             >
               <SkillsPanel />
             </div>
+          ) : active.id === 'agents' ? (
+            <div
+              id="capability-panel"
+              role="tabpanel"
+              key={active.id}
+              aria-live="polite"
+              className="animate-[fadeIn_220ms_ease-out]"
+            >
+              <AgentsPanel />
+            </div>
           ) : (
             <div
               id="capability-panel"
@@ -465,6 +466,58 @@ function SkillsPanel() {
                     </p>
                     <p className="text-body-sm text-ink/75 leading-snug mt-[2px] max-w-[44ch]">
                       {skill.summary}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </dd>
+          </div>
+        ))}
+      </dl>
+    </article>
+  );
+}
+
+/**
+ * <AgentsPanel> — replaces the prompt + result demo on the Agents tab.
+ * Renders the flagship AI Agents (content/curriculum/ai-agents.ts) —
+ * multi-step workflows that chain Skills with human checkpoints —
+ * grouped by department.
+ */
+function AgentsPanel() {
+  const grouped = AGENT_DEPT_ORDER.map((dept) => ({
+    dept,
+    items: AI_AGENTS.filter((a) => a.dept === dept),
+  })).filter((g) => g.items.length > 0);
+
+  return (
+    <article className="bg-parch border border-hairline">
+      <header className="flex items-center justify-between px-s5 md:px-s6 py-s4 border-b border-hairline">
+        <p className="font-serif-sc text-label-sm uppercase tracking-widest text-terra">
+          Flagship Agents
+        </p>
+        <p className="font-mono text-mono-xs uppercase tracking-wider text-ink/40 tabular-nums">
+          {String(AI_AGENTS.length).padStart(2, '0')} of many
+        </p>
+      </header>
+      <dl className="divide-y divide-hairline">
+        {grouped.map((group) => (
+          <div
+            key={group.dept}
+            className="grid grid-cols-[6rem_1fr] gap-s5 px-s5 md:px-s6 py-s4"
+          >
+            <dt className="font-mono text-label-md uppercase tracking-widest text-terra pt-s1">
+              {group.dept}
+            </dt>
+            <dd>
+              <ul className="space-y-s3">
+                {group.items.map((agent) => (
+                  <li key={agent.cmd}>
+                    <p className="font-mono text-mono-sm tabular-nums text-ink">
+                      {agent.cmd}
+                    </p>
+                    <p className="text-body-sm text-ink/75 leading-snug mt-[2px] max-w-[44ch]">
+                      {agent.summary}
                     </p>
                   </li>
                 ))}
