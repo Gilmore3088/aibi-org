@@ -45,12 +45,6 @@ const TRUST_POINTS = [
   },
 ] as const;
 
-const HERO_PROMISES = [
-  'Your readiness tier in plain language — Starting Point, Early Stage, Building Momentum, or Ready to Scale.',
-  'The one dimension dragging your score down, with a copy-paste artifact you can use this week.',
-  'A clear next step — free, no credit card, no sales call.',
-] as const;
-
 export const metadata = {
   title: 'Teach Your Team How to Use AI Safely at Work | The AI Banking Institute',
   description:
@@ -61,43 +55,40 @@ export default function HomePage() {
   return (
     <main>
       <HomeContextStrip />
-      <section className="px-6 pt-16 pb-14 md:pt-24 md:pb-20 bg-[color:var(--color-linen)] border-b border-[color:var(--color-ink)]/10">
-        <div className="max-w-4xl mx-auto text-center">
+      <section className="px-6 pt-14 pb-12 md:pt-20 md:pb-16 bg-[color:var(--color-linen)] border-b border-[color:var(--color-ink)]/10">
+        <div className="max-w-3xl mx-auto text-center">
           <p className="font-serif-sc text-xs uppercase tracking-[0.22em] text-[color:var(--color-terra)]">
             For community banks and credit unions
           </p>
-          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl leading-[1.08] text-[color:var(--color-ink)] mt-5">
-            Teach your team how to use AI safely at work.
+          <h1 className="font-serif text-[2.5rem] leading-[1.05] md:text-5xl lg:text-[3.75rem] lg:leading-[1.05] text-[color:var(--color-ink)] mt-5 max-w-2xl mx-auto">
+            Teach your team to use AI safely at work.
           </h1>
-          <p className="font-serif-sc text-base md:text-lg tracking-[0.08em] text-[color:var(--color-terra)] mt-5">
+          <p className="font-serif italic text-lg md:text-xl text-[color:var(--color-terra)] mt-4">
             Turning bankers into builders.
           </p>
-          <p className="text-base md:text-xl text-[color:var(--color-ink)]/75 max-w-2xl mx-auto leading-relaxed mt-5">
+          <p className="text-base md:text-lg text-[color:var(--color-ink)]/75 max-w-xl mx-auto leading-relaxed mt-6">
             Twelve questions, three minutes, no signup before you see your
-            score. Here&rsquo;s what comes back:
+            score. The free assessment shows your readiness tier, the one
+            dimension dragging you down, and a copy-paste artifact you can
+            use this week.
           </p>
-          <ul className="mt-6 max-w-xl mx-auto space-y-3 text-left">
-            {HERO_PROMISES.map((line) => (
-              <li
-                key={line}
-                className="flex gap-3 text-sm md:text-base text-[color:var(--color-ink)]/85 leading-relaxed"
-              >
-                <span
-                  className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-terra)] shrink-0"
-                  aria-hidden="true"
-                />
-                <span>{line}</span>
-              </li>
-            ))}
-          </ul>
-          <div className="mt-8 flex justify-center">
+          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
             <Link
               href="/assessment/start"
               className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
             >
-              Take the Assessment
+              Take the free assessment
+            </Link>
+            <Link
+              href="/assessment/in-depth"
+              className="inline-block px-8 py-4 border border-[color:var(--color-ink)]/20 text-[color:var(--color-ink)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-parch)] active:scale-[0.98] transition-all"
+            >
+              In-Depth Assessment · $99
             </Link>
           </div>
+          <p className="mt-5 font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-ink)]/55">
+            48 questions · 20-page report · for institutions ready to act
+          </p>
         </div>
       </section>
 
