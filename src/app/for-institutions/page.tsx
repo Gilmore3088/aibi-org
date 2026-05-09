@@ -5,8 +5,6 @@ import {
   SectionHeader,
   PillarCard,
   Cta,
-  ToolGrid,
-  SkillGrid,
 } from "@/components/system";
 import { enrollmentTiers } from "@content/institutions/v1";
 import { CTAS } from "@content/copy";
@@ -31,20 +29,18 @@ export default function ForInstitutionsPage() {
         eyebrow: "For Banks & Credit Unions",
         title: (
           <>
-            Capability,{" "}
-            <em className="not-italic text-terra">not a platform.</em>
+            Capability, <em className="text-terra">not a platform.</em>
           </>
         ),
         lede: (
-          <>
-            An education engagement for community banks and credit unions. Your bankers
-            leave with reviewed AI workflows; your leadership leaves with a readiness
-            baseline and a governance plan; your examiners see a defensible posture.
-            Nothing to install. No vendor lock-in. Just capability that compounds.
-          </>
+          <span className="font-serif italic">
+            An education engagement for community banks and credit unions.
+            No software seats. No vendor lock-in.
+          </span>
         ),
         primaryCta: CTAS.requestPilot,
         secondaryCta: CTAS.beginAssessment,
+        divider: "hairline",
       }}
     >
       {/* Value prop band — what your institution actually gets.
@@ -135,12 +131,11 @@ export default function ForInstitutionsPage() {
         </div>
       </div>
 
-      {/* §01 — Three engagement tiles */}
+      {/* Three engagement tiles */}
       <Section variant="linen" padding="default">
         <SectionHeader
-          number="01"
           label="Engagement"
-          title="Three ways to enroll, one free briefing to find the right fit."
+          title="Three ways to enroll."
         />
         <div className="grid md:grid-cols-3 gap-px bg-hairline border-y border-strong mt-s6">
           {enrollmentTiers.map((tier) => {
@@ -181,41 +176,20 @@ export default function ForInstitutionsPage() {
         </div>
       </Section>
 
-      {/* §02 — Tools, named */}
-      <Section variant="parch" padding="default">
-        <SectionHeader
-          number="02"
-          label="Tools, named"
-          title="Six platforms. No abstractions."
-        />
-        <ToolGrid className="mt-s8" />
-      </Section>
-
-      {/* §03 — Skills, verb-stated */}
-      <Section variant="linen" padding="default">
-        <SectionHeader
-          number="03"
-          label="Skills, verb-stated"
-          title="What practitioners can do on day one."
-        />
-        <SkillGrid className="mt-s8" />
-      </Section>
-
-      {/* §03 — Pilot CTA */}
+      {/* Pilot CTA — the recommended start */}
       <Section variant="dark" divider="none" padding="default" id="inquiry">
         <div className="grid md:grid-cols-[1.4fr_1fr] gap-s10 items-center">
           <div>
-            <p className="font-serif-sc text-label-md uppercase tracking-widest text-amber-light mb-s3">
+            <p className="font-serif-sc text-label-md uppercase tracking-widest text-cream mb-s3">
               Begin where it makes sense
             </p>
             <h2 className="font-serif text-display-md text-bone leading-tight">
               Start with a coached cohort. Scale on what works.
             </h2>
             <p className="text-body-md text-cream mt-s4 leading-relaxed">
-              The fastest way to see the Institute&rsquo;s shape inside your bank is a 10-seat
-              coached cohort over eight weeks. Practitioners ship reviewed AI workflows;
-              leadership gets the readiness data to plan the next step. No platform
-              purchase. No vendor lock-in.
+              A 10-seat cohort over eight weeks. Practitioners ship reviewed
+              AI workflows; leadership gets the readiness data to plan the
+              next step.
             </p>
           </div>
           <div className="border-l border-cream/20 pl-s8">
@@ -231,7 +205,7 @@ export default function ForInstitutionsPage() {
                 "Capstone artifact review by an instructor",
               ].map((item) => (
                 <li key={item} className="grid grid-cols-[12px_1fr] gap-s2">
-                  <span aria-hidden="true" className="font-mono text-amber-light">
+                  <span aria-hidden="true" className="font-mono text-cream">
                     —
                   </span>
                   <span>{item}</span>

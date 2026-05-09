@@ -6,6 +6,8 @@ import {
   CertificationLadder,
   Cta,
   Marginalia,
+  ToolGrid,
+  SkillGrid,
 } from "@/components/system";
 import { InteractiveSkillsPreview } from "@/components/sections/InteractiveSkillsPreview";
 import { InquiryForm } from "@/app/certifications/_components/InquiryForm";
@@ -244,8 +246,26 @@ export default async function EducationPage() {
         />
       </Section>
 
-      {/* §03 — Sample question */}
+      {/* Capabilities preview — interactive tabs */}
       <InteractiveSkillsPreview />
+
+      {/* Tools — the platforms taught in the curriculum */}
+      <Section variant="parch" padding="default">
+        <SectionHeader
+          label="Tools"
+          title="Six platforms. No abstractions."
+        />
+        <ToolGrid className="mt-s8" />
+      </Section>
+
+      {/* Skills — what practitioners can do on day one */}
+      <Section variant="linen" padding="default">
+        <SectionHeader
+          label="Skills"
+          title="What practitioners can do on day one."
+        />
+        <SkillGrid className="mt-s8" />
+      </Section>
 
       {/* Inquiry */}
       <Section variant="parch" padding="default" container="narrow" id="inquiry-form">
