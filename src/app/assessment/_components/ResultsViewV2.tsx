@@ -552,6 +552,10 @@ function ImplicationRow({ label, body }: { readonly label: string; readonly body
 
 function GapCard({ gap }: { readonly gap: RankedDimension }) {
   const content = GAP_CONTENT[gap.id];
+  // Defensive: a stored dimensionBreakdown may contain legacy keys that
+  // no longer exist in GAP_CONTENT (e.g. old rotation-set IDs). Skip the
+  // card rather than crash the entire results page when that happens.
+  if (!content) return null;
   return (
     <article className="border-l-2 border-[color:var(--color-error)] bg-[color:var(--color-linen)] rounded-[3px] p-6">
       <header className="flex items-baseline justify-between gap-4">

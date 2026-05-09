@@ -52,6 +52,11 @@ const nextConfig = {
   // /courses/* → /education/<program>/*. Old routes preserved here as
   // permanent redirects so internal links and external references still
   // resolve while the migration completes in Phase 07.
+  //
+  // Decision log: 2026-05-09 — friendly short URLs added for email and
+  // print copy: /practitioner → /courses/aibi-p, /consulting →
+  // /for-institutions/advisory. Lets author copy use memorable paths
+  // without having to know the canonical routes.
   async redirects() {
     return [
       { source: '/courses', destination: '/education', permanent: true },
@@ -73,6 +78,9 @@ const nextConfig = {
       { source: '/education/leader', destination: '/coming-soon?interest=leader', permanent: false },
       { source: '/education/leader/:path*', destination: '/coming-soon?interest=leader', permanent: false },
       { source: '/certifications/exam/aibi-p', destination: '/courses/aibi-p/exam', permanent: true },
+      // Friendly short URLs for email/print copy (2026-05-09).
+      { source: '/practitioner', destination: '/courses/aibi-p', permanent: true },
+      { source: '/consulting', destination: '/for-institutions/advisory', permanent: true },
     ];
   },
 };

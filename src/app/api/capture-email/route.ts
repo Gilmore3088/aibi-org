@@ -243,10 +243,22 @@ export async function POST(request: Request) {
       }
     }
 
+    // Compute lowest-scoring dimension once — used both as a MailerLite
+    // field (for tier-email merge tags) and downstream by Resend.
+    const lowestDimensionId = dimensionBreakdown
+      ? Object.entries(dimensionBreakdown)
+          .map(([id, d]) => ({ id, pct: d.maxScore > 0 ? d.score / d.maxScore : 0 }))
+          .sort((a, b) => a.pct - b.pct)[0]?.id
+      : undefined;
+
     const added = await tagAssessmentTier({
       email,
       tierId: newTier,
       ...(trimmedFirstName ? { firstName: trimmedFirstName } : {}),
+      ...(profileId ? { profileId } : {}),
+      score,
+      tierLabel,
+      ...(lowestDimensionId ? { lowestDimension: lowestDimensionId } : {}),
     });
 
     if (added.status === 'tagged') {

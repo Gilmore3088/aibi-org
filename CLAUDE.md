@@ -760,6 +760,43 @@ from plans for tiers being held back. Decision drivers + design
 discussion in
 `docs/superpowers/specs/2026-05-05-product-simplification-and-indepth-assessment-design.md`.
 
+**2026-05-08 — MailerLite e2e setup complete.** Five Automations created
+in production MailerLite (account `2331976`, sender
+`hello@aibankinginstitute.com`): one Newsletter welcome bound to the
+Newsletter group, plus four assessment tier sequences (Starting Point /
+Early Stage / Building Momentum / Ready to Scale), each triggered on
+"subscriber joins group" with a Day 0 / Day 3 / Day 7 cadence. All thirteen
+emails authored against brand voice (full name "The AI Banking Institute"
+in prose, AiBI only for credentials, sourced statistics with citations,
+DM Mono numbers, no buzzwords) and live in
+`src/lib/mailerlite/email-content.ts` as the version-controlled source of
+truth — operators may polish in dashboard but the canonical copy is in the
+repo. After the every-style-editor audit pass, all 5 Automations were
+deleted and recreated with corrected copy (drop H1 terminal periods,
+remove em-dash spaces, replace single quotes with doubles, eliminate
+semicolons, drop retired "A-B-C framework" reference, spell out
+February 2026, replace alternative slashes with "and"/"or"). Final
+automation ids: Newsletter `186965438418126829`, Starting Point
+`186965478342657970`, Early Stage `186965527420208336`, Building Momentum
+`186965564883732340`, Ready to Scale `186965601924679393`. Project-level
+style decisions documented in the email-content.ts header: subject =
+headline (title case OK), H1 = subhead (sentence case, no period); bold
+reserved for visual labels not prose emphasis; percentages stay in DM
+Mono (`X%`) per brand rule, overriding Every's "X percent"; no semicolons
+in email copy.
+
+**Manual steps remaining before activation:** (1) authenticate sender
+`hello@aibankinginstitute.com` in MailerLite Settings → Domains so the
+"Sender email must be authenticated" config error clears on each email
+step; (2) review each automation in the dashboard and toggle from Draft
+to Active. End-to-end verified locally: a `marketingOptIn=true` POST to
+`/api/capture-email` with tier `starting-point` lands the subscriber in
+both `Tier · Starting Point` and `AI Readiness Assessment` groups via
+the `tagAssessmentTier` upsert path (subscriber `186964712064288484`).
+The route does NOT subscribe non-opted-in users to MailerLite — they
+still get transactional Resend emails (assessment breakdown), but no
+nurture sequence. This honors marketing-consent expectations.
+
 **2026-05-06 — End-of-day state after long debug session.**
 Outstanding follow-ups for next session:
 - Rotate `SUPABASE_SERVICE_ROLE_KEY` and mark Sensitive in Vercel

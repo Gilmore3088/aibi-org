@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MailerLite Automations Overview · The AI Banking Institute</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Cormorant+SC:wght@500;600&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --color-terra: #b5512e;
+    --color-terra-light: #c96a43;
+    --color-terra-pale: #f0c4ab;
+    --color-sage: #4a6741;
+    --color-cobalt: #2d4a7a;
+    --color-ink: #1e1a14;
+    --color-parch: #f5f0e6;
+    --color-linen: #f9f6f0;
+    --color-rule: #e6dfd1;
+    --color-mute: #6b6357;
+    --color-error: #9b2226;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--color-linen);
+    color: var(--color-ink);
+    font-family: 'DM Sans', Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 64px 24px 96px;
+  }
+  header.title {
+    border-bottom: 1px solid var(--color-rule);
+    padding-bottom: 32px;
+    margin-bottom: 48px;
+  }
+  .designation {
+    font-family: 'Cormorant SC', serif;
+    font-weight: 500;
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    color: var(--color-terra);
+    text-transform: uppercase;
+    margin: 0 0 12px 0;
+  }
+  h1 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-weight: 500;
+    font-size: 44px;
+    line-height: 1.1;
+    margin: 0 0 12px 0;
+    letter-spacing: -0.01em;
+  }
+  h1 em { font-style: italic; color: var(--color-terra); }
+  .subtitle {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-style: italic;
+    font-size: 22px;
+    line-height: 1.4;
+    color: var(--color-mute);
+    margin: 0 0 8px 0;
+  }
+  .meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--color-mute);
+    letter-spacing: 0.5px;
+  }
+  h2 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-weight: 500;
+    font-size: 30px;
+    line-height: 1.2;
+    margin: 56px 0 16px 0;
+    letter-spacing: -0.005em;
+  }
+  h3 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-weight: 500;
+    font-size: 22px;
+    margin: 32px 0 12px 0;
+  }
+  h4 {
+    font-family: 'Cormorant SC', serif;
+    font-weight: 500;
+    font-size: 13px;
+    letter-spacing: 1.2px;
+    color: var(--color-mute);
+    text-transform: uppercase;
+    margin: 24px 0 8px 0;
+  }
+  p { margin: 0 0 14px 0; }
+  a { color: var(--color-terra); text-decoration: none; border-bottom: 1px solid var(--color-terra-pale); }
+  a:hover { border-bottom-color: var(--color-terra); }
+  code, .mono {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    background: var(--color-parch);
+    padding: 2px 6px;
+    border-radius: 2px;
+  }
+  ul, ol { padding-left: 22px; margin: 0 0 16px 0; }
+  ul li, ol li { margin-bottom: 6px; }
+
+  .toc {
+    background: var(--color-parch);
+    border-left: 3px solid var(--color-terra);
+    padding: 20px 24px;
+    margin: 32px 0 48px 0;
+  }
+  .toc h4 { margin-top: 0; }
+  .toc ol {
+    margin: 0;
+    padding-left: 18px;
+    columns: 2;
+    column-gap: 32px;
+  }
+  .toc li { margin-bottom: 6px; }
+  .toc a { border-bottom: none; }
+
+  .card {
+    background: var(--color-parch);
+    padding: 32px;
+    margin: 24px 0;
+    border-top: 3px solid var(--color-rule);
+  }
+  .card.tier-starting { border-top-color: var(--color-error); }
+  .card.tier-early    { border-top-color: var(--color-terra); }
+  .card.tier-momentum { border-top-color: var(--color-terra-light); }
+  .card.tier-ready    { border-top-color: var(--color-sage); }
+  .card.newsletter    { border-top-color: var(--color-cobalt); }
+
+  .card h3 { margin-top: 0; }
+  .card .designation { color: var(--color-mute); }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin: 24px 0;
+  }
+  @media (max-width: 720px) {
+    .grid-2 { grid-template-columns: 1fr; }
+  }
+  .stat {
+    border-left: 2px solid var(--color-rule);
+    padding-left: 16px;
+  }
+  .stat .num {
+    font-family: 'DM Mono', monospace;
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--color-ink);
+    line-height: 1;
+  }
+  .stat .label {
+    font-size: 13px;
+    color: var(--color-mute);
+    margin-top: 6px;
+    line-height: 1.4;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0 24px 0;
+    font-size: 14px;
+  }
+  th, td {
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--color-rule);
+    vertical-align: top;
+  }
+  th {
+    font-family: 'Cormorant SC', serif;
+    font-weight: 500;
+    font-size: 12px;
+    letter-spacing: 1.2px;
+    color: var(--color-mute);
+    text-transform: uppercase;
+    border-bottom: 2px solid var(--color-ink);
+  }
+  td.mono-cell { font-family: 'DM Mono', monospace; font-size: 12.5px; }
+
+  .email-block {
+    background: var(--color-linen);
+    border: 1px solid var(--color-rule);
+    padding: 20px 24px;
+    margin: 12px 0;
+  }
+  .email-block .day-tag {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    color: #fff;
+    background: var(--color-terra);
+    padding: 2px 8px;
+    border-radius: 2px;
+    margin-bottom: 8px;
+  }
+  .email-block .day-tag.delay { background: var(--color-mute); }
+  .email-block .subject {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-weight: 500;
+    font-size: 19px;
+    line-height: 1.3;
+    margin: 0 0 6px 0;
+  }
+  .email-block .preheader {
+    font-style: italic;
+    color: var(--color-mute);
+    font-size: 14px;
+    margin: 0 0 12px 0;
+  }
+  .email-block .summary { font-size: 14.5px; }
+  .email-block .summary p { margin-bottom: 8px; }
+  .email-block .cta {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--color-terra);
+    margin-top: 8px;
+  }
+
+  .pull {
+    border-left: 3px solid var(--color-terra);
+    padding: 4px 0 4px 18px;
+    margin: 24px 0;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-style: italic;
+    font-size: 18px;
+    color: var(--color-ink);
+    line-height: 1.45;
+  }
+
+  .step-list {
+    counter-reset: step;
+    list-style: none;
+    padding: 0;
+    margin: 24px 0;
+  }
+  .step-list li {
+    counter-increment: step;
+    padding: 18px 24px 18px 64px;
+    background: var(--color-parch);
+    margin-bottom: 8px;
+    position: relative;
+    border-left: 2px solid var(--color-terra);
+  }
+  .step-list li::before {
+    content: counter(step);
+    position: absolute;
+    left: 24px;
+    top: 18px;
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-terra);
+  }
+
+  .checklist {
+    list-style: none;
+    padding: 0;
+    margin: 16px 0;
+  }
+  .checklist li {
+    padding: 10px 0 10px 32px;
+    position: relative;
+    border-bottom: 1px solid var(--color-rule);
+  }
+  .checklist li::before {
+    content: "□";
+    position: absolute;
+    left: 4px;
+    top: 8px;
+    font-size: 18px;
+    color: var(--color-mute);
+  }
+  .checklist li.done::before { content: "☑"; color: var(--color-sage); }
+
+  .footer-note {
+    border-top: 1px solid var(--color-rule);
+    margin-top: 64px;
+    padding-top: 24px;
+    font-size: 13px;
+    color: var(--color-mute);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="title">
+  <p class="designation">MailerLite Operations Brief · 2026-05-09</p>
+  <h1>Five automations, <em>thirteen emails</em>, one funnel</h1>
+  <p class="subtitle">A complete reference for what is wired, what is sent, and what still needs you to flip a switch.</p>
+  <p class="meta">Account 2331976 · Sender <a href="mailto:hello@aibankinginstitute.com">hello@aibankinginstitute.com</a> · Verified 2026-05-09</p>
+</header>
+
+<div class="toc">
+  <h4>Contents</h4>
+  <ol>
+    <li><a href="#overview">The big picture</a></li>
+    <li><a href="#architecture">How it is wired</a></li>
+    <li><a href="#newsletter">Automation 1 · Newsletter</a></li>
+    <li><a href="#starting-point">Automation 2 · Starting Point</a></li>
+    <li><a href="#early-stage">Automation 3 · Early Stage</a></li>
+    <li><a href="#building-momentum">Automation 4 · Building Momentum</a></li>
+    <li><a href="#ready-to-scale">Automation 5 · Ready to Scale</a></li>
+    <li><a href="#voice">Voice and content rules</a></li>
+    <li><a href="#activation">How to activate (the manual steps)</a></li>
+    <li><a href="#testing">How to test</a></li>
+    <li><a href="#operations">Day-to-day operations</a></li>
+  </ol>
+</div>
+
+<!-- ============================================================== -->
+<h2 id="overview">The big picture</h2>
+
+<p>Every banker who completes the AI readiness assessment, and every visitor who signs up to the AI Banking Brief, lands in MailerLite. From there, one of five automations fires automatically, based on which group the subscriber joined.</p>
+
+<p>The five automations are:</p>
+
+<table>
+  <thead><tr>
+    <th style="width:36%;">Automation</th>
+    <th style="width:18%;">Trigger Group</th>
+    <th style="width:14%;">Emails</th>
+    <th style="width:32%;">Subscriber Outcome</th>
+  </tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>AiBI Newsletter — Welcome</strong></td>
+      <td>AI Banking Brief Newsletter</td>
+      <td>1</td>
+      <td>One welcome email confirming subscription, setting expectation of one issue every two weeks.</td>
+    </tr>
+    <tr>
+      <td><strong>AiBI Assessment — Starting Point</strong></td>
+      <td>Tier · Starting Point</td>
+      <td>3 (Day 0, 3, 7)</td>
+      <td>Banker scored 12–20. Sequence orients them, gives one cheap pilot, and ends with the funding-conversation email.</td>
+    </tr>
+    <tr>
+      <td><strong>AiBI Assessment — Early Stage</strong></td>
+      <td>Tier · Early Stage</td>
+      <td>3 (Day 0, 3, 7)</td>
+      <td>Banker scored 21–29. Sequence pushes convergence on one tool, a one-page governance memo, and a 90-day arc.</td>
+    </tr>
+    <tr>
+      <td><strong>AiBI Assessment — Building Momentum</strong></td>
+      <td>Tier · Building Momentum</td>
+      <td>3 (Day 0, 3, 7)</td>
+      <td>Banker scored 30–38. Sequence frames the capability ladder and the habits of the next maturity band.</td>
+    </tr>
+    <tr>
+      <td><strong>AiBI Assessment — Ready to Scale</strong></td>
+      <td>Tier · Ready to Scale</td>
+      <td>3 (Day 0, 3, 7)</td>
+      <td>Banker scored 39–48. Sequence positions them as peer leaders and surfaces the institution-wide credential program plus Leadership Advisory.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p class="pull">"Free assessment in. Right tier sequence out. Three emails in seven days. The right CTA at the right tier."</p>
+
+<!-- ============================================================== -->
+<h2 id="architecture">How it is wired</h2>
+
+<h3>The data flow, end to end</h3>
+
+<ol class="step-list">
+  <li><strong>Banker takes the free assessment</strong> at <a href="https://aibankinginstitute.com/assessment/start">/assessment/start</a>. Twelve questions, scored on a 12–48 scale.</li>
+  <li><strong>The result page shows their tier</strong> (Starting Point, Early Stage, Building Momentum, or Ready to Scale).</li>
+  <li><strong>Banker enters their email</strong> for the dimension breakdown plus a starter artifact tied to their lowest-scoring dimension.</li>
+  <li><strong>The browser POSTs to <span class="mono">/api/capture-email</span></strong> with the score, tier, and (when consent is given) <span class="mono">marketingOptIn: true</span>.</li>
+  <li><strong>The route writes to Supabase</strong> (<span class="mono">user_profiles</span> table) and synchronously calls <span class="mono">tagAssessmentTier()</span> in <span class="mono">src/lib/mailerlite/sequences.ts</span>.</li>
+  <li><strong>MailerLite upserts the subscriber</strong> via POST <span class="mono">/api/subscribers</span>, attaching them to two groups: <em>AI Readiness Assessment</em> (the master list) and the matching tier group.</li>
+  <li><strong>MailerLite sees the new group membership</strong> and fires the matching automation. The Day 0 email is queued immediately.</li>
+  <li><strong>Days 3 and 7 fire on schedule</strong> from MailerLite's clock, with no further server interaction.</li>
+</ol>
+
+<h3>Why marketing opt-in is required</h3>
+
+<p>The route deliberately does <strong>not</strong> subscribe a banker to MailerLite when they have not opted in. They still receive their assessment results (transactional, via Resend), but the nurture sequence is consent-gated. This honors CAN-SPAM and matches the language used on the consent checkbox.</p>
+
+<h3>Group ids (for reference)</h3>
+<table>
+  <thead><tr><th>Group</th><th>Id</th></tr></thead>
+  <tbody>
+    <tr><td>AI Banking Brief Newsletter</td><td class="mono-cell">186962925939853044</td></tr>
+    <tr><td>AI Readiness Assessment (master)</td><td class="mono-cell">186962926400177174</td></tr>
+    <tr><td>Tier · Starting Point</td><td class="mono-cell">186962926730478712</td></tr>
+    <tr><td>Tier · Early Stage</td><td class="mono-cell">186962927090140351</td></tr>
+    <tr><td>Tier · Building Momentum</td><td class="mono-cell">186962927437219089</td></tr>
+    <tr><td>Tier · Ready to Scale</td><td class="mono-cell">186962927795832121</td></tr>
+  </tbody>
+</table>
+
+<!-- ============================================================== -->
+<h2 id="newsletter">Automation 1 · AiBI Newsletter — Welcome</h2>
+<div class="card newsletter">
+  <p class="designation">Trigger group · AI Banking Brief Newsletter · ID 186965438418126829</p>
+  <h3>One welcome email. That is the entire automation.</h3>
+  <p>Anyone who signs up for the AI Banking Brief from any newsletter form on the site lands in this group, fires this automation, and receives the welcome email immediately.</p>
+  <p>The newsletter itself (the recurring "one regulatory update, one practical lever, one peer signal" issue) is a separate Campaign workflow, sent on a schedule by you. This automation is only the welcome.</p>
+
+  <h4>The email</h4>
+  <div class="email-block">
+    <span class="day-tag">Day 0 · Welcome</span>
+    <p class="subject">Welcome to the AI Banking Brief</p>
+    <p class="preheader">Practitioner-grade AI insight for community banks and credit unions.</p>
+    <div class="summary">
+      <p>Sets the format of the recurring brief: one regulatory update, one practical lever, one peer signal. No vendor pitches. No "AI-powered" headlines. No unsourced statistics.</p>
+      <p>Closes by inviting subscribers who have not yet taken the assessment to do so.</p>
+      <p class="cta">CTA → Take the 12-question assessment</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================== -->
+<h2 id="starting-point">Automation 2 · Assessment — Starting Point</h2>
+<div class="card tier-starting">
+  <p class="designation">Trigger group · Tier · Starting Point · ID 186965478342657970</p>
+  <h3>Score 12–20 · Posture: orientation, not catch-up</h3>
+
+  <p>Most community banks and credit unions land in this band today. The voice is deliberately reassuring: <em>"You are not late. You are early."</em> The CTAs progress from a free 30-minute Executive Briefing toward the AiBI-Practitioner credential.</p>
+
+  <div class="grid-2">
+    <div class="stat"><div class="num">55%</div><div class="label">of FIs have no AI governance framework yet (Gartner via Jack Henry, 2025)</div></div>
+    <div class="stat"><div class="num">57%</div><div class="label">report AI skill gaps at the team level (Gartner via Jack Henry, 2025)</div></div>
+  </div>
+
+  <h4>The three-email sequence</h4>
+
+  <div class="email-block">
+    <span class="day-tag">Day 0</span>
+    <p class="subject">Your assessment result: Starting Point — and what to do this week</p>
+    <p class="preheader">You are not behind. You are at a starting line that 4 in 10 community banks share.</p>
+    <div class="summary">
+      <p>Frames Starting Point as the median position, not a failure. Cites three Gartner statistics. Recommends a single move: build a one-page AI use-case registry by sending one question to every department head.</p>
+      <p>Anchors to the AIEOG AI Lexicon (US Treasury, FBIIC, FSSCC, February 2026) which names "AI use case inventory" as a baseline expectation.</p>
+      <p class="cta">CTA → View your full results</p>
+    </div>
+  </div>
+
+  <div class="email-block"><span class="day-tag delay">+3 days</span></div>
+
+  <div class="email-block">
+    <span class="day-tag">Day 3</span>
+    <p class="subject">A 60-minute pilot you can run this week (no vendor required)</p>
+    <p class="preheader">One person. One hour. One real piece of bank work.</p>
+    <div class="summary">
+      <p>Three concrete pilots that work on free-tier ChatGPT or Claude with zero customer PII: summarize a redacted credit memo, redline a procedure to current FFIEC language, compare two vendor proposals as a decision matrix.</p>
+      <p>The point is the question the banker asks afterward: <em>"Where else could this save us 20 minutes?"</em></p>
+      <p class="cta">CTA → Book an Executive Briefing (free, 30 minutes)</p>
+    </div>
+  </div>
+
+  <div class="email-block"><span class="day-tag delay">+4 days</span></div>
+
+  <div class="email-block">
+    <span class="day-tag">Day 7</span>
+    <p class="subject">How most community banks plan to fund AI in 2026</p>
+    <p class="preheader">Bank Director 2024 Tech Survey, Gartner Peer Community, FDIC data.</p>
+    <div class="summary">
+      <p>Three sourced statistics worth memorizing: 66% of banks discussing AI budget (Bank Director 2024), ~65% community-bank median efficiency ratio (FDIC CEIC), ~55.7% industry-wide (FDIC Q4 2024).</p>
+      <p>The gap between those last two is the prize. Closing it does not require a moonshot.</p>
+      <p class="cta">CTA → AiBI-Practitioner credential ($295)</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================== -->
+<h2 id="early-stage">Automation 3 · Assessment — Early Stage</h2>
+<div class="card tier-early">
+  <p class="designation">Trigger group · Tier · Early Stage · ID 186965527420208336</p>
+  <h3>Score 21–29 · Posture: focus, not more activity</h3>
+
+  <p>Early Stage means experimentation is happening, often informally, sometimes without governance. The risk is sprawl: ten people using ten different tools. The voice is decisive: pick one tool, write a one-page memo, run a 90-day arc.</p>
+
+  <h4>The three-email sequence</h4>
+
+  <div class="email-block">
+    <span class="day-tag">Day 0</span>
+    <p class="subject">Your assessment result: Early Stage — and the one decision that matters</p>
+    <p class="preheader">You have started. The next move is choosing one tool to standardize on.</p>
+    <div class="summary">
+      <p>Names the risk (tool sprawl) and the single decision: pick one general-purpose AI tool and standardize across the institution. Three evaluation criteria, in order: data residency and training opt-out, SSO and audit log, integration with existing workflow.</p>
+      <p class="cta">CTA → View your full results</p>
+    </div>
+  </div>
+
+  <div class="email-block"><span class="day-tag delay">+3 days</span></div>
+
+  <div class="email-block">
+    <span class="day-tag">Day 3</span>
+    <p class="subject">The governance memo every Early Stage bank needs (one page)</p>
+    <p class="preheader">A template you can adapt in 60 minutes, not 60 days.</p>
+    <div class="summary">
+      <p>A one-page memo, not a 40-page policy. Four sections: what is allowed, who owns oversight, how exceptions get approved, what gets logged. Maps to SR 11-7, Interagency TPRM Guidance, ECOA/Reg B, and the AIEOG AI Lexicon.</p>
+      <p class="cta">CTA → Book an Executive Briefing</p>
+    </div>
+  </div>
+
+  <div class="email-block"><span class="day-tag delay">+4 days</span></div>
+
+  <div class="email-block">
+    <span class="day-tag">Day 7</span>
+    <p class="subject">From Early Stage to Building Momentum: the 90-day arc</p>
+    <p class="preheader">Three milestones that move the needle and a credential that codifies them.</p>
+    <div class="summary">
+      <p>Day 30 — inventory complete, tool selected, memo signed. Day 60 — two pilot use cases live in back-office. Day 90 — first impact metric reported to leadership.</p>
+      <p class="cta">CTA → AiBI-Practitioner credential ($295 / $199 at 10+)</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================== -->
+<h2 id="building-momentum">Automation 4 · Assessment — Building Momentum</h2>
+<div class="card tier-momentum">
+  <p class="designation">Trigger group · Tier · Building Momentum · ID 186965564883732340</p>
+  <h3>Score 30–38 · Posture: scale, not just activity</h3>
+
+  <p>This band has moved past "should we use AI?" to "how do we scale it responsibly?" The voice is institutional. The CTA is the credential program at scale and the institution-wide capability ladder.</p>
+
+  <h4>The three-email sequence</h4>
+
+  <div class="email-block">
+    <span class="day-tag">Day 0</span>
+    <p class="subject">Your assessment result: Building Momentum — what the next band requires</p>
+    <p class="preheader">You are in the top quartile. Here is what separates Building Momentum from Ready to Scale.</p>
+    <div class="summary">
+      <p>Three patterns separate Building Momentum from Ready to Scale: a documented capability ladder, an impact ledger with measured outcomes, and live governance with monthly reviews.</p>
+      <p class="cta">CTA → View your full results</p>
+    </div>
+  </div>
+
+  <div class="email-block"><span class="day-tag delay">+3 days</span></div>
+
+  <div class="email-block">
+    <span class="day-tag">Day 3</span>
+    <p class="subject">A capability ladder that maps to your institution</p>
+    <p class="preheader">Practitioner, Specialist, Leader — what each role does.</p>
+    <div class="summary">
+      <p>Three rungs: Practitioner (target: 1 in 5 of your team), Specialist (1 per major function), Leader (1 per institution). The credential program (AiBI-Practitioner, AiBI-S, AiBI-L) maps directly to this.</p>
+      <p class="cta">CTA → AiBI-Practitioner credential</p>
+    </div>
+  </div>
+
+  <div class="email-block"><span class="day-tag delay">+4 days</span></div>
+
+  <div class="email-block">
+    <span class="day-tag">Day 7</span>
+    <p class="subject">What "Ready to Scale" institutions do that Building Momentum institutions do not</p>
+    <p class="preheader">Three operating habits, observed across the cohort.</p>
+    <div class="summary">
+      <p>Quarterly impact-ledger review at the board level. A bench of two named successors per credentialed leader. Active customer-facing AI with explicit explainability (84% of consumers would switch FIs for AI-driven insights, Personetics 2025 via Apiture).</p>
+      <p class="cta">CTA → Book an Executive Briefing</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================== -->
+<h2 id="ready-to-scale">Automation 5 · Assessment — Ready to Scale</h2>
+<div class="card tier-ready">
+  <p class="designation">Trigger group · Tier · Ready to Scale · ID 186965601924679393</p>
+  <h3>Score 39–48 · Posture: peer leadership, not catch-up</h3>
+
+  <p>The top band. Most of the community banking sector will not reach this maturity for another 24 months. The voice is collegial. The CTA progression moves from credentialing the bench to the Leadership Advisory engagement (the Institute's fractional Chief AI Officer offering).</p>
+
+  <h4>The three-email sequence</h4>
+
+  <div class="email-block">
+    <span class="day-tag">Day 0</span>
+    <p class="subject">Your assessment result: Ready to Scale — you are in the top band</p>
+    <p class="preheader">You scored in the top quartile. The conversation now is leadership, not catch-up.</p>
+    <div class="summary">
+      <p>Three things to consider in the next quarter: peer leadership (your story benefits the sector), talent pipeline (your bench is your moat), and customer experience leverage (76% of consumers would switch FIs for a better digital experience, Motley Fool via Apiture 2025).</p>
+      <p class="cta">CTA → View your full results</p>
+    </div>
+  </div>
+
+  <div class="email-block"><span class="day-tag delay">+3 days</span></div>
+
+  <div class="email-block">
+    <span class="day-tag">Day 3</span>
+    <p class="subject">The institution-wide credential program (and why it matters)</p>
+    <p class="preheader">AiBI-Practitioner at scale — the bench pattern that protects your AI program.</p>
+    <div class="summary">
+      <p>The single largest institutional risk in a Ready to Scale program is concentration. Pattern that works: 10–25 credentialed Practitioners, one Specialist per business line, one Leader as accountable executive.</p>
+      <p>Institutional pricing: $199 per seat at 10+ bankers, self-paced over 90 days.</p>
+      <p class="cta">CTA → For Institutions</p>
+    </div>
+  </div>
+
+  <div class="email-block"><span class="day-tag delay">+4 days</span></div>
+
+  <div class="email-block">
+    <span class="day-tag">Day 7</span>
+    <p class="subject">A standing invitation: Leadership Advisory</p>
+    <p class="preheader">For Ready to Scale institutions wanting a fractional Chief AI Officer.</p>
+    <div class="summary">
+      <p>Most institutions in this band do not need a full-time Chief AI Officer. What they often need is a fractional CAIO with sector-specific depth who joins the leadership cadence and is the named external advisor on AI strategy and regulatory posture.</p>
+      <p>Quarterly cadence, retainer-based, no software fees. Tied to the same three-pillar curriculum as the credential program.</p>
+      <p class="cta">CTA → Book an Executive Briefing</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================== -->
+<h2 id="voice">Voice and content rules</h2>
+
+<p>Every email follows the same content rules, derived from the brand brief and the design system. These are non-negotiable across all 13 emails.</p>
+
+<h3>What every email does</h3>
+<ul>
+  <li>Uses the full name <em>The AI Banking Institute</em> in prose. <span class="mono">AiBI</span> appears only in credential codes (AiBI-Practitioner, AiBI-S, AiBI-L) and the wordmark.</li>
+  <li>Cites every statistic by source, year, and publication. No unsourced claims.</li>
+  <li>Sets numbers in DM Mono so they read with weight. Percentages stay as <span class="mono">55%</span> (brand rule overrides Every's "55 percent").</li>
+  <li>Uses italics, never bold, for emphasis in prose. Bold tags are reserved for visual labels (table cells, list lead-ins).</li>
+  <li>Em dashes carry no surrounding spaces. <span class="mono">X—Y</span>, never <span class="mono">X — Y</span>.</li>
+  <li>Subject lines act as the headline (title case). The H1 inside the body acts as a subheading (sentence case, no terminal period).</li>
+  <li>No semicolons in email copy. (Hard Every-style rule, accepted.)</li>
+  <li>No emoji, no gradients, no "AI-powered" buzzwords.</li>
+</ul>
+
+<h3>What every CTA looks like</h3>
+<ul>
+  <li>Day 0 emails point to the full results page on the site.</li>
+  <li>Mid-sequence (Day 3) emails point to the Executive Briefing (free, 30 minutes) or the Practitioner credential.</li>
+  <li>End-of-sequence (Day 7) emails point to the credential program or Leadership Advisory, scaled to the band.</li>
+</ul>
+
+<h3>Where the canonical copy lives</h3>
+<p>The version-controlled source of truth is <span class="mono">src/lib/mailerlite/email-content.ts</span>. The MailerLite dashboard editor is downstream. If an operator polishes typography in the dashboard, that change does not propagate back to the repo — to keep both in sync, edit the file first and recreate the automations.</p>
+
+<!-- ============================================================== -->
+<h2 id="activation">How to activate (the manual steps)</h2>
+
+<p>The five automations are created via API, but MailerLite requires each email step to be opened in the visual editor and saved at least once before the automation can flip from Draft to Active. This is a one-time setup pass.</p>
+
+<ol class="step-list">
+  <li><strong>Open the automation list</strong> at <a href="https://dashboard.mailerlite.com/automations" target="_blank">dashboard.mailerlite.com/automations</a>. Click the <em>Drafts</em> tab.</li>
+  <li><strong>Click "Edit" on one automation</strong> (recommend starting with the Newsletter — it has only one email step).</li>
+  <li><strong>Click on the first email block</strong> in the workflow editor. The right-hand panel shows From name, From email, Subject, and a "Design email" button.</li>
+  <li><strong>Set the From fields</strong> if not already filled: From name <span class="mono">James Gilmore</span>, From email <span class="mono">hello@aibankinginstitute.com</span> (the verified sender).</li>
+  <li><strong>Click "Design email"</strong>. The visual editor loads the HTML I generated. Click "Done editing" or "Save and exit" — no changes required.</li>
+  <li><strong>Repeat for each email step in that automation.</strong> Tier sequences have three; the Newsletter has one.</li>
+  <li><strong>Click "Activate"</strong> at the top of the workflow. The automation moves from Drafts to Workflows.</li>
+  <li><strong>Repeat for the remaining four automations.</strong></li>
+</ol>
+
+<h3>Activation checklist</h3>
+<ul class="checklist">
+  <li class="done">Sender domain <span class="mono">aibankinginstitute.com</span> verified</li>
+  <li>Newsletter automation activated</li>
+  <li>Starting Point automation activated</li>
+  <li>Early Stage automation activated</li>
+  <li>Building Momentum automation activated</li>
+  <li>Ready to Scale automation activated</li>
+</ul>
+
+<!-- ============================================================== -->
+<h2 id="testing">How to test</h2>
+
+<h3>Path A — Send test from inside the dashboard</h3>
+<ol>
+  <li>Open the activated automation in the workflow editor.</li>
+  <li>Click the three-dot menu next to an email step → "Send test".</li>
+  <li>Enter your email and send. The test arrives in 1–2 minutes and bypasses the delay timers.</li>
+  <li>Inspect rendering on desktop and mobile.</li>
+</ol>
+
+<h3>Path B — Real subscriber, real flow</h3>
+<ol>
+  <li>Activate at least one tier automation.</li>
+  <li>Tell me to add a fresh subscriber (e.g. <span class="mono">jlgilmore2+test1@gmail.com</span>) directly to the matching tier group via the MailerLite API.</li>
+  <li>The Day 0 email arrives in your inbox within 1–2 minutes.</li>
+  <li>Day 3 and Day 7 follow on schedule. Watch for them.</li>
+</ol>
+
+<h3>Path C — Real assessment, real flow (the full e2e)</h3>
+<ol>
+  <li>Activate all five automations.</li>
+  <li>Take the assessment yourself at <a href="https://aibankinginstitute.com/assessment/start">aibankinginstitute.com/assessment/start</a>.</li>
+  <li>Use a fresh email (<span class="mono">+test</span> aliases work). Tick the marketing-consent checkbox.</li>
+  <li>Within 1–2 minutes you receive: the transactional Resend "your assessment results" email AND the Day 0 MailerLite tier email.</li>
+  <li>Confirm both arrived. Confirm the right tier sequence fired.</li>
+</ol>
+
+<!-- ============================================================== -->
+<h2 id="operations">Day-to-day operations</h2>
+
+<h3>How to edit copy</h3>
+<p>Two ways. The dashboard route is fastest for typo fixes; the repo route is the source of truth.</p>
+<ul>
+  <li><strong>Dashboard edit (fast):</strong> Open the automation, open the email step, edit in the visual editor, save. Effective immediately for new subscribers; subscribers already mid-sequence receive what was queued at the time they joined.</li>
+  <li><strong>Repo edit (canonical):</strong> Edit <span class="mono">src/lib/mailerlite/email-content.ts</span>, commit, then in the dashboard either edit the email step manually OR delete and recreate the automation via the API.</li>
+</ul>
+
+<h3>How to add a new tier email</h3>
+<p>The current cadence is Day 0, 3, 7. To add a Day 14 follow-up:</p>
+<ol>
+  <li>Add the new email to <span class="mono">email-content.ts</span> as a fourth entry in the tier's <span class="mono">EMAILS</span> array.</li>
+  <li>Add <span class="mono">14</span> to the tier's <span class="mono">delaysDays</span> array.</li>
+  <li>Either delete and recreate the automation via the MailerLite MCP, or open the automation in the dashboard and add a new email step manually after the Day 7 step.</li>
+</ol>
+
+<h3>How to retake handling works</h3>
+<p>If a banker takes the assessment again and lands in a different tier, the route detects the change (<span class="mono">priorTierId !== newTier</span>) and removes them from the old tier group before adding them to the new one. The old tier's automation stops queuing further emails for them. The new tier's automation fires from Day 0 again.</p>
+
+<h3>What is NOT in MailerLite</h3>
+<ul>
+  <li><strong>The Resend transactional emails</strong> (results breakdown, course purchase, certificate, inquiry ack). Those run through five Resend Templates, separate from MailerLite. See the 2026-05-06 entry in CLAUDE.md.</li>
+  <li><strong>Supabase Auth emails</strong> (signup confirm, password reset, magic link). Those run through Supabase Custom SMTP using Resend as transport.</li>
+  <li><strong>The recurring AI Banking Brief newsletter issues</strong>. Those will be Campaigns in MailerLite, sent on your schedule. The automation here is only the welcome.</li>
+</ul>
+
+<h3>What still needs you (open items)</h3>
+<ul class="checklist">
+  <li class="done">MailerLite MCP installed and authenticated</li>
+  <li class="done">5 Automations created with style-corrected copy</li>
+  <li class="done">Sender domain <span class="mono">aibankinginstitute.com</span> verified in MailerLite</li>
+  <li class="done">End-to-end wiring confirmed (test subscriber landed in Tier · Starting Point + Master groups via <span class="mono">/api/capture-email</span>)</li>
+  <li>Each of the 5 automations completed in the visual editor and activated</li>
+  <li>Test subscribe to confirm a real Day 0 email arrives</li>
+  <li>Author the recurring AI Banking Brief Campaign workflow (separate from these automations)</li>
+  <li>Clean up test subscribers (<span class="mono">+mltest</span>, <span class="mono">+e2e1</span>, <span class="mono">+e2e2</span>) after activation</li>
+</ul>
+
+<p class="footer-note">
+  Generated 2026-05-09 by James &amp; Claude. Source: <span class="mono">~/Projects/aibi-mailerlite</span> on branch <span class="mono">feature/mailerlite-automations</span> at commit <span class="mono">e9c15c5</span>.<br/>
+  Cross-references: <span class="mono">CLAUDE.md</span> (decisions log), <span class="mono">src/lib/mailerlite/email-content.ts</span> (canonical copy), <span class="mono">src/lib/mailerlite/sequences.ts</span> (tier-routing logic), <span class="mono">src/app/api/capture-email/route.ts</span> (the route that fires it all).
+</p>
+
+</div>
+</body>
+</html>
