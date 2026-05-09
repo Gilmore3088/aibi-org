@@ -3,23 +3,14 @@ import { MarketingPage } from "@/components/system/templates";
 import {
   Section,
   SectionHeader,
-  PillarCard,
   Cta,
 } from "@/components/system";
-import { enrollmentTiers } from "@content/institutions/v1";
 import { CTAS } from "@content/copy";
-import type { Pillar } from "@/lib/design-system/tokens";
 
 export const metadata: Metadata = {
   title: "For Institutions | The AI Banking Institute",
   description:
     "Three ways to bring AiBI capability into your bank — without buying a platform. Coached cohort · institution-wide program · leadership advisory.",
-};
-
-const TIER_PILLAR: Record<typeof enrollmentTiers[number]["id"], Pillar> = {
-  individual: "application",
-  team: "understanding",
-  "institution-wide": "awareness",
 };
 
 export default function ForInstitutionsPage() {
@@ -43,136 +34,81 @@ export default function ForInstitutionsPage() {
         divider: "hairline",
       }}
     >
-      {/* Value prop band — what your institution actually gets.
-          Contained to max-w-wide so it matches the rest of the page. */}
-      <div className="px-s7 py-s8">
-        <div className="mx-auto max-w-wide grid sm:grid-cols-2 lg:grid-cols-4 bg-parch-dark border border-strong">
-          {[
-          {
-            label: "Practitioner output",
-            value: "3 reviewed artifacts / banker",
-            desc: "Real workflows your examiners can see, your peers can review, your bank can ship.",
-            glyph: (
-              <svg viewBox="0 0 36 36" aria-hidden="true" stroke="currentColor" strokeWidth="1.25" fill="none" className="w-9 h-9">
-                <rect x="4" y="14" width="20" height="14" />
-                <rect x="8" y="10" width="20" height="14" />
-                <rect x="12" y="6" width="20" height="14" />
-                <path d="M16 13 L19 16 L26 9" strokeWidth="1.75" strokeLinecap="square" />
-              </svg>
-            ),
-          },
-          {
-            label: "Readiness baseline",
-            value: "Institutional diagnostic",
-            desc: "8 dimensions, regulator-aligned, run before and after the engagement.",
-            glyph: (
-              <svg viewBox="0 0 36 36" aria-hidden="true" className="w-9 h-9">
-                <g stroke="currentColor" strokeWidth="0.75" opacity="0.55">
-                  <line x1="18" y1="18" x2="18" y2="4" />
-                  <line x1="18" y1="18" x2="28" y2="8" />
-                  <line x1="18" y1="18" x2="32" y2="18" />
-                  <line x1="18" y1="18" x2="28" y2="28" />
-                  <line x1="18" y1="18" x2="18" y2="32" />
-                  <line x1="18" y1="18" x2="8" y2="28" />
-                  <line x1="18" y1="18" x2="4" y2="18" />
-                  <line x1="18" y1="18" x2="8" y2="8" />
-                </g>
-                <polygon
-                  points="18,4 28,8 32,18 28,28 18,32 8,28 4,18 8,8"
-                  stroke="currentColor"
-                  strokeWidth="1.25"
-                  fill="none"
-                />
-                <circle cx="18" cy="18" r="1.75" fill="currentColor" />
-              </svg>
-            ),
-          },
-          {
-            label: "Governance posture",
-            value: "Inventory + policy stack",
-            desc: "The artifact examiners ask for, drafted by the people who will maintain it.",
-            glyph: (
-              <svg viewBox="0 0 36 36" aria-hidden="true" stroke="currentColor" strokeWidth="1.25" fill="none" className="w-9 h-9">
-                <rect x="5" y="22" width="26" height="7" />
-                <rect x="5" y="14" width="26" height="7" />
-                <rect x="5" y="6" width="26" height="7" />
-                <rect x="8" y="8.5" width="3" height="2" fill="currentColor" stroke="none" />
-                <rect x="8" y="16.5" width="3" height="2" fill="currentColor" stroke="none" />
-                <rect x="8" y="24.5" width="3" height="2" fill="currentColor" stroke="none" />
-              </svg>
-            ),
-          },
-          {
-            label: "Cost discipline",
-            value: "$0 platform cost",
-            desc: "No software seats, no vendor lock-in. The Institute is the engagement, not a SaaS bill.",
-            glyph: (
-              <svg viewBox="0 0 36 36" aria-hidden="true" stroke="currentColor" strokeWidth="1.5" fill="none" className="w-9 h-9">
-                <circle cx="18" cy="18" r="13" />
-                <line x1="9" y1="27" x2="27" y2="9" strokeLinecap="square" />
-              </svg>
-            ),
-          },
-        ].map((card) => (
-          <div
-            key={card.label}
-            className="p-s6 border-l border-hairline first:border-l-0 sm:[&:nth-child(3)]:border-l-0 sm:[&:nth-child(3)]:border-t lg:[&:nth-child(3)]:border-t-0 lg:[&:nth-child(3)]:border-l"
-          >
-            <span className="text-terra block mb-s4">{card.glyph}</span>
-            <p className="font-serif-sc text-label-sm uppercase tracking-widest text-slate mb-s2">
-              {card.label}
-            </p>
-            <p className="font-serif text-display-xs text-ink leading-snug mb-s2">
-              {card.value}
-            </p>
-            <p className="text-body-sm text-ink/80 leading-relaxed">{card.desc}</p>
-          </div>
-        ))}
-        </div>
-      </div>
-
-      {/* Three engagement tiles */}
+      {/* Three ways to build */}
       <Section variant="linen" padding="default">
         <SectionHeader
           label="Engagement"
-          title="Three ways to enroll."
+          title="Three ways to build."
         />
         <div className="grid md:grid-cols-3 gap-px bg-hairline border-y border-strong mt-s6">
-          {enrollmentTiers.map((tier) => {
-            const pillar = TIER_PILLAR[tier.id];
-            const isCalendly = tier.cta.href === "calendly";
-            const ctaHref = isCalendly
-              ? process.env.NEXT_PUBLIC_CALENDLY_URL ?? "#"
-              : tier.cta.href;
-            return (
-              <PillarCard
-                key={tier.id}
-                pillar={pillar}
-                stripe
-                surface="linen"
-                className="border-l-0 border-r-0 border-t-0 border-b-0"
-              >
-                <p className="font-mono text-label-sm uppercase tracking-widest text-terra mb-s2">
-                  {tier.scaleLabel}
-                </p>
-                <PillarCard.Title level={3}>{tier.name}</PillarCard.Title>
-                <PillarCard.Designation>{tier.tagline}</PillarCard.Designation>
-                <ul className="border-y border-hairline py-s3 my-s4 space-y-s1 text-body-sm">
-                  {tier.included.map((item) => (
-                    <li key={item} className="grid grid-cols-[12px_1fr] gap-s2">
-                      <span aria-hidden="true" className="font-mono text-terra">
-                        —
-                      </span>
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-                <Cta variant="secondary" href={ctaHref}>
+          {[
+            {
+              scale: "Free · diagnostic",
+              name: "Readiness Assessment",
+              tagline: "Twelve questions, three minutes — see where you stand.",
+              included: [
+                "Your readiness score and tier",
+                "The dimension dragging you down",
+                "A starter artifact you can take to your team this week",
+              ],
+              cta: { href: "/assessment", label: "Begin the assessment" },
+            },
+            {
+              scale: "Per-banker",
+              name: "Courses",
+              tagline: "AiBI-Practitioner. Self-paced, scored on reviewed work.",
+              included: [
+                "Twelve self-paced modules",
+                "Three reviewed AI artifacts per practitioner",
+                "$295 individual · $199/seat at 10+",
+              ],
+              cta: { href: "/courses/aibi-p", label: "View the curriculum" },
+            },
+            {
+              scale: "Institution-wide",
+              name: "Organizational Rollout",
+              tagline: "A coached cohort, an aggregate dashboard, a defensible posture.",
+              included: [
+                "10-seat coached cohort over eight weeks",
+                "Institutional readiness baseline + post-engagement diagnostic",
+                "Aggregate dashboard for your champion",
+              ],
+              cta: {
+                href: process.env.NEXT_PUBLIC_CALENDLY_URL ?? "#inquiry",
+                label: "Request a pilot",
+              },
+            },
+          ].map((tier) => (
+            <article
+              key={tier.name}
+              className="bg-linen px-s6 py-s8 flex flex-col"
+            >
+              <p className="font-mono text-label-sm uppercase tracking-widest text-terra mb-s3">
+                {tier.scale}
+              </p>
+              <h3 className="font-serif text-display-sm leading-snug text-ink">
+                {tier.name}
+              </h3>
+              <p className="font-serif italic text-body-md text-slate leading-snug mt-s2">
+                {tier.tagline}
+              </p>
+              <ul className="border-y border-hairline py-s4 my-s5 space-y-s2 text-body-sm">
+                {tier.included.map((item) => (
+                  <li key={item} className="grid grid-cols-[14px_1fr] gap-s2 items-start">
+                    <span aria-hidden="true" className="font-mono text-terra leading-snug">
+                      —
+                    </span>
+                    <span className="text-ink/80 leading-snug">{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-auto">
+                <Cta variant="secondary" href={tier.cta.href}>
                   {tier.cta.label} →
                 </Cta>
-              </PillarCard>
-            );
-          })}
+              </div>
+            </article>
+          ))}
         </div>
       </Section>
 
