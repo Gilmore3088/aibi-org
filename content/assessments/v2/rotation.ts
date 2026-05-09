@@ -48,3 +48,18 @@ export function selectQuestions(
   // 6. Fisher-Yates shuffle the final 12 questions for presentation order
   return fisherYatesShuffle(allSelected);
 }
+
+/**
+ * Returns ALL questions in the pool (48 in v2), shuffled for presentation
+ * order. Used by the paid In-Depth Assessment, which exercises every
+ * question across all eight dimensions instead of a 12-question rotation.
+ *
+ * Output length: pool.length (typically 48). Caller-controlled — the same
+ * shuffle is deterministic per session via the v2 hook's sessionStorage
+ * persistence layer (the hook restores by question id, not by re-shuffling).
+ */
+export function selectAllQuestions(
+  pool: readonly AssessmentQuestion[] = questions,
+): AssessmentQuestion[] {
+  return fisherYatesShuffle([...pool]);
+}

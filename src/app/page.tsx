@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { MarketingPage } from "@/components/system/templates";
 import { Section, Cta } from "@/components/system";
 import { ROIDossier } from "@/components/sections/ROIDossier";
+import { HomeContextStrip } from "@/components/sections/HomeContextStrip";
 import { BRAND } from "@content/copy";
 
 export const metadata: Metadata = {
@@ -12,7 +13,9 @@ export const metadata: Metadata = {
 
 export default function HomePage() {
   return (
-    <MarketingPage
+    <>
+      <HomeContextStrip />
+      <MarketingPage
       hero={{
         eyebrow: "An institute for community banking",
         title: (
@@ -71,5 +74,6 @@ export default function HomePage() {
       {/* Savings calculator — the closing payload */}
       <ROIDossier />
     </MarketingPage>
+    </>
   );
 }

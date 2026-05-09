@@ -100,10 +100,16 @@ export async function provisionEnrollment(
       }
     }
 
+    // course_enrollments.product accepts any string; we use it to gate access
+    // to either the AiBI-P course or the In-Depth Assessment 48-question
+    // version. The current_module / completed_modules columns are ignored
+    // for in-depth-assessment (no module sequence to track).
+    const productSlug = product === 'in-depth-assessment' ? 'in-depth-assessment' : 'aibi-p';
+
     const { error: insertErr } = await supabase.from('course_enrollments').insert({
       ...(userId ? { user_id: userId } : {}),
       email,
-      product: 'aibi-p',
+      product: productSlug,
       stripe_session_id: sessionId,
       current_module: 1,
       completed_modules: '{}',

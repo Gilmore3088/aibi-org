@@ -1,18 +1,17 @@
 // /assessment/in-depth — landing for the paid 48-question In-Depth Assessment.
 //
 // design-2.0 build. Uses MarketingPage + the same composition rhythm as the
-// homepage and /assessment/start (consolidated into /assessment).
+// homepage and /assessment/start.
 //
-// Stripe checkout for this product lives only on `main` today
-// (src/app/assessment/in-depth/_components/PurchaseButton.tsx). Until the
-// checkout route is migrated to design-2.0, the CTA is a mailto stub for
-// institutional inquiry. Individuals can still take the free 12-question
-// version via the secondary CTA.
+// Pricing per CLAUDE.md 2026-05-05: $99 individual, $79/seat at 10+.
+// Stripe Checkout via PurchaseButton (./_components/PurchaseButton.tsx),
+// which routes through /api/checkout/in-depth.
 
 import type { Metadata } from "next";
 import { MarketingPage } from "@/components/system/templates";
 import { Section } from "@/components/system";
 import { BRAND } from "@content/copy";
+import { PurchaseButton } from "./_components/PurchaseButton";
 
 export const metadata: Metadata = {
   title: "In-Depth Assessment | The AI Banking Institute",
@@ -45,10 +44,6 @@ export default function InDepthAssessmentPage() {
             your board.
           </span>
         ),
-        primaryCta: {
-          href: `mailto:${BRAND.emails.contact}?subject=In-Depth%20Assessment%20%E2%80%94%20interest`,
-          label: "Request access",
-        },
         secondaryCta: {
           href: "/assessment",
           label: "Or take the free 12-question version",
@@ -86,6 +81,9 @@ export default function InDepthAssessmentPage() {
               Pay once. Take the diagnostic. Receive the report. One free
               retake within twelve months.
             </p>
+            <div className="mt-s8">
+              <PurchaseButton />
+            </div>
             <p className="font-mono text-mono-xs uppercase tracking-wider text-slate mt-s6">
               Bulk orders for 10+ seats — email{" "}
               <a

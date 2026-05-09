@@ -25,7 +25,7 @@ export async function generateAssessmentPdf({
       ? await chromium.executablePath()
       : process.env.PUPPETEER_LOCAL_CHROME ??
         '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
-    headless: chromium.headless,
+    headless: true,
   });
 
   try {

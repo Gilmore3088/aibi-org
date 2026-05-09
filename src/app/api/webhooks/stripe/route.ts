@@ -14,10 +14,18 @@
 import { NextRequest, NextResponse } from 'next/server';
 import type Stripe from 'stripe';
 import { provisionEnrollment } from '@/lib/stripe/provision-enrollment';
+import { ensureAuthUser, generateMagicLink } from '@/lib/supabase/auth-admin';
 import {
   sendCoursePurchaseIndividual,
   sendCoursePurchaseInstitution,
+  sendIndepthAssessmentPurchase,
 } from '@/lib/resend';
+
+function nextPathForProduct(product: string | undefined, mode: string | undefined): string {
+  if (product === 'in-depth-assessment') return '/assessment/in-depth/take';
+  if (product === 'aibi-p' && mode === 'institution') return '/admin';
+  return '/courses/aibi-p';
+}
 
 function formatAmount(amountCents: number | null | undefined, currency: string | null | undefined): string {
   if (typeof amountCents !== 'number') return '—';
@@ -83,23 +91,52 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   if (result.action === 'created') {
     const email = session.customer_details?.email ?? session.metadata?.user_email ?? null;
     const amountPaid = formatAmount(session.amount_total, session.currency);
+    const product = session.metadata?.product;
+    const mode = session.metadata?.mode;
 
-    if (email && result.type === 'individual') {
-      sendCoursePurchaseIndividual({
-        email,
-        amountPaid,
-      }).catch((err) => console.warn('[webhook] resend individual skip', err));
-    } else if (email && result.type === 'institution') {
-      const institutionName = session.metadata?.institution_name ?? 'Your institution';
-      const seatsPurchased = session.metadata?.quantity
-        ? parseInt(session.metadata.quantity, 10)
-        : 0;
-      sendCoursePurchaseInstitution({
-        email,
-        institutionName,
-        seatsPurchased,
-        amountPaid,
-      }).catch((err) => console.warn('[webhook] resend institution skip', err));
+    if (email) {
+      // Provision a Supabase auth account for the buyer (idempotent) and
+      // generate a magic link so the buyer's welcome email is one-click into
+      // an authenticated session — no separate sign-up step. ensureAuthUser
+      // and generateMagicLink both swallow errors and return null, so a
+      // failure here doesn't block the rest of the response.
+      let magicLinkUrl: string | null = null;
+      try {
+        await ensureAuthUser(email);
+        magicLinkUrl = await generateMagicLink(email, nextPathForProduct(product, mode));
+      } catch (err) {
+        console.warn('[webhook] auth-admin magic-link skip', err);
+      }
+
+      if (result.type === 'individual') {
+        if (product === 'in-depth-assessment') {
+          sendIndepthAssessmentPurchase({
+            email,
+            amountPaid,
+            magicLinkUrl: magicLinkUrl ?? undefined,
+          }).catch((err) =>
+            console.warn('[webhook] resend in-depth-assessment skip', err),
+          );
+        } else {
+          sendCoursePurchaseIndividual({
+            email,
+            amountPaid,
+            magicLinkUrl: magicLinkUrl ?? undefined,
+          }).catch((err) => console.warn('[webhook] resend individual skip', err));
+        }
+      } else if (result.type === 'institution') {
+        const institutionName = session.metadata?.institution_name ?? 'Your institution';
+        const seatsPurchased = session.metadata?.quantity
+          ? parseInt(session.metadata.quantity, 10)
+          : 0;
+        sendCoursePurchaseInstitution({
+          email,
+          institutionName,
+          seatsPurchased,
+          amountPaid,
+          magicLinkUrl: magicLinkUrl ?? undefined,
+        }).catch((err) => console.warn('[webhook] resend institution skip', err));
+      }
     }
   }
 

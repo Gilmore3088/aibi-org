@@ -132,6 +132,8 @@ export interface CoursePurchaseIndividualPayload {
   readonly courseName?: string;
   readonly courseUrl?: string;
   readonly amountPaid: string;
+  /** One-click magic-link login URL — buyer clicks to land in an authed session. */
+  readonly magicLinkUrl?: string;
 }
 
 export function sendCoursePurchaseIndividual(
@@ -144,9 +146,49 @@ export function sendCoursePurchaseIndividual(
     subject: `Welcome to the ${courseName} program`,
     variables: {
       COURSE_NAME: courseName,
-      COURSE_URL: payload.courseUrl ?? 'https://aibankinginstitute.com/courses/aibi-p',
+      // COURSE_URL is what the email's primary CTA points at. When a magic
+      // link is available, prefer it so guest buyers get a one-click login;
+      // fall back to the public course page for returning users.
+      COURSE_URL:
+        payload.magicLinkUrl ??
+        payload.courseUrl ??
+        'https://aibankinginstitute.com/courses/aibi-p',
       AMOUNT_PAID: payload.amountPaid,
       RECEIPT_URL: 'https://aibankinginstitute.com/dashboard',
+    },
+  });
+}
+
+// ── Email 2.5: In-Depth Assessment purchase ────────────────────────────────
+
+export interface IndepthAssessmentPurchasePayload {
+  readonly email: string;
+  readonly amountPaid: string;
+  readonly magicLinkUrl?: string;
+}
+
+/**
+ * Sent after a successful $99 In-Depth Assessment purchase. Distinct from
+ * `course-purchase-individual` because the buyer is signing up for a
+ * 48-question diagnostic, not a 12-module course.
+ *
+ * Template alias must be published in the Resend dashboard before this
+ * helper resolves to an actual email send. Until the template exists,
+ * this helper logs the skip and returns silently — the purchase still
+ * succeeds.
+ */
+export function sendIndepthAssessmentPurchase(
+  payload: IndepthAssessmentPurchasePayload,
+): Promise<ResendResult> {
+  return sendTemplate({
+    to: payload.email,
+    templateAlias: 'in-depth-assessment-purchase',
+    subject: 'Your In-Depth AI Readiness Assessment is unlocked',
+    variables: {
+      AMOUNT_PAID: payload.amountPaid,
+      ASSESSMENT_URL:
+        payload.magicLinkUrl ??
+        'https://aibankinginstitute.com/assessment/in-depth/purchased',
     },
   });
 }
@@ -158,6 +200,7 @@ export interface CoursePurchaseInstitutionPayload {
   readonly institutionName: string;
   readonly seatsPurchased: number;
   readonly amountPaid: string;
+  readonly magicLinkUrl?: string;
 }
 
 export function sendCoursePurchaseInstitution(
@@ -171,7 +214,8 @@ export function sendCoursePurchaseInstitution(
       INSTITUTION_NAME: payload.institutionName,
       SEATS_PURCHASED: payload.seatsPurchased,
       AMOUNT_PAID: payload.amountPaid,
-      ADMIN_URL: 'https://aibankinginstitute.com/admin',
+      ADMIN_URL:
+        payload.magicLinkUrl ?? 'https://aibankinginstitute.com/admin',
       COURSE_URL: 'https://aibankinginstitute.com/courses/aibi-p',
     },
   });
@@ -223,6 +267,32 @@ export function sendWaitlistConfirmation(
     subject: `You're on the list — ${payload.interestLabel}`,
     variables: {
       INTEREST_LABEL: payload.interestLabel,
+      INSTITUTION: payload.institution ?? 'your institution',
+    },
+  });
+}
+
+// ── Email 7: Assessment options (waitlist signed up for "assessment") ──────
+
+export interface AssessmentOptionsPayload {
+  readonly email: string;
+  readonly institution?: string;
+}
+
+/**
+ * When a visitor signs up for the "assessment" waitlist, the assessment is
+ * already live — we don't make them wait. This email gives them the free
+ * 12-question version and the paid 48-question In-Depth version side by
+ * side, both with direct links.
+ */
+export function sendAssessmentOptions(
+  payload: AssessmentOptionsPayload,
+): Promise<ResendResult> {
+  return sendTemplate({
+    to: payload.email,
+    templateAlias: 'assessment-options',
+    subject: 'The AI readiness assessment is ready when you are',
+    variables: {
       INSTITUTION: payload.institution ?? 'your institution',
     },
   });

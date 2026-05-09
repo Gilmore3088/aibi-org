@@ -27,7 +27,23 @@ export function HomeContextStrip() {
     let cancelled = false;
 
     async function load() {
-      // 1. Check enrollment first — strongest signal, gives the most useful CTA.
+      // The strip is "welcome back" copy — only render it for actually
+      // authenticated users. A logged-out visitor with stale localStorage
+      // from a prior assessment session should see the regular hero, not
+      // a "welcome back" greeting that lies about their auth state.
+      if (!isSupabaseConfigured()) return;
+
+      let authUser = null;
+      try {
+        const supabase = createBrowserClient();
+        const { data } = await supabase.auth.getUser();
+        authUser = data.user;
+      } catch {
+        return;
+      }
+      if (cancelled || !authUser) return;
+
+      // 1. Authenticated and enrolled — strongest signal, gives the most useful CTA.
       let enrollment: LearnerSnapshot['enrollment'] = null;
       try {
         const res = await fetch('/api/dashboard/learner', { cache: 'no-store' });
@@ -50,7 +66,7 @@ export function HomeContextStrip() {
         return;
       }
 
-      // 2. Check assessment localStorage state next.
+      // 2. Authenticated, has prior assessment in localStorage / supabase.
       const user = await getUserDataWithSupabaseFallback();
       if (cancelled) return;
       if (user?.readiness) {
@@ -65,25 +81,12 @@ export function HomeContextStrip() {
         return;
       }
 
-      // 3. Last resort: signed-in but no progress. Acknowledge them by name.
-      if (isSupabaseConfigured()) {
-        try {
-          const supabase = createBrowserClient();
-          const {
-            data: { user: authUser },
-          } = await supabase.auth.getUser();
-          if (cancelled) return;
-          if (authUser) {
-            const displayName =
-              (authUser.user_metadata?.full_name as string | undefined) ??
-              authUser.email?.split('@')[0] ??
-              'there';
-            setMode({ kind: 'signed-in', displayName });
-          }
-        } catch {
-          /* anonymous experience is the right fallback */
-        }
-      }
+      // 3. Authenticated but no progress yet. Acknowledge them by name.
+      const displayName =
+        (authUser.user_metadata?.full_name as string | undefined) ??
+        authUser.email?.split('@')[0] ??
+        'there';
+      setMode({ kind: 'signed-in', displayName });
     }
 
     load();

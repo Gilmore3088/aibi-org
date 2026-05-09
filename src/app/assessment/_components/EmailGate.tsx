@@ -93,7 +93,7 @@ export function EmailGate({
       const data = (await res.json().catch(() => ({}))) as {
         error?: string;
         profileId?: string | null;
-        convertkitTagAdded?: boolean;
+        mailerliteTagAdded?: boolean;
       };
       if (!res.ok) {
         throw new Error(data.error ?? 'Something went wrong. Please try again.');
@@ -108,11 +108,11 @@ export function EmailGate({
         ...(dimensionBreakdown ? { dimensionBreakdown } : {}),
       });
       if (
-        data.convertkitTagAdded &&
+        data.mailerliteTagAdded &&
         typeof window !== 'undefined' &&
         typeof window.plausible === 'function'
       ) {
-        window.plausible('convertkit_tag_added', {
+        window.plausible('mailerlite_tag_added', {
           props: { tier: tierId, opt_in: marketingOptIn },
         });
       }

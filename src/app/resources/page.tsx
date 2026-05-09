@@ -250,25 +250,45 @@ export default function ResourcesPage() {
         </section>
 
         {/* Newsletter teaser */}
-        <section className="border-t border-[color:var(--color-ink)]/10 pt-16 text-center">
-          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-3">
-            Coming soon
-          </p>
-          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] mb-4">
-            The AI Banking Brief.
-          </h2>
-          <p className="text-lg text-[color:var(--color-ink)]/75 max-w-2xl mx-auto leading-relaxed mb-8">
-            A weekly short for community bank and credit union leaders on
-            where AI is actually working in regulated institutions, what is
-            still experimental, and how to tell the difference. Take the free
-            assessment to reserve a spot on the list.
-          </p>
-          <Link
-            href="/assessment/start"
-            className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
-          >
-            Take the Free Assessment
-          </Link>
+        <section className="border-t border-[color:var(--color-ink)]/10 pt-16">
+          <div className="max-w-2xl mx-auto text-center">
+            <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-3">
+              Coming soon
+            </p>
+            <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] mb-4">
+              The AI Banking Brief.
+            </h2>
+            <p className="text-lg text-[color:var(--color-ink)]/75 leading-relaxed mb-8">
+              A weekly read for community-bank and credit-union leaders.
+              Short, sourced, and free. Here&rsquo;s what each issue carries:
+            </p>
+          </div>
+          <ul className="max-w-xl mx-auto space-y-3 mb-10 text-left">
+            {[
+              'One regulatory or examiner-relevant signal — what changed, who it affects, what to do this week.',
+              'One vendor or tool we have actually tested against community-bank workflows, with the verdict.',
+              'One workflow you can run inside your institution before next Friday — built around the never-paste list.',
+            ].map((line) => (
+              <li
+                key={line}
+                className="flex gap-3 text-sm md:text-base text-[color:var(--color-ink)]/85 leading-relaxed"
+              >
+                <span
+                  className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-terra)] shrink-0"
+                  aria-hidden="true"
+                />
+                <span>{line}</span>
+              </li>
+            ))}
+          </ul>
+          <div className="text-center">
+            <Link
+              href="/coming-soon?interest=newsletter"
+              className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
+            >
+              Get the first issue
+            </Link>
+          </div>
         </section>
       </div>
     </main>

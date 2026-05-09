@@ -255,14 +255,47 @@ export default async function ComingSoonPage({ searchParams }: ComingSoonPagePro
           <div className="grid gap-12 md:grid-cols-12">
             <div className="md:col-span-6">
               <p className="font-serif-sc text-[11px] tracking-[0.28em] uppercase text-[color:var(--color-terra)]">
-                Save your spot
+                Get notified
               </p>
               <h2 className="mt-3 font-serif text-[28px] md:text-[36px] leading-[1.1] tracking-[-0.01em]">
-                We&apos;ll email when your track opens.
+                Be the first to know when your track opens.
               </h2>
               <p className="mt-5 text-[15px] leading-[1.6] text-[color:var(--color-ink)]/75">
-                Your ROI numbers stay on your device. We just send the launch note.
+                One email when the track is live. Nothing in between &mdash; no drip
+                campaign, no marketing churn, no list-rental partners. Your ROI
+                numbers stay on your device.
               </p>
+
+              <ul className="mt-7 space-y-3 text-[14px] leading-[1.55] text-[color:var(--color-ink)]/85">
+                <li className="flex gap-3">
+                  <span className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-terra)] shrink-0" aria-hidden="true" />
+                  <span>Direct enrollment link the day your track opens.</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-terra)] shrink-0" aria-hidden="true" />
+                  <span>A heads-up if the launch timeline shifts so you can plan.</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-terra)] shrink-0" aria-hidden="true" />
+                  <span>Reply any time to ask questions &mdash; a real person reads it.</span>
+                </li>
+              </ul>
+
+              <div className="mt-8 pt-6 border-t border-[color:var(--color-ink)]/10">
+                <p className="font-serif-sc text-[10px] tracking-[0.22em] uppercase text-[color:var(--color-ink)]/55 mb-2">
+                  Don&rsquo;t want to wait
+                </p>
+                <p className="text-[14px] leading-[1.55] text-[color:var(--color-ink)]/80">
+                  The free 12-question AI readiness assessment is live now. Three
+                  minutes, no payment required, no email gate before your score.{' '}
+                  <a
+                    href="/assessment"
+                    className="text-[color:var(--color-terra)] underline decoration-[color:var(--color-terra)]/40 underline-offset-2 hover:decoration-[color:var(--color-terra)]"
+                  >
+                    Take the assessment &rarr;
+                  </a>
+                </p>
+              </div>
             </div>
 
             <div className="md:col-span-6">
