@@ -98,17 +98,13 @@ export default async function EducationPage() {
     <MarketingPage
       hero={{
         eyebrow: "Education",
-        title: <>Build the capability that endures.</>,
+        title: <>Use our assessments to measure you or your team&rsquo;s readiness.</>,
         lede: (
           <>
-            Tools change. The judgment to deploy AI responsibly inside a regulated
-            institution does not. Start free; earn the Practitioner credential when you&rsquo;re
-            ready. Specialist and Leader programs are coming after the foundation loop is
-            validated.
+            Start free; the In-Depth Assessment is for institutions that need a
+            defensible, eight-dimension picture before committing to a program.
           </>
         ),
-        primaryCta: { href: "/assessment/start", label: "Take the free readiness assessment" },
-        secondaryCta: { href: "/assessment/in-depth", label: "Or the In-Depth ($99)" },
         aside: isPEnrolled ? (
           <Marginalia label="Your progress">
             <h4 className="font-serif text-display-xs leading-snug">
@@ -124,12 +120,9 @@ export default async function EducationPage() {
         ) : undefined,
       }}
     >
-      {/* Assessments */}
-      <Section variant="linen" padding="default">
-        <SectionHeader
-          title="Use our assessments to measure you or your team’s readiness."
-        />
-        <div className="grid md:grid-cols-2 gap-px bg-hairline border-y border-strong mt-s6">
+      {/* Assessments — the hero's payload */}
+      <Section variant="linen" padding="default" divider="none">
+        <div className="grid md:grid-cols-2 gap-px bg-hairline border-y border-strong">
           {assessments.map((a) => (
             <article key={a.title} className="bg-linen p-s8 lg:p-s10 flex flex-col">
               <div className="flex items-center mb-s5">
@@ -165,10 +158,9 @@ export default async function EducationPage() {
         </div>
       </Section>
 
-      {/* §02 — Free Classes */}
+      {/* Free Classes */}
       <Section variant="parch" padding="default">
         <SectionHeader
-          number="02"
           label="Classes · Free"
           title="Other free entry points."
           subtitle="Subscribe to the Brief, watch a five-minute class. No purchase required."
@@ -197,10 +189,9 @@ export default async function EducationPage() {
         </div>
       </Section>
 
-      {/* §03 — Certification ladder */}
+      {/* Certification ladder */}
       <Section variant="linen" padding="default">
         <SectionHeader
-          number="03"
           label="Certifications · Paid"
           title="Three credentials, one ladder."
           subtitle="Each certification builds on the previous. Earn the credential that matches your role today and advance when you are ready."
@@ -268,10 +259,9 @@ export default async function EducationPage() {
       {/* §03 — Sample question */}
       <SampleQuestion />
 
-      {/* §05 — Inquiry */}
+      {/* Inquiry */}
       <Section variant="parch" padding="default" container="narrow" id="inquiry-form">
         <SectionHeader
-          number="05"
           label="Talk to us"
           title="Questions before you commit?"
         />
