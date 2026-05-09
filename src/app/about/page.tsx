@@ -46,7 +46,7 @@ export default function AboutPage() {
       <Section variant="parchDark" padding="default">
         <div className="max-w-narrow mx-auto">
           <p className="font-serif italic text-display-lg leading-[1.05] text-terra">
-            The Institute exists for her.
+            For the institutions that anchor towns.
           </p>
         </div>
         <div className="grid md:grid-cols-3 gap-px bg-hairline border-y border-strong mt-s10">
