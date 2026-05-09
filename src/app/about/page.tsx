@@ -1,7 +1,53 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import { MarketingPage } from "@/components/system/templates";
 import { Section, SectionHeader, EditorialQuote } from "@/components/system";
 import { BRAND, PRINCIPLES, CTAS } from "@content/copy";
+
+const PRINCIPLE_GLYPHS: Record<string, ReactNode> = {
+  "01": (
+    <svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="12" r="5" fill="currentColor" />
+      <rect x="4" y="22" width="24" height="1" fill="currentColor" />
+      <rect x="4" y="26" width="24" height="1" fill="currentColor" opacity="0.4" />
+    </svg>
+  ),
+  "02": (
+    <svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <path d="M9 6 L4 6 L4 26 L9 26" />
+      <path d="M23 6 L28 6 L28 26 L23 26" />
+      <rect x="13" y="13" width="6" height="6" fill="currentColor" stroke="none" />
+    </svg>
+  ),
+  "03": (
+    <svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true">
+      {[8, 13, 18, 23].map((y) => (
+        <rect key={y} x="4" y={y} width="24" height="1.5" fill="currentColor" />
+      ))}
+    </svg>
+  ),
+  "04": (
+    <svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <rect x="6" y="4" width="20" height="24" />
+      <path d="M11 16 L15 20 L22 11" strokeWidth="2" strokeLinecap="square" />
+    </svg>
+  ),
+  "05": (
+    <svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true">
+      {[
+        [4, 14], [10, 18], [16, 10], [22, 22], [28, 16],
+      ].map(([x, h], i) => (
+        <rect key={i} x={x - 1} y={28 - h} width="2" height={h} fill="currentColor" />
+      ))}
+    </svg>
+  ),
+  "06": (
+    <svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true">
+      <rect x="4" y="11" width="24" height="2.5" fill="currentColor" />
+      <rect x="4" y="18" width="24" height="2.5" fill="currentColor" />
+    </svg>
+  ),
+};
 
 export const metadata: Metadata = {
   title: `About — ${BRAND.name}`,
@@ -16,16 +62,12 @@ export default function AboutPage() {
         eyebrow: "About the Institute",
         title: (
           <>
-            There is a banker somewhere right now who has been doing the same thing every
-            Tuesday morning for <em className="not-italic text-terra">six years.</em>
+            An education company for community banks
+            and <em className="not-italic text-terra">credit unions.</em>
           </>
         ),
-        lede: (
-          <>
-            It takes two and a half hours. She knows it is inefficient. She could fix it
-            herself in an afternoon — she just does not know that yet.
-          </>
-        ),
+        tagline: "Built on regulator-aligned criteria. Tuition published. Methodology published.",
+        lede: BRAND.mission,
         primaryCta: CTAS.beginAssessment,
       }}
     >
@@ -127,14 +169,19 @@ export default function AboutPage() {
           title="Six principles, applied without exception."
           subtitle="Internal rules, made public."
         />
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-hairline border-y border-strong mt-s6">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-hairline border-y border-hairline mt-s10">
           {PRINCIPLES.map((p) => (
-            <div key={p.number} className="bg-linen p-s6">
-              <p className="font-mono text-mono-sm uppercase tracking-wider text-terra mb-s2">
-                {p.number}
-              </p>
-              <h3 className="font-serif text-display-xs leading-snug mb-s2">{p.title}</h3>
-              <p className="text-body-sm text-ink/80 leading-relaxed">{p.body}</p>
+            <div key={p.number} className="bg-linen p-s8 lg:p-s10">
+              <div className="flex items-start justify-between mb-s6">
+                <span className="text-terra">{PRINCIPLE_GLYPHS[p.number]}</span>
+                <span className="font-mono text-mono-sm uppercase tracking-wider text-ink/40 tabular-nums">
+                  {p.number}
+                </span>
+              </div>
+              <h3 className="font-serif text-display-xs leading-snug text-ink mb-s3">
+                {p.title}
+              </h3>
+              <p className="text-body-sm text-ink/75 leading-relaxed">{p.body}</p>
             </div>
           ))}
         </div>
