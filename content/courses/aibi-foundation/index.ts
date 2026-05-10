@@ -10,6 +10,7 @@ import { managerTrack } from './manager';
 import { boardTrack } from './board';
 
 export * from './types';
+export * from './refresh-slots';
 
 export const tracks: readonly Track[] = [
   liteTrack,

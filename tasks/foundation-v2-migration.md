@@ -113,22 +113,48 @@ charge anyone the delta.
 - [ ] Test: full $495 Foundation Full Checkout → webhook → enrollment row
   → course purchase email. Use Stripe test mode on staging first.
 
-## Phase 4 — Course shells + routing
+## Phase 4 — Course shells + routing (PARTIAL DONE 2026-05-10)
 
-- [ ] Build new track shells: `/courses/foundation-lite`,
-  `/courses/foundation` (Full), `/courses/foundation-manager`,
-  `/courses/foundation-board`. The existing `/courses/aibi-p` shell can be
-  reskinned for Foundation Full or kept as a redirect to
-  `/courses/foundation`.
-- [ ] Module-level routes: `/courses/foundation/[module]` already exists
-  pattern in `src/app/courses/aibi-p/[module]/`.
+- [x] Top-level overview at `/courses/foundation` rendering all four tracks
+  with metadata, pricing, audience.
+- [x] Track detail at `/courses/foundation/[track]` rendering module list
+  with pillar tags, time estimates, key outputs.
+- [x] Module detail at `/courses/foundation/[track]/[module]` rendering
+  whyThisExists, learning objectives, daily-use outcomes, sections (with
+  light-markdown rendering for prose + tables), activities (form fields
+  via the activity dispatcher), and prev/next navigation.
+- [x] Component scaffold under
+  `src/app/courses/foundation/_components/`: `LightMarkdown`,
+  `SectionRenderer`, `ActivityRenderer`. ActivityRenderer dispatches on
+  the 8 activity types with engine-pending callouts.
+
+Operator-side or follow-up work for Phase 4:
 - [ ] Add prerequisite check for Manager Track (requires Foundation Full
-  completion or Lite + 6 mo supervisory experience).
+  completion or Lite + 6 mo supervisory experience). Stubbed in the data
+  layer (`Track.prerequisite`) but not yet enforced in the route.
 - [ ] DB: add `product` enum values for the four new SKUs in
   `course_enrollments` — keep `aibi-p` as legacy. Migration goes through
-  `mcp__supabase__apply_migration`.
+  `mcp__supabase__apply_migration` and needs explicit user approval per
+  CLAUDE.md.
+- [ ] Browser-test the routes (CLAUDE.md requires this for UI changes;
+  not done in the code-only commit).
+- [ ] Decide on enrollment gating: do these routes require sign-in,
+  or are they previewable like `/courses/aibi-p` is today?
 
-## Phase 5 — Platform build (the big one)
+## Phase 5 — Platform build (SCAFFOLDING DONE 2026-05-10; ENGINES PENDING)
+
+The dispatcher pattern is live: every activity type renders through
+`ActivityRenderer` (`src/app/courses/foundation/_components/`). Each of
+the 8 types currently shows:
+1. The activity title, time estimate, and description.
+2. A clearly-marked "engine pending" callout describing what the
+   interactive engine will do.
+3. The activity's typed form fields rendered as a real HTML form
+   (text/textarea/radio/select/file) so the platform can capture
+   learner work as a fallback even before the engine is built.
+
+The engines themselves still need to be built. Each is a real engineering
+product:
 
 The v2 spec calls for a custom learning platform beyond standard course
 mechanics. This is the work most likely to slip. Sequenced by leverage:
@@ -156,16 +182,24 @@ mechanics. This is the work most likely to slip. Sequenced by leverage:
 Activity Type 8 (real-world capture with NPI regex guard) is **DEFERRED**
 per Phase 0 decision — Final Lab uses synthetic inputs only at launch.
 
-## Phase 6 — Quarterly refresh mechanics
+## Phase 6 — Quarterly refresh mechanics (ARCHITECTURE DONE 2026-05-10)
 
-The v2 doc bakes a 90-day refresh cycle into the curriculum. Build the
-authoring side now so we don't paint ourselves into a corner.
+- [x] Slot architecture defined in
+  `content/courses/aibi-foundation/refresh-slots.ts`. Seven slots
+  declared (M2 hallucinations, M4 sort bank, M11 extraction flaw,
+  M12 anomaly false positive, M15 vendor pitches, M19 examiner
+  scenarios, M20 final-lab errors). Lifecycle is `current` /
+  `onDeck` / `archive`. Engines call `getCurrentVariation(key)`.
+- [x] Type-safe content shapes (SortItem, PlantedFabrication,
+  VendorPitch, ExaminerScenario, FinalLabError) for the variations.
 
-- [ ] Rotation slots for planted-error content (M2, M11, M12, M15, M18,
-  M20) — author bible with current + on-deck variations.
-- [ ] Sort-bank rotation for M4 (20 items × 4 quarterly sets).
-- [ ] Examiner Q&A rotation for M19 (5 scenarios, rotate 2 per quarter).
-- [ ] Vendor pitch rotation for M15 (3 decks, refresh annually).
+Authoring follow-ups:
+- [ ] Author the first set of variations (2026-Q2 release) under
+  `content/courses/aibi-foundation/refresh/2026-Q2-*.ts` and wire
+  into `CURRENT_VARIATIONS` in `refresh-slots.ts`.
+- [ ] Author the on-deck set for 2026-Q3 release.
+- [ ] Document the operator handoff for quarter rollover (promote
+  onDeck -> current, archive prior current).
 
 ## Phase 7 — Sales / GTM
 
