@@ -60,10 +60,10 @@ type Capability = {
 
 const CAPABILITIES: readonly Capability[] = [
   {
-    id: 'tools',
-    title: 'Tools',
+    id: 'models',
+    title: 'Models',
     subtitle:
-      'ChatGPT, Claude, Microsoft Copilot, Google Gemini, NotebookLM, Perplexity. Match the platform to the task — and know which data should never go near each one.',
+      'ChatGPT, Claude, Microsoft Copilot, Google Gemini, NotebookLM, Perplexity. Match the model to the task — and know which data should never go near each one.',
     prompt:
       'You are a community bank ops manager. Compare ChatGPT, Claude, Microsoft Copilot, Google Gemini, NotebookLM, and Perplexity for our team. For each: one task it does well, one weakness, one type of data we should never paste in. Return a six-row table.',
     output: [
@@ -122,7 +122,7 @@ export interface InteractiveSkillsPreviewProps {
 export function InteractiveSkillsPreview({
   eyebrow = 'Inside the course',
   heading = 'Learn these capabilities in AiBI-Practitioner.',
-  subhead = 'Tools, prompts, skills, agents — and the judgment to use them inside a regulated institution.',
+  subhead = 'Models, prompts, skills, agents — and the judgment to use them inside a regulated institution.',
 }: InteractiveSkillsPreviewProps = {}) {
   const [activeId, setActiveId] = useState<string>(CAPABILITIES[0].id);
   const [copied, setCopied] = useState(false);
@@ -237,10 +237,10 @@ export function InteractiveSkillsPreview({
             })}
           </ul>
 
-          {/* Right column — Tools and Skills tabs render curriculum-data
+          {/* Right column — Models and Skills tabs render curriculum-data
               panels (no demo, just the list). Other tabs get the stacked
               Sample Prompt + AI-Assisted Result demo. */}
-          {active.id === 'tools' ? (
+          {active.id === 'models' ? (
             <div
               id="capability-panel"
               role="tabpanel"
@@ -357,7 +357,7 @@ export function InteractiveSkillsPreview({
 }
 
 /**
- * <PlatformsPanel> — replaces the prompt + result demo on the Tools tab.
+ * <PlatformsPanel> — replaces the prompt + result demo on the Models tab.
  * A clean grouped reference of the six platforms taught in the curriculum,
  * grouped by category. No prompt, no AI demo — just a peek at what we use.
  */
