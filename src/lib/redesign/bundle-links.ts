@@ -14,7 +14,7 @@
  */
 
 const BUNDLE_TO_ROUTE: Record<string, string> = {
-  'AI Banking Institute.html': '/',
+  'AI Banking Institute.html': '/preview-home',
   'User Home.html': '/user-home',
   'Design System.html': '/design-system',
   'My Toolbox.html': '/my-toolbox',

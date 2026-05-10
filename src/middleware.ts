@@ -41,6 +41,7 @@ const COMING_SOON_BYPASS_PREFIXES: readonly string[] = [
   '/my-toolbox',    // redesign preview of the artifact toolbox, internal only
   '/playground',    // redesign preview of the prompt playground, internal only
   '/faq',           // redesign preview of the FAQ surface
+  '/preview-home',  // redesign preview of the marketing landing
 ];
 
 export async function middleware(request: NextRequest): Promise<NextResponse> {
