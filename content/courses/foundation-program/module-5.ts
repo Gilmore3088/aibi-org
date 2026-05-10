@@ -1,4 +1,4 @@
-// AiBI-P Module 5: Projects and Context
+// AiBI-Foundation Module 5: Projects and Context
 // Pillar: Understanding | Estimated: 35 minutes
 // Key Output: Project Brief Template
 

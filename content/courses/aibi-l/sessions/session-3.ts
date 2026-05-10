@@ -55,14 +55,14 @@ export const session3: WorkshopSession = {
       id: '3.4',
       title: 'Building the Business Case',
       content:
-        'The business case document assembles the model into a board-defensible narrative with five components. First, investment required: AiBI-P at $295 per seat for staff, AiBI-S at $1,495 per seat for managers, AI tools and platform licenses, and consulting if applicable. Second, projected returns by department, with the Year 1 number deliberately conservative to set up an early credibility win. Third, risk factors: implementation risk, adoption risk, regulatory risk, and vendor concentration risk — each paired with the mitigation that the governance framework from Session 2 already addresses. Fourth, a 3-year phased timeline aligned to the maturity level. Fifth, success metrics that the board can track at every meeting: efficiency ratio, time savings by department, governed AI use case count, and governance compliance status.',
+        'The business case document assembles the model into a board-defensible narrative with five components. First, investment required: AiBI-Foundation at $295 per seat for staff, AiBI-S at $1,495 per seat for managers, AI tools and platform licenses, and consulting if applicable. Second, projected returns by department, with the Year 1 number deliberately conservative to set up an early credibility win. Third, risk factors: implementation risk, adoption risk, regulatory risk, and vendor concentration risk — each paired with the mitigation that the governance framework from Session 2 already addresses. Fourth, a 3-year phased timeline aligned to the maturity level. Fifth, success metrics that the board can track at every meeting: efficiency ratio, time savings by department, governed AI use case count, and governance compliance status.',
     },
   ],
   activity: {
     id: 'activity-3',
     title: '3-Year AI Roadmap',
     description:
-      'Build a 3-year AI roadmap with three phases. Foundation (months 1-6): staff AiBI-P training, governance framework approval, three to five pilot use cases deployed under governance. Build (months 7-18): department manager AiBI-S training, departmental automation, measurement infrastructure. Scale (months 19-36): enterprise-wide adoption, advanced use cases, continuous improvement. Each phase carries explicit milestones, named owners, and ROI projections built from the institution\'s actual FTE and cost-per-FTE data.',
+      'Build a 3-year AI roadmap with three phases. Foundation (months 1-6): staff AiBI-Foundation training, governance framework approval, three to five pilot use cases deployed under governance. Build (months 7-18): department manager AiBI-S training, departmental automation, measurement infrastructure. Scale (months 19-36): enterprise-wide adoption, advanced use cases, continuous improvement. Each phase carries explicit milestones, named owners, and ROI projections built from the institution\'s actual FTE and cost-per-FTE data.',
     estimatedMinutes: 40,
     deliverable: '3-Year AI Roadmap with ROI Projections (board-ready)',
     facilitationNotes:

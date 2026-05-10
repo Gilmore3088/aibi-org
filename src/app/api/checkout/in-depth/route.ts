@@ -3,7 +3,7 @@
 //
 // Phase 1: individual purchase only ($99 — STRIPE_INDEPTH_PRICE_ID).
 // Institution/team mode ($79 × N seats) is deferred — the seat-grant
-// semantics for the assessment are different from AiBI-P and want their
+// semantics for the assessment are different from AiBI-Foundation and want their
 // own table; until that lands, return 503 with a contact-us nudge.
 //
 // On payment, /api/webhooks/stripe sees product='in-depth-assessment' in

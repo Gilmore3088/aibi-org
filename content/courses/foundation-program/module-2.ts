@@ -1,4 +1,4 @@
-// AiBI-P Module 2: What AI Is and Is Not
+// AiBI-Foundation Module 2: What AI Is and Is Not
 // Pillar: Awareness | Estimated: 20 minutes
 // Key Output: AI Claim Review
 
@@ -30,7 +30,7 @@ The ecosystem comparison table gives you a quick-reference framework for matchin
       title: 'Out-of-Scope Tools',
       content: `Some AI platforms — specifically website creation tools like Framer and 10Web, and full-stack application builders like Lovable and Replit Agent — appear in the ecosystem overview but are primarily covered in the **AiBI-S (Specialist)** curriculum.
 
-These tools are powerful but require software development context that goes beyond the AiBI-P practitioner scope.
+These tools are powerful but require software development context that goes beyond the AiBI-Foundation practitioner scope.
 
 > If you encounter them in your work environment, treat them as tools for specialized technical staff until you have completed AiBI-S.
 
@@ -115,13 +115,13 @@ You can always revisit modules with different platform context by resetting your
     },
     {
       id: 'm2-full-ecosystem',
-      caption: 'Full AI Tool Ecosystem — Complete Platform Landscape (AiBI-P Scope and Beyond)',
+      caption: 'Full AI Tool Ecosystem — Complete Platform Landscape (AiBI-Foundation Scope and Beyond)',
       columns: [
         { header: 'Platform', key: 'platform' },
         { header: 'Category', key: 'category' },
         { header: 'Primary Strength', key: 'strength' },
         { header: 'Access Status', key: 'access' },
-        { header: 'AiBI-P Scope', key: 'scope' },
+        { header: 'AiBI-Foundation Scope', key: 'scope' },
       ],
       rows: [
         {
@@ -171,14 +171,14 @@ You can always revisit modules with different platform context by resetting your
           category: 'Website Creator',
           strength: 'High-fidelity UI animation and hosting',
           access: 'SaaS premium subscription',
-          scope: 'AiBI-S scope — not covered in AiBI-P',
+          scope: 'AiBI-S scope — not covered in AiBI-Foundation',
         },
         {
           platform: '10Web',
           category: 'Website Creator',
           strength: 'AI-driven WordPress generation and site migration',
           access: 'Enterprise tier subscription',
-          scope: 'AiBI-S scope — not covered in AiBI-P',
+          scope: 'AiBI-S scope — not covered in AiBI-Foundation',
         },
         {
           platform: 'Lovable / Bolt.new',

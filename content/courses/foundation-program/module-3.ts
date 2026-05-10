@@ -1,4 +1,4 @@
-// AiBI-P Module 3: Prompting Fundamentals
+// AiBI-Foundation Module 3: Prompting Fundamentals
 // Pillar: Understanding | Estimated: 30 minutes
 // Key Output: Prompt Strategy Cheat Sheet
 

@@ -102,7 +102,7 @@ export interface RoleTrackContent {
   readonly skillExamples: readonly string[];   // Concrete banking examples for this track
 }
 
-// Activity field types mirror AiBI-P for consistency
+// Activity field types mirror AiBI-Foundation for consistency
 export type ActivityType = 'free-text' | 'form' | 'drill' | 'builder' | 'iteration' | 'audit';
 
 export interface ActivityField {

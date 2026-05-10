@@ -1,4 +1,4 @@
-// Sandbox config map for all AiBI-P modules
+// Sandbox config map for all AiBI-Foundation modules
 // Used by [module]/page.tsx to conditionally render AIPracticeSandbox
 
 import type { SandboxConfig } from '@/lib/sandbox/types';

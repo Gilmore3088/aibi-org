@@ -1,4 +1,4 @@
-// AiBI-P Module 1: AI for Your Workday
+// AiBI-Foundation Module 1: AI for Your Workday
 // Pillar: Awareness | Estimated: 25 minutes
 // Key Output: Rewritten Email
 

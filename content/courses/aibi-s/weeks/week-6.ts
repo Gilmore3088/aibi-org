@@ -103,7 +103,7 @@ Four questions structure the reflection:
 
 **Dimension 3 — Measured Impact (HARD GATE):** Real time savings data, not estimates. Minimum 3 timed data points before and after. Sound calculation methodology. Conservative and defensible executive summary. A score below 3 on this dimension automatically fails the submission regardless of total score.
 
-**Dimension 4 — Documentation:** Can someone who did not build this maintain and iterate on it? The test is whether a new team member with AiBI-P-level proficiency could use and maintain the skills from the documentation alone — without asking the builder.
+**Dimension 4 — Documentation:** Can someone who did not build this maintain and iterate on it? The test is whether a new team member with AiBI-Foundation-level proficiency could use and maintain the skills from the documentation alone — without asking the builder.
 
 **Dimension 5 — Change Adoption:** Has anyone else on the team actually used it? Evidence required. Screenshots, colleague confirmation, or usage logs. Multiple team members using the automation regularly, with feedback incorporated, exceeds standard.
 
@@ -196,7 +196,7 @@ Four questions structure the reflection:
           dimension: '4. Documentation',
           score1: 'Incomplete or assumes the reader is the builder. Quick start guides missing or unusable.',
           score2: 'Covers basics but a new user would have questions. Quick start guides vague on inputs or output interpretation.',
-          score3: 'Complete. A new team member with AiBI-P proficiency could use and maintain skills from documentation alone.',
+          score3: 'Complete. A new team member with AiBI-Foundation proficiency could use and maintain skills from documentation alone.',
           score4: 'Exemplary. Library index, ownership matrix, and training materials could be adopted by another department without modification.',
         },
         {

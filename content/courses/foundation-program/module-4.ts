@@ -1,4 +1,4 @@
-// AiBI-P Module 4: Your AI Work Profile
+// AiBI-Foundation Module 4: Your AI Work Profile
 // Pillar: Understanding | Estimated: 30 minutes
 // Key Output: AI Work Profile
 // roleSpecific: true — role-specific spotlights vary by department

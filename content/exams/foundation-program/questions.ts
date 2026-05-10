@@ -1,4 +1,4 @@
-// AiBI-P Practitioner Proficiency Assessment — Question Bank
+// AiBI-Foundation Practitioner Proficiency Assessment — Question Bank
 // 40 questions across 5 topics. Each attempt draws 12 randomly.
 // EVERY question is rooted in a specific community banking scenario.
 

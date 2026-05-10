@@ -1,4 +1,4 @@
-// AiBI-P Module 11: Personal Prompt Library
+// AiBI-Foundation Module 11: Personal Prompt Library
 // Pillar: Application | Estimated: 35 minutes
 // Key Output: Personal Prompt Library
 

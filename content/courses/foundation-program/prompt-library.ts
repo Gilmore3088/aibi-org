@@ -1,4 +1,4 @@
-// AiBI-P Prompt Library — Copy-paste-ready prompts for banking practitioners
+// AiBI-Foundation Prompt Library — Copy-paste-ready prompts for banking practitioners
 // Organized by platform, role, and difficulty
 // All prompts are banking-specific with institutional constraints
 
@@ -809,7 +809,7 @@ Constraints:
 ] as const;
 
 // ---------------------------------------------------------------------------
-// S-level gated prompts — visible to AiBI-P completers but unlocked at AiBI-S
+// S-level gated prompts — visible to AiBI-Foundation completers but unlocked at AiBI-S
 // ---------------------------------------------------------------------------
 
 const sLevelPrompts: readonly Prompt[] = [
@@ -899,7 +899,7 @@ Constraints:
     expectedOutput: 'A department-level skill library template with a standardized skill registry format, a skill submission and review process, a quarterly audit checklist, and a skill deprecation policy — ready for a department head to adopt and manage.',
     promptText: `You are an AI Transformation Lead at a community bank helping a department head build and manage a sustainable skill library for their team.
 
-Context: The department has completed AiBI-P and individual staff have built 6-12 skills. Skills are currently stored inconsistently (some in personal ChatGPT Projects, some in shared drives, some only in individuals' heads). The goal is to create a department-level skill library that:
+Context: The department has completed AiBI-Foundation and individual staff have built 6-12 skills. Skills are currently stored inconsistently (some in personal ChatGPT Projects, some in shared drives, some only in individuals' heads). The goal is to create a department-level skill library that:
 - Makes skills discoverable and usable by any qualified team member
 - Ensures skills are reviewed, approved, and compliant before shared use
 - Identifies skills that are stale, superseded, or no longer compliant

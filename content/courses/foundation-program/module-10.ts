@@ -1,4 +1,4 @@
-// AiBI-P Module 10: Role-Based Use Cases
+// AiBI-Foundation Module 10: Role-Based Use Cases
 // Pillar: Application | Estimated: 35 minutes
 // Key Output: Role Use-Case Card
 

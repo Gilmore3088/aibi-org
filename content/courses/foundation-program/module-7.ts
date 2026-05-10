@@ -1,4 +1,4 @@
-// AiBI-P Module 7: AI Tools Landscape
+// AiBI-Foundation Module 7: AI Tools Landscape
 // Pillar: Creation | Estimated: 35 minutes
 // Key Output: Tool Choice Map
 

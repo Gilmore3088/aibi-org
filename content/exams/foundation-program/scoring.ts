@@ -1,4 +1,4 @@
-// AiBI-P Proficiency Assessment — Scoring
+// AiBI-Foundation Proficiency Assessment — Scoring
 // No pass/fail. Proficiency levels indicate readiness for certification submission.
 
 export interface ProficiencyLevel {
@@ -45,7 +45,7 @@ export const proficiencyLevels: readonly ProficiencyLevel[] = [
     colorVar: 'var(--color-terra-light)',
     headline: 'You are ready to pursue certification.',
     summary:
-      'You have demonstrated sufficient knowledge across the five assessment dimensions to submit a work product for the Practitioner credential. Your submission will be evaluated against the AiBI-P rubric.',
+      'You have demonstrated sufficient knowledge across the five assessment dimensions to submit a work product for the Practitioner credential. Your submission will be evaluated against the AiBI-Foundation rubric.',
     recommendation:
       'Proceed to the Practitioner certification inquiry form. You will submit a real work product — something you would actually present to a supervisor — assessed across five rubric dimensions (Accuracy, Completeness, Tone, Judgment, Usability).',
   },

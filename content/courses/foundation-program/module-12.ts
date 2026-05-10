@@ -1,4 +1,4 @@
-// AiBI-P Module 12: Final Practitioner Lab
+// AiBI-Foundation Module 12: Final Practitioner Lab
 // Pillar: Application | Estimated: 45 minutes
 // Key Output: Final Practitioner Lab Package
 

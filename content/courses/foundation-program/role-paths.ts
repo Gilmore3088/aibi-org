@@ -1,4 +1,4 @@
-// AiBI-P Role-Specific Learning Paths
+// AiBI-Foundation Role-Specific Learning Paths
 // Defines depth and prioritization for each of the 8 learner roles.
 // Consumed by RolePathCard (overview page) and module deep-dive callouts.
 
@@ -87,7 +87,7 @@ const lendingPath: RolePath = {
     'Credit Memo Draft Generator',
   ],
   peerBenchmark:
-    'Lending officers who complete AiBI-P automate an average of 4 workflows within 30 days — most commonly loan file review and committee brief preparation.',
+    'Lending officers who complete AiBI-Foundation automate an average of 4 workflows within 30 days — most commonly loan file review and committee brief preparation.',
   startHereModule: 4,
   quickWins: [
     'Run a loan file through ChatGPT File Upload against the 22-item checklist and cut review time in half',
@@ -145,7 +145,7 @@ const operationsPath: RolePath = {
     'Policy Document Review Checklist',
   ],
   peerBenchmark:
-    'Operations managers who complete AiBI-P automate an average of 5 workflows within 30 days — exception triage and meeting documentation are consistently the first two.',
+    'Operations managers who complete AiBI-Foundation automate an average of 5 workflows within 30 days — exception triage and meeting documentation are consistently the first two.',
   startHereModule: 4,
   quickWins: [
     'Set up Custom Instructions in ChatGPT to standardize your exception report format across the team',
@@ -203,7 +203,7 @@ const compliancePath: RolePath = {
     'Policy Gap Analyzer',
   ],
   peerBenchmark:
-    'Compliance officers who complete AiBI-P automate an average of 3 workflows within 30 days — SAR narrative drafting and regulatory research preparation are the most common.',
+    'Compliance officers who complete AiBI-Foundation automate an average of 3 workflows within 30 days — SAR narrative drafting and regulatory research preparation are the most common.',
   startHereModule: 5,
   quickWins: [
     'Use Perplexity to research the latest CFPB guidance on a topic on your watch list — note every citation links directly to source',
@@ -261,7 +261,7 @@ const financePath: RolePath = {
     'Board Report Narrative Writer',
   ],
   peerBenchmark:
-    'Finance professionals who complete AiBI-P automate an average of 3 workflows within 30 days — monthly variance commentary and board report drafting are the most consistent.',
+    'Finance professionals who complete AiBI-Foundation automate an average of 3 workflows within 30 days — monthly variance commentary and board report drafting are the most consistent.',
   startHereModule: 4,
   quickWins: [
     'Upload last month\'s income statement to ChatGPT and run the variance analysis prompt — compare to your manual commentary',
@@ -319,7 +319,7 @@ const marketingPath: RolePath = {
     'Member Communication Drafter',
   ],
   peerBenchmark:
-    'Marketing professionals who complete AiBI-P automate an average of 4 workflows within 30 days — campaign copy production and social content drafting are the most common time savings.',
+    'Marketing professionals who complete AiBI-Foundation automate an average of 4 workflows within 30 days — campaign copy production and social content drafting are the most common time savings.',
   startHereModule: 4,
   quickWins: [
     'Run the social media prompt in Gemini for your next product promotion — note how the UDAP constraints are already built in',
@@ -377,7 +377,7 @@ const itPath: RolePath = {
     'Technical-to-Executive Summary Converter',
   ],
   peerBenchmark:
-    'IT professionals who complete AiBI-P automate an average of 3 workflows within 30 days — vendor due diligence documentation and policy gap analysis are the most common.',
+    'IT professionals who complete AiBI-Foundation automate an average of 3 workflows within 30 days — vendor due diligence documentation and policy gap analysis are the most common.',
   startHereModule: 5,
   quickWins: [
     'Use the IT vendor assessment prompt in Claude to generate a TPRM questionnaire for a vendor you are currently evaluating',
@@ -435,7 +435,7 @@ const retailPath: RolePath = {
     'Branch Training Material Builder',
   ],
   peerBenchmark:
-    'Retail and frontline staff who complete AiBI-P automate an average of 4 workflows within 30 days — customer email drafting is the most universal first win.',
+    'Retail and frontline staff who complete AiBI-Foundation automate an average of 4 workflows within 30 days — customer email drafting is the most universal first win.',
   startHereModule: 3,
   quickWins: [
     'Draft a rate change email to a customer using the Copilot prompt — your first draft in under 5 minutes',
@@ -493,7 +493,7 @@ const executivePath: RolePath = {
     'Strategic Briefing Assembler',
   ],
   peerBenchmark:
-    'Executives who complete AiBI-P implement institution-wide AI policies within 60 days and report board-level AI adoption updates within 90 days.',
+    'Executives who complete AiBI-Foundation implement institution-wide AI policies within 60 days and report board-level AI adoption updates within 90 days.',
   startHereModule: 1,
   quickWins: [
     'Use the board AI update prompt in Claude to draft your next quarterly AI report in under 20 minutes',

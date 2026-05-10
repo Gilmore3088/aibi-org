@@ -39,14 +39,14 @@
 - "Work audit" methodology should reference the Cornerstone Advisors AI Playbook use cases by department
 - "Governance Framework" must align with AIEOG AI Lexicon vocabulary
 - 5 role tracks per existing AiBI-S definition: Operations, Lending, Compliance, Finance, Retail
-- Live cohort format (not self-paced like AiBI-P) — per content/certifications/v1.ts
+- Live cohort format (not self-paced like AiBI-Foundation) — per content/certifications/v1.ts
 - Price point: $1,495 per the existing certification spec
 
-## Key Differentiators from AiBI-P
+## Key Differentiators from AiBI-Foundation
 
-- AiBI-P: Personal margin of error (learn for yourself, fail privately)
+- AiBI-Foundation: Personal margin of error (learn for yourself, fail privately)
 - AiBI-S: Team margin of error (deploy for your department, colleagues catch mistakes)
-- AiBI-P: Skills are personal productivity tools
+- AiBI-Foundation: Skills are personal productivity tools
 - AiBI-S: Skills are institutional assets with governance, versioning, and handoff
-- AiBI-P: Self-paced, 4-6 hours
+- AiBI-Foundation: Self-paced, 4-6 hours
 - AiBI-S: Live cohort, 6 weeks, process improvement with measured time savings

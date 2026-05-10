@@ -1,4 +1,4 @@
-// AiBI-P Module 9: Safe AI Use in Banking
+// AiBI-Foundation Module 9: Safe AI Use in Banking
 // Pillar: Understanding | Estimated: 35 minutes
 // Key Output: Safe AI Use Checklist
 

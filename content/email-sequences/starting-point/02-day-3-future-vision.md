@@ -22,7 +22,7 @@ A working AI program means:
 
 You are at the starting line. The path to all five conditions is not technology procurement. It is staff capability, built deliberately. The mistake we see most often: institutions explore tools before training their team. Capability comes first.
 
-The AiBI-P certification is built around this exact problem. Twelve short modules, taken on a banker's schedule, that turn a curious staff member into a confident user. SAFE framework included. Reusable prompt patterns included.
+The AiBI-Foundation certification is built around this exact problem. Twelve short modules, taken on a banker's schedule, that turn a curious staff member into a confident user. SAFE framework included. Reusable prompt patterns included.
 
 Walk through your tier-specific [recommendations]({{ subscriber.profile_url | default: "https://aibankinginstitute.com/" }}) again — they ladder up to this same picture.
 

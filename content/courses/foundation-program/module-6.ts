@@ -1,4 +1,4 @@
-// AiBI-P Module 6: Files and Document Workflows
+// AiBI-Foundation Module 6: Files and Document Workflows
 // Pillar: Creation | Estimated: 35 minutes
 // Key Output: Document Workflow Prompt
 
