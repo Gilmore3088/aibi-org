@@ -21,7 +21,7 @@ legacy fallbacks.
 | # | Action | Method | Status |
 |---|---|---|---|
 | 1 | Supabase migration | MCP (`apply_migration`) | ✅ Applied — 5 + 6 rows updated, check constraint widened |
-| 2 | Vercel env var renames | Vercel dashboard | ⏳ Pending — operator |
+| 2 | Vercel env var renames | Vercel dashboard | ✅ Done 2026-05-09 — `STRIPE_FOUNDATIONS_*` added alongside legacy `STRIPE_AIBIP_*`. Drop the legacy pair from Vercel after the cleanup commit ships and `main` is reading the new names only. |
 | 3 | Stripe product rename + metadata | MCP (`stripe_api_execute`) | ✅ `prod_UShU302Dln6DMz` renamed to "AiBI Foundations"; metadata `tier`/`credential_code`/`access_grant` updated |
 | 4 | Resend templates (3) | MCP (`update-template` + `publish-template`) | ✅ All 3 updated and republished — names, subjects, variable fallbacks |
 | 5 | MailerLite automations (5) | — | ⏳ MCP `update_automation_email` rejects the content (subject Liquid + 1000-char cap). See §5 below for the dashboard procedure. Automations still in DRAFT (enabled=false), so subscribers are unaffected. |
