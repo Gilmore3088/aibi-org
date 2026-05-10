@@ -36,6 +36,7 @@ const COMING_SOON_BYPASS_PREFIXES: readonly string[] = [
   '/auth',
   '/admin',
   '/coming-soon',
+  '/design-system', // internal Ledger reference, gated only by URL knowledge
 ];
 
 export async function middleware(request: NextRequest): Promise<NextResponse> {
