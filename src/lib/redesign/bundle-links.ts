@@ -25,10 +25,10 @@ const BUNDLE_TO_ROUTE: Record<string, string> = {
   // not yet built — clicks no-op rather than 404
   'Playground.html': '/playground',
   'Playground v1.html': '/playground',
+  'FAQ.html': '/faq',
 
   // not yet built — clicks no-op rather than 404
   'LMS Prototype.html': '#',
-  'FAQ.html': '#',
   'AI Readiness Briefing.html': '#',
 };
 
