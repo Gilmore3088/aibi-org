@@ -42,6 +42,7 @@ const COMING_SOON_BYPASS_PREFIXES: readonly string[] = [
   '/playground',    // redesign preview of the prompt playground, internal only
   '/faq',           // redesign preview of the FAQ surface
   '/preview-home',  // redesign preview of the marketing landing
+  '/briefing-preview', // redesign preview of the assessment results briefing
 ];
 
 export async function middleware(request: NextRequest): Promise<NextResponse> {

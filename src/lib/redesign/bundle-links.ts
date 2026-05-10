@@ -15,6 +15,7 @@
 
 const BUNDLE_TO_ROUTE: Record<string, string> = {
   'AI Banking Institute.html': '/preview-home',
+  'AI Readiness Briefing.html': '/briefing-preview',
   'User Home.html': '/user-home',
   'Design System.html': '/design-system',
   'My Toolbox.html': '/my-toolbox',
@@ -29,7 +30,6 @@ const BUNDLE_TO_ROUTE: Record<string, string> = {
 
   // not yet built — clicks no-op rather than 404
   'LMS Prototype.html': '#',
-  'AI Readiness Briefing.html': '#',
 };
 
 export function rewriteBundleLinks(html: string): string {
