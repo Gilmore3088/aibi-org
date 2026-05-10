@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AiBI — Developer Technical Specification</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+SC:wght@400;500;600&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --parch:#f5f0e6;--parch2:#ede6d8;--linen:#f9f6f0;
+  --terra:#b5512e;--terra2:#c96a43;--terra4:#f0c4ab;
+  --cobalt:#2d4a7a;--sage:#4a6741;
+  --ink:#1e1a14;--slate:#6b6355;--dust:#9b9085;
+  --amber:#b8860b;
+  --border:rgba(181,81,46,.15);--border2:rgba(30,26,20,.1);--border3:rgba(30,26,20,.06);
+  --fd:'Cormorant',Georgia,serif;--fsc:'Cormorant SC',Georgia,serif;
+  --fb:'DM Sans',system-ui,sans-serif;--fm:'DM Mono',monospace;
+}
+body{background:var(--linen);color:var(--ink);font-family:var(--fb);-webkit-font-smoothing:antialiased}
+.cover{background:var(--ink);padding:56px;border-bottom:3px solid var(--terra)}
+.cover-role{font-family:var(--fm);font-size:10px;color:rgba(245,240,230,.3);letter-spacing:3px;margin-bottom:10px}
+.cover-title{font-family:var(--fd);font-size:clamp(36px,5vw,58px);font-weight:700;color:var(--parch);line-height:1.05;margin-bottom:8px}
+.cover-sub{font-family:var(--fd);font-size:16px;font-style:italic;color:rgba(245,240,230,.45)}
+main{max-width:1100px;margin:0 auto;padding:0 56px 80px}
+.section{padding:60px 0;border-bottom:1px solid var(--border2)}
+.section:last-child{border-bottom:none}
+.s-num{font-family:var(--fm);font-size:10px;color:var(--terra2);letter-spacing:2px;margin-bottom:8px}
+.s-title{font-family:var(--fd);font-size:clamp(24px,3vw,38px);font-weight:700;color:var(--ink);line-height:1.1;margin-bottom:10px}
+.s-title em{font-style:italic;color:var(--terra2)}
+.s-sub{font-family:var(--fd);font-size:14px;font-weight:300;color:var(--slate);line-height:1.8;font-style:italic;max-width:640px;margin-bottom:28px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:20px}
+.card{background:var(--parch2);border:1px solid var(--border);border-radius:3px;padding:22px;margin-bottom:16px}
+.card-lbl{font-family:var(--fsc);font-size:9px;letter-spacing:2.5px;color:var(--terra);margin-bottom:10px}
+.body{font-size:13px;color:var(--slate);line-height:1.7}
+.body strong{color:var(--ink);font-weight:600}
+
+/* CODE */
+pre{background:var(--ink);color:#d4d0c8;padding:18px 20px;border-radius:3px;font-family:var(--fm);font-size:12px;line-height:1.65;overflow-x:auto;margin-bottom:16px}
+code{font-family:var(--fm);font-size:12px;background:rgba(181,81,46,.08);color:var(--terra);padding:2px 6px;border-radius:2px}
+
+/* TABLE */
+.t{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:20px}
+.t th{font-family:var(--fsc);font-size:9px;letter-spacing:2px;color:var(--terra);text-align:left;padding:9px 13px;border-bottom:1px solid var(--border);background:var(--parch2)}
+.t td{padding:11px 13px;border-bottom:1px solid var(--border3);color:var(--ink);line-height:1.55;vertical-align:top}
+.t tr:last-child td{border-bottom:none}
+.mono{font-family:var(--fm);font-size:11px}
+
+/* ALERT */
+.alert{padding:14px 18px;border-left:3px solid var(--terra);background:rgba(181,81,46,.05);border-radius:0 3px 3px 0;margin-bottom:18px}
+.alert-title{font-family:var(--fsc);font-size:9px;letter-spacing:2px;color:var(--terra);margin-bottom:6px}
+.alert-body{font-size:13px;color:var(--ink);line-height:1.6}
+
+/* PHASE */
+.phase{border:1px solid var(--border2);border-radius:3px;margin-bottom:16px;overflow:hidden}
+.phase-head{padding:16px 20px;background:var(--parch2);display:flex;justify-content:space-between;align-items:center}
+.phase-title{font-family:var(--fsc);font-size:11px;letter-spacing:1.5px;color:var(--ink)}
+.phase-tag{font-family:var(--fm);font-size:9px;padding:3px 8px;border-radius:1px;background:rgba(181,81,46,.12);color:var(--terra)}
+.phase-body{padding:16px 20px;background:var(--linen)}
+.phase-item{font-size:12px;color:var(--ink3);padding:6px 0;border-bottom:1px solid rgba(30,26,20,.05);display:flex;gap:8px;align-items:baseline;line-height:1.5}
+.phase-item:last-child{border-bottom:none}
+.phase-item::before{content:'□';color:var(--terra);font-size:10px;flex-shrink:0}
+
+@media(max-width:900px){
+  .cover,.section{padding-left:24px;padding-right:24px}
+  main{padding:0 24px 60px}
+  .two-col{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="cover-role">AiBI · Developer Technical Specification · v1.0</div>
+  <h1 class="cover-title">The AI Banking Institute<br>Technical Spec</h1>
+  <div class="cover-sub">For the Lead Developer. Architecture, stack, page specs, assessment logic, integrations, environment setup, and build phases.</div>
+</div>
+
+<main>
+
+<!-- 01 ARCHITECTURE -->
+<section class="section">
+  <div class="s-num">01 · Recommended Architecture</div>
+  <h2 class="s-title">The recommended stack<br><em>and why.</em></h2>
+
+  <div class="two-col">
+    <div class="card">
+      <div class="card-lbl">Option A — Recommended</div>
+      <div class="body">
+        <strong>Next.js 14 (App Router) + Vercel</strong><br><br>
+        Frontend framework + hosting. The HTML prototype (aibi-site-v3.html) converts cleanly to React components. Vercel handles CI/CD, edge functions, and analytics integration. Free tier sufficient for launch.<br><br>
+        <strong>Why:</strong> The assessment tool requires client-side state management. Next.js handles SSR for SEO on marketing pages and CSR for the interactive assessment. Vercel deployment is a git push.
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-lbl">Option B — No-Code Alternative</div>
+      <div class="body">
+        <strong>Webflow + Memberstack + Typeform</strong><br><br>
+        If timeline is critical and developer capacity is limited: Webflow for the marketing site, Typeform for the assessment tool (with redirect to results page), Memberstack for future course access gating.<br><br>
+        <strong>Tradeoff:</strong> Less control over assessment UX, harder to iterate on scoring logic, Typeform branding visible. Acceptable for MVP if timeline pressure is real.
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-lbl">Full Recommended Stack</div>
+    <div class="body">
+      <strong>Frontend:</strong> Next.js 14 (App Router), TypeScript, Tailwind CSS (utility classes match the prototype approach)<br>
+      <strong>Hosting:</strong> Vercel — free tier for MVP, Pro ($20/mo) when traffic warrants<br>
+      <strong>Email:</strong> ConvertKit API for list management + automated sequences<br>
+      <strong>CRM:</strong> HubSpot (free tier) — contact creation via API on form submissions<br>
+      <strong>Scheduling:</strong> Calendly embed (standard iframe or popup widget)<br>
+      <strong>Payments:</strong> Stripe — Checkout Sessions for $97 and $295 products<br>
+      <strong>Analytics:</strong> Plausible Analytics (privacy-friendly, simple script tag, GDPR-compliant)<br>
+      <strong>Font loading:</strong> Google Fonts (Cormorant, Cormorant SC, DM Sans, DM Mono) — already specified in prototype<br>
+      <strong>Future — LMS:</strong> Kajabi (external) or custom-built with Supabase + Postgres if budget allows
+    </div>
+  </div>
+</section>
+
+<!-- 02 PAGE ROUTES -->
+<section class="section">
+  <div class="s-num">02 · Page Routes & Components</div>
+  <h2 class="s-title">Every route,<br><em>every component.</em></h2>
+
+  <table class="t">
+    <thead><tr><th>Route</th><th>Component Name</th><th>Type</th><th>Notes</th><th>Priority</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">/</td><td><code>HomePage</code></td><td>SSR</td><td>Static marketing page. SEO-optimized. Contains ROI Calculator (client component).</td><td class="mono" style="color:var(--terra)">MVP</td></tr>
+      <tr><td class="mono">/assessment</td><td><code>AssessmentPage</code></td><td>CSR</td><td>Fully client-side. State managed in useState. No server calls during questions. Results page is same route, conditional render.</td><td class="mono" style="color:var(--terra)">MVP</td></tr>
+      <tr><td class="mono">/assessment/results</td><td><code>ResultsPage</code></td><td>CSR</td><td>OR: results shown on same /assessment route post-completion. Score + email gate + detailed breakdown.</td><td class="mono" style="color:var(--terra)">MVP</td></tr>
+      <tr><td class="mono">/services</td><td><code>ServicesPage</code></td><td>SSR</td><td>Static. Three engagement tiers. Calendly embed for briefing booking.</td><td class="mono" style="color:var(--terra)">MVP</td></tr>
+      <tr><td class="mono">/certifications</td><td><code>CertificationsPage</code></td><td>SSR</td><td>Static. Three cert levels. Enrollment CTAs link to Stripe or inquiry form.</td><td class="mono" style="color:var(--terra)">MVP</td></tr>
+      <tr><td class="mono">/foundations</td><td><code>FoundationsPage</code></td><td>SSR</td><td>$97 course landing page. Stripe Checkout on CTA click. Phase 2.</td><td class="mono" style="color:var(--cobalt)">Phase 2</td></tr>
+      <tr><td class="mono">/security</td><td><code>SecurityPage</code></td><td>SSR</td><td>Pillar B landing page. Free guide download. Email capture form. Phase 2.</td><td class="mono" style="color:var(--cobalt)">Phase 2</td></tr>
+      <tr><td class="mono">/about</td><td><code>AboutPage</code></td><td>SSR</td><td>Founder story. Credibility. Phase 3.</td><td class="mono" style="color:var(--slate)">Phase 3</td></tr>
+      <tr><td class="mono">/resources</td><td><code>ResourcesPage</code></td><td>SSR</td><td>BAI Brief archive + newsletter signup. Phase 3.</td><td class="mono" style="color:var(--slate)">Phase 3</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 03 ASSESSMENT TECHNICAL SPEC -->
+<section class="section">
+  <div class="s-num">03 · Assessment — Technical Spec</div>
+  <h2 class="s-title">The most important<br><em>feature to build correctly.</em></h2>
+
+  <div class="alert">
+    <div class="alert-title">Build Priority</div>
+    <div class="alert-body">The assessment is the primary conversion mechanism. It must work perfectly on mobile (iPhone Safari, Android Chrome) in under 3 minutes. One question per view on mobile. Progress bar visible throughout. Score animation on results. This gets the most QA time before launch.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-lbl">State Management</div>
+    <div class="body">
+      Use React <code>useState</code> for all assessment state. No server calls during question flow — questions and options are hardcoded, not fetched.<br><br>
+      State shape:
+    </div>
+  </div>
+
+<pre>
+interface AssessmentState {
+  currentQuestion: number;        // 0–7
+  answers: number[];              // Array of scores (1–4) per question
+  phase: 'questions' | 'score' | 'results';
+  email: string;                  // Captured after score reveal
+  emailCaptured: boolean;
+}
+
+// Score tiers
+const getTier = (total: number) => {
+  if (total >= 28) return { label: 'Ready to Scale', color: '#4a6741' };
+  if (total >= 22) return { label: 'Building Momentum', color: '#b5512e' };
+  if (total >= 15) return { label: 'Early Stage', color: '#c96a43' };
+  return { label: 'Starting Point', color: '#9b2226' };
+};
+</pre>
+
+  <div class="card">
+    <div class="card-lbl">Email Capture Flow</div>
+    <div class="body">
+      When phase transitions to 'score':<br>
+      1. Animate score ring into view<br>
+      2. Show tier label and description<br>
+      3. Show email capture form ("Get your personalized AI roadmap")<br>
+      4. On email submit: POST to <code>/api/capture-email</code> → ConvertKit API + HubSpot API<br>
+      5. Transition phase to 'results' → show dimension breakdown + CTAs<br><br>
+      The email form must NOT be required to see the score. Phase 'score' shows the number. Phase 'results' shows the breakdown — that's what's behind the email gate.
+    </div>
+  </div>
+
+<pre>
+// /api/capture-email route
+// POST body: { email, score, tier, answers[] }
+export async function POST(req: Request) {
+  const { email, score, tier, answers } = await req.json();
+
+  // 1. Add to ConvertKit with tags
+  await fetch('https://api.convertkit.com/v3/forms/[FORM_ID]/subscribe', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      api_key: process.env.CONVERTKIT_API_KEY,
+      email,
+      tags: [`score-${tier.replace(' ', '-').toLowerCase()}`],
+      fields: { score: String(score), tier }
+    })
+  });
+
+  // 2. Create HubSpot contact
+  await fetch('https://api.hubapi.com/crm/v3/objects/contacts', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${process.env.HUBSPOT_API_KEY}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      properties: {
+        email,
+        assessment_score: score,
+        score_tier: tier,
+        lead_source: 'assessment'
+      }
+    })
+  });
+
+  return Response.json({ success: true });
+}
+</pre>
+
+  <div class="card">
+    <div class="card-lbl">⚠ Assessment State Persistence — Browser Back / Refresh</div>
+    <div class="card-body">
+      The assessment uses React <code>useState</code> which resets on page refresh or browser back navigation. On mobile, where browsers aggressively kill tabs, users can lose their progress mid-assessment.<br><br>
+      <strong>Fix:</strong> Sync state to <code>sessionStorage</code> on every answer. Restore on mount. Clear on email capture (signifies completion). This is a one-time <code>useEffect</code> pattern — add it during Phase 1 before launch.
+    </div>
+  </div>
+<pre>
+// Persist and restore assessment state
+useEffect(() => {
+  const saved = sessionStorage.getItem('aibi-assessment');
+  if (saved) {
+    const state = JSON.parse(saved);
+    setAnswers(state.answers);
+    setCurrentQuestion(state.currentQuestion);
+  }
+}, []);
+
+useEffect(() => {
+  if (answers.length > 0) {
+    sessionStorage.setItem('aibi-assessment', JSON.stringify({
+      answers, currentQuestion
+    }));
+  }
+}, [answers, currentQuestion]);
+
+// Clear on email capture:
+sessionStorage.removeItem('aibi-assessment');
+</pre>
+  <div class="card">
+    <div class="card-lbl">Score Ring Animation</div>
+    <div class="body">
+      SVG circle with <code>strokeDasharray</code> and <code>strokeDashoffset</code> technique. Animate offset from full (score = 0) to calculated value (score = total/32) over 1.5s with <code>cubic-bezier(0.4, 0, 0.2, 1)</code> easing. Use <code>useEffect</code> to trigger animation after component mounts. Colors map to tier: Starting Point → #9b2226, Early Stage → #b5512e, Building Momentum → #c96a43, Ready to Scale → #4a6741.
+    </div>
+  </div>
+</section>
+
+<!-- 04 ROI CALCULATOR -->
+<section class="section">
+  <div class="s-num">04 · ROI Calculator Component</div>
+  <h2 class="s-title">Client-side calculation.<br><em>No server required.</em></h2>
+
+<pre>
+// ROICalculator.tsx — all math client-side
+interface ROIInputs {
+  fte: number;        // Total FTEs (default: 85)
+  costPerFTE: number; // Loaded annual cost (default: 58000)
+  loHours: number;    // Conservative hrs/FTE/week automatable (default: 1.5)
+  hiHours: number;    // Optimistic hrs/FTE/week automatable (default: 3)
+}
+
+const calcROI = ({ fte, costPerFTE, loHours, hiHours }: ROIInputs) => {
+  const hourlyRate = costPerFTE / 2080;
+  const midHours = (loHours + hiHours) / 2;
+
+  return {
+    mid: fte * midHours * hourlyRate * 50,
+    low: fte * loHours * hourlyRate * 50,
+    high: fte * hiHours * hourlyRate * 50,
+    hoursPerYear: Math.round(fte * midHours * 50),
+    efficiencyPoints: ((fte * midHours * hourlyRate * 50) / (fte * costPerFTE) * 100).toFixed(1)
+  };
+};
+
+// Format helper
+const fmt = (n: number): string => {
+  if (n >= 1_000_000) return `$${(n / 1_000_000).toFixed(2)}M`;
+  if (n >= 1_000) return `$${Math.round(n / 1000)}K`;
+  return `$${Math.round(n)}`;
+};
+</pre>
+</section>
+
+<!-- 05 INTEGRATIONS -->
+<section class="section">
+  <div class="s-num">05 · Integration Reference</div>
+  <h2 class="s-title">API connections<br><em>and environment variables.</em></h2>
+
+  <table class="t">
+    <thead><tr><th>Service</th><th>Env Variable</th><th>Used In</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>ConvertKit</td><td class="mono">CONVERTKIT_API_KEY<br>CONVERTKIT_ASSESSMENT_FORM_ID<br>CONVERTKIT_NEWSLETTER_FORM_ID</td><td>/api/capture-email</td><td><strong>⚠ No test mode exists in ConvertKit.</strong> On staging, add a <code>SKIP_CONVERTKIT=true</code> env var and gate the API call: <code>if (process.env.SKIP_CONVERTKIT !== 'true')</code>. Otherwise staging submissions hit the live list.</td></tr>
+      <tr><td>HubSpot</td><td class="mono">HUBSPOT_API_KEY</td><td>/api/capture-email, /api/contact-form</td><td>Free CRM. Private App access token. Contacts API v3.<br><br><strong>⚠ Pre-create custom properties in HubSpot dashboard BEFORE going live:</strong> <code>assessment_score</code> (number), <code>score_tier</code> (single-line text), <code>institution_name</code> (single-line text), <code>asset_size</code> (dropdown). The API will silently fail on unknown properties.</td></tr>
+      <tr><td>Stripe</td><td class="mono">STRIPE_SECRET_KEY<br>STRIPE_WEBHOOK_SECRET<br>NEXT_PUBLIC_STRIPE_KEY</td><td>/api/create-checkout, /api/webhooks/stripe</td><td>Checkout Sessions for $97 and $295. Webhook to provision LMS access on payment.success.</td></tr>
+      <tr><td>Plausible</td><td class="mono">NEXT_PUBLIC_PLAUSIBLE_DOMAIN</td><td>_app.tsx / layout.tsx</td><td>Script tag only. Track custom events: assessment_start, assessment_complete, email_captured, briefing_booked.</td></tr>
+      <tr><td>Calendly</td><td class="mono">NEXT_PUBLIC_CALENDLY_URL</td><td>CTAs throughout site</td><td>Popup widget or inline embed. Use Calendly's official React embed package.</td></tr>
+    </tbody>
+  </table>
+
+<pre>
+# .env.local (never commit this file)
+CONVERTKIT_API_KEY=
+CONVERTKIT_FORM_ID=
+HUBSPOT_API_KEY=
+STRIPE_SECRET_KEY=sk_live_...
+STRIPE_WEBHOOK_SECRET=whsec_...
+NEXT_PUBLIC_STRIPE_KEY=pk_live_...
+NEXT_PUBLIC_PLAUSIBLE_DOMAIN=aibankinginstitute.com
+NEXT_PUBLIC_CALENDLY_URL=https://calendly.com/[handle]/executive-briefing
+</pre>
+
+  <div class="card">
+    <div class="card-lbl">Plausible Custom Events to Track</div>
+    <div class="body">
+      All custom events use <code>window.plausible('EventName', { props: {} })</code><br><br>
+      <strong>assessment_start</strong> — on load of /assessment<br>
+      <strong>assessment_q{n}_answered</strong> — on each question answer (optional, for drop-off analysis)<br>
+      <strong>assessment_complete</strong> — on reaching score phase. Props: <code>{ tier: string, score: number }</code><br>
+      <strong>email_captured</strong> — on email form submit. Props: <code>{ tier: string }</code><br>
+      <strong>briefing_booked</strong> — on Calendly booking confirmation. Props: <code>{ source: 'assessment' | 'services' | 'home' }</code><br>
+      <strong>purchase_initiated</strong> — on Stripe checkout click. Props: <code>{ product: 'foundations' | 'aibi-p' }</code>
+    </div>
+  </div>
+</section>
+
+<!-- 06 SEO -->
+<section class="section">
+  <div class="s-num">06 · SEO Requirements</div>
+  <h2 class="s-title">Metadata and<br><em>search optimization.</em></h2>
+
+  <table class="t">
+    <thead><tr><th>Page</th><th>Title Tag</th><th>Meta Description</th><th>Primary Keyword</th></tr></thead>
+    <tbody>
+      <tr><td>Home</td><td>The AI Banking Institute — The A-B-C of AI Banking</td><td>AI proficiency and transformation for community banks and credit unions. Accessible. Boundary-Safe. Capable. The AiBI certification program.</td><td>AI training community banks</td></tr>
+      <tr><td>Assessment</td><td>AI Readiness Assessment — The AI Banking Institute</td><td>Take the free 3-minute AI readiness assessment for community banks and credit unions. Instant score. Personalized recommendations.</td><td>AI readiness assessment banking</td></tr>
+      <tr><td>Services</td><td>AI Consulting for Community Banks — AiBI</td><td>Quick Win Sprints, Process Audits, and AI Transformation programs for community banks and credit unions. Vendor neutral. ROI guaranteed.</td><td>AI consulting community banks</td></tr>
+      <tr><td>Certifications</td><td>AiBI-P · AiBI-S · AiBI-L Banking AI Certifications</td><td>Role-specific AI certifications for banking professionals. AiBI Practitioner, Specialist, and Leader credentials from The AI Banking Institute.</td><td>AI certification banking professionals</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 07 BUILD PHASES -->
+<section class="section">
+  <div class="s-num">07 · Build Phases & Checklist</div>
+  <h2 class="s-title">What to build<br><em>in what order.</em></h2>
+
+  <div class="phase">
+    <div class="phase-head"><div class="phase-title">Phase 1 — MVP (Launch Gate)</div><div class="phase-tag">~3 weeks</div></div>
+    <div class="phase-body">
+      <div class="phase-item">Next.js project scaffolded on Vercel with custom domain (aibankinginstitute.com)</div>
+      <div class="phase-item">Global CSS variables and typography system from designer brief implemented</div>
+      <div class="phase-item">Layout component: Nav + Footer (from site prototype)</div>
+      <div class="phase-item">HomePage: all sections from aibi-site-v3.html converted to React components</div>
+      <div class="phase-item">ROI Calculator: client component with live calculation</div>
+      <div class="phase-item">AssessmentPage: 8-question flow with state management, progress bar, mobile-first</div>
+      <div class="phase-item">Results page: score ring animation, tier display, email capture form</div>
+      <div class="phase-item">/api/capture-email: ConvertKit + HubSpot integration</div>
+      <div class="phase-item">Calendly popup/embed on all CTA buttons pointing to Executive Briefing</div>
+      <div class="phase-item">ServicesPage and CertificationsPage: static content</div>
+      <div class="phase-item">Plausible Analytics installed with custom event tracking</div>
+      <div class="phase-item">Mobile QA: all pages tested on iPhone Safari and Android Chrome</div>
+      <div class="phase-item">SSL active, 404 page, redirects from bankingaiinstitute.com if applicable</div>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-head"><div class="phase-title">Phase 2 — Monetization (Month 2–3)</div><div class="phase-tag">~2 weeks</div></div>
+    <div class="phase-body">
+      <div class="phase-item">AI Foundations ($97) landing page and Stripe Checkout integration</div>
+      <div class="phase-item">Stripe webhook: /api/webhooks/stripe → provision Kajabi/LMS access on payment.success</div>
+      <div class="phase-item">AiBI-P individual purchase ($295) Stripe Checkout</div>
+      <div class="phase-item">SecurityPage (/security): Pillar B landing + PDF download gate</div>
+      <div class="phase-item">Email sequences in ConvertKit: Day 0, Day 3, Day 7 post-assessment</div>
+      <div class="phase-item">Contact form on /services for group/institutional pricing inquiries</div>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-head"><div class="phase-title">Phase 3 — Content & Scale (Month 4+)</div><div class="phase-tag">Ongoing</div></div>
+    <div class="phase-body">
+      <div class="phase-item">AboutPage: founder story, AiBI founding narrative</div>
+      <div class="phase-item">ResourcesPage: BAI Brief archive, newsletter signup</div>
+      <div class="phase-item">Blog/insight posts (if content strategy warrants it)</div>
+      <div class="phase-item">Case study pages (after first client gives permission)</div>
+      <div class="phase-item">AiBI-L team booking flow (multi-seat workshop inquiry → quote)</div>
+      <div class="phase-item">Member portal (if membership product is activated)</div>
+    </div>
+  </div>
+
+  <div class="alert">
+    <div class="alert-title">The Launch Hard Gate</div>
+    <div class="alert-body">The Phase 1 checklist above is the gate on sending the post-conference follow-up email. Nothing ships to the email list until every Phase 1 item is checked and QA'd on mobile. The assessment conversion flow is the only thing that matters for launch.</div>
+  </div>
+</section>
+
+</main>
+</body>
+</html>
