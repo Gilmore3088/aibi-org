@@ -15,10 +15,11 @@ import { SiteNav, SiteFooter } from '@/components/system';
 import { BRAND } from '@content/copy';
 import './globals.css';
 
-// Routes that render WITHOUT the global Header/Footer chrome. /coming-soon
-// is the only one — it provides its own internal brand lockup, so showing
-// the global Header on top would produce a duplicate logo.
-const CHROMELESS_PATHS: readonly string[] = ['/coming-soon'];
+// Routes that render WITHOUT the global Header/Footer chrome. These pages
+// provide their own internal brand lockup, so showing the global Header on
+// top would produce a duplicate logo (or, in the case of the design system
+// reference, would frame a pixel-faithful mockup with extraneous chrome).
+const CHROMELESS_PATHS: readonly string[] = ['/coming-soon', '/design-system'];
 
 const PLAUSIBLE_DOMAIN = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN;
 
