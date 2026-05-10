@@ -103,6 +103,34 @@ export interface ActivityField {
   readonly options?: readonly { readonly value: string; readonly label: string }[];
 }
 
+// ---- Engine config types ----
+// Each interactive engine type accepts a typed config that authors fill in.
+// Activities without an engineConfig render the generic form fallback.
+
+export interface ScenarioChoice {
+  readonly id: string;
+  readonly label: string;
+  readonly nextNodeId: string; // 'END' to finish on this choice
+  readonly verdict?: 'best' | 'partial' | 'wrong' | 'catastrophic';
+  readonly consequence?: string; // shown after pick before continuing
+}
+
+export interface ScenarioNode {
+  readonly id: string;
+  readonly speaker?: string; // e.g. "Member" | "Examiner" | narration
+  readonly prompt: string; // the situation / question / line presented
+  readonly choices?: readonly ScenarioChoice[]; // omit for END nodes
+  readonly endingRubric?: string; // shown when this node is reached as END
+  readonly endingVerdict?: 'best' | 'partial' | 'wrong' | 'catastrophic';
+}
+
+export interface BranchingScenarioConfig {
+  readonly intro?: string;
+  readonly startNodeId: string;
+  readonly nodes: readonly ScenarioNode[];
+  readonly bestPathHint?: string; // shown after completion alongside rubric
+}
+
 export interface Activity {
   readonly id: string; //                 e.g. '1.1', 'L2.3', 'BB1.2'
   readonly title: string;
@@ -112,6 +140,9 @@ export interface Activity {
   readonly fields: readonly ActivityField[];
   readonly completionTrigger?: 'artifact-download' | 'module-advance' | 'save-response';
   readonly artifactId?: string;
+  // Optional engine config. When present, the dispatcher renders the matching
+  // interactive engine instead of the generic form fallback.
+  readonly scenarioConfig?: BranchingScenarioConfig;
 }
 
 export interface Section {

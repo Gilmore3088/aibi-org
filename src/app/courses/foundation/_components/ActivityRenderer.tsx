@@ -23,6 +23,7 @@
 
 import type { Activity, ActivityType } from '@content/courses/aibi-foundation';
 import { ACTIVITY_TYPE_META, DEFERRED_ACTIVITY_TYPES } from '@content/courses/aibi-foundation';
+import { BranchingScenarioEngine } from './engines/BranchingScenarioEngine';
 
 interface ActivityRendererProps {
   readonly activity: Activity;
@@ -208,24 +209,33 @@ export function ActivityRenderer({ activity, index }: ActivityRendererProps) {
         {activity.description}
       </p>
 
-      <EngineCallout activityType={activity.activityType} />
-
-      <form className="mt-6" aria-label={`${activity.title} fields`}>
-        <ActivityFields activity={activity} />
-        <div className="mt-5 flex items-center gap-3">
-          <button
-            type="button"
-            disabled
-            aria-disabled="true"
-            className="font-mono text-[11px] uppercase tracking-[0.10em] py-2 px-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] opacity-60 cursor-not-allowed"
-          >
-            Save response
-          </button>
-          <span className="font-mono text-[10px] uppercase tracking-[0.10em] text-[color:var(--color-muted,#5b5346)]">
-            Persistence wired in Phase 5
-          </span>
+      {/* If the activity has scenarioConfig, render the live engine.
+        * Otherwise, fall back to engine-pending callout + form fields. */}
+      {activity.scenarioConfig ? (
+        <div className="mt-2">
+          <BranchingScenarioEngine config={activity.scenarioConfig} />
         </div>
-      </form>
+      ) : (
+        <>
+          <EngineCallout activityType={activity.activityType} />
+          <form className="mt-6" aria-label={`${activity.title} fields`}>
+            <ActivityFields activity={activity} />
+            <div className="mt-5 flex items-center gap-3">
+              <button
+                type="button"
+                disabled
+                aria-disabled="true"
+                className="font-mono text-[11px] uppercase tracking-[0.10em] py-2 px-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] opacity-60 cursor-not-allowed"
+              >
+                Save response
+              </button>
+              <span className="font-mono text-[10px] uppercase tracking-[0.10em] text-[color:var(--color-muted,#5b5346)]">
+                Persistence wired in Phase 5
+              </span>
+            </div>
+          </form>
+        </>
+      )}
 
       {activity.artifactId && (
         <p className="mt-4 font-mono text-[10px] uppercase tracking-[0.10em] text-[color:var(--color-muted,#5b5346)]">

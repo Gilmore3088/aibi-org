@@ -29,6 +29,21 @@ export default function FoundationOverviewPage() {
   return (
     <main className="min-h-screen bg-[color:var(--color-linen)]">
       <div className="mx-auto max-w-6xl px-6 py-16 sm:py-20">
+        <aside
+          role="status"
+          className="mb-10 bg-[color:var(--color-parch)] border-l-4 border-[color:var(--color-amber,#c08a2e)] py-4 px-5"
+        >
+          <p className="font-mono text-[11px] uppercase tracking-[0.10em] text-[color:var(--color-amber,#c08a2e)] mb-1">
+            Preview · v2.0.0 · not yet for sale
+          </p>
+          <p className="text-sm text-[color:var(--color-ink)] leading-relaxed">
+            The four-track AiBI-Foundation curriculum is in late-stage authoring.
+            Modules and activities below are the canonical content; the platform
+            engines and checkout flows ship with the v2 launch. The current
+            $295 AiBI-Foundation course at <code className="font-mono">/courses/aibi-p</code> remains
+            the active product for purchase.
+          </p>
+        </aside>
         <header className="mb-12 max-w-3xl">
           <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-[color:var(--color-muted,#5b5346)] mb-3">
             AiBI-Foundation · v2 · 2026-Q2

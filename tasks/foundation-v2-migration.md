@@ -201,18 +201,29 @@ Authoring follow-ups:
 - [ ] Document the operator handoff for quarter rollover (promote
   onDeck -> current, archive prior current).
 
-## Phase 7 — Sales / GTM
+## Phase 7 — Sales / GTM (PARTIAL DONE 2026-05-10)
 
-- [ ] Foundation positioning doc (`Plans/foundation-v2/aibi-foundation-v2/
-  positioning/foundation-positioning.md`) feeds homepage copy + email
-  sequences.
+- [x] Discreet preview surface added: /education hub now has a "AiBI-
+  Foundation v2 — preview" tile linking to /courses/foundation.
+- [x] /courses/foundation overview carries a clear preview banner stating
+  v2 is not yet for sale and pointing buyers to the active /courses/aibi-p
+  product. No misleading purchase paths exposed.
+- [x] BranchingScenarioEngine wired into the L4.1 member-conversation
+  activity end-to-end as a working demo of the v2 platform pattern.
+
+Still to author / decide for full GTM rollout:
+- [ ] Foundation positioning doc
+  (`Plans/foundation-v2/aibi-foundation-v2/positioning/foundation-positioning.md`)
+  feeds homepage hero copy and the assessment-tier sequences once Stripe
+  is live.
 - [ ] Pricing page rebuild — four tracks instead of one Practitioner row.
 - [ ] Volume pricing calculator for Lite (bank-wide enrollment).
 - [ ] Communication kit: executive announcement email, 5-min kickoff
   video script, intranet banner, manager FAQ, weekly tracker template.
-- [ ] Update assessment tier email sequences to point at Foundation tracks
-  (current sequences in `src/lib/mailerlite/email-content.ts` reference
-  AiBI-Practitioner as the next step — needs reword).
+- [ ] Update assessment tier email content (currently authored in
+  MailerLite dashboard per the 2026-05-08 decision; the wrapper code in
+  `src/lib/mailerlite/sequences.ts` is plumbing, not body copy) to
+  reference Foundation tracks once Stripe products exist.
 
 ---
 

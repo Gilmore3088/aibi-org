@@ -49,6 +49,14 @@ export default async function EducationPage() {
       href: "#",
       available: false,
     },
+    {
+      title: "AiBI-Foundation v2 — preview",
+      subtitle:
+        "Preview the four-track curriculum (Lite, Full, Manager Track, Board Briefing). Modules and activities are authored; checkout flows arrive with the v2 launch.",
+      cta: "Preview the curriculum",
+      href: "/courses/foundation",
+      available: true,
+    },
   ];
 
   interface AssessmentTile {
