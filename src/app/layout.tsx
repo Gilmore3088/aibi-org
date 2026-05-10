@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import Script from 'next/script';
 import { headers } from 'next/headers';
 import {
   Cormorant_Garamond,
@@ -20,16 +19,6 @@ import './globals.css';
 // top would produce a duplicate logo (or, in the case of the design system
 // reference, would frame a pixel-faithful mockup with extraneous chrome).
 const CHROMELESS_PATHS: readonly string[] = ['/coming-soon', '/design-system', '/user-home', '/my-toolbox', '/playground', '/faq', '/preview-home', '/briefing-preview', '/lms-preview', '/courses/foundation-preview'];
-
-const PLAUSIBLE_DOMAIN = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN;
-
-// Deferred queue initializer — must run before the async Plausible script loads.
-// See CLAUDE.md: never call window.plausible() directly without this guard.
-const PLAUSIBLE_QUEUE_INIT = `
-  window.plausible = window.plausible || function() {
-    (window.plausible.q = window.plausible.q || []).push(arguments);
-  };
-`;
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -129,19 +118,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <html lang="en">
-      <head>
-        <Script id="plausible-queue-init" strategy="beforeInteractive">
-          {PLAUSIBLE_QUEUE_INIT}
-        </Script>
-        {PLAUSIBLE_DOMAIN && (
-          <Script
-            defer
-            data-domain={PLAUSIBLE_DOMAIN}
-            src="https://plausible.io/js/script.js"
-            strategy="afterInteractive"
-          />
-        )}
-      </head>
+      <head />
+
       <body
         className={`${cormorant.variable} ${cormorantSC.variable} ${dmSans.variable} ${dmMono.variable} ${newsreader.variable} ${GeistSans.variable} ${jetbrainsMono.variable} flex flex-col min-h-screen`}
       >

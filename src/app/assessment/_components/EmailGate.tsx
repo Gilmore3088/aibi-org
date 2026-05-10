@@ -107,15 +107,6 @@ export function EmailGate({
         ...(maxScore !== undefined ? { maxScore } : {}),
         ...(dimensionBreakdown ? { dimensionBreakdown } : {}),
       });
-      if (
-        data.mailerliteTagAdded &&
-        typeof window !== 'undefined' &&
-        typeof window.plausible === 'function'
-      ) {
-        window.plausible('mailerlite_tag_added', {
-          props: { tier: tierId, opt_in: marketingOptIn },
-        });
-      }
       onCaptured(emailToUse, {
         firstName: firstName.trim() || undefined,
         institutionName: institutionName.trim() || undefined,

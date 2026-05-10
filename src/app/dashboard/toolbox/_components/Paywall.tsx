@@ -1,18 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect } from 'react';
-
-// window.plausible is typed in src/types/plausible.d.ts and queue-initialized
-// in src/app/layout.tsx — we just call through the typed global here.
 
 export function Paywall() {
-  useEffect(() => {
-    if (typeof window !== 'undefined' && typeof window.plausible === 'function') {
-      window.plausible('toolbox_paywall_shown', { props: { source: 'direct' } });
-    }
-  }, []);
-
   return (
     <main className="mx-auto max-w-2xl px-6 py-16">
       <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
