@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AiBI — Lead Consultant Playbook</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+SC:wght@400;500;600&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --parch:#f5f0e6;--parch2:#ede6d8;--linen:#f9f6f0;
+  --terra:#b5512e;--terra2:#c96a43;--terra4:#f0c4ab;
+  --cobalt:#2d4a7a;--sage:#4a6741;
+  --ink:#1e1a14;--slate:#6b6355;--dust:#9b9085;
+  --amber:#b8860b;
+  --border:rgba(181,81,46,.15);--border2:rgba(30,26,20,.1);--border3:rgba(30,26,20,.06);
+  --fd:'Cormorant',Georgia,serif;--fsc:'Cormorant SC',Georgia,serif;
+  --fb:'DM Sans',system-ui,sans-serif;--fm:'DM Mono',monospace;
+}
+body{background:var(--linen);color:var(--ink);font-family:var(--fb);-webkit-font-smoothing:antialiased}
+.cover{background:var(--sage);padding:56px;border-bottom:3px solid rgba(255,255,255,.15)}
+.cover-role{font-family:var(--fm);font-size:10px;color:rgba(249,246,240,.4);letter-spacing:3px;margin-bottom:10px}
+.cover-title{font-family:var(--fd);font-size:clamp(36px,5vw,58px);font-weight:700;color:var(--parch);line-height:1.05;margin-bottom:8px}
+.cover-sub{font-family:var(--fd);font-size:16px;font-style:italic;color:rgba(249,246,240,.55)}
+main{max-width:1100px;margin:0 auto;padding:0 56px 80px}
+.section{padding:60px 0;border-bottom:1px solid var(--border2)}
+.section:last-child{border-bottom:none}
+.s-num{font-family:var(--fm);font-size:10px;color:var(--terra2);letter-spacing:2px;margin-bottom:8px}
+.s-title{font-family:var(--fd);font-size:clamp(24px,3vw,38px);font-weight:700;color:var(--ink);line-height:1.1;margin-bottom:10px}
+.s-title em{font-style:italic;color:var(--terra2)}
+.s-sub{font-family:var(--fd);font-size:14px;font-weight:300;color:var(--slate);line-height:1.8;font-style:italic;max-width:640px;margin-bottom:28px}
+.rule{width:40px;height:1px;background:var(--terra);margin-bottom:18px;display:block}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:20px}
+.card{background:var(--parch2);border:1px solid var(--border);border-radius:3px;padding:22px;margin-bottom:16px;position:relative}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--terra),transparent)}
+.card-lbl{font-family:var(--fsc);font-size:9px;letter-spacing:2.5px;color:var(--terra);margin-bottom:10px}
+.body{font-size:13px;color:var(--slate);line-height:1.7}
+.body strong{color:var(--ink);font-weight:600}
+
+/* WEEK TIMELINE */
+.week-grid{display:flex;flex-direction:column;gap:0}
+.week{display:grid;grid-template-columns:90px 1fr;gap:0;border-bottom:1px solid var(--border2)}
+.week:last-child{border-bottom:none}
+.week-num{padding:18px 16px 18px 0;border-right:1px solid var(--border2)}
+.week-label{font-family:var(--fsc);font-size:9px;letter-spacing:1.5px;color:var(--terra);margin-bottom:4px}
+.week-title{font-family:var(--fd);font-size:16px;font-weight:600;color:var(--ink)}
+.week-body{padding:18px 0 18px 20px}
+.week-task{font-size:12px;color:var(--ink3);padding:5px 0;border-bottom:1px solid rgba(30,26,20,.05);display:flex;gap:8px;align-items:baseline;line-height:1.5}
+.week-task:last-child{border-bottom:none}
+.week-task::before{content:'→';color:var(--terra);font-size:10px;flex-shrink:0;margin-top:1px}
+
+/* OBJECTION TABLE */
+.t{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:20px}
+.t th{font-family:var(--fsc);font-size:9px;letter-spacing:2px;color:var(--terra);text-align:left;padding:9px 13px;border-bottom:1px solid var(--border);background:var(--parch2)}
+.t td{padding:11px 13px;border-bottom:1px solid var(--border3);color:var(--ink);line-height:1.55;vertical-align:top}
+.t tr:last-child td{border-bottom:none}
+
+/* RUBRIC */
+.rubric{border:1px solid var(--border2);border-radius:3px;overflow:hidden;margin-bottom:20px}
+.rubric-head{display:grid;grid-template-columns:120px repeat(4,1fr);gap:0;background:var(--parch2);border-bottom:1px solid var(--border2)}
+.rubric-head div{padding:10px 12px;font-family:var(--fsc);font-size:9px;letter-spacing:1.5px;color:var(--terra);border-right:1px solid var(--border3)}
+.rubric-head div:last-child{border-right:none}
+.rubric-row{display:grid;grid-template-columns:120px repeat(4,1fr);gap:0;border-bottom:1px solid var(--border3)}
+.rubric-row:last-child{border-bottom:none}
+.rubric-row div{padding:10px 12px;font-size:11px;color:var(--slate);border-right:1px solid var(--border3);line-height:1.5}
+.rubric-row div:last-child{border-right:none}
+.rubric-row div:first-child{font-weight:600;color:var(--ink);font-size:11px}
+
+/* ALERT */
+.alert{padding:14px 18px;border-left:3px solid;border-radius:0 3px 3px 0;margin-bottom:18px}
+.alert-terra{border-color:var(--terra);background:rgba(181,81,46,.05)}
+.alert-amber{border-color:var(--amber);background:rgba(184,134,11,.05)}
+.alert-sage{border-color:var(--sage);background:rgba(74,103,65,.05)}
+.alert-title{font-family:var(--fsc);font-size:9px;letter-spacing:2px;margin-bottom:6px}
+.at-terra{color:var(--terra)}.at-amber{color:var(--amber)}.at-sage{color:var(--sage)}
+.alert-body{font-size:13px;color:var(--ink);line-height:1.6}
+
+@media(max-width:900px){
+  .cover,.section{padding-left:24px;padding-right:24px}
+  main{padding:0 24px 60px}
+  .two-col{grid-template-columns:1fr}
+  .week{grid-template-columns:1fr}
+  .week-num{border-right:none;border-bottom:1px solid var(--border3);padding-bottom:8px}
+  .week-body{padding-left:0;padding-top:12px}
+  .rubric-head,.rubric-row{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="cover-role">AiBI · Lead Consultant Playbook · v1.0</div>
+  <h1 class="cover-title">The AI Banking Institute<br>Delivery Guide</h1>
+  <div class="cover-sub">For the Lead Consultant. Engagement delivery, client scripts, discovery templates, assessment rubrics, and objection handling.</div>
+</div>
+
+<main>
+
+<!-- 01 EXECUTIVE BRIEFING -->
+<section class="section">
+  <div class="s-num">01 · The Executive Briefing</div>
+  <h2 class="s-title">The 45-minute conversation<br><em>that starts everything.</em></h2>
+  <p class="s-sub">Free. No pitch at the end. The goal is to deliver enough value in 45 minutes that the CEO says "what's the next step?" — not to ask for the engagement.</p>
+
+  <div class="card">
+    <div class="card-lbl">Briefing Script — Minute by Minute</div>
+    <div class="body">
+      <strong>Minutes 1–5: Establish the shared context</strong><br>
+      "I want to start with your institution's numbers — not a generic benchmark. Do you have your most recent efficiency ratio and FTE count handy? If not, we can estimate from your asset size." Run the model together. Let the number land. Don't interpret it yet — let them react.<br><br>
+      <strong>Context for you, not for them:</strong> Community bank long-term median efficiency ratio is ~65% based on FDIC data. Industry-wide (including large banks) it's ~55.7% as of Q4 2024. The gap is real and FDIC-sourced. You can say that.<br><br>
+      <strong>Minutes 6–15: The three fears</strong><br>
+      "Before we talk about what to do, I want to ask three questions. First: when you think about AI adoption, is your first instinct concern about whether your staff can actually use it?" Pause. Let them answer. Then: "Is the second concern whether it's safe for a regulated institution?" Then: "And the third — whether the ROI is actually there?" The answers tell you exactly where to focus the rest of the conversation.<br><br>
+      <strong>Minutes 16–30: The A-B-C framework applied to their answers</strong><br>
+      Walk through the three pillars in order of their stated concerns. If they led with security — go deep on B. If they led with staff adoption — go deep on A. Use one specific use case per pillar that's relevant to their institution size and structure.<br><br>
+      <strong>Minutes 31–40: The peer benchmark</strong><br>
+      "Here's where community banks are right now: median efficiency ratio around 65% based on 30 years of FDIC quarterly data. The industry-wide number including large banks is 55.7% as of Q4 2024. That gap isn't luck — it's automation.<br><br>
+      Meanwhile, 66% of banks are now discussing AI budgets (Bank Director 2024), but 57% still struggle with the skill gaps to actually use what they've bought (Gartner). And 55% have not yet implemented a governance framework — meaning most institutions are spending on AI without the policy infrastructure to deploy it safely (Gartner).<br><br>
+      The institutions that close the efficiency gap are doing three things in order: they get their people using tools personally first, they build governance before they build workflows, and then they automate the most painful processes with documented ROI. That's the AiBI sequence." Show the three quick wins most relevant to their institution.<br><br>
+      <strong>Minutes 41–45: The honest close</strong><br>
+      "I'm not going to ask you to commit to anything today. What I'd like to do is send you a one-page model with your institution's actual numbers — the NIE reduction potential from the three automations we discussed — and you can share it with your CFO. If it's compelling, we can talk about a Quick Win Sprint. If it's not, you have the model and you're welcome to use it."<br><br>
+      <strong>What to send within 24 hours:</strong> One-page PDF with: (1) institution's efficiency ratio vs. FDIC community bank median, (2) NIE reduction calculation using their FTE count and loaded cost, (3) three specific automations matched to their operational profile, (4) Quick Win Sprint scope and 90-day ROI guarantee. This document is your close.
+    </div>
+  </div>
+
+  <div class="alert alert-sage">
+    <div class="alert-title at-sage">The Rule</div>
+    <div class="alert-body">Never ask for the engagement in the briefing. The briefing IS the value. The follow-up email with the model IS the pitch. This discipline is what separates AiBI from every other vendor who shows up with slides and a close.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-lbl">Pre-Briefing Research — 15 Minutes Before Every Call</div>
+    <div class="body">
+      Before every Executive Briefing: (1) Pull the institution's FDIC Call Report or NCUA 5300 — note their actual efficiency ratio, asset size, and FTE count if available. (2) Check their LinkedIn for any AI or technology announcements. (3) Know their core system — if they're on a major platform, know which AI features that platform is currently shipping. (4) Note their asset tier — efficiency ratio benchmarks shift meaningfully between &lt;$500M, $500M–$2B, and $2B+ institutions.<br><br>
+      <strong>FDIC resource:</strong> FDIC BankFind Suite at banks.data.fdic.gov gives you efficiency ratios, asset figures, and FTE data for every FDIC-insured institution by name. Free, public, and current.
+    </div>
+  </div>
+</section>
+
+<!-- 02 QUICK WIN SPRINT -->
+<section class="section">
+  <div class="s-num">02 · Quick Win Sprint Delivery</div>
+  <h2 class="s-title">4–6 weeks.<br><em>Three automations. Measured.</em></h2>
+
+  <div class="card" style="margin-bottom:24px">
+    <div class="card-lbl">Engagement Kickoff — Day 1</div>
+    <div class="body">
+      <strong>Send before kickoff call:</strong> Welcome email with engagement timeline, data request list, and point of contact. Let them know the discovery process starts immediately — the 5-day time diary begins today.<br><br>
+      <strong>On kickoff call (30 min):</strong> (1) Confirm engagement scope and three focus departments. (2) Walk through the 5-day time diary — what to log, how granular to go. (3) Schedule 45-min interview with each department head (weeks 1–2). (4) Set expectation: by week 2 we'll have the three automation candidates; by week 4 they'll be running.
+    </div>
+  </div>
+
+  <div style="border:1px solid var(--border2);border-radius:3px;overflow:hidden;margin-bottom:20px">
+    <div class="week-grid">
+      <div class="week">
+        <div class="week-num"><div class="week-label">Week</div><div class="week-title">1</div></div>
+        <div class="week-body">
+          <div class="week-task">Distribute 5-day time diary to department participants (template provided)</div>
+          <div class="week-task">Conduct structured interviews: 3 department heads × 45 min each</div>
+          <div class="week-task">Interview protocol: top 5 manual tasks, hours/week, frustration level, existing tools (especially whether they already have M365/Copilot, Zoom, or any RPA tools licensed but unused)</div>
+          <div class="week-task">Begin building the prioritization matrix in the engagement spreadsheet</div>
+        </div>
+      </div>
+      <div class="week">
+        <div class="week-num"><div class="week-label">Week</div><div class="week-title">2</div></div>
+        <div class="week-body">
+          <div class="week-task">Collect time diary submissions — follow up on any non-responders</div>
+          <div class="week-task">Complete prioritization matrix: every identified process gets: hours/week × loaded rate × AI solvability score</div>
+          <div class="week-task">Select top 3 automations by ROI ÷ implementation speed</div>
+          <div class="week-task">Present shortlist to engagement sponsor — confirm selections before building</div>
+        </div>
+      </div>
+      <div class="week">
+        <div class="week-num"><div class="week-label">Weeks</div><div class="week-title">3–4</div></div>
+        <div class="week-body">
+          <div class="week-task">Build and test the 3 automations. Typical tools: Power Automate (if M365 licensed — most FIs are), Fathom or Zoom AI Companion (meeting notes), ChatGPT/Claude (document review, drafting). Ocrolus or Informatica for document-heavy workflows where budget allows.</div>
+          <div class="week-task">Train the 1–2 staff who will operate each automation going forward</div>
+          <div class="week-task">Document: before-state workflow, after-state workflow, operating instructions, what to do when it breaks</div>
+          <div class="week-task">Soft launch: 5 days of live operation before measurement begins</div>
+        </div>
+      </div>
+      <div class="week">
+        <div class="week-num"><div class="week-label">Weeks</div><div class="week-title">5–6</div></div>
+        <div class="week-body">
+          <div class="week-task">Measure: actual hours recaptured vs. projected — track for 2 full weeks</div>
+          <div class="week-task">Build the ROI report: before/after table, dollar value, efficiency ratio impact, annualized projection</div>
+          <div class="week-task">Build "What We Didn't Do" page: next 7 opportunities identified, each with estimated annual value</div>
+          <div class="week-task">Deliver final report + present to leadership team</div>
+          <div class="week-task">Request case study permission and a reference call</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert alert-amber">
+    <div class="alert-title at-amber">The "What We Didn't Do" Page — Never Skip This</div>
+    <div class="alert-body">The final page of every Sprint report lists the 7 opportunities identified but not pursued, with estimated annual NIE reduction per item. This is honest reporting — not a sales page. The CEO reads it and decides whether to act. This page is the organic path to every Process Audit engagement. A Sprint without this page is leaving 60% of the client relationship on the table.</div>
+  </div>
+</section>
+
+<!-- 03 ASSESSMENT RUBRICS -->
+<section class="section">
+  <div class="s-num">03 · Certification Assessment Rubrics</div>
+  <h2 class="s-title">The quality standard<br><em>in black and white.</em></h2>
+  <p class="s-sub">Every AiBI-P submission is reviewed against this rubric. The question is always the same: "If this person submitted this output to their supervisor without saying AI was involved, would anyone know — and would anyone push back on the substance?"</p>
+
+  <h3 style="font-family:var(--fsc);font-size:10px;letter-spacing:2px;color:var(--terra);margin-bottom:14px">AiBI-P Assessment Rubric (Score 1–4 per dimension. Minimum 3 in Accuracy. 14+ total to pass.)</h3>
+  <div class="rubric">
+    <div class="rubric-head"><div>Dimension</div><div>1 — Does Not Meet</div><div>2 — Approaching</div><div>3 — Meets Standard</div><div>4 — Exceeds</div></div>
+    <div class="rubric-row"><div>Accuracy</div><div>Contains factual errors, invented citations, or unverified financial data</div><div>Mostly accurate; minor unverified details that don't affect substance</div><div>Every factual claim is verifiable; sources available if asked</div><div>All claims sourced; proactively flags assumptions and limitations</div></div>
+    <div class="rubric-row"><div>Completeness</div><div>Missing material elements a domain expert would immediately notice</div><div>Most components present; minor gaps that a supervisor might catch</div><div>Complete — a competent reviewer would not find material omissions</div><div>Comprehensive; anticipates follow-up questions with relevant detail</div></div>
+    <div class="rubric-row"><div>Tone & Voice</div><div>Generic, obviously AI-voiced; doesn't reflect banking professional context</div><div>Functional but doesn't feel like it came from this institution</div><div>Matches institutional voice; would not be flagged as AI-generated</div><div>Indistinguishable from the learner's best manual work; institution-specific</div></div>
+    <div class="rubric-row"><div>Judgment</div><div>Draws conclusions AI shouldn't draw; submits without appropriate verification</div><div>Shows some caution but relies too heavily on AI output without review</div><div>Correctly identifies what required human verification; shows clear judgment about AI limitations</div><div>Exemplary verification discipline; notes limitations proactively; would serve as a model for others</div></div>
+    <div class="rubric-row"><div>Usability</div><div>Requires complete rewriting before it could be used professionally</div><div>Needs substantial editing — structural or substantive changes required</div><div>Could be forwarded or presented with factual review only — not rewriting</div><div>Submission-ready with only minor review; saves measurable time vs. manual</div></div>
+  </div>
+
+  <div class="alert alert-terra">
+    <div class="alert-title at-terra">Accuracy is the Hard Gate</div>
+    <div class="alert-body">A score of 1 in Accuracy automatically fails the submission regardless of total score. A brilliant well-written submission with an invented regulatory citation fails. This maintains the standard that AiBI credentials mean something. Resubmission is always allowed with instructor feedback — failing a submission is not punitive, it is developmental.</div>
+  </div>
+</section>
+
+<!-- 04 HALLUCINATION CATALOG -->
+<section class="section">
+  <div class="s-num">04 · Banking Hallucination Catalog</div>
+  <h2 class="s-title">What to teach staff<br><em>to look for.</em></h2>
+  <p class="s-sub">This catalog is used in AiBI-P Module 1 and AiBI-S compliance/lending tracks. These are the specific failure modes that appear in banking AI outputs — not generic warnings.</p>
+  <table class="t">
+    <thead><tr><th>Pattern</th><th>What It Looks Like</th><th>Why It's Dangerous</th><th>The Defense</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Regulatory Citation Fabrication</strong></td><td>Invents section numbers, bulletin dates, and agency positions with confident precision</td><td>Forwarded compliance summaries with non-existent regulatory citations</td><td>Every cite must be pulled from the primary source document before use</td></tr>
+      <tr><td><strong>Financial Ratio Error</strong></td><td>Calculates efficiency ratio with wrong denominator (omits non-interest income)</td><td>Wrong numbers presented to board; CFO catches it in the meeting</td><td>Verify every AI-calculated ratio against a known-correct formula</td></tr>
+      <tr><td><strong>Credit Policy Hallucination</strong></td><td>States institution LTV limits, DTI thresholds, or approval criteria not in your policy</td><td>Credit memo contains policy requirements the institution never adopted</td><td>Your actual policy must be embedded in the prompt — AI applies what you give it</td></tr>
+      <tr><td><strong>Temporal Confusion</strong></td><td>States "current CFPB position on X" based on guidance from 18 months ago — potentially rescinded</td><td>Confidently outdated compliance analysis fails examination</td><td>For anything regulatory-currency-dependent: verify at the source agency website</td></tr>
+      <tr><td><strong>SAR Overreach</strong></td><td>"Transaction pattern is consistent with structuring in violation of 31 U.S.C. § 5324"</td><td>Legal conclusion filed in a SAR that the filer should not be making</td><td>AI drafts. BSA officer decides. Every SAR narrative reviewed by a human before filing.</td></tr>
+      <tr><td><strong>Fabricated Precedent</strong></td><td>Invents "comparable situations at similar institutions" to justify a credit exception</td><td>Hardest to detect; looks like research; most dangerous in exception memos</td><td>Any cited "comparable situation" must be independently verifiable — AI cannot provide case history</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 05 OBJECTION HANDLING -->
+<section class="section">
+  <div class="s-num">05 · Objection Handling Guide</div>
+  <h2 class="s-title">The five objections<br><em>and how to answer them.</em></h2>
+  <table class="t">
+    <thead><tr><th>Objection</th><th>What's Really Being Said</th><th>The Response</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>"My people don't have time for training."</strong></td>
+        <td>I've sat through vendor training that delivered nothing. I don't trust this is different.</td>
+        <td>"That's exactly the problem we're solving. Right now your operations team is spending 3–4 hours a week building reports that AI can produce in 15 minutes. The training isn't a cost — it's the thing that gets those hours back. Let me show you the math."</td>
+      </tr>
+      <tr>
+        <td><strong>"We have compliance concerns about AI."</strong></td>
+        <td>I'm worried about examiner exposure and I don't know what's safe.</td>
+        <td>"That's the right concern and it's exactly why we built the B pillar first. The answer isn't to avoid AI — your staff are already using it on personal accounts without guidelines. The question is whether that use is governed or ungoverned. We make the institution more secure than before we arrived."</td>
+      </tr>
+      <tr>
+        <td><strong>"We can't afford it."</strong></td>
+        <td>I don't believe the ROI is real.</td>
+        <td>"Let me run your numbers right now. [Pull up the model.] Based on your FTE count and loaded cost, the three automations we'd implement in a Quick Win Sprint would recapture approximately [X] in annual NIE. The Sprint costs $7,500. The payback is [X] weeks. If it doesn't cover the engagement cost in 90 days, we refund the difference."</td>
+      </tr>
+      <tr>
+        <td><strong>"We're waiting to see what our core system does."</strong></td>
+        <td>I'm hoping someone else solves this for me.</td>
+        <td>"Your core will have AI features. But they won't train your people to use them well, and they won't tell you which of your processes to automate first. We're also vendor neutral — our recommendations aren't tied to any core system. We work with whatever you're running."</td>
+      </tr>
+      <tr>
+        <td><strong>"We tried AI training and it didn't work."</strong></td>
+        <td>I've been burned before.</td>
+        <td>"Tell me what happened." [Let them describe it.] Almost always: people watched a demo, got excited, and went back to their desks with nothing to do differently. The failure is almost never the technology — it's the absence of a specific first action. Our curriculum doesn't end without the learner having built something that runs on Monday morning."</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 06 fCAIO MONTHLY CADENCE -->
+<section class="section">
+  <div class="s-num">06 · AiBI fCAIO Monthly Cadence</div>
+  <h2 class="s-title">The operating system<br><em>we install inside the institution.</em></h2>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-lbl">Week 1 — Executive Alignment</div>
+      <div class="body">
+        <strong>Duration:</strong> 60–90 min with CEO/COO (sometimes CFO)<br><br>
+        <strong>Agenda:</strong> (1) Review prior month's KPI report — what moved, what didn't. (2) Roadmap adjustment — reprioritize based on operational changes. (3) Approve next month's work scope. (4) Flag any board or regulatory items that affect AI direction.<br><br>
+        <strong>Output:</strong> Updated roadmap, approved sprint scope for Week 3
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-lbl">Week 2 — Department Activation</div>
+      <div class="body">
+        <strong>Duration:</strong> 60–90 min per department (rotate monthly)<br><br>
+        <strong>Agenda:</strong> (1) Deep dive into one department's workflow — new process mapping. (2) Identify 2–3 automation candidates not yet on the roadmap. (3) Check adoption of previously implemented automations — are they still running? (4) Surface skill gaps or training needs.<br><br>
+        <strong>Output:</strong> New candidates added to roadmap backlog
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-lbl">Week 3 — Implementation Sprint</div>
+      <div class="body">
+        <strong>Duration:</strong> Active building — hours vary by scope<br><br>
+        <strong>Goal:</strong> One automation deployed and running before the end of the week. Non-negotiable. If it's not deployed, it's not the sprint — it's a promise.<br><br>
+        <strong>Staff involvement:</strong> The staff member who will operate it is involved in the build. Capability transfer happens during the sprint, not as an afterthought.<br><br>
+        <strong>Output:</strong> Running automation + documentation
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-lbl">Week 4 — Training + Reporting</div>
+      <div class="body">
+        <strong>Duration:</strong> Training session 60–90 min + report delivery<br><br>
+        <strong>Training:</strong> One module per month, rotating through staff. Practical focus — never theoretical. Always tied to a tool they can use this week.<br><br>
+        <strong>Report:</strong> Monthly impact report delivered to leadership: automations running, hours recaptured, dollar value, efficiency ratio trend, next month's scope.<br><br>
+        <strong>Output:</strong> Impact report + next month pre-loaded
+      </div>
+    </div>
+  </div>
+
+  <div class="alert alert-sage">
+    <div class="alert-title at-sage">Capability Transfer — The Exit Principle</div>
+    <div class="alert-body">Every fCAIO engagement is designed so the institution can operate independently when it ends. We teach them to fish during every sprint. The measure of a successful engagement is not client dependency — it's a client who says "we wouldn't have known how to do this without you" and then does it themselves. This is what makes us referable.</div>
+  </div>
+</section>
+
+</main>
+</body>
+</html>

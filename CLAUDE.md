@@ -23,13 +23,13 @@
 
 ## What This Project Is
 
-The AI Banking Institute (AiBI, pronounced "AI-bee") is an AI proficiency and education company built exclusively for community banks and credit unions (~8,400 US institutions). The business model is built around a free AI readiness assessment that leads to certifications (AiBI-Practitioner, AiBI-S, AiBI-L) and optional coaching advisory for institutions running cohorts. See the 2026-04-24 entry in the Decisions Log for the shift from implementation-led consulting to education-first positioning.
+The AI Banking Institute (AiBI, pronounced "AI-bee") is an AI proficiency and education company built exclusively for community banks and credit unions (~8,400 US institutions). The business model is built around a free AI readiness assessment that leads to a Foundations Certificate plus advanced credentials (AiBI-S, AiBI-L) and optional coaching advisory for institutions running cohorts. See the 2026-04-24 entry in the Decisions Log for the shift from implementation-led consulting to education-first positioning, and the 2026-05-09 entry for the Ledger brand refresh and the AiBI-Practitioner → AiBI Foundations rename.
 
 **The website is the sales funnel.** The assessment is the primary conversion mechanism. Every technical decision should be evaluated against whether it helps or hinders: assessment completion → email capture → Executive Briefing booking.
 
 **Domains:** AIBankingInstitute.com (primary) + AIBankingInstitute.org (registered)
 **Brand nickname:** AiBI | **Tagline:** "Turning Bankers into Builders" (as of 2026-04-15)
-**Certifications:** AiBI-Practitioner · AiBI-S (Specialist) · AiBI-L (Leader)
+**Course + credentials:** AiBI Foundations (course) · Foundations Certificate (entry credential) · AiBI-S (Specialist) · AiBI-L (Leader)
 
 > **Tagline history:** The original "A-B-C of AI Banking" tagline was retired
 > per the v1 landing page PRD feedback doc and superseded by "We turn your
@@ -383,11 +383,12 @@ Never write "AiBI helps..." or "the AiBI approach..." in body copy. Use
 | Institute name | The AI Banking Institute (use in prose) |
 | Informal reference | the Institute |
 | Brand nickname | AiBI (not AiBi, not AIBI) — reserved for credentials, seal, and compound program names |
-| Practitioner cert | AiBI-Practitioner |
+| Foundations course | AiBI Foundations (replaces "AiBI-Practitioner" — see 2026-05-09 Decisions Log) |
+| Foundations credential | Foundations Certificate (no AiBI prefix on the cert itself) |
 | Specialist cert | AiBI-S / AiBI-S/Ops / AiBI-S/Lending / etc. |
 | Leader cert | AiBI-L |
 | Advisory engagement | Leadership Advisory (describe as "fractional Chief AI Officer" when shape matters) |
-| Credential display | "AiBI-Practitioner · The AI Banking Institute" |
+| Credential display | "Foundations Certificate · The AI Banking Institute" / "AiBI-S · The AI Banking Institute" |
 
 ### Phrases That Must Never Appear in the Codebase or Copy
 
@@ -395,8 +396,8 @@ Never write "AiBI helps..." or "the AiBI approach..." in body copy. Use
 |-----------|-------------|
 | `FFIEC-aware training` | "Aligned with SR 11-7, Interagency TPRM Guidance, ECOA/Reg B, and the AIEOG AI Lexicon" |
 | `AI-enabled peers at 58.1%` | "Community bank median ~65% efficiency ratio (FDIC); industry-wide ~55.7% (Q4 2024)" |
-| `BAI-P / BAI-S / BAI-L` | `AiBI-Practitioner / AiBI-S / AiBI-L` |
-| `AiBI-P` (in user-facing copy) | `AiBI-Practitioner` (see 2026-05-06 Decisions Log) |
+| `BAI-P / BAI-S / BAI-L` | `AiBI Foundations / AiBI-S / AiBI-L` |
+| `AiBI-Practitioner` / `AiBI-P` (user-facing copy) | `AiBI Foundations` (course) or `Foundations Certificate` (credential) — see 2026-05-09 Decisions Log |
 | `AiBi` | `AiBI` |
 | Any unsourced statistic | Named source + year + publication |
 
@@ -416,19 +417,48 @@ Never write "AiBI helps..." or "the AiBI approach..." in body copy. Use
 
 ### Color Variables — Never Hardcode Hex
 
+**Two systems coexist during the 2026-05-09 brand refresh.** Legacy Terra/Sage/Cobalt
+tokens stay in `src/styles/tokens.css` for surfaces not yet migrated. New Ledger
+tokens live in `src/styles/tokens-ledger.css` and are the target system. New work
+uses Ledger; migrated surfaces drop Terra references. When migration completes,
+`tokens.css` is deleted and `tokens-ledger.css` is renamed to take its place.
+
+**Ledger (target — use for all new and migrated work):**
+
 ```css
---color-terra:        #b5512e   /* Pillar C / CTAs / brand signal */
---color-terra-light:  #c96a43   /* Hover states */
---color-terra-pale:   #f0c4ab   /* Background tints */
---color-sage:         #4a6741   /* Pillar A ONLY */
---color-cobalt:       #2d4a7a   /* Pillar B / security contexts ONLY */
---color-ink:          #1e1a14   /* Primary text */
---color-parch:        #f5f0e6   /* Card backgrounds */
---color-linen:        #f9f6f0   /* Page background */
---color-error:        #9b2226   /* Error / Starting Point tier */
+--ledger-bg:           #ECE9DF   /* page field — linen */
+--ledger-paper:        #F4F1E7   /* card field */
+--ledger-parch:        #E4E0D2   /* recessed surfaces */
+--ledger-tape:         #F1E9D0   /* highlight tape (reviewer notes) */
+--ledger-ink:          #0E1B2D   /* primary text, primary fill */
+--ledger-ink-2:        #1F2A3F   /* secondary text */
+--ledger-muted:        #5C6B82   /* muted text */
+--ledger-soft:         #8C95A8   /* softest text — wordmark line 2 */
+--ledger-accent:       #B5862A   /* gold — emphasis, primary CTA alt */
+--ledger-accent-2:     #1E3A5F   /* navy — secondary accent */
+--ledger-weak:         #8E3B2A   /* oxblood — destructive only */
+--ledger-rule:         #D5D1C2   /* hairline divider */
+--ledger-rule-strong:  #A8AEBE   /* strong rule — section heads */
 ```
 
-Pillar color discipline: **sage = Pillar A only. Cobalt = Pillar B only. Terra = Pillar C + brand.** Using them interchangeably destroys the three-pillar visual system.
+**Legacy (Terra/Sage/Cobalt — do not use for new work):**
+
+```css
+--color-terra:        #b5512e   /* superseded by --ledger-accent */
+--color-sage:         #4a6741   /* retired — pillar discipline gone */
+--color-cobalt:       #2d4a7a   /* superseded by --ledger-accent-2 */
+--color-ink:          #1e1a14   /* superseded by --ledger-ink */
+--color-parch:        #f5f0e6   /* superseded by --ledger-paper */
+--color-linen:        #f9f6f0   /* superseded by --ledger-bg */
+--color-error:        #9b2226   /* superseded by --ledger-weak */
+```
+
+**Pillar color discipline (sage = Pillar A, cobalt = Pillar B, terra = Pillar C)
+is retired with the Ledger refresh.** Ledger uses one accent (gold) for emphasis
+and oxblood for destructive states. The 4-pillar curriculum structure
+(Awareness · Understanding · Creation · Application) shown in the new LMS
+prototype carries soft pillar marks for navigation but they do not enforce a
+visual grammar. See the 2026-05-09 Decisions Log entry.
 
 ---
 
@@ -876,6 +906,22 @@ configured in the Supabase Auth dashboard, NOT in Resend Templates;
 their sender `From` field also needs swapping in the Supabase
 dashboard (not yet done — manual step).
 
+**2026-05-09 — Ledger brand refresh (Slice 0 — additive token + font foundation).**
+The 2026-04-15 Terra/Sage/Cobalt designer brief is superseded by a new
+"Ledger" design system delivered as a Claude Design handoff bundle
+(saved at `docs/brand-refresh-2026-05-09/`, original URLs in chats).
+Three canonical artifacts: `Design System.html` (full token system + 21
+component specs), `AI Readiness Briefing.html` (assessment results page),
+and `LMS Prototype.html` + `lms/*.jsx` (course harness React shell). The
+new palette is parchment/linen + ink/navy + gold accent + oxblood for
+destructive only. Typography swaps Cormorant/DM Sans/DM Mono for
+Newsreader/Geist/JetBrains Mono. **Pillar color discipline is retired** —
+sage/cobalt/terra are no longer enforced as visual grammar. Slice 0 is
+additive only: new tokens in `src/styles/tokens-ledger.css`, new fonts
+wired alongside existing ones, zero visible change. Migration proceeds
+surface-by-surface in subsequent slices. Full Ledger redesign + bundle
+routes + token remap shipped in PR #47 (see 2026-05-10 entry).
+
 **2026-05-09 — AiBI-Foundation v2 redesign accepted; staged migration.**
 The current AiBI-Practitioner course (12 modules, 6.6 hrs, $295) is
 superseded by AiBI-Foundation v2 — a four-track product family under
@@ -1003,31 +1049,57 @@ current code reality and the operator's mental model.
 
 ## Design Context
 
-Full design system documented in `.impeccable.md` (project root). Key
-principles summarized here for quick reference.
+**Canonical source (2026-05-09 onward):**
+`docs/brand-refresh-2026-05-09/project/Design System.html` plus the
+adjoining `AI Readiness Briefing.html` and `LMS Prototype.html`.
 
-**Source:** Plans/aibi-designer-brief.html (canonical)
-
-**Aesthetic:** "Ancient wisdom meets modern tech." Parchment and terracotta.
-Institutional authority. References: McKinsey, Oliver Wyman, The Economist.
+**Aesthetic:** "Newspaper bones, software polish." Editorial ledger:
+parchment field, ink type, gold accent, oxblood for destructive states.
+Authoritative, dry, slightly editorial. References: financial print
+publications, hand-kept ledgers.
 
 **Emotional goals:** Authority + Trust, Aspiration + Pride.
 
 **Accessibility:** WCAG 2.1 AA.
 
-**Color discipline:** Terra = brand signal. Sage = Pillar A ONLY.
-Cobalt = Pillar B / security ONLY. Non-negotiable.
+**Color:** Gold (`--ledger-accent` `#B5862A`) for emphasis only — never
+decoration. Oxblood (`--ledger-weak` `#8E3B2A`) for destructive / late /
+failed only — never marketing. Navy (`--ledger-accent-2` `#1E3A5F`) as
+a secondary accent. Body text on Paper or BG, never on Parch (insufficient
+contrast). The pillar color discipline (sage / cobalt / terra) is retired.
 
-**Typography:** Cormorant (display), Cormorant SC (labels/designations),
-DM Sans (body/UI), DM Mono (ALL numbers). Italic Cormorant for warmth;
-never italicize DM Sans.
+**Typography:** Newsreader (display, ledes, quotes, wordmark) ·
+Geist (body, UI labels, sans buttons) · JetBrains Mono (kickers,
+metadata, code, version + status pills, tabular numbers). Three families;
+do not add a fourth. Italics signal voice (ledes, quotes, trailing
+clauses on section titles), not emphasis. Caps + 0.16–0.20em tracking
+only on mono; never track sans.
 
 **Design principles:**
 1. Content is the design — restraint over decoration
-2. Every number earns its place — sourced, DM Mono, tabular-nums
+2. Every number earns its place — sourced, mono, tabular-nums
 3. Institutional, not promotional — consulting materials, not SaaS
-4. Pillar discipline is visual grammar — sage/cobalt/terra never interchange
+4. Lines do real work — they replace boxes and shadows
 5. Accessible by default — WCAG 2.1 AA, focus rings, skip links
 
-**Never:** gradients, drop shadows, rounded corners >4px, emoji, icon
-libraries, stock photos, dark mode, "AI-powered" badges.
+**Wordmark:** Two-line lockup, both lines Geist 700 UPPER, line-height
+1.0, 0–2px gap. Line 1 in `--ledger-ink`, line 2 in `--ledger-soft`.
+Sans-serif. No italics. No symbol. No monogram. No circular seal — the
+old AiBI seal is retired with this refresh.
+
+**Radii:** 2px (buttons, inputs, chips) · 3px (cards, sidebars, sections)
+· 4px (hero cards). One shadow only — `--ledger-shadow` — and only on
+hero/feature cards; nothing else gets a shadow.
+
+**Motion:** Almost none. 120ms (UI) / 200ms (page transitions),
+cubic-bezier(0.4, 0, 0.2, 1). Hover = border darken. No skeleton
+shimmers, no parallax, no scroll-jacking, no spring physics.
+
+**Voice:** Editorial first, promotional never. Lead with the artifact,
+not the tool. Specific over clever. No exclamation points. No emoji
+(unless quoting someone using one). Banned words: supercharge, unlock,
+revolutionize, leverage, synergy, AI-powered, users (use "you").
+
+**Never:** gradients, drop shadows beyond `--ledger-shadow` on hero
+cards, rounded corners >4px, emoji, icon libraries, stock photos,
+dark mode, "AI-powered" badges, sentence-case CTAs (mono caps only).

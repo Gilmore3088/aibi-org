@@ -6,10 +6,15 @@
  * Print styles:      src/styles/print.css
  *
  * This file is the only entry point that Next.js loads. It imports the
- * three modular pieces above plus the Tailwind directives.
+ * modular pieces above plus the Tailwind directives.
+ *
+ * tokens-ledger.css is the new (2026-05-09) brand-refresh token layer.
+ * It coexists with tokens.css during migration. See
+ * docs/brand-refresh-2026-05-09/ for the canonical Design System.
  */
 
 @import "../styles/tokens.css";
+@import "../styles/tokens-ledger.css";
 @import "../styles/base.css";
 @import "../styles/print.css";
 

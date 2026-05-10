@@ -1,7 +1,15 @@
 import type { Metadata } from 'next';
 import Script from 'next/script';
 import { headers } from 'next/headers';
-import { Cormorant_Garamond, Cormorant_SC, DM_Sans, DM_Mono } from 'next/font/google';
+import {
+  Cormorant_Garamond,
+  Cormorant_SC,
+  DM_Sans,
+  DM_Mono,
+  Newsreader,
+  JetBrains_Mono,
+} from 'next/font/google';
+import { GeistSans } from 'geist/font/sans';
 import { Analytics } from '@vercel/analytics/next';
 import { SiteNav, SiteFooter } from '@/components/system';
 import { BRAND } from '@content/copy';
@@ -47,6 +55,28 @@ const dmMono = DM_Mono({
   subsets: ['latin'],
   weight: ['400', '500'],
   variable: '--font-dm-mono',
+  display: 'swap',
+});
+
+// Ledger brand-refresh fonts (2026-05-09). Loaded alongside the legacy
+// Cormorant/DM Sans/DM Mono stack while surfaces are migrated. The legacy
+// fonts will be removed once the migration is complete.
+const newsreader = Newsreader({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  style: ['normal', 'italic'],
+  variable: '--font-newsreader',
+  display: 'swap',
+});
+
+// Geist ships its own variable font wrapper — `--font-geist-sans`.
+// We alias it via tokens-ledger.css's `--ledger-sans → var(--font-geist)`.
+// To keep the variable name `--font-geist` (referenced in tokens-ledger.css),
+// we re-export GeistSans's variable under that name on the body class.
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  weight: ['400', '500', '600'],
+  variable: '--font-jetbrains-mono',
   display: 'swap',
 });
 
@@ -112,7 +142,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         )}
       </head>
       <body
-        className={`${cormorant.variable} ${cormorantSC.variable} ${dmSans.variable} ${dmMono.variable} flex flex-col min-h-screen`}
+        className={`${cormorant.variable} ${cormorantSC.variable} ${dmSans.variable} ${dmMono.variable} ${newsreader.variable} ${GeistSans.variable} ${jetbrainsMono.variable} flex flex-col min-h-screen`}
       >
         {!chromeless && (
           <a href="#main-content" className="skip-link">
