@@ -3,6 +3,7 @@ import path from 'node:path';
 import type { Metadata } from 'next';
 import Script from 'next/script';
 
+import { rewriteBundleLinks } from '@/lib/redesign/bundle-links';
 import './my-toolbox.css';
 
 export const metadata: Metadata = {
@@ -11,9 +12,8 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-const bodyHtml = readFileSync(
-  path.join(process.cwd(), 'src/app/my-toolbox/_body.html'),
-  'utf8',
+const bodyHtml = rewriteBundleLinks(
+  readFileSync(path.join(process.cwd(), 'src/app/my-toolbox/_body.html'), 'utf8'),
 );
 
 const inlineScript = readFileSync(

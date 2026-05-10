@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import type { Metadata } from 'next';
 
+import { rewriteBundleLinks } from '@/lib/redesign/bundle-links';
 import './user-home.css';
 
 export const metadata: Metadata = {
@@ -10,9 +11,8 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-const bodyHtml = readFileSync(
-  path.join(process.cwd(), 'src/app/user-home/_body.html'),
-  'utf8',
+const bodyHtml = rewriteBundleLinks(
+  readFileSync(path.join(process.cwd(), 'src/app/user-home/_body.html'), 'utf8'),
 );
 
 export default function UserHomePage(): JSX.Element {
