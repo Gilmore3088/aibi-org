@@ -16,7 +16,7 @@ import { getEnrollment as getPEnrollment } from "@/app/courses/aibi-p/_lib/getEn
 export const metadata: Metadata = {
   title: "Education | The AI Banking Institute",
   description:
-    "Free classes and three certification tracks for community banks and credit unions. Start with the AI Readiness Assessment, then earn AiBI-Practitioner, AiBI-S, or AiBI-L credentials.",
+    "Free classes and three certification tracks for community banks and credit unions. Start with the AI Readiness Assessment, then earn AiBI-Foundation, AiBI-S, or AiBI-L credentials.",
 };
 
 interface FreeClass {
@@ -106,7 +106,7 @@ export default async function EducationPage() {
               {completedCount}/{modules.length} modules complete
             </h4>
             <p className="font-serif italic text-body-sm text-slate mt-s1 mb-s4">
-              AiBI-Practitioner · in progress
+              AiBI-Foundation · in progress
             </p>
             <Cta href="/courses/aibi-p" variant="secondary">
               Resume the program →
@@ -196,7 +196,7 @@ export default async function EducationPage() {
             {
               level: "Practitioner",
               stepLabel: "01",
-              code: "AiBI-Practitioner",
+              code: "AiBI-Foundation",
               title: "Banking AI Practitioner",
               designation: "Personal AI proficiency for every staff member",
               pillar: "application",
@@ -278,7 +278,7 @@ export default async function EducationPage() {
               Need team certification or executive workshops?
             </h2>
             <p className="text-body-md text-cream mt-s4 leading-relaxed max-w-narrow">
-              AiBI-Practitioner team pricing starts at 10 seats. Specialist and Leader
+              AiBI-Foundation team pricing starts at 10 seats. Specialist and Leader
               programs are coming after the Practitioner is validated with real learners.
             </p>
           </div>

@@ -17,7 +17,7 @@ interface CertLevel {
 const CERT_LEVELS: readonly CertLevel[] = [
   {
     code: 'aibi-p',
-    label: 'AiBI-Practitioner',
+    label: 'AiBI-Foundation',
     color: 'var(--color-terra)',
     colorBg: 'var(--color-terra-pale)',
     product: 'Practitioner',
@@ -48,7 +48,7 @@ interface MockEnrollment {
   readonly certificate_id?: string;
 }
 
-// Dev bypass — V4 is locked to AiBI-Practitioner only.
+// Dev bypass — V4 is locked to AiBI-Foundation only.
 const DEV_ENROLLMENTS: readonly MockEnrollment[] = [
   {
     product: 'aibi-p',
@@ -75,16 +75,16 @@ function deriveMetrics(enrollments: readonly MockEnrollment[]): CumulativeMetric
   const pModules = pEnroll?.completed_modules.length ?? 0;
   const sModules = sEnroll?.completed_modules.length ?? 0;
 
-  // AiBI-Practitioner: ~2 skills per module, AiBI-S: ~4 departmental skills per module
+  // AiBI-Foundation: ~2 skills per module, AiBI-S: ~4 departmental skills per module
   const skillsBuilt = pModules * 2 + sModules * 4;
 
-  // AiBI-Practitioner: ~15 hrs/yr saved per module, AiBI-S: ~40 hrs/yr per module (departmental scope)
+  // AiBI-Foundation: ~15 hrs/yr saved per module, AiBI-S: ~40 hrs/yr per module (departmental scope)
   const hoursSavedPerYear = pModules * 15 + sModules * 40;
 
-  // AiBI-Practitioner: 1 workflow per 3 modules (rounded), AiBI-S: 1 per 2
+  // AiBI-Foundation: 1 workflow per 3 modules (rounded), AiBI-S: 1 per 2
   const workflowsAutomated = Math.floor(pModules / 3) + Math.floor(sModules / 2);
 
-  // Quick wins: 1 per AiBI-Practitioner module completed past module 4
+  // Quick wins: 1 per AiBI-Foundation module completed past module 4
   const quickWinsLogged = Math.max(0, pModules - 4);
 
   return { skillsBuilt, hoursSavedPerYear, workflowsAutomated, quickWinsLogged };
@@ -351,15 +351,15 @@ function NextStepBanner({ enrollments }: { enrollments: readonly MockEnrollment[
   const sEnrollment = enrollments.find((e) => e.product === 'aibi-s');
 
   let accent = 'var(--color-terra)';
-  let heading = 'Start with AiBI-Practitioner';
+  let heading = 'Start with AiBI-Foundation';
   let body = 'Build your AI foundation. The Practitioner certification is where every transformation begins.';
   let href = '/courses/aibi-p/purchase';
-  let cta = 'View AiBI-Practitioner';
+  let cta = 'View AiBI-Foundation';
 
   if (hasP && hasS && hasL) {
     accent = 'var(--color-sage)';
     heading = "You've completed the full certification ladder";
-    body = 'AiBI-Practitioner · AiBI-S · AiBI-L earned. You are now equipped to lead AI transformation across your institution.';
+    body = 'AiBI-Foundation · AiBI-S · AiBI-L earned. You are now equipped to lead AI transformation across your institution.';
     href = '/education';
     cta = 'View education';
   } else if (hasP && hasS) {

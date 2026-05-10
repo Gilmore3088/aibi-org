@@ -25,9 +25,9 @@ function getStepsForTier(tierId: Tier['id']): readonly NextStep[] {
           label: 'Recommended',
           title: 'Start with the Practitioner course',
           description:
-            'Nine self-paced modules that build hands-on AI proficiency for every staff member. Earn the AiBI-Practitioner credential with a real work product — not a multiple-choice test.',
+            'Nine self-paced modules that build hands-on AI proficiency for every staff member. Earn the AiBI-Foundation credential with a real work product — not a multiple-choice test.',
           href: '/courses/aibi-p',
-          cta: 'Explore AiBI-Practitioner',
+          cta: 'Explore AiBI-Foundation',
           accent: 'var(--color-terra)',
           primary: true,
         },
@@ -48,9 +48,9 @@ function getStepsForTier(tierId: Tier['id']): readonly NextStep[] {
           label: 'Recommended',
           title: 'Earn the Practitioner credential',
           description:
-            'Your institution has early adopters. Give them the tools to lead with confidence. The AiBI-Practitioner course builds governed, repeatable AI skills across nine self-paced modules.',
+            'Your institution has early adopters. Give them the tools to lead with confidence. The AiBI-Foundation course builds governed, repeatable AI skills across nine self-paced modules.',
           href: '/courses/aibi-p',
-          cta: 'Explore AiBI-Practitioner',
+          cta: 'Explore AiBI-Foundation',
           accent: 'var(--color-terra)',
           primary: true,
         },

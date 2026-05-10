@@ -40,7 +40,7 @@ const JOURNEY_STEPS: Record<string, JourneyStep> = {
   'aibi-l': {
     label: 'Full certification ladder complete',
     heading: 'You are equipped to lead AI transformation.',
-    body: 'AiBI-Practitioner, AiBI-S, and AiBI-L earned. View your complete certification journey and cumulative impact metrics on your dashboard.',
+    body: 'AiBI-Foundation, AiBI-S, and AiBI-L earned. View your complete certification journey and cumulative impact metrics on your dashboard.',
     href: '/dashboard/progression',
     cta: 'View your journey',
     accent: 'var(--color-terra)',

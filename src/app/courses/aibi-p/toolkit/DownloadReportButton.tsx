@@ -17,7 +17,7 @@ export function DownloadReportButton({ enrollmentId }: DownloadReportButtonProps
       const objectUrl = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = objectUrl;
-      a.download = 'AiBI-Practitioner-Transformation-Report.pdf';
+      a.download = 'AiBI-Foundation-Transformation-Report.pdf';
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -32,7 +32,7 @@ export function DownloadReportButton({ enrollmentId }: DownloadReportButtonProps
       type="button"
       onClick={() => { void handleDownload(); }}
       className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[color:var(--color-terra)] text-[color:var(--color-terra)] hover:bg-[color:var(--color-terra)] hover:text-[color:var(--color-linen)] text-[10px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-2"
-      aria-label="Download AiBI-Practitioner Transformation Report PDF"
+      aria-label="Download AiBI-Foundation Transformation Report PDF"
     >
       <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
         <path

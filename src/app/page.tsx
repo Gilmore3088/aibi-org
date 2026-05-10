@@ -8,7 +8,7 @@ import { BRAND } from "@content/copy";
 export const metadata: Metadata = {
   title: `${BRAND.name} — ${BRAND.tagline}`,
   description:
-    "An education company for community banks and credit unions. Begin with a twelve-question readiness diagnostic; earn the AiBI-Practitioner credential when you are ready.",
+    "An education company for community banks and credit unions. Begin with a twelve-question readiness diagnostic; earn the AiBI-Foundation credential when you are ready.",
 };
 
 export default function HomePage() {

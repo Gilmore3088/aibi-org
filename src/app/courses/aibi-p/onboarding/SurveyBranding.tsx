@@ -55,7 +55,7 @@ export function SurveyBranding({ step }: SurveyBrandingProps) {
             opacity: 0.7,
           }}
         >
-          To personalize your journey through the AiBI-Practitioner curriculum, we
+          To personalize your journey through the AiBI-Foundation curriculum, we
           need a brief read of your current professional environment.
         </p>
       </div>

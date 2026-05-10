@@ -1,5 +1,5 @@
 // POST /api/create-checkout
-// Creates a Stripe Checkout Session for AiBI-Practitioner course purchase.
+// Creates a Stripe Checkout Session for AiBI-Foundation course purchase.
 //
 // Individual mode: $295/seat (STRIPE_AIBIP_PRICE_ID)
 // Institution/team mode: $199/seat x quantity (STRIPE_AIBIP_INSTITUTION_PRICE_ID), min 10 seats

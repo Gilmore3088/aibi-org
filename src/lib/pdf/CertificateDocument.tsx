@@ -1,4 +1,4 @@
-// CertificateDocument — React PDF component for the AiBI-Practitioner certificate.
+// CertificateDocument — React PDF component for the AiBI-Foundation certificate.
 // Rendered server-side via @react-pdf/renderer renderToBuffer().
 // Must NOT be imported in Client Components — PDF renderer is server-only.
 //

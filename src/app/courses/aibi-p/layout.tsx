@@ -63,7 +63,7 @@ export default async function CourseLayout({ children }: CourseLayoutProps) {
             Ai
           </div>
           <span className="font-serif italic text-sm font-bold text-[color:var(--color-ink)]">
-            AiBI-Practitioner
+            AiBI-Foundation
           </span>
         </div>
       </header>

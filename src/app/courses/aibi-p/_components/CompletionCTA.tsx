@@ -51,7 +51,7 @@ export function CompletionCTA({ moduleNumber, isLastModule }: CompletionCTAProps
             Ready for your assessed work product.
           </p>
           <p className="font-sans text-sm text-[color:var(--color-slate)] leading-relaxed mb-5">
-            You have completed all 12 modules of the AiBI-Practitioner course. Your final step is to
+            You have completed all 12 modules of the AiBI-Foundation course. Your final step is to
             submit a four-item work product package demonstrating your professional AI capability.
             This is not a test — it is a demonstration of the skills you have built throughout
             this course.

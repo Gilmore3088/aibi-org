@@ -25,7 +25,7 @@ import {
 import type { ActivityResponse } from '@/types/course';
 
 export const metadata: Metadata = {
-  title: 'My Toolkit | AiBI-Practitioner',
+  title: 'My Toolkit | AiBI-Foundation',
 };
 
 // ---- Artifact definitions pulled from module data (mirrors module-*.ts entries) ----
@@ -258,12 +258,12 @@ export default async function ToolkitPage() {
       <div className="bg-[color:var(--color-terra)] text-[color:var(--color-linen)] py-10 px-6">
         <div className="mx-auto px-8 lg:px-16">
           <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra-pale)] mb-2">
-            AiBI-Practitioner Course
+            AiBI-Foundation Course
           </p>
           <h1 className="font-serif text-3xl font-bold mb-2">My AI Toolkit</h1>
           <p className="font-sans text-sm text-[color:var(--color-terra-pale)] leading-relaxed max-w-2xl">
             Your accumulated course assets in one place — skills, artifacts, subscription
-            inventory, and capstone summary. Everything you built during AiBI-Practitioner is here to
+            inventory, and capstone summary. Everything you built during AiBI-Foundation is here to
             keep and use.
           </p>
         </div>
@@ -546,7 +546,7 @@ export default async function ToolkitPage() {
                   Quality Standard Met
                 </p>
                 <p className="font-sans text-sm text-[color:var(--color-ink)] leading-relaxed">
-                  Five-dimension AiBI-Practitioner rubric: Accuracy (hard gate), Completeness,
+                  Five-dimension AiBI-Foundation rubric: Accuracy (hard gate), Completeness,
                   Tone, Judgment, and Skill Quality.
                 </p>
               </div>
@@ -582,10 +582,10 @@ export default async function ToolkitPage() {
             <div className="flex items-start justify-between gap-4 flex-wrap">
               <div className="flex-1 min-w-0">
                 <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] mb-1">
-                  AiBI-Practitioner Complete
+                  AiBI-Foundation Complete
                 </p>
                 <p className="font-sans text-sm font-semibold text-[color:var(--color-ink)] mb-1">
-                  AiBI-Practitioner Transformation Report
+                  AiBI-Foundation Transformation Report
                 </p>
                 <p className="font-sans text-xs text-[color:var(--color-slate)] leading-relaxed">
                   Five-page PDF summarising your pre/post assessment comparison, skills built,

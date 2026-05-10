@@ -8,7 +8,7 @@ import { getEnrollment } from '../_lib/getEnrollment';
 import { OnboardingSettings } from './OnboardingSettings';
 
 export const metadata: Metadata = {
-  title: 'Profile Settings | AiBI-Practitioner',
+  title: 'Profile Settings | AiBI-Foundation',
 };
 
 export default async function SettingsPage() {

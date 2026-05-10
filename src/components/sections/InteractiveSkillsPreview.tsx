@@ -120,7 +120,7 @@ export interface InteractiveSkillsPreviewProps {
 
 export function InteractiveSkillsPreview({
   eyebrow = 'Inside the course',
-  heading = 'Learn these capabilities in AiBI-Practitioner.',
+  heading = 'Learn these capabilities in AiBI-Foundation.',
   subhead = 'Models, prompts, skills, agents — and the judgment to use them inside a regulated institution.',
 }: InteractiveSkillsPreviewProps = {}) {
   const [activeId, setActiveId] = useState<string>(CAPABILITIES[0].id);

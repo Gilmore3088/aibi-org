@@ -52,24 +52,40 @@ The canonical markdown remains the rich source-of-truth for facilitator
 notes and the deeper "why this exists" framing; the TS file is the
 runtime contract for the platform.
 
-## Phase 2 — Rename in user-facing copy
+## Phase 2 — Rename in user-facing copy (DONE 2026-05-10)
 
-Per 2026-05-06 rename pattern: change copy, keep internal identifiers.
+- [x] Replaced "AiBI-Practitioner" → "AiBI-Foundation" across 66 files in
+  `src/`, `content/`, `public/`. Includes: certificate PDF designation,
+  transformation report, skill template library, onboarding, assessment
+  recommendations, Resend wrapper subject lines, course pages, navigation,
+  homepage description.
+- [x] Internal identifiers preserved: route `/courses/aibi-p`, DB
+  `product='aibi-p'`, file path `public/AiBI-P/`, env var names, Stripe
+  metadata keys, Resend template aliases, certificate ID format
+  (`AIBI-P-…`), UTM codes, sandbox-data path slugs. Comments documenting
+  the historical "AiBI-P" name kept for context.
+- [x] tsc --noEmit clean.
 
-- [ ] Search for "AiBI-Practitioner" in `src/`, `content/`, `public/` —
-  replace with "AiBI-Foundation" or "AiBI-Foundation Full" depending on
-  context (Foundation Full is the current Practitioner equivalent).
-- [ ] Update certificate PDF designation (`src/lib/certificates/`) and
-  filename pattern.
-- [ ] Update transformation report copy.
-- [ ] Update skill template library + onboarding copy.
-- [ ] Update transactional email template copy in Resend dashboard
-  (assessment-results-breakdown, course-purchase-individual,
-  course-purchase-institution, certificate-issued, inquiry-ack) and the
-  wrapper helpers in `src/lib/resend/index.ts`.
-- [ ] DO NOT change route `/courses/aibi-p`, DB `product='aibi-p'`, file
-  path `public/AiBI-P/`, env var names, Stripe metadata keys, Resend
-  template aliases — kept short to avoid churn (per 2026-05-06).
+### Operator-side follow-ups (cannot be done from the codebase)
+
+- [ ] **Resend dashboard** — update template *bodies* for the 5 published
+  templates: `assessment-results-breakdown`, `course-purchase-individual`,
+  `course-purchase-institution`, `certificate-issued`, `inquiry-ack`.
+  Subject lines are sent by the wrapper helpers and already say
+  "AiBI-Foundation"; bodies in the dashboard still say "AiBI-Practitioner"
+  until manually updated.
+- [ ] **MailerLite Automations** — copy in the 5 live Automations
+  (Newsletter welcome + 4 tier sequences) references the credential by
+  name; review each email and update where "AiBI-Practitioner" appears.
+  Source-of-truth copy in `src/lib/mailerlite/email-content.ts` is
+  already updated by this rename; the dashboard versions need a re-sync
+  per the 2026-05-08 decision pattern (delete and recreate, or edit in
+  place).
+- [ ] **Stripe product names** — Stripe metadata keys preserved, but the
+  customer-facing product *name* in Stripe checkout still says
+  "AiBI-Practitioner". Update in Stripe dashboard.
+- [ ] **Supabase Auth email templates** — if any reference the
+  credential name in signup/reset/magic-link emails, update there.
 
 ## Phase 3 — Stripe pricing changes
 

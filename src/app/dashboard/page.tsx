@@ -113,7 +113,7 @@ export default function DashboardPage() {
           </h1>
           <p className="text-lg text-[color:var(--color-ink)]/75 leading-relaxed">
             Take the assessment to unlock a practical next step, your first
-            practice rep, and the AiBI-Practitioner learning path.
+            practice rep, and the AiBI-Foundation learning path.
           </p>
           <Link
             href="/assessment/start"
@@ -206,7 +206,7 @@ export default function DashboardPage() {
                   Your next step
                 </p>
                 <h1 className="font-serif text-3xl md:text-5xl text-[color:var(--color-ink)] leading-tight mt-3">
-                  Enroll in AiBI-Practitioner.
+                  Enroll in AiBI-Foundation.
                 </h1>
                 {tier && (
                   <p className="mt-4 text-sm text-[color:var(--color-ink)]/75 leading-relaxed">
@@ -286,7 +286,7 @@ export default function DashboardPage() {
             <div className="flex items-end justify-between gap-4">
               <div>
                 <h2 className="font-serif text-3xl text-[color:var(--color-ink)]">
-                  AiBI-Practitioner
+                  AiBI-Foundation
                 </h2>
                 <p className="text-sm text-[color:var(--color-slate)] mt-1">
                   Banking AI Practitioner

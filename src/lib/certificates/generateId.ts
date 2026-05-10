@@ -1,4 +1,4 @@
-// Certificate ID generator for AiBI-Practitioner credentials.
+// Certificate ID generator for AiBI-Foundation credentials.
 // Produces IDs in format: AIBIP-YYYY-XXXXXX
 // where YYYY is the current year and XXXXXX is 6 random chars from an
 // unambiguous 30-character alphabet (no 0/O/1/I/L to prevent confusion).

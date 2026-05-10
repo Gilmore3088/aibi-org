@@ -56,7 +56,7 @@ export default function ForInstitutionsPage() {
             {
               scale: "Per-banker",
               name: "Courses",
-              tagline: "AiBI-Practitioner. Self-paced, scored on reviewed work.",
+              tagline: "AiBI-Foundation. Self-paced, scored on reviewed work.",
               included: [
                 "Twelve self-paced modules",
                 "Three reviewed AI artifacts per practitioner",
@@ -134,7 +134,7 @@ export default function ForInstitutionsPage() {
             </p>
             <ul className="space-y-s2 text-body-sm text-cream">
               {[
-                "10 AiBI-Practitioner seats",
+                "10 AiBI-Foundation seats",
                 "Weekly coaching for 8 weeks",
                 "Institutional readiness diagnostic",
                 "Aggregate dashboard for your champion",

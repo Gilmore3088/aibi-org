@@ -1,5 +1,5 @@
 // POST /api/courses/save-post-assessment
-// Saves the post-course assessment result to course_enrollments for the AiBI-Practitioner course.
+// Saves the post-course assessment result to course_enrollments for the AiBI-Foundation course.
 //
 // Security model:
 //   - Requires valid Supabase auth session; verifies enrollment.user_id === user.id

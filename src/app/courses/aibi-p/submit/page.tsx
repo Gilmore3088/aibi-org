@@ -19,7 +19,7 @@ import { WorkProductForm } from '../_components/WorkProductForm';
 import type { WorkSubmission } from '@/types/course';
 
 export const metadata: Metadata = {
-  title: 'Work Product Submission | AiBI-Practitioner',
+  title: 'Work Product Submission | AiBI-Foundation',
 };
 
 const ALL_MODULES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
@@ -62,11 +62,11 @@ export default async function SubmitPage() {
       <div className="bg-[color:var(--color-terra)] text-[color:var(--color-linen)] py-10 px-6">
         <div className="mx-auto px-8 lg:px-16">
           <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra-pale)] mb-2">
-            AiBI-Practitioner Certification
+            AiBI-Foundation Certification
           </p>
           <h1 className="font-serif text-3xl font-bold mb-2">Work Product Submission</h1>
           <p className="font-sans text-sm text-[color:var(--color-terra-pale)] leading-relaxed max-w-2xl">
-            Submit your four-item work product package to earn the AiBI-Practitioner credential.
+            Submit your four-item work product package to earn the AiBI-Foundation credential.
             A reviewer will assess your submission against the five-dimension rubric
             within five business days.
           </p>
@@ -125,7 +125,7 @@ export default async function SubmitPage() {
               Approved
             </p>
             <p className="font-sans text-base text-[color:var(--color-ink)] mb-4">
-              Your work product has been approved. Your AiBI-Practitioner credential has been issued.
+              Your work product has been approved. Your AiBI-Foundation credential has been issued.
             </p>
             <a
               href="/courses/aibi-p/certificate"

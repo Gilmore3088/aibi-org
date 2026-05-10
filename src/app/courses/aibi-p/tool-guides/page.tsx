@@ -13,7 +13,7 @@ import {
 } from '@content/courses/aibi-p/tool-guides-notebooklm-perplexity';
 
 export const metadata: Metadata = {
-  title: 'Platform Deep Dive Guides | AiBI-Practitioner | The AI Banking Institute',
+  title: 'Platform Deep Dive Guides | AiBI-Foundation | The AI Banking Institute',
   description:
     'In-depth guides for NotebookLM and Perplexity — two high-value AI platforms for community banking professionals. Getting started, banking use cases, data safety, and pro tips.',
 };
@@ -37,7 +37,7 @@ export default function ToolGuidesPage() {
               href="/courses/aibi-p"
               className="hover:text-[color:var(--color-terra)] transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-1 rounded-sm"
             >
-              AiBI-Practitioner
+              AiBI-Foundation
             </Link>
           </li>
           <li aria-hidden="true">/</li>
