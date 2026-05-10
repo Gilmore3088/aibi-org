@@ -3,7 +3,7 @@
 // SHELL-09: no horizontal page scroll on 390px — overflow-x-auto wrapper
 // Large tables (8+ rows) render as a card grid for visual appeal
 
-import type { ContentTable as ContentTableType } from '@content/courses/aibi-p';
+import type { ContentTable as ContentTableType } from '@content/courses/foundation-program';
 
 interface ContentTableProps {
   readonly table: ContentTableType;

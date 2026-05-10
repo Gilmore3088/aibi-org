@@ -2,8 +2,8 @@
 // Server Component: pure display
 
 import Link from 'next/link';
-import type { Module } from '@content/courses/aibi-p';
-import { PILLAR_META } from '@content/courses/aibi-p';
+import type { Module } from '@content/courses/foundation-program';
+import { PILLAR_META } from '@content/courses/foundation-program';
 
 export type ModuleStatus = 'completed' | 'current' | 'locked';
 
@@ -96,7 +96,7 @@ export function ModuleMapItem({ module: mod, status }: ModuleMapItemProps) {
 
   return (
     <Link
-      href={`/courses/aibi-p/${mod.number}`}
+      href={`/courses/foundation/program/${mod.number}`}
       className="flex gap-4 items-start group hover:translate-x-1 transition-transform duration-200 focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-2 rounded-sm"
     >
       {content}

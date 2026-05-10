@@ -1,10 +1,10 @@
-// Work product submission page — /courses/aibi-p/submit
+// Work product submission page — /courses/foundation/program/submit
 //
 // Server Component: enrollment check + module completion check happen at render time.
 // Delegates interactive form to WorkProductForm (client component).
 //
 // Access rules:
-//   - Unauthenticated / not enrolled → redirect to /courses/aibi-p/purchase
+//   - Unauthenticated / not enrolled → redirect to /courses/foundation/program/purchase
 //   - Enrolled but not all 12 modules complete → show completion gate message
 //   - Submission pending or under re-review → show "under review" message
 //   - Submission approved → show "approved" message with certificate link
@@ -32,7 +32,7 @@ export default async function SubmitPage() {
   const enrollment = await getEnrollment();
 
   if (!enrollment) {
-    redirect('/courses/aibi-p/purchase');
+    redirect('/courses/foundation/program/purchase');
   }
 
   // Check for existing submission
@@ -86,7 +86,7 @@ export default async function SubmitPage() {
               Complete all 12 modules before submitting your work product.
             </p>
             <a
-              href="/courses/aibi-p"
+              href="/courses/foundation/program"
               className="inline-block px-5 py-2 border border-[color:var(--color-terra)] text-[color:var(--color-terra)] hover:bg-[color:var(--color-terra)] hover:text-[color:var(--color-linen)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-2"
             >
               Return to Course
@@ -128,7 +128,7 @@ export default async function SubmitPage() {
               Your work product has been approved. Your AiBI-Foundation credential has been issued.
             </p>
             <a
-              href="/courses/aibi-p/certificate"
+              href="/courses/foundation/program/certificate"
               className="inline-block px-5 py-2 bg-[color:var(--color-sage)] hover:opacity-90 text-[color:var(--color-linen)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-opacity focus:outline-none focus:ring-2 focus:ring-[color:var(--color-sage)] focus:ring-offset-2"
             >
               View Certificate

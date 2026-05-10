@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { AIBI_P_ARTIFACTS } from '@content/practice-reps/aibi-p';
+import { AIBI_P_ARTIFACTS } from '@content/practice-reps/foundation-program';
 import { ArtifactStatusPanel } from './ArtifactStatusPanel';
 
 interface ArtifactPageProps {

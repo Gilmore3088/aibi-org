@@ -8,7 +8,7 @@
 // A11Y-02: error messages prefixed with "Error:" (not color-only).
 
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import type { Activity } from '@content/courses/aibi-p';
+import type { Activity } from '@content/courses/foundation-program';
 import { StepHeader, ReadOnlyField, InteractiveField } from './IterationFields';
 import {
   FIELDS,

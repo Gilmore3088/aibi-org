@@ -7,7 +7,7 @@
 // After successful submit, renders in read-only mode.
 
 import React, { useState, useCallback } from 'react';
-import type { Activity } from '@content/courses/aibi-p';
+import type { Activity } from '@content/courses/foundation-program';
 
 export interface SubscriptionInventoryProps {
   readonly activity: Activity;

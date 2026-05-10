@@ -13,7 +13,7 @@
 // Rendered inside the server ModulePage component via ModuleContentClient.
 
 import { useState, useCallback } from 'react';
-import type { Activity, ContentTable } from '@content/courses/aibi-p';
+import type { Activity, ContentTable } from '@content/courses/foundation-program';
 import type { LearnerRole } from '@/types/course';
 import { ActivityForm } from './ActivityForm';
 import { SubscriptionInventory } from './SubscriptionInventory';

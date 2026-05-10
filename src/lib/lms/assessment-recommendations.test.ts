@@ -32,8 +32,8 @@ describe('getTopAssessmentGaps', () => {
 
 describe('assessment next steps', () => {
   it('routes lower tiers to AiBI-Foundation', () => {
-    expect(getAssessmentNextStep('starting-point').href).toBe('/courses/aibi-p');
-    expect(getAssessmentNextStep('early-stage').href).toBe('/courses/aibi-p');
+    expect(getAssessmentNextStep('starting-point').href).toBe('/courses/foundation/program');
+    expect(getAssessmentNextStep('early-stage').href).toBe('/courses/foundation/program');
   });
 
   it('returns a concrete practice recommendation', () => {

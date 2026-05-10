@@ -29,7 +29,7 @@ describe('SourceBacklink', () => {
       <SourceBacklink source="course" sourceRef="aibi-p/module-3/p-001" librarySlugMap={{}} />
     );
     const link = getByRole('link');
-    expect(link.getAttribute('href')).toBe('/courses/aibi-p/3');
+    expect(link.getAttribute('href')).toBe('/courses/foundation/program/3');
     expect(link.textContent).toContain('Module 3');
   });
 

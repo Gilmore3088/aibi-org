@@ -213,7 +213,7 @@ export function OnboardingSettings({ enrollmentId, currentAnswers }: OnboardingS
           style={{ borderTop: '1px solid rgba(181,81,46,0.1)' }}
         >
           <Link
-            href="/courses/aibi-p"
+            href="/courses/foundation/program"
             className="font-mono text-[11px] uppercase tracking-widest transition-colors focus:outline-none focus-visible:ring-2"
             style={{
               color: 'var(--color-ink)',

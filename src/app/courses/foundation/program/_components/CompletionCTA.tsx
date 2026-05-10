@@ -57,7 +57,7 @@ export function CompletionCTA({ moduleNumber, isLastModule }: CompletionCTAProps
             this course.
           </p>
           <a
-            href="/courses/aibi-p/submit"
+            href="/courses/foundation/program/submit"
             className="inline-flex items-center gap-2 px-5 py-2.5 bg-[color:var(--color-terra)] hover:bg-[color:var(--color-terra-light)] text-[color:var(--color-linen)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-2"
           >
             Begin Work Product Submission
@@ -84,7 +84,7 @@ export function CompletionCTA({ moduleNumber, isLastModule }: CompletionCTAProps
             comparison shows your AI readiness improvement — dimension by dimension.
           </p>
           <a
-            href="/courses/aibi-p/post-assessment"
+            href="/courses/foundation/program/post-assessment"
             className="inline-flex items-center gap-2 px-4 py-2 border border-[color:var(--color-terra)]/30 hover:border-[color:var(--color-terra)] text-[color:var(--color-ink)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-2"
           >
             Measure Your Growth

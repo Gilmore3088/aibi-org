@@ -4,13 +4,13 @@
 // Allows filtering by banking role. Renders OutputExampleCard for each result.
 
 import { useState, useMemo } from 'react';
-import type { PromptRole } from '@content/courses/aibi-p/prompt-library';
+import type { PromptRole } from '@content/courses/foundation-program/prompt-library';
 import {
   OUTPUT_EXAMPLES,
   OUTPUT_ROLE_META,
   GALLERY_ROLE_OPTIONS,
   filterOutputExamples,
-} from '@content/courses/aibi-p/output-examples';
+} from '@content/courses/foundation-program/output-examples';
 import { OutputExampleCard } from '../_components/OutputExample';
 
 type RoleFilter = PromptRole | 'all';

@@ -1,6 +1,6 @@
 'use client';
 
-// /courses/aibi-p/quick-wins — Quick Win Tracker
+// /courses/foundation/program/quick-wins — Quick Win Tracker
 // Course completers log automations they've built and time saved.
 // Encouragement milestone: 3 wins unlocks a recommendation letter template.
 //
@@ -190,7 +190,7 @@ export default function QuickWinsPage() {
         <ol className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">
           <li>
             <Link
-              href="/courses/aibi-p"
+              href="/courses/foundation/program"
               className="hover:text-[color:var(--color-terra)] transition-colors"
             >
               AiBI-Foundation
@@ -267,7 +267,7 @@ export default function QuickWinsPage() {
             <span className="font-bold">recommendation letter template</span> is
             unlocked — download it from your{' '}
             <Link
-              href="/courses/aibi-p/certificate"
+              href="/courses/foundation/program/certificate"
               className="underline hover:text-[color:var(--color-terra)] transition-colors"
             >
               certificate page

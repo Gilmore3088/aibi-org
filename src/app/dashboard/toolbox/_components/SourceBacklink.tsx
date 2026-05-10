@@ -32,7 +32,7 @@ function resolveTarget(
     const moduleNumber = match[1];
     return {
       label: `AiBI-Foundation · Module ${moduleNumber}`,
-      href: `/courses/aibi-p/${moduleNumber}`,
+      href: `/courses/foundation/program/${moduleNumber}`,
     };
   }
   // Cookbook branch must precede the library branch: a cookbook source_ref

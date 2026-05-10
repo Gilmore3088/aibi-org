@@ -129,7 +129,7 @@ export default async function AiBISPurchasePage() {
             your AiBI-Foundation credential before enrolling in AiBI-S.
           </p>
           <Link
-            href="/courses/aibi-p/purchase"
+            href="/courses/foundation/program/purchase"
             className="inline-block font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-cobalt)] hover:opacity-70 transition-opacity focus:outline-none focus:ring-2 focus:ring-[color:var(--color-cobalt)] focus:ring-offset-2 rounded-sm"
           >
             Enroll in AiBI-Foundation first

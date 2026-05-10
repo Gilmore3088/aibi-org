@@ -1,8 +1,8 @@
-// /courses/aibi-p/purchased
+// /courses/foundation/program/purchased
 // Stripe Checkout success_url for AiBI-Foundation.
 // Mirrors /assessment/in-depth/purchased: branches on auth state so a buyer
 // who hasn't logged in yet sees a clear "log in to start" CTA instead of
-// hitting the entitlement gate on /courses/aibi-p with no context.
+// hitting the entitlement gate on /courses/foundation/program with no context.
 
 import type { Metadata } from 'next';
 import Link from 'next/link';
@@ -92,7 +92,7 @@ export default async function AiBIPurchasedPage() {
                 . Module 1 takes about 35 minutes.
               </p>
               <Link
-                href="/courses/aibi-p"
+                href="/courses/foundation/program"
                 className="inline-block bg-[color:var(--color-terra)] text-[color:var(--color-linen)] px-8 py-3 rounded-sm font-mono text-[10px] uppercase tracking-[0.15em] hover:bg-[color:var(--color-terra-light)] transition-colors"
               >
                 Begin Module 1
@@ -107,13 +107,13 @@ export default async function AiBIPurchasedPage() {
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link
-                  href="/auth/login?next=/courses/aibi-p"
+                  href="/auth/login?next=/courses/foundation/program"
                   className="inline-block bg-[color:var(--color-terra)] text-[color:var(--color-linen)] px-8 py-3 rounded-sm font-mono text-[10px] uppercase tracking-[0.15em] hover:bg-[color:var(--color-terra-light)] transition-colors"
                 >
                   Log in to start
                 </Link>
                 <Link
-                  href="/auth/sign-up?next=/courses/aibi-p"
+                  href="/auth/sign-up?next=/courses/foundation/program"
                   className="inline-block border border-[color:var(--color-ink)]/20 text-[color:var(--color-ink)] px-8 py-3 rounded-sm font-mono text-[10px] uppercase tracking-[0.15em] hover:bg-[color:var(--color-parch)] transition-colors"
                 >
                   Create my account

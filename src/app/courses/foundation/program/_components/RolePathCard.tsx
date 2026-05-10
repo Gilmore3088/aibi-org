@@ -4,8 +4,8 @@
 // Only renders when enrollment.onboarding_answers includes a supported role
 
 import Link from 'next/link';
-import type { RolePath } from '@content/courses/aibi-p/role-paths';
-import { PLATFORM_META } from '@content/courses/aibi-p';
+import type { RolePath } from '@content/courses/foundation-program/role-paths';
+import { PLATFORM_META } from '@content/courses/foundation-program';
 
 interface RolePathCardProps {
   readonly rolePath: RolePath;
@@ -176,7 +176,7 @@ export function RolePathCard({ rolePath }: RolePathCardProps) {
               Start Here
             </h3>
             <Link
-              href={`/courses/aibi-p/${rolePath.startHereModule}`}
+              href={`/courses/foundation/program/${rolePath.startHereModule}`}
               className="group block rounded-sm p-5 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
               style={{
                 backgroundColor: 'var(--color-parch)',

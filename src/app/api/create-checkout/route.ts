@@ -1,8 +1,9 @@
 // POST /api/create-checkout
 // Creates a Stripe Checkout Session for AiBI-Foundation course purchase.
 //
-// Individual mode: $295/seat (STRIPE_AIBIP_PRICE_ID)
-// Institution/team mode: $199/seat x quantity (STRIPE_AIBIP_INSTITUTION_PRICE_ID), min 10 seats
+// Individual mode: $295/seat (STRIPE_FOUNDATION_PRICE_ID, fallback STRIPE_AIBIP_PRICE_ID)
+// Institution/team mode: $199/seat x quantity (STRIPE_FOUNDATION_INSTITUTION_PRICE_ID,
+// fallback STRIPE_AIBIP_INSTITUTION_PRICE_ID), min 10 seats
 //
 // Persistent discount: if an individual buyer's email is associated with an institution
 // that has discount_locked=true, they get the institution price automatically (PAY-03).
@@ -111,16 +112,24 @@ export async function POST(request: Request) {
     }
   }
 
-  // Check required environment variables
-  const { STRIPE_AIBIP_PRICE_ID, STRIPE_AIBIP_INSTITUTION_PRICE_ID } = process.env;
+  // Check required environment variables.
+  // Phase 5 (2026-05-10): expand/contract rename of STRIPE_AIBIP_* -> STRIPE_FOUNDATION_*.
+  // Code reads new var first, falls back to old name. Phase 5a: both vars set in Vercel
+  // (same value). Phase 5b: code stops checking the legacy var. Phase 5c: legacy var
+  // removed from Vercel.
+  const STRIPE_AIBIP_PRICE_ID =
+    process.env.STRIPE_FOUNDATION_PRICE_ID ?? process.env.STRIPE_AIBIP_PRICE_ID;
+  const STRIPE_AIBIP_INSTITUTION_PRICE_ID =
+    process.env.STRIPE_FOUNDATION_INSTITUTION_PRICE_ID ??
+    process.env.STRIPE_AIBIP_INSTITUTION_PRICE_ID;
 
   if (!STRIPE_AIBIP_PRICE_ID) {
-    console.error('[create-checkout] STRIPE_AIBIP_PRICE_ID is not set.');
+    console.error('[create-checkout] STRIPE_FOUNDATION_PRICE_ID (or legacy STRIPE_AIBIP_PRICE_ID) is not set.');
     return NextResponse.json({ error: 'Payment system not configured.' }, { status: 503 });
   }
 
   if (mode === 'institution' && !STRIPE_AIBIP_INSTITUTION_PRICE_ID) {
-    console.error('[create-checkout] STRIPE_AIBIP_INSTITUTION_PRICE_ID is not set.');
+    console.error('[create-checkout] STRIPE_FOUNDATION_INSTITUTION_PRICE_ID (or legacy STRIPE_AIBIP_INSTITUTION_PRICE_ID) is not set.');
     return NextResponse.json({ error: 'Payment system not configured.' }, { status: 503 });
   }
 

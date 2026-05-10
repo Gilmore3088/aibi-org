@@ -20,7 +20,7 @@ export function ModuleNavigation({
     <div className="flex items-center justify-between mt-16 pt-8 border-t border-[color:var(--color-parch-dark)]">
       <div className="flex flex-wrap items-center gap-4">
         <Link
-          href="/courses/aibi-p"
+          href="/courses/foundation/program"
           className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-slate)] hover:text-[color:var(--color-ink)] transition-colors"
         >
           Back to Overview
@@ -36,7 +36,7 @@ export function ModuleNavigation({
       {!isLastModule && (
         moduleComplete ? (
           <Link
-            href={`/courses/aibi-p/${moduleNumber + 1}`}
+            href={`/courses/foundation/program/${moduleNumber + 1}`}
             className="inline-flex items-center gap-2 bg-[color:var(--color-terra)] hover:bg-[color:var(--color-terra-light)] text-[color:var(--color-linen)] px-6 py-2.5 rounded-sm font-mono text-[11px] uppercase tracking-widest transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-2"
           >
             Next Module

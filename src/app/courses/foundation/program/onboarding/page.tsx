@@ -1,4 +1,4 @@
-// /courses/aibi-p/onboarding — Server Component
+// /courses/foundation/program/onboarding — Server Component
 // Enrollments gate: non-enrolled users redirect to purchase.
 // The onboarding survey runs inside the course layout (sidebar present).
 
@@ -15,7 +15,7 @@ export default async function OnboardingPage() {
 
   // ONBD-01: Non-enrolled visitors go to purchase
   if (!enrollment) {
-    redirect('/courses/aibi-p/purchase');
+    redirect('/courses/foundation/program/purchase');
   }
 
   return (

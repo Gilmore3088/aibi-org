@@ -1,4 +1,4 @@
-// Personal AI Toolkit — /courses/aibi-p/toolkit
+// Personal AI Toolkit — /courses/foundation/program/toolkit
 // Server Component: reads activity responses for the learner's enrollment.
 // Dev mode: uses placeholder data matching the mock enrollment in getEnrollment.ts.
 //
@@ -203,7 +203,7 @@ export default async function ToolkitPage() {
   const enrollment = await getEnrollment();
 
   if (!enrollment) {
-    redirect('/courses/aibi-p/purchase');
+    redirect('/courses/foundation/program/purchase');
   }
 
   // Fetch activity responses — all modules in a single query
@@ -306,7 +306,7 @@ export default async function ToolkitPage() {
                   />
                 ) : (
                   <Link
-                    href="/courses/aibi-p/7"
+                    href="/courses/foundation/program/7"
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[color:var(--color-parch-dark)] text-[color:var(--color-slate)] text-[10px] font-mono uppercase tracking-widest rounded-sm"
                     aria-label="Go to Module 7 to build your skill"
                   >
@@ -354,7 +354,7 @@ export default async function ToolkitPage() {
                   />
                 ) : (
                   <Link
-                    href="/courses/aibi-p/8"
+                    href="/courses/foundation/program/8"
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[color:var(--color-parch-dark)] text-[color:var(--color-slate)] text-[10px] font-mono uppercase tracking-widest rounded-sm"
                     aria-label="Go to Module 8 to iterate your skill"
                   >
@@ -406,7 +406,7 @@ export default async function ToolkitPage() {
                   </div>
                   {isUnlocked ? (
                     <Link
-                      href={`/courses/aibi-p/${artifact.module}`}
+                      href={`/courses/foundation/program/${artifact.module}`}
                       className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[color:var(--color-cobalt)] text-[color:var(--color-cobalt)] hover:bg-[color:var(--color-cobalt)] hover:text-[color:var(--color-linen)] text-[10px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-cobalt)] focus:ring-offset-2"
                     >
                       <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
@@ -420,7 +420,7 @@ export default async function ToolkitPage() {
                     </Link>
                   ) : (
                     <Link
-                      href={`/courses/aibi-p/${artifact.module}`}
+                      href={`/courses/foundation/program/${artifact.module}`}
                       className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[color:var(--color-parch-dark)] text-[color:var(--color-slate)] text-[10px] font-mono uppercase tracking-widest rounded-sm"
                       aria-label={`Go to Module ${artifact.module} to unlock this artifact`}
                     >
@@ -444,7 +444,7 @@ export default async function ToolkitPage() {
               <p className="font-sans text-xs text-[color:var(--color-slate)] mb-4 leading-relaxed">
                 Recorded during Module 2. Update by revisiting{' '}
                 <Link
-                  href="/courses/aibi-p/2"
+                  href="/courses/foundation/program/2"
                   className="underline underline-offset-2 text-[color:var(--color-ink)] hover:text-[color:var(--color-terra)] transition-colors"
                 >
                   Module 2
@@ -553,7 +553,7 @@ export default async function ToolkitPage() {
 
               <div className="pt-2">
                 <Link
-                  href="/courses/aibi-p/submit"
+                  href="/courses/foundation/program/submit"
                   className="inline-flex items-center gap-2 px-5 py-2.5 bg-[color:var(--color-terra)] hover:bg-[color:var(--color-terra-light)] text-[color:var(--color-linen)] text-[10px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-2"
                 >
                   Submit Work Product

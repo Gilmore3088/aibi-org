@@ -26,7 +26,7 @@ vi.mock('@/lib/toolbox/access', () => ({
 vi.mock('@/lib/analytics/plausible', () => ({
   trackEvent: vi.fn(),
 }));
-vi.mock('@content/courses/aibi-p/prompt-library', async () => ({
+vi.mock('@content/courses/foundation-program/prompt-library', async () => ({
   getPromptById: (id: string) =>
     id === 'p-1'
       ? {

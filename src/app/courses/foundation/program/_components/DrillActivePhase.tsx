@@ -3,7 +3,7 @@
 // DrillActivePhase — The timed scenario UI shown during an active ClassificationDrill.
 // Renders the timer bar, scenario text, and classification radio options.
 
-import type { Activity } from '@content/courses/aibi-p';
+import type { Activity } from '@content/courses/foundation-program';
 
 const SCENARIO_TIME_SECONDS = 20;
 

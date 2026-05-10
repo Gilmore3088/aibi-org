@@ -5,7 +5,7 @@
  * a single, focused, reusable instruction template you can paste into
  * any approved platform. The course's Module 11 ("Personal Prompt
  * Library") teaches practitioners to save what works and refine over
- * time. The full library lives at content/courses/aibi-p/prompt-library.ts
+ * time. The full library lives at content/courses/foundation/program/prompt-library.ts
  * (~30 prompts, growing).
  *
  * The flagships listed here are a representative sample for the
@@ -32,7 +32,7 @@ export type AiPromptPlatform =
   | "Perplexity";
 
 export interface AiPrompt {
-  /** id from content/courses/aibi-p/prompt-library.ts */
+  /** id from content/courses/foundation/program/prompt-library.ts */
   readonly libraryId: string;
   readonly title: string;
   readonly role: AiPromptRole;

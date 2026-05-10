@@ -152,7 +152,7 @@ export function sendCoursePurchaseIndividual(
       COURSE_URL:
         payload.magicLinkUrl ??
         payload.courseUrl ??
-        'https://aibankinginstitute.com/courses/aibi-p',
+        'https://aibankinginstitute.com/courses/foundation/program',
       AMOUNT_PAID: payload.amountPaid,
       RECEIPT_URL: 'https://aibankinginstitute.com/dashboard',
     },
@@ -216,7 +216,7 @@ export function sendCoursePurchaseInstitution(
       AMOUNT_PAID: payload.amountPaid,
       ADMIN_URL:
         payload.magicLinkUrl ?? 'https://aibankinginstitute.com/admin',
-      COURSE_URL: 'https://aibankinginstitute.com/courses/aibi-p',
+      COURSE_URL: 'https://aibankinginstitute.com/courses/foundation/program',
     },
   });
 }

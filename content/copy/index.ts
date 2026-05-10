@@ -69,7 +69,7 @@ export const PRINCIPLES = [
 export const CTAS = {
   beginAssessment: { href: "/assessment/start", label: "Begin the readiness assessment" },
   takeAssessment: { href: "/assessment/start", label: "Take the assessment" },
-  viewCurriculum: { href: "/courses/aibi-p", label: "View the curriculum" },
+  viewCurriculum: { href: "/courses/foundation/program", label: "View the curriculum" },
   enrollPractitioner: { href: "/education/practitioner/purchase", label: "Enroll — $295" },
   contactInstitute: { href: `mailto:${BRAND.emails.contact}`, label: "Contact the Institute" },
   requestPilot: { href: "/for-institutions#pilot", label: "Request a pilot" },

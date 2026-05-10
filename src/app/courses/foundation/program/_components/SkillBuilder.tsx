@@ -11,7 +11,7 @@
 // Layout: two-column on lg breakpoint, single-column on mobile.
 
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import type { Activity } from '@content/courses/aibi-p';
+import type { Activity } from '@content/courses/foundation-program';
 import type { LearnerRole } from '@/types/course';
 import {
   getRolePlaceholders,

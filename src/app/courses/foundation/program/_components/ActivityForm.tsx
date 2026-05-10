@@ -7,7 +7,7 @@
 // A11Y-05: artifact download uses plain <a href download> anchor (no JS required).
 
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import type { Activity, ActivityField } from '@content/courses/aibi-p';
+import type { Activity, ActivityField } from '@content/courses/foundation-program';
 
 export interface ActivityFormProps {
   readonly activity: Activity;

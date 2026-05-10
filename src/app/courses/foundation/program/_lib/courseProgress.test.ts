@@ -1,8 +1,8 @@
-// Unit tests for courseProgress.ts — runnable via: npx tsx src/app/courses/aibi-p/_lib/courseProgress.test.ts
+// Unit tests for courseProgress.ts — runnable via: npx tsx src/app/courses/foundation/program/_lib/courseProgress.test.ts
 // No test framework installed; uses a lightweight assert-and-throw pattern.
 
 import { canAccessModule, getModuleStatus, getPillarStatus } from './courseProgress';
-import type { Module, Pillar } from '@content/courses/aibi-p';
+import type { Module, Pillar } from '@content/courses/foundation-program';
 
 // ---------------------------------------------------------------------------
 // Minimal test harness

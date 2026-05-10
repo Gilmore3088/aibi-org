@@ -1,5 +1,5 @@
 // AiBI-Foundation v2 — Course Content Types
-// Pattern follows content/courses/aibi-p/types.ts (the v1 Practitioner course).
+// Pattern follows content/courses/foundation-program/types.ts (the v1 Practitioner course).
 // v2 introduces a four-track product family under one credential:
 //   - Foundation Lite (4 modules · 90 min · $99 · mandatory bank-wide)
 //   - Foundation Full (20 modules · 9.5 hrs · $495)

@@ -110,11 +110,11 @@ Precise image generation for campaign mockups (using ChatGPT with DALL-E or Midj
 2. Upload five policy documents to create a searchable knowledge base that answers natural-language questions grounded only in your actual documents.
 3. This is the foundation for an institutional AI reference system.
 
-All prompts are available in the [Prompt Library](/courses/aibi-p/prompt-library) for easy copying.
+All prompts are available in the [Prompt Library](/courses/foundation/program/prompt-library) for easy copying.
 
 **Deep Dive: Platform Guides**
 
-For comprehensive, step-by-step guides on NotebookLM and Perplexity — including getting started walkthroughs, free vs. paid breakdowns, five banking use cases with copy-paste prompts, custom instruction templates, and data safety guidance for banking use — visit the [Platform Deep Dive Guides](/courses/aibi-p/tool-guides).`,
+For comprehensive, step-by-step guides on NotebookLM and Perplexity — including getting started walkthroughs, free vs. paid breakdowns, five banking use cases with copy-paste prompts, custom instruction templates, and data safety guidance for banking use — visit the [Platform Deep Dive Guides](/courses/foundation/program/tool-guides).`,
     },
   ],
   tables: [

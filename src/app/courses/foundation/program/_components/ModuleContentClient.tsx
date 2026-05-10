@@ -9,7 +9,7 @@
 // This prevents learners from being stuck on modules with no activities.
 
 import { useState, useCallback } from 'react';
-import type { Activity, ContentTable } from '@content/courses/aibi-p';
+import type { Activity, ContentTable } from '@content/courses/foundation-program';
 import type { LearnerRole } from '@/types/course';
 import { ActivitySection } from './ActivitySection';
 import { CompletionCTA } from './CompletionCTA';

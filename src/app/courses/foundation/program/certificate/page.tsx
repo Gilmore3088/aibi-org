@@ -1,4 +1,4 @@
-// Learner certificate page — /courses/aibi-p/certificate
+// Learner certificate page — /courses/foundation/program/certificate
 // Server component. Authenticates the user, looks up their certificate,
 // and renders download + LinkedIn placeholder sections.
 // Per CERT-04: learner can download PDF from this page.
@@ -41,7 +41,7 @@ export default async function CertificatePage() {
 
   const enrollment = await getEnrollment();
   if (!enrollment) {
-    redirect('/courses/aibi-p/purchase');
+    redirect('/courses/foundation/program/purchase');
   }
 
   const serviceClient = createServiceRoleClient();
@@ -295,7 +295,7 @@ export default async function CertificatePage() {
               appear here shortly. Please refresh this page in a moment.
             </p>
             <a
-              href="/courses/aibi-p/certificate"
+              href="/courses/foundation/program/certificate"
               className="inline-block bg-[var(--color-terra)] text-white text-xs font-semibold font-sans py-2.5 px-6 rounded-sm hover:bg-[var(--color-terra-light)] transition-colors"
             >
               Refresh Page

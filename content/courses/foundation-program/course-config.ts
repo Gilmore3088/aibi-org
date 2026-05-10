@@ -4,7 +4,7 @@ import {
   AIBI_P_ARTIFACTS,
   AIBI_P_CERTIFICATE_REQUIREMENTS,
   AIBI_P_PRACTICE_REPS,
-} from '@content/practice-reps/aibi-p';
+} from '@content/practice-reps/foundation-program';
 
 const PHASE_BY_MODULE: Record<number, CourseModule['phase']> = {
   1: 'understand',

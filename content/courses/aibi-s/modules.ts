@@ -1,6 +1,6 @@
 // AiBI-S Course Module Map
 // Imports all 6 week files and exports as typed array + lookup function
-// Follows the same pattern as content/courses/aibi-p/modules.ts
+// Follows the same pattern as content/courses/foundation/program/modules.ts
 
 import type { CohortWeek } from './types';
 import { week1 } from './weeks/week-1';

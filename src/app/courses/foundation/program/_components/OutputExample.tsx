@@ -5,11 +5,11 @@
 // Collapsed by default; click header to expand.
 
 import { useState } from 'react';
-import type { OutputExample } from '@content/courses/aibi-p/output-examples';
+import type { OutputExample } from '@content/courses/foundation-program/output-examples';
 import {
   OUTPUT_PLATFORM_META,
   OUTPUT_ROLE_META,
-} from '@content/courses/aibi-p/output-examples';
+} from '@content/courses/foundation-program/output-examples';
 import { MarkdownRenderer } from './MarkdownRenderer';
 
 interface OutputExampleProps {

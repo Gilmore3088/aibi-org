@@ -2,7 +2,7 @@
 // SHELL-04: Forward-only module access enforcement.
 // SHELL-05: Server-side check (called from Server Components).
 
-import type { Module, Pillar } from '@content/courses/aibi-p';
+import type { Module, Pillar } from '@content/courses/foundation-program';
 
 export type ModuleStatus = 'completed' | 'current' | 'locked';
 export type PillarStatus = 'completed' | 'in-progress' | 'locked';

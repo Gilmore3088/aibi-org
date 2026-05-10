@@ -1,4 +1,4 @@
-import type { Prompt } from '@content/courses/aibi-p/prompt-library';
+import type { Prompt } from '@content/courses/foundation-program/prompt-library';
 import type {
   ToolboxMessage,
   ToolboxScenario,

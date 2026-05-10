@@ -10,8 +10,8 @@ import {
 } from "@/components/system";
 import { InteractiveSkillsPreview } from "@/components/sections/InteractiveSkillsPreview";
 import { InquiryForm } from "@/app/certifications/_components/InquiryForm";
-import { modules } from "@content/courses/aibi-p";
-import { getEnrollment as getPEnrollment } from "@/app/courses/aibi-p/_lib/getEnrollment";
+import { modules } from "@content/courses/foundation-program";
+import { getEnrollment as getPEnrollment } from "@/app/courses/foundation/program/_lib/getEnrollment";
 
 export const metadata: Metadata = {
   title: "Education | The AI Banking Institute",
@@ -116,7 +116,7 @@ export default async function EducationPage() {
             <p className="font-serif italic text-body-sm text-slate mt-s1 mb-s4">
               AiBI-Foundation · in progress
             </p>
-            <Cta href="/courses/aibi-p" variant="secondary">
+            <Cta href="/courses/foundation/program" variant="secondary">
               Resume the program →
             </Cta>
           </Marginalia>
@@ -214,7 +214,7 @@ export default async function EducationPage() {
                 { label: "Effort", value: `${modules.length} modules`, mono: true },
                 { label: "Tuition", value: "$295 · $199/seat at 10+", mono: true },
               ],
-              href: "/courses/aibi-p",
+              href: "/courses/foundation/program",
             },
             {
               level: "Specialist",

@@ -27,7 +27,7 @@ What you get when your team finishes:
 
 That is the difference between "AI is on the agenda" and "AI is on the floor."
 
-[**Enroll your team in AiBI-P**](https://aibankinginstitute.com/courses/aibi-p)
+[**Enroll your team in AiBI-P**](https://aibankinginstitute.com/courses/foundation/program)
 
 If you would rather walk the diagnosis through with a person first — your results, your institution, your priorities — book a 30-minute Executive Briefing instead. No hard sell.
 

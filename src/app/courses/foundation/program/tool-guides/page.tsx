@@ -1,4 +1,4 @@
-// /courses/aibi-p/tool-guides — Platform deep-dive guides page
+// /courses/foundation/program/tool-guides — Platform deep-dive guides page
 // Server Component: lists all platform guides with client-rendered ToolGuide accordions.
 // Currently covers: NotebookLM, Perplexity
 // Designed to expand as additional platforms are added to tool-guides-*.ts files.
@@ -10,7 +10,7 @@ import {
   notebooklmGuide,
   perplexityGuide,
   ALL_TOOL_GUIDES,
-} from '@content/courses/aibi-p/tool-guides-notebooklm-perplexity';
+} from '@content/courses/foundation-program/tool-guides-notebooklm-perplexity';
 
 export const metadata: Metadata = {
   title: 'Platform Deep Dive Guides | AiBI-Foundation | The AI Banking Institute',
@@ -34,7 +34,7 @@ export default function ToolGuidesPage() {
         <ol className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">
           <li>
             <Link
-              href="/courses/aibi-p"
+              href="/courses/foundation/program"
               className="hover:text-[color:var(--color-terra)] transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-1 rounded-sm"
             >
               AiBI-Foundation
@@ -156,7 +156,7 @@ export default function ToolGuidesPage() {
             <ul className="space-y-2">
               <li>
                 <Link
-                  href="/courses/aibi-p/3"
+                  href="/courses/foundation/program/3"
                   className="font-sans text-sm text-[color:var(--color-terra)] hover:underline underline-offset-2 focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-1 rounded-sm"
                 >
                   Module 3 — What You Already Have + Activation
@@ -164,7 +164,7 @@ export default function ToolGuidesPage() {
               </li>
               <li>
                 <Link
-                  href="/courses/aibi-p/4"
+                  href="/courses/foundation/program/4"
                   className="font-sans text-sm text-[color:var(--color-terra)] hover:underline underline-offset-2 focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-1 rounded-sm"
                 >
                   Module 4 — Platform Features Deep Dive

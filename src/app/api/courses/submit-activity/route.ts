@@ -14,9 +14,9 @@ import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/cl
 import {
   V4_AIBIP_MODULE_BY_NUMBER,
   getModuleByNumber,
-} from '@content/courses/aibi-p';
-import { AIBI_P_ARTIFACTS } from '@content/practice-reps/aibi-p';
-import type { Activity, ActivityField } from '@content/courses/aibi-p';
+} from '@content/courses/foundation-program';
+import { AIBI_P_ARTIFACTS } from '@content/practice-reps/foundation-program';
+import type { Activity, ActivityField } from '@content/courses/foundation-program';
 
 const LAST_MODULE = 12;
 

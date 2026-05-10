@@ -1,8 +1,8 @@
 // ModuleHeader — compact sticky pillar-colored header band
 // Server Component: no interactivity needed
 
-import { PILLAR_META } from '@content/courses/aibi-p';
-import type { Pillar } from '@content/courses/aibi-p';
+import { PILLAR_META } from '@content/courses/foundation-program';
+import type { Pillar } from '@content/courses/foundation-program';
 
 interface ModuleHeaderProps {
   readonly moduleNumber: number;

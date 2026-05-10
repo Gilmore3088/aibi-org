@@ -9,7 +9,7 @@
 // select) and a markdown template using {{field_id}} placeholders.
 // `/api/courses/generate-module-artifact` does the merge.
 
-import type { Activity } from '@content/courses/aibi-p/types';
+import type { Activity } from '@content/courses/foundation-program/types';
 
 export interface ModuleActivitySpec {
   readonly moduleNumber: number;

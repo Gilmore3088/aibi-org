@@ -1,4 +1,4 @@
-// /courses/aibi-p layout — shared sidebar + main content area
+// /courses/foundation/program layout — shared sidebar + main content area
 // Server Component: reads live enrollment from Supabase on every request (Plan 02-03)
 // ONBD-02: Redirects enrolled users with null onboarding_answers to /onboarding survey.
 
@@ -34,7 +34,7 @@ export default async function CourseLayout({ children }: CourseLayoutProps) {
     );
 
     if (!isExempt) {
-      redirect('/courses/aibi-p/onboarding');
+      redirect('/courses/foundation/program/onboarding');
     }
   }
 

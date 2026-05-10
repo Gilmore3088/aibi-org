@@ -1,4 +1,4 @@
-// /courses/aibi-p/settings — Server Component
+// /courses/foundation/program/settings — Server Component
 // Allows an enrolled learner to update their onboarding answers at any time.
 // Redirects to /purchase if user is not enrolled.
 
@@ -15,7 +15,7 @@ export default async function SettingsPage() {
   const enrollment = await getEnrollment();
 
   if (!enrollment) {
-    redirect('/courses/aibi-p/purchase');
+    redirect('/courses/foundation/program/purchase');
   }
 
   return (

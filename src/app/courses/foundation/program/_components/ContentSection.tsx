@@ -1,7 +1,7 @@
 // ContentSection — renders a single content section with optional subsections
 // Server Component
 
-import type { Section } from '@content/courses/aibi-p';
+import type { Section } from '@content/courses/foundation-program';
 import { MarkdownRenderer } from './MarkdownRenderer';
 
 interface ContentSectionProps {

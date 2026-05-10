@@ -1,7 +1,7 @@
 // PillarCard — displays a single learning pillar with status
 // Server Component: pure display
 
-import type { Pillar } from '@content/courses/aibi-p';
+import type { Pillar } from '@content/courses/foundation-program';
 
 export type PillarStatus = 'completed' | 'in-progress' | 'locked';
 

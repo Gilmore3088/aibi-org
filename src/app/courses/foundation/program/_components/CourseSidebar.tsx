@@ -2,8 +2,8 @@
 // Server Component: no interactivity needed, rendered once per layout
 
 import Link from 'next/link';
-import { modules, PILLAR_META } from '@content/courses/aibi-p';
-import type { Pillar } from '@content/courses/aibi-p';
+import { modules, PILLAR_META } from '@content/courses/foundation-program';
+import type { Pillar } from '@content/courses/foundation-program';
 
 interface CourseSidebarProps {
   readonly completedModules: readonly number[];
@@ -104,7 +104,7 @@ export function CourseSidebar({ completedModules, currentModule }: CourseSidebar
                 return (
                   <Link
                     key={mod.id}
-                    href={`/courses/aibi-p/${mod.number}`}
+                    href={`/courses/foundation/program/${mod.number}`}
                     className="flex items-center gap-3 px-6 py-2.5 bg-[color:var(--color-parch-dark)] font-bold transition-colors"
                     aria-current="page"
                   >
@@ -127,7 +127,7 @@ export function CourseSidebar({ completedModules, currentModule }: CourseSidebar
               return (
                 <Link
                   key={mod.id}
-                  href={`/courses/aibi-p/${mod.number}`}
+                  href={`/courses/foundation/program/${mod.number}`}
                   className="flex items-center gap-3 px-6 py-2.5 hover:bg-[color:var(--color-parch)] transition-colors"
                 >
                   <span
@@ -162,7 +162,7 @@ export function CourseSidebar({ completedModules, currentModule }: CourseSidebar
       {/* Footer: My Toolkit + Resume + Settings */}
       <div className="p-6 border-t border-[color:var(--color-terra)]/10 space-y-3">
         <Link
-          href="/courses/aibi-p/toolkit"
+          href="/courses/foundation/program/toolkit"
           className="w-full flex items-center justify-center gap-2 py-2 px-4 rounded-sm border border-[color:var(--color-terra)]/30 hover:bg-[color:var(--color-parch)] transition-colors text-[10px] uppercase tracking-widest font-mono text-[color:var(--color-terra)]"
         >
           <svg
@@ -176,7 +176,7 @@ export function CourseSidebar({ completedModules, currentModule }: CourseSidebar
           My Toolkit
         </Link>
         <Link
-          href="/courses/aibi-p/gallery"
+          href="/courses/foundation/program/gallery"
           className="w-full flex items-center justify-center gap-2 py-2 px-4 rounded-sm border border-[color:var(--color-terra)]/30 hover:bg-[color:var(--color-parch)] transition-colors text-[10px] uppercase tracking-widest font-mono text-[color:var(--color-terra)]"
         >
           <svg
@@ -190,7 +190,7 @@ export function CourseSidebar({ completedModules, currentModule }: CourseSidebar
           Output Gallery
         </Link>
         <Link
-          href={`/courses/aibi-p/${currentModule}`}
+          href={`/courses/foundation/program/${currentModule}`}
           className="w-full bg-[color:var(--color-terra)] hover:bg-[color:var(--color-terra-light)] text-[color:var(--color-linen)] py-3 px-4 rounded-sm font-bold transition-colors flex items-center justify-center gap-2 text-[10px] uppercase tracking-widest font-mono"
         >
           Resume
@@ -208,7 +208,7 @@ export function CourseSidebar({ completedModules, currentModule }: CourseSidebar
           </svg>
         </Link>
         <Link
-          href="/courses/aibi-p/quick-wins"
+          href="/courses/foundation/program/quick-wins"
           className="w-full flex items-center justify-center gap-2 py-2 px-4 rounded-sm transition-colors text-[10px] uppercase tracking-widest font-mono hover:bg-[color:var(--color-parch)]"
           style={{ color: 'var(--color-ink)', opacity: 0.6 }}
         >
@@ -227,7 +227,7 @@ export function CourseSidebar({ completedModules, currentModule }: CourseSidebar
           Quick Wins
         </Link>
         <Link
-          href="/courses/aibi-p/settings"
+          href="/courses/foundation/program/settings"
           className="w-full flex items-center justify-center gap-2 py-2 px-4 rounded-sm transition-colors text-[10px] uppercase tracking-widest font-mono hover:bg-[color:var(--color-parch)]"
           style={{ color: 'var(--color-ink)', opacity: 0.5 }}
         >

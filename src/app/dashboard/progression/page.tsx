@@ -321,7 +321,7 @@ function CredentialCard({
         <Link
           href={
             level.code === 'aibi-p'
-              ? '/courses/aibi-p'
+              ? '/courses/foundation/program'
               : level.code === 'aibi-s'
                 ? '/coming-soon?interest=specialist'
                 : '/coming-soon?interest=leader'
@@ -353,7 +353,7 @@ function NextStepBanner({ enrollments }: { enrollments: readonly MockEnrollment[
   let accent = 'var(--color-terra)';
   let heading = 'Start with AiBI-Foundation';
   let body = 'Build your AI foundation. The Practitioner certification is where every transformation begins.';
-  let href = '/courses/aibi-p/purchase';
+  let href = '/courses/foundation/program/purchase';
   let cta = 'View AiBI-Foundation';
 
   if (hasP && hasS && hasL) {

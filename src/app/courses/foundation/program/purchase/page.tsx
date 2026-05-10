@@ -1,4 +1,4 @@
-// /courses/aibi-p/purchase — Enrollment landing page
+// /courses/foundation/program/purchase — Enrollment landing page
 // Server Component: fetches auth session, checks existing enrollment, renders EnrollButton.
 // Redirect target for non-enrolled users attempting to access module pages (SHELL-12)
 
@@ -6,10 +6,10 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { cookies } from 'next/headers';
 import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
-import { getEnrollment } from '@/app/courses/aibi-p/_lib/getEnrollment';
+import { getEnrollment } from '@/app/courses/foundation/program/_lib/getEnrollment';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
 import { EnrollButton } from './EnrollButton';
-import { aibiPCourseConfig } from '@content/courses/aibi-p';
+import { aibiPCourseConfig } from '@content/courses/foundation-program';
 
 export const metadata: Metadata = {
   title: 'Enroll in AiBI-Foundation | The AI Banking Institute',
@@ -73,7 +73,7 @@ export default async function PurchasePage() {
         </p>
         <div className="flex flex-wrap gap-4">
           <Link
-            href="/courses/aibi-p"
+            href="/courses/foundation/program"
             className="inline-block bg-[color:var(--color-terra)] text-[color:var(--color-linen)] px-8 py-3 rounded-sm font-mono text-[10px] uppercase tracking-[0.15em] hover:bg-[color:var(--color-terra-light)] transition-colors"
           >
             Continue the course
@@ -96,7 +96,7 @@ export default async function PurchasePage() {
           Education
         </Link>
         <span className="mx-2 text-[color:var(--color-ink)]/20">/</span>
-        <Link href="/courses/aibi-p" className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] hover:opacity-80 transition-opacity">
+        <Link href="/courses/foundation/program" className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] hover:opacity-80 transition-opacity">
           AiBI-Foundation
         </Link>
         <span className="mx-2 text-[color:var(--color-ink)]/20">/</span>
@@ -181,7 +181,7 @@ export default async function PurchasePage() {
       {/* Back link */}
       <div className="pt-6 border-t border-[color:var(--color-terra)]/10">
         <Link
-          href="/courses/aibi-p"
+          href="/courses/foundation/program"
           className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-slate)] hover:text-[color:var(--color-ink)] transition-colors"
         >
           Back to Course Overview

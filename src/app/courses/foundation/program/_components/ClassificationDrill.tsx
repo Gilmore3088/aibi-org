@@ -8,7 +8,7 @@
 // A11Y-02: text labels for all correctness indicators (not color-only), timer urgency announced by text.
 
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import type { Activity } from '@content/courses/aibi-p';
+import type { Activity } from '@content/courses/foundation-program';
 import { DrillReadOnlyReview, tierToValue } from './DrillReadOnlyReview';
 import { DrillActivePhase } from './DrillActivePhase';
 

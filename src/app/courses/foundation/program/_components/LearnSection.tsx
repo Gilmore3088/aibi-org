@@ -4,7 +4,7 @@
 // key takeaways, and reading time. Replaces the static content dump.
 
 import { useState } from 'react';
-import type { Section } from '@content/courses/aibi-p';
+import type { Section } from '@content/courses/foundation-program';
 import { MarkdownRenderer } from './MarkdownRenderer';
 
 interface LearnSectionProps {

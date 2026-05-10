@@ -99,7 +99,7 @@ export default function AssessmentPage() {
             <div className="flex flex-col items-center gap-4">
               {isLowerTier ? (
                 <a
-                  href="/courses/aibi-p"
+                  href="/courses/foundation/program"
                   onClick={() =>
                     trackEvent('purchase_initiated', { product: 'aibi-p' })
                   }

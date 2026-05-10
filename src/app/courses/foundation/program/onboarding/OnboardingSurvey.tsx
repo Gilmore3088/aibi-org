@@ -141,7 +141,7 @@ export function OnboardingSurvey({ enrollmentId }: OnboardingSurveyProps) {
         throw new Error(data.error ?? 'Failed to save your responses. Please try again.');
       }
 
-      router.push('/courses/aibi-p/1');
+      router.push('/courses/foundation/program/1');
     } catch (err) {
       setErrorMessage(
         err instanceof Error ? err.message : 'An unexpected error occurred.',

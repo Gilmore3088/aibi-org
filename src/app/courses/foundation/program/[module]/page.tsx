@@ -1,4 +1,4 @@
-// Dynamic module page — /courses/aibi-p/[module]
+// Dynamic module page — /courses/foundation/program/[module]
 // Server Component: all content read from typed files at build time
 // T-02-03: parseInt + getModuleByNumber + notFound() guards invalid params
 // SHELL-12: Non-enrolled users redirected to purchase page server-side
@@ -10,8 +10,8 @@ import {
   modules,
   getModuleByNumber,
   V4_AIBIP_MODULE_BY_NUMBER,
-} from '@content/courses/aibi-p';
-import type { Activity, ExpandedModule } from '@content/courses/aibi-p';
+} from '@content/courses/foundation-program';
+import type { Activity, ExpandedModule } from '@content/courses/foundation-program';
 import { ModuleHeader } from '../_components/ModuleHeader';
 import { ContentTable } from '../_components/ContentTable';
 import { LearnSection } from '../_components/LearnSection';
@@ -23,12 +23,12 @@ import { getRoleSpotlight } from '../_lib/contentRouting';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import type { ActivityResponse } from '@/types/course';
 import { AIPracticeSandbox } from '@/components/AIPracticeSandbox';
-import { SANDBOX_CONFIGS } from '@content/sandbox-data/aibi-p';
-import { AIBI_P_ARTIFACTS } from '@content/practice-reps/aibi-p';
+import { SANDBOX_CONFIGS } from '@content/sandbox-data/foundation-program';
+import { AIBI_P_ARTIFACTS } from '@content/practice-reps/foundation-program';
 import {
   getModuleActivitySpec,
   buildModuleActivity,
-} from '@content/courses/aibi-p/module-activities';
+} from '@content/courses/foundation-program/module-activities';
 
 interface ModulePageParams {
   readonly params: { module: string };
@@ -65,12 +65,12 @@ export default async function ModulePage({ params }: ModulePageParams) {
   // SHELL-12: Require enrollment — redirect unauthenticated / non-enrolled visitors
   const enrollment = await getEnrollment();
   if (!enrollment) {
-    redirect('/courses/aibi-p/purchase');
+    redirect('/courses/foundation/program/purchase');
   }
 
   // SHELL-04/05: Forward-only enforcement — redirect to current module if locked
   if (!canAccessModule(moduleNum, enrollment.completed_modules)) {
-    redirect(`/courses/aibi-p/${enrollment.current_module}`);
+    redirect(`/courses/foundation/program/${enrollment.current_module}`);
   }
 
   const isLastModule = mod.number === modules.length;

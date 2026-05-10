@@ -1,4 +1,4 @@
-// /courses/aibi-p/gallery — Browsable gallery of exemplary AI outputs by role
+// /courses/foundation/program/gallery — Browsable gallery of exemplary AI outputs by role
 // Server Component shell with client-side role filtering
 
 import type { Metadata } from 'next';
@@ -19,7 +19,7 @@ export default function OutputGalleryPage() {
         <ol className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">
           <li>
             <Link
-              href="/courses/aibi-p"
+              href="/courses/foundation/program"
               className="hover:text-[color:var(--color-terra)] transition-colors"
             >
               AiBI-Foundation

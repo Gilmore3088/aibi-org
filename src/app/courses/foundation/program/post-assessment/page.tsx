@@ -1,4 +1,4 @@
-// /courses/aibi-p/post-assessment — Post-course "Measure Your Growth" assessment.
+// /courses/foundation/program/post-assessment — Post-course "Measure Your Growth" assessment.
 // Framed as growth measurement, not a readiness screener.
 // Gate: all 12 modules must be completed (enforced client-side and server-side).
 // Uses the v2 question pool with the same rotation logic as the public assessment.
@@ -23,7 +23,7 @@ export default async function PostAssessmentPage() {
 
   // Not enrolled — send to purchase
   if (!enrollment) {
-    redirect('/courses/aibi-p/purchase');
+    redirect('/courses/foundation/program/purchase');
   }
 
   const completedModules = enrollment.completed_modules ?? [];
@@ -34,7 +34,7 @@ export default async function PostAssessmentPage() {
 
   // Not all modules done — send back to course overview
   if (!allComplete) {
-    redirect('/courses/aibi-p');
+    redirect('/courses/foundation/program');
   }
 
   return (

@@ -17,7 +17,7 @@ export type EnrollmentData = Pick<
  *
  * Returns null when Supabase is not configured or when the request has no
  * valid auth session. Callers should treat null as "not enrolled" and
- * redirect to /courses/aibi-p/purchase accordingly.
+ * redirect to /courses/foundation/program/purchase accordingly.
  *
  * Uses getAll/setAll cookie pattern (recommended by @supabase/ssr 0.5+).
  */
@@ -101,7 +101,7 @@ export async function getEnrollmentResult(): Promise<EnrollmentResult> {
 
   // Normalize current_module so URL-bound consumers never see 0.
   // The DB allows current_module=0 (means "enrolled, not started"), but every
-  // UI consumer that builds a /courses/aibi-p/{N} URL needs N >= 1. Coercing
+  // UI consumer that builds a /courses/foundation/program/{N} URL needs N >= 1. Coercing
   // here keeps page.tsx, layout.tsx, and the [module] redirect aligned.
   // Server-side validators (api/courses/submit-activity, save-progress) use
   // a separate query and continue to see the raw value.

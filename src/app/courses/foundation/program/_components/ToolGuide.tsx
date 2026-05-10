@@ -6,7 +6,7 @@
 // Banking use case prompts appear in monospace copy-paste boxes (PromptCard pattern).
 
 import { useState, useCallback } from 'react';
-import type { ToolGuide as ToolGuideData } from '@content/courses/aibi-p/tool-guides-notebooklm-perplexity';
+import type { ToolGuide as ToolGuideData } from '@content/courses/foundation-program/tool-guides-notebooklm-perplexity';
 
 interface ToolGuideProps {
   readonly guide: ToolGuideData;
