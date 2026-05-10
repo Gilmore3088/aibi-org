@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The AI Banking Institute — The A-B-C of AI Banking</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600&family=Cormorant+SC:wght@300;400;500;600&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --parch:#f5f0e6;--parch2:#ede6d8;--parch3:#e2d9c8;--linen:#f9f6f0;
+  --terra:#b5512e;--terra2:#c96a43;--terra3:#e08560;--terra4:#f0c4ab;
+  --cobalt:#2d4a7a;--cobalt2:#3d5f96;
+  --sage:#4a6741;--sage2:#5a7d50;
+  --ink:#1e1a14;--ink2:#2e2820;--ink3:#3e3830;
+  --slate:#6b6355;--dust:#9b9085;
+  --red:#9b2226;
+  --border:rgba(181,81,46,.15);
+  --border2:rgba(30,26,20,.1);
+  --border3:rgba(30,26,20,.06);
+  --fd:'Cormorant',Georgia,serif;
+  --fsc:'Cormorant SC',Georgia,serif;
+  --fb:'DM Sans',system-ui,sans-serif;
+  --fm:'DM Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{background:var(--linen);color:var(--ink);font-family:var(--fb);-webkit-font-smoothing:antialiased}
+button,input{font-family:var(--fb);cursor:pointer}
+
+/* ─── NAV ─── */
+nav{
+  position:sticky;top:0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 60px;height:70px;
+  background:rgba(249,246,240,.97);
+  border-bottom:1px solid var(--border);
+  backdrop-filter:blur(12px);
+}
+.n-logo{display:flex;align-items:center;gap:14px;cursor:pointer}
+.n-seal{
+  width:38px;height:38px;border:1.5px solid var(--terra);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.n-seal-text{font-family:var(--fsc);font-size:11px;color:var(--terra);letter-spacing:.5px}
+.n-wordmark{}
+.n-name{font-family:var(--fsc);font-size:15px;font-weight:600;color:var(--ink);letter-spacing:1.5px;line-height:1.1}
+.n-tag{font-family:var(--fm);font-size:8px;color:var(--dust);letter-spacing:2px;margin-top:2px}
+.n-links{display:flex;align-items:center;gap:0}
+.n-link{padding:8px 14px;background:none;border:none;color:var(--slate);font-size:12px;font-weight:500;letter-spacing:.3px;cursor:pointer;transition:color .15s}
+.n-link:hover{color:var(--terra)}
+.n-cta{
+  margin-left:14px;padding:9px 22px;
+  border:1px solid var(--terra);border-radius:2px;
+  background:transparent;color:var(--terra);
+  font-size:11px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;
+  cursor:pointer;transition:all .18s;
+}
+.n-cta:hover{background:var(--terra);color:var(--linen)}
+
+/* ─── HERO ─── */
+.hero{
+  padding:108px 60px 84px;
+  background:
+    radial-gradient(ellipse 55% 70% at 100% 50%,rgba(181,81,46,.06),transparent 55%),
+    var(--linen);
+  border-bottom:1px solid var(--border);
+  display:grid;grid-template-columns:1fr 400px;gap:72px;align-items:center;
+  position:relative;min-height:88vh;overflow:hidden;
+}
+.hero::after{content:'';position:absolute;right:-80px;top:50%;transform:translateY(-50%);width:400px;height:400px;border:1px solid rgba(181,81,46,.07);border-radius:50%;pointer-events:none}
+.hero::before{content:'';position:absolute;right:20px;top:50%;transform:translateY(-50%);width:260px;height:260px;border:1px solid rgba(181,81,46,.05);border-radius:50%;pointer-events:none}
+.hero-left{position:relative;z-index:1}
+.hero-kicker{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.kicker-rule{width:28px;height:1px;background:var(--terra)}
+.kicker-text{font-family:var(--fsc);font-size:10px;letter-spacing:3px;color:var(--terra)}
+h1{font-family:var(--fd);font-size:clamp(44px,5.5vw,74px);font-weight:600;line-height:1.05;color:var(--ink);margin-bottom:14px;letter-spacing:-.3px}
+h1 em{font-style:italic;color:var(--terra2)}
+.hero-abc{display:flex;gap:20px;margin-bottom:26px;flex-wrap:wrap}
+.abc-pill{display:flex;align-items:center;gap:7px;font-family:var(--fsc);font-size:10px;letter-spacing:1.5px;color:var(--slate)}
+.abc-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.hero-sub{font-family:var(--fd);font-size:17px;font-weight:300;color:var(--slate);line-height:1.75;max-width:540px;margin-bottom:40px;font-style:italic}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:52px}
+.btn-terra{padding:13px 28px;border:none;border-radius:2px;background:var(--terra);color:var(--linen);font-size:11px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;cursor:pointer;transition:all .18s}
+.btn-terra:hover{background:#9b3d1e;transform:translateY(-1px)}
+.btn-outline{padding:13px 24px;border:1px solid var(--border2);border-radius:2px;background:transparent;color:var(--ink3);font-size:11px;font-weight:500;letter-spacing:.5px;cursor:pointer;transition:all .18s}
+.btn-outline:hover{border-color:var(--terra);color:var(--terra)}
+.hero-proof{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--border2);padding-top:28px}
+.proof{padding-right:22px;border-right:1px solid var(--border2)}
+.proof:last-child{border-right:none;padding-right:0;padding-left:22px}
+.proof:nth-child(2){padding:0 22px}
+.proof-n{font-family:var(--fd);font-size:36px;font-weight:600;color:var(--terra);line-height:1;margin-bottom:4px}
+.proof-n sup{font-size:18px;color:var(--terra2)}
+.proof-l{font-size:11px;color:var(--dust);line-height:1.45}
+
+/* HERO RIGHT CARD */
+.hero-card{
+  position:relative;z-index:1;
+  background:var(--parch2);border:1px solid var(--border);border-radius:3px;padding:32px;
+}
+.hero-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--terra),transparent)}
+.hc-label{font-family:var(--fsc);font-size:9px;letter-spacing:2.5px;color:var(--terra);margin-bottom:20px}
+.pillar-stack{display:flex;flex-direction:column;gap:0}
+.pr{display:grid;grid-template-columns:28px 1fr;gap:14px;padding:16px 0;border-bottom:1px solid var(--border3);align-items:start}
+.pr:first-child{padding-top:0}
+.pr:last-child{border-bottom:none;padding-bottom:0}
+.pr-icon{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--fsc);font-size:10px;font-weight:600;flex-shrink:0}
+.pi-a{background:rgba(74,103,65,.12);color:var(--sage)}
+.pi-b{background:rgba(45,74,122,.12);color:var(--cobalt)}
+.pi-c{background:rgba(181,81,46,.12);color:var(--terra)}
+.pr-title{font-family:var(--fsc);font-size:11px;letter-spacing:1.5px;color:var(--ink);margin-bottom:4px}
+.pr-desc{font-size:12px;color:var(--slate);line-height:1.55}
+.hc-div{height:1px;background:var(--border2);margin:18px 0}
+.hc-quote{font-family:var(--fd);font-size:13px;color:var(--ink3);line-height:1.65;font-style:italic}
+
+/* ─── CRED BAR ─── */
+.cred-bar{background:var(--parch2);border-bottom:1px solid var(--border);padding:15px 60px;display:flex;align-items:center;justify-content:center;gap:36px;flex-wrap:wrap}
+.ci-item{font-family:var(--fsc);font-size:9px;letter-spacing:2px;color:var(--slate);display:flex;align-items:center;gap:10px}
+.ci-sep{width:4px;height:4px;background:var(--terra4);border-radius:50%;transform:rotate(45deg)}
+
+/* ─── SHARED SECTION STYLES ─── */
+.section{padding:88px 60px}
+.s-inner{max-width:1200px;margin:0 auto}
+.s-lbl{font-family:var(--fsc);font-size:10px;letter-spacing:3px;color:var(--terra);margin-bottom:12px}
+.s-h2{font-family:var(--fd);font-size:clamp(28px,3.5vw,48px);font-weight:600;color:var(--ink);line-height:1.1;margin-bottom:14px;letter-spacing:-.2px}
+.s-h2 em{font-style:italic;color:var(--terra2)}
+.s-sub{font-family:var(--fd);font-size:15px;font-weight:300;color:var(--slate);line-height:1.8;font-style:italic;max-width:560px}
+.rule-terra{width:40px;height:1px;background:var(--terra);margin-bottom:20px;display:block}
+
+/* ─── PILLARS ─── */
+.pillars-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border3);border:1px solid var(--border2);border-radius:4px;overflow:hidden;margin-top:48px}
+.pillar{padding:44px 36px;background:var(--parch);position:relative;overflow:hidden}
+.pillar::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.p-a::before{background:linear-gradient(90deg,var(--sage),transparent)}
+.p-b::before{background:linear-gradient(90deg,var(--cobalt),transparent)}
+.p-c::before{background:linear-gradient(90deg,var(--terra),transparent)}
+.p-bg-num{position:absolute;top:-16px;right:8px;font-family:var(--fd);font-size:96px;font-weight:700;opacity:.05;line-height:1}
+.p-a .p-bg-num{color:var(--sage)}
+.p-b .p-bg-num{color:var(--cobalt)}
+.p-c .p-bg-num{color:var(--terra)}
+.p-letter{font-family:var(--fsc);font-size:13px;letter-spacing:3px;margin-bottom:14px}
+.p-a .p-letter{color:var(--sage)}
+.p-b .p-letter{color:var(--cobalt)}
+.p-c .p-letter{color:var(--terra)}
+.p-name{font-family:var(--fd);font-size:24px;font-weight:600;color:var(--ink);margin-bottom:12px;line-height:1.15}
+.p-desc{font-family:var(--fd);font-size:14px;font-weight:300;color:var(--slate);line-height:1.75;font-style:italic;margin-bottom:20px}
+.p-points{display:flex;flex-direction:column;gap:7px;border-top:1px solid var(--border3);padding-top:16px}
+.pp{font-size:12px;color:var(--ink3);line-height:1.5}
+.pp::before{content:'— ';color:var(--terra);font-family:var(--fm);font-size:10px}
+
+/* ─── FEAR SECTION ─── */
+.fear-grid{display:grid;grid-template-columns:1fr 1fr;gap:88px;align-items:start}
+.fear-left h2{font-family:var(--fd);font-size:clamp(26px,3.5vw,46px);font-weight:600;color:var(--ink);line-height:1.1;margin-bottom:16px;letter-spacing:-.2px}
+.fear-left h2 em{font-style:italic;color:var(--terra2)}
+.fear-left p{font-family:var(--fd);font-size:15px;font-weight:300;color:var(--slate);line-height:1.8;font-style:italic;margin-bottom:12px}
+.fear-stack{display:flex;flex-direction:column;gap:0}
+.fi{display:grid;grid-template-columns:52px 1fr;gap:14px;padding:22px 0;border-bottom:1px solid var(--border3);align-items:start}
+.fi:first-child{padding-top:0}
+.fi:last-child{border-bottom:none}
+.fi-n{font-family:var(--fd);font-size:32px;font-weight:700;line-height:1;margin-top:-2px;opacity:.18;color:var(--ink)}
+.fi-q{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:5px}
+.fi-a{font-size:12px;color:var(--dust);line-height:1.6}
+
+/* ─── FUNNEL ─── */
+.funnel-row{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--border3);border:1px solid var(--border2);border-radius:3px;overflow:hidden}
+.fstep{padding:28px 20px;background:var(--parch);text-align:center}
+.fstep-circle{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;border:1.5px solid var(--border2);font-family:var(--fsc);font-size:10px;letter-spacing:.5px;background:var(--linen)}
+.fc-free{border-color:var(--sage);color:var(--sage)}
+.fc-97{border-color:var(--cobalt);color:var(--cobalt)}
+.fc-p{border-color:var(--terra2);color:var(--terra2)}
+.fc-s{border-color:var(--terra);color:var(--terra)}
+.fc-l{border-color:var(--ink);color:var(--ink)}
+.fstep-price{font-family:var(--fm);font-size:11px;margin-bottom:5px}
+.fstep-name{font-family:var(--fd);font-size:15px;font-weight:600;color:var(--ink);margin-bottom:5px;line-height:1.2}
+.fstep-desc{font-size:11px;color:var(--dust);line-height:1.5}
+
+/* ─── ENGAGEMENTS ─── */
+.eng-header{display:grid;grid-template-columns:1fr 1fr;gap:80px;margin-bottom:48px;align-items:end}
+.eng-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border2);border:1px solid var(--border2);border-radius:3px;overflow:hidden}
+.eng{padding:40px 30px;background:var(--linen);transition:background .2s}
+.eng:hover{background:var(--parch)}
+.eng-phase{font-family:var(--fsc);font-size:9px;letter-spacing:2.5px;color:var(--terra);margin-bottom:18px}
+.eng-name{font-family:var(--fd);font-size:22px;font-weight:600;color:var(--ink);margin-bottom:12px;line-height:1.2}
+.eng-desc{font-family:var(--fd);font-size:14px;font-weight:300;color:var(--slate);line-height:1.75;font-style:italic;margin-bottom:22px}
+.eng-details{border-top:1px solid var(--border3);padding-top:14px;display:flex;flex-direction:column;gap:7px}
+.eng-d{font-size:12px;color:var(--ink3);display:flex;gap:6px;align-items:baseline}
+.eng-d::before{content:'—';color:var(--terra);font-family:var(--fm);font-size:10px;flex-shrink:0}
+.eng-price{font-family:var(--fsc);font-size:11px;letter-spacing:1px;color:var(--terra);margin-top:6px}
+
+/* ─── CERTIFICATIONS ─── */
+.cert-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.cert{border:1px solid var(--border2);border-radius:3px;padding:34px 30px;background:var(--parch);transition:all .2s;position:relative;overflow:hidden}
+.cert::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--terra),transparent);transform:scaleX(0);transform-origin:left;transition:transform .3s}
+.cert:hover{border-color:var(--terra2);transform:translateY(-3px);box-shadow:0 8px 28px rgba(181,81,46,.1)}
+.cert:hover::after{transform:scaleX(1)}
+.cert-mark{width:36px;height:36px;border:1.5px solid var(--terra);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+.cert-mark span{font-family:var(--fsc);font-size:12px;color:var(--terra)}
+.cert-tier{font-family:var(--fsc);font-size:9px;letter-spacing:2.5px;color:var(--terra);margin-bottom:10px}
+.cert-desig{font-family:var(--fm);font-size:14px;font-weight:500;color:var(--ink);margin-bottom:4px;letter-spacing:.5px}
+.cert-fullname{font-family:var(--fsc);font-size:11px;color:var(--slate);margin-bottom:14px;letter-spacing:.5px}
+.cert-desc{font-family:var(--fd);font-size:13px;font-weight:300;color:var(--slate);line-height:1.7;font-style:italic;margin-bottom:16px}
+.cert-mods{border-top:1px solid var(--border3);padding-top:13px;display:flex;flex-direction:column;gap:6px}
+.cm{font-size:11px;color:var(--ink3)}
+.cm::before{content:'· ';color:var(--terra)}
+.cert-meta{margin-top:14px;display:flex;gap:7px;flex-wrap:wrap}
+.c-badge{font-family:var(--fm);font-size:9px;padding:3px 8px;border:1px solid var(--border2);border-radius:1px;color:var(--slate)}
+
+/* ─── SECURITY BAND ─── */
+.security-band{
+  padding:64px 60px;
+  background:var(--cobalt);
+}
+.sb-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.sb-left h2{font-family:var(--fd);font-size:clamp(26px,3.2vw,44px);font-weight:600;color:var(--linen);line-height:1.1;margin-bottom:14px;letter-spacing:-.2px}
+.sb-left h2 em{font-style:italic;color:rgba(249,246,240,.55)}
+.sb-left p{font-family:var(--fd);font-size:15px;font-weight:300;color:rgba(249,246,240,.6);line-height:1.8;font-style:italic}
+.sb-points{display:flex;flex-direction:column;gap:14px}
+.sp{display:flex;gap:12px;align-items:flex-start}
+.sp-num{width:22px;height:22px;border-radius:50%;background:rgba(249,246,240,.1);border:1px solid rgba(249,246,240,.18);flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.sp-num span{font-family:var(--fsc);font-size:8px;color:rgba(249,246,240,.65)}
+.sp-title{font-size:13px;font-weight:600;color:var(--linen);margin-bottom:3px}
+.sp-desc{font-size:12px;color:rgba(249,246,240,.5);line-height:1.55}
+
+/* ─── ROI ─── */
+.roi-layout{display:grid;grid-template-columns:1fr 480px;gap:80px;align-items:start}
+.roi-copy h2{font-family:var(--fd);font-size:clamp(26px,3.2vw,44px);font-weight:600;color:var(--ink);line-height:1.1;margin-bottom:14px;letter-spacing:-.2px}
+.roi-copy h2 em{font-style:italic;color:var(--terra2)}
+.roi-copy p{font-family:var(--fd);font-size:15px;font-weight:300;color:var(--slate);line-height:1.8;font-style:italic;margin-bottom:12px}
+.bench{background:var(--parch2);border:1px solid var(--border);border-radius:3px;padding:22px;margin-top:22px}
+.bench-lbl{font-family:var(--fsc);font-size:9px;letter-spacing:2.5px;color:var(--terra);margin-bottom:12px}
+.br{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border3)}
+.br:last-child{border-bottom:none}
+.br-n{font-size:11px;color:var(--slate)}
+.br-v{font-family:var(--fm);font-size:11px;font-weight:500}
+.br-bad{color:var(--red)}.br-good{color:var(--sage)}
+.calc-card{background:var(--parch2);border:1px solid var(--border);border-radius:3px;padding:32px;position:relative}
+.calc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--terra),transparent)}
+.calc-lbl{font-family:var(--fsc);font-size:9px;letter-spacing:2.5px;color:var(--terra);margin-bottom:22px}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.f{margin-bottom:16px}
+.f-label{font-size:11px;color:var(--slate);margin-bottom:6px;font-weight:500}
+.f-input{width:100%;background:var(--linen);border:1px solid var(--border2);border-radius:2px;padding:10px 12px;color:var(--ink);font-family:var(--fm);font-size:17px;outline:none;transition:border-color .2s}
+.f-input:focus{border-color:var(--terra)}
+.r-meta{display:flex;justify-content:space-between;font-size:11px;color:var(--slate);margin-bottom:5px}
+.r-meta span:last-child{font-family:var(--fm);color:var(--terra)}
+input[type=range]{width:100%;accent-color:var(--terra);cursor:pointer;margin-bottom:14px}
+.res-box{background:var(--parch3);border:1px solid var(--border);border-radius:3px;padding:24px;text-align:center;margin-top:4px}
+.res-lbl{font-family:var(--fsc);font-size:9px;letter-spacing:2.5px;color:var(--terra);margin-bottom:8px}
+.res-big{font-family:var(--fd);font-size:52px;font-weight:700;color:var(--terra);line-height:1;margin-bottom:4px}
+.res-range{font-size:11px;color:var(--dust);margin-bottom:16px}
+.res-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.rg{background:var(--parch);border-radius:2px;padding:11px;text-align:center}
+.rg-n{font-family:var(--fm);font-size:16px;color:var(--ink)}
+.rg-l{font-size:10px;color:var(--dust);margin-top:3px;line-height:1.3}
+
+/* ─── CTA ─── */
+.cta-section{padding:88px 60px;background:var(--terra);text-align:center}
+.cta-inner{max-width:600px;margin:0 auto}
+.cta-rule{width:40px;height:1px;background:rgba(249,246,240,.4);margin:0 auto 22px}
+.cta-lbl{font-family:var(--fsc);font-size:10px;letter-spacing:3px;color:var(--terra4);margin-bottom:14px}
+.cta-inner h2{font-family:var(--fd);font-size:clamp(30px,4vw,52px);font-weight:600;color:var(--linen);line-height:1.1;margin-bottom:14px;letter-spacing:-.2px}
+.cta-inner h2 em{font-style:italic;color:rgba(249,246,240,.6)}
+.cta-inner p{font-family:var(--fd);font-size:15px;font-weight:300;color:rgba(249,246,240,.7);line-height:1.75;margin-bottom:36px;font-style:italic}
+.cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.btn-cream{padding:13px 28px;border:none;border-radius:2px;background:var(--linen);color:var(--terra);font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;cursor:pointer;transition:all .18s}
+.btn-cream:hover{background:var(--parch3);transform:translateY(-1px)}
+.btn-lo{padding:13px 24px;border:1px solid rgba(249,246,240,.35);border-radius:2px;background:transparent;color:rgba(249,246,240,.8);font-size:11px;font-weight:500;letter-spacing:.5px;cursor:pointer;transition:all .18s}
+.btn-lo:hover{border-color:var(--linen);color:var(--linen)}
+
+/* ─── FOOTER ─── */
+footer{padding:52px 60px 40px;background:var(--ink);border-top:1px solid rgba(255,255,255,.06)}
+.foot-inner{max-width:1200px;margin:0 auto}
+.foot-top{display:grid;grid-template-columns:280px 1fr;gap:80px;margin-bottom:36px}
+.foot-brand-name{font-family:var(--fsc);font-size:16px;letter-spacing:1.5px;color:var(--parch);margin-bottom:4px}
+.foot-brand-aibi{font-family:var(--fsc);font-size:11px;letter-spacing:3px;color:rgba(245,240,230,.3);margin-bottom:6px}
+.foot-brand-abc{font-family:var(--fd);font-size:13px;font-style:italic;color:rgba(245,240,230,.35);margin-bottom:14px}
+.foot-domain{font-family:var(--fm);font-size:9px;color:var(--terra3);letter-spacing:2px}
+.foot-links{display:grid;grid-template-columns:repeat(3,1fr);gap:36px}
+.fl-title{font-family:var(--fsc);font-size:8px;letter-spacing:2.5px;color:rgba(245,240,230,.25);text-transform:uppercase;margin-bottom:12px}
+.fl-link{display:block;font-size:12px;color:rgba(245,240,230,.4);margin-bottom:8px;cursor:pointer;transition:color .15s}
+.fl-link:hover{color:rgba(245,240,230,.8)}
+.foot-bottom{padding-top:24px;border-top:1px solid rgba(255,255,255,.05);display:flex;justify-content:space-between;align-items:center}
+.foot-copy{font-size:11px;color:rgba(245,240,230,.25)}
+.foot-reg{font-family:var(--fm);font-size:9px;color:rgba(245,240,230,.2);letter-spacing:.5px}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:1000px){
+  nav{padding:0 24px}.n-links{display:none}
+  .hero{padding:80px 24px 60px;grid-template-columns:1fr;min-height:auto;gap:40px}
+  .hero::before,.hero::after{display:none}
+  .section{padding:64px 24px}
+  .pillars-grid,.cert-grid,.eng-grid,.funnel-row{grid-template-columns:1fr}
+  .fear-grid,.eng-header,.roi-layout,.sb-inner{grid-template-columns:1fr;gap:40px}
+  .hero-proof{grid-template-columns:1fr 1fr;row-gap:20px}
+  footer{padding:40px 24px}
+  .foot-top{grid-template-columns:1fr;gap:28px}
+  .foot-bottom{flex-direction:column;gap:8px;text-align:center}
+  .cred-bar{padding:14px 24px}
+  .cta-section{padding:72px 24px}
+  .security-band{padding:60px 24px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="n-logo" onclick="gs('hero')">
+    <div class="n-seal"><div class="n-seal-text">AiBI</div></div>
+    <div class="n-wordmark">
+      <div class="n-name">The AI Banking Institute</div>
+      <div class="n-tag">aibankinginstitute.com</div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center">
+    <div class="n-links">
+      <button class="n-link" onclick="gs('pillars')">The A-B-C</button>
+      <button class="n-link" onclick="gs('engagements')">Services</button>
+      <button class="n-link" onclick="gs('certs')">Certifications</button>
+      <button class="n-link" onclick="gs('roi')">ROI Model</button>
+    </div>
+    <button class="n-cta" onclick="gs('cta')">Request Briefing</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-left">
+    <div class="hero-kicker">
+      <div class="kicker-rule"></div>
+      <span class="kicker-text">AiBI · The AI Banking Institute</span>
+    </div>
+    <h1>AI your people<br>will actually <em>use.</em></h1>
+    <div class="hero-abc">
+      <div class="abc-pill"><div class="abc-dot" style="background:var(--sage)"></div>A — Accessible</div>
+      <div class="abc-pill"><div class="abc-dot" style="background:var(--cobalt)"></div>B — Boundary-Safe</div>
+      <div class="abc-pill"><div class="abc-dot" style="background:var(--terra)"></div>C — Capable</div>
+    </div>
+    <p class="hero-sub">AI proficiency and transformation built exclusively for community banks and credit unions — structured around the three things that determine whether AI actually sticks inside a regulated institution.</p>
+    <div class="hero-actions">
+      <button class="btn-terra" onclick="gs('cta')">Request Free Briefing</button>
+      <button class="btn-outline" onclick="gs('roi')">Model Your ROI</button>
+    </div>
+    <div class="hero-proof">
+      <div class="proof">
+        <div class="proof-n">~8<sup>,400</sup></div>
+        <div class="proof-l">US community banks &amp; credit unions we serve</div>
+      </div>
+      <div class="proof">
+        <div class="proof-n">8–12<sup>pp</sup></div>
+        <div class="proof-l">efficiency ratio gap — FDIC data, community banks vs. top performers</div>
+      </div>
+      <div class="proof">
+        <div class="proof-n">$280<sup>K</sup></div>
+        <div class="proof-l">annual NIE reduction at a 100-FTE institution</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-card">
+    <div class="hc-label">Why the Sequence Matters</div>
+    <div class="pillar-stack">
+      <div class="pr">
+        <div class="pr-icon pi-a">A</div>
+        <div>
+          <div class="pr-title">Accessible — First</div>
+          <div class="pr-desc">Before staff use AI safely or efficiently, they have to believe they can use it. Personal tools. Immediate wins. Fear removed first.</div>
+        </div>
+      </div>
+      <div class="pr">
+        <div class="pr-icon pi-b">B</div>
+        <div>
+          <div class="pr-title">Boundary-Safe — Second</div>
+          <div class="pr-desc">Governance, data protection, regulatory readiness. Every recommendation assumes an examiner will eventually see it.</div>
+        </div>
+      </div>
+      <div class="pr">
+        <div class="pr-icon pi-c">C</div>
+        <div>
+          <div class="pr-title">Capable — Third</div>
+          <div class="pr-desc">Every banker becomes a builder and problem-solver. The efficiency ratio impact follows — it is the output, not the frame.</div>
+        </div>
+      </div>
+    </div>
+    <div class="hc-div"></div>
+    <div class="hc-quote">"Institutions that lead with efficiency without clearing accessibility and security first have adoption measured in weeks, not years." — 66% of banks are discussing AI budgets (Bank Director 2024), yet 57% report skill gaps as the primary barrier (Gartner). The gap is not budget. It is people.</div>
+  </div>
+</section>
+
+<!-- CRED BAR -->
+<div class="cred-bar">
+  <div class="ci-item"><div class="ci-sep"></div>Banking-Only Practice<div class="ci-sep"></div></div>
+  <div class="ci-item">FDIC-Insured Institutions<div class="ci-sep"></div></div>
+  <div class="ci-item">NCUA-Chartered Credit Unions<div class="ci-sep"></div></div>
+  <div class="ci-item">Vendor Neutral<div class="ci-sep"></div></div>
+  <div class="ci-item">AIEOG-Aligned Curriculum<div class="ci-sep"></div></div>
+</div>
+
+<!-- PILLARS -->
+<section class="section" id="pillars" style="background:var(--linen);border-bottom:1px solid var(--border2)">
+  <div class="s-inner">
+    <div style="text-align:center;max-width:640px;margin:0 auto 0">
+      <div class="s-lbl">The A-B-C of AI Banking</div>
+      <h2 class="s-h2">Three pillars.<br><em>One necessary sequence.</em></h2>
+      <p class="s-sub" style="margin:0 auto">Most AI programs fail because they skip the first two and jump straight to the third. We don't.</p>
+    </div>
+    <div class="pillars-grid">
+      <div class="pillar p-a">
+        <div class="p-bg-num">A</div>
+        <div class="p-letter">Pillar A — Accessible</div>
+        <div class="p-name">Built for bankers, not technologists</div>
+        <div class="p-desc">Your compliance officer, your tellers, your branch managers — they don't need to understand how AI works. They need to experience what it does for their Tuesday morning. 57% of financial institutions report AI skill gaps as their primary adoption barrier (Gartner) — the tools are available. The confidence is not.</div>
+        <div class="p-points">
+          <div class="pp">Personal experimentation before business application — always</div>
+          <div class="pp">ChatGPT, Claude, Gemini, Microsoft Copilot (already licensed in M365) — tools available today at no additional cost to most institutions</div>
+          <div class="pp">Optional builders: Lovable, Bolt.new for those who want to build</div>
+          <div class="pp">Assessment-driven curriculum — no one-size-fits-all track</div>
+          <div class="pp">First session always produces something they use that week</div>
+        </div>
+      </div>
+      <div class="pillar p-b">
+        <div class="p-bg-num">B</div>
+        <div class="p-letter">Pillar B — Boundary-Safe</div>
+        <div class="p-name">Every recommendation assumes a regulated institution</div>
+        <div class="p-desc">The question your board will ask isn't "can we use AI?" It's "is it safe?" We answer it before they ask — with specific frameworks, not general reassurances.</div>
+        <div class="p-points">
+          <div class="pp">Member PII never enters a public LLM — clear policy from day one</div>
+          <div class="pp">Aligned with SR 11-7, TPRM Guidance, ECOA/Reg B, and the AIEOG AI Lexicon — the official shared vocabulary developed by the US Treasury, FBIIC, and FSSCC (February 2026)</div>
+          <div class="pp">AI governance framework included in every Transformation engagement</div>
+          <div class="pp">Vendor evaluation: what to require in every AI contract</div>
+          <div class="pp">Shadow AI addressed directly. 55% of organizations have not yet implemented a governance framework, but most are developing one (Gartner) — we help you be in the prepared majority</div>
+        </div>
+      </div>
+      <div class="pillar p-c">
+        <div class="p-bg-num">C</div>
+        <div class="p-letter">Pillar C — Capable</div>
+        <div class="p-name">Every banker becomes a builder and problem-solver</div>
+        <div class="p-desc">You never know who has the best idea in the room. A teller who's been frustrated by a manual process for three years might build the automation that saves the operations team 10 hours a week.</div>
+        <div class="p-points">
+          <div class="pp">Power Automate, Copilot Studio — build without IT involvement</div>
+          <div class="pp">Every Quick Win Sprint teaches the institution to fish, not just delivers fish</div>
+          <div class="pp">Efficiency ratio impact documented in NIE reduction terms</div>
+          <div class="pp">Community bank median efficiency ratio: ~65% (FDIC data)</div>
+          <div class="pp">Top-quartile institutions: 8–12pp below — the gap is measurable and closable</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THE FEAR SEQUENCE -->
+<section class="section" style="background:var(--parch2);border-bottom:1px solid var(--border2)">
+  <div class="s-inner">
+    <div class="fear-grid">
+      <div class="fear-left">
+        <span class="rule-terra"></span>
+        <div class="s-lbl" style="margin-bottom:14px">The Real Objections</div>
+        <h2>The three fears every<br>community bank CEO <em>actually has.</em></h2>
+        <p>Executives don't say these out loud. But they're present in every conversation about AI. We address all three — in order — before asking for any commitment.</p>
+        <p>Clearing the first fear is prerequisite to the second. The second is prerequisite to the third. This is why the A-B-C sequence is not optional.</p>
+      </div>
+      <div class="fear-stack">
+        <div class="fi">
+          <div class="fi-n">01</div>
+          <div>
+            <div class="fi-q" style="color:var(--sage)">"My people can't do this."</div>
+            <div class="fi-a">The silent first objection. The A pillar solves it — not through explanation but through experience. A compliance officer who builds something useful in their first session converts. One who watches a demo doesn't.</div>
+          </div>
+        </div>
+        <div class="fi">
+          <div class="fi-n">02</div>
+          <div>
+            <div class="fi-q" style="color:var(--cobalt)">"It's not safe for a regulated institution."</div>
+            <div class="fi-a">The first spoken objection. The B pillar answers it with specifics: here's what never goes in a public LLM, here's what your governance policy needs to say, here's what an examiner will ask. We make the institution more secure than before we arrived.</div>
+          </div>
+        </div>
+        <div class="fi">
+          <div class="fi-n">03</div>
+          <div>
+            <div class="fi-q" style="color:var(--terra)">"I can't justify the cost."</div>
+            <div class="fi-a">Tractable — once A and B are cleared. We run the efficiency ratio model before asking for anything. Quick Win Sprint: if the ROI doesn't cover the engagement cost within 90 days, we refund the difference.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THE JOURNEY -->
+<section class="section" style="background:var(--linen);border-bottom:1px solid var(--border2)">
+  <div class="s-inner">
+    <span class="rule-terra"></span>
+    <div class="s-lbl" style="margin-bottom:14px">The AiBI Journey</div>
+    <h2 class="s-h2">Every step earns<br><em>the next one.</em></h2>
+    <p class="s-sub" style="margin-bottom:40px">Start free. Move at your institution's pace. The engagement model scales with your evidence of value — not our ambition.</p>
+    <div class="funnel-row">
+      <div class="fstep">
+        <div class="fstep-circle fc-free">FREE</div>
+        <div class="fstep-price" style="color:var(--sage)">$0</div>
+        <div class="fstep-name">AI Readiness Assessment</div>
+        <div class="fstep-desc">8 questions, 3 minutes. Instant score. Personalized first-steps recommendation by pillar.</div>
+      </div>
+      <div class="fstep">
+        <div class="fstep-circle fc-97">$97</div>
+        <div class="fstep-price" style="color:var(--cobalt)">$97</div>
+        <div class="fstep-name">AI Foundations</div>
+        <div class="fstep-desc">90-min course. Three tools, five templates, certificate. The accessible entry point.</div>
+      </div>
+      <div class="fstep">
+        <div class="fstep-circle fc-p">AiBI-P</div>
+        <div class="fstep-price" style="color:var(--terra2)">$295</div>
+        <div class="fstep-name">Practitioner Cert.</div>
+        <div class="fstep-desc">Full AiBI-P certification. All staff. Assessed by work product quality.</div>
+      </div>
+      <div class="fstep">
+        <div class="fstep-circle fc-s">AiBI-S</div>
+        <div class="fstep-price" style="color:var(--terra)">$1,495</div>
+        <div class="fstep-name">Specialist Cert.</div>
+        <div class="fstep-desc">5 role tracks. Live cohort. Assessed by implemented process improvement.</div>
+      </div>
+      <div class="fstep">
+        <div class="fstep-circle fc-l">AiBI-L</div>
+        <div class="fstep-price" style="color:var(--ink)">$2,800+</div>
+        <div class="fstep-name">Leader Cert. + fCAIO</div>
+        <div class="fstep-desc">C-suite workshop + fractional Chief AI Officer for strategic transformation.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECURITY BAND -->
+<div class="security-band" id="security">
+  <div class="sb-inner">
+    <div class="sb-left">
+      <div style="width:32px;height:1px;background:rgba(249,246,240,.3);margin-bottom:20px"></div>
+      <div style="font-family:var(--fsc);font-size:9px;letter-spacing:2.5px;color:rgba(249,246,240,.38);margin-bottom:14px">Pillar B — Boundary-Safe · Grounded in AIEOG AI Lexicon (US Treasury, February 2026)</div>
+      <h2>Safe to use.<br><em>Safe to audit.</em></h2>
+      <p>The institutions we work with are examined by the OCC, FDIC, NCUA, and state regulators. Every recommendation assumes an examiner will see it. That's our differentiator.</p>
+    </div>
+    <div class="sb-points">
+      <div class="sp">
+        <div class="sp-num"><span>01</span></div>
+        <div><div class="sp-title">Member data stays protected</div><div class="sp-desc">Clear protocols for public vs. enterprise-licensed tools. Embedded in every training module, not mentioned once and assumed.</div></div>
+      </div>
+      <div class="sp">
+        <div class="sp-num"><span>02</span></div>
+        <div><div class="sp-title">AIEOG-vocabulary aligned</div><div class="sp-desc">Training uses the official shared AI vocabulary developed by the US Treasury, FBIIC, and FSSCC (February 2026). SR 11-7, Interagency TPRM, ECOA/Reg B, and BSA/AML are addressed by name. Your compliance officer and your examiner will be speaking the same language.</div></div>
+      </div>
+      <div class="sp">
+        <div class="sp-num"><span>03</span></div>
+        <div><div class="sp-title">Vendor evaluation included</div><div class="sp-desc">Every engagement includes a vendor scorecard: data handling, SLA terms, concentration risk, model explainability, exit provisions. Know what to require before signing.</div></div>
+      </div>
+      <div class="sp">
+        <div class="sp-num"><span>04</span></div>
+        <div><div class="sp-title">Shadow AI addressed directly</div><div class="sp-desc">Your staff are already using AI on personal devices. The choice isn't AI vs. no AI — it's governed, documented AI vs. ungoverned, untracked AI.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ENGAGEMENTS -->
+<section class="section" id="engagements" style="background:var(--parch2);border-bottom:1px solid var(--border2)">
+  <div class="s-inner">
+    <div class="eng-header">
+      <div>
+        <span class="rule-terra"></span>
+        <div class="s-lbl" style="margin-bottom:14px">AiBI Engagement Models</div>
+        <h2 class="s-h2">Start small.<br><em>Scale on evidence.</em></h2>
+      </div>
+      <p style="font-family:var(--fd);font-size:15px;font-weight:300;color:var(--slate);line-height:1.8;font-style:italic">Every engagement produces a deliverable that demonstrates measurable value before you commit to a larger scope. The Quick Win Sprint includes a "What We Didn't Do" page showing the next seven opportunities — that's how the Process Audit conversation begins.</p>
+    </div>
+    <div class="eng-grid">
+      <div class="eng">
+        <div class="eng-phase">Phase I · Entry</div>
+        <div class="eng-name">Operational Quick Win Sprint</div>
+        <div class="eng-desc">We identify your three highest-value automation opportunities, implement them, and deliver a documented before/after impact report — hours recaptured, NIE reduced, efficiency ratio impact quantified.</div>
+        <div class="eng-details">
+          <div class="eng-d">4–6 week delivery</div>
+          <div class="eng-d">3 implemented automations</div>
+          <div class="eng-d">Documented ROI report + "What We Didn't Do" page</div>
+          <div class="eng-d">90-day ROI guarantee</div>
+        </div>
+        <div class="eng-price" style="margin-top:16px">$5,000 – $15,000</div>
+      </div>
+      <div class="eng">
+        <div class="eng-phase">Phase II · Expansion</div>
+        <div class="eng-name">Efficiency &amp; Process Audit</div>
+        <div class="eng-desc">Full cross-departmental assessment. Every manual workflow quantified by dollar value. Prioritized automation roadmap with NIE reduction attached to each line item. Board-ready.</div>
+        <div class="eng-details">
+          <div class="eng-d">6–10 week engagement</div>
+          <div class="eng-d">All departments assessed</div>
+          <div class="eng-d">Efficiency ratio model for your institution</div>
+          <div class="eng-d">Board presentation included</div>
+        </div>
+        <div class="eng-price" style="margin-top:16px">$25,000 – $60,000</div>
+      </div>
+      <div class="eng">
+        <div class="eng-phase">Phase III · Strategic</div>
+        <div class="eng-name">AI Transformation + AiBI fCAIO</div>
+        <div class="eng-desc">A structured monthly operating system installed inside your institution. Dedicated team. 90-day rolling roadmap. Capability transfer built in — your team drives AI transformation independently when the engagement ends.</div>
+        <div class="eng-details">
+          <div class="eng-d">Wk 1: Executive Alignment</div>
+          <div class="eng-d">Wk 2: Department Activation</div>
+          <div class="eng-d">Wk 3: Implementation Sprint</div>
+          <div class="eng-d">Wk 4: Training + Impact Report</div>
+        </div>
+        <div class="eng-price" style="margin-top:16px">$75,000 – $150,000+</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section class="section" id="certs" style="background:var(--linen);border-bottom:1px solid var(--border2)">
+  <div class="s-inner">
+    <span class="rule-terra"></span>
+    <div style="max-width:620px;margin-bottom:48px">
+      <div class="s-lbl" style="margin-bottom:14px">AiBI Certifications</div>
+      <h2 class="s-h2">Credentials that mean<br><em>something in banking.</em></h2>
+      <p class="s-sub">Assessed by work product, not test score. Role-specific, banking-calibrated, and continuously updated as the tools change. The credential on your LinkedIn reads: <strong>AiBI-P · The AI Banking Institute.</strong></p>
+    </div>
+    <div class="cert-grid">
+      <div class="cert">
+        <div class="cert-mark"><span>P</span></div>
+        <div class="cert-tier">Foundation · All Staff</div>
+        <div class="cert-desig">AiBI-P</div>
+        <div class="cert-fullname">Banking AI Practitioner</div>
+        <div class="cert-desc">Tool fluency, prompt engineering, and safe use grounded in banking operations. Assessed by a real work output — something they'd actually submit to a supervisor.</div>
+        <div class="cert-mods">
+          <div class="cm">What Gen AI is and why it fails in banking contexts</div>
+          <div class="cm">Prompting for professional banking output (RTFC framework)</div>
+          <div class="cm">Safe use — what never goes in a public LLM</div>
+          <div class="cm">Five universal templates for banking roles</div>
+          <div class="cm">Identifying the highest-value AI use cases in your role</div>
+        </div>
+        <div class="cert-meta">
+          <span class="c-badge">Self-Paced</span>
+          <span class="c-badge">8 Credit Hours</span>
+          <span class="c-badge">$295</span>
+        </div>
+      </div>
+      <div class="cert">
+        <div class="cert-mark"><span>S</span></div>
+        <div class="cert-tier">Specialist · Department Managers</div>
+        <div class="cert-desig">AiBI-S</div>
+        <div class="cert-fullname">Banking AI Specialist (+ track)</div>
+        <div class="cert-desc">Five role-specific tracks: Operations, Lending, Compliance, Finance, Retail. Assessed by a submitted process improvement with measured time savings — not a test.</div>
+        <div class="cert-mods">
+          <div class="cm">Advanced prompt architecture for professional output</div>
+          <div class="cm">Workflow mapping and automation design</div>
+          <div class="cm">Power Automate / Copilot Studio for non-developers</div>
+          <div class="cm">AI vendor evaluation — 5 questions, scoring framework</div>
+          <div class="cm">Change management and staff adoption</div>
+        </div>
+        <div class="cert-meta">
+          <span class="c-badge">Live Cohort</span>
+          <span class="c-badge">16 Credit Hours</span>
+          <span class="c-badge">$1,495</span>
+        </div>
+      </div>
+      <div class="cert">
+        <div class="cert-mark"><span>L</span></div>
+        <div class="cert-tier">Leadership · C-Suite &amp; Board</div>
+        <div class="cert-desig">AiBI-L</div>
+        <div class="cert-fullname">Banking AI Leader</div>
+        <div class="cert-desc">AI strategy, efficiency ratio modeling, governance, and regulatory readiness for executives and board directors. You leave with your institution's actual ROI numbers — not a template.</div>
+        <div class="cert-mods">
+          <div class="cm">The A-B-C from a leadership accountability lens</div>
+          <div class="cm">Efficiency ratio strategy — live modeling, your numbers</div>
+          <div class="cm">3-year AI roadmap development for board presentation</div>
+          <div class="cm">AI governance and examiner readiness</div>
+          <div class="cm">Vendor evaluation and concentration risk</div>
+        </div>
+        <div class="cert-meta">
+          <span class="c-badge">1-Day Workshop</span>
+          <span class="c-badge">In-Person</span>
+          <span class="c-badge">$2,800</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ROI MODEL -->
+<section class="section" id="roi" style="background:var(--parch2);border-bottom:1px solid var(--border2)">
+  <div class="s-inner">
+    <div class="roi-layout">
+      <div class="roi-copy">
+        <span class="rule-terra"></span>
+        <div class="s-lbl" style="margin-bottom:14px">Pillar C — The Efficiency Case</div>
+        <h2>The board conversation<br><em>starts with numbers.</em></h2>
+        <p>We don't ask for a commitment until we've run your institution's numbers through the model. The calculator below is what we use in every Executive Briefing — your inputs, before anything is signed.</p>
+        <p>If the math doesn't justify the engagement, we tell you. And we send you the model to present to your CFO anyway.</p>
+        <div class="bench">
+          <div class="bench-lbl">Efficiency Ratio Benchmarks — FDIC Quarterly Banking Profile</div>
+          <div class="br"><span class="br-n">Community bank long-term median efficiency ratio</span><span class="br-v br-bad">~65% <small style="color:var(--dust);font-size:9px">FDIC, 1992–2025</small></span></div>
+          <div class="br"><span class="br-n">All FDIC-insured banks (incl. large banks), Q4 2024</span><span class="br-v" style="color:var(--slate)">~55.7% <small style="color:var(--dust);font-size:9px">FDIC QBP</small></span></div>
+          <div class="br"><span class="br-n">Top-quartile institutions gap vs. community avg</span><span class="br-v br-good">8–12 pp</span></div>
+          <div class="br"><span class="br-n">NIM compression, community banks (2023–2025)</span><span class="br-v br-bad">−24 bps</span></div>
+          <div class="br"><span class="br-n">Every 1pp efficiency improvement at $500M bank</span><span class="br-v br-good">~$300–500K pre-tax</span></div>
+        </div>
+      </div>
+      <div class="calc-card">
+        <div class="calc-lbl">Non-Interest Expense Reduction Model</div>
+        <div class="f-row">
+          <div class="f">
+            <div class="f-label">Total FTEs</div>
+            <input class="f-input" id="fte" type="number" value="85" oninput="calc()">
+          </div>
+          <div class="f">
+            <div class="f-label">Avg. Loaded Cost / FTE ($)</div>
+            <input class="f-input" id="cost" type="number" value="58000" oninput="calc()">
+          </div>
+        </div>
+        <div>
+          <div class="r-meta"><span>Conservative hrs automatable / FTE / week</span><span id="lv">1.5 hrs</span></div>
+          <input type="range" id="lo" min="0.5" max="8" step="0.5" value="1.5" oninput="calc()">
+          <div class="r-meta"><span>Optimistic hrs automatable / FTE / week</span><span id="hv">3 hrs</span></div>
+          <input type="range" id="hi" min="1" max="15" step="0.5" value="3" oninput="calc()">
+        </div>
+        <div class="res-box">
+          <div class="res-lbl">Estimated Annual NIE Reduction</div>
+          <div class="res-big" id="res">$298K</div>
+          <div class="res-range" id="rng">Conservative $149K — Optimistic $447K</div>
+          <div class="res-grid">
+            <div class="rg"><div class="rg-n" id="rmo">$25K</div><div class="rg-l">Per Month</div></div>
+            <div class="rg"><div class="rg-n" id="rhrs">7,650</div><div class="rg-l">FTE Hours / Year</div></div>
+            <div class="rg"><div class="rg-n" id="rpp">~2.1<span style="font-size:10px">pp</span></div><div class="rg-l">Efficiency Ratio</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="cta">
+  <div class="cta-inner">
+    <div class="cta-rule"></div>
+    <div class="cta-lbl">Begin the Conversation</div>
+    <h2>Start with accessible.<br><em>End with capable.</em></h2>
+    <p>A 45-minute Executive Briefing. We walk through the A-B-C framework for your institution, run your efficiency ratio numbers, and tell you exactly where to start. No commitment. No pitch at the end.</p>
+    <div class="cta-btns">
+      <button class="btn-cream">Request Executive Briefing</button>
+      <button class="btn-lo" onclick="gs('roi')">Model Your ROI First</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-inner">
+    <div class="foot-top">
+      <div>
+        <div class="foot-brand-name">The AI Banking Institute</div>
+        <div class="foot-brand-aibi">AiBI · aibankinginstitute.com</div>
+        <div class="foot-brand-abc">"The A-B-C of AI Banking"</div>
+        <div class="foot-domain">aibankinginstitute.com · aibankinginstitute.org</div>
+      </div>
+      <div class="foot-links">
+        <div>
+          <div class="fl-title">Services</div>
+          <div class="fl-link">Quick Win Sprint</div>
+          <div class="fl-link">Process &amp; Efficiency Audit</div>
+          <div class="fl-link">AI Transformation Program</div>
+          <div class="fl-link">AiBI fCAIO Program</div>
+        </div>
+        <div>
+          <div class="fl-title">Certifications</div>
+          <div class="fl-link">AiBI-P · Practitioner</div>
+          <div class="fl-link">AiBI-S · Specialist</div>
+          <div class="fl-link">AiBI-L · Leader</div>
+          <div class="fl-link">AI Foundations ($97)</div>
+        </div>
+        <div>
+          <div class="fl-title">Resources</div>
+          <div class="fl-link">AI Readiness Assessment</div>
+          <div class="fl-link">Efficiency Ratio Calculator</div>
+          <div class="fl-link">Safe AI Use Guide</div>
+          <div class="fl-link">The AI Banking Brief</div>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <div class="foot-copy">© 2026 The AI Banking Institute. All rights reserved.</div>
+      <div class="foot-reg">Serving FDIC-Insured Institutions and NCUA-Chartered Credit Unions</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+function gs(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth'})}
+
+function fmt(n){
+  if(n>=1e6)return'$'+(n/1e6).toFixed(2)+'M';
+  if(n>=1e3)return'$'+Math.round(n/1000)+'K';
+  return'$'+Math.round(n);
+}
+function calc(){
+  const fte=parseFloat(document.getElementById('fte').value)||0;
+  const cost=parseFloat(document.getElementById('cost').value)||0;
+  const lo=parseFloat(document.getElementById('lo').value)||0;
+  const hi=parseFloat(document.getElementById('hi').value)||0;
+  const hrly=cost/2080;
+  const mid=fte*((lo+hi)/2)*hrly*50;
+  const annLo=fte*lo*hrly*50;
+  const annHi=fte*hi*hrly*50;
+  const nie=fte*cost;
+  const pp=nie>0?(mid/nie*100).toFixed(1):0;
+  document.getElementById('res').textContent=fmt(mid);
+  document.getElementById('rng').textContent='Conservative '+fmt(annLo)+' — Optimistic '+fmt(annHi);
+  document.getElementById('rmo').textContent=fmt(mid/12);
+  document.getElementById('rhrs').textContent=Math.round(fte*((lo+hi)/2)*50).toLocaleString();
+  document.getElementById('rpp').innerHTML='~'+pp+'<span style="font-size:10px">pp</span>';
+  document.getElementById('lv').textContent=lo+(lo===1?' hr':' hrs');
+  document.getElementById('hv').textContent=hi+(hi===1?' hr':' hrs');
+}
+calc();
+</script>
+</body>
+</html>

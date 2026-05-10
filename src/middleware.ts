@@ -45,6 +45,7 @@ const COMING_SOON_BYPASS_PREFIXES: readonly string[] = [
   '/briefing-preview', // redesign preview of the assessment results briefing
   '/lms-preview',      // LMS prototype iframe wrapper
   '/lms-prototype',    // static asset folder (iframe target)
+  '/courses/foundation-preview',  // pre-purchase foundation course preview
 ];
 
 export async function middleware(request: NextRequest): Promise<NextResponse> {
