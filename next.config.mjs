@@ -68,18 +68,25 @@ const nextConfig = {
       // /resources root → /research; individual essays remain at /resources/<slug>
       // until Phase 07 migration ports each essay to MDX in content/essays/.
       { source: '/resources', destination: '/research', permanent: true },
+      // Foundation rename (2026-05-10) — every legacy /courses/aibi-p path
+      // redirects to /courses/foundation/program. permanent: true emits HTTP
+      // 308 (method-preserving, cacheable, search-engine-friendly). Keep
+      // these forever — sent emails, Stripe receipts, indexed search results
+      // all link to /courses/aibi-p and there is no removal date.
+      { source: '/courses/aibi-p', destination: '/courses/foundation/program', permanent: true },
+      { source: '/courses/aibi-p/:path*', destination: '/courses/foundation/program/:path*', permanent: true },
+      { source: '/certifications/exam/aibi-p', destination: '/courses/foundation/program/exam', permanent: true },
+      // Friendly short URLs flipped to the new canonical home.
+      { source: '/practitioner', destination: '/courses/foundation/program', permanent: true },
       // Wave D inverse: until /education/<program> ships as a real page,
-      // those routes redirect BACK to the working /courses/aibi-* routes.
-      // Use temporary (302) so we can flip when Wave D migrates the pages.
-      { source: '/education/practitioner', destination: '/courses/aibi-p', permanent: false },
-      { source: '/education/practitioner/:path*', destination: '/courses/aibi-p/:path*', permanent: false },
+      // those routes redirect to /courses/foundation/program (the active
+      // program). Use temporary (302) so we can flip when Wave D migrates.
+      { source: '/education/practitioner', destination: '/courses/foundation/program', permanent: false },
+      { source: '/education/practitioner/:path*', destination: '/courses/foundation/program/:path*', permanent: false },
       { source: '/education/specialist', destination: '/coming-soon?interest=specialist', permanent: false },
       { source: '/education/specialist/:path*', destination: '/coming-soon?interest=specialist', permanent: false },
       { source: '/education/leader', destination: '/coming-soon?interest=leader', permanent: false },
       { source: '/education/leader/:path*', destination: '/coming-soon?interest=leader', permanent: false },
-      { source: '/certifications/exam/aibi-p', destination: '/courses/aibi-p/exam', permanent: true },
-      // Friendly short URLs for email/print copy (2026-05-09).
-      { source: '/practitioner', destination: '/courses/aibi-p', permanent: true },
       { source: '/consulting', destination: '/for-institutions/advisory', permanent: true },
     ];
   },
