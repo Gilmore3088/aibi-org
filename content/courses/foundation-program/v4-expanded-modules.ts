@@ -27,7 +27,7 @@ function sections(
   }));
 }
 
-export const V4_AIBIP_MODULES: readonly ExpandedModule[] = [
+export const V4_FOUNDATION_PROGRAM_MODULES: readonly ExpandedModule[] = [
   {
     number: 1,
     goal: 'Create immediate usefulness with low-risk daily AI wins.',
@@ -522,6 +522,6 @@ export const V4_AIBIP_MODULES: readonly ExpandedModule[] = [
   },
 ] as const;
 
-export const V4_AIBIP_MODULE_BY_NUMBER = new Map(
-  V4_AIBIP_MODULES.map((module) => [module.number, module])
+export const V4_FOUNDATION_PROGRAM_MODULE_BY_NUMBER = new Map(
+  V4_FOUNDATION_PROGRAM_MODULES.map((module) => [module.number, module])
 );

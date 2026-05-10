@@ -18,7 +18,7 @@ type Mode =
   | { kind: 'assessment-only'; tierLabel: string; score: number; maxScore: number }
   | { kind: 'enrolled'; currentModule: number; completedCount: number; totalModules: number };
 
-const TOTAL_AIBIP_MODULES = 12;
+const TOTAL_FOUNDATION_PROGRAM_MODULES = 12;
 
 export function HomeContextStrip() {
   const [mode, setMode] = useState<Mode>({ kind: 'hidden' });
@@ -61,7 +61,7 @@ export function HomeContextStrip() {
           kind: 'enrolled',
           currentModule: enrollment.currentModule,
           completedCount: enrollment.completedModules.length,
-          totalModules: TOTAL_AIBIP_MODULES,
+          totalModules: TOTAL_FOUNDATION_PROGRAM_MODULES,
         });
         return;
       }

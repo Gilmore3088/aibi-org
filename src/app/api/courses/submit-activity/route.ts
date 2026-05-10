@@ -12,7 +12,7 @@ import { cookies } from 'next/headers';
 import { createServerClient } from '@supabase/ssr';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import {
-  V4_AIBIP_MODULE_BY_NUMBER,
+  V4_FOUNDATION_PROGRAM_MODULE_BY_NUMBER,
   getModuleByNumber,
 } from '@content/courses/foundation-program';
 import { AIBI_P_ARTIFACTS } from '@content/practice-reps/foundation-program';
@@ -38,7 +38,7 @@ interface EnrollmentRow {
 }
 
 function getV4Activity(moduleNumber: number): Activity | null {
-  const expandedModule = V4_AIBIP_MODULE_BY_NUMBER.get(moduleNumber);
+  const expandedModule = V4_FOUNDATION_PROGRAM_MODULE_BY_NUMBER.get(moduleNumber);
   if (!expandedModule) return null;
 
   const artifact = AIBI_P_ARTIFACTS.find((item) => item.moduleNumber === expandedModule.number);

@@ -9,7 +9,7 @@ import type { Metadata } from 'next';
 import {
   modules,
   getModuleByNumber,
-  V4_AIBIP_MODULE_BY_NUMBER,
+  V4_FOUNDATION_PROGRAM_MODULE_BY_NUMBER,
 } from '@content/courses/foundation-program';
 import type { Activity, ExpandedModule } from '@content/courses/foundation-program';
 import { ModuleHeader } from '../_components/ModuleHeader';
@@ -75,7 +75,7 @@ export default async function ModulePage({ params }: ModulePageParams) {
 
   const isLastModule = mod.number === modules.length;
   const isAlreadyCompleted = enrollment.completed_modules.includes(moduleNum);
-  const expandedModule = V4_AIBIP_MODULE_BY_NUMBER.get(moduleNum);
+  const expandedModule = V4_FOUNDATION_PROGRAM_MODULE_BY_NUMBER.get(moduleNum);
   // 2026-04-29: per-module structured Apply activities replace the generic
   // V4 textarea form. Each spec drives both the form fields and the
   // downloadable artifact .md served by /api/courses/generate-module-artifact.

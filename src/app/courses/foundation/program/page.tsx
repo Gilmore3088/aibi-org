@@ -6,8 +6,8 @@ import Link from 'next/link';
 import {
   modules,
   PILLAR_META,
-  aibiPCourseConfig,
-  V4_AIBIP_MODULE_BY_NUMBER,
+  foundationProgramCourseConfig,
+  V4_FOUNDATION_PROGRAM_MODULE_BY_NUMBER,
 } from '@content/courses/foundation-program';
 import type { Pillar } from '@content/courses/foundation-program';
 import { getEnrollmentResult, isFetchError } from './_lib/getEnrollment';
@@ -69,7 +69,7 @@ export default async function CourseOverviewPage() {
           Banking AI <span className="text-[color:var(--color-terra)] italic">Practitioner</span>
         </h1>
         <p className="mt-5 font-serif italic text-2xl leading-relaxed text-[color:var(--color-ink)]/80 max-w-3xl">
-          {aibiPCourseConfig.promise}
+          {foundationProgramCourseConfig.promise}
         </p>
         <p className="mt-4 text-base text-[color:var(--color-ink)]/70 max-w-3xl leading-relaxed">
           In less than two weeks, learn how to write better, summarize faster,
@@ -102,7 +102,7 @@ export default async function CourseOverviewPage() {
         </div>
 
         <p className="mt-6 font-mono text-[11px] text-[color:var(--color-slate)] tabular-nums">
-          12 modules &middot; {aibiPCourseConfig.estimatedMinutes} min total &middot;{' '}
+          12 modules &middot; {foundationProgramCourseConfig.estimatedMinutes} min total &middot;{' '}
           $295 per seat &middot; $199 per seat for 10+
           {completedCount > 0 && (
             <>
@@ -133,7 +133,7 @@ export default async function CourseOverviewPage() {
             Required outputs
           </p>
           <div className="space-y-3">
-            {aibiPCourseConfig.artifacts.map((artifact) => (
+            {foundationProgramCourseConfig.artifacts.map((artifact) => (
               <div key={artifact.id}>
                 <h3 className="font-serif text-base text-[color:var(--color-ink)]">
                   {artifact.title}
@@ -187,7 +187,7 @@ export default async function CourseOverviewPage() {
                   {pillarModules.map((mod) => {
                     const status = getModuleStatus(mod.number, completedModules, currentModule);
                     const isAccessible = status !== 'locked';
-                    const expanded = V4_AIBIP_MODULE_BY_NUMBER.get(mod.number);
+                    const expanded = V4_FOUNDATION_PROGRAM_MODULE_BY_NUMBER.get(mod.number);
 
                     const row = (
                       <div

@@ -9,7 +9,7 @@ import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
 import { getEnrollment } from '@/app/courses/foundation/program/_lib/getEnrollment';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
 import { EnrollButton } from './EnrollButton';
-import { aibiPCourseConfig } from '@content/courses/foundation-program';
+import { foundationProgramCourseConfig } from '@content/courses/foundation-program';
 
 export const metadata: Metadata = {
   title: 'Enroll in AiBI-Foundation | The AI Banking Institute',
@@ -110,7 +110,7 @@ export default async function PurchasePage() {
           Banking AI <span className="text-[color:var(--color-terra)] italic">Practitioner</span>
         </h1>
         <p className="text-sm text-[color:var(--color-ink)]/75 mb-4 max-w-2xl">
-          {aibiPCourseConfig.promise} In less than two weeks, learn how to
+          {foundationProgramCourseConfig.promise} In less than two weeks, learn how to
           write better, summarize faster, think clearer, and avoid risky AI
           mistakes.
         </p>
@@ -125,7 +125,7 @@ export default async function PurchasePage() {
             Learn / Practice / Apply
           </span>
           <span className="font-mono text-[10px] text-[color:var(--color-slate)] uppercase tracking-wider">
-            {aibiPCourseConfig.estimatedMinutes} min total
+            {foundationProgramCourseConfig.estimatedMinutes} min total
           </span>
         </div>
       </section>
