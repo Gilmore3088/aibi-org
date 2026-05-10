@@ -1,0 +1,311 @@
+
+<!-- ===== SITE NAV ===== -->
+<header class="nav">
+  <div class="nav-inner">
+    <a href="AI Banking Institute.html" class="nav-mark" aria-label="The AI Banking Institute">
+      <span class="l1">The AI Banking</span>
+      <span class="l2">Institute</span>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="AI Banking Institute.html#pillars" class="nav-link">Education</a>
+      <a href="#" class="nav-link">For Institutions</a>
+      <a href="#" class="nav-link">Research</a>
+      <a href="#" class="nav-link">About</a>
+      <a href="FAQ.html" class="nav-link">Support</a>
+      <button class="acct" aria-label="Account">
+        <span class="avatar">DM</span>
+        <span class="name">D. Maxwell</span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<!-- ===== MASTHEAD ===== -->
+<section class="mast">
+  <div class="container">
+    <div class="mast-row">
+      <div class="mast-text">
+        <span class="eyebrow greet">Scratch surface · ephemeral</span>
+        <h1>The <em>playground.</em></h1>
+        <p class="lede">A bench for trying things — single shots, model bake-offs, multi-turn chats. Bring your data, set the role, run the same prompt against four models. Save what's worth keeping.</p>
+      </div>
+      <div class="mast-stats">
+        <div class="stat"><span class="v">3</span><span class="l">Today</span></div>
+        <div class="stat"><span class="v">12</span><span class="l">This week</span></div>
+        <div class="stat"><span class="v">7</span><span class="l">Saved</span></div>
+        <div class="stat"><span class="v">$0.41</span><span class="l">Spend</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== USER TABS ===== -->
+<div class="tabs">
+  <div class="tabs-inner" role="tablist" aria-label="My account">
+    <a href="User Home.html" class="tab" role="tab">Dashboard</a>
+    <a href="LMS Prototype.html" class="tab" role="tab">My Curriculum</a>
+    <a href="Playground.html" class="tab active" role="tab" aria-selected="true">Playground</a>
+    <a href="My Toolbox.html" class="tab" role="tab">My Toolbox</a>
+    <a href="#" class="tab" role="tab">My Brief</a>
+    <a href="#" class="tab" role="tab">Account</a>
+  </div>
+</div>
+
+<!-- ===== MODE BAR ===== -->
+<section class="modebar">
+  <div class="modebar-inner">
+    <div class="mode-pick" role="tablist" aria-label="Run mode">
+      <span class="lab">Mode</span>
+      <button class="mode-btn active" data-mode="single"><span class="ico">●</span>Single shot</button>
+      <button class="mode-btn" data-mode="compare"><span class="ico">⊟</span>Compare</button>
+      <button class="mode-btn" data-mode="conv"><span class="ico">⇄</span>Conversation</button>
+    </div>
+    <p class="mode-help" id="modeHelp">One prompt, one model, one output. The default for trying something out.</p>
+  </div>
+</section>
+
+<!-- ===== SHELL ===== -->
+<div class="shell">
+
+  <!-- COMPOSER + OUTPUT -->
+  <div>
+    <section class="compose">
+      <div class="compose-head">
+        <h2>Untitled <em>run.</em></h2>
+        <div class="ch-spacer"></div>
+        <button class="ch-act" id="loadBtn">Load from toolbox</button>
+        <button class="ch-act" id="recipesBtn">Recipes</button>
+        <button class="ch-act" id="clearBtn">Clear</button>
+      </div>
+
+      <div class="pad">
+        <div class="pad-name">
+          <span class="lab">Title</span>
+          <input id="runTitle" placeholder="Give this run a name (optional)…" autocomplete="off">
+        </div>
+
+        <!-- SYSTEM PROMPT -->
+        <div class="sys" id="sysPanel">
+          <div class="sys-head" id="sysHead">
+            <span class="lab">Role</span>
+            <span class="preview" id="sysPreview">Plain, factual, examiner-aware. No marketing language.</span>
+            <span class="chev">▸</span>
+          </div>
+          <div class="sys-body">
+            <textarea id="sysInput">You are an experienced banker's assistant for a community credit union. Voice: plain, factual, examiner-aware. No marketing language. No bullet points unless asked. Answer concisely.</textarea>
+            <div class="sys-presets">
+              <button class="sys-preset" data-preset="bsa">BSA officer</button>
+              <button class="sys-preset" data-preset="under">Senior underwriter</button>
+              <button class="sys-preset" data-preset="comp">Compliance reviewer</button>
+              <button class="sys-preset" data-preset="member">Member-facing</button>
+              <button class="sys-preset" data-preset="board">Board-facing</button>
+              <button class="sys-preset" data-preset="reset">Reset</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="pad-body">
+          <textarea id="promptInput" placeholder="What do you want to try?  e.g.  &quot;Take this credit memo and write three honest critiques a senior underwriter would make.&quot;  Use {{double-braces}} for variables you'll fill in on the right."></textarea>
+        </div>
+
+        <!-- CONTEXT -->
+        <div class="pad-ctx">
+          <span class="lab">Context</span>
+          <button class="ctx-chip" data-ctx="memo"><span class="x">×</span>Sample memo</button>
+          <button class="ctx-chip" data-ctx="tx"><span class="x">×</span>30-day tx log</button>
+          <button class="ctx-chip" data-ctx="brief"><span class="x">×</span>Last week's brief</button>
+          <button class="ctx-chip" data-ctx="reg"><span class="x">×</span>Reg B excerpt</button>
+          <button class="ctx-chip" data-ctx="add"><span class="plus">+</span>Pin a file</button>
+        </div>
+
+        <!-- OUTPUT CONTROLS -->
+        <div class="pad-controls">
+          <div class="ctrl-group">
+            <span class="lab">Format</span>
+            <div class="seg" data-ctrl="format">
+              <button class="sel" data-v="auto">Auto</button>
+              <button data-v="memo">Memo</button>
+              <button data-v="bullets">Bullets</button>
+              <button data-v="table">Table</button>
+              <button data-v="json">JSON</button>
+            </div>
+          </div>
+          <div class="ctrl-group">
+            <span class="lab">Length</span>
+            <div class="seg" data-ctrl="length">
+              <button data-v="brief">Brief</button>
+              <button class="sel" data-v="standard">Standard</button>
+              <button data-v="long">Long</button>
+            </div>
+          </div>
+          <div class="ctrl-group">
+            <span class="lab">Tone</span>
+            <div class="seg" data-ctrl="tone">
+              <button class="sel" data-v="plain">Plain</button>
+              <button data-v="examiner">Examiner-ready</button>
+              <button data-v="member">Member-friendly</button>
+            </div>
+          </div>
+          <div class="ctrl-group">
+            <span class="lab">Guards</span>
+            <div class="seg" data-ctrl="guards">
+              <button class="sel" data-v="redact">Redact PII</button>
+              <button data-v="reg">Reg-aware</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- MODEL + RUN -->
+        <div class="pad-foot">
+          <div class="mp">
+            <span class="lab">Model</span>
+            <div class="mp-pick" id="modelPick">
+              <button class="sel" data-m="opus"><span class="mp-dot opus"></span>Opus 4.5</button>
+              <button data-m="sonnet"><span class="mp-dot sonnet"></span>Sonnet 4.5</button>
+              <button data-m="haiku"><span class="mp-dot haiku"></span>Haiku 4.5</button>
+              <button data-m="gpt"><span class="mp-dot gpt"></span>GPT-5</button>
+              <button data-m="gemini"><span class="mp-dot gemini"></span>Gemini 2.5</button>
+            </div>
+          </div>
+          <div class="creative" title="Creativity">
+            <span class="lab">Creative</span>
+            <input type="range" min="0" max="100" value="20" id="creative">
+            <span class="creative-val" id="creativeVal">Careful 0.2</span>
+          </div>
+          <button class="run" id="runBtn">Run<span class="arr">→</span><span class="ksh">⌘ ↵</span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- OUTPUT -->
+    <section class="out-wrap" id="outWrap">
+      <div class="out-head">
+        <h2>Output</h2>
+        <span class="out-mode" id="outModeTag">Single shot</span>
+        <div class="out-meta" id="outMeta" style="display:none">
+          <span>Total · <strong id="outTime">—</strong></span>
+          <span>Tokens · <strong id="outTok">—</strong></span>
+          <span>Cost · <strong id="outCost">—</strong></span>
+          <span>Saves · <strong id="outSaves">~32 min analyst</strong></span>
+        </div>
+      </div>
+
+      <!-- Single / Compare grid -->
+      <div class="out-grid cols-1" id="outGrid">
+        <div class="out-empty">Your output will land here. Nothing is saved unless you tell it to be — runs auto-discard in <em>24 hours.</em></div>
+      </div>
+
+      <!-- Conversation -->
+      <div class="conv" id="convBox" style="display:none">
+        <div class="conv-body" id="convBody">
+          <div class="conv-empty">Start the conversation. The model holds context across turns until you Clear.</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- SIDE -->
+  <aside class="side-pane">
+
+    <!-- VARIABLES -->
+    <div class="pane">
+      <div class="pane-head">
+        <h3>Variables</h3>
+        <span class="cnt" id="varCnt">0</span>
+      </div>
+      <div id="varsList" class="vars-list">
+        <div class="vars-empty">Use <code>{{name}}</code> in your prompt and the field appears here.</div>
+      </div>
+    </div>
+
+    <!-- HISTORY -->
+    <div class="pane">
+      <div class="pane-head">
+        <h3>This <em>session.</em></h3>
+        <span class="cnt" id="runCount">0</span>
+      </div>
+      <div class="hist-search">
+        <span class="ico">⌕</span>
+        <input id="histSearch" placeholder="Filter history…" type="search">
+      </div>
+      <div id="runsList">
+        <div class="hist-empty">Recent runs appear here. Save the keepers — the rest fade in 24 hours.</div>
+      </div>
+      <div class="hist-rule">Auto-discards after 24h</div>
+    </div>
+
+    <!-- RECIPES -->
+    <div class="pane">
+      <div class="pane-head">
+        <h3>Try a <em>recipe.</em></h3>
+        <span class="cnt">5</span>
+      </div>
+      <div id="recipeList"></div>
+    </div>
+
+  </aside>
+
+</div>
+
+<!-- ===== LOAD DRAWER ===== -->
+<div class="modal-bg" id="loadBg"></div>
+<div class="modal" id="loadModal" aria-hidden="true">
+  <div class="modal-head">
+    <span class="lab">Load from toolbox</span>
+    <button class="btn-ghost" id="loadClose">Close ✕</button>
+  </div>
+  <div class="modal-body">
+    <h2>Start with <em>something.</em></h2>
+    <p class="lede">Pick a saved prompt, skill, or agent — it'll drop into the pad.</p>
+    <div class="hist-search" style="margin-bottom:14px">
+      <span class="ico">⌕</span>
+      <input id="ldSearch" placeholder="Search your toolbox…" type="search">
+    </div>
+    <div id="ldList" style="max-height:340px; overflow-y:auto"></div>
+  </div>
+</div>
+
+<!-- ===== SAVE MODAL ===== -->
+<div class="modal-bg" id="saveBg"></div>
+<div class="modal" id="saveModal" aria-hidden="true">
+  <div class="modal-head">
+    <span class="lab">Save to toolbox</span>
+    <button class="btn-ghost" id="saveClose">Close ✕</button>
+  </div>
+  <div class="modal-body">
+    <h2>Promote to <em>toolbox.</em></h2>
+    <p class="lede">Name it. Pick what kind of asset this is. We'll set it to v1 and link the run.</p>
+    <div class="field">
+      <label>Asset type</label>
+      <div class="type-pick" id="saveType">
+        <button class="sel" data-t="prompt">Prompt</button>
+        <button data-t="skill">Skill</button>
+        <button data-t="agent">Agent</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>Name</label>
+      <input id="saveName" placeholder="e.g. Past-tense memo rewrite" autocomplete="off">
+    </div>
+    <div class="field">
+      <label>One-line description</label>
+      <input id="saveDesc" placeholder="What this asset does — one sentence">
+    </div>
+    <div class="modal-foot">
+      <button class="btn-ghost" id="saveCancel">Cancel</button>
+      <button class="btn-prim" id="saveDo">Save · v1 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- ===== FOOTER ===== -->
+<footer class="foot">
+  <div class="foot-inner">
+    <span>© 2026 The AI Banking Institute</span>
+    <span><a href="AI Banking Institute.html">Home</a> · <a href="FAQ.html">Support</a> · <a href="#">Verify a credential</a></span>
+  </div>
+</footer>
+

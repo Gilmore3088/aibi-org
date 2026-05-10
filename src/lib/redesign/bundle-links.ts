@@ -23,9 +23,11 @@ const BUNDLE_TO_ROUTE: Record<string, string> = {
   'My Toolbox v3.html': '/my-toolbox',
 
   // not yet built — clicks no-op rather than 404
+  'Playground.html': '/playground',
+  'Playground v1.html': '/playground',
+
+  // not yet built — clicks no-op rather than 404
   'LMS Prototype.html': '#',
-  'Playground.html': '#',
-  'Playground v1.html': '#',
   'FAQ.html': '#',
   'AI Readiness Briefing.html': '#',
 };
