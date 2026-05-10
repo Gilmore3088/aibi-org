@@ -22,32 +22,35 @@ gates are explicit so we don't ship half a relabel.
 - [x] CLAUDE.md "Reference Plans" table updated to reference
   `Plans/foundation-v2/`
 
-## Phase 1 — Authoring (no code changes yet)
+## Phase 1 — Authoring (DONE 2026-05-10)
 
-Author the actual TypeScript module content for the 8 net-new modules and
-revise pillar order on the existing 12. Today the bundle has spec
-descriptions in `Plans/foundation-v2/aibi-foundation-v2/modules/`; those
-need to become typed module objects matching `content/courses/aibi-p/types.ts`.
+- [x] Hard cut: new folder `content/courses/aibi-foundation/` parallel to
+  `aibi-p/`. v1 untouched.
+- [x] Foundation Lite (4 modules: L1–L4) authored at production depth.
+- [x] Manager Track (3 modules: M1–M3) authored at production depth.
+- [x] Board Briefing (2 modules: BB1–BB2) authored at production depth.
+- [x] Foundation Full (20 modules) authored at production depth in
+  `content/courses/aibi-foundation/full/module-01.ts` through `-20.ts`.
+  Pillar order strictly linear (Awareness 1–4 · Understanding 5–10 ·
+  Creation 11–15 · Application 16–20).
+- [x] Type-clean (`npx tsc --noEmit` passes).
+- [x] Editorial decisions baked in: M5 / L2 / L4 ship text-only (voice
+  clone / deepfake elements deferred); M9 / M16 / M17 / M20 use
+  build-test or adaptive-scenario instead of Activity Type 8 (real-world
+  capture deferred at v2 launch).
 
-- [ ] Decide whether to create `content/courses/aibi-foundation/v2/` (new
-  folder, hard cut) or evolve `content/courses/aibi-p/` in place. Recommend
-  hard cut — keeps v1 in repo for rollback and parallel review.
-- [ ] Author module content for the 8 net-new Full-track modules (M3, M5,
-  M6, M12, M15, M18, M19, plus the renumbered M20). Each requires sections,
-  activities, key outputs, daily-use outcomes per the spec in
-  `Plans/foundation-v2/aibi-foundation-v2/modules/foundation-full/`.
-- [ ] Revise pillar tags + ordering on the existing 12 modules to match the
-  strictly-linear v2 order (Awareness 1–4 · Understanding 5–10 · Creation
-  11–15 · Application 16–20). The current course has Module 9 (Safe AI Use)
-  in Understanding after the Creation block — v2 fixes this.
-- [ ] Author Foundation Lite track (4 modules: L1–L4). Lite is a strict
-  subset of Full — coordinate so Lite graduates can upgrade by completing
-  the missing modules without re-doing Lite content.
-- [ ] Author Manager Track (3 modules: M1–M3) — coaching, library review,
-  escalation.
-- [ ] Author Board Briefing (2 modules: BB1–BB2) — director vocabulary,
-  governance questions.
-- [ ] Author 33 artifact templates per `Plans/foundation-v2/.../artifacts/`.
+Authoring artifacts referenced from `Plans/foundation-v2/.../artifacts/`
+(33 markdown templates) — wiring those templates into the runtime artifact
+store is part of Phase 5 (platform build), not Phase 1. The TypeScript
+module objects already reference the templates by `templatePath`.
+
+The `content/courses/aibi-foundation/full/module-NN.ts` files are
+production-depth: typed sections, typed activities, learning objectives,
+daily-use outcomes, dependencies, forwardLinks, artifacts, and a `specRef`
+pointer back to the canonical markdown spec under `Plans/foundation-v2/`.
+The canonical markdown remains the rich source-of-truth for facilitator
+notes and the deeper "why this exists" framing; the TS file is the
+runtime contract for the platform.
 
 ## Phase 2 — Rename in user-facing copy
 
