@@ -1,4 +1,4 @@
-// AiBI-P Module 5: Projects and Context
+// AiBI Foundations Module 5: Projects and Context
 // Pillar: Understanding | Estimated: 35 minutes
 // Key Output: Project Brief Template
 
@@ -11,7 +11,7 @@ export const module5: Module = {
   pillar: 'understanding',
   estimatedMinutes: 35,
   keyOutput: 'Project Brief Template',
-  mockupRef: 'content/courses/AiBI-P v1/stitch_ai_banking_institute_course/m5_refined_safe_use_guardrails',
+  mockupRef: 'content/courses/AiBI Foundations v1/stitch_ai_banking_institute_course/m5_refined_safe_use_guardrails',
   sections: [
     {
       id: 'm5-why-context-matters',

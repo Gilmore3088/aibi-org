@@ -1,4 +1,4 @@
-// AiBI-P Course Content Types
+// AiBI Foundations Course Content Types
 // Pattern: readonly typed constants, same as content/assessments/v1/
 // All content is Markdown strings for Kajabi-migration-readiness (CONT-02)
 

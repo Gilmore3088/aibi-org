@@ -90,7 +90,7 @@ export default function SixWaysAIFailsArticle() {
             on top of it.
           </p>
           <p>
-            The six patterns below come from the AiBI-Practitioner curriculum&rsquo;s
+            The six patterns below come from the AiBI Foundations curriculum&rsquo;s
             Safe Use module, which draws on the AIEOG AI Lexicon definitions.
             Each pattern has a name, a real-world example of what it looks
             like in a banking workflow, why it is dangerous, and the practical
@@ -363,13 +363,13 @@ export default function SixWaysAIFailsArticle() {
 
         <aside className="mt-16 bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-8 md:p-10 text-center">
           <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
-            AiBI-Practitioner Certification
+            AiBI Foundations Certification
           </p>
           <h3 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] mb-4">
             Train your team on the six patterns.
           </h3>
           <p className="text-[color:var(--color-ink)]/75 max-w-xl mx-auto mb-6 leading-relaxed">
-            The AiBI-Practitioner certification covers all six hallucination
+            The AiBI Foundations certification covers all six hallucination
             patterns, the three-tier data classification framework, the five
             regulatory frameworks, and hands-on skill building &mdash; in under
             four hours. Built exclusively for community bank and credit union staff.
@@ -378,7 +378,7 @@ export default function SixWaysAIFailsArticle() {
             href="/education"
             className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
           >
-            View the AiBI-Practitioner Certification
+            View the AiBI Foundations Certification
           </Link>
         </aside>
 

@@ -300,7 +300,7 @@ Before uploading or pasting any document, run this checklist:
 
 Use of AI tools with non-public institution data should be covered by your AI use policy.
 If your institution does not have an AI use policy, flag this to your compliance officer.
-The AI Banking Institute's AiBI-P curriculum includes a model AI use policy template.
+The AI Banking Institute's AiBI Foundations curriculum includes a model AI use policy template.
   `.trim(),
 
   proTips: [
@@ -613,7 +613,7 @@ The ability to upload a 100-page document is powerful — and creates a proporti
 
 ### Institutional policy requirement
 
-AI tool use involving institution data should be governed by a written AI use policy. If your institution does not have one, flag this gap to your compliance officer. The AI Banking Institute's AiBI-P curriculum includes a model AI use policy template aligned with SR 11-7 and the AIEOG AI Lexicon.
+AI tool use involving institution data should be governed by a written AI use policy. If your institution does not have one, flag this gap to your compliance officer. The AI Banking Institute's AiBI Foundations curriculum includes a model AI use policy template aligned with SR 11-7 and the AIEOG AI Lexicon.
   `.trim(),
 
   proTips: [

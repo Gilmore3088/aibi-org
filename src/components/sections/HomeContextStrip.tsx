@@ -129,7 +129,7 @@ export function HomeContextStrip() {
           href="/courses/aibi-p"
           className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] hover:text-[color:var(--color-ink)]"
         >
-          Explore the Practitioner course →
+          Explore the AiBI Foundations →
         </Link>
       </ContextBand>
     );

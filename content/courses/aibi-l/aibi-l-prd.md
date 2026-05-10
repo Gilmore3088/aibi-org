@@ -24,17 +24,17 @@
 
 This is the comprehensive PRD for AiBI-L — the leader workshop of the AiBI curriculum. It specifies every session, every activity, every deliverable, every facilitation note, and every assessment requirement.
 
-AiBI-L is fundamentally different from AiBI-P and AiBI-S. It is not an online course. It is not self-paced. It is not a cohort that meets weekly. It is a single-day, in-person workshop designed for the people who sign the checks, set the strategy, and answer to examiners and boards of directors. Everything about the design — the pacing, the deliverables, the facilitation style — reflects that these participants are senior leaders with limited time, high expectations, and zero tolerance for anything that feels like a training class.
+AiBI-L is fundamentally different from AiBI Foundations and AiBI-S. It is not an online course. It is not self-paced. It is not a cohort that meets weekly. It is a single-day, in-person workshop designed for the people who sign the checks, set the strategy, and answer to examiners and boards of directors. Everything about the design — the pacing, the deliverables, the facilitation style — reflects that these participants are senior leaders with limited time, high expectations, and zero tolerance for anything that feels like a training class.
 
 ### Why AiBI-L Exists
 
-AiBI-P creates personal AI skills. AiBI-S creates departmental AI champions. But neither of those programs produces the institutional decision that unlocks budget, governance, and strategic commitment. That decision happens in the C-suite and the boardroom. AiBI-L exists to equip the executives who make that decision with the strategic framework, the regulatory confidence, the financial modeling, and the board-ready materials to make it well.
+AiBI Foundations creates personal AI skills. AiBI-S creates departmental AI champions. But neither of those programs produces the institutional decision that unlocks budget, governance, and strategic commitment. That decision happens in the C-suite and the boardroom. AiBI-L exists to equip the executives who make that decision with the strategic framework, the regulatory confidence, the financial modeling, and the board-ready materials to make it well.
 
 The business outcome of AiBI-L is not the credential — it is the board presentation that the executive delivers after the workshop. That presentation, built with their institution's actual numbers and regulatory context, is the vehicle for institutional AI transformation.
 
-### How AiBI-L Differs from AiBI-P and AiBI-S
+### How AiBI-L Differs from AiBI Foundations and AiBI-S
 
-| Dimension | AiBI-P | AiBI-S | AiBI-L (this program) |
+| Dimension | AiBI Foundations | AiBI-S | AiBI-L (this program) |
 |-----------|--------|--------|----------------------|
 | Audience | All staff | Department managers | C-suite and board |
 | Format | Self-paced online | 6-week live cohort | 1-day in-person workshop |
@@ -42,12 +42,12 @@ The business outcome of AiBI-L is not the credential — it is the board present
 | Assessment | Rubric-scored work output | Measured process improvement | Completion + 3 deliverables + board deck presentation |
 | Deliverable | Personal skill portfolio | Departmental automation package | Board-ready AI strategy presentation |
 | Price | $295 | $1,495 | $2,800+ individual / $12,000 team of 8 |
-| Prerequisite | None | AiBI-P certification | Institutional relationship |
+| Prerequisite | None | AiBI Foundations certification | Institutional relationship |
 | Margin of error | High (personal) | Medium (team) | Zero (institutional, examiner-facing, board-facing) |
 
 ### The Institutional Relationship Prerequisite
 
-AiBI-L does not require AiBI-P or AiBI-S certification as a prerequisite. It requires an institutional relationship — meaning the workshop is booked through a sales conversation, not a self-serve checkout. This is deliberate:
+AiBI-L does not require AiBI Foundations or AiBI-S certification as a prerequisite. It requires an institutional relationship — meaning the workshop is booked through a sales conversation, not a self-serve checkout. This is deliberate:
 
 1. **Pre-workshop data gathering.** The facilitator needs the institution's actual financial data (efficiency ratio, FTE count, department structure, technology stack) to customize Sessions 3 and 4. This data is collected during a pre-workshop planning call, not during the workshop itself.
 2. **Participant alignment.** A workshop with a CEO, a CFO, a COO, and two board members produces a fundamentally different outcome than a workshop with a single VP. The sales conversation ensures the right people are in the room.
@@ -147,13 +147,13 @@ Typical participant roster for a team workshop:
 | Step | Product | Price | Conversion Goal |
 |------|---------|-------|----------------|
 | 1 | Free AI readiness assessment | $0 | Score creates urgency |
-| 2a | AiBI-P course | $295 | Foundation for staff |
+| 2a | AiBI Foundations course | $295 | Foundation for staff |
 | 2b | Executive Briefing | $150-200 (credited) | Institution-level conversation |
 | 3 | AiBI-S course | $1,495 | Department manager capability |
 | **4** | **AiBI-L workshop** | **$2,800+ / $12,000** | **C-suite and board strategic alignment, governance, efficiency modeling** |
 | 5 | Consulting / fCAIO | Quoted | Ongoing engagement |
 
-**The AiBI-L graduate as institutional champion:** The AiBI-L workshop produces the board-level decision to pursue institutional AI transformation. The AiBI-L credential signals to regulators, peers, and staff that the institution's leadership has formally engaged with AI strategy and governance. AiBI-L graduates become the executive sponsors for AiBI-S cohorts, AiBI-P rollouts, and consulting engagements.
+**The AiBI-L graduate as institutional champion:** The AiBI-L workshop produces the board-level decision to pursue institutional AI transformation. The AiBI-L credential signals to regulators, peers, and staff that the institution's leadership has formally engaged with AI strategy and governance. AiBI-L graduates become the executive sponsors for AiBI-S cohorts, AiBI Foundations rollouts, and consulting engagements.
 
 ---
 
@@ -225,7 +225,7 @@ Participants complete an institutional AI Maturity Scorecard covering six dimens
 |-------------|----------------|-------------|
 | 25-30 | Advanced | Ready to scale AI across the institution. Focus on governance and measurement. |
 | 19-24 | Developing | Foundation in place. Prioritize governance framework and pilot programs. |
-| 13-18 | Early | Awareness exists but infrastructure and skills are lacking. Start with AiBI-P for staff. |
+| 13-18 | Early | Awareness exists but infrastructure and skills are lacking. Start with AiBI Foundations for staff. |
 | 6-12 | Starting | Minimal AI engagement. Begin with executive education and strategic visioning. |
 
 **Deliverable:** Completed AI Maturity Scorecard with dimension-level scores and total. This scorecard is referenced in Sessions 2, 3, and 4.
@@ -359,7 +359,7 @@ ROI = Total Savings / Total Investment (training + tools + consulting)
 
 The business case includes:
 
-1. **Investment required:** AiBI-P for staff ($295/seat), AiBI-S for managers ($1,495/seat), AI tools and platform licenses, consulting engagement if applicable
+1. **Investment required:** AiBI Foundations for staff ($295/seat), AiBI-S for managers ($1,495/seat), AI tools and platform licenses, consulting engagement if applicable
 2. **Projected returns:** Department-by-department savings, efficiency ratio improvement, capacity gained (hours reclaimed, not headcount reduction)
 3. **Risk factors:** Implementation risk, adoption risk, regulatory risk, vendor risk
 4. **Timeline:** 3-year phased approach aligned with maturity level
@@ -373,7 +373,7 @@ Participants build a 3-year AI roadmap with three phases:
 
 | Phase | Timeline | Focus | Key Milestones |
 |-------|----------|-------|----------------|
-| Foundation | Months 1-6 | Staff training (AiBI-P), governance framework, pilot use cases | All staff AiBI-P certified, AI governance policy approved, 3-5 pilot use cases deployed |
+| Foundation | Months 1-6 | Staff training (AiBI Foundations), governance framework, pilot use cases | All staff AiBI Foundations certified, AI governance policy approved, 3-5 pilot use cases deployed |
 | Build | Months 7-18 | Department manager training (AiBI-S), departmental automation, measurement | Key managers AiBI-S certified, 10+ governed use cases, measurable time savings documented |
 | Scale | Months 19-36 | Enterprise-wide AI adoption, advanced use cases, continuous improvement | AI embedded in daily operations, efficiency ratio improvement demonstrated, examiner-ready documentation complete |
 
@@ -545,7 +545,7 @@ AiBI-L is NOT a self-serve purchase. The flow:
 | Board presentation delivered | 80% within 90 days | Quarterly check-in 1 (month 3) |
 | Quarterly check-in attendance | 75% of scheduled sessions | Check-in tracking |
 | Consulting conversion | 30% within 12 months | CRM pipeline tracking |
-| AiBI-P/S institutional rollout | 50% within 6 months | Enrollment tracking by institution |
+| AiBI Foundations/S institutional rollout | 50% within 6 months | Enrollment tracking by institution |
 | Credential renewal | 60% at 2-year mark | Renewal submissions |
 
 ---

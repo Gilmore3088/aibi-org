@@ -7,7 +7,7 @@
  *
  *   <KPIRibbon items={[
  *     { label: "Curriculum", value: "9 modules", delta: "~12 hrs", desc: "From AI literacy to a working portfolio" },
- *     { label: "Practitioner output", value: "3 artifacts", delta: "peer-reviewed", desc: "Real workflows shipped during the program" },
+ *     { label: "Foundations output", value: "3 artifacts", delta: "peer-reviewed", desc: "Real workflows shipped during the program" },
  *   ]} />
  *
  * Cells span the full row at the page level — they're meant to bleed

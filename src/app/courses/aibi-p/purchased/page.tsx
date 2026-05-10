@@ -1,5 +1,5 @@
 // /courses/aibi-p/purchased
-// Stripe Checkout success_url for AiBI-Practitioner.
+// Stripe Checkout success_url for AiBI Foundations.
 // Mirrors /assessment/in-depth/purchased: branches on auth state so a buyer
 // who hasn't logged in yet sees a clear "log in to start" CTA instead of
 // hitting the entitlement gate on /courses/aibi-p with no context.
@@ -11,9 +11,9 @@ import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
 
 export const metadata: Metadata = {
-  title: 'Welcome to AiBI-Practitioner | The AI Banking Institute',
+  title: 'Welcome to AiBI Foundations | The AI Banking Institute',
   description:
-    'Your AiBI-Practitioner enrollment is confirmed. Sign in to begin Module 1.',
+    'Your AiBI Foundations enrollment is confirmed. Sign in to begin Module 1.',
   robots: { index: false, follow: false },
 };
 
@@ -22,7 +22,7 @@ export const dynamic = 'force-dynamic';
 const HIGHLIGHTS = [
   '12 self-paced modules built around AI Use Cards',
   'Banking-specific practice reps you keep and reuse',
-  'Work-product assessment + the AiBI-Practitioner credential',
+  'Work-product assessment + the AiBI Foundations credential',
   'Lifetime access to course materials',
 ] as const;
 
@@ -54,7 +54,7 @@ export default async function AiBIPurchasedPage() {
           Enrollment confirmed
         </p>
         <h1 className="font-serif text-4xl md:text-5xl font-bold leading-tight text-[color:var(--color-ink)] mb-5">
-          Welcome to AiBI-Practitioner.
+          Welcome to AiBI Foundations.
         </h1>
         <p className="text-base md:text-lg text-[color:var(--color-ink)]/75 leading-relaxed mb-8 max-w-2xl">
           Thanks for your purchase. A receipt is on its way from Stripe, and a

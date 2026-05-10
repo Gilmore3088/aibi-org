@@ -6,7 +6,7 @@
 
 ## Context
 
-The course harness ships with one format: self-paced, single track, three phases of items. Live today at `/courses/aibi-s/*`. AiBI-P (still on its own components) is also self-paced with modules grouped by pillars.
+The course harness ships with one format: self-paced, single track, three phases of items. Live today at `/courses/aibi-s/*`. AiBI Foundations (still on its own components) is also self-paced with modules grouped by pillars.
 
 Future courses will likely need:
 
@@ -93,9 +93,9 @@ The sidebar reads `config.cohort` and conditionally shows a "Next live session" 
 
 Fork to `src/lib/playground-shell/` — no sections, no items, no progress, different primary nav.
 
-### For AiBI-P migration (H6)
+### For AiBI Foundations migration (H6)
 
-AiBI-P is a self-paced course with four pillars. It's pure Option A — will migrate cleanly into the existing `CourseConfig` shape when H6 runs.
+AiBI Foundations is a self-paced course with four pillars. It's pure Option A — will migrate cleanly into the existing `CourseConfig` shape when H6 runs.
 
 ## Follow-ups
 

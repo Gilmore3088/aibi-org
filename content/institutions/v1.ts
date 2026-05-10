@@ -37,7 +37,7 @@ export const enrollmentTiers: readonly EnrollmentTier[] = [
     summary:
       'A group from one institution moves through a track together. Shared kickoff, an internal champion, group reporting for the executive sponsor, and team pricing that scales with headcount.',
     included: [
-      'Team pricing on Practitioner or Specialist tracks',
+      'Team pricing on Foundations or Specialist tracks',
       'Shared kickoff and internal champion support',
       'Group reporting for the executive sponsor',
     ],
@@ -50,9 +50,9 @@ export const enrollmentTiers: readonly EnrollmentTier[] = [
     scaleLabel: 'Everyone, over time',
     tagline: 'A cohort cadence, built to endure.',
     summary:
-      'Multi-year. Mixed cohorts of Practitioner, Specialist, and Leader credentials, scheduled on a recurring cadence so every banker — new hire or tenured — has a path to proficiency. The most durable way to build internal AI capability.',
+      'Multi-year. Mixed cohorts of Foundations, Specialist, and Leader credentials, scheduled on a recurring cadence so every banker — new hire or tenured — has a path to proficiency. The most durable way to build internal AI capability.',
     included: [
-      'Quarterly Practitioner cohorts for ongoing onboarding',
+      'Quarterly Foundations cohorts for ongoing onboarding',
       'Specialist cohorts by department as readiness grows',
       'Leader certification for executives and the board',
       'Named program lead and annual capability review',

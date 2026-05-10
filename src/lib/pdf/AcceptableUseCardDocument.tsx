@@ -190,7 +190,7 @@ export function AcceptableUseCardDocument({
         <View style={styles.header}>
           <Text style={styles.headerTitle}>Acceptable Use Card</Text>
           <Text style={styles.headerSubtitle}>
-            The AI Banking Institute  |  AiBI-Practitioner — Banking AI Practitioner
+            The AI Banking Institute  |  AiBI Foundations — Banking AI Foundations
           </Text>
         </View>
 

@@ -1,4 +1,4 @@
-// AiBI-P Module 1: AI for Your Workday
+// AiBI Foundations Module 1: AI for Your Workday
 // Pillar: Awareness | Estimated: 25 minutes
 // Key Output: Rewritten Email
 
@@ -11,7 +11,7 @@ export const module1: Module = {
   pillar: 'awareness',
   estimatedMinutes: 25,
   keyOutput: 'Rewritten Email',
-  mockupRef: 'content/courses/AiBI-P v1/stitch_ai_banking_institute_course/m1_refined_regulatory_landscape',
+  mockupRef: 'content/courses/AiBI Foundations v1/stitch_ai_banking_institute_course/m1_refined_regulatory_landscape',
   sections: [
     {
       id: 'm1-opening',

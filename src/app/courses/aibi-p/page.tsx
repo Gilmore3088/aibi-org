@@ -15,9 +15,9 @@ import { getModuleStatus } from './_lib/courseProgress';
 import type { ModuleStatus } from './_lib/courseProgress';
 
 export const metadata: Metadata = {
-  title: 'AiBI-Practitioner — Banking AI Practitioner | The AI Banking Institute',
+  title: 'AiBI Foundations — Banking AI Foundations | The AI Banking Institute',
   description:
-    'The Banking AI Practitioner course teaches every staff member at a community financial institution how to use AI tools safely, professionally, and with regulatory confidence.',
+    'The Banking AI Foundations course teaches every staff member at a community financial institution how to use AI tools safely, professionally, and with regulatory confidence.',
 };
 
 const PILLAR_ORDER: Pillar[] = ['awareness', 'understanding', 'creation', 'application'];
@@ -60,13 +60,13 @@ export default async function CourseOverviewPage() {
           Education
         </Link>
         <span className="mx-2 text-[color:var(--color-ink)]/20">/</span>
-        <span className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-terra)]">AiBI-Practitioner</span>
+        <span className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-terra)]">AiBI Foundations</span>
       </nav>
 
       {/* Hero */}
       <section className="mb-12">
         <h1 className="font-serif text-5xl md:text-6xl leading-tight text-[color:var(--color-ink)]">
-          Banking AI <span className="text-[color:var(--color-terra)] italic">Practitioner</span>
+          Banking AI <span className="text-[color:var(--color-terra)] italic">Foundations</span>
         </h1>
         <p className="mt-5 font-serif italic text-2xl leading-relaxed text-[color:var(--color-ink)]/80 max-w-3xl">
           {aibiPCourseConfig.promise}

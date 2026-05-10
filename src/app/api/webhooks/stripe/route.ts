@@ -1,5 +1,5 @@
 // POST /api/webhooks/stripe
-// Handles Stripe webhook events for AiBI-Practitioner course enrollment provisioning.
+// Handles Stripe webhook events for AiBI Foundations course enrollment provisioning.
 //
 // Security: Every request is verified via stripe.webhooks.constructEvent before
 // any processing occurs. Unverified requests are rejected with 400.

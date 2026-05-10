@@ -1,4 +1,4 @@
-// AiBI-P Module 7: AI Tools Landscape
+// AiBI Foundations Module 7: AI Tools Landscape
 // Pillar: Creation | Estimated: 35 minutes
 // Key Output: Tool Choice Map
 
@@ -11,7 +11,7 @@ export const module7: Module = {
   pillar: 'creation',
   estimatedMinutes: 35,
   keyOutput: 'Tool Choice Map',
-  mockupRef: 'content/courses/AiBI-P v1/stitch_ai_banking_institute_course/m7_refined_skill_builder',
+  mockupRef: 'content/courses/AiBI Foundations v1/stitch_ai_banking_institute_course/m7_refined_skill_builder',
   sections: [
     {
       id: 'm7-tool-categories',

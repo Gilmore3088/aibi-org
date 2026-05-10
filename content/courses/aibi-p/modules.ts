@@ -1,4 +1,4 @@
-// AiBI-P Course Module Map
+// AiBI Foundations Course Module Map
 // Imports all 9 module files and exports as typed array + lookup function
 
 import type { Module } from './types';

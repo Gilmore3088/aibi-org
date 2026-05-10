@@ -1,4 +1,4 @@
-// AiBI-P Module 4: Your AI Work Profile
+// AiBI Foundations Module 4: Your AI Work Profile
 // Pillar: Understanding | Estimated: 30 minutes
 // Key Output: AI Work Profile
 // roleSpecific: true — role-specific spotlights vary by department
@@ -12,7 +12,7 @@ export const module4: Module = {
   pillar: 'understanding',
   estimatedMinutes: 30,
   keyOutput: 'AI Work Profile',
-  mockupRef: 'content/courses/AiBI-P v1/stitch_ai_banking_institute_course/m4_platform_features_deep_dive',
+  mockupRef: 'content/courses/AiBI Foundations v1/stitch_ai_banking_institute_course/m4_platform_features_deep_dive',
   roleSpecific: true,
   sections: [
     {

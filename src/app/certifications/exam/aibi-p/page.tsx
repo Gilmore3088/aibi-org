@@ -17,10 +17,10 @@ export default function AiBIPExamPage() {
       <main className="px-6 py-14 md:py-20">
         <div className="max-w-2xl mx-auto text-center space-y-8">
           <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
-            Practitioner Proficiency Assessment
+            Foundations Proficiency Assessment
           </p>
           <h1 className="font-serif text-5xl md:text-6xl text-[color:var(--color-ink)] leading-tight">
-            How ready are you for the Practitioner credential?
+            How ready are you for the Foundations Certificate?
           </h1>
           <p className="text-lg text-[color:var(--color-ink)]/75 leading-relaxed max-w-xl mx-auto">
             A short proficiency assessment covering fundamentals, prompting,

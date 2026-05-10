@@ -1,4 +1,4 @@
-// AiBI-P Tool Guides — NotebookLM and Perplexity
+// AiBI Foundations Tool Guides — NotebookLM and Perplexity
 // Deep-dive reference for two high-value platforms in banking AI practice
 // Used by: /courses/aibi-p/tool-guides
 

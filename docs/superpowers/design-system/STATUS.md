@@ -60,7 +60,7 @@ The branch will not be merged until the founder reviews remaining waves and appr
 | `content/regulations/` | SR 11-7 / TPRM / ECOA / AIEOG — single source for `<TrustStrip>` |
 | `content/citations/` | Sourced statistics registry; `citationAsKPI()` helper |
 | `content/copy/` | `BRAND`, `PRINCIPLES`, `CTAS` — taglines & founder copy |
-| `content/curriculum/tools.ts` | 6 real platforms from the AiBI-Practitioner curriculum |
+| `content/curriculum/tools.ts` | 6 real platforms from the AiBI Foundations curriculum |
 | `content/curriculum/skills.ts` | 11 verb-stated skills derived from module takeaways |
 | `content/essays/` | MDX support + frontmatter types + registry |
 

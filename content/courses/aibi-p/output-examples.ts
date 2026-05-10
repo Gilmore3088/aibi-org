@@ -1,4 +1,4 @@
-// AiBI-P Output Gallery — Exemplary AI outputs for each banking role
+// AiBI Foundations Output Gallery — Exemplary AI outputs for each banking role
 // These show learners what EXCELLENCE looks like in their department.
 // Each example is realistic, banking-specific, and drawn from real skill workflows.
 
@@ -1282,8 +1282,8 @@ existing ad hoc use without an institutional framework. Inaction carries its own
    Incremental cost: approximately $[VERIFY: pull current M365 Copilot per-seat pricing].
    Expansion is contingent on AUP approval (Item 1). Conservative rollout: 10–15 seats.
 
-3. **Authorize AiBI-P certification enrollment for 6 staff — Owner: HR + IT. Due: Q2 2026.**
-   AiBI-P provides the governance framework, skill-building curriculum, and vendor-neutral
+3. **Authorize AiBI Foundations certification enrollment for 6 staff — Owner: HR + IT. Due: Q2 2026.**
+   AiBI Foundations provides the governance framework, skill-building curriculum, and vendor-neutral
    AI proficiency the institution needs before broad deployment. Enrollment is available now.
 
 ---
@@ -1569,7 +1569,7 @@ in a supervised function, the institution cannot demonstrate control.
 What We Are Doing
 - Phase 1 (Q2 2026): Adopt AI Acceptable Use Policy — board approval requested
 - Phase 2 (Q3 2026): Complete vendor AI inventory and TPRM documentation
-- Phase 3 (Q4 2026): Staff certification program — AiBI-P for first 30 users
+- Phase 3 (Q4 2026): Staff certification program — AiBI Foundations for first 30 users
 
 SPEAKER NOTE: Some directors will want to wait for clearer federal guidance.
 The response: the guidance is already here — SR 11-7, TPRM, ECOA. We are not
@@ -1679,7 +1679,7 @@ Cross-check efficiency ratio baseline against FDIC BankFind Suite Q4 2025 report
 SENSITIVITY NOTE — WHAT MUST BE TRUE FOR THE OPTIMISTIC SCENARIO
 
 1. Adoption rate: 80%+ of eligible FTE actively using AI tools within 12 months
-2. Training completion: All adopters have completed structured AI training (AiBI-P minimum)
+2. Training completion: All adopters have completed structured AI training (AiBI Foundations minimum)
 3. Process restructuring: At least 3 high-volume workflows redesigned around AI assistance
 4. Management reinforcement: Department heads actively measure and report time savings
 5. Platform stability: No major AI platform disruptions or compliance restrictions on core tools

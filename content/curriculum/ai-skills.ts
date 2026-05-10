@@ -1,5 +1,5 @@
 /**
- * AI Skills the AiBI-Practitioner curriculum teaches bankers to build.
+ * AI Skills the AiBI Foundations curriculum teaches bankers to build.
  *
  * "Skill" here is the AI primitive — a packaged, named, reusable
  * capability invoked by slash command, not a learning outcome.

@@ -193,7 +193,7 @@ export default function QuickWinsPage() {
               href="/courses/aibi-p"
               className="hover:text-[color:var(--color-terra)] transition-colors"
             >
-              AiBI-Practitioner
+              AiBI Foundations
             </Link>
           </li>
           <li aria-hidden="true">/</li>
@@ -219,7 +219,7 @@ export default function QuickWinsPage() {
 
         <p className="font-sans text-base text-[color:var(--color-ink)]/80 leading-relaxed max-w-2xl">
           Log every workflow you&apos;ve automated. Each entry builds your professional
-          record and proves the return on your AI Practitioner training.
+          record and proves the return on your AiBI Foundations training.
         </p>
       </header>
 

@@ -42,10 +42,10 @@ export async function generateMetadata({ params }: ModulePageParams): Promise<Me
   const moduleNum = parseInt(params.module, 10);
   const mod = getModuleByNumber(moduleNum);
   if (!mod) {
-    return { title: 'Module Not Found | AiBI-Practitioner' };
+    return { title: 'Module Not Found | AiBI Foundations' };
   }
   return {
-    title: `Module ${mod.number}: ${mod.title} | AiBI-Practitioner`,
+    title: `Module ${mod.number}: ${mod.title} | AiBI Foundations`,
   };
 }
 

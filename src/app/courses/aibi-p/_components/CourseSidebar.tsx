@@ -42,10 +42,10 @@ export function CourseSidebar({ completedModules, currentModule }: CourseSidebar
           </div>
           <div>
             <div className="text-[color:var(--color-ink)] font-bold text-sm font-serif leading-tight">
-              AiBI-Practitioner
+              AiBI Foundations
             </div>
             <div className="text-[10px] uppercase font-mono tracking-[0.2em] text-[color:var(--color-slate)]">
-              Banking AI Practitioner
+              Banking AI Foundations
             </div>
           </div>
         </div>

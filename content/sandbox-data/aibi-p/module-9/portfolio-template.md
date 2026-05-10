@@ -1,4 +1,4 @@
-# AiBI-P Portfolio Work Product Template
+# AiBI Foundations Portfolio Work Product Template
 
 Use this template for each of the four items in your capstone portfolio. Each item should demonstrate a real AI skill you built during the course, applied to your actual role at a community bank or credit union. The strongest portfolios show measurable impact, honest limitations, and professional judgment.
 

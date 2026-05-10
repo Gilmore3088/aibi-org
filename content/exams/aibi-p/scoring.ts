@@ -1,4 +1,4 @@
-// AiBI-P Proficiency Assessment — Scoring
+// AiBI Foundations Proficiency Assessment — Scoring
 // No pass/fail. Proficiency levels indicate readiness for certification submission.
 
 export interface ProficiencyLevel {
@@ -35,7 +35,7 @@ export const proficiencyLevels: readonly ProficiencyLevel[] = [
     summary:
       'You understand several core concepts but have gaps in specific areas. Your topic breakdown below shows where to focus your study before submitting a work product for certification.',
     recommendation:
-      'Review the topic breakdown below. Focus your study on the one or two weakest areas. When your retake places you at Proficient or above, you are ready to submit your work product for the Practitioner credential.',
+      'Review the topic breakdown below. Focus your study on the one or two weakest areas. When your retake places you at Proficient or above, you are ready to submit your work product for the Foundations Certificate.',
   },
   {
     id: 'proficient',
@@ -45,7 +45,7 @@ export const proficiencyLevels: readonly ProficiencyLevel[] = [
     colorVar: 'var(--color-terra-light)',
     headline: 'You are ready to pursue certification.',
     summary:
-      'You have demonstrated sufficient knowledge across the five assessment dimensions to submit a work product for the Practitioner credential. Your submission will be evaluated against the AiBI-P rubric.',
+      'You have demonstrated sufficient knowledge across the five assessment dimensions to submit a work product for the Foundations Certificate. Your submission will be evaluated against the AiBI Foundations rubric.',
     recommendation:
       'Proceed to the Practitioner certification inquiry form. You will submit a real work product — something you would actually present to a supervisor — assessed across five rubric dimensions (Accuracy, Completeness, Tone, Judgment, Usability).',
   },
@@ -57,9 +57,9 @@ export const proficiencyLevels: readonly ProficiencyLevel[] = [
     colorVar: 'var(--color-sage)',
     headline: 'Strong mastery. Proceed with confidence.',
     summary:
-      'You have demonstrated strong knowledge across all five assessment dimensions. Your readiness for the Practitioner credential is clear.',
+      'You have demonstrated strong knowledge across all five assessment dimensions. Your readiness for the Foundations Certificate is clear.',
     recommendation:
-      'Submit your work product for the Practitioner credential and consider whether the Specialist track (AiBI-S) is the right next step for your role. Your topic mastery suggests you may be ready for department-level AI leadership.',
+      'Submit your work product for the Foundations Certificate and consider whether the Specialist track (AiBI-S) is the right next step for your role. Your topic mastery suggests you may be ready for department-level AI leadership.',
   },
 ];
 

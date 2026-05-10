@@ -2,9 +2,9 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Bring AiBI-S and AiBI-L course pages up to AiBI-P's interactive standard — collapsible accordion sections, mini TOC, reading time, compact sticky headers, and key takeaways across all three courses.
+**Goal:** Bring AiBI-S and AiBI-L course pages up to AiBI Foundations's interactive standard — collapsible accordion sections, mini TOC, reading time, compact sticky headers, and key takeaways across all three courses.
 
-**Architecture:** Extract LearnSection and MarkdownRenderer from AiBI-P's `_components/` into shared `src/components/courses/`. Parameterize accent color. Replace WeekContent's section dump and AiBI-L's inline SectionBlock with the shared LearnSection. Extract a shared CourseHeader from ModuleHeader. Add `keyTakeaways` field to all three course content types and populate for every module/week/session.
+**Architecture:** Extract LearnSection and MarkdownRenderer from AiBI Foundations's `_components/` into shared `src/components/courses/`. Parameterize accent color. Replace WeekContent's section dump and AiBI-L's inline SectionBlock with the shared LearnSection. Extract a shared CourseHeader from ModuleHeader. Add `keyTakeaways` field to all three course content types and populate for every module/week/session.
 
 **Tech Stack:** Next.js 14 (App Router), TypeScript strict, Tailwind CSS, CSS custom properties for brand colors.
 
@@ -14,7 +14,7 @@
 
 | Action | File | Responsibility |
 |--------|------|----------------|
-| Create | `src/components/courses/MarkdownRenderer.tsx` | Shared markdown renderer (moved from AiBI-P) |
+| Create | `src/components/courses/MarkdownRenderer.tsx` | Shared markdown renderer (moved from AiBI Foundations) |
 | Create | `src/components/courses/LearnSection.tsx` | Shared collapsible accordion with accent color prop |
 | Create | `src/components/courses/CourseHeader.tsx` | Shared sticky header band with accent color prop |
 | Modify | `src/app/courses/aibi-p/_components/LearnSection.tsx` | Replace with re-export from shared |
@@ -315,7 +315,7 @@ export function LearnSection({
 }
 ```
 
-- [ ] **Step 2: Replace AiBI-P's LearnSection with re-export**
+- [ ] **Step 2: Replace AiBI Foundations's LearnSection with re-export**
 
 ```typescript
 // src/app/courses/aibi-p/_components/LearnSection.tsx
@@ -323,7 +323,7 @@ export { LearnSection } from '@/components/courses/LearnSection';
 export type { LearnSectionItem } from '@/components/courses/LearnSection';
 ```
 
-- [ ] **Step 3: Update AiBI-P module page import**
+- [ ] **Step 3: Update AiBI Foundations module page import**
 
 In `src/app/courses/aibi-p/[module]/page.tsx`, the existing import `import { LearnSection } from '../_components/LearnSection'` still works via re-export. No change needed to the import.
 
@@ -467,7 +467,7 @@ export function ModuleHeader({
 - [ ] **Step 3: Verify build**
 
 Run: `cd /Users/jgmbp/Projects/aibi-phase-2 && npx tsc --noEmit`
-Expected: No errors. AiBI-P module pages render identically.
+Expected: No errors. AiBI Foundations module pages render identically.
 
 - [ ] **Step 4: Commit**
 
@@ -795,7 +795,7 @@ git commit -m "feat(aibi-l): replace SectionBlock dump with shared LearnSection 
 - Modify: `content/courses/aibi-s/types.ts`
 - Modify: `content/courses/aibi-l/types.ts`
 
-- [ ] **Step 1: Add keyTakeaways to AiBI-P Module interface**
+- [ ] **Step 1: Add keyTakeaways to AiBI Foundations Module interface**
 
 In `content/courses/aibi-p/types.ts`, add to the `Module` interface:
 
@@ -885,7 +885,7 @@ git commit -m "feat: add keyTakeaways field to all three course content types"
 
 ---
 
-### Task 8: Populate keyTakeaways for AiBI-P modules 1-9
+### Task 8: Populate keyTakeaways for AiBI Foundations modules 1-9
 
 **Files:**
 - Modify: `content/courses/aibi-p/module-1.ts` through `module-9.ts`
@@ -973,7 +973,7 @@ keyTakeaways: [
 keyTakeaways: [
   'Submit a complete work product that demonstrates governed AI skill deployment',
   'Self-assess your submission against the five-dimension grading rubric before final upload',
-  'Prepare for the reviewer feedback process and understand what earns the AiBI-P credential',
+  'Prepare for the reviewer feedback process and understand what earns the AiBI Foundations credential',
 ],
 ```
 
@@ -982,7 +982,7 @@ keyTakeaways: [
 Run: `cd /Users/jgmbp/Projects/aibi-phase-2 && npx tsc --noEmit`
 Expected: No errors.
 
-- [ ] **Step 3: Update AiBI-P module page to pass keyTakeaways**
+- [ ] **Step 3: Update AiBI Foundations module page to pass keyTakeaways**
 
 In `src/app/courses/aibi-p/[module]/page.tsx`, update the LearnSection call:
 

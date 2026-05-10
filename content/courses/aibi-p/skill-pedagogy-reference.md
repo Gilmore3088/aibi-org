@@ -2,9 +2,9 @@
 
 **Source:** AIDB Operators Cut — Skills Master Class (Nufar Gaspar + Nathaniel Whittemore)
 **Saved:** 2026-04-16
-**Purpose:** Enrich AiBI-P M6-M8 skill modules with proven teaching patterns
+**Purpose:** Enrich AiBI Foundations M6-M8 skill modules with proven teaching patterns
 
-## Key Concepts to Incorporate into AiBI-P
+## Key Concepts to Incorporate into AiBI Foundations
 
 ### 1. The 5 Skill Killers (for M6 — Anatomy of a Skill)
 

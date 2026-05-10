@@ -14,7 +14,7 @@
 | Weeks | Six (W1-W6) |
 | Assessment | Submitted process improvement with measured time savings — not a test |
 | Price | $1,495/seat individual — institution cohort pricing (8+ seats) custom quote |
-| Prerequisite | AiBI-P certification (verified at enrollment) |
+| Prerequisite | AiBI Foundations certification (verified at enrollment) |
 | Certificate | AiBI-S — Banking AI Specialist — unique ID, verifiable, LinkedIn badge, role track designation (e.g., AiBI-S/Ops) |
 | Status | PRD — Ready for Content Development |
 | Version | 1.0 — April 2026 |
@@ -25,22 +25,22 @@
 
 This is the comprehensive PRD for AiBI-S — the specialist course of the AiBI curriculum. It specifies every week, every activity, every deliverable, every platform behavior, and every assessment requirement.
 
-AiBI-S is the second tier in the AiBI certification ladder. It requires AiBI-P as a prerequisite. Where AiBI-P operates at the personal margin of error — the learner builds skills for themselves and can fail privately — AiBI-S operates at the team and institutional margin of error. Everything the learner builds in this course is deployed to their department, used by colleagues, and measured with real data.
+AiBI-S is the second tier in the AiBI certification ladder. It requires AiBI Foundations as a prerequisite. Where AiBI Foundations operates at the personal margin of error — the learner builds skills for themselves and can fail privately — AiBI-S operates at the team and institutional margin of error. Everything the learner builds in this course is deployed to their department, used by colleagues, and measured with real data.
 
-The organizing principle of AiBI-S is the progression from personal productivity to institutional capability. The learner arrives with a personal skill (from AiBI-P) and leaves with a documented, governed, measured departmental automation that other people use.
+The organizing principle of AiBI-S is the progression from personal productivity to institutional capability. The learner arrives with a personal skill (from AiBI Foundations) and leaves with a documented, governed, measured departmental automation that other people use.
 
 ### The Margin of Error Shift
 
-This is the core conceptual upgrade from AiBI-P to AiBI-S:
+This is the core conceptual upgrade from AiBI Foundations to AiBI-S:
 
 | Level | Margin of Error | Who is Affected | Course |
 |-------|----------------|-----------------|--------|
-| Personal | High — fail privately, learn fast, iterate freely | Only you | AiBI-P |
+| Personal | High — fail privately, learn fast, iterate freely | Only you | AiBI Foundations |
 | Team | Medium — colleagues catch mistakes, reputation has some risk but is recoverable | Your immediate colleagues | **AiBI-S (this course)** |
 | Institution | Low — documented, governed, examined. Errors have compliance and operational consequences | The whole organization + examiners | **AiBI-S (this course)** |
 | Customer-facing | Zero — touches members, borrowers, or depositors. Full governance, full accountability | Members and the public | AiBI-L |
 
-AiBI-P planted the concept. AiBI-S deploys it. The learner moves from "I built something useful for myself" to "I built something my department relies on, and I can prove it works."
+AiBI Foundations planted the concept. AiBI-S deploys it. The learner moves from "I built something useful for myself" to "I built something my department relies on, and I can prove it works."
 
 ---
 
@@ -103,21 +103,21 @@ AiBI-S is delivered as a live cohort, not self-paced. This is a deliberate desig
 |-------|-------|-----------|-------|
 | AiBI-S Individual | $1,495/seat | 1-7 seats | Standard individual price |
 | AiBI-S Institution Cohort | Custom quote | 8+ seats | Dedicated cohort scheduling, institution-specific examples, volume discount |
-| AiBI-S + AiBI-P Bundle | $1,495 + $295 | 1+ seats | No discount on bundle — AiBI-P is prerequisite, not upsell |
+| AiBI-S + AiBI Foundations Bundle | $1,495 + $295 | 1+ seats | No discount on bundle — AiBI Foundations is prerequisite, not upsell |
 
 **Institution cohort pricing rules:**
 
 - 8+ seats triggers institution cohort pricing. The institution receives a dedicated cohort or guaranteed seats in a scheduled cohort.
 - Custom quote based on seat count, scheduling requirements, and whether the institution wants a private cohort (all seats from one institution) or mixed cohort (their seats alongside other institutions).
 - Private cohorts (12+ seats from one institution) include a pre-course consultation to customize work audit examples and platform content to the institution's specific technology stack.
-- The institution discount does NOT retroactively apply to AiBI-P purchases.
+- The institution discount does NOT retroactively apply to AiBI Foundations purchases.
 
 ### 2.2 AiBI-S in the Sales Funnel
 
 | Step | Product | Price | Conversion Goal |
 |------|---------|-------|----------------|
-| 1 | Free 12-question assessment | $0 | Score creates urgency — routes to AiBI-P |
-| 2a | AiBI-P course | $295 individual | Foundation. Every AiBI-S learner has completed this. |
+| 1 | Free 12-question assessment | $0 | Score creates urgency — routes to AiBI Foundations |
+| 2a | AiBI Foundations course | $295 individual | Foundation. Every AiBI-S learner has completed this. |
 | 2b | Executive Briefing | $150-200 (credited) | Institution-level conversation. May trigger institutional AiBI-S cohort purchase. |
 | **3** | **AiBI-S course** | **$1,495 individual** | **Primary product for department managers. Clear path: deploy AI to your team, earn the specialist credential.** |
 | 4 | AiBI-L workshop | $2,800+ individual | C-suite and board. Governance, roadmap, examiner readiness. |
@@ -129,21 +129,21 @@ AiBI-S is delivered as a live cohort, not self-paced. This is a deliberate desig
 
 ## 3. Prerequisite Verification
 
-### 3.1 AiBI-P Requirement
+### 3.1 AiBI Foundations Requirement
 
-AiBI-S requires a valid AiBI-P certification. This is verified at enrollment, not at purchase. The verification flow:
+AiBI-S requires a valid AiBI Foundations certification. This is verified at enrollment, not at purchase. The verification flow:
 
 1. Learner purchases AiBI-S (Stripe checkout, $1,495).
-2. On first login to the AiBI-S course, system checks for a valid AiBI-P certificate ID associated with the learner's email.
+2. On first login to the AiBI-S course, system checks for a valid AiBI Foundations certificate ID associated with the learner's email.
 3. If found: enrollment proceeds. Role track selection presented.
-4. If not found: learner sees a message explaining the prerequisite and a link to enroll in AiBI-P. AiBI-S access is gated until AiBI-P is verified.
-5. Edge case: learner completed AiBI-P under a different email. Manual override available via support request. Instructor can verify and unlock.
+4. If not found: learner sees a message explaining the prerequisite and a link to enroll in AiBI Foundations. AiBI-S access is gated until AiBI Foundations is verified.
+5. Edge case: learner completed AiBI Foundations under a different email. Manual override available via support request. Instructor can verify and unlock.
 
 **Why verify at enrollment, not at purchase:** Allowing purchase without verification prevents cart abandonment from learners who have the credential but cannot locate their certificate ID at checkout. The verification gate at first login catches the genuine prerequisite gap without losing the sale.
 
-### 3.2 What AiBI-P Established
+### 3.2 What AiBI Foundations Established
 
-The AiBI-S curriculum assumes every learner arrives with these capabilities from AiBI-P:
+The AiBI-S curriculum assumes every learner arrives with these capabilities from AiBI Foundations:
 
 - Can name the five key regulatory frameworks that apply to AI in banking (SR 11-7, Interagency TPRM Guidance, ECOA/Reg B, BSA/AML, AIEOG AI Lexicon)
 - Has activated and used at least one AI platform (Claude, ChatGPT, Copilot, Perplexity, NotebookLM, or Gemini)
@@ -152,7 +152,7 @@ The AiBI-S curriculum assumes every learner arrives with these capabilities from
 - Has automated 1-3 personal tasks and submitted an assessed work product
 - Understands the margin of error progression and knows that AiBI-S operates at the team/institutional level
 
-AiBI-S does not reteach any AiBI-P content. If a learner struggles with foundational concepts during AiBI-S, the instructor directs them to specific AiBI-P modules for review.
+AiBI-S does not reteach any AiBI Foundations content. If a learner struggles with foundational concepts during AiBI-S, the instructor directs them to specific AiBI Foundations modules for review.
 
 ---
 
@@ -168,17 +168,17 @@ Two weeks. The learner transitions from personal AI user to institutional AI dep
 
 #### Why This Week Exists
 
-AiBI-P graduates have a skill that works for them. Most of them are already using it daily. But that skill lives in their personal account, has no documentation beyond what they wrote for themselves, has no version control, and would be lost if they left the institution. Week 1 closes that gap. The personal skill becomes a template for institutional deployment.
+AiBI Foundations graduates have a skill that works for them. Most of them are already using it daily. But that skill lives in their personal account, has no documentation beyond what they wrote for themselves, has no version control, and would be lost if they left the institution. Week 1 closes that gap. The personal skill becomes a template for institutional deployment.
 
 #### Content Specification
 
 **Opening frame: The shift from personal to institutional**
 
-In AiBI-P, the learner built a skill and automated a personal task. That skill is a personal productivity tool — it makes one person faster. In AiBI-S, the question changes: how do you make your department faster? The answer is not "give everyone my skill." The answer involves governance, documentation, versioning, ownership, and measurement. This week introduces each of those concepts.
+In AiBI Foundations, the learner built a skill and automated a personal task. That skill is a personal productivity tool — it makes one person faster. In AiBI-S, the question changes: how do you make your department faster? The answer is not "give everyone my skill." The answer involves governance, documentation, versioning, ownership, and measurement. This week introduces each of those concepts.
 
 **Skill governance: what changes when a skill serves a team**
 
-| Dimension | Personal Skill (AiBI-P) | Institutional Skill (AiBI-S) |
+| Dimension | Personal Skill (AiBI Foundations) | Institutional Skill (AiBI-S) |
 |-----------|------------------------|------------------------------|
 | Ownership | You own it. You iterate on it when you want to. | Someone owns it. Changes go through a review. |
 | Versioning | You save over the old file. Maybe you have a v2. | Version-controlled. Every change documented. Previous versions recoverable. |
@@ -250,15 +250,15 @@ Conduct a work audit of your department. Map a minimum of 10 recurring workflows
 
 #### Why This Week Exists
 
-AiBI-P introduced six platforms at a survey level: Claude, ChatGPT, Copilot (M365), Perplexity, NotebookLM, and Gemini. Every learner activated at least one. In AiBI-S, platform training goes deep and role-specific. An operations manager learning Power Automate and a compliance officer learning Perplexity for regulatory research are doing fundamentally different work — the live session splits into role-track breakout groups for the platform deep dive.
+AiBI Foundations introduced six platforms at a survey level: Claude, ChatGPT, Copilot (M365), Perplexity, NotebookLM, and Gemini. Every learner activated at least one. In AiBI-S, platform training goes deep and role-specific. An operations manager learning Power Automate and a compliance officer learning Perplexity for regulatory research are doing fundamentally different work — the live session splits into role-track breakout groups for the platform deep dive.
 
 #### Content Specification
 
 **The departmental workspace concept**
 
-In AiBI-P, learners set up personal Custom Instructions (ChatGPT) or Projects (Claude). In AiBI-S, the concept scales to the department. A departmental workspace is an AI environment pre-loaded with institutional context so that any team member who uses it gets output calibrated to the institution.
+In AiBI Foundations, learners set up personal Custom Instructions (ChatGPT) or Projects (Claude). In AiBI-S, the concept scales to the department. A departmental workspace is an AI environment pre-loaded with institutional context so that any team member who uses it gets output calibrated to the institution.
 
-| Component | Personal Setup (AiBI-P) | Departmental Setup (AiBI-S) |
+| Component | Personal Setup (AiBI Foundations) | Departmental Setup (AiBI-S) |
 |-----------|------------------------|------------------------------|
 | Context | Your role, your institution, your preferences | Department mission, team processes, institutional standards, regulatory context |
 | Skills | Your personal skill files | Shared skill files accessible to the team |
@@ -268,7 +268,7 @@ In AiBI-P, learners set up personal Custom Instructions (ChatGPT) or Projects (C
 
 **Role-track platform deep dives:**
 
-The live session in W2 includes a 45-minute breakout by role track. Each breakout covers the platforms most relevant to that track, going significantly deeper than AiBI-P's survey-level coverage.
+The live session in W2 includes a 45-minute breakout by role track. Each breakout covers the platforms most relevant to that track, going significantly deeper than AiBI Foundations's survey-level coverage.
 
 **Operations Track (/Ops):**
 - **Copilot in Teams:** Meeting summarization, action item extraction, follow-up drafts. Setting up Teams channels with Copilot for recurring operational meetings.
@@ -302,7 +302,7 @@ Each role track builds a departmental workspace during the Activity 2.1. The wor
 
 1. **Institution context block:** Institution name, charter type, asset size, primary regulators, number of staff in the department.
 2. **Department context block:** Department mission, key processes, reporting relationships, current technology stack.
-3. **Regulatory context block:** Applicable regulatory frameworks for this department's work (from AiBI-P M1 knowledge).
+3. **Regulatory context block:** Applicable regulatory frameworks for this department's work (from AiBI Foundations M1 knowledge).
 4. **Data handling rules:** Explicit statement of what data tiers this workspace handles and what must never be entered.
 5. **Output standards:** Default output format, tone, and quality expectations for this department.
 6. **Skill references:** Pointers to any existing skills the department uses.
@@ -321,7 +321,7 @@ Set up a departmental AI workspace using the platform most relevant to your role
 **Requirements:**
 1. All six context blocks completed (institution, department, regulatory, data handling, output standards, skill references).
 2. At least one test query run through the workspace demonstrating that the context produces department-calibrated output.
-3. Documentation: a one-page setup guide that a colleague in your department could follow to access and use the workspace. This guide should be understandable by someone with AiBI-P-level AI proficiency but no prior experience with workspace configuration.
+3. Documentation: a one-page setup guide that a colleague in your department could follow to access and use the workspace. This guide should be understandable by someone with AiBI Foundations-level AI proficiency but no prior experience with workspace configuration.
 
 **Submission format:** Screenshot of the configured workspace + the one-page setup guide + the test query and its output.
 
@@ -341,15 +341,15 @@ Two weeks. The learner builds and deploys a real automation for their department
 
 #### Why This Week Exists
 
-This is the hardest week of the course. In AiBI-P, the learner built a skill for personal use. The margin of error was high — if the skill produced imperfect output, only the learner saw it. In W3, the learner deploys something that colleagues will use. The margin of error drops to medium. The skill must be robust enough that someone who did not build it can run it and get consistently acceptable output.
+This is the hardest week of the course. In AiBI Foundations, the learner built a skill for personal use. The margin of error was high — if the skill produced imperfect output, only the learner saw it. In W3, the learner deploys something that colleagues will use. The margin of error drops to medium. The skill must be robust enough that someone who did not build it can run it and get consistently acceptable output.
 
-The week also introduces advanced skill patterns that were not covered in AiBI-P: multi-step skills, skill chaining, and context engineering at institutional scale.
+The week also introduces advanced skill patterns that were not covered in AiBI Foundations: multi-step skills, skill chaining, and context engineering at institutional scale.
 
 #### Content Specification
 
 **Advanced skill architecture**
 
-AiBI-P introduced the RTFC framework (Role, Task, Format, Constraint) and the extended skill anatomy (name, description, instructions, output format, gotcha section, constraints). AiBI-S builds on this foundation with patterns for institutional-grade skills:
+AiBI Foundations introduced the RTFC framework (Role, Task, Format, Constraint) and the extended skill anatomy (name, description, instructions, output format, gotcha section, constraints). AiBI-S builds on this foundation with patterns for institutional-grade skills:
 
 **Multi-step skills:**
 
@@ -364,9 +364,9 @@ A personal skill typically does one thing: summarize a meeting, draft a response
 
 **The 5 Skill Killers at institutional scale**
 
-AiBI-P introduced the 5 Skill Killers from the AIDB pedagogy. In AiBI-S, each killer is revisited through the lens of departmental deployment:
+AiBI Foundations introduced the 5 Skill Killers from the AIDB pedagogy. In AiBI-S, each killer is revisited through the lens of departmental deployment:
 
-| # | Killer | Personal Impact (AiBI-P) | Institutional Impact (AiBI-S) |
+| # | Killer | Personal Impact (AiBI Foundations) | Institutional Impact (AiBI-S) |
 |---|--------|-------------------------|-------------------------------|
 | 1 | Description does not trigger properly | Your skill does not activate when you need it | A colleague runs the wrong skill for the task because the description was ambiguous |
 | 2 | Over-defining the process | Your output is rigid when you wanted flexibility | Team members cannot adapt the skill to their specific sub-tasks because every step is hardcoded |
@@ -387,7 +387,7 @@ Context engineering is the practice of selecting, structuring, and maintaining t
 
 **Data classification enforcement for departmental workflows**
 
-In AiBI-P, data classification was a personal awareness exercise. In AiBI-S, it becomes an enforcement mechanism built into the skill itself.
+In AiBI Foundations, data classification was a personal awareness exercise. In AiBI-S, it becomes an enforcement mechanism built into the skill itself.
 
 | Tier | Definition | Departmental Skill Rule |
 |------|-----------|------------------------|
@@ -498,7 +498,7 @@ Annual dollar value = Annual hours saved x (Department avg salary / 2080)
 
 **The Litmus Test at department scale**
 
-In AiBI-P, the Litmus Test was personal: "If you find yourself having to iterate and refine the output AFTER the skill runs, then the skill itself needs improvement."
+In AiBI Foundations, the Litmus Test was personal: "If you find yourself having to iterate and refine the output AFTER the skill runs, then the skill itself needs improvement."
 
 At department scale, the Litmus Test adds a second dimension: "Would a new team member produce the same output?" If the answer is no — if the skill only works properly when the person who built it runs it — then the skill has an implicit knowledge dependency that needs to be made explicit in the documentation.
 
@@ -510,7 +510,7 @@ At department scale, the Litmus Test adds a second dimension: "Would a new team 
 
 **Vendor evaluation framework**
 
-AiBI-P surveyed six platforms. AiBI-S asks a sharper question: which platforms should your department standardize on? The vendor evaluation framework provides 5 questions to score any AI platform for departmental adoption:
+AiBI Foundations surveyed six platforms. AiBI-S asks a sharper question: which platforms should your department standardize on? The vendor evaluation framework provides 5 questions to score any AI platform for departmental adoption:
 
 | # | Question | What It Measures | Scoring |
 |---|----------|-----------------|---------|
@@ -774,7 +774,7 @@ The rationale: The AI Banking Institute's value proposition is that AI measurabl
 | **1. Process Selection** — Did they pick a workflow that matters? | Selected a low-frequency or low-impact workflow. Score of 6 or below on the frequency x time x standardization matrix. | Reasonable selection but not the highest-value candidate from the work audit. Score of 7-8. | Selected a high-value workflow. Score of 9-10. Clear justification for selection tied to department priorities. | Selected the highest-impact workflow available. Score of 11-12. Articulated strategic alignment with institutional goals beyond department efficiency. |
 | **2. Skill Quality** — Are the deployed skills institutional-grade? | Skills are missing components, contain contradictions, or would not produce consistent output for a user other than the builder. | Skills have most components but gotcha sections are thin, constraints are generic, or documentation assumes builder knowledge. | Skills have all extended anatomy components. Gotcha sections reflect real failure modes observed during deployment. Constraints are specific and enforceable. A colleague could maintain the skill. | Skills are exemplary: modular, well-documented, version-controlled. Gotcha sections are comprehensive. Naming conventions and categorization demonstrate library-scale thinking. Could be handed to another department as a template. |
 | **3. Measured Impact** — Real time savings data, not estimates. **HARD GATE: minimum 3 required.** | No baseline data. Savings are estimated or projected without measurement. Before/after data is missing or fabricated. | Some measurement attempted but methodology is inconsistent. Fewer than 3 data points on either side. Quality comparison is subjective without evidence. | At least 3 timed occurrences before and after. Calculation methodology is sound. Quality comparison includes output evidence. Executive summary is conservative and defensible. | Rigorous measurement: 5+ data points on each side. Methodology documented and repeatable. Quality comparison is thorough. Dollar value projection is conservative and sourced. Board-presentable. |
-| **4. Documentation** — Can someone who did not build this maintain and iterate on it? | Documentation is incomplete or assumes the reader is the builder. Quick start guides are missing or unusable. | Documentation covers the basics but a new user would have questions. Quick start guides exist but are vague on inputs or output interpretation. | Documentation is complete. A new team member with AiBI-P-level proficiency could use and maintain the skills from documentation alone. Quick start guides are clear and actionable. | Documentation is exemplary. Library index, ownership matrix, and training materials could be adopted by another department without modification. Demonstrates institutional-grade documentation practices. |
+| **4. Documentation** — Can someone who did not build this maintain and iterate on it? | Documentation is incomplete or assumes the reader is the builder. Quick start guides are missing or unusable. | Documentation covers the basics but a new user would have questions. Quick start guides exist but are vague on inputs or output interpretation. | Documentation is complete. A new team member with AiBI Foundations-level proficiency could use and maintain the skills from documentation alone. Quick start guides are clear and actionable. | Documentation is exemplary. Library index, ownership matrix, and training materials could be adopted by another department without modification. Demonstrates institutional-grade documentation practices. |
 | **5. Change Adoption** — Has anyone else on the team actually used it? | No evidence that anyone other than the builder has used the automation. | One colleague has tried it once, but no evidence of ongoing use or feedback incorporation. | At least one colleague has used the automation multiple times. Feedback has been received and incorporated into the skill. Evidence of adoption provided (screenshots, confirmation, usage logs). | Multiple team members are using the automation regularly. Feedback loop is active. The automation has become part of the department's standard workflow. Evidence of organic adoption beyond the builder's direct encouragement. |
 
 ### 7.4 Scoring Summary
@@ -897,7 +897,7 @@ The instructor needs a dashboard to manage the cohort:
 
 | Feature | Specification |
 |---------|--------------|
-| Cohort roster | All enrolled learners, role track, AiBI-P certificate ID, contact info |
+| Cohort roster | All enrolled learners, role track, AiBI Foundations certificate ID, contact info |
 | Submission tracker | Grid: learners (rows) x weeks (columns). Green = submitted, yellow = submitted late, red = missing, blue = under review |
 | Feedback interface | Per-submission feedback form. Rich text. Can attach files. |
 | Peer review management | Auto-assign peers (cross-track when possible). Monitor completion. Override assignments if needed. |
@@ -910,7 +910,7 @@ The instructor needs a dashboard to manage the cohort:
 | Event | Trigger | Properties |
 |-------|---------|------------|
 | cohort_enrolled | Learner purchases and is assigned to cohort | learner_id, cohort_id, role_track, source, timestamp |
-| prerequisite_verified | AiBI-P credential confirmed | learner_id, aibi_p_certificate_id, timestamp |
+| prerequisite_verified | AiBI Foundations credential confirmed | learner_id, aibi_p_certificate_id, timestamp |
 | session_attended | Learner joins live Zoom session | learner_id, cohort_id, week_number, duration_min |
 | activity_submitted | Weekly activity submitted | learner_id, cohort_id, week_number, activity_id, timestamp |
 | peer_review_completed | Peer review submitted | reviewer_id, reviewee_id, activity_id, timestamp |
@@ -1000,7 +1000,7 @@ The instructor needs a dashboard to manage the cohort:
 
 11. Course shell visual design (cobalt accent — Pillar B color, consistent with AIBankingInstitute.com brand system).
 12. Six week header bands (cobalt gradient or variation to distinguish weeks while maintaining Pillar B identity).
-13. Activity container component (visually distinct from content copy, consistent with AiBI-P design).
+13. Activity container component (visually distinct from content copy, consistent with AiBI Foundations design).
 14. Progress indicator (week-level, six steps, with phase labels: Foundation / First Build / Scale and Orchestrate).
 15. Role track selector component (enrollment flow, 5 options with descriptions).
 16. Peer review interface design (anonymous, structured form).
@@ -1013,7 +1013,7 @@ The instructor needs a dashboard to manage the cohort:
 
 ### 12.3 Development Team
 
-23. Prerequisite verification system (check AiBI-P certificate ID at enrollment).
+23. Prerequisite verification system (check AiBI Foundations certificate ID at enrollment).
 24. Role track selection and content routing (5 tracks, conditional content display throughout course).
 25. Week-by-week progress state management (6 weeks, forward-gated).
 26. Activity submission forms with file upload (supports .md, .txt, .pdf, .docx, .xlsx, .pptx, .png, .jpg, .zip).
@@ -1036,7 +1036,7 @@ The instructor needs a dashboard to manage the cohort:
 40. Full course completed end-to-end on desktop (Chrome, Safari, Firefox) by internal tester.
 41. All activity submission forms tested with valid and invalid inputs.
 42. Role track routing verified: all 5 tracks show correct platform content throughout course.
-43. Prerequisite verification tested: valid AiBI-P cert passes, missing cert blocks, manual override works.
+43. Prerequisite verification tested: valid AiBI Foundations cert passes, missing cert blocks, manual override works.
 44. Peer review assignment tested: cross-track assignment, anonymous display, review form submission.
 45. File upload tested for all supported formats and size limits.
 46. Capstone .zip upload tested with the expected folder structure.
@@ -1062,7 +1062,7 @@ The instructor needs a dashboard to manage the cohort:
 ### 13.1 Curriculum Progression
 
 ```
-Free Assessment → AiBI-P (Practitioner) → AiBI-S (Specialist) → AiBI-L (Leader)
+Free Assessment → AiBI Foundations (Practitioner) → AiBI-S (Specialist) → AiBI-L (Leader)
          $0              $295                  $1,495              $2,800+
      12 questions      Self-paced            6-week cohort       1-day workshop
      All staff         All staff             Dept managers        C-suite/Board

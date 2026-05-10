@@ -2,7 +2,7 @@
 tier: early-stage
 sequence_position: 3
 delay: 7 days
-subject: AiBI-P starts when you're ready
+subject: AiBI Foundations starts when you're ready
 preheader: Turn your existing experimenters into the first cohort.
 tags:
   - aibi-assessment-earlystage
@@ -12,7 +12,7 @@ tags:
 
 A week ago you completed the readiness assessment and scored in the Early Stage tier. The diagnosis: experiments exist, governance does not.
 
-The fastest way to move out of Early Stage is to enroll your existing experimenters in AiBI-P. They already understand why this matters — the program teaches them how to make it repeatable.
+The fastest way to move out of Early Stage is to enroll your existing experimenters in AiBI Foundations. They already understand why this matters — the program teaches them how to make it repeatable.
 
 What changes in 30 days:
 
@@ -21,7 +21,7 @@ What changes in 30 days:
 - One workflow gets a documented review step.
 - A measurable time-saving claim — with numbers — gets to leadership.
 
-[**Enroll your team in AiBI-P**](https://aibankinginstitute.com/courses/aibi-p)
+[**Enroll your team in AiBI Foundations**](https://aibankinginstitute.com/courses/aibi-p)
 
 Your tier is the one where Executive Briefing pays off most. You have enough internal momentum that an outside roadmap conversation lands hard. We walk through your scores with leadership at the table, name the dimension that is holding you back, and write the 90-day plan with you. No slides. No sales theater.
 

@@ -11,9 +11,9 @@ import { getEnrollment } from '../_lib/getEnrollment';
 import { PostAssessmentClient } from './_PostAssessmentClient';
 
 export const metadata: Metadata = {
-  title: 'Measure Your Growth | AiBI-Practitioner | The AI Banking Institute',
+  title: 'Measure Your Growth | AiBI Foundations | The AI Banking Institute',
   description:
-    'Take the post-course assessment to measure how your AI readiness has changed after completing the AiBI-Practitioner Banking AI Practitioner course.',
+    'Take the post-course assessment to measure how your AI readiness has changed after completing the AiBI Foundations Banking AI Foundations course.',
 };
 
 const REQUIRED_MODULES = 12;

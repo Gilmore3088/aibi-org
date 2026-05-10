@@ -1,5 +1,5 @@
 /**
- * Tools the AiBI-Practitioner curriculum teaches.
+ * Tools the AiBI Foundations curriculum teaches.
  *
  * Bound to the actual tool guides in
  *   content/courses/aibi-p/tool-guides.ts                  (ChatGPT, Claude)

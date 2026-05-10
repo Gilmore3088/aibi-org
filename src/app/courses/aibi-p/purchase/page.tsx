@@ -12,9 +12,9 @@ import { EnrollButton } from './EnrollButton';
 import { aibiPCourseConfig } from '@content/courses/aibi-p';
 
 export const metadata: Metadata = {
-  title: 'Enroll in AiBI-Practitioner | The AI Banking Institute',
+  title: 'Enroll in AiBI Foundations | The AI Banking Institute',
   description:
-    'Enroll in the Banking AI Practitioner course. Twelve modules, practical artifacts, and the AiBI-Practitioner credential upon completion.',
+    'Enroll in the Banking AI Foundations course. Twelve modules, practical artifacts, and the AiBI Foundations credential upon completion.',
 };
 
 const COURSE_FEATURES = [
@@ -65,7 +65,7 @@ export default async function PurchasePage() {
           Already enrolled
         </p>
         <h1 className="font-serif text-3xl md:text-4xl font-bold leading-tight text-[color:var(--color-ink)] mb-4">
-          You&rsquo;re in the AiBI-Practitioner program.
+          You&rsquo;re in the AiBI Foundations program.
         </h1>
         <p className="text-base text-[color:var(--color-ink)]/75 mb-8 max-w-2xl">
           Your enrollment is active and your access is permanent. Pick up where
@@ -97,7 +97,7 @@ export default async function PurchasePage() {
         </Link>
         <span className="mx-2 text-[color:var(--color-ink)]/20">/</span>
         <Link href="/courses/aibi-p" className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] hover:opacity-80 transition-opacity">
-          AiBI-Practitioner
+          AiBI Foundations
         </Link>
         <span className="mx-2 text-[color:var(--color-ink)]/20">/</span>
         <span className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/50">
@@ -107,7 +107,7 @@ export default async function PurchasePage() {
 
       <section className="mb-8">
         <h1 className="font-serif text-3xl font-bold leading-tight text-[color:var(--color-ink)] mb-2">
-          Banking AI <span className="text-[color:var(--color-terra)] italic">Practitioner</span>
+          Banking AI <span className="text-[color:var(--color-terra)] italic">Foundations</span>
         </h1>
         <p className="text-sm text-[color:var(--color-ink)]/75 mb-4 max-w-2xl">
           {aibiPCourseConfig.promise} In less than two weeks, learn how to
@@ -137,7 +137,7 @@ export default async function PurchasePage() {
             Pricing
           </p>
           <h2 className="font-serif text-3xl text-[color:var(--color-ink)] leading-tight">
-            AiBI-Practitioner
+            AiBI Foundations
           </h2>
           <div className="mt-4 space-y-2">
             <p className="font-mono text-sm text-[color:var(--color-ink)] tabular-nums">
@@ -174,7 +174,7 @@ export default async function PurchasePage() {
         <p className="text-sm text-[color:var(--color-slate)] leading-relaxed">
           Team purchases use a single checkout with manual onboarding follow-up.
           Advanced AiBI-S and AiBI-L tracks are coming later; this checkout only
-          enrolls learners in AiBI-Practitioner.
+          enrolls learners in AiBI Foundations.
         </p>
       </section>
 

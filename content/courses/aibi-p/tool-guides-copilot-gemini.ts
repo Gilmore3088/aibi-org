@@ -1,4 +1,4 @@
-// AiBI-P Tool Guides — Microsoft Copilot and Google Gemini
+// AiBI Foundations Tool Guides — Microsoft Copilot and Google Gemini
 // Deep platform guides for banking practitioners
 // Each guide covers: getting started, free vs paid, use cases, custom instructions, data safety, pro tips
 

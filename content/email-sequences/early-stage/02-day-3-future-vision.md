@@ -20,7 +20,7 @@ A coordinated AI program — the thing your tier is reaching for — looks like 
 
 The honest assessment of Early Stage: you are roughly half of the way to all five. The mistake we see is institutions trying to add new use cases before consolidating the ones already working. The faster move is to take one or two existing wins, document them properly, and publish a use policy that codifies what is allowed.
 
-That is exactly what AiBI-P teaches. Twelve modules. Staff capability + governance posture in the same workflow. Your existing experimenters become the first cohort — they do not start from scratch.
+That is exactly what AiBI Foundations teaches. Twelve modules. Staff capability + governance posture in the same workflow. Your existing experimenters become the first cohort — they do not start from scratch.
 
 If you want to look at your specific gap with someone, the [Executive Briefing](https://aibankinginstitute.com/for-institutions/advisory) is built for it. Otherwise, your [brief]({{ subscriber.profile_url | default: "https://aibankinginstitute.com/" }}) names the lowest-scoring dimension and the move that fixes it.
 

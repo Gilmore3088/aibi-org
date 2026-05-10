@@ -1,6 +1,6 @@
 // AiBI-S Advanced Frameworks — Exclusive Content
-// Access: AiBI-S enrolled learners only. AiBI-P completers can see these resources exist but cannot access them.
-// These five frameworks are the primary justification for the $1,495 price difference between AiBI-P and AiBI-S.
+// Access: AiBI-S enrolled learners only. AiBI Foundations completers can see these resources exist but cannot access them.
+// These five frameworks are the primary justification for the $1,495 price difference between AiBI Foundations and AiBI-S.
 // All content is Markdown strings for Kajabi-migration-readiness.
 // Cobalt accent system throughout — AiBI-S color discipline.
 
@@ -52,7 +52,7 @@ export const multiStepSkillArchitecture: AdvancedFramework = {
     {
       id: 'mssa-concept',
       title: 'From Single Skills to Skill Chains',
-      content: `AiBI-P teaches you to build skills that do one thing well. AiBI-S introduces the next architectural question: what do you do when a valuable workflow requires multiple distinct AI steps in sequence?
+      content: `AiBI Foundations teaches you to build skills that do one thing well. AiBI-S introduces the next architectural question: what do you do when a valuable workflow requires multiple distinct AI steps in sequence?
 
 A single skill handles a single transformation: a document goes in, a summary comes out. A skill chain handles a workflow: a regulatory update goes in, and a draft board memo — with impact analysis and training brief attached — comes out. Between entry and exit, three or four separate skills execute in sequence, each receiving the structured output of the previous step.
 
@@ -1292,13 +1292,13 @@ The fourth behavior — peer teaching without prompting — is the strongest ado
     {
       id: 'tap-shadow-skill',
       title: 'The Shadow Skill Discovery Method for Departments',
-      content: `In AiBI-P, shadow AI refers to staff using AI tools without institutional knowledge — ungoverned use that creates data classification and compliance risk. AiBI-S inverts this insight: shadow AI is also an intelligence source.
+      content: `In AiBI Foundations, shadow AI refers to staff using AI tools without institutional knowledge — ungoverned use that creates data classification and compliance risk. AiBI-S inverts this insight: shadow AI is also an intelligence source.
 
 The shadow skill discovery method is a structured approach to surfacing the AI use that is already happening in your department — informally, personally, and outside the institutional skill library — and converting the most valuable examples into governed institutional assets.
 
 **Why this matters:**
 
-By the time an AiBI-S cohort begins, the average community bank department has 2-5 staff members who are already using AI tools regularly for work tasks. They are not telling anyone. They built their own personal skills in AiBI-P or through self-directed learning. They are getting measurable value. And none of that knowledge is captured anywhere that the institution can access, maintain, or use if those staff members change roles.
+By the time an AiBI-S cohort begins, the average community bank department has 2-5 staff members who are already using AI tools regularly for work tasks. They are not telling anyone. They built their own personal skills in AiBI Foundations or through self-directed learning. They are getting measurable value. And none of that knowledge is captured anywhere that the institution can access, maintain, or use if those staff members change roles.
 
 The shadow skill discovery method finds these practitioners, learns from their practice, and converts their personal skills into institutional assets — with their full participation and credit.
 
@@ -1396,7 +1396,7 @@ export const advancedPromptEngineering: AdvancedFramework = {
     {
       id: 'ape-beyond-rtfc',
       title: 'Beyond RTFC: The Advanced Skill Architecture',
-      content: `AiBI-P teaches the RTFC framework — Role, Task, Format, Constraints — as the foundation of skill writing. Every skill you submitted for AiBI-P certification used this structure. It works. But it handles linear tasks: one input, one transformation, one output.
+      content: `AiBI Foundations teaches the RTFC framework — Role, Task, Format, Constraints — as the foundation of skill writing. Every skill you submitted for AiBI Foundations certification used this structure. It works. But it handles linear tasks: one input, one transformation, one output.
 
 Advanced skill architecture extends RTFC to handle the tasks that actually define departmental AI: conditional logic (different outputs for different input types), multi-output formats (the same skill produces both a summary and a detailed table), and error handling (the skill fails gracefully when input is incomplete or out of scope).
 
@@ -1415,7 +1415,7 @@ VERSION: [Number, date, change summary]
 OWNER: [Named staff member]
 \`\`\`
 
-The four additions — INPUT FORMAT, VALIDATION, PROCESS, and GOTCHA — are what distinguish a production skill from a prototype. AiBI-P required Role, Task, Format, and Constraints. AiBI-S adds the four production components that make skills reliable enough for institutional use.`,
+The four additions — INPUT FORMAT, VALIDATION, PROCESS, and GOTCHA — are what distinguish a production skill from a prototype. AiBI Foundations required Role, Task, Format, and Constraints. AiBI-S adds the four production components that make skills reliable enough for institutional use.`,
     },
     {
       id: 'ape-conditional-logic',
@@ -1611,7 +1611,7 @@ A skill that lists its context dependencies explicitly can be audited, maintaine
     {
       id: 'ape-ab-testing',
       title: 'A/B Testing Methodology for Skills at Department Scale',
-      content: `Individual skill iteration — running a skill, reviewing the output, adjusting the prompt, running again — is the method AiBI-P teaches. It is appropriate for personal-use skills where the developer and the user are the same person.
+      content: `Individual skill iteration — running a skill, reviewing the output, adjusting the prompt, running again — is the method AiBI Foundations teaches. It is appropriate for personal-use skills where the developer and the user are the same person.
 
 At department scale, skill iteration requires a more systematic approach. Multiple users are running the skill on varied inputs, observing different failure modes, and forming different opinions about what "good output" means for their use case. A/B testing at department scale captures this variation and converts it into data-driven skill improvement.
 

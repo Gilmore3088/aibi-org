@@ -235,7 +235,7 @@ export const RECOMMENDATIONS: Record<Dimension, Recommendation> = {
     ],
   },
   'ai-literacy-level': {
-    title: 'Run AiBI-P Module 01 with one team',
+    title: 'Run AiBI Foundations Module 01 with one team',
     riskLevel: 'Low',
     timeSaved: 'Compounding — pays back across every later workflow',
     owner: 'Department lead + L&D',
@@ -546,16 +546,16 @@ export const TIER_CLOSING_CTA: Record<Tier['id'], TierClosingCta> = {
     eyebrow: 'Your next move',
     headline: 'Get your team trained on AI fundamentals.',
     body:
-      'Skills come first. AiBI-P teaches working AI use to bankers in 12 short modules — your team can start this week.',
-    ctaLabel: 'Enroll your team in AiBI-P',
+      'Skills come first. AiBI Foundations teaches working AI use to bankers in 12 short modules — your team can start this week.',
+    ctaLabel: 'Enroll your team in AiBI Foundations',
     ctaHref: '/courses/aibi-p',
   },
   'early-stage': {
     eyebrow: 'Your next move',
     headline: 'Get your team trained on AI fundamentals.',
     body:
-      'You have momentum. Lock it in with AiBI-P — your bankers learn the same patterns repeatable across the institution.',
-    ctaLabel: 'Enroll your team in AiBI-P',
+      'You have momentum. Lock it in with AiBI Foundations — your bankers learn the same patterns repeatable across the institution.',
+    ctaLabel: 'Enroll your team in AiBI Foundations',
     ctaHref: '/courses/aibi-p',
   },
   'building-momentum': {

@@ -1,5 +1,5 @@
 /**
- * Flagship reusable prompts the AiBI-Practitioner curriculum publishes.
+ * Flagship reusable prompts the AiBI Foundations curriculum publishes.
  *
  * "Prompt" here is the AI primitive distinct from a Skill or Agent —
  * a single, focused, reusable instruction template you can paste into

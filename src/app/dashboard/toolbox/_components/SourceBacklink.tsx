@@ -31,7 +31,7 @@ function resolveTarget(
     if (!match) return null;
     const moduleNumber = match[1];
     return {
-      label: `AiBI-Practitioner · Module ${moduleNumber}`,
+      label: `AiBI Foundations · Module ${moduleNumber}`,
       href: `/courses/aibi-p/${moduleNumber}`,
     };
   }

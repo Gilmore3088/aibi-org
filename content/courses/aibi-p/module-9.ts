@@ -1,4 +1,4 @@
-// AiBI-P Module 9: Safe AI Use in Banking
+// AiBI Foundations Module 9: Safe AI Use in Banking
 // Pillar: Understanding | Estimated: 35 minutes
 // Key Output: Safe AI Use Checklist
 
@@ -11,7 +11,7 @@ export const module9: Module = {
   pillar: 'understanding',
   estimatedMinutes: 35,
   keyOutput: 'Safe AI Use Checklist',
-  mockupRef: 'content/courses/AiBI-P v1/stitch_ai_banking_institute_course/m5_refined_safe_use_guardrails',
+  mockupRef: 'content/courses/AiBI Foundations v1/stitch_ai_banking_institute_course/m5_refined_safe_use_guardrails',
   sections: [
     {
       id: 'm9-safe-rule',

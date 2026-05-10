@@ -12,22 +12,22 @@ export const week2: CohortWeek = {
   estimatedAssignmentMinutes: 105,
   keyOutput:
     'Departmental AI workspace configured and documented with a one-page setup guide a colleague can follow',
-  whyThisWeekExists: `AiBI-P introduced six platforms at a survey level. Every learner activated at least one. In AiBI-S, platform training goes deep and role-specific. An operations manager learning Power Automate and a compliance officer learning Perplexity for regulatory research are doing fundamentally different work — the live session splits into role-track breakout groups for the platform deep dive.
+  whyThisWeekExists: `AiBI Foundations introduced six platforms at a survey level. Every learner activated at least one. In AiBI-S, platform training goes deep and role-specific. An operations manager learning Power Automate and a compliance officer learning Perplexity for regulatory research are doing fundamentally different work — the live session splits into role-track breakout groups for the platform deep dive.
 
-The other purpose of this week is scale. In AiBI-P, learners set up personal Custom Instructions or Projects. In AiBI-S, the same concept scales to the department. A departmental workspace pre-loads institutional context so that any authorized team member gets output calibrated to the institution, not just to the person who configured it.`,
+The other purpose of this week is scale. In AiBI Foundations, learners set up personal Custom Instructions or Projects. In AiBI-S, the same concept scales to the department. A departmental workspace pre-loads institutional context so that any authorized team member gets output calibrated to the institution, not just to the person who configured it.`,
 
   learningGoals: [
     'Configure a departmental AI workspace with all six required context blocks',
     'Achieve deep proficiency in the platforms most relevant to their role track',
-    'Understand the difference between personal platform configuration (AiBI-P) and departmental workspace setup (AiBI-S)',
-    'Produce a one-page setup guide that enables a colleague with AiBI-P-level proficiency to access and use the workspace',
+    'Understand the difference between personal platform configuration (AiBI Foundations) and departmental workspace setup (AiBI-S)',
+    'Produce a one-page setup guide that enables a colleague with AiBI Foundations-level proficiency to access and use the workspace',
   ],
 
   sections: [
     {
       id: 'w2-workspace-concept',
       title: 'The Departmental Workspace Concept',
-      content: `In AiBI-P, you set up Custom Instructions in ChatGPT or a Project in Claude. The context was personal: your role, your institution, your preferences. That configuration made the AI useful for you.
+      content: `In AiBI Foundations, you set up Custom Instructions in ChatGPT or a Project in Claude. The context was personal: your role, your institution, your preferences. That configuration made the AI useful for you.
 
 In AiBI-S, the concept scales to the department. A departmental workspace is an AI environment pre-loaded with institutional context so that any team member who uses it gets output calibrated to the institution — not just to the person who built it.
 
@@ -44,7 +44,7 @@ The naming convention reflects this shift: **[Institution]-[Department]-[Functio
 
 **Block 2 — Department context:** Department mission in one sentence, key processes the department owns, reporting relationships, and the current technology stack. This block orients the AI to what your department actually does, so outputs are calibrated to your workflows rather than generic banking processes.
 
-**Block 3 — Regulatory context:** The applicable regulatory frameworks for this department's work. Operations focuses on BSA/AML and operational risk. Lending focuses on ECOA/Reg B and SR 11-7. Compliance touches all five frameworks. Finance focuses on financial reporting standards. Retail focuses on consumer protection regulations. This block draws on AiBI-P Module 1 knowledge.
+**Block 3 — Regulatory context:** The applicable regulatory frameworks for this department's work. Operations focuses on BSA/AML and operational risk. Lending focuses on ECOA/Reg B and SR 11-7. Compliance touches all five frameworks. Finance focuses on financial reporting standards. Retail focuses on consumer protection regulations. This block draws on AiBI Foundations Module 1 knowledge.
 
 **Block 4 — Data handling rules:** Explicit statement of what data tiers this workspace handles, what data must never be entered, and what redaction is required before using AI on specific inputs. This block is the compliance guardrail built into the workspace itself — for every team member who uses it, not just the person who configured it.
 
@@ -66,10 +66,10 @@ The workspace owner is responsible for this maintenance. In most cases, the AiBI
   tables: [
     {
       id: 'w2-personal-vs-dept',
-      caption: 'Personal Setup (AiBI-P) vs. Departmental Setup (AiBI-S)',
+      caption: 'Personal Setup (AiBI Foundations) vs. Departmental Setup (AiBI-S)',
       columns: [
         { header: 'Component', key: 'component' },
-        { header: 'Personal Setup (AiBI-P)', key: 'personal' },
+        { header: 'Personal Setup (AiBI Foundations)', key: 'personal' },
         { header: 'Departmental Setup (AiBI-S)', key: 'departmental' },
       ],
       rows: [
@@ -124,7 +124,7 @@ The workspace owner is responsible for this maintenance. In most cases, the AiBI
 
 1. All six context blocks completed — institution, department, regulatory, data handling, output standards, skill references.
 2. At least one test query run through the workspace demonstrating that the context produces department-calibrated output. The submission should show what a default session (no context) would produce vs. what the configured workspace produces.
-3. A one-page setup guide written for someone with AiBI-P-level proficiency who has never configured a departmental workspace. Cover: how to access the workspace, what it is for, the data handling rules they must follow, and who to contact if something goes wrong.
+3. A one-page setup guide written for someone with AiBI Foundations-level proficiency who has never configured a departmental workspace. Cover: how to access the workspace, what it is for, the data handling rules they must follow, and who to contact if something goes wrong.
 
 **What "department-calibrated output" looks like:** A lending workspace asked to summarize a market conditions memo should include references to the institution credit policy context if it was uploaded. A compliance workspace asked about a regulatory requirement should cite the specific framework — because the regulatory context block tells it which frameworks apply. A retail workspace drafting a member response should match the institution voice because the output standards block specifies it.`,
       type: 'builder',
@@ -237,7 +237,7 @@ The workspace owner is responsible for this maintenance. In most cases, the AiBI
         'Source discipline in compliance contexts: every AI-assisted regulatory conclusion must trace to a primary source. NotebookLM cites uploaded documents — those documents must be the current versions. Perplexity cites web sources — those citations must be verified against the primary regulatory text.',
       ],
       activityVariations:
-        'Compliance workspace uses a NotebookLM notebook (policy library) plus a Claude Project (analysis). Data handling rules are the strictest of all five tracks: examination findings are Tier 3, SAR information is Tier 3 with additional legal restrictions (SAR filings are legally confidential and cannot be discussed in any AI platform), internal policy documents are Tier 2. The regulatory context block should reference all five frameworks from AiBI-P M1 — compliance touches all of them.',
+        'Compliance workspace uses a NotebookLM notebook (policy library) plus a Claude Project (analysis). Data handling rules are the strictest of all five tracks: examination findings are Tier 3, SAR information is Tier 3 with additional legal restrictions (SAR filings are legally confidential and cannot be discussed in any AI platform), internal policy documents are Tier 2. The regulatory context block should reference all five frameworks from AiBI Foundations M1 — compliance touches all of them.',
       skillExamples: [
         'NotebookLM notebook with 15 institutional policy documents — compliance officer queries "what does our BSA policy say about beneficial ownership documentation for LLCs" and gets a source-cited answer in 30 seconds',
         'Perplexity research thread tracking CFPB guidance on BNPL products — new guidance surfaces with citations for manual verification against primary source',

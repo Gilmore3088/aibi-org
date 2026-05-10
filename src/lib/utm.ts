@@ -1,5 +1,5 @@
 // UTM utility — centralized tracking parameters for all AI platform links
-// Used throughout the AiBI-Practitioner course for partnership attribution
+// Used throughout the AiBI Foundations course for partnership attribution
 
 const UTM_SOURCE = 'aibankinginstitute';
 const UTM_MEDIUM = 'course';

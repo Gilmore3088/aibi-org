@@ -1,4 +1,4 @@
-// Per-module Apply activities for AiBI-P.
+// Per-module Apply activities for AiBI Foundations.
 //
 // Audit ref: C1 + C2 + H6. The previous buildV4Activity gave every module
 // the same generic two-textarea form. This file replaces it with module-
@@ -90,7 +90,7 @@ const MODULE_ACTIVITIES: Record<number, ModuleActivitySpec> = {
 
 ---
 
-This is one of twelve workday wins from the AiBI-P Practitioner course at
+This is one of twelve workday wins from the AiBI Foundations AiBI Foundations at
 The AI Banking Institute. Each artifact is the banker's own work product;
 the AI assistance is a tool, the banker's judgment is what makes it safe.
 `,
@@ -939,7 +939,7 @@ language drift faster than you expect.
       },
     ],
     artifactFilename: 'aibi-p-m12-final-lab.md',
-    artifactTemplate: `# AiBI-P Final Practitioner Lab
+    artifactTemplate: `# AiBI Foundations Final Lab
 
 **Banker:** {{name}}
 **Submission date:** {{date}}
@@ -973,7 +973,7 @@ language drift faster than you expect.
 ---
 
 Submitted to The AI Banking Institute for review and credentialing as
-AiBI-P · Banking AI Practitioner.
+AiBI Foundations · Banking AI Foundations.
 `,
   },
 };

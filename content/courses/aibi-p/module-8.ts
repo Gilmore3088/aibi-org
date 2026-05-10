@@ -1,4 +1,4 @@
-// AiBI-P Module 8: Agents and Workflow Thinking
+// AiBI Foundations Module 8: Agents and Workflow Thinking
 // Pillar: Creation | Estimated: 35 minutes
 // Key Output: Workflow Map
 
@@ -11,7 +11,7 @@ export const module8: Module = {
   pillar: 'creation',
   estimatedMinutes: 35,
   keyOutput: 'Workflow Map',
-  mockupRef: 'content/courses/AiBI-P v1/stitch_ai_banking_institute_course/m8_test_iterate_share',
+  mockupRef: 'content/courses/AiBI Foundations v1/stitch_ai_banking_institute_course/m8_test_iterate_share',
   sections: [
     {
       id: 'm8-agent-basics',
@@ -34,7 +34,7 @@ Use checkpoints after source intake, before customer-facing output, before decis
       title: 'Banking Boundary',
       content: `Agent-style workflows become riskier when they connect to live systems, send messages, update records, access customer data, or make decisions without review.
 
-For AiBI-P, keep agents conceptual. The goal is to understand the workflow shape, not automate regulated activity.`,
+For AiBI Foundations, keep agents conceptual. The goal is to understand the workflow shape, not automate regulated activity.`,
     },
   ],
   activities: [

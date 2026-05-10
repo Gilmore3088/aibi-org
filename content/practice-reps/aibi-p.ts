@@ -513,7 +513,7 @@ export const AIBI_P_CERTIFICATE_REQUIREMENTS: readonly CertificateRequirement[] 
   {
     id: 'modules-complete',
     label: 'Complete all modules',
-    description: 'Finish every AiBI-P module in order.',
+    description: 'Finish every AiBI Foundations module in order.',
     requiredCount: 12,
   },
   {

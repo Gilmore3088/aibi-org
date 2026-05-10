@@ -1,6 +1,6 @@
 // /courses/aibi-s/purchase — Enrollment landing page
-// Server Component: checks existing enrollment + AiBI-Practitioner prerequisite + user auth
-// AiBI-S: $1,495 per seat · Prerequisite: AiBI-Practitioner credential · Role track selection
+// Server Component: checks existing enrollment + AiBI Foundations prerequisite + user auth
+// AiBI-S: $1,495 per seat · Prerequisite: AiBI Foundations credential · Role track selection
 
 import type { Metadata } from 'next';
 import Link from 'next/link';
@@ -16,7 +16,7 @@ import { EnrollButton } from './EnrollButton';
 export const metadata: Metadata = {
   title: 'Enroll in AiBI-S | The AI Banking Institute',
   description:
-    'Enroll in the Banking AI Specialist course. Six weeks, live cohort, for department managers at community banks and credit unions. Prerequisite: AiBI-Practitioner certification.',
+    'Enroll in the Banking AI Specialist course. Six weeks, live cohort, for department managers at community banks and credit unions. Prerequisite: AiBI Foundations certification.',
 };
 
 const COURSE_FEATURES = [
@@ -58,7 +58,7 @@ async function getUserData(): Promise<{ email: string | null; hasAiBIP: boolean 
       return { email: null, hasAiBIP: false };
     }
 
-    // Check AiBI-Practitioner enrollment with approved credential
+    // Check AiBI Foundations enrollment with approved credential
     const { data: aibipEnrollment } = await supabase
       .from('course_enrollments')
       .select('id')
@@ -66,7 +66,7 @@ async function getUserData(): Promise<{ email: string | null; hasAiBIP: boolean 
       .eq('product', 'aibi-p')
       .maybeSingle();
 
-    // AiBI-Practitioner enrollment exists — this is the prerequisite check
+    // AiBI Foundations enrollment exists — this is the prerequisite check
     // In Phase 2+, this should also verify the work submission was approved
     const hasAiBIP = aibipEnrollment !== null;
 
@@ -125,14 +125,14 @@ export default async function AiBISPurchasePage() {
             Prerequisite Required
           </p>
           <p className="font-sans text-sm text-[color:var(--color-slate)] leading-relaxed mb-4">
-            AiBI-S requires completion of the AiBI-Practitioner (Banking AI Practitioner) course. You must earn
-            your AiBI-Practitioner credential before enrolling in AiBI-S.
+            AiBI-S requires completion of the AiBI Foundations (Banking AI Foundations) course. You must earn
+            your AiBI Foundations credential before enrolling in AiBI-S.
           </p>
           <Link
             href="/courses/aibi-p/purchase"
             className="inline-block font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-cobalt)] hover:opacity-70 transition-opacity focus:outline-none focus:ring-2 focus:ring-[color:var(--color-cobalt)] focus:ring-offset-2 rounded-sm"
           >
-            Enroll in AiBI-Practitioner first
+            Enroll in AiBI Foundations first
           </Link>
         </div>
       )}
@@ -213,7 +213,7 @@ export default async function AiBISPurchasePage() {
             aria-disabled="true"
             className="w-full px-8 py-4 rounded-sm font-mono text-[10px] uppercase tracking-[0.15em] bg-[color:var(--color-cobalt)]/30 text-[color:var(--color-linen)]/50 cursor-not-allowed"
           >
-            Complete AiBI-Practitioner First
+            Complete AiBI Foundations First
           </button>
         )}
       </div>

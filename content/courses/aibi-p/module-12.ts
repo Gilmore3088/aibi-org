@@ -1,17 +1,17 @@
-// AiBI-P Module 12: Final Practitioner Lab
+// AiBI Foundations Module 12: Final Lab
 // Pillar: Application | Estimated: 45 minutes
-// Key Output: Final Practitioner Lab Package
+// Key Output: Final Lab Package
 
 import type { Module } from './types';
 
 export const module12: Module = {
   number: 12,
   id: 'm12-final-practitioner-lab',
-  title: 'Final Practitioner Lab',
+  title: 'Final Lab',
   pillar: 'application',
   estimatedMinutes: 45,
-  keyOutput: 'Final Practitioner Lab Package',
-  mockupRef: 'content/courses/AiBI-P v1/stitch_ai_banking_institute_course/m9_final_capstone_submission',
+  keyOutput: 'Final Lab Package',
+  mockupRef: 'content/courses/AiBI Foundations v1/stitch_ai_banking_institute_course/m9_final_capstone_submission',
   sections: [
     {
       id: 'm12-lab-purpose',
@@ -48,7 +48,7 @@ The final lab should demonstrate safe judgment, not risky ambition.`,
   activities: [
     {
       id: '12.1',
-      title: 'Plan Your Final Practitioner Lab',
+      title: 'Plan Your Final Lab',
       description:
         'Define your final workflow, prompt, source context, review step, and artifact evidence.',
       type: 'form',

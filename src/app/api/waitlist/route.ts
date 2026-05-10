@@ -12,7 +12,7 @@ import { sendWaitlistConfirmation, sendAssessmentOptions } from '@/lib/resend';
 // body line. Keep in sync with VALID_INTERESTS below.
 const INTEREST_LABELS: Record<string, string> = {
   assessment: 'the AI readiness assessment',
-  course: 'AiBI-Practitioner',
+  course: 'AiBI Foundations',
   newsletter: 'the AI Banking Brief newsletter',
   institutional: 'institutional cohort enrollment',
   consulting: 'leadership advisory engagement',

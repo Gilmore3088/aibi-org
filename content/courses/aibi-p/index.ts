@@ -1,4 +1,4 @@
-// AiBI-P Course Content — Barrel Export
+// AiBI Foundations Course Content — Barrel Export
 // Usage: import { modules, getModuleByNumber, module1 } from '@/content/courses/aibi-p'
 
 export * from './types';

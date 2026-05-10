@@ -4,7 +4,7 @@
 **Supersedes:** `content/courses/aibi-s/aibi-s-prd.md` (cohort-format PRD)
 **Owner:** James Gilmore
 **Level:** AiBI-S (Specialist, Level 2 of the AiBI credential ladder)
-**Prereq:** AiBI-P (Practitioner)
+**Prereq:** AiBI Foundations (Practitioner)
 
 ---
 
@@ -27,7 +27,7 @@ a capstone event.
 
 | Level | Credential | Margin of Error | Audience | Core Artifact |
 |-------|-----------|----------------|----------|---------------|
-| 1 | AiBI-P | Personal | Individual banker | Personal skill + assessed work product |
+| 1 | AiBI Foundations | Personal | Individual banker | Personal skill + assessed work product |
 | **2** | **AiBI-S** | **Team / Department** | **Department manager or team lead** | **Deployed departmental automation + operating model + defended artifact bundle** |
 | 3 | AiBI-L | Institutional / Executive | C-suite, board, fCAIO | Institution-wide governance + examiner-ready artifacts |
 
@@ -43,7 +43,7 @@ recoverable.
 ### 2.1 Format
 
 - **Self-paced.** No "X weeks" duration claim in any marketing or course
-  framing. Matches the AiBI-P convention.
+  framing. Matches the AiBI Foundations convention.
 - No live cohort, no weekly deadlines, no live sessions, no instructor-led
   breakouts. Pressure and rigor come from the embedded simulation engine, not
   from cohort accountability.
@@ -51,10 +51,10 @@ recoverable.
 
 ### 2.2 Prerequisite
 
-A valid AiBI-P certification is required. Verification happens at enrollment
+A valid AiBI Foundations certification is required. Verification happens at enrollment
 (first login), not at purchase — this prevents cart abandonment from learners
 who have the credential but cannot locate their certificate ID at checkout. A
-learner who has completed AiBI-P under a different email uses a manual
+learner who has completed AiBI Foundations under a different email uses a manual
 override pathway.
 
 ### 2.3 Role Tracks — Five Full Tracks, All Included
@@ -132,7 +132,7 @@ candidate selected with a written rationale.
 Units cover:
 
 - Advanced skill authoring using RTFC+D+G (Role, Task, Format, Constraint +
-  Data tier + Governance) — the institutional extension of AiBI-P's RTFC
+  Data tier + Governance) — the institutional extension of AiBI Foundations's RTFC
   framework
 - Multi-step skills, skill chaining, context engineering at institutional
   scale
@@ -256,7 +256,7 @@ beat.
 4 personas × 5 tracks × 3 phases of appearance = **60 written memos + 60 AI
 chat system prompts + 60 grading rubrics** to author. This is the central
 authoring investment of AiBI-S, and it is what justifies the price relative
-to AiBI-P.
+to AiBI Foundations.
 
 ### 6.2 Persona Execution Mechanism
 
@@ -395,7 +395,7 @@ data.
 
 ### 8.3 AiBI Framework (A-B-C)
 
-AiBI-P established the A-B-C pillar framework (Accessible, Boundary-Safe,
+AiBI Foundations established the A-B-C pillar framework (Accessible, Boundary-Safe,
 Capable). AiBI-S extends this:
 
 - **A (Accessible)** — moving a skill from personal to team-wide usability.
@@ -411,7 +411,7 @@ meaningfully reinforced (see §7.4, dimension 5).
 
 ### 8.4 RTFC+D+G Skill Authoring
 
-AiBI-P taught RTFC (Role, Task, Format, Constraint). AiBI-S extends this to
+AiBI Foundations taught RTFC (Role, Task, Format, Constraint). AiBI-S extends this to
 **RTFC+D+G** for institutional skills:
 
 - **D — Data tier declared.** The skill documentation states the tier(s) of
@@ -460,7 +460,7 @@ can pursue new tracks without re-purchasing.
 
 Three reasons, in priority order:
 
-1. **Simplicity matches AiBI-P.** AiBI-P is one price, no upsell treadmill.
+1. **Simplicity matches AiBI Foundations.** AiBI Foundations is one price, no upsell treadmill.
    AiBI-S should read the same way to the same buyer.
 2. **Intrinsic motivation to stack.** Graduates are not "paying more to do
    more" — they are unlocking what they already own. Completion rate on
@@ -486,8 +486,8 @@ Unchanged from the existing PRD:
 
 | Step | Product | Price | Purpose |
 |------|---------|-------|---------|
-| 1 | Free 12-question assessment | $0 | Creates tier-based urgency, routes to AiBI-P |
-| 2a | AiBI-P | $295 | Foundation. Prereq for AiBI-S. |
+| 1 | Free 12-question assessment | $0 | Creates tier-based urgency, routes to AiBI Foundations |
+| 2a | AiBI Foundations | $295 | Foundation. Prereq for AiBI-S. |
 | 2b | Executive Briefing | $150–200 credited | Institution-level conversation, potential institutional AiBI-S cohort lead |
 | **3** | **AiBI-S** | **$1,495** | **Primary product for department managers. The internal-champion factory.** |
 | 4 | AiBI-L | $2,800+ | C-suite and board. Governance, roadmap, examiner readiness. |
@@ -543,7 +543,7 @@ AiBI-S. Detailed implementation planning is a separate document.
 
 ### 10.4 Support Assets
 
-- Manual AiBI-P prereq override path for cross-email learners
+- Manual AiBI Foundations prereq override path for cross-email learners
 - Institutional cohort onboarding flow (8+ seats, custom pre-build
   consultation)
 - Credential PDFs + LinkedIn badge generation per track + Full Specialist
@@ -601,7 +601,7 @@ during implementation planning:
 - Include live instruction, cohort mechanics, or scheduled deadlines
 - Handle CFO-level, Examiner-level, or Board-level personas (reserved for
   AiBI-L)
-- Replace the AiBI-P prereq or its content
+- Replace the AiBI Foundations prereq or its content
 - Raise price above $1,495 before we have paying customers, completion
   data, and qualitative feedback — see §9.1
 
@@ -614,7 +614,7 @@ during implementation planning:
   content-authoring detail per track
 - `content/courses/aibi-s/curriculum-reference.md` — the 6-week structure
   reference, now superseded for format
-- `content/courses/aibi-p/` — AiBI-P content, the foundation this course
+- `content/courses/aibi-p/` — AiBI Foundations content, the foundation this course
   builds on
 - `CLAUDE.md` — project intelligence file with regulatory frameworks,
   sourced statistics, brand rules

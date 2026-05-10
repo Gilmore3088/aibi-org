@@ -19,8 +19,8 @@ function formatDate(isoString: string): string {
 }
 
 export const metadata = {
-  title: 'Your Certificate — AiBI-Practitioner | The AI Banking Institute',
-  description: 'Download your AiBI-Practitioner Banking AI Practitioner certificate.',
+  title: 'Your Foundations Certificate | The AI Banking Institute',
+  description: 'Download your Foundations Certificate from The AI Banking Institute.',
 };
 
 export default async function CertificatePage() {
@@ -128,7 +128,7 @@ export default async function CertificatePage() {
                   className="text-xl font-bold text-[var(--color-ink)] uppercase tracking-wide"
                   style={{ fontFamily: 'Cormorant SC, Cormorant, Georgia, serif' }}
                 >
-                  AiBI-Practitioner &middot; Banking AI Practitioner
+                  Foundations Certificate
                 </p>
                 <p
                   className="text-sm font-bold text-[var(--color-slate)] uppercase tracking-wider mt-1"
@@ -198,7 +198,7 @@ export default async function CertificatePage() {
                     className="text-xs text-[var(--color-ink)] bg-[var(--color-parch)] p-3 rounded-sm leading-relaxed"
                     style={{ fontFamily: 'DM Mono, Courier New, monospace' }}
                   >
-                    AiBI-Practitioner &mdash; The AI Banking Institute
+                    AiBI Foundations &mdash; The AI Banking Institute
                     <br />
                     Verified at aibankinginstitute.com/verify/{certificate.certificate_id}
                   </p>
@@ -233,7 +233,7 @@ export default async function CertificatePage() {
                   </p>
                   <a
                     href={`/api/courses/generate-certificate?enrollmentId=${enrollment.id}`}
-                    download={`AiBI-Practitioner-Certificate-${certificate.certificate_id}.pdf`}
+                    download={`AiBI Foundations-Certificate-${certificate.certificate_id}.pdf`}
                     className="inline-block w-full text-center bg-[var(--color-terra)] text-white text-xs font-semibold font-sans py-2.5 px-4 rounded-sm hover:bg-[var(--color-terra-light)] transition-colors"
                   >
                     Download Certificate PDF
@@ -253,7 +253,7 @@ export default async function CertificatePage() {
                   Continue Your Journey
                 </h3>
                 <p className="text-xs leading-relaxed mb-5 opacity-90 font-sans">
-                  Your AiBI-Practitioner credential will open the door to the Specialist
+                  Your AiBI Foundations credential will open the door to the Specialist
                   track when advanced training launches.
                 </p>
                 <a

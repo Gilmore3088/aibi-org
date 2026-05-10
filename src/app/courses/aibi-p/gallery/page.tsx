@@ -6,9 +6,9 @@ import Link from 'next/link';
 import { OutputGalleryClient } from './OutputGalleryClient';
 
 export const metadata: Metadata = {
-  title: 'Output Gallery | AiBI-Practitioner | The AI Banking Institute',
+  title: 'Output Gallery | AiBI Foundations | The AI Banking Institute',
   description:
-    'See what excellent AI outputs look like in every banking department. Role-specific examples from lending, operations, compliance, finance, marketing, and IT. Part of the AiBI-Practitioner course.',
+    'See what excellent AI outputs look like in every banking department. Role-specific examples from lending, operations, compliance, finance, marketing, and IT. Part of the AiBI Foundations course.',
 };
 
 export default function OutputGalleryPage() {
@@ -22,7 +22,7 @@ export default function OutputGalleryPage() {
               href="/courses/aibi-p"
               className="hover:text-[color:var(--color-terra)] transition-colors"
             >
-              AiBI-Practitioner
+              AiBI Foundations
             </Link>
           </li>
           <li aria-hidden="true">/</li>
@@ -54,7 +54,7 @@ export default function OutputGalleryPage() {
 
         <p className="font-sans text-sm text-[color:var(--color-slate)] mt-3 leading-relaxed max-w-2xl">
           Each example was produced using the skills, platforms, and prompting patterns
-          taught in AiBI-Practitioner. Study the quality markers — they are the same criteria your
+          taught in AiBI Foundations. Study the quality markers — they are the same criteria your
           capstone submission will be evaluated against.
         </p>
 

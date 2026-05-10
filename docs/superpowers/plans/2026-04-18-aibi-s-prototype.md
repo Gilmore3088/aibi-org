@@ -936,7 +936,7 @@ export const opsUnit1_1: Unit = {
     {
       kind: 'learn',
       title: 'The shift from personal to institutional',
-      body: `In AiBI-P you built a skill that makes **one person faster** — you. That skill lives in your personal account, has the documentation you wrote for yourself, and would disappear if you left the institution tomorrow.
+      body: `In AiBI Foundations you built a skill that makes **one person faster** — you. That skill lives in your personal account, has the documentation you wrote for yourself, and would disappear if you left the institution tomorrow.
 
 AiBI-S starts at a different question: *how do you make your department faster?*
 
@@ -2421,7 +2421,7 @@ Cross-referencing this plan against `docs/superpowers/specs/2026-04-18-aibi-s-cu
 - Phase gates + capstone + certification human-review workflow
 - Credential generation, multi-track stacking, Full Specialist honorific
 - Supabase persistence (localStorage only for prototype)
-- Prereq verification (AiBI-P completion check) — prototype doesn't gate
+- Prereq verification (AiBI Foundations completion check) — prototype doesn't gate
 - Other simulation types (workflow, edge-case, regulatory sims)
 
 These are the natural contents of subsequent plans after prototype validation.

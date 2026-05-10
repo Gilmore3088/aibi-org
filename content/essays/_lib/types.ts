@@ -25,6 +25,6 @@ export type EssayCategory =
   | "Risk & controls"
   | "Vendor / TPRM"
   | "Member impact"
-  | "Practitioner work"
+  | "Foundations work"
   | "Examiner trends"
   | "Methodology";

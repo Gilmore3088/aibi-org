@@ -216,7 +216,7 @@ Dependencies added: `@next/mdx`, `@mdx-js/loader`, `@mdx-js/react`, `@types/mdx`
 | Add a skill to the curriculum surface | 1 entry in `content/curriculum/skills.ts` |
 | Publish a new essay | 1 MDX file + 1 line in `content/essays/_lib/registry.ts` |
 | Add a new program | ~3 files: `content/courses/<slug>/index.ts` + `modules.ts` + entry in `/education/page.tsx` |
-| Add a new module to AiBI-Practitioner | 1 file: `content/courses/aibi-p/module-N.ts` |
+| Add a new module to AiBI Foundations | 1 file: `content/courses/aibi-p/module-N.ts` |
 
 Every other operation either composes existing primitives in a page, or modifies a template (rare; templates are stable).
 

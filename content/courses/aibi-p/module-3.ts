@@ -1,4 +1,4 @@
-// AiBI-P Module 3: Prompting Fundamentals
+// AiBI Foundations Module 3: Prompting Fundamentals
 // Pillar: Understanding | Estimated: 30 minutes
 // Key Output: Prompt Strategy Cheat Sheet
 
@@ -11,7 +11,7 @@ export const module3: Module = {
   pillar: 'understanding',
   estimatedMinutes: 30,
   keyOutput: 'Prompt Strategy Cheat Sheet',
-  mockupRef: 'content/courses/AiBI-P v1/stitch_ai_banking_institute_course/m3_what_you_already_have_activation',
+  mockupRef: 'content/courses/AiBI Foundations v1/stitch_ai_banking_institute_course/m3_what_you_already_have_activation',
   roleSpecific: true,
   sections: [
     {

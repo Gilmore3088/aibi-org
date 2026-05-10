@@ -1,5 +1,5 @@
 /**
- * Skills the AiBI-Practitioner curriculum teaches.
+ * Skills the AiBI Foundations curriculum teaches.
  *
  * Bound to the takeaways across the 12 modules in
  *   content/courses/aibi-p/v4-expanded-modules.ts

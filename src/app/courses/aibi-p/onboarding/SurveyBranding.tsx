@@ -55,7 +55,7 @@ export function SurveyBranding({ step }: SurveyBrandingProps) {
             opacity: 0.7,
           }}
         >
-          To personalize your journey through the AiBI-Practitioner curriculum, we
+          To personalize your journey through the AiBI Foundations curriculum, we
           need a brief read of your current professional environment.
         </p>
       </div>
@@ -125,7 +125,7 @@ export function SurveyBranding({ step }: SurveyBrandingProps) {
             opacity: 0.75,
           }}
         >
-          &ldquo;The Banking AI Practitioner certification bridges the gap
+          &ldquo;The Banking AI Foundations certification bridges the gap
           between institutional legacy and generative futures.&rdquo;
         </p>
       </div>
