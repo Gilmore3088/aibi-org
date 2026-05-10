@@ -1,0 +1,72 @@
+/* Ledger design tokens — additive layer for the 2026-05-09 brand refresh.
+ *
+ * Source of truth: docs/brand-refresh-2026-05-09/project/Design System.html
+ *
+ * These tokens coexist with the legacy Terra/Sage/Cobalt tokens in tokens.css
+ * during migration. As surfaces are refactored onto Ledger, they should
+ * reference these names directly. When the migration is complete this file
+ * replaces tokens.css and the legacy variables are deleted.
+ *
+ * Naming follows the bundle exactly so that snippets pasted from the
+ * Design System / Briefing / LMS prototypes drop in without rewriting.
+ */
+
+:root {
+  /* ---- Ledger · Foundation ------------------------------------------- */
+  --ledger-bg:           #ECE9DF;        /* page field — linen */
+  --ledger-paper:        #F4F1E7;        /* card field */
+  --ledger-parch:        #E4E0D2;        /* recessed surfaces */
+  --ledger-parch-dark:   #D5D1C2;        /* divider on parch */
+  --ledger-tape:         #F1E9D0;        /* highlight tape (reviewer notes) */
+
+  /* ---- Ledger · Ink & type ------------------------------------------- */
+  --ledger-ink:          #0E1B2D;        /* primary text, primary fill */
+  --ledger-ink-2:        #1F2A3F;        /* secondary text */
+  --ledger-slate:        #5C6B82;        /* muted text */
+  --ledger-muted:        #5C6B82;        /* alias of slate */
+  --ledger-soft:         #8C95A8;        /* softest text — wordmark line 2 */
+
+  /* ---- Ledger · Accents ---------------------------------------------- */
+  --ledger-accent:       #B5862A;        /* gold — emphasis, primary CTA alt */
+  --ledger-accent-light: #C99A40;        /* gold hover */
+  --ledger-accent-soft:  rgba(181, 134, 42, 0.10);
+  --ledger-accent-2:     #1E3A5F;        /* navy — secondary accent */
+  --ledger-warn:         #B5862A;        /* gold doubles as warn */
+  --ledger-weak:         #8E3B2A;        /* oxblood — destructive only */
+
+  /* ---- Ledger · Rules ------------------------------------------------ */
+  --ledger-rule:         #D5D1C2;        /* hairline */
+  --ledger-rule-strong:  #A8AEBE;        /* strong rule */
+
+  /* ---- Ledger · Typography ------------------------------------------- */
+  --ledger-serif:        var(--font-newsreader), "Iowan Old Style", Georgia, serif;
+  --ledger-sans:         var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --ledger-mono:         var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* ---- Ledger · Spacing scale (8-pt baseline) ------------------------ */
+  --ledger-s-1:          4px;
+  --ledger-s-2:          8px;
+  --ledger-s-3:          12px;
+  --ledger-s-4:          16px;
+  --ledger-s-5:          24px;
+  --ledger-s-6:          32px;
+  --ledger-s-7:          48px;
+  --ledger-s-8:          64px;
+  --ledger-s-9:          96px;
+
+  /* ---- Ledger · Radii ------------------------------------------------ */
+  --ledger-r-1:          2px;            /* buttons, inputs, chips */
+  --ledger-r-2:          3px;            /* cards, sidebars, sections */
+  --ledger-r-3:          4px;            /* hero / phase cards */
+
+  /* ---- Ledger · Shadow (one only) ------------------------------------ */
+  --ledger-shadow:       0 1px 0 rgba(14, 27, 45, 0.04),
+                         0 14px 40px -28px rgba(14, 27, 45, 0.18);
+
+  /* ---- Ledger · Layout shell (LMS) ----------------------------------- */
+  --ledger-sidebar:      280px;
+}
+
+body[data-density="compact"] {
+  --ledger-sidebar:      232px;
+}
