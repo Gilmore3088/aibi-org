@@ -84,7 +84,7 @@ export async function getEnrollmentResult(): Promise<EnrollmentResult> {
     .from('course_enrollments')
     .select('id, user_id, completed_modules, current_module, enrolled_at, onboarding_answers')
     .eq('user_id', user.id)
-    .eq('product', 'aibi-p')
+    .in('product', ['aibi-p', 'foundation'])
     .single();
 
   // PGRST116 = "no rows returned" — user is signed in but not enrolled.

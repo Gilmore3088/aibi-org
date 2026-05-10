@@ -63,7 +63,7 @@ async function getUserData(): Promise<{ email: string | null; hasAiBIP: boolean 
       .from('course_enrollments')
       .select('id')
       .eq('user_id', user.id)
-      .eq('product', 'aibi-p')
+      .in('product', ['aibi-p', 'foundation'])
       .maybeSingle();
 
     // AiBI-Foundation enrollment exists — this is the prerequisite check

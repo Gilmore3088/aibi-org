@@ -1,6 +1,9 @@
 import type { LearnerRole } from '@/types/course';
 
-export type CourseId = 'aibi-p' | 'aibi-s' | 'aibi-l' | (string & {});
+// 'aibi-p' kept as a legacy value forever for Stripe webhook retries and
+// pre-Phase 7-backfill DB rows. New writes emit 'foundation'.
+// See src/lib/products/normalize.ts for the boundary shim.
+export type CourseId = 'aibi-p' | 'foundation' | 'aibi-s' | 'aibi-l' | (string & {});
 
 export type CoursePhase =
   | 'understand'

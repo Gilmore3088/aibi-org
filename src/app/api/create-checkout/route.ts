@@ -51,7 +51,7 @@ async function hasLockedInstitutionDiscount(email: string): Promise<boolean> {
       .from('course_enrollments')
       .select('institution_enrollment_id, institution_enrollments!inner(discount_locked)')
       .eq('email', email)
-      .eq('product', 'aibi-p')
+      .in('product', ['aibi-p', 'foundation'])
       .limit(1);
 
     if (error || !data || data.length === 0) return false;
@@ -147,10 +147,12 @@ export async function POST(request: Request) {
       const session = await stripe.checkout.sessions.create({
         mode: 'payment',
         line_items: [{ price: priceId, quantity: 1 }],
-        success_url: `${origin}/courses/aibi-p/purchased`,
-        cancel_url: `${origin}/courses/aibi-p/purchase`,
+        success_url: `${origin}/courses/foundation/program/purchased`,
+        cancel_url: `${origin}/courses/foundation/program/purchase`,
         metadata: {
-          product: 'aibi-p',
+          // Canonical post-rename slug. Webhook handler accepts both 'aibi-p'
+          // (legacy retries) and 'foundation' (new sessions) via normalizeProduct().
+          product: 'foundation',
           mode: 'individual',
           tier: 'individual',
           ...(userEmail ? { user_email: userEmail } : {}),
@@ -173,10 +175,11 @@ export async function POST(request: Request) {
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
       line_items: [{ price: STRIPE_AIBIP_INSTITUTION_PRICE_ID, quantity }],
-      success_url: `${origin}/courses/aibi-p?enrolled=true`,
-      cancel_url: `${origin}/courses/aibi-p/purchase`,
+      success_url: `${origin}/courses/foundation/program?enrolled=true`,
+      cancel_url: `${origin}/courses/foundation/program/purchase`,
       metadata: {
-        product: 'aibi-p',
+        // Canonical post-rename slug; webhook accepts both via normalizeProduct().
+        product: 'foundation',
         mode: 'institution',
         tier: 'team',
         institution_name: institutionName,

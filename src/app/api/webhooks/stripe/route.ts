@@ -23,8 +23,11 @@ import {
 
 function nextPathForProduct(product: string | undefined, mode: string | undefined): string {
   if (product === 'in-depth-assessment') return '/assessment/in-depth/take';
-  if (product === 'aibi-p' && mode === 'institution') return '/admin';
-  return '/courses/aibi-p';
+  // Accept both legacy 'aibi-p' (Stripe webhook retries from 2026-Q1) and
+  // canonical 'foundation' (post-Phase 6 sessions). Both map to the same
+  // active program at /courses/foundation/program.
+  if ((product === 'aibi-p' || product === 'foundation') && mode === 'institution') return '/admin';
+  return '/courses/foundation/program';
 }
 
 function formatAmount(amountCents: number | null | undefined, currency: string | null | undefined): string {

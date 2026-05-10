@@ -51,23 +51,23 @@ export async function GET(): Promise<NextResponse> {
       .from('course_enrollments')
       .select('id, completed_modules, current_module, enrolled_at, onboarding_answers')
       .eq('user_id', user.id)
-      .eq('product', 'aibi-p')
+      .in('product', ['aibi-p', 'foundation'])
       .maybeSingle(),
     supabase
       .from('practice_rep_completions')
       .select('rep_id, completed_at')
       .eq('user_id', user.id)
-      .eq('course_id', 'aibi-p'),
+      .in('course_id', ['aibi-p', 'foundation']),
     supabase
       .from('saved_prompts')
       .select('prompt_id')
       .eq('user_id', user.id)
-      .eq('course_id', 'aibi-p'),
+      .in('course_id', ['aibi-p', 'foundation']),
     supabase
       .from('user_artifacts')
       .select('artifact_id, status, updated_at')
       .eq('user_id', user.id)
-      .eq('course_id', 'aibi-p'),
+      .in('course_id', ['aibi-p', 'foundation']),
   ]);
 
   if (enrollmentResult.error) {
