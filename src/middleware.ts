@@ -43,6 +43,8 @@ const COMING_SOON_BYPASS_PREFIXES: readonly string[] = [
   '/faq',           // redesign preview of the FAQ surface
   '/preview-home',  // redesign preview of the marketing landing
   '/briefing-preview', // redesign preview of the assessment results briefing
+  '/lms-preview',      // LMS prototype iframe wrapper
+  '/lms-prototype',    // static asset folder (iframe target)
 ];
 
 export async function middleware(request: NextRequest): Promise<NextResponse> {

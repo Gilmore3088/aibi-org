@@ -28,8 +28,7 @@ const BUNDLE_TO_ROUTE: Record<string, string> = {
   'Playground v1.html': '/playground',
   'FAQ.html': '/faq',
 
-  // not yet built — clicks no-op rather than 404
-  'LMS Prototype.html': '#',
+  'LMS Prototype.html': '/lms-preview',
 };
 
 export function rewriteBundleLinks(html: string): string {
