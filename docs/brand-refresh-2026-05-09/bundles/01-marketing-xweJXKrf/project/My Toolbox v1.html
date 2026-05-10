@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Toolbox · The AI Banking Institute</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ECE9DF; --paper:#F4F1E7; --parch:#E4E0D2; --tape:#F1E9D0;
+    --ink:#0E1B2D; --ink-2:#1F2A3F; --muted:#5C6B82; --soft:#8C95A8;
+    --terra:#B5862A; --terra-2:#8E6620; --weak:#8E3B2A;
+    --rule:#D5D1C2; --rule-strong:#B9B4A0;
+    --serif:'Newsreader', Georgia, serif;
+    --sans:'Geist','Inter',system-ui,sans-serif;
+    --mono:'JetBrains Mono', ui-monospace, monospace;
+    --maxw:1480px;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0 }
+  html, body{ background:var(--paper); color:var(--ink); font-family:var(--sans); -webkit-font-smoothing:antialiased; line-height:1.45 }
+  a{ color:inherit; text-decoration:none }
+  button{ font:inherit; color:inherit; background:none; border:none; cursor:pointer }
+  ::selection{ background:var(--terra); color:var(--paper) }
+
+  .container{ max-width:var(--maxw); margin:0 auto; padding:0 32px }
+  .eyebrow{ font-family:var(--mono); font-size:11px; letter-spacing:0.22em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+  .ilink{ font-family:var(--sans); font-weight:500; font-size:13px; color:var(--terra); border-bottom:1.5px solid var(--terra); padding-bottom:1px }
+  .ilink:hover{ color:var(--terra-2); border-color:var(--terra-2) }
+
+  /* ===== SITE NAV (public) ===== */
+  .nav{ position:sticky; top:0; z-index:30; background:var(--paper); border-bottom:1px solid var(--rule) }
+  .nav-inner{ max-width:var(--maxw); margin:0 auto; padding:18px 32px; display:flex; align-items:center; justify-content:space-between; gap:24px }
+  .nav-mark{ display:flex; flex-direction:column; line-height:1 }
+  .nav-mark .l1, .nav-mark .l2{ font-family:var(--sans); font-weight:700; font-size:13px; letter-spacing:-0.005em; text-transform:uppercase; line-height:1 }
+  .nav-mark .l1{ color:var(--ink) }
+  .nav-mark .l2{ color:var(--soft); margin-top:1px }
+  .nav-links{ display:flex; align-items:center; gap:32px }
+  .nav-link{ font-family:var(--mono); font-size:11px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:var(--ink-2) }
+  .nav-link:hover{ color:var(--terra) }
+  .acct{ display:flex; align-items:center; gap:10px; padding:6px 14px 6px 6px; background:transparent; border:1px solid var(--rule-strong); border-radius:1px; cursor:pointer; margin-left:8px }
+  .acct:hover{ border-color:var(--ink-2) }
+  .avatar{ width:28px; height:28px; border-radius:50%; background:var(--terra); color:var(--paper); display:grid; place-items:center; font-family:var(--mono); font-size:10px; font-weight:600 }
+  .acct .name{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink); font-weight:600 }
+
+  /* ===== MASTHEAD ===== */
+  .mast{ padding:64px 0 36px; border-bottom:1px solid var(--rule) }
+  .mast-row{ display:grid; grid-template-columns:1.4fr 1fr; gap:64px; align-items:end }
+  .mast .greet{ display:block; color:var(--terra); margin-bottom:18px }
+  .mast h1{ font-family:var(--serif); font-weight:500; font-size:clamp(54px, 6.4vw, 88px); line-height:0.98; letter-spacing:-0.035em; margin:0 0 14px; max-width:18ch }
+  .mast h1 em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .mast .lede{ font-family:var(--serif); font-size:22px; line-height:1.45; color:var(--ink-2); max-width:50ch; margin:0; font-weight:400 }
+  .mast-meta{ border-left:1px solid var(--rule-strong); padding:0 0 6px 28px; display:flex; flex-direction:column; gap:18px }
+  .mast-meta .row{ display:flex; justify-content:space-between; gap:24px; align-items:baseline; padding-bottom:14px; border-bottom:1px solid var(--rule) }
+  .mast-meta .row:last-child{ border-bottom:none; padding-bottom:0 }
+  .mast-meta .lab{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+  .mast-meta .val{ font-family:var(--serif); font-size:22px; color:var(--ink); font-weight:500; letter-spacing:-0.01em }
+
+  /* ===== USER TABS ===== */
+  .tabs{ background:var(--paper); border-bottom:1px solid var(--rule); border-top:1px solid var(--rule) }
+  .tabs-inner{ max-width:var(--maxw); margin:0 auto; padding:0 32px; display:flex; align-items:center; gap:0 }
+  .tab{ font-family:var(--mono); font-size:11px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); padding:16px 18px 14px; border-bottom:2px solid transparent; margin-bottom:-1px }
+  .tab:hover{ color:var(--ink-2) }
+  .tab.active{ color:var(--ink); border-bottom-color:var(--terra) }
+
+  /* ===== ACTION RIBBON (AI quick workflows) ===== */
+  .ribbon{ background:var(--ink); color:var(--paper); padding:24px 0; position:relative; overflow:hidden }
+  .ribbon::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:6px; background:var(--terra) }
+  .rib-inner{ max-width:var(--maxw); margin:0 auto; padding:0 32px; display:grid; grid-template-columns:auto 1fr; gap:32px; align-items:center }
+  .rib-lab{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.2em; text-transform:uppercase; color:rgba(244,241,231,0.5); font-weight:600 }
+  .rib-lab strong{ display:block; color:var(--paper); font-family:var(--serif); font-style:italic; font-size:20px; letter-spacing:-0.01em; text-transform:none; font-weight:500; margin-top:4px }
+  .rib-chips{ display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end }
+  .rib-chip{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.16em; text-transform:uppercase; color:rgba(244,241,231,0.85); padding:9px 14px; border:1px solid rgba(244,241,231,0.18); background:rgba(244,241,231,0.03); transition:all 0.15s; font-weight:600 }
+  .rib-chip:hover{ background:var(--terra); border-color:var(--terra); color:var(--paper) }
+  .rib-chip .arr{ display:inline-block; margin-left:6px; opacity:0.5 }
+  .rib-chip:hover .arr{ opacity:1 }
+
+  /* ===== SHELL ===== */
+  .shell{ display:grid; grid-template-columns:240px 1fr 340px; gap:0; max-width:var(--maxw); margin:0 auto; min-height:1100px; background:var(--paper) }
+  .facets{ border-right:1px solid var(--rule); padding:32px 28px 64px; position:sticky; top:62px; align-self:start; max-height:calc(100vh - 62px); overflow-y:auto }
+  .work{ padding:32px 36px 80px; border-right:1px solid var(--rule) }
+  .assistant{ padding:32px 28px 64px; position:sticky; top:62px; align-self:start; max-height:calc(100vh - 62px); overflow-y:auto; background:var(--bg) }
+
+  /* ===== FACETS ===== */
+  .search{ display:flex; align-items:center; gap:8px; padding:10px 12px; background:var(--paper); border:1px solid var(--rule-strong); margin-bottom:28px }
+  .search input{ border:none; outline:none; background:transparent; font-family:var(--sans); font-size:14px; color:var(--ink); width:100%; font-weight:500 }
+  .search input::placeholder{ color:var(--muted); font-style:italic }
+  .search .ico{ font-family:var(--mono); font-size:12px; color:var(--muted); font-weight:600 }
+
+  .fgroup{ margin-bottom:28px }
+  .fgroup-title{ font-family:var(--mono); font-size:10px; letter-spacing:0.22em; text-transform:uppercase; color:var(--muted); font-weight:600; padding-bottom:10px; border-bottom:1px solid var(--rule); margin-bottom:6px }
+  .frow{ display:flex; align-items:center; justify-content:space-between; padding:7px 0; cursor:pointer; font-family:var(--sans); font-size:13.5px; color:var(--ink-2); border-bottom:1px solid transparent; font-weight:500 }
+  .frow:hover{ color:var(--ink) }
+  .frow.active{ color:var(--ink); font-weight:600 }
+  .frow.active .fcount{ color:var(--terra) }
+  .frow .fcount{ font-family:var(--mono); font-size:10.5px; color:var(--muted); font-weight:600 }
+  .frow .fdot{ display:inline-block; width:8px; height:8px; margin-right:8px; vertical-align:middle; border:1px solid var(--rule-strong) }
+  .frow.active .fdot{ background:var(--terra); border-color:var(--terra) }
+
+  /* ===== WORK TOOLBAR ===== */
+  .wbar{ display:flex; align-items:center; gap:16px; padding-bottom:18px; border-bottom:1px solid var(--rule); margin-bottom:24px }
+  .wbar-tabs{ display:flex; gap:4px }
+  .wbar-tab{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); font-weight:600; padding:8px 12px; border:1px solid transparent }
+  .wbar-tab:hover{ color:var(--ink-2) }
+  .wbar-tab.active{ color:var(--ink); border-color:var(--rule-strong); background:var(--bg) }
+  .wbar-sort{ margin-left:auto; display:flex; align-items:center; gap:10px; font-family:var(--mono); font-size:10.5px; letter-spacing:0.16em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+  .wbar-sort select{ font:inherit; color:var(--ink); background:transparent; border:none; border-bottom:1px solid var(--ink-2); padding:2px 4px; cursor:pointer; text-transform:uppercase }
+  .wbar-cta{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; padding:9px 14px; background:var(--ink); color:var(--paper); font-weight:600 }
+  .wbar-cta:hover{ background:var(--ink-2) }
+
+  /* Active filter chips */
+  .chips{ display:flex; gap:6px; flex-wrap:wrap; margin-bottom:24px }
+  .chip{ font-family:var(--mono); font-size:10px; letter-spacing:0.16em; text-transform:uppercase; padding:5px 9px 5px 11px; background:var(--bg); border:1px solid var(--rule-strong); color:var(--ink-2); font-weight:600; display:inline-flex; align-items:center; gap:8px }
+  .chip .x{ color:var(--muted); cursor:pointer; font-weight:500 }
+  .chip .x:hover{ color:var(--terra) }
+
+  /* ===== ARTIFACT CARDS ===== */
+  .group-head{ display:flex; align-items:baseline; gap:18px; padding:24px 0 14px; border-bottom:1px solid var(--rule); margin-bottom:6px }
+  .group-head:first-of-type{ padding-top:0 }
+  .group-head .gh-num{ font-family:var(--mono); font-size:11px; letter-spacing:0.22em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+  .group-head h3{ font-family:var(--serif); font-weight:500; font-size:24px; line-height:1; letter-spacing:-0.02em; margin:0; color:var(--ink) }
+  .group-head h3 em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .group-head .gh-count{ margin-left:auto; font-family:var(--mono); font-size:10.5px; letter-spacing:0.16em; color:var(--muted); font-weight:600; text-transform:uppercase }
+
+  .art{ display:grid; grid-template-columns:1fr auto; gap:24px; padding:22px 0; border-bottom:1px solid var(--rule); cursor:pointer; transition:background 0.12s }
+  .art:hover{ background:linear-gradient(90deg, transparent, rgba(181,134,42,0.04) 30%, rgba(181,134,42,0.06)) }
+  .art-main{ min-width:0 }
+  .art-meta{ display:flex; gap:14px; flex-wrap:wrap; margin-bottom:10px; align-items:center }
+  .art-domain{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--terra); font-weight:600 }
+  .art-mod{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+  .art h4{ font-family:var(--serif); font-weight:500; font-size:24px; line-height:1.15; letter-spacing:-0.02em; margin:0 0 8px; color:var(--ink); max-width:48ch }
+  .art h4 em{ font-style:italic; color:var(--ink-2); font-weight:500 }
+  .art .preview{ font-family:var(--serif); font-style:italic; font-size:15.5px; line-height:1.5; color:var(--ink-2); margin:0 0 14px; max-width:60ch }
+
+  /* version + model row */
+  .verline{ display:flex; gap:18px; flex-wrap:wrap; align-items:center }
+  .vpill{ display:inline-flex; align-items:center; gap:0; font-family:var(--mono); font-size:10px; letter-spacing:0.14em; text-transform:uppercase; font-weight:600 }
+  .vpill .v{ background:var(--ink); color:var(--paper); padding:5px 8px }
+  .vpill .m{ background:var(--bg); color:var(--ink-2); padding:5px 9px; border:1px solid var(--rule-strong); border-left:none }
+  .vpill.mc-claude .m{ color:var(--terra) }
+  .vpill.mc-gpt .m{ color:#1F8A5B }
+  .vpill.mc-gemini .m{ color:#2A6FDB }
+  .art-when{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.16em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+  .art-iter{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink-2); font-weight:600 }
+  .art-iter strong{ color:var(--ink); font-weight:700 }
+
+  /* hover actions */
+  .art-actions{ display:flex; flex-direction:column; gap:6px; align-items:flex-end; opacity:0; transition:opacity 0.12s; min-width:140px }
+  .art:hover .art-actions{ opacity:1 }
+  .a-btn{ font-family:var(--mono); font-size:10px; letter-spacing:0.16em; text-transform:uppercase; padding:7px 11px; background:var(--paper); border:1px solid var(--rule-strong); color:var(--ink-2); font-weight:600; white-space:nowrap; transition:all 0.1s }
+  .a-btn:hover{ background:var(--ink); color:var(--paper); border-color:var(--ink) }
+  .a-btn.primary{ background:var(--terra); border-color:var(--terra); color:var(--paper) }
+  .a-btn.primary:hover{ background:var(--terra-2); border-color:var(--terra-2) }
+
+  /* ===== ASSISTANT ===== */
+  .as-head{ display:flex; align-items:baseline; gap:10px; margin-bottom:14px }
+  .as-head .num{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.22em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+  .as-head h3{ font-family:var(--serif); font-weight:500; font-size:22px; line-height:1; letter-spacing:-0.02em; color:var(--ink); margin:0 }
+  .as-head h3 em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .as-lede{ font-family:var(--serif); font-style:italic; font-size:14px; line-height:1.5; color:var(--ink-2); margin:0 0 20px }
+
+  .as-form{ display:flex; flex-direction:column; gap:8px; margin-bottom:24px; background:var(--paper); border:1px solid var(--rule-strong); padding:14px }
+  .as-form textarea{ width:100%; min-height:72px; font-family:var(--serif); font-size:15px; line-height:1.45; color:var(--ink); border:none; outline:none; background:transparent; resize:none }
+  .as-form textarea::placeholder{ color:var(--muted); font-style:italic }
+  .as-form-foot{ display:flex; justify-content:space-between; align-items:center; padding-top:10px; border-top:1px solid var(--rule) }
+  .as-modelpick{ font-family:var(--mono); font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:var(--muted); font-weight:600; display:flex; align-items:center; gap:6px }
+  .as-modelpick select{ font:inherit; color:var(--ink-2); background:transparent; border:none; border-bottom:1px solid var(--ink-2); cursor:pointer; padding:1px 4px; text-transform:uppercase }
+  .as-send{ font-family:var(--mono); font-size:10px; letter-spacing:0.18em; text-transform:uppercase; padding:8px 14px; background:var(--ink); color:var(--paper); font-weight:600 }
+  .as-send:hover{ background:var(--ink-2) }
+  .as-send:disabled{ opacity:0.5; cursor:wait }
+
+  .as-suggest-lab{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.22em; text-transform:uppercase; color:var(--muted); font-weight:600; margin-bottom:10px }
+  .as-suggest{ display:flex; flex-direction:column; gap:0; margin-bottom:24px }
+  .as-suggest button{ text-align:left; font-family:var(--serif); font-size:14.5px; line-height:1.4; color:var(--ink-2); padding:12px 0; border-bottom:1px solid var(--rule); transition:color 0.1s }
+  .as-suggest button:hover{ color:var(--terra) }
+  .as-suggest button:last-child{ border-bottom:none }
+  .as-suggest button .arr{ float:right; color:var(--muted); font-family:var(--mono); font-size:11px }
+  .as-suggest button:hover .arr{ color:var(--terra) }
+
+  /* answer card */
+  .as-answer{ background:var(--paper); border:1px solid var(--rule-strong); border-left:3px solid var(--terra); padding:18px 18px 16px; margin-top:8px }
+  .as-answer .lab{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); font-weight:600; margin-bottom:8px }
+  .as-answer .body{ font-family:var(--serif); font-size:14.5px; line-height:1.5; color:var(--ink); white-space:pre-wrap }
+  .as-answer .foot{ display:flex; gap:12px; margin-top:14px; padding-top:12px; border-top:1px solid var(--rule); font-family:var(--mono); font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+  .as-answer .foot a{ color:var(--terra); border-bottom:1px solid var(--terra); padding-bottom:1px }
+  .typing::after{ content:"▋"; animation:bl 0.8s infinite; color:var(--terra); margin-left:2px }
+  @keyframes bl{ 0%,49%{ opacity:1 } 50%,100%{ opacity:0 } }
+
+  /* ===== DRAWER ===== */
+  .drawer-bg{ position:fixed; inset:0; background:rgba(14,27,45,0.5); opacity:0; pointer-events:none; transition:opacity 0.2s; z-index:50 }
+  .drawer-bg.open{ opacity:1; pointer-events:auto }
+  .drawer{ position:fixed; right:0; top:0; bottom:0; width:560px; max-width:96vw; background:var(--paper); transform:translateX(100%); transition:transform 0.25s ease-out; z-index:51; overflow-y:auto; box-shadow:-12px 0 40px rgba(14,27,45,0.18) }
+  .drawer.open{ transform:translateX(0) }
+  .dr-head{ position:sticky; top:0; background:var(--paper); padding:24px 32px; border-bottom:1px solid var(--rule); display:flex; justify-content:space-between; align-items:center }
+  .dr-head .lab{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+  .dr-close{ font-family:var(--mono); font-size:13px; color:var(--ink-2); padding:4px 8px }
+  .dr-close:hover{ color:var(--terra) }
+  .dr-body{ padding:32px }
+  .dr-body h2{ font-family:var(--serif); font-weight:500; font-size:36px; line-height:1.05; letter-spacing:-0.025em; margin:0 0 16px; color:var(--ink) }
+  .dr-body h2 em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .dr-meta{ display:flex; gap:16px; flex-wrap:wrap; margin-bottom:24px; padding-bottom:24px; border-bottom:1px solid var(--rule) }
+  .dr-meta span{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+  .dr-meta .terra{ color:var(--terra) }
+
+  .dr-section{ margin-bottom:32px }
+  .dr-sec-lab{ font-family:var(--mono); font-size:10px; letter-spacing:0.22em; text-transform:uppercase; color:var(--muted); font-weight:600; padding-bottom:8px; border-bottom:1px solid var(--rule); margin-bottom:14px }
+
+  /* version timeline */
+  .vtl{ display:flex; flex-direction:column; gap:0 }
+  .vrow{ display:grid; grid-template-columns:60px 1fr auto; gap:14px; padding:14px 0; border-bottom:1px solid var(--rule); align-items:start }
+  .vrow:last-child{ border-bottom:none }
+  .vrow.cur{ background:linear-gradient(90deg, rgba(181,134,42,0.06), transparent 60%) }
+  .vrow .vno{ font-family:var(--mono); font-size:11px; letter-spacing:0.18em; color:var(--ink); font-weight:700; padding-top:2px }
+  .vrow.cur .vno{ color:var(--terra) }
+  .vrow .vbody{ font-family:var(--serif); font-size:14.5px; line-height:1.45; color:var(--ink-2) }
+  .vrow .vmodel{ font-family:var(--mono); font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:var(--muted); font-weight:600; margin-top:6px }
+  .vrow .vmodel strong{ color:var(--ink-2); font-weight:700 }
+  .vrow .vact{ display:flex; gap:6px; padding-top:2px }
+  .vsm-btn{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.16em; text-transform:uppercase; padding:5px 9px; border:1px solid var(--rule-strong); color:var(--ink-2); font-weight:600 }
+  .vsm-btn:hover{ background:var(--ink); color:var(--paper); border-color:var(--ink) }
+
+  /* iterate panel */
+  .iter{ background:var(--bg); border:1px solid var(--rule-strong); padding:20px; margin-bottom:14px }
+  .iter h4{ font-family:var(--serif); font-weight:500; font-size:18px; line-height:1.2; letter-spacing:-0.015em; margin:0 0 12px; color:var(--ink) }
+  .iter h4 em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .iter p{ font-family:var(--serif); font-size:14px; line-height:1.5; color:var(--ink-2); margin:0 0 14px; font-style:italic }
+  .iter-models{ display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:14px }
+  .iter-model{ text-align:left; padding:10px 12px; background:var(--paper); border:1px solid var(--rule-strong); cursor:pointer; transition:all 0.1s }
+  .iter-model:hover{ border-color:var(--ink) }
+  .iter-model.sel{ background:var(--ink); color:var(--paper); border-color:var(--ink) }
+  .iter-model .mname{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.16em; text-transform:uppercase; font-weight:700; display:block; margin-bottom:2px }
+  .iter-model .mtag{ font-family:var(--mono); font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+  .iter-model.sel .mtag{ color:rgba(244,241,231,0.6) }
+  .iter-go{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; padding:11px 18px; background:var(--terra); color:var(--paper); font-weight:600; width:100%; }
+  .iter-go:hover{ background:var(--terra-2) }
+
+  /* ai actions */
+  .ai-acts{ display:grid; grid-template-columns:1fr 1fr; gap:8px }
+  .ai-act{ background:var(--paper); border:1px solid var(--rule-strong); padding:12px 14px; text-align:left; cursor:pointer; transition:all 0.1s }
+  .ai-act:hover{ background:var(--ink); color:var(--paper); border-color:var(--ink) }
+  .ai-act .lab{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--terra); font-weight:600; display:block; margin-bottom:3px }
+  .ai-act:hover .lab{ color:#E5C29A }
+  .ai-act .desc{ font-family:var(--serif); font-size:13.5px; line-height:1.35; color:var(--ink-2) }
+  .ai-act:hover .desc{ color:var(--paper) }
+
+  /* artifact body preview */
+  .pv{ background:var(--bg); border:1px solid var(--rule-strong); padding:24px; font-family:var(--serif); font-size:14.5px; line-height:1.6; color:var(--ink-2); white-space:pre-wrap }
+  .pv .h{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); font-weight:600; display:block; margin-bottom:8px }
+  .pv .gloss{ font-family:var(--mono); font-size:10px; letter-spacing:0.16em; color:var(--muted); margin-top:14px; text-transform:uppercase; font-weight:600 }
+
+  /* ===== FOOTER ===== */
+  .foot{ background:var(--ink); color:rgba(244,241,231,0.7); padding:32px 0; margin-top:40px }
+  .foot-inner{ max-width:var(--maxw); margin:0 auto; padding:0 32px; display:flex; justify-content:space-between; gap:24px; flex-wrap:wrap; font-family:var(--mono); font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; font-weight:600 }
+  .foot-inner a{ color:rgba(244,241,231,0.85) }
+  .foot-inner a:hover{ color:var(--terra) }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width:1280px){
+    .shell{ grid-template-columns:220px 1fr 320px }
+  }
+  @media (max-width:1100px){
+    .shell{ grid-template-columns:1fr; min-height:auto }
+    .facets, .assistant{ position:relative; top:0; max-height:none; border-right:none; border-bottom:1px solid var(--rule); padding:24px 32px }
+    .work{ border-right:none }
+    .mast-row{ grid-template-columns:1fr; gap:32px }
+    .mast-meta{ border-left:none; border-top:1px solid var(--rule-strong); padding:24px 0 0 }
+  }
+  @media (max-width:760px){
+    .nav-links{ gap:18px } .nav-link{ display:none } .nav-link:nth-last-child(-n+2){ display:inline }
+    .rib-inner{ grid-template-columns:1fr; gap:14px }
+    .rib-chips{ justify-content:flex-start }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== SITE NAV ===== -->
+<header class="nav">
+  <div class="nav-inner">
+    <a href="AI Banking Institute.html" class="nav-mark" aria-label="The AI Banking Institute">
+      <span class="l1">The AI Banking</span>
+      <span class="l2">Institute</span>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="AI Banking Institute.html#pillars" class="nav-link">Education</a>
+      <a href="#" class="nav-link">For Institutions</a>
+      <a href="#" class="nav-link">Research</a>
+      <a href="#" class="nav-link">About</a>
+      <a href="FAQ.html" class="nav-link">Support</a>
+      <button class="acct" aria-label="Account">
+        <span class="avatar">DM</span>
+        <span class="name">D. Maxwell</span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<!-- ===== MASTHEAD ===== -->
+<section class="mast">
+  <div class="container">
+    <div class="mast-row">
+      <div>
+        <span class="eyebrow greet">Library · 47 saved</span>
+        <h1>Your <em>toolbox.</em></h1>
+        <p class="lede">Every artifact you've drafted, with every revision, every prompt, and the model that produced it. Search by domain, dig into any version, and run it again with a different model.</p>
+      </div>
+      <div class="mast-meta">
+        <div class="row"><span class="lab">Saved</span><span class="val">47 artifacts</span></div>
+        <div class="row"><span class="lab">Domains</span><span class="val">6 areas</span></div>
+        <div class="row"><span class="lab">Modules</span><span class="val">8 of 12</span></div>
+        <div class="row"><span class="lab">Models used</span><span class="val">4 LLMs</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== USER TABS ===== -->
+<div class="tabs">
+  <div class="tabs-inner" role="tablist" aria-label="My account">
+    <a href="User Home.html" class="tab" role="tab">Dashboard</a>
+    <a href="LMS Prototype.html" class="tab" role="tab">My Curriculum</a>
+    <a href="#" class="tab active" role="tab" aria-selected="true">My Toolbox</a>
+    <a href="#" class="tab" role="tab">My Brief</a>
+    <a href="#" class="tab" role="tab">Account</a>
+  </div>
+</div>
+
+<!-- ===== ACTION RIBBON ===== -->
+<section class="ribbon">
+  <div class="rib-inner">
+    <div class="rib-lab">Quick AI workflows<strong>Run something across your toolbox</strong></div>
+    <div class="rib-chips">
+      <button class="rib-chip" data-q="Run a Reg B / ECOA fairness check across my last 3 credit memos and flag any phrasing that could read as discriminatory.">Reg B check on recent memos<span class="arr">→</span></button>
+      <button class="rib-chip" data-q="Summarize what I worked on this month, organized by domain. Keep it under 200 words.">Summarize the month<span class="arr">→</span></button>
+      <button class="rib-chip" data-q="Find my most-iterated artifact and tell me what changed between v1 and the latest version.">Most-iterated piece<span class="arr">→</span></button>
+      <button class="rib-chip" data-q="Re-run my last credit memo with Claude Opus and tell me what's different.">Re-run last memo<span class="arr">→</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SHELL ===== -->
+<div class="shell">
+
+  <!-- ============ FACETS ============ -->
+  <aside class="facets" aria-label="Filters">
+    <div class="search">
+      <span class="ico">⌕</span>
+      <input id="searchBox" type="search" placeholder="Search artifacts, prompts…" aria-label="Search toolbox">
+    </div>
+
+    <div class="fgroup">
+      <div class="fgroup-title">View</div>
+      <div class="frow active"><span><span class="fdot"></span>All artifacts</span><span class="fcount">47</span></div>
+      <div class="frow"><span><span class="fdot"></span>In progress</span><span class="fcount">3</span></div>
+      <div class="frow"><span><span class="fdot"></span>Pinned</span><span class="fcount">8</span></div>
+      <div class="frow"><span><span class="fdot"></span>Shared with reviewer</span><span class="fcount">5</span></div>
+      <div class="frow"><span><span class="fdot"></span>Archived</span><span class="fcount">12</span></div>
+    </div>
+
+    <div class="fgroup">
+      <div class="fgroup-title">Domain</div>
+      <div class="frow"><span><span class="fdot"></span>Credit &amp; lending</span><span class="fcount">14</span></div>
+      <div class="frow"><span><span class="fdot"></span>Deposit &amp; ops</span><span class="fcount">9</span></div>
+      <div class="frow active"><span><span class="fdot"></span>BSA &amp; compliance</span><span class="fcount">11</span></div>
+      <div class="frow"><span><span class="fdot"></span>Risk &amp; audit</span><span class="fcount">5</span></div>
+      <div class="frow"><span><span class="fdot"></span>Customer comms</span><span class="fcount">4</span></div>
+      <div class="frow"><span><span class="fdot"></span>Board &amp; governance</span><span class="fcount">4</span></div>
+    </div>
+
+    <div class="fgroup">
+      <div class="fgroup-title">Module</div>
+      <div class="frow"><span>02 · Talking to AI</span><span class="fcount">3</span></div>
+      <div class="frow"><span>03 · 4-prompt method</span><span class="fcount">5</span></div>
+      <div class="frow"><span>04 · Auditable AI</span><span class="fcount">4</span></div>
+      <div class="frow"><span>06 · Vendor AI / TPRM</span><span class="fcount">3</span></div>
+      <div class="frow"><span>07 · Credit memos</span><span class="fcount">8</span></div>
+      <div class="frow"><span>08 · Deposit ops narratives</span><span class="fcount">6</span></div>
+      <div class="frow"><span>09 · BSA narratives</span><span class="fcount">9</span></div>
+      <div class="frow"><span>10 · Reg B / ECOA</span><span class="fcount">5</span></div>
+      <div class="frow"><span>11 · Board summaries</span><span class="fcount">4</span></div>
+    </div>
+
+    <div class="fgroup">
+      <div class="fgroup-title">Model</div>
+      <div class="frow"><span><span class="fdot" style="background:var(--terra); border-color:var(--terra)"></span>Claude Opus</span><span class="fcount">18</span></div>
+      <div class="frow"><span><span class="fdot" style="background:#C8A24A; border-color:#C8A24A"></span>Claude Sonnet</span><span class="fcount">12</span></div>
+      <div class="frow"><span><span class="fdot" style="background:#1F8A5B; border-color:#1F8A5B"></span>GPT-4o</span><span class="fcount">9</span></div>
+      <div class="frow"><span><span class="fdot" style="background:#2A6FDB; border-color:#2A6FDB"></span>Gemini Pro</span><span class="fcount">8</span></div>
+    </div>
+
+    <div class="fgroup">
+      <div class="fgroup-title">Type</div>
+      <div class="frow"><span>Memos</span><span class="fcount">14</span></div>
+      <div class="frow"><span>Narratives</span><span class="fcount">11</span></div>
+      <div class="frow"><span>Letters &amp; comms</span><span class="fcount">8</span></div>
+      <div class="frow"><span>Briefs &amp; summaries</span><span class="fcount">6</span></div>
+      <div class="frow"><span>Reusable prompts</span><span class="fcount">5</span></div>
+      <div class="frow"><span>Notes &amp; clippings</span><span class="fcount">3</span></div>
+    </div>
+  </aside>
+
+  <!-- ============ WORK ============ -->
+  <main class="work">
+
+    <div class="wbar">
+      <div class="wbar-tabs">
+        <button class="wbar-tab active">Grid</button>
+        <button class="wbar-tab">List</button>
+        <button class="wbar-tab">By domain</button>
+        <button class="wbar-tab">Versions</button>
+      </div>
+      <div class="wbar-sort">
+        Sort
+        <select>
+          <option>Recent</option>
+          <option>Most iterated</option>
+          <option>Module order</option>
+          <option>Alphabetical</option>
+        </select>
+      </div>
+      <button class="wbar-cta">+ New artifact</button>
+    </div>
+
+    <div class="chips">
+      <span class="chip">Domain · BSA &amp; compliance <span class="x">×</span></span>
+      <span class="chip">Sort · Recent <span class="x">×</span></span>
+      <span class="chip">View · All artifacts <span class="x">×</span></span>
+    </div>
+
+    <!-- ===== Group: This week ===== -->
+    <header class="group-head">
+      <span class="gh-num">01</span>
+      <h3>This <em>week.</em></h3>
+      <span class="gh-count">3 artifacts</span>
+    </header>
+
+    <article class="art" data-art="bsa-4471">
+      <div class="art-main">
+        <div class="art-meta">
+          <span class="art-domain">BSA &amp; compliance</span>
+          <span class="art-mod">Module 09 · BSA narratives</span>
+        </div>
+        <h4>SAR narrative — <em>structuring pattern, account 4471</em></h4>
+        <p class="preview">"Between Mar 12 and Apr 28, the customer made 19 cash deposits across three branches, each between $9,200 and $9,800. The deposits were made on weekdays, generally between 11:00 a.m. and 1:00 p.m…"</p>
+        <div class="verline">
+          <span class="vpill mc-claude"><span class="v">v 4</span><span class="m">Claude Opus</span></span>
+          <span class="art-iter"><strong>4 versions</strong> · 12 iterations</span>
+          <span class="art-when">2 days ago</span>
+        </div>
+      </div>
+      <div class="art-actions">
+        <button class="a-btn primary">Open →</button>
+        <button class="a-btn">Iterate</button>
+        <button class="a-btn">Compare versions</button>
+      </div>
+    </article>
+
+    <article class="art" data-art="bsa-trend">
+      <div class="art-main">
+        <div class="art-meta">
+          <span class="art-domain">BSA &amp; compliance</span>
+          <span class="art-mod">Module 09 · BSA narratives</span>
+        </div>
+        <h4>BSA quarterly trend brief — <em>Q1, Garner CU</em></h4>
+        <p class="preview">"Cash-intensive merchant traffic up 14% QoQ, concentrated in two ZIP codes. Three new account profiles flagged for review under elevated-risk monitoring; none escalated to SAR…"</p>
+        <div class="verline">
+          <span class="vpill mc-claude"><span class="v">v 1</span><span class="m">Claude Sonnet</span></span>
+          <span class="art-iter"><strong>1 version</strong> · 3 iterations</span>
+          <span class="art-when">3 days ago</span>
+        </div>
+      </div>
+      <div class="art-actions">
+        <button class="a-btn primary">Open →</button>
+        <button class="a-btn">Iterate</button>
+        <button class="a-btn">Pin</button>
+      </div>
+    </article>
+
+    <article class="art" data-art="bsa-policy">
+      <div class="art-main">
+        <div class="art-meta">
+          <span class="art-domain">BSA &amp; compliance</span>
+          <span class="art-mod">Module 04 · Auditable AI</span>
+        </div>
+        <h4>BSA AI-use policy draft — <em>v0 for committee review</em></h4>
+        <p class="preview">"The Bank permits use of generative AI tools to draft, edit, or summarize BSA work product subject to the controls below. AI output is treated as a draft until reviewed by a designated BSA officer…"</p>
+        <div class="verline">
+          <span class="vpill mc-gpt"><span class="v">v 2</span><span class="m">GPT-4o</span></span>
+          <span class="art-iter"><strong>2 versions</strong> · 7 iterations</span>
+          <span class="art-when">5 days ago</span>
+        </div>
+      </div>
+      <div class="art-actions">
+        <button class="a-btn primary">Open →</button>
+        <button class="a-btn">Iterate</button>
+        <button class="a-btn">Share</button>
+      </div>
+    </article>
+
+    <!-- ===== Group: Earlier ===== -->
+    <header class="group-head">
+      <span class="gh-num">02</span>
+      <h3>Earlier <em>this month.</em></h3>
+      <span class="gh-count">8 artifacts</span>
+    </header>
+
+    <article class="art" data-art="bsa-mule">
+      <div class="art-main">
+        <div class="art-meta">
+          <span class="art-domain">BSA &amp; compliance</span>
+          <span class="art-mod">Module 09 · BSA narratives</span>
+        </div>
+        <h4>SAR narrative — <em>suspected money mule, account 8821</em></h4>
+        <p class="preview">"On Apr 02, account 8821 (opened Mar 14) received a $4,800 ACH credit from an unrelated payroll originator, followed by 11 outbound P2P transfers to distinct recipients within 48 hours…"</p>
+        <div class="verline">
+          <span class="vpill mc-claude"><span class="v">v 3</span><span class="m">Claude Opus</span></span>
+          <span class="art-iter"><strong>3 versions</strong> · 9 iterations</span>
+          <span class="art-when">11 days ago</span>
+        </div>
+      </div>
+      <div class="art-actions">
+        <button class="a-btn primary">Open →</button>
+        <button class="a-btn">Iterate</button>
+        <button class="a-btn">Compare versions</button>
+      </div>
+    </article>
+
+    <article class="art" data-art="bsa-elder">
+      <div class="art-main">
+        <div class="art-meta">
+          <span class="art-domain">BSA &amp; compliance</span>
+          <span class="art-mod">Module 09 · BSA narratives</span>
+        </div>
+        <h4>EFT-fraud narrative — <em>elder-financial-exploitation, customer 1209</em></h4>
+        <p class="preview">"Customer 1209 (age 78, retired) made six wire transfers totaling $42,400 over a 19-day period, each to a different beneficiary in three separate jurisdictions. Behavioral indicators inconsistent with prior account activity…"</p>
+        <div class="verline">
+          <span class="vpill mc-claude"><span class="v">v 2</span><span class="m">Claude Opus</span></span>
+          <span class="art-iter"><strong>2 versions</strong> · 5 iterations</span>
+          <span class="art-when">14 days ago</span>
+        </div>
+      </div>
+      <div class="art-actions">
+        <button class="a-btn primary">Open →</button>
+        <button class="a-btn">Iterate</button>
+        <button class="a-btn">Pin</button>
+      </div>
+    </article>
+
+    <article class="art" data-art="bsa-prompt">
+      <div class="art-main">
+        <div class="art-meta">
+          <span class="art-domain">BSA &amp; compliance</span>
+          <span class="art-mod">Module 03 · 4-prompt method</span>
+        </div>
+        <h4>Reusable prompt — <em>SAR-grade narrative scaffold</em></h4>
+        <p class="preview">"You are a BSA officer drafting a Suspicious Activity Report narrative. Use only the facts provided. Write in past tense, third person. Do not speculate on intent. Structure: Who · What · Where · When · Why suspicious…"</p>
+        <div class="verline">
+          <span class="vpill mc-claude"><span class="v">v 5</span><span class="m">Claude Opus</span></span>
+          <span class="art-iter"><strong>5 versions</strong> · 18 iterations · used 23×</span>
+          <span class="art-when">3 weeks ago</span>
+        </div>
+      </div>
+      <div class="art-actions">
+        <button class="a-btn primary">Open →</button>
+        <button class="a-btn">Run prompt</button>
+        <button class="a-btn">Pin</button>
+      </div>
+    </article>
+
+    <article class="art" data-art="bsa-audit">
+      <div class="art-main">
+        <div class="art-meta">
+          <span class="art-domain">BSA &amp; compliance</span>
+          <span class="art-mod">Module 04 · Auditable AI</span>
+        </div>
+        <h4>AI-assisted SAR audit log — <em>April 2026</em></h4>
+        <p class="preview">"This log documents the use of generative AI tools in drafting BSA work product for the period Apr 1–30, 2026. Each entry records: model used, prompt summary, human reviewer, time of review, and substantive edits made…"</p>
+        <div class="verline">
+          <span class="vpill mc-gemini"><span class="v">v 1</span><span class="m">Gemini Pro</span></span>
+          <span class="art-iter"><strong>1 version</strong> · 4 iterations</span>
+          <span class="art-when">3 weeks ago</span>
+        </div>
+      </div>
+      <div class="art-actions">
+        <button class="a-btn primary">Open →</button>
+        <button class="a-btn">Iterate</button>
+        <button class="a-btn">Share</button>
+      </div>
+    </article>
+
+    <article class="art" data-art="bsa-thresholds">
+      <div class="art-main">
+        <div class="art-meta">
+          <span class="art-domain">BSA &amp; compliance</span>
+          <span class="art-mod">Module 09 · BSA narratives</span>
+        </div>
+        <h4>Threshold-tuning memo — <em>structuring scenarios, why $9,000?</em></h4>
+        <p class="preview">"This memo recommends lowering the structuring scenario threshold from $9,500 to $9,000 based on a six-month false-negative review. Of 412 cleared alerts, 3 were later identified as missed structuring patterns…"</p>
+        <div class="verline">
+          <span class="vpill mc-claude"><span class="v">v 3</span><span class="m">Claude Opus</span></span>
+          <span class="art-iter"><strong>3 versions</strong> · 11 iterations</span>
+          <span class="art-when">4 weeks ago</span>
+        </div>
+      </div>
+      <div class="art-actions">
+        <button class="a-btn primary">Open →</button>
+        <button class="a-btn">Iterate</button>
+        <button class="a-btn">Compare versions</button>
+      </div>
+    </article>
+
+    <div style="text-align:center; padding:32px 0 0">
+      <button class="a-btn" style="padding:11px 22px">Load 5 more →</button>
+    </div>
+
+  </main>
+
+  <!-- ============ ASSISTANT ============ -->
+  <aside class="assistant" aria-label="Toolbox assistant">
+    <div class="as-head">
+      <span class="num">03</span>
+      <h3>Ask your <em>toolbox.</em></h3>
+    </div>
+    <p class="as-lede">Search, summarize, or run something against the artifacts you've already saved. Trained on your work, not the public web.</p>
+
+    <form class="as-form" id="askForm">
+      <textarea id="askInput" placeholder="What did I draft last week?  Find any board summary I've worked on.  Re-run the SAR narrative with Opus…" aria-label="Ask the toolbox"></textarea>
+      <div class="as-form-foot">
+        <label class="as-modelpick">
+          Model ·
+          <select id="askModel">
+            <option value="claude-opus">Claude Opus</option>
+            <option value="claude-sonnet">Claude Sonnet</option>
+            <option value="gpt-4o">GPT-4o</option>
+            <option value="gemini-pro">Gemini Pro</option>
+          </select>
+        </label>
+        <button type="submit" class="as-send" id="askSend">Ask →</button>
+      </div>
+    </form>
+
+    <div class="as-suggest-lab">Try one of these</div>
+    <div class="as-suggest" id="suggestList">
+      <button data-q="Show me everything I've drafted this week, grouped by domain.">Show me this week, grouped by domain.<span class="arr">→</span></button>
+      <button data-q="What's the difference between v1 and the latest version of my SAR narrative for account 4471?">Diff v1 vs current of the 4471 SAR.<span class="arr">→</span></button>
+      <button data-q="Find any artifact where I haven't iterated in over 14 days and might want to revisit.">What's gone stale?<span class="arr">→</span></button>
+      <button data-q="Summarize the model usage across my toolbox — which one am I leaning on too hard?">Audit my model usage.<span class="arr">→</span></button>
+      <button data-q="Pull every BSA artifact and produce a one-page summary I can hand to my BSA officer.">One-pager for my BSA officer.<span class="arr">→</span></button>
+    </div>
+
+    <div class="as-answer" id="askAnswer" style="display:none">
+      <div class="lab" id="answerLab">Answer · Claude Opus</div>
+      <div class="body" id="answerBody"></div>
+      <div class="foot">
+        <a href="#">Save to toolbox</a>
+        <a href="#">Continue</a>
+      </div>
+    </div>
+  </aside>
+
+</div>
+
+<!-- ===== DRAWER ===== -->
+<div class="drawer-bg" id="drawerBg"></div>
+<aside class="drawer" id="drawer" aria-label="Artifact detail">
+  <div class="dr-head">
+    <span class="lab" id="drLab">BSA &amp; compliance · Module 09</span>
+    <button class="dr-close" id="drClose">Close ✕</button>
+  </div>
+  <div class="dr-body">
+    <h2 id="drTitle">SAR narrative — <em>structuring pattern, account 4471</em></h2>
+    <div class="dr-meta">
+      <span class="terra" id="drVer">CURRENT · v 4</span>
+      <span id="drModel">Claude Opus</span>
+      <span id="drIter">12 iterations</span>
+      <span id="drWhen">2 days ago</span>
+    </div>
+
+    <div class="dr-section">
+      <div class="dr-sec-lab">Iterate with another model</div>
+      <div class="iter">
+        <h4>Run this again, <em>differently.</em></h4>
+        <p>Pick a model. The prompt and inputs that produced the current version will be re-run. The new draft saves as v 5; the current stays untouched.</p>
+        <div class="iter-models">
+          <button class="iter-model"><span class="mname">Claude Opus</span><span class="mtag">Most rigorous · slowest</span></button>
+          <button class="iter-model sel"><span class="mname">Claude Sonnet</span><span class="mtag">Balanced · fastest Anthropic</span></button>
+          <button class="iter-model"><span class="mname">GPT-4o</span><span class="mtag">Concise · committee-friendly</span></button>
+          <button class="iter-model"><span class="mname">Gemini Pro</span><span class="mtag">Long context · multi-doc</span></button>
+        </div>
+        <button class="iter-go" id="iterGo">Run as v 5 →</button>
+      </div>
+    </div>
+
+    <div class="dr-section">
+      <div class="dr-sec-lab">Ask AI about this artifact</div>
+      <div class="ai-acts">
+        <button class="ai-act" data-aa="critique"><span class="lab">Critique</span><span class="desc">Where would a BSA officer push back?</span></button>
+        <button class="ai-act" data-aa="compress"><span class="lab">Compress</span><span class="desc">Tighten to a 200-word committee version.</span></button>
+        <button class="ai-act" data-aa="extract"><span class="lab">Extract facts</span><span class="desc">Pull a table of every named amount, date, account.</span></button>
+        <button class="ai-act" data-aa="riskcheck"><span class="lab">Reg / risk check</span><span class="desc">Flag SR 11-7, ECOA, or BSA exposure.</span></button>
+      </div>
+    </div>
+
+    <div class="dr-section">
+      <div class="dr-sec-lab">Version timeline</div>
+      <div class="vtl">
+        <div class="vrow cur">
+          <div class="vno">v 4</div>
+          <div class="vbody">Tightened to past tense. Removed any speculation on customer intent. Reorganized facts as a numbered timeline.<div class="vmodel"><strong>Claude Opus</strong> · 2 days ago · 4 substantive edits before save</div></div>
+          <div class="vact"><span class="vsm-btn">Current</span></div>
+        </div>
+        <div class="vrow">
+          <div class="vno">v 3</div>
+          <div class="vbody">Added detail on the third branch and adjusted dollar ranges to match the underlying ATM logs.<div class="vmodel"><strong>Claude Opus</strong> · 5 days ago</div></div>
+          <div class="vact"><button class="vsm-btn">Restore</button><button class="vsm-btn">Compare</button></div>
+        </div>
+        <div class="vrow">
+          <div class="vno">v 2</div>
+          <div class="vbody">Reframed under the structuring scenario language. Removed two adjectives that read editorial.<div class="vmodel"><strong>GPT-4o</strong> · 8 days ago</div></div>
+          <div class="vact"><button class="vsm-btn">Restore</button><button class="vsm-btn">Compare</button></div>
+        </div>
+        <div class="vrow">
+          <div class="vno">v 1</div>
+          <div class="vbody">First draft from raw transaction notes. Too long; mixed past and present tense.<div class="vmodel"><strong>Claude Sonnet</strong> · 11 days ago</div></div>
+          <div class="vact"><button class="vsm-btn">Restore</button><button class="vsm-btn">Compare</button></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dr-section">
+      <div class="dr-sec-lab">Current draft</div>
+      <div class="pv">
+<span class="h">SAR Narrative · v 4</span>
+Between March 12 and April 28, 2026, the customer associated with account 4471 made nineteen cash deposits across three branch locations. Deposit amounts ranged from $9,200 to $9,800; no single deposit exceeded $10,000. Deposits were made on weekdays, generally between 11:00 a.m. and 1:00 p.m.
+
+The customer's prior twelve-month deposit history shows no comparable cash activity. Stated occupation is "consultant." No corresponding deposit pattern is observable in any other Bank-held account associated with the customer or the customer's known business affiliations.
+
+Bank personnel reviewed the deposits under the Bank's structuring scenario monitoring threshold. The amounts and frequency are consistent with conduct designed to avoid the $10,000 currency-transaction reporting threshold under 31 C.F.R. § 1010.311.
+        <div class="gloss">Current as of v 4 · 2 days ago · reviewed by D. Maxwell</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ===== FOOTER ===== -->
+<footer class="foot">
+  <div class="foot-inner">
+    <span>The AI Banking Institute · Member tools</span>
+    <a href="FAQ.html">Support</a>
+  </div>
+</footer>
+
+<script>
+  // ----- drawer -----
+  const drawer = document.getElementById('drawer');
+  const drBg   = document.getElementById('drawerBg');
+  document.querySelectorAll('.art').forEach(el => {
+    el.addEventListener('click', e => {
+      if (e.target.closest('.a-btn') && !e.target.textContent.includes('Open')) return;
+      drawer.classList.add('open'); drBg.classList.add('open');
+    });
+  });
+  document.getElementById('drClose').addEventListener('click', () => { drawer.classList.remove('open'); drBg.classList.remove('open'); });
+  drBg.addEventListener('click', () => { drawer.classList.remove('open'); drBg.classList.remove('open'); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape'){ drawer.classList.remove('open'); drBg.classList.remove('open'); }});
+
+  // ----- iterate model select -----
+  document.querySelectorAll('.iter-model').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('.iter-model').forEach(x => x.classList.remove('sel'));
+    b.classList.add('sel');
+  }));
+
+  // ----- facet toggle (visual only) -----
+  document.querySelectorAll('.frow').forEach(r => r.addEventListener('click', () => r.classList.toggle('active')));
+
+  // ----- view toggle -----
+  document.querySelectorAll('.wbar-tab').forEach(t => t.addEventListener('click', () => {
+    document.querySelectorAll('.wbar-tab').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+  }));
+
+  // ----- ASSISTANT (real Claude calls) -----
+  const askInput = document.getElementById('askInput');
+  const askForm  = document.getElementById('askForm');
+  const askSend  = document.getElementById('askSend');
+  const askModel = document.getElementById('askModel');
+  const answer   = document.getElementById('askAnswer');
+  const ansLab   = document.getElementById('answerLab');
+  const ansBody  = document.getElementById('answerBody');
+
+  // Toolbox-aware system prompt — gives Claude context about the saved artifacts
+  const TOOLBOX_CONTEXT = `You are the personal toolbox assistant for D. Maxwell, a banking professional enrolled in The AI Banking Institute's Foundations program. They have 47 saved artifacts across these domains: Credit & lending (14), Deposit & ops (9), BSA & compliance (11), Risk & audit (5), Customer comms (4), Board & governance (4).
+
+Recent artifacts they've worked on:
+- SAR narrative — structuring pattern, account 4471 (BSA, Module 09, v4 Claude Opus, 2d ago)
+- BSA quarterly trend brief — Q1 Garner CU (BSA, Module 09, v1 Claude Sonnet, 3d ago)
+- BSA AI-use policy draft (BSA, Module 04, v2 GPT-4o, 5d ago)
+- SAR narrative — money mule, account 8821 (BSA, Module 09, v3 Claude Opus, 11d ago)
+- EFT-fraud narrative — elder exploitation, customer 1209 (BSA, Module 09, v2 Claude Opus, 14d ago)
+- Reusable prompt: SAR-grade narrative scaffold (BSA, Module 03, v5 Claude Opus, used 23×)
+- AI-assisted SAR audit log April 2026 (BSA, Module 04, v1 Gemini Pro, 3w ago)
+- Threshold-tuning memo: structuring scenarios (BSA, Module 09, v3 Claude Opus, 4w ago)
+
+Voice: editorial, dry, banker-credible. Short sentences. No exclamation points. No "supercharge / unlock / revolutionize." Prefer specifics over adjectives. When citing artifacts, name them. Keep responses under 180 words unless the user asked for length. Plain text — no markdown headings.`;
+
+  async function ask(question){
+    answer.style.display = 'block';
+    answer.scrollIntoView({ block:'nearest' });
+    const modelLabel = askModel.options[askModel.selectedIndex].text;
+    ansLab.textContent = 'Answer · ' + modelLabel;
+    ansBody.textContent = '';
+    ansBody.classList.add('typing');
+    askSend.disabled = true; askSend.textContent = 'Thinking…';
+
+    try {
+      const reply = await window.claude.complete({
+        messages: [
+          { role: 'user', content: TOOLBOX_CONTEXT + '\n\n— — —\n\nQuestion: ' + question }
+        ]
+      });
+      ansBody.classList.remove('typing');
+      // simple typewriter
+      const text = (reply || '').trim();
+      let i = 0;
+      const tick = () => {
+        if (i >= text.length){ askSend.disabled = false; askSend.textContent = 'Ask →'; return; }
+        ansBody.textContent += text.slice(i, i + 4);
+        i += 4;
+        requestAnimationFrame(tick);
+      };
+      tick();
+    } catch(err){
+      ansBody.classList.remove('typing');
+      ansBody.textContent = '(Couldn\'t reach the assistant. Try again.)';
+      askSend.disabled = false; askSend.textContent = 'Ask →';
+    }
+  }
+
+  askForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const q = askInput.value.trim();
+    if (q) ask(q);
+  });
+
+  // Suggested questions + ribbon chips
+  document.querySelectorAll('#suggestList button, .rib-chip').forEach(b => {
+    b.addEventListener('click', () => {
+      const q = b.dataset.q;
+      askInput.value = q;
+      askInput.focus();
+      ask(q);
+    });
+  });
+
+  // Drawer AI actions — fire prompts about the open artifact
+  document.querySelectorAll('.ai-act').forEach(b => {
+    b.addEventListener('click', () => {
+      const map = {
+        critique: 'Critique my SAR narrative for account 4471 (v4) the way a senior BSA officer would. Be specific. Flag anything that reads as speculation or could weaken the case.',
+        compress: 'Compress my SAR narrative for account 4471 (v4) to a 200-word version suitable for the BSA committee summary.',
+        extract: 'Extract a clean facts table from my SAR narrative for account 4471 (v4): every named amount, date range, account number, and location.',
+        riskcheck: 'Run a quick regulatory exposure check on my SAR narrative for account 4471 (v4). Flag any SR 11-7, ECOA, or BSA-language risks.'
+      };
+      drawer.classList.remove('open'); drBg.classList.remove('open');
+      askInput.value = map[b.dataset.aa];
+      ask(map[b.dataset.aa]);
+      window.scrollTo({ top:0, behavior:'smooth' });
+    });
+  });
+
+  // Iterate-go button
+  document.getElementById('iterGo').addEventListener('click', () => {
+    const sel = document.querySelector('.iter-model.sel .mname').textContent;
+    drawer.classList.remove('open'); drBg.classList.remove('open');
+    const q = `Re-run my SAR narrative for account 4471 with ${sel}. Use the same source facts. Keep past tense, third person. After the new draft, give a 3-bullet diff against v4.`;
+    askInput.value = q;
+    ask(q);
+    window.scrollTo({ top:0, behavior:'smooth' });
+  });
+</script>
+</body>
+</html>

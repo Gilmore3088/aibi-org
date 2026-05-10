@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AiBI — Product Requirements Document</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+SC:wght@400;500;600&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --parch:#f5f0e6;--parch2:#ede6d8;--linen:#f9f6f0;
+  --terra:#b5512e;--terra2:#c96a43;--terra4:#f0c4ab;
+  --cobalt:#2d4a7a;--sage:#4a6741;
+  --ink:#1e1a14;--slate:#6b6355;--dust:#9b9085;
+  --border:rgba(181,81,46,.15);--border2:rgba(30,26,20,.1);--border3:rgba(30,26,20,.06);
+  --fd:'Cormorant',Georgia,serif;--fsc:'Cormorant SC',Georgia,serif;
+  --fb:'DM Sans',system-ui,sans-serif;--fm:'DM Mono',monospace;
+}
+body{background:var(--linen);color:var(--ink);font-family:var(--fb);-webkit-font-smoothing:antialiased}
+.cover{background:var(--cobalt);padding:56px;border-bottom:3px solid rgba(255,255,255,.15)}
+.cover-role{font-family:var(--fm);font-size:10px;color:rgba(249,246,240,.35);letter-spacing:3px;margin-bottom:10px}
+.cover-title{font-family:var(--fd);font-size:clamp(36px,5vw,58px);font-weight:700;color:var(--parch);line-height:1.05;margin-bottom:8px}
+.cover-sub{font-family:var(--fd);font-size:16px;font-style:italic;color:rgba(249,246,240,.5)}
+main{max-width:1100px;margin:0 auto;padding:0 56px 80px}
+.section{padding:60px 0;border-bottom:1px solid var(--border2)}
+.section:last-child{border-bottom:none}
+.s-num{font-family:var(--fm);font-size:10px;color:var(--terra2);letter-spacing:2px;margin-bottom:8px}
+.s-title{font-family:var(--fd);font-size:clamp(24px,3vw,38px);font-weight:700;color:var(--ink);line-height:1.1;margin-bottom:10px}
+.s-title em{font-style:italic;color:var(--terra2)}
+.s-sub{font-family:var(--fd);font-size:14px;font-weight:300;color:var(--slate);line-height:1.8;font-style:italic;max-width:640px;margin-bottom:28px}
+.rule{width:40px;height:1px;background:var(--terra);margin-bottom:18px;display:block}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:20px}
+.card{background:var(--parch2);border:1px solid var(--border);border-radius:3px;padding:22px;margin-bottom:16px}
+.card-lbl{font-family:var(--fsc);font-size:9px;letter-spacing:2.5px;color:var(--terra);margin-bottom:10px}
+.body{font-size:13px;color:var(--slate);line-height:1.7}
+.body strong{color:var(--ink);font-weight:600}
+
+/* TABLE */
+.t{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:20px}
+.t th{font-family:var(--fsc);font-size:9px;letter-spacing:2px;color:var(--terra);text-align:left;padding:9px 13px;border-bottom:1px solid var(--border);background:var(--parch2)}
+.t td{padding:11px 13px;border-bottom:1px solid var(--border3);color:var(--ink);line-height:1.5;vertical-align:top}
+.t tr:last-child td{border-bottom:none}
+.mono{font-family:var(--fm);font-size:11px}
+
+/* USER FLOW */
+.flow{display:flex;align-items:center;gap:0;margin-bottom:20px;overflow-x:auto;padding-bottom:4px}
+.flow-step{background:var(--parch2);border:1px solid var(--border);border-radius:3px;padding:14px 16px;min-width:140px;flex-shrink:0}
+.flow-step-num{font-family:var(--fm);font-size:9px;color:var(--terra2);letter-spacing:1px;margin-bottom:5px}
+.flow-step-name{font-size:12px;font-weight:600;color:var(--ink);margin-bottom:4px;line-height:1.3}
+.flow-step-desc{font-size:10px;color:var(--dust);line-height:1.4}
+.flow-arrow{color:var(--terra);font-size:14px;padding:0 8px;flex-shrink:0}
+
+/* PRIORITY TAGS */
+.p1{font-family:var(--fm);font-size:9px;padding:2px 7px;border-radius:1px;background:rgba(181,81,46,.12);color:var(--terra)}
+.p2{font-family:var(--fm);font-size:9px;padding:2px 7px;border-radius:1px;background:rgba(45,74,122,.1);color:var(--cobalt)}
+.p3{font-family:var(--fm);font-size:9px;padding:2px 7px;border-radius:1px;background:rgba(30,26,20,.07);color:var(--slate)}
+
+/* AC */
+.ac-list{list-style:none;display:flex;flex-direction:column;gap:5px}
+.ac-list li{font-size:12px;color:var(--ink);padding:7px 12px;background:var(--parch);border-radius:2px;border-left:2px solid var(--sage);line-height:1.5}
+.ac-list li::before{content:'✓ ';color:var(--sage);font-size:11px}
+
+/* ALERT */
+.alert{padding:14px 18px;border-left:3px solid var(--terra);background:rgba(181,81,46,.05);border-radius:0 3px 3px 0;margin-bottom:18px}
+.alert-title{font-family:var(--fsc);font-size:9px;letter-spacing:2px;color:var(--terra);margin-bottom:6px}
+.alert-body{font-size:13px;color:var(--ink);line-height:1.6}
+
+@media(max-width:900px){
+  .cover,.section{padding-left:24px;padding-right:24px}
+  main{padding:0 24px 60px}
+  .two-col{grid-template-columns:1fr}
+  .flow{flex-direction:column;align-items:flex-start}
+  .flow-arrow{transform:rotate(90deg);padding:4px 0}
+}
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="cover-role">AiBI · Product Requirements Document · v1.0</div>
+  <h1 class="cover-title">The AI Banking Institute<br>Product Spec</h1>
+  <div class="cover-sub">For the Product Manager. Feature requirements, user flows, acceptance criteria, prioritization, and success metrics.</div>
+</div>
+
+<main>
+
+<!-- 01 PRODUCT OVERVIEW -->
+<section class="section">
+  <div class="s-num">01 · Product Overview</div>
+  <h2 class="s-title">What we're building<br><em>and why it matters.</em></h2>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-lbl">Product Vision</div>
+      <div class="body">A marketing and conversion website + assessment tool that (1) educates community bank leaders on AI readiness, (2) generates qualified leads via a free assessment, and (3) converts those leads into paid certifications and consulting engagements. The site IS the sales funnel.</div>
+    </div>
+    <div class="card">
+      <div class="card-lbl">Primary Success Metric</div>
+      <div class="body"><strong>Assessment completion rate → Executive Briefing conversion.</strong> Every feature prioritization decision flows from this. If a feature doesn't increase assessment completions or briefing bookings, it is not MVP.</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-lbl">Product Principles</div>
+    <div class="body">
+      <strong>1. The assessment is the product.</strong> The free assessment is not a lead form — it's a genuine value delivery that earns the email address. Every assessment result must give the user something they couldn't get elsewhere.<br><br>
+      <strong>2. Every page has one job.</strong> One primary CTA per page. No page tries to do two things at once. If a user can't tell what they're supposed to do next in 3 seconds, it's a design/copy failure.<br><br>
+      <strong>3. No friction before value.</strong> Assessment results are visible before email capture. Email is requested for the detailed report. Trust is earned before data is extracted.<br><br>
+      <strong>4. Mobile is not an afterthought.</strong> Banking executives read email on phones. The assessment must be completable on mobile in 3 minutes without friction.
+    </div>
+  </div>
+</section>
+
+<!-- 02 PAGE INVENTORY -->
+<section class="section">
+  <div class="s-num">02 · Page Inventory & Priorities</div>
+  <h2 class="s-title">Eight pages.<br><em>Four are MVP.</em></h2>
+  <table class="t">
+    <thead>
+      <tr><th>Page</th><th>URL</th><th>Primary Job</th><th>Primary CTA</th><th>Priority</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Home</strong></td><td class="mono">/</td><td>Awareness → Assessment entry</td><td>Take the Free Assessment</td><td><span class="p1">MVP</span></td></tr>
+      <tr><td><strong>Assessment</strong></td><td class="mono">/assessment</td><td>Score delivery → Email capture → Briefing book</td><td>Request Briefing (post-score)</td><td><span class="p1">MVP</span></td></tr>
+      <tr><td><strong>Services</strong></td><td class="mono">/services</td><td>Consulting engagement inquiry</td><td>Request Executive Briefing</td><td><span class="p1">MVP</span></td></tr>
+      <tr><td><strong>Certifications</strong></td><td class="mono">/certifications</td><td>AiBI-P / AiBI-L enrollment or inquiry</td><td>Enroll or Request Info</td><td><span class="p1">MVP</span></td></tr>
+      <tr><td><strong>AI Foundations ($97)</strong></td><td class="mono">/foundations</td><td>$97 course purchase</td><td>Enroll — $97</td><td><span class="p2">Phase 2</span></td></tr>
+      <tr><td><strong>Security / Pillar B</strong></td><td class="mono">/security</td><td>Guide download → Email capture</td><td>Download Free Guide</td><td><span class="p2">Phase 2</span></td></tr>
+      <tr><td><strong>About</strong></td><td class="mono">/about</td><td>Founder credibility → Trust building</td><td>Request Briefing</td><td><span class="p3">Phase 3</span></td></tr>
+      <tr><td><strong>Resources / BAI Brief</strong></td><td class="mono">/resources</td><td>Newsletter signup → List growth</td><td>Subscribe to AI Banking Brief</td><td><span class="p3">Phase 3</span></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 03 ASSESSMENT FEATURE SPEC -->
+<section class="section">
+  <div class="s-num">03 · Assessment Feature Spec — The Core Product</div>
+  <h2 class="s-title">The assessment is where<br><em>the business starts.</em></h2>
+  <p class="s-sub">This is the single most important feature in the product. It is the lead generation engine, the value delivery mechanism, and the first impression of AiBI. It must work perfectly before the site launches.</p>
+
+  <div class="alert">
+    <div class="alert-title">Critical Requirement</div>
+    <div class="alert-body">The score and basic results must be visible WITHOUT email capture. Email is requested only for the detailed personalized report. Gating the score itself will destroy conversion. The value proposition is "we tell you where you stand immediately" — if that's not true, the assessment loses its reason to exist.</div>
+  </div>
+
+  <h3 style="font-family:var(--fsc);font-size:10px;letter-spacing:2px;color:var(--terra);margin-bottom:14px">Question Spec — 8 Questions, Single Select</h3>
+  <table class="t">
+    <thead><tr><th>#</th><th>Dimension</th><th>Question Text</th><th>Score Range</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Current AI Usage</td><td>"How are your staff currently using AI tools in their daily work?"</td><td>1–4</td></tr>
+      <tr><td>2</td><td>Experimentation Culture</td><td>"How does your institution approach trying new technology tools?"</td><td>1–4</td></tr>
+      <tr><td>3</td><td>AI Literacy Level</td><td>"How would you describe your staff's current understanding of AI tools?"</td><td>1–4</td></tr>
+      <tr><td>4</td><td>Quick Win Potential</td><td>"How much manual, repetitive work exists in your current workflows?"</td><td>1–4</td></tr>
+      <tr><td>5</td><td>Leadership Buy-In</td><td>"How does your leadership team currently view AI adoption?"</td><td>1–4</td></tr>
+      <tr><td>6</td><td>Security Posture</td><td>"Does your institution currently have an AI governance framework or staff AI use guidelines?" — 55% of FIs don't yet (Gartner); low score = Pillar B entry point</td><td>1–4</td></tr>
+      <tr><td>7</td><td>Training Infrastructure</td><td>"What is your institution's capacity for delivering staff training programs?"</td><td>1–4</td></tr>
+      <tr><td>8</td><td>Builder Potential</td><td>"How much appetite do your staff have for building their own workflow solutions?"</td><td>1–4</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="font-family:var(--fsc);font-size:10px;letter-spacing:2px;color:var(--terra);margin-bottom:14px">Scoring Logic</h3>
+  <table class="t">
+    <thead><tr><th>Score Range</th><th>Tier Label</th><th>Description</th><th>Recommended Next Step</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">8–14</td><td>Starting Point</td><td>Most community FIs begin here. The tools aren't being used yet, but the opportunity is significant.</td><td>Start with AI Foundations ($97)</td></tr>
+      <tr><td class="mono">15–21</td><td>Early Stage</td><td>Some individuals are experimenting. The foundation exists. Quick wins are available now.</td><td>Request Executive Briefing</td></tr>
+      <tr><td class="mono">22–27</td><td>Building Momentum</td><td>Real progress underway. Time to standardize and measure. Process Audit ready.</td><td>Schedule Process Audit conversation</td></tr>
+      <tr><td class="mono">28–32</td><td>Ready to Scale</td><td>Strong foundation across all dimensions. Time for the Transformation Program + fCAIO.</td><td>AiBI Transformation engagement</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="font-family:var(--fsc);font-size:10px;letter-spacing:2px;color:var(--terra);margin-bottom:14px">Results Page Requirements</h3>
+  <ul class="ac-list">
+    <li>Animated score ring (0 → score, 1.5s ease animation) visible immediately on load</li>
+    <li>Tier label and one-paragraph plain-language description of what the score means</li>
+    <li>8-bar breakdown showing score per dimension (4-bar max, filled = score)</li>
+    <li>Three specific "what to do next" recommendations based on the score tier</li>
+    <li>Email gate: "Get your personalized AI roadmap emailed to you" — appears below the basic score, above the detailed breakdown</li>
+    <li>Primary CTA after email capture: "Request Free 45-min Executive Briefing" (Calendly link)</li>
+    <li>Secondary CTA for scores 8–14: "Start with AI Foundations — $97"</li>
+    <li>Score is shareable: "Copy my score link" generates a shareable URL with score embedded</li>
+  </ul>
+
+  <h3 style="font-family:var(--fsc);font-size:10px;letter-spacing:2px;color:var(--terra);margin-bottom:14px;margin-top:28px">Assessment UX Flow</h3>
+  <div class="flow">
+    <div class="flow-step"><div class="flow-step-num">Step 1</div><div class="flow-step-name">Entry</div><div class="flow-step-desc">User lands on /assessment or clicks CTA on homepage</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step"><div class="flow-step-num">Step 2</div><div class="flow-step-name">Questions</div><div class="flow-step-desc">8 single-select questions with progress bar. One question per view on mobile.</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step"><div class="flow-step-num">Step 3</div><div class="flow-step-name">Score Reveal</div><div class="flow-step-desc">Animated ring + tier label. Visible immediately. No gate.</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step"><div class="flow-step-num">Step 4</div><div class="flow-step-name">Email Gate</div><div class="flow-step-desc">"Get your detailed roadmap" — captures email before showing dimension breakdown</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step"><div class="flow-step-num">Step 5</div><div class="flow-step-name">Full Results</div><div class="flow-step-desc">Dimension breakdown + next steps + Calendly CTA</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step"><div class="flow-step-num">Step 6</div><div class="flow-step-name">Email Delivery</div><div class="flow-step-desc">Automated email: score + personalized 3-step recommendations + briefing link</div></div>
+  </div>
+</section>
+
+<!-- 04 KEY USER FLOWS -->
+<section class="section">
+  <div class="s-num">04 · Key User Flows</div>
+  <h2 class="s-title">Five journeys that<br><em>drive revenue.</em></h2>
+
+  <div class="card" style="margin-bottom:20px">
+    <div class="card-lbl">Flow 1 · Assessment → Executive Briefing (Primary Conversion)</div>
+    <div class="body">
+      Homepage → CTA click → /assessment → 8 questions → score reveal → email capture → full results → "Request Free Briefing" → Calendly → briefing booked → HubSpot contact created → automated follow-up sequence triggered
+    </div>
+  </div>
+  <div class="card" style="margin-bottom:20px">
+    <div class="card-lbl">Flow 2 · Assessment → AI Foundations Purchase ($97)</div>
+    <div class="body">
+      Assessment score 8–14 → results page → "Start with AI Foundations — $97" CTA → /foundations → course overview → Stripe checkout → payment confirmed → LMS access provisioned → welcome email → AiBI-Foundations certificate on completion
+    </div>
+  </div>
+  <div class="card" style="margin-bottom:20px">
+    <div class="card-lbl">Flow 3 · Direct Certifications Interest</div>
+    <div class="body">
+      /certifications → AiBI-P or AiBI-L selection → program details → individual purchase ($295 or $2,800) OR "Request Info" form for group/institutional pricing → HubSpot contact → follow-up sequence
+    </div>
+  </div>
+  <div class="card" style="margin-bottom:20px">
+    <div class="card-lbl">Flow 4 · LinkedIn / BAI Brief → Assessment</div>
+    <div class="body">
+      LinkedIn post with assessment link → /assessment → complete → score → email capture → briefing booking. This is the social-to-conversion flow. Assessment URL must work flawlessly on mobile.
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-lbl">Flow 5 · Conference Follow-Up Email → Assessment</div>
+    <div class="body">
+      Post-conference email with assessment link → /assessment → score → email captured → automated sequence: Day 0 (score email) → Day 3 (use case email) → Day 7 (briefing offer) → Day 14 (final follow-up). HubSpot handles the sequence.
+    </div>
+  </div>
+</section>
+
+<!-- 05 INTEGRATIONS -->
+<section class="section">
+  <div class="s-num">05 · Integration Requirements</div>
+  <h2 class="s-title">The systems that<br><em>make the funnel work.</em></h2>
+  <table class="t">
+    <thead><tr><th>System</th><th>Purpose</th><th>Trigger</th><th>Required For MVP</th></tr></thead>
+    <tbody>
+      <tr><td><strong>ConvertKit / Kit</strong></td><td>Email list management, automated sequences</td><td>Assessment email capture, $97 purchase, briefing booking</td><td>Yes</td></tr>
+      <tr><td><strong>HubSpot (free)</strong></td><td>CRM — contact tracking, deal pipeline, follow-up tasks</td><td>Every form submission and purchase creates a contact</td><td>Yes</td></tr>
+      <tr><td><strong>Calendly</strong></td><td>Executive Briefing booking</td><td>CTA on assessment results page, services page, home CTA</td><td>Yes</td></tr>
+      <tr><td><strong>Stripe</strong></td><td>Payment processing for $97 and $295 products</td><td>Checkout pages for AI Foundations and AiBI-P</td><td>Yes — Phase 2</td></tr>
+      <tr><td><strong>Kajabi or Teachable</strong></td><td>Course delivery and progress tracking for AI Foundations and AiBI-P</td><td>Post-purchase provisioning</td><td>Phase 2</td></tr>
+      <tr><td><strong>Accredible</strong></td><td>Certificate generation with unique IDs</td><td>Course completion triggers certificate PDF generation</td><td>Phase 2</td></tr>
+      <tr><td><strong>Plausible Analytics</strong></td><td>Privacy-friendly site analytics — assessment completion rate, funnel tracking</td><td>Page load and conversion events</td><td>Yes</td></tr>
+    </tbody>
+  </table>
+
+  <div class="card">
+    <div class="card-lbl">HubSpot Contact Properties to Track</div>
+    <div class="body">
+      Assessment Score (number) · Score Tier (dropdown: Starting Point / Early Stage / Building Momentum / Ready to Scale) · Institution Name (text) · Asset Size (dropdown: &lt;$100M / $100–$500M / $500M–$1B / $1B+) · Lead Source (assessment / referral / LinkedIn / conference) · Last Engagement Type · Briefing Booked (Y/N) · Products Purchased (multi-select)
+    </div>
+  </div>
+</section>
+
+<!-- 06 SUCCESS METRICS -->
+<section class="section">
+  <div class="s-num">06 · Success Metrics</div>
+  <h2 class="s-title">What we measure<br><em>to know it's working.</em></h2>
+  <table class="t">
+    <thead><tr><th>Metric</th><th>Definition</th><th>Target (Month 3)</th><th>Target (Month 6)</th></tr></thead>
+    <tbody>
+      <tr><td>Assessment completion rate</td><td>% of users who start the assessment and complete all 8 questions</td><td>70%+</td><td>75%+</td></tr>
+      <tr><td>Email capture rate</td><td>% of completed assessments that submit email for detailed report</td><td>45%+</td><td>55%+</td></tr>
+      <tr><td>Assessment → Briefing conversion</td><td>% of email-captured users who book an Executive Briefing</td><td>8–12%</td><td>12–18%</td></tr>
+      <tr><td>Score 8–14 (Starting Point) rate</td><td>% of assessments landing in lowest tier — indicates market is mostly early stage (expected high initially)</td><td>Track only</td><td>&lt;40% (as market matures)</td></tr>
+      <tr><td>Briefing → Engagement conversion</td><td>% of briefings that convert to a paid engagement within 60 days</td><td>25%+</td><td>30%+</td></tr>
+      <tr><td>$97 conversion rate</td><td>% of Score 8–14 results that click through to AI Foundations purchase</td><td>5%+</td><td>8%+</td></tr>
+      <tr><td>Mobile assessment completion</td><td>% completion rate on mobile devices (must be ≥ desktop rate)</td><td>Match desktop</td><td>Match desktop</td></tr>
+      <tr><td>Email open rate (AI Banking Brief)</td><td>Monthly newsletter open rate</td><td>45%+</td><td>48%+</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 07 LAUNCH CHECKLIST -->
+<section class="section">
+  <div class="s-num">07 · MVP Launch Checklist</div>
+  <h2 class="s-title">Minimum viable<br><em>before the conference email goes out.</em></h2>
+  <p class="s-sub">The conference follow-up email cannot be sent until every item below is checked. This is the hard gate on launch.</p>
+  <ul class="ac-list">
+    <li>aibankinginstitute.com and aibankinginstitute.org domains registered and DNS configured</li>
+    <li>Home page live and rendering correctly on desktop and mobile</li>
+    <li>Assessment tool live at /assessment — all 8 questions functional, scoring logic correct</li>
+    <li>Results page rendering with animated ring, score, tier label, and next steps</li>
+    <li>Email capture form on results page connected to ConvertKit</li>
+    <li>ConvertKit automated welcome email sequence active (Day 0, Day 3, Day 7)</li>
+    <li>Calendly "Executive Briefing" link live and tested on mobile</li>
+    <li>HubSpot integration: every email capture creates a contact with score properties</li>
+    <li>Plausible analytics installed and tracking assessment completion events</li>
+    <li>SSL certificate active (HTTPS everywhere)</li>
+    <li>404 page exists and redirects gracefully</li>
+    <li>Site tested on iPhone (Safari), Android (Chrome), and desktop (Chrome, Safari, Firefox)</li>
+    <li>Assessment completed end-to-end in under 3 minutes on mobile</li>
+    <li>All sourced statistics on site have citations (FDIC, Gartner via Jack Henry, AIEOG) — no unsourced data claims live on launch day</li>
+    <li>The word "FFIEC-aware" does not appear anywhere on the site</li>
+  </ul>
+</section>
+
+</main>
+</body>
+</html>

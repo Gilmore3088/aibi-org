@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The AI Banking Institute — Turning Bankers into Builders</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* Ledger palette — applied from Design System.html */
+    --bg:#ECE9DF;
+    --paper:#F4F1E7;
+    --paper-2:#EDE8DA;
+    --parch:#E4E0D2;
+    --parch-dark:#D9D4C2;
+    --tape:#F1E9D0;
+    --linen:#F4F1E7;
+    --ink:#0E1B2D;
+    --ink-2:#1F2A3F;
+    --slate:#5C6B82;
+    --muted:#5C6B82;
+    --soft:#8C95A8;
+    --accent:#B5862A;       /* Gold */
+    --accent-2:#1E3A5F;     /* Navy */
+    --weak:#8E3B2A;         /* Oxblood */
+    /* Back-compat aliases — terra now maps to gold accent */
+    --terra:#B5862A;
+    --terra-2:#8E6212;
+    --terra-soft:#EFE5C2;
+    --rule:rgba(14,27,45,0.10);
+    --rule-strong:rgba(14,27,45,0.22);
+
+    --serif:'Newsreader', 'EB Garamond', Georgia, serif;
+    --sans:'Geist', -apple-system, system-ui, sans-serif;
+    --mono:'JetBrains Mono', ui-monospace, monospace;
+
+    --maxw:1240px;
+  }
+
+  *{ box-sizing:border-box }
+  html,body{ margin:0; padding:0 }
+  body{ background:var(--paper); color:var(--ink); font-family:var(--sans); font-size:15px; line-height:1.55; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility }
+  a{ color:inherit; text-decoration:none }
+  img{ display:block; max-width:100% }
+  button{ font:inherit; cursor:pointer }
+  hr{ border:none; border-top:1px solid var(--rule); margin:0 }
+
+  /* ---------- Layout shell ---------- */
+  .container{ max-width:var(--maxw); margin:0 auto; padding:0 32px }
+  section{ position:relative }
+
+  /* ---------- Section labels (mono small-caps, like footer "START HERE") ---------- */
+  .eyebrow{ font-family:var(--mono); font-size:11px; letter-spacing:0.22em; text-transform:uppercase; color:var(--muted); font-weight:500 }
+
+  /* ---------- Buttons ---------- */
+  .btn{ display:inline-flex; align-items:center; gap:10px; padding:14px 22px; border:1px solid transparent; font-family:var(--mono); font-size:11px; font-weight:600; letter-spacing:0.16em; text-transform:uppercase; border-radius:1px; transition:transform 0.15s, background 0.15s, color 0.15s; line-height:1 }
+  .btn-primary{ background:var(--terra); color:#FAF7EE; border-color:var(--terra) }
+  .btn-primary:hover{ background:var(--terra-2); border-color:var(--terra-2) }
+  .btn-ghost{ background:transparent; color:var(--ink); border-color:var(--ink) }
+  .btn-ghost:hover{ background:var(--ink); color:var(--paper) }
+  .btn .arrow{ font-family:var(--serif); font-style:normal; font-weight:400; font-size:14px; letter-spacing:0; transform:translateY(-0.5px) }
+
+  /* Inline editorial link (italic with arrow) */
+  .ilink{ font-family:var(--serif); font-style:italic; font-size:18px; color:var(--terra); border-bottom:1px solid var(--terra); padding-bottom:2px; transition:color 0.15s, border-color 0.15s }
+  .ilink:hover{ color:var(--terra-2); border-color:var(--terra-2) }
+
+  /* ---------- NAV ---------- */
+  .nav{ position:sticky; top:0; z-index:30; background:rgba(246,243,234,0.92); backdrop-filter:blur(8px); border-bottom:1px solid var(--rule) }
+  .nav-inner{ max-width:var(--maxw); margin:0 auto; padding:18px 32px; display:flex; align-items:center; justify-content:space-between; gap:24px }
+  .nav-mark{ display:flex; flex-direction:column; gap:0; color:var(--ink); line-height:1 }
+  .nav-mark .l1, .nav-mark .l2{ font-family:var(--sans); font-weight:700; font-size:15px; letter-spacing:-0.005em; text-transform:uppercase; line-height:1 }
+  .nav-mark .l1{ color:var(--ink) }
+  .nav-mark .l2{ color:var(--soft); margin-top:1px }
+  .nav-links{ display:flex; align-items:center; gap:32px }
+  .nav-link{ font-family:var(--mono); font-size:11px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:var(--ink-2); transition:color 0.15s }
+  .nav-link:hover{ color:var(--terra) }
+  .nav-cta{ padding:13px 22px; font-size:11px; letter-spacing:0.18em }
+  .nav-signin{ color:var(--ink-2) }
+
+  /* ---------- HERO (clean, generous, single-column) ---------- */
+  .hero{ padding:72px 0 88px }
+  .hero .eyebrow{ display:inline-block; color:var(--terra); font-weight:600; margin-bottom:24px }
+  .hero h1{ font-family:var(--serif); font-weight:500; font-size:clamp(56px, 7.4vw, 108px); line-height:0.98; letter-spacing:-0.035em; margin:0 0 28px; max-width:14ch; color:var(--ink) }
+  .hero h1 em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .hero-lede{ font-family:var(--serif); font-style:italic; font-size:22px; line-height:1.4; color:var(--ink-2); max-width:48ch; margin:0 0 32px; font-weight:400 }
+  .hero-ctas{ display:flex; flex-wrap:wrap; gap:28px; align-items:center }
+  .hero-ctas .ilink-curric{ font-family:var(--sans); font-weight:500; font-size:16px; color:var(--terra); border-bottom:1.5px solid var(--terra); padding-bottom:3px }
+  .hero-ctas .ilink-curric:hover{ color:var(--terra-2); border-color:var(--terra-2) }
+
+  /* ---------- TWO-UP PILLARS (giant serif, side-by-side cards) ---------- */
+  .pillars{ padding:0; border-top:1px solid var(--rule) }
+  .pillars-grid{ display:grid; grid-template-columns:1fr 1fr; gap:0 }
+  .pillar{ padding:64px 64px 88px; position:relative; display:flex; flex-direction:column; justify-content:flex-start }
+  .pillar.pillar-1{ background:var(--paper) }
+  .pillar.pillar-2{ background:var(--paper-2); border-left:1px solid var(--rule) }
+  .pillar h3{ font-family:var(--serif); font-weight:500; font-size:clamp(56px, 5.4vw, 84px); line-height:0.98; letter-spacing:-0.03em; margin:0 0 56px; max-width:11ch; color:var(--ink) }
+  .pillar h3 em{ font-style:italic; color:var(--terra); font-weight:500; display:block }
+  .pillar p.lede{ font-family:var(--serif); font-size:21px; line-height:1.45; color:var(--ink-2); max-width:36ch; margin:0 0 56px }
+  .pillar a.cta{ font-family:var(--sans); font-weight:500; font-size:17px; color:var(--terra); border-bottom:1.5px solid var(--terra); padding-bottom:4px; align-self:flex-start; transition:color 0.15s, border-color 0.15s }
+  .pillar a.cta:hover{ color:var(--terra-2); border-color:var(--terra-2) }
+
+  /* ---------- ROI CALC ---------- */
+  .roi{ padding:96px 0 96px; background:var(--parch); border-top:1px solid var(--rule); border-bottom:1px solid var(--rule) }
+  .roi-head{ margin-bottom:48px; display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:end }
+  .roi-head h2{ font-family:var(--serif); font-weight:500; font-size:64px; line-height:0.98; letter-spacing:-0.03em; margin:0; color:var(--ink) }
+  .roi-head h2 em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .roi-head .desc{ font-family:var(--serif); font-size:18px; line-height:1.5; color:var(--ink-2); margin:0; max-width:46ch }
+  .roi-head .desc em{ font-style:italic }
+
+  .roi-grid{ display:grid; grid-template-columns:1fr 1.2fr; gap:48px; align-items:start }
+
+  .roi-inputs{ background:var(--paper); border:1px solid var(--rule-strong); padding:32px; }
+  .roi-inputs .group{ padding:20px 0; border-bottom:1px solid var(--rule) }
+  .roi-inputs .group:first-child{ padding-top:0 }
+  .roi-inputs .group:last-child{ border-bottom:none; padding-bottom:0 }
+  .roi-inputs label{ display:block; font-family:var(--mono); font-size:10.5px; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); margin-bottom:12px; font-weight:500 }
+  .roi-input-row{ display:flex; align-items:baseline; justify-content:space-between; gap:16px; margin-bottom:12px }
+  .roi-val{ font-family:var(--serif); font-style:italic; font-weight:500; font-size:28px; color:var(--ink); letter-spacing:-0.015em }
+  .roi-input-row input[type="range"]{
+    -webkit-appearance:none; appearance:none; width:100%; background:transparent; height:24px;
+  }
+  .roi-input-row input[type="range"]::-webkit-slider-runnable-track{
+    height:2px; background:var(--accent); border-radius:0;
+  }
+  .roi-input-row input[type="range"]::-webkit-slider-thumb{
+    -webkit-appearance:none; appearance:none; width:16px; height:16px; border-radius:50%; background:var(--accent); margin-top:-7px; border:2px solid var(--paper); box-shadow:0 0 0 1px var(--accent); cursor:grab;
+  }
+  .roi-input-row input[type="range"]:active::-webkit-slider-thumb{ cursor:grabbing }
+  .roi-input-row input[type="range"]::-moz-range-track{ height:2px; background:var(--accent); border:none; border-radius:0 }
+  .roi-input-row input[type="range"]::-moz-range-thumb{ width:16px; height:16px; border-radius:50%; background:var(--accent); border:2px solid var(--paper); box-shadow:0 0 0 1px var(--accent); cursor:grab }
+  .roi-range-row{ width:100% }
+
+  .roi-input-paired{ display:grid; grid-template-columns:1fr 1fr; gap:24px }
+  .roi-input-paired .sub{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.16em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; font-weight:500 }
+  .roi-input-paired .roi-val{ font-size:22px }
+
+  /* Outputs */
+  .roi-outputs{ display:flex; flex-direction:column; gap:0 }
+  .roi-scenarios{ display:grid; grid-template-columns:repeat(3,1fr); gap:0; border:1px solid var(--rule-strong) }
+  .roi-scn{ padding:28px 24px; border-right:1px solid var(--rule); position:relative }
+  .roi-scn:last-child{ border-right:none }
+  .roi-scn.mid{ background:var(--terra); color:var(--paper) }
+  .roi-scn.mid .roi-scn-lab{ color:rgba(250,247,238,0.7) }
+  .roi-scn.mid .roi-scn-val{ color:var(--paper) }
+  .roi-scn.mid .roi-scn-sub{ color:rgba(250,247,238,0.65) }
+  .roi-scn-lab{ font-family:var(--mono); font-size:10px; letter-spacing:0.22em; text-transform:uppercase; color:var(--muted); margin-bottom:14px; font-weight:600 }
+  .roi-scn-val{ font-family:var(--serif); font-weight:500; font-size:34px; letter-spacing:-0.02em; line-height:1; color:var(--ink) }
+  .roi-scn-sub{ font-family:var(--mono); font-size:10px; color:var(--muted); margin-top:8px; letter-spacing:0.04em }
+
+  .roi-stats{ display:grid; grid-template-columns:repeat(3,1fr); gap:0; border:1px solid var(--rule-strong); border-top:none; background:var(--paper) }
+  .roi-stat{ padding:22px 24px; border-right:1px solid var(--rule) }
+  .roi-stat:last-child{ border-right:none }
+  .roi-stat-val{ font-family:var(--serif); font-weight:500; font-size:24px; letter-spacing:-0.015em; color:var(--ink); line-height:1 }
+  .roi-stat-lab{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); margin-top:8px; font-weight:500; line-height:1.4 }
+
+  .roi-cta{ margin-top:24px; padding:32px; background:var(--ink); color:var(--paper); display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap }
+  .roi-cta-q{ font-family:var(--serif); font-style:italic; font-weight:400; font-size:24px; line-height:1.25; max-width:30ch; margin:0 }
+  .roi-cta-q b{ font-style:normal; font-weight:600; color:#E5C29A }
+  .roi-cta-meta{ font-family:var(--mono); font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:rgba(250,247,238,0.55); display:block; margin-bottom:14px }
+
+  /* ---------- TRUST / VOICE STRIP ---------- */
+  .trust{ padding:80px 0 88px }
+  .trust-grid{ display:grid; grid-template-columns:1fr 2fr; gap:64px; align-items:start }
+  .trust .eyebrow{ display:block; margin-bottom:18px }
+  .trust h2{ font-family:var(--serif); font-weight:500; font-size:36px; line-height:1.1; letter-spacing:-0.02em; margin:0 0 20px; color:var(--ink) }
+  .trust h2 em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .trust .lead{ font-family:var(--serif); font-size:18px; color:var(--ink-2); line-height:1.55; margin:0 }
+  .trust-cols{ display:grid; grid-template-columns:1fr 1fr; gap:48px }
+  .trust-col h4{ font-family:var(--mono); font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:var(--terra); margin:0 0 14px; font-weight:600 }
+  .trust-col p{ font-size:14.5px; line-height:1.6; color:var(--ink-2); margin:0 0 18px }
+  .trust-col p:last-child{ margin-bottom:0 }
+  .trust-col p strong{ color:var(--ink); font-weight:600 }
+
+  /* ---------- FAQ ---------- */
+  .faq{ padding:80px 0 96px; border-top:1px solid var(--rule) }
+  .faq-head{ display:flex; align-items:last baseline; gap:32px; margin-bottom:32px }
+  .faq-head h2{ font-family:var(--serif); font-weight:500; font-size:42px; line-height:1.05; letter-spacing:-0.025em; margin:0; color:var(--ink) }
+  .faq-head h2 em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .faq-head p{ flex:1; font-family:var(--serif); font-style:italic; font-size:17px; color:var(--ink-2); margin-left:auto; text-align:right; max-width:42ch }
+  .faq-list{ border-top:1px solid var(--rule-strong) }
+  .faq-item{ border-bottom:1px solid var(--rule); padding:24px 0; cursor:pointer; display:grid; grid-template-columns:48px 1fr auto; gap:16px; align-items:start; transition:background 0.15s }
+  .faq-item:hover{ background:rgba(27,24,20,0.015) }
+  .faq-num{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); padding-top:6px; font-weight:500 }
+  .faq-q{ font-family:var(--serif); font-weight:500; font-size:22px; line-height:1.3; letter-spacing:-0.015em; color:var(--ink); margin:0 }
+  .faq-q em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .faq-toggle{ font-family:var(--serif); font-size:24px; color:var(--muted); padding-top:2px; font-weight:300; line-height:1; transition:transform 0.2s }
+  .faq-item.open .faq-toggle{ transform:rotate(45deg); color:var(--terra) }
+  .faq-a{ grid-column:2; font-family:var(--serif); font-size:17px; line-height:1.55; color:var(--ink-2); max-width:60ch; margin:14px 0 0; display:none }
+  .faq-item.open .faq-a{ display:block }
+  .faq-a em{ font-style:italic }
+
+  /* ---------- FOOTER (matches live site) ---------- */
+  footer{ background:var(--parch); padding:72px 0 28px; border-top:1px solid var(--rule) }
+  .foot-grid{ display:grid; grid-template-columns:1.4fr 1fr 1fr 1.2fr; gap:48px; padding-bottom:48px }
+  .foot-brand .mark{ font-family:var(--serif); font-weight:500; font-size:30px; line-height:1.05; letter-spacing:-0.015em; color:var(--ink); margin:0 }
+  .foot-brand .tag{ font-family:var(--serif); font-style:italic; font-weight:500; font-size:18px; color:var(--terra); margin:6px 0 22px; letter-spacing:0 }
+  .foot-brand p{ font-family:var(--serif); font-size:15px; line-height:1.5; color:var(--ink-2); max-width:30ch; margin:0 }
+
+  .foot-col h5{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.22em; text-transform:uppercase; color:var(--muted); margin:0 0 22px; font-weight:600 }
+  .foot-col ul{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:14px }
+  .foot-col a{ font-family:var(--serif); font-size:18px; color:var(--ink); transition:color 0.15s }
+  .foot-col a:hover{ color:var(--terra) }
+
+  .foot-sub{ background:var(--paper-2); padding:28px; }
+  .foot-sub .eyebrow{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.22em; text-transform:uppercase; color:var(--muted); display:block; margin-bottom:14px; font-weight:600 }
+  .foot-sub h4{ font-family:var(--serif); font-weight:500; font-size:24px; letter-spacing:-0.015em; margin:0 0 8px; color:var(--ink) }
+  .foot-sub p{ font-family:var(--sans); font-size:14px; color:var(--ink-2); margin:0 0 18px; line-height:1.5 }
+  .foot-sub-form{ display:grid; grid-template-columns:1fr auto; gap:0; border:1px solid var(--rule-strong); background:var(--paper) }
+  .foot-sub-form input{ border:none; background:transparent; padding:14px 16px; font-family:var(--sans); font-size:13.5px; color:var(--ink); outline:none }
+  .foot-sub-form input::placeholder{ color:var(--muted) }
+  .foot-sub-form button{ background:var(--terra); color:var(--paper); border:none; padding:14px 22px; font-family:var(--mono); font-size:11px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; cursor:pointer; transition:background 0.15s }
+  .foot-sub-form button:hover{ background:var(--terra-2) }
+
+  .foot-bot{ padding-top:24px; border-top:1px solid var(--rule); display:flex; justify-content:space-between; align-items:center; gap:24px; flex-wrap:wrap }
+  .foot-bot .copy{ font-family:var(--sans); font-size:13px; color:var(--slate) }
+  .foot-bot .links{ display:flex; gap:28px }
+  .foot-bot .links a{ font-family:var(--sans); font-size:13px; color:var(--slate); transition:color 0.15s }
+  .foot-bot .links a:hover{ color:var(--terra) }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width:1024px){
+    .hero-grid{ grid-template-columns:1fr; gap:48px }
+    .hero-side{ border-left:none; border-top:1px solid var(--rule-strong); padding:24px 0 0 }
+    .pillars-grid{ grid-template-columns:1fr }
+    .pillar{ border-right:none; border-bottom:1px solid var(--rule) }
+    .pillar:last-child{ border-bottom:none }
+    .roi-grid{ grid-template-columns:1fr }
+    .roi-head{ grid-template-columns:1fr }
+    .roi-head .desc{ max-width:none }
+    .trust-grid{ grid-template-columns:1fr }
+    .foot-grid{ grid-template-columns:1fr 1fr }
+    .nav-links .nav-link:not(.nav-cta){ display:none }
+  }
+  @media (max-width:640px){
+    .container{ padding:0 20px }
+    .nav-mark .l1, .nav-mark .l2{ font-size:13px }
+    .pillars-head, .faq-head{ flex-direction:column; align-items:flex-start; gap:18px }
+    .pillars-head p, .faq-head p{ text-align:left; margin-left:0 }
+    .pillar-stats{ grid-template-columns:1fr }
+    .roi-scenarios, .roi-stats{ grid-template-columns:1fr }
+    .roi-scn, .roi-stat{ border-right:none; border-bottom:1px solid var(--rule) }
+    .roi-scn:last-child, .roi-stat:last-child{ border-bottom:none }
+    .trust-cols{ grid-template-columns:1fr }
+    .foot-grid{ grid-template-columns:1fr }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header class="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-mark" aria-label="The AI Banking Institute">
+      <span class="l1">The AI Banking</span>
+      <span class="l2">Institute</span>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#pillars" class="nav-link">Education</a>
+      <a href="#" class="nav-link">For Institutions</a>
+      <a href="#" class="nav-link">Research</a>
+      <a href="#" class="nav-link">About</a>
+      <a href="#assessment" class="btn btn-primary nav-cta">Take Assessment</a>
+      <a href="#" class="nav-link nav-signin">Sign in</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="container">
+    <span class="eyebrow">An institute for community banks and credit unions</span>
+    <h1>Turning Bankers into <em>Builders.</em></h1>
+    <p class="hero-lede">Independent AI assessment and education for community banks and credit unions.</p>
+    <div class="hero-ctas">
+      <a href="#assessment" class="btn btn-primary">Take the assessment</a>
+      <a href="#pillars" class="ilink-curric">View the curriculum</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PILLARS ============ -->
+<section class="pillars" id="pillars">
+  <div class="pillars-grid">
+    <article class="pillar pillar-1" id="assessment">
+      <h3>AI <em>Readiness</em> Assessment</h3>
+      <p class="lede">Twelve questions, three minutes. A score, a tier, and a tailored starter artifact you can take to your team this week.</p>
+      <a href="#" class="cta">Begin the assessment →</a>
+    </article>
+    <article class="pillar pillar-2" id="practitioner">
+      <h3>AiBI-<em>Foundations</em> Certification</h3>
+      <p class="lede">Twelve self-paced modules. The community-banking AI proficiency standard, scored on reviewed work — not multiple-choice quizzes.</p>
+      <a href="#" class="cta">View the curriculum →</a>
+    </article>
+  </div>
+</section>
+
+<!-- ============ ROI CALCULATOR ============ -->
+<section class="roi" id="roi">
+  <div class="container">
+    <header class="roi-head">
+      <div>
+        <span class="eyebrow">Run the numbers</span>
+        <h2>Run your <em>own numbers.</em></h2>
+      </div>
+      <p class="desc">Plug in your headcount and loaded cost. We'll show you what's recoverable across <em>conservative, mid,</em> and <em>optimistic</em> AI-leverage scenarios. No model assumptions hidden — drag the sliders and watch them move.</p>
+    </header>
+
+    <div class="roi-grid">
+      <!-- Inputs -->
+      <div class="roi-inputs">
+        <div class="group">
+          <label for="ftes">Full-time employees</label>
+          <div class="roi-input-row">
+            <span class="roi-val" id="ftesVal">50</span>
+          </div>
+          <div class="roi-range-row"><input type="range" id="ftes" min="5" max="500" step="1" value="50" /></div>
+        </div>
+
+        <div class="group">
+          <label for="cost">Loaded cost per FTE</label>
+          <div class="roi-input-row">
+            <span class="roi-val" id="costVal">$85,000</span>
+          </div>
+          <div class="roi-range-row"><input type="range" id="cost" min="40000" max="180000" step="1000" value="85000" /></div>
+        </div>
+
+        <div class="group">
+          <label>Hours / week recovered</label>
+          <div class="roi-input-row">
+            <span class="roi-val" id="midVal">3.5 hrs</span>
+          </div>
+          <div class="roi-range-row"><input type="range" id="mid" min="1" max="10" step="0.25" value="3.5" /></div>
+          <p style="font-family:var(--mono); font-size:9.5px; letter-spacing:0.16em; text-transform:uppercase; color:var(--muted); margin:10px 0 0">Low &amp; high derived at ±40% of midpoint</p>
+        </div>
+      </div>
+
+      <!-- Outputs -->
+      <div class="roi-outputs">
+        <div class="roi-scenarios">
+          <div class="roi-scn">
+            <div class="roi-scn-lab">Conservative</div>
+            <div class="roi-scn-val" id="scnLow">$204,327</div>
+            <div class="roi-scn-sub">@ low hours saved</div>
+          </div>
+          <div class="roi-scn mid">
+            <div class="roi-scn-lab">Mid case</div>
+            <div class="roi-scn-val" id="scnMid">$357,572</div>
+            <div class="roi-scn-sub">expected outcome</div>
+          </div>
+          <div class="roi-scn">
+            <div class="roi-scn-lab">Optimistic</div>
+            <div class="roi-scn-val" id="scnHigh">$510,817</div>
+            <div class="roi-scn-sub">@ high hours saved</div>
+          </div>
+        </div>
+        <div class="roi-stats">
+          <div class="roi-stat">
+            <div class="roi-stat-val" id="hoursYr">8,750</div>
+            <div class="roi-stat-lab">Hours / year recaptured</div>
+          </div>
+          <div class="roi-stat">
+            <div class="roi-stat-val" id="perWeek">~3.5 hrs</div>
+            <div class="roi-stat-lab">Per banker, per week</div>
+          </div>
+          <div class="roi-stat">
+            <div class="roi-stat-val" id="pctPayroll">~8.4%</div>
+            <div class="roi-stat-lab">Of payroll</div>
+          </div>
+        </div>
+
+        <div class="roi-cta">
+          <p class="roi-cta-q"><span class="roi-cta-meta">Conservative estimate</span>What if we could save you <b id="ctaAmount">$204,327</b>?</p>
+          <a href="#" class="btn btn-primary" style="background:var(--terra); border-color:var(--terra)">Start your free assessment <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <p class="mark">The AI Banking Institute</p>
+        <p class="tag">Turning Bankers into Builders</p>
+        <p>An education company for community banks and credit unions.</p>
+      </div>
+      <div class="foot-col">
+        <h5>Start here</h5>
+        <ul>
+          <li><a href="#assessment">Take the assessment</a></li>
+          <li><a href="#pillars">Education</a></li>
+          <li><a href="#">For institutions</a></li>
+          <li><a href="#">Research</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h5>Institute</h5>
+        <ul>
+          <li><a href="FAQ.html">FAQ</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Security &amp; Governance</a></li>
+          <li><a href="#">Verify a credential</a></li>
+        </ul>
+      </div>
+      <div class="foot-sub">
+        <span class="eyebrow">Subscribe</span>
+        <h4>The AI Banking Brief.</h4>
+        <p>Fortnightly research, no marketing.</p>
+        <form class="foot-sub-form" onsubmit="event.preventDefault(); this.querySelector('button').textContent='Thanks ✓'; setTimeout(()=>this.querySelector('button').textContent='Subscribe', 2000)">
+          <input type="email" placeholder="you@yourbank.com" aria-label="Email" />
+          <button type="submit">Subscribe</button>
+        </form>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <div class="copy">© 2026 The AI Banking Institute · aibankinginstitute.com</div>
+      <div class="links">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">AI Use Disclaimer</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ---------- ROI calculator ----------
+(function(){
+  const $ = id => document.getElementById(id);
+  const fmt = n => '$' + Math.round(n).toLocaleString('en-US');
+  const fmtHr = n => Math.round(n).toLocaleString('en-US');
+
+  const ftes = $('ftes'), cost = $('cost'), mid = $('mid');
+  const ftesVal = $('ftesVal'), costVal = $('costVal'), midVal = $('midVal');
+  const scnLow = $('scnLow'), scnMid = $('scnMid'), scnHigh = $('scnHigh');
+  const hoursYr = $('hoursYr'), perWeek = $('perWeek'), pctPayroll = $('pctPayroll');
+  const ctaAmount = $('ctaAmount');
+
+  function recalc(){
+    const f = +ftes.value, c = +cost.value, m = +mid.value;
+    const l = m * 0.6, h = m * 1.4;
+    const hourlyRate = c / 2080;
+    const weeksPerYr = 50;
+    const lowSav = f * l * weeksPerYr * hourlyRate;
+    const highSav = f * h * weeksPerYr * hourlyRate;
+    const midSav = (lowSav + highSav) / 2;
+    const midHrsYr = f * m * weeksPerYr;
+    const totalPayroll = f * c;
+    const pct = (midSav / totalPayroll) * 100;
+
+    ftesVal.textContent = f;
+    costVal.textContent = fmt(c);
+    midVal.textContent = m + ' hrs';
+    scnLow.textContent = fmt(lowSav);
+    scnMid.textContent = fmt(midSav);
+    scnHigh.textContent = fmt(highSav);
+    hoursYr.textContent = fmtHr(midHrsYr);
+    perWeek.textContent = '~' + m.toFixed(1) + ' hrs';
+    pctPayroll.textContent = '~' + pct.toFixed(1) + '%';
+    ctaAmount.textContent = fmt(lowSav);
+  }
+  [ftes, cost, mid].forEach(el => el.addEventListener('input', recalc));
+  recalc();
+})();
+
+// ---------- FAQ accordion ----------
+document.querySelectorAll('.faq-item').forEach(item => {
+  item.addEventListener('click', () => item.classList.toggle('open'));
+});
+
+// ---------- Smooth scroll for anchors ----------
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const id = a.getAttribute('href');
+    if (id.length <= 1) return;
+    const el = document.querySelector(id);
+    if (!el) return;
+    e.preventDefault();
+    window.scrollTo({ top: el.getBoundingClientRect().top + window.pageYOffset - 70, behavior:'smooth' });
+  });
+});
+</script>
+
+</body>
+</html>
