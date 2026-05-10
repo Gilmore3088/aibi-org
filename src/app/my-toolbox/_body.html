@@ -1,0 +1,500 @@
+
+<!-- ===== SITE NAV ===== -->
+<header class="nav">
+  <div class="nav-inner">
+    <a href="AI Banking Institute.html" class="nav-mark" aria-label="The AI Banking Institute">
+      <span class="l1">The AI Banking</span>
+      <span class="l2">Institute</span>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="AI Banking Institute.html#pillars" class="nav-link">Education</a>
+      <a href="#" class="nav-link">For Institutions</a>
+      <a href="#" class="nav-link">Research</a>
+      <a href="#" class="nav-link">About</a>
+      <a href="FAQ.html" class="nav-link">Support</a>
+      <button class="acct" aria-label="Account">
+        <span class="avatar">DM</span>
+        <span class="name">D. Maxwell</span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<!-- ===== MASTHEAD ===== -->
+<section class="mast">
+  <div class="container">
+    <div class="mast-row">
+      <div class="mast-text">
+        <span class="eyebrow greet">Library · BSA officer</span>
+        <h1>Your <em>toolbox.</em></h1>
+        <p class="lede">Your personal library of AI assets — prompts, skills, agents, and playbooks. Some you've made, some came with the curriculum, some are tuned for your role.</p>
+      </div>
+      <div class="mast-stats">
+        <div class="stat"><span class="v">28</span><span class="l">Prompts</span></div>
+        <div class="stat"><span class="v">11</span><span class="l">Skills</span></div>
+        <div class="stat"><span class="v">5</span><span class="l">Agents</span></div>
+        <div class="stat"><span class="v">3</span><span class="l">Playbooks</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== USER TABS ===== -->
+<div class="tabs">
+  <div class="tabs-inner" role="tablist" aria-label="My account">
+    <a href="User Home.html" class="tab" role="tab">Dashboard</a>
+    <a href="LMS Prototype.html" class="tab" role="tab">My Curriculum</a>
+    <a href="Playground.html" class="tab" role="tab">Playground</a>
+    <a href="#" class="tab active" role="tab" aria-selected="true">My Toolbox</a>
+    <a href="#" class="tab" role="tab">My Brief</a>
+    <a href="#" class="tab" role="tab">Account</a>
+  </div>
+</div>
+
+<!-- ===== FILTER BAR ===== -->
+<section class="fbar">
+  <div class="fbar-inner">
+    <div class="fset" role="tablist" aria-label="Asset type">
+      <span class="fset-lab">Type</span>
+      <button class="fchip active" data-f="all">All <span class="cnt">47</span></button>
+      <button class="fchip" data-f="prompt">Prompts <span class="cnt">28</span></button>
+      <button class="fchip" data-f="skill">Skills <span class="cnt">11</span></button>
+      <button class="fchip" data-f="agent">Agents <span class="cnt">5</span></button>
+      <button class="fchip" data-f="playbook">Playbooks <span class="cnt">3</span></button>
+    </div>
+    <div class="fbar-search">
+      <span class="ico">⌕</span>
+      <input id="searchBox" type="search" placeholder="Search…" aria-label="Search toolbox">
+    </div>
+    <button class="fbar-new" id="newBtn" aria-label="Capture new asset"><span class="plus">+</span> New</button>
+  </div>
+</section>
+
+<!-- ===== SHELL ===== -->
+<div class="shell">
+
+  <!-- ============ SIDE ============ -->
+  <aside class="side" aria-label="Collections">
+    <div class="sgroup">
+      <div class="sgroup-title">Source</div>
+      <div class="srow active" data-side-s="all"><span>All</span><span class="scnt">47</span></div>
+      <div class="srow" data-side-s="mine"><span><span class="sdot" style="background:var(--ink)"></span>Mine</span><span class="scnt">31</span></div>
+      <div class="srow" data-side-s="inst"><span><span class="sdot" style="background:var(--terra)"></span>From modules</span><span class="scnt">12</span></div>
+      <div class="srow" data-side-s="role"><span><span class="sdot" style="background:var(--green)"></span>Role · BSA</span><span class="scnt">4</span></div>
+    </div>
+
+    <div class="sgroup">
+      <div class="sgroup-title">Status</div>
+      <div class="srow"><span>Pinned</span><span class="scnt">8</span></div>
+      <div class="srow"><span>Recently used</span><span class="scnt">12</span></div>
+      <div class="srow"><span>Drafts</span><span class="scnt">3</span></div>
+      <div class="srow"><span>Archived</span><span class="scnt">9</span></div>
+    </div>
+
+    <div class="sgroup">
+      <div class="sgroup-title">My playbooks</div>
+      <div class="srow"><span><span class="sdot" style="background:var(--navy)"></span>Credit-shop kit</span><span class="scnt">6</span></div>
+      <div class="srow"><span><span class="sdot" style="background:var(--navy)"></span>BSA officer kit</span><span class="scnt">14</span></div>
+      <div class="srow"><span><span class="sdot" style="background:var(--navy)"></span>Board-summary toolkit</span><span class="scnt">5</span></div>
+      <div class="srow" style="color:var(--terra); font-weight:600"><span>+ New playbook</span></div>
+    </div>
+
+    <div class="sgroup">
+      <div class="sgroup-title">By module</div>
+      <div class="srow"><span>03 · 4-prompt method</span><span class="scnt">5</span></div>
+      <div class="srow"><span>04 · Auditable AI</span><span class="scnt">4</span></div>
+      <div class="srow"><span>06 · Vendor / TPRM</span><span class="scnt">3</span></div>
+      <div class="srow"><span>07 · Credit memos</span><span class="scnt">8</span></div>
+      <div class="srow"><span>09 · BSA narratives</span><span class="scnt">9</span></div>
+      <div class="srow"><span>10 · Reg B / ECOA</span><span class="scnt">5</span></div>
+      <div class="srow"><span>11 · Board summaries</span><span class="scnt">4</span></div>
+    </div>
+
+    <div class="sgroup">
+      <div class="sgroup-title">Team library · BSA</div>
+      <div class="srow"><span><span class="sdot" style="background:var(--green)"></span>Browse role library</span><span class="scnt">42</span></div>
+      <div class="srow"><span><span class="sdot" style="background:var(--green)"></span>What peers use most</span><span class="scnt">12</span></div>
+      <div class="srow" style="color:var(--terra); font-weight:600"><span>+ Publish to team</span></div>
+    </div>
+
+    <div class="sgroup">
+      <div class="sgroup-title">Pinned</div>
+      <div class="srow"><span><span class="sdot" style="background:var(--terra)"></span>SAR-grade frame</span></div>
+      <div class="srow"><span><span class="sdot" style="background:var(--terra)"></span>4-prompt scaffold</span></div>
+      <div class="srow"><span><span class="sdot" style="background:var(--terra)"></span>Tone: dry banker</span></div>
+    </div>
+  </aside>
+
+  <!-- ============ WORK ============ -->
+  <main class="work">
+
+    <!-- PINNED -->
+    <header class="group-head">
+      <span class="gh-num">01</span>
+      <h2>Pinned · <em>your daily drivers.</em></h2>
+      <span class="gh-count">3 pinned</span>
+    </header>
+    <div class="grid">
+
+      <article class="card t-prompt" data-art="sar-frame">
+        <div class="card-top">
+          <span class="ttag">Prompt</span>
+          <span class="vtag">v <strong>5</strong></span>
+          <button class="pin on" title="Pinned">★</button>
+        </div>
+        <h3>SAR-grade <em>narrative frame.</em></h3>
+        <p class="desc">Past-tense, third-person scaffold for suspicious-activity reports. Strips speculation; structures Who · What · Where · When.</p>
+        <div class="card-foot">
+          <span class="src mine">Mine</span>
+          <span>Mod 09</span>
+          <span class="uses">Used 23×</span>
+        </div>
+      </article>
+
+      <article class="card t-prompt" data-art="4-prompt">
+        <div class="card-top">
+          <span class="ttag">Prompt</span>
+          <span class="vtag">v <strong>3</strong></span>
+          <button class="pin on" title="Pinned">★</button>
+        </div>
+        <h3>Credit memo · <em>4-prompt scaffold.</em></h3>
+        <p class="desc">Decomposes a committee memo into ask, facts, frame, and ask-back — one prompt per pass.</p>
+        <div class="card-foot">
+          <span class="src mine">Mine</span>
+          <span>Mod 07</span>
+          <span class="uses">Used 12×</span>
+        </div>
+      </article>
+
+      <article class="card t-skill" data-art="dry-banker">
+        <div class="card-top">
+          <span class="ttag">Skill</span>
+          <span class="vtag">v <strong>4</strong></span>
+          <button class="pin on" title="Pinned">★</button>
+        </div>
+        <h3>Tone match — <em>dry banker.</em></h3>
+        <p class="desc">Rewrites any draft in plain, examiner-friendly tone. Removes adjectives, marketing verbs, exclamations.</p>
+        <div class="card-foot">
+          <span class="src mine">Mine</span>
+          <span>—</span>
+          <span class="uses">Used 31×</span>
+        </div>
+      </article>
+    </div>
+
+    <!-- PROMPTS -->
+    <header class="group-head">
+      <span class="gh-num">02</span>
+      <h2>Prompts · <em>reusable instructions.</em></h2>
+      <span class="gh-count">28 total · showing 6</span>
+    </header>
+    <div class="grid">
+
+      <article class="card t-prompt">
+        <div class="card-top"><span class="ttag">Prompt</span><span class="vtag">v <strong>2</strong></span><button class="pin">☆</button></div>
+        <h3>Board summary — <em>one-page exec.</em></h3>
+        <p class="desc">Condenses any memo to a single board-grade page. Bullets cap at 6.</p>
+        <div class="card-foot"><span class="src mine">Mine</span><span>Mod 11</span><span class="uses">Used 4×</span></div>
+      </article>
+
+      <article class="card t-prompt">
+        <div class="card-top"><span class="ttag">Prompt</span><span class="vtag">v <strong>1</strong></span><button class="pin">☆</button></div>
+        <h3>Reg B / ECOA <em>fairness check.</em></h3>
+        <p class="desc">Audits any customer-facing draft for phrasing that could read as discriminatory.</p>
+        <div class="card-foot"><span class="src inst">From module</span><span>Mod 10</span><span class="uses">Used 7×</span></div>
+      </article>
+
+      <article class="card t-prompt">
+        <div class="card-top"><span class="ttag">Prompt</span><span class="vtag">v <strong>3</strong></span><button class="pin">☆</button></div>
+        <h3>Past-tense, <em>third-person rewrite.</em></h3>
+        <p class="desc">Conforms any narrative to BSA / SAR voice rules without paraphrasing facts.</p>
+        <div class="card-foot"><span class="src mine">Mine</span><span>Mod 09</span><span class="uses">Used 18×</span><span class="fresh stale">Stale · 38d</span></div>
+      </article>
+
+      <article class="card t-prompt">
+        <div class="card-top"><span class="ttag">Prompt</span><span class="vtag">v <strong>1</strong></span><button class="pin">☆</button></div>
+        <h3>Vendor TPRM — <em>exception letter.</em></h3>
+        <p class="desc">Drafts a controlled exception under SR 11-7 / TPRM language, ready for committee.</p>
+        <div class="card-foot"><span class="src inst">From module</span><span>Mod 06</span><span class="uses">Used 2×</span><span class="fresh review">Update?</span></div>
+      </article>
+
+      <article class="card t-prompt">
+        <div class="card-top"><span class="ttag">Prompt</span><span class="vtag">v <strong>2</strong></span><button class="pin">☆</button></div>
+        <h3>Strip speculative <em>adjectives.</em></h3>
+        <p class="desc">Removes "appears to," "seems," "likely" — anything that weakens evidentiary tone.</p>
+        <div class="card-foot"><span class="src mine">Mine</span><span>—</span><span class="uses">Used 9×</span></div>
+      </article>
+
+      <article class="card t-prompt">
+        <div class="card-top"><span class="ttag">Prompt</span><span class="vtag">v <strong>1</strong></span><button class="pin">☆</button></div>
+        <h3>BSA officer — <em>quarterly trend brief.</em></h3>
+        <p class="desc">Frames a quarter of alert / SAR data as a one-page trend narrative for the BSA committee.</p>
+        <div class="card-foot"><span class="src role">Role · BSA</span><span>—</span><span class="uses">Used 1×</span><span class="fresh new">New</span></div>
+      </article>
+    </div>
+
+    <!-- SKILLS -->
+    <header class="group-head">
+      <span class="gh-num">03</span>
+      <h2>Skills · <em>composable patterns.</em></h2>
+      <span class="gh-count">11 total · showing 4</span>
+    </header>
+    <div class="grid">
+
+      <article class="card t-skill">
+        <div class="card-top"><span class="ttag">Skill</span><span class="vtag">v <strong>2</strong></span><button class="pin">☆</button></div>
+        <h3>Extract amounts &amp; <em>dates → table.</em></h3>
+        <p class="desc">Pulls every dollar figure and date from a draft into a clean reviewable table.</p>
+        <div class="card-foot"><span class="src mine">Mine</span><span>—</span><span class="uses">Used 15×</span></div>
+      </article>
+
+      <article class="card t-skill">
+        <div class="card-top"><span class="ttag">Skill</span><span class="vtag">v <strong>1</strong></span><button class="pin">☆</button></div>
+        <h3>Format as <em>committee memo.</em></h3>
+        <p class="desc">Applies the institute committee-memo template: header block, ask, body, recommendation.</p>
+        <div class="card-foot"><span class="src inst">From module</span><span>Mod 07</span><span class="uses">Used 6×</span></div>
+      </article>
+
+      <article class="card t-skill">
+        <div class="card-top"><span class="ttag">Skill</span><span class="vtag">v <strong>4</strong></span><button class="pin">☆</button></div>
+        <h3>BSA tense + <em>voice check.</em></h3>
+        <p class="desc">Validates past-tense, third-person, evidentiary voice before save.</p>
+        <div class="card-foot"><span class="src mine">Mine</span><span>Mod 09</span><span class="uses">Used 11×</span></div>
+      </article>
+
+      <article class="card t-skill">
+        <div class="card-top"><span class="ttag">Skill</span><span class="vtag">v <strong>1</strong></span><button class="pin">☆</button></div>
+        <h3>Compress to <em>200 words.</em></h3>
+        <p class="desc">Tightens any draft to a 200-word committee summary without dropping facts.</p>
+        <div class="card-foot"><span class="src mine">Mine</span><span>—</span><span class="uses">Used 8×</span></div>
+      </article>
+    </div>
+
+    <!-- AGENTS -->
+    <header class="group-head">
+      <span class="gh-num">04</span>
+      <h2>Agents · <em>multi-step workflows.</em></h2>
+      <span class="gh-count">5 total</span>
+    </header>
+    <div class="grid">
+
+      <article class="card t-agent">
+        <div class="card-top"><span class="ttag">Agent</span><span class="vtag">v <strong>1</strong></span><button class="pin">☆</button></div>
+        <h3>Memo reviewer — <em>3-pass.</em></h3>
+        <p class="desc">Critique → revisions → final. Surfaces every change for review before save.</p>
+        <div class="card-foot"><span class="src inst">From module</span><span>Mod 07</span><span class="uses">Run 4×</span></div>
+      </article>
+
+      <article class="card t-agent">
+        <div class="card-top"><span class="ttag">Agent</span><span class="vtag">v <strong>3</strong></span><button class="pin">☆</button></div>
+        <h3>BSA narrative <em>builder.</em></h3>
+        <p class="desc">Takes raw transaction notes; outputs SAR-grade narrative + auditable trail.</p>
+        <div class="card-foot"><span class="src mine">Mine</span><span>Mod 09</span><span class="uses">Run 7×</span></div>
+      </article>
+
+      <article class="card t-agent">
+        <div class="card-top"><span class="ttag">Agent</span><span class="vtag">v <strong>1</strong></span><button class="pin">☆</button></div>
+        <h3>Weekly toolbox <em>digest.</em></h3>
+        <p class="desc">Pulls your last week's artifacts and writes a one-page summary for your manager.</p>
+        <div class="card-foot"><span class="src mine">Mine</span><span>—</span><span class="uses">Run 4×</span></div>
+      </article>
+    </div>
+
+    <!-- PLAYBOOKS -->
+    <header class="group-head">
+      <span class="gh-num">05</span>
+      <h2>Playbooks · <em>collections.</em></h2>
+      <span class="gh-count">3 total</span>
+    </header>
+    <div class="grid">
+
+      <article class="card t-playbook" style="min-height:230px">
+        <div class="card-top"><span class="ttag">Playbook</span><span class="vtag">9 items</span><button class="pin on">★</button></div>
+        <h3>BSA officer <em>starter kit.</em></h3>
+        <div class="pb-list">
+          <div class="pb-row"><span class="pbt p">P</span><span>SAR-grade frame</span><span class="pbn">v5</span></div>
+          <div class="pb-row"><span class="pbt p">P</span><span>Trend brief</span><span class="pbn">v1</span></div>
+          <div class="pb-row"><span class="pbt s">S</span><span>BSA tense check</span><span class="pbn">v4</span></div>
+          <div class="pb-row"><span class="pbt a">A</span><span>Narrative builder</span><span class="pbn">v3</span></div>
+        </div>
+        <div class="card-foot"><span class="src role">Role · BSA</span><span class="uses">14 runs</span></div>
+      </article>
+
+      <article class="card t-playbook" style="min-height:230px">
+        <div class="card-top"><span class="ttag">Playbook</span><span class="vtag">7 items</span><button class="pin">☆</button></div>
+        <h3>Credit-shop <em>playbook.</em></h3>
+        <div class="pb-list">
+          <div class="pb-row"><span class="pbt p">P</span><span>4-prompt scaffold</span><span class="pbn">v3</span></div>
+          <div class="pb-row"><span class="pbt p">P</span><span>Board summary</span><span class="pbn">v2</span></div>
+          <div class="pb-row"><span class="pbt s">S</span><span>Committee memo</span><span class="pbn">v1</span></div>
+          <div class="pb-row"><span class="pbt a">A</span><span>Memo reviewer</span><span class="pbn">v1</span></div>
+        </div>
+        <div class="card-foot"><span class="src mine">Mine</span><span class="uses">11 runs</span></div>
+      </article>
+
+      <article class="card t-playbook" style="min-height:230px">
+        <div class="card-top"><span class="ttag">Playbook</span><span class="vtag">5 items</span><button class="pin">☆</button></div>
+        <h3>Board-summary <em>toolkit.</em></h3>
+        <div class="pb-list">
+          <div class="pb-row"><span class="pbt p">P</span><span>One-page exec</span><span class="pbn">v2</span></div>
+          <div class="pb-row"><span class="pbt s">S</span><span>Compress 200w</span><span class="pbn">v1</span></div>
+          <div class="pb-row"><span class="pbt s">S</span><span>Strip adjectives</span><span class="pbn">v2</span></div>
+        </div>
+        <div class="card-foot"><span class="src mine">Mine</span><span class="uses">5 runs</span></div>
+      </article>
+    </div>
+
+  </main>
+
+</div>
+
+<!-- ===== ASK FAB ===== -->
+<button class="askfab" id="askFab" aria-label="Ask your toolbox">
+  <span class="dot"></span>
+  Ask your toolbox
+</button>
+
+<!-- ===== DRAWER (artifact + ask) ===== -->
+<div class="drawer-bg" id="drawerBg"></div>
+
+<aside class="drawer" id="askDrawer" aria-label="Ask your toolbox">
+  <div class="dr-head">
+    <span class="lab">Toolbox · Assistant</span>
+    <button class="dr-close" data-close>Close ✕</button>
+  </div>
+  <div class="dr-body">
+    <h2 class="ask-h">Ask your <em>toolbox.</em></h2>
+    <p class="ask-l">Search, summarize, or run something across your saved assets. Trained on your work, not the public web.</p>
+
+    <form class="as-form" id="askForm">
+      <textarea id="askInput" placeholder="Find my SAR-grade frame.  Run the memo reviewer on my last credit memo.  Show me what I haven't used in 30 days…" aria-label="Ask the toolbox"></textarea>
+      <div class="as-form-foot">
+        <label class="as-mp">
+          Model ·
+          <select id="askModel">
+            <option value="claude-opus">Claude Opus</option>
+            <option value="claude-sonnet">Claude Sonnet</option>
+            <option value="gpt-4o">GPT-4o</option>
+            <option value="gemini-pro">Gemini Pro</option>
+          </select>
+        </label>
+        <button type="submit" class="as-send" id="askSend">Ask →</button>
+      </div>
+    </form>
+
+    <div class="sug-lab">Try one of these</div>
+    <div class="sug">
+      <button data-q="Show me everything I've used most this month, ranked by frequency.">What am I leaning on most?<span class="arr">→</span></button>
+      <button data-q="Find any prompt or skill I haven't used in 30+ days that I might want to retire or refresh.">What's gone stale?<span class="arr">→</span></button>
+      <button data-q="Compose a new playbook for handling examiner-prep work, drawing only from prompts and skills already in my toolbox.">Build me an examiner-prep playbook.<span class="arr">→</span></button>
+      <button data-q="Audit my model usage across my toolbox. Which model am I leaning on too hard? Where could I diversify?">Audit my model usage.<span class="arr">→</span></button>
+      <button data-q="Diff v1 vs v5 of my SAR-grade frame and tell me what got better.">How has my SAR frame evolved?<span class="arr">→</span></button>
+    </div>
+
+    <div class="as-ans" id="askAnswer">
+      <div class="lab" id="answerLab">Answer · Claude Opus</div>
+      <div class="body" id="answerBody"></div>
+    </div>
+  </div>
+</aside>
+
+<aside class="drawer" id="artDrawer" aria-label="Asset detail">
+  <div class="dr-head">
+    <span class="lab" id="adLab">Prompt · Module 09</span>
+    <button class="dr-close" data-close>Close ✕</button>
+  </div>
+  <div class="dr-body">
+    <h2 class="ad-h" id="adTitle">SAR-grade <em>narrative frame.</em></h2>
+    <div class="ad-meta">
+      <span class="terra">CURRENT · v 5</span>
+      <span>Mine</span>
+      <span>Used 23×</span>
+      <span>Updated 4d ago</span>
+    </div>
+
+    <div class="ad-section">
+      <div class="ad-sec-lab">Run this</div>
+      <div class="ad-actions">
+        <button class="ad-act" data-run="open"><span class="lab">Open</span><span class="desc">Run in workspace with my data.</span></button>
+        <button class="ad-act" data-run="iter"><span class="lab">Iterate</span><span class="desc">Save a new version with a different model.</span></button>
+        <button class="ad-act" data-run="critique"><span class="lab">Critique</span><span class="desc">Have AI review the prompt itself.</span></button>
+        <button class="ad-act" data-run="add"><span class="lab">Add to playbook</span><span class="desc">Drop into one of your collections.</span></button>
+      </div>
+    </div>
+
+    <div class="ad-section">
+      <div class="ad-sec-lab">Prompt body</div>
+      <div class="pv">
+<span class="h">v 5 · current</span>
+You are a BSA officer drafting a Suspicious Activity Report narrative.
+Use only the facts provided. Do not speculate on intent.
+Write in past tense, third person.
+Structure as: Who · What · Where · When · Why suspicious.
+Strip adjectives that imply judgment ("blatant," "obvious," "clear").
+Cap at 280 words.
+      </div>
+    </div>
+
+    <div class="ad-section">
+      <div class="ad-sec-lab">Versions</div>
+      <div class="vtl">
+        <div class="vrow cur"><div class="vno">v 5</div><div class="vbody">Added the 280-word cap and the adjective list.<div class="vmodel"><strong>Claude Opus</strong> · 4 days ago</div></div><div class="vsm">Current</div></div>
+        <div class="vrow"><div class="vno">v 4</div><div class="vbody">Reordered to put "Why suspicious" last; reads better in committee.<div class="vmodel"><strong>Claude Opus</strong> · 2 weeks ago</div></div><button class="vsm">Restore</button></div>
+        <div class="vrow"><div class="vno">v 3</div><div class="vbody">Removed "in the analyst's view" — was tilting tone.<div class="vmodel"><strong>GPT-4o</strong> · 5 weeks ago</div></div><button class="vsm">Restore</button></div>
+        <div class="vrow"><div class="vno">v 2</div><div class="vbody">Added the "do not speculate" instruction.<div class="vmodel"><strong>Claude Sonnet</strong> · 8 weeks ago</div></div><button class="vsm">Restore</button></div>
+        <div class="vrow"><div class="vno">v 1</div><div class="vbody">Initial scaffold based on Mod 09 lesson.<div class="vmodel"><strong>Claude Sonnet</strong> · 11 weeks ago</div></div><button class="vsm">Restore</button></div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ===== FOOTER ===== -->
+<footer class="foot">
+  <div class="foot-inner">
+    <span>The AI Banking Institute · Member tools</span>
+    <a href="FAQ.html">Support</a>
+  </div>
+</footer>
+
+<!-- ===== NEW ASSET MODAL ===== -->
+<div class="modal-bg" id="modalBg"></div>
+<div class="modal" id="newModal" role="dialog" aria-labelledby="nmTitle">
+  <div class="modal-head">
+    <span class="lab">Capture · New asset</span>
+    <button class="dr-close" id="modalClose">Close ✕</button>
+  </div>
+  <div class="modal-body">
+    <h2 id="nmTitle">Capture <em>something useful.</em></h2>
+    <p class="lede">Save a prompt, skill, agent, or playbook to your toolbox. You can iterate on it later.</p>
+
+    <div class="field">
+      <label>Type</label>
+      <div class="type-pick" id="nmTypes">
+        <button data-t="prompt" class="sel">Prompt</button>
+        <button data-t="skill">Skill</button>
+        <button data-t="agent">Agent</button>
+        <button data-t="playbook">Playbook</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Name</label>
+      <input id="nmName" type="text" placeholder="e.g. Quarterly trend brief">
+    </div>
+
+    <div class="field">
+      <label>One-line description</label>
+      <input id="nmDesc" type="text" placeholder="What does it do, in plain English?">
+    </div>
+
+    <div class="field">
+      <label>Body / instructions</label>
+      <textarea id="nmBody" placeholder="You are a BSA officer drafting…"></textarea>
+    </div>
+
+    <div class="modal-foot">
+      <button class="btn-ghost" id="modalCancel">Cancel</button>
+      <button class="btn-prim" id="modalSave">Save to toolbox →</button>
+    </div>
+  </div>
+</div>
