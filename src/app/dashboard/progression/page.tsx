@@ -6,8 +6,10 @@ import { getUserDataWithSupabaseFallback, type UserData } from '@/lib/user-data'
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
+type FoundationsLevelCode = 'foundations' | 'aibi-p' | 'aibi-s' | 'aibi-l';
+
 interface CertLevel {
-  readonly code: 'aibi-p' | 'aibi-s' | 'aibi-l';
+  readonly code: FoundationsLevelCode;
   readonly label: string;
   readonly color: string;
   readonly colorBg: string;
@@ -16,7 +18,7 @@ interface CertLevel {
 
 const CERT_LEVELS: readonly CertLevel[] = [
   {
-    code: 'aibi-p',
+    code: 'foundations',
     label: 'AiBI Foundations',
     color: 'var(--color-terra)',
     colorBg: 'var(--color-terra-pale)',
@@ -39,7 +41,7 @@ const CERT_LEVELS: readonly CertLevel[] = [
 ] as const;
 
 interface MockEnrollment {
-  readonly product: 'aibi-p' | 'aibi-s' | 'aibi-l';
+  readonly product: FoundationsLevelCode;
   readonly completed_modules: readonly number[];
   readonly total_modules: number;
   readonly enrolled_at: string;
@@ -51,7 +53,7 @@ interface MockEnrollment {
 // Dev bypass — V4 is locked to AiBI Foundations only.
 const DEV_ENROLLMENTS: readonly MockEnrollment[] = [
   {
-    product: 'aibi-p',
+    product: 'foundations',
     completed_modules: [1, 2, 3, 4, 5, 6, 7, 8, 9],
     total_modules: 9,
     enrolled_at: '2026-02-10T09:00:00.000Z',
@@ -69,7 +71,7 @@ interface CumulativeMetrics {
 
 // Derive aggregate impact from enrollment progress
 function deriveMetrics(enrollments: readonly MockEnrollment[]): CumulativeMetrics {
-  const pEnroll = enrollments.find((e) => e.product === 'aibi-p');
+  const pEnroll = enrollments.find((e) => (e.product === 'foundations' || e.product === 'aibi-p'));
   const sEnroll = enrollments.find((e) => e.product === 'aibi-s');
 
   const pModules = pEnroll?.completed_modules.length ?? 0;
@@ -320,8 +322,8 @@ function CredentialCard({
       <div className="flex items-center gap-3 pt-3 border-t border-[color:var(--color-ink)]/8">
         <Link
           href={
-            level.code === 'aibi-p'
-              ? '/courses/aibi-p'
+            (level.code === 'foundations' || level.code === 'aibi-p')
+              ? '/courses/foundations'
               : level.code === 'aibi-s'
                 ? '/coming-soon?interest=specialist'
                 : '/coming-soon?interest=leader'
@@ -345,7 +347,7 @@ function CredentialCard({
 }
 
 function NextStepBanner({ enrollments }: { enrollments: readonly MockEnrollment[] }) {
-  const hasP = enrollments.some((e) => e.product === 'aibi-p' && e.completed_at);
+  const hasP = enrollments.some((e) => (e.product === 'foundations' || e.product === 'aibi-p') && e.completed_at);
   const hasS = enrollments.some((e) => e.product === 'aibi-s' && e.completed_at);
   const hasL = enrollments.some((e) => e.product === 'aibi-l' && e.completed_at);
   const sEnrollment = enrollments.find((e) => e.product === 'aibi-s');
@@ -353,7 +355,7 @@ function NextStepBanner({ enrollments }: { enrollments: readonly MockEnrollment[
   let accent = 'var(--color-terra)';
   let heading = 'Start with AiBI Foundations';
   let body = 'Build your AI foundation. The Foundations Certificate is where every transformation begins.';
-  let href = '/courses/aibi-p/purchase';
+  let href = '/courses/foundations/purchase';
   let cta = 'View AiBI Foundations';
 
   if (hasP && hasS && hasL) {
@@ -429,8 +431,15 @@ export default function ProgressionPage() {
 
   const metrics = deriveMetrics(enrollments);
 
-  const getStatus = (code: 'aibi-p' | 'aibi-s' | 'aibi-l'): 'completed' | 'active' | 'locked' => {
-    const e = enrollments.find((en) => en.product === code);
+  const getStatus = (code: FoundationsLevelCode): 'completed' | 'active' | 'locked' => {
+    // Foundations matches both 'foundations' (new) and 'aibi-p' (legacy DB rows
+    // pre-2026-05-09 migration). Once the migration is applied the legacy
+    // matcher is harmless dead code; remove in a cleanup pass.
+    const e = enrollments.find(
+      (en) =>
+        en.product === code ||
+        (code === 'foundations' && en.product === 'aibi-p'),
+    );
     if (!e) return 'locked';
     if (e.completed_at) return 'completed';
     return 'active';

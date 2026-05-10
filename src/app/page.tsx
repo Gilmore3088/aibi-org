@@ -30,7 +30,7 @@ export default function HomePage() {
           </span>
         ),
         primaryCta: { href: "/assessment/start", label: "Take the assessment" },
-        secondaryCta: { href: "/courses/aibi-p", label: "View the curriculum" },
+        secondaryCta: { href: "/courses/foundations", label: "View the curriculum" },
         divider: "hairline",
       }}
     >
@@ -63,7 +63,7 @@ export default function HomePage() {
               standard, scored on reviewed work — not multiple-choice quizzes.
             </p>
             <div className="mt-s8">
-              <Cta variant="secondary" href="/courses/aibi-p">
+              <Cta variant="secondary" href="/courses/foundations">
                 View the curriculum →
               </Cta>
             </div>

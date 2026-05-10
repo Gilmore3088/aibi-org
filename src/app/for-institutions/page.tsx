@@ -62,7 +62,7 @@ export default function ForInstitutionsPage() {
                 "Three reviewed AI artifacts per practitioner",
                 "$295 individual · $199/seat at 10+",
               ],
-              cta: { href: "/courses/aibi-p", label: "View the curriculum" },
+              cta: { href: "/courses/foundations", label: "View the curriculum" },
             },
             {
               scale: "Institution-wide",

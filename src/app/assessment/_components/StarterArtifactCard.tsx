@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { MarkdownRenderer } from '@/app/courses/aibi-p/_components/MarkdownRenderer';
+import { MarkdownRenderer } from '@/app/courses/foundations/_components/MarkdownRenderer';
 import type { StarterArtifact } from '@content/assessments/v2/starter-artifacts';
 
 interface StarterArtifactCardProps {

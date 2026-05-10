@@ -23,8 +23,8 @@ import {
 
 function nextPathForProduct(product: string | undefined, mode: string | undefined): string {
   if (product === 'in-depth-assessment') return '/assessment/in-depth/take';
-  if (product === 'aibi-p' && mode === 'institution') return '/admin';
-  return '/courses/aibi-p';
+  if ((product === 'foundations' || product === 'aibi-p') && mode === 'institution') return '/admin';
+  return '/courses/foundations';
 }
 
 function formatAmount(amountCents: number | null | undefined, currency: string | null | undefined): string {

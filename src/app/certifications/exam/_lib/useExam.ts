@@ -1,8 +1,8 @@
 'use client';
 
 import { useCallback, useMemo, useState } from 'react';
-import { examQuestions, TOPIC_LABELS, type ExamQuestion, type Topic } from '@content/exams/aibi-p/questions';
-import { getProficiencyLevel, type ProficiencyLevel } from '@content/exams/aibi-p/scoring';
+import { examQuestions, TOPIC_LABELS, type ExamQuestion, type Topic } from '@content/exams/foundations/questions';
+import { getProficiencyLevel, type ProficiencyLevel } from '@content/exams/foundations/scoring';
 
 const QUESTIONS_PER_EXAM = 12;
 

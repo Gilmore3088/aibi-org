@@ -40,7 +40,7 @@ export function getAssessmentNextStep(tierId: Tier['id']): AssessmentNextStep {
         title: 'Start the AiBI Foundations',
         description:
           'Build safe daily AI habits before your institution invests in broader automation.',
-        href: '/courses/aibi-p',
+        href: '/courses/foundations',
         cta: 'Start AiBI Foundations',
       };
     case 'early-stage':
@@ -48,7 +48,7 @@ export function getAssessmentNextStep(tierId: Tier['id']): AssessmentNextStep {
         title: 'Earn the Foundations Certificate',
         description:
           'Turn isolated experimentation into a shared staff baseline with practical exercises and artifacts.',
-        href: '/courses/aibi-p',
+        href: '/courses/foundations',
         cta: 'Preview AiBI Foundations',
       };
     case 'building-momentum':

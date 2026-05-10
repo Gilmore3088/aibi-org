@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { createServerClientWithCookies, isSupabaseConfigured } from '@/lib/supabase/client';
-import { AIBI_P_ARTIFACTS } from '@content/practice-reps/aibi-p';
+import { AIBI_P_ARTIFACTS } from '@content/practice-reps/foundations';
 
 interface CompletePracticeRepBody {
   readonly courseId?: unknown;

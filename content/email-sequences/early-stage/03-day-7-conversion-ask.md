@@ -21,7 +21,7 @@ What changes in 30 days:
 - One workflow gets a documented review step.
 - A measurable time-saving claim — with numbers — gets to leadership.
 
-[**Enroll your team in AiBI Foundations**](https://aibankinginstitute.com/courses/aibi-p)
+[**Enroll your team in AiBI Foundations**](https://aibankinginstitute.com/courses/foundations)
 
 Your tier is the one where Executive Briefing pays off most. You have enough internal momentum that an outside roadmap conversation lands hard. We walk through your scores with leadership at the table, name the dimension that is holding you back, and write the 90-day plan with you. No slides. No sales theater.
 

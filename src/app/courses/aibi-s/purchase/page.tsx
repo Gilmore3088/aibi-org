@@ -63,7 +63,8 @@ async function getUserData(): Promise<{ email: string | null; hasAiBIP: boolean 
       .from('course_enrollments')
       .select('id')
       .eq('user_id', user.id)
-      .eq('product', 'aibi-p')
+      // Accept legacy 'aibi-p' rows during the 2026-05-09 rename migration window.
+      .in('product', ['foundations', 'aibi-p'])
       .maybeSingle();
 
     // AiBI Foundations enrollment exists — this is the prerequisite check
@@ -129,7 +130,7 @@ export default async function AiBISPurchasePage() {
             your AiBI Foundations credential before enrolling in AiBI-S.
           </p>
           <Link
-            href="/courses/aibi-p/purchase"
+            href="/courses/foundations/purchase"
             className="inline-block font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-cobalt)] hover:opacity-70 transition-opacity focus:outline-none focus:ring-2 focus:ring-[color:var(--color-cobalt)] focus:ring-offset-2 rounded-sm"
           >
             Enroll in AiBI Foundations first

@@ -41,7 +41,7 @@ describe('provisionEnrollment', () => {
     // return contract are correct at the type level.
     const session = makeSession({
       metadata: {
-        product: 'aibi-p',
+        product: 'foundations',
         mode: 'individual',
         tier: 'individual',
         user_email: 'teller@firstcommunity.bank',
@@ -63,7 +63,7 @@ describe('provisionEnrollment', () => {
 
     // Verify session has the expected shape
     assert.ok(session.id.startsWith('cs_test_'));
-    assert.equal(session.metadata?.product, 'aibi-p');
+    assert.equal(session.metadata?.product, 'foundations');
     assert.equal(session.metadata?.mode, 'individual');
   });
 
@@ -75,7 +75,7 @@ describe('provisionEnrollment', () => {
     // STUB: requires live Supabase
     const session = makeSession({
       metadata: {
-        product: 'aibi-p',
+        product: 'foundations',
         mode: 'institution',
         tier: 'team',
         institution_name: 'First Community Bank',
@@ -159,7 +159,7 @@ describe('provisionEnrollment', () => {
     // STUB: requires live Supabase for full execution
     const session = makeSession({
       metadata: {
-        product: 'aibi-p',
+        product: 'foundations',
         mode: 'institution',
         quantity: '10',
         // deliberately omit institution_name

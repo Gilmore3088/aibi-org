@@ -108,7 +108,7 @@ export function HomeContextStrip() {
           ({mode.completedCount} complete).
         </p>
         <Link
-          href={`/courses/aibi-p/${mode.currentModule}`}
+          href={`/courses/foundations/${mode.currentModule}`}
           className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] hover:text-[color:var(--color-ink)]"
         >
           Resume course →
@@ -126,7 +126,7 @@ export function HomeContextStrip() {
           <span className="font-mono tabular-nums">({mode.score}/{mode.maxScore})</span>.
         </p>
         <Link
-          href="/courses/aibi-p"
+          href="/courses/foundations"
           className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] hover:text-[color:var(--color-ink)]"
         >
           Explore the AiBI Foundations →

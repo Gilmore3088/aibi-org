@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import { AIBI_P_PRACTICE_REPS, getPracticeRepById } from '@content/practice-reps/aibi-p';
+import { AIBI_P_PRACTICE_REPS, getPracticeRepById } from '@content/practice-reps/foundations';
 import { PracticeRepClient } from './PracticeRepClient';
 
 interface PracticeRepPageProps {

@@ -529,7 +529,7 @@ export const FINANCIAL_IMPLICATIONS: Record<Tier['id'], FinancialImplications> =
 // ---------------------------------------------------------------------------
 // Closing CTA — tier-keyed single-card replacement for the cut Next-Steps trio.
 // One card renders at the bottom of the on-screen brief, varying content by
-// tier. Drives /courses/aibi-p (Starting Point + Early Stage) or
+// tier. Drives /courses/foundations (Starting Point + Early Stage) or
 // /for-institutions/advisory (Building Momentum + Ready to Scale).
 // ---------------------------------------------------------------------------
 
@@ -548,7 +548,7 @@ export const TIER_CLOSING_CTA: Record<Tier['id'], TierClosingCta> = {
     body:
       'Skills come first. AiBI Foundations teaches working AI use to bankers in 12 short modules — your team can start this week.',
     ctaLabel: 'Enroll your team in AiBI Foundations',
-    ctaHref: '/courses/aibi-p',
+    ctaHref: '/courses/foundations',
   },
   'early-stage': {
     eyebrow: 'Your next move',
@@ -556,7 +556,7 @@ export const TIER_CLOSING_CTA: Record<Tier['id'], TierClosingCta> = {
     body:
       'You have momentum. Lock it in with AiBI Foundations — your bankers learn the same patterns repeatable across the institution.',
     ctaLabel: 'Enroll your team in AiBI Foundations',
-    ctaHref: '/courses/aibi-p',
+    ctaHref: '/courses/foundations',
   },
   'building-momentum': {
     eyebrow: 'Your next move',

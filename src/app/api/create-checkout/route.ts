@@ -1,8 +1,12 @@
 // POST /api/create-checkout
 // Creates a Stripe Checkout Session for AiBI Foundations course purchase.
 //
-// Individual mode: $295/seat (STRIPE_AIBIP_PRICE_ID)
-// Institution/team mode: $199/seat x quantity (STRIPE_AIBIP_INSTITUTION_PRICE_ID), min 10 seats
+// Individual mode: $295/seat (STRIPE_FOUNDATIONS_PRICE_ID)
+// Institution/team mode: $199/seat x quantity (STRIPE_FOUNDATIONS_INSTITUTION_PRICE_ID), min 10 seats
+//
+// During the 2026-05-09 rename migration window the legacy STRIPE_AIBIP_*
+// env var names are accepted as fallbacks so a Vercel env var rename can
+// happen on the operator's schedule without a deploy outage.
 //
 // Persistent discount: if an individual buyer's email is associated with an institution
 // that has discount_locked=true, they get the institution price automatically (PAY-03).
@@ -51,7 +55,8 @@ async function hasLockedInstitutionDiscount(email: string): Promise<boolean> {
       .from('course_enrollments')
       .select('institution_enrollment_id, institution_enrollments!inner(discount_locked)')
       .eq('email', email)
-      .eq('product', 'aibi-p')
+      // Accept legacy 'aibi-p' rows during the 2026-05-09 rename migration window.
+      .in('product', ['foundations', 'aibi-p'])
       .limit(1);
 
     if (error || !data || data.length === 0) return false;
@@ -111,16 +116,21 @@ export async function POST(request: Request) {
     }
   }
 
-  // Check required environment variables
-  const { STRIPE_AIBIP_PRICE_ID, STRIPE_AIBIP_INSTITUTION_PRICE_ID } = process.env;
+  // Check required environment variables. Prefer the new STRIPE_FOUNDATIONS_*
+  // names; fall back to legacy STRIPE_AIBIP_* during the rename migration.
+  const STRIPE_FOUNDATIONS_PRICE_ID =
+    process.env.STRIPE_FOUNDATIONS_PRICE_ID ?? process.env.STRIPE_FOUNDATIONS_PRICE_ID;
+  const STRIPE_FOUNDATIONS_INSTITUTION_PRICE_ID =
+    process.env.STRIPE_FOUNDATIONS_INSTITUTION_PRICE_ID ??
+    process.env.STRIPE_FOUNDATIONS_INSTITUTION_PRICE_ID;
 
-  if (!STRIPE_AIBIP_PRICE_ID) {
-    console.error('[create-checkout] STRIPE_AIBIP_PRICE_ID is not set.');
+  if (!STRIPE_FOUNDATIONS_PRICE_ID) {
+    console.error('[create-checkout] STRIPE_FOUNDATIONS_PRICE_ID is not set.');
     return NextResponse.json({ error: 'Payment system not configured.' }, { status: 503 });
   }
 
-  if (mode === 'institution' && !STRIPE_AIBIP_INSTITUTION_PRICE_ID) {
-    console.error('[create-checkout] STRIPE_AIBIP_INSTITUTION_PRICE_ID is not set.');
+  if (mode === 'institution' && !STRIPE_FOUNDATIONS_INSTITUTION_PRICE_ID) {
+    console.error('[create-checkout] STRIPE_FOUNDATIONS_INSTITUTION_PRICE_ID is not set.');
     return NextResponse.json({ error: 'Payment system not configured.' }, { status: 503 });
   }
 
@@ -133,13 +143,13 @@ export async function POST(request: Request) {
     if (mode === 'individual') {
       // PAY-03: persistent discount check — if this user is associated with a
       // discount-locked institution, apply institution pricing automatically.
-      let priceId = STRIPE_AIBIP_PRICE_ID;
+      let priceId = STRIPE_FOUNDATIONS_PRICE_ID;
       let discountApplied: string | undefined;
 
-      if (userEmail && STRIPE_AIBIP_INSTITUTION_PRICE_ID) {
+      if (userEmail && STRIPE_FOUNDATIONS_INSTITUTION_PRICE_ID) {
         const locked = await hasLockedInstitutionDiscount(userEmail);
         if (locked) {
-          priceId = STRIPE_AIBIP_INSTITUTION_PRICE_ID;
+          priceId = STRIPE_FOUNDATIONS_INSTITUTION_PRICE_ID;
           discountApplied = 'institution_persistent';
         }
       }
@@ -147,10 +157,10 @@ export async function POST(request: Request) {
       const session = await stripe.checkout.sessions.create({
         mode: 'payment',
         line_items: [{ price: priceId, quantity: 1 }],
-        success_url: `${origin}/courses/aibi-p/purchased`,
-        cancel_url: `${origin}/courses/aibi-p/purchase`,
+        success_url: `${origin}/courses/foundations/purchased`,
+        cancel_url: `${origin}/courses/foundations/purchase`,
         metadata: {
-          product: 'aibi-p',
+          product: 'foundations',
           mode: 'individual',
           tier: 'individual',
           ...(userEmail ? { user_email: userEmail } : {}),
@@ -166,17 +176,17 @@ export async function POST(request: Request) {
     const quantity = body.quantity as number;
     const institutionName = (body.institution_name as string).trim();
 
-    if (!STRIPE_AIBIP_INSTITUTION_PRICE_ID) {
+    if (!STRIPE_FOUNDATIONS_INSTITUTION_PRICE_ID) {
       return NextResponse.json({ error: 'Payment system not configured.' }, { status: 503 });
     }
 
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
-      line_items: [{ price: STRIPE_AIBIP_INSTITUTION_PRICE_ID, quantity }],
-      success_url: `${origin}/courses/aibi-p?enrolled=true`,
-      cancel_url: `${origin}/courses/aibi-p/purchase`,
+      line_items: [{ price: STRIPE_FOUNDATIONS_INSTITUTION_PRICE_ID, quantity }],
+      success_url: `${origin}/courses/foundations?enrolled=true`,
+      cancel_url: `${origin}/courses/foundations/purchase`,
       metadata: {
-        product: 'aibi-p',
+        product: 'foundations',
         mode: 'institution',
         tier: 'team',
         institution_name: institutionName,

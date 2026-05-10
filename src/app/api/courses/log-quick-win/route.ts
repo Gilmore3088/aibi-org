@@ -66,7 +66,8 @@ export async function GET(): Promise<NextResponse> {
     .from('course_enrollments')
     .select('id')
     .eq('user_id', user.id)
-    .eq('product', 'aibi-p');
+    // Accept legacy 'aibi-p' rows during the 2026-05-09 rename migration window.
+    .in('product', ['foundations', 'aibi-p']);
 
   if (enrollmentError) {
     return NextResponse.json({ error: 'Failed to load quick wins.' }, { status: 500 });
@@ -147,7 +148,8 @@ export async function POST(request: Request): Promise<NextResponse> {
     .from('course_enrollments')
     .select('id')
     .eq('user_id', user.id)
-    .eq('product', 'aibi-p')
+    // Accept legacy 'aibi-p' rows during the 2026-05-09 rename migration window.
+    .in('product', ['foundations', 'aibi-p'])
     .single();
 
   if (enrollmentError || !enrollment) {

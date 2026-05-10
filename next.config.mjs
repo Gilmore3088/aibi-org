@@ -37,7 +37,7 @@ const nextConfig = {
   },
   // Decision log: 2026-04-17 — /courses and /certifications merged into /education
   // to reduce nav clutter. Exact-match redirects preserve sub-route access:
-  // /courses/aibi-p, /courses/aibi-s, /courses/aibi-l remain the course pages,
+  // /courses/foundations, /courses/aibi-s, /courses/aibi-l remain the course pages,
   // and /certifications/exam remains the sample exam.
   //
   // Decision log: 2026-04-24 — /services reworked to /for-institutions with
@@ -54,15 +54,28 @@ const nextConfig = {
   // resolve while the migration completes in Phase 07.
   //
   // Decision log: 2026-05-09 — friendly short URLs added for email and
-  // print copy: /practitioner → /courses/aibi-p, /consulting →
+  // print copy: /practitioner → /courses/foundations, /consulting →
   // /for-institutions/advisory. Lets author copy use memorable paths
   // without having to know the canonical routes.
+  //
+  // Decision log: 2026-05-09 (later) — AiBI-Practitioner course renamed to
+  // AiBI Foundations. The route /courses/aibi-p moved to /courses/foundations
+  // and the old route 301s here so existing inbound links (transactional
+  // emails, MailerLite automations, third-party references) keep working.
   async redirects() {
     return [
       { source: '/courses', destination: '/education', permanent: true },
       { source: '/certifications', destination: '/education', permanent: true },
       { source: '/services', destination: '/for-institutions', permanent: true },
-      { source: '/foundations', destination: '/education', permanent: true },
+      // 2026-05-09 brand-refresh rename. The bare /foundations slug used to
+      // belong to the deprecated $97 course (retired 2026-04-17 → /education).
+      // It now points at the new Foundations course landing instead.
+      { source: '/foundations', destination: '/courses/foundations', permanent: true },
+      // 2026-05-09 brand-refresh — AiBI-P → Foundations rename.
+      { source: '/courses/aibi-p', destination: '/courses/foundations', permanent: true },
+      { source: '/courses/aibi-p/:path*', destination: '/courses/foundations/:path*', permanent: true },
+      { source: '/certifications/exam/aibi-p', destination: '/certifications/exam/foundations', permanent: true },
+      { source: '/certifications/exam/aibi-p/:path*', destination: '/certifications/exam/foundations/:path*', permanent: true },
       { source: '/toolbox', destination: '/dashboard/toolbox', permanent: true },
       { source: '/toolbox/:path*', destination: '/dashboard/toolbox/:path*', permanent: true },
       // /resources root → /research; individual essays remain at /resources/<slug>
@@ -71,15 +84,15 @@ const nextConfig = {
       // Wave D inverse: until /education/<program> ships as a real page,
       // those routes redirect BACK to the working /courses/aibi-* routes.
       // Use temporary (302) so we can flip when Wave D migrates the pages.
-      { source: '/education/practitioner', destination: '/courses/aibi-p', permanent: false },
-      { source: '/education/practitioner/:path*', destination: '/courses/aibi-p/:path*', permanent: false },
+      { source: '/education/practitioner', destination: '/courses/foundations', permanent: false },
+      { source: '/education/practitioner/:path*', destination: '/courses/foundations/:path*', permanent: false },
       { source: '/education/specialist', destination: '/coming-soon?interest=specialist', permanent: false },
       { source: '/education/specialist/:path*', destination: '/coming-soon?interest=specialist', permanent: false },
       { source: '/education/leader', destination: '/coming-soon?interest=leader', permanent: false },
       { source: '/education/leader/:path*', destination: '/coming-soon?interest=leader', permanent: false },
-      { source: '/certifications/exam/aibi-p', destination: '/courses/aibi-p/exam', permanent: true },
+      { source: '/certifications/exam/foundations', destination: '/courses/foundations/exam', permanent: true },
       // Friendly short URLs for email/print copy (2026-05-09).
-      { source: '/practitioner', destination: '/courses/aibi-p', permanent: true },
+      { source: '/practitioner', destination: '/courses/foundations', permanent: true },
       { source: '/consulting', destination: '/for-institutions/advisory', permanent: true },
     ];
   },

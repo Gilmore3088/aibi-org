@@ -1,5 +1,5 @@
 // Server-only entitlement lookup for the In-Depth Assessment.
-// Mirrors src/app/courses/aibi-p/_lib/getEnrollment.ts but matches against
+// Mirrors src/app/courses/foundations/_lib/getEnrollment.ts but matches against
 // product='in-depth-assessment' instead of 'aibi-p'.
 //
 // Returns null when:

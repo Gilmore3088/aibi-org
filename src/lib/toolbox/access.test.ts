@@ -44,14 +44,14 @@ describe('getPaidToolboxAccess (reads from entitlements)', () => {
   it('returns access and queries the entitlements table', async () => {
     mockGetUser.mockResolvedValueOnce({ data: { user: { id: 'user-1' } } });
     mockEqActive.mockResolvedValueOnce({
-      data: [{ product: 'aibi-p' }, { product: 'aibi-s' }],
+      data: [{ product: 'foundations' }, { product: 'aibi-s' }],
       error: null,
     });
 
     const result = await getPaidToolboxAccess();
     expect(result).not.toBeNull();
     expect(result!.userId).toBe('user-1');
-    expect(result!.products).toEqual(['aibi-p', 'aibi-s']);
+    expect(result!.products).toEqual(['foundations', 'aibi-s']);
     expect(mockFrom).toHaveBeenCalledWith('entitlements');
   });
 

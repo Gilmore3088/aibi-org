@@ -27,7 +27,7 @@ export const stripe = new Stripe(STRIPE_SECRET_KEY, {
 // ============================================================
 
 export interface CheckoutMetadata {
-  product: 'aibi-p' | 'in-depth-assessment';
+  product: 'foundations' | 'aibi-p' | 'in-depth-assessment';
   mode: 'individual' | 'institution';
   tier?: 'individual' | 'team';
   user_email?: string;

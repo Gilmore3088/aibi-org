@@ -14,9 +14,9 @@ import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/cl
 import {
   V4_AIBIP_MODULE_BY_NUMBER,
   getModuleByNumber,
-} from '@content/courses/aibi-p';
-import { AIBI_P_ARTIFACTS } from '@content/practice-reps/aibi-p';
-import type { Activity, ActivityField } from '@content/courses/aibi-p';
+} from '@content/courses/foundations';
+import { AIBI_P_ARTIFACTS } from '@content/practice-reps/foundations';
+import type { Activity, ActivityField } from '@content/courses/foundations';
 
 const LAST_MODULE = 12;
 
@@ -261,7 +261,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     await serviceClient.from('user_artifacts').upsert(
       {
         user_id: user.id,
-        course_id: 'aibi-p',
+        course_id: 'foundations',
         artifact_id: submittedActivity.artifactId,
         status: 'completed',
         source_activity_id: activityId,

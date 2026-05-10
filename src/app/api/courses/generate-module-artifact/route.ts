@@ -2,7 +2,7 @@
 //
 // Generates the per-module Apply artifact .md by merging the learner's saved
 // activity_response with the module's markdown template (defined in
-// content/courses/aibi-p/module-activities.ts).
+// content/courses/foundations/module-activities.ts).
 //
 // Returns text/markdown with a Content-Disposition: attachment header so the
 // browser downloads the file with the spec's filename.
@@ -11,8 +11,8 @@
 
 import { NextResponse, type NextRequest } from 'next/server';
 import { isSupabaseConfigured, createServiceRoleClient } from '@/lib/supabase/client';
-import { getEnrollment } from '@/app/courses/aibi-p/_lib/getEnrollment';
-import { getModuleActivitySpec } from '@content/courses/aibi-p/module-activities';
+import { getEnrollment } from '@/app/courses/foundations/_lib/getEnrollment';
+import { getModuleActivitySpec } from '@content/courses/foundations/module-activities';
 
 export async function GET(request: NextRequest) {
   const url = new URL(request.url);

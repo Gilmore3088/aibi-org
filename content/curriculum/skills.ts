@@ -2,7 +2,7 @@
  * Skills the AiBI Foundations curriculum teaches.
  *
  * Bound to the takeaways across the 12 modules in
- *   content/courses/aibi-p/v4-expanded-modules.ts
+ *   content/courses/foundations/v4-expanded-modules.ts
  *
  * Each entry consolidates one or more module takeaways into a verb-stated
  * skill, with a back-reference to the module(s) where the skill is built.

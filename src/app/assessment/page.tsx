@@ -99,9 +99,9 @@ export default function AssessmentPage() {
             <div className="flex flex-col items-center gap-4">
               {isLowerTier ? (
                 <a
-                  href="/courses/aibi-p"
+                  href="/courses/foundations"
                   onClick={() =>
-                    trackEvent('purchase_initiated', { product: 'aibi-p' })
+                    trackEvent('purchase_initiated', { product: 'foundations' })
                   }
                   className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
                 >

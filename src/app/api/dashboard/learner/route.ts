@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { createServerClientWithCookies, isSupabaseConfigured } from '@/lib/supabase/client';
-import { AIBI_P_ARTIFACTS } from '@content/practice-reps/aibi-p';
+import { AIBI_P_ARTIFACTS } from '@content/practice-reps/foundations';
 
 interface EnrollmentRow {
   readonly id: string;
@@ -51,23 +51,27 @@ export async function GET(): Promise<NextResponse> {
       .from('course_enrollments')
       .select('id, completed_modules, current_module, enrolled_at, onboarding_answers')
       .eq('user_id', user.id)
-      .eq('product', 'aibi-p')
+      // Accept legacy 'aibi-p' rows during the 2026-05-09 rename migration window.
+      .in('product', ['foundations', 'aibi-p'])
       .maybeSingle(),
     supabase
       .from('practice_rep_completions')
       .select('rep_id, completed_at')
       .eq('user_id', user.id)
-      .eq('course_id', 'aibi-p'),
+      // Accept legacy 'aibi-p' rows during the 2026-05-09 rename migration window.
+      .in('course_id', ['foundations', 'aibi-p']),
     supabase
       .from('saved_prompts')
       .select('prompt_id')
       .eq('user_id', user.id)
-      .eq('course_id', 'aibi-p'),
+      // Accept legacy 'aibi-p' rows during the 2026-05-09 rename migration window.
+      .in('course_id', ['foundations', 'aibi-p']),
     supabase
       .from('user_artifacts')
       .select('artifact_id, status, updated_at')
       .eq('user_id', user.id)
-      .eq('course_id', 'aibi-p'),
+      // Accept legacy 'aibi-p' rows during the 2026-05-09 rename migration window.
+      .in('course_id', ['foundations', 'aibi-p']),
   ]);
 
   if (enrollmentResult.error) {

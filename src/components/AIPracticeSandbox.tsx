@@ -22,7 +22,7 @@ const PROVIDERS = [
 
 interface AIPracticeSandboxProps {
   readonly moduleId: string;
-  readonly product: 'aibi-p' | 'aibi-s' | 'aibi-l';
+  readonly product: 'foundations' | 'aibi-p' | 'aibi-s' | 'aibi-l';
   readonly sandboxConfig: SandboxConfig;
   readonly accentColor?: string;
 }

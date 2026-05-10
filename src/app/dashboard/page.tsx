@@ -5,13 +5,13 @@ import Link from 'next/link';
 import { getUserDataWithSupabaseFallback, type UserData } from '@/lib/user-data';
 import { getTier } from '@content/assessments/v1/scoring';
 import { getTierV2 } from '@content/assessments/v2/scoring';
-import { modules } from '@content/courses/aibi-p';
+import { modules } from '@content/courses/foundations';
 import {
   AIBI_P_ARTIFACTS,
   AIBI_P_CERTIFICATE_REQUIREMENTS,
   AIBI_P_PRACTICE_REPS,
   getDailyPracticeRep,
-} from '@content/practice-reps/aibi-p';
+} from '@content/practice-reps/foundations';
 import type { ArtifactStatus } from '@/types/lms';
 
 interface LearnerDashboardState {
@@ -187,7 +187,7 @@ export default function DashboardPage() {
                 </div>
                 <div className="mt-6 flex flex-col sm:flex-row gap-3">
                   <Link
-                    href={`/courses/aibi-p/${currentModule.number}`}
+                    href={`/courses/foundations/${currentModule.number}`}
                     className="text-center px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
                   >
                     Continue Lesson
@@ -217,13 +217,13 @@ export default function DashboardPage() {
                 )}
                 <div className="mt-6 flex flex-col sm:flex-row gap-3">
                   <Link
-                    href="/courses/aibi-p/purchase"
+                    href="/courses/foundations/purchase"
                     className="text-center px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
                   >
                     Enroll — $295
                   </Link>
                   <Link
-                    href="/courses/aibi-p"
+                    href="/courses/foundations"
                     className="text-center px-6 py-3 border border-[color:var(--color-ink)]/25 text-[color:var(--color-ink)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)] transition-colors"
                   >
                     Preview the program
@@ -361,7 +361,7 @@ export default function DashboardPage() {
               </h2>
             </div>
             <Link
-              href="/courses/aibi-p/toolkit"
+              href="/courses/foundations/toolkit"
               className="hidden sm:inline-block font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] border-b border-[color:var(--color-terra)]"
             >
               Open toolkit
@@ -390,7 +390,7 @@ export default function DashboardPage() {
                           {artifact.description}
                         </p>
                         <Link
-                          href={`/courses/aibi-p/artifacts/${artifact.id}`}
+                          href={`/courses/foundations/artifacts/${artifact.id}`}
                           className="inline-block mt-4 font-serif-sc text-[10px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] border-b border-[color:var(--color-terra)]"
                         >
                           View Detail

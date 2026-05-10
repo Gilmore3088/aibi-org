@@ -1,5 +1,5 @@
 // AiBI-S Course Content Types
-// Pattern follows content/courses/aibi-p/types.ts
+// Pattern follows content/courses/foundations/types.ts
 // All content is Markdown strings for Kajabi-migration-readiness
 // AiBI-S uses Pillar B cobalt color system throughout
 
