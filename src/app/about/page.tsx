@@ -145,7 +145,7 @@ export default function AboutPage() {
               A framework that puts AI in their hands.
             </p>
             <p className="text-body-sm text-ink/75 leading-relaxed mt-s3">
-              Not the vendor's. Not a hired expert's. Theirs.
+              Not the vendor&rsquo;s. Not a hired expert&rsquo;s. Theirs.
             </p>
           </div>
         </div>

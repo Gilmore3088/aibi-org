@@ -7,7 +7,6 @@
  * one phrase per stage; the visual carries the rest.
  */
 
-import type { ReactNode } from "react";
 import { cn } from "@/lib/utils/cn";
 
 export interface FlowStage {

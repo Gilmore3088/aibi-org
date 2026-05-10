@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import type { ReactNode } from 'react';
 import { useEffect, useState } from 'react';
 import { TOOLS, type CurriculumTool } from '@content/curriculum/tools';
 import { AI_SKILLS, type AiSkillDept } from '@content/curriculum/ai-skills';

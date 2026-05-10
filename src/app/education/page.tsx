@@ -12,7 +12,6 @@ import { InteractiveSkillsPreview } from "@/components/sections/InteractiveSkill
 import { InquiryForm } from "@/app/certifications/_components/InquiryForm";
 import { modules } from "@content/courses/aibi-p";
 import { getEnrollment as getPEnrollment } from "@/app/courses/aibi-p/_lib/getEnrollment";
-import { CTAS } from "@content/copy";
 
 export const metadata: Metadata = {
   title: "Education | The AI Banking Institute",
