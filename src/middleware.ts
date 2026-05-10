@@ -37,6 +37,7 @@ const COMING_SOON_BYPASS_PREFIXES: readonly string[] = [
   '/admin',
   '/coming-soon',
   '/design-system', // internal Ledger reference, gated only by URL knowledge
+  '/user-home',     // redesign preview of the user dashboard, internal only
 ];
 
 export async function middleware(request: NextRequest): Promise<NextResponse> {
