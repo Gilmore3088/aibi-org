@@ -18,7 +18,19 @@ import './globals.css';
 // provide their own internal brand lockup, so showing the global Header on
 // top would produce a duplicate logo (or, in the case of the design system
 // reference, would frame a pixel-faithful mockup with extraneous chrome).
-const CHROMELESS_PATHS: readonly string[] = ['/coming-soon', '/design-system', '/user-home', '/my-toolbox', '/playground', '/faq', '/preview-home', '/briefing-preview', '/lms-preview', '/courses/foundation-preview'];
+const CHROMELESS_PATHS: readonly string[] = [
+  '/coming-soon',
+  '/design-system',
+  '/user-home',
+  '/my-toolbox',
+  '/playground',
+  '/faq',
+  '/preview-home',
+  '/briefing-preview',
+  '/lms-preview',
+  '/courses/foundation-preview',
+  '/auth', // Ledger-redesigned auth surfaces render their own brand lockup
+];
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],

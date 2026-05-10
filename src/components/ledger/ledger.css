@@ -1,0 +1,139 @@
+/* Ledger primitives — shared CSS for the React components in this folder.
+ *
+ * Scoped under .ledger so every Ledger surface gets the unprefixed token
+ * names (--ink, --paper, --terra, ...) without colliding with the legacy
+ * --color-* token system in use elsewhere on the site. Pages that opt in
+ * wrap their content in <LedgerSurface> (or .ledger directly).
+ *
+ * Mirrors the Ledger color and type contract from /design-system.
+ */
+
+.ledger {
+  --bg: #ECE9DF;
+  --paper: #F4F1E7;
+  --parch: #E4E0D2;
+  --parch-dark: #D5D1C2;
+  --tape: #F1E9D0;
+  --ink: #0E1B2D;
+  --ink-2: #1F2A3F;
+  --slate: #5C6B82;
+  --muted: #5C6B82;
+  --soft: #8C95A8;
+  --terra: #B5862A;
+  --terra-2: #8E6620;
+  --weak: #8E3B2A;
+  --rule: #D5D1C2;
+  --rule-strong: #A8AEBE;
+
+  --serif: var(--font-newsreader), 'Iowan Old Style', Georgia, serif;
+  --sans: var(--font-geist-sans), -apple-system, system-ui, sans-serif;
+  --mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+.ledger *,
+.ledger *::before,
+.ledger *::after {
+  box-sizing: border-box;
+}
+
+/* ---------- Lockup ---------- */
+.ledger-lockup { display: flex; flex-direction: column; line-height: 1; }
+.ledger-lockup .l1, .ledger-lockup .l2 { font-family: var(--sans); font-weight: 700; font-size: 13px; letter-spacing: -0.005em; text-transform: uppercase; line-height: 1; }
+.ledger-lockup .l1 { color: var(--ink); }
+.ledger-lockup .l2 { color: var(--soft); margin-top: 1px; }
+
+.ledger-lockup--lg .l1, .ledger-lockup--lg .l2 { font-size: 24px; letter-spacing: -0.005em; }
+.ledger-lockup--lg .l2 { margin-top: 2px; }
+
+/* ---------- Eyebrow ---------- */
+.ledger-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+
+/* ---------- Heading ---------- */
+.ledger-h1 { font-family: var(--serif); font-weight: 500; font-size: clamp(40px, 5vw, 64px); line-height: 1; letter-spacing: -0.03em; margin: 0; }
+.ledger-h1 em { font-style: italic; color: var(--terra); font-weight: 500; }
+.ledger-h2 { font-family: var(--serif); font-weight: 500; font-size: 28px; line-height: 1.1; letter-spacing: -0.02em; margin: 0; }
+.ledger-h2 em { font-style: italic; color: var(--terra); font-weight: 500; }
+.ledger-h3 { font-family: var(--serif); font-weight: 500; font-size: 22px; line-height: 1.18; letter-spacing: -0.018em; margin: 0; }
+
+.ledger-lede { font-family: var(--serif); font-style: italic; font-size: 18px; line-height: 1.45; color: var(--ink-2); margin: 0; }
+
+/* ---------- Card ---------- */
+.ledger-card { background: var(--paper); border: 1px solid var(--rule); border-radius: 3px; padding: 32px 36px; }
+.ledger-card--strong { border-color: var(--rule-strong); }
+.ledger-card--ink { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+/* ---------- Field ---------- */
+.ledger-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+.ledger-field label { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.ledger-field input,
+.ledger-field textarea,
+.ledger-field select {
+  font-family: var(--sans); font-size: 14px; color: var(--ink);
+  padding: 10px 12px; border: 1px solid var(--rule-strong); border-radius: 2px;
+  background: var(--paper); outline: none; width: 100%;
+  transition: border-color 0.15s;
+}
+.ledger-field input:focus,
+.ledger-field textarea:focus,
+.ledger-field select:focus { border-color: var(--ink); }
+.ledger-field input::placeholder,
+.ledger-field textarea::placeholder { color: var(--soft); font-style: italic; }
+.ledger-field--inline { display: flex; flex-direction: row; align-items: baseline; justify-content: space-between; }
+.ledger-field--inline a { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--terra); font-weight: 600; }
+.ledger-field--inline a:hover { color: var(--terra-2); }
+
+/* ---------- Button ---------- */
+.ledger-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  font-family: var(--mono); font-size: 11px; font-weight: 600;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  padding: 13px 22px; border-radius: 2px; border: 1px solid transparent;
+  cursor: pointer; line-height: 1; transition: background 0.12s, color 0.12s, border-color 0.12s;
+}
+.ledger-btn:disabled { opacity: 0.5; cursor: wait; }
+.ledger-btn--primary { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.ledger-btn--primary:hover:not(:disabled) { background: var(--ink-2); border-color: var(--ink-2); }
+.ledger-btn--accent { background: var(--terra); color: var(--paper); border-color: var(--terra); }
+.ledger-btn--accent:hover:not(:disabled) { background: var(--terra-2); border-color: var(--terra-2); }
+.ledger-btn--ghost { background: transparent; color: var(--ink); border-color: var(--rule-strong); }
+.ledger-btn--ghost:hover:not(:disabled) { border-color: var(--ink); }
+.ledger-btn--block { width: 100%; }
+.ledger-btn .arrow { font-family: var(--serif); font-style: italic; text-transform: none; letter-spacing: 0; font-size: 14px; line-height: 0; margin-top: -1px; }
+
+/* ---------- Inline link ---------- */
+.ledger-link { font-family: var(--sans); font-weight: 500; color: var(--terra); border-bottom: 1.5px solid var(--terra); padding-bottom: 1px; }
+.ledger-link:hover { color: var(--terra-2); border-color: var(--terra-2); }
+
+/* ---------- Alert ---------- */
+.ledger-alert { font-family: var(--sans); font-size: 13.5px; line-height: 1.5; padding: 12px 14px; border-radius: 2px; border: 1px solid transparent; }
+.ledger-alert--error { background: rgba(142, 59, 42, 0.08); border-color: rgba(142, 59, 42, 0.25); color: var(--weak); }
+.ledger-alert--info { background: rgba(181, 134, 42, 0.08); border-color: rgba(181, 134, 42, 0.25); color: var(--terra-2); }
+
+/* ---------- Tab toggle (segmented) ---------- */
+.ledger-toggle { display: flex; border: 1px solid var(--rule-strong); border-radius: 2px; overflow: hidden; }
+.ledger-toggle button {
+  flex: 1; padding: 10px 14px;
+  font-family: var(--mono); font-size: 10.5px; font-weight: 600;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  background: transparent; color: var(--muted); cursor: pointer; border: none;
+  border-right: 1px solid var(--rule-strong);
+  transition: all 0.12s;
+}
+.ledger-toggle button:last-child { border-right: none; }
+.ledger-toggle button:hover { color: var(--ink-2); }
+.ledger-toggle button[aria-selected="true"] { background: var(--ink); color: var(--paper); }
+
+/* ---------- Surface (full-page wrapper) ---------- */
+.ledger-surface { min-height: 100vh; display: flex; flex-direction: column; }
+.ledger-surface__header { padding: 24px 32px; border-bottom: 1px solid var(--rule); display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.ledger-surface__main { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 56px 32px 96px; }
+.ledger-surface__footer { padding: 22px 32px; border-top: 1px solid var(--rule); font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+.ledger-surface__footer a { color: var(--muted); }
+.ledger-surface__footer a:hover { color: var(--terra); }
