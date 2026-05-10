@@ -11,7 +11,6 @@ export const module12: Module = {
   pillar: 'application',
   estimatedMinutes: 45,
   keyOutput: 'Final Practitioner Lab Package',
-  mockupRef: 'content/courses/AiBI-P v1/stitch_ai_banking_institute_course/m9_final_capstone_submission',
   sections: [
     {
       id: 'm12-lab-purpose',

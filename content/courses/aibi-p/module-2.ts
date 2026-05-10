@@ -11,7 +11,6 @@ export const module2: Module = {
   pillar: 'awareness',
   estimatedMinutes: 20,
   keyOutput: 'AI Claim Review',
-  mockupRef: 'content/courses/AiBI-P v1/stitch_ai_banking_institute_course/m2_the_expanded_ai_ecosystem',
   sections: [
     {
       id: 'm2-opening',

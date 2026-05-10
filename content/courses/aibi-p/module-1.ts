@@ -11,7 +11,6 @@ export const module1: Module = {
   pillar: 'awareness',
   estimatedMinutes: 25,
   keyOutput: 'Rewritten Email',
-  mockupRef: 'content/courses/AiBI-P v1/stitch_ai_banking_institute_course/m1_refined_regulatory_landscape',
   sections: [
     {
       id: 'm1-opening',

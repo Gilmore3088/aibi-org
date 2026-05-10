@@ -11,7 +11,6 @@ export const module11: Module = {
   pillar: 'application',
   estimatedMinutes: 35,
   keyOutput: 'Personal Prompt Library',
-  mockupRef: 'content/courses/AiBI-P v1/stitch_ai_banking_institute_course/m7_refined_skill_builder',
   sections: [
     {
       id: 'm11-library-purpose',

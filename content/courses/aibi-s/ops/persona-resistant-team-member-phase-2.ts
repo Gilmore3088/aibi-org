@@ -1,4 +1,4 @@
-import type { DefendBeatPersona } from '../../../../lib/aibi-s/types';
+import type { DefendBeatPersona } from '@/lib/aibi-s/types';
 
 export const opsResistantTeamMemberPhase2: DefendBeatPersona = {
   id: 'ops-resistant-team-member-p2',

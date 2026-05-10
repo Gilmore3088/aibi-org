@@ -1,4 +1,4 @@
-import type { Unit } from '../../../../lib/aibi-s/types';
+import type { Unit } from '@/lib/aibi-s/types';
 import { opsDepartmentHeadPhase1 } from './persona-dept-head-phase-1';
 
 export const opsUnit1_1: Unit = {

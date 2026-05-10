@@ -11,7 +11,6 @@ export const module6: Module = {
   pillar: 'creation',
   estimatedMinutes: 35,
   keyOutput: 'Document Workflow Prompt',
-  mockupRef: 'content/courses/AiBI-P v1/stitch_ai_banking_institute_course/m6_anatomy_of_a_skill',
   sections: [
     {
       id: 'm6-file-workflows',

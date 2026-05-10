@@ -11,7 +11,6 @@ export const module10: Module = {
   pillar: 'application',
   estimatedMinutes: 35,
   keyOutput: 'Role Use-Case Card',
-  mockupRef: 'content/courses/AiBI-P v1/stitch_ai_banking_institute_course/m9_final_capstone_submission',
   roleSpecific: true,
   sections: [
     {

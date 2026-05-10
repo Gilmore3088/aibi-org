@@ -11,7 +11,6 @@ export const module9: Module = {
   pillar: 'understanding',
   estimatedMinutes: 35,
   keyOutput: 'Safe AI Use Checklist',
-  mockupRef: 'content/courses/AiBI-P v1/stitch_ai_banking_institute_course/m5_refined_safe_use_guardrails',
   sections: [
     {
       id: 'm9-safe-rule',

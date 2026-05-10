@@ -11,7 +11,6 @@ export const module3: Module = {
   pillar: 'understanding',
   estimatedMinutes: 30,
   keyOutput: 'Prompt Strategy Cheat Sheet',
-  mockupRef: 'content/courses/AiBI-P v1/stitch_ai_banking_institute_course/m3_what_you_already_have_activation',
   roleSpecific: true,
   sections: [
     {

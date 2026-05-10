@@ -38,7 +38,6 @@ function makeModule(number: number, pillar: Pillar): Module {
     title: `Module ${number}`,
     estimatedMinutes: 30,
     keyOutput: 'output',
-    mockupRef: '',
     sections: [],
     activities: [],
   };

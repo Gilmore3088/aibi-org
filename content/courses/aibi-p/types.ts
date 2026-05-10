@@ -84,6 +84,6 @@ export interface Module {
   readonly tables?: readonly ContentTable[];
   readonly activities: readonly Activity[];
   readonly artifacts?: readonly ArtifactDefinition[];
-  readonly mockupRef: string;        // path to HTML mockup directory (CONT-03)
+  readonly mockupRef?: string;       // optional — legacy stitch mockups retired 2026-05-09
   readonly roleSpecific?: boolean;   // true if content varies by onboarding role
 }

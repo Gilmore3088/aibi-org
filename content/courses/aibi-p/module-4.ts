@@ -12,7 +12,6 @@ export const module4: Module = {
   pillar: 'understanding',
   estimatedMinutes: 30,
   keyOutput: 'AI Work Profile',
-  mockupRef: 'content/courses/AiBI-P v1/stitch_ai_banking_institute_course/m4_platform_features_deep_dive',
   roleSpecific: true,
   sections: [
     {

@@ -11,7 +11,6 @@ export const module8: Module = {
   pillar: 'creation',
   estimatedMinutes: 35,
   keyOutput: 'Workflow Map',
-  mockupRef: 'content/courses/AiBI-P v1/stitch_ai_banking_institute_course/m8_test_iterate_share',
   sections: [
     {
       id: 'm8-agent-basics',
