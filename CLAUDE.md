@@ -14,6 +14,8 @@
 | `aibi-designer-brief.html` | Visual identity, color system, typography, Do's/Don'ts |
 | `aibi-consultant-playbook.html` | Executive Briefing script, Quick Win Sprint methodology, delivery |
 | `feedback-v1-aibi-landing-page-prd.docx` | V1 landing page PRD feedback — tagline, stats band, 8-section homepage spec |
+| `foundation-v2/AIBI-FOUNDATION-COMPLETE.md` | **AiBI-Foundation v2 redesign — canonical** (see 2026-05-09 Decisions Log) |
+| `foundation-v2/aibi-foundation-v2/` | Full v2 bundle — 29 module specs, 33 artifact templates, platform brief, positioning |
 
 **Assessment content lives in `content/assessments/<version>/`** — each version is a folder (questions, scoring, copy) so content can iterate without touching component code. Current version: `v1`.
 
@@ -873,6 +875,61 @@ through Supabase Custom SMTP using Resend as transport — they are
 configured in the Supabase Auth dashboard, NOT in Resend Templates;
 their sender `From` field also needs swapping in the Supabase
 dashboard (not yet done — manual step).
+
+**2026-05-09 — AiBI-Foundation v2 redesign accepted; staged migration.**
+The current AiBI-Practitioner course (12 modules, 6.6 hrs, $295) is
+superseded by AiBI-Foundation v2 — a four-track product family under
+one credential: Foundation Lite (4 modules · 90 min · $99 · mandatory
+bank-wide), Foundation Full (20 modules · 9.5 hrs · $495), Manager Track
+(3 modules · 90 min · $195), Board Briefing (2 modules · 60 min · $295/
+director or $1,495 flat). Activity-driven (8 activity types, 80%+
+hands-on, video capped at 60–90 sec per module). Multi-model platform:
+Claude + ChatGPT + Gemini + Copilot Chat in parallel. Six new modules
+in Full vs current course: M3 (How AI Got Here), M5 (Cybersecurity & AI
+Threats), M6 (Talking About AI With Members), M12 (Spreadsheet
+Workflows), M15 (Vendor Pitch Decoder), M18 (Incident Response Drill),
+M19 (Examiner Q&A Practice). Pillar order is now strictly linear
+(Awareness 1–4 · Understanding 5–10 · Creation 11–15 · Application
+16–20) — explicitly framed as "defensible to examiners reviewing the
+bank's AI training program." The Personal Prompt Library schema (18
+fields) is the spine artifact and a FIXED CONTRACT — forward-compatible
+with AiBI-Specialist's Departmental Skill Library and AiBI-Leader's
+bank-wide AI portfolio. Canonical bundle now lives at
+`Plans/foundation-v2/` (29 module specs, 33 artifact templates,
+platform brief, positioning).
+
+**Decisions captured this session:**
+1. **Rename continues** — AiBI-Practitioner → AiBI-Foundation in
+   user-facing copy. Internal IDs (`aibi-p` route, DB `product='aibi-p'`,
+   file paths, Stripe metadata, Resend template aliases) kept short
+   per the 2026-05-06 rename pattern to avoid URL/DB churn.
+2. **9.5-hr commit acknowledged** — Full track is no longer "evening +
+   weekend"; closer to a 2–3-weekend commit. Manager support and
+   pacing matter more in marketing/onboarding copy.
+3. **Lite is a real new SKU** — $99 mandatory bank-wide is a different
+   sales motion (volume-priced site licenses). Stripe checkout needs
+   a volume-pricing path before Lite goes live.
+4. **M5 ships text-only** — Voice-clone and deepfake elements
+   deferred. v2 launch curriculum covers prompt injection, AI-
+   augmented phishing, and member conversation handling. The voice-
+   verification protocol artifact stays in source bundle as future
+   scope; affected specs (M5, L2, L4, voice artifacts) carry an
+   editorial banner marking the deferral.
+5. **Real-world capture (Type 8) deferred** — Activity Type 8
+   (learner uploads sanitized real artifact) and the NPI regex
+   guard are out of v2 launch scope. Final Lab (M20) reverts to
+   synthetic-only inputs for launch.
+6. **AiBI-S/L deferrals confirmed** — multi-agent orchestration,
+   MCP, departmental governance held for Specialist; board strategy
+   deck and 3-year roadmap held for Leader. Handoffs via the fixed
+   Personal Prompt Library schema.
+
+**Migration is staged, not shipped.** Touching course content, Stripe
+pricing, the rename, and the Lite/Manager/Board track shells is
+multi-week work. Punch list at `tasks/foundation-v2-migration.md`.
+Plans/ canonical specs (aibi-prd.html etc.) left unchanged for the
+v1 site — v2 supersedes only the course tier, not the homepage,
+assessment, or institutional positioning.
 
 ---
 
