@@ -50,6 +50,17 @@ const COMING_SOON_BYPASS_PREFIXES: readonly string[] = [
   '/terms',            // Ledger-redesigned legal page
   '/ai-use-disclaimer', // Ledger-redesigned legal page
   '/verify',           // Ledger-redesigned credential verification
+  // Marketing pages — auto-Ledger-ified via the legacy-token remap
+  // (see src/styles/tokens.css). Bypassed so the redesign is visible
+  // while COMING_SOON=true. Remove if you flip COMING_SOON to false.
+  '/about',
+  '/education',
+  '/for-institutions',
+  '/research',
+  '/security',
+  '/resources',
+  '/dashboard',
+  '/courses',
 ];
 
 export async function middleware(request: NextRequest): Promise<NextResponse> {
