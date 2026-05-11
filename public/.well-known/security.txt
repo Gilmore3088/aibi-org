@@ -1,0 +1,24 @@
+Contact: mailto:hello@aibankinginstitute.com
+Expires: 2027-12-31T23:59:59.000Z
+Preferred-Languages: en
+Canonical: https://www.aibankinginstitute.com/.well-known/security.txt
+Policy: https://www.aibankinginstitute.com/security
+
+# Responsible disclosure
+#
+# If you've found a security issue affecting this site or our learners'
+# data, please email hello@aibankinginstitute.com with:
+#   - A description of the issue and steps to reproduce
+#   - The affected endpoint or surface
+#   - Your suggested severity
+#
+# We aim to acknowledge within 48 hours and patch critical issues
+# within 7 days. We do not currently run a paid bug bounty, but we
+# will credit researchers who report vulnerabilities responsibly.
+#
+# Out of scope:
+#   - Social engineering of our staff
+#   - Physical attacks
+#   - DoS / volumetric attacks
+#   - Issues in third-party services we use (Supabase, Stripe, Vercel,
+#     Resend, MailerLite) — please report those directly to the vendor.
