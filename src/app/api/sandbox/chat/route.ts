@@ -6,6 +6,7 @@ import { NextResponse } from 'next/server';
 import { scanForPII } from '@/lib/sandbox/pii-scanner';
 import { scanForInjection } from '@/lib/sandbox/injection-filter';
 import { streamClaude } from '@/lib/sandbox/providers/claude';
+import { getAuthUser } from '@/lib/api/auth';
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -71,6 +72,16 @@ function isValidMessages(v: unknown): v is ChatMessage[] {
 // ---------------------------------------------------------------------------
 
 export async function POST(request: Request) {
+  // 0. Require an authenticated session. The sandbox is an AI proxy
+  // that bills the Anthropic API on every call — anonymous access
+  // turns this endpoint into an unbounded cost surface. Practice
+  // tabs only render inside enrolled course modules, so requiring a
+  // session here doesn't block any legitimate UX.
+  const user = await getAuthUser();
+  if (!user) {
+    return NextResponse.json({ error: 'Authentication required.' }, { status: 401 });
+  }
+
   // 1. Parse body
   let body: ChatRequestBody;
   try {
@@ -164,14 +175,10 @@ export async function POST(request: Request) {
     );
   }
 
-  // 7. Dev bypass for auth — in production, validate Supabase session
-  if (process.env.NODE_ENV !== 'development') {
-    // TODO: Validate Supabase auth session and enrollment for the given
-    // product. For now, allow all requests in production as well until
-    // auth is wired up.
-  }
-
-  // 8. Track in-memory message count per moduleId
+  // 7. Track in-memory message count per moduleId. This is per-instance
+  // only (serverless cold starts wipe it) but combined with the auth
+  // gate above it's enough to deter casual abuse. Replace with Supabase
+  // or Redis when Upstash is wired (see tasks/api-auth-audit-2026-05-11.md).
   const currentCount = messageCounts.get(moduleId as string) ?? 0;
   messageCounts.set(moduleId as string, currentCount + 1);
 

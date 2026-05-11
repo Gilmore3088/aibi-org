@@ -1,14 +1,20 @@
 // POST /api/save-proficiency
 // Persists a proficiency exam result to Supabase user_profiles.
-// The email is read from the caller's existing localStorage profile
-// (sent in the request body). No auth session required.
 //
-// Best-effort: returns 200 even on Supabase failure so the client-side
-// localStorage write is always the source of truth for the current device.
+// Auth model: requires an authenticated Supabase session AND the
+// session email must match the payload email. The proficiency exam
+// lives behind /certifications/exam/foundation which already requires
+// auth, so this gate matches the surrounding flow and prevents anyone
+// from overwriting another user's exam history by knowing their email.
+//
+// Best-effort write: returns 200 even on Supabase failure so the
+// client-side localStorage write is always the source of truth for
+// the current device.
 
 import { NextResponse } from 'next/server';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
 import { upsertProficiencyResult } from '@/lib/supabase/user-profiles';
+import { getAuthUser } from '@/lib/api/auth';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -39,6 +45,11 @@ function isValidPayload(p: SaveProficiencyPayload): p is {
 }
 
 export async function POST(request: Request) {
+  const user = await getAuthUser();
+  if (!user) {
+    return NextResponse.json({ error: 'Authentication required.' }, { status: 401 });
+  }
+
   let body: SaveProficiencyPayload;
   try {
     body = (await request.json()) as SaveProficiencyPayload;
@@ -51,6 +62,16 @@ export async function POST(request: Request) {
   }
 
   const { email, pctCorrect, levelId, levelLabel, topicScores, completedAt } = body;
+
+  // Email in the payload must match the authenticated session. Without
+  // this check a logged-in user could overwrite anyone else's exam
+  // history by passing a different email.
+  if (user.email?.toLowerCase() !== email.toLowerCase()) {
+    return NextResponse.json(
+      { error: 'Payload email does not match session.' },
+      { status: 403 },
+    );
+  }
 
   if (isSupabaseConfigured()) {
     await upsertProficiencyResult(email, {
