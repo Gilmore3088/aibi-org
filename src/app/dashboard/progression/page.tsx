@@ -20,7 +20,7 @@ const CERT_LEVELS: readonly CertLevel[] = [
     label: 'AiBI-Foundation',
     color: 'var(--color-terra)',
     colorBg: 'var(--color-terra-pale)',
-    product: 'Practitioner',
+    product: 'Foundation',
   },
   {
     code: 'aibi-s',
@@ -56,7 +56,7 @@ const DEV_ENROLLMENTS: readonly MockEnrollment[] = [
     total_modules: 9,
     enrolled_at: '2026-02-10T09:00:00.000Z',
     completed_at: '2026-03-18T14:22:00.000Z',
-    certificate_id: 'AIBI-P-2026-0042',
+    certificate_id: 'AIBIP-2026-0042',
   },
 ];
 
@@ -352,7 +352,7 @@ function NextStepBanner({ enrollments }: { enrollments: readonly MockEnrollment[
 
   let accent = 'var(--color-terra)';
   let heading = 'Start with AiBI-Foundation';
-  let body = 'Build your AI foundation. The Practitioner certification is where every transformation begins.';
+  let body = 'Build your AI foundation. The Foundation certification is where every transformation begins.';
   let href = '/courses/foundation/program/purchase';
   let cta = 'View AiBI-Foundation';
 
@@ -456,7 +456,7 @@ export default function ProgressionPage() {
             Your certification journey.
           </h1>
           <p className="text-[color:var(--color-slate)] mt-2 text-base leading-relaxed max-w-2xl">
-            Track your progress from Practitioner through Specialist to Leader across The AI Banking Institute&apos;s full certification ladder.
+            Track your progress from Foundation through Specialist to Leader across The AI Banking Institute&apos;s full certification ladder.
           </p>
         </header>
 
