@@ -1,8 +1,8 @@
 // /coming-soon — minimal pre-launch holding page.
 //
 // One sentence, no links, no CTAs. Surfaced via the COMING_SOON=true
-// middleware rewrite while the public site is dark. /auth and /admin
-// bypass the middleware so the operator can still log in.
+// middleware rewrite while the public site is dark. /auth bypasses the
+// middleware so the operator can still log in.
 
 import type { Metadata } from 'next';
 

@@ -1,8 +1,7 @@
 // POST /api/inquiry
-// Certification inquiry form — validates, logs, stubs HubSpot adapter.
+// Certification inquiry form — validates, logs, sends ack email.
 
 import { NextResponse } from 'next/server';
-import { upsertContact } from '@/lib/hubspot';
 import { sendInquiryAck } from '@/lib/resend';
 import { ensureAuthUser } from '@/lib/supabase/auth-admin';
 
@@ -50,13 +49,6 @@ export async function POST(request: Request) {
     ...body,
     at: new Date().toISOString(),
   });
-
-  await upsertContact({
-    email: body.email,
-    assessmentScore: 0,
-    scoreTier: 'inquiry-only',
-    institutionName: body.institution,
-  }).catch((err) => console.warn('[inquiry] hubspot skip', err));
 
   // Provision a Supabase Auth account for the inquirer so they have a
   // real identity if they later take the assessment or buy a course.

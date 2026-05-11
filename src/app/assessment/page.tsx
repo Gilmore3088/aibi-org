@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { trackEvent } from '@/lib/analytics/plausible';
 import { useAssessmentV2, QUESTIONS_PER_SESSION } from './_lib/useAssessmentV2';
 import { QuestionCard } from './_components/QuestionCard';
 import { ProgressBar } from './_components/ProgressBar';
@@ -26,15 +25,10 @@ export default function AssessmentPage() {
 
   useEffect(() => {
     setMounted(true);
-    trackEvent('assessment_start');
   }, []);
 
   useEffect(() => {
     if (state.isComplete && state.phase === 'score') {
-      trackEvent('assessment_complete', {
-        score: state.totalScore,
-        tier: state.tier?.id ?? 'unknown',
-      });
       // Move focus to the score heading so screen readers announce the
       // transition and keyboard users land somewhere meaningful instead of
       // on the now-unmounted last answer button.
@@ -100,9 +94,6 @@ export default function AssessmentPage() {
               {isLowerTier ? (
                 <a
                   href="/courses/foundation/program"
-                  onClick={() =>
-                    trackEvent('purchase_initiated', { product: 'aibi-p' })
-                  }
                   className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
                 >
                   Explore the Practitioner Course
@@ -110,9 +101,6 @@ export default function AssessmentPage() {
               ) : (
                 <a
                   href={BRIEFING_URL}
-                  onClick={() =>
-                    trackEvent('briefing_booked', { source: 'assessment' })
-                  }
                   className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
                 >
                   Book Your Executive Briefing
@@ -147,7 +135,6 @@ export default function AssessmentPage() {
                 maxScore={48}
                 dimensionBreakdown={state.getDimensionBreakdown()}
                 onCaptured={(email, extras) => {
-                  trackEvent('email_captured', { tier: state.tier?.id ?? 'unknown' });
                   setCapturedEmail(email);
                   setCapturedFirstName(extras.firstName ?? null);
                   setCapturedInstitution(extras.institutionName ?? null);

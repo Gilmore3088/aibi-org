@@ -20,13 +20,11 @@ import {
   sendCoursePurchaseInstitution,
   sendIndepthAssessmentPurchase,
 } from '@/lib/resend';
-import { normalizeProduct } from '@/lib/products/normalize';
 
-function nextPathForProduct(product: string | undefined, mode: string | undefined): string {
+function nextPathForProduct(product: string | undefined): string {
   if (product === 'in-depth-assessment') return '/assessment/in-depth/take';
-  // normalizeProduct collapses legacy 'aibi-p' (Stripe webhook retries from
-  // 2026-Q1) to canonical 'foundation' so we only test one value here.
-  if (normalizeProduct(product) === 'foundation' && mode === 'institution') return '/admin';
+  // Institution leaders land on the same course page as individuals for now;
+  // dedicated leader-dashboard surface is tracked in issue #48.
   return '/courses/foundation/program';
 }
 
@@ -95,7 +93,6 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     const email = session.customer_details?.email ?? session.metadata?.user_email ?? null;
     const amountPaid = formatAmount(session.amount_total, session.currency);
     const product = session.metadata?.product;
-    const mode = session.metadata?.mode;
 
     if (email) {
       // Provision a Supabase auth account for the buyer (idempotent) and
@@ -106,7 +103,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       let magicLinkUrl: string | null = null;
       try {
         await ensureAuthUser(email);
-        magicLinkUrl = await generateMagicLink(email, nextPathForProduct(product, mode));
+        magicLinkUrl = await generateMagicLink(email, nextPathForProduct(product));
       } catch (err) {
         console.warn('[webhook] auth-admin magic-link skip', err);
       }

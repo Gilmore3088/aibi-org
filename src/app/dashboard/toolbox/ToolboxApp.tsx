@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState, type RefObject } from 'react';
 import { TOOLBOX_TEMPLATES } from '@/content/toolbox/templates';
-import { trackEvent } from '@/lib/analytics/plausible';
 import { generateToolboxMarkdown } from '@/lib/toolbox/markdown';
 import {
   isWorkflowSkill,
@@ -216,7 +215,6 @@ export function ToolboxApp() {
       setTemplateSkill(saved);
     }
     setNotice('Skill saved to your Toolbox.');
-    trackEvent('toolbox_skill_saved', { maturity: saved.maturity, source: saved.templateId ? 'template' : 'custom' });
     return saved;
   }
 
@@ -238,7 +236,6 @@ export function ToolboxApp() {
     setMessages(nextMessages);
     setInput('');
     setRunning(true);
-    trackEvent('toolbox_scenario_run', { source: activeSkill.templateId ? 'template' : 'custom' });
     try {
       const res = await fetch('/api/toolbox/run/stream', {
         method: 'POST',
@@ -318,7 +315,6 @@ export function ToolboxApp() {
 
   function exportSkill(skill: ToolboxSkill) {
     downloadText(`${slugFromCommand(skill.cmd)}.md`, generateToolboxMarkdown(skill));
-    trackEvent('toolbox_skill_exported', { maturity: skill.maturity });
   }
 
   function copySkill(skill: ToolboxSkill) {

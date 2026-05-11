@@ -308,7 +308,7 @@ function TrustStrip() {
   return (
     <div className="mt-6 grid sm:grid-cols-3 gap-x-6 gap-y-3 px-2">
       {[
-        ['Where this goes', 'HubSpot for our records and ConvertKit only if you opt in. Never sold.'],
+        ['Where this goes', 'Our records and your newsletter list only if you opt in. Never sold.'],
         ['What we store', 'Your email, answers, and score. Removable on request — email hello@aibankinginstitute.com.'],
         ['No surprise sales calls', 'Briefings happen by request only. We will not cold-call your line.'],
       ].map(([title, body]) => (

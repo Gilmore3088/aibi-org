@@ -6,7 +6,6 @@ import {
   playgroundMessagesToToolboxSkill,
   libraryEntryToToolboxSkill,
 } from '@/lib/toolbox/save-mappers';
-import { trackEvent } from '@/lib/analytics/plausible';
 import { getPromptById } from '@content/courses/foundation-program/prompt-library';
 import type {
   ToolboxMessage,
@@ -153,11 +152,6 @@ export async function POST(request: Request): Promise<NextResponse> {
       { status: 500 },
     );
   }
-
-  trackEvent('save_to_toolbox_clicked', {
-    origin: body.origin,
-    source_ref: sourceRef ?? '',
-  });
 
   return NextResponse.json({ id: (data as { id: string }).id });
 }
