@@ -1,7 +1,18 @@
--- 2026-05-09 brand refresh — rename product 'aibi-p' to 'foundations'
+-- 2026-05-09 brand refresh — rename product 'aibi-p' to 'foundations' (plural)
 --
--- APPLIED 2026-05-09 via the Supabase MCP. This file is kept for the
--- migration history; re-running it is idempotent.
+-- HISTORICAL — DO NOT RE-APPLY. Original number was 00028 (collided with
+-- 00028_add_foundation_product_value.sql from PR #45). Renamed to 00028a
+-- on 2026-05-11 to break the on-disk collision; the migration itself was
+-- applied directly via Supabase MCP on 2026-05-10 and is recorded in the
+-- supabase migration log as `rename_aibi_p_product_to_foundations`.
+--
+-- The plural `'foundations'` rows it produced have since been re-flipped
+-- to canonical singular `'foundation'` by migration 00030
+-- (widen_foundation_product_and_backfill_plural). Do not re-run this
+-- file — it would re-introduce the plural value the recovery migration
+-- removed.
+--
+-- Kept for migration history only.
 --
 -- Backfill rows from the legacy product identifier ('aibi-p') to the
 -- new canonical identifier ('foundations'). Production schema only has

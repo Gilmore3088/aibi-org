@@ -1,6 +1,16 @@
 -- 00029_backfill_foundation_product.sql
 -- Phase 7 of the aibi-p -> foundation rename migration.
 --
+-- OBSOLETE — DO NOT APPLY. This migration would flip 'aibi-p' -> 'foundation',
+-- but the brand-refresh migration (00028a_legacy_rename_applied_2026_05_10.sql)
+-- had already moved every 'aibi-p' row to 'foundations' (plural) before PR #45
+-- landed, so there were no 'aibi-p' rows for this backfill to find. It was
+-- never applied to production. The actual recovery from 'foundations' plural
+-- to 'foundation' singular is in 00030_widen_foundation_product_and_backfill_plural.sql.
+--
+-- Kept for repo history. Re-running it now is a no-op (there are zero rows
+-- with product='aibi-p' anywhere in prod).
+--
 -- DEPLOY ORDER MATTERS. Apply this migration ONLY after:
 --   1. 00028_add_foundation_product_value.sql is applied (CHECK constraint accepts both)
 --   2. The application code from Phase 3 is deployed (dual-read queries via .in())
