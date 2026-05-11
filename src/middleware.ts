@@ -66,6 +66,7 @@ const COMING_SOON_BYPASS_PREFIXES: readonly string[] = [
   '/prompt-cards',
   '/certifications',
   '/results',
+  '/redesign-checklist', // internal QA checklist for the Ledger redesign
 ];
 
 export async function middleware(request: NextRequest): Promise<NextResponse> {

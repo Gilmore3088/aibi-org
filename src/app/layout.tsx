@@ -30,6 +30,7 @@ const CHROMELESS_PATHS: readonly string[] = [
   '/lms-preview',
   '/courses/foundation-preview',
   '/auth', // Ledger-redesigned auth surfaces render their own brand lockup
+  '/redesign-checklist',
 ];
 
 const cormorant = Cormorant_Garamond({
