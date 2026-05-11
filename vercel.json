@@ -7,12 +7,20 @@
     "src/app/api/assessment/pdf/cron-cleanup/route.ts": {
       "maxDuration": 30,
       "memory": 512
+    },
+    "src/app/api/cron/cleanup-rate-limits/route.ts": {
+      "maxDuration": 30,
+      "memory": 256
     }
   },
   "crons": [
     {
       "path": "/api/assessment/pdf/cron-cleanup",
       "schedule": "0 4 * * *"
+    },
+    {
+      "path": "/api/cron/cleanup-rate-limits",
+      "schedule": "30 4 * * *"
     }
   ]
 }

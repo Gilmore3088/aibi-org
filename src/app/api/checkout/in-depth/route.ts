@@ -11,6 +11,7 @@
 // 48-question assessment.
 
 import { NextResponse } from 'next/server';
+import { rateLimitOrFail, getRequestIp } from '@/lib/api/rate-limit';
 
 async function getStripe() {
   const { stripe } = await import('@/lib/stripe');
@@ -33,6 +34,15 @@ function getOrigin(request: Request): string {
 }
 
 export async function POST(request: Request) {
+  const limited = await rateLimitOrFail({
+    key: 'checkout-in-depth',
+    scope: 'ip',
+    identifier: getRequestIp(request),
+    max: 20,
+    windowSeconds: 3600,
+  });
+  if (limited) return limited;
+
   let body: CheckoutBody;
   try {
     body = (await request.json()) as CheckoutBody;

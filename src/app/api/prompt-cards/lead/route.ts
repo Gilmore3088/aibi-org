@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { subscribeToAssessmentForm } from '@/lib/mailerlite';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
+import { rateLimitOrFail, getRequestIp } from '@/lib/api/rate-limit';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const ROLES = new Set(['practitioner', 'compliance-risk', 'executive', 'training-buyer', 'other']);
@@ -13,6 +14,15 @@ interface LeadBody {
 }
 
 export async function POST(request: Request): Promise<NextResponse> {
+  const limited = await rateLimitOrFail({
+    key: 'prompt-cards-lead',
+    scope: 'ip',
+    identifier: getRequestIp(request),
+    max: 10,
+    windowSeconds: 3600,
+  });
+  if (limited) return limited;
+
   let body: LeadBody;
   try {
     body = (await request.json()) as LeadBody;

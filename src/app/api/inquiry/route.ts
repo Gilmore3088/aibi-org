@@ -4,6 +4,7 @@
 import { NextResponse } from 'next/server';
 import { sendInquiryAck } from '@/lib/resend';
 import { ensureAuthUser } from '@/lib/supabase/auth-admin';
+import { rateLimitOrFail, getRequestIp } from '@/lib/api/rate-limit';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -34,6 +35,15 @@ function isValid(p: InquiryPayload): p is {
 }
 
 export async function POST(request: Request) {
+  const limited = await rateLimitOrFail({
+    key: 'inquiry',
+    scope: 'ip',
+    identifier: getRequestIp(request),
+    max: 5,
+    windowSeconds: 3600,
+  });
+  if (limited) return limited;
+
   let body: InquiryPayload;
   try {
     body = (await request.json()) as InquiryPayload;
