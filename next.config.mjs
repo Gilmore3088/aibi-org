@@ -90,12 +90,51 @@ const nextConfig = {
       { source: '/consulting', destination: '/for-institutions/advisory', permanent: true },
     ];
   },
-  // Security headers applied to every route. CSP intentionally omitted from
-  // this pass — it needs per-origin tuning against a real preview (Supabase,
-  // Stripe, Calendly, Vercel Analytics, MailerLite) and a misconfigured CSP
-  // breaks the site silently. Added in a follow-up. The headers here are
-  // safe baseline values that work on every Next.js app.
+  // Security headers applied to every route.
+  //
+  // CSP is in REPORT-ONLY mode for now. Violations log to the browser
+  // console but do not block resource loads. Once a few preview-deploy
+  // smoke tests confirm zero unexpected violations, flip
+  // `Content-Security-Policy-Report-Only` → `Content-Security-Policy`
+  // in the header below to enforce.
+  //
+  // Origin whitelist:
+  //   - Supabase    *.supabase.co     (auth, storage, realtime, REST)
+  //   - Stripe      js.stripe.com, *.stripe.com, *.stripe.network, q.stripe.com
+  //                                   (checkout, fraud detection scripts)
+  //   - Vercel      vitals.vercel-insights.com, va.vercel-scripts.com
+  //                                   (Analytics + Speed Insights)
+  //   - Calendly    *.calendly.com, assets.calendly.com
+  //                                   (Executive Briefing embed)
+  //   - Google      fonts.googleapis.com, fonts.gstatic.com
+  //                                   (Newsreader + Geist + JetBrains Mono)
+  //
+  // MailerLite, Resend, Anthropic, OpenAI: server-side only — no client
+  // origins needed.
   async headers() {
+    const csp = [
+      "default-src 'self'",
+      // Next.js inlines hydration scripts; without 'unsafe-inline' the page
+      // does not interactively boot. 'unsafe-eval' is NOT included — Next.js
+      // 14 production builds don't require it.
+      "script-src 'self' 'unsafe-inline' https://js.stripe.com https://*.stripe.com https://va.vercel-scripts.com",
+      // Tailwind inline styles need 'unsafe-inline'. Google Fonts stylesheets too.
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+      "font-src 'self' data: https://fonts.gstatic.com",
+      // data:/blob: for image-resize previews and inline SVGs.
+      "img-src 'self' data: blob: https://*.supabase.co https://*.stripe.com https://q.stripe.com",
+      "media-src 'self' blob:",
+      "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.stripe.com https://*.stripe.com https://*.vercel-insights.com https://vitals.vercel-insights.com",
+      "frame-src https://js.stripe.com https://hooks.stripe.com https://checkout.stripe.com https://*.calendly.com",
+      "frame-ancestors 'self'",
+      "form-action 'self' https://checkout.stripe.com https://*.calendly.com",
+      "base-uri 'self'",
+      "object-src 'none'",
+      "manifest-src 'self'",
+      "worker-src 'self' blob:",
+      "upgrade-insecure-requests",
+    ].join('; ');
+
     return [
       {
         source: '/:path*',
@@ -126,6 +165,9 @@ const nextConfig = {
           // not strictly required (we don't use SharedArrayBuffer) so we
           // keep it permissive enough for Stripe/Calendly popups.
           { key: 'Cross-Origin-Opener-Policy', value: 'same-origin-allow-popups' },
+          // CSP in report-only mode. Flip the key to `Content-Security-Policy`
+          // to enforce after preview validation.
+          { key: 'Content-Security-Policy-Report-Only', value: csp },
         ],
       },
     ];
