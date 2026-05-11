@@ -41,7 +41,7 @@ export default function TheSkillNotThePromptArticle() {
       <article className="max-w-3xl mx-auto">
         <header className="mb-12">
           <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-4">
-            Practitioner Guide &middot; April 2026
+            Foundation Guide &middot; April 2026
           </p>
           <h1 className="font-serif text-5xl md:text-6xl text-[color:var(--color-ink)] leading-[1.05] mb-6">
             The skill, not the prompt.

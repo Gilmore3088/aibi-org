@@ -211,7 +211,7 @@ export default function DashboardPage() {
                 {tier && (
                   <p className="mt-4 text-sm text-[color:var(--color-ink)]/75 leading-relaxed">
                     Your readiness tier is <strong className="text-[color:var(--color-terra)]">{tier.label}</strong>.
-                    The Practitioner program turns the diagnostic into hands-on
+                    The Foundation program turns the diagnostic into hands-on
                     skills your team can apply this week.
                   </p>
                 )}
@@ -289,7 +289,7 @@ export default function DashboardPage() {
                   AiBI-Foundation
                 </h2>
                 <p className="text-sm text-[color:var(--color-slate)] mt-1">
-                  Banking AI Practitioner
+                  AiBI-Foundation
                 </p>
               </div>
               <p className="font-mono text-xl text-[color:var(--color-terra)] tabular-nums">

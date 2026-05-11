@@ -5,7 +5,7 @@ import type { ReactNode } from 'react';
 // ================= STATIC CONFIG (per course, serializable) =================
 
 export interface CourseBrand {
-  readonly name: string;              // 'Banking AI Practitioner'
+  readonly name: string;              // 'AiBI-Foundation'
   readonly shortCode: string;         // 'AiBI-Foundation'
   readonly wordmark: string;          // displayed in sidebar
   readonly accentColorVar: string;    // 'var(--color-terra)' | 'var(--color-cobalt)' | ...

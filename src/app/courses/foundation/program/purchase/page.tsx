@@ -14,7 +14,7 @@ import { foundationProgramCourseConfig } from '@content/courses/foundation-progr
 export const metadata: Metadata = {
   title: 'Enroll in AiBI-Foundation | The AI Banking Institute',
   description:
-    'Enroll in the Banking AI Practitioner course. Twelve modules, practical artifacts, and the AiBI-Foundation credential upon completion.',
+    'Enroll in the AiBI-Foundation course. Twelve modules, practical artifacts, and the AiBI-Foundation credential upon completion.',
 };
 
 const COURSE_FEATURES = [
@@ -107,7 +107,7 @@ export default async function PurchasePage() {
 
       <section className="mb-8">
         <h1 className="font-serif text-3xl font-bold leading-tight text-[color:var(--color-ink)] mb-2">
-          Banking AI <span className="text-[color:var(--color-terra)] italic">Practitioner</span>
+          Banking AI <span className="text-[color:var(--color-terra)] italic">Foundation</span>
         </h1>
         <p className="text-sm text-[color:var(--color-ink)]/75 mb-4 max-w-2xl">
           {foundationProgramCourseConfig.promise} In less than two weeks, learn how to

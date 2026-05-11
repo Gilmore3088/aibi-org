@@ -1,16 +1,16 @@
-// AiBI-Foundation Module 12: Final Practitioner Lab
+// AiBI-Foundation Module 12: Final Foundation Lab
 // Pillar: Application | Estimated: 45 minutes
-// Key Output: Final Practitioner Lab Package
+// Key Output: Final Foundation Lab Package
 
 import type { Module } from './types';
 
 export const module12: Module = {
   number: 12,
   id: 'm12-final-practitioner-lab',
-  title: 'Final Practitioner Lab',
+  title: 'Final Foundation Lab',
   pillar: 'application',
   estimatedMinutes: 45,
-  keyOutput: 'Final Practitioner Lab Package',
+  keyOutput: 'Final Foundation Lab Package',
   sections: [
     {
       id: 'm12-lab-purpose',
@@ -47,7 +47,7 @@ The final lab should demonstrate safe judgment, not risky ambition.`,
   activities: [
     {
       id: '12.1',
-      title: 'Plan Your Final Practitioner Lab',
+      title: 'Plan Your Final Foundation Lab',
       description:
         'Define your final workflow, prompt, source context, review step, and artifact evidence.',
       type: 'form',

@@ -22,7 +22,7 @@ const JOURNEY_STEPS: Record<string, JourneyStep> = {
   'aibi-p': {
     label: 'Next in your journey',
     heading: 'Ready to scale your skills across a department?',
-    body: 'AiBI-S is coming after Practitioner is validated. It will focus on workflow automation, agents, internal AI systems, and team-level rollout.',
+    body: 'AiBI-S is coming after Foundation is validated. It will focus on workflow automation, agents, internal AI systems, and team-level rollout.',
     href: '/coming-soon?interest=specialist',
     cta: 'Join AiBI-S Waitlist',
     accent: 'var(--color-amber)',
@@ -31,7 +31,7 @@ const JOURNEY_STEPS: Record<string, JourneyStep> = {
   'aibi-s': {
     label: 'Next in your journey',
     heading: 'Ready to lead your institution\'s AI strategy?',
-    body: 'AiBI-L is coming after Practitioner is validated. It will focus on executive confidence, governance, rollout, and institution-level AI leadership.',
+    body: 'AiBI-L is coming after Foundation is validated. It will focus on executive confidence, governance, rollout, and institution-level AI leadership.',
     href: '/coming-soon?interest=leader',
     cta: 'Join AiBI-L Waitlist',
     accent: 'var(--color-cobalt)',

@@ -23,7 +23,7 @@ function getStepsForTier(tierId: Tier['id']): readonly NextStep[] {
       return [
         {
           label: 'Recommended',
-          title: 'Start with the Practitioner course',
+          title: 'Start with the Foundation course',
           description:
             'Nine self-paced modules that build hands-on AI proficiency for every staff member. Earn the AiBI-Foundation credential with a real work product — not a multiple-choice test.',
           href: '/courses/foundation/program',
@@ -46,7 +46,7 @@ function getStepsForTier(tierId: Tier['id']): readonly NextStep[] {
       return [
         {
           label: 'Recommended',
-          title: 'Earn the Practitioner credential',
+          title: 'Earn the Foundation credential',
           description:
             'Your institution has early adopters. Give them the tools to lead with confidence. The AiBI-Foundation course builds governed, repeatable AI skills across nine self-paced modules.',
           href: '/courses/foundation/program',
@@ -71,7 +71,7 @@ function getStepsForTier(tierId: Tier['id']): readonly NextStep[] {
           label: 'Recommended',
           title: 'Join the Specialist waitlist',
           description:
-            'You have traction. AiBI-S will focus on workflow automation, agents, internal AI systems, and team-level rollout after Practitioner is validated.',
+            'You have traction. AiBI-S will focus on workflow automation, agents, internal AI systems, and team-level rollout after Foundation is validated.',
           href: '/coming-soon?interest=specialist',
           cta: 'Join AiBI-S Waitlist',
           accent: 'var(--color-cobalt)',
@@ -94,7 +94,7 @@ function getStepsForTier(tierId: Tier['id']): readonly NextStep[] {
           label: 'Recommended',
           title: 'Join the Leader waitlist',
           description:
-            'AiBI-L will focus on executive confidence, governance, rollout, and institution-level AI leadership after the Practitioner loop is validated.',
+            'AiBI-L will focus on executive confidence, governance, rollout, and institution-level AI leadership after the Foundation loop is validated.',
           href: '/coming-soon?interest=leader',
           cta: 'Join AiBI-L Waitlist',
           accent: 'var(--color-sage)',
@@ -104,7 +104,7 @@ function getStepsForTier(tierId: Tier['id']): readonly NextStep[] {
           label: 'Build enduring capability',
           title: 'Institution-wide capability program',
           description:
-            'A recurring cohort cadence — Practitioner, Specialist, and Leader — scheduled so every banker, new or tenured, has a path to proficiency. Leadership Advisory available alongside for your AI leader.',
+            'A recurring cohort cadence — Foundation, Specialist, and Leader — scheduled so every banker, new or tenured, has a path to proficiency. Leadership Advisory available alongside for your AI leader.',
           href: '/for-institutions',
           cta: 'See enrollment options',
           accent: 'var(--color-terra)',

@@ -194,10 +194,10 @@ export default async function EducationPage() {
           className="mt-s6"
           rungs={[
             {
-              level: "Practitioner",
+              level: "Foundation",
               stepLabel: "01",
               code: "AiBI-Foundation",
-              title: "Banking AI Practitioner",
+              title: "AiBI-Foundation",
               designation: "Personal AI proficiency for every staff member",
               pillar: "application",
               facts: [
@@ -279,7 +279,7 @@ export default async function EducationPage() {
             </h2>
             <p className="text-body-md text-cream mt-s4 leading-relaxed max-w-narrow">
               AiBI-Foundation team pricing starts at 10 seats. Specialist and Leader
-              programs are coming after the Practitioner is validated with real learners.
+              programs are coming after the Foundation is validated with real learners.
             </p>
           </div>
           <div>

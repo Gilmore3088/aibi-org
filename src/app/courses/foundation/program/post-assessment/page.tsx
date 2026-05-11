@@ -13,7 +13,7 @@ import { PostAssessmentClient } from './_PostAssessmentClient';
 export const metadata: Metadata = {
   title: 'Measure Your Growth | AiBI-Foundation | The AI Banking Institute',
   description:
-    'Take the post-course assessment to measure how your AI readiness has changed after completing the AiBI-Foundation Banking AI Practitioner course.',
+    'Take the post-course assessment to measure how your AI readiness has changed after completing the AiBI-Foundation course.',
 };
 
 const REQUIRED_MODULES = 12;

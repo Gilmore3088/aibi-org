@@ -1062,7 +1062,7 @@ The instructor needs a dashboard to manage the cohort:
 ### 13.1 Curriculum Progression
 
 ```
-Free Assessment → AiBI-Foundation (Practitioner) → AiBI-S (Specialist) → AiBI-L (Leader)
+Free Assessment → AiBI-Foundation → AiBI-S (Specialist) → AiBI-L (Leader)
          $0              $295                  $1,495              $2,800+
      12 questions      Self-paced            6-week cohort       1-day workshop
      All staff         All staff             Dept managers        C-suite/Board

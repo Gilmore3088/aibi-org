@@ -85,7 +85,7 @@ export function PromptCardsExperience() {
                 href="/courses/foundation/program"
                 className="border border-[color:var(--color-ink)]/25 px-6 py-3 text-center font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-ink)] transition-colors hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)]"
               >
-                Explore Practitioner
+                Explore AiBI-Foundation
               </Link>
             </div>
           </div>
@@ -224,14 +224,14 @@ export function PromptCardsExperience() {
             </p>
             <h2 className="mt-2 font-serif text-4xl leading-tight">Ready for the full AiBI Method?</h2>
             <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[color:var(--color-linen)]/75">
-              Practitioner turns these habits into training. Toolbox turns the method into saved, tested, exportable workflows.
+              Foundation turns these habits into training. Toolbox turns the method into saved, tested, exportable workflows.
             </p>
           </div>
           <Link
             href="/courses/foundation/program"
             className="bg-[color:var(--color-terra)] px-6 py-3 text-center font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-linen)]"
           >
-            View Practitioner
+            View AiBI-Foundation
           </Link>
         </div>
       </section>
@@ -317,7 +317,7 @@ function CardDetail(props: {
       <div className="mt-6 flex flex-col gap-3 border-t border-[color:var(--color-ink)]/10 pt-5 sm:flex-row sm:items-center sm:justify-between">
         <p className="font-serif text-2xl text-[color:var(--color-ink)]">Ready for the full AiBI Method?</p>
         <Link href="/courses/foundation/program" className="bg-[color:var(--color-ink)] px-4 py-3 text-center font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-linen)]">
-          Practitioner Course
+          Foundation course
         </Link>
       </div>
     </article>
@@ -387,7 +387,7 @@ function LeadModal({ onClose, onUnlocked }: { readonly onClose: () => void; read
           <label className="block">
             <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">Role</span>
             <select value={role} onChange={(event) => setRole(event.target.value)} className="mt-2 w-full border border-[color:var(--color-ink)]/15 bg-white px-3 py-3 text-sm">
-              <option value="practitioner">Practitioner</option>
+              <option value="foundation">Foundation</option>
               <option value="compliance-risk">Compliance / Risk</option>
               <option value="executive">Executive</option>
               <option value="training-buyer">Training Buyer</option>
