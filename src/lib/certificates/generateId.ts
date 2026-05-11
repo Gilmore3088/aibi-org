@@ -1,4 +1,4 @@
-// Certificate ID generator for AiBI-Practitioner credentials.
+// Certificate ID generator for AiBI-Foundation credentials.
 // Produces IDs in format: AIBIP-YYYY-XXXXXX
 // where YYYY is the current year and XXXXXX is 6 random chars from an
 // unambiguous 30-character alphabet (no 0/O/1/I/L to prevent confusion).
@@ -22,5 +22,9 @@ export function generateCertificateId(): string {
     .map((byte) => ALPHABET[byte % ALPHABET.length])
     .join('');
 
+  // AIBIP- prefix retained for credential-ID continuity across the
+  // aibi-p -> foundation rename. Existing certificates carry AIBIP- IDs;
+  // changing the prefix would split the credential namespace and break
+  // any external verification that has cached an issued ID.
   return `AIBIP-${year}-${randomPart}`;
 }

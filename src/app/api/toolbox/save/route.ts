@@ -7,7 +7,7 @@ import {
   libraryEntryToToolboxSkill,
 } from '@/lib/toolbox/save-mappers';
 import { trackEvent } from '@/lib/analytics/plausible';
-import { getPromptById } from '@content/courses/aibi-p/prompt-library';
+import { getPromptById } from '@content/courses/foundation-program/prompt-library';
 import type {
   ToolboxMessage,
   ToolboxSkill,

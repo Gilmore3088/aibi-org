@@ -1,5 +1,5 @@
 // AiBI-S Course Content Types
-// Pattern follows content/courses/aibi-p/types.ts
+// Pattern follows content/courses/foundation/program/types.ts
 // All content is Markdown strings for Kajabi-migration-readiness
 // AiBI-S uses Pillar B cobalt color system throughout
 
@@ -102,7 +102,7 @@ export interface RoleTrackContent {
   readonly skillExamples: readonly string[];   // Concrete banking examples for this track
 }
 
-// Activity field types mirror AiBI-P for consistency
+// Activity field types mirror AiBI-Foundation for consistency
 export type ActivityType = 'free-text' | 'form' | 'drill' | 'builder' | 'iteration' | 'audit';
 
 export interface ActivityField {

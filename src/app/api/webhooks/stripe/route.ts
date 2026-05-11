@@ -1,5 +1,5 @@
 // POST /api/webhooks/stripe
-// Handles Stripe webhook events for AiBI-Practitioner course enrollment provisioning.
+// Handles Stripe webhook events for AiBI-Foundation course enrollment provisioning.
 //
 // Security: Every request is verified via stripe.webhooks.constructEvent before
 // any processing occurs. Unverified requests are rejected with 400.
@@ -20,11 +20,14 @@ import {
   sendCoursePurchaseInstitution,
   sendIndepthAssessmentPurchase,
 } from '@/lib/resend';
+import { normalizeProduct } from '@/lib/products/normalize';
 
 function nextPathForProduct(product: string | undefined, mode: string | undefined): string {
   if (product === 'in-depth-assessment') return '/assessment/in-depth/take';
-  if (product === 'aibi-p' && mode === 'institution') return '/admin';
-  return '/courses/aibi-p';
+  // normalizeProduct collapses legacy 'aibi-p' (Stripe webhook retries from
+  // 2026-Q1) to canonical 'foundation' so we only test one value here.
+  if (normalizeProduct(product) === 'foundation' && mode === 'institution') return '/admin';
+  return '/courses/foundation/program';
 }
 
 function formatAmount(amountCents: number | null | undefined, currency: string | null | undefined): string {

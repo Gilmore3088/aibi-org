@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect, useReducer } from 'react';
-import type { Unit, UnitLearnerState, ChatTurn, RubricScore } from '../../../../../../../../lib/aibi-s/types';
-import { advance, initialState, canAdvance, type Action } from '../../../../../../../../lib/aibi-s/beat-state';
-import { loadUnitState, saveUnitState, clearUnitState } from '../../../../../../../../lib/aibi-s/persist';
+import type { Unit, UnitLearnerState, ChatTurn, RubricScore } from '@/lib/aibi-s/types';
+import { advance, initialState, canAdvance, type Action } from '@/lib/aibi-s/beat-state';
+import { loadUnitState, saveUnitState, clearUnitState } from '@/lib/aibi-s/persist';
 import { CourseItemHeader } from '@/lib/course-harness/CourseItemHeader';
 import { CourseTabs } from '@/lib/course-harness/CourseTabs';
 import type { TabDef, ResolvedCourseItem, ResolvedCourseSection, CourseConfig } from '@/lib/course-harness/types';

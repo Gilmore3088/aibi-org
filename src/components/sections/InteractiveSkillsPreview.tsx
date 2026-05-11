@@ -120,7 +120,7 @@ export interface InteractiveSkillsPreviewProps {
 
 export function InteractiveSkillsPreview({
   eyebrow = 'Inside the course',
-  heading = 'Learn these capabilities in AiBI-Practitioner.',
+  heading = 'Learn these capabilities in AiBI-Foundation.',
   subhead = 'Models, prompts, skills, agents — and the judgment to use them inside a regulated institution.',
 }: InteractiveSkillsPreviewProps = {}) {
   const [activeId, setActiveId] = useState<string>(CAPABILITIES[0].id);
@@ -172,7 +172,7 @@ export function InteractiveSkillsPreview({
             </p>
           </div>
           <Link
-            href="/courses/aibi-p"
+            href="/courses/foundation/program"
             className="inline-flex w-fit items-center font-serif-sc text-mono-sm uppercase tracking-widest text-terra border-b border-terra pb-[2px] hover:text-terra-light hover:border-terra-light transition-colors"
           >
             View the curriculum →
@@ -517,7 +517,7 @@ function AgentsPanel() {
  * Renders flagship prompts (content/curriculum/ai-prompts.ts) — single,
  * reusable instruction templates from the course's prompt library —
  * grouped by role. Title + platform tag + summary. Full prompt text
- * stays in content/courses/aibi-p/prompt-library.ts.
+ * stays in content/courses/foundation/program/prompt-library.ts.
  */
 function PromptsPanel() {
   const grouped = PROMPT_ROLE_ORDER.map((role) => ({

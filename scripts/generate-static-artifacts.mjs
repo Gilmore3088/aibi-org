@@ -1,6 +1,6 @@
 /**
  * generate-static-artifacts.mjs
- * Generates two static brand-consistent PDFs for the AiBI-P course:
+ * Generates two static brand-consistent PDFs for the AiBI-Foundation course:
  *   1. public/artifacts/regulatory-cheatsheet.pdf  (ARTF-01)
  *   2. public/artifacts/platform-feature-reference-card.pdf (ARTF-05)
  *
@@ -568,7 +568,7 @@ function RegulatoryCheatsheet() {
       ),
 
       React.createElement(PageFooter, {
-        center: 'ARTF-01  \u00b7  AiBI-P: Banking AI Practitioner',
+        center: 'ARTF-01  \u00b7  AiBI-Foundation',
         right: `AIBankingInstitute.com  \u00b7  ${FOOTER_DATE}`,
       })
     ),
@@ -634,7 +634,7 @@ function RegulatoryCheatsheet() {
       ),
 
       React.createElement(PageFooter, {
-        center: 'ARTF-01  \u00b7  AiBI-P: Banking AI Practitioner',
+        center: 'ARTF-01  \u00b7  AiBI-Foundation',
         right: `AIBankingInstitute.com  \u00b7  ${FOOTER_DATE}`,
       })
     )
@@ -885,7 +885,7 @@ function PlatformReferenceCard() {
       ),
 
       React.createElement(PageFooter, {
-        center: 'ARTF-05  \u00b7  AiBI-P: Banking AI Practitioner',
+        center: 'ARTF-05  \u00b7  AiBI-Foundation',
         right: `AIBankingInstitute.com  \u00b7  ${FOOTER_DATE}`,
       })
     ),
@@ -952,7 +952,7 @@ function PlatformReferenceCard() {
       ),
 
       React.createElement(PageFooter, {
-        center: 'ARTF-05  \u00b7  AiBI-P: Banking AI Practitioner',
+        center: 'ARTF-05  \u00b7  AiBI-Foundation',
         right: `AIBankingInstitute.com  \u00b7  ${FOOTER_DATE}`,
       })
     )

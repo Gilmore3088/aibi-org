@@ -6,7 +6,7 @@
  *
  *   <PillarCard pillar="application" stripe>
  *     <PillarCard.Eyebrow>01 · Foundational</PillarCard.Eyebrow>
- *     <PillarCard.Title>AiBI-Practitioner</PillarCard.Title>
+ *     <PillarCard.Title>AiBI-Foundation</PillarCard.Title>
  *     <PillarCard.Designation>Banking AI Practitioner · The Institute</PillarCard.Designation>
  *     ...
  *   </PillarCard>

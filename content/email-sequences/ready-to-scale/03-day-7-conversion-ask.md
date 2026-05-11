@@ -10,7 +10,7 @@ tags:
 
 {{ subscriber.first_name | default: "Hi" }} —
 
-A week ago you completed the readiness assessment and scored in Ready to Scale. We do not send the AiBI-P enrollment ask to your tier. Your team is past where AiBI-P starts.
+A week ago you completed the readiness assessment and scored in Ready to Scale. We do not send the AiBI-Foundation enrollment ask to your tier. Your team is past where AiBI-Foundation starts.
 
 The question for institutions at your level is not "how do we adopt." It is "who is the AI judgment in the room when this gets harder."
 

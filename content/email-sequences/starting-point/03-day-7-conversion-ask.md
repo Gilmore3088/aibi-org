@@ -2,7 +2,7 @@
 tier: starting-point
 sequence_position: 3
 delay: 7 days
-subject: AiBI-P starts when you're ready
+subject: AiBI-Foundation starts when you're ready
 preheader: Twelve short modules. SAFE framework. Built for community banks.
 tags:
   - aibi-assessment-startingpoint
@@ -12,7 +12,7 @@ tags:
 
 A week ago you completed the readiness assessment and scored in the Starting Point tier. The diagnosis was clear: skills first, tools second.
 
-The AiBI-P certification is the answer:
+The AiBI-Foundation certification is the answer:
 
 - **Twelve modules**, designed to fit a banker's calendar — most learners finish in 2–3 weeks of focused work.
 - **SAFE framework** baked into every exercise. Your team learns prompt patterns alongside the policy guardrails to use them safely.
@@ -27,7 +27,7 @@ What you get when your team finishes:
 
 That is the difference between "AI is on the agenda" and "AI is on the floor."
 
-[**Enroll your team in AiBI-P**](https://aibankinginstitute.com/courses/aibi-p)
+[**Enroll your team in AiBI-Foundation**](https://aibankinginstitute.com/courses/foundation/program)
 
 If you would rather walk the diagnosis through with a person first — your results, your institution, your priorities — book a 30-minute Executive Briefing instead. No hard sell.
 

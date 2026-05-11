@@ -18,7 +18,7 @@ type Mode =
   | { kind: 'assessment-only'; tierLabel: string; score: number; maxScore: number }
   | { kind: 'enrolled'; currentModule: number; completedCount: number; totalModules: number };
 
-const TOTAL_AIBIP_MODULES = 12;
+const TOTAL_FOUNDATION_PROGRAM_MODULES = 12;
 
 export function HomeContextStrip() {
   const [mode, setMode] = useState<Mode>({ kind: 'hidden' });
@@ -61,7 +61,7 @@ export function HomeContextStrip() {
           kind: 'enrolled',
           currentModule: enrollment.currentModule,
           completedCount: enrollment.completedModules.length,
-          totalModules: TOTAL_AIBIP_MODULES,
+          totalModules: TOTAL_FOUNDATION_PROGRAM_MODULES,
         });
         return;
       }
@@ -108,7 +108,7 @@ export function HomeContextStrip() {
           ({mode.completedCount} complete).
         </p>
         <Link
-          href={`/courses/aibi-p/${mode.currentModule}`}
+          href={`/courses/foundation/program/${mode.currentModule}`}
           className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] hover:text-[color:var(--color-ink)]"
         >
           Resume course →
@@ -126,7 +126,7 @@ export function HomeContextStrip() {
           <span className="font-mono tabular-nums">({mode.score}/{mode.maxScore})</span>.
         </p>
         <Link
-          href="/courses/aibi-p"
+          href="/courses/foundation/program"
           className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] hover:text-[color:var(--color-ink)]"
         >
           Explore the Practitioner course →

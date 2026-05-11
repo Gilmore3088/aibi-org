@@ -8,7 +8,7 @@ import { BRAND } from "@content/copy";
 export const metadata: Metadata = {
   title: `${BRAND.name} — ${BRAND.tagline}`,
   description:
-    "An education company for community banks and credit unions. Begin with a twelve-question readiness diagnostic; earn the AiBI-Practitioner credential when you are ready.",
+    "An education company for community banks and credit unions. Begin with a twelve-question readiness diagnostic; earn the AiBI-Foundation credential when you are ready.",
 };
 
 export default function HomePage() {
@@ -30,7 +30,7 @@ export default function HomePage() {
           </span>
         ),
         primaryCta: { href: "/assessment/start", label: "Take the assessment" },
-        secondaryCta: { href: "/courses/aibi-p", label: "View the curriculum" },
+        secondaryCta: { href: "/courses/foundation/program", label: "View the curriculum" },
         divider: "hairline",
       }}
     >
@@ -63,7 +63,7 @@ export default function HomePage() {
               standard, scored on reviewed work — not multiple-choice quizzes.
             </p>
             <div className="mt-s8">
-              <Cta variant="secondary" href="/courses/aibi-p">
+              <Cta variant="secondary" href="/courses/foundation/program">
                 View the curriculum →
               </Cta>
             </div>

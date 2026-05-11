@@ -6,7 +6,11 @@
 import Link from 'next/link';
 import type { ToolboxSource } from '@/lib/toolbox/types';
 
-const COURSE_REF_PATTERN = /^aibi-p\/module-(\d+)\/[^/]+$/;
+// Accepts both legacy 'aibi-p/' prefix (pre-Phase 7 backfill) and canonical
+// 'foundation/' prefix (post-backfill). Both map to the same /courses/foundation/program
+// target. The pattern must accept both forever — Stripe webhook retries and
+// other async writers may emit either even after the backfill runs.
+const COURSE_REF_PATTERN = /^(?:aibi-p|foundation)\/module-(\d+)\/[^/]+$/;
 const LIBRARY_REF_PATTERN = /^library:([0-9a-f-]{36})@/i;
 const COOKBOOK_REF_PATTERN = /^cookbook:([^#]+)#step-(\d+)$/;
 
@@ -31,8 +35,8 @@ function resolveTarget(
     if (!match) return null;
     const moduleNumber = match[1];
     return {
-      label: `AiBI-Practitioner · Module ${moduleNumber}`,
-      href: `/courses/aibi-p/${moduleNumber}`,
+      label: `AiBI-Foundation · Module ${moduleNumber}`,
+      href: `/courses/foundation/program/${moduleNumber}`,
     };
   }
   // Cookbook branch must precede the library branch: a cookbook source_ref

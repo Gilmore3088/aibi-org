@@ -1,4 +1,4 @@
-import type { DefendBeatPersona } from '../../../../lib/aibi-s/types';
+import type { DefendBeatPersona } from '@/lib/aibi-s/types';
 
 export const opsComplianceLiaisonPhase2: DefendBeatPersona = {
   id: 'ops-compliance-liaison-p2',

@@ -1,4 +1,4 @@
-import type { Unit } from '../../../../lib/aibi-s/types';
+import type { Unit } from '@/lib/aibi-s/types';
 import { opsDepartmentHeadPhase1 } from './persona-dept-head-phase-1';
 
 export const opsUnit1_1: Unit = {
@@ -11,7 +11,7 @@ export const opsUnit1_1: Unit = {
     {
       kind: 'learn',
       title: 'The shift from personal to institutional',
-      body: `In AiBI-P you built a skill that makes **one person faster** — you. That skill lives in your personal account, has the documentation you wrote for yourself, and would disappear if you left the institution tomorrow.
+      body: `In AiBI-Foundation you built a skill that makes **one person faster** — you. That skill lives in your personal account, has the documentation you wrote for yourself, and would disappear if you left the institution tomorrow.
 
 AiBI-S starts at a different question: *how do you make your department faster?*
 

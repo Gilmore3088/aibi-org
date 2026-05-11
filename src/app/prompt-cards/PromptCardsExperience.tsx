@@ -87,7 +87,7 @@ export function PromptCardsExperience() {
                 Get the AiBI Prompt Cards
               </button>
               <Link
-                href="/courses/aibi-p"
+                href="/courses/foundation/program"
                 className="border border-[color:var(--color-ink)]/25 px-6 py-3 text-center font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-ink)] transition-colors hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)]"
               >
                 Explore Practitioner
@@ -235,7 +235,7 @@ export function PromptCardsExperience() {
             </p>
           </div>
           <Link
-            href="/courses/aibi-p"
+            href="/courses/foundation/program"
             onClick={() => trackEvent('prompt_card_course_click')}
             className="bg-[color:var(--color-terra)] px-6 py-3 text-center font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-linen)]"
           >
@@ -324,7 +324,7 @@ function CardDetail(props: {
 
       <div className="mt-6 flex flex-col gap-3 border-t border-[color:var(--color-ink)]/10 pt-5 sm:flex-row sm:items-center sm:justify-between">
         <p className="font-serif text-2xl text-[color:var(--color-ink)]">Ready for the full AiBI Method?</p>
-        <Link href="/courses/aibi-p" className="bg-[color:var(--color-ink)] px-4 py-3 text-center font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-linen)]">
+        <Link href="/courses/foundation/program" className="bg-[color:var(--color-ink)] px-4 py-3 text-center font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-linen)]">
           Practitioner Course
         </Link>
       </div>

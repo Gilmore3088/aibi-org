@@ -89,7 +89,7 @@ Measure at least 3 actual occurrences using the automation after deployment. Sam
     {
       id: 'w4-litmus-test',
       title: 'The Departmental Litmus Test',
-      content: `In AiBI-P, the Litmus Test was personal: "If you find yourself having to iterate and refine the output after the skill runs, then the skill itself needs improvement." At department scale, the test adds a second dimension: "Would a new team member produce the same quality output?"
+      content: `In AiBI-Foundation, the Litmus Test was personal: "If you find yourself having to iterate and refine the output after the skill runs, then the skill itself needs improvement." At department scale, the test adds a second dimension: "Would a new team member produce the same quality output?"
 
 If the answer is no — if the skill only works well when the person who built it runs it — then the skill has an implicit knowledge dependency. The builder is compensating for gaps in the skill instructions by applying institutional knowledge they have and did not document. That undocumented knowledge disappears if the builder changes roles.
 
@@ -106,7 +106,7 @@ The Litmus Test connects directly to Assessment Rubric Dimension 2 (Skill Qualit
     {
       id: 'w4-vendor-evaluation',
       title: 'Vendor Evaluation Framework',
-      content: `AiBI-P surveyed six platforms. AiBI-S asks a sharper question: which platforms should your department standardize on? Standardization matters because inconsistent platform choices create training overhead, security exposure, and uneven output quality across the team.
+      content: `AiBI-Foundation surveyed six platforms. AiBI-S asks a sharper question: which platforms should your department standardize on? Standardization matters because inconsistent platform choices create training overhead, security exposure, and uneven output quality across the team.
 
 The framework scores any AI platform on five questions designed to surface the considerations that matter for departmental adoption — not just personal preference or feature richness.
 

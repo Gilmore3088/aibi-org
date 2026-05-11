@@ -17,9 +17,9 @@ export interface Certification {
 export const certifications: readonly Certification[] = [
   {
     id: 'aibi-p',
-    name: 'AiBI-P',
+    name: 'AiBI-Foundation',
     fullName: 'Banking AI Practitioner',
-    credentialDisplay: 'AiBI-P · The AI Banking Institute',
+    credentialDisplay: 'AiBI-Foundation · The AI Banking Institute',
     price: '$99',
     audience: 'All staff',
     learn: [

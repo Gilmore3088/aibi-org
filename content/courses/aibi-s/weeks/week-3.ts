@@ -12,9 +12,9 @@ export const week3: CohortWeek = {
   estimatedAssignmentMinutes: 150,
   keyOutput:
     'One automation deployed and in use by at least one colleague, with skill file, context files, data classification statement, and 3 documented test runs',
-  whyThisWeekExists: `This is the hardest week of the course. In AiBI-P, the learner built a skill for personal use. The margin of error was high — if the skill produced imperfect output, only the learner saw it. In Week 3, the learner deploys something that colleagues will use. The margin of error drops to medium. The skill must be robust enough that someone who did not build it can run it and get consistently acceptable output.
+  whyThisWeekExists: `This is the hardest week of the course. In AiBI-Foundation, the learner built a skill for personal use. The margin of error was high — if the skill produced imperfect output, only the learner saw it. In Week 3, the learner deploys something that colleagues will use. The margin of error drops to medium. The skill must be robust enough that someone who did not build it can run it and get consistently acceptable output.
 
-The week also introduces advanced skill patterns that were not covered in AiBI-P: multi-step skills, skill chaining, and context engineering at institutional scale. These patterns are what separate a personal productivity tool from a departmental asset.`,
+The week also introduces advanced skill patterns that were not covered in AiBI-Foundation: multi-step skills, skill chaining, and context engineering at institutional scale. These patterns are what separate a personal productivity tool from a departmental asset.`,
 
   learningGoals: [
     'Build a complete institutional-grade skill using the extended skill anatomy with gotcha section and data classification enforcement',
@@ -27,7 +27,7 @@ The week also introduces advanced skill patterns that were not covered in AiBI-P
     {
       id: 'w3-advanced-architecture',
       title: 'Advanced Skill Architecture',
-      content: `AiBI-P introduced the RTFC framework (Role, Task, Format, Constraint) and the extended skill anatomy (name, description, instructions, output format, gotcha section, constraints). AiBI-S builds on this foundation with patterns for institutional-grade skills that need to work for people who did not build them.
+      content: `AiBI-Foundation introduced the RTFC framework (Role, Task, Format, Constraint) and the extended skill anatomy (name, description, instructions, output format, gotcha section, constraints). AiBI-S builds on this foundation with patterns for institutional-grade skills that need to work for people who did not build them.
 
 **Why architecture matters more at the departmental level**
 
@@ -56,7 +56,7 @@ The skill architecture questions change at AiBI-S:
     {
       id: 'w3-skill-killers',
       title: 'The 5 Skill Killers at Institutional Scale',
-      content: `AiBI-P introduced the 5 Skill Killers from the AIDB pedagogy. At the personal level, each killer creates friction for the builder. At the institutional level, each killer creates failures for colleagues who did not build the skill and cannot diagnose what went wrong.
+      content: `AiBI-Foundation introduced the 5 Skill Killers from the AIDB pedagogy. At the personal level, each killer creates friction for the builder. At the institutional level, each killer creates failures for colleagues who did not build the skill and cannot diagnose what went wrong.
 
 **Killer 1: Description does not trigger properly.** At the personal level, you run the wrong skill and notice immediately. At the institutional level, a colleague activates the wrong skill for their task because the description was ambiguous — and they may not realize the mismatch until after they have used the output.
 
@@ -81,14 +81,14 @@ The four context layers for a departmental skill:
 
 **Workflow layer:** The context specific to this skill. Process steps, input/output formats, quality standards, approval requirements. This layer lives in the skill file itself and is updated whenever the workflow changes.
 
-**Regulatory layer:** The applicable frameworks for this workflow. Which regulations constrain the output, what disclosures are required, what outputs must include human review flags. For most community banking workflows, this layer draws on the AiBI-P Module 1 framework knowledge already embedded in the workspace regulatory context block.
+**Regulatory layer:** The applicable frameworks for this workflow. Which regulations constrain the output, what disclosures are required, what outputs must include human review flags. For most community banking workflows, this layer draws on the AiBI-Foundation Module 1 framework knowledge already embedded in the workspace regulatory context block.
 
 **Why layering matters:** A skill file should not repeat context that already lives in the workspace. If the institution name appears in every skill file, it needs to be updated in every skill file when anything changes. If it lives in the workspace and skills reference it, one update propagates everywhere. This is the institutional-scale version of the "state the obvious" killer — except at the context level rather than the instruction level.`,
     },
     {
       id: 'w3-data-classification',
       title: 'Data Classification Enforcement in Departmental Skills',
-      content: `In AiBI-P, data classification was a personal awareness exercise. You learned the three tiers and applied them to your own inputs consciously. In AiBI-S, data classification becomes an enforcement mechanism built into the skill itself — because your colleagues may not have the same intuitive awareness you developed during AiBI-P.
+      content: `In AiBI-Foundation, data classification was a personal awareness exercise. You learned the three tiers and applied them to your own inputs consciously. In AiBI-S, data classification becomes an enforcement mechanism built into the skill itself — because your colleagues may not have the same intuitive awareness you developed during AiBI-Foundation.
 
 **Tier 1 — Public information:** No restrictions. Can be used freely in any AI platform. Market data, published regulatory guidance, public financial statements, press releases.
 
@@ -137,7 +137,7 @@ The four context layers for a departmental skill:
       caption: 'The 5 Skill Killers: Personal Impact vs. Institutional Impact',
       columns: [
         { header: 'Killer', key: 'killer' },
-        { header: 'Personal Impact (AiBI-P)', key: 'personal' },
+        { header: 'Personal Impact (AiBI-Foundation)', key: 'personal' },
         { header: 'Institutional Impact (AiBI-S)', key: 'institutional' },
       ],
       rows: [

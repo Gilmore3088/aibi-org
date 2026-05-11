@@ -139,7 +139,7 @@ export interface CoursePurchaseIndividualPayload {
 export function sendCoursePurchaseIndividual(
   payload: CoursePurchaseIndividualPayload,
 ): Promise<ResendResult> {
-  const courseName = payload.courseName ?? 'AiBI-Practitioner';
+  const courseName = payload.courseName ?? 'AiBI-Foundation';
   return sendTemplate({
     to: payload.email,
     templateAlias: 'course-purchase-individual',
@@ -152,7 +152,7 @@ export function sendCoursePurchaseIndividual(
       COURSE_URL:
         payload.magicLinkUrl ??
         payload.courseUrl ??
-        'https://aibankinginstitute.com/courses/aibi-p',
+        'https://aibankinginstitute.com/courses/foundation/program',
       AMOUNT_PAID: payload.amountPaid,
       RECEIPT_URL: 'https://aibankinginstitute.com/dashboard',
     },
@@ -209,14 +209,14 @@ export function sendCoursePurchaseInstitution(
   return sendTemplate({
     to: payload.email,
     templateAlias: 'course-purchase-institution',
-    subject: `${payload.institutionName} — your AiBI-Practitioner seats are ready`,
+    subject: `${payload.institutionName} — your AiBI-Foundation seats are ready`,
     variables: {
       INSTITUTION_NAME: payload.institutionName,
       SEATS_PURCHASED: payload.seatsPurchased,
       AMOUNT_PAID: payload.amountPaid,
       ADMIN_URL:
         payload.magicLinkUrl ?? 'https://aibankinginstitute.com/admin',
-      COURSE_URL: 'https://aibankinginstitute.com/courses/aibi-p',
+      COURSE_URL: 'https://aibankinginstitute.com/courses/foundation/program',
     },
   });
 }
@@ -238,7 +238,7 @@ export function sendCertificateIssued(
   return sendTemplate({
     to: payload.email,
     templateAlias: 'certificate-issued',
-    subject: `Your AiBI-Practitioner certificate is ready, ${payload.holderName}`,
+    subject: `Your AiBI-Foundation certificate is ready, ${payload.holderName}`,
     variables: {
       HOLDER_NAME: payload.holderName,
       DESIGNATION: payload.designation,

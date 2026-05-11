@@ -1,8 +1,12 @@
 // UTM utility — centralized tracking parameters for all AI platform links
-// Used throughout the AiBI-Practitioner course for partnership attribution
+// Used throughout the AiBI-Foundation course for partnership attribution
 
 const UTM_SOURCE = 'aibankinginstitute';
 const UTM_MEDIUM = 'course';
+// Value kept as 'aibi-p' across the 2026-05-10 rename for Plausible
+// attribution-history continuity. Changing the value would split historical
+// campaign data into two dimensions. The constant name itself stays for the
+// same reason — code that joins on this string lives downstream in analytics.
 const UTM_CAMPAIGN = 'aibi-p';
 
 export const PLATFORM_URLS = {

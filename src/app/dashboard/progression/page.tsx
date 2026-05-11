@@ -7,7 +7,7 @@ import { getUserDataWithSupabaseFallback, type UserData } from '@/lib/user-data'
 // ── Types ────────────────────────────────────────────────────────────────────
 
 interface CertLevel {
-  readonly code: 'aibi-p' | 'aibi-s' | 'aibi-l';
+  readonly code: 'foundation' | 'aibi-s' | 'aibi-l';
   readonly label: string;
   readonly color: string;
   readonly colorBg: string;
@@ -16,11 +16,11 @@ interface CertLevel {
 
 const CERT_LEVELS: readonly CertLevel[] = [
   {
-    code: 'aibi-p',
-    label: 'AiBI-Practitioner',
+    code: 'foundation',
+    label: 'AiBI-Foundation',
     color: 'var(--color-terra)',
     colorBg: 'var(--color-terra-pale)',
-    product: 'Practitioner',
+    product: 'Foundation',
   },
   {
     code: 'aibi-s',
@@ -39,7 +39,7 @@ const CERT_LEVELS: readonly CertLevel[] = [
 ] as const;
 
 interface MockEnrollment {
-  readonly product: 'aibi-p' | 'aibi-s' | 'aibi-l';
+  readonly product: 'foundation' | 'aibi-s' | 'aibi-l';
   readonly completed_modules: readonly number[];
   readonly total_modules: number;
   readonly enrolled_at: string;
@@ -48,15 +48,15 @@ interface MockEnrollment {
   readonly certificate_id?: string;
 }
 
-// Dev bypass — V4 is locked to AiBI-Practitioner only.
+// Dev bypass — V4 is locked to AiBI-Foundation only.
 const DEV_ENROLLMENTS: readonly MockEnrollment[] = [
   {
-    product: 'aibi-p',
+    product: 'foundation',
     completed_modules: [1, 2, 3, 4, 5, 6, 7, 8, 9],
     total_modules: 9,
     enrolled_at: '2026-02-10T09:00:00.000Z',
     completed_at: '2026-03-18T14:22:00.000Z',
-    certificate_id: 'AIBI-P-2026-0042',
+    certificate_id: 'AIBIP-2026-0042',
   },
 ];
 
@@ -69,22 +69,22 @@ interface CumulativeMetrics {
 
 // Derive aggregate impact from enrollment progress
 function deriveMetrics(enrollments: readonly MockEnrollment[]): CumulativeMetrics {
-  const pEnroll = enrollments.find((e) => e.product === 'aibi-p');
+  const pEnroll = enrollments.find((e) => e.product === 'foundation');
   const sEnroll = enrollments.find((e) => e.product === 'aibi-s');
 
   const pModules = pEnroll?.completed_modules.length ?? 0;
   const sModules = sEnroll?.completed_modules.length ?? 0;
 
-  // AiBI-Practitioner: ~2 skills per module, AiBI-S: ~4 departmental skills per module
+  // AiBI-Foundation: ~2 skills per module, AiBI-S: ~4 departmental skills per module
   const skillsBuilt = pModules * 2 + sModules * 4;
 
-  // AiBI-Practitioner: ~15 hrs/yr saved per module, AiBI-S: ~40 hrs/yr per module (departmental scope)
+  // AiBI-Foundation: ~15 hrs/yr saved per module, AiBI-S: ~40 hrs/yr per module (departmental scope)
   const hoursSavedPerYear = pModules * 15 + sModules * 40;
 
-  // AiBI-Practitioner: 1 workflow per 3 modules (rounded), AiBI-S: 1 per 2
+  // AiBI-Foundation: 1 workflow per 3 modules (rounded), AiBI-S: 1 per 2
   const workflowsAutomated = Math.floor(pModules / 3) + Math.floor(sModules / 2);
 
-  // Quick wins: 1 per AiBI-Practitioner module completed past module 4
+  // Quick wins: 1 per AiBI-Foundation module completed past module 4
   const quickWinsLogged = Math.max(0, pModules - 4);
 
   return { skillsBuilt, hoursSavedPerYear, workflowsAutomated, quickWinsLogged };
@@ -320,8 +320,8 @@ function CredentialCard({
       <div className="flex items-center gap-3 pt-3 border-t border-[color:var(--color-ink)]/8">
         <Link
           href={
-            level.code === 'aibi-p'
-              ? '/courses/aibi-p'
+            level.code === 'foundation'
+              ? '/courses/foundation/program'
               : level.code === 'aibi-s'
                 ? '/coming-soon?interest=specialist'
                 : '/coming-soon?interest=leader'
@@ -345,21 +345,21 @@ function CredentialCard({
 }
 
 function NextStepBanner({ enrollments }: { enrollments: readonly MockEnrollment[] }) {
-  const hasP = enrollments.some((e) => e.product === 'aibi-p' && e.completed_at);
+  const hasP = enrollments.some((e) => e.product === 'foundation' && e.completed_at);
   const hasS = enrollments.some((e) => e.product === 'aibi-s' && e.completed_at);
   const hasL = enrollments.some((e) => e.product === 'aibi-l' && e.completed_at);
   const sEnrollment = enrollments.find((e) => e.product === 'aibi-s');
 
   let accent = 'var(--color-terra)';
-  let heading = 'Start with AiBI-Practitioner';
-  let body = 'Build your AI foundation. The Practitioner certification is where every transformation begins.';
-  let href = '/courses/aibi-p/purchase';
-  let cta = 'View AiBI-Practitioner';
+  let heading = 'Start with AiBI-Foundation';
+  let body = 'Build your AI foundation. The Foundation certification is where every transformation begins.';
+  let href = '/courses/foundation/program/purchase';
+  let cta = 'View AiBI-Foundation';
 
   if (hasP && hasS && hasL) {
     accent = 'var(--color-sage)';
     heading = "You've completed the full certification ladder";
-    body = 'AiBI-Practitioner · AiBI-S · AiBI-L earned. You are now equipped to lead AI transformation across your institution.';
+    body = 'AiBI-Foundation · AiBI-S · AiBI-L earned. You are now equipped to lead AI transformation across your institution.';
     href = '/education';
     cta = 'View education';
   } else if (hasP && hasS) {
@@ -429,7 +429,7 @@ export default function ProgressionPage() {
 
   const metrics = deriveMetrics(enrollments);
 
-  const getStatus = (code: 'aibi-p' | 'aibi-s' | 'aibi-l'): 'completed' | 'active' | 'locked' => {
+  const getStatus = (code: 'foundation' | 'aibi-s' | 'aibi-l'): 'completed' | 'active' | 'locked' => {
     const e = enrollments.find((en) => en.product === code);
     if (!e) return 'locked';
     if (e.completed_at) return 'completed';
@@ -456,7 +456,7 @@ export default function ProgressionPage() {
             Your certification journey.
           </h1>
           <p className="text-[color:var(--color-slate)] mt-2 text-base leading-relaxed max-w-2xl">
-            Track your progress from Practitioner through Specialist to Leader across The AI Banking Institute&apos;s full certification ladder.
+            Track your progress from Foundation through Specialist to Leader across The AI Banking Institute&apos;s full certification ladder.
           </p>
         </header>
 

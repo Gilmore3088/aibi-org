@@ -2,7 +2,7 @@
 //
 // Generates the per-module Apply artifact .md by merging the learner's saved
 // activity_response with the module's markdown template (defined in
-// content/courses/aibi-p/module-activities.ts).
+// content/courses/foundation/program/module-activities.ts).
 //
 // Returns text/markdown with a Content-Disposition: attachment header so the
 // browser downloads the file with the spec's filename.
@@ -11,8 +11,8 @@
 
 import { NextResponse, type NextRequest } from 'next/server';
 import { isSupabaseConfigured, createServiceRoleClient } from '@/lib/supabase/client';
-import { getEnrollment } from '@/app/courses/aibi-p/_lib/getEnrollment';
-import { getModuleActivitySpec } from '@content/courses/aibi-p/module-activities';
+import { getEnrollment } from '@/app/courses/foundation/program/_lib/getEnrollment';
+import { getModuleActivitySpec } from '@content/courses/foundation-program/module-activities';
 
 export async function GET(request: NextRequest) {
   const url = new URL(request.url);
@@ -81,7 +81,7 @@ export async function GET(request: NextRequest) {
   const name =
     (enrollment as unknown as { user_full_name?: string | null }).user_full_name ??
     (enrollment as unknown as { user_email?: string | null }).user_email ??
-    'AiBI-Practitioner learner';
+    'AiBI-Foundation learner';
 
   const merged = spec.artifactTemplate
     .replace(/\{\{date\}\}/g, today)

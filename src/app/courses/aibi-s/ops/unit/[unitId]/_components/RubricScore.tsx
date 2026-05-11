@@ -1,6 +1,6 @@
 'use client';
 
-import type { RubricScore as ScoreT, Rubric } from '../../../../../../../../lib/aibi-s/types';
+import type { RubricScore as ScoreT, Rubric } from '@/lib/aibi-s/types';
 
 export function RubricScore({
   rubric,

@@ -34,7 +34,7 @@ export default async function ToolboxPage() {
             </p>
           </div>
           <Link
-            href="/courses/aibi-p"
+            href="/courses/foundation/program"
             className="inline-flex w-fit items-center border border-[color:var(--color-ink)]/20 px-4 py-2 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-ink)] transition-colors hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)]"
           >
             Back to coursework

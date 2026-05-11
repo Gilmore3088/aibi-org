@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AiBI-Foundation: Banking AI Practitioner - Onboarding Survey</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Work+Sans:wght@300;400;500;600&amp;family=DM+Sans:wght@400;500;700&amp;family=DM+Mono&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed": "#ffdbd2",
+                    "error-container": "#ffdad6",
+                    "on-primary-fixed": "#3c0800",
+                    "outline-variant": "#dcc0ba",
+                    "secondary-fixed-dim": "#a7c8ff",
+                    "on-surface": "#1b1c19",
+                    "on-primary-container": "#fffbff",
+                    "tertiary-fixed": "#cceace",
+                    "surface-container-high": "#eae8e3",
+                    "inverse-surface": "#30312e",
+                    "on-background": "#1b1c19",
+                    "on-surface-variant": "#56423d",
+                    "secondary-fixed": "#d5e3ff",
+                    "surface-container-low": "#f5f3ee",
+                    "on-error-container": "#93000a",
+                    "tertiary-container": "#607b63",
+                    "inverse-primary": "#ffb4a2",
+                    "on-tertiary-fixed-variant": "#334d38",
+                    "on-tertiary-container": "#f6fff3",
+                    "on-tertiary-fixed": "#07200f",
+                    "surface": "#f9f6f0", /* Updated to Linen */
+                    "surface-container": "#f0eee9",
+                    "on-secondary": "#ffffff",
+                    "secondary-container": "#9ec2fe",
+                    "tertiary": "#47624c",
+                    "surface-bright": "#fbf9f4",
+                    "error": "#ba1a1a",
+                    "on-secondary-fixed": "#001c3b",
+                    "on-secondary-container": "#284f83",
+                    "on-primary-fixed-variant": "#7e2b16",
+                    "on-primary": "#ffffff",
+                    "surface-tint": "#9d422b",
+                    "tertiary-fixed-dim": "#b0ceb2",
+                    "surface-variant": "#e4e2dd",
+                    "inverse-on-surface": "#f2f1ec",
+                    "primary-container": "#b9573e",
+                    "primary": "#9a4028", /* Terra */
+                    "primary-fixed-dim": "#ffb4a2",
+                    "outline": "#89726c",
+                    "on-tertiary": "#ffffff",
+                    "surface-container-highest": "#e4e2dd",
+                    "surface-dim": "#dbdad5",
+                    "secondary": "#395f94",
+                    "on-error": "#ffffff",
+                    "background": "#f9f6f0", /* Updated to Linen */
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary-fixed-variant": "#1e477b"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Newsreader", "serif"],
+                    "body": ["Work Sans", "sans-serif"],
+                    "label": ["DM Mono", "monospace"],
+                    "mono": ["DM Mono", "monospace"],
+                    "sans": ["DM Sans", "sans-serif"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Work Sans', sans-serif; }
+        h1, h2, h3 { font-family: 'Newsreader', serif; letter-spacing: -0.02em; }
+        .mono-label { font-family: 'DM Mono', monospace; }
+        .bg-linen { background-color: #f9f6f0; }
+        .bg-parchment { background-color: #f5f0e6; }
+        .border-terra { border-color: #9a4028; }
+    </style>
+</head>
+<body class="bg-linen text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed min-h-screen">
+<!-- Main Content Area -->
+<main class="min-h-screen flex items-center justify-center px-6 py-20">
+<!-- Background Elements -->
+<div class="fixed top-0 left-0 w-full h-full pointer-events-none opacity-20 overflow-hidden">
+<div class="absolute -top-24 -left-24 w-96 h-96 bg-primary-fixed rounded-full blur-[120px]"></div>
+<div class="absolute top-1/2 -right-48 w-[600px] h-[600px] bg-tertiary-fixed rounded-full blur-[150px]"></div>
+</div>
+<div class="relative z-10 w-full max-w-5xl">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+<!-- Left Column: Branding & Progress -->
+<div class="lg:col-span-5 flex flex-col space-y-12">
+<div>
+<span class="mono-label text-xs font-bold text-primary tracking-widest uppercase mb-4 block">Institutional Record 1.4</span>
+<h1 class="text-6xl font-extrabold leading-none text-on-surface">
+                            Curation of <br/><span class="italic text-primary">Context</span>
+</h1>
+<p class="mt-8 text-lg text-on-surface-variant leading-relaxed max-w-sm">
+                            To personalize your journey through the Digital Curator's archives, we require a signature of your current professional environment.
+                        </p>
+</div>
+<!-- Progress Indicator -->
+<div class="space-y-6">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full border border-primary/20 flex items-center justify-center text-primary font-mono text-sm bg-surface-container-lowest">01</div>
+<div class="flex-1">
+<div class="h-px bg-outline-variant/30 relative overflow-hidden">
+<div class="absolute inset-y-0 left-0 w-1/3 bg-primary"></div>
+</div>
+</div>
+<div class="text-on-surface-variant/40 font-mono text-sm">03</div>
+</div>
+<p class="text-xs font-medium text-on-surface-variant uppercase tracking-tighter font-mono">Current Phase: Infrastructure Assessment</p>
+</div>
+<div class="pt-12">
+<div class="p-8 bg-surface-container rounded-xl border border-outline-variant/20">
+<span class="material-symbols-outlined text-primary mb-4" style="font-variation-settings: 'FILL' 1;">verified</span>
+<p class="text-lg italic font-serif leading-relaxed text-on-surface-variant">
+                                "The Banking AI Practitioner certification (AiBI-Foundation) bridges the gap between institutional legacy and generative futures."
+                            </p>
+</div>
+</div>
+</div>
+<!-- Right Column: The Survey Canvas -->
+<div class="lg:col-span-7 bg-surface-container-lowest p-10 lg:p-16 rounded-xl shadow-[20px_0_40px_rgba(27,28,25,0.02)] border border-outline-variant/10">
+<form class="space-y-12">
+<!-- Question 1 -->
+<section class="space-y-6 pb-12 border-b border-outline-variant/10">
+<label class="block">
+<span class="mono-label text-[10px] text-primary uppercase tracking-[0.2em] mb-2 block">Foundational Ecosystem</span>
+<h2 class="text-2xl font-bold text-on-surface mb-6 leading-tight">Does your institution use Microsoft 365?</h2>
+</label>
+<div class="grid grid-cols-2 gap-4">
+<button class="group flex items-center justify-between p-5 rounded-lg border border-transparent bg-parchment hover:border-terra hover:border-[1.5px] transition-all duration-200" type="button">
+<span class="font-medium text-on-surface">Full Enterprise</span>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-primary">check_circle</span>
+</button>
+<button class="group flex items-center justify-between p-5 rounded-lg border border-transparent bg-parchment hover:border-terra hover:border-[1.5px] transition-all duration-200" type="button">
+<span class="font-medium text-on-surface">Not currently</span>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-primary">cancel</span>
+</button>
+</div>
+</section>
+<!-- Question 2 -->
+<section class="space-y-6 pb-12 border-b border-outline-variant/10">
+<label class="block">
+<span class="mono-label text-[10px] text-primary uppercase tracking-[0.2em] mb-2 block">Personal Capability</span>
+<h2 class="text-2xl font-bold text-on-surface mb-6 leading-tight">Do you currently have any personal AI subscriptions?</h2>
+</label>
+<div class="space-y-3">
+<div class="relative group">
+<select class="w-full appearance-none bg-parchment border-0 border-b border-outline-variant/30 focus:border-primary focus:ring-0 py-4 px-2 text-on-surface font-medium transition-all rounded-t-lg">
+<option>Select active subscriptions</option>
+<option>ChatGPT Plus</option>
+<option>Claude Pro</option>
+<option>Perplexity Pro</option>
+<option>Other / Multiple</option>
+<option>None at this time</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-4 pointer-events-none text-on-surface-variant/40">expand_more</span>
+</div>
+</div>
+</section>
+<!-- Question 3 -->
+<section class="space-y-6">
+<label class="block">
+<span class="mono-label text-[10px] text-primary uppercase tracking-[0.2em] mb-2 block">Persona Mapping</span>
+<h2 class="text-2xl font-bold text-on-surface mb-6 leading-tight">What is your primary role at your institution?</h2>
+</label>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="relative">
+<input class="w-full bg-parchment border-0 border-b border-outline-variant/30 focus:border-primary focus:ring-0 py-4 px-2 text-on-surface transition-all placeholder:text-on-surface-variant/30 rounded-t-lg" placeholder="e.g. Risk Analyst, Relationship Manager" type="text"/>
+</div>
+<div class="flex gap-2 flex-wrap items-center">
+<span class="px-3 py-1 bg-surface-container-high rounded-full text-[10px] font-bold text-on-surface-variant uppercase tracking-tighter cursor-pointer hover:bg-tertiary-fixed transition-colors">Strategy</span>
+<span class="px-3 py-1 bg-surface-container-high rounded-full text-[10px] font-bold text-on-surface-variant uppercase tracking-tighter cursor-pointer hover:bg-secondary-fixed transition-colors">Operations</span>
+<span class="px-3 py-1 bg-surface-container-high rounded-full text-[10px] font-bold text-on-surface-variant uppercase tracking-tighter cursor-pointer hover:bg-primary-fixed transition-colors">Compliance</span>
+</div>
+</div>
+</section>
+<!-- Actions -->
+<div class="pt-8 flex items-center justify-between border-t border-outline-variant/10">
+<button class="text-on-surface-variant/60 font-medium hover:text-primary transition-colors flex items-center gap-2" type="button">
+<span class="material-symbols-outlined text-sm">arrow_back</span>
+                                Previous Step
+                            </button>
+<button class="bg-primary text-on-primary px-10 py-4 rounded-[2px] font-bold shadow-xl shadow-primary/20 hover:opacity-90 active:scale-95 transition-all flex items-center gap-3 uppercase tracking-wider font-sans text-sm" type="submit">
+                                Initialize Pillar Access
+                                <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</form>
+</div>
+</div>
+<!-- Supporting Imagery -->
+<div class="mt-24 grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="h-48 rounded-xl bg-surface-container-low relative overflow-hidden group">
+<img alt="Abstract digital network" class="w-full h-full object-cover opacity-20 grayscale group-hover:grayscale-0 group-hover:opacity-40 transition-all duration-700" data-alt="abstract close-up of server lights and fiber optic cables in a dark room with cool blue and warm orange tones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtVXM3teZzxq_DOnVBe5ZZAXQE6iGTRa3-snMJstDrCgRoUbhX8tr9QimctJYJaL9nKaWGdGdkT6Xh20XlfuEWTH_vy2ex7CnfkYjpLH8vA0HsM_TxelJQ7w4nxQLyx-vqs9ybBKttBV8vD3E_2m1_C_ilhrMoQrQyF2eP87xpTRc_-IoWGYYMCvos61ecgJp2Wv4Z0kUGbq2IXBuaK-4LjswRZrH9Ixitz5NK4Si3Pd8JxheVHV3q_Bh1pSOO34g_uboUeWTn8yU"/>
+<div class="absolute inset-0 p-6 flex flex-col justify-end">
+<span class="mono-label text-[10px] text-primary">Security Layer</span>
+<p class="text-sm font-bold">Institutional Security Standard</p>
+</div>
+</div>
+<div class="h-48 rounded-xl bg-surface-container-low relative overflow-hidden group">
+<img alt="Satellite view of earth" class="w-full h-full object-cover opacity-20 grayscale group-hover:grayscale-0 group-hover:opacity-40 transition-all duration-700" data-alt="cinematic view of earth from space at night showing illuminated city lights and atmosphere glow in deep blues and amber" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGBBfYdDh64TubLXEJhwg0JEvZ1GJZeBl_hLEbxaCUgPcHI9Zb5nBT9pUNUiIFSkVsUR3O6sAQZQvfmVTRGnI2zPFnF0vfKc3TWfkFAZ_mFChA991stqSOj6ajSoy1C1sF1PLUSS98Nunn4t_w70z2a--lx1O6TwM_u6y8clND2PIrQPR2-G1_suKzcBbrxnq6Htb1IMgC6rLHvfFGZDNxPl7iw-8KY60fR9SRmv5Zx79ECJEk7fE-ps-6_bMXYfP7_-9gZd-Dd9k"/>
+<div class="absolute inset-0 p-6 flex flex-col justify-end">
+<span class="mono-label text-[10px] text-primary">Global Reach</span>
+<p class="text-sm font-bold">Cross-Border AI Application</p>
+</div>
+</div>
+<div class="h-48 rounded-xl bg-surface-container-low relative overflow-hidden group">
+<img alt="Abstract gradient" class="w-full h-full object-cover opacity-20 grayscale group-hover:grayscale-0 group-hover:opacity-40 transition-all duration-700" data-alt="sophisticated abstract gradient flowing from deep terracotta to soft parchment white with fine film grain texture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTUm0FmMtBmQwsM6_HWi7Z93-Q44Xdu4XGyxgk9NQ0Y-OJ2uQQOQmks8HAAI_sJXrsoiGp8wJ8WZKfujg6ROKyNY6Ku4fstaWR0I155SwlxDweSETWxIxD-pykKgEwRcm81TOTZHJbovBBPYJC8U1_Ccy4KQEQJzn05eWnrvesSEIfZIPCVVP_5ZXj7Jn2LGBpOZ7eoTvmCIs-u6YDbbcYQaljT5R7k_lHv7L13AdSR51We0P361A6T7T8co8iKeZx8uGwOmWFvgk"/>
+<div class="absolute inset-0 p-6 flex flex-col justify-end">
+<span class="mono-label text-[10px] text-primary">Identity System</span>
+<p class="text-sm font-bold">Practitioner Credentialing</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Sticky Bottom Online Status -->
+<div class="fixed bottom-8 right-8 flex items-center gap-4">
+<div class="flex -space-x-2">
+<img alt="Practitioner 1" class="w-10 h-10 rounded-full border-2 border-surface object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDG3MMwyzWDvPArL3cWyRyKPR2PGwwwojXqbPRQXcCaxzveC4CS1UWq4PDAk6hvJBdXkn3JC2vdktf6wVVSHxzBAv3gRhA2Et-jFlhhPrQJ5-aIbpaURGdxAHkjeBHLDdxKv3sTEncRo31uloPtfhuuelDelP44DdSxj8NmTi2A2NPyoe7UtLBbh20aOxLCFUKKWlgjo6GApaiOm7VXGOh3ihL8BYKMdAwAPe5-TY43sgCyJ-0clphEqoSnPu9LE6BhoPFoTnUPJCY"/>
+<img alt="Practitioner 2" class="w-10 h-10 rounded-full border-2 border-surface object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuChA8cFjVfhkACqYaFQgP0nsU6fuu9wXSdu1ZUfvj0b3mldAIqNBxq2w7PzpUKR91wVgC7cVlrvlyqE-niL6AXt89wwsj_0dfVxR5Ic3Vp75n7U0vmzguAx3OgFCf0oRWymXSAqRwrsKITB5sgD3ewlQq_V-POL9si-EhFR047_4tTUO-rW53l967Ha9E4tkce1WxDNM-oYY3iNxFnMDJLAhS7HpADRUGY8AFWmrx3qrgUn7S4BECYHrWHhU3Kq6r8QS_oNm5Rtdxo"/>
+</div>
+<div class="bg-surface-container-lowest px-4 py-2 rounded-full shadow-sm border border-outline-variant/10">
+<p class="text-[10px] font-mono text-on-surface-variant uppercase">82 practitioners online</p>
+</div>
+</div>
+</main>
+</body></html>
