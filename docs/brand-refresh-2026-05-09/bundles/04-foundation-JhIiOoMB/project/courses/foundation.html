@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AiBI-Foundations · The AI Banking Institute</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ECE9DF; --paper:#F4F1E7; --paper-2:#EFEBDD; --parch:#E4E0D2; --tape:#F1E9D0;
+    --ink:#0E1B2D; --ink-2:#1F2A3F; --muted:#5C6B82; --soft:#8C95A8;
+    --terra:#B5862A; --terra-2:#8E6620; --weak:#8E3B2A;
+    --green:#1F8A5B; --navy:#1E3A5F;
+    --rule:#D5D1C2; --rule-strong:#B9B4A0;
+    --serif:'Newsreader', Georgia, serif;
+    --sans:'Geist','Inter',system-ui,sans-serif;
+    --mono:'JetBrains Mono', ui-monospace, monospace;
+    --maxw:1380px;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0 }
+  html{ scroll-behavior:smooth }
+  body{ background:var(--paper); color:var(--ink); font-family:var(--sans); line-height:1.5; -webkit-font-smoothing:antialiased }
+  a{ color:inherit; text-decoration:none }
+  button{ font:inherit; color:inherit; background:none; border:none; cursor:pointer }
+  ::selection{ background:var(--terra); color:var(--paper) }
+
+  .container{ max-width:var(--maxw); margin:0 auto; padding:0 32px }
+
+  /* NAV */
+  .nav{ position:sticky; top:0; z-index:30; background:var(--paper); border-bottom:1px solid var(--rule) }
+  .nav-inner{ max-width:var(--maxw); margin:0 auto; padding:18px 32px; display:flex; align-items:center; justify-content:space-between; gap:24px }
+  .nav-mark{ display:flex; flex-direction:column; line-height:1 }
+  .nav-mark .l1, .nav-mark .l2{ font-family:var(--sans); font-weight:700; font-size:13px; letter-spacing:-0.005em; text-transform:uppercase; line-height:1 }
+  .nav-mark .l1{ color:var(--ink) }
+  .nav-mark .l2{ color:var(--soft); margin-top:1px }
+  .nav-links{ display:flex; align-items:center; gap:32px }
+  .nav-link{ font-family:var(--mono); font-size:11px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:var(--ink-2) }
+  .nav-link:hover{ color:var(--terra) }
+  .nav-link.cur{ color:var(--terra) }
+  .nav-cta{ padding:13px 22px; background:var(--ink); color:var(--paper); font-family:var(--mono); font-size:11px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase }
+  .nav-cta:hover{ background:var(--terra) }
+
+  /* CRUMB */
+  .crumb{ background:var(--bg); border-bottom:1px solid var(--rule); font-family:var(--mono); font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; font-weight:600 }
+  .crumb-inner{ max-width:var(--maxw); margin:0 auto; padding:11px 32px; display:flex; align-items:center; gap:10px; color:var(--muted) }
+  .crumb a{ color:var(--ink-2) }
+  .crumb a:hover{ color:var(--terra) }
+  .crumb .cur{ color:var(--ink) }
+  .crumb .sep{ color:var(--soft) }
+
+  /* HERO */
+  .hero{ padding:64px 0 28px; border-bottom:1px solid var(--rule) }
+  .hero-grid{ display:grid; grid-template-columns:1fr 380px; gap:56px; align-items:start }
+  .hero-tag{ display:inline-flex; align-items:center; gap:10px; margin-bottom:22px; padding:6px 12px; background:var(--tape); border:1px solid var(--rule-strong); font-family:var(--mono); font-size:10px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--ink) }
+  .hero-tag .dot{ width:6px; height:6px; background:var(--terra); border-radius:50% }
+  .hero h1{ font-family:var(--serif); font-weight:500; font-size:clamp(56px, 7.2vw, 100px); line-height:0.96; letter-spacing:-0.035em; margin-bottom:24px; max-width:12ch }
+  .hero h1 em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .hero-lede{ font-family:var(--serif); font-size:21px; line-height:1.45; color:var(--ink-2); max-width:48ch; margin-bottom:32px }
+  .hero-ctas{ display:flex; flex-wrap:wrap; gap:18px; align-items:center; margin-bottom:36px }
+  .btn-prim{ display:inline-flex; align-items:center; gap:12px; padding:16px 28px; background:var(--terra); color:var(--paper); font-family:var(--mono); font-size:11.5px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase }
+  .btn-prim:hover{ background:var(--terra-2) }
+  .btn-prim .arr{ font-family:var(--serif); font-size:16px; line-height:0; margin-top:-2px }
+  .btn-ghost{ display:inline-flex; align-items:center; gap:8px; padding:15px 22px; border:1px solid var(--ink); color:var(--ink); font-family:var(--mono); font-size:11px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase }
+  .btn-ghost:hover{ background:var(--ink); color:var(--paper) }
+  .hero-meta{ display:grid; grid-template-columns:repeat(4, 1fr); gap:0; padding-top:24px; border-top:1px solid var(--rule) }
+  .hero-meta .m{ padding:0 24px; border-right:1px solid var(--rule); display:flex; flex-direction:column; gap:4px }
+  .hero-meta .m:first-child{ padding-left:0 }
+  .hero-meta .m:last-child{ border-right:none; padding-right:0 }
+  .hero-meta .v{ font-family:var(--serif); font-weight:500; font-size:24px; line-height:1; letter-spacing:-0.02em }
+  .hero-meta .l{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+
+  .price-card{ background:var(--paper); border:1px solid var(--rule-strong); padding:28px 28px 24px }
+  .price-card .lab{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.22em; text-transform:uppercase; color:var(--muted); font-weight:600; margin-bottom:8px; display:block }
+  .price-card .pamt{ font-family:var(--serif); font-size:60px; line-height:1; letter-spacing:-0.03em; font-weight:500; display:flex; align-items:baseline; gap:8px; margin-bottom:4px }
+  .price-card .pamt .cur{ font-size:24px; color:var(--muted); font-weight:400 }
+  .price-card .pper{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); font-weight:600; margin-bottom:18px }
+  .price-card .pper s{ color:var(--soft); margin-right:8px }
+  .price-card hr{ border:none; border-top:1px dashed var(--rule); margin:0 0 18px }
+  .price-card ul{ list-style:none; margin:0 0 22px; padding:0; display:flex; flex-direction:column; gap:8px }
+  .price-card li{ display:grid; grid-template-columns:auto 1fr; gap:10px; font-family:var(--sans); font-size:13.5px; line-height:1.4; color:var(--ink-2) }
+  .price-card li::before{ content:"✓"; font-family:var(--mono); font-size:11px; color:var(--terra); font-weight:700; padding-top:3px }
+  .price-card .pcta{ width:100%; padding:14px; background:var(--ink); color:var(--paper); font-family:var(--mono); font-size:11px; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; text-align:center; display:block }
+  .price-card .pcta:hover{ background:var(--terra) }
+  .price-card .pmid{ display:block; text-align:center; margin-top:12px; font-family:var(--sans); font-size:12.5px; color:var(--muted) }
+  .price-card .pmid a{ color:var(--terra); border-bottom:1px solid var(--terra); padding-bottom:1px }
+
+  /* SECTIONS */
+  .sec{ padding:80px 0; border-bottom:1px solid var(--rule) }
+  #curriculum{ padding-top:56px }
+  .sec.tight{ padding:56px 0 }
+  .sec-head{ display:grid; grid-template-columns:auto 1fr; gap:32px; align-items:end; margin-bottom:48px; padding-bottom:18px; border-bottom:1px solid var(--rule-strong) }
+  .sec-head:has(.num:empty){ grid-template-columns:1fr; gap:0 }
+  .sec-head .num:empty{ display:none }
+  .sec-head .num:not(:empty){ font-family:var(--mono); font-size:11px; letter-spacing:0.22em; color:var(--muted); font-weight:600; padding-right:32px; border-right:1px solid var(--rule); align-self:end; padding-bottom:8px; text-transform:uppercase }
+  .sec-head .lab{ font-family:var(--mono); font-size:11px; letter-spacing:0.22em; text-transform:uppercase; color:var(--terra); font-weight:600 }
+  .sec-head h2{ font-family:var(--serif); font-weight:500; font-size:clamp(40px,4.4vw,56px); line-height:1; letter-spacing:-0.025em; margin-top:10px }
+  .sec-head h2 em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .sec-head-text{ display:flex; flex-direction:column }
+
+  /* PROMISE */
+  .promise{ background:var(--ink); color:var(--paper); padding:56px 0 }
+  .promise h3{ font-family:var(--serif); font-weight:500; font-size:clamp(28px,3.2vw,42px); line-height:1.15; letter-spacing:-0.02em; max-width:32ch }
+  .promise h3 em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .promise .signoff{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--terra); margin-top:24px; display:block; font-weight:600 }
+
+  /* PILLARS */
+  .pillars{ display:grid; grid-template-columns:repeat(4, 1fr); border-left:1px solid var(--rule) }
+  .pillar-card{ padding:28px 24px; border-right:1px solid var(--rule); border-bottom:1px solid var(--rule); border-top:1px solid var(--rule); display:flex; flex-direction:column; gap:12px; min-height:220px }
+  .pillar-card .pn{ font-family:var(--mono); font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--terra); font-weight:600 }
+  .pillar-card h4{ font-family:var(--serif); font-weight:500; font-size:26px; line-height:1.05; letter-spacing:-0.02em; color:var(--ink); margin:0; flex:1 }
+  .pillar-card .pmod{ font-family:var(--mono); font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:var(--muted); font-weight:600; padding-top:10px; border-top:1px solid var(--rule) }
+
+  /* CURRICULUM */
+  .curr-pillar{ border-bottom:1px solid var(--rule); padding-bottom:28px; margin-bottom:28px }
+  .curr-pillar:last-child{ border-bottom:none; margin-bottom:0 }
+  .cp-head{ display:flex; align-items:baseline; gap:18px; margin-bottom:16px; padding-bottom:10px; border-bottom:1px dashed var(--rule) }
+  .cp-head .num{ font-family:var(--mono); font-size:11px; letter-spacing:0.22em; text-transform:uppercase; color:var(--terra); font-weight:700 }
+  .cp-head h3{ font-family:var(--serif); font-weight:500; font-size:28px; line-height:1; letter-spacing:-0.02em }
+  .cp-head .desc{ font-family:var(--mono); font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); margin-left:auto; font-weight:600 }
+
+  .mod{ display:grid; grid-template-columns:auto 1fr 240px 130px; gap:28px; align-items:center; padding:16px 8px; border-bottom:1px solid var(--rule) }
+  .mod:hover{ background:var(--paper-2) }
+  .mod:last-child{ border-bottom:none }
+  .mod .mn{ font-family:var(--serif); font-size:28px; line-height:1; letter-spacing:-0.02em; color:var(--ink); font-weight:500; min-width:50px }
+  .mod .mb h4{ font-family:var(--serif); font-weight:500; font-size:20px; line-height:1.2; letter-spacing:-0.015em; margin:0; color:var(--ink) }
+  .mod .ma{ font-family:var(--sans); font-size:13.5px; line-height:1.4; color:var(--muted); font-weight:500 }
+  .mod .ma .lab{ font-family:var(--mono); font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); font-weight:600; display:block; margin-bottom:3px }
+  .mod .mt{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); font-weight:600; white-space:nowrap; display:flex; flex-direction:column; gap:6px; align-items:flex-end }
+  .mod .mt .pre{ display:inline-flex; align-items:center; gap:6px; padding:3px 8px; background:var(--terra); color:var(--paper); font-size:9px; letter-spacing:0.18em; font-weight:700 }
+
+  /* SAMPLE */
+  .sample{ background:var(--bg); padding:80px 0; border-bottom:1px solid var(--rule) }
+  .sample-grid{ display:grid; grid-template-columns:340px 1fr; gap:64px; align-items:start }
+  .sample-side .lab{ font-family:var(--mono); font-size:11px; letter-spacing:0.22em; text-transform:uppercase; color:var(--terra); font-weight:600; margin-bottom:14px; display:block }
+  .sample-side h2{ font-family:var(--serif); font-weight:500; font-size:44px; line-height:1; letter-spacing:-0.025em; margin-bottom:18px }
+  .sample-side h2 em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .sample-side p{ font-family:var(--sans); font-size:15px; line-height:1.55; color:var(--ink-2); margin-bottom:14px; max-width:34ch }
+  .sample-side ul{ list-style:none; padding:0; margin:24px 0 0; display:flex; flex-direction:column; gap:10px }
+  .sample-side li{ font-family:var(--mono); font-size:11.5px; letter-spacing:0.06em; color:var(--ink-2); font-weight:600; text-transform:uppercase; padding:8px 0; border-bottom:1px dashed var(--rule); display:grid; grid-template-columns:auto 1fr; gap:12px }
+  .sample-side li .ico{ color:var(--terra) }
+
+  .lesson-card{ background:var(--paper); border:1px solid var(--rule-strong); box-shadow:0 4px 24px rgba(14,27,45,0.08) }
+  .lc-head{ padding:16px 24px; background:var(--bg); border-bottom:1px solid var(--rule); display:flex; align-items:center; gap:14px; font-family:var(--mono); font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+  .lc-head .pre{ background:var(--terra); color:var(--paper); padding:4px 9px; font-size:9.5px; font-weight:700 }
+  .lc-head .modref{ color:var(--ink-2); font-weight:700 }
+  .lc-head .right{ margin-left:auto; color:var(--ink-2); font-weight:700 }
+  .lc-body{ padding:32px 36px 28px }
+  .lc-body h3{ font-family:var(--serif); font-weight:500; font-size:30px; line-height:1.1; letter-spacing:-0.02em; margin:0 0 8px; color:var(--ink) }
+  .lc-body h3 em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .lc-body .sub{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); font-weight:600; margin-bottom:22px }
+  .lc-body p.read{ font-family:var(--serif); font-size:17px; line-height:1.6; color:var(--ink); margin-bottom:14px }
+  .lc-quote{ border-left:3px solid var(--terra); padding:6px 0 6px 22px; margin:18px 0; font-family:var(--serif); font-size:16px; line-height:1.5; color:var(--ink-2) }
+  .lc-actions{ padding:18px 36px 24px; border-top:1px dashed var(--rule); display:flex; align-items:center; gap:14px; flex-wrap:wrap }
+  .lc-actions .progress{ display:flex; align-items:center; gap:10px; font-family:var(--mono); font-size:9.5px; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+  .lc-actions .pbar{ width:120px; height:4px; background:var(--rule); position:relative }
+  .lc-actions .pbar::after{ content:""; position:absolute; left:0; top:0; bottom:0; width:32%; background:var(--terra) }
+  .lc-actions .grow{ flex:1 }
+  .lc-cta{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; padding:11px 18px; color:var(--ink); font-weight:600; border:1px solid var(--ink) }
+  .lc-cta:hover{ background:var(--ink); color:var(--paper) }
+  .lc-cta.prim{ background:var(--ink); color:var(--paper) }
+  .lc-cta.prim:hover{ background:var(--terra); border-color:var(--terra) }
+
+  /* METHOD */
+  .method{ display:grid; grid-template-columns:repeat(4, 1fr); border-top:1px solid var(--rule); border-bottom:1px solid var(--rule) }
+  .method-step{ padding:32px 26px; border-right:1px solid var(--rule); display:flex; flex-direction:column; gap:14px; min-height:220px }
+  .method-step:last-child{ border-right:none }
+  .method-step .stp{ font-family:var(--mono); font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+  .method-step .num{ font-family:var(--serif); font-weight:500; font-size:64px; line-height:0.85; letter-spacing:-0.04em; color:var(--terra) }
+  .method-step h4{ font-family:var(--serif); font-weight:500; font-size:22px; line-height:1.1; letter-spacing:-0.015em; color:var(--ink); margin:0 }
+  .method-step p{ font-family:var(--sans); font-size:13.5px; line-height:1.5; color:var(--ink-2); flex:1 }
+  .method-step .mins{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); font-weight:600; padding-top:10px; border-top:1px solid var(--rule) }
+
+  /* ARTIFACTS */
+  .artifacts{ display:grid; grid-template-columns:repeat(3, 1fr); border-top:1px solid var(--rule); border-left:1px solid var(--rule) }
+  .art-cell{ padding:22px 22px 18px; border-right:1px solid var(--rule); border-bottom:1px solid var(--rule); background:var(--paper); display:flex; flex-direction:column; gap:8px; min-height:140px }
+  .art-cell .num{ font-family:var(--mono); font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+  .art-cell h4{ font-family:var(--serif); font-weight:500; font-size:20px; line-height:1.2; letter-spacing:-0.015em; color:var(--ink); margin:0 }
+  .art-cell .kind{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.16em; text-transform:uppercase; color:var(--terra); font-weight:600; margin-top:auto; padding-top:14px; border-top:1px dashed var(--rule) }
+
+  /* TOOLBOX BAND */
+  .toolbox-band{ background:var(--ink); color:var(--paper); padding:64px 0; border-bottom:1px solid var(--rule) }
+  .tb-head{ display:grid; grid-template-columns:auto 1fr auto; gap:32px; align-items:end; margin-bottom:36px; padding-bottom:18px; border-bottom:1px solid rgba(244,241,231,0.18) }
+  .tb-head .num{ font-family:var(--mono); font-size:11px; letter-spacing:0.22em; color:var(--soft); font-weight:600; padding-right:32px; border-right:1px solid rgba(244,241,231,0.18); align-self:end; padding-bottom:8px; text-transform:uppercase }
+  .tb-head .lab{ font-family:var(--mono); font-size:11px; letter-spacing:0.22em; text-transform:uppercase; color:var(--terra); font-weight:600 }
+  .tb-head h2{ font-family:var(--serif); font-weight:500; font-size:clamp(36px,4vw,52px); line-height:1; letter-spacing:-0.025em; margin-top:10px }
+  .tb-head h2 em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .tb-head .right-tag{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.2em; text-transform:uppercase; color:var(--terra); font-weight:600; padding-bottom:8px; align-self:end }
+  .tb-grid{ display:grid; grid-template-columns:1.2fr 1fr 1fr 1fr; gap:0; border-left:1px solid rgba(244,241,231,0.18) }
+  .tb-cell{ padding:24px 24px; border-right:1px solid rgba(244,241,231,0.18); display:flex; flex-direction:column; gap:10px; min-height:200px }
+  .tb-cell.feat{ background:rgba(181,134,42,0.08) }
+  .tb-cell .kind{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.22em; text-transform:uppercase; color:var(--terra); font-weight:700 }
+  .tb-cell h4{ font-family:var(--serif); font-weight:500; font-size:22px; line-height:1.15; letter-spacing:-0.015em; color:var(--paper); margin:0 }
+  .tb-cell p{ font-family:var(--sans); font-size:13.5px; line-height:1.5; color:rgba(244,241,231,0.78); flex:1 }
+  .tb-cell .pill{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.18em; text-transform:uppercase; color:rgba(244,241,231,0.55); font-weight:600; padding-top:10px; border-top:1px solid rgba(244,241,231,0.18); margin-top:auto }
+  .tb-foot{ display:grid; grid-template-columns:repeat(4, 1fr); margin-top:0; border-top:1px solid rgba(244,241,231,0.18); padding-top:18px; gap:24px }
+  .tb-foot .ti{ font-family:var(--mono); font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:rgba(244,241,231,0.55); font-weight:600; display:flex; align-items:center; gap:10px }
+  .tb-foot .ti .ico{ color:var(--terra); font-family:var(--serif); font-size:14px }
+
+  /* OUTCOMES (sec 04) */
+  .out-stats{ display:grid; grid-template-columns:repeat(4, 1fr); border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); margin-bottom:48px }
+  .out-stat{ padding:28px 24px; border-right:1px solid var(--rule); display:flex; flex-direction:column; gap:8px }
+  .out-stat:last-child{ border-right:none }
+  .out-stat .v{ font-family:var(--serif); font-weight:500; font-size:60px; line-height:0.9; letter-spacing:-0.035em; color:var(--ink) }
+  .out-stat .v .u{ font-family:var(--serif); font-size:22px; color:var(--muted); margin-left:4px; font-weight:400 }
+  .out-stat .l{ font-family:var(--mono); font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+  .out-stat .d{ font-family:var(--sans); font-size:13px; line-height:1.4; color:var(--ink-2); margin-top:4px }
+
+  .out-row{ display:grid; grid-template-columns:1.4fr 1fr; gap:0; border:1px solid var(--rule-strong); margin-bottom:32px }
+  .out-tb{ background:var(--ink); color:var(--paper); padding:32px 32px 28px; display:flex; flex-direction:column; gap:14px }
+  .out-tb .lab{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.22em; text-transform:uppercase; color:var(--terra); font-weight:700 }
+  .out-tb h3{ font-family:var(--serif); font-weight:500; font-size:32px; line-height:1.05; letter-spacing:-0.02em; color:var(--paper); max-width:18ch }
+  .out-tb-list{ list-style:none; padding:14px 0 0; margin:0; display:flex; flex-direction:column; gap:10px; border-top:1px solid rgba(244,241,231,0.18) }
+  .out-tb-list li{ display:grid; grid-template-columns:auto 1fr; gap:14px; align-items:baseline; font-family:var(--sans); font-size:14px; line-height:1.4; color:rgba(244,241,231,0.86) }
+  .out-tb-list .num{ font-family:var(--mono); font-size:10px; letter-spacing:0.16em; color:var(--terra); font-weight:700 }
+  .out-tb a{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--terra); font-weight:600; padding-top:14px; border-top:1px solid rgba(244,241,231,0.18); margin-top:auto }
+
+  .out-cred{ background:var(--paper); padding:32px 28px; display:flex; flex-direction:column; gap:14px; justify-content:center }
+  .out-cred .lab{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.22em; text-transform:uppercase; color:var(--terra); font-weight:700 }
+  .out-cred h4{ font-family:var(--serif); font-weight:500; font-size:30px; line-height:1; letter-spacing:-0.02em; color:var(--ink) }
+  .out-cred .badge{ display:flex; align-items:center; gap:14px; padding:16px; background:var(--bg); border:1px solid var(--rule) }
+  .out-cred .seal{ width:56px; height:56px; border:1.5px solid var(--terra); border-radius:50%; display:grid; place-items:center; font-family:var(--serif); font-size:18px; color:var(--terra); font-weight:500 }
+  .out-cred .meta{ display:flex; flex-direction:column; gap:2px }
+  .out-cred .meta .n{ font-family:var(--serif); font-weight:500; font-size:15px; color:var(--ink) }
+  .out-cred .meta .s{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.16em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+  .out-cred p{ font-family:var(--sans); font-size:13.5px; line-height:1.5; color:var(--ink-2) }
+
+  .out-deliv{ display:grid; grid-template-columns:repeat(3, 1fr); border-left:1px solid var(--rule); border-top:1px solid var(--rule) }
+  .out-d{ padding:18px 22px; border-right:1px solid var(--rule); border-bottom:1px solid var(--rule); display:flex; flex-direction:column; gap:6px; min-height:96px }
+  .out-d .n{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+  .out-d h5{ font-family:var(--serif); font-weight:500; font-size:18px; line-height:1.15; letter-spacing:-0.015em; color:var(--ink); margin:0 }
+  .out-d .src{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.16em; text-transform:uppercase; color:var(--terra); font-weight:600; margin-top:auto }
+
+  /* AUDIENCE */
+  .audience{ background:var(--ink); color:var(--paper); padding:64px 0; border-bottom:1px solid var(--rule) }
+  .audience-head{ display:grid; grid-template-columns:auto 1fr; gap:32px; align-items:end; margin-bottom:36px; padding-bottom:18px; border-bottom:1px solid rgba(244,241,231,0.18) }
+  .audience-head .num{ font-family:var(--mono); font-size:11px; letter-spacing:0.22em; color:var(--soft); font-weight:600; padding-right:32px; border-right:1px solid rgba(244,241,231,0.18); align-self:end; padding-bottom:8px; text-transform:uppercase }
+  .audience-head .lab{ font-family:var(--mono); font-size:11px; letter-spacing:0.22em; text-transform:uppercase; color:var(--terra); font-weight:600 }
+  .audience-head h2{ font-family:var(--serif); font-weight:500; font-size:clamp(36px,4vw,52px); line-height:1; letter-spacing:-0.025em; margin-top:10px }
+  .audience-head h2 em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .audience-grid{ display:grid; grid-template-columns:1fr 1fr 1fr; border-left:1px solid rgba(244,241,231,0.18) }
+  .aud-card{ padding:24px 26px; border-right:1px solid rgba(244,241,231,0.18); display:flex; flex-direction:column; gap:10px; min-height:170px }
+  .aud-card .role{ font-family:var(--mono); font-size:10px; letter-spacing:0.22em; text-transform:uppercase; color:var(--terra); font-weight:600 }
+  .aud-card h4{ font-family:var(--serif); font-weight:500; font-size:22px; line-height:1.15; letter-spacing:-0.015em; color:var(--paper); margin:0 }
+  .aud-card .why{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.18em; text-transform:uppercase; color:rgba(244,241,231,0.55); padding-top:12px; border-top:1px solid rgba(244,241,231,0.18); margin-top:auto; font-weight:600 }
+
+  /* TESTIMONIALS */
+  .test{ display:grid; grid-template-columns:1fr 1fr 1fr; border-left:1px solid var(--rule); border-top:1px solid var(--rule) }
+  .test-cell{ padding:28px 26px 24px; border-right:1px solid var(--rule); border-bottom:1px solid var(--rule); display:flex; flex-direction:column; gap:14px; min-height:240px }
+  .test-cell .stars{ font-family:var(--mono); font-size:13px; letter-spacing:2px; color:var(--terra) }
+  .test-cell blockquote{ font-family:var(--serif); font-size:17px; line-height:1.4; color:var(--ink); flex:1; font-weight:400 }
+  .test-cell .att{ display:flex; flex-direction:column; gap:3px; padding-top:10px; border-top:1px solid var(--rule) }
+  .test-cell .att .name{ font-family:var(--serif); font-weight:500; font-size:14.5px; color:var(--ink); letter-spacing:-0.005em }
+  .test-cell .att .meta{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+
+  /* INSTRUCTOR */
+  .inst-row{ display:grid; grid-template-columns:1fr 360px; gap:64px; align-items:start; padding-top:8px }
+  .inst-bio h3{ font-family:var(--serif); font-weight:500; font-size:36px; line-height:1.05; letter-spacing:-0.025em; margin-bottom:18px; max-width:18ch }
+  .inst-bio h3 em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .inst-bio p{ font-family:var(--sans); font-size:15px; line-height:1.55; color:var(--ink-2); max-width:60ch }
+  .inst-card{ background:var(--paper); border:1px solid var(--rule-strong); padding:24px }
+  .inst-card .ph{ width:100%; aspect-ratio:1; background:linear-gradient(135deg, var(--tape) 0%, var(--parch) 100%); display:grid; place-items:center; font-family:var(--serif); font-size:64px; color:var(--terra); border:1px solid var(--rule); margin-bottom:18px }
+  .inst-card .name{ font-family:var(--serif); font-weight:500; font-size:22px; line-height:1.1; letter-spacing:-0.015em; color:var(--ink); margin-bottom:4px }
+  .inst-card .role{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--terra); font-weight:600; margin-bottom:14px }
+  .inst-card ul.cred{ list-style:none; padding-top:14px; border-top:1px solid var(--rule); display:flex; flex-direction:column }
+  .inst-card .cred li{ padding:6px 0; border-bottom:1px dashed var(--rule); display:grid; grid-template-columns:78px 1fr; gap:10px; font-family:var(--sans); font-size:13px; line-height:1.4; color:var(--ink-2) }
+  .inst-card .cred li:last-child{ border-bottom:none }
+  .inst-card .cred .y{ font-family:var(--mono); font-size:10px; letter-spacing:0.16em; color:var(--muted); font-weight:600; padding-top:2px }
+
+  /* FAQ */
+  .faq-list{ display:flex; flex-direction:column; border-top:1px solid var(--rule) }
+  details.q{ border-bottom:1px solid var(--rule) }
+  details.q summary{ list-style:none; cursor:pointer; padding:20px 0; display:grid; grid-template-columns:auto 1fr auto; gap:24px; align-items:baseline }
+  details.q summary::-webkit-details-marker{ display:none }
+  details.q .qn{ font-family:var(--mono); font-size:11px; letter-spacing:0.18em; color:var(--muted); font-weight:600 }
+  details.q .qt{ font-family:var(--serif); font-weight:500; font-size:20px; line-height:1.3; letter-spacing:-0.015em; color:var(--ink) }
+  details.q .toggle{ font-family:var(--serif); font-size:22px; color:var(--muted); transition:transform 0.2s; line-height:1 }
+  details.q[open] .toggle{ transform:rotate(45deg); color:var(--terra) }
+  details.q .qa{ padding:0 0 22px 60px; max-width:80ch }
+  details.q .qa p{ font-family:var(--sans); font-size:15px; line-height:1.6; color:var(--ink-2) }
+
+  /* FINAL */
+  .final{ background:var(--ink); color:var(--paper); padding:80px 0; text-align:center }
+  .final .lab{ font-family:var(--mono); font-size:11px; letter-spacing:0.22em; text-transform:uppercase; color:var(--terra); font-weight:600; display:block; margin-bottom:18px }
+  .final h2{ font-family:var(--serif); font-weight:500; font-size:clamp(44px, 5.4vw, 72px); line-height:1; letter-spacing:-0.03em; max-width:18ch; margin:0 auto 32px }
+  .final h2 em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .final .ctas{ display:flex; gap:16px; justify-content:center; flex-wrap:wrap }
+  .final .btn-prim{ background:var(--terra); border:1px solid var(--terra) }
+  .final .btn-prim:hover{ background:var(--paper); color:var(--ink); border-color:var(--paper) }
+  .final .btn-ghost{ border-color:var(--paper); color:var(--paper) }
+  .final .btn-ghost:hover{ background:var(--paper); color:var(--ink); border-color:var(--paper) }
+  .final .small{ display:block; margin-top:32px; font-family:var(--mono); font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; color:rgba(244,241,231,0.5); font-weight:600 }
+
+  /* FOOTER */
+  .foot{ background:#0A1320; color:rgba(244,241,231,0.6); padding:48px 0 28px }
+  .foot-grid{ display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:48px; margin-bottom:36px }
+  .foot-mark .l1{ font-family:var(--sans); font-weight:700; font-size:14px; letter-spacing:-0.005em; text-transform:uppercase; color:var(--paper); display:block }
+  .foot-mark .l2{ font-family:var(--sans); font-weight:700; font-size:14px; letter-spacing:-0.005em; text-transform:uppercase; color:var(--soft); margin-top:1px; display:block }
+  .foot-mark .tag{ font-family:var(--sans); color:var(--terra); margin-top:10px; font-size:12px; letter-spacing:0.18em; text-transform:uppercase; font-weight:600 }
+  .foot-col h6{ font-family:var(--mono); font-size:10px; letter-spacing:0.22em; text-transform:uppercase; color:var(--soft); font-weight:600; margin-bottom:14px }
+  .foot-col ul{ list-style:none; display:flex; flex-direction:column; gap:8px }
+  .foot-col a{ font-family:var(--sans); font-size:13.5px; color:rgba(244,241,231,0.78) }
+  .foot-col a:hover{ color:var(--terra) }
+  .foot-bot{ padding-top:18px; border-top:1px solid rgba(244,241,231,0.12); display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; font-family:var(--mono); font-size:10px; letter-spacing:0.18em; text-transform:uppercase; font-weight:600 }
+
+  @media (max-width:1100px){
+    .hero-grid{ grid-template-columns:1fr; gap:36px }
+    .price-card{ max-width:480px }
+    .pillars{ grid-template-columns:repeat(2, 1fr) }
+    .audience-grid, .test{ grid-template-columns:1fr 1fr }
+    .method{ grid-template-columns:1fr 1fr }
+    .artifacts{ grid-template-columns:1fr 1fr }
+    .sample-grid{ grid-template-columns:1fr; gap:32px }
+    .inst-row{ grid-template-columns:1fr; gap:32px }
+    .foot-grid{ grid-template-columns:1fr 1fr }
+    .mod{ grid-template-columns:auto 1fr; gap:18px }
+    .mod .ma, .mod .mt{ grid-column:2 }
+  }
+  @media (max-width:600px){
+    .hero-meta{ grid-template-columns:1fr 1fr }
+    .pillars, .audience-grid, .test, .method, .artifacts{ grid-template-columns:1fr }
+    .nav-links .nav-link:not(.nav-cta){ display:none }
+    .container{ padding:0 20px }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a href="../AI Banking Institute.html" class="nav-mark">
+      <span class="l1">The AI Banking</span>
+      <span class="l2">Institute</span>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="../AI Banking Institute.html#pillars" class="nav-link cur">Education</a>
+      <a href="#" class="nav-link">For Institutions</a>
+      <a href="#" class="nav-link">Research</a>
+      <a href="#" class="nav-link">About</a>
+      <a href="../FAQ.html" class="nav-link">Support</a>
+      <a href="#enroll" class="nav-cta">Enroll</a>
+      <a href="../User Home.html" class="nav-link" style="color:var(--muted)">Sign in</a>
+    </nav>
+  </div>
+</header>
+
+<div class="crumb">
+  <div class="crumb-inner">
+    <a href="../AI Banking Institute.html">The Institute</a>
+    <span class="sep">/</span>
+    <a href="#">Education</a>
+    <span class="sep">/</span>
+    <a href="#">Courses</a>
+    <span class="sep">/</span>
+    <span class="cur">AiBI-Foundations</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div>
+        <span class="hero-tag"><span class="dot"></span>AiBI-Foundations · Certification</span>
+        <h1>Stop being shown AI. Start <em>using</em> it.</h1>
+        <div class="hero-ctas">
+          <a href="#enroll" class="btn-prim">Enroll — $295 <span class="arr">→</span></a>
+          <a href="#sample" class="btn-ghost">Try a free lesson</a>
+        </div>
+      </div>
+
+      <aside class="price-card" id="enroll">
+        <span class="lab">Individual seat</span>
+        <div class="pamt"><span class="cur">$</span>295</div>
+        <div class="pper">$199 / seat for teams of 10+</div>
+        <hr>
+        <ul>
+          <li>All 12 modules, no expiry</li>
+          <li>Reviewed feedback on every artifact</li>
+          <li>AiBI-Foundations digital credential</li>
+          <li>Toolbox of prompts, skills, and agents</li>
+        </ul>
+        <a href="#" class="pcta">Enroll — secure your seat</a>
+        <span class="pmid">Sending a team? <a href="#enroll">Institutional pricing below</a></span>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="curriculum">
+  <div class="container">
+    <div class="sec-head">
+      <span class="num"></span>
+      <div class="sec-head-text">
+        <span class="lab">Curriculum</span>
+        <h2>From cautious to capable in twelve modules.</h2>
+      </div>
+    </div>
+
+    <div class="curr-pillar">
+      <div class="cp-head">
+        <span class="num">Pillar 01 — Awareness</span>
+        <span class="desc">3 modules · 76 min</span>
+      </div>
+      <div class="mod">
+        <div class="mn">01</div>
+        <div class="mb"><h4>The AI landscape in banking</h4></div>
+        <div class="ma"><span class="lab">You'll keep</span>A personal AI map</div>
+        <div class="mt">22 min<span class="pre">▸ Free preview</span></div>
+      </div>
+      <div class="mod">
+        <div class="mn">02</div>
+        <div class="mb"><h4>Subscription inventory</h4></div>
+        <div class="ma"><span class="lab">You'll keep</span>A vetted list of AI tools in use</div>
+        <div class="mt">28 min</div>
+      </div>
+      <div class="mod">
+        <div class="mn">03</div>
+        <div class="mb"><h4>The privacy line</h4></div>
+        <div class="ma"><span class="lab">You'll keep</span>A "stays in / goes out" rule</div>
+        <div class="mt">26 min</div>
+      </div>
+    </div>
+
+    <div class="curr-pillar">
+      <div class="cp-head">
+        <span class="num">Pillar 02 — Understanding</span>
+        <span class="desc">3 modules · 86 min</span>
+      </div>
+      <div class="mod">
+        <div class="mn">04</div>
+        <div class="mb"><h4>How language models actually work</h4></div>
+        <div class="ma"><span class="lab">You'll keep</span>A one-page mental model</div>
+        <div class="mt">32 min</div>
+      </div>
+      <div class="mod">
+        <div class="mn">05</div>
+        <div class="mb"><h4>Acceptable use — your boundaries</h4></div>
+        <div class="ma"><span class="lab">You'll keep</span>A printable Acceptable Use card</div>
+        <div class="mt">30 min</div>
+      </div>
+      <div class="mod">
+        <div class="mn">06</div>
+        <div class="mb"><h4>Skill diagnosis</h4></div>
+        <div class="ma"><span class="lab">You'll keep</span>A short report on your AI fluency</div>
+        <div class="mt">24 min</div>
+      </div>
+    </div>
+
+    <div class="curr-pillar">
+      <div class="cp-head">
+        <span class="num">Pillar 03 — Creation</span>
+        <span class="desc">3 modules · 105 min</span>
+      </div>
+      <div class="mod">
+        <div class="mn">07</div>
+        <div class="mb"><h4>Skill builder — your first prompt</h4></div>
+        <div class="ma"><span class="lab">You'll keep</span>A reusable prompt for a weekly task</div>
+        <div class="mt">40 min<span class="pre">▸ Free preview</span></div>
+      </div>
+      <div class="mod">
+        <div class="mn">08</div>
+        <div class="mb"><h4>Iteration tracker</h4></div>
+        <div class="ma"><span class="lab">You'll keep</span>A documented before/after</div>
+        <div class="mt">35 min</div>
+      </div>
+      <div class="mod">
+        <div class="mn">09</div>
+        <div class="mb"><h4>Building durable prompts</h4></div>
+        <div class="ma"><span class="lab">You'll keep</span>Three saved prompts in your toolbox</div>
+        <div class="mt">30 min</div>
+      </div>
+    </div>
+
+    <div class="curr-pillar">
+      <div class="cp-head">
+        <span class="num">Pillar 04 — Application</span>
+        <span class="desc">3 modules · 88 min</span>
+      </div>
+      <div class="mod">
+        <div class="mn">10</div>
+        <div class="mb"><h4>Better email, faster</h4></div>
+        <div class="ma"><span class="lab">You'll keep</span>Your member-letter rewrite, reviewed</div>
+        <div class="mt">28 min</div>
+      </div>
+      <div class="mod">
+        <div class="mn">11</div>
+        <div class="mb"><h4>Summarising documents responsibly</h4></div>
+        <div class="ma"><span class="lab">You'll keep</span>A vetted policy summary</div>
+        <div class="mt">30 min</div>
+      </div>
+      <div class="mod">
+        <div class="mn">12</div>
+        <div class="mb"><h4>Reviewing AI outputs like an auditor</h4></div>
+        <div class="ma"><span class="lab">You'll keep</span>A reviewer checklist, signed off</div>
+        <div class="mt">30 min</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sample" id="sample">
+  <div class="container">
+    <div class="sample-grid">
+      <div class="sample-side">
+        <span class="lab">A free preview</span>
+        <h2>Try a real lesson.</h2>
+        <p>Module 07 is the heart of the course — where most learners go from "I tried ChatGPT once" to having a prompt they use every week.</p>
+        <ul>
+          <li><span class="ico">●</span>Plain-language reading</li>
+          <li><span class="ico">●</span>One real-world example</li>
+          <li><span class="ico">●</span>An exercise with reviewed feedback</li>
+          <li><span class="ico">●</span>An artifact you keep</li>
+        </ul>
+      </div>
+
+      <article class="lesson-card">
+        <div class="lc-head">
+          <span class="pre">▸ Free preview</span>
+          <span class="modref">Module 07 · L2</span>
+          <span>The four-pillar prompt</span>
+          <span class="right">Reading 4 of 7</span>
+        </div>
+        <div class="lc-body">
+          <h3>Every prompt worth saving has four parts.</h3>
+          <p class="sub">A reading · about three minutes</p>
+          <p class="read">The bankers who pull ahead this year are the ones who write a prompt once and use it every week — not the ones who keep typing variations into a fresh chat.</p>
+          <p class="read">Every prompt worth saving has four parts: a <strong>Role</strong> for the AI, the <strong>Inputs</strong> you'll paste, the <strong>Constraints</strong> (what to avoid), and the <strong>Output</strong> you want back.</p>
+          <div class="lc-quote">"The chat version says 'rewrite this nicer.' The tool version names the role, names the constraint, and names the output. One is a chat. The other is a tool."</div>
+          <p class="read">Read on to see the two prompts side-by-side, then write your own…</p>
+        </div>
+        <div class="lc-actions">
+          <span class="progress">
+            <span>Lesson 32% read</span>
+            <span class="pbar"></span>
+          </span>
+          <span class="grow"></span>
+          <a href="#enroll" class="lc-cta prim">Enroll to continue</a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="container">
+    <div class="sec-head">
+      <span class="num"></span>
+      <div class="sec-head-text">
+        <span class="lab">Outcomes</span>
+        <h2>What you actually walk out with.</h2>
+      </div>
+    </div>
+
+    <div class="out-stats">
+      <div class="out-stat">
+        <span class="v">8<span class="u">+</span></span>
+        <span class="l">Reusable tools</span>
+        <span class="d">Prompts, skills, and agents loaded into your Toolbox.</span>
+      </div>
+      <div class="out-stat">
+        <span class="v">~6<span class="u">hrs</span></span>
+        <span class="l">Saved per week</span>
+        <span class="d">Median time charter learners reclaim on routine writing.</span>
+      </div>
+      <div class="out-stat">
+        <span class="v">12</span>
+        <span class="l">Reviewed deliverables</span>
+        <span class="d">Every module ends with reviewer feedback signed off.</span>
+      </div>
+      <div class="out-stat">
+        <span class="v">1</span>
+        <span class="l">Verifiable credential</span>
+        <span class="d">AiBI-Foundations badge — proof of reviewed work.</span>
+      </div>
+    </div>
+
+    <div class="out-row">
+      <div class="out-tb">
+        <span class="lab">★ Your Toolbox at graduation</span>
+        <h3>Eight tools you can run on Monday — and still own next year.</h3>
+        <ul class="out-tb-list">
+          <li><span class="num">PROMPT</span><span>Member-letter rewriter — your tone, your bank's compliance line</span></li>
+          <li><span class="num">PROMPT</span><span>Policy-summary drafter — runs on any uploaded doc</span></li>
+          <li><span class="num">PROMPT</span><span>Memo opener for credit committee</span></li>
+          <li><span class="num">SKILL</span><span>Privacy-line decision check — "stays in / goes out"</span></li>
+          <li><span class="num">SKILL</span><span>Reviewer checklist — examiner-ready sign-off form</span></li>
+          <li><span class="num">SKILL</span><span>Iteration tracker — before/after with rationale</span></li>
+          <li><span class="num">AGENT</span><span>Draft → redact PII → summarise → hand off</span></li>
+          <li><span class="num">AGENT</span><span>Subscription audit — flag tools, owners, redundancies</span></li>
+        </ul>
+      <span class="pill">Yours after the cohort closes</span>
+      </div>
+
+      <div class="out-cred">
+        <span class="lab">+ Credential</span>
+        <h4>AiBI-Foundations</h4>
+        <div class="badge">
+          <div class="seal">AiBI</div>
+          <div class="meta">
+            <span class="n">Verifiable digital badge</span>
+            <span class="s">Issued on completion · LinkedIn-ready</span>
+          </div>
+        </div>
+        <p>Proof you finished reviewed work — not a multiple-choice quiz. Recognised toward state-association CE credit (in progress).</p>
+      </div>
+    </div>
+
+    <div class="out-deliv" style="display:none">
+      <div class="out-d"><span class="n">Deliverable 01</span><h5>Personal AI map</h5><span class="src">Module 01</span></div>
+      <div class="out-d"><span class="n">Deliverable 02</span><h5>Subscription inventory</h5><span class="src">Module 02</span></div>
+      <div class="out-d"><span class="n">Deliverable 03</span><h5>Privacy-line rule</h5><span class="src">Module 03</span></div>
+      <div class="out-d"><span class="n">Deliverable 04</span><h5>Acceptable Use card</h5><span class="src">Module 05</span></div>
+      <div class="out-d"><span class="n">Deliverable 05</span><h5>Three saved prompts</h5><span class="src">Module 09 · Toolbox</span></div>
+      <div class="out-d"><span class="n">Deliverable 06</span><h5>Iteration before/after</h5><span class="src">Module 08</span></div>
+      <div class="out-d"><span class="n">Deliverable 07</span><h5>Member-letter rewrite</h5><span class="src">Module 10</span></div>
+      <div class="out-d"><span class="n">Deliverable 08</span><h5>Reviewer checklist</h5><span class="src">Module 12</span></div>
+      <div class="out-d"><span class="n">Deliverable 09</span><h5>Examiner-ready audit log</h5><span class="src">Toolbox · Built-in</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec tight">
+  <div class="container">
+    <div class="sec-head">
+      <span class="num"></span>
+      <div class="sec-head-text">
+        <span class="lab">Charter cohort</span>
+        <h2>What learners said.</h2>
+      </div>
+    </div>
+    <div class="test">
+      <div class="test-cell">
+        <span class="stars">★★★★★</span>
+        <blockquote>"Came in expecting another vendor demo. Left with a prompt that cuts forty minutes off my Tuesday."</blockquote>
+        <div class="att">
+          <span class="name">Marisol Tavares</span>
+          <span class="meta">VP Member Services · Atlas Federal CU</span>
+        </div>
+      </div>
+      <div class="test-cell">
+        <span class="stars">★★★★★</span>
+        <blockquote>"The reviewed feedback is the differentiator. A reviewer rewrote my Module 7 prompt with three changes I'd never have seen on my own."</blockquote>
+        <div class="att">
+          <span class="name">Henry Caldwell</span>
+          <span class="meta">Senior Underwriter · First Plains Bank</span>
+        </div>
+      </div>
+      <div class="test-cell">
+        <span class="stars">★★★★★</span>
+        <blockquote>"Module 02 surfaced three tools we didn't know we were paying for. Paid for the cohort in week two."</blockquote>
+        <div class="att">
+          <span class="name">Eleanor Nash</span>
+          <span class="meta">CRO · Cascadia Community Bank</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="container">
+    <div class="sec-head">
+      <span class="num"></span>
+      <div class="sec-head-text">
+        <span class="lab">Common questions</span>
+        <h2>Asked &amp; answered.</h2>
+      </div>
+    </div>
+
+    <div class="faq-list">
+      <details class="q" open>
+        <summary>
+          <span class="qn">01</span>
+          <span class="qt">How long will this take me?</span>
+          <span class="toggle">+</span>
+        </summary>
+        <div class="qa">
+          <p>About six hours of reading and exercises. Most finish in three to six weeks at one or two modules a week. You have ninety days from enrollment.</p>
+        </div>
+      </details>
+      <details class="q">
+        <summary>
+          <span class="qn">02</span>
+          <span class="qt">What if my bank's policy says no AI tools?</span>
+          <span class="toggle">+</span>
+        </summary>
+        <div class="qa">
+          <p>The Playground is sandboxed; nothing leaves the Institute. Module 03 is built specifically to help you stay inside any reasonable policy.</p>
+        </div>
+      </details>
+      <details class="q">
+        <summary>
+          <span class="qn">03</span>
+          <span class="qt">Is this technical? I'm not a programmer.</span>
+          <span class="toggle">+</span>
+        </summary>
+        <div class="qa">
+          <p>No code, no math. If you can write a memo, you can do this course.</p>
+        </div>
+      </details>
+      <details class="q">
+        <summary>
+          <span class="qn">04</span>
+          <span class="qt">What's the credential worth?</span>
+          <span class="toggle">+</span>
+        </summary>
+        <div class="qa">
+          <p>A verifiable digital badge that proves you shipped reviewed work. We're working with state banking associations and the NCUA on continuing-ed credit recognition.</p>
+        </div>
+      </details>
+      <details class="q">
+        <summary>
+          <span class="qn">05</span>
+          <span class="qt">My institution wants to send a team.</span>
+          <span class="toggle">+</span>
+        </summary>
+        <div class="qa">
+          <p>$199 a seat for teams of ten or more, with a sponsor dashboard and an aggregated readiness report. <a href="#" style="color:var(--terra); border-bottom:1px solid var(--terra)">Request institutional pricing →</a></p>
+        </div>
+      </details>
+      <details class="q">
+        <summary>
+          <span class="qn">06</span>
+          <span class="qt">What if I don't finish?</span>
+          <span class="toggle">+</span>
+        </summary>
+        <div class="qa">
+          <p>You keep what you've made. We'll extend the ninety-day window once on request.</p>
+        </div>
+      </details>
+      <details class="q">
+        <summary>
+          <span class="qn">07</span>
+          <span class="qt">Is there a refund?</span>
+          <span class="toggle">+</span>
+        </summary>
+        <div class="qa">
+          <p>Yes. Finish Module 01 and the first exercise. Within fourteen days, ask for a full refund. No exit interview.</p>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section class="final">
+  <div class="container">
+    <span class="lab"></span>
+    <h2>The shortest path to using AI at your financial institution.</h2>
+    <div class="ctas">
+      <a href="#enroll" class="btn-prim">Enroll — $295 <span class="arr">→</span></a>
+      <a href="#sample" class="btn-ghost">Try a free lesson</a>
+    </div>
+    <span class="small"></span>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-mark">
+        <span class="l1">The AI Banking</span>
+        <span class="l2">Institute</span>
+        <p class="tag">Turning Bankers into Builders</p>
+      </div>
+      <div class="foot-col">
+        <h6>Education</h6>
+        <ul>
+          <li><a href="foundation.html">AiBI-Foundations</a></li>
+          <li><a href="../AI Readiness Briefing.html">Readiness Brief</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h6>Institute</h6>
+        <ul>
+          <li><a href="#">For institutions</a></li>
+          <li><a href="#">Research</a></li>
+          <li><a href="#">About</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h6>Account</h6>
+        <ul>
+          <li><a href="../User Home.html">Sign in</a></li>
+          <li><a href="../FAQ.html">Support</a></li>
+          <li><a href="#">Verify a credential</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span>© 2026 The AI Banking Institute</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

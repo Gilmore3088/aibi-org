@@ -4,7 +4,7 @@
  * Composes <PillarCard> + <DefinitionList>. Each rung shows level, credential
  * code, designation, format/effort/outcome/tuition spec, and a "program detail"
  * link. Pillar colors apply per the discipline rule (terra/cobalt/sage on
- * Practitioner/Specialist/Leader).
+ * Foundations/Specialist/Leader).
  */
 
 import Link from "next/link";

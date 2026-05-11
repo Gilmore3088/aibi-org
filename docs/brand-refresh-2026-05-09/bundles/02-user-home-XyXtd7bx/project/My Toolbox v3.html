@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Toolbox · The AI Banking Institute</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ECE9DF; --paper:#F4F1E7; --parch:#E4E0D2; --tape:#F1E9D0;
+    --ink:#0E1B2D; --ink-2:#1F2A3F; --muted:#5C6B82; --soft:#8C95A8;
+    --terra:#B5862A; --terra-2:#8E6620; --weak:#8E3B2A;
+    --green:#1F8A5B; --navy:#1E3A5F; --plum:#5E3B6E;
+    --rule:#D5D1C2; --rule-strong:#B9B4A0;
+    --serif:'Newsreader', Georgia, serif;
+    --sans:'Geist','Inter',system-ui,sans-serif;
+    --mono:'JetBrains Mono', ui-monospace, monospace;
+    --maxw:1480px;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0 }
+  html, body{ background:var(--paper); color:var(--ink); font-family:var(--sans); -webkit-font-smoothing:antialiased; line-height:1.45 }
+  a{ color:inherit; text-decoration:none }
+  button{ font:inherit; color:inherit; background:none; border:none; cursor:pointer }
+  ::selection{ background:var(--terra); color:var(--paper) }
+
+  .container{ max-width:var(--maxw); margin:0 auto; padding:0 32px }
+  .eyebrow{ font-family:var(--mono); font-size:11px; letter-spacing:0.22em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+
+  /* ===== SITE NAV ===== */
+  .nav{ position:sticky; top:0; z-index:30; background:var(--paper); border-bottom:1px solid var(--rule) }
+  .nav-inner{ max-width:var(--maxw); margin:0 auto; padding:18px 32px; display:flex; align-items:center; justify-content:space-between; gap:24px }
+  .nav-mark{ display:flex; flex-direction:column; line-height:1 }
+  .nav-mark .l1, .nav-mark .l2{ font-family:var(--sans); font-weight:700; font-size:13px; letter-spacing:-0.005em; text-transform:uppercase; line-height:1 }
+  .nav-mark .l1{ color:var(--ink) }
+  .nav-mark .l2{ color:var(--soft); margin-top:1px }
+  .nav-links{ display:flex; align-items:center; gap:32px }
+  .nav-link{ font-family:var(--mono); font-size:11px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:var(--ink-2) }
+  .nav-link:hover{ color:var(--terra) }
+  .acct{ display:flex; align-items:center; gap:10px; padding:6px 14px 6px 6px; background:transparent; border:1px solid var(--rule-strong); border-radius:1px; cursor:pointer; margin-left:8px }
+  .acct:hover{ border-color:var(--ink-2) }
+  .avatar{ width:28px; height:28px; border-radius:50%; background:var(--terra); color:var(--paper); display:grid; place-items:center; font-family:var(--mono); font-size:10px; font-weight:600 }
+  .acct .name{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink); font-weight:600 }
+
+  /* ===== MASTHEAD (compact) ===== */
+  .mast{ padding:48px 0 28px; border-bottom:1px solid var(--rule) }
+  .mast-row{ display:flex; align-items:end; gap:48px; flex-wrap:wrap }
+  .mast-text{ flex:1; min-width:280px }
+  .mast .greet{ display:block; color:var(--terra); margin-bottom:14px }
+  .mast h1{ font-family:var(--serif); font-weight:500; font-size:clamp(40px, 4.6vw, 64px); line-height:1; letter-spacing:-0.03em; margin:0 0 8px }
+  .mast h1 em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .mast .lede{ font-family:var(--serif); font-size:17px; line-height:1.45; color:var(--ink-2); max-width:54ch; margin:0; font-weight:400 }
+  .mast-stats{ display:flex; gap:32px; padding-left:32px; border-left:1px solid var(--rule-strong); align-self:flex-end }
+  .mast-stats .stat{ display:flex; flex-direction:column; gap:3px }
+  .mast-stats .v{ font-family:var(--serif); font-size:28px; line-height:1; letter-spacing:-0.02em; color:var(--ink); font-weight:500 }
+  .mast-stats .l{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.22em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+
+  /* ===== USER TABS ===== */
+  .tabs{ background:var(--paper); border-bottom:1px solid var(--rule); border-top:1px solid var(--rule) }
+  .tabs-inner{ max-width:var(--maxw); margin:0 auto; padding:0 32px; display:flex; align-items:center; gap:0 }
+  .tab{ font-family:var(--mono); font-size:11px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); padding:16px 18px 14px; border-bottom:2px solid transparent; margin-bottom:-1px }
+  .tab:hover{ color:var(--ink-2) }
+  .tab.active{ color:var(--ink); border-bottom-color:var(--terra) }
+
+  /* ===== FILTER BAR ===== */
+  .fbar{ background:var(--paper); border-bottom:1px solid var(--rule); padding:16px 0 }
+  .fbar-inner{ max-width:var(--maxw); margin:0 auto; padding:0 32px; display:flex; gap:24px; align-items:center; flex-wrap:wrap }
+  .fset{ display:flex; gap:0; align-items:center }
+  .fset-lab{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.22em; text-transform:uppercase; color:var(--muted); font-weight:600; margin-right:12px }
+  .fchip{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.16em; text-transform:uppercase; padding:8px 14px; color:var(--ink-2); font-weight:600; border:1px solid var(--rule-strong); border-right:none; transition:all 0.1s; background:var(--paper) }
+  .fchip:last-child{ border-right:1px solid var(--rule-strong) }
+  .fchip:hover{ background:var(--bg) }
+  .fchip.active{ background:var(--ink); color:var(--paper); border-color:var(--ink) }
+  .fchip .cnt{ opacity:0.5; margin-left:6px; font-weight:500 }
+  .fchip.active .cnt{ opacity:0.7 }
+  .fbar-search{ margin-left:auto }
+  .fbar-new{ display:flex; align-items:center; gap:8px; padding:8px 16px; background:var(--ink); color:var(--paper); font-family:var(--mono); font-size:10.5px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; cursor:pointer; border:none }
+  .fbar-new:hover{ background:var(--terra) }
+  .fbar-new .plus{ font-family:var(--serif); font-size:18px; line-height:0; margin-top:-2px }
+  .fbar-search{ display:flex; align-items:center; gap:8px; border:1px solid var(--rule-strong); padding:8px 12px; min-width:240px; background:var(--paper) }
+  .fbar-search input{ border:none; outline:none; background:transparent; font-family:var(--sans); font-size:13px; color:var(--ink); width:100%; font-weight:500 }
+  .fbar-search input::placeholder{ color:var(--muted); font-style:italic }
+  .fbar-search .ico{ font-family:var(--mono); color:var(--muted); font-size:13px }
+
+  /* ===== SHELL ===== */
+  .shell{ display:grid; grid-template-columns:240px 1fr; gap:0; max-width:var(--maxw); margin:0 auto }
+  .side{ border-right:1px solid var(--rule); padding:32px 28px 64px; position:sticky; top:62px; align-self:start; max-height:calc(100vh - 62px); overflow-y:auto }
+  .work{ padding:32px 36px 80px }
+
+  /* ===== SIDE: collections ===== */
+  .sgroup{ margin-bottom:28px }
+  .sgroup-title{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.22em; text-transform:uppercase; color:var(--muted); font-weight:600; padding-bottom:10px; border-bottom:1px solid var(--rule); margin-bottom:6px }
+  .srow{ display:flex; align-items:center; justify-content:space-between; padding:8px 0; cursor:pointer; font-family:var(--sans); font-size:13.5px; color:var(--ink-2); font-weight:500 }
+  .srow:hover{ color:var(--ink) }
+  .srow.active{ color:var(--ink); font-weight:600 }
+  .srow.active .scnt{ color:var(--terra) }
+  .srow .scnt{ font-family:var(--mono); font-size:10.5px; color:var(--muted); font-weight:600 }
+  .srow .sdot{ display:inline-block; width:8px; height:8px; margin-right:10px; vertical-align:middle; background:var(--rule-strong) }
+  .srow.active .sdot{ background:var(--terra) }
+
+  /* ===== WORK / GRID ===== */
+  .group-head{ display:flex; align-items:baseline; gap:18px; padding:8px 0 14px; border-bottom:1px solid var(--rule); margin-bottom:18px }
+  .group-head:not(:first-of-type){ margin-top:48px }
+  .group-head .gh-num{ display:none }
+  .group-head h2{ font-family:var(--serif); font-weight:500; font-size:22px; line-height:1; letter-spacing:-0.02em; margin:0; color:var(--ink) }
+  .group-head h2 em{ font-style:normal; color:var(--ink); font-weight:500 }
+  .group-head .gh-count{ margin-left:auto; font-family:var(--mono); font-size:10.5px; letter-spacing:0.18em; color:var(--muted); font-weight:600; text-transform:uppercase }
+
+  .grid{ display:grid; grid-template-columns:repeat(3, 1fr); gap:14px }
+  @media (max-width:1280px){ .grid{ grid-template-columns:repeat(2, 1fr) } }
+  @media (max-width:780px){ .grid{ grid-template-columns:1fr } }
+
+  /* ===== CARD ===== */
+  .card{ background:var(--paper); border:1px solid var(--rule-strong); padding:20px 22px 18px; cursor:pointer; transition:all 0.12s; position:relative; display:flex; flex-direction:column; min-height:170px }
+  .card::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:3px; background:var(--rule-strong); transition:background 0.12s }
+  .card:hover{ border-color:var(--ink); transform:translateY(-1px) }
+  .card.t-prompt::before{ background:var(--terra) }
+  .card.t-skill::before{ background:var(--ink) }
+  .card.t-agent::before{ background:var(--green) }
+  .card.t-playbook::before{ background:var(--navy) }
+
+  .card-top{ display:flex; align-items:center; gap:10px; margin-bottom:14px }
+  .ttag{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.18em; text-transform:uppercase; padding:4px 8px; font-weight:700 }
+  .t-prompt .ttag{ background:var(--terra); color:var(--paper) }
+  .t-skill .ttag{ background:var(--ink); color:var(--paper) }
+  .t-agent .ttag{ background:var(--green); color:var(--paper) }
+  .t-playbook .ttag{ background:var(--navy); color:var(--paper) }
+  .vtag{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.16em; text-transform:uppercase; color:var(--muted); font-weight:600; margin-left:auto }
+  .vtag strong{ color:var(--ink); font-weight:700 }
+  .pin{ font-family:var(--mono); font-size:11px; color:var(--muted); cursor:pointer; padding:0 4px }
+  .pin.on{ color:var(--terra) }
+  .fresh{ font-family:var(--mono); font-size:9px; letter-spacing:0.16em; text-transform:uppercase; padding:3px 6px; font-weight:700; margin-left:auto }
+  .fresh.stale{ background:#F0E4D6; color:var(--weak) }
+  .fresh.new{ background:var(--green); color:var(--paper) }
+  .fresh.review{ background:var(--terra); color:var(--paper) }
+  .vtag.has-fresh{ margin-left:0 }
+  .no-results{ grid-column:1/-1; padding:48px 20px; text-align:center; font-family:var(--serif); font-style:italic; font-size:18px; color:var(--muted); border:1px dashed var(--rule-strong) }
+  .no-results em{ color:var(--terra); font-style:italic; font-weight:500 }
+  .group-head.empty{ display:none }
+  /* Modal */
+  .modal-bg{ position:fixed; inset:0; background:rgba(14,27,45,0.55); opacity:0; pointer-events:none; transition:opacity 0.2s; z-index:60 }
+  .modal-bg.open{ opacity:1; pointer-events:auto }
+  .modal{ position:fixed; left:50%; top:50%; transform:translate(-50%,-48%); width:560px; max-width:96vw; background:var(--paper); border:1px solid var(--rule-strong); padding:0; opacity:0; pointer-events:none; transition:opacity 0.2s, transform 0.2s; z-index:61; box-shadow:0 24px 60px rgba(14,27,45,0.25) }
+  .modal.open{ opacity:1; pointer-events:auto; transform:translate(-50%,-50%) }
+  .modal-head{ padding:22px 28px 18px; border-bottom:1px solid var(--rule); display:flex; justify-content:space-between; align-items:center }
+  .modal-head .lab{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+  .modal-body{ padding:24px 28px 28px }
+  .modal h2{ font-family:var(--serif); font-weight:500; font-size:30px; line-height:1; letter-spacing:-0.025em; margin:0 0 6px; color:var(--ink) }
+  .modal h2 em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .modal .lede{ font-family:var(--serif); font-size:14.5px; line-height:1.45; color:var(--ink-2); margin:0 0 22px; font-style:italic }
+  .field{ display:flex; flex-direction:column; gap:6px; margin-bottom:18px }
+  .field label{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.22em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+  .field input, .field textarea{ font-family:var(--sans); font-size:14px; color:var(--ink); padding:10px 12px; border:1px solid var(--rule-strong); background:var(--paper); outline:none; font-weight:500 }
+  .field input:focus, .field textarea:focus{ border-color:var(--ink) }
+  .field textarea{ font-family:var(--mono); font-size:13px; line-height:1.55; min-height:96px; resize:vertical }
+  .type-pick{ display:grid; grid-template-columns:repeat(4,1fr); gap:8px }
+  .type-pick button{ padding:12px 8px; border:1px solid var(--rule-strong); background:var(--paper); cursor:pointer; font-family:var(--mono); font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink-2); font-weight:600 }
+  .type-pick button.sel{ background:var(--ink); color:var(--paper); border-color:var(--ink) }
+  .modal-foot{ display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:8px }
+  .btn-prim{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; padding:11px 18px; background:var(--ink); color:var(--paper); font-weight:600; cursor:pointer; border:none }
+  .btn-prim:hover{ background:var(--terra) }
+  .btn-ghost{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; padding:11px 14px; color:var(--muted); font-weight:600; cursor:pointer }
+  .btn-ghost:hover{ color:var(--ink) }
+
+  .card h3{ font-family:var(--serif); font-weight:500; font-size:21px; line-height:1.18; letter-spacing:-0.02em; margin:0 0 6px; color:var(--ink) }
+  .card h3 em{ font-style:normal; color:var(--ink); font-weight:500 }
+  .card .desc{ font-family:var(--serif); font-size:14px; line-height:1.45; color:var(--ink-2); margin:0; flex:1 }
+
+  .card-foot{ display:flex; gap:10px; align-items:center; margin-top:14px; padding-top:12px; border-top:1px solid var(--rule); font-family:var(--mono); font-size:9.5px; letter-spacing:0.16em; text-transform:uppercase; color:var(--muted); font-weight:600; flex-wrap:wrap }
+  .src{ display:inline-flex; align-items:center; gap:5px }
+  .src.mine{ color:var(--ink) }
+  .src.mine::before{ content:""; display:inline-block; width:6px; height:6px; background:var(--ink) }
+  .src.inst{ color:var(--terra) }
+  .src.inst::before{ content:""; display:inline-block; width:6px; height:6px; background:var(--terra) }
+  .src.role{ color:var(--green) }
+  .src.role::before{ content:""; display:inline-block; width:6px; height:6px; background:var(--green) }
+  .uses{ margin-left:auto }
+
+  /* PLAYBOOK card variant — list inside */
+  .pb-list{ display:flex; flex-direction:column; gap:6px; margin:8px 0 4px; flex:1 }
+  .pb-row{ display:grid; grid-template-columns:auto 1fr auto; gap:10px; align-items:center; font-family:var(--sans); font-size:12.5px; color:var(--ink-2); padding:5px 0; border-bottom:1px dashed var(--rule); font-weight:500 }
+  .pb-row:last-child{ border-bottom:none }
+  .pb-row .pbt{ font-family:var(--mono); font-size:8.5px; letter-spacing:0.16em; text-transform:uppercase; padding:2px 5px; color:var(--paper); font-weight:700 }
+  .pb-row .pbt.p{ background:var(--terra) } .pb-row .pbt.s{ background:var(--ink) } .pb-row .pbt.a{ background:var(--green) }
+  .pb-row .pbn{ font-family:var(--mono); font-size:9px; letter-spacing:0.14em; color:var(--muted); font-weight:600 }
+
+  /* ===== ASK BUTTON & DRAWER ===== */
+  .askfab{ position:fixed; bottom:28px; right:28px; z-index:40; display:flex; align-items:center; gap:10px; padding:14px 22px; background:var(--ink); color:var(--paper); border-radius:1px; font-family:var(--mono); font-size:11px; letter-spacing:0.18em; text-transform:uppercase; font-weight:600; box-shadow:0 8px 24px rgba(14,27,45,0.22); cursor:pointer }
+  .askfab:hover{ background:var(--terra) }
+  .askfab .dot{ width:8px; height:8px; background:var(--terra); border-radius:50%; animation:pulse 2s infinite }
+  .askfab:hover .dot{ background:var(--paper) }
+  @keyframes pulse{ 0%,100%{ opacity:1 } 50%{ opacity:0.4 } }
+
+  /* drawer (re-used for ask + artifact detail) */
+  .drawer-bg{ position:fixed; inset:0; background:rgba(14,27,45,0.5); opacity:0; pointer-events:none; transition:opacity 0.2s; z-index:50 }
+  .drawer-bg.open{ opacity:1; pointer-events:auto }
+  .drawer{ position:fixed; right:0; top:0; bottom:0; width:520px; max-width:96vw; background:var(--paper); transform:translateX(100%); transition:transform 0.25s ease-out; z-index:51; overflow-y:auto; box-shadow:-12px 0 40px rgba(14,27,45,0.18) }
+  .drawer.open{ transform:translateX(0) }
+  .dr-head{ position:sticky; top:0; background:var(--paper); padding:22px 28px; border-bottom:1px solid var(--rule); display:flex; justify-content:space-between; align-items:center; z-index:1 }
+  .dr-head .lab{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+  .dr-close{ font-family:var(--mono); font-size:12px; color:var(--ink-2); padding:4px 8px; letter-spacing:0.14em }
+  .dr-close:hover{ color:var(--terra) }
+  .dr-body{ padding:28px }
+
+  /* ASK drawer content */
+  .ask-h{ font-family:var(--serif); font-weight:500; font-size:34px; line-height:1; letter-spacing:-0.025em; margin:0 0 10px; color:var(--ink) }
+  .ask-h em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .ask-l{ font-family:var(--serif); font-style:italic; font-size:15px; line-height:1.5; color:var(--ink-2); margin:0 0 22px }
+  .as-form{ display:flex; flex-direction:column; gap:8px; margin-bottom:18px; background:var(--bg); border:1px solid var(--rule-strong); padding:14px }
+  .as-form textarea{ width:100%; min-height:64px; font-family:var(--serif); font-size:15px; line-height:1.45; color:var(--ink); border:none; outline:none; background:transparent; resize:none }
+  .as-form textarea::placeholder{ color:var(--muted); font-style:italic }
+  .as-form-foot{ display:flex; justify-content:space-between; align-items:center; padding-top:10px; border-top:1px solid var(--rule) }
+  .as-mp{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.16em; text-transform:uppercase; color:var(--muted); font-weight:600; display:flex; align-items:center; gap:6px }
+  .as-mp select{ font:inherit; color:var(--ink-2); background:transparent; border:none; border-bottom:1px solid var(--ink-2); cursor:pointer; padding:1px 4px; text-transform:uppercase }
+  .as-send{ font-family:var(--mono); font-size:10px; letter-spacing:0.18em; text-transform:uppercase; padding:8px 14px; background:var(--ink); color:var(--paper); font-weight:600 }
+  .as-send:hover{ background:var(--ink-2) }
+  .as-send:disabled{ opacity:0.5; cursor:wait }
+  .sug-lab{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.22em; text-transform:uppercase; color:var(--muted); font-weight:600; margin-bottom:6px }
+  .sug{ display:flex; flex-direction:column; gap:0; margin-bottom:18px }
+  .sug button{ text-align:left; font-family:var(--serif); font-size:14.5px; line-height:1.4; color:var(--ink-2); padding:11px 0; border-bottom:1px solid var(--rule); transition:color 0.1s }
+  .sug button:hover{ color:var(--terra) }
+  .sug button:last-child{ border-bottom:none }
+  .sug button .arr{ float:right; color:var(--muted); font-family:var(--mono); font-size:11px }
+  .as-ans{ background:var(--paper); border:1px solid var(--rule-strong); border-left:3px solid var(--terra); padding:16px 16px 14px; margin-top:10px; display:none }
+  .as-ans.show{ display:block }
+  .as-ans .lab{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); font-weight:600; margin-bottom:8px }
+  .as-ans .body{ font-family:var(--serif); font-size:14.5px; line-height:1.5; color:var(--ink); white-space:pre-wrap }
+  .typing::after{ content:"▋"; animation:bl 0.8s infinite; color:var(--terra); margin-left:2px }
+  @keyframes bl{ 0%,49%{ opacity:1 } 50%,100%{ opacity:0 } }
+
+  /* ARTIFACT drawer content */
+  .ad-meta{ display:flex; gap:14px; flex-wrap:wrap; margin-bottom:22px; padding-bottom:18px; border-bottom:1px solid var(--rule) }
+  .ad-meta span{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+  .ad-meta .terra{ color:var(--terra) }
+  .ad-h{ font-family:var(--serif); font-weight:500; font-size:30px; line-height:1.05; letter-spacing:-0.025em; margin:0 0 14px; color:var(--ink) }
+  .ad-h em{ font-style:italic; color:var(--terra); font-weight:500 }
+
+  .ad-section{ margin-bottom:28px }
+  .ad-sec-lab{ font-family:var(--mono); font-size:10px; letter-spacing:0.22em; text-transform:uppercase; color:var(--muted); font-weight:600; padding-bottom:8px; border-bottom:1px solid var(--rule); margin-bottom:14px }
+  .ad-actions{ display:grid; grid-template-columns:1fr 1fr; gap:8px }
+  .ad-act{ background:var(--paper); border:1px solid var(--rule-strong); padding:11px 13px; text-align:left; cursor:pointer; transition:all 0.1s }
+  .ad-act:hover{ background:var(--ink); color:var(--paper); border-color:var(--ink) }
+  .ad-act .lab{ font-family:var(--mono); font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:var(--terra); font-weight:600; display:block; margin-bottom:3px }
+  .ad-act:hover .lab{ color:#E5C29A }
+  .ad-act .desc{ font-family:var(--serif); font-size:13px; line-height:1.35; color:var(--ink-2) }
+  .ad-act:hover .desc{ color:var(--paper) }
+  .vtl{ display:flex; flex-direction:column; gap:0 }
+  .vrow{ display:grid; grid-template-columns:50px 1fr auto; gap:12px; padding:11px 0; border-bottom:1px solid var(--rule); align-items:start }
+  .vrow:last-child{ border-bottom:none }
+  .vrow.cur{ background:linear-gradient(90deg, rgba(181,134,42,0.06), transparent 60%) }
+  .vrow .vno{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.18em; color:var(--ink); font-weight:700 }
+  .vrow.cur .vno{ color:var(--terra) }
+  .vrow .vbody{ font-family:var(--serif); font-size:13.5px; line-height:1.45; color:var(--ink-2) }
+  .vrow .vmodel{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.16em; text-transform:uppercase; color:var(--muted); font-weight:600; margin-top:4px }
+  .vrow .vmodel strong{ color:var(--ink-2); font-weight:700 }
+  .vsm{ font-family:var(--mono); font-size:9px; letter-spacing:0.16em; text-transform:uppercase; padding:4px 8px; border:1px solid var(--rule-strong); color:var(--ink-2); font-weight:600 }
+  .vsm:hover{ background:var(--ink); color:var(--paper); border-color:var(--ink) }
+  .pv{ background:var(--bg); border:1px solid var(--rule-strong); padding:18px; font-family:var(--mono); font-size:12.5px; line-height:1.6; color:var(--ink-2); white-space:pre-wrap }
+  .pv .h{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); font-weight:600; display:block; margin-bottom:8px }
+
+  /* ===== FOOTER ===== */
+  .foot{ background:var(--ink); color:rgba(244,241,231,0.7); padding:32px 0; margin-top:60px }
+  .foot-inner{ max-width:var(--maxw); margin:0 auto; padding:0 32px; display:flex; justify-content:space-between; gap:24px; flex-wrap:wrap; font-family:var(--mono); font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; font-weight:600 }
+  .foot-inner a{ color:rgba(244,241,231,0.85) }
+  .foot-inner a:hover{ color:var(--terra) }
+
+  @media (max-width:1024px){
+    .shell{ grid-template-columns:1fr }
+    .side{ position:relative; top:0; max-height:none; border-right:none; border-bottom:1px solid var(--rule); padding:24px 32px }
+    .mast-stats{ border-left:none; padding-left:0; gap:24px }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== SITE NAV ===== -->
+<header class="nav">
+  <div class="nav-inner">
+    <a href="AI Banking Institute.html" class="nav-mark" aria-label="The AI Banking Institute">
+      <span class="l1">The AI Banking</span>
+      <span class="l2">Institute</span>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="AI Banking Institute.html#pillars" class="nav-link">Education</a>
+      <a href="#" class="nav-link">For Institutions</a>
+      <a href="#" class="nav-link">Research</a>
+      <a href="#" class="nav-link">About</a>
+      <a href="FAQ.html" class="nav-link">Support</a>
+      <button class="acct" aria-label="Account">
+        <span class="avatar">DM</span>
+        <span class="name">D. Maxwell</span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<!-- ===== MASTHEAD ===== -->
+<section class="mast">
+  <div class="container">
+    <div class="mast-row">
+      <div class="mast-text">
+        <span class="eyebrow greet">Library · BSA officer</span>
+        <h1>Your <em>toolbox.</em></h1>
+        <p class="lede">Your personal library of AI assets — prompts, skills, agents, and playbooks. Some you've made, some came with the curriculum, some are tuned for your role.</p>
+      </div>
+      <div class="mast-stats">
+        <div class="stat"><span class="v">28</span><span class="l">Prompts</span></div>
+        <div class="stat"><span class="v">11</span><span class="l">Skills</span></div>
+        <div class="stat"><span class="v">5</span><span class="l">Agents</span></div>
+        <div class="stat"><span class="v">3</span><span class="l">Playbooks</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== USER TABS ===== -->
+<div class="tabs">
+  <div class="tabs-inner" role="tablist" aria-label="My account">
+    <a href="User Home.html" class="tab" role="tab">Dashboard</a>
+    <a href="LMS Prototype.html" class="tab" role="tab">My Curriculum</a>
+    <a href="#" class="tab active" role="tab" aria-selected="true">My Toolbox</a>
+    <a href="#" class="tab" role="tab">My Brief</a>
+    <a href="#" class="tab" role="tab">Account</a>
+  </div>
+</div>
+
+<!-- ===== FILTER BAR ===== -->
+<section class="fbar">
+  <div class="fbar-inner">
+    <div class="fset" role="tablist" aria-label="Asset type">
+      <span class="fset-lab">Type</span>
+      <button class="fchip active" data-f="all">All <span class="cnt">47</span></button>
+      <button class="fchip" data-f="prompt">Prompts <span class="cnt">28</span></button>
+      <button class="fchip" data-f="skill">Skills <span class="cnt">11</span></button>
+      <button class="fchip" data-f="agent">Agents <span class="cnt">5</span></button>
+      <button class="fchip" data-f="playbook">Playbooks <span class="cnt">3</span></button>
+    </div>
+    <div class="fbar-search">
+      <span class="ico">⌕</span>
+      <input id="searchBox" type="search" placeholder="Search…" aria-label="Search toolbox">
+    </div>
+    <button class="fbar-new" id="newBtn" aria-label="Capture new asset"><span class="plus">+</span> New</button>
+  </div>
+</section>
+
+<!-- ===== SHELL ===== -->
+<div class="shell">
+
+  <!-- ============ SIDE ============ -->
+  <aside class="side" aria-label="Collections">
+    <div class="sgroup">
+      <div class="sgroup-title">Source</div>
+      <div class="srow active" data-side-s="all"><span>All</span><span class="scnt">47</span></div>
+      <div class="srow" data-side-s="mine"><span><span class="sdot" style="background:var(--ink)"></span>Mine</span><span class="scnt">31</span></div>
+      <div class="srow" data-side-s="inst"><span><span class="sdot" style="background:var(--terra)"></span>From modules</span><span class="scnt">12</span></div>
+      <div class="srow" data-side-s="role"><span><span class="sdot" style="background:var(--green)"></span>Role · BSA</span><span class="scnt">4</span></div>
+    </div>
+
+    <div class="sgroup">
+      <div class="sgroup-title">Status</div>
+      <div class="srow"><span>Pinned</span><span class="scnt">8</span></div>
+      <div class="srow"><span>Recently used</span><span class="scnt">12</span></div>
+      <div class="srow"><span>Drafts</span><span class="scnt">3</span></div>
+      <div class="srow"><span>Archived</span><span class="scnt">9</span></div>
+    </div>
+
+    <div class="sgroup">
+      <div class="sgroup-title">My playbooks</div>
+      <div class="srow"><span><span class="sdot" style="background:var(--navy)"></span>Credit-shop kit</span><span class="scnt">6</span></div>
+      <div class="srow"><span><span class="sdot" style="background:var(--navy)"></span>BSA officer kit</span><span class="scnt">14</span></div>
+      <div class="srow"><span><span class="sdot" style="background:var(--navy)"></span>Board-summary toolkit</span><span class="scnt">5</span></div>
+      <div class="srow" style="color:var(--terra); font-weight:600"><span>+ New playbook</span></div>
+    </div>
+
+    <div class="sgroup">
+      <div class="sgroup-title">By module</div>
+      <div class="srow"><span>03 · 4-prompt method</span><span class="scnt">5</span></div>
+      <div class="srow"><span>04 · Auditable AI</span><span class="scnt">4</span></div>
+      <div class="srow"><span>06 · Vendor / TPRM</span><span class="scnt">3</span></div>
+      <div class="srow"><span>07 · Credit memos</span><span class="scnt">8</span></div>
+      <div class="srow"><span>09 · BSA narratives</span><span class="scnt">9</span></div>
+      <div class="srow"><span>10 · Reg B / ECOA</span><span class="scnt">5</span></div>
+      <div class="srow"><span>11 · Board summaries</span><span class="scnt">4</span></div>
+    </div>
+
+    <div class="sgroup">
+      <div class="sgroup-title">Team library · BSA</div>
+      <div class="srow"><span><span class="sdot" style="background:var(--green)"></span>Browse role library</span><span class="scnt">42</span></div>
+      <div class="srow"><span><span class="sdot" style="background:var(--green)"></span>What peers use most</span><span class="scnt">12</span></div>
+      <div class="srow" style="color:var(--terra); font-weight:600"><span>+ Publish to team</span></div>
+    </div>
+
+    <div class="sgroup">
+      <div class="sgroup-title">Pinned</div>
+      <div class="srow"><span><span class="sdot" style="background:var(--terra)"></span>SAR-grade frame</span></div>
+      <div class="srow"><span><span class="sdot" style="background:var(--terra)"></span>4-prompt scaffold</span></div>
+      <div class="srow"><span><span class="sdot" style="background:var(--terra)"></span>Tone: dry banker</span></div>
+    </div>
+  </aside>
+
+  <!-- ============ WORK ============ -->
+  <main class="work">
+
+    <!-- PINNED -->
+    <header class="group-head">
+      <span class="gh-num">01</span>
+      <h2>Pinned · <em>your daily drivers.</em></h2>
+      <span class="gh-count">3 pinned</span>
+    </header>
+    <div class="grid">
+
+      <article class="card t-prompt" data-art="sar-frame">
+        <div class="card-top">
+          <span class="ttag">Prompt</span>
+          <span class="vtag">v <strong>5</strong></span>
+          <button class="pin on" title="Pinned">★</button>
+        </div>
+        <h3>SAR-grade <em>narrative frame.</em></h3>
+        <p class="desc">Past-tense, third-person scaffold for suspicious-activity reports. Strips speculation; structures Who · What · Where · When.</p>
+        <div class="card-foot">
+          <span class="src mine">Mine</span>
+          <span>Mod 09</span>
+          <span class="uses">Used 23×</span>
+        </div>
+      </article>
+
+      <article class="card t-prompt" data-art="4-prompt">
+        <div class="card-top">
+          <span class="ttag">Prompt</span>
+          <span class="vtag">v <strong>3</strong></span>
+          <button class="pin on" title="Pinned">★</button>
+        </div>
+        <h3>Credit memo · <em>4-prompt scaffold.</em></h3>
+        <p class="desc">Decomposes a committee memo into ask, facts, frame, and ask-back — one prompt per pass.</p>
+        <div class="card-foot">
+          <span class="src mine">Mine</span>
+          <span>Mod 07</span>
+          <span class="uses">Used 12×</span>
+        </div>
+      </article>
+
+      <article class="card t-skill" data-art="dry-banker">
+        <div class="card-top">
+          <span class="ttag">Skill</span>
+          <span class="vtag">v <strong>4</strong></span>
+          <button class="pin on" title="Pinned">★</button>
+        </div>
+        <h3>Tone match — <em>dry banker.</em></h3>
+        <p class="desc">Rewrites any draft in plain, examiner-friendly tone. Removes adjectives, marketing verbs, exclamations.</p>
+        <div class="card-foot">
+          <span class="src mine">Mine</span>
+          <span>—</span>
+          <span class="uses">Used 31×</span>
+        </div>
+      </article>
+    </div>
+
+    <!-- PROMPTS -->
+    <header class="group-head">
+      <span class="gh-num">02</span>
+      <h2>Prompts · <em>reusable instructions.</em></h2>
+      <span class="gh-count">28 total · showing 6</span>
+    </header>
+    <div class="grid">
+
+      <article class="card t-prompt">
+        <div class="card-top"><span class="ttag">Prompt</span><span class="vtag">v <strong>2</strong></span><button class="pin">☆</button></div>
+        <h3>Board summary — <em>one-page exec.</em></h3>
+        <p class="desc">Condenses any memo to a single board-grade page. Bullets cap at 6.</p>
+        <div class="card-foot"><span class="src mine">Mine</span><span>Mod 11</span><span class="uses">Used 4×</span></div>
+      </article>
+
+      <article class="card t-prompt">
+        <div class="card-top"><span class="ttag">Prompt</span><span class="vtag">v <strong>1</strong></span><button class="pin">☆</button></div>
+        <h3>Reg B / ECOA <em>fairness check.</em></h3>
+        <p class="desc">Audits any customer-facing draft for phrasing that could read as discriminatory.</p>
+        <div class="card-foot"><span class="src inst">From module</span><span>Mod 10</span><span class="uses">Used 7×</span></div>
+      </article>
+
+      <article class="card t-prompt">
+        <div class="card-top"><span class="ttag">Prompt</span><span class="vtag">v <strong>3</strong></span><button class="pin">☆</button></div>
+        <h3>Past-tense, <em>third-person rewrite.</em></h3>
+        <p class="desc">Conforms any narrative to BSA / SAR voice rules without paraphrasing facts.</p>
+        <div class="card-foot"><span class="src mine">Mine</span><span>Mod 09</span><span class="uses">Used 18×</span><span class="fresh stale">Stale · 38d</span></div>
+      </article>
+
+      <article class="card t-prompt">
+        <div class="card-top"><span class="ttag">Prompt</span><span class="vtag">v <strong>1</strong></span><button class="pin">☆</button></div>
+        <h3>Vendor TPRM — <em>exception letter.</em></h3>
+        <p class="desc">Drafts a controlled exception under SR 11-7 / TPRM language, ready for committee.</p>
+        <div class="card-foot"><span class="src inst">From module</span><span>Mod 06</span><span class="uses">Used 2×</span><span class="fresh review">Update?</span></div>
+      </article>
+
+      <article class="card t-prompt">
+        <div class="card-top"><span class="ttag">Prompt</span><span class="vtag">v <strong>2</strong></span><button class="pin">☆</button></div>
+        <h3>Strip speculative <em>adjectives.</em></h3>
+        <p class="desc">Removes "appears to," "seems," "likely" — anything that weakens evidentiary tone.</p>
+        <div class="card-foot"><span class="src mine">Mine</span><span>—</span><span class="uses">Used 9×</span></div>
+      </article>
+
+      <article class="card t-prompt">
+        <div class="card-top"><span class="ttag">Prompt</span><span class="vtag">v <strong>1</strong></span><button class="pin">☆</button></div>
+        <h3>BSA officer — <em>quarterly trend brief.</em></h3>
+        <p class="desc">Frames a quarter of alert / SAR data as a one-page trend narrative for the BSA committee.</p>
+        <div class="card-foot"><span class="src role">Role · BSA</span><span>—</span><span class="uses">Used 1×</span><span class="fresh new">New</span></div>
+      </article>
+    </div>
+
+    <!-- SKILLS -->
+    <header class="group-head">
+      <span class="gh-num">03</span>
+      <h2>Skills · <em>composable patterns.</em></h2>
+      <span class="gh-count">11 total · showing 4</span>
+    </header>
+    <div class="grid">
+
+      <article class="card t-skill">
+        <div class="card-top"><span class="ttag">Skill</span><span class="vtag">v <strong>2</strong></span><button class="pin">☆</button></div>
+        <h3>Extract amounts &amp; <em>dates → table.</em></h3>
+        <p class="desc">Pulls every dollar figure and date from a draft into a clean reviewable table.</p>
+        <div class="card-foot"><span class="src mine">Mine</span><span>—</span><span class="uses">Used 15×</span></div>
+      </article>
+
+      <article class="card t-skill">
+        <div class="card-top"><span class="ttag">Skill</span><span class="vtag">v <strong>1</strong></span><button class="pin">☆</button></div>
+        <h3>Format as <em>committee memo.</em></h3>
+        <p class="desc">Applies the institute committee-memo template: header block, ask, body, recommendation.</p>
+        <div class="card-foot"><span class="src inst">From module</span><span>Mod 07</span><span class="uses">Used 6×</span></div>
+      </article>
+
+      <article class="card t-skill">
+        <div class="card-top"><span class="ttag">Skill</span><span class="vtag">v <strong>4</strong></span><button class="pin">☆</button></div>
+        <h3>BSA tense + <em>voice check.</em></h3>
+        <p class="desc">Validates past-tense, third-person, evidentiary voice before save.</p>
+        <div class="card-foot"><span class="src mine">Mine</span><span>Mod 09</span><span class="uses">Used 11×</span></div>
+      </article>
+
+      <article class="card t-skill">
+        <div class="card-top"><span class="ttag">Skill</span><span class="vtag">v <strong>1</strong></span><button class="pin">☆</button></div>
+        <h3>Compress to <em>200 words.</em></h3>
+        <p class="desc">Tightens any draft to a 200-word committee summary without dropping facts.</p>
+        <div class="card-foot"><span class="src mine">Mine</span><span>—</span><span class="uses">Used 8×</span></div>
+      </article>
+    </div>
+
+    <!-- AGENTS -->
+    <header class="group-head">
+      <span class="gh-num">04</span>
+      <h2>Your <em>roster.</em></h2>
+      <span class="gh-count">5 agents</span>
+    </header>
+    <div class="grid grid-personas">
+
+      <article class="persona t-agent">
+        <div class="persona-port"><span class="glyph">W</span><span class="badge">On call</span></div>
+        <div class="persona-body">
+          <div class="persona-role">Memo reviewer · 3-pass</div>
+          <div class="persona-name">M. <span class="lastn">Whitfield</span></div>
+          <p class="persona-quote">Three passes. Always show the diffs — the committee should see what changed and why.</p>
+          <div class="persona-meta"><span>Claude Opus</span><span class="rcount">Run 4×</span><span>Last · yesterday</span><button class="vbtn">Brief →</button></div>
+        </div>
+      </article>
+
+      <article class="persona t-agent">
+        <div class="persona-port"><span class="glyph">C</span><span class="badge">On call</span></div>
+        <div class="persona-body">
+          <div class="persona-role">BSA narrative builder</div>
+          <div class="persona-name">B. <span class="lastn">Caldwell</span></div>
+          <p class="persona-quote">Past tense. No speculation. The facts speak — what an examiner can read in two minutes.</p>
+          <div class="persona-meta"><span>Claude Opus</span><span class="rcount">Run 7×</span><span>Last · 3d ago</span><button class="vbtn">Brief →</button></div>
+        </div>
+      </article>
+
+      <article class="persona t-agent">
+        <div class="persona-port"><span class="glyph">V</span><span class="badge">On call</span></div>
+        <div class="persona-body">
+          <div class="persona-role">Weekly toolbox digest</div>
+          <div class="persona-name">H. <span class="lastn">Vance</span></div>
+          <p class="persona-quote">What did you save? What sat unused? Friday afternoons, on your desk, one page.</p>
+          <div class="persona-meta"><span>Claude Sonnet</span><span class="rcount">Run 4×</span><span>Last · Fri 4:00</span><button class="vbtn">Brief →</button></div>
+        </div>
+      </article>
+
+      <article class="persona t-agent off">
+        <div class="persona-port"><span class="glyph">N</span><span class="badge">Standby</span></div>
+        <div class="persona-body">
+          <div class="persona-role">Reg B / ECOA auditor</div>
+          <div class="persona-name">E. <span class="lastn">Nash</span></div>
+          <p class="persona-quote">If a customer wouldn't sign it, neither will I. Fairness language, examined the way an examiner would.</p>
+          <div class="persona-meta"><span>Claude Opus</span><span class="rcount">Run 2×</span><span>Last · 2 wk</span><button class="vbtn">Brief →</button></div>
+        </div>
+      </article>
+
+      <article class="persona" style="border-left-color:var(--terra)">
+        <div class="persona-port" style="border:1px dashed var(--rule-strong); background:var(--paper)"><span class="glyph" style="font-style:normal; color:var(--terra); font-size:48px; font-weight:300">+</span></div>
+        <div class="persona-body">
+          <div class="persona-role" style="color:var(--terra)">Hire a new agent</div>
+          <div class="persona-name" style="font-style:normal">Compose <span class="lastn" style="color:var(--terra); font-style:italic">your own.</span></div>
+          <p class="persona-quote" style="border-left-color:var(--terra)">Define a role, give them a brief, pick a model. Run once. Promote to the roster if they earn their keep.</p>
+          <div class="persona-meta"><span>—</span><button class="vbtn" style="background:var(--terra); margin-left:auto">Compose →</button></div>
+        </div>
+      </article>
+    </div>
+
+    <!-- PLAYBOOKS -->
+    <header class="group-head">
+      <span class="gh-num">05</span>
+      <h2>Playbooks · <em>collections.</em></h2>
+      <span class="gh-count">3 total</span>
+    </header>
+    <div class="grid">
+
+      <article class="card t-playbook" style="min-height:230px">
+        <div class="card-top"><span class="ttag">Playbook</span><span class="vtag">9 items</span><button class="pin on">★</button></div>
+        <h3>BSA officer <em>starter kit.</em></h3>
+        <div class="pb-list">
+          <div class="pb-row"><span class="pbt p">P</span><span>SAR-grade frame</span><span class="pbn">v5</span></div>
+          <div class="pb-row"><span class="pbt p">P</span><span>Trend brief</span><span class="pbn">v1</span></div>
+          <div class="pb-row"><span class="pbt s">S</span><span>BSA tense check</span><span class="pbn">v4</span></div>
+          <div class="pb-row"><span class="pbt a">A</span><span>Narrative builder</span><span class="pbn">v3</span></div>
+        </div>
+        <div class="card-foot"><span class="src role">Role · BSA</span><span class="uses">14 runs</span></div>
+      </article>
+
+      <article class="card t-playbook" style="min-height:230px">
+        <div class="card-top"><span class="ttag">Playbook</span><span class="vtag">7 items</span><button class="pin">☆</button></div>
+        <h3>Credit-shop <em>playbook.</em></h3>
+        <div class="pb-list">
+          <div class="pb-row"><span class="pbt p">P</span><span>4-prompt scaffold</span><span class="pbn">v3</span></div>
+          <div class="pb-row"><span class="pbt p">P</span><span>Board summary</span><span class="pbn">v2</span></div>
+          <div class="pb-row"><span class="pbt s">S</span><span>Committee memo</span><span class="pbn">v1</span></div>
+          <div class="pb-row"><span class="pbt a">A</span><span>Memo reviewer</span><span class="pbn">v1</span></div>
+        </div>
+        <div class="card-foot"><span class="src mine">Mine</span><span class="uses">11 runs</span></div>
+      </article>
+
+      <article class="card t-playbook" style="min-height:230px">
+        <div class="card-top"><span class="ttag">Playbook</span><span class="vtag">5 items</span><button class="pin">☆</button></div>
+        <h3>Board-summary <em>toolkit.</em></h3>
+        <div class="pb-list">
+          <div class="pb-row"><span class="pbt p">P</span><span>One-page exec</span><span class="pbn">v2</span></div>
+          <div class="pb-row"><span class="pbt s">S</span><span>Compress 200w</span><span class="pbn">v1</span></div>
+          <div class="pb-row"><span class="pbt s">S</span><span>Strip adjectives</span><span class="pbn">v2</span></div>
+        </div>
+        <div class="card-foot"><span class="src mine">Mine</span><span class="uses">5 runs</span></div>
+      </article>
+    </div>
+
+  </main>
+
+</div>
+
+<!-- ===== ASK FAB ===== -->
+<button class="askfab" id="askFab" aria-label="Ask your toolbox">
+  <span class="dot"></span>
+  Ask your toolbox
+</button>
+
+<!-- ===== DRAWER (artifact + ask) ===== -->
+<div class="drawer-bg" id="drawerBg"></div>
+
+<aside class="drawer" id="askDrawer" aria-label="Ask your toolbox">
+  <div class="dr-head">
+    <span class="lab">Toolbox · Assistant</span>
+    <button class="dr-close" data-close>Close ✕</button>
+  </div>
+  <div class="dr-body">
+    <h2 class="ask-h">Ask your <em>toolbox.</em></h2>
+    <p class="ask-l">Search, summarize, or run something across your saved assets. Trained on your work, not the public web.</p>
+
+    <form class="as-form" id="askForm">
+      <textarea id="askInput" placeholder="Find my SAR-grade frame.  Run the memo reviewer on my last credit memo.  Show me what I haven't used in 30 days…" aria-label="Ask the toolbox"></textarea>
+      <div class="as-form-foot">
+        <label class="as-mp">
+          Model ·
+          <select id="askModel">
+            <option value="claude-opus">Claude Opus</option>
+            <option value="claude-sonnet">Claude Sonnet</option>
+            <option value="gpt-4o">GPT-4o</option>
+            <option value="gemini-pro">Gemini Pro</option>
+          </select>
+        </label>
+        <button type="submit" class="as-send" id="askSend">Ask →</button>
+      </div>
+    </form>
+
+    <div class="sug-lab">Try one of these</div>
+    <div class="sug">
+      <button data-q="Show me everything I've used most this month, ranked by frequency.">What am I leaning on most?<span class="arr">→</span></button>
+      <button data-q="Find any prompt or skill I haven't used in 30+ days that I might want to retire or refresh.">What's gone stale?<span class="arr">→</span></button>
+      <button data-q="Compose a new playbook for handling examiner-prep work, drawing only from prompts and skills already in my toolbox.">Build me an examiner-prep playbook.<span class="arr">→</span></button>
+      <button data-q="Audit my model usage across my toolbox. Which model am I leaning on too hard? Where could I diversify?">Audit my model usage.<span class="arr">→</span></button>
+      <button data-q="Diff v1 vs v5 of my SAR-grade frame and tell me what got better.">How has my SAR frame evolved?<span class="arr">→</span></button>
+    </div>
+
+    <div class="as-ans" id="askAnswer">
+      <div class="lab" id="answerLab">Answer · Claude Opus</div>
+      <div class="body" id="answerBody"></div>
+    </div>
+  </div>
+</aside>
+
+<aside class="drawer" id="artDrawer" aria-label="Asset detail">
+  <div class="dr-head">
+    <span class="lab" id="adLab">Prompt · Module 09</span>
+    <button class="dr-close" data-close>Close ✕</button>
+  </div>
+  <div class="dr-body">
+    <h2 class="ad-h" id="adTitle">SAR-grade <em>narrative frame.</em></h2>
+    <div class="ad-meta">
+      <span class="terra">CURRENT · v 5</span>
+      <span>Mine</span>
+      <span>Used 23×</span>
+      <span>Updated 4d ago</span>
+    </div>
+
+    <div class="ad-section">
+      <div class="ad-sec-lab">Run this</div>
+      <div class="ad-actions">
+        <button class="ad-act" data-run="open"><span class="lab">Open</span><span class="desc">Run in workspace with my data.</span></button>
+        <button class="ad-act" data-run="iter"><span class="lab">Iterate</span><span class="desc">Save a new version with a different model.</span></button>
+        <button class="ad-act" data-run="critique"><span class="lab">Critique</span><span class="desc">Have AI review the prompt itself.</span></button>
+        <button class="ad-act" data-run="add"><span class="lab">Add to playbook</span><span class="desc">Drop into one of your collections.</span></button>
+      </div>
+    </div>
+
+    <div class="ad-section">
+      <div class="ad-sec-lab">Prompt body</div>
+      <div class="pv">
+<span class="h">v 5 · current</span>
+You are a BSA officer drafting a Suspicious Activity Report narrative.
+Use only the facts provided. Do not speculate on intent.
+Write in past tense, third person.
+Structure as: Who · What · Where · When · Why suspicious.
+Strip adjectives that imply judgment ("blatant," "obvious," "clear").
+Cap at 280 words.
+      </div>
+    </div>
+
+    <div class="ad-section">
+      <div class="ad-sec-lab">Versions</div>
+      <div class="vtl">
+        <div class="vrow cur"><div class="vno">v 5</div><div class="vbody">Added the 280-word cap and the adjective list.<div class="vmodel"><strong>Claude Opus</strong> · 4 days ago</div></div><div class="vsm">Current</div></div>
+        <div class="vrow"><div class="vno">v 4</div><div class="vbody">Reordered to put "Why suspicious" last; reads better in committee.<div class="vmodel"><strong>Claude Opus</strong> · 2 weeks ago</div></div><button class="vsm">Restore</button></div>
+        <div class="vrow"><div class="vno">v 3</div><div class="vbody">Removed "in the analyst's view" — was tilting tone.<div class="vmodel"><strong>GPT-4o</strong> · 5 weeks ago</div></div><button class="vsm">Restore</button></div>
+        <div class="vrow"><div class="vno">v 2</div><div class="vbody">Added the "do not speculate" instruction.<div class="vmodel"><strong>Claude Sonnet</strong> · 8 weeks ago</div></div><button class="vsm">Restore</button></div>
+        <div class="vrow"><div class="vno">v 1</div><div class="vbody">Initial scaffold based on Mod 09 lesson.<div class="vmodel"><strong>Claude Sonnet</strong> · 11 weeks ago</div></div><button class="vsm">Restore</button></div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ===== FOOTER ===== -->
+<footer class="foot">
+  <div class="foot-inner">
+    <span>The AI Banking Institute · Member tools</span>
+    <a href="FAQ.html">Support</a>
+  </div>
+</footer>
+
+<!-- ===== NEW ASSET MODAL ===== -->
+<div class="modal-bg" id="modalBg"></div>
+<div class="modal" id="newModal" role="dialog" aria-labelledby="nmTitle">
+  <div class="modal-head">
+    <span class="lab">Capture · New asset</span>
+    <button class="dr-close" id="modalClose">Close ✕</button>
+  </div>
+  <div class="modal-body">
+    <h2 id="nmTitle">Capture <em>something useful.</em></h2>
+    <p class="lede">Save a prompt, skill, agent, or playbook to your toolbox. You can iterate on it later.</p>
+
+    <div class="field">
+      <label>Type</label>
+      <div class="type-pick" id="nmTypes">
+        <button data-t="prompt" class="sel">Prompt</button>
+        <button data-t="skill">Skill</button>
+        <button data-t="agent">Agent</button>
+        <button data-t="playbook">Playbook</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Name</label>
+      <input id="nmName" type="text" placeholder="e.g. Quarterly trend brief">
+    </div>
+
+    <div class="field">
+      <label>One-line description</label>
+      <input id="nmDesc" type="text" placeholder="What does it do, in plain English?">
+    </div>
+
+    <div class="field">
+      <label>Body / instructions</label>
+      <textarea id="nmBody" placeholder="You are a BSA officer drafting…"></textarea>
+    </div>
+
+    <div class="modal-foot">
+      <button class="btn-ghost" id="modalCancel">Cancel</button>
+      <button class="btn-prim" id="modalSave">Save to toolbox →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ----- drawer plumbing -----
+  const drBg     = document.getElementById('drawerBg');
+  const askDr    = document.getElementById('askDrawer');
+  const artDr    = document.getElementById('artDrawer');
+  const closeAll = () => { askDr.classList.remove('open'); artDr.classList.remove('open'); drBg.classList.remove('open'); };
+  drBg.addEventListener('click', closeAll);
+  document.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', closeAll));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAll(); });
+
+  // open ask drawer
+  document.getElementById('askFab').addEventListener('click', () => {
+    closeAll();
+    askDr.classList.add('open'); drBg.classList.add('open');
+    setTimeout(() => document.getElementById('askInput').focus(), 250);
+  });
+  // ===== PINS — persistent, drives reorder + sidebar pinned list =====
+  const PIN_KEY = 'aibi_toolbox_pins';
+  const loadPins = () => { try { return new Set(JSON.parse(localStorage.getItem(PIN_KEY) || '[]')); } catch { return new Set(); } };
+  const savePins = (set) => localStorage.setItem(PIN_KEY, JSON.stringify([...set]));
+  let pinned = loadPins();
+  function applyPins(){
+    document.querySelectorAll('.card').forEach(card => {
+      const id = card.dataset.id || (card.dataset.id = (card.querySelector('h3')?.textContent || '').trim());
+      const pin = card.querySelector('.pin');
+      const on = pinned.has(id);
+      if (pin){ pin.classList.toggle('on', on); pin.textContent = on ? '★' : '☆'; }
+    });
+  }
+  applyPins();
+
+  // ===== FILTER STATE =====
+  const state = { type: 'all', source: 'all', q: '' };
+
+  function applyFilters(){
+    const q = state.q.trim().toLowerCase();
+    let visible = 0;
+    document.querySelectorAll('.card').forEach(card => {
+      // type
+      const matchType = state.type === 'all'
+        || (state.type === 'prompt'   && card.classList.contains('t-prompt'))
+        || (state.type === 'skill'    && card.classList.contains('t-skill'))
+        || (state.type === 'agent'    && card.classList.contains('t-agent'))
+        || (state.type === 'playbook' && card.classList.contains('t-playbook'));
+      // source
+      const matchSrc = state.source === 'all'
+        || (state.source === 'mine' && card.querySelector('.src.mine'))
+        || (state.source === 'inst' && card.querySelector('.src.inst'))
+        || (state.source === 'role' && card.querySelector('.src.role'));
+      // search
+      const text = card.textContent.toLowerCase();
+      const matchQ = !q || text.includes(q);
+
+      const show = matchType && matchSrc && matchQ;
+      card.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    // hide empty groups
+    document.querySelectorAll('.group-head').forEach(head => {
+      let next = head.nextElementSibling;
+      const grid = next && next.classList.contains('grid') ? next : null;
+      if (!grid) return;
+      const hasVisible = [...grid.querySelectorAll('.card')].some(c => c.style.display !== 'none');
+      head.classList.toggle('empty', !hasVisible);
+      grid.style.display = hasVisible ? '' : 'none';
+    });
+    // empty state
+    let nr = document.getElementById('noResults');
+    if (!visible){
+      if (!nr){
+        nr = document.createElement('div');
+        nr.id = 'noResults';
+        nr.className = 'no-results';
+        nr.innerHTML = 'Nothing matches. Try <em>clearing filters</em> or change the search.';
+        document.querySelector('.work').appendChild(nr);
+      }
+      nr.style.display = '';
+    } else if (nr){ nr.style.display = 'none'; }
+  }
+
+  // open artifact drawer on card click; star toggles pin
+  function bindCard(card){
+    card.addEventListener('click', e => {
+      if (e.target.closest('.pin')){
+        const id = card.dataset.id || card.querySelector('h3')?.textContent.trim();
+        if (pinned.has(id)) pinned.delete(id); else pinned.add(id);
+        savePins(pinned); applyPins(); return;
+      }
+      closeAll();
+      artDr.classList.add('open'); drBg.classList.add('open');
+    });
+  }
+  document.querySelectorAll('.card').forEach(bindCard);
+
+  // ===== FILTER CHIPS =====
+  document.querySelectorAll('.fset').forEach(set => {
+    set.querySelectorAll('.fchip').forEach(c => c.addEventListener('click', () => {
+      set.querySelectorAll('.fchip').forEach(x => x.classList.remove('active'));
+      c.classList.add('active');
+      if (c.dataset.f) state.type = c.dataset.f;
+      if (c.dataset.s) state.source = c.dataset.s;
+      applyFilters();
+    }));
+  });
+  // sidebar Source rows act like a filter chip set
+  document.querySelectorAll('[data-side-s]').forEach(r => r.addEventListener('click', () => {
+    document.querySelectorAll('[data-side-s]').forEach(x => x.classList.remove('active'));
+    r.classList.add('active');
+    state.source = r.dataset.sideS;
+    applyFilters();
+  }));
+  // generic side rows just toggle visual active
+  document.querySelectorAll('.srow:not([data-side-s])').forEach(r => r.addEventListener('click', () => { r.classList.toggle('active'); }));
+  // search
+  document.getElementById('searchBox').addEventListener('input', e => { state.q = e.target.value; applyFilters(); });
+
+  // ===== NEW ASSET MODAL =====
+  const mBg = document.getElementById('modalBg');
+  const mEl = document.getElementById('newModal');
+  const openModal  = () => { mBg.classList.add('open'); mEl.classList.add('open'); setTimeout(() => document.getElementById('nmName').focus(), 200); };
+  const closeModal = () => { mBg.classList.remove('open'); mEl.classList.remove('open'); };
+  document.getElementById('newBtn').addEventListener('click', openModal);
+  document.getElementById('modalClose').addEventListener('click', closeModal);
+  document.getElementById('modalCancel').addEventListener('click', closeModal);
+  mBg.addEventListener('click', closeModal);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  let pickedType = 'prompt';
+  document.querySelectorAll('#nmTypes button').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('#nmTypes button').forEach(x => x.classList.remove('sel'));
+    b.classList.add('sel'); pickedType = b.dataset.t;
+  }));
+
+  document.getElementById('modalSave').addEventListener('click', () => {
+    const name = document.getElementById('nmName').value.trim() || 'Untitled';
+    const desc = document.getElementById('nmDesc').value.trim() || 'No description yet.';
+    // create a card and prepend to first grid
+    const tClass = 't-' + pickedType;
+    const tLabel = pickedType[0].toUpperCase() + pickedType.slice(1);
+    const card = document.createElement('article');
+    card.className = 'card ' + tClass;
+    card.innerHTML = `
+      <div class="card-top"><span class="ttag">${tLabel}</span><span class="vtag">v <strong>1</strong></span><button class="pin">☆</button></div>
+      <h3>${name.replace(/<[^>]+>/g,'')}</h3>
+      <p class="desc">${desc.replace(/<[^>]+>/g,'')}</p>
+      <div class="card-foot"><span class="src mine">Mine</span><span>—</span><span class="uses">Used 0×</span><span class="fresh new">New</span></div>`;
+    document.querySelector('.grid').prepend(card);
+    bindCard(card);
+    // reset & close
+    document.getElementById('nmName').value = '';
+    document.getElementById('nmDesc').value = '';
+    document.getElementById('nmBody').value = '';
+    closeModal();
+    // flash
+    card.style.outline = '2px solid var(--terra)';
+    setTimeout(() => card.style.outline = '', 900);
+  });
+
+  // ----- ASK assistant (Claude-backed) -----
+  const askInput = document.getElementById('askInput');
+  const askForm  = document.getElementById('askForm');
+  const askSend  = document.getElementById('askSend');
+  const askModel = document.getElementById('askModel');
+  const ansBox   = document.getElementById('askAnswer');
+  const ansLab   = document.getElementById('answerLab');
+  const ansBody  = document.getElementById('answerBody');
+
+  const TOOLBOX_CONTEXT = `You are the personal toolbox assistant for D. Maxwell, a BSA officer at a community credit union enrolled in The AI Banking Institute's Foundations program. Their toolbox holds 47 reusable AI assets across four types: 28 prompts, 11 skills, 5 agents, 3 playbooks.
+
+Most-used items:
+- "Tone match: dry banker" (skill, v4, used 31×)
+- "SAR-grade narrative frame" (prompt, v5, used 23×)
+- "Past-tense, third-person rewrite" (prompt, v3, used 18×)
+- "Extract amounts & dates → table" (skill, v2, used 15×)
+- "Credit memo · 4-prompt scaffold" (prompt, v3, used 12×)
+- "BSA tense + voice check" (skill, v4, used 11×)
+- "Compress to 200 words" (skill, v1, used 8×)
+
+Playbooks: BSA officer starter kit (role, 9 items, 14 runs); Credit-shop playbook (mine, 7 items, 11 runs); Board-summary toolkit (mine, 5 items, 5 runs).
+
+Voice: editorial, dry, banker-credible. Short sentences. No marketing verbs. When citing assets, use their names. Keep responses under 160 words unless explicitly asked for length. Plain text, no markdown headings.`;
+
+  async function ask(question){
+    ansBox.classList.add('show');
+    const modelLabel = askModel.options[askModel.selectedIndex].text;
+    ansLab.textContent = 'Answer · ' + modelLabel;
+    ansBody.textContent = '';
+    ansBody.classList.add('typing');
+    askSend.disabled = true; askSend.textContent = 'Thinking…';
+
+    try {
+      const reply = await window.claude.complete({
+        messages: [{ role:'user', content: TOOLBOX_CONTEXT + '\n\n— — —\n\nQuestion: ' + question }]
+      });
+      ansBody.classList.remove('typing');
+      const text = (reply || '').trim();
+      let i = 0;
+      const tick = () => {
+        if (i >= text.length){ askSend.disabled = false; askSend.textContent = 'Ask →'; return; }
+        ansBody.textContent += text.slice(i, i + 4); i += 4;
+        requestAnimationFrame(tick);
+      };
+      tick();
+    } catch(err){
+      ansBody.classList.remove('typing');
+      ansBody.textContent = '(Couldn\'t reach the assistant. Try again.)';
+      askSend.disabled = false; askSend.textContent = 'Ask →';
+    }
+  }
+
+  askForm.addEventListener('submit', e => { e.preventDefault(); const q = askInput.value.trim(); if (q) ask(q); });
+  document.querySelectorAll('.sug button').forEach(b => b.addEventListener('click', () => { askInput.value = b.dataset.q; ask(b.dataset.q); }));
+
+  // artifact drawer AI actions
+  document.querySelectorAll('.ad-act').forEach(b => b.addEventListener('click', () => {
+    const map = {
+      open: 'Open my SAR-grade narrative frame in the workspace and pre-fill it with placeholders for: account number, date range, amounts, observed pattern.',
+      iter: 'Iterate my SAR-grade narrative frame. Suggest 3 specific tweaks and show me what v 6 would look like.',
+      critique: 'Critique my SAR-grade narrative frame as a senior BSA officer. Where is it weak? What might an examiner question?',
+      add: 'Suggest which of my playbooks the SAR-grade narrative frame belongs in, and tell me why.'
+    };
+    closeAll();
+    askDr.classList.add('open'); drBg.classList.add('open');
+    setTimeout(() => { askInput.value = map[b.dataset.run]; ask(map[b.dataset.run]); }, 250);
+  }));
+</script>
+</body>
+</html>

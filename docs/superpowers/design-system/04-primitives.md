@@ -87,8 +87,8 @@ Top stripe + content slots. Used in cert ladder, transformation arc, engagement 
 ```tsx
 <PillarCard pillar="application" stripe>
   <PillarCard.Eyebrow>01 · Foundational</PillarCard.Eyebrow>
-  <PillarCard.Title>AiBI-Practitioner</PillarCard.Title>
-  <PillarCard.Designation>Banking AI Practitioner · The Institute</PillarCard.Designation>
+  <PillarCard.Title>AiBI Foundations</PillarCard.Title>
+  <PillarCard.Designation>Banking AI Foundations · The Institute</PillarCard.Designation>
   <PillarCard.Body>...</PillarCard.Body>
 </PillarCard>
 ```

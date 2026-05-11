@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AiBI-Foundations · The AI Banking Institute</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ECE9DF; --paper:#F4F1E7; --paper-2:#EFEBDD; --parch:#E4E0D2; --tape:#F1E9D0;
+    --ink:#0E1B2D; --ink-2:#1F2A3F; --muted:#5C6B82; --soft:#8C95A8;
+    --terra:#B5862A; --terra-2:#8E6620; --weak:#8E3B2A;
+    --green:#1F8A5B; --navy:#1E3A5F; --plum:#5E3B6E;
+    --rule:#D5D1C2; --rule-strong:#B9B4A0;
+    --serif:'Newsreader', Georgia, serif;
+    --sans:'Geist','Inter',system-ui,sans-serif;
+    --mono:'JetBrains Mono', ui-monospace, monospace;
+    --maxw:1380px;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0 }
+  html{ scroll-behavior:smooth }
+  body{ background:var(--paper); color:var(--ink); font-family:var(--sans); line-height:1.5; -webkit-font-smoothing:antialiased }
+  a{ color:inherit; text-decoration:none }
+  button{ font:inherit; color:inherit; background:none; border:none; cursor:pointer }
+  ::selection{ background:var(--terra); color:var(--paper) }
+  img{ max-width:100% }
+
+  .container{ max-width:var(--maxw); margin:0 auto; padding:0 32px }
+  .eyebrow{ font-family:var(--mono); font-size:11px; letter-spacing:0.22em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+  .terra{ color:var(--terra) }
+
+  /* ===== NAV ===== */
+  .nav{ position:sticky; top:0; z-index:30; background:var(--paper); border-bottom:1px solid var(--rule) }
+  .nav-inner{ max-width:var(--maxw); margin:0 auto; padding:18px 32px; display:flex; align-items:center; justify-content:space-between; gap:24px }
+  .nav-mark{ display:flex; flex-direction:column; line-height:1 }
+  .nav-mark .l1, .nav-mark .l2{ font-family:var(--sans); font-weight:700; font-size:13px; letter-spacing:-0.005em; text-transform:uppercase; line-height:1 }
+  .nav-mark .l1{ color:var(--ink) }
+  .nav-mark .l2{ color:var(--soft); margin-top:1px }
+  .nav-links{ display:flex; align-items:center; gap:32px }
+  .nav-link{ font-family:var(--mono); font-size:11px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:var(--ink-2) }
+  .nav-link:hover{ color:var(--terra) }
+  .nav-link.cur{ color:var(--terra); position:relative }
+  .nav-cta{ padding:13px 22px; background:var(--ink); color:var(--paper); font-family:var(--mono); font-size:11px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase }
+  .nav-cta:hover{ background:var(--terra) }
+
+  /* ===== COURSE BREADCRUMB BAR ===== */
+  .crumb{ background:var(--bg); border-bottom:1px solid var(--rule); font-family:var(--mono); font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; font-weight:600 }
+  .crumb-inner{ max-width:var(--maxw); margin:0 auto; padding:11px 32px; display:flex; align-items:center; gap:10px; color:var(--muted) }
+  .crumb a{ color:var(--ink-2) }
+  .crumb a:hover{ color:var(--terra) }
+  .crumb .cur{ color:var(--ink) }
+  .crumb .sep{ color:var(--soft) }
+
+  /* ===== HERO ===== */
+  .hero{ padding:64px 0 56px; border-bottom:1px solid var(--rule); position:relative; overflow:hidden }
+  .hero-grid{ display:grid; grid-template-columns:1fr 380px; gap:56px; align-items:start }
+  .hero-tag{ display:inline-flex; align-items:center; gap:10px; margin-bottom:22px; padding:6px 12px; background:var(--tape); border:1px solid var(--rule-strong); font-family:var(--mono); font-size:10px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--ink) }
+  .hero-tag .dot{ width:6px; height:6px; background:var(--terra); border-radius:50% }
+  .hero h1{ font-family:var(--serif); font-weight:500; font-size:clamp(56px, 7.4vw, 104px); line-height:0.96; letter-spacing:-0.035em; margin-bottom:22px; max-width:13ch }
+  .hero h1 em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .hero h1 .small{ display:block; font-size:0.42em; line-height:1.1; color:var(--muted); font-style:normal; margin-top:8px; letter-spacing:-0.01em }
+  .hero-lede{ font-family:var(--serif); font-size:22px; line-height:1.45; color:var(--ink-2); max-width:54ch; margin-bottom:32px }
+  .hero-lede em{ font-style:italic; color:var(--ink) }
+  .hero-ctas{ display:flex; flex-wrap:wrap; gap:18px; align-items:center; margin-bottom:36px }
+  .btn-prim{ display:inline-flex; align-items:center; gap:12px; padding:16px 28px; background:var(--terra); color:var(--paper); font-family:var(--mono); font-size:11.5px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase }
+  .btn-prim:hover{ background:var(--terra-2) }
+  .btn-prim .arr{ font-family:var(--serif); font-size:16px; line-height:0; margin-top:-2px }
+  .btn-ghost{ display:inline-flex; align-items:center; gap:8px; padding:15px 22px; border:1px solid var(--ink); color:var(--ink); font-family:var(--mono); font-size:11px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase }
+  .btn-ghost:hover{ background:var(--ink); color:var(--paper) }
+  .hero-meta{ display:grid; grid-template-columns:repeat(4, 1fr); gap:0; padding-top:24px; border-top:1px solid var(--rule) }
+  .hero-meta .m{ padding-right:16px; border-right:1px solid var(--rule); display:flex; flex-direction:column; gap:4px }
+  .hero-meta .m:last-child{ border-right:none }
+  .hero-meta .v{ font-family:var(--serif); font-weight:500; font-size:24px; line-height:1; letter-spacing:-0.02em }
+  .hero-meta .v em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .hero-meta .l{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+
+  /* Hero card — pricing capsule */
+  .price-card{ background:var(--paper); border:1px solid var(--rule-strong); padding:28px 28px 24px; position:relative; box-shadow:0 1px 0 rgba(0,0,0,0.04) }
+  .price-card .lab{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.22em; text-transform:uppercase; color:var(--muted); font-weight:600; margin-bottom:8px; display:block }
+  .price-card .pamt{ font-family:var(--serif); font-size:60px; line-height:1; letter-spacing:-0.03em; font-weight:500; display:flex; align-items:baseline; gap:8px; margin-bottom:4px }
+  .price-card .pamt .cur{ font-size:24px; color:var(--muted); font-weight:400 }
+  .price-card .pper{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); font-weight:600; margin-bottom:18px }
+  .price-card .pper s{ color:var(--soft); margin-right:8px }
+  .price-card hr{ border:none; border-top:1px dashed var(--rule); margin:0 0 18px }
+  .price-card ul{ list-style:none; margin:0 0 22px; padding:0; display:flex; flex-direction:column; gap:8px }
+  .price-card li{ display:grid; grid-template-columns:auto 1fr; gap:10px; font-family:var(--serif); font-size:14.5px; line-height:1.4; color:var(--ink-2) }
+  .price-card li::before{ content:"✓"; font-family:var(--mono); font-size:11px; color:var(--terra); font-weight:700; padding-top:3px }
+  .price-card .pcta{ width:100%; padding:14px; background:var(--ink); color:var(--paper); font-family:var(--mono); font-size:11px; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; text-align:center; display:block }
+  .price-card .pcta:hover{ background:var(--terra) }
+  .price-card .pmid{ display:block; text-align:center; margin-top:12px; font-family:var(--serif); font-style:italic; font-size:13.5px; color:var(--muted) }
+  .price-card .pmid a{ color:var(--terra); border-bottom:1px solid var(--terra); padding-bottom:1px }
+  .price-card .pmid a:hover{ color:var(--terra-2) }
+
+  /* ===== SECTION HEADERS ===== */
+  .sec{ padding:80px 0; border-bottom:1px solid var(--rule) }
+  .sec.tight{ padding:56px 0 }
+  .sec-head{ display:grid; grid-template-columns:auto 1fr; gap:32px; align-items:end; margin-bottom:48px; padding-bottom:18px; border-bottom:1px solid var(--rule-strong) }
+  .sec-head .lab{ font-family:var(--mono); font-size:11px; letter-spacing:0.22em; text-transform:uppercase; color:var(--terra); font-weight:600 }
+  .sec-head h2{ font-family:var(--serif); font-weight:500; font-size:clamp(40px,4.4vw, 60px); line-height:1; letter-spacing:-0.025em; margin:0 }
+  .sec-head h2 em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .sec-head .lede{ font-family:var(--serif); font-size:18px; line-height:1.45; color:var(--ink-2); max-width:54ch; margin-top:14px }
+  .sec-head-text{ display:flex; flex-direction:column; gap:14px }
+  .sec-head .num{ font-family:var(--serif); font-size:18px; color:var(--muted); font-weight:500; padding-right:32px; border-right:1px solid var(--rule); align-self:end; padding-bottom:10px }
+
+  /* ===== PROMISE ROW (bold serif statement strip) ===== */
+  .promise{ background:var(--ink); color:var(--paper); padding:64px 0 }
+  .promise .container{ display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:start }
+  .promise h3{ font-family:var(--serif); font-weight:500; font-size:clamp(34px,3.6vw,52px); line-height:1.05; letter-spacing:-0.025em }
+  .promise h3 em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .promise p{ font-family:var(--serif); font-size:18px; line-height:1.55; color:rgba(244,241,231,0.78); max-width:50ch }
+  .promise p + p{ margin-top:18px }
+  .promise .signoff{ font-family:var(--serif); font-style:italic; color:var(--terra); font-size:16px; margin-top:24px; display:block }
+
+  /* ===== OUTCOMES (4 pillar cards) ===== */
+  .pillars{ display:grid; grid-template-columns:repeat(4, 1fr); gap:0; border-left:1px solid var(--rule) }
+  .pillar-card{ padding:32px 28px; border-right:1px solid var(--rule); border-bottom:1px solid var(--rule); border-top:1px solid var(--rule); display:flex; flex-direction:column; gap:14px; min-height:280px }
+  .pillar-card .pn{ font-family:var(--mono); font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--terra); font-weight:600 }
+  .pillar-card h4{ font-family:var(--serif); font-weight:500; font-size:30px; line-height:1.05; letter-spacing:-0.02em; color:var(--ink); margin:0 }
+  .pillar-card h4 em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .pillar-card p{ font-family:var(--serif); font-size:15px; line-height:1.5; color:var(--ink-2); flex:1; max-width:30ch }
+  .pillar-card .pmod{ font-family:var(--mono); font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:var(--muted); font-weight:600; padding-top:10px; border-top:1px solid var(--rule) }
+
+  /* ===== CURRICULUM (12 modules) ===== */
+  .curr{ display:flex; flex-direction:column; gap:0 }
+  .curr-pillar{ border-bottom:1px solid var(--rule); padding-bottom:32px; margin-bottom:32px }
+  .curr-pillar:last-child{ border-bottom:none; margin-bottom:0 }
+  .cp-head{ display:flex; align-items:baseline; gap:18px; margin-bottom:20px; padding-bottom:10px; border-bottom:1px dashed var(--rule) }
+  .cp-head .num{ font-family:var(--mono); font-size:11px; letter-spacing:0.22em; text-transform:uppercase; color:var(--terra); font-weight:700 }
+  .cp-head h3{ font-family:var(--serif); font-weight:500; font-size:32px; line-height:1; letter-spacing:-0.02em }
+  .cp-head h3 em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .cp-head .desc{ font-family:var(--serif); font-style:italic; color:var(--muted); font-size:15px; margin-left:auto }
+
+  .mod-list{ display:flex; flex-direction:column }
+  .mod{ display:grid; grid-template-columns:auto 1fr 200px auto; gap:28px; align-items:start; padding:18px 8px; border-bottom:1px solid var(--rule); cursor:pointer; transition:background 0.1s }
+  .mod:hover{ background:var(--paper-2) }
+  .mod:last-child{ border-bottom:none }
+  .mod .mn{ font-family:var(--serif); font-size:30px; line-height:1; letter-spacing:-0.02em; color:var(--ink); font-weight:500; min-width:60px; padding-top:2px }
+  .mod .mb h4{ font-family:var(--serif); font-weight:500; font-size:21px; line-height:1.2; letter-spacing:-0.015em; margin:0 0 6px; color:var(--ink) }
+  .mod .mb h4 em{ font-style:italic; color:var(--ink); font-weight:500 }
+  .mod .mb .gl{ font-family:var(--serif); font-size:14.5px; line-height:1.45; color:var(--ink-2); max-width:60ch }
+  .mod .ma{ display:flex; flex-direction:column; gap:5px; padding-top:6px }
+  .mod .ma .lab{ font-family:var(--mono); font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+  .mod .ma .v{ font-family:var(--serif); font-style:italic; font-size:14px; line-height:1.35; color:var(--ink-2) }
+  .mod .mt{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); font-weight:600; padding-top:8px; white-space:nowrap; display:flex; flex-direction:column; gap:8px; align-items:flex-end }
+  .mod .mt .pre{ display:inline-flex; align-items:center; gap:6px; padding:3px 8px; background:var(--terra); color:var(--paper); font-size:9px; letter-spacing:0.18em; font-weight:700 }
+  .mod .mt .pre .play{ font-family:var(--serif); font-size:10px; line-height:0; margin-top:-1px }
+
+  /* ===== SAMPLE LESSON ===== */
+  .sample{ background:var(--bg); padding:80px 0; border-bottom:1px solid var(--rule) }
+  .sample-grid{ display:grid; grid-template-columns:380px 1fr; gap:64px; align-items:start }
+  .sample-side .lab{ font-family:var(--mono); font-size:11px; letter-spacing:0.22em; text-transform:uppercase; color:var(--terra); font-weight:600; margin-bottom:14px; display:block }
+  .sample-side h2{ font-family:var(--serif); font-weight:500; font-size:48px; line-height:1; letter-spacing:-0.025em; margin-bottom:18px }
+  .sample-side h2 em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .sample-side p{ font-family:var(--serif); font-size:17px; line-height:1.5; color:var(--ink-2); margin-bottom:18px }
+  .sample-side ul{ list-style:none; padding:0; margin:24px 0; display:flex; flex-direction:column; gap:10px }
+  .sample-side li{ display:grid; grid-template-columns:auto 1fr; gap:12px; font-family:var(--mono); font-size:11.5px; letter-spacing:0.06em; color:var(--ink-2); font-weight:600; text-transform:uppercase; padding-bottom:10px; border-bottom:1px dashed var(--rule) }
+  .sample-side li .ico{ color:var(--terra); font-family:var(--serif); font-size:14px; line-height:1; }
+
+  .lesson-card{ background:var(--paper); border:1px solid var(--rule-strong); display:flex; flex-direction:column; box-shadow:0 4px 24px rgba(14,27,45,0.08) }
+  .lc-head{ padding:18px 24px; background:var(--bg); border-bottom:1px solid var(--rule); display:flex; align-items:center; gap:14px; font-family:var(--mono); font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+  .lc-head .pre{ background:var(--terra); color:var(--paper); padding:4px 9px; font-size:9.5px; font-weight:700 }
+  .lc-head .modref{ color:var(--ink-2); font-weight:700 }
+  .lc-head .right{ margin-left:auto; color:var(--ink-2); font-weight:700 }
+  .lc-body{ padding:36px 40px 32px }
+  .lc-body h3{ font-family:var(--serif); font-weight:500; font-size:32px; line-height:1.1; letter-spacing:-0.02em; margin:0 0 8px; color:var(--ink) }
+  .lc-body h3 em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .lc-body .sub{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); font-weight:600; margin-bottom:24px }
+  .lc-body p.read{ font-family:var(--serif); font-size:17px; line-height:1.6; color:var(--ink); margin-bottom:14px }
+  .lc-body p.read.muted{ color:var(--ink-2); font-size:16px }
+  .lc-quote{ border-left:3px solid var(--terra); padding:8px 0 8px 22px; margin:22px 0; font-family:var(--serif); font-style:italic; font-size:17px; line-height:1.5; color:var(--ink-2) }
+  .lc-quote .att{ display:block; margin-top:10px; font-size:13px; font-style:normal; font-family:var(--mono); letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+  .lc-actions{ padding:20px 40px 28px; border-top:1px dashed var(--rule); display:flex; align-items:center; gap:14px; flex-wrap:wrap }
+  .lc-actions .progress{ display:flex; align-items:center; gap:8px; font-family:var(--mono); font-size:9.5px; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+  .lc-actions .pbar{ width:120px; height:4px; background:var(--rule); position:relative }
+  .lc-actions .pbar::after{ content:""; position:absolute; left:0; top:0; bottom:0; width:32%; background:var(--terra) }
+  .lc-actions .grow{ flex:1 }
+  .lc-cta{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; padding:11px 18px; color:var(--ink); font-weight:600; border:1px solid var(--ink) }
+  .lc-cta:hover{ background:var(--ink); color:var(--paper) }
+  .lc-cta.prim{ background:var(--ink); color:var(--paper) }
+  .lc-cta.prim:hover{ background:var(--terra); border-color:var(--terra) }
+
+  /* ===== FORMAT (4-pillar method) ===== */
+  .method{ display:grid; grid-template-columns:repeat(4, 1fr); gap:0; border-top:1px solid var(--rule); border-bottom:1px solid var(--rule) }
+  .method-step{ padding:36px 28px; border-right:1px solid var(--rule); display:flex; flex-direction:column; gap:16px; min-height:300px; position:relative }
+  .method-step:last-child{ border-right:none }
+  .method-step .stp{ font-family:var(--mono); font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+  .method-step .num{ font-family:var(--serif); font-weight:500; font-size:80px; line-height:0.85; letter-spacing:-0.04em; color:var(--terra); font-style:italic }
+  .method-step h4{ font-family:var(--serif); font-weight:500; font-size:24px; line-height:1.1; letter-spacing:-0.015em; color:var(--ink); margin:0 }
+  .method-step p{ font-family:var(--serif); font-size:14.5px; line-height:1.5; color:var(--ink-2); flex:1 }
+  .method-step .mins{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); font-weight:600; padding-top:10px; border-top:1px solid var(--rule) }
+
+  /* ===== ARTIFACTS WALL ===== */
+  .artifacts{ display:grid; grid-template-columns:repeat(3, 1fr); gap:0; border-top:1px solid var(--rule); border-left:1px solid var(--rule) }
+  .art-cell{ padding:24px 24px 20px; border-right:1px solid var(--rule); border-bottom:1px solid var(--rule); background:var(--paper); position:relative; display:flex; flex-direction:column; gap:8px; min-height:170px }
+  .art-cell .num{ font-family:var(--mono); font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+  .art-cell h4{ font-family:var(--serif); font-weight:500; font-size:21px; line-height:1.2; letter-spacing:-0.015em; color:var(--ink); margin:0 }
+  .art-cell h4 em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .art-cell .kind{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.16em; text-transform:uppercase; color:var(--terra); font-weight:600; margin-top:auto; padding-top:14px; border-top:1px dashed var(--rule) }
+
+  /* ===== INSTRUCTOR / WHO IT'S FOR ===== */
+  .audience{ background:var(--ink); color:var(--paper); padding:64px 0; border-bottom:1px solid var(--rule) }
+  .audience-grid{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:0; border-left:1px solid rgba(244,241,231,0.18) }
+  .aud-card{ padding:28px 28px 22px; border-right:1px solid rgba(244,241,231,0.18); display:flex; flex-direction:column; gap:12px }
+  .aud-card .role{ font-family:var(--mono); font-size:10px; letter-spacing:0.22em; text-transform:uppercase; color:var(--terra); font-weight:600 }
+  .aud-card h4{ font-family:var(--serif); font-weight:500; font-size:24px; line-height:1.15; letter-spacing:-0.015em; color:var(--paper); margin:0 }
+  .aud-card h4 em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .aud-card p{ font-family:var(--serif); font-size:15px; line-height:1.5; color:rgba(244,241,231,0.78) }
+  .aud-card .why{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.18em; text-transform:uppercase; color:rgba(244,241,231,0.55); padding-top:12px; border-top:1px solid rgba(244,241,231,0.18); margin-top:auto; font-weight:600 }
+  .audience-head{ display:grid; grid-template-columns:auto 1fr; gap:32px; align-items:end; margin-bottom:36px; padding-bottom:18px; border-bottom:1px solid rgba(244,241,231,0.18) }
+  .audience-head .lab{ font-family:var(--mono); font-size:11px; letter-spacing:0.22em; text-transform:uppercase; color:var(--terra); font-weight:600 }
+  .audience-head h2{ font-family:var(--serif); font-weight:500; font-size:clamp(36px,4vw, 52px); line-height:1; letter-spacing:-0.025em }
+  .audience-head h2 em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .audience-head .num{ font-family:var(--serif); font-size:16px; color:var(--soft); font-weight:500; padding-right:32px; border-right:1px solid rgba(244,241,231,0.18); align-self:end; padding-bottom:8px }
+
+  /* ===== TESTIMONIALS ===== */
+  .test{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:0; border-left:1px solid var(--rule); border-top:1px solid var(--rule) }
+  .test-cell{ padding:32px 28px 28px; border-right:1px solid var(--rule); border-bottom:1px solid var(--rule); display:flex; flex-direction:column; gap:18px; min-height:300px }
+  .test-cell .stars{ font-family:var(--mono); font-size:14px; letter-spacing:2px; color:var(--terra) }
+  .test-cell blockquote{ font-family:var(--serif); font-size:18px; line-height:1.45; color:var(--ink); flex:1; font-weight:400 }
+  .test-cell blockquote em{ font-style:italic; color:var(--terra) }
+  .test-cell .att{ display:flex; flex-direction:column; gap:3px; padding-top:12px; border-top:1px solid var(--rule) }
+  .test-cell .att .name{ font-family:var(--serif); font-weight:500; font-size:14.5px; color:var(--ink); letter-spacing:-0.005em }
+  .test-cell .att .meta{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+
+  /* ===== INSTRUCTOR / TRUST STRIP ===== */
+  .inst-row{ display:grid; grid-template-columns:1fr 360px; gap:64px; align-items:start; padding-top:8px }
+  .inst-bio h3{ font-family:var(--serif); font-weight:500; font-size:42px; line-height:1; letter-spacing:-0.025em; margin-bottom:18px }
+  .inst-bio h3 em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .inst-bio p{ font-family:var(--serif); font-size:17px; line-height:1.55; color:var(--ink-2); max-width:62ch; margin-bottom:14px }
+  .inst-bio .sig{ font-family:'Newsreader', serif; font-style:italic; color:var(--terra); font-size:24px; margin-top:18px }
+  .inst-card{ background:var(--paper); border:1px solid var(--rule-strong); padding:24px }
+  .inst-card .ph{ width:100%; aspect-ratio:1; background:linear-gradient(135deg, var(--tape) 0%, var(--parch) 100%); display:grid; place-items:center; font-family:var(--serif); font-style:italic; font-size:64px; color:var(--terra); border:1px solid var(--rule); margin-bottom:18px }
+  .inst-card .name{ font-family:var(--serif); font-weight:500; font-size:22px; line-height:1.1; letter-spacing:-0.015em; color:var(--ink); margin-bottom:4px }
+  .inst-card .role{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--terra); font-weight:600; margin-bottom:14px }
+  .inst-card .cred{ font-family:var(--serif); font-size:14px; line-height:1.5; color:var(--ink-2); padding-top:14px; border-top:1px solid var(--rule) }
+  .inst-card .cred li{ list-style:none; padding:6px 0; border-bottom:1px dashed var(--rule); display:grid; grid-template-columns:auto 1fr; gap:10px }
+  .inst-card .cred li:last-child{ border-bottom:none }
+  .inst-card .cred .y{ font-family:var(--mono); font-size:10px; letter-spacing:0.16em; color:var(--muted); font-weight:600; padding-top:2px }
+
+  /* ===== FAQ ===== */
+  .faq-list{ display:flex; flex-direction:column; border-top:1px solid var(--rule) }
+  details.q{ border-bottom:1px solid var(--rule); padding:0 }
+  details.q summary{ list-style:none; cursor:pointer; padding:22px 0; display:grid; grid-template-columns:auto 1fr auto; gap:24px; align-items:baseline }
+  details.q summary::-webkit-details-marker{ display:none }
+  details.q .qn{ font-family:var(--mono); font-size:11px; letter-spacing:0.18em; color:var(--muted); font-weight:600 }
+  details.q .qt{ font-family:var(--serif); font-weight:500; font-size:21px; line-height:1.3; letter-spacing:-0.015em; color:var(--ink) }
+  details.q .qt em{ font-style:italic; color:var(--terra); font-weight:500 }
+  details.q .toggle{ font-family:var(--serif); font-size:24px; color:var(--muted); transition:transform 0.2s; line-height:1 }
+  details.q[open] .toggle{ transform:rotate(45deg); color:var(--terra) }
+  details.q .qa{ padding:0 0 24px; max-width:80ch; padding-left:60px }
+  details.q .qa p{ font-family:var(--serif); font-size:16px; line-height:1.6; color:var(--ink-2); margin-bottom:10px }
+  details.q .qa p:last-child{ margin-bottom:0 }
+
+  /* ===== FINAL CTA ===== */
+  .final{ background:var(--ink); color:var(--paper); padding:96px 0 80px; text-align:center }
+  .final .lab{ font-family:var(--mono); font-size:11px; letter-spacing:0.22em; text-transform:uppercase; color:var(--terra); font-weight:600; display:block; margin-bottom:18px }
+  .final h2{ font-family:var(--serif); font-weight:500; font-size:clamp(48px, 6vw, 84px); line-height:1; letter-spacing:-0.03em; max-width:18ch; margin:0 auto 18px }
+  .final h2 em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .final p{ font-family:var(--serif); font-style:italic; font-size:20px; line-height:1.4; color:rgba(244,241,231,0.75); max-width:48ch; margin:0 auto 36px }
+  .final .ctas{ display:flex; gap:16px; justify-content:center; flex-wrap:wrap }
+  .final .btn-prim{ background:var(--terra); border:1px solid var(--terra) }
+  .final .btn-prim:hover{ background:var(--paper); color:var(--ink); border-color:var(--paper) }
+  .final .btn-ghost{ border-color:var(--paper); color:var(--paper) }
+  .final .btn-ghost:hover{ background:var(--paper); color:var(--ink); border-color:var(--paper) }
+  .final .small{ display:block; margin-top:32px; font-family:var(--mono); font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; color:rgba(244,241,231,0.5); font-weight:600 }
+
+  /* ===== FOOTER ===== */
+  .foot{ background:#0A1320; color:rgba(244,241,231,0.6); padding:48px 0 28px }
+  .foot-grid{ display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:48px; margin-bottom:36px }
+  .foot-mark .l1{ font-family:var(--sans); font-weight:700; font-size:14px; letter-spacing:-0.005em; text-transform:uppercase; color:var(--paper); display:block }
+  .foot-mark .l2{ font-family:var(--sans); font-weight:700; font-size:14px; letter-spacing:-0.005em; text-transform:uppercase; color:var(--soft); margin-top:1px; display:block }
+  .foot-mark .tag{ font-family:var(--serif); font-style:italic; color:var(--terra); margin-top:10px; font-size:14.5px }
+  .foot-col h6{ font-family:var(--mono); font-size:10px; letter-spacing:0.22em; text-transform:uppercase; color:var(--soft); font-weight:600; margin-bottom:14px }
+  .foot-col ul{ list-style:none; display:flex; flex-direction:column; gap:8px }
+  .foot-col a{ font-family:var(--sans); font-size:13.5px; color:rgba(244,241,231,0.78) }
+  .foot-col a:hover{ color:var(--terra) }
+  .foot-bot{ padding-top:18px; border-top:1px solid rgba(244,241,231,0.12); display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; font-family:var(--mono); font-size:10px; letter-spacing:0.18em; text-transform:uppercase; font-weight:600 }
+
+  @media (max-width:1100px){
+    .hero-grid{ grid-template-columns:1fr; gap:36px }
+    .price-card{ max-width:480px }
+    .pillars{ grid-template-columns:repeat(2, 1fr) }
+    .audience-grid{ grid-template-columns:1fr 1fr }
+    .test{ grid-template-columns:1fr 1fr }
+    .method{ grid-template-columns:1fr 1fr }
+    .artifacts{ grid-template-columns:1fr 1fr }
+    .promise .container{ grid-template-columns:1fr }
+    .sample-grid{ grid-template-columns:1fr; gap:32px }
+    .inst-row{ grid-template-columns:1fr; gap:32px }
+    .foot-grid{ grid-template-columns:1fr 1fr }
+    .mod{ grid-template-columns:auto 1fr; gap:18px }
+    .mod .ma, .mod .mt{ grid-column:2 }
+  }
+  @media (max-width:600px){
+    .hero-meta{ grid-template-columns:1fr 1fr }
+    .pillars, .audience-grid, .test, .method, .artifacts{ grid-template-columns:1fr }
+    .nav-links .nav-link:not(.nav-cta){ display:none }
+    .container{ padding:0 20px }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<header class="nav">
+  <div class="nav-inner">
+    <a href="../AI Banking Institute.html" class="nav-mark">
+      <span class="l1">The AI Banking</span>
+      <span class="l2">Institute</span>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="../AI Banking Institute.html#pillars" class="nav-link cur">Education</a>
+      <a href="#" class="nav-link">For Institutions</a>
+      <a href="#" class="nav-link">Research</a>
+      <a href="#" class="nav-link">About</a>
+      <a href="../FAQ.html" class="nav-link">Support</a>
+      <a href="#enroll" class="nav-cta">Enrol now</a>
+      <a href="../User Home.html" class="nav-link" style="color:var(--muted)">Sign in</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ===== BREADCRUMB ===== -->
+<div class="crumb">
+  <div class="crumb-inner">
+    <a href="../AI Banking Institute.html">The Institute</a>
+    <span class="sep">/</span>
+    <a href="#">Education</a>
+    <span class="sep">/</span>
+    <a href="#">Courses</a>
+    <span class="sep">/</span>
+    <span class="cur">AiBI-Foundations</span>
+  </div>
+</div>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div>
+        <span class="hero-tag"><span class="dot"></span>AiBI-Foundations · Certification course</span>
+        <h1>Working <em>fluency.</em><span class="small">For everyone in your bank.</span></h1>
+        <p class="hero-lede">Twelve self-paced modules that build the AI muscle a community banker actually needs — <em>scored on real artifacts you keep,</em> not multiple-choice quizzes you forget by Monday.</p>
+        <div class="hero-ctas">
+          <a href="#enroll" class="btn-prim">Enrol — $1,200 <span class="arr">→</span></a>
+          <a href="#sample" class="btn-ghost">Try a free lesson</a>
+        </div>
+        <div class="hero-meta">
+          <div class="m"><span class="v"><em>12</em> modules</span><span class="l">Self-paced</span></div>
+          <div class="m"><span class="v">~6 hours</span><span class="l">Total time</span></div>
+          <div class="m"><span class="v">8 keep</span><span class="l">Artifacts you build</span></div>
+          <div class="m"><span class="v">90 days</span><span class="l">To complete</span></div>
+        </div>
+      </div>
+
+      <aside class="price-card" id="enroll">
+        <span class="lab">Individual seat</span>
+        <div class="pamt"><span class="cur">$</span>1,200<span style="font-size:18px; color:var(--muted); font-weight:400; align-self:end">USD</span></div>
+        <div class="pper"><s>$1,500</s>Charter cohort price · saves $300</div>
+        <hr>
+        <ul>
+          <li>All 12 modules, no time limit on access</li>
+          <li>Reviewed feedback on your artifacts (not auto-graded)</li>
+          <li>The AiBI-Foundations digital credential</li>
+          <li>Permanent toolbox: prompts, skills, agents you build here, yours forever</li>
+          <li>Fortnightly cohort office-hours for 90 days</li>
+        </ul>
+        <a href="#" class="pcta">Enrol — secure your seat</a>
+        <span class="pmid">Buying for your team? <a href="#audience">See institutional pricing</a></span>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PROMISE ===== -->
+<section class="promise">
+  <div class="container">
+    <h3>The promise: <em>by Friday week one,</em> you have a prompt that saves you an hour a week — and a defensible answer when an examiner asks what you're using AI for.</h3>
+    <div>
+      <p>Most AI training is theatre. A vendor demo, a thirty-slide deck, a quiz, and a certificate that says you watched videos. Six weeks later your team is still copying member data into ChatGPT.</p>
+      <p>This is the opposite. Every module produces an artifact you keep. Every artifact is reviewed by a human who has worked in a community bank. The certificate at the end means something — because the work is the proof.</p>
+      <span class="signoff">— D. Maxwell, Director of Education</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOUR PILLARS / OUTCOMES ===== -->
+<section class="sec">
+  <div class="container">
+    <div class="sec-head">
+      <span class="num">§ 01</span>
+      <div class="sec-head-text">
+        <span class="lab">The four-pillar method</span>
+        <h2>Awareness, then understanding, then <em>creation,</em> then application.</h2>
+        <p class="lede">Built for adults who already know how a bank works. We don't drown you in tooling — we teach a sequence so the next module always builds on the last.</p>
+      </div>
+    </div>
+    <div class="pillars">
+      <div class="pillar-card">
+        <span class="pn">§ 01 · Awareness</span>
+        <h4>Know the <em>terrain.</em></h4>
+        <p>What AI is and isn't, what already lives inside your walls, and where the privacy line gets drawn. The map before the journey.</p>
+        <span class="pmod">Modules 01 – 03</span>
+      </div>
+      <div class="pillar-card">
+        <span class="pn">§ 02 · Understanding</span>
+        <h4>Open the <em>black box.</em></h4>
+        <p>How language models actually predict. What an Acceptable Use card looks like at your desk. An honest read of your own AI muscle today.</p>
+        <span class="pmod">Modules 04 – 06</span>
+      </div>
+      <div class="pillar-card">
+        <span class="pn">§ 03 · Creation</span>
+        <h4>Build something <em>that lasts.</em></h4>
+        <p>Your first reusable prompt. The iteration loop — try, critique, refine, save. Three saved prompts in your toolbox by the end.</p>
+        <span class="pmod">Modules 07 – 09</span>
+      </div>
+      <div class="pillar-card">
+        <span class="pn">§ 04 · Application</span>
+        <h4>Ship it on <em>Monday.</em></h4>
+        <p>A real member letter, faster. A vetted policy summary with a confidence note. The reviewer's habit, signed off on a real artifact.</p>
+        <span class="pmod">Modules 10 – 12</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CURRICULUM ===== -->
+<section class="sec" id="curriculum">
+  <div class="container">
+    <div class="sec-head">
+      <span class="num">§ 02</span>
+      <div class="sec-head-text">
+        <span class="lab">The 12 modules</span>
+        <h2>The whole <em>curriculum,</em> nothing hidden.</h2>
+        <p class="lede">Every module is roughly half an hour. Every module produces something you can show your manager, your team, or an examiner. Two are free to preview.</p>
+      </div>
+    </div>
+
+    <div class="curr">
+
+      <div class="curr-pillar">
+        <div class="cp-head">
+          <span class="num">§ 01 — Awareness</span>
+          <h3>Know the <em>terrain.</em></h3>
+          <span class="desc">Three modules · about ninety minutes</span>
+        </div>
+        <div class="mod-list">
+          <div class="mod">
+            <div class="mn">01</div>
+            <div class="mb">
+              <h4>The AI <em>landscape</em> in banking</h4>
+              <p class="gl">What AI can and can't do in a regulated bank. The honest version, with the sharp edges named.</p>
+            </div>
+            <div class="ma">
+              <span class="lab">You'll keep</span>
+              <span class="v">A personal map of where AI fits in your workday.</span>
+            </div>
+            <div class="mt">22 min<span class="pre"><span class="play">▸</span>Free preview</span></div>
+          </div>
+          <div class="mod">
+            <div class="mn">02</div>
+            <div class="mb">
+              <h4>Subscription <em>inventory</em></h4>
+              <p class="gl">Audit the AI tools already inside your walls. The shadow IT you didn't know you had.</p>
+            </div>
+            <div class="ma">
+              <span class="lab">You'll keep</span>
+              <span class="v">A vetted list of AI tools your team actually uses.</span>
+            </div>
+            <div class="mt">28 min</div>
+          </div>
+          <div class="mod">
+            <div class="mn">03</div>
+            <div class="mb">
+              <h4>The <em>privacy line</em></h4>
+              <p class="gl">Draw the line between safe-to-send and not. The decision rule you'll fall back on every day.</p>
+            </div>
+            <div class="ma">
+              <span class="lab">You'll keep</span>
+              <span class="v">Your personal "what stays in / what goes out" rule.</span>
+            </div>
+            <div class="mt">26 min</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="curr-pillar">
+        <div class="cp-head">
+          <span class="num">§ 02 — Understanding</span>
+          <h3>Open the <em>black box.</em></h3>
+          <span class="desc">Three modules · about ninety minutes</span>
+        </div>
+        <div class="mod-list">
+          <div class="mod">
+            <div class="mn">04</div>
+            <div class="mb">
+              <h4>How language models <em>actually work</em></h4>
+              <p class="gl">A working mental model of how LLMs predict — without a math degree.</p>
+            </div>
+            <div class="ma">
+              <span class="lab">You'll keep</span>
+              <span class="v">A one-page mental model you can show a coworker.</span>
+            </div>
+            <div class="mt">32 min</div>
+          </div>
+          <div class="mod">
+            <div class="mn">05</div>
+            <div class="mb">
+              <h4>Acceptable use — your <em>boundaries</em></h4>
+              <p class="gl">Turn policy into a card you keep at your desk. Not a binder, a card.</p>
+            </div>
+            <div class="ma">
+              <span class="lab">You'll keep</span>
+              <span class="v">A printable Acceptable Use card.</span>
+            </div>
+            <div class="mt">30 min</div>
+          </div>
+          <div class="mod">
+            <div class="mn">06</div>
+            <div class="mb">
+              <h4>Skill <em>diagnosis</em></h4>
+              <p class="gl">See where your AI muscle is strong and weak — before you spend energy on the wrong things.</p>
+            </div>
+            <div class="ma">
+              <span class="lab">You'll keep</span>
+              <span class="v">A short report on your current AI fluency.</span>
+            </div>
+            <div class="mt">24 min</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="curr-pillar">
+        <div class="cp-head">
+          <span class="num">§ 03 — Creation</span>
+          <h3>Build something <em>that lasts.</em></h3>
+          <span class="desc">Three modules · about a hundred minutes</span>
+        </div>
+        <div class="mod-list">
+          <div class="mod">
+            <div class="mn">07</div>
+            <div class="mb">
+              <h4>Skill builder — your <em>first prompt</em></h4>
+              <p class="gl">Build a prompt that survives Monday. Pick a real task; engineer for it.</p>
+            </div>
+            <div class="ma">
+              <span class="lab">You'll keep</span>
+              <span class="v">A reusable prompt for a task you do every week.</span>
+            </div>
+            <div class="mt">40 min<span class="pre"><span class="play">▸</span>Free preview</span></div>
+          </div>
+          <div class="mod">
+            <div class="mn">08</div>
+            <div class="mb">
+              <h4>Iteration <em>tracker</em></h4>
+              <p class="gl">Practice the loop: try, critique, refine, save. Document the path so you can do it again.</p>
+            </div>
+            <div class="ma">
+              <span class="lab">You'll keep</span>
+              <span class="v">A documented before/after of one prompt you refined.</span>
+            </div>
+            <div class="mt">35 min</div>
+          </div>
+          <div class="mod">
+            <div class="mn">09</div>
+            <div class="mb">
+              <h4>Building <em>durable</em> prompts</h4>
+              <p class="gl">From one-off chats to prompts you reuse weekly. The patterns that survive next quarter.</p>
+            </div>
+            <div class="ma">
+              <span class="lab">You'll keep</span>
+              <span class="v">Three saved prompts in your toolbox.</span>
+            </div>
+            <div class="mt">30 min</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="curr-pillar">
+        <div class="cp-head">
+          <span class="num">§ 04 — Application</span>
+          <h3>Ship it on <em>Monday.</em></h3>
+          <span class="desc">Three modules · about ninety minutes</span>
+        </div>
+        <div class="mod-list">
+          <div class="mod">
+            <div class="mn">10</div>
+            <div class="mb">
+              <h4>Better <em>email,</em> faster</h4>
+              <p class="gl">Write the email you were going to write — faster. With the regulated voice, not the marketing voice.</p>
+            </div>
+            <div class="ma">
+              <span class="lab">You'll keep</span>
+              <span class="v">Your member-letter rewrite, reviewed.</span>
+            </div>
+            <div class="mt">28 min</div>
+          </div>
+          <div class="mod">
+            <div class="mn">11</div>
+            <div class="mb">
+              <h4>Summarising documents <em>responsibly</em></h4>
+              <p class="gl">Summarise a document you'd actually stake your name on. With the confidence note attached.</p>
+            </div>
+            <div class="ma">
+              <span class="lab">You'll keep</span>
+              <span class="v">A vetted policy summary with a confidence note.</span>
+            </div>
+            <div class="mt">30 min</div>
+          </div>
+          <div class="mod">
+            <div class="mn">12</div>
+            <div class="mb">
+              <h4>Reviewing AI outputs like an <em>auditor</em></h4>
+              <p class="gl">The review habit, so AI never reaches a member without a human read first.</p>
+            </div>
+            <div class="ma">
+              <span class="lab">You'll keep</span>
+              <span class="v">A reviewer checklist signed off on a real artifact.</span>
+            </div>
+            <div class="mt">30 min</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== SAMPLE LESSON ===== -->
+<section class="sample" id="sample">
+  <div class="container">
+    <div class="sample-grid">
+      <div class="sample-side">
+        <span class="lab">§ 03 — A free preview</span>
+        <h2>Try a real <em>lesson.</em></h2>
+        <p>Module 07 is the heart of the course — where most learners go from "I tried ChatGPT once" to "I have a prompt I'll use every week."</p>
+        <p>Read the opening section here, then pick up where you left off after you enrol.</p>
+        <ul>
+          <li><span class="ico">●</span>Plain language reading</li>
+          <li><span class="ico">●</span>One real-world example</li>
+          <li><span class="ico">●</span>An exercise with reviewed feedback</li>
+          <li><span class="ico">●</span>An artifact you keep</li>
+        </ul>
+      </div>
+
+      <article class="lesson-card">
+        <div class="lc-head">
+          <span class="pre">▸ Free preview</span>
+          <span class="modref">Module 07 · L2</span>
+          <span>The four-pillar prompt</span>
+          <span class="right">Reading 4 of 7</span>
+        </div>
+        <div class="lc-body">
+          <h3>Every prompt worth saving has <em>four parts.</em></h3>
+          <p class="sub">A reading · about three minutes</p>
+          <p class="read">Reusable prompts are the difference between a one-off chat and a working tool. The bankers who pull ahead this year are the ones who write a prompt once and use it every week — not the ones who keep typing variations of the same request into a fresh chat.</p>
+          <p class="read muted">Every prompt worth saving has four parts: a <strong>Role</strong> for the AI, the <strong>Inputs</strong> you'll paste, the <strong>Constraints</strong> (what to avoid), and the <strong>Output</strong> you want back. Skip any one of them and the prompt becomes a chat — useful once, and forgotten by Wednesday.</p>
+          <div class="lc-quote">
+            "Member-services rep needs to rewrite a rate-change letter. The chat version says 'rewrite this nicer.' The tool version names the role, names the constraint (no implied promises), and names the output (one paragraph, plain language)."
+            <span class="att">— Module 07, Lesson 2</span>
+          </div>
+          <p class="read">Read the next section to see the two prompts side-by-side, and try writing the four-pillar version yourself…</p>
+        </div>
+        <div class="lc-actions">
+          <span class="progress">
+            <span>Lesson 32% read</span>
+            <span class="pbar"></span>
+          </span>
+          <span class="grow"></span>
+          <a href="#enroll" class="lc-cta prim">Enrol to continue</a>
+          <a href="../LMS Prototype.html" class="lc-cta">Open in the LMS</a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD / FORMAT ===== -->
+<section class="sec">
+  <div class="container">
+    <div class="sec-head">
+      <span class="num">§ 03</span>
+      <div class="sec-head-text">
+        <span class="lab">How a module flows</span>
+        <h2>Read it, see it, <em>do it,</em> get it reviewed.</h2>
+        <p class="lede">Every one of the twelve modules has the same shape. No surprise quizzes. No video-watch theatre. No certificate for showing up — only for finishing the work.</p>
+      </div>
+    </div>
+    <div class="method">
+      <div class="method-step">
+        <span class="stp">Step one</span>
+        <span class="num">i</span>
+        <h4>Read</h4>
+        <p>A short reading — three to five sections, plain language, written for adults who already know banking. Read like an essay, not a textbook.</p>
+        <span class="mins">~8 minutes</span>
+      </div>
+      <div class="method-step">
+        <span class="stp">Step two</span>
+        <span class="num">ii</span>
+        <h4>See</h4>
+        <p>One real-world example, drawn from a community bank or credit union. The before-and-after, the trade-off, the call you'd actually make.</p>
+        <span class="mins">~6 minutes</span>
+      </div>
+      <div class="method-step">
+        <span class="stp">Step three</span>
+        <span class="num">iii</span>
+        <h4>Do</h4>
+        <p>An exercise on a real task you do every week. Built in our Playground — your work, your data (or our sample), your saved artifact.</p>
+        <span class="mins">~12 minutes</span>
+      </div>
+      <div class="method-step">
+        <span class="stp">Step four</span>
+        <span class="num">iv</span>
+        <h4>Reviewed</h4>
+        <p>A human reviewer reads what you produced and writes you back — what to keep, what to redo, why. No auto-grader. No 'B+ for trying.'</p>
+        <span class="mins">~3 days return</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== AUDIENCE ===== -->
+<section class="audience" id="audience">
+  <div class="container">
+    <div class="audience-head">
+      <span class="num">§ 04</span>
+      <div class="sec-head-text">
+        <span class="lab">Who it's for</span>
+        <h2>Built for the people who actually run a <em>community bank.</em></h2>
+      </div>
+    </div>
+    <div class="audience-grid">
+      <div class="aud-card">
+        <span class="role">Member-facing roles</span>
+        <h4>Tellers, MSRs, and <em>branch managers</em></h4>
+        <p>You write the email, you take the call, you draft the letter. Foundations turns the AI from a curiosity into something that shaves the routine work and gives you back the human conversations.</p>
+        <span class="why">Why · time saved on routine writing</span>
+      </div>
+      <div class="aud-card">
+        <span class="role">Risk &amp; compliance</span>
+        <h4>BSA, compliance, and <em>internal audit</em></h4>
+        <p>You need to know what AI your bank is already using, what the risk actually is, and how to talk about it with examiners. The course turns you into the trusted source.</p>
+        <span class="why">Why · defensibility, examiner readiness</span>
+      </div>
+      <div class="aud-card">
+        <span class="role">Lending &amp; ops</span>
+        <h4>Underwriters, lenders, and <em>ops leads</em></h4>
+        <p>You write memos. You summarise files. You read more documents than anyone gives you time for. Foundations gives you the prompt patterns and the review habit so AI is a junior analyst, not a wildcard.</p>
+        <span class="why">Why · throughput on memos and summaries</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ARTIFACTS ===== -->
+<section class="sec">
+  <div class="container">
+    <div class="sec-head">
+      <span class="num">§ 05</span>
+      <div class="sec-head-text">
+        <span class="lab">What you walk away with</span>
+        <h2>Eight artifacts. <em>Yours forever.</em></h2>
+        <p class="lede">Not certificates. Not screenshots. Real work-products you'll use the week after the course ends — and the year after that.</p>
+      </div>
+    </div>
+    <div class="artifacts">
+      <div class="art-cell">
+        <span class="num">01</span>
+        <h4>Personal AI <em>map</em></h4>
+        <span class="kind">From Module 01 · Diagram</span>
+      </div>
+      <div class="art-cell">
+        <span class="num">02</span>
+        <h4>Subscription <em>inventory</em></h4>
+        <span class="kind">From Module 02 · Audit table</span>
+      </div>
+      <div class="art-cell">
+        <span class="num">03</span>
+        <h4>Privacy-line <em>rule</em></h4>
+        <span class="kind">From Module 03 · Decision rule</span>
+      </div>
+      <div class="art-cell">
+        <span class="num">04</span>
+        <h4>Acceptable Use <em>card</em></h4>
+        <span class="kind">From Module 05 · Printable card</span>
+      </div>
+      <div class="art-cell">
+        <span class="num">05</span>
+        <h4>Three saved <em>prompts</em></h4>
+        <span class="kind">From Module 09 · Toolbox entries</span>
+      </div>
+      <div class="art-cell">
+        <span class="num">06</span>
+        <h4>Iteration <em>before/after</em></h4>
+        <span class="kind">From Module 08 · Documented diff</span>
+      </div>
+      <div class="art-cell">
+        <span class="num">07</span>
+        <h4>Member-letter <em>rewrite</em></h4>
+        <span class="kind">From Module 10 · Reviewed draft</span>
+      </div>
+      <div class="art-cell">
+        <span class="num">08</span>
+        <h4>Reviewer <em>checklist</em></h4>
+        <span class="kind">From Module 12 · Sign-off form</span>
+      </div>
+      <div class="art-cell" style="background:var(--ink); color:var(--paper); border-color:var(--ink)">
+        <span class="num" style="color:var(--terra)">+ The credential</span>
+        <h4 style="color:var(--paper)">AiBI-Foundations <em>certified</em></h4>
+        <span class="kind" style="color:rgba(244,241,231,0.65); border-top-color:rgba(244,241,231,0.18)">Verifiable digital credential</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== INSTRUCTOR ===== -->
+<section class="sec">
+  <div class="container">
+    <div class="sec-head">
+      <span class="num">§ 06</span>
+      <div class="sec-head-text">
+        <span class="lab">Who teaches it</span>
+        <h2>Written by people who've sat at the <em>desk.</em></h2>
+      </div>
+    </div>
+    <div class="inst-row">
+      <div class="inst-bio">
+        <h3>Plain banking voice. <em>Examiner-aware.</em> No marketing theatre.</h3>
+        <p>Foundations is written and reviewed by a panel of community bankers, credit-union operators, and former examiners — people who've drafted the memo, taken the exam, and lived with the consequences.</p>
+        <p>You won't hear about the future of money. You'll learn how to write a prompt for the rate-change letter you have to send Tuesday, and you'll learn how to defend that prompt to your compliance officer on Wednesday. That's the bar.</p>
+        <span class="sig">— D. Maxwell &amp; the Foundations panel</span>
+      </div>
+      <aside class="inst-card">
+        <div class="ph">DM</div>
+        <div class="name">D. Maxwell</div>
+        <div class="role">Director of Education</div>
+        <p style="font-family:var(--serif); font-size:14.5px; line-height:1.55; color:var(--ink-2); margin:0">Twenty-two years in community banking and credit-union operations. Former Head of Risk at a $2B-asset CU. Builds curriculum because she got tired of bad vendor decks.</p>
+        <ul class="cred">
+          <li><span class="y">2024</span><span>Founded the AI Banking Institute</span></li>
+          <li><span class="y">2018–24</span><span>Head of Risk &amp; Innovation, Mid-Atlantic CU</span></li>
+          <li><span class="y">2010–18</span><span>VP, Compliance — community-bank holding co.</span></li>
+          <li><span class="y">CRCM</span><span>Certified Regulatory Compliance Manager</span></li>
+        </ul>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TESTIMONIALS ===== -->
+<section class="sec tight">
+  <div class="container">
+    <div class="sec-head">
+      <span class="num">§ 07</span>
+      <div class="sec-head-text">
+        <span class="lab">From the charter cohort</span>
+        <h2>What learners <em>actually said.</em></h2>
+      </div>
+    </div>
+    <div class="test">
+      <div class="test-cell">
+        <span class="stars">★★★★★</span>
+        <blockquote>"I came in expecting another vendor demo. I left with a prompt that <em>cuts forty minutes off my Tuesday</em>, and a way to talk about it with our compliance officer that didn't make her flinch."</blockquote>
+        <div class="att">
+          <span class="name">Marisol Tavares</span>
+          <span class="meta">VP Member Services · Atlas Federal CU</span>
+        </div>
+      </div>
+      <div class="test-cell">
+        <span class="stars">★★★★★</span>
+        <blockquote>"The reviewed feedback is the differentiator. A reviewer rewrote my Module 7 prompt with three changes I'd <em>never have seen on my own</em>. That single edit is worth the price of the course."</blockquote>
+        <div class="att">
+          <span class="name">Henry Caldwell</span>
+          <span class="meta">Senior Underwriter · First Plains Bank</span>
+        </div>
+      </div>
+      <div class="test-cell">
+        <span class="stars">★★★★★</span>
+        <blockquote>"We sent six BSA staff through. The subscription-inventory module surfaced <em>three tools we didn't know we were paying for,</em> two we shouldn't have been using. Paid for itself in week two."</blockquote>
+        <div class="att">
+          <span class="name">Eleanor Nash</span>
+          <span class="meta">Chief Risk Officer · Cascadia Community Bank</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section class="sec">
+  <div class="container">
+    <div class="sec-head">
+      <span class="num">§ 08</span>
+      <div class="sec-head-text">
+        <span class="lab">Common questions</span>
+        <h2>Asked &amp; <em>answered.</em></h2>
+        <p class="lede">More on the <a href="../FAQ.html" style="color:var(--terra); border-bottom:1px solid var(--terra); padding-bottom:1px">full FAQ page</a>. The seven most common are below.</p>
+      </div>
+    </div>
+
+    <div class="faq-list">
+
+      <details class="q" open>
+        <summary>
+          <span class="qn">Q · 01</span>
+          <span class="qt">How long will this <em>actually</em> take me?</span>
+          <span class="toggle">+</span>
+        </summary>
+        <div class="qa">
+          <p>About six hours of reading and exercises across the twelve modules. The reviewed feedback adds a day or two between modules — but that's calendar time, not your time.</p>
+          <p>Most learners finish in three to six weeks doing one or two modules a week at lunch. You have ninety days from enrolment, but no time pressure inside that window.</p>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary>
+          <span class="qn">Q · 02</span>
+          <span class="qt">What if my bank's <em>policy</em> says no AI tools?</span>
+          <span class="toggle">+</span>
+        </summary>
+        <div class="qa">
+          <p>You'll do fine. The Playground inside the course is sandboxed; nothing you paste leaves the Institute, and we never train models on your work. Module 03 (the privacy line) is built specifically to help you stay inside any reasonable policy.</p>
+          <p>Several charter-cohort learners completed Foundations on banks with restrictive policies, and used the artifacts to <em>write</em> the policy that came next.</p>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary>
+          <span class="qn">Q · 03</span>
+          <span class="qt">Is this <em>technical?</em> I'm not a programmer.</span>
+          <span class="toggle">+</span>
+        </summary>
+        <div class="qa">
+          <p>No code. No math. The most technical it gets is Module 04, where we explain how a language model predicts — using analogies, not equations. If you can write a memo, you can do this course.</p>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary>
+          <span class="qn">Q · 04</span>
+          <span class="qt">What's the credential <em>worth</em>?</span>
+          <span class="toggle">+</span>
+        </summary>
+        <div class="qa">
+          <p>The AiBI-Foundations credential is a verifiable digital badge that says you've shipped reviewed work — not watched videos. We're working with several state banking associations and the NCUA to recognise it for continuing-education credit; your local mileage may vary.</p>
+          <p>Honestly, the artifacts are worth more than the badge. Frame the badge if you like; use the artifacts on Monday.</p>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary>
+          <span class="qn">Q · 05</span>
+          <span class="qt">My institution wants to <em>send a team.</em></span>
+          <span class="toggle">+</span>
+        </summary>
+        <div class="qa">
+          <p>Institutional pricing starts at $1,000 per seat for five or more, with a cohort dashboard for the sponsor and an aggregated readiness report at the end. Talk to us — we'll write a proposal in three working days.</p>
+          <p><a href="#" style="color:var(--terra); border-bottom:1px solid var(--terra)">Request institutional pricing →</a></p>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary>
+          <span class="qn">Q · 06</span>
+          <span class="qt">What if I <em>don't finish?</em></span>
+          <span class="toggle">+</span>
+        </summary>
+        <div class="qa">
+          <p>You keep what you've made. Every artifact you produced lives in your toolbox forever. You'll just be missing the credential at the end.</p>
+          <p>If life happens, write us — we'll extend your ninety-day window once, no questions asked.</p>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary>
+          <span class="qn">Q · 07</span>
+          <span class="qt">Is there a <em>refund?</em></span>
+          <span class="toggle">+</span>
+        </summary>
+        <div class="qa">
+          <p>Yes. Finish Module 01 and the first exercise. If it's not for you, write us within fourteen days for a full refund. No survey, no exit interview.</p>
+        </div>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== FINAL CTA ===== -->
+<section class="final">
+  <div class="container">
+    <span class="lab">§ 09 — Enrol</span>
+    <h2>The shortest path to <em>actually using AI</em> at your bank.</h2>
+    <p>Twelve modules. Eight artifacts. One credential. Three to six weeks at the pace of your real life.</p>
+    <div class="ctas">
+      <a href="#enroll" class="btn-prim">Enrol — $1,200 <span class="arr">→</span></a>
+      <a href="#sample" class="btn-ghost">Try a free lesson</a>
+    </div>
+    <span class="small">Charter cohort closes Aug 31, 2026 · 14-day refund · No vendor pitches, ever</span>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="foot">
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-mark">
+        <span class="l1">The AI Banking</span>
+        <span class="l2">Institute</span>
+        <p class="tag">Turning Bankers into Builders</p>
+      </div>
+      <div class="foot-col">
+        <h6>Education</h6>
+        <ul>
+          <li><a href="foundation.html">AiBI-Foundations</a></li>
+          <li><a href="#">AiBI-Practitioner</a></li>
+          <li><a href="../AI Readiness Briefing.html">Readiness Brief</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h6>Institute</h6>
+        <ul>
+          <li><a href="#">For institutions</a></li>
+          <li><a href="#">Research</a></li>
+          <li><a href="#">About</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h6>Account</h6>
+        <ul>
+          <li><a href="../User Home.html">Sign in</a></li>
+          <li><a href="../FAQ.html">Support</a></li>
+          <li><a href="#">Verify a credential</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span>© 2026 The AI Banking Institute</span>
+      <span>Independent · Vendor-free · Examiner-aware</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

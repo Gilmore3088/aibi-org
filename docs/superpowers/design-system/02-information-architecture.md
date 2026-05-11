@@ -9,7 +9,7 @@
 
 ## Principles
 
-1. **Programs collapse under one prefix.** AiBI-Practitioner, AiBI-S, AiBI-L, and any future program live as siblings under `/education/<program>/`. Adding program N+1 is a content config + zero new page code.
+1. **Programs collapse under one prefix.** AiBI Foundations, AiBI-S, AiBI-L, and any future program live as siblings under `/education/<program>/`. Adding program N+1 is a content config + zero new page code.
 2. **LMS interior is nested cleanly** under the program that owns it. The course is the program; the modules are the chapters.
 3. **Research lives where research lives.** Essays move from `/resources/<slug>` → `/research/<slug>` to match the v4 brand language ("research shop, not a content hub").
 4. **Funnel routes are short and named consistently.** `/assessment` (start) → `/results/[id]` (deliverable). One word, one job, one page.
@@ -28,7 +28,7 @@ PUBLIC MARKETING & FUNNEL
   /research                                Essay archive (the AI Banking Brief)
   /research/[slug]                         Individual essay (MDX)
   /education                               Programs catalog hub (free + paid)
-  /education/practitioner                  AiBI-Practitioner detail
+  /education/practitioner                  AiBI Foundations detail
   /education/practitioner/m/[module]       LMS module / lesson interior
   /education/practitioner/onboarding       First-run onboarding
   /education/practitioner/post-assessment  Post-course assessment
@@ -175,11 +175,11 @@ The current `/certifications/exam/aibi-p` route implies "certifications" is a to
 
 ## Why module/unit/session URLs use `m/`, `u/`, `s/` segments
 
-The current `/courses/aibi-p/[module]` pattern works for AiBI-P because there are no sibling routes that would collide with module slugs. But once the program adds peers (`toolkit`, `gallery`, `quick-wins`, `prompt-library`, etc.), bare-segment module URLs are a footgun. A future module slug `gallery` would collide with the gallery route.
+The current `/courses/aibi-p/[module]` pattern works for AiBI Foundations because there are no sibling routes that would collide with module slugs. But once the program adds peers (`toolkit`, `gallery`, `quick-wins`, `prompt-library`, etc.), bare-segment module URLs are a footgun. A future module slug `gallery` would collide with the gallery route.
 
 `m/[module]`, `u/[unit]`, `s/[session]` segments fix this and match a learning-system convention readers will recognize:
 
-- `m/` for a module (AiBI-P)
+- `m/` for a module (AiBI Foundations)
 - `u/` for a unit within a track (AiBI-S)
 - `s/` for a cohort session (AiBI-L)
 
@@ -231,7 +231,7 @@ After migration, the operations to add common content become:
 |---|---|
 | Add a new essay | 1 file: `content/essays/<slug>.mdx` |
 | Add a new program (program N+1) | ~3 files: `content/courses/<n>/index.ts`, `content/courses/<n>/modules.ts`, route entry in `/education/page.tsx` |
-| Add a new module to AiBI-Practitioner | 1 file: `content/courses/aibi-p/module-N.ts` (auto-picked up by existing iteration) |
+| Add a new module to AiBI Foundations | 1 file: `content/courses/aibi-p/module-N.ts` (auto-picked up by existing iteration) |
 | Add a new sample artifact | 1 file under `content/institutions/` or `content/samples/` plus 1 route file |
 | Update a tagline or value prop | 1 file: `content/copy/index.ts` |
 | Add a new sourced statistic | 1 entry in `content/citations/index.ts`; reference by id everywhere |
@@ -249,7 +249,7 @@ This is the modular, scalable architecture the user asked for.
 ├── research
 │   └── [slug]
 ├── education                                      ← public catalog
-│   ├── practitioner                               ← AiBI-Practitioner program
+│   ├── practitioner                               ← AiBI Foundations program
 │   │   ├── m/[module]                             ← LMS interior
 │   │   ├── onboarding
 │   │   ├── post-assessment

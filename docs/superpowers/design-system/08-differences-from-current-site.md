@@ -118,7 +118,7 @@ These were drafted as scaffolding and need the founder to either replace with re
 - **Action needed:** Wave D LMS migration uses the real module count.
 
 ### Sample alumna quote — **REMOVED**
-- **What I drafted in v4 mockup:** "I came in handling exceptions. I left with a working AI workflow my compliance officer signed off on the same week." — attributed to "Sample alumna · community bank, $480M assets · AiBI-Practitioner · Cohort 01"
+- **What I drafted in v4 mockup:** "I came in handling exceptions. I left with a working AI workflow my compliance officer signed off on the same week." — attributed to "Sample alumna · community bank, $480M assets · AiBI Foundations · Cohort 01"
 - **Status:** Never made it into shipped pages — was only in brainstorming HTML mockups. No action needed.
 
 ### Aggregate dashboard sample numbers — **REMOVED**

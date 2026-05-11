@@ -19,12 +19,12 @@ export const advisoryTiers: readonly AdvisoryTier[] = [
   {
     id: 'pilot',
     name: 'Pilot Advisory',
-    scaleLabel: 'Alongside a Practitioner cohort',
+    scaleLabel: 'Alongside a Foundations cohort',
     tagline: 'Coach one use case, end to end.',
     summary:
-      'A short engagement paired with a Practitioner cohort. We coach your bankers through picking one real use case inside the institution and applying what they learned — from scoping through the documented before/after. Your team does the work. We keep them unstuck.',
+      'A short engagement paired with a Foundations cohort. We coach your bankers through picking one real use case inside the institution and applying what they learned — from scoping through the documented before/after. Your team does the work. We keep them unstuck.',
     bestFor:
-      'Institutions running their first Practitioner cohort that want structured application support.',
+      'Institutions running their first Foundations cohort that want structured application support.',
     format: 'Weekly coaching, async review, one documented use case at the end.',
     duration: '4 – 6 weeks',
     accent: 'var(--color-terra)',

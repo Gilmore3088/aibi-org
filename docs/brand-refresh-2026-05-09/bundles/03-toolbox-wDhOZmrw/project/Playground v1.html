@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Playground · The AI Banking Institute</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ECE9DF; --paper:#F4F1E7; --parch:#E4E0D2; --tape:#F1E9D0;
+    --ink:#0E1B2D; --ink-2:#1F2A3F; --muted:#5C6B82; --soft:#8C95A8;
+    --terra:#B5862A; --terra-2:#8E6620; --weak:#8E3B2A;
+    --green:#1F8A5B; --navy:#1E3A5F; --plum:#5E3B6E;
+    --rule:#D5D1C2; --rule-strong:#B9B4A0;
+    --serif:'Newsreader', Georgia, serif;
+    --sans:'Geist','Inter',system-ui,sans-serif;
+    --mono:'JetBrains Mono', ui-monospace, monospace;
+    --maxw:1480px;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0 }
+  html, body{ background:var(--paper); color:var(--ink); font-family:var(--sans); -webkit-font-smoothing:antialiased; line-height:1.45 }
+  a{ color:inherit; text-decoration:none }
+  button{ font:inherit; color:inherit; background:none; border:none; cursor:pointer }
+  ::selection{ background:var(--terra); color:var(--paper) }
+
+  .container{ max-width:var(--maxw); margin:0 auto; padding:0 32px }
+  .eyebrow{ font-family:var(--mono); font-size:11px; letter-spacing:0.22em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+
+  /* ===== SITE NAV ===== */
+  .nav{ position:sticky; top:0; z-index:30; background:var(--paper); border-bottom:1px solid var(--rule) }
+  .nav-inner{ max-width:var(--maxw); margin:0 auto; padding:18px 32px; display:flex; align-items:center; justify-content:space-between; gap:24px }
+  .nav-mark{ display:flex; flex-direction:column; line-height:1 }
+  .nav-mark .l1, .nav-mark .l2{ font-family:var(--sans); font-weight:700; font-size:13px; letter-spacing:-0.005em; text-transform:uppercase; line-height:1 }
+  .nav-mark .l1{ color:var(--ink) }
+  .nav-mark .l2{ color:var(--soft); margin-top:1px }
+  .nav-links{ display:flex; align-items:center; gap:32px }
+  .nav-link{ font-family:var(--mono); font-size:11px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:var(--ink-2) }
+  .nav-link:hover{ color:var(--terra) }
+  .acct{ display:flex; align-items:center; gap:10px; padding:6px 14px 6px 6px; border:1px solid var(--rule-strong); cursor:pointer; margin-left:8px }
+  .acct:hover{ border-color:var(--ink-2) }
+  .avatar{ width:28px; height:28px; border-radius:50%; background:var(--terra); color:var(--paper); display:grid; place-items:center; font-family:var(--mono); font-size:10px; font-weight:600 }
+  .acct .name{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink); font-weight:600 }
+
+  /* ===== MASTHEAD ===== */
+  .mast{ padding:48px 0 28px; border-bottom:1px solid var(--rule) }
+  .mast-row{ display:flex; align-items:end; gap:48px; flex-wrap:wrap }
+  .mast-text{ flex:1; min-width:280px }
+  .mast .greet{ display:block; color:var(--terra); margin-bottom:14px }
+  .mast h1{ font-family:var(--serif); font-weight:500; font-size:clamp(40px, 4.6vw, 64px); line-height:1; letter-spacing:-0.03em; margin:0 0 8px }
+  .mast h1 em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .mast .lede{ font-family:var(--serif); font-size:17px; line-height:1.45; color:var(--ink-2); max-width:64ch; margin:0; font-weight:400 }
+  .mast-stats{ display:flex; gap:32px; padding-left:32px; border-left:1px solid var(--rule-strong); align-self:flex-end }
+  .mast-stats .stat{ display:flex; flex-direction:column; gap:3px }
+  .mast-stats .v{ font-family:var(--serif); font-size:28px; line-height:1; letter-spacing:-0.02em; color:var(--ink); font-weight:500 }
+  .mast-stats .l{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.22em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+
+  /* ===== USER TABS ===== */
+  .tabs{ background:var(--paper); border-bottom:1px solid var(--rule); border-top:1px solid var(--rule) }
+  .tabs-inner{ max-width:var(--maxw); margin:0 auto; padding:0 32px; display:flex; align-items:center; gap:0 }
+  .tab{ font-family:var(--mono); font-size:11px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); padding:16px 18px 14px; border-bottom:2px solid transparent; margin-bottom:-1px }
+  .tab:hover{ color:var(--ink-2) }
+  .tab.active{ color:var(--ink); border-bottom-color:var(--terra) }
+
+  /* ===== SHELL ===== */
+  .shell{ max-width:var(--maxw); margin:0 auto; padding:32px 32px 80px; display:grid; grid-template-columns:1fr 340px; gap:40px }
+  @media (max-width:1100px){ .shell{ grid-template-columns:1fr } }
+
+  /* ===== COMPOSER ===== */
+  .compose{ display:flex; flex-direction:column; gap:0 }
+  .compose-head{ display:flex; align-items:baseline; gap:18px; padding-bottom:14px; border-bottom:1px solid var(--rule); margin-bottom:18px }
+  .compose-head h2{ font-family:var(--serif); font-weight:500; font-size:24px; line-height:1; letter-spacing:-0.02em; color:var(--ink) }
+  .compose-head h2 em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .ch-spacer{ flex:1 }
+  .ch-load{ font-family:var(--mono); font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--ink-2); font-weight:600; padding:6px 10px; border:1px solid var(--rule-strong) }
+  .ch-load:hover{ background:var(--ink); color:var(--paper); border-color:var(--ink) }
+
+  .pad{ background:var(--paper); border:1px solid var(--rule-strong); display:flex; flex-direction:column }
+  .pad-name{ display:flex; align-items:center; gap:10px; padding:12px 18px; border-bottom:1px solid var(--rule); background:var(--bg) }
+  .pad-name .lab{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.22em; text-transform:uppercase; color:var(--muted); font-weight:600; min-width:60px }
+  .pad-name input{ flex:1; font-family:var(--serif); font-style:italic; font-size:16px; color:var(--ink-2); border:none; outline:none; background:transparent; font-weight:400 }
+  .pad-name input::placeholder{ color:var(--soft) }
+  .pad-body{ display:flex; flex-direction:column }
+  .pad-body textarea{ width:100%; min-height:280px; padding:24px 28px 18px; font-family:var(--serif); font-size:18px; line-height:1.55; color:var(--ink); border:none; outline:none; background:transparent; resize:vertical; font-weight:400 }
+  .pad-body textarea::placeholder{ color:var(--soft); font-style:italic }
+  .pad-ctx{ display:flex; align-items:center; gap:8px; padding:10px 18px; border-top:1px dashed var(--rule); flex-wrap:wrap }
+  .pad-ctx .lab{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.22em; text-transform:uppercase; color:var(--muted); font-weight:600; margin-right:4px }
+  .ctx-chip{ display:inline-flex; align-items:center; gap:6px; padding:5px 10px; border:1px solid var(--rule-strong); font-family:var(--mono); font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--ink-2); font-weight:600; cursor:pointer; background:var(--paper) }
+  .ctx-chip:hover{ border-color:var(--ink) }
+  .ctx-chip.on{ background:var(--ink); color:var(--paper); border-color:var(--ink) }
+  .ctx-chip .x{ opacity:0; transition:opacity 0.1s; font-family:var(--mono); font-size:11px }
+  .ctx-chip.on .x{ opacity:0.6 }
+  .ctx-chip .plus{ font-family:var(--serif); font-size:14px; line-height:0; margin-top:-2px; color:var(--terra) }
+
+  .pad-foot{ display:flex; align-items:center; gap:14px; padding:14px 18px; border-top:1px solid var(--rule); background:var(--bg) }
+  .mp{ display:flex; align-items:center; gap:10px }
+  .mp-lab{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.22em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+  .mp-pick{ display:flex; gap:0 }
+  .mp-pick button{ font-family:var(--mono); font-size:10px; letter-spacing:0.14em; text-transform:uppercase; padding:7px 11px; color:var(--ink-2); font-weight:600; border:1px solid var(--rule-strong); border-right:none; background:var(--paper) }
+  .mp-pick button:last-child{ border-right:1px solid var(--rule-strong) }
+  .mp-pick button:hover{ background:var(--bg) }
+  .mp-pick button.sel{ background:var(--ink); color:var(--paper); border-color:var(--ink) }
+  .mp-dot{ display:inline-block; width:6px; height:6px; margin-right:6px; vertical-align:middle }
+  .mp-dot.opus{ background:#D97757 } .mp-dot.sonnet{ background:#B5862A } .mp-dot.gpt{ background:#1F8A5B } .mp-dot.gemini{ background:#1E3A5F }
+  .run{ margin-left:auto; display:flex; align-items:center; gap:10px; padding:11px 22px; background:var(--ink); color:var(--paper); font-family:var(--mono); font-size:11px; letter-spacing:0.18em; text-transform:uppercase; font-weight:600 }
+  .run:hover{ background:var(--terra) }
+  .run:disabled{ opacity:0.5; cursor:wait }
+  .run .arr{ font-family:var(--serif); font-size:14px; line-height:0; margin-top:-1px }
+
+  /* ===== OUTPUT ===== */
+  .out-wrap{ margin-top:24px }
+  .out-head{ display:flex; align-items:baseline; gap:18px; padding-bottom:14px; border-bottom:1px solid var(--rule); margin-bottom:18px }
+  .out-head h2{ font-family:var(--serif); font-weight:500; font-size:22px; line-height:1; letter-spacing:-0.02em; color:var(--ink) }
+  .out-head h2 em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .out-meta{ margin-left:auto; display:flex; gap:14px; font-family:var(--mono); font-size:9.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+  .out-meta strong{ color:var(--ink); font-weight:700 }
+
+  .out-body{ background:var(--paper); border:1px solid var(--rule-strong); border-left:3px solid var(--terra); padding:28px 32px; min-height:160px }
+  .out-body .typing{ font-family:var(--serif); font-style:italic; color:var(--muted); font-size:15px }
+  .out-body .typing::after{ content:"▋"; animation:bl 0.8s infinite; color:var(--terra); margin-left:2px }
+  @keyframes bl{ 0%,49%{ opacity:1 } 50%,100%{ opacity:0 } }
+  .out-body .text{ font-family:var(--serif); font-size:16px; line-height:1.6; color:var(--ink); white-space:pre-wrap }
+  .out-body.empty{ display:grid; place-items:center; color:var(--muted); font-family:var(--serif); font-style:italic; font-size:16px; padding:48px 32px; border-left-color:var(--rule-strong); background:transparent; border-style:dashed }
+
+  .out-actions{ display:flex; align-items:center; gap:8px; padding:14px 0 0; flex-wrap:wrap }
+  .oa{ font-family:var(--mono); font-size:10px; letter-spacing:0.18em; text-transform:uppercase; padding:9px 14px; color:var(--ink-2); font-weight:600; border:1px solid var(--rule-strong); background:var(--paper) }
+  .oa:hover{ background:var(--ink); color:var(--paper); border-color:var(--ink) }
+  .oa.prim{ background:var(--ink); color:var(--paper); border-color:var(--ink) }
+  .oa.prim:hover{ background:var(--terra); border-color:var(--terra) }
+  .oa.sub{ color:var(--muted); border:none; background:transparent }
+  .oa.sub:hover{ color:var(--weak); background:transparent }
+  .oa-spacer{ flex:1 }
+  .oa-saved{ font-family:var(--mono); font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--green); font-weight:700; opacity:0; transition:opacity 0.2s }
+  .oa-saved.show{ opacity:1 }
+
+  /* ===== SIDE: ephemeral runs ===== */
+  .runs{ display:flex; flex-direction:column; gap:0 }
+  .runs-head{ display:flex; align-items:baseline; gap:18px; padding-bottom:14px; border-bottom:1px solid var(--rule); margin-bottom:14px }
+  .runs-head h3{ font-family:var(--serif); font-weight:500; font-size:18px; line-height:1; letter-spacing:-0.015em; color:var(--ink) }
+  .runs-head h3 em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .runs-cnt{ margin-left:auto; font-family:var(--mono); font-size:9.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+
+  .run-card{ background:var(--paper); border:1px solid var(--rule); border-left:2px solid var(--rule-strong); padding:14px 16px; margin-bottom:10px; cursor:pointer; transition:all 0.1s; position:relative }
+  .run-card:hover{ border-color:var(--ink); border-left-color:var(--ink) }
+  .run-card .rc-top{ display:flex; align-items:center; gap:8px; margin-bottom:8px }
+  .run-card .rc-time{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.16em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+  .run-card .rc-model{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.14em; text-transform:uppercase; color:var(--ink-2); font-weight:600; margin-left:auto }
+  .run-card .rc-prompt{ font-family:var(--serif); font-style:italic; font-size:13.5px; line-height:1.4; color:var(--ink-2); margin-bottom:6px; overflow:hidden; text-overflow:ellipsis; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical }
+  .run-card .rc-out{ font-family:var(--serif); font-size:13.5px; line-height:1.4; color:var(--ink); overflow:hidden; text-overflow:ellipsis; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical }
+  .run-card .rc-foot{ display:flex; align-items:center; gap:10px; margin-top:10px; padding-top:8px; border-top:1px dashed var(--rule); font-family:var(--mono); font-size:9px; letter-spacing:0.16em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+  .run-card .rc-exp{ color:var(--weak) }
+  .run-card .rc-save{ margin-left:auto; color:var(--ink-2); cursor:pointer; padding:2px 6px }
+  .run-card .rc-save:hover{ color:var(--terra) }
+  .run-card.saved{ border-left-color:var(--green) }
+  .run-card.saved .rc-save{ color:var(--green) }
+  .runs-empty{ font-family:var(--serif); font-style:italic; color:var(--muted); font-size:14px; padding:18px; border:1px dashed var(--rule-strong); text-align:center }
+
+  .runs-rule{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); font-weight:600; padding:14px 0 4px; margin-top:18px; border-top:1px solid var(--rule); display:flex; align-items:center; gap:8px }
+  .runs-rule::before{ content:""; width:6px; height:6px; background:var(--weak) }
+
+  /* Tip card under runs */
+  .tip{ margin-top:24px; background:var(--bg); border:1px solid var(--rule); padding:18px 18px 16px }
+  .tip .lab{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.22em; text-transform:uppercase; color:var(--terra); font-weight:600; margin-bottom:8px }
+  .tip h4{ font-family:var(--serif); font-weight:500; font-size:17px; line-height:1.2; color:var(--ink); margin:0 0 6px; letter-spacing:-0.015em }
+  .tip h4 em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .tip p{ font-family:var(--serif); font-size:13.5px; line-height:1.5; color:var(--ink-2); margin:0 }
+
+  /* ===== Load drawer ===== */
+  .drawer-bg{ position:fixed; inset:0; background:rgba(14,27,45,0.5); opacity:0; pointer-events:none; transition:opacity 0.2s; z-index:50 }
+  .drawer-bg.open{ opacity:1; pointer-events:auto }
+  .drawer{ position:fixed; right:0; top:0; bottom:0; width:480px; max-width:96vw; background:var(--paper); transform:translateX(100%); transition:transform 0.25s ease-out; z-index:51; overflow-y:auto; box-shadow:-12px 0 40px rgba(14,27,45,0.18) }
+  .drawer.open{ transform:translateX(0) }
+  .dr-head{ position:sticky; top:0; background:var(--paper); padding:22px 28px; border-bottom:1px solid var(--rule); display:flex; justify-content:space-between; align-items:center; z-index:1 }
+  .dr-head .lab{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+  .dr-close{ font-family:var(--mono); font-size:12px; color:var(--ink-2); padding:4px 8px; letter-spacing:0.14em }
+  .dr-close:hover{ color:var(--terra) }
+  .dr-body{ padding:24px 28px 32px }
+  .ld-h{ font-family:var(--serif); font-weight:500; font-size:28px; line-height:1; letter-spacing:-0.025em; margin:0 0 8px; color:var(--ink) }
+  .ld-h em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .ld-l{ font-family:var(--serif); font-style:italic; font-size:14.5px; line-height:1.5; color:var(--ink-2); margin:0 0 22px }
+  .ld-search{ display:flex; align-items:center; gap:8px; border:1px solid var(--rule-strong); padding:8px 12px; margin-bottom:14px; background:var(--paper) }
+  .ld-search input{ border:none; outline:none; background:transparent; font-family:var(--sans); font-size:13px; color:var(--ink); width:100%; font-weight:500 }
+  .ld-search input::placeholder{ color:var(--muted); font-style:italic }
+  .ld-list{ display:flex; flex-direction:column; gap:0 }
+  .ld-item{ display:grid; grid-template-columns:auto 1fr auto; gap:12px; padding:14px 0; border-bottom:1px solid var(--rule); cursor:pointer; align-items:start }
+  .ld-item:hover .ld-name{ color:var(--terra) }
+  .ld-tag{ font-family:var(--mono); font-size:8.5px; letter-spacing:0.16em; text-transform:uppercase; padding:3px 6px; color:var(--paper); font-weight:700; align-self:start; margin-top:2px }
+  .ld-tag.p{ background:var(--terra) } .ld-tag.s{ background:var(--ink) } .ld-tag.a{ background:var(--green) }
+  .ld-name{ font-family:var(--serif); font-size:15px; line-height:1.3; color:var(--ink); font-weight:500; transition:color 0.1s }
+  .ld-name em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .ld-meta{ font-family:var(--mono); font-size:9px; letter-spacing:0.16em; text-transform:uppercase; color:var(--muted); font-weight:600; margin-top:3px }
+  .ld-arr{ font-family:var(--mono); font-size:11px; color:var(--muted) }
+
+  /* ===== FOOTER ===== */
+  .foot{ background:var(--ink); color:rgba(244,241,231,0.7); padding:32px 0; margin-top:60px }
+  .foot-inner{ max-width:var(--maxw); margin:0 auto; padding:0 32px; display:flex; justify-content:space-between; gap:24px; flex-wrap:wrap; font-family:var(--mono); font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; font-weight:600 }
+  .foot-inner a{ color:rgba(244,241,231,0.85) }
+  .foot-inner a:hover{ color:var(--terra) }
+</style>
+</head>
+<body>
+
+<!-- ===== SITE NAV ===== -->
+<header class="nav">
+  <div class="nav-inner">
+    <a href="AI Banking Institute.html" class="nav-mark" aria-label="The AI Banking Institute">
+      <span class="l1">The AI Banking</span>
+      <span class="l2">Institute</span>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="AI Banking Institute.html#pillars" class="nav-link">Education</a>
+      <a href="#" class="nav-link">For Institutions</a>
+      <a href="#" class="nav-link">Research</a>
+      <a href="#" class="nav-link">About</a>
+      <a href="FAQ.html" class="nav-link">Support</a>
+      <button class="acct" aria-label="Account">
+        <span class="avatar">DM</span>
+        <span class="name">D. Maxwell</span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<!-- ===== MASTHEAD ===== -->
+<section class="mast">
+  <div class="container">
+    <div class="mast-row">
+      <div class="mast-text">
+        <span class="eyebrow greet">Scratch surface · ephemeral</span>
+        <h1>The <em>playground.</em></h1>
+        <p class="lede">A bench for trying things. Write a prompt, pick a model, run it on a real artifact. Runs auto-discard in 24 hours — save the keepers to your toolbox.</p>
+      </div>
+      <div class="mast-stats">
+        <div class="stat"><span class="v">3</span><span class="l">Runs today</span></div>
+        <div class="stat"><span class="v">12</span><span class="l">This week</span></div>
+        <div class="stat"><span class="v">2</span><span class="l">Saved</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== USER TABS ===== -->
+<div class="tabs">
+  <div class="tabs-inner" role="tablist" aria-label="My account">
+    <a href="User Home.html" class="tab" role="tab">Dashboard</a>
+    <a href="LMS Prototype.html" class="tab" role="tab">My Curriculum</a>
+    <a href="Playground.html" class="tab active" role="tab" aria-selected="true">Playground</a>
+    <a href="My Toolbox.html" class="tab" role="tab">My Toolbox</a>
+    <a href="#" class="tab" role="tab">My Brief</a>
+    <a href="#" class="tab" role="tab">Account</a>
+  </div>
+</div>
+
+<!-- ===== SHELL ===== -->
+<div class="shell">
+
+  <!-- COMPOSER + OUTPUT -->
+  <div>
+    <section class="compose">
+      <div class="compose-head">
+        <h2>Untitled <em>run.</em></h2>
+        <div class="ch-spacer"></div>
+        <button class="ch-load" id="loadBtn">Load from toolbox</button>
+        <button class="ch-load" id="clearBtn" style="margin-left:8px">Clear</button>
+      </div>
+
+      <div class="pad">
+        <div class="pad-name">
+          <span class="lab">Title</span>
+          <input id="runTitle" placeholder="Give this run a name (optional)…" autocomplete="off">
+        </div>
+
+        <div class="pad-body">
+          <textarea id="promptInput" placeholder="What do you want to try?  e.g.  &quot;Take this credit memo and write three honest critiques a senior underwriter would make.&quot;"></textarea>
+        </div>
+
+        <div class="pad-ctx">
+          <span class="lab">Context</span>
+          <button class="ctx-chip" data-ctx="memo"><span class="x">×</span>Sample memo</button>
+          <button class="ctx-chip" data-ctx="tx"><span class="x">×</span>30-day tx log</button>
+          <button class="ctx-chip" data-ctx="brief"><span class="x">×</span>Last week's brief</button>
+          <button class="ctx-chip" data-ctx="add"><span class="plus">+</span>Pin a file</button>
+        </div>
+
+        <div class="pad-foot">
+          <div class="mp">
+            <span class="mp-lab">Model</span>
+            <div class="mp-pick" id="modelPick">
+              <button class="sel" data-m="opus"><span class="mp-dot opus"></span>Claude Opus</button>
+              <button data-m="sonnet"><span class="mp-dot sonnet"></span>Sonnet</button>
+              <button data-m="gpt"><span class="mp-dot gpt"></span>GPT-5</button>
+              <button data-m="gemini"><span class="mp-dot gemini"></span>Gemini</button>
+            </div>
+          </div>
+          <button class="run" id="runBtn">Run<span class="arr">→</span></button>
+        </div>
+      </div>
+    </section>
+
+    <section class="out-wrap" id="outWrap">
+      <div class="out-head">
+        <h2>Output</h2>
+        <div class="out-meta" id="outMeta" style="display:none">
+          <span>Model · <strong id="outModel">—</strong></span>
+          <span>Took · <strong id="outTime">—</strong></span>
+        </div>
+      </div>
+      <div class="out-body empty" id="outBody">Your output will appear here. Nothing is saved unless you tell it to be.</div>
+      <div class="out-actions" id="outActions" style="display:none">
+        <button class="oa prim" id="saveBtn">Save to toolbox</button>
+        <button class="oa" id="iterBtn">Iterate</button>
+        <button class="oa" id="dupBtn">Run again</button>
+        <span class="oa-spacer"></span>
+        <span class="oa-saved" id="savedFlag">✓ Saved as v1</span>
+        <button class="oa sub" id="discardBtn">Discard</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- EPHEMERAL RUNS -->
+  <aside>
+    <div class="runs">
+      <div class="runs-head">
+        <h3>This <em>session.</em></h3>
+        <span class="runs-cnt" id="runCount">0 runs</span>
+      </div>
+
+      <div id="runsList">
+        <div class="runs-empty" id="runsEmpty">Your recent runs land here. They'll fade in 24 hours unless you save them.</div>
+      </div>
+
+      <div class="runs-rule">Auto-discards after 24h</div>
+    </div>
+
+    <div class="tip">
+      <div class="lab">From the curriculum</div>
+      <h4>Prompts are <em>conversations,</em> not commands.</h4>
+      <p>Try the same prompt against two models. Read the differences out loud. The one you'd defend in committee is usually the right one.</p>
+    </div>
+  </aside>
+
+</div>
+
+<!-- ===== LOAD DRAWER ===== -->
+<div class="drawer-bg" id="drBg"></div>
+<aside class="drawer" id="drawer" aria-hidden="true">
+  <div class="dr-head">
+    <span class="lab">Load from toolbox</span>
+    <button class="dr-close" id="drClose">Close ✕</button>
+  </div>
+  <div class="dr-body">
+    <h2 class="ld-h">Start with <em>something.</em></h2>
+    <p class="ld-l">Pick a saved prompt or skill — it'll drop into the pad so you can modify and run.</p>
+    <div class="ld-search">
+      <span style="color:var(--muted); font-family:var(--mono); font-size:13px">⌕</span>
+      <input id="ldSearch" placeholder="Search your toolbox…" type="search">
+    </div>
+    <div class="ld-list" id="ldList"></div>
+  </div>
+</aside>
+
+<!-- ===== FOOTER ===== -->
+<footer class="foot">
+  <div class="foot-inner">
+    <span>© 2026 The AI Banking Institute</span>
+    <span><a href="AI Banking Institute.html">Home</a> · <a href="FAQ.html">Support</a> · <a href="#">Verify a credential</a></span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // ---- model picker ----
+  let model = 'opus';
+  const modelLabels = { opus:'Claude Opus', sonnet:'Claude Sonnet', gpt:'GPT-5', gemini:'Gemini Pro' };
+  document.querySelectorAll('#modelPick button').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('#modelPick button').forEach(x => x.classList.remove('sel'));
+      b.classList.add('sel');
+      model = b.dataset.m;
+    });
+  });
+
+  // ---- context chips ----
+  document.querySelectorAll('.ctx-chip').forEach(c => {
+    c.addEventListener('click', () => {
+      if(c.dataset.ctx === 'add') return;
+      c.classList.toggle('on');
+    });
+  });
+
+  // ---- toolbox sample data ----
+  const toolboxItems = [
+    { type:'p', name:'Past-tense rewrite', meta:'Mod 09 · v3 · Run 12×', body:'Rewrite this as past-tense narrative. No speculation. The facts speak — what an examiner can read in two minutes.' },
+    { type:'p', name:'Three honest critiques', meta:'Mine · v2 · Run 8×', body:'Take this credit memo and give me three honest critiques a senior underwriter would make. Be specific. Cite the line.' },
+    { type:'s', name:'Reg B fairness check', meta:'Role · v1 · Run 4×', body:'Read the attached letter as if you were an examiner. Flag any language that could be read as denying credit on a prohibited basis. Suggest neutral phrasing for each flag.' },
+    { type:'p', name:'Board summary in 90 words', meta:'Mod 07 · v4 · Run 6×', body:'Summarise the attached document for the board. 90 words maximum. Lead with the recommendation. Use one sentence per material fact.' },
+    { type:'a', name:'Memo reviewer · 3-pass', meta:'Mod 07 · v1 · Run 4×', body:'You are the memo reviewer. Run three passes. Pass 1: structural critique. Pass 2: language and tone. Pass 3: regulatory risk. Show the diffs between passes.' },
+    { type:'s', name:'Vendor TPRM exception', meta:'Role · v2 · Run 3×', body:'Draft a TPRM exception letter for a vendor that did not return a SOC 2. Include compensating controls and a sunset date.' },
+    { type:'p', name:'Quarterly trend brief', meta:'Mine · v1 · Run 1×', body:'From the attached weekly briefs, identify the three most recurring themes. One sentence each. Plain language.' },
+  ];
+
+  // ---- load drawer ----
+  const drBg = document.getElementById('drBg');
+  const drawer = document.getElementById('drawer');
+  const ldList = document.getElementById('ldList');
+  const ldSearch = document.getElementById('ldSearch');
+  function renderLd(filter=''){
+    const f = filter.trim().toLowerCase();
+    ldList.innerHTML = toolboxItems
+      .filter(it => !f || it.name.toLowerCase().includes(f) || it.body.toLowerCase().includes(f))
+      .map(it => `<div class="ld-item" data-body="${encodeURIComponent(it.body)}" data-name="${encodeURIComponent(it.name)}">
+        <span class="ld-tag ${it.type}">${it.type==='p'?'Prompt':it.type==='s'?'Skill':'Agent'}</span>
+        <div>
+          <div class="ld-name">${it.name}</div>
+          <div class="ld-meta">${it.meta}</div>
+        </div>
+        <span class="ld-arr">→</span>
+      </div>`).join('');
+    ldList.querySelectorAll('.ld-item').forEach(el => {
+      el.addEventListener('click', () => {
+        document.getElementById('promptInput').value = decodeURIComponent(el.dataset.body);
+        document.getElementById('runTitle').value = decodeURIComponent(el.dataset.name);
+        closeDr();
+        document.getElementById('promptInput').focus();
+      });
+    });
+  }
+  function openDr(){ drawer.classList.add('open'); drBg.classList.add('open'); drawer.setAttribute('aria-hidden','false'); renderLd(); }
+  function closeDr(){ drawer.classList.remove('open'); drBg.classList.remove('open'); drawer.setAttribute('aria-hidden','true'); }
+  document.getElementById('loadBtn').addEventListener('click', openDr);
+  document.getElementById('drClose').addEventListener('click', closeDr);
+  drBg.addEventListener('click', closeDr);
+  ldSearch.addEventListener('input', e => renderLd(e.target.value));
+
+  // ---- clear ----
+  document.getElementById('clearBtn').addEventListener('click', () => {
+    document.getElementById('promptInput').value = '';
+    document.getElementById('runTitle').value = '';
+    discardOutput();
+  });
+
+  // ---- ephemeral runs ----
+  let sessionRuns = [];
+  function timeAgo(ts){
+    const s = Math.floor((Date.now() - ts)/1000);
+    if(s < 60) return 'just now';
+    if(s < 3600) return Math.floor(s/60)+'m ago';
+    return Math.floor(s/3600)+'h ago';
+  }
+  function expIn(ts){
+    const h = 24 - Math.floor((Date.now() - ts)/(1000*60*60));
+    return h <= 0 ? 'expired' : 'expires in ' + h + 'h';
+  }
+  function renderRuns(){
+    const list = document.getElementById('runsList');
+    const cnt = document.getElementById('runCount');
+    cnt.textContent = sessionRuns.length + (sessionRuns.length === 1 ? ' run' : ' runs');
+    if(sessionRuns.length === 0){
+      list.innerHTML = '<div class="runs-empty">Your recent runs land here. They\'ll fade in 24 hours unless you save them.</div>';
+      return;
+    }
+    list.innerHTML = sessionRuns.map((r,i) => `
+      <div class="run-card ${r.saved?'saved':''}" data-i="${i}">
+        <div class="rc-top">
+          <span class="rc-time">${timeAgo(r.ts)}</span>
+          <span class="rc-model">${modelLabels[r.model] || r.model}</span>
+        </div>
+        <div class="rc-prompt">${escapeHtml(r.title || r.prompt.slice(0,90))}</div>
+        <div class="rc-out">${escapeHtml(r.output.slice(0,140))}…</div>
+        <div class="rc-foot">
+          <span class="rc-exp">${r.saved ? '✓ saved' : expIn(r.ts)}</span>
+          <span class="rc-save" data-i="${i}">${r.saved?'✓':'☆ Save'}</span>
+        </div>
+      </div>
+    `).join('');
+    list.querySelectorAll('.rc-save').forEach(el => {
+      el.addEventListener('click', e => {
+        e.stopPropagation();
+        const i = +el.dataset.i;
+        sessionRuns[i].saved = true;
+        renderRuns();
+      });
+    });
+    list.querySelectorAll('.run-card').forEach(el => {
+      el.addEventListener('click', () => {
+        const i = +el.dataset.i;
+        const r = sessionRuns[i];
+        document.getElementById('promptInput').value = r.prompt;
+        document.getElementById('runTitle').value = r.title;
+        showOutput(r.output, r.model, r.took);
+        window.scrollTo({top:0, behavior:'smooth'});
+      });
+    });
+  }
+  function escapeHtml(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+  // ---- output ----
+  function discardOutput(){
+    const ob = document.getElementById('outBody');
+    const oa = document.getElementById('outActions');
+    const om = document.getElementById('outMeta');
+    ob.className = 'out-body empty';
+    ob.textContent = 'Your output will appear here. Nothing is saved unless you tell it to be.';
+    oa.style.display = 'none';
+    om.style.display = 'none';
+    document.getElementById('savedFlag').classList.remove('show');
+  }
+  function showOutput(text, m, took){
+    const ob = document.getElementById('outBody');
+    const oa = document.getElementById('outActions');
+    const om = document.getElementById('outMeta');
+    ob.className = 'out-body';
+    ob.innerHTML = '<div class="text"></div>';
+    ob.querySelector('.text').textContent = text;
+    document.getElementById('outModel').textContent = modelLabels[m] || m;
+    document.getElementById('outTime').textContent = (took/1000).toFixed(1)+'s';
+    om.style.display = 'flex';
+    oa.style.display = 'flex';
+    document.getElementById('savedFlag').classList.remove('show');
+  }
+
+  // ---- run ----
+  const runBtn = document.getElementById('runBtn');
+  runBtn.addEventListener('click', async () => {
+    const prompt = document.getElementById('promptInput').value.trim();
+    if(!prompt) return;
+    const title = document.getElementById('runTitle').value.trim();
+    const ob = document.getElementById('outBody');
+    const oa = document.getElementById('outActions');
+    const om = document.getElementById('outMeta');
+    ob.className = 'out-body';
+    ob.innerHTML = '<div class="typing">Thinking…</div>';
+    om.style.display = 'none';
+    oa.style.display = 'none';
+    runBtn.disabled = true;
+    runBtn.querySelector('span') && (runBtn.querySelector('span').textContent = '');
+    runBtn.firstChild.textContent = 'Running ';
+
+    const t0 = Date.now();
+    let resp = '';
+    try{
+      // Add modelLabel context to the prompt — the helper uses one model, but we render the chosen label
+      const sys = "You are an experienced banker's assistant for a community credit union. Voice: plain, factual, examiner-aware. No marketing language. No bullet points unless asked. Answer concisely.";
+      resp = await window.claude.complete({
+        messages: [
+          { role:'user', content: sys + '\n\n---\n\n' + prompt }
+        ]
+      });
+    } catch(e){
+      resp = 'Run failed. ' + (e?.message || e);
+    }
+    const took = Date.now() - t0;
+    runBtn.disabled = false;
+    runBtn.firstChild.textContent = 'Run';
+    runBtn.querySelector('span') && (runBtn.querySelector('span').textContent = '→');
+
+    showOutput(resp, model, took);
+
+    sessionRuns.unshift({ ts:Date.now(), title, prompt, output:resp, model, took, saved:false });
+    if(sessionRuns.length > 6) sessionRuns = sessionRuns.slice(0,6);
+    renderRuns();
+  });
+
+  // ---- output actions ----
+  document.getElementById('saveBtn').addEventListener('click', () => {
+    if(sessionRuns[0]) sessionRuns[0].saved = true;
+    document.getElementById('savedFlag').classList.add('show');
+    renderRuns();
+  });
+  document.getElementById('discardBtn').addEventListener('click', discardOutput);
+  document.getElementById('dupBtn').addEventListener('click', () => runBtn.click());
+  document.getElementById('iterBtn').addEventListener('click', () => {
+    const cur = document.getElementById('outBody').textContent;
+    const cont = '\n\n---\nIterate on the previous output:\n' + cur.slice(0,200) + '…\n\nNow: ';
+    const ta = document.getElementById('promptInput');
+    ta.value = ta.value + cont;
+    ta.focus();
+    ta.scrollTop = ta.scrollHeight;
+  });
+
+  // initial state
+  renderRuns();
+})();
+</script>
+
+</body>
+</html>

@@ -91,7 +91,7 @@ export const NEWSLETTER_WELCOME: EmailDraft = {
 </div>
 
 <div style="margin:0 0 28px 0;padding:20px 0;border-top:1px solid #e6dfd1;">
-  <p style="margin:0 0 8px 0;"><strong style="font-size:17px;">The AiBI Practitioner Course</strong></p>
+  <p style="margin:0 0 8px 0;"><strong style="font-size:17px;">The AiBI AiBI Foundations</strong></p>
   <p style="margin:0 0 12px 0;">For institutions that have decided AI capability needs to live inside the team, not be rented from vendors. Built around four pillars &mdash; awareness, understanding, creation, application &mdash; with a margin-of-error framework so your bankers know when to trust the output and when to push back.</p>
   <p style="margin:0;"><a href="https://aibankinginstitute.com/practitioner" style="color:#b5512e;text-decoration:none;font-weight:500;">See the curriculum &rarr;</a></p>
 </div>
@@ -208,8 +208,8 @@ prize. Closing it does not require an AI moonshot. It requires turning
 a few back-office workflows from manual into machine-assisted, with a
 human in the loop on every output.</p>
 <p>If your team is ready to put a structured plan against that gap, our
-Practitioner credential is the most direct path:</p>
-<p><a href="https://aibankinginstitute.com/courses/aibi-p" style="color:#b5512e;font-weight:500;">AiBI-Practitioner &rarr; $295</a></p>
+Foundations Certificate is the most direct path:</p>
+<p><a href="https://aibankinginstitute.com/courses/aibi-p" style="color:#b5512e;font-weight:500;">AiBI Foundations &rarr; $295</a></p>
 <p>Twelve hours. Self-paced. Designed for the banker, not the data scientist.</p>
 `),
   },
@@ -308,8 +308,8 @@ this:</p>
 </table>
 <p>If you want to put a credentialed framework against this—and have
 a named banker on your team certified to lead the next 90 days—the
-Practitioner credential is the most direct route:</p>
-<p><a href="https://aibankinginstitute.com/courses/aibi-p" style="color:#b5512e;font-weight:500;">AiBI-Practitioner &rarr; $295 ($199 at 10+)</a></p>
+Foundations Certificate is the most direct route:</p>
+<p><a href="https://aibankinginstitute.com/courses/aibi-p" style="color:#b5512e;font-weight:500;">AiBI Foundations &rarr; $295 ($199 at 10+)</a></p>
 `),
   },
 ];
@@ -348,7 +348,7 @@ dimension) is here:</p>
   },
   {
     subject: 'A capability ladder that maps to your institution',
-    preheader: 'Practitioner, Specialist, Leader — what each role does.',
+    preheader: 'Foundations, Specialist, Leader — what each role does.',
     html: wrap(`
 <h1 style="font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:28px;line-height:1.2;margin:0 0 16px 0;">
 The three rungs of the AI capability ladder
@@ -371,9 +371,9 @@ $5 billion in assets:</p>
   </tr>
 </table>
 <p>Our credential program is designed against this ladder
-(AiBI-Practitioner, AiBI-S, AiBI-L). The Practitioner credential is
+(AiBI Foundations, AiBI-S, AiBI-L). The Foundations Certificate is
 self-paced, $295 individual or $199 at 10+ seats:</p>
-<p><a href="https://aibankinginstitute.com/courses/aibi-p" style="color:#b5512e;font-weight:500;">AiBI-Practitioner &rarr;</a></p>
+<p><a href="https://aibankinginstitute.com/courses/aibi-p" style="color:#b5512e;font-weight:500;">AiBI Foundations &rarr;</a></p>
 `),
   },
   {
@@ -446,7 +446,7 @@ the conversation in our market?"</p>
   },
   {
     subject: 'The institution-wide credential program (and why it matters)',
-    preheader: 'AiBI-Practitioner at scale — the bench pattern that protects your AI program.',
+    preheader: 'AiBI Foundations at scale — the bench pattern that protects your AI program.',
     html: wrap(`
 <h1 style="font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:28px;line-height:1.2;margin:0 0 16px 0;">
 Train the bench, not the leadership
@@ -465,7 +465,7 @@ capability, the program is one resignation away from a setback.</p>
       The named owner who can speak to the board and the regulator
       with equal fluency.</li>
 </ul>
-<p>Institutional pricing for AiBI-Practitioner is
+<p>Institutional pricing for AiBI Foundations is
 <span style="font-family:'DM Mono',monospace;">$199</span> per seat at
 <span style="font-family:'DM Mono',monospace;">10+</span> bankers.
 Self-paced over 90 days, with credentialing on completion.</p>

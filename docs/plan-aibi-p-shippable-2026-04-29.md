@@ -1,6 +1,6 @@
-# Plan: Make AiBI-P actually shippable as a course
+# Plan: Make AiBI Foundations actually shippable as a course
 
-**Goal:** Close every audit finding that prevents AiBI-P from being a real, paid, banker-credible course. Eight phases, sequenced by dependency. Output: a single PR (or merged set) that lets you say "AiBI-P is ready" without caveats.
+**Goal:** Close every audit finding that prevents AiBI Foundations from being a real, paid, banker-credible course. Eight phases, sequenced by dependency. Output: a single PR (or merged set) that lets you say "AiBI Foundations is ready" without caveats.
 
 **Branch:** `claude/aibi-p-shippable` · Worktree: `~/Projects/aibi-shippable` · Base: main @ 23e3888
 
@@ -21,7 +21,7 @@ The most role-applied modules currently have no Practice tab. `public/sandbox-da
 - Wire each into `src/components/AIPracticeSandbox.tsx` SANDBOX_CONFIGS map
 - Smoke test all three Practice tabs render
 
-**Done when:** every AiBI-P module has a working Practice tab with banker-specific samples.
+**Done when:** every AiBI Foundations module has a working Practice tab with banker-specific samples.
 
 ---
 
@@ -104,7 +104,7 @@ Plan:
 - TS check, smoke test all 3 courses
 - Open PR #4
 
-**Done when:** keyTakeaways block renders at the bottom of every AiBI-P module, every AiBI-S week, every AiBI-L session.
+**Done when:** keyTakeaways block renders at the bottom of every AiBI Foundations module, every AiBI-S week, every AiBI-L session.
 
 ---
 

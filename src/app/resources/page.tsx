@@ -67,7 +67,7 @@ const ARTICLES: readonly Article[] = [
   },
   {
     slug: 'the-skill-not-the-prompt',
-    eyebrow: 'Practitioner Guide',
+    eyebrow: 'Foundations Guide',
     title: 'The skill, not the prompt.',
     dek: 'Prompting is a one-time act. A skill is a persistent, reusable, institution-grade AI instruction that executes reliably every time you need it. Here is why the distinction matters for community banks — and how to build your first one in 20 minutes.',
     readTime: '8 min read',

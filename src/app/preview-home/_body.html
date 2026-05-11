@@ -1,0 +1,179 @@
+
+<!-- ============ NAV ============ -->
+<header class="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-mark" aria-label="The AI Banking Institute">
+      <span class="l1">The AI Banking</span>
+      <span class="l2">Institute</span>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#pillars" class="nav-link">Education</a>
+      <a href="#" class="nav-link">For Institutions</a>
+      <a href="#" class="nav-link">Research</a>
+      <a href="#" class="nav-link">About</a>
+      <a href="#assessment" class="btn btn-primary nav-cta">Take Assessment</a>
+      <a href="#" class="nav-link nav-signin">Sign in</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="container">
+    <span class="eyebrow">An institute for community banks and credit unions</span>
+    <h1>Turning Bankers into <em>Builders.</em></h1>
+    <p class="hero-lede">Independent AI assessment and education for community banks and credit unions.</p>
+    <div class="hero-ctas">
+      <a href="#assessment" class="btn btn-primary">Take the assessment</a>
+      <a href="#pillars" class="ilink-curric">View the curriculum</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PILLARS ============ -->
+<section class="pillars" id="pillars">
+  <div class="pillars-grid">
+    <article class="pillar pillar-1" id="assessment">
+      <h3>AI <em>Readiness</em> Assessment</h3>
+      <p class="lede">Twelve questions, three minutes. A score, a tier, and a tailored starter artifact you can take to your team this week.</p>
+      <a href="#" class="cta">Begin the assessment →</a>
+    </article>
+    <article class="pillar pillar-2" id="practitioner">
+      <h3>AiBI-<em>Foundations</em> Certification</h3>
+      <p class="lede">Twelve self-paced modules. The community-banking AI proficiency standard, scored on reviewed work — not multiple-choice quizzes.</p>
+      <a href="#" class="cta">View the curriculum →</a>
+    </article>
+  </div>
+</section>
+
+<!-- ============ ROI CALCULATOR ============ -->
+<section class="roi" id="roi">
+  <div class="container">
+    <header class="roi-head">
+      <div>
+        <span class="eyebrow">Run the numbers</span>
+        <h2>Run your <em>own numbers.</em></h2>
+      </div>
+      <p class="desc">Plug in your headcount and loaded cost. We'll show you what's recoverable across <em>conservative, mid,</em> and <em>optimistic</em> AI-leverage scenarios. No model assumptions hidden — drag the sliders and watch them move.</p>
+    </header>
+
+    <div class="roi-grid">
+      <!-- Inputs -->
+      <div class="roi-inputs">
+        <div class="group">
+          <label for="ftes">Full-time employees</label>
+          <div class="roi-input-row">
+            <span class="roi-val" id="ftesVal">50</span>
+          </div>
+          <div class="roi-range-row"><input type="range" id="ftes" min="5" max="500" step="1" value="50" /></div>
+        </div>
+
+        <div class="group">
+          <label for="cost">Loaded cost per FTE</label>
+          <div class="roi-input-row">
+            <span class="roi-val" id="costVal">$85,000</span>
+          </div>
+          <div class="roi-range-row"><input type="range" id="cost" min="40000" max="180000" step="1000" value="85000" /></div>
+        </div>
+
+        <div class="group">
+          <label>Hours / week recovered</label>
+          <div class="roi-input-row">
+            <span class="roi-val" id="midVal">3.5 hrs</span>
+          </div>
+          <div class="roi-range-row"><input type="range" id="mid" min="1" max="10" step="0.25" value="3.5" /></div>
+          <p style="font-family:var(--mono); font-size:9.5px; letter-spacing:0.16em; text-transform:uppercase; color:var(--muted); margin:10px 0 0">Low &amp; high derived at ±40% of midpoint</p>
+        </div>
+      </div>
+
+      <!-- Outputs -->
+      <div class="roi-outputs">
+        <div class="roi-scenarios">
+          <div class="roi-scn">
+            <div class="roi-scn-lab">Conservative</div>
+            <div class="roi-scn-val" id="scnLow">$204,327</div>
+            <div class="roi-scn-sub">@ low hours saved</div>
+          </div>
+          <div class="roi-scn mid">
+            <div class="roi-scn-lab">Mid case</div>
+            <div class="roi-scn-val" id="scnMid">$357,572</div>
+            <div class="roi-scn-sub">expected outcome</div>
+          </div>
+          <div class="roi-scn">
+            <div class="roi-scn-lab">Optimistic</div>
+            <div class="roi-scn-val" id="scnHigh">$510,817</div>
+            <div class="roi-scn-sub">@ high hours saved</div>
+          </div>
+        </div>
+        <div class="roi-stats">
+          <div class="roi-stat">
+            <div class="roi-stat-val" id="hoursYr">8,750</div>
+            <div class="roi-stat-lab">Hours / year recaptured</div>
+          </div>
+          <div class="roi-stat">
+            <div class="roi-stat-val" id="perWeek">~3.5 hrs</div>
+            <div class="roi-stat-lab">Per banker, per week</div>
+          </div>
+          <div class="roi-stat">
+            <div class="roi-stat-val" id="pctPayroll">~8.4%</div>
+            <div class="roi-stat-lab">Of payroll</div>
+          </div>
+        </div>
+
+        <div class="roi-cta">
+          <p class="roi-cta-q"><span class="roi-cta-meta">Conservative estimate</span>What if we could save you <b id="ctaAmount">$204,327</b>?</p>
+          <a href="#" class="btn btn-primary" style="background:var(--terra); border-color:var(--terra)">Start your free assessment <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <p class="mark">The AI Banking Institute</p>
+        <p class="tag">Turning Bankers into Builders</p>
+        <p>An education company for community banks and credit unions.</p>
+      </div>
+      <div class="foot-col">
+        <h5>Start here</h5>
+        <ul>
+          <li><a href="#assessment">Take the assessment</a></li>
+          <li><a href="#pillars">Education</a></li>
+          <li><a href="#">For institutions</a></li>
+          <li><a href="#">Research</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h5>Institute</h5>
+        <ul>
+          <li><a href="FAQ.html">FAQ</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Security &amp; Governance</a></li>
+          <li><a href="#">Verify a credential</a></li>
+        </ul>
+      </div>
+      <div class="foot-sub">
+        <span class="eyebrow">Subscribe</span>
+        <h4>The AI Banking Brief.</h4>
+        <p>Fortnightly research, no marketing.</p>
+        <form class="foot-sub-form" onsubmit="event.preventDefault(); this.querySelector('button').textContent='Thanks ✓'; setTimeout(()=>this.querySelector('button').textContent='Subscribe', 2000)">
+          <input type="email" placeholder="you@yourbank.com" aria-label="Email" />
+          <button type="submit">Subscribe</button>
+        </form>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <div class="copy">© 2026 The AI Banking Institute · aibankinginstitute.com</div>
+      <div class="links">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">AI Use Disclaimer</a>
+      </div>
+    </div>
+  </div>
+</footer>
+

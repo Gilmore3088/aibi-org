@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Home — The AI Banking Institute</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ECE9DF; --paper:#F4F1E7; --paper-2:#EDE8DA; --parch:#E4E0D2; --parch-dark:#D9D4C2; --tape:#F1E9D0;
+    --ink:#0E1B2D; --ink-2:#1F2A3F; --slate:#5C6B82; --muted:#5C6B82; --soft:#8C95A8;
+    --accent:#B5862A; --accent-2:#1E3A5F; --weak:#8E3B2A;
+    --terra:#B5862A; --terra-2:#8E6212;
+    --rule:rgba(14,27,45,0.10); --rule-strong:rgba(14,27,45,0.22);
+    --serif:'Newsreader', Georgia, serif;
+    --sans:'Geist', -apple-system, system-ui, sans-serif;
+    --mono:'JetBrains Mono', ui-monospace, monospace;
+    --maxw:1280px;
+  }
+  *{ box-sizing:border-box }
+  html,body{ margin:0; padding:0 }
+  body{ background:var(--paper); color:var(--ink); font-family:var(--sans); font-size:15px; line-height:1.55; -webkit-font-smoothing:antialiased }
+  a{ color:inherit; text-decoration:none }
+  .container{ max-width:var(--maxw); margin:0 auto; padding:0 32px }
+  .eyebrow{ font-family:var(--mono); font-size:11px; letter-spacing:0.22em; text-transform:uppercase; color:var(--muted); font-weight:500 }
+  .btn{ display:inline-flex; align-items:center; gap:10px; padding:13px 22px; border:1px solid transparent; font-family:var(--mono); font-size:11px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; line-height:1; cursor:pointer }
+  .btn-primary{ background:var(--terra); color:#FAF7EE; border-color:var(--terra) }
+  .btn-primary:hover{ background:var(--terra-2); border-color:var(--terra-2) }
+  .btn-ghost{ background:transparent; color:var(--ink); border:1px solid var(--ink-2) }
+  .btn-ghost:hover{ background:var(--ink); color:var(--paper) }
+  .ilink{ font-family:var(--sans); font-weight:500; font-size:14px; color:var(--terra); border-bottom:1.5px solid var(--terra); padding-bottom:2px }
+  .ilink:hover{ color:var(--terra-2); border-color:var(--terra-2) }
+
+  /* ===== SITE NAV (public, paper) ===== */
+  .nav{ position:sticky; top:0; z-index:30; background:var(--paper); border-bottom:1px solid var(--rule) }
+  .nav-inner{ max-width:var(--maxw); margin:0 auto; padding:18px 32px; display:flex; align-items:center; justify-content:space-between; gap:24px }
+  .nav-mark{ display:flex; flex-direction:column; line-height:1 }
+  .nav-mark .l1, .nav-mark .l2{ font-family:var(--sans); font-weight:700; font-size:13px; letter-spacing:-0.005em; text-transform:uppercase; line-height:1 }
+  .nav-mark .l1{ color:var(--ink) }
+  .nav-mark .l2{ color:var(--soft); margin-top:1px }
+  .nav-links{ display:flex; align-items:center; gap:32px }
+  .nav-link{ font-family:var(--mono); font-size:11px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:var(--ink-2); transition:color 0.15s }
+  .nav-link:hover{ color:var(--terra) }
+  .acct{ display:flex; align-items:center; gap:10px; padding:6px 14px 6px 6px; background:transparent; border:1px solid var(--rule-strong); border-radius:1px; cursor:pointer; margin-left:8px }
+  .acct:hover{ border-color:var(--ink-2) }
+  .avatar{ width:28px; height:28px; border-radius:50%; background:var(--terra); color:var(--paper); display:grid; place-items:center; font-family:var(--mono); font-size:10px; font-weight:600 }
+  .acct .name{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink); font-weight:600 }
+
+  /* ===== USER TABS (under welcome) ===== */
+  .tabs{ background:var(--paper); border-bottom:1px solid var(--rule); border-top:1px solid var(--rule) }
+  .tabs-inner{ max-width:var(--maxw); margin:0 auto; padding:0 32px; display:flex; align-items:center; gap:0 }
+  .tab{ font-family:var(--mono); font-size:11px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); padding:16px 18px 14px; border-bottom:2px solid transparent; margin-bottom:-1px }
+  .tab:hover{ color:var(--ink-2) }
+  .tab.active{ color:var(--ink); border-bottom-color:var(--terra) }
+
+  /* ===== MASTHEAD ===== */
+  .mast{ padding:64px 0 40px; border-bottom:1px solid var(--rule) }
+  .mast-row{ display:grid; grid-template-columns:1.4fr 1fr; gap:64px; align-items:end }
+  .mast .greet{ display:block; color:var(--terra); font-weight:600; margin-bottom:18px }
+  .mast h1{ font-family:var(--serif); font-weight:500; font-size:clamp(48px, 5.4vw, 76px); line-height:0.98; letter-spacing:-0.035em; margin:0 0 14px; max-width:18ch }
+  .mast h1 em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .mast .lede{ font-family:var(--serif); font-size:22px; line-height:1.45; color:var(--ink-2); max-width:48ch; margin:0; font-weight:400 }
+  .mast-meta{ border-left:1px solid var(--rule-strong); padding:0 0 6px 28px; display:flex; flex-direction:column; gap:18px }
+  .mast-meta .row{ display:flex; justify-content:space-between; gap:24px; align-items:baseline; padding-bottom:14px; border-bottom:1px solid var(--rule) }
+  .mast-meta .row:last-child{ border-bottom:none; padding-bottom:0 }
+  .mast-meta .lab{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+  .mast-meta .val{ font-family:var(--serif); font-size:22px; color:var(--ink); font-weight:500; letter-spacing:-0.01em }
+  .mast-meta .val em{ font-style:italic; color:var(--terra); font-weight:500 }
+
+  /* ===== RESUME STRIP (continue learning) ===== */
+  .resume{ padding:48px 0 56px; border-bottom:1px solid var(--rule) }
+  .sec-head{ display:flex; align-items:last baseline; gap:24px; margin-bottom:28px }
+  .sec-head .num{ font-family:var(--mono); font-size:11px; letter-spacing:0.22em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+  .sec-head h2{ font-family:var(--serif); font-weight:500; font-size:32px; line-height:1; letter-spacing:-0.02em; margin:0; color:var(--ink) }
+  .sec-head h2 em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .sec-head .more{ margin-left:auto; font-family:var(--mono); font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--terra); font-weight:600 }
+  .sec-head .more:hover{ color:var(--terra-2) }
+
+  .resume-card{ background:var(--ink); color:var(--paper); padding:40px; display:grid; grid-template-columns:1fr auto; gap:48px; align-items:end; position:relative; overflow:hidden }
+  .resume-card::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:6px; background:var(--terra) }
+  .resume-card .meta{ display:flex; gap:18px; flex-wrap:wrap; margin-bottom:18px }
+  .resume-card .meta span{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.2em; text-transform:uppercase; color:rgba(250,247,238,0.6); font-weight:600 }
+  .resume-card .meta span.now{ color:#E5C29A }
+  .resume-card h3{ font-family:var(--serif); font-weight:500; font-size:44px; line-height:1.05; letter-spacing:-0.02em; margin:0 0 14px; max-width:18ch }
+  .resume-card h3 em{ font-style:italic; color:#E5C29A; font-weight:500 }
+  .resume-card .desc{ font-family:var(--serif); font-style:italic; font-size:18px; line-height:1.45; color:rgba(250,247,238,0.78); max-width:50ch; margin:0 0 24px }
+  .resume-card .pgrow{ display:flex; gap:8px; margin:0 0 4px }
+  .resume-card .pdot{ width:32px; height:6px; background:rgba(250,247,238,0.14) }
+  .resume-card .pdot.done{ background:var(--terra) }
+  .resume-card .pdot.cur{ background:#E5C29A }
+  .resume-card .pgloss{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; color:rgba(250,247,238,0.55); margin-top:10px }
+  .resume-card .cta-col{ display:flex; flex-direction:column; gap:14px; align-items:flex-end }
+  .resume-card .cta-col .est{ font-family:var(--mono); font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:rgba(250,247,238,0.55) }
+
+  /* ===== 3-UP CARDS ===== */
+  .cards{ padding:56px 0; border-bottom:1px solid var(--rule) }
+  .cards-grid{ display:grid; grid-template-columns:1fr 1fr; gap:0; border:1px solid var(--rule-strong); background:var(--paper-2) }
+  .cards-grid.quad{ grid-template-columns:repeat(4,1fr) }
+  .card.link{ min-height:180px; transition:background 0.15s }
+  .card.link:hover{ background:var(--paper) }
+  .card.link h3{ flex:1 }
+  .card.link .lab{ color:var(--terra) }
+  .card{ padding:32px 28px; border-right:1px solid var(--rule); display:flex; flex-direction:column; min-height:340px; position:relative }
+  .card:last-child{ border-right:none }
+  .card .lab{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.22em; text-transform:uppercase; font-weight:600; margin-bottom:12px }
+  .card.review .lab{ color:var(--weak) }
+  .card.cohort .lab{ color:var(--accent-2) }
+  .card.brief .lab{ color:var(--terra) }
+  .card h3{ font-family:var(--serif); font-weight:500; font-size:28px; line-height:1.1; letter-spacing:-0.02em; margin:0 0 12px; max-width:18ch }
+  .card h3 em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .card .body{ font-family:var(--serif); font-size:16px; line-height:1.5; color:var(--ink-2); margin:0 0 20px; flex:1 }
+  .card .body em{ font-style:italic }
+
+  .card .reviewer{ background:var(--paper); border-left:3px solid var(--terra); padding:14px 16px; margin-bottom:18px }
+  .card .reviewer .who{ font-family:var(--mono); font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); margin-bottom:6px; font-weight:600 }
+  .card .reviewer .quote{ font-family:var(--serif); font-style:italic; font-size:15px; line-height:1.45; color:var(--ink-2); margin:0 }
+
+  .card .when{ display:flex; flex-direction:column; gap:14px; margin-bottom:20px }
+  .card .when-row{ display:grid; grid-template-columns:60px 1fr; gap:14px; align-items:start; padding-bottom:12px; border-bottom:1px solid var(--rule) }
+  .card .when-row:last-child{ border-bottom:none; padding-bottom:0 }
+  .card .when-row .day{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.16em; text-transform:uppercase; color:var(--terra); font-weight:600; padding-top:2px }
+  .card .when-row .what{ font-family:var(--serif); font-size:15.5px; line-height:1.4; color:var(--ink); font-weight:500 }
+  .card .when-row .what em{ font-style:italic; color:var(--ink-2); font-weight:400; display:block; margin-top:2px; font-size:13.5px }
+
+  .card .brief-meta{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); margin-bottom:14px }
+  .card .brief-title{ font-family:var(--serif); font-weight:500; font-size:24px; line-height:1.15; letter-spacing:-0.015em; color:var(--ink); margin:0 0 12px }
+  .card .brief-title em{ font-style:italic; color:var(--terra) }
+  .card .brief-dek{ font-family:var(--serif); font-style:italic; font-size:15px; line-height:1.45; color:var(--ink-2); margin:0 0 18px; flex:1 }
+
+  .card .foot{ font-family:var(--sans); font-weight:500; font-size:14px; color:var(--terra); border-bottom:1.5px solid var(--terra); padding-bottom:3px; align-self:flex-start }
+
+  /* ===== TOOLBOX PREVIEW ===== */
+  .toolbox{ padding:56px 0; border-bottom:1px solid var(--rule) }
+  .tb-group{ margin-bottom:32px }
+  .tb-group:last-child{ margin-bottom:0 }
+  .tb-group-head{ display:flex; align-items:baseline; justify-content:space-between; padding-bottom:10px; border-bottom:1px solid var(--rule-strong); margin-bottom:18px }
+  .tb-group-head .name{ font-family:var(--mono); font-size:11px; letter-spacing:0.22em; text-transform:uppercase; color:var(--ink); font-weight:600 }
+  .tb-group-head .count{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); font-weight:500 }
+  .tb-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px }
+  .tb-card{ background:var(--paper-2); border:1px solid var(--rule); padding:22px; display:flex; flex-direction:column; gap:8px; min-height:170px; position:relative; transition:border-color 0.15s, background 0.15s }
+  .tb-card:hover{ border-color:var(--rule-strong); background:var(--paper) }
+  .tb-card .type{ font-family:var(--mono); font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+  .tb-card h4{ font-family:var(--serif); font-weight:500; font-size:19px; line-height:1.25; letter-spacing:-0.015em; margin:0; color:var(--ink) }
+  .tb-card .meta{ margin-top:auto; display:flex; justify-content:space-between; align-items:baseline; padding-top:14px; border-top:1px solid var(--rule); gap:10px }
+  .tb-card .ver{ font-family:var(--mono); font-size:10px; letter-spacing:0.18em; color:var(--terra); font-weight:600; text-transform:uppercase }
+  .tb-card .ago{ font-family:var(--mono); font-size:10px; letter-spacing:0.04em; color:var(--muted) }
+  .tb-card .model{ position:absolute; top:24px; right:24px; font-family:var(--mono); font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); font-weight:500 }
+
+  /* ===== CREDENTIAL TRACK ===== */
+  .credo{ padding:56px 0 96px }
+  .credo-card{ background:var(--parch); border:1px solid var(--rule-strong); padding:40px; display:grid; grid-template-columns:1.6fr 1fr; gap:48px; align-items:center }
+  .credo-card .lab{ font-family:var(--mono); font-size:11px; letter-spacing:0.22em; text-transform:uppercase; color:var(--terra); font-weight:600; margin-bottom:14px }
+  .credo-card h3{ font-family:var(--serif); font-weight:500; font-size:38px; line-height:1.1; letter-spacing:-0.02em; margin:0 0 14px }
+  .credo-card h3 em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .credo-card .copy{ font-family:var(--serif); font-style:italic; font-size:18px; line-height:1.5; color:var(--ink-2); margin:0; max-width:50ch }
+  .credo-stats{ display:grid; grid-template-columns:1fr 1fr; gap:0 }
+  .credo-stat{ padding:16px 20px; border-left:1px solid var(--rule-strong) }
+  .credo-stat .n{ font-family:var(--serif); font-weight:500; font-size:38px; line-height:1; letter-spacing:-0.02em; color:var(--ink); font-style:italic }
+  .credo-stat .l{ font-family:var(--mono); font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); margin-top:8px; font-weight:600; line-height:1.3 }
+
+  /* ===== FOOTER (compact app footer) ===== */
+  .app-foot{ padding:28px 0; background:var(--parch); border-top:1px solid var(--rule); font-family:var(--mono); font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--muted) }
+  .app-foot-inner{ max-width:var(--maxw); margin:0 auto; padding:0 32px; display:flex; justify-content:space-between; gap:24px; flex-wrap:wrap }
+  .app-foot a{ color:var(--muted) }
+  .app-foot a:hover{ color:var(--terra) }
+  .app-foot .links{ display:flex; gap:24px }
+
+  @media (max-width:1024px){
+    .mast-row{ grid-template-columns:1fr; gap:32px }
+    .mast-meta{ border-left:none; border-top:1px solid var(--rule-strong); padding:24px 0 0 }
+    .resume-card{ grid-template-columns:1fr; gap:24px }
+    .resume-card .cta-col{ align-items:flex-start }
+    .cards-grid{ grid-template-columns:1fr }
+    .card{ border-right:none; border-bottom:1px solid var(--rule) }
+    .card:last-child{ border-bottom:none }
+    .tb-grid{ grid-template-columns:1fr 1fr }
+    .credo-card{ grid-template-columns:1fr; gap:24px }
+    .nav-links .nav-link:not(.acct){ display:none }
+  }
+  @media (max-width:640px){
+    .container{ padding:0 20px }
+    .tb-grid{ grid-template-columns:1fr }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<header class="nav">
+  <div class="nav-inner">
+    <a href="AI Banking Institute.html" class="nav-mark" aria-label="The AI Banking Institute">
+      <span class="l1">The AI Banking</span>
+      <span class="l2">Institute</span>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="AI Banking Institute.html#pillars" class="nav-link">Education</a>
+      <a href="#" class="nav-link">For Institutions</a>
+      <a href="#" class="nav-link">Research</a>
+      <a href="#" class="nav-link">About</a>
+      <a href="FAQ.html" class="nav-link">Support</a>
+      <button class="acct" aria-label="Account">
+        <span class="avatar">DM</span>
+        <span class="name">D. Maxwell</span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<!-- ===== MASTHEAD ===== -->
+<section class="mast">
+  <div class="container">
+    <div class="mast-row">
+      <div>
+        <span class="eyebrow greet">Tuesday · May 10</span>
+        <h1>Hello, James.</h1>
+        <p class="lede">Welcome back. Let's pick up where you left off.</p>
+      </div>
+      <div class="mast-meta">
+        <div class="row"><span class="lab">Track</span><span class="val">AiBI-Foundations</span></div>
+        <div class="row"><span class="lab">Progress</span><span class="val">6 / 12 modules</span></div>
+        <div class="row"><span class="lab">Streak</span><span class="val">12 days</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== USER TABS ===== -->
+<div class="tabs">
+  <div class="tabs-inner" role="tablist" aria-label="My account">
+    <a href="#" class="tab active" role="tab" aria-selected="true">Dashboard</a>
+    <a href="LMS Prototype.html" class="tab" role="tab">My Curriculum</a>
+    <a href="Playground.html" class="tab" role="tab">Playground</a>
+    <a href="My Toolbox.html" class="tab" role="tab">My Toolbox</a>
+    <a href="#" class="tab" role="tab">My Brief</a>
+    <a href="#" class="tab" role="tab">Account</a>
+  </div>
+</div>
+
+<!-- ===== RESUME ===== -->
+<section class="resume">
+  <div class="container">
+    <header class="sec-head">
+      <span class="num">01 · Continue</span>
+      <h2>Where you left off.</h2>
+      <a href="LMS Prototype.html" class="more">See all 12 modules →</a>
+    </header>
+
+    <div class="resume-card">
+      <div>
+        <div class="meta">
+          <span>Module 07 · Unlocked today</span>
+          <span class="now">90 min</span>
+        </div>
+        <h3>Prompting credit memos that pass committee.</h3>
+        <div class="pgrow">
+          <span class="pdot done"></span><span class="pdot done"></span><span class="pdot done"></span>
+          <span class="pdot done"></span><span class="pdot done"></span><span class="pdot done"></span>
+          <span class="pdot cur"></span>
+          <span class="pdot"></span><span class="pdot"></span><span class="pdot"></span>
+          <span class="pdot"></span><span class="pdot"></span>
+        </div>
+        <div class="pgloss">06 complete · 07 in progress · 5 remaining</div>
+      </div>
+      <div class="cta-col">
+        <span class="est">Estimated · 90 min</span>
+        <a href="LMS Prototype.html" class="btn btn-primary">Resume module 07 →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== QUICK LINKS ===== -->
+<section class="cards">
+  <div class="container">
+    <header class="sec-head">
+      <span class="num">02 · Jump to</span>
+      <h2>Tools.</h2>
+    </header>
+
+    <div class="cards-grid quad">
+      <a href="LMS Prototype.html" class="card link">
+        <span class="lab">Curriculum</span>
+        <h3>12 modules</h3>
+        <span class="foot">Open →</span>
+      </a>
+      <a href="#" class="card link">
+        <span class="lab">Playground</span>
+        <h3>Test prompts side-by-side</h3>
+        <span class="foot">Open →</span>
+      </a>
+      <a href="#" class="card link">
+        <span class="lab">Toolbox</span>
+        <h3>Your saved artifacts</h3>
+        <span class="foot">Open →</span>
+      </a>
+      <a href="#" class="card link">
+        <span class="lab">The Brief</span>
+        <h3>Issue 042 — out today</h3>
+        <span class="foot">Read →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TOOLBOX PREVIEW ===== -->
+<section class="toolbox">
+  <div class="container">
+    <header class="sec-head">
+      <span class="num">03 · Your toolbox</span>
+      <h2>Recent artifacts.</h2>
+      <a href="#" class="more">Open toolbox →</a>
+    </header>
+
+    <div class="tb-group">
+      <div class="tb-group-head"><span class="name">Credit &amp; lending</span><span class="count">2 artifacts</span></div>
+      <div class="tb-grid">
+        <article class="tb-card">
+          <span class="type">Credit memo</span>
+          <span class="model">Claude</span>
+          <h4>Acme Manufacturing — line increase memo</h4>
+          <div class="meta"><span class="ver">v.04 · current</span><span class="ago">2h ago</span></div>
+        </article>
+        <article class="tb-card">
+          <span class="type">Vendor letter</span>
+          <span class="model">ChatGPT</span>
+          <h4>TPRM exception — core processor add-on</h4>
+          <div class="meta"><span class="ver">v.03 · current</span><span class="ago">2 days</span></div>
+        </article>
+      </div>
+    </div>
+
+    <div class="tb-group">
+      <div class="tb-group-head"><span class="name">Deposit &amp; ops</span><span class="count">1 artifact</span></div>
+      <div class="tb-grid">
+        <article class="tb-card">
+          <span class="type">Board summary</span>
+          <span class="model">Gemini</span>
+          <h4>Q4 deposit migration board update</h4>
+          <div class="meta"><span class="ver">v.02 · current</span><span class="ago">Yesterday</span></div>
+        </article>
+      </div>
+    </div>
+
+    <div class="tb-group">
+      <div class="tb-group-head"><span class="name">BSA &amp; compliance</span><span class="count">1 artifact</span></div>
+      <div class="tb-grid">
+        <article class="tb-card">
+          <span class="type">BSA narrative</span>
+          <span class="model">Claude</span>
+          <h4>Structuring pattern — branch 04 / Sept</h4>
+          <div class="meta"><span class="ver">v.01 · draft</span><span class="ago">5 days</span></div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CREDENTIAL ===== -->
+<!-- ===== FOOTER ===== -->
+<footer class="app-foot">
+  <div class="app-foot-inner">
+    <div>© 2026 The AI Banking Institute</div>
+    <div class="links">
+      <a href="FAQ.html">FAQ</a>
+      <a href="#">Account</a>
+      <a href="#">Security</a>
+      <a href="#">Sign out</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

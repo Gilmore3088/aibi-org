@@ -21,7 +21,7 @@ The assessment results experience currently tries to do four jobs on one HTML pa
 | Job | What it means |
 |---|---|
 | Advocacy | A tool the assessment-taker hands to their CEO / risk committee / board |
-| Conversion | A sales asset that drives Executive Briefing booking or AiBI-P enrollment |
+| Conversion | A sales asset that drives Executive Briefing booking or AiBI Foundations enrollment |
 | Authority | A credibility play — proof The AI Banking Institute knows community banking |
 | Utility | A working artifact the user actually uses for the next 30 days |
 
@@ -92,8 +92,8 @@ The four tier IDs live in `@content/assessments/v2/scoring`. The card content li
 
 | Tier (id) | Card eyebrow | Card headline | Card body | CTA label | CTA href |
 |---|---|---|---|---|---|
-| `starting-point` | Your next move | Get your team trained on AI fundamentals. | Skills come first. AiBI-P teaches working AI use to bankers in 12 short modules — your team can start this week. | Enroll your team in AiBI-P | `/courses/aibi-p` |
-| `early-stage` | Your next move | Get your team trained on AI fundamentals. | You have momentum. Lock it in with AiBI-P — your bankers learn the same patterns repeatable across the institution. | Enroll your team in AiBI-P | `/courses/aibi-p` |
+| `starting-point` | Your next move | Get your team trained on AI fundamentals. | Skills come first. AiBI Foundations teaches working AI use to bankers in 12 short modules — your team can start this week. | Enroll your team in AiBI Foundations | `/courses/aibi-p` |
+| `early-stage` | Your next move | Get your team trained on AI fundamentals. | You have momentum. Lock it in with AiBI Foundations — your bankers learn the same patterns repeatable across the institution. | Enroll your team in AiBI Foundations | `/courses/aibi-p` |
 | `building-momentum` | Your next move | Walk through these results with us. | You're ready for a roadmap conversation, not a course. An Executive Briefing translates this report into a phased plan with leadership at the table. | Request an Executive Briefing | `/for-institutions/advisory` |
 | `ready-to-scale` | Your next move | Talk to us about Leadership Advisory. | You don't need foundations — you need ongoing AI judgment at the leadership level. Leadership Advisory is fractional CAIO work for institutions with internal momentum. | Request a conversation | `/for-institutions/advisory` |
 
@@ -156,7 +156,7 @@ A merged PR closes Spec 1 if and only if:
 | Cutting §10 (Footer Close) leaves the brief ending on the new tier-keyed CTA which feels promotional. | The CTA card is editorial in tone (one quiet "Your next move" eyebrow), and the appendix below softens the close. |
 | Removing PrintButton kills the only "save my results" affordance until Spec 2 ships. | Acceptable risk — Spec 2 is next in the pipeline. If Spec 2 slips beyond ~2 weeks, we add a temporary "Print this page" browser hint in a follow-up commit. |
 | Cutting §3 removes tier-keyed behavioral pattern bullets that some users found grounding. | The lensed `dl` rows in the merged §2b cover similar territory at a higher level. If user testing reveals a gap, restore §3 in a follow-up — the data (`TIER_INSIGHTS`) is in git history. |
-| Tier-keyed CTA may misroute Building Momentum users who would convert better to AiBI-P than to a Briefing. | Tracked as a Plausible custom event (`closing_cta_click` with `props: { tier, destination }`) — wired in this spec's plan. We can flip the mapping in a 5-line PR after 30 days of data. |
+| Tier-keyed CTA may misroute Building Momentum users who would convert better to AiBI Foundations than to a Briefing. | Tracked as a Plausible custom event (`closing_cta_click` with `props: { tier, destination }`) — wired in this spec's plan. We can flip the mapping in a 5-line PR after 30 days of data. |
 
 ---
 
@@ -221,7 +221,7 @@ These came up during brainstorming and were rejected. Recording them so future-y
 - **Flipping order to "act-first, diagnose-below"**: rejected. Editorial diagnose-first arc preserved per user direction.
 - **Tabs / two-panel split / aggressive accordion-by-default**: rejected. Single linear scroll preserved.
 - **Keeping both §2b lensed `dl` AND §3 tier-keyed bullets**: rejected as redundant for a 5-minute read. Kept §2b only.
-- **Single-tier CTA (just AiBI-P, or just Briefing)**: rejected. Tier-keyed mapping picked because audience differs meaningfully across tiers.
+- **Single-tier CTA (just AiBI Foundations, or just Briefing)**: rejected. Tier-keyed mapping picked because audience differs meaningfully across tiers.
 - **No closing CTA at all (brief just ends)**: rejected. Too risky for revenue if Spec 3 email sequence ships late.
 - **"Get the board-ready PDF" placeholder/teaser**: rejected. Spec 1 ships clean — no fake affordances.
 

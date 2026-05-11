@@ -306,7 +306,7 @@ New packages:
 - Add OpenAI and Gemini adapters
 - Add chart rendering via Recharts
 - Add PDF download on responses
-- Roll out to all AiBI-P modules with sandbox exercises
+- Roll out to all AiBI Foundations modules with sandbox exercises
 
 ### Phase 3: Full course coverage
 - AiBI-S exercises with role-track-specific scenarios

@@ -1,5 +1,5 @@
 -- Plan F continuation — Migration 00022
--- Migrate the AiBI-P course prompts (content/courses/aibi-p/prompt-library.ts)
+-- Migrate the AiBI-P course prompts (content/courses/foundations/prompt-library.ts)
 -- into toolbox_library_skills as published kind='template' rows with v1 content
 -- snapshots in toolbox_library_skill_versions.
 --

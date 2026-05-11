@@ -173,7 +173,7 @@ export default function EfficiencyRatioWorkbookPage() {
               <strong className="text-[color:var(--color-ink)]">It isn’t</strong>{' '}
               guaranteed. The estimate assumes your institution can identify,
               build, and adopt the automations within a year. That is what a
-              Practitioner cohort and (optionally) a Pilot Advisory engagement
+              Foundations cohort and (optionally) a Pilot Advisory engagement
               are designed to deliver.
             </p>
             <p>
@@ -199,7 +199,7 @@ export default function EfficiencyRatioWorkbookPage() {
           <p className="text-[color:var(--color-linen)]/75 max-w-xl mx-auto mb-6 leading-relaxed">
             Thirty minutes. We’ll pressure-test your inputs, identify the
             three departments most likely to deliver the recaptured hours,
-            and recommend whether a Practitioner cohort, a Specialist cohort,
+            and recommend whether a Foundations cohort, a Specialist cohort,
             or an institution-wide capability program is the right starting
             point. No pitch.
           </p>

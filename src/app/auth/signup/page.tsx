@@ -3,13 +3,19 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+
 import { signUp } from '@/lib/supabase/auth';
+import {
+  LedgerAlert,
+  LedgerButton,
+  LedgerCard,
+  LedgerEyebrow,
+  LedgerField,
+  LedgerH1,
+  LedgerSurface,
+} from '@/components/ledger';
 
 const MIN_PASSWORD_LENGTH = 8;
-
-function passwordsMatch(a: string, b: string): boolean {
-  return a === b;
-}
 
 export default function SignupPage() {
   const searchParams = useSearchParams();
@@ -39,7 +45,7 @@ export default function SignupPage() {
       setError(`Password must be at least ${MIN_PASSWORD_LENGTH} characters.`);
       return;
     }
-    if (!passwordsMatch(password, confirmPassword)) {
+    if (password !== confirmPassword) {
       setError('Passwords do not match.');
       return;
     }
@@ -60,176 +66,146 @@ export default function SignupPage() {
 
   if (done) {
     return (
-      <main className="flex-1 flex items-start justify-center px-6 py-14 md:py-20">
-        <div className="w-full max-w-sm space-y-8">
-          <div className="text-center space-y-2">
-            <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
-              The AI Banking Institute
-            </p>
-            <h1 className="font-serif text-3xl text-[color:var(--color-ink)]">Check Your Inbox</h1>
+      <LedgerSurface>
+        <div style={{ width: '100%', maxWidth: 440, display: 'flex', flexDirection: 'column', gap: 24 }}>
+          <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <LedgerEyebrow>Account created</LedgerEyebrow>
+            <LedgerH1>Check your <em>inbox.</em></LedgerH1>
           </div>
-          <div className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[2px] p-7 space-y-4 text-center">
-            <p className="font-sans text-sm text-[color:var(--color-ink)]">
+          <LedgerCard variant="strong">
+            <p style={{ margin: 0, fontFamily: 'var(--serif)', fontSize: 18, lineHeight: 1.5, color: 'var(--ink-2)', textAlign: 'center' }}>
               We sent a confirmation link to your email. Click it to activate your account.
             </p>
-            <p className="font-sans text-xs text-[color:var(--color-slate)]">
-              The link expires in 24 hours. Check your spam folder if you don&apos;t see it.
+            <p style={{ margin: '12px 0 0', fontFamily: 'var(--mono)', fontSize: 10.5, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--muted)', textAlign: 'center' }}>
+              The link expires in 24 hours · check spam if you don&apos;t see it
             </p>
-          </div>
-          <p className="text-center font-sans text-sm text-[color:var(--color-slate)]">
+          </LedgerCard>
+          <p style={{ textAlign: 'center', fontFamily: 'var(--serif)', fontSize: 15, color: 'var(--ink-2)', margin: 0 }}>
             Already confirmed?{' '}
-            <Link href="/auth/login" className="text-[color:var(--color-terra)] hover:underline font-semibold">
+            <Link href="/auth/login" className="ledger-link">
               Sign in
             </Link>
           </p>
         </div>
-      </main>
+      </LedgerSurface>
     );
   }
 
   return (
-    <main className="flex-1 flex items-start justify-center px-6 py-14 md:py-20">
-      <div className="w-full max-w-sm space-y-8">
-        {/* Header */}
-        <div className="text-center space-y-2">
-          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
-            The AI Banking Institute
-          </p>
-          <h1 className="font-serif text-3xl text-[color:var(--color-ink)]">Create Account</h1>
+    <LedgerSurface>
+      <div style={{ width: '100%', maxWidth: 440, display: 'flex', flexDirection: 'column', gap: 24 }}>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <LedgerEyebrow>Create account</LedgerEyebrow>
+          <LedgerH1>Start <em>here.</em></LedgerH1>
         </div>
 
-        {/* Card */}
-        <div className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[2px] p-7 space-y-5">
+        <LedgerCard variant="strong">
           {error && (
-            <p role="alert" className="text-[color:var(--color-error)] text-sm font-sans px-3 py-2 bg-[color:var(--color-error)]/8 rounded-[2px] border border-[color:var(--color-error)]/20">
-              {error}
-            </p>
+            <div style={{ marginBottom: 18 }}>
+              <LedgerAlert variant="error">{error}</LedgerAlert>
+            </div>
           )}
 
-          <form onSubmit={handleSubmit} noValidate className="space-y-4">
-            {/* Full name */}
-            <div className="space-y-1">
-              <label htmlFor="fullName" className="block font-sans text-xs font-semibold uppercase tracking-[0.12em] text-[color:var(--color-ink)]/70">
-                Full Name
-              </label>
-              <input
-                id="fullName"
-                name="fullName"
-                type="text"
-                autoComplete="name"
-                required
-                className="w-full px-3 py-2.5 bg-[color:var(--color-linen)] border border-[color:var(--color-ink)]/20 rounded-[2px] font-sans text-sm text-[color:var(--color-ink)] placeholder:text-[color:var(--color-slate)]/60 focus:outline-none focus:border-[color:var(--color-terra)] focus:ring-1 focus:ring-[color:var(--color-terra)] transition-colors"
-                placeholder="Jane Doe"
-              />
-            </div>
+          <form onSubmit={handleSubmit} noValidate style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+            <LedgerField
+              label="Full name"
+              name="fullName"
+              type="text"
+              autoComplete="name"
+              required
+              placeholder="Jane Doe"
+            />
+            <LedgerField
+              label="Email"
+              name="email"
+              type="email"
+              autoComplete="email"
+              required
+              placeholder="you@yourbank.com"
+            />
+            <LedgerField
+              label={
+                <>
+                  Institution{' '}
+                  <span style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', textTransform: 'none', letterSpacing: 0, color: 'var(--soft)', fontWeight: 400 }}>
+                    (optional)
+                  </span>
+                </>
+              }
+              name="institutionName"
+              type="text"
+              autoComplete="organization"
+              placeholder="First Community Bank"
+            />
+            <LedgerField
+              label="Password"
+              name="password"
+              type="password"
+              autoComplete="new-password"
+              required
+              minLength={MIN_PASSWORD_LENGTH}
+              placeholder={`${MIN_PASSWORD_LENGTH}+ characters`}
+            />
+            <LedgerField
+              label="Confirm password"
+              name="confirmPassword"
+              type="password"
+              autoComplete="new-password"
+              required
+              placeholder="••••••••"
+            />
 
-            {/* Email */}
-            <div className="space-y-1">
-              <label htmlFor="email" className="block font-sans text-xs font-semibold uppercase tracking-[0.12em] text-[color:var(--color-ink)]/70">
-                Email
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                className="w-full px-3 py-2.5 bg-[color:var(--color-linen)] border border-[color:var(--color-ink)]/20 rounded-[2px] font-sans text-sm text-[color:var(--color-ink)] placeholder:text-[color:var(--color-slate)]/60 focus:outline-none focus:border-[color:var(--color-terra)] focus:ring-1 focus:ring-[color:var(--color-terra)] transition-colors"
-                placeholder="you@yourbank.com"
-              />
-            </div>
-
-            {/* Institution (optional) */}
-            <div className="space-y-1">
-              <label htmlFor="institutionName" className="block font-sans text-xs font-semibold uppercase tracking-[0.12em] text-[color:var(--color-ink)]/70">
-                Institution{' '}
-                <span className="normal-case font-normal text-[color:var(--color-slate)]">(optional)</span>
-              </label>
-              <input
-                id="institutionName"
-                name="institutionName"
-                type="text"
-                autoComplete="organization"
-                className="w-full px-3 py-2.5 bg-[color:var(--color-linen)] border border-[color:var(--color-ink)]/20 rounded-[2px] font-sans text-sm text-[color:var(--color-ink)] placeholder:text-[color:var(--color-slate)]/60 focus:outline-none focus:border-[color:var(--color-terra)] focus:ring-1 focus:ring-[color:var(--color-terra)] transition-colors"
-                placeholder="First Community Bank"
-              />
-            </div>
-
-            {/* Password */}
-            <div className="space-y-1">
-              <label htmlFor="password" className="block font-sans text-xs font-semibold uppercase tracking-[0.12em] text-[color:var(--color-ink)]/70">
-                Password
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="new-password"
-                required
-                minLength={MIN_PASSWORD_LENGTH}
-                className="w-full px-3 py-2.5 bg-[color:var(--color-linen)] border border-[color:var(--color-ink)]/20 rounded-[2px] font-sans text-sm text-[color:var(--color-ink)] placeholder:text-[color:var(--color-slate)]/60 focus:outline-none focus:border-[color:var(--color-terra)] focus:ring-1 focus:ring-[color:var(--color-terra)] transition-colors"
-                placeholder={`${MIN_PASSWORD_LENGTH}+ characters`}
-              />
-            </div>
-
-            {/* Confirm password */}
-            <div className="space-y-1">
-              <label htmlFor="confirmPassword" className="block font-sans text-xs font-semibold uppercase tracking-[0.12em] text-[color:var(--color-ink)]/70">
-                Confirm Password
-              </label>
-              <input
-                id="confirmPassword"
-                name="confirmPassword"
-                type="password"
-                autoComplete="new-password"
-                required
-                className="w-full px-3 py-2.5 bg-[color:var(--color-linen)] border border-[color:var(--color-ink)]/20 rounded-[2px] font-sans text-sm text-[color:var(--color-ink)] placeholder:text-[color:var(--color-slate)]/60 focus:outline-none focus:border-[color:var(--color-terra)] focus:ring-1 focus:ring-[color:var(--color-terra)] transition-colors"
-                placeholder="••••••••"
-              />
-            </div>
-
-            {/* Terms */}
-            <div className="flex items-start gap-3 pt-1">
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10, paddingTop: 6, marginBottom: 14 }}>
               <input
                 id="terms"
                 name="terms"
                 type="checkbox"
                 required
-                className="mt-0.5 h-4 w-4 rounded-[2px] border-[color:var(--color-ink)]/30 text-[color:var(--color-terra)] focus:ring-[color:var(--color-terra)] accent-[color:var(--color-terra)] shrink-0"
+                style={{
+                  marginTop: 3,
+                  width: 14,
+                  height: 14,
+                  accentColor: 'var(--terra)',
+                  borderRadius: 2,
+                  flexShrink: 0,
+                }}
               />
-              <label htmlFor="terms" className="font-sans text-xs text-[color:var(--color-slate)] leading-relaxed">
+              <label
+                htmlFor="terms"
+                style={{
+                  fontFamily: 'var(--serif)',
+                  fontSize: 14,
+                  lineHeight: 1.45,
+                  color: 'var(--ink-2)',
+                }}
+              >
                 I agree to the{' '}
-                <Link href="/terms" className="text-[color:var(--color-terra)] hover:underline">
+                <Link href="/terms" className="ledger-link">
                   Terms of Service
                 </Link>{' '}
                 and{' '}
-                <Link href="/privacy" className="text-[color:var(--color-terra)] hover:underline">
+                <Link href="/privacy" className="ledger-link">
                   Privacy Policy
                 </Link>
               </label>
             </div>
 
-            <button
-              type="submit"
-              disabled={pending}
-              className="w-full py-2.5 px-6 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-sm font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all disabled:opacity-60 disabled:cursor-not-allowed"
-            >
-              {pending ? 'Creating account...' : 'Create Account'}
-            </button>
+            <LedgerButton type="submit" variant="primary" block disabled={pending}>
+              {pending ? 'Creating account…' : 'Create account'}
+            </LedgerButton>
           </form>
-        </div>
+        </LedgerCard>
 
-        {/* Footer link */}
-        <p className="text-center font-sans text-sm text-[color:var(--color-slate)]">
+        <p style={{ textAlign: 'center', fontFamily: 'var(--serif)', fontSize: 15, color: 'var(--ink-2)', margin: 0 }}>
           Already have an account?{' '}
           <Link
             href={`/auth/login${redirectTo !== '/dashboard' ? `?next=${encodeURIComponent(redirectTo)}` : ''}`}
-            className="text-[color:var(--color-terra)] hover:underline font-semibold"
+            className="ledger-link"
           >
             Sign in
           </Link>
         </p>
       </div>
-    </main>
+    </LedgerSurface>
   );
 }

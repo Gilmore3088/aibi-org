@@ -5,7 +5,7 @@
 **Captured:** 2026-05-04
 **Tracking issue:** TBD (filed alongside this spec)
 
-> **The big idea:** Stop building an assessment result page. Build a mini AI consultant. The static score + dimension breakdown shipped in V1 (`content/assessments/v2/`) is a diagnostic, not a recommendation engine. This spec turns the post-completion screen into a personalized AI transformation brief that drives conversion into AiBI-P (primary) or readiness/advisory (secondary).
+> **The big idea:** Stop building an assessment result page. Build a mini AI consultant. The static score + dimension breakdown shipped in V1 (`content/assessments/v2/`) is a diagnostic, not a recommendation engine. This spec turns the post-completion screen into a personalized AI transformation brief that drives conversion into AiBI Foundations (primary) or readiness/advisory (secondary).
 
 ---
 
@@ -15,7 +15,7 @@ Transform a static assessment result into a personalized brief that:
 1. Diagnoses the institution clearly
 2. Creates urgency and clarity
 3. Recommends a specific next move
-4. Drives conversion into AiBI-P (primary) or readiness/advisory (secondary)
+4. Drives conversion into AiBI Foundations (primary) or readiness/advisory (secondary)
 
 ## User
 
@@ -97,8 +97,8 @@ This object drives **all** UI + content rendering.
 - *What a Practitioner-Ready Institution looks like:* Daily AI usage in internal workflows · Standardized prompts · Human review processes · Measurable time savings
 
 ### Section 8 — Recommended path (conversion)
-- Dynamic routing — e.g., low score + Education interest → AiBI-P card
-- AiBI-P card: 12 modules · Real workflows · Prompt systems · SAFE framework · CTA `Start Practitioner Training`
+- Dynamic routing — e.g., low score + Education interest → AiBI Foundations card
+- AiBI Foundations card: 12 modules · Real workflows · Prompt systems · SAFE framework · CTA `Start Practitioner Training`
 - Alternate: Executive briefing · Advisory
 
 ### Section 9 — CTA footer
@@ -188,7 +188,7 @@ results
 - % completing assessment
 - % reaching results page
 - % clicking primary CTA
-- % converting to: AiBI-P · Briefing
+- % converting to: AiBI Foundations · Briefing
 
 ## Critical UX principles
 

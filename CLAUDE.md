@@ -906,21 +906,32 @@ configured in the Supabase Auth dashboard, NOT in Resend Templates;
 their sender `From` field also needs swapping in the Supabase
 dashboard (not yet done — manual step).
 
-**2026-05-09 — Ledger brand refresh (Slice 0 — additive token + font foundation).**
-The 2026-04-15 Terra/Sage/Cobalt designer brief is superseded by a new
-"Ledger" design system delivered as a Claude Design handoff bundle
-(saved at `docs/brand-refresh-2026-05-09/`, original URLs in chats).
-Three canonical artifacts: `Design System.html` (full token system + 21
-component specs), `AI Readiness Briefing.html` (assessment results page),
-and `LMS Prototype.html` + `lms/*.jsx` (course harness React shell). The
-new palette is parchment/linen + ink/navy + gold accent + oxblood for
-destructive only. Typography swaps Cormorant/DM Sans/DM Mono for
-Newsreader/Geist/JetBrains Mono. **Pillar color discipline is retired** —
-sage/cobalt/terra are no longer enforced as visual grammar. Slice 0 is
+**2026-05-09 — Ledger brand refresh (Slice 0).** Executed on
+`feature/brand-refresh`. The 2026-04-15 Terra/Sage/Cobalt designer brief
+is superseded by a new "Ledger" design system delivered as a Claude
+Design handoff bundle (saved at `docs/brand-refresh-2026-05-09/`,
+original URLs in chats). Three canonical artifacts: `Design System.html`
+(full token system + 21 component specs), `AI Readiness Briefing.html`
+(assessment results page), and `LMS Prototype.html` + `lms/*.jsx`
+(course harness React shell). The new palette is parchment/linen +
+ink/navy + gold accent + oxblood for destructive only. Typography swaps
+Cormorant/DM Sans/DM Mono for Newsreader/Geist/JetBrains Mono.
+**Pillar color discipline is retired** — sage/cobalt/terra are no
+longer enforced as visual grammar. The 4-pillar curriculum structure
+shown in the LMS prototype data (Awareness · Understanding · Creation ·
+Application) is descriptive, not a color rule. Slice 0 (this commit) is
 additive only: new tokens in `src/styles/tokens-ledger.css`, new fonts
 wired alongside existing ones, zero visible change. Migration proceeds
-surface-by-surface in subsequent slices. Full Ledger redesign + bundle
-routes + token remap shipped in PR #47 (see 2026-05-10 entry).
+surface-by-surface in subsequent slices: internal `/design-system`
+reference page → assessment results (Briefing) → LMS harness →
+marketing site → cleanup of legacy tokens and fonts.
+
+> _Note: An earlier coupled rename plan in this entry (AiBI-Practitioner
+> → "AiBI Foundations" plural with route `/courses/foundations`) was
+> superseded by PR #45 on 2026-05-11, which landed the canonical
+> singular "AiBI-Foundation" with route `/courses/foundation/program`.
+> See the 2026-05-11 PR #45 entry below for the canonical rename._
+
 
 **2026-05-09 — AiBI-Foundation v2 redesign accepted; staged migration.**
 The current AiBI-Practitioner course (12 modules, 6.6 hrs, $295) is

@@ -103,7 +103,7 @@ const PLACEHOLDERS: Record<LearnerRole, SkillPlaceholders> = {
       'Keep the executive summary to one page or under 400 words. Do not include operational detail appropriate for staff — this is decision-support for leadership. Flag any item with regulatory, legal, or reputational risk implications with the appropriate flag code. Never speculate beyond the data provided.',
   },
   other: {
-    role: 'You are a Banking AI Practitioner at a community financial institution with expertise in applying AI tools to improve operational efficiency, communication quality, and analytical precision in banking workflows.',
+    role: 'You are a Banking AI Foundations at a community financial institution with expertise in applying AI tools to improve operational efficiency, communication quality, and analytical precision in banking workflows.',
     context:
       'I am providing you with content from a banking workflow that would benefit from AI-assisted processing. My institution is a community bank or credit union. The output will be reviewed before use in any operational, regulatory, or member-facing context.',
     task: 'Analyze the provided content and produce structured output that: (1) Completes the defined task with precision and appropriate banking expertise. (2) Flags any items requiring human review before the output is used. (3) Notes any data gaps or ambiguities in the source material.',
@@ -401,7 +401,7 @@ const STARTERS: Record<LearnerRole, readonly SkillStarter[]> = {
     {
       id: 'other-workflow-skill',
       name: 'Banking Workflow Skill',
-      role: 'You are a Banking AI Practitioner at a community financial institution with expertise in applying AI tools to improve operational efficiency, communication quality, and analytical precision.',
+      role: 'You are a Banking AI Foundations at a community financial institution with expertise in applying AI tools to improve operational efficiency, communication quality, and analytical precision.',
       context:
         'I am providing content from a banking workflow that would benefit from AI-assisted processing. Institution: community bank or credit union. Output reviewed before any operational, regulatory, or member-facing use.',
       task: 'Analyze the provided content and produce structured output that: (1) Completes the defined task with precision and appropriate banking expertise. (2) Flags any items requiring human review before the output is used. (3) Notes data gaps or ambiguities in the source material.',
@@ -412,7 +412,7 @@ const STARTERS: Record<LearnerRole, readonly SkillStarter[]> = {
     {
       id: 'other-document-summary',
       name: 'Document Summary',
-      role: 'You are a Banking AI Practitioner producing concise, structured summaries of banking documents for staff review and decision support.',
+      role: 'You are a Banking AI Foundations producing concise, structured summaries of banking documents for staff review and decision support.',
       context:
         'I am providing a banking document — policy, procedure, report, or correspondence. Output is an internal summary for staff or management review.',
       task: 'Summarize the provided document with: (1) A three-sentence plain-language summary of the key content. (2) Three to five action items or key requirements extracted from the document. (3) Any deadlines, regulatory citations, or review requirements flagged explicitly.',
@@ -423,7 +423,7 @@ const STARTERS: Record<LearnerRole, readonly SkillStarter[]> = {
     {
       id: 'other-communication-draft',
       name: 'Communication Draft',
-      role: 'You are a Banking AI Practitioner drafting professional internal and external communications for a community bank or credit union.',
+      role: 'You are a Banking AI Foundations drafting professional internal and external communications for a community bank or credit union.',
       context:
         'I am providing a communication brief or rough notes. The communication may be internal (to staff or management) or external (to members, regulators, or vendors).',
       task: 'Draft the communication with: (1) An appropriate opening that establishes context and purpose. (2) Body content addressing each key point in the brief. (3) A clear closing with any required actions or next steps. (4) Compliance notes if the communication is member-facing or regulatory.',

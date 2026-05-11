@@ -59,7 +59,7 @@ Six published essays as of audit date. These are the research-shop substance and
 
 (All under `src/app/resources/<slug>/page.tsx`.)
 
-## 4. AiBI-Practitioner course / LMS — P1
+## 4. AiBI Foundations course / LMS — P1
 
 The paid product experience. Every enrolled banker lives here.
 
