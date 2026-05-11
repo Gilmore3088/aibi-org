@@ -1,22 +1,38 @@
 // Dynamic module page — /courses/foundation/program/[module]
-// Server Component: all content read from typed files at build time
-// T-02-03: parseInt + getModuleByNumber + notFound() guards invalid params
-// SHELL-12: Non-enrolled users redirected to purchase page server-side
-// SHELL-04/05: Locked module access redirected to current module server-side
+//
+// LMS reskin (PR 2 of 7): wraps the module surface in the Ledger-styled
+// <CourseShell> + <LMSTopBar> primitives introduced in PR #52. The tab
+// content (Learn / Practice / Apply) and all activity-routing behavior
+// are preserved unchanged — only the surrounding chrome is reskinned.
+//
+// Server Component: all content read from typed files at build time.
+// T-02-03: parseInt + getModuleByNumber + notFound() guards invalid params.
+// SHELL-12: Non-enrolled users redirected to purchase page server-side.
+// SHELL-04/05: Locked module access redirected to current module server-side.
 
 import { notFound, redirect } from 'next/navigation';
+import Link from 'next/link';
 import type { Metadata } from 'next';
 import {
   modules,
+  foundationProgramCourseConfig,
   getModuleByNumber,
   V4_FOUNDATION_PROGRAM_MODULE_BY_NUMBER,
 } from '@content/courses/foundation-program';
 import type { Activity, ExpandedModule } from '@content/courses/foundation-program';
-import { ModuleHeader } from '../_components/ModuleHeader';
 import { ContentTable } from '../_components/ContentTable';
 import { LearnSection } from '../_components/LearnSection';
 import { ModuleContentClient } from '../_components/ModuleContentClient';
 import { CourseTabs } from '@/components/CourseTabs';
+import {
+  CourseShell,
+  LMSTopBar,
+  PillarTag,
+  ProgressDot,
+  getModuleStatus,
+  toLMSModules,
+  type LMSModule,
+} from '@/components/lms';
 import { getEnrollment } from '../_lib/getEnrollment';
 import { canAccessModule } from '../_lib/courseProgress';
 import { getRoleSpotlight } from '../_lib/contentRouting';
@@ -52,7 +68,6 @@ export async function generateMetadata({ params }: ModulePageParams): Promise<Me
 export default async function ModulePage({ params }: ModulePageParams) {
   const moduleNum = parseInt(params.module, 10);
 
-  // T-02-03: Guard against invalid params (NaN, out of range, non-existent)
   if (isNaN(moduleNum) || moduleNum < 1 || moduleNum > modules.length) {
     notFound();
   }
@@ -62,13 +77,11 @@ export default async function ModulePage({ params }: ModulePageParams) {
     notFound();
   }
 
-  // SHELL-12: Require enrollment — redirect unauthenticated / non-enrolled visitors
   const enrollment = await getEnrollment();
   if (!enrollment) {
     redirect('/courses/foundation/program/purchase');
   }
 
-  // SHELL-04/05: Forward-only enforcement — redirect to current module if locked
   if (!canAccessModule(moduleNum, enrollment.completed_modules)) {
     redirect(`/courses/foundation/program/${enrollment.current_module}`);
   }
@@ -76,9 +89,6 @@ export default async function ModulePage({ params }: ModulePageParams) {
   const isLastModule = mod.number === modules.length;
   const isAlreadyCompleted = enrollment.completed_modules.includes(moduleNum);
   const expandedModule = V4_FOUNDATION_PROGRAM_MODULE_BY_NUMBER.get(moduleNum);
-  // 2026-04-29: per-module structured Apply activities replace the generic
-  // V4 textarea form. Each spec drives both the form fields and the
-  // downloadable artifact .md served by /api/courses/generate-module-artifact.
   const moduleSpec = getModuleActivitySpec(moduleNum);
   const moduleActivities = moduleSpec
     ? [buildModuleActivity(moduleSpec)]
@@ -87,7 +97,6 @@ export default async function ModulePage({ params }: ModulePageParams) {
       : mod.activities;
   const moduleTables = expandedModule ? undefined : mod.tables;
 
-  // Fetch existing activity responses for this enrollment + module (read-only, service role)
   const existingResponses: Record<string, Record<string, string>> = {};
   if (isSupabaseConfigured() && moduleActivities.length > 0) {
     const serviceClient = createServiceRoleClient();
@@ -104,22 +113,155 @@ export default async function ModulePage({ params }: ModulePageParams) {
     }
   }
 
+  const lmsModules: readonly LMSModule[] = toLMSModules(
+    foundationProgramCourseConfig.modules,
+  );
+  const status = getModuleStatus(
+    mod.number,
+    enrollment.completed_modules,
+    enrollment.current_module,
+  );
+  const pillarId = mod.pillar;
+  const goalLine =
+    expandedModule?.goal ??
+    `Use AI more safely and practically for ${mod.keyOutput.toLowerCase()}.`;
+  const titleParts = mod.title.split(' — ');
+  const titleMain = titleParts[0];
+  const titleTail = titleParts.length > 1 ? titleParts.slice(1).join(' — ') : null;
+
   return (
-    <>
-      {/* Pillar-colored header band */}
-      <ModuleHeader
-        moduleNumber={mod.number}
-        title={mod.title}
-        pillar={mod.pillar}
-        estimatedMinutes={mod.estimatedMinutes}
-        keyOutput={mod.keyOutput}
+    <CourseShell
+      modules={lmsModules}
+      completed={enrollment.completed_modules}
+      current={enrollment.current_module}
+    >
+      <LMSTopBar
+        crumbs={['Education', 'AiBI-Foundation', `Module ${String(mod.number).padStart(2, '0')}`]}
+        right={
+          <Link
+            href="/courses/foundation/program"
+            style={{
+              fontFamily: 'var(--ledger-mono)',
+              fontSize: 10.5,
+              letterSpacing: '0.16em',
+              textTransform: 'uppercase',
+              color: 'var(--ledger-muted)',
+              textDecoration: 'none',
+            }}
+          >
+            ← Course overview
+          </Link>
+        }
       />
 
-      {/* Content area — tabbed: Learn / Practice / Apply */}
-      <article className="mx-auto px-8 lg:px-16 py-4">
+      <div style={{ maxWidth: 1180, margin: '0 auto', padding: '36px 36px 24px' }}>
+        {/* Module header */}
+        <header>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 18,
+              marginBottom: 18,
+              flexWrap: 'wrap',
+            }}
+          >
+            <PillarTag pillarId={pillarId} />
+            <span
+              style={{
+                fontFamily: 'var(--ledger-mono)',
+                fontSize: 10,
+                letterSpacing: '0.18em',
+                textTransform: 'uppercase',
+                color: 'var(--ledger-muted)',
+              }}
+            >
+              Module {String(mod.number).padStart(2, '0')} · {mod.estimatedMinutes} min
+            </span>
+            <span style={{ flex: 1, height: 1, background: 'var(--ledger-rule)' }} />
+            <ProgressDot status={status} />
+            <span
+              style={{
+                fontFamily: 'var(--ledger-mono)',
+                fontSize: 10,
+                letterSpacing: '0.16em',
+                textTransform: 'uppercase',
+                color: status === 'current' ? 'var(--ledger-accent)' : 'var(--ledger-muted)',
+              }}
+            >
+              {status === 'current'
+                ? 'In progress'
+                : status === 'completed'
+                  ? 'Completed'
+                  : 'Locked'}
+            </span>
+          </div>
+
+          <h1
+            style={{
+              fontFamily: 'var(--ledger-serif)',
+              fontWeight: 500,
+              fontSize: 'clamp(38px, 5vw, 58px)',
+              lineHeight: 1.05,
+              letterSpacing: '-0.025em',
+              margin: '0 0 12px',
+              color: 'var(--ledger-ink)',
+            }}
+          >
+            {titleMain}
+            {titleTail && (
+              <em
+                style={{
+                  color: 'var(--ledger-accent)',
+                  fontStyle: 'italic',
+                  fontWeight: 400,
+                }}
+              >
+                {' — '}
+                {titleTail}
+              </em>
+            )}
+          </h1>
+
+          <p
+            style={{
+              fontFamily: 'var(--ledger-serif)',
+              fontStyle: 'italic',
+              fontSize: 19,
+              lineHeight: 1.45,
+              color: 'var(--ledger-ink-2)',
+              margin: '0 0 14px',
+              maxWidth: '72ch',
+            }}
+          >
+            {goalLine}
+          </p>
+
+          <p
+            style={{
+              color: 'var(--ledger-slate)',
+              fontSize: 13,
+              fontFamily: 'var(--ledger-mono)',
+              letterSpacing: '0.04em',
+              margin: 0,
+              paddingTop: 14,
+              borderTop: '1px solid var(--ledger-rule)',
+            }}
+          >
+            You walk away with:{' '}
+            <span style={{ color: 'var(--ledger-ink)', fontWeight: 600 }}>
+              {mod.keyOutput}
+            </span>
+          </p>
+        </header>
+      </div>
+
+      {/* Tabbed content (Learn / Practice / Apply) — behavior preserved */}
+      <article style={{ maxWidth: 1180, margin: '0 auto', padding: '4px 36px 80px' }}>
         <CourseTabs
           storagePrefix="aibi-p-m"
           segmentNumber={moduleNum}
+          accentColor="var(--ledger-accent)"
           learnContent={
             <>
               <LearnSection
@@ -129,7 +271,7 @@ export default async function ModulePage({ params }: ModulePageParams) {
               />
               <BankingBoundary moduleNumber={moduleNum} />
               {moduleTables && moduleTables.length > 0 && (
-                <div className="mt-6">
+                <div style={{ marginTop: 24 }}>
                   {moduleTables.map((table) => (
                     <ContentTable key={table.id} table={table} />
                   ))}
@@ -140,8 +282,6 @@ export default async function ModulePage({ params }: ModulePageParams) {
           practiceContent={
             SANDBOX_CONFIGS[moduleNum] ? (
               <AIPracticeSandbox
-                // moduleId kept as 'aibi-p-module-N' for rate-limit-store
-                // continuity. The product prop is the canonical slug.
                 moduleId={`aibi-p-module-${moduleNum}`}
                 product="foundation"
                 sandboxConfig={SANDBOX_CONFIGS[moduleNum]!}
@@ -166,7 +306,7 @@ export default async function ModulePage({ params }: ModulePageParams) {
           }
         />
       </article>
-    </>
+    </CourseShell>
   );
 }
 
@@ -205,17 +345,55 @@ function BankingBoundary({ moduleNumber }: { readonly moduleNumber: number }) {
   const boundary = BANKING_BOUNDARIES[moduleNumber] ?? BANKING_BOUNDARIES.default;
 
   return (
-    <section className="mt-8 border border-[color:var(--color-ink)]/10 rounded-[3px] bg-[color:var(--color-parch)] p-6">
-      <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-4">
+    <section
+      style={{
+        marginTop: 32,
+        border: '1px solid var(--ledger-rule)',
+        borderRadius: 3,
+        background: 'var(--ledger-parch)',
+        padding: 24,
+      }}
+    >
+      <p
+        style={{
+          fontFamily: 'var(--ledger-mono)',
+          fontSize: 10.5,
+          letterSpacing: '0.2em',
+          textTransform: 'uppercase',
+          color: 'var(--ledger-accent)',
+          margin: '0 0 14px',
+        }}
+      >
         Banking Boundary
       </p>
-      <div className="grid md:grid-cols-3 gap-5">
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+          gap: 20,
+        }}
+      >
         {boundary.map(([title, body]) => (
           <div key={title}>
-            <h2 className="font-serif text-lg text-[color:var(--color-ink)]">
+            <h2
+              style={{
+                fontFamily: 'var(--ledger-serif)',
+                fontSize: 18,
+                fontWeight: 500,
+                color: 'var(--ledger-ink)',
+                margin: '0 0 6px',
+              }}
+            >
               {title}
             </h2>
-            <p className="text-sm text-[color:var(--color-slate)] leading-relaxed mt-2">
+            <p
+              style={{
+                fontSize: 13.5,
+                color: 'var(--ledger-slate)',
+                lineHeight: 1.55,
+                margin: 0,
+              }}
+            >
               {body}
             </p>
           </div>
