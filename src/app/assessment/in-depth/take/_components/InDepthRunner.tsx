@@ -57,10 +57,10 @@ export function InDepthRunner(): React.ReactElement {
           submittedRef.current = false;
           return;
         }
-        // Redirect into the existing /results/[id] surface for now — same UI
-        // as the free flow until the 20-page in-depth report is built.
+        // Redirect into the In-Depth Briefing surface — the dedicated
+        // rich-report page for the paid 48-question assessment.
         if (data.profileId) {
-          router.replace(`/results/${data.profileId}`);
+          router.replace(`/assessment/in-depth/results/${data.profileId}`);
         } else {
           setSubmit({ kind: 'error', message: 'Saved, but no result ID returned.' });
         }
