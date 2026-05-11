@@ -14,8 +14,8 @@
 | `aibi-designer-brief.html` | Visual identity, color system, typography, Do's/Don'ts |
 | `aibi-consultant-playbook.html` | Executive Briefing script, Quick Win Sprint methodology, delivery |
 | `feedback-v1-aibi-landing-page-prd.docx` | V1 landing page PRD feedback — tagline, stats band, 8-section homepage spec |
-| `foundation-v2/AIBI-FOUNDATION-COMPLETE.md` | **AiBI-Foundation v2 redesign — canonical** (see 2026-05-09 Decisions Log) |
-| `foundation-v2/aibi-foundation-v2/` | Full v2 bundle — 29 module specs, 33 artifact templates, platform brief, positioning |
+| `foundation-v2/AIBI-FOUNDATION-COMPLETE.md` | _SUPERSEDED 2026-05-11._ Four-track family (Lite/Full/Manager/Board) reversed — see 2026-05-11 Decisions Log. Kept as authoring archive. |
+| `foundation-v2/aibi-foundation-v2/` | _SUPERSEDED 2026-05-11._ Full v2 bundle archived; AiBI-Foundation is one course, not four tracks. |
 
 **Assessment content lives in `content/assessments/<version>/`** — each version is a folder (questions, scoring, copy) so content can iterate without touching component code. Current version: `v1`.
 
@@ -956,6 +956,48 @@ add `STRIPE_FOUNDATION_PRICE_ID` and `STRIPE_FOUNDATION_INSTITUTION_PRICE_ID`
 Vercel env vars (legacy `STRIPE_AIBIP_*` already work as fallback);
 re-sync ConvertKit/MailerLite copy where "AiBI-Practitioner" appears;
 update Stripe product *display* names; verify Resend template bodies.
+
+**2026-05-11 — Four-track Foundation family REVERSED. AiBI-Foundation is
+one course.** Reverses the 2026-05-09 Decisions Log entry. The four-track
+product family (Lite $99 bank-wide, Full $495, Manager Track $195, Board
+Briefing $295/director) is scrapped. There is one Foundation course — the
+current 12-module curriculum at `content/courses/foundation-program/`,
+served at `/courses/foundation/program/*`. AiBI-Practitioner is the old
+name; AiBI-Foundation is the new name. Same course, renamed.
+
+**What this means going forward:** anything pointing at the four-track
+shape is dead. `Plans/foundation-v2/` (29 module specs, 33 artifact
+templates) is archived authoring work — keep for historical reference but
+**not** the source of truth. The single-course Foundation product runs on
+the renamed v1 curriculum.
+
+**Cleanup commits shipped to `main` 2026-05-11** (commits `b3ad031`,
+`d3436f3`, plus this commit's stranded-code delete):
+- `/courses/foundation` now redirects to `/courses/foundation/program`
+  (was a marketing overview for the four tracks).
+- `/education` page drops the "AiBI-Foundation v2 — preview" tile.
+- Deleted: `src/app/courses/foundation/[track]/` (route tree),
+  `src/app/courses/foundation/_components/` (ActivityRenderer +
+  engines/BranchingScenarioEngine + LightMarkdown + SectionRenderer),
+  `content/courses/aibi-foundation/` (32 files: Lite + Full + Manager +
+  Board + refresh-slots), `tasks/foundation-v2-migration.md`.
+- Demoted `Plans/foundation-v2/` rows in the Reference Plans table.
+
+**What did NOT change:**
+- The 2026-05-11 rename (PR #45, commit `c172923`) is unaffected — that
+  was internal hygiene (aibi-p → foundation). The reversal here is about
+  product shape (one course vs four tracks), not about names.
+- The Personal Prompt Library 18-field schema is **still a fixed
+  contract** for future AiBI-Specialist / AiBI-Leader compatibility.
+- AiBI-S and AiBI-L deferrals remain in place; the single Foundation
+  course is the only active SKU.
+
+**Why the reversal:** The four-track design was a planning document;
+the actual product has always been one course. Shipping four SKUs would
+have required new Stripe products, new checkout flows, new institutional
+volume-pricing logic, and ~5,500 lines of new platform code (8 activity
+engines). None of that exists. The single-course shape matches both the
+current code reality and the operator's mental model.
 
 ---
 

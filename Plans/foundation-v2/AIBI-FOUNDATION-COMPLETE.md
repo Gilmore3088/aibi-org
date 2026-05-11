@@ -1,6 +1,16 @@
 # AiBI-Foundation v2
 # The Complete Program Reference
 
+> **STATUS: SUPERSEDED — 2026-05-11.** The four-track product family
+> described in this bundle (Foundation Lite, Foundation Full, Manager
+> Track, Board Briefing) was reversed. AiBI-Foundation is one course,
+> not four tracks. See CLAUDE.md Decisions Log → 2026-05-11 entry for
+> the reasoning. This bundle is preserved as an authoring archive and
+> may inform future product decisions, but it is NOT the source of
+> truth for the shipped product. The current Foundation course runs on
+> `content/courses/foundation-program/` via
+> `/courses/foundation/program/*`.
+
 **The AI Banking Institute**
 **Version 2.0 · 2026-Q2**
 **Single-source-of-truth document · ~30 min read**
