@@ -14,6 +14,7 @@
 import { NextResponse } from 'next/server';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { dbReadValues } from '@/lib/products/normalize';
+import { rateLimitOrFail, getRequestIp } from '@/lib/api/rate-limit';
 
 // Lazy-import the stripe singleton so the module-level throw only fires
 // when the route is actually invoked, not at build time.
@@ -71,6 +72,15 @@ async function hasLockedInstitutionDiscount(email: string): Promise<boolean> {
 }
 
 export async function POST(request: Request) {
+  const limited = await rateLimitOrFail({
+    key: 'create-checkout',
+    scope: 'ip',
+    identifier: getRequestIp(request),
+    max: 20,
+    windowSeconds: 3600,
+  });
+  if (limited) return limited;
+
   // Parse body
   let body: CheckoutBody;
   try {

@@ -6,6 +6,7 @@
 import { NextResponse } from 'next/server';
 import { subscribeToNewsletterForm } from '@/lib/mailerlite';
 import { ensureAuthUser } from '@/lib/supabase/auth-admin';
+import { rateLimitOrFail, getRequestIp } from '@/lib/api/rate-limit';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -15,6 +16,15 @@ interface SubscribePayload {
 }
 
 export async function POST(request: Request) {
+  const limited = await rateLimitOrFail({
+    key: 'subscribe-newsletter',
+    scope: 'ip',
+    identifier: getRequestIp(request),
+    max: 10,
+    windowSeconds: 3600,
+  });
+  if (limited) return limited;
+
   let body: SubscribePayload;
   try {
     body = (await request.json()) as SubscribePayload;
