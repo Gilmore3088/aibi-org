@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AiBI — Designer Brief</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+SC:wght@400;500;600&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --parch:#f5f0e6;--parch2:#ede6d8;--linen:#f9f6f0;
+  --terra:#b5512e;--terra2:#c96a43;--terra4:#f0c4ab;
+  --cobalt:#2d4a7a;--sage:#4a6741;
+  --ink:#1e1a14;--slate:#6b6355;--dust:#9b9085;
+  --border:rgba(181,81,46,.15);--border2:rgba(30,26,20,.1);
+  --fd:'Cormorant',Georgia,serif;--fsc:'Cormorant SC',Georgia,serif;
+  --fb:'DM Sans',system-ui,sans-serif;--fm:'DM Mono',monospace;
+}
+body{background:var(--linen);color:var(--ink);font-family:var(--fb);-webkit-font-smoothing:antialiased}
+.cover{background:var(--ink);padding:56px;border-bottom:3px solid var(--terra)}
+.cover-role{font-family:var(--fm);font-size:10px;color:rgba(245,240,230,.35);letter-spacing:3px;margin-bottom:10px}
+.cover-title{font-family:var(--fd);font-size:clamp(36px,5vw,58px);font-weight:700;color:var(--parch);line-height:1.05;margin-bottom:8px}
+.cover-sub{font-family:var(--fd);font-size:16px;font-style:italic;color:rgba(245,240,230,.5)}
+main{max-width:1100px;margin:0 auto;padding:0 56px 80px}
+.section{padding:60px 0;border-bottom:1px solid var(--border2)}
+.section:last-child{border-bottom:none}
+.s-num{font-family:var(--fm);font-size:10px;color:var(--terra2);letter-spacing:2px;margin-bottom:8px}
+.s-title{font-family:var(--fd);font-size:clamp(26px,3vw,40px);font-weight:700;color:var(--ink);line-height:1.1;margin-bottom:10px;letter-spacing:-.2px}
+.s-title em{font-style:italic;color:var(--terra2)}
+.s-sub{font-family:var(--fd);font-size:14px;font-weight:300;color:var(--slate);line-height:1.8;font-style:italic;max-width:640px;margin-bottom:32px}
+.rule{width:40px;height:1px;background:var(--terra);margin-bottom:20px;display:block}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-bottom:24px}
+.three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:24px}
+.card{background:var(--parch2);border:1px solid var(--border);border-radius:3px;padding:24px;margin-bottom:18px}
+.card-lbl{font-family:var(--fsc);font-size:9px;letter-spacing:2.5px;color:var(--terra);margin-bottom:10px}
+.body{font-size:13px;color:var(--slate);line-height:1.7}
+.body strong{color:var(--ink);font-weight:600}
+
+/* COLOR SWATCHES */
+.swatch-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+.swatch{border-radius:4px;overflow:hidden;border:1px solid rgba(0,0,0,.08);flex:1;min-width:120px}
+.swatch-color{height:72px}
+.swatch-info{padding:10px 12px;background:white}
+.swatch-name{font-family:var(--fsc);font-size:9px;letter-spacing:1px;color:var(--slate);margin-bottom:3px}
+.swatch-hex{font-family:var(--fm);font-size:11px;color:var(--ink);font-weight:500}
+.swatch-use{font-size:10px;color:var(--dust);margin-top:2px}
+
+/* TYPE SPECIMENS */
+.type-row{padding:20px 0;border-bottom:1px solid var(--border2)}
+.type-row:last-child{border-bottom:none}
+.type-meta{font-family:var(--fm);font-size:10px;color:var(--terra2);letter-spacing:1px;margin-bottom:8px}
+.type-sample{color:var(--ink)}
+
+/* ASSET CHECKLIST */
+.asset-list{display:flex;flex-direction:column;gap:0}
+.asset-item{display:grid;grid-template-columns:24px 1fr auto;gap:12px;align-items:start;padding:12px 0;border-bottom:1px solid var(--border2)}
+.asset-item:last-child{border-bottom:none}
+.asset-check{width:18px;height:18px;border:1.5px solid var(--border2);border-radius:2px;flex-shrink:0;margin-top:1px}
+.asset-name{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:3px}
+.asset-spec{font-size:11px;color:var(--dust)}
+.asset-priority{font-family:var(--fm);font-size:9px;padding:3px 8px;border-radius:1px;letter-spacing:.5px;white-space:nowrap;align-self:start;margin-top:2px}
+.p-critical{background:rgba(181,81,46,.12);color:var(--terra)}
+.p-soon{background:rgba(45,74,122,.1);color:var(--cobalt)}
+.p-later{background:rgba(30,26,20,.07);color:var(--slate)}
+
+/* DO / DONT */
+.do-dont{display:grid;grid-template-columns:1fr 1fr;gap:2px;border:1px solid var(--border2);border-radius:3px;overflow:hidden;margin-bottom:20px}
+.do-col{padding:20px 22px;background:rgba(74,103,65,.04)}
+.dont-col{padding:20px 22px;background:rgba(155,34,38,.03)}
+.dd-title{font-family:var(--fsc);font-size:9px;letter-spacing:2px;margin-bottom:14px}
+.do-title{color:var(--sage)}.dont-title{color:#9b2226}
+.dd-item{font-size:12px;color:var(--slate);padding:6px 0;border-bottom:1px solid rgba(0,0,0,.05);line-height:1.5}
+.dd-item:last-child{border-bottom:none}
+.do-item::before{content:'✓  ';color:var(--sage);font-size:10px}
+.dont-item::before{content:'✗  ';color:#9b2226;font-size:10px}
+
+/* SPACING */
+.spacing-row{display:flex;gap:16px;align-items:flex-end;margin-bottom:16px;flex-wrap:wrap}
+.sp-item{text-align:center}
+.sp-box{background:rgba(181,81,46,.12);border:1px solid var(--terra4);border-radius:2px;margin-bottom:6px}
+.sp-val{font-family:var(--fm);font-size:10px;color:var(--terra)}
+.sp-px{font-size:10px;color:var(--dust)}
+
+/* ALERT */
+.alert{padding:16px 20px;border-left:3px solid var(--terra);background:rgba(181,81,46,.05);border-radius:0 3px 3px 0;margin-bottom:20px}
+.alert-title{font-family:var(--fsc);font-size:9px;letter-spacing:2px;color:var(--terra);margin-bottom:7px}
+.alert-body{font-size:13px;color:var(--ink);line-height:1.65}
+
+@media(max-width:900px){
+  .cover,.section{padding-left:24px;padding-right:24px}
+  main{padding:0 24px 60px}
+  .two-col,.three-col,.do-dont{grid-template-columns:1fr}
+  .swatch-row{flex-wrap:wrap}
+  .swatch{min-width:calc(50% - 6px)}
+}
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="cover-role">AiBI · Designer Brief · v1.0</div>
+  <h1 class="cover-title">The AI Banking Institute<br>Brand & Visual System</h1>
+  <div class="cover-sub">For the designer responsible for visual identity, UI components, and all branded assets.</div>
+</div>
+
+<main>
+
+<!-- 01 AESTHETIC DIRECTION -->
+<section class="section">
+  <div class="s-num">01 · Aesthetic Direction</div>
+  <h2 class="s-title">Ancient wisdom<br><em>meets modern tech.</em></h2>
+  <p class="s-sub">This is the single most important brief you'll receive for this brand. Everything visual should feel like it belongs in both a 200-year-old bank and a serious technology firm — simultaneously. Not retro. Not startup. Something that earns trust the moment you see it.</p>
+
+  <div class="three-col">
+    <div class="card">
+      <div class="card-lbl">Feel</div>
+      <div class="body">Parchment and terracotta. The warmth of old documents and institutional authority. Architectural ornament without decoration for decoration's sake. Think: the weight of a legal brief on premium paper.</div>
+    </div>
+    <div class="card">
+      <div class="card-lbl">References</div>
+      <div class="body">Oliver Wyman financial services practice materials. McKinsey banking sector reports. The Economist's clean authority. Roman architectural details — arcs, circles, ruled lines. Manuscript illumination without the gold leaf.</div>
+    </div>
+    <div class="card">
+      <div class="card-lbl">Counter-References</div>
+      <div class="body">Nothing that looks like a fintech startup. No gradients with purple-to-teal. No abstract geometric blobs. No stock photos of diverse people pointing at screens. No emoji anywhere in the brand system.<br><br>
+      Specifically avoid the visual language of vendor conference booths, core system sales decks, and "digital transformation" stock photography. AiBI should look like it belongs in a boardroom, not on a tradeshow floor.</div>
+    </div>
+  </div>
+
+  <div class="do-dont">
+    <div class="do-col">
+      <div class="dd-title do-title">Visual Do's</div>
+      <div class="dd-item do-item">Ruled lines, hairlines, and ornamental separators</div>
+      <div class="dd-item do-item">Circular seal/mark motifs with fine border</div>
+      <div class="dd-item do-item">Warm cream backgrounds — never pure white</div>
+      <div class="dd-item do-item">Monospaced type for numbers and data</div>
+      <div class="dd-item do-item">Generous white space with intentional density contrast</div>
+      <div class="dd-item do-item">Terracotta as the singular signal color</div>
+      <div class="dd-item do-item">Italic serif for emphasis — it earns its weight</div>
+    </div>
+    <div class="dont-col">
+      <div class="dd-title dont-title">Visual Don'ts</div>
+      <div class="dd-item dont-item">Gradients (except the subtle top-border treatment on cards)</div>
+      <div class="dd-item dont-item">Drop shadows (elevation is implied through color, not shadow)</div>
+      <div class="dd-item dont-item">Icons that look like they came from an icon library</div>
+      <div class="dd-item dont-item">Rounded corners more than 4px (keeps authority)</div>
+      <div class="dd-item dont-item">Uppercase sans-serif for body text</div>
+      <div class="dd-item dont-item">Blue as a primary or accent color — cobalt is reserved for security contexts only</div>
+      <div class="dd-item dont-item">Any background darker than the ink color on light surfaces</div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 COLOR SYSTEM -->
+<section class="section">
+  <div class="s-num">02 · Color System</div>
+  <h2 class="s-title">Six colors.<br><em>Each one earns its role.</em></h2>
+
+  <div style="font-family:var(--fsc);font-size:9px;letter-spacing:2px;color:var(--terra);margin-bottom:14px">Primary Palette</div>
+  <div class="swatch-row">
+    <div class="swatch">
+      <div class="swatch-color" style="background:#f9f6f0"></div>
+      <div class="swatch-info"><div class="swatch-name">Linen</div><div class="swatch-hex">#f9f6f0</div><div class="swatch-use">Primary background</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#f5f0e6"></div>
+      <div class="swatch-info"><div class="swatch-name">Parchment</div><div class="swatch-hex">#f5f0e6</div><div class="swatch-use">Card backgrounds</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#ede6d8"></div>
+      <div class="swatch-info"><div class="swatch-name">Parchment Dark</div><div class="swatch-hex">#ede6d8</div><div class="swatch-use">Hover states, section bands</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#1e1a14"></div>
+      <div class="swatch-info"><div class="swatch-name">Ink</div><div class="swatch-hex">#1e1a14</div><div class="swatch-use">Body text, headings</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#6b6355"></div>
+      <div class="swatch-info"><div class="swatch-name">Slate</div><div class="swatch-hex">#6b6355</div><div class="swatch-use">Secondary text</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#9b9085"></div>
+      <div class="swatch-info"><div class="swatch-name">Dust</div><div class="swatch-hex">#9b9085</div><div class="swatch-use">Captions, metadata</div></div>
+    </div>
+  </div>
+
+  <div style="font-family:var(--fsc);font-size:9px;letter-spacing:2px;color:var(--terra);margin-bottom:14px;margin-top:8px">Signal Colors — Pillar System</div>
+  <div class="swatch-row">
+    <div class="swatch">
+      <div class="swatch-color" style="background:#b5512e"></div>
+      <div class="swatch-info"><div class="swatch-name">Terra — Primary</div><div class="swatch-hex">#b5512e</div><div class="swatch-use">Pillar C · CTAs · Brand color · Borders</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#c96a43"></div>
+      <div class="swatch-info"><div class="swatch-name">Terra Light</div><div class="swatch-hex">#c96a43</div><div class="swatch-use">Hover states · Secondary terra</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#f0c4ab"></div>
+      <div class="swatch-info"><div class="swatch-name">Terra Pale</div><div class="swatch-hex">#f0c4ab</div><div class="swatch-use">Background tints · Tags</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#4a6741"></div>
+      <div class="swatch-info"><div class="swatch-name">Sage — Pillar A</div><div class="swatch-hex">#4a6741</div><div class="swatch-use">Accessible pillar only · Positive data</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#2d4a7a"></div>
+      <div class="swatch-info"><div class="swatch-name">Cobalt — Pillar B</div><div class="swatch-hex">#2d4a7a</div><div class="swatch-use">Boundary-Safe pillar only · Security contexts</div></div>
+    </div>
+  </div>
+
+  <div class="alert">
+    <div class="alert-title">Color Discipline</div>
+    <div class="alert-body">Terra is the ONLY brand signal color used outside of pillar-specific contexts. Sage is only used when discussing Pillar A (Accessible). Cobalt is only used when discussing Pillar B (Boundary-Safe). Using them interchangeably destroys the three-pillar visual system. The security band on the website is cobalt for this reason — it immediately signals which pillar is being discussed.</div>
+  </div>
+</section>
+
+<!-- 03 TYPOGRAPHY -->
+<section class="section">
+  <div class="s-num">03 · Typography</div>
+  <h2 class="s-title">Three typefaces.<br><em>Each with a defined job.</em></h2>
+
+  <div class="card" style="margin-bottom:28px">
+    <div class="card-lbl">Type Stack</div>
+    <div class="body">
+      <strong>Display / Headings:</strong> Cormorant (Google Fonts) — weights 300, 400, 600, 700. Italic variants used intentionally for emphasis and warmth.<br><br>
+      <strong>Small Caps / Labels:</strong> Cormorant SC (Google Fonts) — weights 400, 500, 600. Used for ALL section labels, navigation items, designation names (AiBI-P, AiBI-S, AiBI-L), and the AiBI wordmark itself.<br><br>
+      <strong>Body / UI:</strong> DM Sans (Google Fonts) — weights 300, 400, 500, 600. Clean, modern, highly legible at small sizes. Used for all body copy, buttons, and UI elements.<br><br>
+      <strong>Data / Code:</strong> DM Mono (Google Fonts) — weights 400, 500. Used for ALL numbers, prices, hex codes, financial data, and the AiBI seal initials.
+    </div>
+  </div>
+
+  <div style="border:1px solid var(--border2);border-radius:3px;padding:28px;margin-bottom:20px">
+    <div class="type-row">
+      <div class="type-meta">Cormorant 700 · Display — clamp(44px, 5.5vw, 74px)</div>
+      <div class="type-sample" style="font-family:var(--fd);font-size:52px;font-weight:700;line-height:1.05;letter-spacing:-.3px">AI your people will use.</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">Cormorant 600 italic · Hero Sub — 17px</div>
+      <div class="type-sample" style="font-family:var(--fd);font-size:17px;font-weight:300;font-style:italic;color:var(--slate);line-height:1.75">AI proficiency built exclusively for community banks and credit unions.</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">Cormorant SC 600 · Section Labels — 10px / letter-spacing: 3px</div>
+      <div class="type-sample" style="font-family:var(--fsc);font-size:10px;font-weight:600;letter-spacing:3px;color:var(--terra)">The A-B-C of AI Banking</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">DM Sans 400 · Body Text — 13–15px</div>
+      <div class="type-sample" style="font-family:var(--fb);font-size:14px;color:var(--slate);line-height:1.7">Every recommendation accounts for SR 11-7 model risk management, TPRM guidance, and ECOA/Reg B for credit-adjacent AI decisions.</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">DM Mono 500 · Data / Numbers — 11–17px</div>
+      <div class="type-sample" style="font-family:var(--fm);font-size:17px;font-weight:500;color:var(--ink)">$280K &nbsp; 67.2% &nbsp; −24 bps &nbsp; AiBI-P</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-lbl">Rules for Italic Usage</div>
+    <div class="body">Italic Cormorant is used intentionally for warmth and authority — never as an afterthought. Use it for: key phrases in subheadlines that need emphasis ("your people will actually <em>use</em> it"), section subtitles in the hero, pull quotes, and card body text where a contemplative tone is needed. Never italicize body copy (DM Sans) — italics there signal error state.</div>
+  </div>
+</section>
+
+<!-- 04 THE AiBI MARK -->
+<section class="section">
+  <div class="s-num">04 · The AiBI Mark</div>
+  <h2 class="s-title">The seal.<br><em>What it needs to be.</em></h2>
+  <p class="s-sub">The mark direction is established in the HTML prototype — a circular seal with fine border, Cormorant SC initials, institutional weight. The designer's job is to produce the production-ready vector package.</p>
+
+  <div class="two-col">
+    <div class="card">
+      <div class="card-lbl">Mark Specification</div>
+      <div class="body">
+        <strong>Form:</strong> Circle. Fine stroke border (1.5–2px at production size). Not a badge, not a pill — a seal. The weight should suggest something stamped into wax, not a software icon.<br><br>
+        <strong>Interior:</strong> "AiBI" in Cormorant SC. The "Ai" should feel slightly smaller or lighter than the "BI" to preserve the internal visual hierarchy — AI Banking Institute, not AI-Bi. Alternatively: the full four letters at equal weight in SC is also acceptable if it reads cleanly.<br><br>
+        <strong>Color variants required:</strong> Terra on linen (primary) · White on terra (reversed for CTA band) · White on ink (for dark backgrounds/footer) · Terra on parchment (for document use)
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-lbl">Wordmark + Seal Lockup</div>
+      <div class="body">
+        <strong>Primary lockup:</strong> Seal + "The AI Banking Institute" (Cormorant SC, 15px, 1.5px letter-spacing) with "aibankinginstitute.com" below in DM Mono 8px. This is the nav lockup.<br><br>
+        <strong>Secondary lockup:</strong> Seal alone (for favicon, app icon, social avatar).<br><br>
+        <strong>Tertiary lockup:</strong> Full name stacked without seal (for documents where the seal would be too small to read).<br><br>
+        <strong>Minimum clear space:</strong> The width of the letter "A" in the seal on all sides. Never crowd the mark.
+      </div>
+    </div>
+  </div>
+
+  <div class="alert">
+    <div class="alert-title">What the Mark Should NOT Look Like</div>
+    <div class="alert-body">Not a tech company icon. Not a bank logo with columns or eagles. Not a shield. Not a hexagon. The circle with fine ruling is the direction — it reads as institutional, verified, and slightly ancient in the best way. Think less "fintech app icon" and more "embossed seal on a legal document." The AiBI mark should look appropriate on both a digital screen and a certificate of achievement.</div>
+  </div>
+</section>
+
+<!-- 05 UI COMPONENTS -->
+<section class="section">
+  <div class="s-num">05 · UI Component Library</div>
+  <h2 class="s-title">Components from<br><em>the site prototype.</em></h2>
+  <p class="s-sub">These components exist in the HTML prototype (aibi-site-v3.html). The designer needs to create Figma versions of each for the developer handoff.</p>
+
+  <div class="two-col">
+    <div>
+      <div class="card-lbl" style="font-family:var(--fsc);font-size:9px;letter-spacing:2px;color:var(--terra);margin-bottom:12px">Navigation</div>
+      <div class="card">
+        <div class="body">
+          <strong>Sticky nav:</strong> Linen background 97% opacity, 70px height, terra border bottom 1px. Contains: Seal + wordmark lockup (left) · Nav links (Cormorant SC 12px, letter-spacing .3px) · "Request Briefing" CTA button (right)<br><br>
+          <strong>CTA button states:</strong> Default (terra border, terra text, transparent bg) · Hover (solid terra bg, linen text) · All caps, 11px, letter-spacing 1.2px, 2px border-radius
+        </div>
+      </div>
+      <div class="card-lbl" style="font-family:var(--fsc);font-size:9px;letter-spacing:2px;color:var(--terra);margin-bottom:12px">Buttons</div>
+      <div class="card">
+        <div class="body">
+          <strong>Primary (btn-terra):</strong> Solid terra bg, linen text, 13px 28px padding, 2px radius, no border<br><br>
+          <strong>Secondary (btn-outline):</strong> Transparent bg, border2 color border, ink3 text — hover to terra border + terra text<br><br>
+          <strong>CTA reversed (btn-cream):</strong> Linen bg, terra text — used on terra backgrounds only<br><br>
+          <strong>Ghost reversed (btn-lo):</strong> Transparent, 35% white border, 80% white text — used on cobalt/dark backgrounds<br><br>
+          All buttons: uppercase, 11px, DM Sans 600, letter-spacing 1.2px, 2px border-radius
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="card-lbl" style="font-family:var(--fsc);font-size:9px;letter-spacing:2px;color:var(--terra);margin-bottom:12px">Cards</div>
+      <div class="card">
+        <div class="body">
+          <strong>Standard card:</strong> Parch2 bg, terra border 1px, 3px radius. Top accent: 2px gradient from terra → transparent (leftward). Label in Cormorant SC 9px terra, 2.5px letter-spacing. Title in Cormorant 20px 600. Body in DM Sans 13px slate.<br><br>
+          <strong>Pillar cards:</strong> Parch bg, large background number (opacity .05). Top accent 3px in pillar color. Letter label in Cormorant SC 13px, 3px letter-spacing.<br><br>
+          <strong>Certification cards:</strong> Parch bg, border2 border. Bottom accent 2px terra (revealed on hover via scaleX transform). Hover state: translateY(-3px), box shadow terra.<br><br>
+          <strong>Engagement cards:</strong> Linen bg, no accent line. Hover: background darkens to parch.
+        </div>
+      </div>
+      <div class="card-lbl" style="font-family:var(--fsc);font-size:9px;letter-spacing:2px;color:var(--terra);margin-bottom:12px">Form Elements</div>
+      <div class="card">
+        <div class="body">
+          <strong>Text input:</strong> Parch2 bg, border2 border, 2px radius, 10px 12px padding, DM Mono 17px. Focus: terra border.<br><br>
+          <strong>Range slider:</strong> Terra accent-color. Default browser with terra color override.<br><br>
+          <strong>Result display box:</strong> Parch3 bg, terra border. Display number in Cormorant 52px 700 terra. Range/subtitle in DM Sans 11px dust.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 ASSETS TO CREATE -->
+<section class="section">
+  <div class="s-num">06 · Asset Delivery List</div>
+  <h2 class="s-title">Everything the designer<br><em>needs to produce.</em></h2>
+
+  <div class="asset-list">
+    <div class="asset-item"><div class="asset-check"></div><div><div class="asset-name">AiBI Primary Mark — Vector Package</div><div class="asset-spec">SVG + PDF + PNG @1x/2x/3x. Four color variants: terra/linen, white/terra, white/ink, terra/parch. Plus favicon (32px, 64px) and app icon (512px).</div></div><div class="asset-priority p-critical">Critical First</div></div>
+    <div class="asset-item"><div class="asset-check"></div><div><div class="asset-name">Wordmark Lockup Variations</div><div class="asset-spec">Horizontal (seal + name) and stacked. All four color variants. SVG + PNG. The nav lockup should include the aibankinginstitute.com tagline below.</div></div><div class="asset-priority p-critical">Critical First</div></div>
+    <div class="asset-item"><div class="asset-check"></div><div><div class="asset-name">AiBI-P / AiBI-S / AiBI-L Certificate Design</div><div class="asset-spec">Print-ready PDF template (8.5×11" landscape). Cormorant serif, parchment (#f5f0e6) background, terra accent, circular seal watermark at 8% opacity center. Fields: recipient name (Cormorant 32px), designation (Cormorant SC, e.g. "AiBI-P · Banking AI Practitioner"), date issued (DM Mono), unique certificate ID (DM Mono), registrar signature line. Should look appropriate framed on a wall and shared on LinkedIn. Three versions: AiBI-P (terra accent), AiBI-S (terra + track suffix), AiBI-L (cobalt accent).</div></div><div class="asset-priority p-critical">Critical First</div></div>
+    <div class="asset-item"><div class="asset-check"></div><div><div class="asset-name">Figma Component Library</div><div class="asset-spec">All UI components from site prototype in Figma: nav, buttons (all states), cards (all variants), pillar blocks, certification cards, form inputs, section headers, footer. With proper auto-layout and variant properties.</div></div><div class="asset-priority p-critical">Critical First</div></div>
+    <div class="asset-item"><div class="asset-check"></div><div><div class="asset-name">LinkedIn Company Page Header + Personal Profile Banner</div><div class="asset-spec">LinkedIn header: 1584×396px. Personal banner: 1584×396px. Must include mark, wordmark, and tagline "The A-B-C of AI Banking." Terracotta on parchment.</div></div><div class="asset-priority p-critical">Before Launch</div></div>
+    <div class="asset-item"><div class="asset-check"></div><div><div class="asset-name">PowerPoint / Keynote Master Template</div><div class="asset-spec">Master slide deck template for client deliverables. Cover slide, content slide, data slide, section divider, final/CTA slide. Must match website aesthetic. All deliverables produced for clients use this template.</div></div><div class="asset-priority p-critical">Before First Client</div></div>
+    <div class="asset-item"><div class="asset-check"></div><div><div class="asset-name">Email Signature Template</div><div class="asset-spec">HTML email signature. Minimal: Name · Title · AiBI mark (small) · aibankinginstitute.com · Phone. Terra and ink. No banner image.</div></div><div class="asset-priority p-critical">Before Launch</div></div>
+    <div class="asset-item"><div class="asset-check"></div><div><div class="asset-name">BAI Brief Email Newsletter Template</div><div class="asset-spec">HTML email template. Header: wordmark on parchment. Three sections: metric, use case, regulatory note. Footer with unsubscribe. Plain reading experience — not a marketing email.</div></div><div class="asset-priority p-soon">Month 2</div></div>
+    <div class="asset-item"><div class="asset-check"></div><div><div class="asset-name">PDF 1-Pagers (×2)</div><div class="asset-spec">(1) "The 5 Questions Before Signing an AI Vendor Contract" (2) "Safe AI Use in Your Institution." Single page, print-quality PDF. On-brand. These are lead magnets — they must look serious enough to forward to a CFO.</div></div><div class="asset-priority p-soon">Month 2</div></div>
+    <div class="asset-item"><div class="asset-check"></div><div><div class="asset-name">LinkedIn Post Template (×3 pillar types)</div><div class="asset-spec">Three branded post image templates (one per A/B/C pillar). 1200×628px. Pillar color as accent, parchment background, mark in corner. Used for data posts, use case posts, and regulatory notes.</div></div><div class="asset-priority p-soon">Month 2</div></div>
+    <div class="asset-item"><div class="asset-check"></div><div><div class="asset-name">Engagement Report Cover Template</div><div class="asset-spec">Cover page design for Quick Win Sprint ROI reports and Process Audit deliverables. Client name, engagement title, date. Serious, board-presentable. Terra accent on parchment.</div></div><div class="asset-priority p-later">Before First Engagement</div></div>
+  </div>
+</section>
+
+<!-- 07 SPACING & LAYOUT -->
+<section class="section">
+  <div class="s-num">07 · Spacing & Layout</div>
+  <h2 class="s-title">The spacing system<br><em>from the prototype.</em></h2>
+
+  <div class="spacing-row">
+    <div class="sp-item"><div class="sp-box" style="width:4px;height:4px"></div><div class="sp-val">4</div><div class="sp-px">px</div></div>
+    <div class="sp-item"><div class="sp-box" style="width:8px;height:8px"></div><div class="sp-val">8</div><div class="sp-px">px</div></div>
+    <div class="sp-item"><div class="sp-box" style="width:12px;height:12px"></div><div class="sp-val">12</div><div class="sp-px">px</div></div>
+    <div class="sp-item"><div class="sp-box" style="width:16px;height:16px"></div><div class="sp-val">16</div><div class="sp-px">px</div></div>
+    <div class="sp-item"><div class="sp-box" style="width:20px;height:20px"></div><div class="sp-val">20</div><div class="sp-px">px</div></div>
+    <div class="sp-item"><div class="sp-box" style="width:24px;height:24px"></div><div class="sp-val">24</div><div class="sp-px">px</div></div>
+    <div class="sp-item"><div class="sp-box" style="width:32px;height:32px"></div><div class="sp-val">32</div><div class="sp-px">px</div></div>
+    <div class="sp-item"><div class="sp-box" style="width:48px;height:48px"></div><div class="sp-val">48</div><div class="sp-px">px</div></div>
+    <div class="sp-item"><div class="sp-box" style="width:60px;height:60px"></div><div class="sp-val">60</div><div class="sp-px">px</div></div>
+    <div class="sp-item"><div class="sp-box" style="width:88px;height:88px"></div><div class="sp-val">88</div><div class="sp-px">px</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-lbl">Layout Rules</div>
+    <div class="body">
+      <strong>Max content width:</strong> 1200px, centered with 60px horizontal padding (24px on mobile).<br>
+      <strong>Section padding:</strong> 88px top and bottom on desktop, 64px on mobile.<br>
+      <strong>Grid:</strong> 12-column. Primary layouts use 2-col (1fr 1fr), 3-col (repeat(3,1fr)), and asymmetric (1fr + fixed sidebar).<br>
+      <strong>Gap:</strong> 24px standard gap between cards. 1px gap between grid-joined components (like pillar blocks).<br>
+      <strong>Border radius:</strong> 2–4px throughout. Never more than 4px on structural elements. Circles are for marks and icons only.<br>
+      <strong>Breakpoint:</strong> Mobile at 1000px. The design is desktop-first; mobile is a graceful degradation.
+    </div>
+  </div>
+</section>
+
+</main>
+</body>
+</html>

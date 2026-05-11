@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The AI Banking Institute — Foundation Document v2.0</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Cormorant+SC:wght@400;500;600&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --parch:#f5f0e6;--parch2:#ede6d8;--linen:#f9f6f0;
+  --terra:#b5512e;--terra2:#c96a43;--terra4:#f0c4ab;
+  --cobalt:#2d4a7a;--cobalt2:#3d5f96;
+  --sage:#4a6741;--sage2:#5a7d50;
+  --ink:#1e1a14;--ink2:#2e2820;--ink3:#3e3830;
+  --slate:#6b6355;--dust:#9b9085;
+  --red:#9b2226;--amber:#b8860b;
+  --border:rgba(181,81,46,.15);--border2:rgba(30,26,20,.1);--border3:rgba(30,26,20,.06);
+  --fd:'Cormorant',Georgia,serif;--fsc:'Cormorant SC',Georgia,serif;
+  --fb:'DM Sans',system-ui,sans-serif;--fm:'DM Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{background:var(--linen);color:var(--ink);font-family:var(--fb);-webkit-font-smoothing:antialiased}
+
+/* COVER */
+.cover{background:var(--terra);padding:64px 56px;border-bottom:3px solid rgba(0,0,0,.1)}
+.cover-eyebrow{font-family:var(--fsc);font-size:10px;letter-spacing:3px;color:rgba(249,246,240,.5);margin-bottom:12px}
+.cover-title{font-family:var(--fd);font-size:clamp(40px,5.5vw,68px);font-weight:700;color:var(--linen);line-height:1.05;margin-bottom:8px;letter-spacing:-.3px}
+.cover-sub{font-family:var(--fd);font-size:18px;font-weight:300;color:rgba(249,246,240,.65);font-style:italic;margin-bottom:20px}
+.cover-meta{display:flex;gap:24px;flex-wrap:wrap}
+.cm{font-family:var(--fm);font-size:10px;color:rgba(249,246,240,.45);letter-spacing:1px}
+
+/* NAV */
+.doc-nav{background:var(--parch2);border-bottom:1px solid var(--border);padding:16px 56px;position:sticky;top:0;z-index:100}
+.doc-nav-inner{display:flex;gap:6px;flex-wrap:wrap;max-width:1200px;margin:0 auto;align-items:center}
+.doc-nav-label{font-family:var(--fsc);font-size:9px;letter-spacing:2px;color:var(--terra);margin-right:8px}
+.nav-chip{font-family:var(--fsc);font-size:9px;letter-spacing:1px;padding:4px 10px;border:1px solid var(--border2);border-radius:2px;color:var(--slate);cursor:pointer;transition:all .15s;background:var(--linen)}
+.nav-chip:hover{border-color:var(--terra);color:var(--terra)}
+
+/* LAYOUT */
+main{max-width:1100px;margin:0 auto;padding:0 56px 80px}
+
+/* SECTION */
+.doc-section{padding:64px 0;border-bottom:1px solid var(--border2)}
+.doc-section:last-child{border-bottom:none}
+.sec-num{font-family:var(--fm);font-size:10px;color:var(--terra2);letter-spacing:2px;margin-bottom:8px}
+.sec-title{font-family:var(--fd);font-size:clamp(28px,3.5vw,44px);font-weight:700;color:var(--ink);line-height:1.1;margin-bottom:10px;letter-spacing:-.2px}
+.sec-title em{font-style:italic;color:var(--terra2)}
+.sec-sub{font-family:var(--fd);font-size:15px;font-weight:300;color:var(--slate);line-height:1.8;font-style:italic;max-width:680px;margin-bottom:36px}
+.rule{width:40px;height:1px;background:var(--terra);margin-bottom:20px;display:block}
+
+/* TYPOGRAPHY */
+.body-text{font-family:var(--fd);font-size:15px;color:var(--slate);line-height:1.8;font-weight:300;margin-bottom:14px}
+.body-text strong{font-weight:600;color:var(--ink);font-style:normal}
+.body-text em{color:var(--terra2)}
+
+/* GRIDS */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:28px}
+.three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:28px}
+
+/* CARDS */
+.card{background:var(--parch2);border:1px solid var(--border);border-radius:3px;padding:28px;position:relative;margin-bottom:20px}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.card-terra::before{background:linear-gradient(90deg,var(--terra),transparent)}
+.card-cobalt::before{background:linear-gradient(90deg,var(--cobalt),transparent)}
+.card-sage::before{background:linear-gradient(90deg,var(--sage),transparent)}
+.card-label{font-family:var(--fsc);font-size:9px;letter-spacing:2.5px;color:var(--terra);margin-bottom:12px}
+.card-label-cobalt{color:var(--cobalt)}
+.card-label-sage{color:var(--sage)}
+.card-title{font-family:var(--fd);font-size:20px;font-weight:600;color:var(--ink);margin-bottom:8px}
+.card-body{font-size:13px;color:var(--slate);line-height:1.7}
+
+/* ALERT */
+.alert{padding:18px 22px;border-radius:3px;margin-bottom:24px;border-left:3px solid}
+.alert-red{background:rgba(155,34,38,.06);border-color:var(--red)}
+.alert-amber{background:rgba(184,134,11,.07);border-color:var(--amber)}
+.alert-sage{background:rgba(74,103,65,.06);border-color:var(--sage)}
+.alert-cobalt{background:rgba(45,74,122,.06);border-color:var(--cobalt)}
+.alert-title{font-family:var(--fsc);font-size:9px;letter-spacing:2px;margin-bottom:8px}
+.alert-title-red{color:var(--red)}.alert-title-amber{color:var(--amber)}.alert-title-sage{color:var(--sage)}.alert-title-cobalt{color:var(--cobalt)}
+.alert-body{font-size:13px;line-height:1.65}
+.alert-body-red{color:var(--ink2)}.alert-body-amber{color:var(--ink2)}.alert-body-sage{color:var(--ink3)}.alert-body-cobalt{color:var(--ink3)}
+
+/* TABLE */
+.doc-table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:24px}
+.doc-table th{font-family:var(--fsc);font-size:9px;letter-spacing:2px;color:var(--terra);text-align:left;padding:10px 14px;border-bottom:1px solid var(--border);background:var(--parch2)}
+.doc-table td{padding:11px 14px;border-bottom:1px solid var(--border3);color:var(--ink3);line-height:1.5;vertical-align:top}
+.doc-table tr:last-child td{border-bottom:none}
+.doc-table tr:hover td{background:rgba(181,81,46,.02)}
+.mono{font-family:var(--fm);font-size:11px}
+
+/* LIST */
+.doc-list{list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:20px}
+.doc-list li{padding:10px 14px;background:var(--parch);border:1px solid var(--border3);border-radius:2px;font-size:13px;color:var(--ink3);line-height:1.55;padding-left:28px;position:relative}
+.doc-list li::before{content:'→';position:absolute;left:12px;color:var(--terra);font-size:10px;top:11px}
+
+/* DIVIDER */
+.pill-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}
+.pill{font-family:var(--fsc);font-size:9px;letter-spacing:1.5px;padding:4px 10px;border:1px solid var(--border2);border-radius:1px;color:var(--slate)}
+.pill-terra{border-color:rgba(181,81,46,.3);color:var(--terra)}
+.pill-cobalt{border-color:rgba(45,74,122,.3);color:var(--cobalt)}
+.pill-sage{border-color:rgba(74,103,65,.3);color:var(--sage)}
+
+/* PILLAR BLOCK */
+.pillar-block{border:1px solid var(--border2);border-radius:3px;margin-bottom:20px;overflow:hidden}
+.pb-header{padding:20px 24px;display:flex;align-items:center;gap:16px}
+.pb-letter{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:22px;font-weight:700;flex-shrink:0}
+.pb-a{background:rgba(74,103,65,.12);color:var(--sage)}
+.pb-b{background:rgba(45,74,122,.12);color:var(--cobalt)}
+.pb-c{background:rgba(181,81,46,.12);color:var(--terra)}
+.pb-title{font-family:var(--fsc);font-size:13px;letter-spacing:1.5px;color:var(--ink)}
+.pb-word{font-family:var(--fd);font-size:22px;font-weight:600;color:var(--ink);line-height:1}
+.pb-body{padding:0 24px 24px;border-top:1px solid var(--border3);padding-top:18px}
+.pb-desc{font-family:var(--fd);font-size:14px;font-weight:300;color:var(--slate);line-height:1.75;font-style:italic;margin-bottom:14px}
+.pb-points{display:flex;flex-direction:column;gap:6px}
+.pb-point{font-size:12px;color:var(--ink3);padding-left:16px;position:relative;line-height:1.5}
+.pb-point::before{content:'·';position:absolute;left:6px;color:var(--terra)}
+
+/* CURRICULUM LEVEL */
+.curr-level{border:1px solid var(--border2);border-radius:3px;margin-bottom:16px;overflow:hidden}
+.cl-head{padding:20px 24px;background:var(--parch);display:flex;align-items:center;justify-content:space-between;gap:16px}
+.cl-desig{font-family:var(--fsc);font-size:11px;letter-spacing:2px;color:var(--terra);width:48px;flex-shrink:0}
+.cl-name{font-family:var(--fd);font-size:18px;font-weight:600;color:var(--ink)}
+.cl-for{font-size:11px;color:var(--slate);margin-top:2px}
+.cl-meta{font-family:var(--fm);font-size:10px;color:var(--dust);text-align:right;line-height:1.5}
+.cl-body{padding:20px 24px;background:var(--linen);border-top:1px solid var(--border3)}
+.cl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.cl-col-title{font-family:var(--fsc);font-size:9px;letter-spacing:2px;color:var(--terra);margin-bottom:10px}
+.cl-item{font-size:12px;color:var(--ink3);padding:6px 0;border-bottom:1px solid rgba(30,26,20,.05);line-height:1.5}
+.cl-item:last-child{border-bottom:none}
+.cl-item::before{content:'→  ';color:var(--terra);font-size:10px}
+
+/* FUNNEL */
+.funnel-row{display:flex;align-items:stretch;gap:0;margin-bottom:24px;border:1px solid var(--border2);border-radius:3px;overflow:hidden}
+.fr{flex:1;padding:20px 18px;border-right:1px solid var(--border3);background:var(--parch)}
+.fr:last-child{border-right:none}
+.fr-price{font-family:var(--fm);font-size:11px;margin-bottom:4px}
+.fr-name{font-family:var(--fd);font-size:15px;font-weight:600;color:var(--ink);margin-bottom:5px}
+.fr-desc{font-size:11px;color:var(--dust);line-height:1.5}
+
+/* SOURCE BOX */
+.source-box{background:rgba(184,134,11,.05);border:1px solid rgba(184,134,11,.2);border-radius:3px;padding:16px 18px;margin-top:14px}
+.source-label{font-family:var(--fsc);font-size:9px;letter-spacing:2px;color:var(--amber);margin-bottom:8px}
+.source-text{font-size:12px;color:var(--ink3);line-height:1.6}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .cover{padding:48px 24px}.doc-nav{padding:14px 24px}
+  main{padding:0 24px 60px}
+  .two-col,.three-col,.cl-grid{grid-template-columns:1fr}
+  .funnel-row{flex-direction:column}
+  .fr{border-right:none;border-bottom:1px solid var(--border3)}
+  .fr:last-child{border-bottom:none}
+}
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="cover-eyebrow">Confidential Working Document</div>
+  <h1 class="cover-title">The AI Banking Institute</h1>
+  <div class="cover-sub">Foundation Document v2.0 — Brand, Curriculum, Business Model, Website Architecture</div>
+  <div class="cover-meta">
+    <span class="cm">AiBI · aibankinginstitute.com</span>
+    <span class="cm">Updated April 2026</span>
+    <span class="cm">Accessible · Boundary-Safe · Capable</span>
+  </div>
+</div>
+
+<div class="doc-nav">
+  <div class="doc-nav-inner">
+    <span class="doc-nav-label">Jump to</span>
+    <span class="nav-chip" onclick="gs('identity')">Identity</span>
+    <span class="nav-chip" onclick="gs('abc')">A-B-C Framework</span>
+    <span class="nav-chip" onclick="gs('curriculum')">Curriculum</span>
+    <span class="nav-chip" onclick="gs('business')">Business Model</span>
+    <span class="nav-chip" onclick="gs('website')">Website Spec</span>
+    <span class="nav-chip" onclick="gs('messaging')">Messaging</span>
+    <span class="nav-chip" onclick="gs('data')">Data & Sources</span>
+    <span class="nav-chip" onclick="gs('gtm')">Go-to-Market</span>
+  </div>
+</div>
+
+<main>
+
+<!-- ─── 01 IDENTITY ─── -->
+<section class="doc-section" id="identity">
+  <div class="sec-num">01 · Identity</div>
+  <h2 class="sec-title">The brand, the name,<br><em>and what AiBI means.</em></h2>
+
+  <div class="two-col">
+    <div>
+      <div class="card card-terra">
+        <div class="card-label">Full Name</div>
+        <div class="card-title">The AI Banking Institute</div>
+        <div class="card-body">The definitive article "The" signals there is one — not one of several. "AI Banking" positions the institute itself as AI-native, not as a training program that exists inside a traditional frame.</div>
+      </div>
+      <div class="card card-terra">
+        <div class="card-label">Brand Nickname</div>
+        <div class="card-title">AiBI</div>
+        <div class="card-body">Pronounced "AY-bee." Playful, memorable, pronounceable. Sounds like a name, not an acronym. Used informally in conversation and social media. Never replaces the full name in formal contexts (proposals, certifications, legal).</div>
+      </div>
+      <div class="card card-terra">
+        <div class="card-label">Domain</div>
+        <div class="card-title">aibankinginstitute.com + .org</div>
+        <div class="card-body">Both available as of April 2026. Register both immediately. .com is primary. .org reinforces the institute positioning and blocks squatters. Redirect from bankingaiinstitute.com if already owned.</div>
+      </div>
+    </div>
+    <div>
+      <div class="card card-terra">
+        <div class="card-label">Primary Tagline</div>
+        <div class="card-title">"The A-B-C of AI Banking"</div>
+        <div class="card-body">Maps to the three pillars. Signals fundamentals — anyone can start here. Works as a mnemonic: A is Accessible, B is Boundary-Safe, C is Capable. Simple enough to say on stage, substantive enough to mean something.</div>
+      </div>
+      <div class="card card-terra">
+        <div class="card-label">Secondary Taglines</div>
+        <div class="card-title">Context-specific</div>
+        <div class="card-body">
+          <strong>For staff/training contexts:</strong> "AI your people will actually use."<br><br>
+          <strong>For executive/ROI contexts:</strong> "AI that moves your efficiency ratio."<br><br>
+          <strong>For compliance/board contexts:</strong> "AI your examiners won't question."<br><br>
+          Use whichever matches the audience. All three are true simultaneously.
+        </div>
+      </div>
+      <div class="card card-terra">
+        <div class="card-label">Certification Designations</div>
+        <div class="card-title">AiBI-P · AiBI-S · AiBI-L</div>
+        <div class="card-body">All three certifications use the AiBI prefix — consistent with the brand nickname for The AI Banking Institute. The credential on a LinkedIn profile reads: AiBI-P · The AI Banking Institute. Track-specific Specialist credentials read: AiBI-S/Ops, AiBI-S/Lending, etc.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert alert-sage">
+    <div class="alert-title alert-title-sage">Brand Voice in One Sentence</div>
+    <div class="alert-body alert-body-sage">"The voice of a very good banker explaining something important to another banker — measured, specific, no hype, always with a number attached." Never generic. Never startup-breathless. Never condescending about technology adoption speed.</div>
+  </div>
+</section>
+
+<!-- ─── 02 A-B-C FRAMEWORK ─── -->
+<section class="doc-section" id="abc">
+  <div class="sec-num">02 · The A-B-C Framework</div>
+  <h2 class="sec-title">Three pillars.<br><em>One necessary sequence.</em></h2>
+  <p class="sec-sub">The sequence is not optional. Institutions that skip A and B and go straight to C have AI initiatives that fail at adoption. The framework exists because the fears have to be cleared in order.</p>
+
+  <div class="pillar-block">
+    <div class="pb-header">
+      <div class="pb-letter pb-a">A</div>
+      <div>
+        <div class="pb-title">Pillar One</div>
+        <div class="pb-word" style="color:var(--sage)">Accessible</div>
+      </div>
+    </div>
+    <div class="pb-body">
+      <div class="pb-desc">Before staff will use AI safely or efficiently, they have to believe they can use it at all. This pillar exists to overcome fear — through personal, low-stakes, immediately rewarding experiences with tools anyone already has access to.</div>
+      <div class="pb-points">
+        <div class="pb-point"><strong>Tools introduced:</strong> ChatGPT (OpenAI), Claude (Anthropic), Gemini (Google), Microsoft Copilot (M365 — already in most banks)</div>
+        <div class="pb-point"><strong>Optional builders:</strong> Lovable, Bolt.new, Replit — for those who want to build something, not just use something</div>
+        <div class="pb-point"><strong>The opening experience:</strong> Personal first. Build something for yourself — a recipe organizer, a trip itinerary, a personal budget template — before anything banking-related</div>
+        <div class="pb-point"><strong>The business pivot:</strong> "Now what are your top 3–5 problems at work? What can you solve with what you just learned?"</div>
+        <div class="pb-point"><strong>Not required in sequence:</strong> This progression can span sessions, days, or weeks. It is a phase, not a block of consecutive hours</div>
+        <div class="pb-point"><strong>Assessment first:</strong> Every learner completes the readiness assessment before being assigned curriculum. Accessibility is the default starting point for low-score responders</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pillar-block">
+    <div class="pb-header">
+      <div class="pb-letter pb-b">B</div>
+      <div>
+        <div class="pb-title">Pillar Two</div>
+        <div class="pb-word" style="color:var(--cobalt)">Boundary-Safe</div>
+      </div>
+    </div>
+    <div class="pb-body">
+      <div class="pb-desc">Every recommendation assumes a regulated institution. The security pillar addresses the first objection anyone says out loud — "Is this safe for our members? For our examiners?" — with specifics, not reassurances.</div>
+      <div class="pb-points">
+        <div class="pb-point"><strong>Primary source documents:</strong> US Treasury "AI in Financial Services" report · GAO-25-107197 (May 2025) · FSOC Annual Report · Interagency TPRM Guidance (2023)</div>
+        <div class="pb-point"><strong>Regulatory frameworks that apply to AI:</strong> SR 11-7 (Model Risk Management, applied to AI/ML models) · Interagency TPRM Guidance (AI vendors as third-party relationships) · ECOA/Reg B (for AI in credit decisions) · BSA/AML (for AI in transaction monitoring)</div>
+        <div class="pb-point"><strong>What never goes in a public LLM:</strong> Member PII (account numbers, SSNs, addresses) · MNPI (for institutions with publicly traded holding companies) · Proprietary credit policy detail · Specific examination findings</div>
+        <div class="pb-point"><strong>The enterprise vs. public distinction:</strong> Public ChatGPT ≠ ChatGPT Enterprise (data not used for training). Microsoft Copilot within M365 has contractual data protections. This distinction is taught explicitly, not assumed</div>
+        <div class="pb-point"><strong>What examiners currently look for:</strong> Model documentation · AI use case inventory · Third-party due diligence records · Explainability for credit-adjacent AI · Governance structure ownership</div>
+        <div class="pb-point"><strong>Shadow AI:</strong> Staff are already using AI on personal devices without guidelines. This is addressed directly — the choice is not AI vs. no AI, it is governed vs. ungoverned AI</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pillar-block">
+    <div class="pb-header">
+      <div class="pb-letter pb-c">C</div>
+      <div>
+        <div class="pb-title">Pillar Three</div>
+        <div class="pb-word" style="color:var(--terra)">Capable</div>
+      </div>
+    </div>
+    <div class="pb-body">
+      <div class="pb-desc">Once people are using AI safely and confidently, we empower every banker to become a builder and problem-solver. You never know who has the best idea in the room — a teller who's been frustrated by a manual process for three years might build the automation that saves the operations team 10 hours a week.</div>
+      <div class="pb-points">
+        <div class="pb-point"><strong>The shift:</strong> From "AI saves time" to "AI gives every banker the tools to solve their own problems." The efficiency ratio impact follows — but the frame that converts staff is empowerment, not productivity</div>
+        <div class="pb-point"><strong>What this looks like in practice:</strong> Loan officer builds their own pipeline dashboard. BSA officer builds their own regulatory change tracker. Teller builds an automated exception report. IT was not involved in any of these</div>
+        <div class="pb-point"><strong>The tools:</strong> Power Automate (already in M365), Copilot Studio, Zapier, Make — for automations. ChatGPT/Claude for content and analysis. Lovable/Bolt.new for staff who want to build actual apps</div>
+        <div class="pb-point"><strong>The efficiency ratio impact:</strong> Documented in NIE reduction terms for leadership. Community bank FDIC data median: ~65% efficiency ratio. Top-quartile technology-forward institutions: 55–60%. The gap is real; the specific claim requires honest sourcing (see Section 07)</div>
+        <div class="pb-point"><strong>The builder frame for CEOs:</strong> "What if every department could solve its own biggest problem without waiting for IT? That's what the Capable pillar builds."</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 03 CURRICULUM ─── -->
+<section class="doc-section" id="curriculum">
+  <div class="sec-num">03 · Curriculum Architecture</div>
+  <h2 class="sec-title">Assessment-first.<br><em>Then personal. Then professional.</em></h2>
+  <p class="sec-sub">The curriculum does not begin with modules. It begins with an assessment that determines where the learner starts and what path they follow. The opening experience is personal and fun — fear removed before business application begins.</p>
+
+  <div class="alert alert-cobalt">
+    <div class="alert-title alert-title-cobalt">Core Philosophy</div>
+    <div class="alert-body alert-body-cobalt">People earn the designation when their <strong>work product</strong> meets the standard — not when they complete the hours. "If you submitted this output to your supervisor without saying AI was involved, would anyone know — and would anyone push back on the substance?" That is the BAI quality standard.</div>
+  </div>
+
+  <h3 style="font-family:var(--fsc);font-size:11px;letter-spacing:2px;color:var(--terra);margin-bottom:16px">The Learning Journey</h3>
+
+  <div class="funnel-row">
+    <div class="fr">
+      <div class="fr-price" style="color:var(--sage)">Step 0 · Free</div>
+      <div class="fr-name">AI Readiness Assessment</div>
+      <div class="fr-desc">8 questions, 3 minutes, instant score. Assigns learner to recommended path. No email required to see results.</div>
+    </div>
+    <div class="fr">
+      <div class="fr-price" style="color:var(--terra2)">Phase A · $97</div>
+      <div class="fr-name">AI Foundations</div>
+      <div class="fr-desc">90-min micro-course. Personal tool exploration, 5 universal prompt templates, certificate. The accessible entry.</div>
+    </div>
+    <div class="fr">
+      <div class="fr-price" style="color:var(--terra)">AiBI-P · $295</div>
+      <div class="fr-name">Practitioner Cert.</div>
+      <div class="fr-desc">Full foundation cert. All staff. Covers A + B + intro to C. Assessed by work product.</div>
+    </div>
+    <div class="fr">
+      <div class="fr-price" style="color:var(--terra)">AiBI-S · $1,495</div>
+      <div class="fr-name">Specialist Cert.</div>
+      <div class="fr-desc">5 role tracks. Live cohort. Deep C-pillar. Assessed by submitted process improvement.</div>
+    </div>
+    <div class="fr">
+      <div class="fr-price" style="color:var(--ink)">AiBI-L · $2,800</div>
+      <div class="fr-name">Leader Cert.</div>
+      <div class="fr-desc">C-suite workshop. All three pillars from leadership view. Leaves with institution's actual ROI model.</div>
+    </div>
+  </div>
+
+  <!-- ASSESSMENT SPEC -->
+  <div class="card card-terra" style="margin-bottom:24px">
+    <div class="card-label">Assessment Specification — 8 Questions</div>
+    <table class="doc-table" style="margin-bottom:0">
+      <thead><tr><th>#</th><th>Dimension</th><th>What It Measures</th><th>Score Range</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Current AI Usage</td><td>Are staff currently using any AI tools for work tasks?</td><td>1–4</td></tr>
+        <tr><td>2</td><td>Experimentation Culture</td><td>Does the institution support trying new tools?</td><td>1–4</td></tr>
+        <tr><td>3</td><td>AI Literacy Level</td><td>Do staff understand what AI can and cannot do?</td><td>1–4</td></tr>
+        <tr><td>4</td><td>Quick Win Potential</td><td>Are there identified manual workflows AI could address?</td><td>1–4</td></tr>
+        <tr><td>5</td><td>Leadership Buy-In</td><td>Has leadership allocated time/budget for AI?</td><td>1–4</td></tr>
+        <tr><td>6</td><td>Security Posture</td><td>Does the institution have AI use guidelines in place?</td><td>1–4</td></tr>
+        <tr><td>7</td><td>Training Infrastructure</td><td>Capacity to deliver and sustain learning programs?</td><td>1–4</td></tr>
+        <tr><td>8</td><td>Builder Potential</td><td>Do staff have appetite to build/automate their own workflows?</td><td>1–4</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:14px;display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
+      <div style="padding:10px;background:var(--linen);border-radius:2px;text-align:center"><div style="font-family:var(--fm);font-size:11px;color:var(--red)">8–14</div><div style="font-size:10px;color:var(--dust);margin-top:3px">Starting Point<br>→ Begin with A</div></div>
+      <div style="padding:10px;background:var(--linen);border-radius:2px;text-align:center"><div style="font-family:var(--fm);font-size:11px;color:var(--amber)">15–21</div><div style="font-size:10px;color:var(--dust);margin-top:3px">Early Stage<br>→ A + B focus</div></div>
+      <div style="padding:10px;background:var(--linen);border-radius:2px;text-align:center"><div style="font-family:var(--fm);font-size:11px;color:var(--terra)">22–27</div><div style="font-size:10px;color:var(--dust);margin-top:3px">Building Momentum<br>→ B + C focus</div></div>
+      <div style="padding:10px;background:var(--linen);border-radius:2px;text-align:center"><div style="font-family:var(--fm);font-size:11px;color:var(--sage)">28–32</div><div style="font-size:10px;color:var(--dust);margin-top:3px">Ready to Scale<br>→ C + fCAIO</div></div>
+    </div>
+  </div>
+
+  <!-- AI FOUNDATIONS -->
+  <div class="curr-level">
+    <div class="cl-head">
+      <div style="display:flex;align-items:center;gap:20px">
+        <div class="cl-desig" style="font-size:10px">FOUNDATIONS</div>
+        <div><div class="cl-name">AI Foundations</div><div class="cl-for">Entry product · All staff · Pillar A focus</div></div>
+      </div>
+      <div class="cl-meta">90 Minutes · Self-Paced<br>Certificate of Completion · $97</div>
+    </div>
+    <div class="cl-body">
+      <div class="cl-grid">
+        <div>
+          <div class="cl-col-title">Part 1 · Personal Exploration</div>
+          <div class="cl-item">What ChatGPT, Claude, and Gemini actually are — in plain language</div>
+          <div class="cl-item">Live walkthrough: sign up, first prompt, first surprise</div>
+          <div class="cl-item">Personal project: build one thing for yourself (recipe, travel, budget)</div>
+          <div class="cl-item">The felt-gap moment: what you produced vs. what AI produced</div>
+        </div>
+        <div>
+          <div class="cl-col-title">Part 2 · Five Universal Templates</div>
+          <div class="cl-item">Meeting Summary (RTFC framework)</div>
+          <div class="cl-item">Structured Email (audience-calibrated)</div>
+          <div class="cl-item">Document Summary with VERIFY flags</div>
+          <div class="cl-item">Report First Draft (data → narrative)</div>
+          <div class="cl-item">Research Brief with [VERIFY] markers</div>
+        </div>
+        <div>
+          <div class="cl-col-title">Part 3 · The Business Bridge</div>
+          <div class="cl-item">"What are your top 3–5 problems at work?"</div>
+          <div class="cl-item">Which of those can you start solving today?</div>
+          <div class="cl-item">What you should never put in a public tool</div>
+          <div class="cl-item">Assessment: use one template on a real work task</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AiBI-P -->
+  <div class="curr-level">
+    <div class="cl-head">
+      <div style="display:flex;align-items:center;gap:20px">
+        <div class="cl-desig">AiBI-P</div>
+        <div><div class="cl-name">Banking AI Practitioner</div><div class="cl-for">All staff · Pillars A + B + intro to C</div></div>
+      </div>
+      <div class="cl-meta">Self-Paced · 8 Credit Hours<br>Work Product Assessment · $295</div>
+    </div>
+    <div class="cl-body">
+      <div class="cl-grid">
+        <div>
+          <div class="cl-col-title">Module 1 · What AI Actually Is</div>
+          <div class="cl-item">How LLMs work — and why they hallucinate confidently (AIEOG official definition used)</div>
+          <div class="cl-item">Traditional ML vs. Gen AI: the compliance distinction (SR 11-7 applies to both)</div>
+          <div class="cl-item">6 banking-specific hallucination patterns — with real examples from the catalog</div>
+          <div class="cl-item">What never enters a public LLM: member PII, MNPI, exam findings, proprietary credit policy</div>
+          <div class="cl-item">Enterprise vs. public tools: ChatGPT free ≠ ChatGPT Enterprise ≠ Microsoft Copilot in M365</div>
+          <div class="cl-item">AI use case inventory — what it is and why examiners will ask for it (AIEOG definition)</div>
+          <div class="cl-item">What regulators are currently applying: SR 11-7, TPRM 2023, ECOA/Reg B, AIEOG Lexicon</div>
+        </div>
+        <div>
+          <div class="cl-col-title">Module 2 · Prompting for Banking</div>
+          <div class="cl-item">RTFC Framework: Role, Task, Format, Constraint — practiced on real work tasks</div>
+          <div class="cl-item">Embedding institutional context into every prompt</div>
+          <div class="cl-item">Iterating toward board-quality output</div>
+          <div class="cl-item">Building and saving prompt libraries for your specific role</div>
+          <div class="cl-item">Tools by task: ChatGPT/Claude for analysis and drafting; Copilot for M365 integration; Fathom/Zoom AI for meetings; Power Automate for automation</div>
+          <div class="cl-item">Quick wins available today at zero additional cost (already in M365 license)</div>
+        </div>
+        <div>
+          <div class="cl-col-title">Module 3 · Application + Assessment</div>
+          <div class="cl-item">Identifying the highest-value AI use cases in your role</div>
+          <div class="cl-item">Evaluating output: what to verify, accept, or reject</div>
+          <div class="cl-item">The quality standard: "Would anyone push back on the substance?"</div>
+          <div class="cl-item">Assessment: submit one role-appropriate work product</div>
+          <div class="cl-item">Rubric: Accuracy · Completeness · Tone · Judgment · Usability</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AiBI-S -->
+  <div class="curr-level">
+    <div class="cl-head">
+      <div style="display:flex;align-items:center;gap:20px">
+        <div class="cl-desig">AiBI-S</div>
+        <div><div class="cl-name">Banking AI Specialist</div><div class="cl-for">Department managers · 5 tracks · Deep C pillar</div></div>
+      </div>
+      <div class="cl-meta">Live Cohort · 16 Hrs<br>Process Improvement Assessment · $1,495</div>
+    </div>
+    <div class="cl-body">
+      <div class="cl-grid">
+        <div>
+          <div class="cl-col-title">Five Tracks Available</div>
+          <div class="cl-item">AiBI-S/Ops — Operations (COO track)</div>
+          <div class="cl-item">AiBI-S/Lending — Lending & Credit (CLO track)</div>
+          <div class="cl-item">AiBI-S/Compliance — Compliance & Risk (CCO track)</div>
+          <div class="cl-item">AiBI-S/Finance — Finance & Reporting (CFO track)</div>
+          <div class="cl-item">AiBI-S/Retail — Retail Banking (Retail track)</div>
+        </div>
+        <div>
+          <div class="cl-col-title">Core Curriculum (All Tracks)</div>
+          <div class="cl-item">Advanced prompt architecture for professional output</div>
+          <div class="cl-item">Workflow mapping: where AI belongs in your process chain</div>
+          <div class="cl-item">RPA tools for non-developers: Power Automate, Copilot Studio, UiPath, Nintex</div>
+          <div class="cl-item">AI vendor evaluation: "Can the software show the math?" — the 5-question scorecard</div>
+          <div class="cl-item">AI use case inventory: building the governance artifact examiners will ask for</div>
+          <div class="cl-item">Change management: internal LLM deployment before customer-facing (validated best practice)</div>
+          <div class="cl-item">Building your department's 3-use-case automation roadmap with documented ROI</div>
+        </div>
+        <div>
+          <div class="cl-col-title">Assessment Standard</div>
+          <div class="cl-item">Submit: before/after workflow with measured time savings</div>
+          <div class="cl-item">Demonstrate: one running automation (screenshot or recording)</div>
+          <div class="cl-item">Present: 3-use-case department roadmap with ROI estimates</div>
+          <div class="cl-item">Peer review: critique another manager's AI workflow</div>
+          <div class="cl-item">Resubmission allowed once with instructor feedback</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AiBI-L -->
+  <div class="curr-level">
+    <div class="cl-head">
+      <div style="display:flex;align-items:center;gap:20px">
+        <div class="cl-desig">AiBI-L</div>
+        <div><div class="cl-name">Banking AI Leader</div><div class="cl-for">C-suite & board · All three pillars from leadership view</div></div>
+      </div>
+      <div class="cl-meta">1-Day Workshop · In-Person<br>$2,800 individual / $12,000 team of 8</div>
+    </div>
+    <div class="cl-body">
+      <div class="cl-grid">
+        <div>
+          <div class="cl-col-title">Morning Session</div>
+          <div class="cl-item">The A-B-C framework from a leadership accountability lens</div>
+          <div class="cl-item">Reading the competitive landscape: where peer institutions are</div>
+          <div class="cl-item">Efficiency ratio mechanics: how AI moves the number</div>
+          <div class="cl-item">Building a 3-year AI roadmap a board can approve</div>
+          <div class="cl-item">AI governance: what the institution is responsible for</div>
+        </div>
+        <div>
+          <div class="cl-col-title">Afternoon Session</div>
+          <div class="cl-item">Build your institution's ROI model live (actual numbers, not template)</div>
+          <div class="cl-item">Vendor evaluation masterclass: 5 questions, scoring framework</div>
+          <div class="cl-item">Concentration risk, data ownership, exit provisions</div>
+          <div class="cl-item">Board presentation: template + talking points</div>
+          <div class="cl-item">The "shadow AI" conversation: governance before restrictions</div>
+        </div>
+        <div>
+          <div class="cl-col-title">Deliverables Package</div>
+          <div class="cl-item">Completed efficiency ratio model (institution's actual numbers)</div>
+          <div class="cl-item">3-year AI roadmap outline — board-ready</div>
+          <div class="cl-item">Vendor evaluation scorecard</div>
+          <div class="cl-item">Governance policy framework starter document</div>
+          <div class="cl-item">AiBI-L designation certificate</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HALLUCINATION CATALOG -->
+  <div class="card card-cobalt" id="hallucinations">
+    <div class="card-label card-label-cobalt">Hallucination Catalog — Banking Context (Module 1 Content)</div>
+    <div class="card-body" style="font-family:var(--fd);font-size:13px;color:var(--slate);font-style:italic;margin-bottom:16px">Official AIEOG definition (US Treasury, February 2026): "A phenomenon when AI produces output that is erroneous or flawed but is still in the form of a convincing narrative or presentation. Generative AI can still produce flawed information even if underlying data is free of defects." — Use this definition verbatim in Module 1.</div>
+    <table class="doc-table" style="margin-bottom:0">
+      <thead><tr><th>Pattern</th><th>What It Looks Like</th><th>Why It's Dangerous</th><th>Defense</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Regulatory Citation Fabrication</strong></td><td>Invents section numbers, effective dates, agency statements that sound precise</td><td>Compliance officer forwards to CEO; cited regulation doesn't say what AI said</td><td>Treat every regulatory cite as unverified until source document pulled</td></tr>
+        <tr><td><strong>Financial Ratio Confabulation</strong></td><td>Calculates efficiency ratio with wrong denominator (omits non-interest income)</td><td>CFO presents wrong number to board committee</td><td>Always verify AI-calculated ratios against a known-correct formula</td></tr>
+        <tr><td><strong>Credit Policy Hallucination</strong></td><td>States LTV limits, DTI thresholds not in your policy — plausible industry norms</td><td>Credit memo contains a policy requirement the institution never adopted</td><td>Embed actual policy in the prompt; AI can only apply what you give it</td></tr>
+        <tr><td><strong>Temporal Regulatory Confusion</strong></td><td>States "current CFPB position" based on guidance that was rescinded or amended</td><td>Compliance summary is confidently outdated; fails examination</td><td>For anything regulatory-currency-dependent, verify at source agency</td></tr>
+        <tr><td><strong>SAR Narrative Overreach</strong></td><td>Draws legal conclusions: "pattern consistent with structuring in violation of 31 U.S.C. § 5324"</td><td>BSA officer files SAR with legal conclusion they shouldn't be making</td><td>SAR drafts always human-reviewed by BSA officer before filing; AI drafts, officer decides</td></tr>
+        <tr><td><strong>Fabricated Precedent</strong></td><td>Invents "comparable situations at similar institutions" to justify an exception approval</td><td>Hardest to detect — looks like research; most dangerous in credit exceptions</td><td>Any cited "comparable situation" must be independently verifiable; AI cannot provide comparable case history</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ─── 04 BUSINESS MODEL ─── -->
+<section class="doc-section" id="business">
+  <div class="sec-num">04 · Business Model</div>
+  <h2 class="sec-title">Products, pricing,<br><em>and the engagement ladder.</em></h2>
+
+  <h3 style="font-family:var(--fsc);font-size:11px;letter-spacing:2px;color:var(--terra);margin-bottom:16px">Revenue Streams</h3>
+  <table class="doc-table">
+    <thead><tr><th>Product</th><th>Price</th><th>Format</th><th>Y1 Target</th><th>Y1 Revenue</th></tr></thead>
+    <tbody>
+      <tr><td>AI Foundations (micro-course)</td><td class="mono">$97</td><td>Self-paced, 90 min</td><td>150 seats</td><td class="mono">$14,550</td></tr>
+      <tr><td>AiBI-P Practitioner (individual)</td><td class="mono">$295</td><td>Self-paced, 8 hrs</td><td>200 seats</td><td class="mono">$59,000</td></tr>
+      <tr><td>AiBI-P (bulk, 20+ seats)</td><td class="mono">$195/seat</td><td>Institution license</td><td>300 seats</td><td class="mono">$58,500</td></tr>
+      <tr><td>AiBI-S Specialist (cohort)</td><td class="mono">$1,495/seat</td><td>Live cohort, 16 hrs</td><td>80 seats</td><td class="mono">$119,600</td></tr>
+      <tr><td>AiBI-L Leader (individual)</td><td class="mono">$2,800</td><td>1-day workshop</td><td>20</td><td class="mono">$56,000</td></tr>
+      <tr><td>AiBI-L Leader (team of 8)</td><td class="mono">$12,000</td><td>In-person workshop</td><td>8 sessions</td><td class="mono">$96,000</td></tr>
+      <tr><td>Quick Win Sprint</td><td class="mono">$5K–$15K avg $10K</td><td>4–6 week consulting</td><td>18</td><td class="mono">$180,000</td></tr>
+      <tr><td>Process & Efficiency Audit</td><td class="mono">$25K–$60K avg $40K</td><td>6–10 week consulting</td><td>6</td><td class="mono">$240,000</td></tr>
+      <tr><td>AI Transformation / fCAIO</td><td class="mono">$75K–$150K+</td><td>3–6 month + monthly</td><td>2</td><td class="mono">$220,000</td></tr>
+      <tr><td>Annual Membership</td><td class="mono">$3,600/yr</td><td>Quarterly efficiency ratio benchmarks + curriculum updates + AIEOG vocabulary tracking</td><td>30</td><td class="mono">$108,000</td></tr>
+      <tr><td colspan="4"><strong>Year 1 Total (target)</strong></td><td class="mono"><strong>~$1.15M</strong></td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="font-family:var(--fsc);font-size:11px;letter-spacing:2px;color:var(--terra);margin-bottom:16px;margin-top:32px">Consulting Engagement Ladder</h3>
+  <div class="three-col">
+    <div class="card card-terra">
+      <div class="card-label">Phase I · Entry</div>
+      <div class="card-title">Quick Win Sprint</div>
+      <div class="card-body">
+        <strong>Scope:</strong> 3 implemented automations, documented ROI report<br><br>
+        <strong>Deliverable:</strong> Before/after report with hours recaptured, dollar value, efficiency ratio impact. Includes "What We Didn't Do" page — seeds the Process Audit conversation.<br><br>
+        <strong>Guarantee:</strong> If ROI doesn't cover the engagement cost in 90 days, refund the difference.<br><br>
+        <strong>Duration:</strong> 4–6 weeks<br>
+        <strong>Price:</strong> $5,000–$15,000
+      </div>
+    </div>
+    <div class="card card-terra">
+      <div class="card-label">Phase II · Expansion</div>
+      <div class="card-title">Process & Efficiency Audit</div>
+      <div class="card-body">
+        <strong>Scope:</strong> All departments mapped. Every manual workflow quantified by dollar value. Prioritized roadmap with ROI per line item.<br><br>
+        <strong>Deliverable:</strong> Complete process inventory, 3-phase implementation roadmap, efficiency ratio model, board presentation (10 slides).<br><br>
+        <strong>Duration:</strong> 6–10 weeks<br>
+        <strong>Price:</strong> $25,000–$60,000
+      </div>
+    </div>
+    <div class="card card-terra">
+      <div class="card-label">Phase III · Strategic</div>
+      <div class="card-title">AI Transformation + fCAIO</div>
+      <div class="card-body">
+        <strong>Scope:</strong> Monthly structured operating system installed inside the institution. Dedicated team. 90-day rolling roadmap. Capability transfer built in — client drives AI independently when engagement ends.<br><br>
+        <strong>Monthly cadence:</strong> Wk 1: Executive Alignment → Wk 2: Department Activation → Wk 3: Implementation Sprint → Wk 4: Training + Impact Report<br><br>
+        <strong>Price:</strong> $75,000–$150,000+
+      </div>
+    </div>
+  </div>
+
+  <div class="alert alert-sage">
+    <div class="alert-title alert-title-sage">The "What We Didn't Do" Page</div>
+    <div class="alert-body alert-body-sage">The most important page in every Quick Win Sprint deliverable. After the three automations are documented, the report closes with: "Here are the next seven opportunities we identified but didn't pursue — and here's what they're worth annually." This is not a sales pitch. It is honest reporting. The CEO reads it and decides whether to act. This page is the organic path to every Process Audit engagement.</div>
+  </div>
+</section>
+
+<!-- ─── 05 WEBSITE ARCHITECTURE ─── -->
+<section class="doc-section" id="website">
+  <div class="sec-num">05 · Website Architecture</div>
+  <h2 class="sec-title">Page-by-page specification<br><em>for building the real site.</em></h2>
+  <p class="sec-sub">Every page has one primary conversion goal. Build them in priority order. The site is not complete until the assessment is live and converting to email captures.</p>
+
+  <table class="doc-table">
+    <thead><tr><th>Page</th><th>Primary Goal</th><th>Key Elements</th><th>Build Priority</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Home</strong></td>
+        <td>Assessment completion or Executive Briefing booking</td>
+        <td>Hero (tagline + three pillars intro) · Fear sequence section · Funnel overview · ROI calculator · CTA band</td>
+        <td class="mono" style="color:var(--red)">Priority 1</td>
+      </tr>
+      <tr>
+        <td><strong>Assessment</strong></td>
+        <td>Score delivered → recommended path → email capture</td>
+        <td>8 questions · Animated scoring · Results page with score breakdown + "Your next step" recommendation · Email gate before detailed report</td>
+        <td class="mono" style="color:var(--red)">Priority 1</td>
+      </tr>
+      <tr>
+        <td><strong>AI Foundations ($97)</strong></td>
+        <td>Purchase of entry product</td>
+        <td>What's in the 90 minutes · Sample template · Checkout (Stripe) · Certificate preview</td>
+        <td class="mono" style="color:var(--terra)">Priority 2</td>
+      </tr>
+      <tr>
+        <td><strong>Certifications</strong></td>
+        <td>AiBI-P enrollment or AiBI-L workshop inquiry</td>
+        <td>Three-level overview · Module details per level · Assessment standard explained · Pricing + enrollment CTA</td>
+        <td class="mono" style="color:var(--terra)">Priority 2</td>
+      </tr>
+      <tr>
+        <td><strong>Services / Consulting</strong></td>
+        <td>Executive Briefing booking</td>
+        <td>Three engagement tiers with scope + pricing · fCAIO monthly cadence · "What We Didn't Do" concept · Calendly embed</td>
+        <td class="mono" style="color:var(--terra)">Priority 2</td>
+      </tr>
+      <tr>
+        <td><strong>Security Hub</strong></td>
+        <td>"Safe AI Use" guide download → email capture</td>
+        <td>Regulatory frameworks explained · What examiners look for · Vendor evaluation checklist · Free guide download</td>
+        <td class="mono" style="color:var(--amber)">Priority 3</td>
+      </tr>
+      <tr>
+        <td><strong>About</strong></td>
+        <td>Credibility building before outreach</td>
+        <td>Founder story (CSI background → deep FI knowledge) · Banking-only focus · The AiBI founding story</td>
+        <td class="mono" style="color:var(--amber)">Priority 3</td>
+      </tr>
+      <tr>
+        <td><strong>Resources / BAI Brief</strong></td>
+        <td>Email list growth</td>
+        <td>Monthly BAI Brief archive · Benchmark report landing · Free 1-pagers</td>
+        <td class="mono" style="color:var(--sage)">Priority 4</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="card card-cobalt">
+    <div class="card-label card-label-cobalt">Assessment Results Page — Critical Specification</div>
+    <div class="card-body" style="font-size:13px;line-height:1.7">
+      The assessment results page does the selling. It must include:
+      <ul style="margin:10px 0 0 16px;display:flex;flex-direction:column;gap:6px">
+        <li>Animated score reveal (visual ring, 0→score)</li>
+        <li>Score tier label with plain-language description</li>
+        <li>Six-dimension breakdown (bar per question)</li>
+        <li>Three specific "next steps" recommendations based on score range</li>
+        <li><strong>Email gate:</strong> "Get your personalized AI roadmap emailed to you" — captures before detailed breakdown is shown</li>
+        <li>Primary CTA: "Request a free 45-minute Executive Briefing" (Calendly link)</li>
+        <li>Secondary CTA: "Start with AI Foundations — $97" (for lower scores)</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 style="font-family:var(--fsc);font-size:11px;letter-spacing:2px;color:var(--terra);margin:28px 0 16px">Technology Stack</h3>
+  <table class="doc-table">
+    <thead><tr><th>Function</th><th>Tool</th><th>Cost/Month</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>Website / Frontend</td><td class="mono">Next.js on Vercel OR Webflow</td><td class="mono">$0–$20</td><td>Vercel if you want to own the code. Webflow if you want no-code maintenance. Both work.</td></tr>
+      <tr><td>Email capture + newsletters</td><td class="mono">ConvertKit (Kit) or Beehiiv</td><td class="mono">$0–$29</td><td>ConvertKit has better automation. Beehiiv is cleaner for newsletter-first. Either works.</td></tr>
+      <tr><td>CRM</td><td class="mono">HubSpot (free tier)</td><td class="mono">$0</td><td>Free tier is sufficient for Year 1. Every assessment completion, briefing request, and course purchase tracked here.</td></tr>
+      <tr><td>Scheduling</td><td class="mono">Calendly</td><td class="mono">$10</td><td>Executive Briefing link goes on every page and every email signature.</td></tr>
+      <tr><td>Payments</td><td class="mono">Stripe</td><td class="mono">2.9%+30¢</td><td>For $97 Foundations and $295 AiBI-P individual. Consulting invoices go ACH/wire.</td></tr>
+      <tr><td>Course delivery (LMS)</td><td class="mono">Kajabi or Teachable</td><td class="mono">$39–$119</td><td>Kajabi handles courses + email + community in one. Build here before building custom.</td></tr>
+      <tr><td>Webinar / cohort delivery</td><td class="mono">Zoom Webinars</td><td class="mono">$79</td><td>AiBI-S live cohorts. Record every session — recordings become async content.</td></tr>
+      <tr><td>Certificate generation</td><td class="mono">Accredible</td><td class="mono">$0 to start</td><td>Auto-generates PDFs with unique IDs. Integrates with Kajabi/Teachable completions.</td></tr>
+      <tr><td>Analytics</td><td class="mono">Plausible or Google Analytics</td><td class="mono">$9–$0</td><td>Track assessment completions and conversion funnel from day one.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ─── 06 MESSAGING ─── -->
+<section class="doc-section" id="messaging">
+  <div class="sec-num">06 · Messaging Guide</div>
+  <h2 class="sec-title">What to say.<br><em>What to stop saying.</em></h2>
+
+  <h3 style="font-family:var(--fsc);font-size:11px;letter-spacing:2px;color:var(--terra);margin-bottom:16px">Stop Using These Phrases</h3>
+  <table class="doc-table">
+    <thead><tr><th>Stop Saying</th><th>Say Instead</th></tr></thead>
+    <tbody>
+      <tr><td>"Leverage AI to transform your business"</td><td>"Use AI to move your efficiency ratio 3–5 points in 18 months"</td></tr>
+      <tr><td>"Future-proof your institution"</td><td>"Close the gap between your efficiency ratio and your peers"</td></tr>
+      <tr><td>"Stay ahead of the curve"</td><td>"Community banks running AI are already separating from peers on efficiency"</td></tr>
+      <tr><td>"FFIEC-aware training"</td><td>"Training that accounts for the regulatory frameworks examiners are applying to AI — SR 11-7, TPRM, ECOA/Reg B"</td></tr>
+      <tr><td>"AI-enabled peers run at 58.1%"</td><td>"Top-quartile institutions run 8–12 points below the community bank average — and technology investment is a measurable factor" (see Section 07 for sourcing)</td></tr>
+      <tr><td>"Save time" (without a number)</td><td>"Loan doc QC automation: 4–5 hours per week recaptured at $28/hr loaded = $7,280/year per FTE"</td></tr>
+      <tr><td>"Game-changing" / "disruptive" / "revolutionary"</td><td>Delete. State the specific outcome instead.</td></tr>
+      <tr><td>"User-friendly"</td><td>"A compliance officer with no tech background was productive in the first session"</td></tr>
+      <tr><td>"We'd love to connect"</td><td>"I'd like to run your institution's numbers through the efficiency ratio model — takes 45 minutes"</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="font-family:var(--fsc);font-size:11px;letter-spacing:2px;color:var(--terra);margin:32px 0 16px">Messaging by Audience</h3>
+  <div class="two-col">
+    <div>
+      <div class="card card-terra">
+        <div class="card-label">CEO / President</div>
+        <div class="card-body"><strong>Lead with:</strong> Peer competition and the efficiency ratio gap. "Community banks run a median 65% efficiency ratio based on FDIC data going back 30 years. Technology-forward institutions are running 8–12 points below that. That gap is the conversation we're here to have."<br><br><strong>Fear to pre-empt:</strong> "Is this safe for a regulated institution?" — answer before they ask, with specifics.<br><br><strong>CTA:</strong> Executive Briefing, or AiBI-L for the full leadership team.</div>
+      </div>
+      <div class="card card-terra">
+        <div class="card-label">CFO</div>
+        <div class="card-body"><strong>Lead with:</strong> NIE reduction with your institution's actual numbers. "Every automation we implement produces a before/after dollar figure measured at 30, 60, and 90 days."<br><br><strong>The number:</strong> 100 FTEs × 2 hrs/week recaptured × $28/hr loaded × 50 weeks = $280,000/year recoverable NIE.<br><br><strong>CTA:</strong> ROI calculator on website, then Executive Briefing.</div>
+      </div>
+      <div class="card card-terra">
+        <div class="card-label">COO / Operations</div>
+        <div class="card-body"><strong>Lead with:</strong> Specific tasks they already hate. "Meeting doc: 2 hrs/week. Loan doc QC: 4–5 hrs/week. Pipeline reporting: 3 hrs/week. That's 9–10 hours you get back starting this month."<br><br><strong>CTA:</strong> Quick Win Sprint. "You'll have something running before week 6."</div>
+      </div>
+    </div>
+    <div>
+      <div class="card card-cobalt">
+        <div class="card-label card-label-cobalt">CCO / Compliance Officer</div>
+        <div class="card-body" style="color:var(--slate)"><strong>Lead with:</strong> Security and governance — not productivity. "We don't touch AI near credit decisions without explainability confirmed. We build the governance policy before we build the workflow."<br><br><strong>The reassurance:</strong> "Our security curriculum uses the same vocabulary your examiners use — the shared AI lexicon developed by the US Treasury's public-private partnership with the financial services sector, published February 2026. We can speak examiner before your examiner arrives." Reference SR 11-7, TPRM, and the AIEOG Lexicon by name.<br><br><strong>CTA:</strong> "Safe AI Use" guide download → AiBI-S Compliance track.</div>
+      </div>
+      <div class="card card-cobalt">
+        <div class="card-label card-label-cobalt">Board Director</div>
+        <div class="card-body" style="color:var(--slate)"><strong>Lead with:</strong> Fiduciary responsibility. "The board's job on AI is not to understand the technology — it's to ensure the institution has a policy, a governance structure, and a measurement framework."<br><br><strong>The liability angle:</strong> "What are you personally responsible for if an AI-related incident occurs? We help you build the documentation that answers that question."<br><br><strong>Supporting data:</strong> 55% of organizations have not yet implemented an AI governance framework (Gartner). The board's job is to ensure the institution is in the prepared minority.<br><br><strong>CTA:</strong> AiBI-L workshop for the board AI subcommittee.</div>
+      </div>
+      <div class="card card-cobalt">
+        <div class="card-label card-label-cobalt">Department Staff (All)</div>
+        <div class="card-body" style="color:var(--slate)"><strong>Lead with:</strong> Personal empowerment — not productivity mandates. "You have a problem at work you've been dealing with for two years. We're going to give you the tools to solve it — and you won't need IT's help."<br><br><strong>The opening experience:</strong> Personal and fun before professional. Build something for yourself first.<br><br><strong>Frame:</strong> "You are now a builder." That is the shift.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="font-family:var(--fsc);font-size:11px;letter-spacing:2px;color:var(--terra);margin:32px 0 16px">The BAI Brief — Monthly Email Template</h3>
+  <div class="card card-sage">
+    <div class="card-label card-label-sage">Format & Structure</div>
+    <div class="card-body">
+      <strong>Subject formula:</strong> One specific data point stated as a fact. Example: "Loan doc QC is costing your operations team 4 hours a week. Here's the workflow."<br><br>
+      <strong>Three sections, ~400 words total:</strong><br>
+      1. <strong>The Metric</strong> (2–3 sentences) — one data point from FDIC quarterly banking profiles, Jack Henry, Cornerstone Advisors, Gartner, or the AIEOG Lexicon. Always cited with source. Always community-bank specific. Never use a statistic that cannot be traced to a named publication.<br>
+      2. <strong>The Use Case</strong> (150–200 words) — one specific automation: the problem (hours/week), the tool (specific), setup time, ROI calculation.<br>
+      3. <strong>The Regulatory Note</strong> (75–100 words) — one development from CFPB, OCC, FDIC, NCUA, or FinCEN. Links to primary source. Flags where legal review is required.<br><br>
+      <strong>Close:</strong> One sentence. Either "Forward this to your CFO" or a link to the assessment or ROI calculator. Never more than one ask.
+    </div>
+  </div>
+</section>
+
+<!-- ─── 07 DATA & SOURCES ─── -->
+<section class="doc-section" id="data">
+  <div class="sec-num">07 · Data & Sources — Research Library</div>
+  <h2 class="sec-title">Every number sourced.<br><em>Every claim defensible.</em></h2>
+  <p class="sec-sub">A CFO will ask where the numbers come from. A compliance officer will verify the regulatory claims. Every data point used in AiBI materials is classified below: sourced, calculable, or directional. Never use unsourced data in a client-facing document.</p>
+
+  <div class="alert alert-red">
+    <div class="alert-title alert-title-red">Retire Immediately — Two Claims That Cannot Be Defended</div>
+    <div class="alert-body alert-body-red">
+      (1) <strong>"AI-enabled peers run at 58.1% efficiency ratio."</strong> No published benchmark exists for this specific claim. Replace with FDIC-sourced language: "Community banks run a median ~65% efficiency ratio; the industry-wide figure including large banks is ~55.7% (FDIC Q4 2024)."<br><br>
+      (2) <strong>"FFIEC-aware training."</strong> The FFIEC has not issued AI-specific training guidance. No such standard exists. Replace with the specific regulatory frameworks listed in Section 07c below.
+    </div>
+  </div>
+
+  <h3 style="font-family:var(--fsc);font-size:11px;letter-spacing:2px;color:var(--terra);margin-bottom:16px">Section 07a · Efficiency Ratio Data</h3>
+  <table class="doc-table">
+    <thead><tr><th>Claim</th><th>Status</th><th>Source</th><th>How to Use in Conversation</th></tr></thead>
+    <tbody>
+      <tr><td>Community bank long-term median efficiency ratio ~65%</td><td class="mono" style="color:var(--sage)">Sourced</td><td>FDIC CEIC data: long-term median 65.1%, Q1 1992–Q4 2025</td><td>"Based on FDIC quarterly banking data going back 30 years."</td></tr>
+      <tr><td>Industry-wide efficiency ratio Q4 2024: ~55.7%</td><td class="mono" style="color:var(--sage)">Sourced</td><td>FDIC Quarterly Banking Profile Q4 2024</td><td>Caveat: includes large banks. Community banks run above this. Cite both numbers together.</td></tr>
+      <tr><td>Gap between community banks and top-quartile performers: 8–12pp</td><td class="mono" style="color:var(--amber)">Directional</td><td>Derived from FDIC data — community banks median ~65%, large bank technology leaders ~53–58%</td><td>"The gap is documented in FDIC data. Your institution's specific gap is what we model in the briefing."</td></tr>
+      <tr><td>Every 1pp efficiency improvement = $300K–$500K pre-tax at $500M bank</td><td class="mono" style="color:var(--amber)">Calculable</td><td>Math: $500M bank, ~3% pre-tax ROA; 1pp NIE change = ~$300–500K depending on revenue mix</td><td>Always show the calculation. "Here's the math specific to your numbers."</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="font-family:var(--fsc);font-size:11px;letter-spacing:2px;color:var(--terra);margin:32px 0 16px">Section 07b · Research-Sourced Statistics for Client Conversations</h3>
+  <table class="doc-table">
+    <thead><tr><th>Statistic</th><th>Source</th><th>Best Used For</th></tr></thead>
+    <tbody>
+      <tr><td>66% of banks have discussed allocating budget or resources to AI</td><td>Bank Director 2024 Technology Survey (via Jack Henry AI eBook)</td><td>Opening the CEO conversation — "The discussion is happening everywhere."</td></tr>
+      <tr><td>57% of financial institutions struggle with AI skill gaps</td><td>Gartner Peer Community (via Jack Henry AI eBook)</td><td>Justifying Pillar A — "The tool isn't the barrier. The skills are."</td></tr>
+      <tr><td>55% of organizations have not yet implemented an AI governance framework, but majority are developing one</td><td>Gartner (via Jack Henry AI eBook)</td><td>Opening the compliance conversation — "Your peers are in the same position."</td></tr>
+      <tr><td>48% of financial institutions struggle with lack of clarity about AI's business impacts</td><td>Gartner (via Jack Henry AI eBook)</td><td>Justifying the ROI model — "We remove the ambiguity before you spend anything."</td></tr>
+      <tr><td>62% of consumers open to AI-powered personalized alerts to avoid fees</td><td>2025 consumer survey (via Apiture UX paper)</td><td>Retail banking module — member appetite for AI is real.</td></tr>
+      <tr><td>84% of banking consumers would switch to a bank providing AI-driven financial health insights</td><td>Personetics 2025 (via Apiture UX paper)</td><td>CDO/Digital banking conversation about member experience AI.</td></tr>
+      <tr><td>76% of consumers would switch FIs for better digital banking experience</td><td>Motley Fool consumer survey (via Apiture UX paper)</td><td>Digital strategy context — the experience gap has real attrition consequences.</td></tr>
+      <tr><td>55% of millennial-run small businesses would switch to community bank offering comparable digital products</td><td>Datos Insights (via Apiture Digital Transformation paper)</td><td>Business banking growth narrative — the market is there if the capability is.</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="font-family:var(--fsc);font-size:11px;letter-spacing:2px;color:var(--terra);margin:32px 0 16px">Section 07c · Regulatory Frameworks — What's Real and What Isn't</h3>
+  <table class="doc-table">
+    <thead><tr><th>Claim</th><th>Status</th><th>Source / Notes</th></tr></thead>
+    <tbody>
+      <tr><td>"FFIEC-aware training"</td><td class="mono" style="color:var(--red)">Retire — No Such Standard</td><td>FFIEC has not issued AI-specific training or curriculum guidance. Do not use this phrase. See replacement language below.</td></tr>
+      <tr><td>SR 11-7 Model Risk Management guidance applies to AI/ML models</td><td class="mono" style="color:var(--sage)">Sourced</td><td>Federal Reserve SR 11-7 (2011); OCC, FDIC confirmed application to AI/ML models in subsequent guidance</td></tr>
+      <tr><td>2023 Interagency TPRM Guidance covers AI vendors as third-party relationships</td><td class="mono" style="color:var(--sage)">Sourced</td><td>OCC/FDIC/Federal Reserve Interagency Guidance on Third-Party Relationships, 2023</td></tr>
+      <tr><td>AIEOG AI Lexicon: official shared vocabulary for financial sector AI</td><td class="mono" style="color:var(--sage)">Sourced — February 2026</td><td>Published by US Treasury / FBIIC / FSSCC public-private partnership. The definitive shared vocabulary for financial sector AI — use its definitions in all training materials.</td></tr>
+      <tr><td>GAO-25-107197: Congressional assessment of AI oversight in financial services</td><td class="mono" style="color:var(--sage)">Sourced — May 2025</td><td>GAO-25-107197, "Artificial Intelligence: Use and Oversight in Financial Services." Key finding: no comprehensive AI-specific regulatory framework yet exists; existing guidance applies.</td></tr>
+      <tr><td>ECOA/Reg B explainability requirements for AI in credit decisions</td><td class="mono" style="color:var(--sage)">Sourced</td><td>CFPB Reg B adverse action requirements apply to AI-assisted credit decisions. "Can the software show the math?" is the practical test. (Cornerstone Advisors, 2025)</td></tr>
+      <tr><td>NIST Cyber AI Profile</td><td class="mono" style="color:var(--amber)">Preliminary Draft Only</td><td>NIST Cybersecurity Framework Profile for AI, preliminary draft December 2025. Not final. Not examination-applicable yet.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="alert alert-cobalt">
+    <div class="alert-title alert-title-cobalt">Replace "FFIEC-Aware" With This Exact Language</div>
+    <div class="alert-body alert-body-cobalt">
+      "AiBI curriculum is grounded in the regulatory frameworks examiners are currently applying to AI use — SR 11-7 (model risk management), the 2023 Interagency TPRM Guidance (AI vendor relationships as third-party risk), ECOA/Reg B (for credit-adjacent AI decisions), BSA/AML program requirements, and the AIEOG AI Lexicon published by the US Treasury in February 2026."<br><br>
+      In sales conversations: "Our security curriculum uses the same vocabulary your examiners use — the shared AI lexicon developed by the US Treasury's public-private partnership with the financial services sector."
+    </div>
+  </div>
+
+  <h3 style="font-family:var(--fsc);font-size:11px;letter-spacing:2px;color:var(--terra);margin:32px 0 16px">Section 07d · Source Documents on File</h3>
+  <table class="doc-table">
+    <thead><tr><th>Document</th><th>Publisher</th><th>Date</th><th>Primary Use</th></tr></thead>
+    <tbody>
+      <tr><td>AIEOG AI Lexicon</td><td>US Treasury / FBIIC / FSSCC</td><td>February 2026</td><td>Official definitions for all AI terms used in curriculum and sales materials</td></tr>
+      <tr><td>A Playbook for Deploying AI in Your Bank or Credit Union</td><td>Cornerstone Advisors</td><td>2025</td><td>Use case validation, tool names, explainability framing, department-by-department AI applications</td></tr>
+      <tr><td>Getting Started in AI: A Guide for Community and Regional Banks and Credit Unions</td><td>Jack Henry &amp; Associates</td><td>2025</td><td>Statistics on skill gaps, governance gaps, and AI budget allocation in community FIs</td></tr>
+      <tr><td>The Digital Loyalty Dividend: Turning User Experience into Engagement and Growth</td><td>Apiture (now part of CSI)</td><td>2025</td><td>Consumer AI readiness stats, digital banking adoption data, member experience context</td></tr>
+      <tr><td>Digital Transformation for Community Banks and Credit Unions: 4 Steps</td><td>Apiture</td><td>2025</td><td>Small business banking stats, younger consumer digital expectations, competitive context</td></tr>
+      <tr><td>A Hybrid Multi-Cloud Strategy for Deploying AI Models</td><td>SS&amp;C Managed IT Services</td><td>2025</td><td>Security architecture for Pillar B — PII protection, private vs. public cloud AI, Zero Trust</td></tr>
+      <tr><td>GAO-25-107197: AI Use and Oversight in Financial Services</td><td>US Government Accountability Office</td><td>May 2025</td><td>Regulatory landscape — confirms no comprehensive AI framework yet; existing guidance applies</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ─── 08 GO-TO-MARKET ─── -->
+<section class="doc-section" id="gtm">
+  <div class="sec-num">08 · Go-to-Market</div>
+  <h2 class="sec-title">The sequence that gets<br><em>to first revenue.</em></h2>
+
+  <div class="alert alert-amber">
+    <div class="alert-title alert-title-amber">The Conference Email — Ready to Send When Site is Live</div>
+    <div class="alert-body alert-body-amber">Post-conference email is drafted. Context: a major industry conference occurred where the core system platform encouraged 400+ community banks and credit unions to "go experiment, have fun, solve your own problems" — the conference was entirely about AI. The timing is optimal. The email references the conference energy directly, leads with the free assessment, and closes with a P.S. about the starting gun. Gate conditions: (1) AIBankingInstitute.com live with working assessment, (2) email capture active and connected to ConvertKit sequence, (3) Calendly Executive Briefing link functional and tested on mobile. Send within 72 hours of site going live while the conference energy is still active in recipients' memory.</div>
+  </div>
+
+  <h3 style="font-family:var(--fsc);font-size:11px;letter-spacing:2px;color:var(--terra);margin-bottom:16px">Pre-Launch Checklist</h3>
+  <ul class="doc-list">
+    <li>✓ AIBankingInstitute.com and AIBankingInstitute.org — registered</li>
+    <li>Resolve CSI employment agreement with attorney before taking any paid client</li>
+    <li>Form LLC (Washington state) + get EIN + open business bank account</li>
+    <li>Commission logo design (AiBI circular seal direction, terracotta, Cormorant serif)</li>
+    <li>Update LinkedIn personal profile: Founder, The AI Banking Institute · The A-B-C of AI Banking</li>
+    <li>Create LinkedIn company page for The AI Banking Institute</li>
+    <li>Set up HubSpot (free CRM), ConvertKit (email), Calendly (scheduling), Stripe (payments)</li>
+    <li>Deploy website — minimum viable: home + assessment + Calendly embed + email capture</li>
+    <li>Write "Safe AI Use in Community Banking" guide (2-page PDF, email-gated)</li>
+    <li>Write "5 Questions Before Signing an AI Vendor Contract" (1-page PDF, email-gated)</li>
+    <li>Pre-write BAI Brief issues 1–4 before launch</li>
+    <li>Pre-write 12 weeks of LinkedIn content (3 posts/week across A, B, C pillars)</li>
+  </ul>
+
+  <h3 style="font-family:var(--fsc);font-size:11px;letter-spacing:2px;color:var(--terra);margin:28px 0 16px">First 90 Days</h3>
+  <table class="doc-table">
+    <thead><tr><th>Month</th><th>Priority Actions</th><th>Revenue Target</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Month 1</strong></td><td>Employment resolution · Entity formation · LinkedIn live · Website MVP deployed · Conference email sent · Assessment taking</td><td>$0 — foundation only</td></tr>
+      <tr><td><strong>Month 2</strong></td><td>2–3 Executive Briefings delivered · First Quick Win Sprint signed · BAI Brief issue 1 sent · WBA education director contacted · LinkedIn: 3 posts/week established</td><td>$7,500–$15,000</td></tr>
+      <tr><td><strong>Month 3</strong></td><td>Quick Win Sprint delivered · Case study drafted (with permission) · AI Foundations ($97) live on Kajabi · AiBI-P curriculum build started · First cohort waitlist opened</td><td>$7,500–$25,000</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="font-family:var(--fsc);font-size:11px;letter-spacing:2px;color:var(--terra);margin:28px 0 16px">Association Strategy</h3>
+  <div class="two-col">
+    <div class="card card-sage">
+      <div class="card-label card-label-sage">First Target: Washington Bankers Association</div>
+      <div class="card-body">Your home state. They know CSI. You may have existing relationships. Email the education director: "I'm a Seattle-based banking technology professional who just launched The AI Banking Institute — the only AI proficiency program built exclusively for community banks. I'd love 20 minutes to share what we're building and explore whether it might serve your members."<br><br>
+      <strong>What you're proposing:</strong> A member benefit — the free assessment available to all WBA members, co-branded if they want. They get to offer AI education. You get distribution to hundreds of institutions.</div>
+    </div>
+    <div class="card card-sage">
+      <div class="card-label card-label-sage">Second Wave: ICBA + America's Credit Unions</div>
+      <div class="card-body"><strong>ICBA:</strong> Technology committee, ThinkTECH Accelerator, annual convention (March). Submit talk abstract for 2027 by September 2026: "Accessible, Boundary-Safe, and Capable: The A-B-C Framework for Community Bank AI Adoption."<br><br>
+      <strong>America's Credit Unions (CUNA):</strong> Professional development programs actively seeking AI curriculum. Contact education director directly.<br><br>
+      <strong>Conference talks to write now:</strong> "The conference inspired everyone to 'go experiment.' Here's what actually comes next."</div>
+    </div>
+  </div>
+
+  <h3 style="font-family:var(--fsc);font-size:11px;letter-spacing:2px;color:var(--terra);margin:28px 0 16px">LinkedIn Content Calendar — Three Streams</h3>
+  <table class="doc-table">
+    <thead><tr><th>Pillar</th><th>Post Type</th><th>Example</th></tr></thead>
+    <tbody>
+      <tr><td><strong>A — Accessible</strong><br>Monday</td><td>Story, tool spotlight, before/after</td><td>"What happened when a BSA officer with no tech background spent 90 minutes with Claude. She hasn't looked at policy reviews the same way since."</td></tr>
+      <tr><td><strong>B — Boundary-Safe</strong><br>Wednesday</td><td>Regulatory note, governance tip, examiner prep</td><td>"What examiners are now asking about AI that community banks aren't ready to answer. The four documentation gaps we see most often."</td></tr>
+      <tr><td><strong>C — Capable</strong><br>Friday</td><td>Data point, use case with ROI, builder story</td><td>"Loan pipeline report automation: 3.5 hrs/week recaptured, $9,600/year per lending manager. Here's the exact Power Automate workflow."</td></tr>
+    </tbody>
+  </table>
+
+  <div class="alert alert-sage">
+    <div class="alert-title alert-title-sage">The Honest Close</div>
+    <div class="alert-body alert-body-sage">The website is specified. The curriculum is architected. The business model is documented. The messaging is written. The conference email is ready to send. All of that was built without spending money or leaving a job.<br><br>
+    What the business still needs: one client, their numbers improving, and permission to tell the story. Every week spent building more infrastructure instead of having the first Executive Briefing is a week the business doesn't actually start.<br><br>
+    <strong>The critical path is:</strong> employment resolution → domain + LLC → LinkedIn live → website MVP → conference email → first briefing → first Sprint → case study → everything else builds from that foundation.</div>
+  </div>
+</section>
+
+</main>
+
+<script>function gs(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth'})}</script>
+</body>
+</html>

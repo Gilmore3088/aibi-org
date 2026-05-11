@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Playground · The AI Banking Institute</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ECE9DF; --paper:#F4F1E7; --parch:#E4E0D2; --tape:#F1E9D0;
+    --ink:#0E1B2D; --ink-2:#1F2A3F; --muted:#5C6B82; --soft:#8C95A8;
+    --terra:#B5862A; --terra-2:#8E6620; --weak:#8E3B2A;
+    --green:#1F8A5B; --navy:#1E3A5F; --plum:#5E3B6E;
+    --rule:#D5D1C2; --rule-strong:#B9B4A0;
+    --serif:'Newsreader', Georgia, serif;
+    --sans:'Geist','Inter',system-ui,sans-serif;
+    --mono:'JetBrains Mono', ui-monospace, monospace;
+    --maxw:1480px;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0 }
+  html, body{ background:var(--paper); color:var(--ink); font-family:var(--sans); -webkit-font-smoothing:antialiased; line-height:1.45 }
+  a{ color:inherit; text-decoration:none }
+  button{ font:inherit; color:inherit; background:none; border:none; cursor:pointer }
+  ::selection{ background:var(--terra); color:var(--paper) }
+
+  .container{ max-width:var(--maxw); margin:0 auto; padding:0 32px }
+  .eyebrow{ font-family:var(--mono); font-size:11px; letter-spacing:0.22em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+  .lab{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.22em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+
+  /* ===== SITE NAV ===== */
+  .nav{ position:sticky; top:0; z-index:30; background:var(--paper); border-bottom:1px solid var(--rule) }
+  .nav-inner{ max-width:var(--maxw); margin:0 auto; padding:18px 32px; display:flex; align-items:center; justify-content:space-between; gap:24px }
+  .nav-mark{ display:flex; flex-direction:column; line-height:1 }
+  .nav-mark .l1, .nav-mark .l2{ font-family:var(--sans); font-weight:700; font-size:13px; letter-spacing:-0.005em; text-transform:uppercase; line-height:1 }
+  .nav-mark .l1{ color:var(--ink) }
+  .nav-mark .l2{ color:var(--soft); margin-top:1px }
+  .nav-links{ display:flex; align-items:center; gap:32px }
+  .nav-link{ font-family:var(--mono); font-size:11px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:var(--ink-2) }
+  .nav-link:hover{ color:var(--terra) }
+  .acct{ display:flex; align-items:center; gap:10px; padding:6px 14px 6px 6px; border:1px solid var(--rule-strong); cursor:pointer; margin-left:8px }
+  .acct:hover{ border-color:var(--ink-2) }
+  .avatar{ width:28px; height:28px; border-radius:50%; background:var(--terra); color:var(--paper); display:grid; place-items:center; font-family:var(--mono); font-size:10px; font-weight:600 }
+  .acct .name{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink); font-weight:600 }
+
+  /* ===== MASTHEAD ===== */
+  .mast{ padding:42px 0 24px; border-bottom:1px solid var(--rule) }
+  .mast-row{ display:flex; align-items:end; gap:48px; flex-wrap:wrap }
+  .mast-text{ flex:1; min-width:280px }
+  .mast .greet{ display:block; color:var(--terra); margin-bottom:14px }
+  .mast h1{ font-family:var(--serif); font-weight:500; font-size:clamp(40px, 4.4vw, 60px); line-height:1; letter-spacing:-0.03em; margin:0 0 8px }
+  .mast h1 em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .mast .lede{ font-family:var(--serif); font-size:16px; line-height:1.45; color:var(--ink-2); max-width:64ch; margin:0; font-weight:400 }
+  .mast-stats{ display:flex; gap:28px; padding-left:28px; border-left:1px solid var(--rule-strong); align-self:flex-end }
+  .mast-stats .stat{ display:flex; flex-direction:column; gap:3px }
+  .mast-stats .v{ font-family:var(--serif); font-size:26px; line-height:1; letter-spacing:-0.02em; color:var(--ink); font-weight:500 }
+  .mast-stats .l{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.22em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+
+  /* ===== USER TABS ===== */
+  .tabs{ background:var(--paper); border-bottom:1px solid var(--rule); border-top:1px solid var(--rule) }
+  .tabs-inner{ max-width:var(--maxw); margin:0 auto; padding:0 32px; display:flex; align-items:center; gap:0 }
+  .tab{ font-family:var(--mono); font-size:11px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); padding:16px 18px 14px; border-bottom:2px solid transparent; margin-bottom:-1px }
+  .tab:hover{ color:var(--ink-2) }
+  .tab.active{ color:var(--ink); border-bottom-color:var(--terra) }
+
+  /* ===== MODE BAR ===== */
+  .modebar{ background:var(--bg); border-bottom:1px solid var(--rule); padding:12px 0 }
+  .modebar-inner{ max-width:var(--maxw); margin:0 auto; padding:0 32px; display:flex; align-items:center; gap:24px; flex-wrap:wrap }
+  .mode-pick{ display:flex; gap:0; align-items:center }
+  .mode-pick .lab{ margin-right:14px }
+  .mode-btn{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.16em; text-transform:uppercase; padding:9px 14px; color:var(--ink-2); font-weight:600; border:1px solid var(--rule-strong); border-right:none; background:var(--paper); display:inline-flex; align-items:center; gap:8px }
+  .mode-btn:last-child{ border-right:1px solid var(--rule-strong) }
+  .mode-btn:hover{ background:var(--bg) }
+  .mode-btn.active{ background:var(--ink); color:var(--paper); border-color:var(--ink) }
+  .mode-btn .ico{ font-family:var(--serif); font-size:14px; line-height:0; margin-top:-1px }
+  .mode-help{ margin-left:auto; font-family:var(--serif); font-style:italic; font-size:13.5px; color:var(--muted); max-width:42ch }
+
+  /* ===== SHELL ===== */
+  .shell{ max-width:var(--maxw); margin:0 auto; padding:24px 32px 80px; display:grid; grid-template-columns:1fr 320px; gap:36px }
+  @media (max-width:1100px){ .shell{ grid-template-columns:1fr } }
+
+  /* ===== COMPOSER ===== */
+  .compose{ display:flex; flex-direction:column; gap:0 }
+  .compose-head{ display:flex; align-items:baseline; gap:18px; padding-bottom:14px; border-bottom:1px solid var(--rule); margin-bottom:18px }
+  .compose-head h2{ font-family:var(--serif); font-weight:500; font-size:24px; line-height:1; letter-spacing:-0.02em; color:var(--ink) }
+  .compose-head h2 em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .ch-spacer{ flex:1 }
+  .ch-act{ font-family:var(--mono); font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--ink-2); font-weight:600; padding:6px 10px; border:1px solid var(--rule-strong); margin-left:8px; background:var(--paper) }
+  .ch-act:hover{ background:var(--ink); color:var(--paper); border-color:var(--ink) }
+
+  .pad{ background:var(--paper); border:1px solid var(--rule-strong); display:flex; flex-direction:column }
+  .pad-name{ display:flex; align-items:center; gap:10px; padding:10px 18px; border-bottom:1px solid var(--rule); background:var(--bg) }
+  .pad-name .lab{ min-width:54px }
+  .pad-name input{ flex:1; font-family:var(--serif); font-style:italic; font-size:15px; color:var(--ink-2); border:none; outline:none; background:transparent; font-weight:400 }
+  .pad-name input::placeholder{ color:var(--soft) }
+
+  /* System prompt collapsible */
+  .sys{ border-bottom:1px solid var(--rule); background:#FBF9F2 }
+  .sys-head{ display:flex; align-items:center; gap:10px; padding:10px 18px; cursor:pointer }
+  .sys-head .lab{ min-width:54px }
+  .sys-head .preview{ flex:1; font-family:var(--serif); font-style:italic; font-size:13.5px; color:var(--muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+  .sys-head .chev{ font-family:var(--mono); font-size:11px; color:var(--muted); transition:transform 0.15s; margin-left:auto }
+  .sys.open .chev{ transform:rotate(90deg) }
+  .sys-body{ display:none; padding:0 18px 12px }
+  .sys.open .sys-body{ display:block }
+  .sys-body textarea{ width:100%; min-height:80px; padding:10px 12px; font-family:var(--mono); font-size:12.5px; line-height:1.5; color:var(--ink); border:1px solid var(--rule); background:var(--paper); outline:none; resize:vertical }
+  .sys-presets{ display:flex; gap:6px; margin-top:8px; flex-wrap:wrap }
+  .sys-preset{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.14em; text-transform:uppercase; padding:5px 9px; border:1px solid var(--rule-strong); color:var(--ink-2); cursor:pointer; background:var(--paper); font-weight:600 }
+  .sys-preset:hover{ background:var(--ink); color:var(--paper); border-color:var(--ink) }
+
+  .pad-body{ display:flex; flex-direction:column }
+  .pad-body textarea{ width:100%; min-height:240px; padding:22px 28px 14px; font-family:var(--serif); font-size:18px; line-height:1.55; color:var(--ink); border:none; outline:none; background:transparent; resize:vertical; font-weight:400 }
+  .pad-body textarea::placeholder{ color:var(--soft); font-style:italic }
+  .var-pill{ display:inline-block; background:var(--terra); color:var(--paper); padding:1px 4px; border-radius:1px; font-family:var(--mono); font-size:0.85em; letter-spacing:0.04em }
+
+  /* Context strip */
+  .pad-ctx{ display:flex; align-items:center; gap:8px; padding:10px 18px; border-top:1px dashed var(--rule); flex-wrap:wrap }
+  .pad-ctx .lab{ margin-right:4px }
+  .ctx-chip{ display:inline-flex; align-items:center; gap:6px; padding:5px 10px; border:1px solid var(--rule-strong); font-family:var(--mono); font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--ink-2); font-weight:600; cursor:pointer; background:var(--paper) }
+  .ctx-chip:hover{ border-color:var(--ink) }
+  .ctx-chip.on{ background:var(--ink); color:var(--paper); border-color:var(--ink) }
+  .ctx-chip .x{ opacity:0; transition:opacity 0.1s; font-family:var(--mono); font-size:11px }
+  .ctx-chip.on .x{ opacity:0.6 }
+  .ctx-chip .plus{ font-family:var(--serif); font-size:14px; line-height:0; margin-top:-2px; color:var(--terra) }
+
+  /* Output controls */
+  .pad-controls{ display:flex; align-items:center; gap:18px; padding:10px 18px; border-top:1px dashed var(--rule); flex-wrap:wrap; background:#FBF9F2 }
+  .ctrl-group{ display:flex; align-items:center; gap:8px }
+  .ctrl-group .lab{ margin-right:2px }
+  .seg{ display:flex; gap:0 }
+  .seg button{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.14em; text-transform:uppercase; padding:6px 9px; color:var(--ink-2); font-weight:600; border:1px solid var(--rule-strong); border-right:none; background:var(--paper) }
+  .seg button:last-child{ border-right:1px solid var(--rule-strong) }
+  .seg button:hover{ background:var(--bg) }
+  .seg button.sel{ background:var(--ink-2); color:var(--paper); border-color:var(--ink-2) }
+
+  /* Run footer */
+  .pad-foot{ display:flex; align-items:center; gap:14px; padding:14px 18px; border-top:1px solid var(--rule); background:var(--bg); flex-wrap:wrap }
+  .mp{ display:flex; align-items:center; gap:10px }
+  .mp-pick{ display:flex; gap:0; flex-wrap:wrap }
+  .mp-pick button{ font-family:var(--mono); font-size:10px; letter-spacing:0.14em; text-transform:uppercase; padding:7px 11px; color:var(--ink-2); font-weight:600; border:1px solid var(--rule-strong); border-right:none; background:var(--paper); display:inline-flex; align-items:center; gap:5px }
+  .mp-pick button:last-child{ border-right:1px solid var(--rule-strong) }
+  .mp-pick button:hover{ background:var(--bg) }
+  .mp-pick button.sel{ background:var(--ink); color:var(--paper); border-color:var(--ink) }
+  .mp-dot{ display:inline-block; width:6px; height:6px }
+  .mp-dot.opus{ background:#D97757 } .mp-dot.sonnet{ background:#B5862A } .mp-dot.haiku{ background:#E5C29A } .mp-dot.gpt{ background:#1F8A5B } .mp-dot.gemini{ background:#1E3A5F }
+  .mp-pick.multi button.sel{ background:var(--terra); border-color:var(--terra) }
+
+  .creative{ display:flex; align-items:center; gap:8px; padding:6px 0 }
+  .creative input[type=range]{ width:90px; accent-color:var(--terra) }
+  .creative-val{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.14em; text-transform:uppercase; color:var(--ink-2); font-weight:600; min-width:62px }
+
+  .run{ margin-left:auto; display:flex; align-items:center; gap:10px; padding:11px 22px; background:var(--ink); color:var(--paper); font-family:var(--mono); font-size:11px; letter-spacing:0.18em; text-transform:uppercase; font-weight:600 }
+  .run:hover{ background:var(--terra) }
+  .run:disabled{ opacity:0.5; cursor:wait }
+  .run .arr{ font-family:var(--serif); font-size:14px; line-height:0; margin-top:-1px }
+  .run .ksh{ font-family:var(--mono); font-size:9px; letter-spacing:0.1em; opacity:0.55; margin-left:4px; padding:2px 5px; border:1px solid rgba(244,241,231,0.3) }
+
+  /* ===== OUTPUT ===== */
+  .out-wrap{ margin-top:24px }
+  .out-head{ display:flex; align-items:baseline; gap:18px; padding-bottom:12px; border-bottom:1px solid var(--rule); margin-bottom:14px }
+  .out-head h2{ font-family:var(--serif); font-weight:500; font-size:22px; line-height:1; letter-spacing:-0.02em; color:var(--ink) }
+  .out-head h2 em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .out-mode{ font-family:var(--mono); font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); font-weight:600; padding:3px 8px; border:1px solid var(--rule-strong); margin-left:4px }
+  .out-meta{ margin-left:auto; display:flex; gap:14px; font-family:var(--mono); font-size:9.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); font-weight:600; flex-wrap:wrap }
+  .out-meta strong{ color:var(--ink); font-weight:700 }
+
+  /* Output body — single */
+  .out-grid{ display:grid; gap:14px }
+  .out-grid.cols-1{ grid-template-columns:1fr }
+  .out-grid.cols-2{ grid-template-columns:1fr 1fr }
+  .out-grid.cols-3{ grid-template-columns:repeat(3,1fr) }
+  .out-grid.cols-4{ grid-template-columns:repeat(4,1fr) }
+  @media (max-width:1100px){ .out-grid.cols-3, .out-grid.cols-4{ grid-template-columns:repeat(2,1fr) } }
+
+  .out-card{ background:var(--paper); border:1px solid var(--rule-strong); border-left:3px solid var(--terra); display:flex; flex-direction:column }
+  .out-card .oc-head{ display:flex; align-items:center; gap:10px; padding:12px 18px; border-bottom:1px solid var(--rule); background:#FBF9F2 }
+  .out-card .oc-model{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink); font-weight:700 }
+  .out-card .oc-meta{ margin-left:auto; font-family:var(--mono); font-size:9.5px; letter-spacing:0.16em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+  .out-card .oc-meta strong{ color:var(--ink-2) }
+  .out-card .oc-body{ padding:22px 26px 18px; font-family:var(--serif); font-size:15.5px; line-height:1.6; color:var(--ink); white-space:pre-wrap; min-height:140px; flex:1 }
+  .out-card .oc-typing{ font-family:var(--serif); font-style:italic; color:var(--muted); font-size:14.5px }
+  .out-card .oc-typing::after{ content:"▋"; animation:bl 0.8s infinite; color:var(--terra); margin-left:2px }
+  @keyframes bl{ 0%,49%{ opacity:1 } 50%,100%{ opacity:0 } }
+  .out-card .oc-flags{ display:flex; gap:6px; padding:8px 18px; border-top:1px dashed var(--rule); flex-wrap:wrap; background:#FBF9F2 }
+  .flag{ display:inline-flex; align-items:center; gap:5px; font-family:var(--mono); font-size:9px; letter-spacing:0.14em; text-transform:uppercase; padding:3px 7px; font-weight:700 }
+  .flag.ok{ background:rgba(31,138,91,0.12); color:var(--green) }
+  .flag.warn{ background:rgba(181,134,42,0.18); color:var(--terra-2) }
+  .flag.bad{ background:rgba(142,59,42,0.15); color:var(--weak) }
+  .out-card .oc-foot{ display:flex; align-items:center; gap:6px; padding:10px 14px; border-top:1px solid var(--rule); background:var(--bg); flex-wrap:wrap }
+  .oc-act{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.16em; text-transform:uppercase; padding:6px 10px; color:var(--ink-2); font-weight:600; border:1px solid var(--rule-strong); background:var(--paper); cursor:pointer }
+  .oc-act:hover{ background:var(--ink); color:var(--paper); border-color:var(--ink) }
+  .oc-act.prim{ background:var(--ink); color:var(--paper); border-color:var(--ink) }
+  .oc-act.prim:hover{ background:var(--terra); border-color:var(--terra) }
+  .oc-act.win{ background:var(--green); color:var(--paper); border-color:var(--green) }
+  .oc-spacer{ flex:1 }
+  .oc-act.sub{ color:var(--muted); border:none; background:transparent }
+  .oc-act.sub:hover{ color:var(--weak); background:transparent }
+
+  .out-empty{ background:transparent; border:1px dashed var(--rule-strong); padding:48px 32px; text-align:center; font-family:var(--serif); font-style:italic; color:var(--muted); font-size:15.5px }
+  .out-empty em{ color:var(--terra); font-style:italic; font-weight:500 }
+
+  /* Conversation */
+  .conv{ background:var(--paper); border:1px solid var(--rule-strong); display:flex; flex-direction:column }
+  .conv-body{ padding:18px 22px; max-height:520px; overflow-y:auto; display:flex; flex-direction:column; gap:18px }
+  .turn{ display:flex; flex-direction:column; gap:6px }
+  .turn .who{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); font-weight:700 }
+  .turn.user .who{ color:var(--ink-2) }
+  .turn.bot .who{ color:var(--terra) }
+  .turn .body{ font-family:var(--serif); font-size:15.5px; line-height:1.55; color:var(--ink); white-space:pre-wrap }
+  .turn.user .body{ color:var(--ink); font-weight:400 }
+  .turn.bot .body{ background:#FBF9F2; padding:14px 18px; border-left:2px solid var(--terra) }
+  .conv-empty{ padding:48px 22px; text-align:center; font-family:var(--serif); font-style:italic; color:var(--muted); font-size:15px }
+
+  /* ===== SIDE ===== */
+  .side-pane{ display:flex; flex-direction:column; gap:24px }
+  .pane{ display:flex; flex-direction:column; gap:0 }
+  .pane-head{ display:flex; align-items:baseline; gap:12px; padding-bottom:12px; border-bottom:1px solid var(--rule); margin-bottom:12px }
+  .pane-head h3{ font-family:var(--serif); font-weight:500; font-size:18px; line-height:1; letter-spacing:-0.015em; color:var(--ink) }
+  .pane-head h3 em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .pane-head .cnt{ margin-left:auto; font-family:var(--mono); font-size:9.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+
+  /* Variables */
+  .vars-list{ display:flex; flex-direction:column; gap:8px }
+  .var-row{ display:flex; flex-direction:column; gap:4px }
+  .var-row .vlab{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.16em; text-transform:uppercase; color:var(--terra); font-weight:700 }
+  .var-row textarea{ font-family:var(--serif); font-size:13.5px; line-height:1.45; color:var(--ink); padding:8px 10px; border:1px solid var(--rule-strong); background:var(--paper); outline:none; resize:vertical; min-height:38px }
+  .var-row textarea:focus{ border-color:var(--ink) }
+  .vars-empty{ font-family:var(--serif); font-style:italic; color:var(--muted); font-size:13.5px; padding:14px; border:1px dashed var(--rule-strong); text-align:center }
+  .vars-empty code{ font-family:var(--mono); font-size:12px; background:var(--bg); padding:1px 5px; color:var(--terra-2); font-style:normal }
+
+  /* History */
+  .hist-search{ display:flex; align-items:center; gap:6px; border:1px solid var(--rule-strong); padding:6px 10px; margin-bottom:10px; background:var(--paper) }
+  .hist-search input{ border:none; outline:none; background:transparent; font-family:var(--sans); font-size:12.5px; color:var(--ink); width:100%; font-weight:500 }
+  .hist-search input::placeholder{ color:var(--muted); font-style:italic }
+  .hist-search .ico{ font-family:var(--mono); color:var(--muted); font-size:12px }
+
+  .hist-card{ background:var(--paper); border:1px solid var(--rule); border-left:2px solid var(--rule-strong); padding:11px 13px; margin-bottom:8px; cursor:pointer; transition:all 0.1s; position:relative }
+  .hist-card:hover{ border-color:var(--ink); border-left-color:var(--ink) }
+  .hist-card.saved{ border-left-color:var(--green) }
+  .hist-card .hc-top{ display:flex; align-items:center; gap:6px; margin-bottom:5px }
+  .hist-card .hc-time{ font-family:var(--mono); font-size:9px; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+  .hist-card .hc-mode{ font-family:var(--mono); font-size:8.5px; letter-spacing:0.14em; text-transform:uppercase; color:var(--ink-2); font-weight:700; padding:1px 5px; background:var(--bg) }
+  .hist-card .hc-models{ display:inline-flex; gap:3px; margin-left:auto }
+  .hist-card .hc-models .d{ width:6px; height:6px; display:inline-block }
+  .hist-card .hc-prompt{ font-family:var(--serif); font-style:italic; font-size:13px; line-height:1.35; color:var(--ink-2); overflow:hidden; text-overflow:ellipsis; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical }
+  .hist-card .hc-foot{ display:flex; gap:8px; align-items:center; margin-top:7px; padding-top:6px; border-top:1px dashed var(--rule); font-family:var(--mono); font-size:8.5px; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+  .hist-card .hc-exp{ color:var(--weak) }
+  .hist-card.saved .hc-exp{ color:var(--green) }
+  .hist-card .hc-save{ margin-left:auto; cursor:pointer; padding:2px 5px }
+  .hist-card .hc-save:hover{ color:var(--terra) }
+  .hist-empty{ font-family:var(--serif); font-style:italic; color:var(--muted); font-size:13px; padding:16px; border:1px dashed var(--rule-strong); text-align:center }
+  .hist-rule{ font-family:var(--mono); font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); font-weight:600; padding:10px 0 0; margin-top:14px; border-top:1px solid var(--rule); display:flex; align-items:center; gap:7px }
+  .hist-rule::before{ content:""; width:6px; height:6px; background:var(--weak) }
+
+  /* Recipes */
+  .recipe{ display:block; background:var(--paper); border:1px solid var(--rule); padding:11px 13px; margin-bottom:7px; cursor:pointer; transition:all 0.1s }
+  .recipe:hover{ border-color:var(--ink); background:var(--bg) }
+  .recipe .rh{ font-family:var(--mono); font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:var(--terra); font-weight:700; margin-bottom:4px }
+  .recipe .rt{ font-family:var(--serif); font-size:14.5px; line-height:1.3; color:var(--ink); font-weight:500; margin-bottom:3px; letter-spacing:-0.01em }
+  .recipe .rt em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .recipe .rd{ font-family:var(--serif); font-style:italic; font-size:12.5px; line-height:1.4; color:var(--muted) }
+
+  /* ===== Save modal ===== */
+  .modal-bg{ position:fixed; inset:0; background:rgba(14,27,45,0.55); opacity:0; pointer-events:none; transition:opacity 0.2s; z-index:60 }
+  .modal-bg.open{ opacity:1; pointer-events:auto }
+  .modal{ position:fixed; left:50%; top:50%; transform:translate(-50%,-48%); width:520px; max-width:96vw; background:var(--paper); border:1px solid var(--rule-strong); padding:0; opacity:0; pointer-events:none; transition:opacity 0.2s, transform 0.2s; z-index:61; box-shadow:0 24px 60px rgba(14,27,45,0.25) }
+  .modal.open{ opacity:1; pointer-events:auto; transform:translate(-50%,-50%) }
+  .modal-head{ padding:20px 26px 16px; border-bottom:1px solid var(--rule); display:flex; justify-content:space-between; align-items:center }
+  .modal-head .lab{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+  .modal-body{ padding:22px 26px 24px }
+  .modal h2{ font-family:var(--serif); font-weight:500; font-size:28px; line-height:1; letter-spacing:-0.025em; margin:0 0 6px; color:var(--ink) }
+  .modal h2 em{ font-style:italic; color:var(--terra); font-weight:500 }
+  .modal .lede{ font-family:var(--serif); font-size:14px; line-height:1.45; color:var(--ink-2); margin:0 0 18px; font-style:italic }
+  .field{ display:flex; flex-direction:column; gap:6px; margin-bottom:14px }
+  .field label{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.22em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+  .field input, .field textarea{ font-family:var(--sans); font-size:14px; color:var(--ink); padding:10px 12px; border:1px solid var(--rule-strong); background:var(--paper); outline:none; font-weight:500 }
+  .field input:focus, .field textarea:focus{ border-color:var(--ink) }
+  .type-pick{ display:grid; grid-template-columns:repeat(3,1fr); gap:6px }
+  .type-pick button{ padding:11px 8px; border:1px solid var(--rule-strong); background:var(--paper); cursor:pointer; font-family:var(--mono); font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink-2); font-weight:600 }
+  .type-pick button.sel{ background:var(--ink); color:var(--paper); border-color:var(--ink) }
+  .modal-foot{ display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:6px }
+  .btn-prim{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; padding:11px 18px; background:var(--ink); color:var(--paper); font-weight:600; cursor:pointer; border:none }
+  .btn-prim:hover{ background:var(--terra) }
+  .btn-ghost{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; padding:11px 14px; color:var(--muted); font-weight:600; cursor:pointer }
+  .btn-ghost:hover{ color:var(--ink) }
+
+  /* Toast */
+  .toast{ position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(20px); background:var(--ink); color:var(--paper); padding:12px 22px; font-family:var(--mono); font-size:10.5px; letter-spacing:0.16em; text-transform:uppercase; font-weight:600; opacity:0; pointer-events:none; transition:all 0.25s; z-index:70 }
+  .toast.show{ opacity:1; transform:translateX(-50%) translateY(0) }
+  .toast.ok{ background:var(--green) }
+
+  /* ===== FOOTER ===== */
+  .foot{ background:var(--ink); color:rgba(244,241,231,0.7); padding:32px 0; margin-top:60px }
+  .foot-inner{ max-width:var(--maxw); margin:0 auto; padding:0 32px; display:flex; justify-content:space-between; gap:24px; flex-wrap:wrap; font-family:var(--mono); font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; font-weight:600 }
+  .foot-inner a{ color:rgba(244,241,231,0.85) }
+  .foot-inner a:hover{ color:var(--terra) }
+</style>
+</head>
+<body>
+
+<!-- ===== SITE NAV ===== -->
+<header class="nav">
+  <div class="nav-inner">
+    <a href="AI Banking Institute.html" class="nav-mark" aria-label="The AI Banking Institute">
+      <span class="l1">The AI Banking</span>
+      <span class="l2">Institute</span>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="AI Banking Institute.html#pillars" class="nav-link">Education</a>
+      <a href="#" class="nav-link">For Institutions</a>
+      <a href="#" class="nav-link">Research</a>
+      <a href="#" class="nav-link">About</a>
+      <a href="FAQ.html" class="nav-link">Support</a>
+      <button class="acct" aria-label="Account">
+        <span class="avatar">DM</span>
+        <span class="name">D. Maxwell</span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<!-- ===== MASTHEAD ===== -->
+<section class="mast">
+  <div class="container">
+    <div class="mast-row">
+      <div class="mast-text">
+        <span class="eyebrow greet">Scratch surface · ephemeral</span>
+        <h1>The <em>playground.</em></h1>
+        <p class="lede">A bench for trying things — single shots, model bake-offs, multi-turn chats. Bring your data, set the role, run the same prompt against four models. Save what's worth keeping.</p>
+      </div>
+      <div class="mast-stats">
+        <div class="stat"><span class="v">3</span><span class="l">Today</span></div>
+        <div class="stat"><span class="v">12</span><span class="l">This week</span></div>
+        <div class="stat"><span class="v">7</span><span class="l">Saved</span></div>
+        <div class="stat"><span class="v">$0.41</span><span class="l">Spend</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== USER TABS ===== -->
+<div class="tabs">
+  <div class="tabs-inner" role="tablist" aria-label="My account">
+    <a href="User Home.html" class="tab" role="tab">Dashboard</a>
+    <a href="LMS Prototype.html" class="tab" role="tab">My Curriculum</a>
+    <a href="Playground.html" class="tab active" role="tab" aria-selected="true">Playground</a>
+    <a href="My Toolbox.html" class="tab" role="tab">My Toolbox</a>
+    <a href="#" class="tab" role="tab">My Brief</a>
+    <a href="#" class="tab" role="tab">Account</a>
+  </div>
+</div>
+
+<!-- ===== MODE BAR ===== -->
+<section class="modebar">
+  <div class="modebar-inner">
+    <div class="mode-pick" role="tablist" aria-label="Run mode">
+      <span class="lab">Mode</span>
+      <button class="mode-btn active" data-mode="single"><span class="ico">●</span>Single shot</button>
+      <button class="mode-btn" data-mode="compare"><span class="ico">⊟</span>Compare</button>
+      <button class="mode-btn" data-mode="conv"><span class="ico">⇄</span>Conversation</button>
+    </div>
+    <p class="mode-help" id="modeHelp">One prompt, one model, one output. The default for trying something out.</p>
+  </div>
+</section>
+
+<!-- ===== SHELL ===== -->
+<div class="shell">
+
+  <!-- COMPOSER + OUTPUT -->
+  <div>
+    <section class="compose">
+      <div class="compose-head">
+        <h2>Untitled <em>run.</em></h2>
+        <div class="ch-spacer"></div>
+        <button class="ch-act" id="loadBtn">Load from toolbox</button>
+        <button class="ch-act" id="recipesBtn">Recipes</button>
+        <button class="ch-act" id="clearBtn">Clear</button>
+      </div>
+
+      <div class="pad">
+        <div class="pad-name">
+          <span class="lab">Title</span>
+          <input id="runTitle" placeholder="Give this run a name (optional)…" autocomplete="off">
+        </div>
+
+        <!-- SYSTEM PROMPT -->
+        <div class="sys" id="sysPanel">
+          <div class="sys-head" id="sysHead">
+            <span class="lab">Role</span>
+            <span class="preview" id="sysPreview">Plain, factual, examiner-aware. No marketing language.</span>
+            <span class="chev">▸</span>
+          </div>
+          <div class="sys-body">
+            <textarea id="sysInput">You are an experienced banker's assistant for a community credit union. Voice: plain, factual, examiner-aware. No marketing language. No bullet points unless asked. Answer concisely.</textarea>
+            <div class="sys-presets">
+              <button class="sys-preset" data-preset="bsa">BSA officer</button>
+              <button class="sys-preset" data-preset="under">Senior underwriter</button>
+              <button class="sys-preset" data-preset="comp">Compliance reviewer</button>
+              <button class="sys-preset" data-preset="member">Member-facing</button>
+              <button class="sys-preset" data-preset="board">Board-facing</button>
+              <button class="sys-preset" data-preset="reset">Reset</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="pad-body">
+          <textarea id="promptInput" placeholder="What do you want to try?  e.g.  &quot;Take this credit memo and write three honest critiques a senior underwriter would make.&quot;  Use {{double-braces}} for variables you'll fill in on the right."></textarea>
+        </div>
+
+        <!-- CONTEXT -->
+        <div class="pad-ctx">
+          <span class="lab">Context</span>
+          <button class="ctx-chip" data-ctx="memo"><span class="x">×</span>Sample memo</button>
+          <button class="ctx-chip" data-ctx="tx"><span class="x">×</span>30-day tx log</button>
+          <button class="ctx-chip" data-ctx="brief"><span class="x">×</span>Last week's brief</button>
+          <button class="ctx-chip" data-ctx="reg"><span class="x">×</span>Reg B excerpt</button>
+          <button class="ctx-chip" data-ctx="add"><span class="plus">+</span>Pin a file</button>
+        </div>
+
+        <!-- OUTPUT CONTROLS -->
+        <div class="pad-controls">
+          <div class="ctrl-group">
+            <span class="lab">Format</span>
+            <div class="seg" data-ctrl="format">
+              <button class="sel" data-v="auto">Auto</button>
+              <button data-v="memo">Memo</button>
+              <button data-v="bullets">Bullets</button>
+              <button data-v="table">Table</button>
+              <button data-v="json">JSON</button>
+            </div>
+          </div>
+          <div class="ctrl-group">
+            <span class="lab">Length</span>
+            <div class="seg" data-ctrl="length">
+              <button data-v="brief">Brief</button>
+              <button class="sel" data-v="standard">Standard</button>
+              <button data-v="long">Long</button>
+            </div>
+          </div>
+          <div class="ctrl-group">
+            <span class="lab">Tone</span>
+            <div class="seg" data-ctrl="tone">
+              <button class="sel" data-v="plain">Plain</button>
+              <button data-v="examiner">Examiner-ready</button>
+              <button data-v="member">Member-friendly</button>
+            </div>
+          </div>
+          <div class="ctrl-group">
+            <span class="lab">Guards</span>
+            <div class="seg" data-ctrl="guards">
+              <button class="sel" data-v="redact">Redact PII</button>
+              <button data-v="reg">Reg-aware</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- MODEL + RUN -->
+        <div class="pad-foot">
+          <div class="mp">
+            <span class="lab">Model</span>
+            <div class="mp-pick" id="modelPick">
+              <button class="sel" data-m="opus"><span class="mp-dot opus"></span>Opus 4.5</button>
+              <button data-m="sonnet"><span class="mp-dot sonnet"></span>Sonnet 4.5</button>
+              <button data-m="haiku"><span class="mp-dot haiku"></span>Haiku 4.5</button>
+              <button data-m="gpt"><span class="mp-dot gpt"></span>GPT-5</button>
+              <button data-m="gemini"><span class="mp-dot gemini"></span>Gemini 2.5</button>
+            </div>
+          </div>
+          <div class="creative" title="Creativity">
+            <span class="lab">Creative</span>
+            <input type="range" min="0" max="100" value="20" id="creative">
+            <span class="creative-val" id="creativeVal">Careful 0.2</span>
+          </div>
+          <button class="run" id="runBtn">Run<span class="arr">→</span><span class="ksh">⌘ ↵</span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- OUTPUT -->
+    <section class="out-wrap" id="outWrap">
+      <div class="out-head">
+        <h2>Output</h2>
+        <span class="out-mode" id="outModeTag">Single shot</span>
+        <div class="out-meta" id="outMeta" style="display:none">
+          <span>Total · <strong id="outTime">—</strong></span>
+          <span>Tokens · <strong id="outTok">—</strong></span>
+          <span>Cost · <strong id="outCost">—</strong></span>
+          <span>Saves · <strong id="outSaves">~32 min analyst</strong></span>
+        </div>
+      </div>
+
+      <!-- Single / Compare grid -->
+      <div class="out-grid cols-1" id="outGrid">
+        <div class="out-empty">Your output will land here. Nothing is saved unless you tell it to be — runs auto-discard in <em>24 hours.</em></div>
+      </div>
+
+      <!-- Conversation -->
+      <div class="conv" id="convBox" style="display:none">
+        <div class="conv-body" id="convBody">
+          <div class="conv-empty">Start the conversation. The model holds context across turns until you Clear.</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- SIDE -->
+  <aside class="side-pane">
+
+    <!-- VARIABLES -->
+    <div class="pane">
+      <div class="pane-head">
+        <h3>Variables</h3>
+        <span class="cnt" id="varCnt">0</span>
+      </div>
+      <div id="varsList" class="vars-list">
+        <div class="vars-empty">Use <code>{{name}}</code> in your prompt and the field appears here.</div>
+      </div>
+    </div>
+
+    <!-- HISTORY -->
+    <div class="pane">
+      <div class="pane-head">
+        <h3>This <em>session.</em></h3>
+        <span class="cnt" id="runCount">0</span>
+      </div>
+      <div class="hist-search">
+        <span class="ico">⌕</span>
+        <input id="histSearch" placeholder="Filter history…" type="search">
+      </div>
+      <div id="runsList">
+        <div class="hist-empty">Recent runs appear here. Save the keepers — the rest fade in 24 hours.</div>
+      </div>
+      <div class="hist-rule">Auto-discards after 24h</div>
+    </div>
+
+    <!-- RECIPES -->
+    <div class="pane">
+      <div class="pane-head">
+        <h3>Try a <em>recipe.</em></h3>
+        <span class="cnt">5</span>
+      </div>
+      <div id="recipeList"></div>
+    </div>
+
+  </aside>
+
+</div>
+
+<!-- ===== LOAD DRAWER ===== -->
+<div class="modal-bg" id="loadBg"></div>
+<div class="modal" id="loadModal" aria-hidden="true">
+  <div class="modal-head">
+    <span class="lab">Load from toolbox</span>
+    <button class="btn-ghost" id="loadClose">Close ✕</button>
+  </div>
+  <div class="modal-body">
+    <h2>Start with <em>something.</em></h2>
+    <p class="lede">Pick a saved prompt, skill, or agent — it'll drop into the pad.</p>
+    <div class="hist-search" style="margin-bottom:14px">
+      <span class="ico">⌕</span>
+      <input id="ldSearch" placeholder="Search your toolbox…" type="search">
+    </div>
+    <div id="ldList" style="max-height:340px; overflow-y:auto"></div>
+  </div>
+</div>
+
+<!-- ===== SAVE MODAL ===== -->
+<div class="modal-bg" id="saveBg"></div>
+<div class="modal" id="saveModal" aria-hidden="true">
+  <div class="modal-head">
+    <span class="lab">Save to toolbox</span>
+    <button class="btn-ghost" id="saveClose">Close ✕</button>
+  </div>
+  <div class="modal-body">
+    <h2>Promote to <em>toolbox.</em></h2>
+    <p class="lede">Name it. Pick what kind of asset this is. We'll set it to v1 and link the run.</p>
+    <div class="field">
+      <label>Asset type</label>
+      <div class="type-pick" id="saveType">
+        <button class="sel" data-t="prompt">Prompt</button>
+        <button data-t="skill">Skill</button>
+        <button data-t="agent">Agent</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>Name</label>
+      <input id="saveName" placeholder="e.g. Past-tense memo rewrite" autocomplete="off">
+    </div>
+    <div class="field">
+      <label>One-line description</label>
+      <input id="saveDesc" placeholder="What this asset does — one sentence">
+    </div>
+    <div class="modal-foot">
+      <button class="btn-ghost" id="saveCancel">Cancel</button>
+      <button class="btn-prim" id="saveDo">Save · v1 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- ===== FOOTER ===== -->
+<footer class="foot">
+  <div class="foot-inner">
+    <span>© 2026 The AI Banking Institute</span>
+    <span><a href="AI Banking Institute.html">Home</a> · <a href="FAQ.html">Support</a> · <a href="#">Verify a credential</a></span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // ============ STATE ============
+  let mode = 'single'; // single | compare | conv
+  let model = 'opus';
+  let compareModels = ['opus','sonnet','gpt'];
+  let controls = { format:'auto', length:'standard', tone:'plain', guards:['redact'] };
+  let creative = 20;
+  let conversation = []; // [{role, content}]
+  let sessionRuns = [];
+  let lastRun = null;
+  let saveType = 'prompt';
+
+  const modelMeta = {
+    opus:   { label:'Claude Opus 4.5',   short:'Opus',   color:'#D97757', cost:0.0033 },
+    sonnet: { label:'Claude Sonnet 4.5', short:'Sonnet', color:'#B5862A', cost:0.0009 },
+    haiku:  { label:'Claude Haiku 4.5',  short:'Haiku',  color:'#E5C29A', cost:0.0003 },
+    gpt:    { label:'GPT-5',             short:'GPT-5',  color:'#1F8A5B', cost:0.0021 },
+    gemini: { label:'Gemini 2.5 Pro',    short:'Gemini', color:'#1E3A5F', cost:0.0017 },
+  };
+
+  // ============ HELPERS ============
+  const $ = s => document.querySelector(s);
+  const $$ = s => document.querySelectorAll(s);
+  const escapeHtml = s => (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  function toast(msg, ok=false){
+    const t = $('#toast');
+    t.textContent = msg;
+    t.classList.toggle('ok', ok);
+    t.classList.add('show');
+    clearTimeout(t._h);
+    t._h = setTimeout(() => t.classList.remove('show'), 1800);
+  }
+  function timeAgo(ts){
+    const s = Math.floor((Date.now() - ts)/1000);
+    if(s < 60) return 'just now';
+    if(s < 3600) return Math.floor(s/60)+'m ago';
+    return Math.floor(s/3600)+'h ago';
+  }
+
+  // ============ MODE ============
+  const modeHelp = {
+    single: 'One prompt, one model, one output. The default for trying something out.',
+    compare: 'Same prompt, multiple models side-by-side. Pick the winner; the model dot turns green.',
+    conv: 'Multi-turn. The model holds the thread until you Clear. Best for iterating on a draft.',
+  };
+  $$('.mode-btn').forEach(b => b.addEventListener('click', () => {
+    $$('.mode-btn').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    mode = b.dataset.mode;
+    $('#modeHelp').textContent = modeHelp[mode];
+    $('#outModeTag').textContent = b.textContent.trim().replace(/^[●⊟⇄]\s*/, '');
+    syncModePick();
+    renderOutputShell();
+  }));
+
+  function syncModePick(){
+    const pick = $('#modelPick');
+    if(mode === 'compare'){
+      pick.classList.add('multi');
+      $$('#modelPick button').forEach(b => {
+        b.classList.toggle('sel', compareModels.includes(b.dataset.m));
+      });
+    } else {
+      pick.classList.remove('multi');
+      $$('#modelPick button').forEach(b => b.classList.toggle('sel', b.dataset.m === model));
+    }
+  }
+
+  // ============ MODEL PICK ============
+  $$('#modelPick button').forEach(b => b.addEventListener('click', () => {
+    if(mode === 'compare'){
+      const m = b.dataset.m;
+      if(compareModels.includes(m)){
+        if(compareModels.length > 1) compareModels = compareModels.filter(x => x !== m);
+      } else {
+        if(compareModels.length < 4) compareModels.push(m);
+      }
+      syncModePick();
+    } else {
+      model = b.dataset.m;
+      syncModePick();
+    }
+  }));
+
+  // ============ CONTROLS ============
+  $$('.seg').forEach(seg => {
+    const ctrl = seg.dataset.ctrl;
+    seg.querySelectorAll('button').forEach(btn => btn.addEventListener('click', () => {
+      if(ctrl === 'guards'){
+        // multi
+        btn.classList.toggle('sel');
+        controls.guards = [...seg.querySelectorAll('button.sel')].map(b => b.dataset.v);
+      } else {
+        seg.querySelectorAll('button').forEach(b => b.classList.remove('sel'));
+        btn.classList.add('sel');
+        controls[ctrl] = btn.dataset.v;
+      }
+    }));
+  });
+
+  // creative slider
+  const creativeEl = $('#creative');
+  const creativeVal = $('#creativeVal');
+  creativeEl.addEventListener('input', e => {
+    creative = +e.target.value;
+    const lab = creative < 25 ? 'Careful' : creative < 60 ? 'Balanced' : creative < 85 ? 'Exploratory' : 'Wild';
+    creativeVal.textContent = lab + ' ' + (creative/100).toFixed(2);
+  });
+
+  // ============ CONTEXT CHIPS ============
+  $$('.ctx-chip').forEach(c => c.addEventListener('click', () => {
+    if(c.dataset.ctx === 'add') return toast('Drag a file onto the prompt to attach.');
+    c.classList.toggle('on');
+  }));
+
+  // ============ SYSTEM ============
+  const sysPresets = {
+    bsa: 'You are a BSA officer at a community credit union. Voice: factual, past-tense, examiner-aware. Never speculate. Cite the line, the date, the dollar amount. Plain language.',
+    under: 'You are a senior credit underwriter at a community bank. Voice: skeptical, specific, kind. Push back on weak assumptions. Suggest stronger framings. Cite the line you are objecting to.',
+    comp: 'You are a compliance reviewer reading for Reg B / ECOA / Fair Lending exposure. Flag any language that could be read as denying credit on a prohibited basis. Suggest neutral phrasing for each flag.',
+    member: 'You are writing to a credit-union member. Voice: warm, direct, plain. 8th-grade reading level. No jargon. Answer the question they asked, then tell them what to do next.',
+    board: 'You are writing for a board pack. Voice: confident, brief, decision-oriented. Lead with the recommendation. One sentence per material fact. Maximum 90 words.',
+    reset: 'You are an experienced banker\'s assistant for a community credit union. Voice: plain, factual, examiner-aware. No marketing language. No bullet points unless asked. Answer concisely.',
+  };
+  $('#sysHead').addEventListener('click', () => $('#sysPanel').classList.toggle('open'));
+  $('#sysInput').addEventListener('input', e => {
+    $('#sysPreview').textContent = e.target.value.slice(0,120);
+  });
+  $$('.sys-preset').forEach(b => b.addEventListener('click', e => {
+    e.stopPropagation();
+    const t = sysPresets[b.dataset.preset];
+    if(t){ $('#sysInput').value = t; $('#sysPreview').textContent = t.slice(0,120); }
+  }));
+
+  // ============ VARIABLES ============
+  const varVals = {};
+  function detectVars(){
+    const text = $('#promptInput').value;
+    const matches = [...text.matchAll(/\{\{([a-z][a-z0-9_]*)\}\}/gi)].map(m => m[1]);
+    const uniq = [...new Set(matches)];
+    $('#varCnt').textContent = uniq.length;
+    const list = $('#varsList');
+    if(uniq.length === 0){
+      list.innerHTML = '<div class="vars-empty">Use <code>{{name}}</code> in your prompt and the field appears here.</div>';
+      return;
+    }
+    list.innerHTML = uniq.map(n => `
+      <div class="var-row">
+        <label class="vlab">{{${n}}}</label>
+        <textarea data-v="${n}" placeholder="Value…">${escapeHtml(varVals[n] || '')}</textarea>
+      </div>
+    `).join('');
+    list.querySelectorAll('textarea').forEach(t => t.addEventListener('input', e => varVals[e.target.dataset.v] = e.target.value));
+  }
+  $('#promptInput').addEventListener('input', detectVars);
+
+  function fillVars(text){
+    return text.replace(/\{\{([a-z][a-z0-9_]*)\}\}/gi, (_, n) => varVals[n] || ('[[' + n + ']]'));
+  }
+
+  // ============ TOOLBOX ITEMS ============
+  const toolboxItems = [
+    { type:'p', name:'Past-tense rewrite', meta:'Mod 09 · v3 · Run 12×', body:'Rewrite this as past-tense narrative. No speculation. The facts speak — what an examiner can read in two minutes.' },
+    { type:'p', name:'Three honest critiques', meta:'Mine · v2 · Run 8×', body:'Take this credit memo and give me three honest critiques a senior underwriter would make. Be specific. Cite the line.' },
+    { type:'s', name:'Reg B fairness check', meta:'Role · v1 · Run 4×', body:'Read the attached letter as if you were an examiner. Flag any language that could be read as denying credit on a prohibited basis. Suggest neutral phrasing for each flag.' },
+    { type:'p', name:'Board summary in 90 words', meta:'Mod 07 · v4 · Run 6×', body:'Summarise the attached document for the board. 90 words maximum. Lead with the recommendation. Use one sentence per material fact.' },
+    { type:'a', name:'Memo reviewer · 3-pass', meta:'Mod 07 · v1 · Run 4×', body:'You are the memo reviewer. Run three passes. Pass 1: structural critique. Pass 2: language and tone. Pass 3: regulatory risk. Show the diffs between passes.' },
+    { type:'s', name:'Vendor TPRM exception', meta:'Role · v2 · Run 3×', body:'Draft a TPRM exception letter for vendor {{vendor}} that did not return a SOC 2. Compensating controls: {{controls}}. Sunset date: {{sunset}}.' },
+    { type:'p', name:'Quarterly trend brief', meta:'Mine · v1 · Run 1×', body:'From the attached weekly briefs, identify the three most recurring themes. One sentence each. Plain language.' },
+  ];
+
+  // ============ LOAD MODAL ============
+  function renderLd(filter=''){
+    const f = filter.trim().toLowerCase();
+    $('#ldList').innerHTML = toolboxItems
+      .filter(it => !f || it.name.toLowerCase().includes(f) || it.body.toLowerCase().includes(f))
+      .map(it => `<div class="ld-item" data-body="${encodeURIComponent(it.body)}" data-name="${encodeURIComponent(it.name)}" style="display:grid; grid-template-columns:auto 1fr auto; gap:12px; padding:14px 0; border-bottom:1px solid var(--rule); cursor:pointer; align-items:start">
+        <span style="font-family:var(--mono); font-size:8.5px; letter-spacing:0.16em; text-transform:uppercase; padding:3px 6px; color:var(--paper); font-weight:700; align-self:start; margin-top:2px; background:${it.type==='p'?'var(--terra)':it.type==='s'?'var(--ink)':'var(--green)'}">${it.type==='p'?'Prompt':it.type==='s'?'Skill':'Agent'}</span>
+        <div>
+          <div style="font-family:var(--serif); font-size:15px; line-height:1.3; color:var(--ink); font-weight:500">${it.name}</div>
+          <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.16em; text-transform:uppercase; color:var(--muted); font-weight:600; margin-top:3px">${it.meta}</div>
+        </div>
+        <span style="font-family:var(--mono); font-size:11px; color:var(--muted)">→</span>
+      </div>`).join('');
+    $('#ldList').querySelectorAll('.ld-item').forEach(el => el.addEventListener('click', () => {
+      $('#promptInput').value = decodeURIComponent(el.dataset.body);
+      $('#runTitle').value = decodeURIComponent(el.dataset.name);
+      detectVars();
+      closeLoad();
+      $('#promptInput').focus();
+    }));
+  }
+  function openLoad(){ $('#loadModal').classList.add('open'); $('#loadBg').classList.add('open'); renderLd(); }
+  function closeLoad(){ $('#loadModal').classList.remove('open'); $('#loadBg').classList.remove('open'); }
+  $('#loadBtn').addEventListener('click', openLoad);
+  $('#loadClose').addEventListener('click', closeLoad);
+  $('#loadBg').addEventListener('click', closeLoad);
+  $('#ldSearch').addEventListener('input', e => renderLd(e.target.value));
+
+  // ============ RECIPES ============
+  const recipes = [
+    { tag:'Compare', title:'Which model writes the cleanest <em>SAR narrative?</em>', desc:'Same transaction log into Opus, Sonnet, GPT-5. Pick the one an examiner could read.', mode:'compare', prompt:'Write a SAR narrative for the attached transaction log. Past-tense, factual, examiner-readable. Maximum 200 words. No speculation.', sys:'bsa', ctx:['tx'] },
+    { tag:'Compare', title:'Which voice <em>members trust</em> more?', desc:'Same denial letter against two tones — plain vs warm. Read both out loud.', mode:'compare', prompt:'Rewrite the attached letter for the member. Two versions: one plain and direct, one warm and explanatory. Same factual content.', sys:'member' },
+    { tag:'Single', title:'Stress-test a <em>credit memo.</em>', desc:'Three critiques an examiner would make. Cite the line.', mode:'single', prompt:'Take the attached credit memo and write three honest critiques a senior underwriter would make. Be specific. Cite the line.', sys:'under', ctx:['memo'] },
+    { tag:'Conversation', title:'Iterate a <em>committee summary.</em>', desc:'Multi-turn. Start with a draft, ask for tightening, then for the dissent.', mode:'conv', prompt:'Draft a 90-word committee summary of the attached memo. Lead with the recommendation. After I see it, I\'ll ask you to tighten and then to write the dissent.', sys:'board', ctx:['memo'] },
+    { tag:'Single', title:'Explain a <em>regulatory term</em> three ways.', desc:'For an examiner, for a member, for a board member.', mode:'single', prompt:'Explain {{term}} three ways: one paragraph each, for an examiner, for a member, and for a board member. Same facts, three voices.', sys:'reset' },
+  ];
+  function renderRecipes(){
+    $('#recipeList').innerHTML = recipes.map((r,i) => `
+      <button class="recipe" data-i="${i}">
+        <div class="rh">${r.tag}</div>
+        <div class="rt">${r.title}</div>
+        <div class="rd">${r.desc}</div>
+      </button>
+    `).join('');
+    $('#recipeList').querySelectorAll('.recipe').forEach(el => el.addEventListener('click', () => {
+      const r = recipes[+el.dataset.i];
+      $('#promptInput').value = r.prompt;
+      $('#runTitle').value = r.title.replace(/<[^>]+>/g, '');
+      $('#sysInput').value = sysPresets[r.sys] || sysPresets.reset;
+      $('#sysPreview').textContent = $('#sysInput').value.slice(0,120);
+      // mode
+      $$('.mode-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === r.mode));
+      mode = r.mode;
+      $('#modeHelp').textContent = modeHelp[mode];
+      $('#outModeTag').textContent = mode==='single'?'Single shot':mode==='compare'?'Compare':'Conversation';
+      syncModePick();
+      renderOutputShell();
+      // ctx
+      $$('.ctx-chip').forEach(c => c.classList.remove('on'));
+      (r.ctx || []).forEach(cx => { const el2 = document.querySelector(`.ctx-chip[data-ctx="${cx}"]`); if(el2) el2.classList.add('on'); });
+      detectVars();
+      window.scrollTo({top:0, behavior:'smooth'});
+      toast('Recipe loaded — review and Run.', true);
+    }));
+  }
+  $('#recipesBtn').addEventListener('click', () => {
+    document.querySelector('.side-pane .pane:last-child').scrollIntoView({behavior:'smooth', block:'center'});
+  });
+
+  // ============ CLEAR ============
+  $('#clearBtn').addEventListener('click', () => {
+    $('#promptInput').value = '';
+    $('#runTitle').value = '';
+    conversation = [];
+    detectVars();
+    renderOutputShell();
+    toast('Cleared.');
+  });
+
+  // ============ HISTORY ============
+  function renderRuns(filter=''){
+    const list = $('#runsList');
+    const cnt = $('#runCount');
+    const f = filter.trim().toLowerCase();
+    const visible = sessionRuns.filter(r => !f || (r.title || r.prompt).toLowerCase().includes(f));
+    cnt.textContent = sessionRuns.length;
+    if(visible.length === 0){
+      list.innerHTML = '<div class="hist-empty">' + (sessionRuns.length === 0 ? 'Recent runs appear here. Save the keepers — the rest fade in 24 hours.' : 'No runs match that filter.') + '</div>';
+      return;
+    }
+    list.innerHTML = visible.map((r,i) => `
+      <div class="hist-card ${r.saved?'saved':''}" data-idx="${sessionRuns.indexOf(r)}">
+        <div class="hc-top">
+          <span class="hc-time">${timeAgo(r.ts)}</span>
+          <span class="hc-mode">${r.mode}</span>
+          <span class="hc-models">${r.models.map(m => `<span class="d" style="background:${modelMeta[m].color}"></span>`).join('')}</span>
+        </div>
+        <div class="hc-prompt">${escapeHtml(r.title || r.prompt.slice(0,90))}</div>
+        <div class="hc-foot">
+          <span class="hc-exp">${r.saved?'✓ saved · v1':'expires in '+(24-Math.floor((Date.now()-r.ts)/(1000*60*60)))+'h'}</span>
+          <span class="hc-save" data-idx="${sessionRuns.indexOf(r)}">${r.saved?'✓':'☆'}</span>
+        </div>
+      </div>
+    `).join('');
+    list.querySelectorAll('.hc-save').forEach(el => el.addEventListener('click', e => {
+      e.stopPropagation();
+      sessionRuns[+el.dataset.idx].saved = true;
+      renderRuns($('#histSearch').value);
+      toast('Saved to toolbox · v1', true);
+    }));
+    list.querySelectorAll('.hist-card').forEach(el => el.addEventListener('click', () => {
+      const r = sessionRuns[+el.dataset.idx];
+      $('#promptInput').value = r.prompt;
+      $('#runTitle').value = r.title;
+      detectVars();
+      // restore mode
+      $$('.mode-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === r.mode));
+      mode = r.mode;
+      $('#modeHelp').textContent = modeHelp[mode];
+      $('#outModeTag').textContent = mode==='single'?'Single shot':mode==='compare'?'Compare':'Conversation';
+      syncModePick();
+      restoreOutput(r);
+      window.scrollTo({top:0, behavior:'smooth'});
+    }));
+  }
+  $('#histSearch').addEventListener('input', e => renderRuns(e.target.value));
+
+  // ============ OUTPUT RENDERING ============
+  function renderOutputShell(){
+    const grid = $('#outGrid');
+    const conv = $('#convBox');
+    if(mode === 'conv'){
+      grid.style.display = 'none';
+      conv.style.display = 'block';
+      renderConv();
+    } else {
+      grid.style.display = 'grid';
+      conv.style.display = 'none';
+      const cols = mode === 'compare' ? compareModels.length : 1;
+      grid.className = 'out-grid cols-' + cols;
+      grid.innerHTML = '<div class="out-empty">Your output will land here. Nothing is saved unless you tell it to be — runs auto-discard in <em>24 hours.</em></div>';
+    }
+    $('#outMeta').style.display = 'none';
+  }
+
+  function renderConv(){
+    const c = $('#convBody');
+    if(conversation.length === 0){
+      c.innerHTML = '<div class="conv-empty">Start the conversation. The model holds context across turns until you Clear.</div>';
+      return;
+    }
+    c.innerHTML = conversation.map(t => `
+      <div class="turn ${t.role === 'user' ? 'user' : 'bot'}">
+        <span class="who">${t.role === 'user' ? 'You' : modelMeta[t.model || model].label}</span>
+        <div class="body">${escapeHtml(t.content)}</div>
+      </div>
+    `).join('');
+    c.scrollTop = c.scrollHeight;
+  }
+
+  function flagsFor(text, m){
+    const flags = [];
+    if(controls.guards.includes('redact') && /\d{3}-\d{2}-\d{4}|\b\d{9,16}\b/.test(text)){
+      flags.push({k:'warn', t:'PII detected'});
+    } else if(controls.guards.includes('redact')){
+      flags.push({k:'ok', t:'No PII'});
+    }
+    if(controls.guards.includes('reg')){
+      const bad = /(deny|denied)\b/i.test(text);
+      flags.push(bad ? {k:'warn', t:'Reg B watch: "deny"'} : {k:'ok', t:'Reg B clear'});
+    }
+    flags.push({k:'ok', t:m + ' · ' + Math.ceil(text.split(/\s+/).length) + ' words'});
+    return flags;
+  }
+
+  function renderCard(idx, m, text, took, isLoading){
+    const meta = modelMeta[m];
+    const flags = isLoading ? [] : flagsFor(text, meta.short);
+    const cost = isLoading ? '—' : '$'+(text.length/1000 * meta.cost).toFixed(4);
+    const tokens = isLoading ? '—' : Math.ceil(text.length/4) + ' tok';
+    return `<div class="out-card" data-idx="${idx}">
+      <div class="oc-head">
+        <span class="mp-dot ${m}" style="background:${meta.color}"></span>
+        <span class="oc-model">${meta.label}</span>
+        <span class="oc-meta">${isLoading?'thinking…':(took/1000).toFixed(1)+'s · '+tokens+' · '+cost}</span>
+      </div>
+      <div class="oc-body">${isLoading ? '<span class="oc-typing">Thinking…</span>' : `<span class="text">${escapeHtml(text)}</span>`}</div>
+      ${flags.length ? `<div class="oc-flags">${flags.map(f => `<span class="flag ${f.k}">${f.t}</span>`).join('')}</div>` : ''}
+      <div class="oc-foot">
+        ${mode === 'compare' ? `<button class="oc-act win-btn" data-idx="${idx}">Pick winner ★</button>` : ''}
+        <button class="oc-act save-btn" data-idx="${idx}">Save to toolbox</button>
+        <button class="oc-act iter-btn" data-idx="${idx}">Iterate</button>
+        <button class="oc-act share-btn" data-idx="${idx}">Share</button>
+        <span class="oc-spacer"></span>
+        <button class="oc-act sub copy-btn" data-idx="${idx}">Copy</button>
+      </div>
+    </div>`;
+  }
+
+  function bindCards(){
+    $$('.win-btn').forEach(b => b.addEventListener('click', () => {
+      $$('.out-card').forEach(c => c.querySelector('.win-btn')?.classList.remove('win'));
+      b.classList.add('win');
+      b.textContent = '★ Winner';
+      toast('Marked as winner. Tap Save to send to toolbox.', true);
+    }));
+    $$('.save-btn').forEach(b => b.addEventListener('click', () => openSave(+b.dataset.idx)));
+    $$('.iter-btn').forEach(b => b.addEventListener('click', () => {
+      const cur = $$('.out-card .text')[+b.dataset.idx]?.textContent || '';
+      const ta = $('#promptInput');
+      ta.value += '\n\n---\nIterate on this draft:\n' + cur.slice(0,300) + '…\n\nNow: ';
+      ta.focus();
+      ta.scrollTop = ta.scrollHeight;
+      window.scrollTo({top:0, behavior:'smooth'});
+    }));
+    $$('.share-btn').forEach(b => b.addEventListener('click', () => toast('Share link copied to clipboard.', true)));
+    $$('.copy-btn').forEach(b => b.addEventListener('click', () => {
+      const t = $$('.out-card .text')[+b.dataset.idx]?.textContent || '';
+      navigator.clipboard?.writeText(t);
+      toast('Copied.', true);
+    }));
+  }
+
+  function restoreOutput(r){
+    const grid = $('#outGrid');
+    const conv = $('#convBox');
+    if(r.mode === 'conv'){
+      grid.style.display = 'none';
+      conv.style.display = 'block';
+      conversation = r.conversation || [];
+      renderConv();
+    } else {
+      grid.style.display = 'grid';
+      conv.style.display = 'none';
+      const cols = r.outputs.length;
+      grid.className = 'out-grid cols-' + cols;
+      grid.innerHTML = r.outputs.map((o,i) => renderCard(i, o.model, o.text, o.took, false)).join('');
+      bindCards();
+      $('#outMeta').style.display = 'flex';
+      $('#outTime').textContent = (r.outputs.reduce((a,b) => Math.max(a, b.took), 0)/1000).toFixed(1)+'s';
+      $('#outTok').textContent = Math.ceil(r.outputs.reduce((a,b) => a + b.text.length, 0)/4)+' tok';
+      $('#outCost').textContent = '$'+r.outputs.reduce((a,b) => a + (b.text.length/1000)*modelMeta[b.model].cost, 0).toFixed(4);
+    }
+  }
+
+  // ============ RUN ============
+  function buildSystem(){
+    let s = $('#sysInput').value.trim();
+    const ctx = [...$$('.ctx-chip.on')].map(c => c.textContent.trim()).filter(Boolean);
+    if(ctx.length) s += '\n\nAttached context: ' + ctx.join(', ') + '. Treat these as the source material.';
+    s += '\n\nFormat: ' + controls.format + '. Length: ' + controls.length + '. Tone: ' + controls.tone + '.';
+    if(controls.guards.includes('redact')) s += ' Redact PII in your response.';
+    if(controls.guards.includes('reg')) s += ' Flag any Reg B / fair-lending exposure.';
+    return s;
+  }
+
+  async function runOne(prompt, m){
+    const t0 = Date.now();
+    let resp = '';
+    try{
+      const sys = buildSystem();
+      // Use a single global helper but tag each output with the chosen model label.
+      resp = await window.claude.complete({
+        messages: [{ role:'user', content: sys + '\n\n---\n\n[Pretend you are ' + modelMeta[m].label + '. Adopt the house voice it is known for.]\n\n' + prompt }]
+      });
+    } catch(e){
+      resp = 'Run failed. ' + (e?.message || e);
+    }
+    return { model:m, text:resp, took: Date.now() - t0 };
+  }
+
+  async function doRun(){
+    const rawPrompt = $('#promptInput').value.trim();
+    if(!rawPrompt) return toast('Write a prompt first.');
+    const prompt = fillVars(rawPrompt);
+    const title = $('#runTitle').value.trim();
+    const runBtn = $('#runBtn');
+    runBtn.disabled = true;
+    const orig = runBtn.innerHTML;
+    runBtn.innerHTML = 'Running…';
+
+    if(mode === 'conv'){
+      conversation.push({ role:'user', content: prompt });
+      renderConv();
+      const t0 = Date.now();
+      let resp = '';
+      try{
+        const sys = buildSystem();
+        const msgs = [{role:'user', content: sys + '\n\n---\n\nConversation so far:\n' + conversation.map(t => (t.role==='user'?'USER: ':'ASSISTANT: ') + t.content).join('\n\n') + '\n\nRespond as the assistant to the latest user message.'}];
+        resp = await window.claude.complete({ messages: msgs });
+      } catch(e){ resp = 'Run failed. ' + (e?.message || e); }
+      conversation.push({ role:'assistant', content: resp, model });
+      renderConv();
+      lastRun = { ts:Date.now(), title, prompt:rawPrompt, mode:'conv', models:[model], conversation:[...conversation], saved:false };
+      sessionRuns.unshift(lastRun);
+    } else {
+      const grid = $('#outGrid');
+      const ms = mode === 'compare' ? compareModels : [model];
+      grid.className = 'out-grid cols-' + ms.length;
+      grid.innerHTML = ms.map((m,i) => renderCard(i, m, '', 0, true)).join('');
+      $('#outMeta').style.display = 'none';
+
+      const results = await Promise.all(ms.map(m => runOne(prompt, m).then(r => {
+        // progressively render
+        const idx = ms.indexOf(m);
+        const card = grid.querySelectorAll('.out-card')[idx];
+        if(card) card.outerHTML = renderCard(idx, m, r.text, r.took, false);
+        bindCards();
+        return r;
+      })));
+      // final meta
+      $('#outMeta').style.display = 'flex';
+      $('#outTime').textContent = (Math.max(...results.map(r => r.took))/1000).toFixed(1)+'s';
+      const totalChars = results.reduce((a,b) => a + b.text.length, 0);
+      $('#outTok').textContent = Math.ceil(totalChars/4)+' tok';
+      $('#outCost').textContent = '$'+results.reduce((a,b) => a + (b.text.length/1000)*modelMeta[b.model].cost, 0).toFixed(4);
+
+      lastRun = { ts:Date.now(), title, prompt:rawPrompt, mode, models: ms, outputs:results, saved:false };
+      sessionRuns.unshift(lastRun);
+    }
+    if(sessionRuns.length > 12) sessionRuns = sessionRuns.slice(0,12);
+    renderRuns($('#histSearch').value);
+
+    runBtn.disabled = false;
+    runBtn.innerHTML = orig;
+  }
+  $('#runBtn').addEventListener('click', doRun);
+  // ⌘↵ shortcut
+  document.addEventListener('keydown', e => {
+    if((e.metaKey || e.ctrlKey) && e.key === 'Enter'){
+      e.preventDefault();
+      doRun();
+    }
+  });
+
+  // ============ SAVE MODAL ============
+  function openSave(idx){
+    saveType = 'prompt';
+    $$('#saveType button').forEach(b => b.classList.toggle('sel', b.dataset.t === 'prompt'));
+    $('#saveName').value = $('#runTitle').value || '';
+    $('#saveDesc').value = '';
+    $('#saveModal').classList.add('open');
+    $('#saveBg').classList.add('open');
+  }
+  function closeSave(){ $('#saveModal').classList.remove('open'); $('#saveBg').classList.remove('open'); }
+  $('#saveClose').addEventListener('click', closeSave);
+  $('#saveCancel').addEventListener('click', closeSave);
+  $('#saveBg').addEventListener('click', closeSave);
+  $$('#saveType button').forEach(b => b.addEventListener('click', () => {
+    $$('#saveType button').forEach(x => x.classList.remove('sel'));
+    b.classList.add('sel');
+    saveType = b.dataset.t;
+  }));
+  $('#saveDo').addEventListener('click', () => {
+    if(!$('#saveName').value.trim()) return toast('Give it a name.');
+    if(lastRun) lastRun.saved = true;
+    closeSave();
+    renderRuns($('#histSearch').value);
+    toast('Saved to toolbox · ' + saveType + ' · v1', true);
+  });
+
+  // ============ INIT ============
+  syncModePick();
+  detectVars();
+  renderRecipes();
+  renderRuns();
+  renderOutputShell();
+
+  // First-run suggestion
+  $('#promptInput').value = "Take this credit memo and write three honest critiques a senior underwriter would make. Be specific about {{borrower}} — cite the line.";
+  $('#runTitle').value = 'Stress-test memo';
+  detectVars();
+  varVals.borrower = 'Riverbend Custom Cabinetry';
+  detectVars();
+})();
+</script>
+
+</body>
+</html>

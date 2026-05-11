@@ -2,31 +2,40 @@
  * Intent contract: docs/superpowers/design-system/03-tokens.md
  *
  * Components and pages NEVER use hex literals. Reference tokens by name only.
+ *
+ * 2026-05-10: legacy --color-* and --font-* tokens REMAPPED to point at
+ * the Ledger palette (defined in tokens-ledger.css). Every component that
+ * references a legacy token now renders Ledger gold/navy/parchment instead
+ * of the old terra/sage/cobalt. Pillar discipline retired (sage/amber/
+ * cobalt-pale kept as legacy aliases for the few places that still
+ * reference them; new code should use the Ledger names directly).
  */
 
 :root {
-  /* ---- Color · Pillar tokens (discipline rule applies) ---------------- */
-  --color-terra:        #b5512e;
-  --color-terra-light:  #c96a43;
-  --color-terra-pale:   #f0c4ab;
+  /* ---- Color · Pillar tokens (REMAPPED to Ledger) -------------------- */
+  --color-terra:        var(--ledger-terra,        #B5862A);  /* was #b5512e (rust) */
+  --color-terra-light:  var(--ledger-terra-light,  #C99A40);  /* was #c96a43 */
+  --color-terra-pale:   var(--ledger-tape,         #F1E9D0);  /* was #f0c4ab */
+  --color-cobalt:       var(--ledger-accent-2,     #1E3A5F);  /* was #2d4a7a (similar navy) */
+
+  /* ---- Color · Pillar tokens (legacy, no Ledger equiv) --------------- */
   --color-sage:         #4a6741;
   --color-sage-pale:    #d8e8d5;
-  --color-cobalt:       #2d4a7a;
   --color-cobalt-pale:  #dce6f5;
   --color-amber:        #c48820;
   --color-amber-light:  #d4a032;
 
-  /* ---- Color · Surfaces ----------------------------------------------- */
-  --color-linen:        #f9f6f0;
-  --color-parch:        #f5f0e6;
-  --color-parch-dark:   #ede6d8;
-  --color-ink:          #1e1a14;
+  /* ---- Color · Surfaces (REMAPPED to Ledger) ------------------------- */
+  --color-linen:        var(--ledger-bg,           #ECE9DF);  /* was #f9f6f0 */
+  --color-parch:        var(--ledger-paper,        #F4F1E7);  /* was #f5f0e6 */
+  --color-parch-dark:   var(--ledger-parch,        #E4E0D2);  /* was #ede6d8 */
+  --color-ink:          var(--ledger-ink,          #0E1B2D);  /* was #1e1a14 (warm) */
 
-  /* ---- Color · Text --------------------------------------------------- */
-  --color-slate:        #6b6355;
-  --color-dust:         #9b9085;
-  --color-bone:         #e8dec8;
-  --color-cream:        #c9b889;
+  /* ---- Color · Text (REMAPPED to Ledger) ----------------------------- */
+  --color-slate:        var(--ledger-slate,        #5C6B82);  /* was #6b6355 */
+  --color-dust:         var(--ledger-soft,         #8C95A8);  /* was #9b9085 */
+  --color-bone:         var(--ledger-paper,        #F4F1E7);  /* was #e8dec8 */
+  --color-cream:        var(--ledger-tape,         #F1E9D0);  /* was #c9b889 */
 
   /* ---- Color · Semantic ----------------------------------------------- */
   --color-error:        #9b2226;
@@ -37,11 +46,19 @@
   --divider-hairline:   rgba(30, 26, 20, 0.10);
   --divider-strong:     var(--color-ink);
 
-  /* ---- Typography · Family ------------------------------------------- */
-  --font-serif:         var(--font-cormorant), Georgia, "Times New Roman", serif;
+  /* ---- Typography · Family (REMAPPED to Ledger) --------------------- *
+   * --font-serif/-sans/-mono now point at Newsreader / Geist / JetBrains
+   * Mono (the Ledger stack). The Cormorant / DM Sans / DM Mono fonts
+   * remain loaded in layout.tsx for the few places that import them
+   * directly via --font-cormorant etc., but the unprefixed --font-* tokens
+   * resolve to Ledger.
+   * --font-serif-sc keeps Cormorant SC because Newsreader has no small
+   * caps glyph set.
+   */
+  --font-serif:         var(--font-newsreader),   "Iowan Old Style", Georgia, "Times New Roman", serif;
   --font-serif-sc:      var(--font-cormorant-sc), Georgia, "Times New Roman", serif;
-  --font-sans:          var(--font-dm-sans), -apple-system, "Helvetica Neue", system-ui, sans-serif;
-  --font-mono:          var(--font-dm-mono), "SF Mono", Menlo, Consolas, ui-monospace, monospace;
+  --font-sans:          var(--font-geist-sans),    -apple-system, "Helvetica Neue", system-ui, sans-serif;
+  --font-mono:          var(--font-jetbrains-mono),"SF Mono", Menlo, Consolas, ui-monospace, monospace;
 
   /* ---- Typography · Size --------------------------------------------- */
   --text-display-xl:    4rem;        /*  64 */

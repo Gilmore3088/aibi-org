@@ -61,13 +61,29 @@ export function SiteFooter({ showNewsletter = true }: SiteFooterProps = {}) {
               : "max-w-wide mx-auto grid gap-s10 md:gap-s12 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr]"
           }
         >
-          {/* Brand column */}
+          {/* Brand column — Ledger lockup */}
           <div>
-            <p className="font-serif text-display-xs text-ink">The AI Banking Institute</p>
-            <p className="font-serif-sc text-body-md text-terra mt-s1 mb-s5">
+            <div className="flex flex-col" style={{ lineHeight: 0.95 }}>
+              <span
+                className="font-sans uppercase text-ink"
+                style={{ fontWeight: 700, fontSize: 16, letterSpacing: '-0.005em', lineHeight: 1 }}
+              >
+                The AI Banking
+              </span>
+              <span
+                className="font-sans uppercase text-dust"
+                style={{ fontWeight: 700, fontSize: 16, letterSpacing: '-0.005em', lineHeight: 1, marginTop: 1 }}
+              >
+                Institute
+              </span>
+            </div>
+            <p
+              className="font-mono text-terra mt-s4 mb-s5"
+              style={{ fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 600 }}
+            >
               Turning Bankers into Builders
             </p>
-            <p className="text-body-sm text-ink/70 leading-relaxed max-w-[36ch]">
+            <p className="font-serif text-body-lg text-ink/80 leading-relaxed italic max-w-[36ch]">
               An education company for community banks and credit unions.
             </p>
           </div>

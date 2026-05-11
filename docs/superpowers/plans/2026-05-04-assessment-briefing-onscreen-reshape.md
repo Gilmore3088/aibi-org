@@ -94,16 +94,16 @@ export const TIER_CLOSING_CTA: Record<Tier['id'], TierClosingCta> = {
     eyebrow: 'Your next move',
     headline: 'Get your team trained on AI fundamentals.',
     body:
-      'Skills come first. AiBI-P teaches working AI use to bankers in 12 short modules — your team can start this week.',
-    ctaLabel: 'Enroll your team in AiBI-P',
+      'Skills come first. AiBI Foundations teaches working AI use to bankers in 12 short modules — your team can start this week.',
+    ctaLabel: 'Enroll your team in AiBI Foundations',
     ctaHref: '/courses/aibi-p',
   },
   'early-stage': {
     eyebrow: 'Your next move',
     headline: 'Get your team trained on AI fundamentals.',
     body:
-      'You have momentum. Lock it in with AiBI-P — your bankers learn the same patterns repeatable across the institution.',
-    ctaLabel: 'Enroll your team in AiBI-P',
+      'You have momentum. Lock it in with AiBI Foundations — your bankers learn the same patterns repeatable across the institution.',
+    ctaLabel: 'Enroll your team in AiBI Foundations',
     ctaHref: '/courses/aibi-p',
   },
   'building-momentum': {
@@ -248,7 +248,7 @@ git commit -m "feat(assessment): replace Next-Steps trio with tier-keyed closing
 
 Section 9 was three competing cards (Training/Strategic Planning/
 Governance). Per Spec 1, drops to a single card whose content varies by
-tier — Starting Point + Early Stage push AiBI-P; Building Momentum and
+tier — Starting Point + Early Stage push AiBI Foundations; Building Momentum and
 Ready to Scale push the Briefing/Advisory route.
 
 Refs: docs/superpowers/specs/2026-05-04-assessment-results-four-surfaces.md"
@@ -636,7 +636,7 @@ git commit -m "feat(assessment): track closing_cta_click for tier-keyed CTA
 
 Fires Plausible event with { tier, destination } props on click. Lets us
 flip the tier→href mapping in a 5-line PR after 30 days of data instead
-of guessing the AiBI-P vs Briefing/Advisory split. Uses the deferred
+of guessing the AiBI Foundations vs Briefing/Advisory split. Uses the deferred
 queue pattern documented in CLAUDE.md.
 
 Refs: docs/superpowers/specs/2026-05-04-assessment-results-four-surfaces.md"
@@ -817,7 +817,7 @@ gh pr create --title "Assessment briefing reshape (Spec 1 of 4)" --body "$(cat <
 
 ## Test plan
 
-- [ ] Complete assessment with Starting Point answers — closing CTA reads "Enroll your team in AiBI-P" → \`/courses/aibi-p\`
+- [ ] Complete assessment with Starting Point answers — closing CTA reads "Enroll your team in AiBI Foundations" → \`/courses/aibi-p\`
 - [ ] Complete assessment with Building Momentum answers — closing CTA reads "Request an Executive Briefing" → \`/for-institutions/advisory\`
 - [ ] Complete assessment with Ready to Scale answers — closing CTA reads "Request a conversation" → \`/for-institutions/advisory\`
 - [ ] iPhone SE (375 px) — no horizontal scroll, CTA tappable

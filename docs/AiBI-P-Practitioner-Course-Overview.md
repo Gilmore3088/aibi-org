@@ -1,12 +1,12 @@
-# AiBI-P Practitioner Course Overview
+# AiBI Foundations AiBI Foundations Overview
 
 ## Course Name
 
-**AiBI-P: Banking AI Practitioner**
+**AiBI Foundations: Banking AI Foundations**
 
 ## Positioning
 
-AiBI-P is a practical AI foundations course for community bank and credit union employees.
+AiBI Foundations is a practical AI foundations course for community bank and credit union employees.
 
 The course teaches bankers how to use AI safely, confidently, and practically in daily work without turning them into technologists.
 
@@ -23,7 +23,7 @@ In less than two weeks, a banker should be able to use AI to:
 
 ## Primary Buyer Promise
 
-AiBI-P gives institutions a practical, measurable AI education program that improves productivity while respecting banking risk, compliance, governance, and human accountability.
+AiBI Foundations gives institutions a practical, measurable AI education program that improves productivity while respecting banking risk, compliance, governance, and human accountability.
 
 ## Product Loop
 
@@ -59,11 +59,11 @@ Advanced products are future-facing:
 - **AiBI-S: Specialist** - Coming soon
 - **AiBI-L: Leader** - Coming soon
 
-AiBI-P is the active V4 product.
+AiBI Foundations is the active V4 product.
 
 ## Core Safety Framework
 
-AiBI-P uses the SAFE rule:
+AiBI Foundations uses the SAFE rule:
 
 - **Strip sensitive data** - remove customer, account, credit, SAR, investigation, and confidential financial details before prompting.
 - **Ask clearly** - give AI a role, task, context, format, and constraints.
@@ -78,7 +78,7 @@ The course also uses a red/yellow/green AI use model:
 
 ## Prompt Strategy System
 
-AiBI-P does not teach prompts as syntax. It teaches prompt strategies as tools for specific jobs.
+AiBI Foundations does not teach prompts as syntax. It teaches prompt strategies as tools for specific jobs.
 
 ### The Six Prompt Strategies
 
@@ -380,7 +380,7 @@ Level 1 awareness also introduces **multi-step prompts** as a simple precursor t
 - Organize prompts by task
 - Improve prompts over time
 
-### Module 12 - Final Practitioner Lab
+### Module 12 - Final Lab
 
 **Goal:** Demonstrate practical, safe AI use through a final lab.
 
@@ -439,7 +439,7 @@ Each rep includes:
 
 ## Artifacts
 
-AiBI-P gives learners tangible outputs they can reuse.
+AiBI Foundations gives learners tangible outputs they can reuse.
 
 Core artifacts include:
 
@@ -454,11 +454,11 @@ Core artifacts include:
 - Tool Choice Map
 - Role Use-Case Card
 - Personal Prompt Library
-- Final Practitioner Lab Submission
+- Final Lab Submission
 
 ## Certification Criteria
 
-AiBI-P certification should require:
+AiBI Foundations certification should require:
 
 - Complete all 12 modules
 - Complete required activities
@@ -479,9 +479,9 @@ The course is designed for:
 - Power users who want better workflows and reusable prompts
 - Institution leaders who need confidence, readiness, ROI, and governance alignment
 
-## What AiBI-P Is Not
+## What AiBI Foundations Is Not
 
-AiBI-P is not:
+AiBI Foundations is not:
 
 - A generic AI course
 - A technical prompt engineering course
@@ -490,11 +490,11 @@ AiBI-P is not:
 - A replacement for compliance, legal, credit, or operational controls
 - A tool-specific vendor training program
 
-AiBI-P is the foundations course for bankers who need to use AI safely and practically at work.
+AiBI Foundations is the foundations course for bankers who need to use AI safely and practically at work.
 
 ## Summary
 
-AiBI-P is the first-course proof of the reusable AI Banking Institute learning model:
+AiBI Foundations is the first-course proof of the reusable AI Banking Institute learning model:
 
 **Assessment -> Personalized Path -> Short Lesson -> Practice Rep -> Useful Artifact -> Progress -> Certification**
 

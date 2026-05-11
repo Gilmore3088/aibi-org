@@ -16,7 +16,6 @@
 
 import Link from "next/link";
 import { headers } from "next/headers";
-import { AibiSeal } from "@/components/AibiSeal";
 import { AuthButton } from "@/components/AuthButton";
 import { MobileNav } from "@/components/MobileNav";
 import { cn } from "@/lib/utils/cn";
@@ -44,16 +43,25 @@ export async function SiteNav() {
   return (
     <header className="sticky top-0 z-sticky border-b border-hairline bg-linen/[0.97]">
       <div className="max-w-wide mx-auto px-s7 py-s5 flex items-center justify-between gap-s6">
+        {/* Ledger lockup — two-line Geist 700 uppercase. Per the Design System
+            spec: sans-serif, no italics, no symbol, no monogram. */}
         <Link
           href="/"
           aria-label="The AI Banking Institute — Home"
-          className="flex items-center gap-s3 group"
+          className="flex flex-col leading-none group"
+          style={{ lineHeight: 0.95 }}
         >
-          <span className="text-ink group-hover:text-terra transition-colors duration-fast">
-            <AibiSeal size={36} />
+          <span
+            className="font-sans uppercase text-ink group-hover:text-terra transition-colors duration-fast"
+            style={{ fontWeight: 700, fontSize: 14, letterSpacing: '-0.005em', lineHeight: 1 }}
+          >
+            The AI Banking
           </span>
-          <span className="font-serif-sc text-body-md text-ink hidden sm:inline">
-            The AI Banking Institute
+          <span
+            className="font-sans uppercase text-dust"
+            style={{ fontWeight: 700, fontSize: 14, letterSpacing: '-0.005em', lineHeight: 1, marginTop: 1 }}
+          >
+            Institute
           </span>
         </Link>
 

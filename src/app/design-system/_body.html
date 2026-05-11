@@ -1,0 +1,899 @@
+<div class="wrap">
+
+  <!-- ============ MASTHEAD ============ -->
+  <header class="masthead">
+    <div class="lockup">
+      <div class="l1">The AI Banking</div>
+      <div class="l2">Institute</div>
+    </div>
+    <div class="meta">
+      <div class="row"><strong>Status</strong> &nbsp; Draft for designer handoff</div>
+      <div class="row"><strong>Owner</strong> &nbsp; James (founder)</div>
+      <div class="row"><strong>Stack</strong> &nbsp; HTML · CSS variables · Newsreader / Geist / JetBrains Mono</div>
+    </div>
+  </header>
+
+  <div class="title-bar">
+    <h1 class="title">Design <em>system.</em></h1>
+    <div class="recipient">
+      For
+      <span class="name">Designer rebuild · v1</span>
+    </div>
+  </div>
+
+  <!-- ============ TOC ============ -->
+  <nav class="toc">
+    <h6>Contents</h6>
+    <a href="#brand"><span class="num">01</span> Brand &amp; voice</a>
+    <a href="#color"><span class="num">02</span> Color · Ledger</a>
+    <a href="#type"><span class="num">03</span> Typography</a>
+    <a href="#layout"><span class="num">04</span> Layout &amp; spacing</a>
+    <a href="#rules"><span class="num">05</span> Rules &amp; dividers</a>
+    <a href="#radii"><span class="num">06</span> Radii &amp; shadow</a>
+    <a href="#buttons"><span class="num">07</span> Buttons</a>
+    <a href="#pills"><span class="num">08</span> Pills &amp; chips</a>
+    <a href="#progress"><span class="num">09</span> Progress dots</a>
+    <a href="#cards"><span class="num">10</span> Cards</a>
+    <a href="#sidebar"><span class="num">11</span> Sidebar</a>
+    <a href="#topbar"><span class="num">12</span> Topbar &amp; crumbs</a>
+    <a href="#section"><span class="num">13</span> Section header</a>
+    <a href="#tables"><span class="num">14</span> Tables</a>
+    <a href="#models"><span class="num">15</span> Model picker</a>
+    <a href="#versions"><span class="num">16</span> Version timeline</a>
+    <a href="#forms"><span class="num">17</span> Form fields</a>
+    <a href="#reviewer"><span class="num">18</span> Reviewer note</a>
+    <a href="#icons"><span class="num">19</span> Iconography</a>
+    <a href="#motion"><span class="num">20</span> Motion</a>
+    <a href="#voice"><span class="num">21</span> Voice &amp; copy</a>
+  </nav>
+
+  <!-- ============ 01 BRAND ============ -->
+  <section id="brand">
+    <header class="sec-head">
+      <span class="sec-num"><b>01</b> BRAND</span>
+      <h2 class="sec-title">Brand <em>& voice.</em></h2>
+      <p class="sec-lead">A banker-built institute. Authoritative, dry, slightly editorial. Newspaper bones, software polish.</p>
+    </header>
+
+    <div class="spec">
+      <div class="live">
+        <div class="lockup">
+          <div class="l1">The AI Banking</div>
+          <div class="l2">Institute</div>
+        </div>
+      </div>
+      <div class="notes">
+        <div class="kicker">Wordmark</div>
+        <h4>Primary lockup</h4>
+        <p>Two lines, both <strong>Geist 700 uppercase</strong>. Line 1 in ink, line 2 in soft slate-blue. Stacked tight (line-height 1, no extra gap). <strong>Sans-serif. No italics. No symbol. No monogram.</strong></p>
+        <dl>
+          <dt>Line 1</dt><dd>Geist 700 · 24px · –0.005em · UPPER · --ink</dd>
+          <dt>Line 2</dt><dd>Geist 700 · 24px · –0.005em · UPPER · --soft</dd>
+          <dt>Line-height</dt><dd>1.0 (tight stack)</dd>
+          <dt>Gap</dt><dd>0–2px between lines</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="live" style="background:var(--ink); color:var(--paper)">
+        <div class="lockup">
+          <div class="l1" style="color:var(--paper)">The AI Banking</div>
+          <div class="l2" style="color:var(--soft)">Institute</div>
+        </div>
+      </div>
+      <div class="notes">
+        <div class="kicker">Reverse</div>
+        <h4>On ink backgrounds</h4>
+        <p>Same mark, recolored. Keep both lines on a flat ink panel — never over imagery.</p>
+        <ul class="rule-list">
+          <li>Use <code>--paper</code> for line 1, <code>--soft</code> for line 2.</li>
+          <li class="no">Do not outline, emboss, or place over imagery without a flat backing.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="live">
+        <p style="font-family:var(--serif); font-size:24px; line-height:1.35; color:var(--ink-2); margin:0; max-width:54ch">
+          I built this because I love AI and want to help people use it to improve something they already do well. Bankers have a real need to understand it — not be sold it.
+        </p>
+        <p style="font-family:var(--mono); font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--muted); margin:8px 0 0">House voice · sample</p>
+      </div>
+      <div class="notes">
+        <div class="kicker">Voice</div>
+        <h4>Editorial, not promotional</h4>
+        <ul class="rule-list">
+          <li>Short sentences. Few adjectives. Never “supercharge,” “unlock,” or “revolutionize.”</li>
+          <li>Use “you” in the second person. Avoid “users.”</li>
+          <li>Numbers earn their place — don't pad with stats that prove nothing.</li>
+          <li class="no">No exclamation points. Ever.</li>
+          <li class="no">No emoji unless quoting someone using one.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 02 COLOR ============ -->
+  <section id="color">
+    <header class="sec-head">
+      <span class="sec-num"><b>02</b> COLOR</span>
+      <h2 class="sec-title">Color · <em>Ledger.</em></h2>
+      <p class="sec-lead">Parchment field, navy ink, gold accent, oxblood for warning. Inspired by hand-kept ledgers — never bright, never neon.</p>
+    </header>
+
+    <h4 style="font-family:var(--serif); font-size:20px; font-weight:500; letter-spacing:-0.015em; margin:0 0 14px">Foundation</h4>
+    <div class="swatch-grid">
+      <div class="sw"><div class="chip" style="background:#ECE9DF"></div><div class="label"><div class="name">Linen / BG</div><div class="var">--bg</div><div class="hex">#ECE9DF</div></div></div>
+      <div class="sw"><div class="chip" style="background:#F4F1E7"></div><div class="label"><div class="name">Paper</div><div class="var">--paper</div><div class="hex">#F4F1E7</div></div></div>
+      <div class="sw"><div class="chip" style="background:#E4E0D2"></div><div class="label"><div class="name">Parch</div><div class="var">--parch</div><div class="hex">#E4E0D2</div></div></div>
+      <div class="sw"><div class="chip" style="background:#F1E9D0"></div><div class="label"><div class="name">Tape (highlight)</div><div class="var">--tape</div><div class="hex">#F1E9D0</div></div></div>
+    </div>
+
+    <h4 style="font-family:var(--serif); font-size:20px; font-weight:500; letter-spacing:-0.015em; margin:32px 0 14px">Ink &amp; type</h4>
+    <div class="swatch-grid">
+      <div class="sw"><div class="chip" style="background:#0E1B2D"></div><div class="label"><div class="name">Ink</div><div class="var">--ink</div><div class="hex">#0E1B2D</div></div></div>
+      <div class="sw"><div class="chip" style="background:#1F2A3F"></div><div class="label"><div class="name">Ink-2</div><div class="var">--ink-2</div><div class="hex">#1F2A3F</div></div></div>
+      <div class="sw"><div class="chip" style="background:#5C6B82"></div><div class="label"><div class="name">Slate / Muted</div><div class="var">--muted</div><div class="hex">#5C6B82</div></div></div>
+      <div class="sw"><div class="chip" style="background:#8C95A8"></div><div class="label"><div class="name">Soft</div><div class="var">--soft</div><div class="hex">#8C95A8</div></div></div>
+    </div>
+
+    <h4 style="font-family:var(--serif); font-size:20px; font-weight:500; letter-spacing:-0.015em; margin:32px 0 14px">Accents</h4>
+    <div class="swatch-grid">
+      <div class="sw"><div class="chip" style="background:#B5862A"></div><div class="label"><div class="name">Gold (accent)</div><div class="var">--accent</div><div class="hex">#B5862A</div></div></div>
+      <div class="sw"><div class="chip" style="background:#1E3A5F"></div><div class="label"><div class="name">Navy (accent-2)</div><div class="var">--accent-2</div><div class="hex">#1E3A5F</div></div></div>
+      <div class="sw"><div class="chip" style="background:#8E3B2A"></div><div class="label"><div class="name">Oxblood (warn)</div><div class="var">--weak</div><div class="hex">#8E3B2A</div></div></div>
+      <div class="sw"><div class="chip" style="background:#D5D1C2"></div><div class="label"><div class="name">Rule</div><div class="var">--rule</div><div class="hex">#D5D1C2</div></div></div>
+    </div>
+
+    <div class="spec" style="margin-top:24px">
+      <div class="live">
+        <p style="margin:0; font-family:var(--serif); font-size:18px; color:var(--ink-2)">Use color for <strong style="color:var(--accent)">emphasis</strong>, never for decoration. The accent is gold; the warning is oxblood; the body is parchment.</p>
+      </div>
+      <div class="notes">
+        <div class="kicker">Usage</div>
+        <ul class="rule-list">
+          <li>Body text on Paper or BG, never Parch (insufficient contrast).</li>
+          <li>Gold for inline emphasis, kicker labels, current-state indicators, primary CTAs that aren't ink.</li>
+          <li>Oxblood is for destructive / late / failed states only. Never for marketing.</li>
+          <li class="no">Don't use accent on accent (gold text on gold backing). Use ink on gold or paper on gold.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 03 TYPE ============ -->
+  <section id="type">
+    <header class="sec-head">
+      <span class="sec-num"><b>03</b> TYPE</span>
+      <h2 class="sec-title">Typography.</h2>
+      <p class="sec-lead">Three families. Each has a job and a role. Don't add a fourth.</p>
+    </header>
+
+    <div class="spec full">
+      <div class="live" style="display:block; padding:36px 40px">
+        <div class="type-row">
+          <span class="role">Display</span>
+          <div style="font-family:var(--serif); font-weight:500; font-size:76px; line-height:0.95; letter-spacing:-0.035em; color:var(--ink)">Banking AI <em style="color:var(--accent); font-style:italic; font-weight:400">Practitioner.</em></div>
+          <span class="specs">Newsreader 500 / 76px / 0.95 / –0.035em</span>
+        </div>
+        <div class="type-row">
+          <span class="role">H1 — Section</span>
+          <div style="font-family:var(--serif); font-weight:500; font-size:42px; line-height:1.05; letter-spacing:-0.025em; color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis">Section heading <em style="color:var(--muted); font-weight:400">italic clause.</em></div>
+          <span class="specs">Newsreader 500 / 42px / 1.05 / –0.025em</span>
+        </div>
+        <div class="type-row">
+          <span class="role">H2 — Card</span>
+          <div style="font-family:var(--serif); font-weight:500; font-size:28px; line-height:1.1; letter-spacing:-0.02em; color:var(--ink)">A card-level title</div>
+          <span class="specs">Newsreader 500 / 28px / 1.1 / –0.02em</span>
+        </div>
+        <div class="type-row">
+          <span class="role">Lede</span>
+          <div style="font-family:var(--serif); font-style:italic; font-size:22px; line-height:1.4; color:var(--ink-2)">Editorial lede sentence — single line.</div>
+          <span class="specs">Newsreader italic 500 / 22px / 1.4</span>
+        </div>
+        <div class="type-row">
+          <span class="role">Body</span>
+          <div style="font-family:var(--sans); font-size:15px; line-height:1.55; color:var(--ink-2)">The body text. Geist sans-serif at 15px with 1.55 leading is the workhorse.</div>
+          <span class="specs">Geist 400 / 15px / 1.55</span>
+        </div>
+        <div class="type-row">
+          <span class="role">Body emphasized</span>
+          <div style="font-family:var(--sans); font-size:15px; line-height:1.55; color:var(--ink); font-weight:500">Same body, weight 500 for inline emphasis.</div>
+          <span class="specs">Geist 500 / 15px</span>
+        </div>
+        <div class="type-row">
+          <span class="role">Small / Caption</span>
+          <div style="font-family:var(--sans); font-size:12.5px; line-height:1.5; color:var(--slate)">Used for captions and supporting text under primary content.</div>
+          <span class="specs">Geist 400 / 12.5px</span>
+        </div>
+        <div class="type-row">
+          <span class="role">Kicker / Label</span>
+          <div style="font-family:var(--mono); font-size:10.5px; letter-spacing:0.2em; text-transform:uppercase; color:var(--accent); font-weight:600">Module · 04 · 28 min</div>
+          <span class="specs">JetBrains Mono 600 / 10.5px / 0.2em / UPPER</span>
+        </div>
+        <div class="type-row">
+          <span class="role">Meta / Mono</span>
+          <div style="font-family:var(--mono); font-size:11px; color:var(--muted); letter-spacing:0.06em">brief · v3 · claude · 2 min ago</div>
+          <span class="specs">JetBrains Mono 400 / 11px</span>
+        </div>
+        <div class="type-row">
+          <span class="role">Quote</span>
+          <div style="font-family:var(--serif); font-style:italic; font-weight:500; font-size:26px; line-height:1.35; color:var(--ink)">“The point of a credit committee is to slow you down. AI shouldn't speed that up.”</div>
+          <span class="specs">Newsreader italic 500 / 26px</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="live">
+        <h4 style="margin:0 0 4px; font-family:var(--mono); font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted)">Family roles</h4>
+        <ul style="margin:0; padding:0; list-style:none; font-family:var(--serif); font-size:18px; line-height:1.5; color:var(--ink)">
+          <li><strong style="font-weight:500">Newsreader</strong> &mdash; titles, ledes, quotes, the brand wordmark.</li>
+          <li style="font-family:var(--sans); font-size:15px; color:var(--ink)"><strong>Geist</strong> &mdash; body, UI labels, buttons (when not mono).</li>
+          <li style="font-family:var(--mono); font-size:13.5px; color:var(--ink)"><strong>JetBrains Mono</strong> &mdash; kickers, metadata, code, version &amp; status pills.</li>
+        </ul>
+      </div>
+      <div class="notes">
+        <div class="kicker">Rules</div>
+        <ul class="rule-list">
+          <li>Italics signal voice — they are not for emphasis. Use Newsreader italic for ledes, quotes, and the trailing clause of section titles.</li>
+          <li>Caps + 0.16–0.20em letter-spacing only on mono. Don't track sans.</li>
+          <li>Body line-height 1.55. Display line-height 0.95–1.1.</li>
+          <li class="no">Never set Geist or Newsreader at letter-spacing &gt; 0.06em.</li>
+          <li class="no">Never set mono &lt; 9px.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 04 LAYOUT ============ -->
+  <section id="layout">
+    <header class="sec-head">
+      <span class="sec-num"><b>04</b> LAYOUT</span>
+      <h2 class="sec-title">Layout &amp; <em>spacing.</em></h2>
+      <p class="sec-lead">8-pt baseline. Generous white space. The page breathes like a printed brief.</p>
+    </header>
+
+    <div class="spec full">
+      <div class="live" style="padding:0">
+        <div class="scale">
+          <div class="bar"><i style="width:4px;height:4px"></i><div class="lab"><b>4</b><br/><span>s-1</span></div></div>
+          <div class="bar"><i style="width:8px;height:8px"></i><div class="lab"><b>8</b><br/><span>s-2</span></div></div>
+          <div class="bar"><i style="width:12px;height:12px"></i><div class="lab"><b>12</b><br/><span>s-3</span></div></div>
+          <div class="bar"><i style="width:16px;height:16px"></i><div class="lab"><b>16</b><br/><span>s-4</span></div></div>
+          <div class="bar"><i style="width:24px;height:24px"></i><div class="lab"><b>24</b><br/><span>s-5</span></div></div>
+          <div class="bar"><i style="width:32px;height:32px"></i><div class="lab"><b>32</b><br/><span>s-6</span></div></div>
+          <div class="bar"><i style="width:48px;height:48px"></i><div class="lab"><b>48</b><br/><span>s-7</span></div></div>
+          <div class="bar"><i style="width:64px;height:64px"></i><div class="lab"><b>64</b><br/><span>s-8</span></div></div>
+          <div class="bar"><i style="width:96px;height:96px"></i><div class="lab"><b>96</b><br/><span>s-9</span></div></div>
+        </div>
+      </div>
+      <div class="notes">
+        <div class="kicker">Spacing scale</div>
+        <ul class="rule-list">
+          <li>Tight spacing inside cards: 4 / 8 / 12.</li>
+          <li>Card padding: 22–32. Card gap in grids: 18–24.</li>
+          <li>Section margins (top): 64–96. The page should feel airy.</li>
+          <li>Always size with the scale. No 18, 20, 22 — those are font sizes.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="live">
+        <div style="display:grid; grid-template-columns:repeat(12, 1fr); gap:8px">
+          <span style="grid-column:span 12; height:36px; background:var(--accent-soft); border:1px solid var(--accent); border-radius:2px; display:grid; place-items:center; font-family:var(--mono); font-size:10px; color:var(--accent); letter-spacing:0.16em">12 · FULL</span>
+          <span style="grid-column:span 8; height:36px; background:var(--paper); border:1px solid var(--rule); border-radius:2px; display:grid; place-items:center; font-family:var(--mono); font-size:10px; color:var(--muted); letter-spacing:0.12em">8 · CONTENT</span>
+          <span style="grid-column:span 4; height:36px; background:var(--paper); border:1px solid var(--rule); border-radius:2px; display:grid; place-items:center; font-family:var(--mono); font-size:10px; color:var(--muted); letter-spacing:0.12em">4 · ASIDE</span>
+          <span style="grid-column:span 6; height:36px; background:var(--paper); border:1px solid var(--rule); border-radius:2px; display:grid; place-items:center; font-family:var(--mono); font-size:10px; color:var(--muted); letter-spacing:0.12em">6 · L</span>
+          <span style="grid-column:span 6; height:36px; background:var(--paper); border:1px solid var(--rule); border-radius:2px; display:grid; place-items:center; font-family:var(--mono); font-size:10px; color:var(--muted); letter-spacing:0.12em">6 · R</span>
+        </div>
+      </div>
+      <div class="notes">
+        <div class="kicker">Grid</div>
+        <h4>12-column · 24px gutter</h4>
+        <p>Container max-width <strong>1240px</strong>, padded <strong>56px</strong> on each side at desktop. Common splits: 12, 8+4, 6+6, 4+4+4, 3+3+3+3. Inside cards, allow free-form grids — don't force the page grid into a card.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 05 RULES ============ -->
+  <section id="rules">
+    <header class="sec-head">
+      <span class="sec-num"><b>05</b> RULES</span>
+      <h2 class="sec-title">Rules &amp; <em>dividers.</em></h2>
+      <p class="sec-lead">Lines do real work here — they replace boxes and shadows.</p>
+    </header>
+    <div class="rule-demo">
+      <div class="item">
+        <div class="lab">Soft rule</div>
+        <hr style="border:none; border-top:1px solid var(--rule); margin:0">
+        <div style="font-family:var(--mono); font-size:10.5px; color:var(--muted); margin-top:10px">1px · --rule · in-card dividers, table rows</div>
+      </div>
+      <div class="item">
+        <div class="lab">Strong rule</div>
+        <hr style="border:none; border-top:1px solid var(--rule-strong); margin:0">
+        <div style="font-family:var(--mono); font-size:10.5px; color:var(--muted); margin-top:10px">1px · --rule-strong · section heads</div>
+      </div>
+      <div class="item">
+        <div class="lab">Ink rule</div>
+        <hr style="border:none; border-top:1px solid var(--ink); margin:0">
+        <div style="font-family:var(--mono); font-size:10.5px; color:var(--muted); margin-top:10px">1px · --ink · masthead bottom</div>
+      </div>
+      <div class="item">
+        <div class="lab">Double rule</div>
+        <hr style="border:none; border-top:3px double var(--ink); margin:0">
+        <div style="font-family:var(--mono); font-size:10.5px; color:var(--muted); margin-top:10px">3px double · --ink · page openers &amp; closers</div>
+      </div>
+      <div class="item">
+        <div class="lab">Dashed</div>
+        <hr style="border:none; border-top:1px dashed var(--rule-strong); margin:0">
+        <div style="font-family:var(--mono); font-size:10.5px; color:var(--muted); margin-top:10px">1px dashed · table secondary rows</div>
+      </div>
+      <div class="item">
+        <div class="lab">Accent border</div>
+        <hr style="border:none; border-top:2px solid var(--accent); margin:0">
+        <div style="font-family:var(--mono); font-size:10.5px; color:var(--muted); margin-top:10px">2px · --accent · timeline left border, hero cards</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 06 RADII ============ -->
+  <section id="radii">
+    <header class="sec-head">
+      <span class="sec-num"><b>06</b> RADII</span>
+      <h2 class="sec-title">Radii &amp; <em>shadow.</em></h2>
+      <p class="sec-lead">Tight. Almost square. We are not rounded-rectangle people.</p>
+    </header>
+    <div class="radii">
+      <div class="col">
+        <div class="swatch" style="border-radius:0"></div>
+        <div class="name">0 px</div>
+        <div class="var">sharp</div>
+        <div class="use">Rules · dividers · inline marks</div>
+      </div>
+      <div class="col">
+        <div class="swatch" style="border-radius:2px"></div>
+        <div class="name">2 px</div>
+        <div class="var">--r-1</div>
+        <div class="use">Buttons · inputs · chips</div>
+      </div>
+      <div class="col">
+        <div class="swatch" style="border-radius:3px"></div>
+        <div class="name">3 px</div>
+        <div class="var">--r-2</div>
+        <div class="use">Cards · sidebars · sections</div>
+      </div>
+      <div class="col">
+        <div class="swatch" style="border-radius:4px"></div>
+        <div class="name">4 px</div>
+        <div class="var">--r-3</div>
+        <div class="use">Hero · phase cards</div>
+      </div>
+      <div class="col">
+        <div class="swatch" style="border-radius:999px; width:128px; height:60px"></div>
+        <div class="name">pill</div>
+        <div class="var">999px</div>
+        <div class="use">Status chips only</div>
+      </div>
+    </div>
+    <div class="spec" style="margin-top:24px">
+      <div class="live">
+        <div class="card" style="box-shadow:var(--shadow); max-width:340px">
+          <div class="kicker">Shadow</div>
+          <h5>One shadow. That's it.</h5>
+          <p>A 1px hairline + a long, low ambient. No multi-layer drop shadows.</p>
+        </div>
+      </div>
+      <div class="notes">
+        <div class="kicker">Tokens</div>
+        <dl>
+          <dt>--r-1</dt><dd>2px · pills, buttons, inputs</dd>
+          <dt>--r-2</dt><dd>3px · cards, sidebars, sections</dd>
+          <dt>--r-3</dt><dd>4px · phase cards, hero blocks</dd>
+          <dt>pill</dt><dd>999px · status chips only</dd>
+          <dt>--shadow</dt><dd>0 1px 0 ink/0.04, 0 14px 40px -28px ink/0.18</dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 07 BUTTONS ============ -->
+  <section id="buttons">
+    <header class="sec-head">
+      <span class="sec-num"><b>07</b> BUTTONS</span>
+      <h2 class="sec-title">Buttons.</h2>
+      <p class="sec-lead">Mono caps, never sentence-case. The page's "tap targets" feel like editorial bylines.</p>
+    </header>
+    <div class="spec">
+      <div class="live">
+        <div style="display:flex; gap:12px; flex-wrap:wrap">
+          <button class="btn primary">Mark complete <span class="arrow">→</span></button>
+          <button class="btn">Save to toolbox</button>
+          <button class="btn accent">Run on Claude <span class="arrow">→</span></button>
+          <button class="btn" style="border-color:var(--rule)">Cancel</button>
+        </div>
+        <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:6px">
+          <button class="btn primary" disabled style="opacity:0.4; cursor:not-allowed">Disabled primary</button>
+          <button class="btn" style="color:var(--weak); border-color:var(--weak)">Destructive</button>
+        </div>
+      </div>
+      <div class="notes">
+        <div class="kicker">Specs</div>
+        <dl>
+          <dt>Type</dt><dd>JetBrains Mono 600 · 11px · 0.14em · UPPER</dd>
+          <dt>Padding</dt><dd>11px / 20px</dd>
+          <dt>Radius</dt><dd>--r-1 (2px)</dd>
+          <dt>Primary</dt><dd>--ink fill, --paper text</dd>
+          <dt>Accent</dt><dd>--accent fill, --paper text</dd>
+          <dt>Ghost</dt><dd>1px --rule-strong, ink text</dd>
+          <dt>Arrow</dt><dd>Newsreader italic →, lower-case, 14px</dd>
+        </dl>
+        <ul class="rule-list" style="margin-top:14px">
+          <li>One primary per screen. Two competing primaries means the screen needs editing.</li>
+          <li class="no">No icon-only buttons except the arrow → after a label.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 08 PILLS ============ -->
+  <section id="pills">
+    <header class="sec-head">
+      <span class="sec-num"><b>08</b> PILLS</span>
+      <h2 class="sec-title">Pills &amp; chips.</h2>
+      <p class="sec-lead">Status, version, model, tag. Always mono caps.</p>
+    </header>
+    <div class="spec">
+      <div class="live">
+        <div style="display:flex; gap:8px; flex-wrap:wrap">
+          <span class="pill">Reviewed</span>
+          <span class="pill solid">Current</span>
+          <span class="pill accent">v3 · Claude</span>
+          <span class="pill warn">Late · 2d</span>
+          <span class="pill">Module 04</span>
+          <span class="pill" style="border-radius:2px">Tag</span>
+        </div>
+      </div>
+      <div class="notes">
+        <div class="kicker">Use</div>
+        <ul class="rule-list">
+          <li>Pill (rounded) for status, version, model.</li>
+          <li>Chip (squared) for taxonomic tags.</li>
+          <li>Accent fill = primary status. Warn fill = late/error/destructive.</li>
+          <li class="no">Don't put more than 3 pills next to each other in a list row.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 09 PROGRESS ============ -->
+  <section id="progress">
+    <header class="sec-head">
+      <span class="sec-num"><b>09</b> PROGRESS</span>
+      <h2 class="sec-title">Progress dots.</h2>
+      <p class="sec-lead">Three states, one shape. No spinners, no percentages bigger than necessary.</p>
+    </header>
+    <div class="spec">
+      <div class="live">
+        <div style="display:flex; gap:18px; flex-wrap:wrap">
+          <span class="pdot done"><i></i> Done</span>
+          <span class="pdot current"><i></i> Current</span>
+          <span class="pdot locked"><i></i> Locked</span>
+        </div>
+        <div style="display:flex; gap:6px; align-items:center; margin-top:10px">
+          <span class="pdot done"><i></i></span><span class="pdot done"><i></i></span><span class="pdot done"><i></i></span><span class="pdot current"><i></i></span><span class="pdot locked"><i></i></span><span class="pdot locked"><i></i></span><span class="pdot locked"><i></i></span><span class="pdot locked"><i></i></span><span class="pdot locked"><i></i></span><span class="pdot locked"><i></i></span><span class="pdot locked"><i></i></span><span class="pdot locked"><i></i></span>
+          <span style="font-family:var(--mono); font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); margin-left:8px">3 / 12</span>
+        </div>
+      </div>
+      <div class="notes">
+        <div class="kicker">Specs</div>
+        <dl>
+          <dt>Size</dt><dd>8px circle, 1.5px border</dd>
+          <dt>Done</dt><dd>--ink fill</dd>
+          <dt>Current</dt><dd>--accent fill</dd>
+          <dt>Locked</dt><dd>--rule-strong border, transparent fill</dd>
+          <dt>Gap</dt><dd>6px between dots in a strip</dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 10 CARDS ============ -->
+  <section id="cards">
+    <header class="sec-head">
+      <span class="sec-num"><b>10</b> CARDS</span>
+      <h2 class="sec-title">Cards.</h2>
+      <p class="sec-lead">Paper field, hairline border. The card is the container; the kicker is the byline.</p>
+    </header>
+    <div class="spec">
+      <div class="live" style="display:grid; grid-template-columns:1fr 1fr; gap:18px">
+        <div class="card">
+          <div class="kicker">Module 04 · 28 min</div>
+          <h5>Prompting for credit memos</h5>
+          <p>Turn a deal narrative into a structured memo without losing the underwriter's voice.</p>
+        </div>
+        <div class="card" style="background:var(--ink); color:var(--paper); border-color:var(--ink)">
+          <div class="kicker" style="color:var(--accent-light)">Reverse · feature</div>
+          <h5 style="color:var(--paper)">Inverse card variant</h5>
+          <p style="color:rgba(244,241,231,0.72)">Used sparingly — section openers, stat blocks, or quotes from the field.</p>
+        </div>
+      </div>
+      <div class="notes">
+        <div class="kicker">Anatomy</div>
+        <dl>
+          <dt>Padding</dt><dd>22–32px</dd>
+          <dt>Border</dt><dd>1px --rule</dd>
+          <dt>Radius</dt><dd>--r-2 (3px)</dd>
+          <dt>Kicker</dt><dd>Mono 10px / 0.2em / accent</dd>
+          <dt>Title</dt><dd>Newsreader 500 / 22px</dd>
+          <dt>Body</dt><dd>Geist 13.5px / ink-2</dd>
+        </dl>
+        <ul class="rule-list" style="margin-top:12px">
+          <li>One kicker per card. Doubling kickers = duplicate metadata.</li>
+          <li class="no">No drop shadows on inline cards. Use --shadow only on hero / feature cards.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 11 SIDEBAR ============ -->
+  <section id="sidebar">
+    <header class="sec-head">
+      <span class="sec-num"><b>11</b> SIDEBAR</span>
+      <h2 class="sec-title">Sidebar.</h2>
+      <p class="sec-lead">Wordmark on top, four pillars, twelve modules. Roomy or compact.</p>
+    </header>
+    <div class="spec">
+      <div class="live" style="background:var(--bg); padding:24px">
+        <div class="sb">
+          <div class="brand">
+            <div class="b1">The AI Banking</div>
+            <div class="b2">Institute</div>
+          </div>
+          <div class="pillar">I · Foundations</div>
+          <div class="nav">
+            <a><span class="n">01</span><span>Why AI in banking</span><span class="m">28m</span></a>
+            <a class="active"><span class="n">02</span><span>Models &amp; modes</span><span class="m">22m</span></a>
+            <a><span class="n">03</span><span>Risk &amp; controls</span><span class="m">35m</span></a>
+          </div>
+          <div class="pillar">II · Practice</div>
+          <div class="nav">
+            <a><span class="n">04</span><span>Prompting credit memos</span><span class="m">28m</span></a>
+            <a><span class="n">05</span><span>Drafting member letters</span><span class="m">24m</span></a>
+          </div>
+        </div>
+      </div>
+      <div class="notes">
+        <div class="kicker">Specs</div>
+        <dl>
+          <dt>Width</dt><dd>280px (roomy) · 232px (compact)</dd>
+          <dt>Background</dt><dd>--paper</dd>
+          <dt>Brand</dt><dd>Wordmark lockup, 24/22/20 padding</dd>
+          <dt>Pillar</dt><dd>Mono 9.5px / 0.18em / muted · 14/22 padding</dd>
+          <dt>Module row</dt><dd>24px num gutter · 13.5px label · 9.5px mono mins</dd>
+          <dt>Active</dt><dd>--bg fill, ink text, weight 500</dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 12 TOPBAR ============ -->
+  <section id="topbar">
+    <header class="sec-head">
+      <span class="sec-num"><b>12</b> TOPBAR</span>
+      <h2 class="sec-title">Topbar &amp; <em>crumbs.</em></h2>
+      <p class="sec-lead">Where you are. Where you came from. Nothing else.</p>
+    </header>
+    <div class="spec full">
+      <div class="live">
+        <div class="tb">
+          <span class="crumb">Course</span>
+          <span class="sep">/</span>
+          <span class="crumb">II · Practice</span>
+          <span class="sep">/</span>
+          <span class="crumb last">04 · Prompting credit memos</span>
+          <span class="right">
+            <span class="pill accent">v3 · Claude</span>
+            <span class="pill">Mod 4 of 12</span>
+          </span>
+        </div>
+      </div>
+      <div class="notes">
+        <div class="kicker">Specs</div>
+        <ul class="rule-list">
+          <li>Mono 11px · 0.06em letter-spacing.</li>
+          <li>Last crumb is ink, others muted.</li>
+          <li>Right-side: status pills only (version, mod count). No avatars.</li>
+          <li class="no">No global nav links in the topbar — that's the sidebar's job.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 13 SECTION HEADER ============ -->
+  <section id="section">
+    <header class="sec-head">
+      <span class="sec-num"><b>13</b> SECTION HEADER</span>
+      <h2 class="sec-title">Section header.</h2>
+      <p class="sec-lead">Number, title with italic clause, lede on the right. Ruled below.</p>
+    </header>
+    <div class="spec full">
+      <div class="live" style="padding:0">
+        <header class="sec-head" style="margin:32px 36px 0; padding-bottom:18px">
+          <span class="sec-num"><b>04</b> MODULE</span>
+          <h2 class="sec-title">Prompting <em>credit memos.</em></h2>
+          <p class="sec-lead">A working session. Bring a real deal narrative if you have one — or use the sample we've planted.</p>
+        </header>
+        <div style="height:24px"></div>
+      </div>
+      <div class="notes">
+        <div class="kicker">Anatomy</div>
+        <dl>
+          <dt>Layout</dt><dd>Flex baseline-aligned, gap 20</dd>
+          <dt>Number</dt><dd>Mono 11px / 0.2em / muted / UPPER</dd>
+          <dt>Title</dt><dd>Newsreader 500 / 42px / –0.025em</dd>
+          <dt>Italic clause</dt><dd>Newsreader italic 400 / muted</dd>
+          <dt>Lede</dt><dd>Newsreader italic 18px / max-width 46ch / right-aligned</dd>
+          <dt>Rule</dt><dd>1px --rule-strong, 18px below baseline</dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 14 TABLES ============ -->
+  <section id="tables">
+    <header class="sec-head">
+      <span class="sec-num"><b>14</b> TABLES</span>
+      <h2 class="sec-title">Tables.</h2>
+      <p class="sec-lead">Editorial tables. Headers in mono, titles in serif, metadata in mono.</p>
+    </header>
+    <div class="spec full">
+      <div class="live" style="padding:0">
+        <table class="t">
+          <thead>
+            <tr>
+              <th>Artifact</th>
+              <th>Module</th>
+              <th>Versions</th>
+              <th>Latest</th>
+              <th>Updated</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="ttl">Credit memo · Pinewood Mfg.</td><td class="mc">M04</td><td class="vc">v3</td><td class="mc">Claude</td><td class="mc">2 days ago</td></tr>
+            <tr><td class="ttl">Member letter · overdraft</td><td class="mc">M05</td><td class="vc">v2</td><td class="mc">OpenAI</td><td class="mc">5 days ago</td></tr>
+            <tr><td class="ttl">Risk memo · model use</td><td class="mc">M03</td><td class="vc">v1</td><td class="mc">Gemini</td><td class="mc">1 wk ago</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="notes">
+        <div class="kicker">Rules</div>
+        <ul class="rule-list">
+          <li>Row padding 14/16. Border --rule (soft).</li>
+          <li>First column = serif title. Other columns = mono metadata.</li>
+          <li>Version cell uses accent gold weight 600.</li>
+          <li class="no">No zebra striping. Rules carry the rhythm.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 15 MODEL PICKER ============ -->
+  <section id="models">
+    <header class="sec-head">
+      <span class="sec-num"><b>15</b> MODEL PICKER</span>
+      <h2 class="sec-title">Model picker.</h2>
+      <p class="sec-lead">The institute is model-agnostic. The picker shows it.</p>
+    </header>
+    <div class="spec">
+      <div class="live">
+        <div class="mp">
+          <button class="opt sel"><span class="logo cl">A</span> Claude</button>
+          <button class="opt"><span class="logo oa">○</span> OpenAI</button>
+          <button class="opt"><span class="logo gm">G</span> Gemini</button>
+        </div>
+      </div>
+      <div class="notes">
+        <div class="kicker">Specs</div>
+        <dl>
+          <dt>Type</dt><dd>Geist 12.5px</dd>
+          <dt>Logo</dt><dd>14×14, --r-1</dd>
+          <dt>Selected</dt><dd>--ink fill, --paper text</dd>
+          <dt>Rest</dt><dd>--paper, --rule-strong border</dd>
+        </dl>
+        <ul class="rule-list" style="margin-top:12px">
+          <li>Always show all three. Don't hide alternatives once a user picks.</li>
+          <li>Logos are placeholders — replace with brand-correct marks at handoff.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 16 VERSIONS ============ -->
+  <section id="versions">
+    <header class="sec-head">
+      <span class="sec-num"><b>16</b> VERSIONS</span>
+      <h2 class="sec-title">Version timeline.</h2>
+      <p class="sec-lead">Every artifact carries its history. Model used + reviewer note.</p>
+    </header>
+    <div class="spec full">
+      <div class="live" style="padding:24px 28px">
+        <div class="tl">
+          <span class="v">v1</span>
+          <span class="note">First pass — too long, buried the lede.</span>
+          <span class="mdl">Claude</span>
+          <span class="when">Mon · 9:42</span>
+        </div>
+        <div class="tl">
+          <span class="v">v2</span>
+          <span class="note">Tightened, restructured around risk &amp; mitigants.</span>
+          <span class="mdl">Claude</span>
+          <span class="when">Tue · 11:15</span>
+        </div>
+        <div class="tl" style="border-left-color:var(--ink)">
+          <span class="v" style="color:var(--ink)">v3 · current</span>
+          <span class="note">Final — uses the underwriter voice. Approved.</span>
+          <span class="mdl">OpenAI</span>
+          <span class="when">Wed · 16:08</span>
+        </div>
+      </div>
+      <div class="notes">
+        <div class="kicker">Pattern</div>
+        <ul class="rule-list">
+          <li>Each version row: 4-column grid (version, note, model, when).</li>
+          <li>Left border in --accent; switch to --ink for the current version.</li>
+          <li>Reviewer notes are serif italic, model+timestamp are mono.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 17 FORMS ============ -->
+  <section id="forms">
+    <header class="sec-head">
+      <span class="sec-num"><b>17</b> FORMS</span>
+      <h2 class="sec-title">Form fields.</h2>
+      <p class="sec-lead">Mono labels, paper fields, a single ink focus border. No floating labels.</p>
+    </header>
+    <div class="spec">
+      <div class="live">
+        <div class="field"><label>Title</label><input value="Credit memo — Pinewood Mfg." /></div>
+        <div class="field"><label>Audience</label><input placeholder="e.g. Senior credit committee" /></div>
+        <div class="field"><label>Constraints</label><textarea rows="3" placeholder="Tone, length, must-include points…"></textarea></div>
+        <div class="field"><label>Model</label><select><option>Claude</option><option>OpenAI</option><option>Gemini</option></select></div>
+      </div>
+      <div class="notes">
+        <div class="kicker">Specs</div>
+        <dl>
+          <dt>Label</dt><dd>Mono 9.5px / 0.18em / UPPER / muted</dd>
+          <dt>Field</dt><dd>Geist 14px / 10/12 padding</dd>
+          <dt>Border</dt><dd>1px --rule-strong, focus → --ink</dd>
+          <dt>Radius</dt><dd>--r-1 (2px)</dd>
+          <dt>Background</dt><dd>--paper</dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 18 REVIEWER ============ -->
+  <section id="reviewer">
+    <header class="sec-head">
+      <span class="sec-num"><b>18</b> REVIEWER</span>
+      <h2 class="sec-title">Reviewer note.</h2>
+      <p class="sec-lead">A taped-on margin note from a real banker. Always serif italic, always tape-colored.</p>
+    </header>
+    <div class="spec full">
+      <div class="live" style="padding:0">
+        <div style="background:var(--paper); border:1px solid var(--rule); border-radius:var(--r-2); margin:24px 28px">
+          <div style="padding:18px 22px">
+            <p style="margin:0; font-family:var(--serif); font-size:18px; line-height:1.5">Tightened, restructured around risk &amp; mitigants. The committee will read this without asking three follow-ups.</p>
+          </div>
+          <div class="rn">
+            <span class="lab">Reviewer</span>
+            <span>Watch the verb tense in section 3 — past tense reads as if the loan already closed.</span>
+          </div>
+        </div>
+      </div>
+      <div class="notes">
+        <div class="kicker">Pattern</div>
+        <ul class="rule-list">
+          <li>Sits below the artifact body, inside the same card.</li>
+          <li>Background --tape, top border --rule.</li>
+          <li>Label "Reviewer" in mono accent caps, note in serif italic.</li>
+          <li class="no">Don't use this for system messages. Reviewer = a person.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 19 ICONS ============ -->
+  <section id="icons">
+    <header class="sec-head">
+      <span class="sec-num"><b>19</b> ICONS</span>
+      <h2 class="sec-title">Iconography.</h2>
+      <p class="sec-lead">A placeholder strategy until the designer commissions a system. Less is more.</p>
+    </header>
+    <div class="spec">
+      <div class="live" style="display:flex; gap:14px; flex-wrap:wrap">
+        <div class="icon-box">Module<br/>icon</div>
+        <div class="icon-box">Pillar<br/>mark</div>
+        <div class="icon-box">Activity<br/>type</div>
+        <div class="icon-box">Reviewer<br/>avatar</div>
+      </div>
+      <div class="notes">
+        <div class="kicker">Strategy</div>
+        <ul class="rule-list">
+          <li>Until commissioned, use dashed-border placeholders. Better than a Lucide grab-bag.</li>
+          <li>Final system: hand-drawn, single-stroke marks. Think 19th-century almanac, not iOS app.</li>
+          <li>Stroke 1.5px, color --ink. No fills.</li>
+          <li class="no">No emoji. No pictograms. No 3D glyphs.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 20 MOTION ============ -->
+  <section id="motion">
+    <header class="sec-head">
+      <span class="sec-num"><b>20</b> MOTION</span>
+      <h2 class="sec-title">Motion.</h2>
+      <p class="sec-lead">Almost none. The page is a printed brief that happens to render in a browser.</p>
+    </header>
+    <div class="spec">
+      <div class="live">
+        <div class="card">
+          <div class="kicker">Allowed</div>
+          <h5>Subtle, fast, functional</h5>
+          <p>Hover lifts (border darken). Pill state changes. Page transitions: 120ms cross-fade max.</p>
+        </div>
+      </div>
+      <div class="notes">
+        <div class="kicker">Tokens</div>
+        <dl>
+          <dt>Duration</dt><dd>120ms (UI) · 200ms (page)</dd>
+          <dt>Easing</dt><dd>cubic-bezier(0.4, 0, 0.2, 1)</dd>
+          <dt>Hover</dt><dd>border --rule-strong → --ink</dd>
+          <dt>Press</dt><dd>0.96 scale, 80ms — buttons only</dd>
+        </dl>
+        <ul class="rule-list" style="margin-top:10px">
+          <li class="no">No skeleton shimmers, no parallax, no scroll-jacking, no spring physics.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 21 VOICE ============ -->
+  <section id="voice">
+    <header class="sec-head">
+      <span class="sec-num"><b>21</b> VOICE &AMP; COPY</span>
+      <h2 class="sec-title">Voice &amp; <em>copy.</em></h2>
+      <p class="sec-lead">Editorial first. Promotional never. Specific over clever.</p>
+    </header>
+    <div class="spec">
+      <div class="live">
+        <p style="margin:0 0 12px; font-family:var(--mono); font-size:9.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--accent); font-weight:600">Do</p>
+        <p style="margin:0 0 18px; font-family:var(--serif); font-size:19px; line-height:1.45; color:var(--ink)">Twelve modules, twelve real artifacts. By the end, you'll have memos a credit committee will read without flinching.</p>
+        <p style="margin:0 0 12px; font-family:var(--mono); font-size:9.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--weak); font-weight:600">Don't</p>
+        <p style="margin:0; font-family:var(--serif); font-size:19px; line-height:1.45; color:var(--muted); font-style:italic">Unlock the power of AI to revolutionize your banking workflows with cutting-edge tools that 10x your productivity!</p>
+      </div>
+      <div class="notes">
+        <div class="kicker">Heuristics</div>
+        <ul class="rule-list">
+          <li>Lead with the artifact, not the tool.</li>
+          <li>Numbers are concrete (12 modules, 28 minutes), not vague (many, several).</li>
+          <li>Names of real banking objects: memo, letter, committee, draw, charge-off.</li>
+          <li class="no">No "AI-powered." It is AI. We know.</li>
+          <li class="no">No "users," "leverage," "synergy," or sentence-case CTAs.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span><em>The AI Banking Institute.</em> &nbsp; Design system v1 · Ledger.</span>
+    <span>For internal handoff. Not for external distribution.</span>
+  </footer>
+
+</div>

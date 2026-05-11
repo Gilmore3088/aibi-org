@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AiBI-Practitioner — LMS prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,500;1,6..72,600&family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* Ledger palette — aligned with AI Readiness Brief (data-direction="ledger") */
+    --linen:#ECE9DF;
+    --bg:#ECE9DF;
+    --paper:#F4F1E7;
+    --parch:#E4E0D2;
+    --parch-dark:#D5D1C2;
+    --ink:#0E1B2D;
+    --ink-2:#1F2A3F;
+    --slate:#5C6B82;
+    --muted:#5C6B82;
+    --soft:#8C95A8;
+    --accent:#B5862A;
+    --accent-2:#1E3A5F;
+    --warn:#B5862A;
+    --weak:#8E3B2A;
+    --tape:#F1E9D0;
+    /* terra retained as alias of accent for legacy refs (now Ledger gold) */
+    --terra:#B5862A;
+    --terra-light:#C99A40;
+    --terra-soft:rgba(181,134,42,0.10);
+    --sage:#1E3A5F;
+    --rule:#D5D1C2;
+    --rule-strong:#A8AEBE;
+
+    --serif:"Newsreader", "Iowan Old Style", Georgia, serif;
+    --sans:"Geist", ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+    --mono:"JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+    --sidebar:280px;
+  }
+  body[data-density="compact"]{ --sidebar:232px; }
+  *{ box-sizing:border-box; }
+  html, body{ margin:0; padding:0; }
+  body{
+    background:var(--linen);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:14.5px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  a{ color:inherit; }
+  button{ font:inherit; }
+  ::selection{ background:var(--terra-soft); }
+
+  /* serif small caps simulation */
+  .sc{
+    font-family:var(--serif);
+    font-feature-settings:"smcp" on;
+    font-variant-caps:small-caps;
+    text-transform:lowercase;
+    letter-spacing:0.18em;
+  }
+  /* fallback for browsers without smcp glyphs */
+  .sc-mono{
+    font-family:var(--mono);
+    font-size:10.5px;
+    letter-spacing:0.2em;
+    text-transform:uppercase;
+  }
+
+  /* App shell */
+  .app{
+    display:grid;
+    grid-template-columns: var(--sidebar) minmax(0,1fr);
+    min-height:100vh;
+  }
+  @media (max-width: 880px){
+    .app{ grid-template-columns: 1fr; }
+    .sidebar{ display:none; }
+  }
+
+  /* Smooth scroll */
+  html{ scroll-behavior:smooth; }
+</style>
+</head>
+<body data-density="roomy" data-progress="quiet" data-layout="split">
+
+<div id="root"></div>
+
+<aside id="tweakPanel" class="tweak-panel" data-open="false"></aside>
+
+<!-- TWEAK DEFAULTS — host parses + rewrites -->
+<script>
+  window.__TWEAKS__ = /*EDITMODE-BEGIN*/{
+    "density": "roomy",
+    "progress": "quiet",
+    "layout": "split",
+    "layoutOverrides": {}
+  }/*EDITMODE-END*/;
+</script>
+
+<!-- React + Babel -->
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<!-- Course data + tweaks helpers -->
+<script src="lms/data.js"></script>
+<script type="text/babel" src="lms/tweaks-panel.jsx"></script>
+<script type="text/babel" src="lms/components.jsx"></script>
+<script type="text/babel" src="lms/screens.jsx"></script>
+<script type="text/babel" src="lms/app.jsx"></script>
+
+</body>
+</html>

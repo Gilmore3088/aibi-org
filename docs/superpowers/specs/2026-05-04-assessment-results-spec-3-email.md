@@ -10,7 +10,7 @@
 
 ## Job
 
-A timed sequence of 3 emails delivered after email capture. Optimized for **conversion**: tier-specific CTAs, urgency-appropriate cadence, pulling cut on-screen content (Section 8 Future Vision, Section 10 close) into long-tail nurture, and reinforcing the path to AiBI-P enrollment or Executive Briefing booking.
+A timed sequence of 3 emails delivered after email capture. Optimized for **conversion**: tier-specific CTAs, urgency-appropriate cadence, pulling cut on-screen content (Section 8 Future Vision, Section 10 close) into long-tail nurture, and reinforcing the path to AiBI Foundations enrollment or Executive Briefing booking.
 
 Audience: the assessment-taker, currently shopping or curious.
 
@@ -31,7 +31,7 @@ Audience: the assessment-taker, currently shopping or curious.
 |---|---|---|---|
 | 1 | 0 (1–2h) | "Your brief is ready" — link back to results page, brand reinforcement, mention the PDF awaits in their account | Cover line + "click to revisit" link to `/assessment/results/{token}` (Spec 4 makes this a permanent URL; Spec 3 ships with sessionStorage round-trip if Spec 4 hasn't merged) |
 | 2 | 3 | "What good looks like for your tier" | `FUTURE_VISION` content (cut from on-screen in Spec 1) framed as "Here's the institution you can build" |
-| 3 | 7 | Tier-keyed conversion ask | Mirrors the on-screen `TIER_CLOSING_CTA` per tier — Starting Point + Early Stage push AiBI-P; Building Momentum + Ready to Scale push Executive Briefing / Leadership Advisory |
+| 3 | 7 | Tier-keyed conversion ask | Mirrors the on-screen `TIER_CLOSING_CTA` per tier — Starting Point + Early Stage push AiBI Foundations; Building Momentum + Ready to Scale push Executive Briefing / Leadership Advisory |
 
 ### Per-tier Sequence structure (ConvertKit dashboard reference)
 
@@ -57,7 +57,7 @@ Audience: the assessment-taker, currently shopping or curious.
 | 2 | early-stage | "From scattered to systematic — what's next" |
 | 2 | building-momentum | "From program to advantage — measuring outcomes" |
 | 2 | ready-to-scale | "The compounding advantage — what comes after readiness" |
-| 3 | starting-point / early-stage | "AiBI-P starts when you're ready" |
+| 3 | starting-point / early-stage | "AiBI Foundations starts when you're ready" |
 | 3 | building-momentum | "Walk through your results with us" |
 | 3 | ready-to-scale | "Leadership Advisory — what fractional CAIO looks like" |
 

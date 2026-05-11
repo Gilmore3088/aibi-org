@@ -802,7 +802,7 @@ function SourceBacklink({ skill }: { skill: ToolboxSkill }) {
       <p className="text-xs text-[color:var(--color-slate)]">
         Source:{' '}
         <Link href={`/courses/aibi-p/${match[1]}`} className="underline">
-          AiBI-P · Module {match[1]}
+          AiBI Foundations · Module {match[1]}
         </Link>
       </p>
     );

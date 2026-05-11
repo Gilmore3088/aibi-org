@@ -110,8 +110,8 @@ Composes:
 
 ```tsx
 <ProgramPage
-  code="AiBI-Practitioner"
-  designation="Banking AI Practitioner · The AI Banking Institute"
+  code="AiBI Foundations"
+  designation="Banking AI Foundations · The AI Banking Institute"
   level="01 · Foundational"
   pillar="application"
   lede="Working AI literacy for everyone inside a community bank..."
@@ -160,7 +160,7 @@ Composes (3-rail layout on `lg:`, single-column on mobile):
 
 ```tsx
 <LMSPage
-  progress={{ courseTitle: "AiBI-Practitioner", designation: "Foundational Credential", completed: 3, total: 9, resumeHref: "..." }}
+  progress={{ courseTitle: "AiBI Foundations", designation: "Foundational Credential", completed: 3, total: 9, resumeHref: "..." }}
   modules={[
     { number: 1, title: "What AI is, and what it isn't", state: "complete", href: "..." },
     { number: 2, title: "Boundary safety", state: "complete", href: "..." },

@@ -12,7 +12,7 @@
 |---|---|---|
 | AI Readiness Assessment (free) | **No Stripe object** — it's free. | Live (`/assessment`) |
 | In-Depth Assessment (paid, $99 / $79 at 10+) | **Create product + 2 prices + 2 promo codes.** Active. | Live behind email gate (Phase 1.5 add-on) |
-| AI Banking Practitioner Course ($295) | **Create product + price + Payment Link.** Active. | Live (`/courses/aibi-p`) |
+| AI Banking AiBI Foundations ($295) | **Create product + price + Payment Link.** Active. | Live (`/courses/aibi-p`) |
 | AiBI-S Specialist ($1,495 / seat) | Create product + price. **Mark `active: false` until cohort dates set.** | "Request info" form only |
 | AiBI-L Leader ($2,800 individual / $12,000 team of 8) | Create both prices. **Mark `active: false`.** | "Request info" form only |
 | Advisory: Pilot · Program · Leadership Advisory | **Do NOT create in Stripe.** Custom-quoted, invoiced. | "Request info" form only |
@@ -66,7 +66,7 @@ Create **one coupon, two redeemable promotion codes** so you can hand the codes 
 | `coupon.percent_off` | `100` |
 | `coupon.duration` | `once` |
 | `coupon.max_redemptions` | `2` (hard cap across both codes) |
-| `coupon.applies_to.products` | `[<In-Depth Assessment product id>]` (scope the comp so it can't accidentally zero out an AiBI-P sale) |
+| `coupon.applies_to.products` | `[<In-Depth Assessment product id>]` (scope the comp so it can't accidentally zero out an AiBI Foundations sale) |
 | `coupon.metadata.purpose` | `comp-testing` |
 
 Then attach two promotion codes to that coupon:
@@ -86,22 +86,22 @@ Customer types `AIBI-COMP-01` at checkout → total goes to $0 → `checkout.ses
 
 ---
 
-## Product 3 — AI Banking Practitioner Course ($295) — first real course
+## Product 3 — AI Banking AiBI Foundations ($295) — first real course
 
-The flagship Phase 2 product. HTML mockups exist in `public/AiBI-P/`; LMS in `src/lib/lms/`; webhook chain documented in `CLAUDE.md` § "Course Provisioning." The **product name in Stripe** is the spelled-out form ("AI Banking Practitioner Course"), not the credential code — per the 2026-04-15 brand rule that reserves "AiBI-P" for credential displays, the seal, and the LinkedIn-credential string. Receipts, hosted invoices, and the Stripe-hosted Checkout page all show the product name to the buyer; "AI Banking Practitioner Course" reads cleanly to a banker who doesn't know the brand yet. The credential they earn on completion is still rendered as "AiBI-P · The AI Banking Institute" in the LMS / certificate.
+The flagship Phase 2 product. HTML mockups exist in `public/AiBI Foundations/`; LMS in `src/lib/lms/`; webhook chain documented in `CLAUDE.md` § "Course Provisioning." The **product name in Stripe** is the spelled-out form ("AI Banking AiBI Foundations"), not the credential code — per the 2026-04-15 brand rule that reserves "AiBI Foundations" for credential displays, the seal, and the LinkedIn-credential string. Receipts, hosted invoices, and the Stripe-hosted Checkout page all show the product name to the buyer; "AI Banking AiBI Foundations" reads cleanly to a banker who doesn't know the brand yet. The credential they earn on completion is still rendered as "AiBI Foundations · The AI Banking Institute" in the LMS / certificate.
 
 | Field | Value |
 |---|---|
-| `product.name` | `AI Banking Practitioner Course` |
-| `product.description` | `Self-paced certification course (≈8 credit hours) for community bank and credit union staff. Covers Pillars A (Accessible AI) and B (Boundary-Safe AI) with an introduction to Pillar C (Capable AI). Includes 9 modules, work-product assessment, and the AiBI-P credential ("AiBI-P · The AI Banking Institute") on completion. Lifetime access to course materials.` |
+| `product.name` | `AI Banking AiBI Foundations` |
+| `product.description` | `Self-paced certification course (≈8 credit hours) for community bank and credit union staff. Covers Pillars A (Accessible AI) and B (Boundary-Safe AI) with an introduction to Pillar C (Capable AI). Includes 9 modules, work-product assessment, and the AiBI Foundations credential ("AiBI Foundations · The AI Banking Institute") on completion. Lifetime access to course materials.` |
 | `product.metadata.tier` | `aibi-p` |
-| `product.metadata.credential_code` | `AiBI-P` |
+| `product.metadata.credential_code` | `AiBI Foundations` |
 | `product.metadata.access_grant` | `course:aibi-p` |
 | `product.metadata.format` | `self-paced` |
 | `price.unit_amount` | `29500` |
 | `price.currency` | `usd` |
 | `price.recurring` | none — one-time |
-| `price.nickname` | `AI Banking Practitioner Course — Individual` |
+| `price.nickname` | `AI Banking AiBI Foundations — Individual` |
 | `.env.local` key | `STRIPE_AIBIP_PRICE_ID` |
 
 **Volume / institution pricing (added 2026-05-05):** A second price exists on the same product for institution bundles.
@@ -109,17 +109,17 @@ The flagship Phase 2 product. HTML mockups exist in `public/AiBI-P/`; LMS in `sr
 | Field | Value |
 |---|---|
 | `price.unit_amount` | `19900` (= $199/seat) |
-| `price.nickname` | `AI Banking Practitioner Course — Institution Bundle ($199/seat, min 10)` |
+| `price.nickname` | `AI Banking AiBI Foundations — Institution Bundle ($199/seat, min 10)` |
 | `price.metadata.min_quantity` | `10` |
 | `.env.local` key | `STRIPE_AIBIP_INSTITUTION_PRICE_ID` |
 
-The minimum-quantity guard (`>= 10`) is enforced at the API route level in `/api/create-checkout`, not in Stripe. Net effect: 10 seats = $1,990 (~33% off list); 25 seats = $4,975. Single-seat AiBI-P remains $295. No customer should ever buy 1–9 institution seats — the route rejects qty < 10 with 400.
+The minimum-quantity guard (`>= 10`) is enforced at the API route level in `/api/create-checkout`, not in Stripe. Net effect: 10 seats = $1,990 (~33% off list); 25 seats = $4,975. Single-seat AiBI Foundations remains $295. No customer should ever buy 1–9 institution seats — the route rejects qty < 10 with 400.
 
 ---
 
 ## Product 4 — AiBI-S Specialist ($1,495/seat) — staged dark
 
-Cohort-based, 16-hour live track. Per-track Specialist credentials (AiBI-S/Ops, AiBI-S/Lending, AiBI-S/Compliance). Decision 2026-04-19 in memory: format will eventually shift to self-paced to match AiBI-P, but PRD currently says cohort. Create the product anyway so the price ID slot exists in `.env.local`.
+Cohort-based, 16-hour live track. Per-track Specialist credentials (AiBI-S/Ops, AiBI-S/Lending, AiBI-S/Compliance). Decision 2026-04-19 in memory: format will eventually shift to self-paced to match AiBI Foundations, but PRD currently says cohort. Create the product anyway so the price ID slot exists in `.env.local`.
 
 | Field | Value |
 |---|---|
@@ -219,7 +219,7 @@ Run these in sequence. Stop after each block, paste the returned IDs into `.env.
 **Block 1 — Active products (ship-ready):**
 1. Create product **In-Depth AI Readiness Assessment** with the fields in Product 2 above. Create **two prices** on it: $99 individual and $79 volume (min 10). Capture both → `STRIPE_INDEPTH_ASSESSMENT_PRICE_ID` and `STRIPE_INDEPTH_ASSESSMENT_VOLUME_PRICE_ID`.
 2. Create the comp coupon (100% off, max 2 redemptions, scoped to the In-Depth Assessment product) and attach two single-use promotion codes: `AIBI-COMP-01` and `AIBI-COMP-02`, each expiring 90 days out.
-3. Create product **AI Banking Practitioner Course** with the fields in Product 3. Capture `price_id` → `STRIPE_AIBIP_PRICE_ID`.
+3. Create product **AI Banking AiBI Foundations** with the fields in Product 3. Capture `price_id` → `STRIPE_AIBIP_PRICE_ID`.
 
 **Block 2 — Inactive products (staged, dark):**
 4. Create **AiBI-S Specialist** with `active: false`. Capture `price_id` → `STRIPE_AIBIS_PRICE_ID`.
@@ -257,8 +257,8 @@ NEXT_PUBLIC_STRIPE_KEY=pk_test_...
 # Created by Block 1
 STRIPE_INDEPTH_ASSESSMENT_PRICE_ID=price_...          # $99 individual
 STRIPE_INDEPTH_ASSESSMENT_VOLUME_PRICE_ID=price_...   # $79/seat, min 10
-STRIPE_AIBIP_PRICE_ID=price_...                       # AI Banking Practitioner Course, $295 (1 seat)
-STRIPE_AIBIP_INSTITUTION_PRICE_ID=price_...           # AiBI-P institution bundle, $199/seat (min 10)
+STRIPE_AIBIP_PRICE_ID=price_...                       # AI Banking AiBI Foundations, $295 (1 seat)
+STRIPE_AIBIP_INSTITUTION_PRICE_ID=price_...           # AiBI Foundations institution bundle, $199/seat (min 10)
 
 # Created by Block 2 (inactive products)
 STRIPE_AIBIS_PRICE_ID=price_...

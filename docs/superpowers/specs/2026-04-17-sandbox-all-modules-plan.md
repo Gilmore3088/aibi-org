@@ -1,7 +1,7 @@
 # AI Practice Sandbox — All Modules Implementation Plan
 
 **Date:** 2026-04-17
-**Scope:** AiBI-P Modules 1-4, 6-9 sandbox exercises (Module 5 already shipped)
+**Scope:** AiBI Foundations Modules 1-4, 6-9 sandbox exercises (Module 5 already shipped)
 **Prerequisite:** Phase 1 sandbox infrastructure is complete (Claude adapter, PII scanner, injection filter, API route, AIPracticeSandbox component, markdown renderer)
 
 ## Execution Strategy

@@ -63,7 +63,7 @@ export const LEGACY_ESSAYS: readonly (EssayMeta & { readonly legacyHref: string 
     title: "The skill, not the prompt.",
     dek: "Prompting is a one-time act. A skill is a persistent, repeatable, institution-grade instruction. Here is why the distinction matters for community banks.",
     date: "2026-04-04",
-    category: "Practitioner work",
+    category: "Foundations work",
     readMinutes: 13,
     author: "James Gilmore",
     legacyHref: "/resources/the-skill-not-the-prompt",

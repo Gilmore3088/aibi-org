@@ -26,7 +26,7 @@ The **AiBI Toolbox** is a paid-only, gated product surface at `/dashboard/toolbo
 3. **Playground** — multi-provider sandbox (Claude, OpenAI, Gemini) for safe prompt experimentation with PII redaction warnings
 4. **Cookbook** — curated end-to-end recipes that chain multiple Skills into full workflows
 
-The Toolbox is **bundled with every paid course enrollment** (AiBI-P, AiBI-S, AiBI-L). In a future Phase 2, Skill Builder + Library will also be sold as a standalone monthly subscription.
+The Toolbox is **bundled with every paid course enrollment** (AiBI Foundations, AiBI-S, AiBI-L). In a future Phase 2, Skill Builder + Library will also be sold as a standalone monthly subscription.
 
 The single most important interaction is **"Save to Toolbox"** — a one-click capture button surfaced everywhere a prompt example appears in course content. This creates a tight learning loop: see in lesson → test in Playground → save to personal toolbox → keep using after course ends.
 
@@ -68,7 +68,7 @@ hasToolboxAccess(user) =
 
 | User type | Access |
 |-----------|--------|
-| AiBI-P / AiBI-S / AiBI-L enrollee | Full Toolbox during enrollment + 12 months after |
+| AiBI Foundations / AiBI-S / AiBI-L enrollee | Full Toolbox during enrollment + 12 months after |
 | Free Class learner *(future)* | None. Free Classes do NOT unlock Toolbox in v1. |
 | Standalone Subscriber (Phase 2) | Skill Builder + Library only (no Playground, no Cookbook curation) |
 | Anonymous / unauthorized / unpaid | Redirect from `/dashboard/toolbox` to a paywall page explaining the Toolbox is included with any paid course; CTA to `/education` |
@@ -182,7 +182,7 @@ interface TeachingAnnotation {
 
 ### 5.2 Skill/Prompt Template Library
 
-**v1 sourcing (Locked):** 25 launch Skills harvested directly from existing course content (AiBI-P modules). The Library is a curated, polished subset of prompts already living in lessons.
+**v1 sourcing (Locked):** 25 launch Skills harvested directly from existing course content (AiBI Foundations modules). The Library is a curated, polished subset of prompts already living in lessons.
 
 **Library entries are read-only originals.** Learners "fork" them into their personal Toolbox, which creates an editable copy with a `source: 'library'` provenance pointer back to the original.
 
@@ -534,7 +534,7 @@ A reconciliation job (or trigger on `course_enrollments` insert/update) writes a
 
 | Phase | Bundle | Price |
 |-------|--------|-------|
-| **Phase 1** (this spec) | Toolbox included with AiBI-P / AiBI-S / AiBI-L | $0 marginal |
+| **Phase 1** (this spec) | Toolbox included with AiBI Foundations / AiBI-S / AiBI-L | $0 marginal |
 | **Phase 2** (~6 mo post-launch) | Standalone subscription: Skill Builder + Library only | TBD ($19–$49/mo range) |
 | **Phase 3** | Team/institution plans, Compare Mode, sharing, analytics | TBD |
 
