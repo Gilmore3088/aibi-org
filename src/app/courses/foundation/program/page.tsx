@@ -1,37 +1,47 @@
-// /courses/foundation/program — Course overview / preview page
-// Server Component: hero + outcomes + course structure
+// /courses/foundation/program — Course overview (LMS prototype reskin)
+//
+// Server Component. Reads enrollment state, then renders the prototype's
+// OverviewScreen pattern through the shared <CourseShell> primitives.
+// V4 expanded module details (includes / practice / artifact / boundary) are
+// preserved via the existing data source and rendered inline inside the
+// pillar grouping.
 
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import {
   modules,
-  PILLAR_META,
   foundationProgramCourseConfig,
   V4_FOUNDATION_PROGRAM_MODULE_BY_NUMBER,
 } from '@content/courses/foundation-program';
-import type { Pillar } from '@content/courses/foundation-program';
+import {
+  CourseShell,
+  LMSTopBar,
+  LMS_PILLARS,
+  PillarTag,
+  PrimaryButton,
+  ProgressDot,
+  getModuleStatus,
+  toLMSModules,
+  type LMSModule,
+} from '@/components/lms';
 import { getEnrollmentResult, isFetchError } from './_lib/getEnrollment';
-import { getModuleStatus } from './_lib/courseProgress';
-import type { ModuleStatus } from './_lib/courseProgress';
 import { courseJsonLd, jsonLdString } from '@/lib/seo/jsonld';
 
 export const metadata: Metadata = {
   title: 'AiBI-Foundation | The AI Banking Institute',
   description:
-    'The AiBI-Foundation course teaches every staff member at a community financial institution how to use AI tools safely, professionally, and with regulatory confidence.',
+    'AiBI-Foundation teaches every staff member at a community bank or credit union how to use AI tools safely, professionally, and with regulatory confidence.',
 };
 
 const FOUNDATION_COURSE_JSONLD = courseJsonLd({
-  name: 'AiBI-Foundation',
+  name: 'AiBI-Foundation — Banking AI for Community Financial Institutions',
   description:
-    'AiBI-Foundation teaches every staff member at a community financial institution how to use AI tools safely, professionally, and with regulatory confidence. 12 modules covering Awareness, Understanding, Creation, and Application of AI for community banking work.',
+    'AiBI-Foundation teaches every staff member at a community bank or credit union how to use AI tools safely, professionally, and with regulatory confidence. 12 modules covering Awareness, Understanding, Creation, and Application of AI for community banking work.',
   slug: '/courses/foundation/program',
   modules: 12,
   hours: 7,
   priceUSD: 295,
 });
-
-const PILLAR_ORDER: Pillar[] = ['awareness', 'understanding', 'creation', 'application'];
 
 const LEARNER_OUTCOMES = [
   'Choose the right prompt strategy for the job',
@@ -42,261 +52,661 @@ const LEARNER_OUTCOMES = [
   'Use AI for communication, meetings, policy review, and productivity',
 ] as const;
 
-function StatusIndicator({ status }: { readonly status: ModuleStatus }) {
-  switch (status) {
-    case 'completed':
-      return <span className="text-[color:var(--color-sage)] font-mono text-xs" aria-label="Complete">&#10003;</span>;
-    case 'current':
-      return <span className="text-[color:var(--color-terra)] font-mono text-xs" aria-label="Current">&rarr;</span>;
-    case 'locked':
-      return <span className="text-[color:var(--color-ink)]/30 font-mono text-xs" aria-label="Locked">&middot;</span>;
-  }
-}
-
 export default async function CourseOverviewPage() {
   const enrollmentResult = await getEnrollmentResult();
   const fetchFailed = isFetchError(enrollmentResult);
   const enrollment = fetchFailed ? null : enrollmentResult;
   const completedModules = enrollment?.completed_modules ?? [];
-  // current_module is already normalized to >= 1 inside getEnrollment.
   const currentModule = enrollment?.current_module ?? 1;
   const completedCount = completedModules.length;
+  const totalModules = modules.length;
+  const totalMinutes = foundationProgramCourseConfig.estimatedMinutes;
+  const pct = Math.round((completedCount / totalModules) * 100);
+
+  const lmsModules: readonly LMSModule[] = toLMSModules(
+    foundationProgramCourseConfig.modules,
+  );
+  const currentMod = lmsModules.find((m) => m.num === currentModule) ?? lmsModules[0];
 
   return (
-    <div className="mx-auto px-8 lg:px-16 py-8 max-w-6xl">
+    <CourseShell
+      modules={lmsModules}
+      completed={completedModules}
+      current={currentModule}
+    >
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: jsonLdString(FOUNDATION_COURSE_JSONLD) }}
       />
-
-      {/* Breadcrumb */}
-      <nav aria-label="Breadcrumb" className="mb-8">
-        <Link href="/education" className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/50 hover:text-[color:var(--color-terra)] transition-colors">
-          Education
-        </Link>
-        <span className="mx-2 text-[color:var(--color-ink)]/20">/</span>
-        <span className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-terra)]">AiBI-Foundation</span>
-      </nav>
-
-      {/* Hero */}
-      <section className="mb-12">
-        <h1 className="font-serif text-5xl md:text-6xl leading-tight text-[color:var(--color-ink)]">
-          Banking AI <span className="text-[color:var(--color-terra)] italic">Foundation</span>
-        </h1>
-        <p className="mt-5 font-serif italic text-2xl leading-relaxed text-[color:var(--color-ink)]/80 max-w-3xl">
-          {foundationProgramCourseConfig.promise}
-        </p>
-        <p className="mt-4 text-base text-[color:var(--color-ink)]/70 max-w-3xl leading-relaxed">
-          In less than two weeks, learn how to write better, summarize faster,
-          think clearer, and avoid risky AI mistakes.
-        </p>
-
-        {fetchFailed && (
-          <p className="mt-6 border-l-2 border-[color:var(--color-error)] bg-[color:var(--color-error)]/5 px-4 py-3 text-sm text-[color:var(--color-ink)]">
-            Couldn&apos;t load your progress right now.{' '}
-            <Link href="/auth/login" className="underline">Sign in</Link> to resume,
-            or refresh the page in a moment.
-          </p>
-        )}
-
-        <div className="mt-8 flex flex-wrap items-center gap-4">
-          <Link
-            href={`/courses/foundation/program/${currentModule}`}
-            className="bg-[color:var(--color-terra)] hover:bg-[color:var(--color-terra-light)] text-[color:var(--color-linen)] px-6 py-3 rounded-[2px] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] transition-colors"
+      <LMSTopBar
+        crumbs={['Education', 'AiBI-Foundation']}
+        right={
+          <span
+            style={{
+              fontFamily: 'var(--ledger-mono)',
+              fontSize: 10.5,
+              letterSpacing: '0.16em',
+              textTransform: 'uppercase',
+              color: 'var(--ledger-muted)',
+            }}
           >
-            {completedCount > 0 ? 'Resume course' : 'Start course'} &rarr;
-          </Link>
-          {enrollment && (
-            <Link
-              href="/dashboard/toolbox?tab=guide"
-              className="border border-[color:var(--color-ink)]/25 px-6 py-3 rounded-[2px] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] text-[color:var(--color-ink)] hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)] transition-colors"
+            {completedCount}/{totalModules} complete
+          </span>
+        }
+      />
+
+      <div style={{ maxWidth: 1080, margin: '0 auto', padding: '40px 36px 80px' }}>
+        {/* Hero */}
+        <section style={{ marginBottom: 56 }}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 14,
+              marginBottom: 24,
+            }}
+          >
+            <span
+              style={{
+                fontFamily: 'var(--ledger-mono)',
+                fontSize: 10.5,
+                letterSpacing: '0.2em',
+                textTransform: 'uppercase',
+                color: 'var(--ledger-accent)',
+              }}
             >
-              Open Toolbox
-            </Link>
-          )}
-        </div>
+              {completedCount > 0 ? 'Welcome back' : 'Begin here'}
+            </span>
+            <span
+              style={{
+                flex: 1,
+                height: 1,
+                background: 'var(--ledger-rule)',
+              }}
+            />
+          </div>
 
-        <p className="mt-6 font-mono text-[11px] text-[color:var(--color-slate)] tabular-nums">
-          12 modules &middot; {foundationProgramCourseConfig.estimatedMinutes} min total &middot;{' '}
-          $295 per seat &middot; $199 per seat for 10+
-          {completedCount > 0 && (
-            <>
-              {' '}&middot; <span className="text-[color:var(--color-terra)]">{completedCount}/{modules.length} complete</span>
-            </>
-          )}
-        </p>
-      </section>
-
-      {/* Outcomes + Required outputs */}
-      <section className="grid lg:grid-cols-[1fr_0.9fr] gap-8 mb-12">
-        <div className="border border-[color:var(--color-ink)]/10 rounded-[3px] p-6">
-          <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-4">
-            What you will be able to do
+          <h1
+            style={{
+              fontFamily: 'var(--ledger-serif)',
+              fontWeight: 500,
+              fontSize: 'clamp(46px, 6vw, 76px)',
+              lineHeight: 0.98,
+              letterSpacing: '-0.035em',
+              margin: '0 0 18px',
+              color: 'var(--ledger-ink)',
+            }}
+          >
+            Banking AI{' '}
+            <em
+              style={{
+                color: 'var(--ledger-accent)',
+                fontStyle: 'normal',
+                fontWeight: 500,
+              }}
+            >
+              Foundation.
+            </em>
+          </h1>
+          <p
+            style={{
+              fontFamily: 'var(--ledger-serif)',
+              fontStyle: 'italic',
+              fontSize: 22,
+              lineHeight: 1.4,
+              color: 'var(--ledger-ink-2)',
+              margin: '0 0 12px',
+              maxWidth: '62ch',
+            }}
+          >
+            {foundationProgramCourseConfig.promise}
           </p>
-          <ul className="space-y-3">
-            {LEARNER_OUTCOMES.map((outcome) => (
-              <li key={outcome} className="flex gap-3 text-sm text-[color:var(--color-ink)]/75 leading-relaxed">
-                <span className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-terra)] shrink-0" />
-                <span>{outcome}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="border border-[color:var(--color-ink)]/10 rounded-[3px] p-6 bg-[color:var(--color-parch)]">
-          <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-4">
-            Required outputs
+          <p
+            style={{
+              color: 'var(--ledger-slate)',
+              fontSize: 15,
+              lineHeight: 1.6,
+              maxWidth: '62ch',
+              margin: 0,
+            }}
+          >
+            In less than two weeks, write better, summarize faster, think clearer,
+            and avoid risky AI mistakes — using the model your institution already
+            trusts.
           </p>
-          <div className="space-y-3">
-            {foundationProgramCourseConfig.artifacts.map((artifact) => (
-              <div key={artifact.id}>
-                <h3 className="font-serif text-base text-[color:var(--color-ink)]">
-                  {artifact.title}
-                </h3>
-                <p className="text-xs text-[color:var(--color-slate)] leading-relaxed">
-                  {artifact.description}
-                </p>
-              </div>
-            ))}
+
+          {fetchFailed && (
+            <p
+              style={{
+                marginTop: 24,
+                padding: '12px 16px',
+                borderLeft: '2px solid var(--ledger-weak)',
+                background: 'rgba(142,59,42,0.06)',
+                fontSize: 14,
+                color: 'var(--ledger-ink)',
+              }}
+            >
+              Couldn&rsquo;t load your progress right now.{' '}
+              <Link
+                href="/auth/login"
+                style={{ textDecoration: 'underline', color: 'var(--ledger-ink)' }}
+              >
+                Sign in
+              </Link>{' '}
+              to resume, or refresh the page in a moment.
+            </p>
+          )}
+
+          {/* Resume strip */}
+          <div
+            style={{
+              marginTop: 32,
+              display: 'grid',
+              gridTemplateColumns: 'auto 1fr auto',
+              gap: 24,
+              alignItems: 'center',
+              background: 'var(--ledger-ink)',
+              color: 'var(--ledger-paper)',
+              padding: '22px 26px',
+              borderRadius: 2,
+            }}
+          >
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+              <span
+                style={{
+                  fontFamily: 'var(--ledger-mono)',
+                  fontSize: 10,
+                  letterSpacing: '0.2em',
+                  textTransform: 'uppercase',
+                  color: 'rgba(244,241,231,0.6)',
+                }}
+              >
+                {completedCount > 0 ? 'Currently on' : 'Start with'}
+              </span>
+              <span
+                style={{
+                  fontFamily: 'var(--ledger-mono)',
+                  fontSize: 11,
+                  letterSpacing: '0.16em',
+                  color: 'var(--ledger-accent-light)',
+                }}
+              >
+                Module {String(currentMod.num).padStart(2, '0')} &middot;{' '}
+                {currentMod.mins} min
+              </span>
+            </div>
             <div>
-              <h3 className="font-serif text-base text-[color:var(--color-ink)]">
-                Final practical assessment
+              <h3
+                style={{
+                  fontFamily: 'var(--ledger-serif)',
+                  fontWeight: 500,
+                  fontSize: 26,
+                  lineHeight: 1.1,
+                  letterSpacing: '-0.02em',
+                  margin: 0,
+                  color: 'var(--ledger-paper)',
+                }}
+              >
+                {currentMod.title}
               </h3>
-              <p className="text-xs text-[color:var(--color-slate)] leading-relaxed">
-                Submit a reviewed work product package that demonstrates safe,
-                practical AI use.
+              <p
+                style={{
+                  margin: '4px 0 0',
+                  fontSize: 13,
+                  color: 'rgba(244,241,231,0.72)',
+                  lineHeight: 1.5,
+                  maxWidth: '62ch',
+                }}
+              >
+                {currentMod.goal}
               </p>
             </div>
+            <PrimaryButton
+              as="a"
+              href={`/courses/foundation/program/${currentMod.num}`}
+              style={{
+                background: 'var(--ledger-accent)',
+                color: 'var(--ledger-paper)',
+              }}
+            >
+              {completedCount > 0 ? 'Resume' : 'Start'}{' '}
+              <span
+                style={{
+                  fontFamily: 'var(--ledger-serif)',
+                  fontStyle: 'italic',
+                  textTransform: 'none',
+                  letterSpacing: 0,
+                  fontSize: 14,
+                }}
+              >
+                →
+              </span>
+            </PrimaryButton>
           </div>
-        </div>
-      </section>
 
-      {/* Course Structure */}
-      <section
-        id="course-structure"
-        className="bg-[color:var(--color-parch)] p-6 sm:p-8 border border-[color:var(--color-ink)]/10 rounded-[3px]"
-      >
-        <h2 className="font-serif text-3xl text-[color:var(--color-ink)] mb-2">
-          Course structure
-        </h2>
-        <p className="text-sm text-[color:var(--color-slate)] leading-relaxed mb-8 max-w-2xl">
-          Twelve modules grouped by pillar. Each module is roughly 20-40 minutes
-          of learning, practice, and a single banking artifact you walk away with.
-        </p>
+          {/* Stats */}
+          <div
+            style={{
+              marginTop: 18,
+              display: 'grid',
+              gridTemplateColumns: 'repeat(4, 1fr)',
+              borderTop: '1px solid var(--ledger-rule-strong)',
+              borderBottom: '1px solid var(--ledger-rule)',
+            }}
+          >
+            {[
+              {
+                k: 'Progress',
+                v: `${pct}%`,
+                sub: `${completedCount} of ${totalModules} modules`,
+              },
+              {
+                k: 'Time committed',
+                v: `${totalMinutes}m`,
+                sub: 'across all modules',
+              },
+              {
+                k: 'Per seat',
+                v: '$295',
+                sub: '$199 at 10+ seats',
+              },
+              {
+                k: 'Format',
+                v: 'Self-paced',
+                sub: 'On your schedule',
+              },
+            ].map((r, i) => (
+              <div
+                key={r.k}
+                style={{
+                  padding: '18px 22px',
+                  borderRight: i < 3 ? '1px solid var(--ledger-rule)' : 'none',
+                }}
+              >
+                <div
+                  style={{
+                    fontFamily: 'var(--ledger-mono)',
+                    fontSize: 9.5,
+                    letterSpacing: '0.2em',
+                    textTransform: 'uppercase',
+                    color: 'var(--ledger-muted)',
+                  }}
+                >
+                  {r.k}
+                </div>
+                <div
+                  style={{
+                    fontFamily: 'var(--ledger-serif)',
+                    fontWeight: 500,
+                    fontSize: 30,
+                    letterSpacing: '-0.02em',
+                    lineHeight: 1,
+                    marginTop: 6,
+                    color: 'var(--ledger-ink)',
+                  }}
+                >
+                  {r.v}
+                </div>
+                <div
+                  style={{
+                    fontSize: 12,
+                    color: 'var(--ledger-slate)',
+                    marginTop: 4,
+                  }}
+                >
+                  {r.sub}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
 
-        <div className="space-y-8">
-          {PILLAR_ORDER.map((pillar) => {
-            const meta = PILLAR_META[pillar];
-            const pillarModules = modules.filter((m) => m.pillar === pillar);
+        {/* What you'll do (outcomes) */}
+        <section
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr 0.85fr',
+            gap: 28,
+            marginBottom: 64,
+          }}
+        >
+          <div
+            style={{
+              border: '1px solid var(--ledger-rule)',
+              padding: 26,
+              background: 'var(--ledger-paper)',
+              borderRadius: 3,
+            }}
+          >
+            <div
+              style={{
+                fontFamily: 'var(--ledger-mono)',
+                fontSize: 10.5,
+                letterSpacing: '0.2em',
+                textTransform: 'uppercase',
+                color: 'var(--ledger-accent)',
+                marginBottom: 14,
+              }}
+            >
+              What you will be able to do
+            </div>
+            <ul
+              style={{
+                margin: 0,
+                padding: 0,
+                listStyle: 'none',
+                display: 'grid',
+                gap: 10,
+              }}
+            >
+              {LEARNER_OUTCOMES.map((outcome) => (
+                <li
+                  key={outcome}
+                  style={{
+                    display: 'flex',
+                    gap: 10,
+                    fontSize: 14,
+                    color: 'var(--ledger-ink-2)',
+                    lineHeight: 1.5,
+                  }}
+                >
+                  <span
+                    style={{
+                      marginTop: 7,
+                      width: 6,
+                      height: 6,
+                      background: 'var(--ledger-accent)',
+                      flex: 'none',
+                    }}
+                  />
+                  {outcome}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div
+            style={{
+              border: '1px solid var(--ledger-rule)',
+              padding: 26,
+              background: 'var(--ledger-parch)',
+              borderRadius: 3,
+            }}
+          >
+            <div
+              style={{
+                fontFamily: 'var(--ledger-mono)',
+                fontSize: 10.5,
+                letterSpacing: '0.2em',
+                textTransform: 'uppercase',
+                color: 'var(--ledger-accent)',
+                marginBottom: 14,
+              }}
+            >
+              Required outputs
+            </div>
+            <div style={{ display: 'grid', gap: 14 }}>
+              {foundationProgramCourseConfig.artifacts.map((artifact) => (
+                <div key={artifact.id}>
+                  <div
+                    style={{
+                      fontFamily: 'var(--ledger-serif)',
+                      fontSize: 16,
+                      fontWeight: 500,
+                      color: 'var(--ledger-ink)',
+                    }}
+                  >
+                    {artifact.title}
+                  </div>
+                  <div
+                    style={{
+                      fontSize: 12.5,
+                      color: 'var(--ledger-slate)',
+                      lineHeight: 1.5,
+                    }}
+                  >
+                    {artifact.description}
+                  </div>
+                </div>
+              ))}
+              <div>
+                <div
+                  style={{
+                    fontFamily: 'var(--ledger-serif)',
+                    fontSize: 16,
+                    fontWeight: 500,
+                    color: 'var(--ledger-ink)',
+                  }}
+                >
+                  Final practical assessment
+                </div>
+                <div
+                  style={{
+                    fontSize: 12.5,
+                    color: 'var(--ledger-slate)',
+                    lineHeight: 1.5,
+                  }}
+                >
+                  Submit a reviewed work product package that demonstrates safe,
+                  practical AI use.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Course structure */}
+        <section
+          style={{
+            background: 'var(--ledger-parch)',
+            padding: '34px 36px',
+            border: '1px solid var(--ledger-rule)',
+            borderRadius: 3,
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'baseline',
+              justifyContent: 'space-between',
+              marginBottom: 8,
+              flexWrap: 'wrap',
+              gap: 12,
+            }}
+          >
+            <h2
+              style={{
+                fontFamily: 'var(--ledger-serif)',
+                fontWeight: 500,
+                fontSize: 32,
+                letterSpacing: '-0.02em',
+                margin: 0,
+                color: 'var(--ledger-ink)',
+              }}
+            >
+              Course structure
+            </h2>
+            <span
+              style={{
+                fontFamily: 'var(--ledger-mono)',
+                fontSize: 10.5,
+                letterSpacing: '0.16em',
+                textTransform: 'uppercase',
+                color: 'var(--ledger-muted)',
+              }}
+            >
+              4 pillars &middot; {totalModules} modules
+            </span>
+          </div>
+          <p
+            style={{
+              color: 'var(--ledger-slate)',
+              fontSize: 14,
+              maxWidth: '58ch',
+              margin: '0 0 28px',
+            }}
+          >
+            Each module is roughly 20–40 minutes of learning, practice, and a
+            single banking artifact you walk away with.
+          </p>
+
+          {LMS_PILLARS.map((pillar) => {
+            const pillarMods = lmsModules.filter((m) => m.pillar === pillar.id);
+            if (pillarMods.length === 0) return null;
+            const totalPillarMin = pillarMods.reduce((s, m) => s + m.mins, 0);
 
             return (
-              <div key={pillar}>
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="w-2 h-2 rounded-sm" style={{ backgroundColor: meta.colorVar }} aria-hidden="true" />
-                  <h3 className="font-serif-sc text-[10px] uppercase tracking-[0.18em]" style={{ color: meta.colorVar }}>
-                    {meta.label}
-                  </h3>
+              <div key={pillar.id} style={{ marginBottom: 32 }}>
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'baseline',
+                    gap: 14,
+                    marginBottom: 14,
+                    paddingBottom: 8,
+                    borderBottom: '1px solid var(--ledger-rule)',
+                    flexWrap: 'wrap',
+                  }}
+                >
+                  <PillarTag pillarId={pillar.id} size="lg" />
+                  <span
+                    style={{
+                      fontFamily: 'var(--ledger-mono)',
+                      fontSize: 10,
+                      letterSpacing: '0.18em',
+                      textTransform: 'uppercase',
+                      color: 'var(--ledger-muted)',
+                    }}
+                  >
+                    {pillarMods.length} modules &middot; {totalPillarMin} min
+                  </span>
                 </div>
-
-                <ul className="grid gap-4">
-                  {pillarModules.map((mod) => {
-                    const status = getModuleStatus(mod.number, completedModules, currentModule);
-                    const isAccessible = status !== 'locked';
-                    const expanded = V4_FOUNDATION_PROGRAM_MODULE_BY_NUMBER.get(mod.number);
-
-                    const row = (
-                      <div
-                        className={`border border-[color:var(--color-ink)]/10 bg-[color:var(--color-linen)] rounded-[3px] p-5 transition-colors ${
-                          isAccessible ? 'hover:border-[color:var(--color-terra)]/40' : ''
-                        }`}
-                      >
-                        <div className="flex flex-wrap items-start gap-3">
-                          <span className="w-4 shrink-0 pt-1"><StatusIndicator status={status} /></span>
-                          <div className="min-w-0 flex-1">
-                            <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                              <span className="font-mono text-[10px] text-[color:var(--color-slate)] shrink-0">
-                                Module {mod.number}
-                              </span>
-                              <h4 className={`font-serif text-xl leading-tight ${status === 'current' ? 'text-[color:var(--color-terra)] font-semibold' : 'text-[color:var(--color-ink)]'}`}>
-                                {mod.title}
-                              </h4>
-                              <span className="font-mono text-[9px] text-[color:var(--color-slate)] uppercase tracking-wider">
-                                {mod.estimatedMinutes} min
-                              </span>
-                            </div>
-                            <p className="mt-2 text-sm text-[color:var(--color-ink)]/75 leading-relaxed">
-                              {expanded?.goal ?? mod.keyOutput}
-                            </p>
+                <div style={{ display: 'grid', gap: 10 }}>
+                  {pillarMods.map((mod) => {
+                    const status = getModuleStatus(
+                      mod.num,
+                      completedModules,
+                      currentModule,
+                    );
+                    const locked = status === 'locked';
+                    const expanded = V4_FOUNDATION_PROGRAM_MODULE_BY_NUMBER.get(
+                      mod.num,
+                    );
+                    const href = `/courses/foundation/program/${mod.num}`;
+                    const cardStyle: React.CSSProperties = {
+                      textAlign: 'left',
+                      background: 'var(--ledger-paper)',
+                      border: '1px solid var(--ledger-rule)',
+                      borderRadius: 3,
+                      padding: '18px 22px',
+                      display: 'grid',
+                      gridTemplateColumns: '24px 56px 1fr auto auto',
+                      gap: 18,
+                      alignItems: 'center',
+                      opacity: locked ? 0.55 : 1,
+                      transition: 'border-color .15s, background .15s',
+                      textDecoration: 'none',
+                      color: 'inherit',
+                    };
+                    const interior = (
+                      <>
+                        <ProgressDot status={status} size={11} />
+                        <span
+                          style={{
+                            fontFamily: 'var(--ledger-mono)',
+                            fontSize: 11,
+                            color: 'var(--ledger-muted)',
+                            letterSpacing: '0.06em',
+                          }}
+                        >
+                          M{String(mod.num).padStart(2, '0')}
+                        </span>
+                        <div>
+                          <div
+                            style={{
+                              fontFamily: 'var(--ledger-serif)',
+                              fontSize: 19,
+                              fontWeight: 500,
+                              letterSpacing: '-0.01em',
+                              color:
+                                status === 'current'
+                                  ? 'var(--ledger-accent)'
+                                  : 'var(--ledger-ink)',
+                            }}
+                          >
+                            {mod.title}
+                          </div>
+                          <div
+                            style={{
+                              fontSize: 13,
+                              color: 'var(--ledger-slate)',
+                              marginTop: 3,
+                              lineHeight: 1.5,
+                            }}
+                          >
+                            {expanded?.goal ?? mod.output}
                           </div>
                         </div>
-
-                        {expanded && (
-                          <div className="mt-5 grid lg:grid-cols-[1.1fr_0.9fr] gap-5">
-                            <div>
-                              <p className="font-serif-sc text-[10px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] mb-3">
-                                Includes
-                              </p>
-                              <div className="grid sm:grid-cols-2 gap-2">
-                                {expanded.includes.map((item) => (
-                                  <div key={item} className="flex gap-2 text-xs text-[color:var(--color-ink)]/70 leading-relaxed">
-                                    <span className="mt-1.5 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-terra)]/70 shrink-0" />
-                                    <span>{item}</span>
-                                  </div>
-                                ))}
-                              </div>
-                            </div>
-
-                            <div className="space-y-3 text-xs text-[color:var(--color-slate)] leading-relaxed">
-                              <div>
-                                <p className="font-serif-sc text-[10px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/55 mb-1">
-                                  Practice
-                                </p>
-                                <p>{expanded.practice}</p>
-                              </div>
-                              <div>
-                                <p className="font-serif-sc text-[10px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/55 mb-1">
-                                  Artifact
-                                </p>
-                                <p>{expanded.artifact}</p>
-                              </div>
-                              <div>
-                                <p className="font-serif-sc text-[10px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/55 mb-1">
-                                  Banking Boundary
-                                </p>
-                                <p>{expanded.bankingBoundary}</p>
-                              </div>
-                            </div>
-                          </div>
-                        )}
-                      </div>
+                        <span
+                          style={{
+                            fontFamily: 'var(--ledger-mono)',
+                            fontSize: 10,
+                            letterSpacing: '0.14em',
+                            textTransform: 'uppercase',
+                            color: 'var(--ledger-muted)',
+                          }}
+                        >
+                          {mod.mins} min
+                        </span>
+                        <span
+                          style={{
+                            fontFamily: 'var(--ledger-serif)',
+                            fontStyle: 'italic',
+                            fontSize: 18,
+                            color: locked
+                              ? 'var(--ledger-rule-strong)'
+                              : 'var(--ledger-ink)',
+                          }}
+                        >
+                          {locked ? '·' : '→'}
+                        </span>
+                      </>
                     );
 
+                    if (locked) {
+                      return (
+                        <div
+                          key={mod.num}
+                          style={{ ...cardStyle, cursor: 'not-allowed' }}
+                          aria-disabled
+                          title="Complete the previous module to unlock"
+                        >
+                          {interior}
+                        </div>
+                      );
+                    }
                     return (
-                      <li key={mod.id}>
-                        {isAccessible ? (
-                          <Link href={`/courses/foundation/program/${mod.number}`} className="block rounded-[2px] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)]">
-                            {row}
-                          </Link>
-                        ) : (
-                          row
-                        )}
-                      </li>
+                      <Link key={mod.num} href={href} style={cardStyle}>
+                        {interior}
+                      </Link>
                     );
                   })}
-                </ul>
-
-                {pillar !== 'application' && (
-                  <div className="mt-6 border-b border-[color:var(--color-ink)]/5" aria-hidden="true" />
-                )}
+                </div>
               </div>
             );
           })}
-        </div>
 
-        <p className="mt-8 text-xs text-[color:var(--color-slate)]">
-          More certifications launching soon: AiBI-S (Specialist) and AiBI-L (Leader).
-        </p>
-      </section>
-    </div>
+          <p
+            style={{
+              marginTop: 8,
+              fontSize: 12,
+              color: 'var(--ledger-slate)',
+            }}
+          >
+            More credentials launching soon: AiBI-S (Specialist) and AiBI-L (Leader).
+          </p>
+        </section>
+      </div>
+    </CourseShell>
   );
 }
