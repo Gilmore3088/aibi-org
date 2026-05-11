@@ -28,6 +28,24 @@ function formatBytes(n: number): string {
   return `${(n / (1024 * 1024)).toFixed(2)} MB`;
 }
 
+function downloadJson(filename: string, data: unknown): void {
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function buildExportFilename(): string {
+  const now = new Date();
+  const stamp = now.toISOString().slice(0, 16).replace(/[:T]/g, '-');
+  return `aibi-redesign-checklist-${stamp}.json`;
+}
+
 export default function RedesignChecklistPage(): JSX.Element {
   const [store, setStore] = useState<StoreShape>({});
   const [filter, setFilter] = useState<Filter>('all');
@@ -118,6 +136,37 @@ export default function RedesignChecklistPage(): JSX.Element {
     }
   }
 
+  function exportToFile() {
+    const payload = {
+      exportedAt: new Date().toISOString(),
+      schemaVersion: 2,
+      progress: { done, total, pct },
+      store,
+    };
+    downloadJson(buildExportFilename(), payload);
+  }
+
+  function importFromFile(file: File) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const text = String(reader.result ?? '');
+        const parsed = JSON.parse(text) as { store?: StoreShape };
+        if (!parsed.store || typeof parsed.store !== 'object') {
+          throw new Error('Invalid file — missing "store" object.');
+        }
+        const mode = window.confirm(
+          'OK = Merge with existing notes (incoming overrides on conflict).\nCancel = Replace everything with the imported data.',
+        );
+        setStore((prev) => (mode ? { ...prev, ...parsed.store } : (parsed.store as StoreShape)));
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : 'import-failed';
+        window.alert(`Import failed: ${msg}`);
+      }
+    };
+    reader.readAsText(file);
+  }
+
   return (
     <LedgerSurface
       brandHref="/"
@@ -183,22 +232,64 @@ export default function RedesignChecklistPage(): JSX.Element {
               fontWeight: 600,
             }}
           >
-            <span>Progress · {formatBytes(storageBytes)} stored</span>
-            <button
-              type="button"
-              onClick={resetAll}
-              style={{
-                background: 'transparent',
-                border: 'none',
-                cursor: 'pointer',
-                font: 'inherit',
-                letterSpacing: 'inherit',
-                textTransform: 'inherit',
-                color: 'var(--weak)',
-              }}
-            >
-              Reset all
-            </button>
+            <span>Progress · {formatBytes(storageBytes)} stored locally</span>
+            <div style={{ display: 'flex', gap: 14, alignItems: 'baseline' }}>
+              <button
+                type="button"
+                onClick={exportToFile}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  font: 'inherit',
+                  letterSpacing: 'inherit',
+                  textTransform: 'inherit',
+                  color: 'var(--ink)',
+                  fontWeight: 'inherit',
+                  padding: 0,
+                }}
+              >
+                Export ↓
+              </button>
+              <label
+                style={{
+                  cursor: 'pointer',
+                  font: 'inherit',
+                  letterSpacing: 'inherit',
+                  textTransform: 'inherit',
+                  color: 'var(--ink)',
+                  fontWeight: 'inherit',
+                }}
+              >
+                Import ↑
+                <input
+                  type="file"
+                  accept="application/json"
+                  style={{ display: 'none' }}
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) importFromFile(file);
+                    e.currentTarget.value = '';
+                  }}
+                />
+              </label>
+              <button
+                type="button"
+                onClick={resetAll}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  font: 'inherit',
+                  letterSpacing: 'inherit',
+                  textTransform: 'inherit',
+                  color: 'var(--weak)',
+                  padding: 0,
+                }}
+              >
+                Reset all
+              </button>
+            </div>
           </div>
         </div>
 
