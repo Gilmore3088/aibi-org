@@ -931,6 +931,32 @@ Plans/ canonical specs (aibi-prd.html etc.) left unchanged for the
 v1 site — v2 supersedes only the course tier, not the homepage,
 assessment, or institutional positioning.
 
+**2026-05-11 — `aibi-p` → `foundation` systematic rename merged (PR #45).**
+The 10-phase rename from the 2026-05-09 plan shipped to `main` as merge
+commit `c172923`. 11 commits covering: forever-shim `normalizeProduct` /
+`dbReadValues` at every DB read boundary (Stripe webhooks, course
+enrollments, entitlements), 4 write-side flips from `'aibi-p'` to
+`'foundation'`, migrations 00028 (CHECK constraint accepts both values)
+and 00029 (backfill `course_enrollments.product`, `entitlements.product`,
+`prompt_library.course_source_ref`, plus `course_id` on `user_artifacts`,
+`saved_prompts`, `practice_rep_completions` with DELETE-on-UNIQUE
+pre-flight), pedagogical prose swap (AiBI-P → AiBI-Foundation across 66
+files), env var rename `STRIPE_AIBIP_*` → `STRIPE_FOUNDATION_*` (legacy
+names kept as fallback). Internal identifiers preserved per 2026-05-06
+pattern: route `/courses/aibi-p`, DB `product='aibi-p'` legacy value,
+`AIBIP-` cert ID prefix, file path `public/AiBI-P/`. Shim is permanent —
+Stripe retry events from 2026-Q1 enrollments can land at any future date
+with `metadata.product='aibi-p'` and must collapse to `'foundation'`.
+
+**Operator deploy steps remaining for the rename** (per
+`tasks/aibi-p-to-foundation-deploy-checklist.md`): apply migrations
+00028 then 00029 to staging then prod (in order — 00028 first so the
+CHECK constraint accepts both values before the backfill flips rows);
+add `STRIPE_FOUNDATION_PRICE_ID` and `STRIPE_FOUNDATION_INSTITUTION_PRICE_ID`
+Vercel env vars (legacy `STRIPE_AIBIP_*` already work as fallback);
+re-sync ConvertKit/MailerLite copy where "AiBI-Practitioner" appears;
+update Stripe product *display* names; verify Resend template bodies.
+
 ---
 
 ## Design Context
