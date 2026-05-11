@@ -53,10 +53,10 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Right tile — Practitioner Certification, on parch */}
+          {/* Right tile — Foundation credential, on parch */}
           <div className="bg-parch px-s7 py-s12 md:py-s14 md:pl-s10">
             <h2 className="font-serif text-display-lg md:text-display-xl text-ink leading-[1.05] tracking-tightish max-w-[14ch]">
-              AiBI-<em className="text-terra">Practitioner</em> Certification
+              AiBI-<em className="text-terra">Foundation</em>
             </h2>
             <p className="text-body-lg text-ink/80 leading-relaxed mt-s6 max-w-[36ch]">
               Twelve self-paced modules. The community-banking AI proficiency

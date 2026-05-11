@@ -78,7 +78,7 @@ function Sidebar({ route, navigate, density }){
       {/* Pillars + modules */}
       <div style={{ padding:'10px 0 24px', overflowY:'auto', flex:1 }}>
         <div style={{ padding:sectionPad, fontFamily:'var(--sans)', fontWeight:700, fontSize:11, letterSpacing:'-0.005em', textTransform:'uppercase', color:'var(--slate)', lineHeight:1 }}>
-          <span style={{ color:'var(--ink)' }}>AiBI</span> Practitioner
+          <span style={{ color:'var(--ink)' }}>AiBI</span> Foundation
         </div>
         {PILLARS.map(p => {
           const mods = MODULES.filter(m => m.pillar === p.id);

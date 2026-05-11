@@ -15,7 +15,7 @@ function OverviewScreen({ navigate, progress }){
   return (
     <div>
       <TopBar
-        crumbs={['Education', 'AiBI-Practitioner']}
+        crumbs={['Education', 'AiBI-Foundation']}
         right={
           <span style={{ fontFamily:'var(--mono)', fontSize:10.5, letterSpacing:'0.16em', textTransform:'uppercase', color:'var(--muted)' }}>
             {completed}/{total} complete
@@ -32,7 +32,7 @@ function OverviewScreen({ navigate, progress }){
           </div>
 
           <h1 style={{ fontFamily:'var(--serif)', fontWeight:500, fontSize:'clamp(46px, 6vw, 76px)', lineHeight:0.98, letterSpacing:'-0.035em', margin:'0 0 18px' }}>
-            Banking AI <em style={{ color:'var(--terra)', fontStyle:'normal', fontWeight:500 }}>Practitioner.</em>
+            Banking AI <em style={{ color:'var(--terra)', fontStyle:'normal', fontWeight:500 }}>Foundation.</em>
           </h1>
           <p style={{ fontFamily:'var(--serif)', fontStyle:'italic', fontSize:22, lineHeight:1.4, color:'var(--ink-2)', whiteSpace:'nowrap', margin:'0 0 12px' }}>
             Learn AI by doing AI — twelve modules, twelve real artifacts.
@@ -664,7 +664,7 @@ function CompleteScreen({ navigate }){
   const reviews = SAVED_ARTIFACTS.reduce((s,a)=>s+a.versions.length, 0);
   return (
     <div>
-      <TopBar crumbs={['Course', 'Complete']} right={<span style={{ fontFamily:'var(--mono)', fontSize:10.5, letterSpacing:'0.16em', textTransform:'uppercase', color:'var(--terra)' }}>★ Practitioner — earned</span>} />
+      <TopBar crumbs={['Course', 'Complete']} right={<span style={{ fontFamily:'var(--mono)', fontSize:10.5, letterSpacing:'0.16em', textTransform:'uppercase', color:'var(--terra)' }}>★ Foundation — earned</span>} />
       <div style={{ maxWidth:1080, margin:'0 auto', padding:'48px 36px 80px' }}>
 
         <div style={{ display:'flex', alignItems:'center', gap:14, marginBottom:18 }}>
@@ -674,7 +674,7 @@ function CompleteScreen({ navigate }){
         </div>
 
         <h1 style={{ fontFamily:'var(--serif)', fontWeight:500, fontSize:'clamp(56px, 7vw, 96px)', lineHeight:0.95, letterSpacing:'-0.04em', margin:'0 0 18px' }}>
-          You\u2019re a <em style={{ color:'var(--terra)', fontStyle:'italic', fontWeight:400 }}>Practitioner.</em>
+          You\u2019re a <em style={{ color:'var(--terra)', fontStyle:'italic', fontWeight:400 }}>Foundation.</em>
         </h1>
         <p style={{ fontFamily:'var(--serif)', fontStyle:'italic', fontSize:22, lineHeight:1.4, color:'var(--ink-2)', whiteSpace:'nowrap', margin:'0 0 36px' }}>
           {S.learner.name.split(' ')[0]}, twelve modules done. Twelve artifacts in hand.
@@ -734,7 +734,7 @@ function CompleteScreen({ navigate }){
                 </div>
               </div>
             ))}
-            <p style={{ marginTop:14, fontSize:12.5, lineHeight:1.55, color:'rgba(250,246,237,0.72)' }}>You compared multiple models on 6 of 12 activities — a key Practitioner habit.</p>
+            <p style={{ marginTop:14, fontSize:12.5, lineHeight:1.55, color:'rgba(250,246,237,0.72)' }}>You compared multiple models on 6 of 12 activities — a key Foundation habit.</p>
           </div>
         </div>
 
@@ -745,7 +745,7 @@ function CompleteScreen({ navigate }){
             {[
               { t:'AiBI-Builder', d:'The next track. Build internal tools your team will actually use.', cta:'Join the waitlist' },
               { t:'Cohort live sessions', d:'Quarterly Q&A with banking AI practitioners across the network.', cta:'See schedule' },
-              { t:'Coach a coworker', d:'Run the Practitioner course with one teammate. Free re-enrollment for them.', cta:'Send invite' },
+              { t:'Coach a coworker', d:'Run the Foundation course with one teammate. Free re-enrollment for them.', cta:'Send invite' },
             ].map(s => (
               <div key={s.t} style={{ background:'var(--paper)', border:'1px solid var(--rule)', borderRadius:3, padding:'18px 20px' }}>
                 <div style={{ fontFamily:'var(--serif)', fontSize:20, fontWeight:500, letterSpacing:'-0.015em', marginBottom:6 }}>{s.t}</div>
@@ -760,7 +760,7 @@ function CompleteScreen({ navigate }){
         <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:24, marginBottom:32 }}>
           <div style={{ background:'var(--paper)', border:'1px solid var(--rule)', borderRadius:3, padding:'24px 26px' }}>
             <div style={{ fontFamily:'var(--mono)', fontSize:10.5, letterSpacing:'0.2em', textTransform:'uppercase', color:'var(--terra)', marginBottom:12 }}>Share the badge</div>
-            <p style={{ margin:'0 0 16px', fontSize:13.5, color:'var(--ink-2)', lineHeight:1.55 }}>Tell your network you\u2019re an AiBI-Practitioner. We\u2019ll generate a shareable image and a pre-written post.</p>
+            <p style={{ margin:'0 0 16px', fontSize:13.5, color:'var(--ink-2)', lineHeight:1.55 }}>Tell your network you\u2019re an AiBI-Foundation. We\u2019ll generate a shareable image and a pre-written post.</p>
             <div style={{ display:'flex', gap:8, flexWrap:'wrap' }}>
               {['LinkedIn','X','Email','Copy link'].map(p => (
                 <button key={p} style={{ background:'transparent', border:'1px solid var(--rule-strong)', padding:'8px 14px', borderRadius:2, cursor:'pointer', fontFamily:'var(--mono)', fontSize:10.5, letterSpacing:'0.14em', textTransform:'uppercase', fontWeight:600, color:'var(--ink-2)' }}>{p}</button>

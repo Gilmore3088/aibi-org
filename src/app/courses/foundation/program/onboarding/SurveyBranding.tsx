@@ -125,7 +125,7 @@ export function SurveyBranding({ step }: SurveyBrandingProps) {
             opacity: 0.75,
           }}
         >
-          &ldquo;The Banking AI Practitioner certification bridges the gap
+          &ldquo;The AiBI-Foundation certification bridges the gap
           between institutional legacy and generative futures.&rdquo;
         </p>
       </div>

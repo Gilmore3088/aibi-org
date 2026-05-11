@@ -90,7 +90,7 @@ const MODULE_ACTIVITIES: Record<number, ModuleActivitySpec> = {
 
 ---
 
-This is one of twelve workday wins from the AiBI-Foundation Practitioner course at
+This is one of twelve workday wins from the AiBI-Foundation course at
 The AI Banking Institute. Each artifact is the banker's own work product;
 the AI assistance is a tool, the banker's judgment is what makes it safe.
 `,
@@ -939,7 +939,7 @@ language drift faster than you expect.
       },
     ],
     artifactFilename: 'aibi-p-m12-final-lab.md',
-    artifactTemplate: `# AiBI-Foundation Final Practitioner Lab
+    artifactTemplate: `# AiBI-Foundation Final Foundation Lab
 
 **Banker:** {{name}}
 **Submission date:** {{date}}
@@ -973,7 +973,7 @@ language drift faster than you expect.
 ---
 
 Submitted to The AI Banking Institute for review and credentialing as
-AiBI-Foundation · Banking AI Practitioner.
+AiBI-Foundation · AiBI-Foundation.
 `,
   },
 };

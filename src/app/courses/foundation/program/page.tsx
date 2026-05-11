@@ -16,9 +16,9 @@ import type { ModuleStatus } from './_lib/courseProgress';
 import { courseJsonLd, jsonLdString } from '@/lib/seo/jsonld';
 
 export const metadata: Metadata = {
-  title: 'AiBI-Foundation — Banking AI Practitioner | The AI Banking Institute',
+  title: 'AiBI-Foundation — AiBI-Foundation | The AI Banking Institute',
   description:
-    'The Banking AI Practitioner course teaches every staff member at a community financial institution how to use AI tools safely, professionally, and with regulatory confidence.',
+    'The AiBI-Foundation course teaches every staff member at a community financial institution how to use AI tools safely, professionally, and with regulatory confidence.',
 };
 
 const FOUNDATION_COURSE_JSONLD = courseJsonLd({
@@ -81,7 +81,7 @@ export default async function CourseOverviewPage() {
       {/* Hero */}
       <section className="mb-12">
         <h1 className="font-serif text-5xl md:text-6xl leading-tight text-[color:var(--color-ink)]">
-          Banking AI <span className="text-[color:var(--color-terra)] italic">Practitioner</span>
+          Banking AI <span className="text-[color:var(--color-terra)] italic">Foundation</span>
         </h1>
         <p className="mt-5 font-serif italic text-2xl leading-relaxed text-[color:var(--color-ink)]/80 max-w-3xl">
           {foundationProgramCourseConfig.promise}

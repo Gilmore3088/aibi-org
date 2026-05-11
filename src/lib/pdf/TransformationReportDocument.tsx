@@ -903,7 +903,7 @@ function CompletionPage({
           <View>
             <Text style={styles.credentialLabel}>Credential Earned</Text>
             <Text style={styles.credentialValue}>AiBI-Foundation</Text>
-            <Text style={styles.credentialSub}>Banking AI Practitioner  ·  The AI Banking Institute</Text>
+            <Text style={styles.credentialSub}>AiBI-Foundation  ·  The AI Banking Institute</Text>
           </View>
           <View>
             <Text style={[styles.credentialLabel, { textAlign: 'right' }]}>Enrollment ID</Text>
@@ -945,7 +945,7 @@ export function TransformationReportDocument(props: TransformationReportProps) {
     <Document
       title={`AiBI-Foundation Transformation Report — ${props.learnerName} — The AI Banking Institute`}
       author="The AI Banking Institute"
-      subject="AiBI-Foundation Banking AI Practitioner Transformation Report"
+      subject="AiBI-Foundation Transformation Report"
     >
       <CoverPage
         learnerName={props.learnerName}

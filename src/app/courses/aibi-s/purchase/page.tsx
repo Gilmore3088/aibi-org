@@ -126,7 +126,7 @@ export default async function AiBISPurchasePage() {
             Prerequisite Required
           </p>
           <p className="font-sans text-sm text-[color:var(--color-slate)] leading-relaxed mb-4">
-            AiBI-S requires completion of the AiBI-Foundation (Banking AI Practitioner) course. You must earn
+            AiBI-S requires completion of the AiBI-Foundation (AiBI-Foundation) course. You must earn
             your AiBI-Foundation credential before enrolling in AiBI-S.
           </p>
           <Link

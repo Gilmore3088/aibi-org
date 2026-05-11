@@ -37,15 +37,15 @@ export function getAssessmentNextStep(tierId: Tier['id']): AssessmentNextStep {
   switch (tierId) {
     case 'starting-point':
       return {
-        title: 'Start the Practitioner Course',
+        title: 'Start the Foundation course',
         description:
           'Build safe daily AI habits before your institution invests in broader automation.',
         href: '/courses/foundation/program',
-        cta: 'Start Practitioner Course',
+        cta: 'Start Foundation course',
       };
     case 'early-stage':
       return {
-        title: 'Earn the Practitioner Credential',
+        title: 'Earn the Foundation Credential',
         description:
           'Turn isolated experimentation into a shared staff baseline with practical exercises and artifacts.',
         href: '/courses/foundation/program',

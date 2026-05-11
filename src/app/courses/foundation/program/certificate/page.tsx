@@ -20,7 +20,7 @@ function formatDate(isoString: string): string {
 
 export const metadata = {
   title: 'Your Certificate — AiBI-Foundation | The AI Banking Institute',
-  description: 'Download your AiBI-Foundation Banking AI Practitioner certificate.',
+  description: 'Download your AiBI-Foundation certificate.',
 };
 
 export default async function CertificatePage() {
@@ -128,7 +128,7 @@ export default async function CertificatePage() {
                   className="text-xl font-bold text-[var(--color-ink)] uppercase tracking-wide"
                   style={{ fontFamily: 'Cormorant SC, Cormorant, Georgia, serif' }}
                 >
-                  AiBI-Foundation &middot; Banking AI Practitioner
+                  AiBI-Foundation &middot; AiBI-Foundation
                 </p>
                 <p
                   className="text-sm font-bold text-[var(--color-slate)] uppercase tracking-wider mt-1"

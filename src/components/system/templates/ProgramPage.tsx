@@ -38,7 +38,7 @@ export interface ProgramArtifact {
 
 export interface ProgramPageProps {
   readonly code: string; // "AiBI-Foundation"
-  readonly designation: string; // "Banking AI Practitioner · The AI Banking Institute"
+  readonly designation: string; // "AiBI-Foundation · The AI Banking Institute"
   readonly level: string; // "01 · Foundational"
   readonly pillar: Pillar;
   readonly tagline?: string;

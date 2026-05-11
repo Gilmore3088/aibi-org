@@ -348,7 +348,7 @@ function TemplatePage({ template, index }: { template: typeof TEMPLATES[0]; inde
 
       <View style={styles.footer}>
         <Text style={styles.footerText}>
-          AiBI-Foundation — Banking AI Practitioner · Skill Template Library · Module 6 Artifact
+          AiBI-Foundation — AiBI-Foundation · Skill Template Library · Module 6 Artifact
         </Text>
         <Text style={styles.pageNum}>Template {index + 1} of {TEMPLATES.length}</Text>
       </View>
@@ -469,7 +469,7 @@ export function SkillTemplateLibraryDocument() {
 
         <View style={styles.footer}>
           <Text style={styles.footerText}>
-            The AI Banking Institute · AiBI-Foundation — Banking AI Practitioner
+            The AI Banking Institute · AiBI-Foundation — AiBI-Foundation
           </Text>
           <Text style={styles.pageNum}>1 of {TEMPLATES.length + 1}</Text>
         </View>

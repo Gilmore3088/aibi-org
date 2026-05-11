@@ -371,9 +371,9 @@ const event = stripe.webhooks.constructEvent(body, sig, process.env.STRIPE_WEBHO
 **Name standard (2026-04-15):** In running prose, always use the full name
 **The AI Banking Institute** or **the Institute**. Do NOT hide behind the
 acronym. Bankers do not need another acronym. Reserve "AiBI" for:
-- Credential codes (AiBI-Practitioner, AiBI-S, AiBI-L)
+- Credential codes (AiBI-Foundation, AiBI-S, AiBI-L)
 - The circular seal / wordmark logo
-- Credential display format: "AiBI-Practitioner · The AI Banking Institute"
+- Credential display format: "AiBI-Foundation · The AI Banking Institute"
 
 Never write "AiBI helps..." or "the AiBI approach..." in body copy. Use
 "The AI Banking Institute helps..." or "our approach..." instead.
@@ -383,12 +383,12 @@ Never write "AiBI helps..." or "the AiBI approach..." in body copy. Use
 | Institute name | The AI Banking Institute (use in prose) |
 | Informal reference | the Institute |
 | Brand nickname | AiBI (not AiBi, not AIBI) — reserved for credentials, seal, and compound program names |
-| Foundations course | AiBI Foundations (replaces "AiBI-Practitioner" — see 2026-05-09 Decisions Log) |
-| Foundations credential | Foundations Certificate (no AiBI prefix on the cert itself) |
+| Foundation course | AiBI-Foundation (replaces "AiBI-Practitioner" / "AiBI Foundations" — see 2026-05-11 Decisions Log) |
+| Foundation credential | AiBI-Foundation (course name and credential code are the same) |
 | Specialist cert | AiBI-S / AiBI-S/Ops / AiBI-S/Lending / etc. |
 | Leader cert | AiBI-L |
 | Advisory engagement | Leadership Advisory (describe as "fractional Chief AI Officer" when shape matters) |
-| Credential display | "Foundations Certificate · The AI Banking Institute" / "AiBI-S · The AI Banking Institute" |
+| Credential display | "AiBI-Foundation · The AI Banking Institute" / "AiBI-S · The AI Banking Institute" |
 
 ### Phrases That Must Never Appear in the Codebase or Copy
 
@@ -396,8 +396,8 @@ Never write "AiBI helps..." or "the AiBI approach..." in body copy. Use
 |-----------|-------------|
 | `FFIEC-aware training` | "Aligned with SR 11-7, Interagency TPRM Guidance, ECOA/Reg B, and the AIEOG AI Lexicon" |
 | `AI-enabled peers at 58.1%` | "Community bank median ~65% efficiency ratio (FDIC); industry-wide ~55.7% (Q4 2024)" |
-| `BAI-P / BAI-S / BAI-L` | `AiBI Foundations / AiBI-S / AiBI-L` |
-| `AiBI-Practitioner` / `AiBI-P` (user-facing copy) | `AiBI Foundations` (course) or `Foundations Certificate` (credential) — see 2026-05-09 Decisions Log |
+| `BAI-P / BAI-S / BAI-L` | `AiBI-Foundation / AiBI-S / AiBI-L` |
+| `AiBI-Practitioner` / `AiBI-P` / `AiBI Foundations` (plural) / `Banking AI Practitioner` (user-facing copy) | `AiBI-Foundation` (singular) — see 2026-05-11 Decisions Log |
 | `AiBi` | `AiBI` |
 | Any unsourced statistic | Named source + year + publication |
 

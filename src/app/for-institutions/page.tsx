@@ -123,7 +123,7 @@ export default function ForInstitutionsPage() {
               Start with a coached cohort. Scale on what works.
             </h2>
             <p className="text-body-md text-cream mt-s4 leading-relaxed">
-              A 10-seat cohort over eight weeks. Practitioners ship reviewed
+              A 10-seat cohort over eight weeks. Learners ship reviewed
               AI workflows; leadership gets the readiness data to plan the
               next step.
             </p>

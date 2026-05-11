@@ -56,7 +56,7 @@ export const aibiPReusableModules: readonly CourseModule[] = modules.map((mod) =
 
 export const foundationProgramCourseConfig: CourseConfig = {
   id: 'aibi-p',
-  title: 'Banking AI Practitioner',
+  title: 'AiBI-Foundation',
   shortTitle: 'AiBI-Foundation',
   promise:
     'Help every community banking employee use AI safely, confidently, and practically in daily work.',
