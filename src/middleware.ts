@@ -61,6 +61,11 @@ const COMING_SOON_BYPASS_PREFIXES: readonly string[] = [
   '/resources',
   '/dashboard',
   '/courses',
+  '/assessment',
+  '/practice',
+  '/prompt-cards',
+  '/certifications',
+  '/results',
 ];
 
 export async function middleware(request: NextRequest): Promise<NextResponse> {
