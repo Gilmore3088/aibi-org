@@ -15,6 +15,7 @@ import { redirect } from 'next/navigation';
 import type { Metadata } from 'next';
 import { getEnrollment } from '../_lib/getEnrollment';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
+import { CourseShellWrapper } from '@/components/lms/CourseShellWrapper';
 import { WorkProductForm } from '../_components/WorkProductForm';
 import type { WorkSubmission } from '@/types/course';
 
@@ -57,23 +58,63 @@ export default async function SubmitPage() {
   const modulesComplete = allModulesComplete(enrollment.completed_modules);
 
   return (
-    <>
-      {/* Terra-colored header band matching module page pattern */}
-      <div className="bg-[color:var(--color-terra)] text-[color:var(--color-linen)] py-10 px-6">
-        <div className="mx-auto px-8 lg:px-16">
-          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra-pale)] mb-2">
+    <CourseShellWrapper crumbs={['Education', 'AiBI-Foundation', 'Work Product']}>
+      <header style={{ marginBottom: 40 }}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 14,
+            marginBottom: 18,
+          }}
+        >
+          <span
+            style={{
+              fontFamily: 'var(--ledger-mono)',
+              fontSize: 10.5,
+              letterSpacing: '0.2em',
+              textTransform: 'uppercase',
+              color: 'var(--ledger-accent)',
+            }}
+          >
             AiBI-Foundation Certification
-          </p>
-          <h1 className="font-serif text-3xl font-bold mb-2">Work Product Submission</h1>
-          <p className="font-sans text-sm text-[color:var(--color-terra-pale)] leading-relaxed max-w-2xl">
-            Submit your four-item work product package to earn the AiBI-Foundation credential.
-            A reviewer will assess your submission against the five-dimension rubric
-            within five business days.
-          </p>
+          </span>
+          <span style={{ flex: 1, height: 1, background: 'var(--ledger-rule)' }} />
         </div>
-      </div>
+        <h1
+          style={{
+            fontFamily: 'var(--ledger-serif)',
+            fontWeight: 500,
+            fontSize: 'clamp(40px, 5vw, 60px)',
+            lineHeight: 1.02,
+            letterSpacing: '-0.03em',
+            margin: '0 0 16px',
+            color: 'var(--ledger-ink)',
+          }}
+        >
+          Work Product{' '}
+          <em style={{ color: 'var(--ledger-accent)', fontStyle: 'normal', fontWeight: 500 }}>
+            Submission.
+          </em>
+        </h1>
+        <p
+          style={{
+            fontFamily: 'var(--ledger-serif)',
+            fontStyle: 'italic',
+            fontSize: 20,
+            lineHeight: 1.45,
+            color: 'var(--ledger-ink-2)',
+            margin: 0,
+            maxWidth: '60ch',
+          }}
+        >
+          Submit your four-item package to earn the AiBI-Foundation credential. A
+          reviewer will assess your submission against the five-dimension rubric
+          within five business days.
+        </p>
+      </header>
 
-      <article className="mx-auto px-8 lg:px-16 px-6 lg:px-8 py-10">
+      <article>
 
         {/* Module completion gate */}
         {!modulesComplete && (
@@ -146,6 +187,6 @@ export default async function SubmitPage() {
         )}
 
       </article>
-    </>
+    </CourseShellWrapper>
   );
 }

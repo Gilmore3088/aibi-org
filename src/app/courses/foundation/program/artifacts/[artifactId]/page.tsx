@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { AIBI_P_ARTIFACTS } from '@content/practice-reps/foundation-program';
+import { PrimaryButton, GhostButton } from '@/components/lms';
+import { CourseShellWrapper } from '@/components/lms/CourseShellWrapper';
 import { ArtifactStatusPanel } from './ArtifactStatusPanel';
 
 interface ArtifactPageProps {
@@ -20,7 +22,7 @@ export function generateMetadata({ params }: ArtifactPageProps) {
   };
 }
 
-export default function ArtifactDetailPage({ params }: ArtifactPageProps) {
+export default async function ArtifactDetailPage({ params }: ArtifactPageProps) {
   const artifact = AIBI_P_ARTIFACTS.find((item) => item.id === params.artifactId);
 
   if (!artifact) {
@@ -28,67 +30,106 @@ export default function ArtifactDetailPage({ params }: ArtifactPageProps) {
   }
 
   return (
-    <main className="px-6 py-12 md:py-16">
-      <section className="max-w-3xl mx-auto space-y-8">
-        <nav aria-label="Breadcrumb">
-          <Link
-            href="/dashboard"
-            className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/50 hover:text-[color:var(--color-terra)] transition-colors"
-          >
-            Dashboard
-          </Link>
-          <span className="mx-2 text-[color:var(--color-ink)]/20">/</span>
-          <span className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-terra)]">
-            Artifact
-          </span>
-        </nav>
+    <CourseShellWrapper
+      crumbs={['Education', 'AiBI-Foundation', `Module ${artifact.moduleNumber}`, 'Artifact']}
+      contentMaxWidth={760}
+    >
+      <header
+        style={{
+          borderBottom: '1px solid var(--ledger-rule)',
+          paddingBottom: 28,
+          marginBottom: 32,
+        }}
+      >
+        <p
+          style={{
+            fontFamily: 'var(--ledger-mono)',
+            fontSize: 10.5,
+            letterSpacing: '0.2em',
+            textTransform: 'uppercase',
+            color: 'var(--ledger-accent)',
+            margin: '0 0 12px',
+          }}
+        >
+          Module {artifact.moduleNumber} · {artifact.format}
+        </p>
+        <h1
+          style={{
+            fontFamily: 'var(--ledger-serif)',
+            fontWeight: 500,
+            fontSize: 'clamp(34px, 4vw, 48px)',
+            lineHeight: 1.05,
+            letterSpacing: '-0.025em',
+            margin: '0 0 16px',
+            color: 'var(--ledger-ink)',
+          }}
+        >
+          {artifact.title}
+        </h1>
+        <p
+          style={{
+            fontSize: 16,
+            color: 'var(--ledger-ink-2)',
+            lineHeight: 1.6,
+            margin: 0,
+            maxWidth: '60ch',
+          }}
+        >
+          {artifact.description}
+        </p>
+      </header>
 
-        <header className="border-b border-[color:var(--color-ink)]/10 pb-8">
-          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
-            Module {artifact.moduleNumber} · {artifact.format}
-          </p>
-          <h1 className="font-serif text-4xl md:text-5xl text-[color:var(--color-ink)] leading-tight">
-            {artifact.title}
-          </h1>
-          <p className="text-base text-[color:var(--color-ink)]/75 mt-4 leading-relaxed">
-            {artifact.description}
-          </p>
-        </header>
-
-        <section className="grid md:grid-cols-2 gap-4">
-          <ArtifactStatusPanel artifactId={artifact.id} />
-          <DetailBlock title="Source activity" body={artifact.sourceActivityId} />
-          <DetailBlock
-            title="Certification evidence"
-            body={artifact.countsTowardCertificate ? 'Counts toward AiBI-Foundation certification.' : 'Practice artifact only.'}
-          />
-        </section>
-
-        <div className="flex flex-col sm:flex-row gap-3">
-          {artifact.downloadHref ? (
-            <a
-              href={artifact.downloadHref}
-              className="inline-block text-center px-7 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
-            >
-              Download
-            </a>
-          ) : (
-            <Link
-              href={`/practice/${artifact.sourceActivityId}`}
-              className="inline-block text-center px-7 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
-            >
-              Open Source Activity
-            </Link>
-          )}
-          <Link
-            href="/dashboard"
-            className="inline-block text-center px-7 py-3 border border-[color:var(--color-ink)]/25 text-[color:var(--color-ink)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)] transition-colors"
-          >
-            Back to Dashboard
-          </Link>
-        </div>
+      <section
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+          gap: 14,
+          marginBottom: 32,
+        }}
+      >
+        <ArtifactStatusPanel artifactId={artifact.id} />
+        <DetailBlock title="Source activity" body={artifact.sourceActivityId} />
+        <DetailBlock
+          title="Certification evidence"
+          body={
+            artifact.countsTowardCertificate
+              ? 'Counts toward AiBI-Foundation certification.'
+              : 'Practice artifact only.'
+          }
+        />
       </section>
-    </main>
+
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
+        {artifact.downloadHref ? (
+          <PrimaryButton as="a" href={artifact.downloadHref}>
+            Download
+          </PrimaryButton>
+        ) : (
+          <PrimaryButton as="a" href={`/practice/${artifact.sourceActivityId}`}>
+            Open source activity
+          </PrimaryButton>
+        )}
+        <GhostButton as="a" href="/courses/foundation/program/gallery">
+          Browse gallery
+        </GhostButton>
+        <Link
+          href="/dashboard"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            padding: '12px 18px',
+            fontFamily: 'var(--ledger-mono)',
+            fontSize: 11,
+            letterSpacing: '0.16em',
+            textTransform: 'uppercase',
+            color: 'var(--ledger-muted)',
+            textDecoration: 'none',
+          }}
+        >
+          Dashboard ↗
+        </Link>
+      </div>
+    </CourseShellWrapper>
   );
 }
 
@@ -100,11 +141,34 @@ function DetailBlock({
   readonly body: string;
 }) {
   return (
-    <article className="border border-[color:var(--color-ink)]/10 rounded-[3px] bg-[color:var(--color-parch)] p-5">
-      <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-2">
+    <article
+      style={{
+        border: '1px solid var(--ledger-rule)',
+        borderRadius: 3,
+        background: 'var(--ledger-parch)',
+        padding: 18,
+      }}
+    >
+      <p
+        style={{
+          fontFamily: 'var(--ledger-mono)',
+          fontSize: 10,
+          letterSpacing: '0.2em',
+          textTransform: 'uppercase',
+          color: 'var(--ledger-accent)',
+          margin: '0 0 8px',
+        }}
+      >
         {title}
       </p>
-      <p className="text-sm text-[color:var(--color-slate)] leading-relaxed">
+      <p
+        style={{
+          fontSize: 13,
+          color: 'var(--ledger-slate)',
+          lineHeight: 1.55,
+          margin: 0,
+        }}
+      >
         {body}
       </p>
     </article>

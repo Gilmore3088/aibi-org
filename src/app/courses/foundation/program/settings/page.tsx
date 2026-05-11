@@ -5,6 +5,7 @@
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { getEnrollment } from '../_lib/getEnrollment';
+import { CourseShellWrapper } from "@/components/lms/CourseShellWrapper";
 import { OnboardingSettings } from './OnboardingSettings';
 
 export const metadata: Metadata = {
@@ -19,11 +20,11 @@ export default async function SettingsPage() {
   }
 
   return (
-    <div className="mx-auto px-8 lg:px-16 py-12">
+    <CourseShellWrapper crumbs={['Education', 'AiBI-Foundation', 'Settings']}>
       <OnboardingSettings
         enrollmentId={enrollment.id}
         currentAnswers={enrollment.onboarding_answers}
       />
-    </div>
+    </CourseShellWrapper>
   );
 }

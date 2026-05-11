@@ -6,6 +6,7 @@
 import { redirect } from 'next/navigation';
 import { getEnrollment } from '../_lib/getEnrollment';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
+import { CourseShellWrapper } from "@/components/lms/CourseShellWrapper";
 import type { Certificate } from '@/types/course';
 
 const MONTHS = [
@@ -60,16 +61,35 @@ export default async function CertificatePage() {
     : null;
 
   return (
-    <main className="min-h-screen bg-[var(--color-linen)] px-4 py-12">
-      <div className="max-w-3xl mx-auto">
+    <CourseShellWrapper
+      crumbs={['Education', 'AiBI-Foundation', 'Certificate']}
+      contentMaxWidth={760}
+    >
+      <div>
         {/* Page header */}
-        <div className="mb-10 text-center">
-          <p className="text-xs uppercase tracking-widest text-[var(--color-slate)] mb-2 font-sans">
+        <div style={{ marginBottom: 40, textAlign: 'center' }}>
+          <p
+            style={{
+              fontFamily: 'var(--ledger-mono)',
+              fontSize: 11,
+              letterSpacing: '0.22em',
+              textTransform: 'uppercase',
+              color: 'var(--ledger-accent)',
+              margin: '0 0 12px',
+            }}
+          >
             The AI Banking Institute
           </p>
           <h1
-            className="text-4xl font-bold text-[var(--color-ink)] mb-4"
-            style={{ fontFamily: 'Cormorant, Cormorant Garamond, Georgia, serif' }}
+            style={{
+              fontFamily: 'var(--ledger-serif)',
+              fontWeight: 500,
+              fontSize: 'clamp(36px, 4.5vw, 52px)',
+              lineHeight: 1.05,
+              letterSpacing: '-0.025em',
+              margin: '0 0 12px',
+              color: 'var(--ledger-ink)',
+            }}
           >
             {certificate ? 'Your Certificate' : 'Certificate Pending'}
           </h1>
@@ -303,6 +323,6 @@ export default async function CertificatePage() {
           </div>
         )}
       </div>
-    </main>
+    </CourseShellWrapper>
   );
 }
