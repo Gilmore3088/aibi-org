@@ -50,3 +50,8 @@ next-env.d.ts
 
 # Local-only audit viewers (generated alongside their .md source)
 docs/superpowers/design-system/ui-review.html
+
+# Playwright
+/playwright-report/
+/test-results/
+/.playwright/
