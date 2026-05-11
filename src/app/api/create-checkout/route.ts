@@ -13,7 +13,7 @@
 
 import { NextResponse } from 'next/server';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
-import { dbReadValues, normalizeProduct } from '@/lib/products/normalize';
+import { dbReadValues } from '@/lib/products/normalize';
 
 // Lazy-import the stripe singleton so the module-level throw only fires
 // when the route is actually invoked, not at build time.
