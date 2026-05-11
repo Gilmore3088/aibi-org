@@ -12,6 +12,7 @@ import { GeistSans } from 'geist/font/sans';
 import { Analytics } from '@vercel/analytics/next';
 import { SiteNav, SiteFooter } from '@/components/system';
 import { BRAND } from '@content/copy';
+import { organizationJsonLd, websiteJsonLd, jsonLdString } from '@/lib/seo/jsonld';
 import './globals.css';
 
 // Routes that render WITHOUT the global Header/Footer chrome. These pages
@@ -131,7 +132,19 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <html lang="en">
-      <head />
+      <head>
+        {/* Organization + WebSite JSON-LD. Rendered on every page so
+            crawlers always see the org graph node. Course/Article-level
+            structured data lives on individual route pages. */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: jsonLdString(organizationJsonLd()) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: jsonLdString(websiteJsonLd()) }}
+        />
+      </head>
 
       <body
         className={`${cormorant.variable} ${cormorantSC.variable} ${dmSans.variable} ${dmMono.variable} ${newsreader.variable} ${GeistSans.variable} ${jetbrainsMono.variable} flex flex-col min-h-screen`}
