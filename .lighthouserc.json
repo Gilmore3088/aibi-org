@@ -1,0 +1,44 @@
+{
+  "ci": {
+    "collect": {
+      "url": [
+        "https://www.aibankinginstitute.com/",
+        "https://www.aibankinginstitute.com/assessment",
+        "https://www.aibankinginstitute.com/education",
+        "https://www.aibankinginstitute.com/for-institutions",
+        "https://www.aibankinginstitute.com/courses/foundation/program/purchase"
+      ],
+      "numberOfRuns": 1,
+      "settings": {
+        "preset": "desktop",
+        "skipAudits": [
+          "uses-http2",
+          "redirects-http",
+          "service-worker"
+        ]
+      }
+    },
+    "assert": {
+      "assertions": {
+        "categories:performance":   ["warn",  { "minScore": 0.80 }],
+        "categories:accessibility": ["error", { "minScore": 0.90 }],
+        "categories:best-practices":["warn",  { "minScore": 0.90 }],
+        "categories:seo":           ["error", { "minScore": 0.90 }],
+
+        "first-contentful-paint":   ["warn",  { "maxNumericValue": 2000 }],
+        "largest-contentful-paint": ["warn",  { "maxNumericValue": 2500 }],
+        "cumulative-layout-shift":  ["error", { "maxNumericValue": 0.1 }],
+        "total-blocking-time":      ["warn",  { "maxNumericValue": 300 }],
+
+        "color-contrast":           "off",
+        "image-alt":                ["error", { "minScore": 1 }],
+        "html-has-lang":            ["error", { "minScore": 1 }],
+        "meta-description":         ["error", { "minScore": 1 }],
+        "document-title":           ["error", { "minScore": 1 }]
+      }
+    },
+    "upload": {
+      "target": "temporary-public-storage"
+    }
+  }
+}

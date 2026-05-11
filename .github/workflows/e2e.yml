@@ -46,6 +46,38 @@ jobs:
           path: playwright-report/
           retention-days: 7
 
+  a11y:
+    name: Accessibility (axe-core)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: smoke
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+      - name: Wait for Vercel preview
+        if: github.event_name == 'pull_request'
+        id: preview
+        uses: patrickedqvist/wait-for-vercel-preview@v1.3.1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          max_timeout: 600
+      - name: Run a11y tests
+        env:
+          PLAYWRIGHT_BASE_URL: ${{ steps.preview.outputs.url || inputs.target_url || 'http://localhost:3000' }}
+        run: npx playwright test e2e/a11y.spec.ts --project=chromium
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-a11y-report
+          path: playwright-report/
+          retention-days: 7
+
   auth:
     name: Auth flow tests
     runs-on: ubuntu-latest
