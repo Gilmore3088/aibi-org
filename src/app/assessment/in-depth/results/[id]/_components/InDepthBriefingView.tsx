@@ -16,10 +16,11 @@ import type { Tier, DimensionScore } from '@content/assessments/v2/scoring';
 import type { Dimension } from '@content/assessments/v2/types';
 import {
   buildDimRows,
+  composeScore,
+  deepDiveContent,
   filingRef,
+  insightForPhase,
   lowestHook,
-  normalizeComposite,
-  phaseForTier,
   postureFor,
   rereadDate,
   selectDeepDives,
@@ -97,31 +98,9 @@ function radarLabels(rows: readonly DimRow[]): ReactElement[] {
   });
 }
 
-// Per-tier insight copy. Same source of truth as the tier headlines in
-// scoring.ts, but trimmed for the briefing voice (one pull-quote + one
-// supporting paragraph). Mapping by tier id keeps it stable as
-// scoring.ts copy iterates.
-const INSIGHT_BY_TIER: Record<
-  Tier['id'],
-  { pull: string; body: string }
-> = {
-  'starting-point': {
-    pull: 'You are at the start of the work. The cost of waiting is now higher than the cost of starting.',
-    body: 'A small, well-scoped first move — one repetitive workflow, one named owner, one written boundary — produces more learning than a vendor evaluation. The shape of the first 90 days matters more than the size of the first investment.',
-  },
-  'early-stage': {
-    pull: 'You have experimentation. What you do not yet have is a program — and the gap between those two is the work.',
-    body: 'Isolated wins do not compound on their own. They compound when someone is responsible for converting them into shared practice, written boundaries, and a backlog the board can read. Naming that someone is the first action.',
-  },
-  'building-momentum': {
-    pull: 'You have earned the right to a program — and the cost of not committing to one is now higher than the cost of building it.',
-    body: 'You have governance scaffolding, an engaged leadership, and working pilots. What you do not have is a single person whose year has been bent around AI. The institutions that move from Coordinated to Programmatic share one structural choice: they name an owner.',
-  },
-  'ready-to-scale': {
-    pull: 'You operate AI as a strategic capability. The compounding question is replication speed.',
-    body: 'Your wins now belong to a program, not a heroic individual. The next twelve weeks are about codifying what works for the next wave of staff so the program survives turnover and accelerates through expansion.',
-  },
-};
+// Insight copy now lives in derive.ts (insightForPhase) and is keyed off
+// the composed phase, not the stored tier — see derive.ts comments for
+// the reconciliation rationale.
 
 // Reference content — regulatory exhibit is templated, identical for
 // every reader. Framed in the surrounding copy as "the supervisory
@@ -188,13 +167,12 @@ interface RegisterRow {
   readonly status: 'now' | 'next' | 'later';
 }
 
-function buildRegister(lowestTitle: string): readonly RegisterRow[] {
+function buildRegister(lowestImperative: string): readonly RegisterRow[] {
   return [
     {
       num: '01',
-      action: 'Address your lowest dimension —',
-      actionEm: lowestTitle,
-      sub: 'The lowest-scoring dimension is where 30 days of effort compounds fastest. Starter artifact below.',
+      action: lowestImperative,
+      sub: 'Pulled from your lowest-scoring dimension. This is where the next thirty days of effort compounds fastest.',
       owner: 'open-seat',
       dueDate: 'Week 01',
       dueWeek: 'Week 01',
@@ -302,70 +280,32 @@ function effortDots(n: number): ReactElement[] {
   ));
 }
 
-// Three concrete recommendations per deep-dive card. The copy below is
-// the institute's generic three-action play per posture — strong, mid,
-// weak — keyed off pct, then composed with the dimension label so each
-// card reads as dimension-specific without authoring 8×3 unique strings.
-function recommendationsFor(row: DimRow): readonly string[] {
-  const noun = row.label.toLowerCase();
-  if (row.terrain === 'strong') {
-    return [
-      `Codify what works on ${noun} into a written artifact your team will reuse.`,
-      `Brief the board on the cohort rank — strong dimensions defend the rest of the program.`,
-      `Pair this dimension with a weaker one. Strong dimensions teach. Weak dimensions learn.`,
-    ];
-  }
-  if (row.terrain === 'mid') {
-    return [
-      `Pick one workflow inside ${noun} and instrument it for a four-week measurement window.`,
-      `Document the rubric for ${noun} in one page. Naming the bar is half the lift.`,
-      `Add ${noun} to the monthly leadership report so it has someone watching it.`,
-    ];
-  }
-  return [
-    `Use the starter artifact below to scope a 30-day move on ${noun}.`,
-    `Name one person responsible for ${noun} for the next quarter. Calendar it.`,
-    `Set a measurable bar — even a low one — and re-read in 90 days.`,
-  ];
-}
-
-// Posture headline for the deep-dive narrative. Two-sentence stems per
-// terrain, composed with the dimension label.
-function narrativeFor(row: DimRow): readonly [string, string] {
-  if (row.terrain === 'strong') {
-    return [
-      `${row.label} is a position to defend, not a problem to solve.`,
-      `Scores in this band typically reflect either an artifact the team has shared, a person who has owned it, or both. The next move is to make the practice transferable so the dimension does not regress when a single contributor leaves.`,
-    ];
-  }
-  if (row.terrain === 'mid') {
-    return [
-      `${row.label} is in motion but uncounted. The work is to make it visible.`,
-      `Mid-tier scores are the most common outcome at this stage. The institutions that move them upward inside a quarter share one practice: they convert a working workflow into a written one, and then a reported one.`,
-    ];
-  }
-  return [
-    `${row.label} is the most predictable source of the next four weeks' work.`,
-    `Low scores in this band do not usually reflect lack of capability — they reflect lack of dedicated calendar. Use the starter artifact below as a scaffold for the first 30 days, then re-read.`,
-  ];
-}
+// Deep-dive narrative + recommendations now live in derive.ts
+// (deepDiveContent) keyed per-dimension × terrain. Each of the 24
+// possible combinations has unique authored copy so consecutive deep
+// dives in the same terrain band no longer read as identical filler.
 
 export function InDepthBriefingView({
   profileId,
   email,
-  score,
-  maxScore,
-  tier,
+  // The stored score (12–48 scale) and tier are ignored here because the
+  // free-flow tier function does not reconcile with the 48-question raw
+  // sum (e.g. stored 30/48 vs dimension sum 119/192 — see derive.ts).
+  // We compose all display values from the dimension breakdown so the
+  // composite, the radar, and the phase rubric agree.
+  score: _ignoredStoredScore,
+  maxScore: _ignoredStoredMax,
+  tier: _ignoredStoredTier,
   dimensionBreakdown,
   readinessAt,
 }: Props): ReactElement {
   const rows = buildDimRows(dimensionBreakdown);
+  const composite = composeScore(dimensionBreakdown);
   const deepDives = selectDeepDives(rows);
   const hook = lowestHook(rows);
-  const phase = phaseForTier(tier.id);
-  const compositePct = normalizeComposite(score, maxScore);
-  const insight = INSIGHT_BY_TIER[tier.id];
-  const register = buildRegister(hook.title);
+  const phase = composite.phase;
+  const insight = insightForPhase(phase);
+  const register = buildRegister(hook.imperative);
 
   // Radar uses the 8 dimension percentages in display order.
   const radarSeries = rows.map((r) => r.pct);
@@ -448,7 +388,7 @@ export function InDepthBriefingView({
 
           <div className="thisweek">
             <div className="tag">If you only act on one thing<em>This week · weeks 1–3</em></div>
-            <div className="verb">{hook.title}.</div>
+            <div className="verb">{hook.imperative}</div>
             <div className="who">Lowest dimension<strong>{hook.row.label}</strong></div>
           </div>
 
@@ -456,10 +396,10 @@ export function InDepthBriefingView({
             <div className="composite">
               <span className="lbl">Composite readiness · eight dimensions weighted</span>
               <div className="score-row">
-                <div className="score">{score}<small>/{maxScore}</small></div>
+                <div className="score">{composite.rawScore}<small>/{composite.rawMax}</small></div>
                 <div className="phase-box">
                   <div className="phase">{phase} <em>Posture</em></div>
-                  <div className="stage">{tier.label} · {compositePct}/100 normalized</div>
+                  <div className="stage">{composite.normalized}/100 normalized</div>
                 </div>
               </div>
               <svg
@@ -543,7 +483,7 @@ export function InDepthBriefingView({
                   <div key={p} className="rt-node" style={{ left: `${left}%` }}>
                     {i === nowIndex && (
                       <div className="rt-here">
-                        You are here<em>{score} / {maxScore}</em>
+                        You are here<em>{composite.normalized} / 100</em>
                       </div>
                     )}
                     <span className={cls} />
@@ -607,8 +547,7 @@ export function InDepthBriefingView({
           </div>
 
           {deepDives.map((row) => {
-            const [n1, n2] = narrativeFor(row);
-            const recs = recommendationsFor(row);
+            const content = deepDiveContent(row);
             return (
               <div className="deep" key={row.id}>
                 <div className="left">
@@ -616,9 +555,9 @@ export function InDepthBriefingView({
                     {row.code} · {row.label}
                     <em>{row.pillar} pillar</em>
                   </div>
-                  <h3>{n1.split(' ')[0]} <em>{row.label}</em></h3>
-                  <p className="narr">{n1}</p>
-                  <p className="narr">{n2}</p>
+                  <h3>{content.headline}</h3>
+                  <p className="narr">{content.narrative[0]}</p>
+                  <p className="narr">{content.narrative[1]}</p>
                 </div>
                 <div className="right">
                   <div className="deep-card">
@@ -648,7 +587,7 @@ export function InDepthBriefingView({
                     <div className="actions">
                       <h5>Three recommendations · 90 days</h5>
                       <ol>
-                        {recs.map((rec, i) => <li key={i}>{rec}</li>)}
+                        {content.recommendations.map((rec, i) => <li key={i}>{rec}</li>)}
                       </ol>
                     </div>
                   </div>
