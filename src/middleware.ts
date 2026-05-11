@@ -69,9 +69,15 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
   // Coming-soon mode: rewrite every public route to /coming-soon.
   // The browser URL stays the same; the visitor sees the placeholder.
   if (COMING_SOON_MODE) {
-    const isBypassed = COMING_SOON_BYPASS_PREFIXES.some(
-      (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
-    );
+    // Special-case the root: prefix-matching against '/' would match every
+    // path. Allow exactly '/' through so the homepage redesign is visible
+    // alongside the rest of the bypass list.
+    const isRoot = pathname === '/';
+    const isBypassed =
+      isRoot ||
+      COMING_SOON_BYPASS_PREFIXES.some(
+        (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
+      );
     if (!isBypassed) {
       const rewriteUrl = request.nextUrl.clone();
       rewriteUrl.pathname = COMING_SOON_PATH;
