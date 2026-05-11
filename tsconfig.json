@@ -23,5 +23,5 @@
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules", "docs/brand-refresh-2026-05-09"]
+  "exclude": ["node_modules", "docs/brand-refresh-2026-05-09", "e2e", "playwright.config.ts", "playwright-report", "test-results"]
 }
