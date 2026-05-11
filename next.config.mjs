@@ -90,6 +90,46 @@ const nextConfig = {
       { source: '/consulting', destination: '/for-institutions/advisory', permanent: true },
     ];
   },
+  // Security headers applied to every route. CSP intentionally omitted from
+  // this pass — it needs per-origin tuning against a real preview (Supabase,
+  // Stripe, Calendly, Vercel Analytics, MailerLite) and a misconfigured CSP
+  // breaks the site silently. Added in a follow-up. The headers here are
+  // safe baseline values that work on every Next.js app.
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          // Prevent clickjacking. SAMEORIGIN (not DENY) so internal previews
+          // can iframe our own routes for QA tooling.
+          { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+          // Prevent MIME sniffing.
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          // Send origin (not full URL) on cross-origin requests.
+          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+          // Force HTTPS for 2 years. `preload` requires submitting to
+          // hstspreload.org once we're confident the apex + all subdomains
+          // are https-only forever.
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=63072000; includeSubDomains; preload',
+          },
+          // Disable browser features we don't use. Reduces fingerprint
+          // surface and prevents third-party scripts from quietly enabling
+          // them.
+          {
+            key: 'Permissions-Policy',
+            value:
+              'camera=(), microphone=(), geolocation=(), interest-cohort=(), payment=(self "https://js.stripe.com" "https://checkout.stripe.com")',
+          },
+          // Modern replacement for X-XSS-Protection. Cross-origin isolation
+          // not strictly required (we don't use SharedArrayBuffer) so we
+          // keep it permissive enough for Stripe/Calendly popups.
+          { key: 'Cross-Origin-Opener-Policy', value: 'same-origin-allow-popups' },
+        ],
+      },
+    ];
+  },
 };
 
 export default withMDX(nextConfig);
