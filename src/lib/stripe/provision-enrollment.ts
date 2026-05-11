@@ -5,6 +5,7 @@
 import type Stripe from 'stripe';
 import { createServiceRoleClient } from '@/lib/supabase/client';
 import type { CheckoutMetadata } from '@/lib/stripe';
+import { canonicalEmail } from '@/lib/email/canonicalize';
 
 export interface ProvisionResult {
   action: 'created' | 'skipped';
@@ -18,20 +19,25 @@ export interface ProvisionError {
 
 /**
  * Resolves a user_id from an email address using the Supabase service role
- * auth admin API. Returns null if the user does not exist yet — enrollments
- * are created with user_id=null in that case; the value can be back-filled
- * once the user creates their account.
+ * auth admin API. Matches by canonical form (Gmail +alias / dots stripped)
+ * so a buyer who paid as `user+1@gmail.com` but later signs in as
+ * `user@gmail.com` still gets bound correctly. Returns null if no user
+ * exists yet — enrollments are created with user_id=null in that case;
+ * the value can be back-filled once the user creates their account.
  */
 async function resolveUserId(
   email: string,
   supabase: ReturnType<typeof createServiceRoleClient>
 ): Promise<string | null> {
+  const targetCanonical = canonicalEmail(email);
   try {
     const { data: userList } = await supabase.auth.admin.listUsers({
       page: 1,
       perPage: 1000,
     });
-    const matched = userList?.users?.find((u) => u.email === email);
+    const matched = userList?.users?.find(
+      (u) => u.email && canonicalEmail(u.email) === targetCanonical,
+    );
     return matched?.id ?? null;
   } catch {
     // Non-fatal — proceed without user_id

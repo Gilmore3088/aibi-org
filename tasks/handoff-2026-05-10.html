@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>End of Day 2026-05-10 — Handoff · The AI Banking Institute</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,500;1,6..72,600&family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ECE9DF;
+    --paper: #F4F1E7;
+    --parch: #E4E0D2;
+    --parch-dark: #D5D1C2;
+    --ink: #0E1B2D;
+    --ink-2: #1F2A3F;
+    --slate: #5C6B82;
+    --muted: #5C6B82;
+    --accent: #B5862A;
+    --accent-light: #C99A40;
+    --accent-soft: rgba(181,134,42,0.10);
+    --accent-2: #1E3A5F;
+    --weak: #8E3B2A;
+    --rule: #D5D1C2;
+    --rule-strong: #A8AEBE;
+    --serif: "Newsreader", "Iowan Old Style", Georgia, serif;
+    --sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 14.5px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 56px 36px 100px; }
+  .masthead {
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 20px;
+    margin-bottom: 36px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .masthead .brand {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  .masthead .meta {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  h1 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(40px, 5.5vw, 64px);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    margin: 0 0 12px;
+  }
+  h1 em { color: var(--accent); font-style: normal; font-weight: 500; }
+  .deck {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 19px;
+    color: var(--ink-2);
+    margin: 0 0 32px;
+    max-width: 60ch;
+  }
+  h2 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 26px;
+    letter-spacing: -0.02em;
+    margin: 48px 0 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--rule);
+  }
+  h3 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 18px;
+    letter-spacing: -0.01em;
+    margin: 22px 0 6px;
+  }
+  .label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .pill {
+    display: inline-block;
+    padding: 3px 8px;
+    border: 1px solid currentColor;
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    border-radius: 2px;
+    vertical-align: middle;
+  }
+  .pill-blocker { color: var(--weak); background: rgba(142,59,42,0.06); }
+  .pill-pr { color: var(--accent); background: var(--accent-soft); }
+  .pill-future { color: var(--slate); }
+  .pill-low { color: var(--muted); }
+  p { margin: 0 0 12px; max-width: 70ch; }
+  ul, ol { padding-left: 18px; margin: 8px 0 14px; max-width: 70ch; }
+  li { margin: 4px 0; }
+  code {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    background: var(--parch);
+    padding: 1px 5px;
+    border-radius: 2px;
+    color: var(--ink-2);
+  }
+  pre {
+    font-family: var(--mono);
+    font-size: 12px;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 14px 18px;
+    border-radius: 3px;
+    overflow-x: auto;
+    margin: 10px 0 16px;
+    line-height: 1.5;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 8px 0 18px;
+    font-size: 13px;
+  }
+  th, td {
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+  th {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: var(--paper);
+    border-bottom: 1px solid var(--rule-strong);
+  }
+  tr:hover td { background: var(--paper); }
+  a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-soft); }
+  a:hover { border-bottom-color: var(--accent); }
+  .callout {
+    border-left: 3px solid var(--accent);
+    background: var(--paper);
+    padding: 18px 22px;
+    margin: 18px 0 22px;
+    border-radius: 0 3px 3px 0;
+  }
+  .callout-blocker {
+    border-left-color: var(--weak);
+    background: rgba(142,59,42,0.04);
+  }
+  .callout-title {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 17px;
+    margin: 0 0 6px;
+    color: var(--ink);
+  }
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+    margin: 14px 0 22px;
+  }
+  .card {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 20px 22px;
+    border-radius: 3px;
+  }
+  .card .label { margin-bottom: 8px; display: block; }
+  .number {
+    font-family: var(--serif);
+    font-size: 38px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    color: var(--ink);
+  }
+  .footer {
+    margin-top: 60px;
+    padding-top: 20px;
+    border-top: 1px solid var(--rule);
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .sequence-num {
+    display: inline-block;
+    font-family: var(--mono);
+    font-weight: 600;
+    background: var(--ink);
+    color: var(--paper);
+    width: 22px;
+    height: 22px;
+    text-align: center;
+    line-height: 22px;
+    border-radius: 2px;
+    margin-right: 8px;
+    font-size: 11px;
+  }
+  @media (max-width: 720px) {
+    .grid-2 { grid-template-columns: 1fr; }
+    .wrap { padding: 32px 20px 60px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="brand">The AI Banking Institute</div>
+    <div class="meta">Internal handoff &middot; 2026-05-10 &middot; End of day</div>
+  </header>
+
+  <h1>End of Day <em>5 · 10</em></h1>
+  <p class="deck">Production is healthy. Two PRs are open. One real bug blocks the in-depth assessment auth flow.</p>
+
+  <div class="grid-2">
+    <div class="card">
+      <span class="label">Shipped</span>
+      <span class="number">4 PRs</span>
+      <p style="margin: 8px 0 0; font-size: 12.5px; color: var(--slate);">#47, #46, #49, #50 merged to main &middot; auto-deployed to prod</p>
+    </div>
+    <div class="card">
+      <span class="label">Open</span>
+      <span class="number">2 PRs</span>
+      <p style="margin: 8px 0 0; font-size: 12.5px; color: var(--slate);">#51 Practitioner rename &middot; #52 LMS reskin (PR 1 of 7)</p>
+    </div>
+  </div>
+
+  <h2>Tomorrow's first action</h2>
+
+  <div class="callout callout-blocker">
+    <p class="callout-title">🔴 Fix Supabase Auth email templates (3 min)</p>
+    <p>The magic-link template hardcodes <code>next=/dashboard</code>. Users who buy the In-Depth Assessment, click their magic-link email, get sent to <code>/dashboard</code> instead of <code>/assessment/in-depth/take</code>.</p>
+    <p>In <strong>Supabase &rarr; Authentication &rarr; Email Templates</strong>, change the <code>href</code> in each of the 4 templates:</p>
+    <pre><span style="color:var(--accent-light)">// BEFORE</span>
+href="{{ .SiteURL }}/auth/callback?token_hash={{ .TokenHash }}&type=magiclink&next=/dashboard"
+
+<span style="color:var(--accent-light)">// AFTER</span>
+href="{{ .RedirectTo }}&token_hash={{ .TokenHash }}&type=magiclink"</pre>
+    <p style="margin-bottom: 0;">Replace <code>type=magiclink</code> per template: <code>signup</code>, <code>magiclink</code>, <code>recovery</code>, <code>email_change</code>. Test with a clean signup to <code>/assessment/in-depth/take</code> while logged out.</p>
+  </div>
+
+  <h2>Recommended sequence</h2>
+
+  <ol style="list-style: none; padding-left: 0; max-width: 78ch;">
+    <li style="margin-bottom: 14px;">
+      <span class="sequence-num">1</span>
+      <strong>Fix magic-link template</strong> per the callout above &middot; <span class="pill pill-blocker">3 min</span>
+    </li>
+    <li style="margin-bottom: 14px;">
+      <span class="sequence-num">2</span>
+      <strong>Smoke test:</strong> log out, visit <code>/assessment/in-depth/take</code>, follow the magic link, confirm you land at the take page (not <code>/dashboard</code>) &middot; <span class="pill pill-low">5 min</span>
+    </li>
+    <li style="margin-bottom: 14px;">
+      <span class="sequence-num">3</span>
+      <strong>Merge PR #51</strong> &mdash; Practitioner &rarr; AiBI-Foundation brand cleanup &middot; <span class="pill pill-pr">5 min</span>
+    </li>
+    <li style="margin-bottom: 14px;">
+      <span class="sequence-num">4</span>
+      <strong>Eyeball PR #52 preview</strong> on Vercel &mdash; new course overview should match the LMS prototype shell. Merge if green. <span class="pill pill-pr">10 min</span>
+    </li>
+    <li style="margin-bottom: 14px;">
+      <span class="sequence-num">5</span>
+      <strong>Start LMS reskin PR 2</strong> &mdash; module detail page. Next highest-impact surface after the overview. <span class="pill pill-future">~3-4 hrs</span>
+    </li>
+  </ol>
+
+  <h2>Today's wins</h2>
+
+  <table>
+    <thead>
+      <tr><th>Commit</th><th>PR</th><th>What landed</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>ce4327d</code></td><td><a href="https://github.com/Gilmore3088/aibi-org/pull/47">#47</a></td><td>Ledger redesign + AiBI-Foundation rename merged (resolved 535 conflicts)</td></tr>
+      <tr><td><code>04e4d42</code></td><td><a href="https://github.com/Gilmore3088/aibi-org/pull/46">#46</a></td><td>Brand-refresh feature branch landed</td></tr>
+      <tr><td><code>dcb255c</code></td><td><a href="https://github.com/Gilmore3088/aibi-org/pull/49">#49</a></td><td>Migration housekeeping: broke <code>00028_</code> collision; recorded prod recovery as <code>00030</code></td></tr>
+      <tr><td><code>636fdf6</code></td><td><a href="https://github.com/Gilmore3088/aibi-org/pull/50">#50</a></td><td>Removed HubSpot, Plausible, and reviewer admin feature (~1,600 LOC)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Beyond the merges</h3>
+  <ul>
+    <li><strong>Database recovery:</strong> 11 orphaned <code>'foundations'</code> plural rows in <code>course_enrollments</code> + <code>entitlements</code> backfilled to canonical <code>'foundation'</code> singular. CHECK constraint widened, sync trigger updated. Without this, real users with Foundation enrollments were invisible to the entitlement system.</li>
+    <li><strong>Test data wiped:</strong> 38 <code>auth.users</code>, 33 profiles, 10 enrollments, 8 entitlements deleted (all the operator's own test aliases). DB is clean for fresh testing.</li>
+    <li><strong>Stripe products updated:</strong> <code>AiBI Foundations</code> (plural) renamed to <code>AiBI-Foundation</code> (singular). Metadata flipped. Stripe CLI test stray archived.</li>
+    <li><strong>Supabase Auth fully configured:</strong> Custom SMTP via Resend, URL Configuration (Site URL + redirect URLs), 4 email templates in Ledger style, Provider settings. End-to-end signup smoke-tested.</li>
+  </ul>
+
+  <h2>Open PRs</h2>
+
+  <table>
+    <thead>
+      <tr><th>PR</th><th>Title</th><th>State</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a href="https://github.com/Gilmore3088/aibi-org/pull/51">#51</a></td>
+        <td>chore: rename remaining Practitioner references to AiBI-Foundation</td>
+        <td>Built + pushed, awaiting merge</td>
+      </tr>
+      <tr>
+        <td><a href="https://github.com/Gilmore3088/aibi-org/pull/52">#52</a></td>
+        <td>feat(lms): reskin course overview to match LMS prototype (PR 1 of 7)</td>
+        <td>Built + pushed, awaiting eyeball + merge</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Future work, in priority</h2>
+
+  <table>
+    <thead>
+      <tr><th>#</th><th>Item</th><th>Scope</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td>LMS reskin PRs 2&ndash;7 &mdash; module detail, activity workspace, toolbox, completion, auxiliary surfaces, cleanup</td>
+        <td>Multi-day project. Roadmap in <code>tasks/lms-prototype-reskin.md</code>.</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Build missing Foundation exam page</td>
+        <td><code>src/app/certifications/exam/</code> has only <code>_lib/useExam.ts</code>, no <code>page.tsx</code>. Content exists. Half-day to a day.</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Issue <a href="https://github.com/Gilmore3088/aibi-org/issues/48">#48</a> &mdash; In-Depth Assessment leader/institution features</td>
+        <td>Carry-forward from closed PR #44: invite flow, aggregate report, leader dashboard, Starter Toolkit tier, <code>/dashboard/assessments</code>, <code>/api/auth/me</code>. Backup tag <code>backup/stripe-products-pre-rebase-2026-05-11</code> retains original work.</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>Cherry-pick PR #44's three applied-but-not-in-git migrations</td>
+        <td>Production has <code>00028_indepth_assessment_tables</code>, <code>00029_indepth_user_id_and_starter_toolkit</code>, <code>00030_collapse_indepth_schema</code> but main does not. Future staging resets will be missing them.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Low-priority housekeeping</h2>
+  <ul>
+    <li><strong>Duplicate <code>00011_</code> migration files</strong> on main (<code>00011_activity_responses_12_modules</code> + <code>00011_readiness_dimension_columns</code>). Cosmetic only.</li>
+    <li><strong>Rotate <code>SUPABASE_SERVICE_ROLE_KEY</code></strong> &mdash; Vercel flags it as plaintext-readable. Should be rotated + marked Sensitive in the Vercel dashboard.</li>
+    <li><strong><code>/api/assessment/pdf/warm</code></strong> 500s on Vercel serverless with <code>libnss3.so</code> missing. Pre-existing; doesn't block normal flows.</li>
+  </ul>
+
+  <h2>State references</h2>
+  <ul>
+    <li><strong>Production deploy:</strong> <code>636fdf6</code> (PR #50 merge)</li>
+    <li><strong>Working tree:</strong> clean on <code>main</code>; branches <code>feature/lms-reskin-overview</code> and <code>chore/practitioner-to-foundation-rename</code> retained</li>
+    <li><strong>Backup tag:</strong> <code>backup/stripe-products-pre-rebase-2026-05-11</code> on origin</li>
+    <li><strong>LMS prototype source:</strong> <code>public/lms-prototype/</code> (served at <code>/lms-preview</code>)</li>
+    <li><strong>Roadmap:</strong> <code>tasks/lms-prototype-reskin.md</code></li>
+    <li><strong>This handoff (markdown):</strong> <code>tasks/handoff-2026-05-10.md</code></li>
+    <li><strong>Database:</strong> 0 users (wiped today), constraint widened to accept <code>'foundation'</code> singular</li>
+  </ul>
+
+  <div class="footer">
+    <span>The AI Banking Institute &middot; aibankinginstitute.com</span>
+    <span>Goodnight &middot; pick this up fresh tomorrow</span>
+  </div>
+
+</div>
+
+</body>
+</html>

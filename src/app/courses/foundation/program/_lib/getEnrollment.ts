@@ -7,6 +7,7 @@ import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
 import type { CourseEnrollment } from '@/types/course';
 import { dbReadValues } from '@/lib/products/normalize';
+import { emailVariants } from '@/lib/email/canonicalize';
 
 export type EnrollmentData = Pick<
   CourseEnrollment,
@@ -81,12 +82,21 @@ export async function getEnrollmentResult(): Promise<EnrollmentResult> {
     return null;
   }
 
+  // Match by user_id OR any email variant (covers Gmail +alias forms left
+  // over from Stripe checkout). When a row is found by email-only, the
+  // user_id stays NULL until a back-fill job binds it; that's fine here —
+  // the gate just needs ONE match across either column.
+  const variants = user.email ? emailVariants(user.email) : [];
+  const emailClause = variants.map((e) => `email.eq.${e}`).join(',');
+  const orClause = emailClause ? `user_id.eq.${user.id},${emailClause}` : `user_id.eq.${user.id}`;
+
   const { data, error } = await supabase
     .from('course_enrollments')
     .select('id, user_id, completed_modules, current_module, enrolled_at, onboarding_answers')
-    .eq('user_id', user.id)
+    .or(orClause)
     .in('product', dbReadValues('foundation'))
-    .single();
+    .limit(1)
+    .maybeSingle();
 
   // PGRST116 = "no rows returned" — user is signed in but not enrolled.
   // Any other error code means the fetch itself failed; surface that distinctly
