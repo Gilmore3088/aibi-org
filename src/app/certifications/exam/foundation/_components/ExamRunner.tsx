@@ -71,6 +71,14 @@ export function ExamRunner() {
     submitOnceRef.current = true;
     setSubmitState('submitting');
 
+    // Analytics: exam_completed fires once per attempt when results land.
+    void import('@/lib/analytics/events').then((mod) => {
+      mod.trackExamCompleted({
+        pct: exam.pctCorrect,
+        proficiency: exam.proficiency?.id ?? 'unknown',
+      });
+    });
+
     fetch('/api/certifications/exam/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

@@ -13,6 +13,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import type Stripe from 'stripe';
+import { track as trackServer } from '@vercel/analytics/server';
 import { provisionEnrollment } from '@/lib/stripe/provision-enrollment';
 import { ensureAuthUser, generateMagicLink } from '@/lib/supabase/auth-admin';
 import {
@@ -92,6 +93,16 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   if (result.action === 'created') {
     const email = session.customer_details?.email ?? session.metadata?.user_email ?? null;
     const amountPaid = formatAmount(session.amount_total, session.currency);
+    const amountUsd = (session.amount_total ?? 0) / 100;
+
+    // Server-side analytics: purchase_completed fires once per provisioned
+    // enrollment. Names + props match src/lib/analytics/events.ts so client
+    // and server events aggregate to one funnel.
+    void trackServer('purchase_completed', {
+      product: (session.metadata?.product as string) ?? 'unknown',
+      amountUsd,
+      mode: result.type,
+    }).catch((err) => console.warn('[webhook] analytics track failed', err));
     const product = session.metadata?.product;
 
     if (email) {
