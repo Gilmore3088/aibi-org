@@ -4,6 +4,7 @@
 // Calls /api/checkout/in-depth and redirects to the returned Stripe URL.
 
 import { useState } from 'react';
+import { trackPurchaseInitiated } from '@/lib/analytics/events';
 
 export function PurchaseButton(): React.ReactElement {
   const [pending, setPending] = useState(false);
@@ -12,6 +13,7 @@ export function PurchaseButton(): React.ReactElement {
   async function handleClick(): Promise<void> {
     setPending(true);
     setError(null);
+    trackPurchaseInitiated({ product: 'in-depth-assessment', mode: 'individual' });
     try {
       const response = await fetch('/api/checkout/in-depth', {
         method: 'POST',

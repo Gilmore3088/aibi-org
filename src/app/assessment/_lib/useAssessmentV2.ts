@@ -1,6 +1,10 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  trackAssessmentStart,
+  trackAssessmentComplete,
+} from '@/lib/analytics/events';
 import { questions as questionPool } from '@content/assessments/v2/questions';
 import { selectQuestions } from '@content/assessments/v2/rotation';
 import { getTierV2, getDimensionScores, type Tier, type DimensionScore } from '@content/assessments/v2/scoring';
@@ -77,6 +81,8 @@ export function useAssessmentV2(): AssessmentState & AssessmentActions {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [phase, setPhase] = useState<AssessmentPhase>('questions');
   const [hydrated, setHydrated] = useState(false);
+  const startFiredRef = useRef(false);
+  const completeFiredRef = useRef(false);
 
   // Hydrate from sessionStorage on mount; otherwise select fresh questions
   useEffect(() => {
@@ -89,6 +95,12 @@ export function useAssessmentV2(): AssessmentState & AssessmentActions {
       setSelectedQuestions(selectQuestions(questionPool));
     }
     setHydrated(true);
+
+    // assessment_start fires once per mount, even on a resumed session.
+    if (!startFiredRef.current) {
+      startFiredRef.current = true;
+      trackAssessmentStart();
+    }
   }, []);
 
   // Persist answers and question selection on every change
@@ -110,6 +122,20 @@ export function useAssessmentV2(): AssessmentState & AssessmentActions {
   const isComplete = answers.length === QUESTIONS_PER_SESSION;
   const tier = isComplete ? getTierV2(totalScore) : null;
   const progress = answers.length / QUESTIONS_PER_SESSION;
+
+  // Fire assessment_complete once when the score phase first becomes visible.
+  // The completeFiredRef gate prevents double-firing on re-render or restart
+  // -> finish in the same session.
+  useEffect(() => {
+    if (phase === 'score' && tier && !completeFiredRef.current) {
+      completeFiredRef.current = true;
+      trackAssessmentComplete({ tier: tier.id, score: totalScore });
+    }
+    if (phase === 'questions') {
+      // Allow another complete event on restart.
+      completeFiredRef.current = false;
+    }
+  }, [phase, tier, totalScore]);
 
   // answer: record points, advance to next question or transition to score phase
   const answer = useCallback(

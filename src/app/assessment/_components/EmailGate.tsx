@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { saveReadinessResult, type DimensionScoreSerialized } from '@/lib/user-data';
 import { createBrowserClient, isSupabaseConfigured } from '@/lib/supabase/client';
+import { trackEmailCaptured } from '@/lib/analytics/events';
 
 interface EmailGateProps {
   readonly score: number;
@@ -107,6 +108,7 @@ export function EmailGate({
         ...(maxScore !== undefined ? { maxScore } : {}),
         ...(dimensionBreakdown ? { dimensionBreakdown } : {}),
       });
+      trackEmailCaptured({ tier: tierId });
       onCaptured(emailToUse, {
         firstName: firstName.trim() || undefined,
         institutionName: institutionName.trim() || undefined,

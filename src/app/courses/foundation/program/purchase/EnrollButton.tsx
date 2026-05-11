@@ -6,6 +6,7 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
+import { trackPurchaseInitiated } from '@/lib/analytics/events';
 
 interface EnrollButtonProps {
   userEmail?: string;
@@ -39,6 +40,7 @@ export function EnrollButton({ userEmail }: EnrollButtonProps) {
   async function handleEnroll() {
     setLoading(true);
     setError(null);
+    trackPurchaseInitiated({ product: 'foundation', mode: 'individual' });
 
     try {
       const res = await fetch('/api/create-checkout', {
