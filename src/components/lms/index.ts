@@ -1,5 +1,6 @@
 export { CourseShell } from './CourseShell';
 export { LMSSidebar } from './LMSSidebar';
+export { LMSMobileNav } from './LMSMobileNav';
 export { LMSTopBar } from './LMSTopBar';
 export { ProgressDot } from './ProgressDot';
 export { PillarTag } from './PillarTag';
