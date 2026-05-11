@@ -19,28 +19,53 @@ export interface ProvisionError {
 
 /**
  * Resolves a user_id from an email address using the Supabase service role
- * auth admin API. Matches by canonical form (Gmail +alias / dots stripped)
- * so a buyer who paid as `user+1@gmail.com` but later signs in as
- * `user@gmail.com` still gets bound correctly. Returns null if no user
- * exists yet — enrollments are created with user_id=null in that case;
- * the value can be back-filled once the user creates their account.
+ * auth admin API.
+ *
+ * Match priority:
+ *   1. Exact email match (case-insensitive) — the "real" account.
+ *   2. Canonical match (Gmail +alias / dots stripped) AS A FALLBACK only.
+ *      If multiple users share a canonical email, prefer the one with the
+ *      most recent last_sign_in_at, since that's almost certainly the
+ *      account the buyer is actively using.
+ *
+ * This ordering matters: an earlier version did canonical-first and bound
+ * an in-depth purchase to a never-signed-in ghost +alias account that
+ * Stripe checkout had auto-created, while the real account sat with no
+ * entitlement. See 2026-05-11 incident.
+ *
+ * Returns null if no user exists yet — enrollments are created with
+ * user_id=null in that case; the value can be back-filled once the user
+ * creates their account.
  */
 async function resolveUserId(
   email: string,
   supabase: ReturnType<typeof createServiceRoleClient>
 ): Promise<string | null> {
+  const targetLower = email.trim().toLowerCase();
   const targetCanonical = canonicalEmail(email);
   try {
     const { data: userList } = await supabase.auth.admin.listUsers({
       page: 1,
       perPage: 1000,
     });
-    const matched = userList?.users?.find(
+    const users = userList?.users ?? [];
+
+    const exact = users.find((u) => u.email?.toLowerCase() === targetLower);
+    if (exact) return exact.id;
+
+    const canonicalMatches = users.filter(
       (u) => u.email && canonicalEmail(u.email) === targetCanonical,
     );
-    return matched?.id ?? null;
+    if (canonicalMatches.length === 0) return null;
+
+    // Pick the most recently active account.
+    canonicalMatches.sort((a, b) => {
+      const at = a.last_sign_in_at ? Date.parse(a.last_sign_in_at) : 0;
+      const bt = b.last_sign_in_at ? Date.parse(b.last_sign_in_at) : 0;
+      return bt - at;
+    });
+    return canonicalMatches[0].id;
   } catch {
-    // Non-fatal — proceed without user_id
     return null;
   }
 }
