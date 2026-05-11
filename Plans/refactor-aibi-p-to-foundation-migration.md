@@ -1,9 +1,36 @@
 # refactor: aibi-p → foundation systematic migration
 
-**Status:** plan · drafted 2026-05-10 · **Phase 0 conflicts resolved 2026-05-10** (Conflict 1 → Option B; Conflict 2 → `foundation-program/`; Conflict 3 → leave cert code unchanged; 5 lower-stakes recommendations accepted)
-**Owner:** TBD · **Context:** v2 redesign migration, picks up where Phase 2 (rename in user-facing copy) ended
+> **2026-05-11 — Four-track product family REVERSED. AiBI-Foundation is one
+> course.** The 2026-05-09 decision to ship a four-track family (Lite / Full /
+> Manager / Board) is overturned. There is one Foundation course — the
+> current 12-module AiBI-Practitioner curriculum, renamed. AiBI-Practitioner
+> is the old name; AiBI-Foundation is the new name. No second SKU, no Lite,
+> no Manager, no Board.
+>
+> **What this means for this plan:** the systematic-rename work it describes
+> is **complete and shipped** as PR #45 (merged commit `c172923`,
+> 2026-05-11). Conflict 1 (route shape), Conflict 2 (content dir shape),
+> and Conflict 3 (cert code) all landed. The active course lives at
+> `/courses/foundation/program/*` and `content/courses/foundation-program/`.
+> The shim, the migrations (00028 + 00029), the env var expand, and the
+> URL redirects are all in `main`.
+>
+> **What the reversal changes:** any reference below that recommends
+> keeping `content/courses/aibi-foundation/` (the v2 four-track typed data),
+> the `/courses/foundation/[track]/` route (the v2 preview), or the
+> Phase 7 preview tile on `/education` is now **stranded code**. Those
+> assets should be removed in a follow-up commit (search "STRANDED v2"
+> below) but the active product is unaffected. The current rename plan
+> remains historically accurate as the record of how PR #45 got built;
+> the stranded v2 work just no longer has a destination.
+>
+> Stranded-asset surface report appended at the bottom of this file.
+
+**Status:** plan · drafted 2026-05-10 · **Phase 0 conflicts resolved 2026-05-10** (Conflict 1 → Option B; Conflict 2 → `foundation-program/`; Conflict 3 → leave cert code unchanged; 5 lower-stakes recommendations accepted) · **SHIPPED 2026-05-11 (PR #45)** · **Four-track scope reversed 2026-05-11 — single Foundation SKU only**
+**Owner:** shipped · **Context:** v2 redesign migration, picks up where Phase 2 (rename in user-facing copy) ended
 **Predecessors:** commits `98cb3b9` · `252c58e` · `ee1a6a5` · `dd2a3c6` · `ad5ba7c` · `d191dab` · `718f963` · `3e8ee1e`
-**Related:** `tasks/foundation-v2-migration.md` · CLAUDE.md Decisions Log entry 2026-05-09
+**Successor:** PR #45 merge commit `c172923`
+**Related:** `tasks/foundation-v2-migration.md` (now mostly defunct — single-SKU reversal makes most of Phase 3 / Phase 5 moot) · CLAUDE.md Decisions Log entries 2026-05-09 (four-track accepted) → 2026-05-11 (four-track reversed)
 
 ---
 
@@ -61,6 +88,17 @@ should ship until these are settled in writing.**
 
 ### Conflict 1: Route directory shape
 
+> **POST-REVERSAL (2026-05-11):** With the four-track family scrapped, the
+> ideal resolution is now **Option A — V1 absorbs and the v2 four-track
+> preview is removed**. However, PR #45 already shipped Option B
+> (`/courses/foundation/program/*` for the active course, with the v2
+> `[track]` preview hidden but present). Rewinding to Option A would cost
+> another URL move on a live product. Practical path forward: **keep the
+> shipped Option B URLs** (no churn), and **delete the stranded v2
+> assets** instead — `src/app/courses/foundation/[track]/` and
+> `content/courses/aibi-foundation/`. Recommendation block below
+> describes the original Option B reasoning for historical accuracy.
+
 `src/app/courses/foundation/[track]/page.tsx` exists today (v2 four-track preview, hidden
 from the public landing per commit `3e8ee1e` but the route remains). Renaming
 `src/app/courses/aibi-p/[module]/` → `src/app/courses/foundation/[module]/` would put two
@@ -95,6 +133,12 @@ in parallel without route conflicts. Trade-off accepted: the active program live
 segment of URL depth.
 
 ### Conflict 2: Content directory shape
+
+> **POST-REVERSAL (2026-05-11):** Only `content/courses/foundation-program/`
+> (the active 12-module Foundation course, renamed from `aibi-p/`) needs to
+> exist. `content/courses/aibi-foundation/` (29 modules across four tracks,
+> ~5,400 lines of TS) is stranded and should be removed in a follow-up.
+> The original recommendation below is retained for historical accuracy.
 
 `content/courses/aibi-foundation/` (v2 typed module data, 29 modules across four tracks)
 and `content/courses/aibi-p/` (v1 typed module data, 12 modules) both exist. A flat
@@ -824,3 +868,51 @@ That's three commits and ~30 minutes of work. The rest of the plan exists becaus
 the user's stated intent is *systematic* rename, not *minimum viable*. The
 recommendation is to go through all 10 phases in sequence over ~30 days, with each
 phase committable and reversible independently.
+
+---
+
+## Appendix — Stranded four-track surface report (2026-05-11)
+
+The four-track product family (Lite / Full / Manager / Board) was reversed
+on 2026-05-11. The systematic rename **succeeded**; what's now stranded is
+the v2 four-track scaffolding that was supposed to ship alongside it. The
+single Foundation SKU runs entirely on the v1 (12-module) curriculum at
+`content/courses/foundation-program/`. Everything below assumes four
+tracks and should be cleaned up.
+
+### Stranded code — safe to delete
+
+| Path | Notes |
+|---|---|
+| `src/app/courses/foundation/[track]/page.tsx` | v2 four-track preview route. Deleting unblocks any future flat `/courses/foundation/[slug]/` shape if ever needed. |
+| `src/app/courses/foundation/[track]/[module]/page.tsx` | Module-detail renderer for the v2 tracks. |
+| `src/app/courses/foundation/_components/` (whole dir) | `ActivityRenderer.tsx`, `SectionRenderer.tsx`, `LightMarkdown.tsx`, `activities/`, `engines/BranchingScenarioEngine.tsx`. Built for v2's 8-activity-type dispatcher. |
+| `content/courses/aibi-foundation/` (whole tree, ~36 files) | Lite (4 modules) + Full (20 modules) + Manager (3 modules) + Board (2 modules) + `refresh-slots.ts`. ~5,400 lines of TS. Active course content lives at `content/courses/foundation-program/`, not here. |
+| `tasks/foundation-v2-migration.md` | Punch list for a migration that no longer applies. Either delete or convert to a single-SKU follow-up list (most items become moot). |
+
+### Stranded copy + plan references — need rewording
+
+| File | Specifically |
+|---|---|
+| `src/app/courses/foundation/page.tsx:2` | Comment "Lists all four tracks". |
+| `src/app/courses/foundation/page.tsx:15` | Description string: "AiBI-Foundation is a four-track program for community banks: Lite for every employee, Full for practitioners, Manager Track for supervisors, and Board Briefing for directors." Currently exposes only Full via `TRACK_ORDER`. With the reversal, simplify the page to describe a single course (no tracks). |
+| `src/app/courses/foundation/page.tsx:18-22` | Comment block + `TRACK_ORDER = ['full']` guard that hides Lite/Manager/Board. With four-track gone, this guard is irrelevant — just render the single course. |
+| `src/app/courses/foundation/page.tsx:116-118` | "Bank-wide deployment options — including a literacy track for every employee, a manager-coaching track, and a director-level board briefing — are in" (planning). |
+| `src/app/education/page.tsx:53-55` | "AiBI-Foundation v2 — preview" tile. Description: "Preview the four-track curriculum (Lite, Full, Manager Track, Board Briefing)." Remove the tile. |
+| `CLAUDE.md` lines 17-18 (Reference Plans table) | Two rows pointing at `Plans/foundation-v2/` as canonical. Demote — the v2 bundle is no longer the source of truth; it's archived/aspirational. |
+| `CLAUDE.md` lines 879-933 (2026-05-09 Decisions Log entry) | Original "four-track redesign accepted" entry. Already implicitly superseded by the 2026-05-11 entry recording the reversal — leave both in place for audit trail. |
+| `~/.claude/projects/.../memory/project_foundation_v2_redesign.md` | Memory file says four-track is accepted. Update to reflect the reversal. |
+
+### Stranded plan bundle — archive, don't delete
+
+| Path | Reason to keep |
+|---|---|
+| `Plans/foundation-v2/` (whole tree) | 29 module specs, 33 artifact templates, platform brief, positioning. Represents a significant authoring investment that may inform future product decisions even if the four-track shape is dead. Move to `Plans/archive/foundation-v2/` or add a `STATUS: SUPERSEDED` banner at the top of `AIBI-FOUNDATION-COMPLETE.md`. |
+
+### Suggested cleanup commit sequence
+
+1. **One commit, code-only:** delete the five stranded code paths in the first table. The build will fail at `import` boundaries from inside `_components/` and `[track]/`; verify no production route imports from those trees first (Foundation Program lives at `/courses/foundation/program/*` and doesn't touch `_components/` or `[track]/`).
+2. **One commit, copy-only:** rewrite `src/app/courses/foundation/page.tsx` to describe a single course (no `TRACK_ORDER`, no four-track sentence). Remove the v2 preview tile from `src/app/education/page.tsx`.
+3. **One commit, docs:** demote the `Plans/foundation-v2/` rows in `CLAUDE.md`'s Reference Plans table; update the memory file; add a `STATUS: SUPERSEDED` banner to `Plans/foundation-v2/AIBI-FOUNDATION-COMPLETE.md`.
+
+Each commit is independently revertable. Total impact: ~5,500 lines of TS removed, ~40 lines of copy edits, no DB or env-var work. The shipped rename in PR #45 is unaffected.
