@@ -215,7 +215,7 @@ export function sendCoursePurchaseInstitution(
       SEATS_PURCHASED: payload.seatsPurchased,
       AMOUNT_PAID: payload.amountPaid,
       ADMIN_URL:
-        payload.magicLinkUrl ?? 'https://aibankinginstitute.com/admin',
+        payload.magicLinkUrl ?? 'https://aibankinginstitute.com/courses/foundation/program',
       COURSE_URL: 'https://aibankinginstitute.com/courses/foundation/program',
     },
   });

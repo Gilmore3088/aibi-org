@@ -127,8 +127,6 @@ export const CHECKLIST: readonly ChecklistCategory[] = [
       { path: '/practice/test-rep', label: '/practice/[repId]', note: 'Use a real rep ID' },
       { path: '/prompt-cards' },
       { path: '/certifications/exam/foundations' },
-      { path: '/admin' },
-      { path: '/admin/reviewer' },
     ],
   },
 ];

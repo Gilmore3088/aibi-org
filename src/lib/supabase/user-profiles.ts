@@ -29,7 +29,7 @@ export interface UserProfileRow {
 
 /**
  * Upsert the readiness assessment result for the given email.
- * Called from POST /api/capture-email after successful ConvertKit/HubSpot sync.
+ * Called from POST /api/capture-email after MailerLite sync.
  *
  * No-op if Supabase is not configured or SKIP_SUPABASE_PROFILES is set.
  */

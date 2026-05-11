@@ -1,11 +1,10 @@
 // POST /api/capture-email
-// Validates input, fires ConvertKit/HubSpot adapters, and persists the
+// Validates input, fires the MailerLite adapter, and persists the
 // readiness result to Supabase user_profiles (when configured).
 
 import { NextResponse } from 'next/server';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
 import { subscribeToAssessmentForm } from '@/lib/mailerlite';
-import { upsertContact } from '@/lib/hubspot';
 import {
   upsertReadinessResult,
   getReadinessTierByEmail,
@@ -155,13 +154,11 @@ export async function POST(request: Request) {
     maxScore,
     dimensionBreakdown,
     firstName,
-    institutionName,
     marketingOptIn,
   } = body;
 
   const completedAt = new Date().toISOString();
   const trimmedFirstName = firstName?.trim() || undefined;
-  const trimmedInstitution = institutionName?.trim() || undefined;
 
   // MailerLite fires only when the user explicitly opted in to marketing.
   // Without consent the email is treated as transactional only — assessment
@@ -180,14 +177,6 @@ export async function POST(request: Request) {
   ensureAuthUser(email).catch((err) =>
     console.warn('[capture-email] auth-admin skip', err),
   );
-
-  // HubSpot always fires (CRM contact tracking is operational, not marketing).
-  await upsertContact({
-    email,
-    assessmentScore: score,
-    scoreTier: tierLabel,
-    ...(trimmedInstitution ? { institutionName: trimmedInstitution } : {}),
-  }).catch((err) => console.warn('[capture-email] hubspot skip', err));
 
   // Persist to Supabase user_profiles when configured.
   // Best-effort: a Supabase failure must not block the response — the

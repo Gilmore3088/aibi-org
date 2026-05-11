@@ -8,8 +8,6 @@ import {
   PROMPT_CARDS,
   type PromptCard,
 } from '@/content/prompt-cards/cards';
-import { trackEvent } from '@/lib/analytics/plausible';
-
 const STORAGE_KEY = 'aibi-prompt-cards-unlocked';
 
 function buildPrompt(card: PromptCard): string {
@@ -29,7 +27,6 @@ export function PromptCardsExperience() {
 
   useEffect(() => {
     setUnlocked(window.localStorage.getItem(STORAGE_KEY) === 'true');
-    trackEvent('prompt_cards_page_view');
   }, []);
 
   const visibleCards = useMemo(() => (
@@ -55,13 +52,11 @@ export function PromptCardsExperience() {
   async function copyPrompt(card: PromptCard) {
     await navigator.clipboard.writeText(buildPrompt(card));
     setCopied(card.id);
-    trackEvent('prompt_card_prompt_copy', { card_id: card.id });
     window.setTimeout(() => setCopied(null), 1800);
   }
 
   function selectCard(card: PromptCard) {
     setSelectedId(card.id);
-    trackEvent('prompt_card_view', { card_id: card.id });
   }
 
   return (
@@ -144,7 +139,6 @@ export function PromptCardsExperience() {
             {unlocked ? (
               <a
                 href="/api/prompt-cards/download"
-                onClick={() => trackEvent('prompt_card_pdf_download')}
                 className="mt-5 block bg-[color:var(--color-ink)] px-4 py-3 text-center font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-linen)]"
               >
                 Download PDF
@@ -216,7 +210,6 @@ export function PromptCardsExperience() {
             onCopy={() => copyPrompt(selected)}
             onExpand={() => {
               setExpanded((prev) => ({ ...prev, [selected.id]: !prev[selected.id] }));
-              trackEvent('prompt_card_expand_click', { card_id: selected.id });
             }}
             onUnlock={unlock}
           />
@@ -236,7 +229,6 @@ export function PromptCardsExperience() {
           </div>
           <Link
             href="/courses/foundation/program"
-            onClick={() => trackEvent('prompt_card_course_click')}
             className="bg-[color:var(--color-terra)] px-6 py-3 text-center font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-linen)]"
           >
             View Practitioner
@@ -368,7 +360,6 @@ function LeadModal({ onClose, onUnlocked }: { readonly onClose: () => void; read
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? 'Could not unlock cards.');
-      trackEvent('prompt_card_email_submit', { role });
       onUnlocked();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Could not unlock cards.');

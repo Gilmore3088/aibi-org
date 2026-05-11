@@ -14,7 +14,6 @@ import { cookies } from 'next/headers';
 import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
 import { upsertReadinessResult } from '@/lib/supabase/user-profiles';
-import { upsertContact } from '@/lib/hubspot';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -150,13 +149,6 @@ export async function POST(request: Request): Promise<NextResponse> {
     console.error('[in-depth/submit] user_profiles upsert error:', err);
     return NextResponse.json({ error: 'Could not save result.' }, { status: 500 });
   }
-
-  // HubSpot sync — best-effort, non-blocking.
-  upsertContact({
-    email: user.email,
-    assessmentScore: score,
-    scoreTier: tierLabel,
-  }).catch((err) => console.warn('[in-depth/submit] hubspot skip', err));
 
   return NextResponse.json({ ok: true, profileId });
 }

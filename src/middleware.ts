@@ -26,7 +26,6 @@ const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 // working while the public site is dark:
 //   /api          — Stripe webhooks, capture-email, etc. cannot break.
 //   /auth         — operator login. Without this you cannot sign in.
-//   /admin        — admin surface for the operator.
 //   /coming-soon  — destination itself; do not rewrite onto itself.
 //   _next, static — implicitly bypassed via the matcher below.
 const COMING_SOON_MODE = process.env.COMING_SOON === 'true';
@@ -34,7 +33,6 @@ const COMING_SOON_PATH = '/coming-soon';
 const COMING_SOON_BYPASS_PREFIXES: readonly string[] = [
   '/api',
   '/auth',
-  '/admin',
   '/coming-soon',
   '/assessment',
   '/results',
