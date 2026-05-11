@@ -36,37 +36,6 @@ const COMING_SOON_BYPASS_PREFIXES: readonly string[] = [
   '/auth',
   '/admin',
   '/coming-soon',
-  '/design-system', // internal Ledger reference, gated only by URL knowledge
-  '/user-home',     // redesign preview of the user dashboard, internal only
-  '/my-toolbox',    // redesign preview of the artifact toolbox, internal only
-  '/playground',    // redesign preview of the prompt playground, internal only
-  '/faq',           // redesign preview of the FAQ surface
-  '/preview-home',  // redesign preview of the marketing landing
-  '/briefing-preview', // redesign preview of the assessment results briefing
-  '/lms-preview',      // LMS prototype iframe wrapper
-  '/lms-prototype',    // static asset folder (iframe target)
-  '/courses/foundation-preview',  // pre-purchase foundation course preview
-  '/privacy',          // Ledger-redesigned legal page
-  '/terms',            // Ledger-redesigned legal page
-  '/ai-use-disclaimer', // Ledger-redesigned legal page
-  '/verify',           // Ledger-redesigned credential verification
-  // Marketing pages — auto-Ledger-ified via the legacy-token remap
-  // (see src/styles/tokens.css). Bypassed so the redesign is visible
-  // while COMING_SOON=true. Remove if you flip COMING_SOON to false.
-  '/about',
-  '/education',
-  '/for-institutions',
-  '/research',
-  '/security',
-  '/resources',
-  '/dashboard',
-  '/courses',
-  '/assessment',
-  '/practice',
-  '/prompt-cards',
-  '/certifications',
-  '/results',
-  '/redesign-checklist', // internal QA checklist for the Ledger redesign
 ];
 
 export async function middleware(request: NextRequest): Promise<NextResponse> {
