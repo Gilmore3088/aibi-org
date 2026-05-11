@@ -1,4 +1,7 @@
 export { CourseShell } from './CourseShell';
+// CourseShellWrapper is server-only (uses next/headers via getEnrollment).
+// Import it directly from '@/components/lms/CourseShellWrapper' to avoid
+// pulling server-only code into client component bundles.
 export { LMSSidebar } from './LMSSidebar';
 export { LMSMobileNav } from './LMSMobileNav';
 export { LMSTopBar } from './LMSTopBar';

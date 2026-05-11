@@ -8,6 +8,7 @@
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { getEnrollment } from '../_lib/getEnrollment';
+import { CourseShellWrapper } from "@/components/lms/CourseShellWrapper";
 import { PostAssessmentClient } from './_PostAssessmentClient';
 
 export const metadata: Metadata = {
@@ -38,8 +39,8 @@ export default async function PostAssessmentPage() {
   }
 
   return (
-    <PostAssessmentClient
-      enrollmentId={enrollment.id}
-    />
+    <CourseShellWrapper crumbs={['Education', 'AiBI-Foundation', 'Measure Your Growth']}>
+      <PostAssessmentClient enrollmentId={enrollment.id} />
+    </CourseShellWrapper>
   );
 }

@@ -5,6 +5,7 @@
 
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { CourseShellWrapper } from "@/components/lms/CourseShellWrapper";
 import { ToolGuide } from '../_components/ToolGuide';
 import {
   notebooklmGuide,
@@ -25,53 +26,75 @@ const PLATFORMS = ALL_TOOL_GUIDES.map((g) => ({
   colorVar: g.colorVar,
 }));
 
-export default function ToolGuidesPage() {
+export default async function ToolGuidesPage() {
   return (
-    <div className="mx-auto px-8 lg:px-16 py-16">
-
-      {/* Breadcrumb */}
-      <nav className="mb-8" aria-label="Breadcrumb">
-        <ol className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">
-          <li>
-            <Link
-              href="/courses/foundation/program"
-              className="hover:text-[color:var(--color-terra)] transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-1 rounded-sm"
-            >
-              AiBI-Foundation
-            </Link>
-          </li>
-          <li aria-hidden="true">/</li>
-          <li className="text-[color:var(--color-ink)]">Platform Guides</li>
-        </ol>
-      </nav>
-
-      {/* Page header */}
-      <header className="mb-10">
-        <div className="flex items-center gap-3 mb-4">
-          <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--color-terra)]">
-            Deep Dive
+    <CourseShellWrapper crumbs={['Education', 'AiBI-Foundation', 'Platform Guides']}>
+      <header style={{ marginBottom: 40 }}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 14,
+            marginBottom: 18,
+          }}
+        >
+          <span
+            style={{
+              fontFamily: 'var(--ledger-mono)',
+              fontSize: 10.5,
+              letterSpacing: '0.2em',
+              textTransform: 'uppercase',
+              color: 'var(--ledger-accent)',
+            }}
+          >
+            Deep Dive · Platform Reference
           </span>
-          <div className="h-px w-8 bg-[color:var(--color-terra)]/30" aria-hidden="true" />
-          <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--color-slate)]">
-            Platform Reference
-          </span>
+          <span style={{ flex: 1, height: 1, background: 'var(--ledger-rule)' }} />
         </div>
 
-        <h1 className="font-serif text-3xl sm:text-4xl font-bold text-[color:var(--color-ink)] mb-4">
-          Platform Deep Dive Guides
+        <h1
+          style={{
+            fontFamily: 'var(--ledger-serif)',
+            fontWeight: 500,
+            fontSize: 'clamp(40px, 5vw, 60px)',
+            lineHeight: 1.02,
+            letterSpacing: '-0.03em',
+            margin: '0 0 16px',
+            color: 'var(--ledger-ink)',
+          }}
+        >
+          Platform Deep Dive{' '}
+          <em style={{ color: 'var(--ledger-accent)', fontStyle: 'normal', fontWeight: 500 }}>
+            Guides.
+          </em>
         </h1>
 
-        <p className="font-sans text-base text-[color:var(--color-ink)]/80 leading-relaxed max-w-2xl">
-          Step-by-step guides for the platforms most valuable to community banking practitioners.
-          Each guide covers getting started, free vs. paid decisions, five banking use cases with
-          copy-paste prompts, custom instructions, data safety for institutional use, and five
-          pro tips from banking practitioners.
+        <p
+          style={{
+            fontFamily: 'var(--ledger-serif)',
+            fontStyle: 'italic',
+            fontSize: 20,
+            lineHeight: 1.45,
+            color: 'var(--ledger-ink-2)',
+            margin: '0 0 12px',
+            maxWidth: '60ch',
+          }}
+        >
+          The platforms most valuable to community banking, end-to-end.
         </p>
-
-        <p className="font-sans text-sm text-[color:var(--color-slate)] mt-3 leading-relaxed max-w-2xl">
-          These guides complement Module 4 (Platform Features Deep Dive) and Module 3
-          (First Try tutorials). Use them as reference when you encounter a new platform or
-          want to go beyond the basics covered in the module.
+        <p
+          style={{
+            color: 'var(--ledger-slate)',
+            fontSize: 14.5,
+            lineHeight: 1.6,
+            margin: 0,
+            maxWidth: '64ch',
+          }}
+        >
+          Each guide covers getting started, free vs. paid decisions, five banking
+          use cases with copy-paste prompts, custom instructions, data safety for
+          institutional use, and five pro tips. Use these as reference alongside
+          Module 3 (First Try) and Module 4 (Platform Features Deep Dive).
         </p>
       </header>
 
@@ -182,7 +205,6 @@ export default function ToolGuidesPage() {
           </div>
         </div>
       </footer>
-
-    </div>
+    </CourseShellWrapper>
   );
 }

@@ -4,6 +4,7 @@
 
 import { redirect } from 'next/navigation';
 import { getEnrollment } from '../_lib/getEnrollment';
+import { CourseShellWrapper } from "@/components/lms/CourseShellWrapper";
 import { OnboardingSurvey } from './OnboardingSurvey';
 
 export const metadata = {
@@ -19,8 +20,8 @@ export default async function OnboardingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[color:var(--color-linen)]">
+    <CourseShellWrapper crumbs={['Education', 'AiBI-Foundation', 'Onboarding']}>
       <OnboardingSurvey enrollmentId={enrollment.id} />
-    </div>
+    </CourseShellWrapper>
   );
 }

@@ -1,14 +1,17 @@
 // /courses/foundation/program/purchased
 // Stripe Checkout success_url for AiBI-Foundation.
-// Mirrors /assessment/in-depth/purchased: branches on auth state so a buyer
-// who hasn't logged in yet sees a clear "log in to start" CTA instead of
-// hitting the entitlement gate on /courses/foundation/program with no context.
+//
+// Intentionally chromeless (no LMS sidebar). The user has just paid but may
+// not be signed in yet — showing them a sidebar of locked modules would
+// confuse the "I just bought this, where's my course?" mental model. Once
+// they sign in, the binding completes and /courses/foundation/program
+// renders the full LMS shell.
 
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { cookies } from 'next/headers';
 import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
+import { PrimaryButton, GhostButton } from '@/components/lms';
 
 export const metadata: Metadata = {
   title: 'Welcome to AiBI-Foundation | The AI Banking Institute',
@@ -48,32 +51,118 @@ export default async function AiBIPurchasedPage() {
   }
 
   return (
-    <main className="px-6 py-14 md:py-20">
-      <div className="mx-auto max-w-3xl">
-        <p className="font-serif-sc text-[11px] uppercase tracking-[0.22em] text-[color:var(--color-terra)] mb-3">
-          Enrollment confirmed
-        </p>
-        <h1 className="font-serif text-4xl md:text-5xl font-bold leading-tight text-[color:var(--color-ink)] mb-5">
-          Welcome to AiBI-Foundation.
+    <main
+      style={{
+        background: 'var(--ledger-bg)',
+        minHeight: '70vh',
+        padding: '56px 24px',
+      }}
+    >
+      <div style={{ maxWidth: 720, margin: '0 auto' }}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 14,
+            marginBottom: 18,
+          }}
+        >
+          <span
+            style={{
+              fontFamily: 'var(--ledger-mono)',
+              fontSize: 10.5,
+              letterSpacing: '0.22em',
+              textTransform: 'uppercase',
+              color: 'var(--ledger-accent)',
+            }}
+          >
+            Enrollment confirmed
+          </span>
+          <span style={{ flex: 1, height: 1, background: 'var(--ledger-rule)' }} />
+        </div>
+
+        <h1
+          style={{
+            fontFamily: 'var(--ledger-serif)',
+            fontWeight: 500,
+            fontSize: 'clamp(40px, 5.2vw, 60px)',
+            lineHeight: 1.02,
+            letterSpacing: '-0.03em',
+            margin: '0 0 16px',
+            color: 'var(--ledger-ink)',
+          }}
+        >
+          Welcome to{' '}
+          <em style={{ color: 'var(--ledger-accent)', fontStyle: 'normal', fontWeight: 500 }}>
+            AiBI-Foundation.
+          </em>
         </h1>
-        <p className="text-base md:text-lg text-[color:var(--color-ink)]/75 leading-relaxed mb-8 max-w-2xl">
+
+        <p
+          style={{
+            fontFamily: 'var(--ledger-serif)',
+            fontStyle: 'italic',
+            fontSize: 20,
+            lineHeight: 1.45,
+            color: 'var(--ledger-ink-2)',
+            margin: '0 0 32px',
+            maxWidth: '60ch',
+          }}
+        >
           Thanks for your purchase. A receipt is on its way from Stripe, and a
           welcome email with the course link will follow within minutes.
         </p>
 
-        <section className="border border-[color:var(--color-terra)]/20 bg-[color:var(--color-parch)] rounded-[3px] p-6 md:p-8 mb-10">
-          <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-4">
+        <section
+          style={{
+            border: '1px solid var(--ledger-rule)',
+            background: 'var(--ledger-parch)',
+            borderRadius: 3,
+            padding: '24px 26px',
+            marginBottom: 40,
+          }}
+        >
+          <p
+            style={{
+              fontFamily: 'var(--ledger-mono)',
+              fontSize: 10.5,
+              letterSpacing: '0.2em',
+              textTransform: 'uppercase',
+              color: 'var(--ledger-accent)',
+              margin: '0 0 14px',
+            }}
+          >
             What you get
           </p>
-          <ul className="space-y-3">
+          <ul
+            style={{
+              margin: 0,
+              padding: 0,
+              listStyle: 'none',
+              display: 'grid',
+              gap: 10,
+            }}
+          >
             {HIGHLIGHTS.map((line) => (
               <li
                 key={line}
-                className="flex gap-3 text-sm md:text-base text-[color:var(--color-ink)]/85"
+                style={{
+                  display: 'flex',
+                  gap: 10,
+                  fontSize: 14.5,
+                  color: 'var(--ledger-ink-2)',
+                  lineHeight: 1.55,
+                }}
               >
                 <span
-                  className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-terra)] shrink-0"
                   aria-hidden="true"
+                  style={{
+                    marginTop: 7,
+                    width: 6,
+                    height: 6,
+                    background: 'var(--ledger-accent)',
+                    flex: 'none',
+                  }}
                 />
                 <span>{line}</span>
               </li>
@@ -81,51 +170,77 @@ export default async function AiBIPurchasedPage() {
           </ul>
         </section>
 
-        <section className="border-t border-[color:var(--color-ink)]/10 pt-8">
+        <section style={{ borderTop: '1px solid var(--ledger-rule)', paddingTop: 28 }}>
           {signedInEmail ? (
             <>
-              <p className="text-sm text-[color:var(--color-ink)]/75 mb-5">
+              <p
+                style={{
+                  fontSize: 14,
+                  color: 'var(--ledger-ink-2)',
+                  margin: '0 0 18px',
+                  lineHeight: 1.6,
+                }}
+              >
                 You&rsquo;re signed in as{' '}
-                <span className="font-mono text-[color:var(--color-ink)]">
+                <span
+                  style={{
+                    fontFamily: 'var(--ledger-mono)',
+                    color: 'var(--ledger-ink)',
+                  }}
+                >
                   {signedInEmail}
                 </span>
                 . Module 1 takes about 35 minutes.
               </p>
-              <Link
-                href="/courses/foundation/program"
-                className="inline-block bg-[color:var(--color-terra)] text-[color:var(--color-linen)] px-8 py-3 rounded-sm font-mono text-[10px] uppercase tracking-[0.15em] hover:bg-[color:var(--color-terra-light)] transition-colors"
-              >
-                Begin Module 1
-              </Link>
+              <PrimaryButton as="a" href="/courses/foundation/program">
+                Begin Module 1 →
+              </PrimaryButton>
             </>
           ) : (
             <>
-              <p className="text-sm text-[color:var(--color-ink)]/75 mb-5">
-                One last step: sign in with the email you used at checkout to
-                bind your enrollment to your account. New here? You can create
-                an account in 30 seconds.
+              <p
+                style={{
+                  fontSize: 14,
+                  color: 'var(--ledger-ink-2)',
+                  margin: '0 0 18px',
+                  lineHeight: 1.6,
+                }}
+              >
+                One last step: sign in with the email you used at checkout to bind
+                your enrollment to your account. New here? You can create an account
+                in 30 seconds.
               </p>
-              <div className="flex flex-wrap gap-4">
-                <Link
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
+                <PrimaryButton
+                  as="a"
                   href="/auth/login?next=/courses/foundation/program"
-                  className="inline-block bg-[color:var(--color-terra)] text-[color:var(--color-linen)] px-8 py-3 rounded-sm font-mono text-[10px] uppercase tracking-[0.15em] hover:bg-[color:var(--color-terra-light)] transition-colors"
                 >
                   Log in to start
-                </Link>
-                <Link
+                </PrimaryButton>
+                <GhostButton
+                  as="a"
                   href="/auth/sign-up?next=/courses/foundation/program"
-                  className="inline-block border border-[color:var(--color-ink)]/20 text-[color:var(--color-ink)] px-8 py-3 rounded-sm font-mono text-[10px] uppercase tracking-[0.15em] hover:bg-[color:var(--color-parch)] transition-colors"
                 >
                   Create my account
-                </Link>
+                </GhostButton>
               </div>
             </>
           )}
-          <p className="text-xs text-[color:var(--color-ink)]/55 mt-6">
+          <p
+            style={{
+              fontSize: 12.5,
+              color: 'var(--ledger-muted)',
+              margin: '24px 0 0',
+              lineHeight: 1.55,
+            }}
+          >
             Trouble? Reply to your receipt email or write to{' '}
             <a
               href="mailto:hello@aibankinginstitute.com"
-              className="underline hover:text-[color:var(--color-terra)]"
+              style={{
+                color: 'var(--ledger-accent)',
+                textDecoration: 'underline',
+              }}
             >
               hello@aibankinginstitute.com
             </a>

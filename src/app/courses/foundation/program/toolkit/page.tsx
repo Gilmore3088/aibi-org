@@ -16,6 +16,7 @@ import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { getEnrollment } from '../_lib/getEnrollment';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
+import { CourseShellWrapper } from "@/components/lms/CourseShellWrapper";
 import { DownloadSkillButton } from './DownloadSkillButton';
 import { DownloadReportButton } from './DownloadReportButton';
 import {
@@ -253,23 +254,62 @@ export default async function ToolkitPage() {
   const m8Complete = completedModules.includes(8);
 
   return (
-    <>
-      {/* Page header band */}
-      <div className="bg-[color:var(--color-terra)] text-[color:var(--color-linen)] py-10 px-6">
-        <div className="mx-auto px-8 lg:px-16">
-          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra-pale)] mb-2">
-            AiBI-Foundation Course
-          </p>
-          <h1 className="font-serif text-3xl font-bold mb-2">My AI Toolkit</h1>
-          <p className="font-sans text-sm text-[color:var(--color-terra-pale)] leading-relaxed max-w-2xl">
-            Your accumulated course assets in one place — skills, artifacts, subscription
-            inventory, and capstone summary. Everything you built during AiBI-Foundation is here to
-            keep and use.
-          </p>
+    <CourseShellWrapper crumbs={['Education', 'AiBI-Foundation', 'My Toolkit']}>
+      <header style={{ marginBottom: 40 }}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 14,
+            marginBottom: 18,
+          }}
+        >
+          <span
+            style={{
+              fontFamily: 'var(--ledger-mono)',
+              fontSize: 10.5,
+              letterSpacing: '0.2em',
+              textTransform: 'uppercase',
+              color: 'var(--ledger-accent)',
+            }}
+          >
+            AiBI-Foundation · Accumulated Assets
+          </span>
+          <span style={{ flex: 1, height: 1, background: 'var(--ledger-rule)' }} />
         </div>
-      </div>
+        <h1
+          style={{
+            fontFamily: 'var(--ledger-serif)',
+            fontWeight: 500,
+            fontSize: 'clamp(40px, 5vw, 60px)',
+            lineHeight: 1.02,
+            letterSpacing: '-0.03em',
+            margin: '0 0 16px',
+            color: 'var(--ledger-ink)',
+          }}
+        >
+          My{' '}
+          <em style={{ color: 'var(--ledger-accent)', fontStyle: 'normal', fontWeight: 500 }}>
+            AI Toolkit.
+          </em>
+        </h1>
+        <p
+          style={{
+            fontFamily: 'var(--ledger-serif)',
+            fontStyle: 'italic',
+            fontSize: 20,
+            lineHeight: 1.45,
+            color: 'var(--ledger-ink-2)',
+            margin: 0,
+            maxWidth: '60ch',
+          }}
+        >
+          Your course assets in one place — skills, artifacts, subscription
+          inventory, and capstone summary.
+        </p>
+      </header>
 
-      <article className="mx-auto px-8 lg:px-16 px-6 lg:px-8 py-8">
+      <article>
 
         {/* 1 — My Skills */}
         <SectionCard title="My Skills" label="Skills" labelColor="var(--color-amber)">
@@ -599,6 +639,6 @@ export default async function ToolkitPage() {
         </SectionCard>
 
       </article>
-    </>
+    </CourseShellWrapper>
   );
 }
