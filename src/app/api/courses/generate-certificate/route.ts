@@ -269,6 +269,14 @@ export async function POST(request: Request): Promise<Response> {
     enrollmentId: cert.enrollment_id,
   }).catch((err) => console.warn('[certificate] resend skip', err));
 
+  // Server-side analytics — first issuance only (this branch is gated by
+  // the insert-not-race path above).
+  void import('@vercel/analytics/server')
+    .then((mod) =>
+      mod.track('certificate_issued', { certificateId: cert.certificate_id }),
+    )
+    .catch((err) => console.warn('[certificate] analytics skip', err));
+
   return pdfResponse(pdfBuffer, cert.certificate_id, 201, false);
 }
 

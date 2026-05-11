@@ -54,6 +54,9 @@ export function ModuleContentClient({
       });
       if (res.ok) {
         setModuleComplete(true);
+        void import('@/lib/analytics/events').then((mod) =>
+          mod.trackModuleCompleted({ moduleNumber }),
+        );
       }
     } catch {
       // Silently fail — user can retry by clicking the button again
