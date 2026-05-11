@@ -1,16 +1,20 @@
 // Admin-side Supabase Auth helpers.
 //
 // Used by API routes that capture an email (assessment, inquiry, newsletter,
-// waitlist) to provision a Supabase Auth account for that email — so every
-// captured email becomes a real user the platform can authenticate later.
+// waitlist, stripe webhook) to provision a Supabase Auth account for that
+// email — so every captured email becomes a real user the platform can
+// authenticate later.
 //
-// Idempotent: returns the existing user's id if one already exists for that
-// email; creates a new email-confirmed user otherwise. No password is set —
-// the user authenticates via magic link until they choose to set one.
+// Idempotent + canonical-aware: returns the existing user's id if one
+// already exists for any Gmail-canonical form of the email. Stores
+// canonical form on create, so subsequent alias captures dedupe to the
+// same auth user. Prevents the "ghost auth user per +alias" failure mode
+// that bit production 2026-05-11.
 //
 // Server-only. Uses the service role key.
 
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
+import { canonicalEmail } from '@/lib/email/canonicalize';
 
 export interface EnsureAuthUserResult {
   readonly userId: string | null;
@@ -21,10 +25,17 @@ export interface EnsureAuthUserResult {
 /**
  * Ensures a Supabase Auth user exists for this email. Idempotent.
  *
+ * Match strategy:
+ *   1. Exact match (case-insensitive) on auth.users.email.
+ *   2. Canonical match (Gmail +alias / dots stripped) — covers buyers who
+ *      paid with a +alias but already signed up under the base address.
+ *   3. If no match, create a new user using the CANONICAL email so the
+ *      next alias-purchase from the same Gmail inbox dedupes to it.
+ *
  * Returns:
  *   { userId: <uuid>, created: true }   — net-new user
- *   { userId: <uuid>, created: false }  — already existed
- *   { userId: null, created: false, skipped: <reason> } — supabase not configured
+ *   { userId: <uuid>, created: false }  — already existed (exact OR canonical)
+ *   { userId: null, created: false, skipped: <reason> } — unconfigured / failed
  *
  * Never throws on "already registered" — that's not an error in our flow.
  */
@@ -34,11 +45,45 @@ export async function ensureAuthUser(email: string): Promise<EnsureAuthUserResul
   }
 
   const supabase = createServiceRoleClient();
+  const lowered = email.trim().toLowerCase();
+  const canonical = canonicalEmail(email);
 
-  // Try to create first. email_confirm:true skips the verify-email step
-  // since the email arrived through one of our gated capture flows.
+  // Existence check FIRST. Avoids the previous "always try create, fall back
+  // to listUsers on conflict" pattern, which silently created +alias
+  // duplicates whenever the alias didn't exactly match an existing row.
+  try {
+    const { data: list, error: listError } = await supabase.auth.admin.listUsers({
+      page: 1,
+      perPage: 1000,
+    });
+    if (listError) {
+      console.warn('[auth-admin] listUsers failed:', listError.message);
+    } else if (list?.users) {
+      const exact = list.users.find((u) => u.email?.toLowerCase() === lowered);
+      if (exact) return { userId: exact.id, created: false };
+
+      const canonicalMatches = list.users.filter(
+        (u) => u.email && canonicalEmail(u.email) === canonical,
+      );
+      if (canonicalMatches.length > 0) {
+        canonicalMatches.sort((a, b) => {
+          const at = a.last_sign_in_at ? Date.parse(a.last_sign_in_at) : 0;
+          const bt = b.last_sign_in_at ? Date.parse(b.last_sign_in_at) : 0;
+          return bt - at;
+        });
+        return { userId: canonicalMatches[0].id, created: false };
+      }
+    }
+  } catch (err) {
+    console.warn('[auth-admin] existence check exception:', err);
+  }
+
+  // No match — create with CANONICAL email. Storing the canonical form
+  // (rather than the as-typed alias) means the next alias purchase from
+  // the same Gmail inbox dedupes against this row instead of creating
+  // yet another ghost.
   const { data: createData, error: createError } = await supabase.auth.admin.createUser({
-    email,
+    email: canonical,
     email_confirm: true,
   });
 
@@ -46,28 +91,23 @@ export async function ensureAuthUser(email: string): Promise<EnsureAuthUserResul
     return { userId: createData.user.id, created: true };
   }
 
-  // Common case when the email is already in auth.users — fall back to lookup.
-  // listUsers is paginated; we scan the first 1000 which is enough for our
-  // current scale. If this grows, switch to a direct SQL query via service client.
+  // Race condition fallback: another concurrent webhook may have created the
+  // row between our check and our create. Re-list and look for canonical.
   try {
-    const { data: list, error: listError } = await supabase.auth.admin.listUsers({
+    const { data: list } = await supabase.auth.admin.listUsers({
       page: 1,
       perPage: 1000,
     });
-    if (listError) {
-      console.warn('[auth-admin] listUsers fallback failed:', listError.message);
-      return { userId: null, created: false, skipped: 'list-users-failed' };
-    }
-    const existing = list?.users?.find((u) => u.email === email);
-    if (existing) {
-      return { userId: existing.id, created: false };
-    }
-  } catch (err) {
-    console.warn('[auth-admin] listUsers exception:', err);
+    const racey = list?.users?.find(
+      (u) => u.email && canonicalEmail(u.email) === canonical,
+    );
+    if (racey) return { userId: racey.id, created: false };
+  } catch {
+    // fall through
   }
 
   console.warn(
-    '[auth-admin] createUser failed and no existing user found:',
+    '[auth-admin] createUser failed and no canonical match found:',
     createError?.message ?? 'unknown',
   );
   return { userId: null, created: false, skipped: 'create-and-lookup-failed' };
@@ -97,9 +137,13 @@ export async function generateMagicLink(
 
   const supabase = createServiceRoleClient();
 
+  // Use canonical email so the link binds to the deduped auth user, not
+  // an alias variant that won't have an account.
+  const targetEmail = canonicalEmail(email);
+
   const { data, error } = await supabase.auth.admin.generateLink({
     type: 'magiclink',
-    email,
+    email: targetEmail,
   });
 
   if (error) {
