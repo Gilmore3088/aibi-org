@@ -6,6 +6,7 @@ import { cookies } from 'next/headers';
 import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
 import type { CourseEnrollment } from '@/types/course';
+import { dbReadValues } from '@/lib/products/normalize';
 
 export type EnrollmentData = Pick<
   CourseEnrollment,
@@ -84,7 +85,7 @@ export async function getEnrollmentResult(): Promise<EnrollmentResult> {
     .from('course_enrollments')
     .select('id, user_id, completed_modules, current_module, enrolled_at, onboarding_answers')
     .eq('user_id', user.id)
-    .in('product', ['aibi-p', 'foundation'])
+    .in('product', dbReadValues('foundation'))
     .single();
 
   // PGRST116 = "no rows returned" — user is signed in but not enrolled.

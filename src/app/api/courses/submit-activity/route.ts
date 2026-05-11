@@ -261,7 +261,10 @@ export async function POST(request: Request): Promise<NextResponse> {
     await serviceClient.from('user_artifacts').upsert(
       {
         user_id: user.id,
-        course_id: 'aibi-p',
+        // Canonical post-rename slug. Existing rows with course_id='aibi-p' get
+        // backfilled by supabase/migrations/00029. Dual-read consumers
+        // (dashboard/learner) accept both via dbReadValues().
+        course_id: 'foundation',
         artifact_id: submittedActivity.artifactId,
         status: 'completed',
         source_activity_id: activityId,

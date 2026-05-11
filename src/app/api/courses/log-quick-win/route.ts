@@ -10,6 +10,7 @@ import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { createServerClient } from '@supabase/ssr';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
+import { dbReadValues } from '@/lib/products/normalize';
 
 const VALID_TOOLS = ['chatgpt', 'claude', 'copilot', 'gemini', 'notebooklm', 'perplexity'] as const;
 const VALID_FREQUENCIES = ['daily', '2-3x/week', 'weekly', 'monthly'] as const;
@@ -66,7 +67,7 @@ export async function GET(): Promise<NextResponse> {
     .from('course_enrollments')
     .select('id')
     .eq('user_id', user.id)
-    .in('product', ['aibi-p', 'foundation']);
+    .in('product', dbReadValues('foundation'));
 
   if (enrollmentError) {
     return NextResponse.json({ error: 'Failed to load quick wins.' }, { status: 500 });
@@ -147,7 +148,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     .from('course_enrollments')
     .select('id')
     .eq('user_id', user.id)
-    .in('product', ['aibi-p', 'foundation'])
+    .in('product', dbReadValues('foundation'))
     .single();
 
   if (enrollmentError || !enrollment) {

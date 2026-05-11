@@ -140,8 +140,10 @@ export default async function ModulePage({ params }: ModulePageParams) {
           practiceContent={
             SANDBOX_CONFIGS[moduleNum] ? (
               <AIPracticeSandbox
+                // moduleId kept as 'aibi-p-module-N' for rate-limit-store
+                // continuity. The product prop is the canonical slug.
                 moduleId={`aibi-p-module-${moduleNum}`}
-                product="aibi-p"
+                product="foundation"
                 sandboxConfig={SANDBOX_CONFIGS[moduleNum]!}
               />
             ) : null

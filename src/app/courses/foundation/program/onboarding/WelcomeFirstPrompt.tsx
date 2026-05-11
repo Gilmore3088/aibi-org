@@ -51,8 +51,10 @@ export function WelcomeFirstPrompt({ onContinue }: WelcomeFirstPromptProps) {
           messages: [{ role: 'user', content: USER_PROMPT_PREFIX + SAMPLE_INPUT }],
           // Use a stable moduleId so the per-session rate-limit map keys
           // welcome-prompt usage separately from real module practice.
+          // moduleId kept as 'aibi-p-welcome' for rate-limit-store continuity
+          // across the rename — changing it would reset every existing key.
           moduleId: 'aibi-p-welcome',
-          product: 'aibi-p',
+          product: 'foundation',
         }),
       });
 

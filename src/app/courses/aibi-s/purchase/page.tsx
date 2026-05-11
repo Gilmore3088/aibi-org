@@ -12,6 +12,7 @@ import { isSupabaseConfigured } from '@/lib/supabase/client';
 import { ROLE_TRACK_META } from '@content/courses/aibi-s';
 import type { RoleTrack } from '@content/courses/aibi-s';
 import { EnrollButton } from './EnrollButton';
+import { dbReadValues } from '@/lib/products/normalize';
 
 export const metadata: Metadata = {
   title: 'Enroll in AiBI-S | The AI Banking Institute',
@@ -63,7 +64,7 @@ async function getUserData(): Promise<{ email: string | null; hasAiBIP: boolean 
       .from('course_enrollments')
       .select('id')
       .eq('user_id', user.id)
-      .in('product', ['aibi-p', 'foundation'])
+      .in('product', dbReadValues('foundation'))
       .maybeSingle();
 
     // AiBI-Foundation enrollment exists — this is the prerequisite check

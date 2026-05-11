@@ -13,6 +13,7 @@
 
 import { NextResponse } from 'next/server';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
+import { dbReadValues, normalizeProduct } from '@/lib/products/normalize';
 
 // Lazy-import the stripe singleton so the module-level throw only fires
 // when the route is actually invoked, not at build time.
@@ -52,7 +53,7 @@ async function hasLockedInstitutionDiscount(email: string): Promise<boolean> {
       .from('course_enrollments')
       .select('institution_enrollment_id, institution_enrollments!inner(discount_locked)')
       .eq('email', email)
-      .in('product', ['aibi-p', 'foundation'])
+      .in('product', dbReadValues('foundation'))
       .limit(1);
 
     if (error || !data || data.length === 0) return false;

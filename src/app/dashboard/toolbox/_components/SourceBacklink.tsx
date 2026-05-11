@@ -6,7 +6,11 @@
 import Link from 'next/link';
 import type { ToolboxSource } from '@/lib/toolbox/types';
 
-const COURSE_REF_PATTERN = /^aibi-p\/module-(\d+)\/[^/]+$/;
+// Accepts both legacy 'aibi-p/' prefix (pre-Phase 7 backfill) and canonical
+// 'foundation/' prefix (post-backfill). Both map to the same /courses/foundation/program
+// target. The pattern must accept both forever — Stripe webhook retries and
+// other async writers may emit either even after the backfill runs.
+const COURSE_REF_PATTERN = /^(?:aibi-p|foundation)\/module-(\d+)\/[^/]+$/;
 const LIBRARY_REF_PATTERN = /^library:([0-9a-f-]{36})@/i;
 const COOKBOOK_REF_PATTERN = /^cookbook:([^#]+)#step-(\d+)$/;
 

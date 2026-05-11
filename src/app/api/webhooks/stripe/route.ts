@@ -20,13 +20,13 @@ import {
   sendCoursePurchaseInstitution,
   sendIndepthAssessmentPurchase,
 } from '@/lib/resend';
+import { normalizeProduct } from '@/lib/products/normalize';
 
 function nextPathForProduct(product: string | undefined, mode: string | undefined): string {
   if (product === 'in-depth-assessment') return '/assessment/in-depth/take';
-  // Accept both legacy 'aibi-p' (Stripe webhook retries from 2026-Q1) and
-  // canonical 'foundation' (post-Phase 6 sessions). Both map to the same
-  // active program at /courses/foundation/program.
-  if ((product === 'aibi-p' || product === 'foundation') && mode === 'institution') return '/admin';
+  // normalizeProduct collapses legacy 'aibi-p' (Stripe webhook retries from
+  // 2026-Q1) to canonical 'foundation' so we only test one value here.
+  if (normalizeProduct(product) === 'foundation' && mode === 'institution') return '/admin';
   return '/courses/foundation/program';
 }
 

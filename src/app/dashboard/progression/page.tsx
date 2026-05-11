@@ -7,7 +7,7 @@ import { getUserDataWithSupabaseFallback, type UserData } from '@/lib/user-data'
 // ── Types ────────────────────────────────────────────────────────────────────
 
 interface CertLevel {
-  readonly code: 'aibi-p' | 'aibi-s' | 'aibi-l';
+  readonly code: 'foundation' | 'aibi-s' | 'aibi-l';
   readonly label: string;
   readonly color: string;
   readonly colorBg: string;
@@ -16,7 +16,7 @@ interface CertLevel {
 
 const CERT_LEVELS: readonly CertLevel[] = [
   {
-    code: 'aibi-p',
+    code: 'foundation',
     label: 'AiBI-Foundation',
     color: 'var(--color-terra)',
     colorBg: 'var(--color-terra-pale)',
@@ -39,7 +39,7 @@ const CERT_LEVELS: readonly CertLevel[] = [
 ] as const;
 
 interface MockEnrollment {
-  readonly product: 'aibi-p' | 'aibi-s' | 'aibi-l';
+  readonly product: 'foundation' | 'aibi-s' | 'aibi-l';
   readonly completed_modules: readonly number[];
   readonly total_modules: number;
   readonly enrolled_at: string;
@@ -51,7 +51,7 @@ interface MockEnrollment {
 // Dev bypass — V4 is locked to AiBI-Foundation only.
 const DEV_ENROLLMENTS: readonly MockEnrollment[] = [
   {
-    product: 'aibi-p',
+    product: 'foundation',
     completed_modules: [1, 2, 3, 4, 5, 6, 7, 8, 9],
     total_modules: 9,
     enrolled_at: '2026-02-10T09:00:00.000Z',
@@ -69,7 +69,7 @@ interface CumulativeMetrics {
 
 // Derive aggregate impact from enrollment progress
 function deriveMetrics(enrollments: readonly MockEnrollment[]): CumulativeMetrics {
-  const pEnroll = enrollments.find((e) => e.product === 'aibi-p');
+  const pEnroll = enrollments.find((e) => e.product === 'foundation');
   const sEnroll = enrollments.find((e) => e.product === 'aibi-s');
 
   const pModules = pEnroll?.completed_modules.length ?? 0;
@@ -320,7 +320,7 @@ function CredentialCard({
       <div className="flex items-center gap-3 pt-3 border-t border-[color:var(--color-ink)]/8">
         <Link
           href={
-            level.code === 'aibi-p'
+            level.code === 'foundation'
               ? '/courses/foundation/program'
               : level.code === 'aibi-s'
                 ? '/coming-soon?interest=specialist'
@@ -345,7 +345,7 @@ function CredentialCard({
 }
 
 function NextStepBanner({ enrollments }: { enrollments: readonly MockEnrollment[] }) {
-  const hasP = enrollments.some((e) => e.product === 'aibi-p' && e.completed_at);
+  const hasP = enrollments.some((e) => e.product === 'foundation' && e.completed_at);
   const hasS = enrollments.some((e) => e.product === 'aibi-s' && e.completed_at);
   const hasL = enrollments.some((e) => e.product === 'aibi-l' && e.completed_at);
   const sEnrollment = enrollments.find((e) => e.product === 'aibi-s');
@@ -429,7 +429,7 @@ export default function ProgressionPage() {
 
   const metrics = deriveMetrics(enrollments);
 
-  const getStatus = (code: 'aibi-p' | 'aibi-s' | 'aibi-l'): 'completed' | 'active' | 'locked' => {
+  const getStatus = (code: 'foundation' | 'aibi-s' | 'aibi-l'): 'completed' | 'active' | 'locked' => {
     const e = enrollments.find((en) => en.product === code);
     if (!e) return 'locked';
     if (e.completed_at) return 'completed';

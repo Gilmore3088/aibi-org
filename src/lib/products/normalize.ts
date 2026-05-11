@@ -68,11 +68,14 @@ export function normalizeProduct(
  * Use in dual-read queries:
  *   .in('product', dbReadValues('foundation'))
  */
-export function dbReadValues(canonical: ProductSlug): readonly string[] {
+export function dbReadValues(canonical: ProductSlug): string[] {
+  // Returns mutable string[] (not readonly) because Supabase
+  // PostgrestFilterBuilder.in() does not accept readonly arrays in the
+  // current type signature. Callers should treat the return as read-only.
   if (canonical === 'foundation') {
-    return ['aibi-p', 'foundation'] as const;
+    return ['aibi-p', 'foundation'];
   }
-  return [canonical] as const;
+  return [canonical];
 }
 
 /**
