@@ -48,6 +48,8 @@ const COMING_SOON_BYPASS_PREFIXES: readonly string[] = [
   '/courses/foundation-preview',  // pre-purchase foundation course preview
   '/privacy',          // Ledger-redesigned legal page
   '/terms',            // Ledger-redesigned legal page
+  '/ai-use-disclaimer', // Ledger-redesigned legal page
+  '/verify',           // Ledger-redesigned credential verification
 ];
 
 export async function middleware(request: NextRequest): Promise<NextResponse> {
