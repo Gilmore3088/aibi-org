@@ -14,6 +14,15 @@ import {
 } from '@content/practice-reps/foundation-program';
 import type { ArtifactStatus } from '@/types/lms';
 
+interface AssessmentsState {
+  readonly inDepth: {
+    readonly entitled: boolean;
+    readonly profileId: string | null;
+    readonly hasCompleted: boolean;
+    readonly purchasedAt: string | null;
+  } | null;
+}
+
 interface LearnerDashboardState {
   readonly enrollment: {
     readonly id: string;
@@ -69,6 +78,7 @@ export default function DashboardPage() {
   const [dashboard, setDashboard] = useState<LearnerDashboardState | null>(null);
   const [localCompletedRepIds, setLocalCompletedRepIds] = useState<readonly string[]>([]);
   const [toolboxEntitled, setToolboxEntitled] = useState(false);
+  const [assessments, setAssessments] = useState<AssessmentsState | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -76,9 +86,10 @@ export default function DashboardPage() {
       .then(async (loadedUser) => {
         setUser(loadedUser);
         try {
-          const [learnerRes, toolboxRes] = await Promise.all([
+          const [learnerRes, toolboxRes, assessmentsRes] = await Promise.all([
             fetch('/api/dashboard/learner', { cache: 'no-store' }),
             fetch('/api/dashboard/toolbox-access', { cache: 'no-store' }),
+            fetch('/api/dashboard/assessments', { cache: 'no-store' }),
           ]);
           if (learnerRes.ok) {
             setDashboard((await learnerRes.json()) as LearnerDashboardState);
@@ -86,6 +97,9 @@ export default function DashboardPage() {
           if (toolboxRes.ok) {
             const { entitled } = (await toolboxRes.json()) as { entitled: boolean };
             setToolboxEntitled(Boolean(entitled));
+          }
+          if (assessmentsRes.ok) {
+            setAssessments((await assessmentsRes.json()) as AssessmentsState);
           }
         } catch {
           // Local assessment-only users still get a useful dashboard fallback.
@@ -277,6 +291,53 @@ export default function DashboardPage() {
             </article>
           </div>
         </section>
+
+        {assessments?.inDepth?.entitled && (
+          <section className="border-b border-[color:var(--color-ink)]/10 pb-8">
+            <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
+              Your Assessments
+            </p>
+            <article className="border border-[color:var(--color-ink)]/10 rounded-[3px] p-6 md:p-8">
+              <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+                <div>
+                  <p className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-slate)]">
+                    In-Depth AI Readiness Assessment
+                  </p>
+                  <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] leading-tight mt-2">
+                    {assessments.inDepth.hasCompleted
+                      ? 'Your In-Depth Briefing is ready.'
+                      : 'Take your purchased assessment.'}
+                  </h2>
+                  <p className="text-sm text-[color:var(--color-ink)]/75 mt-3 leading-relaxed max-w-2xl">
+                    {assessments.inDepth.hasCompleted
+                      ? 'Forty-eight questions across eight dimensions. Re-take any time — every submission overwrites the previous reading so you can track progress across quarterly re-reads.'
+                      : 'Forty-eight questions across eight dimensions, roughly twelve minutes. You will receive a personalized Briefing with deep dives and a ninety-day action register.'}
+                  </p>
+                </div>
+              </div>
+              <div className="mt-6 flex flex-col sm:flex-row gap-3">
+                {assessments.inDepth.hasCompleted && assessments.inDepth.profileId && (
+                  <Link
+                    href={`/assessment/in-depth/results/${assessments.inDepth.profileId}`}
+                    className="text-center px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
+                  >
+                    View your Briefing
+                  </Link>
+                )}
+                <Link
+                  href="/assessment/in-depth/take"
+                  className={
+                    assessments.inDepth.hasCompleted
+                      ? 'text-center px-6 py-3 border border-[color:var(--color-ink)]/25 text-[color:var(--color-ink)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)] transition-colors'
+                      : 'text-center px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors'
+                  }
+                >
+                  {assessments.inDepth.hasCompleted ? 'Re-take the assessment' : 'Start the assessment'}
+                </Link>
+              </div>
+            </article>
+          </section>
+        )}
 
         <section>
           <article className="border border-[color:var(--color-ink)]/10 rounded-[3px] p-6 md:p-8">
