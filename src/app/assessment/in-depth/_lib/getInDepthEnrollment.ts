@@ -10,6 +10,7 @@
 import { cookies } from 'next/headers';
 import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
+import { emailVariants } from '@/lib/email/canonicalize';
 
 export interface InDepthEnrollment {
   readonly id: string;
@@ -41,11 +42,13 @@ export async function getInDepthEnrollment(): Promise<InDepthEnrollment | null> 
 
   if (!user) return null;
 
-  // Match by user_id when bound, else by email — purchases happen pre-login,
-  // so the row may have user_id=null until first login binds it.
-  const email = user.email ?? null;
-  const orFilter = email
-    ? `user_id.eq.${user.id},email.eq.${email}`
+  // Match by user_id OR any email variant. Email variants cover Gmail-style
+  // "+alias" forms typed at Stripe checkout. Purchases happen pre-login, so
+  // the row may have user_id=null until first login binds it.
+  const variants = user.email ? emailVariants(user.email) : [];
+  const emailClause = variants.map((e) => `email.eq.${e}`).join(',');
+  const orFilter = emailClause
+    ? `user_id.eq.${user.id},${emailClause}`
     : `user_id.eq.${user.id}`;
 
   const { data, error } = await supabase

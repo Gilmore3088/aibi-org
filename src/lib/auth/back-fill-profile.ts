@@ -5,6 +5,7 @@
 // Refs: docs/superpowers/specs/2026-05-04-assessment-results-spec-2-pdf.md
 
 import { createServiceRoleClient } from '@/lib/supabase/client';
+import { emailVariants } from '@/lib/email/canonicalize';
 
 export interface BackFillResult {
   readonly linked: boolean;
@@ -16,11 +17,26 @@ export async function backFillProfile(
   email: string,
 ): Promise<BackFillResult> {
   const client = createServiceRoleClient();
+  const variants = emailVariants(email);
+
+  // Opportunistically bind any course_enrollments rows that match any
+  // email variant but have user_id=null. Covers the Stripe-alias case:
+  // bought as user+1@gmail.com, signed in as user@gmail.com.
+  await client
+    .from('course_enrollments')
+    .update({ user_id: authUserId })
+    .is('user_id', null)
+    .in('email', variants)
+    .then(({ error }) => {
+      if (error) {
+        console.warn('[back-fill-profile] enrollment bind failed:', error.message);
+      }
+    });
 
   const { data: existing, error: fetchError } = await client
     .from('user_profiles')
     .select('id, pdf_storage_path')
-    .eq('email', email)
+    .in('email', variants)
     .maybeSingle();
 
   if (fetchError) {
