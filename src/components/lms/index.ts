@@ -7,3 +7,7 @@ export { PrimaryButton, GhostButton } from './LMSButtons';
 export { LMS_PILLARS, getModuleStatus } from './types';
 export type { LMSModule, LMSPillar, ModuleStatus } from './types';
 export { toLMSModule, toLMSModules } from './_adapters';
+export { ActivityWorkspace } from './ActivityWorkspace';
+export { FormField, ledgerInputStyle } from './FormField';
+export { ModelPicker, LMS_MODELS } from './ModelPicker';
+export type { LMSModelId, LMSModelOption } from './ModelPicker';
