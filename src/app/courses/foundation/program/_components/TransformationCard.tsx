@@ -103,7 +103,7 @@ export function TransformationCard({
   const tierChanged = preTierLabel !== null && preTierLabel !== postTierLabel;
 
   const shareSummary = [
-    'AiBI-Foundation — AiBI-Foundation — Course Complete',
+    'AiBI-Foundation — Course Complete',
     '',
     scoreImprovement
       ? `AI Readiness: ${preScore} → ${postScore} (${scoreImprovement})`

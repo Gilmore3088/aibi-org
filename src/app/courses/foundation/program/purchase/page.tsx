@@ -169,7 +169,7 @@ export default async function PurchasePage() {
           id="includes-heading"
           className="font-serif text-2xl font-bold text-[color:var(--color-ink)]"
         >
-          Enrollment includes the full practitioner path.
+          Enrollment includes the full AiBI-Foundation path.
         </h2>
         <p className="text-sm text-[color:var(--color-slate)] leading-relaxed">
           Team purchases use a single checkout with manual onboarding follow-up.
