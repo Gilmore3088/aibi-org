@@ -22,5 +22,9 @@ export function generateCertificateId(): string {
     .map((byte) => ALPHABET[byte % ALPHABET.length])
     .join('');
 
+  // AIBIP- prefix retained for credential-ID continuity across the
+  // aibi-p -> foundation rename. Existing certificates carry AIBIP- IDs;
+  // changing the prefix would split the credential namespace and break
+  // any external verification that has cached an issued ID.
   return `AIBIP-${year}-${randomPart}`;
 }

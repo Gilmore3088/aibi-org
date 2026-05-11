@@ -30,6 +30,48 @@ UPDATE prompt_library
    SET course_source_ref = REPLACE(course_source_ref, 'aibi-p/', 'foundation/')
  WHERE course_source_ref LIKE 'aibi-p/%';
 
+-- 4. LMS-primitive tables (00009): course_id is a tenant slug, not a FK.
+-- Each table has UNIQUE (user_id, course_id, <item_id>). If a user has both
+-- an 'aibi-p' row and a 'foundation' row for the same item (possible when
+-- the writer flip happened mid-session), the UPDATE would violate UNIQUE.
+-- Pre-flight DELETE the legacy 'aibi-p' row in that collision case — the
+-- canonical 'foundation' row wins because it reflects the post-flip writer
+-- state. Then UPDATE the remaining 'aibi-p' rows to 'foundation'.
+--
+-- This mirrors the upsert-on-conflict behavior of the write-side code:
+-- pre-flip writes would have updated the 'aibi-p' row; post-flip writes
+-- create the 'foundation' row separately when no upsert key matches.
+
+DELETE FROM user_artifacts u1
+ WHERE u1.course_id = 'aibi-p'
+   AND EXISTS (
+     SELECT 1 FROM user_artifacts u2
+      WHERE u2.user_id = u1.user_id
+        AND u2.course_id = 'foundation'
+        AND u2.artifact_id = u1.artifact_id
+   );
+UPDATE user_artifacts SET course_id = 'foundation' WHERE course_id = 'aibi-p';
+
+DELETE FROM saved_prompts s1
+ WHERE s1.course_id = 'aibi-p'
+   AND EXISTS (
+     SELECT 1 FROM saved_prompts s2
+      WHERE s2.user_id = s1.user_id
+        AND s2.course_id = 'foundation'
+        AND s2.prompt_id = s1.prompt_id
+   );
+UPDATE saved_prompts SET course_id = 'foundation' WHERE course_id = 'aibi-p';
+
+DELETE FROM practice_rep_completions p1
+ WHERE p1.course_id = 'aibi-p'
+   AND EXISTS (
+     SELECT 1 FROM practice_rep_completions p2
+      WHERE p2.user_id = p1.user_id
+        AND p2.course_id = 'foundation'
+        AND p2.rep_id = p1.rep_id
+   );
+UPDATE practice_rep_completions SET course_id = 'foundation' WHERE course_id = 'aibi-p';
+
 -- Verification queries (these are not run as part of the migration; they are
 -- here for the operator to run manually after the migration applies):
 --
@@ -37,6 +79,9 @@ UPDATE prompt_library
 --   SELECT COUNT(*) FROM entitlements        WHERE product = 'aibi-p'; -- expect 0
 --   SELECT COUNT(*) FROM prompt_library
 --    WHERE course_source_ref LIKE 'aibi-p/%';                          -- expect 0
+--   SELECT COUNT(*) FROM user_artifacts          WHERE course_id = 'aibi-p'; -- expect 0
+--   SELECT COUNT(*) FROM saved_prompts           WHERE course_id = 'aibi-p'; -- expect 0
+--   SELECT COUNT(*) FROM practice_rep_completions WHERE course_id = 'aibi-p'; -- expect 0
 
 COMMIT;
 
@@ -47,5 +92,9 @@ COMMIT;
 --   UPDATE prompt_library
 --      SET course_source_ref = REPLACE(course_source_ref, 'foundation/', 'aibi-p/')
 --    WHERE course_source_ref LIKE 'foundation/%';
+--   UPDATE user_artifacts          SET course_id = 'aibi-p' WHERE course_id = 'foundation';
+--   UPDATE saved_prompts           SET course_id = 'aibi-p' WHERE course_id = 'foundation';
+--   UPDATE practice_rep_completions SET course_id = 'aibi-p' WHERE course_id = 'foundation';
 -- BUT: this loses any genuinely-new 'foundation' rows written by the post-Phase 6
--- writer code. Coordinate with operator before rolling back.
+-- writer code, AND the DELETE-on-conflict step above is not reversible (legacy
+-- duplicate rows are gone). Coordinate with operator before rolling back.
