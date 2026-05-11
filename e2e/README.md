@@ -33,11 +33,21 @@ npx playwright show-report
 
 ## Test seeding
 
-Tests that need an authenticated user create one via the helpers in
-`e2e/helpers/`. Every seeded account uses the address pattern
-`e2e+<short-id>@aibankinginstitute.test` so cleanup can target them
-by email LIKE. **Never seed against production.** The helpers throw
-if `SUPABASE_URL` matches the production project ref.
+There is no staging Supabase project. Tests seed users directly into
+the real Supabase project using the `.test` TLD email pattern
+(`e2e+<short-id>@aibankinginstitute.test`) — RFC 6761 guarantees this
+TLD never reaches a real inbox, and the cleanup helper deletes them
+by email LIKE after each test.
+
+The seed helper requires `E2E_ALLOW_PRODUCTION_SUPABASE=true` as an
+explicit acknowledgment. Set it in `.env.local` for local runs and as
+a CI secret for the auth job.
+
+To purge any stranded test users:
+
+```bash
+node -e "require('./e2e/helpers/seed').cleanupAllSeededUsers().then(r => console.log(r))"
+```
 
 ## Environment
 

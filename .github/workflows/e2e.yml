@@ -73,9 +73,11 @@ jobs:
       - name: Run auth tests
         env:
           PLAYWRIGHT_BASE_URL: ${{ steps.preview.outputs.url || inputs.target_url }}
-          SUPABASE_URL: ${{ secrets.STAGING_SUPABASE_URL }}
-          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.STAGING_SUPABASE_SERVICE_ROLE_KEY }}
-          SUPABASE_PROD_PROJECT_REF: ${{ secrets.PROD_SUPABASE_PROJECT_REF }}
+          # No staging Supabase project — auth tests seed against the
+          # real project with .test TLD emails. See e2e/README.md.
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          E2E_ALLOW_PRODUCTION_SUPABASE: 'true'
         run: npx playwright test e2e/auth.spec.ts
       - uses: actions/upload-artifact@v4
         if: failure()

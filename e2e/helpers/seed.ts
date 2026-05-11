@@ -1,10 +1,14 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 import { randomBytes } from 'node:crypto';
 
-// Production safety: refuse to seed if SUPABASE_URL points at the production
-// project. The check is conservative — any URL containing the production
-// project ref (set in env or hardcoded fallback) trips the guard.
-const PROD_PROJECT_REF = process.env.SUPABASE_PROD_PROJECT_REF ?? '';
+// There is no staging Supabase project. By design — for a pre-launch
+// site with no real traffic, a parallel project adds operational cost
+// (migrations, env vars, key rotation) for very little isolation gain.
+// Instead, we run e2e against production Supabase using the `.test` TLD
+// (RFC 6761, guaranteed never to reach a real inbox) and clean up after.
+//
+// The guard below blocks accidental runs that didn't opt in to this
+// pattern — set E2E_ALLOW_PRODUCTION_SUPABASE=true to acknowledge.
 
 function getServiceRoleClient(): SupabaseClient {
   const url = process.env.SUPABASE_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -15,10 +19,11 @@ function getServiceRoleClient(): SupabaseClient {
         'Set them in .env.local or CI secrets before running auth tests.',
     );
   }
-  if (PROD_PROJECT_REF && url.includes(PROD_PROJECT_REF)) {
+  if (process.env.E2E_ALLOW_PRODUCTION_SUPABASE !== 'true') {
     throw new Error(
-      'Refusing to seed e2e users against the production Supabase project. ' +
-        'Point SUPABASE_URL at staging or a local Supabase instance.',
+      'E2E seeding requires E2E_ALLOW_PRODUCTION_SUPABASE=true. This is a ' +
+        'safety acknowledgment that test users (e2e+*@aibankinginstitute.test) ' +
+        'will be created in the real Supabase project. Set the flag and rerun.',
     );
   }
   return createClient(url, serviceRole, {
