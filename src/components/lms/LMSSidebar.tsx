@@ -13,6 +13,15 @@ interface Props {
     readonly name: string;
     readonly role: string;
   };
+  /**
+   * When true, render without the `hidden md:flex` class and without
+   * sticky positioning. Used by the mobile drawer overlay so the same
+   * sidebar markup serves both the desktop rail and the mobile drawer.
+   */
+  readonly mobile?: boolean;
+  /** Optional click handler — fires when a nav link is activated. Used by
+   *  the mobile drawer to close itself after navigation. */
+  readonly onNavigate?: () => void;
 }
 
 const NAV_SECTIONS = [
@@ -45,14 +54,25 @@ const brandLine: React.CSSProperties = {
   lineHeight: 1,
 };
 
-export function LMSSidebar({ modules, completed, current, learner }: Props) {
+export function LMSSidebar({ modules, completed, current, learner, mobile, onNavigate }: Props) {
   const pathname = usePathname();
   const isOverview = pathname === '/courses/foundation/program' || pathname === '/courses/foundation/program/';
 
+  const asideStyle: React.CSSProperties = mobile
+    ? {
+        ...shellStyle,
+        position: 'static',
+        minHeight: '100%',
+        height: '100%',
+        width: '100%',
+        borderRight: 'none',
+      }
+    : shellStyle;
+
   return (
     <aside
-      style={shellStyle}
-      className="hidden md:flex"
+      style={asideStyle}
+      className={mobile ? 'flex' : 'hidden md:flex'}
       data-testid="lms-sidebar"
     >
       <div style={brandWrap}>
@@ -72,6 +92,7 @@ export function LMSSidebar({ modules, completed, current, learner }: Props) {
             <Link
               key={section.id}
               href={section.href}
+              onClick={onNavigate}
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -224,7 +245,7 @@ export function LMSSidebar({ modules, completed, current, learner }: Props) {
                           {interior}
                         </span>
                       ) : (
-                        <Link href={href} title={m.title} style={sharedStyle}>
+                        <Link href={href} title={m.title} onClick={onNavigate} style={sharedStyle}>
                           {interior}
                         </Link>
                       )}
