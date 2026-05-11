@@ -11,9 +11,9 @@ export const week1: CohortWeek = {
   estimatedLiveMinutes: 90,
   estimatedAssignmentMinutes: 105,
   keyOutput: 'Departmental work audit with 10+ workflows scored by frequency, time, and standardization value',
-  whyThisWeekExists: `AiBI Foundations graduates arrive with a skill that works for them. Most are using it daily. But that skill lives in their personal account, has no documentation beyond what they wrote for themselves, has no version control, and would be lost if they left the institution. Week 1 closes that gap. The personal skill becomes a template for institutional deployment.
+  whyThisWeekExists: `AiBI-Foundation graduates arrive with a skill that works for them. Most are using it daily. But that skill lives in their personal account, has no documentation beyond what they wrote for themselves, has no version control, and would be lost if they left the institution. Week 1 closes that gap. The personal skill becomes a template for institutional deployment.
 
-The organizing question of Week 1 is not "what can AI do?" — every AiBI Foundations graduate already knows the answer to that. The question is "what changes when other people depend on what I build?" Governance, documentation, versioning, ownership, and measurement each answer a different part of that question. The work audit grounds all of it in the learner's actual department.`,
+The organizing question of Week 1 is not "what can AI do?" — every AiBI-Foundation graduate already knows the answer to that. The question is "what changes when other people depend on what I build?" Governance, documentation, versioning, ownership, and measurement each answer a different part of that question. The work audit grounds all of it in the learner's actual department.`,
 
   learningGoals: [
     'Distinguish between a personal AI skill and an institutional AI asset across six governance dimensions',
@@ -26,7 +26,7 @@ The organizing question of Week 1 is not "what can AI do?" — every AiBI Founda
     {
       id: 'w1-opening',
       title: 'The Shift from Personal to Institutional',
-      content: `In AiBI Foundations, you built a skill and automated a personal task. That skill makes one person faster. It was designed for your margin of error — if it produced imperfect output, only you saw it, and you fixed it on the fly.
+      content: `In AiBI-Foundation, you built a skill and automated a personal task. That skill makes one person faster. It was designed for your margin of error — if it produced imperfect output, only you saw it, and you fixed it on the fly.
 
 In AiBI-S, the question changes: how do you make your department faster? The answer is not "give everyone my skill." The answer requires governance, documentation, versioning, ownership, and measurement. Each of those words represents a gap between a personal productivity tool and an institutional asset.
 
@@ -82,7 +82,7 @@ The three criteria compound. A task that scores high on all three is a strong au
     {
       id: 'w1-margin-of-error',
       title: 'The Margin of Error Shift',
-      content: `AiBI Foundations operated at the personal margin of error: high tolerance for failure, iterate freely, no one else sees your mistakes. AiBI-S operates at two overlapping margins.
+      content: `AiBI-Foundation operated at the personal margin of error: high tolerance for failure, iterate freely, no one else sees your mistakes. AiBI-S operates at two overlapping margins.
 
 **Team margin of error:** Colleagues catch mistakes. Reputation has some risk but is recoverable. A flawed output that goes to a colleague is embarrassing — it may require a correction email or an apology. It is not a regulatory event. The team margin permits learning through deployment, which is why AiBI-S starts building in Week 3 rather than spending six weeks in theory.
 
@@ -100,7 +100,7 @@ The customer-facing margin (zero tolerance, full governance, full accountability
       caption: 'Personal Skill vs. Institutional Asset: Six Governance Dimensions',
       columns: [
         { header: 'Dimension', key: 'dimension' },
-        { header: 'Personal Skill (AiBI Foundations)', key: 'personal' },
+        { header: 'Personal Skill (AiBI-Foundation)', key: 'personal' },
         { header: 'Institutional Skill (AiBI-S)', key: 'institutional' },
       ],
       rows: [
@@ -186,7 +186,7 @@ The customer-facing margin (zero tolerance, full governance, full accountability
           level: 'Personal',
           margin: 'High — fail privately, learn fast, iterate freely',
           affected: 'Only you',
-          course: 'AiBI Foundations',
+          course: 'AiBI-Foundation',
         },
         {
           level: 'Team',

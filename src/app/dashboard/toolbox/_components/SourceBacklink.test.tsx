@@ -24,12 +24,21 @@ describe('SourceBacklink', () => {
     expect(container.firstChild).toBeNull();
   });
 
-  it('renders course backlink with module number', () => {
+  it('renders course backlink with module number (legacy aibi-p prefix)', () => {
     const { getByRole } = render(
       <SourceBacklink source="course" sourceRef="aibi-p/module-3/p-001" librarySlugMap={{}} />
     );
     const link = getByRole('link');
-    expect(link.getAttribute('href')).toBe('/courses/foundations/3');
+    expect(link.getAttribute('href')).toBe('/courses/foundation/program/3');
+    expect(link.textContent).toContain('Module 3');
+  });
+
+  it('renders course backlink with module number (post-backfill foundation prefix)', () => {
+    const { getByRole } = render(
+      <SourceBacklink source="course" sourceRef="foundation/module-3/p-001" librarySlugMap={{}} />
+    );
+    const link = getByRole('link');
+    expect(link.getAttribute('href')).toBe('/courses/foundation/program/3');
     expect(link.textContent).toContain('Module 3');
   });
 

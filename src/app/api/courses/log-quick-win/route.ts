@@ -10,6 +10,7 @@ import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { createServerClient } from '@supabase/ssr';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
+import { dbReadValues } from '@/lib/products/normalize';
 
 const VALID_TOOLS = ['chatgpt', 'claude', 'copilot', 'gemini', 'notebooklm', 'perplexity'] as const;
 const VALID_FREQUENCIES = ['daily', '2-3x/week', 'weekly', 'monthly'] as const;
@@ -66,8 +67,7 @@ export async function GET(): Promise<NextResponse> {
     .from('course_enrollments')
     .select('id')
     .eq('user_id', user.id)
-    // Accept legacy 'aibi-p' rows during the 2026-05-09 rename migration window.
-    .in('product', ['foundations', 'aibi-p']);
+    .in('product', dbReadValues('foundation'));
 
   if (enrollmentError) {
     return NextResponse.json({ error: 'Failed to load quick wins.' }, { status: 500 });
@@ -143,18 +143,17 @@ export async function POST(request: Request): Promise<NextResponse> {
 
   const serviceClient = createServiceRoleClient();
 
-  // Look up the user's AiBI Foundations enrollment (one per user, per RLS policy)
+  // Look up the user's AiBI-Foundation enrollment (one per user, per RLS policy)
   const { data: enrollment, error: enrollmentError } = await serviceClient
     .from('course_enrollments')
     .select('id')
     .eq('user_id', user.id)
-    // Accept legacy 'aibi-p' rows during the 2026-05-09 rename migration window.
-    .in('product', ['foundations', 'aibi-p'])
+    .in('product', dbReadValues('foundation'))
     .single();
 
   if (enrollmentError || !enrollment) {
     return NextResponse.json(
-      { error: 'No AiBI Foundations enrollment found for this account.' },
+      { error: 'No AiBI-Foundation enrollment found for this account.' },
       { status: 403 },
     );
   }

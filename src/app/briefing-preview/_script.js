@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
   // animate score ring + count-up
   (function(){
     const total = 48, score = 32;

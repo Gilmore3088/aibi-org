@@ -10,13 +10,13 @@ import {
 } from "@/components/system";
 import { InteractiveSkillsPreview } from "@/components/sections/InteractiveSkillsPreview";
 import { InquiryForm } from "@/app/certifications/_components/InquiryForm";
-import { modules } from "@content/courses/foundations";
-import { getEnrollment as getPEnrollment } from "@/app/courses/foundations/_lib/getEnrollment";
+import { modules } from "@content/courses/foundation-program";
+import { getEnrollment as getPEnrollment } from "@/app/courses/foundation/program/_lib/getEnrollment";
 
 export const metadata: Metadata = {
   title: "Education | The AI Banking Institute",
   description:
-    "Free classes and three certification tracks for community banks and credit unions. Start with the AI Readiness Assessment, then earn AiBI Foundations, AiBI-S, or AiBI-L credentials.",
+    "Free classes and three certification tracks for community banks and credit unions. Start with the AI Readiness Assessment, then earn AiBI-Foundation, AiBI-S, or AiBI-L credentials.",
 };
 
 interface FreeClass {
@@ -106,9 +106,9 @@ export default async function EducationPage() {
               {completedCount}/{modules.length} modules complete
             </h4>
             <p className="font-serif italic text-body-sm text-slate mt-s1 mb-s4">
-              AiBI Foundations · in progress
+              AiBI-Foundation · in progress
             </p>
-            <Cta href="/courses/foundations" variant="secondary">
+            <Cta href="/courses/foundation/program" variant="secondary">
               Resume the program →
             </Cta>
           </Marginalia>
@@ -194,10 +194,10 @@ export default async function EducationPage() {
           className="mt-s6"
           rungs={[
             {
-              level: "Foundations",
+              level: "Practitioner",
               stepLabel: "01",
-              code: "AiBI Foundations",
-              title: "Banking AI Foundations",
+              code: "AiBI-Foundation",
+              title: "Banking AI Practitioner",
               designation: "Personal AI proficiency for every staff member",
               pillar: "application",
               facts: [
@@ -206,7 +206,7 @@ export default async function EducationPage() {
                 { label: "Effort", value: `${modules.length} modules`, mono: true },
                 { label: "Tuition", value: "$295 · $199/seat at 10+", mono: true },
               ],
-              href: "/courses/foundations",
+              href: "/courses/foundation/program",
             },
             {
               level: "Specialist",
@@ -278,8 +278,8 @@ export default async function EducationPage() {
               Need team certification or executive workshops?
             </h2>
             <p className="text-body-md text-cream mt-s4 leading-relaxed max-w-narrow">
-              AiBI Foundations team pricing starts at 10 seats. Specialist and Leader
-              programs are coming after the Foundations is validated with real learners.
+              AiBI-Foundation team pricing starts at 10 seats. Specialist and Leader
+              programs are coming after the Practitioner is validated with real learners.
             </p>
           </div>
           <div>

@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { verifyReviewer } from '@/lib/auth/reviewerAuth';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 
-const AIBIP_TOTAL_MODULES = 12;
+const FOUNDATION_PROGRAM_TOTAL_MODULES = 12;
 
 export async function GET(): Promise<NextResponse> {
   if (!isSupabaseConfigured()) {
@@ -47,7 +47,7 @@ export async function GET(): Promise<NextResponse> {
   return NextResponse.json({
     totalUsers: enrollmentRows.length,
     activeUsers: enrollmentRows.filter((row) => (row.completed_modules?.length ?? 0) > 0).length,
-    completedUsers: enrollmentRows.filter((row) => (row.completed_modules?.length ?? 0) >= AIBIP_TOTAL_MODULES).length,
+    completedUsers: enrollmentRows.filter((row) => (row.completed_modules?.length ?? 0) >= FOUNDATION_PROGRAM_TOTAL_MODULES).length,
     averageReadinessScore,
     certificatesIssued: certificateRows.length,
     pendingReviews: (submissions.data ?? []).filter((row) => row.review_status === 'pending').length,

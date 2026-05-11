@@ -87,10 +87,10 @@ export function PromptCardsExperience() {
                 Get the AiBI Prompt Cards
               </button>
               <Link
-                href="/courses/foundations"
+                href="/courses/foundation/program"
                 className="border border-[color:var(--color-ink)]/25 px-6 py-3 text-center font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-ink)] transition-colors hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)]"
               >
-                Explore AiBI Foundations
+                Explore Practitioner
               </Link>
             </div>
           </div>
@@ -231,15 +231,15 @@ export function PromptCardsExperience() {
             </p>
             <h2 className="mt-2 font-serif text-4xl leading-tight">Ready for the full AiBI Method?</h2>
             <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[color:var(--color-linen)]/75">
-              Foundations turns these habits into training. Toolbox turns the method into saved, tested, exportable workflows.
+              Practitioner turns these habits into training. Toolbox turns the method into saved, tested, exportable workflows.
             </p>
           </div>
           <Link
-            href="/courses/foundations"
+            href="/courses/foundation/program"
             onClick={() => trackEvent('prompt_card_course_click')}
             className="bg-[color:var(--color-terra)] px-6 py-3 text-center font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-linen)]"
           >
-            View AiBI Foundations
+            View Practitioner
           </Link>
         </div>
       </section>
@@ -324,8 +324,8 @@ function CardDetail(props: {
 
       <div className="mt-6 flex flex-col gap-3 border-t border-[color:var(--color-ink)]/10 pt-5 sm:flex-row sm:items-center sm:justify-between">
         <p className="font-serif text-2xl text-[color:var(--color-ink)]">Ready for the full AiBI Method?</p>
-        <Link href="/courses/foundations" className="bg-[color:var(--color-ink)] px-4 py-3 text-center font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-linen)]">
-          AiBI Foundations
+        <Link href="/courses/foundation/program" className="bg-[color:var(--color-ink)] px-4 py-3 text-center font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-linen)]">
+          Practitioner Course
         </Link>
       </div>
     </article>
@@ -396,7 +396,7 @@ function LeadModal({ onClose, onUnlocked }: { readonly onClose: () => void; read
           <label className="block">
             <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">Role</span>
             <select value={role} onChange={(event) => setRole(event.target.value)} className="mt-2 w-full border border-[color:var(--color-ink)]/15 bg-white px-3 py-3 text-sm">
-              <option value="foundations">Foundations</option>
+              <option value="practitioner">Practitioner</option>
               <option value="compliance-risk">Compliance / Risk</option>
               <option value="executive">Executive</option>
               <option value="training-buyer">Training Buyer</option>

@@ -14,6 +14,8 @@
 | `aibi-designer-brief.html` | Visual identity, color system, typography, Do's/Don'ts |
 | `aibi-consultant-playbook.html` | Executive Briefing script, Quick Win Sprint methodology, delivery |
 | `feedback-v1-aibi-landing-page-prd.docx` | V1 landing page PRD feedback — tagline, stats band, 8-section homepage spec |
+| `foundation-v2/AIBI-FOUNDATION-COMPLETE.md` | _SUPERSEDED 2026-05-11._ Four-track family (Lite/Full/Manager/Board) reversed — see 2026-05-11 Decisions Log. Kept as authoring archive. |
+| `foundation-v2/aibi-foundation-v2/` | _SUPERSEDED 2026-05-11._ Full v2 bundle archived; AiBI-Foundation is one course, not four tracks. |
 
 **Assessment content lives in `content/assessments/<version>/`** — each version is a folder (questions, scoring, copy) so content can iterate without touching component code. Current version: `v1`.
 
@@ -904,46 +906,155 @@ configured in the Supabase Auth dashboard, NOT in Resend Templates;
 their sender `From` field also needs swapping in the Supabase
 dashboard (not yet done — manual step).
 
-**2026-05-09 — Ledger brand refresh + AiBI-Practitioner → AiBI Foundations
-rename.** Two coupled decisions, executed on `feature/brand-refresh`.
+**2026-05-09 — Ledger brand refresh (Slice 0).** Executed on
+`feature/brand-refresh`. The 2026-04-15 Terra/Sage/Cobalt designer brief
+is superseded by a new "Ledger" design system delivered as a Claude
+Design handoff bundle (saved at `docs/brand-refresh-2026-05-09/`,
+original URLs in chats). Three canonical artifacts: `Design System.html`
+(full token system + 21 component specs), `AI Readiness Briefing.html`
+(assessment results page), and `LMS Prototype.html` + `lms/*.jsx`
+(course harness React shell). The new palette is parchment/linen +
+ink/navy + gold accent + oxblood for destructive only. Typography swaps
+Cormorant/DM Sans/DM Mono for Newsreader/Geist/JetBrains Mono.
+**Pillar color discipline is retired** — sage/cobalt/terra are no
+longer enforced as visual grammar. The 4-pillar curriculum structure
+shown in the LMS prototype data (Awareness · Understanding · Creation ·
+Application) is descriptive, not a color rule. Slice 0 (this commit) is
+additive only: new tokens in `src/styles/tokens-ledger.css`, new fonts
+wired alongside existing ones, zero visible change. Migration proceeds
+surface-by-surface in subsequent slices: internal `/design-system`
+reference page → assessment results (Briefing) → LMS harness →
+marketing site → cleanup of legacy tokens and fonts.
 
-*Ledger refresh.* The 2026-04-15 Terra/Sage/Cobalt designer brief is superseded
-by a new "Ledger" design system delivered as a Claude Design handoff bundle
-(saved at `docs/brand-refresh-2026-05-09/`, original URLs in chats). Three
-canonical artifacts: `Design System.html` (full token system + 21 component
-specs), `AI Readiness Briefing.html` (assessment results page), and
-`LMS Prototype.html` + `lms/*.jsx` (course harness React shell). The new
-palette is parchment/linen + ink/navy + gold accent + oxblood for
-destructive only. Typography swaps Cormorant/DM Sans/DM Mono for
-Newsreader/Geist/JetBrains Mono. **Pillar color discipline is retired** —
-sage/cobalt/terra are no longer enforced as visual grammar. The 4-pillar
-curriculum structure shown in the LMS prototype data
-(Awareness · Understanding · Creation · Application) is descriptive, not a
-color rule. Slice 0 (this commit) is additive only: new tokens in
-`src/styles/tokens-ledger.css`, new fonts wired alongside existing ones,
-zero visible change. Migration proceeds surface-by-surface in subsequent
-slices: internal `/design-system` reference page → assessment results
-(Briefing) → LMS harness → marketing site → cleanup of legacy tokens
-and fonts.
+> _Note: An earlier coupled rename plan in this entry (AiBI-Practitioner
+> → "AiBI Foundations" plural with route `/courses/foundations`) was
+> superseded by PR #45 on 2026-05-11, which landed the canonical
+> singular "AiBI-Foundation" with route `/courses/foundation/program`.
+> See the 2026-05-11 PR #45 entry below for the canonical rename._
 
-*AiBI-Practitioner → AiBI Foundations rename.* Reverses the 2026-05-06
-`AiBI-P → AiBI-Practitioner` rename. The course is now publicly named
-**AiBI Foundations** (keeping the AiBI prefix as a brand stamp) and the
-credential earned is **Foundations Certificate** (no AiBI prefix on the
-cert itself, treating it as a milestone rather than a credential class).
-AiBI-S and AiBI-L credentials are unchanged. Internal identifiers will
-also rename in this slice plan: route `/courses/aibi-p` →
-`/courses/foundations` (with 301), DB `course_enrollments.product`
-`'aibi-p'` → `'foundations'` via migration, file path `public/AiBI-P/` →
-`public/foundations/`, env vars `STRIPE_AIBIP_PRICE_ID` /
-`STRIPE_AIBIP_INSTITUTION_PRICE_ID` → `STRIPE_FOUNDATIONS_PRICE_ID` /
-`STRIPE_FOUNDATIONS_INSTITUTION_PRICE_ID`, Stripe product metadata
-updated, Resend template aliases renamed. ConvertKit and MailerLite
-tags are tier-keyed (Starting Point / Early Stage / Building Momentum /
-Ready to Scale) so they are unaffected. The retired-then-reused word
-"Foundations" was previously the name of the $97 5-module course
-deprecated 2026-04-17; that earlier product remains retired and the
-slot is now reused for the renamed course.
+
+**2026-05-09 — AiBI-Foundation v2 redesign accepted; staged migration.**
+The current AiBI-Practitioner course (12 modules, 6.6 hrs, $295) is
+superseded by AiBI-Foundation v2 — a four-track product family under
+one credential: Foundation Lite (4 modules · 90 min · $99 · mandatory
+bank-wide), Foundation Full (20 modules · 9.5 hrs · $495), Manager Track
+(3 modules · 90 min · $195), Board Briefing (2 modules · 60 min · $295/
+director or $1,495 flat). Activity-driven (8 activity types, 80%+
+hands-on, video capped at 60–90 sec per module). Multi-model platform:
+Claude + ChatGPT + Gemini + Copilot Chat in parallel. Six new modules
+in Full vs current course: M3 (How AI Got Here), M5 (Cybersecurity & AI
+Threats), M6 (Talking About AI With Members), M12 (Spreadsheet
+Workflows), M15 (Vendor Pitch Decoder), M18 (Incident Response Drill),
+M19 (Examiner Q&A Practice). Pillar order is now strictly linear
+(Awareness 1–4 · Understanding 5–10 · Creation 11–15 · Application
+16–20) — explicitly framed as "defensible to examiners reviewing the
+bank's AI training program." The Personal Prompt Library schema (18
+fields) is the spine artifact and a FIXED CONTRACT — forward-compatible
+with AiBI-Specialist's Departmental Skill Library and AiBI-Leader's
+bank-wide AI portfolio. Canonical bundle now lives at
+`Plans/foundation-v2/` (29 module specs, 33 artifact templates,
+platform brief, positioning).
+
+**Decisions captured this session:**
+1. **Rename continues** — AiBI-Practitioner → AiBI-Foundation in
+   user-facing copy. Internal IDs (`aibi-p` route, DB `product='aibi-p'`,
+   file paths, Stripe metadata, Resend template aliases) kept short
+   per the 2026-05-06 rename pattern to avoid URL/DB churn.
+2. **9.5-hr commit acknowledged** — Full track is no longer "evening +
+   weekend"; closer to a 2–3-weekend commit. Manager support and
+   pacing matter more in marketing/onboarding copy.
+3. **Lite is a real new SKU** — $99 mandatory bank-wide is a different
+   sales motion (volume-priced site licenses). Stripe checkout needs
+   a volume-pricing path before Lite goes live.
+4. **M5 ships text-only** — Voice-clone and deepfake elements
+   deferred. v2 launch curriculum covers prompt injection, AI-
+   augmented phishing, and member conversation handling. The voice-
+   verification protocol artifact stays in source bundle as future
+   scope; affected specs (M5, L2, L4, voice artifacts) carry an
+   editorial banner marking the deferral.
+5. **Real-world capture (Type 8) deferred** — Activity Type 8
+   (learner uploads sanitized real artifact) and the NPI regex
+   guard are out of v2 launch scope. Final Lab (M20) reverts to
+   synthetic-only inputs for launch.
+6. **AiBI-S/L deferrals confirmed** — multi-agent orchestration,
+   MCP, departmental governance held for Specialist; board strategy
+   deck and 3-year roadmap held for Leader. Handoffs via the fixed
+   Personal Prompt Library schema.
+
+**Migration is staged, not shipped.** Touching course content, Stripe
+pricing, the rename, and the Lite/Manager/Board track shells is
+multi-week work. Punch list at `tasks/foundation-v2-migration.md`.
+Plans/ canonical specs (aibi-prd.html etc.) left unchanged for the
+v1 site — v2 supersedes only the course tier, not the homepage,
+assessment, or institutional positioning.
+
+**2026-05-11 — `aibi-p` → `foundation` systematic rename merged (PR #45).**
+The 10-phase rename from the 2026-05-09 plan shipped to `main` as merge
+commit `c172923`. 11 commits covering: forever-shim `normalizeProduct` /
+`dbReadValues` at every DB read boundary (Stripe webhooks, course
+enrollments, entitlements), 4 write-side flips from `'aibi-p'` to
+`'foundation'`, migrations 00028 (CHECK constraint accepts both values)
+and 00029 (backfill `course_enrollments.product`, `entitlements.product`,
+`prompt_library.course_source_ref`, plus `course_id` on `user_artifacts`,
+`saved_prompts`, `practice_rep_completions` with DELETE-on-UNIQUE
+pre-flight), pedagogical prose swap (AiBI-P → AiBI-Foundation across 66
+files), env var rename `STRIPE_AIBIP_*` → `STRIPE_FOUNDATION_*` (legacy
+names kept as fallback). Internal identifiers preserved per 2026-05-06
+pattern: route `/courses/aibi-p`, DB `product='aibi-p'` legacy value,
+`AIBIP-` cert ID prefix, file path `public/AiBI-P/`. Shim is permanent —
+Stripe retry events from 2026-Q1 enrollments can land at any future date
+with `metadata.product='aibi-p'` and must collapse to `'foundation'`.
+
+**Operator deploy steps remaining for the rename** (per
+`tasks/aibi-p-to-foundation-deploy-checklist.md`): apply migrations
+00028 then 00029 to staging then prod (in order — 00028 first so the
+CHECK constraint accepts both values before the backfill flips rows);
+add `STRIPE_FOUNDATION_PRICE_ID` and `STRIPE_FOUNDATION_INSTITUTION_PRICE_ID`
+Vercel env vars (legacy `STRIPE_AIBIP_*` already work as fallback);
+re-sync ConvertKit/MailerLite copy where "AiBI-Practitioner" appears;
+update Stripe product *display* names; verify Resend template bodies.
+
+**2026-05-11 — Four-track Foundation family REVERSED. AiBI-Foundation is
+one course.** Reverses the 2026-05-09 Decisions Log entry. The four-track
+product family (Lite $99 bank-wide, Full $495, Manager Track $195, Board
+Briefing $295/director) is scrapped. There is one Foundation course — the
+current 12-module curriculum at `content/courses/foundation-program/`,
+served at `/courses/foundation/program/*`. AiBI-Practitioner is the old
+name; AiBI-Foundation is the new name. Same course, renamed.
+
+**What this means going forward:** anything pointing at the four-track
+shape is dead. `Plans/foundation-v2/` (29 module specs, 33 artifact
+templates) is archived authoring work — keep for historical reference but
+**not** the source of truth. The single-course Foundation product runs on
+the renamed v1 curriculum.
+
+**Cleanup commits shipped to `main` 2026-05-11** (commits `b3ad031`,
+`d3436f3`, plus this commit's stranded-code delete):
+- `/courses/foundation` now redirects to `/courses/foundation/program`
+  (was a marketing overview for the four tracks).
+- `/education` page drops the "AiBI-Foundation v2 — preview" tile.
+- Deleted: `src/app/courses/foundation/[track]/` (route tree),
+  `src/app/courses/foundation/_components/` (ActivityRenderer +
+  engines/BranchingScenarioEngine + LightMarkdown + SectionRenderer),
+  `content/courses/aibi-foundation/` (32 files: Lite + Full + Manager +
+  Board + refresh-slots), `tasks/foundation-v2-migration.md`.
+- Demoted `Plans/foundation-v2/` rows in the Reference Plans table.
+
+**What did NOT change:**
+- The 2026-05-11 rename (PR #45, commit `c172923`) is unaffected — that
+  was internal hygiene (aibi-p → foundation). The reversal here is about
+  product shape (one course vs four tracks), not about names.
+- The Personal Prompt Library 18-field schema is **still a fixed
+  contract** for future AiBI-Specialist / AiBI-Leader compatibility.
+- AiBI-S and AiBI-L deferrals remain in place; the single Foundation
+  course is the only active SKU.
+
+**Why the reversal:** The four-track design was a planning document;
+the actual product has always been one course. Shipping four SKUs would
+have required new Stripe products, new checkout flows, new institutional
+volume-pricing logic, and ~5,500 lines of new platform code (8 activity
+engines). None of that exists. The single-course shape matches both the
+current code reality and the operator's mental model.
 
 ---
 

@@ -1,10 +1,10 @@
 /**
- * Tools the AiBI Foundations curriculum teaches.
+ * Tools the AiBI-Foundation curriculum teaches.
  *
  * Bound to the actual tool guides in
- *   content/courses/foundations/tool-guides.ts                  (ChatGPT, Claude)
- *   content/courses/foundations/tool-guides-copilot-gemini.ts   (Copilot, Gemini)
- *   content/courses/foundations/tool-guides-notebooklm-perplexity.ts (NotebookLM, Perplexity)
+ *   content/courses/foundation/program/tool-guides.ts                  (ChatGPT, Claude)
+ *   content/courses/foundation/program/tool-guides-copilot-gemini.ts   (Copilot, Gemini)
+ *   content/courses/foundation/program/tool-guides-notebooklm-perplexity.ts (NotebookLM, Perplexity)
  *
  * If a tool is added to the course, add it here too. Pages that surface the
  * "tools your bankers will use" list (e.g. /for-institutions, /education)

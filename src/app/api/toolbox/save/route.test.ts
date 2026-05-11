@@ -26,7 +26,7 @@ vi.mock('@/lib/toolbox/access', () => ({
 vi.mock('@/lib/analytics/plausible', () => ({
   trackEvent: vi.fn(),
 }));
-vi.mock('@content/courses/foundations/prompt-library', async () => ({
+vi.mock('@content/courses/foundation-program/prompt-library', async () => ({
   getPromptById: (id: string) =>
     id === 'p-1'
       ? {
@@ -69,7 +69,7 @@ describe('POST /api/toolbox/save', () => {
     const res = await POST(
       req({
         origin: 'course',
-        payload: { promptId: 'p-1', courseSlug: 'foundations', moduleNumber: 2 },
+        payload: { promptId: 'p-1', courseSlug: 'aibi-p', moduleNumber: 2 },
       }),
     );
     expect(res.status).toBe(403);
@@ -84,7 +84,7 @@ describe('POST /api/toolbox/save', () => {
     const res = await POST(
       req({
         origin: 'course',
-        payload: { promptId: 'p-1', courseSlug: 'foundations', moduleNumber: 2 },
+        payload: { promptId: 'p-1', courseSlug: 'aibi-p', moduleNumber: 2 },
       }),
     );
     expect(res.status).toBe(200);
@@ -143,7 +143,7 @@ describe('POST /api/toolbox/save', () => {
         origin: 'course',
         payload: {
           promptId: 'does-not-exist',
-          courseSlug: 'foundations',
+          courseSlug: 'aibi-p',
           moduleNumber: 2,
         },
       }),

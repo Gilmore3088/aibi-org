@@ -4,7 +4,7 @@ export const runtime = 'nodejs';
 
 export function POST() {
   return NextResponse.json(
-    { error: 'AiBI-S is coming soon. Start with AiBI Foundations.' },
+    { error: 'AiBI-S is coming soon. Start with AiBI-Foundation.' },
     { status: 404 }
   );
 }

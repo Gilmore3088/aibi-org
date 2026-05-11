@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
   // ----- drawer plumbing -----
   const drBg     = document.getElementById('drawerBg');
   const askDr    = document.getElementById('askDrawer');

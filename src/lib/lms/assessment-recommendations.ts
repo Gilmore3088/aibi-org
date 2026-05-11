@@ -37,19 +37,19 @@ export function getAssessmentNextStep(tierId: Tier['id']): AssessmentNextStep {
   switch (tierId) {
     case 'starting-point':
       return {
-        title: 'Start the AiBI Foundations',
+        title: 'Start the Practitioner Course',
         description:
           'Build safe daily AI habits before your institution invests in broader automation.',
-        href: '/courses/foundations',
-        cta: 'Start AiBI Foundations',
+        href: '/courses/foundation/program',
+        cta: 'Start Practitioner Course',
       };
     case 'early-stage':
       return {
-        title: 'Earn the Foundations Certificate',
+        title: 'Earn the Practitioner Credential',
         description:
           'Turn isolated experimentation into a shared staff baseline with practical exercises and artifacts.',
-        href: '/courses/foundations',
-        cta: 'Preview AiBI Foundations',
+        href: '/courses/foundation/program',
+        cta: 'Preview AiBI-Foundation',
       };
     case 'building-momentum':
       return {

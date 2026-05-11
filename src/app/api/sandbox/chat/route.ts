@@ -14,7 +14,9 @@ import { streamClaude } from '@/lib/sandbox/providers/claude';
 const MAX_MESSAGE_LENGTH = 4000;
 const MAX_MESSAGES = 20;
 const VALID_PROVIDERS = ['claude'] as const;
-const VALID_PRODUCTS = ['aibi-p', 'aibi-s', 'aibi-l'] as const;
+// 'aibi-p' kept for legacy clients that have not refreshed; new clients send
+// 'foundation'. Both are accepted by the sandbox API.
+const VALID_PRODUCTS = ['aibi-p', 'foundation', 'aibi-s', 'aibi-l'] as const;
 
 type Provider = (typeof VALID_PROVIDERS)[number];
 type Product = (typeof VALID_PRODUCTS)[number];

@@ -56,13 +56,13 @@ export default function ForInstitutionsPage() {
             {
               scale: "Per-banker",
               name: "Courses",
-              tagline: "AiBI Foundations. Self-paced, scored on reviewed work.",
+              tagline: "AiBI-Foundation. Self-paced, scored on reviewed work.",
               included: [
                 "Twelve self-paced modules",
                 "Three reviewed AI artifacts per practitioner",
                 "$295 individual · $199/seat at 10+",
               ],
-              cta: { href: "/courses/foundations", label: "View the curriculum" },
+              cta: { href: "/courses/foundation/program", label: "View the curriculum" },
             },
             {
               scale: "Institution-wide",
@@ -134,7 +134,7 @@ export default function ForInstitutionsPage() {
             </p>
             <ul className="space-y-s2 text-body-sm text-cream">
               {[
-                "10 AiBI Foundations seats",
+                "10 AiBI-Foundation seats",
                 "Weekly coaching for 8 weeks",
                 "Institutional readiness diagnostic",
                 "Aggregate dashboard for your champion",

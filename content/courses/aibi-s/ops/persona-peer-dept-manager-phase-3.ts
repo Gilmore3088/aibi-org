@@ -1,4 +1,4 @@
-import type { DefendBeatPersona } from '../../../../lib/aibi-s/types';
+import type { DefendBeatPersona } from '@/lib/aibi-s/types';
 
 export const opsPeerDeptManagerPhase3: DefendBeatPersona = {
   id: 'ops-peer-dept-manager-p3',

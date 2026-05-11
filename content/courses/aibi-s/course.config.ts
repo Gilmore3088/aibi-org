@@ -43,7 +43,7 @@ export const aibiSConfig: CourseConfig = {
     },
   ],
   crossCourseNav: [
-    { label: 'AiBI Foundations', href: '/courses/foundations' },
+    { label: 'AiBI-Foundation', href: '/courses/foundation/program' },
     { label: 'AiBI-L', href: '/courses/aibi-l' },
   ],
   aiFeatures: {

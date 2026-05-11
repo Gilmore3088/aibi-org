@@ -2,7 +2,7 @@
 // Self-paced prototype: 5-track selector.
 
 import Link from 'next/link';
-import type { TrackCode } from '../../../../lib/aibi-s/types';
+import type { TrackCode } from '@/lib/aibi-s/types';
 
 interface TrackMeta {
   readonly code: TrackCode;

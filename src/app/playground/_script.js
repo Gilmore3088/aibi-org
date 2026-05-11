@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 (function(){
   // ============ STATE ============
   let mode = 'single'; // single | compare | conv

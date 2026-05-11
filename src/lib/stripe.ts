@@ -27,7 +27,9 @@ export const stripe = new Stripe(STRIPE_SECRET_KEY, {
 // ============================================================
 
 export interface CheckoutMetadata {
-  product: 'foundations' | 'aibi-p' | 'in-depth-assessment';
+  // 'aibi-p' kept for legacy Stripe webhook retries; new sessions emit 'foundation'.
+  // The webhook handler accepts both via normalizeProduct(); see src/lib/products/normalize.ts.
+  product: 'aibi-p' | 'foundation' | 'in-depth-assessment';
   mode: 'individual' | 'institution';
   tier?: 'individual' | 'team';
   user_email?: string;

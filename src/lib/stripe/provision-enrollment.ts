@@ -101,10 +101,15 @@ export async function provisionEnrollment(
     }
 
     // course_enrollments.product accepts any string; we use it to gate access
-    // to either the AiBI Foundations course or the In-Depth Assessment 48-question
+    // to either the Foundation course or the In-Depth Assessment 48-question
     // version. The current_module / completed_modules columns are ignored
     // for in-depth-assessment (no module sequence to track).
-    const productSlug = product === 'in-depth-assessment' ? 'in-depth-assessment' : 'aibi-p';
+    //
+    // Per the 2026-05-10 rename, NEW writes emit 'foundation'. Legacy rows
+    // with product='aibi-p' continue to read correctly via normalizeProduct()
+    // (src/lib/products/normalize.ts). The DB CHECK constraint accepts both
+    // values; backfill ships in 00029 after the dual-read code is live.
+    const productSlug = product === 'in-depth-assessment' ? 'in-depth-assessment' : 'foundation';
 
     const { error: insertErr } = await supabase.from('course_enrollments').insert({
       ...(userId ? { user_id: userId } : {}),

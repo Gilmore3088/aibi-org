@@ -22,9 +22,21 @@ const PROVIDERS = [
 
 interface AIPracticeSandboxProps {
   readonly moduleId: string;
-  readonly product: 'foundations' | 'aibi-p' | 'aibi-s' | 'aibi-l';
+  // 'aibi-p' kept for legacy clients during transition; canonical post-rename
+  // is 'foundation'. Both resolve to the same sandbox-data directory.
+  readonly product: 'aibi-p' | 'foundation' | 'aibi-s' | 'aibi-l';
   readonly sandboxConfig: SandboxConfig;
   readonly accentColor?: string;
+}
+
+/**
+ * Maps a product slug to its sandbox-data directory name.
+ * 'aibi-p' (legacy) and 'foundation' (canonical) both resolve to
+ * 'foundation-program' per the 2026-05-10 rename (Conflict 1 Option B).
+ */
+function productToDataDir(product: AIPracticeSandboxProps['product']): string {
+  if (product === 'aibi-p' || product === 'foundation') return 'foundation-program';
+  return product;
 }
 
 // ---------------------------------------------------------------------------
@@ -214,7 +226,7 @@ export function AIPracticeSandbox({
     const ext = sandboxConfig.sampleData[selectedDataIndex].type === 'csv' ? 'csv' : 'md';
     // moduleId is "aibi-p-module-5" — extract "module-5" for the public path
     const moduleDir = moduleId.replace(/^aibi-[psl]-/, '');
-    const path = `/sandbox-data/${product}/${moduleDir}/${dataId}.${ext}`;
+    const path = `/sandbox-data/${productToDataDir(product)}/${moduleDir}/${dataId}.${ext}`;
 
     fetch(path)
       .then((res) => {

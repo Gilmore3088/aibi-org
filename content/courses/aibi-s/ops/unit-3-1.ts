@@ -1,4 +1,4 @@
-import type { Unit } from '../../../../lib/aibi-s/types';
+import type { Unit } from '@/lib/aibi-s/types';
 import { opsPeerDeptManagerPhase3 } from './persona-peer-dept-manager-phase-3';
 
 export const opsUnit3_1: Unit = {

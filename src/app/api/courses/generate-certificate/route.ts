@@ -61,7 +61,7 @@ function pdfResponse(buffer: Buffer, certificateId: string, status: number, alre
     status,
     headers: {
       'Content-Type': 'application/pdf',
-      'Content-Disposition': `attachment; filename="Foundations-Certificate-${certificateId}.pdf"`,
+      'Content-Disposition': `attachment; filename="AiBI-Foundation-Certificate-${certificateId}.pdf"`,
       'Content-Length': String(buffer.length),
       'Cache-Control': 'no-store',
       'X-Certificate-Id': certificateId,
@@ -134,7 +134,7 @@ async function buildPdfBuffer(cert: CertificateRow): Promise<Buffer> {
   // a <Document> root so the cast is safe.
   const element = React.createElement(CertificateDocument, {
     holderName: cert.holder_name,
-    designation: 'Foundations Certificate',
+    designation: 'AiBI-Foundation',
     issuingInstitution: 'The AI Banking Institute',
     issuedDate: formatDate(cert.issued_at),
     certificateId: cert.certificate_id,
@@ -225,7 +225,7 @@ export async function POST(request: Request): Promise<Response> {
       enrollment_id: enrollmentId,
       certificate_id: certificateId,
       holder_name: holderName,
-      designation: 'Foundations Certificate',
+      designation: 'AiBI-Foundation',
       issued_at: issuedAt,
     })
     .select('id, certificate_id, holder_name, designation, issued_at, enrollment_id')
@@ -263,7 +263,7 @@ export async function POST(request: Request): Promise<Response> {
   sendCertificateIssued({
     email: enrollment.email,
     holderName: cert.holder_name,
-    designation: 'Foundations Certificate — The AI Banking Institute',
+    designation: 'AiBI-Foundation — The AI Banking Institute',
     certificateId: cert.certificate_id,
     issuedDate: formatDate(cert.issued_at),
     enrollmentId: cert.enrollment_id,

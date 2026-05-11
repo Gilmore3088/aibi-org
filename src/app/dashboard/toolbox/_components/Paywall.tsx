@@ -1,8 +1,18 @@
 'use client';
 
 import Link from 'next/link';
+import { useEffect } from 'react';
+
+// window.plausible is typed in src/types/plausible.d.ts and queue-initialized
+// in src/app/layout.tsx — we just call through the typed global here.
 
 export function Paywall() {
+  useEffect(() => {
+    if (typeof window !== 'undefined' && typeof window.plausible === 'function') {
+      window.plausible('toolbox_paywall_shown', { props: { source: 'direct' } });
+    }
+  }, []);
+
   return (
     <main className="mx-auto max-w-2xl px-6 py-16">
       <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
@@ -14,7 +24,7 @@ export function Paywall() {
       <p className="mt-6 text-lg leading-relaxed text-[color:var(--color-ink)]/80">
         The AiBI Toolbox — Skill Builder, Template Library, multi-provider
         Playground, and Cookbook — is bundled with every paid enrollment in
-        AiBI Foundations, AiBI-S, or AiBI-L. Enroll in any course and your access
+        AiBI-Foundation, AiBI-S, or AiBI-L. Enroll in any course and your access
         turns on automatically.
       </p>
       <div className="mt-10 flex flex-col gap-4 sm:flex-row">

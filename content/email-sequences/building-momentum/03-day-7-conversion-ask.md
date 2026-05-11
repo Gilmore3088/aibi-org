@@ -16,7 +16,7 @@ The Executive Briefing is a 60-minute working session with you, the leaders who 
 
 What it is not:
 
-- Not a sales pitch for AiBI Foundations. Most of your team has already moved past where AiBI Foundations starts.
+- Not a sales pitch for AiBI-Foundation. Most of your team has already moved past where AiBI-Foundation starts.
 - Not a slide deck.
 - Not a workshop.
 

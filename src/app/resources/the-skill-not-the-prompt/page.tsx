@@ -41,7 +41,7 @@ export default function TheSkillNotThePromptArticle() {
       <article className="max-w-3xl mx-auto">
         <header className="mb-12">
           <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-4">
-            Foundations Guide &middot; April 2026
+            Practitioner Guide &middot; April 2026
           </p>
           <h1 className="font-serif text-5xl md:text-6xl text-[color:var(--color-ink)] leading-[1.05] mb-6">
             The skill, not the prompt.
@@ -88,7 +88,7 @@ export default function TheSkillNotThePromptArticle() {
             What a skill is.
           </h2>
           <p>
-            In the AiBI Foundations curriculum, a skill is defined
+            In the AiBI-Foundation curriculum, a skill is defined
             precisely: a persistent, reusable instruction that executes
             reliably every time you need it, without requiring you to
             reconstruct the full context from scratch. Skills exist across
@@ -136,7 +136,7 @@ export default function TheSkillNotThePromptArticle() {
           <p>
             Every robust banking AI skill contains five components. Missing
             any one of them degrades the quality and consistency of outputs.
-            The AiBI Foundations curriculum calls this the five-component anatomy,
+            The AiBI-Foundation curriculum calls this the five-component anatomy,
             simplified in practice to the RTFC Framework (Role, Task, Format,
             Constraint), with Context embedded in Role.
           </p>
@@ -178,7 +178,7 @@ export default function TheSkillNotThePromptArticle() {
             The arithmetic of skills.
           </h2>
           <p>
-            The Loan QC skill example in the AiBI Foundations curriculum is concrete:
+            The Loan QC skill example in the AiBI-Foundation curriculum is concrete:
             a lending analyst who builds a Loan QC skill &mdash; configured
             to act as a senior credit analyst, focus on collateral adequacy
             and documentation completeness, format output as a two-column
@@ -261,7 +261,7 @@ export default function TheSkillNotThePromptArticle() {
             Constraints turns it into a repeatable, institutional-grade tool.
           </p>
           <p>
-            The AiBI Foundations curriculum&rsquo;s Module 7 skill builder takes
+            The AiBI-Foundation curriculum&rsquo;s Module 7 skill builder takes
             that process from a blank page to a deployable Markdown file
             in 30 minutes. The resulting file can be loaded into ChatGPT,
             Claude, Gemini, or any AI platform that supports custom
@@ -276,13 +276,13 @@ export default function TheSkillNotThePromptArticle() {
 
         <aside className="mt-16 bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-8 md:p-10 text-center">
           <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
-            AiBI Foundations Certification
+            AiBI-Foundation Certification
           </p>
           <h3 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] mb-4">
             Build your first institutional skill in Module&nbsp;7.
           </h3>
           <p className="text-[color:var(--color-ink)]/75 max-w-xl mx-auto mb-6 leading-relaxed">
-            The AiBI Foundations certification covers the full five-component
+            The AiBI-Foundation certification covers the full five-component
             skill anatomy, the RTFC Framework, and a guided skill-builder that
             produces a deployable Markdown file in 30 minutes. Twelve pre-built
             skill templates across four banking roles are included.
@@ -291,13 +291,13 @@ export default function TheSkillNotThePromptArticle() {
             href="/education"
             className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
           >
-            View the AiBI Foundations Certification
+            View the AiBI-Foundation Certification
           </Link>
         </aside>
 
         <footer className="mt-16 pt-8 border-t border-[color:var(--color-ink)]/10">
           <p className="font-mono text-xs text-[color:var(--color-ink)]/70 leading-relaxed">
-            <strong>Sources:</strong> AiBI Foundations curriculum, Modules 6
+            <strong>Sources:</strong> AiBI-Foundation curriculum, Modules 6
             and 7: Anatomy of a Skill and Write Your First Skill. Getting Started
             in AI, Jack Henry &amp; Associates, 2025, citing Gartner Peer
             Community data (57% of FIs struggle with AI skill gaps). Platform

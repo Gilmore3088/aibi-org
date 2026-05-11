@@ -1,10 +1,9 @@
 import type { LearnerRole } from '@/types/course';
 
-// 'foundations' is the canonical id from 2026-05-09. 'aibi-p' is retained
-// as a legacy value because existing rows in course_enrollments still use
-// it; a Supabase migration backfills them. Code should write 'foundations'
-// for new enrollments and accept either when reading.
-export type CourseId = 'foundations' | 'aibi-p' | 'aibi-s' | 'aibi-l' | (string & {});
+// 'aibi-p' kept as a legacy value forever for Stripe webhook retries and
+// pre-Phase 7-backfill DB rows. New writes emit 'foundation'.
+// See src/lib/products/normalize.ts for the boundary shim.
+export type CourseId = 'aibi-p' | 'foundation' | 'aibi-s' | 'aibi-l' | (string & {});
 
 export type CoursePhase =
   | 'understand'

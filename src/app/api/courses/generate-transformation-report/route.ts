@@ -1,6 +1,6 @@
 // GET /api/courses/generate-transformation-report?enrollmentId=<id>
 //
-// Generates the AiBI Foundations Transformation Report PDF for a completed learner.
+// Generates the AiBI-Foundation Transformation Report PDF for a completed learner.
 // The report summarises pre/post assessment comparison, skills built,
 // cumulative impact, quick wins, and course completion status.
 //
@@ -23,7 +23,7 @@ import {
   type DimensionEntry,
 } from '@/lib/pdf/TransformationReportDocument';
 
-const PDF_FILENAME = 'AiBI Foundations-Transformation-Report.pdf';
+const PDF_FILENAME = 'AiBI-Foundation-Transformation-Report.pdf';
 
 // Annual hours saved by module — mirrors _PostAssessmentClient.tsx constant
 const ANNUAL_HOURS_BY_MODULE: Record<number, number> = {

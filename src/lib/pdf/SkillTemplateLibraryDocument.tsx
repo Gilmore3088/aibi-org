@@ -348,7 +348,7 @@ function TemplatePage({ template, index }: { template: typeof TEMPLATES[0]; inde
 
       <View style={styles.footer}>
         <Text style={styles.footerText}>
-          AiBI Foundations — Banking AI Foundations · Skill Template Library · Module 6 Artifact
+          AiBI-Foundation — Banking AI Practitioner · Skill Template Library · Module 6 Artifact
         </Text>
         <Text style={styles.pageNum}>Template {index + 1} of {TEMPLATES.length}</Text>
       </View>
@@ -359,14 +359,14 @@ function TemplatePage({ template, index }: { template: typeof TEMPLATES[0]; inde
 export function SkillTemplateLibraryDocument() {
   return (
     <Document
-      title="AiBI Foundations Skill Template Library"
+      title="AiBI-Foundation Skill Template Library"
       author="The AI Banking Institute"
       subject="Banking AI Skill Templates — Module 6 Artifact"
     >
       {/* Cover Page */}
       <Page size="LETTER" style={styles.page}>
         <View style={styles.header}>
-          <Text style={styles.headerLabel}>AiBI Foundations: BANKING AI PRACTITIONER</Text>
+          <Text style={styles.headerLabel}>AiBI-Foundation: BANKING AI PRACTITIONER</Text>
           <Text style={styles.headerTitle}>Skill Template Library</Text>
           <Text style={styles.headerSubtitle}>
             Module 6 Artifact · Five Banking AI Skill Templates · Ready to Deploy
@@ -469,7 +469,7 @@ export function SkillTemplateLibraryDocument() {
 
         <View style={styles.footer}>
           <Text style={styles.footerText}>
-            The AI Banking Institute · AiBI Foundations — Banking AI Foundations
+            The AI Banking Institute · AiBI-Foundation — Banking AI Practitioner
           </Text>
           <Text style={styles.pageNum}>1 of {TEMPLATES.length + 1}</Text>
         </View>

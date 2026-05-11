@@ -99,7 +99,7 @@ export const PDF_NEXT_STEPS_TRIO: ReadonlyArray<PdfNextStep> = [
   {
     number: '01',
     category: 'Training',
-    title: 'AiBI Foundations',
+    title: 'AiBI-Foundation',
     body: 'Enroll relevant staff to build foundational skills inside a safe, repeatable framework.',
     bullets: [
       '12 short modules focused on real work',

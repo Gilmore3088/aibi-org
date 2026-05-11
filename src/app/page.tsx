@@ -8,7 +8,7 @@ import { BRAND } from "@content/copy";
 export const metadata: Metadata = {
   title: `${BRAND.name} — ${BRAND.tagline}`,
   description:
-    "An education company for community banks and credit unions. Begin with a twelve-question readiness diagnostic; earn the AiBI Foundations credential when you are ready.",
+    "An education company for community banks and credit unions. Begin with a twelve-question readiness diagnostic; earn the AiBI-Foundation credential when you are ready.",
 };
 
 export default function HomePage() {
@@ -30,7 +30,7 @@ export default function HomePage() {
           </span>
         ),
         primaryCta: { href: "/assessment/start", label: "Take the assessment" },
-        secondaryCta: { href: "/courses/foundations", label: "View the curriculum" },
+        secondaryCta: { href: "/courses/foundation/program", label: "View the curriculum" },
         divider: "hairline",
       }}
     >
@@ -53,17 +53,17 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Right tile — Foundations Certificate, on parch */}
+          {/* Right tile — Practitioner Certification, on parch */}
           <div className="bg-parch px-s7 py-s12 md:py-s14 md:pl-s10">
             <h2 className="font-serif text-display-lg md:text-display-xl text-ink leading-[1.05] tracking-tightish max-w-[14ch]">
-              AiBI-<em className="text-terra">Foundations</em> Certificate
+              AiBI-<em className="text-terra">Practitioner</em> Certification
             </h2>
             <p className="text-body-lg text-ink/80 leading-relaxed mt-s6 max-w-[36ch]">
               Twelve self-paced modules. The community-banking AI proficiency
               standard, scored on reviewed work — not multiple-choice quizzes.
             </p>
             <div className="mt-s8">
-              <Cta variant="secondary" href="/courses/foundations">
+              <Cta variant="secondary" href="/courses/foundation/program">
                 View the curriculum →
               </Cta>
             </div>

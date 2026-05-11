@@ -1,6 +1,6 @@
 'use client';
 
-import type { DefendBeatPersona } from '../../../../../../../../lib/aibi-s/types';
+import type { DefendBeatPersona } from '@/lib/aibi-s/types';
 
 export function PersonaMemo({ persona }: { readonly persona: DefendBeatPersona }) {
   return (

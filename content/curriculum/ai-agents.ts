@@ -1,5 +1,5 @@
 /**
- * AI Agents the AiBI Foundations curriculum teaches bankers to build.
+ * AI Agents the AiBI-Foundation curriculum teaches bankers to build.
  *
  * "Agent" here is the AI primitive distinct from a Skill — a multi-step
  * workflow that chains Skills, decision logic, and human checkpoints

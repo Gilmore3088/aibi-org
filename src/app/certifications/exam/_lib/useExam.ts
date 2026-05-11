@@ -1,8 +1,8 @@
 'use client';
 
 import { useCallback, useMemo, useState } from 'react';
-import { examQuestions, TOPIC_LABELS, type ExamQuestion, type Topic } from '@content/exams/foundations/questions';
-import { getProficiencyLevel, type ProficiencyLevel } from '@content/exams/foundations/scoring';
+import { examQuestions, TOPIC_LABELS, type ExamQuestion, type Topic } from '@content/exams/foundation-program/questions';
+import { getProficiencyLevel, type ProficiencyLevel } from '@content/exams/foundation-program/scoring';
 
 const QUESTIONS_PER_EXAM = 12;
 

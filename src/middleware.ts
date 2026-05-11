@@ -36,6 +36,13 @@ const COMING_SOON_BYPASS_PREFIXES: readonly string[] = [
   '/auth',
   '/admin',
   '/coming-soon',
+  '/assessment',
+  '/results',
+  '/verify',
+  '/education',
+  '/for-institutions',
+  '/courses',
+  '/dashboard',
 ];
 
 export async function middleware(request: NextRequest): Promise<NextResponse> {

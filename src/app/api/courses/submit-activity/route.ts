@@ -12,11 +12,11 @@ import { cookies } from 'next/headers';
 import { createServerClient } from '@supabase/ssr';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import {
-  V4_AIBIP_MODULE_BY_NUMBER,
+  V4_FOUNDATION_PROGRAM_MODULE_BY_NUMBER,
   getModuleByNumber,
-} from '@content/courses/foundations';
-import { AIBI_P_ARTIFACTS } from '@content/practice-reps/foundations';
-import type { Activity, ActivityField } from '@content/courses/foundations';
+} from '@content/courses/foundation-program';
+import { AIBI_P_ARTIFACTS } from '@content/practice-reps/foundation-program';
+import type { Activity, ActivityField } from '@content/courses/foundation-program';
 
 const LAST_MODULE = 12;
 
@@ -38,7 +38,7 @@ interface EnrollmentRow {
 }
 
 function getV4Activity(moduleNumber: number): Activity | null {
-  const expandedModule = V4_AIBIP_MODULE_BY_NUMBER.get(moduleNumber);
+  const expandedModule = V4_FOUNDATION_PROGRAM_MODULE_BY_NUMBER.get(moduleNumber);
   if (!expandedModule) return null;
 
   const artifact = AIBI_P_ARTIFACTS.find((item) => item.moduleNumber === expandedModule.number);
@@ -261,7 +261,10 @@ export async function POST(request: Request): Promise<NextResponse> {
     await serviceClient.from('user_artifacts').upsert(
       {
         user_id: user.id,
-        course_id: 'foundations',
+        // Canonical post-rename slug. Existing rows with course_id='aibi-p' get
+        // backfilled by supabase/migrations/00029. Dual-read consumers
+        // (dashboard/learner) accept both via dbReadValues().
+        course_id: 'foundation',
         artifact_id: submittedActivity.artifactId,
         status: 'completed',
         source_activity_id: activityId,

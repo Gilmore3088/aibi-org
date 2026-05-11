@@ -6,10 +6,11 @@
 import Link from 'next/link';
 import type { ToolboxSource } from '@/lib/toolbox/types';
 
-// Accept both new 'foundations' prefix and legacy 'aibi-p' prefix during the
-// 2026-05-09 rename migration window. Existing library_links rows are
-// rewritten in supabase/migrations/00028; this matcher is forward + back compat.
-const COURSE_REF_PATTERN = /^(?:foundations|aibi-p)\/module-(\d+)\/[^/]+$/;
+// Accepts both legacy 'aibi-p/' prefix (pre-Phase 7 backfill) and canonical
+// 'foundation/' prefix (post-backfill). Both map to the same /courses/foundation/program
+// target. The pattern must accept both forever — Stripe webhook retries and
+// other async writers may emit either even after the backfill runs.
+const COURSE_REF_PATTERN = /^(?:aibi-p|foundation)\/module-(\d+)\/[^/]+$/;
 const LIBRARY_REF_PATTERN = /^library:([0-9a-f-]{36})@/i;
 const COOKBOOK_REF_PATTERN = /^cookbook:([^#]+)#step-(\d+)$/;
 
@@ -34,8 +35,8 @@ function resolveTarget(
     if (!match) return null;
     const moduleNumber = match[1];
     return {
-      label: `AiBI Foundations · Module ${moduleNumber}`,
-      href: `/courses/foundations/${moduleNumber}`,
+      label: `AiBI-Foundation · Module ${moduleNumber}`,
+      href: `/courses/foundation/program/${moduleNumber}`,
     };
   }
   // Cookbook branch must precede the library branch: a cookbook source_ref
