@@ -130,6 +130,24 @@
 .ledger-toggle button:hover { color: var(--ink-2); }
 .ledger-toggle button[aria-selected="true"] { background: var(--ink); color: var(--paper); }
 
+/* ---------- Prose (long-form body copy) ---------- */
+.ledger-prose { font-family: var(--serif); font-size: 17px; line-height: 1.65; color: var(--ink-2); max-width: 64ch; }
+.ledger-prose > * + * { margin-top: 1.1em; }
+.ledger-prose strong { color: var(--ink); font-weight: 500; }
+.ledger-prose em { color: var(--ink); }
+.ledger-prose a { color: var(--terra); border-bottom: 1.5px solid var(--terra); padding-bottom: 1px; }
+.ledger-prose a:hover { color: var(--terra-2); border-color: var(--terra-2); }
+.ledger-prose h2 { font-family: var(--serif); font-weight: 500; font-size: 26px; line-height: 1.15; letter-spacing: -0.02em; margin-top: 2em; color: var(--ink); }
+.ledger-prose h3 { font-family: var(--serif); font-weight: 500; font-size: 20px; line-height: 1.2; letter-spacing: -0.015em; margin-top: 1.6em; color: var(--ink); }
+.ledger-prose ul, .ledger-prose ol { padding-left: 1.4em; }
+.ledger-prose li + li { margin-top: 0.4em; }
+
+/* ---------- Article (Eyebrow + H1 + prose stack) ---------- */
+.ledger-article { max-width: 760px; margin: 0 auto; padding: 56px 32px 96px; }
+.ledger-article__head { margin-bottom: 36px; }
+.ledger-article__head .ledger-eyebrow { margin-bottom: 12px; display: block; }
+.ledger-article__head .ledger-h1 { font-size: clamp(40px, 5vw, 64px); }
+
 /* ---------- Surface (full-page wrapper) ---------- */
 .ledger-surface { min-height: 100vh; display: flex; flex-direction: column; }
 .ledger-surface__header { padding: 24px 32px; border-bottom: 1px solid var(--rule); display: flex; align-items: center; justify-content: space-between; gap: 16px; }

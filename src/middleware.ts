@@ -46,6 +46,8 @@ const COMING_SOON_BYPASS_PREFIXES: readonly string[] = [
   '/lms-preview',      // LMS prototype iframe wrapper
   '/lms-prototype',    // static asset folder (iframe target)
   '/courses/foundation-preview',  // pre-purchase foundation course preview
+  '/privacy',          // Ledger-redesigned legal page
+  '/terms',            // Ledger-redesigned legal page
 ];
 
 export async function middleware(request: NextRequest): Promise<NextResponse> {

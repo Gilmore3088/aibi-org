@@ -68,6 +68,32 @@ export function LedgerSurface({
   );
 }
 
+// LedgerArticle — eyebrow + h1 + prose body. Wraps content in .ledger so
+// the Ledger tokens are in scope. Designed for legal pages, marketing
+// inner pages, and any long-form content. Does NOT add a page header
+// (use LedgerSurface for that); these pages keep the global site chrome.
+export function LedgerArticle({
+  eyebrow,
+  title,
+  children,
+}: {
+  eyebrow: ReactNode;
+  title: ReactNode;
+  children: ReactNode;
+}) {
+  return (
+    <LedgerScope>
+      <article className="ledger-article">
+        <header className="ledger-article__head">
+          <LedgerEyebrow>{eyebrow}</LedgerEyebrow>
+          <LedgerH1>{title}</LedgerH1>
+        </header>
+        <div className="ledger-prose">{children}</div>
+      </article>
+    </LedgerScope>
+  );
+}
+
 export function LedgerEyebrow({ children }: { children: ReactNode }) {
   return <p className="ledger-eyebrow">{children}</p>;
 }
