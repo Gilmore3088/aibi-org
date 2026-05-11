@@ -128,7 +128,7 @@ export default async function CertificatePage() {
                   className="text-xl font-bold text-[var(--color-ink)] uppercase tracking-wide"
                   style={{ fontFamily: 'Cormorant SC, Cormorant, Georgia, serif' }}
                 >
-                  AiBI-Foundation &middot; AiBI-Foundation
+                  AiBI-Foundation
                 </p>
                 <p
                   className="text-sm font-bold text-[var(--color-slate)] uppercase tracking-wider mt-1"

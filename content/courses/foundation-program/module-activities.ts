@@ -973,7 +973,7 @@ language drift faster than you expect.
 ---
 
 Submitted to The AI Banking Institute for review and credentialing as
-AiBI-Foundation · AiBI-Foundation.
+AiBI-Foundation.
 `,
   },
 };

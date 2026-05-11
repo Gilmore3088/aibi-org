@@ -45,7 +45,7 @@ export function CourseSidebar({ completedModules, currentModule }: CourseSidebar
               AiBI-Foundation
             </div>
             <div className="text-[10px] uppercase font-mono tracking-[0.2em] text-[color:var(--color-slate)]">
-              AiBI-Foundation
+              Foundation Program
             </div>
           </div>
         </div>

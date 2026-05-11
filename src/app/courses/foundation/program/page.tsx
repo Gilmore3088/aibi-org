@@ -16,15 +16,15 @@ import type { ModuleStatus } from './_lib/courseProgress';
 import { courseJsonLd, jsonLdString } from '@/lib/seo/jsonld';
 
 export const metadata: Metadata = {
-  title: 'AiBI-Foundation — AiBI-Foundation | The AI Banking Institute',
+  title: 'AiBI-Foundation | The AI Banking Institute',
   description:
     'The AiBI-Foundation course teaches every staff member at a community financial institution how to use AI tools safely, professionally, and with regulatory confidence.',
 };
 
 const FOUNDATION_COURSE_JSONLD = courseJsonLd({
-  name: 'AiBI-Foundation — Banking AI Practitioner',
+  name: 'AiBI-Foundation',
   description:
-    'The Banking AI Practitioner course teaches every staff member at a community financial institution how to use AI tools safely, professionally, and with regulatory confidence. 12 modules covering Awareness, Understanding, Creation, and Application of AI for community banking work.',
+    'AiBI-Foundation teaches every staff member at a community financial institution how to use AI tools safely, professionally, and with regulatory confidence. 12 modules covering Awareness, Understanding, Creation, and Application of AI for community banking work.',
   slug: '/courses/foundation/program',
   modules: 12,
   hours: 7,
