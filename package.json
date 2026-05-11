@@ -13,6 +13,8 @@
     "e2e:ui": "playwright test --ui",
     "e2e:smoke": "playwright test e2e/smoke.spec.ts",
     "e2e:a11y": "playwright test e2e/a11y.spec.ts",
+    "audit:env": "node scripts/audit-env.mjs",
+    "audit:env:strict": "node scripts/audit-env.mjs --strict",
     "e2e:install": "playwright install --with-deps chromium webkit",
     "hubspot:create-properties": "node scripts/hubspot-create-properties.mjs",
     "hubspot:create-properties:dry": "node scripts/hubspot-create-properties.mjs --dry-run"
