@@ -1,0 +1,59 @@
+name: Lighthouse
+
+on:
+  pull_request:
+    branches: [main, staging]
+  workflow_dispatch:
+
+concurrency:
+  group: lighthouse-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    name: Lighthouse audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Wait for Vercel preview
+        id: preview
+        if: github.event_name == 'pull_request'
+        uses: patrickedqvist/wait-for-vercel-preview@v1.3.1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          max_timeout: 600
+
+      - name: Run Lighthouse CI
+        # Against PR previews, swap the production URLs in .lighthouserc.json
+        # for the preview URL. Against main/staging, hit production directly.
+        env:
+          LHCI_PREVIEW_URL: ${{ steps.preview.outputs.url }}
+        run: |
+          npm install -g @lhci/cli@0.13.x
+
+          if [ -n "${LHCI_PREVIEW_URL}" ]; then
+            # Rewrite production hostnames to the preview URL for this run only.
+            tmp=$(mktemp)
+            jq --arg base "${LHCI_PREVIEW_URL}" '
+              .ci.collect.url |= map(
+                sub("https://www.aibankinginstitute.com"; $base)
+              )
+            ' .lighthouserc.json > "$tmp"
+            mv "$tmp" .lighthouserc.json
+            echo "Auditing against preview: ${LHCI_PREVIEW_URL}"
+          else
+            echo "Auditing against production"
+          fi
+
+          lhci autorun --config=./.lighthouserc.json || true
+
+      - name: Upload Lighthouse report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-report
+          path: |
+            .lighthouseci/
+          retention-days: 14

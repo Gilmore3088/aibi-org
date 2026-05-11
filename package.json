@@ -12,6 +12,7 @@
     "e2e": "playwright test",
     "e2e:ui": "playwright test --ui",
     "e2e:smoke": "playwright test e2e/smoke.spec.ts",
+    "e2e:a11y": "playwright test e2e/a11y.spec.ts",
     "e2e:install": "playwright install --with-deps chromium webkit",
     "hubspot:create-properties": "node scripts/hubspot-create-properties.mjs",
     "hubspot:create-properties:dry": "node scripts/hubspot-create-properties.mjs --dry-run"
@@ -37,6 +38,7 @@
     "stripe": "^22.0.2"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.10.0",
     "@playwright/test": "^1.50.0",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
