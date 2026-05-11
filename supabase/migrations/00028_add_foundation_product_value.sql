@@ -1,6 +1,17 @@
 -- 00028_add_foundation_product_value.sql
 -- Phase 2 of the aibi-p -> foundation rename migration (Plan: refactor-aibi-p-to-foundation-migration.md)
 --
+-- OBSOLETE — DO NOT APPLY. This migration was never run against production:
+-- the brand-refresh rename (see 00028a_legacy_rename_applied_2026_05_10.sql)
+-- had already moved the data to 'foundations' (plural) by the time PR #45
+-- landed in git, and PR #45's migrations were therefore never invoked.
+-- Migration 00030_widen_foundation_product_and_backfill_plural.sql superseded
+-- this file by widening the CHECK constraint to accept both singular and
+-- plural (then immediately backfilling plural -> singular).
+--
+-- Kept for repo history. Re-running it is a no-op safely (the constraint
+-- and trigger are already at the post-00030 shape).
+--
 -- ADDITIVE: extends the allowed `product` values from
 --   ('aibi-p', 'aibi-s', 'aibi-l', 'toolbox-only')
 -- to
