@@ -11,7 +11,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { questions as questionPool } from '@content/assessments/v2/questions';
 import { selectAllQuestions } from '@content/assessments/v2/rotation';
 import {
-  getTierV2,
+  getTierInDepth,
   getDimensionScores,
   type Tier,
   type DimensionScore,
@@ -33,6 +33,7 @@ export interface InDepthState {
   readonly answers: readonly number[];
   readonly phase: AssessmentPhase;
   readonly totalScore: number;
+  readonly maxScore: number;
   readonly tier: Tier | null;
   readonly isComplete: boolean;
   readonly progress: number;
@@ -123,15 +124,16 @@ export function useAssessmentInDepth(): InDepthState & InDepthActions {
     window.sessionStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
   }, [answers, currentQuestion, selectedQuestions, hydrated]);
 
+  // Raw score is the sum of all 48 answers (1-4 points each) — range
+  // 48–192. We keep the raw value as the source of truth and stop
+  // rescaling into the free-flow 12–48 band. The In-Depth tier function
+  // maps raw + max → tier id via percentile thresholds so the Briefing's
+  // phase rubric (Curious / Coordinated / Programmatic / Native) and the
+  // stored readiness_tier_id always reconcile.
   const totalScore = answers.reduce((sum, n) => sum + n, 0);
+  const maxScore = questionCount * 4;
   const isComplete = questionCount > 0 && answers.length === questionCount;
-  // Scoring normalizes by question count via the same getTierV2 mapping —
-  // the 48-question full-pool max is 192 (4 × 48), but the public tier
-  // mapping is keyed off a 12-48 scale. Normalize the in-depth raw score
-  // back into the 12-48 band by dividing by 4 then multiplying by 12.
-  const normalizedScore =
-    questionCount > 0 ? Math.round((totalScore / (4 * questionCount)) * 48) : 0;
-  const tier = isComplete ? getTierV2(normalizedScore) : null;
+  const tier = isComplete ? getTierInDepth(totalScore, maxScore) : null;
   const progress = questionCount > 0 ? answers.length / questionCount : 0;
 
   const answer = useCallback(
@@ -181,7 +183,8 @@ export function useAssessmentInDepth(): InDepthState & InDepthActions {
     currentQuestion,
     answers,
     phase,
-    totalScore: normalizedScore,
+    totalScore,
+    maxScore,
     tier,
     isComplete,
     progress,

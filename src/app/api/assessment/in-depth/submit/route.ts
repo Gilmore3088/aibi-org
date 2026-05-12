@@ -21,6 +21,7 @@ export const dynamic = 'force-dynamic';
 interface SubmitPayload {
   answers?: unknown;
   score?: unknown;
+  maxScore?: unknown;
   tier?: unknown;
   tierLabel?: unknown;
   dimensionBreakdown?: unknown;
@@ -63,7 +64,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     return NextResponse.json({ error: 'Invalid JSON body.' }, { status: 400 });
   }
 
-  const { answers, score, tier, tierLabel, dimensionBreakdown } = body;
+  const { answers, score, maxScore, tier, tierLabel, dimensionBreakdown } = body;
 
   if (!Array.isArray(answers) || answers.length !== EXPECTED_QUESTION_COUNT) {
     return NextResponse.json(
@@ -80,6 +81,13 @@ export async function POST(request: Request): Promise<NextResponse> {
   if (typeof score !== 'number') {
     return NextResponse.json({ error: 'score must be a number.' }, { status: 400 });
   }
+  // Defensive default: older clients pre-2026-05-12 may omit maxScore.
+  // The submit route now expects the raw 48–192 range; fall back to the
+  // 4 × question count derivation if a client somehow forgets to send it.
+  const persistedMaxScore =
+    typeof maxScore === 'number' && Number.isFinite(maxScore) && maxScore > 0
+      ? maxScore
+      : EXPECTED_QUESTION_COUNT * 4;
   if (typeof tier !== 'string' || tier.length === 0) {
     return NextResponse.json({ error: 'tier required.' }, { status: 400 });
   }
@@ -141,7 +149,7 @@ export async function POST(request: Request): Promise<NextResponse> {
       answers: answers as number[],
       completedAt,
       version: 'v2',
-      maxScore: 48,
+      maxScore: persistedMaxScore,
       ...(dimensionBreakdown ? { dimensionBreakdown: dimensionBreakdown as DimensionBreakdown } : {}),
     });
     profileId = result.id;
