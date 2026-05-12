@@ -10,6 +10,7 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { createServerClientWithCookies, isSupabaseConfigured } from '@/lib/supabase/client';
+import { emailVariants } from '@/lib/email/canonicalize';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -38,13 +39,19 @@ export async function GET(): Promise<NextResponse> {
     return NextResponse.json({ error: 'Not authenticated.' }, { status: 401 });
   }
 
-  // Entitlement check: course_enrollments row keyed on user_id OR email
-  // (older rows may pre-date the user_id binding).
+  // Entitlement check: course_enrollments row keyed on user_id OR any
+  // canonical/alias variant of the auth email. Without variant expansion,
+  // a Gmail "+alias" buyer who later signs in as the plain address falls
+  // through the dashboard gate even though /assessment/in-depth/take
+  // recognizes them. Matches the variant-aware pattern used in
+  // src/app/assessment/in-depth/take/page.tsx.
+  const variants = emailVariants(user.email);
+  const emailClause = variants.map((e) => `email.eq.${e}`).join(',');
   const { data: enrollments, error: enrollErr } = await supabase
     .from('course_enrollments')
     .select('id, created_at')
     .eq('product', 'in-depth-assessment')
-    .or(`user_id.eq.${user.id},email.eq.${user.email}`)
+    .or(`user_id.eq.${user.id},${emailClause}`)
     .order('created_at', { ascending: true });
 
   if (enrollErr) {
@@ -62,11 +69,15 @@ export async function GET(): Promise<NextResponse> {
   let profileId: string | null = null;
   let hasCompleted = false;
   if (entitled) {
-    const { data: profile, error: profileErr } = await supabase
+    // Same variant-aware lookup as the entitlement query — the profile
+    // may have been created under the +alias form used in checkout.
+    const { data: profileRows, error: profileErr } = await supabase
       .from('user_profiles')
-      .select('id, readiness_answers, readiness_version, readiness_max_score')
-      .eq('email', user.email)
-      .maybeSingle();
+      .select('id, readiness_answers, readiness_version, readiness_max_score, readiness_at')
+      .or(variants.map((e) => `email.eq.${e}`).join(','))
+      .order('readiness_at', { ascending: false, nullsFirst: false })
+      .limit(1);
+    const profile = profileRows && profileRows.length > 0 ? profileRows[0] : null;
     if (profileErr) {
       console.warn('[dashboard/assessments] profile lookup error:', profileErr);
     } else if (profile) {

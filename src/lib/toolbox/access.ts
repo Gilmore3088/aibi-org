@@ -7,7 +7,17 @@ export interface PaidAccess {
   readonly products: readonly string[];
 }
 
-const PAID_PRODUCTS = ['aibi-p', 'aibi-s', 'aibi-l', 'toolbox-only'] as const;
+// Includes both 'foundation' (canonical post-rename, 2026-05-11) and
+// 'aibi-p' (legacy slug kept defensively per the forever-shim pattern in
+// src/lib/products/normalize.ts). A paying Foundation user whose entitlement
+// row was created under either slug should still pass the toolbox gate.
+const PAID_PRODUCTS = [
+  'foundation',
+  'aibi-p',
+  'aibi-s',
+  'aibi-l',
+  'toolbox-only',
+] as const;
 
 export async function getPaidToolboxAccess(): Promise<PaidAccess | null> {
   if (
