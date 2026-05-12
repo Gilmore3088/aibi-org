@@ -112,7 +112,11 @@
 /* CONTENTS */
 .aibi-briefing .contents { padding: 54px 0; border-bottom: 1px solid var(--rule); }
 .aibi-briefing .contents-grid {
-  display: grid; grid-template-columns: 1fr 2fr; gap: 60px; align-items: flex-start;
+  /* Fixed left rail keeps the section heading in a tight margin column.
+   * The prior 1fr 2fr fluid split stranded "The briefing." H2 in the
+   * page margin at wide viewports — section labels are short, the body
+   * column carries the weight. */
+  display: grid; grid-template-columns: 240px 1fr; gap: 56px; align-items: flex-start;
 }
 .aibi-briefing .contents h2 {
   font-family: var(--serif); font-weight: 500; font-size: 46px;
@@ -154,7 +158,10 @@
 }
 .aibi-briefing section.chapter.shaded { background: var(--paper-2); }
 .aibi-briefing .ch-head {
-  display: grid; grid-template-columns: 1fr 2fr; gap: 60px;
+  /* Fixed left rail (240px) — same rationale as .contents-grid. The
+   * "Chapter NN · title" kicker is short; allowing it to expand to 1fr
+   * pushed the chapter heading off into the right half of the page. */
+  display: grid; grid-template-columns: 240px 1fr; gap: 56px;
   margin-bottom: 48px; align-items: flex-end;
 }
 .aibi-briefing .ch-head .left .num {
