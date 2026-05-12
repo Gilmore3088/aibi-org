@@ -9,7 +9,7 @@
 // Refs: docs/superpowers/specs/2026-05-04-assessment-results-spec-4-return-url.md
 
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
-import { getTierV2 } from '@content/assessments/v2/scoring';
+import { getTierV2, getTierInDepth } from '@content/assessments/v2/scoring';
 import type { Tier, DimensionScore } from '@content/assessments/v2/scoring';
 import type { Dimension } from '@content/assessments/v2/types';
 
@@ -46,7 +46,15 @@ export async function loadAssessmentResponse(
   if (typeof data.readiness_score !== 'number') return null;
   if (!data.readiness_dimension_breakdown) return null;
 
-  const tier = getTierV2(data.readiness_score);
+  // Pick the right tier function based on the stored max. Free flow
+  // stores max=48 (12-48 raw range); In-Depth stores max=192 (48-192
+  // raw range) after the 2026-05-12 runner fix. We accept either so
+  // historical and future rows both render.
+  const storedMax = (data.readiness_max_score as number | null) ?? 48;
+  const tier =
+    storedMax > 48
+      ? getTierInDepth(data.readiness_score as number, storedMax)
+      : getTierV2(data.readiness_score as number);
   const breakdown = data.readiness_dimension_breakdown as Record<
     Dimension,
     DimensionScore
@@ -56,7 +64,7 @@ export async function loadAssessmentResponse(
     profileId: data.id as string,
     email: data.email as string,
     score: data.readiness_score,
-    maxScore: (data.readiness_max_score as number | null) ?? 48,
+    maxScore: storedMax,
     tier,
     tierId: tier.id,
     dimensionBreakdown: breakdown,

@@ -43,6 +43,7 @@ export function InDepthRunner(): React.ReactElement {
           body: JSON.stringify({
             answers: state.answers,
             score: state.totalScore,
+            maxScore: state.maxScore,
             tier: state.tier!.id,
             tierLabel: state.tier!.label,
             dimensionBreakdown: state.getDimensionBreakdown(),
@@ -123,8 +124,8 @@ export function InDepthRunner(): React.ReactElement {
               </p>
               <ScoreRing
                 score={state.totalScore}
-                minScore={12}
-                maxScore={48}
+                minScore={state.questionCount}
+                maxScore={state.maxScore}
                 colorVar={state.tier.colorVar}
                 label={state.tier.label}
               />

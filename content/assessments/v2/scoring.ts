@@ -65,6 +65,29 @@ export function getTierV2(totalScore: number): Tier {
   return match;
 }
 
+// In-Depth tier mapping — handles the 48-question raw score (48–192 range,
+// or any arbitrary max) by mapping a normalized percentage to the same
+// four tier ids. Thresholds match the Briefing surface's phase rubric
+// (Curious < 50% < Coordinated < 75% < Programmatic < 90% < Native) so
+// the displayed phase and the stored tier id always reconcile.
+//
+// Tier id mapping (same string ids as getTierV2 so downstream consumers
+// — dashboard, sequences, etc. — do not branch on assessment flavor):
+//   starting-point   < 50%   → Curious
+//   early-stage      50–74%  → Coordinated
+//   building-momentum 75–89% → Programmatic
+//   ready-to-scale   90–100% → Native
+export function getTierInDepth(rawScore: number, maxScore: number): Tier {
+  if (maxScore <= 0) {
+    throw new Error('getTierInDepth: maxScore must be positive.');
+  }
+  const pct = Math.max(0, Math.min(100, (rawScore / maxScore) * 100));
+  if (pct >= 90) return tiers[3];
+  if (pct >= 75) return tiers[2];
+  if (pct >= 50) return tiers[1];
+  return tiers[0];
+}
+
 export interface DimensionScore {
   readonly score: number;
   readonly maxScore: number;

@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
-import { getTierV2 } from '@content/assessments/v2/scoring';
+import { getTierV2, getTierInDepth } from '@content/assessments/v2/scoring';
 import type { DimensionScore } from '@content/assessments/v2/scoring';
 import type { Dimension } from '@content/assessments/v2/types';
 import { Cover } from '../_components/Cover';
@@ -60,7 +60,13 @@ export default async function PrintPage({ params }: PrintPageProps) {
   if (!profile.readiness_tier_id) notFound();
   if (!profile.readiness_dimension_breakdown) notFound();
 
-  const tier = getTierV2(profile.readiness_score ?? 0);
+  // Free flow stores max=48 (12–48 range); In-Depth stores max=192
+  // (48–192 range). Pick the matching tier function.
+  const storedMax = (profile.readiness_max_score as number | null) ?? 48;
+  const tier =
+    storedMax > 48
+      ? getTierInDepth(profile.readiness_score ?? 0, storedMax)
+      : getTierV2(profile.readiness_score ?? 0);
   const generatedAt = new Date();
   const breakdown = profile.readiness_dimension_breakdown as Record<Dimension, DimensionScore>;
   const ranked = rankWeakest(breakdown);

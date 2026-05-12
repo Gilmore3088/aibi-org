@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import Link from 'next/link';
 import { getUserDataWithSupabaseFallback, type UserData } from '@/lib/user-data';
 import { getTier } from '@content/assessments/v1/scoring';
-import { getTierV2 } from '@content/assessments/v2/scoring';
+import { getTierV2, getTierInDepth } from '@content/assessments/v2/scoring';
 import { modules } from '@content/courses/foundation-program';
 import {
   AIBI_P_ARTIFACTS,
@@ -54,11 +54,20 @@ function getReadinessDisplay(readiness: NonNullable<UserData['readiness']>) {
   const isV2 =
     readiness.version === 'v2' ||
     readiness.maxScore === 48 ||
-    readiness.answers.length === 12;
+    readiness.maxScore === 192 ||
+    readiness.answers.length === 12 ||
+    readiness.answers.length === 48;
+  // Three sources for max: explicit field, v2 default (48), v1 default (32).
+  // In-Depth submissions (48 answers) carry maxScore=192.
   const maxScore = readiness.maxScore ?? (isV2 ? 48 : 32);
+  const isInDepth = maxScore > 48;
 
   try {
-    const tier = isV2 ? getTierV2(readiness.score) : getTier(readiness.score);
+    const tier = isInDepth
+      ? getTierInDepth(readiness.score, maxScore)
+      : isV2
+        ? getTierV2(readiness.score)
+        : getTier(readiness.score);
     return { tier, maxScore };
   } catch {
     return {
