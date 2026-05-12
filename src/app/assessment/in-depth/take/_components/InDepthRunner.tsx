@@ -30,8 +30,21 @@ export function InDepthRunner(): React.ReactElement {
     setMounted(true);
   }, []);
 
+  // Destructure the exact fields we depend on so the dependency list is
+  // explicit and the linter is satisfied. Re-deriving inside the effect
+  // closes over a stable snapshot per render rather than the whole state
+  // object (which would change on every keystroke).
+  const {
+    isComplete,
+    tier,
+    answers,
+    totalScore,
+    maxScore,
+    getDimensionBreakdown,
+  } = state;
+
   useEffect(() => {
-    if (!state.isComplete || !state.tier || submittedRef.current) return;
+    if (!isComplete || !tier || submittedRef.current) return;
     submittedRef.current = true;
     setSubmit({ kind: 'submitting' });
 
@@ -41,12 +54,12 @@ export function InDepthRunner(): React.ReactElement {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            answers: state.answers,
-            score: state.totalScore,
-            maxScore: state.maxScore,
-            tier: state.tier!.id,
-            tierLabel: state.tier!.label,
-            dimensionBreakdown: state.getDimensionBreakdown(),
+            answers,
+            score: totalScore,
+            maxScore,
+            tier: tier.id,
+            tierLabel: tier.label,
+            dimensionBreakdown: getDimensionBreakdown(),
           }),
         });
         const data = (await response.json()) as { profileId?: string; error?: string };
@@ -73,7 +86,7 @@ export function InDepthRunner(): React.ReactElement {
         submittedRef.current = false;
       }
     })();
-  }, [state.isComplete, state.tier, state.answers, state.totalScore, state.getDimensionBreakdown, router]);
+  }, [isComplete, tier, answers, totalScore, maxScore, getDimensionBreakdown, router]);
 
   useEffect(() => {
     if (state.phase === 'score') {

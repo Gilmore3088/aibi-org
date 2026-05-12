@@ -219,7 +219,7 @@ export default async function AiBIPurchasedPage() {
                 </PrimaryButton>
                 <GhostButton
                   as="a"
-                  href="/auth/sign-up?next=/courses/foundation/program"
+                  href="/auth/signup?next=/courses/foundation/program"
                 >
                   Create my account
                 </GhostButton>

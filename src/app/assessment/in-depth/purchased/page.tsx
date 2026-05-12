@@ -115,7 +115,7 @@ export default async function InDepthPurchasedPage() {
                   Log in to start
                 </Link>
                 <Link
-                  href="/auth/sign-up?next=/assessment/in-depth/take"
+                  href="/auth/signup?next=/assessment/in-depth/take"
                   className="inline-block border border-[color:var(--color-ink)]/20 text-[color:var(--color-ink)] px-8 py-3 rounded-sm font-mono text-[10px] uppercase tracking-[0.15em] hover:bg-[color:var(--color-parch)] transition-colors"
                 >
                   Create my account
