@@ -8,46 +8,36 @@
 // Differs from /api/capture-email which is the public 12-question free path
 // — this route does NOT have an email gate, does NOT subscribe to ConvertKit
 // marketing forms, and does NOT enforce the 8/12 answer-length cap.
+//
+// Server-side scoring (2026-05-12): the client submits only `answers` and
+// `questionIds` (the order the user saw the questions in). The server
+// recomputes score, maxScore, tier, and dimensionBreakdown from canonical
+// data — the client cannot dictate scoring values. questionIds are
+// validated as an exact permutation of the canonical 48-question pool.
 
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
 import { upsertReadinessResult } from '@/lib/supabase/user-profiles';
+import { questions as canonicalPool } from '@content/assessments/v2/questions';
+import {
+  getDimensionScores,
+  getTierInDepth,
+  type DimensionScore,
+} from '@content/assessments/v2/scoring';
+import { emailVariants } from '@/lib/email/canonicalize';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 interface SubmitPayload {
   answers?: unknown;
-  score?: unknown;
-  maxScore?: unknown;
-  tier?: unknown;
-  tierLabel?: unknown;
-  dimensionBreakdown?: unknown;
-}
-
-interface DimensionEntry {
-  score: number;
-  maxScore: number;
-  label: string;
-}
-
-type DimensionBreakdown = Record<string, DimensionEntry>;
-
-function isDimensionBreakdown(value: unknown): value is DimensionBreakdown {
-  if (typeof value !== 'object' || value === null) return false;
-  for (const entry of Object.values(value as Record<string, unknown>)) {
-    if (typeof entry !== 'object' || entry === null) return false;
-    const e = entry as Record<string, unknown>;
-    if (typeof e.score !== 'number') return false;
-    if (typeof e.maxScore !== 'number') return false;
-    if (typeof e.label !== 'string') return false;
-  }
-  return true;
+  questionIds?: unknown;
 }
 
 const EXPECTED_QUESTION_COUNT = 48;
+const POOL_BY_ID = new Map(canonicalPool.map((q) => [q.id, q]));
 
 export async function POST(request: Request): Promise<NextResponse> {
   if (!isSupabaseConfigured()) {
@@ -64,7 +54,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     return NextResponse.json({ error: 'Invalid JSON body.' }, { status: 400 });
   }
 
-  const { answers, score, maxScore, tier, tierLabel, dimensionBreakdown } = body;
+  const { answers, questionIds } = body;
 
   if (!Array.isArray(answers) || answers.length !== EXPECTED_QUESTION_COUNT) {
     return NextResponse.json(
@@ -72,30 +62,48 @@ export async function POST(request: Request): Promise<NextResponse> {
       { status: 400 },
     );
   }
-  if (!answers.every((n: unknown) => typeof n === 'number' && Number.isInteger(n) && n >= 1 && n <= 4)) {
+  if (
+    !answers.every(
+      (n: unknown) => typeof n === 'number' && Number.isInteger(n) && n >= 1 && n <= 4,
+    )
+  ) {
     return NextResponse.json(
       { error: 'answers entries must be integers 1-4.' },
       { status: 400 },
     );
   }
-  if (typeof score !== 'number') {
-    return NextResponse.json({ error: 'score must be a number.' }, { status: 400 });
+  if (
+    !Array.isArray(questionIds) ||
+    questionIds.length !== EXPECTED_QUESTION_COUNT
+  ) {
+    return NextResponse.json(
+      { error: `questionIds must be an array of ${EXPECTED_QUESTION_COUNT} strings.` },
+      { status: 400 },
+    );
   }
-  // Defensive default: older clients pre-2026-05-12 may omit maxScore.
-  // The submit route now expects the raw 48–192 range; fall back to the
-  // 4 × question count derivation if a client somehow forgets to send it.
-  const persistedMaxScore =
-    typeof maxScore === 'number' && Number.isFinite(maxScore) && maxScore > 0
-      ? maxScore
-      : EXPECTED_QUESTION_COUNT * 4;
-  if (typeof tier !== 'string' || tier.length === 0) {
-    return NextResponse.json({ error: 'tier required.' }, { status: 400 });
+  if (!questionIds.every((id): id is string => typeof id === 'string')) {
+    return NextResponse.json(
+      { error: 'questionIds entries must be strings.' },
+      { status: 400 },
+    );
   }
-  if (typeof tierLabel !== 'string' || tierLabel.length === 0) {
-    return NextResponse.json({ error: 'tierLabel required.' }, { status: 400 });
+
+  // questionIds must be an exact permutation of the canonical pool:
+  // every id present, no duplicates, no unknown ids. This is the trust
+  // boundary — once it holds, server scoring is deterministic.
+  const idSet = new Set(questionIds);
+  if (idSet.size !== EXPECTED_QUESTION_COUNT) {
+    return NextResponse.json(
+      { error: 'questionIds contains duplicates.' },
+      { status: 400 },
+    );
   }
-  if (dimensionBreakdown !== undefined && !isDimensionBreakdown(dimensionBreakdown)) {
-    return NextResponse.json({ error: 'dimensionBreakdown malformed.' }, { status: 400 });
+  const orderedQuestions = (questionIds as string[]).map((id) => POOL_BY_ID.get(id));
+  if (orderedQuestions.some((q) => !q)) {
+    return NextResponse.json(
+      { error: 'questionIds contains unknown question id(s).' },
+      { status: 400 },
+    );
   }
 
   // ── Auth + entitlement gate ───────────────────────────────────────────────
@@ -118,11 +126,15 @@ export async function POST(request: Request): Promise<NextResponse> {
     return NextResponse.json({ error: 'Authentication required.' }, { status: 401 });
   }
 
+  // Variant-aware entitlement lookup — matches the take page + dashboard
+  // patterns so Gmail "+alias" buyers are not locked out.
+  const variants = emailVariants(user.email);
+  const emailClause = variants.map((e) => `email.eq.${e}`).join(',');
   const { data: enrollment, error: enrollErr } = await supabase
     .from('course_enrollments')
     .select('id')
     .eq('product', 'in-depth-assessment')
-    .or(`user_id.eq.${user.id},email.eq.${user.email}`)
+    .or(`user_id.eq.${user.id},${emailClause}`)
     .limit(1)
     .maybeSingle();
 
@@ -137,6 +149,19 @@ export async function POST(request: Request): Promise<NextResponse> {
     );
   }
 
+  // ── Server-side scoring ──────────────────────────────────────────────────
+  // Compute everything from the validated (answers, orderedQuestions) pair.
+  // No client-supplied scoring fields are read.
+  const typedQuestions = orderedQuestions.map((q) => q!);
+  const typedAnswers = answers as number[];
+  const score = typedAnswers.reduce((sum, n) => sum + n, 0);
+  const maxScore = EXPECTED_QUESTION_COUNT * 4;
+  const tier = getTierInDepth(score, maxScore);
+  const dimensionBreakdown: Record<string, DimensionScore> = getDimensionScores(
+    typedAnswers,
+    typedQuestions,
+  );
+
   // ── Persist the result ───────────────────────────────────────────────────
   const completedAt = new Date().toISOString();
   let profileId: string | null = null;
@@ -144,13 +169,13 @@ export async function POST(request: Request): Promise<NextResponse> {
   try {
     const result = await upsertReadinessResult(user.email, {
       score,
-      tierId: tier,
-      tierLabel,
-      answers: answers as number[],
+      tierId: tier.id,
+      tierLabel: tier.label,
+      answers: typedAnswers,
       completedAt,
       version: 'v2',
-      maxScore: persistedMaxScore,
-      ...(dimensionBreakdown ? { dimensionBreakdown: dimensionBreakdown as DimensionBreakdown } : {}),
+      maxScore,
+      dimensionBreakdown,
     });
     profileId = result.id;
   } catch (err) {

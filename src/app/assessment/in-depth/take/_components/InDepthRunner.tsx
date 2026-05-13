@@ -31,17 +31,11 @@ export function InDepthRunner(): React.ReactElement {
   }, []);
 
   // Destructure the exact fields we depend on so the dependency list is
-  // explicit and the linter is satisfied. Re-deriving inside the effect
-  // closes over a stable snapshot per render rather than the whole state
-  // object (which would change on every keystroke).
-  const {
-    isComplete,
-    tier,
-    answers,
-    totalScore,
-    maxScore,
-    getDimensionBreakdown,
-  } = state;
+  // explicit and the linter is satisfied. Server now recomputes score,
+  // maxScore, tier, and dimensionBreakdown — the client only sends what
+  // the user picked (answers) and in what order (questionIds). This keeps
+  // the trust boundary at the server.
+  const { isComplete, tier, answers, selectedQuestions } = state;
 
   useEffect(() => {
     if (!isComplete || !tier || submittedRef.current) return;
@@ -55,11 +49,7 @@ export function InDepthRunner(): React.ReactElement {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             answers,
-            score: totalScore,
-            maxScore,
-            tier: tier.id,
-            tierLabel: tier.label,
-            dimensionBreakdown: getDimensionBreakdown(),
+            questionIds: selectedQuestions.map((q) => q.id),
           }),
         });
         const data = (await response.json()) as { profileId?: string; error?: string };
@@ -86,7 +76,7 @@ export function InDepthRunner(): React.ReactElement {
         submittedRef.current = false;
       }
     })();
-  }, [isComplete, tier, answers, totalScore, maxScore, getDimensionBreakdown, router]);
+  }, [isComplete, tier, answers, selectedQuestions, router]);
 
   useEffect(() => {
     if (state.phase === 'score') {
