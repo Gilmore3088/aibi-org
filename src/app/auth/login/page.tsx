@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
 
-import { signIn, signInWithMagicLink } from '@/lib/supabase/auth';
+import { signIn, signInWithMagicLink, sanitizeNext } from '@/lib/supabase/auth';
 import {
   LedgerAlert,
   LedgerButton,
@@ -153,7 +153,10 @@ function MagicLinkForm({ redirectTo }: { redirectTo: string }) {
 
 export default function LoginPage() {
   const searchParams = useSearchParams();
-  const redirectTo = searchParams.get('next') ?? '/dashboard';
+  // Normalize ?next= to a same-origin relative path. Open-redirect defense:
+  // rejects protocol-relative URLs ("//evil.com"), absolute URLs, and any
+  // value with embedded control characters.
+  const redirectTo = sanitizeNext(searchParams.get('next'));
   const urlError = searchParams.get('error');
 
   const [mode, setMode] = useState<'password' | 'magic'>('password');

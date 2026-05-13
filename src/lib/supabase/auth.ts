@@ -4,6 +4,22 @@
 
 import { createBrowserClient, isSupabaseConfigured } from '@/lib/supabase/client';
 
+// Open-redirect defense. Allow only same-origin relative paths starting
+// with a single "/". Reject protocol-relative ("//evil.com"), absolute
+// URLs, and anything with embedded newlines. Anything that fails returns
+// the default "/dashboard" so callers can use this unconditionally.
+export function sanitizeNext(
+  candidate: string | null | undefined,
+  fallback = '/dashboard',
+): string {
+  if (typeof candidate !== 'string') return fallback;
+  if (candidate.length === 0 || candidate.length > 512) return fallback;
+  if (!candidate.startsWith('/')) return fallback;
+  if (candidate.startsWith('//')) return fallback;
+  if (/[\r\n\t]/.test(candidate)) return fallback;
+  return candidate;
+}
+
 // ── Types ────────────────────────────────────────────────────────────────────
 
 export interface SignUpMetadata {
@@ -32,17 +48,19 @@ export async function signUp(
   email: string,
   password: string,
   metadata: SignUpMetadata,
+  redirectTo?: string,
 ): Promise<AuthResult> {
   if (!isSupabaseConfigured()) {
     return { error: 'Auth is not configured. Set Supabase environment variables.' };
   }
   const origin =
     typeof window !== 'undefined' ? window.location.origin : 'https://aibankinginstitute.com';
+  const next = sanitizeNext(redirectTo);
   const { error } = await client().auth.signUp({
     email,
     password,
     options: {
-      emailRedirectTo: `${origin}/auth/callback?next=${encodeURIComponent('/dashboard')}`,
+      emailRedirectTo: `${origin}/auth/callback?next=${encodeURIComponent(next)}`,
       data: {
         full_name: metadata.fullName,
         institution_name: metadata.institutionName ?? '',
@@ -76,7 +94,7 @@ export async function signInWithMagicLink(
   }
   const origin =
     typeof window !== 'undefined' ? window.location.origin : 'https://aibankinginstitute.com';
-  const next = redirectTo ?? '/dashboard';
+  const next = sanitizeNext(redirectTo);
   const { error } = await client().auth.signInWithOtp({
     email,
     options: {
@@ -97,7 +115,16 @@ export async function signOut(): Promise<AuthResult> {
 
 /**
  * Send a password reset email.
- * The link redirects to /auth/reset-password.
+ *
+ * The recovery link routes through /auth/callback so the OTP can be
+ * verified, the recovery session cookies set, and only then the user is
+ * forwarded to /auth/reset-password. The prior direct redirect to
+ * /auth/reset-password bypassed the OTP exchange, leaving the reset
+ * page without a session and unable to call updateUser({ password }).
+ *
+ * The /auth/callback POST handler recognizes type=recovery and forces
+ * the post-verify destination to /auth/reset-password, so the next
+ * query param here is informational but kept for symmetry.
  */
 export async function resetPassword(email: string): Promise<AuthResult> {
   if (!isSupabaseConfigured()) {
@@ -106,7 +133,7 @@ export async function resetPassword(email: string): Promise<AuthResult> {
   const origin =
     typeof window !== 'undefined' ? window.location.origin : 'https://aibankinginstitute.com';
   const { error } = await client().auth.resetPasswordForEmail(email, {
-    redirectTo: `${origin}/auth/reset-password`,
+    redirectTo: `${origin}/auth/callback?next=${encodeURIComponent('/auth/reset-password')}`,
   });
   return { error: error?.message ?? null };
 }
