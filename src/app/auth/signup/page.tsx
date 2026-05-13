@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 
-import { signUp } from '@/lib/supabase/auth';
+import { signUp, sanitizeNext } from '@/lib/supabase/auth';
 import {
   LedgerAlert,
   LedgerButton,
@@ -19,7 +19,8 @@ const MIN_PASSWORD_LENGTH = 8;
 
 export default function SignupPage() {
   const searchParams = useSearchParams();
-  const redirectTo = searchParams.get('next') ?? '/dashboard';
+  // Same open-redirect defense as /auth/login.
+  const redirectTo = sanitizeNext(searchParams.get('next'));
 
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
@@ -51,10 +52,18 @@ export default function SignupPage() {
     }
 
     setPending(true);
-    const result = await signUp(email, password, {
-      fullName: fullName.trim(),
-      institutionName: institutionName.trim() || undefined,
-    });
+    // Pass the deep-link target through so the confirmation email lands
+    // the user back on the page they tried to reach (e.g. /assessment/
+    // in-depth/take) rather than the generic /dashboard.
+    const result = await signUp(
+      email,
+      password,
+      {
+        fullName: fullName.trim(),
+        institutionName: institutionName.trim() || undefined,
+      },
+      redirectTo,
+    );
     setPending(false);
 
     if (result.error) {
