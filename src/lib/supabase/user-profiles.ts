@@ -11,6 +11,7 @@
 
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import type { ReadinessResult, ProficiencyResult } from '@/lib/user-data';
+import type { Role } from '@content/assessments/v2/role';
 
 // ── Dev bypass ──────────────────────────────────────────────────────────────
 // Set SKIP_SUPABASE_PROFILES=true in .env.local to disable all Supabase writes
@@ -36,6 +37,7 @@ export interface UserProfileRow {
 export async function upsertReadinessResult(
   email: string,
   result: ReadinessResult,
+  options: { role?: Role | null } = {},
 ): Promise<{ id: string | null }> {
   if (SKIP || !isSupabaseConfigured()) return { id: null };
 
@@ -56,6 +58,10 @@ export async function upsertReadinessResult(
         ...(result.dimensionBreakdown
           ? { readiness_dimension_breakdown: result.dimensionBreakdown }
           : {}),
+        // Role is set only when the caller supplies it. Omitted entirely on
+        // free-flow submits so we never overwrite a previously-captured role
+        // with null on a retake.
+        ...(options.role !== undefined ? { role: options.role } : {}),
       },
       { onConflict: 'email' },
     )
