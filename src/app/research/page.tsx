@@ -390,46 +390,24 @@ export default async function ResearchPage() {
                         >
                           {b.pct}%
                         </text>
-                        <text
-                          x={xCenter}
-                          y={238}
-                          textAnchor="middle"
-                          fontFamily="var(--ar-mono)"
-                          fontSize={8.5}
-                          fill="var(--ar-muted)"
-                          letterSpacing={1.2}
-                        >
-                          {b.kicker.toUpperCase()}
-                        </text>
                       </g>
                     );
                   })}
                 </svg>
-                <div
-                  style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(4, 1fr)',
-                    gap: 12,
-                    marginTop: 8,
-                    fontFamily: 'var(--ar-serif)',
-                    fontStyle: 'italic',
-                    fontSize: 13,
-                    lineHeight: 1.35,
-                    color: 'var(--ar-ink-2)',
-                  }}
-                >
-                  {GARTNER_BARS.map((b) => (
-                    <span key={b.label} style={{ textAlign: 'center' }}>
-                      {b.label}
-                    </span>
-                  ))}
-                </div>
+              </div>
+              <div className="cc-labels">
+                {GARTNER_BARS.map((b) => (
+                  <div key={b.label} className="cc-label">
+                    <span className="cc-label-text">{b.label}</span>
+                    <span className="cc-label-src">{b.kicker}</span>
+                  </div>
+                ))}
               </div>
               <div className="ccfooter">
                 <div className="legend">
                   <span><span className="swatch top" />% reporting</span>
                 </div>
-                <div>Source · Jack Henry &quot;Getting Started in AI&quot; 2025</div>
+                <div>Source · Jack Henry &quot;Getting Started in AI&quot; · 2025</div>
               </div>
             </div>
           </div>
