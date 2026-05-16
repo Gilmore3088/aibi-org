@@ -65,9 +65,9 @@ export default function HomePage() {
               In-<em className="text-terra">Depth</em> Assessment
             </h2>
             <p className="text-body-md text-ink/80 leading-relaxed mt-s5 max-w-[36ch]">
-              Forty-eight questions across eight readiness dimensions. A
-              consulting-grade report for you, plus an anonymized rollup for
-              institution leaders.
+              You leave with your in-depth score, AI assets you can use
+              immediately, and a playbook to launch your first AI win.
+              Anonymized team rollup included.
             </p>
             <div className="mt-s7">
               <Cta variant="secondary" href="/assessment/in-depth">
@@ -85,9 +85,9 @@ export default function HomePage() {
               AiBI-<em className="text-terra">Foundation</em>
             </h2>
             <p className="text-body-md text-ink/80 leading-relaxed mt-s5 max-w-[36ch]">
-              Twelve self-paced modules, practice reps, artifacts, prompt
-              library, and the AiBI-Foundation credential. Scored on reviewed
-              work — not multiple-choice quizzes.
+              Learn how to build the prompts, agents, and AI workflows your
+              daily banking work demands — and earn the AiBI-Foundation
+              credential your examiner respects.
             </p>
             <div className="mt-s7">
               <Cta variant="secondary" href="/courses/foundation/program">

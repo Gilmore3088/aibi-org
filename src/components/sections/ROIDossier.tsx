@@ -187,10 +187,10 @@ export function ROIDossier() {
           </p>
           <div className="mt-s6">
             <Link
-              href="/assessment/start"
+              href="/assessment/in-depth"
               className="inline-block font-sans text-mono-md font-medium uppercase tracking-wider rounded-sharp bg-terra text-linen px-s8 py-s4 hover:bg-terra-light transition-colors duration-fast"
             >
-              Start your free assessment →
+              Take the In-Depth Assessment · $99 →
             </Link>
           </div>
         </div>
