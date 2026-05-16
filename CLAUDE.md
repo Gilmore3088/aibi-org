@@ -3,21 +3,24 @@
 
 ## Reference Plans — Canonical Source of Truth
 
-**These 6 files in `/Plans/` are the authoritative specification. Read before any non-trivial work. If a request conflicts with these, flag it before coding.**
+**Read [`Plans/aibi-launch-spec-v2.md`](./Plans/aibi-launch-spec-v2.md) before any non-trivial work.** It is the active May 2026 launch spec. If a request conflicts with it, flag it before coding.
 
-| File | Purpose |
-|------|---------|
-| `aibi-prd.html` | Product requirements, user flows, success metrics, launch gate |
-| `aibi-foundation-v3.html` | Brand identity, A-B-C framework, business model, GTM |
-| `aibi-site-v3.html` | Full design system, page specs, navigation, components |
-| `aibi-developer-spec.html` | Architecture, stack, component structure, assessment logic, integrations |
-| `aibi-designer-brief.html` | Visual identity, color system, typography, Do's/Don'ts |
-| `aibi-consultant-playbook.html` | Executive Briefing script, Quick Win Sprint methodology, delivery |
-| `feedback-v1-aibi-landing-page-prd.docx` | V1 landing page PRD feedback — tagline, stats band, 8-section homepage spec |
-| `foundation-v2/AIBI-FOUNDATION-COMPLETE.md` | _SUPERSEDED 2026-05-11._ Four-track family (Lite/Full/Manager/Board) reversed — see 2026-05-11 Decisions Log. Kept as authoring archive. |
-| `foundation-v2/aibi-foundation-v2/` | _SUPERSEDED 2026-05-11._ Full v2 bundle archived; AiBI-Foundation is one course, not four tracks. |
+The HTML files in `Plans/` are **archive only** — they predate the issue #88 product-ladder cleanup and contain stale assumptions (8-question free assessment, 8–32 scoring, `/foundations` route, AiBI-P / AiBI-Practitioner naming, four-track Foundation family). See [`Plans/README.md`](./Plans/README.md) for the full mapping.
 
-**Assessment content lives in `content/assessments/<version>/`** — each version is a folder (questions, scoring, copy) so content can iterate without touching component code. Current version: `v1`.
+| File | Status |
+|------|--------|
+| **`Plans/aibi-launch-spec-v2.md`** | **Active.** Product ladder, naming, routes, entitlements, pricing, assessment logic, checkout/webhook, dashboard states, launch QA checklist, deferred items |
+| `DECISIONS.md` | Companion to v2 — chronological override log explaining why decisions changed |
+| `Plans/README.md` | Status index for everything in `Plans/` — read this when in doubt |
+| `Plans/aibi-prd.html` | _Archive._ Initial PRD — superseded by v2 §1, §6, §9 |
+| `Plans/aibi-foundation-v3.html` | _Archive._ Brand identity — superseded by v2 §2 |
+| `Plans/aibi-site-v3.html` | _Archive._ Design system + page specs — design now Ledger (see `docs/brand-refresh-2026-05-09/`) |
+| `Plans/aibi-developer-spec.html` | _Archive._ Architecture — superseded by v2 §4, §7 |
+| `Plans/aibi-designer-brief.html` | _Archive._ Visual identity — superseded by Ledger refresh below |
+| `Plans/aibi-consultant-playbook.html` | _Archive._ Advisory engagements deferred post-launch — see v2 §10 |
+| `Plans/foundation-v2/` | _Archive — REVERSED 2026-05-11._ Four-track Foundation family scrapped; AiBI-Foundation is one course. The Personal Prompt Library 18-field schema is the one piece still in force. |
+
+**Assessment content lives in `content/assessments/<version>/`** — each version is a folder (questions, scoring, copy) so content can iterate without touching component code. Current version: **`v2`** (48-question pool, eight readiness dimensions, 12–48 scoring range for the free rotation and 48–192 raw for the In-Depth full 48). See spec v2 §6.
 
 ---
 
