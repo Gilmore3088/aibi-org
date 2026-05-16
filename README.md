@@ -16,10 +16,11 @@ implementation for any future course on the platform.
    Twelve questions, three minutes. Score, tier, and a tailored starter
    artifact. Email captured for the dimension breakdown.
 
-2. **In-Depth Assessment** — `/assessment/in-depth` — $99, $79/seat at 10+
+2. **In-Depth Assessment** — `/assessment/in-depth` — $99 individual; $79/seat at 10+ by request
    Forty-eight questions across eight readiness dimensions. Consulting-grade
    report with peer-band comparison plus an anonymized rollup for institution
-   leaders.
+   leaders. Self-serve checkout covers individual buyers; teams of 10+ email
+   `hello@aibankinginstitute.com` for the $79/seat price.
 
 3. **AiBI-Foundation Course** — `/courses/foundation/program` — $295,
    $199/seat at 10+. **Lifetime access** to all twelve modules, practice
@@ -85,7 +86,7 @@ STRIPE_WEBHOOK_SECRET=
 STRIPE_FOUNDATION_PRICE_ID=             # $295 AiBI-Foundation individual
 STRIPE_FOUNDATION_INSTITUTION_PRICE_ID= # $199/seat at 10+
 STRIPE_INDEPTH_PRICE_ID=                # $99 In-Depth individual
-STRIPE_INDEPTH_INSTITUTION_PRICE_ID=    # $79/seat at 10+
+STRIPE_INDEPTH_INSTITUTION_PRICE_ID=    # $79/seat at 10+ — by-request only; self-serve team checkout deferred
 
 NEXT_PUBLIC_CALENDLY_URL=
 NEXT_PUBLIC_PLAUSIBLE_DOMAIN=

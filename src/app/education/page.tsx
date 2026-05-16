@@ -78,7 +78,7 @@ export default async function EducationPage() {
       href: "/assessment/start",
     },
     {
-      tag: "$99 · $79 at 10+",
+      tag: "$99 · $79 at 10+ by request",
       tagTone: "paid",
       title: "In-Depth Assessment",
       subtitle:
@@ -87,7 +87,7 @@ export default async function EducationPage() {
         { label: "Questions", value: "48" },
         { label: "Time", value: "20 min" },
         { label: "Format", value: "Individual + institution rollup" },
-        { label: "Cost", value: "$99 · $79/seat at 10+" },
+        { label: "Cost", value: "$99 individual · $79/seat at 10+ by request" },
       ],
       cta: "Begin the In-Depth Assessment →",
       href: "/assessment/in-depth",
