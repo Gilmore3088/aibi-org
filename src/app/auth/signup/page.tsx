@@ -17,10 +17,19 @@ import {
 
 const MIN_PASSWORD_LENGTH = 8;
 
+// Lenient email-shaped check just to avoid pre-filling random garbage from
+// a crafted URL. The form's own type="email" validation is the real gate.
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 export default function SignupPage() {
   const searchParams = useSearchParams();
   // Same open-redirect defense as /auth/login.
   const redirectTo = sanitizeNext(searchParams.get('next'));
+  // Pre-fill from ?email= so post-Stripe buyers don't re-type the email
+  // they just used at checkout. Keeps the field editable in case Stripe had
+  // a stale address.
+  const rawEmail = searchParams.get('email');
+  const prefillEmail = rawEmail && EMAIL_RE.test(rawEmail) ? rawEmail : '';
 
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
@@ -131,6 +140,7 @@ export default function SignupPage() {
               autoComplete="email"
               required
               placeholder="you@yourbank.com"
+              defaultValue={prefillEmail}
             />
             <LedgerField
               label={

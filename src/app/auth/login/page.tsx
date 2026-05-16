@@ -36,7 +36,7 @@ function DevSkipButton() {
 
 // ── Password form ─────────────────────────────────────────────────────────────
 
-function PasswordForm({ redirectTo }: { redirectTo: string }) {
+function PasswordForm({ redirectTo, prefillEmail }: { redirectTo: string; prefillEmail: string }) {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
@@ -71,6 +71,7 @@ function PasswordForm({ redirectTo }: { redirectTo: string }) {
         autoComplete="email"
         required
         placeholder="you@yourbank.com"
+        defaultValue={prefillEmail}
       />
       <LedgerField
         label="Password"
@@ -94,7 +95,7 @@ function PasswordForm({ redirectTo }: { redirectTo: string }) {
 
 // ── Magic link form ───────────────────────────────────────────────────────────
 
-function MagicLinkForm({ redirectTo }: { redirectTo: string }) {
+function MagicLinkForm({ redirectTo, prefillEmail }: { redirectTo: string; prefillEmail: string }) {
   const [state, setState] = useState<'idle' | 'sent' | 'error'>('idle');
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
@@ -141,6 +142,7 @@ function MagicLinkForm({ redirectTo }: { redirectTo: string }) {
         autoComplete="email"
         required
         placeholder="you@yourbank.com"
+        defaultValue={prefillEmail}
       />
       <LedgerButton type="submit" variant="ghost" block disabled={pending} style={{ marginTop: 4 }}>
         {pending ? 'Sending link…' : 'Send Magic Link'}
@@ -151,6 +153,10 @@ function MagicLinkForm({ redirectTo }: { redirectTo: string }) {
 
 // ── Page ──────────────────────────────────────────────────────────────────────
 
+// Lenient email-shaped check just to avoid pre-filling random garbage from
+// a crafted URL. The form's own type="email" validation is the real gate.
+const EMAIL_RE_LOGIN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 export default function LoginPage() {
   const searchParams = useSearchParams();
   // Normalize ?next= to a same-origin relative path. Open-redirect defense:
@@ -158,6 +164,11 @@ export default function LoginPage() {
   // value with embedded control characters.
   const redirectTo = sanitizeNext(searchParams.get('next'));
   const urlError = searchParams.get('error');
+  // Pre-fill from ?email= so post-Stripe buyers don't re-type the email
+  // they used at checkout. Keeps the field editable.
+  const rawEmail = searchParams.get('email');
+  const prefillEmail =
+    rawEmail && EMAIL_RE_LOGIN.test(rawEmail) ? rawEmail : '';
 
   const [mode, setMode] = useState<'password' | 'magic'>('password');
 
@@ -195,9 +206,9 @@ export default function LoginPage() {
           </div>
 
           {mode === 'password' ? (
-            <PasswordForm redirectTo={redirectTo} />
+            <PasswordForm redirectTo={redirectTo} prefillEmail={prefillEmail} />
           ) : (
-            <MagicLinkForm redirectTo={redirectTo} />
+            <MagicLinkForm redirectTo={redirectTo} prefillEmail={prefillEmail} />
           )}
 
           <div style={{ marginTop: 16 }}>

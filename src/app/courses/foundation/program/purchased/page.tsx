@@ -29,7 +29,13 @@ const HIGHLIGHTS = [
   'Lifetime access to course materials',
 ] as const;
 
-export default async function AiBIPurchasedPage() {
+interface AiBIPurchasedPageProps {
+  readonly searchParams?: Promise<{ readonly session_id?: string }>;
+}
+
+export default async function AiBIPurchasedPage({
+  searchParams,
+}: AiBIPurchasedPageProps) {
   let signedInEmail: string | null = null;
 
   if (isSupabaseConfigured()) {
@@ -49,6 +55,18 @@ export default async function AiBIPurchasedPage() {
     } = await supabase.auth.getUser();
     signedInEmail = user?.email ?? null;
   }
+
+  // Recover the email from the Stripe Checkout Session so the auth links
+  // pre-fill — buyer typed their email once at Stripe, never again.
+  const sp = (await searchParams) ?? {};
+  const { getSessionEmail } = await import('@/lib/stripe/get-session-email');
+  const stripeEmail = signedInEmail
+    ? null
+    : await getSessionEmail(sp.session_id);
+  const prefillEmail = signedInEmail ?? stripeEmail ?? null;
+  const emailQs = prefillEmail
+    ? `&email=${encodeURIComponent(prefillEmail)}`
+    : '';
 
   return (
     <main
@@ -206,22 +224,28 @@ export default async function AiBIPurchasedPage() {
                   lineHeight: 1.6,
                 }}
               >
-                One last step: sign in with the email you used at checkout to bind
-                your enrollment to your account. New here? You can create an account
-                in 30 seconds.
+                One last step: {prefillEmail ? 'finish creating' : 'create or sign into'} your
+                account{prefillEmail ? (
+                  <>
+                    {' '}for{' '}
+                    <span style={{ fontFamily: 'var(--ledger-mono)', color: 'var(--ledger-ink)' }}>
+                      {prefillEmail}
+                    </span>
+                  </>
+                ) : null} to bind your enrollment. Takes 30 seconds.
               </p>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
                 <PrimaryButton
                   as="a"
-                  href="/auth/login?next=/courses/foundation/program"
+                  href={`/auth/signup?next=/courses/foundation/program${emailQs}`}
                 >
-                  Log in to start
+                  Create my account
                 </PrimaryButton>
                 <GhostButton
                   as="a"
-                  href="/auth/signup?next=/courses/foundation/program"
+                  href={`/auth/login?next=/courses/foundation/program${emailQs}`}
                 >
-                  Create my account
+                  I already have one
                 </GhostButton>
               </div>
             </>

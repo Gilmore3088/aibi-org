@@ -28,7 +28,13 @@ const HIGHLIGHTS = [
   'One free retake within 12 months',
 ] as const;
 
-export default async function InDepthPurchasedPage() {
+interface InDepthPurchasedPageProps {
+  readonly searchParams?: Promise<{ readonly session_id?: string }>;
+}
+
+export default async function InDepthPurchasedPage({
+  searchParams,
+}: InDepthPurchasedPageProps) {
   let signedInEmail: string | null = null;
 
   if (isSupabaseConfigured()) {
@@ -48,6 +54,18 @@ export default async function InDepthPurchasedPage() {
     } = await supabase.auth.getUser();
     signedInEmail = user?.email ?? null;
   }
+
+  // Recover the email from the Stripe session so the auth links are
+  // pre-filled — buyer typed it once at Stripe Checkout, never again.
+  const sp = (await searchParams) ?? {};
+  const { getSessionEmail } = await import('@/lib/stripe/get-session-email');
+  const stripeEmail = signedInEmail
+    ? null
+    : await getSessionEmail(sp.session_id);
+  const prefillEmail = signedInEmail ?? stripeEmail ?? null;
+  const emailQs = prefillEmail
+    ? `&email=${encodeURIComponent(prefillEmail)}`
+    : '';
 
   return (
     <main className="px-6 py-14 md:py-20">
@@ -103,22 +121,29 @@ export default async function InDepthPurchasedPage() {
           ) : (
             <>
               <p className="text-sm text-[color:var(--color-ink)]/75 mb-5">
-                One last step: sign in with the email you used at checkout to
-                unlock the assessment. If you don&rsquo;t have an account yet,
-                you can create one in 30 seconds.
+                One last step: {prefillEmail ? 'finish creating' : 'create or sign into'} your
+                account{prefillEmail ? (
+                  <>
+                    {' '}for{' '}
+                    <span className="font-mono text-[color:var(--color-ink)]">
+                      {prefillEmail}
+                    </span>
+                  </>
+                ) : null}{' '}
+                to unlock the assessment. Takes 30 seconds.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link
-                  href="/auth/login?next=/assessment/in-depth/take"
+                  href={`/auth/signup?next=/assessment/in-depth/take${emailQs}`}
                   className="inline-block bg-[color:var(--color-terra)] text-[color:var(--color-linen)] px-8 py-3 rounded-sm font-mono text-[10px] uppercase tracking-[0.15em] hover:bg-[color:var(--color-terra-light)] transition-colors"
                 >
-                  Log in to start
+                  Create my account
                 </Link>
                 <Link
-                  href="/auth/signup?next=/assessment/in-depth/take"
+                  href={`/auth/login?next=/assessment/in-depth/take${emailQs}`}
                   className="inline-block border border-[color:var(--color-ink)]/20 text-[color:var(--color-ink)] px-8 py-3 rounded-sm font-mono text-[10px] uppercase tracking-[0.15em] hover:bg-[color:var(--color-parch)] transition-colors"
                 >
-                  Create my account
+                  I already have one
                 </Link>
               </div>
             </>

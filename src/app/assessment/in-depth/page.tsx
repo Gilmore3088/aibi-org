@@ -8,10 +8,36 @@
 // which routes through /api/checkout/in-depth.
 
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
+import { createServerClient as ssrCreateServerClient } from "@supabase/ssr";
 import { MarketingPage } from "@/components/system/templates";
 import { Section } from "@/components/system";
+import { isSupabaseConfigured } from "@/lib/supabase/client";
 import { BRAND } from "@content/copy";
 import { PurchaseButton } from "./_components/PurchaseButton";
+
+export const dynamic = "force-dynamic";
+
+async function getSignedInEmail(): Promise<string | null> {
+  if (!isSupabaseConfigured()) return null;
+  try {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+    const cookieStore = await cookies();
+    const supabase = ssrCreateServerClient(supabaseUrl, supabaseAnonKey, {
+      cookies: {
+        getAll() {
+          return cookieStore.getAll();
+        },
+        setAll() {},
+      },
+    });
+    const { data } = await supabase.auth.getUser();
+    return data.user?.email ?? null;
+  } catch {
+    return null;
+  }
+}
 
 export const metadata: Metadata = {
   title: "In-Depth Assessment | The AI Banking Institute",
@@ -31,10 +57,11 @@ interface InDepthAssessmentPageProps {
   readonly searchParams?: { readonly reason?: string };
 }
 
-export default function InDepthAssessmentPage({
+export default async function InDepthAssessmentPage({
   searchParams,
 }: InDepthAssessmentPageProps) {
   const noPurchase = searchParams?.reason === "no-purchase";
+  const signedInEmail = await getSignedInEmail();
 
   return (
     <MarketingPage
@@ -107,7 +134,7 @@ export default function InDepthAssessmentPage({
               retake within twelve months.
             </p>
             <div className="mt-s8">
-              <PurchaseButton />
+              <PurchaseButton userEmail={signedInEmail ?? undefined} />
             </div>
             <p className="font-serif text-body-md text-ink/85 mt-s6 max-w-[40ch]">
               Want your whole team to benefit? Contact us for ten or more.
