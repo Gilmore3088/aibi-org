@@ -6,9 +6,12 @@
  * 2026-05-10: legacy --color-* and --font-* tokens REMAPPED to point at
  * the Ledger palette (defined in tokens-ledger.css). Every component that
  * references a legacy token now renders Ledger gold/navy/parchment instead
- * of the old terra/sage/cobalt. Pillar discipline retired (sage/amber/
- * cobalt-pale kept as legacy aliases for the few places that still
- * reference them; new code should use the Ledger names directly).
+ * of the old terra/sage/cobalt.
+ *
+ * 2026-05-15: marketing-site migration — sage/amber/cobalt-pale also
+ * remapped (no remaining unmapped legacy hex in token system). Pillar
+ * discipline officially retired. New code SHOULD use Ledger token names
+ * directly; legacy --color-* names exist as aliases only.
  */
 
 :root {
@@ -18,12 +21,17 @@
   --color-terra-pale:   var(--ledger-tape,         #F1E9D0);  /* was #f0c4ab */
   --color-cobalt:       var(--ledger-accent-2,     #1E3A5F);  /* was #2d4a7a (similar navy) */
 
-  /* ---- Color · Pillar tokens (legacy, no Ledger equiv) --------------- */
-  --color-sage:         #4a6741;
-  --color-sage-pale:    #d8e8d5;
-  --color-cobalt-pale:  #dce6f5;
-  --color-amber:        #c48820;
-  --color-amber-light:  #d4a032;
+  /* ---- Color · Pillar tokens (REMAPPED to Ledger; pillar discipline retired) ----
+   * Sage was Pillar A (success/strength). Amber was the warn/highlight.
+   * Ledger consolidates: navy (--ledger-accent-2) takes sage's "trusted/
+   * strength" semantic; gold (--ledger-accent) takes amber's emphasis
+   * semantic; pale tints become the gold/navy soft washes.
+   */
+  --color-sage:         var(--ledger-accent-2,     #1E3A5F);  /* was #4a6741 (forest) */
+  --color-sage-pale:    var(--ledger-tape,         #F1E9D0);  /* was #d8e8d5 */
+  --color-cobalt-pale:  var(--ledger-tape,         #F1E9D0);  /* was #dce6f5 */
+  --color-amber:        var(--ledger-accent,       #B5862A);  /* was #c48820 */
+  --color-amber-light:  var(--ledger-accent-light, #C99A40);  /* was #d4a032 */
 
   /* ---- Color · Surfaces (REMAPPED to Ledger) ------------------------- */
   --color-linen:        var(--ledger-bg,           #ECE9DF);  /* was #f9f6f0 */

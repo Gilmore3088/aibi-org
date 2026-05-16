@@ -20,8 +20,8 @@ export default function ComingSoonPage() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: '#f9f6f0',
-        color: '#1e1a14',
+        background: '#ECE9DF',
+        color: '#0E1B2D',
         padding: '2rem',
         textAlign: 'center',
       }}

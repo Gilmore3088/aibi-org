@@ -17,8 +17,8 @@ export default function GlobalError({
           margin: 0,
           padding: '4rem 1.5rem',
           fontFamily: 'Georgia, serif',
-          background: '#f9f6f0',
-          color: '#1e1a14',
+          background: '#ECE9DF',
+          color: '#0E1B2D',
           minHeight: '100vh',
           display: 'flex',
           alignItems: 'center',
@@ -31,7 +31,7 @@ export default function GlobalError({
               fontSize: '0.75rem',
               textTransform: 'uppercase',
               letterSpacing: '0.2em',
-              color: '#9b2226',
+              color: '#8E3B2A',
               marginBottom: '1rem',
             }}
           >
@@ -61,8 +61,8 @@ export default function GlobalError({
             onClick={reset}
             style={{
               padding: '1rem 2rem',
-              background: '#b5512e',
-              color: '#f9f6f0',
+              background: '#B5862A',
+              color: '#ECE9DF',
               border: 'none',
               fontSize: '1rem',
               cursor: 'pointer',
