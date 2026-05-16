@@ -59,7 +59,7 @@ export default function HomePage() {
           {/* Tile 2 — In-Depth Assessment (paid diagnostic) */}
           <div className="bg-parch px-s7 py-s12 md:py-s14 md:px-s8 border-r border-hairline">
             <p className="font-mono text-label-md uppercase tracking-widest text-terra mb-s4">
-              $99 · $79 at 10+
+              $99 · $79 at 10+ by request
             </p>
             <h2 className="font-serif text-display-md md:text-display-lg text-ink leading-[1.05] tracking-tightish max-w-[14ch]">
               In-<em className="text-terra">Depth</em> Assessment

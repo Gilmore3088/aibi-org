@@ -3,7 +3,10 @@
 // design-2.0 build. Uses MarketingPage + the same composition rhythm as the
 // homepage and /assessment/start.
 //
-// Pricing per CLAUDE.md 2026-05-05: $99 individual, $79/seat at 10+.
+// Pricing per Plans/aibi-launch-spec-v2.md §1b: $99 individual; $79/seat
+// at 10+ by email request. Self-serve team checkout is deferred — the
+// in-depth checkout route returns 503 for mode='institution' and nudges
+// buyers to email hello@aibankinginstitute.com.
 // Stripe Checkout via PurchaseButton (./_components/PurchaseButton.tsx),
 // which routes through /api/checkout/in-depth.
 
@@ -125,7 +128,7 @@ export default async function InDepthAssessmentPage({
                   $79
                 </p>
                 <p className="font-mono text-label-md uppercase tracking-widest text-slate mt-s3">
-                  Per seat · 10+
+                  Per seat · 10+ · by request
                 </p>
               </div>
             </div>
