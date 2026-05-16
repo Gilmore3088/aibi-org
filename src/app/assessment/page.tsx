@@ -93,10 +93,10 @@ export default function AssessmentPage() {
             <div className="flex flex-col items-center gap-4">
               {isLowerTier ? (
                 <a
-                  href="/courses/foundation/program"
+                  href="/assessment/in-depth"
                   className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
                 >
-                  Explore the Foundation course
+                  Take the In-Depth Assessment · $99
                 </a>
               ) : (
                 <a
