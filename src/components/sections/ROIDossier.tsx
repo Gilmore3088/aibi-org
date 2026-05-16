@@ -94,7 +94,7 @@ function RangeField({
 }
 
 export function ROIDossier() {
-  const [fte, setFte] = useState(50);
+  const [fte, setFte] = useState(25);
   const [costPerFTE, setCostPerFTE] = useState(85_000);
   const [loHours, setLoHours] = useState(2);
   const [hiHours, setHiHours] = useState(5);
@@ -118,7 +118,7 @@ export function ROIDossier() {
             value={fte}
             displayValue={fmtNumber(fte)}
             min={1}
-            max={500}
+            max={100}
             step={1}
             onChange={setFte}
           />
