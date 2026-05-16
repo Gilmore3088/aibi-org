@@ -48,6 +48,7 @@ export default function AssessmentPage() {
 
   return (
     <main className="min-h-screen">
+      <h1 className="sr-only">AI Readiness Assessment</h1>
       <ProgressBar progress={state.phase === 'questions' ? state.progress : 1} />
 
       <div className="px-6 py-12 md:py-20">

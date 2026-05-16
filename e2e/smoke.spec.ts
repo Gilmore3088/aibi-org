@@ -10,7 +10,11 @@ test.describe('marketing smoke', () => {
     await page.goto('/');
     await expect(page).toHaveTitle(/AI Banking Institute/i);
     // The tagline is non-negotiable per CLAUDE.md (2026-04-15 decision).
-    await expect(page.getByText(/Turning Bankers into Builders/i)).toBeVisible();
+    // It appears in the hero H1 and again in the SiteFooter wordmark; scope
+    // to the hero heading so the assertion stays specific.
+    await expect(
+      page.getByRole('heading', { level: 1, name: /Turning Bankers into Builders/i }),
+    ).toBeVisible();
   });
 
   test('homepage does not contain the banned "FFIEC-aware" phrase', async ({ page }) => {
@@ -49,6 +53,13 @@ test.describe('marketing smoke', () => {
 
   test('404 page renders for unknown route', async ({ page }) => {
     const res = await page.goto('/this-route-definitely-does-not-exist-xyz');
+    // Under COMING_SOON=true the middleware rewrites unknown routes to
+    // /coming-soon (200) so crawlers don't surface broken paths during
+    // takedown. Detect that case from the response and skip the 404 check.
+    const body = await page.locator('body').innerText().catch(() => '');
+    if (res?.status() === 200 && /AI noise soon/i.test(body)) {
+      test.skip(true, 'COMING_SOON rewrite active — 404 only applies when the real site is live.');
+    }
     expect(res?.status()).toBe(404);
   });
 
