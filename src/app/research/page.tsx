@@ -12,6 +12,7 @@
 // the prototype's own nav/footer were dropped to avoid duplication.
 
 import type { Metadata } from 'next';
+import { listAllEssays } from '@content/essays/_lib/registry';
 import { ResearchAnimations } from './_components/ResearchAnimations';
 import './research.css';
 
@@ -21,37 +22,33 @@ export const metadata: Metadata = {
     'Sourced AI research, field notes, and practical artifacts for community banks and credit unions adopting AI safely. Published fortnightly.',
 };
 
+// Ticker items are sourced data points only — every claim cites a named
+// publication per CLAUDE.md "Citations Always". When the legacy-essay
+// catalog is migrated to MDX, swap these for the latest essay headlines.
 const TICKER_ITEMS = [
-  { kicker: 'NEW', text: 'Brief №14 · The widening AI gap, quantified' },
-  { kicker: 'FIELD', text: 'Why meeting summaries are the safest first AI workflow' },
-  { kicker: 'REG', text: 'NCUA emphasis on member-facing AI · Q4 2025' },
-  { kicker: 'ARTIFACT', text: 'Vendor AI review checklist · v4 released' },
-  { kicker: 'DOSSIER', text: '2026 Community Bank AI Readiness Report · 62 pp.' },
+  { kicker: 'FDIC', text: 'Community-bank median efficiency ratio ~65% · Q4 2024 QBP' },
+  { kicker: 'GARTNER', text: '66% of banks discussing AI budget · Bank Director 2024 (via Jack Henry)' },
+  { kicker: 'PERSONETICS', text: '84% would switch FIs for AI-driven financial insights · 2025 (via Apiture)' },
+  { kicker: 'GAO', text: 'GAO 25-107197 · no AI-specific banking framework yet · May 2025' },
+  { kicker: 'MOTLEY FOOL', text: '76% would switch FIs for better digital experience · 2025 (via Apiture)' },
 ];
 
-interface Brief {
-  readonly num: string;
-  readonly date: string;
-  readonly cat: 'gov' | 'risk' | 'train' | 'ops' | 'mbr' | 'exam' | 'art' | 'signals';
-  readonly catLabel: string;
-  readonly title: string;
-  readonly titleEm: string;
-  readonly titleTail: string;
-  readonly read: string;
+// Essay category → tile color key. Legacy registry uses prose labels;
+// we map them to the design-system swatches defined in research.css.
+const CAT_MAP: Record<string, { readonly key: string; readonly label: string }> = {
+  Governance: { key: 'gov', label: 'Governance' },
+  'Risk & controls': { key: 'risk', label: 'Risk & Controls' },
+  'Foundations work': { key: 'train', label: 'Training & Skills' },
+  'Member impact': { key: 'mbr', label: 'Member Impact' },
+  'Examiner trends': { key: 'exam', label: 'Examiner Trends' },
+};
+
+function formatDate(iso: string): string {
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-US', { month: 'short', day: '2-digit' });
 }
 
-const BRIEFS: readonly Brief[] = [
-  { num: '13', date: 'Apr 28', cat: 'gov', catLabel: 'Governance', title: 'AI governance,', titleEm: 'without', titleTail: 'the jargon.', read: '18 min' },
-  { num: '12', date: 'Apr 14', cat: 'risk', catLabel: 'Risk & Controls', title: 'Six ways AI', titleEm: 'fails', titleTail: 'in banking.', read: '22 min' },
-  { num: '11', date: 'Mar 31', cat: 'train', catLabel: 'Training & Skills', title: 'The', titleEm: 'skill,', titleTail: 'not the prompt.', read: '16 min' },
-  { num: '10', date: 'Mar 17', cat: 'ops', catLabel: 'Operations', title: 'What your', titleEm: 'efficiency ratio', titleTail: 'is hiding.', read: '19 min' },
-  { num: '09', date: 'Mar 03', cat: 'mbr', catLabel: 'Member Impact', title: 'Members', titleEm: 'will switch.', titleTail: 'To whom?', read: '14 min' },
-  { num: '08', date: 'Feb 17', cat: 'exam', catLabel: 'Examiner Trends', title: 'Three questions your', titleEm: 'next exam', titleTail: 'will ask.', read: '20 min' },
-  { num: '07', date: 'Feb 03', cat: 'art', catLabel: 'Tools & Artifacts', title: 'The', titleEm: 'acceptable use', titleTail: 'card, examined.', read: '12 min' },
-  { num: '06', date: 'Jan 20', cat: 'signals', catLabel: 'Market Signals', title: 'The vendor AI', titleEm: 'arms race,', titleTail: 'charted.', read: '17 min' },
-];
-
-function BriefMark({ cat }: { cat: Brief['cat'] }) {
+function BriefMark({ cat }: { cat: string }) {
   const stroke = '#0E1B2D';
   const gold = '#B5862A';
   switch (cat) {
@@ -128,6 +125,8 @@ function BriefMark({ cat }: { cat: Brief['cat'] }) {
           <rect x="48" y="10" width="8" height="44" fill={gold} stroke="none" />
         </svg>
       );
+    default:
+      return null;
   }
 }
 
@@ -229,13 +228,17 @@ interface SealMeta {
   readonly smallInitials?: boolean;
 }
 
+// Regulatory references are sourced (CLAUDE.md "Reference Documents").
+// Operating translations are plain-English paraphrases — not legal advice
+// and not statistical claims. Verifiable status timestamps removed: we'll
+// add them back when an authoritative tracking source is wired up.
 const SEALS: readonly SealMeta[] = [
-  { id: 'sr', initials: 'SR', sub: '11-7', curveLabel: 'SUPERVISION · REGULATION', nm: 'SR 11-7', subline: 'Federal Reserve · OCC', means: 'Define "model" broadly. Inventory before exam.', status: "Active · re-cited Q1 '26" },
-  { id: 'tp', initials: 'TP', sub: '2023', curveLabel: 'INTERAGENCY · TPRM', nm: 'TPRM', subline: 'OCC · FRB · FDIC', means: "Vendor's AI = your model. Inherit the risk.", status: "Active · issued Jun '23" },
-  { id: 'ff', initials: 'FF', sub: 'AIO', curveLabel: 'FFIEC · IT HANDBOOK', nm: 'FFIEC', subline: 'IT Handbook · AIO', means: 'Treat AI like any other production system.', status: 'Watch · last 2024' },
-  { id: 'nc', initials: 'NC', sub: 'UA', curveLabel: 'NCUA · LETTER TO CUs', nm: 'NCUA', subline: 'Letter to CUs', means: 'Human fallback path required, < one business day.', status: "Active · emphasis Q4 '25" },
-  { id: 'cf', initials: 'CF', sub: 'PB', curveLabel: 'CFPB · CIRCULAR THEMES', nm: 'CFPB', subline: 'Circular themes', means: '"Algorithm said so" is not a reason code.', status: 'Active · theme 2023–26' },
-  { id: 'fc', initials: 'FC', sub: 'BSA', curveLabel: 'FINCEN · BSA', nm: 'FinCEN', subline: 'BSA · operational risk', means: 'AI drafts. The BSA officer still signs.', status: 'Active · enforcement ongoing', smallInitials: true },
+  { id: 'sr', initials: 'SR', sub: '11-7', curveLabel: 'SUPERVISION · REGULATION', nm: 'SR 11-7', subline: 'Federal Reserve · OCC · 2011', means: 'Define "model" broadly. Inventory before exam.', status: 'Read the guidance' },
+  { id: 'tp', initials: 'TP', sub: 'RM', curveLabel: 'INTERAGENCY · TPRM', nm: 'Interagency TPRM', subline: 'OCC · FRB · FDIC · 2023', means: "Vendor's AI is your model. You inherit the risk.", status: 'Read the guidance' },
+  { id: 'ff', initials: 'FF', sub: 'IT', curveLabel: 'FFIEC · IT HANDBOOK', nm: 'FFIEC IT Handbook', subline: 'Architecture · Operations · 2021', means: 'Treat AI like any other production system.', status: 'Read the guidance' },
+  { id: 'ai', initials: 'AI', sub: 'EOG', curveLabel: 'AIEOG · AI LEXICON', nm: 'AIEOG AI Lexicon', subline: 'Treasury · FBIIC · FSSCC · Feb 2026', means: 'Use the official definitions: hallucination, HITL, AI inventory.', status: 'Read the lexicon' },
+  { id: 'cf', initials: 'EC', sub: 'OA', curveLabel: 'ECOA · REG B · CFPB', nm: 'ECOA / Reg B', subline: 'CFPB · ongoing', means: 'Disparate-impact testing on any model influencing credit.', status: 'Read the guidance' },
+  { id: 'gl', initials: 'GL', sub: 'BA', curveLabel: 'GLBA · SAFEGUARDS RULE', nm: 'GLBA Safeguards', subline: '16 CFR 314 · final rule 2023', means: 'Encryption, access controls, incident response for NPI.', status: 'Read the guidance', smallInitials: true },
 ];
 
 function Seal({ meta }: { meta: SealMeta }) {
@@ -272,7 +275,22 @@ function revealDelay(i: number): string {
   return '';
 }
 
-export default function ResearchPage() {
+// Real Gartner Peer Community findings cited in Jack Henry's
+// "Getting Started in AI" (2025). Source for these four bars sits in
+// CLAUDE.md "Sourced Statistics for Copy".
+const GARTNER_BARS = [
+  { pct: 66, label: 'Discussing AI budget', kicker: 'Bank Director 2024' },
+  { pct: 57, label: 'Struggle with AI skill gaps', kicker: 'Gartner Peer Community' },
+  { pct: 55, label: 'No AI governance framework yet', kicker: 'Gartner Peer Community' },
+  { pct: 48, label: 'Lack clarity on AI business impact', kicker: 'Gartner Peer Community' },
+];
+
+export default async function ResearchPage() {
+  // Pull from the real essay registry; falls back gracefully when empty.
+  const essays = await listAllEssays();
+  const featured = essays[0] ?? null;
+  const indexEssays = essays.slice(0, 8);
+
   return (
     <div className="aibi-research">
       <ResearchAnimations />
@@ -320,25 +338,20 @@ export default function ResearchPage() {
             <div className="cover-chart">
               <div className="cc-head">
                 <div className="ttl">
-                  The widening gap — <em>top-quartile</em> institutions are compounding.
+                  The state of AI <em>at the desk,</em> in four numbers.
                 </div>
                 <div className="fig">
                   Fig. 01
-                  <small>n = 240 · 2022–26</small>
+                  <small>Gartner · Bank Director · 2024</small>
                 </div>
               </div>
               <div className="cc-svg">
                 <svg
                   viewBox="0 0 600 260"
-                  preserveAspectRatio="none"
                   id="coverChart"
                   role="img"
-                  aria-label="Line chart of AI-workflow adoption: top-quartile community banks rising sharply versus a near-flat bottom quartile."
+                  aria-label="Four-bar chart of bank AI readiness: 66% discussing AI budget, 57% struggle with skill gaps, 55% no governance framework, 48% lack business-impact clarity. Sources: Bank Director 2024 and Gartner Peer Community."
                 >
-                  <path
-                    className="gap-band"
-                    d="M40,210 C 140,202 230,196 320,188 C 410,180 490,176 560,172 L 560,38 C 490,46 410,58 320,82 C 230,108 140,148 40,182 Z"
-                  />
                   <g className="axis">
                     <line x1="40" y1="40" x2="560" y2="40" />
                     <line x1="40" y1="100" x2="560" y2="100" />
@@ -348,30 +361,75 @@ export default function ResearchPage() {
                     <text x="32" y="104" textAnchor="end">75</text>
                     <text x="32" y="164" textAnchor="end">50</text>
                     <text x="32" y="224" textAnchor="end">25</text>
-                    <text x="40" y="244" textAnchor="middle">&apos;22</text>
-                    <text x="170" y="244" textAnchor="middle">&apos;23</text>
-                    <text x="300" y="244" textAnchor="middle">&apos;24</text>
-                    <text x="430" y="244" textAnchor="middle">&apos;25</text>
-                    <text x="560" y="244" textAnchor="middle">&apos;26</text>
                   </g>
-                  <path className="ln top draw" data-len="640" d="M40,182 C 140,148 230,108 320,82 C 410,58 490,46 560,38" />
-                  <path className="ln bot draw" data-len="540" d="M40,210 C 140,202 230,196 320,188 C 410,180 490,176 560,172" />
-                  <circle className="dot top" cx="560" cy="38" r="5" />
-                  <circle className="dot bot" cx="560" cy="172" r="5" />
-                  <text className="lbl top" x="554" y="26" textAnchor="end">Top quartile · 86</text>
-                  <text className="lbl bot" x="554" y="190" textAnchor="end">Bottom quartile · 37</text>
-                  <line className="gap-callout" x1="480" y1="62" x2="480" y2="168" />
-                  <line className="gap-callout" x1="474" y1="62" x2="486" y2="62" />
-                  <line className="gap-callout" x1="474" y1="168" x2="486" y2="168" />
-                  <text className="gap-num" x="490" y="120">49 pts</text>
+                  {GARTNER_BARS.map((b, i) => {
+                    const xCenter = 95 + i * 130;
+                    const barW = 78;
+                    const barX = xCenter - barW / 2;
+                    const barH = (b.pct / 100) * 180;
+                    const barY = 220 - barH;
+                    return (
+                      <g key={b.label}>
+                        <rect
+                          x={barX}
+                          y={barY}
+                          width={barW}
+                          height={barH}
+                          fill="var(--ar-terra)"
+                          opacity={0.85}
+                        />
+                        <text
+                          x={xCenter}
+                          y={barY - 8}
+                          textAnchor="middle"
+                          fontFamily="var(--ar-serif)"
+                          fontStyle="italic"
+                          fontSize={26}
+                          fill="var(--ar-terra-2)"
+                          fontWeight={500}
+                        >
+                          {b.pct}%
+                        </text>
+                        <text
+                          x={xCenter}
+                          y={238}
+                          textAnchor="middle"
+                          fontFamily="var(--ar-mono)"
+                          fontSize={8.5}
+                          fill="var(--ar-muted)"
+                          letterSpacing={1.2}
+                        >
+                          {b.kicker.toUpperCase()}
+                        </text>
+                      </g>
+                    );
+                  })}
                 </svg>
+                <div
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(4, 1fr)',
+                    gap: 12,
+                    marginTop: 8,
+                    fontFamily: 'var(--ar-serif)',
+                    fontStyle: 'italic',
+                    fontSize: 13,
+                    lineHeight: 1.35,
+                    color: 'var(--ar-ink-2)',
+                  }}
+                >
+                  {GARTNER_BARS.map((b) => (
+                    <span key={b.label} style={{ textAlign: 'center' }}>
+                      {b.label}
+                    </span>
+                  ))}
+                </div>
               </div>
               <div className="ccfooter">
                 <div className="legend">
-                  <span><span className="swatch top" />Top quartile</span>
-                  <span><span className="swatch bot" />Bottom quartile</span>
+                  <span><span className="swatch top" />% reporting</span>
                 </div>
-                <div>Source · AiBI Readiness Index</div>
+                <div>Source · Jack Henry &quot;Getting Started in AI&quot; 2025</div>
               </div>
             </div>
           </div>
@@ -387,29 +445,48 @@ export default function ResearchPage() {
             </div>
           </div>
 
-          <article className="feat reveal">
-            <div className="mark-col">
-              <div className="badge">
-                Brief
-                <b>№&nbsp;14</b>
-                Market signals
+          {featured ? (
+            <article className="feat reveal">
+              <div className="mark-col">
+                <div className="badge">
+                  Latest brief
+                  <b>{formatDate(featured.date)}</b>
+                  {featured.category}
+                </div>
+                <div className="meta">
+                  <b>{featured.readMinutes} min read</b>
+                  <br />
+                  By {featured.author}
+                </div>
               </div>
-              <div className="meta">
-                <b>Tue · May 12</b>2026<br />
-                24 min read<br />
-                47 footnotes
+              <div className="body">
+                <h3>{featured.title}</h3>
+                {featured.dek && (
+                  <p
+                    style={{
+                      fontFamily: 'var(--ar-serif)',
+                      fontStyle: 'italic',
+                      fontSize: 19,
+                      lineHeight: 1.45,
+                      color: 'var(--ar-ink-2)',
+                      margin: 0,
+                      maxWidth: '52ch',
+                    }}
+                  >
+                    {featured.dek}
+                  </p>
+                )}
+                <div className="read">
+                  <a href={featured.href}>Read the full brief →</a>
+                  <div className="by">By <b>{featured.author}</b></div>
+                </div>
               </div>
-            </div>
-            <div className="body">
-              <h3>
-                The institutions that delay <em>twelve months</em> will not catch up in <em>twenty-four.</em>
-              </h3>
-              <div className="read">
-                <a href="/assessment/start">Read the full brief →</a>
-                <div className="by">By <b>James Park</b> · Founder</div>
-              </div>
-            </div>
-          </article>
+            </article>
+          ) : (
+            <p style={{ fontFamily: 'var(--ar-serif)', fontStyle: 'italic', color: 'var(--ar-muted)' }}>
+              The next brief is being filed.
+            </p>
+          )}
         </div>
       </section>
 
@@ -423,30 +500,28 @@ export default function ResearchPage() {
           </div>
 
           <div className="idx-grid">
-            {BRIEFS.map((b, i) => (
-              <a
-                key={b.num}
-                className={`idx reveal${revealDelay(i)}`}
-                data-cat={b.cat}
-                href="#subscribe"
-              >
-                <div className="row1">
-                  <div className="mark"><BriefMark cat={b.cat} /></div>
-                  <div className="num">
-                    №<b>{b.num}</b>
-                    {b.date}
+            {indexEssays.map((e, i) => {
+              const cat = CAT_MAP[e.category] ?? { key: 'signals', label: e.category };
+              return (
+                <a
+                  key={e.slug}
+                  className={`idx reveal${revealDelay(i)}`}
+                  data-cat={cat.key}
+                  href={e.href}
+                >
+                  <div className="row1">
+                    <div className="mark"><BriefMark cat={cat.key} /></div>
+                    <div className="num">{formatDate(e.date)}</div>
                   </div>
-                </div>
-                <div className="cat">{b.catLabel}</div>
-                <h4>
-                  {b.title} <em>{b.titleEm}</em> {b.titleTail}
-                </h4>
-                <div className="foot">
-                  <span>Brief</span>
-                  <span>{b.read}</span>
-                </div>
-              </a>
-            ))}
+                  <div className="cat">{cat.label}</div>
+                  <h4>{e.title}</h4>
+                  <div className="foot">
+                    <span>Brief</span>
+                    <span>{e.readMinutes} min</span>
+                  </div>
+                </a>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -466,28 +541,28 @@ export default function ResearchPage() {
               <div className="num">Role 01 <em>i.</em></div>
               <h3>For the <em>executive</em> seat.</h3>
               <div className="titles">CEO · President · Board chair</div>
-              <div className="cta"><b>12 reads</b><span className="arrow">→</span></div>
+              <div className="cta"><b>See briefs</b><span className="arrow">→</span></div>
             </a>
             <a className="role reveal r-2" href="#subscribe">
               <div className="illust"><RoleIllust kind="risk" /></div>
               <div className="num">Role 02 <em>ii.</em></div>
               <h3>For <em>risk</em> &amp; compliance.</h3>
               <div className="titles">CRO · Compliance · Audit</div>
-              <div className="cta"><b>14 reads</b><span className="arrow">→</span></div>
+              <div className="cta"><b>See briefs</b><span className="arrow">→</span></div>
             </a>
             <a className="role reveal r-3" href="#subscribe">
               <div className="illust"><RoleIllust kind="ops" /></div>
               <div className="num">Role 03 <em>iii.</em></div>
               <h3>For <em>operators</em> &amp; trainers.</h3>
               <div className="titles">COO · Training · HR · Dept. heads</div>
-              <div className="cta"><b>11 reads</b><span className="arrow">→</span></div>
+              <div className="cta"><b>See briefs</b><span className="arrow">→</span></div>
             </a>
             <a className="role reveal r-4" href="#subscribe">
               <div className="illust"><RoleIllust kind="it" /></div>
               <div className="num">Role 04 <em>iv.</em></div>
               <h3>For <em>IT</em> &amp; security.</h3>
               <div className="titles">CIO · CISO · IT security · Data</div>
-              <div className="cta"><b>9 reads</b><span className="arrow">→</span></div>
+              <div className="cta"><b>See briefs</b><span className="arrow">→</span></div>
             </a>
           </div>
         </div>
@@ -505,7 +580,7 @@ export default function ResearchPage() {
           <div className="toolkit">
             <article className="art reveal">
               <div className="preview">
-                <span className="tape">Open · No email</span>
+                <span className="tape">Forthcoming</span>
                 <svg viewBox="0 0 320 180">
                   <rect width="320" height="180" fill="#EDE8DA" />
                   <g transform="translate(40 32)">
@@ -527,15 +602,15 @@ export default function ResearchPage() {
                 <h4>AI use-case <em>inventory.</em></h4>
               </div>
               <div className="meta">
-                <span>XLSX · 12 sheets</span>
-                <span className="gate open">Open</span>
+                <span>Q3 2026</span>
+                <span className="gate">Forthcoming</span>
               </div>
-              <a className="dl" href="#subscribe">Download <span className="arrow">↓</span></a>
+              <a className="dl" href="#subscribe">Notify me <span className="arrow">→</span></a>
             </article>
 
             <article className="art reveal r-2">
               <div className="preview">
-                <span className="tape">Open · No email</span>
+                <span className="tape">Forthcoming</span>
                 <svg viewBox="0 0 320 180">
                   <rect width="320" height="180" fill="#EDE8DA" />
                   <g transform="translate(80 28)">
@@ -557,15 +632,15 @@ export default function ResearchPage() {
                 <h4><em>Acceptable use</em> card.</h4>
               </div>
               <div className="meta">
-                <span>PDF · 1 page</span>
-                <span className="gate open">Open</span>
+                <span>Q3 2026</span>
+                <span className="gate">Forthcoming</span>
               </div>
-              <a className="dl" href="#subscribe">Download <span className="arrow">↓</span></a>
+              <a className="dl" href="#subscribe">Notify me <span className="arrow">→</span></a>
             </article>
 
             <article className="art reveal r-3">
               <div className="preview">
-                <span className="tape">Email unlock</span>
+                <span className="tape">Forthcoming</span>
                 <svg viewBox="0 0 320 180">
                   <rect width="320" height="180" fill="#EDE8DA" />
                   <g transform="translate(50 28)">
@@ -591,15 +666,15 @@ export default function ResearchPage() {
                 <h4>Vendor AI <em>review.</em></h4>
               </div>
               <div className="meta">
-                <span>PDF · 4 pages</span>
-                <span className="gate">Email unlock</span>
+                <span>Q3 2026</span>
+                <span className="gate">Forthcoming</span>
               </div>
-              <a className="dl" href="#subscribe">Unlock <span className="arrow">↓</span></a>
+              <a className="dl" href="#subscribe">Notify me <span className="arrow">→</span></a>
             </article>
 
             <article className="art reveal r-4">
               <div className="preview">
-                <span className="tape">Email unlock</span>
+                <span className="tape">Forthcoming</span>
                 <svg viewBox="0 0 320 180">
                   <rect width="320" height="180" fill="#EDE8DA" />
                   <g transform="translate(60 26)">
@@ -623,15 +698,15 @@ export default function ResearchPage() {
                 <h4><em>Board briefing</em> outline.</h4>
               </div>
               <div className="meta">
-                <span>DOCX + PPTX</span>
-                <span className="gate">Email unlock</span>
+                <span>Q3 2026</span>
+                <span className="gate">Forthcoming</span>
               </div>
-              <a className="dl" href="#subscribe">Unlock <span className="arrow">↓</span></a>
+              <a className="dl" href="#subscribe">Notify me <span className="arrow">→</span></a>
             </article>
 
             <article className="art reveal">
               <div className="preview">
-                <span className="tape">Email unlock</span>
+                <span className="tape">Forthcoming</span>
                 <svg viewBox="0 0 320 180">
                   <rect width="320" height="180" fill="#EDE8DA" />
                   <g transform="translate(50 26)">
@@ -663,15 +738,15 @@ export default function ResearchPage() {
                 <h4>Department <em>readiness</em> sheet.</h4>
               </div>
               <div className="meta">
-                <span>PDF + Notion</span>
-                <span className="gate">Email unlock</span>
+                <span>Q3 2026</span>
+                <span className="gate">Forthcoming</span>
               </div>
-              <a className="dl" href="#subscribe">Unlock <span className="arrow">↓</span></a>
+              <a className="dl" href="#subscribe">Notify me <span className="arrow">→</span></a>
             </article>
 
             <article className="art reveal r-2">
               <div className="preview">
-                <span className="tape">Email unlock</span>
+                <span className="tape">Forthcoming</span>
                 <svg viewBox="0 0 320 180">
                   <rect width="320" height="180" fill="#EDE8DA" />
                   <g transform="translate(70 28)">
@@ -698,10 +773,10 @@ export default function ResearchPage() {
                 <h4>Prompt <em>risk review.</em></h4>
               </div>
               <div className="meta">
-                <span>PDF · 2 pp.</span>
-                <span className="gate">Email unlock</span>
+                <span>Q3 2026</span>
+                <span className="gate">Forthcoming</span>
               </div>
-              <a className="dl" href="#subscribe">Unlock <span className="arrow">↓</span></a>
+              <a className="dl" href="#subscribe">Notify me <span className="arrow">→</span></a>
             </article>
           </div>
         </div>
