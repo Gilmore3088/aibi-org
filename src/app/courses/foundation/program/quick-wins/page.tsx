@@ -5,8 +5,10 @@
 // chrome stays consistent with the rest of the course tree.
 
 import type { Metadata } from 'next';
+import { redirect } from 'next/navigation';
 import { CourseShellWrapper } from "@/components/lms/CourseShellWrapper";
 import { QuickWinsClient } from './QuickWinsClient';
+import { getEnrollment } from '../_lib/getEnrollment';
 
 export const metadata: Metadata = {
   title: 'Quick Wins | AiBI-Foundation | The AI Banking Institute',
@@ -15,6 +17,11 @@ export const metadata: Metadata = {
 };
 
 export default async function QuickWinsPage() {
+  const enrollment = await getEnrollment();
+  if (!enrollment) {
+    redirect('/courses/foundation/program/purchase');
+  }
+
   return (
     <CourseShellWrapper crumbs={['Education', 'AiBI-Foundation', 'Quick Wins']}>
       <QuickWinsClient />

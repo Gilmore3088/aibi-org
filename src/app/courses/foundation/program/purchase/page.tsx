@@ -307,7 +307,7 @@ export default async function PurchasePage() {
               </span>
             </div>
             <div>
-              <h3
+              <h2
                 style={{
                   fontFamily: 'var(--ledger-serif)',
                   fontWeight: 500,
@@ -318,7 +318,7 @@ export default async function PurchasePage() {
                 }}
               >
                 $295
-              </h3>
+              </h2>
               <p
                 style={{
                   margin: '4px 0 0',
@@ -328,7 +328,7 @@ export default async function PurchasePage() {
                   maxWidth: '52ch',
                 }}
               >
-                One-time payment. Permanent access. Stripe checkout.
+                One-time payment. Lifetime access. Stripe checkout.
               </p>
             </div>
             <EnrollButton userEmail={userEmail ?? undefined} />
@@ -509,7 +509,7 @@ export default async function PurchasePage() {
           </div>
         </section>
 
-        {/* Enrollment notes — institution / advanced tracks */}
+        {/* Lifetime access — what is included */}
         <section
           style={{
             background: 'var(--ledger-parch)',
@@ -519,24 +519,104 @@ export default async function PurchasePage() {
             display: 'grid',
             gridTemplateColumns: '0.8fr 1.2fr',
             gap: 24,
+            marginBottom: 24,
           }}
         >
-          <h2
+          <div>
+            <div
+              style={{
+                fontFamily: 'var(--ledger-mono)',
+                fontSize: 10.5,
+                letterSpacing: '0.2em',
+                textTransform: 'uppercase',
+                color: 'var(--ledger-accent)',
+                marginBottom: 10,
+              }}
+            >
+              Lifetime access
+            </div>
+            <h2
+              style={{
+                fontFamily: 'var(--ledger-serif)',
+                fontWeight: 500,
+                fontSize: 26,
+                letterSpacing: '-0.02em',
+                margin: 0,
+                color: 'var(--ledger-ink)',
+                lineHeight: 1.15,
+              }}
+            >
+              Pay once. Keep everything.
+            </h2>
+            <p
+              style={{
+                fontSize: 13.5,
+                color: 'var(--ledger-slate)',
+                lineHeight: 1.6,
+                margin: '10px 0 0',
+              }}
+            >
+              Future updates to modules, artifacts, and the prompt library are
+              included for the life of the program at no additional cost.
+            </p>
+          </div>
+          <ul
             style={{
-              fontFamily: 'var(--ledger-serif)',
-              fontWeight: 500,
-              fontSize: 26,
-              letterSpacing: '-0.02em',
               margin: 0,
-              color: 'var(--ledger-ink)',
-              lineHeight: 1.15,
+              padding: 0,
+              listStyle: 'none',
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: 12,
             }}
           >
-            Enrollment includes the full AiBI-Foundation path.
-          </h2>
+            {[
+              'All twelve course modules — Learn, Practice, Apply',
+              'Hands-on practice reps and reviewed-work submissions',
+              'Artifact templates you keep and reuse at your desk',
+              'Searchable prompt library and saved-prompts toolbox',
+              'Learner dashboard, progress, and resume-anywhere',
+              'AiBI-Foundation certificate on completion',
+            ].map((item) => (
+              <li
+                key={item}
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: '10px 1fr',
+                  gap: 10,
+                  fontSize: 13.5,
+                  color: 'var(--ledger-ink-2)',
+                  lineHeight: 1.5,
+                  alignItems: 'start',
+                }}
+              >
+                <span
+                  aria-hidden="true"
+                  style={{
+                    marginTop: 7,
+                    width: 6,
+                    height: 6,
+                    background: 'var(--ledger-accent)',
+                  }}
+                />
+                {item}
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        {/* Enrollment notes — institution / advanced tracks */}
+        <section
+          style={{
+            background: 'var(--ledger-paper)',
+            padding: '20px 24px',
+            border: '1px solid var(--ledger-rule)',
+            borderRadius: 3,
+          }}
+        >
           <p
             style={{
-              fontSize: 14,
+              fontSize: 13,
               color: 'var(--ledger-slate)',
               lineHeight: 1.6,
               margin: 0,

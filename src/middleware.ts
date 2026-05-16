@@ -43,6 +43,17 @@ const COMING_SOON_BYPASS_PREFIXES: readonly string[] = [
   '/dashboard',
 ];
 
+// Exact paths that must always render their real content even in coming-soon
+// mode. Crawler infrastructure: /robots.txt and /sitemap.xml tell search
+// engines what to index — rewriting them to the placeholder HTML breaks SEO
+// while the takedown is up.
+const COMING_SOON_BYPASS_EXACT: readonly string[] = [
+  '/robots.txt',
+  '/sitemap.xml',
+  '/icon.svg',
+  '/apple-icon.svg',
+];
+
 export async function middleware(request: NextRequest): Promise<NextResponse> {
   const { pathname } = request.nextUrl;
 
@@ -55,6 +66,7 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
     const isRoot = pathname === '/';
     const isBypassed =
       isRoot ||
+      COMING_SOON_BYPASS_EXACT.includes(pathname) ||
       COMING_SOON_BYPASS_PREFIXES.some(
         (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
       );

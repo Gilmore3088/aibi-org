@@ -5,8 +5,10 @@
 
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import { CourseShellWrapper } from "@/components/lms/CourseShellWrapper";
 import { ToolGuide } from '../_components/ToolGuide';
+import { getEnrollment } from '../_lib/getEnrollment';
 import {
   notebooklmGuide,
   perplexityGuide,
@@ -27,6 +29,13 @@ const PLATFORMS = ALL_TOOL_GUIDES.map((g) => ({
 }));
 
 export default async function ToolGuidesPage() {
+  // Platform deep-dive guides are part of the AiBI-Foundation lifetime-access
+  // bundle. Non-enrolled visitors must hit the purchase page.
+  const enrollment = await getEnrollment();
+  if (!enrollment) {
+    redirect('/courses/foundation/program/purchase');
+  }
+
   return (
     <CourseShellWrapper crumbs={['Education', 'AiBI-Foundation', 'Platform Guides']}>
       <header style={{ marginBottom: 40 }}>

@@ -13,55 +13,51 @@ interface NextStep {
   readonly primary?: boolean;
 }
 
-const CALENDLY_URL =
-  process.env.NEXT_PUBLIC_CALENDLY_URL ??
-  'https://calendly.com/aibi/executive-briefing';
-
 function getStepsForTier(tierId: Tier['id']): readonly NextStep[] {
   switch (tierId) {
     case 'starting-point':
       return [
         {
-          label: 'Recommended',
-          title: 'Start with the Foundation course',
+          label: 'Go deeper · $99',
+          title: 'Take the In-Depth Assessment',
           description:
-            'Nine self-paced modules that build hands-on AI proficiency for every staff member. Earn the AiBI-Foundation credential with a real work product — not a multiple-choice test.',
-          href: '/courses/foundation/program',
-          cta: 'Explore AiBI-Foundation',
-          accent: 'var(--color-terra)',
+            'Forty-eight questions across eight readiness dimensions. A consulting-grade report with peer-band comparison and a starting playbook keyed to your lowest-scoring areas.',
+          href: '/assessment/in-depth',
+          cta: 'See the In-Depth Assessment',
+          accent: 'var(--color-cobalt)',
           primary: true,
         },
         {
-          label: 'When you are ready',
-          title: 'Request an Executive Briefing',
+          label: 'Train your team',
+          title: 'Start the Foundation course',
           description:
-            'A free 45-minute conversation where we walk through what your score means, share peer benchmarks from FDIC data, and outline what the first 90 days would look like.',
-          href: CALENDLY_URL,
-          cta: 'Request Executive Briefing',
-          accent: 'var(--color-ink)',
+            'Twelve self-paced modules that build hands-on AI proficiency for every staff member. Lifetime access to modules, artifacts, and the prompt library. Earn the AiBI-Foundation credential on reviewed work.',
+          href: '/courses/foundation/program',
+          cta: 'Explore AiBI-Foundation',
+          accent: 'var(--color-terra)',
         },
       ];
 
     case 'early-stage':
       return [
         {
-          label: 'Recommended',
-          title: 'Earn the Foundation credential',
+          label: 'Go deeper · $99',
+          title: 'Take the In-Depth Assessment',
           description:
-            'Your institution has early adopters. Give them the tools to lead with confidence. The AiBI-Foundation course builds governed, repeatable AI skills across nine self-paced modules.',
-          href: '/courses/foundation/program',
-          cta: 'Explore AiBI-Foundation',
-          accent: 'var(--color-terra)',
+            'Forty-eight questions across eight readiness dimensions. Diagnose where momentum is real and where you are still relying on heroics — with an anonymized rollup if your team takes it too.',
+          href: '/assessment/in-depth',
+          cta: 'See the In-Depth Assessment',
+          accent: 'var(--color-cobalt)',
           primary: true,
         },
         {
-          label: 'Get guidance',
-          title: 'Book an Executive Briefing',
+          label: 'Train your team',
+          title: 'Earn the Foundation credential',
           description:
-            'A free 45-minute conversation to convert scattered experiments into a coordinated program with governance and measured outcomes.',
-          href: CALENDLY_URL,
-          cta: 'Request Executive Briefing',
-          accent: 'var(--color-ink)',
+            'Give your early adopters governed, repeatable AI skills. Twelve self-paced modules with practice reps and artifacts. Lifetime access. AiBI-Foundation credential on reviewed work.',
+          href: '/courses/foundation/program',
+          cta: 'Explore AiBI-Foundation',
+          accent: 'var(--color-terra)',
         },
       ];
 

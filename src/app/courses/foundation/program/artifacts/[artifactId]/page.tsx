@@ -1,13 +1,16 @@
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { AIBI_P_ARTIFACTS } from '@content/practice-reps/foundation-program';
 import { PrimaryButton, GhostButton } from '@/components/lms';
 import { CourseShellWrapper } from '@/components/lms/CourseShellWrapper';
 import { ArtifactStatusPanel } from './ArtifactStatusPanel';
+import { getEnrollment } from '../../_lib/getEnrollment';
 
 interface ArtifactPageProps {
   readonly params: { artifactId: string };
 }
+
+export const dynamic = 'force-dynamic';
 
 export function generateStaticParams() {
   return AIBI_P_ARTIFACTS.map((artifact) => ({ artifactId: artifact.id }));
@@ -27,6 +30,13 @@ export default async function ArtifactDetailPage({ params }: ArtifactPageProps) 
 
   if (!artifact) {
     notFound();
+  }
+
+  // Artifact templates are part of the AiBI-Foundation lifetime-access bundle.
+  // Non-enrolled visitors must hit the purchase page, not preview the asset.
+  const enrollment = await getEnrollment();
+  if (!enrollment) {
+    redirect('/courses/foundation/program/purchase');
   }
 
   return (

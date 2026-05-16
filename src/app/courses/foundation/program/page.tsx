@@ -236,7 +236,7 @@ export default async function CourseOverviewPage() {
               </span>
             </div>
             <div>
-              <h3
+              <h2
                 style={{
                   fontFamily: 'var(--ledger-serif)',
                   fontWeight: 500,
@@ -248,7 +248,7 @@ export default async function CourseOverviewPage() {
                 }}
               >
                 {currentMod.title}
-              </h3>
+              </h2>
               <p
                 style={{
                   margin: '4px 0 0',

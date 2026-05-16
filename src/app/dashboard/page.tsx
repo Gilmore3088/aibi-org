@@ -224,35 +224,74 @@ export default function DashboardPage() {
                 </div>
               </article>
             ) : user.readiness ? (
-              <article className="border border-[color:var(--color-ink)]/10 rounded-[3px] p-6 md:p-8">
-                <p className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-slate)]">
-                  Your next step
-                </p>
-                <h1 className="font-serif text-3xl md:text-5xl text-[color:var(--color-ink)] leading-tight mt-3">
-                  Enroll in AiBI-Foundation.
-                </h1>
-                {tier && (
-                  <p className="mt-4 text-sm text-[color:var(--color-ink)]/75 leading-relaxed">
-                    Your readiness tier is <strong className="text-[color:var(--color-terra)]">{tier.label}</strong>.
-                    The Foundation program turns the diagnostic into hands-on
-                    skills your team can apply this week.
+              assessments?.inDepth?.entitled ? (
+                // In-Depth buyer with no Foundation enrollment: their dedicated
+                // In-Depth card below carries the action. Use this slot to surface
+                // the next graduation step (Foundation) at the same prominence as
+                // the homepage ladder.
+                <article className="border border-[color:var(--color-ink)]/10 rounded-[3px] p-6 md:p-8">
+                  <p className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-slate)]">
+                    Your next step
                   </p>
-                )}
-                <div className="mt-6 flex flex-col sm:flex-row gap-3">
-                  <Link
-                    href="/courses/foundation/program/purchase"
-                    className="text-center px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
-                  >
-                    Enroll — $295
-                  </Link>
-                  <Link
-                    href="/courses/foundation/program"
-                    className="text-center px-6 py-3 border border-[color:var(--color-ink)]/25 text-[color:var(--color-ink)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)] transition-colors"
-                  >
-                    Preview the program
-                  </Link>
-                </div>
-              </article>
+                  <h1 className="font-serif text-3xl md:text-5xl text-[color:var(--color-ink)] leading-tight mt-3">
+                    Enroll in AiBI-Foundation.
+                  </h1>
+                  <p className="mt-4 text-sm text-[color:var(--color-ink)]/75 leading-relaxed">
+                    You have the In-Depth diagnosis. The Foundation course turns
+                    the playbook into skills your team can apply this week.
+                    Lifetime access to modules, practice reps, artifacts, and
+                    the prompt library.
+                  </p>
+                  <div className="mt-6 flex flex-col sm:flex-row gap-3">
+                    <Link
+                      href="/courses/foundation/program/purchase"
+                      className="text-center px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
+                    >
+                      Enroll — $295
+                    </Link>
+                    <Link
+                      href="/courses/foundation/program"
+                      className="text-center px-6 py-3 border border-[color:var(--color-ink)]/25 text-[color:var(--color-ink)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)] transition-colors"
+                    >
+                      Preview the program
+                    </Link>
+                  </div>
+                </article>
+              ) : (
+                // Free-assessment lead: ladder up to In-Depth ($99) first, then
+                // Foundation ($295). Mirrors the homepage three-tile ladder and
+                // the post-email TIER_CLOSING_CTA from #92-4.
+                <article className="border border-[color:var(--color-ink)]/10 rounded-[3px] p-6 md:p-8">
+                  <p className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-slate)]">
+                    Your next step
+                  </p>
+                  <h1 className="font-serif text-3xl md:text-5xl text-[color:var(--color-ink)] leading-tight mt-3">
+                    Go deeper with the In-Depth Assessment.
+                  </h1>
+                  {tier && (
+                    <p className="mt-4 text-sm text-[color:var(--color-ink)]/75 leading-relaxed">
+                      Your readiness tier is <strong className="text-[color:var(--color-terra)]">{tier.label}</strong>.
+                      Forty-eight questions across eight readiness dimensions
+                      with peer-band comparison and a starting playbook keyed
+                      to your weakest area.
+                    </p>
+                  )}
+                  <div className="mt-6 flex flex-col sm:flex-row gap-3">
+                    <Link
+                      href="/assessment/in-depth"
+                      className="text-center px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
+                    >
+                      Take In-Depth — $99
+                    </Link>
+                    <Link
+                      href="/courses/foundation/program"
+                      className="text-center px-6 py-3 border border-[color:var(--color-ink)]/25 text-[color:var(--color-ink)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)] transition-colors"
+                    >
+                      Or preview Foundation
+                    </Link>
+                  </div>
+                </article>
+              )
             ) : (
               <article className="border border-[color:var(--color-ink)]/10 rounded-[3px] p-6 md:p-8">
                 <p className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-slate)]">

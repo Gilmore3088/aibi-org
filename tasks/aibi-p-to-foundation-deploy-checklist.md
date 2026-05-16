@@ -256,3 +256,24 @@ Customer-support one-pager pre-paste into Notion before the email goes
 out: 3-sentence answer to "AiBI-P vs Foundation."
 
 No social, no blog, no newsletter blast. This is a maintenance change.
+
+---
+
+## Issue 88 — public product-ladder cleanup (added 2026-05-15)
+
+Public copy now positions three distinct offers: Free Assessment,
+In-Depth Assessment, AiBI-Foundation Course. Internal `aibi-p`
+identifiers stay legacy per the rename pattern.
+
+Operator must verify in Stripe dashboard before launch:
+
+- [ ] Foundation product display name reads **AiBI-Foundation Course**
+      (not "AiBI-Practitioner", not "AiBI-P", not "Foundation v2").
+- [ ] In-Depth product display name reads **In-Depth Assessment**.
+- [ ] Foundation product description mentions **lifetime access** so
+      Stripe-hosted invoice and email receipts carry the same promise as
+      `/courses/foundation/program/purchase`.
+- [ ] Statement descriptor (`AIBI FOUNDATION` / `AIBI INDEPTH` or similar)
+      will not confuse a banker reading their card statement.
+
+No code change needed — these are dashboard-only edits.

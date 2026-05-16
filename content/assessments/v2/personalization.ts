@@ -544,19 +544,19 @@ export interface TierClosingCta {
 export const TIER_CLOSING_CTA: Record<Tier['id'], TierClosingCta> = {
   'starting-point': {
     eyebrow: 'Your next move',
-    headline: 'Get your team trained on AI fundamentals.',
+    headline: 'Go deeper before you commit to training.',
     body:
-      'Skills come first. AiBI-Foundation teaches working AI use to bankers in 12 short modules — your team can start this week.',
-    ctaLabel: 'Enroll your team in AiBI-Foundation',
-    ctaHref: '/courses/foundation/program',
+      'The free assessment gives you a score; the In-Depth Assessment gives you a verdict — eight readiness dimensions, peer-band comparison, and a starting playbook keyed to your weakest area. Take it before deciding which AiBI-Foundation cohort to fund.',
+    ctaLabel: 'Take the In-Depth Assessment · $99',
+    ctaHref: '/assessment/in-depth',
   },
   'early-stage': {
     eyebrow: 'Your next move',
-    headline: 'Get your team trained on AI fundamentals.',
+    headline: 'Pressure-test your momentum.',
     body:
-      'You have momentum. Lock it in with AiBI-Foundation — your bankers learn the same patterns repeatable across the institution.',
-    ctaLabel: 'Enroll your team in AiBI-Foundation',
-    ctaHref: '/courses/foundation/program',
+      'You have early adopters. The In-Depth Assessment shows whether that momentum is real or local — eight dimensions across your team, an anonymized aggregate rollup for leaders, and a starting playbook keyed to your weakest area.',
+    ctaLabel: 'Take the In-Depth Assessment · $99',
+    ctaHref: '/assessment/in-depth',
   },
   'building-momentum': {
     eyebrow: 'Your next move',

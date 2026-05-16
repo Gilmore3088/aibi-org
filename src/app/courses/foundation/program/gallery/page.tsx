@@ -3,8 +3,10 @@
 // Wrapped in CourseShellWrapper so the LMS chrome matches the rest of the course tree.
 
 import type { Metadata } from 'next';
+import { redirect } from 'next/navigation';
 import { CourseShellWrapper } from "@/components/lms/CourseShellWrapper";
 import { OutputGalleryClient } from './OutputGalleryClient';
+import { getEnrollment } from '../_lib/getEnrollment';
 
 export const metadata: Metadata = {
   title: 'Output Gallery | AiBI-Foundation | The AI Banking Institute',
@@ -13,6 +15,11 @@ export const metadata: Metadata = {
 };
 
 export default async function OutputGalleryPage() {
+  const enrollment = await getEnrollment();
+  if (!enrollment) {
+    redirect('/courses/foundation/program/purchase');
+  }
+
   return (
     <CourseShellWrapper crumbs={['Education', 'AiBI-Foundation', 'Output Gallery']}>
       <header style={{ marginBottom: 40 }}>

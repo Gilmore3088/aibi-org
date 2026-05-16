@@ -128,14 +128,22 @@ export async function POST(request: Request) {
   // Code reads new var first, falls back to old name. Phase 5a: both vars set in Vercel
   // (same value). Phase 5b: code stops checking the legacy var. Phase 5c: legacy var
   // removed from Vercel.
+  //
+  // 2026-05-16: also accept STRIPE_FOUNDATIONS_* (plural) — that's the name
+  // currently set in Vercel. The plural form was a one-letter typo when the
+  // env var was created; cheaper to read both names than to ask the operator
+  // to rename in the Vercel dashboard.
   const STRIPE_AIBIP_PRICE_ID =
-    process.env.STRIPE_FOUNDATION_PRICE_ID ?? process.env.STRIPE_AIBIP_PRICE_ID;
+    process.env.STRIPE_FOUNDATION_PRICE_ID ??
+    process.env.STRIPE_FOUNDATIONS_PRICE_ID ??
+    process.env.STRIPE_AIBIP_PRICE_ID;
   const STRIPE_AIBIP_INSTITUTION_PRICE_ID =
     process.env.STRIPE_FOUNDATION_INSTITUTION_PRICE_ID ??
+    process.env.STRIPE_FOUNDATIONS_INSTITUTION_PRICE_ID ??
     process.env.STRIPE_AIBIP_INSTITUTION_PRICE_ID;
 
   if (!STRIPE_AIBIP_PRICE_ID) {
-    console.error('[create-checkout] STRIPE_FOUNDATION_PRICE_ID (or legacy STRIPE_AIBIP_PRICE_ID) is not set.');
+    console.error('[create-checkout] STRIPE_FOUNDATION_PRICE_ID (or legacy STRIPE_AIBIP_PRICE_ID / STRIPE_FOUNDATIONS_PRICE_ID) is not set.');
     return NextResponse.json({ error: 'Payment system not configured.' }, { status: 503 });
   }
 
@@ -167,7 +175,7 @@ export async function POST(request: Request) {
       const session = await stripe.checkout.sessions.create({
         mode: 'payment',
         line_items: [{ price: priceId, quantity: 1 }],
-        success_url: `${origin}/courses/foundation/program/purchased`,
+        success_url: `${origin}/courses/foundation/program/purchased?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${origin}/courses/foundation/program/purchase`,
         metadata: {
           // Canonical post-rename slug. Webhook handler accepts both 'aibi-p'
