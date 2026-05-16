@@ -27,7 +27,15 @@ const DELIVERABLES = [
   "One free retake within twelve months",
 ] as const;
 
-export default function InDepthAssessmentPage() {
+interface InDepthAssessmentPageProps {
+  readonly searchParams?: { readonly reason?: string };
+}
+
+export default function InDepthAssessmentPage({
+  searchParams,
+}: InDepthAssessmentPageProps) {
+  const noPurchase = searchParams?.reason === "no-purchase";
+
   return (
     <MarketingPage
       hero={{
@@ -51,6 +59,23 @@ export default function InDepthAssessmentPage() {
         divider: "hairline",
       }}
     >
+      {noPurchase && (
+        <Section variant="parch" padding="default" divider="none">
+          <div
+            role="status"
+            className="mx-auto max-w-default border border-terra/30 bg-terra/5 px-s6 py-s5 rounded-sharp"
+          >
+            <p className="font-mono text-mono-sm uppercase tracking-widest text-terra mb-s2">
+              Purchase required
+            </p>
+            <p className="font-serif text-body-md text-ink leading-relaxed">
+              The forty-eight-question In-Depth Assessment is paid. Purchase a
+              seat below to unlock it. Already paid? Make sure you are signed
+              in with the same email you used at checkout.
+            </p>
+          </div>
+        </Section>
+      )}
       {/* Pricing + deliverables side-by-side */}
       <Section variant="linen" padding="default" divider="none">
         <div className="grid md:grid-cols-2 -mx-s7">

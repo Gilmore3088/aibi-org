@@ -19,7 +19,7 @@ import { InDepthRunner } from './_components/InDepthRunner';
 export const metadata: Metadata = {
   title: 'In-Depth AI Readiness Assessment | The AI Banking Institute',
   description:
-    'Forty-eight questions across the four readiness dimensions. Returns a 20-page personalized report with peer-band comparison and a 30-day action plan.',
+    'Forty-eight questions across the eight readiness dimensions. Returns a personalized Briefing with peer-band comparison, a deep-dive on your lowest-scoring dimensions, and an action register scaffold.',
   robots: { index: false, follow: false },
 };
 
