@@ -6,15 +6,15 @@ import { AIBI_SAFETY_NOTE, PROMPT_CARDS } from '@/content/prompt-cards/cards';
 const PDF_FILENAME = 'AiBI-Prompt-Cards.pdf';
 
 const styles = StyleSheet.create({
-  page: { padding: 42, fontFamily: 'Helvetica', fontSize: 9, color: '#1e1a14' },
-  eyebrow: { fontSize: 8, textTransform: 'uppercase', letterSpacing: 1.4, color: '#b5512e', marginBottom: 8 },
+  page: { padding: 42, fontFamily: 'Helvetica', fontSize: 9, color: '#0E1B2D' },
+  eyebrow: { fontSize: 8, textTransform: 'uppercase', letterSpacing: 1.4, color: '#B5862A', marginBottom: 8 },
   title: { fontSize: 26, marginBottom: 8 },
-  body: { fontSize: 10, lineHeight: 1.45, color: '#4c463d', marginBottom: 12 },
-  sectionTitle: { fontSize: 14, marginTop: 14, marginBottom: 8, color: '#1e1a14' },
-  card: { borderTop: '1 solid #d8d0c2', paddingTop: 8, marginTop: 8 },
-  cardTitle: { fontSize: 12, color: '#1e1a14', marginBottom: 3 },
-  meta: { fontSize: 8, color: '#6b6355', marginBottom: 5 },
-  prompt: { fontSize: 8, lineHeight: 1.35, backgroundColor: '#f5f0e6', padding: 7, marginTop: 5 },
+  body: { fontSize: 10, lineHeight: 1.45, color: '#1F2A3F', marginBottom: 12 },
+  sectionTitle: { fontSize: 14, marginTop: 14, marginBottom: 8, color: '#0E1B2D' },
+  card: { borderTop: '1 solid #D5D1C2', paddingTop: 8, marginTop: 8 },
+  cardTitle: { fontSize: 12, color: '#0E1B2D', marginBottom: 3 },
+  meta: { fontSize: 8, color: '#5C6B82', marginBottom: 5 },
+  prompt: { fontSize: 8, lineHeight: 1.35, backgroundColor: '#F4F1E7', padding: 7, marginTop: 5 },
 });
 
 function PromptCardsPdf() {
