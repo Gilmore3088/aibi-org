@@ -12,6 +12,7 @@ import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/cl
 import { getTierV2, getTierInDepth } from '@content/assessments/v2/scoring';
 import type { Tier, DimensionScore } from '@content/assessments/v2/scoring';
 import type { Dimension } from '@content/assessments/v2/types';
+import { parseRole, type Role } from '@content/assessments/v2/role';
 
 export interface AssessmentResponseLoaded {
   readonly profileId: string;
@@ -22,6 +23,7 @@ export interface AssessmentResponseLoaded {
   readonly tierId: Tier['id'];
   readonly dimensionBreakdown: Record<Dimension, DimensionScore>;
   readonly readinessAt: string;
+  readonly role: Role | null;
 }
 
 export async function loadAssessmentResponse(
@@ -36,7 +38,7 @@ export async function loadAssessmentResponse(
   const { data, error } = await client
     .from('user_profiles')
     .select(
-      'id, email, readiness_score, readiness_max_score, readiness_tier_id, readiness_dimension_breakdown, readiness_at',
+      'id, email, readiness_score, readiness_max_score, readiness_tier_id, readiness_dimension_breakdown, readiness_at, role',
     )
     .eq('id', id)
     .maybeSingle();
@@ -69,5 +71,6 @@ export async function loadAssessmentResponse(
     tierId: tier.id,
     dimensionBreakdown: breakdown,
     readinessAt: (data.readiness_at as string) ?? new Date().toISOString(),
+    role: parseRole((data as { role?: unknown }).role),
   };
 }

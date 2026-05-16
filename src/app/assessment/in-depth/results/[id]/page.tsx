@@ -45,6 +45,7 @@ export default async function InDepthResultsPage({ params }: PageProps) {
       tier={response.tier}
       dimensionBreakdown={response.dimensionBreakdown}
       readinessAt={response.readinessAt}
+      role={response.role}
     />
   );
 }

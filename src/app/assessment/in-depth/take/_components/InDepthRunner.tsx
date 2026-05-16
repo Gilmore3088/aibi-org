@@ -12,6 +12,9 @@ import { useAssessmentInDepth } from '../../_lib/useAssessmentInDepth';
 import { QuestionCard } from '@/app/assessment/_components/QuestionCard';
 import { ProgressBar } from '@/app/assessment/_components/ProgressBar';
 import { ScoreRing } from '@/app/assessment/_components/ScoreRing';
+import { ROLES, ROLE_META, parseRole, type Role } from '@content/assessments/v2/role';
+
+const ROLE_STORAGE_KEY = 'aibi-indepth-role';
 
 type SubmitState =
   | { kind: 'idle' }
@@ -23,12 +26,35 @@ export function InDepthRunner(): React.ReactElement {
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
   const [submit, setSubmit] = useState<SubmitState>({ kind: 'idle' });
+  const [role, setRole] = useState<Role | null>(null);
+  const [rolePicked, setRolePicked] = useState(false);
   const scoreHeadingRef = useRef<HTMLHeadingElement | null>(null);
   const submittedRef = useRef(false);
 
   useEffect(() => {
     setMounted(true);
+    // Restore prior role pick so a refresh mid-assessment does not re-show
+    // the picker. Empty string is the marker for "user skipped".
+    try {
+      const saved = sessionStorage.getItem(ROLE_STORAGE_KEY);
+      if (saved !== null) {
+        setRole(parseRole(saved));
+        setRolePicked(true);
+      }
+    } catch {
+      // sessionStorage unavailable (private mode); proceed without persistence.
+    }
   }, []);
+
+  function commitRolePick(picked: Role | null): void {
+    setRole(picked);
+    setRolePicked(true);
+    try {
+      sessionStorage.setItem(ROLE_STORAGE_KEY, picked ?? '');
+    } catch {
+      // ignore — non-blocking
+    }
+  }
 
   // Destructure the exact fields we depend on so the dependency list is
   // explicit and the linter is satisfied. Server now recomputes score,
@@ -50,6 +76,7 @@ export function InDepthRunner(): React.ReactElement {
           body: JSON.stringify({
             answers,
             questionIds: selectedQuestions.map((q) => q.id),
+            role,
           }),
         });
         const data = (await response.json()) as { profileId?: string; error?: string };
@@ -76,7 +103,7 @@ export function InDepthRunner(): React.ReactElement {
         submittedRef.current = false;
       }
     })();
-  }, [isComplete, tier, answers, selectedQuestions, router]);
+  }, [isComplete, tier, answers, selectedQuestions, role, router]);
 
   useEffect(() => {
     if (state.phase === 'score') {
@@ -97,6 +124,86 @@ export function InDepthRunner(): React.ReactElement {
               className="h-16 w-full border border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)] rounded-sm mb-3"
             />
           ))}
+        </div>
+      </main>
+    );
+  }
+
+  // Role-pick gate. Shown once, before Q1, when no answers have been
+  // submitted yet. Skippable — role is optional and the Briefing renderer
+  // falls back to un-roled framing when null.
+  const showRoleGate =
+    !rolePicked &&
+    state.phase === 'questions' &&
+    state.currentQuestion === 0 &&
+    state.answers.length === 0;
+
+  if (showRoleGate) {
+    return (
+      <main className="min-h-screen">
+        <ProgressBar progress={0} />
+        <div className="px-6 py-12 md:py-20 max-w-2xl mx-auto">
+          <p className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-ink)]/70 mb-4">
+            Before we begin
+          </p>
+          <h1 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] leading-tight">
+            Which seat are you reading <em>from?</em>
+          </h1>
+          <p className="text-[color:var(--color-ink)]/75 mt-4 leading-relaxed">
+            Your Briefing will be framed for your seat. Optional &mdash; skip and
+            you will still get the full diagnosis.
+          </p>
+
+          <fieldset className="mt-8 space-y-2">
+            <legend className="sr-only">Your role</legend>
+            {ROLES.map((id) => {
+              const meta = ROLE_META[id];
+              const selected = role === id;
+              return (
+                <label
+                  key={id}
+                  className={`block border rounded-sm px-4 py-3 cursor-pointer transition-colors ${
+                    selected
+                      ? 'border-[color:var(--color-ink)] bg-[color:var(--color-parch)]'
+                      : 'border-[color:var(--color-ink)]/15 hover:border-[color:var(--color-ink)]/40'
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="aibi-role"
+                    value={id}
+                    checked={selected}
+                    onChange={() => setRole(id)}
+                    className="sr-only"
+                  />
+                  <span className="font-serif text-lg text-[color:var(--color-ink)]">
+                    {meta.label}
+                  </span>
+                  <span className="block text-sm text-[color:var(--color-ink)]/70 mt-1">
+                    {meta.description}
+                  </span>
+                </label>
+              );
+            })}
+          </fieldset>
+
+          <div className="mt-8 flex items-center gap-6">
+            <button
+              type="button"
+              onClick={() => commitRolePick(role)}
+              disabled={role === null}
+              className="font-mono text-xs uppercase tracking-widest px-6 py-3 bg-[color:var(--color-ink)] text-[color:var(--color-linen)] rounded-sm disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              Begin assessment
+            </button>
+            <button
+              type="button"
+              onClick={() => commitRolePick(null)}
+              className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-ink)]/70 hover:text-[color:var(--color-ink)]"
+            >
+              Skip
+            </button>
+          </div>
         </div>
       </main>
     );

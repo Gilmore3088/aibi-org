@@ -691,3 +691,97 @@
   .aibi-briefing .reg-line { grid-template-columns: 1fr; gap: 8px; }
   .aibi-briefing .mast h1 { font-size: clamp(40px, 11vw, 64px); }
 }
+
+/* ── Personalization stripe ─────────────────────────────────────── */
+/* Foundation course recommendation block (#97). Sits at the end of
+ * the Briefing inside its own chapter section, reusing the .ch-head
+ * pattern for the diagnosis half and adding .recs for the three
+ * Foundation module cards underneath. */
+.aibi-briefing .recs {
+  margin-top: 48px;
+  padding: 36px 0 0;
+  border-top: 1px solid var(--rule);
+}
+.aibi-briefing .recs-head {
+  display: flex; align-items: center; gap: 14px; margin-bottom: 14px;
+}
+.aibi-briefing .recs-kicker {
+  font-family: var(--mono);
+  font-size: 11px; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--terra);
+  font-weight: 600;
+}
+.aibi-briefing .recs-rule { flex: 1; height: 1px; background: var(--rule); }
+.aibi-briefing .recs-deck {
+  font-family: var(--serif); font-size: 17px; line-height: 1.55;
+  color: var(--ink-2); max-width: 60ch; margin: 0 0 22px;
+}
+.aibi-briefing .recs-deck em { color: var(--terra); font-style: italic; }
+.aibi-briefing .recs-list {
+  list-style: none; padding: 0; margin: 0;
+  display: grid; gap: 0;
+}
+.aibi-briefing .recs-list .rec {
+  padding: 22px 0;
+  border-top: 1px solid var(--rule);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+.aibi-briefing .recs-list .rec:last-child {
+  border-bottom: 1px solid var(--rule);
+}
+.aibi-briefing .recs-list .rec-head {
+  display: flex; align-items: baseline; gap: 14px;
+}
+.aibi-briefing .recs-list .rec-num {
+  font-family: var(--mono);
+  font-size: 12px; letter-spacing: 0.18em;
+  color: var(--terra); font-weight: 600;
+}
+.aibi-briefing .recs-list .rec-title {
+  font-family: var(--serif);
+  font-size: 19px; font-weight: 500;
+  line-height: 1.3; color: var(--ink);
+}
+.aibi-briefing .recs-list .rec-title em { color: var(--terra); font-style: italic; }
+.aibi-briefing .recs-list .rec-why {
+  font-family: var(--serif); font-size: 15px; line-height: 1.55;
+  color: var(--slate); margin: 0;
+  max-width: 64ch;
+}
+.aibi-briefing .recs-cta {
+  margin-top: 28px;
+  display: flex; flex-wrap: wrap; gap: 16px;
+}
+.aibi-briefing .recs-cta-primary {
+  display: inline-block;
+  background: var(--terra);
+  color: var(--linen, #f9f6f0);
+  padding: 14px 26px;
+  border-radius: 2px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 600;
+  transition: background 120ms ease;
+}
+.aibi-briefing .recs-cta-primary:hover { background: var(--terra-light, var(--terra)); }
+.aibi-briefing .recs-cta-secondary {
+  display: inline-block;
+  border: 1px solid var(--rule-strong, var(--rule));
+  color: var(--ink);
+  padding: 13px 24px;
+  border-radius: 2px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 600;
+  transition: border-color 120ms ease, color 120ms ease;
+}
+.aibi-briefing .recs-cta-secondary:hover {
+  border-color: var(--terra);
+  color: var(--terra);
+}

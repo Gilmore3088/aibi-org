@@ -27,6 +27,7 @@ import {
   type DimensionScore,
 } from '@content/assessments/v2/scoring';
 import { emailVariants } from '@/lib/email/canonicalize';
+import { parseRole } from '@content/assessments/v2/role';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -34,6 +35,7 @@ export const dynamic = 'force-dynamic';
 interface SubmitPayload {
   answers?: unknown;
   questionIds?: unknown;
+  role?: unknown;
 }
 
 const EXPECTED_QUESTION_COUNT = 48;
@@ -54,7 +56,11 @@ export async function POST(request: Request): Promise<NextResponse> {
     return NextResponse.json({ error: 'Invalid JSON body.' }, { status: 400 });
   }
 
-  const { answers, questionIds } = body;
+  const { answers, questionIds, role: rawRole } = body;
+  // Role is optional — null falls back to un-roled Briefing framing.
+  // Unknown strings parse to null rather than erroring; the assessment
+  // never blocks on this field.
+  const role = parseRole(rawRole);
 
   if (!Array.isArray(answers) || answers.length !== EXPECTED_QUESTION_COUNT) {
     return NextResponse.json(
@@ -167,16 +173,20 @@ export async function POST(request: Request): Promise<NextResponse> {
   let profileId: string | null = null;
 
   try {
-    const result = await upsertReadinessResult(user.email, {
-      score,
-      tierId: tier.id,
-      tierLabel: tier.label,
-      answers: typedAnswers,
-      completedAt,
-      version: 'v2',
-      maxScore,
-      dimensionBreakdown,
-    });
+    const result = await upsertReadinessResult(
+      user.email,
+      {
+        score,
+        tierId: tier.id,
+        tierLabel: tier.label,
+        answers: typedAnswers,
+        completedAt,
+        version: 'v2',
+        maxScore,
+        dimensionBreakdown,
+      },
+      { role },
+    );
     profileId = result.id;
   } catch (err) {
     console.error('[in-depth/submit] user_profiles upsert error:', err);
