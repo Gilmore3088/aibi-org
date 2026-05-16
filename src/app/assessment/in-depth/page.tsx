@@ -84,10 +84,13 @@ export default function InDepthAssessmentPage() {
             <div className="mt-s8">
               <PurchaseButton />
             </div>
-            <p className="font-mono text-mono-xs uppercase tracking-wider text-slate mt-s6">
-              Bulk orders for 10+ seats — email{" "}
+            <p className="font-serif text-body-md text-ink/85 mt-s6 max-w-[40ch]">
+              Want your whole team to benefit? Contact us for ten or more.
+            </p>
+            <p className="font-mono text-mono-xs uppercase tracking-wider text-slate mt-s3">
+              Email{" "}
               <a
-                href={`mailto:${BRAND.emails.contact}`}
+                href={`mailto:${BRAND.emails.contact}?subject=In-Depth%20Assessment%20%E2%80%94%2010%2B%20seats`}
                 className="text-terra border-b border-terra hover:text-terra-light hover:border-terra-light"
               >
                 {BRAND.emails.contact}
