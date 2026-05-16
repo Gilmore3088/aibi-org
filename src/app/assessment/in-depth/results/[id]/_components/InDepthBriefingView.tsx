@@ -14,6 +14,7 @@ import './briefing.css';
 import type { ReactElement } from 'react';
 import type { Tier, DimensionScore } from '@content/assessments/v2/scoring';
 import type { Dimension } from '@content/assessments/v2/types';
+import type { Role } from '@content/assessments/v2/role';
 import {
   buildDimRows,
   composeScore,
@@ -27,6 +28,7 @@ import {
   shortDate,
   type DimRow,
 } from '../_lib/derive';
+import { PersonalizationStripe } from './PersonalizationStripe';
 
 interface Props {
   readonly profileId: string;
@@ -36,6 +38,7 @@ interface Props {
   readonly tier: Tier;
   readonly dimensionBreakdown: Record<Dimension, DimensionScore>;
   readonly readinessAt: string;
+  readonly role?: Role | null;
 }
 
 // Eight-axis radar polygon points. Calculated once at module level to
@@ -298,6 +301,7 @@ export function InDepthBriefingView({
   tier: _ignoredStoredTier,
   dimensionBreakdown,
   readinessAt,
+  role = null,
 }: Props): ReactElement {
   const rows = buildDimRows(dimensionBreakdown);
   const composite = composeScore(dimensionBreakdown);
@@ -702,6 +706,13 @@ export function InDepthBriefingView({
           </div>
         </div>
       </section>
+
+      {/* Dynamic personalization — profile diagnosis + Foundation course
+          recommendations. Falls back gracefully when no profile detected. */}
+      <PersonalizationStripe
+        dimensionBreakdown={dimensionBreakdown}
+        role={role}
+      />
 
       <footer className="docfoot">
         <div className="container docfoot-row">
