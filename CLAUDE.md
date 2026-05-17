@@ -68,7 +68,7 @@ The AI Banking Institute (AiBI, pronounced "AI-bee") is an AI proficiency and ed
 
 **NEVER delete, drop, or destroy ANY external resource (Supabase branches, database tables, Vercel deployments, Stripe products, DNS records, ConvertKit sequences, HubSpot contacts, etc.) without EXPLICIT user approval. This includes "recreating" — deleting and recreating IS deleting. When asking approval for ANY destructive action, use ALL CAPS:**
 
-> "⚠️ THIS WILL DELETE THE STAGING SUPABASE BRANCH AND ALL ITS DATA. PROCEED? (yes/no)"
+> "⚠️ THIS WILL DELETE THE SUPABASE PROJECT AND ALL ITS DATA. PROCEED? (yes/no)"
 
 **No exceptions. No "it'll be fine." Ask first, in caps, every single time.**
 
@@ -76,7 +76,7 @@ The AI Banking Institute (AiBI, pronounced "AI-bee") is an AI proficiency and ed
 
 **At the start of EVERY session, before doing ANY work:**
 
-> "Which branch should I work on — main, staging, or a feature branch?"
+> "Which branch should I work on — main or a feature branch?"
 
 Then run `git worktree list` to confirm layout before proceeding.
 
@@ -97,13 +97,11 @@ The user is not a developer. Before implementing anything proposed:
 |------|---------|
 | Dev server (main) | `cd ~/Projects/TheAiBankingInstitute && npm run dev` |
 | Dev server (feature) | `cd ~/Projects/aibi-<feature> && npm run dev` |
-| Dev server (staging) | `cd ~/Projects/aibi-staging && npm run dev` |
 | Build | `npm run build` (in relevant worktree) |
 | Type check | `npx tsc --noEmit` |
 | Lint | `npm run lint` |
-| Test on staging | `git push origin HEAD:staging --force` (from feature worktree) |
-| Reset staging | `cd ~/Projects/aibi-staging && git reset --hard origin/main && git push origin staging --force` |
-| Push production | `cd ~/Projects/TheAiBankingInstitute && git merge <branch> && git push origin main` |
+| Open a preview (de facto staging) | `git push origin feature/<n>` — Vercel auto-builds and surfaces a preview URL on the PR |
+| Push to production | `cd ~/Projects/TheAiBankingInstitute && git merge feature/<n> && git push origin main` |
 | List worktrees | `git worktree list` |
 | Add feature worktree | `git worktree add ../aibi-<n> feature/<n>` |
 | Remove worktree | `git worktree remove ../aibi-<n>` |
@@ -129,8 +127,13 @@ The user is not a developer. Before implementing anything proposed:
 | Directory | Branch | Purpose |
 |-----------|--------|---------|
 | `~/Projects/TheAiBankingInstitute` | main (permanent) | Home base, production code, plans, CLAUDE.md |
-| `~/Projects/aibi-staging` | staging (permanent) | Staging testing |
 | `~/Projects/aibi-<feature>` | feature/* (temporary) | Per-feature, removed when merged |
+
+There is no separate `staging` environment. Vercel auto-deploys every
+non-main push as a **preview URL** (`https://aibi-<hash>-…vercel.app`);
+that is the testing surface. The `~/Projects/aibi-staging` worktree
+and the `staging` git branch are legacy from an abandoned staging
+plan — both should be removed once any in-flight work is rebased.
 
 **Starting a feature worktree:**
 ```bash
@@ -148,14 +151,21 @@ cd ../aibi-<n> && npm install
 
 ## Deployment
 
-**Environments:**
-- **Staging:** `staging.aibankinginstitute.com` (staging branch) — test Stripe keys, `SKIP_CONVERTKIT=true`
-- **Production:** `aibankinginstitute.com` (main branch) — live keys
+**Environments (two — there is no staging):**
+- **Preview:** Vercel auto-deploys every non-main branch push to a unique
+  URL (`https://aibi-<hash>-gilmore3088s-projects.vercel.app`). Surfaced
+  on the PR. Uses Vercel "Preview" env scope. Test keys where applicable;
+  same Supabase as production (by design — no separate Supabase project).
+- **Production:** `aibankinginstitute.com` (main branch) — live keys.
+  Vercel auto-deploys on push to `main`.
 
 **MANDATORY RULES:**
-- NEVER run `git push` to staging or production without EXPLICIT user approval
-- Always ask "Push to staging, production, or both?" and WAIT for a response
-- NEVER touch environment variables in Vercel — user manages these in the Vercel dashboard
+- NEVER run `git push origin main` without EXPLICIT user approval —
+  it goes straight to production.
+- Pushes to feature branches are safe (preview URL only) but still
+  require approval before the first push of a session.
+- NEVER touch environment variables in Vercel — user manages these in
+  the Vercel dashboard.
 
 ---
 
@@ -182,7 +192,8 @@ STRIPE_PRACTITIONER_PRICE_ID=          # $295 AiBI-Practitioner
 NEXT_PUBLIC_PLAUSIBLE_DOMAIN=aibankinginstitute.com
 NEXT_PUBLIC_CALENDLY_URL=https://calendly.com/[handle]/executive-briefing
 
-# Staging only — suppresses live ConvertKit calls
+# Preview/local only — suppresses live ConvertKit calls when set on a
+# non-production environment. Never set this in Production scope.
 SKIP_CONVERTKIT=true
 ```
 
@@ -200,7 +211,7 @@ SKIP_CONVERTKIT=true
 | `/security` | SSR | Phase 2 | Pillar B landing. Free guide download + email gate. |
 | `/about` | SSR | Phase 3 | Founder story. |
 | `/resources` | SSR | Phase 3 | AI Banking Brief archive + newsletter. |
-| `/api/capture-email` | API | Shipped | ConvertKit assessment-form subscribe + tier sequence tagging + HubSpot upsert. Suppressed on staging via `SKIP_CONVERTKIT=true`. Rate limiting deferred (see 2026-04-15 Decisions Log). |
+| `/api/capture-email` | API | Shipped | ConvertKit assessment-form subscribe + tier sequence tagging + HubSpot upsert. Suppressed on preview deploys via `SKIP_CONVERTKIT=true`. Rate limiting deferred (see 2026-04-15 Decisions Log). |
 | `/api/create-checkout` | API | Phase 2 | Stripe Checkout Session. |
 | `/api/webhooks/stripe` | API | Phase 2 | payment.success → insert into `course_enrollments` → ConvertKit welcome tag. |
 
@@ -307,7 +318,7 @@ window.plausible('assessment_complete', { props: { tier, score } });
 
 ## ConvertKit — No Test Mode
 
-ConvertKit has no sandbox. Every API call hits the live account. Suppress on staging:
+ConvertKit has no sandbox. Every API call hits the live account. Suppress on preview deploys (and local dev when desired):
 
 ```typescript
 // In /api/capture-email
@@ -316,7 +327,7 @@ if (process.env.SKIP_CONVERTKIT !== 'true') {
 }
 ```
 
-Set `SKIP_CONVERTKIT=true` in Vercel staging environment. Never in production.
+Set `SKIP_CONVERTKIT=true` in Vercel **Preview** environment scope, never in Production.
 
 ---
 
@@ -614,7 +625,7 @@ Run `/simplify` before committing. Skip for trivial one-liners.
 
 ## Feature Development Workflow
 
-**Before any feature:** "Which branch — main, staging, or new feature branch?"
+**Before any feature:** "Which branch — main, or new feature branch?"
 
 **Before starting work:** `git worktree list`. Check `git status`.
 
