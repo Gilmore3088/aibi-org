@@ -20,6 +20,8 @@ interface RunBody {
   readonly messages?: unknown;
   readonly provider?: unknown;
   readonly model?: unknown;
+  // PII-override path (#8 layer 3). See stream/route.ts for the design note.
+  readonly confirmedFabricated?: unknown;
 }
 
 function isMessageList(value: unknown): value is ToolboxMessage[] {
@@ -91,11 +93,23 @@ export async function POST(request: Request): Promise<NextResponse> {
     );
   }
 
+  const confirmedFabricated = body.confirmedFabricated === true;
   const pii = scanForPII(latestUser.content);
-  if (!pii.safe) return NextResponse.json({ error: pii.reason }, { status: 422 });
+  if (!pii.safe && !confirmedFabricated) {
+    return NextResponse.json(
+      { error: pii.reason, kind: 'pii_warning', canOverride: true },
+      { status: 422 },
+    );
+  }
 
+  // Injection filter is not user-overridable — it protects the model.
   const injection = scanForInjection(latestUser.content);
-  if (!injection.safe) return NextResponse.json({ error: injection.reason }, { status: 422 });
+  if (!injection.safe) {
+    return NextResponse.json(
+      { error: injection.reason, kind: 'injection_blocked', canOverride: false },
+      { status: 422 },
+    );
+  }
 
   const limit = await checkRateLimit({
     userId: access.userId,
