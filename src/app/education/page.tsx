@@ -136,15 +136,38 @@ export default async function EducationPage() {
                 </div>
                 <h3 className="font-serif text-display-sm leading-snug mb-s3">{a.title}</h3>
                 <p className="text-body-md leading-relaxed text-ink/80 mb-s6">{a.subtitle}</p>
-                <dl className="grid grid-cols-2 gap-y-s3 gap-x-s5 border-t border-hairline pt-s5 mb-s6">
-                  {a.facts.map((f) => (
-                    <div key={f.label}>
-                      <dt className="font-serif-sc text-mono-xs uppercase tracking-wider text-ink/50 mb-[2px]">
-                        {f.label}
-                      </dt>
-                      <dd className="font-mono text-body-sm tabular-nums text-ink">{f.value}</dd>
-                    </div>
-                  ))}
+                <dl className="grid grid-cols-2 border-y border-strong mb-s6">
+                  {a.facts.map((f, i) => {
+                    const isStat = i < 2;
+                    const isLeft = i % 2 === 0;
+                    const isTopRow = i < 2;
+                    return (
+                      <div
+                        key={f.label}
+                        className={[
+                          "py-s4",
+                          isLeft ? "pr-s5" : "pl-s5",
+                          !isLeft && "border-l border-hairline",
+                          isTopRow && "border-b border-hairline",
+                        ]
+                          .filter(Boolean)
+                          .join(" ")}
+                      >
+                        <dt className="font-mono text-mono-xs uppercase tracking-widest text-ink/55 mb-s2">
+                          {f.label}
+                        </dt>
+                        {isStat ? (
+                          <dd className="font-serif italic text-4xl md:text-5xl text-terra leading-none tabular-nums">
+                            {f.value}
+                          </dd>
+                        ) : (
+                          <dd className="font-serif text-body-md text-ink leading-snug">
+                            {f.value}
+                          </dd>
+                        )}
+                      </div>
+                    );
+                  })}
                 </dl>
                 <div className="mt-auto">
                   <Cta variant="secondary" href={a.href}>
