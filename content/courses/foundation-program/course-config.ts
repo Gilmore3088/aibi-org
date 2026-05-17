@@ -32,6 +32,10 @@ export const aibiPReusableModules: readonly CourseModule[] = modules.map((mod) =
     number: mod.number,
     title: mod.title,
     phase: PHASE_BY_MODULE[mod.number] ?? 'daily-workflows',
+    // Pillar comes straight from the canonical Module file so the LMS sidebar
+    // groups match the data, not the phase mapping (which is a separate
+    // learning-arc concept and historically diverged from pillar).
+    pillar: mod.pillar,
     estimatedMinutes: mod.estimatedMinutes,
     keyOutput: mod.keyOutput,
     learnerOutcome: `Use AI more safely and practically for ${mod.keyOutput.toLowerCase()}.`,

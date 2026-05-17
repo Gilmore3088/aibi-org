@@ -30,6 +30,7 @@ const CHROMELESS_PATHS: readonly string[] = [
   '/briefing-preview',
   '/lms-preview',
   '/courses/foundation-preview',
+  '/courses/foundation/program', // CourseShell renders its own sidebar + breadcrumb chrome
   '/auth', // Ledger-redesigned auth surfaces render their own brand lockup
   '/redesign-checklist',
 ];

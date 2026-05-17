@@ -209,7 +209,7 @@ const DEEP_DIVE_CONTENT: Record<Dimension, DimContent> = {
       headline: 'There is no leadership sponsor for AI. Everything else compounds off this.',
       narrative: [
         'When the lowest score in the dossier is here, the institution is doing AI in the gaps of other people’s calendars. That cannot scale.',
-        'Naming a senior sponsor is the single highest-leverage move of the next quarter — every other dimension improves faster once this one moves.',
+        'Naming a senior sponsor is the single most compounding move of the next quarter — every other dimension improves faster once this one moves.',
       ],
       recommendations: [
         'Name a 1.0-FTE AI program lead, or 0.5 with explicit backfill, in the next 30 days.',

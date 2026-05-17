@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { MarketingPage } from "@/components/system/templates";
-import { Section, Cta } from "@/components/system";
+import { Section, Cta, ProductMark } from "@/components/system";
 import { ROIDossier } from "@/components/sections/ROIDossier";
 import { HomeContextStrip } from "@/components/sections/HomeContextStrip";
 import { BRAND } from "@content/copy";
@@ -39,6 +39,7 @@ export default function HomePage() {
         <div className="grid md:grid-cols-3 -mx-s7">
           {/* Tile 1 — Free Readiness Assessment */}
           <div className="bg-linen px-s7 py-s12 md:py-s14 md:pr-s8 border-r border-hairline">
+            <ProductMark kind="assessment-free" size={48} className="mb-s5" />
             <p className="font-mono text-label-md uppercase tracking-widest text-terra mb-s4">
               Free
             </p>
@@ -58,6 +59,7 @@ export default function HomePage() {
 
           {/* Tile 2 — In-Depth Assessment (paid diagnostic) */}
           <div className="bg-parch px-s7 py-s12 md:py-s14 md:px-s8 border-r border-hairline">
+            <ProductMark kind="assessment-indepth" size={48} className="mb-s5" />
             <p className="font-mono text-label-md uppercase tracking-widest text-terra mb-s4">
               $99 · $79 at 10+ by request
             </p>
@@ -78,6 +80,7 @@ export default function HomePage() {
 
           {/* Tile 3 — AiBI-Foundation course (paid, lifetime access) */}
           <div className="bg-linen px-s7 py-s12 md:py-s14 md:pl-s8">
+            <ProductMark kind="course-foundation" size={48} className="mb-s5" />
             <p className="font-mono text-label-md uppercase tracking-widest text-terra mb-s4">
               $295 · $199 at 10+ · Lifetime access
             </p>

@@ -62,6 +62,9 @@ export interface CourseModule {
   readonly number: number;
   readonly title: string;
   readonly phase: CoursePhase;
+  // Canonical learning pillar — sourced from the foundation-program Module's
+  // pillar field, not derived from phase. The LMS sidebar groups by this.
+  readonly pillar: 'awareness' | 'understanding' | 'creation' | 'application';
   readonly estimatedMinutes: number;
   readonly keyOutput: string;
   readonly learnerOutcome: string;

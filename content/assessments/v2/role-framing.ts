@@ -62,7 +62,7 @@ export const ROLE_FRAMING: Record<Role, RoleFraming> = {
   },
   lending: {
     'quick-win-potential':
-      "Lending workflows — credit memo drafts, condition checklists, denial letter language — are among the highest-leverage AI use cases in community banking. The In-Depth result names which one is closest at hand.",
+      "Lending workflows — credit memo drafts, condition checklists, denial letter language — are among the highest-impact AI use cases in community banking. The In-Depth result names which one is closest at hand.",
     'security-posture':
       'NPI is the constraint that shapes every lending AI decision. The policy gap is how staff know what they can and cannot paste.',
     'current-ai-usage':
