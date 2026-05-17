@@ -13,7 +13,7 @@ import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
-import { emailVariants } from '@/lib/email/canonicalize';
+import { findEnrollmentByEmailOrUserId } from '@/lib/enrollment/findEnrollment';
 import { InDepthRunner } from './_components/InDepthRunner';
 
 export const metadata: Metadata = {
@@ -62,18 +62,11 @@ export default async function InDepthTakePage() {
     redirect('/auth/login?next=/assessment/in-depth/take');
   }
 
-  // Email variants cover Gmail-style "+alias" forms that Stripe stores
-  // verbatim. Without this, paying as user+1@gmail.com but signing in
-  // as user@gmail.com leaves the entitlement unfindable.
-  const variants = emailVariants(user.email);
-  const emailClause = variants.map((e) => `email.eq.${e}`).join(',');
-  const { data: enrollment } = await supabase
-    .from('course_enrollments')
-    .select('id, enrolled_at')
-    .eq('product', 'in-depth-assessment')
-    .or(`user_id.eq.${user.id},${emailClause}`)
-    .limit(1)
-    .maybeSingle();
+  const enrollment = await findEnrollmentByEmailOrUserId(supabase, {
+    user,
+    products: ['in-depth-assessment'],
+    columns: 'id, enrolled_at',
+  });
 
   if (!enrollment) {
     redirect('/assessment/in-depth?reason=no-purchase');

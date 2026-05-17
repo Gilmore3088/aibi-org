@@ -1,3 +1,13 @@
+// AiBI-Foundation course configuration.
+//
+// Source-of-truth note (2026-05-17, issues #107–#111):
+//   `modules` here drives the metadata layer (number, title, pillar,
+//   estimatedMinutes, keyOutput) used by sidebar, progress, and config.
+//   Learner-facing section content is rendered from V4 expanded modules
+//   in `v4-expanded-modules.ts`. See `modules.ts` for the full note.
+//   The `id: 'aibi-p'` below is a legacy internal product key kept for
+//   database compatibility (`course_enrollments.product`); it is not
+//   shown to learners.
 import type { CourseConfig, CourseModule } from '@/types/lms';
 import { modules } from './modules';
 import {

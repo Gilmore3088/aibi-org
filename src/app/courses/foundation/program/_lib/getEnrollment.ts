@@ -9,6 +9,13 @@ import type { CourseEnrollment } from '@/types/course';
 import { dbReadValues } from '@/lib/products/normalize';
 import { emailVariants } from '@/lib/email/canonicalize';
 
+// NOTE (2026-05-17, #106): getEnrollment retains its inline supabase query
+// rather than delegating to findEnrollmentByEmailOrUserId because it needs
+// to surface the distinct 'fetch_failed' branch for the
+// "couldn't load progress" UI state. The shared helper collapses transient
+// errors to null. The In-Depth callers — getInDepthEnrollment and the
+// take page — use the shared helper.
+
 export type EnrollmentData = Pick<
   CourseEnrollment,
   'id' | 'user_id' | 'completed_modules' | 'current_module' | 'enrolled_at' | 'onboarding_answers'
