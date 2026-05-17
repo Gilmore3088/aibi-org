@@ -128,8 +128,12 @@ jobs:
     timeout-minutes: 25
     needs: smoke
     # Auth tests require Supabase service-role access to seed/cleanup
-    # users. Skipped on forks (secrets unavailable).
-    if: github.event.pull_request.head.repo.full_name == github.repository
+    # users. Skip on forks (secrets unavailable) AND on repos where the
+    # operator hasn't configured the SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY
+    # secrets yet — seed helpers throw without them, which surfaces as a
+    # red lane that nobody can fix in code. When the secrets are missing,
+    # mark the lane as "skipped" rather than failing.
+    if: github.event.pull_request.head.repo.full_name == github.repository && vars.E2E_AUTH_TESTS_ENABLED == 'true'
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v4
