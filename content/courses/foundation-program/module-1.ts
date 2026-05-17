@@ -1,6 +1,18 @@
 // AiBI-Foundation Module 1: AI for Your Workday
 // Pillar: Awareness | Estimated: 25 minutes
 // Key Output: Rewritten Email
+//
+// IMPORTANT (2026-05-17, issue #110):
+//   The `sections` below — beginning with "The Regulatory Environment
+//   Through 2026" — are LEGACY content and are NOT rendered to learners.
+//   V4 Module 1 in `v4-expanded-modules.ts` is the canonical practical-
+//   first onboarding experience ("Where the Day Actually Goes", "The
+//   First Safe Win — Emails"). The module page prefers V4 sections via
+//   `expandedModule?.sections ?? mod.sections`, and a V4 entry exists
+//   for module 1. Regulatory framework content belongs in Module 9
+//   (Safe AI Use) per the curriculum decision in #110. This file is
+//   kept for metadata (title, pillar, estimatedMinutes, keyOutput)
+//   until V4 absorbs those fields.
 
 import type { Module } from './types';
 

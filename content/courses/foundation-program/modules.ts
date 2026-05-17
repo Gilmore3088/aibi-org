@@ -1,5 +1,18 @@
 // AiBI-Foundation Course Module Map
-// Imports all 9 module files and exports as typed array + lookup function
+// Imports all 12 module files and exports as typed array + lookup function.
+//
+// Source-of-truth note (2026-05-17, issues #107–#111):
+//   These legacy module files are the source of truth for module *metadata*
+//   only — number, title, pillar, estimatedMinutes, keyOutput. Module body
+//   content (sections, takeaways, V4 activities) is canonically rendered
+//   from `v4-expanded-modules.ts` via the
+//   `V4_FOUNDATION_PROGRAM_MODULE_BY_NUMBER` map in
+//   `src/app/courses/foundation/program/[module]/page.tsx`. V4 falls back
+//   to the legacy `sections` array here only when a V4 entry is missing;
+//   all 12 modules currently have V4 entries, so the legacy `sections`
+//   fields are not rendered. They are kept for type contract reasons and
+//   are scheduled for cleanup once the V4 contract absorbs the metadata
+//   fields. Do not rely on them for learner-facing copy.
 
 import type { Module } from './types';
 import { module1 } from './module-1';
