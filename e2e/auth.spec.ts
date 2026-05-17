@@ -26,13 +26,18 @@ test.describe('auth — public pages (logged out)', () => {
   test('§3.44 visit /auth/signup — form renders', async ({ page }) => {
     await page.goto('/auth/signup');
     await expect(page.getByLabel(/email/i)).toBeVisible();
-    await expect(page.getByLabel(/password/i)).toBeVisible();
+    // The signup page has two password fields ("Password" and "Confirm
+    // password"); disambiguate to the primary one. /password/i matches
+    // both and triggers Playwright strict-mode violation.
+    await expect(page.getByLabel('Password', { exact: true })).toBeVisible();
+    await expect(page.getByLabel(/confirm password/i)).toBeVisible();
   });
 
   test('§3.47 signup with invalid email format surfaces error', async ({ page }) => {
     await page.goto('/auth/signup');
     await page.getByLabel(/email/i).fill('not-an-email');
-    await page.getByLabel(/password/i).fill('valid-password-123');
+    await page.getByLabel('Password', { exact: true }).fill('valid-password-123');
+    await page.getByLabel(/confirm password/i).fill('valid-password-123');
     await page.getByRole('button', { name: /sign up|create/i }).click();
     // Native validation OR server validation — accept either.
     const emailField = page.getByLabel(/email/i);

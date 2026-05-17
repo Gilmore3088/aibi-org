@@ -6,21 +6,25 @@ on:
   workflow_dispatch:
     inputs:
       target_url:
-        description: 'Base URL to run against (defaults to PR preview)'
+        description: 'Base URL to run against (defaults to local build)'
         required: false
 
 concurrency:
   group: e2e-${{ github.ref }}
   cancel-in-progress: true
 
+# All jobs build and serve the PR's own code on localhost:3000 instead of
+# polling a Vercel preview URL. Vercel Deployment Protection 401s
+# unauthenticated requests so wait-for-vercel-preview times out. Same fix
+# as the Lighthouse workflow (PR #118, commit 1b6b525). See issue #119.
+
 jobs:
   smoke:
     name: Smoke tests
     runs-on: ubuntu-latest
-    timeout-minutes: 15
-    # Smoke tests need no DB seeding; they run against any URL.
+    timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -28,18 +32,38 @@ jobs:
       - run: npm ci
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
-      - name: Wait for Vercel preview
-        if: github.event_name == 'pull_request'
-        id: preview
-        uses: patrickedqvist/wait-for-vercel-preview@v1.3.1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          max_timeout: 600
+      - name: Build
+        env:
+          NEXT_TELEMETRY_DISABLED: 1
+        run: npm run build
+      - name: Start server
+        env:
+          NEXT_TELEMETRY_DISABLED: 1
+          PORT: 3000
+        run: |
+          npm start > server.log 2>&1 &
+          echo $! > server.pid
+          for i in $(seq 1 60); do
+            if curl -fsS http://localhost:3000/ > /dev/null 2>&1; then
+              echo "Server up after ${i}s"
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "Server failed to start"
+          cat server.log
+          exit 1
       - name: Run smoke tests
         env:
-          PLAYWRIGHT_BASE_URL: ${{ steps.preview.outputs.url || inputs.target_url || 'http://localhost:3000' }}
+          PLAYWRIGHT_BASE_URL: ${{ inputs.target_url || 'http://localhost:3000' }}
         run: npx playwright test e2e/smoke.spec.ts --project=chromium
-      - uses: actions/upload-artifact@v4
+      - name: Stop server
+        if: always()
+        run: |
+          if [ -f server.pid ]; then
+            kill "$(cat server.pid)" 2>/dev/null || true
+          fi
+      - uses: actions/upload-artifact@v5
         if: failure()
         with:
           name: playwright-smoke-report
@@ -49,10 +73,10 @@ jobs:
   a11y:
     name: Accessibility (axe-core)
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     needs: smoke
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -60,18 +84,38 @@ jobs:
       - run: npm ci
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
-      - name: Wait for Vercel preview
-        if: github.event_name == 'pull_request'
-        id: preview
-        uses: patrickedqvist/wait-for-vercel-preview@v1.3.1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          max_timeout: 600
+      - name: Build
+        env:
+          NEXT_TELEMETRY_DISABLED: 1
+        run: npm run build
+      - name: Start server
+        env:
+          NEXT_TELEMETRY_DISABLED: 1
+          PORT: 3000
+        run: |
+          npm start > server.log 2>&1 &
+          echo $! > server.pid
+          for i in $(seq 1 60); do
+            if curl -fsS http://localhost:3000/ > /dev/null 2>&1; then
+              echo "Server up after ${i}s"
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "Server failed to start"
+          cat server.log
+          exit 1
       - name: Run a11y tests
         env:
-          PLAYWRIGHT_BASE_URL: ${{ steps.preview.outputs.url || inputs.target_url || 'http://localhost:3000' }}
+          PLAYWRIGHT_BASE_URL: ${{ inputs.target_url || 'http://localhost:3000' }}
         run: npx playwright test e2e/a11y.spec.ts --project=chromium
-      - uses: actions/upload-artifact@v4
+      - name: Stop server
+        if: always()
+        run: |
+          if [ -f server.pid ]; then
+            kill "$(cat server.pid)" 2>/dev/null || true
+          fi
+      - uses: actions/upload-artifact@v5
         if: failure()
         with:
           name: playwright-a11y-report
@@ -81,13 +125,13 @@ jobs:
   auth:
     name: Auth flow tests
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     needs: smoke
     # Auth tests require Supabase service-role access to seed/cleanup
     # users. Skipped on forks (secrets unavailable).
     if: github.event.pull_request.head.repo.full_name == github.repository
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -95,23 +139,48 @@ jobs:
       - run: npm ci
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium webkit
-      - name: Wait for Vercel preview
-        if: github.event_name == 'pull_request'
-        id: preview
-        uses: patrickedqvist/wait-for-vercel-preview@v1.3.1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          max_timeout: 600
+      - name: Build
+        env:
+          NEXT_TELEMETRY_DISABLED: 1
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: npm run build
+      - name: Start server
+        env:
+          NEXT_TELEMETRY_DISABLED: 1
+          PORT: 3000
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          npm start > server.log 2>&1 &
+          echo $! > server.pid
+          for i in $(seq 1 60); do
+            if curl -fsS http://localhost:3000/ > /dev/null 2>&1; then
+              echo "Server up after ${i}s"
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "Server failed to start"
+          cat server.log
+          exit 1
       - name: Run auth tests
         env:
-          PLAYWRIGHT_BASE_URL: ${{ steps.preview.outputs.url || inputs.target_url }}
+          PLAYWRIGHT_BASE_URL: ${{ inputs.target_url || 'http://localhost:3000' }}
           # No staging Supabase project — auth tests seed against the
           # real project with .test TLD emails. See e2e/README.md.
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           E2E_ALLOW_PRODUCTION_SUPABASE: 'true'
         run: npx playwright test e2e/auth.spec.ts
-      - uses: actions/upload-artifact@v4
+      - name: Stop server
+        if: always()
+        run: |
+          if [ -f server.pid ]; then
+            kill "$(cat server.pid)" 2>/dev/null || true
+          fi
+      - uses: actions/upload-artifact@v5
         if: failure()
         with:
           name: playwright-auth-report

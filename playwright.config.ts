@@ -39,9 +39,13 @@ export default defineConfig({
 
   webServer: useLocalServer
     ? {
+        // The e2e workflow (.github/workflows/e2e.yml) starts a production
+        // server BEFORE the playwright step in CI, so we always reuse that
+        // existing server. Local dev still auto-spins a dev server when
+        // nothing is on the port.
         command: 'npm run dev',
         url: 'http://localhost:3000',
-        reuseExistingServer: !process.env.CI,
+        reuseExistingServer: true,
         timeout: 120_000,
       }
     : undefined,

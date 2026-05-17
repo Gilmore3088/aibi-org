@@ -19,6 +19,12 @@ interface RunBody {
   readonly messages?: unknown;
   readonly provider?: unknown;
   readonly model?: unknown;
+  // PII-override path (#8 layer 3 — telemetered "send anyway"). Client sets
+  // this AFTER a 422 ai_pii_warning response and an explicit user confirmation
+  // that the input is fabricated. The server still flags the message so it
+  // is logged as a deliberate override; it does not bypass the injection
+  // filter — that one is non-negotiable.
+  readonly confirmedFabricated?: unknown;
 }
 
 function isMessageList(value: unknown): value is ToolboxMessage[] {
@@ -79,10 +85,22 @@ export async function POST(request: Request): Promise<Response> {
     );
   }
 
+  const confirmedFabricated = body.confirmedFabricated === true;
   const pii = scanForPII(latestUser.content);
-  if (!pii.safe) return NextResponse.json({ error: pii.reason }, { status: 422 });
+  if (!pii.safe && !confirmedFabricated) {
+    return NextResponse.json(
+      { error: pii.reason, kind: 'pii_warning', canOverride: true },
+      { status: 422 },
+    );
+  }
+  // Injection filter cannot be overridden — it protects the model, not the user.
   const injection = scanForInjection(latestUser.content);
-  if (!injection.safe) return NextResponse.json({ error: injection.reason }, { status: 422 });
+  if (!injection.safe) {
+    return NextResponse.json(
+      { error: injection.reason, kind: 'injection_blocked', canOverride: false },
+      { status: 422 },
+    );
+  }
 
   const limit = await checkRateLimit({
     userId: access.userId,
@@ -132,6 +150,13 @@ export async function POST(request: Request): Promise<Response> {
         errored = true;
         write({ type: 'error', message: err instanceof LLMError ? err.kind : 'unknown' });
       } finally {
+        // #8 layer 3 telemetry — server logs only succeeded/errored status.
+        // The "pii override accepted" leading signal fires from the client
+        // via Plausible (`playground_pii_override_send`) so we can compute
+        // the override click-through rate without a schema change. If we
+        // later need server-side audit of overrides, extend logUsage with
+        // a featureNote column and write it here from `confirmedFabricated`.
+        void confirmedFabricated;
         await logUsage({
           userId, courseSlug: 'toolbox', featureId: 'toolbox-playground',
           provider, model,

@@ -132,6 +132,18 @@ export function ToolboxApp() {
   const [running, setRunning] = useState(false);
   const [playgroundSaveState, setPlaygroundSaveState] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
   const [notice, setNotice] = useState<string | null>(null);
+  // #8 layer 2 — typed-confirmation gate. Resets per session (sessionStorage).
+  // Once a learner has typed the confirmation phrase in a given tab session,
+  // they don't get re-prompted on subsequent runs in the same session.
+  const [confirmedSession, setConfirmedSession] = useState(false);
+  const [confirmGateOpen, setConfirmGateOpen] = useState(false);
+  // #8 layer 3 — telemetered "send anyway" path. When the API returns a
+  // pii_warning (HTTP 422 with kind:'pii_warning'), we surface the reason
+  // and offer the override. Plausible fires on shown + send.
+  const [piiWarning, setPiiWarning] = useState<{
+    readonly reason: string;
+    readonly pendingMessages: readonly ToolboxMessage[];
+  } | null>(null);
   const [modelSelection, setModelSelection] = useState<ModelSelection>({
     provider: 'anthropic',
     model: 'claude-sonnet-4-6',
@@ -166,6 +178,57 @@ export function ToolboxApp() {
   useEffect(() => {
     threadRef.current?.scrollTo({ top: threadRef.current.scrollHeight });
   }, [messages]);
+
+  // #8 layer 3 — Plausible event helper. Safe no-op when the script hasn't
+  // loaded yet thanks to the deferred-queue pattern set up in layout.tsx.
+  function firePlausible(event: string, props?: Record<string, string | number>) {
+    if (typeof window !== 'undefined' && typeof (window as unknown as {
+      plausible?: (e: string, opts?: { props?: Record<string, string | number> }) => void;
+    }).plausible === 'function') {
+      (window as unknown as {
+        plausible: (e: string, opts?: { props?: Record<string, string | number> }) => void;
+      }).plausible(event, props ? { props } : undefined);
+    }
+  }
+
+  function confirmAndRun() {
+    try {
+      sessionStorage.setItem('toolbox-pii-confirmed', 'true');
+    } catch {
+      /* sessionStorage unavailable — accept the confirmation in-memory only */
+    }
+    setConfirmedSession(true);
+    setConfirmGateOpen(false);
+    firePlausible('playground_typed_confirm_accepted');
+    void sendMessages(
+      [...messages, { role: 'user' as const, content: input.trim() }],
+      { confirmedFabricated: false },
+    );
+  }
+
+  function overrideAndSend() {
+    if (!piiWarning) return;
+    const pending = piiWarning.pendingMessages;
+    setPiiWarning(null);
+    void sendMessages(pending, { confirmedFabricated: true });
+  }
+
+  function dismissPiiWarning() {
+    if (!piiWarning) return;
+    firePlausible('playground_pii_override_cancelled');
+    setPiiWarning(null);
+  }
+
+  // #8 layer 2 — restore session-scoped confirmation on tab reload.
+  useEffect(() => {
+    try {
+      if (sessionStorage.getItem('toolbox-pii-confirmed') === 'true') {
+        setConfirmedSession(true);
+      }
+    } catch {
+      /* sessionStorage unavailable (e.g. SSR or sandboxed iframe) — fail open */
+    }
+  }, []);
 
   const roles = useMemo(() => (
     ['all', ...Array.from(new Set(TOOLBOX_TEMPLATES.map((template) => template.deptFull)))]
@@ -232,8 +295,23 @@ export function ToolboxApp() {
 
   async function runSkill() {
     if (!activeSkill || !input.trim()) return;
-    const nextMessages = [...messages, { role: 'user' as const, content: input.trim() }];
-    setMessages(nextMessages);
+    // #8 layer 2 — typed-confirmation gate on first free-form send per session.
+    if (!confirmedSession) {
+      setConfirmGateOpen(true);
+      return;
+    }
+    await sendMessages(
+      [...messages, { role: 'user' as const, content: input.trim() }],
+      { confirmedFabricated: false },
+    );
+  }
+
+  async function sendMessages(
+    nextMessages: readonly ToolboxMessage[],
+    opts: { readonly confirmedFabricated: boolean },
+  ) {
+    if (!activeSkill) return;
+    setMessages([...nextMessages]);
     setInput('');
     setRunning(true);
     try {
@@ -245,13 +323,27 @@ export function ToolboxApp() {
           messages: nextMessages,
           provider: modelSelection.provider,
           model: modelSelection.model,
+          confirmedFabricated: opts.confirmedFabricated,
         }),
       });
       if (!res.ok || !res.body) {
         const json = await res.json().catch(() => ({ error: 'Unknown error.' }));
+        // #8 layer 3 — pii_warning is a recoverable state with override path.
+        if (res.status === 422 && (json as { kind?: string }).kind === 'pii_warning') {
+          // Roll back the optimistic user message — the warning UI now owns
+          // the decision; if the learner confirms, sendMessages reissues it.
+          setMessages((prev) => prev.slice(0, -1));
+          firePlausible('playground_pii_override_shown', { reason: String(json.error).slice(0, 60) });
+          setPiiWarning({ reason: String(json.error), pendingMessages: nextMessages });
+          setRunning(false);
+          return;
+        }
         setMessages((prev) => [...prev, { role: 'assistant', content: `Error: ${json.error ?? res.statusText}` }]);
         setRunning(false);
         return;
+      }
+      if (opts.confirmedFabricated) {
+        firePlausible('playground_pii_override_send');
       }
 
       setMessages((prev) => [...prev, { role: 'assistant', content: '' }]);
@@ -511,6 +603,12 @@ export function ToolboxApp() {
           onReset={() => setMessages([])}
           onSavePlayground={handleSavePlayground}
           playgroundSaveState={playgroundSaveState}
+          piiWarning={piiWarning}
+          onPiiOverride={overrideAndSend}
+          onPiiDismiss={dismissPiiWarning}
+          confirmGateOpen={confirmGateOpen}
+          onConfirmGateAccept={confirmAndRun}
+          onConfirmGateCancel={() => setConfirmGateOpen(false)}
         />
       )}
 
@@ -788,25 +886,51 @@ function PlaygroundPanel(props: {
   readonly onReset: () => void;
   readonly onSavePlayground: () => void;
   readonly playgroundSaveState: 'idle' | 'saving' | 'saved' | 'error';
+  // #8 PII safety props
+  readonly piiWarning: { readonly reason: string; readonly pendingMessages: readonly ToolboxMessage[] } | null;
+  readonly onPiiOverride: () => void;
+  readonly onPiiDismiss: () => void;
+  readonly confirmGateOpen: boolean;
+  readonly onConfirmGateAccept: () => void;
+  readonly onConfirmGateCancel: () => void;
 }) {
   if (!props.activeSkill) {
+    // Empty state still gets layer 4 (the persistent disclaimer banner)
+    // — the warning has to ride along with the Playground tab even before
+    // a playbook is loaded, otherwise the banner only appears once the
+    // user has already engaged and the surface is no longer "blank."
     return (
-      <section className="mx-auto max-w-2xl py-20 text-center">
-        <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
-          Playground
-        </p>
-        <h2 className="mt-3 font-serif text-4xl text-[color:var(--color-ink)]">
-          Try a playbook against a fabricated scenario.
-        </h2>
-        <p className="mt-4 text-sm leading-relaxed text-[color:var(--color-slate)]">
-          The Playground runs any playbook through your selected model
-          (Claude, GPT, or Gemini) against test data you supply. <span className="text-[color:var(--color-ink)]">Never enter real member data here</span> — these
-          requests leave our servers.
-        </p>
-        <p className="mt-3 text-sm leading-relaxed text-[color:var(--color-slate)]">
-          Pick a starter from the Library to see how it works.
-        </p>
-        <button type="button" onClick={props.onBrowse} className="mt-6 bg-[color:var(--color-terra)] px-5 py-3 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-linen)]">Browse Library</button>
+      <section className="space-y-4">
+        <div
+          role="note"
+          aria-label="Playground data-handling notice"
+          className="flex flex-wrap items-center justify-between gap-3 border border-[color:var(--color-error)]/30 bg-[color:var(--color-parch)] px-4 py-3"
+        >
+          <p className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-error)]">
+            Sandbox · Never enter real member, account, or institution-confidential data
+          </p>
+          <p className="font-mono text-[10px] tracking-wide text-[color:var(--color-slate)]">
+            Requests leave our servers. Use fabricated examples only.
+          </p>
+        </div>
+        <div className="mx-auto max-w-2xl py-20 text-center">
+          <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
+            Playground
+          </p>
+          <h2 className="mt-3 font-serif text-4xl text-[color:var(--color-ink)]">
+            Try a playbook against a fabricated scenario.
+          </h2>
+          <p className="mt-4 text-sm leading-relaxed text-[color:var(--color-slate)]">
+            The Playground runs any playbook through your selected model
+            (Claude, GPT, or Gemini) against test data you supply.{' '}
+            <span className="text-[color:var(--color-ink)]">Never enter real member data here</span> — these
+            requests leave our servers.
+          </p>
+          <p className="mt-3 text-sm leading-relaxed text-[color:var(--color-slate)]">
+            Pick a starter from the Library to see how it works.
+          </p>
+          <button type="button" onClick={props.onBrowse} className="mt-6 bg-[color:var(--color-terra)] px-5 py-3 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-linen)]">Browse Library</button>
+        </div>
       </section>
     );
   }
@@ -834,7 +958,44 @@ function PlaygroundPanel(props: {
           : 'Save this run';
 
   return (
-    <section className="grid gap-6 lg:grid-cols-[320px_1fr]">
+    <section className="space-y-4">
+      {/*
+        #8 layer 4 — persistent disclaimer banner. Always visible at the top
+        of the Playground tab, regardless of which playbook is active. Uses
+        oxblood-on-parchment so it reads as a regulatory notice, not a
+        marketing badge.
+      */}
+      <div
+        role="note"
+        aria-label="Playground data-handling notice"
+        className="flex flex-wrap items-center justify-between gap-3 border border-[color:var(--color-error)]/30 bg-[color:var(--color-parch)] px-4 py-3"
+      >
+        <p className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-error)]">
+          Sandbox · Never enter real member, account, or institution-confidential data
+        </p>
+        <p className="font-mono text-[10px] tracking-wide text-[color:var(--color-slate)]">
+          Requests leave our servers. Use fabricated examples only.
+        </p>
+      </div>
+
+      {/* #8 layer 2 — typed-confirmation gate, first send per session. */}
+      {props.confirmGateOpen && (
+        <TypedConfirmGate
+          onConfirm={props.onConfirmGateAccept}
+          onCancel={props.onConfirmGateCancel}
+        />
+      )}
+
+      {/* #8 layer 3 — telemetered "send anyway" path on PII detection. */}
+      {props.piiWarning && (
+        <PiiOverrideBanner
+          reason={props.piiWarning.reason}
+          onOverride={props.onPiiOverride}
+          onDismiss={props.onPiiDismiss}
+        />
+      )}
+
+      <div className="grid gap-6 lg:grid-cols-[320px_1fr]">
       <aside className="h-fit border border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)] p-5 lg:sticky lg:top-40">
         <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)]">
           {props.activeSkill.deptFull || props.activeSkill.dept || 'Playbook'}
@@ -970,7 +1131,111 @@ function PlaygroundPanel(props: {
           </div>
         )}
       </div>
+      </div>
     </section>
+  );
+}
+
+function TypedConfirmGate(props: {
+  readonly onConfirm: () => void;
+  readonly onCancel: () => void;
+}) {
+  const [typed, setTyped] = useState('');
+  const REQUIRED = 'I confirm this is fabricated data';
+  const matches = typed.trim().toLowerCase() === REQUIRED.toLowerCase();
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="pii-confirm-title"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-[color:var(--color-ink)]/40 px-4"
+    >
+      <div className="w-full max-w-lg border border-[color:var(--color-ink)]/15 bg-white p-6">
+        <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-error)]">
+          Sandbox confirmation
+        </p>
+        <h3
+          id="pii-confirm-title"
+          className="mt-2 font-serif text-2xl leading-tight text-[color:var(--color-ink)]"
+        >
+          Before your first run this session
+        </h3>
+        <p className="mt-3 text-sm leading-relaxed text-[color:var(--color-slate)]">
+          The Playground sends your input to a third-party model provider.
+          Real member data, account numbers, or institution-confidential
+          material must never leave your institution this way. Confirm you
+          are using fabricated data by typing the phrase below.
+        </p>
+        <p className="mt-4 font-mono text-xs text-[color:var(--color-ink)]">
+          {REQUIRED}
+        </p>
+        <input
+          type="text"
+          value={typed}
+          onChange={(e) => setTyped(e.target.value)}
+          placeholder="Type the phrase exactly"
+          className="mt-2 w-full border border-[color:var(--color-ink)]/20 bg-white px-3 py-2 text-sm focus:border-[color:var(--color-terra)] focus:outline-none"
+          autoFocus
+        />
+        <div className="mt-5 flex justify-end gap-3">
+          <button
+            type="button"
+            onClick={props.onCancel}
+            className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] hover:text-[color:var(--color-ink)]"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            disabled={!matches}
+            onClick={props.onConfirm}
+            className="bg-[color:var(--color-terra)] px-4 py-2 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-linen)] disabled:opacity-40"
+          >
+            Confirm &amp; run
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PiiOverrideBanner(props: {
+  readonly reason: string;
+  readonly onOverride: () => void;
+  readonly onDismiss: () => void;
+}) {
+  return (
+    <div
+      role="alert"
+      aria-live="polite"
+      className="border border-[color:var(--color-error)]/40 bg-white p-4"
+    >
+      <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-error)]">
+        Possible real-member data detected
+      </p>
+      <p className="mt-2 text-sm leading-relaxed text-[color:var(--color-ink)]">{props.reason}</p>
+      <p className="mt-2 text-xs leading-relaxed text-[color:var(--color-slate)]">
+        If this is a fabricated scenario you can send anyway. The override is
+        logged so the team can see how often the detector fires on
+        intentional test data.
+      </p>
+      <div className="mt-3 flex flex-wrap gap-3">
+        <button
+          type="button"
+          onClick={props.onOverride}
+          className="border border-[color:var(--color-error)]/60 px-3 py-1.5 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-error)] hover:bg-[color:var(--color-error)]/10"
+        >
+          Send anyway · fabricated
+        </button>
+        <button
+          type="button"
+          onClick={props.onDismiss}
+          className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] hover:text-[color:var(--color-ink)]"
+        >
+          Edit my input
+        </button>
+      </div>
+    </div>
   );
 }
 
