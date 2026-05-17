@@ -3,10 +3,11 @@ import { MarketingPage } from "@/components/system/templates";
 import {
   Section,
   SectionHeader,
-  CertificationLadder,
   Cta,
   Marginalia,
   SkillGrid,
+  ProductMark,
+  type ProductMarkKind,
 } from "@/components/system";
 import { InteractiveSkillsPreview } from "@/components/sections/InteractiveSkillsPreview";
 import { InquiryForm } from "@/app/certifications/_components/InquiryForm";
@@ -19,37 +20,10 @@ export const metadata: Metadata = {
     "Free classes and three certification tracks for community banks and credit unions. Start with the AI Readiness Assessment, then earn AiBI-Foundation, AiBI-S, or AiBI-L credentials.",
 };
 
-interface FreeClass {
-  readonly title: string;
-  readonly subtitle: string;
-  readonly cta: string;
-  readonly href: string;
-  readonly available: boolean;
-}
-
 export default async function EducationPage() {
   const pEnrollment = await getPEnrollment();
   const completedCount = pEnrollment?.completed_modules?.length ?? 0;
   const isPEnrolled = pEnrollment !== null;
-
-  const freeClasses: readonly FreeClass[] = [
-    {
-      title: "The AI Banking Brief",
-      subtitle:
-        "Fortnightly research on regulatory updates, vendor moves, and practical AI use cases for community FIs.",
-      cta: "Subscribe",
-      href: "/research",
-      available: true,
-    },
-    {
-      title: "Short-form classes",
-      subtitle:
-        "Five-minute video lessons on regulatory framing, vendor evaluation, and Acceptable Use practices.",
-      cta: "Coming soon",
-      href: "#",
-      available: false,
-    },
-  ];
 
   interface AssessmentTile {
     readonly tag: string;
@@ -59,6 +33,7 @@ export default async function EducationPage() {
     readonly facts: readonly { readonly label: string; readonly value: string }[];
     readonly cta: string;
     readonly href: string;
+    readonly mark: ProductMarkKind;
   }
 
   const assessments: readonly AssessmentTile[] = [
@@ -66,6 +41,7 @@ export default async function EducationPage() {
       tag: "Free",
       tagTone: "free",
       title: "Free AI Readiness Assessment",
+      mark: "assessment-free",
       subtitle:
         "A quick diagnostic for your institution. Score, tier, and a tailored starter artifact you can take to your team this week.",
       facts: [
@@ -81,6 +57,7 @@ export default async function EducationPage() {
       tag: "$99 · $79 at 10+ by request",
       tagTone: "paid",
       title: "In-Depth Assessment",
+      mark: "assessment-indepth",
       subtitle:
         "Forty-eight questions across eight readiness dimensions. Individual report, plus an anonymized aggregate dashboard for institution leaders.",
       facts: [
@@ -117,6 +94,7 @@ export default async function EducationPage() {
           <div className="grid md:grid-cols-2 gap-px bg-hairline border-y border-strong">
             {assessments.map((a) => (
               <article key={a.title} className="bg-linen p-s8 lg:p-s10 flex flex-col">
+                <ProductMark kind={a.mark} size={48} className="mb-s4" />
                 <div className="flex items-center mb-s5">
                   <span
                     className={
@@ -130,15 +108,38 @@ export default async function EducationPage() {
                 </div>
                 <h3 className="font-serif text-display-sm leading-snug mb-s3">{a.title}</h3>
                 <p className="text-body-md leading-relaxed text-ink/80 mb-s6">{a.subtitle}</p>
-                <dl className="grid grid-cols-2 gap-y-s3 gap-x-s5 border-t border-hairline pt-s5 mb-s6">
-                  {a.facts.map((f) => (
-                    <div key={f.label}>
-                      <dt className="font-serif-sc text-mono-xs uppercase tracking-wider text-ink/50 mb-[2px]">
-                        {f.label}
-                      </dt>
-                      <dd className="font-mono text-body-sm tabular-nums text-ink">{f.value}</dd>
-                    </div>
-                  ))}
+                <dl className="grid grid-cols-2 border-y border-strong mb-s6">
+                  {a.facts.map((f, i) => {
+                    const isStat = i < 2;
+                    const isLeft = i % 2 === 0;
+                    const isTopRow = i < 2;
+                    return (
+                      <div
+                        key={f.label}
+                        className={[
+                          "py-s4",
+                          isLeft ? "pr-s5" : "pl-s5",
+                          !isLeft && "border-l border-hairline",
+                          isTopRow && "border-b border-hairline",
+                        ]
+                          .filter(Boolean)
+                          .join(" ")}
+                      >
+                        <dt className="font-mono text-mono-xs uppercase tracking-widest text-ink/55 mb-s2">
+                          {f.label}
+                        </dt>
+                        {isStat ? (
+                          <dd className="font-serif italic text-4xl md:text-5xl text-terra leading-none tabular-nums">
+                            {f.value}
+                          </dd>
+                        ) : (
+                          <dd className="font-serif text-body-md text-ink leading-snug">
+                            {f.value}
+                          </dd>
+                        )}
+                      </div>
+                    );
+                  })}
                 </dl>
                 <div className="mt-auto">
                   <Cta variant="secondary" href={a.href}>
@@ -151,98 +152,6 @@ export default async function EducationPage() {
         ),
       }}
     >
-
-      {/* Free Classes */}
-      <Section variant="parch" padding="default">
-        <SectionHeader
-          label="Classes · Free"
-          title="Other free entry points."
-          subtitle="Subscribe to the Brief, watch a five-minute class. No purchase required."
-        />
-        <div className="grid sm:grid-cols-2 gap-px bg-hairline border-y border-strong mt-s6">
-          {freeClasses.map((cls) => (
-            <article
-              key={cls.title}
-              className="bg-linen p-s6 flex flex-col"
-            >
-              <h3 className="font-serif text-display-xs leading-snug mb-s3">{cls.title}</h3>
-              <p className="text-body-sm leading-relaxed text-ink/80 flex-1 mb-s5">
-                {cls.subtitle}
-              </p>
-              {cls.available ? (
-                <Cta variant="secondary" href={cls.href}>
-                  {cls.cta} →
-                </Cta>
-              ) : (
-                <span className="font-serif-sc text-mono-sm uppercase tracking-widest text-ink/40 border-b border-hairline pb-[1px] self-start">
-                  {cls.cta}
-                </span>
-              )}
-            </article>
-          ))}
-        </div>
-      </Section>
-
-      {/* Certification ladder */}
-      <Section variant="linen" padding="default">
-        <SectionHeader
-          label="Certifications · Paid"
-          title="Three credentials, one ladder."
-          subtitle="Each certification builds on the previous. Earn the credential that matches your role today and advance when you are ready."
-        />
-        <CertificationLadder
-          className="mt-s6"
-          rungs={[
-            {
-              level: "Foundation",
-              stepLabel: "01",
-              code: "AiBI-Foundation",
-              title: "AiBI-Foundation",
-              designation: "Personal AI proficiency for every staff member",
-              pillar: "application",
-              facts: [
-                { label: "Audience", value: "All staff" },
-                { label: "Format", value: "Self-paced online" },
-                { label: "Effort", value: `${modules.length} modules`, mono: true },
-                { label: "Tuition", value: "$295 · $199/seat at 10+", mono: true },
-              ],
-              href: "/courses/foundation/program",
-            },
-            {
-              level: "Specialist",
-              stepLabel: "02",
-              code: "AiBI-Specialist",
-              title: "Banking AI Specialist",
-              designation: "Advanced workflows, agents, and internal AI systems",
-              pillar: "understanding",
-              facts: [
-                { label: "Audience", value: "Department managers" },
-                { label: "Format", value: "Self-paced, role-tracked" },
-                { label: "Effort", value: "Track-dependent", mono: true },
-                { label: "Tuition", value: "Coming soon" },
-              ],
-              href: "/coming-soon?interest=specialist",
-              comingSoon: true,
-            },
-            {
-              level: "Leader",
-              stepLabel: "03",
-              code: "AiBI-Leader",
-              title: "Banking AI Leader",
-              designation: "Team-level rollout and executive AI leadership",
-              pillar: "awareness",
-              facts: [
-                { label: "Audience", value: "C-suite & board" },
-                { label: "Format", value: "Cohort-supported" },
-                { label: "Effort", value: "Capstone", mono: true },
-                { label: "Tuition", value: "Coming soon" },
-              ],
-              href: "/coming-soon?interest=leader",
-              comingSoon: true,
-            },
-          ]}
-        />
-      </Section>
 
       {/* Capabilities preview — interactive tabs */}
       <InteractiveSkillsPreview />
