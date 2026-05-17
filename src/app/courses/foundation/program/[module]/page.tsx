@@ -253,6 +253,69 @@ export default async function ModulePage({ params }: ModulePageParams) {
               {mod.keyOutput}
             </span>
           </p>
+
+          {/*
+            Canonical module loop indicator (issue #104 §6). Always shows the
+            same four steps so the learner can see the shape of the work at
+            a glance and never has to wonder "what next" (issue #104 §4).
+            The first three steps are mapped to the Learn / Practice / Apply
+            tabs below; the fourth step ("Save it.") is the artifact-save
+            action that lives inside the Apply tab — not a separate tab.
+          */}
+          <ol
+            aria-label="Module loop"
+            style={{
+              listStyle: 'none',
+              padding: 0,
+              margin: '20px 0 0',
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: 0,
+              borderTop: '1px solid var(--ledger-rule)',
+              paddingTop: 14,
+            }}
+          >
+            {[
+              { n: '01', label: 'Learn it.' },
+              { n: '02', label: 'Try it.' },
+              { n: '03', label: 'Use it.' },
+              { n: '04', label: 'Save it.' },
+            ].map((step, idx, arr) => (
+              <li
+                key={step.n}
+                style={{
+                  display: 'flex',
+                  alignItems: 'baseline',
+                  gap: 8,
+                  paddingRight: idx === arr.length - 1 ? 0 : 18,
+                  marginRight: idx === arr.length - 1 ? 0 : 18,
+                  borderRight: idx === arr.length - 1
+                    ? 'none'
+                    : '1px solid var(--ledger-rule)',
+                }}
+              >
+                <span
+                  style={{
+                    fontFamily: 'var(--ledger-mono)',
+                    fontSize: 10,
+                    color: 'var(--ledger-muted)',
+                    letterSpacing: '0.16em',
+                  }}
+                >
+                  {step.n}
+                </span>
+                <span
+                  style={{
+                    fontFamily: 'var(--ledger-serif)',
+                    fontSize: 14,
+                    color: 'var(--ledger-ink)',
+                  }}
+                >
+                  {step.label}
+                </span>
+              </li>
+            ))}
+          </ol>
         </header>
       </div>
 

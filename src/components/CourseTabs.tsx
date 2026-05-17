@@ -12,10 +12,16 @@ interface Tab {
   readonly sublabel: string;
 }
 
+// Sublabels say the canonical loop out loud — "Learn it. Try it. Use it.
+// Save it." (issue #104 §6). Apply carries both "Use it." and "Save it."
+// because the save-artifact step happens at the end of the Apply tab,
+// not as a fourth tab — keeping it on Apply avoids a fourth nav target
+// that would dilute the loop. The full four-step loop is also surfaced
+// as a visual indicator above the tabs in the module header.
 const TABS: readonly Tab[] = [
-  { id: 'learn', label: 'Learn', sublabel: 'Read the material' },
-  { id: 'practice', label: 'Practice', sublabel: 'Try it with AI' },
-  { id: 'apply', label: 'Apply', sublabel: 'Complete activities' },
+  { id: 'learn', label: 'Learn', sublabel: 'Learn it.' },
+  { id: 'practice', label: 'Practice', sublabel: 'Try it.' },
+  { id: 'apply', label: 'Apply', sublabel: 'Use it. Save it.' },
 ] as const;
 
 interface CourseTabsProps {
