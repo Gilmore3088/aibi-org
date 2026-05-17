@@ -3,7 +3,6 @@ import { MarketingPage } from "@/components/system/templates";
 import {
   Section,
   SectionHeader,
-  CertificationLadder,
   Cta,
   Marginalia,
   SkillGrid,
@@ -21,37 +20,10 @@ export const metadata: Metadata = {
     "Free classes and three certification tracks for community banks and credit unions. Start with the AI Readiness Assessment, then earn AiBI-Foundation, AiBI-S, or AiBI-L credentials.",
 };
 
-interface FreeClass {
-  readonly title: string;
-  readonly subtitle: string;
-  readonly cta: string;
-  readonly href: string;
-  readonly available: boolean;
-}
-
 export default async function EducationPage() {
   const pEnrollment = await getPEnrollment();
   const completedCount = pEnrollment?.completed_modules?.length ?? 0;
   const isPEnrolled = pEnrollment !== null;
-
-  const freeClasses: readonly FreeClass[] = [
-    {
-      title: "The AI Banking Brief",
-      subtitle:
-        "Fortnightly research on regulatory updates, vendor moves, and practical AI use cases for community FIs.",
-      cta: "Subscribe",
-      href: "/research",
-      available: true,
-    },
-    {
-      title: "Short-form classes",
-      subtitle:
-        "Five-minute video lessons on regulatory framing, vendor evaluation, and Acceptable Use practices.",
-      cta: "Coming soon",
-      href: "#",
-      available: false,
-    },
-  ];
 
   interface AssessmentTile {
     readonly tag: string;
@@ -180,98 +152,6 @@ export default async function EducationPage() {
         ),
       }}
     >
-
-      {/* Free Classes */}
-      <Section variant="parch" padding="default">
-        <SectionHeader
-          label="Classes · Free"
-          title="Other free entry points."
-          subtitle="Subscribe to the Brief, watch a five-minute class. No purchase required."
-        />
-        <div className="grid sm:grid-cols-2 gap-px bg-hairline border-y border-strong mt-s6">
-          {freeClasses.map((cls) => (
-            <article
-              key={cls.title}
-              className="bg-linen p-s6 flex flex-col"
-            >
-              <h3 className="font-serif text-display-xs leading-snug mb-s3">{cls.title}</h3>
-              <p className="text-body-sm leading-relaxed text-ink/80 flex-1 mb-s5">
-                {cls.subtitle}
-              </p>
-              {cls.available ? (
-                <Cta variant="secondary" href={cls.href}>
-                  {cls.cta} →
-                </Cta>
-              ) : (
-                <span className="font-serif-sc text-mono-sm uppercase tracking-widest text-ink/40 border-b border-hairline pb-[1px] self-start">
-                  {cls.cta}
-                </span>
-              )}
-            </article>
-          ))}
-        </div>
-      </Section>
-
-      {/* Certification ladder */}
-      <Section variant="linen" padding="default">
-        <SectionHeader
-          label="Certifications · Paid"
-          title="Three credentials, one ladder."
-          subtitle="Each certification builds on the previous. Earn the credential that matches your role today and advance when you are ready."
-        />
-        <CertificationLadder
-          className="mt-s6"
-          rungs={[
-            {
-              level: "Foundation",
-              stepLabel: "01",
-              code: "AiBI-Foundation",
-              title: "AiBI-Foundation",
-              designation: "Personal AI proficiency for every staff member",
-              pillar: "application",
-              facts: [
-                { label: "Audience", value: "All staff" },
-                { label: "Format", value: "Self-paced online" },
-                { label: "Effort", value: `${modules.length} modules`, mono: true },
-                { label: "Tuition", value: "$295 · $199/seat at 10+", mono: true },
-              ],
-              href: "/courses/foundation/program",
-            },
-            {
-              level: "Specialist",
-              stepLabel: "02",
-              code: "AiBI-Specialist",
-              title: "Banking AI Specialist",
-              designation: "Advanced workflows, agents, and internal AI systems",
-              pillar: "understanding",
-              facts: [
-                { label: "Audience", value: "Department managers" },
-                { label: "Format", value: "Self-paced, role-tracked" },
-                { label: "Effort", value: "Track-dependent", mono: true },
-                { label: "Tuition", value: "Coming soon" },
-              ],
-              href: "/coming-soon?interest=specialist",
-              comingSoon: true,
-            },
-            {
-              level: "Leader",
-              stepLabel: "03",
-              code: "AiBI-Leader",
-              title: "Banking AI Leader",
-              designation: "Team-level rollout and executive AI leadership",
-              pillar: "awareness",
-              facts: [
-                { label: "Audience", value: "C-suite & board" },
-                { label: "Format", value: "Cohort-supported" },
-                { label: "Effort", value: "Capstone", mono: true },
-                { label: "Tuition", value: "Coming soon" },
-              ],
-              href: "/coming-soon?interest=leader",
-              comingSoon: true,
-            },
-          ]}
-        />
-      </Section>
 
       {/* Capabilities preview — interactive tabs */}
       <InteractiveSkillsPreview />
