@@ -118,50 +118,6 @@ export default function ForInstitutionsPage() {
         </div>
       </Section>
 
-      {/* Pilot CTA — the recommended start */}
-      <Section variant="dark" divider="none" padding="default" id="inquiry">
-        <div className="grid md:grid-cols-[1.4fr_1fr] gap-s10 items-center">
-          <div>
-            <p className="font-serif-sc text-label-md uppercase tracking-widest text-cream mb-s3">
-              Begin where it makes sense
-            </p>
-            <h2 className="font-serif text-display-md text-bone leading-tight">
-              Start with a coached cohort. Scale on what works.
-            </h2>
-            <p className="text-body-md text-cream mt-s4 leading-relaxed">
-              A 10-seat cohort over eight weeks. Learners ship reviewed
-              AI workflows; leadership gets the readiness data to plan the
-              next step.
-            </p>
-          </div>
-          <div className="border-l border-cream/20 pl-s8">
-            <p className="font-mono text-label-md uppercase tracking-widest text-cream mb-s4">
-              What&rsquo;s included
-            </p>
-            <ul className="space-y-s2 text-body-sm text-cream">
-              {[
-                "10 AiBI-Foundation seats",
-                "Weekly coaching for 8 weeks",
-                "Institutional readiness diagnostic",
-                "Aggregate dashboard for your champion",
-                "Capstone artifact review by an instructor",
-              ].map((item) => (
-                <li key={item} className="grid grid-cols-[12px_1fr] gap-s2">
-                  <span aria-hidden="true" className="font-mono text-cream">
-                    —
-                  </span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-            <div className="mt-s5">
-              <Cta href={CTAS.contactInstitute.href} tone="dark">
-                {CTAS.contactInstitute.label}
-              </Cta>
-            </div>
-          </div>
-        </div>
-      </Section>
     </MarketingPage>
   );
 }
