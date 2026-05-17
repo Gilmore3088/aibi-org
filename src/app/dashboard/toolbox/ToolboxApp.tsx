@@ -895,23 +895,42 @@ function PlaygroundPanel(props: {
   readonly onConfirmGateCancel: () => void;
 }) {
   if (!props.activeSkill) {
+    // Empty state still gets layer 4 (the persistent disclaimer banner)
+    // — the warning has to ride along with the Playground tab even before
+    // a playbook is loaded, otherwise the banner only appears once the
+    // user has already engaged and the surface is no longer "blank."
     return (
-      <section className="mx-auto max-w-2xl py-20 text-center">
-        <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
-          Playground
-        </p>
-        <h2 className="mt-3 font-serif text-4xl text-[color:var(--color-ink)]">
-          Try a playbook against a fabricated scenario.
-        </h2>
-        <p className="mt-4 text-sm leading-relaxed text-[color:var(--color-slate)]">
-          The Playground runs any playbook through your selected model
-          (Claude, GPT, or Gemini) against test data you supply. <span className="text-[color:var(--color-ink)]">Never enter real member data here</span> — these
-          requests leave our servers.
-        </p>
-        <p className="mt-3 text-sm leading-relaxed text-[color:var(--color-slate)]">
-          Pick a starter from the Library to see how it works.
-        </p>
-        <button type="button" onClick={props.onBrowse} className="mt-6 bg-[color:var(--color-terra)] px-5 py-3 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-linen)]">Browse Library</button>
+      <section className="space-y-4">
+        <div
+          role="note"
+          aria-label="Playground data-handling notice"
+          className="flex flex-wrap items-center justify-between gap-3 border border-[color:var(--color-error)]/30 bg-[color:var(--color-parch)] px-4 py-3"
+        >
+          <p className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-error)]">
+            Sandbox · Never enter real member, account, or institution-confidential data
+          </p>
+          <p className="font-mono text-[10px] tracking-wide text-[color:var(--color-slate)]">
+            Requests leave our servers. Use fabricated examples only.
+          </p>
+        </div>
+        <div className="mx-auto max-w-2xl py-20 text-center">
+          <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
+            Playground
+          </p>
+          <h2 className="mt-3 font-serif text-4xl text-[color:var(--color-ink)]">
+            Try a playbook against a fabricated scenario.
+          </h2>
+          <p className="mt-4 text-sm leading-relaxed text-[color:var(--color-slate)]">
+            The Playground runs any playbook through your selected model
+            (Claude, GPT, or Gemini) against test data you supply.{' '}
+            <span className="text-[color:var(--color-ink)]">Never enter real member data here</span> — these
+            requests leave our servers.
+          </p>
+          <p className="mt-3 text-sm leading-relaxed text-[color:var(--color-slate)]">
+            Pick a starter from the Library to see how it works.
+          </p>
+          <button type="button" onClick={props.onBrowse} className="mt-6 bg-[color:var(--color-terra)] px-5 py-3 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-linen)]">Browse Library</button>
+        </div>
       </section>
     );
   }
