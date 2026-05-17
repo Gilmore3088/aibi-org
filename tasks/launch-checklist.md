@@ -99,7 +99,7 @@ post-conference launch email going out. Each item is sized to take
 - [ ] 72. Test: rapid magic-link requests are rate-limited
 - [ ] 73. Test: failed login does not lock account permanently after threshold
 - [ ] 74. Test: `/api/auth/me` returns current user when authenticated
-- [ ] 75. Test: `/api/auth/me` returns 401 when not authenticated
+- [ ] 75. Test: `/api/auth/me` returns 200 with `{user: null}` when not authenticated (intentional — clients treat null as "not logged in or service unavailable"; see comment in `src/app/api/auth/me/route.ts`)
 - [ ] 76. Test: signup creates a row in `auth.users` AND `user_profiles`
 - [ ] 77. Test: signup with marketingOptIn=true subscribes to MailerLite Newsletter group
 - [ ] 78. Test: signup with marketingOptIn=false does NOT subscribe
