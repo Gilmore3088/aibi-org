@@ -1,3 +1,9 @@
+---
+status: active
+created: 2026-05-16
+owner-tasks: tasks/research-page-design-brief.md
+---
+
 # Research Page Design Brief
 
 ## Rebuild `/research` as The AI Banking Brief credibility and lead engine

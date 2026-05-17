@@ -1,3 +1,10 @@
+---
+status: active
+created: 2026-05-16
+owner-tasks: tasks/launch-checklist.md
+canonical: true
+---
+
 # AiBI Launch Spec — v2 (May 2026)
 
 **Status:** Active. Single source of truth for May launch work.

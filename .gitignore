@@ -55,3 +55,15 @@ docs/superpowers/design-system/ui-review.html
 /playwright-report/
 /test-results/
 /.playwright/
+
+# Private input stash — your notes, idea seeds, and raw research dumps
+# (kept local; CHRONOLOGY/MASTER track the public-facing planning work)
+# The folder-rule READMEs are tracked so future devs see the rules.
+/Plans/_ideas/*
+!/Plans/_ideas/README.md
+/Plans/_assets/*
+!/Plans/_assets/README.md
+/Plans/aibi-docs/
+/Plans/untitled folder/
+/Plans/standards-aibi.zip
+

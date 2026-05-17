@@ -178,7 +178,7 @@ export async function POST(request: Request) {
   // 7. Track in-memory message count per moduleId. This is per-instance
   // only (serverless cold starts wipe it) but combined with the auth
   // gate above it's enough to deter casual abuse. Replace with Supabase
-  // or Redis when Upstash is wired (see tasks/api-auth-audit-2026-05-11.md).
+  // or Redis when Upstash is wired (see docs/reviews/api-auth-audit-2026-05-11.md).
   const currentCount = messageCounts.get(moduleId as string) ?? 0;
   messageCounts.set(moduleId as string, currentCount + 1);
 

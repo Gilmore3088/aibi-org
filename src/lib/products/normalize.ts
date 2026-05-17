@@ -7,7 +7,7 @@
 // at any future date with metadata.product='aibi-p'; the app must normalize
 // them to 'foundation' so downstream code only sees the canonical value.
 //
-// Plan: Plans/refactor-aibi-p-to-foundation-migration.md (Phase 3 + Phase 6)
+// Plan: Plans/_archive/refactor-aibi-p-to-foundation-migration.md (Phase 3 + Phase 6)
 // Migration: supabase/migrations/00028_add_foundation_product_value.sql
 //
 // Companion DB-side: 'aibi-p' stays in the entitlements CHECK constraint and

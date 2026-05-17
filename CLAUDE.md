@@ -5,20 +5,41 @@
 
 **Read [`Plans/aibi-launch-spec-v2.md`](./Plans/aibi-launch-spec-v2.md) before any non-trivial work.** It is the active May 2026 launch spec. If a request conflicts with it, flag it before coding.
 
-The HTML files in `Plans/` are **archive only** — they predate the issue #88 product-ladder cleanup and contain stale assumptions (8-question free assessment, 8–32 scoring, `/foundations` route, AiBI-P / AiBI-Practitioner naming, four-track Foundation family). See [`Plans/README.md`](./Plans/README.md) for the full mapping.
+### Project organization (folder roles)
 
-| File | Status |
-|------|--------|
-| **`Plans/aibi-launch-spec-v2.md`** | **Active.** Product ladder, naming, routes, entitlements, pricing, assessment logic, checkout/webhook, dashboard states, launch QA checklist, deferred items |
-| `DECISIONS.md` | Companion to v2 — chronological override log explaining why decisions changed |
-| `Plans/README.md` | Status index for everything in `Plans/` — read this when in doubt |
-| `Plans/aibi-prd.html` | _Archive._ Initial PRD — superseded by v2 §1, §6, §9 |
-| `Plans/aibi-foundation-v3.html` | _Archive._ Brand identity — superseded by v2 §2 |
-| `Plans/aibi-site-v3.html` | _Archive._ Design system + page specs — design now Ledger (see `docs/brand-refresh-2026-05-09/`) |
-| `Plans/aibi-developer-spec.html` | _Archive._ Architecture — superseded by v2 §4, §7 |
-| `Plans/aibi-designer-brief.html` | _Archive._ Visual identity — superseded by Ledger refresh below |
-| `Plans/aibi-consultant-playbook.html` | _Archive._ Advisory engagements deferred post-launch — see v2 §10 |
-| `Plans/foundation-v2/` | _Archive — REVERSED 2026-05-11._ Four-track Foundation family scrapped; AiBI-Foundation is one course. The Personal Prompt Library 18-field schema is the one piece still in force. |
+The repo separates **plans**, **tasks**, **handoffs**, and **reference docs** into four folders, each with its own README that defines the local rules. Read the folder README before adding files to that folder:
+
+| Folder | Role | Rules |
+|--------|------|-------|
+| [`Plans/`](./Plans/README.md) | One markdown plan per initiative (WHAT + WHY). Frontmatter required. | [`Plans/README.md`](./Plans/README.md) |
+| [`tasks/`](./tasks/README.md) | One task list per active plan (checkboxes). `MASTER.md` is the universal index. | [`tasks/README.md`](./tasks/README.md) |
+| [`docs/`](./docs/README.md) | Runbooks, references, reviews. Not plans. | [`docs/README.md`](./docs/README.md) |
+| [`docs/handoffs/`](./docs/handoffs/README.md) | Dated session handoffs and status snapshots. Immutable once written. | [`docs/handoffs/README.md`](./docs/handoffs/README.md) |
+
+**Index files:**
+- [`CHRONOLOGY.md`](./CHRONOLOGY.md) — every plan/review/handoff in chronological order with status
+- [`tasks/MASTER.md`](./tasks/MASTER.md) — the universal "what's outstanding right now?" registry
+- [`DECISIONS.md`](./DECISIONS.md) — chronological override log explaining direction changes
+
+**Subfolders (each has its own README):**
+- `Plans/_archive/` — superseded or shipped plans (incl. the old HTML specs)
+- `Plans/_assets/` — PDFs, docx, images referenced by plans
+- `Plans/_ideas/` — stash for future ideas (gitignored, local-only)
+- `docs/_archive/` — stale references and pre-Ledger audits
+- `docs/reviews/` — code/security/UI reviews with open findings
+- `tasks/_done/` — completed task files (kept for history)
+
+### Workflow when you create something new
+
+```
+New plan        → Plans/<slug>.md  (frontmatter: status, created, owner-tasks)
+                → tasks/<slug>.md  (the checklist)
+                → append row to tasks/MASTER.md + CHRONOLOGY.md
+
+New handoff    → docs/handoffs/<type>-YYYY-MM-DD[-context].md
+New review     → docs/reviews/<scope>-audit-YYYY-MM-DD.md
+New idea seed  → Plans/_ideas/<slug>.md  (low-ceremony, gitignored)
+```
 
 **Assessment content lives in `content/assessments/<version>/`** — each version is a folder (questions, scoring, copy) so content can iterate without touching component code. Current version: **`v2`** (48-question pool, eight readiness dimensions, 12–48 scoring range for the free rotation and 48–192 raw for the In-Depth full 48). See spec v2 §6.
 

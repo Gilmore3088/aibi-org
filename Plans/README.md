@@ -1,47 +1,64 @@
-# `Plans/` — Status Index
+# `Plans/` — Folder Rules
 
-This directory holds the project's planning artifacts. **Most are now
-archival.** Read this file before treating anything in `Plans/` as
-authoritative.
+## Purpose
 
-## Authoritative for current launch
+This folder holds **plans only** — one markdown file per initiative,
+describing the WHAT and the WHY. A plan is a strategic document, not
+a checklist. Detailed task tracking lives in `tasks/<same-slug>.md`.
 
-| File | What it covers |
-|------|----------------|
-| **[`aibi-launch-spec-v2.md`](./aibi-launch-spec-v2.md)** | **Active May 2026 launch spec.** Product ladder, naming, routes, entitlements, pricing, assessment logic, checkout/webhook, dashboard states, QA checklist, deferred items. When code disagrees with anything here, file an issue. |
+## What belongs here
 
-Companion (lives in repo root):
-- [`../DECISIONS.md`](../DECISIONS.md) — chronological override log
-  explaining why decisions changed.
-- [`../CLAUDE.md`](../CLAUDE.md) — operator + agent rules (env vars,
-  branch protocol, deploy commands).
-- [`../tasks/aibi-p-to-foundation-deploy-checklist.md`](../tasks/aibi-p-to-foundation-deploy-checklist.md)
-  — operator dashboard checklist for the AiBI-P → AiBI-Foundation
-  rename + the post-#88 product-ladder cleanup.
+- Active plan markdown files (the strategic doc for an initiative)
+- `README.md` (this file) — the folder rules
+- `_archive/` — superseded, completed, and historical specs (incl. old HTML)
+- `_assets/` — PDFs, docx, images, screenshots referenced by plans
 
-## Archive — historical context only
+## What does NOT belong here
 
-The following documents predate `aibi-launch-spec-v2.md`. They contain
-stale assumptions (8-question free assessment, 8–32 scoring range,
-`/foundations` route, `$97` Foundations product, Kajabi LMS, AiBI-P /
-AiBI-Practitioner / "AiBI Foundations" plural product names, four-track
-Foundation family) and **should not steer development.** Kept for
-historical reference of the project's evolution.
+| Wrong location | Right location |
+|----------------|----------------|
+| Task checklists | `tasks/<slug>.md` |
+| Session handoffs / status snapshots | `docs/handoffs/` |
+| Code reviews, security audits | `docs/reviews/` |
+| Runbooks, operational reference | `docs/` |
+| Binary assets dropped in via Finder | `Plans/_assets/` |
 
-| File | Original purpose | Superseding section in v2 |
-|------|------------------|---------------------------|
-| `aibi-prd.html` | Initial product requirements | §1 (product ladder), §6 (assessment), §9 (launch QA) |
-| `aibi-foundation-v3.html` | Brand identity + GTM | §2 (naming) |
-| `aibi-site-v3.html` | Design system + page specs | §3 (routes) — design system now Ledger (see `docs/brand-refresh-2026-05-09/`) |
-| `aibi-developer-spec.html` | Architecture + stack | §4 (entitlements), §7 (checkout/webhook) |
-| `aibi-designer-brief.html` | Visual identity | superseded by Ledger refresh; see CLAUDE.md "Design Context" |
-| `aibi-consultant-playbook.html` | Executive Briefing script | §10 (advisory deferred post-launch) |
-| `aibi-banking-playground.html` | Sandbox concept | not in current launch scope |
-| `foundation-v2/` | Four-track Foundation family bundle | **reversed 2026-05-11**; AiBI-Foundation is one course. See `DECISIONS.md`. The Personal Prompt Library 18-field schema in that bundle is the one piece still in force. |
+## Naming
 
-## Adding new planning docs
+- Active plans: `<slug>.md` (lowercase kebab-case)
+- One plan file per initiative — do not split across multiple files
+- Add YAML frontmatter to every plan:
 
-Place new active specs alongside `aibi-launch-spec-v2.md` as Markdown.
-If a decision supersedes part of v2, document the override in
-`DECISIONS.md` first, then update v2 to reflect the new state. Do not
-keep stale specs in the "Authoritative" table.
+```yaml
+---
+status: active | shipped | superseded | archived
+created: YYYY-MM-DD
+owner-tasks: tasks/<slug>.md   # link to the task list, if one exists
+superseded-by: <filename>       # only if status: superseded
+---
+```
+
+## Lifecycle
+
+1. **Create:** write `Plans/<slug>.md` with frontmatter
+2. **Activate:** create `tasks/<slug>.md` with the checklist; append a
+   row to [`tasks/MASTER.md`](../tasks/MASTER.md); append a row to
+   [`../CHRONOLOGY.md`](../CHRONOLOGY.md)
+3. **Ship:** flip `status: shipped`; move plan to `_archive/`; move
+   task file to `tasks/_done/`; update MASTER + CHRONOLOGY
+4. **Supersede:** flip `status: superseded`; set `superseded-by:`;
+   move to `_archive/`; update CHRONOLOGY
+
+## Canonical plan
+
+**[`aibi-launch-spec-v2.md`](./aibi-launch-spec-v2.md)** — the May 2026
+launch spec. Single source of truth for product ladder, naming, routes,
+entitlements, pricing. When code disagrees with this doc, file an issue
+rather than coding around it.
+
+## Pointers
+
+- [`CHRONOLOGY.md`](../CHRONOLOGY.md) — full timeline of every plan
+- [`DECISIONS.md`](../DECISIONS.md) — chronological override log
+- [`_archive/`](./_archive/) — superseded specs (read its README first)
+- [`_assets/`](./_assets/) — binary attachments referenced by plans

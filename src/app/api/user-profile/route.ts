@@ -9,7 +9,7 @@
 //     lookup so the "email-gate visitor returns on a new device"
 //     flow keeps working. This path is rate-limited per IP and
 //     should be replaced with an emailed bearer token once Upstash
-//     is wired (tracked in tasks/api-auth-audit-2026-05-11.md).
+//     is wired (tracked in docs/reviews/api-auth-audit-2026-05-11.md).
 //
 // A valid-format email that has no matching profile returns 404.
 

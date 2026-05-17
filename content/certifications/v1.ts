@@ -1,5 +1,5 @@
 // Certifications — shared between /certifications and homepage.
-// Source: Plans/aibi-foundation-v3.html
+// Source: Plans/_archive/aibi-foundation-v3.html
 
 export interface Certification {
   readonly id: 'aibi-p' | 'aibi-s' | 'aibi-l';
