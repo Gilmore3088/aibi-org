@@ -15,7 +15,7 @@ const STAT_CARDS = [
   },
   {
     figure: '62%',
-    label: 'open to AI-powered fee and spending alerts',
+    label: 'open to AI-driven fee and spending alerts',
     source: '2025 consumer survey (via Apiture)',
   },
   {
@@ -63,7 +63,7 @@ export default function MembersWillSwitchArticle() {
           <p>
             The corollary: <strong>76%</strong> would switch for a better
             digital experience overall (Motley Fool, via Apiture), and
-            <strong> 62%</strong> are actively open to AI-powered fee and
+            <strong> 62%</strong> are actively open to AI-driven fee and
             spending alerts. The story the data tells is that members do not
             need to be sold on AI. They are already looking for it. The only
             question is whether they find it at your institution or the one

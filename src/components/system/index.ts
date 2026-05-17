@@ -34,6 +34,9 @@ export type { EditorialQuoteProps } from "./EditorialQuote";
 export { ScoreRing } from "./ScoreRing";
 export type { ScoreRingProps } from "./ScoreRing";
 
+export { ProductMark } from "./ProductMark";
+export type { ProductMarkKind } from "./ProductMark";
+
 export { EssayMeta } from "./EssayMeta";
 export type { EssayMetaProps } from "./EssayMeta";
 
