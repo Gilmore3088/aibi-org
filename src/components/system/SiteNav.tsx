@@ -1,13 +1,13 @@
 /**
  * <SiteNav> — top-of-page brand chrome.
  *
- * Replaces src/components/Header.tsx. Composes:
- *   - AibiSeal + serif-SC wordmark on the left
+ * Composes:
+ *   - Two-line Geist 700 uppercase wordmark on the left (no seal — retired 2026-05-09)
  *   - Editorial nav links in the center
  *   - Auth chrome on the right
- *   - Persistent terra "Take Assessment" CTA, visible from md:
+ *   - Persistent gold "Take Assessment" CTA, visible from md:
  *
- * Active route is announced visually with a 1px terra underline. The Tailwind
+ * Active route is announced visually with a 1px ink underline. The Tailwind
  * `aria-[current=page]:` selector picks up the `aria-current` attribute on the
  * active link.
  *

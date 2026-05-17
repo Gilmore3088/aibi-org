@@ -425,3 +425,14 @@ volume-pricing logic, and ~5,500 lines of new platform code (8 activity
 engines). None of that exists. The single-course shape matches both the
 current code reality and the operator's mental model.
 
+
+**2026-05-17 — `.impeccable.md` deleted as stale brand bible.** The pre-Ledger
+brand bible at repo root (`.impeccable.md`) directly contradicted CLAUDE.md
+"Design Context" on every axis: terra/sage/cobalt palette, Cormorant +
+DM Sans typography, three-pillar discipline, circular wax-stamp seal —
+all retired in the 2026-05-09 Ledger refresh. Hidden filename starting
+with `.` made it easy to miss. Resolved per issue #112 by deleting outright;
+content is fully superseded by CLAUDE.md "Design Context" and
+`docs/brand-refresh-2026-05-09/project/Design System.html`. Companion
+cleanup retired `src/components/AibiSeal.tsx` and the orphaned
+`src/components/Header.tsx` (SiteNav replaced it earlier).

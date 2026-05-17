@@ -54,7 +54,7 @@ function PromptCardsPdf() {
       React.createElement(
         Text,
         { style: styles.body },
-        'Continue with AiBI Foundations and the paid Toolbox to build, test, save, and export durable banking AI skills.',
+        'Continue with AiBI-Foundation and the paid Toolbox to build, test, save, and export durable banking AI skills.',
       ),
     ),
   );

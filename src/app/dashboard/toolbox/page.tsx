@@ -30,7 +30,7 @@ export default async function ToolboxPage() {
               Banking AI Toolbox
             </h1>
             <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[color:var(--color-slate)]">
-              Build durable AI skills, test them through the AIBI API proxy, save them to your account, and export Markdown files for your own repository.
+              Build durable AI skills, test them through the AiBI API proxy, save them to your account, and export Markdown files for your own repository.
             </p>
           </div>
           <Link
