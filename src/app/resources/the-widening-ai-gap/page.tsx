@@ -174,8 +174,8 @@ export default function WideningGapArticle() {
           </h3>
           <p className="text-[color:var(--color-ink)]/75 max-w-xl mx-auto mb-6 leading-relaxed">
             The free AI readiness assessment scores you on eight dimensions,
-            places you in one of four tiers, and shows you the highest-leverage
-            next move for the next 90 days.
+            places you in one of four tiers, and names the single move that
+            compounds fastest over the next ninety days.
           </p>
           <Link
             href="/assessment/start"

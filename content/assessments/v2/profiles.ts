@@ -71,7 +71,7 @@ export const PROFILE_META: Record<Profile, ProfileMeta> = {
     label: 'Posture without use cases',
     diagnosis:
       'Your guardrails are real. Your team has not yet found the workflows the guardrails are meant to protect. The shape is a posture in search of a program.',
-    priority: 'Identify the three highest-leverage workflows per department, then run them under the posture you already have.',
+    priority: 'Identify the three highest-impact workflows per department, then run them under the posture you already have.',
     foundationEmphasis:
       'Lead with Role-Based Use Cases and AI for Your Workday. The safety system is built; the program needs use cases to justify it.',
   },

@@ -4,6 +4,8 @@ import {
   Section,
   SectionHeader,
   Cta,
+  ProductMark,
+  type ProductMarkKind,
 } from "@/components/system";
 import { CTAS } from "@content/copy";
 
@@ -41,11 +43,12 @@ export default function ForInstitutionsPage() {
           title="Three ways to build."
         />
         <div className="grid md:grid-cols-3 gap-px bg-hairline border-y border-strong mt-s6">
-          {[
+          {([
             {
               scale: "Free · diagnostic",
               name: "Readiness Assessment",
               tagline: "Twelve questions, three minutes — see where you stand.",
+              mark: "assessment-free",
               included: [
                 "Your readiness score and tier",
                 "The dimension dragging you down",
@@ -57,6 +60,7 @@ export default function ForInstitutionsPage() {
               scale: "Per-banker",
               name: "Courses",
               tagline: "AiBI-Foundation. Self-paced, scored on reviewed work.",
+              mark: "course-foundation",
               included: [
                 "Twelve self-paced modules",
                 "Three reviewed AI artifacts per practitioner",
@@ -68,6 +72,7 @@ export default function ForInstitutionsPage() {
               scale: "Institution-wide",
               name: "Organizational Rollout",
               tagline: "A coached cohort, an aggregate dashboard, a defensible posture.",
+              mark: "institution-cohort",
               included: [
                 "10-seat coached cohort over eight weeks",
                 "Institutional readiness baseline + post-engagement diagnostic",
@@ -78,11 +83,12 @@ export default function ForInstitutionsPage() {
                 label: "Request a pilot",
               },
             },
-          ].map((tier) => (
+          ] as const satisfies readonly { readonly mark: ProductMarkKind; readonly scale: string; readonly name: string; readonly tagline: string; readonly included: readonly string[]; readonly cta: { readonly href: string; readonly label: string } }[]).map((tier) => (
             <article
               key={tier.name}
               className="bg-linen px-s6 py-s8 flex flex-col"
             >
+              <ProductMark kind={tier.mark} size={48} className="mb-s4" />
               <p className="font-mono text-label-sm uppercase tracking-widest text-terra mb-s3">
                 {tier.scale}
               </p>

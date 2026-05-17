@@ -7,6 +7,8 @@ import {
   Cta,
   Marginalia,
   SkillGrid,
+  ProductMark,
+  type ProductMarkKind,
 } from "@/components/system";
 import { InteractiveSkillsPreview } from "@/components/sections/InteractiveSkillsPreview";
 import { InquiryForm } from "@/app/certifications/_components/InquiryForm";
@@ -59,6 +61,7 @@ export default async function EducationPage() {
     readonly facts: readonly { readonly label: string; readonly value: string }[];
     readonly cta: string;
     readonly href: string;
+    readonly mark: ProductMarkKind;
   }
 
   const assessments: readonly AssessmentTile[] = [
@@ -66,6 +69,7 @@ export default async function EducationPage() {
       tag: "Free",
       tagTone: "free",
       title: "Free AI Readiness Assessment",
+      mark: "assessment-free",
       subtitle:
         "A quick diagnostic for your institution. Score, tier, and a tailored starter artifact you can take to your team this week.",
       facts: [
@@ -81,6 +85,7 @@ export default async function EducationPage() {
       tag: "$99 · $79 at 10+ by request",
       tagTone: "paid",
       title: "In-Depth Assessment",
+      mark: "assessment-indepth",
       subtitle:
         "Forty-eight questions across eight readiness dimensions. Individual report, plus an anonymized aggregate dashboard for institution leaders.",
       facts: [
@@ -117,6 +122,7 @@ export default async function EducationPage() {
           <div className="grid md:grid-cols-2 gap-px bg-hairline border-y border-strong">
             {assessments.map((a) => (
               <article key={a.title} className="bg-linen p-s8 lg:p-s10 flex flex-col">
+                <ProductMark kind={a.mark} size={48} className="mb-s4" />
                 <div className="flex items-center mb-s5">
                   <span
                     className={
