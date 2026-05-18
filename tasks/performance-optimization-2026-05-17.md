@@ -98,14 +98,19 @@ When all boxes check, move this file to `tasks/_done/`.
 
 Each item is independently shippable. Estimates are conservative.
 
-### E.1 — Investigate "Failed to find font override values for font `Newsreader`" build warning (~CLS impact)
-- [ ] E1.1. Reproduce: clean build, capture stderr alongside stdout (`npm run build 2>&1 > log` then check for the warning). The warning appears four times — once per route bundle that uses Newsreader.
-- [ ] E1.2. Root-cause: when Next can't compute a size-adjusted fallback metric for a custom font, it skips the fallback `font-family` override. Result: the unstyled fallback (Iowan / Georgia) doesn't get sized to match Newsreader, so when Newsreader loads there's a layout shift. Confirm by checking if `--font-newsreader-hero-fallback` and `--font-newsreader-heavy-fallback` CSS rules are missing in the generated stylesheet.
-- [ ] E1.3. Fix candidates: (a) ensure `adjustFontFallback` defaults to `true` (it should — but the warning suggests Next failed to find the source font's ascent/descent metrics for the synthetic fallback). (b) pin the `next` minor version since this changed in 14.2.x. (c) supply explicit `adjustFontFallback: 'Times New Roman'` to nudge Next toward a known metric source.
-- [ ] E1.4. Verify post-fix: CLS score on `/` stays at 0 (Lighthouse). Run Playwright with `chromium --enable-features=LayoutInstabilityAPI` and trace the LayoutShift events on hero render.
+### E.1 — Investigate "Failed to find font override values for font `Newsreader`" build warning (~CLS impact) (PARTIALLY INVESTIGATED 2026-05-17)
+- [x] E1.1. **DONE.** Reproduced cleanly. Warning fires four times per build (twice for Hero, twice for Heavy — `next build` runs the font loader once per server + once per client bundle).
+- [x] E1.2. **DONE.** Root cause confirmed by inspecting the generated CSS: `__Newsreader_<hash>` has NO companion `_Fallback` family. By contrast, `__JetBrains_Mono_Fallback_<hash>` and `__GeistSans_Fallback_<hash>` both exist with `ascent-override: 75.79%; descent-override: 22.29%; size-adjust: 134.59%` etc. So Next IS computing synthetic fallbacks for the fonts it can, just not Newsreader. Likely cause: Newsreader's metrics aren't in `@next/font`'s bundled font-metric database (it's a 2022 Google Fonts addition).
+- [x] E1.3. **DONE.** Attempted `adjustFontFallback: 'Times New Roman'` — TypeScript error. That option is `boolean` only for `next/font/google` (the string variant is `next/font/local` exclusive). Reverted. Documented the known issue inline in `src/app/layout.tsx`.
+- [ ] E1.4. **Open — fix paths:**
+  - (a) Self-host Newsreader via `next/font/local` and pass `adjustFontFallback: 'Times New Roman'` + explicit `ascent-override` / `descent-override` / `size-adjust` derived from Newsreader's font tables (use `fontkit` or `opentype.js` at script time).
+  - (b) Add `fontaine` (https://github.com/unjs/fontaine) as a Next plugin — it computes the synthetic fallback metrics at build time without needing self-hosting.
+  - (c) Upgrade `next` past whatever version landed the Newsreader metric data (check the @next/font repo for newer entries).
+- [ ] E1.5. Verify post-fix: CLS score on `/` stays at 0 (Lighthouse). Run Playwright with `chromium --enable-features=LayoutInstabilityAPI` and trace the LayoutShift events on hero render. Acceptance: CLS < 0.05 with no Newsreader fallback hop visible in the trace.
 
-### E.2 — Lazy-load SignupModal + PdfDownloadButton on /assessment
-- [ ] E2.1. These two components only render late in the assessment flow (after results, after email capture). Wrap them in `next/dynamic({ ssr: false })` from the results-view file. Expected savings: another ~5-10 KB First Load JS off `/assessment` since the React import graph stops eagerly bundling them.
+### E.2 — Lazy-load late-flow components on /assessment (SHIPPED 2026-05-17 `4f61dad`)
+- [x] E2.1. **SHIPPED.** Lazy-loaded `ResultsViewV2` (the wrapper for SignupModal + PdfDownloadButton + tier-rendering) via `next/dynamic({ ssr: false })` in `src/app/assessment/page.tsx`. Measured: /assessment First Load JS 127 → 106 KB (-21 KB, -16%). Combined with Wave A+, /assessment total drop is 190 → 106 KB (-44%).
+- [ ] E2.2. Optional follow-up: lazy-load PdfDownloadButton + SignupModal *inside* ResultsViewV2 too — that would help `/results/[id]` (currently 111 KB, server-renders ResultsViewV2 so the top-level lazy-load doesn't apply there). Estimated additional savings: ~5-9 KB. Trade-off is a first-click latency on Download PDF + Create Account.
 
 ### E.3 — Audit dashboard for client-Supabase footguns
 - [ ] E3.1. `/dashboard` is 208 KB First Load JS. The Supabase chunk does NOT load anymore (Wave A+ removed eager imports), so the 208 KB is something else. Run `cat .next/app-build-manifest.json | jq '.pages["/dashboard/page"]'` and identify the biggest unique chunk(s).
@@ -116,9 +121,9 @@ Each item is independently shippable. Estimates are conservative.
 - [ ] E4.1. This route ships 41 KB of page-specific JS plus the framework. Profile it: which components/imports are pulling weight? CourseShell, the post-assessment widget, the practice rep player?
 - [ ] E4.2. If `marked` is used here too, same code-split decision applies.
 
-### E.5 — Optimize HeroHeadlineSvg
-- [ ] E5.1. The inline SVG is 21.7 KB (one giant `path d=` of 20.6 KB). Run SVGO (`npx svgo src/components/_generated/hero-headline.svg --multipass`) and check the diff. Many path-coordinate decimals can usually be reduced from 4 to 2 digits with no visual loss.
-- [ ] E5.2. Decide: re-generate via `node scripts/gen-hero-svg.mjs` with an SVGO post-process step baked in, OR commit the SVGO'd output directly and add a note to the generator.
+### E.5 — Optimize HeroHeadlineSvg (SHIPPED 2026-05-17 `fe3bd48`)
+- [x] E5.1. **SHIPPED.** Ran `npx svgo --multipass --precision=3` over the Satori output. 20.6 KB → 10.4 KB (-49%). SVGO dropped the `<mask>` + `<g>` scaffolding Satori emits for layout grouping; consolidated each glyph cluster into a single `<path>`. Visually identical.
+- [x] E5.2. **SHIPPED.** Baked the SVGO pass into `scripts/gen-hero-svg.mjs` via `execSync('npx --yes svgo ...')`. Future regenerations stay optimized. Wrapped in try/catch so an offline regenerate still works (with a heavier SVG).
 
 ### E.6 — public/fonts directory cleanup (deploy-size, not runtime)
 - [ ] E6.1. `public/fonts/` is 2.4 MB of Cormorant + DM Sans TTF files used by `react-pdf` for PDF certificates (server-side only). Move to a non-public path (e.g. `assets/pdf-fonts/` at the repo root, or `src/lib/pdf/fonts/`) and update the route handler's `path.join` to read from there. Cuts the deployed bundle size by 2 MB, doesn't change runtime.

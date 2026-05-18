@@ -25,8 +25,9 @@ brand stack.
 | CLS | 0 | 0 | TBD |
 | Total page weight | 599 KiB | 508 KiB (-91) | TBD |
 | Homepage First Load JS | 165 KB | 165 KB | **101 KB (-64 KB, -39%)** |
-| /assessment First Load JS | 190 KB | 190 KB | **127 KB (-63 KB, -33%)** |
+| /assessment First Load JS | 190 KB | 190 KB | **106 KB (-84 KB, -44%)** ← lazy-load ResultsViewV2 shaved another 21 KB |
 | /results/[id] First Load JS | 174 KB | 174 KB | **111 KB (-63 KB, -36%)** |
+| Hero SVG inline HTML | 20.6 KB | 20.6 KB | **10.4 KB (-49%)** via SVGO |
 
 Real-user LCP is already great. Lighthouse synthetic 4G shows 3.3s
 because **the page is network-bound at simulated bandwidth** — 508 KB
@@ -61,6 +62,8 @@ Five workstreams, ranked by impact ÷ risk:
 | E | Reverted lede SVG + combined hero SVG (regressed FCP, no LCP gain) | Net negative experiments removed | `b6ca19d`, `8f2df9c` |
 | F | **Wave A** — ROIDossier code-split + Newsreader split into hero (400 + italic, preload) and heavy (500/600/700, no preload, no italic) | -3 italic font files; ROI calculator JS deferred below-the-fold | `13e7f65` |
 | G | **Wave A+** — Drop Supabase JS SDK from marketing routes. HomeContextStrip → async server component. AuthDropdown signOut → server action. EmailGate / PdfDownloadButton → fetch `/api/auth/me`. SignupModal magic link → server action. | **-64 KB First Load JS across every marketing route** (home, assessment, results, about, security, education, …) | `3f92c4f` |
+| H | **SVGO the hero SVG** — Satori's mask/<g> scaffolding stripped, precision-3 path coordinates | -10 KB inline HTML on every homepage render (20.6 → 10.4 KB SVG) | `fe3bd48` |
+| I | **Lazy-load ResultsViewV2 on /assessment** — `next/dynamic({ ssr: false })`; renders only after question phase + email capture | **-21 KB First Load JS on /assessment** (127 → 106) | `4f61dad` |
 
 Five Lighthouse audit reports document each attempt — see
 [`docs/reviews/performance-overhaul-2026-05-17.md`](../docs/reviews/performance-overhaul-2026-05-17.md)
