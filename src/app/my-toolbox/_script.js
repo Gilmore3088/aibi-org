@@ -1343,3 +1343,319 @@ ASKS
     }).join('');
     $('dr-sharetext').innerHTML = `<b>${t.share.users} colleagues</b> at your bank use this. <b>${t.share.forks} forks</b>.`;
   })();
+
+  // ============== REAL WIRING — persistence, exports, actions ==============
+  // /my-toolbox is a design preview without a backend, so "persistence"
+  // means localStorage. The state survives reloads but is per-browser.
+  // Real toolbox persistence lives at /dashboard/toolbox (Supabase-backed).
+
+  const LS_PIN   = 'aibi.my-toolbox.pinned';
+  const LS_ROLE  = 'aibi.my-toolbox.role';
+  const LS_KIT   = 'aibi.my-toolbox.activeKit';
+  const LS_ADDED = 'aibi.my-toolbox.added';
+
+  const safeRead = (key, fallback) => {
+    try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; }
+    catch { return fallback; }
+  };
+  const safeWrite = (key, val) => {
+    try { localStorage.setItem(key, JSON.stringify(val)); } catch {}
+  };
+
+  // ---------- Pin persistence ----------
+  const pinnedSet = new Set(safeRead(LS_PIN, []));
+  function syncPinStars(){
+    document.querySelectorAll('.tile[data-item]').forEach(tile => {
+      const key = tile.dataset.item;
+      let star = tile.querySelector('.pin-mark');
+      const want = pinnedSet.has(key) || tile.classList.contains('pinned');
+      if (want && !star){
+        star = document.createElement('span');
+        star.className = 'pin-mark';
+        star.textContent = '★';
+        tile.appendChild(star);
+      } else if (!want && star){
+        star.remove();
+      }
+      tile.classList.toggle('pinned', want);
+    });
+  }
+  syncPinStars();
+
+  // ---------- Role + kit persistence ----------
+  const savedRole = safeRead(LS_ROLE, null);
+  const savedKit  = safeRead(LS_KIT,  null);
+  if (savedRole){
+    const roleBtn = document.querySelector('.role');
+    if (roleBtn) roleBtn.innerHTML = '<span class="dot"></span>' + savedRole + ' ▾';
+  }
+  if (savedKit){
+    document.querySelectorAll('.kit').forEach(k => k.classList.remove('active'));
+    document.querySelectorAll('.kit .active-pill').forEach(p => p.remove());
+    document.querySelectorAll('.kit .cta').forEach(c => { c.textContent = 'Adopt kit →'; c.style.color = ''; });
+    const target = savedKit === 'bsa'
+      ? document.querySelector('.kit')
+      : document.querySelector('.kit[data-kit="' + savedKit + '"]');
+    if (target){
+      target.classList.add('active');
+      const cap = target.querySelector('.kicap');
+      if (cap && !cap.querySelector('.active-pill')){
+        const pill = document.createElement('span');
+        pill.className = 'active-pill';
+        pill.textContent = '★ Active';
+        cap.appendChild(pill);
+      }
+      const cta = target.querySelector('.cta');
+      if (cta){ cta.textContent = 'In your toolbox ✓'; cta.style.color = 'var(--green)'; }
+    }
+  }
+  const roleBtnRef = document.querySelector('.role');
+  if (roleBtnRef){
+    const KIT_MAP = { 'BSA officer':'bsa', 'Lender':'lender', 'Branch manager':'bm', 'Compliance':'compl' };
+    new MutationObserver(() => {
+      const txt = roleBtnRef.textContent.replace('▾','').trim();
+      if (txt){
+        safeWrite(LS_ROLE, txt);
+        if (KIT_MAP[txt]) safeWrite(LS_KIT, KIT_MAP[txt]);
+      }
+    }).observe(roleBtnRef, { childList:true, subtree:true, characterData:true });
+  }
+
+  // ---------- Shared-with-you tile adoption ----------
+  const addedList = safeRead(LS_ADDED, []);
+  const gridEl = document.querySelector('.grid');
+  function plainName(html){ return html.replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim(); }
+  function renderAddedTile(rec){
+    if (!gridEl) return;
+    const article = document.createElement('article');
+    article.className = 'tile t-' + (rec.type === 'agent' ? 'a' : rec.type === 'skill' ? 's' : rec.type === 'playbook' ? 'pb' : 'p');
+    article.dataset.item = rec.key;
+    article.innerHTML =
+      '<div class="doc">' +
+        '<div style="display:flex;justify-content:space-between;align-items:baseline">' +
+          '<span class="d-cap" style="color:var(--terra)">From ' + rec.byline + '</span>' +
+          '<span class="flag new">added</span>' +
+        '</div>' +
+        '<div class="d-h" style="margin-top:8px">' + rec.title + '</div>' +
+        '<div style="margin-top:auto;font-family:var(--mono);font-size:7.5px;letter-spacing:0.16em;color:var(--muted);font-weight:700;text-transform:uppercase">Read-only · forked into your toolbox</div>' +
+      '</div>' +
+      '<div class="meta">' +
+        '<span class="typetag">' + (rec.type.charAt(0).toUpperCase() + rec.type.slice(1)) + '</span>' +
+        '<h3>' + rec.title + '</h3>' +
+        '<div class="footer">' +
+          '<div class="runs"><span class="b"></span><span class="b"></span><span class="b"></span><span class="b"></span><span class="b"></span><span class="b"></span></div>' +
+          '<div class="keep"><span style="font-family:var(--mono);font-size:10px;color:var(--muted)">just added</span></div>' +
+        '</div>' +
+      '</div>';
+    gridEl.insertBefore(article, gridEl.firstChild);
+  }
+  addedList.forEach(renderAddedTile);
+  const adoptedTitles = new Set(addedList.map(r => r.title));
+  document.querySelectorAll('.swyt').forEach(t => {
+    const title = t.querySelector('h4')?.textContent?.trim() || '';
+    if (adoptedTitles.has(title)){
+      t.style.opacity = '0.4';
+      t.style.pointerEvents = 'none';
+      const accept = t.querySelector('.accept');
+      if (accept){ accept.textContent = '✓ in your toolbox'; }
+    }
+    t.addEventListener('click', () => {
+      const ttl = t.querySelector('h4')?.textContent?.trim() || '';
+      const bylineName = t.querySelector('.row1 b')?.textContent?.trim() || 'colleague';
+      const bylineRole = (t.querySelector('.row1')?.textContent?.split('·')[1] || '').trim() || '';
+      const byline = bylineName + (bylineRole ? ' · ' + bylineRole : '');
+      const typeText = t.querySelector('.row3 span')?.textContent || '';
+      const type = /agent/i.test(typeText) ? 'agent' : /skill/i.test(typeText) ? 'skill' : /playbook/i.test(typeText) ? 'playbook' : 'prompt';
+      if (adoptedTitles.has(ttl)) return;
+      const key = 'added-' + Date.now();
+      const rec = { key, title:ttl, type, byline };
+      addedList.push(rec);
+      safeWrite(LS_ADDED, addedList);
+      adoptedTitles.add(ttl);
+      renderAddedTile(rec);
+      t.style.opacity = '0.4';
+      t.style.pointerEvents = 'none';
+      const accept = t.querySelector('.accept');
+      if (accept){ accept.textContent = '✓ in your toolbox'; }
+      showToast('Added to your toolbox');
+    }, true);
+  });
+
+  // ---------- Real exports ----------
+  function downloadBlob(filename, mime, contents){
+    const blob = new Blob([contents], { type: mime });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 100);
+  }
+  function currentTool(){
+    const cap = document.getElementById('dr-cat')?.textContent || '';
+    for (const [key, t] of Object.entries(TOOLS)){
+      if (t.cat === cap) return [key, t];
+    }
+    return null;
+  }
+  function slug(s){
+    return s.toLowerCase().replace(/<[^>]+>/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,60);
+  }
+  function exportMarkdown(key, t){
+    const md = [
+      '# ' + plainName(t.name),
+      '',
+      '> ' + t.cat + ' · v' + t.ver + ' · edited ' + t.edited,
+      '',
+      '## ' + (t.bodyLabel || 'Body'),
+      '',
+      '```',
+      t.body,
+      '```',
+      '',
+      '## Composes with',
+      '',
+      (t.composes && t.composes.length)
+        ? t.composes.map(c => '- ' + ({p:'prompt',s:'skill',a:'agent',pb:'playbook'}[c.c] || c.c) + ' · ' + c.n).join('\n')
+        : '_Stand-alone — not part of a chain._',
+      '',
+      '## Version history',
+      '',
+      t.history.map(h => '- v' + h.v + ' · ' + h.when + (h.model ? ' · ' + h.model : '') + ' — ' + plainName(h.msg)).join('\n'),
+      '',
+      '---',
+      '_Exported from The AI Banking Institute · My Toolbox._',
+    ].join('\n');
+    downloadBlob(slug(plainName(t.name)) + '.md', 'text/markdown', md);
+  }
+  function exportJSON(key, t){
+    const obj = {
+      key,
+      type:   { p:'prompt', s:'skill', a:'agent', pb:'playbook' }[t.type],
+      name:   plainName(t.name),
+      category: t.cat,
+      version: t.ver,
+      edited: t.edited,
+      runs:   t.runs,
+      keep_rate: t.keep,
+      origin: t.origin,
+      body:   t.body,
+      composes: t.composes,
+      history: t.history,
+      share:  t.share,
+      exported_at: new Date().toISOString(),
+      exported_from: 'The AI Banking Institute · My Toolbox',
+    };
+    downloadBlob(slug(plainName(t.name)) + '.json', 'application/json', JSON.stringify(obj, null, 2));
+  }
+  function exportPrompt(key, t){
+    const text = '# ' + plainName(t.name) + '\n# ' + t.cat + ' · v' + t.ver + '\n\n' + t.body + '\n';
+    downloadBlob(slug(plainName(t.name)) + '.prompt', 'text/plain', text);
+  }
+  function exportPDF(key, t){
+    const html = '<!doctype html><html><head><meta charset="utf-8"><title>' + plainName(t.name) + '</title>' +
+      '<style>body{font-family:Georgia,serif;max-width:680px;margin:48px auto;padding:0 24px;color:#0E1B2D;line-height:1.55}' +
+      'h1{font-weight:500;letter-spacing:-0.02em} pre{background:#F4F1E7;padding:16px 20px;white-space:pre-wrap;font-family:ui-monospace,Menlo,monospace;font-size:12px;line-height:1.6;border-left:3px solid #B5862A}' +
+      '.meta{font-family:ui-monospace,Menlo,monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#5C6B82}</style>' +
+      '</head><body>' +
+      '<div class="meta">' + t.cat + ' · v' + t.ver + ' · ' + t.edited + '</div>' +
+      '<h1>' + plainName(t.name) + '</h1>' +
+      '<h2>' + (t.bodyLabel || 'Body') + '</h2>' +
+      '<pre>' + t.body.replace(/&/g,'&amp;').replace(/</g,'&lt;') + '</pre>' +
+      '<hr><p style="font-size:10px;color:#5C6B82">Exported from The AI Banking Institute · My Toolbox.</p>' +
+      '<script>window.onload=function(){setTimeout(function(){window.print()},300)}<\/script>' +
+      '</body></html>';
+    const w = window.open('', '_blank');
+    if (w){ w.document.write(html); w.document.close(); }
+    else  { showToast('Allow pop-ups to export PDF'); }
+  }
+  document.querySelectorAll('.exp-btn').forEach(b => {
+    b.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const result = currentTool();
+      if (!result){ showToast('Open a tool first'); return; }
+      const [key, t] = result;
+      const fmt = (b.querySelector('b')?.textContent || '').toLowerCase();
+      if (fmt === 'markdown') exportMarkdown(key, t);
+      else if (fmt === 'json') exportJSON(key, t);
+      else if (fmt === '.prompt') exportPrompt(key, t);
+      else if (fmt === 'pdf') exportPDF(key, t);
+      else showToast('Unknown format');
+    }, true);
+  });
+
+  // ---------- Action overlay buttons on tiles ----------
+  document.querySelectorAll('.tile .act').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const tile = btn.closest('.tile');
+      const itemKey = tile?.dataset?.item;
+      const t = itemKey ? TOOLS[itemKey] : null;
+      if (!t) return;
+      const action = (btn.getAttribute('title') || '').toLowerCase();
+      if (action.includes('run')){
+        window.location.href = '/playground?tool=' + encodeURIComponent(itemKey);
+      } else if (action.includes('share')){
+        const link = t.share && t.share.link ? t.share.link : window.location.origin + '/my-toolbox#' + itemKey;
+        try { navigator.clipboard.writeText(link); } catch(_) {}
+        showToast('Share link copied');
+      } else if (action.includes('fork')){
+        const addedRec = { key:'fork-'+itemKey+'-'+Date.now(), title:plainName(t.name), type:({p:'prompt',s:'skill',a:'agent',pb:'playbook'}[t.type]), byline:'You · fork of ' + plainName(t.name) };
+        addedList.push(addedRec);
+        safeWrite(LS_ADDED, addedList);
+        renderAddedTile(addedRec);
+        showToast('Forked to your toolbox');
+      } else if (action.includes('download')){
+        exportMarkdown(itemKey, t);
+      }
+    }, true);
+  });
+
+  // ---------- Drawer star toggle ----------
+  (function addDrawerStar(){
+    const dh = document.querySelector('.drawer .dh');
+    if (!dh || dh.querySelector('.dpin')) return;
+    const btn = document.createElement('button');
+    btn.className = 'dpin';
+    btn.type = 'button';
+    btn.style.cssText = 'background:transparent;border:none;font-size:18px;color:var(--terra);cursor:pointer;line-height:1;margin-right:8px';
+    btn.title = 'Pin to shelf';
+    btn.textContent = '☆';
+    const closeBtn = dh.querySelector('.dc');
+    dh.insertBefore(btn, closeBtn);
+    function refresh(){
+      const result = currentTool();
+      const key = result ? result[0] : null;
+      btn.textContent = (key && pinnedSet.has(key)) ? '★' : '☆';
+    }
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const result = currentTool();
+      if (!result) return;
+      const [key] = result;
+      if (pinnedSet.has(key)){
+        pinnedSet.delete(key);
+        showToast('Unpinned');
+      } else {
+        pinnedSet.add(key);
+        showToast('Pinned to shelf');
+      }
+      safeWrite(LS_PIN, [...pinnedSet]);
+      syncPinStars();
+      refresh();
+    });
+    new MutationObserver(refresh).observe(document.getElementById('drawer'), { attributes:true, attributeFilter:['class'] });
+    refresh();
+  })();
+
+  // ---------- Stats live-update ----------
+  function recomputeStats(){
+    const total = document.querySelectorAll('.shelf .tile, .grid .tile').length;
+    const v = document.querySelector('.stats .stat:first-child .v');
+    if (v) v.textContent = String(total);
+  }
+  recomputeStats();
+  if (gridEl){
+    new MutationObserver(recomputeStats).observe(gridEl, { childList:true });
+  }
