@@ -10,7 +10,9 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import {
   modules,
-  foundationProgramCourseConfig,
+  foundationCourseConfig,
+  FOUNDATION_TOTAL_MINUTES,
+  FOUNDATION_ARTIFACTS,
   V4_FOUNDATION_PROGRAM_MODULE_BY_NUMBER,
 } from '@content/courses/foundation-program';
 import {
@@ -60,11 +62,11 @@ export default async function CourseOverviewPage() {
   const currentModule = enrollment?.current_module ?? 1;
   const completedCount = completedModules.length;
   const totalModules = modules.length;
-  const totalMinutes = foundationProgramCourseConfig.estimatedMinutes;
+  const totalMinutes = FOUNDATION_TOTAL_MINUTES;
   const pct = Math.round((completedCount / totalModules) * 100);
 
   const lmsModules: readonly LMSModule[] = toLMSModules(
-    foundationProgramCourseConfig.modules,
+    foundationCourseConfig.modules,
   );
   const currentMod = lmsModules.find((m) => m.num === currentModule) ?? lmsModules[0];
 
@@ -159,7 +161,7 @@ export default async function CourseOverviewPage() {
               maxWidth: '62ch',
             }}
           >
-            {foundationProgramCourseConfig.promise}
+            {foundationCourseConfig.promise}
           </p>
 
           {fetchFailed && (
@@ -433,7 +435,7 @@ export default async function CourseOverviewPage() {
               Required outputs
             </div>
             <div style={{ display: 'grid', gap: 14 }}>
-              {foundationProgramCourseConfig.artifacts.map((artifact) => (
+              {FOUNDATION_ARTIFACTS.map((artifact) => (
                 <div key={artifact.id}>
                   <div
                     style={{
