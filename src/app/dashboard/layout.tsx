@@ -16,8 +16,16 @@ import { redirect } from 'next/navigation';
 import { cookies, headers } from 'next/headers';
 import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
+import { isPreviewAuthBypassEnabled } from '@/lib/auth/previewBypass';
 
 export default async function DashboardLayout({ children }: { children: ReactNode }) {
+  // Preview/local bypass — skip the gate entirely when PREVIEW_AUTH_BYPASS=true
+  // is set on a non-production environment. Lets us click into /dashboard on
+  // a Vercel preview without provisioning Supabase. See lib/auth/previewBypass.
+  if (isPreviewAuthBypassEnabled()) {
+    return <>{children}</>;
+  }
+
   // Preserve the originally-requested path so the post-login redirect lands
   // the visitor on the page they tried to reach (e.g. /dashboard/assessments)
   // rather than always the top-level /dashboard. Middleware sets x-pathname.

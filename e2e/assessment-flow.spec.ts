@@ -47,6 +47,71 @@ test.describe('free assessment — public flow', () => {
     expect(count).toBeGreaterThan(0);
   });
 
+  test('§4.92 / §4.97 complete all 12 questions → score + tier visible WITHOUT email gate', async ({
+    page,
+  }) => {
+    await page.goto('/assessment');
+    await page.waitForLoadState('networkidle');
+
+    // QUESTIONS_PER_SESSION = 12 per src/app/assessment/_lib/useAssessmentV2.ts.
+    // Each QuestionCard renders a radiogroup of 4 options. The interaction:
+    // click one option, the hook auto-advances to the next question. The
+    // ScoreRing renders once answers.length === 12.
+    //
+    // We pick the FIRST radio option on each question, which yields the
+    // lowest tier ('starting-point'). That's deterministic across runs.
+    for (let i = 0; i < 12; i++) {
+      const radios = page.getByRole('radio');
+      await radios.first().waitFor({ state: 'visible', timeout: 5_000 });
+      await radios.first().click();
+      // Tiny pause so the next radiogroup mounts before we re-query.
+      await page.waitForTimeout(150);
+    }
+
+    // After 12 answers, the score+tier surface should be visible without
+    // any email submission. ScoreRing has aria-label "Your AI readiness
+    // score is N out of M, placing you in the X tier." — easy to assert on.
+    await expect(
+      page.getByLabel(/Your AI readiness score is \d+ out of \d+/i),
+    ).toBeVisible({ timeout: 10_000 });
+  });
+
+  test('§4.98 dimension breakdown is gated behind the email capture', async ({ page }) => {
+    await page.goto('/assessment');
+    await page.waitForLoadState('networkidle');
+
+    // Complete the 12 questions as above.
+    for (let i = 0; i < 12; i++) {
+      const radios = page.getByRole('radio');
+      await radios.first().waitFor({ state: 'visible', timeout: 5_000 });
+      await radios.first().click();
+      await page.waitForTimeout(150);
+    }
+
+    // After scoring, an email capture form is visible (per the 2026-04-27
+    // decision: dimension breakdown is gated until email is captured).
+    await expect(
+      page.getByRole('textbox', { name: /email/i }).first(),
+    ).toBeVisible({ timeout: 10_000 });
+  });
+
+  test('§4.120 progress indicator updates as questions are answered', async ({ page }) => {
+    await page.goto('/assessment');
+    await page.waitForLoadState('networkidle');
+
+    // ProgressBar renders the fraction answered. We can't directly query
+    // its visual fill, but the page text typically includes "Question N
+    // of 12" or a percentage. Verify the question index advances.
+    const initialText = await page.locator('body').innerText();
+    expect(initialText).toMatch(/question\s+1\s+of\s+12|1\s*\/\s*12|question 1/i);
+
+    // Answer Q1; expect text to reflect Q2.
+    await page.getByRole('radio').first().click();
+    await page.waitForTimeout(300);
+    const afterFirstAnswer = await page.locator('body').innerText();
+    expect(afterFirstAnswer).toMatch(/question\s+2\s+of\s+12|2\s*\/\s*12|question 2/i);
+  });
+
   test('§4.97 tagline mentions "Turning Bankers into Builders"', async ({ page }) => {
     // The assessment page often surfaces the brand tagline; if not, the
     // homepage does. Either is acceptable — the tagline must exist

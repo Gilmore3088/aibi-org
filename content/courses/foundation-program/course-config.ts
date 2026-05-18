@@ -73,7 +73,7 @@ export const foundationProgramCourseConfig: CourseConfig = {
   title: 'AiBI-Foundation',
   shortTitle: 'AiBI-Foundation',
   promise:
-    'Help every community banking employee use AI safely, confidently, and practically in daily work.',
+    'In less than two weeks, every community banking employee can write better, summarize faster, think clearer, and avoid risky AI mistakes — safely and confidently, on the model your institution already trusts.',
   audience: 'Community bank and credit union employees',
   estimatedMinutes: modules.reduce((total, mod) => total + mod.estimatedMinutes, 0),
   modules: aibiPReusableModules,

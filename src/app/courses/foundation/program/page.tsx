@@ -34,7 +34,7 @@ export const metadata: Metadata = {
 };
 
 const FOUNDATION_COURSE_JSONLD = courseJsonLd({
-  name: 'AiBI-Foundation — Banking AI for Community Financial Institutions',
+  name: 'AiBI-Foundation — AI Banking for Community Financial Institutions',
   description:
     'AiBI-Foundation teaches every staff member at a community bank or credit union how to use AI tools safely, professionally, and with regulatory confidence. 12 modules covering Awareness, Understanding, Creation, and Application of AI for community banking work.',
   slug: '/courses/foundation/program',
@@ -137,7 +137,7 @@ export default async function CourseOverviewPage() {
               color: 'var(--ledger-ink)',
             }}
           >
-            Banking AI{' '}
+            AI Banking{' '}
             <em
               style={{
                 color: 'var(--ledger-accent)',
@@ -160,19 +160,6 @@ export default async function CourseOverviewPage() {
             }}
           >
             {foundationProgramCourseConfig.promise}
-          </p>
-          <p
-            style={{
-              color: 'var(--ledger-slate)',
-              fontSize: 15,
-              lineHeight: 1.6,
-              maxWidth: '62ch',
-              margin: 0,
-            }}
-          >
-            In less than two weeks, write better, summarize faster, think clearer,
-            and avoid risky AI mistakes — using the model your institution already
-            trusts.
           </p>
 
           {fetchFailed && (
@@ -696,15 +683,6 @@ export default async function CourseOverviewPage() {
             );
           })}
 
-          <p
-            style={{
-              marginTop: 8,
-              fontSize: 12,
-              color: 'var(--ledger-slate)',
-            }}
-          >
-            More credentials launching soon: AiBI-S (Specialist) and AiBI-L (Leader).
-          </p>
         </section>
       </div>
     </CourseShell>

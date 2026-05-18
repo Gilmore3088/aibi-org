@@ -26,7 +26,7 @@
   --rule: rgba(14, 27, 45, 0.10);
   --rule-strong: rgba(14, 27, 45, 0.22);
 
-  --serif: var(--font-newsreader), Georgia, serif;
+  --serif: var(--font-newsreader-hero), var(--font-newsreader-heavy), Georgia, serif;
   --sans: var(--font-geist-sans), -apple-system, system-ui, sans-serif;
   --mono: var(--font-jetbrains-mono), ui-monospace, monospace;
 

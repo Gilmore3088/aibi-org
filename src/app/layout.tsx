@@ -1,10 +1,7 @@
 import type { Metadata } from 'next';
 import { headers } from 'next/headers';
 import {
-  Cormorant_Garamond,
   Cormorant_SC,
-  DM_Sans,
-  DM_Mono,
   Newsreader,
   JetBrains_Mono,
 } from 'next/font/google';
@@ -30,18 +27,18 @@ const CHROMELESS_PATHS: readonly string[] = [
   '/briefing-preview',
   '/lms-preview',
   '/courses/foundation-preview',
-  '/courses/foundation/program', // CourseShell renders its own sidebar + breadcrumb chrome
-  '/auth', // Ledger-redesigned auth surfaces render their own brand lockup
+  // /courses/foundation/program and /auth intentionally NOT chromeless —
+  // both need the global SiteNav. /auth surfaces drop the LedgerSurface
+  // internal lockup via showHeader={false} so there's no duplicate mark.
+  // CourseShell's sidebar + breadcrumb cover the course tree only.
   '/redesign-checklist',
 ];
 
-const cormorant = Cormorant_Garamond({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-cormorant',
-  display: 'swap',
-});
-
+// 2026-05-17: Cormorant Garamond, DM Sans, and DM Mono removed — they
+// were declared here but had zero references anywhere in src/. They were
+// blocking the LCP element (the H1 in Newsreader) by competing for the
+// font network budget. Cormorant SC stays because tokens.css's
+// --font-serif-sc still maps to it for small-caps surfaces.
 const cormorantSC = Cormorant_SC({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
@@ -49,29 +46,40 @@ const cormorantSC = Cormorant_SC({
   display: 'swap',
 });
 
-const dmSans = DM_Sans({
+// Ledger brand-refresh fonts (2026-05-09). Loaded as the primary stack
+// (Newsreader serif + Geist sans + JetBrains Mono).
+//
+// 2026-05-17 perf notes:
+//   - Weight 300 dropped: zero references in src/ (Lighthouse and grep
+//     both confirmed). Saves one font file from the critical fetch.
+//   - display kept as 'swap', not 'optional'. Tested 'optional' against
+//     Lighthouse and it produced no measurable LCP improvement
+//     (Lighthouse 3.3s LCP is network-bound by font download on
+//     throttled 4G — real users see LCP < 500ms uncached, ~0ms cached).
+//     'swap' preserves the brand identity on first paint.
+//   - Split into two configs (Wave A3): hero (400 + italic, preloaded)
+//     covers ledes/body; heavy (500/600/700, no preload) covers section
+//     titles + the few bold serif pulls. Two distinct CSS variables —
+//     tokens.css and tokens-ledger.css chain them in font-family so the
+//     browser resolves heavy weights to newsreaderHeavy's family when
+//     they're requested. (Spec said "both bind --font-newsreader" but a
+//     single variable can't expose two families — see audit trail.)
+const newsreaderHero = Newsreader({
   subsets: ['latin'],
-  weight: ['400', '500', '700'],
-  variable: '--font-dm-sans',
-  display: 'swap',
-});
-
-const dmMono = DM_Mono({
-  subsets: ['latin'],
-  weight: ['400', '500'],
-  variable: '--font-dm-mono',
-  display: 'swap',
-});
-
-// Ledger brand-refresh fonts (2026-05-09). Loaded alongside the legacy
-// Cormorant/DM Sans/DM Mono stack while surfaces are migrated. The legacy
-// fonts will be removed once the migration is complete.
-const newsreader = Newsreader({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
+  weight: ['400'],
   style: ['normal', 'italic'],
-  variable: '--font-newsreader',
+  variable: '--font-newsreader-hero',
   display: 'swap',
+  preload: true,
+});
+
+const newsreaderHeavy = Newsreader({
+  subsets: ['latin'],
+  weight: ['500', '600', '700'],
+  style: ['normal'],
+  variable: '--font-newsreader-heavy',
+  display: 'swap',
+  preload: false,
 });
 
 // Geist ships its own variable font wrapper — `--font-geist-sans`.
@@ -148,7 +156,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
 
       <body
-        className={`${cormorant.variable} ${cormorantSC.variable} ${dmSans.variable} ${dmMono.variable} ${newsreader.variable} ${GeistSans.variable} ${jetbrainsMono.variable} flex flex-col min-h-screen`}
+        className={`${cormorantSC.variable} ${newsreaderHero.variable} ${newsreaderHeavy.variable} ${GeistSans.variable} ${jetbrainsMono.variable} flex flex-col min-h-screen`}
       >
         {!chromeless && (
           <a href="#main-content" className="skip-link">

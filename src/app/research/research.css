@@ -27,7 +27,7 @@
   --ar-rule: rgba(14, 27, 45, 0.10);
   --ar-rule-strong: rgba(14, 27, 45, 0.22);
 
-  --ar-serif: var(--font-newsreader), 'Newsreader', 'EB Garamond', Georgia, serif;
+  --ar-serif: var(--font-newsreader-hero), var(--font-newsreader-heavy), 'Newsreader', 'EB Garamond', Georgia, serif;
   --ar-sans: var(--font-geist-sans), 'Geist', -apple-system, system-ui, sans-serif;
   --ar-mono: var(--font-jetbrains-mono), 'JetBrains Mono', ui-monospace, monospace;
   --ar-maxw: 1280px;

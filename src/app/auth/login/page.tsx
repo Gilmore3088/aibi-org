@@ -173,7 +173,7 @@ export default function LoginPage() {
   const [mode, setMode] = useState<'password' | 'magic'>('password');
 
   return (
-    <LedgerSurface>
+    <LedgerSurface showHeader={false}>
       <div style={{ width: '100%', maxWidth: 440, display: 'flex', flexDirection: 'column', gap: 24 }}>
         <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', gap: 8 }}>
           <LedgerEyebrow>Sign in</LedgerEyebrow>

@@ -73,6 +73,12 @@ the registry of active plans and their open task counts.
 | 2026-05-15 | [`tasks/qa-bug-log-2026-05-15.md`](./tasks/qa-bug-log-2026-05-15.md) | BUG-LOG | ACTIVE | Issues #92–96 QA sweep tally |
 | 2026-05-16 | [`Plans/aibi-launch-spec-v2.md`](./Plans/aibi-launch-spec-v2.md) | PLAN | **ACTIVE — canonical** | May 2026 launch spec — single source of truth |
 | 2026-05-16 | [`Plans/research-page-design-brief.md`](./Plans/research-page-design-brief.md) | PLAN | ACTIVE | /research page rebuild as AI Banking Brief |
+| 2026-05-17 | [`Plans/dashboard-ledger-redesign.md`](./Plans/dashboard-ledger-redesign.md) | PLAN | COMPLETE | /dashboard rebuilt on Ledger + In-Depth $99 sell + chrome fixes; shipped same day |
+| 2026-05-17 | [`tasks/_done/dashboard-ledger-redesign.md`](./tasks/_done/dashboard-ledger-redesign.md) | CHECKLIST | COMPLETE | Companion task tally for the dashboard redesign |
+| 2026-05-17 | [`docs/handoffs/handoff-2026-05-17-dashboard-ledger.md`](./docs/handoffs/handoff-2026-05-17-dashboard-ledger.md) | HANDOFF | ACTIVE | Session handoff — what shipped + state of the repo |
+| 2026-05-17 | [`Plans/performance-optimization-2026-05-17.md`](./Plans/performance-optimization-2026-05-17.md) | PLAN | ACTIVE | LCP < 2.5s overhaul — font surgery, code-split, Early Hints |
+| 2026-05-17 | [`tasks/performance-optimization-2026-05-17.md`](./tasks/performance-optimization-2026-05-17.md) | CHECKLIST | ACTIVE | Wave A–D execution list for the perf plan |
+| 2026-05-17 | [`docs/reviews/performance-overhaul-2026-05-17.md`](./docs/reviews/performance-overhaul-2026-05-17.md) | REVIEW | ACTIVE | Audit trail: 6 LCP attempts, kept vs reverted, bytes-bound root cause |
 
 ## Archived design specs (Plans/_archive/*.html)
 

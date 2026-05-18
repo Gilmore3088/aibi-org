@@ -26,13 +26,15 @@ export function LedgerScope({
 }
 
 // Full-page Ledger surface: header lockup + main column + footer.
-// Used by /auth/* and any other chromeless redesigned page.
+// Pass showHeader={false} when the page is already rendered under the
+// global SiteNav (e.g. /auth/*) to avoid a duplicate brand lockup.
 export function LedgerSurface({
   brandLine1 = 'The AI Banking',
   brandLine2 = 'Institute',
   brandHref = '/',
   headerRight,
   footer,
+  showHeader = true,
   children,
 }: {
   brandLine1?: string;
@@ -40,21 +42,24 @@ export function LedgerSurface({
   brandHref?: string;
   headerRight?: ReactNode;
   footer?: ReactNode;
+  showHeader?: boolean;
   children: ReactNode;
 }) {
   return (
     <div className="ledger ledger-surface">
-      <header className="ledger-surface__header">
-        <Link
-          href={brandHref}
-          aria-label="The AI Banking Institute"
-          className="ledger-lockup ledger-lockup--lg"
-        >
-          <span className="l1">{brandLine1}</span>
-          <span className="l2">{brandLine2}</span>
-        </Link>
-        {headerRight}
-      </header>
+      {showHeader && (
+        <header className="ledger-surface__header">
+          <Link
+            href={brandHref}
+            aria-label="The AI Banking Institute"
+            className="ledger-lockup ledger-lockup--lg"
+          >
+            <span className="l1">{brandLine1}</span>
+            <span className="l2">{brandLine2}</span>
+          </Link>
+          {headerRight}
+        </header>
+      )}
       <main className="ledger-surface__main">{children}</main>
       {footer ? (
         <footer className="ledger-surface__footer">{footer}</footer>

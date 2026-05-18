@@ -84,7 +84,7 @@ export default function SignupPage() {
 
   if (done) {
     return (
-      <LedgerSurface>
+      <LedgerSurface showHeader={false}>
         <div style={{ width: '100%', maxWidth: 440, display: 'flex', flexDirection: 'column', gap: 24 }}>
           <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', gap: 8 }}>
             <LedgerEyebrow>Account created</LedgerEyebrow>
@@ -110,7 +110,7 @@ export default function SignupPage() {
   }
 
   return (
-    <LedgerSurface>
+    <LedgerSurface showHeader={false}>
       <div style={{ width: '100%', maxWidth: 440, display: 'flex', flexDirection: 'column', gap: 24 }}>
         <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', gap: 8 }}>
           <LedgerEyebrow>Create account</LedgerEyebrow>

@@ -237,7 +237,7 @@ export default async function PurchasePage() {
               color: 'var(--ledger-ink)',
             }}
           >
-            Banking AI{' '}
+            AI Banking{' '}
             <em style={{ color: 'var(--ledger-accent)', fontStyle: 'normal', fontWeight: 500 }}>
               Foundation.
             </em>
@@ -254,19 +254,6 @@ export default async function PurchasePage() {
             }}
           >
             {foundationProgramCourseConfig.promise}
-          </p>
-          <p
-            style={{
-              color: 'var(--ledger-slate)',
-              fontSize: 15,
-              lineHeight: 1.6,
-              maxWidth: '62ch',
-              margin: 0,
-            }}
-          >
-            In less than two weeks, write better, summarize faster, think
-            clearer, and avoid risky AI mistakes — using the model your
-            institution already trusts.
           </p>
 
           {/* Enroll strip — ink card with price + EnrollButton */}
@@ -605,29 +592,6 @@ export default async function PurchasePage() {
           </ul>
         </section>
 
-        {/* Enrollment notes — institution / advanced tracks */}
-        <section
-          style={{
-            background: 'var(--ledger-paper)',
-            padding: '20px 24px',
-            border: '1px solid var(--ledger-rule)',
-            borderRadius: 3,
-          }}
-        >
-          <p
-            style={{
-              fontSize: 13,
-              color: 'var(--ledger-slate)',
-              lineHeight: 1.6,
-              margin: 0,
-            }}
-          >
-            Team purchases use a single checkout with manual onboarding
-            follow-up. Advanced <strong style={{ color: 'var(--ledger-ink)' }}>AiBI-S</strong> and{' '}
-            <strong style={{ color: 'var(--ledger-ink)' }}>AiBI-L</strong> tracks are coming later;
-            this checkout only enrolls learners in AiBI-Foundation.
-          </p>
-        </section>
       </div>
     </CourseShell>
   );
