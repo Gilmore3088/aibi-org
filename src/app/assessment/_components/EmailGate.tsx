@@ -18,6 +18,10 @@ interface EmailGateProps {
       readonly firstName?: string;
       readonly institutionName?: string;
       readonly profileId?: string | null;
+      /** True when the captured email is from a known free-mail provider.
+          Lets the post-capture surface show a soft nudge to re-submit with
+          a work email. See #189 + 2026-05-18 product call. */
+      readonly usedFreeEmail?: boolean;
     },
   ) => void;
 }
@@ -25,6 +29,31 @@ interface EmailGateProps {
 type Status = 'idle' | 'submitting' | 'error';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+// Free-mail providers. When an email matches one of these AND institution
+// is empty, the gate blocks submit with an inline message asking for the
+// institution. When institution IS provided, the submit proceeds and the
+// post-capture surface shows a soft nudge. See #189 + 2026-05-18 product
+// call (DECISIONS.md).
+const FREE_EMAIL_DOMAINS = new Set<string>([
+  'gmail.com', 'googlemail.com',
+  'yahoo.com', 'yahoo.co.uk', 'yahoo.ca', 'ymail.com', 'rocketmail.com',
+  'hotmail.com', 'hotmail.co.uk', 'hotmail.fr', 'live.com', 'live.co.uk', 'msn.com',
+  'outlook.com', 'outlook.co.uk',
+  'icloud.com', 'me.com', 'mac.com',
+  'aol.com',
+  'protonmail.com', 'proton.me', 'pm.me',
+  'mail.com', 'gmx.com', 'gmx.us',
+  'zoho.com',
+  'yandex.com', 'yandex.ru',
+  'fastmail.com', 'fastmail.fm',
+  'tutanota.com', 'tuta.io',
+]);
+
+function isFreeEmailDomain(email: string): boolean {
+  const domain = email.split('@')[1]?.toLowerCase().trim();
+  return domain ? FREE_EMAIL_DOMAINS.has(domain) : false;
+}
 
 export function EmailGate({
   score,
@@ -118,6 +147,7 @@ export function EmailGate({
         firstName: firstName.trim() || undefined,
         institutionName: institutionName.trim() || undefined,
         profileId: data.profileId ?? null,
+        usedFreeEmail: isFreeEmailDomain(emailToUse),
       });
     } catch (err) {
       setStatus('error');
@@ -131,6 +161,16 @@ export function EmailGate({
     if (!EMAIL_RE.test(trimmedEmail)) {
       setStatus('error');
       setMessage('Please enter a valid work email.');
+      return;
+    }
+    // Soft-gate on free-email providers: accept the personal email, but
+    // only after the user provides an institution name. Without that
+    // context, the report can't be tailored.
+    if (isFreeEmailDomain(trimmedEmail) && !institutionName.trim()) {
+      setStatus('error');
+      setMessage(
+        'Add your institution name so we can tailor your report. A work email also works — but if you prefer a personal address, we just need to know where you work.',
+      );
       return;
     }
     await submit(trimmedEmail);

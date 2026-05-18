@@ -23,6 +23,7 @@ export default function AssessmentPage() {
   const [capturedFirstName, setCapturedFirstName] = useState<string | null>(null);
   const [capturedInstitution, setCapturedInstitution] = useState<string | null>(null);
   const [capturedProfileId, setCapturedProfileId] = useState<string | null>(null);
+  const [usedFreeEmail, setUsedFreeEmail] = useState(false);
   const [mounted, setMounted] = useState(false);
   const scoreHeadingRef = useRef<HTMLHeadingElement | null>(null);
 
@@ -118,6 +119,7 @@ export default function AssessmentPage() {
                 setCapturedFirstName(extras.firstName ?? null);
                 setCapturedInstitution(extras.institutionName ?? null);
                 setCapturedProfileId(extras.profileId ?? null);
+                setUsedFreeEmail(extras.usedFreeEmail ?? false);
                 state.advanceToResults();
               }}
             />
@@ -135,16 +137,34 @@ export default function AssessmentPage() {
         )}
 
         {state.phase === 'results' && state.tier && capturedEmail && (
-          <ResultsViewV2
-            score={state.totalScore}
-            tier={state.tier}
-            dimensionBreakdown={state.getDimensionBreakdown()}
-            email={capturedEmail}
-            tierId={state.tier.id}
-            firstName={capturedFirstName}
-            institutionName={capturedInstitution}
-            profileId={capturedProfileId}
-          />
+          <>
+            {usedFreeEmail && (
+              <aside
+                className="max-w-3xl mx-auto mb-8 border border-[color:var(--color-ink)]/15 bg-[color:var(--color-parch)] px-5 py-4 rounded-[2px] text-sm leading-relaxed text-[color:var(--color-ink)]/85"
+                aria-label="Personal email notice"
+              >
+                <p className="font-mono text-[10.5px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] mb-1.5">
+                  Note
+                </p>
+                <p>
+                  You submitted a personal email. The report below is tailored
+                  using the institution you provided. If you'd prefer follow-up
+                  emails to land at your work address, just retake the
+                  assessment with your work email and we'll merge the records.
+                </p>
+              </aside>
+            )}
+            <ResultsViewV2
+              score={state.totalScore}
+              tier={state.tier}
+              dimensionBreakdown={state.getDimensionBreakdown()}
+              email={capturedEmail}
+              tierId={state.tier.id}
+              firstName={capturedFirstName}
+              institutionName={capturedInstitution}
+              profileId={capturedProfileId}
+            />
+          </>
         )}
       </div>
     </main>
