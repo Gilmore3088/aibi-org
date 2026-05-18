@@ -134,6 +134,7 @@ export default function EfficiencyRatioWorkbookPage() {
               process.env.NEXT_PUBLIC_CALENDLY_URL ??
               'https://calendly.com/aibi/executive-briefing'
             }
+            briefingSource="services"
           />
         </div>
       </section>

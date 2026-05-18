@@ -12,11 +12,18 @@
 // enrolled-course access) continue to enforce their own checks on top.
 
 import type { ReactNode } from 'react';
+import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { cookies, headers } from 'next/headers';
 import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
 import { isPreviewAuthBypassEnabled } from '@/lib/auth/previewBypass';
+
+// Authed surface — never index dashboard pages in search engines.
+export const metadata: Metadata = {
+  title: 'Dashboard',
+  robots: { index: false, follow: false },
+};
 
 export default async function DashboardLayout({ children }: { children: ReactNode }) {
   // Preview/local bypass — skip the gate entirely when PREVIEW_AUTH_BYPASS=true

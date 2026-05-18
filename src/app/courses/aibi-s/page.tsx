@@ -1,8 +1,15 @@
 // AiBI-S course landing — routed at /courses/aibi-s
 // Self-paced prototype: 5-track selector.
 
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import type { TrackCode } from '@/lib/aibi-s/types';
+
+export const metadata: Metadata = {
+  title: 'AiBI-S — Specialist credential tracks',
+  description:
+    'Role-specific AI proficiency for community bankers. Five tracks: Operations, Lending, Compliance, Finance, Retail. Self-paced, banking-grounded.',
+};
 
 interface TrackMeta {
   readonly code: TrackCode;
