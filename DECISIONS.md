@@ -521,3 +521,16 @@ Three decisions worth recording for future override:
    beat-shape with real consumers, then delete `src/lib/course-harness/`.
    The new harness in `src/lib/lms/` is designed to absorb AiBI-S when
    that work begins.
+
+**2026-05-18 — Content Engine shares the website's Supabase project.**
+The Scout + Queue milestone (`Plans/content-engine.md`) considered a
+separate Supabase project for isolation. User direction: always use the
+shared website project. Initial schema relocated from the scaffold's
+`content-engine/supabase/migrations/001_initial_schema.sql` into the
+canonical website migrations as `supabase/migrations/00034_content_engine_schema.sql`,
+so it applies via the normal CLI flow alongside website migrations.
+Open follow-up: the four tables (`sources`, `content_items`,
+`content_scores`, `story_candidates`) currently sit in `public` with
+generic names. A second migration can move them into a dedicated
+`content_engine` schema (or apply a `ce_` prefix) before any UI reads
+them — both are mechanical at this point.

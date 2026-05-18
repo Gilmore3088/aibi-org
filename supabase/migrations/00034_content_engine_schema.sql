@@ -1,7 +1,15 @@
--- 001_initial_schema.sql
--- AiBI Content Engine: Scout + queue
+-- 00034 — AiBI Content Engine: Scout + queue schema.
 --
--- Run this in the Supabase SQL editor against a fresh project.
+-- Adds four tables (sources, content_items, content_scores,
+-- story_candidates) and the content_with_latest_score view used by the
+-- nightly Scout cron and the founder-only /admin/content-engine console.
+-- See Plans/content-engine.md and tasks/content-engine.md.
+--
+-- Lives in the shared website Supabase project (per 2026-05-18
+-- decision in DECISIONS.md). If table-name collisions ever appear with
+-- website features, a follow-up migration can move these into a
+-- dedicated `content_engine` schema or prefix them — both are
+-- mechanical at this point because no UI reads them yet.
 
 create extension if not exists "uuid-ossp";
 create extension if not exists "pg_trgm";  -- enables future fuzzy theme search

@@ -9,8 +9,8 @@ Updated 2026-05-18 (initial draft from upstream zip).
 
 ## Phase 1 · Days 1–2 · Infrastructure
 
-- [ ] Decide Supabase project: shared with website (default) vs. separate
-- [ ] Run `content-engine/supabase/migrations/001_initial_schema.sql` in the chosen Supabase SQL editor
+- [x] Decide Supabase project: shared with website (2026-05-18 — see `DECISIONS.md`). Migration relocated to `supabase/migrations/00034_content_engine_schema.sql`.
+- [ ] Apply `supabase/migrations/00034_content_engine_schema.sql` to the shared project (via Supabase CLI / dashboard alongside the website migrations)
 - [ ] Confirm tables created: `sources`, `content_items`, `content_scores`, `story_candidates`
 - [ ] Confirm view created: `content_with_latest_score`
 - [ ] Confirm extensions: `uuid-ossp`, `pg_trgm`

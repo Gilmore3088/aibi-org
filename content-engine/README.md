@@ -31,9 +31,13 @@ RSS / YouTube / Gmail  →  Modal nightly cron (07:00 UTC)
 ## Setup
 
 ### 1. Supabase
-- Create a project at supabase.com
-- Run `supabase/migrations/001_initial_schema.sql` in the SQL editor
-- Copy the project URL and `service_role` key
+- Uses the shared website Supabase project (decided 2026-05-18 — see
+  `DECISIONS.md` at repo root).
+- Schema lives in `supabase/migrations/00034_content_engine_schema.sql`
+  at the repo root and is applied via the normal Supabase CLI flow with
+  the website's other migrations — do not run it manually.
+- For local Modal runs, set `SUPABASE_URL` and `SUPABASE_SERVICE_KEY`
+  to the website project's values.
 
 ### 2. Modal
 - `pip install modal && modal token new`
