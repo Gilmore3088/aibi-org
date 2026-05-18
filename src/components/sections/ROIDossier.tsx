@@ -163,14 +163,17 @@ export function ROIDossier() {
           </div>
         </div>
 
-        {/* Result — 3-cell tableau with payroll % chip */}
+        {/* Result — 3-cell tableau with payroll % chip.
+            Mobile: stacks 1-col with horizontal dividers; tablet+: 3-col
+            with vertical dividers. Currency values like $432,000 overflowed
+            when forced 3-up at 375px. See #194. */}
         <div className="mt-s10 border border-strong bg-linen">
-          <div className="grid grid-cols-3">
+          <div className="grid grid-cols-1 divide-y divide-hairline sm:grid-cols-3 sm:divide-y-0 sm:divide-x">
             <ResultCell label="Conservative" amount={result.low} tone="muted" />
             <ResultCell label="Best estimate" amount={result.mid} tone="primary" />
             <ResultCell label="Optimistic" amount={result.high} tone="muted" />
           </div>
-          <div className="px-s6 py-s3 border-t border-hairline grid grid-cols-3 gap-s4 text-body-sm">
+          <div className="px-s6 py-s3 border-t border-hairline grid grid-cols-1 gap-s2 sm:grid-cols-3 sm:gap-s4 text-body-sm">
             <FactCell label="Hours reclaimed / year" value={fmtNumber(result.hoursPerYear)} />
             <FactCell label="Per banker, per week" value={`~${((loHours + hiHours) / 2).toFixed(1)} hrs`} />
             <FactCell label="Share of payroll" value={`~${result.payrollRecaptured}%`} />
@@ -232,7 +235,7 @@ function ResultCell({ label, amount, tone }: ResultCellProps) {
   return (
     <div
       className={cn(
-        "p-s4 lg:p-s5 border-l border-hairline first:border-l-0 min-w-0",
+        "p-s4 lg:p-s5 min-w-0",
         isPrimary && "bg-parch"
       )}
     >

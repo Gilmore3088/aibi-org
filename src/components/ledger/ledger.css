@@ -75,7 +75,10 @@
 .ledger-field input,
 .ledger-field textarea,
 .ledger-field select {
-  font-family: var(--sans); font-size: 14px; color: var(--ink);
+  /* 16px is the iOS Safari floor — fields below 16px trigger forced
+     viewport zoom on tap, then often don't zoom back out. Keeping
+     this at 16px across all viewports per Apple HIG. See #194. */
+  font-family: var(--sans); font-size: 16px; color: var(--ink);
   padding: 10px 12px; border: 1px solid var(--rule-strong); border-radius: 2px;
   background: var(--paper); outline: none; width: 100%;
   transition: border-color 0.15s;
