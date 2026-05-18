@@ -2,6 +2,13 @@
   "name": "aibi-scaffold",
   "version": "0.1.0",
   "private": true,
+  "sideEffects": [
+    "**/*.css",
+    "**/*.scss",
+    "**/globals.css",
+    "src/styles/**",
+    "src/middleware.ts"
+  ],
   "scripts": {
     "dev": "next dev",
     "build": "next build",
