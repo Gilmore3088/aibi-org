@@ -144,7 +144,7 @@ export function FirstMove({ focusGapId }: FirstMoveProps) {
       </div>
 
       <div className="pdf-page-footer">
-        <span>Page 8</span>
+        <span>Page 9</span>
         <span>AI Readiness Briefing</span>
       </div>
     </article>

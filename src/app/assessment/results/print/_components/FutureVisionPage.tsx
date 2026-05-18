@@ -55,7 +55,7 @@ export function FutureVisionPage() {
       </ul>
 
       <div className="pdf-page-footer">
-        <span>Page 11</span>
+        <span>Page 12</span>
         <span>AI Readiness Briefing</span>
       </div>
     </article>

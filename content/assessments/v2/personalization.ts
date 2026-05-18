@@ -60,6 +60,71 @@ export const BIG_INSIGHT: Record<Tier['id'], string> = {
 };
 
 // ---------------------------------------------------------------------------
+// MATURITY LADDER — six named rungs from AI Curiosity through
+// Institutional Advantage. The four scoring tiers map to rungs 1, 2,
+// 3, and 5 (rungs 4 and 6 are aspirational and not directly measured
+// by the free 12-question pool). The ladder gives the reader context
+// for where they are and a visible next-step ambition.
+// ---------------------------------------------------------------------------
+
+export interface MaturityRung {
+  readonly label: string;
+  readonly description: string;
+}
+
+export const MATURITY_LADDER: ReadonlyArray<MaturityRung> = [
+  {
+    label: 'AI Curiosity',
+    description:
+      "AI is on the agenda but not yet on the floor. Individual staff are experimenting on their own time.",
+  },
+  {
+    label: 'Controlled Experimentation',
+    description:
+      "A small group of staff use AI inside loosely-defined guardrails. Wins are real but unevenly distributed.",
+  },
+  {
+    label: 'Building Momentum',
+    description:
+      "Multiple teams produce measurable value with AI. The program survives on individual sponsors and a few motivated builders.",
+  },
+  {
+    label: 'Operational Adoption',
+    description:
+      "AI-assisted workflows are documented, reviewed, and replicable. Outcomes are measured and reported to leadership monthly.",
+  },
+  {
+    label: 'Governed Scale',
+    description:
+      "Every staff member shares the same safe-use baseline. Governance is examiner-grade and onboarding rebuilds capability automatically.",
+  },
+  {
+    label: 'Institutional Advantage',
+    description:
+      "AI capability is a durable institutional asset. Compounding learning loops are the operating norm; the question shifts from adoption to compounding.",
+  },
+];
+
+/**
+ * Map each scoring tier onto its rung index in the six-rung ladder.
+ * Starting Point → rung 0 (AI Curiosity)
+ * Early Stage     → rung 1 (Controlled Experimentation)
+ * Building Momentum → rung 2 (Building Momentum)
+ * Ready to Scale  → rung 4 (Governed Scale)
+ *
+ * Rungs 3 (Operational Adoption) and 5 (Institutional Advantage) are
+ * aspirational — they describe states beyond what the free pool can
+ * confidently measure. The In-Depth assessment is the path to landing
+ * on those rungs with evidence.
+ */
+export const TIER_TO_RUNG: Record<Tier['id'], number> = {
+  'starting-point': 0,
+  'early-stage': 1,
+  'building-momentum': 2,
+  'ready-to-scale': 4,
+};
+
+// ---------------------------------------------------------------------------
 // SECTION 1b — What this looks like in practice. Recognition copy by
 // internal role (operations / compliance / managers / executives),
 // per tier. This is the "they understand us" page; lives between the

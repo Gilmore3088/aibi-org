@@ -10,6 +10,7 @@ import { PdfDownloadButton } from './PdfDownloadButton';
 import { StarterArtifactCard } from './StarterArtifactCard';
 import { StarterPrompt } from './StarterPrompt';
 import { PracticePicture } from './PracticePicture';
+import { MaturityLadder } from './MaturityLadder';
 import { getStarterArtifact } from '@content/assessments/v2/starter-artifacts';
 import {
   PERSONAS,
@@ -269,8 +270,13 @@ export function ResultsViewV2({
           </div>
         )}
 
-        <ContinueLink to="section-5" label="Your first move" />
+        <ContinueLink to="section-4b" label="Where this leads" />
       </section>
+
+      {/* SECTION 4b — Maturity ladder */}
+      <SectionAnchor id="section-4b" />
+      <MaturityLadder tierId={tierId} />
+      <ContinueLink to="section-5" label="Your first move" />
 
       {/* SECTION 5 — Fastest ROI */}
       {fastestRoi && focusGap && (

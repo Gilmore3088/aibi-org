@@ -9,6 +9,7 @@ import { PracticePicturePage } from '../_components/PracticePicturePage';
 import { LensedImplications } from '../_components/LensedImplications';
 import { StrengthsAndGaps } from '../_components/StrengthsAndGaps';
 import { GapDetail } from '../_components/GapDetail';
+import { MaturityLadderPage } from '../_components/MaturityLadderPage';
 import { FirstMove } from '../_components/FirstMove';
 import { StarterPromptAndPlan } from '../_components/StarterPromptAndPlan';
 import { FutureVisionPage } from '../_components/FutureVisionPage';
@@ -103,6 +104,7 @@ export default async function PrintPage({ params }: PrintPageProps) {
           pageNumber={6 + idx}
         />
       ))}
+      <MaturityLadderPage tierId={profile.readiness_tier_id} />
       {focusGapId ? (
         <>
           <FirstMove focusGapId={focusGapId} />
