@@ -4,6 +4,9 @@
 //
 // Refs: docs/superpowers/specs/2026-05-04-assessment-results-spec-2-pdf.md
 
+import { mkdtemp, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import puppeteer, { type Browser } from 'puppeteer-core';
 
 interface GenerateOptions {
@@ -16,10 +19,17 @@ interface GenerateOptions {
 // dynamically on Vercel only — importing it at module scope on
 // macOS triggers a binary extraction whose ELF can't exec, which is
 // the spawn ENOEXEC the dev server saw.
+//
+// --user-data-dir is set per-call in the function below so each
+// Puppeteer launch gets its own isolated profile and Chrome cannot
+// piggyback on the user's already-running browser instance (which
+// would open the print page in a real tab the user can see).
 const LOCAL_CHROME_ARGS = [
   '--disable-dev-shm-usage',
   '--no-sandbox',
   '--disable-setuid-sandbox',
+  '--headless=new',
+  '--disable-gpu',
 ];
 
 export async function generateAssessmentPdf({
@@ -42,8 +52,17 @@ export async function generateAssessmentPdf({
           '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
       };
 
+  // Force an isolated user-data-dir so Chrome can't reuse the user's
+  // running browser session. Without this, launching Chrome on macOS
+  // hands the navigation off to the user's existing Chrome instance
+  // and the print page opens as a real visible tab.
+  const userDataDir = await mkdtemp(join(tmpdir(), 'aibi-pdf-chrome-'));
+  const launchArgs = useSparticuz
+    ? args
+    : [...args, `--user-data-dir=${userDataDir}`];
+
   const browser: Browser = await puppeteer.launch({
-    args,
+    args: launchArgs,
     defaultViewport: { width: 1200, height: 1600 },
     executablePath,
     headless: true,
@@ -65,6 +84,9 @@ export async function generateAssessmentPdf({
     return buffer as Buffer;
   } finally {
     await browser.close();
+    // Clean up the temp profile dir. Best-effort — if Chrome left a
+    // lock file we still don't want to leak it forever.
+    await rm(userDataDir, { recursive: true, force: true }).catch(() => {});
   }
 }
 
