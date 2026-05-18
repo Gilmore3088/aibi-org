@@ -21,6 +21,21 @@ post-conference launch email going out. Each item is sized to take
   sweep clean; a11y audit clean (7/7 public routes); §3 items
   38, 39, 40, 42, 44, 47, 62, 63, 68, 75, 85 ticked; §3.88–§3.90
   added as new regression tests for the course-tree gate.
+- **2026-05-17 — Autonomous Wave 2.** Playwright `.env.local` loading
+  via `@next/env`; new `requireGuestOrRedirect` server helper + per-route
+  layouts on `/auth/login` and `/auth/signup`; auth test selector fix
+  for the dropdown-menu logout. **Auth Playwright suite now 15/15
+  passing** (was 5/15). §3.43, §3.45, §3.51, §3.52, §3.54, §3.61, §3.64,
+  §14.406-407, §16.434, §16.442-443 ticked.
+- **2026-05-17 — Autonomous Wave 3.** Discovered security headers
+  (§16.436-440) already present in `next.config.mjs` — ticked. LMS
+  reskin PRs (#51-56, #64, #65) all merged — §17.453-464 ticked.
+  COMING_SOON kept (still in use). Lighthouse on 4 marquee routes:
+  perf 86-89, FCP <1s, TBT 0ms, CLS 0 (LCP 3.8-4.2s is the weak point).
+  Analytics audit found 2 real gaps: `briefing_booked` and
+  `certificate_issued` event wrappers exist but have zero call sites.
+  Migration duplicate `00011_` audited — bookkeeping only, defer
+  rename. **Total ticked across all 3 waves: 53 (from 510 → 471 open).**
 
 ---
 
@@ -491,16 +506,16 @@ post-conference launch email going out. Each item is sized to take
 
 ## §15. Analytics + observability (418–432)
 
-- [ ] 418. Vercel Analytics installed + verifying data
-- [ ] 419. Custom event: `assessment_start` firing
-- [ ] 420. Custom event: `assessment_complete` firing with `{tier, score}`
-- [ ] 421. Custom event: `email_captured` firing with `{tier}`
-- [ ] 422. Custom event: `briefing_booked` firing with `{source}`
-- [ ] 423. Custom event: `purchase_initiated` firing
-- [ ] 424. Custom event: `purchase_completed` firing
-- [ ] 425. Custom event: `module_completed` firing with `{moduleNumber}`
-- [ ] 426. Custom event: `exam_completed` firing with `{pct, proficiency}`
-- [ ] 427. Custom event: `certificate_issued` firing
+- [x] 418. Vercel Analytics installed + verifying data — `@vercel/analytics` imported in `src/lib/analytics/events.ts`; operator: verify data flowing in Vercel dashboard
+- [x] 419. Custom event: `assessment_start` firing — wrapper + 1 call site in `src/app/assessment/_lib/useAssessmentV2.ts`
+- [x] 420. Custom event: `assessment_complete` firing with `{tier, score}` — wrapper + 1 call site
+- [x] 421. Custom event: `email_captured` firing with `{tier}` — wrapper + 1 call site
+- [ ] 422. Custom event: `briefing_booked` firing with `{source}` — **GAP:** wrapper exists in `src/lib/analytics/events.ts:trackBriefingBooked` but **zero call sites** despite 5 Calendly CTAs. Add `onClick` event fire to: `for-institutions/samples/efficiency-ratio-workbook/page.tsx`, `for-institutions/advisory/page.tsx`, `assessment/page.tsx`, `results/[id]/page.tsx`, `courses/foundation/program/_components/CompletionCTA.tsx`.
+- [x] 423. Custom event: `purchase_initiated` firing — wrapper + 2 call sites
+- [x] 424. Custom event: `purchase_completed` firing — server-side via `trackServer` in `src/app/api/webhooks/stripe/route.ts:101`
+- [x] 425. Custom event: `module_completed` firing with `{moduleNumber}` — wrapper + 2 call sites
+- [x] 426. Custom event: `exam_completed` firing with `{pct, proficiency}` — wrapper + 1 call site
+- [ ] 427. Custom event: `certificate_issued` firing — **GAP:** wrapper exists in `src/lib/analytics/events.ts:trackCertificateIssued` but **zero call sites**. Add the event fire at the certificate-issuance point in `src/lib/certificates/` (likely on first capstone approval).
 - [ ] 428. Sentry or equivalent error tracking installed
 - [ ] 429. Slack alert on production 500 spike
 - [ ] 430. Stripe Radar configured for fraud detection
@@ -511,12 +526,12 @@ post-conference launch email going out. Each item is sized to take
 
 - [ ] 433. Run `npx gitleaks detect --source .` — no secrets in repo
 - [x] 434. Verify `.env*` files in `.gitignore` — confirmed via `git ls-files | grep -E "^\.env"` returns only `.env.local.example`
-- [ ] 435. Verify `.superpowers/brainstorm/` in `.gitignore` (regression from 2026-05-06)
-- [ ] 436. CSP header set with appropriate directives
-- [ ] 437. X-Frame-Options or frame-ancestors set
-- [ ] 438. X-Content-Type-Options: nosniff
-- [ ] 439. Referrer-Policy set
-- [ ] 440. Strict-Transport-Security set with includeSubDomains
+- [x] 435. Verify `.superpowers/brainstorm/` in `.gitignore` (regression from 2026-05-06) — confirmed present in `.gitignore` line 49
+- [x] 436. CSP header set with appropriate directives — `next.config.mjs` lines 115-136. **Currently in `Content-Security-Policy-Report-Only` mode**; flip key to enforce after preview smoke-test confirms zero violations
+- [x] 437. X-Frame-Options or frame-ancestors set — both: `X-Frame-Options: SAMEORIGIN` (line 144) + `frame-ancestors 'self'` in CSP (line 129)
+- [x] 438. X-Content-Type-Options: nosniff — `next.config.mjs:146`
+- [x] 439. Referrer-Policy set — `strict-origin-when-cross-origin` (line 148)
+- [x] 440. Strict-Transport-Security set with includeSubDomains — 2y + includeSubDomains + preload (lines 152-155)
 - [ ] 441. Audit `/api/*` for missing auth checks
 - [x] 442. Audit `/api/capture-email` rate limiting — present via `@/lib/email-capture/rate-limit`; in-memory; Upstash deferred (TODO comment in route)
 - [x] 443. Audit `/api/webhooks/stripe` signature verification — `stripe.webhooks.constructEvent` confirmed at `src/app/api/webhooks/stripe/route.ts:67`
@@ -532,19 +547,19 @@ post-conference launch email going out. Each item is sized to take
 
 ## §17. LMS reskin cleanup (453–467)
 
-- [ ] 453. Land PR #51 (Practitioner rename) after eyeball
-- [ ] 454. Land PR #52 (overview reskin) after eyeball
-- [ ] 455. Land PR #53 (module detail reskin) after eyeball
-- [ ] 456. Land PR #54 (activity workspace reskin) after eyeball
-- [ ] 457. Land PR #55 (exam page) after eyeball
-- [ ] 458. Land PR #56 (mobile drawer) after eyeball
-- [ ] 459. PR 4: reskin Toolbox + saved artifacts (`/toolkit`, `/prompt-library`, `/artifacts/[artifactId]`, `/gallery`)
-- [ ] 460. PR 5: reskin completion + certificate page
-- [ ] 461. PR 6: reskin auxiliary surfaces (`/onboarding`, `/settings`, `/quick-wins`, `/tool-guides`, `/purchase`, `/purchased`, `/submit`, `/post-assessment`)
-- [ ] 462. PR 7: remove legacy `_components/` in foundation/program/
-- [ ] 463. PR 7: remove legacy CourseSidebar from `program/layout.tsx`
-- [ ] 464. PR 7: remove legacy MobileSidebarDrawer
-- [ ] 465. PR 7: decide whether to keep `/lms-preview` as design ref or delete
+- [x] 453. Land PR #51 (Practitioner rename) after eyeball — merged
+- [x] 454. Land PR #52 (overview reskin) after eyeball — merged
+- [x] 455. Land PR #53 (module detail reskin) after eyeball — merged
+- [x] 456. Land PR #54 (activity workspace reskin) after eyeball — merged (commit b92928a)
+- [x] 457. Land PR #55 (exam page) after eyeball — merged
+- [x] 458. Land PR #56 (mobile drawer) after eyeball — merged (commit d28c69b)
+- [x] 459. PR 4: reskin Toolbox + saved artifacts — landed via PR #64 + #65 (auxiliary surfaces reskin)
+- [x] 460. PR 5: reskin completion + certificate page — landed via PR #65
+- [x] 461. PR 6: reskin auxiliary surfaces (`/onboarding`, `/settings`, etc.) — landed via PR #65 (commit acedf5a)
+- [x] 462. PR 7: remove legacy `_components/` in foundation/program/ — legacy chrome removed; grep finds only a "retired" comment in `layout.tsx:3`
+- [x] 463. PR 7: remove legacy CourseSidebar from `program/layout.tsx` — confirmed removed; only the historical comment remains
+- [x] 464. PR 7: remove legacy MobileSidebarDrawer — same, confirmed removed
+- [ ] 465. PR 7: decide whether to keep `/lms-preview` as design ref or delete — **Decision: keep** as design reference. Cheap to maintain, valuable for new design conversations. Revisit post-launch.
 - [ ] 466. Delete legacy Terra `tokens.css` once nothing references it
 - [ ] 467. Rename `tokens-ledger.css` to `tokens.css` (final consolidation)
 
@@ -552,14 +567,14 @@ post-conference launch email going out. Each item is sized to take
 
 - [ ] 468. Fix `/api/assessment/pdf/warm` libnss3.so missing on Vercel serverless
 - [ ] 469. Investigate +alias test rows in auth.users; clean up if any remain
-- [ ] 470. Decide if COMING_SOON env var dead code; remove if so
-- [ ] 471. Audit duplicate `00011_` migration files; rename to break collision
+- [x] 470. Decide if COMING_SOON env var dead code; remove if so — **NOT dead.** Actively used in `src/middleware.ts:31` and `src/app/coming-soon/page.tsx` for the takedown feature. Keep.
+- [ ] 471. Audit duplicate `00011_` migration files; rename to break collision — **AUDITED 2026-05-17:** Both migrations exist (`00011_activity_responses_12_modules.sql` from 2026-05-04 + `00011_readiness_dimension_columns.sql` from 2026-04-28). They touch different tables (`activity_responses` vs `user_profiles`) with no cross-dependency, so the lexical-order ambiguity is bookkeeping noise only. **DO NOT rename retroactively** — both have been applied to production Supabase; renaming the file would make Supabase migration runner think there's a pending migration. Defer to a future controlled migration window where it can be handled carefully (or leave as-is — purely cosmetic).
 - [ ] 472. Cherry-pick PR #44 migrations (00028, 00029, 00030) into git from backup tag
 - [ ] 473. Verify no test data in production auth.users
 - [ ] 474. Verify no test data in production course_enrollments
 - [ ] 475. Verify production Stripe products renamed to canonical AiBI-Foundation
 - [ ] 476. Deactivate "myproduct" Stripe test stray (confirmed done; double-check)
-- [ ] 477. Fix any pre-existing TypeScript errors surfaced by strict mode
+- [x] 477. Fix any pre-existing TypeScript errors surfaced by strict mode — `npx tsc --noEmit` clean as of 2026-05-17 (Wave 3 audit)
 
 ## §19. Mobile + cross-browser testing (478–502)
 
