@@ -15,7 +15,7 @@ import Link from "next/link";
 import { cookies } from "next/headers";
 import { createServerClient as ssrCreateServerClient } from "@supabase/ssr";
 import { MarketingPage } from "@/components/system/templates";
-import { Section } from "@/components/system";
+import { Section, Cta } from "@/components/system";
 import { isSupabaseConfigured } from "@/lib/supabase/client";
 import { BRAND } from "@content/copy";
 import { PurchaseButton } from "./_components/PurchaseButton";
@@ -92,14 +92,19 @@ export default async function InDepthAssessmentPage({
             A written report you can take to your board on Monday.
           </span>
         ),
-        primaryCta: {
-          href: "#purchase",
-          label: "Purchase In-Depth · $99",
-        },
-        secondaryCta: {
-          href: "#compare",
-          label: "Compare with the free scan",
-        },
+        payload: (
+          <div className="flex flex-wrap items-center gap-s6">
+            <PurchaseButton
+              userEmail={signedInEmail ?? undefined}
+              label="Purchase In-Depth · $99"
+              pendingLabel="Starting checkout…"
+              size="hero"
+            />
+            <Cta variant="secondary" href="#compare">
+              Compare with the free scan
+            </Cta>
+          </div>
+        ),
         divider: "hairline",
       }}
     >
@@ -288,12 +293,12 @@ export default async function InDepthAssessmentPage({
                 </Link>
               </div>
               <div className="p-s5 border-l border-hairline bg-terra/5">
-                <Link
-                  href="#purchase"
-                  className="inline-flex items-center justify-center px-s5 py-s3 bg-terra text-linen font-mono text-mono-sm uppercase tracking-widest rounded-sharp hover:bg-terra-light"
-                >
-                  Purchase In-Depth · $99 →
-                </Link>
+                <PurchaseButton
+                  userEmail={signedInEmail ?? undefined}
+                  label="Purchase In-Depth · $99"
+                  pendingLabel="Starting checkout…"
+                  size="compact"
+                />
               </div>
             </div>
           </div>
