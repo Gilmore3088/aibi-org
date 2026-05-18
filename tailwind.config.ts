@@ -26,6 +26,25 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // Ledger refresh (2026-05-09) — additive layer alongside legacy
+        // Terra/Sage/Cobalt. New work uses these; existing surfaces
+        // migrate incrementally. Tokens live in src/styles/tokens-ledger.css.
+        // See #197 + DECISIONS.md.
+        "ledger-bg":           "var(--ledger-bg)",
+        "ledger-paper":        "var(--ledger-paper)",
+        "ledger-parch":        "var(--ledger-parch)",
+        "ledger-tape":         "var(--ledger-tape)",
+        "ledger-ink":          "var(--ledger-ink)",
+        "ledger-ink-2":        "var(--ledger-ink-2)",
+        "ledger-muted":        "var(--ledger-muted)",
+        "ledger-soft":         "var(--ledger-soft)",
+        "ledger-accent":       "var(--ledger-accent)",
+        "ledger-accent-light": "var(--ledger-accent-light)",
+        "ledger-accent-2":     "var(--ledger-accent-2)",
+        "ledger-weak":         "var(--ledger-weak)",
+        "ledger-rule":         "var(--ledger-rule)",
+        "ledger-rule-strong":  "var(--ledger-rule-strong)",
+
         // Pillar
         terra: "var(--color-terra)",
         "terra-light": "var(--color-terra-light)",
