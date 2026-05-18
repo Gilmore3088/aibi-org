@@ -128,8 +128,18 @@ async function main() {
     ],
   });
 
+  // Post-process: replace Satori's intrinsic width="1500" height="260"
+  // attributes with responsive `width="100%" height="auto"` so the SVG
+  // scales to its parent container at every viewport. The viewBox
+  // (preserved by Satori) handles the aspect ratio. Without this,
+  // mobile viewports clip the headline at the right edge. See #194.
+  const responsiveSvg = svg.replace(
+    /width="1500" height="260" viewBox/,
+    'width="100%" height="auto" viewBox',
+  );
+
   await mkdir(dirname(OUTPUT_SVG), { recursive: true });
-  await writeFile(OUTPUT_SVG, svg + '\n');
+  await writeFile(OUTPUT_SVG, responsiveSvg + '\n');
 
   // SVGO pass — cuts the Satori output ~50% by dropping the mask/<g>
   // scaffolding and rounding path coordinates. The CLI is invoked via

@@ -81,7 +81,25 @@ export function MarketingPage({ hero, kpis, closing, children, className }: Mark
               </p>
             )}
             {hero.titleNode ? (
-              hero.titleNode
+              <>
+                {/* Mobile: HTML <h1> using `title`. Desktop (md:+):
+                    LCP-optimized SVG via `titleNode`. The SVG is a
+                    desktop-wide editorial banner (5.77:1 aspect ratio);
+                    shrinking it to 375px yields readable-but-tiny letters
+                    that don't read like a proper hero. The HTML H1 sizes
+                    responsively (clamp-style display tokens) and stacks
+                    naturally on narrow viewports. See #194.
+
+                    `HeroHeadlineSvg` already includes its own sr-only
+                    <h1> for screen readers, so wrapping it in a div with
+                    `hidden md:block` hides BOTH the visible SVG and that
+                    sr-only H1 on mobile — leaving exactly one announced
+                    H1 per breakpoint. */}
+                <div className="hidden md:block">{hero.titleNode}</div>
+                <h1 className="md:hidden font-serif text-display-lg text-ink leading-tight tracking-tightish">
+                  {hero.title}
+                </h1>
+              </>
             ) : (
               <h1 className="font-serif text-display-lg md:text-display-xl text-ink leading-tight tracking-tightish">
                 {hero.title}
