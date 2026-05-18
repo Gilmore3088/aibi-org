@@ -68,3 +68,12 @@ docs/superpowers/design-system/ui-review.html
 /Plans/standards-aibi.zip
 
 docs/reviews/lighthouse-*/
+
+# Content engine (Python) — venv, build artifacts, secrets, eval set
+/content-engine/.venv/
+/content-engine/.modal/
+/content-engine/**/__pycache__/
+/content-engine/**/*.pyc
+/content-engine/**/*.egg-info/
+/content-engine/.env
+/content-engine/evals/scout_eval_set.jsonl
