@@ -284,6 +284,7 @@ Tasks AP9–AP14 in `tasks/performance-optimization-2026-05-17.md` cover the pos
 | `f5fa2e6` | Docs catch-up for SVGO + lazy ResultsView + E.1 investigation |
 | `09100a6` | **Fonts off public/ (-2.4 MB deploy) + unused font weights dropped (-8 KB CSS)** |
 | `34b0bba` | **Bundle analyzer behind `ANALYZE=true` — first treemap captured** |
+| `bb418c4` | **`sideEffects` declaration in package.json — tree-shakes content barrels. /dashboard 208→135 KB First Load JS (-35%). Dashboard chunk gzipped 80→36 KB (-55%). Single biggest bundle win of the session.** |
 
 ## Files touched this session (perf scope)
 
