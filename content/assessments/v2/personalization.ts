@@ -60,6 +60,18 @@ export const BIG_INSIGHT: Record<Tier['id'], string> = {
 };
 
 // ---------------------------------------------------------------------------
+// SIGNATURE INSIGHT — the memorable line that travels with the report.
+// One sentence, two-clause structure. Treated as a distinct visual
+// element on both surfaces (italic display serif on parchment with a
+// hairline rule above and below). Lives between the Diagnosis and the
+// Practice Picture on screen; between ExecSummary and PracticePicture
+// in the PDF (Spec 5 — page 2.5, no number).
+// ---------------------------------------------------------------------------
+
+export const SIGNATURE_INSIGHT =
+  "Most institutions do not fail because employees refuse to use AI. They struggle because experimentation spreads faster than operational standards.";
+
+// ---------------------------------------------------------------------------
 // MATURITY LADDER — six named rungs from AI Curiosity through
 // Institutional Advantage. The four scoring tiers map to rungs 1, 2,
 // 3, and 5 (rungs 4 and 6 are aspirational and not directly measured

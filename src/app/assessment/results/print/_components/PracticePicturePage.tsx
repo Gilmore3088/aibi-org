@@ -1,5 +1,5 @@
 import type { Tier } from '@content/assessments/v2/scoring';
-import { PRACTICE_PICTURE } from '@content/assessments/v2/personalization';
+import { PRACTICE_PICTURE, SIGNATURE_INSIGHT } from '@content/assessments/v2/personalization';
 
 interface PracticePicturePageProps {
   readonly tierId: Tier['id'];
@@ -17,12 +17,36 @@ export function PracticePicturePage({ tierId }: PracticePicturePageProps) {
   return (
     <article className="pdf-page" data-pdf-page="practice-picture">
       <p className="pdf-eyebrow">What this looks like in practice</p>
-      <h2 className="pdf-h2" style={{ marginTop: '0.2in' }}>
+
+      <figure
+        style={{
+          marginTop: '0.25in',
+          borderTop: '0.5pt solid var(--color-ink)',
+          borderBottom: '0.5pt solid var(--color-ink)',
+          padding: '0.22in 0',
+        }}
+      >
+        <p
+          style={{
+            fontFamily: 'var(--font-serif)',
+            fontStyle: 'italic',
+            fontSize: '13.5pt',
+            lineHeight: 1.45,
+            color: 'var(--color-ink)',
+            margin: 0,
+            maxWidth: '6in',
+          }}
+        >
+          {SIGNATURE_INSIGHT}
+        </p>
+      </figure>
+
+      <h2 className="pdf-h2" style={{ marginTop: '0.3in' }}>
         How this shows up inside the bank.
       </h2>
       <p
         className="pdf-body"
-        style={{ marginTop: '0.2in', fontSize: '10.5pt', maxWidth: '6in' }}
+        style={{ marginTop: '0.18in', fontSize: '10.5pt', maxWidth: '6in' }}
       >
         Most institutions at your stage share a few patterns by role.
         Find your role first — the rest of the report is keyed to the

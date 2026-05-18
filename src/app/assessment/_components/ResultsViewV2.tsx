@@ -11,6 +11,7 @@ import { StarterArtifactCard } from './StarterArtifactCard';
 import { StarterPrompt } from './StarterPrompt';
 import { PracticePicture } from './PracticePicture';
 import { MaturityLadder } from './MaturityLadder';
+import { SignatureInsight } from './SignatureInsight';
 import { getStarterArtifact } from '@content/assessments/v2/starter-artifacts';
 import {
   PERSONAS,
@@ -150,8 +151,12 @@ export function ResultsViewV2({
             <ScoreRing score={score} minScore={12} maxScore={48} colorVar={tier.colorVar} label={tier.label} />
           </div>
         </div>
-        <ContinueLink to="section-1b" label="What this looks like in practice" />
+        <ContinueLink to="section-1a" label="What this looks like in practice" />
       </section>
+
+      {/* SECTION 1a — Signature insight (callout that travels with the report) */}
+      <SectionAnchor id="section-1a" />
+      <SignatureInsight />
 
       {/* SECTION 1b — Practice picture (recognition by role) */}
       <SectionAnchor id="section-1b" />
