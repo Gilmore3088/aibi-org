@@ -117,6 +117,12 @@ const DEFAULT_DESCRIPTION =
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
+  // Every page becomes self-canonical by default (relative '/' resolves
+  // against metadataBase + the current request path). Pages that need a
+  // different canonical override this in their own metadata export.
+  alternates: {
+    canonical: '/',
+  },
   title: {
     default: `${BRAND.name} — ${BRAND.tagline}`,
     template: `%s — ${BRAND.name}`,
