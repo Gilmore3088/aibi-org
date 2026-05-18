@@ -37,6 +37,12 @@ export interface MarketingHero {
   /** Optional sub-title in italic serif under the H1. */
   readonly tagline?: string;
   readonly lede?: ReactNode;
+  /**
+   * Optional pre-rendered lede (mirror of titleNode but for the
+   * paragraph below the H1). Same purpose: get the LCP element off
+   * the font-load critical path on the homepage.
+   */
+  readonly ledeNode?: ReactNode;
   readonly primaryCta?: { readonly href: string; readonly label: string };
   readonly secondaryCta?: { readonly href: string; readonly label: string };
   /** Optional aside content (marginalia, quote, founder card). */
@@ -90,10 +96,14 @@ export function MarketingPage({ hero, kpis, closing, children, className }: Mark
             {hero.tagline && (
               <p className="font-serif italic text-body-lg text-terra mt-s4">{hero.tagline}</p>
             )}
-            {hero.lede && (
-              <p className="text-body-lg text-ink/80 leading-relaxed mt-s5 max-w-narrow">
-                {hero.lede}
-              </p>
+            {hero.ledeNode ? (
+              <div className="mt-s5 max-w-narrow">{hero.ledeNode}</div>
+            ) : (
+              hero.lede && (
+                <p className="text-body-lg text-ink/80 leading-relaxed mt-s5 max-w-narrow">
+                  {hero.lede}
+                </p>
+              )
             )}
             {(hero.primaryCta || hero.secondaryCta) && (
               <div className="mt-s8 flex flex-wrap items-center gap-s6">
