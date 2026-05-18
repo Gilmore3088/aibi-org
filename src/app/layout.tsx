@@ -39,9 +39,13 @@ const CHROMELESS_PATHS: readonly string[] = [
 // blocking the LCP element (the H1 in Newsreader) by competing for the
 // font network budget. Cormorant SC stays because tokens.css's
 // --font-serif-sc still maps to it for small-caps surfaces.
+// 2026-05-17 perf: dropped weights 500/600/700 — every `.font-serif-sc`
+// usage in src/ inherits the default 400 weight (no font-bold / font-medium
+// utilities applied). Cuts ~3 KB of @font-face declarations from the
+// shared layout CSS (18 declarations × 6 unicode subsets).
 const cormorantSC = Cormorant_SC({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
+  weight: ['400'],
   variable: '--font-cormorant-sc',
   display: 'swap',
 });
@@ -101,9 +105,12 @@ const newsreaderHeavy = Newsreader({
 // We alias it via tokens-ledger.css's `--ledger-sans → var(--font-geist)`.
 // To keep the variable name `--font-geist` (referenced in tokens-ledger.css),
 // we re-export GeistSans's variable under that name on the body class.
+// 2026-05-17 perf: dropped weight 500 — no `font-mono font-medium` usage
+// in src/. Weights 400 (default) and 600 (font-semibold on mono buttons,
+// kicker labels, plan markers) cover every observed usage.
 const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
-  weight: ['400', '500', '600'],
+  weight: ['400', '600'],
   variable: '--font-jetbrains-mono',
   display: 'swap',
 });
