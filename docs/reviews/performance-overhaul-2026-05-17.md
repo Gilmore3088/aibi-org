@@ -278,6 +278,9 @@ Tasks AP9–AP14 in `tasks/performance-optimization-2026-05-17.md` cover the pos
 | `13e7f65` | Wave A bundled with In-Depth completion-detection dashboard fix |
 | `73b325f` | Docs catch-up for Wave A |
 | `3f92c4f` | **Wave A+ — Supabase JS off marketing critical path (-64 KB First Load JS)** |
+| `fe3bd48` | **SVGO hero — Satori mask/<g> scaffolding removed (-10 KB inline HTML)** |
+| `8039fc6` | Docs catch-up for Wave A+ |
+| `4f61dad` | **Lazy-load ResultsViewV2 on /assessment (-21 KB First Load JS)** |
 
 ## Files touched this session (perf scope)
 
