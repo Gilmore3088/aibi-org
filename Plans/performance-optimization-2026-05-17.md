@@ -15,15 +15,18 @@ brand stack.
 
 ## Where we are (start of plan)
 
-| Metric | Baseline (2026-05-17 AM) | Current (2026-05-17 PM) |
-|--------|-------|-------|
-| Performance | 89 | **92** |
-| LCP (Lighthouse) | 3.8s | **3.3s** |
-| LCP (real users via Playwright unthrottled) | ~440ms | ~440ms |
-| FCP | 0.9s | 0.9s |
-| TBT | 0ms | 0ms |
-| CLS | 0 | 0 |
-| Total page weight | 599 KiB | 508 KiB (-91) |
+| Metric | Baseline (2026-05-17 AM) | Current (2026-05-17 PM) | Post-Wave A+ (2026-05-17 evening) |
+|--------|-------|-------|-------|
+| Performance | 89 | 92 | **TBD (re-measure pending)** |
+| LCP (Lighthouse) | 3.8s | 3.3s | **TBD** |
+| LCP (real users via Playwright unthrottled) | ~440ms | ~440ms | ~440ms (no regression expected) |
+| FCP | 0.9s | 0.9s | TBD |
+| TBT | 0ms | 0ms | TBD |
+| CLS | 0 | 0 | TBD |
+| Total page weight | 599 KiB | 508 KiB (-91) | TBD |
+| Homepage First Load JS | 165 KB | 165 KB | **101 KB (-64 KB, -39%)** |
+| /assessment First Load JS | 190 KB | 190 KB | **127 KB (-63 KB, -33%)** |
+| /results/[id] First Load JS | 174 KB | 174 KB | **111 KB (-63 KB, -36%)** |
 
 Real-user LCP is already great. Lighthouse synthetic 4G shows 3.3s
 because **the page is network-bound at simulated bandwidth** — 508 KB
@@ -45,6 +48,7 @@ Five workstreams, ranked by impact ÷ risk:
 | 3 | Drop Cormorant SC, use Geist tracked-uppercase | ~50 KB fonts | Small-caps surfaces become tracked sans | **Deferred** (Wave C — brand decision) |
 | 4 | `preload: false` on heavy Newsreader weights | 0 KB on disk; frees critical path | None | **Shipped (Wave A, `13e7f65`)** |
 | 5 | Vercel Early Hints for Newsreader 400 woff2 | 100-300ms latency | None | **Pending verification** (Wave B) |
+| 6 | **Drop Supabase JS SDK from marketing routes** | **~64 KB JS wire / ~230 KB raw** | None | **Shipped (Wave A+, `3f92c4f`)** — biggest single win |
 
 ## Already shipped this session
 
@@ -56,6 +60,7 @@ Five workstreams, ranked by impact ÷ risk:
 | D | Reverted `display: optional` (no measurable Lighthouse benefit) | Brand preserved | `eb13838` |
 | E | Reverted lede SVG + combined hero SVG (regressed FCP, no LCP gain) | Net negative experiments removed | `b6ca19d`, `8f2df9c` |
 | F | **Wave A** — ROIDossier code-split + Newsreader split into hero (400 + italic, preload) and heavy (500/600/700, no preload, no italic) | -3 italic font files; ROI calculator JS deferred below-the-fold | `13e7f65` |
+| G | **Wave A+** — Drop Supabase JS SDK from marketing routes. HomeContextStrip → async server component. AuthDropdown signOut → server action. EmailGate / PdfDownloadButton → fetch `/api/auth/me`. SignupModal magic link → server action. | **-64 KB First Load JS across every marketing route** (home, assessment, results, about, security, education, …) | `3f92c4f` |
 
 Five Lighthouse audit reports document each attempt — see
 [`docs/reviews/performance-overhaul-2026-05-17.md`](../docs/reviews/performance-overhaul-2026-05-17.md)
