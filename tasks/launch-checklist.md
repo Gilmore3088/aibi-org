@@ -573,11 +573,11 @@ post-conference launch email going out. Each item is sized to take
 
 ## §18. Bug fixes (468–477)
 
-- [ ] 468. Fix `/api/assessment/pdf/warm` libnss3.so missing on Vercel serverless
+- [x] 468. Fix `/api/assessment/pdf/warm` libnss3.so missing on Vercel serverless — shipped via `@sparticuz/chromium` v148 bump (`399e646`) + `src/lib/pdf/generate.ts` shell-headless rewrite on main 2026-05-18. Prod smoke confirmation pending.
 - [ ] 469. Investigate +alias test rows in auth.users; clean up if any remain
 - [x] 470. Decide if COMING_SOON env var dead code; remove if so — **NOT dead.** Actively used in `src/middleware.ts:31` and `src/app/coming-soon/page.tsx` for the takedown feature. Keep.
 - [ ] 471. Audit duplicate `00011_` migration files; rename to break collision — **AUDITED 2026-05-17:** Both migrations exist (`00011_activity_responses_12_modules.sql` from 2026-05-04 + `00011_readiness_dimension_columns.sql` from 2026-04-28). They touch different tables (`activity_responses` vs `user_profiles`) with no cross-dependency, so the lexical-order ambiguity is bookkeeping noise only. **DO NOT rename retroactively** — both have been applied to production Supabase; renaming the file would make Supabase migration runner think there's a pending migration. Defer to a future controlled migration window where it can be handled carefully (or leave as-is — purely cosmetic).
-- [ ] 472. Cherry-pick PR #44 migrations (00028, 00029, 00030) into git from backup tag
+- [x] 472. Cherry-pick PR #44 migrations (00028, 00029, 00030) into git from backup tag — **AUDITED 2026-05-18:** All three migrations already on main via the AiBI-P → Foundation rename phases (`c667afd` Phase 2 = `00028`, `1b41e34` Phase 7 = `00029`, `6a96297` collision-break = `00030`). Different code path than PR #44 but same migration content. No cherry-pick needed.
 - [ ] 473. Verify no test data in production auth.users
 - [ ] 474. Verify no test data in production course_enrollments
 - [ ] 475. Verify production Stripe products renamed to canonical AiBI-Foundation
