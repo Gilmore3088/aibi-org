@@ -1,4 +1,7 @@
+'use client';
+
 import Link from 'next/link';
+import { useState } from 'react';
 import { TOOLS, type CurriculumTool } from '@content/curriculum/tools';
 import { AI_SKILLS, type AiSkillDept } from '@content/curriculum/ai-skills';
 import { AI_AGENTS, type AiAgentDept } from '@content/curriculum/ai-agents';
@@ -90,6 +93,11 @@ export function InteractiveSkillsPreview({
   heading = 'Learn these capabilities in our Foundation course.',
   subhead = 'Models, prompts, skills, agents — and the judgment to use them inside a regulated institution.',
 }: InteractiveSkillsPreviewProps = {}) {
+  // Desktop-only state — drives the tab+panel layout at lg:+. The
+  // mobile/tablet accordion below uses native <details> with no JS.
+  const [activeId, setActiveId] = useState<Capability['id']>(CAPABILITIES[0].id);
+  const active = CAPABILITIES.find((c) => c.id === activeId) ?? CAPABILITIES[0];
+
   return (
     <section className="px-s7 py-s12 md:py-s14 bg-linen border-y border-hairline">
       <div className="max-w-wide mx-auto">
@@ -114,10 +122,11 @@ export function InteractiveSkillsPreview({
           </Link>
         </div>
 
-        {/* Accordion — each capability is a <details> with the panel content
-            inline. Native HTML, full keyboard a11y, no JS state. Models is
-            open by default; the rest start collapsed. Multi-open allowed. */}
-        <ul className="border-y border-hairline divide-y divide-hairline">
+        {/* MOBILE + TABLET (< lg / < 1024px) — vertical accordion.
+            Each capability is a native <details> with its panel inline.
+            No JS state, full keyboard a11y for free. Models open by default;
+            multi-open allowed. */}
+        <ul className="lg:hidden border-y border-hairline divide-y divide-hairline">
           {CAPABILITIES.map((cap, index) => (
             <li key={cap.id}>
               <details className="group" open={index === 0}>
@@ -160,6 +169,77 @@ export function InteractiveSkillsPreview({
             </li>
           ))}
         </ul>
+
+        {/* DESKTOP (lg:+ / ≥ 1024px) — editorial 2-col: tab rail on left,
+            active panel on right. The rail shows all four capability titles
+            at a glance with the active one's subtitle expanding inline. */}
+        <div className="hidden lg:grid lg:grid-cols-[minmax(0,0.62fr)_minmax(0,1fr)] gap-s8">
+          <ul
+            role="tablist"
+            aria-label="Capability categories"
+            className="border-y border-hairline divide-y divide-hairline"
+          >
+            {CAPABILITIES.map((cap, index) => {
+              const isActive = cap.id === activeId;
+              return (
+                <li key={cap.id} role="presentation" className="relative">
+                  {isActive && (
+                    <span
+                      aria-hidden="true"
+                      className="pointer-events-none absolute inset-x-0 -inset-y-px border border-terra"
+                    />
+                  )}
+                  <button
+                    type="button"
+                    role="tab"
+                    aria-selected={isActive}
+                    aria-controls="capability-panel"
+                    onClick={() => setActiveId(cap.id)}
+                    className={`relative w-full text-left px-s6 py-s6 grid grid-cols-[3rem_1fr] gap-s4 transition-colors ${
+                      isActive ? 'bg-parch/40' : 'hover:bg-parch/30'
+                    }`}
+                  >
+                    <span
+                      aria-hidden="true"
+                      className={`font-mono text-mono-sm tabular-nums pt-s1 transition-colors ${
+                        isActive ? 'text-terra' : 'text-ink/30'
+                      }`}
+                    >
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                    <span className="block">
+                      <span className="block font-serif text-display-md text-ink leading-tight">
+                        {cap.title}
+                      </span>
+                      <span
+                        className={`block font-serif italic text-body-sm leading-snug overflow-hidden transition-all duration-300 ${
+                          isActive
+                            ? 'mt-s3 text-slate max-h-32 opacity-100'
+                            : 'mt-0 max-h-0 opacity-0'
+                        }`}
+                      >
+                        {cap.subtitle}
+                      </span>
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+
+          <div
+            id="capability-panel"
+            role="tabpanel"
+            key={active.id}
+            aria-live="polite"
+            className="animate-[fadeIn_220ms_ease-out]"
+          >
+            {active.id === 'models' && <PlatformsPanel />}
+            {active.id === 'prompts' && <PromptsPanel />}
+            {active.id === 'skills' && <SkillsPanel />}
+            {active.id === 'agents' && <AgentsPanel />}
+          </div>
+        </div>
       </div>
     </section>
   );
