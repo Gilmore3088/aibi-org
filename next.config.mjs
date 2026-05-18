@@ -1,4 +1,14 @@
 import createMDX from '@next/mdx';
+import bundleAnalyzer from '@next/bundle-analyzer';
+
+// Bundle analyzer — runs only when ANALYZE=true.
+//   ANALYZE=true npm run build
+// Opens an interactive treemap (.next/analyze/*.html) breaking down
+// the server + client + edge bundles by package. Useful for catching
+// new heavy dependencies before they ship.
+const withBundleAnalyzer = bundleAnalyzer({
+  enabled: process.env.ANALYZE === 'true',
+});
 
 // Production guard: SKIP_MAILERLITE=true must never reach prod, or every
 // real user opt-in silently skips the MailerLite call and the nurture
@@ -174,4 +184,4 @@ const nextConfig = {
   },
 };
 
-export default withMDX(nextConfig);
+export default withBundleAnalyzer(withMDX(nextConfig));
