@@ -115,7 +115,11 @@ const jetbrainsMono = JetBrains_Mono({
   display: 'swap',
 });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? `https://${BRAND.domains.primary}`;
+// Apex `aibankinginstitute.com` 301s to `www.aibankinginstitute.com` at the
+// edge (Vercel + DNS), so the www subdomain is the canonical host. Default
+// to it explicitly here — the BRAND.domains.primary value is the apex used
+// in display copy / email addresses and is NOT the canonical web origin.
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? `https://www.${BRAND.domains.primary}`;
 const DEFAULT_DESCRIPTION =
   'The AI Banking Institute helps community banks and credit unions build AI proficiency through assessment, certification, and curriculum aligned with SR 11-7, TPRM, ECOA / Reg B, and the AIEOG AI Lexicon.';
 

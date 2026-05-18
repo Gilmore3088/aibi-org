@@ -498,10 +498,10 @@ post-conference launch email going out. Each item is sized to take
 
 - [ ] 403. Unique <title> per page, ≤60 chars
 - [ ] 404. Unique <meta description> per page, ≤160 chars
-- [ ] 405. Canonical URLs set (avoid www/apex duplication)
-- [x] 406. sitemap.xml lists every public route — verified at `https://www.aibankinginstitute.com/sitemap.xml`
+- [x] 405. Canonical URLs set (avoid www/apex duplication) — `alternates.canonical` added to 7 marketing pages + `metadataBase` defaulted to www subdomain (`feature/seo-audit-fixes-2026-05-18`). See `docs/reviews/seo-audit-2026-05-18.md`.
+- [x] 406. sitemap.xml lists every public route — verified + fixed leak. Removed `/courses/foundation/program` (auth-gated, 307→/auth/login), added `/assessment/in-depth` and `/courses/foundation/program/purchase`. `feature/seo-audit-fixes-2026-05-18`.
 - [x] 407. robots.txt allows public, disallows /api, /dashboard, /auth/callback — verified at `/robots.txt`
-- [ ] 408. Open Graph image 1200x630 with brand
+- [x] 408. Open Graph image 1200x630 with brand — `/opengraph-image` route resolves on every page (fallback). Per-page `og:url` deferred — see S6 in `docs/reviews/seo-audit-2026-05-18.md`.
 - [ ] 409. Schema.org Organization JSON-LD on homepage
 - [ ] 410. Schema.org Course JSON-LD on `/courses/foundation`
 - [ ] 411. Submit sitemap to Google Search Console

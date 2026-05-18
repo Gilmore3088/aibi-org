@@ -10,6 +10,7 @@ import {
 import { CTAS } from "@content/copy";
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/for-institutions' },
   title: "For Institutions | The AI Banking Institute",
   description:
     "Three ways to bring AiBI capability into your bank — without buying a platform. Coached cohort · institution-wide program · leadership advisory.",

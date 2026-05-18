@@ -13,6 +13,7 @@ const ROUTES = [
   { path: '/', priority: 1.0, changeFrequency: 'weekly' as const },
   { path: '/assessment/start', priority: 0.95, changeFrequency: 'monthly' as const },
   { path: '/assessment', priority: 0.75, changeFrequency: 'monthly' as const },
+  { path: '/assessment/in-depth', priority: 0.9, changeFrequency: 'monthly' as const },
   { path: '/education', priority: 0.9, changeFrequency: 'monthly' as const },
   { path: '/for-institutions', priority: 0.9, changeFrequency: 'monthly' as const },
   { path: '/for-institutions/advisory', priority: 0.75, changeFrequency: 'monthly' as const },
@@ -21,7 +22,15 @@ const ROUTES = [
     priority: 0.7,
     changeFrequency: 'monthly' as const,
   },
-  { path: '/courses/foundation/program', priority: 0.85, changeFrequency: 'monthly' as const },
+  // Foundation course purchase page — public (no auth gate), the Stripe checkout
+  // surface. /courses/foundation/program itself is auth-gated (307 → /auth/login)
+  // and is intentionally excluded so search engines don't index login redirects.
+  // /courses/foundation-preview is also excluded — it carries `robots: noindex`.
+  {
+    path: '/courses/foundation/program/purchase',
+    priority: 0.85,
+    changeFrequency: 'monthly' as const,
+  },
   { path: '/security', priority: 0.85, changeFrequency: 'monthly' as const },
   { path: '/about', priority: 0.75, changeFrequency: 'monthly' as const },
   { path: '/research', priority: 0.7, changeFrequency: 'weekly' as const },

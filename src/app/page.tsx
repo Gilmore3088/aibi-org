@@ -7,6 +7,7 @@ import { HeroHeadlineSvg } from "@/components/_generated/HeroHeadlineSvg";
 import { BRAND } from "@content/copy";
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/' },
   title: `${BRAND.name} — ${BRAND.tagline}`,
   description:
     "An education company for community banks and credit unions. Begin with a free twelve-question readiness diagnostic; deepen the diagnosis with the In-Depth Assessment; earn the AiBI-Foundation credential when you are ready.",
