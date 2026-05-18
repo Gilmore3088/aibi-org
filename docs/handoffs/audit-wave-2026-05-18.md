@@ -46,6 +46,19 @@ Three parallel PRs landed from your side during the session and are accounted fo
 
 ---
 
+## GitHub issues for the outstanding queue
+
+Discrete follow-up issues created this session, all labelled `audit-followup`:
+
+- **[#177](https://github.com/Gilmore3088/aibi-org/issues/177)** — SEO follow-ups (per-route `og:url`, `/assessment` metadata, Vercel `NEXT_PUBLIC_SITE_URL`, gitleaks CI)
+- **[#178](https://github.com/Gilmore3088/aibi-org/issues/178)** — Security follow-ups (§16.448 RLS, §16.450 pen-test, §16.451 disclosure body)
+- **[#179](https://github.com/Gilmore3088/aibi-org/issues/179)** — Lighthouse follow-ups (Ledger token migration, Newsreader subset, §13.392 authed CWV)
+- **[#180](https://github.com/Gilmore3088/aibi-org/issues/180)** — §18.468 prod-smoke confirmation for PDF fix
+
+The existing per-section launch-checklist issues (#132–#162) still hold the canonical lists for §1–§20.
+
+---
+
 ## What is NOT done — outstanding queue
 
 ### Code-shaped, autonomous-safe (some blockers)
