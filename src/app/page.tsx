@@ -28,7 +28,7 @@ export default function HomePage() {
         // inline-SVG vector paths instead of font-dependent text.
         title: (
           <>
-            Turning Bankers into <em className="text-terra">Builders.</em>
+            Turning Bankers into <em className="text-ledger-accent">Builders.</em>
           </>
         ),
         titleNode: <HeroHeadlineSvg className="block w-full max-w-[1500px]" />,
