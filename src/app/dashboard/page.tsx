@@ -183,7 +183,6 @@ export default function DashboardPage() {
       href: '/dashboard/toolbox',
       lock: stepEnrolled ? undefined : '— with Foundation',
     },
-    { label: 'Account', href: '/account' },
   ];
 
   return (
@@ -280,7 +279,7 @@ export default function DashboardPage() {
               <h2>
                 What you can <em>do</em> today.
               </h2>
-              <Link href="/courses/foundation/program" className="more">
+              <Link href="/courses/foundation" className="more">
                 Tour the Institute →
               </Link>
             </header>
@@ -379,9 +378,6 @@ export default function DashboardPage() {
               <h2>
                 Today&apos;s six-minute <em>rep.</em>
               </h2>
-              <Link href="/practice" className="more">
-                See all reps →
-              </Link>
             </header>
 
             <article className="rep-card">
@@ -408,14 +404,14 @@ export default function DashboardPage() {
 
               <div className="demo">
                 <span className="lbl">
-                  <b>Risky</b> · what the banker first typed
+                  <b>Risky</b> · example of a prompt you&apos;d want to fix
                 </span>
                 <div className="prompt risky">
                   &ldquo;Look at <mark>John D. Holt&apos;s</mark> account, <mark>acct 4471-2208</mark>, his last 6 months of statements. He has <mark>$184,209 in deposits</mark>. Should we approve his <mark>$240k HELOC</mark>?&rdquo;
                 </div>
                 <div className="arrow-down">↓</div>
                 <span className="lbl">
-                  <b className="safe">Safe</b> · what the rep teaches them to send
+                  <b className="safe">Safe</b> · the same question, banker-safe
                 </span>
                 <div className="prompt safe">
                   &ldquo;A member has six months of deposit history averaging <mark className="green">about $30k/month</mark>. They are requesting a HELOC of roughly <mark className="green">8× monthly deposits</mark>. What three questions should the underwriter ask before approving?&rdquo;
@@ -493,12 +489,12 @@ export default function DashboardPage() {
 
             <article className="found-card">
               <div className="body">
-                <span className="lab">AiBI-Foundation · 8-week cohort</span>
+                <span className="lab">AiBI-Foundation · Self-paced course</span>
                 <h3>
                   Turn the <em>skill</em> into operating capability.
                 </h3>
                 <p className="copy">
-                  Twelve modules, taught with the same examiner-aware rigor as our research desk. Role-specific tracks for executives, risk, operations, and IT.
+                  Twelve modules of structured exercises, working artifacts, and a banker-tested prompt library — taught with the same examiner-aware rigor as our research desk. Aligned with SR 11-7 and TPRM.
                 </p>
                 <div className="ctas">
                   <Link href="/courses/foundation/program" className="btn btn-paper">
@@ -513,7 +509,7 @@ export default function DashboardPage() {
                 <div className="price">
                   <div className="n">$295</div>
                   <div className="l">
-                    <b>Per seat · 8-week cohort</b>
+                    <b>Per seat · Lifetime access</b>
                     Institutional pricing from $199/seat for 10+.
                   </div>
                 </div>
@@ -527,13 +523,7 @@ export default function DashboardPage() {
                     <line x1="6" y1="14" x2="26" y2="14" />
                     <line x1="10" y1="20" x2="22" y2="20" opacity="0.5" />
                   </svg>
-                } name={<>12 video <em>modules</em></>} meta="8 weeks" />
-                <FeatureRow svg={
-                  <svg viewBox="0 0 32 32" fill="none" stroke="#B5862A" strokeWidth="1.4" strokeLinecap="round">
-                    <circle cx="16" cy="16" r="11" />
-                    <path d="M11 16 L15 19 L21 12" strokeWidth="1.8" />
-                  </svg>
-                } name={<>Banker-safe <em>rep library</em></>} meta="200+ reps" />
+                } name={<>12 structured <em>modules</em></>} meta="Self-paced" />
                 <FeatureRow svg={
                   <svg viewBox="0 0 32 32" fill="none" stroke="#B5862A" strokeWidth="1.4" strokeLinejoin="round">
                     <path d="M8 8 L24 8 L24 28 L8 28 Z" fill="rgba(181,134,42,0.18)" />
@@ -541,22 +531,26 @@ export default function DashboardPage() {
                     <line x1="12" y1="18" x2="20" y2="18" />
                     <line x1="12" y1="22" x2="16" y2="22" />
                   </svg>
-                } name={<>Templates &amp; <em>prompt library</em></>} meta="40 items" />
+                } name={<>Banker-tested <em>prompt library</em></>} meta="30+ prompts" />
+                <FeatureRow svg={
+                  <svg viewBox="0 0 32 32" fill="none" stroke="#B5862A" strokeWidth="1.4" strokeLinecap="round">
+                    <circle cx="16" cy="16" r="11" />
+                    <path d="M11 16 L15 19 L21 12" strokeWidth="1.8" />
+                  </svg>
+                } name={<>Hands-on <em>activities</em></>} meta="In every module" />
+                <FeatureRow svg={
+                  <svg viewBox="0 0 32 32" fill="none" stroke="#B5862A" strokeWidth="1.4" strokeLinejoin="round">
+                    <rect x="6" y="10" width="20" height="16" fill="rgba(181,134,42,0.18)" />
+                    <path d="M10 14 L22 14 M10 18 L18 18 M10 22 L20 22" opacity="0.6" />
+                  </svg>
+                } name={<>Working <em>artifacts</em></>} meta="PDFs + worksheets" />
                 <FeatureRow svg={
                   <svg viewBox="0 0 32 32" fill="none" stroke="#B5862A" strokeWidth="1.4">
                     <circle cx="16" cy="14" r="6" fill="rgba(181,134,42,0.20)" />
                     <path d="M10 24 L10 28 M22 24 L22 28 M16 20 L16 26" />
                     <circle cx="16" cy="14" r="2" fill="#B5862A" stroke="none" />
                   </svg>
-                } name={<>Certificate <em>track</em></>} meta="Verified" />
-                <FeatureRow svg={
-                  <svg viewBox="0 0 32 32" fill="none" stroke="#B5862A" strokeWidth="1.4" strokeLinecap="round">
-                    <circle cx="11" cy="14" r="4" />
-                    <circle cx="21" cy="14" r="4" />
-                    <path d="M5 26 C 5 22 8 20 11 20 C 14 20 17 22 17 26" />
-                    <path d="M15 26 C 15 22 18 20 21 20 C 24 20 27 22 27 26" />
-                  </svg>
-                } name={<>Cohort <em>community</em></>} meta="Live calls" />
+                } name={<>Verified <em>certificate</em></>} meta="On completion" />
               </div>
             </article>
           </div>
@@ -576,25 +570,24 @@ export default function DashboardPage() {
 
             <div className="res-grid">
               <ResourceCard
-                href="/resources/safe-rule-card"
-                tag="Frontline card"
-                title={<>The <em>SAFE</em> Rule card.</>}
-                meta="PDF · 1 page"
+                href="/resources/the-skill-not-the-prompt"
+                tag="Briefing"
+                title={<>The <em>skill</em>, not the prompt.</>}
+                meta="Briefing · 8 min read"
                 svg={
                   <svg viewBox="0 0 48 48" fill="none" stroke="#0E1B2D" strokeWidth="1.5" strokeLinejoin="round">
                     <rect x="10" y="6" width="28" height="36" fill="rgba(181,134,42,0.12)" />
                     <line x1="14" y1="14" x2="34" y2="14" />
                     <line x1="14" y1="20" x2="28" y2="20" opacity="0.6" />
                     <line x1="14" y1="26" x2="32" y2="26" opacity="0.6" />
-                    <text x="24" y="38" textAnchor="middle" fontFamily="Newsreader,serif" fontStyle="italic" fontSize="10" fill="#B5862A" fontWeight="500">SAFE</text>
                   </svg>
                 }
               />
               <ResourceCard
-                href="/resources/use-case-inventory"
-                tag="Inventory"
-                title={<>AI use-case <em>inventory.</em></>}
-                meta="XLSX · 12 sheets"
+                href="/resources/six-ways-ai-fails-in-banking"
+                tag="Briefing"
+                title={<>Six ways AI <em>fails</em> in banking.</>}
+                meta="Briefing · 10 min read"
                 svg={
                   <svg viewBox="0 0 48 48" fill="none" stroke="#0E1B2D" strokeWidth="1.5" strokeLinejoin="round">
                     <rect x="6" y="10" width="36" height="28" fill="rgba(181,134,42,0.10)" />
@@ -608,10 +601,10 @@ export default function DashboardPage() {
                 }
               />
               <ResourceCard
-                href="/resources/meeting-summary-prompt"
-                tag="Prompt"
-                title={<>Meeting <em>summary</em> prompt.</>}
-                meta="Copy-paste"
+                href="/resources/ai-governance-without-the-jargon"
+                tag="Briefing"
+                title={<>AI governance, <em>without</em> the jargon.</>}
+                meta="Briefing · 12 min read"
                 svg={
                   <svg viewBox="0 0 48 48" fill="none" stroke="#0E1B2D" strokeWidth="1.5" strokeLinejoin="round">
                     <path d="M8 10 L40 10 L40 32 L26 32 L18 38 L18 32 L8 32 Z" fill="rgba(181,134,42,0.12)" />
@@ -624,9 +617,9 @@ export default function DashboardPage() {
               />
               <ResourceCard
                 href="/research"
-                tag="Newsletter"
+                tag="All research"
                 title={<>The AI Banking <em>Brief.</em></>}
-                meta="Fortnightly"
+                meta="Six briefings + more"
                 svg={
                   <svg viewBox="0 0 48 48" fill="none" stroke="#0E1B2D" strokeWidth="1.5" strokeLinejoin="round">
                     <rect x="8" y="6" width="32" height="36" fill="rgba(181,134,42,0.10)" />
@@ -663,10 +656,10 @@ export default function DashboardPage() {
                 ))}
               </div>
               <div className="cta-col">
-                <Link href="/resources/safe-rule-card" className="btn btn-primary">
-                  Open SAFE card <span className="arrow">→</span>
+                <Link href="/resources/the-skill-not-the-prompt" className="btn btn-primary">
+                  Read the briefing <span className="arrow">→</span>
                 </Link>
-                <span className="meta">PDF · 1 page · Print-ready</span>
+                <span className="meta">The skill, not the prompt</span>
               </div>
             </article>
           </div>
