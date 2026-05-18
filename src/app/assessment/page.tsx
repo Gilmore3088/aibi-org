@@ -48,7 +48,10 @@ export default function AssessmentPage() {
   useEffect(() => {
     if (state.phase === 'results' && capturedEmail) {
       requestAnimationFrame(() => {
-        window.scrollTo({ top: 0, behavior: 'instant' });
+        // Legacy two-arg form (always synchronous, always typed across lib
+        // versions). The newer { behavior: 'instant' } option may not be
+        // in ScrollBehavior on older lib.dom.d.ts versions used by CI.
+        window.scrollTo(0, 0);
       });
     }
   }, [state.phase, capturedEmail]);
