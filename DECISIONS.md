@@ -492,3 +492,32 @@ credentials launching soon: AiBI-S (Specialist) and AiBI-L (Leader)" on
 `/program`. Both removed. AiBI-S/L still exist in the long-term roadmap;
 they just don't appear on production surfaces until they have something
 to point at.
+
+**2026-05-18 — Foundation content cleanup + LMS harness extraction shipped.**
+Six PRs merged to main (#124, #131, #127, #128, #130, #163). Captured in
+[`docs/handoffs/foundation-content-and-harness-2026-05-17.md`](./docs/handoffs/foundation-content-and-harness-2026-05-17.md).
+Three decisions worth recording for future override:
+
+1. **Foundation course's per-module rich data lives in `FOUNDATION_MODULES_META`,
+   not on the harness `CourseModule`.** Two options were on the table for the
+   B4 migration: (A) extend the harness `CourseModule` with Foundation's rich
+   fields via subtype, (B) move them to a separate keyed map. Chose B for
+   precision — the harness stays portable across courses; AiBI-S won't
+   inherit Foundation's pillar/keyOutput concepts. `CourseModule` in
+   `src/lib/lms/types.ts` is the lean shape; rich Foundation-specific data
+   in `content/courses/foundation-program/course-config.ts`. New courses
+   follow the same pattern (see `src/lib/lms/README.md`).
+
+2. **`slug` (public identity) is separated from `dbProductKey` (Stripe / Supabase
+   write key) on `CourseConfig`.** Foundation is `slug: 'foundation'`,
+   `dbProductKey: 'aibi-p'`. The legacy `'aibi-p'` value is preserved forever
+   for webhook retries and pre-rename `course_enrollments` rows; the public
+   slug is the routing identity. Don't conflate them.
+
+3. **AiBI-S harness migration deferred until AiBI-S becomes a shipping
+   product.** Originally B5+B6 in the Phase B plan. AiBI-S routes currently
+   return 404 stubs; migrating it would be speculative without product
+   constraints. When AiBI-S is real, redesign `<AISimulation>` and the
+   beat-shape with real consumers, then delete `src/lib/course-harness/`.
+   The new harness in `src/lib/lms/` is designed to absorb AiBI-S when
+   that work begins.

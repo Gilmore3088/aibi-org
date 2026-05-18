@@ -18,6 +18,42 @@
 @import "../styles/base.css";
 @import "../styles/print.css";
 
+/* ---- Newsreader fallback metrics (E.1 fix) ---------------------------
+ * Next 14.2.x's @next/font/google bundle doesn't include metric data for
+ * Newsreader, so it can't auto-generate a size-adjusted fallback family
+ * (it logs "Failed to find font override values for font `Newsreader`"
+ * four times during build). Without that fallback, the browser renders
+ * the unstyled chain (Iowan / Georgia / serif) at different metrics
+ * from Newsreader, causing a layout shift when Newsreader actually loads.
+ *
+ * Defined here manually using Newsreader's actual font tables:
+ *   ascent      950   (out of 1000 upm)
+ *   descent    -250
+ *   xHeight     514
+ *   capHeight   695
+ * over a Times New Roman base:
+ *   ascent     1825   (out of 2048 upm)
+ *   xHeight     916
+ *
+ * Computation:
+ *   size-adjust       = (514/1000) / (916/2048) ≈ 1.149 → 114.85%
+ *   ascent-override   = 950/1000 → 95.0%
+ *   descent-override  = 250/1000 → 25.0%
+ *   line-gap-override = 0%
+ *
+ * Chained into tokens.css's --font-serif so the browser uses this
+ * fallback when Newsreader is still loading. Matches the synthetic
+ * fallback Next already generates for JetBrains Mono and Geist Sans.
+ */
+@font-face {
+  font-family: 'Newsreader Fallback';
+  src: local('Times New Roman');
+  size-adjust: 114.85%;
+  ascent-override: 95.0%;
+  descent-override: 25.0%;
+  line-gap-override: 0%;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
