@@ -17,7 +17,11 @@ const config: Config = {
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./content/**/*.{md,mdx}",
+    // content/ MDX files contain narrative copy only — no className
+    // attributes. The components they import (EditorialQuote, Marginalia,
+    // etc) already get scanned via src/components/**. Including content/
+    // here added thousands of MDX lines to the JIT scan with zero new
+    // utility classes discovered. Removed 2026-05-17 (E.8.2).
   ],
   theme: {
     extend: {
