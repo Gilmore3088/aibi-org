@@ -285,7 +285,7 @@ const DEEP_DIVE_CONTENT: Record<Dimension, DimContent> = {
       headline: 'Nobody has named a workflow yet — start with one repetitive task.',
       narrative: [
         'A low score here is rarely a capability issue. It is usually that no one has been given the explicit task of identifying where AI assist would help.',
-        'The fastest unlock is to assign that task, with a deadline, to one person.',
+        'The fastest fix is to assign that task, with a deadline, to one person.',
       ],
       recommendations: [
         'Ask each department head: "What do you do every week that takes more than two hours and feels mechanical?"',
