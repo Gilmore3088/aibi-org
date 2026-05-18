@@ -40,6 +40,11 @@ import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/cl
 import type { ActivityResponse } from '@/types/course';
 import { AIPracticeSandbox } from '@/components/AIPracticeSandbox';
 import { SANDBOX_CONFIGS } from '@content/sandbox-data/foundation-program';
+import { MiniTutorialList } from '../_components/MiniTutorialList';
+import {
+  M3_TUTORIALS,
+  M7_TUTORIALS,
+} from '@content/courses/foundation-program/prompt-library';
 import { FOUNDATION_ARTIFACTS } from '@content/practice-reps/foundation-program';
 import {
   getModuleActivitySpec,
@@ -343,13 +348,29 @@ export default async function ModulePage({ params }: ModulePageParams) {
             </>
           }
           practiceContent={
-            SANDBOX_CONFIGS[moduleNum] ? (
-              <AIPracticeSandbox
-                moduleId={`aibi-p-module-${moduleNum}`}
-                product="foundation"
-                sandboxConfig={SANDBOX_CONFIGS[moduleNum]!}
-              />
-            ) : null
+            <>
+              {SANDBOX_CONFIGS[moduleNum] && (
+                <AIPracticeSandbox
+                  moduleId={`aibi-p-module-${moduleNum}`}
+                  product="foundation"
+                  sandboxConfig={SANDBOX_CONFIGS[moduleNum]!}
+                />
+              )}
+              {moduleNum === 3 && (
+                <MiniTutorialList
+                  tutorials={M3_TUTORIALS}
+                  heading="First-try tutorials"
+                  intro="Step-by-step walkthroughs for your first real banking task on each platform. Pick the one that matches what you already have access to."
+                />
+              )}
+              {moduleNum === 7 && (
+                <MiniTutorialList
+                  tutorials={M7_TUTORIALS}
+                  heading="Skill-builder tutorials"
+                  intro="Worked examples of the anatomy-of-a-skill pattern applied to common banking workflows. Open the platform you use, copy the prompt, work through the steps."
+                />
+              )}
+            </>
           }
           applyContent={
             <ModuleContentClient
