@@ -130,12 +130,33 @@ export default function DashboardPage() {
     ? AIBI_P_PRACTICE_REPS.find((rep) => !completedRepIds.includes(rep.id)) ?? dailyRep
     : dailyRep;
 
-  // Activation steps — derived from the user's actual state.
+  // Activation ladder — derived from the user's actual state. Seven rungs,
+  // each tied to real evidence in the data. The "now" badge is computed
+  // separately so only the next un-done step lights up.
   const stepAccount = Boolean(user?.email);
   const stepAssessment = Boolean(user?.readiness);
   const stepRep = completedRepIds.length > 0;
+  const stepInDepth = Boolean(assessments?.inDepth?.hasCompleted);
   const stepEnrolled = Boolean(dashboard?.enrollment);
-  const stepsComplete = [stepAccount, stepAssessment, stepRep, stepEnrolled].filter(Boolean).length;
+  const stepFirstModule =
+    (dashboard?.enrollment?.completedModules.length ?? 0) > 0;
+  const totalModules = modules.length;
+  const completedModuleCount = dashboard?.enrollment?.completedModules.length ?? 0;
+  const stepCertificate = stepEnrolled && completedModuleCount >= totalModules;
+
+  const stepsDone = [
+    stepAccount,
+    stepAssessment,
+    stepRep,
+    stepInDepth,
+    stepEnrolled,
+    stepFirstModule,
+    stepCertificate,
+  ];
+  const stepsComplete = stepsDone.filter(Boolean).length;
+  const totalSteps = stepsDone.length;
+  // Index of the first un-done step — that one renders as "now".
+  const nowIndex = stepsDone.findIndex((d) => !d);
 
   // Hero CTA pair adapts to what's most actionable next.
   let heroPrimary: { href: string; label: string };
@@ -228,23 +249,23 @@ export default function DashboardPage() {
                 </div>
               </div>
 
-              <aside className="progress" aria-label="Account setup">
-                <span className="lab">Your account · {stepsComplete} of 4 complete</span>
+              <aside className="progress" aria-label="Your path">
+                <span className="lab">Your path · {stepsComplete} of {totalSteps} complete</span>
                 <h4>
-                  Four steps to <em>activate</em> the full Institute.
+                  Seven steps to <em>activate</em> the full Institute.
                 </h4>
                 <div className="steps">
                   <ActivationStep
                     n={1}
                     done={stepAccount}
-                    now={!stepAccount}
+                    now={nowIndex === 0}
                     text="Create your account."
                     meta={stepAccount ? 'Done' : '1 min'}
                   />
                   <ActivationStep
                     n={2}
                     done={stepAssessment}
-                    now={stepAccount && !stepAssessment}
+                    now={nowIndex === 1}
                     text={
                       <>
                         Take the free <em>readiness</em> assessment.
@@ -255,16 +276,53 @@ export default function DashboardPage() {
                   <ActivationStep
                     n={3}
                     done={stepRep}
-                    now={stepAssessment && !stepRep}
+                    now={nowIndex === 2}
                     text="Try today's banker-safe rep."
                     meta={stepRep ? 'Done' : '6 min'}
                   />
                   <ActivationStep
                     n={4}
+                    done={stepInDepth}
+                    now={nowIndex === 3}
+                    text={
+                      <>
+                        Go deeper with the <em>In-Depth</em> Assessment.
+                      </>
+                    }
+                    meta={stepInDepth ? 'Done' : '$99'}
+                  />
+                  <ActivationStep
+                    n={5}
                     done={stepEnrolled}
-                    now={stepRep && !stepEnrolled}
-                    text="Enroll in AiBI-Foundation."
+                    now={nowIndex === 4}
+                    text={
+                      <>
+                        Enroll in <em>AiBI-Foundation</em>.
+                      </>
+                    }
                     meta={stepEnrolled ? 'Enrolled' : '$295'}
+                  />
+                  <ActivationStep
+                    n={6}
+                    done={stepFirstModule}
+                    now={nowIndex === 5}
+                    text="Complete your first module."
+                    meta={
+                      stepFirstModule
+                        ? `${completedModuleCount} of ${totalModules}`
+                        : 'Build the skill'
+                    }
+                  />
+                  <ActivationStep
+                    n={7}
+                    done={stepCertificate}
+                    now={nowIndex === 6}
+                    text={
+                      <>
+                        Earn your <em>Foundation</em> certificate.
+                      </>
+                    }
+                    meta={stepCertificate ? 'Verified' : `${completedModuleCount}/${totalModules}`}
                   />
                 </div>
               </aside>
