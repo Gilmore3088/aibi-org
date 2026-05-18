@@ -82,9 +82,13 @@ export default async function InDepthAssessmentPage({
             your board.
           </span>
         ),
+        primaryCta: {
+          href: "#purchase",
+          label: "Purchase In-Depth Assessment · $99",
+        },
         secondaryCta: {
           href: "/assessment",
-          label: "Or take the free 12-question version",
+          label: "Take the free 12-question version first",
         },
         divider: "hairline",
       }}
@@ -107,7 +111,7 @@ export default async function InDepthAssessmentPage({
         </Section>
       )}
       {/* Pricing + deliverables side-by-side */}
-      <Section variant="linen" padding="default" divider="none">
+      <Section id="purchase" variant="linen" padding="default" divider="none">
         <div className="grid md:grid-cols-2 -mx-s7">
           {/* Pricing tile */}
           <div className="bg-linen px-s7 py-s12 md:py-s14 md:pr-s10 border-r border-hairline flex flex-col">

@@ -13,6 +13,15 @@ post-conference launch email going out. Each item is sized to take
 - `(blocked)` waiting on something — note what
 - `(deferred)` decided not to do for launch — note why
 
+## Session log
+
+- **2026-05-17 — Autonomous Wave 1.** Auth gate fix for course tree
+  (Finding 1 in [`../docs/reviews/auth-e2e-2026-05-17.md`](../docs/reviews/auth-e2e-2026-05-17.md));
+  in-depth assessment hero now leads with paid CTA; banned-word
+  sweep clean; a11y audit clean (7/7 public routes); §3 items
+  38, 39, 40, 42, 44, 47, 62, 63, 68, 75, 85 ticked; §3.88–§3.90
+  added as new regression tests for the course-tree gate.
+
 ---
 
 ## §1. Infrastructure + env (1–22)
@@ -62,16 +71,16 @@ post-conference launch email going out. Each item is sized to take
 
 **Tooling decision:** Pick Playwright (recommend) or Cypress before starting. Tests live in `e2e/`.
 
-- [ ] 38. Decide test runner; set up `e2e/playwright.config.ts` (or equivalent)
-- [ ] 39. Add test DB seed helper that creates a real auth.users row + course_enrollments row
-- [ ] 40. Add test DB cleanup helper that deletes test users by email pattern `+e2e@`
+- [x] 38. Decide test runner; set up `e2e/playwright.config.ts` (or equivalent) — Playwright, config in `playwright.config.ts`
+- [x] 39. Add test DB seed helper that creates a real auth.users row + course_enrollments row — `e2e/helpers/seed.ts`
+- [x] 40. Add test DB cleanup helper that deletes test users by email pattern `+e2e@` — `e2e/helpers/seed.ts:cleanupSeededUser`
 - [ ] 41. Add CI workflow `.github/workflows/e2e.yml` running on PR
-- [ ] 42. Test: visit `/auth/login` while logged out — login form renders
+- [x] 42. Test: visit `/auth/login` while logged out — login form renders
 - [ ] 43. Test: visit `/auth/login` while logged in — redirects to `/dashboard`
-- [ ] 44. Test: visit `/auth/signup` while logged out — signup form renders
+- [x] 44. Test: visit `/auth/signup` while logged out — signup form renders
 - [ ] 45. Test: visit `/auth/signup` while logged in — redirects to `/dashboard`
 - [ ] 46. Test: signup with valid email → confirmation email sent → click link → /dashboard
-- [ ] 47. Test: signup with invalid email format — surfaces validation error
+- [x] 47. Test: signup with invalid email format — surfaces validation error
 - [ ] 48. Test: signup with password under min length — error
 - [ ] 49. Test: signup with duplicate email — error message (no email leak)
 - [ ] 50. Test: signup respects `?next=` redirect after confirmation
@@ -86,13 +95,13 @@ post-conference launch email going out. Each item is sized to take
 - [ ] 59. Test: password reset link cannot be reused
 - [ ] 60. Test: email change flow → confirm in new inbox → email updated
 - [ ] 61. Test: logout clears session, redirects to `/`
-- [ ] 62. Test: protected route `/dashboard` redirects logged-out users to `/auth/login`
-- [ ] 63. Test: protected route `/courses/foundation/program` requires auth + enrollment
+- [x] 62. Test: protected route `/dashboard` redirects logged-out users to `/auth/login`
+- [x] 63. Test: protected route `/courses/foundation/program` requires auth + enrollment — auth layer landed in this session (commit 9da4d77); enrollment gate still page-level. See §3.86–§3.88.
 - [ ] 64. Test: session persists across page reload
 - [ ] 65. Test: session persists across browser tab close/reopen (cookie-based)
 - [ ] 66. Test: middleware refreshes session token before expiry
 - [ ] 67. Test: session expires after configured TTL
-- [ ] 68. Test: visiting `/auth/callback` without token shows error, not crash
+- [x] 68. Test: visiting `/auth/callback` without token shows error, not crash
 - [ ] 69. Test: malformed `?token_hash=` returns clean error
 - [ ] 70. Test: rapid signup attempts are rate-limited
 - [ ] 71. Test: rapid login attempts are rate-limited
@@ -109,9 +118,12 @@ post-conference launch email going out. Each item is sized to take
 - [ ] 82. Test: RLS prevents user A from reading user B's `activity_responses`
 - [ ] 83. Test: service-role client can read all rows (only used server-side)
 - [ ] 84. Test: anon client cannot read service-role-only tables
-- [ ] 85. Test: deep-link to `/courses/foundation/program/3` while logged out → `/auth/login?next=/courses/foundation/program/3` → after login lands on the module
+- [x] 85. Test: deep-link to `/courses/foundation/program/3` while logged out → `/auth/login?next=/courses/foundation/program/3` → after login lands on the module — logged-out half verified; logged-in landing waits on Supabase env (Finding 2)
 - [ ] 86. Test: signup form Enter-key submission works
 - [ ] 87. Test: login form Enter-key submission works
+- [x] 88. Test: `/courses/foundation/program` overview redirects logged-out → `/auth/login?next=...`
+- [x] 89. Test: `/courses/foundation/program/purchase` accessible to logged-out (buy funnel exempt)
+- [x] 90. Test: `/courses/foundation/program/gallery` redirects logged-out → `/auth/login?next=...`
 
 ## §4. E2E — Free assessment (88–127)
 

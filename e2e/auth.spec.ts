@@ -81,6 +81,31 @@ test.describe('auth — protected routes (logged out)', () => {
     // Should redirect to login with the original path captured.
     await expect(page).toHaveURL(/\/auth\/login.*next=.*foundation/);
   });
+
+  test('§3.86 /courses/foundation/program overview redirects logged-out users to /auth/login', async ({
+    page,
+  }) => {
+    await page.goto('/courses/foundation/program');
+    await expect(page).toHaveURL(/\/auth\/login.*next=.*foundation/);
+  });
+
+  test('§3.87 /courses/foundation/program/purchase remains accessible to logged-out visitors (buy funnel)', async ({
+    page,
+  }) => {
+    const response = await page.goto('/courses/foundation/program/purchase');
+    // /purchase is the one exempt path in the course tree — visitors
+    // must be able to reach it without an account so they can buy and
+    // create the account afterward via the post-Stripe link.
+    expect(response?.status()).toBe(200);
+    await expect(page).toHaveURL(/\/courses\/foundation\/program\/purchase/);
+  });
+
+  test('§3.88 /courses/foundation/program/gallery redirects logged-out users to /auth/login', async ({
+    page,
+  }) => {
+    await page.goto('/courses/foundation/program/gallery');
+    await expect(page).toHaveURL(/\/auth\/login.*next=.*gallery/);
+  });
 });
 
 test.describe('auth — logged-in flows', () => {
