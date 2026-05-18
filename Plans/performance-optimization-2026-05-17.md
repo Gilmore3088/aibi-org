@@ -27,6 +27,7 @@ brand stack.
 | Homepage First Load JS | 165 KB | 165 KB | **101 KB (-64 KB, -39%)** |
 | /assessment First Load JS | 190 KB | 190 KB | **106 KB (-84 KB, -44%)** ← lazy-load ResultsViewV2 shaved another 21 KB |
 | /results/[id] First Load JS | 174 KB | 174 KB | **111 KB (-63 KB, -36%)** |
+| /dashboard First Load JS | 208 KB | 208 KB | **135 KB (-73 KB, -35%)** ← `sideEffects` declaration unlocked content-barrel tree-shaking |
 | Hero SVG inline HTML | 20.6 KB | 20.6 KB | **10.4 KB (-49%)** via SVGO |
 
 Real-user LCP is already great. Lighthouse synthetic 4G shows 3.3s
@@ -66,6 +67,7 @@ Five workstreams, ranked by impact ÷ risk:
 | I | **Lazy-load ResultsViewV2 on /assessment** — `next/dynamic({ ssr: false })`; renders only after question phase + email capture | **-21 KB First Load JS on /assessment** (127 → 106) | `4f61dad` |
 | J | **Move TTF fonts off public/** + **drop unused font weights** (Cormorant SC 500/600/700, JetBrains Mono 500) | -2.4 MB deploy size; -8 KB CSS on every page load | `09100a6` |
 | K | **`@next/bundle-analyzer` wired behind `ANALYZE=true`** | No runtime change. Treemap surfaces future regressions before they ship. | `34b0bba` |
+| L | **`sideEffects` declaration in package.json — enables webpack tree-shaking of content barrels** | **-73 KB First Load JS on /dashboard** (208 → 135). Dashboard page chunk gzipped: 80 → 36 KB (-55%). Single biggest bundle win of the session. | `bb418c4` |
 
 Five Lighthouse audit reports document each attempt — see
 [`docs/reviews/performance-overhaul-2026-05-17.md`](../docs/reviews/performance-overhaul-2026-05-17.md)
