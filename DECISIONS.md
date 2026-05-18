@@ -521,3 +521,50 @@ Three decisions worth recording for future override:
    beat-shape with real consumers, then delete `src/lib/course-harness/`.
    The new harness in `src/lib/lms/` is designed to absorb AiBI-S when
    that work begins.
+
+**2026-05-18 — Free assessment results are fully gated behind email
+capture.** Reverses the 2026-04-27 decision (which kept score + tier
+visible without email and only gated dimension breakdown + starter
+artifact). The reversal rationale per issue #189:
+
+- The 2026-04-27 decision was made when the assessment was **8 questions
+  (~2 min sunk cost)**. Today's flow is **12 questions (~3 min sunk cost)**.
+  Email gate at 8 questions had high bounce risk; at 12 questions the
+  user has materially more skin in the game.
+- The conversion-optimization conventional wisdom that produced the
+  partly-gated approach is empirically untested for AiBI's audience
+  (community-bank executives behave differently than consumer SaaS
+  visitors).
+- A full email gate captures every completer; the partly-gated approach
+  captured maybe 30–40% of completers (the ones who clicked through to
+  the dimension breakdown).
+
+What the new flow looks like:
+
+1. User completes 12 questions
+2. Final step is "Your readiness report is ready. Enter your work email
+   to see your score, tier, eight-dimension breakdown, and a starter
+   artifact." — NO score / tier visible until email submit
+3. On submit, the full on-page report renders inline (no "check your
+   inbox" wait state). Same surface as the previous post-capture report.
+4. (Follow-up PR-C) Email with the same content is sent in parallel for
+   archival / re-engagement
+
+What we lose vs the 2026-04-27 model:
+
+- Visitors who would have seen the score and bounced now leave with no
+  signal at all. We lose the `assessment_complete` Plausible event for
+  that segment as a partial conversion indicator.
+- Cannot easily A/B test if shipped as the only option. Worth tracking
+  completion-to-email-submit rate carefully for the first 30 days; if it
+  drops below ~60% the reversal is wrong and we revisit.
+
+Implementation: PR-A (this entry) hides the visible score block on
+`src/app/assessment/page.tsx` when `!emailCaptured`. PR-B (deferred)
+adds a bookmarkable `/assessment/results/[token]` page so the report
+URL is shareable. PR-C (deferred) builds the email template + send
+helper. The on-page report uses the existing `ResultsViewV2` component
+unchanged.
+
+CLAUDE.md § Critical UX Rule and § MVP Launch Gate both updated in the
+same PR to match.
