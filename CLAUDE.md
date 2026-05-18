@@ -115,7 +115,7 @@ The user is not a developer. Before implementing anything proposed:
 - **Framework:** Next.js 14 (App Router), TypeScript strict mode, Tailwind CSS
 - **Hosting:** Vercel (AIBankingInstitute.com on main branch)
 - **Database / Auth:** Supabase (Postgres + RLS)
-- **Payments:** Stripe (Checkout Sessions for $97 and $295 products)
+- **Payments:** Stripe — In-Depth Assessment ($99) and AiBI-Foundation course ($295). Live unit prices in `src/app/courses/foundation/program/page.tsx` (`priceUSD: 295`) and the In-Depth purchase flow.
 - **Email / Sequences:** ConvertKit (Kit) — assessment captures, newsletter, automated sequences
 - **CRM:** HubSpot free tier — contact tracking, deal pipeline
 - **Analytics:** Plausible (privacy-first, custom events — see deferred call pattern below)
@@ -186,8 +186,8 @@ HUBSPOT_API_KEY=                       # Private App access token
 STRIPE_SECRET_KEY=sk_live_...
 STRIPE_WEBHOOK_SECRET=whsec_...
 NEXT_PUBLIC_STRIPE_KEY=pk_live_...
-STRIPE_FOUNDATIONS_PRICE_ID=           # $97 AI Foundations
-STRIPE_PRACTITIONER_PRICE_ID=          # $295 AiBI-Practitioner
+STRIPE_FOUNDATION_PRICE_ID=            # $295 AiBI-Foundation (formerly $97 AI Foundations — renamed + repriced 2026-05-11; see Plans/_archive/refactor-aibi-p-to-foundation-migration.md)
+STRIPE_IN_DEPTH_PRICE_ID=              # $99 In-Depth Assessment
 
 NEXT_PUBLIC_PLAUSIBLE_DOMAIN=aibankinginstitute.com
 NEXT_PUBLIC_CALENDLY_URL=https://calendly.com/[handle]/executive-briefing
@@ -258,7 +258,7 @@ lockup (`/auth/*`, `/design-system`, etc.). Two notes:
 | `/assessment` | CSR | MVP | All state in useState + sessionStorage. Score visible before email gate. |
 | `/services` | SSR | MVP | Three engagement tiers. Calendly embed. |
 | `/certifications` | SSR | MVP | **Phase 1: inquiry form ONLY. No Stripe CTA until Phase 2.** |
-| `/foundations` | SSR | Phase 2 | $97 course. Stripe Checkout. |
+| `/foundations` | (redirect) | — | 308 → `/education` (see `next.config.mjs`). Foundation course lives at `/courses/foundation/program` at $295. |
 | `/security` | SSR | Phase 2 | Pillar B landing. Free guide download + email gate. |
 | `/about` | SSR | Phase 3 | Founder story. |
 | `/resources` | SSR | Phase 3 | AI Banking Brief archive + newsletter. |
