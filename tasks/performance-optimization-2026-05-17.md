@@ -46,7 +46,7 @@ When all boxes check, move this file to `tasks/_done/`.
 
 ## Wave D — measure + close
 
-- [ ] D1. Run full Playwright suite (`npm run test:e2e` or whatever the project alias is) — must remain green. Particular attention to homepage hero, ROI calculator interaction, and any test that touches Newsreader italic styling.
+- [ ] D1. Run full Playwright suite (`npm run test:e2e` or whatever the project alias is) — must remain green. Particular attention to homepage hero, ROI calculator interaction, sign-out flow (now goes through server action), assessment email-gate auto-fill, PDF download, magic-link send, and any test that touches Newsreader italic styling.
 - [x] D2. Run Lighthouse twice on `/` and one secondary route (`/assessment`) (2026-05-18 — mobile + desktop, 6 runs total against prod aibankinginstitute.com; reports saved at /tmp/lh-2026-05-18/). Averages: mobile / Perf 98 LCP 2.44s FCP 0.95s; mobile /assessment Perf 98 LCP 2.43s FCP 0.93s; desktop both routes Perf 100 LCP <0.6s. TBT 0ms / CLS 0 across all runs.
 - [x] D3. Update plan + audit trail with final numbers (2026-05-18 — "Where we are" table + acceptance criteria updated with measured numbers)
 - [ ] D4. Move this task file to `tasks/_done/` when LCP < 2.5s achieved. **LCP gate HIT** — D4 unblocked; defer move until A4 visual QA + D1 Playwright suite close.
@@ -72,27 +72,6 @@ When all boxes check, move this file to `tasks/_done/`.
 - [ ] AP12. Manual smoke test: open the SignupModal from a result page → submit email → confirm "magic link sent" UI shows AND that the email arrives in the inbox. (`sendMagicLinkAction` is the most novel change — magic-link delivery is the highest-risk regression.)
 - [ ] AP13. Playwright suite: run the full e2e against `npm run dev` locally and on a Vercel preview. The auth tests are the failure mode here — they cover sign-up → sign-in → sign-out and may need updating if they relied on the old `signOut()` client behavior (router.push vs. server redirect).
 - [ ] AP14. Look at the auth callback flow on `/auth/callback`: confirm magic link from `sendMagicLinkAction` still hits the same callback URL and exchanges correctly. The action derives origin from `x-forwarded-host` + proto headers; verify behind Vercel's edge proxy this still produces the right URL (not the internal Vercel proxy hostname).
-
-## Wave B — verification + early hints
-
-- [x] B1. **VERIFIED 2026-05-18.** Production already emits HTTP `Link: rel=preload` headers for 5 font woff2 files. Confirmed via `curl -sLI https://www.aibankinginstitute.com/ | grep "^link:"`. Vercel auto-promotes these to HTTP 103 Early Hints on the production tier.
-- [x] B2. **NOT NEEDED.** No additional `next.config.mjs` headers config required — Next's font loader already declares the preloads, and Vercel's edge handles the 103 conversion.
-- [x] B3. Re-measure Lighthouse, log result (2026-05-18 — see A2; Early Hints verified, prod LCP under gate)
-
-## Wave C — needs decision (brand cost)
-
-- [ ] C1. **DECISION (you-only):** drop Cormorant SC and migrate the 10 small-caps surfaces to Geist tracked-uppercase? See `docs/reviews/performance-overhaul-2026-05-17.md` §"Cormorant SC tradeoff" for the visual side-by-side recommendation. Engineering recommends drop; brand owns the call. Until decided, Wave C is parked.
-- [ ] C2. (If C1 = yes) Update `--font-serif-sc` token alias in `tokens.css` to point at `var(--font-geist-sans)` with `letter-spacing: 0.18em; text-transform: uppercase` baked into the `.font-serif-sc` utility in `globals.css`.
-- [ ] C3. (If C1 = yes) Remove `Cormorant_SC` import + `cormorantSC.variable` binding from `layout.tsx`. Drop the `--font-cormorant-sc` class on `<body>`.
-- [ ] C4. (If C1 = yes) Visual QA across the 10 known surfaces. Use the audit doc's Cormorant SC inventory section as the checklist.
-- [ ] C5. (If C1 = no) Confirm Cormorant SC stays — flip status from "Pending verification" to "Permanent" in the strategy table in `Plans/performance-optimization-2026-05-17.md`. This unblocks Wave D regardless.
-
-## Wave D — measure + close
-
-- [ ] D1. Run full Playwright suite (`npm run test:e2e` or whatever the project alias is) — must remain green. Particular attention to homepage hero, ROI calculator interaction, sign-out flow (now goes through server action), assessment email-gate auto-fill, PDF download, magic-link send.
-- [x] D2. Run Lighthouse twice on `/` and one secondary route (`/assessment`) (2026-05-18 — same measurement covers both Wave D and Wave A+ Wave D; see Wave D D2 above for averages).
-- [x] D3. Update plan + audit trail with final numbers (2026-05-18 — "Where we are" table + acceptance criteria updated).
-- [ ] D4. Move this task file to `tasks/_done/` when LCP < 2.5s achieved. If LCP plateaus above 2.5s after Waves A+B+C, document the new floor in the audit trail and close the plan as PARTIAL with the achieved score.
 
 ## Wave E — newly identified post-Wave-A+ opportunities
 
