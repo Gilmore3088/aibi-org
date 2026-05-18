@@ -237,7 +237,7 @@ export default async function PurchasePage() {
               color: 'var(--ledger-ink)',
             }}
           >
-            Banking AI{' '}
+            AI Banking{' '}
             <em style={{ color: 'var(--ledger-accent)', fontStyle: 'normal', fontWeight: 500 }}>
               Foundation.
             </em>
@@ -254,19 +254,6 @@ export default async function PurchasePage() {
             }}
           >
             {foundationProgramCourseConfig.promise}
-          </p>
-          <p
-            style={{
-              color: 'var(--ledger-slate)',
-              fontSize: 15,
-              lineHeight: 1.6,
-              maxWidth: '62ch',
-              margin: 0,
-            }}
-          >
-            In less than two weeks, write better, summarize faster, think
-            clearer, and avoid risky AI mistakes — using the model your
-            institution already trusts.
           </p>
 
           {/* Enroll strip — ink card with price + EnrollButton */}
