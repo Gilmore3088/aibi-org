@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { createBrowserClient } from '@/lib/supabase/client';
 import { SignupModal } from './SignupModal';
 
 type State =
@@ -50,11 +49,20 @@ export function PdfDownloadButton({ profileId, email }: PdfDownloadButtonProps) 
   }, [profileId]);
 
   const handleDownload = async () => {
-    const supabase = createBrowserClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    if (!user) {
+    // Server-side auth check via /api/auth/me avoids pulling the Supabase
+    // browser SDK into the bundle for the entire assessment route.
+    let signedIn = false;
+    try {
+      const res = await fetch('/api/auth/me', { cache: 'no-store' });
+      if (res.ok) {
+        const data = (await res.json()) as { user: { email: string | null } | null };
+        signedIn = Boolean(data.user?.email);
+      }
+    } catch {
+      // Network down — surface the auth prompt; the user can sign in
+      // and retry instead of seeing a silent failure.
+    }
+    if (!signedIn) {
       setState({ kind: 'auth-prompt' });
       return;
     }
