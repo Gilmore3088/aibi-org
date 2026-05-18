@@ -5,6 +5,7 @@ import type { DimensionScore } from '@content/assessments/v2/scoring';
 import type { Dimension } from '@content/assessments/v2/types';
 import { Cover } from '../_components/Cover';
 import { ExecSummary } from '../_components/ExecSummary';
+import { PracticePicturePage } from '../_components/PracticePicturePage';
 import { LensedImplications } from '../_components/LensedImplications';
 import { StrengthsAndGaps } from '../_components/StrengthsAndGaps';
 import { GapDetail } from '../_components/GapDetail';
@@ -90,6 +91,7 @@ export default async function PrintPage({ params }: PrintPageProps) {
         score={profile.readiness_score ?? 0}
         maxScore={profile.readiness_max_score ?? 48}
       />
+      <PracticePicturePage tierId={profile.readiness_tier_id} />
       <LensedImplications tierId={profile.readiness_tier_id} />
       <StrengthsAndGaps dimensionBreakdown={breakdown} />
       {topTwoCriticalGaps.map((dim, idx) => (
@@ -98,7 +100,7 @@ export default async function PrintPage({ params }: PrintPageProps) {
           dimensionId={dim.id}
           score={dim.score}
           maxScore={dim.maxScore}
-          pageNumber={5 + idx}
+          pageNumber={6 + idx}
         />
       ))}
       {focusGapId ? (

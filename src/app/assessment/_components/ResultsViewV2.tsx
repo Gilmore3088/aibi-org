@@ -9,6 +9,7 @@ import { NewsletterCTA } from './NewsletterCTA';
 import { PdfDownloadButton } from './PdfDownloadButton';
 import { StarterArtifactCard } from './StarterArtifactCard';
 import { StarterPrompt } from './StarterPrompt';
+import { PracticePicture } from './PracticePicture';
 import { getStarterArtifact } from '@content/assessments/v2/starter-artifacts';
 import {
   PERSONAS,
@@ -148,8 +149,13 @@ export function ResultsViewV2({
             <ScoreRing score={score} minScore={12} maxScore={48} colorVar={tier.colorVar} label={tier.label} />
           </div>
         </div>
-        <ContinueLink to="section-2" label="The big insight" />
+        <ContinueLink to="section-1b" label="What this looks like in practice" />
       </section>
+
+      {/* SECTION 1b — Practice picture (recognition by role) */}
+      <SectionAnchor id="section-1b" />
+      <PracticePicture tierId={tierId} />
+      <ContinueLink to="section-2" label="The big insight" />
 
       {/* SECTION 2 — Big Insight */}
       <SectionAnchor id="section-2" />

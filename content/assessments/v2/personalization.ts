@@ -60,6 +60,109 @@ export const BIG_INSIGHT: Record<Tier['id'], string> = {
 };
 
 // ---------------------------------------------------------------------------
+// SECTION 1b — What this looks like in practice. Recognition copy by
+// internal role (operations / compliance / managers / executives),
+// per tier. This is the "they understand us" page; lives between the
+// diagnosis and the big insight on screen, and as its own page in the PDF.
+// ---------------------------------------------------------------------------
+
+export interface PracticePictureRow {
+  readonly role: 'Operations' | 'Compliance / Risk' | 'Managers' | 'Executives';
+  readonly body: string;
+}
+
+export const PRACTICE_PICTURE: Record<Tier['id'], ReadonlyArray<PracticePictureRow>> = {
+  'starting-point': [
+    {
+      role: 'Operations',
+      body:
+        "A handful of staff are using AI for summaries, draft emails, or research — but each person is doing it their own way. Nobody can point to a workflow that is documented or repeatable.",
+    },
+    {
+      role: 'Compliance / Risk',
+      body:
+        "There is concern about what data is being pasted where, what vendors are touching customer information, and whether review steps are consistent. The instinct is to slow everything down until somebody writes it all up.",
+    },
+    {
+      role: 'Managers',
+      body:
+        "There is curiosity, but not enough proof. Without measurable wins, managers cannot defend giving their team time to learn this — and the staff who could lead it do not have permission to.",
+    },
+    {
+      role: 'Executives',
+      body:
+        "Leadership knows AI matters, but does not yet have a confident answer to 'where are we today, and what is our first move?' That uncertainty turns every conversation into a survey of opinions.",
+    },
+  ],
+  'early-stage': [
+    {
+      role: 'Operations',
+      body:
+        "Two or three people on the team are getting real time savings with AI. Everyone else can tell something is working, but cannot quite point to which prompt or which tool is doing it.",
+    },
+    {
+      role: 'Compliance / Risk',
+      body:
+        "A baseline policy probably exists, but it lags the way staff are actually using AI. The audit-trail question — what tool, what data, what review — has different answers in different rooms.",
+    },
+    {
+      role: 'Managers',
+      body:
+        "Managers see the wins but can't yet codify them. Without a documented workflow, replicating the same outcome on another team takes weeks instead of days.",
+    },
+    {
+      role: 'Executives',
+      body:
+        "Leadership sees evidence that AI is producing value, but cannot defend continued investment in front of the board without measurement. The conversation needs a number, not a feeling.",
+    },
+  ],
+  'building-momentum': [
+    {
+      role: 'Operations',
+      body:
+        "Multiple teams are running AI-assisted workflows. The patterns are real, but they only live in two or three people's heads — when those people are out, the work slows down visibly.",
+    },
+    {
+      role: 'Compliance / Risk',
+      body:
+        "Governance is real but uneven. One team's documentation would pass an examiner; another team's would not. The risk is not policy absence — it is inconsistent application across the institution.",
+    },
+    {
+      role: 'Managers',
+      body:
+        "Managers are managing the program by hand, tracking who's doing what in spreadsheets. Without standardized workflows and outcome measurement, scale always feels two hires away.",
+    },
+    {
+      role: 'Executives',
+      body:
+        "Leadership wants to invest more but needs to defend ROI numerically. The metrics exist on individual desks; they have never been rolled up into the kind of view a board expects.",
+    },
+  ],
+  'ready-to-scale': [
+    {
+      role: 'Operations',
+      body:
+        "Standard workflows are documented and most teams follow them. The remaining variation is between top performers and average performers — the question is how to close that gap faster for every new hire.",
+    },
+    {
+      role: 'Compliance / Risk',
+      body:
+        "Governance is mature. The audit trail holds up under examiner review. The remaining concern is keeping policy current as new tools and new vendor relationships arrive.",
+    },
+    {
+      role: 'Managers',
+      body:
+        "Managers spend less time on policy and more time on coaching. The bottleneck is replication speed — getting the next class of analysts to your top performers' baseline without slowing the program down.",
+    },
+    {
+      role: 'Executives',
+      body:
+        "Leadership has documented outcomes and a defensible budget story. The strategic question is no longer whether to invest, but where the next compounding investment is — measurement, leadership judgment, or capability depth.",
+    },
+  ],
+};
+
+// ---------------------------------------------------------------------------
 // SECTION 4 — Gap content. Per dimension: explanation · impacts · what good
 // looks like. Drives the rich gap cards.
 // ---------------------------------------------------------------------------
