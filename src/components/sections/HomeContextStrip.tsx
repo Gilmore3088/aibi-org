@@ -1,114 +1,69 @@
-'use client';
+// HomeContextStrip — server component. Reads the Supabase session from
+// cookies and renders a "welcome back" band for authenticated users.
+//
+// 2026-05-17 perf rewrite: was a 'use client' component that called
+// supabase.auth.getUser() from the browser. That pulled the full
+// Supabase JS SDK (+ Web3 auth providers) into the homepage bundle —
+// ~80 KB wire on every anonymous request, for a band that's hidden
+// for 99% of visitors. Moved to the server: no client JS for anonymous
+// users; the Supabase SDK no longer enters the homepage critical path.
+//
+// Caveat: the localStorage-only fallback that used to upgrade the band
+// for users with stale browser-only assessment data is gone. If we want
+// that back, render this server-shell first and hydrate with a small
+// client island that swaps in localStorage data when available.
 
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import { createBrowserClient, isSupabaseConfigured } from '@/lib/supabase/client';
-import { getUserDataWithSupabaseFallback } from '@/lib/user-data';
-
-interface LearnerSnapshot {
-  readonly enrollment: {
-    readonly currentModule: number;
-    readonly completedModules: readonly number[];
-  } | null;
-}
-
-type Mode =
-  | { kind: 'hidden' }
-  | { kind: 'signed-in'; displayName: string }
-  | { kind: 'assessment-only'; tierLabel: string; score: number; maxScore: number }
-  | { kind: 'enrolled'; currentModule: number; completedCount: number; totalModules: number };
+import { cookies } from 'next/headers';
+import { createServerClientWithCookies, isSupabaseConfigured } from '@/lib/supabase/client';
+import { dbReadValues } from '@/lib/products/normalize';
 
 const TOTAL_FOUNDATION_PROGRAM_MODULES = 12;
 
-export function HomeContextStrip() {
-  const [mode, setMode] = useState<Mode>({ kind: 'hidden' });
+interface EnrollmentRow {
+  readonly current_module: number;
+  readonly completed_modules: readonly number[] | null;
+}
 
-  useEffect(() => {
-    let cancelled = false;
+interface ProfileRow {
+  readonly readiness_score: number | null;
+  readonly readiness_tier_label: string | null;
+  readonly readiness_max_score: number | null;
+  readonly readiness_answers: unknown;
+}
 
-    async function load() {
-      // The strip is "welcome back" copy — only render it for actually
-      // authenticated users. A logged-out visitor with stale localStorage
-      // from a prior assessment session should see the regular hero, not
-      // a "welcome back" greeting that lies about their auth state.
-      if (!isSupabaseConfigured()) return;
+export async function HomeContextStrip() {
+  if (!isSupabaseConfigured()) return null;
 
-      let authUser = null;
-      try {
-        const supabase = createBrowserClient();
-        const { data } = await supabase.auth.getUser();
-        authUser = data.user;
-      } catch {
-        return;
-      }
-      if (cancelled || !authUser) return;
+  const supabase = createServerClientWithCookies(await cookies());
 
-      // 1. Authenticated and enrolled — strongest signal, gives the most useful CTA.
-      let enrollment: LearnerSnapshot['enrollment'] = null;
-      try {
-        const res = await fetch('/api/dashboard/learner', { cache: 'no-store' });
-        if (res.ok) {
-          const data = (await res.json()) as LearnerSnapshot;
-          enrollment = data.enrollment;
-        }
-      } catch {
-        /* fall through to lower-priority states */
-      }
-      if (cancelled) return;
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return null;
 
-      if (enrollment) {
-        setMode({
-          kind: 'enrolled',
-          currentModule: enrollment.currentModule,
-          completedCount: enrollment.completedModules.length,
-          totalModules: TOTAL_FOUNDATION_PROGRAM_MODULES,
-        });
-        return;
-      }
+  // 1. Enrollment is the strongest signal — gives the most useful CTA.
+  const { data: enrollmentRaw } = await supabase
+    .from('course_enrollments')
+    .select('current_module, completed_modules')
+    .eq('user_id', user.id)
+    .in('product', dbReadValues('foundation'))
+    .maybeSingle();
 
-      // 2. Authenticated, has prior assessment in localStorage / supabase.
-      const user = await getUserDataWithSupabaseFallback();
-      if (cancelled) return;
-      if (user?.readiness) {
-        const maxScore =
-          user.readiness.maxScore ?? (user.readiness.answers.length === 12 ? 48 : 32);
-        setMode({
-          kind: 'assessment-only',
-          tierLabel: user.readiness.tierLabel,
-          score: user.readiness.score,
-          maxScore,
-        });
-        return;
-      }
-
-      // 3. Authenticated but no progress yet. Acknowledge them by name.
-      const displayName =
-        (authUser.user_metadata?.full_name as string | undefined) ??
-        authUser.email?.split('@')[0] ??
-        'there';
-      setMode({ kind: 'signed-in', displayName });
-    }
-
-    load();
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  if (mode.kind === 'hidden') return null;
-
-  if (mode.kind === 'enrolled') {
+  const enrollment = enrollmentRaw as EnrollmentRow | null;
+  if (enrollment) {
+    const completedCount = enrollment.completed_modules?.length ?? 0;
     return (
       <ContextBand>
         <p className="text-sm text-[color:var(--color-slate)]">
           Welcome back. You&apos;re on{' '}
           <span className="text-[color:var(--color-ink)]">
-            Module {mode.currentModule} of {mode.totalModules}
+            Module {enrollment.current_module} of {TOTAL_FOUNDATION_PROGRAM_MODULES}
           </span>{' '}
-          ({mode.completedCount} complete).
+          ({completedCount} complete).
         </p>
         <Link
-          href={`/courses/foundation/program/${mode.currentModule}`}
+          href={`/courses/foundation/program/${enrollment.current_module}`}
           className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] hover:text-[color:var(--color-ink)]"
         >
           Resume course →
@@ -117,13 +72,31 @@ export function HomeContextStrip() {
     );
   }
 
-  if (mode.kind === 'assessment-only') {
+  // 2. Authenticated user with an assessment on file in Supabase.
+  const { data: profileRaw } = await supabase
+    .from('user_profiles')
+    .select('readiness_score, readiness_tier_label, readiness_max_score, readiness_answers')
+    .eq('user_id', user.id)
+    .maybeSingle();
+
+  const profile = profileRaw as ProfileRow | null;
+  if (
+    profile &&
+    typeof profile.readiness_score === 'number' &&
+    typeof profile.readiness_tier_label === 'string'
+  ) {
+    const answers = profile.readiness_answers as unknown[] | null;
+    const maxScore =
+      profile.readiness_max_score ?? (Array.isArray(answers) && answers.length === 12 ? 48 : 32);
     return (
       <ContextBand>
         <p className="text-sm text-[color:var(--color-slate)]">
           Welcome back. Your readiness:{' '}
-          <span className="text-[color:var(--color-ink)]">{mode.tierLabel}</span>{' '}
-          <span className="font-mono tabular-nums">({mode.score}/{mode.maxScore})</span>.
+          <span className="text-[color:var(--color-ink)]">{profile.readiness_tier_label}</span>{' '}
+          <span className="font-mono tabular-nums">
+            ({profile.readiness_score}/{maxScore})
+          </span>
+          .
         </p>
         <Link
           href="/courses/foundation/program"
@@ -135,10 +108,16 @@ export function HomeContextStrip() {
     );
   }
 
+  // 3. Authenticated, no progress yet — acknowledge by name.
+  const displayName =
+    (user.user_metadata?.full_name as string | undefined) ??
+    user.email?.split('@')[0] ??
+    'there';
+
   return (
     <ContextBand>
       <p className="text-sm text-[color:var(--color-slate)]">
-        Welcome back, <span className="text-[color:var(--color-ink)]">{mode.displayName}</span>.
+        Welcome back, <span className="text-[color:var(--color-ink)]">{displayName}</span>.
         Take the readiness assessment to see your starting point.
       </p>
       <Link

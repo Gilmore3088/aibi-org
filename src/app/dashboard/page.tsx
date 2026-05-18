@@ -368,33 +368,58 @@ export default function DashboardPage() {
             </header>
 
             <div className="trio-grid">
-              <Link className="vc" href={stepAssessment ? '/assessment/in-depth' : '/assessment/start'}>
-                <div className="illust" aria-hidden="true">
-                  <svg viewBox="0 0 140 120" fill="none" stroke="#0E1B2D" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M22 92 A 48 48 0 0 1 118 92" fill="rgba(181,134,42,0.10)" />
-                    <line x1="22" y1="92" x2="30" y2="88" />
-                    <line x1="38" y1="64" x2="44" y2="68" />
-                    <line x1="70" y1="44" x2="70" y2="52" />
-                    <line x1="102" y1="64" x2="96" y2="68" />
-                    <line x1="118" y1="92" x2="110" y2="88" />
-                    <line x1="70" y1="92" x2="92" y2="54" stroke="#B5862A" strokeWidth="2.4" />
-                    <circle cx="70" cy="92" r="5" fill="#B5862A" stroke="none" />
-                    <line x1="20" y1="100" x2="120" y2="100" />
-                  </svg>
-                </div>
-                <div className="step">
-                  <span>Step 01</span>
-                  <em>i.</em>
-                </div>
-                <h3>
-                  Assess your <em>readiness.</em>
-                </h3>
-                <p>Twelve dimensions. Three minutes. A scored snapshot.</p>
-                <div className="cta">
-                  <b>{stepAssessment ? 'Go deeper · In-Depth' : 'Take the free assessment'}</b>
-                  <span className="arrow">→</span>
-                </div>
-              </Link>
+              {(() => {
+                // Trio card 1 — adapts to where the user actually is.
+                // In-Depth completed → open their Briefing.
+                // In-Depth entitled but not taken → take it.
+                // Free done → sell the In-Depth.
+                // Nothing → take the free scan.
+                let assessHref = '/assessment/start';
+                let assessCta = 'Take the free assessment';
+                let assessCopy = 'Twelve dimensions. Three minutes. A scored snapshot.';
+                if (stepInDepth && assessments?.inDepth?.profileId) {
+                  assessHref = `/assessment/in-depth/results/${assessments.inDepth.profileId}`;
+                  assessCta = 'View your Briefing';
+                  assessCopy = 'Your In-Depth diagnosis with peer comparison and a ninety-day plan.';
+                } else if (assessments?.inDepth?.entitled) {
+                  assessHref = '/assessment/in-depth/take';
+                  assessCta = 'Take your In-Depth';
+                  assessCopy = 'Forty-eight questions across eight dimensions. About twelve minutes.';
+                } else if (stepAssessment) {
+                  assessHref = '/assessment/in-depth';
+                  assessCta = 'Go deeper · In-Depth';
+                  assessCopy = 'Eight dimensions, peer-band comparison, a written ninety-day playbook.';
+                }
+                return (
+                  <Link className="vc" href={assessHref}>
+                    <div className="illust" aria-hidden="true">
+                      <svg viewBox="0 0 140 120" fill="none" stroke="#0E1B2D" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M22 92 A 48 48 0 0 1 118 92" fill="rgba(181,134,42,0.10)" />
+                        <line x1="22" y1="92" x2="30" y2="88" />
+                        <line x1="38" y1="64" x2="44" y2="68" />
+                        <line x1="70" y1="44" x2="70" y2="52" />
+                        <line x1="102" y1="64" x2="96" y2="68" />
+                        <line x1="118" y1="92" x2="110" y2="88" />
+                        <line x1="70" y1="92" x2="92" y2="54" stroke="#B5862A" strokeWidth="2.4" />
+                        <circle cx="70" cy="92" r="5" fill="#B5862A" stroke="none" />
+                        <line x1="20" y1="100" x2="120" y2="100" />
+                      </svg>
+                    </div>
+                    <div className="step">
+                      <span>Step 01</span>
+                      <em>i.</em>
+                    </div>
+                    <h3>
+                      {stepInDepth ? <>Your <em>Briefing.</em></> : <>Assess your <em>readiness.</em></>}
+                    </h3>
+                    <p>{assessCopy}</p>
+                    <div className="cta">
+                      <b>{assessCta}</b>
+                      <span className="arrow">→</span>
+                    </div>
+                  </Link>
+                );
+              })()}
 
               <Link className="vc" href={`/practice/${currentRep.id}`}>
                 <div className="illust" aria-hidden="true">

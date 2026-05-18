@@ -88,6 +88,11 @@ export async function GET(): Promise<NextResponse> {
   let profileId: string | null = null;
   let hasCompleted = false;
   let snapshot: ReadinessSnapshot | null = null;
+  // Fetch up to 10 rows (one per email variant) so we can prefer an
+  // In-Depth row over a free-scan row when both exist. Ordering by
+  // readiness_at alone produced the regression where a user who took
+  // In-Depth then retook the free scan saw 'Take your purchased
+  // assessment' on their dashboard because the free row was newer.
   const { data: profileRows, error: profileErr } = await supabase
     .from('user_profiles')
     .select(
@@ -95,29 +100,40 @@ export async function GET(): Promise<NextResponse> {
     )
     .or(variants.map((e) => `email.eq.${e}`).join(','))
     .order('readiness_at', { ascending: false, nullsFirst: false })
-    .limit(1);
-  const profile = profileRows && profileRows.length > 0 ? profileRows[0] : null;
+    .limit(10);
+
+  function isInDepthRow(row: { readiness_answers: unknown; readiness_max_score: unknown }): boolean {
+    const answers = row.readiness_answers as unknown[] | null;
+    const maxScore = row.readiness_max_score;
+    return (
+      (Array.isArray(answers) && answers.length === 48) ||
+      (typeof maxScore === 'number' && maxScore === 192)
+    );
+  }
+
   if (profileErr) {
     console.warn('[dashboard/assessments] profile lookup error:', profileErr);
-  } else if (profile) {
+  } else if (profileRows && profileRows.length > 0) {
+    // Prefer the in-depth row; fall back to the most recent (which is row[0]
+    // because of the order-by above).
+    const profile = profileRows.find(isInDepthRow) ?? profileRows[0];
     profileId = profile.id as string;
     const answers = profile.readiness_answers as unknown[] | null;
-    // 48-answer length is the canonical In-Depth completion signal — the
-    // free assessment stores 12-element arrays.
-    hasCompleted = Array.isArray(answers) && answers.length === 48;
+    hasCompleted = isInDepthRow(profile);
     if (
       typeof profile.readiness_score === 'number' &&
       typeof profile.readiness_tier_id === 'string' &&
       typeof profile.readiness_tier_label === 'string'
     ) {
-      const answerCount = Array.isArray(answers) ? answers.length : 0;
-      const isInDepth = answerCount === 48;
+      const isInDepth = hasCompleted;
       const maxScore =
         typeof profile.readiness_max_score === 'number'
           ? profile.readiness_max_score
           : isInDepth
             ? 192
-            : 48;
+            : Array.isArray(answers) && answers.length === 12
+              ? 48
+              : 48;
       snapshot = {
         score: profile.readiness_score,
         maxScore,

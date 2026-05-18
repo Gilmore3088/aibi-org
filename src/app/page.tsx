@@ -15,6 +15,9 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <>
+      {/* HomeContextStrip is an async server component — React awaits it
+          automatically. Returns null for anonymous users so no Supabase
+          JS ships to them. */}
       <HomeContextStrip />
       <MarketingPage
       hero={{
