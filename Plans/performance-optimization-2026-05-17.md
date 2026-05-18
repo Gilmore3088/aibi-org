@@ -64,6 +64,8 @@ Five workstreams, ranked by impact ÷ risk:
 | G | **Wave A+** — Drop Supabase JS SDK from marketing routes. HomeContextStrip → async server component. AuthDropdown signOut → server action. EmailGate / PdfDownloadButton → fetch `/api/auth/me`. SignupModal magic link → server action. | **-64 KB First Load JS across every marketing route** (home, assessment, results, about, security, education, …) | `3f92c4f` |
 | H | **SVGO the hero SVG** — Satori's mask/<g> scaffolding stripped, precision-3 path coordinates | -10 KB inline HTML on every homepage render (20.6 → 10.4 KB SVG) | `fe3bd48` |
 | I | **Lazy-load ResultsViewV2 on /assessment** — `next/dynamic({ ssr: false })`; renders only after question phase + email capture | **-21 KB First Load JS on /assessment** (127 → 106) | `4f61dad` |
+| J | **Move TTF fonts off public/** + **drop unused font weights** (Cormorant SC 500/600/700, JetBrains Mono 500) | -2.4 MB deploy size; -8 KB CSS on every page load | `09100a6` |
+| K | **`@next/bundle-analyzer` wired behind `ANALYZE=true`** | No runtime change. Treemap surfaces future regressions before they ship. | `34b0bba` |
 
 Five Lighthouse audit reports document each attempt — see
 [`docs/reviews/performance-overhaul-2026-05-17.md`](../docs/reviews/performance-overhaul-2026-05-17.md)

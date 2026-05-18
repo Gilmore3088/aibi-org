@@ -112,21 +112,22 @@ Each item is independently shippable. Estimates are conservative.
 - [x] E2.1. **SHIPPED.** Lazy-loaded `ResultsViewV2` (the wrapper for SignupModal + PdfDownloadButton + tier-rendering) via `next/dynamic({ ssr: false })` in `src/app/assessment/page.tsx`. Measured: /assessment First Load JS 127 → 106 KB (-21 KB, -16%). Combined with Wave A+, /assessment total drop is 190 → 106 KB (-44%).
 - [ ] E2.2. Optional follow-up: lazy-load PdfDownloadButton + SignupModal *inside* ResultsViewV2 too — that would help `/results/[id]` (currently 111 KB, server-renders ResultsViewV2 so the top-level lazy-load doesn't apply there). Estimated additional savings: ~5-9 KB. Trade-off is a first-click latency on Download PDF + Create Account.
 
-### E.3 — Audit dashboard for client-Supabase footguns
-- [ ] E3.1. `/dashboard` is 208 KB First Load JS. The Supabase chunk does NOT load anymore (Wave A+ removed eager imports), so the 208 KB is something else. Run `cat .next/app-build-manifest.json | jq '.pages["/dashboard/page"]'` and identify the biggest unique chunk(s).
-- [ ] E3.2. Likely culprit: `marked` (markdown renderer in chunk 8458, ~77 KB). Confirm and decide if it's needed eagerly or can be code-split / replaced with a lighter renderer (`marked-async`, `mdast-util-to-html`, or inline server-rendered HTML).
-- [ ] E3.3. Also check `5861` chunk (10 KB, includes `query` — possibly @tanstack/react-query?). If unused on dashboard, drop the dep entirely.
+### E.3 — Audit dashboard for client-bundle bloat (PARTIALLY INVESTIGATED 2026-05-17)
+- [x] E3.1. **DONE via bundle analyzer.** `/dashboard` page chunk is 272 KB parsed / **80 KB gzipped** — by far the largest page chunk in the app. Source: `src/app/dashboard/page.tsx` (1147 lines, 'use client') which eagerly imports `@content/courses/foundation-program` (12 modules × full content) plus `@content/practice-reps/foundation-program` (all practice rep data). The earlier "marked" hit in chunk 8458 (77 KB) is unrelated — it's toolbox cookbook content data.
+- [ ] E3.2. **Open.** Refactor: most module/practice-rep content is render-only fields; the dashboard needs slim summaries (title, current/completed status, slug). Build a `getDashboardLearnerSummary()` server function that returns just the slim data; client gets a `~5 KB` JSON instead of the full content modules. Estimated savings: 60-100 KB of client bundle on `/dashboard`. Significant refactor — touches `getUserDataWithSupabaseFallback`, the activation ladder, the resume-course CTA.
+- [ ] E3.3. **Open.** Convert `/dashboard/page.tsx` from `'use client'` to a server component that streams the activation-ladder data + uses small client islands for interactive bits only (toolbox button, dropdown). Same direction as Wave A+ HomeContextStrip refactor.
 
-### E.4 — Audit /courses/foundation/program/[module] (140 KB First Load JS)
-- [ ] E4.1. This route ships 41 KB of page-specific JS plus the framework. Profile it: which components/imports are pulling weight? CourseShell, the post-assessment widget, the practice rep player?
-- [ ] E4.2. If `marked` is used here too, same code-split decision applies.
+### E.4 — Audit /courses/foundation/program/[module] (140 KB First Load JS) (PARTIALLY INVESTIGATED 2026-05-17)
+- [x] E4.1. **DONE via bundle analyzer.** Page chunk is 177 KB parsed / **41 KB gzipped**. Server component (uses `notFound`, `redirect`) but imports the full module content tree (`modules`, `foundationProgramCourseConfig`, `V4_FOUNDATION_PROGRAM_MODULE_BY_NUMBER`). The content gets serialized into the RSC payload and into nested client components (`<ModuleContentClient>`, `<CourseShell>`).
+- [ ] E4.2. **Open.** Same pattern as E.3: client islands only get the slim shape they need. The full module content tree should not cross the server/client boundary on every page render. Touch the `ModuleContentClient` boundary first — it's the biggest consumer.
+- [ ] E4.3. **Open.** Check whether `@content/courses/foundation-program` exports are tree-shakeable. If the `modules` named export pulls in ALL twelve modules' content even when only one is referenced via `getModuleByNumber(n)`, the bundler can't drop the other eleven. Restructure as one-file-per-module + dynamic-import the requested module.
 
 ### E.5 — Optimize HeroHeadlineSvg (SHIPPED 2026-05-17 `fe3bd48`)
 - [x] E5.1. **SHIPPED.** Ran `npx svgo --multipass --precision=3` over the Satori output. 20.6 KB → 10.4 KB (-49%). SVGO dropped the `<mask>` + `<g>` scaffolding Satori emits for layout grouping; consolidated each glyph cluster into a single `<path>`. Visually identical.
 - [x] E5.2. **SHIPPED.** Baked the SVGO pass into `scripts/gen-hero-svg.mjs` via `execSync('npx --yes svgo ...')`. Future regenerations stay optimized. Wrapped in try/catch so an offline regenerate still works (with a heavier SVG).
 
-### E.6 — public/fonts directory cleanup (deploy-size, not runtime)
-- [ ] E6.1. `public/fonts/` is 2.4 MB of Cormorant + DM Sans TTF files used by `react-pdf` for PDF certificates (server-side only). Move to a non-public path (e.g. `assets/pdf-fonts/` at the repo root, or `src/lib/pdf/fonts/`) and update the route handler's `path.join` to read from there. Cuts the deployed bundle size by 2 MB, doesn't change runtime.
+### E.6 — public/fonts directory cleanup (deploy-size, not runtime) (SHIPPED 2026-05-17 `09100a6`)
+- [x] E6.1. **SHIPPED.** Moved 2.4 MB of TTFs from `public/fonts/` to `assets/pdf-fonts/`. Updated all three consumers (`safe-ai-use/route.ts`, `CertificateDocument.tsx`, `generate-static-artifacts.mjs`). No runtime change; lighter deploy artifact.
 
 ### E.7 — Static-generate the homepage (currently `ƒ` — dynamic)
 - [ ] E7.1. `/` is rendered dynamically (`ƒ` in the build output) because `HomeContextStrip` calls `cookies()`. For anonymous traffic, that work is wasted — `HomeContextStrip` immediately returns null. Two paths to a static `/`:
@@ -139,12 +140,16 @@ Each item is independently shippable. Estimates are conservative.
 - [ ] E8.1. The main CSS chunk loaded on every page is 55 KB raw (`c06410d29a662799.css`). Some of that is unused utilities. Add `@next/bundle-analyzer`-equivalent for CSS, OR run a one-time analysis with `tailwindcss --content "src/**/*.{tsx,ts}" --output /tmp/css-bloat.css --postcss postcss.config.js -m` to see the post-purge size and identify orphan utilities.
 - [ ] E8.2. Decision: consider removing the `./content/**/*.{md,mdx}` content path from `tailwind.config.ts` if no MDX file actually emits Tailwind class names. Currently it scans every markdown file and could be padding the utility list.
 
-### E.9 — Bundle analyzer (one-time tooling install)
-- [ ] E9.1. Add `@next/bundle-analyzer` as a dev dependency. Wire it into `next.config.mjs` behind `ANALYZE=true`. Run `ANALYZE=true npm run build` to get treemap of the framework + page chunks.
-- [ ] E9.2. Investigate any module larger than 30 KB in the homepage chunk tree. Document findings; create follow-up tasks per significant offender.
+### E.9 — Bundle analyzer (one-time tooling install) (SHIPPED 2026-05-17 `34b0bba`)
+- [x] E9.1. **SHIPPED.** `@next/bundle-analyzer` added as devDependency. Wired in `next.config.mjs` behind `ANALYZE=true`. New npm script: `npm run analyze`. Outputs `client.html`, `edge.html`, `nodejs.html` under `.next/analyze/`.
+- [x] E9.2. **DONE.** First analyzer run identified the heavy chunks (data captured in E.3 + E.4 entries). Top page-specific client chunks: `/dashboard/page` 272 KB / 80 KB gz, `/courses/foundation/program/[module]/page` 177 KB / 41 KB gz, `/dashboard/toolbox/page` 106 KB / 30 KB gz. Framework floor is `fd9d1056-*` (React/Vendor) at 173 KB / 54 KB gz.
 
-### E.10 — Remove unused next/font subset declarations
-- [ ] E10.1. The Cormorant SC @font-face block emits cyrillic + vietnamese + greek + latin-ext subsets even though we declared `subsets: ['latin']`. The woff2 files for those subsets ARE only fetched when needed (good), but the @font-face declarations themselves bloat the CSS bundle. Inspect generated CSS, decide if `next/font/google` can be configured to emit only the latin block.
+### E.10 — Trim unused next/font weights + subset declarations (PARTIALLY SHIPPED 2026-05-17 `09100a6`)
+- [x] E10.1. **SHIPPED.** Audited every `font-serif-sc` and `font-mono` usage in src/. Dropped:
+  - Cormorant SC weights 500, 600, 700 (no usage; only 400 inherited via the `.font-serif-sc` utility)
+  - JetBrains Mono weight 500 (no `font-mono font-medium` anywhere; only 400 default + 600 via `font-semibold`)
+  Net effect: shared layout CSS shrank from 78 KB (two files) to 70 KB (one file).
+- [ ] E10.2. **Open.** Subset declarations still emit cyrillic + vietnamese + greek + latin-ext blocks. Next 14.2.x doesn't expose a way to suppress these (the unicode-range mechanism is intentional — browsers only fetch the woff2 when a glyph in that range is needed). Low-priority follow-up — patching @next/font isn't worth ~2 KB of CSS.
 
 ---
 

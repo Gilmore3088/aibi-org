@@ -281,6 +281,9 @@ Tasks AP9–AP14 in `tasks/performance-optimization-2026-05-17.md` cover the pos
 | `fe3bd48` | **SVGO hero — Satori mask/<g> scaffolding removed (-10 KB inline HTML)** |
 | `8039fc6` | Docs catch-up for Wave A+ |
 | `4f61dad` | **Lazy-load ResultsViewV2 on /assessment (-21 KB First Load JS)** |
+| `f5fa2e6` | Docs catch-up for SVGO + lazy ResultsView + E.1 investigation |
+| `09100a6` | **Fonts off public/ (-2.4 MB deploy) + unused font weights dropped (-8 KB CSS)** |
+| `34b0bba` | **Bundle analyzer behind `ANALYZE=true` — first treemap captured** |
 
 ## Files touched this session (perf scope)
 
