@@ -74,16 +74,6 @@ function displayName(email: string | undefined): string {
   return first.charAt(0).toUpperCase() + first.slice(1).toLowerCase();
 }
 
-function initials(email: string | undefined): string {
-  if (!email) return 'JP';
-  const local = email.split('@')[0] ?? '';
-  const parts = local.split(/[._-]/).filter(Boolean);
-  if (parts.length >= 2) {
-    return (parts[0]![0]! + parts[1]![0]!).toUpperCase();
-  }
-  return (local.slice(0, 2) || 'JP').toUpperCase();
-}
-
 export default function DashboardPage() {
   const [user, setUser] = useState<UserData | null>(null);
   const [dashboard, setDashboard] = useState<LearnerDashboardState | null>(null);
