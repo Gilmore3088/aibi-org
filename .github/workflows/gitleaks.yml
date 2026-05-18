@@ -1,0 +1,38 @@
+name: Gitleaks
+
+on:
+  pull_request:
+    branches: [main, staging]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Replaces the manual secret-pattern grep documented in launch-checklist
+# §16.433. Runs against the diff on every PR and against full history on
+# every main push. See #177 for the SEO/security audit follow-up that
+# prompted this.
+concurrency:
+  group: gitleaks-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  scan:
+    name: Scan for secrets
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          # Full history so the action can compare against base on PRs and
+          # scan the full repo on main pushes.
+          fetch-depth: 0
+
+      - name: Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # GITLEAKS_LICENSE is only required for organizations on
+          # GitHub.com — leaving unset for the personal repo. If you ever
+          # move the repo into a paid org account, add the license env var
+          # here.
