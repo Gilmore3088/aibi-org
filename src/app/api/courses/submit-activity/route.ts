@@ -15,7 +15,7 @@ import {
   V4_FOUNDATION_PROGRAM_MODULE_BY_NUMBER,
   getModuleByNumber,
 } from '@content/courses/foundation-program';
-import { AIBI_P_ARTIFACTS } from '@content/practice-reps/foundation-program';
+import { FOUNDATION_ARTIFACTS } from '@content/practice-reps/foundation-program';
 import type { Activity, ActivityField } from '@content/courses/foundation-program';
 
 const LAST_MODULE = 12;
@@ -41,7 +41,7 @@ function getV4Activity(moduleNumber: number): Activity | null {
   const expandedModule = V4_FOUNDATION_PROGRAM_MODULE_BY_NUMBER.get(moduleNumber);
   if (!expandedModule) return null;
 
-  const artifact = AIBI_P_ARTIFACTS.find((item) => item.moduleNumber === expandedModule.number);
+  const artifact = FOUNDATION_ARTIFACTS.find((item) => item.moduleNumber === expandedModule.number);
 
   return {
     id: `${expandedModule.number}.1`,
@@ -257,7 +257,7 @@ export async function POST(request: Request): Promise<NextResponse> {
   }
 
   if (submittedActivity?.artifactId) {
-    const artifact = AIBI_P_ARTIFACTS.find((item) => item.id === submittedActivity?.artifactId);
+    const artifact = FOUNDATION_ARTIFACTS.find((item) => item.id === submittedActivity?.artifactId);
     await serviceClient.from('user_artifacts').upsert(
       {
         user_id: user.id,

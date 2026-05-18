@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { getUserDataWithSupabaseFallback, type UserData } from '@/lib/user-data';
 import { modules } from '@content/courses/foundation-program';
 import {
-  AIBI_P_PRACTICE_REPS,
+  FOUNDATION_PRACTICE_REPS,
   getDailyPracticeRep,
 } from '@content/practice-reps/foundation-program';
 
@@ -118,7 +118,7 @@ export default function DashboardPage() {
     ...localCompletedRepIds,
   ]));
   const currentRep = completedRepIds.includes(dailyRep.id)
-    ? AIBI_P_PRACTICE_REPS.find((rep) => !completedRepIds.includes(rep.id)) ?? dailyRep
+    ? FOUNDATION_PRACTICE_REPS.find((rep) => !completedRepIds.includes(rep.id)) ?? dailyRep
     : dailyRep;
 
   // Activation ladder — derived from the user's actual state. Seven rungs,
@@ -910,7 +910,7 @@ const SAFE_CELLS: ReadonlyArray<{ letter: string; word: string; desc: string }> 
 
 function readLocalCompletedRepIds(): readonly string[] {
   try {
-    return AIBI_P_PRACTICE_REPS
+    return FOUNDATION_PRACTICE_REPS
       .filter((rep) => localStorage.getItem(`aibi-practice-${rep.id}`))
       .map((rep) => rep.id);
   } catch {

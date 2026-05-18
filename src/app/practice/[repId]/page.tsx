@@ -1,6 +1,6 @@
 import { notFound, redirect } from 'next/navigation';
 import type { Metadata } from 'next';
-import { AIBI_P_PRACTICE_REPS, getPracticeRepById } from '@content/practice-reps/foundation-program';
+import { FOUNDATION_PRACTICE_REPS, getPracticeRepById } from '@content/practice-reps/foundation-program';
 import { PracticeRepClient } from './PracticeRepClient';
 import { getEnrollment } from '@/app/courses/foundation/program/_lib/getEnrollment';
 
@@ -11,7 +11,7 @@ interface PracticeRepPageProps {
 export const dynamic = 'force-dynamic';
 
 export function generateStaticParams() {
-  return AIBI_P_PRACTICE_REPS.map((rep) => ({ repId: rep.id }));
+  return FOUNDATION_PRACTICE_REPS.map((rep) => ({ repId: rep.id }));
 }
 
 export function generateMetadata({ params }: PracticeRepPageProps): Metadata {

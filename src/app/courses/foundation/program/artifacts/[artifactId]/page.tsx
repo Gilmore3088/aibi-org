@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
-import { AIBI_P_ARTIFACTS } from '@content/practice-reps/foundation-program';
+import { FOUNDATION_ARTIFACTS } from '@content/practice-reps/foundation-program';
 import { PrimaryButton, GhostButton } from '@/components/lms';
 import { CourseShellWrapper } from '@/components/lms/CourseShellWrapper';
 import { ArtifactStatusPanel } from './ArtifactStatusPanel';
@@ -13,11 +13,11 @@ interface ArtifactPageProps {
 export const dynamic = 'force-dynamic';
 
 export function generateStaticParams() {
-  return AIBI_P_ARTIFACTS.map((artifact) => ({ artifactId: artifact.id }));
+  return FOUNDATION_ARTIFACTS.map((artifact) => ({ artifactId: artifact.id }));
 }
 
 export function generateMetadata({ params }: ArtifactPageProps) {
-  const artifact = AIBI_P_ARTIFACTS.find((item) => item.id === params.artifactId);
+  const artifact = FOUNDATION_ARTIFACTS.find((item) => item.id === params.artifactId);
   return {
     title: artifact
       ? `${artifact.title} | AiBI-Foundation Artifact`
@@ -26,7 +26,7 @@ export function generateMetadata({ params }: ArtifactPageProps) {
 }
 
 export default async function ArtifactDetailPage({ params }: ArtifactPageProps) {
-  const artifact = AIBI_P_ARTIFACTS.find((item) => item.id === params.artifactId);
+  const artifact = FOUNDATION_ARTIFACTS.find((item) => item.id === params.artifactId);
 
   if (!artifact) {
     notFound();
