@@ -4,7 +4,7 @@ import type { Tier } from '@content/assessments/v2/scoring';
 import type { DimensionScore } from '@content/assessments/v2/scoring';
 import { DIMENSION_LABELS } from '@content/assessments/v2/types';
 import type { Dimension } from '@content/assessments/v2/types';
-import { ScoreRing } from './ScoreRing';
+import { ResultsDashboard } from './ResultsDashboard';
 import { NewsletterCTA } from './NewsletterCTA';
 import { PdfDownloadButton } from './PdfDownloadButton';
 import { StarterArtifactCard } from './StarterArtifactCard';
@@ -14,7 +14,6 @@ import { MaturityLadder } from './MaturityLadder';
 import { SignatureInsight } from './SignatureInsight';
 import { getStarterArtifact } from '@content/assessments/v2/starter-artifacts';
 import {
-  PERSONAS,
   BIG_INSIGHT,
   GAP_CONTENT,
   RECOMMENDATIONS,
@@ -86,7 +85,6 @@ export function ResultsViewV2({
   institutionName,
   profileId,
 }: ResultsViewV2Props) {
-  const persona = PERSONAS[tierId];
   const subjectName = institutionName?.trim() || 'Your institution';
   const grouped = groupDimensions(dimensionBreakdown);
   const focusGap =
@@ -123,36 +121,16 @@ export function ResultsViewV2({
         </p>
       </header>
 
-      {/* SECTION 1 — Diagnosis */}
+      {/* SECTION 1 — Diagnostic dashboard (ring + 8 bars + tier seal + rung ribbon) */}
       <SectionAnchor id="section-1" />
-      <section
-        aria-labelledby="section-1-heading"
-        className="space-y-8"
-        style={{ animation: 'fadeInUp 700ms cubic-bezier(0.22, 1, 0.36, 1) 200ms both' }}
-      >
-        <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
-          Diagnosis
-        </p>
-        <div className="grid gap-8 md:grid-cols-[1fr_auto] md:items-center">
-          <div>
-            <h2
-              id="section-1-heading"
-              className="font-serif text-3xl md:text-5xl leading-[1.05] tracking-[-0.01em] text-[color:var(--color-ink)]"
-            >
-              {subjectName} is in the{' '}
-              <span className="text-[color:var(--color-terra)]">{persona.label}</span>{' '}
-              phase.
-            </h2>
-            <p className="mt-5 text-base md:text-lg text-[color:var(--color-ink)]/75 leading-relaxed max-w-xl">
-              {persona.oneLine}
-            </p>
-          </div>
-          <div className="md:flex-shrink-0">
-            <ScoreRing score={score} minScore={12} maxScore={48} colorVar={tier.colorVar} label={tier.label} />
-          </div>
-        </div>
-        <ContinueLink to="section-1a" label="What this looks like in practice" />
-      </section>
+      <ResultsDashboard
+        score={score}
+        tier={tier}
+        tierId={tierId}
+        subjectName={subjectName}
+        dimensionBreakdown={dimensionBreakdown}
+      />
+      <ContinueLink to="section-1a" label="What this looks like in practice" />
 
       {/* SECTION 1a — Signature insight (callout that travels with the report) */}
       <SectionAnchor id="section-1a" />
@@ -207,71 +185,32 @@ export function ResultsViewV2({
         <ContinueLink to="section-4" label="Where you're strong vs exposed" />
       </section>
 
-      {/* SECTION 4 — Strengths vs Gaps */}
+      {/* SECTION 4 — Strengths vs Gaps (chart-led, then deep dive on critical) */}
       <SectionAnchor id="section-4" />
-      <section className="space-y-10" aria-labelledby="section-4-heading">
+      <section className="space-y-8" aria-labelledby="section-4-heading">
+        <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
+          Strengths and gaps
+        </p>
         <h2
           id="section-4-heading"
-          className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]"
+          className="font-serif text-3xl md:text-4xl leading-tight text-[color:var(--color-ink)]"
         >
-          Strengths and gaps
+          Where you&apos;re strong. Where you&apos;re exposed.
         </h2>
 
+        <StrengthsChart rows={grouped.all} />
+
         {grouped.critical.length > 0 && (
-          <div>
-            <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-error)] mb-5 flex items-center gap-2">
+          <div className="space-y-5 pt-2">
+            <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-error)] flex items-center gap-2">
               <span aria-hidden className="inline-block h-2 w-2 rounded-full bg-[color:var(--color-error)]" />
-              Your biggest gaps · focus here
+              Closest look · your biggest gaps
             </p>
             <div className="grid gap-5">
               {grouped.critical.map((gap) => (
                 <GapCard key={gap.id} gap={gap} />
               ))}
             </div>
-          </div>
-        )}
-
-        {grouped.developing.length > 0 && (
-          <div>
-            <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-5 flex items-center gap-2">
-              <span aria-hidden className="inline-block h-2 w-2 rounded-full bg-[color:var(--color-terra)]" />
-              Developing
-            </p>
-            <ul className="grid gap-3">
-              {grouped.developing.map((dim) => (
-                <li
-                  key={dim.id}
-                  className="flex items-baseline justify-between gap-4 border border-[color:var(--color-ink)]/10 rounded-[3px] px-4 py-3 bg-[color:var(--color-linen)]"
-                >
-                  <span className="min-w-0 font-serif text-lg text-[color:var(--color-ink)] break-words">{dim.label}</span>
-                  <span className="font-mono text-xs text-[color:var(--color-slate)] tabular-nums shrink-0">
-                    {dim.score}/{dim.maxScore}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        {grouped.strong.length > 0 && (
-          <div>
-            <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/65 mb-5 flex items-center gap-2">
-              <span aria-hidden className="inline-block h-2 w-2 rounded-full bg-[color:var(--color-ink)]/40" />
-              Where you&apos;re strong
-            </p>
-            <ul className="grid gap-3">
-              {grouped.strong.map((strength) => (
-                <li
-                  key={strength.id}
-                  className="flex items-baseline justify-between gap-4 border border-[color:var(--color-ink)]/15 rounded-[3px] px-4 py-3 bg-[color:var(--color-parch)]"
-                >
-                  <span className="min-w-0 font-serif text-lg text-[color:var(--color-ink)] break-words">{strength.label}</span>
-                  <span className="font-mono text-xs text-[color:var(--color-slate)] tabular-nums shrink-0">
-                    {strength.score}/{strength.maxScore}
-                  </span>
-                </li>
-              ))}
-            </ul>
           </div>
         )}
 
@@ -442,45 +381,8 @@ export function ResultsViewV2({
       <SectionAnchor id="section-9" />
       <ClosingCta tierId={tierId} />
 
-      {/* APPENDIX — full diagnostic + newsletter + PDF */}
-      <details className="mt-16 border-t border-[color:var(--color-ink)]/15 pt-6 group">
-        <summary className="cursor-pointer list-none flex items-center justify-between font-serif-sc text-[11px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/65 hover:text-[color:var(--color-terra)]">
-          <span>Full diagnostic · all 8 dimensions</span>
-          <span aria-hidden className="font-mono text-[12px] transition-transform group-open:rotate-180">▾</span>
-        </summary>
-        <div className="mt-6 space-y-4">
-          {grouped.all.map((dim) => {
-            const filledBars = Math.round(dim.pct * 4);
-            return (
-              <div key={dim.id} className="space-y-2">
-                <div className="flex items-baseline justify-between gap-4">
-                  <span className="min-w-0 font-serif text-lg text-[color:var(--color-ink)] break-words">
-                    {dim.label}
-                  </span>
-                  <span className="font-mono text-xs text-[color:var(--color-slate)] tabular-nums shrink-0">
-                    {dim.score} / {dim.maxScore}
-                  </span>
-                </div>
-                <div className="flex gap-1">
-                  {[1, 2, 3, 4].map((bar) => (
-                    <div
-                      key={bar}
-                      className={
-                        'h-2 flex-1 ' +
-                        (bar <= filledBars
-                          ? 'bg-[color:var(--color-terra)]'
-                          : 'bg-[color:var(--color-ink)]/10')
-                      }
-                    />
-                  ))}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </details>
-
-      <div className="mt-12" data-print-hide="true">
+      {/* Newsletter + PDF (full dimension chart now lives in the dashboard at top) */}
+      <div className="mt-16 border-t border-[color:var(--color-ink)]/15 pt-12" data-print-hide="true">
         <NewsletterCTA email={email} />
       </div>
 
@@ -531,6 +433,112 @@ function ImplicationRow({ label, body }: { readonly label: string; readonly body
       <dd className="text-[15px] leading-[1.6] text-[color:var(--color-ink)]/85">
         {body}
       </dd>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// StrengthsChart — full 8-dimension horizontal bar chart with zone bands.
+// Same data as the dashboard at top, but presented bigger and with named
+// zones (critical / developing / strong) so the eye lands on red first.
+// ---------------------------------------------------------------------------
+
+function StrengthsChart({
+  rows,
+}: {
+  readonly rows: ReadonlyArray<RankedDimension>;
+}) {
+  return (
+    <figure
+      className="border border-[color:var(--color-ink)]/20 rounded-[3px] bg-[color:var(--color-linen)] p-6 md:p-8"
+      aria-label="Eight-dimension readiness chart, sorted weakest first"
+    >
+      <ZoneLegend />
+      <ul className="space-y-4 mt-5">
+        {rows.map((row) => {
+          const zone =
+            row.pct < 0.5 ? 'critical' : row.pct >= 0.75 ? 'strong' : 'developing';
+          const fill =
+            zone === 'critical'
+              ? 'bg-[color:var(--color-error)]'
+              : zone === 'strong'
+                ? 'bg-[color:var(--color-ink)]/75'
+                : 'bg-[color:var(--color-terra)]';
+          const pctLabel = Math.round(row.pct * 100);
+          return (
+            <li key={row.id} className="space-y-1.5">
+              <div className="flex items-baseline justify-between gap-3">
+                <span className="min-w-0 font-serif text-[16px] md:text-[17px] text-[color:var(--color-ink)] truncate">
+                  {row.label}
+                </span>
+                <span className="font-mono text-[11px] text-[color:var(--color-ink)]/65 tabular-nums shrink-0">
+                  {row.score}/{row.maxScore}
+                  <span className="text-[color:var(--color-ink)]/35"> · {pctLabel}%</span>
+                </span>
+              </div>
+              <div
+                className="relative h-2.5 bg-[color:var(--color-ink)]/8"
+                role="presentation"
+              >
+                <div
+                  className={'absolute inset-y-0 left-0 ' + fill}
+                  style={{ width: `${Math.max(row.pct * 100, 2)}%` }}
+                />
+                {/* zone markers — 50% and 75% */}
+                <span
+                  aria-hidden
+                  className="absolute top-0 bottom-0 w-[1px] bg-[color:var(--color-ink)]/25"
+                  style={{ left: '50%' }}
+                />
+                <span
+                  aria-hidden
+                  className="absolute top-0 bottom-0 w-[1px] bg-[color:var(--color-ink)]/25"
+                  style={{ left: '75%' }}
+                />
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+    </figure>
+  );
+}
+
+function ZoneLegend() {
+  const zones: ReadonlyArray<{
+    readonly label: string;
+    readonly className: string;
+    readonly range: string;
+  }> = [
+    {
+      label: 'Critical',
+      className: 'bg-[color:var(--color-error)]',
+      range: '< 50%',
+    },
+    {
+      label: 'Developing',
+      className: 'bg-[color:var(--color-terra)]',
+      range: '50–74%',
+    },
+    {
+      label: 'Strong',
+      className: 'bg-[color:var(--color-ink)]/75',
+      range: '≥ 75%',
+    },
+  ];
+  return (
+    <div className="flex flex-wrap items-baseline gap-x-5 gap-y-2 pb-4 border-b border-[color:var(--color-ink)]/15">
+      {zones.map((zone) => (
+        <div key={zone.label} className="flex items-center gap-2">
+          <span aria-hidden className={'inline-block h-2.5 w-5 ' + zone.className} />
+          <span className="font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/70">
+            {zone.label}
+          </span>
+          <span className="font-mono text-[10px] text-[color:var(--color-ink)]/45 tabular-nums">
+            {zone.range}
+          </span>
+        </div>
+      ))}
     </div>
   );
 }

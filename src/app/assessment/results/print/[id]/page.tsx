@@ -85,6 +85,7 @@ export default async function PrintPage({ params }: PrintPageProps) {
         firstName={null}
         institutionName={null}
         generatedAt={generatedAt}
+        dimensionBreakdown={breakdown}
       />
       <ExecSummary
         tier={tier}

@@ -8,15 +8,16 @@ interface PracticePictureProps {
 }
 
 /**
- * "What this looks like in practice" — recognition copy by internal
- * role (operations / compliance / managers / executives). Sits between
- * the Diagnosis and the Big Insight on the on-screen brief. Job is to
- * earn "they understand us" in under thirty seconds of reading.
+ * Recognition copy by internal role — operations, compliance/risk,
+ * managers, executives — laid out as a 2×2 quadrant. Reads as a panel
+ * of cards instead of a dense list. Goal: a reader scanning the page
+ * meets their own role first, then their boss's, in under five
+ * seconds.
  */
 export function PracticePicture({ tierId }: PracticePictureProps) {
   const rows = PRACTICE_PICTURE[tierId];
   return (
-    <section className="space-y-8" aria-labelledby="practice-picture-heading">
+    <section className="space-y-6" aria-labelledby="practice-picture-heading">
       <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
         What this looks like in practice
       </p>
@@ -26,21 +27,32 @@ export function PracticePicture({ tierId }: PracticePictureProps) {
       >
         How this shows up inside the bank.
       </h2>
-      <dl className="border-t border-[color:var(--color-ink)]/15">
-        {rows.map((row) => (
-          <div
+      <p className="text-[15px] leading-[1.6] text-[color:var(--color-ink)]/75 max-w-2xl">
+        Most institutions at your stage share a few patterns by role.
+        Find yours first — the rest of the briefing is keyed to the
+        operating reality of that work.
+      </p>
+
+      <div className="grid gap-4 md:grid-cols-2 md:gap-5">
+        {rows.map((row, idx) => (
+          <article
             key={row.role}
-            className="grid gap-3 md:grid-cols-[200px_1fr] md:gap-8 py-5 border-b border-[color:var(--color-ink)]/15"
+            className="border border-[color:var(--color-ink)]/20 rounded-[3px] bg-[color:var(--color-linen)] p-5 md:p-6 flex flex-col gap-3"
           >
-            <dt className="font-serif-sc text-[11px] uppercase tracking-[0.22em] text-[color:var(--color-terra)] md:pt-1">
-              {row.role}
-            </dt>
-            <dd className="text-[15px] leading-[1.6] text-[color:var(--color-ink)]/85">
+            <header className="flex items-baseline justify-between gap-4 pb-3 border-b border-[color:var(--color-ink)]/15">
+              <p className="font-serif-sc text-[11px] uppercase tracking-[0.22em] text-[color:var(--color-terra)]">
+                {row.role}
+              </p>
+              <p className="font-mono text-[10px] tabular-nums text-[color:var(--color-ink)]/45 tracking-[0.18em]">
+                {String(idx + 1).padStart(2, '0')} / {String(rows.length).padStart(2, '0')}
+              </p>
+            </header>
+            <p className="text-[14.5px] leading-[1.55] text-[color:var(--color-ink)]/85">
               {row.body}
-            </dd>
-          </div>
+            </p>
+          </article>
         ))}
-      </dl>
+      </div>
     </section>
   );
 }
