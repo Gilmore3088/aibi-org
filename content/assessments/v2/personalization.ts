@@ -22,25 +22,25 @@ export const PERSONAS: Record<Tier['id'], Persona> = {
     id: 'starting-point',
     label: 'Unstructured AI',
     oneLine:
-      'AI is already being used inside your organization—but without consistent training, structure, or safeguards. This creates uneven results, missed efficiency gains, and unnecessary risk.',
+      "Your staff are already using AI — they just have no shared rules for it. Different teams make different decisions about what tools are safe and what data can go where. That is the gap to close first.",
   },
   'early-stage': {
     id: 'early-stage',
     label: 'Coordinated Experimentation',
     oneLine:
-      'AI is in use across some teams, but adoption is uneven and outcomes are inconsistent. The institutions that pull ahead from here are the ones that systematize the wins, not the ones that buy more tools.',
+      "Some teams are running real AI experiments and getting wins. The ones who pull ahead next are the ones who turn those wins into shared workflows — not the ones who buy more tools.",
   },
   'building-momentum': {
     id: 'building-momentum',
     label: 'Program Building',
     oneLine:
-      'AI is producing real value across multiple teams—but the program is fragile. Without measured outcomes and codified workflows, leadership support erodes faster than capability builds.',
+      "Multiple teams are using AI and producing real value. The risk now is that the program lives or dies with two or three motivated employees. Time to codify what is working.",
   },
   'ready-to-scale': {
     id: 'ready-to-scale',
     label: 'Capability Leadership',
     oneLine:
-      'AI is operating as a strategic capability inside your institution. The opportunity now is replication speed: how fast you codify what works for the next wave of staff.',
+      "AI is operating as a real capability inside your institution. The next question is replication speed — how fast every new hire reaches the same baseline as your strongest users.",
   },
 };
 
@@ -50,13 +50,13 @@ export const PERSONAS: Record<Tier['id'], Persona> = {
 
 export const BIG_INSIGHT: Record<Tier['id'], string> = {
   'starting-point':
-    'You are capable of quick AI wins—but currently lack the structure to use AI safely and consistently.',
+    "Quick AI wins are within reach. What's missing is the shared structure to make them safe and repeatable.",
   'early-stage':
-    'You have the people and curiosity. What you lack is a coordinated program that turns isolated wins into institutional capability.',
+    "You have the curiosity. What you lack is the connective tissue that turns isolated wins into institutional capability.",
   'building-momentum':
-    'You have working AI workflows. What you need next is the discipline to measure outcomes well enough to defend the program with leadership.',
+    "Your workflows are working. The next constraint is measurement — outcomes documented well enough to defend the program at the board level.",
   'ready-to-scale':
-    'You have a working program. The compounding question now is whether you can replicate it across every new hire fast enough to stay ahead.',
+    "You have a working program. The compounding question is whether every new hire can reach your top performers' baseline fast enough to keep the advantage.",
 };
 
 // ---------------------------------------------------------------------------
@@ -73,9 +73,9 @@ export interface GapContent {
 
 export const GAP_CONTENT: Record<Dimension, GapContent> = {
   'current-ai-usage': {
-    oneLine: 'AI tools are not embedded in repeating workflows. Use is sporadic and invisible to managers.',
+    oneLine: 'AI use is sporadic, individual, and invisible to managers.',
     explanation:
-      'AI tools are not yet embedded in repeating workflows. Use is sporadic, individual, and invisible to managers — which means time savings are real but not measurable.',
+      "AI is being used, but not in any workflow that repeats. The time savings are real — they just live inside one person's day and never roll up to a number you can manage.",
     impacts: [
       'Productivity gains stay locked inside individual desks',
       'No baseline exists to measure what AI is or is not doing for your institution',
@@ -86,9 +86,9 @@ export const GAP_CONTENT: Record<Dimension, GapContent> = {
     ],
   },
   'experimentation-culture': {
-    oneLine: 'AI usage is happening — but not shared or improving across your team.',
+    oneLine: 'AI use happens — but nobody learns from anyone else.',
     explanation:
-      'There is no shared place where staff can try, share, and improve AI use. Without that, every learning has to be rediscovered by the next person.',
+      "There is no shared place to try, swap, and improve prompts. Every lesson has to be rediscovered by the next person who needs it.",
     impacts: [
       'The same prompt gets re-invented across teams instead of refined',
       'Wins go silent — leadership never hears about them',
@@ -99,9 +99,9 @@ export const GAP_CONTENT: Record<Dimension, GapContent> = {
     ],
   },
   'ai-literacy-level': {
-    oneLine: 'Skills are not compounding. Every employee is figuring this out alone.',
+    oneLine: 'Every employee is figuring this out alone.',
     explanation:
-      'Staff have not yet been through structured training on safe and effective AI use. The gap shows up as cautious avoidance from some staff and unsafe enthusiasm from others.',
+      "Staff have not been through structured training on safe AI use. Some are too cautious to use it at all; others use it confidently in places they should not. Both reactions create real cost.",
     impacts: [
       'Two failure modes coexist: paralysis (afraid to use it) and oversharing (PII into public tools)',
       'Compliance risk grows faster than productivity gain',
@@ -112,9 +112,9 @@ export const GAP_CONTENT: Record<Dimension, GapContent> = {
     ],
   },
   'quick-win-potential': {
-    oneLine: 'No first workflow has been identified. The program never gets started.',
+    oneLine: 'No first workflow named. Conversations stay theoretical.',
     explanation:
-      'No low-risk workflow has been identified where AI can immediately save time. Without a beachhead, the program never gets started.',
+      "No low-risk workflow has been picked as the proving ground. Without a concrete first win, the program stays in slide decks and never reaches anyone's desk.",
     impacts: [
       'Conversations stay theoretical instead of producing measurable savings',
       'Skeptics inside the institution stay skeptical because nothing concrete has happened yet',
@@ -125,9 +125,9 @@ export const GAP_CONTENT: Record<Dimension, GapContent> = {
     ],
   },
   'leadership-buy-in': {
-    oneLine: 'Leadership has not committed. The program lives or dies by individual sponsors.',
+    oneLine: 'No committed senior sponsor. The program runs on volunteers.',
     explanation:
-      'Senior leadership has not committed to AI as a strategic priority. Without that air cover, the program lives or dies by individual sponsors.',
+      "Senior leadership has not committed to AI as a strategic priority. Without that air cover, the program lives or dies with the one or two employees willing to push it forward.",
     impacts: [
       'Budget conversations stall — AI is treated as IT spend, not capability investment',
       'Compliance and risk teams default to "no" without a counterweight',
@@ -138,9 +138,9 @@ export const GAP_CONTENT: Record<Dimension, GapContent> = {
     ],
   },
   'security-posture': {
-    oneLine: 'Staff may be doing the right things, but you cannot prove it to an examiner.',
+    oneLine: 'Right behavior may be happening — you cannot prove it on paper.',
     explanation:
-      'Your AI security posture is not yet documented in a way your examiner would accept. Staff may be doing the right things, but you cannot prove it.',
+      "Your AI security posture is not yet documented in a form an examiner would accept. Staff may be doing the right things every day, but there is no record to point to when asked.",
     impacts: [
       'Examiner asks for the AI workflow inventory — you cannot produce one',
       'A single staff prompt with PII becomes a reportable incident',
@@ -151,9 +151,9 @@ export const GAP_CONTENT: Record<Dimension, GapContent> = {
     ],
   },
   'training-infrastructure': {
-    oneLine: 'No training system. Skills decay between events; new hires arrive into a vacuum.',
+    oneLine: 'No practice cadence. Skills decay between events.',
     explanation:
-      'There is no recurring practice cadence for AI skills. One-off training fades within a quarter; without a place where practice lives, capability does not compound.',
+      "There is no recurring rhythm for AI practice. One-off training events fade within a quarter, and new hires arrive with no path into the workflows your team has built.",
     impacts: [
       'Skills decay between training events; new hires arrive into a vacuum',
       'Leadership keeps paying for kickoff sessions that never produce durable capability',
@@ -164,9 +164,9 @@ export const GAP_CONTENT: Record<Dimension, GapContent> = {
     ],
   },
   'builder-potential': {
-    oneLine: 'No internal builder. Every workflow improvement requires consultant or vendor work.',
+    oneLine: 'No internal builder. Workflow improvements wait for vendors.',
     explanation:
-      'There is not yet a named internal builder — the analyst or operations person who turns AI tools into working processes for everyone else. Without one, capability stays vendor-shaped.',
+      "There is no named builder — the analyst or operations person who turns AI tools into working processes the rest of the team can reuse. Without one, capability stays vendor-shaped.",
     impacts: [
       'Every workflow improvement requires consultant or vendor work',
       'The institution remains dependent on external expertise indefinitely',
@@ -494,35 +494,35 @@ export interface FinancialImplications {
 export const FINANCIAL_IMPLICATIONS: Record<Tier['id'], FinancialImplications> = {
   'starting-point': {
     operational:
-      'Time savings exist on individual desks but never aggregate to a measurable efficiency gain at the institution level. Without sanctioned workflows, the program cannot be staffed or budgeted with confidence.',
+      "Time is being saved on individual desks but it never rolls up to a number you can show the board. Without sanctioned workflows, the program cannot be staffed or budgeted with confidence.",
     risk:
-      'Staff use of public AI tools without policy or audit trail creates compliance exposure under SR 11-7 and the AIEOG Lexicon. The risk question your examiner will ask cannot yet be answered with documentation.',
+      "Staff are pasting work into public AI tools without policy or audit trail. Under SR 11-7 and the AIEOG Lexicon, examiners will ask what tools you approve, for what data, with what review — and that question cannot yet be answered on paper.",
     cost:
-      'Every workflow improvement requires consultant or vendor involvement. There is no internal capability accumulating, so spend keeps repeating instead of compounding into capability.',
+      "Every workflow improvement still needs a vendor or consultant. Spend repeats instead of compounding into capability your team owns.",
   },
   'early-stage': {
     operational:
-      'Uneven adoption means efficiency gains are not realized across the organization. Isolated wins cannot scale without process alignment, and the gap between top-performing teams and the rest widens.',
+      "Wins are real but uneven. The gap between your top-performing team and everyone else widens with each month that the strong patterns are not written down.",
     risk:
-      'Absence of a program increases compliance risk. Audit trails are inconsistent, raising questions about what tools are used, what data is exposed, and who is approving usage at the institution level.',
+      "Audit trails vary by team. An examiner walking the floor would get four different answers about what tools are in use and who approved them.",
     cost:
-      'Reliance on vendors or consultants for every workflow improvement can become expensive and delays internal capability. Building internal skills reduces long-term costs and reduces vendor lock-in.',
+      "Vendors are doing the work your team could be doing. Each engagement leaves no durable capability behind.",
   },
   'building-momentum': {
     operational:
-      'Multiple teams are producing measurable savings, but the program lacks the documented outcomes leadership needs to defend continued investment. Inconsistent measurement obscures which workflows are actually moving the efficiency ratio.',
+      "Several teams are producing measurable savings — but the measurement itself is uneven. Without documented outcomes, leadership cannot tell which workflows are actually moving the efficiency ratio.",
     risk:
-      'Governance exists but is uneven. Examiner-grade documentation needs to be standardized across teams before staff turnover or a single incident creates exposure.',
+      "Governance exists in pockets. Examiner-grade documentation needs to be standardized across teams before staff turnover or a single incident creates exposure.",
     cost:
-      'The program survives on individual sponsorship rather than institutional investment. Without measured ROI, budget conversations stall and capability that should compound stays linear.',
+      "The program survives on two or three motivated sponsors. Without measured ROI, budget conversations stall and what should compound stays linear.",
   },
   'ready-to-scale': {
     operational:
-      'AI is producing measurable, repeatable efficiency gains across departments. The risk now is not adoption — it is replication speed. Institutions that codify their program can extend the advantage; institutions that do not lose ground when staff turn over.',
+      "AI is producing repeatable efficiency gains across departments. The risk now is not adoption — it's replication speed. Institutions that codify their program extend the advantage; those that don't lose ground when staff turn over.",
     risk:
-      'Mature governance reduces incident risk to acceptable levels. The remaining risk is complacency: programs that stop investing in the next wave of capability fall behind faster than they realize.',
+      "Governance is mature enough that incident risk is acceptable. The remaining risk is complacency — programs that stop investing in the next wave fall behind faster than they realize.",
     cost:
-      'Internal capability has reduced vendor dependence and extended the productive life of staff hours. The next investment is not in tools — it is in the practice cadence that compounds capability across every new hire.',
+      "Vendor dependence is down and capability is compounding. The next investment is not in tools — it's in the practice cadence that gets every new hire to baseline.",
   },
 };
 
