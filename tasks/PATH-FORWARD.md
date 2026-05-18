@@ -1,10 +1,15 @@
 # Path Forward — consolidated work plan
 
-Living document. Synthesizes [`launch-checklist.md`](./launch-checklist.md)
-(520 open items), [`aibi-p-to-foundation-deploy-checklist.md`](./aibi-p-to-foundation-deploy-checklist.md)
-(14 open), [`todo.md`](./todo.md) (52 open), this session's findings,
-and [`MASTER.md`](./MASTER.md). The other files stay authoritative for
-their domain; this one tells you what to attack next.
+Living document. Synthesizes [`launch-checklist.md`](./launch-checklist.md),
+[`aibi-p-to-foundation-deploy-checklist.md`](./aibi-p-to-foundation-deploy-checklist.md),
+[`todo.md`](./todo.md), the latest session findings, and
+[`MASTER.md`](./MASTER.md). The other files stay authoritative for their
+domain; this one tells you what to attack next.
+
+**Last refreshed:** 2026-05-18 after the audit wave session
+([handoff](../docs/handoffs/audit-wave-2026-05-18.md)).
+**Wave 2 status:** W2.2/W2.3/W2.4/W2.5 done; W2.7 closed on §18.468;
+W2.1/W2.6/W2.8 blocked (see table below).
 
 Tag legend:
 - 🤖 **Autonomous** — I can do this without you
@@ -27,20 +32,18 @@ Estimated time: ~30–45 minutes total. Commit + push at the end.
 
 ---
 
-## Wave 2 — Autonomous, next session
+## Wave 2 — status after 2026-05-18 audit session
 
-(Larger items I can do but won't fit this session.)
-
-| ID | Task | Source |
+| ID | Task | Status |
 |----|------|--------|
-| W2.1 | 🤖 Build out the Playwright e2e test suite for §3 (auth flows §3.42–§3.87) — currently most are seeded tests gated on Supabase env | Launch §3 |
-| W2.2 | 🤖 Lift the `/assessment/in-depth` PurchaseButton into the hero region so the primary CTA is the actual Stripe button, not just a link | Polish |
-| W2.3 | 🤖 §13 Performance audit: run Lighthouse against the 5 marquee routes, file findings to `docs/reviews/perf-YYYY-MM-DD.md` | Launch §13 |
-| W2.4 | 🤖 §14 SEO: verify `robots.txt`, `sitemap.xml`, canonical tags, OG image fallbacks | Launch §14 |
-| W2.5 | 🤖 §16 Security audit: review API rate limiting, webhook signature verification, RLS coverage | Launch §16 |
-| W2.6 | 🤖 §17 LMS reskin cleanup — code-level, see launch-checklist §17 for the punch list | Launch §17 |
-| W2.7 | 🤖 §18 Bug fixes — code-level work tracked in launch-checklist §18 | Launch §18 |
-| W2.8 | 🤖 §19 Mobile + cross-browser testing (Playwright multi-project run) | Launch §19 |
+| W2.1 | 🤖 Build out the Playwright e2e test suite for §3 (auth flows §3.42–§3.87) | **BLOCKED on U.1** — needs Supabase env in `.env.local` to actually execute |
+| W2.2 | 🤖 Lift the `/assessment/in-depth` PurchaseButton into the hero region | **DONE** — hero-region purchase button shipped in prior session |
+| W2.3 | 🤖 §13 Performance audit on 5 marquee routes | **DONE** — PR #171, [`docs/reviews/lighthouse-2026-05-18.md`](../docs/reviews/lighthouse-2026-05-18.md). All routes Perf 98, LCP 2.4s |
+| W2.4 | 🤖 §14 SEO audit + fixes | **DONE** — PR #167 + #173, [`docs/reviews/seo-audit-2026-05-18.md`](../docs/reviews/seo-audit-2026-05-18.md) |
+| W2.5 | 🤖 §16 Security code-level audit | **DONE** — PR #168, [`docs/reviews/security-audit-2026-05-18.md`](../docs/reviews/security-audit-2026-05-18.md) |
+| W2.6 | 🤖 §17 LMS reskin cleanup | **BLOCKED** — 174 files still reference Terra/Sage/Cobalt tokens; Ledger migration must complete before legacy `tokens.css` can be deleted |
+| W2.7 | 🤖 §18 Bug fixes — code-level | **§18.468 DONE** (PDF libnss3 on Vercel — shipped via main rewrite). Remaining .469-.476 all need Supabase/Stripe data hygiene (you-only) |
+| W2.8 | 🤖 §19 Mobile + cross-browser Playwright multi-project | **BLOCKED on U.1** — needs Supabase env to run authed tests |
 
 ---
 
