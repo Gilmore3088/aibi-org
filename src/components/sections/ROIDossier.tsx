@@ -108,13 +108,17 @@ export function ROIDossier() {
     <Section variant="parch" padding="default" id="roi-dossier">
       <div className="max-w-default mx-auto">
         <h2 className="font-serif text-display-lg md:text-display-xl text-ink leading-[1.05] tracking-tightish text-center">
-          Run your <em className="text-terra">own numbers.</em>
+          Hours saved. Dollars saved. <em className="text-terra">Your numbers.</em>
         </h2>
+        <p className="font-serif italic text-body-lg text-ink/80 leading-relaxed mt-s3 max-w-[56ch] mx-auto text-center">
+          Annual time and dollar impact, scaled to your team and the range of
+          hours an AI-fluent banker reclaims.
+        </p>
 
         {/* Inputs — no chrome, just the four sliders */}
         <div className="mt-s10 space-y-s5">
           <RangeField
-            label="Full-time employees"
+            label="People on your team"
             value={fte}
             displayValue={fmtNumber(fte)}
             min={1}
@@ -123,7 +127,7 @@ export function ROIDossier() {
             onChange={setFte}
           />
           <RangeField
-            label="Loaded cost per FTE"
+            label="Average annual cost per person"
             value={costPerFTE}
             displayValue={fmtCurrency(costPerFTE)}
             min={40_000}
@@ -133,7 +137,7 @@ export function ROIDossier() {
           />
           <div className="grid grid-cols-2 gap-s5">
             <RangeField
-              label="Hours / week — low"
+              label="Hours saved / week — low"
               value={loHours}
               displayValue={`${loHours} hrs`}
               min={0}
@@ -145,7 +149,7 @@ export function ROIDossier() {
               }}
             />
             <RangeField
-              label="Hours / week — high"
+              label="Hours saved / week — high"
               value={hiHours}
               displayValue={`${hiHours} hrs`}
               min={0}
@@ -163,13 +167,13 @@ export function ROIDossier() {
         <div className="mt-s10 border border-strong bg-linen">
           <div className="grid grid-cols-3">
             <ResultCell label="Conservative" amount={result.low} tone="muted" />
-            <ResultCell label="Mid case" amount={result.mid} tone="primary" />
+            <ResultCell label="Best estimate" amount={result.mid} tone="primary" />
             <ResultCell label="Optimistic" amount={result.high} tone="muted" />
           </div>
           <div className="px-s6 py-s3 border-t border-hairline grid grid-cols-3 gap-s4 text-body-sm">
-            <FactCell label="Hours / year recaptured" value={fmtNumber(result.hoursPerYear)} />
+            <FactCell label="Hours reclaimed / year" value={fmtNumber(result.hoursPerYear)} />
             <FactCell label="Per banker, per week" value={`~${((loHours + hiHours) / 2).toFixed(1)} hrs`} />
-            <FactCell label="% of payroll" value={`~${result.payrollRecaptured}%`} />
+            <FactCell label="Share of payroll" value={`~${result.payrollRecaptured}%`} />
           </div>
         </div>
 
