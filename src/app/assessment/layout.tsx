@@ -4,6 +4,7 @@ export const metadata: Metadata = {
   title: 'Free AI Readiness Assessment',
   description:
     'Twelve questions. Under three minutes. See where your community bank stands on AI readiness across eight dimensions, with a tier classification and next-step recommendations.',
+  alternates: { canonical: '/assessment' },
 };
 
 export default function AssessmentLayout({ children }: { children: React.ReactNode }) {
