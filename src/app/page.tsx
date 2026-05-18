@@ -4,7 +4,6 @@ import { Section, Cta, ProductMark } from "@/components/system";
 import { ROIDossier } from "@/components/sections/ROIDossier";
 import { HomeContextStrip } from "@/components/sections/HomeContextStrip";
 import { HeroHeadlineSvg } from "@/components/_generated/HeroHeadlineSvg";
-import { HeroBlockPng } from "@/components/_generated/HeroBlockPng";
 import { BRAND } from "@content/copy";
 
 export const metadata: Metadata = {
@@ -20,11 +19,9 @@ export default function HomePage() {
       <MarketingPage
       hero={{
         eyebrow: "An institute for community banking",
-        // title + lede are retained as source-of-truth for any consumer
-        // that needs the text (search engines see them via the sr-only
-        // mirrors inside HeroBlockPng). Visually, heroBlock takes over
-        // the entire eyebrow + H1 + lede slot with a single pre-baked
-        // image so the LCP element doesn't wait on any webfont.
+        // Title text kept for any metadata / consumers, but visual
+        // rendering uses titleNode below so the LCP element ships as
+        // inline-SVG vector paths instead of font-dependent text.
         title: (
           <>
             Turning Bankers into <em className="text-terra">Builders.</em>
@@ -37,7 +34,6 @@ export default function HomePage() {
             credit unions.
           </span>
         ),
-        heroBlock: <HeroBlockPng className="block w-full" />,
         primaryCta: { href: "/assessment/start", label: "Take the assessment" },
         secondaryCta: { href: "/courses/foundation/program", label: "View the curriculum" },
         divider: "hairline",
