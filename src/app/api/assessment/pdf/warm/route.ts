@@ -9,6 +9,7 @@ import { NextResponse } from 'next/server';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { generateAssessmentPdf } from '@/lib/pdf/generate';
 import { uploadAssessmentPdf } from '@/lib/pdf/storage';
+import { rateLimitOrFail, getRequestIp } from '@/lib/api/rate-limit';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -26,6 +27,18 @@ export async function POST(request: Request) {
       { status: 200 },
     );
   }
+
+  // PDF generation is expensive (60s maxDuration). The 5-min idempotency
+  // window mitigates replay for the same profileId; this per-IP limit
+  // mitigates an attacker hammering with rotating UUIDs.
+  const limited = await rateLimitOrFail({
+    key: 'pdf-warm',
+    scope: 'ip',
+    identifier: getRequestIp(request),
+    max: 10,
+    windowSeconds: 60,
+  });
+  if (limited) return limited;
 
   let body: { profileId?: string };
   try {

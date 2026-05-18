@@ -2,6 +2,7 @@ import React from 'react';
 import type { DocumentProps } from '@react-pdf/renderer';
 import { Document, Page, StyleSheet, Text, View, renderToBuffer } from '@react-pdf/renderer';
 import { AIBI_SAFETY_NOTE, PROMPT_CARDS } from '@/content/prompt-cards/cards';
+import { rateLimitOrFail, getRequestIp } from '@/lib/api/rate-limit';
 
 const PDF_FILENAME = 'AiBI-Prompt-Cards.pdf';
 
@@ -60,7 +61,19 @@ function PromptCardsPdf() {
   );
 }
 
-export async function GET(): Promise<Response> {
+export async function GET(request: Request): Promise<Response> {
+  // PDF generation is expensive; throttle to discourage scrape-abuse.
+  // The PDF is the same for every caller (static content) so a generous
+  // per-IP cap is fine.
+  const limited = await rateLimitOrFail({
+    key: 'prompt-cards-download',
+    scope: 'ip',
+    identifier: getRequestIp(request),
+    max: 20,
+    windowSeconds: 3600,
+  });
+  if (limited) return limited as unknown as Response;
+
   try {
     const element = React.createElement(PromptCardsPdf) as React.ReactElement<DocumentProps>;
     const buffer = await renderToBuffer(element);

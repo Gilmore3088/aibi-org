@@ -15,15 +15,20 @@ brand stack.
 
 ## Where we are (start of plan)
 
-| Metric | Baseline (2026-05-17 AM) | Current (2026-05-17 PM) | Post-Wave A+ (2026-05-17 evening) |
-|--------|-------|-------|-------|
-| Performance | 89 | 92 | **TBD (re-measure pending)** |
-| LCP (Lighthouse) | 3.8s | 3.3s | **TBD** |
-| LCP (real users via Playwright unthrottled) | ~440ms | ~440ms | ~440ms (no regression expected) |
-| FCP | 0.9s | 0.9s | TBD |
-| TBT | 0ms | 0ms | TBD |
-| CLS | 0 | 0 | TBD |
-| Total page weight | 599 KiB | 508 KiB (-91) | TBD |
+| Metric | Baseline (2026-05-17 AM) | Current (2026-05-17 PM) | Post-Wave A+ (2026-05-17 evening) | Measured (2026-05-18, prod) |
+|--------|-------|-------|-------|-------|
+| Performance (mobile) | 89 | 92 | TBD | **98** ✓ |
+| Performance (desktop) | — | — | — | **100** ✓ |
+| LCP mobile / | 3.8s | 3.3s | TBD | **2.44s** ✓ (avg of 2 runs) |
+| LCP mobile /assessment | — | — | — | **2.43s** ✓ (avg of 2 runs) |
+| LCP desktop / | — | — | — | **0.60s** ✓ |
+| LCP desktop /assessment | — | — | — | **0.51s** ✓ |
+| LCP (real users via Playwright unthrottled) | ~440ms | ~440ms | ~440ms (no regression expected) | — |
+| FCP mobile | 0.9s | 0.9s | TBD | **0.95s** ✓ |
+| FCP desktop | — | — | — | **0.32s** ✓ |
+| TBT (all 4 measurements) | 0ms | 0ms | TBD | **0ms** ✓ |
+| CLS (all 4 measurements) | 0 | 0 | TBD | **0** ✓ |
+| Total page weight | 599 KiB | 508 KiB (-91) | TBD | — |
 | Homepage First Load JS | 165 KB | 165 KB | **101 KB (-64 KB, -39%)** |
 | /assessment First Load JS | 190 KB | 190 KB | **106 KB (-84 KB, -44%)** ← lazy-load ResultsViewV2 shaved another 21 KB |
 | /results/[id] First Load JS | 174 KB | 174 KB | **111 KB (-63 KB, -36%)** |
@@ -77,13 +82,13 @@ for the full audit trail with metrics.
 
 ## Acceptance criteria
 
-- Lighthouse Performance ≥ 95 on `/`
-- LCP < 2.5s on Lighthouse Slow 4G simulation
-- FCP not worse than 1.0s
-- TBT ≤ 50ms, CLS ≤ 0.05
+- Lighthouse Performance ≥ 95 on `/` — **HIT (mobile 98 / desktop 100, 2026-05-18)**
+- LCP < 2.5s on Lighthouse Slow 4G simulation — **HIT (mobile / 2.44s, mobile /assessment 2.43s)**
+- FCP not worse than 1.0s — **HIT (mobile 0.95s)**
+- TBT ≤ 50ms, CLS ≤ 0.05 — **HIT (both 0 across all 6 runs)**
 - No visual regression on the Ledger brand (Newsreader headlines,
-  Cormorant SC small caps for those decisions kept, Geist body)
-- Full Playwright suite still 106+ passing
+  Cormorant SC small caps for those decisions kept, Geist body) — pending A4 visual QA
+- Full Playwright suite still 106+ passing — pending D1
 
 ## Out of scope
 

@@ -68,21 +68,13 @@ const cormorantSC = Cormorant_SC({
 //     browser resolves heavy weights to newsreaderHeavy's family when
 //     they're requested. (Spec said "both bind --font-newsreader" but a
 //     single variable can't expose two families — see audit trail.)
-// Known issue (tracked in tasks/performance-optimization-2026-05-17.md E.1):
-// Next 14.2.x can't auto-resolve Newsreader's ascent/descent metrics for
-// the synthetic size-adjusted fallback (it emits "Failed to find font
-// override values for font Newsreader" four times during build). The
-// `adjustFontFallback: 'Times New Roman'` string variant only works for
-// next/font/local — for next/font/google the option is boolean only.
-//
-// JetBrains Mono + Geist Sans get proper `_Fallback` families with
-// size-adjust + ascent-override; Newsreader does not. Modest CLS risk
-// on first paint until Newsreader loads, but the explicit
-// `Iowan Old Style → Georgia → serif` chain in tokens.css cushions it.
-//
-// Fix path (deferred): use next/font/local with locally-hosted
-// Newsreader files + explicit metric overrides, OR adopt `fontaine`
-// to compute the metrics at build time.
+// The Next build still logs "Failed to find font override values for font
+// `Newsreader`" four times — @next/font/google's metric database doesn't
+// include Newsreader. We compensate manually: globals.css declares a
+// "Newsreader Fallback" @font-face that wraps Times New Roman with
+// size-adjust + ascent/descent overrides matching Newsreader's metrics,
+// and tokens.css chains it between the loading Newsreader family and the
+// generic serif chain. No CLS hop on first paint.
 const newsreaderHero = Newsreader({
   subsets: ['latin'],
   weight: ['400'],

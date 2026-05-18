@@ -6,6 +6,8 @@
 // the calcROI() spec in CLAUDE.md.
 
 import { useMemo, useState } from 'react';
+import { trackBriefingBooked } from '@/lib/analytics/events';
+import type { BriefingSource } from '@/components/analytics/BriefingButton';
 
 function calcROI(inputs: {
   fte: number;
@@ -53,11 +55,15 @@ const CALENDLY_URL =
 interface ROICalculatorBodyProps {
   readonly ctaLabel?: string;
   readonly ctaHref?: string;
+  // Surface the calculator is rendered on — feeds the briefing_booked
+  // analytics event so we can attribute briefings to the originating page.
+  readonly briefingSource?: BriefingSource;
 }
 
 export function ROICalculatorBody({
   ctaLabel = 'Request Executive Briefing',
   ctaHref = CALENDLY_URL,
+  briefingSource = 'home',
 }: ROICalculatorBodyProps = {}) {
   const [fte, setFte] = useState(50);
   const [costPerFTE, setCostPerFTE] = useState(85_000);
@@ -126,6 +132,11 @@ export function ROICalculatorBody({
           href={ctaHref}
           target={ctaHref.startsWith('http') ? '_blank' : undefined}
           rel={ctaHref.startsWith('http') ? 'noopener noreferrer' : undefined}
+          onClick={
+            ctaHref.startsWith('http')
+              ? () => trackBriefingBooked({ source: briefingSource })
+              : undefined
+          }
           className="mt-6 inline-block px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
         >
           {ctaLabel}
