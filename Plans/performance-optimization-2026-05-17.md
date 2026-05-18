@@ -40,11 +40,11 @@ Five workstreams, ranked by impact ÷ risk:
 
 | # | Change | Bytes saved | Brand cost | Status |
 |---|--------|-------------|------------|--------|
-| 1 | Code-split ROIDossier (next/dynamic) | ~10-30 KB JS | None | **Pending** |
-| 2 | Drop italic from Newsreader 500/600/700 | ~90 KB fonts | Heavy-weight `<em>` becomes synthesized italic OR upright | **Pending** |
-| 3 | Drop Cormorant SC, use Geist tracked-uppercase | ~50 KB fonts | Small-caps surfaces become tracked sans | **Deferred** |
-| 4 | `preload: false` on heavy Newsreader weights | 0 KB on disk; frees critical path | None | **Pending** (covered by #2 split) |
-| 5 | Vercel Early Hints for Newsreader 400 woff2 | 100-300ms latency | None | **Pending verification** |
+| 1 | Code-split ROIDossier (next/dynamic) | ~10-30 KB JS | None | **Shipped (Wave A, `13e7f65`)** |
+| 2 | Drop italic from Newsreader 500/600/700 | ~90 KB fonts | Heavy-weight `<em>` becomes synthesized italic OR upright | **Shipped (Wave A, `13e7f65`)** — done via the hero/heavy split below |
+| 3 | Drop Cormorant SC, use Geist tracked-uppercase | ~50 KB fonts | Small-caps surfaces become tracked sans | **Deferred** (Wave C — brand decision) |
+| 4 | `preload: false` on heavy Newsreader weights | 0 KB on disk; frees critical path | None | **Shipped (Wave A, `13e7f65`)** |
+| 5 | Vercel Early Hints for Newsreader 400 woff2 | 100-300ms latency | None | **Pending verification** (Wave B) |
 
 ## Already shipped this session
 
@@ -55,6 +55,7 @@ Five workstreams, ranked by impact ÷ risk:
 | C | Inline-SVG homepage H1 (pre-rasterized vector paths) | Permanent LCP shield for the H1 element | `4f2a4e8` |
 | D | Reverted `display: optional` (no measurable Lighthouse benefit) | Brand preserved | `eb13838` |
 | E | Reverted lede SVG + combined hero SVG (regressed FCP, no LCP gain) | Net negative experiments removed | `b6ca19d`, `8f2df9c` |
+| F | **Wave A** — ROIDossier code-split + Newsreader split into hero (400 + italic, preload) and heavy (500/600/700, no preload, no italic) | -3 italic font files; ROI calculator JS deferred below-the-fold | `13e7f65` |
 
 Five Lighthouse audit reports document each attempt — see
 [`docs/reviews/performance-overhaul-2026-05-17.md`](../docs/reviews/performance-overhaul-2026-05-17.md)

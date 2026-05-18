@@ -78,7 +78,8 @@ the registry of active plans and their open task counts.
 | 2026-05-17 | [`docs/handoffs/handoff-2026-05-17-dashboard-ledger.md`](./docs/handoffs/handoff-2026-05-17-dashboard-ledger.md) | HANDOFF | ACTIVE | Session handoff — what shipped + state of the repo |
 | 2026-05-17 | [`Plans/performance-optimization-2026-05-17.md`](./Plans/performance-optimization-2026-05-17.md) | PLAN | ACTIVE | LCP < 2.5s overhaul — font surgery, code-split, Early Hints |
 | 2026-05-17 | [`tasks/performance-optimization-2026-05-17.md`](./tasks/performance-optimization-2026-05-17.md) | CHECKLIST | ACTIVE | Wave A–D execution list for the perf plan |
-| 2026-05-17 | [`docs/reviews/performance-overhaul-2026-05-17.md`](./docs/reviews/performance-overhaul-2026-05-17.md) | REVIEW | ACTIVE | Audit trail: 6 LCP attempts, kept vs reverted, bytes-bound root cause |
+| 2026-05-17 | [`docs/reviews/performance-overhaul-2026-05-17.md`](./docs/reviews/performance-overhaul-2026-05-17.md) | REVIEW | ACTIVE | Audit trail: 6 LCP attempts, kept vs reverted, bytes-bound root cause; Wave A appended PM (`13e7f65`) |
+| 2026-05-17 | Wave A perf shipped (`13e7f65`) | COMMIT | DONE | ROIDossier code-split + Newsreader hero/heavy split (-3 italic font files, deferred ROI calculator JS). Bundled with In-Depth completion-detection dashboard fix. |
 
 ## Archived design specs (Plans/_archive/*.html)
 
