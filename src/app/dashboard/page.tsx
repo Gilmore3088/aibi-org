@@ -3,15 +3,24 @@
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { getUserDataWithSupabaseFallback, type UserData } from '@/lib/user-data';
-import { getTier } from '@content/assessments/v1/scoring';
-import { getTierV2, getTierInDepth } from '@content/assessments/v2/scoring';
 import { modules } from '@content/courses/foundation-program';
 import {
   AIBI_P_PRACTICE_REPS,
   getDailyPracticeRep,
 } from '@content/practice-reps/foundation-program';
 
+interface ReadinessSnapshot {
+  readonly score: number;
+  readonly maxScore: number;
+  readonly tierId: string;
+  readonly tierLabel: string;
+  readonly isInDepth: boolean;
+  readonly takenAt: string | null;
+}
+
 interface AssessmentsState {
+  readonly displayName: string;
+  readonly snapshot: ReadinessSnapshot | null;
   readonly inDepth: {
     readonly entitled: boolean;
     readonly profileId: string | null;
@@ -37,40 +46,23 @@ interface LearnerDashboardState {
   };
 }
 
-function getReadinessDisplay(readiness: NonNullable<UserData['readiness']>) {
-  const isV2 =
-    readiness.version === 'v2' ||
-    readiness.maxScore === 48 ||
-    readiness.maxScore === 192 ||
-    readiness.answers.length === 12 ||
-    readiness.answers.length === 48;
-  const maxScore = readiness.maxScore ?? (isV2 ? 48 : 32);
-  const isInDepth = maxScore > 48;
-  try {
-    const tier = isInDepth
-      ? getTierInDepth(readiness.score, maxScore)
-      : isV2
-        ? getTierV2(readiness.score)
-        : getTier(readiness.score);
-    return { tier, maxScore };
-  } catch {
-    return {
-      tier: {
-        id: readiness.tierId,
-        label: readiness.tierLabel,
-        colorVar: 'var(--ledger-accent)',
-        headline: 'Your readiness result is saved.',
-      },
-      maxScore,
-    };
-  }
-}
-
-function displayName(email: string | undefined): string {
-  if (!email) return 'there';
+// Greeting name resolution.
+// 1. Prefer the user's full_name from Supabase auth metadata (passed in via
+//    the /api/dashboard/assessments response as displayName).
+// 2. Fall back to the email local-part ONLY when it reads like a real name
+//    (alpha characters, no digits) — never turn "jlgilmore2" into
+//    "Jlgilmore2", which looks like a username, not a salutation.
+// 3. Last resort: empty string. Callers should render "Welcome back" with
+//    no name attached rather than guessing.
+function resolveGreetingName(apiName: string, email: string | undefined): string {
+  if (apiName.trim().length > 0) return apiName.trim();
+  if (!email) return '';
   const local = email.split('@')[0] ?? '';
   const first = local.split(/[._-]/)[0] ?? local;
-  if (!first) return 'there';
+  // Treat it as a real first name only if it's purely alpha and short-ish.
+  if (first.length === 0 || first.length > 24 || !/^[a-zA-Z]+$/.test(first)) {
+    return '';
+  }
   return first.charAt(0).toUpperCase() + first.slice(1).toLowerCase();
 }
 
@@ -119,9 +111,8 @@ export default function DashboardPage() {
 
   if (loading) return null;
 
-  const name = displayName(user?.email);
-  const display = user?.readiness ? getReadinessDisplay(user.readiness) : null;
-  const tier = display?.tier ?? null;
+  const name = resolveGreetingName(assessments?.displayName ?? '', user?.email);
+  const snapshot = assessments?.snapshot ?? null;
   const completedRepIds = Array.from(new Set([
     ...(dashboard?.practice.completedRepIds ?? []),
     ...localCompletedRepIds,
@@ -159,36 +150,44 @@ export default function DashboardPage() {
   const nowIndex = stepsDone.findIndex((d) => !d);
 
   // Hero CTA pair adapts to what's most actionable next.
+  // Order matters — most-progressed states first so we never push a user
+  // backwards (e.g. don't show "take in-depth" to someone who took it).
   let heroPrimary: { href: string; label: string };
   let heroSecondary: { href: string; label: string };
   let heroLede: string;
-  if (!stepAssessment) {
-    heroPrimary = { href: '/assessment/start', label: 'Take the free assessment' };
-    heroSecondary = { href: '/courses/foundation/program', label: 'Preview Foundation' };
-    heroLede =
-      "Start with a three-minute readiness check. You'll get your score, your strongest area, your weakest area, and the recommended next step.";
-  } else if (assessments?.inDepth?.entitled && !assessments.inDepth.hasCompleted) {
-    heroPrimary = { href: '/assessment/in-depth/take', label: 'Take your In-Depth assessment' };
-    heroSecondary = { href: `/practice/${currentRep.id}`, label: "Try today's rep" };
-    heroLede =
-      'Your In-Depth Assessment is unlocked. Forty-eight questions across eight dimensions — about twelve minutes — for a personalized Briefing and ninety-day action register.';
-  } else if (stepEnrolled) {
+  const profileIdForBriefing = assessments?.inDepth?.profileId;
+  if (stepEnrolled) {
     const cur = modules.find((m) => m.number === (dashboard?.enrollment?.currentModule ?? 1)) ?? modules[0]!;
     heroPrimary = { href: `/courses/foundation/program/${cur.number}`, label: `Continue Module ${cur.number}` };
     heroSecondary = { href: `/practice/${currentRep.id}`, label: "Today's rep" };
     heroLede =
       `Pick up where you left off in ${cur.title}. Practice reps are your shortest path between modules — six minutes, banker-safe.`;
-  } else if (assessments?.inDepth?.entitled) {
-    heroPrimary = { href: '/courses/foundation/program/purchase', label: 'Enroll · $295' };
-    heroSecondary = { href: '/courses/foundation/program', label: 'Preview Foundation' };
+  } else if (stepInDepth) {
+    // Took the In-Depth — push them to the Briefing and to Foundation.
+    heroPrimary = profileIdForBriefing
+      ? { href: `/assessment/in-depth/results/${profileIdForBriefing}`, label: 'View your Briefing' }
+      : { href: '/courses/foundation/program/purchase', label: 'Enroll · $295' };
+    heroSecondary = { href: '/courses/foundation/program/purchase', label: 'Enroll · $295' };
     heroLede =
-      'You have the In-Depth diagnosis. The Foundation course turns the playbook into skills your team can apply this week.';
-  } else {
+      'Your In-Depth Briefing is filed. The next move is to turn the diagnosis into operating capability — Foundation is the course that does that.';
+  } else if (assessments?.inDepth?.entitled) {
+    // Paid but hasn't taken it yet.
+    heroPrimary = { href: '/assessment/in-depth/take', label: 'Take your In-Depth assessment' };
+    heroSecondary = { href: `/practice/${currentRep.id}`, label: "Try today's rep" };
+    heroLede =
+      'Your In-Depth Assessment is unlocked. Forty-eight questions across eight dimensions — about twelve minutes — for a personalized Briefing and ninety-day action register.';
+  } else if (stepAssessment) {
+    // Free assessment only — sell the In-Depth.
     heroPrimary = { href: '/assessment/in-depth', label: 'Take In-Depth · $99' };
     heroSecondary = { href: '/courses/foundation/program', label: 'Preview Foundation' };
-    heroLede = tier
-      ? `Your readiness tier is ${tier.label}. Go deeper with the In-Depth Assessment — forty-eight questions, peer-band comparison, and a starting playbook keyed to your weakest area.`
-      : "Start with a three-minute readiness check. You'll get your score, your strongest area, your weakest area, and the recommended next step.";
+    heroLede = snapshot
+      ? `You scored ${snapshot.score}/${snapshot.maxScore} — ${snapshot.tierLabel}. The In-Depth Assessment goes from a three-minute scan to a forty-eight-question diagnostic with peer-band comparison and a ninety-day playbook.`
+      : 'Go deeper with the In-Depth Assessment — forty-eight questions, peer-band comparison, and a starting playbook keyed to your weakest area.';
+  } else {
+    heroPrimary = { href: '/assessment/start', label: 'Take the free assessment' };
+    heroSecondary = { href: '/courses/foundation/program', label: 'Preview Foundation' };
+    heroLede =
+      "Start with a three-minute readiness check. You'll get your score, your strongest area, your weakest area, and the recommended next step.";
   }
 
   const tabs: ReadonlyArray<{ label: string; href: string; active?: boolean; lock?: string }> = [
@@ -234,10 +233,21 @@ export default function DashboardPage() {
           <div className="container">
             <div className="wgrid">
               <div>
-                <span className="eyebrow greet">Welcome to The AI Banking Institute</span>
-                <h1>
-                  Hello, <em>{name}.</em>
-                </h1>
+                <span className="eyebrow greet">
+                  {snapshot ? 'Your AI readiness reading' : 'Welcome to The AI Banking Institute'}
+                </span>
+                {snapshot ? (
+                  <>
+                    <h1>
+                      {name ? <>Hello, <em>{name}.</em></> : <>Welcome <em>back.</em></>}
+                    </h1>
+                    <SnapshotPanel snapshot={snapshot} inDepthEntitled={Boolean(assessments?.inDepth?.entitled)} />
+                  </>
+                ) : (
+                  <h1>
+                    {name ? <>Hello, <em>{name}.</em></> : <>Welcome <em>in.</em></>}
+                  </h1>
+                )}
                 <p className="lede">{heroLede}</p>
                 <div className="ctas">
                   <Link href={heroPrimary.href} className="btn btn-primary">
@@ -742,6 +752,53 @@ export default function DashboardPage() {
   );
 }
 
+function SnapshotPanel({
+  snapshot,
+  inDepthEntitled,
+}: {
+  readonly snapshot: ReadinessSnapshot;
+  readonly inDepthEntitled: boolean;
+}) {
+  const pct = Math.round((snapshot.score / snapshot.maxScore) * 100);
+  const sourceLabel = snapshot.isInDepth ? 'In-Depth Briefing' : 'Free Readiness Scan';
+  const takenAt = snapshot.takenAt
+    ? new Date(snapshot.takenAt).toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+      })
+    : null;
+  return (
+    <div className="snap">
+      <div className="snap-row">
+        <div className="snap-cell">
+          <span className="snap-lab">Tier</span>
+          <span className="snap-tier">{snapshot.tierLabel}</span>
+        </div>
+        <div className="snap-cell">
+          <span className="snap-lab">Score</span>
+          <span className="snap-score">
+            {snapshot.score}
+            <span className="snap-score-max">/{snapshot.maxScore}</span>
+          </span>
+          <span className="snap-pct">{pct}%</span>
+        </div>
+        <div className="snap-cell">
+          <span className="snap-lab">Source</span>
+          <span className="snap-source">{sourceLabel}</span>
+          {takenAt && <span className="snap-meta">Filed {takenAt}</span>}
+        </div>
+      </div>
+      {!snapshot.isInDepth && !inDepthEntitled && (
+        <p className="snap-foot">
+          The free scan gives you the headline. The In-Depth Assessment gives you the explanation —
+          eight dimensions, peer-band comparison, and a ninety-day action register.
+        </p>
+      )}
+    </div>
+  );
+}
+
 function ActivationStep({
   n,
   done,
@@ -892,6 +949,26 @@ const dashboardStyles = `
   .ledger-dash .welcome h1 em{ font-style:italic; color:var(--terra); font-weight:500 }
   .ledger-dash .welcome .lede{ font-family:var(--serif); font-size:21px; line-height:1.45; color:var(--ink-2); max-width:42ch; margin:0 0 30px; font-weight:400 }
   .ledger-dash .welcome .ctas{ display:flex; gap:12px; flex-wrap:wrap }
+
+  /* Snapshot panel — replaces the generic lede when the user has results */
+  .ledger-dash .welcome .snap{ background:var(--paper); border:1px solid var(--rule-strong); padding:22px 24px; margin:0 0 26px; max-width:560px }
+  .ledger-dash .welcome .snap-row{ display:grid; grid-template-columns:repeat(3,1fr); gap:0; align-items:start }
+  .ledger-dash .welcome .snap-cell{ display:flex; flex-direction:column; gap:6px; padding:0 18px; border-left:1px solid var(--rule) }
+  .ledger-dash .welcome .snap-cell:first-child{ padding-left:0; border-left:none }
+  .ledger-dash .welcome .snap-cell:last-child{ padding-right:0 }
+  .ledger-dash .welcome .snap-lab{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+  .ledger-dash .welcome .snap-tier{ font-family:var(--serif); font-style:italic; font-size:22px; line-height:1.1; color:var(--terra); font-weight:500; letter-spacing:-0.015em }
+  .ledger-dash .welcome .snap-score{ font-family:var(--mono); font-size:24px; font-weight:600; color:var(--ink); line-height:1; font-variant-numeric:tabular-nums }
+  .ledger-dash .welcome .snap-score-max{ font-size:14px; font-weight:400; color:var(--muted); margin-left:2px }
+  .ledger-dash .welcome .snap-pct{ font-family:var(--mono); font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:var(--terra); font-weight:600 }
+  .ledger-dash .welcome .snap-source{ font-family:var(--serif); font-size:15px; line-height:1.2; color:var(--ink); font-weight:500 }
+  .ledger-dash .welcome .snap-meta{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); font-weight:500 }
+  .ledger-dash .welcome .snap-foot{ font-family:var(--serif); font-style:italic; font-size:14px; line-height:1.5; color:var(--ink-2); margin:18px 0 0; padding-top:14px; border-top:1px solid var(--rule); max-width:56ch }
+  @media (max-width:640px){
+    .ledger-dash .welcome .snap-row{ grid-template-columns:1fr; gap:18px }
+    .ledger-dash .welcome .snap-cell{ padding:0; border-left:none; border-top:1px solid var(--rule); padding-top:14px }
+    .ledger-dash .welcome .snap-cell:first-child{ border-top:none; padding-top:0 }
+  }
   .ledger-dash .welcome .progress{ background:var(--paper-2); border:1px solid var(--rule-strong); padding:32px 32px 28px; position:relative }
   .ledger-dash .welcome .progress .lab{ font-family:var(--mono); font-size:10px; letter-spacing:0.22em; text-transform:uppercase; color:var(--terra); font-weight:600; margin-bottom:14px; display:block }
   .ledger-dash .welcome .progress h4{ font-family:var(--serif); font-weight:500; font-size:22px; line-height:1.2; letter-spacing:-0.015em; margin:0 0 22px; max-width:28ch; color:var(--ink) }

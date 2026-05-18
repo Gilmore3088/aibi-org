@@ -15,7 +15,22 @@ import { emailVariants } from '@/lib/email/canonicalize';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
+interface ReadinessSnapshot {
+  readonly score: number;
+  readonly maxScore: number;
+  readonly tierId: string;
+  readonly tierLabel: string;
+  readonly isInDepth: boolean;
+  readonly takenAt: string | null;
+}
+
 interface AssessmentsResponse {
+  /** First name pulled from Supabase auth user_metadata.full_name.
+   *  Empty string when no name is on file — dashboard falls back to "Welcome back". */
+  readonly displayName: string;
+  /** Most recent readiness reading (free or in-depth), regardless of entitlement.
+   *  Surfaced so the dashboard can render YOUR results, not generic CTAs. */
+  readonly snapshot: ReadinessSnapshot | null;
   readonly inDepth: {
     readonly entitled: boolean;
     readonly profileId: string | null;
@@ -72,9 +87,12 @@ export async function GET(): Promise<NextResponse> {
   // +alias form used in checkout.
   let profileId: string | null = null;
   let hasCompleted = false;
+  let snapshot: ReadinessSnapshot | null = null;
   const { data: profileRows, error: profileErr } = await supabase
     .from('user_profiles')
-    .select('id, readiness_answers, readiness_version, readiness_max_score, readiness_at')
+    .select(
+      'id, readiness_answers, readiness_score, readiness_tier_id, readiness_tier_label, readiness_max_score, readiness_at',
+    )
     .or(variants.map((e) => `email.eq.${e}`).join(','))
     .order('readiness_at', { ascending: false, nullsFirst: false })
     .limit(1);
@@ -87,13 +105,46 @@ export async function GET(): Promise<NextResponse> {
     // 48-answer length is the canonical In-Depth completion signal — the
     // free assessment stores 12-element arrays.
     hasCompleted = Array.isArray(answers) && answers.length === 48;
+    if (
+      typeof profile.readiness_score === 'number' &&
+      typeof profile.readiness_tier_id === 'string' &&
+      typeof profile.readiness_tier_label === 'string'
+    ) {
+      const answerCount = Array.isArray(answers) ? answers.length : 0;
+      const isInDepth = answerCount === 48;
+      const maxScore =
+        typeof profile.readiness_max_score === 'number'
+          ? profile.readiness_max_score
+          : isInDepth
+            ? 192
+            : 48;
+      snapshot = {
+        score: profile.readiness_score,
+        maxScore,
+        tierId: profile.readiness_tier_id,
+        tierLabel: profile.readiness_tier_label,
+        isInDepth,
+        takenAt: (profile.readiness_at as string | null) ?? null,
+      };
+    }
   }
+
+  // First-name display string. Auth metadata is the only canonical source —
+  // we never derive a name from the email local-part (produces things like
+  // "Jlgilmore2" from jlgilmore2@gmail.com).
+  const fullName = (user.user_metadata as { full_name?: unknown } | null | undefined)?.full_name;
+  const displayName =
+    typeof fullName === 'string' && fullName.trim().length > 0
+      ? fullName.trim().split(/\s+/)[0]!
+      : '';
 
   // Surface inDepth whenever the user is entitled OR has completed it. The
   // dashboard reads .hasCompleted to flip step 4 of the activation ladder;
   // returning null when neither condition holds keeps the section hidden
   // for users who never engaged with the paid path.
   const body: AssessmentsResponse = {
+    displayName,
+    snapshot,
     inDepth: (entitled || hasCompleted)
       ? { entitled, profileId, hasCompleted, purchasedAt }
       : null,
