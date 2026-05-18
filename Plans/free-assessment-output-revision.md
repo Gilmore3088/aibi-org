@@ -1,7 +1,20 @@
 ---
-status: active
+status: shipped
 created: 2026-05-17
+shipped: 2026-05-18
 owner-tasks: tasks/free-assessment-output-revision.md
+shipped-branch: feature/free-assessment-output-revision
+shipped-commits:
+  - 006ebd1  # T1 CTA rank (Foundation $295 primary tiers 1–3)
+  - 01ba011  # T2 copy density –20%
+  - 76d2734  # T3 Practice Picture page
+  - 38f8464  # T4 Maturity Ladder
+  - 853bbe5  # T5 Signature Insight
+  - aeb3024  # T6 dashboard + 2×2 + chart + PDF cover
+  - aafef31  # T6 type size bump
+  - 40448c9  # PDF gen macOS platform gate
+  - e46ec11  # PDF Chrome isolation (no tabs in user browser)
+human-followup: see Ship gate "🔒 HUMAN" section in tasks file (H1–H4)
 ---
 
 # Free AI Readiness Assessment — Output Revision
