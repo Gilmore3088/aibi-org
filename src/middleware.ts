@@ -80,20 +80,12 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
     }
   }
 
-  // Forward x-pathname on the REQUEST headers so RSC's headers() can read it.
-  // Setting it on response.headers only sends it to the browser; the root
-  // layout's chromeless detection (CHROMELESS_PATHS) relies on the request
-  // side. Without this, /auth/*, /coming-soon, /design-system, etc. all
-  // render the global SiteNav on top of their own brand lockup.
-  request.headers.set('x-pathname', request.nextUrl.pathname);
-
   // Start with a mutable response so we can write cookies onto it.
   let response = NextResponse.next({
     request: { headers: request.headers },
   });
 
-  // Mirror x-pathname onto the response too — harmless, and a couple of
-  // existing call sites still inspect it there.
+  // Always forward the pathname header regardless of Supabase config.
   response.headers.set('x-pathname', request.nextUrl.pathname);
 
   // If Supabase is not configured (local dev without .env.local), skip session refresh.
@@ -112,8 +104,6 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
         // Write each cookie onto the request (so downstream server code sees it)
         // and onto the response (so the browser receives it).
         cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
-        // request.headers already carries x-pathname from above; re-emitting
-        // request.headers preserves it for the rebuilt response.
         response = NextResponse.next({
           request: { headers: request.headers },
         });
