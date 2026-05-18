@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { ROICalculatorBody } from '@/components/sections/ROICalculatorBody';
+import { BriefingButton } from '@/components/analytics/BriefingButton';
 
 export const metadata: Metadata = {
   title: 'Efficiency Ratio Workbook | For Institutions · The AI Banking Institute',
@@ -203,17 +204,16 @@ export default function EfficiencyRatioWorkbookPage() {
             or an institution-wide capability program is the right starting
             point. No pitch.
           </p>
-          <a
+          <BriefingButton
             href={
               process.env.NEXT_PUBLIC_CALENDLY_URL ??
               'https://calendly.com/aibi/executive-briefing'
             }
-            target="_blank"
-            rel="noopener noreferrer"
+            source="services"
             className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
           >
             Book an Executive Briefing
-          </a>
+          </BriefingButton>
         </div>
       </section>
     </main>

@@ -11,6 +11,7 @@
 
 import { TimeSavingsCard } from './TimeSavingsCard';
 import { JourneyBanner } from '@/components/JourneyBanner';
+import { trackBriefingBooked } from '@/lib/analytics/events';
 
 interface CompletionCTAProps {
   readonly moduleNumber: number;
@@ -126,6 +127,7 @@ export function CompletionCTA({ moduleNumber, isLastModule }: CompletionCTAProps
             href={calendlyUrl}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => trackBriefingBooked({ source: 'cta' })}
             className="inline-flex items-center gap-2 px-5 py-2.5 bg-[color:var(--color-terra)] hover:bg-[color:var(--color-terra-light)] text-[color:var(--color-linen)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-2"
           >
             Book an Executive Briefing

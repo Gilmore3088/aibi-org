@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { advisoryTiers } from '@content/advisory/v1';
+import { BriefingButton } from '@/components/analytics/BriefingButton';
 
 export const metadata: Metadata = {
   title: 'Advisory | For Institutions · The AI Banking Institute',
@@ -180,14 +181,13 @@ export default function AdvisoryPage() {
             certification track and the right advisory shape — or tell you
             plainly that you don’t need advisory at all.
           </p>
-          <a
+          <BriefingButton
             href={CALENDLY_URL}
-            target="_blank"
-            rel="noopener noreferrer"
+            source="services"
             className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
           >
             Book an Executive Briefing
-          </a>
+          </BriefingButton>
         </div>
       </section>
     </main>

@@ -7,6 +7,7 @@ import { ProgressBar } from './_components/ProgressBar';
 import { EmailGate } from './_components/EmailGate';
 import { ResultsViewV2 } from './_components/ResultsViewV2';
 import { ScoreRing } from './_components/ScoreRing';
+import { trackBriefingBooked } from '@/lib/analytics/events';
 
 // If the Calendly URL is unset (e.g. preview/dev), fall back to the advisory
 // page so the briefing CTA is never silently dead. Never use '#'.
@@ -102,6 +103,7 @@ export default function AssessmentPage() {
               ) : (
                 <a
                   href={BRIEFING_URL}
+                  onClick={() => trackBriefingBooked({ source: 'assessment' })}
                   className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
                 >
                   Book Your Executive Briefing
