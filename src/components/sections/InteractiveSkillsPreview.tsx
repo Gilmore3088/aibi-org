@@ -381,14 +381,14 @@ function PlatformsPanel() {
         {grouped.map((group) => (
           <div
             key={group.category}
-            className="grid grid-cols-[7rem_1fr] gap-s5 px-s5 md:px-s6 py-s4 items-baseline"
+            className="grid grid-cols-1 gap-s2 sm:grid-cols-[7rem_1fr] sm:gap-s5 sm:items-baseline px-s5 md:px-s6 py-s4"
           >
             <dt className="font-mono text-label-md uppercase tracking-widest text-terra">
               {group.label}
             </dt>
             <dd className="font-serif text-body-lg text-ink leading-snug">
               {group.items.map((t, i) => (
-                <span key={t.slug} className="whitespace-nowrap">
+                <span key={t.slug} className="sm:whitespace-nowrap">
                   {t.name}
                   <span className="font-mono text-label-sm uppercase tracking-widest text-slate ml-s2">
                     {t.vendor}
@@ -434,7 +434,7 @@ function SkillsPanel() {
         {grouped.map((group) => (
           <div
             key={group.dept}
-            className="grid grid-cols-[6rem_1fr] gap-s5 px-s5 md:px-s6 py-s4"
+            className="grid grid-cols-1 gap-s2 sm:grid-cols-[6rem_1fr] sm:gap-s5 px-s5 md:px-s6 py-s4"
           >
             <dt className="font-mono text-label-md uppercase tracking-widest text-terra pt-s1">
               {group.dept}
@@ -486,7 +486,7 @@ function AgentsPanel() {
         {grouped.map((group) => (
           <div
             key={group.dept}
-            className="grid grid-cols-[6rem_1fr] gap-s5 px-s5 md:px-s6 py-s4"
+            className="grid grid-cols-1 gap-s2 sm:grid-cols-[6rem_1fr] sm:gap-s5 px-s5 md:px-s6 py-s4"
           >
             <dt className="font-mono text-label-md uppercase tracking-widest text-terra pt-s1">
               {group.dept}
@@ -539,7 +539,7 @@ function PromptsPanel() {
         {grouped.map((group) => (
           <div
             key={group.role}
-            className="grid grid-cols-[6rem_1fr] gap-s5 px-s5 md:px-s6 py-s4"
+            className="grid grid-cols-1 gap-s2 sm:grid-cols-[6rem_1fr] sm:gap-s5 px-s5 md:px-s6 py-s4"
           >
             <dt className="font-mono text-label-md uppercase tracking-widest text-terra pt-s1">
               {group.role}
