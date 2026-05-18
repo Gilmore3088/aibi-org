@@ -1,28 +1,20 @@
+// Foundation content types.
+//
+// Historical note: this file used to hold a competing CourseConfig and
+// CourseModule interface that drove Foundation's pre-harness rendering.
+// Those interfaces were retired in Phase B4 when Foundation migrated to
+// the canonical CourseConfig in src/lib/lms/types.ts. The remaining
+// exports here are Foundation-specific *content* types (practice reps,
+// artifacts, certificate requirements) that don't generalize to other
+// courses and don't belong in the harness.
+//
+// AiBI-S has its own type files in content/courses/aibi-s/ and does not
+// import from this file.
+
 import type { LearnerRole } from '@/types/course';
 
-// 'aibi-p' kept as a legacy value forever for Stripe webhook retries and
-// pre-Phase 7-backfill DB rows. New writes emit 'foundation'.
-// See src/lib/products/normalize.ts for the boundary shim.
-export type CourseId = 'aibi-p' | 'foundation' | 'aibi-s' | 'aibi-l' | (string & {});
-
-export type CoursePhase =
-  | 'understand'
-  | 'safe-use'
-  | 'daily-workflows'
-  | 'role-application'
-  | 'credential';
-
-export type CourseActivityKind =
-  | 'reflection'
-  | 'form'
-  | 'drill'
-  | 'builder'
-  | 'simulation'
-  | 'artifact';
-
-export type ArtifactStatus = 'available' | 'in-progress' | 'completed' | 'locked';
-export type ArtifactFormat = 'pdf' | 'md' | 'doc' | 'worksheet' | 'prompt-card';
 export type SafetyLevel = 'green' | 'yellow' | 'red';
+
 export type PromptStrategyType =
   | 'structured'
   | 'transformation'
@@ -31,6 +23,7 @@ export type PromptStrategyType =
   | 'template'
   | 'sanitization'
   | 'multi-step';
+
 export type PromptTaskType =
   | 'email'
   | 'summary'
@@ -44,43 +37,14 @@ export type PromptTaskType =
   | 'sanitization'
   | 'workflow';
 
-export interface CourseConfig {
-  readonly id: CourseId;
-  readonly title: string;
-  readonly shortTitle: string;
-  readonly promise: string;
-  readonly audience: string;
-  readonly estimatedMinutes: number;
-  readonly modules: readonly CourseModule[];
-  readonly practiceReps: readonly PracticeRep[];
-  readonly artifacts: readonly Artifact[];
-  readonly certificateRequirements: readonly CertificateRequirement[];
-}
+export type ArtifactStatus = 'available' | 'in-progress' | 'completed' | 'locked';
+export type ArtifactFormat = 'pdf' | 'md' | 'doc' | 'worksheet' | 'prompt-card';
 
-export interface CourseModule {
-  readonly id: string;
-  readonly number: number;
-  readonly title: string;
-  readonly phase: CoursePhase;
-  // Canonical learning pillar — sourced from the foundation-program Module's
-  // pillar field, not derived from phase. The LMS sidebar groups by this.
-  readonly pillar: 'awareness' | 'understanding' | 'creation' | 'application';
-  readonly estimatedMinutes: number;
-  readonly keyOutput: string;
-  readonly learnerOutcome: string;
-  readonly learn: readonly string[];
-  readonly practice: PracticeRep | Simulation;
-  readonly apply: CourseActivity;
-}
-
-export interface CourseActivity {
-  readonly id: string;
-  readonly kind: CourseActivityKind;
-  readonly title: string;
-  readonly description: string;
-  readonly artifactId?: string;
-  readonly countsTowardCertificate: boolean;
-}
+// Foundation course identifier — accepts the legacy 'aibi-p' DB write key,
+// the modern 'foundation' slug, and other-course slugs as escape hatch.
+// Used by content type fields that record which course a piece of content
+// belongs to.
+export type CourseId = 'aibi-p' | 'foundation' | 'aibi-s' | 'aibi-l' | (string & {});
 
 export interface PracticeRep {
   readonly id: string;
