@@ -1,17 +1,20 @@
 /**
  * Tools the AiBI-Foundation curriculum teaches.
  *
- * Bound to the actual tool guides in
- *   content/courses/foundation/program/tool-guides.ts                  (ChatGPT, Claude)
- *   content/courses/foundation/program/tool-guides-copilot-gemini.ts   (Copilot, Gemini)
- *   content/courses/foundation/program/tool-guides-notebooklm-perplexity.ts (NotebookLM, Perplexity)
+ * Live tool guides live in:
+ *   content/courses/foundation-program/tool-guides-notebooklm-perplexity.ts
  *
- * If a tool is added to the course, add it here too. Pages that surface the
- * "tools your bankers will use" list (e.g. /for-institutions, /education)
- * read from this module.
+ * NotebookLM and Perplexity are the two platforms surfaced on
+ * /courses/foundation/program/tool-guides. ChatGPT, Claude, Copilot,
+ * and Gemini are referenced in the curriculum but do not yet have
+ * canonical structured guides — see task C1c for the transcription
+ * follow-up.
  *
- * Module 7 of the curriculum covers tool comparison; this list reflects the
- * platforms the curriculum walks the practitioner through using.
+ * Pages that surface the "tools your bankers will use" list
+ * (e.g. /for-institutions, /education) read from this module.
+ *
+ * Module 7 of the curriculum covers tool comparison; this list reflects
+ * the platforms the curriculum walks the practitioner through using.
  */
 
 export type ToolCategory =
