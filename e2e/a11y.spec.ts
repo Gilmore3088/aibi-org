@@ -18,9 +18,12 @@ import AxeBuilder from '@axe-core/playwright';
 const PUBLIC_ROUTES: ReadonlyArray<{ name: string; path: string }> = [
   { name: 'homepage', path: '/' },
   { name: 'assessment', path: '/assessment' },
+  { name: 'assessment in-depth landing', path: '/assessment/in-depth' },
   { name: 'education', path: '/education' },
   { name: 'for-institutions', path: '/for-institutions' },
   { name: 'foundation purchase', path: '/courses/foundation/program/purchase' },
+  { name: 'foundation module sample', path: '/courses/foundation/program/1' },
+  { name: 'foundation exam', path: '/certifications/exam/foundation' },
   { name: 'login', path: '/auth/login' },
   { name: 'signup', path: '/auth/signup' },
 ];
