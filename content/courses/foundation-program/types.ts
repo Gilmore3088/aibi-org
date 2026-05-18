@@ -80,7 +80,10 @@ export interface Module {
   readonly pillar: Pillar;
   readonly estimatedMinutes: number;
   readonly keyOutput: string;        // one-line description of what learner produces
-  readonly sections: readonly Section[];
+  // sections retired 2026-05-17 — V4 expanded modules in v4-expanded-modules.ts
+  // are the canonical learner-facing body. Kept optional for any tooling that
+  // still types against this interface.
+  readonly sections?: readonly Section[];
   readonly tables?: readonly ContentTable[];
   readonly activities: readonly Activity[];
   readonly artifacts?: readonly ArtifactDefinition[];
