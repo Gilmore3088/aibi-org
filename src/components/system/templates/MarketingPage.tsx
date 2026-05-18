@@ -23,6 +23,17 @@ import { cn } from "@/lib/utils/cn";
 export interface MarketingHero {
   readonly eyebrow?: string;
   readonly title: ReactNode;
+  /**
+   * Optional pre-rendered headline (e.g. inline SVG). When set, the H1
+   * is rendered FROM THIS NODE and `title` is ignored visually but kept
+   * as the source of truth for metadata. The node should provide its
+   * own semantic <h1> (typically visually-hidden alongside an SVG) so
+   * screen readers + crawlers still see a heading.
+   *
+   * Used on the homepage so the LCP element ships as inline-SVG vector
+   * paths, eliminating the Newsreader font-load dependency.
+   */
+  readonly titleNode?: ReactNode;
   /** Optional sub-title in italic serif under the H1. */
   readonly tagline?: string;
   readonly lede?: ReactNode;
@@ -69,9 +80,13 @@ export function MarketingPage({ hero, kpis, closing, children, className }: Mark
                 {hero.eyebrow}
               </p>
             )}
-            <h1 className="font-serif text-display-lg md:text-display-xl text-ink leading-tight tracking-tightish">
-              {hero.title}
-            </h1>
+            {hero.titleNode ? (
+              hero.titleNode
+            ) : (
+              <h1 className="font-serif text-display-lg md:text-display-xl text-ink leading-tight tracking-tightish">
+                {hero.title}
+              </h1>
+            )}
             {hero.tagline && (
               <p className="font-serif italic text-body-lg text-terra mt-s4">{hero.tagline}</p>
             )}

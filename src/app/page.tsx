@@ -3,6 +3,7 @@ import { MarketingPage } from "@/components/system/templates";
 import { Section, Cta, ProductMark } from "@/components/system";
 import { ROIDossier } from "@/components/sections/ROIDossier";
 import { HomeContextStrip } from "@/components/sections/HomeContextStrip";
+import { HeroHeadlineSvg } from "@/components/_generated/HeroHeadlineSvg";
 import { BRAND } from "@content/copy";
 
 export const metadata: Metadata = {
@@ -18,11 +19,15 @@ export default function HomePage() {
       <MarketingPage
       hero={{
         eyebrow: "An institute for community banking",
+        // Title text kept for any metadata / consumers, but visual
+        // rendering uses titleNode below so the LCP element ships as
+        // inline-SVG vector paths instead of font-dependent text.
         title: (
           <>
             Turning Bankers into <em className="text-terra">Builders.</em>
           </>
         ),
+        titleNode: <HeroHeadlineSvg className="block w-full max-w-[1500px]" />,
         lede: (
           <span className="font-serif italic">
             Independent AI assessment and education for community banks and
