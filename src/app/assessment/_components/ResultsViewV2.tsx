@@ -94,27 +94,27 @@ export function ResultsViewV2({
   const starterArtifact = focusGap ? getStarterArtifact(focusGap.id) : null;
 
   return (
-    <div className="w-full max-w-3xl mx-auto">
+    <div className="w-full max-w-4xl mx-auto">
       {/* Executive briefing header */}
       <header
         className="mb-14 border-b border-[color:var(--color-ink)]/15 pb-8"
         style={{ animation: 'fadeInUp 600ms cubic-bezier(0.22, 1, 0.36, 1) both' }}
       >
-        <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 mb-3">
-          <p className="font-serif-sc text-xs uppercase tracking-[0.22em] text-[color:var(--color-terra)]">
+        <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 mb-4">
+          <p className="font-serif-sc text-sm uppercase tracking-[0.22em] text-[color:var(--color-terra)]">
             AI Readiness Briefing
           </p>
-          <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55 shrink-0">
+          <p className="font-mono text-[12px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/65 shrink-0">
             {BRIEFING_DATE_FORMATTER.format(new Date())}
           </p>
         </div>
-        <h1 className="font-serif text-2xl md:text-3xl text-[color:var(--color-ink)] leading-tight">
+        <h1 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] leading-tight">
           {firstName
             ? `${firstName.trim()}, here is your assessment in brief.`
             : 'Your assessment, in brief.'}
         </h1>
         <p
-          className="mt-4 font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55"
+          className="mt-5 font-mono text-[12px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/65"
           data-print-hide="true"
         >
           A 5-minute read
@@ -450,11 +450,11 @@ function StrengthsChart({
 }) {
   return (
     <figure
-      className="border border-[color:var(--color-ink)]/20 rounded-[3px] bg-[color:var(--color-linen)] p-6 md:p-8"
+      className="border border-[color:var(--color-ink)]/20 rounded-[3px] bg-[color:var(--color-linen)] p-7 md:p-9"
       aria-label="Eight-dimension readiness chart, sorted weakest first"
     >
       <ZoneLegend />
-      <ul className="space-y-4 mt-5">
+      <ul className="space-y-5 mt-6">
         {rows.map((row) => {
           const zone =
             row.pct < 0.5 ? 'critical' : row.pct >= 0.75 ? 'strong' : 'developing';
@@ -466,18 +466,18 @@ function StrengthsChart({
                 : 'bg-[color:var(--color-terra)]';
           const pctLabel = Math.round(row.pct * 100);
           return (
-            <li key={row.id} className="space-y-1.5">
+            <li key={row.id} className="space-y-2">
               <div className="flex items-baseline justify-between gap-3">
-                <span className="min-w-0 font-serif text-[16px] md:text-[17px] text-[color:var(--color-ink)] truncate">
+                <span className="min-w-0 font-serif text-[18px] md:text-[19px] text-[color:var(--color-ink)] truncate leading-tight">
                   {row.label}
                 </span>
-                <span className="font-mono text-[11px] text-[color:var(--color-ink)]/65 tabular-nums shrink-0">
+                <span className="font-mono text-[13px] text-[color:var(--color-ink)]/75 tabular-nums shrink-0">
                   {row.score}/{row.maxScore}
-                  <span className="text-[color:var(--color-ink)]/35"> · {pctLabel}%</span>
+                  <span className="text-[color:var(--color-ink)]/45"> · {pctLabel}%</span>
                 </span>
               </div>
               <div
-                className="relative h-2.5 bg-[color:var(--color-ink)]/8"
+                className="relative h-4 bg-[color:var(--color-ink)]/8"
                 role="presentation"
               >
                 <div
@@ -527,14 +527,14 @@ function ZoneLegend() {
     },
   ];
   return (
-    <div className="flex flex-wrap items-baseline gap-x-5 gap-y-2 pb-4 border-b border-[color:var(--color-ink)]/15">
+    <div className="flex flex-wrap items-baseline gap-x-6 gap-y-2 pb-4 border-b border-[color:var(--color-ink)]/20">
       {zones.map((zone) => (
-        <div key={zone.label} className="flex items-center gap-2">
-          <span aria-hidden className={'inline-block h-2.5 w-5 ' + zone.className} />
-          <span className="font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/70">
+        <div key={zone.label} className="flex items-center gap-2.5">
+          <span aria-hidden className={'inline-block h-3 w-6 ' + zone.className} />
+          <span className="font-serif-sc text-[12px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/80">
             {zone.label}
           </span>
-          <span className="font-mono text-[10px] text-[color:var(--color-ink)]/45 tabular-nums">
+          <span className="font-mono text-[11px] text-[color:var(--color-ink)]/55 tabular-nums">
             {zone.range}
           </span>
         </div>

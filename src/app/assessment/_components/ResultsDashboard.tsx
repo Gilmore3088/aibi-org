@@ -84,11 +84,11 @@ export function ResultsDashboard({
         {persona.oneLine}
       </p>
 
-      {/* Dashboard panel */}
+      {/* Dashboard panel — stacks on mobile, side-by-side on md+ */}
       <div className="border border-[color:var(--color-ink)]/20 rounded-[3px] bg-[color:var(--color-linen)] overflow-hidden">
-        <div className="grid md:grid-cols-[auto_1fr] gap-0">
+        <div className="grid md:grid-cols-[minmax(280px,320px)_1fr] gap-0">
           {/* Left — Ring + tier seal */}
-          <div className="flex flex-col items-center gap-5 p-6 md:p-8 border-b md:border-b-0 md:border-r border-[color:var(--color-ink)]/15 bg-[color:var(--color-parch)]">
+          <div className="flex flex-col items-center gap-6 p-7 md:p-9 border-b md:border-b-0 md:border-r border-[color:var(--color-ink)]/15 bg-[color:var(--color-parch)]">
             <ScoreRing
               score={score}
               minScore={12}
@@ -100,16 +100,16 @@ export function ResultsDashboard({
           </div>
 
           {/* Right — 8-dimension chart */}
-          <div className="p-6 md:p-8">
-            <div className="flex items-baseline justify-between mb-5">
-              <p className="font-serif-sc text-[11px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/65">
+          <div className="p-7 md:p-9">
+            <div className="flex items-baseline justify-between mb-6">
+              <p className="font-serif-sc text-[13px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/75">
                 Readiness by dimension
               </p>
-              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/50 tabular-nums">
+              <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/55 tabular-nums">
                 Weakest first
               </p>
             </div>
-            <ul className="space-y-3">
+            <ul className="space-y-4">
               {ranked.map((row) => (
                 <DimensionBar key={row.id} row={row} />
               ))}
@@ -118,17 +118,19 @@ export function ResultsDashboard({
         </div>
 
         {/* Footer ribbon — bridges into the maturity ladder */}
-        <div className="border-t border-[color:var(--color-ink)]/15 px-6 md:px-8 py-4 bg-[color:var(--color-parch)] flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
-          <p className="font-serif-sc text-[11px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/65">
+        <div className="border-t border-[color:var(--color-ink)]/15 px-7 md:px-9 py-5 bg-[color:var(--color-parch)] flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+          <p className="font-serif-sc text-[13px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/75">
             Rung{' '}
-            <span className="text-[color:var(--color-terra)] font-mono tabular-nums tracking-normal">
+            <span className="text-[color:var(--color-terra)] font-mono tabular-nums tracking-normal text-[15px]">
               {rungIndex + 1}
             </span>{' '}
             of 6 ·{' '}
-            <span className="text-[color:var(--color-ink)]">{rungLabel}</span>
+            <span className="text-[color:var(--color-ink)] font-serif normal-case tracking-normal text-[16px]">
+              {rungLabel}
+            </span>
           </p>
-          <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/55">
-            The ladder is below. The first move follows it.
+          <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-[color:var(--color-ink)]/65">
+            The ladder is below ↓
           </p>
         </div>
       </div>
@@ -149,11 +151,11 @@ function TierSeal({
   readonly rungLabel: string;
 }) {
   return (
-    <div className="border border-[color:var(--color-ink)]/30 rounded-[3px] px-4 py-2 text-center max-w-[14rem]">
-      <p className="font-mono text-[9px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55 tabular-nums">
+    <div className="border border-[color:var(--color-ink)]/40 rounded-[3px] px-5 py-3 text-center max-w-[15rem] bg-[color:var(--color-linen)]">
+      <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/65 tabular-nums">
         Rung {rungIndex + 1} of 6
       </p>
-      <p className="font-serif text-[15px] text-[color:var(--color-ink)] leading-tight mt-1">
+      <p className="font-serif text-[18px] text-[color:var(--color-terra)] leading-tight mt-1.5">
         {rungLabel}
       </p>
     </div>
@@ -177,11 +179,11 @@ function DimensionBar({ row }: { readonly row: RankedRow }) {
   return (
     <li className="grid grid-cols-[1fr_auto] gap-x-4 items-baseline">
       <div className="min-w-0">
-        <div className="flex items-baseline justify-between gap-3 mb-1">
-          <span className="min-w-0 font-serif text-[15px] text-[color:var(--color-ink)] truncate">
+        <div className="flex items-baseline justify-between gap-3 mb-2">
+          <span className="min-w-0 font-serif text-[17px] text-[color:var(--color-ink)] truncate leading-tight">
             {row.label}
           </span>
-          <span className="font-mono text-[11px] text-[color:var(--color-ink)]/65 tabular-nums shrink-0">
+          <span className="font-mono text-[13px] text-[color:var(--color-ink)]/75 tabular-nums shrink-0">
             {row.score}/{row.maxScore}
           </span>
         </div>
@@ -190,7 +192,7 @@ function DimensionBar({ row }: { readonly row: RankedRow }) {
             <div
               key={bar}
               className={
-                'h-[6px] flex-1 ' +
+                'h-[9px] flex-1 ' +
                 (bar < filled ? fillColor : 'bg-[color:var(--color-ink)]/10')
               }
             />

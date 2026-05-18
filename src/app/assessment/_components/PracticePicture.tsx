@@ -37,17 +37,17 @@ export function PracticePicture({ tierId }: PracticePictureProps) {
         {rows.map((row, idx) => (
           <article
             key={row.role}
-            className="border border-[color:var(--color-ink)]/20 rounded-[3px] bg-[color:var(--color-linen)] p-5 md:p-6 flex flex-col gap-3"
+            className="border border-[color:var(--color-ink)]/25 rounded-[3px] bg-[color:var(--color-linen)] p-6 md:p-7 flex flex-col gap-4"
           >
-            <header className="flex items-baseline justify-between gap-4 pb-3 border-b border-[color:var(--color-ink)]/15">
-              <p className="font-serif-sc text-[11px] uppercase tracking-[0.22em] text-[color:var(--color-terra)]">
+            <header className="flex items-baseline justify-between gap-4 pb-4 border-b border-[color:var(--color-ink)]/20">
+              <p className="font-serif-sc text-[13px] uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
                 {row.role}
               </p>
-              <p className="font-mono text-[10px] tabular-nums text-[color:var(--color-ink)]/45 tracking-[0.18em]">
+              <p className="font-mono text-[11px] tabular-nums text-[color:var(--color-ink)]/50 tracking-[0.16em]">
                 {String(idx + 1).padStart(2, '0')} / {String(rows.length).padStart(2, '0')}
               </p>
             </header>
-            <p className="text-[14.5px] leading-[1.55] text-[color:var(--color-ink)]/85">
+            <p className="text-[16px] md:text-[17px] leading-[1.6] text-[color:var(--color-ink)]/85">
               {row.body}
             </p>
           </article>
