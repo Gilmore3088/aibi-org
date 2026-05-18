@@ -19,7 +19,8 @@ const PDF_FILENAME = 'AiBI-Safe-AI-Use-Guide.pdf';
 
 // ---------------------------------------------------------------------------
 // Font registration — must run before first renderToBuffer call.
-// Fonts live in public/fonts/ and are served as static assets.
+// Fonts live in assets/pdf-fonts/ — read server-side by react-pdf, never
+// served to the browser (moved out of public/ on 2026-05-17).
 // In a Next.js server context process.cwd() is the project root.
 // ---------------------------------------------------------------------------
 let fontsRegistered = false;
@@ -27,7 +28,11 @@ let fontsRegistered = false;
 function ensureFonts() {
   if (fontsRegistered) return;
 
-  const fontsDir = path.join(process.cwd(), 'public', 'fonts');
+  // 2026-05-17: TTF fonts moved out of public/ to assets/pdf-fonts/ — they
+  // are only used server-side by react-pdf, never served to the browser.
+  // Keeping them in public/ shipped 2.4 MB of unused static assets on every
+  // Vercel deploy. They still live in the repo, just not in public/.
+  const fontsDir = path.join(process.cwd(), 'assets', 'pdf-fonts');
 
   Font.registerHyphenationCallback((word) => [word]);
 
