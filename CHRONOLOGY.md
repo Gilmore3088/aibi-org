@@ -118,6 +118,8 @@ the registry of active plans and their open task counts.
 | 2026-05-18 | SEO sweep W2.4 — PR [#173](https://github.com/Gilmore3088/aibi-org/pull/173) (`2f058ae`) | COMMIT | DONE | Root-level self-canonicals via `alternates.canonical: '/'` in `app/layout.tsx`; sitemap expansion adds /privacy, /terms, /faq, /ai-use-disclaimer + 4 essays (9 routes total, 13→22). |
 | 2026-05-18 | Banned-phrase sweep W1.3 — PR [#174](https://github.com/Gilmore3088/aibi-org/pull/174) (`08c1c44`) | COMMIT | DONE | Repo-wide grep for CLAUDE.md banned phrases. One real violation: `derive.ts:288` "fastest unlock" → "fastest fix" in the In-Depth Briefing. Meta-references in design-system and curriculum content correctly preserved. Internal `'aibi-p'` slug kept (102 hits, all DB/storage/regex identifiers per CLAUDE.md "user-facing copy only" qualifier). |
 | 2026-05-18 | CLAUDE.md stale-price fix — this commit | DOC | DONE | Replaced 3 stale $97 references with current $295 (Foundation) + $99 (In-Depth). Renamed `STRIPE_FOUNDATIONS_PRICE_ID` → `STRIPE_FOUNDATION_PRICE_ID`. Marked `/foundations` as redirect-only per `next.config.mjs`. |
+| 2026-05-18 | [`tasks/github-issues-2026-05-18.md`](./tasks/github-issues-2026-05-18.md) | CHECKLIST | ACTIVE | Canonical local tracker for the 44 open GitHub issues as of 2026-05-18. 7 waves (Wave 0 housekeeping closures → Wave 6 launch-checklist closeouts). One cluster branch per wave; each cluster lands as one PR. |
+| 2026-05-18 | [`docs/handoffs/uat-2026-05-18.md`](./docs/handoffs/uat-2026-05-18.md) | HANDOFF | ACTIVE | UAT checklist populated wave-by-wave as cluster PRs merge. Single doc for post-deploy verification across all 44 fixes. |
 
 ## Archived design specs (Plans/_archive/*.html)
 
