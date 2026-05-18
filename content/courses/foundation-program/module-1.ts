@@ -2,17 +2,9 @@
 // Pillar: Awareness | Estimated: 25 minutes
 // Key Output: Rewritten Email
 //
-// IMPORTANT (2026-05-17, issue #110):
-//   The `sections` below — beginning with "The Regulatory Environment
-//   Through 2026" — are LEGACY content and are NOT rendered to learners.
-//   V4 Module 1 in `v4-expanded-modules.ts` is the canonical practical-
-//   first onboarding experience ("Where the Day Actually Goes", "The
-//   First Safe Win — Emails"). The module page prefers V4 sections via
-//   `expandedModule?.sections ?? mod.sections`, and a V4 entry exists
-//   for module 1. Regulatory framework content belongs in Module 9
-//   (Safe AI Use) per the curriculum decision in #110. This file is
-//   kept for metadata (title, pillar, estimatedMinutes, keyOutput)
-//   until V4 absorbs those fields.
+// Metadata + tables + activities only. Learner-facing body content
+// is in v4-expanded-modules.ts. Legacy `sections` arrays were
+// removed 2026-05-17 once all 12 modules had V4 entries.
 
 import type { Module } from './types';
 
@@ -23,60 +15,6 @@ export const module1: Module = {
   pillar: 'awareness',
   estimatedMinutes: 25,
   keyOutput: 'Rewritten Email',
-  sections: [
-    {
-      id: 'm1-opening',
-      title: 'The Regulatory Environment Through 2026',
-      content: `Understanding AI governance in community banking begins with recognizing that no single law governs AI — instead, five existing frameworks have been extended to cover it. Each framework was written for a different purpose, but together they form the institutional boundaries within which every AI use case at your bank must operate.
-
-The US Government Accountability Office confirmed in its May 2025 report (GAO-25-107197) that there is no comprehensive AI-specific banking regulation yet. What exists is a patchwork of extensions: SR 11-7 applied to AI models, TPRM guidance extended to AI vendors, ECOA enforced against algorithmic lending decisions, BSA/AML standards applied to AI-driven transaction monitoring, and the AIEOG AI Lexicon providing shared vocabulary across regulators.
-
-> This is not a temporary gap. The regulatory environment will remain framework-dependent for the foreseeable future.
-
-Your job as a practitioner is to understand which framework applies to each AI use case you encounter — and what it means for how you must document, test, and communicate about that use case.`,
-      tryThis: 'Pull up your last vendor risk review or new-tool intake form. Identify which of the five frameworks (SR 11-7, TPRM, ECOA/Reg B, BSA/AML, AIEOG) would apply if that vendor turned on an AI feature tomorrow. If the answer is "more than one," note which one carries the strictest documentation burden.',
-    },
-    {
-      id: 'm1-governed-vs-ungoverned',
-      title: 'Governed vs. Ungoverned AI Use',
-      content: `> The most important distinction in community banking AI practice is not "good AI vs. bad AI" — it is governed AI vs. ungoverned AI.
-
-**Governed AI** is use that has been:
-- Reviewed against applicable regulatory frameworks
-- Documented with clear records of validation and testing
-- Subject to human-in-the-loop oversight for material decisions
-- Disclosed to affected parties where required
-
-**Ungoverned AI** is use where these elements are absent. This includes the informal use of consumer AI tools (ChatGPT, Claude, Gemini) with institutional data that has not been assessed for data classification compliance, vendor AI features enabled without third-party risk review, and automated outputs used in credit or compliance decisions without validation.
-
-> Shadow AI — staff using AI tools without institutional knowledge — is the most common source of ungoverned use.
-
-Module 9 covers the specific SAFE and red/yellow/green boundary framework for managing this risk.`,
-      tryThis: 'At your next team huddle, ask: "Has anyone pasted member data, loan tape rows, or board materials into a consumer AI tool in the last 30 days?" Track the honest answers. Every "yes" is an ungoverned use case that needs to be either retired or moved into the institution\'s sanctioned platform.',
-    },
-    {
-      id: 'm1-aieog',
-      title: 'The AIEOG AI Lexicon',
-      content: `In February 2026, the US Treasury, FBIIC, and FSSCC jointly published the AIEOG AI Lexicon — the first cross-regulator glossary for AI in financial services.
-
-> Understanding these definitions matters because regulators will use them.
-
-**Key terms from the AIEOG Lexicon:**
-
-- **Hallucination**: An AI output that is factually incorrect, fabricated, or misleading, presented with apparent confidence. The AIEOG definition distinguishes hallucination from model error — hallucination specifically refers to outputs that lack grounding in source data.
-
-- **AI Governance**: The policies, processes, and organizational structures that define how an institution develops, deploys, monitors, and retires AI systems. Per the Lexicon, governance is distinct from individual model risk management — it applies to the institutional AI program as a whole.
-
-- **AI Use Case Inventory**: A structured record of all AI systems and tools in active use at an institution, including their purpose, data inputs, outputs, and applicable risk controls. The Lexicon treats this as a baseline governance requirement.
-
-- **HITL (Human-in-the-Loop)**: A design pattern in which a human reviews or approves AI outputs before they are acted upon. HITL is required for any AI system that makes or influences material decisions affecting customers.
-
-- **Third-Party AI Risk**: Risks arising from AI systems operated by vendors or service providers. TPRM guidance has been extended to require the same risk assessment rigor for AI-enabled vendor tools as for any other critical third party.
-
-- **Explainability**: The capacity of an AI system to provide human-understandable reasons for its outputs. SR 11-7 requires conceptual soundness and transparency for model outputs used in decisions.`,
-      tryThis: 'Open your institution\'s current AI policy, acceptable-use guidance, or vendor questionnaire. Search it for the six AIEOG terms (hallucination, AI governance, AI use case inventory, HITL, third-party AI risk, explainability). Note which terms are missing — those are the gaps an examiner will find first.',
-    },
-  ],
   tables: [
     {
       id: 'm1-frameworks',

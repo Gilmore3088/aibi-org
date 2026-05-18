@@ -10,6 +10,7 @@
 //   shown to learners.
 import type { CourseConfig, CourseModule } from '@/types/lms';
 import { modules } from './modules';
+import { V4_FOUNDATION_PROGRAM_MODULE_BY_NUMBER } from './v4-expanded-modules';
 import {
   AIBI_P_ARTIFACTS,
   AIBI_P_CERTIFICATE_REQUIREMENTS,
@@ -36,6 +37,7 @@ export const aibiPReusableModules: readonly CourseModule[] = modules.map((mod) =
     AIBI_P_PRACTICE_REPS[0];
   const artifact = AIBI_P_ARTIFACTS.find((item) => item.moduleNumber === mod.number);
   const firstActivity = mod.activities[0];
+  const v4 = V4_FOUNDATION_PROGRAM_MODULE_BY_NUMBER.get(mod.number);
 
   return {
     id: mod.id,
@@ -49,7 +51,7 @@ export const aibiPReusableModules: readonly CourseModule[] = modules.map((mod) =
     estimatedMinutes: mod.estimatedMinutes,
     keyOutput: mod.keyOutput,
     learnerOutcome: `Use AI more safely and practically for ${mod.keyOutput.toLowerCase()}.`,
-    learn: mod.sections.map((section) => section.title),
+    learn: (v4?.sections ?? []).map((section) => section.title),
     practice,
     apply: {
       id: firstActivity?.id ?? `m${mod.number}-complete`,

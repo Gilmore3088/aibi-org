@@ -328,7 +328,7 @@ export default async function ModulePage({ params }: ModulePageParams) {
           learnContent={
             <>
               <LearnSection
-                sections={expandedModule?.sections ?? mod.sections}
+                sections={expandedModule?.sections ?? []}
                 keyTakeaways={expandedModule?.takeaways}
                 moduleNumber={moduleNum}
               />
