@@ -1,13 +1,23 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { useAssessmentV2, QUESTIONS_PER_SESSION } from './_lib/useAssessmentV2';
 import { QuestionCard } from './_components/QuestionCard';
 import { ProgressBar } from './_components/ProgressBar';
 import { EmailGate } from './_components/EmailGate';
-import { ResultsViewV2 } from './_components/ResultsViewV2';
 import { ScoreRing } from './_components/ScoreRing';
 import { trackBriefingBooked } from '@/lib/analytics/events';
+
+// ResultsViewV2 is a ~25 KB source component (drags in PdfDownloadButton +
+// SignupModal + result-rendering helpers). It only renders after the user
+// completes questions AND captures email. Defer the chunk until then so
+// the initial page bundle stays light — the user has spent ~2 minutes
+// answering questions by the time this is needed.
+const ResultsViewV2 = dynamic(
+  () => import('./_components/ResultsViewV2').then((mod) => mod.ResultsViewV2),
+  { ssr: false },
+);
 
 // If the Calendly URL is unset (e.g. preview/dev), fall back to the advisory
 // page so the briefing CTA is never silently dead. Never use '#'.
