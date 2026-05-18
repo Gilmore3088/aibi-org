@@ -13,16 +13,34 @@
 // Rendered inside the server ModulePage component via ModuleContentClient.
 
 import { useState, useCallback } from 'react';
+import dynamic from 'next/dynamic';
 import type { Activity, ContentTable } from '@content/courses/foundation-program';
 import type { LearnerRole } from '@/types/course';
 import { ActivityForm } from './ActivityForm';
-import { SubscriptionInventory } from './SubscriptionInventory';
-import { ClassificationDrill } from './ClassificationDrill';
-import { AcceptableUseCardForm } from './AcceptableUseCardForm';
-import { SkillDiagnosis } from './SkillDiagnosis';
-import { SkillBuilder } from './SkillBuilder';
-import { IterationTracker } from './IterationTracker';
 import { CompletionCTA } from './CompletionCTA';
+
+// Specialized activity widgets — each module renders at most one. Statically
+// importing all six made the [module] route's First Load JS pay for all of
+// them on every module page. next/dynamic splits each into its own chunk;
+// SSR stays on so initial paint still includes the active widget.
+const SubscriptionInventory = dynamic(
+  () => import('./SubscriptionInventory').then((m) => ({ default: m.SubscriptionInventory })),
+);
+const ClassificationDrill = dynamic(
+  () => import('./ClassificationDrill').then((m) => ({ default: m.ClassificationDrill })),
+);
+const AcceptableUseCardForm = dynamic(
+  () => import('./AcceptableUseCardForm').then((m) => ({ default: m.AcceptableUseCardForm })),
+);
+const SkillDiagnosis = dynamic(
+  () => import('./SkillDiagnosis').then((m) => ({ default: m.SkillDiagnosis })),
+);
+const SkillBuilder = dynamic(
+  () => import('./SkillBuilder').then((m) => ({ default: m.SkillBuilder })),
+);
+const IterationTracker = dynamic(
+  () => import('./IterationTracker').then((m) => ({ default: m.IterationTracker })),
+);
 
 export interface ActivitySectionProps {
   readonly activities: readonly Activity[];
