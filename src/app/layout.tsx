@@ -1,10 +1,7 @@
 import type { Metadata } from 'next';
 import { headers } from 'next/headers';
 import {
-  Cormorant_Garamond,
   Cormorant_SC,
-  DM_Sans,
-  DM_Mono,
   Newsreader,
   JetBrains_Mono,
 } from 'next/font/google';
@@ -35,13 +32,11 @@ const CHROMELESS_PATHS: readonly string[] = [
   '/redesign-checklist',
 ];
 
-const cormorant = Cormorant_Garamond({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-cormorant',
-  display: 'swap',
-});
-
+// 2026-05-17: Cormorant Garamond, DM Sans, and DM Mono removed — they
+// were declared here but had zero references anywhere in src/. They were
+// blocking the LCP element (the H1 in Newsreader) by competing for the
+// font network budget. Cormorant SC stays because tokens.css's
+// --font-serif-sc still maps to it for small-caps surfaces.
 const cormorantSC = Cormorant_SC({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
@@ -49,23 +44,8 @@ const cormorantSC = Cormorant_SC({
   display: 'swap',
 });
 
-const dmSans = DM_Sans({
-  subsets: ['latin'],
-  weight: ['400', '500', '700'],
-  variable: '--font-dm-sans',
-  display: 'swap',
-});
-
-const dmMono = DM_Mono({
-  subsets: ['latin'],
-  weight: ['400', '500'],
-  variable: '--font-dm-mono',
-  display: 'swap',
-});
-
-// Ledger brand-refresh fonts (2026-05-09). Loaded alongside the legacy
-// Cormorant/DM Sans/DM Mono stack while surfaces are migrated. The legacy
-// fonts will be removed once the migration is complete.
+// Ledger brand-refresh fonts (2026-05-09). Loaded as the primary stack
+// (Newsreader serif + Geist sans + JetBrains Mono).
 const newsreader = Newsreader({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
@@ -148,7 +128,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
 
       <body
-        className={`${cormorant.variable} ${cormorantSC.variable} ${dmSans.variable} ${dmMono.variable} ${newsreader.variable} ${GeistSans.variable} ${jetbrainsMono.variable} flex flex-col min-h-screen`}
+        className={`${cormorantSC.variable} ${newsreader.variable} ${GeistSans.variable} ${jetbrainsMono.variable} flex flex-col min-h-screen`}
       >
         {!chromeless && (
           <a href="#main-content" className="skip-link">
