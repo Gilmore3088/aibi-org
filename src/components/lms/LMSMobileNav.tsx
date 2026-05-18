@@ -110,17 +110,22 @@ export function LMSMobileNav({ modules, completed, current, learner }: Props) {
 
   return (
     <>
-      <button
-        type="button"
-        className="md:hidden"
-        style={buttonStyle}
-        onClick={() => setOpen(true)}
-        aria-label="Open course navigation"
-        aria-expanded={open}
-        aria-controls="lms-mobile-drawer"
-      >
-        <HamburgerIcon />
-      </button>
+      {/* Wrapper carries md:hidden so Tailwind's display:none on desktop
+          beats the button's inline display:inline-flex (inline styles
+          otherwise win the specificity battle and the button leaks onto
+          desktop where the sidebar is already visible). */}
+      <div className="md:hidden">
+        <button
+          type="button"
+          style={buttonStyle}
+          onClick={() => setOpen(true)}
+          aria-label="Open course navigation"
+          aria-expanded={open}
+          aria-controls="lms-mobile-drawer"
+        >
+          <HamburgerIcon />
+        </button>
+      </div>
 
       {open && (
         <div className="md:hidden">

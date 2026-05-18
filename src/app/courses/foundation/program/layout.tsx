@@ -19,6 +19,7 @@ import { redirect } from 'next/navigation';
 import { cookies, headers } from 'next/headers';
 import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
+import { isPreviewAuthBypassEnabled } from '@/lib/auth/previewBypass';
 import { getEnrollment } from './_lib/getEnrollment';
 
 interface CourseLayoutProps {
@@ -34,6 +35,12 @@ const AUTH_EXEMPT_SUFFIXES = ['/purchase'] as const;
 const ONBOARDING_EXEMPT_SUFFIXES = ['/onboarding', '/settings', '/purchase'] as const;
 
 export default async function CourseLayout({ children }: CourseLayoutProps) {
+  // Preview/local bypass — skip auth + onboarding gates entirely when
+  // PREVIEW_AUTH_BYPASS=true on a non-production environment.
+  if (isPreviewAuthBypassEnabled()) {
+    return <>{children}</>;
+  }
+
   const headersList = await headers();
   const pathname = headersList.get('x-pathname') ?? '';
 
