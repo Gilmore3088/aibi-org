@@ -27,11 +27,10 @@ const CHROMELESS_PATHS: readonly string[] = [
   '/briefing-preview',
   '/lms-preview',
   '/courses/foundation-preview',
-  // /courses/foundation/program intentionally NOT chromeless — enrolled
-  // learners need the global SiteNav as their way back to the rest of the
-  // site. CourseShell's sidebar + breadcrumb cover the course tree, not
-  // navigation off it.
-  '/auth', // Ledger-redesigned auth surfaces render their own brand lockup
+  // /courses/foundation/program and /auth intentionally NOT chromeless —
+  // both need the global SiteNav. /auth surfaces drop the LedgerSurface
+  // internal lockup via showHeader={false} so there's no duplicate mark.
+  // CourseShell's sidebar + breadcrumb cover the course tree only.
   '/redesign-checklist',
 ];
 

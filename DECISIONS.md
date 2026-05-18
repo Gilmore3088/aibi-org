@@ -436,3 +436,59 @@ content is fully superseded by CLAUDE.md "Design Context" and
 `docs/brand-refresh-2026-05-09/project/Design System.html`. Companion
 cleanup retired `src/components/AibiSeal.tsx` and the orphaned
 `src/components/Header.tsx` (SiteNav replaced it earlier).
+
+
+**2026-05-17 — `/dashboard` rebuilt on the Ledger design.** The signed-in
+dashboard was still on the legacy Terra palette and lacked any visible ladder
+from sign-up to enrollment. Rebuilt from the Claude Design `User Home.html`
+handoff bundle. Composition: welcome hero, 7-rung activation ladder (account →
+free readiness → first rep → In-Depth $99 → Foundation $295 → first module →
+certificate, each tied to real evidence), trio cards, today's rep, In-Depth
+section (when entitled), dark Foundation card, free resources, SAFE strip.
+Shipped via PR #123. See `Plans/dashboard-ledger-redesign.md`.
+
+**2026-05-17 — `/assessment/in-depth` refocused on selling the $99.** Page
+previously stacked three $99 callouts without comparative context. Restructured
+around a single buying surface: muted "for the curious" free scan vs gold-
+bordered "Recommended" In-Depth card with price, deliverables, and Stripe
+button inline. Line-by-line comparison table below for buyers who want detail.
+All three "Purchase In-Depth · $99" CTAs now call `/api/checkout/in-depth`
+via the generalised `PurchaseButton` (added `label` / `pendingLabel` / `size`
+props). The bottom trust strip was removed as redundant with the comparison.
+
+**2026-05-17 — `/courses/foundation/program` removed from `CHROMELESS_PATHS`.**
+The path was chromeless on the assumption that `CourseShell`'s sidebar +
+breadcrumb covered all navigation needs. They don't — they cover the course
+tree only, not the way back to the rest of the site. Global `SiteNav` is now
+stacked above the LMS chrome.
+
+**2026-05-17 — Foundation card copy rebuilt around real product data.** The
+design's illustrative copy claimed "8-week cohort / 12 video modules /
+200+ reps / cohort community / live calls / role-specific tracks." None of
+that exists. The course is self-paced, modules are reading + activities (no
+video), the rep library is ~15 reps and free for everyone, there's no cohort
+community, and Foundation is one course (not four role tracks — see the
+2026-05-10 reversal entry above). Rewrote the dashboard's Foundation card and
+the program-page hero to match: "12 structured modules · Self-paced",
+"30+ prompts" (real count), "Hands-on activities", "Working artifacts —
+PDFs + worksheets", "Verified certificate · On completion".
+
+**2026-05-17 — `PREVIEW_AUTH_BYPASS` auto-fires when Supabase is unconfigured.**
+Auth-gated layouts (`/dashboard`, `/courses/foundation/program/*`) trapped
+visitors on Vercel previews that lacked Supabase env vars — the gate redirected
+to a login page that itself couldn't authenticate anyone. New helper at
+`src/lib/auth/previewBypass.ts` with three layers: (1) `VERCEL_ENV === 'production'`
+hard-floor refusal, (2) explicit `PREVIEW_AUTH_BYPASS=true` opt-in still works,
+(3) otherwise auto-bypass when `NEXT_PUBLIC_SUPABASE_URL` is missing. Production
+is inert because it has Supabase configured and the hard-floor blocks even
+mis-scoped env vars. The bypass only unlocks the route gate; API routes still
+401, but the visual surface renders (which is what design QA needs).
+
+**2026-05-17 — Roadmap teases removed from buyer-facing surfaces.** Two
+footers on Foundation surfaces exposed roadmap state to buyers/learners
+without dates or links: "Team purchases use a single checkout… Advanced
+AiBI-S and AiBI-L tracks are coming later" on `/purchase`, and "More
+credentials launching soon: AiBI-S (Specialist) and AiBI-L (Leader)" on
+`/program`. Both removed. AiBI-S/L still exist in the long-term roadmap;
+they just don't appear on production surfaces until they have something
+to point at.

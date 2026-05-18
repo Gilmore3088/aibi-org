@@ -195,7 +195,58 @@ NEXT_PUBLIC_CALENDLY_URL=https://calendly.com/[handle]/executive-briefing
 # Preview/local only — suppresses live ConvertKit calls when set on a
 # non-production environment. Never set this in Production scope.
 SKIP_CONVERTKIT=true
+
+# Optional preview-only auth bypass. The helper at
+# src/lib/auth/previewBypass.ts already auto-fires when Supabase isn't
+# configured, so usually you do not need to set this. Use it when
+# Supabase IS configured on preview but you want to skip its gate for
+# visual QA. Refused outright when VERCEL_ENV === 'production'.
+PREVIEW_AUTH_BYPASS=true
 ```
+
+---
+
+## Preview Auth Bypass
+
+`src/lib/auth/previewBypass.ts` lets `/dashboard` and
+`/courses/foundation/program/*` render on a Vercel preview without a
+Supabase session. Three-layer safety:
+
+1. **Hard floor:** `VERCEL_ENV === 'production'` → always refuse,
+   regardless of any env var.
+2. **Explicit opt-in:** `PREVIEW_AUTH_BYPASS=true` → bypass on (set
+   it on the Vercel Preview scope only).
+3. **Auto-fire:** if neither of the above triggers, bypass when
+   `NEXT_PUBLIC_SUPABASE_URL` is missing — the auth gate would just
+   redirect to a login page that can't authenticate anyone.
+
+The bypass only unlocks the layout-level redirect. API routes still
+enforce auth (`/api/dashboard/*` returns 401). The dashboard page
+handles empty data gracefully, so design QA works end-to-end on
+previews. Production is inert because Supabase is configured AND the
+hard-floor blocks even mis-scoped env vars.
+
+When adding a new auth-gated layout, import and call
+`isPreviewAuthBypassEnabled()` at the top — short-circuit with
+`return <>{children}</>` before any redirect logic.
+
+---
+
+## Chromeless Routes
+
+`src/app/layout.tsx` keeps a `CHROMELESS_PATHS` list — routes that
+suppress the global `SiteNav` because they render their own brand
+lockup (`/auth/*`, `/design-system`, etc.). Two notes:
+
+- `/courses/foundation/program` is **intentionally not chromeless** —
+  enrolled learners need the global nav as their way back to the
+  rest of the site. `CourseShell`'s sidebar + breadcrumb cover the
+  course tree only.
+- The forwarding mechanism uses `x-pathname` set on the response by
+  middleware. There is an in-flight question about whether that
+  reaches RSC reliably; if a chromeless path ever leaks the global
+  nav, the fix is to set `x-pathname` on the forwarded REQUEST
+  headers in middleware, not just the response.
 
 ---
 

@@ -35,6 +35,7 @@ The detailed checkboxes never live in two places — they live in
 | [AiBI-P → AiBI-Foundation rename](../Plans/_archive/refactor-aibi-p-to-foundation-migration.md) (plan complete) | [`aibi-p-to-foundation-deploy-checklist.md`](./aibi-p-to-foundation-deploy-checklist.md) | **~14** | External rollout | Stripe / MailerLite / Resend / Vercel display-name updates |
 | [Research page redesign](../Plans/research-page-design-brief.md) | _(not yet created)_ | — | Plan only | Break into task list when work begins |
 | [Persistent backlog (Phase 2)](./todo.md) | [`todo.md`](./todo.md) | **~52** | Backlog | Phase 2 features (Supabase persistence, sandbox providers, AiBI-S/L wiring) |
+| [Performance optimization (May 2026)](../Plans/performance-optimization-2026-05-17.md) | [`performance-optimization-2026-05-17.md`](./performance-optimization-2026-05-17.md) | **~16** | Active | LCP < 2.5s via font surgery + code-split; audit trail at [`docs/reviews/performance-overhaul-2026-05-17.md`](../docs/reviews/performance-overhaul-2026-05-17.md) |
 
 **Prioritized view:** see [`PATH-FORWARD.md`](./PATH-FORWARD.md) — tags
 every outstanding work item as 🤖 autonomous / 🔒 you-only /
@@ -44,6 +45,7 @@ every outstanding work item as 🤖 autonomous / 🔒 you-only /
 
 | Plan | Closed | Why |
 |------|--------|-----|
+| `dashboard-ledger-redesign.md` | 2026-05-17 | `/dashboard` Ledger rebuild + In-Depth refocus + chrome/copy sweep — all shipped same day |
 | `lms-prototype-reskin.md` | 2026-05-17 | All 7 PRs merged (#52–#56, #64, #65) — Ledger LMS shipped |
 | `qa-bug-log-2026-05-15.md` | 2026-05-17 | Issues #92–96 all PASS verdict |
 

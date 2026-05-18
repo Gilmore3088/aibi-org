@@ -261,6 +261,7 @@ export default function DashboardPage() {
                     now={nowIndex === 0}
                     text="Create your account."
                     meta={stepAccount ? 'Done' : '1 min'}
+                    href={stepAccount ? undefined : '/auth/signup'}
                   />
                   <ActivationStep
                     n={2}
@@ -272,6 +273,7 @@ export default function DashboardPage() {
                       </>
                     }
                     meta={stepAssessment ? 'Done' : '3 min'}
+                    href="/assessment/start"
                   />
                   <ActivationStep
                     n={3}
@@ -279,6 +281,7 @@ export default function DashboardPage() {
                     now={nowIndex === 2}
                     text="Try today's banker-safe rep."
                     meta={stepRep ? 'Done' : '6 min'}
+                    href={`/practice/${currentRep.id}`}
                   />
                   <ActivationStep
                     n={4}
@@ -290,6 +293,11 @@ export default function DashboardPage() {
                       </>
                     }
                     meta={stepInDepth ? 'Done' : '$99'}
+                    href={
+                      assessments?.inDepth?.entitled
+                        ? '/assessment/in-depth/take'
+                        : '/assessment/in-depth'
+                    }
                   />
                   <ActivationStep
                     n={5}
@@ -301,6 +309,11 @@ export default function DashboardPage() {
                       </>
                     }
                     meta={stepEnrolled ? 'Enrolled' : '$295'}
+                    href={
+                      stepEnrolled
+                        ? '/courses/foundation/program'
+                        : '/courses/foundation/program/purchase'
+                    }
                   />
                   <ActivationStep
                     n={6}
@@ -312,6 +325,7 @@ export default function DashboardPage() {
                         ? `${completedModuleCount} of ${totalModules}`
                         : 'Build the skill'
                     }
+                    href={stepEnrolled ? '/courses/foundation/program' : undefined}
                   />
                   <ActivationStep
                     n={7}
@@ -323,6 +337,7 @@ export default function DashboardPage() {
                       </>
                     }
                     meta={stepCertificate ? 'Verified' : `${completedModuleCount}/${totalModules}`}
+                    href={stepEnrolled ? '/courses/foundation/program' : undefined}
                   />
                 </div>
               </aside>
@@ -733,21 +748,31 @@ function ActivationStep({
   now,
   text,
   meta,
+  href,
 }: {
   readonly n: number;
   readonly done: boolean;
   readonly now: boolean;
   readonly text: React.ReactNode;
   readonly meta: string;
+  readonly href?: string;
 }) {
   const cls = done ? 'step done' : now ? 'step now' : 'step locked';
-  return (
-    <div className={cls}>
+  const body = (
+    <>
       <span className="pn">{done ? '✓' : n}</span>
       <span className="t">{text}</span>
       <span className="meta">{meta}</span>
-    </div>
+    </>
   );
+  if (href) {
+    return (
+      <Link href={href} className={cls}>
+        {body}
+      </Link>
+    );
+  }
+  return <div className={cls}>{body}</div>;
 }
 
 function FeatureRow({
@@ -872,7 +897,10 @@ const dashboardStyles = `
   .ledger-dash .welcome .progress h4{ font-family:var(--serif); font-weight:500; font-size:22px; line-height:1.2; letter-spacing:-0.015em; margin:0 0 22px; max-width:28ch; color:var(--ink) }
   .ledger-dash .welcome .progress h4 em{ font-style:italic; color:var(--terra) }
   .ledger-dash .welcome .progress .steps{ display:flex; flex-direction:column; gap:14px }
-  .ledger-dash .welcome .progress .step{ display:grid; grid-template-columns:24px 1fr auto; gap:14px; align-items:center; padding:10px 0; border-top:1px solid var(--rule) }
+  .ledger-dash .welcome .progress .step{ display:grid; grid-template-columns:24px 1fr auto; gap:14px; align-items:center; padding:10px 0; border-top:1px solid var(--rule); text-decoration:none; color:inherit; transition:background .15s }
+  a.ledger-dash .welcome .progress .step,
+  .ledger-dash .welcome .progress a.step{ cursor:pointer }
+  .ledger-dash .welcome .progress a.step:hover .t{ color:var(--terra) }
   .ledger-dash .welcome .progress .step:first-child{ border-top:none; padding-top:0 }
   .ledger-dash .welcome .progress .step .pn{ width:24px; height:24px; border:1.4px solid var(--rule-strong); border-radius:50%; display:grid; place-items:center; font-family:var(--mono); font-size:10px; color:var(--muted); font-weight:700 }
   .ledger-dash .welcome .progress .step.done .pn{ background:var(--terra); border-color:var(--terra); color:#FAF7EE }
