@@ -91,7 +91,7 @@ export function MarketingPage({ hero, kpis, closing, children, className }: Mark
               <p className="font-serif italic text-body-lg text-terra mt-s4">{hero.tagline}</p>
             )}
             {hero.lede && (
-              <p className="text-body-lg text-ink/80 leading-relaxed mt-s5 max-w-narrow">
+              <p className="text-body-lg text-ink/80 leading-relaxed mt-s3 max-w-narrow">
                 {hero.lede}
               </p>
             )}

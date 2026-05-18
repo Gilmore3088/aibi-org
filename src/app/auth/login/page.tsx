@@ -82,7 +82,7 @@ function PasswordForm({ redirectTo, prefillEmail }: { redirectTo: string; prefil
         placeholder="••••••••"
         trailing={
           <Link href="/auth/forgot-password" className="ledger-link" style={{ fontFamily: 'var(--mono)', fontSize: 9.5, letterSpacing: '0.16em', textTransform: 'uppercase', borderBottom: 'none' }}>
-            Forgot?
+            Forgot password
           </Link>
         }
       />

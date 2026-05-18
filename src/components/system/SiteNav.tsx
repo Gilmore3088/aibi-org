@@ -11,7 +11,10 @@
  * `aria-[current=page]:` selector picks up the `aria-current` attribute on the
  * active link.
  *
- * Sticky positioning is solid linen at 97% — no backdrop-blur (per token rules).
+ * Sticky positioning is solid linen — no translucency, no backdrop-blur.
+ * Translucent nav backgrounds can't guarantee WCAG contrast (depends on what
+ * scrolls underneath) and conflict with Ledger's "lines do real work"
+ * principle. See #185.
  */
 
 import Link from "next/link";
@@ -41,7 +44,7 @@ export async function SiteNav() {
   const pathname = (await headers()).get("x-pathname") ?? "/";
 
   return (
-    <header className="sticky top-0 z-sticky border-b border-hairline bg-linen/[0.97]">
+    <header className="sticky top-0 z-sticky border-b border-hairline bg-linen">
       <div className="max-w-wide mx-auto px-s7 py-s5 flex items-center justify-between gap-s6">
         {/* Ledger lockup — two-line Geist 700 uppercase. Per the Design System
             spec: sans-serif, no italics, no symbol, no monogram. */}
