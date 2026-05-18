@@ -12,7 +12,9 @@ import {
   modules,
   foundationProgramCourseConfig,
   V4_FOUNDATION_PROGRAM_MODULE_BY_NUMBER,
+  getRolePath,
 } from '@content/courses/foundation-program';
+import { RolePathCard } from './_components/RolePathCard';
 import {
   CourseShell,
   LMSTopBar,
@@ -67,6 +69,11 @@ export default async function CourseOverviewPage() {
     foundationProgramCourseConfig.modules,
   );
   const currentMod = lmsModules.find((m) => m.num === currentModule) ?? lmsModules[0];
+
+  // Role-based personalization: only renders when the learner completed
+  // onboarding and picked a supported role. Falls through silently otherwise.
+  const primaryRole = enrollment?.onboarding_answers?.primary_role ?? null;
+  const rolePath = primaryRole ? getRolePath(primaryRole) : null;
 
   return (
     <CourseShell
@@ -481,6 +488,14 @@ export default async function CourseOverviewPage() {
             </div>
           </div>
         </section>
+
+        {/* Role-based learning path — only when the learner has completed
+            onboarding with a recognized role. */}
+        {rolePath && (
+          <div style={{ marginBottom: 32 }}>
+            <RolePathCard rolePath={rolePath} />
+          </div>
+        )}
 
         {/* Course structure */}
         <section
