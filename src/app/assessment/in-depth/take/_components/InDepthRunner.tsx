@@ -142,66 +142,83 @@ export function InDepthRunner(): React.ReactElement {
     return (
       <main className="min-h-screen">
         <ProgressBar progress={0} />
-        <div className="px-6 py-12 md:py-20 max-w-2xl mx-auto">
-          <p className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-ink)]/70 mb-4">
+        <div className="px-6 py-12 md:py-16 max-w-4xl mx-auto">
+          <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-[color:var(--color-terra)] mb-3 font-semibold">
             Before we begin
           </p>
-          <h1 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] leading-tight">
-            Which seat are you reading <em>from?</em>
+          <h1 className="font-serif text-3xl md:text-5xl text-[color:var(--color-ink)] leading-[1.02] tracking-tight">
+            Which seat are you reading <em className="text-[color:var(--color-terra)]">from?</em>
           </h1>
-          <p className="text-[color:var(--color-ink)]/75 mt-4 leading-relaxed">
-            Your Briefing will be framed for your seat. Optional &mdash; skip and
-            you will still get the full diagnosis.
+          <p className="font-serif italic text-lg text-[color:var(--color-ink)]/75 mt-4 leading-relaxed max-w-[58ch]">
+            Your Briefing will be framed for your seat. Optional &mdash; skip and you&apos;ll still get the full diagnosis.
           </p>
 
-          <fieldset className="mt-8 space-y-2">
+          <fieldset className="mt-10">
             <legend className="sr-only">Your role</legend>
-            {ROLES.map((id) => {
-              const meta = ROLE_META[id];
-              const selected = role === id;
-              return (
-                <label
-                  key={id}
-                  className={`block border rounded-sm px-4 py-3 cursor-pointer transition-colors ${
-                    selected
-                      ? 'border-[color:var(--color-ink)] bg-[color:var(--color-parch)]'
-                      : 'border-[color:var(--color-ink)]/15 hover:border-[color:var(--color-ink)]/40'
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    name="aibi-role"
-                    value={id}
-                    checked={selected}
-                    onChange={() => setRole(id)}
-                    className="sr-only"
-                  />
-                  <span className="font-serif text-lg text-[color:var(--color-ink)]">
-                    {meta.label}
-                  </span>
-                  <span className="block text-sm text-[color:var(--color-ink)]/70 mt-1">
-                    {meta.description}
-                  </span>
-                </label>
-              );
-            })}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {ROLES.map((id) => {
+                const meta = ROLE_META[id];
+                const selected = role === id;
+                return (
+                  <label
+                    key={id}
+                    className={`relative block border-2 rounded-[3px] p-5 cursor-pointer transition-all ${
+                      selected
+                        ? 'border-[color:var(--color-terra)] bg-[color:var(--color-terra)]/[0.04] shadow-[0_8px_22px_-18px_rgba(14,27,45,0.30)]'
+                        : 'border-[color:var(--color-ink)]/12 hover:border-[color:var(--color-ink)]/35 hover:bg-[color:var(--color-parch)]/40'
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="aibi-role"
+                      value={id}
+                      checked={selected}
+                      onChange={() => setRole(id)}
+                      className="sr-only"
+                    />
+                    <div className="flex items-start gap-4">
+                      <div className={`flex-none w-10 h-10 grid place-items-center rounded-[2px] transition-colors ${
+                        selected
+                          ? 'bg-[color:var(--color-terra)] text-[color:var(--color-linen)]'
+                          : 'bg-[color:var(--color-parch)] text-[color:var(--color-ink)]/80'
+                      }`}>
+                        <RoleIcon id={id} />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <span className="font-serif text-lg text-[color:var(--color-ink)] leading-tight block">
+                          {meta.label}
+                        </span>
+                        <span className="block text-sm text-[color:var(--color-ink)]/70 mt-1.5 leading-snug">
+                          {meta.description}
+                        </span>
+                      </div>
+                      {selected && (
+                        <span className="flex-none w-5 h-5 grid place-items-center rounded-full bg-[color:var(--color-terra)] text-[color:var(--color-linen)] text-[11px] font-bold">
+                          ✓
+                        </span>
+                      )}
+                    </div>
+                  </label>
+                );
+              })}
+            </div>
           </fieldset>
 
-          <div className="mt-8 flex items-center gap-6">
+          <div className="mt-10 flex items-center gap-6 flex-wrap">
             <button
               type="button"
               onClick={() => commitRolePick(role)}
               disabled={role === null}
-              className="font-mono text-xs uppercase tracking-widest px-6 py-3 bg-[color:var(--color-ink)] text-[color:var(--color-linen)] rounded-sm disabled:opacity-40 disabled:cursor-not-allowed"
+              className="font-mono text-[11px] uppercase tracking-[0.18em] font-semibold px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] rounded-[1px] disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[color:var(--color-terra-light)] transition-colors"
             >
-              Begin assessment
+              Begin assessment →
             </button>
             <button
               type="button"
               onClick={() => commitRolePick(null)}
-              className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-ink)]/70 hover:text-[color:var(--color-ink)]"
+              className="font-mono text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/60 hover:text-[color:var(--color-ink)] border-b border-[color:var(--color-ink)]/30 hover:border-[color:var(--color-ink)] pb-0.5"
             >
-              Skip
+              Skip for now
             </button>
           </div>
         </div>
@@ -282,4 +299,73 @@ export function InDepthRunner(): React.ReactElement {
       </div>
     </main>
   );
+}
+
+function RoleIcon({ id }: { readonly id: Role }) {
+  // Minimal line icons in the Ledger style — same stroke weight, same gold accent.
+  const stroke = 'currentColor';
+  const sw = 1.6;
+  switch (id) {
+    case 'operator':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+          <circle cx="12" cy="12" r="3" />
+          <path d="M12 2 L12 5 M12 19 L12 22 M2 12 L5 12 M19 12 L22 12 M4.93 4.93 L7.05 7.05 M16.95 16.95 L19.07 19.07 M4.93 19.07 L7.05 16.95 M16.95 7.05 L19.07 4.93" />
+        </svg>
+      );
+    case 'compliance-risk':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+          <path d="M12 2 L20 6 L20 12 C 20 17 16 21 12 22 C 8 21 4 17 4 12 L4 6 Z" />
+          <path d="M9 12 L11 14 L15 10" />
+        </svg>
+      );
+    case 'training-hr':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+          <path d="M2 9 L12 4 L22 9 L12 14 Z" />
+          <path d="M6 11 L6 16 C 6 17 8.5 18 12 18 C 15.5 18 18 17 18 16 L18 11" />
+          <line x1="22" y1="9" x2="22" y2="14" />
+        </svg>
+      );
+    case 'executive':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+          <path d="M3 20 L21 20 M5 20 L5 10 L9 7 L9 20 M15 20 L15 4 L19 7 L19 20" />
+        </svg>
+      );
+    case 'lending':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+          <circle cx="12" cy="12" r="9" />
+          <path d="M9 8 L9 16 M9 8 L13 8 C 14.5 8 15.5 9 15.5 10.5 C 15.5 12 14.5 13 13 13 L9 13" />
+        </svg>
+      );
+    case 'marketing':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+          <path d="M3 11 L3 13 L7 13 L13 18 L13 6 L7 11 Z" />
+          <path d="M16 8 C 18 9 18 15 16 16" />
+          <path d="M19 5 C 23 8 23 16 19 19" />
+        </svg>
+      );
+    case 'it':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+          <rect x="3" y="4" width="18" height="13" rx="1" />
+          <line x1="8" y1="21" x2="16" y2="21" />
+          <line x1="12" y1="17" x2="12" y2="21" />
+          <path d="M8 9 L10 11 L8 13 M13 13 L16 13" />
+        </svg>
+      );
+    case 'other':
+    default:
+      return (
+        <svg viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+          <circle cx="12" cy="12" r="9" />
+          <circle cx="12" cy="9" r="1.5" fill={stroke} />
+          <path d="M10 13 L12 13 L12 17 M10 17 L14 17" />
+        </svg>
+      );
+  }
 }

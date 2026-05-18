@@ -25,7 +25,7 @@
   --rule: #D5D1C2;
   --rule-strong: #A8AEBE;
 
-  --serif: var(--font-newsreader), 'Iowan Old Style', Georgia, serif;
+  --serif: var(--font-newsreader-hero), var(--font-newsreader-heavy), 'Iowan Old Style', Georgia, serif;
   --sans: var(--font-geist-sans), -apple-system, system-ui, sans-serif;
   --mono: var(--font-jetbrains-mono), ui-monospace, monospace;
 

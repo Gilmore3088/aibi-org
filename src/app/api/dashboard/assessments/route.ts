@@ -62,34 +62,40 @@ export async function GET(): Promise<NextResponse> {
   const entitled = (enrollments ?? []).length > 0;
   const purchasedAt = entitled ? (enrollments![0].created_at as string) : null;
 
-  // Profile + completion check. The user_profiles row exists for anyone who
-  // has taken any flavor of the readiness assessment (free or in-depth).
-  // We treat readiness_answers.length === 48 as the in-depth completion
-  // signal — the free path stores 12-element arrays.
+  // Profile + completion check. Run UNCONDITIONALLY (was previously gated on
+  // entitled) — completion is a property of the profile data, not of
+  // entitlement. Users who took the In-Depth via a non-Stripe path (preview
+  // bypass, manually-granted access, partner code) still need their dashboard
+  // step to flip to Done.
+  //
+  // Variant-aware lookup — the profile may have been created under the
+  // +alias form used in checkout.
   let profileId: string | null = null;
   let hasCompleted = false;
-  if (entitled) {
-    // Same variant-aware lookup as the entitlement query — the profile
-    // may have been created under the +alias form used in checkout.
-    const { data: profileRows, error: profileErr } = await supabase
-      .from('user_profiles')
-      .select('id, readiness_answers, readiness_version, readiness_max_score, readiness_at')
-      .or(variants.map((e) => `email.eq.${e}`).join(','))
-      .order('readiness_at', { ascending: false, nullsFirst: false })
-      .limit(1);
-    const profile = profileRows && profileRows.length > 0 ? profileRows[0] : null;
-    if (profileErr) {
-      console.warn('[dashboard/assessments] profile lookup error:', profileErr);
-    } else if (profile) {
-      profileId = profile.id as string;
-      const answers = profile.readiness_answers as unknown[] | null;
-      hasCompleted = Array.isArray(answers) && answers.length === 48;
-    }
+  const { data: profileRows, error: profileErr } = await supabase
+    .from('user_profiles')
+    .select('id, readiness_answers, readiness_version, readiness_max_score, readiness_at')
+    .or(variants.map((e) => `email.eq.${e}`).join(','))
+    .order('readiness_at', { ascending: false, nullsFirst: false })
+    .limit(1);
+  const profile = profileRows && profileRows.length > 0 ? profileRows[0] : null;
+  if (profileErr) {
+    console.warn('[dashboard/assessments] profile lookup error:', profileErr);
+  } else if (profile) {
+    profileId = profile.id as string;
+    const answers = profile.readiness_answers as unknown[] | null;
+    // 48-answer length is the canonical In-Depth completion signal — the
+    // free assessment stores 12-element arrays.
+    hasCompleted = Array.isArray(answers) && answers.length === 48;
   }
 
+  // Surface inDepth whenever the user is entitled OR has completed it. The
+  // dashboard reads .hasCompleted to flip step 4 of the activation ladder;
+  // returning null when neither condition holds keeps the section hidden
+  // for users who never engaged with the paid path.
   const body: AssessmentsResponse = {
-    inDepth: entitled
-      ? { entitled: true, profileId, hasCompleted, purchasedAt }
+    inDepth: (entitled || hasCompleted)
+      ? { entitled, profileId, hasCompleted, purchasedAt }
       : null,
   };
   return NextResponse.json(body);

@@ -152,6 +152,53 @@ When LCP < 2.5s is achieved on `/`:
 - Flip the row in `tasks/MASTER.md` to COMPLETE
 - Append a closing entry to `CHRONOLOGY.md`
 
+## Wave A — code changes (2026-05-17, post-audit)
+
+### A1 — ROIDossier code-split
+
+The calculator at `src/components/sections/ROIDossier.tsx` is a client component (`"use client"`, useState/useMemo) sitting below the fold on `/`. It was eagerly bundled into the homepage's client JS even though no user above the fold needs it.
+
+Next 14.2 disallows `next/dynamic({ ssr: false })` from server components. Workaround: a thin client wrapper at `src/components/sections/ROIDossierLazy.tsx` does the dynamic import. The homepage server component imports the wrapper; the underlying ROIDossier chunk is fetched on-demand.
+
+Expected effect: smaller homepage First Load JS, faster TTI on mobile, no impact on FCP/LCP (calculator is below the fold). The wrapper itself is microscopic (a single dynamic call).
+
+### A3 — Newsreader split
+
+Layout previously declared a single `Newsreader({ weight: ['400','500','600','700'], style: ['normal','italic'] })` call bound to `--font-newsreader`. That preloaded eight font files even though the LCP element is now inline-SVG (HeroHeadlineSvg) and only body lede + a handful of section pulls need the heavier weights.
+
+New split:
+
+| Config | Weights | Styles | Preload | Variable |
+|--------|---------|--------|---------|----------|
+| `newsreaderHero` | 400 | normal, italic | ✓ | `--font-newsreader-hero` |
+| `newsreaderHeavy` | 500, 600, 700 | normal | ✗ | `--font-newsreader-heavy` |
+
+**Deviation from spec.** The task said "Both bind `--font-newsreader`". This is impossible with next/font: each `Newsreader({...})` call generates a unique internal family name (e.g. `__Newsreader_abc123`), and the `.variable` className assigns that internal name to the CSS variable. If two configs share a variable, the latter overrides — only one family is reachable. We switched to two distinct variables and chain them in `font-family`:
+
+```css
+--ledger-serif: var(--font-newsreader-hero), var(--font-newsreader-heavy), "Iowan Old Style", Georgia, serif;
+```
+
+The browser uses `newsreaderHero`'s family for weights 400/400-italic, falls through to `newsreaderHeavy` for 500/600/700, then to system fallbacks. Italic weights 500/600/700 are dropped intentionally — they had zero references in `src/` per grep, and the savings (3 font files) are why the split matters.
+
+### Files touched in Wave A
+
+- `src/app/page.tsx` — import wrapper, replace `<ROIDossier />` with `<ROIDossierLazy />`
+- `src/app/layout.tsx` — split Newsreader into two configs, apply both `.variable` classes to body
+- `src/components/sections/ROIDossierLazy.tsx` — NEW; thin client wrapper
+- `src/styles/tokens.css`, `src/styles/tokens-ledger.css` — chain hero + heavy variables
+- Nine scoped route CSS files referencing `--font-newsreader` directly:
+  `src/app/research/research.css`, `src/app/user-home/user-home.css`,
+  `src/app/playground/playground.css`, `src/app/faq/faq.css`,
+  `src/app/preview-home/preview-home.css`,
+  `src/app/courses/foundation-preview/foundation-preview.css`,
+  `src/app/design-system/design-system.css`, `src/app/my-toolbox/my-toolbox.css`,
+  `src/components/ledger/ledger.css`
+
+### Wave A blocked from clean build
+
+`npm run build` is currently failing on `src/app/assessment/in-depth/take/_components/InDepthRunner.tsx` — `'RoleIcon' is not defined` (uncommitted WIP, not in our scope). `npx tsc --noEmit` is clean. `npx next lint` against the Wave A files is clean. Lighthouse re-measure (A2 + A5) is gated on the unrelated InDepthRunner fix landing OR a temporary stash.
+
 ## Commit references
 
 | Commit | Description |

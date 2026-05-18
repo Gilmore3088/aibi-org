@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { MarketingPage } from "@/components/system/templates";
 import { Section, Cta, ProductMark } from "@/components/system";
-import { ROIDossier } from "@/components/sections/ROIDossier";
+import { ROIDossierLazy } from "@/components/sections/ROIDossierLazy";
 import { HomeContextStrip } from "@/components/sections/HomeContextStrip";
 import { HeroHeadlineSvg } from "@/components/_generated/HeroHeadlineSvg";
 import { BRAND } from "@content/copy";
@@ -107,7 +107,7 @@ export default function HomePage() {
       </Section>
 
       {/* Savings calculator — the closing payload */}
-      <ROIDossier />
+      <ROIDossierLazy />
     </MarketingPage>
     </>
   );

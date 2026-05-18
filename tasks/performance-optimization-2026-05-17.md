@@ -17,12 +17,13 @@ When all boxes check, move this file to `tasks/_done/`.
 
 ## Wave A — autonomous, ~30 min total
 
-- [ ] A1. Code-split `<ROIDossier>` with `next/dynamic({ ssr: false })` on the homepage. Verify the calculator still works.
+- [x] A1. Code-split `<ROIDossier>` with `next/dynamic({ ssr: false })` on the homepage. Verify the calculator still works.
+  - Implementation note: Next 14.2 disallows `ssr: false` inside server components, so the lazy import lives in a thin client wrapper at `src/components/sections/ROIDossierLazy.tsx`. The homepage imports the wrapper instead of `<ROIDossier>` directly.
 - [ ] A2. Re-measure Lighthouse, log result in audit trail
-- [ ] A3. Split Newsreader font config in `layout.tsx`:
-  - `newsreaderHero` — `weight: ['400']`, `style: ['normal','italic']`, `preload: true`
-  - `newsreaderHeavy` — `weight: ['500','600','700']`, `style: ['normal']`, `preload: false`
-  - Both bind `--font-newsreader`
+- [x] A3. Split Newsreader font config in `layout.tsx`:
+  - `newsreaderHero` — `weight: ['400']`, `style: ['normal','italic']`, `preload: true` → `--font-newsreader-hero`
+  - `newsreaderHeavy` — `weight: ['500','600','700']`, `style: ['normal']`, `preload: false` → `--font-newsreader-heavy`
+  - Deviation from spec: spec said "both bind `--font-newsreader`", but a single CSS variable can only expose ONE next/font-generated family name. Switched to two variables chained in font-family across `tokens.css`, `tokens-ledger.css`, and the nine scoped route CSS files that referenced `--font-newsreader` directly. Documented in audit trail.
 - [ ] A4. Verify no Newsreader 500-italic / 600-italic / 700-italic usage breaks visually. Spot-check pages: `/research`, `/resources/*`, `/security`, `/about`
 - [ ] A5. Re-measure Lighthouse, log result
 
