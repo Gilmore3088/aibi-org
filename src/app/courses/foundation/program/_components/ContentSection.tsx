@@ -2,7 +2,7 @@
 // Server Component
 
 import type { Section } from '@content/courses/foundation-program';
-import { MarkdownRenderer } from './MarkdownRenderer';
+import { MarkdownRenderer } from '@/components/lms/MarkdownRenderer';
 
 interface ContentSectionProps {
   readonly section: Section;
