@@ -4,7 +4,6 @@ import { Section, Cta, ProductMark } from "@/components/system";
 import { ROIDossier } from "@/components/sections/ROIDossier";
 import { HomeContextStrip } from "@/components/sections/HomeContextStrip";
 import { HeroHeadlineSvg } from "@/components/_generated/HeroHeadlineSvg";
-import { HeroLedeSvg } from "@/components/_generated/HeroLedeSvg";
 import { BRAND } from "@content/copy";
 
 export const metadata: Metadata = {
@@ -35,7 +34,6 @@ export default function HomePage() {
             credit unions.
           </span>
         ),
-        ledeNode: <HeroLedeSvg className="block w-full max-w-[700px]" />,
         primaryCta: { href: "/assessment/start", label: "Take the assessment" },
         secondaryCta: { href: "/courses/foundation/program", label: "View the curriculum" },
         divider: "hairline",
