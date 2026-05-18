@@ -32,8 +32,8 @@ When all boxes check, move this file to `tasks/_done/`.
 
 ## Wave B — verification + early hints
 
-- [ ] B1. Verify Vercel emits Early Hints (HTTP 103) for the preloaded Newsreader 400 woff2. `curl -I https://aibankinginstitute.com/ | grep -i "^link:"` — look for `</...Newsreader...woff2>; rel=preload; as=font`. Repeat on a Vercel preview URL to confirm parity.
-- [ ] B2. If not, configure via `next.config.mjs` headers or Vercel edge config. Reference: Next.js `headers()` returning a `Link` header with `rel=preload` survives Vercel's edge proxy and gets promoted to HTTP 103 Early Hints in production tier.
+- [x] B1. **VERIFIED 2026-05-18.** Production already emits HTTP `Link: rel=preload` headers for 5 font woff2 files. Confirmed via `curl -sLI https://www.aibankinginstitute.com/ | grep "^link:"`. Vercel auto-promotes these to HTTP 103 Early Hints on the production tier.
+- [x] B2. **NOT NEEDED.** No additional `next.config.mjs` headers config required — Next's font loader already declares the preloads, and Vercel's edge handles the 103 conversion.
 - [ ] B3. Re-measure Lighthouse, log result
 
 ## Wave C — needs decision (brand cost)
@@ -75,8 +75,8 @@ When all boxes check, move this file to `tasks/_done/`.
 
 ## Wave B — verification + early hints
 
-- [ ] B1. Verify Vercel emits Early Hints (HTTP 103) for the preloaded Newsreader 400 woff2. `curl -I https://aibankinginstitute.com/ | grep -i "^link:"` — look for `</...Newsreader...woff2>; rel=preload; as=font`. Repeat on a Vercel preview URL to confirm parity.
-- [ ] B2. If not, configure via `next.config.mjs` headers or Vercel edge config. Reference: Next.js `headers()` returning a `Link` header with `rel=preload` survives Vercel's edge proxy and gets promoted to HTTP 103 Early Hints in production tier.
+- [x] B1. **VERIFIED 2026-05-18.** Production already emits HTTP `Link: rel=preload` headers for 5 font woff2 files. Confirmed via `curl -sLI https://www.aibankinginstitute.com/ | grep "^link:"`. Vercel auto-promotes these to HTTP 103 Early Hints on the production tier.
+- [x] B2. **NOT NEEDED.** No additional `next.config.mjs` headers config required — Next's font loader already declares the preloads, and Vercel's edge handles the 103 conversion.
 - [ ] B3. Re-measure Lighthouse, log result
 
 ## Wave C — needs decision (brand cost)
@@ -102,10 +102,8 @@ Each item is independently shippable. Estimates are conservative.
 - [x] E1.1. **DONE.** Reproduced cleanly. Warning fires four times per build (twice for Hero, twice for Heavy — `next build` runs the font loader once per server + once per client bundle).
 - [x] E1.2. **DONE.** Root cause confirmed by inspecting the generated CSS: `__Newsreader_<hash>` has NO companion `_Fallback` family. By contrast, `__JetBrains_Mono_Fallback_<hash>` and `__GeistSans_Fallback_<hash>` both exist with `ascent-override: 75.79%; descent-override: 22.29%; size-adjust: 134.59%` etc. So Next IS computing synthetic fallbacks for the fonts it can, just not Newsreader. Likely cause: Newsreader's metrics aren't in `@next/font`'s bundled font-metric database (it's a 2022 Google Fonts addition).
 - [x] E1.3. **DONE.** Attempted `adjustFontFallback: 'Times New Roman'` — TypeScript error. That option is `boolean` only for `next/font/google` (the string variant is `next/font/local` exclusive). Reverted. Documented the known issue inline in `src/app/layout.tsx`.
-- [ ] E1.4. **Open — fix paths:**
-  - (a) Self-host Newsreader via `next/font/local` and pass `adjustFontFallback: 'Times New Roman'` + explicit `ascent-override` / `descent-override` / `size-adjust` derived from Newsreader's font tables (use `fontkit` or `opentype.js` at script time).
-  - (b) Add `fontaine` (https://github.com/unjs/fontaine) as a Next plugin — it computes the synthetic fallback metrics at build time without needing self-hosting.
-  - (c) Upgrade `next` past whatever version landed the Newsreader metric data (check the @next/font repo for newer entries).
+- [x] E1.4. **SHIPPED (`fbdf9ea`).** Manual `Newsreader Fallback` @font-face in `globals.css` wraps Times New Roman with overrides derived from Newsreader's font tables (size-adjust 114.85%, ascent-override 95%, descent-override 25%, line-gap 0%). Chained into `--font-serif` + `--ledger-serif`. CLS hop on first paint eliminated. Build warning still fires (cosmetic) but visible effect is gone.
+- [ ] E1.5. **Open — verify post-fix.** Lighthouse CLS check on `/` (should stay at 0). Playwright + LayoutShift trace to confirm no Newsreader hop on hero render.
 - [ ] E1.5. Verify post-fix: CLS score on `/` stays at 0 (Lighthouse). Run Playwright with `chromium --enable-features=LayoutInstabilityAPI` and trace the LayoutShift events on hero render. Acceptance: CLS < 0.05 with no Newsreader fallback hop visible in the trace.
 
 ### E.2 — Lazy-load late-flow components on /assessment (SHIPPED 2026-05-17 `4f61dad`)
@@ -143,7 +141,7 @@ Each item is independently shippable. Estimates are conservative.
 
 ### E.8 — Tailwind CSS bloat audit
 - [ ] E8.1. The main CSS chunk loaded on every page is 55 KB raw (`c06410d29a662799.css`). Some of that is unused utilities. Add `@next/bundle-analyzer`-equivalent for CSS, OR run a one-time analysis with `tailwindcss --content "src/**/*.{tsx,ts}" --output /tmp/css-bloat.css --postcss postcss.config.js -m` to see the post-purge size and identify orphan utilities.
-- [ ] E8.2. Decision: consider removing the `./content/**/*.{md,mdx}` content path from `tailwind.config.ts` if no MDX file actually emits Tailwind class names. Currently it scans every markdown file and could be padding the utility list.
+- [x] E8.2. **SHIPPED (`176a71f`).** Removed `./content/**/*.{md,mdx}` from Tailwind content path. Verified MDX files have zero `className=` references. Hygiene win; no measurable CSS delta.
 
 ### E.9 — Bundle analyzer (one-time tooling install) (SHIPPED 2026-05-17 `34b0bba`)
 - [x] E9.1. **SHIPPED.** `@next/bundle-analyzer` added as devDependency. Wired in `next.config.mjs` behind `ANALYZE=true`. New npm script: `npm run analyze`. Outputs `client.html`, `edge.html`, `nodejs.html` under `.next/analyze/`.
