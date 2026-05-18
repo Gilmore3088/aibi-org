@@ -5,8 +5,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { signOut } from '@/lib/supabase/auth';
+import { signOutAction } from '@/app/auth/actions';
 
 interface Props {
   readonly email: string;
@@ -19,7 +18,6 @@ const MENU_LINKS = [
 ] as const;
 
 export function AuthDropdown({ email, displayName }: Props) {
-  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [signingOut, setSigningOut] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -46,9 +44,9 @@ export function AuthDropdown({ email, displayName }: Props) {
 
   async function handleSignOut() {
     setSigningOut(true);
-    await signOut();
-    router.push('/');
-    router.refresh();
+    // signOutAction is a server action that clears the Supabase cookie
+    // and redirects to '/'. No Supabase client JS ships to the browser.
+    await signOutAction();
   }
 
   // Initials avatar — first letter of display name, max 2 chars

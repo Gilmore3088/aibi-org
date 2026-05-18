@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { signInWithMagicLink } from '@/lib/supabase/auth';
+import { sendMagicLinkAction } from '@/app/auth/actions';
 
 interface SignupModalProps {
   readonly email: string;
@@ -22,7 +22,7 @@ export function SignupModal({ email, profileId, onClose }: SignupModalProps) {
         : typeof window !== 'undefined'
           ? window.location.pathname + window.location.search
           : '/assessment';
-      const result = await signInWithMagicLink(email, next);
+      const result = await sendMagicLinkAction(email, next);
       if (result.error === null) {
         setStatus('sent');
       } else {

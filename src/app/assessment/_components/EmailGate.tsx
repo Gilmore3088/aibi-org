@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { saveReadinessResult, type DimensionScoreSerialized } from '@/lib/user-data';
-import { createBrowserClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { trackEmailCaptured } from '@/lib/analytics/events';
 
 interface EmailGateProps {
@@ -47,22 +46,28 @@ export function EmailGate({
   // Auto-skip the gate if the visitor is already signed in. We re-use their
   // auth-session email instead of asking them for it again — the most common
   // UX complaint from logged-in users completing the assessment.
+  //
+  // Hits the server endpoint instead of importing the Supabase browser SDK,
+  // which would balloon the assessment route's First Load JS by ~64 KB.
   const autoSubmittedRef = useRef(false);
   useEffect(() => {
     if (autoSubmittedRef.current) return;
-    if (!isSupabaseConfigured()) return;
-    const supabase = createBrowserClient();
     let cancelled = false;
     void (async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      if (cancelled || autoSubmittedRef.current) return;
-      const sessionEmail = user?.email;
-      if (!sessionEmail || !EMAIL_RE.test(sessionEmail)) return;
-      autoSubmittedRef.current = true;
-      setEmail(sessionEmail);
-      void submit(sessionEmail);
+      try {
+        const res = await fetch('/api/auth/me', { cache: 'no-store' });
+        if (!res.ok) return;
+        const data = (await res.json()) as { user: { email: string | null } | null };
+        const sessionEmail = data.user?.email;
+        if (cancelled || autoSubmittedRef.current) return;
+        if (!sessionEmail || !EMAIL_RE.test(sessionEmail)) return;
+        autoSubmittedRef.current = true;
+        setEmail(sessionEmail);
+        void submit(sessionEmail);
+      } catch {
+        // Service down or offline — fall through to the manual form. The
+        // gate still works; the user just has to type their email.
+      }
     })();
     return () => {
       cancelled = true;
