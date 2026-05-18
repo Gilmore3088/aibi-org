@@ -54,7 +54,9 @@ every outstanding work item as 🤖 autonomous / 🔒 you-only /
 | `dashboard-ledger-redesign.md` | 2026-05-17 | `/dashboard` Ledger rebuild + In-Depth refocus + chrome/copy sweep — all shipped same day |
 | `lms-prototype-reskin.md` | 2026-05-17 | All 7 PRs merged (#52–#56, #64, #65) — Ledger LMS shipped |
 | `qa-bug-log-2026-05-15.md` | 2026-05-17 | Issues #92–96 all PASS verdict |
-| `free-assessment-output-revision.md` | 2026-05-17 | 8 commits on `feature/free-assessment-output-revision` — CTA rank, copy density –20%, Practice Picture page, Maturity Ladder, Signature Insight, dashboard + 2×2 grid + chart-led strengths + PDF cover report card, type-size bump, macOS PDF generation fix. Branch awaits merge. |
+| `free-assessment-output-revision.md` | 2026-05-18 | 10 commits → **merged as PR [#172](https://github.com/Gilmore3088/aibi-org/pull/172)** (squash `028c8b0`). CTA rank, copy –20%, Practice Picture, Maturity Ladder, Signature Insight, dashboard + 2×2 grid + chart-led strengths + PDF cover report card, type-size bump, macOS PDF gen fix, Puppeteer Chrome isolation. **🔒 HUMAN post-deploy QA H1–H4** still open — see `tasks/_done/free-assessment-output-revision.md` Ship-gate section. |
+| `seo-sweep-2026-05-18` _(single-PR, no plan file)_ | 2026-05-18 | **PR [#173](https://github.com/Gilmore3088/aibi-org/pull/173)** (squash `2f058ae`) — root self-canonicals + sitemap +9 routes (privacy/terms/faq/ai-use-disclaimer + 4 essays). Closes PATH-FORWARD W2.4. |
+| `banned-word-sweep-2026-05-18` _(single-PR, no plan file)_ | 2026-05-18 | **PR [#174](https://github.com/Gilmore3088/aibi-org/pull/174)** (squash `08c1c44`) — repo-wide banned-phrase audit; one real violation fixed (`derive.ts` "fastest unlock" → "fastest fix"). Closes PATH-FORWARD W1.3. |
 
 ## Active reviews / runbooks (not task-trackable)
 

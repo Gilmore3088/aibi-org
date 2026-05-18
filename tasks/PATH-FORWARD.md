@@ -140,6 +140,11 @@ Grouped by dashboard so you can batch context switches.
 - C.1 §9 Email round-trip tests — agent writes test code, you confirm emails land in inbox
 - C.2 §15 Analytics — agent adds event-firing code, you set up dashboards
 - C.4 Any push to `main` — agent needs your explicit approval each time (CLAUDE.md)
+- **C.5 Free assessment post-deploy QA (PR [#172](https://github.com/Gilmore3088/aibi-org/pull/172) shipped 2026-05-18)** — see `tasks/_done/free-assessment-output-revision.md` Ship-gate § for the four 🔒 HUMAN actions:
+  - H1 Walk all four tier results on `/assessment` (desktop + iPhone Safari)
+  - H2 Walk all four tier PDFs at `/assessment/results/print/<id>` — verify page numbering 1–14, cover report card, no orphaned hairlines
+  - H3 Confirm Plausible fires `purchase_initiated · source: 'free-results-primary'` on Foundation CTA click
+  - H4 Production smoke after Vercel deploy completes
 
 ---
 
