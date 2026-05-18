@@ -20,7 +20,7 @@ import {
   V4_FOUNDATION_PROGRAM_MODULE_BY_NUMBER,
 } from '@content/courses/foundation-program';
 import type { Activity, ExpandedModule } from '@content/courses/foundation-program';
-import { ContentTable } from '../_components/ContentTable';
+import { ContentTable } from '@/components/lms/ContentTable';
 import { LearnSection } from '../_components/LearnSection';
 import { ModuleContentClient } from '../_components/ModuleContentClient';
 import { CourseTabs } from '@/components/CourseTabs';
