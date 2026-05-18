@@ -4,7 +4,6 @@
 //
 // Refs: docs/superpowers/specs/2026-05-04-assessment-results-spec-2-pdf.md
 
-import chromium from '@sparticuz/chromium';
 import puppeteer, { type Browser } from 'puppeteer-core';
 
 interface GenerateOptions {
@@ -12,19 +11,41 @@ interface GenerateOptions {
   readonly origin: string;
 }
 
+// Minimal launch flags that work on macOS system Chrome. The Linux
+// production flags come from @sparticuz/chromium and are loaded
+// dynamically on Vercel only — importing it at module scope on
+// macOS triggers a binary extraction whose ELF can't exec, which is
+// the spawn ENOEXEC the dev server saw.
+const LOCAL_CHROME_ARGS = [
+  '--disable-dev-shm-usage',
+  '--no-sandbox',
+  '--disable-setuid-sandbox',
+];
+
 export async function generateAssessmentPdf({
   profileId,
   origin,
 }: GenerateOptions): Promise<Buffer> {
-  const isVercel = process.env.VERCEL === '1';
+  // The .env.local file may export VERCEL=1 for things like preview
+  // detection in the app. We can't trust it alone — we also have to
+  // confirm we're actually on Linux before trying to extract the
+  // bundled chromium binary (which is Linux-only).
+  const isLinuxRuntime = process.platform === 'linux';
+  const useSparticuz = process.env.VERCEL === '1' && isLinuxRuntime;
+
+  const { args, executablePath } = useSparticuz
+    ? await loadVercelChromium()
+    : {
+        args: LOCAL_CHROME_ARGS,
+        executablePath:
+          process.env.PUPPETEER_LOCAL_CHROME ??
+          '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+      };
 
   const browser: Browser = await puppeteer.launch({
-    args: chromium.args,
+    args,
     defaultViewport: { width: 1200, height: 1600 },
-    executablePath: isVercel
-      ? await chromium.executablePath()
-      : process.env.PUPPETEER_LOCAL_CHROME ??
-        '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+    executablePath,
     headless: true,
   });
 
@@ -45,4 +66,20 @@ export async function generateAssessmentPdf({
   } finally {
     await browser.close();
   }
+}
+
+/**
+ * Dynamic import for @sparticuz/chromium so the Linux binary is never
+ * extracted on macOS dev. Only runs when VERCEL=1.
+ */
+async function loadVercelChromium(): Promise<{
+  readonly args: string[];
+  readonly executablePath: string;
+}> {
+  const mod = await import('@sparticuz/chromium');
+  const chromium = mod.default;
+  return {
+    args: chromium.args,
+    executablePath: await chromium.executablePath(),
+  };
 }
