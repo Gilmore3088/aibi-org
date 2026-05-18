@@ -54,10 +54,49 @@ can ship in parallel once 1 and 2 are in.
 
 ## Ship gate
 
+### Automated — done
+
 - [x] G1 `npm run build` clean — zero TypeScript errors
 - [x] G2 `npm run lint` clean
 - [x] G3 Banned-phrase grep clean (see T2.5)
-- [ ] G4 Manual walkthrough of all four tier results on `localhost:3000/assessment` (mobile + desktop) — needs human verification
-- [ ] G5 Manual walkthrough of all four tier PDFs at `localhost:3000/assessment/results/print/<id>` — needs human verification (test user per tier)
-- [ ] G6 Plausible events fire on Foundation CTA click from free results — needs browser session
-- [ ] G7 Tick this section in `tasks/MASTER.md`, move file to `tasks/_done/` when shipped
+
+### Track 6 (richer visuals) — added mid-session
+
+- [x] T6.1 Dashboard band (`ResultsDashboard`) — score ring + tier seal + 8 ranked bars + rung ribbon
+- [x] T6.2 Practice Picture as 2×2 quadrant grid
+- [x] T6.3 Strengths section chart-led, then deep-dive on critical only
+- [x] T6.4 PDF cover report card — score, rung seal, top-3 weakest
+- [x] T6.5 Type-size bump across all new surfaces
+- [x] T6.6 PDF generation works on macOS (platform gate)
+- [x] T6.7 Puppeteer Chrome isolation (no tabs in user browser)
+
+### 🔒 HUMAN — needs the user
+
+These cannot be completed by Claude. They require a real browser
+session and the user's eyes:
+
+- [ ] **🔒 HUMAN H1** Walk all four tier results on `/assessment` end-to-end (desktop + iPhone Safari). Verify on each tier:
+  - Dashboard band: score ring, 8 dimension bars (weakest first), tier seal "Rung N of 6", footer ribbon
+  - Signature insight italic band reads correctly
+  - Practice Picture renders as 2×2 grid (not a stacked list)
+  - Big Insight dark callout visible
+  - Strengths chart: zone legend, 8 bars with percent labels, 50%/75% markers
+  - Maturity ladder: terra-pinned current rung, dimmed below, hollow above
+  - Closing CTA: Foundation $295 primary (tiers 1–3) or Advisory primary (tier 4)
+- [ ] **🔒 HUMAN H2** Walk the four tier PDFs at `/assessment/results/print/<profileId>` (or via the Download PDF button). Verify cover report card, page numbering 1–14, no orphaned hairlines, no awkward page breaks
+- [ ] **🔒 HUMAN H3** Confirm Plausible fires `purchase_initiated` with `source: 'free-results-primary'` on Foundation CTA click from the free results page (check Plausible dashboard live view)
+- [ ] **🔒 HUMAN H4** Open PR `feature/free-assessment-output-revision` → `main`, request review, merge when green
+
+### How to run H1 / H2 quickly
+
+```
+cd ~/Projects/aibi-free-assessment-revision
+npm run dev   # → http://localhost:3000
+```
+
+Test profile already in Supabase with cached PDF:
+`0894264b-629b-40b6-a4b9-f4d5acf0044f`
+
+To get fresh profiles for each tier, run the assessment four times
+selecting all-Strongly-Disagree, mixed-low, mixed-high,
+all-Strongly-Agree.
