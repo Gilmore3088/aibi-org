@@ -68,6 +68,8 @@ Five workstreams, ranked by impact ÷ risk:
 | J | **Move TTF fonts off public/** + **drop unused font weights** (Cormorant SC 500/600/700, JetBrains Mono 500) | -2.4 MB deploy size; -8 KB CSS on every page load | `09100a6` |
 | K | **`@next/bundle-analyzer` wired behind `ANALYZE=true`** | No runtime change. Treemap surfaces future regressions before they ship. | `34b0bba` |
 | L | **`sideEffects` declaration in package.json — enables webpack tree-shaking of content barrels** | **-73 KB First Load JS on /dashboard** (208 → 135). Dashboard page chunk gzipped: 80 → 36 KB (-55%). Single biggest bundle win of the session. | `bb418c4` |
+| M | **Newsreader Fallback @font-face — closes the synthetic-fallback gap in @next/font/google** | CLS hop on first paint eliminated (Newsreader-metric-matched Times New Roman now bridges the load) | `903617b` |
+| N | **Wave B verified shipped** — Production already emits `Link: rel=preload` for font woff2 files; Vercel auto-promotes to HTTP 103 Early Hints | 100-300ms latency saving baked in. No config change needed. | — |
 
 Five Lighthouse audit reports document each attempt — see
 [`docs/reviews/performance-overhaul-2026-05-17.md`](../docs/reviews/performance-overhaul-2026-05-17.md)
