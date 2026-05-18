@@ -533,45 +533,114 @@ export const FINANCIAL_IMPLICATIONS: Record<Tier['id'], FinancialImplications> =
 // /for-institutions/advisory (Building Momentum + Ready to Scale).
 // ---------------------------------------------------------------------------
 
+export interface CtaOffer {
+  readonly label: string;
+  readonly href: string;
+  /**
+   * Plausible event `source` prop. Lets us measure conversion from
+   * each ranked slot independently.
+   */
+  readonly source: 'free-results-primary' | 'free-results-secondary' | 'free-results-tertiary';
+}
+
 export interface TierClosingCta {
   readonly eyebrow: string;
   readonly headline: string;
   readonly body: string;
-  readonly ctaLabel: string;
-  readonly ctaHref: string;
+  readonly primary: CtaOffer;
+  readonly secondary: CtaOffer;
+  readonly tertiary: CtaOffer;
 }
 
+// Three ranked CTAs per tier. For tiers 1–3 the primary is always
+// AiBI-Foundation ($295) — the next constraint for almost every free-
+// assessment taker is structured capability, not another diagnostic.
+// In-Depth ($99) sits as secondary for institutions that want a deeper
+// read before committing. Tier 4 (Ready to Scale) inverts the order:
+// they already have foundations, so the primary becomes Advisory.
 export const TIER_CLOSING_CTA: Record<Tier['id'], TierClosingCta> = {
   'starting-point': {
     eyebrow: 'Your next move',
-    headline: 'Go deeper before you commit to training.',
+    headline: 'Start with AiBI-Foundation.',
     body:
-      'The free assessment gives you a score; the In-Depth Assessment gives you a verdict — eight readiness dimensions, peer-band comparison, and a starting playbook keyed to your weakest area. Take it before deciding which AiBI-Foundation cohort to fund.',
-    ctaLabel: 'Take the In-Depth Assessment · $99',
-    ctaHref: '/assessment/in-depth',
+      "Your score says AI is already being used inside your organization without consistent training or guardrails. The fastest way to fix that is to build internal capability — one workflow owner, one safe-use habit, one repeatable workflow at a time. AiBI-Foundation is twelve self-paced modules built for banking professionals.",
+    primary: {
+      label: 'Enroll in AiBI-Foundation · $295',
+      href: '/courses/foundation/program',
+      source: 'free-results-primary',
+    },
+    secondary: {
+      label: 'Or take the In-Depth Assessment · $99',
+      href: '/assessment/in-depth',
+      source: 'free-results-secondary',
+    },
+    tertiary: {
+      label: 'Request an Executive Briefing',
+      href: '/for-institutions/advisory',
+      source: 'free-results-tertiary',
+    },
   },
   'early-stage': {
     eyebrow: 'Your next move',
-    headline: 'Pressure-test your momentum.',
+    headline: 'Turn experimentation into capability.',
     body:
-      'You have early adopters. The In-Depth Assessment shows whether that momentum is real or local — eight dimensions across your team, an anonymized aggregate rollup for leaders, and a starting playbook keyed to your weakest area.',
-    ctaLabel: 'Take the In-Depth Assessment · $99',
-    ctaHref: '/assessment/in-depth',
+      "You have curiosity and a few early wins. The next constraint is not another tool — it is structured AI capability your team can replicate. AiBI-Foundation gives each staff member a safe-use checklist, a prompt builder, and reusable banking workflows. Take it as a team and codify what's already working.",
+    primary: {
+      label: 'Enroll in AiBI-Foundation · $295',
+      href: '/courses/foundation/program',
+      source: 'free-results-primary',
+    },
+    secondary: {
+      label: 'Or take the In-Depth Assessment · $99',
+      href: '/assessment/in-depth',
+      source: 'free-results-secondary',
+    },
+    tertiary: {
+      label: 'Request an Executive Briefing',
+      href: '/for-institutions/advisory',
+      source: 'free-results-tertiary',
+    },
   },
   'building-momentum': {
     eyebrow: 'Your next move',
-    headline: 'Walk through these results with us.',
+    headline: 'Standardize what is already working.',
     body:
-      "You're ready for a roadmap conversation, not a course. An Executive Briefing translates this report into a phased plan with leadership at the table.",
-    ctaLabel: 'Request an Executive Briefing',
-    ctaHref: '/for-institutions/advisory',
+      "Your teams are producing real value with AI. The risk now is that progress depends on a few motivated individuals. AiBI-Foundation turns those individual wins into a shared baseline — every staff member with the same safe-use habits, the same prompt patterns, the same reusable workflows. It is the cheapest path from fragile momentum to repeatable program.",
+    primary: {
+      label: 'Enroll in AiBI-Foundation · $295',
+      href: '/courses/foundation/program',
+      source: 'free-results-primary',
+    },
+    secondary: {
+      label: 'Or take the In-Depth Assessment · $99',
+      href: '/assessment/in-depth',
+      source: 'free-results-secondary',
+    },
+    tertiary: {
+      label: 'Request an Executive Briefing',
+      href: '/for-institutions/advisory',
+      source: 'free-results-tertiary',
+    },
   },
   'ready-to-scale': {
     eyebrow: 'Your next move',
     headline: 'Talk to us about Leadership Advisory.',
     body:
-      "You don't need foundations — you need ongoing AI judgment at the leadership level. Leadership Advisory is fractional CAIO work for institutions with internal momentum.",
-    ctaLabel: 'Request a conversation',
-    ctaHref: '/for-institutions/advisory',
+      "Your institution has built real AI capability. The opportunity now is leadership judgment — what to prioritize next, how to measure outcomes, how to defend the program at the board level. Leadership Advisory is fractional Chief AI Officer work for institutions with internal momentum. AiBI-Foundation stays available as the onboarding path for every new hire.",
+    primary: {
+      label: 'Request a conversation',
+      href: '/for-institutions/advisory',
+      source: 'free-results-primary',
+    },
+    secondary: {
+      label: 'Onboard new hires with AiBI-Foundation · $295',
+      href: '/courses/foundation/program',
+      source: 'free-results-secondary',
+    },
+    tertiary: {
+      label: 'Take the In-Depth Assessment · $99',
+      href: '/assessment/in-depth',
+      source: 'free-results-tertiary',
+    },
   },
 };

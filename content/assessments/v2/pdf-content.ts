@@ -26,13 +26,13 @@ export const PDF_FOOTER_CLOSE = {
 // Restored from Spec 1's git deletion. Used in the Next Steps trio (page 11).
 export const PDF_RECOMMENDED_PATH_INTRO: Record<Tier['id'], string> = {
   'starting-point':
-    'Most institutions at your stage make the same mistake: they explore tools before training their team. The fastest path forward is building staff capability first.',
+    'The fastest path forward at your stage is building staff capability first. Tools without trained staff produce inconsistent results and unnecessary risk. Start with one course, one team.',
   'early-stage':
-    'Most institutions at your stage make the same mistake: they let isolated experiments stay isolated. The fastest path forward is converting those wins into a coordinated program with shared prompt patterns and a documented review step.',
+    'The fastest path forward at your stage is turning isolated experiments into a coordinated program. Train your team on the same safe-use habits and reusable workflows so wins compound instead of staying local.',
   'building-momentum':
-    'Most institutions at your stage make the same mistake: they assume the program will sustain itself. The fastest path forward is measuring outcomes rigorously and codifying the patterns that already work, so the program survives staff turnover.',
+    'The fastest path forward at your stage is standardizing what already works. Codify the prompt patterns and review steps your strongest teams use, then teach them to everyone else.',
   'ready-to-scale':
-    "Most institutions at your stage make the same mistake: they slow down because the early wins are visible. The fastest path forward is replicating capability across every new hire — turning today's advantage into a compounding one.",
+    "The fastest path forward at your stage is leadership judgment on what to prioritize next, paired with a reliable onboarding path for every new hire. Compound the advantage you've already built.",
 };
 
 // New for Spec 2. Page 12: governance & citations.
@@ -83,53 +83,110 @@ export const PDF_COVER_SUBHEAD: Record<Tier['id'], string> = {
     'How to compound an existing advantage as the next wave of AI capability arrives.',
 };
 
-// PDF page 11 — restored Next Steps trio content (cut from on-screen
-// in Spec 1). Reformatted for PDF context — no CTAs, since the PDF is
-// a static artifact. The "Outcome" line replaces the on-screen CTA.
+// PDF page 11 — Next Steps trio. Tier-keyed so the printed report
+// reflects the same ranked CTA hierarchy as the on-screen brief:
+// tiers 1–3 lead with AiBI-Foundation ($295); tier 4 (Ready to Scale)
+// leads with Leadership Advisory. The "rank" line gives the printed
+// page a visible primary card and two visually subordinate stacks.
 export interface PdfNextStep {
   readonly number: string;
+  readonly rank: 'primary' | 'secondary' | 'tertiary';
   readonly category: string;
   readonly title: string;
+  readonly price?: string;
   readonly body: string;
   readonly bullets: ReadonlyArray<string>;
   readonly outcome: string;
 }
 
-export const PDF_NEXT_STEPS_TRIO: ReadonlyArray<PdfNextStep> = [
-  {
-    number: '01',
-    category: 'Training',
-    title: 'AiBI-Foundation',
-    body: 'Enroll relevant staff to build foundational skills inside a safe, repeatable framework.',
-    bullets: [
-      '12 short modules focused on real work',
-      'Reusable prompt systems',
-      'SAFE framework',
-    ],
-    outcome: 'Outcome: your team can safely use AI in daily work within 2 weeks.',
-  },
-  {
-    number: '02',
-    category: 'Strategic planning',
-    title: 'Executive Briefing',
-    body: 'Align leadership on priorities and define a roadmap for scaling AI responsibly across the institution.',
-    bullets: [
-      'Walk through your results with leadership',
-      'Define a phased adoption roadmap',
-      'Identify the right first cohort',
-    ],
-    outcome: 'Outcome: a documented 90-day plan with named owners.',
-  },
-  {
-    number: '03',
-    category: 'Governance',
-    title: 'AI Use Policy',
-    body: 'Document tool usage, data handling, and accountability so your audit team can defend the program.',
-    bullets: [
-      'Approved tools and data classes',
-      'Mandatory human review steps',
-      'Retention and incident procedures',
-    ],
-    outcome: 'Aligned with SR 11-7 model risk guidance and the AIEOG AI Lexicon.',
-  },
-];
+const FOUNDATION_STEP: PdfNextStep = {
+  number: '01',
+  rank: 'primary',
+  category: 'Build internal capability',
+  title: 'AiBI-Foundation',
+  price: '$295 · self-paced',
+  body:
+    'Twelve self-paced modules built for banking professionals. Every learner finishes with a safe-use checklist, a prompt builder, and reusable workflows they can run in real work the same week.',
+  bullets: [
+    'AI safe-use checklist + prompt builder',
+    'Copilot, ChatGPT, Claude, Perplexity workflows',
+    'Local-vs-hosted decision guide + governance starter',
+  ],
+  outcome:
+    'Outcome: every staff member shares the same safe-use habits and the same banking-specific workflow patterns.',
+};
+
+const IN_DEPTH_STEP: PdfNextStep = {
+  number: '02',
+  rank: 'secondary',
+  category: 'Institutional diagnostic',
+  title: 'In-Depth Assessment',
+  price: '$99 · 30 minutes',
+  body:
+    'Eight readiness dimensions across your team, with an anonymized aggregate rollup for leaders and a starting playbook keyed to your weakest dimension. Take it before deciding how to fund the program.',
+  bullets: [
+    'Eight dimensions of readiness across all participants',
+    'Peer-band comparison against community-bank cohort',
+    'Starting playbook keyed to your weakest area',
+  ],
+  outcome:
+    'Outcome: a written verdict you can defend with leadership in a one-meeting conversation.',
+};
+
+const EXEC_BRIEFING_STEP: PdfNextStep = {
+  number: '03',
+  rank: 'tertiary',
+  category: 'Leadership conversation',
+  title: 'Executive Briefing',
+  body:
+    'A working session that translates this report into a phased adoption roadmap with leadership at the table — first cohort, first workflows, first measurement gates.',
+  bullets: [
+    'Walk through results with leadership',
+    'Define a phased adoption roadmap',
+    'Identify the right first cohort',
+  ],
+  outcome: 'Outcome: a documented 90-day plan with named owners.',
+};
+
+const ADVISORY_STEP_PRIMARY: PdfNextStep = {
+  number: '01',
+  rank: 'primary',
+  category: 'Leadership judgment',
+  title: 'Leadership Advisory',
+  body:
+    'Fractional Chief AI Officer engagement for institutions with internal momentum. Ongoing leadership judgment on what to prioritize, how to measure outcomes, and how to defend the program at the board level.',
+  bullets: [
+    'Monthly cadence with the leadership team',
+    'Outcome measurement + board-level reporting',
+    'Phased roadmap that compounds existing capability',
+  ],
+  outcome:
+    "Outcome: AI judgment at the leadership level — without a full-time hire.",
+};
+
+const FOUNDATION_STEP_SECONDARY: PdfNextStep = {
+  ...FOUNDATION_STEP,
+  number: '02',
+  rank: 'secondary',
+  body:
+    'Use AiBI-Foundation as the onboarding path for every new hire. Twelve self-paced modules give each new staff member the same safe-use habits and workflow patterns as the rest of your team.',
+  outcome:
+    'Outcome: a single, reliable onboarding path that compounds your existing AI advantage.',
+};
+
+const IN_DEPTH_STEP_TERTIARY: PdfNextStep = {
+  ...IN_DEPTH_STEP,
+  number: '03',
+  rank: 'tertiary',
+};
+
+export const PDF_NEXT_STEPS_TRIO: Record<Tier['id'], ReadonlyArray<PdfNextStep>> = {
+  'starting-point': [FOUNDATION_STEP, IN_DEPTH_STEP, EXEC_BRIEFING_STEP],
+  'early-stage': [FOUNDATION_STEP, IN_DEPTH_STEP, EXEC_BRIEFING_STEP],
+  'building-momentum': [FOUNDATION_STEP, IN_DEPTH_STEP, EXEC_BRIEFING_STEP],
+  'ready-to-scale': [
+    ADVISORY_STEP_PRIMARY,
+    FOUNDATION_STEP_SECONDARY,
+    IN_DEPTH_STEP_TERTIARY,
+  ],
+};

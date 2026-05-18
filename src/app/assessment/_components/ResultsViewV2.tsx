@@ -421,31 +421,9 @@ export function ResultsViewV2({
         </ol>
       </section>
 
-      {/* SECTION 9 — Closing CTA (tier-keyed, single card) */}
+      {/* SECTION 9 — Closing CTA (ranked: primary card + two secondary links) */}
       <SectionAnchor id="section-9" />
-      <section aria-labelledby="section-9-heading" className="space-y-6">
-        <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
-          {TIER_CLOSING_CTA[tierId].eyebrow}
-        </p>
-        <h2
-          id="section-9-heading"
-          className="font-serif text-3xl md:text-4xl leading-tight text-[color:var(--color-ink)]"
-        >
-          {TIER_CLOSING_CTA[tierId].headline}
-        </h2>
-        <article className="border-2 border-[color:var(--color-terra)] rounded-[3px] p-6 md:p-8 bg-[color:var(--color-linen)]">
-          <p className="text-[15px] leading-[1.6] text-[color:var(--color-ink)]/85">
-            {TIER_CLOSING_CTA[tierId].body}
-          </p>
-          <a
-            href={TIER_CLOSING_CTA[tierId].ctaHref}
-            data-print-hide="true"
-            className="mt-6 inline-block px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
-          >
-            {TIER_CLOSING_CTA[tierId].ctaLabel}
-          </a>
-        </article>
-      </section>
+      <ClosingCta tierId={tierId} />
 
       {/* APPENDIX — full diagnostic + newsletter + PDF */}
       <details className="mt-16 border-t border-[color:var(--color-ink)]/15 pt-6 group">
@@ -537,6 +515,56 @@ function ImplicationRow({ label, body }: { readonly label: string; readonly body
         {body}
       </dd>
     </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Closing CTA (ranked: primary card + two secondary links)
+// ---------------------------------------------------------------------------
+
+function ClosingCta({ tierId }: { readonly tierId: Tier['id'] }) {
+  const cta = TIER_CLOSING_CTA[tierId];
+  return (
+    <section aria-labelledby="section-9-heading" className="space-y-6">
+      <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
+        {cta.eyebrow}
+      </p>
+      <h2
+        id="section-9-heading"
+        className="font-serif text-3xl md:text-4xl leading-tight text-[color:var(--color-ink)]"
+      >
+        {cta.headline}
+      </h2>
+      <article className="border-2 border-[color:var(--color-terra)] rounded-[3px] p-6 md:p-8 bg-[color:var(--color-linen)]">
+        <p className="text-[15px] leading-[1.6] text-[color:var(--color-ink)]/85">
+          {cta.body}
+        </p>
+        <a
+          href={cta.primary.href}
+          data-print-hide="true"
+          data-plausible-event-source={cta.primary.source}
+          className="mt-6 inline-block px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
+        >
+          {cta.primary.label}
+        </a>
+      </article>
+      <ul
+        className="border-t border-[color:var(--color-ink)]/15 pt-4 space-y-2"
+        data-print-hide="true"
+      >
+        {[cta.secondary, cta.tertiary].map((offer) => (
+          <li key={offer.source} className="leading-snug">
+            <a
+              href={offer.href}
+              data-plausible-event-source={offer.source}
+              className="font-serif-sc text-[12px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/70 hover:text-[color:var(--color-terra)] underline underline-offset-4 decoration-[color:var(--color-ink)]/25 hover:decoration-[color:var(--color-terra)] transition-colors"
+            >
+              {offer.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }
 
