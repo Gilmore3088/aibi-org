@@ -1,4 +1,13 @@
 import { defineConfig, devices } from '@playwright/test';
+import { loadEnvConfig } from '@next/env';
+
+// Load .env.local before any test-config evaluation. Next.js does this
+// automatically for the dev server; Playwright runs as a separate Node
+// process so it would otherwise see only the inherited shell env. The
+// seed helpers (e2e/helpers/seed.ts) need SUPABASE_SERVICE_ROLE_KEY +
+// NEXT_PUBLIC_SUPABASE_URL — without this, every logged-in test fails
+// with a seed-helper "env not set" error.
+loadEnvConfig(process.cwd());
 
 // Base URL precedence: explicit override → Vercel preview → localhost.
 // CI sets PLAYWRIGHT_BASE_URL to the preview deployment URL; local dev

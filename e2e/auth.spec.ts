@@ -138,8 +138,13 @@ test.describe('auth — logged-in flows', () => {
   test('§3.61 logout clears session and redirects to /', async ({ page }) => {
     if (!user) throw new Error('user not seeded');
     await loginViaUI(page, user);
-    // Logout via the UI control. If the selector changes, update here.
-    const logout = page.getByRole('button', { name: /sign out|log out/i }).first();
+    // Sign out lives inside the AuthDropdown menu — open the trigger
+    // first, then click the menuitem.
+    const accountTrigger = page
+      .getByRole('button', { name: /account menu for/i })
+      .first();
+    await accountTrigger.click();
+    const logout = page.getByRole('menuitem', { name: /sign out/i }).first();
     await logout.click();
     await expect(page).toHaveURL(/^https?:\/\/[^/]+\/?$/);
     // Visiting /dashboard should bounce back to login.

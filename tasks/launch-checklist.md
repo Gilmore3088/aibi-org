@@ -76,27 +76,28 @@ post-conference launch email going out. Each item is sized to take
 - [x] 40. Add test DB cleanup helper that deletes test users by email pattern `+e2e@` — `e2e/helpers/seed.ts:cleanupSeededUser`
 - [ ] 41. Add CI workflow `.github/workflows/e2e.yml` running on PR
 - [x] 42. Test: visit `/auth/login` while logged out — login form renders
-- [ ] 43. Test: visit `/auth/login` while logged in — redirects to `/dashboard`
+- [x] 43. Test: visit `/auth/login` while logged in — redirects to `/dashboard`
 - [x] 44. Test: visit `/auth/signup` while logged out — signup form renders
-- [ ] 45. Test: visit `/auth/signup` while logged in — redirects to `/dashboard`
+- [x] 45. Test: visit `/auth/signup` while logged in — redirects to `/dashboard` — same `requireGuestOrRedirect` layout
 - [ ] 46. Test: signup with valid email → confirmation email sent → click link → /dashboard
 - [x] 47. Test: signup with invalid email format — surfaces validation error
 - [ ] 48. Test: signup with password under min length — error
 - [ ] 49. Test: signup with duplicate email — error message (no email leak)
 - [ ] 50. Test: signup respects `?next=` redirect after confirmation
-- [ ] 51. Test: login with correct credentials → /dashboard
-- [ ] 52. Test: login with wrong password — generic "invalid credentials" error
+- [x] 51. Test: login with correct credentials → /dashboard
+- [x] 52. Test: login with wrong password — generic "invalid credentials" error
 - [ ] 53. Test: login with unknown email — same generic error (no enumeration)
-- [ ] 54. Test: login respects `?next=` redirect
+- [x] 54. Test: login respects `?next=` redirect
 - [ ] 55. Test: magic-link request flow → email sent → click → logged in
 - [ ] 56. Test: magic-link with expired token shows clear error
 - [ ] 57. Test: magic-link respects `?next=` redirect
 - [ ] 58. Test: password reset flow → email → new password → can log in
 - [ ] 59. Test: password reset link cannot be reused
 - [ ] 60. Test: email change flow → confirm in new inbox → email updated
-- [ ] 61. Test: logout clears session, redirects to `/`
+- [x] 61. Test: logout clears session, redirects to `/`
 - [x] 62. Test: protected route `/dashboard` redirects logged-out users to `/auth/login`
 - [x] 63. Test: protected route `/courses/foundation/program` requires auth + enrollment — auth layer landed in this session (commit 9da4d77); enrollment gate still page-level. See §3.86–§3.88.
+- [x] 64. Test: session persists across page reload
 - [ ] 64. Test: session persists across page reload
 - [ ] 65. Test: session persists across browser tab close/reopen (cookie-based)
 - [ ] 66. Test: middleware refreshes session token before expiry
@@ -475,8 +476,8 @@ post-conference launch email going out. Each item is sized to take
 - [ ] 403. Unique <title> per page, ≤60 chars
 - [ ] 404. Unique <meta description> per page, ≤160 chars
 - [ ] 405. Canonical URLs set (avoid www/apex duplication)
-- [ ] 406. sitemap.xml lists every public route
-- [ ] 407. robots.txt allows public, disallows /api, /dashboard, /auth/callback
+- [x] 406. sitemap.xml lists every public route — verified at `https://www.aibankinginstitute.com/sitemap.xml`
+- [x] 407. robots.txt allows public, disallows /api, /dashboard, /auth/callback — verified at `/robots.txt`
 - [ ] 408. Open Graph image 1200x630 with brand
 - [ ] 409. Schema.org Organization JSON-LD on homepage
 - [ ] 410. Schema.org Course JSON-LD on `/courses/foundation`
@@ -509,7 +510,7 @@ post-conference launch email going out. Each item is sized to take
 ## §16. Security audit (433–452)
 
 - [ ] 433. Run `npx gitleaks detect --source .` — no secrets in repo
-- [ ] 434. Verify `.env*` files in `.gitignore`
+- [x] 434. Verify `.env*` files in `.gitignore` — confirmed via `git ls-files | grep -E "^\.env"` returns only `.env.local.example`
 - [ ] 435. Verify `.superpowers/brainstorm/` in `.gitignore` (regression from 2026-05-06)
 - [ ] 436. CSP header set with appropriate directives
 - [ ] 437. X-Frame-Options or frame-ancestors set
@@ -517,8 +518,8 @@ post-conference launch email going out. Each item is sized to take
 - [ ] 439. Referrer-Policy set
 - [ ] 440. Strict-Transport-Security set with includeSubDomains
 - [ ] 441. Audit `/api/*` for missing auth checks
-- [ ] 442. Audit `/api/capture-email` rate limiting
-- [ ] 443. Audit `/api/webhooks/stripe` signature verification — never process unverified
+- [x] 442. Audit `/api/capture-email` rate limiting — present via `@/lib/email-capture/rate-limit`; in-memory; Upstash deferred (TODO comment in route)
+- [x] 443. Audit `/api/webhooks/stripe` signature verification — `stripe.webhooks.constructEvent` confirmed at `src/app/api/webhooks/stripe/route.ts:67`
 - [ ] 444. Audit input validation on every API route
 - [ ] 445. Audit SQL injection vectors — confirm parameterized queries only
 - [ ] 446. Audit XSS vectors — confirm dangerouslySetInnerHTML usage justified
