@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { headers } from 'next/headers';
 import {
   Cormorant_SC,
@@ -114,6 +114,16 @@ const jetbrainsMono = JetBrains_Mono({
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? `https://www.${BRAND.domains.primary}`;
 const DEFAULT_DESCRIPTION =
   'The AI Banking Institute helps community banks and credit unions build AI proficiency through assessment, certification, and curriculum aligned with SR 11-7, TPRM, ECOA / Reg B, and the AIEOG AI Lexicon.';
+
+// Explicit viewport so every public route gets the mobile-first defaults.
+// Without this, Next.js 14 falls back to its own defaults — same values,
+// but having it explicit makes the contract grep-able and prevents future
+// metadata refactors from accidentally dropping mobile sizing.
+// See #194.
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
