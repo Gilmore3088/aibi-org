@@ -7,9 +7,9 @@ import { getTier } from '@content/assessments/v1/scoring';
 import { getTierV2, getTierInDepth } from '@content/assessments/v2/scoring';
 import { modules } from '@content/courses/foundation-program';
 import {
-  AIBI_P_ARTIFACTS,
-  AIBI_P_CERTIFICATE_REQUIREMENTS,
-  AIBI_P_PRACTICE_REPS,
+  FOUNDATION_ARTIFACTS,
+  FOUNDATION_CERTIFICATE_REQUIREMENTS,
+  FOUNDATION_PRACTICE_REPS,
   getDailyPracticeRep,
 } from '@content/practice-reps/foundation-program';
 import type { ArtifactStatus } from '@/types/lms';
@@ -161,9 +161,9 @@ export default function DashboardPage() {
     ...localCompletedRepIds,
   ]));
   const currentRep = completedRepIds.includes(dailyRep.id)
-    ? AIBI_P_PRACTICE_REPS.find((rep) => !completedRepIds.includes(rep.id)) ?? dailyRep
+    ? FOUNDATION_PRACTICE_REPS.find((rep) => !completedRepIds.includes(rep.id)) ?? dailyRep
     : dailyRep;
-  const artifacts = (dashboard?.artifacts ?? AIBI_P_ARTIFACTS.map((artifact) => ({
+  const artifacts = (dashboard?.artifacts ?? FOUNDATION_ARTIFACTS.map((artifact) => ({
     ...artifact,
     status: artifact.moduleNumber && artifact.moduleNumber > 1
       ? 'locked' as const
@@ -421,7 +421,7 @@ export default function DashboardPage() {
                   {completedRepIds.length} complete
                 </span>
               </li>
-              {AIBI_P_CERTIFICATE_REQUIREMENTS.map((requirement, idx) => (
+              {FOUNDATION_CERTIFICATE_REQUIREMENTS.map((requirement, idx) => (
                 <li
                   key={requirement.id}
                   className="flex items-start gap-3 text-sm text-[color:var(--color-ink)]/75"
@@ -621,7 +621,7 @@ function formatStatus(status: ArtifactStatus): string {
   return status.replace('-', ' ');
 }
 
-function formatPromptStrategy(strategy: NonNullable<(typeof AIBI_P_PRACTICE_REPS)[number]['promptStrategy']>) {
+function formatPromptStrategy(strategy: NonNullable<(typeof FOUNDATION_PRACTICE_REPS)[number]['promptStrategy']>) {
   return strategy
     .split('-')
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
@@ -630,7 +630,7 @@ function formatPromptStrategy(strategy: NonNullable<(typeof AIBI_P_PRACTICE_REPS
 
 function readLocalCompletedRepIds(): readonly string[] {
   try {
-    return AIBI_P_PRACTICE_REPS
+    return FOUNDATION_PRACTICE_REPS
       .filter((rep) => localStorage.getItem(`aibi-practice-${rep.id}`))
       .map((rep) => rep.id);
   } catch {
