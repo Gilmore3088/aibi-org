@@ -18,7 +18,7 @@
 
 import type { ReactNode } from 'react';
 import { getEnrollment } from '@/app/courses/foundation/program/_lib/getEnrollment';
-import { foundationProgramCourseConfig } from '@content/courses/foundation-program';
+import { foundationCourseConfig } from '@content/courses/foundation-program';
 import { CourseShell } from './CourseShell';
 import { LMSTopBar } from './LMSTopBar';
 import { toLMSModules } from './_adapters';
@@ -43,7 +43,7 @@ export async function CourseShellWrapper({
 }: CourseShellWrapperProps) {
   const enrollment = await getEnrollment();
   const lmsModules: readonly LMSModule[] = toLMSModules(
-    foundationProgramCourseConfig.modules,
+    foundationCourseConfig.modules,
   );
   const completed = enrollment?.completed_modules ?? [];
   const current = enrollment?.current_module ?? (enrollment ? 1 : 0);

@@ -15,15 +15,15 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import {
   modules,
-  foundationProgramCourseConfig,
+  foundationCourseConfig,
   getModuleByNumber,
   V4_FOUNDATION_PROGRAM_MODULE_BY_NUMBER,
 } from '@content/courses/foundation-program';
 import type { Activity, ExpandedModule } from '@content/courses/foundation-program';
-import { ContentTable } from '../_components/ContentTable';
+import { ContentTable } from '@/components/lms/ContentTable';
 import { LearnSection } from '../_components/LearnSection';
 import { ModuleContentClient } from '../_components/ModuleContentClient';
-import { CourseTabs } from '@/components/CourseTabs';
+import { Tabbed } from '@/lib/lms/module-body';
 import {
   CourseShell,
   LMSTopBar,
@@ -114,7 +114,7 @@ export default async function ModulePage({ params }: ModulePageParams) {
   }
 
   const lmsModules: readonly LMSModule[] = toLMSModules(
-    foundationProgramCourseConfig.modules,
+    foundationCourseConfig.modules,
   );
   const status = getModuleStatus(
     mod.number,
@@ -321,9 +321,9 @@ export default async function ModulePage({ params }: ModulePageParams) {
 
       {/* Tabbed content (Learn / Practice / Apply) — behavior preserved */}
       <article style={{ maxWidth: 1180, margin: '0 auto', padding: '4px 36px 80px' }}>
-        <CourseTabs
+        <Tabbed
           storagePrefix="aibi-p-m"
-          segmentNumber={moduleNum}
+          moduleNumber={moduleNum}
           accentColor="var(--ledger-accent)"
           learnContent={
             <>

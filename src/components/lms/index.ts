@@ -13,5 +13,7 @@ export type { LMSModule, LMSPillar, ModuleStatus } from './types';
 export { toLMSModule, toLMSModules } from './_adapters';
 export { ActivityWorkspace } from './ActivityWorkspace';
 export { FormField, ledgerInputStyle } from './FormField';
+export { MarkdownRenderer } from './MarkdownRenderer';
+export { ContentTable } from './ContentTable';
 export { ModelPicker, LMS_MODELS } from './ModelPicker';
 export type { LMSModelId, LMSModelOption } from './ModelPicker';
