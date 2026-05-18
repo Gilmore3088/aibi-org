@@ -22,25 +22,25 @@ export const PERSONAS: Record<Tier['id'], Persona> = {
     id: 'starting-point',
     label: 'Unstructured AI',
     oneLine:
-      'AI is already being used inside your organization—but without consistent training, structure, or safeguards. This creates uneven results, missed efficiency gains, and unnecessary risk.',
+      "Your staff are already using AI — they just have no shared rules for it. Different teams make different decisions about what tools are safe and what data can go where. That is the gap to close first.",
   },
   'early-stage': {
     id: 'early-stage',
     label: 'Coordinated Experimentation',
     oneLine:
-      'AI is in use across some teams, but adoption is uneven and outcomes are inconsistent. The institutions that pull ahead from here are the ones that systematize the wins, not the ones that buy more tools.',
+      "Some teams are running real AI experiments and getting wins. The ones who pull ahead next are the ones who turn those wins into shared workflows — not the ones who buy more tools.",
   },
   'building-momentum': {
     id: 'building-momentum',
     label: 'Program Building',
     oneLine:
-      'AI is producing real value across multiple teams—but the program is fragile. Without measured outcomes and codified workflows, leadership support erodes faster than capability builds.',
+      "Multiple teams are using AI and producing real value. The risk now is that the program lives or dies with two or three motivated employees. Time to codify what is working.",
   },
   'ready-to-scale': {
     id: 'ready-to-scale',
     label: 'Capability Leadership',
     oneLine:
-      'AI is operating as a strategic capability inside your institution. The opportunity now is replication speed: how fast you codify what works for the next wave of staff.',
+      "AI is operating as a real capability inside your institution. The next question is replication speed — how fast every new hire reaches the same baseline as your strongest users.",
   },
 };
 
@@ -50,13 +50,193 @@ export const PERSONAS: Record<Tier['id'], Persona> = {
 
 export const BIG_INSIGHT: Record<Tier['id'], string> = {
   'starting-point':
-    'You are capable of quick AI wins—but currently lack the structure to use AI safely and consistently.',
+    "Quick AI wins are within reach. What's missing is the shared structure to make them safe and repeatable.",
   'early-stage':
-    'You have the people and curiosity. What you lack is a coordinated program that turns isolated wins into institutional capability.',
+    "You have the curiosity. What you lack is the connective tissue that turns isolated wins into institutional capability.",
   'building-momentum':
-    'You have working AI workflows. What you need next is the discipline to measure outcomes well enough to defend the program with leadership.',
+    "Your workflows are working. The next constraint is measurement — outcomes documented well enough to defend the program at the board level.",
   'ready-to-scale':
-    'You have a working program. The compounding question now is whether you can replicate it across every new hire fast enough to stay ahead.',
+    "You have a working program. The compounding question is whether every new hire can reach your top performers' baseline fast enough to keep the advantage.",
+};
+
+// ---------------------------------------------------------------------------
+// SIGNATURE INSIGHT — the memorable line that travels with the report.
+// One sentence, two-clause structure. Treated as a distinct visual
+// element on both surfaces (italic display serif on parchment with a
+// hairline rule above and below). Lives between the Diagnosis and the
+// Practice Picture on screen; between ExecSummary and PracticePicture
+// in the PDF (Spec 5 — page 2.5, no number).
+// ---------------------------------------------------------------------------
+
+export const SIGNATURE_INSIGHT =
+  "Most institutions do not fail because employees refuse to use AI. They struggle because experimentation spreads faster than operational standards.";
+
+// ---------------------------------------------------------------------------
+// MATURITY LADDER — six named rungs from AI Curiosity through
+// Institutional Advantage. The four scoring tiers map to rungs 1, 2,
+// 3, and 5 (rungs 4 and 6 are aspirational and not directly measured
+// by the free 12-question pool). The ladder gives the reader context
+// for where they are and a visible next-step ambition.
+// ---------------------------------------------------------------------------
+
+export interface MaturityRung {
+  readonly label: string;
+  readonly description: string;
+}
+
+export const MATURITY_LADDER: ReadonlyArray<MaturityRung> = [
+  {
+    label: 'AI Curiosity',
+    description:
+      "AI is on the agenda but not yet on the floor. Individual staff are experimenting on their own time.",
+  },
+  {
+    label: 'Controlled Experimentation',
+    description:
+      "A small group of staff use AI inside loosely-defined guardrails. Wins are real but unevenly distributed.",
+  },
+  {
+    label: 'Building Momentum',
+    description:
+      "Multiple teams produce measurable value with AI. The program survives on individual sponsors and a few motivated builders.",
+  },
+  {
+    label: 'Operational Adoption',
+    description:
+      "AI-assisted workflows are documented, reviewed, and replicable. Outcomes are measured and reported to leadership monthly.",
+  },
+  {
+    label: 'Governed Scale',
+    description:
+      "Every staff member shares the same safe-use baseline. Governance is examiner-grade and onboarding rebuilds capability automatically.",
+  },
+  {
+    label: 'Institutional Advantage',
+    description:
+      "AI capability is a durable institutional asset. Compounding learning loops are the operating norm; the question shifts from adoption to compounding.",
+  },
+];
+
+/**
+ * Map each scoring tier onto its rung index in the six-rung ladder.
+ * Starting Point → rung 0 (AI Curiosity)
+ * Early Stage     → rung 1 (Controlled Experimentation)
+ * Building Momentum → rung 2 (Building Momentum)
+ * Ready to Scale  → rung 4 (Governed Scale)
+ *
+ * Rungs 3 (Operational Adoption) and 5 (Institutional Advantage) are
+ * aspirational — they describe states beyond what the free pool can
+ * confidently measure. The In-Depth assessment is the path to landing
+ * on those rungs with evidence.
+ */
+export const TIER_TO_RUNG: Record<Tier['id'], number> = {
+  'starting-point': 0,
+  'early-stage': 1,
+  'building-momentum': 2,
+  'ready-to-scale': 4,
+};
+
+// ---------------------------------------------------------------------------
+// SECTION 1b — What this looks like in practice. Recognition copy by
+// internal role (operations / compliance / managers / executives),
+// per tier. This is the "they understand us" page; lives between the
+// diagnosis and the big insight on screen, and as its own page in the PDF.
+// ---------------------------------------------------------------------------
+
+export interface PracticePictureRow {
+  readonly role: 'Operations' | 'Compliance / Risk' | 'Managers' | 'Executives';
+  readonly body: string;
+}
+
+export const PRACTICE_PICTURE: Record<Tier['id'], ReadonlyArray<PracticePictureRow>> = {
+  'starting-point': [
+    {
+      role: 'Operations',
+      body:
+        "A handful of staff are using AI for summaries, draft emails, or research — but each person is doing it their own way. Nobody can point to a workflow that is documented or repeatable.",
+    },
+    {
+      role: 'Compliance / Risk',
+      body:
+        "There is concern about what data is being pasted where, what vendors are touching customer information, and whether review steps are consistent. The instinct is to slow everything down until somebody writes it all up.",
+    },
+    {
+      role: 'Managers',
+      body:
+        "There is curiosity, but not enough proof. Without measurable wins, managers cannot defend giving their team time to learn this — and the staff who could lead it do not have permission to.",
+    },
+    {
+      role: 'Executives',
+      body:
+        "Leadership knows AI matters, but does not yet have a confident answer to 'where are we today, and what is our first move?' That uncertainty turns every conversation into a survey of opinions.",
+    },
+  ],
+  'early-stage': [
+    {
+      role: 'Operations',
+      body:
+        "Two or three people on the team are getting real time savings with AI. Everyone else can tell something is working, but cannot quite point to which prompt or which tool is doing it.",
+    },
+    {
+      role: 'Compliance / Risk',
+      body:
+        "A baseline policy probably exists, but it lags the way staff are actually using AI. The audit-trail question — what tool, what data, what review — has different answers in different rooms.",
+    },
+    {
+      role: 'Managers',
+      body:
+        "Managers see the wins but can't yet codify them. Without a documented workflow, replicating the same outcome on another team takes weeks instead of days.",
+    },
+    {
+      role: 'Executives',
+      body:
+        "Leadership sees evidence that AI is producing value, but cannot defend continued investment in front of the board without measurement. The conversation needs a number, not a feeling.",
+    },
+  ],
+  'building-momentum': [
+    {
+      role: 'Operations',
+      body:
+        "Multiple teams are running AI-assisted workflows. The patterns are real, but they only live in two or three people's heads — when those people are out, the work slows down visibly.",
+    },
+    {
+      role: 'Compliance / Risk',
+      body:
+        "Governance is real but uneven. One team's documentation would pass an examiner; another team's would not. The risk is not policy absence — it is inconsistent application across the institution.",
+    },
+    {
+      role: 'Managers',
+      body:
+        "Managers are managing the program by hand, tracking who's doing what in spreadsheets. Without standardized workflows and outcome measurement, scale always feels two hires away.",
+    },
+    {
+      role: 'Executives',
+      body:
+        "Leadership wants to invest more but needs to defend ROI numerically. The metrics exist on individual desks; they have never been rolled up into the kind of view a board expects.",
+    },
+  ],
+  'ready-to-scale': [
+    {
+      role: 'Operations',
+      body:
+        "Standard workflows are documented and most teams follow them. The remaining variation is between top performers and average performers — the question is how to close that gap faster for every new hire.",
+    },
+    {
+      role: 'Compliance / Risk',
+      body:
+        "Governance is mature. The audit trail holds up under examiner review. The remaining concern is keeping policy current as new tools and new vendor relationships arrive.",
+    },
+    {
+      role: 'Managers',
+      body:
+        "Managers spend less time on policy and more time on coaching. The bottleneck is replication speed — getting the next class of analysts to your top performers' baseline without slowing the program down.",
+    },
+    {
+      role: 'Executives',
+      body:
+        "Leadership has documented outcomes and a defensible budget story. The strategic question is no longer whether to invest, but where the next compounding investment is — measurement, leadership judgment, or capability depth.",
+    },
+  ],
 };
 
 // ---------------------------------------------------------------------------
@@ -73,9 +253,9 @@ export interface GapContent {
 
 export const GAP_CONTENT: Record<Dimension, GapContent> = {
   'current-ai-usage': {
-    oneLine: 'AI tools are not embedded in repeating workflows. Use is sporadic and invisible to managers.',
+    oneLine: 'AI use is sporadic, individual, and invisible to managers.',
     explanation:
-      'AI tools are not yet embedded in repeating workflows. Use is sporadic, individual, and invisible to managers — which means time savings are real but not measurable.',
+      "AI is being used, but not in any workflow that repeats. The time savings are real — they just live inside one person's day and never roll up to a number you can manage.",
     impacts: [
       'Productivity gains stay locked inside individual desks',
       'No baseline exists to measure what AI is or is not doing for your institution',
@@ -86,9 +266,9 @@ export const GAP_CONTENT: Record<Dimension, GapContent> = {
     ],
   },
   'experimentation-culture': {
-    oneLine: 'AI usage is happening — but not shared or improving across your team.',
+    oneLine: 'AI use happens — but nobody learns from anyone else.',
     explanation:
-      'There is no shared place where staff can try, share, and improve AI use. Without that, every learning has to be rediscovered by the next person.',
+      "There is no shared place to try, swap, and improve prompts. Every lesson has to be rediscovered by the next person who needs it.",
     impacts: [
       'The same prompt gets re-invented across teams instead of refined',
       'Wins go silent — leadership never hears about them',
@@ -99,9 +279,9 @@ export const GAP_CONTENT: Record<Dimension, GapContent> = {
     ],
   },
   'ai-literacy-level': {
-    oneLine: 'Skills are not compounding. Every employee is figuring this out alone.',
+    oneLine: 'Every employee is figuring this out alone.',
     explanation:
-      'Staff have not yet been through structured training on safe and effective AI use. The gap shows up as cautious avoidance from some staff and unsafe enthusiasm from others.',
+      "Staff have not been through structured training on safe AI use. Some are too cautious to use it at all; others use it confidently in places they should not. Both reactions create real cost.",
     impacts: [
       'Two failure modes coexist: paralysis (afraid to use it) and oversharing (PII into public tools)',
       'Compliance risk grows faster than productivity gain',
@@ -112,9 +292,9 @@ export const GAP_CONTENT: Record<Dimension, GapContent> = {
     ],
   },
   'quick-win-potential': {
-    oneLine: 'No first workflow has been identified. The program never gets started.',
+    oneLine: 'No first workflow named. Conversations stay theoretical.',
     explanation:
-      'No low-risk workflow has been identified where AI can immediately save time. Without a beachhead, the program never gets started.',
+      "No low-risk workflow has been picked as the proving ground. Without a concrete first win, the program stays in slide decks and never reaches anyone's desk.",
     impacts: [
       'Conversations stay theoretical instead of producing measurable savings',
       'Skeptics inside the institution stay skeptical because nothing concrete has happened yet',
@@ -125,9 +305,9 @@ export const GAP_CONTENT: Record<Dimension, GapContent> = {
     ],
   },
   'leadership-buy-in': {
-    oneLine: 'Leadership has not committed. The program lives or dies by individual sponsors.',
+    oneLine: 'No committed senior sponsor. The program runs on volunteers.',
     explanation:
-      'Senior leadership has not committed to AI as a strategic priority. Without that air cover, the program lives or dies by individual sponsors.',
+      "Senior leadership has not committed to AI as a strategic priority. Without that air cover, the program lives or dies with the one or two employees willing to push it forward.",
     impacts: [
       'Budget conversations stall — AI is treated as IT spend, not capability investment',
       'Compliance and risk teams default to "no" without a counterweight',
@@ -138,9 +318,9 @@ export const GAP_CONTENT: Record<Dimension, GapContent> = {
     ],
   },
   'security-posture': {
-    oneLine: 'Staff may be doing the right things, but you cannot prove it to an examiner.',
+    oneLine: 'Right behavior may be happening — you cannot prove it on paper.',
     explanation:
-      'Your AI security posture is not yet documented in a way your examiner would accept. Staff may be doing the right things, but you cannot prove it.',
+      "Your AI security posture is not yet documented in a form an examiner would accept. Staff may be doing the right things every day, but there is no record to point to when asked.",
     impacts: [
       'Examiner asks for the AI workflow inventory — you cannot produce one',
       'A single staff prompt with PII becomes a reportable incident',
@@ -151,9 +331,9 @@ export const GAP_CONTENT: Record<Dimension, GapContent> = {
     ],
   },
   'training-infrastructure': {
-    oneLine: 'No training system. Skills decay between events; new hires arrive into a vacuum.',
+    oneLine: 'No practice cadence. Skills decay between events.',
     explanation:
-      'There is no recurring practice cadence for AI skills. One-off training fades within a quarter; without a place where practice lives, capability does not compound.',
+      "There is no recurring rhythm for AI practice. One-off training events fade within a quarter, and new hires arrive with no path into the workflows your team has built.",
     impacts: [
       'Skills decay between training events; new hires arrive into a vacuum',
       'Leadership keeps paying for kickoff sessions that never produce durable capability',
@@ -164,9 +344,9 @@ export const GAP_CONTENT: Record<Dimension, GapContent> = {
     ],
   },
   'builder-potential': {
-    oneLine: 'No internal builder. Every workflow improvement requires consultant or vendor work.',
+    oneLine: 'No internal builder. Workflow improvements wait for vendors.',
     explanation:
-      'There is not yet a named internal builder — the analyst or operations person who turns AI tools into working processes for everyone else. Without one, capability stays vendor-shaped.',
+      "There is no named builder — the analyst or operations person who turns AI tools into working processes the rest of the team can reuse. Without one, capability stays vendor-shaped.",
     impacts: [
       'Every workflow improvement requires consultant or vendor work',
       'The institution remains dependent on external expertise indefinitely',
@@ -494,35 +674,35 @@ export interface FinancialImplications {
 export const FINANCIAL_IMPLICATIONS: Record<Tier['id'], FinancialImplications> = {
   'starting-point': {
     operational:
-      'Time savings exist on individual desks but never aggregate to a measurable efficiency gain at the institution level. Without sanctioned workflows, the program cannot be staffed or budgeted with confidence.',
+      "Time is being saved on individual desks but it never rolls up to a number you can show the board. Without sanctioned workflows, the program cannot be staffed or budgeted with confidence.",
     risk:
-      'Staff use of public AI tools without policy or audit trail creates compliance exposure under SR 11-7 and the AIEOG Lexicon. The risk question your examiner will ask cannot yet be answered with documentation.',
+      "Staff are pasting work into public AI tools without policy or audit trail. Under SR 11-7 and the AIEOG Lexicon, examiners will ask what tools you approve, for what data, with what review — and that question cannot yet be answered on paper.",
     cost:
-      'Every workflow improvement requires consultant or vendor involvement. There is no internal capability accumulating, so spend keeps repeating instead of compounding into capability.',
+      "Every workflow improvement still needs a vendor or consultant. Spend repeats instead of compounding into capability your team owns.",
   },
   'early-stage': {
     operational:
-      'Uneven adoption means efficiency gains are not realized across the organization. Isolated wins cannot scale without process alignment, and the gap between top-performing teams and the rest widens.',
+      "Wins are real but uneven. The gap between your top-performing team and everyone else widens with each month that the strong patterns are not written down.",
     risk:
-      'Absence of a program increases compliance risk. Audit trails are inconsistent, raising questions about what tools are used, what data is exposed, and who is approving usage at the institution level.',
+      "Audit trails vary by team. An examiner walking the floor would get four different answers about what tools are in use and who approved them.",
     cost:
-      'Reliance on vendors or consultants for every workflow improvement can become expensive and delays internal capability. Building internal skills reduces long-term costs and reduces vendor lock-in.',
+      "Vendors are doing the work your team could be doing. Each engagement leaves no durable capability behind.",
   },
   'building-momentum': {
     operational:
-      'Multiple teams are producing measurable savings, but the program lacks the documented outcomes leadership needs to defend continued investment. Inconsistent measurement obscures which workflows are actually moving the efficiency ratio.',
+      "Several teams are producing measurable savings — but the measurement itself is uneven. Without documented outcomes, leadership cannot tell which workflows are actually moving the efficiency ratio.",
     risk:
-      'Governance exists but is uneven. Examiner-grade documentation needs to be standardized across teams before staff turnover or a single incident creates exposure.',
+      "Governance exists in pockets. Examiner-grade documentation needs to be standardized across teams before staff turnover or a single incident creates exposure.",
     cost:
-      'The program survives on individual sponsorship rather than institutional investment. Without measured ROI, budget conversations stall and capability that should compound stays linear.',
+      "The program survives on two or three motivated sponsors. Without measured ROI, budget conversations stall and what should compound stays linear.",
   },
   'ready-to-scale': {
     operational:
-      'AI is producing measurable, repeatable efficiency gains across departments. The risk now is not adoption — it is replication speed. Institutions that codify their program can extend the advantage; institutions that do not lose ground when staff turn over.',
+      "AI is producing repeatable efficiency gains across departments. The risk now is not adoption — it's replication speed. Institutions that codify their program extend the advantage; those that don't lose ground when staff turn over.",
     risk:
-      'Mature governance reduces incident risk to acceptable levels. The remaining risk is complacency: programs that stop investing in the next wave of capability fall behind faster than they realize.',
+      "Governance is mature enough that incident risk is acceptable. The remaining risk is complacency — programs that stop investing in the next wave fall behind faster than they realize.",
     cost:
-      'Internal capability has reduced vendor dependence and extended the productive life of staff hours. The next investment is not in tools — it is in the practice cadence that compounds capability across every new hire.',
+      "Vendor dependence is down and capability is compounding. The next investment is not in tools — it's in the practice cadence that gets every new hire to baseline.",
   },
 };
 
@@ -533,45 +713,114 @@ export const FINANCIAL_IMPLICATIONS: Record<Tier['id'], FinancialImplications> =
 // /for-institutions/advisory (Building Momentum + Ready to Scale).
 // ---------------------------------------------------------------------------
 
+export interface CtaOffer {
+  readonly label: string;
+  readonly href: string;
+  /**
+   * Plausible event `source` prop. Lets us measure conversion from
+   * each ranked slot independently.
+   */
+  readonly source: 'free-results-primary' | 'free-results-secondary' | 'free-results-tertiary';
+}
+
 export interface TierClosingCta {
   readonly eyebrow: string;
   readonly headline: string;
   readonly body: string;
-  readonly ctaLabel: string;
-  readonly ctaHref: string;
+  readonly primary: CtaOffer;
+  readonly secondary: CtaOffer;
+  readonly tertiary: CtaOffer;
 }
 
+// Three ranked CTAs per tier. For tiers 1–3 the primary is always
+// AiBI-Foundation ($295) — the next constraint for almost every free-
+// assessment taker is structured capability, not another diagnostic.
+// In-Depth ($99) sits as secondary for institutions that want a deeper
+// read before committing. Tier 4 (Ready to Scale) inverts the order:
+// they already have foundations, so the primary becomes Advisory.
 export const TIER_CLOSING_CTA: Record<Tier['id'], TierClosingCta> = {
   'starting-point': {
     eyebrow: 'Your next move',
-    headline: 'Go deeper before you commit to training.',
+    headline: 'Start with AiBI-Foundation.',
     body:
-      'The free assessment gives you a score; the In-Depth Assessment gives you a verdict — eight readiness dimensions, peer-band comparison, and a starting playbook keyed to your weakest area. Take it before deciding which AiBI-Foundation cohort to fund.',
-    ctaLabel: 'Take the In-Depth Assessment · $99',
-    ctaHref: '/assessment/in-depth',
+      "Your score says AI is already being used inside your organization without consistent training or guardrails. The fastest way to fix that is to build internal capability — one workflow owner, one safe-use habit, one repeatable workflow at a time. AiBI-Foundation is twelve self-paced modules built for banking professionals.",
+    primary: {
+      label: 'Enroll in AiBI-Foundation · $295',
+      href: '/courses/foundation/program',
+      source: 'free-results-primary',
+    },
+    secondary: {
+      label: 'Or take the In-Depth Assessment · $99',
+      href: '/assessment/in-depth',
+      source: 'free-results-secondary',
+    },
+    tertiary: {
+      label: 'Request an Executive Briefing',
+      href: '/for-institutions/advisory',
+      source: 'free-results-tertiary',
+    },
   },
   'early-stage': {
     eyebrow: 'Your next move',
-    headline: 'Pressure-test your momentum.',
+    headline: 'Turn experimentation into capability.',
     body:
-      'You have early adopters. The In-Depth Assessment shows whether that momentum is real or local — eight dimensions across your team, an anonymized aggregate rollup for leaders, and a starting playbook keyed to your weakest area.',
-    ctaLabel: 'Take the In-Depth Assessment · $99',
-    ctaHref: '/assessment/in-depth',
+      "You have curiosity and a few early wins. The next constraint is not another tool — it is structured AI capability your team can replicate. AiBI-Foundation gives each staff member a safe-use checklist, a prompt builder, and reusable banking workflows. Take it as a team and codify what's already working.",
+    primary: {
+      label: 'Enroll in AiBI-Foundation · $295',
+      href: '/courses/foundation/program',
+      source: 'free-results-primary',
+    },
+    secondary: {
+      label: 'Or take the In-Depth Assessment · $99',
+      href: '/assessment/in-depth',
+      source: 'free-results-secondary',
+    },
+    tertiary: {
+      label: 'Request an Executive Briefing',
+      href: '/for-institutions/advisory',
+      source: 'free-results-tertiary',
+    },
   },
   'building-momentum': {
     eyebrow: 'Your next move',
-    headline: 'Walk through these results with us.',
+    headline: 'Standardize what is already working.',
     body:
-      "You're ready for a roadmap conversation, not a course. An Executive Briefing translates this report into a phased plan with leadership at the table.",
-    ctaLabel: 'Request an Executive Briefing',
-    ctaHref: '/for-institutions/advisory',
+      "Your teams are producing real value with AI. The risk now is that progress depends on a few motivated individuals. AiBI-Foundation turns those individual wins into a shared baseline — every staff member with the same safe-use habits, the same prompt patterns, the same reusable workflows. It is the cheapest path from fragile momentum to repeatable program.",
+    primary: {
+      label: 'Enroll in AiBI-Foundation · $295',
+      href: '/courses/foundation/program',
+      source: 'free-results-primary',
+    },
+    secondary: {
+      label: 'Or take the In-Depth Assessment · $99',
+      href: '/assessment/in-depth',
+      source: 'free-results-secondary',
+    },
+    tertiary: {
+      label: 'Request an Executive Briefing',
+      href: '/for-institutions/advisory',
+      source: 'free-results-tertiary',
+    },
   },
   'ready-to-scale': {
     eyebrow: 'Your next move',
     headline: 'Talk to us about Leadership Advisory.',
     body:
-      "You don't need foundations — you need ongoing AI judgment at the leadership level. Leadership Advisory is fractional CAIO work for institutions with internal momentum.",
-    ctaLabel: 'Request a conversation',
-    ctaHref: '/for-institutions/advisory',
+      "Your institution has built real AI capability. The opportunity now is leadership judgment — what to prioritize next, how to measure outcomes, how to defend the program at the board level. Leadership Advisory is fractional Chief AI Officer work for institutions with internal momentum. AiBI-Foundation stays available as the onboarding path for every new hire.",
+    primary: {
+      label: 'Request a conversation',
+      href: '/for-institutions/advisory',
+      source: 'free-results-primary',
+    },
+    secondary: {
+      label: 'Onboard new hires with AiBI-Foundation · $295',
+      href: '/courses/foundation/program',
+      source: 'free-results-secondary',
+    },
+    tertiary: {
+      label: 'Take the In-Depth Assessment · $99',
+      href: '/assessment/in-depth',
+      source: 'free-results-tertiary',
+    },
   },
 };

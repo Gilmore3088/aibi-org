@@ -10,7 +10,7 @@ export function StarterPromptAndPlan({ focusGapId }: StarterPromptAndPlanProps) 
 
   return (
     <>
-      {/* Page 8 — Starter Prompt */}
+      {/* Page 10 — Starter Prompt */}
       <article className="pdf-page" data-pdf-page="starter-prompt">
         <p className="pdf-eyebrow">Starter prompt</p>
         <h2 className="pdf-h2" style={{ marginTop: '0.2in' }}>
@@ -38,12 +38,12 @@ export function StarterPromptAndPlan({ focusGapId }: StarterPromptAndPlanProps) 
         </pre>
 
         <div className="pdf-page-footer">
-          <span>Page 8</span>
+          <span>Page 10</span>
           <span>AI Readiness Briefing</span>
         </div>
       </article>
 
-      {/* Page 9 — 7-Day Plan */}
+      {/* Page 11 — 7-Day Plan */}
       <article className="pdf-page" data-pdf-page="seven-day-plan">
         <p className="pdf-eyebrow">Your 7-day AI activation plan</p>
         <h2 className="pdf-h2" style={{ marginTop: '0.2in' }}>
@@ -84,7 +84,7 @@ export function StarterPromptAndPlan({ focusGapId }: StarterPromptAndPlanProps) 
         </ol>
 
         <div className="pdf-page-footer">
-          <span>Page 9</span>
+          <span>Page 11</span>
           <span>AI Readiness Briefing</span>
         </div>
       </article>

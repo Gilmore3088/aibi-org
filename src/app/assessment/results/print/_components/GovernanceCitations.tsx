@@ -59,7 +59,7 @@ export function GovernanceCitations() {
       </dl>
 
       <div className="pdf-page-footer">
-        <span>Page 12</span>
+        <span>Page 14</span>
         <span>AI Readiness Briefing</span>
       </div>
     </article>

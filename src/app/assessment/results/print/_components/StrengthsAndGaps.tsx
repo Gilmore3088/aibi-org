@@ -85,7 +85,7 @@ export function StrengthsAndGaps({ dimensionBreakdown }: StrengthsAndGapsProps) 
       </div>
 
       <div className="pdf-page-footer">
-        <span>Page 4</span>
+        <span>Page 5</span>
         <span>AI Readiness Briefing</span>
       </div>
     </article>

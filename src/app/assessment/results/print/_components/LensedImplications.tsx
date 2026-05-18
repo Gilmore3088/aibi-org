@@ -55,7 +55,7 @@ export function LensedImplications({ tierId }: LensedImplicationsProps) {
       </div>
 
       <div className="pdf-page-footer">
-        <span>Page 3</span>
+        <span>Page 4</span>
         <span>AI Readiness Briefing</span>
       </div>
     </article>
