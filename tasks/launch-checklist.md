@@ -573,7 +573,7 @@ post-conference launch email going out. Each item is sized to take
 
 ## §18. Bug fixes (468–477)
 
-- [ ] 468. Fix `/api/assessment/pdf/warm` libnss3.so missing on Vercel serverless
+- [x] 468. Fix `/api/assessment/pdf/warm` libnss3.so missing on Vercel serverless — switched to `headless: 'shell'` + `chromium.setGraphicsMode = false` for @sparticuz/chromium v148+. Production smoke test should hit `/api/assessment/pdf/warm` after deploy to confirm.
 - [ ] 469. Investigate +alias test rows in auth.users; clean up if any remain
 - [x] 470. Decide if COMING_SOON env var dead code; remove if so — **NOT dead.** Actively used in `src/middleware.ts:31` and `src/app/coming-soon/page.tsx` for the takedown feature. Keep.
 - [ ] 471. Audit duplicate `00011_` migration files; rename to break collision — **AUDITED 2026-05-17:** Both migrations exist (`00011_activity_responses_12_modules.sql` from 2026-05-04 + `00011_readiness_dimension_columns.sql` from 2026-04-28). They touch different tables (`activity_responses` vs `user_profiles`) with no cross-dependency, so the lexical-order ambiguity is bookkeeping noise only. **DO NOT rename retroactively** — both have been applied to production Supabase; renaming the file would make Supabase migration runner think there's a pending migration. Defer to a future controlled migration window where it can be handled carefully (or leave as-is — purely cosmetic).

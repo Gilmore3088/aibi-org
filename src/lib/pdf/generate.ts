@@ -2,7 +2,12 @@
 // returns a Buffer ready to upload. Detects local vs Vercel runtime
 // to pick the right Chromium binary.
 //
+// Vercel runtime: uses @sparticuz/chromium's bundled Chromium with
+// shell headless mode (recommended for v148+; previous `headless: true`
+// triggered libnss3.so loader errors on Vercel's serverless image).
+//
 // Refs: docs/superpowers/specs/2026-05-04-assessment-results-spec-2-pdf.md
+// Issue: launch-checklist §18.468
 
 import chromium from '@sparticuz/chromium';
 import puppeteer, { type Browser } from 'puppeteer-core';
@@ -18,6 +23,13 @@ export async function generateAssessmentPdf({
 }: GenerateOptions): Promise<Buffer> {
   const isVercel = process.env.VERCEL === '1';
 
+  // On Vercel: @sparticuz/chromium v148+ requires `headless: 'shell'` mode
+  // and disabling its WebGL/graphics path keeps the bundle clear of the
+  // libnss3.so dependency chain that breaks on the serverless image.
+  if (isVercel) {
+    chromium.setGraphicsMode = false;
+  }
+
   const browser: Browser = await puppeteer.launch({
     args: chromium.args,
     defaultViewport: { width: 1200, height: 1600 },
@@ -25,7 +37,7 @@ export async function generateAssessmentPdf({
       ? await chromium.executablePath()
       : process.env.PUPPETEER_LOCAL_CHROME ??
         '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
-    headless: true,
+    headless: isVercel ? 'shell' : true,
   });
 
   try {
