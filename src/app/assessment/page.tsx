@@ -39,6 +39,19 @@ export default function AssessmentPage() {
     }
   }, [state.isComplete, state.phase, state.totalScore, state.tier]);
 
+  // After email capture, the page transitions from the email-gate view to
+  // the full report (ResultsViewV2). The user's scroll position is wherever
+  // they tapped the submit button — usually near the bottom of the gate
+  // form on mobile. Without this, the report appears to "start" from
+  // wherever the form ended, which reads as broken.
+  useEffect(() => {
+    if (state.phase === 'results' && capturedEmail) {
+      requestAnimationFrame(() => {
+        window.scrollTo({ top: 0, behavior: 'instant' });
+      });
+    }
+  }, [state.phase, capturedEmail]);
+
   if (!mounted) {
     // Pre-hydration skeleton — sessionStorage-aware state must be read client-
     // side, but a blank screen reads as broken on slow phones. Render a
