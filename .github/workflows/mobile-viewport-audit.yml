@@ -1,0 +1,82 @@
+name: Mobile viewport audit
+
+on:
+  pull_request:
+    branches: [main, staging]
+  workflow_dispatch:
+
+# Runs e2e/mobile-viewport-audit.spec.ts on every PR. The spec visits
+# ~18 public routes at three mobile widths (375 / 390 / 414 px) and asserts
+# no horizontal overflow at each width.
+#
+# `continue-on-error: true` (set on the test step) means a failing route
+# does NOT block the PR. The screenshots and failure list land in the
+# `mobile-viewport-screenshots` artifact for reviewer inspection. This is
+# the right posture during the initial mobile-foundations rollout: surface
+# the failures, fix them incrementally, then flip the step to blocking
+# once the matrix is green.
+#
+# See #194 for the foundational mobile responsiveness sweep + audit
+# methodology decision.
+
+concurrency:
+  group: mobile-viewport-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    name: Mobile viewport overflow check
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+      - name: Build
+        env:
+          NEXT_TELEMETRY_DISABLED: 1
+        run: npm run build
+      - name: Start server
+        env:
+          NEXT_TELEMETRY_DISABLED: 1
+          PORT: 3000
+        run: |
+          npm start > server.log 2>&1 &
+          echo $! > server.pid
+          for i in $(seq 1 60); do
+            if curl -fsS http://localhost:3000/ > /dev/null 2>&1; then
+              echo "Server up after ${i}s"
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "Server failed to start"
+          cat server.log
+          exit 1
+      - name: Run mobile viewport audit
+        # NOT blocking during initial rollout. Flip to blocking once the
+        # matrix is green. See #194 for the rollout plan.
+        continue-on-error: true
+        env:
+          PLAYWRIGHT_BASE_URL: http://localhost:3000
+        run: npx playwright test e2e/mobile-viewport-audit.spec.ts --project=chromium --reporter=list
+      - name: Stop server
+        if: always()
+        run: |
+          if [ -f server.pid ]; then
+            kill "$(cat server.pid)" 2>/dev/null || true
+          fi
+      - name: Upload screenshots + report
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: mobile-viewport-screenshots
+          path: |
+            test-results/mobile-viewport/
+            playwright-report/
+          retention-days: 14
