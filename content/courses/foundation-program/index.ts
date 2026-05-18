@@ -1,5 +1,5 @@
 // AiBI-Foundation Course Content — Barrel Export
-// Usage: import { modules, getModuleByNumber, module1 } from '@/content/courses/foundation/program'
+// Usage: import { modules, getModuleByNumber, module1 } from '@content/courses/foundation-program'
 
 export * from './types';
 export * from './modules';

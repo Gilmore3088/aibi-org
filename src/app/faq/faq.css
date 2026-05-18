@@ -10,7 +10,7 @@
     --accent:#B5862A; --accent-2:#1E3A5F; --weak:#8E3B2A;
     --terra:#B5862A; --terra-2:#8E6212; --terra-soft:#EFE5C2;
     --rule:rgba(14,27,45,0.10); --rule-strong:rgba(14,27,45,0.22);
-    --serif: var(--font-newsreader), Georgia, serif;
+    --serif: var(--font-newsreader-hero), var(--font-newsreader-heavy), Georgia, serif;
     --sans: var(--font-geist-sans), -apple-system, system-ui, sans-serif;
     --mono: var(--font-jetbrains-mono), ui-monospace, monospace;
     --maxw:1240px;

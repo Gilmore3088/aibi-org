@@ -27,11 +27,10 @@ const CHROMELESS_PATHS: readonly string[] = [
   '/briefing-preview',
   '/lms-preview',
   '/courses/foundation-preview',
-  // /courses/foundation/program intentionally NOT chromeless — enrolled
-  // learners need the global SiteNav as their way back to the rest of the
-  // site. CourseShell's sidebar + breadcrumb cover the course tree, not
-  // navigation off it.
-  '/auth', // Ledger-redesigned auth surfaces render their own brand lockup
+  // /courses/foundation/program and /auth intentionally NOT chromeless —
+  // both need the global SiteNav. /auth surfaces drop the LedgerSurface
+  // internal lockup via showHeader={false} so there's no duplicate mark.
+  // CourseShell's sidebar + breadcrumb cover the course tree only.
   '/redesign-checklist',
 ];
 
@@ -58,12 +57,29 @@ const cormorantSC = Cormorant_SC({
 //     (Lighthouse 3.3s LCP is network-bound by font download on
 //     throttled 4G — real users see LCP < 500ms uncached, ~0ms cached).
 //     'swap' preserves the brand identity on first paint.
-const newsreader = Newsreader({
+//   - Split into two configs (Wave A3): hero (400 + italic, preloaded)
+//     covers ledes/body; heavy (500/600/700, no preload) covers section
+//     titles + the few bold serif pulls. Two distinct CSS variables —
+//     tokens.css and tokens-ledger.css chain them in font-family so the
+//     browser resolves heavy weights to newsreaderHeavy's family when
+//     they're requested. (Spec said "both bind --font-newsreader" but a
+//     single variable can't expose two families — see audit trail.)
+const newsreaderHero = Newsreader({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
+  weight: ['400'],
   style: ['normal', 'italic'],
-  variable: '--font-newsreader',
+  variable: '--font-newsreader-hero',
   display: 'swap',
+  preload: true,
+});
+
+const newsreaderHeavy = Newsreader({
+  subsets: ['latin'],
+  weight: ['500', '600', '700'],
+  style: ['normal'],
+  variable: '--font-newsreader-heavy',
+  display: 'swap',
+  preload: false,
 });
 
 // Geist ships its own variable font wrapper — `--font-geist-sans`.
@@ -140,7 +156,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
 
       <body
-        className={`${cormorantSC.variable} ${newsreader.variable} ${GeistSans.variable} ${jetbrainsMono.variable} flex flex-col min-h-screen`}
+        className={`${cormorantSC.variable} ${newsreaderHero.variable} ${newsreaderHeavy.variable} ${GeistSans.variable} ${jetbrainsMono.variable} flex flex-col min-h-screen`}
       >
         {!chromeless && (
           <a href="#main-content" className="skip-link">

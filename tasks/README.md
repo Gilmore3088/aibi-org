@@ -29,6 +29,7 @@ for that plan lives in `tasks/<slug>.md`.
 | [`_done/`](./_done/) | Closed task files (history) | — | — |
 | └─ `qa-bug-log-2026-05-15.md` | Issues #92–96 sweep — all PASS | Closed 2026-05-17 | 0 |
 | └─ `lms-prototype-reskin.md` | LMS Ledger reskin 7-PR roadmap | Closed 2026-05-17 (PRs #52–65 merged) | 0 |
+| └─ `dashboard-ledger-redesign.md` | /dashboard Ledger rebuild + In-Depth refocus + chrome/copy sweep | Closed 2026-05-17 (PR #123 + 3 hotfixes shipped) | 0 |
 
 Three files were closed and one removed in the 2026-05-17 tidy:
 - `qa-bug-log-2026-05-15.md` → `_done/` (all 5 issues PASS)

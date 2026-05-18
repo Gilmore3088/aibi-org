@@ -662,6 +662,21 @@
   margin-top: 3px; text-transform: uppercase;
 }
 
+/* Return to dashboard strip */
+.aibi-briefing .docback {
+  padding: 36px 0 32px; border-top: 1px solid var(--rule);
+}
+.aibi-briefing .docback-link {
+  font-family: var(--mono); font-size: 12px; font-weight: 600;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--ink); text-decoration: none;
+  border-bottom: 1px solid var(--ink); padding-bottom: 2px;
+  transition: color .15s, border-color .15s;
+}
+.aibi-briefing .docback-link:hover {
+  color: var(--terra); border-bottom-color: var(--terra);
+}
+
 /* Footer */
 .aibi-briefing .docfoot {
   padding: 36px 0; background: var(--parch); color: var(--slate);
