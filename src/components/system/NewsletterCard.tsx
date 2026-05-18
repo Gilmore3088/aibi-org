@@ -1,23 +1,30 @@
 /**
- * <NewsletterCard> — subscribe primitive for the AI Banking Brief.
+ * <NewsletterCard> — subscribe primitive for The AI Banking Brief.
  *
  * A compact, parch-dark surface with label, headline, blurb, email field, and
  * submit. Lives in the footer, on /research, and inline at end of essays.
  *
- * Rendered as a client form that submits to /api/subscribe-newsletter. The
- * server-side route preserves the existing CONVERTKIT integration.
+ * Submits as JSON to /api/subscribe-newsletter — the server writes to
+ * Supabase (owned-data backup) and MailerLite (primary list). See #190.
+ *
+ * Spam mitigation: hidden honeypot field (`companyUrl`). Bots fill every
+ * field; the server treats a non-empty honeypot as a silent accept (no
+ * subscriber recorded). Real users never see it.
  */
 
 "use client";
 
 import { useState, type FormEvent } from "react";
 import { cn } from "@/lib/utils/cn";
+import { trackBriefSubscribed } from "@/lib/analytics/events";
 
 export interface NewsletterCardProps {
   readonly heading?: string;
   readonly blurb?: string;
   /** Optional shape for proof line, e.g. "340+ subscribers". */
   readonly proof?: string;
+  /** Where this form is rendered — used for analytics attribution. */
+  readonly source?: 'footer' | 'research' | 'essay' | 'home';
   readonly className?: string;
 }
 
@@ -27,9 +34,11 @@ export function NewsletterCard({
   heading = "Join the operator list.",
   blurb = "The AI Banking Brief — sourced commentary on how community institutions are actually adopting AI.",
   proof,
+  source = 'footer',
   className,
 }: NewsletterCardProps) {
   const [email, setEmail] = useState("");
+  const [companyUrl, setCompanyUrl] = useState(""); // honeypot
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState<string>("");
 
@@ -37,7 +46,7 @@ export function NewsletterCard({
     event.preventDefault();
     if (!email.includes("@")) {
       setStatus("error");
-      setMessage("Please enter a valid email.");
+      setMessage("Please enter a valid email address.");
       return;
     }
     setStatus("submitting");
@@ -45,15 +54,24 @@ export function NewsletterCard({
       const res = await fetch("/api/subscribe-newsletter", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, source, companyUrl }),
       });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      if (!res.ok) {
+        // Read the friendly error from the server body when available.
+        // Never surface raw response codes to users.
+        const data = (await res.json().catch(() => ({}))) as { error?: string };
+        if (res.status === 429) {
+          throw new Error('Too many attempts. Please try again in a minute.');
+        }
+        throw new Error(data.error ?? 'Something went wrong. Please try again.');
+      }
       setStatus("success");
-      setMessage("Subscribed. The next issue lands in your inbox.");
+      setMessage("You're on the list. The next AI Banking Brief lands in your inbox.");
       setEmail("");
-    } catch {
+      trackBriefSubscribed({ source });
+    } catch (err) {
       setStatus("error");
-      setMessage("Subscribe failed. Try again in a minute.");
+      setMessage(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
     }
   }
 
@@ -84,6 +102,19 @@ export function NewsletterCard({
           placeholder="you@yourbank.com"
           className="border border-hairline bg-linen px-s3 py-s2 text-body-sm font-sans rounded-sharp focus:border-terra focus:outline-none"
           disabled={status === "submitting" || status === "success"}
+        />
+        {/* Honeypot — bots fill every field, humans don't see this.
+            Hidden visually and from assistive tech. The server treats a
+            non-empty value as a silent-accept bot submission. */}
+        <input
+          type="text"
+          name="company_url"
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+          value={companyUrl}
+          onChange={(e) => setCompanyUrl(e.target.value)}
+          className="absolute left-[-9999px] top-auto h-px w-px overflow-hidden"
         />
         <button
           type="submit"
