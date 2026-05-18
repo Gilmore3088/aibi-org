@@ -47,22 +47,20 @@ const cormorantSC = Cormorant_SC({
 // Ledger brand-refresh fonts (2026-05-09). Loaded as the primary stack
 // (Newsreader serif + Geist sans + JetBrains Mono).
 //
-// 2026-05-17: display 'swap' → 'optional'. The H1 "Turning Bankers into
-// Builders" in Newsreader was the LCP element; with 'swap' the browser
-// waits up to ~3s for Newsreader before rendering the heading, which
-// pinned LCP at 3.3-3.8s. With 'optional' the browser renders the H1
-// in the fallback (Iowan Old Style → Georgia) immediately if Newsreader
-// hasn't loaded within ~100ms, and does NOT swap when it finishes. The
-// trade: occasional first paint in the system fallback instead of
-// Newsreader. On second visit / cached browsing the user sees Newsreader
-// normally. adjustFontFallback (default true) matches the fallback's
-// x-height + cap-height to Newsreader's to minimize layout difference.
+// 2026-05-17 perf notes:
+//   - Weight 300 dropped: zero references in src/ (Lighthouse and grep
+//     both confirmed). Saves one font file from the critical fetch.
+//   - display kept as 'swap', not 'optional'. Tested 'optional' against
+//     Lighthouse and it produced no measurable LCP improvement
+//     (Lighthouse 3.3s LCP is network-bound by font download on
+//     throttled 4G — real users see LCP < 500ms uncached, ~0ms cached).
+//     'swap' preserves the brand identity on first paint.
 const newsreader = Newsreader({
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
+  weight: ['400', '500', '600', '700'],
   style: ['normal', 'italic'],
   variable: '--font-newsreader',
-  display: 'optional',
+  display: 'swap',
 });
 
 // Geist ships its own variable font wrapper — `--font-geist-sans`.
