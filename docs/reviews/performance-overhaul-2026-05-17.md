@@ -197,7 +197,70 @@ The browser uses `newsreaderHero`'s family for weights 400/400-italic, falls thr
 
 ### Wave A blocked from clean build
 
-`npm run build` is currently failing on `src/app/assessment/in-depth/take/_components/InDepthRunner.tsx` — `'RoleIcon' is not defined` (uncommitted WIP, not in our scope). `npx tsc --noEmit` is clean. `npx next lint` against the Wave A files is clean. Lighthouse re-measure (A2 + A5) is gated on the unrelated InDepthRunner fix landing OR a temporary stash.
+`npm run build` is currently failing on `src/app/assessment/in-depth/take/_components/InDepthRunner.tsx` — `'RoleIcon' is not defined` (uncommitted WIP, not in our scope). `npx tsc --noEmit` is clean. `npx next lint` against the Wave A files is clean. Lighthouse re-measure (A2 + A5) is gated on the unrelated InDepthRunner fix landing OR a temporary stash. _(Unblocked: parallel commit `13e7f65` landed the InDepthRunner fix; build is now green.)_
+
+## Wave A+ — Supabase JS SDK off the marketing critical path (2026-05-17 evening, `3f92c4f`)
+
+The single biggest perf win of the entire session. Wave A was sub-10 KB savings. Wave A+ was -64 KB First Load JS across every marketing route.
+
+### Root cause
+
+The homepage (and every page that mounts `<SiteNav>`) was eagerly bundling the full `@supabase/ssr` JS SDK — chunk `619-*.js` at 178 KB raw — plus its Web3 (ethereum/solana) auth provider helpers — chunk `44530001-*.js` at 52 KB raw. On the wire (gzipped): ~64 KB on every First Load.
+
+The trigger was a chain of `'use client'` boundaries: `SiteNav` (server) → `AuthButton` (server) → `AuthDropdown` (client, conditionally rendered for logged-in users) → imports `signOut` from `@/lib/supabase/auth` → which imports `createBrowserClient` from `@supabase/ssr`. Even though `AuthDropdown` only renders for logged-in users, webpack bundled its dependency graph into every page that mounts the nav, because the client manifest can't know at build time which conditional branch will execute.
+
+Same trigger on `/assessment`:
+- `EmailGate.tsx` (client) called `supabase.auth.getUser()` directly to auto-fill the email field for logged-in users.
+- `PdfDownloadButton.tsx` (client) called `supabase.auth.getUser()` directly to gate "Download PDF" behind auth.
+- `SignupModal.tsx` (client) imported `signInWithMagicLink` for the post-results signup nudge.
+
+And `<HomeContextStrip>` was a `'use client'` component that called `supabase.auth.getUser()` on mount to decide whether to render the "welcome back" band — a band that is hidden (returns null) for the 99% of homepage traffic that's anonymous.
+
+### Fix
+
+Architectural pattern: **anything that just READS the auth session or invokes ONE Supabase method becomes a server endpoint or server action**, not a client import.
+
+1. `HomeContextStrip` → async server component. Reads cookies + Supabase session in the server render. Anonymous visitors get null; no client JS at all.
+2. New `src/app/auth/actions.ts` server-actions module:
+   - `signOutAction` — clears every `sb-*` cookie directly + redirects. No SDK import at all.
+   - `sendMagicLinkAction(email, redirectTo)` — derives origin from `x-forwarded-host` / `x-forwarded-proto`, calls `supabase.auth.signInWithOtp` server-side.
+3. `AuthDropdown` imports `signOutAction` instead of `signOut`. `useRouter` removed (no longer needed — server action redirects).
+4. `EmailGate` + `PdfDownloadButton` switched from `createBrowserClient().auth.getUser()` to `fetch('/api/auth/me')` (which already existed and returns `{ user: { id, email } | null }`).
+5. `SignupModal` calls `sendMagicLinkAction` instead of `signInWithMagicLink`.
+
+### Verified impact (from `npm run build`, First Load JS)
+
+| Route | Before Wave A+ | After Wave A+ | Delta |
+|-------|----------------|----------------|-------|
+| `/` | 165 KB | 101 KB | **-64 KB (-39%)** |
+| `/assessment` | 190 KB | 127 KB | **-63 KB (-33%)** |
+| `/results/[id]` | 174 KB | 111 KB | **-63 KB (-36%)** |
+| `/about` | 163 KB | 99.8 KB | **-63 KB (-39%)** |
+| `/security` | 164 KB | 101 KB | **-63 KB (-38%)** |
+| `/education` | 170 KB | 107 KB | **-63 KB (-37%)** |
+| `/auth/login` | 162 KB | 163 KB | +1 KB (expected — login still needs Supabase) |
+
+Chunk-manifest verification (via `cat .next/app-build-manifest.json`):
+
+```
+/page:           7 chunks, supabase=False
+/assessment/page: 7 chunks, supabase=False
+/results/[id]/page: 6 chunks, supabase=False
+/dashboard/page: 8 chunks, supabase=False  (auth done server-side via cookies)
+/auth/login/page: 10 chunks, supabase=True  (correct — login uses the SDK directly)
+```
+
+### Why this matters beyond the byte count
+
+Lighthouse LCP on Slow 4G simulation is bytes-bound. The plan called out that the only path to LCP < 2.5s was reducing total bytes. Wave A trimmed ~3 italic font files (-40 KB on a cold cache). Wave A+ trims another 64 KB of JS from every marketing page. Combined with Wave B (Early Hints), this should clear the < 2.5s LCP target without needing the Wave C Cormorant SC brand decision.
+
+### Risk surfaces (need post-deploy verification)
+
+1. **Sign-out flow.** Previously `signOut()` called `supabase.auth.signOut()` then `router.push('/') + router.refresh()`. Now `signOutAction` clears `sb-*` cookies directly and redirects via Next's server-action redirect. Different mechanism; same intent. Verify the dropdown's sign-out still completes cleanly and doesn't strand the user with a half-cleared session.
+2. **Magic-link delivery.** `sendMagicLinkAction` derives origin from request headers and passes it as `emailRedirectTo`. Behind Vercel's edge proxy, `x-forwarded-host` should be the public hostname; verify the `/auth/callback?next=…` URL in the delivered email is correct (not the internal proxy hostname).
+3. **EmailGate auto-fill latency.** Previously a sync `getUser()` call. Now an HTTP fetch round-trip to `/api/auth/me`. Adds ~50-100ms latency for the auto-fill effect. Acceptable.
+
+Tasks AP9–AP14 in `tasks/performance-optimization-2026-05-17.md` cover the post-ship validation checklist.
 
 ## Commit references
 
@@ -212,6 +275,9 @@ The browser uses `newsreaderHero`'s family for weights 400/400-italic, falls thr
 | `6b55297` | Revert hero PNG eslint-disable path |
 | `54033b3` | Restore global SiteNav on /courses/foundation/program |
 | `7418545` | Combine duplicate hero copy + brand fixes on Foundation pages |
+| `13e7f65` | Wave A bundled with In-Depth completion-detection dashboard fix |
+| `73b325f` | Docs catch-up for Wave A |
+| `3f92c4f` | **Wave A+ — Supabase JS off marketing critical path (-64 KB First Load JS)** |
 
 ## Files touched this session (perf scope)
 
