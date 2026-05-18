@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { trackBriefSubscribed } from '@/lib/analytics/events';
 
 interface NewsletterCTAProps {
   readonly email: string;
@@ -19,16 +20,23 @@ export function NewsletterCTA({ email }: NewsletterCTAProps) {
       const res = await fetch('/api/subscribe-newsletter', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        // No honeypot field on this CTA — the user is already authenticated
+        // by virtue of having completed the assessment + provided email
+        // upstream. Bots can't reach this surface.
         body: JSON.stringify({ email, source: 'assessment-results' }),
       });
       if (!res.ok) {
         const data = (await res.json().catch(() => ({}))) as { error?: string };
-        throw new Error(data.error ?? 'Something went wrong.');
+        if (res.status === 429) {
+          throw new Error('Too many attempts. Please try again in a minute.');
+        }
+        throw new Error(data.error ?? 'Something went wrong. Please try again.');
       }
       setStatus('subscribed');
+      trackBriefSubscribed({ source: 'assessment-results' });
     } catch (err) {
       setStatus('error');
-      setMessage(err instanceof Error ? err.message : 'Unexpected error.');
+      setMessage(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
     }
   }
 
