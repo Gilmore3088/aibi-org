@@ -543,15 +543,15 @@ post-conference launch email going out. Each item is sized to take
 - [ ] 441. Audit `/api/*` for missing auth checks
 - [x] 442. Audit `/api/capture-email` rate limiting — present via `@/lib/email-capture/rate-limit`; in-memory; Upstash deferred (TODO comment in route)
 - [x] 443. Audit `/api/webhooks/stripe` signature verification — `stripe.webhooks.constructEvent` confirmed at `src/app/api/webhooks/stripe/route.ts:67`
-- [ ] 444. Audit input validation on every API route
-- [ ] 445. Audit SQL injection vectors — confirm parameterized queries only
-- [ ] 446. Audit XSS vectors — confirm dangerouslySetInnerHTML usage justified
-- [ ] 447. Audit CSRF — Next.js POST routes from same-origin only
-- [ ] 448. Audit Supabase RLS policies on every table
-- [ ] 449. Audit service-role usage — only server-side, never exposed
-- [ ] 450. Penetration test login + signup endpoints (or hire firm)
-- [ ] 451. Document responsible disclosure policy
-- [ ] 452. Set up security.txt at /.well-known/security.txt
+- [x] 444. Audit input validation on every API route — typed payload guards (regex, length caps, allow-listed enums) across all 46 API routes. See `docs/reviews/security-audit-2026-05-18.md` SA5.
+- [x] 445. Audit SQL injection vectors — confirm parameterized queries only — all DB writes via `@supabase/ssr` / `@supabase/supabase-js` parameterized queries; two `.rpc()` callsites pass named-arg objects. SA6.
+- [x] 446. Audit XSS vectors — confirm dangerouslySetInnerHTML usage justified — 17 callsites enumerated, all static content sources (bundled HTML, JSON-LD, MarkdownRenderer authored content). Zero user input. SA7.
+- [x] 447. Audit CSRF — Next.js POST routes from same-origin only — zero `Access-Control-Allow-Origin` headers; SameSite=Lax cookies default. SA8.
+- [ ] 448. Audit Supabase RLS policies on every table — deferred; requires Supabase MCP query pass
+- [x] 449. Audit service-role usage — only server-side, never exposed — `SUPABASE_SERVICE_ROLE_KEY` no `NEXT_PUBLIC_` prefix, single import site in `lib/supabase/client.ts`, 20 callsites all server contexts (zero `'use client'`). SA9.
+- [ ] 450. Penetration test login + signup endpoints (or hire firm) — external scope
+- [ ] 451. Document responsible disclosure policy — body of security.txt may need expansion; verify
+- [x] 452. Set up security.txt at /.well-known/security.txt — present at `public/.well-known/security.txt`, returns 200 on production. SA10.
 
 ## §17. LMS reskin cleanup (453–467)
 
