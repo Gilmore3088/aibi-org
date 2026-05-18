@@ -10,7 +10,7 @@ import {
   OUTPUT_PLATFORM_META,
   OUTPUT_ROLE_META,
 } from '@content/courses/foundation-program/output-examples';
-import { MarkdownRenderer } from './MarkdownRenderer';
+import { MarkdownRenderer } from '@/components/lms/MarkdownRenderer';
 
 interface OutputExampleProps {
   readonly example: OutputExample;

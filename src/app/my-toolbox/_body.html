@@ -1,500 +1,753 @@
+<!-- Action icons -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="ico-run" viewBox="0 0 16 16"><path d="M4 3 L13 8 L4 13 Z" fill="currentColor"/></symbol>
+    <symbol id="ico-share" viewBox="0 0 16 16"><path d="M3 13 L13 3 M7 3 L13 3 L13 9" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="ico-fork" viewBox="0 0 16 16"><circle cx="4" cy="3" r="1.7" stroke="currentColor" stroke-width="1.4" fill="none"/><circle cx="12" cy="3" r="1.7" stroke="currentColor" stroke-width="1.4" fill="none"/><circle cx="8" cy="13" r="1.7" stroke="currentColor" stroke-width="1.4" fill="none"/><path d="M4 5 L4 8 Q4 11 8 11 L12 11 L12 5" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/></symbol>
+    <symbol id="ico-dl" viewBox="0 0 16 16"><path d="M8 2 L8 11 M4 8 L8 12 L12 8 M3 14 L13 14" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="ico-copy" viewBox="0 0 16 16"><rect x="3" y="3" width="9" height="11" rx="1" stroke="currentColor" stroke-width="1.4" fill="none"/><path d="M6 3 L6 1 L14 1 L14 11 L12 11" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="ico-check" viewBox="0 0 16 16"><path d="M3 8 L7 12 L13 4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="ico-pdf" viewBox="0 0 16 16"><path d="M3 2 L10 2 L13 5 L13 14 L3 14 Z M10 2 L10 5 L13 5" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linejoin="round"/></symbol>
+    <symbol id="ico-md" viewBox="0 0 16 16"><rect x="2" y="4" width="12" height="8" rx="1" stroke="currentColor" stroke-width="1.4" fill="none"/><path d="M4 10 L4 6 L6 8.5 L8 6 L8 10 M11 6 L11 10 M11 10 L13 8 M11 10 L9 8" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="ico-json" viewBox="0 0 16 16"><path d="M6 2 Q3 2 3 5 L3 7 Q3 8 1.5 8 Q3 8 3 9 L3 11 Q3 14 6 14 M10 2 Q13 2 13 5 L13 7 Q13 8 14.5 8 Q13 8 13 9 L13 11 Q13 14 10 14" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  </defs>
+</svg>
 
-<!-- ===== SITE NAV ===== -->
+
 <header class="nav">
   <div class="nav-inner">
-    <a href="AI Banking Institute.html" class="nav-mark" aria-label="The AI Banking Institute">
-      <span class="l1">The AI Banking</span>
-      <span class="l2">Institute</span>
-    </a>
-    <nav class="nav-links" aria-label="Primary">
-      <a href="AI Banking Institute.html#pillars" class="nav-link">Education</a>
-      <a href="#" class="nav-link">For Institutions</a>
-      <a href="#" class="nav-link">Research</a>
-      <a href="#" class="nav-link">About</a>
-      <a href="FAQ.html" class="nav-link">Support</a>
-      <button class="acct" aria-label="Account">
-        <span class="avatar">DM</span>
-        <span class="name">D. Maxwell</span>
-      </button>
+    <a href="AI Banking Institute.html" class="nav-mark">The AI Banking<span class="l2">Institute</span></a>
+    <nav class="nav-links">
+      <a class="nav-link" href="User Home.html">Home</a>
+      <a class="nav-link" href="LMS Prototype.html">Reading</a>
+      <a class="nav-link" href="Playground v2.html">Playground</a>
+      <a class="nav-link act" href="#">Toolbox</a>
     </nav>
+    <span class="av">DM</span>
   </div>
 </header>
 
-<!-- ===== MASTHEAD ===== -->
-<section class="mast">
-  <div class="container">
-    <div class="mast-row">
-      <div class="mast-text">
-        <span class="eyebrow greet">Library · BSA officer</span>
-        <h1>Your <em>toolbox.</em></h1>
-        <p class="lede">Your personal library of AI assets — prompts, skills, agents, and playbooks. Some you've made, some came with the curriculum, some are tuned for your role.</p>
-      </div>
-      <div class="mast-stats">
-        <div class="stat"><span class="v">28</span><span class="l">Prompts</span></div>
-        <div class="stat"><span class="v">11</span><span class="l">Skills</span></div>
-        <div class="stat"><span class="v">5</span><span class="l">Agents</span></div>
-        <div class="stat"><span class="v">3</span><span class="l">Playbooks</span></div>
-      </div>
-    </div>
+<section class="container head" style="grid-template-columns:1fr">
+  <div>
+    <button class="role"><span class="dot"></span>BSA officer ▾</button>
+    <h1>Your <em>toolbox.</em></h1>
   </div>
 </section>
 
-<!-- ===== USER TABS ===== -->
-<div class="tabs">
-  <div class="tabs-inner" role="tablist" aria-label="My account">
-    <a href="User Home.html" class="tab" role="tab">Dashboard</a>
-    <a href="LMS Prototype.html" class="tab" role="tab">My Curriculum</a>
-    <a href="Playground.html" class="tab" role="tab">Playground</a>
-    <a href="#" class="tab active" role="tab" aria-selected="true">My Toolbox</a>
-    <a href="#" class="tab" role="tab">My Brief</a>
-    <a href="#" class="tab" role="tab">Account</a>
+<section class="container">
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat"><div class="v">47</div><div class="l">In your toolbox</div></div>
+    <div class="stat"><div class="v good">3</div><div class="l">New this week</div></div>
+    <div class="stat"><div class="v bad">2</div><div class="l">Stale</div></div>
+    <div class="stat"><div class="v">73<span style="font-size:18px;color:var(--muted);font-weight:400">%</span></div><div class="l">Kept after review</div></div>
+    <div class="stat"><div class="v">$0.41</div><div class="l">Spend MTD</div></div>
   </div>
-</div>
 
-<!-- ===== FILTER BAR ===== -->
-<section class="fbar">
-  <div class="fbar-inner">
-    <div class="fset" role="tablist" aria-label="Asset type">
-      <span class="fset-lab">Type</span>
-      <button class="fchip active" data-f="all">All <span class="cnt">47</span></button>
-      <button class="fchip" data-f="prompt">Prompts <span class="cnt">28</span></button>
-      <button class="fchip" data-f="skill">Skills <span class="cnt">11</span></button>
-      <button class="fchip" data-f="agent">Agents <span class="cnt">5</span></button>
-      <button class="fchip" data-f="playbook">Playbooks <span class="cnt">3</span></button>
-    </div>
-    <div class="fbar-search">
-      <span class="ico">⌕</span>
-      <input id="searchBox" type="search" placeholder="Search…" aria-label="Search toolbox">
-    </div>
-    <button class="fbar-new" id="newBtn" aria-label="Capture new asset"><span class="plus">+</span> New</button>
+  <!-- ASK -->
+  <form class="ask" id="askForm">
+    <span class="ico">
+      <svg width="20" height="20" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M16 16 L21 21" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+    </span>
+    <input id="askInput" placeholder="Ask your toolbox — find, run, or compose…" />
+    <button type="submit" class="go">
+      <svg width="18" height="18" viewBox="0 0 24 24"><path d="M5 12 L19 12 M13 6 L19 12 L13 18" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </form>
+
+  <!-- TYPE FILTER -->
+  <div class="types">
+    <button class="typecard t-p sel">
+      <div class="swatch"><div class="l3"></div></div>
+      <div class="meta"><span class="lab">Prompts</span><span class="num">28</span></div>
+    </button>
+    <button class="typecard t-s">
+      <div class="swatch"><div class="l3"></div></div>
+      <div class="meta"><span class="lab">Skills</span><span class="num">11</span></div>
+    </button>
+    <button class="typecard t-a">
+      <div class="swatch"><div class="l3"></div></div>
+      <div class="meta"><span class="lab">Agents</span><span class="num">5</span></div>
+    </button>
+    <button class="typecard t-pb">
+      <div class="swatch"><div class="l3"></div></div>
+      <div class="meta"><span class="lab">Playbooks</span><span class="num">3</span></div>
+    </button>
   </div>
-</section>
 
-<!-- ===== SHELL ===== -->
-<div class="shell">
+  <!-- SHELF — PINNED -->
 
-  <!-- ============ SIDE ============ -->
-  <aside class="side" aria-label="Collections">
-    <div class="sgroup">
-      <div class="sgroup-title">Source</div>
-      <div class="srow active" data-side-s="all"><span>All</span><span class="scnt">47</span></div>
-      <div class="srow" data-side-s="mine"><span><span class="sdot" style="background:var(--ink)"></span>Mine</span><span class="scnt">31</span></div>
-      <div class="srow" data-side-s="inst"><span><span class="sdot" style="background:var(--terra)"></span>From modules</span><span class="scnt">12</span></div>
-      <div class="srow" data-side-s="role"><span><span class="sdot" style="background:var(--green)"></span>Role · BSA</span><span class="scnt">4</span></div>
+  <div class="kits-h">
+    <span class="l">Starter kits</span>
+    <h2>Pick a <em>role.</em> Adopt a desk.</h2>
+    <span class="right">4 curated · updated quarterly</span>
+  </div>
+
+  <div class="kits">
+
+    <!-- BSA officer — currently active -->
+    <article class="kit active">
+      <div class="kit-h">
+        <div class="kicap"><span>BSA officer</span><span class="active-pill">★ Active</span></div>
+        <h3>SAR-ready, <em>day one.</em></h3>
+        <div class="kdesc">A working desk for narrative drafting, voice control, and red-flag triage.</div>
+      </div>
+      <div class="kit-foot">
+        <span><b>5</b> tools</span>
+        <span><b>47</b> users</span>
+        <span class="cta">In your toolbox ✓</span>
+      </div>
+    </article>
+
+    <!-- Lender -->
+    <article class="kit" data-kit="lender">
+      <div class="kit-h">
+        <div class="kicap"><span>Lender</span></div>
+        <h3>Credit memos &amp; <em>denials.</em></h3>
+        <div class="kdesc">Borrower context, debt-coverage logic, plain-English denials with reviewer prompts.</div>
+      </div>
+      <div class="kit-foot">
+        <span><b>5</b> tools</span>
+        <span><b>33</b> users</span>
+        <span class="cta">Adopt kit →</span>
+      </div>
+    </article>
+
+    <!-- Branch manager -->
+    <article class="kit" data-kit="bm">
+      <div class="kit-h">
+        <div class="kicap"><span>Branch manager</span></div>
+        <h3>Coaching, <em>complaints, comms.</em></h3>
+        <div class="kdesc">Member-facing language, fair coaching notes, weekly huddle prep, and clean follow-ups.</div>
+      </div>
+      <div class="kit-foot">
+        <span><b>4</b> tools</span>
+        <span><b>28</b> users</span>
+        <span class="cta">Adopt kit →</span>
+      </div>
+    </article>
+
+    <!-- Compliance -->
+    <article class="kit" data-kit="compl">
+      <div class="kit-h">
+        <div class="kicap"><span>Compliance</span></div>
+        <h3>Examiner-ready <em>writing.</em></h3>
+        <div class="kdesc">Vendor risk language, exception letters, regulator-friendly summaries, citation-checked research.</div>
+      </div>
+      <div class="kit-foot">
+        <span><b>5</b> tools</span>
+        <span><b>52</b> users</span>
+        <span class="cta">Adopt kit →</span>
+      </div>
+    </article>
+
+  </div>
+
+  <div class="swy">
+    <div class="swy-h">
+      <span class="l">Shared with you</span>
+      <h3>From your <em>team.</em></h3>
+      <span class="right">3 new this week</span>
     </div>
-
-    <div class="sgroup">
-      <div class="sgroup-title">Status</div>
-      <div class="srow"><span>Pinned</span><span class="scnt">8</span></div>
-      <div class="srow"><span>Recently used</span><span class="scnt">12</span></div>
-      <div class="srow"><span>Drafts</span><span class="scnt">3</span></div>
-      <div class="srow"><span>Archived</span><span class="scnt">9</span></div>
-    </div>
-
-    <div class="sgroup">
-      <div class="sgroup-title">My playbooks</div>
-      <div class="srow"><span><span class="sdot" style="background:var(--navy)"></span>Credit-shop kit</span><span class="scnt">6</span></div>
-      <div class="srow"><span><span class="sdot" style="background:var(--navy)"></span>BSA officer kit</span><span class="scnt">14</span></div>
-      <div class="srow"><span><span class="sdot" style="background:var(--navy)"></span>Board-summary toolkit</span><span class="scnt">5</span></div>
-      <div class="srow" style="color:var(--terra); font-weight:600"><span>+ New playbook</span></div>
-    </div>
-
-    <div class="sgroup">
-      <div class="sgroup-title">By module</div>
-      <div class="srow"><span>03 · 4-prompt method</span><span class="scnt">5</span></div>
-      <div class="srow"><span>04 · Auditable AI</span><span class="scnt">4</span></div>
-      <div class="srow"><span>06 · Vendor / TPRM</span><span class="scnt">3</span></div>
-      <div class="srow"><span>07 · Credit memos</span><span class="scnt">8</span></div>
-      <div class="srow"><span>09 · BSA narratives</span><span class="scnt">9</span></div>
-      <div class="srow"><span>10 · Reg B / ECOA</span><span class="scnt">5</span></div>
-      <div class="srow"><span>11 · Board summaries</span><span class="scnt">4</span></div>
-    </div>
-
-    <div class="sgroup">
-      <div class="sgroup-title">Team library · BSA</div>
-      <div class="srow"><span><span class="sdot" style="background:var(--green)"></span>Browse role library</span><span class="scnt">42</span></div>
-      <div class="srow"><span><span class="sdot" style="background:var(--green)"></span>What peers use most</span><span class="scnt">12</span></div>
-      <div class="srow" style="color:var(--terra); font-weight:600"><span>+ Publish to team</span></div>
-    </div>
-
-    <div class="sgroup">
-      <div class="sgroup-title">Pinned</div>
-      <div class="srow"><span><span class="sdot" style="background:var(--terra)"></span>SAR-grade frame</span></div>
-      <div class="srow"><span><span class="sdot" style="background:var(--terra)"></span>4-prompt scaffold</span></div>
-      <div class="srow"><span><span class="sdot" style="background:var(--terra)"></span>Tone: dry banker</span></div>
-    </div>
-  </aside>
-
-  <!-- ============ WORK ============ -->
-  <main class="work">
-
-    <!-- PINNED -->
-    <header class="group-head">
-      <span class="gh-num">01</span>
-      <h2>Pinned · <em>your daily drivers.</em></h2>
-      <span class="gh-count">3 pinned</span>
-    </header>
-    <div class="grid">
-
-      <article class="card t-prompt" data-art="sar-frame">
-        <div class="card-top">
-          <span class="ttag">Prompt</span>
-          <span class="vtag">v <strong>5</strong></span>
-          <button class="pin on" title="Pinned">★</button>
+    <div class="swy-grid">
+      <div class="swyt">
+        <div class="row1">
+          <span class="av" style="background:var(--navy)">JM</span>
+          <b>Jordan Martin</b> · Compliance lead
         </div>
-        <h3>SAR-grade <em>narrative frame.</em></h3>
-        <p class="desc">Past-tense, third-person scaffold for suspicious-activity reports. Strips speculation; structures Who · What · Where · When.</p>
-        <div class="card-foot">
-          <span class="src mine">Mine</span>
-          <span>Mod 09</span>
-          <span class="uses">Used 23×</span>
+        <h4>314(a) match — <em>response template.</em></h4>
+        <div class="row3">
+          <span>v3 · prompt</span>
+          <span class="accept">+ Add to my toolbox →</span>
         </div>
-      </article>
-
-      <article class="card t-prompt" data-art="4-prompt">
-        <div class="card-top">
-          <span class="ttag">Prompt</span>
-          <span class="vtag">v <strong>3</strong></span>
-          <button class="pin on" title="Pinned">★</button>
+      </div>
+      <div class="swyt">
+        <div class="row1">
+          <span class="av" style="background:var(--terra)">KR</span>
+          <b>Kim Roe</b> · BSA analyst
         </div>
-        <h3>Credit memo · <em>4-prompt scaffold.</em></h3>
-        <p class="desc">Decomposes a committee memo into ask, facts, frame, and ask-back — one prompt per pass.</p>
-        <div class="card-foot">
-          <span class="src mine">Mine</span>
-          <span>Mod 07</span>
-          <span class="uses">Used 12×</span>
+        <h4>Cash-structuring red flag — <em>checklist.</em></h4>
+        <div class="row3">
+          <span>v2 · skill</span>
+          <span class="accept">+ Add to my toolbox →</span>
         </div>
-      </article>
-
-      <article class="card t-skill" data-art="dry-banker">
-        <div class="card-top">
-          <span class="ttag">Skill</span>
-          <span class="vtag">v <strong>4</strong></span>
-          <button class="pin on" title="Pinned">★</button>
+      </div>
+      <div class="swyt">
+        <div class="row1">
+          <span class="av" style="background:var(--green)">DT</span>
+          <b>Devon T.</b> · AML director
         </div>
-        <h3>Tone match — <em>dry banker.</em></h3>
-        <p class="desc">Rewrites any draft in plain, examiner-friendly tone. Removes adjectives, marketing verbs, exclamations.</p>
-        <div class="card-foot">
-          <span class="src mine">Mine</span>
-          <span>—</span>
-          <span class="uses">Used 31×</span>
+        <h4>SAR quality — <em>final reviewer.</em></h4>
+        <div class="row3">
+          <span>v4 · agent</span>
+          <span class="accept">+ Add to my toolbox →</span>
         </div>
-      </article>
+      </div>
     </div>
+  </div>
 
-    <!-- PROMPTS -->
-    <header class="group-head">
-      <span class="gh-num">02</span>
-      <h2>Prompts · <em>reusable instructions.</em></h2>
-      <span class="gh-count">28 total · showing 6</span>
-    </header>
-    <div class="grid">
+  <div class="sec-h">
+    <span class="l">Pinned</span>
+    <h2>Most-used <em>recently.</em></h2>
+    <span class="right">23 runs this week</span>
+  </div>
 
-      <article class="card t-prompt">
-        <div class="card-top"><span class="ttag">Prompt</span><span class="vtag">v <strong>2</strong></span><button class="pin">☆</button></div>
-        <h3>Board summary — <em>one-page exec.</em></h3>
-        <p class="desc">Condenses any memo to a single board-grade page. Bullets cap at 6.</p>
-        <div class="card-foot"><span class="src mine">Mine</span><span>Mod 11</span><span class="uses">Used 4×</span></div>
-      </article>
+  <div class="shelf">
 
-      <article class="card t-prompt">
-        <div class="card-top"><span class="ttag">Prompt</span><span class="vtag">v <strong>1</strong></span><button class="pin">☆</button></div>
-        <h3>Reg B / ECOA <em>fairness check.</em></h3>
-        <p class="desc">Audits any customer-facing draft for phrasing that could read as discriminatory.</p>
-        <div class="card-foot"><span class="src inst">From module</span><span>Mod 10</span><span class="uses">Used 7×</span></div>
-      </article>
+    <!-- 1) SAR-grade frame — Prompt -->
+    <article class="tile t-p pinned" data-item="sar">
+      <div class="doc">
+      <div class="actions">
+        <button class="act" title="Run in Playground" data-stop><svg><use href="#ico-run"/></svg></button>
+        <button class="act" title="Share link" data-stop><svg><use href="#ico-share"/></svg></button>
+        <button class="act" title="Fork to my Toolbox" data-stop><svg><use href="#ico-fork"/></svg></button>
+        <button class="act" title="Download" data-stop><svg><use href="#ico-dl"/></svg></button>
+      </div>
+      <div class="cmpl"><svg><use href="#ico-check"/></svg> Compliance ✓</div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline">
+          <span class="d-cap" style="color:var(--terra)">SAR · narrative</span>
+          <span class="d-cap">v5</span>
+        </div>
+        <div class="d-h">Who · What · Where · When · <em>Why.</em></div>
+        <div class="d-grid" style="margin-top:6px">
+          <div class="d-row" style="grid-template-columns:34px 1fr"><span class="d-cap" style="color:var(--terra)">WHO</span><div class="d-bar" style="width:88%"></div></div>
+          <div class="d-row" style="grid-template-columns:34px 1fr"><span class="d-cap" style="color:var(--terra)">WHAT</span><div class="d-bar" style="width:96%"></div></div>
+          <div class="d-row" style="grid-template-columns:34px 1fr"><span class="d-cap" style="color:var(--terra)">WHERE</span><div class="d-bar" style="width:72%"></div></div>
+          <div class="d-row" style="grid-template-columns:34px 1fr"><span class="d-cap" style="color:var(--terra)">WHEN</span><div class="d-bar" style="width:80%"></div></div>
+          <div class="d-row" style="grid-template-columns:34px 1fr"><span class="d-cap" style="color:var(--terra)">WHY</span><div class="d-bar acc" style="width:66%"></div></div>
+        </div>
+        <div style="margin-top:auto;font-family:var(--mono);font-size:7.5px;letter-spacing:0.16em;color:var(--muted);font-weight:700;text-transform:uppercase">≤ 280 words · past tense · 3rd person</div>
+      </div>
+      <div class="meta">
+        <span class="typetag">Prompt</span>
+        <h3>SAR-grade <em>frame.</em></h3>
+        <div class="footer">
+          <div class="runs"><span class="b f"></span><span class="b f"></span><span class="b f"></span><span class="b f"></span><span class="b f"></span><span class="b f"></span><span class="b f"></span><span class="b"></span></div>
+          <div class="keep">
+            <svg class="ring" viewBox="0 0 36 36"><circle cx="18" cy="18" r="14" stroke="rgba(14,27,45,0.12)" stroke-width="3" fill="none"/><circle cx="18" cy="18" r="14" stroke="var(--green)" stroke-width="3" fill="none" stroke-dasharray="88" stroke-dashoffset="19" transform="rotate(-90 18 18)" stroke-linecap="round"/></svg>
+            78%
+          </div>
+        </div>
+      
+        <div class="social"><span class="avs"><span class="av a">JM</span><span class="av b">KR</span><span class="av c">DT</span><span class="av more">+9</span></span><span><b>12</b> used</span><span class="fork"><svg width="11" height="11"><use href="#ico-fork"/></svg> 3</span></div>
+      </div>
+    </article>
 
-      <article class="card t-prompt">
-        <div class="card-top"><span class="ttag">Prompt</span><span class="vtag">v <strong>3</strong></span><button class="pin">☆</button></div>
-        <h3>Past-tense, <em>third-person rewrite.</em></h3>
-        <p class="desc">Conforms any narrative to BSA / SAR voice rules without paraphrasing facts.</p>
-        <div class="card-foot"><span class="src mine">Mine</span><span>Mod 09</span><span class="uses">Used 18×</span><span class="fresh stale">Stale · 38d</span></div>
-      </article>
+    <!-- 2) Tone — dry banker — Skill -->
+    <article class="tile t-s pinned" data-item="tone">
+      <div class="doc">
+      <div class="actions">
+        <button class="act" title="Run in Playground" data-stop><svg><use href="#ico-run"/></svg></button>
+        <button class="act" title="Share link" data-stop><svg><use href="#ico-share"/></svg></button>
+        <button class="act" title="Fork to my Toolbox" data-stop><svg><use href="#ico-fork"/></svg></button>
+        <button class="act" title="Download" data-stop><svg><use href="#ico-dl"/></svg></button>
+      </div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline">
+          <span class="d-cap" style="color:var(--ink-2)">Skill · tone</span>
+          <span class="d-cap">v3</span>
+        </div>
+        <div class="d-h">Strip until it sounds <em>like a banker.</em></div>
+        <div class="d-grid" style="margin-top:8px;gap:5px">
+          <div style="display:grid;grid-template-columns:14px 1fr;gap:6px;align-items:center"><span style="color:var(--weak);font-family:var(--mono);font-size:11px;font-weight:700">−</span><span class="d-pill weak">adjectives</span></div>
+          <div style="display:grid;grid-template-columns:14px 1fr;gap:6px;align-items:center"><span style="color:var(--weak);font-family:var(--mono);font-size:11px;font-weight:700">−</span><span class="d-pill weak">hedges</span></div>
+          <div style="display:grid;grid-template-columns:14px 1fr;gap:6px;align-items:center"><span style="color:var(--weak);font-family:var(--mono);font-size:11px;font-weight:700">−</span><span class="d-pill weak">hype words</span></div>
+          <div style="display:grid;grid-template-columns:14px 1fr;gap:6px;align-items:center;margin-top:2px"><span style="color:var(--green);font-family:var(--mono);font-size:11px;font-weight:700">+</span><span class="d-pill green">past tense</span></div>
+          <div style="display:grid;grid-template-columns:14px 1fr;gap:6px;align-items:center"><span style="color:var(--green);font-family:var(--mono);font-size:11px;font-weight:700">+</span><span class="d-pill green">third person</span></div>
+        </div>
+      </div>
+      <div class="meta">
+        <span class="typetag">Skill</span>
+        <h3>Tone — <em>dry banker.</em></h3>
+        <div class="footer">
+          <div class="runs"><span class="b f"></span><span class="b f"></span><span class="b f"></span><span class="b f"></span><span class="b f"></span><span class="b f"></span><span class="b f"></span><span class="b f"></span></div>
+          <div class="keep">
+            <svg class="ring" viewBox="0 0 36 36"><circle cx="18" cy="18" r="14" stroke="rgba(14,27,45,0.12)" stroke-width="3" fill="none"/><circle cx="18" cy="18" r="14" stroke="var(--green)" stroke-width="3" fill="none" stroke-dasharray="88" stroke-dashoffset="7" transform="rotate(-90 18 18)" stroke-linecap="round"/></svg>
+            92%
+          </div>
+        </div>
+      
+        <div class="social"><span class="avs"><span class="av a">JM</span><span class="av b">KR</span><span class="av more">+5</span></span><span><b>7</b> used</span><span class="fork"><svg width="11" height="11"><use href="#ico-fork"/></svg> 1</span></div>
+      </div>
+    </article>
 
-      <article class="card t-prompt">
-        <div class="card-top"><span class="ttag">Prompt</span><span class="vtag">v <strong>1</strong></span><button class="pin">☆</button></div>
-        <h3>Vendor TPRM — <em>exception letter.</em></h3>
-        <p class="desc">Drafts a controlled exception under SR 11-7 / TPRM language, ready for committee.</p>
-        <div class="card-foot"><span class="src inst">From module</span><span>Mod 06</span><span class="uses">Used 2×</span><span class="fresh review">Update?</span></div>
-      </article>
-
-      <article class="card t-prompt">
-        <div class="card-top"><span class="ttag">Prompt</span><span class="vtag">v <strong>2</strong></span><button class="pin">☆</button></div>
-        <h3>Strip speculative <em>adjectives.</em></h3>
-        <p class="desc">Removes "appears to," "seems," "likely" — anything that weakens evidentiary tone.</p>
-        <div class="card-foot"><span class="src mine">Mine</span><span>—</span><span class="uses">Used 9×</span></div>
-      </article>
-
-      <article class="card t-prompt">
-        <div class="card-top"><span class="ttag">Prompt</span><span class="vtag">v <strong>1</strong></span><button class="pin">☆</button></div>
-        <h3>BSA officer — <em>quarterly trend brief.</em></h3>
-        <p class="desc">Frames a quarter of alert / SAR data as a one-page trend narrative for the BSA committee.</p>
-        <div class="card-foot"><span class="src role">Role · BSA</span><span>—</span><span class="uses">Used 1×</span><span class="fresh new">New</span></div>
-      </article>
-    </div>
-
-    <!-- SKILLS -->
-    <header class="group-head">
-      <span class="gh-num">03</span>
-      <h2>Skills · <em>composable patterns.</em></h2>
-      <span class="gh-count">11 total · showing 4</span>
-    </header>
-    <div class="grid">
-
-      <article class="card t-skill">
-        <div class="card-top"><span class="ttag">Skill</span><span class="vtag">v <strong>2</strong></span><button class="pin">☆</button></div>
-        <h3>Extract amounts &amp; <em>dates → table.</em></h3>
-        <p class="desc">Pulls every dollar figure and date from a draft into a clean reviewable table.</p>
-        <div class="card-foot"><span class="src mine">Mine</span><span>—</span><span class="uses">Used 15×</span></div>
-      </article>
-
-      <article class="card t-skill">
-        <div class="card-top"><span class="ttag">Skill</span><span class="vtag">v <strong>1</strong></span><button class="pin">☆</button></div>
-        <h3>Format as <em>committee memo.</em></h3>
-        <p class="desc">Applies the institute committee-memo template: header block, ask, body, recommendation.</p>
-        <div class="card-foot"><span class="src inst">From module</span><span>Mod 07</span><span class="uses">Used 6×</span></div>
-      </article>
-
-      <article class="card t-skill">
-        <div class="card-top"><span class="ttag">Skill</span><span class="vtag">v <strong>4</strong></span><button class="pin">☆</button></div>
-        <h3>BSA tense + <em>voice check.</em></h3>
-        <p class="desc">Validates past-tense, third-person, evidentiary voice before save.</p>
-        <div class="card-foot"><span class="src mine">Mine</span><span>Mod 09</span><span class="uses">Used 11×</span></div>
-      </article>
-
-      <article class="card t-skill">
-        <div class="card-top"><span class="ttag">Skill</span><span class="vtag">v <strong>1</strong></span><button class="pin">☆</button></div>
-        <h3>Compress to <em>200 words.</em></h3>
-        <p class="desc">Tightens any draft to a 200-word committee summary without dropping facts.</p>
-        <div class="card-foot"><span class="src mine">Mine</span><span>—</span><span class="uses">Used 8×</span></div>
-      </article>
-    </div>
-
-    <!-- AGENTS -->
-    <header class="group-head">
-      <span class="gh-num">04</span>
-      <h2>Agents · <em>multi-step workflows.</em></h2>
-      <span class="gh-count">5 total</span>
-    </header>
-    <div class="grid">
-
-      <article class="card t-agent">
-        <div class="card-top"><span class="ttag">Agent</span><span class="vtag">v <strong>1</strong></span><button class="pin">☆</button></div>
-        <h3>Memo reviewer — <em>3-pass.</em></h3>
-        <p class="desc">Critique → revisions → final. Surfaces every change for review before save.</p>
-        <div class="card-foot"><span class="src inst">From module</span><span>Mod 07</span><span class="uses">Run 4×</span></div>
-      </article>
-
-      <article class="card t-agent">
-        <div class="card-top"><span class="ttag">Agent</span><span class="vtag">v <strong>3</strong></span><button class="pin">☆</button></div>
+    <!-- 3) BSA narrative builder — Agent -->
+    <article class="tile t-a" data-item="builder">
+      <div class="doc">
+      <div class="actions">
+        <button class="act" title="Run in Playground" data-stop><svg><use href="#ico-run"/></svg></button>
+        <button class="act" title="Share link" data-stop><svg><use href="#ico-share"/></svg></button>
+        <button class="act" title="Fork to my Toolbox" data-stop><svg><use href="#ico-fork"/></svg></button>
+        <button class="act" title="Download" data-stop><svg><use href="#ico-dl"/></svg></button>
+      </div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline">
+          <span class="d-cap" style="color:var(--green)">Agent · chain</span>
+          <span class="d-cap">v2</span>
+        </div>
+        <div class="d-h">Gather → draft → <em>tense-check.</em></div>
+        <div style="margin-top:10px;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;align-items:start">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+            <div style="width:100%;height:28px;background:rgba(31,138,91,0.16);border:1px solid var(--green);display:grid;place-items:center;color:var(--green);font-family:var(--serif);font-style:italic;font-size:14px;font-weight:500">01</div>
+            <span class="d-cap">Gather</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+            <div style="width:100%;height:28px;background:var(--green);border:1px solid var(--green);display:grid;place-items:center;color:#FAF7EE;font-family:var(--serif);font-style:italic;font-size:14px;font-weight:500">02</div>
+            <span class="d-cap">Draft</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+            <div style="width:100%;height:28px;background:rgba(31,138,91,0.16);border:1px solid var(--green);display:grid;place-items:center;color:var(--green);font-family:var(--serif);font-style:italic;font-size:14px;font-weight:500">03</div>
+            <span class="d-cap">Check</span>
+          </div>
+        </div>
+        <div style="margin-top:auto;font-family:var(--mono);font-size:7.5px;letter-spacing:0.16em;color:var(--muted);font-weight:700;text-transform:uppercase">3 prompts · 2 skills · ~14s</div>
+      </div>
+      <div class="meta">
+        <span class="typetag">Agent</span>
         <h3>BSA narrative <em>builder.</em></h3>
-        <p class="desc">Takes raw transaction notes; outputs SAR-grade narrative + auditable trail.</p>
-        <div class="card-foot"><span class="src mine">Mine</span><span>Mod 09</span><span class="uses">Run 7×</span></div>
-      </article>
+        <div class="footer">
+          <div class="runs"><span class="b f"></span><span class="b f"></span><span class="b f"></span><span class="b f"></span><span class="b f"></span><span class="b"></span><span class="b"></span><span class="b"></span></div>
+          <div class="keep">
+            <svg class="ring" viewBox="0 0 36 36"><circle cx="18" cy="18" r="14" stroke="rgba(14,27,45,0.12)" stroke-width="3" fill="none"/><circle cx="18" cy="18" r="14" stroke="var(--green)" stroke-width="3" fill="none" stroke-dasharray="88" stroke-dashoffset="12" transform="rotate(-90 18 18)" stroke-linecap="round"/></svg>
+            86%
+          </div>
+        </div>
+      
+        <div class="social"><span class="avs"><span class="av c">DT</span><span class="av more">+2</span></span><span><b>3</b> used</span></div>
+      </div>
+    </article>
 
-      <article class="card t-agent">
-        <div class="card-top"><span class="ttag">Agent</span><span class="vtag">v <strong>1</strong></span><button class="pin">☆</button></div>
-        <h3>Weekly toolbox <em>digest.</em></h3>
-        <p class="desc">Pulls your last week's artifacts and writes a one-page summary for your manager.</p>
-        <div class="card-foot"><span class="src mine">Mine</span><span>—</span><span class="uses">Run 4×</span></div>
-      </article>
-    </div>
-
-    <!-- PLAYBOOKS -->
-    <header class="group-head">
-      <span class="gh-num">05</span>
-      <h2>Playbooks · <em>collections.</em></h2>
-      <span class="gh-count">3 total</span>
-    </header>
-    <div class="grid">
-
-      <article class="card t-playbook" style="min-height:230px">
-        <div class="card-top"><span class="ttag">Playbook</span><span class="vtag">9 items</span><button class="pin on">★</button></div>
+    <!-- 4) BSA officer starter kit — Playbook -->
+    <article class="tile t-pb" data-item="kit">
+      <div class="doc">
+      <div class="actions">
+        <button class="act" title="Run in Playground" data-stop><svg><use href="#ico-run"/></svg></button>
+        <button class="act" title="Share link" data-stop><svg><use href="#ico-share"/></svg></button>
+        <button class="act" title="Fork to my Toolbox" data-stop><svg><use href="#ico-fork"/></svg></button>
+        <button class="act" title="Download" data-stop><svg><use href="#ico-dl"/></svg></button>
+      </div>
+      <div class="cmpl"><svg><use href="#ico-check"/></svg> Compliance ✓</div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline">
+          <span class="d-cap" style="color:var(--navy)">Playbook · bundle</span>
+          <span class="d-cap">v1</span>
+        </div>
+        <div class="d-h">Five tools, one <em>desk drawer.</em></div>
+        <div class="d-grid" style="margin-top:8px;gap:3px">
+          <div class="d-row" style="grid-template-columns:36px 1fr;align-items:center"><span class="d-pill" style="color:var(--terra);border-color:var(--terra)">PRO</span><div class="d-bar acc" style="width:88%"></div></div>
+          <div class="d-row" style="grid-template-columns:36px 1fr;align-items:center"><span class="d-pill" style="color:var(--terra);border-color:var(--terra)">PRO</span><div class="d-bar acc" style="width:72%"></div></div>
+          <div class="d-row" style="grid-template-columns:36px 1fr;align-items:center"><span class="d-pill" style="color:var(--ink-2);border-color:var(--rule-2)">SKL</span><div class="d-bar ink" style="width:96%"></div></div>
+          <div class="d-row" style="grid-template-columns:36px 1fr;align-items:center"><span class="d-pill" style="color:var(--ink-2);border-color:var(--rule-2)">SKL</span><div class="d-bar ink" style="width:64%"></div></div>
+          <div class="d-row" style="grid-template-columns:36px 1fr;align-items:center"><span class="d-pill green">AGT</span><div class="d-bar green" style="width:80%"></div></div>
+        </div>
+      </div>
+      <div class="meta">
+        <span class="typetag">Playbook</span>
         <h3>BSA officer <em>starter kit.</em></h3>
-        <div class="pb-list">
-          <div class="pb-row"><span class="pbt p">P</span><span>SAR-grade frame</span><span class="pbn">v5</span></div>
-          <div class="pb-row"><span class="pbt p">P</span><span>Trend brief</span><span class="pbn">v1</span></div>
-          <div class="pb-row"><span class="pbt s">S</span><span>BSA tense check</span><span class="pbn">v4</span></div>
-          <div class="pb-row"><span class="pbt a">A</span><span>Narrative builder</span><span class="pbn">v3</span></div>
+        <div class="footer">
+          <div class="runs"><span class="b f"></span><span class="b f"></span><span class="b f"></span><span class="b f"></span><span class="b f"></span><span class="b f"></span><span class="b"></span><span class="b"></span></div>
+          <div class="keep">
+            <svg class="ring" viewBox="0 0 36 36"><circle cx="18" cy="18" r="14" stroke="rgba(14,27,45,0.12)" stroke-width="3" fill="none"/><circle cx="18" cy="18" r="14" stroke="var(--green)" stroke-width="3" fill="none" stroke-dasharray="88" stroke-dashoffset="17" transform="rotate(-90 18 18)" stroke-linecap="round"/></svg>
+            81%
+          </div>
         </div>
-        <div class="card-foot"><span class="src role">Role · BSA</span><span class="uses">14 runs</span></div>
-      </article>
+      
+        <div class="social"><span class="avs"><span class="av a">JM</span><span class="av b">KR</span><span class="av c">DT</span><span class="av d">SP</span><span class="av more">+22</span></span><span><b>26</b> used</span><span class="fork"><svg width="11" height="11"><use href="#ico-fork"/></svg> 5</span></div>
+      </div>
+    </article>
 
-      <article class="card t-playbook" style="min-height:230px">
-        <div class="card-top"><span class="ttag">Playbook</span><span class="vtag">7 items</span><button class="pin">☆</button></div>
-        <h3>Credit-shop <em>playbook.</em></h3>
-        <div class="pb-list">
-          <div class="pb-row"><span class="pbt p">P</span><span>4-prompt scaffold</span><span class="pbn">v3</span></div>
-          <div class="pb-row"><span class="pbt p">P</span><span>Board summary</span><span class="pbn">v2</span></div>
-          <div class="pb-row"><span class="pbt s">S</span><span>Committee memo</span><span class="pbn">v1</span></div>
-          <div class="pb-row"><span class="pbt a">A</span><span>Memo reviewer</span><span class="pbn">v1</span></div>
+  </div>
+
+  <!-- ALL ASSETS -->
+  <div class="sec-h">
+    <span class="l">43 more</span>
+    <h2>All your <em>assets.</em></h2>
+    <span class="right">Sort · <select><option>Recently used</option><option>Most used</option><option>A–Z</option></select></span>
+  </div>
+
+  <div class="grid">
+
+    <!-- 5) Past-tense, third-person rewrite — Prompt (STALE) -->
+    <article class="tile t-p" data-item="pasttense">
+      <div class="doc">
+      <div class="actions">
+        <button class="act" title="Run in Playground" data-stop><svg><use href="#ico-run"/></svg></button>
+        <button class="act" title="Share link" data-stop><svg><use href="#ico-share"/></svg></button>
+        <button class="act" title="Fork to my Toolbox" data-stop><svg><use href="#ico-fork"/></svg></button>
+        <button class="act" title="Download" data-stop><svg><use href="#ico-dl"/></svg></button>
+      </div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline">
+          <span class="d-cap" style="color:var(--terra)">Prompt · rewrite</span>
+          <span class="flag stale">stale 38d</span>
         </div>
-        <div class="card-foot"><span class="src mine">Mine</span><span class="uses">11 runs</span></div>
-      </article>
-
-      <article class="card t-playbook" style="min-height:230px">
-        <div class="card-top"><span class="ttag">Playbook</span><span class="vtag">5 items</span><button class="pin">☆</button></div>
-        <h3>Board-summary <em>toolkit.</em></h3>
-        <div class="pb-list">
-          <div class="pb-row"><span class="pbt p">P</span><span>One-page exec</span><span class="pbn">v2</span></div>
-          <div class="pb-row"><span class="pbt s">S</span><span>Compress 200w</span><span class="pbn">v1</span></div>
-          <div class="pb-row"><span class="pbt s">S</span><span>Strip adjectives</span><span class="pbn">v2</span></div>
+        <div style="margin-top:8px;display:flex;flex-direction:column;gap:6px">
+          <div style="background:rgba(142,59,42,0.08);border-left:2px solid var(--weak);padding:5px 7px;font-family:var(--mono);font-size:8.5px;line-height:1.4;color:var(--ink-2)">
+            <span class="d-cap" style="color:var(--weak)">BEFORE</span><br/>"The analyst is reviewing…"
+          </div>
+          <div style="background:rgba(31,138,91,0.08);border-left:2px solid var(--green);padding:5px 7px;font-family:var(--mono);font-size:8.5px;line-height:1.4;color:var(--ink-2)">
+            <span class="d-cap" style="color:var(--green)">AFTER</span><br/>"The analyst reviewed…"
+          </div>
         </div>
-        <div class="card-foot"><span class="src mine">Mine</span><span class="uses">5 runs</span></div>
-      </article>
-    </div>
-
-  </main>
-
-</div>
-
-<!-- ===== ASK FAB ===== -->
-<button class="askfab" id="askFab" aria-label="Ask your toolbox">
-  <span class="dot"></span>
-  Ask your toolbox
-</button>
-
-<!-- ===== DRAWER (artifact + ask) ===== -->
-<div class="drawer-bg" id="drawerBg"></div>
-
-<aside class="drawer" id="askDrawer" aria-label="Ask your toolbox">
-  <div class="dr-head">
-    <span class="lab">Toolbox · Assistant</span>
-    <button class="dr-close" data-close>Close ✕</button>
-  </div>
-  <div class="dr-body">
-    <h2 class="ask-h">Ask your <em>toolbox.</em></h2>
-    <p class="ask-l">Search, summarize, or run something across your saved assets. Trained on your work, not the public web.</p>
-
-    <form class="as-form" id="askForm">
-      <textarea id="askInput" placeholder="Find my SAR-grade frame.  Run the memo reviewer on my last credit memo.  Show me what I haven't used in 30 days…" aria-label="Ask the toolbox"></textarea>
-      <div class="as-form-foot">
-        <label class="as-mp">
-          Model ·
-          <select id="askModel">
-            <option value="claude-opus">Claude Opus</option>
-            <option value="claude-sonnet">Claude Sonnet</option>
-            <option value="gpt-4o">GPT-4o</option>
-            <option value="gemini-pro">Gemini Pro</option>
-          </select>
-        </label>
-        <button type="submit" class="as-send" id="askSend">Ask →</button>
       </div>
-    </form>
-
-    <div class="sug-lab">Try one of these</div>
-    <div class="sug">
-      <button data-q="Show me everything I've used most this month, ranked by frequency.">What am I leaning on most?<span class="arr">→</span></button>
-      <button data-q="Find any prompt or skill I haven't used in 30+ days that I might want to retire or refresh.">What's gone stale?<span class="arr">→</span></button>
-      <button data-q="Compose a new playbook for handling examiner-prep work, drawing only from prompts and skills already in my toolbox.">Build me an examiner-prep playbook.<span class="arr">→</span></button>
-      <button data-q="Audit my model usage across my toolbox. Which model am I leaning on too hard? Where could I diversify?">Audit my model usage.<span class="arr">→</span></button>
-      <button data-q="Diff v1 vs v5 of my SAR-grade frame and tell me what got better.">How has my SAR frame evolved?<span class="arr">→</span></button>
-    </div>
-
-    <div class="as-ans" id="askAnswer">
-      <div class="lab" id="answerLab">Answer · Claude Opus</div>
-      <div class="body" id="answerBody"></div>
-    </div>
-  </div>
-</aside>
-
-<aside class="drawer" id="artDrawer" aria-label="Asset detail">
-  <div class="dr-head">
-    <span class="lab" id="adLab">Prompt · Module 09</span>
-    <button class="dr-close" data-close>Close ✕</button>
-  </div>
-  <div class="dr-body">
-    <h2 class="ad-h" id="adTitle">SAR-grade <em>narrative frame.</em></h2>
-    <div class="ad-meta">
-      <span class="terra">CURRENT · v 5</span>
-      <span>Mine</span>
-      <span>Used 23×</span>
-      <span>Updated 4d ago</span>
-    </div>
-
-    <div class="ad-section">
-      <div class="ad-sec-lab">Run this</div>
-      <div class="ad-actions">
-        <button class="ad-act" data-run="open"><span class="lab">Open</span><span class="desc">Run in workspace with my data.</span></button>
-        <button class="ad-act" data-run="iter"><span class="lab">Iterate</span><span class="desc">Save a new version with a different model.</span></button>
-        <button class="ad-act" data-run="critique"><span class="lab">Critique</span><span class="desc">Have AI review the prompt itself.</span></button>
-        <button class="ad-act" data-run="add"><span class="lab">Add to playbook</span><span class="desc">Drop into one of your collections.</span></button>
+      <div class="meta">
+        <span class="typetag">Prompt</span>
+        <h3>Past-tense, <em>3rd-person rewrite.</em></h3>
+        <div class="footer">
+          <div class="runs"><span class="b f"></span><span class="b f"></span><span class="b f"></span><span class="b f"></span><span class="b f"></span><span class="b"></span></div>
+          <div class="keep"><span style="font-family:var(--mono);font-size:10px">75%</span></div>
+        </div>
+      
+        <div class="social"><span class="avs"><span class="av a">JM</span></span><span><b>1</b> used</span></div>
       </div>
-    </div>
+    </article>
 
-    <div class="ad-section">
-      <div class="ad-sec-lab">Prompt body</div>
-      <div class="pv">
-<span class="h">v 5 · current</span>
-You are a BSA officer drafting a Suspicious Activity Report narrative.
-Use only the facts provided. Do not speculate on intent.
-Write in past tense, third person.
-Structure as: Who · What · Where · When · Why suspicious.
-Strip adjectives that imply judgment ("blatant," "obvious," "clear").
-Cap at 280 words.
+    <!-- 6) Credit memo — 4-prompt scaffold — Prompt -->
+    <article class="tile t-p" data-item="creditmemo">
+      <div class="doc">
+      <div class="actions">
+        <button class="act" title="Run in Playground" data-stop><svg><use href="#ico-run"/></svg></button>
+        <button class="act" title="Share link" data-stop><svg><use href="#ico-share"/></svg></button>
+        <button class="act" title="Fork to my Toolbox" data-stop><svg><use href="#ico-fork"/></svg></button>
+        <button class="act" title="Download" data-stop><svg><use href="#ico-dl"/></svg></button>
       </div>
-    </div>
-
-    <div class="ad-section">
-      <div class="ad-sec-lab">Versions</div>
-      <div class="vtl">
-        <div class="vrow cur"><div class="vno">v 5</div><div class="vbody">Added the 280-word cap and the adjective list.<div class="vmodel"><strong>Claude Opus</strong> · 4 days ago</div></div><div class="vsm">Current</div></div>
-        <div class="vrow"><div class="vno">v 4</div><div class="vbody">Reordered to put "Why suspicious" last; reads better in committee.<div class="vmodel"><strong>Claude Opus</strong> · 2 weeks ago</div></div><button class="vsm">Restore</button></div>
-        <div class="vrow"><div class="vno">v 3</div><div class="vbody">Removed "in the analyst's view" — was tilting tone.<div class="vmodel"><strong>GPT-4o</strong> · 5 weeks ago</div></div><button class="vsm">Restore</button></div>
-        <div class="vrow"><div class="vno">v 2</div><div class="vbody">Added the "do not speculate" instruction.<div class="vmodel"><strong>Claude Sonnet</strong> · 8 weeks ago</div></div><button class="vsm">Restore</button></div>
-        <div class="vrow"><div class="vno">v 1</div><div class="vbody">Initial scaffold based on Mod 09 lesson.<div class="vmodel"><strong>Claude Sonnet</strong> · 11 weeks ago</div></div><button class="vsm">Restore</button></div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline">
+          <span class="d-cap" style="color:var(--terra)">Prompt · scaffold</span>
+          <span class="d-cap">v3</span>
+        </div>
+        <div style="margin-top:8px;display:grid;grid-template-columns:repeat(2,1fr);gap:5px">
+          <div style="background:rgba(181,134,42,0.10);padding:5px 7px"><span class="d-num">01</span><div class="d-cap" style="margin-top:2px">Borrower</div></div>
+          <div style="background:rgba(181,134,42,0.10);padding:5px 7px"><span class="d-num">02</span><div class="d-cap" style="margin-top:2px">Sources</div></div>
+          <div style="background:rgba(181,134,42,0.10);padding:5px 7px"><span class="d-num">03</span><div class="d-cap" style="margin-top:2px">Risk</div></div>
+          <div style="background:rgba(181,134,42,0.10);padding:5px 7px"><span class="d-num">04</span><div class="d-cap" style="margin-top:2px">Recommend</div></div>
+        </div>
       </div>
-    </div>
-  </div>
-</aside>
+      <div class="meta">
+        <span class="typetag">Prompt</span>
+        <h3>Credit memo · <em>4-prompt scaffold.</em></h3>
+        <div class="footer">
+          <div class="runs"><span class="b f"></span><span class="b f"></span><span class="b f"></span><span class="b f"></span><span class="b f"></span><span class="b"></span></div>
+          <div class="keep"><span style="font-family:var(--mono);font-size:10px">84%</span></div>
+        </div>
+      
+        <div class="social"><span class="avs"><span class="av b">KR</span><span class="av c">DT</span></span><span><b>2</b> used</span><span class="fork"><svg width="11" height="11"><use href="#ico-fork"/></svg> 1</span></div>
+      </div>
+    </article>
 
-<!-- ===== FOOTER ===== -->
-<footer class="foot">
-  <div class="foot-inner">
-    <span>The AI Banking Institute · Member tools</span>
-    <a href="FAQ.html">Support</a>
+    <!-- 7) Extract amounts & dates → table — Skill -->
+    <article class="tile t-s" data-item="extract">
+      <div class="doc">
+      <div class="actions">
+        <button class="act" title="Run in Playground" data-stop><svg><use href="#ico-run"/></svg></button>
+        <button class="act" title="Share link" data-stop><svg><use href="#ico-share"/></svg></button>
+        <button class="act" title="Fork to my Toolbox" data-stop><svg><use href="#ico-fork"/></svg></button>
+        <button class="act" title="Download" data-stop><svg><use href="#ico-dl"/></svg></button>
+      </div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline">
+          <span class="d-cap" style="color:var(--ink-2)">Skill · extract</span>
+          <span class="d-cap">v2</span>
+        </div>
+        <div style="margin-top:8px;border:1px solid var(--rule);background:#FFF">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;background:var(--paper-2);border-bottom:1px solid var(--rule)">
+            <span class="d-cap" style="padding:4px 6px;color:var(--ink-2)">Amount</span>
+            <span class="d-cap" style="padding:4px 6px;color:var(--ink-2)">Date</span>
+            <span class="d-cap" style="padding:4px 6px;color:var(--ink-2)">Type</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid var(--rule)">
+            <span style="padding:3px 6px;font-family:var(--mono);font-size:9px;color:var(--ink-2)">$12,400</span>
+            <span style="padding:3px 6px;font-family:var(--mono);font-size:9px;color:var(--ink-2)">3/14</span>
+            <span style="padding:3px 6px;font-family:var(--mono);font-size:9px;color:var(--ink-2)">wire</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid var(--rule)">
+            <span style="padding:3px 6px;font-family:var(--mono);font-size:9px;color:var(--ink-2)">$7,800</span>
+            <span style="padding:3px 6px;font-family:var(--mono);font-size:9px;color:var(--ink-2)">3/19</span>
+            <span style="padding:3px 6px;font-family:var(--mono);font-size:9px;color:var(--ink-2)">ach</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr">
+            <span style="padding:3px 6px;font-family:var(--mono);font-size:9px;color:var(--ink-2)">$3,200</span>
+            <span style="padding:3px 6px;font-family:var(--mono);font-size:9px;color:var(--ink-2)">3/21</span>
+            <span style="padding:3px 6px;font-family:var(--mono);font-size:9px;color:var(--ink-2)">cash</span>
+          </div>
+        </div>
+      </div>
+      <div class="meta">
+        <span class="typetag">Skill</span>
+        <h3>Extract amounts &amp; <em>dates → table.</em></h3>
+        <div class="footer">
+          <div class="runs"><span class="b f"></span><span class="b f"></span><span class="b f"></span><span class="b f"></span><span class="b"></span><span class="b"></span></div>
+          <div class="keep"><span style="font-family:var(--mono);font-size:10px">88%</span></div>
+        </div>
+      
+        <div class="social"><span class="avs"><span class="av a">JM</span><span class="av b">KR</span><span class="av more">+3</span></span><span><b>5</b> used</span><span class="fork"><svg width="11" height="11"><use href="#ico-fork"/></svg> 2</span></div>
+      </div>
+    </article>
+
+    <!-- 8) Vendor TPRM exception letter — Prompt (UPDATE) -->
+    <article class="tile t-p" data-item="tprm">
+      <div class="doc">
+      <div class="actions">
+        <button class="act" title="Run in Playground" data-stop><svg><use href="#ico-run"/></svg></button>
+        <button class="act" title="Share link" data-stop><svg><use href="#ico-share"/></svg></button>
+        <button class="act" title="Fork to my Toolbox" data-stop><svg><use href="#ico-fork"/></svg></button>
+        <button class="act" title="Download" data-stop><svg><use href="#ico-dl"/></svg></button>
+      </div>
+      <div class="cmpl"><svg><use href="#ico-check"/></svg> Compliance ✓</div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline">
+          <span class="d-cap" style="color:var(--terra)">Prompt · letter</span>
+          <span class="flag update">update ↑</span>
+        </div>
+        <div style="margin-top:8px;padding:7px 9px;background:#FFF;border:1px solid var(--rule);position:relative">
+          <div style="font-family:var(--serif);font-size:10px;color:var(--ink-2);line-height:1.35">
+            <div style="font-style:italic;font-size:9px;color:var(--muted)">Re: Vendor TPRM exception</div>
+            <div style="margin-top:4px">Dear [Vendor],</div>
+            <div style="margin-top:3px">The Bank has identified a control gap…</div>
+            <div class="d-bar" style="width:85%;margin-top:3px"></div>
+            <div class="d-bar" style="width:70%;margin-top:2px"></div>
+            <div style="margin-top:5px;font-style:italic">— J. Smith, BSA</div>
+          </div>
+        </div>
+      </div>
+      <div class="meta">
+        <span class="typetag">Prompt</span>
+        <h3>Vendor TPRM — <em>exception letter.</em></h3>
+        <div class="footer">
+          <div class="runs"><span class="b f"></span><span class="b f"></span><span class="b"></span><span class="b"></span><span class="b"></span><span class="b"></span></div>
+          <div class="keep"><span style="font-family:var(--mono);font-size:10px;color:var(--muted)">50%</span></div>
+        </div>
+      
+        <div class="social"><span class="avs"><span class="av a">JM</span><span class="av more">+1</span></span><span><b>2</b> used</span></div>
+      </div>
+    </article>
+
+    <!-- 9) BSA tense + voice check — Skill -->
+    <article class="tile t-s" data-item="tensecheck">
+      <div class="doc">
+      <div class="actions">
+        <button class="act" title="Run in Playground" data-stop><svg><use href="#ico-run"/></svg></button>
+        <button class="act" title="Share link" data-stop><svg><use href="#ico-share"/></svg></button>
+        <button class="act" title="Fork to my Toolbox" data-stop><svg><use href="#ico-fork"/></svg></button>
+        <button class="act" title="Download" data-stop><svg><use href="#ico-dl"/></svg></button>
+      </div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline">
+          <span class="d-cap" style="color:var(--ink-2)">Skill · check</span>
+          <span class="d-cap">v4</span>
+        </div>
+        <div style="margin-top:8px;display:flex;flex-direction:column;gap:4px">
+          <div style="display:grid;grid-template-columns:18px 1fr;gap:6px;align-items:center"><span style="color:var(--green);font-family:var(--mono);font-size:11px;font-weight:700">✓</span><span style="font-family:var(--mono);font-size:9px;color:var(--ink-2)">past tense</span></div>
+          <div style="display:grid;grid-template-columns:18px 1fr;gap:6px;align-items:center"><span style="color:var(--green);font-family:var(--mono);font-size:11px;font-weight:700">✓</span><span style="font-family:var(--mono);font-size:9px;color:var(--ink-2)">third person</span></div>
+          <div style="display:grid;grid-template-columns:18px 1fr;gap:6px;align-items:center"><span style="color:var(--weak);font-family:var(--mono);font-size:11px;font-weight:700">✗</span><span style="font-family:var(--mono);font-size:9px;color:var(--ink-2)">no speculation</span></div>
+          <div style="display:grid;grid-template-columns:18px 1fr;gap:6px;align-items:center"><span style="color:var(--green);font-family:var(--mono);font-size:11px;font-weight:700">✓</span><span style="font-family:var(--mono);font-size:9px;color:var(--ink-2)">facts only</span></div>
+          <div style="display:grid;grid-template-columns:18px 1fr;gap:6px;align-items:center"><span style="color:var(--terra);font-family:var(--mono);font-size:11px;font-weight:700">~</span><span style="font-family:var(--mono);font-size:9px;color:var(--ink-2)">cap respected</span></div>
+        </div>
+      </div>
+      <div class="meta">
+        <span class="typetag">Skill</span>
+        <h3>BSA tense + <em>voice check.</em></h3>
+        <div class="footer">
+          <div class="runs"><span class="b f"></span><span class="b f"></span><span class="b f"></span><span class="b f"></span><span class="b"></span><span class="b"></span></div>
+          <div class="keep"><span style="font-family:var(--mono);font-size:10px">90%</span></div>
+        </div>
+      
+        <div class="social"><span class="avs"><span class="av b">KR</span><span class="av c">DT</span><span class="av more">+4</span></span><span><b>6</b> used</span><span class="fork"><svg width="11" height="11"><use href="#ico-fork"/></svg> 1</span></div>
+      </div>
+    </article>
+
+    <!-- 10) Quarterly trend brief — Prompt (NEW) -->
+    <article class="tile t-p" data-item="trend">
+      <div class="doc">
+      <div class="actions">
+        <button class="act" title="Run in Playground" data-stop><svg><use href="#ico-run"/></svg></button>
+        <button class="act" title="Share link" data-stop><svg><use href="#ico-share"/></svg></button>
+        <button class="act" title="Fork to my Toolbox" data-stop><svg><use href="#ico-fork"/></svg></button>
+        <button class="act" title="Download" data-stop><svg><use href="#ico-dl"/></svg></button>
+      </div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline">
+          <span class="d-cap" style="color:var(--terra)">Prompt · brief</span>
+          <span class="flag new">new</span>
+        </div>
+        <div style="margin-top:8px">
+          <div class="d-h">Q3 <em>trend brief.</em></div>
+          <div style="margin-top:8px;display:flex;align-items:end;justify-content:space-between;gap:3px;height:50px">
+            <div style="width:11%;height:30%;background:var(--terra);opacity:0.4"></div>
+            <div style="width:11%;height:48%;background:var(--terra);opacity:0.55"></div>
+            <div style="width:11%;height:38%;background:var(--terra);opacity:0.5"></div>
+            <div style="width:11%;height:62%;background:var(--terra);opacity:0.7"></div>
+            <div style="width:11%;height:55%;background:var(--terra);opacity:0.65"></div>
+            <div style="width:11%;height:78%;background:var(--terra);opacity:0.85"></div>
+            <div style="width:11%;height:88%;background:var(--terra)"></div>
+            <div style="width:11%;height:72%;background:var(--terra);opacity:0.75"></div>
+          </div>
+        </div>
+      </div>
+      <div class="meta">
+        <span class="typetag">Prompt</span>
+        <h3>Quarterly <em>trend brief.</em></h3>
+        <div class="footer">
+          <div class="runs"><span class="b f"></span><span class="b"></span><span class="b"></span><span class="b"></span><span class="b"></span><span class="b"></span></div>
+          <div class="keep"><span style="font-family:var(--mono);font-size:10px;color:var(--muted)">—</span></div>
+        </div>
+      
+        <div class="social"><span style="color:var(--muted)">no team activity yet</span></div>
+      </div>
+    </article>
+
+    <!-- 11) Memo reviewer — 3-pass — Agent -->
+    <article class="tile t-a" data-item="reviewer">
+      <div class="doc">
+      <div class="actions">
+        <button class="act" title="Run in Playground" data-stop><svg><use href="#ico-run"/></svg></button>
+        <button class="act" title="Share link" data-stop><svg><use href="#ico-share"/></svg></button>
+        <button class="act" title="Fork to my Toolbox" data-stop><svg><use href="#ico-fork"/></svg></button>
+        <button class="act" title="Download" data-stop><svg><use href="#ico-dl"/></svg></button>
+      </div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline">
+          <span class="d-cap" style="color:var(--green)">Agent · review</span>
+          <span class="d-cap">v2</span>
+        </div>
+        <div style="margin-top:10px;display:flex;flex-direction:column;gap:4px">
+          <div style="display:grid;grid-template-columns:22px 1fr 30px;gap:5px;align-items:center;padding:4px 6px;background:rgba(31,138,91,0.08)"><span class="d-num" style="color:var(--green)">i</span><span style="font-family:var(--serif);font-size:11px;color:var(--ink)">Facts</span><span class="d-cap" style="color:var(--green)">✓</span></div>
+          <div style="display:grid;grid-template-columns:22px 1fr 30px;gap:5px;align-items:center;padding:4px 6px;background:rgba(31,138,91,0.08)"><span class="d-num" style="color:var(--green)">ii</span><span style="font-family:var(--serif);font-size:11px;color:var(--ink)">Tense</span><span class="d-cap" style="color:var(--green)">✓</span></div>
+          <div style="display:grid;grid-template-columns:22px 1fr 30px;gap:5px;align-items:center;padding:4px 6px;background:rgba(181,134,42,0.10)"><span class="d-num">iii</span><span style="font-family:var(--serif);font-size:11px;color:var(--ink)">Hedges</span><span class="d-cap" style="color:var(--terra)">3</span></div>
+        </div>
+      </div>
+      <div class="meta">
+        <span class="typetag">Agent</span>
+        <h3>Memo reviewer — <em>3-pass.</em></h3>
+        <div class="footer">
+          <div class="runs"><span class="b f"></span><span class="b f"></span><span class="b f"></span><span class="b"></span><span class="b"></span><span class="b"></span></div>
+          <div class="keep"><span style="font-family:var(--mono);font-size:10px">85%</span></div>
+        </div>
+      
+        <div class="social"><span class="avs"><span class="av a">JM</span></span><span><b>1</b> used</span></div>
+      </div>
+    </article>
+
+    <!-- 12) Board summary — one-page exec — Prompt -->
+    <article class="tile t-p" data-item="board">
+      <div class="doc">
+      <div class="actions">
+        <button class="act" title="Run in Playground" data-stop><svg><use href="#ico-run"/></svg></button>
+        <button class="act" title="Share link" data-stop><svg><use href="#ico-share"/></svg></button>
+        <button class="act" title="Fork to my Toolbox" data-stop><svg><use href="#ico-fork"/></svg></button>
+        <button class="act" title="Download" data-stop><svg><use href="#ico-dl"/></svg></button>
+      </div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline">
+          <span class="d-cap" style="color:var(--terra)">Prompt · exec</span>
+          <span class="d-cap">v6</span>
+        </div>
+        <div style="margin-top:8px;padding:7px 8px;background:#FFF;border:1px solid var(--rule)">
+          <div style="border-bottom:1px solid var(--rule-2);padding-bottom:3px;margin-bottom:4px">
+            <div class="d-cap" style="font-size:7px">Q3 BOARD MEMO</div>
+            <div style="font-family:var(--serif);font-size:9px;font-weight:500;line-height:1.1;color:var(--ink);margin-top:1px">BSA program highlights.</div>
+          </div>
+          <div class="d-bar" style="width:100%;margin-top:3px"></div>
+          <div class="d-bar" style="width:84%;margin-top:2px"></div>
+          <div class="d-bar" style="width:92%;margin-top:2px"></div>
+          <div class="d-bar acc" style="width:60%;margin-top:5px;height:3px"></div>
+          <div class="d-bar" style="width:74%;margin-top:2px"></div>
+          <div class="d-bar" style="width:88%;margin-top:2px"></div>
+        </div>
+      </div>
+      <div class="meta">
+        <span class="typetag">Prompt</span>
+        <h3>Board summary — <em>one-page exec.</em></h3>
+        <div class="footer">
+          <div class="runs"><span class="b f"></span><span class="b f"></span><span class="b"></span><span class="b"></span><span class="b"></span><span class="b"></span></div>
+          <div class="keep"><span style="font-family:var(--mono);font-size:10px">100%</span></div>
+        </div>
+      
+        <div class="social"><span class="avs"><span class="av b">KR</span><span class="av c">DT</span><span class="av d">SP</span><span class="av more">+7</span></span><span><b>10</b> used</span><span class="fork"><svg width="11" height="11"><use href="#ico-fork"/></svg> 2</span></div>
+      </div>
+    </article>
+
   </div>
+
+</section>
+
+<footer class="foot container">
+  <span>The AI Banking Institute · Member tools</span>
+  <a href="FAQ.html">Support</a>
 </footer>
 
-<!-- ===== NEW ASSET MODAL ===== -->
-<div class="modal-bg" id="modalBg"></div>
-<div class="modal" id="newModal" role="dialog" aria-labelledby="nmTitle">
-  <div class="modal-head">
-    <span class="lab">Capture · New asset</span>
-    <button class="dr-close" id="modalClose">Close ✕</button>
+<!-- DRAWER -->
+<div class="dbg" id="dbg"></div>
+<aside class="drawer" id="drawer">
+  <div class="dh">
+    <span class="l" id="dr-header">Prompt · v5 · 23 runs · 78% kept</span>
+    <button class="dc" data-close>✕</button>
   </div>
-  <div class="modal-body">
-    <h2 id="nmTitle">Capture <em>something useful.</em></h2>
-    <p class="lede">Save a prompt, skill, agent, or playbook to your toolbox. You can iterate on it later.</p>
+  <div class="db">
 
-    <div class="field">
-      <label>Type</label>
-      <div class="type-pick" id="nmTypes">
-        <button data-t="prompt" class="sel">Prompt</button>
-        <button data-t="skill">Skill</button>
-        <button data-t="agent">Agent</button>
-        <button data-t="playbook">Playbook</button>
+    <!-- Big document preview at top -->
+    <div class="doc-preview">
+      <div class="docmeta">
+        <span class="docn" id="dr-cat">SAR · narrative frame</span>
+        <span class="docv" id="dr-verline">v5 · 4 days ago</span>
+      </div>
+      <h2 id="dr-title">SAR-grade <em>narrative frame.</em></h2>
+      <div id="dr-body" style="margin-top:14px"></div>
+      <div id="dr-foot" style="margin-top:16px;padding-top:10px;border-top:1px solid rgba(14,27,45,0.18);display:flex;align-items:center;justify-content:space-between"></div>
+    </div>
+
+    <div class="dprim">
+      <button class="big" id="dr-play">Use in Playground →</button>
+      <button class="alt">Edit</button>
+      <button class="alt">Duplicate</button>
+      <button class="alt">⋯</button>
+    </div>
+
+    <div class="dsect share">
+      <div class="dl">Share &amp; export</div>
+      <div class="share-card">
+        <div class="share-link">
+          <span class="key">Read-only link</span>
+          <input id="dr-sharelink" value="toolbox.aibi.com/share/sar-frame-v5-x9k2" readonly />
+          <button class="copy" data-copylink><svg width="11" height="11" style="vertical-align:-1px;margin-right:5px"><use href="#ico-copy"/></svg>Copy</button>
+        </div>
+        <div class="share-controls">
+          <div class="sc">
+            <span class="l">Visibility</span>
+            <select>
+              <option>Just me</option>
+              <option>My team · BSA group (8)</option>
+              <option selected>Northpoint Community Bank (47)</option>
+              <option>Public link</option>
+            </select>
+          </div>
+          <div class="sc">
+            <span class="l">Permission</span>
+            <select>
+              <option selected>Can view + fork</option>
+              <option>Can view only</option>
+              <option>Can edit (collaborators)</option>
+            </select>
+          </div>
+        </div>
+        <div class="share-people">
+          <span class="avs" id="dr-shareavs"></span>
+          <span id="dr-sharetext"></span>
+        </div>
+      </div>
+
+      <div class="exports">
+        <button class="exp-btn"><svg><use href="#ico-pdf"/></svg><b>PDF</b></button>
+        <button class="exp-btn"><svg><use href="#ico-md"/></svg><b>Markdown</b></button>
+        <button class="exp-btn"><svg><use href="#ico-json"/></svg><b>JSON</b></button>
+        <button class="exp-btn"><svg><use href="#ico-dl"/></svg><b>.prompt</b></button>
       </div>
     </div>
 
-    <div class="field">
-      <label>Name</label>
-      <input id="nmName" type="text" placeholder="e.g. Quarterly trend brief">
+    <div class="dsect">
+      <div class="dl" id="dr-bodylabel">Prompt body</div>
+      <div class="pv" id="dr-prompt"></div>
     </div>
 
-    <div class="field">
-      <label>One-line description</label>
-      <input id="nmDesc" type="text" placeholder="What does it do, in plain English?">
+    <div class="dsect">
+      <div class="dl">Composes with</div>
+      <div class="gnodes" id="dr-composes"></div>
     </div>
 
-    <div class="field">
-      <label>Body / instructions</label>
-      <textarea id="nmBody" placeholder="You are a BSA officer drafting…"></textarea>
+    <div class="dsect">
+      <div class="dl">Versions</div>
+      <div class="vtl" id="dr-versions"></div>
     </div>
 
-    <div class="modal-foot">
-      <button class="btn-ghost" id="modalCancel">Cancel</button>
-      <button class="btn-prim" id="modalSave">Save to toolbox →</button>
-    </div>
   </div>
-</div>
+</aside>

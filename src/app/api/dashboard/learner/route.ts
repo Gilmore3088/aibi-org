@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { createServerClientWithCookies, isSupabaseConfigured } from '@/lib/supabase/client';
-import { AIBI_P_ARTIFACTS } from '@content/practice-reps/foundation-program';
+import { FOUNDATION_ARTIFACTS } from '@content/practice-reps/foundation-program';
 import { dbReadValues } from '@/lib/products/normalize';
 
 interface EnrollmentRow {
@@ -83,7 +83,7 @@ export async function GET(): Promise<NextResponse> {
   const completedRepIds = practiceCompletions.map((row) => row.rep_id);
   const currentModule = Math.max(1, enrollment?.current_module ?? 1);
   const completedModules = enrollment?.completed_modules ?? [];
-  const artifactRows = AIBI_P_ARTIFACTS.map((artifact) => {
+  const artifactRows = FOUNDATION_ARTIFACTS.map((artifact) => {
     const persisted = userArtifacts.find((row) => row.artifact_id === artifact.id);
     const sourceRepComplete = completedRepIds.includes(artifact.sourceActivityId);
     const moduleComplete = artifact.moduleNumber

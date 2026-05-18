@@ -1,6 +1,6 @@
 import type { PracticeRep, Simulation, Artifact, CertificateRequirement } from '@/types/lms';
 
-export const AIBI_P_PRACTICE_REPS: readonly PracticeRep[] = [
+export const FOUNDATION_PRACTICE_REPS: readonly PracticeRep[] = [
   {
     id: 'rewrite-for-clarity',
     courseId: 'aibi-p',
@@ -439,12 +439,12 @@ export const AIBI_P_PRACTICE_REPS: readonly PracticeRep[] = [
   },
 ] as const;
 
-export const AIBI_P_SIMULATIONS: readonly Simulation[] = AIBI_P_PRACTICE_REPS.map((rep) => ({
+export const FOUNDATION_SIMULATIONS: readonly Simulation[] = FOUNDATION_PRACTICE_REPS.map((rep) => ({
   ...rep,
   simulationType: 'role-based',
 }));
 
-export const AIBI_P_ARTIFACTS: readonly Artifact[] = [
+export const FOUNDATION_ARTIFACTS: readonly Artifact[] = [
   {
     id: 'safe-ai-use-checklist',
     courseId: 'aibi-p',
@@ -509,7 +509,7 @@ export const AIBI_P_ARTIFACTS: readonly Artifact[] = [
   },
 ];
 
-export const AIBI_P_CERTIFICATE_REQUIREMENTS: readonly CertificateRequirement[] = [
+export const FOUNDATION_CERTIFICATE_REQUIREMENTS: readonly CertificateRequirement[] = [
   {
     id: 'modules-complete',
     label: 'Complete all modules',
@@ -541,9 +541,9 @@ export const AIBI_P_CERTIFICATE_REQUIREMENTS: readonly CertificateRequirement[] 
 
 export function getDailyPracticeRep(seed = new Date().toISOString().slice(0, 10)): PracticeRep {
   const dayTotal = Array.from(seed).reduce((total, char) => total + char.charCodeAt(0), 0);
-  return AIBI_P_PRACTICE_REPS[dayTotal % AIBI_P_PRACTICE_REPS.length];
+  return FOUNDATION_PRACTICE_REPS[dayTotal % FOUNDATION_PRACTICE_REPS.length];
 }
 
 export function getPracticeRepById(repId: string): PracticeRep | undefined {
-  return AIBI_P_PRACTICE_REPS.find((rep) => rep.id === repId);
+  return FOUNDATION_PRACTICE_REPS.find((rep) => rep.id === repId);
 }

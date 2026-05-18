@@ -39,9 +39,13 @@ const CHROMELESS_PATHS: readonly string[] = [
 // blocking the LCP element (the H1 in Newsreader) by competing for the
 // font network budget. Cormorant SC stays because tokens.css's
 // --font-serif-sc still maps to it for small-caps surfaces.
+// 2026-05-17 perf: dropped weights 500/600/700 — every `.font-serif-sc`
+// usage in src/ inherits the default 400 weight (no font-bold / font-medium
+// utilities applied). Cuts ~3 KB of @font-face declarations from the
+// shared layout CSS (18 declarations × 6 unicode subsets).
 const cormorantSC = Cormorant_SC({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
+  weight: ['400'],
   variable: '--font-cormorant-sc',
   display: 'swap',
 });
@@ -64,6 +68,13 @@ const cormorantSC = Cormorant_SC({
 //     browser resolves heavy weights to newsreaderHeavy's family when
 //     they're requested. (Spec said "both bind --font-newsreader" but a
 //     single variable can't expose two families — see audit trail.)
+// The Next build still logs "Failed to find font override values for font
+// `Newsreader`" four times — @next/font/google's metric database doesn't
+// include Newsreader. We compensate manually: globals.css declares a
+// "Newsreader Fallback" @font-face that wraps Times New Roman with
+// size-adjust + ascent/descent overrides matching Newsreader's metrics,
+// and tokens.css chains it between the loading Newsreader family and the
+// generic serif chain. No CLS hop on first paint.
 const newsreaderHero = Newsreader({
   subsets: ['latin'],
   weight: ['400'],
@@ -86,19 +97,32 @@ const newsreaderHeavy = Newsreader({
 // We alias it via tokens-ledger.css's `--ledger-sans → var(--font-geist)`.
 // To keep the variable name `--font-geist` (referenced in tokens-ledger.css),
 // we re-export GeistSans's variable under that name on the body class.
+// 2026-05-17 perf: dropped weight 500 — no `font-mono font-medium` usage
+// in src/. Weights 400 (default) and 600 (font-semibold on mono buttons,
+// kicker labels, plan markers) cover every observed usage.
 const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
-  weight: ['400', '500', '600'],
+  weight: ['400', '600'],
   variable: '--font-jetbrains-mono',
   display: 'swap',
 });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? `https://${BRAND.domains.primary}`;
+// Apex `aibankinginstitute.com` 301s to `www.aibankinginstitute.com` at the
+// edge (Vercel + DNS), so the www subdomain is the canonical host. Default
+// to it explicitly here — the BRAND.domains.primary value is the apex used
+// in display copy / email addresses and is NOT the canonical web origin.
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? `https://www.${BRAND.domains.primary}`;
 const DEFAULT_DESCRIPTION =
   'The AI Banking Institute helps community banks and credit unions build AI proficiency through assessment, certification, and curriculum aligned with SR 11-7, TPRM, ECOA / Reg B, and the AIEOG AI Lexicon.';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
+  // Every page becomes self-canonical by default (relative '/' resolves
+  // against metadataBase + the current request path). Pages that need a
+  // different canonical override this in their own metadata export.
+  alternates: {
+    canonical: '/',
+  },
   title: {
     default: `${BRAND.name} — ${BRAND.tagline}`,
     template: `%s — ${BRAND.name}`,

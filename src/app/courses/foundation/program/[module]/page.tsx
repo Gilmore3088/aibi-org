@@ -15,15 +15,15 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import {
   modules,
-  foundationProgramCourseConfig,
+  foundationCourseConfig,
   getModuleByNumber,
   V4_FOUNDATION_PROGRAM_MODULE_BY_NUMBER,
 } from '@content/courses/foundation-program';
 import type { Activity, ExpandedModule } from '@content/courses/foundation-program';
-import { ContentTable } from '../_components/ContentTable';
+import { ContentTable } from '@/components/lms/ContentTable';
 import { LearnSection } from '../_components/LearnSection';
 import { ModuleContentClient } from '../_components/ModuleContentClient';
-import { CourseTabs } from '@/components/CourseTabs';
+import { Tabbed } from '@/lib/lms/module-body';
 import {
   CourseShell,
   LMSTopBar,
@@ -40,7 +40,12 @@ import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/cl
 import type { ActivityResponse } from '@/types/course';
 import { AIPracticeSandbox } from '@/components/AIPracticeSandbox';
 import { SANDBOX_CONFIGS } from '@content/sandbox-data/foundation-program';
-import { AIBI_P_ARTIFACTS } from '@content/practice-reps/foundation-program';
+import { MiniTutorialList } from '../_components/MiniTutorialList';
+import {
+  M3_TUTORIALS,
+  M7_TUTORIALS,
+} from '@content/courses/foundation-program/prompt-library';
+import { FOUNDATION_ARTIFACTS } from '@content/practice-reps/foundation-program';
 import {
   getModuleActivitySpec,
   buildModuleActivity,
@@ -114,7 +119,7 @@ export default async function ModulePage({ params }: ModulePageParams) {
   }
 
   const lmsModules: readonly LMSModule[] = toLMSModules(
-    foundationProgramCourseConfig.modules,
+    foundationCourseConfig.modules,
   );
   const status = getModuleStatus(
     mod.number,
@@ -321,14 +326,14 @@ export default async function ModulePage({ params }: ModulePageParams) {
 
       {/* Tabbed content (Learn / Practice / Apply) — behavior preserved */}
       <article style={{ maxWidth: 1180, margin: '0 auto', padding: '4px 36px 80px' }}>
-        <CourseTabs
+        <Tabbed
           storagePrefix="aibi-p-m"
-          segmentNumber={moduleNum}
+          moduleNumber={moduleNum}
           accentColor="var(--ledger-accent)"
           learnContent={
             <>
               <LearnSection
-                sections={expandedModule?.sections ?? mod.sections}
+                sections={expandedModule?.sections ?? []}
                 keyTakeaways={expandedModule?.takeaways}
                 moduleNumber={moduleNum}
               />
@@ -343,13 +348,29 @@ export default async function ModulePage({ params }: ModulePageParams) {
             </>
           }
           practiceContent={
-            SANDBOX_CONFIGS[moduleNum] ? (
-              <AIPracticeSandbox
-                moduleId={`aibi-p-module-${moduleNum}`}
-                product="foundation"
-                sandboxConfig={SANDBOX_CONFIGS[moduleNum]!}
-              />
-            ) : null
+            <>
+              {SANDBOX_CONFIGS[moduleNum] && (
+                <AIPracticeSandbox
+                  moduleId={`aibi-p-module-${moduleNum}`}
+                  product="foundation"
+                  sandboxConfig={SANDBOX_CONFIGS[moduleNum]!}
+                />
+              )}
+              {moduleNum === 3 && (
+                <MiniTutorialList
+                  tutorials={M3_TUTORIALS}
+                  heading="First-try tutorials"
+                  intro="Step-by-step walkthroughs for your first real banking task on each platform. Pick the one that matches what you already have access to."
+                />
+              )}
+              {moduleNum === 7 && (
+                <MiniTutorialList
+                  tutorials={M7_TUTORIALS}
+                  heading="Skill-builder tutorials"
+                  intro="Worked examples of the anatomy-of-a-skill pattern applied to common banking workflows. Open the platform you use, copy the prompt, work through the steps."
+                />
+              )}
+            </>
           }
           applyContent={
             <ModuleContentClient
@@ -374,7 +395,7 @@ export default async function ModulePage({ params }: ModulePageParams) {
 }
 
 function buildV4Activity(module: ExpandedModule): Activity {
-  const artifact = AIBI_P_ARTIFACTS.find((item) => item.moduleNumber === module.number);
+  const artifact = FOUNDATION_ARTIFACTS.find((item) => item.moduleNumber === module.number);
 
   return {
     id: `${module.number}.1`,

@@ -1,4 +1,14 @@
 import createMDX from '@next/mdx';
+import bundleAnalyzer from '@next/bundle-analyzer';
+
+// Bundle analyzer — runs only when ANALYZE=true.
+//   ANALYZE=true npm run build
+// Opens an interactive treemap (.next/analyze/*.html) breaking down
+// the server + client + edge bundles by package. Useful for catching
+// new heavy dependencies before they ship.
+const withBundleAnalyzer = bundleAnalyzer({
+  enabled: process.env.ANALYZE === 'true',
+});
 
 // Production guard: SKIP_MAILERLITE=true must never reach prod, or every
 // real user opt-in silently skips the MailerLite call and the nurture
@@ -92,11 +102,13 @@ const nextConfig = {
   },
   // Security headers applied to every route.
   //
-  // CSP is in REPORT-ONLY mode for now. Violations log to the browser
-  // console but do not block resource loads. Once a few preview-deploy
-  // smoke tests confirm zero unexpected violations, flip
-  // `Content-Security-Policy-Report-Only` → `Content-Security-Policy`
-  // in the header below to enforce.
+  // CSP is ENFORCED (flipped from Report-Only 2026-05-17 after the
+  // §16 security audit verified zero unexpected violations on the
+  // preview deploys). Violations now block resource loads.
+  //
+  // To roll back during incident response, change the header key
+  // below from `Content-Security-Policy` to
+  // `Content-Security-Policy-Report-Only` and redeploy.
   //
   // Origin whitelist:
   //   - Supabase    *.supabase.co     (auth, storage, realtime, REST)
@@ -165,13 +177,14 @@ const nextConfig = {
           // not strictly required (we don't use SharedArrayBuffer) so we
           // keep it permissive enough for Stripe/Calendly popups.
           { key: 'Cross-Origin-Opener-Policy', value: 'same-origin-allow-popups' },
-          // CSP in report-only mode. Flip the key to `Content-Security-Policy`
-          // to enforce after preview validation.
-          { key: 'Content-Security-Policy-Report-Only', value: csp },
+          // CSP enforced (was report-only until 2026-05-17). Roll back
+          // by reverting to `Content-Security-Policy-Report-Only` if a
+          // new third-party integration trips violations in production.
+          { key: 'Content-Security-Policy', value: csp },
         ],
       },
     ];
   },
 };
 
-export default withMDX(nextConfig);
+export default withBundleAnalyzer(withMDX(nextConfig));

@@ -39,7 +39,7 @@
   --ledger-rule-strong:  #A8AEBE;        /* strong rule */
 
   /* ---- Ledger · Typography ------------------------------------------- */
-  --ledger-serif:        var(--font-newsreader-hero), var(--font-newsreader-heavy), "Iowan Old Style", Georgia, serif;
+  --ledger-serif:        var(--font-newsreader-hero), var(--font-newsreader-heavy), "Newsreader Fallback", "Iowan Old Style", Georgia, serif;
   --ledger-sans:         var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
   --ledger-mono:         var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
 

@@ -1,6 +1,19 @@
-// AiBI-Foundation Prompt Library — Copy-paste-ready prompts for banking practitioners
-// Organized by platform, role, and difficulty
-// All prompts are banking-specific with institutional constraints
+// AiBI-Foundation Prompt Library — banking-specific prompts.
+//
+// Source-of-truth split:
+//   - The 14 prompts in `ALL_PROMPTS` are the *authoring* source. They
+//     were migrated into the Supabase Toolbox library by migration
+//     00022_migrate_course_prompts_to_library.sql as kind='template'
+//     rows. Learners reach them via /dashboard/toolbox/library; this
+//     file is no longer the runtime data path for the prompt library.
+//   - `m3Prompts` and `m7Prompts` (subsets of ALL_PROMPTS) are
+//     referenced inline by `M3_TUTORIALS` and `M7_TUTORIALS` (rendered
+//     on the Practice tab of modules 3 and 7).
+//   - `getPromptById` remains live via the toolbox save route.
+//
+// Adding a new prompt: edit ALL_PROMPTS here AND author a new
+// migration that inserts the prompt into toolbox_library_skills.
+// The runtime UI reads from Supabase, not from this array.
 
 export type PromptPlatform =
   | 'chatgpt'
@@ -131,62 +144,6 @@ export const SAFETY_LEVEL_LABELS: Record<PromptSafetyLevel, string> = {
   yellow: 'Yellow',
   red: 'Red',
 } as const;
-
-export function getPromptTaskType(prompt: Prompt): PromptTaskType {
-  if (prompt.taskType) return prompt.taskType;
-  const haystack = [
-    prompt.title,
-    prompt.expectedOutput,
-    prompt.promptText,
-    ...(prompt.tags ?? []),
-  ].join(' ').toLowerCase();
-
-  if (haystack.includes('complaint')) return 'complaint';
-  if (haystack.includes('email')) return 'email';
-  if (haystack.includes('board')) return 'board';
-  if (haystack.includes('loan') || haystack.includes('lending') || haystack.includes('credit')) return 'lending';
-  if (haystack.includes('meeting')) return 'meeting';
-  if (haystack.includes('policy')) return 'policy';
-  if (haystack.includes('verify') || haystack.includes('citation') || haystack.includes('hallucination')) return 'verification';
-  if (haystack.includes('sanitize') || haystack.includes('pii') || haystack.includes('sensitive')) return 'sanitization';
-  if (haystack.includes('report') || haystack.includes('memo')) return 'report';
-  if (haystack.includes('summary') || haystack.includes('summar')) return 'summary';
-  return 'workflow';
-}
-
-export function getPromptSafetyLevel(prompt: Prompt): PromptSafetyLevel {
-  if (prompt.safetyLevel) return prompt.safetyLevel;
-  const haystack = [
-    prompt.title,
-    prompt.expectedOutput,
-    prompt.promptText,
-    ...(prompt.tags ?? []),
-  ].join(' ').toLowerCase();
-
-  if (
-    haystack.includes('customer data') ||
-    haystack.includes('pii') ||
-    haystack.includes('credit decision') ||
-    haystack.includes('account number')
-  ) {
-    return 'red';
-  }
-  if (
-    haystack.includes('policy') ||
-    haystack.includes('compliance') ||
-    haystack.includes('customer') ||
-    haystack.includes('board') ||
-    haystack.includes('loan')
-  ) {
-    return 'yellow';
-  }
-  return 'green';
-}
-
-export function getPromptTimeMinutes(prompt: Prompt): number {
-  const match = prompt.timeEstimate.match(/\d+/);
-  return match ? Number(match[0]) : 10;
-}
 
 // ---------------------------------------------------------------------------
 // Module 3 — "First Try" prompts
@@ -1342,40 +1299,3 @@ export const M7_TUTORIALS: readonly MiniTutorial[] = [
   },
 ] as const;
 
-// ---------------------------------------------------------------------------
-// Utility: filter prompts
-// ---------------------------------------------------------------------------
-
-export function filterPrompts(filters: {
-  readonly platform?: PromptPlatform;
-  readonly role?: PromptRole;
-  readonly difficulty?: PromptDifficulty;
-  readonly module?: number;
-  readonly taskType?: PromptTaskType;
-  readonly maxMinutes?: number;
-  readonly query?: string;
-}): readonly Prompt[] {
-  const normalizedQuery = filters.query?.trim().toLowerCase();
-  return ALL_PROMPTS.filter((p) => {
-    if (filters.platform && p.platform !== filters.platform) return false;
-    if (filters.role && p.role !== filters.role) return false;
-    if (filters.difficulty && p.difficulty !== filters.difficulty) return false;
-    if (filters.module && p.relatedModule !== filters.module) return false;
-    if (filters.taskType && getPromptTaskType(p) !== filters.taskType) return false;
-    if (filters.maxMinutes && getPromptTimeMinutes(p) > filters.maxMinutes) return false;
-    if (normalizedQuery) {
-      const haystack = [
-        p.title,
-        p.expectedOutput,
-        p.promptText,
-        PLATFORM_META[p.platform].label,
-        ROLE_LABELS[p.role],
-        DIFFICULTY_LABELS[p.difficulty],
-        TASK_TYPE_LABELS[getPromptTaskType(p)],
-        ...(p.tags ?? []),
-      ].join(' ').toLowerCase();
-      if (!haystack.includes(normalizedQuery)) return false;
-    }
-    return true;
-  });
-}

@@ -9,7 +9,7 @@
  *
  * Run: node scripts/generate-static-artifacts.mjs
  *
- * Fonts: Full .ttf files in public/fonts/ registered via Font.register().
+ * Fonts: Full .ttf files in assets/pdf-fonts/ registered via Font.register().
  */
 
 import { writeFileSync, mkdirSync } from 'fs';
@@ -36,9 +36,9 @@ mkdirSync(OUT_DIR, { recursive: true });
 Font.registerHyphenationCallback((word) => [word]);
 
 // ---------------------------------------------------------------------------
-// Brand fonts — full .ttf files in public/fonts/
+// Brand fonts — full .ttf files in assets/pdf-fonts/
 // ---------------------------------------------------------------------------
-const FONTS_DIR = join(ROOT, 'public', 'fonts');
+const FONTS_DIR = join(ROOT, 'assets', 'pdf-fonts');
 
 Font.register({
   family: 'Cormorant',

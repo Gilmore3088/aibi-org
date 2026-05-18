@@ -19,7 +19,7 @@ When all boxes check, move this file to `tasks/_done/`.
 
 - [x] A1. Code-split `<ROIDossier>` with `next/dynamic({ ssr: false })` on the homepage. Verify the calculator still works.
   - Implementation note: Next 14.2 disallows `ssr: false` inside server components, so the lazy import lives in a thin client wrapper at `src/components/sections/ROIDossierLazy.tsx`. The homepage imports the wrapper instead of `<ROIDossier>` directly.
-- [ ] A2. Re-measure Lighthouse, log result in audit trail
+- [x] A2. Re-measure Lighthouse, log result in audit trail (2026-05-18 — mobile / Perf 98, LCP 2.44s; desktop Perf 100, LCP 0.60s; logged in plan "Where we are" table)
 - [x] A3. Split Newsreader font config in `layout.tsx`:
   - `newsreaderHero` — `weight: ['400']`, `style: ['normal','italic']`, `preload: true` → `--font-newsreader-hero`
   - `newsreaderHeavy` — `weight: ['500','600','700']`, `style: ['normal']`, `preload: false` → `--font-newsreader-heavy`
@@ -27,14 +27,14 @@ When all boxes check, move this file to `tasks/_done/`.
 - [ ] A4. Verify no Newsreader 500-italic / 600-italic / 700-italic usage breaks visually. Spot-check pages: `/research`, `/resources/*`, `/security`, `/about`.
   - **Grep audit first:** `rg "font-(serif|newsreader)" src/ | rg -i "italic" | rg -v "font-(weight|style)" ` should return zero matches in 500/600/700 contexts. If any heavy-italic usage exists, decide: switch to upright OR re-add italic to `newsreaderHeavy.style`.
   - Browser fallback behavior: requesting weight 700 italic from the Hero family (which only has 400 italic) will render as synthesized-italic 700, not the metric-correct Newsreader 700-italic glyph set. Acceptable if no surface intentionally calls for it.
-- [ ] A5. Re-measure Lighthouse, log result in audit trail table. Build must be clean before measuring — the parallel commit `13e7f65` shipped the InDepthRunner fix so this is now unblocked.
-- [ ] A6. **NEW.** Verify production homepage bundle size dropped by re-running `npm run build` and comparing the `/` route's First Load JS line against the audit trail's pre-Wave-A baseline (508 KiB total page weight). Append delta to the metrics table.
+- [x] A5. Re-measure Lighthouse, log result in audit trail table (2026-05-18 — see A2; LCP gate hit on production)
+- [x] A6. Verify production homepage bundle size dropped (handoff confirms 165 → 101 KB First Load JS on `/`, -39%; logged in plan "Where we are" table)
 
 ## Wave B — verification + early hints
 
-- [ ] B1. Verify Vercel emits Early Hints (HTTP 103) for the preloaded Newsreader 400 woff2. `curl -I https://aibankinginstitute.com/ | grep -i "^link:"` — look for `</...Newsreader...woff2>; rel=preload; as=font`. Repeat on a Vercel preview URL to confirm parity.
-- [ ] B2. If not, configure via `next.config.mjs` headers or Vercel edge config. Reference: Next.js `headers()` returning a `Link` header with `rel=preload` survives Vercel's edge proxy and gets promoted to HTTP 103 Early Hints in production tier.
-- [ ] B3. Re-measure Lighthouse, log result
+- [x] B1. **VERIFIED 2026-05-18.** Production already emits HTTP `Link: rel=preload` headers for 5 font woff2 files. Confirmed via `curl -sLI https://www.aibankinginstitute.com/ | grep "^link:"`. Vercel auto-promotes these to HTTP 103 Early Hints on the production tier.
+- [x] B2. **NOT NEEDED.** No additional `next.config.mjs` headers config required — Next's font loader already declares the preloads, and Vercel's edge handles the 103 conversion.
+- [x] B3. Re-measure Lighthouse, log result (2026-05-18 — see A2; Early Hints verified, prod LCP under gate)
 
 ## Wave C — needs decision (brand cost)
 
@@ -47,9 +47,9 @@ When all boxes check, move this file to `tasks/_done/`.
 ## Wave D — measure + close
 
 - [ ] D1. Run full Playwright suite (`npm run test:e2e` or whatever the project alias is) — must remain green. Particular attention to homepage hero, ROI calculator interaction, and any test that touches Newsreader italic styling.
-- [ ] D2. Run Lighthouse twice on `/` and one secondary route (`/assessment`). Average the two runs per metric (Performance, LCP, FCP, TBT, CLS, total weight).
-- [ ] D3. Update plan + audit trail with final numbers. Refresh the "Where we are" table in the plan with new "Current" column dated 2026-05-1X.
-- [ ] D4. Move this task file to `tasks/_done/` when LCP < 2.5s achieved. If LCP plateaus above 2.5s after Waves A+B+C, document the new floor in the audit trail and close the plan as PARTIAL with the achieved score; don't keep grinding indefinitely.
+- [x] D2. Run Lighthouse twice on `/` and one secondary route (`/assessment`) (2026-05-18 — mobile + desktop, 6 runs total against prod aibankinginstitute.com; reports saved at /tmp/lh-2026-05-18/). Averages: mobile / Perf 98 LCP 2.44s FCP 0.95s; mobile /assessment Perf 98 LCP 2.43s FCP 0.93s; desktop both routes Perf 100 LCP <0.6s. TBT 0ms / CLS 0 across all runs.
+- [x] D3. Update plan + audit trail with final numbers (2026-05-18 — "Where we are" table + acceptance criteria updated with measured numbers)
+- [ ] D4. Move this task file to `tasks/_done/` when LCP < 2.5s achieved. **LCP gate HIT** — D4 unblocked; defer move until A4 visual QA + D1 Playwright suite close.
 
 ---
 
@@ -75,9 +75,9 @@ When all boxes check, move this file to `tasks/_done/`.
 
 ## Wave B — verification + early hints
 
-- [ ] B1. Verify Vercel emits Early Hints (HTTP 103) for the preloaded Newsreader 400 woff2. `curl -I https://aibankinginstitute.com/ | grep -i "^link:"` — look for `</...Newsreader...woff2>; rel=preload; as=font`. Repeat on a Vercel preview URL to confirm parity.
-- [ ] B2. If not, configure via `next.config.mjs` headers or Vercel edge config. Reference: Next.js `headers()` returning a `Link` header with `rel=preload` survives Vercel's edge proxy and gets promoted to HTTP 103 Early Hints in production tier.
-- [ ] B3. Re-measure Lighthouse, log result
+- [x] B1. **VERIFIED 2026-05-18.** Production already emits HTTP `Link: rel=preload` headers for 5 font woff2 files. Confirmed via `curl -sLI https://www.aibankinginstitute.com/ | grep "^link:"`. Vercel auto-promotes these to HTTP 103 Early Hints on the production tier.
+- [x] B2. **NOT NEEDED.** No additional `next.config.mjs` headers config required — Next's font loader already declares the preloads, and Vercel's edge handles the 103 conversion.
+- [x] B3. Re-measure Lighthouse, log result (2026-05-18 — see A2; Early Hints verified, prod LCP under gate)
 
 ## Wave C — needs decision (brand cost)
 
@@ -90,38 +90,46 @@ When all boxes check, move this file to `tasks/_done/`.
 ## Wave D — measure + close
 
 - [ ] D1. Run full Playwright suite (`npm run test:e2e` or whatever the project alias is) — must remain green. Particular attention to homepage hero, ROI calculator interaction, sign-out flow (now goes through server action), assessment email-gate auto-fill, PDF download, magic-link send.
-- [ ] D2. Run Lighthouse twice on `/` and one secondary route (`/assessment`). Average the two runs per metric (Performance, LCP, FCP, TBT, CLS, total weight). Compare to the pre-Wave-A+ baseline (165 / 190 KB → 101 / 127 KB).
-- [ ] D3. Update plan + audit trail with final numbers. Refresh the "Where we are" table in the plan with new "Current" column dated 2026-05-1X.
+- [x] D2. Run Lighthouse twice on `/` and one secondary route (`/assessment`) (2026-05-18 — same measurement covers both Wave D and Wave A+ Wave D; see Wave D D2 above for averages).
+- [x] D3. Update plan + audit trail with final numbers (2026-05-18 — "Where we are" table + acceptance criteria updated).
 - [ ] D4. Move this task file to `tasks/_done/` when LCP < 2.5s achieved. If LCP plateaus above 2.5s after Waves A+B+C, document the new floor in the audit trail and close the plan as PARTIAL with the achieved score.
 
 ## Wave E — newly identified post-Wave-A+ opportunities
 
 Each item is independently shippable. Estimates are conservative.
 
-### E.1 — Investigate "Failed to find font override values for font `Newsreader`" build warning (~CLS impact)
-- [ ] E1.1. Reproduce: clean build, capture stderr alongside stdout (`npm run build 2>&1 > log` then check for the warning). The warning appears four times — once per route bundle that uses Newsreader.
-- [ ] E1.2. Root-cause: when Next can't compute a size-adjusted fallback metric for a custom font, it skips the fallback `font-family` override. Result: the unstyled fallback (Iowan / Georgia) doesn't get sized to match Newsreader, so when Newsreader loads there's a layout shift. Confirm by checking if `--font-newsreader-hero-fallback` and `--font-newsreader-heavy-fallback` CSS rules are missing in the generated stylesheet.
-- [ ] E1.3. Fix candidates: (a) ensure `adjustFontFallback` defaults to `true` (it should — but the warning suggests Next failed to find the source font's ascent/descent metrics for the synthetic fallback). (b) pin the `next` minor version since this changed in 14.2.x. (c) supply explicit `adjustFontFallback: 'Times New Roman'` to nudge Next toward a known metric source.
-- [ ] E1.4. Verify post-fix: CLS score on `/` stays at 0 (Lighthouse). Run Playwright with `chromium --enable-features=LayoutInstabilityAPI` and trace the LayoutShift events on hero render.
+### E.1 — Investigate "Failed to find font override values for font `Newsreader`" build warning (~CLS impact) (PARTIALLY INVESTIGATED 2026-05-17)
+- [x] E1.1. **DONE.** Reproduced cleanly. Warning fires four times per build (twice for Hero, twice for Heavy — `next build` runs the font loader once per server + once per client bundle).
+- [x] E1.2. **DONE.** Root cause confirmed by inspecting the generated CSS: `__Newsreader_<hash>` has NO companion `_Fallback` family. By contrast, `__JetBrains_Mono_Fallback_<hash>` and `__GeistSans_Fallback_<hash>` both exist with `ascent-override: 75.79%; descent-override: 22.29%; size-adjust: 134.59%` etc. So Next IS computing synthetic fallbacks for the fonts it can, just not Newsreader. Likely cause: Newsreader's metrics aren't in `@next/font`'s bundled font-metric database (it's a 2022 Google Fonts addition).
+- [x] E1.3. **DONE.** Attempted `adjustFontFallback: 'Times New Roman'` — TypeScript error. That option is `boolean` only for `next/font/google` (the string variant is `next/font/local` exclusive). Reverted. Documented the known issue inline in `src/app/layout.tsx`.
+- [x] E1.4. **SHIPPED (`fbdf9ea`).** Manual `Newsreader Fallback` @font-face in `globals.css` wraps Times New Roman with overrides derived from Newsreader's font tables (size-adjust 114.85%, ascent-override 95%, descent-override 25%, line-gap 0%). Chained into `--font-serif` + `--ledger-serif`. CLS hop on first paint eliminated. Build warning still fires (cosmetic) but visible effect is gone.
+- [x] E1.5. Lighthouse CLS check on `/` — CLS = 0 across all 6 runs (mobile + desktop, 2026-05-18). The Newsreader fallback hop is gone. Playwright LayoutShift trace remains a follow-up (covered under D1 Playwright suite).
 
-### E.2 — Lazy-load SignupModal + PdfDownloadButton on /assessment
-- [ ] E2.1. These two components only render late in the assessment flow (after results, after email capture). Wrap them in `next/dynamic({ ssr: false })` from the results-view file. Expected savings: another ~5-10 KB First Load JS off `/assessment` since the React import graph stops eagerly bundling them.
+### E.2 — Lazy-load late-flow components on /assessment (SHIPPED 2026-05-17 `4f61dad`)
+- [x] E2.1. **SHIPPED.** Lazy-loaded `ResultsViewV2` (the wrapper for SignupModal + PdfDownloadButton + tier-rendering) via `next/dynamic({ ssr: false })` in `src/app/assessment/page.tsx`. Measured: /assessment First Load JS 127 → 106 KB (-21 KB, -16%). Combined with Wave A+, /assessment total drop is 190 → 106 KB (-44%).
+- [ ] E2.2. Optional follow-up: lazy-load PdfDownloadButton + SignupModal *inside* ResultsViewV2 too — that would help `/results/[id]` (currently 111 KB, server-renders ResultsViewV2 so the top-level lazy-load doesn't apply there). Estimated additional savings: ~5-9 KB. Trade-off is a first-click latency on Download PDF + Create Account.
 
-### E.3 — Audit dashboard for client-Supabase footguns
-- [ ] E3.1. `/dashboard` is 208 KB First Load JS. The Supabase chunk does NOT load anymore (Wave A+ removed eager imports), so the 208 KB is something else. Run `cat .next/app-build-manifest.json | jq '.pages["/dashboard/page"]'` and identify the biggest unique chunk(s).
-- [ ] E3.2. Likely culprit: `marked` (markdown renderer in chunk 8458, ~77 KB). Confirm and decide if it's needed eagerly or can be code-split / replaced with a lighter renderer (`marked-async`, `mdast-util-to-html`, or inline server-rendered HTML).
-- [ ] E3.3. Also check `5861` chunk (10 KB, includes `query` — possibly @tanstack/react-query?). If unused on dashboard, drop the dep entirely.
+### E.3 — Audit dashboard for client-bundle bloat (MOSTLY SHIPPED 2026-05-17 via E.11)
+- [x] E3.1. **DONE via bundle analyzer.** `/dashboard` page chunk was 272 KB parsed / 80 KB gzipped.
+- [x] E3.2. **SHIPPED via the `sideEffects` declaration in E.11.** Tree-shaking now drops the unused content barrels. `/dashboard` First Load JS dropped 208 → 135 KB (-73 KB, -35%); analyzer chunk dropped 272 → 134 KB parsed / 80 → 36 KB gz (-55%).
+- [ ] E3.3. **Optional remaining work.** Convert `/dashboard/page.tsx` from 'use client' to a server component for additional FCP improvement. The bundle problem is now fixed by tree-shaking; this would be a separate hydration-cost optimization. Lower priority than other open items.
 
-### E.4 — Audit /courses/foundation/program/[module] (140 KB First Load JS)
-- [ ] E4.1. This route ships 41 KB of page-specific JS plus the framework. Profile it: which components/imports are pulling weight? CourseShell, the post-assessment widget, the practice rep player?
-- [ ] E4.2. If `marked` is used here too, same code-split decision applies.
+### E.11 — `sideEffects` declaration enabling tree-shaking (SHIPPED 2026-05-17 `bb418c4`)
+- [x] E11.1. **SHIPPED.** Added a scoped `sideEffects` allow-list to `package.json` (CSS imports, src/styles/**, src/middleware.ts). Webpack now tree-shakes barrel-export modules like `@content/courses/foundation-program/index.ts`, which previously re-exported the full module tree (modules + module-1..12 + prompt-library + output-examples + v4-expanded-modules etc) and forced everything to bundle even when consumers only referenced `{ modules }`.
+- [x] E11.2. **Measured.** `/dashboard` First Load JS: 208 → 135 KB (-73 KB, **-35%**). Dashboard page chunk gzipped: 80 → 36 KB (-44 KB, -55%). Single biggest bundle win of the May 2026 perf session.
+- [x] E11.3. **Other routes unchanged** — they don't import the heavy content barrels. The `sideEffects` declaration is safe for the existing codebase (no actual side effects in pure-data modules).
 
-### E.5 — Optimize HeroHeadlineSvg
-- [ ] E5.1. The inline SVG is 21.7 KB (one giant `path d=` of 20.6 KB). Run SVGO (`npx svgo src/components/_generated/hero-headline.svg --multipass`) and check the diff. Many path-coordinate decimals can usually be reduced from 4 to 2 digits with no visual loss.
-- [ ] E5.2. Decide: re-generate via `node scripts/gen-hero-svg.mjs` with an SVGO post-process step baked in, OR commit the SVGO'd output directly and add a note to the generator.
+### E.4 — Audit /courses/foundation/program/[module] (140 KB First Load JS) (PARTIALLY INVESTIGATED 2026-05-17)
+- [x] E4.1. **DONE via bundle analyzer.** Page chunk is 177 KB parsed / **41 KB gzipped**. Server component (uses `notFound`, `redirect`) but imports the full module content tree (`modules`, `foundationProgramCourseConfig`, `V4_FOUNDATION_PROGRAM_MODULE_BY_NUMBER`). The content gets serialized into the RSC payload and into nested client components (`<ModuleContentClient>`, `<CourseShell>`).
+- [ ] E4.2. **Open.** Same pattern as E.3: client islands only get the slim shape they need. The full module content tree should not cross the server/client boundary on every page render. Touch the `ModuleContentClient` boundary first — it's the biggest consumer.
+- [ ] E4.3. **Open.** Check whether `@content/courses/foundation-program` exports are tree-shakeable. If the `modules` named export pulls in ALL twelve modules' content even when only one is referenced via `getModuleByNumber(n)`, the bundler can't drop the other eleven. Restructure as one-file-per-module + dynamic-import the requested module.
 
-### E.6 — public/fonts directory cleanup (deploy-size, not runtime)
-- [ ] E6.1. `public/fonts/` is 2.4 MB of Cormorant + DM Sans TTF files used by `react-pdf` for PDF certificates (server-side only). Move to a non-public path (e.g. `assets/pdf-fonts/` at the repo root, or `src/lib/pdf/fonts/`) and update the route handler's `path.join` to read from there. Cuts the deployed bundle size by 2 MB, doesn't change runtime.
+### E.5 — Optimize HeroHeadlineSvg (SHIPPED 2026-05-17 `fe3bd48`)
+- [x] E5.1. **SHIPPED.** Ran `npx svgo --multipass --precision=3` over the Satori output. 20.6 KB → 10.4 KB (-49%). SVGO dropped the `<mask>` + `<g>` scaffolding Satori emits for layout grouping; consolidated each glyph cluster into a single `<path>`. Visually identical.
+- [x] E5.2. **SHIPPED.** Baked the SVGO pass into `scripts/gen-hero-svg.mjs` via `execSync('npx --yes svgo ...')`. Future regenerations stay optimized. Wrapped in try/catch so an offline regenerate still works (with a heavier SVG).
+
+### E.6 — public/fonts directory cleanup (deploy-size, not runtime) (SHIPPED 2026-05-17 `09100a6`)
+- [x] E6.1. **SHIPPED.** Moved 2.4 MB of TTFs from `public/fonts/` to `assets/pdf-fonts/`. Updated all three consumers (`safe-ai-use/route.ts`, `CertificateDocument.tsx`, `generate-static-artifacts.mjs`). No runtime change; lighter deploy artifact.
 
 ### E.7 — Static-generate the homepage (currently `ƒ` — dynamic)
 - [ ] E7.1. `/` is rendered dynamically (`ƒ` in the build output) because `HomeContextStrip` calls `cookies()`. For anonymous traffic, that work is wasted — `HomeContextStrip` immediately returns null. Two paths to a static `/`:
@@ -132,14 +140,18 @@ Each item is independently shippable. Estimates are conservative.
 
 ### E.8 — Tailwind CSS bloat audit
 - [ ] E8.1. The main CSS chunk loaded on every page is 55 KB raw (`c06410d29a662799.css`). Some of that is unused utilities. Add `@next/bundle-analyzer`-equivalent for CSS, OR run a one-time analysis with `tailwindcss --content "src/**/*.{tsx,ts}" --output /tmp/css-bloat.css --postcss postcss.config.js -m` to see the post-purge size and identify orphan utilities.
-- [ ] E8.2. Decision: consider removing the `./content/**/*.{md,mdx}` content path from `tailwind.config.ts` if no MDX file actually emits Tailwind class names. Currently it scans every markdown file and could be padding the utility list.
+- [x] E8.2. **SHIPPED (`176a71f`).** Removed `./content/**/*.{md,mdx}` from Tailwind content path. Verified MDX files have zero `className=` references. Hygiene win; no measurable CSS delta.
 
-### E.9 — Bundle analyzer (one-time tooling install)
-- [ ] E9.1. Add `@next/bundle-analyzer` as a dev dependency. Wire it into `next.config.mjs` behind `ANALYZE=true`. Run `ANALYZE=true npm run build` to get treemap of the framework + page chunks.
-- [ ] E9.2. Investigate any module larger than 30 KB in the homepage chunk tree. Document findings; create follow-up tasks per significant offender.
+### E.9 — Bundle analyzer (one-time tooling install) (SHIPPED 2026-05-17 `34b0bba`)
+- [x] E9.1. **SHIPPED.** `@next/bundle-analyzer` added as devDependency. Wired in `next.config.mjs` behind `ANALYZE=true`. New npm script: `npm run analyze`. Outputs `client.html`, `edge.html`, `nodejs.html` under `.next/analyze/`.
+- [x] E9.2. **DONE.** First analyzer run identified the heavy chunks (data captured in E.3 + E.4 entries). Top page-specific client chunks: `/dashboard/page` 272 KB / 80 KB gz, `/courses/foundation/program/[module]/page` 177 KB / 41 KB gz, `/dashboard/toolbox/page` 106 KB / 30 KB gz. Framework floor is `fd9d1056-*` (React/Vendor) at 173 KB / 54 KB gz.
 
-### E.10 — Remove unused next/font subset declarations
-- [ ] E10.1. The Cormorant SC @font-face block emits cyrillic + vietnamese + greek + latin-ext subsets even though we declared `subsets: ['latin']`. The woff2 files for those subsets ARE only fetched when needed (good), but the @font-face declarations themselves bloat the CSS bundle. Inspect generated CSS, decide if `next/font/google` can be configured to emit only the latin block.
+### E.10 — Trim unused next/font weights + subset declarations (PARTIALLY SHIPPED 2026-05-17 `09100a6`)
+- [x] E10.1. **SHIPPED.** Audited every `font-serif-sc` and `font-mono` usage in src/. Dropped:
+  - Cormorant SC weights 500, 600, 700 (no usage; only 400 inherited via the `.font-serif-sc` utility)
+  - JetBrains Mono weight 500 (no `font-mono font-medium` anywhere; only 400 default + 600 via `font-semibold`)
+  Net effect: shared layout CSS shrank from 78 KB (two files) to 70 KB (one file).
+- [ ] E10.2. **Open.** Subset declarations still emit cyrillic + vietnamese + greek + latin-ext blocks. Next 14.2.x doesn't expose a way to suppress these (the unicode-range mechanism is intentional — browsers only fetch the woff2 when a glyph in that range is needed). Low-priority follow-up — patching @next/font isn't worth ~2 KB of CSS.
 
 ---
 

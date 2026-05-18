@@ -3,6 +3,7 @@ import { Section, SectionHeader, Cta } from "@/components/system";
 import { GuideRequestForm } from "./_components/GuideRequestForm";
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/security' },
   title: "Security & Governance — AI built for regulated institutions",
   description:
     "Aligned with SR 11-7, Interagency TPRM Guidance, ECOA / Reg B, and the AIEOG AI Lexicon. Free Safe AI Use Guide for community banks and credit unions.",

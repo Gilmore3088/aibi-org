@@ -20,11 +20,11 @@ import { Document, Page, Text, View, StyleSheet, Font } from '@react-pdf/rendere
 Font.register({
   family: 'Cormorant',
   fonts: [
-    { src: path.join(process.cwd(), 'public/fonts/Cormorant-Regular.ttf') },
-    { src: path.join(process.cwd(), 'public/fonts/Cormorant-Bold.ttf'), fontWeight: 'bold' },
-    { src: path.join(process.cwd(), 'public/fonts/Cormorant-Italic.ttf'), fontStyle: 'italic' },
+    { src: path.join(process.cwd(), 'assets/pdf-fonts/Cormorant-Regular.ttf') },
+    { src: path.join(process.cwd(), 'assets/pdf-fonts/Cormorant-Bold.ttf'), fontWeight: 'bold' },
+    { src: path.join(process.cwd(), 'assets/pdf-fonts/Cormorant-Italic.ttf'), fontStyle: 'italic' },
     {
-      src: path.join(process.cwd(), 'public/fonts/Cormorant-BoldItalic.ttf'),
+      src: path.join(process.cwd(), 'assets/pdf-fonts/Cormorant-BoldItalic.ttf'),
       fontWeight: 'bold',
       fontStyle: 'italic',
     },
@@ -33,7 +33,7 @@ Font.register({
 Font.register({
   family: 'DM Mono',
   fonts: [
-    { src: path.join(process.cwd(), 'public/fonts/DMMono-Regular.ttf') },
+    { src: path.join(process.cwd(), 'assets/pdf-fonts/DMMono-Regular.ttf') },
   ],
 });
 

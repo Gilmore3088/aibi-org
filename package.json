@@ -2,9 +2,17 @@
   "name": "aibi-scaffold",
   "version": "0.1.0",
   "private": true,
+  "sideEffects": [
+    "**/*.css",
+    "**/*.scss",
+    "**/globals.css",
+    "src/styles/**",
+    "src/middleware.ts"
+  ],
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "analyze": "ANALYZE=true next build",
     "start": "next start",
     "lint": "next lint",
     "test": "vitest run",
@@ -41,6 +49,7 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.0",
+    "@next/bundle-analyzer": "^16.2.6",
     "@playwright/test": "^1.50.0",
     "@resvg/resvg-js": "^2.6.2",
     "@testing-library/jest-dom": "^6.9.1",

@@ -19,3 +19,4 @@ export * from './course-config';
 export * from './v4-expanded-modules';
 export * from './prompt-library';
 export * from './output-examples';
+export * from './role-paths';

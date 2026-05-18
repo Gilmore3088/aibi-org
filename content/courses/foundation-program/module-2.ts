@@ -11,45 +11,6 @@ export const module2: Module = {
   pillar: 'awareness',
   estimatedMinutes: 20,
   keyOutput: 'AI Claim Review',
-  sections: [
-    {
-      id: 'm2-opening',
-      title: 'Navigating the Modern AI Ecosystem',
-      content: `The AI tools landscape is not one category — it is a spectrum of platforms serving different professional purposes. For community bank and credit union staff, understanding which tool serves which purpose is the foundation of professional AI use.
-
-This module covers the seven platforms most relevant to banking practitioners. It does not cover every AI tool that exists — it covers the ones you are most likely to encounter in your institution's approved toolkit or hear about from colleagues.
-
-**The organizing principle:**
-
-> Every AI tool has a primary strength. The mistake practitioners make is using a generalist tool for a specialist task, or a specialist tool where a generalist tool would produce better results.
-
-The ecosystem comparison table gives you a quick-reference framework for matching tool to task.`,
-    },
-    {
-      id: 'm2-out-of-scope',
-      title: 'Out-of-Scope Tools',
-      content: `Some AI platforms — specifically website creation tools like Framer and 10Web, and full-stack application builders like Lovable and Replit Agent — appear in the ecosystem overview but are primarily covered in the **AiBI-S (Specialist)** curriculum.
-
-These tools are powerful but require software development context that goes beyond the AiBI-Foundation practitioner scope.
-
-> If you encounter them in your work environment, treat them as tools for specialized technical staff until you have completed AiBI-S.
-
-Similarly, AI-powered image generation tools (Midjourney, DALL-E 3) and video tools are not covered in this module beyond a brief orientation. Their primary use cases in community banking are marketing and communications tasks that typically involve dedicated creative staff.`,
-    },
-    {
-      id: 'm2-onboarding-branch',
-      title: 'Your Personalized Journey',
-      content: `During course onboarding, you selected your primary platform. That selection routes personalized content throughout Modules 3, 4, and 7.
-
-**Why this matters:**
-
-A compliance officer using Microsoft 365 Copilot navigates AI differently than a lender using ChatGPT Plus, who navigates it differently than a marketing coordinator using Claude. The underlying skills (regulatory awareness, data classification, skill construction) are the same — but the specific workflows, features, and gotchas differ by platform.
-
-If you selected "Microsoft 365 Copilot" during onboarding, Module 3 will walk you through the M365 activation path specific to your institution's license tier. If you selected a generalist AI (ChatGPT, Claude, Gemini), Module 3 will cover the free-vs-paid transition and how to assess whether a paid subscription is justified for your role.
-
-You can always revisit modules with different platform context by resetting your onboarding answers from your profile settings.`,
-    },
-  ],
   tables: [
     {
       id: 'm2-platforms',

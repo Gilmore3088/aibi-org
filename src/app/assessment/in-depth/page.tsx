@@ -44,6 +44,7 @@ async function getSignedInEmail(): Promise<string | null> {
 }
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/assessment/in-depth' },
   title: "In-Depth Assessment | The AI Banking Institute",
   description:
     "A 48-question, eight-dimension diagnostic for community banks and credit unions. Individual report plus an anonymized aggregate dashboard for institution leaders.",

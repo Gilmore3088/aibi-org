@@ -15,18 +15,25 @@ brand stack.
 
 ## Where we are (start of plan)
 
-| Metric | Baseline (2026-05-17 AM) | Current (2026-05-17 PM) | Post-Wave A+ (2026-05-17 evening) |
-|--------|-------|-------|-------|
-| Performance | 89 | 92 | **TBD (re-measure pending)** |
-| LCP (Lighthouse) | 3.8s | 3.3s | **TBD** |
-| LCP (real users via Playwright unthrottled) | ~440ms | ~440ms | ~440ms (no regression expected) |
-| FCP | 0.9s | 0.9s | TBD |
-| TBT | 0ms | 0ms | TBD |
-| CLS | 0 | 0 | TBD |
-| Total page weight | 599 KiB | 508 KiB (-91) | TBD |
+| Metric | Baseline (2026-05-17 AM) | Current (2026-05-17 PM) | Post-Wave A+ (2026-05-17 evening) | Measured (2026-05-18, prod) |
+|--------|-------|-------|-------|-------|
+| Performance (mobile) | 89 | 92 | TBD | **98** ✓ |
+| Performance (desktop) | — | — | — | **100** ✓ |
+| LCP mobile / | 3.8s | 3.3s | TBD | **2.44s** ✓ (avg of 2 runs) |
+| LCP mobile /assessment | — | — | — | **2.43s** ✓ (avg of 2 runs) |
+| LCP desktop / | — | — | — | **0.60s** ✓ |
+| LCP desktop /assessment | — | — | — | **0.51s** ✓ |
+| LCP (real users via Playwright unthrottled) | ~440ms | ~440ms | ~440ms (no regression expected) | — |
+| FCP mobile | 0.9s | 0.9s | TBD | **0.95s** ✓ |
+| FCP desktop | — | — | — | **0.32s** ✓ |
+| TBT (all 4 measurements) | 0ms | 0ms | TBD | **0ms** ✓ |
+| CLS (all 4 measurements) | 0 | 0 | TBD | **0** ✓ |
+| Total page weight | 599 KiB | 508 KiB (-91) | TBD | — |
 | Homepage First Load JS | 165 KB | 165 KB | **101 KB (-64 KB, -39%)** |
-| /assessment First Load JS | 190 KB | 190 KB | **127 KB (-63 KB, -33%)** |
+| /assessment First Load JS | 190 KB | 190 KB | **106 KB (-84 KB, -44%)** ← lazy-load ResultsViewV2 shaved another 21 KB |
 | /results/[id] First Load JS | 174 KB | 174 KB | **111 KB (-63 KB, -36%)** |
+| /dashboard First Load JS | 208 KB | 208 KB | **135 KB (-73 KB, -35%)** ← `sideEffects` declaration unlocked content-barrel tree-shaking |
+| Hero SVG inline HTML | 20.6 KB | 20.6 KB | **10.4 KB (-49%)** via SVGO |
 
 Real-user LCP is already great. Lighthouse synthetic 4G shows 3.3s
 because **the page is network-bound at simulated bandwidth** — 508 KB
@@ -61,6 +68,13 @@ Five workstreams, ranked by impact ÷ risk:
 | E | Reverted lede SVG + combined hero SVG (regressed FCP, no LCP gain) | Net negative experiments removed | `b6ca19d`, `8f2df9c` |
 | F | **Wave A** — ROIDossier code-split + Newsreader split into hero (400 + italic, preload) and heavy (500/600/700, no preload, no italic) | -3 italic font files; ROI calculator JS deferred below-the-fold | `13e7f65` |
 | G | **Wave A+** — Drop Supabase JS SDK from marketing routes. HomeContextStrip → async server component. AuthDropdown signOut → server action. EmailGate / PdfDownloadButton → fetch `/api/auth/me`. SignupModal magic link → server action. | **-64 KB First Load JS across every marketing route** (home, assessment, results, about, security, education, …) | `3f92c4f` |
+| H | **SVGO the hero SVG** — Satori's mask/<g> scaffolding stripped, precision-3 path coordinates | -10 KB inline HTML on every homepage render (20.6 → 10.4 KB SVG) | `fe3bd48` |
+| I | **Lazy-load ResultsViewV2 on /assessment** — `next/dynamic({ ssr: false })`; renders only after question phase + email capture | **-21 KB First Load JS on /assessment** (127 → 106) | `4f61dad` |
+| J | **Move TTF fonts off public/** + **drop unused font weights** (Cormorant SC 500/600/700, JetBrains Mono 500) | -2.4 MB deploy size; -8 KB CSS on every page load | `09100a6` |
+| K | **`@next/bundle-analyzer` wired behind `ANALYZE=true`** | No runtime change. Treemap surfaces future regressions before they ship. | `34b0bba` |
+| L | **`sideEffects` declaration in package.json — enables webpack tree-shaking of content barrels** | **-73 KB First Load JS on /dashboard** (208 → 135). Dashboard page chunk gzipped: 80 → 36 KB (-55%). Single biggest bundle win of the session. | `bb418c4` |
+| M | **Newsreader Fallback @font-face — closes the synthetic-fallback gap in @next/font/google** | CLS hop on first paint eliminated (Newsreader-metric-matched Times New Roman now bridges the load) | `903617b` |
+| N | **Wave B verified shipped** — Production already emits `Link: rel=preload` for font woff2 files; Vercel auto-promotes to HTTP 103 Early Hints | 100-300ms latency saving baked in. No config change needed. | — |
 
 Five Lighthouse audit reports document each attempt — see
 [`docs/reviews/performance-overhaul-2026-05-17.md`](../docs/reviews/performance-overhaul-2026-05-17.md)
@@ -68,13 +82,13 @@ for the full audit trail with metrics.
 
 ## Acceptance criteria
 
-- Lighthouse Performance ≥ 95 on `/`
-- LCP < 2.5s on Lighthouse Slow 4G simulation
-- FCP not worse than 1.0s
-- TBT ≤ 50ms, CLS ≤ 0.05
+- Lighthouse Performance ≥ 95 on `/` — **HIT (mobile 98 / desktop 100, 2026-05-18)**
+- LCP < 2.5s on Lighthouse Slow 4G simulation — **HIT (mobile / 2.44s, mobile /assessment 2.43s)**
+- FCP not worse than 1.0s — **HIT (mobile 0.95s)**
+- TBT ≤ 50ms, CLS ≤ 0.05 — **HIT (both 0 across all 6 runs)**
 - No visual regression on the Ledger brand (Newsreader headlines,
-  Cormorant SC small caps for those decisions kept, Geist body)
-- Full Playwright suite still 106+ passing
+  Cormorant SC small caps for those decisions kept, Geist body) — pending A4 visual QA
+- Full Playwright suite still 106+ passing — pending D1
 
 ## Out of scope
 

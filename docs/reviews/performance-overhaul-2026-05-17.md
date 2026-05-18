@@ -278,6 +278,13 @@ Tasks AP9–AP14 in `tasks/performance-optimization-2026-05-17.md` cover the pos
 | `13e7f65` | Wave A bundled with In-Depth completion-detection dashboard fix |
 | `73b325f` | Docs catch-up for Wave A |
 | `3f92c4f` | **Wave A+ — Supabase JS off marketing critical path (-64 KB First Load JS)** |
+| `fe3bd48` | **SVGO hero — Satori mask/<g> scaffolding removed (-10 KB inline HTML)** |
+| `8039fc6` | Docs catch-up for Wave A+ |
+| `4f61dad` | **Lazy-load ResultsViewV2 on /assessment (-21 KB First Load JS)** |
+| `f5fa2e6` | Docs catch-up for SVGO + lazy ResultsView + E.1 investigation |
+| `09100a6` | **Fonts off public/ (-2.4 MB deploy) + unused font weights dropped (-8 KB CSS)** |
+| `34b0bba` | **Bundle analyzer behind `ANALYZE=true` — first treemap captured** |
+| `bb418c4` | **`sideEffects` declaration in package.json — tree-shakes content barrels. /dashboard 208→135 KB First Load JS (-35%). Dashboard chunk gzipped 80→36 KB (-55%). Single biggest bundle win of the session.** |
 
 ## Files touched this session (perf scope)
 
@@ -290,6 +297,24 @@ Tasks AP9–AP14 in `tasks/performance-optimization-2026-05-17.md` cover the pos
 
 ## Open questions
 
-- **Early Hints:** does Vercel emit HTTP 103 for our preloaded font today? Wave B verifies via `curl -I`.
+- **Early Hints:** does Vercel emit HTTP 103 for our preloaded font today? Wave B verifies via `curl -I`. **RESOLVED 2026-05-18** — production emits 5 woff2 preload Link headers; Vercel auto-promotes to 103 on prod tier.
 - **ROIDossier code-split:** the calculator component is ~12 KB JS — confirm it isn't on the critical path post-split (it's below the fold, so `ssr: false` should be safe).
 - **Cormorant SC:** stakeholder sign-off needed on the wordmark line change before dropping the family. The recommendation above is the engineer's read; brand owns the decision.
+
+## Lighthouse measurement — 2026-05-18 (closes A2/A5/A6/B3/D2/D3/E1.5)
+
+Run against production `https://www.aibankinginstitute.com` (apex 307s to www) with Lighthouse 13.3.0 (`npx lighthouse`), headless Chrome, default Slow 4G mobile / cable desktop throttling. Two runs per route × form-factor (mobile only — desktop ran once because it sat at 100/100 with no variance worth averaging). All reports saved at `/tmp/lh-2026-05-18/*.report.{json,html}`.
+
+| Route | Form factor | Perf | LCP | FCP | TBT | CLS | Speed Index |
+|-------|-------------|------|-----|-----|-----|-----|-------------|
+| `/` | desktop | **100** | 0.60s | 0.37s | 0ms | 0 | 0.54s |
+| `/` | mobile (avg of 2) | **98** | **2.44s** | 0.96s | 0ms | 0 | 1.02s |
+| `/assessment` | desktop | **100** | 0.51s | 0.27s | 0ms | 0 | 0.33s |
+| `/assessment` | mobile (avg of 2) | **98** | **2.43s** | 0.93s | 0ms | 0 | 0.96s |
+
+**Every acceptance gate hit.** Run-to-run variance on mobile LCP was 0.01s (2.42s vs 2.44s on `/assessment`; 2.44s both times on `/`) — the result is stable, not borderline-lucky. The plan's bytes-bound theory held: cutting First Load JS by ~40% on marquee routes dropped Slow-4G LCP from ~3.3s to 2.44s.
+
+Open follow-ups from this measurement:
+- **A4 visual QA** still pending (Newsreader heavy-italic surfaces).
+- **D1 Playwright suite** still pending — needed to certify the Wave A+ server-action refactors.
+- **D4** (move task file to `_done/`) blocked on A4 + D1.
