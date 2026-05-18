@@ -31,27 +31,38 @@ The detailed checkboxes never live in two places — they live in
 
 | Plan | Task file | Open | Status | Owner-note |
 |------|-----------|------|--------|------------|
-| [Launch spec v2 (canonical)](../Plans/aibi-launch-spec-v2.md) | [`launch-checklist.md`](./launch-checklist.md) | **80** | Pre-launch QA | Infra, auth, e2e, content, security — most items unchecked |
-| [AiBI-P → AiBI-Foundation rename](../Plans/_archive/refactor-aibi-p-to-foundation-migration.md) (plan complete) | [`aibi-p-to-foundation-deploy-checklist.md`](./aibi-p-to-foundation-deploy-checklist.md) | **10** | External rollout | Stripe / MailerLite / Resend / Vercel display-name updates |
-| [LMS prototype reskin](./lms-prototype-reskin.md) | (same file — roadmap-style) | **N/A** | Multi-PR roadmap | PR 1 scope: shared shell + course overview. Track PR status in plan body. |
+| [Launch spec v2 (canonical)](../Plans/aibi-launch-spec-v2.md) | [`launch-checklist.md`](./launch-checklist.md) | **~510** | Pre-launch QA | Infra, auth, e2e, content, security — 13 ticked 2026-05-17, the rest open |
+| [AiBI-P → AiBI-Foundation rename](../Plans/_archive/refactor-aibi-p-to-foundation-migration.md) (plan complete) | [`aibi-p-to-foundation-deploy-checklist.md`](./aibi-p-to-foundation-deploy-checklist.md) | **~14** | External rollout | Stripe / MailerLite / Resend / Vercel display-name updates |
 | [Research page redesign](../Plans/research-page-design-brief.md) | _(not yet created)_ | — | Plan only | Break into task list when work begins |
-| [Persistent backlog (Phase 1+2)](./todo.md) | [`todo.md`](./todo.md) | **40+** | Backlog | Bigger picture roadmap; mix of Phase 2 features (Supabase persistence, Stripe checkout, sandbox providers, AiBI-S/L wiring) |
-| QA bug sweep (issues #92–96) | [`qa-bug-log-2026-05-15.md`](./qa-bug-log-2026-05-15.md) | **0** | Chronicle | Closed bugs only — open ones appear as plain "_Still open_" lines at bottom |
+| [Persistent backlog (Phase 2)](./todo.md) | [`todo.md`](./todo.md) | **~52** | Backlog | Phase 2 features (Supabase persistence, sandbox providers, AiBI-S/L wiring) |
+
+**Prioritized view:** see [`PATH-FORWARD.md`](./PATH-FORWARD.md) — tags
+every outstanding work item as 🤖 autonomous / 🔒 you-only /
+🤝 collaborative, with Wave 1 (done) and Wave 2 (next) queues.
+
+## Recently closed (in `_done/`)
+
+| Plan | Closed | Why |
+|------|--------|-----|
+| `lms-prototype-reskin.md` | 2026-05-17 | All 7 PRs merged (#52–#56, #64, #65) — Ledger LMS shipped |
+| `qa-bug-log-2026-05-15.md` | 2026-05-17 | Issues #92–96 all PASS verdict |
 
 ## Active reviews / runbooks (not task-trackable)
 
 | Artifact | Type | Why active |
 |----------|------|------------|
 | [`docs/reviews/api-auth-audit-2026-05-11.md`](../docs/reviews/api-auth-audit-2026-05-11.md) | Security review | Findings need to be triaged into `launch-checklist.md` if not already |
+| [`docs/reviews/auth-e2e-2026-05-17.md`](../docs/reviews/auth-e2e-2026-05-17.md) | Auth E2E report | Findings 1+3 fixed; 2 unblocked 2026-05-17 |
+| [`docs/reviews/a11y-audit-2026-05-17.md`](../docs/reviews/a11y-audit-2026-05-17.md) | Accessibility audit | 7/7 public routes clean |
 | [`docs/manual-verification-runbook.md`](../docs/manual-verification-runbook.md) | Runbook | Used during launch QA |
 | [`docs/brand-refresh-2026-05-09/MERGE-ROADMAP.md`](../docs/brand-refresh-2026-05-09/MERGE-ROADMAP.md) | Migration plan | Ledger rollout phases 1–5 |
 | [`docs/brand-refresh-2026-05-09/MANUAL-ACTIONS.md`](../docs/brand-refresh-2026-05-09/MANUAL-ACTIONS.md) | Manual steps | Figma / Resend / Vercel dashboard work |
 
 ## Living reference (never closes)
 
-- [`./lessons.md`](./lessons.md) — Session lessons + anti-patterns
-- [`../CLAUDE.md`](../CLAUDE.md) — Project intelligence
+- [`../CLAUDE.md`](../CLAUDE.md) — Project intelligence (also the lessons surface)
 - [`../DECISIONS.md`](../DECISIONS.md) — Decision overrides log
+- `~/.claude/projects/.../memory/MEMORY.md` — Auto-memory (lessons, feedback, project state) — local-only, not in repo
 
 ---
 

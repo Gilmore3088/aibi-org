@@ -56,6 +56,21 @@ launch spec. Single source of truth for product ladder, naming, routes,
 entitlements, pricing. When code disagrees with this doc, file an issue
 rather than coding around it.
 
+## Current contents (as of 2026-05-17)
+
+| File / folder | Role | Status |
+|---------------|------|--------|
+| [`README.md`](./README.md) | Folder rules (this file) | — |
+| [`aibi-launch-spec-v2.md`](./aibi-launch-spec-v2.md) | Canonical launch spec | Active |
+| [`research-page-design-brief.md`](./research-page-design-brief.md) | /research page rebuild brief | Active (no task file yet) |
+| [`_archive/`](./_archive/) | Superseded HTML specs, foundation-v2 reversal, completed migration plan | History |
+| [`_assets/`](./_assets/) | PDFs, docx, screenshots referenced by plans | Local-only (gitignored, README tracked) |
+| [`_ideas/`](./_ideas/) | Stash for future ideas | Local-only (gitignored, README tracked) |
+
+The active plan set is intentionally tiny — two strategic docs and a
+canonical spec. Everything else is history (`_archive/`) or local
+inputs (`_assets/`, `_ideas/`).
+
 ## Pointers
 
 - [`CHRONOLOGY.md`](../CHRONOLOGY.md) — full timeline of every plan
