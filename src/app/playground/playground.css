@@ -10,7 +10,7 @@
     --terra:#B5862A; --terra-2:#8E6620; --weak:#8E3B2A;
     --green:#1F8A5B; --navy:#1E3A5F; --plum:#5E3B6E;
     --rule:#D5D1C2; --rule-strong:#B9B4A0;
-    --serif: var(--font-newsreader), Georgia, serif;
+    --serif: var(--font-newsreader-hero), var(--font-newsreader-heavy), Georgia, serif;
     --sans: var(--font-geist-sans), -apple-system, system-ui, sans-serif;
     --mono: var(--font-jetbrains-mono), ui-monospace, monospace;
     --maxw:1480px;

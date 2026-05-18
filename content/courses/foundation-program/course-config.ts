@@ -10,10 +10,11 @@
 //   shown to learners.
 import type { CourseConfig, CourseModule } from '@/types/lms';
 import { modules } from './modules';
+import { V4_FOUNDATION_PROGRAM_MODULE_BY_NUMBER } from './v4-expanded-modules';
 import {
-  AIBI_P_ARTIFACTS,
-  AIBI_P_CERTIFICATE_REQUIREMENTS,
-  AIBI_P_PRACTICE_REPS,
+  FOUNDATION_ARTIFACTS,
+  FOUNDATION_CERTIFICATE_REQUIREMENTS,
+  FOUNDATION_PRACTICE_REPS,
 } from '@content/practice-reps/foundation-program';
 
 const PHASE_BY_MODULE: Record<number, CourseModule['phase']> = {
@@ -31,11 +32,12 @@ const PHASE_BY_MODULE: Record<number, CourseModule['phase']> = {
   12: 'credential',
 };
 
-export const aibiPReusableModules: readonly CourseModule[] = modules.map((mod) => {
-  const practice = AIBI_P_PRACTICE_REPS.find((rep) => rep.moduleNumber === mod.number) ??
-    AIBI_P_PRACTICE_REPS[0];
-  const artifact = AIBI_P_ARTIFACTS.find((item) => item.moduleNumber === mod.number);
+export const foundationReusableModules: readonly CourseModule[] = modules.map((mod) => {
+  const practice = FOUNDATION_PRACTICE_REPS.find((rep) => rep.moduleNumber === mod.number) ??
+    FOUNDATION_PRACTICE_REPS[0];
+  const artifact = FOUNDATION_ARTIFACTS.find((item) => item.moduleNumber === mod.number);
   const firstActivity = mod.activities[0];
+  const v4 = V4_FOUNDATION_PROGRAM_MODULE_BY_NUMBER.get(mod.number);
 
   return {
     id: mod.id,
@@ -49,7 +51,7 @@ export const aibiPReusableModules: readonly CourseModule[] = modules.map((mod) =
     estimatedMinutes: mod.estimatedMinutes,
     keyOutput: mod.keyOutput,
     learnerOutcome: `Use AI more safely and practically for ${mod.keyOutput.toLowerCase()}.`,
-    learn: mod.sections.map((section) => section.title),
+    learn: (v4?.sections ?? []).map((section) => section.title),
     practice,
     apply: {
       id: firstActivity?.id ?? `m${mod.number}-complete`,
@@ -76,8 +78,8 @@ export const foundationProgramCourseConfig: CourseConfig = {
     'In less than two weeks, every community banking employee can write better, summarize faster, think clearer, and avoid risky AI mistakes — safely and confidently, on the model your institution already trusts.',
   audience: 'Community bank and credit union employees',
   estimatedMinutes: modules.reduce((total, mod) => total + mod.estimatedMinutes, 0),
-  modules: aibiPReusableModules,
-  practiceReps: AIBI_P_PRACTICE_REPS,
-  artifacts: AIBI_P_ARTIFACTS,
-  certificateRequirements: AIBI_P_CERTIFICATE_REQUIREMENTS,
+  modules: foundationReusableModules,
+  practiceReps: FOUNDATION_PRACTICE_REPS,
+  artifacts: FOUNDATION_ARTIFACTS,
+  certificateRequirements: FOUNDATION_CERTIFICATE_REQUIREMENTS,
 };

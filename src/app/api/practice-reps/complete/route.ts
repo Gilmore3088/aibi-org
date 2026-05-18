@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { createServerClientWithCookies, isSupabaseConfigured } from '@/lib/supabase/client';
-import { AIBI_P_ARTIFACTS } from '@content/practice-reps/foundation-program';
+import { FOUNDATION_ARTIFACTS } from '@content/practice-reps/foundation-program';
 
 interface CompletePracticeRepBody {
   readonly courseId?: unknown;
@@ -54,7 +54,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     return NextResponse.json({ error: 'Failed to save practice rep.' }, { status: 500 });
   }
 
-  const linkedArtifacts = AIBI_P_ARTIFACTS.filter(
+  const linkedArtifacts = FOUNDATION_ARTIFACTS.filter(
     (artifact) =>
       artifact.courseId === body.courseId &&
       artifact.sourceActivityId === body.repId,

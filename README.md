@@ -55,8 +55,14 @@ npm run build
 - `/courses/foundation/program` — AiBI-Foundation course overview.
 - `/courses/foundation/program/[module]` — Learn / Practice / Apply shell.
 - `/courses/foundation/program/prompt-library` — searchable prompt library.
-- `/dashboard` — learner command center.
+- `/dashboard` — learner command center (Ledger redesign 2026-05-17: 7-step activation ladder, today's rep, In-Depth section, Foundation preview).
 - `/admin/reviewer` — work product review queue.
+
+Auth-gated routes (`/dashboard`, `/courses/foundation/program/*`) use
+the `isPreviewAuthBypassEnabled()` helper from
+`src/lib/auth/previewBypass.ts` so Vercel previews without Supabase
+env vars still render. Production is inert — `VERCEL_ENV === 'production'`
+hard-floors the bypass.
 
 ## Reusable Course Model
 

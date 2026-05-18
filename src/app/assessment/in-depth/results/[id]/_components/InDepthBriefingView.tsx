@@ -11,6 +11,7 @@
 //   In-Depth Briefing.html (Claude Design handoff bundle, 2026-05-11).
 
 import './briefing.css';
+import Link from 'next/link';
 import type { ReactElement } from 'react';
 import type { Tier, DimensionScore } from '@content/assessments/v2/scoring';
 import type { Dimension } from '@content/assessments/v2/types';
@@ -713,6 +714,16 @@ export function InDepthBriefingView({
         dimensionBreakdown={dimensionBreakdown}
         role={role}
       />
+
+      {/* Return-to-dashboard strip — Briefing is a long read; surface the
+          way back so users don't have to dig through the global nav. */}
+      <section className="docback">
+        <div className="container">
+          <Link href="/dashboard" className="docback-link">
+            ← Return to your dashboard
+          </Link>
+        </div>
+      </section>
 
       <footer className="docfoot">
         <div className="container docfoot-row">

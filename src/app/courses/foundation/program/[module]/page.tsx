@@ -40,7 +40,7 @@ import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/cl
 import type { ActivityResponse } from '@/types/course';
 import { AIPracticeSandbox } from '@/components/AIPracticeSandbox';
 import { SANDBOX_CONFIGS } from '@content/sandbox-data/foundation-program';
-import { AIBI_P_ARTIFACTS } from '@content/practice-reps/foundation-program';
+import { FOUNDATION_ARTIFACTS } from '@content/practice-reps/foundation-program';
 import {
   getModuleActivitySpec,
   buildModuleActivity,
@@ -328,7 +328,7 @@ export default async function ModulePage({ params }: ModulePageParams) {
           learnContent={
             <>
               <LearnSection
-                sections={expandedModule?.sections ?? mod.sections}
+                sections={expandedModule?.sections ?? []}
                 keyTakeaways={expandedModule?.takeaways}
                 moduleNumber={moduleNum}
               />
@@ -374,7 +374,7 @@ export default async function ModulePage({ params }: ModulePageParams) {
 }
 
 function buildV4Activity(module: ExpandedModule): Activity {
-  const artifact = AIBI_P_ARTIFACTS.find((item) => item.moduleNumber === module.number);
+  const artifact = FOUNDATION_ARTIFACTS.find((item) => item.moduleNumber === module.number);
 
   return {
     id: `${module.number}.1`,
