@@ -17,7 +17,7 @@ import {
   toLMSModules,
   type LMSModule,
 } from '@/components/lms';
-import { foundationProgramCourseConfig } from '@content/courses/foundation-program';
+import { foundationCourseConfig } from '@content/courses/foundation-program';
 import { getEnrollment } from '@/app/courses/foundation/program/_lib/getEnrollment';
 import { ExamRunner } from './_components/ExamRunner';
 
@@ -43,7 +43,7 @@ export default async function FoundationExamPage() {
   const eligible = completedCount >= REQUIRED_COMPLETED_MODULES;
 
   const lmsModules: readonly LMSModule[] = toLMSModules(
-    foundationProgramCourseConfig.modules,
+    foundationCourseConfig.modules,
   );
 
   return (

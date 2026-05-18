@@ -15,7 +15,7 @@ import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
 import { getEnrollment } from '@/app/courses/foundation/program/_lib/getEnrollment';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
 import { EnrollButton } from './EnrollButton';
-import { foundationProgramCourseConfig } from '@content/courses/foundation-program';
+import { foundationCourseConfig, FOUNDATION_TOTAL_MINUTES } from '@content/courses/foundation-program';
 import { CourseShell, LMSTopBar, PrimaryButton, toLMSModules, type LMSModule } from '@/components/lms';
 
 export const metadata: Metadata = {
@@ -80,10 +80,10 @@ export default async function PurchasePage() {
   const enrollment = await getEnrollment();
   const userEmail = await getUserEmail();
   const lmsModules: readonly LMSModule[] = toLMSModules(
-    foundationProgramCourseConfig.modules,
+    foundationCourseConfig.modules,
   );
   const totalModules = lmsModules.length;
-  const totalMinutes = foundationProgramCourseConfig.estimatedMinutes;
+  const totalMinutes = FOUNDATION_TOTAL_MINUTES;
 
   // Already-enrolled state — keep the dedicated "you're in" surface,
   // but render it inside the new LMS shell so the wordmark + sidebar
@@ -253,7 +253,7 @@ export default async function PurchasePage() {
               maxWidth: '60ch',
             }}
           >
-            {foundationProgramCourseConfig.promise}
+            {foundationCourseConfig.promise}
           </p>
           <p
             style={{
