@@ -17,6 +17,7 @@ import { ResearchAnimations } from './_components/ResearchAnimations';
 import './research.css';
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/research' },
   title: 'Research — The AI Banking Brief',
   description:
     'Sourced AI research, field notes, and practical artifacts for community banks and credit unions adopting AI safely. Published fortnightly.',

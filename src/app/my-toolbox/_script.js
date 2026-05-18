@@ -1,3 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+// my-toolbox/_script.js — bundled at build into a <script dangerouslySetInnerHTML>.
+// This is mockup-grade JS for the toolbox surface; not part of the React tree.
+// Unused-var lint is disabled because several placeholder bindings (hiddenCount,
+// moreCounter, event-handler args _e/i) are kept to mirror the source mockup
+// structure during the in-flight v5 redesign. Remove this disable when the
+// /my-toolbox redesign lands and dead bindings are cleaned up.
 const dbg = document.getElementById('dbg');
   const dr  = document.getElementById('drawer');
   const close = () => { dr.classList.remove('open'); dbg.classList.remove('open'); };

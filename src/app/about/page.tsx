@@ -50,6 +50,7 @@ const PRINCIPLE_GLYPHS: Record<string, ReactNode> = {
 };
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/about' },
   title: `About — ${BRAND.name}`,
   description:
     "The AI Banking Institute exists for the community banks and credit unions that anchor towns and neighborhoods — not for the twenty largest banks. Here is why.",

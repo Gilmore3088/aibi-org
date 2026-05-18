@@ -15,6 +15,7 @@ import { modules } from "@content/courses/foundation-program";
 import { getEnrollment as getPEnrollment } from "@/app/courses/foundation/program/_lib/getEnrollment";
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/education' },
   title: "Education | The AI Banking Institute",
   description:
     "Free classes and three certification tracks for community banks and credit unions. Start with the AI Readiness Assessment, then earn AiBI-Foundation, AiBI-S, or AiBI-L credentials.",
