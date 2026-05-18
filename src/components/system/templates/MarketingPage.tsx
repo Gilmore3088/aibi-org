@@ -34,6 +34,18 @@ export interface MarketingHero {
    * paths, eliminating the Newsreader font-load dependency.
    */
   readonly titleNode?: ReactNode;
+  /**
+   * Optional override that REPLACES the entire eyebrow + H1 + lede
+   * block with a single pre-rendered node (typically a baked image of
+   * the whole hero text). Bypasses the text-rendering path entirely so
+   * the LCP element is the image, not text waiting on font downloads.
+   * Set this on the homepage; leave undefined elsewhere.
+   *
+   * The node MUST provide its own semantic heading + lede text (as
+   * visually-hidden elements) so screen readers + SEO crawlers still
+   * see the headline content.
+   */
+  readonly heroBlock?: ReactNode;
   /** Optional sub-title in italic serif under the H1. */
   readonly tagline?: string;
   readonly lede?: ReactNode;
@@ -75,25 +87,31 @@ export function MarketingPage({ hero, kpis, closing, children, className }: Mark
       <Section variant="linen" divider={hero.divider ?? "strong"} padding="hero">
         <div className={cn("grid gap-s10", hasAside && "lg:grid-cols-[1.5fr_1fr] lg:items-end")}>
           <div>
-            {hero.eyebrow && (
-              <p className="font-serif-sc text-label-md uppercase tracking-widest text-terra mb-s4">
-                {hero.eyebrow}
-              </p>
-            )}
-            {hero.titleNode ? (
-              hero.titleNode
+            {hero.heroBlock ? (
+              hero.heroBlock
             ) : (
-              <h1 className="font-serif text-display-lg md:text-display-xl text-ink leading-tight tracking-tightish">
-                {hero.title}
-              </h1>
-            )}
-            {hero.tagline && (
-              <p className="font-serif italic text-body-lg text-terra mt-s4">{hero.tagline}</p>
-            )}
-            {hero.lede && (
-              <p className="text-body-lg text-ink/80 leading-relaxed mt-s5 max-w-narrow">
-                {hero.lede}
-              </p>
+              <>
+                {hero.eyebrow && (
+                  <p className="font-serif-sc text-label-md uppercase tracking-widest text-terra mb-s4">
+                    {hero.eyebrow}
+                  </p>
+                )}
+                {hero.titleNode ? (
+                  hero.titleNode
+                ) : (
+                  <h1 className="font-serif text-display-lg md:text-display-xl text-ink leading-tight tracking-tightish">
+                    {hero.title}
+                  </h1>
+                )}
+                {hero.tagline && (
+                  <p className="font-serif italic text-body-lg text-terra mt-s4">{hero.tagline}</p>
+                )}
+                {hero.lede && (
+                  <p className="text-body-lg text-ink/80 leading-relaxed mt-s5 max-w-narrow">
+                    {hero.lede}
+                  </p>
+                )}
+              </>
             )}
             {(hero.primaryCta || hero.secondaryCta) && (
               <div className="mt-s8 flex flex-wrap items-center gap-s6">
