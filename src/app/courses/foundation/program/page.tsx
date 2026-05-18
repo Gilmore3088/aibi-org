@@ -696,15 +696,6 @@ export default async function CourseOverviewPage() {
             );
           })}
 
-          <p
-            style={{
-              marginTop: 8,
-              fontSize: 12,
-              color: 'var(--ledger-slate)',
-            }}
-          >
-            More credentials launching soon: AiBI-S (Specialist) and AiBI-L (Leader).
-          </p>
         </section>
       </div>
     </CourseShell>
