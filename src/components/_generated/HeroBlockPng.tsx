@@ -39,17 +39,19 @@ export function HeroBlockPng({ className }: HeroBlockPngProps): JSX.Element {
       <p className="sr-only">
         Independent AI assessment and education for community banks and credit unions.
       </p>
-      {/* We deliberately use <img> not next/image because the source
-          is an inline data URI — next/image's optimizer can't process
-          it and would warn. fetchpriority="high" prioritizes the LCP
-          element. */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
+      {/*
+        eslint-disable-next-line @next/next/no-img-element
+        We deliberately use <img> not next/image because the source is a
+        base64 data URI — next/image's optimizer can't process it and
+        would warn. fetchPriority="high" tells the browser the image is
+        critical for LCP.
+      */}
       <img
         src={HERO_BLOCK_DATA_URI}
         alt=""
         role="presentation"
         decoding="sync"
-        // @ts-expect-error — fetchpriority is valid HTML; React types lag
+        // @ts-expect-error — fetchpriority is valid HTML, React types lag
         fetchpriority="high"
         className={className}
         style={{ display: 'block', width: '100%', height: 'auto', maxWidth: '1400px' }}
