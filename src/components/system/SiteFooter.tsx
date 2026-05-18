@@ -32,7 +32,10 @@ const LINK_GROUPS: readonly LinkGroup[] = [
     links: [
       { href: "/about", label: "About" },
       { href: "/security", label: "Security & Governance" },
-      { href: "/verify", label: "Verify a credential" },
+      // "/verify" landing was removed because only "/verify/[certificateId]" exists —
+      // third parties verify with the URL printed on the credential itself, which
+      // already includes the ID. Restore this when/if a credential-ID input page
+      // is built.
     ],
   },
 ] as const;
