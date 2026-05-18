@@ -533,4 +533,19 @@ Open follow-up: the four tables (`sources`, `content_items`,
 `content_scores`, `story_candidates`) currently sit in `public` with
 generic names. A second migration can move them into a dedicated
 `content_engine` schema (or apply a `ce_` prefix) before any UI reads
-them — both are mechanical at this point.
+them — both are mechanical at this point. **Resolved same day** — see
+next entry.
+
+**2026-05-18 — Content Engine tables namespaced under `content_engine` schema.**
+Follow-up to the entry above. Picked the Postgres-native option over a
+`ce_` prefix to eliminate collision risk forever. Migration
+`00034_content_engine_schema.sql` rewritten to `create schema if not
+exists content_engine` and qualify all four tables, indexes, and the
+`content_with_latest_score` view. The Python client at
+`content-engine/src/aibi_scout/db.py` now passes
+`ClientOptions(schema="content_engine")` to `create_client`, so all
+existing `client.table("sources")` calls continue to work without
+schema-qualifying every call site. One-time 🔒 dashboard task added to
+`tasks/content-engine.md`: add `content_engine` to **Settings → API →
+Exposed schemas** in Supabase (PostgREST otherwise will not see the
+tables).

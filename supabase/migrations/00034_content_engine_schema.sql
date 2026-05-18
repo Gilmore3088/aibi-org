@@ -5,20 +5,35 @@
 -- nightly Scout cron and the founder-only /admin/content-engine console.
 -- See Plans/content-engine.md and tasks/content-engine.md.
 --
--- Lives in the shared website Supabase project (per 2026-05-18
--- decision in DECISIONS.md). If table-name collisions ever appear with
--- website features, a follow-up migration can move these into a
--- dedicated `content_engine` schema or prefix them — both are
--- mechanical at this point because no UI reads them yet.
+-- Lives in the shared website Supabase project, isolated in a dedicated
+-- `content_engine` schema so generic names (sources, content_items, etc.)
+-- can never collide with future website tables. See 2026-05-18 entry
+-- in DECISIONS.md.
+--
+-- NOTE: After applying this migration, add `content_engine` to the
+-- PostgREST "Exposed schemas" list in Supabase dashboard
+-- (Settings → API → Exposed schemas). Without that step, the supabase-py
+-- client cannot read the tables. This is a one-time dashboard action,
+-- tracked as a 🔒 task in tasks/content-engine.md.
 
 create extension if not exists "uuid-ossp";
 create extension if not exists "pg_trgm";  -- enables future fuzzy theme search
+
+create schema if not exists content_engine;
+
+grant usage on schema content_engine to postgres, anon, authenticated, service_role;
+alter default privileges in schema content_engine
+    grant all on tables to postgres, service_role;
+alter default privileges in schema content_engine
+    grant all on sequences to postgres, service_role;
+alter default privileges in schema content_engine
+    grant all on functions to postgres, service_role;
 
 
 -- =========================================================================
 -- sources: the influencers/blogs/feeds being monitored
 -- =========================================================================
-create table sources (
+create table content_engine.sources (
     id              uuid primary key default uuid_generate_v4(),
     name            text not null unique,
     category        text not null check (category in ('banking', 'general_ai', 'practitioner')),
@@ -31,15 +46,15 @@ create table sources (
     created_at      timestamptz not null default now()
 );
 
-create index idx_sources_active on sources(active) where active = true;
+create index idx_ce_sources_active on content_engine.sources(active) where active = true;
 
 
 -- =========================================================================
 -- content_items: raw items pulled from sources
 -- =========================================================================
-create table content_items (
+create table content_engine.content_items (
     id            uuid primary key default uuid_generate_v4(),
-    source_id     uuid not null references sources(id) on delete cascade,
+    source_id     uuid not null references content_engine.sources(id) on delete cascade,
     external_id   text not null,           -- GUID / URL / message-id, for dedup
     title         text not null,
     url           text,
@@ -51,16 +66,16 @@ create table content_items (
     unique (source_id, external_id)
 );
 
-create index idx_content_items_published on content_items(published_at desc);
-create index idx_content_items_source on content_items(source_id);
+create index idx_ce_content_items_published on content_engine.content_items(published_at desc);
+create index idx_ce_content_items_source on content_engine.content_items(source_id);
 
 
 -- =========================================================================
 -- content_scores: Scout output (one or more per content_item; latest wins)
 -- =========================================================================
-create table content_scores (
+create table content_engine.content_scores (
     id                  uuid primary key default uuid_generate_v4(),
-    content_item_id     uuid not null references content_items(id) on delete cascade,
+    content_item_id     uuid not null references content_engine.content_items(id) on delete cascade,
     banking_relevance   int  not null check (banking_relevance between 0 and 10),
     content_type        text not null check (content_type in (
                             'framework', 'how_to', 'opinion', 'news', 'tool_launch',
@@ -79,16 +94,16 @@ create table content_scores (
     model               text not null
 );
 
-create index idx_content_scores_item on content_scores(content_item_id);
-create index idx_content_scores_relevance on content_scores(banking_relevance desc);
-create index idx_content_scores_themes on content_scores using gin(key_themes);
+create index idx_ce_content_scores_item on content_engine.content_scores(content_item_id);
+create index idx_ce_content_scores_relevance on content_engine.content_scores(banking_relevance desc);
+create index idx_ce_content_scores_themes on content_engine.content_scores using gin(key_themes);
 
 
 -- =========================================================================
 -- story_candidates: Synthesizer output (built in next milestone; schema here so
 -- migrations don't churn later)
 -- =========================================================================
-create table story_candidates (
+create table content_engine.story_candidates (
     id                  uuid primary key default uuid_generate_v4(),
     week_of             date not null,
     title               text not null,
@@ -104,14 +119,14 @@ create table story_candidates (
     updated_at          timestamptz not null default now()
 );
 
-create index idx_story_candidates_week on story_candidates(week_of desc);
-create index idx_story_candidates_status on story_candidates(status);
+create index idx_ce_story_candidates_week on content_engine.story_candidates(week_of desc);
+create index idx_ce_story_candidates_status on content_engine.story_candidates(status);
 
 
 -- =========================================================================
 -- View: latest score per content item — what the digest and review use
 -- =========================================================================
-create or replace view content_with_latest_score as
+create or replace view content_engine.content_with_latest_score as
 select
     ci.id              as content_item_id,
     ci.source_id,
@@ -130,10 +145,10 @@ select
     cs.consequence_level,
     cs.skip,
     cs.scored_at
-from content_items ci
-join sources s on s.id = ci.source_id
+from content_engine.content_items ci
+join content_engine.sources s on s.id = ci.source_id
 left join lateral (
-    select * from content_scores
+    select * from content_engine.content_scores
     where content_item_id = ci.id
     order by scored_at desc
     limit 1

@@ -4,12 +4,21 @@ from datetime import datetime, timezone
 from typing import Any
 
 from supabase import Client, create_client
+from supabase.client import ClientOptions
 
 from aibi_scout.config import settings
 
 
 def get_client() -> Client:
-    return create_client(settings.supabase_url, settings.supabase_service_key)
+    # All Scout tables live in the `content_engine` schema (per 2026-05-18
+    # DECISIONS.md entry). Setting the default schema here keeps every
+    # client.table("sources") / .table("content_items") call below working
+    # without a schema prefix.
+    return create_client(
+        settings.supabase_url,
+        settings.supabase_service_key,
+        options=ClientOptions(schema="content_engine"),
+    )
 
 
 def get_active_sources(client: Client) -> list[dict[str, Any]]:

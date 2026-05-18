@@ -10,9 +10,11 @@ Updated 2026-05-18 (initial draft from upstream zip).
 ## Phase 1 · Days 1–2 · Infrastructure
 
 - [x] Decide Supabase project: shared with website (2026-05-18 — see `DECISIONS.md`). Migration relocated to `supabase/migrations/00034_content_engine_schema.sql`.
+- [x] Decide schema namespacing: dedicated `content_engine` schema (2026-05-18 — see `DECISIONS.md`). Migration creates the schema; Python client at `content-engine/src/aibi_scout/db.py` sets `ClientOptions(schema="content_engine")` so `.table("sources")` calls stay clean.
 - [ ] Apply `supabase/migrations/00034_content_engine_schema.sql` to the shared project (via Supabase CLI / dashboard alongside the website migrations)
-- [ ] Confirm tables created: `sources`, `content_items`, `content_scores`, `story_candidates`
-- [ ] Confirm view created: `content_with_latest_score`
+- [ ] 🔒 Supabase dashboard: add `content_engine` to **Settings → API → Exposed schemas** (one-time; PostgREST will not see the tables without it)
+- [ ] Confirm tables created in `content_engine` schema: `sources`, `content_items`, `content_scores`, `story_candidates`
+- [ ] Confirm view created: `content_engine.content_with_latest_score`
 - [ ] Confirm extensions: `uuid-ossp`, `pg_trgm`
 - [ ] Create Modal account (`pip install modal && modal token new`)
 - [ ] Create Modal secret `aibi-scout-secrets` with `SUPABASE_URL`, `SUPABASE_SERVICE_KEY`, `ANTHROPIC_API_KEY`
