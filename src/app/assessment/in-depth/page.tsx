@@ -15,7 +15,7 @@ import Link from "next/link";
 import { cookies } from "next/headers";
 import { createServerClient as ssrCreateServerClient } from "@supabase/ssr";
 import { MarketingPage } from "@/components/system/templates";
-import { Section, Cta } from "@/components/system";
+import { Section } from "@/components/system";
 import { isSupabaseConfigured } from "@/lib/supabase/client";
 import { BRAND } from "@content/copy";
 import { PurchaseButton } from "./_components/PurchaseButton";
@@ -100,9 +100,12 @@ export default async function InDepthAssessmentPage({
               pendingLabel="Starting checkout…"
               size="hero"
             />
-            <Cta variant="secondary" href="#compare">
-              Compare with the free scan
-            </Cta>
+            <a
+              href="#compare"
+              className="font-mono text-mono-sm uppercase tracking-widest text-ink border-b border-ink hover:text-terra hover:border-terra"
+            >
+              Compare with the free scan →
+            </a>
           </div>
         ),
         divider: "hairline",
@@ -317,22 +320,6 @@ export default async function InDepthAssessmentPage({
         </div>
       </Section>
 
-      <Section variant="linen" padding="default" divider="none">
-        <div className="max-w-default mx-auto border-y border-hairline py-s5 grid sm:grid-cols-3 gap-s4">
-          {[
-            "Individual + institution rollup",
-            "Aligned with SR 11-7 + TPRM",
-            "No customer data required",
-          ].map((point) => (
-            <p
-              key={point}
-              className="font-mono text-label-md uppercase tracking-widest text-slate text-center"
-            >
-              {point}
-            </p>
-          ))}
-        </div>
-      </Section>
     </MarketingPage>
   );
 }
