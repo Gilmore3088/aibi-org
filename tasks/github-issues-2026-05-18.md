@@ -98,12 +98,12 @@ Playwright viewport audit on 18 routes × 3 mobile widths. Non-blocking CI workf
 
 ---
 
-## Wave 3 · Email capture wiring · ⬜ NOT STARTED
+## Wave 3 · Email capture wiring · ✅ COMPLETE
 
-| # | Title | Mode | Status |
-|---|-------|------|--------|
-| 189 | Free Assessment: gate full report behind email | 🤖 + 🤝 QA | ⬜ |
-| 190 | AI Banking Brief: fix subscribe form + wire list | 🤖 + 🔒 ConvertKit list ID | ⬜ |
+| # | Title | PRs | Status |
+|---|-------|-----|--------|
+| 189 | Free Assessment: gate full report behind email | PR-A #204 · PR-B #210 · PR-C already in main | ✅ Closed 2026-05-18 |
+| 190 | AI Banking Brief: fix subscribe form + wire list | PR #203 (Supabase backup + honeypot + analytics) | ✅ Merged 2026-05-18 |
 
 ---
 
@@ -184,7 +184,22 @@ Playwright viewport audit on 18 routes × 3 mobile widths. Non-blocking CI workf
 | `fix/builders-ledger-color-2026-05-18` | #197 + part of #194 | ✅ merged #200 |
 | `test/mobile-viewport-audit-2026-05-18` | harness for #194 | ✅ merged #201 |
 | _next: Wave 1c #191 ticker_ | #191 | ⬜ Not started |
-| _next: Wave 3 email capture_ | #189, #190 | ⬜ Not started |
+| _next: Wave 3 email capture_ | #189, #190 | ✅ Closed (both merged) |
+| `fix/builders-ledger-color-2026-05-18` | #197 + part of #194 | ✅ merged #200 |
+| `fix/mobile-phase-2-2026-05-18` | partial #194 | ✅ merged #198 |
+| `fix/copy-and-chrome-2026-05-18` | #185, #186, #192 | ✅ merged #195 |
+| `fix/roi-copy-2026-05-18` | #188 | ✅ merged #196 |
+| `chore/audit-followups-2026-05-18` | partial #177 | ✅ merged #199 |
+| `chore/issue-tracking-2026-05-18` | tracker scaffolding | ✅ merged #193 |
+| `docs/uat-pr204-updates-2026-05-18` | UAT refresh | ✅ merged #206 |
+| `chore/uat-refresh-2026-05-18` | UAT refresh | ✅ merged #202 |
+| `feat/assessment-email-gate-2026-05-18` | #189 PR-A | ✅ merged #204 |
+| `feat/newsletter-subscribe-backup-2026-05-18` | #190 | ✅ merged #203 |
+| `fix/course-mobile-2026-05-18` | #205 | ✅ merged #207 |
+| `chore/brand-copy-audit-2026-05-18` | partial #142 | ✅ merged #208 |
+| `fix/mobile-phase-3-tables-2026-05-18` | Phase 3a #194 | ✅ merged #209 |
+| `feat/assessment-bookmarkable-url-2026-05-18` | #189 PR-B | ✅ merged #210 |
+| `fix/mobile-phase-3b-tables-2026-05-18` | Phase 3b #194 | ✅ merged #211 |
 | _next: Wave 5 auth replacement_ | #187 | ⬜ Not started |
 
 ---
