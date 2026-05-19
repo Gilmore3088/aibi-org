@@ -8,10 +8,8 @@ interface Props {
 export function LMSTopBar({ crumbs, right }: Props) {
   return (
     <div
+      className="lms-topbar"
       style={{
-        position: 'sticky',
-        top: 0,
-        zIndex: 5,
         background: 'var(--ledger-bg)',
         borderBottom: '1px solid var(--ledger-rule)',
         padding: '14px 28px',
@@ -59,7 +57,40 @@ export function LMSTopBar({ crumbs, right }: Props) {
           </span>
         ))}
       </nav>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>{right}</div>
+      <div className="lms-topbar__right" style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        {right}
+      </div>
+      {/* Sticky positioning is desktop-only. On mobile (< 768px) the bar
+          scrolls with the page so its breadcrumb + right-slot content
+          doesn't multi-line and occlude content below. The bar is also
+          slightly tighter on mobile padding-wise to keep the height
+          compact. See #205. */}
+      <style>{`
+        @media (min-width: 768px) {
+          .lms-topbar {
+            position: sticky;
+            top: 0;
+            z-index: 5;
+          }
+        }
+        @media (max-width: 767px) {
+          .lms-topbar {
+            padding: 12px 16px !important;
+            gap: 12px !important;
+          }
+          .lms-topbar nav {
+            font-size: 11px !important;
+          }
+          /* The right slot ("Not yet enrolled", "N/M complete") is
+             informational. On narrow viewports it pushes the breadcrumb
+             onto a second line. Hide it on mobile — the same info is
+             surfaced inline elsewhere on the page (e.g. EnrollButton CTA,
+             course-overview progress meter). */
+          .lms-topbar__right {
+            display: none !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }

@@ -21,7 +21,11 @@ interface Props {
 
 const buttonStyle: CSSProperties = {
   position: 'fixed',
-  top: 10,
+  // 68px clears the global SiteNav (sticky top:0, ~63px tall + a 5px gap).
+  // Without this offset the button overlapped the SiteNav wordmark on
+  // mobile and clipped the leading "TH" of "THE AI BANKING INSTITUTE".
+  // See #205.
+  top: 68,
   left: 10,
   zIndex: 30,
   display: 'inline-flex',
