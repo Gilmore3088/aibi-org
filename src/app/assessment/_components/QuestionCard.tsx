@@ -148,8 +148,8 @@ export function QuestionCard({
                 style={
                   selected
                     ? {
-                        background:
-                          "radial-gradient(circle, var(--color-terra) 50%, transparent 52%)",
+                        background: "var(--color-terra)",
+                        boxShadow: "inset 0 0 0 3px var(--color-parch)",
                       }
                     : undefined
                 }

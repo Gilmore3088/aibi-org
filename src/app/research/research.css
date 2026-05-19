@@ -808,7 +808,7 @@
 }
 .aibi-research .art:hover {
   transform: translateY(-3px);
-  box-shadow: 0 18px 40px -28px rgba(14, 27, 45, 0.32);
+  box-shadow: var(--ledger-shadow);
 }
 .aibi-research .art .preview {
   height: 180px;

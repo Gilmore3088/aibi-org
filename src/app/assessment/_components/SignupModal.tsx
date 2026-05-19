@@ -44,7 +44,7 @@ export function SignupModal({ email, profileId, onClose }: SignupModalProps) {
       onClick={onClose}
     >
       <div
-        className="bg-[color:var(--color-linen)] border border-[color:var(--color-ink)]/15 rounded-[3px] p-8 max-w-md w-[90%] shadow-md"
+        className="bg-[color:var(--color-linen)] border border-[color:var(--color-ink)]/15 rounded-[3px] p-8 max-w-md w-[90%]"
         onClick={(e) => e.stopPropagation()}
       >
         <h2

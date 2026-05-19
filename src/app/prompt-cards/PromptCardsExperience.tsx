@@ -370,7 +370,7 @@ function LeadModal({ onClose, onUnlocked }: { readonly onClose: () => void; read
 
   return (
     <div className="fixed inset-0 z-[100] grid place-items-center bg-[color:var(--color-ink)]/60 px-4">
-      <form onSubmit={submit} className="w-full max-w-xl bg-[color:var(--color-linen)] p-6 shadow-2xl md:p-8">
+      <form onSubmit={submit} className="w-full max-w-xl bg-[color:var(--color-linen)] border border-[color:var(--color-ink)]/15 p-6 md:p-8">
         <div className="flex items-start justify-between gap-4">
           <div>
             <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)]">Unlock library</p>
