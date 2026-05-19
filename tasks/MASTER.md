@@ -66,6 +66,7 @@ every outstanding work item as 🤖 autonomous / 🔒 you-only /
 | [`docs/reviews/api-auth-audit-2026-05-11.md`](../docs/reviews/api-auth-audit-2026-05-11.md) | Security review | Findings need to be triaged into `launch-checklist.md` if not already |
 | [`docs/reviews/auth-e2e-2026-05-17.md`](../docs/reviews/auth-e2e-2026-05-17.md) | Auth E2E report | Findings 1+3 fixed; 2 unblocked 2026-05-17 |
 | [`docs/reviews/a11y-audit-2026-05-17.md`](../docs/reviews/a11y-audit-2026-05-17.md) | Accessibility audit | 7/7 public routes clean |
+| [`docs/reviews/site-wide-audit-2026-05-19.md`](../docs/reviews/site-wide-audit-2026-05-19.md) | Site-wide audit | 7 commits on `feature/audit-sweep` pushed; 5 deferred follow-ups need their own PRs |
 | [`docs/manual-verification-runbook.md`](../docs/manual-verification-runbook.md) | Runbook | Used during launch QA |
 | [`docs/brand-refresh-2026-05-09/MERGE-ROADMAP.md`](../docs/brand-refresh-2026-05-09/MERGE-ROADMAP.md) | Migration plan | Ledger rollout phases 1–5 |
 | [`docs/brand-refresh-2026-05-09/MANUAL-ACTIONS.md`](../docs/brand-refresh-2026-05-09/MANUAL-ACTIONS.md) | Manual steps | Figma / Resend / Vercel dashboard work |
