@@ -233,13 +233,11 @@ export function OnboardingSurvey({ enrollmentId }: OnboardingSurveyProps) {
                   <button
                     type="button"
                     onClick={handleBack}
-                    className="flex items-center gap-2 font-medium text-sm transition-colors focus:outline-none focus-visible:ring-2"
+                    className="flex items-center gap-2 font-medium text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ledger-accent"
                     style={{
                       fontFamily: "'DM Sans', sans-serif",
                       color: 'var(--ledger-ink)',
                       opacity: 0.6,
-                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                      ['--tw-ring-color' as any]: 'var(--ledger-accent)',
                     }}
                   >
                     &larr; Previous
@@ -252,13 +250,11 @@ export function OnboardingSurvey({ enrollmentId }: OnboardingSurveyProps) {
                   <button
                     type="submit"
                     disabled={!canAdvance}
-                    className="flex items-center gap-3 px-10 py-4 rounded-sm uppercase tracking-wider text-sm font-bold transition-all focus:outline-none focus-visible:ring-2 disabled:opacity-40 disabled:cursor-not-allowed"
+                    className="flex items-center gap-3 px-10 py-4 rounded-sm uppercase tracking-wider text-sm font-bold transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-ledger-accent disabled:opacity-40 disabled:cursor-not-allowed"
                     style={{
                       fontFamily: "'DM Sans', sans-serif",
                       backgroundColor: 'var(--ledger-accent)',
                       color: 'var(--ledger-bg)',
-                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                      ['--tw-ring-color' as any]: 'var(--ledger-accent)',
                     }}
                   >
                     Continue &rarr;
@@ -267,13 +263,11 @@ export function OnboardingSurvey({ enrollmentId }: OnboardingSurveyProps) {
                   <button
                     type="submit"
                     disabled={!canAdvance || isSubmitting}
-                    className="flex items-center gap-3 px-10 py-4 rounded-sm uppercase tracking-wider text-sm font-bold transition-all focus:outline-none focus-visible:ring-2 disabled:opacity-40 disabled:cursor-not-allowed"
+                    className="flex items-center gap-3 px-10 py-4 rounded-sm uppercase tracking-wider text-sm font-bold transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-ledger-accent disabled:opacity-40 disabled:cursor-not-allowed"
                     style={{
                       fontFamily: "'DM Sans', sans-serif",
                       backgroundColor: 'var(--ledger-accent)',
                       color: 'var(--ledger-bg)',
-                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                      ['--tw-ring-color' as any]: 'var(--ledger-accent)',
                     }}
                   >
                     {isSubmitting ? 'Saving...' : <>Start Module 1 &rarr;</>}

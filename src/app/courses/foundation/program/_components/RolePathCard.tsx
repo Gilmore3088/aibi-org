@@ -177,12 +177,10 @@ export function RolePathCard({ rolePath }: RolePathCardProps) {
             </h3>
             <Link
               href={`/courses/foundation/program/${rolePath.startHereModule}`}
-              className="group block rounded-sm p-5 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
+              className="group block rounded-sm p-5 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ledger-accent"
               style={{
                 backgroundColor: 'var(--ledger-paper)',
                 border: '1px solid rgba(181,81,46,0.12)',
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                ['--tw-ring-color' as any]: 'var(--ledger-accent)',
               }}
             >
               <div className="flex items-start justify-between gap-3">

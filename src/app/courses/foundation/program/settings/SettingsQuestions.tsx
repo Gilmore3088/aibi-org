@@ -90,13 +90,11 @@ export function SettingsQuestions({
                 key={opt.value}
                 type="button"
                 onClick={() => onM365Select(opt.value)}
-                className="p-4 rounded-sm transition-all duration-200 text-left focus:outline-none focus-visible:ring-2"
+                className="p-4 rounded-sm transition-all duration-200 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-ledger-accent"
                 style={{
                   backgroundColor: isSelected ? 'var(--ledger-accent)' : 'var(--ledger-paper)',
                   border: isSelected ? '1.5px solid var(--ledger-accent)' : '1.5px solid transparent',
                   color: isSelected ? 'var(--ledger-bg)' : 'var(--ledger-ink)',
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  ['--tw-ring-color' as any]: 'var(--ledger-accent)',
                 }}
                 aria-pressed={isSelected}
               >
@@ -175,13 +173,11 @@ export function SettingsQuestions({
                     key={opt.value}
                     type="button"
                     onClick={() => onExclusiveSelect(opt.value)}
-                    className="p-4 rounded-sm transition-all duration-150 text-left focus:outline-none focus-visible:ring-2"
+                    className="p-4 rounded-sm transition-all duration-150 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-ledger-accent"
                     style={{
                       backgroundColor: isSelected ? 'var(--ledger-accent)' : 'var(--ledger-paper)',
                       border: isSelected ? '1.5px solid var(--ledger-accent)' : '1.5px solid transparent',
                       color: isSelected ? 'var(--ledger-bg)' : 'var(--ledger-ink)',
-                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                      ['--tw-ring-color' as any]: 'var(--ledger-accent)',
                     }}
                     aria-pressed={isSelected}
                   >
@@ -224,14 +220,12 @@ export function SettingsQuestions({
                 key={opt.value}
                 type="button"
                 onClick={() => onRoleSelect(opt.value)}
-                className="py-4 px-3 rounded-sm font-medium text-sm transition-all duration-150 text-center focus:outline-none focus-visible:ring-2"
+                className="py-4 px-3 rounded-sm font-medium text-sm transition-all duration-150 text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-ledger-accent"
                 style={{
                   fontFamily: "'DM Sans', sans-serif",
                   backgroundColor: isSelected ? 'var(--ledger-accent)' : 'var(--ledger-paper)',
                   color: isSelected ? 'var(--ledger-bg)' : 'var(--ledger-ink)',
                   border: isSelected ? '1.5px solid var(--ledger-accent)' : '1.5px solid transparent',
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  ['--tw-ring-color' as any]: 'var(--ledger-accent)',
                 }}
                 aria-pressed={isSelected}
               >

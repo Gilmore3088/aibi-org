@@ -74,26 +74,45 @@ function AccordionSection({
 }
 
 function CopyablePrompt({ text }: { readonly text: string }) {
-  const [copied, setCopied] = useState(false);
+  const [status, setStatus] = useState<'idle' | 'copied' | 'failed'>('idle');
 
   const handleCopy = useCallback(async () => {
-    try {
-      await navigator.clipboard.writeText(text);
-      setCopied(true);
-      setTimeout(() => setCopied(false), COPY_RESET_MS);
-    } catch {
-      const textarea = document.createElement('textarea');
-      textarea.value = text;
-      textarea.style.position = 'fixed';
-      textarea.style.opacity = '0';
-      document.body.appendChild(textarea);
-      textarea.select();
-      document.execCommand('copy');
-      document.body.removeChild(textarea);
-      setCopied(true);
-      setTimeout(() => setCopied(false), COPY_RESET_MS);
+    const reset = () => setTimeout(() => setStatus('idle'), COPY_RESET_MS);
+
+    if (navigator.clipboard?.writeText) {
+      try {
+        await navigator.clipboard.writeText(text);
+        setStatus('copied');
+        reset();
+        return;
+      } catch {
+        // fall through to execCommand fallback
+      }
     }
+
+    // Legacy fallback for non-secure contexts and older browsers.
+    // execCommand is deprecated but remains the only synchronous copy path
+    // when navigator.clipboard isn't available.
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    document.body.appendChild(textarea);
+    textarea.select();
+    let succeeded = false;
+    try {
+      succeeded = document.execCommand('copy');
+    } catch {
+      succeeded = false;
+    }
+    document.body.removeChild(textarea);
+    setStatus(succeeded ? 'copied' : 'failed');
+    reset();
   }, [text]);
+
+  const copied = status === 'copied';
+  const failed = status === 'failed';
 
   return (
     <div className="relative">
@@ -107,12 +126,23 @@ function CopyablePrompt({ text }: { readonly text: string }) {
         onClick={handleCopy}
         className="absolute top-2 right-2 px-3 py-1.5 text-[10px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-1"
         style={{
-          backgroundColor: copied ? 'var(--ledger-accent-light)' : 'var(--ledger-accent)',
+          backgroundColor: failed
+            ? 'var(--ledger-weak)'
+            : copied
+              ? 'var(--ledger-accent-light)'
+              : 'var(--ledger-accent)',
           color: 'var(--ledger-bg)',
         }}
-        aria-label={copied ? 'Copied to clipboard' : 'Copy prompt to clipboard'}
+        aria-live="polite"
+        aria-label={
+          failed
+            ? 'Copy failed — select the prompt manually'
+            : copied
+              ? 'Copied to clipboard'
+              : 'Copy prompt to clipboard'
+        }
       >
-        {copied ? 'Copied' : 'Copy'}
+        {failed ? 'Failed' : copied ? 'Copied' : 'Copy'}
       </button>
     </div>
   );
@@ -143,7 +173,7 @@ export function ToolGuide({ guide }: ToolGuideProps) {
                 rel="noopener noreferrer"
                 className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] hover:text-[color:var(--ledger-accent)] transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-1 rounded-sm"
               >
-                {guide.url.replace('https://', '')} ↗
+                {guide.url.replace(/^https?:\/\//, '')} ↗
               </a>
             </div>
             <p className="font-serif text-base italic text-[color:var(--ledger-ink)] leading-snug max-w-2xl">

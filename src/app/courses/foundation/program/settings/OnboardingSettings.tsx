@@ -214,12 +214,10 @@ export function OnboardingSettings({ enrollmentId, currentAnswers }: OnboardingS
         >
           <Link
             href="/courses/foundation/program"
-            className="font-mono text-[11px] uppercase tracking-widest transition-colors focus:outline-none focus-visible:ring-2"
+            className="font-mono text-[11px] uppercase tracking-widest transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ledger-accent"
             style={{
               color: 'var(--ledger-ink)',
               opacity: 0.55,
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              ['--tw-ring-color' as any]: 'var(--ledger-accent)',
             }}
           >
             &larr; Back to Course
@@ -228,13 +226,11 @@ export function OnboardingSettings({ enrollmentId, currentAnswers }: OnboardingS
           <button
             type="submit"
             disabled={!canSave || isSubmitting}
-            className="px-8 py-3 rounded-sm uppercase tracking-wider text-sm font-bold transition-all focus:outline-none focus-visible:ring-2 disabled:opacity-40 disabled:cursor-not-allowed"
+            className="px-8 py-3 rounded-sm uppercase tracking-wider text-sm font-bold transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-ledger-accent disabled:opacity-40 disabled:cursor-not-allowed"
             style={{
               fontFamily: "'DM Sans', sans-serif",
               backgroundColor: 'var(--ledger-accent)',
               color: 'var(--ledger-bg)',
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              ['--tw-ring-color' as any]: 'var(--ledger-accent)',
             }}
           >
             {isSubmitting ? 'Saving...' : 'Save Changes'}

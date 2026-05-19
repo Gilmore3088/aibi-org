@@ -64,6 +64,7 @@ function validateForm(
 
 const readOnlyValueStyle: CSSProperties = {
   width: '100%',
+  boxSizing: 'border-box',
   padding: '10px 12px',
   borderRadius: 2,
   border: '1px solid var(--ledger-rule)',
@@ -73,6 +74,7 @@ const readOnlyValueStyle: CSSProperties = {
   color: 'var(--ledger-ink)',
   minHeight: 36,
   whiteSpace: 'pre-wrap',
+  overflowWrap: 'anywhere',
 };
 
 function ReadOnlyField({
