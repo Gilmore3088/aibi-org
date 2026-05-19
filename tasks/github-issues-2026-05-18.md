@@ -107,13 +107,13 @@ Playwright viewport audit on 18 routes × 3 mobile widths. Non-blocking CI workf
 
 ---
 
-## Wave 4 · Dashboard + toolbox · ⬜ NOT STARTED
+## Wave 4 · Dashboard + toolbox · 🚧 IN PROGRESS
 
 | # | Title | Mode | Status |
 |---|-------|------|--------|
-| 182 | Build /playground?tool= destination | 🤖 | ⬜ |
-| 183 | Port v5 visual to /dashboard/toolbox | 🤖 | ⬜ |
-| 184 | Real tool content for Lender / Branch / Compliance kits | 🤝 (content from user) | ⬜ |
+| 182 | Build /playground?tool= destination | 🤖 | 🟦 PR [#217](https://github.com/Gilmore3088/aibi-org/pull/217) open 2026-05-19 — PR-a extract `TOOLS` to `src/lib/my-toolbox/tools.ts`, PR-b wire `/playground?tool=<key>` to pre-load editor |
+| 183 | Port v5 visual to /dashboard/toolbox | 🤖 | ⬜ — unblocked by #182 PR-a (`import { TOOLS }` directly once React surface) |
+| 184 | Real tool content for Lender / Branch / Compliance kits | 🤝 (content from user) | ⬜ — needs SME sign-off; nothing in #182 changes its status |
 
 ---
 
