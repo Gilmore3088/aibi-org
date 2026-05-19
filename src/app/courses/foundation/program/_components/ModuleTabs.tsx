@@ -5,6 +5,7 @@
 // Tab state persists in sessionStorage so refreshing keeps the learner's place.
 
 import { useState, useEffect, type ReactNode } from 'react';
+import { migrateStorageKey } from '@/lib/storage/migrate';
 
 interface Tab {
   readonly id: string;
@@ -33,16 +34,19 @@ export function ModuleTabs({
   practiceContent,
   applyContent,
 }: ModuleTabsProps) {
-  const storageKey = `aibi-p-m${moduleNumber}-tab`;
+  const storageKey = `foundations-m${moduleNumber}-tab`;
+  const legacyStorageKey = `aibi-p-m${moduleNumber}-tab`;
   const [activeTab, setActiveTab] = useState('learn');
 
-  // Restore tab from sessionStorage
+  // Restore tab from sessionStorage. Migrate the 2026-05-09 rename in
+  // place so learners with in-flight state don't lose their tab choice.
   useEffect(() => {
+    migrateStorageKey(sessionStorage, legacyStorageKey, storageKey);
     const saved = sessionStorage.getItem(storageKey);
     if (saved && TABS.some((t) => t.id === saved)) {
       setActiveTab(saved);
     }
-  }, [storageKey]);
+  }, [storageKey, legacyStorageKey]);
 
   function selectTab(tabId: string) {
     setActiveTab(tabId);

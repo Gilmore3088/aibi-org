@@ -327,7 +327,8 @@ export default async function ModulePage({ params }: ModulePageParams) {
       {/* Tabbed content (Learn / Practice / Apply) — behavior preserved */}
       <article style={{ maxWidth: 1180, margin: '0 auto', padding: '4px 36px 80px' }}>
         <Tabbed
-          storagePrefix="aibi-p-m"
+          storagePrefix="foundations-m"
+          legacyStoragePrefix="aibi-p-m"
           moduleNumber={moduleNum}
           accentColor="var(--ledger-accent)"
           learnContent={
