@@ -7,6 +7,7 @@ import { scanForPII } from '@/lib/sandbox/pii-scanner';
 import { scanForInjection } from '@/lib/sandbox/injection-filter';
 import { streamClaude } from '@/lib/sandbox/providers/claude';
 import { getAuthUser } from '@/lib/api/auth';
+import { rateLimitOrFail } from '@/lib/api/rate-limit';
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -36,12 +37,11 @@ interface ChatRequestBody {
 }
 
 // ---------------------------------------------------------------------------
-// In-memory rate limit counter (per moduleId).
-// TODO: Replace with Supabase or Redis for production — in-memory state is
-// lost on serverless cold starts and does not share across instances.
+// Rate limit — 50 messages/hour per authenticated user. Backed by Supabase
+// rate_limits table, atomic across serverless instances.
 // ---------------------------------------------------------------------------
 
-const messageCounts = new Map<string, number>();
+const RATE_LIMIT_PER_USER_PER_HOUR = 50;
 
 // ---------------------------------------------------------------------------
 // Validation helpers
@@ -81,6 +81,15 @@ export async function POST(request: Request) {
   if (!user) {
     return NextResponse.json({ error: 'Authentication required.' }, { status: 401 });
   }
+
+  const limited = await rateLimitOrFail({
+    key: 'sandbox-chat',
+    scope: 'user',
+    identifier: user.id,
+    max: RATE_LIMIT_PER_USER_PER_HOUR,
+    windowSeconds: 3600,
+  });
+  if (limited) return limited;
 
   // 1. Parse body
   let body: ChatRequestBody;
@@ -174,13 +183,6 @@ export async function POST(request: Request) {
       { status: 429 },
     );
   }
-
-  // 7. Track in-memory message count per moduleId. This is per-instance
-  // only (serverless cold starts wipe it) but combined with the auth
-  // gate above it's enough to deter casual abuse. Replace with Supabase
-  // or Redis when Upstash is wired (see docs/reviews/api-auth-audit-2026-05-11.md).
-  const currentCount = messageCounts.get(moduleId as string) ?? 0;
-  messageCounts.set(moduleId as string, currentCount + 1);
 
   // 9. Call provider
   try {
