@@ -22,13 +22,20 @@
  *   Library tab; merging is a follow-up once #184 content lands).
  */
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import {
   isWorkflowSkill,
   type ToolboxSkill,
 } from '@/lib/toolbox/types';
 import { SourceBacklink } from './SourceBacklink';
 
+// Pin state is NOT user-scoped today. On a shared browser, user B will
+// see user A's pin set on first load. There is no data leakage — the
+// server's RLS predicate (auth.uid() = user_id on toolbox_skills) means
+// foreign skill IDs return nothing and the tile silently drops — but it
+// is UX/privacy pollution. The proper fix is the server-backed
+// toolbox_pins table tracked in #219; this key disappears entirely when
+// that ships.
 const LS_PIN_KEY = 'aibi.toolbox.pinned-v5';
 
 type TileType = 'prompt' | 'skill' | 'agent' | 'playbook';
@@ -91,9 +98,12 @@ function inferTileType(skill: ToolboxSkill): TileType {
   return 'prompt';
 }
 
-function typeLabel(t: TileType): string {
-  return t === 'pb' as TileType ? 'Playbook' : t.charAt(0).toUpperCase() + t.slice(1);
-}
+const TILE_LABELS: Readonly<Record<TileType, string>> = {
+  prompt: 'Prompt',
+  skill: 'Skill',
+  agent: 'Agent',
+  playbook: 'Playbook',
+};
 
 function plain(html: string): string {
   return html.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
@@ -103,7 +113,10 @@ function readPinned(): Set<string> {
   if (typeof window === 'undefined') return new Set();
   try {
     const raw = window.localStorage.getItem(LS_PIN_KEY);
-    return new Set<string>(raw ? JSON.parse(raw) as string[] : []);
+    if (!raw) return new Set();
+    const parsed: unknown = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return new Set();
+    return new Set(parsed.filter((x): x is string => typeof x === 'string'));
   } catch {
     return new Set();
   }
@@ -155,17 +168,13 @@ export function ToolboxHomeV5({
   // Persist pins
   useEffect(() => { writePinned(pinned); }, [pinned]);
 
-  const togglePin = useCallback((id: string) => {
+  const togglePin = (id: string): void => {
     setPinned((prev) => {
       const next = new Set(prev);
-      if (next.has(id)) {
-        next.delete(id);
-      } else {
-        next.add(id);
-      }
+      if (next.has(id)) next.delete(id); else next.add(id);
       return next;
     });
-  }, []);
+  };
 
   // Skill projection — every skill becomes a tile with computed type +
   // pin state. We sort: pinned first (by recency), then unpinned by
@@ -185,20 +194,32 @@ export function ToolboxHomeV5({
     });
   }, [skills, pinned]);
 
-  const visibleTiles = useMemo(() => {
+  // Single pass: filter for visibility, then split pinned vs grid based
+  // on the tile's own `pinned` flag. Pinned shelf shows up to 4; any
+  // overflow falls through into the grid (still marked as pinned via
+  // the ★ on the tile, so the user sees they've over-pinned).
+  const { pinnedTiles, gridTiles, typeCounts } = useMemo(() => {
     const q = search.trim().toLowerCase();
-    return tiles.filter((t) => {
+    const counts: Record<TileType, number> = { prompt: 0, skill: 0, agent: 0, playbook: 0 };
+    const visible: typeof tiles = [];
+    for (const t of tiles) {
+      counts[t.type] += 1;
       const matchType = !activeType || t.type === activeType;
-      const matchSearch = !q
-        || (t.skill.name || '').toLowerCase().includes(q)
-        || (t.skill.desc || '').toLowerCase().includes(q)
-        || (t.skill.cmd || '').toLowerCase().includes(q);
-      return matchType && matchSearch;
-    });
+      if (!matchType) continue;
+      if (q) {
+        const hay = `${t.skill.name ?? ''} ${t.skill.desc ?? ''} ${t.skill.cmd ?? ''}`.toLowerCase();
+        if (!hay.includes(q)) continue;
+      }
+      visible.push(t);
+    }
+    const allPinned = visible.filter((t) => t.pinned);
+    const unpinned = visible.filter((t) => !t.pinned);
+    return {
+      pinnedTiles: allPinned.slice(0, 4),
+      gridTiles: [...allPinned.slice(4), ...unpinned],
+      typeCounts: counts,
+    };
   }, [tiles, activeType, search]);
-
-  const pinnedTiles = visibleTiles.filter((t) => t.pinned).slice(0, 4);
-  const gridTiles = visibleTiles.filter((t) => !pinnedTiles.includes(t));
 
   // Stats — real counts off the current skill set.
   const stats = useMemo(() => {
@@ -206,21 +227,22 @@ export function ToolboxHomeV5({
     const now = Date.now();
     const weekAgo = now - 7 * 24 * 60 * 60 * 1000;
     const monthAgo = now - 30 * 24 * 60 * 60 * 1000;
-    const newCount = skills.filter((s) => s.created && Date.parse(s.created) >= weekAgo).length;
-    const staleCount = skills.filter((s) => {
-      if (!s.modified) return false;
-      return Date.parse(s.modified) < monthAgo;
-    }).length;
-    const productionCount = skills.filter((s) => s.maturity === 'production').length;
+    let newCount = 0;
+    let staleCount = 0;
+    let productionCount = 0;
+    for (const s of skills) {
+      if (s.created && Date.parse(s.created) >= weekAgo) newCount += 1;
+      if (s.modified && Date.parse(s.modified) < monthAgo) staleCount += 1;
+      if (s.maturity === 'production') productionCount += 1;
+    }
     const keptPct = total > 0 ? Math.round((productionCount / total) * 100) : null;
     return { total, newCount, staleCount, keptPct };
   }, [skills]);
 
-  const drawerSkill = drawerSkillId
-    ? skills.find((s) => s.id === drawerSkillId) ?? null
-    : null;
-
-  const flashToast = useCallback((msg: string) => setToast(msg), []);
+  const drawerSkill = useMemo(
+    () => (drawerSkillId ? skills.find((s) => s.id === drawerSkillId) ?? null : null),
+    [drawerSkillId, skills],
+  );
 
   const empty = skills.length === 0;
 
@@ -243,7 +265,7 @@ export function ToolboxHomeV5({
 
         {/* ASK BAR */}
         <form
-          className="mt-6 flex items-stretch border border-[color:var(--ledger-ink)] bg-[color:#FAF7EE]"
+          className="mt-6 flex items-stretch border border-[color:var(--ledger-ink)] bg-[color:var(--ledger-paper-warm)]"
           onSubmit={(e) => e.preventDefault()}
         >
           <span className="grid place-items-center px-5 text-[color:var(--ledger-accent)]" aria-hidden>
@@ -259,7 +281,7 @@ export function ToolboxHomeV5({
           />
           <button
             type="submit"
-            className="grid place-items-center bg-[color:var(--ledger-ink)] px-5 text-[color:#FAF7EE] transition-colors hover:bg-[color:var(--ledger-accent)]"
+            className="grid place-items-center bg-[color:var(--ledger-ink)] px-5 text-[color:var(--ledger-paper-warm)] transition-colors hover:bg-[color:var(--ledger-accent)]"
             aria-label="Search"
           >
             <ArrowRightIcon />
@@ -269,12 +291,7 @@ export function ToolboxHomeV5({
         {/* TYPE FILTER */}
         <TypeFilter
           activeType={activeType}
-          counts={{
-            prompt: tiles.filter((t) => t.type === 'prompt').length,
-            skill: tiles.filter((t) => t.type === 'skill').length,
-            agent: tiles.filter((t) => t.type === 'agent').length,
-            playbook: tiles.filter((t) => t.type === 'playbook').length,
-          }}
+          counts={typeCounts}
           onSelect={setActiveType}
         />
 
@@ -284,7 +301,7 @@ export function ToolboxHomeV5({
           headline={<>Pick a <em className="italic text-[color:var(--ledger-accent)]">role.</em> Adopt a desk.</>}
           right="4 curated · BSA shipped, 3 awaiting SME sign-off"
         />
-        <KitGrid onAdopt={(k) => flashToast(k.shipped ? 'BSA kit already in your toolbox' : `${k.role} kit — content tracked in #184`)} />
+        <KitGrid onAdopt={(k) => setToast(k.shipped ? 'BSA kit already in your toolbox' : `${k.role} kit — content tracked in #184`)} />
 
         {/* SHARED WITH YOU — honest empty state */}
         <SharedWithYouEmpty />
@@ -344,7 +361,7 @@ export function ToolboxHomeV5({
                 />
               ))}
             </div>
-            {gridTiles.length === 0 && visibleTiles.length === 0 && (
+            {gridTiles.length === 0 && pinnedTiles.length === 0 && (
               <p className="mt-8 text-center font-serif italic text-[color:var(--ledger-muted)]">
                 Nothing matches that filter. Try clearing the type or the search.
               </p>
@@ -363,7 +380,7 @@ export function ToolboxHomeV5({
           onClose={() => setDrawerSkillId(null)}
           onRun={() => { onRun(drawerSkill); setDrawerSkillId(null); }}
           onEdit={() => { onEdit(drawerSkill); setDrawerSkillId(null); }}
-          onExport={() => { onExport(drawerSkill); flashToast('Export started'); }}
+          onExport={() => { onExport(drawerSkill); setToast('Export started'); }}
           onDelete={() => { onDelete(drawerSkill.id); setDrawerSkillId(null); }}
         />
       )}
@@ -372,7 +389,7 @@ export function ToolboxHomeV5({
       {toast && (
         <div
           role="status"
-          className="fixed bottom-6 left-1/2 z-[60] -translate-x-1/2 bg-[color:var(--ledger-ink)] px-5 py-3 font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-[color:#FAF7EE] shadow-lg"
+          className="fixed bottom-6 left-1/2 z-[60] -translate-x-1/2 bg-[color:var(--ledger-ink)] px-5 py-3 font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-[color:var(--ledger-paper-warm)] shadow-lg"
         >
           {toast}
         </div>
@@ -385,7 +402,7 @@ export function ToolboxHomeV5({
 
 function Stats({ stats }: { readonly stats: { total: number; newCount: number; staleCount: number; keptPct: number | null } }): JSX.Element {
   return (
-    <div className="grid grid-cols-2 border border-[color:var(--ledger-rule-strong)] bg-[color:#FAF7EE] sm:grid-cols-4">
+    <div className="grid grid-cols-2 border border-[color:var(--ledger-rule-strong)] bg-[color:var(--ledger-paper-warm)] sm:grid-cols-4">
       <StatCell value={String(stats.total)} label="In your toolbox" />
       <StatCell value={String(stats.newCount)} label="New this week" tone={stats.newCount > 0 ? 'good' : 'neutral'} />
       <StatCell value={String(stats.staleCount)} label="Stale (30d+)" tone={stats.staleCount > 0 ? 'weak' : 'neutral'} />
@@ -433,17 +450,17 @@ function TypeFilter({
             onClick={() => onSelect(isActive ? null : it.key)}
             className={`flex items-center gap-4 border px-4 py-3.5 text-left transition-colors ${
               isActive
-                ? 'border-[color:var(--ledger-ink)] bg-[color:var(--ledger-ink)] text-[color:#FAF7EE]'
-                : 'border-[color:var(--ledger-rule)] bg-[color:#FAF7EE] hover:border-[color:var(--ledger-ink-2)]'
+                ? 'border-[color:var(--ledger-ink)] bg-[color:var(--ledger-ink)] text-[color:var(--ledger-paper-warm)]'
+                : 'border-[color:var(--ledger-rule)] bg-[color:var(--ledger-paper-warm)] hover:border-[color:var(--ledger-ink-2)]'
             }`}
             aria-pressed={isActive}
           >
             <div className="grid h-8 w-8 flex-shrink-0 place-items-center border border-[color:var(--ledger-rule)] bg-[color:var(--ledger-bg)]">
-              <DocIcon active={isActive} />
+              <DocIcon />
             </div>
             <div className="flex flex-col gap-1">
               <span className={`font-mono text-[9.5px] font-bold uppercase tracking-[0.2em] ${isActive ? 'text-[color:rgba(244,241,231,0.7)]' : 'text-[color:var(--ledger-muted)]'}`}>{it.label}</span>
-              <span className={`font-serif text-2xl leading-none tracking-[-0.02em] ${isActive ? 'text-[color:#FAF7EE]' : 'text-[color:var(--ledger-ink)]'}`}>{counts[it.key]}</span>
+              <span className={`font-serif text-2xl leading-none tracking-[-0.02em] ${isActive ? 'text-[color:var(--ledger-paper-warm)]' : 'text-[color:var(--ledger-ink)]'}`}>{counts[it.key]}</span>
             </div>
           </button>
         );
@@ -458,8 +475,8 @@ function SectionHeader({
   right,
 }: {
   readonly eyebrow: string;
-  readonly headline: React.ReactNode;
-  readonly right?: React.ReactNode;
+  readonly headline: ReactNode;
+  readonly right?: ReactNode;
 }): JSX.Element {
   return (
     <div className="mt-11 flex items-baseline gap-4 border-b border-[color:var(--ledger-rule-strong)] pb-3">
@@ -478,7 +495,7 @@ function KitGrid({ onAdopt }: { readonly onAdopt: (kit: KitCard) => void }): JSX
       {STARTER_KITS.map((kit) => (
         <article
           key={kit.key}
-          className={`flex cursor-pointer flex-col border bg-[color:#FAF7EE] transition-all hover:-translate-y-0.5 hover:border-[color:var(--ledger-ink)] hover:shadow-md ${
+          className={`flex cursor-pointer flex-col border bg-[color:var(--ledger-paper-warm)] transition-all hover:-translate-y-0.5 hover:border-[color:var(--ledger-ink)] hover:shadow-md ${
             kit.shipped ? 'border-[color:var(--ledger-rule-strong)]' : 'border-[color:var(--ledger-rule)]'
           }`}
           onClick={() => onAdopt(kit)}
@@ -491,13 +508,13 @@ function KitGrid({ onAdopt }: { readonly onAdopt: (kit: KitCard) => void }): JSX
             <div className="flex items-center justify-between font-mono text-[9px] font-bold uppercase tracking-[0.22em] text-[color:var(--ledger-accent)]">
               <span>{kit.role}</span>
               {kit.shipped && (
-                <span className="bg-[color:var(--ledger-accent)] px-1.5 py-0.5 text-[8px] tracking-[0.2em] text-[color:#FAF7EE]">✓ Live</span>
+                <span className="bg-[color:var(--ledger-accent)] px-1.5 py-0.5 text-[8px] tracking-[0.2em] text-[color:var(--ledger-paper-warm)]">✓ Live</span>
               )}
             </div>
             <h3 className="font-serif text-xl leading-tight tracking-[-0.02em] text-[color:var(--ledger-ink)]">{kit.headline}</h3>
             <p className="mt-0.5 font-serif text-[13px] italic leading-snug text-[color:var(--ledger-muted)]">{kit.description}</p>
           </div>
-          <div className="flex items-center gap-3 border-t border-dashed border-[color:var(--ledger-rule)] bg-[color:#FAF7EE] px-4 py-3 font-mono text-[9.5px] font-semibold uppercase tracking-[0.12em] text-[color:var(--ledger-muted)]">
+          <div className="flex items-center gap-3 border-t border-dashed border-[color:var(--ledger-rule)] bg-[color:var(--ledger-paper-warm)] px-4 py-3 font-mono text-[9.5px] font-semibold uppercase tracking-[0.12em] text-[color:var(--ledger-muted)]">
             <span><b className="font-bold text-[color:var(--ledger-ink-2)]">{kit.toolCount}</b> tools</span>
             <span className={`ml-auto font-bold tracking-[0.18em] ${kit.shipped ? 'text-[color:var(--ledger-accent-2)]' : 'text-[color:var(--ledger-accent)]'}`}>
               {kit.shipped ? 'In your toolbox ✓' : 'Awaiting SME →'}
@@ -550,7 +567,7 @@ function Tile({
     : 'text-[color:var(--ledger-weak)]';
   return (
     <article
-      className={`group relative flex cursor-pointer flex-col border border-[color:var(--ledger-rule)] bg-[color:#FAF7EE] transition-all hover:-translate-y-0.5 hover:border-[color:var(--ledger-ink)] hover:shadow-md`}
+      className={`group relative flex cursor-pointer flex-col border border-[color:var(--ledger-rule)] bg-[color:var(--ledger-paper-warm)] transition-all hover:-translate-y-0.5 hover:border-[color:var(--ledger-ink)] hover:shadow-md`}
       onClick={onOpen}
       onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); onOpen(); } }}
       role="button"
@@ -561,7 +578,7 @@ function Tile({
       <div className={`relative flex h-[140px] flex-col gap-1.5 overflow-hidden border-b border-[color:var(--ledger-rule)] bg-[color:#FBF8EE] px-4 pt-3.5 pb-3 before:absolute before:inset-y-0 before:left-0 before:w-[3px] ${accentClass}`}>
         <div className="flex items-baseline justify-between">
           <span className={`font-mono text-[8px] font-bold uppercase tracking-[0.22em] ${tagColor}`}>
-            {skill.cmd || typeLabel(type)}
+            {skill.cmd || TILE_LABELS[type]}
           </span>
           <span className="font-mono text-[8px] font-bold uppercase tracking-[0.22em] text-[color:var(--ledger-muted)]">
             {skill.maturity || 'draft'}
@@ -579,8 +596,8 @@ function Tile({
       </div>
 
       {/* Meta footer */}
-      <div className="flex flex-col gap-2 bg-[color:#FAF7EE] px-4 pb-3 pt-3">
-        <span className={`font-mono text-[8.5px] font-bold uppercase tracking-[0.22em] ${tagColor}`}>{typeLabel(type)}</span>
+      <div className="flex flex-col gap-2 bg-[color:var(--ledger-paper-warm)] px-4 pb-3 pt-3">
+        <span className={`font-mono text-[8.5px] font-bold uppercase tracking-[0.22em] ${tagColor}`}>{TILE_LABELS[type]}</span>
         <h3 className="font-serif text-[17px] leading-snug tracking-[-0.015em] text-[color:var(--ledger-ink)]">{plain(skill.name)}</h3>
         <div className="mt-1">
           <SourceBacklink source={skill.source} sourceRef={skill.sourceRef} librarySlugMap={librarySlugMap} />
@@ -681,21 +698,21 @@ function Drawer({
             <button
               type="button"
               onClick={onRun}
-              className="flex flex-1 items-center justify-center gap-2 bg-[color:var(--ledger-ink)] px-5 py-3.5 font-mono text-[10.5px] font-bold uppercase tracking-[0.18em] text-[color:#FAF7EE] transition-colors hover:bg-[color:var(--ledger-accent)]"
+              className="flex flex-1 items-center justify-center gap-2 bg-[color:var(--ledger-ink)] px-5 py-3.5 font-mono text-[10.5px] font-bold uppercase tracking-[0.18em] text-[color:var(--ledger-paper-warm)] transition-colors hover:bg-[color:var(--ledger-accent)]"
             >
               ▶ Run in Playground
             </button>
             <button
               type="button"
               onClick={onEdit}
-              className="border border-[color:var(--ledger-rule-strong)] bg-[color:#FAF7EE] px-4 py-3.5 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-[color:var(--ledger-ink-2)] transition-colors hover:border-[color:var(--ledger-ink)]"
+              className="border border-[color:var(--ledger-rule-strong)] bg-[color:var(--ledger-paper-warm)] px-4 py-3.5 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-[color:var(--ledger-ink-2)] transition-colors hover:border-[color:var(--ledger-ink)]"
             >
               Edit
             </button>
             <button
               type="button"
               onClick={onExport}
-              className="border border-[color:var(--ledger-rule-strong)] bg-[color:#FAF7EE] px-4 py-3.5 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-[color:var(--ledger-ink-2)] transition-colors hover:border-[color:var(--ledger-ink)]"
+              className="border border-[color:var(--ledger-rule-strong)] bg-[color:var(--ledger-paper-warm)] px-4 py-3.5 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-[color:var(--ledger-ink-2)] transition-colors hover:border-[color:var(--ledger-ink)]"
             >
               Export
             </button>
@@ -704,7 +721,7 @@ function Drawer({
               onClick={() => {
                 if (window.confirm(`Delete "${plain(skill.name)}"? This cannot be undone.`)) onDelete();
               }}
-              className="border border-[color:var(--ledger-weak)]/40 bg-[color:#FAF7EE] px-4 py-3.5 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-[color:var(--ledger-weak)] transition-colors hover:border-[color:var(--ledger-weak)]"
+              className="border border-[color:var(--ledger-weak)]/40 bg-[color:var(--ledger-paper-warm)] px-4 py-3.5 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-[color:var(--ledger-weak)] transition-colors hover:border-[color:var(--ledger-weak)]"
             >
               Delete
             </button>
@@ -729,7 +746,7 @@ function Drawer({
 
 function EmptyState({ onBrowse, onBuild }: { readonly onBrowse: () => void; readonly onBuild: () => void }): JSX.Element {
   return (
-    <section className="mx-auto mt-16 max-w-2xl border border-[color:var(--ledger-rule-strong)] bg-[color:#FAF7EE] px-8 py-16 text-center">
+    <section className="mx-auto mt-16 max-w-2xl border border-[color:var(--ledger-rule-strong)] bg-[color:var(--ledger-paper-warm)] px-8 py-16 text-center">
       <h2 className="font-serif text-4xl tracking-[-0.025em] text-[color:var(--ledger-ink)]">
         Your toolbox is <em className="italic text-[color:var(--ledger-accent)]">empty.</em>
       </h2>
@@ -740,7 +757,7 @@ function EmptyState({ onBrowse, onBuild }: { readonly onBrowse: () => void; read
         <button
           type="button"
           onClick={onBrowse}
-          className="bg-[color:var(--ledger-ink)] px-5 py-3 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-[color:#FAF7EE] transition-colors hover:bg-[color:var(--ledger-accent)]"
+          className="bg-[color:var(--ledger-ink)] px-5 py-3 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--ledger-paper-warm)] transition-colors hover:bg-[color:var(--ledger-accent)]"
         >
           Browse Library
         </button>
@@ -797,14 +814,13 @@ function ArrowRightIcon(): JSX.Element {
   );
 }
 
-function DocIcon({ active }: { readonly active: boolean }): JSX.Element {
-  const stroke = active ? 'currentColor' : 'currentColor';
+function DocIcon(): JSX.Element {
   return (
-    <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden style={{ color: 'inherit' }}>
-      <rect x="3" y="3" width="10" height="10" stroke={stroke} strokeWidth="1" fill="none" />
-      <line x1="5" y1="6" x2="11" y2="6" stroke={stroke} strokeWidth="1" />
-      <line x1="5" y1="8.5" x2="9" y2="8.5" stroke={stroke} strokeWidth="1" opacity="0.6" />
-      <line x1="5" y1="11" x2="10" y2="11" stroke={stroke} strokeWidth="1" opacity="0.4" />
+    <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden>
+      <rect x="3" y="3" width="10" height="10" stroke="currentColor" strokeWidth="1" fill="none" />
+      <line x1="5" y1="6" x2="11" y2="6" stroke="currentColor" strokeWidth="1" />
+      <line x1="5" y1="8.5" x2="9" y2="8.5" stroke="currentColor" strokeWidth="1" opacity="0.6" />
+      <line x1="5" y1="11" x2="10" y2="11" stroke="currentColor" strokeWidth="1" opacity="0.4" />
     </svg>
   );
 }
