@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { MarketingPage } from "@/components/system/templates";
 import { Section, Cta, ProductMark } from "@/components/system";
+import { Ticker } from "@/components/system/Ticker";
 import { ROIDossierLazy } from "@/components/sections/ROIDossierLazy";
 import { HomeContextStrip } from "@/components/sections/HomeContextStrip";
 import { HeroHeadlineSvg } from "@/components/_generated/HeroHeadlineSvg";
@@ -20,6 +21,11 @@ export default function HomePage() {
           automatically. Returns null for anonymous users so no Supabase
           JS ships to them. */}
       <HomeContextStrip />
+      {/* Bloomberg-style rotating ticker — sourced statistics, regulatory
+          references, and platform updates. Sits between the SiteNav (above)
+          and the marketing hero (below). Content lives in
+          content/ticker/items.ts. See #191. */}
+      <Ticker />
       <MarketingPage
       hero={{
         eyebrow: "An institute for community banking",
