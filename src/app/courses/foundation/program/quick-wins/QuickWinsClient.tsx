@@ -187,37 +187,37 @@ export function QuickWinsClient() {
 
       {/* Breadcrumb */}
       <nav className="mb-8" aria-label="Breadcrumb">
-        <ol className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">
+        <ol className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)]">
           <li>
             <Link
               href="/courses/foundation/program"
-              className="hover:text-[color:var(--color-terra)] transition-colors"
+              className="hover:text-[color:var(--ledger-accent)] transition-colors"
             >
               AiBI-Foundation
             </Link>
           </li>
           <li aria-hidden="true">/</li>
-          <li className="text-[color:var(--color-ink)]">Quick Wins</li>
+          <li className="text-[color:var(--ledger-ink)]">Quick Wins</li>
         </ol>
       </nav>
 
       {/* Page header */}
       <header className="mb-10">
         <div className="flex items-center gap-3 mb-4">
-          <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--color-terra)]">
+          <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--ledger-accent)]">
             Post-Course
           </span>
-          <div className="h-px w-8 bg-[color:var(--color-terra)]/30" aria-hidden="true" />
-          <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--color-slate)]">
+          <div className="h-px w-8 bg-[color:var(--ledger-accent)]/30" aria-hidden="true" />
+          <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--ledger-muted)]">
             Value Log
           </span>
         </div>
 
-        <h1 className="font-serif text-3xl sm:text-4xl font-bold text-[color:var(--color-ink)] mb-4">
+        <h1 className="font-serif text-3xl sm:text-4xl font-bold text-[color:var(--ledger-ink)] mb-4">
           Quick Win Tracker
         </h1>
 
-        <p className="font-sans text-base text-[color:var(--color-ink)]/80 leading-relaxed max-w-2xl">
+        <p className="font-sans text-base text-[color:var(--ledger-ink)]/80 leading-relaxed max-w-2xl">
           Log every workflow you&apos;ve automated. Each entry builds your professional
           record and proves the return on your AI Foundation training.
         </p>
@@ -226,26 +226,26 @@ export function QuickWinsClient() {
       {/* Stats row */}
       <div className="grid grid-cols-2 gap-4 mb-10">
         <div
-          className="bg-[color:var(--color-parch)] border border-[color:var(--color-terra)]/10 rounded-sm p-5"
+          className="bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-accent)]/10 rounded-sm p-5"
           aria-label="Time saved this quarter"
         >
-          <div className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-1">
+          <div className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] mb-1">
             Saved this quarter
           </div>
-          <div className="font-mono text-3xl font-bold text-[color:var(--color-terra)] tabular-nums">
+          <div className="font-mono text-3xl font-bold text-[color:var(--ledger-accent)] tabular-nums">
             {totalQuarterlyHours.toFixed(1)}
-            <span className="text-base font-normal text-[color:var(--color-slate)] ml-1">hrs</span>
+            <span className="text-base font-normal text-[color:var(--ledger-muted)] ml-1">hrs</span>
           </div>
         </div>
 
         <div
-          className="bg-[color:var(--color-parch)] border border-[color:var(--color-terra)]/10 rounded-sm p-5"
+          className="bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-accent)]/10 rounded-sm p-5"
           aria-label="Quick wins logged"
         >
-          <div className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-1">
+          <div className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] mb-1">
             Wins logged
           </div>
-          <div className="font-mono text-3xl font-bold text-[color:var(--color-ink)] tabular-nums">
+          <div className="font-mono text-3xl font-bold text-[color:var(--ledger-ink)] tabular-nums">
             {wins.length}
           </div>
         </div>
@@ -253,14 +253,14 @@ export function QuickWinsClient() {
 
       {/* Encouragement banner */}
       <div
-        className="mb-10 border border-[color:var(--color-sage)]/30 bg-[color:var(--color-sage)]/5 rounded-sm px-5 py-4"
+        className="mb-10 border border-[color:var(--ledger-accent-2)]/30 bg-[color:var(--ledger-accent-2)]/5 rounded-sm px-5 py-4"
         role="status"
         aria-live="polite"
       >
         {winsToGo === 0 ? (
-          <p className="font-sans text-sm text-[color:var(--color-ink)] leading-relaxed">
+          <p className="font-sans text-sm text-[color:var(--ledger-ink)] leading-relaxed">
             You have logged{' '}
-            <span className="font-mono font-bold text-[color:var(--color-sage)] tabular-nums">
+            <span className="font-mono font-bold text-[color:var(--ledger-accent-2)] tabular-nums">
               {wins.length}
             </span>{' '}
             quick wins. Your{' '}
@@ -268,16 +268,16 @@ export function QuickWinsClient() {
             unlocked — download it from your{' '}
             <Link
               href="/courses/foundation/program/certificate"
-              className="underline hover:text-[color:var(--color-terra)] transition-colors"
+              className="underline hover:text-[color:var(--ledger-accent)] transition-colors"
             >
               certificate page
             </Link>
             .
           </p>
         ) : (
-          <p className="font-sans text-sm text-[color:var(--color-ink)] leading-relaxed">
+          <p className="font-sans text-sm text-[color:var(--ledger-ink)] leading-relaxed">
             Log{' '}
-            <span className="font-mono font-bold text-[color:var(--color-sage)] tabular-nums">
+            <span className="font-mono font-bold text-[color:var(--ledger-accent-2)] tabular-nums">
               {winsToGo}
             </span>{' '}
             more quick {winsToGo === 1 ? 'win' : 'wins'} to earn a{' '}
@@ -290,7 +290,7 @@ export function QuickWinsClient() {
       <section aria-labelledby="log-form-heading" className="mb-14">
         <h2
           id="log-form-heading"
-          className="font-serif text-xl font-bold text-[color:var(--color-ink)] mb-6"
+          className="font-serif text-xl font-bold text-[color:var(--ledger-ink)] mb-6"
         >
           Log a new quick win
         </h2>
@@ -298,7 +298,7 @@ export function QuickWinsClient() {
         {error && (
           <div
             role="alert"
-            className="mb-5 px-4 py-3 border border-[color:var(--color-error)]/30 bg-[color:var(--color-error)]/5 rounded-sm font-sans text-sm text-[color:var(--color-error)]"
+            className="mb-5 px-4 py-3 border border-[color:var(--ledger-weak)]/30 bg-[color:var(--ledger-weak)]/5 rounded-sm font-sans text-sm text-[color:var(--ledger-weak)]"
           >
             {error}
           </div>
@@ -308,7 +308,7 @@ export function QuickWinsClient() {
           <div
             role="status"
             aria-live="polite"
-            className="mb-5 px-4 py-3 border border-[color:var(--color-sage)]/30 bg-[color:var(--color-sage)]/5 rounded-sm font-sans text-sm text-[color:var(--color-ink)]"
+            className="mb-5 px-4 py-3 border border-[color:var(--ledger-accent-2)]/30 bg-[color:var(--ledger-accent-2)]/5 rounded-sm font-sans text-sm text-[color:var(--ledger-ink)]"
           >
             {successMsg}
           </div>
@@ -320,7 +320,7 @@ export function QuickWinsClient() {
           <div>
             <label
               htmlFor="qw-description"
-              className="block font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-2"
+              className="block font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] mb-2"
             >
               What did you automate?
             </label>
@@ -332,7 +332,7 @@ export function QuickWinsClient() {
               placeholder='e.g. "Weekly exception report analysis"'
               value={form.description}
               onChange={(e) => handleField('description', e.target.value)}
-              className="w-full bg-[color:var(--color-parch)] border border-[color:var(--color-terra)]/20 rounded-sm px-4 py-3 font-sans text-sm text-[color:var(--color-ink)] placeholder:text-[color:var(--color-dust)]/60 focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)]/40"
+              className="w-full bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-accent)]/20 rounded-sm px-4 py-3 font-sans text-sm text-[color:var(--ledger-ink)] placeholder:text-[color:var(--ledger-soft)]/60 focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)]/40"
             />
           </div>
 
@@ -341,7 +341,7 @@ export function QuickWinsClient() {
             <div>
               <label
                 htmlFor="qw-tool"
-                className="block font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-2"
+                className="block font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] mb-2"
               >
                 Which tool?
               </label>
@@ -350,7 +350,7 @@ export function QuickWinsClient() {
                 required
                 value={form.tool}
                 onChange={(e) => handleField('tool', e.target.value)}
-                className="w-full bg-[color:var(--color-parch)] border border-[color:var(--color-terra)]/20 rounded-sm px-4 py-3 font-sans text-sm text-[color:var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)]/40"
+                className="w-full bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-accent)]/20 rounded-sm px-4 py-3 font-sans text-sm text-[color:var(--ledger-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)]/40"
               >
                 <option value="">Select tool</option>
                 {TOOLS.map((t) => (
@@ -364,7 +364,7 @@ export function QuickWinsClient() {
             <div>
               <label
                 htmlFor="qw-skill"
-                className="block font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-2"
+                className="block font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] mb-2"
               >
                 Which skill?
               </label>
@@ -376,7 +376,7 @@ export function QuickWinsClient() {
                 placeholder='e.g. "RTFC Framework" or "custom workflow"'
                 value={form.skillName}
                 onChange={(e) => handleField('skillName', e.target.value)}
-                className="w-full bg-[color:var(--color-parch)] border border-[color:var(--color-terra)]/20 rounded-sm px-4 py-3 font-sans text-sm text-[color:var(--color-ink)] placeholder:text-[color:var(--color-dust)]/60 focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)]/40"
+                className="w-full bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-accent)]/20 rounded-sm px-4 py-3 font-sans text-sm text-[color:var(--ledger-ink)] placeholder:text-[color:var(--ledger-soft)]/60 focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)]/40"
               />
             </div>
           </div>
@@ -386,7 +386,7 @@ export function QuickWinsClient() {
             <div>
               <label
                 htmlFor="qw-frequency"
-                className="block font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-2"
+                className="block font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] mb-2"
               >
                 How often?
               </label>
@@ -395,7 +395,7 @@ export function QuickWinsClient() {
                 required
                 value={form.frequency}
                 onChange={(e) => handleField('frequency', e.target.value)}
-                className="w-full bg-[color:var(--color-parch)] border border-[color:var(--color-terra)]/20 rounded-sm px-4 py-3 font-sans text-sm text-[color:var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)]/40"
+                className="w-full bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-accent)]/20 rounded-sm px-4 py-3 font-sans text-sm text-[color:var(--ledger-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)]/40"
               >
                 <option value="">Select frequency</option>
                 {FREQUENCIES.map((f) => (
@@ -409,7 +409,7 @@ export function QuickWinsClient() {
             <div>
               <label
                 htmlFor="qw-time"
-                className="block font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-2"
+                className="block font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] mb-2"
               >
                 Time saved per use
               </label>
@@ -418,7 +418,7 @@ export function QuickWinsClient() {
                 required
                 value={form.timeSavedMinutes || ''}
                 onChange={(e) => handleField('timeSavedMinutes', Number(e.target.value))}
-                className="w-full bg-[color:var(--color-parch)] border border-[color:var(--color-terra)]/20 rounded-sm px-4 py-3 font-sans text-sm text-[color:var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)]/40"
+                className="w-full bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-accent)]/20 rounded-sm px-4 py-3 font-sans text-sm text-[color:var(--ledger-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)]/40"
               >
                 <option value="">Select time</option>
                 {TIME_OPTIONS.map((t) => (
@@ -434,7 +434,7 @@ export function QuickWinsClient() {
           <div>
             <label
               htmlFor="qw-department"
-              className="block font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-2"
+              className="block font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] mb-2"
             >
               Department
             </label>
@@ -446,14 +446,14 @@ export function QuickWinsClient() {
               placeholder='e.g. "Compliance" or "Lending"'
               value={form.department}
               onChange={(e) => handleField('department', e.target.value)}
-              className="w-full bg-[color:var(--color-parch)] border border-[color:var(--color-terra)]/20 rounded-sm px-4 py-3 font-sans text-sm text-[color:var(--color-ink)] placeholder:text-[color:var(--color-dust)]/60 focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)]/40"
+              className="w-full bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-accent)]/20 rounded-sm px-4 py-3 font-sans text-sm text-[color:var(--ledger-ink)] placeholder:text-[color:var(--ledger-soft)]/60 focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)]/40"
             />
           </div>
 
           <button
             type="submit"
             disabled={!isFormValid() || submitting}
-            className="mt-2 bg-[color:var(--color-terra)] hover:bg-[color:var(--color-terra-light)] disabled:opacity-40 disabled:cursor-not-allowed text-[color:var(--color-linen)] px-6 py-3 rounded-sm font-mono text-[10px] uppercase tracking-widest font-bold transition-colors"
+            className="mt-2 bg-[color:var(--ledger-accent)] hover:bg-[color:var(--ledger-accent-light)] disabled:opacity-40 disabled:cursor-not-allowed text-[color:var(--ledger-bg)] px-6 py-3 rounded-sm font-mono text-[10px] uppercase tracking-widest font-bold transition-colors"
             aria-busy={submitting}
           >
             {submitting ? 'Logging...' : 'Log Quick Win'}
@@ -465,17 +465,17 @@ export function QuickWinsClient() {
       <section aria-labelledby="wins-list-heading">
         <h2
           id="wins-list-heading"
-          className="font-serif text-xl font-bold text-[color:var(--color-ink)] mb-6"
+          className="font-serif text-xl font-bold text-[color:var(--ledger-ink)] mb-6"
         >
           Your wins
         </h2>
 
         {loading && (
-          <p className="font-sans text-sm text-[color:var(--color-slate)]">Loading...</p>
+          <p className="font-sans text-sm text-[color:var(--ledger-muted)]">Loading...</p>
         )}
 
         {!loading && wins.length === 0 && (
-          <p className="font-sans text-sm text-[color:var(--color-ink)]/60">
+          <p className="font-sans text-sm text-[color:var(--ledger-ink)]/60">
             No quick wins logged yet. Use the form above to add your first one.
           </p>
         )}
@@ -485,28 +485,28 @@ export function QuickWinsClient() {
             {wins.map((win) => (
               <li
                 key={win.id}
-                className="bg-[color:var(--color-parch)] border border-[color:var(--color-terra)]/10 rounded-sm px-5 py-4"
+                className="bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-accent)]/10 rounded-sm px-5 py-4"
               >
                 <div className="flex items-start justify-between gap-4">
-                  <p className="font-serif text-sm font-bold text-[color:var(--color-ink)] leading-snug flex-1">
+                  <p className="font-serif text-sm font-bold text-[color:var(--ledger-ink)] leading-snug flex-1">
                     {win.description}
                   </p>
-                  <span className="font-mono text-sm font-bold text-[color:var(--color-terra)] tabular-nums shrink-0">
+                  <span className="font-mono text-sm font-bold text-[color:var(--ledger-accent)] tabular-nums shrink-0">
                     {minutesToLabel(win.time_saved_minutes)}
                   </span>
                 </div>
 
                 <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1">
-                  <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)]">
                     {toolLabel(win.tool)}
                   </span>
-                  <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)]">
                     {win.skill_name}
                   </span>
-                  <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)]">
                     {win.frequency}
                   </span>
-                  <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)]">
                     {win.department}
                   </span>
                 </div>

@@ -42,11 +42,11 @@ export function ArtifactStatusPanel({ artifactId }: ArtifactStatusPanelProps) {
   if (!status) return null;
 
   return (
-    <article className="border border-[color:var(--color-ink)]/10 rounded-[3px] bg-[color:var(--color-parch)] p-5">
-      <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-2">
+    <article className="border border-[color:var(--ledger-ink)]/10 rounded-[3px] bg-[color:var(--ledger-paper)] p-5">
+      <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--ledger-accent)] mb-2">
         Completion status
       </p>
-      <p className="text-sm text-[color:var(--color-slate)] leading-relaxed">
+      <p className="text-sm text-[color:var(--ledger-muted)] leading-relaxed">
         {formatStatus(status)}
       </p>
     </article>

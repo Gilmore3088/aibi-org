@@ -26,7 +26,7 @@ export function SurveyBranding({ step }: SurveyBrandingProps) {
           className="text-xs font-bold tracking-widest uppercase mb-4 block"
           style={{
             fontFamily: "'DM Mono', monospace",
-            color: 'var(--color-terra)',
+            color: 'var(--ledger-accent)',
           }}
         >
           Institutional Record 1.4
@@ -35,14 +35,14 @@ export function SurveyBranding({ step }: SurveyBrandingProps) {
           className="text-5xl font-extrabold leading-none"
           style={{
             fontFamily: "'Cormorant', serif",
-            color: 'var(--color-ink)',
+            color: 'var(--ledger-ink)',
             letterSpacing: '-0.02em',
           }}
         >
           Curation of{' '}
           <span
             className="italic"
-            style={{ color: 'var(--color-terra)' }}
+            style={{ color: 'var(--ledger-accent)' }}
           >
             Context
           </span>
@@ -51,7 +51,7 @@ export function SurveyBranding({ step }: SurveyBrandingProps) {
           className="mt-6 text-base leading-relaxed max-w-sm"
           style={{
             fontFamily: "'DM Sans', sans-serif",
-            color: 'var(--color-ink)',
+            color: 'var(--ledger-ink)',
             opacity: 0.7,
           }}
         >
@@ -67,9 +67,9 @@ export function SurveyBranding({ step }: SurveyBrandingProps) {
             className="w-12 h-12 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0"
             style={{
               fontFamily: "'DM Mono', monospace",
-              border: '1px solid var(--color-terra)',
-              color: 'var(--color-terra)',
-              backgroundColor: 'var(--color-linen)',
+              border: '1px solid var(--ledger-accent)',
+              color: 'var(--ledger-accent)',
+              backgroundColor: 'var(--ledger-bg)',
             }}
           >
             {String(step).padStart(2, '0')}
@@ -82,7 +82,7 @@ export function SurveyBranding({ step }: SurveyBrandingProps) {
               className="absolute inset-y-0 left-0 transition-all duration-500"
               style={{
                 width: `${progressPercent}%`,
-                backgroundColor: 'var(--color-terra)',
+                backgroundColor: 'var(--ledger-accent)',
               }}
             />
           </div>
@@ -90,7 +90,7 @@ export function SurveyBranding({ step }: SurveyBrandingProps) {
             className="text-sm flex-shrink-0"
             style={{
               fontFamily: "'DM Mono', monospace",
-              color: 'var(--color-ink)',
+              color: 'var(--ledger-ink)',
               opacity: 0.4,
             }}
           >
@@ -101,7 +101,7 @@ export function SurveyBranding({ step }: SurveyBrandingProps) {
           className="text-xs font-medium uppercase tracking-tighter"
           style={{
             fontFamily: "'DM Mono', monospace",
-            color: 'var(--color-ink)',
+            color: 'var(--ledger-ink)',
             opacity: 0.6,
           }}
         >
@@ -113,7 +113,7 @@ export function SurveyBranding({ step }: SurveyBrandingProps) {
       <div
         className="p-8 rounded-sm"
         style={{
-          backgroundColor: 'var(--color-parch)',
+          backgroundColor: 'var(--ledger-paper)',
           border: '1px solid rgba(181,81,46,0.15)',
         }}
       >
@@ -121,7 +121,7 @@ export function SurveyBranding({ step }: SurveyBrandingProps) {
           className="text-base italic leading-relaxed"
           style={{
             fontFamily: "'Cormorant', serif",
-            color: 'var(--color-ink)',
+            color: 'var(--ledger-ink)',
             opacity: 0.75,
           }}
         >

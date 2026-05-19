@@ -42,7 +42,7 @@ const PILLAR_ICONS: Record<Pillar, React.ReactElement> = {
 function StatusBadge({ status, colorVar }: { status: PillarStatus; colorVar: string }) {
   if (status === 'locked') {
     return (
-      <span className="font-mono text-[10px] uppercase tracking-wider text-[color:var(--color-slate)]">
+      <span className="font-mono text-[10px] uppercase tracking-wider text-[color:var(--ledger-muted)]">
         Locked
       </span>
     );
@@ -78,28 +78,28 @@ export function PillarCard({
   status,
 }: PillarCardProps) {
   return (
-    <div className="group bg-[color:var(--color-parch)] p-8 hover:bg-[color:var(--color-parch-dark)] transition-colors duration-300">
+    <div className="group bg-[color:var(--ledger-paper)] p-8 hover:bg-[color:var(--ledger-parch)] transition-colors duration-300">
       {/* Icon with pillar-colored border */}
       <div
         className="w-10 h-10 rounded-sm flex items-center justify-center mb-8"
-        style={{ border: '1.5px solid var(--color-terra)', color: colorVar }}
+        style={{ border: '1.5px solid var(--ledger-accent)', color: colorVar }}
         aria-hidden="true"
       >
         {PILLAR_ICONS[pillar]}
       </div>
 
       {/* Pillar name */}
-      <h3 className="font-serif text-xl font-bold mb-3 text-[color:var(--color-ink)]">
+      <h3 className="font-serif text-xl font-bold mb-3 text-[color:var(--ledger-ink)]">
         {label}
       </h3>
 
       {/* Description */}
-      <p className="text-xs text-[color:var(--color-slate)] leading-relaxed mb-4">
+      <p className="text-xs text-[color:var(--ledger-muted)] leading-relaxed mb-4">
         {description}
       </p>
 
       {/* Module count */}
-      <p className="font-mono text-[10px] text-[color:var(--color-slate)] mb-4 uppercase tracking-wider">
+      <p className="font-mono text-[10px] text-[color:var(--ledger-muted)] mb-4 uppercase tracking-wider">
         {moduleCount} {moduleCount === 1 ? 'module' : 'modules'}
       </p>
 

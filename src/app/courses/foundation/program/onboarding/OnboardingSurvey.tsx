@@ -215,8 +215,8 @@ export function OnboardingSurvey({ enrollmentId }: OnboardingSurveyProps) {
                   role="alert"
                   style={{
                     backgroundColor: 'rgba(155,34,38,0.08)',
-                    border: '1px solid var(--color-error)',
-                    color: 'var(--color-error)',
+                    border: '1px solid var(--ledger-weak)',
+                    color: 'var(--ledger-weak)',
                     fontFamily: "'DM Sans', sans-serif",
                   }}
                 >
@@ -236,10 +236,10 @@ export function OnboardingSurvey({ enrollmentId }: OnboardingSurveyProps) {
                     className="flex items-center gap-2 font-medium text-sm transition-colors focus:outline-none focus-visible:ring-2"
                     style={{
                       fontFamily: "'DM Sans', sans-serif",
-                      color: 'var(--color-ink)',
+                      color: 'var(--ledger-ink)',
                       opacity: 0.6,
                       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                      ['--tw-ring-color' as any]: 'var(--color-terra)',
+                      ['--tw-ring-color' as any]: 'var(--ledger-accent)',
                     }}
                   >
                     &larr; Previous
@@ -255,10 +255,10 @@ export function OnboardingSurvey({ enrollmentId }: OnboardingSurveyProps) {
                     className="flex items-center gap-3 px-10 py-4 rounded-sm uppercase tracking-wider text-sm font-bold transition-all focus:outline-none focus-visible:ring-2 disabled:opacity-40 disabled:cursor-not-allowed"
                     style={{
                       fontFamily: "'DM Sans', sans-serif",
-                      backgroundColor: 'var(--color-terra)',
-                      color: 'var(--color-linen)',
+                      backgroundColor: 'var(--ledger-accent)',
+                      color: 'var(--ledger-bg)',
                       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                      ['--tw-ring-color' as any]: 'var(--color-terra)',
+                      ['--tw-ring-color' as any]: 'var(--ledger-accent)',
                     }}
                   >
                     Continue &rarr;
@@ -270,10 +270,10 @@ export function OnboardingSurvey({ enrollmentId }: OnboardingSurveyProps) {
                     className="flex items-center gap-3 px-10 py-4 rounded-sm uppercase tracking-wider text-sm font-bold transition-all focus:outline-none focus-visible:ring-2 disabled:opacity-40 disabled:cursor-not-allowed"
                     style={{
                       fontFamily: "'DM Sans', sans-serif",
-                      backgroundColor: 'var(--color-terra)',
-                      color: 'var(--color-linen)',
+                      backgroundColor: 'var(--ledger-accent)',
+                      color: 'var(--ledger-bg)',
                       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                      ['--tw-ring-color' as any]: 'var(--color-terra)',
+                      ['--tw-ring-color' as any]: 'var(--ledger-accent)',
                     }}
                   >
                     {isSubmitting ? 'Saving...' : <>Start Module 1 &rarr;</>}

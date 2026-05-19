@@ -118,17 +118,17 @@ export default async function SubmitPage() {
 
         {/* Module completion gate */}
         {!modulesComplete && (
-          <div className="border border-[color:var(--color-parch-dark)] border-l-4 rounded-sm p-6 bg-[color:var(--color-parch)]"
-               style={{ borderLeftColor: 'var(--color-terra)' }}>
-            <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] mb-2">
+          <div className="border border-[color:var(--ledger-parch)] border-l-4 rounded-sm p-6 bg-[color:var(--ledger-paper)]"
+               style={{ borderLeftColor: 'var(--ledger-accent)' }}>
+            <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent)] mb-2">
               Course Incomplete
             </p>
-            <p className="font-sans text-base text-[color:var(--color-ink)] mb-4">
+            <p className="font-sans text-base text-[color:var(--ledger-ink)] mb-4">
               Complete all 12 modules before submitting your work product.
             </p>
             <a
               href="/courses/foundation/program"
-              className="inline-block px-5 py-2 border border-[color:var(--color-terra)] text-[color:var(--color-terra)] hover:bg-[color:var(--color-terra)] hover:text-[color:var(--color-linen)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-2"
+              className="inline-block px-5 py-2 border border-[color:var(--ledger-accent)] text-[color:var(--ledger-accent)] hover:bg-[color:var(--ledger-accent)] hover:text-[color:var(--ledger-bg)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-2"
             >
               Return to Course
             </a>
@@ -138,15 +138,15 @@ export default async function SubmitPage() {
         {/* Submission status — pending or resubmitted */}
         {modulesComplete && submission &&
           (submission.review_status === 'pending' || submission.review_status === 'resubmitted') && (
-          <div className="border border-[color:var(--color-parch-dark)] border-l-4 rounded-sm p-6 bg-[color:var(--color-parch)]"
-               style={{ borderLeftColor: 'var(--color-cobalt)' }}>
-            <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-cobalt)] mb-2">
+          <div className="border border-[color:var(--ledger-parch)] border-l-4 rounded-sm p-6 bg-[color:var(--ledger-paper)]"
+               style={{ borderLeftColor: 'var(--ledger-accent-2)' }}>
+            <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent-2)] mb-2">
               Under Review
             </p>
-            <p className="font-sans text-base text-[color:var(--color-ink)] mb-2">
+            <p className="font-sans text-base text-[color:var(--ledger-ink)] mb-2">
               Your submission is under review.
             </p>
-            <p className="font-sans text-sm text-[color:var(--color-slate)]">
+            <p className="font-sans text-sm text-[color:var(--ledger-muted)]">
               Submitted{' '}
               {new Date(submission.submitted_at).toLocaleDateString('en-US', {
                 year: 'numeric',
@@ -160,17 +160,17 @@ export default async function SubmitPage() {
 
         {/* Submission status — approved */}
         {modulesComplete && submission && submission.review_status === 'approved' && (
-          <div className="border border-[color:var(--color-parch-dark)] border-l-4 rounded-sm p-6 bg-[color:var(--color-parch)]"
-               style={{ borderLeftColor: 'var(--color-sage)' }}>
-            <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-sage)] mb-2">
+          <div className="border border-[color:var(--ledger-parch)] border-l-4 rounded-sm p-6 bg-[color:var(--ledger-paper)]"
+               style={{ borderLeftColor: 'var(--ledger-accent-2)' }}>
+            <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent-2)] mb-2">
               Approved
             </p>
-            <p className="font-sans text-base text-[color:var(--color-ink)] mb-4">
+            <p className="font-sans text-base text-[color:var(--ledger-ink)] mb-4">
               Your work product has been approved. Your AiBI-Foundation credential has been issued.
             </p>
             <a
               href="/courses/foundation/program/certificate"
-              className="inline-block px-5 py-2 bg-[color:var(--color-sage)] hover:opacity-90 text-[color:var(--color-linen)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-opacity focus:outline-none focus:ring-2 focus:ring-[color:var(--color-sage)] focus:ring-offset-2"
+              className="inline-block px-5 py-2 bg-[color:var(--ledger-accent-2)] hover:opacity-90 text-[color:var(--ledger-bg)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-opacity focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent-2)] focus:ring-offset-2"
             >
               View Certificate
             </a>

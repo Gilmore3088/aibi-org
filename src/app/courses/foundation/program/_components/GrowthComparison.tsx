@@ -56,12 +56,12 @@ function DimensionBar({ dimension, delta }: DimensionBarProps) {
   const improvementLabel = formatImprovement(preScore, postScore);
 
   return (
-    <div className="py-4 border-b border-[color:var(--color-ink)]/8 last:border-b-0">
+    <div className="py-4 border-b border-[color:var(--ledger-ink)]/8 last:border-b-0">
       <div className="flex items-center justify-between mb-2">
-        <span className="font-sans text-sm text-[color:var(--color-ink)]">{label}</span>
+        <span className="font-sans text-sm text-[color:var(--ledger-ink)]">{label}</span>
         <span
           className="font-mono text-xs tabular-nums"
-          style={{ color: improved ? 'var(--color-terra)' : 'var(--color-slate)' }}
+          style={{ color: improved ? 'var(--ledger-accent)' : 'var(--ledger-muted)' }}
           aria-label={`${improvementLabel} points`}
         >
           {improvementLabel}
@@ -69,14 +69,14 @@ function DimensionBar({ dimension, delta }: DimensionBarProps) {
       </div>
 
       <div
-        className="relative h-2 rounded-full overflow-hidden bg-[color:var(--color-ink)]/8"
+        className="relative h-2 rounded-full overflow-hidden bg-[color:var(--ledger-ink)]/8"
         role="img"
         aria-label={`${label}: pre ${preScore ?? 0}, post ${postScore} out of ${maxScore}`}
       >
         {/* Pre-score bar (ghost) */}
         {preScore !== null && (
           <div
-            className="absolute top-0 left-0 h-full rounded-full bg-[color:var(--color-ink)]/20"
+            className="absolute top-0 left-0 h-full rounded-full bg-[color:var(--ledger-ink)]/20"
             style={{ width: `${prePct}%` }}
             aria-hidden="true"
           />
@@ -86,16 +86,16 @@ function DimensionBar({ dimension, delta }: DimensionBarProps) {
           className="absolute top-0 left-0 h-full rounded-full transition-all duration-700 ease-out"
           style={{
             width: `${postPct}%`,
-            backgroundColor: improved ? 'var(--color-terra)' : 'var(--color-dust)',
+            backgroundColor: improved ? 'var(--ledger-accent)' : 'var(--ledger-soft)',
           }}
           aria-hidden="true"
         />
       </div>
 
       <div className="flex items-center justify-between mt-1">
-        <span className="font-mono text-[10px] tabular-nums text-[color:var(--color-slate)]">
+        <span className="font-mono text-[10px] tabular-nums text-[color:var(--ledger-muted)]">
           {preScore !== null ? `${preScore} → ` : ''}
-          <span style={{ color: 'var(--color-ink)' }}>{postScore}</span>
+          <span style={{ color: 'var(--ledger-ink)' }}>{postScore}</span>
           {' '}/ {maxScore}
         </span>
       </div>
@@ -128,17 +128,17 @@ export function GrowthComparison({
 
   return (
     <section
-      className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-sm p-6 sm:p-8"
+      className="bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-ink)]/10 rounded-sm p-6 sm:p-8"
       aria-labelledby="growth-heading"
     >
       {/* Header */}
       <div className="mb-8">
-        <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] mb-2">
+        <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent)] mb-2">
           Measure Your Growth
         </p>
         <h2
           id="growth-heading"
-          className="font-serif text-2xl sm:text-3xl font-bold text-[color:var(--color-ink)] leading-tight mb-3"
+          className="font-serif text-2xl sm:text-3xl font-bold text-[color:var(--ledger-ink)] leading-tight mb-3"
         >
           {headline}
         </h2>
@@ -149,15 +149,15 @@ export function GrowthComparison({
             className="inline-flex items-center gap-3 px-4 py-2 border rounded-sm mt-2"
             style={{
               borderColor: postTierColorVar,
-              backgroundColor: 'var(--color-linen)',
+              backgroundColor: 'var(--ledger-bg)',
             }}
             role="status"
             aria-label={`Tier advanced from ${preTierLabel} to ${postTierLabel}`}
           >
-            <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">
+            <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)]">
               {preTierLabel}
             </span>
-            <span className="font-mono text-[10px] text-[color:var(--color-slate)]" aria-hidden="true">
+            <span className="font-mono text-[10px] text-[color:var(--ledger-muted)]" aria-hidden="true">
               →
             </span>
             <span
@@ -181,21 +181,21 @@ export function GrowthComparison({
 
       {/* Score totals */}
       {preScore !== null && (
-        <div className="grid grid-cols-2 gap-4 mb-8 p-4 bg-[color:var(--color-linen)] border border-[color:var(--color-ink)]/8 rounded-sm">
+        <div className="grid grid-cols-2 gap-4 mb-8 p-4 bg-[color:var(--ledger-bg)] border border-[color:var(--ledger-ink)]/8 rounded-sm">
           <div>
-            <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-1">
+            <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] mb-1">
               Before Course
             </p>
-            <p className="font-mono text-3xl tabular-nums text-[color:var(--color-dust)]">
+            <p className="font-mono text-3xl tabular-nums text-[color:var(--ledger-soft)]">
               {preScore}
               <span className="text-base font-normal"> / 48</span>
             </p>
           </div>
           <div>
-            <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] mb-1">
+            <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent)] mb-1">
               After Course
             </p>
-            <p className="font-mono text-3xl tabular-nums text-[color:var(--color-terra)]">
+            <p className="font-mono text-3xl tabular-nums text-[color:var(--ledger-accent)]">
               {postScore}
               <span className="text-base font-normal"> / 48</span>
             </p>
@@ -206,7 +206,7 @@ export function GrowthComparison({
       {/* Dimension breakdown */}
       {sortedDimensions.length > 0 && (
         <div>
-          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-4">
+          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] mb-4">
             By Dimension
           </p>
           <div>
@@ -215,7 +215,7 @@ export function GrowthComparison({
             ))}
           </div>
           {preScore !== null && (
-            <p className="font-sans text-xs text-[color:var(--color-slate)] mt-4 leading-relaxed">
+            <p className="font-sans text-xs text-[color:var(--ledger-muted)] mt-4 leading-relaxed">
               Ghost bars reflect your pre-course scores. Solid bars are post-course.
               Each session draws from different questions, so per-dimension scores
               reflect the questions served in that session.

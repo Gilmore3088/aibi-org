@@ -13,8 +13,8 @@ export function ContentSection({ section, level = 2 }: ContentSectionProps) {
   const HeadingTag = level === 2 ? 'h2' : 'h3';
   const headingClass =
     level === 2
-      ? 'font-serif text-2xl font-bold text-[color:var(--color-ink)] mb-4'
-      : 'font-serif text-xl font-bold text-[color:var(--color-ink)] mb-3';
+      ? 'font-serif text-2xl font-bold text-[color:var(--ledger-ink)] mb-4'
+      : 'font-serif text-xl font-bold text-[color:var(--ledger-ink)] mb-3';
 
   return (
     <section id={section.id} className="mb-16 scroll-mt-8">
@@ -25,7 +25,7 @@ export function ContentSection({ section, level = 2 }: ContentSectionProps) {
       <MarkdownRenderer content={section.content} />
 
       {section.subsections && section.subsections.length > 0 && (
-        <div className="mt-8 pl-0 border-l-2 border-[color:var(--color-parch-dark)] space-y-8">
+        <div className="mt-8 pl-0 border-l-2 border-[color:var(--ledger-parch)] space-y-8">
           {section.subsections.map((sub) => (
             <div key={sub.id} className="pl-6">
               <ContentSection section={sub} level={3} />

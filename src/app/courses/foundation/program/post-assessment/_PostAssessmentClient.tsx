@@ -222,10 +222,10 @@ export function PostAssessmentClient({ enrollmentId }: PostAssessmentClientProps
           <div>
             {/* Context header */}
             <div className="max-w-2xl mx-auto mb-10">
-              <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] mb-2">
+              <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent)] mb-2">
                 AiBI-Foundation · Measure Your Growth
               </p>
-              <p className="font-sans text-sm text-[color:var(--color-slate)] leading-relaxed">
+              <p className="font-sans text-sm text-[color:var(--ledger-muted)] leading-relaxed">
                 You have completed all 12 modules. Answer these questions honestly —
                 the same way you did before the course. The comparison shows your transformation.
               </p>
@@ -245,7 +245,7 @@ export function PostAssessmentClient({ enrollmentId }: PostAssessmentClientProps
         {phase === 'score' && isComplete && (
           <div className="max-w-3xl mx-auto space-y-10">
             <div className="flex flex-col items-center text-center">
-              <p className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-ink)]/70 mb-6">
+              <p className="font-mono text-xs uppercase tracking-widest text-[color:var(--ledger-ink)]/70 mb-6">
                 Post-Course Score
               </p>
               <ScoreRing
@@ -255,11 +255,11 @@ export function PostAssessmentClient({ enrollmentId }: PostAssessmentClientProps
                 colorVar={getTierV2(totalScore).colorVar}
                 label={getTierV2(totalScore).label}
               />
-              <h2 className="font-serif text-3xl md:text-4xl text-center mt-8 max-w-xl text-[color:var(--color-ink)]">
+              <h2 className="font-serif text-3xl md:text-4xl text-center mt-8 max-w-xl text-[color:var(--ledger-ink)]">
                 {getTierV2(totalScore).headline}
               </h2>
               {preData?.score && (
-                <p className="font-sans text-base text-[color:var(--color-ink)]/70 mt-4">
+                <p className="font-sans text-base text-[color:var(--ledger-ink)]/70 mt-4">
                   Before the course: score{' '}
                   <span className="font-mono tabular-nums">{preData.score}</span>
                   {' '}({preData.tierLabel})
@@ -271,7 +271,7 @@ export function PostAssessmentClient({ enrollmentId }: PostAssessmentClientProps
               <button
                 type="button"
                 onClick={handleViewResults}
-                className="inline-flex items-center gap-2 px-8 py-4 bg-[color:var(--color-terra)] hover:bg-[color:var(--color-terra-light)] text-[color:var(--color-linen)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-2"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-[color:var(--ledger-accent)] hover:bg-[color:var(--ledger-accent-light)] text-[color:var(--ledger-bg)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-2"
               >
                 View Full Comparison
               </button>
@@ -283,22 +283,22 @@ export function PostAssessmentClient({ enrollmentId }: PostAssessmentClientProps
         {phase === 'results' && postTier && (
           <div className="max-w-3xl mx-auto space-y-8">
             <div>
-              <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] mb-2">
+              <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent)] mb-2">
                 AiBI-Foundation · Measure Your Growth
               </p>
-              <h1 className="font-serif text-4xl sm:text-5xl font-bold text-[color:var(--color-ink)] leading-tight">
+              <h1 className="font-serif text-4xl sm:text-5xl font-bold text-[color:var(--ledger-ink)] leading-tight">
                 Your Transformation
               </h1>
             </div>
 
             {saving && (
-              <p className="font-mono text-xs text-[color:var(--color-slate)]" aria-live="polite">
+              <p className="font-mono text-xs text-[color:var(--ledger-muted)]" aria-live="polite">
                 Saving your result...
               </p>
             )}
             {saveError && (
               <p
-                className="font-mono text-xs text-[color:var(--color-error)]"
+                className="font-mono text-xs text-[color:var(--ledger-weak)]"
                 role="alert"
                 aria-live="assertive"
               >

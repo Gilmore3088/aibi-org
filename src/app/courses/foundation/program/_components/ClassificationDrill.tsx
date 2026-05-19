@@ -177,40 +177,40 @@ export function ClassificationDrill({
 
   return (
     <div
-      className="border border-[color:var(--color-parch-dark)] border-l-4 rounded-sm p-6 bg-white/40 mb-8"
-      style={{ borderLeftColor: 'var(--color-terra)' }}
+      className="border border-[color:var(--ledger-parch)] border-l-4 rounded-sm p-6 bg-white/40 mb-8"
+      style={{ borderLeftColor: 'var(--ledger-accent)' }}
     >
       {/* Activity header */}
       <div className="mb-5">
-        <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] mb-1">
+        <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent)] mb-1">
           Activity {activity.id}
         </p>
         <div className="flex items-start justify-between gap-4">
-          <h3 className="font-serif text-xl font-bold text-[color:var(--color-ink)] mb-2">{activity.title}</h3>
+          <h3 className="font-serif text-xl font-bold text-[color:var(--ledger-ink)] mb-2">{activity.title}</h3>
           {phase === 'submitted' && (
-            <span className="shrink-0 inline-flex items-center gap-1 px-2 py-0.5 bg-[color:var(--color-sage)]/10 border border-[color:var(--color-sage)] rounded-sm font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-sage)]">
+            <span className="shrink-0 inline-flex items-center gap-1 px-2 py-0.5 bg-[color:var(--ledger-accent-2)]/10 border border-[color:var(--ledger-accent-2)] rounded-sm font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent-2)]">
               Submitted
             </span>
           )}
         </div>
-        <p className="text-sm font-sans text-[color:var(--color-slate)] leading-relaxed">{activity.description}</p>
+        <p className="text-sm font-sans text-[color:var(--ledger-muted)] leading-relaxed">{activity.description}</p>
       </div>
 
       {phase === 'ready' && (
         <div className="text-center py-8">
-          <p className="font-sans text-sm text-[color:var(--color-slate)] mb-2">
+          <p className="font-sans text-sm text-[color:var(--ledger-muted)] mb-2">
             {totalScenarios} scenarios · 20 seconds each · score shown at end
           </p>
-          <p className="font-sans text-sm text-[color:var(--color-slate)] mb-4">
+          <p className="font-sans text-sm text-[color:var(--ledger-muted)] mb-4">
             Classify each scenario as Tier 1 (Public), Tier 2 (Internal Only), or Tier 3 (Highly Restricted).
           </p>
-          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-8">
+          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] mb-8">
             Keyboard shortcut: press 1, 2, or 3 to select during the drill
           </p>
           <button
             type="button"
             onClick={handleStartDrill}
-            className="px-8 py-3 bg-[color:var(--color-terra)] hover:bg-[color:var(--color-terra-light)] text-[color:var(--color-linen)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-2"
+            className="px-8 py-3 bg-[color:var(--ledger-accent)] hover:bg-[color:var(--ledger-accent-light)] text-[color:var(--ledger-bg)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-2"
           >
             Start Drill
           </button>
@@ -240,16 +240,16 @@ export function ClassificationDrill({
         >
           <DrillReadOnlyReview scenarios={scenarios} answers={answers} score={score} />
           {serverError && (
-            <p className="mt-4 text-sm font-sans text-[color:var(--color-error)] bg-[color:var(--color-error)]/5 border border-[color:var(--color-error)]/20 rounded-sm px-3 py-2" role="alert">
+            <p className="mt-4 text-sm font-sans text-[color:var(--ledger-weak)] bg-[color:var(--ledger-weak)]/5 border border-[color:var(--ledger-weak)]/20 rounded-sm px-3 py-2" role="alert">
               {serverError}
             </p>
           )}
-          <div className="mt-6 pt-4 border-t border-[color:var(--color-parch-dark)]">
+          <div className="mt-6 pt-4 border-t border-[color:var(--ledger-parch)]">
             <button
               type="button"
               onClick={handleSubmitDrill}
               disabled={submitting}
-              className="px-6 py-2.5 bg-[color:var(--color-terra)] hover:bg-[color:var(--color-terra-light)] disabled:bg-[color:var(--color-parch-dark)] disabled:text-[color:var(--color-dust)] text-[color:var(--color-linen)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-2"
+              className="px-6 py-2.5 bg-[color:var(--ledger-accent)] hover:bg-[color:var(--ledger-accent-light)] disabled:bg-[color:var(--ledger-parch)] disabled:text-[color:var(--ledger-soft)] text-[color:var(--ledger-bg)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-2"
             >
               {submitting ? 'Submitting…' : 'Submit Results'}
             </button>
@@ -264,7 +264,7 @@ export function ClassificationDrill({
             answers={existingAnswers}
             score={existingScore ?? existingAnswers.filter((a) => a.selected === a.correct).length}
           />
-          <p className="mt-6 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-sage)] text-center">
+          <p className="mt-6 font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent-2)] text-center">
             Drill results saved
           </p>
         </div>

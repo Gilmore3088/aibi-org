@@ -20,7 +20,7 @@ const COPY_RESET_MS = 2000;
 
 function SectionLabel({ children }: { readonly children: React.ReactNode }) {
   return (
-    <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-1">
+    <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] mb-1">
       {children}
     </p>
   );
@@ -42,15 +42,15 @@ function AccordionSection({
   const toggle = useCallback(() => setOpen((prev) => !prev), []);
 
   return (
-    <div className="border border-[color:var(--color-parch-dark)] rounded-sm overflow-hidden">
+    <div className="border border-[color:var(--ledger-parch)] rounded-sm overflow-hidden">
       <button
         type="button"
         onClick={toggle}
-        className="w-full flex items-center justify-between px-5 py-4 bg-[color:var(--color-parch)] hover:bg-[color:var(--color-parch-dark)] transition-colors focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[color:var(--color-terra)]"
+        className="w-full flex items-center justify-between px-5 py-4 bg-[color:var(--ledger-paper)] hover:bg-[color:var(--ledger-parch)] transition-colors focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[color:var(--ledger-accent)]"
         aria-expanded={open}
       >
         <span
-          className="font-serif text-base font-bold text-[color:var(--color-ink)]"
+          className="font-serif text-base font-bold text-[color:var(--ledger-ink)]"
           style={{ borderBottom: open ? `2px solid ${accentVar}` : 'none', paddingBottom: open ? '1px' : '0' }}
         >
           {title}
@@ -65,7 +65,7 @@ function AccordionSection({
       </button>
 
       {open && (
-        <div className="px-5 py-5 bg-[color:var(--color-linen)] space-y-4 border-t border-[color:var(--color-parch-dark)]">
+        <div className="px-5 py-5 bg-[color:var(--ledger-bg)] space-y-4 border-t border-[color:var(--ledger-parch)]">
           {children}
         </div>
       )}
@@ -97,18 +97,18 @@ function CopyablePrompt({ text }: { readonly text: string }) {
 
   return (
     <div className="relative">
-      <div className="bg-[color:var(--color-parch)] border border-[color:var(--color-parch-dark)] rounded-sm p-4 pr-16">
-        <pre className="font-mono text-[13px] leading-relaxed text-[color:var(--color-ink)] whitespace-pre-wrap break-words">
+      <div className="bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-parch)] rounded-sm p-4 pr-16">
+        <pre className="font-mono text-[13px] leading-relaxed text-[color:var(--ledger-ink)] whitespace-pre-wrap break-words">
           {text}
         </pre>
       </div>
       <button
         type="button"
         onClick={handleCopy}
-        className="absolute top-2 right-2 px-3 py-1.5 text-[10px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-1"
+        className="absolute top-2 right-2 px-3 py-1.5 text-[10px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-1"
         style={{
-          backgroundColor: copied ? 'var(--color-terra-light)' : 'var(--color-terra)',
-          color: 'var(--color-linen)',
+          backgroundColor: copied ? 'var(--ledger-accent-light)' : 'var(--ledger-accent)',
+          color: 'var(--ledger-bg)',
         }}
         aria-label={copied ? 'Copied to clipboard' : 'Copy prompt to clipboard'}
       >
@@ -127,12 +127,12 @@ export function ToolGuide({ guide }: ToolGuideProps) {
     <article className="space-y-3" aria-label={`${guide.platformLabel} guide`}>
 
       {/* Platform header */}
-      <div className="bg-[color:var(--color-parch)] border border-[color:var(--color-parch-dark)] rounded-sm p-6">
+      <div className="bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-parch)] rounded-sm p-6">
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div className="space-y-2">
             <div className="flex items-center gap-3">
               <span
-                className="inline-flex items-center px-3 py-1 text-[10px] font-mono uppercase tracking-widest rounded-sm text-[color:var(--color-linen)]"
+                className="inline-flex items-center px-3 py-1 text-[10px] font-mono uppercase tracking-widest rounded-sm text-[color:var(--ledger-bg)]"
                 style={{ backgroundColor: guide.colorVar }}
               >
                 {guide.platformLabel}
@@ -141,12 +141,12 @@ export function ToolGuide({ guide }: ToolGuideProps) {
                 href={guide.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] hover:text-[color:var(--color-terra)] transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-1 rounded-sm"
+                className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] hover:text-[color:var(--ledger-accent)] transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-1 rounded-sm"
               >
                 {guide.url.replace('https://', '')} ↗
               </a>
             </div>
-            <p className="font-serif text-base italic text-[color:var(--color-ink)] leading-snug max-w-2xl">
+            <p className="font-serif text-base italic text-[color:var(--ledger-ink)] leading-snug max-w-2xl">
               {guide.tagline}
             </p>
           </div>
@@ -169,17 +169,17 @@ export function ToolGuide({ guide }: ToolGuideProps) {
               >
                 {i + 1}.
               </span>
-              <span className="font-sans text-sm text-[color:var(--color-ink)] leading-relaxed">
+              <span className="font-sans text-sm text-[color:var(--ledger-ink)] leading-relaxed">
                 {step}
               </span>
             </li>
           ))}
         </ol>
         <div
-          className="mt-4 p-4 border-l-4 rounded-sm bg-[color:var(--color-parch)]"
+          className="mt-4 p-4 border-l-4 rounded-sm bg-[color:var(--ledger-paper)]"
           style={{ borderColor: guide.colorVar }}
         >
-          <p className="font-sans text-sm text-[color:var(--color-ink)] leading-relaxed">
+          <p className="font-sans text-sm text-[color:var(--ledger-ink)] leading-relaxed">
             {guide.gettingStarted.firstSessionNote}
           </p>
         </div>
@@ -191,16 +191,16 @@ export function ToolGuide({ guide }: ToolGuideProps) {
           {guide.pricing.map((tier) => (
             <div
               key={tier.tierName}
-              className="border border-[color:var(--color-parch-dark)] rounded-sm p-4 bg-[color:var(--color-parch)]"
+              className="border border-[color:var(--ledger-parch)] rounded-sm p-4 bg-[color:var(--ledger-paper)]"
             >
               <div className="flex items-center gap-3 mb-3">
                 <span
-                  className="font-mono text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-sm text-[color:var(--color-linen)]"
+                  className="font-mono text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-sm text-[color:var(--ledger-bg)]"
                   style={{ backgroundColor: guide.colorVar }}
                 >
                   {tier.tierName}
                 </span>
-                <span className="font-mono text-sm text-[color:var(--color-ink)]">
+                <span className="font-mono text-sm text-[color:var(--ledger-ink)]">
                   {tier.cost}
                 </span>
               </div>
@@ -212,15 +212,15 @@ export function ToolGuide({ guide }: ToolGuideProps) {
                       style={{ backgroundColor: guide.colorVar }}
                       aria-hidden="true"
                     />
-                    <span className="font-sans text-sm text-[color:var(--color-ink)] leading-relaxed">
+                    <span className="font-sans text-sm text-[color:var(--ledger-ink)] leading-relaxed">
                       {limit}
                     </span>
                   </li>
                 ))}
               </ul>
-              <div className="pt-3 border-t border-[color:var(--color-parch-dark)]">
+              <div className="pt-3 border-t border-[color:var(--ledger-parch)]">
                 <SectionLabel>Banking verdict</SectionLabel>
-                <p className="font-sans text-sm text-[color:var(--color-ink)] leading-relaxed">
+                <p className="font-sans text-sm text-[color:var(--ledger-ink)] leading-relaxed">
                   {tier.bankingVerdict}
                 </p>
               </div>
@@ -235,7 +235,7 @@ export function ToolGuide({ guide }: ToolGuideProps) {
           {guide.bankingUseCases.map((useCase) => (
             <div
               key={useCase.number}
-              className="border border-[color:var(--color-parch-dark)] rounded-sm p-4 bg-[color:var(--color-parch)] space-y-3"
+              className="border border-[color:var(--ledger-parch)] rounded-sm p-4 bg-[color:var(--ledger-paper)] space-y-3"
             >
               <div className="flex items-start gap-3">
                 <span
@@ -245,7 +245,7 @@ export function ToolGuide({ guide }: ToolGuideProps) {
                 >
                   {useCase.number}.
                 </span>
-                <h3 className="font-serif text-base font-bold text-[color:var(--color-ink)] leading-snug">
+                <h3 className="font-serif text-base font-bold text-[color:var(--ledger-ink)] leading-snug">
                   {useCase.title}
                 </h3>
               </div>
@@ -255,7 +255,7 @@ export function ToolGuide({ guide }: ToolGuideProps) {
               </div>
               <div className="space-y-1">
                 <SectionLabel>What you will get</SectionLabel>
-                <p className="font-sans text-sm text-[color:var(--color-ink)] leading-relaxed">
+                <p className="font-sans text-sm text-[color:var(--ledger-ink)] leading-relaxed">
                   {useCase.expectedOutput}
                 </p>
               </div>
@@ -271,7 +271,7 @@ export function ToolGuide({ guide }: ToolGuideProps) {
             <>
               <div>
                 <SectionLabel>How to configure</SectionLabel>
-                <p className="font-sans text-sm text-[color:var(--color-ink)] leading-relaxed">
+                <p className="font-sans text-sm text-[color:var(--ledger-ink)] leading-relaxed">
                   {guide.customInstructions.howTo}
                 </p>
               </div>
@@ -283,7 +283,7 @@ export function ToolGuide({ guide }: ToolGuideProps) {
               )}
             </>
           ) : (
-            <p className="font-sans text-sm text-[color:var(--color-slate)]">
+            <p className="font-sans text-sm text-[color:var(--ledger-muted)]">
               Custom instructions are not available on this platform.
             </p>
           )}
@@ -294,10 +294,10 @@ export function ToolGuide({ guide }: ToolGuideProps) {
       <AccordionSection title="Data Safety for Banking Use" accentVar={guide.colorVar}>
         <div className="space-y-4">
           <div
-            className="p-4 border-l-4 rounded-sm bg-[color:var(--color-parch)]"
+            className="p-4 border-l-4 rounded-sm bg-[color:var(--ledger-paper)]"
             style={{ borderColor: guide.colorVar }}
           >
-            <p className="font-sans text-sm font-semibold text-[color:var(--color-ink)] leading-relaxed">
+            <p className="font-sans text-sm font-semibold text-[color:var(--ledger-ink)] leading-relaxed">
               {guide.dataSafety.summary}
             </p>
           </div>
@@ -309,15 +309,15 @@ export function ToolGuide({ guide }: ToolGuideProps) {
                   style={{ backgroundColor: guide.colorVar }}
                   aria-hidden="true"
                 />
-                <span className="font-sans text-sm text-[color:var(--color-ink)] leading-relaxed">
+                <span className="font-sans text-sm text-[color:var(--ledger-ink)] leading-relaxed">
                   {detail}
                 </span>
               </li>
             ))}
           </ul>
-          <div className="border border-[color:var(--color-parch-dark)] rounded-sm p-4 bg-[color:var(--color-parch)]">
+          <div className="border border-[color:var(--ledger-parch)] rounded-sm p-4 bg-[color:var(--ledger-paper)]">
             <SectionLabel>Banking verdict</SectionLabel>
-            <p className="font-sans text-sm text-[color:var(--color-ink)] leading-relaxed">
+            <p className="font-sans text-sm text-[color:var(--ledger-ink)] leading-relaxed">
               {guide.dataSafety.bankingVerdict}
             </p>
           </div>
@@ -336,7 +336,7 @@ export function ToolGuide({ guide }: ToolGuideProps) {
               >
                 {tip.number}
               </span>
-              <p className="font-sans text-sm text-[color:var(--color-ink)] leading-relaxed pt-0.5">
+              <p className="font-sans text-sm text-[color:var(--ledger-ink)] leading-relaxed pt-0.5">
                 {tip.tip}
               </p>
             </li>

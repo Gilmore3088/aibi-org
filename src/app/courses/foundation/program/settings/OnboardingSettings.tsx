@@ -148,7 +148,7 @@ export function OnboardingSettings({ enrollmentId, currentAnswers }: OnboardingS
           className="text-4xl font-bold leading-tight mb-3"
           style={{
             fontFamily: "'Cormorant', serif",
-            color: 'var(--color-ink)',
+            color: 'var(--ledger-ink)',
             letterSpacing: '-0.02em',
           }}
         >
@@ -156,7 +156,7 @@ export function OnboardingSettings({ enrollmentId, currentAnswers }: OnboardingS
         </h1>
         <p
           className="text-sm"
-          style={{ fontFamily: "'DM Sans', sans-serif", color: 'var(--color-ink)', opacity: 0.6 }}
+          style={{ fontFamily: "'DM Sans', sans-serif", color: 'var(--ledger-ink)', opacity: 0.6 }}
         >
           Changes take effect on your next page load.
         </p>
@@ -181,8 +181,8 @@ export function OnboardingSettings({ enrollmentId, currentAnswers }: OnboardingS
             role="alert"
             style={{
               backgroundColor: 'rgba(155,34,38,0.08)',
-              border: '1px solid var(--color-error)',
-              color: 'var(--color-error)',
+              border: '1px solid var(--ledger-weak)',
+              color: 'var(--ledger-weak)',
               fontFamily: "'DM Sans', sans-serif",
             }}
           >
@@ -198,8 +198,8 @@ export function OnboardingSettings({ enrollmentId, currentAnswers }: OnboardingS
             aria-live="polite"
             style={{
               backgroundColor: 'rgba(74,103,65,0.08)',
-              border: '1px solid var(--color-sage)',
-              color: 'var(--color-sage)',
+              border: '1px solid var(--ledger-accent-2)',
+              color: 'var(--ledger-accent-2)',
               fontFamily: "'DM Sans', sans-serif",
             }}
           >
@@ -216,10 +216,10 @@ export function OnboardingSettings({ enrollmentId, currentAnswers }: OnboardingS
             href="/courses/foundation/program"
             className="font-mono text-[11px] uppercase tracking-widest transition-colors focus:outline-none focus-visible:ring-2"
             style={{
-              color: 'var(--color-ink)',
+              color: 'var(--ledger-ink)',
               opacity: 0.55,
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              ['--tw-ring-color' as any]: 'var(--color-terra)',
+              ['--tw-ring-color' as any]: 'var(--ledger-accent)',
             }}
           >
             &larr; Back to Course
@@ -231,10 +231,10 @@ export function OnboardingSettings({ enrollmentId, currentAnswers }: OnboardingS
             className="px-8 py-3 rounded-sm uppercase tracking-wider text-sm font-bold transition-all focus:outline-none focus-visible:ring-2 disabled:opacity-40 disabled:cursor-not-allowed"
             style={{
               fontFamily: "'DM Sans', sans-serif",
-              backgroundColor: 'var(--color-terra)',
-              color: 'var(--color-linen)',
+              backgroundColor: 'var(--ledger-accent)',
+              color: 'var(--ledger-bg)',
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              ['--tw-ring-color' as any]: 'var(--color-terra)',
+              ['--tw-ring-color' as any]: 'var(--ledger-accent)',
             }}
           >
             {isSubmitting ? 'Saving...' : 'Save Changes'}

@@ -36,12 +36,12 @@ interface SkillSubmittedPanelProps {
 export function SkillSubmittedPanel({ values, successRef, onRedownload }: SkillSubmittedPanelProps) {
   return (
     <div ref={successRef} tabIndex={-1} className="focus:outline-none">
-      <div className="mb-5 p-4 bg-[color:var(--color-sage)]/10 border border-[color:var(--color-sage)] rounded-sm flex items-start justify-between gap-4">
+      <div className="mb-5 p-4 bg-[color:var(--ledger-accent-2)]/10 border border-[color:var(--ledger-accent-2)] rounded-sm flex items-start justify-between gap-4">
         <div>
-          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-sage)] mb-1">
+          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent-2)] mb-1">
             Skill Saved
           </p>
-          <p className="text-sm font-sans text-[color:var(--color-ink)] leading-relaxed">
+          <p className="text-sm font-sans text-[color:var(--ledger-ink)] leading-relaxed">
             Your skill file has been saved and downloaded. Use the button below to re-download at any
             time.
           </p>
@@ -49,7 +49,7 @@ export function SkillSubmittedPanel({ values, successRef, onRedownload }: SkillS
         <button
           type="button"
           onClick={onRedownload}
-          className="shrink-0 flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-mono rounded-sm border border-[color:var(--color-sage)] text-[color:var(--color-sage)] hover:bg-[color:var(--color-sage)]/10 transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-sage)] focus:ring-offset-1"
+          className="shrink-0 flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-mono rounded-sm border border-[color:var(--ledger-accent-2)] text-[color:var(--ledger-accent-2)] hover:bg-[color:var(--ledger-accent-2)]/10 transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent-2)] focus:ring-offset-1"
           aria-label="Re-download skill file"
         >
           <DownloadIcon />

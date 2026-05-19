@@ -41,17 +41,17 @@ export function CompletionCTA({ moduleNumber, isLastModule }: CompletionCTAProps
     return (
       <>
         <div
-          className="mt-8 p-6 bg-[color:var(--color-parch)] border border-[color:var(--color-parch-dark)] border-l-4 rounded-sm"
-          style={{ borderLeftColor: 'var(--color-terra)' }}
+          className="mt-8 p-6 bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-parch)] border-l-4 rounded-sm"
+          style={{ borderLeftColor: 'var(--ledger-accent)' }}
           aria-label="Course complete — next steps"
         >
-          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] mb-2">
+          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent)] mb-2">
             All modules complete
           </p>
-          <p className="font-serif text-lg font-bold text-[color:var(--color-ink)] mb-3">
+          <p className="font-serif text-lg font-bold text-[color:var(--ledger-ink)] mb-3">
             Ready for your assessed work product.
           </p>
-          <p className="font-sans text-sm text-[color:var(--color-slate)] leading-relaxed mb-5">
+          <p className="font-sans text-sm text-[color:var(--ledger-muted)] leading-relaxed mb-5">
             You have completed all 12 modules of the AiBI-Foundation course. Your final step is to
             submit a four-item work product package demonstrating your professional AI capability.
             This is not a test — it is a demonstration of the skills you have built throughout
@@ -59,34 +59,34 @@ export function CompletionCTA({ moduleNumber, isLastModule }: CompletionCTAProps
           </p>
           <a
             href="/courses/foundation/program/submit"
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-[color:var(--color-terra)] hover:bg-[color:var(--color-terra-light)] text-[color:var(--color-linen)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-2"
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-[color:var(--ledger-accent)] hover:bg-[color:var(--ledger-accent-light)] text-[color:var(--ledger-bg)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-2"
           >
             Begin Work Product Submission
             <ArrowIcon />
           </a>
-          <p className="mt-3 font-mono text-[10px] text-[color:var(--color-slate)]">
+          <p className="mt-3 font-mono text-[10px] text-[color:var(--ledger-muted)]">
             Four items required. Reviewed against a five-dimension rubric.
           </p>
         </div>
 
         {/* Post-course assessment CTA — measure transformation */}
         <div
-          className="mt-4 p-5 bg-[color:var(--color-linen)] border border-[color:var(--color-ink)]/10 rounded-sm"
+          className="mt-4 p-5 bg-[color:var(--ledger-bg)] border border-[color:var(--ledger-ink)]/10 rounded-sm"
           aria-label="Measure your growth"
         >
-          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-2">
+          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] mb-2">
             Optional — Measure Your Growth
           </p>
-          <p className="font-sans text-sm text-[color:var(--color-ink)] mb-1">
+          <p className="font-sans text-sm text-[color:var(--ledger-ink)] mb-1">
             See how far you&rsquo;ve come.
           </p>
-          <p className="font-sans text-xs text-[color:var(--color-slate)] leading-relaxed mb-4">
+          <p className="font-sans text-xs text-[color:var(--ledger-muted)] leading-relaxed mb-4">
             Take the same readiness assessment you completed before the course. The side-by-side
             comparison shows your AI readiness improvement — dimension by dimension.
           </p>
           <a
             href="/courses/foundation/program/post-assessment"
-            className="inline-flex items-center gap-2 px-4 py-2 border border-[color:var(--color-terra)]/30 hover:border-[color:var(--color-terra)] text-[color:var(--color-ink)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-2"
+            className="inline-flex items-center gap-2 px-4 py-2 border border-[color:var(--ledger-accent)]/30 hover:border-[color:var(--ledger-accent)] text-[color:var(--ledger-ink)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-2"
           >
             Measure Your Growth
             <ArrowIcon />
@@ -108,17 +108,17 @@ export function CompletionCTA({ moduleNumber, isLastModule }: CompletionCTAProps
     return (
       <>
         <div
-          className="mt-8 p-6 bg-[color:var(--color-parch)] border border-[color:var(--color-parch-dark)] border-l-4 rounded-sm"
-          style={{ borderLeftColor: 'var(--color-terra)' }}
+          className="mt-8 p-6 bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-parch)] border-l-4 rounded-sm"
+          style={{ borderLeftColor: 'var(--ledger-accent)' }}
           aria-label="Module complete — next steps"
         >
-          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] mb-2">
+          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent)] mb-2">
             Understanding pillar complete
           </p>
-          <p className="font-serif text-lg font-bold text-[color:var(--color-ink)] mb-3">
+          <p className="font-serif text-lg font-bold text-[color:var(--ledger-ink)] mb-3">
             You have the foundation. Now see the full picture.
           </p>
-          <p className="font-sans text-sm text-[color:var(--color-slate)] leading-relaxed mb-5">
+          <p className="font-sans text-sm text-[color:var(--ledger-muted)] leading-relaxed mb-5">
             You now know how to classify data, recognise hallucination patterns, and build
             your own Acceptable Use Card. An Executive Briefing maps that knowledge to your
             institution&rsquo;s specific workflows, vendors, and risk profile.
@@ -128,12 +128,12 @@ export function CompletionCTA({ moduleNumber, isLastModule }: CompletionCTAProps
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => trackBriefingBooked({ source: 'cta' })}
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-[color:var(--color-terra)] hover:bg-[color:var(--color-terra-light)] text-[color:var(--color-linen)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-2"
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-[color:var(--ledger-accent)] hover:bg-[color:var(--ledger-accent-light)] text-[color:var(--ledger-bg)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-2"
           >
             Book an Executive Briefing
             <ArrowIcon />
           </a>
-          <p className="mt-3 font-mono text-[10px] text-[color:var(--color-slate)]">
+          <p className="mt-3 font-mono text-[10px] text-[color:var(--ledger-muted)]">
             No obligation. 30 minutes. Specific to your institution.
           </p>
         </div>
@@ -164,10 +164,10 @@ export function CompletionCTA({ moduleNumber, isLastModule }: CompletionCTAProps
   return (
     <>
       <div
-        className="mt-8 p-4 bg-[color:var(--color-parch)] border border-[color:var(--color-parch-dark)] rounded-sm"
+        className="mt-8 p-4 bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-parch)] rounded-sm"
         aria-label="Module complete"
       >
-        <p className="font-sans text-sm text-[color:var(--color-slate)] leading-relaxed">{message}</p>
+        <p className="font-sans text-sm text-[color:var(--ledger-muted)] leading-relaxed">{message}</p>
       </div>
       <TimeSavingsCard moduleNumber={moduleNumber} />
     </>

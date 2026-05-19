@@ -27,12 +27,12 @@ export const metadata = {
 export default async function CertificatePage() {
   if (!isSupabaseConfigured()) {
     return (
-      <main className="min-h-screen bg-[var(--color-parch)] flex items-center justify-center px-4">
+      <main className="min-h-screen bg-[var(--ledger-paper)] flex items-center justify-center px-4">
         <div className="max-w-md text-center">
-          <h1 className="text-2xl font-bold text-[var(--color-ink)] mb-4">
+          <h1 className="text-2xl font-bold text-[var(--ledger-ink)] mb-4">
             Service Unavailable
           </h1>
-          <p className="text-[var(--color-slate)]">
+          <p className="text-[var(--ledger-muted)]">
             The certificate service is not configured. Please contact support.
           </p>
         </div>
@@ -94,9 +94,9 @@ export default async function CertificatePage() {
             {certificate ? 'Your Certificate' : 'Certificate Pending'}
           </h1>
           {certificate && (
-            <p className="text-[var(--color-slate)] font-sans text-sm">
+            <p className="text-[var(--ledger-muted)] font-sans text-sm">
               Awarded to{' '}
-              <span className="text-[var(--color-ink)] font-semibold">{certificate.holder_name}</span>{' '}
+              <span className="text-[var(--ledger-ink)] font-semibold">{certificate.holder_name}</span>{' '}
               on {formatDate(certificate.issued_at)}
             </p>
           )}
@@ -106,76 +106,76 @@ export default async function CertificatePage() {
           <>
             {/* Certificate details card */}
             <div
-              className="bg-[var(--color-parch)] border border-[color-mix(in srgb, var(--color-terra) 20%, transparent)] rounded-sm p-8 mb-8 relative overflow-hidden"
+              className="bg-[var(--ledger-paper)] border border-[color-mix(in srgb, var(--ledger-accent) 20%, transparent)] rounded-sm p-8 mb-8 relative overflow-hidden"
             >
               {/* Inner ruling border */}
               <div
-                className="absolute inset-1 border border-[color-mix(in srgb, var(--color-terra) 10%, transparent)] pointer-events-none"
+                className="absolute inset-1 border border-[color-mix(in srgb, var(--ledger-accent) 10%, transparent)] pointer-events-none"
               />
 
               <div className="text-center relative z-10">
                 <p
-                  className="font-serif text-sm italic text-[var(--color-slate)] mb-2"
+                  className="font-serif text-sm italic text-[var(--ledger-muted)] mb-2"
                   style={{ fontFamily: 'Cormorant, Georgia, serif' }}
                 >
                   AI Banking Institute Presents
                 </p>
                 <p
-                  className="text-3xl font-bold text-[var(--color-ink)] uppercase tracking-widest mb-6"
+                  className="text-3xl font-bold text-[var(--ledger-ink)] uppercase tracking-widest mb-6"
                   style={{ fontFamily: 'Cormorant, Georgia, serif' }}
                 >
                   Certificate of Achievement
                 </p>
 
-                <div className="w-16 h-px bg-[var(--color-terra)] opacity-40 mx-auto mb-6" />
+                <div className="w-16 h-px bg-[var(--ledger-accent)] opacity-40 mx-auto mb-6" />
 
                 <p
-                  className="font-serif text-sm italic text-[var(--color-slate)] mb-3"
+                  className="font-serif text-sm italic text-[var(--ledger-muted)] mb-3"
                   style={{ fontFamily: 'Cormorant, Georgia, serif' }}
                 >
                   This honors the distinguished performance of
                 </p>
                 <p
-                  className="text-3xl font-bold text-[var(--color-terra)] mb-4"
+                  className="text-3xl font-bold text-[var(--ledger-accent)] mb-4"
                   style={{ fontFamily: 'Cormorant, Georgia, serif' }}
                 >
                   {certificate.holder_name}
                 </p>
-                <p className="text-xs uppercase tracking-widest text-[var(--color-ink)] font-sans mb-2">
+                <p className="text-xs uppercase tracking-widest text-[var(--ledger-ink)] font-sans mb-2">
                   For completing the specialized curriculum of
                 </p>
                 <p
-                  className="text-xl font-bold text-[var(--color-ink)] uppercase tracking-wide"
+                  className="text-xl font-bold text-[var(--ledger-ink)] uppercase tracking-wide"
                   style={{ fontFamily: 'Cormorant SC, Cormorant, Georgia, serif' }}
                 >
                   AiBI-Foundation
                 </p>
                 <p
-                  className="text-sm font-bold text-[var(--color-slate)] uppercase tracking-wider mt-1"
+                  className="text-sm font-bold text-[var(--ledger-muted)] uppercase tracking-wider mt-1"
                   style={{ fontFamily: 'Cormorant SC, Cormorant, Georgia, serif' }}
                 >
                   The AI Banking Institute
                 </p>
               </div>
 
-              <div className="mt-8 pt-6 border-t border-[color-mix(in srgb, var(--color-terra) 15%, transparent)] grid grid-cols-2 gap-4 text-sm relative z-10">
+              <div className="mt-8 pt-6 border-t border-[color-mix(in srgb, var(--ledger-accent) 15%, transparent)] grid grid-cols-2 gap-4 text-sm relative z-10">
                 <div>
-                  <p className="text-xs uppercase tracking-widest text-[var(--color-slate)] font-sans mb-1">
+                  <p className="text-xs uppercase tracking-widest text-[var(--ledger-muted)] font-sans mb-1">
                     Issue Date
                   </p>
                   <p
-                    className="text-[var(--color-ink)]"
+                    className="text-[var(--ledger-ink)]"
                     style={{ fontFamily: 'DM Mono, Courier New, monospace', fontSize: '12px' }}
                   >
                     {formatDate(certificate.issued_at)}
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs uppercase tracking-widest text-[var(--color-slate)] font-sans mb-1">
+                  <p className="text-xs uppercase tracking-widest text-[var(--ledger-muted)] font-sans mb-1">
                     Certificate ID
                   </p>
                   <p
-                    className="text-[var(--color-ink)]"
+                    className="text-[var(--ledger-ink)]"
                     style={{ fontFamily: 'DM Mono, Courier New, monospace', fontSize: '10px' }}
                   >
                     {certificate.certificate_id}
@@ -187,7 +187,7 @@ export default async function CertificatePage() {
                 <div className="mt-4 text-center relative z-10">
                   <a
                     href={verificationUrl}
-                    className="text-[var(--color-slate)] hover:text-[var(--color-terra)] transition-colors"
+                    className="text-[var(--ledger-muted)] hover:text-[var(--ledger-accent)] transition-colors"
                     style={{
                       fontFamily: 'DM Mono, Courier New, monospace',
                       fontSize: '10px',
@@ -203,19 +203,19 @@ export default async function CertificatePage() {
             <div className="grid md:grid-cols-3 gap-6">
               <div className="md:col-span-2 grid sm:grid-cols-2 gap-4">
                 {/* LinkedIn placeholder card */}
-                <div className="bg-white border border-[color-mix(in srgb, var(--color-terra) 10%, transparent)] rounded-sm p-6">
-                  <div className="w-8 h-8 bg-[var(--color-terra)] rounded-sm flex items-center justify-center mb-3">
+                <div className="bg-white border border-[color-mix(in srgb, var(--ledger-accent) 10%, transparent)] rounded-sm p-6">
+                  <div className="w-8 h-8 bg-[var(--ledger-accent)] rounded-sm flex items-center justify-center mb-3">
                     <span className="text-white text-xs font-bold font-sans">in</span>
                   </div>
-                  <h3 className="font-bold text-[var(--color-ink)] font-sans mb-2 text-sm">
+                  <h3 className="font-bold text-[var(--ledger-ink)] font-sans mb-2 text-sm">
                     Add to LinkedIn
                   </h3>
-                  <p className="text-xs text-[var(--color-slate)] font-sans leading-relaxed mb-3">
+                  <p className="text-xs text-[var(--ledger-muted)] font-sans leading-relaxed mb-3">
                     LinkedIn badge integration coming soon. In the meantime, you can reference
                     your credential as:
                   </p>
                   <p
-                    className="text-xs text-[var(--color-ink)] bg-[var(--color-parch)] p-3 rounded-sm leading-relaxed"
+                    className="text-xs text-[var(--ledger-ink)] bg-[var(--ledger-paper)] p-3 rounded-sm leading-relaxed"
                     style={{ fontFamily: 'DM Mono, Courier New, monospace' }}
                   >
                     AiBI-Foundation &mdash; The AI Banking Institute
@@ -225,8 +225,8 @@ export default async function CertificatePage() {
                 </div>
 
                 {/* Download PDF card */}
-                <div className="bg-white border border-[color-mix(in srgb, var(--color-terra) 10%, transparent)] rounded-sm p-6">
-                  <div className="w-8 h-8 bg-[var(--color-sage)] rounded-sm flex items-center justify-center mb-3">
+                <div className="bg-white border border-[color-mix(in srgb, var(--ledger-accent) 10%, transparent)] rounded-sm p-6">
+                  <div className="w-8 h-8 bg-[var(--ledger-accent-2)] rounded-sm flex items-center justify-center mb-3">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 20 20"
@@ -245,16 +245,16 @@ export default async function CertificatePage() {
                       />
                     </svg>
                   </div>
-                  <h3 className="font-bold text-[var(--color-ink)] font-sans mb-2 text-sm">
+                  <h3 className="font-bold text-[var(--ledger-ink)] font-sans mb-2 text-sm">
                     Download PDF
                   </h3>
-                  <p className="text-xs text-[var(--color-slate)] font-sans leading-relaxed mb-4">
+                  <p className="text-xs text-[var(--ledger-muted)] font-sans leading-relaxed mb-4">
                     High-resolution vector format suitable for institutional framing.
                   </p>
                   <a
                     href={`/api/courses/generate-certificate?enrollmentId=${enrollment.id}`}
                     download={`AiBI-Foundation-Certificate-${certificate.certificate_id}.pdf`}
-                    className="inline-block w-full text-center bg-[var(--color-terra)] text-white text-xs font-semibold font-sans py-2.5 px-4 rounded-sm hover:bg-[var(--color-terra-light)] transition-colors"
+                    className="inline-block w-full text-center bg-[var(--ledger-accent)] text-white text-xs font-semibold font-sans py-2.5 px-4 rounded-sm hover:bg-[var(--ledger-accent-light)] transition-colors"
                   >
                     Download Certificate PDF
                   </a>
@@ -262,7 +262,7 @@ export default async function CertificatePage() {
               </div>
 
               {/* Next steps promotion card */}
-              <div className="bg-[var(--color-terra)] text-white rounded-sm p-6 flex flex-col justify-center">
+              <div className="bg-[var(--ledger-accent)] text-white rounded-sm p-6 flex flex-col justify-center">
                 <p className="text-xs uppercase tracking-widest font-sans mb-2 opacity-80">
                   What&rsquo;s Next
                 </p>
@@ -278,7 +278,7 @@ export default async function CertificatePage() {
                 </p>
                 <a
                   href="/coming-soon?interest=specialist"
-                  className="inline-block text-center bg-[var(--color-parch)] text-[var(--color-terra)] text-xs font-bold font-sans py-2.5 px-4 rounded-sm hover:bg-white transition-colors"
+                  className="inline-block text-center bg-[var(--ledger-paper)] text-[var(--ledger-accent)] text-xs font-bold font-sans py-2.5 px-4 rounded-sm hover:bg-white transition-colors"
                 >
                   Join Specialist Waitlist
                 </a>
@@ -287,15 +287,15 @@ export default async function CertificatePage() {
           </>
         ) : (
           /* Certificate not yet issued */
-          <div className="text-center bg-[var(--color-parch)] border border-[color-mix(in srgb, var(--color-terra) 15%, transparent)] rounded-sm p-12">
-            <div className="w-16 h-16 bg-[color-mix(in srgb, var(--color-terra) 10%, transparent)] rounded-full flex items-center justify-center mx-auto mb-6">
+          <div className="text-center bg-[var(--ledger-paper)] border border-[color-mix(in srgb, var(--ledger-accent) 15%, transparent)] rounded-sm p-12">
+            <div className="w-16 h-16 bg-[color-mix(in srgb, var(--ledger-accent) 10%, transparent)] rounded-full flex items-center justify-center mx-auto mb-6">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="1.5"
-                className="w-8 h-8 text-[var(--color-terra)]"
+                className="w-8 h-8 text-[var(--ledger-accent)]"
               >
                 <path
                   strokeLinecap="round"
@@ -305,18 +305,18 @@ export default async function CertificatePage() {
               </svg>
             </div>
             <h2
-              className="text-2xl font-bold text-[var(--color-ink)] mb-3"
+              className="text-2xl font-bold text-[var(--ledger-ink)] mb-3"
               style={{ fontFamily: 'Cormorant, Georgia, serif' }}
             >
               Your Certificate Is Being Generated
             </h2>
-            <p className="text-[var(--color-slate)] font-sans text-sm mb-6 max-w-md mx-auto">
+            <p className="text-[var(--ledger-muted)] font-sans text-sm mb-6 max-w-md mx-auto">
               Your submission has been reviewed and approved. Your certificate will
               appear here shortly. Please refresh this page in a moment.
             </p>
             <a
               href="/courses/foundation/program/certificate"
-              className="inline-block bg-[var(--color-terra)] text-white text-xs font-semibold font-sans py-2.5 px-6 rounded-sm hover:bg-[var(--color-terra-light)] transition-colors"
+              className="inline-block bg-[var(--ledger-accent)] text-white text-xs font-semibold font-sans py-2.5 px-6 rounded-sm hover:bg-[var(--ledger-accent-light)] transition-colors"
             >
               Refresh Page
             </a>

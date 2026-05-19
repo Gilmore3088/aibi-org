@@ -36,11 +36,11 @@ export function OutputGalleryClient() {
     <div className="space-y-8">
       {/* Role filter pills */}
       <div
-        className="bg-[color:var(--color-parch)] border border-[color:var(--color-parch-dark)] rounded-sm p-4"
+        className="bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-parch)] rounded-sm p-4"
         role="group"
         aria-label="Filter by role"
       >
-        <div className="text-[10px] font-mono uppercase tracking-widest text-[color:var(--color-slate)] mb-3">
+        <div className="text-[10px] font-mono uppercase tracking-widest text-[color:var(--ledger-muted)] mb-3">
           Filter by Role
         </div>
         <div className="flex flex-wrap gap-2">
@@ -55,20 +55,20 @@ export function OutputGalleryClient() {
                 type="button"
                 onClick={() => setActiveRole(opt.value)}
                 aria-pressed={isActive}
-                className="px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.15em] rounded-sm transition-colors focus-visible:outline-2 focus-visible:outline-[color:var(--color-terra)]"
+                className="px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.15em] rounded-sm transition-colors focus-visible:outline-2 focus-visible:outline-[color:var(--ledger-accent)]"
                 style={
                   isActive
                     ? {
                         backgroundColor: roleMeta
                           ? roleMeta.colorVar
-                          : 'var(--color-terra)',
-                        color: 'var(--color-linen)',
+                          : 'var(--ledger-accent)',
+                        color: 'var(--ledger-bg)',
                         border: '1px solid transparent',
                       }
                     : {
                         backgroundColor: 'transparent',
-                        color: 'var(--color-ink)',
-                        border: '1px solid var(--color-parch-dark)',
+                        color: 'var(--ledger-ink)',
+                        border: '1px solid var(--ledger-parch)',
                       }
                 }
               >
@@ -78,7 +78,7 @@ export function OutputGalleryClient() {
           })}
         </div>
 
-        <p className="mt-3 font-mono text-[11px] text-[color:var(--color-slate)]">
+        <p className="mt-3 font-mono text-[11px] text-[color:var(--ledger-muted)]">
           Showing {filtered.length} of {totalCount} examples
         </p>
       </div>
@@ -86,7 +86,7 @@ export function OutputGalleryClient() {
       {/* Results */}
       {filtered.length === 0 ? (
         <div className="text-center py-12">
-          <p className="font-sans text-sm text-[color:var(--color-slate)]">
+          <p className="font-sans text-sm text-[color:var(--ledger-muted)]">
             No examples match the selected filter.
           </p>
         </div>
