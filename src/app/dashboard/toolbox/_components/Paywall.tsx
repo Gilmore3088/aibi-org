@@ -5,13 +5,13 @@ import Link from 'next/link';
 export function Paywall() {
   return (
     <main className="mx-auto max-w-2xl px-6 py-16">
-      <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
+      <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--ledger-accent)]">
         Toolbox
       </p>
-      <h1 className="mt-3 font-serif text-4xl text-[color:var(--color-ink)] md:text-5xl">
+      <h1 className="mt-3 font-serif text-4xl text-[color:var(--ledger-ink)] md:text-5xl">
         Included with any paid course
       </h1>
-      <p className="mt-6 text-lg leading-relaxed text-[color:var(--color-ink)]/80">
+      <p className="mt-6 text-lg leading-relaxed text-[color:var(--ledger-ink)]/80">
         The AiBI Toolbox — Skill Builder, Template Library, multi-provider
         Playground, and Cookbook — is bundled with every paid enrollment in
         AiBI-Foundation, AiBI-S, or AiBI-L. Enroll in any course and your access
@@ -20,13 +20,13 @@ export function Paywall() {
       <div className="mt-10 flex flex-col gap-4 sm:flex-row">
         <Link
           href="/education"
-          className="inline-flex items-center justify-center rounded-[2px] bg-[color:var(--color-terra)] px-6 py-3 font-sans text-[11px] font-semibold uppercase tracking-[1.2px] text-[color:var(--color-linen)] hover:bg-[color:var(--color-terra-light)]"
+          className="inline-flex items-center justify-center rounded-[2px] bg-[color:var(--ledger-accent)] px-6 py-3 font-sans text-[11px] font-semibold uppercase tracking-[1.2px] text-[color:var(--ledger-bg)] hover:bg-[color:var(--ledger-accent)]"
         >
           Browse Courses
         </Link>
         <Link
           href="/assessment/start"
-          className="inline-flex items-center justify-center rounded-[2px] border border-[color:var(--color-ink)]/20 px-6 py-3 font-sans text-[11px] font-semibold uppercase tracking-[1.2px] text-[color:var(--color-ink)] hover:border-[color:var(--color-ink)]/40"
+          className="inline-flex items-center justify-center rounded-[2px] border border-[color:var(--ledger-ink)]/20 px-6 py-3 font-sans text-[11px] font-semibold uppercase tracking-[1.2px] text-[color:var(--ledger-ink)] hover:border-[color:var(--ledger-ink)]/40"
         >
           Start with the free assessment
         </Link>

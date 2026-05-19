@@ -19,17 +19,17 @@ export function ContextStrip() {
   const lastUsed = skills[0];
 
   return (
-    <div className="border-t border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)]">
+    <div className="border-t border-[color:var(--ledger-ink)]/10 bg-[color:var(--ledger-paper)]">
       <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-6 py-3 lg:px-10">
-        <p className="text-sm text-[color:var(--color-slate)]">
+        <p className="text-sm text-[color:var(--ledger-muted)]">
           Welcome back. You have{' '}
-          <span className="font-mono tabular-nums text-[color:var(--color-ink)]">{skills.length}</span>{' '}
+          <span className="font-mono tabular-nums text-[color:var(--ledger-ink)]">{skills.length}</span>{' '}
           saved playbook{skills.length === 1 ? '' : 's'}. Most recent:{' '}
-          <span className="text-[color:var(--color-ink)]">{lastUsed.name}</span>.
+          <span className="text-[color:var(--ledger-ink)]">{lastUsed.name}</span>.
         </p>
         <Link
           href="/dashboard/toolbox?tab=toolbox"
-          className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] hover:text-[color:var(--color-ink)]"
+          className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent)] hover:text-[color:var(--ledger-ink)]"
         >
           Continue →
         </Link>

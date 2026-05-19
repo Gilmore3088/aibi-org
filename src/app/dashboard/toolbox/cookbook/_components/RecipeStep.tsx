@@ -82,43 +82,43 @@ export function RecipeStep({ index, recipeSlug, step, librarySkillId }: Props) {
           : 'Save to my Toolbox';
 
   return (
-    <article className="border border-[color:var(--color-ink)]/15 bg-[color:var(--color-parch)] p-6">
-      <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
+    <article className="border border-[color:var(--ledger-ink)]/15 bg-[color:var(--ledger-paper)] p-6">
+      <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--ledger-accent)]">
         Step {index} · {snap.kind ? snap.name ?? step.skill_slug : step.skill_slug}
       </p>
-      <p className="mt-3 leading-relaxed text-[color:var(--color-ink)]">{step.narrative}</p>
+      <p className="mt-3 leading-relaxed text-[color:var(--ledger-ink)]">{step.narrative}</p>
 
-      <section className="mt-5 border-t border-[color:var(--color-ink)]/10 pt-5">
+      <section className="mt-5 border-t border-[color:var(--ledger-ink)]/10 pt-5">
         {snap.kind === 'template' && (
           <>
-            <h3 className="font-serif-sc text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">
+            <h3 className="font-serif-sc text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)]">
               System prompt
             </h3>
-            <pre className="mt-2 whitespace-pre-wrap break-words font-mono text-[12px] leading-relaxed text-[color:var(--color-ink)]">
+            <pre className="mt-2 whitespace-pre-wrap break-words font-mono text-[12px] leading-relaxed text-[color:var(--ledger-ink)]">
               {snap.systemPrompt}
             </pre>
-            <h3 className="mt-4 font-serif-sc text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">
+            <h3 className="mt-4 font-serif-sc text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)]">
               User template
             </h3>
-            <pre className="mt-2 whitespace-pre-wrap break-words font-mono text-[12px] leading-relaxed text-[color:var(--color-ink)]">
+            <pre className="mt-2 whitespace-pre-wrap break-words font-mono text-[12px] leading-relaxed text-[color:var(--ledger-ink)]">
               {snap.userPromptTemplate}
             </pre>
           </>
         )}
         {snap.kind === 'workflow' && (
           <>
-            <h3 className="font-serif-sc text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">
+            <h3 className="font-serif-sc text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)]">
               Purpose
             </h3>
-            <p className="mt-2 text-[13px] leading-relaxed text-[color:var(--color-ink)]">
+            <p className="mt-2 text-[13px] leading-relaxed text-[color:var(--ledger-ink)]">
               {snap.purpose}
             </p>
             {snap.steps && snap.steps.length > 0 ? (
               <>
-                <h3 className="mt-4 font-serif-sc text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">
+                <h3 className="mt-4 font-serif-sc text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)]">
                   Steps
                 </h3>
-                <ol className="mt-2 list-decimal pl-5 text-[13px] text-[color:var(--color-ink)]">
+                <ol className="mt-2 list-decimal pl-5 text-[13px] text-[color:var(--ledger-ink)]">
                   {snap.steps.map((s, i) => (
                     <li key={i}>{s}</li>
                   ))}
@@ -127,10 +127,10 @@ export function RecipeStep({ index, recipeSlug, step, librarySkillId }: Props) {
             ) : null}
             {snap.guardrails && snap.guardrails.length > 0 ? (
               <>
-                <h3 className="mt-4 font-serif-sc text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">
+                <h3 className="mt-4 font-serif-sc text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)]">
                   Guardrails
                 </h3>
-                <ul className="mt-2 list-disc pl-5 text-[13px] text-[color:var(--color-ink)]">
+                <ul className="mt-2 list-disc pl-5 text-[13px] text-[color:var(--ledger-ink)]">
                   {snap.guardrails.map((g, i) => (
                     <li key={i}>{g}</li>
                   ))}
@@ -142,7 +142,7 @@ export function RecipeStep({ index, recipeSlug, step, librarySkillId }: Props) {
       </section>
 
       {step.notes ? (
-        <p className="mt-5 border-l-4 border-[color:var(--color-terra)] pl-4 text-sm text-[color:var(--color-slate)]">
+        <p className="mt-5 border-l-4 border-[color:var(--ledger-accent)] pl-4 text-sm text-[color:var(--ledger-muted)]">
           <strong>Note:</strong> {step.notes}
         </p>
       ) : null}
@@ -152,7 +152,7 @@ export function RecipeStep({ index, recipeSlug, step, librarySkillId }: Props) {
           type="button"
           onClick={handleSave}
           disabled={!librarySkillId || state === 'saving'}
-          className="bg-[color:var(--color-terra)] px-4 py-2 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-linen)] disabled:opacity-50"
+          className="bg-[color:var(--ledger-accent)] px-4 py-2 font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-bg)] disabled:opacity-50"
         >
           {buttonLabel}
         </button>

@@ -26,9 +26,9 @@ const PILLAR_LABEL: Record<'A' | 'B' | 'C', string> = {
 };
 
 const PILLAR_COLOR: Record<'A' | 'B' | 'C', string> = {
-  A: 'var(--color-sage)',
-  B: 'var(--color-cobalt)',
-  C: 'var(--color-terra)',
+  A: 'var(--ledger-accent)',
+  B: 'var(--ledger-accent-2)',
+  C: 'var(--ledger-accent)',
 };
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -75,18 +75,18 @@ export default async function CookbookRecipePage({ params }: PageProps) {
             style={{ backgroundColor: PILLAR_COLOR[recipe.pillar] }}
             aria-label={`Pillar ${recipe.pillar} (${PILLAR_LABEL[recipe.pillar]})`}
           />
-          <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
+          <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--ledger-accent)]">
             Cookbook · {recipe.category}
           </p>
         </div>
-        <h1 className="mt-2 font-serif text-4xl text-[color:var(--color-ink)]">
+        <h1 className="mt-2 font-serif text-4xl text-[color:var(--ledger-ink)]">
           {recipe.title}
         </h1>
-        <p className="mt-4 leading-relaxed text-[color:var(--color-slate)]">
+        <p className="mt-4 leading-relaxed text-[color:var(--ledger-muted)]">
           {recipe.overview}
         </p>
         {recipe.compliance_notes ? (
-          <p className="mt-4 border-l-4 border-[color:var(--color-cobalt)] pl-4 text-sm text-[color:var(--color-slate)]">
+          <p className="mt-4 border-l-4 border-[color:var(--ledger-accent-2)] pl-4 text-sm text-[color:var(--ledger-muted)]">
             <strong>Compliance:</strong> {recipe.compliance_notes}
           </p>
         ) : null}

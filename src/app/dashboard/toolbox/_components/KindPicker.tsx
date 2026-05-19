@@ -35,10 +35,10 @@ export function KindPicker({ value, onChange }: KindPickerProps) {
       <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--ledger-accent)]">
         Choose a kind
       </p>
-      <h2 className="mt-2 font-serif text-2xl text-[color:var(--color-ink)]">
+      <h2 className="mt-2 font-serif text-2xl text-[color:var(--ledger-ink)]">
         What kind of skill are you building?
       </h2>
-      <p className="mt-2 max-w-xl text-sm leading-relaxed text-[color:var(--color-ink)]/70">
+      <p className="mt-2 max-w-xl text-sm leading-relaxed text-[color:var(--ledger-ink)]/70">
         Click a card to start. You can switch kinds later — your draft is
         kept until you save.
       </p>
@@ -57,13 +57,13 @@ export function KindPicker({ value, onChange }: KindPickerProps) {
                     : 'border-[color:var(--ledger-rule-strong)] bg-[color:#FAF7EE] hover:-translate-y-0.5 hover:border-[color:var(--ledger-ink)] hover:shadow-sm'
                 }`}
               >
-                <h3 className="font-serif text-xl text-[color:var(--color-ink)]">
+                <h3 className="font-serif text-xl text-[color:var(--ledger-ink)]">
                   {opt.title}
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-[color:var(--color-ink)]/75">
+                <p className="mt-2 text-sm leading-relaxed text-[color:var(--ledger-ink)]/75">
                   {opt.blurb}
                 </p>
-                <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.16em] text-[color:var(--color-slate)]">
+                <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.16em] text-[color:var(--ledger-muted)]">
                   Examples: {opt.example}
                 </p>
                 <p

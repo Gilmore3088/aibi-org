@@ -16,9 +16,9 @@ import type { ToolboxPillar } from '@/lib/toolbox/types';
 
 const PILLAR_LABEL: Record<ToolboxPillar, string> = { A: 'Accessible', B: 'Boundary-Safe', C: 'Capable' };
 const PILLAR_COLOR: Record<ToolboxPillar, string> = {
-  A: 'var(--color-sage)',
-  B: 'var(--color-cobalt)',
-  C: 'var(--color-terra)',
+  A: 'var(--ledger-accent)',
+  B: 'var(--ledger-accent-2)',
+  C: 'var(--ledger-accent)',
 };
 
 export async function generateMetadata({
@@ -54,12 +54,12 @@ export default async function LibrarySkillPage({
   const usedInRecipes = await getRecipesUsingSkill(skill.slug);
 
   return (
-    <main className="min-h-screen bg-[color:var(--color-linen)]">
-      <div className="border-b border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)]">
+    <main className="min-h-screen bg-[color:var(--ledger-bg)]">
+      <div className="border-b border-[color:var(--ledger-ink)]/10 bg-[color:var(--ledger-paper)]">
         <div className="mx-auto flex max-w-5xl flex-col gap-4 px-6 py-6 lg:px-10">
           <Link
             href="/dashboard/toolbox/library"
-            className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] hover:text-[color:var(--color-terra)]"
+            className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] hover:text-[color:var(--ledger-accent)]"
           >
             ← Back to Library
           </Link>
@@ -69,15 +69,15 @@ export default async function LibrarySkillPage({
               style={{ backgroundColor: PILLAR_COLOR[skill.pillar] }}
               aria-label={`Pillar ${skill.pillar} (${PILLAR_LABEL[skill.pillar]})`}
             />
-            <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">
+            <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)]">
               {skill.category} · {skill.complexity ?? 'intermediate'} · {skill.kind}
             </span>
           </div>
-          <h1 className="font-serif text-4xl leading-tight text-[color:var(--color-ink)]">
+          <h1 className="font-serif text-4xl leading-tight text-[color:var(--ledger-ink)]">
             {skill.title}
           </h1>
           {skill.description && (
-            <p className="max-w-3xl text-sm leading-relaxed text-[color:var(--color-slate)]">
+            <p className="max-w-3xl text-sm leading-relaxed text-[color:var(--ledger-muted)]">
               {skill.description}
             </p>
           )}
@@ -93,14 +93,14 @@ export default async function LibrarySkillPage({
         )}
 
         {skill.course_source_ref && (
-          <p className="mt-12 border-t border-[color:var(--color-ink)]/10 pt-6 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">
+          <p className="mt-12 border-t border-[color:var(--ledger-ink)]/10 pt-6 font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)]">
             Sourced from {skill.course_source_ref}
           </p>
         )}
 
         {usedInRecipes.length > 0 && (
-          <section className="mt-12 border-t border-[color:var(--color-ink)]/10 pt-6">
-            <h2 className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-slate)]">
+          <section className="mt-12 border-t border-[color:var(--ledger-ink)]/10 pt-6">
+            <h2 className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--ledger-muted)]">
               Used in recipes
             </h2>
             <ul className="mt-3 space-y-2">
@@ -108,7 +108,7 @@ export default async function LibrarySkillPage({
                 <li key={r.slug}>
                   <Link
                     href={`/dashboard/toolbox/cookbook/${r.slug}`}
-                    className="text-base text-[color:var(--color-ink)] underline decoration-[color:var(--color-ink)]/20 underline-offset-4 hover:text-[color:var(--color-terra)] hover:decoration-[color:var(--color-terra)]"
+                    className="text-base text-[color:var(--ledger-ink)] underline decoration-[color:var(--ledger-ink)]/20 underline-offset-4 hover:text-[color:var(--ledger-accent)] hover:decoration-[color:var(--ledger-accent)]"
                   >
                     {r.title}
                   </Link>
@@ -141,7 +141,7 @@ function WorkflowSections({ content }: { content: Record<string, unknown> }) {
         if (!v || typeof v !== 'string') return null;
         return (
           <Section key={key} label={label}>
-            <p className="whitespace-pre-line text-base leading-relaxed text-[color:var(--color-ink)]">
+            <p className="whitespace-pre-line text-base leading-relaxed text-[color:var(--ledger-ink)]">
               {v}
             </p>
           </Section>
@@ -150,7 +150,7 @@ function WorkflowSections({ content }: { content: Record<string, unknown> }) {
 
       {Array.isArray(steps) && steps.length > 0 && (
         <Section label="Steps">
-          <ol className="list-decimal space-y-2 pl-6 text-base leading-relaxed text-[color:var(--color-ink)]">
+          <ol className="list-decimal space-y-2 pl-6 text-base leading-relaxed text-[color:var(--ledger-ink)]">
             {(steps as string[]).map((s, i) => (
               <li key={i}>{s}</li>
             ))}
@@ -160,7 +160,7 @@ function WorkflowSections({ content }: { content: Record<string, unknown> }) {
 
       {Array.isArray(guardrails) && guardrails.length > 0 && (
         <Section label="Standard guardrails">
-          <ul className="list-disc space-y-2 pl-6 text-base leading-relaxed text-[color:var(--color-ink)]">
+          <ul className="list-disc space-y-2 pl-6 text-base leading-relaxed text-[color:var(--ledger-ink)]">
             {(guardrails as string[]).map((g, i) => (
               <li key={i}>{g}</li>
             ))}
@@ -172,11 +172,11 @@ function WorkflowSections({ content }: { content: Record<string, unknown> }) {
         <Section label="Worked examples">
           <div className="space-y-6">
             {(samples as Array<{ title: string; prompt: string }>).map((s, i) => (
-              <div key={i} className="border border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)] p-4">
-                <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">
+              <div key={i} className="border border-[color:var(--ledger-ink)]/10 bg-[color:var(--ledger-paper)] p-4">
+                <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)]">
                   {s.title}
                 </p>
-                <pre className="mt-2 whitespace-pre-wrap font-mono text-xs leading-relaxed text-[color:var(--color-ink)]">
+                <pre className="mt-2 whitespace-pre-wrap font-mono text-xs leading-relaxed text-[color:var(--ledger-ink)]">
                   {s.prompt}
                 </pre>
               </div>
@@ -198,7 +198,7 @@ function TemplateSections({ content }: { content: Record<string, unknown> }) {
     <>
       {systemPrompt && (
         <Section label="System prompt">
-          <pre className="whitespace-pre-wrap rounded-none border border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)] p-4 font-mono text-xs leading-relaxed text-[color:var(--color-ink)]">
+          <pre className="whitespace-pre-wrap rounded-none border border-[color:var(--ledger-ink)]/10 bg-[color:var(--ledger-paper)] p-4 font-mono text-xs leading-relaxed text-[color:var(--ledger-ink)]">
             {systemPrompt}
           </pre>
         </Section>
@@ -206,7 +206,7 @@ function TemplateSections({ content }: { content: Record<string, unknown> }) {
 
       {userTemplate && (
         <Section label="User prompt template">
-          <pre className="whitespace-pre-wrap rounded-none border border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)] p-4 font-mono text-xs leading-relaxed text-[color:var(--color-ink)]">
+          <pre className="whitespace-pre-wrap rounded-none border border-[color:var(--ledger-ink)]/10 bg-[color:var(--ledger-paper)] p-4 font-mono text-xs leading-relaxed text-[color:var(--ledger-ink)]">
             {userTemplate}
           </pre>
         </Section>
@@ -216,10 +216,10 @@ function TemplateSections({ content }: { content: Record<string, unknown> }) {
         <Section label="Variables">
           <ul className="space-y-2">
             {(variables as Array<{ name: string; label: string; type: string; required?: boolean }>).map((v, i) => (
-              <li key={i} className="flex items-baseline gap-3 text-sm text-[color:var(--color-ink)]">
-                <code className="font-mono text-xs text-[color:var(--color-terra)]">{`{{${v.name}}}`}</code>
+              <li key={i} className="flex items-baseline gap-3 text-sm text-[color:var(--ledger-ink)]">
+                <code className="font-mono text-xs text-[color:var(--ledger-accent)]">{`{{${v.name}}}`}</code>
                 <span>{v.label}</span>
-                <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">
+                <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)]">
                   {v.type}
                   {v.required ? ' · required' : ''}
                 </span>
@@ -233,20 +233,20 @@ function TemplateSections({ content }: { content: Record<string, unknown> }) {
         <Section label="Example">
           {example.input && (
             <div>
-              <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-slate)]">
+              <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--ledger-muted)]">
                 Input
               </p>
-              <pre className="mt-2 whitespace-pre-wrap border border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)] p-4 font-mono text-xs text-[color:var(--color-ink)]">
+              <pre className="mt-2 whitespace-pre-wrap border border-[color:var(--ledger-ink)]/10 bg-[color:var(--ledger-paper)] p-4 font-mono text-xs text-[color:var(--ledger-ink)]">
                 {JSON.stringify(example.input, null, 2)}
               </pre>
             </div>
           )}
           {example.output && (
             <div className="mt-4">
-              <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-slate)]">
+              <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--ledger-muted)]">
                 Output
               </p>
-              <pre className="mt-2 whitespace-pre-wrap border border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)] p-4 font-mono text-xs text-[color:var(--color-ink)]">
+              <pre className="mt-2 whitespace-pre-wrap border border-[color:var(--ledger-ink)]/10 bg-[color:var(--ledger-paper)] p-4 font-mono text-xs text-[color:var(--ledger-ink)]">
                 {example.output}
               </pre>
             </div>
@@ -260,7 +260,7 @@ function TemplateSections({ content }: { content: Record<string, unknown> }) {
 function Section({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <section className="mt-8">
-      <h2 className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
+      <h2 className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--ledger-accent)]">
         {label}
       </h2>
       <div className="mt-3">{children}</div>
