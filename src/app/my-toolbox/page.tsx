@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 import Script from 'next/script';
 
 import { rewriteBundleLinks } from '@/lib/redesign/bundle-links';
+import { TOOLS } from '@/lib/my-toolbox/tools';
 import './my-toolbox.css';
 
 export const metadata: Metadata = {
@@ -21,15 +22,29 @@ const inlineScript = readFileSync(
   'utf8',
 );
 
+// The bundle's vanilla JS reads tool data from a JSON island injected
+// just above it; the script's view-layer code rebuilds the full TOOLS
+// map by merging this data with locally-defined previewBody + footer
+// helpers. See src/lib/my-toolbox/tools.ts.
+const toolsJson = JSON.stringify(TOOLS);
+
 export default function MyToolboxPage(): JSX.Element {
   return (
     <>
       <div className="mt-page" dangerouslySetInnerHTML={{ __html: bodyHtml }} />
+      <script
+        id="toolbox-tools-data"
+        type="application/json"
+        // Safe: TOOLS is build-time data, but escape </script in body
+        // text to prevent any future tool body breaking out.
+        dangerouslySetInnerHTML={{
+          __html: toolsJson.replace(/<\/script/gi, '<\\/script'),
+        }}
+      />
       {/*
         Re-execute the bundle's vanilla JS after the body is in the DOM.
-        Wrapping in an IIFE prevents leaking globals; the script uses
-        document.getElementById/querySelectorAll which all match elements
-        rendered above.
+        Wrapping in an IIFE prevents leaking globals; the script reads
+        the JSON island above to hydrate its TOOLS map.
       */}
       <Script
         id="my-toolbox-inline"
