@@ -3,6 +3,22 @@
 Closes audit pass on §16.441 of `tasks/launch-checklist.md`.
 Covers all 42 route handlers under `src/app/api/`.
 
+## Status as of 2026-05-18
+
+All Category C launch blockers and the open Category D rate-limit gap
+are **fixed in main**. The audit's findings are preserved below for
+provenance; the resolution map:
+
+| Finding | Resolution |
+|---|---|
+| C1 — `sandbox/chat` unauth | ✅ `getAuthUser()` gate added; in-memory `messageCounts` Map replaced with `rateLimitOrFail()` per-user (PR #214) |
+| C2 — `user-profile` GET email-keyed | ✅ Now requires a Supabase session and verifies `user.email === requestedEmail` |
+| C3 — `save-proficiency` POST email-keyed | ✅ Same pattern — session required, email match enforced |
+| D — Rate-limit gaps | ✅ All listed routes wired to Upstash-equivalent Supabase `rate_limits` RPC (`capture-email`, `subscribe-newsletter`, `inquiry`, `prompt-cards/*`, `checkout/*`, `waitlist`, `sandbox/chat`) |
+
+The pre-launch follow-ups in "What this audit did NOT cover" remain
+open and are tracked in `tasks/launch-checklist.md` (§16.445–§16.450).
+
 ## Methodology
 
 For each handler, checked for one of: session check

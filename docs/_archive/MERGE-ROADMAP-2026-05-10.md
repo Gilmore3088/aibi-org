@@ -2,10 +2,15 @@
 title: Merge roadmap — feature/redesign-v3-cd → main
 audience: a fresh-context agent picking this up
 date: 2026-05-10
-status: ready to execute
+status: completed — archived 2026-05-18
 ---
 
 # Merge roadmap — feature/redesign-v3-cd → main
+
+> **Archived 2026-05-18.** This roadmap was executed successfully —
+> the Ledger redesign and the brand-refresh rename are both live on
+> `main` (and have been since mid-May). The brand-refresh-2026-05-09
+> branch is no longer in flight. Preserved here for archeology only.
 
 You're picking up a stalled merge. Read this whole doc before running anything.
 
