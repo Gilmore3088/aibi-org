@@ -15,6 +15,7 @@
   /* ---- Ledger · Foundation ------------------------------------------- */
   --ledger-bg:           #ECE9DF;        /* page field — linen */
   --ledger-paper:        #F4F1E7;        /* card field */
+  --ledger-paper-warm:   #FAF7EE;        /* warm card field — v5 toolbox tiles, sits brighter on paper */
   --ledger-parch:        #E4E0D2;        /* recessed surfaces */
   --ledger-parch-dark:   #D5D1C2;        /* divider on parch */
   --ledger-tape:         #F1E9D0;        /* highlight tape (reviewer notes) */

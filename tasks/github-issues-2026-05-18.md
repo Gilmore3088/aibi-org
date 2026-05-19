@@ -111,9 +111,10 @@ Playwright viewport audit on 18 routes × 3 mobile widths. Non-blocking CI workf
 
 | # | Title | Mode | Status |
 |---|-------|------|--------|
-| 182 | Build /playground?tool= destination | 🤖 | 🟦 PR [#217](https://github.com/Gilmore3088/aibi-org/pull/217) open 2026-05-19 — PR-a extract `TOOLS` to `src/lib/my-toolbox/tools.ts`, PR-b wire `/playground?tool=<key>` to pre-load editor |
-| 183 | Port v5 visual to /dashboard/toolbox | 🤖 | ⬜ — unblocked by #182 PR-a (`import { TOOLS }` directly once React surface) |
-| 184 | Real tool content for Lender / Branch / Compliance kits | 🤝 (content from user) | ⬜ — needs SME sign-off; nothing in #182 changes its status |
+| 182 | Build /playground?tool= destination | 🤖 | ✅ Merged 2026-05-19 (PR [#217](https://github.com/Gilmore3088/aibi-org/pull/217), `42284f0`) — shared TOOLS module + playground wired |
+| 183 | Port v5 visual to /dashboard/toolbox | 🤖 | 🟦 PR [#220](https://github.com/Gilmore3088/aibi-org/pull/220) open 2026-05-19 — Foundation-only scope. New `ToolboxHomeV5` component. Starter-tier work spun off to #219. 13 security invariants verified preserved |
+| 184 | Real tool content for Lender / Branch / Compliance kits | 🤝 (content from user) | 🟦 PR [#218](https://github.com/Gilmore3088/aibi-org/pull/218) open 2026-05-19 — SME interview briefs ready to send (Lender, Branch manager, Compliance + BSA reference) |
+| 219 | Implement read-only AI Starter Toolkit tier (In-Depth buyers) | 🤖 + 🔒 schema | ⬜ — spun off from #183 scope-narrowing. Schema + per-feature API gates + tier prop threading |
 
 ---
 
