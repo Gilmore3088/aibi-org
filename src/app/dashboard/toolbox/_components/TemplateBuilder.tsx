@@ -55,7 +55,7 @@ export function TemplateBuilder({ skill, onChange }: TemplateBuilderProps) {
           type="text"
           value={skill.name}
           onChange={(e) => update('name', e.target.value)}
-          className="w-full rounded-[2px] border border-[color:var(--color-ink)]/20 px-3 py-2 font-sans text-sm"
+          className="w-full rounded-[2px] border border-[color:var(--ledger-ink)]/20 px-3 py-2 font-sans text-sm"
         />
       </Section>
 
@@ -67,7 +67,7 @@ export function TemplateBuilder({ skill, onChange }: TemplateBuilderProps) {
           type="text"
           value={skill.desc}
           onChange={(e) => update('desc', e.target.value)}
-          className="w-full rounded-[2px] border border-[color:var(--color-ink)]/20 px-3 py-2 font-sans text-sm"
+          className="w-full rounded-[2px] border border-[color:var(--ledger-ink)]/20 px-3 py-2 font-sans text-sm"
         />
       </Section>
 
@@ -79,9 +79,9 @@ export function TemplateBuilder({ skill, onChange }: TemplateBuilderProps) {
           value={skill.systemPrompt}
           onChange={(e) => update('systemPrompt', e.target.value)}
           rows={8}
-          className="w-full rounded-[2px] border border-[color:var(--color-ink)]/20 px-3 py-2 font-mono text-xs"
+          className="w-full rounded-[2px] border border-[color:var(--ledger-ink)]/20 px-3 py-2 font-mono text-xs"
         />
-        <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.16em] text-[color:var(--color-slate)]">
+        <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.16em] text-[color:var(--ledger-muted)]">
           {skill.systemPrompt.length} chars · min 20
         </p>
       </Section>
@@ -94,7 +94,7 @@ export function TemplateBuilder({ skill, onChange }: TemplateBuilderProps) {
           value={skill.userPromptTemplate}
           onChange={(e) => update('userPromptTemplate', e.target.value)}
           rows={4}
-          className="w-full rounded-[2px] border border-[color:var(--color-ink)]/20 px-3 py-2 font-mono text-xs"
+          className="w-full rounded-[2px] border border-[color:var(--ledger-ink)]/20 px-3 py-2 font-mono text-xs"
         />
       </Section>
 
@@ -106,20 +106,20 @@ export function TemplateBuilder({ skill, onChange }: TemplateBuilderProps) {
           {skill.variables.map((v, i) => (
             <li
               key={i}
-              className="grid gap-2 rounded-[2px] border border-[color:var(--color-ink)]/15 p-3 md:grid-cols-[1.5fr_1.5fr_1fr_auto_auto]"
+              className="grid gap-2 rounded-[2px] border border-[color:var(--ledger-ink)]/15 p-3 md:grid-cols-[1.5fr_1.5fr_1fr_auto_auto]"
             >
               <input
                 aria-label="Variable name"
                 value={v.name}
                 onChange={(e) => setVariable(i, { name: e.target.value })}
-                className="rounded-[2px] border border-[color:var(--color-ink)]/15 px-2 py-1 font-mono text-xs"
+                className="rounded-[2px] border border-[color:var(--ledger-ink)]/15 px-2 py-1 font-mono text-xs"
                 placeholder="snake_case_name"
               />
               <input
                 aria-label="Variable label"
                 value={v.label}
                 onChange={(e) => setVariable(i, { label: e.target.value })}
-                className="rounded-[2px] border border-[color:var(--color-ink)]/15 px-2 py-1 font-sans text-xs"
+                className="rounded-[2px] border border-[color:var(--ledger-ink)]/15 px-2 py-1 font-sans text-xs"
                 placeholder="Display label"
               />
               <select
@@ -128,7 +128,7 @@ export function TemplateBuilder({ skill, onChange }: TemplateBuilderProps) {
                 onChange={(e) =>
                   setVariable(i, { type: e.target.value as ToolboxVariable['type'] })
                 }
-                className="rounded-[2px] border border-[color:var(--color-ink)]/15 px-2 py-1 font-mono text-xs"
+                className="rounded-[2px] border border-[color:var(--ledger-ink)]/15 px-2 py-1 font-mono text-xs"
               >
                 <option value="text">text</option>
                 <option value="textarea">textarea</option>
@@ -146,7 +146,7 @@ export function TemplateBuilder({ skill, onChange }: TemplateBuilderProps) {
               <button
                 type="button"
                 onClick={() => removeVariable(i)}
-                className="font-mono text-[10px] uppercase tracking-[0.16em] text-[color:var(--color-error)]"
+                className="font-mono text-[10px] uppercase tracking-[0.16em] text-[color:var(--ledger-weak)]"
               >
                 Remove
               </button>
@@ -156,7 +156,7 @@ export function TemplateBuilder({ skill, onChange }: TemplateBuilderProps) {
         <button
           type="button"
           onClick={addVariable}
-          className="mt-3 inline-flex items-center rounded-[2px] border border-[color:var(--color-ink)]/20 px-3 py-1 font-sans text-[11px] uppercase tracking-[1.2px] text-[color:var(--color-ink)] hover:border-[color:var(--color-terra)]"
+          className="mt-3 inline-flex items-center rounded-[2px] border border-[color:var(--ledger-ink)]/20 px-3 py-1 font-sans text-[11px] uppercase tracking-[1.2px] text-[color:var(--ledger-ink)] hover:border-[color:var(--ledger-accent)]"
         >
           + Add variable
         </button>
@@ -166,7 +166,7 @@ export function TemplateBuilder({ skill, onChange }: TemplateBuilderProps) {
         label="Preview"
         hint="Variables substituted with their placeholder text or label. This is what the LLM will see when the learner runs the skill."
       >
-        <pre className="whitespace-pre-wrap rounded-[2px] bg-[color:var(--color-parch)] p-3 font-mono text-xs">
+        <pre className="whitespace-pre-wrap rounded-[2px] bg-[color:var(--ledger-paper)] p-3 font-mono text-xs">
           {preview}
         </pre>
       </Section>
@@ -185,10 +185,10 @@ function Section({
 }) {
   return (
     <section>
-      <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
+      <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--ledger-accent)]">
         {label}
       </p>
-      <p className="mt-1 text-xs text-[color:var(--color-slate)]">{hint}</p>
+      <p className="mt-1 text-xs text-[color:var(--ledger-muted)]">{hint}</p>
       <div className="mt-3">{children}</div>
     </section>
   );

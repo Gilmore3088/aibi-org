@@ -14,9 +14,9 @@ export function UsageMeter({ todayCents, dailyCapCents }: { todayCents: number; 
   const fillPct = Math.min(100, Math.round(ratio * 100));
 
   const fillColor =
-    state === 'blocked' ? 'bg-[var(--color-error)]' :
-    state === 'warning' ? 'bg-[var(--color-terra)]' :
-    'bg-[var(--color-sage)]';
+    state === 'blocked' ? 'bg-[var(--ledger-weak)]' :
+    state === 'warning' ? 'bg-[var(--ledger-accent)]' :
+    'bg-[var(--ledger-accent)]';
 
   return (
     <div className="flex flex-col gap-1 text-sm">
@@ -24,8 +24,8 @@ export function UsageMeter({ todayCents, dailyCapCents }: { todayCents: number; 
         <span className="font-mono tabular-nums">
           {formatDollars(todayCents)} / {formatDollars(dailyCapCents)} today
         </span>
-        {state === 'warning' && <span className="text-[var(--color-terra)]">Approaching daily cap</span>}
-        {state === 'blocked' && <span className="text-[var(--color-error)]">Daily cap reached. Resets at UTC midnight.</span>}
+        {state === 'warning' && <span className="text-[var(--ledger-accent)]">Approaching daily cap</span>}
+        {state === 'blocked' && <span className="text-[var(--ledger-weak)]">Daily cap reached. Resets at UTC midnight.</span>}
       </div>
       <div role="progressbar" data-state={state} aria-valuenow={fillPct} aria-valuemin={0} aria-valuemax={100}
            className="h-1 w-full bg-ink/10 rounded">
