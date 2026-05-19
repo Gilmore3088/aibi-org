@@ -140,7 +140,7 @@
   --z-skip:             100;
 
   /* ---- Focus --------------------------------------------------------- */
-  --focus-ring:         2px solid var(--color-terra);
+  --focus-ring:         2px solid var(--ledger-accent);
   --focus-offset:       2px;
 }
 
