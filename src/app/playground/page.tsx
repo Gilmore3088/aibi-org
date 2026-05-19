@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 import Script from 'next/script';
 
 import { rewriteBundleLinks } from '@/lib/redesign/bundle-links';
+import { TOOLS } from '@/lib/my-toolbox/tools';
 import './playground.css';
 
 export const metadata: Metadata = {
@@ -21,10 +22,21 @@ const inlineScript = readFileSync(
   'utf8',
 );
 
+// Shared tool data so /playground?tool=<key> can pre-load any tool from
+// /my-toolbox into the editor. See src/lib/my-toolbox/tools.ts.
+const toolsJson = JSON.stringify(TOOLS);
+
 export default function PlaygroundPage(): JSX.Element {
   return (
     <>
       <div className="pg-page" dangerouslySetInnerHTML={{ __html: bodyHtml }} />
+      <script
+        id="toolbox-tools-data"
+        type="application/json"
+        dangerouslySetInnerHTML={{
+          __html: toolsJson.replace(/<\/script/gi, '<\\/script'),
+        }}
+      />
       <Script
         id="playground-inline"
         strategy="afterInteractive"

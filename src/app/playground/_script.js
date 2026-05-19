@@ -538,10 +538,66 @@
   renderRuns();
   renderOutputShell();
 
-  // First-run suggestion
+  // First-run suggestion — used unless ?tool=<key> overrides it below.
   $('#promptInput').value = "Take this credit memo and write three honest critiques a senior underwriter would make. Be specific about {{borrower}} — cite the line.";
   $('#runTitle').value = 'Stress-test memo';
   detectVars();
   varVals.borrower = 'Riverbend Custom Cabinetry';
   detectVars();
+
+  // ============ ?tool=<key> pre-load (from /my-toolbox) ============
+  // When a tool key is supplied in the query string and resolves to a
+  // known tool in the toolbox-tools-data JSON island, override the
+  // first-run suggestion with that tool's body. Surface the source so
+  // the user knows what they're editing.
+  (function preloadFromQuery(){
+    let toolsData = {};
+    try {
+      const el = document.getElementById('toolbox-tools-data');
+      toolsData = el ? JSON.parse(el.textContent || '{}') : {};
+    } catch (_) { toolsData = {}; }
+
+    const params = new URLSearchParams(window.location.search);
+    const requested = params.get('tool');
+    if (!requested) return;
+
+    const tool = toolsData[requested];
+    if (!tool){
+      showSource('Unknown tool key: ' + requested + ' — showing default editor.', null);
+      return;
+    }
+
+    const plainName = (tool.name || '').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+    $('#promptInput').value = tool.body || '';
+    $('#runTitle').value = plainName;
+    detectVars();
+
+    // Focus the first {{PLACEHOLDER}} variable in the side panel if any
+    // got picked up. detectVars() reads promptInput; we re-run after
+    // the textarea value is set so the var chips are current.
+    setTimeout(() => {
+      const firstChip = document.querySelector('.var-row input');
+      if (firstChip) firstChip.focus();
+    }, 0);
+
+    showSource('From My Toolbox · ' + plainName + ' · ' + (tool.cat || '') + ' · v' + tool.ver, requested);
+  })();
+
+  function showSource(text, toolKey){
+    let banner = document.getElementById('pg-source-banner');
+    if (!banner){
+      const promptEl = document.getElementById('promptInput');
+      if (!promptEl || !promptEl.parentElement) return;
+      banner = document.createElement('div');
+      banner.id = 'pg-source-banner';
+      banner.style.cssText = 'font-family:var(--mono,ui-monospace,Menlo,monospace);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted,#5C6B82);font-weight:700;padding:8px 12px;margin:0 0 8px;background:rgba(181,134,42,0.08);border-left:2px solid var(--terra,#B5862A);display:flex;align-items:center;gap:10px;justify-content:space-between';
+      promptEl.parentElement.insertBefore(banner, promptEl);
+    }
+    const safeText = String(text || '').replace(/[<>&]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;'})[c]);
+    let backLink = '';
+    if (toolKey){
+      backLink = '<a href="/my-toolbox" style="color:var(--terra,#B5862A);text-decoration:underline;font-weight:700">↩ back to My Toolbox</a>';
+    }
+    banner.innerHTML = '<span>' + safeText + '</span>' + backLink;
+  }
 })();
