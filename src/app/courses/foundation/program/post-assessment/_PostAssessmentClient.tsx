@@ -5,9 +5,10 @@
 // Reads pre-score from localStorage (aibi-user). No email gate — learner
 // is already authenticated. Saves result to course_enrollments via API.
 // Uses a separate sessionStorage key so it never collides with the
-// public readiness assessment (STORAGE_KEY = 'aibi-post-assessment-v2').
+// public readiness assessment (STORAGE_KEY = 'foundations-post-assessment-v2').
 
 import { useEffect, useState, useCallback, useRef } from 'react';
+import { migrateStorageKey } from '@/lib/storage/migrate';
 import { questions as questionPool } from '@content/assessments/v2/questions';
 import { selectQuestions } from '@content/assessments/v2/rotation';
 import { getTierV2, getDimensionScores } from '@content/assessments/v2/scoring';
@@ -22,7 +23,8 @@ import { TransformationCard } from '../_components/TransformationCard';
 import type { ReadinessResult } from '@/lib/user-data';
 
 const QUESTIONS_PER_SESSION = 12;
-const STORAGE_KEY = 'aibi-post-assessment-v2';
+const STORAGE_KEY = 'foundations-post-assessment-v2';
+const LEGACY_STORAGE_KEY = 'aibi-post-assessment-v2';
 
 // Annual hours saved per module (mirrors TimeSavingsCard data).
 const ANNUAL_HOURS_BY_MODULE: Record<number, number> = {
@@ -46,6 +48,7 @@ function readPersisted(): {
 } | null {
   if (typeof window === 'undefined') return null;
   try {
+    migrateStorageKey(window.sessionStorage, LEGACY_STORAGE_KEY, STORAGE_KEY);
     const raw = window.sessionStorage.getItem(STORAGE_KEY);
     if (!raw) return null;
     const parsed = JSON.parse(raw) as PersistedState;

@@ -5,6 +5,7 @@
 // Tab state persists in sessionStorage so refreshing keeps the learner's place.
 
 import { useState, useEffect, type ReactNode } from 'react';
+import { migrateStorageKey } from '@/lib/storage/migrate';
 
 interface Tab {
   readonly id: string;
@@ -26,6 +27,11 @@ const TABS: readonly Tab[] = [
 
 interface CourseTabsProps {
   readonly storagePrefix: string;
+  // Legacy storage prefix for one-shot migration. When provided, the
+  // value at `${legacyStoragePrefix}${segmentNumber}-tab` is copied to
+  // the new key and the legacy key removed. Used during the
+  // 2026-05-09 aibi-p → foundations rename.
+  readonly legacyStoragePrefix?: string;
   readonly segmentNumber: number;
   readonly accentColor?: string;
   readonly learnContent: ReactNode;
@@ -35,6 +41,7 @@ interface CourseTabsProps {
 
 export function CourseTabs({
   storagePrefix,
+  legacyStoragePrefix,
   segmentNumber,
   accentColor = 'var(--color-terra)',
   learnContent,
@@ -42,15 +49,21 @@ export function CourseTabs({
   applyContent,
 }: CourseTabsProps) {
   const storageKey = `${storagePrefix}${segmentNumber}-tab`;
+  const legacyStorageKey = legacyStoragePrefix
+    ? `${legacyStoragePrefix}${segmentNumber}-tab`
+    : null;
   const [activeTab, setActiveTab] = useState('learn');
 
-  // Restore tab from sessionStorage
+  // Restore tab from sessionStorage (migrating from legacy key first)
   useEffect(() => {
+    if (legacyStorageKey) {
+      migrateStorageKey(sessionStorage, legacyStorageKey, storageKey);
+    }
     const saved = sessionStorage.getItem(storageKey);
     if (saved && TABS.some((t) => t.id === saved)) {
       setActiveTab(saved);
     }
-  }, [storageKey]);
+  }, [storageKey, legacyStorageKey]);
 
   function selectTab(tabId: string) {
     setActiveTab(tabId);

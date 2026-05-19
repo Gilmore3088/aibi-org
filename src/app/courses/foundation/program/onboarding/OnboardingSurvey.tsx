@@ -14,10 +14,13 @@ import type { OnboardingAnswers, LearnerRole } from '@/types/course';
 import { SurveyBranding } from './SurveyBranding';
 import { SurveyStepContent } from './SurveyStepContent';
 import { WelcomeFirstPrompt } from './WelcomeFirstPrompt';
+import { migrateStorageKey } from '@/lib/storage/migrate';
 
 // localStorage key — namespaced by enrollment to support multiple bankers
 // sharing a browser (rare, but possible at a branch).
 const WELCOME_DONE_KEY = (enrollmentId: string) =>
+  `foundations-welcome-done-${enrollmentId}`;
+const LEGACY_WELCOME_DONE_KEY = (enrollmentId: string) =>
   `aibi-p-welcome-done-${enrollmentId}`;
 
 const TOTAL_STEPS = 3;
@@ -55,6 +58,11 @@ export function OnboardingSurvey({ enrollmentId }: OnboardingSurveyProps) {
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
+    migrateStorageKey(
+      window.localStorage,
+      LEGACY_WELCOME_DONE_KEY(enrollmentId),
+      WELCOME_DONE_KEY(enrollmentId),
+    );
     const done = window.localStorage.getItem(WELCOME_DONE_KEY(enrollmentId));
     setWelcomePhase(done === 'true' ? 'survey' : 'welcome');
   }, [enrollmentId]);

@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import type { PracticeRep } from '@/types/lms';
+import { migrateStorageKey } from '@/lib/storage/migrate';
 
 interface PracticeRepClientProps {
   readonly rep: PracticeRep;
@@ -11,7 +12,14 @@ interface PracticeRepClientProps {
 
 export function PracticeRepClient({ rep }: PracticeRepClientProps) {
   const router = useRouter();
-  const storageKey = useMemo(() => `aibi-practice-${rep.id}`, [rep.id]);
+  const storageKey = useMemo(() => `foundations-practice-${rep.id}`, [rep.id]);
+  const legacyStorageKey = useMemo(() => `aibi-practice-${rep.id}`, [rep.id]);
+
+  // One-shot migration from the pre-2026-05-09 key name so in-flight
+  // practice responses survive the rename. Safe in SSR (no-op).
+  if (typeof window !== 'undefined') {
+    migrateStorageKey(window.localStorage, legacyStorageKey, storageKey);
+  }
   const [response, setResponse] = useState('');
   const [feedbackVisible, setFeedbackVisible] = useState(false);
   const [saving, setSaving] = useState(false);

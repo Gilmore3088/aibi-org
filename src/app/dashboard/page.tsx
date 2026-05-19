@@ -8,6 +8,7 @@ import {
   FOUNDATION_PRACTICE_REPS,
   getDailyPracticeRep,
 } from '@content/practice-reps/foundation-program';
+import { migrateStorageKey } from '@/lib/storage/migrate';
 
 interface ReadinessSnapshot {
   readonly score: number;
@@ -911,7 +912,14 @@ const SAFE_CELLS: ReadonlyArray<{ letter: string; word: string; desc: string }> 
 function readLocalCompletedRepIds(): readonly string[] {
   try {
     return FOUNDATION_PRACTICE_REPS
-      .filter((rep) => localStorage.getItem(`aibi-practice-${rep.id}`))
+      .filter((rep) => {
+        migrateStorageKey(
+          localStorage,
+          `aibi-practice-${rep.id}`,
+          `foundations-practice-${rep.id}`,
+        );
+        return localStorage.getItem(`foundations-practice-${rep.id}`);
+      })
       .map((rep) => rep.id);
   } catch {
     return [];

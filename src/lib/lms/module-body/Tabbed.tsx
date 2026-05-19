@@ -13,6 +13,8 @@ import { CourseTabs } from '@/components/CourseTabs';
 interface TabbedProps {
   /** Stable id segment used to namespace sessionStorage for tab persistence. */
   readonly storagePrefix: string;
+  /** Optional legacy prefix; if set, value at the legacy key is migrated once. */
+  readonly legacyStoragePrefix?: string;
   /** The current module's number — combined with storagePrefix to form the key. */
   readonly moduleNumber: number;
   readonly accentColor?: string;
@@ -24,6 +26,7 @@ interface TabbedProps {
 
 export function Tabbed({
   storagePrefix,
+  legacyStoragePrefix,
   moduleNumber,
   accentColor,
   learnContent,
@@ -33,6 +36,7 @@ export function Tabbed({
   return (
     <CourseTabs
       storagePrefix={storagePrefix}
+      legacyStoragePrefix={legacyStoragePrefix}
       segmentNumber={moduleNumber}
       accentColor={accentColor}
       learnContent={learnContent}
