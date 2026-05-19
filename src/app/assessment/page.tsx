@@ -151,9 +151,9 @@ export default function AssessmentPage() {
                 </p>
                 <p>
                   You submitted a personal email. The report below is tailored
-                  using the institution you provided. If you'd prefer follow-up
+                  using the institution you provided. If you’d prefer follow-up
                   emails to land at your work address, just retake the
-                  assessment with your work email and we'll merge the records.
+                  assessment with your work email and we’ll merge the records.
                 </p>
               </aside>
             )}
