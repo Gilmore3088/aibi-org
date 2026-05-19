@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
-import { getPaidToolboxAccess } from '@/lib/toolbox/access';
+import { canBuildOrRun, getPaidToolboxAccess } from '@/lib/toolbox/access';
 import type { ToolboxSkill } from '@/lib/toolbox/types';
 import { validateSkill } from '../validateSkill';
 
@@ -15,6 +15,13 @@ function validId(value: string): boolean {
 export async function PATCH(request: Request, { params }: RouteParams): Promise<NextResponse> {
   const access = await getPaidToolboxAccess();
   if (!access) return NextResponse.json({ error: 'Paid access required.' }, { status: 403 });
+  // Starter-tier guard (#219): updating a skill requires the Foundation tier.
+  if (!canBuildOrRun(access)) {
+    return NextResponse.json(
+      { error: 'Editing a skill requires the AiBI-Foundation tier.' },
+      { status: 403 },
+    );
+  }
   if (!isSupabaseConfigured()) return NextResponse.json({ error: 'Toolbox storage is not configured.' }, { status: 503 });
   if (!validId(params.skillId)) return NextResponse.json({ error: 'Invalid skill id.' }, { status: 400 });
 
@@ -77,6 +84,13 @@ export async function PATCH(request: Request, { params }: RouteParams): Promise<
 export async function DELETE(_request: Request, { params }: RouteParams): Promise<NextResponse> {
   const access = await getPaidToolboxAccess();
   if (!access) return NextResponse.json({ error: 'Paid access required.' }, { status: 403 });
+  // Starter-tier guard (#219): deleting a skill requires the Foundation tier.
+  if (!canBuildOrRun(access)) {
+    return NextResponse.json(
+      { error: 'Deleting a skill requires the AiBI-Foundation tier.' },
+      { status: 403 },
+    );
+  }
   if (!isSupabaseConfigured()) return NextResponse.json({ error: 'Toolbox storage is not configured.' }, { status: 503 });
   if (!validId(params.skillId)) return NextResponse.json({ error: 'Invalid skill id.' }, { status: 400 });
 

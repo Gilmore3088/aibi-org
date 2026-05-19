@@ -90,8 +90,8 @@ export default async function InDepthDashboardPage() {
 
         <ScaffoldCard
           kicker="AI Starter Toolkit"
-          title="Read-only Toolbox for cohort members"
-          body="In-Depth buyers get the AI Starter Toolkit tier — read-only Library and Cookbook access, plus the In-Depth Briefing. Full Playground and Build tabs open with AiBI-Foundation. This tier currently routes through manual access provisioning; the entitlement check on the Toolbox surface will gate it automatically once /api/indepth/aggregate is live."
+          title="Read-only Toolbox now provisioned automatically"
+          body="In-Depth Assessment buyers get the AI Starter Toolkit tier — read-only Library and Cookbook access, plus the In-Depth Briefing. Build and Playground unlock with the AiBI-Foundation course. Entitlement is provisioned automatically on Stripe payment.success; no manual access steps required."
           ctaHref="/dashboard/toolbox"
           ctaLabel="OPEN THE TOOLBOX"
         />

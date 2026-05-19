@@ -26,7 +26,7 @@ export default async function ToolboxPage() {
       <div className="border-b border-[color:var(--ink-a10)] bg-[color:var(--cream)]">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-6 py-4 lg:px-10">
           <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-[color:var(--gold-deep)]">
-            Banking AI Toolbox · Foundation tier
+            Banking AI Toolbox · {access.tier === 'starter' ? 'Starter tier (read-only)' : 'Foundation tier'}
           </p>
           <div className="flex flex-wrap items-center gap-3">
             <Link
@@ -42,16 +42,16 @@ export default async function ToolboxPage() {
               COOKBOOK →
             </Link>
             <Link
-              href="/courses/foundation/program"
+              href={access.tier === 'starter' ? '/assessment/in-depth/dashboard' : '/courses/foundation/program'}
               className="inline-flex items-center rounded-[12px] border border-[color:var(--ink-a15)] bg-white px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-[color:var(--ink)] transition-colors hover:border-[color:var(--ink)]"
             >
-              ← COURSEWORK
+              {access.tier === 'starter' ? '← IN-DEPTH DASHBOARD' : '← COURSEWORK'}
             </Link>
           </div>
         </div>
         <ContextStrip />
       </div>
-      <ToolboxApp />
+      <ToolboxApp tier={access.tier} />
     </main>
   );
 }
