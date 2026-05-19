@@ -1206,4 +1206,23 @@
   .aibi-research .idx,
   .aibi-research .role,
   .aibi-research .seal-card { border-right: none; }
+
+  /* #194 Mobile Phase 3 — chapter-head left column was min-width: 260px,
+     forcing horizontal overflow on phones because viewport is < 260 + the
+     sibling .right column's content. Let the column shrink to fit, and
+     allow the H2 (white-space: nowrap by default) to wrap. */
+  .aibi-research .ch-head { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .aibi-research .ch-head .left { min-width: 0; width: 100%; }
+  .aibi-research .ch-head .right { max-width: none; text-align: left; }
+  .aibi-research .ch-head h2 { white-space: normal; }
+
+  /* Featured-section mark column was fixed 240px in a 2-col grid. Stack
+     vertically on mobile and let the mark column be full-width. */
+  .aibi-research .feat { grid-template-columns: 1fr; }
+  .aibi-research .feat .mark-col {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--ar-rule);
+    padding: 32px 24px;
+  }
 }
