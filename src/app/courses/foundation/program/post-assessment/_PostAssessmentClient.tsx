@@ -20,17 +20,13 @@ import { ProgressBar } from '@/app/assessment/_components/ProgressBar';
 import { ScoreRing } from '@/app/assessment/_components/ScoreRing';
 import { GrowthComparison } from '../_components/GrowthComparison';
 import { TransformationCard } from '../_components/TransformationCard';
+import { TOTAL_ANNUAL_HOURS } from '../_lib/activitySavings';
 import type { ReadinessResult } from '@/lib/user-data';
 
 const QUESTIONS_PER_SESSION = 12;
 const STORAGE_KEY = 'foundations-post-assessment-v2';
 const LEGACY_STORAGE_KEY = 'aibi-post-assessment-v2';
 
-// Annual hours saved per module (mirrors TimeSavingsCard data).
-const ANNUAL_HOURS_BY_MODULE: Record<number, number> = {
-  1: 6, 2: 0, 3: 43, 4: 52, 5: 0, 6: 0, 7: 87, 8: 0, 9: 0,
-};
-const TOTAL_ANNUAL_HOURS = Object.values(ANNUAL_HOURS_BY_MODULE).reduce((a, b) => a + b, 0);
 const SKILLS_BUILT = 3; // Modules 4 (Acceptable Use), 7 (AI Skill), 9 (Capstone)
 
 type Phase = 'questions' | 'score' | 'results';

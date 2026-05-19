@@ -9,6 +9,10 @@
 
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import type { Activity, ActivityField } from '@content/courses/foundation-program';
+import {
+  getInitialActivityValues,
+  validateActivityFields,
+} from '../_lib/activityFormHelpers';
 
 export interface AcceptableUseCardFormProps {
   readonly activity: Activity;
@@ -24,35 +28,6 @@ interface CardFormState {
   submitting: boolean;
   submitted: boolean;
   serverError: string | null;
-}
-
-function getInitialValues(
-  fields: readonly ActivityField[],
-  existing?: Record<string, string> | null,
-): Record<string, string> {
-  const init: Record<string, string> = {};
-  for (const f of fields) {
-    init[f.id] = existing?.[f.id] ?? '';
-  }
-  return init;
-}
-
-function validateFields(
-  fields: readonly ActivityField[],
-  values: Record<string, string>,
-): Record<string, string> {
-  const errors: Record<string, string> = {};
-  for (const f of fields) {
-    const val = values[f.id] ?? '';
-    if (f.required && val.trim().length === 0) {
-      errors[f.id] = `${f.label} is required.`;
-      continue;
-    }
-    if (f.minLength && val.length < f.minLength) {
-      errors[f.id] = `Must be at least ${f.minLength} characters (currently ${val.length}).`;
-    }
-  }
-  return errors;
 }
 
 function ReadOnlyField({ field, value }: { readonly field: ActivityField; readonly value: string }) {
@@ -172,7 +147,7 @@ export function AcceptableUseCardForm({
   const isReadOnly = existingResponse != null;
 
   const [state, setState] = useState<CardFormState>({
-    values: getInitialValues(activity.fields, existingResponse),
+    values: getInitialActivityValues(activity.fields, existingResponse),
     errors: {},
     submitting: false,
     submitted: isReadOnly,
@@ -200,7 +175,7 @@ export function AcceptableUseCardForm({
     async (e: React.FormEvent) => {
       e.preventDefault();
 
-      const errors = validateFields(activity.fields, state.values);
+      const errors = validateActivityFields(activity.fields, state.values);
       if (Object.keys(errors).length > 0) {
         setState((prev) => ({ ...prev, errors }));
         return;
