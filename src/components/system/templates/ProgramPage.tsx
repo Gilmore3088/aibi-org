@@ -148,8 +148,8 @@ export function ProgramPage({
           title={`${modules.length} modules. One arc.`}
           subtitle="Built around the work bankers actually do. Each module ends in a deliverable."
         />
-        <div className="border-y border-strong">
-          <table className="w-full text-body-sm">
+        <div className="border-y border-strong overflow-x-auto -mx-s5 px-s5 sm:mx-0 sm:px-0">
+          <table className="w-full text-body-sm min-w-[480px]">
             <thead>
               <tr className="border-b border-strong">
                 <th className="text-left p-s3 font-mono text-label-sm uppercase tracking-widest text-slate w-[60px]">
