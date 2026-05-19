@@ -366,7 +366,7 @@ export function SkillTemplateLibraryDocument() {
       {/* Cover Page */}
       <Page size="LETTER" style={styles.page}>
         <View style={styles.header}>
-          <Text style={styles.headerLabel}>AiBI-Foundation: BANKING AI PRACTITIONER</Text>
+          <Text style={styles.headerLabel}>AiBI-Foundation · The AI Banking Institute</Text>
           <Text style={styles.headerTitle}>Skill Template Library</Text>
           <Text style={styles.headerSubtitle}>
             Module 6 Artifact · Five Banking AI Skill Templates · Ready to Deploy
