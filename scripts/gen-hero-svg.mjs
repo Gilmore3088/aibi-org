@@ -116,25 +116,31 @@ async function main() {
     fetchFont(urls.italic, 'Newsreader-Italic.woff'),
   ]);
 
-  // 1500x260 is the rendered raster region. The SVG is vector so it
+  // 1500x115 is the rendered raster region. The SVG is vector so it
   // scales infinitely; this just sets the natural box. The page CSS
   // sizes the wrapping element so the SVG stretches into the H1 slot.
+  //
+  // Height 115 = one line at 96px / 1.06 line-height (~102px) plus a
+  // small allowance for the italic descenders ("g" in "Turning" and the
+  // period after "Builders."). Earlier value 260 left ~150 units of empty
+  // canvas below the glyphs which rendered as a visible vertical gap
+  // between the H1 and lede on /. See hero-spacing fix 2026-05-19.
   const svg = await satori(buildJsx(), {
     width: 1500,
-    height: 260,
+    height: 115,
     fonts: [
       { name: 'Newsreader', data: regular, weight: 400, style: 'normal' },
       { name: 'Newsreader', data: italic, weight: 400, style: 'italic' },
     ],
   });
 
-  // Post-process: replace Satori's intrinsic width="1500" height="260"
-  // attributes with responsive `width="100%" height="auto"` so the SVG
-  // scales to its parent container at every viewport. The viewBox
-  // (preserved by Satori) handles the aspect ratio. Without this,
-  // mobile viewports clip the headline at the right edge. See #194.
+  // Post-process: replace Satori's intrinsic width/height attributes with
+  // responsive `width="100%" height="auto"` so the SVG scales to its
+  // parent container at every viewport. The viewBox (preserved by Satori)
+  // handles the aspect ratio. Without this, mobile viewports clip the
+  // headline at the right edge. See #194.
   const responsiveSvg = svg.replace(
-    /width="1500" height="260" viewBox/,
+    /width="\d+" height="\d+" viewBox/,
     'width="100%" height="auto" viewBox',
   );
 
