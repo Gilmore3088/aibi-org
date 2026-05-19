@@ -123,6 +123,22 @@ export default function AssessmentPage() {
                 setCapturedInstitution(extras.institutionName ?? null);
                 setCapturedProfileId(extras.profileId ?? null);
                 setUsedFreeEmail(extras.usedFreeEmail ?? false);
+                // Update the URL bar to the bookmarkable per-profile path
+                // (`/results/${profileId}`). Uses replaceState so the
+                // component stays mounted — no flicker, no remount, no
+                // navigation. Users can now copy the URL, share it with
+                // a colleague, or bookmark it for return-later access.
+                // The /results/[id] route renders the same ResultsViewV2
+                // server-side via loadAssessmentResponse. See #189 PR-B.
+                if (extras.profileId) {
+                  try {
+                    window.history.replaceState({}, '', `/results/${extras.profileId}`);
+                  } catch {
+                    // History API failed (very old browser or sandboxed
+                    // iframe) — fall through. Report still renders inline;
+                    // user just can't bookmark the per-profile URL.
+                  }
+                }
                 state.advanceToResults();
               }}
             />
