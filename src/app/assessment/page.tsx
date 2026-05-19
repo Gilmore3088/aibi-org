@@ -159,7 +159,7 @@ export default function AssessmentPage() {
           <>
             {usedFreeEmail && (
               <aside
-                className="max-w-3xl mx-auto mb-8 border border-[color:var(--color-ink)]/15 bg-[color:var(--color-parch)] px-5 py-4 rounded-[2px] text-sm leading-relaxed text-[color:var(--color-ink)]/85"
+                className="max-w-3xl mx-auto mb-8 border border-[color:var(--color-ink)]/15 bg-[color:var(--ledger-paper)] px-5 py-4 rounded-[2px] text-sm leading-relaxed text-[color:var(--ledger-ink)]"
                 aria-label="Personal email notice"
               >
                 <p className="font-mono text-[10.5px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] mb-1.5">

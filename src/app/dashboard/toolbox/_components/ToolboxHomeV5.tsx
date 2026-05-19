@@ -276,7 +276,7 @@ export function ToolboxHomeV5({
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Ask your toolbox — find by name, command, or purpose…"
-            className="flex-1 bg-transparent py-4 font-serif text-lg tracking-[-0.01em] text-[color:var(--ledger-ink)] outline-none placeholder:italic placeholder:text-[color:var(--ledger-soft)]"
+            className="flex-1 bg-transparent py-4 font-serif text-lg tracking-[-0.01em] text-[color:var(--ledger-ink)] outline-none placeholder:italic placeholder:text-[color:var(--ledger-muted)]"
             aria-label="Search toolbox"
           />
           <button

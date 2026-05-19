@@ -5,10 +5,20 @@
 
 import type { ReactElement } from 'react';
 
-const STROKE = '#0E1B2D';
-const GOLD = '#B5862A';
+// These constants mirror Ledger tokens. They are duplicated as literals
+// because SVG presentation attributes (stroke, fill) do not resolve CSS
+// var() across browsers — only inline style props do, and converting
+// every SVG attribute to style is high churn for low benefit. Keep in
+// sync with src/styles/tokens-ledger.css:
+//   STROKE    ↔ --ledger-ink
+//   GOLD      ↔ --ledger-accent
+//   GOLD_*    ↔ rgba derivations of --ledger-accent
+//   PAPER     ↔ --ledger-paper (used as magnifier lens fill below)
+const STROKE = '#0E1B2D';      // --ledger-ink
+const GOLD = '#B5862A';        // --ledger-accent
 const GOLD_FILL = 'rgba(181,134,42,0.18)';
 const GOLD_SOFT = 'rgba(181,134,42,0.10)';
+const PAPER = '#F4F1E7';       // --ledger-paper
 
 export type ProductMarkKind =
   | 'assessment-free'
@@ -73,7 +83,7 @@ export function ProductMark({ kind, size = 56, className }: Props): ReactElement
           <line x1="14" y1="38" x2="36" y2="38" strokeWidth={1} opacity={0.6} />
           <line x1="14" y1="44" x2="28" y2="44" strokeWidth={1} opacity={0.6} />
           {/* Magnifier overlay */}
-          <circle cx="44" cy="40" r="10" fill="#F4F1E7" stroke={STROKE} />
+          <circle cx="44" cy="40" r="10" fill={PAPER} stroke={STROKE} />
           <circle cx="44" cy="40" r="6" fill="none" stroke={STROKE} strokeWidth={1} opacity={0.5} />
           <line x1="51" y1="47" x2="58" y2="54" stroke={GOLD} strokeWidth={2.4} />
         </svg>
