@@ -14,6 +14,9 @@ for current development.**
   superseded by `Plans/aibi-launch-spec-v2.md` §1
 - `email-content.ts.archived` — old TS module retired during the
   MailerLite migration
+- `MERGE-ROADMAP-2026-05-10.md` — completed merge plan from the
+  Ledger redesign landing; preserved as a reference for how the
+  398-conflict resolution was structured
 - `archive-README.md` — README from the previous `docs/archive/` folder
 
 ## When to move a doc here

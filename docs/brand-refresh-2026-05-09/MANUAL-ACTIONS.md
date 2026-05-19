@@ -25,7 +25,7 @@ legacy fallbacks.
 | 3 | Stripe product rename + metadata | MCP (`stripe_api_execute`) | ✅ `prod_UShU302Dln6DMz` renamed to "AiBI Foundations"; metadata `tier`/`credential_code`/`access_grant` updated |
 | 4 | Resend templates (3) | MCP (`update-template` + `publish-template`) | ✅ All 3 updated and republished — names, subjects, variable fallbacks |
 | 5 | MailerLite automations (5) | — | ⏳ MCP `update_automation_email` rejects the content (subject Liquid + 1000-char cap). See §5 below for the dashboard procedure. Automations still in DRAFT (enabled=false), so subscribers are unaffected. |
-| 6 | localStorage migration | client-side migrator | ⏳ Deferred — separate follow-up |
+| 6 | localStorage migration | client-side migrator | ✅ Shipped 2026-05-18 — `migrateStorageKey()` reads legacy key and renames in place on first read (PR #215) |
 | 7 | Cleanup commit | code | ⏳ After everything above is verified |
 
 ---
@@ -147,21 +147,25 @@ authenticated in MailerLite Settings → Domains.
 
 ---
 
-## 6. localStorage migration (deferred — track for follow-up)
+## 6. localStorage migration ✅ DONE
 
-Several browser-side keys still embed the old `aibi-p` prefix:
+Shipped 2026-05-18 (PR #215). `src/lib/storage/migrate.ts` exposes
+`migrateStorageKey(storage, legacyKey, newKey)` — a tiny helper that
+copies the legacy value to the new key and removes the legacy entry.
+Safe in SSR and private browsing.
 
-- `aibi-p-m{N}-tab` (module tab state)
-- `aibi-p-module-{N}` (module-level state)
-- `aibi-p-welcome` (onboarding welcome screen)
-- `aibi-post-assessment-v2`
-- `aibi-practice-{rep-id}`
+Keys renamed in place on the first read after the learner returns:
 
-Renaming these without a migration shim resets every existing learner's
-in-progress state. The right fix is a small client-side migrator that
-reads the old key first, copies its value to a new `foundations-...`
-key, and deletes the old. Tracking this for a follow-up commit — it's
-intentional that the current commit leaves these keys alone.
+| Legacy | New | Surface |
+|---|---|---|
+| `aibi-p-m{N}-tab` | `foundations-m{N}-tab` | `CourseTabs` (Foundation tabs) |
+| `aibi-p-welcome-done-{eid}` | `foundations-welcome-done-{eid}` | `OnboardingSurvey` |
+| `aibi-post-assessment-v2` | `foundations-post-assessment-v2` | Post-course assessment |
+| `aibi-practice-{repId}` | `foundations-practice-{repId}` | `PracticeRepClient` + dashboard |
+
+Runtime moduleId strings (`aibi-p-module-{N}`, `aibi-p-welcome`) are
+intentionally unchanged — those are rate-limit identifiers passed to
+the sandbox API and the server accepts both forms for continuity.
 
 ---
 
