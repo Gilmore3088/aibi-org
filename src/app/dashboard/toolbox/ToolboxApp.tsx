@@ -17,8 +17,8 @@ import {
 import { renderMarkdown } from '@/lib/sandbox/markdown-renderer';
 import { KindPicker } from './_components/KindPicker';
 import { ModelPicker, type ModelSelection } from './_components/ModelPicker';
-import { SourceBacklink } from './_components/SourceBacklink';
 import { TemplateBuilder } from './_components/TemplateBuilder';
+import { ToolboxHomeV5 } from './_components/ToolboxHomeV5';
 import { useUsage } from './_components/UsageMeter';
 
 type TabId = 'guide' | 'library' | 'build' | 'playground' | 'toolbox';
@@ -613,7 +613,7 @@ export function ToolboxApp() {
       )}
 
       {safeTab === 'toolbox' && (
-        <ToolboxPanel
+        <ToolboxHomeV5
           skills={skills}
           librarySlugMap={librarySlugMap}
           onRun={(skill) => loadSkill(skill, 'playground')}
@@ -1239,59 +1239,6 @@ function PiiOverrideBanner(props: {
   );
 }
 
-function ToolboxPanel({ skills, librarySlugMap, onRun, onEdit, onExport, onDelete, onBrowse, onBuild }: {
-  readonly skills: readonly ToolboxSkill[];
-  readonly librarySlugMap: Readonly<Record<string, string>>;
-  readonly onRun: (skill: ToolboxSkill) => void;
-  readonly onEdit: (skill: ToolboxSkill) => void;
-  readonly onExport: (skill: ToolboxSkill) => void;
-  readonly onDelete: (id: string) => void;
-  readonly onBrowse: () => void;
-  readonly onBuild: () => void;
-}) {
-  if (skills.length === 0) {
-    return (
-      <section className="mx-auto max-w-2xl py-20 text-center">
-        <h2 className="font-serif text-4xl text-[color:var(--color-ink)]">Your toolbox is empty.</h2>
-        <p className="mt-3 text-sm text-[color:var(--color-slate)]">Start from a Library template or build the first custom skill for your recurring work.</p>
-        <div className="mt-6 flex justify-center gap-3">
-          <button type="button" onClick={onBrowse} className="bg-[color:var(--color-terra)] px-5 py-3 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-linen)]">Browse Library</button>
-          <button type="button" onClick={onBuild} className="border border-[color:var(--color-ink)]/20 px-5 py-3 font-mono text-[10px] uppercase tracking-widest">Build from scratch</button>
-        </div>
-      </section>
-    );
-  }
-
-  return (
-    <section>
-      <div className="mb-6 flex items-end justify-between border-b border-[color:var(--color-ink)]/10 pb-5">
-        <div>
-          <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)]">My Toolbox</p>
-          <h2 className="mt-2 font-serif text-4xl">{skills.length} saved skill{skills.length === 1 ? '' : 's'}</h2>
-        </div>
-        <button type="button" onClick={onBuild} className="border border-[color:var(--color-ink)]/20 px-4 py-2 font-mono text-[10px] uppercase tracking-widest">New skill</button>
-      </div>
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-        {skills.map((skill) => (
-          <article key={skill.id} className="border border-[color:var(--color-ink)]/10 bg-white/45 p-5">
-            <div className="flex items-start justify-between gap-3">
-              <span className="bg-[color:var(--color-parch)] px-2 py-1 font-mono text-[11px] text-[color:var(--color-terra)]">{skill.cmd}</span>
-              <span className="font-mono text-[9px] uppercase tracking-widest text-[color:var(--color-slate)]">{skill.maturity}</span>
-            </div>
-            <h3 className="mt-4 font-serif text-2xl leading-tight">{skill.name}</h3>
-            <p className="mt-3 min-h-[64px] text-sm leading-relaxed text-[color:var(--color-slate)]">{skill.desc || (isWorkflowSkill(skill) ? skill.purpose : '')}</p>
-            <div className="mt-3">
-              <SourceBacklink source={skill.source} sourceRef={skill.sourceRef} librarySlugMap={librarySlugMap} />
-            </div>
-            <div className="mt-4 grid grid-cols-2 gap-2">
-              <button type="button" onClick={() => onRun(skill)} className="bg-[color:var(--color-terra)] px-3 py-2 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-linen)]">Run</button>
-              <button type="button" onClick={() => onEdit(skill)} className="border border-[color:var(--color-ink)]/20 px-3 py-2 font-mono text-[10px] uppercase tracking-widest">Edit</button>
-              <button type="button" onClick={() => onExport(skill)} className="border border-[color:var(--color-ink)]/20 px-3 py-2 font-mono text-[10px] uppercase tracking-widest">Download</button>
-              <button type="button" onClick={() => onDelete(skill.id)} className="border border-[color:var(--color-error)]/30 px-3 py-2 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-error)]">Delete</button>
-            </div>
-          </article>
-        ))}
-      </div>
-    </section>
-  );
-}
+// ToolboxPanel was the legacy "My Toolbox" tab render — replaced by
+// ToolboxHomeV5 (Ledger refresh, v5 layout). Kept removed here so the
+// dead code doesn't drift; see PR for #183.
