@@ -100,7 +100,7 @@ export default function AssessmentPage() {
               <h2
                 ref={scoreHeadingRef}
                 tabIndex={-1}
-                className="font-serif text-3xl md:text-5xl leading-tight text-[color:var(--color-ink)] focus:outline-none"
+                className="font-serif text-3xl md:text-5xl leading-tight text-[color:var(--color-ink)] focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--ledger-accent)] focus-visible:outline-offset-4 focus-visible:rounded-sm"
               >
                 Your readiness report is <em className="text-[color:var(--color-terra)]">ready.</em>
               </h2>

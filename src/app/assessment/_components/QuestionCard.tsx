@@ -130,7 +130,7 @@ export function QuestionCard({
               className={cn(
                 "w-full text-left grid grid-cols-[1fr_28px] gap-s4 items-baseline",
                 "px-s4 py-s4 border-b border-hairline transition-colors duration-fast",
-                "focus-visible:outline-none focus-visible:bg-parch",
+                "focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--ledger-accent)] focus-visible:outline-offset-[-2px]",
                 selected
                   ? "bg-parch"
                   : "hover:bg-parch/60"
