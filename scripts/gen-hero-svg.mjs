@@ -100,7 +100,10 @@ function buildJsx() {
         {
           type: 'span',
           props: {
-            style: { color: '#B5512E', fontStyle: 'italic' },
+            // --ledger-accent (gold). The legacy --color-terra (#B5512E)
+            // is retired per the 2026-05-09 Ledger refresh; using it here
+            // gives "Builders." the wrong (terracotta-red) hue.
+            style: { color: '#B5862A', fontStyle: 'italic' },
             children: 'Builders.',
           },
         },
