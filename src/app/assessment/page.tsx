@@ -6,8 +6,6 @@ import { useAssessmentV2, QUESTIONS_PER_SESSION } from './_lib/useAssessmentV2';
 import { QuestionCard } from './_components/QuestionCard';
 import { ProgressBar } from './_components/ProgressBar';
 import { EmailGate } from './_components/EmailGate';
-import { ScoreRing } from './_components/ScoreRing';
-import { trackBriefingBooked } from '@/lib/analytics/events';
 
 // ResultsViewV2 is a ~25 KB source component (drags in PdfDownloadButton +
 // SignupModal + result-rendering helpers). It only renders after the user
@@ -19,18 +17,13 @@ const ResultsViewV2 = dynamic(
   { ssr: false },
 );
 
-// If the Calendly URL is unset (e.g. preview/dev), fall back to the advisory
-// page so the briefing CTA is never silently dead. Never use '#'.
-const BRIEFING_URL =
-  process.env.NEXT_PUBLIC_CALENDLY_URL ?? '/for-institutions/advisory';
-
 export default function AssessmentPage() {
   const state = useAssessmentV2();
   const [capturedEmail, setCapturedEmail] = useState<string | null>(null);
   const [capturedFirstName, setCapturedFirstName] = useState<string | null>(null);
   const [capturedInstitution, setCapturedInstitution] = useState<string | null>(null);
   const [capturedProfileId, setCapturedProfileId] = useState<string | null>(null);
-  const emailCaptured = capturedEmail !== null;
+  const [usedFreeEmail, setUsedFreeEmail] = useState(false);
   const [mounted, setMounted] = useState(false);
   const scoreHeadingRef = useRef<HTMLHeadingElement | null>(null);
 
@@ -40,12 +33,28 @@ export default function AssessmentPage() {
 
   useEffect(() => {
     if (state.isComplete && state.phase === 'score') {
-      // Move focus to the score heading so screen readers announce the
-      // transition and keyboard users land somewhere meaningful instead of
-      // on the now-unmounted last answer button.
+      // Move focus to the score-phase heading so screen readers announce
+      // the transition and keyboard users land somewhere meaningful
+      // instead of on the now-unmounted last answer button.
       requestAnimationFrame(() => scoreHeadingRef.current?.focus());
     }
   }, [state.isComplete, state.phase, state.totalScore, state.tier]);
+
+  // After email capture, the page transitions from the email-gate view to
+  // the full report (ResultsViewV2). The user's scroll position is wherever
+  // they tapped the submit button — usually near the bottom of the gate
+  // form on mobile. Without this, the report appears to "start" from
+  // wherever the form ended, which reads as broken.
+  useEffect(() => {
+    if (state.phase === 'results' && capturedEmail) {
+      requestAnimationFrame(() => {
+        // Legacy two-arg form (always synchronous, always typed across lib
+        // versions). The newer { behavior: 'instant' } option may not be
+        // in ScrollBehavior on older lib.dom.d.ts versions used by CI.
+        window.scrollTo(0, 0);
+      });
+    }
+  }, [state.phase, capturedEmail]);
 
   if (!mounted) {
     // Pre-hydration skeleton — sessionStorage-aware state must be read client-
@@ -53,9 +62,6 @@ export default function AssessmentPage() {
     // shape-only placeholder that matches the question card layout.
     return <AssessmentSkeleton />;
   }
-
-  const isLowerTier =
-    state.tier?.id === 'starting-point' || state.tier?.id === 'early-stage';
 
   return (
     <main className="min-h-screen">
@@ -76,86 +82,50 @@ export default function AssessmentPage() {
         )}
 
         {state.phase === 'score' && state.tier && (
-          <div className="max-w-3xl mx-auto space-y-12">
-            {/* ASMT-06: Score and tier visible immediately — no email gate */}
-            <div className="flex flex-col items-center text-center">
-              <p className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-ink)]/70 mb-6">
-                Your AI Readiness Score
+          <div className="max-w-3xl mx-auto space-y-10">
+            {/* Email gate is now the entire score-phase view. Score, tier,
+                dimension breakdown, and starter artifact are all gated
+                behind email capture. Reverses the 2026-04-27 decision —
+                see DECISIONS.md entry from 2026-05-18 and issue #189.
+
+                The 12-question assessment (vs the original 8) gives users
+                more sunk cost, so an email gate at the score reveal has
+                materially lower bounce risk than it did at 8 questions. */}
+            <header className="text-center space-y-4">
+              <p
+                className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-ink)]/70"
+              >
+                12 of 12 · Diagnostic complete
               </p>
-              <ScoreRing
-                score={state.totalScore}
-                minScore={12}
-                maxScore={48}
-                colorVar={state.tier.colorVar}
-                label={state.tier.label}
-              />
               <h2
                 ref={scoreHeadingRef}
                 tabIndex={-1}
-                className="font-serif text-3xl md:text-4xl text-center mt-8 max-w-xl text-[color:var(--color-ink)] focus:outline-none"
+                className="font-serif text-3xl md:text-5xl leading-tight text-[color:var(--color-ink)] focus:outline-none"
               >
-                {state.tier.headline}
+                Your readiness report is <em className="text-[color:var(--color-terra)]">ready.</em>
               </h2>
-              <p className="text-lg text-[color:var(--color-ink)]/75 text-center mt-4 max-w-2xl leading-relaxed">
-                {state.tier.summary}
+              <p className="font-serif italic text-lg md:text-xl text-[color:var(--color-ink)]/75 max-w-2xl mx-auto leading-relaxed">
+                Enter your work email to see your score, tier, eight-dimension breakdown, and a starter artifact keyed to your weakest area.
               </p>
-            </div>
+            </header>
 
-            {/* ASMT-08: Tier-specific CTAs */}
-            <div className="flex flex-col items-center gap-4">
-              {isLowerTier ? (
-                <a
-                  href="/assessment/in-depth"
-                  className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
-                >
-                  Take the In-Depth Assessment · $99
-                </a>
-              ) : (
-                <a
-                  href={BRIEFING_URL}
-                  onClick={() => trackBriefingBooked({ source: 'assessment' })}
-                  className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
-                >
-                  Book Your Executive Briefing
-                </a>
-              )}
-
-              {/* Secondary navigation — always visible */}
-              <nav aria-label="Related pages" className="flex flex-wrap items-center justify-center gap-6 mt-2">
-                <a
-                  href="/education"
-                  className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/60 hover:text-[color:var(--color-terra)] transition-colors"
-                >
-                  Browse education
-                </a>
-                <a
-                  href="/dashboard"
-                  className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/60 hover:text-[color:var(--color-terra)] transition-colors"
-                >
-                  Go to dashboard
-                </a>
-              </nav>
-            </div>
-
-            {/* ASMT-07: Email gate only for dimension breakdown */}
-            {!emailCaptured && (
-              <EmailGate
-                score={state.totalScore}
-                tierId={state.tier.id}
-                tierLabel={state.tier.label}
-                answers={state.answers}
-                version="v2"
-                maxScore={48}
-                dimensionBreakdown={state.getDimensionBreakdown()}
-                onCaptured={(email, extras) => {
-                  setCapturedEmail(email);
-                  setCapturedFirstName(extras.firstName ?? null);
-                  setCapturedInstitution(extras.institutionName ?? null);
-                  setCapturedProfileId(extras.profileId ?? null);
-                  state.advanceToResults();
-                }}
-              />
-            )}
+            <EmailGate
+              score={state.totalScore}
+              tierId={state.tier.id}
+              tierLabel={state.tier.label}
+              answers={state.answers}
+              version="v2"
+              maxScore={48}
+              dimensionBreakdown={state.getDimensionBreakdown()}
+              onCaptured={(email, extras) => {
+                setCapturedEmail(email);
+                setCapturedFirstName(extras.firstName ?? null);
+                setCapturedInstitution(extras.institutionName ?? null);
+                setCapturedProfileId(extras.profileId ?? null);
+                setUsedFreeEmail(extras.usedFreeEmail ?? false);
+                state.advanceToResults();
+              }}
+            />
 
             <div className="text-center">
               <button
@@ -170,16 +140,34 @@ export default function AssessmentPage() {
         )}
 
         {state.phase === 'results' && state.tier && capturedEmail && (
-          <ResultsViewV2
-            score={state.totalScore}
-            tier={state.tier}
-            dimensionBreakdown={state.getDimensionBreakdown()}
-            email={capturedEmail}
-            tierId={state.tier.id}
-            firstName={capturedFirstName}
-            institutionName={capturedInstitution}
-            profileId={capturedProfileId}
-          />
+          <>
+            {usedFreeEmail && (
+              <aside
+                className="max-w-3xl mx-auto mb-8 border border-[color:var(--color-ink)]/15 bg-[color:var(--color-parch)] px-5 py-4 rounded-[2px] text-sm leading-relaxed text-[color:var(--color-ink)]/85"
+                aria-label="Personal email notice"
+              >
+                <p className="font-mono text-[10.5px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] mb-1.5">
+                  Note
+                </p>
+                <p>
+                  You submitted a personal email. The report below is tailored
+                  using the institution you provided. If you’d prefer follow-up
+                  emails to land at your work address, just retake the
+                  assessment with your work email and we’ll merge the records.
+                </p>
+              </aside>
+            )}
+            <ResultsViewV2
+              score={state.totalScore}
+              tier={state.tier}
+              dimensionBreakdown={state.getDimensionBreakdown()}
+              email={capturedEmail}
+              tierId={state.tier.id}
+              firstName={capturedFirstName}
+              institutionName={capturedInstitution}
+              profileId={capturedProfileId}
+            />
+          </>
         )}
       </div>
     </main>

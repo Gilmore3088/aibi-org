@@ -299,7 +299,7 @@ const getTier = (total: number) => {
 
 ### Critical UX Rule
 
-The **score ring and tier label are visible WITHOUT email capture.** Email is requested only for the detailed dimension breakdown. Gating the score kills conversion.
+The **full readiness report is gated behind email capture** — score, tier, dimension breakdown, and starter artifact all hidden until the user submits a work email at step 13 (post Q12). After submission, the on-page report renders inline (no "check your inbox" wait state). The 12-question flow gives enough sunk cost that the email gate doesn't read as extractive. See the 2026-05-18 entry in DECISIONS.md for the reversal of the prior partly-gated approach, and issue #189 for the implementation.
 
 ### State Persistence — Required Before Launch
 
@@ -595,7 +595,7 @@ The post-conference email goes out when ALL items are checked:
 - [ ] AIBankingInstitute.com DNS live, SSL active *(domains registered ✓)*
 - [ ] Home page rendering correctly desktop + mobile
 - [ ] Assessment: 8 questions functional, scoring correct
-- [ ] Assessment: **score + tier visible WITHOUT email gate; dimension breakdown + starter artifact gated** (see 2026-04-27 decision)
+- [ ] Assessment: **email captured before any score is visible; full report (score + tier + dimension breakdown + starter artifact) renders inline immediately after email submit** (reverses 2026-04-27 decision — see 2026-05-18 DECISIONS.md entry)
 - [ ] Assessment: sessionStorage persistence working (test by refreshing mid-assessment on iPhone)
 - [ ] Assessment: /api/capture-email with rate limiting active
 - [ ] ConvertKit: form configured, Day 0/3/7 sequences active
