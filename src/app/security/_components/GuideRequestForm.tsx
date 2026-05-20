@@ -63,21 +63,21 @@ export function GuideRequestForm() {
 
   if (status === 'success') {
     return (
-      <div className="border border-[color:var(--color-linen)]/30 bg-[color:var(--color-linen)]/10 p-8 text-center">
-        <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra-pale)] mb-3">
+      <div className="border border-[color:var(--ledger-bg)]/30 bg-[color:var(--ledger-bg)]/10 p-8 text-center">
+        <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--ledger-tape)] mb-3">
           Downloading now
         </p>
-        <h3 className="font-serif text-3xl text-[color:var(--color-linen)] mb-3">
+        <h3 className="font-serif text-3xl text-[color:var(--ledger-bg)] mb-3">
           Your guide is ready.
         </h3>
-        <p className="text-[color:var(--color-linen)]/80 leading-relaxed mb-4">
+        <p className="text-[color:var(--ledger-bg)]/80 leading-relaxed mb-4">
           The Safe AI Use Guide should be downloading now. If it did not
           start automatically, use the button below.
         </p>
         <button
           type="button"
           onClick={triggerPdfDownload}
-          className="inline-block px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
+          className="inline-block px-6 py-3 bg-[color:var(--ledger-accent)] text-[color:var(--ledger-bg)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--ledger-accent-light)] active:scale-[0.98] transition-all"
         >
           Download guide
         </button>
@@ -89,7 +89,7 @@ export function GuideRequestForm() {
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="grid md:grid-cols-2 gap-4">
         <label className="block">
-          <span className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-linen)]/70">
+          <span className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--ledger-bg)]/70">
             Your name
           </span>
           <input
@@ -97,11 +97,11 @@ export function GuideRequestForm() {
             required
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="mt-1 w-full px-4 py-3 border border-[color:var(--color-linen)]/30 rounded-[2px] bg-transparent text-[color:var(--color-linen)] font-sans focus:outline-none focus:border-[color:var(--color-terra-pale)]"
+            className="mt-1 w-full px-4 py-3 border border-[color:var(--ledger-bg)]/30 rounded-[2px] bg-transparent text-[color:var(--ledger-bg)] font-sans focus:outline-none focus:border-[color:var(--ledger-tape)]"
           />
         </label>
         <label className="block">
-          <span className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-linen)]/70">
+          <span className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--ledger-bg)]/70">
             Work email
           </span>
           <input
@@ -109,12 +109,12 @@ export function GuideRequestForm() {
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="mt-1 w-full px-4 py-3 border border-[color:var(--color-linen)]/30 rounded-[2px] bg-transparent text-[color:var(--color-linen)] font-sans focus:outline-none focus:border-[color:var(--color-terra-pale)]"
+            className="mt-1 w-full px-4 py-3 border border-[color:var(--ledger-bg)]/30 rounded-[2px] bg-transparent text-[color:var(--ledger-bg)] font-sans focus:outline-none focus:border-[color:var(--ledger-tape)]"
           />
         </label>
       </div>
       <label className="block">
-        <span className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-linen)]/70">
+        <span className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--ledger-bg)]/70">
           Institution
         </span>
         <input
@@ -122,18 +122,18 @@ export function GuideRequestForm() {
           required
           value={institution}
           onChange={(e) => setInstitution(e.target.value)}
-          className="mt-1 w-full px-4 py-3 border border-[color:var(--color-linen)]/30 rounded-[2px] bg-transparent text-[color:var(--color-linen)] font-sans focus:outline-none focus:border-[color:var(--color-terra-pale)]"
+          className="mt-1 w-full px-4 py-3 border border-[color:var(--ledger-bg)]/30 rounded-[2px] bg-transparent text-[color:var(--ledger-bg)] font-sans focus:outline-none focus:border-[color:var(--ledger-tape)]"
         />
       </label>
       <button
         type="submit"
         disabled={status === 'submitting'}
-        className="w-full px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all disabled:opacity-60"
+        className="w-full px-6 py-3 bg-[color:var(--ledger-accent)] text-[color:var(--ledger-bg)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--ledger-accent-light)] active:scale-[0.98] transition-all disabled:opacity-60"
       >
         {status === 'submitting' ? 'Sending guide…' : 'Email me the guide'}
       </button>
       {message && status === 'error' && (
-        <p className="text-sm text-[color:var(--color-terra-pale)]" role="alert">
+        <p className="text-sm text-[color:var(--ledger-tape)]" role="alert">
           {message}
         </p>
       )}
