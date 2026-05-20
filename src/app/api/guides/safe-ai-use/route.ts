@@ -14,6 +14,7 @@ import type { DocumentProps } from '@react-pdf/renderer';
 import { renderToBuffer, Font } from '@react-pdf/renderer';
 import path from 'path';
 import { SafeAIUseGuideDocument } from '@/lib/pdf/SafeAIUseGuideDocument';
+import { rateLimitOrFail, getRequestIp } from '@/lib/api/rate-limit';
 
 const PDF_FILENAME = 'AiBI-Safe-AI-Use-Guide.pdf';
 
@@ -73,7 +74,19 @@ function ensureFonts() {
 // ---------------------------------------------------------------------------
 // GET — generate and stream PDF
 // ---------------------------------------------------------------------------
-export async function GET(): Promise<Response> {
+export async function GET(request: Request): Promise<Response> {
+  // PDF generation is expensive (renderToBuffer); throttle per IP to
+  // discourage scrape/DoS abuse. The guide is identical for every caller
+  // (static content) so a generous per-IP cap is fine.
+  const limited = await rateLimitOrFail({
+    key: 'safe-ai-use-guide',
+    scope: 'ip',
+    identifier: getRequestIp(request),
+    max: 20,
+    windowSeconds: 3600,
+  });
+  if (limited) return limited as unknown as Response;
+
   try {
     ensureFonts();
 

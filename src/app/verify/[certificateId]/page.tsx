@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
-import { createClient } from '@supabase/supabase-js';
 
+import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import {
   LedgerCard,
   LedgerEyebrow,
@@ -32,13 +32,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 async function fetchCertificate(
   certificateId: string,
 ): Promise<CertificateVerificationResult | null> {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  if (!url || !anonKey) return null;
+  // Server-side service-role read. The "Public read certificates" anon RLS
+  // policy was dropped (migration 00035) because USING (true) let anyone with
+  // the public anon key enumerate the whole table. Verification is read by a
+  // specific certificate_id (bearer-token semantics) so service role here
+  // returns only the three public fields for the one credential being checked.
+  if (!isSupabaseConfigured()) return null;
 
-  const supabase = createClient(url, anonKey, {
-    auth: { autoRefreshToken: false, persistSession: false },
-  });
+  const supabase = createServiceRoleClient();
 
   const { data, error } = await supabase
     .from('certificates')
