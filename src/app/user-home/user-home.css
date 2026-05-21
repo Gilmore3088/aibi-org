@@ -18,10 +18,10 @@
   --slate: #5C6B82;
   --muted: #5C6B82;
   --soft: #8C95A8;
-  --accent: #B5862A;
+  --accent: var(--ledger-accent);
   --accent-2: #1E3A5F;
   --weak: #8E3B2A;
-  --terra: #B5862A;
+  --terra: var(--ledger-accent);
   --terra-2: #8E6212;
   --rule: rgba(14, 27, 45, 0.10);
   --rule-strong: rgba(14, 27, 45, 0.22);

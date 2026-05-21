@@ -1019,8 +1019,8 @@
     --ink:#0E1B2D; --ink-2:#1F2A3F;
     --muted:#5C6B82; --soft:#8C95A8;
     --rule:#D5D1C2; --rule-strong:#A8AEBE;
-    --accent:#B5862A; --accent-on-dark:#E8C46E;
-    --accent-2:#1E3A5F; --warn:#B5862A;
+    --accent:var(--ledger-accent); --accent-on-dark:#E8C46E;
+    --accent-2:#1E3A5F; --warn:var(--ledger-accent);
     --weak:#8E3B2A; --tape:#F1E9D0;
   
 }

@@ -124,12 +124,17 @@ const nextConfig = {
   // MailerLite, Resend, Anthropic, OpenAI: server-side only — no client
   // origins needed.
   async headers() {
+    // Next.js dev mode (HMR / React Fast Refresh) evaluates strings as JS, so
+    // local `npm run dev` needs 'unsafe-eval' or client components never
+    // hydrate (the page renders SSR but interactive bits — e.g. /research's
+    // cover-chart animation — silently fail under the enforced CSP). Production
+    // builds don't use eval, so it stays OUT of prod CSP. 2026-05-21.
+    const devEval = process.env.NODE_ENV === 'production' ? '' : " 'unsafe-eval'";
     const csp = [
       "default-src 'self'",
       // Next.js inlines hydration scripts; without 'unsafe-inline' the page
-      // does not interactively boot. 'unsafe-eval' is NOT included — Next.js
-      // 14 production builds don't require it.
-      "script-src 'self' 'unsafe-inline' https://js.stripe.com https://*.stripe.com https://va.vercel-scripts.com",
+      // does not interactively boot. 'unsafe-eval' is dev-only (see devEval).
+      `script-src 'self' 'unsafe-inline'${devEval} https://js.stripe.com https://*.stripe.com https://va.vercel-scripts.com`,
       // Tailwind inline styles need 'unsafe-inline'. Google Fonts stylesheets too.
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' data: https://fonts.gstatic.com",

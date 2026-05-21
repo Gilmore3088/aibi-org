@@ -12,7 +12,7 @@
 .mt-page{
     --paper:#F4F1E7; --paper-2:#EDE8DA; --parch:#E4E0D2; --parch-dark:#D5D1C2; --tape:#F1E9D0;
     --ink:#0E1B2D; --ink-2:#1F2A3F; --muted:#5C6B82; --soft:#8C95A8;
-    --terra:#B5862A; --terra-2:#8E6212; --terra-soft:rgba(181,134,42,0.10);
+    --terra:var(--ledger-accent); --terra-2:#8E6212; --terra-soft:rgba(181,134,42,0.10);
     --green:#1F8A5B; --navy:#1E3A5F; --weak:#8E3B2A;
     --rule:rgba(14,27,45,0.10); --rule-2:rgba(14,27,45,0.22);
     --serif:'Newsreader',Georgia,serif;

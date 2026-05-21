@@ -97,7 +97,7 @@ export default async function ConfirmPage({ searchParams }: PageProps) {
               fontSize: 10.5,
               letterSpacing: '0.22em',
               textTransform: 'uppercase',
-              color: 'var(--ledger-accent, #B5862A)',
+              color: 'var(--ledger-accent, var(--ledger-accent))',
               fontWeight: 600,
             }}
           >
@@ -207,7 +207,7 @@ export default async function ConfirmPage({ searchParams }: PageProps) {
                 fontWeight: 600,
                 letterSpacing: '0.16em',
                 textTransform: 'uppercase',
-                color: 'var(--ledger-accent, #B5862A)',
+                color: 'var(--ledger-accent, var(--ledger-accent))',
                 textDecoration: 'underline',
               }}
             >
@@ -231,7 +231,7 @@ export default async function ConfirmPage({ searchParams }: PageProps) {
           Trouble?{' '}
           <a
             href="mailto:hello@aibankinginstitute.com"
-            style={{ color: 'var(--ledger-accent, #B5862A)', textDecoration: 'underline' }}
+            style={{ color: 'var(--ledger-accent, var(--ledger-accent))', textDecoration: 'underline' }}
           >
             hello@aibankinginstitute.com
           </a>

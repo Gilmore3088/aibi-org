@@ -8,7 +8,7 @@ const PDF_FILENAME = 'AiBI-Prompt-Cards.pdf';
 
 const styles = StyleSheet.create({
   page: { padding: 42, fontFamily: 'Helvetica', fontSize: 9, color: '#0E1B2D' },
-  eyebrow: { fontSize: 8, textTransform: 'uppercase', letterSpacing: 1.4, color: '#B5862A', marginBottom: 8 },
+  eyebrow: { fontSize: 8, textTransform: 'uppercase', letterSpacing: 1.4, color: '#7C5814', marginBottom: 8 },
   title: { fontSize: 26, marginBottom: 8 },
   body: { fontSize: 10, lineHeight: 1.45, color: '#1F2A3F', marginBottom: 12 },
   sectionTitle: { fontSize: 14, marginTop: 14, marginBottom: 8, color: '#0E1B2D' },

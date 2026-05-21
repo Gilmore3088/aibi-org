@@ -22,11 +22,11 @@
   --slate: #5C6B82;
   --muted: #5C6B82;
   --soft: #8C95A8;
-  --accent: #B5862A;          /* gold */
-  --accent-light: #C99A40;
+  --accent: var(--ledger-accent);          /* gold */
+  --accent-light: var(--ledger-accent-light);
   --accent-soft: rgba(181, 134, 42, 0.10);
   --accent-2: #1E3A5F;        /* navy */
-  --warn: #B5862A;
+  --warn: var(--ledger-accent);
   --weak: #8E3B2A;            /* oxblood — destructive, errors */
   --tape: #F1E9D0;            /* highlight tape */
   --rule: #D5D1C2;

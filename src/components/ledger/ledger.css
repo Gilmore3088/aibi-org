@@ -19,7 +19,7 @@
   --slate: #5C6B82;
   --muted: #5C6B82;
   --soft: #8C95A8;
-  --terra: #B5862A;
+  --terra: var(--ledger-accent);
   --terra-2: #8E6620;
   --weak: #8E3B2A;
   --rule: #D5D1C2;

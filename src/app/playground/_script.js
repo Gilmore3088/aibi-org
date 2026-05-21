@@ -13,7 +13,7 @@
 
   const modelMeta = {
     opus:   { label:'Claude Opus 4.5',   short:'Opus',   color:'#D97757', cost:0.0033 },
-    sonnet: { label:'Claude Sonnet 4.5', short:'Sonnet', color:'#B5862A', cost:0.0009 },
+    sonnet: { label:'Claude Sonnet 4.5', short:'Sonnet', color:'#7C5814', cost:0.0009 },
     haiku:  { label:'Claude Haiku 4.5',  short:'Haiku',  color:'#E5C29A', cost:0.0003 },
     gpt:    { label:'GPT-5',             short:'GPT-5',  color:'#1F8A5B', cost:0.0021 },
     gemini: { label:'Gemini 2.5 Pro',    short:'Gemini', color:'#1E3A5F', cost:0.0017 },
@@ -590,13 +590,13 @@
       if (!promptEl || !promptEl.parentElement) return;
       banner = document.createElement('div');
       banner.id = 'pg-source-banner';
-      banner.style.cssText = 'font-family:var(--mono,ui-monospace,Menlo,monospace);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted,#5C6B82);font-weight:700;padding:8px 12px;margin:0 0 8px;background:rgba(181,134,42,0.08);border-left:2px solid var(--terra,#B5862A);display:flex;align-items:center;gap:10px;justify-content:space-between';
+      banner.style.cssText = 'font-family:var(--mono,ui-monospace,Menlo,monospace);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted,#5C6B82);font-weight:700;padding:8px 12px;margin:0 0 8px;background:rgba(181,134,42,0.08);border-left:2px solid var(--terra,#7C5814);display:flex;align-items:center;gap:10px;justify-content:space-between';
       promptEl.parentElement.insertBefore(banner, promptEl);
     }
     const safeText = String(text || '').replace(/[<>&]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;'})[c]);
     let backLink = '';
     if (toolKey){
-      backLink = '<a href="/my-toolbox" style="color:var(--terra,#B5862A);text-decoration:underline;font-weight:700">↩ back to My Toolbox</a>';
+      backLink = '<a href="/my-toolbox" style="color:var(--terra,#7C5814);text-decoration:underline;font-weight:700">↩ back to My Toolbox</a>';
     }
     banner.innerHTML = '<span>' + safeText + '</span>' + backLink;
   }

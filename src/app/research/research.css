@@ -17,7 +17,7 @@
   --ar-slate: #5C6B82;
   --ar-muted: #5C6B82;
   --ar-soft: #8C95A8;
-  --ar-terra: #B5862A;
+  --ar-terra: var(--ledger-accent);
   --ar-terra-2: #8E6212;
   --ar-terra-soft: #EFE5C2;
   --ar-navy: #1E3A5F;

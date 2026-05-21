@@ -691,7 +691,7 @@ const dbg = document.getElementById('dbg');
   function exportPDF(key, t){
     const html = '<!doctype html><html><head><meta charset="utf-8"><title>' + plainName(t.name) + '</title>' +
       '<style>body{font-family:Georgia,serif;max-width:680px;margin:48px auto;padding:0 24px;color:#0E1B2D;line-height:1.55}' +
-      'h1{font-weight:500;letter-spacing:-0.02em} pre{background:#F4F1E7;padding:16px 20px;white-space:pre-wrap;font-family:ui-monospace,Menlo,monospace;font-size:12px;line-height:1.6;border-left:3px solid #B5862A}' +
+      'h1{font-weight:500;letter-spacing:-0.02em} pre{background:#F4F1E7;padding:16px 20px;white-space:pre-wrap;font-family:ui-monospace,Menlo,monospace;font-size:12px;line-height:1.6;border-left:3px solid #7C5814}' +
       '.meta{font-family:ui-monospace,Menlo,monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#5C6B82}</style>' +
       '</head><body>' +
       '<div class="meta">' + t.cat + ' · v' + t.ver + ' · ' + t.edited + '</div>' +

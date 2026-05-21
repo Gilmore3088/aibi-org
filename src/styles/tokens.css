@@ -16,7 +16,7 @@
 
 :root {
   /* ---- Color · Pillar tokens (REMAPPED to Ledger) -------------------- */
-  --color-terra:        var(--ledger-terra,        #B5862A);  /* was #b5512e (rust) */
+  --color-terra:        var(--ledger-terra, #7C5814);  /* was #b5512e (rust) */
   --color-terra-light:  var(--ledger-terra-light,  #C99A40);  /* was #c96a43 */
   --color-terra-pale:   var(--ledger-tape,         #F1E9D0);  /* was #f0c4ab */
   --color-cobalt:       var(--ledger-accent-2,     #1E3A5F);  /* was #2d4a7a (similar navy) */
@@ -30,7 +30,7 @@
   --color-sage:         var(--ledger-accent-2,     #1E3A5F);  /* was #4a6741 (forest) */
   --color-sage-pale:    var(--ledger-tape,         #F1E9D0);  /* was #d8e8d5 */
   --color-cobalt-pale:  var(--ledger-tape,         #F1E9D0);  /* was #dce6f5 */
-  --color-amber:        var(--ledger-accent,       #B5862A);  /* was #c48820 */
+  --color-amber:        var(--ledger-accent, #7C5814);  /* was #c48820 */
   --color-amber-light:  var(--ledger-accent-light, #C99A40);  /* was #d4a032 */
 
   /* ---- Color · Surfaces (REMAPPED to Ledger) ------------------------- */

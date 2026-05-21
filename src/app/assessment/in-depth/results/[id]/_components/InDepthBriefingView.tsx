@@ -426,10 +426,10 @@ export function InDepthBriefingView({
                   className="you"
                   points={radarPoints(radarSeries)}
                   fill="rgba(181,134,42,0.22)"
-                  stroke="#B5862A"
+                  stroke="var(--ledger-accent)"
                   strokeWidth={1.8}
                 />
-                <g className="dots" fill="#B5862A">
+                <g className="dots" fill="var(--ledger-accent)">
                   {RADAR_ANGLES.map((angle, i) => {
                     const pct = Math.max(0, Math.min(100, radarSeries[i] ?? 0));
                     const r = (pct / 100) * RADAR_RADIUS;
