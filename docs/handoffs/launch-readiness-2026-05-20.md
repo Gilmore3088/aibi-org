@@ -26,17 +26,17 @@ The post-conference launch email goes out when these are all true:
 | Calendly Executive Briefing tested on iPhone | 🔧 | Operator |
 | Services page live + Calendly | ✅ | Now `/for-institutions` (+advisory); E2E in flight (#141) |
 | Certifications: inquiry-only, no broken Stripe CTA | ✅ | No checkout CTA found on education/cert routes |
-| Analytics events firing | 🟡 | **Stale**: gate says Plausible; code is `@vercel/analytics` but **7 `plausible` refs still linger** — needs a small cleanup |
+| Analytics events firing | 🟡 | Gate says Plausible; site analytics is `@vercel/analytics`. **Corrected 2026-05-20:** most "plausible" hits are false positives (English word). The real Plausible event code (`ToolboxApp.tsx` `firePlausible` / `playground_pii_override_*`) calls `window.plausible`, which no longer exists → **those Toolbox events silently don't fire**. `ToolboxApp.tsx` is in **PR #224**, so re-wire-to-Vercel-or-drop is a decision for that PR's review, not a sweep. |
 | 404 page exists | ✅ | `src/app/not-found.tsx` (just Ledger-migrated) |
 | `npm run build` passes, zero TS errors | ✅ | Verified repeatedly this session |
 | Full assessment on real iPhone Safari < 3 min | 🔧 | Operator (real device) |
 | "FFIEC-aware" string absent from site | ✅* | *Only appears in "do **not** use this phrase" instructions — safe, but a literal string scan will flag 3 negated usages |
-| All statistics have named-source citations | 🟡 | Needs a content audit (agent-doable) |
+| All statistics have named-source citations | ✅ | **Audited 2026-05-20:** stats on the live surfaces (`research/page.tsx`, `resources/*` articles) carry named sources + years matching CLAUDE.md's sourced-stats table. Caveat: primary-surface scan, not an exhaustive per-essay sweep. |
 
 **Read:** the *code/product* side of the gate is largely ✅. The remaining gate
 blockers are almost entirely **operator** (DNS, MailerLite sequences, Calendly,
-real-device test) plus two small cleanups (Plausible→Vercel analytics refs;
-citation audit).
+real-device test). The citation audit is done (passes on live surfaces); the
+Plausible→Vercel analytics gap is real but lives inside PR #224's `ToolboxApp.tsx`.
 
 ---
 
@@ -59,7 +59,7 @@ citation audit).
 ### 🟡 Agent-doable — QUEUED (next waves)
 - LMS refactor remainder **#240–#250** (behavior-preserving file splits).
 - Toolbox sequence **#228 → #219 → #231** (closes #229) — must run serially.
-- Perf/cleanup **#236, #237, #179**, citation audit, Plausible-ref removal.
+- Perf/cleanup **#236, #237, #179**. (Citation audit done; Plausible re-wire belongs in PR #224.)
 - a11y axe tests **#143**; **#154** research redesign; **#157** polish; **#158** sandbox phase 2.
 - Auth rewrite **#187** (large standalone).
 
@@ -80,8 +80,9 @@ citation audit).
    §3/§9 E2E suites.
 2. **DNS + SSL live** (#132) and **MailerLite Day 0/3/7 sequences** (#161/#152).
 3. **Calendly link tested on iPhone**; **one live purchase + refund** (#151).
-4. Two small code cleanups we own: strip the lingering **Plausible** refs
-   (analytics is Vercel now) and run the **citation audit**.
+4. Citation audit: **done** (stats on live surfaces are sourced). Plausible
+   re-wire: fold into the **PR #224** review (its `ToolboxApp.tsx` owns the
+   dead event calls).
 
 Everything else — the LMS refactors, the rest of the E2E suites, toolbox,
 auth rewrite — improves quality and coverage but is **not** on the
