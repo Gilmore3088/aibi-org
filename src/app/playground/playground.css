@@ -445,7 +445,7 @@
 .pg-page .flag.ok { background:rgba(31,138,91,0.12); color:var(--green) 
 }
 
-.pg-page .flag.warn { background:rgba(181,134,42,0.18); color:var(--terra-2) 
+.pg-page .flag.warn { background:var(--ledger-accent-a18); color:var(--terra-2) 
 }
 
 .pg-page .flag.bad { background:rgba(142,59,42,0.15); color:var(--weak) 

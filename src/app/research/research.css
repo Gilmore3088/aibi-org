@@ -1005,7 +1005,7 @@
   font-weight: 500;
   font-size: 96px;
   line-height: 1;
-  color: rgba(181, 134, 42, 0.20);
+  color: var(--ledger-accent-a20);
   letter-spacing: -0.04em;
   pointer-events: none;
 }

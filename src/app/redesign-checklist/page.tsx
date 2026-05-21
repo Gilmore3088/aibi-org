@@ -491,7 +491,7 @@ export default function RedesignChecklistPage(): JSX.Element {
                               : `Add notes for ${item.path}`
                           }
                           style={{
-                            background: hasContent ? 'var(--accent-soft, rgba(181,134,42,0.1))' : 'transparent',
+                            background: hasContent ? 'var(--accent-soft, var(--ledger-accent-a10))' : 'transparent',
                             border: '1px solid var(--rule-strong)',
                             padding: '6px 10px',
                             fontFamily: 'var(--mono)',

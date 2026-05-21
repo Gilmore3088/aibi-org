@@ -40,7 +40,7 @@
   --color-ink:          var(--ledger-ink,          #0E1B2D);  /* was #1e1a14 (warm) */
 
   /* ---- Color · Text (REMAPPED to Ledger) ----------------------------- */
-  --color-slate:        var(--ledger-slate,        #5C6B82);  /* was #6b6355 */
+  --color-slate:        var(--ledger-slate, #4F5C6E);  /* was #6b6355 */
   --color-dust:         var(--ledger-soft,         #8C95A8);  /* was #9b9085 */
   --color-bone:         var(--ledger-paper,        #F4F1E7);  /* was #e8dec8 */
   --color-cream:        var(--ledger-tape,         #F1E9D0);  /* was #c9b889 */

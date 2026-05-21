@@ -57,7 +57,7 @@ function BriefMark({ cat }: { cat: string }) {
       return (
         <svg viewBox="0 0 64 64" fill="none" stroke={stroke} strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
           <line x1="32" y1="10" x2="32" y2="40" />
-          <rect x="22" y="40" width="20" height="8" fill="rgba(181,134,42,0.18)" />
+          <rect x="22" y="40" width="20" height="8" fill="var(--ledger-accent-a18)" />
           <rect x="14" y="52" width="36" height="3" fill={gold} stroke="none" />
           <line x1="20" y1="18" x2="44" y2="18" />
         </svg>
@@ -77,7 +77,7 @@ function BriefMark({ cat }: { cat: string }) {
     case 'train':
       return (
         <svg viewBox="0 0 64 64" fill="none" stroke={stroke} strokeWidth={1.6} strokeLinejoin="round">
-          <path d="M10 16 L32 22 L54 16 L54 48 L32 42 L10 48 Z" fill="rgba(181,134,42,0.10)" />
+          <path d="M10 16 L32 22 L54 16 L54 48 L32 42 L10 48 Z" fill="var(--ledger-accent-a10)" />
           <line x1="32" y1="22" x2="32" y2="42" />
           <line x1="16" y1="22" x2="28" y2="22" strokeWidth={1} opacity={0.5} />
           <line x1="16" y1="28" x2="28" y2="28" strokeWidth={1} opacity={0.5} />
@@ -89,7 +89,7 @@ function BriefMark({ cat }: { cat: string }) {
       return (
         <svg viewBox="0 0 64 64" fill="none" stroke={stroke} strokeWidth={1.6}>
           <rect x="14" y="14" width="36" height="8" />
-          <rect x="14" y="28" width="28" height="8" fill="rgba(181,134,42,0.20)" stroke={stroke} />
+          <rect x="14" y="28" width="28" height="8" fill="var(--ledger-accent-a20)" stroke={stroke} />
           <rect x="14" y="42" width="32" height="8" />
         </svg>
       );
@@ -97,13 +97,13 @@ function BriefMark({ cat }: { cat: string }) {
       return (
         <svg viewBox="0 0 64 64" fill="none" stroke={stroke} strokeWidth={1.6}>
           <circle cx="24" cy="32" r="13" />
-          <circle cx="40" cy="32" r="13" fill="rgba(181,134,42,0.12)" />
+          <circle cx="40" cy="32" r="13" fill="var(--ledger-accent-a12)" />
         </svg>
       );
     case 'exam':
       return (
         <svg viewBox="0 0 64 64" fill="none" stroke={stroke} strokeWidth={1.6} strokeLinecap="round">
-          <circle cx="26" cy="26" r="14" fill="rgba(181,134,42,0.10)" />
+          <circle cx="26" cy="26" r="14" fill="var(--ledger-accent-a10)" />
           <line x1="36" y1="36" x2="50" y2="50" strokeWidth={3} />
           <line x1="20" y1="26" x2="32" y2="26" strokeWidth={1} opacity={0.5} />
           <line x1="26" y1="20" x2="26" y2="32" strokeWidth={1} opacity={0.5} />
@@ -112,7 +112,7 @@ function BriefMark({ cat }: { cat: string }) {
     case 'art':
       return (
         <svg viewBox="0 0 64 64" fill="none" stroke={stroke} strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
-          <path d="M18 14 L26 22 L18 30 L10 22 Z" fill="rgba(181,134,42,0.18)" />
+          <path d="M18 14 L26 22 L18 30 L10 22 Z" fill="var(--ledger-accent-a18)" />
           <line x1="24" y1="28" x2="50" y2="54" strokeWidth={3} />
           <line x1="44" y1="14" x2="54" y2="24" strokeWidth={1} opacity={0.5} />
         </svg>
@@ -122,7 +122,7 @@ function BriefMark({ cat }: { cat: string }) {
         <svg viewBox="0 0 64 64" fill="none" stroke={stroke} strokeWidth={1.6}>
           <rect x="12" y="40" width="8" height="14" />
           <rect x="24" y="30" width="8" height="24" />
-          <rect x="36" y="20" width="8" height="34" fill="rgba(181,134,42,0.20)" />
+          <rect x="36" y="20" width="8" height="34" fill="var(--ledger-accent-a20)" />
           <rect x="48" y="10" width="8" height="44" fill={gold} stroke="none" />
         </svg>
       );
@@ -140,7 +140,7 @@ function RoleIllust({ kind }: { kind: RoleKind }) {
   if (kind === 'exec')
     return (
       <svg viewBox="0 0 160 140" fill="none" stroke={stroke} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-        <rect x="50" y="20" width="60" height="68" fill="rgba(181,134,42,0.10)" />
+        <rect x="50" y="20" width="60" height="68" fill="var(--ledger-accent-a10)" />
         <line x1="62" y1="26" x2="98" y2="26" />
         <line x1="62" y1="36" x2="98" y2="36" />
         <line x1="62" y1="46" x2="98" y2="46" />
@@ -162,10 +162,10 @@ function RoleIllust({ kind }: { kind: RoleKind }) {
         <line x1="30" y1="36" x2="130" y2="36" />
         <line x1="30" y1="36" x2="20" y2="62" />
         <line x1="30" y1="36" x2="40" y2="62" />
-        <path d="M14 62 L46 62 L40 76 L20 76 Z" fill="rgba(181,134,42,0.18)" />
+        <path d="M14 62 L46 62 L40 76 L20 76 Z" fill="var(--ledger-accent-a18)" />
         <line x1="130" y1="36" x2="120" y2="68" />
         <line x1="130" y1="36" x2="140" y2="68" />
-        <path d="M114 68 L146 68 L140 82 L120 82 Z" fill="rgba(181,134,42,0.10)" />
+        <path d="M114 68 L146 68 L140 82 L120 82 Z" fill="var(--ledger-accent-a10)" />
         <line x1="62" y1="110" x2="98" y2="110" />
         <line x1="58" y1="118" x2="102" y2="118" />
         <circle cx="80" cy="14" r="3" fill={gold} stroke="none" />
@@ -176,7 +176,7 @@ function RoleIllust({ kind }: { kind: RoleKind }) {
   if (kind === 'ops')
     return (
       <svg viewBox="0 0 160 140" fill="none" stroke={stroke} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="62" cy="70" r="26" fill="rgba(181,134,42,0.10)" />
+        <circle cx="62" cy="70" r="26" fill="var(--ledger-accent-a10)" />
         <circle cx="62" cy="70" r="6" fill={gold} stroke="none" />
         <g>
           <line x1="62" y1="38" x2="62" y2="44" />
@@ -201,7 +201,7 @@ function RoleIllust({ kind }: { kind: RoleKind }) {
     );
   return (
     <svg viewBox="0 0 160 140" fill="none" stroke={stroke} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-      <path d="M80 14 L120 28 L120 64 C 120 90 102 110 80 122 C 58 110 40 90 40 64 L40 28 Z" fill="rgba(181,134,42,0.10)" />
+      <path d="M80 14 L120 28 L120 64 C 120 90 102 110 80 122 C 58 110 40 90 40 64 L40 28 Z" fill="var(--ledger-accent-a10)" />
       <circle cx="80" cy="60" r="6" />
       <path d="M80 66 L80 80" />
       <path d="M75 75 L85 75" />

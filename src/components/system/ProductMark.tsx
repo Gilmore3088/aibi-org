@@ -16,8 +16,8 @@ import type { ReactElement } from 'react';
 //   PAPER     ↔ --ledger-paper (used as magnifier lens fill below)
 const STROKE = '#0E1B2D';      // --ledger-ink
 const GOLD = 'var(--ledger-accent)';        // --ledger-accent
-const GOLD_FILL = 'rgba(181,134,42,0.18)';
-const GOLD_SOFT = 'rgba(181,134,42,0.10)';
+const GOLD_FILL = 'var(--ledger-accent-a18)';
+const GOLD_SOFT = 'var(--ledger-accent-a10)';
 const PAPER = '#F4F1E7';       // --ledger-paper
 
 export type ProductMarkKind =
