@@ -29,7 +29,7 @@ interface ModuleTabsProps {
 
 export function ModuleTabs({
   moduleNumber,
-  accentColor = 'var(--color-terra)',
+  accentColor = 'var(--ledger-accent)',
   learnContent,
   practiceContent,
   applyContent,
@@ -64,7 +64,7 @@ export function ModuleTabs({
     <div>
       {/* Tab bar */}
       <div
-        className="border-b border-[color:var(--color-ink)]/10 mb-8"
+        className="border-b border-[color:var(--ledger-ink)]/10 mb-8"
         role="tablist"
         aria-label="Module sections"
       >
@@ -84,8 +84,8 @@ export function ModuleTabs({
                   'flex-1 py-4 px-4 text-center transition-all duration-200 relative',
                   'focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-t-[2px]',
                   isActive
-                    ? 'bg-[color:var(--color-parch)]'
-                    : 'hover:bg-[color:var(--color-parch)]/50',
+                    ? 'bg-[color:var(--ledger-paper)]'
+                    : 'hover:bg-[color:var(--ledger-paper)]/50',
                 ].join(' ')}
                 style={{
                   focusRingColor: accentColor,
@@ -94,19 +94,19 @@ export function ModuleTabs({
                 <div className="flex items-center justify-center gap-2 mb-1">
                   <span
                     className="font-mono text-sm tabular-nums"
-                    style={{ color: isActive ? accentColor : 'var(--color-ink)', opacity: isActive ? 1 : 0.3 }}
+                    style={{ color: isActive ? accentColor : 'var(--ledger-ink)', opacity: isActive ? 1 : 0.3 }}
                   >
                     {idx + 1}
                   </span>
                   <span
                     className="font-serif-sc text-sm uppercase tracking-[0.12em]"
-                    style={{ color: isActive ? accentColor : 'var(--color-ink)', opacity: isActive ? 1 : 0.6 }}
+                    style={{ color: isActive ? accentColor : 'var(--ledger-ink)', opacity: isActive ? 1 : 0.6 }}
                   >
                     {tab.label}
                   </span>
                 </div>
                 <p
-                  className="font-sans text-[10px] text-[color:var(--color-slate)]"
+                  className="font-sans text-[10px] text-[color:var(--ledger-muted)]"
                   style={{ opacity: isActive ? 1 : 0.5 }}
                 >
                   {tab.sublabel}

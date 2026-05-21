@@ -15,6 +15,10 @@
 import React, { useState, useCallback, useRef, useEffect, type CSSProperties } from 'react';
 import type { Activity, ActivityField } from '@content/courses/foundation-program';
 import { ActivityWorkspace, FormField, ledgerInputStyle } from '@/components/lms';
+import {
+  getInitialActivityValues,
+  validateActivityFields,
+} from '../_lib/activityFormHelpers';
 
 export interface ActivityFormProps {
   readonly activity: Activity;
@@ -32,38 +36,9 @@ interface FormState {
   serverError: string | null;
 }
 
-function getInitialValues(
-  fields: readonly ActivityField[],
-  existingResponse?: Record<string, string> | null,
-): Record<string, string> {
-  const initial: Record<string, string> = {};
-  for (const field of fields) {
-    initial[field.id] = existingResponse?.[field.id] ?? '';
-  }
-  return initial;
-}
-
-function validateForm(
-  fields: readonly ActivityField[],
-  values: Record<string, string>,
-): Record<string, string> {
-  const errors: Record<string, string> = {};
-  for (const field of fields) {
-    const value = values[field.id] ?? '';
-    if (field.required && value.trim().length === 0) {
-      errors[field.id] = `${field.label} is required.`;
-      continue;
-    }
-    if (field.minLength && value.length < field.minLength) {
-      errors[field.id] =
-        `Must be at least ${field.minLength} characters (currently ${value.length}).`;
-    }
-  }
-  return errors;
-}
-
 const readOnlyValueStyle: CSSProperties = {
   width: '100%',
+  boxSizing: 'border-box',
   padding: '10px 12px',
   borderRadius: 2,
   border: '1px solid var(--ledger-rule)',
@@ -73,6 +48,7 @@ const readOnlyValueStyle: CSSProperties = {
   color: 'var(--ledger-ink)',
   minHeight: 36,
   whiteSpace: 'pre-wrap',
+  overflowWrap: 'anywhere',
 };
 
 function ReadOnlyField({
@@ -298,7 +274,7 @@ export function ActivityForm({
   const isReadOnly = existingResponse != null;
 
   const [state, setState] = useState<FormState>({
-    values: getInitialValues(activity.fields, existingResponse),
+    values: getInitialActivityValues(activity.fields, existingResponse),
     errors: {},
     submitting: false,
     submitted: isReadOnly,
@@ -326,7 +302,7 @@ export function ActivityForm({
     async (e: React.FormEvent) => {
       e.preventDefault();
 
-      const errors = validateForm(activity.fields, state.values);
+      const errors = validateActivityFields(activity.fields, state.values);
       if (Object.keys(errors).length > 0) {
         setState((prev) => ({ ...prev, errors }));
         return;

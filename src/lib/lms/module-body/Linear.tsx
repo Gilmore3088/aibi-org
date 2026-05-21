@@ -13,7 +13,7 @@
 // learner has reached. Steps after `gatedAt` are disabled in the
 // rail until earned.
 
-import { useState, useEffect, type ReactNode } from 'react';
+import { useState, useEffect, useRef, type ReactNode } from 'react';
 
 export interface LinearStep {
   readonly id: string;
@@ -45,6 +45,7 @@ export function Linear({
   const storageKey = `${storagePrefix}${moduleId}-step`;
   const [activeStepId, setActiveStepId] = useState(steps[0]?.id ?? '');
   const maxReachable = gatedAt ?? steps.length - 1;
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const saved = sessionStorage.getItem(storageKey);
@@ -58,14 +59,17 @@ export function Linear({
     setActiveStepId(stepId);
     sessionStorage.setItem(storageKey, stepId);
     onStepChange?.(stepId);
-    window.scrollTo({ top: 280, behavior: 'smooth' });
+    // Scroll the step rail to the top of the viewport. `scroll-margin-top`
+    // (set on the container) accounts for any sticky chrome above without
+    // requiring a hardcoded pixel offset.
+    containerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   const activeStep = steps.find((s) => s.id === activeStepId) ?? steps[0];
   const activeIndex = steps.findIndex((s) => s.id === activeStep.id);
 
   return (
-    <div>
+    <div ref={containerRef} style={{ scrollMarginTop: 96 }}>
       <nav aria-label="Module progression" style={{ marginBottom: 32 }}>
         <ol
           style={{
@@ -120,7 +124,7 @@ export function Linear({
                     }}
                   >
                     Step {i + 1}
-                    {isPast && ' ✓'}
+                    {isPast && ' · Done'}
                   </span>
                   <span style={{ fontWeight: 500 }}>{step.label}</span>
                   {step.sublabel && (

@@ -60,7 +60,7 @@ function ToolRow({
     <div className="flex items-start gap-4 py-4" style={{ borderTop: index === 0 ? 'none' : '1px solid rgba(181,81,46,0.08)' }}>
       <div
         className="flex-shrink-0 w-8 h-8 rounded-sm flex items-center justify-center"
-        style={{ backgroundColor: 'var(--color-parch)', border: '1px solid rgba(181,81,46,0.15)', color: meta?.colorVar ?? 'var(--color-terra)' }}
+        style={{ backgroundColor: 'var(--ledger-paper)', border: '1px solid rgba(181,81,46,0.15)', color: meta?.colorVar ?? 'var(--ledger-accent)' }}
         aria-hidden="true"
       >
         {icon}
@@ -68,11 +68,11 @@ function ToolRow({
       <div className="min-w-0">
         <p
           className="font-mono text-[10px] uppercase tracking-[0.15em] font-bold mb-1"
-          style={{ color: meta?.colorVar ?? 'var(--color-terra)' }}
+          style={{ color: meta?.colorVar ?? 'var(--ledger-accent)' }}
         >
           {meta?.label ?? platform}
         </p>
-        <p className="text-xs leading-relaxed" style={{ color: 'var(--color-slate)' }}>
+        <p className="text-xs leading-relaxed" style={{ color: 'var(--ledger-muted)' }}>
           {rationale}
         </p>
       </div>
@@ -85,12 +85,12 @@ function QuickWinItem({ text, index }: { text: string; index: number }) {
     <li className="flex items-start gap-3">
       <span
         className="flex-shrink-0 font-mono text-[10px] font-bold mt-0.5 w-5 h-5 rounded-sm flex items-center justify-center"
-        style={{ backgroundColor: 'var(--color-terra)', color: 'var(--color-linen)' }}
+        style={{ backgroundColor: 'var(--ledger-accent)', color: 'var(--ledger-bg)' }}
         aria-hidden="true"
       >
         {index + 1}
       </span>
-      <span className="text-xs leading-relaxed" style={{ color: 'var(--color-slate)' }}>
+      <span className="text-xs leading-relaxed" style={{ color: 'var(--ledger-muted)' }}>
         {text}
       </span>
     </li>
@@ -111,7 +111,7 @@ export function RolePathCard({ rolePath }: RolePathCardProps) {
       {/* Header band */}
       <div
         className="px-8 py-6 flex items-center justify-between"
-        style={{ backgroundColor: 'var(--color-terra)', color: 'var(--color-linen)' }}
+        style={{ backgroundColor: 'var(--ledger-accent)', color: 'var(--ledger-bg)' }}
       >
         <div>
           <p className="font-mono text-[10px] uppercase tracking-[0.3em] mb-1 opacity-70">
@@ -140,7 +140,7 @@ export function RolePathCard({ rolePath }: RolePathCardProps) {
       <div
         className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x"
         style={{
-          backgroundColor: 'var(--color-linen)',
+          backgroundColor: 'var(--ledger-bg)',
           '--tw-divide-color': 'rgba(181,81,46,0.1)',
           divideColor: 'rgba(181,81,46,0.1)',
         } as React.CSSProperties}
@@ -149,7 +149,7 @@ export function RolePathCard({ rolePath }: RolePathCardProps) {
         <div className="p-8">
           <h3
             className="font-mono text-[10px] uppercase tracking-[0.2em] mb-4"
-            style={{ color: 'var(--color-slate)' }}
+            style={{ color: 'var(--ledger-muted)' }}
           >
             Top 3 Tools for {rolePath.label}
           </h3>
@@ -171,36 +171,34 @@ export function RolePathCard({ rolePath }: RolePathCardProps) {
           <div>
             <h3
               className="font-mono text-[10px] uppercase tracking-[0.2em] mb-4"
-              style={{ color: 'var(--color-slate)' }}
+              style={{ color: 'var(--ledger-muted)' }}
             >
               Start Here
             </h3>
             <Link
               href={`/courses/foundation/program/${rolePath.startHereModule}`}
-              className="group block rounded-sm p-5 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
+              className="group block rounded-sm p-5 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ledger-accent"
               style={{
-                backgroundColor: 'var(--color-parch)',
+                backgroundColor: 'var(--ledger-paper)',
                 border: '1px solid rgba(181,81,46,0.12)',
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                ['--tw-ring-color' as any]: 'var(--color-terra)',
               }}
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
                   <p
                     className="font-mono text-[9px] uppercase tracking-[0.2em] mb-1"
-                    style={{ color: 'var(--color-terra)' }}
+                    style={{ color: 'var(--ledger-accent)' }}
                   >
                     Module {rolePath.startHereModule} — Highest Value for {rolePath.label}
                   </p>
                   <p
                     className="font-serif text-base font-bold mb-2"
-                    style={{ color: 'var(--color-ink)' }}
+                    style={{ color: 'var(--ledger-ink)' }}
                   >
                     {startHereModule?.title}
                   </p>
                   {startHereModule && (
-                    <p className="text-xs leading-relaxed" style={{ color: 'var(--color-slate)' }}>
+                    <p className="text-xs leading-relaxed" style={{ color: 'var(--ledger-muted)' }}>
                       Focus: {startHereModule.focusSection}
                     </p>
                   )}
@@ -210,7 +208,7 @@ export function RolePathCard({ rolePath }: RolePathCardProps) {
                   fill="currentColor"
                   viewBox="0 0 20 20"
                   aria-hidden="true"
-                  style={{ color: 'var(--color-terra)' }}
+                  style={{ color: 'var(--ledger-accent)' }}
                 >
                   <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
                 </svg>
@@ -222,7 +220,7 @@ export function RolePathCard({ rolePath }: RolePathCardProps) {
           <div>
             <h3
               className="font-mono text-[10px] uppercase tracking-[0.2em] mb-4"
-              style={{ color: 'var(--color-slate)' }}
+              style={{ color: 'var(--ledger-muted)' }}
             >
               3 Quick Wins for {rolePath.label}
             </h3>
@@ -238,7 +236,7 @@ export function RolePathCard({ rolePath }: RolePathCardProps) {
       {/* Peer benchmark footer */}
       <div
         className="px-8 py-4 flex items-center gap-3"
-        style={{ backgroundColor: 'var(--color-parch)', borderTop: '1px solid rgba(181,81,46,0.1)' }}
+        style={{ backgroundColor: 'var(--ledger-paper)', borderTop: '1px solid rgba(181,81,46,0.1)' }}
       >
         <svg
           className="flex-shrink-0 w-4 h-4"
@@ -246,11 +244,11 @@ export function RolePathCard({ rolePath }: RolePathCardProps) {
           stroke="currentColor"
           viewBox="0 0 24 24"
           aria-hidden="true"
-          style={{ color: 'var(--color-terra)' }}
+          style={{ color: 'var(--ledger-accent)' }}
         >
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
         </svg>
-        <p className="text-xs" style={{ color: 'var(--color-slate)' }}>
+        <p className="text-xs" style={{ color: 'var(--ledger-muted)' }}>
           {rolePath.peerBenchmark}
         </p>
       </div>

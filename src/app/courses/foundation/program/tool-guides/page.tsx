@@ -107,17 +107,17 @@ export default async function ToolGuidesPage() {
 
       {/* Platform jump navigation */}
       <nav
-        className="flex flex-wrap gap-2 mb-10 p-4 bg-[color:var(--color-parch)] border border-[color:var(--color-parch-dark)] rounded-sm"
+        className="flex flex-wrap gap-2 mb-10 p-4 bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-parch)] rounded-sm"
         aria-label="Jump to platform"
       >
-        <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] self-center mr-2">
+        <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] self-center mr-2">
           Jump to:
         </span>
         {ALL_TOOL_GUIDES.map((g) => (
           <a
             key={g.platformId}
             href={`#guide-${g.platformId}`}
-            className="inline-flex items-center px-3 py-1.5 text-[10px] font-mono uppercase tracking-widest rounded-sm text-[color:var(--color-linen)] transition-opacity hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-1"
+            className="inline-flex items-center px-3 py-1.5 text-[10px] font-mono uppercase tracking-widest rounded-sm text-[color:var(--ledger-bg)] transition-opacity hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-1"
             style={{ backgroundColor: g.colorVar }}
           >
             {g.platformLabel}
@@ -136,7 +136,7 @@ export default async function ToolGuidesPage() {
             <div className="flex items-center gap-4 mb-5">
               <h2
                 id={`heading-${guide.platformId}`}
-                className="font-serif text-2xl font-bold text-[color:var(--color-ink)]"
+                className="font-serif text-2xl font-bold text-[color:var(--ledger-ink)]"
               >
                 {guide.platformLabel}
               </h2>
@@ -152,13 +152,13 @@ export default async function ToolGuidesPage() {
       </div>
 
       {/* Footer guidance */}
-      <footer className="mt-16 pt-8 border-t border-[color:var(--color-parch-dark)]">
+      <footer className="mt-16 pt-8 border-t border-[color:var(--ledger-parch)]">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
           <div>
-            <h2 className="font-serif text-lg font-bold text-[color:var(--color-ink)] mb-2">
+            <h2 className="font-serif text-lg font-bold text-[color:var(--ledger-ink)] mb-2">
               How to use these guides
             </h2>
-            <p className="font-sans text-sm text-[color:var(--color-ink)]/80 leading-relaxed">
+            <p className="font-sans text-sm text-[color:var(--ledger-ink)]/80 leading-relaxed">
               Open the section that matches your immediate need. Copy a prompt
               directly from any use case box and paste it into the platform.
               Start with the Free tier where available — every platform offers
@@ -166,14 +166,14 @@ export default async function ToolGuidesPage() {
             </p>
           </div>
           <div>
-            <h2 className="font-serif text-lg font-bold text-[color:var(--color-ink)] mb-2">
+            <h2 className="font-serif text-lg font-bold text-[color:var(--ledger-ink)] mb-2">
               Related course content
             </h2>
             <ul className="space-y-2">
               <li>
                 <Link
                   href="/courses/foundation/program/3"
-                  className="font-sans text-sm text-[color:var(--color-terra)] hover:underline underline-offset-2 focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-1 rounded-sm"
+                  className="font-sans text-sm text-[color:var(--ledger-accent)] hover:underline underline-offset-2 focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-1 rounded-sm"
                 >
                   Module 3 — What You Already Have + Activation
                 </Link>
@@ -181,7 +181,7 @@ export default async function ToolGuidesPage() {
               <li>
                 <Link
                   href="/courses/foundation/program/4"
-                  className="font-sans text-sm text-[color:var(--color-terra)] hover:underline underline-offset-2 focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-1 rounded-sm"
+                  className="font-sans text-sm text-[color:var(--ledger-accent)] hover:underline underline-offset-2 focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-1 rounded-sm"
                 >
                   Module 4 — Platform Features Deep Dive
                 </Link>
@@ -189,7 +189,7 @@ export default async function ToolGuidesPage() {
               <li>
                 <Link
                   href="/dashboard/toolbox/library"
-                  className="font-sans text-sm text-[color:var(--color-terra)] hover:underline underline-offset-2 focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-1 rounded-sm"
+                  className="font-sans text-sm text-[color:var(--ledger-accent)] hover:underline underline-offset-2 focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-1 rounded-sm"
                 >
                   Toolbox Library
                 </Link>

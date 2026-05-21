@@ -24,7 +24,7 @@ export function OutputExampleCard({ example }: OutputExampleProps) {
 
   return (
     <article
-      className="border border-[color:var(--color-parch-dark)] rounded-sm overflow-hidden"
+      className="border border-[color:var(--ledger-parch)] rounded-sm overflow-hidden"
       aria-label={example.title}
     >
       {/* Collapsible header — always visible */}
@@ -32,7 +32,7 @@ export function OutputExampleCard({ example }: OutputExampleProps) {
         type="button"
         onClick={() => setExpanded((prev) => !prev)}
         aria-expanded={expanded}
-        className="w-full text-left bg-[color:var(--color-parch)] px-6 py-5 flex items-start gap-4 hover:bg-[color:var(--color-parch-dark)] transition-colors focus-visible:outline-2 focus-visible:outline-[color:var(--color-terra)]"
+        className="w-full text-left bg-[color:var(--ledger-paper)] px-6 py-5 flex items-start gap-4 hover:bg-[color:var(--ledger-parch)] transition-colors focus-visible:outline-2 focus-visible:outline-[color:var(--ledger-accent)]"
       >
         {/* Expand/collapse indicator */}
         <span
@@ -40,7 +40,7 @@ export function OutputExampleCard({ example }: OutputExampleProps) {
           aria-hidden="true"
         >
           <svg
-            className="w-3 h-3 text-[color:var(--color-terra)] transition-transform duration-200"
+            className="w-3 h-3 text-[color:var(--ledger-accent)] transition-transform duration-200"
             style={{ transform: expanded ? 'rotate(90deg)' : 'rotate(0deg)' }}
             fill="currentColor"
             viewBox="0 0 20 20"
@@ -82,13 +82,13 @@ export function OutputExampleCard({ example }: OutputExampleProps) {
 
             {/* Skill pill (if applicable) */}
             {example.skillUsed && (
-              <span className="font-mono text-[9px] text-[color:var(--color-slate)] truncate max-w-xs">
+              <span className="font-mono text-[9px] text-[color:var(--ledger-muted)] truncate max-w-xs">
                 {example.skillUsed}
               </span>
             )}
           </div>
 
-          <h3 className="font-serif text-base font-bold text-[color:var(--color-ink)] leading-snug">
+          <h3 className="font-serif text-base font-bold text-[color:var(--ledger-ink)] leading-snug">
             {example.title}
           </h3>
         </div>
@@ -96,17 +96,17 @@ export function OutputExampleCard({ example }: OutputExampleProps) {
 
       {/* Expandable body */}
       {expanded && (
-        <div className="bg-[color:var(--color-linen)]">
+        <div className="bg-[color:var(--ledger-bg)]">
           {/* The actual output — styled as an institutional memo */}
           <div className="px-6 pt-6 pb-4">
             <div
-              className="text-[10px] font-mono uppercase tracking-[0.25em] text-[color:var(--color-terra)] mb-3"
+              className="text-[10px] font-mono uppercase tracking-[0.25em] text-[color:var(--ledger-accent)] mb-3"
               aria-hidden="true"
             >
               AI Output
             </div>
             <div
-              className="bg-[color:var(--color-parch)] border border-[color:var(--color-parch-dark)] rounded-sm p-5"
+              className="bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-parch)] rounded-sm p-5"
             >
               <MarkdownRenderer content={example.outputText} />
             </div>
@@ -115,18 +115,18 @@ export function OutputExampleCard({ example }: OutputExampleProps) {
           {/* What makes it effective */}
           <div className="px-6 pb-4 pt-2">
             <div
-              className="border-l-2 border-[color:var(--color-terra)] pl-4 py-1"
+              className="border-l-2 border-[color:var(--ledger-accent)] pl-4 py-1"
             >
-              <div className="text-[10px] font-mono uppercase tracking-[0.25em] text-[color:var(--color-terra)] mb-3">
+              <div className="text-[10px] font-mono uppercase tracking-[0.25em] text-[color:var(--ledger-accent)] mb-3">
                 What Makes This Effective
               </div>
               <ul className="space-y-3">
                 {example.whatMakesItEffective.map((marker) => (
                   <li key={marker.heading}>
-                    <span className="font-sans font-bold text-sm text-[color:var(--color-ink)]">
+                    <span className="font-sans font-bold text-sm text-[color:var(--ledger-ink)]">
                       {marker.heading}
                     </span>
-                    <p className="font-sans text-sm text-[color:var(--color-ink)]/80 leading-relaxed mt-0.5">
+                    <p className="font-sans text-sm text-[color:var(--ledger-ink)]/80 leading-relaxed mt-0.5">
                       {marker.detail}
                     </p>
                   </li>
@@ -137,18 +137,18 @@ export function OutputExampleCard({ example }: OutputExampleProps) {
 
           {/* Quality markers — what the learner should notice */}
           <div className="px-6 pb-6 pt-2">
-            <div className="bg-[color:var(--color-parch)] border border-[color:var(--color-parch-dark)] rounded-sm p-4">
-              <div className="text-[10px] font-mono uppercase tracking-[0.25em] text-[color:var(--color-slate)] mb-3">
+            <div className="bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-parch)] rounded-sm p-4">
+              <div className="text-[10px] font-mono uppercase tracking-[0.25em] text-[color:var(--ledger-muted)] mb-3">
                 What to Notice
               </div>
               <ul className="space-y-2">
                 {example.qualityMarkers.map((marker, index) => (
                   <li
                     key={index}
-                    className="flex items-start gap-2 font-sans text-sm text-[color:var(--color-ink)]/80 leading-relaxed"
+                    className="flex items-start gap-2 font-sans text-sm text-[color:var(--ledger-ink)]/80 leading-relaxed"
                   >
                     <span
-                      className="shrink-0 mt-1 w-1.5 h-1.5 rounded-full bg-[color:var(--color-terra)]"
+                      className="shrink-0 mt-1 w-1.5 h-1.5 rounded-full bg-[color:var(--ledger-accent)]"
                       aria-hidden="true"
                     />
                     {marker}

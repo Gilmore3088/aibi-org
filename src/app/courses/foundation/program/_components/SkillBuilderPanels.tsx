@@ -43,14 +43,14 @@ const RTFC_COMPONENTS = [
 
 export function RTFCPanel() {
   return (
-    <div className="bg-[color:var(--color-parch)] border border-[color:var(--color-parch-dark)] rounded-sm p-6 h-full">
-      <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] mb-3">
+    <div className="bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-parch)] rounded-sm p-6 h-full">
+      <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent)] mb-3">
         RTFC Framework
       </p>
-      <h3 className="font-serif text-lg font-bold text-[color:var(--color-ink)] mb-1 leading-snug">
+      <h3 className="font-serif text-lg font-bold text-[color:var(--ledger-ink)] mb-1 leading-snug">
         The Four Components of a Banking AI Skill
       </h3>
-      <p className="text-xs font-sans text-[color:var(--color-slate)] mb-6 leading-relaxed">
+      <p className="text-xs font-sans text-[color:var(--ledger-muted)] mb-6 leading-relaxed">
         Every field in the builder maps to a component of the RTFC Framework. Completing all four
         produces a skill file you can deploy immediately in any AI platform.
       </p>
@@ -59,17 +59,17 @@ export function RTFCPanel() {
         {RTFC_COMPONENTS.map((item) => (
           <div key={item.letter} className="flex gap-3">
             <div
-              className="flex-shrink-0 w-8 h-8 rounded-sm flex items-center justify-center font-mono text-sm font-bold text-[color:var(--color-linen)] transition-colors"
-              style={{ backgroundColor: 'var(--color-terra)' }}
+              className="flex-shrink-0 w-8 h-8 rounded-sm flex items-center justify-center font-mono text-sm font-bold text-[color:var(--ledger-bg)] transition-colors"
+              style={{ backgroundColor: 'var(--ledger-accent)' }}
               aria-hidden="true"
             >
               {item.letter}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="font-sans text-sm font-semibold text-[color:var(--color-ink)] mb-1">
+              <p className="font-sans text-sm font-semibold text-[color:var(--ledger-ink)] mb-1">
                 {item.label}
               </p>
-              <p className="text-xs font-sans text-[color:var(--color-slate)] leading-relaxed">
+              <p className="text-xs font-sans text-[color:var(--ledger-muted)] leading-relaxed">
                 {item.description}
               </p>
             </div>
@@ -77,8 +77,8 @@ export function RTFCPanel() {
         ))}
       </div>
 
-      <div className="mt-6 pt-4 border-t border-[color:var(--color-parch-dark)]">
-        <p className="text-xs font-sans text-[color:var(--color-slate)] leading-relaxed">
+      <div className="mt-6 pt-4 border-t border-[color:var(--ledger-parch)]">
+        <p className="text-xs font-sans text-[color:var(--ledger-muted)] leading-relaxed">
           Context is embedded in your Role field. Adding institutional context directly to the Role
           definition produces a more coherent skill than separating it into a dedicated Context field.
         </p>
@@ -95,11 +95,11 @@ interface StarterSelectorProps {
 
 export function StarterSelector({ starters, selectedId, onSelect }: StarterSelectorProps) {
   return (
-    <div className="mb-6 p-4 bg-[color:var(--color-parch)] border border-[color:var(--color-parch-dark)] rounded-sm">
-      <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-2">
+    <div className="mb-6 p-4 bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-parch)] rounded-sm">
+      <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] mb-2">
         Skill Starters
       </p>
-      <p className="text-xs font-sans text-[color:var(--color-slate)] mb-3 leading-relaxed">
+      <p className="text-xs font-sans text-[color:var(--ledger-muted)] mb-3 leading-relaxed">
         Select a pre-built skill for your role to auto-fill all fields. Edit freely once loaded.
       </p>
       <div className="flex flex-wrap gap-2" role="group" aria-label="Skill starter options">
@@ -108,10 +108,10 @@ export function StarterSelector({ starters, selectedId, onSelect }: StarterSelec
             key={starter.id}
             type="button"
             onClick={() => onSelect(selectedId === starter.id ? null : starter)}
-            className={`px-3 py-1.5 text-[11px] font-mono rounded-sm border transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-1 ${
+            className={`px-3 py-1.5 text-[11px] font-mono rounded-sm border transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-1 ${
               selectedId === starter.id
-                ? 'bg-[color:var(--color-terra)] text-[color:var(--color-linen)] border-[color:var(--color-terra)]'
-                : 'bg-white text-[color:var(--color-ink)] border-[color:var(--color-parch-dark)] hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)]'
+                ? 'bg-[color:var(--ledger-accent)] text-[color:var(--ledger-bg)] border-[color:var(--ledger-accent)]'
+                : 'bg-white text-[color:var(--ledger-ink)] border-[color:var(--ledger-parch)] hover:border-[color:var(--ledger-accent)] hover:text-[color:var(--ledger-accent)]'
             }`}
             aria-pressed={selectedId === starter.id}
           >
@@ -122,7 +122,7 @@ export function StarterSelector({ starters, selectedId, onSelect }: StarterSelec
           <button
             type="button"
             onClick={() => onSelect(null)}
-            className="px-3 py-1.5 text-[11px] font-mono rounded-sm border border-[color:var(--color-parch-dark)] text-[color:var(--color-slate)] hover:text-[color:var(--color-ink)] transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-1"
+            className="px-3 py-1.5 text-[11px] font-mono rounded-sm border border-[color:var(--ledger-parch)] text-[color:var(--ledger-muted)] hover:text-[color:var(--ledger-ink)] transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-1"
             aria-label="Clear starter selection"
           >
             Clear
@@ -162,19 +162,19 @@ export function FormField({
   const hasError = Boolean(error);
 
   const baseClass =
-    'w-full border rounded-sm px-3 py-2 text-sm font-sans bg-white text-[color:var(--color-ink)] placeholder:text-[color:var(--color-dust)] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] transition-shadow';
+    'w-full border rounded-sm px-3 py-2 text-sm font-sans bg-white text-[color:var(--ledger-ink)] placeholder:text-[color:var(--ledger-soft)] focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] transition-shadow';
   const borderClass = hasError
-    ? 'border-[color:var(--color-error)]'
-    : 'border-[color:var(--color-parch-dark)]';
+    ? 'border-[color:var(--ledger-weak)]'
+    : 'border-[color:var(--ledger-parch)]';
 
   return (
     <div className="mb-5">
       <label
         htmlFor={id}
-        className="block font-sans text-sm font-semibold text-[color:var(--color-ink)] mb-1"
+        className="block font-sans text-sm font-semibold text-[color:var(--ledger-ink)] mb-1"
       >
         {label}
-        <span className="ml-1 text-[color:var(--color-error)] text-xs" aria-label="required">
+        <span className="ml-1 text-[color:var(--ledger-weak)] text-xs" aria-label="required">
           *
         </span>
       </label>
@@ -228,7 +228,7 @@ export function FormField({
       {hasError && (
         <p
           id={errorId}
-          className="mt-1 text-[color:var(--color-error)] font-mono text-xs"
+          className="mt-1 text-[color:var(--ledger-weak)] font-mono text-xs"
           role="alert"
         >
           Error: {error}
@@ -236,12 +236,12 @@ export function FormField({
       )}
 
       {type === 'textarea' && minLength && (
-        <p id={hintId} className="mt-1 text-[11px] font-mono text-[color:var(--color-slate)]">
+        <p id={hintId} className="mt-1 text-[11px] font-mono text-[color:var(--ledger-muted)]">
           {value.length}/{minLength} characters
         </p>
       )}
       {type !== 'textarea' && type !== 'select' && minLength && (
-        <p id={hintId} className="mt-1 text-[11px] font-mono text-[color:var(--color-slate)]">
+        <p id={hintId} className="mt-1 text-[11px] font-mono text-[color:var(--ledger-muted)]">
           Minimum {minLength} characters
         </p>
       )}
@@ -271,12 +271,12 @@ export function ReadOnlyView({ values }: ReadOnlyViewProps) {
     <div className="space-y-4">
       {fields.map((field) => (
         <div key={field.label}>
-          <p className="font-sans text-sm font-semibold text-[color:var(--color-ink)] mb-1">
+          <p className="font-sans text-sm font-semibold text-[color:var(--ledger-ink)] mb-1">
             {field.label}
           </p>
-          <div className="w-full border border-[color:var(--color-parch-dark)] rounded-sm px-3 py-2 text-sm font-sans bg-[color:var(--color-parch)] text-[color:var(--color-ink)] min-h-[40px] whitespace-pre-wrap">
+          <div className="w-full border border-[color:var(--ledger-parch)] rounded-sm px-3 py-2 text-sm font-sans bg-[color:var(--ledger-paper)] text-[color:var(--ledger-ink)] min-h-[40px] whitespace-pre-wrap">
             {field.value || (
-              <span className="text-[color:var(--color-slate)]">No response</span>
+              <span className="text-[color:var(--ledger-muted)]">No response</span>
             )}
           </div>
         </div>
