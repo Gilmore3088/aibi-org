@@ -25,7 +25,7 @@ reverted (see F1).
 |----|----------|----------|---------|--------|
 | F1 | **High** | Deps | `npm audit`: Next.js 14.2.35 carries 4 high advisories. **Only fixed in next@15.5.16+** (14.x has no patch). Upgrade to 15.5.18 was implemented and built clean, but **regresses PDF generation** (react-pdf throws React #31 under Next 15's runtime — see below). **Reverted.** | **Open — tracked** |
 | F2 | Medium | Auth / PII | `/api/user-profile` GET returned the full profile (score, tier, raw answers) by email with no session (only in-memory IP limit) — enumeration + PII read. | **Fixed** (401 when unauthenticated) |
-| F3 | Medium | RLS | `certificates` had a `"Public read" USING (true)` policy granting the **public anon key** SELECT on the whole table — enumerate every graduate's name/designation/date. | **Fixed** (migration 00035 + service-role verify) |
+| F3 | Medium | RLS | `certificates` had a `"Public read" USING (true)` policy granting the **public anon key** SELECT on the whole table — enumerate every graduate's name/designation/date. | **Fixed** (migration 00036 + service-role verify) |
 | F4 | Low | DoS / cost | `/api/guides/safe-ai-use` rendered a PDF on every request with **no rate limiting** — scrape/DoS vector on an expensive `renderToBuffer`. | **Fixed** (20/IP/hr, mirrors prompt-cards) |
 | F5 | Low | Rate limit | `/api/capture-email` IP limit was 50/hr (test value). Set to a funnel-safe 30/hr (not the spec's literal 5 — would 429 conference/NAT crowds; see DECISIONS.md 2026-05-20). | **Fixed** |
 | F6 | Moderate | Deps | `@anthropic-ai/sdk` ^0.90 in advisory range (filesystem-memory-tool perms — feature unused here); `ws` 8.x memory disclosure. | **Fixed** (sdk→0.91.1, ws→8.20.1) |
@@ -140,7 +140,7 @@ react-pdf release that resolves the React-instance issue) **plus full PDF-surfac
 **Open — decide / schedule**
 - [ ] **Next.js 15 upgrade (F1)** — needs react-pdf compatibility fix + PDF QA. 4 highs remain on 14.x until then.
 - [ ] Confirm `public/artifacts/*` are intentionally ungated.
-- [ ] `apply migration 00035` to the Supabase project (drops the certificates anon-read policy).
+- [ ] `apply migration 00036` to the Supabase project (drops the certificates anon-read policy).
 
 **Tracked, non-blocking**
 - [ ] `/api/sandbox/chat` server-side system-prompt selection (F7)

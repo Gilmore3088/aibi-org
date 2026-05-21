@@ -33,7 +33,7 @@ async function fetchCertificate(
   certificateId: string,
 ): Promise<CertificateVerificationResult | null> {
   // Server-side service-role read. The "Public read certificates" anon RLS
-  // policy was dropped (migration 00035) because USING (true) let anyone with
+  // policy was dropped (migration 00036) because USING (true) let anyone with
   // the public anon key enumerate the whole table. Verification is read by a
   // specific certificate_id (bearer-token semantics) so service role here
   // returns only the three public fields for the one credential being checked.
