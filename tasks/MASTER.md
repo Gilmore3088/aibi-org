@@ -38,15 +38,24 @@ The detailed checkboxes never live in two places — they live in
 > **2026-05-21 consolidation** (see [`docs/handoffs/session-signoff-2026-05-21.md`](../docs/handoffs/session-signoff-2026-05-21.md)):
 > #254 (security + #238 + E2E + infra), #256 (toolbox onboarding 1/2/4a), #257
 > (perf bars) all merged to production. Auto-closed #141/#229/#237/#239; closed
-> #236 won't-fix + redundant PRs #223/#235. **Open issues 50→46.** Honest split:
-> ~6 launch-critical operator/decision items, ~12 deferred-LMS, rest E2E-blocked
-> or backlog. **⚠️ migration `00036` committed but NOT applied** (cert RLS).
-> Onboarding Slices 3 + 4b/c blocked on #224 (`access.tier`, needs migration `00035`).
+> #236 won't-fix + redundant PRs #223/#235. **⚠️ migration `00036` committed but
+> NOT applied** (cert RLS). Onboarding Slices 3 + 4b/c blocked on #224
+> (`access.tier`, needs migration `00035`).
+>
+> **Board consolidation (same session):** the scattered launch §-umbrellas were
+> collapsed into two tracker tickets so they stop sitting open on shared blockers:
+> **[#267](https://github.com/Gilmore3088/aibi-org/issues/267)** — operator
+> launch punch-list (absorbed + closed #132 §1, #133 §2, #151 §20, #152 rename,
+> #180 PDF smoke; #146 closed code-complete). **[#268](https://github.com/Gilmore3088/aibi-org/issues/268)**
+> — E2E coverage gated on Supabase CI keys (absorbed + closed #134–#140 §3–§9).
+> Granular checkboxes stay authoritative in `launch-checklist.md`. **Open issues
+> 50 → 35.** What's left: #267/#268 trackers, deferred-LMS series (#240–#251),
+> #143/#148/#149/#150 QA umbrellas, #178/#179/#238 audit residue, backlog.
 
 | Plan | Task file | Open | Status | GH issues |
 |------|-----------|------|--------|-----------|
 | [44-issue sweep · 2026-05-18](./github-issues-2026-05-18.md) | [`github-issues-2026-05-18.md`](./github-issues-2026-05-18.md) | **~34** | 🟢 Substantially shipped · 14 PRs merged this session (#193, #195, #196, #198, #199, #200, #201, #202, #203, #204, #206, #207, #208, #209, #210, #211). Issues closed: #153 #185 #186 #188 #189 #190 #192 #197 #205. #142 #146 #194 partially closed. Companion UAT at [`docs/handoffs/uat-2026-05-18.md`](../docs/handoffs/uat-2026-05-18.md). | (see tracker) |
-| [Launch spec v2 (canonical)](../Plans/aibi-launch-spec-v2.md) | [`launch-checklist.md`](./launch-checklist.md) | **~495** | Pre-launch QA · 2026-05-18 audit wave closed 15 items (§13.388-391/400, §14.405-408, §16.444-447/449/452, §18.468). See [audit-wave handoff](../docs/handoffs/audit-wave-2026-05-18.md) | [§1 #132](https://github.com/Gilmore3088/aibi-org/issues/132) · [§2 #133](https://github.com/Gilmore3088/aibi-org/issues/133) · [§3 #134](https://github.com/Gilmore3088/aibi-org/issues/134) · [§4 #135](https://github.com/Gilmore3088/aibi-org/issues/135) · [§5 #136](https://github.com/Gilmore3088/aibi-org/issues/136) · [§6 #137](https://github.com/Gilmore3088/aibi-org/issues/137) · [§7 #138](https://github.com/Gilmore3088/aibi-org/issues/138) · [§8 #139](https://github.com/Gilmore3088/aibi-org/issues/139) · [§9 #140](https://github.com/Gilmore3088/aibi-org/issues/140) · [§10 #141](https://github.com/Gilmore3088/aibi-org/issues/141) · [§11 #142](https://github.com/Gilmore3088/aibi-org/issues/142) · [§12 #143](https://github.com/Gilmore3088/aibi-org/issues/143) · [§14 #145](https://github.com/Gilmore3088/aibi-org/issues/145) · [§15 #146](https://github.com/Gilmore3088/aibi-org/issues/146) · [§16 #147](https://github.com/Gilmore3088/aibi-org/issues/147) · [§17 #148](https://github.com/Gilmore3088/aibi-org/issues/148) · [§18 #149](https://github.com/Gilmore3088/aibi-org/issues/149) · [§19 #150](https://github.com/Gilmore3088/aibi-org/issues/150) · [§20 #151](https://github.com/Gilmore3088/aibi-org/issues/151) |
+| [Launch spec v2 (canonical)](../Plans/aibi-launch-spec-v2.md) | [`launch-checklist.md`](./launch-checklist.md) | **~495** | Pre-launch QA · 2026-05-18 audit wave closed 15 items (§13.388-391/400, §14.405-408, §16.444-447/449/452, §18.468). See [audit-wave handoff](../docs/handoffs/audit-wave-2026-05-18.md) | **Consolidated 2026-05-21:** operator §1/§2/§20 + rename + observability → [#267](https://github.com/Gilmore3088/aibi-org/issues/267) · E2E §3–§9 → [#268](https://github.com/Gilmore3088/aibi-org/issues/268). Still open as standalone: [§12 a11y #143](https://github.com/Gilmore3088/aibi-org/issues/143) · [§17 LMS #148](https://github.com/Gilmore3088/aibi-org/issues/148) · [§18 bugs #149](https://github.com/Gilmore3088/aibi-org/issues/149) · [§19 mobile #150](https://github.com/Gilmore3088/aibi-org/issues/150). Closed: #132 #133 #141 #146 #151 #152 #180. |
 | [AiBI-P → AiBI-Foundation rename](../Plans/_archive/refactor-aibi-p-to-foundation-migration.md) | [`aibi-p-to-foundation-deploy-checklist.md`](./aibi-p-to-foundation-deploy-checklist.md) | **~14** | External rollout | [#152](https://github.com/Gilmore3088/aibi-org/issues/152) |
 | [Research page redesign](../Plans/research-page-design-brief.md) | _(not yet created)_ | — | Plan only | [#154](https://github.com/Gilmore3088/aibi-org/issues/154) |
 | [Persistent backlog (Phase 2)](./todo.md) | [`todo.md`](./todo.md) | **~52** | Backlog | [data loop #155](https://github.com/Gilmore3088/aibi-org/issues/155) · [peer benchmarks #156](https://github.com/Gilmore3088/aibi-org/issues/156) · [polish & parity #157](https://github.com/Gilmore3088/aibi-org/issues/157) · [sandbox ph2 #158](https://github.com/Gilmore3088/aibi-org/issues/158) · [AiBI-S #159](https://github.com/Gilmore3088/aibi-org/issues/159) · [AiBI-L #160](https://github.com/Gilmore3088/aibi-org/issues/160) · [marketing #161](https://github.com/Gilmore3088/aibi-org/issues/161) |
