@@ -91,7 +91,7 @@ export function AuthDropdown({ email, displayName }: Props) {
       {open && (
         <div
           role="menu"
-          className="absolute right-0 top-full mt-2 w-52 bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/12 rounded-[2px] shadow-lg py-1 z-50"
+          className="absolute right-0 top-full mt-2 w-52 bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/20 rounded-[2px] py-1 z-50"
         >
           {/* Identity row */}
           <div className="px-3 py-2 border-b border-[color:var(--color-ink)]/10">

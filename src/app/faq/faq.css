@@ -44,7 +44,7 @@
 .faq-page .btn-primary:hover { background:var(--terra-2); border-color:var(--terra-2) 
 }
 /* NAV */
-.faq-page .nav { position:sticky; top:0; z-index:30; background:rgba(246,243,234,0.92); backdrop-filter:blur(8px); border-bottom:1px solid var(--rule) 
+.faq-page .nav { position:sticky; top:0; z-index:30; background:var(--ledger-paper); border-bottom:1px solid var(--rule)
 }
 
 .faq-page .nav-inner { max-width:var(--maxw); margin:0 auto; padding:18px 32px; display:flex; align-items:center; justify-content:space-between; gap:24px 
@@ -92,7 +92,7 @@
 .faq-page .masthead-lede { font-family:var(--serif); font-style:italic; font-size:22px; line-height:1.4; color:var(--ink-2); max-width:54ch; margin:0; font-weight:400 
 }
 /* CATEGORY NAV */
-.faq-page .cat-nav { padding:24px 0; border-bottom:1px solid var(--rule); position:sticky; top:65px; background:rgba(246,243,234,0.92); backdrop-filter:blur(8px); z-index:20 
+.faq-page .cat-nav { padding:24px 0; border-bottom:1px solid var(--rule); position:sticky; top:65px; background:var(--ledger-paper); z-index:20
 }
 
 .faq-page .cat-nav-inner { display:flex; gap:32px; flex-wrap:wrap 

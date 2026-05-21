@@ -640,7 +640,7 @@
 .pg-page .modal-bg.open { opacity:1; pointer-events:auto 
 }
 
-.pg-page .modal { position:fixed; left:50%; top:50%; transform:translate(-50%,-48%); width:520px; max-width:96vw; background:var(--paper); border:1px solid var(--rule-strong); padding:0; opacity:0; pointer-events:none; transition:opacity 0.2s, transform 0.2s; z-index:61; box-shadow:0 24px 60px rgba(14,27,45,0.25) 
+.pg-page .modal { position:fixed; left:50%; top:50%; transform:translate(-50%,-48%); width:520px; max-width:96vw; background:var(--paper); border:1px solid var(--rule-strong); padding:0; opacity:0; pointer-events:none; transition:opacity 0.2s, transform 0.2s; z-index:61
 }
 
 .pg-page .modal.open { opacity:1; pointer-events:auto; transform:translate(-50%,-50%) 
