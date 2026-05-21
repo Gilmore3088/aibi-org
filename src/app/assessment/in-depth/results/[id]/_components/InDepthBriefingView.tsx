@@ -425,7 +425,7 @@ export function InDepthBriefingView({
                 <polygon
                   className="you"
                   points={radarPoints(radarSeries)}
-                  fill="rgba(181,134,42,0.22)"
+                  fill="var(--ledger-accent-a22)"
                   stroke="var(--ledger-accent)"
                   strokeWidth={1.8}
                 />

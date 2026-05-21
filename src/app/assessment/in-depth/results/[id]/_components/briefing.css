@@ -229,7 +229,7 @@
 }
 .aibi-briefing .composite .radar-legend .sw { display: inline-flex; align-items: center; gap: 8px; }
 .aibi-briefing .composite .radar-legend i { display: inline-block; width: 16px; height: 10px; }
-.aibi-briefing .composite .radar-legend .sw-you { background: rgba(181,134,42,0.22); border: 1.8px solid var(--ledger-accent); }
+.aibi-briefing .composite .radar-legend .sw-you { background: var(--ledger-accent-a22); border: 1.8px solid var(--ledger-accent); }
 
 .aibi-briefing .insight {
   background: var(--paper); border: 1px solid var(--rule-strong);
@@ -305,7 +305,7 @@
 .aibi-briefing .rt-dot.done { background: var(--ink); border-color: var(--ink); }
 .aibi-briefing .rt-dot.now {
   background: var(--terra); border-color: var(--terra-2);
-  box-shadow: 0 0 0 4px var(--paper), 0 0 0 7px rgba(181,134,42,0.20);
+  box-shadow: 0 0 0 4px var(--paper), 0 0 0 7px var(--ledger-accent-a20);
 }
 .aibi-briefing .rt-here {
   position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);

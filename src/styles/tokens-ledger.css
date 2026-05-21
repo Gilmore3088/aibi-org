@@ -23,8 +23,8 @@
   /* ---- Ledger · Ink & type ------------------------------------------- */
   --ledger-ink:          #0E1B2D;        /* primary text, primary fill */
   --ledger-ink-2:        #1F2A3F;        /* secondary text */
-  --ledger-slate:        #5C6B82;        /* muted text */
-  --ledger-muted:        #5C6B82;        /* alias of slate */
+  --ledger-slate:        #4F5C6E;        /* muted text */
+  --ledger-muted:        #4F5C6E;        /* alias of slate */
   --ledger-soft:         #8C95A8;        /* softest text — wordmark line 2 */
 
   /* ---- Ledger · Accents ---------------------------------------------- */
@@ -33,6 +33,17 @@
   --ledger-terra:        #7C5814;        /* legacy text-terra/bg-terra alias → darkened gold (keeps homepage tiles consistent) */
   --ledger-terra-light:  #94701C;
   --ledger-accent-soft:  color-mix(in srgb, var(--ledger-accent) 10%, transparent);
+  /* Translucent gold tints — single-sourced (new gold rgb 124,88,20). Update here if the gold changes. */
+  --ledger-accent-a06:   rgba(124, 88, 20, 0.06);
+  --ledger-accent-a08:   rgba(124, 88, 20, 0.08);
+  --ledger-accent-a10:   rgba(124, 88, 20, 0.10);
+  --ledger-accent-a12:   rgba(124, 88, 20, 0.12);
+  --ledger-accent-a18:   rgba(124, 88, 20, 0.18);
+  --ledger-accent-a20:   rgba(124, 88, 20, 0.20);
+  --ledger-accent-a22:   rgba(124, 88, 20, 0.22);
+  --ledger-accent-a25:   rgba(124, 88, 20, 0.25);
+  --ledger-accent-a30:   rgba(124, 88, 20, 0.30);
+  --ledger-accent-a40:   rgba(124, 88, 20, 0.40);
   --ledger-accent-2:     #1E3A5F;        /* navy — secondary accent */
   --ledger-warn:       var(--ledger-accent);        /* gold doubles as warn */
   --ledger-weak:         #8E3B2A;        /* oxblood — destructive only */

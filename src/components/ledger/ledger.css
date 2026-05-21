@@ -117,7 +117,7 @@
 /* ---------- Alert ---------- */
 .ledger-alert { font-family: var(--sans); font-size: 13.5px; line-height: 1.5; padding: 12px 14px; border-radius: 2px; border: 1px solid transparent; }
 .ledger-alert--error { background: rgba(142, 59, 42, 0.08); border-color: rgba(142, 59, 42, 0.25); color: var(--weak); }
-.ledger-alert--info { background: rgba(181, 134, 42, 0.08); border-color: rgba(181, 134, 42, 0.25); color: var(--terra-2); }
+.ledger-alert--info { background: var(--ledger-accent-a08); border-color: var(--ledger-accent-a25); color: var(--terra-2); }
 
 /* ---------- Tab toggle (segmented) ---------- */
 .ledger-toggle { display: flex; border: 1px solid var(--rule-strong); border-radius: 2px; overflow: hidden; }

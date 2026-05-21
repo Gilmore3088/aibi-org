@@ -395,7 +395,7 @@ export default function DashboardPage() {
                   <Link className="vc" href={assessHref}>
                     <div className="illust" aria-hidden="true">
                       <svg viewBox="0 0 140 120" fill="none" stroke="#0E1B2D" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M22 92 A 48 48 0 0 1 118 92" fill="rgba(181,134,42,0.10)" />
+                        <path d="M22 92 A 48 48 0 0 1 118 92" fill="var(--ledger-accent-a10)" />
                         <line x1="22" y1="92" x2="30" y2="88" />
                         <line x1="38" y1="64" x2="44" y2="68" />
                         <line x1="70" y1="44" x2="70" y2="52" />
@@ -425,8 +425,8 @@ export default function DashboardPage() {
               <Link className="vc" href={`/practice/${currentRep.id}`}>
                 <div className="illust" aria-hidden="true">
                   <svg viewBox="0 0 140 120" fill="none" stroke="#0E1B2D" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="20" y="46" width="14" height="28" fill="rgba(181,134,42,0.18)" />
-                    <rect x="106" y="46" width="14" height="28" fill="rgba(181,134,42,0.18)" />
+                    <rect x="20" y="46" width="14" height="28" fill="var(--ledger-accent-a18)" />
+                    <rect x="106" y="46" width="14" height="28" fill="var(--ledger-accent-a18)" />
                     <rect x="34" y="54" width="8" height="12" />
                     <rect x="98" y="54" width="8" height="12" />
                     <line x1="42" y1="60" x2="98" y2="60" strokeWidth="3" />
@@ -453,7 +453,7 @@ export default function DashboardPage() {
               <Link className="vc" href={stepEnrolled ? '/courses/foundation/program' : '/courses/foundation'}>
                 <div className="illust" aria-hidden="true">
                   <svg viewBox="0 0 140 120" fill="none" stroke="#0E1B2D" strokeWidth="1.6" strokeLinejoin="round" strokeLinecap="round">
-                    <rect x="20" y="44" width="100" height="60" fill="rgba(181,134,42,0.10)" />
+                    <rect x="20" y="44" width="100" height="60" fill="var(--ledger-accent-a10)" />
                     <rect x="20" y="44" width="100" height="14" />
                     <path d="M48 44 L48 30 L92 30 L92 44" />
                     <rect x="64" y="36" width="12" height="8" fill="var(--ledger-accent)" stroke="none" />
@@ -628,14 +628,14 @@ export default function DashboardPage() {
                 <div className="ftxt">What unlocks on enrollment</div>
                 <FeatureRow svg={
                   <svg viewBox="0 0 32 32" fill="none" stroke="var(--ledger-accent)" strokeWidth="1.4" strokeLinejoin="round">
-                    <rect x="6" y="8" width="20" height="18" fill="rgba(181,134,42,0.20)" />
+                    <rect x="6" y="8" width="20" height="18" fill="var(--ledger-accent-a20)" />
                     <line x1="6" y1="14" x2="26" y2="14" />
                     <line x1="10" y1="20" x2="22" y2="20" opacity="0.5" />
                   </svg>
                 } name={<>12 structured <em>modules</em></>} meta="Self-paced" />
                 <FeatureRow svg={
                   <svg viewBox="0 0 32 32" fill="none" stroke="var(--ledger-accent)" strokeWidth="1.4" strokeLinejoin="round">
-                    <path d="M8 8 L24 8 L24 28 L8 28 Z" fill="rgba(181,134,42,0.18)" />
+                    <path d="M8 8 L24 8 L24 28 L8 28 Z" fill="var(--ledger-accent-a18)" />
                     <line x1="12" y1="14" x2="20" y2="14" />
                     <line x1="12" y1="18" x2="20" y2="18" />
                     <line x1="12" y1="22" x2="16" y2="22" />
@@ -649,13 +649,13 @@ export default function DashboardPage() {
                 } name={<>Hands-on <em>activities</em></>} meta="In every module" />
                 <FeatureRow svg={
                   <svg viewBox="0 0 32 32" fill="none" stroke="var(--ledger-accent)" strokeWidth="1.4" strokeLinejoin="round">
-                    <rect x="6" y="10" width="20" height="16" fill="rgba(181,134,42,0.18)" />
+                    <rect x="6" y="10" width="20" height="16" fill="var(--ledger-accent-a18)" />
                     <path d="M10 14 L22 14 M10 18 L18 18 M10 22 L20 22" opacity="0.6" />
                   </svg>
                 } name={<>Working <em>artifacts</em></>} meta="PDFs + worksheets" />
                 <FeatureRow svg={
                   <svg viewBox="0 0 32 32" fill="none" stroke="var(--ledger-accent)" strokeWidth="1.4">
-                    <circle cx="16" cy="14" r="6" fill="rgba(181,134,42,0.20)" />
+                    <circle cx="16" cy="14" r="6" fill="var(--ledger-accent-a20)" />
                     <path d="M10 24 L10 28 M22 24 L22 28 M16 20 L16 26" />
                     <circle cx="16" cy="14" r="2" fill="var(--ledger-accent)" stroke="none" />
                   </svg>
@@ -685,7 +685,7 @@ export default function DashboardPage() {
                 meta="Briefing · 8 min read"
                 svg={
                   <svg viewBox="0 0 48 48" fill="none" stroke="#0E1B2D" strokeWidth="1.5" strokeLinejoin="round">
-                    <rect x="10" y="6" width="28" height="36" fill="rgba(181,134,42,0.12)" />
+                    <rect x="10" y="6" width="28" height="36" fill="var(--ledger-accent-a12)" />
                     <line x1="14" y1="14" x2="34" y2="14" />
                     <line x1="14" y1="20" x2="28" y2="20" opacity="0.6" />
                     <line x1="14" y1="26" x2="32" y2="26" opacity="0.6" />
@@ -699,7 +699,7 @@ export default function DashboardPage() {
                 meta="Briefing · 10 min read"
                 svg={
                   <svg viewBox="0 0 48 48" fill="none" stroke="#0E1B2D" strokeWidth="1.5" strokeLinejoin="round">
-                    <rect x="6" y="10" width="36" height="28" fill="rgba(181,134,42,0.10)" />
+                    <rect x="6" y="10" width="36" height="28" fill="var(--ledger-accent-a10)" />
                     <line x1="6" y1="18" x2="42" y2="18" />
                     <line x1="18" y1="10" x2="18" y2="38" />
                     <line x1="30" y1="10" x2="30" y2="38" />
@@ -716,7 +716,7 @@ export default function DashboardPage() {
                 meta="Briefing · 12 min read"
                 svg={
                   <svg viewBox="0 0 48 48" fill="none" stroke="#0E1B2D" strokeWidth="1.5" strokeLinejoin="round">
-                    <path d="M8 10 L40 10 L40 32 L26 32 L18 38 L18 32 L8 32 Z" fill="rgba(181,134,42,0.12)" />
+                    <path d="M8 10 L40 10 L40 32 L26 32 L18 38 L18 32 L8 32 Z" fill="var(--ledger-accent-a12)" />
                     <line x1="14" y1="18" x2="34" y2="18" opacity="0.6" />
                     <line x1="14" y1="24" x2="28" y2="24" opacity="0.6" />
                     <circle cx="14" cy="14" r="1.5" fill="var(--ledger-accent)" stroke="none" />
@@ -731,7 +731,7 @@ export default function DashboardPage() {
                 meta="Six briefings + more"
                 svg={
                   <svg viewBox="0 0 48 48" fill="none" stroke="#0E1B2D" strokeWidth="1.5" strokeLinejoin="round">
-                    <rect x="8" y="6" width="32" height="36" fill="rgba(181,134,42,0.10)" />
+                    <rect x="8" y="6" width="32" height="36" fill="var(--ledger-accent-a10)" />
                     <line x1="14" y1="14" x2="34" y2="14" strokeWidth="2" />
                     <line x1="14" y1="20" x2="34" y2="20" opacity="0.6" />
                     <line x1="14" y1="24" x2="34" y2="24" opacity="0.6" />
