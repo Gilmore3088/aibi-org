@@ -634,3 +634,34 @@ build-breaking major bumps that need a dedicated migration pass —
 (PDF-generation regression risk, same caution as the reverted Next 15 bump).
 Merge zero-risk GitHub Actions version bumps (CI-only). Runtime minor/patch
 groups get operator review before merge.
+
+**2026-05-21 — Italics retired + gold darkened & single-sourced (PRs #269, #270).**
+Operator directive: "get rid of all the italics… match my design consistently"
++ "if we're hardcoding it everywhere, that's a problem — make it one place."
+
+- **Italics retired site-wide.** A universal `*{font-style:normal!important}`
+  rule in `base.css` kills every italic — default `<em>`, the Tailwind `italic`
+  utility, inline styles, per-stylesheet `font-style:italic` rules, and
+  browser-rendered SVG `<text>`. Server-rendered images (Satori OG card, the
+  hero SVG) are roman at source (CSS can't reach them). Emphasis is now carried
+  by color + weight. **Supersedes the former "italics signal voice" rule** in
+  CLAUDE.md Design Context.
+- **Gold darkened for WCAG AA.** `--ledger-accent` `#B5862A → #7C5814`. Gold
+  text on linen/paper was 2.69:1 (failed AA, even the 3:1 large-text bar); now
+  ≥4.5:1. Verified 18→0 contrast violations on `/` and `/research`.
+- **Gold single-sourced.** Was hardcoded in ~25 files / 47 translucent tints.
+  Now CSS + inline-DOM SVG/styles reference `var(--ledger-accent)`; tints use
+  `--ledger-accent-a06..a40` tokens; `--ledger-warn`/`--ledger-accent-soft`
+  derive from it. **Change the gold in one line in `tokens-ledger.css`.** True
+  exceptions that can't resolve a CSS var (Satori OG, static favicon `.svg`,
+  vanilla-JS chart constants, server-generated downloads) keep a literal
+  `#7C5814` with a sync comment.
+- **Muted/slate text darkened** `#5C6B82 → #4F5C6E` for AA (secondary labels
+  were 4.09–4.45:1; now ≥4.6). Fixed 6 of 8 homepage contrast violations.
+- **Wordmark line-2 left as-is.** The remaining 2 axe contrast flags are the
+  wordmark "INSTITUTE" in `--ledger-soft` — a **logotype**, WCAG 1.4.3 exempt.
+  Any change is a brand decision, not an a11y bug.
+- **Dev-only CSP fix (separate commit).** `'unsafe-eval'` now allowed in
+  development only (Next dev HMR needs it; prod CSP unchanged). Pre-existing
+  bug that made `/research` (and other client-hydrated pages) appear broken in
+  local dev; production was never affected.
