@@ -147,6 +147,9 @@ the registry of active plans and their open task counts.
 | 2026-05-21 | Dependabot triage (#258–#265) | TRACKING | DONE | Config landed via #254 → 8 PRs opened. Closed build-breaking majors (tailwind4 #265, TS6 #263, eslint10 #262, puppeteer25 #264). Merged Actions bumps #258/#259. #260 (rebase pending), #261 (runtime minor/patch group) left for operator. See DECISIONS 2026-05-21. |
 | 2026-05-21 | [`docs/handoffs/handoff-2026-05-21-operator-punch-list.md`](./docs/handoffs/handoff-2026-05-21-operator-punch-list.md) (via #254) + this consolidation PR | HANDOFF | ACTIVE | Operator punch-list (auth templates #133, DNS #132, external rename #152, Calendly+live txn #151, observability) + look-ahead. |
 
+| 2026-05-21 | [PR #269](https://github.com/Gilmore3088/aibi-org/pull/269) merged — retire italics + darken/single-source gold | COMMIT | DONE | Universal `*{font-style:normal!important}` kills italics site-wide; gold `#B5862A→#7C5814` (WCAG AA, 18→0 contrast on / + /research); single-sourced via `--ledger-accent` (+ alpha tints), ~25 files now reference the token. Hero SVG regenerated roman+dark. Includes dev-only CSP `unsafe-eval` fix. See DECISIONS 2026-05-21. |
+| 2026-05-21 | [PR #270](https://github.com/Gilmore3088/aibi-org/pull/270) merged — gold tints + AA text | COMMIT | DONE | 47 `rgba(181,134,42)` tints → single-source `--ledger-accent-a06..a40` tokens; muted/slate `#5C6B82→#4F5C6E` (AA) fixes 6/8 homepage contrast violations; remaining 2 = wordmark logotype (WCAG-exempt). |
+| 2026-05-21 | CLAUDE.md Design Context synced (#266) | DOC | DONE | Italics-retired rule, gold `#7C5814` single-source, muted `#4F5C6E` documented. |
 ## Archived design specs (Plans/_archive/*.html)
 
 Seven HTML specs from project start (`aibi-prd.html`, `aibi-site-v3.html`,
