@@ -1,24 +1,22 @@
 'use client';
 
-// ActivityForm — Interactive activity form that replaces ActivityFormShell for enrolled learners.
-// Handles free-text and form-type activities with submission to /api/courses/submit-activity.
+// ActivityForm — interactive activity form for enrolled learners.
+// Submits free-text / form-type activities to /api/courses/submit-activity.
+// Field renderers live in ActivityFields.tsx; download in ArtifactDownload.tsx.
 //
-// LMS reskin (PR 3 of 7): renders inside <ActivityWorkspace> with <FormField>
-// primitives from src/components/lms/. All submission, validation, error
-// handling, focus management, and artifact download behavior is preserved
-// unchanged — only the visual chrome moves to the Ledger system.
-//
-// A11Y-01: keyboard accessible (focus rings, focus managed to success region on submit).
+// A11Y-01: focus managed to success region on submit.
 // A11Y-02: text error messages with "Error:" prefix (not color-only).
-// A11Y-05: artifact download uses plain <a href download> anchor (no JS required).
+// A11Y-05: artifact download uses a plain <a href download> anchor.
 
 import React, { useState, useCallback, useRef, useEffect, type CSSProperties } from 'react';
-import type { Activity, ActivityField } from '@content/courses/foundation-program';
-import { ActivityWorkspace, FormField, ledgerInputStyle } from '@/components/lms';
+import type { Activity } from '@content/courses/foundation-program';
+import { ActivityWorkspace } from '@/components/lms';
 import {
   getInitialActivityValues,
   validateActivityFields,
 } from '../_lib/activityFormHelpers';
+import { ActivityReadOnlyField, ActivityInteractiveField } from './ActivityFields';
+import { ArtifactDownload } from './ArtifactDownload';
 
 export interface ActivityFormProps {
   readonly activity: Activity;
@@ -34,193 +32,6 @@ interface FormState {
   submitting: boolean;
   submitted: boolean;
   serverError: string | null;
-}
-
-const readOnlyValueStyle: CSSProperties = {
-  width: '100%',
-  boxSizing: 'border-box',
-  padding: '10px 12px',
-  borderRadius: 2,
-  border: '1px solid var(--ledger-rule)',
-  background: 'var(--ledger-parch)',
-  fontFamily: 'var(--ledger-sans)',
-  fontSize: 13.5,
-  color: 'var(--ledger-ink)',
-  minHeight: 36,
-  whiteSpace: 'pre-wrap',
-  overflowWrap: 'anywhere',
-};
-
-function ReadOnlyField({
-  field,
-  value,
-}: {
-  readonly field: ActivityField;
-  readonly value: string;
-}) {
-  if (field.type === 'radio') {
-    return (
-      <FormField label={field.label}>
-        <div role="radiogroup" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-          {(field.options ?? []).map((opt) => (
-            <label
-              key={opt.value}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 8,
-                fontFamily: 'var(--ledger-sans)',
-                fontSize: 13.5,
-                color: 'var(--ledger-ink)',
-              }}
-            >
-              <input
-                type="radio"
-                name={`readonly-${field.id}`}
-                value={opt.value}
-                checked={value === opt.value}
-                readOnly
-                disabled
-              />
-              {opt.label}
-            </label>
-          ))}
-        </div>
-      </FormField>
-    );
-  }
-
-  const display =
-    field.type === 'select'
-      ? ((field.options ?? []).find((o) => o.value === value)?.label ?? value)
-      : value;
-
-  return (
-    <FormField label={field.label}>
-      <div
-        style={{
-          ...readOnlyValueStyle,
-          minHeight: field.type === 'textarea' ? 80 : 36,
-          fontFamily:
-            field.type === 'textarea' ? 'var(--ledger-mono)' : 'var(--ledger-sans)',
-          fontSize: field.type === 'textarea' ? 12.5 : 13.5,
-        }}
-      >
-        {display || (
-          <span style={{ color: 'var(--ledger-muted)' }}>No response</span>
-        )}
-      </div>
-    </FormField>
-  );
-}
-
-function InteractiveField({
-  field,
-  value,
-  error,
-  onChange,
-}: {
-  readonly field: ActivityField;
-  readonly value: string;
-  readonly error?: string;
-  readonly onChange: (fieldId: string, value: string) => void;
-}) {
-  const hasError = Boolean(error);
-  const hint =
-    field.type === 'textarea' && field.minLength
-      ? `${value.length}/${field.minLength} characters`
-      : field.minLength
-        ? `Minimum ${field.minLength} characters`
-        : undefined;
-
-  if (field.type === 'radio') {
-    return (
-      <FormField label={field.label} required={field.required} error={error} hint={hint}>
-        <div role="radiogroup" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-          {(field.options ?? []).map((opt) => (
-            <label
-              key={opt.value}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 8,
-                cursor: 'pointer',
-                fontFamily: 'var(--ledger-sans)',
-                fontSize: 13.5,
-                color: 'var(--ledger-ink)',
-              }}
-            >
-              <input
-                type="radio"
-                name={field.id}
-                value={opt.value}
-                checked={value === opt.value}
-                onChange={() => onChange(field.id, opt.value)}
-              />
-              {opt.label}
-            </label>
-          ))}
-        </div>
-      </FormField>
-    );
-  }
-
-  if (field.type === 'select') {
-    return (
-      <FormField label={field.label} htmlFor={field.id} required={field.required} error={error} hint={hint}>
-        <select
-          id={field.id}
-          name={field.id}
-          value={value}
-          onChange={(e) => onChange(field.id, e.target.value)}
-          style={ledgerInputStyle({ invalid: hasError })}
-          aria-invalid={hasError}
-          aria-required={field.required}
-        >
-          <option value="">{field.placeholder ?? 'Select an option'}</option>
-          {(field.options ?? []).map((opt) => (
-            <option key={opt.value} value={opt.value}>
-              {opt.label}
-            </option>
-          ))}
-        </select>
-      </FormField>
-    );
-  }
-
-  if (field.type === 'textarea') {
-    return (
-      <FormField label={field.label} htmlFor={field.id} required={field.required} error={error} hint={hint}>
-        <textarea
-          id={field.id}
-          name={field.id}
-          placeholder={field.placeholder}
-          value={value}
-          rows={4}
-          onChange={(e) => onChange(field.id, e.target.value)}
-          style={ledgerInputStyle({ invalid: hasError, multi: true })}
-          aria-invalid={hasError}
-          aria-required={field.required}
-        />
-      </FormField>
-    );
-  }
-
-  return (
-    <FormField label={field.label} htmlFor={field.id} required={field.required} error={error} hint={hint}>
-      <input
-        type="text"
-        id={field.id}
-        name={field.id}
-        placeholder={field.placeholder}
-        value={value}
-        onChange={(e) => onChange(field.id, e.target.value)}
-        style={ledgerInputStyle({ invalid: hasError })}
-        aria-invalid={hasError}
-        aria-required={field.required}
-      />
-    </FormField>
-  );
 }
 
 const buttonStyle: CSSProperties = {
@@ -246,22 +57,6 @@ const disabledButtonStyle: CSSProperties = {
   background: 'var(--ledger-rule-strong)',
   color: 'var(--ledger-paper)',
   cursor: 'not-allowed',
-};
-
-const downloadLinkStyle: CSSProperties = {
-  display: 'inline-flex',
-  alignItems: 'center',
-  gap: 10,
-  fontFamily: 'var(--ledger-mono)',
-  fontSize: 11,
-  letterSpacing: '0.16em',
-  textTransform: 'uppercase',
-  fontWeight: 600,
-  padding: '10px 18px',
-  borderRadius: 2,
-  border: '1px solid var(--ledger-rule-strong)',
-  color: 'var(--ledger-ink)',
-  textDecoration: 'none',
 };
 
 export function ActivityForm({
@@ -391,14 +186,14 @@ export function ActivityForm({
           style={{ display: 'grid', gap: 14 }}
         >
           {activity.fields.map((field) => (
-            <ReadOnlyField key={field.id} field={field} value={state.values[field.id] ?? ''} />
+            <ActivityReadOnlyField key={field.id} field={field} value={state.values[field.id] ?? ''} />
           ))}
         </div>
       ) : (
         <form onSubmit={handleSubmit} noValidate>
           <div style={{ display: 'grid', gap: 14 }}>
             {activity.fields.map((field) => (
-              <InteractiveField
+              <ActivityInteractiveField
                 key={field.id}
                 field={field}
                 value={state.values[field.id] ?? ''}
@@ -444,41 +239,8 @@ export function ActivityForm({
         </form>
       )}
 
-      {showArtifactDownload && (
-        <div
-          style={{
-            marginTop: 22,
-            paddingTop: 16,
-            borderTop: '1px solid var(--ledger-rule)',
-          }}
-        >
-          <p
-            style={{
-              fontFamily: 'var(--ledger-mono)',
-              fontSize: 10,
-              letterSpacing: '0.18em',
-              textTransform: 'uppercase',
-              color: 'var(--ledger-muted)',
-              margin: '0 0 10px',
-            }}
-          >
-            Your artifact is ready
-          </p>
-          <a
-            href={
-              activity.artifactId?.startsWith('aibi-p-m')
-                ? `/api/courses/generate-module-artifact?module=${moduleNumber}`
-                : `/artifacts/${activity.artifactId}.pdf`
-            }
-            download
-            style={downloadLinkStyle}
-          >
-            ↓ Download{' '}
-            {activity.artifactId
-              ?.replace(/-/g, ' ')
-              .replace(/\b\w/g, (c) => c.toUpperCase())}
-          </a>
-        </div>
+      {showArtifactDownload && activity.artifactId && (
+        <ArtifactDownload artifactId={activity.artifactId} moduleNumber={moduleNumber} />
       )}
     </ActivityWorkspace>
   );
