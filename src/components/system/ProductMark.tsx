@@ -15,7 +15,7 @@ import type { ReactElement } from 'react';
 //   GOLD_*    ↔ rgba derivations of --ledger-accent
 //   PAPER     ↔ --ledger-paper (used as magnifier lens fill below)
 const STROKE = '#0E1B2D';      // --ledger-ink
-const GOLD = '#B5862A';        // --ledger-accent
+const GOLD = 'var(--ledger-accent)';        // --ledger-accent
 const GOLD_FILL = 'rgba(181,134,42,0.18)';
 const GOLD_SOFT = 'rgba(181,134,42,0.10)';
 const PAPER = '#F4F1E7';       // --ledger-paper

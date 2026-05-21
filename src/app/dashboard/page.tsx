@@ -401,8 +401,8 @@ export default function DashboardPage() {
                         <line x1="70" y1="44" x2="70" y2="52" />
                         <line x1="102" y1="64" x2="96" y2="68" />
                         <line x1="118" y1="92" x2="110" y2="88" />
-                        <line x1="70" y1="92" x2="92" y2="54" stroke="#B5862A" strokeWidth="2.4" />
-                        <circle cx="70" cy="92" r="5" fill="#B5862A" stroke="none" />
+                        <line x1="70" y1="92" x2="92" y2="54" stroke="var(--ledger-accent)" strokeWidth="2.4" />
+                        <circle cx="70" cy="92" r="5" fill="var(--ledger-accent)" stroke="none" />
                         <line x1="20" y1="100" x2="120" y2="100" />
                       </svg>
                     </div>
@@ -433,7 +433,7 @@ export default function DashboardPage() {
                     <line x1="20" y1="34" x2="34" y2="34" strokeWidth="1" opacity="0.5" />
                     <line x1="106" y1="34" x2="120" y2="34" strokeWidth="1" opacity="0.5" />
                     <line x1="20" y1="98" x2="120" y2="98" />
-                    <path d="M70 12 L66 24 L74 24 L70 36" stroke="#B5862A" strokeWidth="2" />
+                    <path d="M70 12 L66 24 L74 24 L70 36" stroke="var(--ledger-accent)" strokeWidth="2" />
                   </svg>
                 </div>
                 <div className="step">
@@ -456,7 +456,7 @@ export default function DashboardPage() {
                     <rect x="20" y="44" width="100" height="60" fill="rgba(181,134,42,0.10)" />
                     <rect x="20" y="44" width="100" height="14" />
                     <path d="M48 44 L48 30 L92 30 L92 44" />
-                    <rect x="64" y="36" width="12" height="8" fill="#B5862A" stroke="none" />
+                    <rect x="64" y="36" width="12" height="8" fill="var(--ledger-accent)" stroke="none" />
                     <path d="M58 30 L58 22 L82 22 L82 30" strokeWidth="1.4" opacity="0.6" />
                     <line x1="44" y1="70" x2="44" y2="100" strokeWidth="1" opacity="0.5" />
                     <line x1="96" y1="70" x2="96" y2="100" strokeWidth="1" opacity="0.5" />
@@ -627,14 +627,14 @@ export default function DashboardPage() {
               <div className="feat">
                 <div className="ftxt">What unlocks on enrollment</div>
                 <FeatureRow svg={
-                  <svg viewBox="0 0 32 32" fill="none" stroke="#B5862A" strokeWidth="1.4" strokeLinejoin="round">
+                  <svg viewBox="0 0 32 32" fill="none" stroke="var(--ledger-accent)" strokeWidth="1.4" strokeLinejoin="round">
                     <rect x="6" y="8" width="20" height="18" fill="rgba(181,134,42,0.20)" />
                     <line x1="6" y1="14" x2="26" y2="14" />
                     <line x1="10" y1="20" x2="22" y2="20" opacity="0.5" />
                   </svg>
                 } name={<>12 structured <em>modules</em></>} meta="Self-paced" />
                 <FeatureRow svg={
-                  <svg viewBox="0 0 32 32" fill="none" stroke="#B5862A" strokeWidth="1.4" strokeLinejoin="round">
+                  <svg viewBox="0 0 32 32" fill="none" stroke="var(--ledger-accent)" strokeWidth="1.4" strokeLinejoin="round">
                     <path d="M8 8 L24 8 L24 28 L8 28 Z" fill="rgba(181,134,42,0.18)" />
                     <line x1="12" y1="14" x2="20" y2="14" />
                     <line x1="12" y1="18" x2="20" y2="18" />
@@ -642,22 +642,22 @@ export default function DashboardPage() {
                   </svg>
                 } name={<>Banker-tested <em>prompt library</em></>} meta="30+ prompts" />
                 <FeatureRow svg={
-                  <svg viewBox="0 0 32 32" fill="none" stroke="#B5862A" strokeWidth="1.4" strokeLinecap="round">
+                  <svg viewBox="0 0 32 32" fill="none" stroke="var(--ledger-accent)" strokeWidth="1.4" strokeLinecap="round">
                     <circle cx="16" cy="16" r="11" />
                     <path d="M11 16 L15 19 L21 12" strokeWidth="1.8" />
                   </svg>
                 } name={<>Hands-on <em>activities</em></>} meta="In every module" />
                 <FeatureRow svg={
-                  <svg viewBox="0 0 32 32" fill="none" stroke="#B5862A" strokeWidth="1.4" strokeLinejoin="round">
+                  <svg viewBox="0 0 32 32" fill="none" stroke="var(--ledger-accent)" strokeWidth="1.4" strokeLinejoin="round">
                     <rect x="6" y="10" width="20" height="16" fill="rgba(181,134,42,0.18)" />
                     <path d="M10 14 L22 14 M10 18 L18 18 M10 22 L20 22" opacity="0.6" />
                   </svg>
                 } name={<>Working <em>artifacts</em></>} meta="PDFs + worksheets" />
                 <FeatureRow svg={
-                  <svg viewBox="0 0 32 32" fill="none" stroke="#B5862A" strokeWidth="1.4">
+                  <svg viewBox="0 0 32 32" fill="none" stroke="var(--ledger-accent)" strokeWidth="1.4">
                     <circle cx="16" cy="14" r="6" fill="rgba(181,134,42,0.20)" />
                     <path d="M10 24 L10 28 M22 24 L22 28 M16 20 L16 26" />
-                    <circle cx="16" cy="14" r="2" fill="#B5862A" stroke="none" />
+                    <circle cx="16" cy="14" r="2" fill="var(--ledger-accent)" stroke="none" />
                   </svg>
                 } name={<>Verified <em>certificate</em></>} meta="On completion" />
               </div>
@@ -703,9 +703,9 @@ export default function DashboardPage() {
                     <line x1="6" y1="18" x2="42" y2="18" />
                     <line x1="18" y1="10" x2="18" y2="38" />
                     <line x1="30" y1="10" x2="30" y2="38" />
-                    <rect x="9" y="22" width="6" height="3" fill="#B5862A" stroke="none" />
-                    <rect x="21" y="22" width="6" height="3" fill="#B5862A" stroke="none" />
-                    <rect x="33" y="22" width="6" height="3" fill="#B5862A" stroke="none" />
+                    <rect x="9" y="22" width="6" height="3" fill="var(--ledger-accent)" stroke="none" />
+                    <rect x="21" y="22" width="6" height="3" fill="var(--ledger-accent)" stroke="none" />
+                    <rect x="33" y="22" width="6" height="3" fill="var(--ledger-accent)" stroke="none" />
                   </svg>
                 }
               />
@@ -719,8 +719,8 @@ export default function DashboardPage() {
                     <path d="M8 10 L40 10 L40 32 L26 32 L18 38 L18 32 L8 32 Z" fill="rgba(181,134,42,0.12)" />
                     <line x1="14" y1="18" x2="34" y2="18" opacity="0.6" />
                     <line x1="14" y1="24" x2="28" y2="24" opacity="0.6" />
-                    <circle cx="14" cy="14" r="1.5" fill="#B5862A" stroke="none" />
-                    <circle cx="20" cy="14" r="1.5" fill="#B5862A" stroke="none" />
+                    <circle cx="14" cy="14" r="1.5" fill="var(--ledger-accent)" stroke="none" />
+                    <circle cx="20" cy="14" r="1.5" fill="var(--ledger-accent)" stroke="none" />
                   </svg>
                 }
               />
@@ -736,7 +736,7 @@ export default function DashboardPage() {
                     <line x1="14" y1="20" x2="34" y2="20" opacity="0.6" />
                     <line x1="14" y1="24" x2="34" y2="24" opacity="0.6" />
                     <line x1="14" y1="28" x2="28" y2="28" opacity="0.6" />
-                    <rect x="14" y="33" width="20" height="5" fill="#B5862A" stroke="none" />
+                    <rect x="14" y="33" width="20" height="5" fill="var(--ledger-accent)" stroke="none" />
                   </svg>
                 }
               />
@@ -943,7 +943,7 @@ const dashboardStyles = `
     --slate:var(--ledger-slate,#5C6B82);
     --muted:var(--ledger-muted,#5C6B82);
     --soft:var(--ledger-soft,#8C95A8);
-    --terra:var(--ledger-accent,#B5862A);
+    --terra:var(--ledger-accent,var(--ledger-accent));
     --terra-2:#8E6212;
     --forest:#4A6B47;
     --weak:var(--ledger-weak,#8E3B2A);

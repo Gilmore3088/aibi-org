@@ -68,7 +68,7 @@
           <div class="swatches">
             ${[
               {v:'editorial', n:'Editorial', c:['#EFE9DC','#1A1713','#8E3B2A']},
-              {v:'ledger',    n:'Ledger',    c:['#ECE9DF','#0E1B2D','#B5862A']},
+              {v:'ledger',    n:'Ledger',    c:['#ECE9DF','#0E1B2D','#7C5814']},
               {v:'signal',    n:'Signal',    c:['#F4F4F4','#0A0A0A','#2A4DFF']},
               {v:'field',     n:'Field',     c:['#E8E3D4','#162619','#7A9A7E']}
             ].map(d => `
