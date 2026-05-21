@@ -146,7 +146,10 @@
         if(e.isIntersecting){
           const pct = e.target.getAttribute('data-pct');
           const i = e.target.querySelector('.bar > i');
-          if(i) i.style.width = pct + '%';
+          // Animate via transform (compositor-only) instead of width (forces
+          // layout reflow each frame). The fill is width:100% scaled from the
+          // left edge, so scaleX(fraction) matches the old width:pct% visually.
+          if(i) i.style.transform = 'scaleX(' + (Number(pct) / 100) + ')';
           io.unobserve(e.target);
         }
       });
