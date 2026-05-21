@@ -20,11 +20,16 @@ export interface LMSModule {
 
 export type ModuleStatus = 'completed' | 'current' | 'locked';
 
+// Pillar color discipline (sage/cobalt/terra) was retired with the
+// 2026-05-09 Ledger refresh. Per CLAUDE.md the 4-pillar structure
+// remains for navigation but does NOT enforce a visual grammar —
+// pillar marks all use the single gold accent. The pillar label
+// text differentiates Awareness / Understanding / Creation / Application.
 export const LMS_PILLARS: readonly LMSPillar[] = [
-  { id: 'awareness', label: 'Awareness', color: '#B8836B' },
-  { id: 'understanding', label: 'Understanding', color: '#6B8AA0' },
-  { id: 'creation', label: 'Creation', color: '#8A7B6B' },
-  { id: 'application', label: 'Application', color: '#5C7B5C' },
+  { id: 'awareness', label: 'Awareness', color: 'var(--ledger-accent)' },
+  { id: 'understanding', label: 'Understanding', color: 'var(--ledger-accent)' },
+  { id: 'creation', label: 'Creation', color: 'var(--ledger-accent)' },
+  { id: 'application', label: 'Application', color: 'var(--ledger-accent)' },
 ];
 
 export function getModuleStatus(

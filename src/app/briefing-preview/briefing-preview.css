@@ -517,11 +517,12 @@
 }
 
 .brief-page .bar > i {
-    display:block; height:100%; width:0%;
+    display:block; height:100%; width:100%;
     background:var(--accent-2);
-    transition: width 1.2s cubic-bezier(.22,.8,.22,1) .3s;
+    transform:scaleX(0); transform-origin:left center;
+    transition: transform 1.2s cubic-bezier(.22,.8,.22,1) .3s;
     position:relative;
-  
+
 }
 
 .brief-page .bar.weak > i {background:var(--weak)

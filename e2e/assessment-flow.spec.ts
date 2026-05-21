@@ -1,4 +1,14 @@
 import { test, expect } from '@playwright/test';
+import {
+  answerAllUniform,
+  answerCurrent,
+  answerWithOneWeakDimension,
+  currentDimension,
+  dimensionLabel,
+  installAnalyticsRecorder,
+  readAnalyticsEvents,
+  submitEmailGate,
+} from './helpers/assessment';
 
 // Free assessment flow — covers §4.88-127 of tasks/launch-checklist.md.
 //
@@ -184,4 +194,337 @@ test.describe('free assessment — error surfaces', () => {
     const res = await request.get('/api/user-profile?email=not-an-email');
     expect(res.status()).toBe(400);
   });
+});
+
+// ---------------------------------------------------------------------------
+// #135 §4 — Score-band assertions for all four tiers.
+//
+// The v2 score range is 12–48 (12 questions × 1–4 points). Tier bands
+// (content/assessments/v2/scoring.ts): Starting Point 12–22 · Early Stage
+// 23–32 · Building Momentum 33–40 · Ready to Scale 41–48.
+//
+// Every QuestionCard renders its 4 options in ascending points order, so
+// clicking the same option index on all 12 questions yields a deterministic,
+// rotation-independent total. The tier reveal is gated behind the email
+// capture (2026-05-18 reversal — full report renders inline after submit),
+// so each test answers, submits a work email, then asserts the tier on the
+// inline ScoreRing aria-label ("…placing you in the <Tier> tier.").
+// ---------------------------------------------------------------------------
+
+test.describe('free assessment — score bands (#135 §4)', () => {
+  // Each row: option index clicked on every question → expected total → tier.
+  const bands = [
+    { name: 'Starting Point', optionIndex: 0, total: 12 },
+    { name: 'Early Stage', optionIndex: 1, total: 24 },
+    { name: 'Building Momentum', optionIndex: 2, total: 36 },
+    { name: 'Ready to Scale', optionIndex: 3, total: 48 },
+  ] as const;
+
+  for (const band of bands) {
+    test(`uniform answers land in "${band.name}" (score ${band.total})`, async ({
+      page,
+    }) => {
+      await page.goto('/assessment');
+      await page.waitForLoadState('networkidle');
+
+      const total = await answerAllUniform(page, band.optionIndex);
+      expect(total).toBe(band.total);
+
+      await submitEmailGate(page);
+
+      // The inline report's ScoreRing carries both the numeric score and the
+      // tier label in its aria-label — assert both in one selector.
+      await expect(
+        page.getByRole('img', {
+          name: new RegExp(
+            `Your AI readiness score is ${band.total} out of 48, placing you in the ${band.name} tier`,
+            'i',
+          ),
+        }),
+      ).toBeVisible({ timeout: 15_000 });
+
+      // The tier label is also surfaced as visible copy somewhere in the
+      // report (ScoreRing caption / dashboard phase line) — guard the
+      // user-facing string, not just the aria attribute.
+      await expect(
+        page.getByText(band.name, { exact: false }).first(),
+      ).toBeVisible();
+    });
+  }
+});
+
+// ---------------------------------------------------------------------------
+// #135 §4 — Email gate contract.
+//
+// Critical UX rule (CLAUDE.md + DECISIONS.md 2026-05-18): score, tier,
+// dimension breakdown, and starter artifact are ALL hidden until a work
+// email is submitted, then the full report renders INLINE on the same page
+// (no redirect, no "check your inbox" wait state).
+// ---------------------------------------------------------------------------
+
+test.describe('free assessment — email gate (#135 §4)', () => {
+  test('full report is hidden until email submit, then renders inline', async ({
+    page,
+  }) => {
+    await page.goto('/assessment');
+    await page.waitForLoadState('networkidle');
+
+    await answerAllUniform(page, 1); // → Early Stage
+
+    // Before email: the email-gate form is showing and NONE of the report
+    // surfaces (score ring, dimension chart, starter artifact) are present.
+    await expect(
+      page.getByRole('textbox', { name: /email/i }).first(),
+    ).toBeVisible({ timeout: 10_000 });
+    await expect(
+      page.getByRole('img', { name: /Your AI readiness score is/i }),
+    ).toHaveCount(0);
+    await expect(
+      page.getByRole('figure', { name: /eight-dimension readiness chart/i }),
+    ).toHaveCount(0);
+    await expect(page.getByText(/your starter artifact/i)).toHaveCount(0);
+
+    // Tag the live document so we can prove the report renders in the SAME
+    // page (inline) rather than via a navigation/redirect to a new document.
+    await page.evaluate(() => {
+      (window as unknown as { __inlineSentinel?: boolean }).__inlineSentinel = true;
+    });
+
+    await submitEmailGate(page);
+
+    // No full navigation away — the sentinel survives because the app uses
+    // history.replaceState (to /results/<id> only when a profileId comes
+    // back; with no DB it simply stays on /assessment). Either way the
+    // document is never torn down, which is the "renders inline, no
+    // redirect/wait" contract.
+    const sameDocument = await page.evaluate(
+      () => (window as unknown as { __inlineSentinel?: boolean }).__inlineSentinel === true,
+    );
+    expect(sameDocument).toBe(true);
+    expect(page.url()).toMatch(/\/(assessment|results\/[0-9a-f-]+)/i);
+    await expect(
+      page.getByRole('img', { name: /Your AI readiness score is/i }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole('figure', { name: /eight-dimension readiness chart/i }),
+    ).toBeVisible();
+  });
+});
+
+// ---------------------------------------------------------------------------
+// #135 §4 — Starter artifact matches the lowest-scoring dimension.
+//
+// The report's "first move" + starter artifact are keyed to focusGap, the
+// weakest dimension (ResultsViewV2.groupDimensions sorts ascending by pct).
+// We drive exactly one dimension to the floor (1 pt) and everything else to
+// the ceiling (4 pts), then assert that dimension is named as the weakest
+// and that the starter artifact is tailored to it.
+// ---------------------------------------------------------------------------
+
+test.describe('free assessment — starter artifact (#135 §4)', () => {
+  test('starter artifact is tailored to the weakest dimension', async ({ page }) => {
+    await page.goto('/assessment');
+    await page.waitForLoadState('networkidle');
+
+    const weakDimension = await answerWithOneWeakDimension(page);
+    const weakLabel = dimensionLabel(weakDimension);
+
+    await submitEmailGate(page);
+
+    // The "first AI move" section names the weakest dimension explicitly.
+    await expect(
+      page.getByText(
+        new RegExp(`Surfaced by your weakest dimension:\\s*${weakLabel}`, 'i'),
+      ),
+    ).toBeVisible({ timeout: 15_000 });
+
+    // The collapsible starter artifact is tailored to that same top gap.
+    await page
+      .getByText(/show printable starter artifact/i)
+      .click();
+    await expect(
+      page.getByText(
+        new RegExp(`Tailored to your top gap:\\s*${weakLabel}`, 'i'),
+      ),
+    ).toBeVisible();
+  });
+});
+
+// ---------------------------------------------------------------------------
+// #135 §4 — sessionStorage persistence.
+//
+// useAssessmentV2 syncs { selectedQuestionIds, answers, currentQuestion } to
+// sessionStorage key "aibi-assessment-v2" on every answer, restores it on
+// mount (rebuilding question order by id), and clears it on restart. After
+// email capture the report renders from in-memory state; the persistence
+// key is no longer needed for an in-progress run.
+// ---------------------------------------------------------------------------
+
+test.describe('free assessment — sessionStorage persistence (#135 §4)', () => {
+  test('refresh mid-assessment restores answers and position', async ({ page }) => {
+    await page.goto('/assessment');
+    await page.waitForLoadState('networkidle');
+
+    // Answer the first three questions, leaving us mid-flow on Q4.
+    await answerCurrent(page, 2);
+    await answerCurrent(page, 2);
+    await answerCurrent(page, 2);
+
+    await expect(page.locator('body')).toContainText(/question\s+4\s+of\s+12|04\s*\/\s*12/i);
+
+    // sessionStorage should hold three answers and currentQuestion === 3.
+    const persisted = await page.evaluate(() =>
+      window.sessionStorage.getItem('aibi-assessment-v2'),
+    );
+    expect(persisted).not.toBeNull();
+    const parsed = JSON.parse(persisted as string) as {
+      answers: number[];
+      currentQuestion: number;
+      selectedQuestionIds: string[];
+    };
+    expect(parsed.answers).toHaveLength(3);
+    expect(parsed.currentQuestion).toBe(3);
+    expect(parsed.selectedQuestionIds).toHaveLength(12);
+
+    // Reload — the hook hydrates from sessionStorage and drops us back on Q4
+    // with the same question set, not a fresh Q1.
+    await page.reload();
+    await page.waitForLoadState('networkidle');
+    await expect(page.locator('body')).toContainText(/question\s+4\s+of\s+12|04\s*\/\s*12/i);
+
+    const afterReload = await page.evaluate(() =>
+      window.sessionStorage.getItem('aibi-assessment-v2'),
+    );
+    const reParsed = JSON.parse(afterReload as string) as {
+      selectedQuestionIds: string[];
+      currentQuestion: number;
+    };
+    // Same questions, same position — order preserved by id.
+    expect(reParsed.selectedQuestionIds).toEqual(parsed.selectedQuestionIds);
+    expect(reParsed.currentQuestion).toBe(3);
+  });
+
+  test('sessionStorage is cleared after email capture', async ({ page }) => {
+    await page.goto('/assessment');
+    await page.waitForLoadState('networkidle');
+
+    await answerAllUniform(page, 1);
+
+    // Mid/late flow the key exists.
+    const beforeCapture = await page.evaluate(() =>
+      window.sessionStorage.getItem('aibi-assessment-v2'),
+    );
+    expect(beforeCapture).not.toBeNull();
+
+    await submitEmailGate(page);
+
+    // After capture the in-progress key must be cleared so a later return to
+    // /assessment starts a fresh run rather than resuming a finished one.
+    await expect
+      .poll(
+        () =>
+          page.evaluate(() =>
+            window.sessionStorage.getItem('aibi-assessment-v2'),
+          ),
+        { timeout: 10_000 },
+      )
+      .toBeNull();
+  });
+});
+
+// ---------------------------------------------------------------------------
+// #135 §4 — Analytics events.
+//
+// The live code uses @vercel/analytics, whose track() dispatches via
+// window.va('event', { name, data }). We pre-install a recorder before app
+// scripts run (initQueue only assigns window.va when it is falsy, so our
+// stub wins) and assert the two funnel-critical events fire with the right
+// props: assessment_complete { tier, score } and email_captured { tier }.
+// ---------------------------------------------------------------------------
+
+test.describe('free assessment — analytics (#135 §4)', () => {
+  test('assessment_complete and email_captured fire with tier/score', async ({
+    page,
+  }) => {
+    await installAnalyticsRecorder(page);
+    await page.goto('/assessment');
+    await page.waitForLoadState('networkidle');
+
+    await answerAllUniform(page, 1); // → Early Stage, score 24
+
+    // assessment_complete fires when the score phase first renders (before
+    // any email is captured).
+    await expect
+      .poll(async () =>
+        (await readAnalyticsEvents(page)).some((e) => e.name === 'assessment_complete'),
+      { timeout: 10_000 })
+      .toBe(true);
+
+    const completeEvent = (await readAnalyticsEvents(page)).find(
+      (e) => e.name === 'assessment_complete',
+    );
+    expect(completeEvent?.data?.tier).toBe('early-stage');
+    expect(completeEvent?.data?.score).toBe(24);
+
+    // email_captured fires after a successful /api/capture-email round-trip.
+    await submitEmailGate(page);
+
+    await expect
+      .poll(async () =>
+        (await readAnalyticsEvents(page)).some((e) => e.name === 'email_captured'),
+      { timeout: 10_000 })
+      .toBe(true);
+
+    const emailEvent = (await readAnalyticsEvents(page)).find(
+      (e) => e.name === 'email_captured',
+    );
+    expect(emailEvent?.data?.tier).toBe('early-stage');
+  });
+
+  test('assessment_start fires on mount', async ({ page }) => {
+    await installAnalyticsRecorder(page);
+    await page.goto('/assessment');
+    await page.waitForLoadState('networkidle');
+
+    await expect
+      .poll(async () =>
+        (await readAnalyticsEvents(page)).some((e) => e.name === 'assessment_start'),
+      { timeout: 10_000 })
+      .toBe(true);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// #135 §9 — Operator / live-network surfaces that CANNOT run here.
+//
+// These need a real inbox or live MailerLite/Resend (no sandbox), so they
+// are tracked as fixmes rather than run. They belong to the §9 operator
+// checklist, not the §4 automated E2E sweep.
+// ---------------------------------------------------------------------------
+
+test.describe('free assessment — live-network (operator, #135 §9)', () => {
+  test.fixme(
+    'breakdown email actually arrives in the captured inbox (Resend)',
+    async () => {
+      // Requires a real/seeded inbox (e.g. Mailosaur) + SKIP_RESEND=false.
+      // Resend has no sandbox that proves delivery; verify operator-side.
+    },
+  );
+
+  test.fixme(
+    'MailerLite tier group + sequence enrolment on opt-in',
+    async () => {
+      // MailerLite has no test mode — every call hits the live account.
+      // Verify the tier group membership in the live dashboard, not in CI.
+    },
+  );
+
+  test.fixme(
+    'sub-3-minute completion on a real iPhone Safari device',
+    async () => {
+      // The launch gate's "<3 min on iPhone Safari" is a real-device timing
+      // check; the mobile-safari project emulates the viewport but not the
+      // device perf envelope. Confirm on hardware.
+    },
+  );
 });

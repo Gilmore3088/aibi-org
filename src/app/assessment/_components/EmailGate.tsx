@@ -403,10 +403,11 @@ function FormField({
       {error && (
         <p
           id={`${id}-error`}
-          className="mt-1.5 text-xs text-[color:var(--color-error)]"
+          className="mt-1.5 text-xs text-[color:var(--color-error)] flex items-start gap-1.5"
           role="alert"
         >
-          {error}
+          <span aria-hidden="true" className="font-mono leading-tight">!</span>
+          <span>{error}</span>
         </p>
       )}
     </div>

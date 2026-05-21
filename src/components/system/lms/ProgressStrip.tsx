@@ -51,7 +51,7 @@ export function ProgressStrip({
             {pct}% complete · {completed} of {total} modules
           </p>
           <div
-            className="w-full md:w-[280px] mx-auto mt-s2 h-[3px] bg-cream/20"
+            className="w-full md:w-[280px] mx-auto mt-s2 h-[3px] bg-cream/20 overflow-hidden"
             role="progressbar"
             aria-valuemin={0}
             aria-valuemax={total}
@@ -59,8 +59,8 @@ export function ProgressStrip({
             aria-label={`Course progress: ${pct}%`}
           >
             <span
-              className="block h-full bg-terra transition-[width] duration-slow"
-              style={{ width: `${pct}%` }}
+              className="block h-full w-full bg-terra origin-left transition-transform duration-slow"
+              style={{ transform: `scaleX(${pct / 100})` }}
             />
           </div>
         </div>

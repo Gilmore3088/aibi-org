@@ -277,7 +277,7 @@ export function ToolboxHomeV5({
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Ask your toolbox — find by name, command, or purpose…"
-            className="flex-1 bg-transparent py-4 font-serif text-lg tracking-[-0.01em] text-[color:var(--ledger-ink)] outline-none placeholder:italic placeholder:text-[color:var(--ledger-soft)]"
+            className="flex-1 bg-transparent py-4 font-serif text-lg tracking-[-0.01em] text-[color:var(--ledger-ink)] outline-none placeholder:italic placeholder:text-[color:var(--ledger-muted)]"
             aria-label="Search toolbox"
           />
           <button
@@ -393,7 +393,7 @@ export function ToolboxHomeV5({
       {toast && (
         <div
           role="status"
-          className="fixed bottom-6 left-1/2 z-[60] -translate-x-1/2 bg-[color:var(--ledger-ink)] px-5 py-3 font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-[color:var(--ledger-paper-warm)] shadow-lg"
+          className="fixed bottom-6 left-1/2 z-[60] -translate-x-1/2 bg-[color:var(--ledger-ink)] px-5 py-3 font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-[color:var(--ledger-paper-warm)] border border-[color:var(--ledger-ink)]"
         >
           {toast}
         </div>
@@ -528,7 +528,7 @@ function ShippedKitCard({
 }): JSX.Element {
   return (
     <article
-      className="flex cursor-pointer flex-col border border-[color:var(--ledger-rule-strong)] bg-[color:var(--ledger-paper-warm)] transition-all hover:-translate-y-0.5 hover:border-[color:var(--ledger-ink)] hover:shadow-md"
+      className="flex cursor-pointer flex-col border border-[color:var(--ledger-rule-strong)] bg-[color:var(--ledger-paper-warm)] transition-all hover:-translate-y-0.5 hover:border-[color:var(--ledger-ink)]"
       onClick={() => onAdopt(kit)}
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onAdopt(kit); } }}
       role="button"
@@ -625,7 +625,7 @@ function Tile({
     : 'text-[color:var(--ledger-weak)]';
   return (
     <article
-      className={`group relative flex cursor-pointer flex-col border border-[color:var(--ledger-rule)] bg-[color:var(--ledger-paper-warm)] transition-all hover:-translate-y-0.5 hover:border-[color:var(--ledger-ink)] hover:shadow-md`}
+      className={`group relative flex cursor-pointer flex-col border border-[color:var(--ledger-rule)] bg-[color:var(--ledger-paper-warm)] transition-all hover:-translate-y-0.5 hover:border-[color:var(--ledger-ink)]`}
       onClick={onOpen}
       onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); onOpen(); } }}
       role="button"
@@ -716,7 +716,7 @@ function Drawer({
         aria-hidden
       />
       <aside
-        className="fixed inset-y-0 right-0 z-[51] w-[640px] max-w-[96vw] overflow-y-auto bg-[color:var(--ledger-bg)] shadow-2xl"
+        className="fixed inset-y-0 right-0 z-[51] w-[640px] max-w-[96vw] overflow-y-auto bg-[color:var(--ledger-bg)] border-l border-[color:var(--ledger-rule-strong)]"
         role="dialog"
         aria-label={`Skill detail: ${skill.name}`}
       >

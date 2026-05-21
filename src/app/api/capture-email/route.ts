@@ -26,10 +26,14 @@ import { getTierV2 } from '@content/assessments/v2/scoring';
 import { getStarterArtifact } from '@content/assessments/v2/starter-artifacts';
 import type { Dimension } from '@content/assessments/v2/types';
 
-// 5 submissions per IP per hour matches the launch-gate spec in CLAUDE.md.
-// Bumped from 5 to 50 to unblock pre-launch testing. CLAUDE.md tracks
-// the move to Upstash sliding-window rate limiting before public launch.
-const RATE_LIMIT_PER_IP_PER_HOUR = 50;
+// Per-IP hourly backstop against scripted abuse. Deliberately NOT the
+// launch-gate's literal "5/hr": the assessment is promoted at in-person
+// conferences and bank offices where many legitimate takers share one egress
+// IP (corporate NAT / event wifi), and 5/hr would 429 real prospects mid-funnel.
+// 30/hr still hard-caps a runaway script while tolerating a shared room.
+// Per-IP is the wrong dimension for shared-NAT crowds; the proper fix is a
+// per-email cap + Upstash sliding window (tracked). See DECISIONS.md 2026-05-20.
+const RATE_LIMIT_PER_IP_PER_HOUR = 30;
 
 function getRequestIp(request: Request): string {
   const xff = request.headers.get('x-forwarded-for');

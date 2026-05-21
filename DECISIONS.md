@@ -568,3 +568,14 @@ unchanged.
 
 CLAUDE.md § Critical UX Rule and § MVP Launch Gate both updated in the
 same PR to match.
+
+**2026-05-20 — `/api/capture-email` per-IP limit set to 30/hr, not the
+launch-gate's literal 5/hr.** The ship-it security audit
+(`docs/reviews/security-audit-2026-05-20.md`) flagged the value. 5/hr would
+429 legitimate prospects at in-person conferences and bank offices where many
+takers share one egress IP (corporate NAT / event wifi) — directly harming the
+primary conversion funnel. 30/hr keeps a hard backstop against scripted abuse
+while tolerating a shared room. Per-IP is the wrong dimension for shared-NAT
+crowds; the proper fix (per-email cap + Upstash sliding window) remains tracked.
+The MVP Launch Gate item "rate limiting active" stays satisfied — the endpoint
+is rate-limited, just at a funnel-safe threshold.

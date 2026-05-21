@@ -100,7 +100,7 @@ export default function AssessmentPage() {
               <h2
                 ref={scoreHeadingRef}
                 tabIndex={-1}
-                className="font-serif text-3xl md:text-5xl leading-tight text-[color:var(--color-ink)] focus:outline-none"
+                className="font-serif text-3xl md:text-5xl leading-tight text-[color:var(--color-ink)] focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--ledger-accent)] focus-visible:outline-offset-4 focus-visible:rounded-sm"
               >
                 Your readiness report is <em className="text-[color:var(--color-terra)]">ready.</em>
               </h2>
@@ -159,7 +159,7 @@ export default function AssessmentPage() {
           <>
             {usedFreeEmail && (
               <aside
-                className="max-w-3xl mx-auto mb-8 border border-[color:var(--color-ink)]/15 bg-[color:var(--color-parch)] px-5 py-4 rounded-[2px] text-sm leading-relaxed text-[color:var(--color-ink)]/85"
+                className="max-w-3xl mx-auto mb-8 border border-[color:var(--color-ink)]/15 bg-[color:var(--ledger-paper)] px-5 py-4 rounded-[2px] text-sm leading-relaxed text-[color:var(--ledger-ink)]"
                 aria-label="Personal email notice"
               >
                 <p className="font-mono text-[10.5px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] mb-1.5">

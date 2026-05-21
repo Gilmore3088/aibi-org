@@ -4,13 +4,13 @@ export default function NotFound() {
   return (
     <main className="min-h-[60vh] flex items-center justify-center px-6 py-24">
       <div className="max-w-xl text-center space-y-6">
-        <p className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-terra)]">
+        <p className="font-mono text-xs uppercase tracking-widest text-[color:var(--ledger-accent)]">
           404 &middot; Page not found
         </p>
-        <h1 className="font-serif text-5xl text-[color:var(--color-ink)] leading-tight">
+        <h1 className="font-serif text-5xl text-[color:var(--ledger-ink)] leading-tight">
           That page is not in our archive.
         </h1>
-        <p className="text-lg text-[color:var(--color-ink)]/70">
+        <p className="text-lg text-[color:var(--ledger-ink)]/70">
           The page you are looking for may have moved, or it may not exist yet.
           While you are here, the free AI readiness assessment takes under three
           minutes.
@@ -18,7 +18,7 @@ export default function NotFound() {
         <div className="pt-4">
           <Link
             href="/assessment/start"
-            className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
+            className="inline-block px-8 py-4 bg-[color:var(--ledger-accent)] text-[color:var(--ledger-bg)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--ledger-accent-light)] active:scale-[0.98] transition-all"
           >
             Take the Free Assessment
           </Link>
@@ -26,7 +26,7 @@ export default function NotFound() {
         <p className="pt-4">
           <Link
             href="/"
-            className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-ink)]/70 hover:text-[color:var(--color-terra)]"
+            className="font-mono text-xs uppercase tracking-widest text-[color:var(--ledger-ink)]/70 hover:text-[color:var(--ledger-accent)]"
           >
             &larr; Back to home
           </Link>

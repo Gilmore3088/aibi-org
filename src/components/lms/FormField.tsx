@@ -91,6 +91,5 @@ export function ledgerInputStyle({ invalid, multi }: InputStyleOptions = {}): CS
     fontSize: multi ? 12.5 : 13.5,
     color: 'var(--ledger-ink)',
     resize: multi ? 'vertical' : undefined,
-    outline: 'none',
   };
 }

@@ -417,7 +417,7 @@ export function ToolboxApp() {
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-6 lg:px-10">
-      <nav className="sticky top-[81px] z-30 -mx-6 mb-8 flex items-center gap-1 overflow-x-auto border-b border-[color:var(--ledger-ink)]/10 bg-[color:var(--ledger-bg)]/95 px-6 backdrop-blur lg:-mx-10 lg:px-10" aria-label="Toolbox sections">
+      <nav className="sticky top-[81px] z-30 -mx-6 mb-8 flex items-center gap-1 overflow-x-auto border-b border-[color:var(--ledger-ink)]/10 bg-[color:var(--ledger-paper)] px-6 lg:-mx-10 lg:px-10" aria-label="Toolbox sections">
         {TABS.map((tab) => (
           <Link
             key={tab.id}
