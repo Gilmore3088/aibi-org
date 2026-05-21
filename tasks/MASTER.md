@@ -35,6 +35,14 @@ The detailed checkboxes never live in two places — they live in
 
 ## Active plans
 
+> **2026-05-21 consolidation** (see [`docs/handoffs/session-signoff-2026-05-21.md`](../docs/handoffs/session-signoff-2026-05-21.md)):
+> #254 (security + #238 + E2E + infra), #256 (toolbox onboarding 1/2/4a), #257
+> (perf bars) all merged to production. Auto-closed #141/#229/#237/#239; closed
+> #236 won't-fix + redundant PRs #223/#235. **Open issues 50→46.** Honest split:
+> ~6 launch-critical operator/decision items, ~12 deferred-LMS, rest E2E-blocked
+> or backlog. **⚠️ migration `00036` committed but NOT applied** (cert RLS).
+> Onboarding Slices 3 + 4b/c blocked on #224 (`access.tier`, needs migration `00035`).
+
 | Plan | Task file | Open | Status | GH issues |
 |------|-----------|------|--------|-----------|
 | [44-issue sweep · 2026-05-18](./github-issues-2026-05-18.md) | [`github-issues-2026-05-18.md`](./github-issues-2026-05-18.md) | **~34** | 🟢 Substantially shipped · 14 PRs merged this session (#193, #195, #196, #198, #199, #200, #201, #202, #203, #204, #206, #207, #208, #209, #210, #211). Issues closed: #153 #185 #186 #188 #189 #190 #192 #197 #205. #142 #146 #194 partially closed. Companion UAT at [`docs/handoffs/uat-2026-05-18.md`](../docs/handoffs/uat-2026-05-18.md). | (see tracker) |
