@@ -260,8 +260,9 @@ export function ToolboxHomeV5({
           </h1>
         </header>
 
-        {/* STATS RIBBON */}
-        <Stats stats={stats} />
+        {/* STATS RIBBON — suppressed when empty so a new desk doesn't open
+            on a bare 0 / 0 / 0 / — band (the editorial empty state speaks instead). */}
+        {!empty && <Stats stats={stats} />}
 
         {/* ASK BAR */}
         <form
@@ -808,7 +809,8 @@ function EmptyState({ onBrowse, onBuild }: { readonly onBrowse: () => void; read
         Your toolbox is <em className="italic text-[color:var(--ledger-accent)]">empty.</em>
       </h2>
       <p className="mt-3 font-serif text-base leading-relaxed text-[color:var(--ledger-muted)]">
-        Start from a Library template or build your first skill for work you do every week.
+        Pick up any prompt from the Library — your saved copies live here,
+        ready to re-run.
       </p>
       <div className="mt-6 flex justify-center gap-3">
         <button
@@ -816,7 +818,7 @@ function EmptyState({ onBrowse, onBuild }: { readonly onBrowse: () => void; read
           onClick={onBrowse}
           className="bg-[color:var(--ledger-ink)] px-5 py-3 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--ledger-paper-warm)] transition-colors hover:bg-[color:var(--ledger-accent)]"
         >
-          Browse Library
+          Browse Library →
         </button>
         <button
           type="button"
