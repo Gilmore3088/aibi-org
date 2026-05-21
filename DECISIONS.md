@@ -579,3 +579,58 @@ while tolerating a shared room. Per-IP is the wrong dimension for shared-NAT
 crowds; the proper fix (per-email cap + Upstash sliding window) remains tracked.
 The MVP Launch Gate item "rate limiting active" stays satisfied — the endpoint
 is rate-limited, just at a funnel-safe threshold.
+
+**2026-05-21 — Consolidation session: how the scattered branches were
+landed.** The open work had fragmented across many branches/PRs. Resolution:
+
+- The four sub-PRs (#234 token sweep, #252 program split, #235 audit sweep,
+  #223 marketing E2E) were merged to main **individually** by the operator;
+  the big consolidation **PR #254** was then squash-merged to carry the work
+  that lived *only* on it — the security hardening (cert RLS migration
+  `00036`, `/api/user-profile` 401, rate limits, dep bumps), **#238**
+  (last-routes Terra→Ledger), the E2E suites, dependabot, and the env-vars
+  audit. Closing #254 would have silently dropped that security work — it was
+  **not** redundant despite the sub-PR overlap.
+- Merge conflicts (in `AcceptableUseCardForm.tsx` / `ActivityForm.tsx` for
+  #254; `ToolboxHomeV5.tsx` for #256) were resolved by taking main's shipped
+  **#255** versions of the forms while **preserving #254's a11y fix**
+  (dropping `outline: 'none'` to restore focus outlines, WCAG 2.4.7) and the
+  non-hero shadow purge. Rule going forward: when an old parallel refactor
+  conflicts with what already shipped, take the shipped version and re-apply
+  only the net-new a11y/brand intent.
+- **⚠️ Migration `00036` is committed but NOT yet applied** — the certificate
+  enumeration hole stays open until it runs in Supabase. Operator action.
+
+**2026-05-21 — #236 closed won't-fix (sandbox dynamic-import).**
+`/courses/foundation/program/[module]/page.tsx` is a *server* component;
+its static import of the `'use client'` `AIPracticeSandbox` is already
+code-split at the client boundary. A `next/dynamic` wrapper adds indirection
+with no measurable First-Load-JS win. Only static imports *inside* a client
+boundary bloat the client bundle (the E.4 finding). Reopen only if a
+bundle-analyzer treemap shows the sandbox shipping eagerly.
+
+**2026-05-21 — #251 deferred (settings re-edit pre-populate).** Restoring the
+original "Free tiers only" vs "None" onboarding answer needs a schema decision
+(Option A: new column · B: sentinel value · C: best-effort heuristic). Not a
+clean autonomous fix; left open for the operator to choose A/B/C.
+
+**2026-05-21 — Toolbox onboarding (#231) shipped slices 1, 2, 4a (PR #256);
+3 + 4b/c deferred.** Slices 3 (welcome overlay) and 4 B/C (tier-aware tile
+CTAs/tooltips) read an `access.tier` prop that only exists once **#224**
+(Starter tier, held pending migration `00035`) lands — so they're blocked, not
+skipped. Shipped-slice deviations from the issue mock, by design:
+(a) no "Watch 90-sec tour" CTA (no tour asset; avoids a dead button);
+(b) no "Pre-review draft prompts: PR #225" line on kit cards (internal
+reviewer reference, off-voice for a paying banker); (c) no fabricated
+"Open the BSA kit" empty-state CTA (no clean BSA-only route — the kit grid
+already provides access). **#229 resolved via the coming-soon treatment** —
+the 3 metadata-only kits now render "in SME review" + Notify instead of a
+silent no-op adopt. Per operator: do not block launch on kit content; content
+lands later.
+
+**2026-05-21 — Dependabot policy (config added via #254).** Close
+build-breaking major bumps that need a dedicated migration pass —
+`tailwindcss 3→4`, `typescript 5→6`, `eslint 8→10`, and `puppeteer-core 24→25`
+(PDF-generation regression risk, same caution as the reverted Next 15 bump).
+Merge zero-risk GitHub Actions version bumps (CI-only). Runtime minor/patch
+groups get operator review before merge.

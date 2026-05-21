@@ -25,6 +25,21 @@ Do these first. They block the bulk of remaining work.
 
 After those three, ~75% of remaining §3–§19 work becomes autonomous.
 
+> **2026-05-21 update:** The ship-it security work (PR #254) is **live on
+> production** — `/api/user-profile` 401, rate limits, dep bumps, cert
+> service-role verify. **But migration `00036` (drop certificate anon-read
+> enumeration policy) is committed and NOT yet applied** — apply it in Supabase
+> to actually close the hole (the code is inert until then). Also pending:
+> apply migration `00035` → merge #224 (Starter tier) → unblocks toolbox
+> onboarding Slices 3 + 4b/c. See [`docs/handoffs/session-signoff-2026-05-21.md`](../docs/handoffs/session-signoff-2026-05-21.md).
+>
+> **Board consolidation:** the operator-only items below are now mirrored in one
+> GitHub tracker — **[#267](https://github.com/Gilmore3088/aibi-org/issues/267)**
+> (closed + absorbed #132/#133/#151/#152/#180). The §3–§9 E2E suites collapsed
+> into **[#268](https://github.com/Gilmore3088/aibi-org/issues/268)** (closed +
+> absorbed #134–#140), gated on U.1. This doc + `launch-checklist.md` remain the
+> granular source; #267/#268 are the board-level trackers.
+
 ---
 
 ## 🔒 Operator-only — launch-blocking

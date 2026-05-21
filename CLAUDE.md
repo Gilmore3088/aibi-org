@@ -116,9 +116,9 @@ The user is not a developer. Before implementing anything proposed:
 - **Hosting:** Vercel (AIBankingInstitute.com on main branch)
 - **Database / Auth:** Supabase (Postgres + RLS)
 - **Payments:** Stripe — In-Depth Assessment ($99) and AiBI-Foundation course ($295). Live unit prices in `src/app/courses/foundation/program/page.tsx` (`priceUSD: 295`) and the In-Depth purchase flow.
-- **Email / Sequences:** ConvertKit (Kit) — assessment captures, newsletter, automated sequences
-- **CRM:** HubSpot free tier — contact tracking, deal pipeline
-- **Analytics:** Plausible (privacy-first, custom events — see deferred call pattern below)
+- **Email / Sequences:** MailerLite (assessment tier-routing groups, newsletter, automations) + Resend (transactional — assessment breakdown, course/cert emails). *(Replaced ConvertKit, 2026-05; some `lib/mailerlite` function names still read "convertkit" — legacy naming only.)*
+- **CRM:** None. *(HubSpot removed — 0 refs in code as of 2026-05-21.)*
+- **Analytics:** `@vercel/analytics` + Plausible coexist (2026-05-21; Plausible still has ~7 call sites — the deferred-queue pattern below still applies). Full cutover to `@vercel/analytics` is in progress, not complete.
 - **Scheduling:** Calendly (popup or inline embed — Executive Briefing link)
 - **LMS (Phase 2):** In-house — `src/lib/lms/`, `src/lib/course-harness/`, `src/lib/certificates/`. Course content + entitlements live in Supabase (`course_enrollments` table). No third-party LMS, no Kajabi, no Zapier.
 
@@ -295,9 +295,9 @@ lockup (`/auth/*`, `/design-system`, etc.). Two notes:
 | `/security` | SSR | Phase 2 | Pillar B landing. Free guide download + email gate. |
 | `/about` | SSR | Phase 3 | Founder story. |
 | `/resources` | SSR | Phase 3 | AI Banking Brief archive + newsletter. |
-| `/api/capture-email` | API | Shipped | ConvertKit assessment-form subscribe + tier sequence tagging + HubSpot upsert. Suppressed on preview deploys via `SKIP_CONVERTKIT=true`. Rate limiting deferred (see 2026-04-15 Decisions Log). |
+| `/api/capture-email` | API | Shipped | MailerLite group/tier routing (`@/lib/mailerlite`) + Resend breakdown (`@/lib/resend`) + Supabase persist. Suppressed on preview via `SKIP_MAILERLITE` / `SKIP_RESEND`. Rate-limited 30/IP/hr (DECISIONS 2026-05-20). |
 | `/api/create-checkout` | API | Phase 2 | Stripe Checkout Session. |
-| `/api/webhooks/stripe` | API | Phase 2 | payment.success → insert into `course_enrollments` → ConvertKit welcome tag. |
+| `/api/webhooks/stripe` | API | Phase 2 | payment.success → insert into `course_enrollments` → MailerLite welcome tag. |
 
 ---
 
@@ -400,32 +400,35 @@ window.plausible('assessment_complete', { props: { tier, score } });
 
 ---
 
-## ConvertKit — No Test Mode
+## MailerLite + Resend — No Test Mode
 
-ConvertKit has no sandbox. Every API call hits the live account. Suppress on preview deploys (and local dev when desired):
+MailerLite (sequences/groups) and Resend (transactional) replaced ConvertKit
+in 2026-05. Neither has a sandbox — every API call hits the live account.
+Suppress on preview/local via the `SKIP_*` flags (set on the Vercel **Preview**
+scope only, never Production):
 
 ```typescript
-// In /api/capture-email
-if (process.env.SKIP_CONVERTKIT !== 'true') {
-  await fetch('https://api.convertkit.com/v3/forms/...', { ... });
-}
+// In /api/capture-email and the email adapters
+if (process.env.SKIP_MAILERLITE !== 'true') { /* MailerLite call */ }
+if (process.env.SKIP_RESEND     !== 'true') { /* Resend call */ }
 ```
 
-Set `SKIP_CONVERTKIT=true` in Vercel **Preview** environment scope, never in Production.
+`next.config` throws if `SKIP_MAILERLITE=true` leaks into Production.
+The capture-email path: validate → MailerLite adapter (`@/lib/mailerlite`,
+honors `marketing_opt_in`) → Resend breakdown (`@/lib/resend`) → persist.
+Some helper names still read `markConvertKitTagged` etc. — legacy naming, real
+backend is MailerLite.
 
 ---
 
-## HubSpot — Custom Properties Must Be Pre-Created
+## HubSpot — REMOVED (2026-05)
 
-The API silently ignores unknown properties. **Create these in HubSpot dashboard before going live:**
-
-| Property | Type |
-|----------|------|
-| `assessment_score` | Number |
-| `score_tier` | Single-line text |
-| `institution_name` | Single-line text |
-| `asset_size` | Dropdown: <$100M / $100–500M / $500M–$1B / $1B+ |
-| `lead_source` | Dropdown: assessment / referral / linkedin / conference |
+HubSpot is no longer in the codebase (0 refs as of 2026-05-21). There is no
+CRM integration. The old custom-property setup
+(`assessment_score`, `score_tier`, `institution_name`, `asset_size`,
+`lead_source`) is obsolete; assessment data lives in Supabase
+`assessment_responses` and MailerLite group/field routing. Do not re-add
+HubSpot calls without an explicit decision.
 
 ---
 
@@ -551,9 +554,9 @@ uses Ledger; migrated surfaces drop Terra references. When migration completes,
 --ledger-tape:         #F1E9D0   /* highlight tape (reviewer notes) */
 --ledger-ink:          #0E1B2D   /* primary text, primary fill */
 --ledger-ink-2:        #1F2A3F   /* secondary text */
---ledger-muted:        #5C6B82   /* muted text */
---ledger-soft:         #8C95A8   /* softest text — wordmark line 2 */
---ledger-accent:       #B5862A   /* gold — emphasis, primary CTA alt */
+--ledger-muted:        #4F5C6E   /* muted text (darkened 2026-05-21 from #5C6B82 for WCAG AA) */
+--ledger-soft:         #8C95A8   /* softest text — wordmark line 2 (logotype; WCAG-exempt) */
+--ledger-accent:       #7C5814   /* gold — emphasis, primary CTA alt (darkened 2026-05-21 from #B5862A for WCAG AA; SINGLE SOURCE for all gold) */
 --ledger-accent-2:     #1E3A5F   /* navy — secondary accent */
 --ledger-weak:         #8E3B2A   /* oxblood — destructive only */
 --ledger-rule:         #D5D1C2   /* hairline divider */
@@ -631,8 +634,8 @@ The post-conference email goes out when ALL items are checked:
 - [ ] Assessment: **email captured before any score is visible; full report (score + tier + dimension breakdown + starter artifact) renders inline immediately after email submit** (reverses 2026-04-27 decision — see 2026-05-18 DECISIONS.md entry)
 - [ ] Assessment: sessionStorage persistence working (test by refreshing mid-assessment on iPhone)
 - [ ] Assessment: /api/capture-email with rate limiting active
-- [ ] ConvertKit: form configured, Day 0/3/7 sequences active
-- [ ] HubSpot: all 5 custom properties pre-created; contact creation tested end-to-end
+- [ ] MailerLite: assessment Day 0/3/7 sequences active; `MAILERLITE_GROUP_ID_ASSESSMENT` / `_NEWSLETTER` populated
+- [ ] Resend: verified sender (`hello@aibankinginstitute.com`); assessment-breakdown transactional email tested end-to-end
 - [ ] Calendly: Executive Briefing link tested on iPhone Safari
 - [ ] Services page live with Calendly embed
 - [ ] Certifications page: **inquiry form only — no broken Stripe CTAs**
@@ -768,18 +771,30 @@ publications, hand-kept ledgers.
 
 **Accessibility:** WCAG 2.1 AA.
 
-**Color:** Gold (`--ledger-accent` `#B5862A`) for emphasis only — never
-decoration. Oxblood (`--ledger-weak` `#8E3B2A`) for destructive / late /
-failed only — never marketing. Navy (`--ledger-accent-2` `#1E3A5F`) as
-a secondary accent. Body text on Paper or BG, never on Parch (insufficient
-contrast). The pillar color discipline (sage / cobalt / terra) is retired.
+**Color:** Gold (`--ledger-accent` **`#7C5814`** — darkened 2026-05-21 from
+`#B5862A` for WCAG AA; old gold failed at 2.69:1 as text) for emphasis only —
+never decoration. **Single-sourced:** the gold lives only in `--ledger-accent`
+(+ derived `--ledger-warn`, `--ledger-accent-soft`, and `--ledger-accent-a06..a40`
+tint tokens). All CSS + inline-DOM SVG/styles reference `var(--ledger-accent)`;
+only non-CSS contexts (Satori OG image, static favicon `.svg`, vanilla-JS chart
+constants, server-generated downloads) carry a literal `#7C5814`. **Change the
+gold in one place: `tokens-ledger.css`.** Oxblood (`--ledger-weak` `#8E3B2A`)
+for destructive / late / failed only — never marketing. Navy
+(`--ledger-accent-2` `#1E3A5F`) as a secondary accent. Muted/slate secondary
+text is `--ledger-muted`/`--ledger-slate` `#4F5C6E` (darkened from `#5C6B82` for
+AA). Body text on Paper or BG, never on Parch (insufficient contrast). The
+pillar color discipline (sage / cobalt / terra) is retired.
 
 **Typography:** Newsreader (display, ledes, quotes, wordmark) ·
 Geist (body, UI labels, sans buttons) · JetBrains Mono (kickers,
 metadata, code, version + status pills, tabular numbers). Three families;
-do not add a fourth. Italics signal voice (ledes, quotes, trailing
-clauses on section titles), not emphasis. Caps + 0.16–0.20em tracking
-only on mono; never track sans.
+do not add a fourth. **Italics are retired site-wide (2026-05-21):** a
+universal `*{font-style:normal!important}` rule in `base.css` kills all
+italics (default `<em>`, the `italic` utility, inline styles, per-stylesheet
+rules, and browser-rendered SVG `<text>`); server-rendered images (Satori OG,
+hero SVG) are roman at source. Emphasis is carried by color + weight, never
+slant. (This supersedes the former "italics signal voice" rule.) Caps +
+0.16–0.20em tracking only on mono; never track sans.
 
 **Design principles:**
 1. Content is the design — restraint over decoration
