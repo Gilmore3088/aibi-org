@@ -32,14 +32,14 @@ export function DrillActivePhase({
 }: DrillActivePhaseProps) {
   const timerPct = (timeLeft / SCENARIO_TIME_SECONDS) * 100;
   const isUrgent = timeLeft <= 5;
-  const timerColorStyle = isUrgent ? 'var(--color-terra)' : 'var(--color-sage)';
+  const timerColorStyle = isUrgent ? 'var(--ledger-accent)' : 'var(--ledger-accent-2)';
 
   return (
     <div>
       {/* Timer bar */}
       <div className="mb-4">
         <div className="flex items-center justify-between mb-1">
-          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">
+          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)]">
             Scenario {currentIndex + 1} of {totalScenarios}
           </p>
           <p
@@ -51,7 +51,7 @@ export function DrillActivePhase({
             {isUrgent ? `Hurry! ${timeLeft}s remaining` : `Time remaining: ${timeLeft}s`}
           </p>
         </div>
-        <div className="w-full h-1.5 bg-[color:var(--color-parch-dark)] rounded-full overflow-hidden">
+        <div className="w-full h-1.5 bg-[color:var(--ledger-parch)] rounded-full overflow-hidden">
           <div
             className="h-full rounded-full transition-all duration-1000"
             style={{ width: `${timerPct}%`, backgroundColor: timerColorStyle }}
@@ -65,15 +65,15 @@ export function DrillActivePhase({
       </div>
 
       {/* Scenario text */}
-      <div className="mb-6 p-5 bg-[color:var(--color-parch)] rounded-sm border border-[color:var(--color-parch-dark)]">
-        <p className="font-sans text-base text-[color:var(--color-ink)] leading-relaxed">
+      <div className="mb-6 p-5 bg-[color:var(--ledger-paper)] rounded-sm border border-[color:var(--ledger-parch)]">
+        <p className="font-sans text-base text-[color:var(--ledger-ink)] leading-relaxed">
           {scenarioText}
         </p>
       </div>
 
       {/* Classification options */}
       <fieldset className="border-0 m-0 p-0">
-        <legend className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-3">
+        <legend className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] mb-3">
           Classify this scenario
           <span className="sr-only"> — Press 1, 2, or 3 to select</span>
         </legend>
@@ -84,8 +84,8 @@ export function DrillActivePhase({
               className={[
                 'flex items-center gap-3 cursor-pointer px-4 py-3 rounded-sm border transition-colors',
                 currentSelection === opt.value
-                  ? 'border-[color:var(--color-terra)] bg-[color:var(--color-terra)]/5'
-                  : 'border-[color:var(--color-parch-dark)] hover:border-[color:var(--color-terra)]/40',
+                  ? 'border-[color:var(--ledger-accent)] bg-[color:var(--ledger-accent)]/5'
+                  : 'border-[color:var(--ledger-parch)] hover:border-[color:var(--ledger-accent)]/40',
               ].join(' ')}
             >
               <input
@@ -96,9 +96,9 @@ export function DrillActivePhase({
                 onChange={() => onSelection(opt.value)}
                 onFocus={onKeyFocus}
                 onBlur={onKeyBlur}
-                className="w-4 h-4 accent-[color:var(--color-terra)] focus:ring-2 focus:ring-[color:var(--color-terra)]"
+                className="w-4 h-4 accent-[color:var(--ledger-accent)] focus:ring-2 focus:ring-[color:var(--ledger-accent)]"
               />
-              <span className="text-sm font-sans text-[color:var(--color-ink)]">
+              <span className="text-sm font-sans text-[color:var(--ledger-ink)]">
                 {opt.label}
               </span>
             </label>

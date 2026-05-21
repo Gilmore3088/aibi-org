@@ -194,31 +194,31 @@ export function SkillBuilder({
 
   return (
     <div
-      className="border border-[color:var(--color-parch-dark)] border-l-4 rounded-sm overflow-hidden bg-white/40 mb-8"
-      style={{ borderLeftColor: 'var(--color-terra)' }}
+      className="border border-[color:var(--ledger-parch)] border-l-4 rounded-sm overflow-hidden bg-white/40 mb-8"
+      style={{ borderLeftColor: 'var(--ledger-accent)' }}
     >
       <div className="px-6 pt-6 pb-5">
-        <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] mb-1">
+        <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent)] mb-1">
           Activity {activity.id}
         </p>
         <div className="flex items-start justify-between gap-4">
-          <h3 className="font-serif text-xl font-bold text-[color:var(--color-ink)] mb-2">
+          <h3 className="font-serif text-xl font-bold text-[color:var(--ledger-ink)] mb-2">
             {activity.title}
           </h3>
           {state.submitted && (
-            <span className="shrink-0 inline-flex items-center gap-1 px-2 py-0.5 bg-[color:var(--color-sage)]/10 border border-[color:var(--color-sage)] rounded-sm font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-sage)]">
+            <span className="shrink-0 inline-flex items-center gap-1 px-2 py-0.5 bg-[color:var(--ledger-accent-2)]/10 border border-[color:var(--ledger-accent-2)] rounded-sm font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent-2)]">
               Submitted
             </span>
           )}
         </div>
-        <p className="text-sm font-sans text-[color:var(--color-slate)] leading-relaxed">
+        <p className="text-sm font-sans text-[color:var(--ledger-muted)] leading-relaxed">
           {activity.description}
         </p>
       </div>
 
-      <div className="border-t border-[color:var(--color-parch-dark)]">
+      <div className="border-t border-[color:var(--ledger-parch)]">
         <div className="lg:grid lg:grid-cols-[280px_1fr]">
-          <div className="hidden lg:block border-r border-[color:var(--color-parch-dark)] p-6">
+          <div className="hidden lg:block border-r border-[color:var(--ledger-parch)] p-6">
             <RTFCPanel />
           </div>
 
@@ -236,11 +236,11 @@ export function SkillBuilder({
                   selectedId={state.selectedStarterId}
                   onSelect={handleStarterSelect}
                 />
-                <div className="lg:hidden mb-6 p-4 bg-[color:var(--color-parch)] border border-[color:var(--color-parch-dark)] rounded-sm">
-                  <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] mb-2">
+                <div className="lg:hidden mb-6 p-4 bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-parch)] rounded-sm">
+                  <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent)] mb-2">
                     RTFC Framework
                   </p>
-                  <p className="text-xs font-sans text-[color:var(--color-slate)] leading-relaxed">
+                  <p className="text-xs font-sans text-[color:var(--ledger-muted)] leading-relaxed">
                     Complete all four components: Role, Task, Format, and Constraints. Each field
                     maps to a component of the RTFC Framework taught in Module 6.
                   </p>
@@ -262,17 +262,17 @@ export function SkillBuilder({
                     value={state.values[FIELD_IDS.constraint] ?? ''} error={state.errors[FIELD_IDS.constraint]}
                     placeholder={placeholders.constraints} minLength={30} onChange={handleChange} />
                   {state.serverError && (
-                    <p className="mt-3 mb-3 text-sm font-sans text-[color:var(--color-error)] bg-[color:var(--color-error)]/5 border border-[color:var(--color-error)]/20 rounded-sm px-3 py-2" role="alert">
+                    <p className="mt-3 mb-3 text-sm font-sans text-[color:var(--ledger-weak)] bg-[color:var(--ledger-weak)]/5 border border-[color:var(--ledger-weak)]/20 rounded-sm px-3 py-2" role="alert">
                       {state.serverError}
                     </p>
                   )}
-                  <div className="mt-4 pt-4 border-t border-[color:var(--color-parch-dark)]">
-                    <p className="text-xs font-sans text-[color:var(--color-slate)] mb-3 leading-relaxed">
+                  <div className="mt-4 pt-4 border-t border-[color:var(--ledger-parch)]">
+                    <p className="text-xs font-sans text-[color:var(--ledger-muted)] mb-3 leading-relaxed">
                       Submitting will save your skill and automatically download a .md file to your
                       device for deployment in your AI platform.
                     </p>
                     <button type="submit" disabled={state.submitting}
-                      className="px-6 py-2.5 bg-[color:var(--color-terra)] hover:bg-[color:var(--color-terra-light)] disabled:bg-[color:var(--color-parch-dark)] disabled:text-[color:var(--color-dust)] text-[color:var(--color-linen)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-2"
+                      className="px-6 py-2.5 bg-[color:var(--ledger-accent)] hover:bg-[color:var(--ledger-accent-light)] disabled:bg-[color:var(--ledger-parch)] disabled:text-[color:var(--ledger-soft)] text-[color:var(--ledger-bg)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-2"
                       aria-label={state.submitting ? 'Building and saving skill…' : 'Save skill and download .md file'}>
                       {state.submitting ? 'Building Skill…' : 'Save Skill and Download'}
                     </button>

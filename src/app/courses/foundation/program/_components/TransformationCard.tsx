@@ -127,11 +127,11 @@ export function TransformationCard({
 
   return (
     <div
-      className="border-l-4 bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-sm p-6 sm:p-8"
+      className="border-l-4 bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-ink)]/10 rounded-sm p-6 sm:p-8"
       style={{ borderLeftColor: postTierColorVar }}
       aria-label="Transformation summary"
     >
-      <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] mb-4">
+      <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent)] mb-4">
         AiBI-Foundation Complete
       </p>
 
@@ -142,20 +142,20 @@ export function TransformationCard({
       >
         {/* Score */}
         <div>
-          <dt className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-1">
+          <dt className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] mb-1">
             Score
           </dt>
-          <dd className="font-mono text-2xl tabular-nums" style={{ color: 'var(--color-ink)' }}>
+          <dd className="font-mono text-2xl tabular-nums" style={{ color: 'var(--ledger-ink)' }}>
             {preScore !== null ? (
               <>
-                <span className="text-[color:var(--color-slate)]">{preScore}</span>
-                {' '}<span className="text-base text-[color:var(--color-slate)]">→</span>{' '}
+                <span className="text-[color:var(--ledger-muted)]">{preScore}</span>
+                {' '}<span className="text-base text-[color:var(--ledger-muted)]">→</span>{' '}
                 <span style={{ color: postTierColorVar }}>{postScore}</span>
               </>
             ) : (
               <span style={{ color: postTierColorVar }}>{postScore}</span>
             )}
-            <span className="text-sm font-normal text-[color:var(--color-slate)]"> / 48</span>
+            <span className="text-sm font-normal text-[color:var(--ledger-muted)]"> / 48</span>
           </dd>
           {scoreImprovement && (
             <dd
@@ -169,7 +169,7 @@ export function TransformationCard({
 
         {/* Tier */}
         <div>
-          <dt className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-1">
+          <dt className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] mb-1">
             Tier
           </dt>
           <dd
@@ -177,7 +177,7 @@ export function TransformationCard({
             style={{ color: postTierColorVar }}
           >
             {tierChanged && preTierLabel && (
-              <span className="text-[color:var(--color-slate)] text-xs block normal-case tracking-normal font-normal mb-0.5">
+              <span className="text-[color:var(--ledger-muted)] text-xs block normal-case tracking-normal font-normal mb-0.5">
                 {preTierLabel} →
               </span>
             )}
@@ -187,30 +187,30 @@ export function TransformationCard({
 
         {/* Skills built */}
         <div>
-          <dt className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-1">
+          <dt className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] mb-1">
             Skills Built
           </dt>
-          <dd className="font-mono text-2xl tabular-nums text-[color:var(--color-ink)]">
+          <dd className="font-mono text-2xl tabular-nums text-[color:var(--ledger-ink)]">
             {skillsBuilt}
           </dd>
         </div>
 
         {/* Hours saved */}
         <div>
-          <dt className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] mb-1">
+          <dt className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] mb-1">
             Hrs Saved / Year
           </dt>
-          <dd className="font-mono text-2xl tabular-nums text-[color:var(--color-ink)]">
+          <dd className="font-mono text-2xl tabular-nums text-[color:var(--ledger-ink)]">
             {annualHoursSaved}
           </dd>
         </div>
       </dl>
 
       {/* Action row */}
-      <div className="flex flex-wrap gap-3 pt-5 border-t border-[color:var(--color-ink)]/10">
+      <div className="flex flex-wrap gap-3 pt-5 border-t border-[color:var(--ledger-ink)]/10">
         <a
           href="/courses/foundation/program/certificate"
-          className="inline-flex items-center gap-2 px-5 py-2.5 bg-[color:var(--color-terra)] hover:bg-[color:var(--color-terra-light)] text-[color:var(--color-linen)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-2"
+          className="inline-flex items-center gap-2 px-5 py-2.5 bg-[color:var(--ledger-accent)] hover:bg-[color:var(--ledger-accent-light)] text-[color:var(--ledger-bg)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-2"
         >
           View Certificate
           <ArrowIcon />
@@ -219,7 +219,7 @@ export function TransformationCard({
         <button
           type="button"
           onClick={handleCopy}
-          className="inline-flex items-center gap-2 px-5 py-2.5 border border-[color:var(--color-terra)]/30 hover:border-[color:var(--color-terra)] text-[color:var(--color-ink)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-2 bg-transparent"
+          className="inline-flex items-center gap-2 px-5 py-2.5 border border-[color:var(--ledger-accent)]/30 hover:border-[color:var(--ledger-accent)] text-[color:var(--ledger-ink)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-2 bg-transparent"
           aria-live="polite"
           aria-label={copied ? 'Result copied to clipboard' : 'Copy result summary to clipboard'}
         >
@@ -237,7 +237,7 @@ export function TransformationCard({
           type="button"
           onClick={() => { void handleDownloadReport(); }}
           disabled={downloading}
-          className="inline-flex items-center gap-2 px-5 py-2.5 border border-[color:var(--color-terra)]/30 hover:border-[color:var(--color-terra)] text-[color:var(--color-ink)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-2 bg-transparent disabled:opacity-50 disabled:cursor-not-allowed"
+          className="inline-flex items-center gap-2 px-5 py-2.5 border border-[color:var(--ledger-accent)]/30 hover:border-[color:var(--ledger-accent)] text-[color:var(--ledger-ink)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-2 bg-transparent disabled:opacity-50 disabled:cursor-not-allowed"
           aria-label="Download Transformation Report PDF"
         >
           {downloading ? (

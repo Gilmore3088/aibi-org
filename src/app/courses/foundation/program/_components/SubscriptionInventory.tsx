@@ -150,25 +150,25 @@ export function SubscriptionInventory({
 
   return (
     <div
-      className="border border-[color:var(--color-parch-dark)] border-l-4 rounded-sm p-6 bg-white/40 mb-8"
-      style={{ borderLeftColor: 'var(--color-terra)' }}
+      className="border border-[color:var(--ledger-parch)] border-l-4 rounded-sm p-6 bg-white/40 mb-8"
+      style={{ borderLeftColor: 'var(--ledger-accent)' }}
     >
       {/* Activity header */}
       <div className="mb-5">
-        <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] mb-1">
+        <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent)] mb-1">
           Activity {activity.id}
         </p>
         <div className="flex items-start justify-between gap-4">
-          <h3 className="font-serif text-xl font-bold text-[color:var(--color-ink)] mb-2">
+          <h3 className="font-serif text-xl font-bold text-[color:var(--ledger-ink)] mb-2">
             {activity.title}
           </h3>
           {state.submitted && (
-            <span className="shrink-0 inline-flex items-center gap-1 px-2 py-0.5 bg-[color:var(--color-sage)]/10 border border-[color:var(--color-sage)] rounded-sm font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-sage)]">
+            <span className="shrink-0 inline-flex items-center gap-1 px-2 py-0.5 bg-[color:var(--ledger-accent-2)]/10 border border-[color:var(--ledger-accent-2)] rounded-sm font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent-2)]">
               Submitted
             </span>
           )}
         </div>
-        <p className="text-sm font-sans text-[color:var(--color-slate)] leading-relaxed">
+        <p className="text-sm font-sans text-[color:var(--ledger-muted)] leading-relaxed">
           {activity.description}
         </p>
       </div>
@@ -182,12 +182,12 @@ export function SubscriptionInventory({
             return (
               <div
                 key={field.id}
-                className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 py-3 border-b border-[color:var(--color-parch-dark)] last:border-0"
+                className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 py-3 border-b border-[color:var(--ledger-parch)] last:border-0"
               >
-                <span className="font-sans text-sm font-semibold text-[color:var(--color-ink)] sm:w-52 shrink-0">
+                <span className="font-sans text-sm font-semibold text-[color:var(--ledger-ink)] sm:w-52 shrink-0">
                   {PLATFORM_LABELS[field.id] ?? field.label}
                 </span>
-                <span className="font-sans text-sm text-[color:var(--color-slate)]">
+                <span className="font-sans text-sm text-[color:var(--ledger-muted)]">
                   {selectedOption?.label ?? getAccessLabel(field.id, value) ?? (
                     <em>No selection</em>
                   )}
@@ -202,9 +202,9 @@ export function SubscriptionInventory({
           <div className="space-y-6">
             {activity.fields.map((field) => (
               <fieldset key={field.id} className="border-0 m-0 p-0">
-                <legend className="font-sans text-sm font-semibold text-[color:var(--color-ink)] mb-2">
+                <legend className="font-sans text-sm font-semibold text-[color:var(--ledger-ink)] mb-2">
                   {PLATFORM_LABELS[field.id] ?? field.label}
-                  <span className="ml-1 text-[color:var(--color-error)] text-xs" aria-label="required">
+                  <span className="ml-1 text-[color:var(--ledger-weak)] text-xs" aria-label="required">
                     *
                   </span>
                 </legend>
@@ -219,8 +219,8 @@ export function SubscriptionInventory({
                         className={[
                           'flex items-center gap-2 cursor-pointer px-3 py-2 rounded-sm border transition-colors',
                           isSelected
-                            ? 'border-[color:var(--color-terra)] bg-[color:var(--color-terra)]/5'
-                            : 'border-[color:var(--color-parch-dark)] hover:border-[color:var(--color-terra)]/40',
+                            ? 'border-[color:var(--ledger-accent)] bg-[color:var(--ledger-accent)]/5'
+                            : 'border-[color:var(--ledger-parch)] hover:border-[color:var(--ledger-accent)]/40',
                         ].join(' ')}
                       >
                         <input
@@ -229,10 +229,10 @@ export function SubscriptionInventory({
                           value={opt.value}
                           checked={isSelected}
                           onChange={() => handleSelect(field.id, opt.value)}
-                          className="w-4 h-4 accent-[color:var(--color-terra)] focus:ring-2 focus:ring-[color:var(--color-terra)]"
+                          className="w-4 h-4 accent-[color:var(--ledger-accent)] focus:ring-2 focus:ring-[color:var(--ledger-accent)]"
                           aria-label={`${PLATFORM_LABELS[field.id] ?? field.label}: ${opt.label}`}
                         />
-                        <span className="text-sm font-sans text-[color:var(--color-ink)]">
+                        <span className="text-sm font-sans text-[color:var(--ledger-ink)]">
                           {opt.label}
                         </span>
                       </label>
@@ -245,7 +245,7 @@ export function SubscriptionInventory({
 
           {state.validationError && (
             <p
-              className="mt-4 text-sm font-sans text-[color:var(--color-error)] bg-[color:var(--color-error)]/5 border border-[color:var(--color-error)]/20 rounded-sm px-3 py-2"
+              className="mt-4 text-sm font-sans text-[color:var(--ledger-weak)] bg-[color:var(--ledger-weak)]/5 border border-[color:var(--ledger-weak)]/20 rounded-sm px-3 py-2"
               role="alert"
             >
               Error: {state.validationError}
@@ -254,18 +254,18 @@ export function SubscriptionInventory({
 
           {state.serverError && (
             <p
-              className="mt-4 text-sm font-sans text-[color:var(--color-error)] bg-[color:var(--color-error)]/5 border border-[color:var(--color-error)]/20 rounded-sm px-3 py-2"
+              className="mt-4 text-sm font-sans text-[color:var(--ledger-weak)] bg-[color:var(--ledger-weak)]/5 border border-[color:var(--ledger-weak)]/20 rounded-sm px-3 py-2"
               role="alert"
             >
               Error: {state.serverError}
             </p>
           )}
 
-          <div className="mt-6 pt-4 border-t border-[color:var(--color-parch-dark)]">
+          <div className="mt-6 pt-4 border-t border-[color:var(--ledger-parch)]">
             <button
               type="submit"
               disabled={state.submitting}
-              className="px-6 py-2.5 bg-[color:var(--color-terra)] hover:bg-[color:var(--color-terra-light)] disabled:bg-[color:var(--color-parch-dark)] disabled:text-[color:var(--color-dust)] text-[color:var(--color-linen)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-2"
+              className="px-6 py-2.5 bg-[color:var(--ledger-accent)] hover:bg-[color:var(--ledger-accent-light)] disabled:bg-[color:var(--ledger-parch)] disabled:text-[color:var(--ledger-soft)] text-[color:var(--ledger-bg)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-2"
               aria-label={state.submitting ? 'Submitting inventory…' : 'Submit inventory'}
             >
               {state.submitting ? 'Submitting…' : 'Submit Inventory'}

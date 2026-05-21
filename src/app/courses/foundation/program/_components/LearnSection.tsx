@@ -25,15 +25,15 @@ export function LearnSection({ sections, keyTakeaways }: LearnSectionProps) {
     <div>
       {/* Key takeaways */}
       {keyTakeaways && keyTakeaways.length > 0 && (
-        <div className="mb-6 bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-5">
-          <p className="font-serif-sc text-[10px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] mb-3">
+        <div className="mb-6 bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-ink)]/10 rounded-[3px] p-5">
+          <p className="font-serif-sc text-[10px] uppercase tracking-[0.18em] text-[color:var(--ledger-accent)] mb-3">
             After this module
           </p>
           <ul className="space-y-2">
             {keyTakeaways.map((item, i) => (
               <li key={i} className="flex items-start gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-[color:var(--color-terra)] mt-1.5 shrink-0" aria-hidden="true" />
-                <span className="font-sans text-sm text-[color:var(--color-ink)]/80 leading-snug">{item}</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-[color:var(--ledger-accent)] mt-1.5 shrink-0" aria-hidden="true" />
+                <span className="font-sans text-sm text-[color:var(--ledger-ink)]/80 leading-snug">{item}</span>
               </li>
             ))}
           </ul>
@@ -50,8 +50,8 @@ export function LearnSection({ sections, keyTakeaways }: LearnSectionProps) {
             className={[
               'px-3 py-1.5 rounded-[2px] font-sans text-xs transition-all',
               idx === openIndex
-                ? 'bg-[color:var(--color-terra)] text-[color:var(--color-linen)]'
-                : 'bg-[color:var(--color-parch)] text-[color:var(--color-ink)]/70 hover:bg-[color:var(--color-parch-dark)]',
+                ? 'bg-[color:var(--ledger-accent)] text-[color:var(--ledger-bg)]'
+                : 'bg-[color:var(--ledger-paper)] text-[color:var(--ledger-ink)]/70 hover:bg-[color:var(--ledger-parch)]',
             ].join(' ')}
           >
             {idx + 1}. {section.title.length > 30 ? section.title.slice(0, 30) + '...' : section.title}
@@ -72,7 +72,7 @@ export function LearnSection({ sections, keyTakeaways }: LearnSectionProps) {
           return (
             <div
               key={section.id}
-              className="border border-[color:var(--color-ink)]/10 rounded-[3px] overflow-hidden"
+              className="border border-[color:var(--ledger-ink)]/10 rounded-[3px] overflow-hidden"
             >
               {/* Section header — always visible */}
               <button
@@ -82,24 +82,24 @@ export function LearnSection({ sections, keyTakeaways }: LearnSectionProps) {
                 className={[
                   'w-full flex items-center justify-between gap-4 px-5 py-4 text-left transition-colors',
                   isOpen
-                    ? 'bg-[color:var(--color-parch)]'
-                    : 'bg-[color:var(--color-linen)] hover:bg-[color:var(--color-parch)]/50',
+                    ? 'bg-[color:var(--ledger-paper)]'
+                    : 'bg-[color:var(--ledger-bg)] hover:bg-[color:var(--ledger-paper)]/50',
                 ].join(' ')}
               >
                 <div className="flex items-center gap-3 min-w-0">
-                  <span className="font-mono text-[10px] text-[color:var(--color-terra)] tabular-nums shrink-0">
+                  <span className="font-mono text-[10px] text-[color:var(--ledger-accent)] tabular-nums shrink-0">
                     {String(idx + 1).padStart(2, '0')}
                   </span>
-                  <h3 className="font-serif text-lg text-[color:var(--color-ink)] leading-snug truncate">
+                  <h3 className="font-serif text-lg text-[color:var(--ledger-ink)] leading-snug truncate">
                     {section.title}
                   </h3>
                 </div>
                 <div className="flex items-center gap-3 shrink-0">
-                  <span className="font-mono text-[9px] text-[color:var(--color-slate)] uppercase tracking-wider hidden sm:block">
+                  <span className="font-mono text-[9px] text-[color:var(--ledger-muted)] uppercase tracking-wider hidden sm:block">
                     {totalReadTime} min read
                   </span>
                   <svg
-                    className="w-4 h-4 text-[color:var(--color-terra)] transition-transform duration-200"
+                    className="w-4 h-4 text-[color:var(--ledger-accent)] transition-transform duration-200"
                     style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
                     fill="currentColor"
                     viewBox="0 0 20 20"
@@ -112,19 +112,19 @@ export function LearnSection({ sections, keyTakeaways }: LearnSectionProps) {
 
               {/* Section content — collapsible */}
               {isOpen && (
-                <div className="px-5 py-6 bg-[color:var(--color-linen)]">
+                <div className="px-5 py-6 bg-[color:var(--ledger-bg)]">
                   <MarkdownRenderer content={section.content} />
 
                   {/* Try-this callout — practical exercise tied to this section */}
                   {section.tryThis && (
                     <aside
-                      className="mt-5 border-l-2 border-[color:var(--color-terra)] bg-[color:var(--color-parch)] px-5 py-4 rounded-r-[3px]"
+                      className="mt-5 border-l-2 border-[color:var(--ledger-accent)] bg-[color:var(--ledger-paper)] px-5 py-4 rounded-r-[3px]"
                       aria-label="Try this practice prompt"
                     >
-                      <p className="font-serif-sc text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-2">
+                      <p className="font-serif-sc text-[10px] uppercase tracking-[0.2em] text-[color:var(--ledger-accent)] mb-2">
                         Try this
                       </p>
-                      <p className="font-sans text-sm text-[color:var(--color-ink)]/85 leading-relaxed">
+                      <p className="font-sans text-sm text-[color:var(--ledger-ink)]/85 leading-relaxed">
                         {section.tryThis}
                       </p>
                     </aside>
@@ -132,10 +132,10 @@ export function LearnSection({ sections, keyTakeaways }: LearnSectionProps) {
 
                   {/* Subsections */}
                   {section.subsections && section.subsections.length > 0 && (
-                    <div className="mt-6 space-y-6 border-l-2 border-[color:var(--color-parch-dark)] pl-5">
+                    <div className="mt-6 space-y-6 border-l-2 border-[color:var(--ledger-parch)] pl-5">
                       {section.subsections.map((sub) => (
                         <div key={sub.id}>
-                          <h4 className="font-serif text-base font-semibold text-[color:var(--color-ink)] mb-3">
+                          <h4 className="font-serif text-base font-semibold text-[color:var(--ledger-ink)] mb-3">
                             {sub.title}
                           </h4>
                           <MarkdownRenderer content={sub.content} />
@@ -146,11 +146,11 @@ export function LearnSection({ sections, keyTakeaways }: LearnSectionProps) {
 
                   {/* Next section prompt */}
                   {idx < sections.length - 1 && (
-                    <div className="mt-6 pt-4 border-t border-[color:var(--color-ink)]/10">
+                    <div className="mt-6 pt-4 border-t border-[color:var(--ledger-ink)]/10">
                       <button
                         type="button"
                         onClick={() => setOpenIndex(idx + 1)}
-                        className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] hover:opacity-70 transition-opacity flex items-center gap-2"
+                        className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--ledger-accent)] hover:opacity-70 transition-opacity flex items-center gap-2"
                       >
                         Next: {sections[idx + 1].title}
                         <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
@@ -162,8 +162,8 @@ export function LearnSection({ sections, keyTakeaways }: LearnSectionProps) {
 
                   {/* Last section — prompt to go to Practice */}
                   {idx === sections.length - 1 && (
-                    <div className="mt-6 pt-4 border-t border-[color:var(--color-ink)]/10">
-                      <p className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-slate)]">
+                    <div className="mt-6 pt-4 border-t border-[color:var(--ledger-ink)]/10">
+                      <p className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--ledger-muted)]">
                         Reading complete. Switch to the Practice tab to try it with AI.
                       </p>
                     </div>

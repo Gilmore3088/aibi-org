@@ -17,17 +17,17 @@ export function ModuleNavigation({
   moduleComplete,
 }: ModuleNavigationProps) {
   return (
-    <div className="flex items-center justify-between mt-16 pt-8 border-t border-[color:var(--color-parch-dark)]">
+    <div className="flex items-center justify-between mt-16 pt-8 border-t border-[color:var(--ledger-parch)]">
       <div className="flex flex-wrap items-center gap-4">
         <Link
           href="/courses/foundation/program"
-          className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-slate)] hover:text-[color:var(--color-ink)] transition-colors"
+          className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--ledger-muted)] hover:text-[color:var(--ledger-ink)] transition-colors"
         >
           Back to Overview
         </Link>
         <Link
           href="/dashboard/toolbox?tab=library"
-          className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-terra)] hover:text-[color:var(--color-ink)] transition-colors"
+          className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--ledger-accent)] hover:text-[color:var(--ledger-ink)] transition-colors"
         >
           Open Toolbox
         </Link>
@@ -37,7 +37,7 @@ export function ModuleNavigation({
         moduleComplete ? (
           <Link
             href={`/courses/foundation/program/${moduleNumber + 1}`}
-            className="inline-flex items-center gap-2 bg-[color:var(--color-terra)] hover:bg-[color:var(--color-terra-light)] text-[color:var(--color-linen)] px-6 py-2.5 rounded-sm font-mono text-[11px] uppercase tracking-widest transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-2"
+            className="inline-flex items-center gap-2 bg-[color:var(--ledger-accent)] hover:bg-[color:var(--ledger-accent-light)] text-[color:var(--ledger-bg)] px-6 py-2.5 rounded-sm font-mono text-[11px] uppercase tracking-widest transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-2"
           >
             Next Module
             <svg
@@ -55,7 +55,7 @@ export function ModuleNavigation({
           </Link>
         ) : (
           <span
-            className="inline-flex items-center gap-2 bg-[color:var(--color-parch-dark)] text-[color:var(--color-slate)] px-6 py-2.5 rounded-sm font-mono text-[11px] uppercase tracking-widest cursor-not-allowed"
+            className="inline-flex items-center gap-2 bg-[color:var(--ledger-parch)] text-[color:var(--ledger-muted)] px-6 py-2.5 rounded-sm font-mono text-[11px] uppercase tracking-widest cursor-not-allowed"
             role="button"
             aria-disabled="true"
             aria-label="Complete all activities to unlock the next module"
@@ -79,7 +79,7 @@ export function ModuleNavigation({
       )}
 
       {isLastModule && (
-        <span className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-slate)]">
+        <span className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--ledger-muted)]">
           Course Complete
         </span>
       )}

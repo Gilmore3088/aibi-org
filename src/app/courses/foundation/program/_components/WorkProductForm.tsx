@@ -144,16 +144,16 @@ export function WorkProductForm({
         ref={successRef}
         tabIndex={-1}
         aria-live="polite"
-        className="border border-[color:var(--color-parch-dark)] border-l-4 rounded-sm p-6 bg-[color:var(--color-parch)] focus:outline-none"
-        style={{ borderLeftColor: 'var(--color-sage)' }}
+        className="border border-[color:var(--ledger-parch)] border-l-4 rounded-sm p-6 bg-[color:var(--ledger-paper)] focus:outline-none"
+        style={{ borderLeftColor: 'var(--ledger-accent-2)' }}
       >
-        <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-sage)] mb-2">
+        <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent-2)] mb-2">
           Submitted
         </p>
-        <p className="font-sans text-base font-semibold text-[color:var(--color-ink)] mb-2">
+        <p className="font-sans text-base font-semibold text-[color:var(--ledger-ink)] mb-2">
           Your work product has been submitted.
         </p>
-        <p className="font-sans text-sm text-[color:var(--color-slate)]">
+        <p className="font-sans text-sm text-[color:var(--ledger-muted)]">
           You will receive feedback within five business days.
         </p>
       </div>
@@ -217,25 +217,25 @@ export function WorkProductForm({
 
         {serverError && (
           <p
-            className="mt-3 mb-3 text-sm font-sans text-[color:var(--color-error)] bg-[color:var(--color-error)]/5 border border-[color:var(--color-error)]/20 rounded-sm px-3 py-2"
+            className="mt-3 mb-3 text-sm font-sans text-[color:var(--ledger-weak)] bg-[color:var(--ledger-weak)]/5 border border-[color:var(--ledger-weak)]/20 rounded-sm px-3 py-2"
             role="alert"
           >
             {serverError}
           </p>
         )}
 
-        <div className="mt-6 pt-6 border-t border-[color:var(--color-parch-dark)]">
+        <div className="mt-6 pt-6 border-t border-[color:var(--ledger-parch)]">
           <button
             type="submit"
             disabled={submitting || !isValid}
             aria-disabled={submitting || !isValid}
-            className="px-8 py-3 bg-[color:var(--color-terra)] hover:bg-[color:var(--color-terra-light)] disabled:bg-[color:var(--color-parch-dark)] disabled:text-[color:var(--color-dust)] text-[color:var(--color-linen)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-2"
+            className="px-8 py-3 bg-[color:var(--ledger-accent)] hover:bg-[color:var(--ledger-accent-light)] disabled:bg-[color:var(--ledger-parch)] disabled:text-[color:var(--ledger-soft)] text-[color:var(--ledger-bg)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-2"
             aria-label={submitting ? 'Submitting work product…' : 'Submit work product'}
           >
             {submitting ? 'Submitting…' : isResubmission ? 'Submit Resubmission' : 'Submit Work Product'}
           </button>
           {!isValid && !submitting && (
-            <p className="mt-2 text-[11px] font-mono text-[color:var(--color-slate)]">
+            <p className="mt-2 text-[11px] font-mono text-[color:var(--ledger-muted)]">
               Complete all required fields to enable submission.
             </p>
           )}

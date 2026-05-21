@@ -29,7 +29,7 @@ export function ModuleMapItem({ module: mod, status }: ModuleMapItemProps) {
       {/* Module number */}
       <div
         className="font-mono text-sm font-bold mt-1 w-6 shrink-0"
-        style={{ color: isLocked ? 'var(--color-slate)' : pillarMeta.colorVar }}
+        style={{ color: isLocked ? 'var(--ledger-muted)' : pillarMeta.colorVar }}
         aria-hidden="true"
       >
         {formattedNumber}
@@ -38,17 +38,17 @@ export function ModuleMapItem({ module: mod, status }: ModuleMapItemProps) {
       {/* Module content */}
       <div className="flex-1 min-w-0">
         {/* Title */}
-        <h4 className="font-serif font-bold text-[color:var(--color-ink)] mb-2 leading-tight">
+        <h4 className="font-serif font-bold text-[color:var(--ledger-ink)] mb-2 leading-tight">
           {mod.title}
         </h4>
 
         {/* Key output */}
-        <p className="font-mono text-[10px] text-[color:var(--color-slate)] mb-2 uppercase tracking-wider leading-relaxed">
+        <p className="font-mono text-[10px] text-[color:var(--ledger-muted)] mb-2 uppercase tracking-wider leading-relaxed">
           {mod.keyOutput}
         </p>
 
         {/* Progress bar */}
-        <div className="h-px w-full bg-[color:var(--color-terra)]/10 relative overflow-hidden mb-2">
+        <div className="h-px w-full bg-[color:var(--ledger-accent)]/10 relative overflow-hidden mb-2">
           {status === 'completed' && (
             <div
               className="absolute left-0 top-0 h-full"
@@ -65,7 +65,7 @@ export function ModuleMapItem({ module: mod, status }: ModuleMapItemProps) {
 
         {/* Status text */}
         {status === 'completed' && (
-          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">
+          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)]">
             Completed · {formatMinutes(mod.estimatedMinutes)}
           </p>
         )}
@@ -78,7 +78,7 @@ export function ModuleMapItem({ module: mod, status }: ModuleMapItemProps) {
           </p>
         )}
         {status === 'locked' && (
-          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]">
+          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)]">
             Locked · {formatMinutes(mod.estimatedMinutes)}
           </p>
         )}
@@ -97,7 +97,7 @@ export function ModuleMapItem({ module: mod, status }: ModuleMapItemProps) {
   return (
     <Link
       href={`/courses/foundation/program/${mod.number}`}
-      className="flex gap-4 items-start group hover:translate-x-1 transition-transform duration-200 focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-2 rounded-sm"
+      className="flex gap-4 items-start group hover:translate-x-1 transition-transform duration-200 focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-2 rounded-sm"
     >
       {content}
     </Link>

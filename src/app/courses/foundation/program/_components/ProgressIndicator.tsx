@@ -21,8 +21,8 @@ export function ProgressIndicator({ completedModules, totalModules }: ProgressIn
               key={moduleNumber}
               className={`w-2 h-2 rounded-full transition-colors ${
                 isComplete
-                  ? 'bg-[color:var(--color-terra)]'
-                  : 'border border-[color:var(--color-terra)]/30 bg-transparent'
+                  ? 'bg-[color:var(--ledger-accent)]'
+                  : 'border border-[color:var(--ledger-accent)]/30 bg-transparent'
               }`}
               aria-hidden="true"
             />
@@ -31,7 +31,7 @@ export function ProgressIndicator({ completedModules, totalModules }: ProgressIn
       </div>
 
       {/* Count label */}
-      <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-slate)]">
+      <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--ledger-muted)]">
         {completedCount} of {totalModules} modules complete
       </span>
     </div>

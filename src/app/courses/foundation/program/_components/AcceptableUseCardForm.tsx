@@ -9,6 +9,10 @@
 
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import type { Activity, ActivityField } from '@content/courses/foundation-program';
+import {
+  getInitialActivityValues,
+  validateActivityFields,
+} from '../_lib/activityFormHelpers';
 
 export interface AcceptableUseCardFormProps {
   readonly activity: Activity;
@@ -26,48 +30,19 @@ interface CardFormState {
   serverError: string | null;
 }
 
-function getInitialValues(
-  fields: readonly ActivityField[],
-  existing?: Record<string, string> | null,
-): Record<string, string> {
-  const init: Record<string, string> = {};
-  for (const f of fields) {
-    init[f.id] = existing?.[f.id] ?? '';
-  }
-  return init;
-}
-
-function validateFields(
-  fields: readonly ActivityField[],
-  values: Record<string, string>,
-): Record<string, string> {
-  const errors: Record<string, string> = {};
-  for (const f of fields) {
-    const val = values[f.id] ?? '';
-    if (f.required && val.trim().length === 0) {
-      errors[f.id] = `${f.label} is required.`;
-      continue;
-    }
-    if (f.minLength && val.length < f.minLength) {
-      errors[f.id] = `Must be at least ${f.minLength} characters (currently ${val.length}).`;
-    }
-  }
-  return errors;
-}
-
 function ReadOnlyField({ field, value }: { readonly field: ActivityField; readonly value: string }) {
   return (
     <div className="mb-5">
-      <label className="block font-sans text-sm font-semibold text-[color:var(--color-ink)] mb-1">
+      <label className="block font-sans text-sm font-semibold text-[color:var(--ledger-ink)] mb-1">
         {field.label}
       </label>
       {field.type === 'textarea' ? (
-        <div className="w-full border border-[color:var(--color-parch-dark)] rounded-sm px-3 py-2 text-sm font-sans bg-[color:var(--color-parch)] text-[color:var(--color-ink)] min-h-[80px] whitespace-pre-wrap">
-          {value || <span className="text-[color:var(--color-slate)]">No response</span>}
+        <div className="w-full border border-[color:var(--ledger-parch)] rounded-sm px-3 py-2 text-sm font-sans bg-[color:var(--ledger-paper)] text-[color:var(--ledger-ink)] min-h-[80px] whitespace-pre-wrap">
+          {value || <span className="text-[color:var(--ledger-muted)]">No response</span>}
         </div>
       ) : (
-        <div className="w-full border border-[color:var(--color-parch-dark)] rounded-sm px-3 py-2 text-sm font-sans bg-[color:var(--color-parch)] text-[color:var(--color-ink)]">
-          {value || <span className="text-[color:var(--color-slate)]">No response</span>}
+        <div className="w-full border border-[color:var(--ledger-parch)] rounded-sm px-3 py-2 text-sm font-sans bg-[color:var(--ledger-paper)] text-[color:var(--ledger-ink)]">
+          {value || <span className="text-[color:var(--ledger-muted)]">No response</span>}
         </div>
       )}
     </div>
@@ -91,20 +66,20 @@ function InteractiveCardField({
   const hasError = Boolean(error);
 
   const baseClass =
-    'w-full border rounded-sm px-3 py-2 text-sm font-sans bg-white text-[color:var(--color-ink)] placeholder:text-[color:var(--color-dust)] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] transition-shadow';
+    'w-full border rounded-sm px-3 py-2 text-sm font-sans bg-white text-[color:var(--ledger-ink)] placeholder:text-[color:var(--ledger-soft)] focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] transition-shadow';
   const borderClass = hasError
-    ? 'border-[color:var(--color-error)]'
-    : 'border-[color:var(--color-parch-dark)]';
+    ? 'border-[color:var(--ledger-weak)]'
+    : 'border-[color:var(--ledger-parch)]';
 
   return (
     <div className="mb-5">
       <label
         htmlFor={field.id}
-        className="block font-sans text-sm font-semibold text-[color:var(--color-ink)] mb-1"
+        className="block font-sans text-sm font-semibold text-[color:var(--ledger-ink)] mb-1"
       >
         {field.label}
         {field.required && (
-          <span className="ml-1 text-[color:var(--color-error)] text-xs" aria-label="required">
+          <span className="ml-1 text-[color:var(--ledger-weak)] text-xs" aria-label="required">
             *
           </span>
         )}
@@ -141,7 +116,7 @@ function InteractiveCardField({
       {hasError && (
         <p
           id={errorId}
-          className="mt-1 text-[color:var(--color-error)] font-mono text-xs"
+          className="mt-1 text-[color:var(--ledger-weak)] font-mono text-xs"
           role="alert"
         >
           Error: {error}
@@ -149,12 +124,12 @@ function InteractiveCardField({
       )}
 
       {field.type === 'textarea' && field.minLength && (
-        <p id={hintId} className="mt-1 text-[11px] font-mono text-[color:var(--color-slate)]">
+        <p id={hintId} className="mt-1 text-[11px] font-mono text-[color:var(--ledger-muted)]">
           {value.length}/{field.minLength} characters
         </p>
       )}
       {field.type !== 'textarea' && field.minLength && (
-        <p id={hintId} className="mt-1 text-[11px] font-mono text-[color:var(--color-slate)]">
+        <p id={hintId} className="mt-1 text-[11px] font-mono text-[color:var(--ledger-muted)]">
           Minimum {field.minLength} characters
         </p>
       )}
@@ -172,7 +147,7 @@ export function AcceptableUseCardForm({
   const isReadOnly = existingResponse != null;
 
   const [state, setState] = useState<CardFormState>({
-    values: getInitialValues(activity.fields, existingResponse),
+    values: getInitialActivityValues(activity.fields, existingResponse),
     errors: {},
     submitting: false,
     submitted: isReadOnly,
@@ -200,7 +175,7 @@ export function AcceptableUseCardForm({
     async (e: React.FormEvent) => {
       e.preventDefault();
 
-      const errors = validateFields(activity.fields, state.values);
+      const errors = validateActivityFields(activity.fields, state.values);
       if (Object.keys(errors).length > 0) {
         setState((prev) => ({ ...prev, errors }));
         return;
@@ -264,25 +239,25 @@ export function AcceptableUseCardForm({
 
   return (
     <div
-      className="border border-[color:var(--color-parch-dark)] border-l-4 rounded-sm p-6 bg-white/40 mb-8"
-      style={{ borderLeftColor: 'var(--color-terra)' }}
+      className="border border-[color:var(--ledger-parch)] border-l-4 rounded-sm p-6 bg-white/40 mb-8"
+      style={{ borderLeftColor: 'var(--ledger-accent)' }}
     >
       {/* Activity header */}
       <div className="mb-5">
-        <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] mb-1">
+        <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent)] mb-1">
           Activity {activity.id}
         </p>
         <div className="flex items-start justify-between gap-4">
-          <h3 className="font-serif text-xl font-bold text-[color:var(--color-ink)] mb-2">
+          <h3 className="font-serif text-xl font-bold text-[color:var(--ledger-ink)] mb-2">
             {activity.title}
           </h3>
           {state.submitted && (
-            <span className="shrink-0 inline-flex items-center gap-1 px-2 py-0.5 bg-[color:var(--color-sage)]/10 border border-[color:var(--color-sage)] rounded-sm font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-sage)]">
+            <span className="shrink-0 inline-flex items-center gap-1 px-2 py-0.5 bg-[color:var(--ledger-accent-2)]/10 border border-[color:var(--ledger-accent-2)] rounded-sm font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent-2)]">
               Submitted
             </span>
           )}
         </div>
-        <p className="text-sm font-sans text-[color:var(--color-slate)] leading-relaxed">
+        <p className="text-sm font-sans text-[color:var(--ledger-muted)] leading-relaxed">
           {activity.description}
         </p>
       </div>
@@ -301,13 +276,13 @@ export function AcceptableUseCardForm({
             ))}
           </div>
 
-          <div className="mt-6 pt-4 border-t border-[color:var(--color-parch-dark)]">
-            <p className="text-xs font-mono text-[color:var(--color-slate)] uppercase tracking-widest mb-2">
+          <div className="mt-6 pt-4 border-t border-[color:var(--ledger-parch)]">
+            <p className="text-xs font-mono text-[color:var(--ledger-muted)] uppercase tracking-widest mb-2">
               Your artifact
             </p>
             <a
               href={`/api/courses/generate-acceptable-use-card?enrollmentId=${enrollmentId}`}
-              className="inline-flex items-center gap-2 px-5 py-2 border border-[color:var(--color-terra)] text-[color:var(--color-terra)] hover:bg-[color:var(--color-terra)] hover:text-[color:var(--color-linen)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-2"
+              className="inline-flex items-center gap-2 px-5 py-2 border border-[color:var(--ledger-accent)] text-[color:var(--ledger-accent)] hover:bg-[color:var(--ledger-accent)] hover:text-[color:var(--ledger-bg)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-2"
             >
               <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                 <path
@@ -337,18 +312,18 @@ export function AcceptableUseCardForm({
 
           {state.serverError && (
             <p
-              className="mt-3 mb-3 text-sm font-sans text-[color:var(--color-error)] bg-[color:var(--color-error)]/5 border border-[color:var(--color-error)]/20 rounded-sm px-3 py-2"
+              className="mt-3 mb-3 text-sm font-sans text-[color:var(--ledger-weak)] bg-[color:var(--ledger-weak)]/5 border border-[color:var(--ledger-weak)]/20 rounded-sm px-3 py-2"
               role="alert"
             >
               {state.serverError}
             </p>
           )}
 
-          <div className="mt-4 pt-4 border-t border-[color:var(--color-parch-dark)]">
+          <div className="mt-4 pt-4 border-t border-[color:var(--ledger-parch)]">
             <button
               type="submit"
               disabled={state.submitting}
-              className="px-6 py-2.5 bg-[color:var(--color-terra)] hover:bg-[color:var(--color-terra-light)] disabled:bg-[color:var(--color-parch-dark)] disabled:text-[color:var(--color-dust)] text-[color:var(--color-linen)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-2"
+              className="px-6 py-2.5 bg-[color:var(--ledger-accent)] hover:bg-[color:var(--ledger-accent-light)] disabled:bg-[color:var(--ledger-parch)] disabled:text-[color:var(--ledger-soft)] text-[color:var(--ledger-bg)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-2"
               aria-label={state.submitting ? 'Submitting card…' : 'Submit and build card'}
             >
               {state.submitting ? 'Submitting…' : 'Submit and Build Card'}

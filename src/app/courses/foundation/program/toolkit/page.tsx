@@ -170,7 +170,7 @@ function SectionCard({
 }) {
   return (
     <section
-      className="bg-[color:var(--color-parch)] border border-[color:var(--color-parch-dark)] rounded-sm p-6 mb-6"
+      className="bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-parch)] rounded-sm p-6 mb-6"
       aria-labelledby={`section-${label.replace(/\s+/g, '-').toLowerCase()}`}
     >
       <p
@@ -181,7 +181,7 @@ function SectionCard({
       </p>
       <h2
         id={`section-${label.replace(/\s+/g, '-').toLowerCase()}`}
-        className="font-serif text-2xl font-bold text-[color:var(--color-ink)] mb-5"
+        className="font-serif text-2xl font-bold text-[color:var(--ledger-ink)] mb-5"
       >
         {title}
       </h2>
@@ -194,7 +194,7 @@ function SectionCard({
 
 function EmptyState({ message }: { readonly message: string }) {
   return (
-    <p className="font-sans text-sm text-[color:var(--color-slate)]">{message}</p>
+    <p className="font-sans text-sm text-[color:var(--ledger-muted)]">{message}</p>
   );
 }
 
@@ -312,17 +312,17 @@ export default async function ToolkitPage() {
       <article>
 
         {/* 1 — My Skills */}
-        <SectionCard title="My Skills" label="Skills" labelColor="var(--color-amber)">
+        <SectionCard title="My Skills" label="Skills" labelColor="var(--ledger-accent)">
           <div className="space-y-4">
 
             {/* M7 skill */}
-            <div className="border border-[color:var(--color-parch-dark)] rounded-sm p-4 bg-white/30">
+            <div className="border border-[color:var(--ledger-parch)] rounded-sm p-4 bg-white/30">
               <div className="flex items-start justify-between gap-4 flex-wrap">
                 <div className="flex-1 min-w-0">
-                  <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-amber)] mb-1">
+                  <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent)] mb-1">
                     Module 7 — My First Skill
                   </p>
-                  <p className="font-sans text-sm font-semibold text-[color:var(--color-ink)] mb-1">
+                  <p className="font-sans text-sm font-semibold text-[color:var(--ledger-ink)] mb-1">
                     {m7SkillMd
                       ? (() => {
                           const match = /^# (.+?) - v1/m.exec(m7SkillMd);
@@ -330,7 +330,7 @@ export default async function ToolkitPage() {
                         })()
                       : 'Banking AI Skill v1.0'}
                   </p>
-                  <p className="font-sans text-xs text-[color:var(--color-slate)]">
+                  <p className="font-sans text-xs text-[color:var(--ledger-muted)]">
                     {m7SkillMd
                       ? 'Five-component RTFC skill built during Module 7. Ready to paste into ChatGPT, Claude, or Gemini.'
                       : m7Complete
@@ -347,7 +347,7 @@ export default async function ToolkitPage() {
                 ) : (
                   <Link
                     href="/courses/foundation/program/7"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[color:var(--color-parch-dark)] text-[color:var(--color-slate)] text-[10px] font-mono uppercase tracking-widest rounded-sm"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[color:var(--ledger-parch)] text-[color:var(--ledger-muted)] text-[10px] font-mono uppercase tracking-widest rounded-sm"
                     aria-label="Go to Module 7 to build your skill"
                   >
                     Go to Module 7
@@ -357,13 +357,13 @@ export default async function ToolkitPage() {
             </div>
 
             {/* M8 iterated skill */}
-            <div className="border border-[color:var(--color-parch-dark)] rounded-sm p-4 bg-white/30">
+            <div className="border border-[color:var(--ledger-parch)] rounded-sm p-4 bg-white/30">
               <div className="flex items-start justify-between gap-4 flex-wrap">
                 <div className="flex-1 min-w-0">
-                  <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] mb-1">
+                  <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent)] mb-1">
                     Module 8 — Iterated Skill
                   </p>
-                  <p className="font-sans text-sm font-semibold text-[color:var(--color-ink)] mb-1">
+                  <p className="font-sans text-sm font-semibold text-[color:var(--ledger-ink)] mb-1">
                     {m8IteratedMd
                       ? (() => {
                           const match = /^# (.+?) - v1/m.exec(m7SkillMd ?? '');
@@ -371,7 +371,7 @@ export default async function ToolkitPage() {
                         })()
                       : 'Banking AI Skill v1.1'}
                   </p>
-                  <p className="font-sans text-xs text-[color:var(--color-slate)]">
+                  <p className="font-sans text-xs text-[color:var(--ledger-muted)]">
                     {m8IteratedMd
                       ? 'Stress-tested and revised version of your Module 7 skill with iteration log embedded.'
                       : m8Complete
@@ -379,7 +379,7 @@ export default async function ToolkitPage() {
                         : 'Complete Module 8 to test and iterate your skill.'}
                   </p>
                   {m8Response?.['revision-notes'] && (
-                    <p className="font-sans text-xs text-[color:var(--color-ink)] mt-2 leading-relaxed">
+                    <p className="font-sans text-xs text-[color:var(--ledger-ink)] mt-2 leading-relaxed">
                       <span className="font-semibold">Revision notes: </span>
                       {m8Response['revision-notes'].slice(0, 160)}
                       {m8Response['revision-notes'].length > 160 ? '…' : ''}
@@ -395,7 +395,7 @@ export default async function ToolkitPage() {
                 ) : (
                   <Link
                     href="/courses/foundation/program/8"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[color:var(--color-parch-dark)] text-[color:var(--color-slate)] text-[10px] font-mono uppercase tracking-widest rounded-sm"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[color:var(--ledger-parch)] text-[color:var(--ledger-muted)] text-[10px] font-mono uppercase tracking-widest rounded-sm"
                     aria-label="Go to Module 8 to iterate your skill"
                   >
                     Go to Module 8
@@ -408,7 +408,7 @@ export default async function ToolkitPage() {
         </SectionCard>
 
         {/* 2 — My Artifacts */}
-        <SectionCard title="My Artifacts" label="Artifacts" labelColor="var(--color-cobalt)">
+        <SectionCard title="My Artifacts" label="Artifacts" labelColor="var(--ledger-accent-2)">
           <div className="space-y-3">
             {ARTIFACTS.map((artifact) => {
               const isUnlocked = completedModules.includes(artifact.module);
@@ -418,36 +418,36 @@ export default async function ToolkitPage() {
                   className={[
                     'border rounded-sm p-4 flex items-start justify-between gap-4 flex-wrap',
                     isUnlocked
-                      ? 'border-[color:var(--color-parch-dark)] bg-white/30'
-                      : 'border-[color:var(--color-parch-dark)] bg-[color:var(--color-parch-dark)]/30 opacity-60',
+                      ? 'border-[color:var(--ledger-parch)] bg-white/30'
+                      : 'border-[color:var(--ledger-parch)] bg-[color:var(--ledger-parch)]/30 opacity-60',
                   ].join(' ')}
                 >
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1 flex-wrap">
-                      <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-cobalt)]">
+                      <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent-2)]">
                         Module {artifact.module}
                       </p>
                       <span
                         className="font-mono text-[9px] uppercase tracking-widest px-1.5 py-0.5 rounded-sm border"
                         style={{
-                          borderColor: 'var(--color-cobalt)',
-                          color: 'var(--color-cobalt)',
+                          borderColor: 'var(--ledger-accent-2)',
+                          color: 'var(--ledger-accent-2)',
                         }}
                       >
                         {artifact.format}
                       </span>
                     </div>
-                    <p className="font-sans text-sm font-semibold text-[color:var(--color-ink)] mb-0.5">
+                    <p className="font-sans text-sm font-semibold text-[color:var(--ledger-ink)] mb-0.5">
                       {artifact.title}
                     </p>
-                    <p className="font-sans text-xs text-[color:var(--color-slate)] leading-relaxed">
+                    <p className="font-sans text-xs text-[color:var(--ledger-muted)] leading-relaxed">
                       {artifact.description}
                     </p>
                   </div>
                   {isUnlocked ? (
                     <Link
                       href={`/courses/foundation/program/${artifact.module}`}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[color:var(--color-cobalt)] text-[color:var(--color-cobalt)] hover:bg-[color:var(--color-cobalt)] hover:text-[color:var(--color-linen)] text-[10px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-cobalt)] focus:ring-offset-2"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[color:var(--ledger-accent-2)] text-[color:var(--ledger-accent-2)] hover:bg-[color:var(--ledger-accent-2)] hover:text-[color:var(--ledger-bg)] text-[10px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent-2)] focus:ring-offset-2"
                     >
                       <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                         <path
@@ -461,7 +461,7 @@ export default async function ToolkitPage() {
                   ) : (
                     <Link
                       href={`/courses/foundation/program/${artifact.module}`}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[color:var(--color-parch-dark)] text-[color:var(--color-slate)] text-[10px] font-mono uppercase tracking-widest rounded-sm"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[color:var(--ledger-parch)] text-[color:var(--ledger-muted)] text-[10px] font-mono uppercase tracking-widest rounded-sm"
                       aria-label={`Go to Module ${artifact.module} to unlock this artifact`}
                     >
                       Locked
@@ -477,15 +477,15 @@ export default async function ToolkitPage() {
         <SectionCard
           title="My Subscription Inventory"
           label="Subscription Inventory"
-          labelColor="var(--color-sage)"
+          labelColor="var(--ledger-accent-2)"
         >
           {inventoryResponse ? (
             <div className="space-y-2">
-              <p className="font-sans text-xs text-[color:var(--color-slate)] mb-4 leading-relaxed">
+              <p className="font-sans text-xs text-[color:var(--ledger-muted)] mb-4 leading-relaxed">
                 Recorded during Module 2. Update by revisiting{' '}
                 <Link
                   href="/courses/foundation/program/2"
-                  className="underline underline-offset-2 text-[color:var(--color-ink)] hover:text-[color:var(--color-terra)] transition-colors"
+                  className="underline underline-offset-2 text-[color:var(--ledger-ink)] hover:text-[color:var(--ledger-accent)] transition-colors"
                 >
                   Module 2
                 </Link>
@@ -498,12 +498,12 @@ export default async function ToolkitPage() {
                   return (
                     <div
                       key={fieldId}
-                      className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 py-2.5 border-b border-[color:var(--color-parch-dark)] last:border-0"
+                      className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 py-2.5 border-b border-[color:var(--ledger-parch)] last:border-0"
                     >
-                      <span className="font-sans text-sm font-semibold text-[color:var(--color-ink)] sm:w-56 shrink-0">
+                      <span className="font-sans text-sm font-semibold text-[color:var(--ledger-ink)] sm:w-56 shrink-0">
                         {platformName}
                       </span>
-                      <span className="font-sans text-sm text-[color:var(--color-slate)]">
+                      <span className="font-sans text-sm text-[color:var(--ledger-muted)]">
                         {displayValue || <em>No selection recorded</em>}
                       </span>
                     </div>
@@ -520,28 +520,28 @@ export default async function ToolkitPage() {
         <SectionCard
           title="What I Automated"
           label="Capstone Summary"
-          labelColor="var(--color-terra)"
+          labelColor="var(--ledger-accent)"
         >
           {m8Response && m7SkillMd ? (
             <div className="space-y-4">
-              <p className="font-sans text-xs text-[color:var(--color-slate)] leading-relaxed mb-4">
+              <p className="font-sans text-xs text-[color:var(--ledger-muted)] leading-relaxed mb-4">
                 Summary of your Module 9 capstone: the workflow you automated, the quality
                 standard your work product was built to meet, and the iteration path that
                 got you there.
               </p>
 
               {/* Skill summary */}
-              <div className="border-l-4 pl-4 py-1" style={{ borderColor: 'var(--color-terra)' }}>
-                <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] mb-1">
+              <div className="border-l-4 pl-4 py-1" style={{ borderColor: 'var(--ledger-accent)' }}>
+                <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent)] mb-1">
                   Skill Used for Capstone
                 </p>
-                <p className="font-sans text-sm text-[color:var(--color-ink)] leading-relaxed">
+                <p className="font-sans text-sm text-[color:var(--ledger-ink)] leading-relaxed">
                   {(() => {
                     const match = /^# (.+?) - v1/m.exec(m7SkillMd);
                     return match ? match[1].trim() : 'Banking AI Skill';
                   })()}{' '}
                   {m8Response['sharing-ladder-level'] ? (
-                    <span className="text-[color:var(--color-slate)]">
+                    <span className="text-[color:var(--ledger-muted)]">
                       — Sharing level:{' '}
                       {
                         {
@@ -558,11 +558,11 @@ export default async function ToolkitPage() {
 
               {/* Automation type from stress test */}
               {m8Response['test-input-1'] && (
-                <div className="border-l-4 pl-4 py-1" style={{ borderColor: 'var(--color-amber)' }}>
-                  <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-amber)] mb-1">
+                <div className="border-l-4 pl-4 py-1" style={{ borderColor: 'var(--ledger-accent)' }}>
+                  <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent)] mb-1">
                     Tested Against
                   </p>
-                  <p className="font-sans text-sm text-[color:var(--color-ink)] leading-relaxed">
+                  <p className="font-sans text-sm text-[color:var(--ledger-ink)] leading-relaxed">
                     {m8Response['test-input-1']}
                   </p>
                 </div>
@@ -570,22 +570,22 @@ export default async function ToolkitPage() {
 
               {/* Revision summary */}
               {m8Response['revision-notes'] && (
-                <div className="border-l-4 pl-4 py-1" style={{ borderColor: 'var(--color-sage)' }}>
-                  <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-sage)] mb-1">
+                <div className="border-l-4 pl-4 py-1" style={{ borderColor: 'var(--ledger-accent-2)' }}>
+                  <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent-2)] mb-1">
                     Iteration Improvements
                   </p>
-                  <p className="font-sans text-sm text-[color:var(--color-ink)] leading-relaxed">
+                  <p className="font-sans text-sm text-[color:var(--ledger-ink)] leading-relaxed">
                     {m8Response['revision-notes']}
                   </p>
                 </div>
               )}
 
               {/* Quality standard */}
-              <div className="border-l-4 pl-4 py-1" style={{ borderColor: 'var(--color-cobalt)' }}>
-                <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-cobalt)] mb-1">
+              <div className="border-l-4 pl-4 py-1" style={{ borderColor: 'var(--ledger-accent-2)' }}>
+                <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent-2)] mb-1">
                   Quality Standard Met
                 </p>
-                <p className="font-sans text-sm text-[color:var(--color-ink)] leading-relaxed">
+                <p className="font-sans text-sm text-[color:var(--ledger-ink)] leading-relaxed">
                   Five-dimension AiBI-Foundation rubric: Accuracy (hard gate), Completeness,
                   Tone, Judgment, and Skill Quality.
                 </p>
@@ -594,7 +594,7 @@ export default async function ToolkitPage() {
               <div className="pt-2">
                 <Link
                   href="/courses/foundation/program/submit"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-[color:var(--color-terra)] hover:bg-[color:var(--color-terra-light)] text-[color:var(--color-linen)] text-[10px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-2"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-[color:var(--ledger-accent)] hover:bg-[color:var(--ledger-accent-light)] text-[color:var(--ledger-bg)] text-[10px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-2"
                 >
                   Submit Work Product
                   <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
@@ -616,18 +616,18 @@ export default async function ToolkitPage() {
         <SectionCard
           title="Transformation Report"
           label="Course Report"
-          labelColor="var(--color-terra)"
+          labelColor="var(--ledger-accent)"
         >
-          <div className="border border-[color:var(--color-parch-dark)] rounded-sm p-4 bg-white/30">
+          <div className="border border-[color:var(--ledger-parch)] rounded-sm p-4 bg-white/30">
             <div className="flex items-start justify-between gap-4 flex-wrap">
               <div className="flex-1 min-w-0">
-                <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] mb-1">
+                <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent)] mb-1">
                   AiBI-Foundation Complete
                 </p>
-                <p className="font-sans text-sm font-semibold text-[color:var(--color-ink)] mb-1">
+                <p className="font-sans text-sm font-semibold text-[color:var(--ledger-ink)] mb-1">
                   AiBI-Foundation Transformation Report
                 </p>
-                <p className="font-sans text-xs text-[color:var(--color-slate)] leading-relaxed">
+                <p className="font-sans text-xs text-[color:var(--ledger-muted)] leading-relaxed">
                   Five-page PDF summarising your pre/post assessment comparison, skills built,
                   estimated annual time savings, quick wins logged, and course completion
                   status. The document a learner shows their manager.
