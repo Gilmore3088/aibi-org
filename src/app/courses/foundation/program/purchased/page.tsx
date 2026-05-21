@@ -271,6 +271,59 @@ export default async function AiBIPurchasedPage({
             .
           </p>
         </section>
+
+        <section
+          style={{
+            marginTop: 40,
+            border: '1px solid var(--ledger-rule)',
+            borderLeft: '4px solid var(--ledger-accent)',
+            background: 'var(--ledger-paper)',
+            borderRadius: 3,
+            padding: '24px 26px',
+          }}
+        >
+          <p
+            style={{
+              fontFamily: 'var(--ledger-mono)',
+              fontSize: 10.5,
+              letterSpacing: '0.2em',
+              textTransform: 'uppercase',
+              color: 'var(--ledger-accent)',
+              margin: '0 0 10px',
+            }}
+          >
+            Included with your purchase
+          </p>
+          <h2
+            style={{
+              fontFamily: 'var(--ledger-serif)',
+              fontWeight: 500,
+              fontSize: 24,
+              lineHeight: 1.15,
+              letterSpacing: '-0.02em',
+              color: 'var(--ledger-ink)',
+              margin: '0 0 10px',
+            }}
+          >
+            Your Banking AI Toolbox
+          </h2>
+          <p
+            style={{
+              fontSize: 14.5,
+              lineHeight: 1.6,
+              color: 'var(--ledger-ink-2)',
+              margin: '0 0 18px',
+              maxWidth: '60ch',
+            }}
+          >
+            The full workbench: Library, Build, Playground, My Toolbox, and
+            Cookbook. Twelve banker-built prompts are live today, with more
+            landing as the role kits roll out.
+          </p>
+          <PrimaryButton as="a" href="/dashboard/toolbox">
+            Open the Toolbox →
+          </PrimaryButton>
+        </section>
       </div>
     </main>
   );

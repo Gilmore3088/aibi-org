@@ -260,8 +260,9 @@ export function ToolboxHomeV5({
           </h1>
         </header>
 
-        {/* STATS RIBBON */}
-        <Stats stats={stats} />
+        {/* STATS RIBBON — suppressed when empty so a new desk doesn't open
+            on a bare 0 / 0 / 0 / — band (the editorial empty state speaks instead). */}
+        {!empty && <Stats stats={stats} />}
 
         {/* ASK BAR */}
         <form
@@ -301,7 +302,10 @@ export function ToolboxHomeV5({
           headline={<>Pick a <em className="italic text-[color:var(--ledger-accent)]">role.</em> Adopt a desk.</>}
           right="4 curated · BSA shipped, 3 awaiting SME sign-off"
         />
-        <KitGrid onAdopt={(k) => setToast(k.shipped ? 'BSA kit already in your toolbox' : `${k.role} kit — content tracked in #184`)} />
+        <KitGrid
+          onAdopt={() => setToast('BSA kit already in your toolbox')}
+          onNotify={(k) => setToast(`We'll email you when the ${k.role} kit ships`)}
+        />
 
         {/* SHARED WITH YOU — honest empty state */}
         <SharedWithYouEmpty />
@@ -489,40 +493,94 @@ function SectionHeader({
   );
 }
 
-function KitGrid({ onAdopt }: { readonly onAdopt: (kit: KitCard) => void }): JSX.Element {
+function KitGrid({
+  onAdopt,
+  onNotify,
+}: {
+  readonly onAdopt: (kit: KitCard) => void;
+  readonly onNotify: (kit: KitCard) => void;
+}): JSX.Element {
   return (
     <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-      {STARTER_KITS.map((kit) => (
-        <article
-          key={kit.key}
-          className={`flex cursor-pointer flex-col border bg-[color:var(--ledger-paper-warm)] transition-all hover:-translate-y-0.5 hover:border-[color:var(--ledger-ink)] ${
-            kit.shipped ? 'border-[color:var(--ledger-rule-strong)]' : 'border-[color:var(--ledger-rule)]'
-          }`}
-          onClick={() => onAdopt(kit)}
-          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onAdopt(kit); } }}
-          role="button"
-          tabIndex={0}
-          aria-label={`Adopt ${kit.role} starter kit`}
-        >
-          <div className="flex flex-col gap-1.5 border-b border-[color:var(--ledger-rule)] px-4 py-3.5">
-            <div className="flex items-center justify-between font-mono text-[9px] font-bold uppercase tracking-[0.22em] text-[color:var(--ledger-accent)]">
-              <span>{kit.role}</span>
-              {kit.shipped && (
-                <span className="bg-[color:var(--ledger-accent)] px-1.5 py-0.5 text-[8px] tracking-[0.2em] text-[color:var(--ledger-paper-warm)]">✓ Live</span>
-              )}
-            </div>
-            <h3 className="font-serif text-xl leading-tight tracking-[-0.02em] text-[color:var(--ledger-ink)]">{kit.headline}</h3>
-            <p className="mt-0.5 font-serif text-[13px] italic leading-snug text-[color:var(--ledger-muted)]">{kit.description}</p>
-          </div>
-          <div className="flex items-center gap-3 border-t border-dashed border-[color:var(--ledger-rule)] bg-[color:var(--ledger-paper-warm)] px-4 py-3 font-mono text-[9.5px] font-semibold uppercase tracking-[0.12em] text-[color:var(--ledger-muted)]">
-            <span><b className="font-bold text-[color:var(--ledger-ink-2)]">{kit.toolCount}</b> tools</span>
-            <span className={`ml-auto font-bold tracking-[0.18em] ${kit.shipped ? 'text-[color:var(--ledger-accent-2)]' : 'text-[color:var(--ledger-accent)]'}`}>
-              {kit.shipped ? 'In your toolbox ✓' : 'Awaiting SME →'}
-            </span>
-          </div>
-        </article>
-      ))}
+      {STARTER_KITS.map((kit) =>
+        // A shipped kit is adoptable (the whole card is a button). A kit still
+        // in SME review is NOT adoptable — it shows an honest "in review" state
+        // with a notify affordance, so the click no longer flips a marker that
+        // swaps no content (#229). When real content lands, set `shipped: true`
+        // (or wire a per-kit pendingReview flag from PR #225) and it reverts to
+        // the adoptable card.
+        kit.shipped ? (
+          <ShippedKitCard key={kit.key} kit={kit} onAdopt={onAdopt} />
+        ) : (
+          <ComingSoonKitCard key={kit.key} kit={kit} onNotify={onNotify} />
+        ),
+      )}
     </div>
+  );
+}
+
+function ShippedKitCard({
+  kit,
+  onAdopt,
+}: {
+  readonly kit: KitCard;
+  readonly onAdopt: (kit: KitCard) => void;
+}): JSX.Element {
+  return (
+    <article
+      className="flex cursor-pointer flex-col border border-[color:var(--ledger-rule-strong)] bg-[color:var(--ledger-paper-warm)] transition-all hover:-translate-y-0.5 hover:border-[color:var(--ledger-ink)]"
+      onClick={() => onAdopt(kit)}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onAdopt(kit); } }}
+      role="button"
+      tabIndex={0}
+      aria-label={`Adopt ${kit.role} starter kit`}
+    >
+      <div className="flex flex-col gap-1.5 border-b border-[color:var(--ledger-rule)] px-4 py-3.5">
+        <div className="flex items-center justify-between font-mono text-[9px] font-bold uppercase tracking-[0.22em] text-[color:var(--ledger-accent)]">
+          <span>{kit.role}</span>
+          <span className="bg-[color:var(--ledger-accent)] px-1.5 py-0.5 text-[8px] tracking-[0.2em] text-[color:var(--ledger-paper-warm)]">✓ Live</span>
+        </div>
+        <h3 className="font-serif text-xl leading-tight tracking-[-0.02em] text-[color:var(--ledger-ink)]">{kit.headline}</h3>
+        <p className="mt-0.5 font-serif text-[13px] italic leading-snug text-[color:var(--ledger-muted)]">{kit.description}</p>
+      </div>
+      <div className="flex items-center gap-3 border-t border-dashed border-[color:var(--ledger-rule)] bg-[color:var(--ledger-paper-warm)] px-4 py-3 font-mono text-[9.5px] font-semibold uppercase tracking-[0.12em] text-[color:var(--ledger-muted)]">
+        <span><b className="font-bold text-[color:var(--ledger-ink-2)]">{kit.toolCount}</b> tools</span>
+        <span className="ml-auto font-bold tracking-[0.18em] text-[color:var(--ledger-accent-2)]">In your toolbox ✓</span>
+      </div>
+    </article>
+  );
+}
+
+function ComingSoonKitCard({
+  kit,
+  onNotify,
+}: {
+  readonly kit: KitCard;
+  readonly onNotify: (kit: KitCard) => void;
+}): JSX.Element {
+  return (
+    <article className="flex flex-col border border-[color:var(--ledger-rule)] bg-[color:var(--ledger-parch)]">
+      <div className="flex flex-col gap-1.5 border-b border-[color:var(--ledger-rule)] px-4 py-3.5">
+        <div className="flex items-center justify-between font-mono text-[9px] font-bold uppercase tracking-[0.22em] text-[color:var(--ledger-muted)]">
+          <span>{kit.role}</span>
+          <span className="border border-[color:var(--ledger-rule-strong)] px-1.5 py-0.5 text-[8px] tracking-[0.2em] text-[color:var(--ledger-muted)]">
+            In review
+          </span>
+        </div>
+        <h3 className="font-serif text-xl leading-tight tracking-[-0.02em] text-[color:var(--ledger-ink-2)]">{kit.headline}</h3>
+        <p className="mt-0.5 font-serif text-[13px] italic leading-snug text-[color:var(--ledger-muted)]">{kit.description}</p>
+      </div>
+      <div className="flex items-center gap-3 border-t border-dashed border-[color:var(--ledger-rule)] px-4 py-3 font-mono text-[9.5px] font-semibold uppercase tracking-[0.12em] text-[color:var(--ledger-muted)]">
+        <span><b className="font-bold text-[color:var(--ledger-ink-2)]">{kit.toolCount}</b> prompts in SME review</span>
+        <button
+          type="button"
+          onClick={() => onNotify(kit)}
+          className="ml-auto font-bold tracking-[0.18em] text-[color:var(--ledger-accent)] underline-offset-2 transition-colors hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-ledger-accent"
+        >
+          Notify me →
+        </button>
+      </div>
+    </article>
   );
 }
 
@@ -751,7 +809,8 @@ function EmptyState({ onBrowse, onBuild }: { readonly onBrowse: () => void; read
         Your toolbox is <em className="italic text-[color:var(--ledger-accent)]">empty.</em>
       </h2>
       <p className="mt-3 font-serif text-base leading-relaxed text-[color:var(--ledger-muted)]">
-        Start from a Library template or build your first skill for work you do every week.
+        Pick up any prompt from the Library — your saved copies live here,
+        ready to re-run.
       </p>
       <div className="mt-6 flex justify-center gap-3">
         <button
@@ -759,7 +818,7 @@ function EmptyState({ onBrowse, onBuild }: { readonly onBrowse: () => void; read
           onClick={onBrowse}
           className="bg-[color:var(--ledger-ink)] px-5 py-3 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--ledger-paper-warm)] transition-colors hover:bg-[color:var(--ledger-accent)]"
         >
-          Browse Library
+          Browse Library →
         </button>
         <button
           type="button"

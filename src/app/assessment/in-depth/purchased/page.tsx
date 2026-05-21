@@ -159,6 +159,34 @@ export default async function InDepthPurchasedPage({
             .
           </p>
         </section>
+
+        <section className="mt-10 rounded-[3px] border border-[color:var(--ledger-rule)] border-l-4 border-l-[color:var(--ledger-accent)] bg-[color:var(--ledger-paper)] p-6 md:p-8">
+          <p className="font-mono text-[10.5px] uppercase tracking-[0.2em] text-[color:var(--ledger-accent)] mb-2.5">
+            Included with your purchase
+          </p>
+          <h2 className="font-serif text-2xl font-medium leading-tight tracking-[-0.02em] text-[color:var(--ledger-ink)] mb-2.5">
+            Your AI Starter Toolkit
+          </h2>
+          <p className="text-sm md:text-[14.5px] leading-relaxed text-[color:var(--ledger-ink-2)] mb-5 max-w-[60ch]">
+            Read-only access to the Library and Cookbook — banker-vetted
+            prompts you can copy into Claude, ChatGPT, or Gemini. Build and
+            Playground unlock with the AiBI-Foundation course.
+          </p>
+          <div className="flex flex-wrap gap-4">
+            <Link
+              href="/dashboard/toolbox/library"
+              className="inline-block rounded-sm bg-[color:var(--ledger-accent)] px-8 py-3 font-mono text-[10px] uppercase tracking-[0.15em] text-[color:var(--ledger-bg)] transition-colors hover:bg-[color:var(--ledger-accent-light)]"
+            >
+              Browse the Library →
+            </Link>
+            <Link
+              href="/courses/foundation/program"
+              className="inline-block rounded-sm border border-[color:var(--ledger-rule-strong)] px-8 py-3 font-mono text-[10px] uppercase tracking-[0.15em] text-[color:var(--ledger-ink)] transition-colors hover:bg-[color:var(--ledger-parch)]"
+            >
+              See the Foundation upgrade
+            </Link>
+          </div>
+        </section>
       </div>
     </main>
   );
