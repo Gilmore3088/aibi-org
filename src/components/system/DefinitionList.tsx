@@ -37,7 +37,7 @@ export function DefinitionList({
   className,
 }: DefinitionListProps) {
   const borderColor = surface === "dark" ? "border-cream/20" : "border-hairline";
-  const labelColor = surface === "dark" ? "text-cream" : "text-dust";
+  const labelColor = surface === "dark" ? "text-cream" : "text-slate";
   const valueColor = surface === "dark" ? "text-bone" : "text-ink";
 
   return (

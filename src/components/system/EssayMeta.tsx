@@ -46,7 +46,7 @@ function formatDate(iso: string): string {
 
 export function EssayMeta({ date, category, readMinutes, className, tone = "light" }: EssayMetaProps) {
   const color = tone === "dark" ? "text-cream" : "text-slate";
-  const sep = tone === "dark" ? "text-cream/40" : "text-dust";
+  const sep = tone === "dark" ? "text-cream/40" : "text-slate";
 
   return (
     <p className={cn("font-mono text-mono-sm tabular-nums", color, className)}>

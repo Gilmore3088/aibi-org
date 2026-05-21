@@ -123,7 +123,7 @@ export function QuestionFrame({
             <blockquote className="font-serif italic text-body-sm text-slate leading-relaxed">
               {why.citation.text}
             </blockquote>
-            <figcaption className="font-mono text-label-sm uppercase tracking-widest text-dust mt-s2">
+            <figcaption className="font-mono text-label-sm uppercase tracking-widest text-slate mt-s2">
               {why.citation.source}
             </figcaption>
           </figure>

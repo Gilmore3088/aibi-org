@@ -79,7 +79,7 @@ export function ModuleNavigator({ modules, className }: ModuleNavigatorProps) {
                           ? "text-success"
                           : lesson.state === "current"
                             ? "text-terra"
-                            : "text-dust"
+                            : "text-slate"
                       )}
                     >
                       {lesson.state === "complete" ? "✓" : lesson.state === "current" ? "→" : "·"}

@@ -81,7 +81,7 @@ export function QuestionCard({
           <span className="text-terra">
             {String(questionNumber).padStart(2, "0")}
           </span>
-          <span className="mx-s2 text-dust">/</span>
+          <span className="mx-s2 text-slate">/</span>
           <span>{String(totalQuestions).padStart(2, "0")}</span>
         </p>
         <p className="font-serif-sc text-label-md uppercase tracking-widest text-terra">
@@ -172,7 +172,7 @@ export function QuestionCard({
         ) : (
           <span />
         )}
-        <span className="font-mono text-label-md uppercase tracking-widest text-dust">
+        <span className="font-mono text-label-md uppercase tracking-widest text-slate">
           Tap an answer to continue
         </span>
       </div>
