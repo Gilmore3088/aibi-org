@@ -554,9 +554,9 @@ uses Ledger; migrated surfaces drop Terra references. When migration completes,
 --ledger-tape:         #F1E9D0   /* highlight tape (reviewer notes) */
 --ledger-ink:          #0E1B2D   /* primary text, primary fill */
 --ledger-ink-2:        #1F2A3F   /* secondary text */
---ledger-muted:        #5C6B82   /* muted text */
---ledger-soft:         #8C95A8   /* softest text — wordmark line 2 */
---ledger-accent:       #B5862A   /* gold — emphasis, primary CTA alt */
+--ledger-muted:        #4F5C6E   /* muted text (darkened 2026-05-21 from #5C6B82 for WCAG AA) */
+--ledger-soft:         #8C95A8   /* softest text — wordmark line 2 (logotype; WCAG-exempt) */
+--ledger-accent:       #7C5814   /* gold — emphasis, primary CTA alt (darkened 2026-05-21 from #B5862A for WCAG AA; SINGLE SOURCE for all gold) */
 --ledger-accent-2:     #1E3A5F   /* navy — secondary accent */
 --ledger-weak:         #8E3B2A   /* oxblood — destructive only */
 --ledger-rule:         #D5D1C2   /* hairline divider */
@@ -771,18 +771,30 @@ publications, hand-kept ledgers.
 
 **Accessibility:** WCAG 2.1 AA.
 
-**Color:** Gold (`--ledger-accent` `#B5862A`) for emphasis only — never
-decoration. Oxblood (`--ledger-weak` `#8E3B2A`) for destructive / late /
-failed only — never marketing. Navy (`--ledger-accent-2` `#1E3A5F`) as
-a secondary accent. Body text on Paper or BG, never on Parch (insufficient
-contrast). The pillar color discipline (sage / cobalt / terra) is retired.
+**Color:** Gold (`--ledger-accent` **`#7C5814`** — darkened 2026-05-21 from
+`#B5862A` for WCAG AA; old gold failed at 2.69:1 as text) for emphasis only —
+never decoration. **Single-sourced:** the gold lives only in `--ledger-accent`
+(+ derived `--ledger-warn`, `--ledger-accent-soft`, and `--ledger-accent-a06..a40`
+tint tokens). All CSS + inline-DOM SVG/styles reference `var(--ledger-accent)`;
+only non-CSS contexts (Satori OG image, static favicon `.svg`, vanilla-JS chart
+constants, server-generated downloads) carry a literal `#7C5814`. **Change the
+gold in one place: `tokens-ledger.css`.** Oxblood (`--ledger-weak` `#8E3B2A`)
+for destructive / late / failed only — never marketing. Navy
+(`--ledger-accent-2` `#1E3A5F`) as a secondary accent. Muted/slate secondary
+text is `--ledger-muted`/`--ledger-slate` `#4F5C6E` (darkened from `#5C6B82` for
+AA). Body text on Paper or BG, never on Parch (insufficient contrast). The
+pillar color discipline (sage / cobalt / terra) is retired.
 
 **Typography:** Newsreader (display, ledes, quotes, wordmark) ·
 Geist (body, UI labels, sans buttons) · JetBrains Mono (kickers,
 metadata, code, version + status pills, tabular numbers). Three families;
-do not add a fourth. Italics signal voice (ledes, quotes, trailing
-clauses on section titles), not emphasis. Caps + 0.16–0.20em tracking
-only on mono; never track sans.
+do not add a fourth. **Italics are retired site-wide (2026-05-21):** a
+universal `*{font-style:normal!important}` rule in `base.css` kills all
+italics (default `<em>`, the `italic` utility, inline styles, per-stylesheet
+rules, and browser-rendered SVG `<text>`); server-rendered images (Satori OG,
+hero SVG) are roman at source. Emphasis is carried by color + weight, never
+slant. (This supersedes the former "italics signal voice" rule.) Caps +
+0.16–0.20em tracking only on mono; never track sans.
 
 **Design principles:**
 1. Content is the design — restraint over decoration
