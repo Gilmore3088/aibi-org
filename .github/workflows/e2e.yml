@@ -63,7 +63,7 @@ jobs:
           if [ -f server.pid ]; then
             kill "$(cat server.pid)" 2>/dev/null || true
           fi
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: playwright-smoke-report
@@ -115,7 +115,7 @@ jobs:
           if [ -f server.pid ]; then
             kill "$(cat server.pid)" 2>/dev/null || true
           fi
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: playwright-a11y-report
@@ -184,7 +184,7 @@ jobs:
           if [ -f server.pid ]; then
             kill "$(cat server.pid)" 2>/dev/null || true
           fi
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: playwright-auth-report
