@@ -171,30 +171,63 @@ cd ../aibi-<n> && npm install
 
 ## Environment Variables
 
+**Authoritative list:** [`docs/env-vars.md`](./docs/env-vars.md) — generated
+from a full `process.env.*` audit (launch §1 item 9). Diff it against
+`vercel env ls`. The block below mirrors it; if they ever disagree, the audit
+doc wins.
+
+> **2026-05-20:** this section was corrected. The old block listed
+> ConvertKit, HubSpot, Plausible, and `NEXT_PUBLIC_STRIPE_KEY`, none of which
+> the code uses anymore (ConvertKit→MailerLite, HubSpot removed,
+> Plausible→`@vercel/analytics`, checkout is a server-side redirect so no
+> client Stripe key). It also documented `STRIPE_IN_DEPTH_PRICE_ID`, but the
+> code reads `STRIPE_INDEPTH_PRICE_ID` (no underscore).
+
 ```bash
 # .env.local — NEVER commit this file
+
+# --- Supabase ---
 NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_ANON_KEY=
-SUPABASE_SERVICE_ROLE_KEY=
+SUPABASE_SERVICE_ROLE_KEY=             # server-only; mark Sensitive in Vercel
 
-CONVERTKIT_API_KEY=
-CONVERTKIT_ASSESSMENT_FORM_ID=        # assessment email captures
-CONVERTKIT_NEWSLETTER_FORM_ID=        # AI Banking Brief subscribers
+# --- Email (MailerLite + Resend) ---
+MAILERLITE_API_KEY=
+MAILERLITE_GROUP_ID_ASSESSMENT=        # assessment tier-routing group
+MAILERLITE_GROUP_ID_NEWSLETTER=        # AI Banking Brief subscribers
+RESEND_API_KEY=                        # transactional email (assessment breakdown)
+RESEND_FROM=hello@aibankinginstitute.com   # verified sender (lowercase exact)
+RESEND_FROM_NAME=The AI Banking Institute
 
-HUBSPOT_API_KEY=                       # Private App access token
-
+# --- Stripe ---
 STRIPE_SECRET_KEY=sk_live_...
 STRIPE_WEBHOOK_SECRET=whsec_...
-NEXT_PUBLIC_STRIPE_KEY=pk_live_...
-STRIPE_FOUNDATION_PRICE_ID=            # $295 AiBI-Foundation (formerly $97 AI Foundations — renamed + repriced 2026-05-11; see Plans/_archive/refactor-aibi-p-to-foundation-migration.md)
-STRIPE_IN_DEPTH_PRICE_ID=              # $99 In-Depth Assessment
+STRIPE_FOUNDATION_PRICE_ID=            # $295 AiBI-Foundation (legacy fallbacks still read: STRIPE_FOUNDATIONS_PRICE_ID, STRIPE_AIBIP_PRICE_ID)
+STRIPE_FOUNDATION_INSTITUTION_PRICE_ID=   # team/seat price (fallbacks: *_FOUNDATIONS_*, *_AIBIP_*)
+STRIPE_INDEPTH_PRICE_ID=               # $99 In-Depth Assessment — note: INDEPTH, not IN_DEPTH
 
-NEXT_PUBLIC_PLAUSIBLE_DOMAIN=aibankinginstitute.com
+# --- AI providers (Toolbox playground + practice sandbox) ---
+ANTHROPIC_API_KEY=
+OPENAI_API_KEY=                        # only if OpenAI models are on the Toolbox menu
+GEMINI_API_KEY=                        # only if Gemini models are on the Toolbox menu
+
+# --- Cron + rate limiting ---
+CRON_SECRET=                           # Bearer auth for /api/cron/* and pdf cron-cleanup
+TOOLBOX_IP_HASH_SALT=                  # salts hashed IPs for AI rate limiting
+
+# --- Public (shipped to the browser) ---
+NEXT_PUBLIC_SITE_URL=https://www.aibankinginstitute.com
 NEXT_PUBLIC_CALENDLY_URL=https://calendly.com/[handle]/executive-briefing
 
-# Preview/local only — suppresses live ConvertKit calls when set on a
-# non-production environment. Never set this in Production scope.
-SKIP_CONVERTKIT=true
+# Preview/local only — suppress live side-effects on non-production. Never set
+# these in Production scope. (next.config throws if SKIP_MAILERLITE=true in prod.)
+SKIP_MAILERLITE=true
+SKIP_RESEND=true
+SKIP_PDF_GENERATION=true
+SKIP_SUPABASE_PROFILES=true
+SKIP_ENROLLMENT_GATE=true
+SKIP_CRON_AUTH=true                    # SECURITY: bypasses CRON_SECRET — must NEVER be true in Production
+COMING_SOON=true                       # coming-soon gate toggle
 
 # Optional preview-only auth bypass. The helper at
 # src/lib/auth/previewBypass.ts already auto-fires when Supabase isn't

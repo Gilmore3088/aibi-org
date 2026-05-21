@@ -21,7 +21,7 @@ h1, h2, h3, h4 {
   font-weight: 400;
 }
 
-/* Visible focus ring on all interactive elements. Always terra, always 2px. */
+/* Visible focus ring on all interactive elements. Always gold, always 2px. */
 *:focus-visible {
   outline: var(--focus-ring);
   outline-offset: var(--focus-offset);

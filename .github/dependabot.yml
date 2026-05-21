@@ -1,0 +1,41 @@
+version: 2
+updates:
+  # Application dependencies (npm). Security updates are the priority per
+  # launch-checklist §1 item 21; grouped non-security bumps keep PR noise low.
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+    groups:
+      # Batch routine minor/patch bumps into one PR. Security advisories are
+      # always opened individually and immediately regardless of grouping.
+      non-security-minor-patch:
+        applies-to: version-updates
+        update-types:
+          - "minor"
+          - "patch"
+    ignore:
+      # Next.js majors are gated on a manual upgrade + PDF-surface QA
+      # (react-pdf React-instance regression — see
+      # docs/reviews/security-audit-2026-05-20.md). Allow patch/minor only.
+      - dependency-name: "next"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react-dom"
+        update-types: ["version-update:semver-major"]
+
+  # GitHub Actions used by the CI workflows (e2e, gitleaks, lighthouse, etc.)
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 3
+    labels:
+      - "dependencies"
+      - "ci"

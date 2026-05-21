@@ -1,15 +1,15 @@
 // GET /api/user-profile?email=<email>
 // Returns the Supabase user_profiles row for the given email.
 //
-// Auth model (2026-05-11 C2 audit fix):
-//   - If the request carries an authenticated Supabase session, the
-//     session email must match the requested email. Closes the
-//     enumeration vector for logged-in users.
-//   - If no session is present, fall back to the legacy email-only
-//     lookup so the "email-gate visitor returns on a new device"
-//     flow keeps working. This path is rate-limited per IP and
-//     should be replaced with an emailed bearer token once Upstash
-//     is wired (tracked in docs/reviews/api-auth-audit-2026-05-11.md).
+// Auth model (2026-05-20 security audit):
+//   - Requires an authenticated Supabase session, and the session email
+//     must match the requested email. This row carries assessment PII
+//     (score, tier, raw answers), so there is no anonymous read path —
+//     the prior email-only fallback let anyone enumerate and read another
+//     person's results by guessing their email. The only caller is the
+//     auth-gated dashboard, which always carries a session cookie; the
+//     "returning visitor on a new device" flow logs in via magic link and
+//     reads results through the auth-enforced /api/dashboard/* routes.
 //
 // A valid-format email that has no matching profile returns 404.
 
@@ -19,31 +19,6 @@ import { isSupabaseConfigured } from '@/lib/supabase/client';
 import { getAuthUser } from '@/lib/api/auth';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-// Per-IP rate limit for unauthenticated lookups. In-memory: lost on
-// cold start, not shared across regions. Best-effort deterrent, not a
-// hard cap. The proper fix is Upstash sliding-window via
-// @upstash/ratelimit; until then this raises the bar enough that
-// casual enumeration is impractical.
-const RATE_LIMIT_WINDOW_MS = 60_000;
-const RATE_LIMIT_MAX_REQUESTS = 10;
-const requestLog = new Map<string, number[]>();
-
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now();
-  const cutoff = now - RATE_LIMIT_WINDOW_MS;
-  const recent = (requestLog.get(ip) ?? []).filter((t) => t > cutoff);
-  if (recent.length >= RATE_LIMIT_MAX_REQUESTS) return false;
-  recent.push(now);
-  requestLog.set(ip, recent);
-  return true;
-}
-
-function getRequestIp(request: Request): string {
-  const fwd = request.headers.get('x-forwarded-for');
-  if (fwd) return fwd.split(',')[0].trim();
-  return 'unknown';
-}
 
 export async function GET(request: Request) {
   if (!isSupabaseConfigured()) {
@@ -58,21 +33,12 @@ export async function GET(request: Request) {
   }
 
   const sessionUser = await getAuthUser();
-  if (sessionUser) {
-    // Authenticated path: session email must match requested email.
-    if (sessionUser.email?.toLowerCase() !== email.toLowerCase()) {
-      return NextResponse.json({ error: 'Forbidden.' }, { status: 403 });
-    }
-  } else {
-    // Unauthenticated fallback: rate-limited by IP. Documented residual
-    // risk until Upstash lands.
-    const ip = getRequestIp(request);
-    if (!checkRateLimit(ip)) {
-      return NextResponse.json(
-        { error: 'Too many requests. Try again in a minute.' },
-        { status: 429 },
-      );
-    }
+  if (!sessionUser) {
+    return NextResponse.json({ error: 'Unauthorized.' }, { status: 401 });
+  }
+  // Session email must match the requested email.
+  if (sessionUser.email?.toLowerCase() !== email.toLowerCase()) {
+    return NextResponse.json({ error: 'Forbidden.' }, { status: 403 });
   }
 
   try {

@@ -90,7 +90,7 @@
 .ph-page .ilink:hover { color:var(--terra-2); border-color:var(--terra-2) 
 }
 /* ---------- NAV ---------- */
-.ph-page .nav { position:sticky; top:0; z-index:30; background:rgba(246,243,234,0.92); backdrop-filter:blur(8px); border-bottom:1px solid var(--rule) 
+.ph-page .nav { position:sticky; top:0; z-index:30; background:var(--ledger-paper); border-bottom:1px solid var(--rule)
 }
 
 .ph-page .nav-inner { max-width:var(--maxw); margin:0 auto; padding:18px 32px; display:flex; align-items:center; justify-content:space-between; gap:24px 
