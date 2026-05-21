@@ -1,18 +1,21 @@
 'use client';
 
 // AcceptableUseCardForm — M5 Activity 5.2 specialized component.
-// Renders 4 role-specific fields from activity.fields, validates minLength requirements,
-// submits to /api/courses/submit-activity, then offers a "Generate Acceptable Use Card" button.
-// PDF generation route wired in Plan 03 — download link uses plain <a href> anchor (A11Y-05).
-// A11Y-01: keyboard accessible with proper labels, focus rings, focus managed to success region.
-// A11Y-02: error messages prefixed with "Error:" (not color-only).
+// Renders the role-specific fields from activity.fields, validates minLength,
+// submits to /api/courses/submit-activity, then offers a "Generate Acceptable
+// Use Card" download. Field rendering uses the shared ActivityFields primitives
+// so this form matches every other activity form; the outer card chrome
+// (accent rail, header, submitted badge, download) is specific to this activity.
+// A11Y-01: focus managed to success region. A11Y-02: "Error:"-prefixed messages.
+// A11Y-05: download uses a plain <a href> anchor.
 
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import type { Activity, ActivityField } from '@content/courses/foundation-program';
+import type { Activity } from '@content/courses/foundation-program';
 import {
   getInitialActivityValues,
   validateActivityFields,
 } from '../_lib/activityFormHelpers';
+import { ActivityReadOnlyField, ActivityInteractiveField } from './ActivityFields';
 
 export interface AcceptableUseCardFormProps {
   readonly activity: Activity;
@@ -28,113 +31,6 @@ interface CardFormState {
   submitting: boolean;
   submitted: boolean;
   serverError: string | null;
-}
-
-function ReadOnlyField({ field, value }: { readonly field: ActivityField; readonly value: string }) {
-  return (
-    <div className="mb-5">
-      <label className="block font-sans text-sm font-semibold text-[color:var(--ledger-ink)] mb-1">
-        {field.label}
-      </label>
-      {field.type === 'textarea' ? (
-        <div className="w-full border border-[color:var(--ledger-parch)] rounded-sm px-3 py-2 text-sm font-sans bg-[color:var(--ledger-paper)] text-[color:var(--ledger-ink)] min-h-[80px] whitespace-pre-wrap">
-          {value || <span className="text-[color:var(--ledger-muted)]">No response</span>}
-        </div>
-      ) : (
-        <div className="w-full border border-[color:var(--ledger-parch)] rounded-sm px-3 py-2 text-sm font-sans bg-[color:var(--ledger-paper)] text-[color:var(--ledger-ink)]">
-          {value || <span className="text-[color:var(--ledger-muted)]">No response</span>}
-        </div>
-      )}
-    </div>
-  );
-}
-
-function InteractiveCardField({
-  field,
-  value,
-  error,
-  onChange,
-}: {
-  readonly field: ActivityField;
-  readonly value: string;
-  readonly error?: string;
-  readonly onChange: (fieldId: string, value: string) => void;
-}) {
-  const hintId = field.minLength ? `${field.id}-hint` : undefined;
-  const errorId = error ? `${field.id}-error` : undefined;
-  const describedBy = [hintId, errorId].filter(Boolean).join(' ') || undefined;
-  const hasError = Boolean(error);
-
-  const baseClass =
-    'w-full border rounded-sm px-3 py-2 text-sm font-sans bg-white text-[color:var(--ledger-ink)] placeholder:text-[color:var(--ledger-soft)] focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] transition-shadow';
-  const borderClass = hasError
-    ? 'border-[color:var(--ledger-weak)]'
-    : 'border-[color:var(--ledger-parch)]';
-
-  return (
-    <div className="mb-5">
-      <label
-        htmlFor={field.id}
-        className="block font-sans text-sm font-semibold text-[color:var(--ledger-ink)] mb-1"
-      >
-        {field.label}
-        {field.required && (
-          <span className="ml-1 text-[color:var(--ledger-weak)] text-xs" aria-label="required">
-            *
-          </span>
-        )}
-      </label>
-
-      {field.type === 'textarea' ? (
-        <textarea
-          id={field.id}
-          name={field.id}
-          placeholder={field.placeholder}
-          value={value}
-          rows={4}
-          onChange={(e) => onChange(field.id, e.target.value)}
-          className={`${baseClass} ${borderClass} resize-y`}
-          aria-describedby={describedBy}
-          aria-invalid={hasError}
-          aria-required={field.required}
-        />
-      ) : (
-        <input
-          type="text"
-          id={field.id}
-          name={field.id}
-          placeholder={field.placeholder}
-          value={value}
-          onChange={(e) => onChange(field.id, e.target.value)}
-          className={`${baseClass} ${borderClass}`}
-          aria-describedby={describedBy}
-          aria-invalid={hasError}
-          aria-required={field.required}
-        />
-      )}
-
-      {hasError && (
-        <p
-          id={errorId}
-          className="mt-1 text-[color:var(--ledger-weak)] font-mono text-xs"
-          role="alert"
-        >
-          Error: {error}
-        </p>
-      )}
-
-      {field.type === 'textarea' && field.minLength && (
-        <p id={hintId} className="mt-1 text-[11px] font-mono text-[color:var(--ledger-muted)]">
-          {value.length}/{field.minLength} characters
-        </p>
-      )}
-      {field.type !== 'textarea' && field.minLength && (
-        <p id={hintId} className="mt-1 text-[11px] font-mono text-[color:var(--ledger-muted)]">
-          Minimum {field.minLength} characters
-        </p>
-      )}
-    </div>
-  );
 }
 
 export function AcceptableUseCardForm({
@@ -270,9 +166,9 @@ export function AcceptableUseCardForm({
           aria-live="polite"
           aria-label="Acceptable Use Card submitted successfully"
         >
-          <div className="space-y-1">
+          <div style={{ display: 'grid', gap: 14 }}>
             {activity.fields.map((field) => (
-              <ReadOnlyField key={field.id} field={field} value={state.values[field.id] ?? ''} />
+              <ActivityReadOnlyField key={field.id} field={field} value={state.values[field.id] ?? ''} />
             ))}
           </div>
 
@@ -298,9 +194,9 @@ export function AcceptableUseCardForm({
       ) : (
         // Interactive form
         <form onSubmit={handleSubmit} noValidate>
-          <div className="space-y-1">
+          <div style={{ display: 'grid', gap: 14 }}>
             {activity.fields.map((field) => (
-              <InteractiveCardField
+              <ActivityInteractiveField
                 key={field.id}
                 field={field}
                 value={state.values[field.id] ?? ''}
