@@ -229,7 +229,7 @@
 }
 .aibi-briefing .composite .radar-legend .sw { display: inline-flex; align-items: center; gap: 8px; }
 .aibi-briefing .composite .radar-legend i { display: inline-block; width: 16px; height: 10px; }
-.aibi-briefing .composite .radar-legend .sw-you { background: rgba(181,134,42,0.22); border: 1.8px solid #B5862A; }
+.aibi-briefing .composite .radar-legend .sw-you { background: rgba(181,134,42,0.22); border: 1.8px solid var(--ledger-accent); }
 
 .aibi-briefing .insight {
   background: var(--paper); border: 1px solid var(--rule-strong);

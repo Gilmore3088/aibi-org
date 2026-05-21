@@ -7,7 +7,7 @@ import { ImageResponse } from 'next/og';
 //   --ledger-bg     #ECE9DF (linen)
 //   --ledger-paper  #F4F1E7
 //   --ledger-ink    #0E1B2D
-//   --ledger-accent #B5862A (gold)
+//   --ledger-accent #7C5814 (gold)
 //   --ledger-muted  #5C6B82
 //
 // Rules:
@@ -101,7 +101,7 @@ export default async function OpengraphImage() {
               <span
                 style={{
                   fontStyle: 'italic',
-                  color: '#B5862A',
+                  color: '#7C5814',
                 }}
               >
                 Builders.
@@ -125,7 +125,7 @@ export default async function OpengraphImage() {
           <span style={{ color: '#5C6B82' }}>
             AI proficiency for community banks &amp; credit unions
           </span>
-          <span style={{ color: '#B5862A' }}>aibankinginstitute.com</span>
+          <span style={{ color: '#7C5814' }}>aibankinginstitute.com</span>
         </div>
       </div>
     ),

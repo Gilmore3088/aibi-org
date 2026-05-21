@@ -10,6 +10,21 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* 2026-05-21 — Italics retired as a brand device, site-wide. Upright,
+   consistent editorial identity; the prior scattered italics (default
+   <em>, the Tailwind `italic` utility, inline styles, AND per-stylesheet
+   `font-style: italic` rules in research.css/briefing.css/etc.) read as
+   inconsistent. A universal !important rule is the only reliable kill —
+   it overrides element defaults, utility classes, inline styles, and
+   author CSS on arbitrary selectors, plus browser-rendered SVG <text>
+   font-style. Emphasis is now carried by color + weight. Supersedes the
+   old "italics signal voice" rule in CLAUDE.md Design Context. (Server-
+   rendered images — the Satori OG card, the hero SVG — are fixed at their
+   source since CSS does not reach them.) */
+*, *::before, *::after {
+  font-style: normal !important;
+}
+
 html {
   scroll-behavior: smooth;
 }

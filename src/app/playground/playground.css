@@ -7,7 +7,7 @@
 .pg-page {
     --bg:#ECE9DF; --paper:#F4F1E7; --parch:#E4E0D2; --tape:#F1E9D0;
     --ink:#0E1B2D; --ink-2:#1F2A3F; --muted:#5C6B82; --soft:#8C95A8;
-    --terra:#B5862A; --terra-2:#8E6620; --weak:#8E3B2A;
+    --terra:var(--ledger-accent); --terra-2:#8E6620; --weak:#8E3B2A;
     --green:#1F8A5B; --navy:#1E3A5F; --plum:#5E3B6E;
     --rule:#D5D1C2; --rule-strong:#B9B4A0;
     --serif: var(--font-newsreader-hero), var(--font-newsreader-heavy), Georgia, serif;
@@ -327,7 +327,7 @@
 .pg-page .mp-dot.opus { background:#D97757 
 }
 
-.pg-page .mp-dot.sonnet { background:#B5862A 
+.pg-page .mp-dot.sonnet { background:var(--ledger-accent) 
 }
 
 .pg-page .mp-dot.haiku { background:#E5C29A 

@@ -28,11 +28,13 @@
   --ledger-soft:         #8C95A8;        /* softest text — wordmark line 2 */
 
   /* ---- Ledger · Accents ---------------------------------------------- */
-  --ledger-accent:       #B5862A;        /* gold — emphasis, primary CTA alt */
-  --ledger-accent-light: #C99A40;        /* gold hover */
-  --ledger-accent-soft:  rgba(181, 134, 42, 0.10);
+  --ledger-accent:       #7C5814;        /* gold (darkened 2026-05-21 for WCAG AA — text on linen/paper now ≥4.5:1; was #B5862A which failed at 2.69:1) */
+  --ledger-accent-light: #94701C;        /* gold hover (darkened to match) */
+  --ledger-terra:        #7C5814;        /* legacy text-terra/bg-terra alias → darkened gold (keeps homepage tiles consistent) */
+  --ledger-terra-light:  #94701C;
+  --ledger-accent-soft:  color-mix(in srgb, var(--ledger-accent) 10%, transparent);
   --ledger-accent-2:     #1E3A5F;        /* navy — secondary accent */
-  --ledger-warn:         #B5862A;        /* gold doubles as warn */
+  --ledger-warn:       var(--ledger-accent);        /* gold doubles as warn */
   --ledger-weak:         #8E3B2A;        /* oxblood — destructive only */
 
   /* ---- Ledger · Rules ------------------------------------------------ */

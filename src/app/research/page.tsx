@@ -51,7 +51,7 @@ function formatDate(iso: string): string {
 
 function BriefMark({ cat }: { cat: string }) {
   const stroke = '#0E1B2D';
-  const gold = '#B5862A';
+  const gold = 'var(--ledger-accent)';
   switch (cat) {
     case 'gov':
       return (
@@ -135,7 +135,7 @@ type RoleKind = 'exec' | 'risk' | 'ops' | 'it';
 
 function RoleIllust({ kind }: { kind: RoleKind }) {
   const stroke = '#0E1B2D';
-  const gold = '#B5862A';
+  const gold = 'var(--ledger-accent)';
   const paper = '#F4F1E7';
   if (kind === 'exec')
     return (
@@ -256,14 +256,14 @@ function Seal({ meta }: { meta: SealMeta }) {
           {meta.curveLabel}
         </textPath>
       </text>
-      <text x="50" y="48" textAnchor="middle" fontFamily="Newsreader,serif" fontStyle="italic" fontSize={meta.smallInitials ? 20 : 22} fill="#B5862A" fontWeight={500}>
+      <text x="50" y="48" textAnchor="middle" fontFamily="Newsreader,serif" fontStyle="italic" fontSize={meta.smallInitials ? 20 : 22} fill="var(--ledger-accent)" fontWeight={500}>
         {meta.initials}
       </text>
       <text x="50" y="64" textAnchor="middle" fontFamily="JetBrains Mono,monospace" fontSize="9" fill="#0E1B2D" letterSpacing={1.5} fontWeight={600}>
         {meta.sub}
       </text>
-      <circle cx="22" cy="50" r="2" fill="#B5862A" />
-      <circle cx="78" cy="50" r="2" fill="#B5862A" />
+      <circle cx="22" cy="50" r="2" fill="var(--ledger-accent)" />
+      <circle cx="78" cy="50" r="2" fill="var(--ledger-accent)" />
     </svg>
   );
 }
@@ -565,14 +565,14 @@ export default async function ResearchPage() {
                   <g transform="translate(40 32)">
                     <rect x="0" y="0" width="240" height="116" fill="#F4F1E7" stroke="#0E1B2D" strokeWidth={1.4} />
                     <rect x="0" y="0" width="240" height="14" fill="#0E1B2D" />
-                    <line x1="14" y1="32" x2="226" y2="32" stroke="#B5862A" strokeWidth={1} />
+                    <line x1="14" y1="32" x2="226" y2="32" stroke="var(--ledger-accent)" strokeWidth={1} />
                     <line x1="14" y1="46" x2="180" y2="46" stroke="#0E1B2D" strokeWidth={0.6} />
                     <line x1="14" y1="58" x2="200" y2="58" stroke="#0E1B2D" strokeWidth={0.6} />
                     <line x1="14" y1="70" x2="170" y2="70" stroke="#0E1B2D" strokeWidth={0.6} />
                     <line x1="14" y1="82" x2="190" y2="82" stroke="#0E1B2D" strokeWidth={0.6} />
-                    <rect x="14" y="92" width="60" height="14" fill="none" stroke="#B5862A" strokeWidth={1} />
-                    <rect x="80" y="92" width="60" height="14" fill="none" stroke="#B5862A" strokeWidth={1} />
-                    <rect x="146" y="92" width="60" height="14" fill="none" stroke="#B5862A" strokeWidth={1} />
+                    <rect x="14" y="92" width="60" height="14" fill="none" stroke="var(--ledger-accent)" strokeWidth={1} />
+                    <rect x="80" y="92" width="60" height="14" fill="none" stroke="var(--ledger-accent)" strokeWidth={1} />
+                    <rect x="146" y="92" width="60" height="14" fill="none" stroke="var(--ledger-accent)" strokeWidth={1} />
                   </g>
                 </svg>
               </div>
@@ -594,7 +594,7 @@ export default async function ResearchPage() {
                   <rect width="320" height="180" fill="#EDE8DA" />
                   <g transform="translate(80 28)">
                     <rect x="0" y="0" width="160" height="124" fill="#F4F1E7" stroke="#0E1B2D" strokeWidth={1.4} rx={2} />
-                    <rect x="0" y="0" width="160" height="22" fill="#B5862A" />
+                    <rect x="0" y="0" width="160" height="22" fill="var(--ledger-accent)" />
                     <text x="80" y="16" textAnchor="middle" fontFamily="ui-monospace" fontSize="9" fill="#F4F1E7" letterSpacing={2}>ACCEPTABLE USE</text>
                     <line x1="14" y1="38" x2="146" y2="38" stroke="#0E1B2D" strokeWidth={0.6} />
                     <line x1="14" y1="50" x2="120" y2="50" stroke="#0E1B2D" strokeWidth={0.6} />
@@ -628,15 +628,15 @@ export default async function ResearchPage() {
                     <text x="14" y="14" fontFamily="ui-monospace" fontSize="7" fill="#5C6B82" letterSpacing={1.5}>VENDOR AI REVIEW</text>
                     <rect x="14" y="30" width="8" height="8" fill="none" stroke="#0E1B2D" strokeWidth={0.8} />
                     <line x1="28" y1="36" x2="180" y2="36" stroke="#0E1B2D" strokeWidth={0.6} />
-                    <rect x="14" y="46" width="8" height="8" fill="#B5862A" stroke="#B5862A" strokeWidth={0.8} />
+                    <rect x="14" y="46" width="8" height="8" fill="var(--ledger-accent)" stroke="var(--ledger-accent)" strokeWidth={0.8} />
                     <line x1="28" y1="52" x2="200" y2="52" stroke="#0E1B2D" strokeWidth={0.6} />
-                    <rect x="14" y="62" width="8" height="8" fill="#B5862A" stroke="#B5862A" strokeWidth={0.8} />
+                    <rect x="14" y="62" width="8" height="8" fill="var(--ledger-accent)" stroke="var(--ledger-accent)" strokeWidth={0.8} />
                     <line x1="28" y1="68" x2="160" y2="68" stroke="#0E1B2D" strokeWidth={0.6} />
                     <rect x="14" y="78" width="8" height="8" fill="none" stroke="#0E1B2D" strokeWidth={0.8} />
                     <line x1="28" y1="84" x2="190" y2="84" stroke="#0E1B2D" strokeWidth={0.6} />
                     <rect x="14" y="94" width="8" height="8" fill="none" stroke="#0E1B2D" strokeWidth={0.8} />
                     <line x1="28" y1="100" x2="170" y2="100" stroke="#0E1B2D" strokeWidth={0.6} />
-                    <line x1="14" y1="114" x2="206" y2="114" stroke="#B5862A" strokeWidth={1} />
+                    <line x1="14" y1="114" x2="206" y2="114" stroke="var(--ledger-accent)" strokeWidth={1} />
                   </g>
                 </svg>
               </div>
@@ -659,15 +659,15 @@ export default async function ResearchPage() {
                   <g transform="translate(60 26)">
                     <rect x="0" y="0" width="200" height="128" fill="#F4F1E7" stroke="#0E1B2D" strokeWidth={1.4} />
                     <rect x="0" y="0" width="200" height="6" fill="#0E1B2D" />
-                    <rect x="0" y="10" width="200" height="6" fill="#B5862A" />
+                    <rect x="0" y="10" width="200" height="6" fill="var(--ledger-accent)" />
                     <text x="100" y="32" textAnchor="middle" fontFamily="Georgia" fontStyle="italic" fontSize="14" fill="#0E1B2D">Board briefing</text>
                     <line x1="20" y1="42" x2="180" y2="42" stroke="#0E1B2D" strokeWidth={0.4} />
                     <line x1="20" y1="56" x2="180" y2="56" stroke="#0E1B2D" strokeWidth={0.4} />
-                    <text x="20" y="76" fontFamily="ui-monospace" fontSize="7" fill="#B5862A" letterSpacing={1.5}>I.</text>
+                    <text x="20" y="76" fontFamily="ui-monospace" fontSize="7" fill="var(--ledger-accent)" letterSpacing={1.5}>I.</text>
                     <line x1="34" y1="74" x2="170" y2="74" stroke="#0E1B2D" strokeWidth={0.5} />
-                    <text x="20" y="92" fontFamily="ui-monospace" fontSize="7" fill="#B5862A" letterSpacing={1.5}>II.</text>
+                    <text x="20" y="92" fontFamily="ui-monospace" fontSize="7" fill="var(--ledger-accent)" letterSpacing={1.5}>II.</text>
                     <line x1="34" y1="90" x2="160" y2="90" stroke="#0E1B2D" strokeWidth={0.5} />
-                    <text x="20" y="108" fontFamily="ui-monospace" fontSize="7" fill="#B5862A" letterSpacing={1.5}>III.</text>
+                    <text x="20" y="108" fontFamily="ui-monospace" fontSize="7" fill="var(--ledger-accent)" letterSpacing={1.5}>III.</text>
                     <line x1="34" y1="106" x2="174" y2="106" stroke="#0E1B2D" strokeWidth={0.5} />
                   </g>
                 </svg>
@@ -695,19 +695,19 @@ export default async function ResearchPage() {
                     <g fontFamily="ui-monospace" fontSize="7" fill="#0E1B2D">
                       <text x="14" y="42">LENDING</text>
                       <rect x="100" y="35" width="90" height="8" fill="#EDE8DA" stroke="#0E1B2D" strokeWidth={0.4} />
-                      <rect x="100" y="35" width="68" height="8" fill="#B5862A" />
+                      <rect x="100" y="35" width="68" height="8" fill="var(--ledger-accent)" />
                       <text x="14" y="58">RETAIL</text>
                       <rect x="100" y="51" width="90" height="8" fill="#EDE8DA" stroke="#0E1B2D" strokeWidth={0.4} />
-                      <rect x="100" y="51" width="42" height="8" fill="#B5862A" />
+                      <rect x="100" y="51" width="42" height="8" fill="var(--ledger-accent)" />
                       <text x="14" y="74">OPERATIONS</text>
                       <rect x="100" y="67" width="90" height="8" fill="#EDE8DA" stroke="#0E1B2D" strokeWidth={0.4} />
-                      <rect x="100" y="67" width="54" height="8" fill="#B5862A" />
+                      <rect x="100" y="67" width="54" height="8" fill="var(--ledger-accent)" />
                       <text x="14" y="90">COMPLIANCE</text>
                       <rect x="100" y="83" width="90" height="8" fill="#EDE8DA" stroke="#0E1B2D" strokeWidth={0.4} />
-                      <rect x="100" y="83" width="76" height="8" fill="#B5862A" />
+                      <rect x="100" y="83" width="76" height="8" fill="var(--ledger-accent)" />
                       <text x="14" y="106">MARKETING</text>
                       <rect x="100" y="99" width="90" height="8" fill="#EDE8DA" stroke="#0E1B2D" strokeWidth={0.4} />
-                      <rect x="100" y="99" width="36" height="8" fill="#B5862A" />
+                      <rect x="100" y="99" width="36" height="8" fill="var(--ledger-accent)" />
                     </g>
                   </g>
                 </svg>
@@ -731,13 +731,13 @@ export default async function ResearchPage() {
                   <g transform="translate(70 28)">
                     <rect x="0" y="0" width="180" height="124" fill="#F4F1E7" stroke="#0E1B2D" strokeWidth={1.4} />
                     <text x="14" y="20" fontFamily="ui-monospace" fontSize="8" fill="#5C6B82" letterSpacing={2}>PROMPT RISK · REVIEW</text>
-                    <line x1="14" y1="26" x2="166" y2="26" stroke="#B5862A" strokeWidth={1} />
+                    <line x1="14" y1="26" x2="166" y2="26" stroke="var(--ledger-accent)" strokeWidth={1} />
                     <g fontFamily="ui-monospace" fontSize="7" fill="#0E1B2D">
-                      <circle cx="20" cy="42" r="3" fill="#B5862A" />
+                      <circle cx="20" cy="42" r="3" fill="var(--ledger-accent)" />
                       <text x="30" y="45">Member data present?</text>
-                      <circle cx="20" cy="58" r="3" fill="#B5862A" />
+                      <circle cx="20" cy="58" r="3" fill="var(--ledger-accent)" />
                       <text x="30" y="61">Auto-action downstream?</text>
-                      <circle cx="20" cy="74" r="3" fill="#B5862A" />
+                      <circle cx="20" cy="74" r="3" fill="var(--ledger-accent)" />
                       <text x="30" y="77">Reversible if wrong?</text>
                       <circle cx="20" cy="90" r="3" fill="none" stroke="#0E1B2D" strokeWidth={0.6} />
                       <text x="30" y="93">Logged &amp; reviewable?</text>
