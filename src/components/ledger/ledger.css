@@ -16,9 +16,9 @@
   --tape: #F1E9D0;
   --ink: #0E1B2D;
   --ink-2: #1F2A3F;
-  --slate: #5C6B82;
-  --muted: #5C6B82;
-  --soft: #8C95A8;
+  --slate: var(--ledger-slate, #4F5C6E);
+  --muted: var(--ledger-muted, #4F5C6E);
+  --soft: var(--ledger-soft, #8C95A8);
   --terra: var(--ledger-accent);
   --terra-2: #8E6620;
   --weak: #8E3B2A;
