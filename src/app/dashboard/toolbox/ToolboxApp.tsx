@@ -1057,6 +1057,7 @@ function PlaygroundPanel(props: {
 
           <div className="relative">
             <textarea
+              aria-label="Prompt input"
               value={props.input}
               onChange={(event) => props.setInput(event.target.value)}
               onKeyDown={(event) => {
@@ -1166,11 +1167,13 @@ function TypedConfirmGate(props: {
           material must never leave your institution this way. Confirm you
           are using fabricated data by typing the phrase below.
         </p>
-        <p className="mt-4 font-mono text-xs text-[color:var(--ledger-ink)]">
+        <p id="pii-confirm-phrase" className="mt-4 font-mono text-xs text-[color:var(--ledger-ink)]">
           {REQUIRED}
         </p>
         <input
           type="text"
+          aria-label="Confirmation phrase"
+          aria-describedby="pii-confirm-phrase"
           value={typed}
           onChange={(e) => setTyped(e.target.value)}
           placeholder="Type the phrase exactly"
