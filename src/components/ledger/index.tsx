@@ -156,7 +156,7 @@ export const LedgerField = forwardRef<
 >(function LedgerField({ label, trailing, id, ...inputProps }, ref) {
   const inputId = id ?? `ledger-field-${Math.random().toString(36).slice(2, 9)}`;
   return (
-    <div className={`ledger-field${trailing ? ' ledger-field--inline' : ''}`}>
+    <div className="ledger-field">
       <div className={trailing ? 'flex items-baseline justify-between' : ''}>
         <label htmlFor={inputId}>{label}</label>
         {trailing}

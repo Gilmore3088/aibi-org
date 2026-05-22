@@ -87,10 +87,7 @@
 .ledger-field textarea:focus,
 .ledger-field select:focus { border-color: var(--ink); }
 .ledger-field input::placeholder,
-.ledger-field textarea::placeholder { color: var(--soft); font-style: italic; }
-.ledger-field--inline { display: flex; flex-direction: row; align-items: baseline; justify-content: space-between; }
-.ledger-field--inline a { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--terra); font-weight: 600; }
-.ledger-field--inline a:hover { color: var(--terra-2); }
+.ledger-field textarea::placeholder { color: var(--soft); }
 
 /* ---------- Button ---------- */
 .ledger-btn {
