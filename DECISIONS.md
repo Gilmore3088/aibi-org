@@ -665,3 +665,45 @@ Operator directive: "get rid of all the italics… match my design consistently"
   development only (Next dev HMR needs it; prod CSP unchanged). Pre-existing
   bug that made `/research` (and other client-hydrated pages) appear broken in
   local dev; production was never affected.
+
+**2026-05-21 — Branch cleanup: retire stale worktrees, rescue what's unique, prune the remote (77 → 7).**
+Operator directive: review the branch structure and resolve the sprawl. Process
+established: **investigate every stale branch for unique unmerged work before
+deleting** — never assume "stale = dead."
+
+- **`design-2.0` retired.** 313 commits ahead but its visual direction
+  *conflicts* with the shipped Ledger refresh (it carried "pillar discipline
+  restored" — the opposite of the retired-pillar decision), and its
+  `courses/aibi-p/*` is the pre-rename naming main superseded. Merging it would
+  have reverted main (`−191k` lines). Its one genuinely-unique surface — an
+  **instructor/reviewer grading loop** (`admin/reviewer/*`, `review-submission`
+  API with an Accuracy hard gate, institution export/summary APIs) — was
+  **explicitly declined** by the operator ("I don't want reviewing"). Deleted
+  worktree + local (90 unpushed commits) + remote.
+- **`feature/mailerlite-automations` retired.** The MailerLite automation work
+  already shipped to main; the branch's only unique files were the same
+  unwanted reviewer surface, retired components (HubSpot, Plausible, `AibiSeal`,
+  old `Header`), old `aibi-p` content, and an old-location `lib/aibi-s/*` that
+  main superseded under `src/lib/`.
+- **`wave-1` / `wave-2` content RESCUED, then retired (PR #276).** Initially
+  mis-judged as dead — investigation found genuinely valuable, main-compatible
+  authored content: `governance.ts` (per-dimension risk + examiner-defensibility
+  lines), `maturity.ts` (8×4 tier meanings), `scoring-authority.ts` (score
+  framing + integrity guardrails). Extracted the 6 content/test files onto a
+  clean branch off main (NOT the branches' modified `scoring.ts`). One test
+  caught a real bug: the copy's band literals (`12–20/21–29/…`, "equal-spaced")
+  were authored against the branches' *simplified* scoring; rewrote to main's
+  actual unequal tiers (12–22, 23–32, 33–40, 41–48). Content is currently inert
+  (data layer for a future in-depth-report governance strip + "About this
+  score" block). After merge, both wave branches retired.
+- **70 stale remote branches deleted.** 64 merged into main (squash-merges don't
+  show in `git branch --merged`, so cross-referenced against 156 merged PRs) +
+  5 with PRs closed *without* merging + 1 superseded docs branch.
+- **3 active WIP branches kept** (no PR, not merged, but live): `content-engine`
+  (net-new Python Scout/Queue sub-project in an isolated dir + schema),
+  `sandbox-multi-provider` (OpenAI+Gemini providers — maps to issue #158),
+  `auth-audit` (auth/rate-limit work; OWNER_EMAILS allowlist *not* adopted —
+  main still uses `SKIP_ENROLLMENT_GATE`; may inform launch-blocker #187).
+- **Workflow note.** Bundled destructive git commands (worktree+local+remote in
+  one chain) get blocked by the safety classifier; remote-branch deletions must
+  run as isolated, explicitly-authorized steps.
