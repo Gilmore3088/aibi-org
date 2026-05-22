@@ -109,7 +109,7 @@ Grouped by dashboard so you can batch context switches.
 
 ### Decisions to close out
 - [ ] U.10 `Plans/aibi-docs/` — promote, gitignore, or remove?
-- [ ] U.11 Branch hygiene — `design-2.0` 90 ahead, `feature/brand-refresh` 37 behind — push, rebase, or delete?
+- [x] U.11 Branch hygiene — **RESOLVED 2026-05-21.** `design-2.0` retired (reviewer feature declined, rest superseded by Ledger); `feature/brand-refresh` deleted (merged). Full pass: 77 → 7 remote branches; wave content rescued via PR #276. See DECISIONS 2026-05-21 + `docs/reviews/branch-cleanup-2026-05-19.md` resolution note.
 - [ ] Wave C decision — drop Cormorant SC for Geist tracked-uppercase? (perf #144)
 - [ ] §17.465 Keep `/lms-preview` as design reference or delete?
 - [ ] §16.450 Pen-test — hire firm or skip pre-launch?
