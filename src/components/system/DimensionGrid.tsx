@@ -81,7 +81,7 @@ export function DimensionGrid({ dimensions, className }: DimensionGridProps) {
               </h3>
               <p className="font-mono tabular-nums text-mono-md text-ink shrink-0">
                 {dim.score}
-                <span className="text-dust"> / {max}</span>
+                <span className="text-slate"> / {max}</span>
               </p>
             </div>
             <div

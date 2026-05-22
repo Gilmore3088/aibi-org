@@ -75,7 +75,7 @@ export function KPIRibbon({ items, padded = false, className, ariaLabel = "Key m
           )}
           {item.desc && <p className="text-body-sm text-ink/80 mt-s2 leading-snug">{item.desc}</p>}
           {item.source && (
-            <p className="font-mono text-label-sm uppercase tracking-wide text-dust mt-s2">
+            <p className="font-mono text-label-sm uppercase tracking-wide text-slate mt-s2">
               {item.source}
             </p>
           )}
