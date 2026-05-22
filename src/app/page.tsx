@@ -6,11 +6,29 @@ import { HomeContextStrip } from "@/components/sections/HomeContextStrip";
 import { HeroHeadlineSvg } from "@/components/_generated/HeroHeadlineSvg";
 import { BRAND } from "@content/copy";
 
+// `title.absolute` opts out of the root layout's `%s — {BRAND.name}` template
+// so the homepage title isn't "… — Turning Bankers into Builders — The AI
+// Banking Institute" (brand doubled). Description trimmed to ~155 chars so it
+// isn't truncated in the SERP. openGraph/twitter overrides ensure social cards
+// use the homepage's own copy, not the root default.
+const HOME_TITLE = `${BRAND.name} — ${BRAND.tagline}`;
+const HOME_DESCRIPTION =
+  'Free AI readiness assessment for community banks and credit unions — a score, tier, and starter artifact in three minutes. Earn the AiBI-Foundation credential.';
+
 export const metadata: Metadata = {
   alternates: { canonical: '/' },
-  title: `${BRAND.name} — ${BRAND.tagline}`,
-  description:
-    "An education company for community banks and credit unions. Begin with a free twelve-question readiness diagnostic; deepen the diagnosis with the In-Depth Assessment; earn the AiBI-Foundation credential when you are ready.",
+  title: { absolute: HOME_TITLE },
+  description: HOME_DESCRIPTION,
+  openGraph: {
+    title: HOME_TITLE,
+    description: HOME_DESCRIPTION,
+    url: '/',
+    type: 'website',
+  },
+  twitter: {
+    title: HOME_TITLE,
+    description: HOME_DESCRIPTION,
+  },
 };
 
 export default function HomePage() {
