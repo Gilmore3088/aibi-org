@@ -7,6 +7,7 @@ import { upsertLead, type Track } from '@/lib/addie/leads/upsert';
 import { migrateAnonToLead } from '@/lib/addie/leads/bind';
 import { isValidEmail } from '@/lib/addie/supabase/service';
 import { emit } from '@/lib/addie/events/emit';
+import { enforceEdgeRateLimit } from '@/lib/addie/rateLimit/edge';
 
 export const runtime = 'nodejs';
 
@@ -25,6 +26,13 @@ const VALID_TRACKS: ReadonlySet<string> = new Set([
 ]);
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
+  const limited = await enforceEdgeRateLimit(req, {
+    bucket: 'addie-capture-email',
+    limit: 30,
+    windowSeconds: 60 * 60,
+  });
+  if (limited) return limited;
+
   let body: Body;
   try {
     body = (await req.json()) as Body;

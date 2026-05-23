@@ -5,6 +5,7 @@ import { createIndividualCheckout } from '@/lib/addie/stripe/checkout';
 import { isValidEmail } from '@/lib/addie/supabase/service';
 import { readAnonSession } from '@/lib/addie/auth/anonSession';
 import { emit } from '@/lib/addie/events/emit';
+import { enforceEdgeRateLimit } from '@/lib/addie/rateLimit/edge';
 
 export const runtime = 'nodejs';
 
@@ -15,6 +16,13 @@ interface Body {
 }
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
+  const limited = await enforceEdgeRateLimit(req, {
+    bucket: 'addie-checkout-individual',
+    limit: 10,
+    windowSeconds: 60 * 60,
+  });
+  if (limited) return limited;
+
   let body: Body = {};
   try {
     body = (await req.json()) as Body;

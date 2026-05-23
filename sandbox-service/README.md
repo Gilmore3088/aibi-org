@@ -72,15 +72,66 @@ all-providers-failed, the handler returns a safe generic message with
 
 Anonymous traffic pins to the per-provider `anonModel` for cost.
 
-## What's NOT in this wave
+## Modes shipped
 
-- Steps 6–8 in the spec: A/B mode (`/sandbox/ab`), skill mode (`/skill/run`),
-  full security test suite, budget/circuit-breaker, real rate limiter.
-- The rate-limit interface in `src/rateLimit/index.ts` is wired but the
-  implementation is a no-op stub.
-- The Next.js shim reads the anon-session cookie as a plain UUID with a
-  `TODO(Wave 1d)` for the HMAC-signed helper coming from
-  `src/lib/addie/auth/anonSession.ts`.
+| Mode | Handler | Route | Spec |
+|---|---|---|---|
+| Single | `src/handlers/run.ts` | `POST /api/sandbox/run` | §8.1 |
+| A/B | `src/handlers/ab.ts` | `POST /api/sandbox/ab` | §8.2 — runs the same exercise under 2–3 lever configs; one sandbox_sessions row per config; rate-limit is charged once per call. |
+| Skill | `src/handlers/skill.ts` | `POST /api/skill/run` | §8.3 — paid-only. A "skill" is a learner-saved parameterized template stored in `addie.toolbox_items` (type='skill') whose `body_md` JSON-encodes `{exerciseId, fixedLeverSelections, slotSchema, presetIds?}`. Fixed levers are authoritative; the learner supplies data slot values only. |
+
+All three modes share `src/handlers/shared.ts` (assemble → circuit-breaker
+→ dispatch → output gate → cost estimate → log → spend-record) so they
+cannot drift.
+
+## Rate limits + budgets (§11)
+
+`src/rateLimit/index.ts` implements:
+
+- Authenticated paid: 200 runs/hour total per learner.
+- Authenticated free: 100 runs/hour total + 30 runs/hour per (learner, lesson).
+- Anonymous: 5 runs/hour per `anon_session_id` + 20 runs/hour per IP.
+  Anonymous traffic is also pinned to the cheaper `anonModel` per provider
+  (gateway concern).
+
+Backend: Upstash Redis when `UPSTASH_REDIS_REST_URL` and
+`UPSTASH_REDIS_REST_TOKEN` are set; otherwise an in-process sliding-window
+Map (acceptable for v1 single-instance Vercel function). No code changes
+required to switch — env-driven only. The `@upstash/redis` package is
+loaded via dynamic import and is NOT a hard dependency.
+
+### Daily LLM-spend circuit breaker
+
+`recordSpend(provider, costUsd)` is bumped on every dispatched call;
+estimates from `src/observability/cost.ts` (approximate per-1k-token
+rates per provider/model). When today's per-provider spend hits
+`SANDBOX_DAILY_BUDGET_USD_TOTAL` (default $25), the circuit opens for
+that provider — the next call fails over to a provider still under
+budget. If every provider is over budget, the handler returns the safe
+fallback with `flagged: true` and `flag_reasons: ['daily_budget_exhausted']`.
+Spend ledger lives in `addie.sandbox_spend` (migration 00052).
+
+## Pre-pilot security checklist (Spec §14 + Security Spec §12)
+
+Run the suite, then visually confirm each item before any pilot.
+
+```bash
+npx vitest run sandbox-service/tests/security
+```
+
+- [ ] §14.1 — Reveal-system-prompt injection: output gate catches canary leaks.
+- [ ] §14.2 — Slot close-tag injection: assembler escapes literal `</learner_data>`.
+- [ ] §14.3 — Lever allowlist: unknown lever key/option → HTTP 400, never silently stripped.
+- [ ] §14.4 — PII pre-check: SSN, Luhn-valid PAN, ABA-valid routing, 10–17 digit account-number patterns rejected.
+- [ ] §14.5 — Output length cap: gate truncates to `gating.maxOutputChars`.
+- [ ] §14.6 — Provider failover: primary error falls over to next in priority.
+- [ ] §14.7 — Anonymous rate limit: 6th call/hour per anon session refused; 21st call/hour per IP refused.
+- [ ] §14.8 — No leakage in payload: response JSON never contains `system_prompt`, `lever_directives`, or the canary.
+- [ ] Daily budget breaker tripped manually (set `SANDBOX_DAILY_BUDGET_USD_TOTAL=0.01` on a preview, fire one call, confirm safe fallback).
+- [ ] `addie.sandbox_sessions` rows are being written with `mode`, `provider`, `tokens`, `est_cost_usd`, and `flagged` populated.
+- [ ] Public Next.js routes (`/api/addie/gate/capture-email`, `/api/addie/checkout/*`) return 429 after their per-IP cap.
+
+See [`SECURITY_SUITE.md`](./SECURITY_SUITE.md) for what each test asserts.
 
 ## Tests
 

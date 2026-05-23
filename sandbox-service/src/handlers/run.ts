@@ -1,19 +1,21 @@
 /**
- * POST /sandbox/run — core handler.
+ * POST /sandbox/run — single-mode handler.
  *
- * Pure-ish function: takes parsed inputs + identity, returns a RunResult.
- * The Next.js route shim parses the request, resolves identity, and serializes
- * the result. All side effects (DB read, provider call, DB insert) live here.
+ * Pure-ish: takes parsed inputs + identity, returns a RunResult.
+ * Side effects (DB read, provider call, DB insert) live here / in shared.
  */
 
 import { z } from 'zod';
-import { assemblePrompt, AssemblyError } from '../exercises/assembler';
 import { loadExercise } from '../exercises/loader';
-import { dispatch, AllProvidersFailedError } from '../gateway';
-import { runOutputGate, SAFE_FALLBACK_MESSAGE } from '../gate/pipeline';
 import { getRateLimiter } from '../rateLimit';
 import { checkEntitlement } from '../auth/entitlement';
-import { getServiceClient } from '../supabase';
+import {
+  SandboxError,
+  enforcePiiPolicy,
+  executeOnce,
+  logSession,
+  validateProviderSwitch,
+} from './shared';
 import type {
   LearnerIdentity,
   ProviderName,
@@ -21,16 +23,7 @@ import type {
   RunResult,
 } from '../types';
 
-export class SandboxError extends Error {
-  readonly status: number;
-  readonly code: string;
-  constructor(status: number, code: string, message: string) {
-    super(message);
-    this.status = status;
-    this.code = code;
-    this.name = 'SandboxError';
-  }
-}
+export { SandboxError };
 
 export const runInputSchema = z.object({
   exerciseId: z.string().min(1).max(128),
@@ -45,10 +38,8 @@ export interface RunHandlerInput extends RunInput {
   ipAddress: string | null;
 }
 
-const DEFAULT_TEMPERATURE = 0.4;
-
 export async function runSandbox(input: RunHandlerInput): Promise<RunResult> {
-  // 1. Load Exercise (server-only fields included).
+  // 1. Load Exercise.
   const exercise = await loadExercise(input.exerciseId);
   if (!exercise) {
     throw new SandboxError(404, 'EXERCISE_NOT_FOUND', `Exercise not found: ${input.exerciseId}`);
@@ -60,19 +51,15 @@ export async function runSandbox(input: RunHandlerInput): Promise<RunResult> {
     throw new SandboxError(403, 'NOT_ENTITLED', ent.reason ?? 'not_entitled');
   }
 
-  // 3. Provider selection.
-  const requestedProvider = input.provider ?? exercise.defaultProvider;
-  if (
-    requestedProvider !== exercise.defaultProvider &&
-    !exercise.allowProviderSwitch
-  ) {
-    throw new SandboxError(400, 'PROVIDER_SWITCH_DISALLOWED', 'Provider switch not allowed');
-  }
+  // 3. Provider selection / switch policy.
+  const requestedProvider: ProviderName = input.provider ?? exercise.defaultProvider;
+  validateProviderSwitch(exercise, requestedProvider);
 
-  // 4. Rate limit (stub in Wave 1b).
+  // 4. Rate limit.
   const decision = await getRateLimiter().check({
     identity: input.identity,
     exerciseId: input.exerciseId,
+    lessonId: exercise.lessonId,
     provider: requestedProvider,
     ipAddress: input.ipAddress,
   });
@@ -80,120 +67,46 @@ export async function runSandbox(input: RunHandlerInput): Promise<RunResult> {
     throw new SandboxError(429, 'RATE_LIMITED', decision.reason ?? 'rate_limited');
   }
 
-  // 5. Assemble prompt.
-  let assembled;
-  try {
-    assembled = assemblePrompt({
-      exercise,
-      leverSelections: input.leverSelections,
-      dataSlotValues: input.dataSlotValues,
-      presetIds: input.presetIds,
-    });
-  } catch (err) {
-    if (err instanceof AssemblyError) {
-      throw new SandboxError(400, err.code, err.message);
-    }
-    throw err;
-  }
+  // 5. PII pre-check.
+  enforcePiiPolicy({
+    exercise,
+    identity: input.identity,
+    leverSelections: input.leverSelections,
+    dataSlotValues: input.dataSlotValues,
+    presetIds: input.presetIds,
+    requestedProvider,
+  });
 
-  // 6. Dispatch with failover.
-  const useAnonModel = input.identity.learnerId === null;
-  let providerResponse;
-  let providerUsed: ProviderName = requestedProvider;
-  let providerFailed = false;
-  try {
-    providerResponse = await dispatch({
-      request: {
-        system: assembled.system,
-        userContent: assembled.userContent,
-        maxTokens: exercise.gating.maxOutputTokens,
-        temperature: DEFAULT_TEMPERATURE,
-      },
-      preferredProvider: requestedProvider,
-      useAnonModel,
-    });
-    providerUsed = providerResponse.provider;
-  } catch (err) {
-    if (err instanceof AllProvidersFailedError) {
-      providerFailed = true;
-      providerResponse = { outputText: '', tokensUsed: 0, provider: requestedProvider };
-    } else {
-      throw err;
-    }
-  }
+  // 6. Execute (assemble → dispatch → gate → cost).
+  const exec = await executeOnce({
+    exercise,
+    identity: input.identity,
+    leverSelections: input.leverSelections,
+    dataSlotValues: input.dataSlotValues,
+    presetIds: input.presetIds,
+    requestedProvider,
+  });
 
-  // 7. Output gate.
-  const gated = providerFailed
-    ? {
-        outputText: SAFE_FALLBACK_MESSAGE,
-        flagged: true,
-        flagReasons: ['all_providers_failed'],
-      }
-    : runOutputGate({
-        rawOutput: providerResponse.outputText,
-        gating: exercise.gating,
-      });
-
-  // 8. Log session.
+  // 7. Log.
   const sessionId = await logSession({
     identity: input.identity,
     exerciseId: exercise.id,
     lessonId: exercise.lessonId,
     mode: 'single',
-    provider: providerUsed,
+    provider: exec.provider,
     leverSelections: input.leverSelections,
     presetIds: input.presetIds,
-    tokens: providerResponse.tokensUsed,
-    flagged: gated.flagged,
-    flagReasons: gated.flagReasons,
+    tokens: exec.tokensUsed,
+    estCostUsd: exec.estCostUsd,
+    flagged: exec.flagged,
+    flagReasons: exec.flagReasons,
   });
 
   return {
     sessionId,
-    provider: providerUsed,
-    outputText: gated.outputText,
-    tokensUsed: providerResponse.tokensUsed,
-    flagged: gated.flagged,
+    provider: exec.provider,
+    outputText: exec.outputText,
+    tokensUsed: exec.tokensUsed,
+    flagged: exec.flagged,
   };
-}
-
-interface LogSessionInput {
-  identity: LearnerIdentity;
-  exerciseId: string;
-  lessonId: string | null;
-  mode: 'single' | 'ab' | 'skill';
-  provider: ProviderName;
-  leverSelections: Record<string, string>;
-  presetIds: string[];
-  tokens: number;
-  flagged: boolean;
-  flagReasons: string[];
-}
-
-async function logSession(input: LogSessionInput): Promise<string> {
-  const supabase = getServiceClient();
-  const { data, error } = await supabase
-    .from('sandbox_sessions')
-    .insert({
-      learner_id: input.identity.learnerId,
-      anon_session_id: input.identity.anonSessionId,
-      exercise_id: input.exerciseId,
-      lesson_id: input.lessonId,
-      mode: input.mode,
-      provider: input.provider,
-      lever_selections: input.leverSelections,
-      preset_ids: input.presetIds,
-      tokens: input.tokens,
-      flagged: input.flagged,
-      flag_reasons: input.flagReasons.length > 0 ? input.flagReasons : null,
-    })
-    .select('id')
-    .single<{ id: string }>();
-
-  if (error || !data) {
-    // Don't fail the user-facing request if logging fails; surface via server logs.
-    console.error('sandbox-service: failed to log session', error);
-    return 'unlogged';
-  }
-  return data.id;
 }
