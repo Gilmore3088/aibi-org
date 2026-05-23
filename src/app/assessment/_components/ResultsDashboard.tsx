@@ -105,7 +105,7 @@ export function ResultsDashboard({
               <p className="font-serif-sc text-[13px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/75">
                 Readiness by dimension
               </p>
-              <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/55 tabular-nums">
+              <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/75 tabular-nums">
                 Weakest first
               </p>
             </div>
@@ -129,7 +129,7 @@ export function ResultsDashboard({
               {rungLabel}
             </span>
           </p>
-          <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-[color:var(--color-ink)]/65">
+          <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-[color:var(--color-ink)]/80">
             The ladder is below ↓
           </p>
         </div>
@@ -152,7 +152,7 @@ function TierSeal({
 }) {
   return (
     <div className="border border-[color:var(--color-ink)]/40 rounded-[3px] px-5 py-3 text-center max-w-[15rem] bg-[color:var(--color-linen)]">
-      <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/65 tabular-nums">
+      <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/80 tabular-nums">
         Rung {rungIndex + 1} of 6
       </p>
       <p className="font-serif text-[18px] text-[color:var(--color-terra)] leading-tight mt-1.5">
