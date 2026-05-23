@@ -828,3 +828,29 @@ Stripe webhook handler listens only to `checkout.session.completed` and
 later (renewal cycle, mid-cycle seat add, downgrade), revisit and add the
 subscription events — schema already supports it via
 `teams.stripe_subscription_id`.
+
+**2026-05-23 — Wave 2a shell adds 7 small API routes alongside the UI.**
+Wave 2a's primary scope is the learner-facing web app shell (lesson player,
+Toolbox UI, three-way gate UI, dashboard, account pages) under
+`src/app/(addie)/...`. To make the UI functional end-to-end without waiting
+on a separate API agent, this wave also lands the small server endpoints
+the UI needs: knowledge-check grader
+(`POST /api/addie/checks/respond`), Toolbox CRUD
+(`GET|POST /api/addie/toolbox/items`,
+`GET|PATCH|DELETE /api/addie/toolbox/items/[id]`,
+`GET /api/addie/toolbox/items/[id]/export` → streams `.md`), and stub
+account endpoints (`POST /api/account/export`,
+`POST /api/account/delete`) that return 501 until the operator runbook +
+real export/delete pipelines ship. Each route is <100 LOC; rate-limited
+where appropriate (checks: 20/IP/hr, toolbox create: 30/IP/hr); the
+server-side 4-artifact free-tier cap lives in
+`src/lib/addie/toolbox/items.ts` (`FREE_TIER_ARTIFACT_CAP = 4`,
+enforced before insert) and `hasAnyFoundationEntitlement` exempts paid
+learners. Identity is resolved through a new shared helper
+`src/lib/addie/auth/resolveIdentity.ts` that returns `{user_id, anon_session_id, lead_id}`,
+deriving `lead_id` from the most recent `addie.events` row keyed by the
+HMAC-signed anon-session cookie (no separate `anon_sessions` table is
+needed today — the events table is the join). Lesson player dispatches on
+`addie.lessons.modality`; Wave 2b authors per-exercise lever payloads for
+the `interactive` and `sandbox` modalities — the shell ships generic
+fallbacks so the loop is provable end-to-end against any seeded row.
