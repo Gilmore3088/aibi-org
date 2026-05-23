@@ -147,9 +147,9 @@ export function InDepthRunner(): React.ReactElement {
             Before we begin
           </p>
           <h1 className="font-serif text-3xl md:text-5xl text-[color:var(--color-ink)] leading-[1.02] tracking-tight">
-            Which seat are you reading <em className="text-[color:var(--color-terra)]">from?</em>
+            Which seat are you reading <span className="text-[color:var(--color-terra)]">from?</span>
           </h1>
-          <p className="font-serif italic text-lg text-[color:var(--color-ink)]/75 mt-4 leading-relaxed max-w-[58ch]">
+          <p className="font-serif text-lg text-[color:var(--color-ink)]/80 mt-4 leading-relaxed max-w-[58ch]">
             Your Briefing will be framed for your seat. Optional &mdash; skip and you&apos;ll still get the full diagnosis.
           </p>
 

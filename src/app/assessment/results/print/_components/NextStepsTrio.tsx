@@ -151,8 +151,7 @@ export function NextStepsTrio({ tierId }: NextStepsTrioProps) {
                   style={{
                     marginTop: '0.15in',
                     fontFamily: 'var(--font-serif)',
-                    fontStyle: 'italic',
-                    fontSize: '10pt',
+                                        fontSize: '10pt',
                     color: rankStyle.accent,
                   }}
                 >

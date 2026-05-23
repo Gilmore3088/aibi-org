@@ -63,8 +63,7 @@ export default async function InDepthDashboardPage() {
       <p
         style={{
           fontFamily: 'var(--ledger-serif)',
-          fontStyle: 'italic',
-          fontSize: 17,
+                    fontSize: 17,
           color: 'var(--ledger-ink-2)',
           margin: '0 0 40px',
         }}

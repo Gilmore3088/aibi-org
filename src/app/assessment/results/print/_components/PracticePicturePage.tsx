@@ -29,8 +29,7 @@ export function PracticePicturePage({ tierId }: PracticePicturePageProps) {
         <p
           style={{
             fontFamily: 'var(--font-serif)',
-            fontStyle: 'italic',
-            fontSize: '13.5pt',
+                        fontSize: '13.5pt',
             lineHeight: 1.45,
             color: 'var(--color-ink)',
             margin: 0,

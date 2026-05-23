@@ -69,8 +69,7 @@ export function Cover({
         <p
           style={{
             fontFamily: 'var(--font-serif)',
-            fontStyle: 'italic',
-            fontSize: '17pt',
+                        fontSize: '17pt',
             lineHeight: 1.3,
             marginTop: '0.35in',
             color: 'var(--color-slate)',

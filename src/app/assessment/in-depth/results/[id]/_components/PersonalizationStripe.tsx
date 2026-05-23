@@ -77,7 +77,7 @@ export function PersonalizationStripe({ dimensionBreakdown, role }: Props) {
                   <strong>Priority:</strong> {meta.priority}
                 </p>
                 {roleFraming ? (
-                  <p className="body" style={{ marginTop: 18, fontStyle: 'italic' }}>
+                  <p className="body" style={{ marginTop: 18 }}>
                     {roleFraming}
                   </p>
                 ) : null}
@@ -87,9 +87,9 @@ export function PersonalizationStripe({ dimensionBreakdown, role }: Props) {
               </>
             ) : (
               <>
-                <h2>Your starting point, <em>named.</em></h2>
+                <h2>Your starting point, <span className="accent">named.</span></h2>
                 {roleFraming ? (
-                  <p className="body" style={{ fontStyle: 'italic' }}>{roleFraming}</p>
+                  <p className="body">{roleFraming}</p>
                 ) : (
                   <p className="body">
                     Your readiness shape doesn&rsquo;t cleanly fit one of the
