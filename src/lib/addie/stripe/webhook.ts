@@ -12,6 +12,7 @@ import {
 } from '@/lib/addie/supabase/service';
 import { writeEntitlement, type AddieProduct } from '@/lib/addie/entitlements/write';
 import { emit } from '@/lib/addie/events/emit';
+import { bindLeadToUser } from '@/lib/addie/leads/bind';
 
 const SCHEMA_PUBLIC = 'public' as const;
 
@@ -34,29 +35,30 @@ export function verifyStripeEvent(rawBody: string, signature: string | null): St
 }
 
 /**
- * Persist the event id to defeat retries. Returns false if we've already
- * processed this id — the route should still 200 (Stripe doesn't care).
- *
- * The stripe_events ledger lives in addie schema (per Auth Spec §6.2 SQL),
- * but if the table doesn't exist yet we fall back to in-memory dedup
- * within this process. Operator should add a migration that creates
- * addie.stripe_events (id text PRIMARY KEY, received_at timestamptz DEFAULT now()).
+ * Persist the event to defeat retries. Returns false if we've already
+ * processed this event id — the route should still 200 (Stripe doesn't care).
+ * Writes to addie.stripe_events (migration 00051): stripe_event_id PK,
+ * type NOT NULL, livemode NOT NULL, payload_summary jsonb.
  */
 const memoryDedup = new Set<string>();
 const MEMORY_DEDUP_CAP = 1000;
 
-async function markEventSeen(event_id: string): Promise<boolean> {
+async function markEventSeen(event: Stripe.Event): Promise<boolean> {
   const supa = getAddieServiceClient();
-  const { error } = await supa.from('stripe_events').insert({ id: event_id });
+  const { error } = await supa.from('stripe_events').insert({
+    stripe_event_id: event.id,
+    type: event.type,
+    livemode: event.livemode,
+    payload_summary: { api_version: event.api_version, created: event.created },
+  });
   if (!error) return true; // newly inserted
   if (/duplicate key|already exists|unique constraint/i.test(error.message)) {
     return false;
   }
-  // Table missing or other transient — fall back to memory.
-  if (memoryDedup.has(event_id)) return false;
-  memoryDedup.add(event_id);
+  // Table missing or other transient — fall back to memory + warn loudly.
+  if (memoryDedup.has(event.id)) return false;
+  memoryDedup.add(event.id);
   if (memoryDedup.size > MEMORY_DEDUP_CAP) {
-    // crude eviction — drop oldest by reinserting
     const next = Array.from(memoryDedup).slice(-MEMORY_DEDUP_CAP / 2);
     memoryDedup.clear();
     next.forEach((id) => memoryDedup.add(id));
@@ -71,7 +73,7 @@ export interface ProcessResult {
 }
 
 export async function processStripeEvent(event: Stripe.Event): Promise<ProcessResult> {
-  const fresh = await markEventSeen(event.id);
+  const fresh = await markEventSeen(event);
   if (!fresh) return { handled: false, reason: 'duplicate' };
 
   switch (event.type) {
@@ -132,6 +134,25 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session): Promis
       object_id: session.id,
       payload: { product },
     });
+    // Wire-in for G3: carry over any anon/lead artifacts this buyer accrued
+    // before paying (Auth Spec §5 lead→user bind). No-op when no unbound
+    // lead exists. Errors logged, not thrown — entitlement is already
+    // written; we don't want to fail the webhook over carry-over work.
+    if (normEmail) {
+      try {
+        const bound = await bindLeadToUser({ user_id, email: normEmail });
+        if (bound.bound && bound.lead_id) {
+          await emit({
+            action: 'lead_bound_to_user',
+            user_id,
+            object_type: 'lead',
+            object_id: bound.lead_id,
+          });
+        }
+      } catch (bindErr) {
+        console.warn('[addie/stripe/webhook] bindLeadToUser warn:', (bindErr as Error).message);
+      }
+    }
     return;
   }
 
@@ -234,12 +255,8 @@ async function writePendingEntitlement(args: {
     stripe_session_id: args.stripe_session_id,
     payload: { seats: args.seats, team_name: args.team_name },
   });
-  if (error && !/duplicate key|already exists|relation .* does not exist/i.test(error.message)) {
+  if (error && !/duplicate key|already exists/i.test(error.message)) {
     console.warn('[addie/stripe/webhook] pending_entitlement insert warn:', error.message);
-  }
-  if (error && /relation .* does not exist/i.test(error.message)) {
-    // TODO: operator should add addie.pending_entitlements migration.
-    console.warn('[addie/stripe/webhook] addie.pending_entitlements table missing — paid sign-ups for unknown emails will not auto-bind. Add the migration before launch.');
   }
 }
 

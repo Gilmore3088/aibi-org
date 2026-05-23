@@ -127,3 +127,28 @@ Wave 1 is **structurally sound**: schema + RLS + sandbox service + §14 security
 **However, the three blockers (G1, G2, G3) must be fixed before Wave 2 starts** because Wave 2 will immediately exercise them — seat-invite UI calls into the team flow, paid sign-up calls into bind, and any webhook test will hit the broken ledger insert.
 
 Recommend a **"Wave 1f cleanup"** mini-batch (estimate: half a day) to land G1+G2+G3 plus the easy fixes G4 (skill route), G5 (subscription model decision), G9 (comment cleanup) before opening Wave 2a. G6 and G7 can ship with Wave 2 if their fix scope is contained.
+
+---
+
+## Wave 1f resolution — 2026-05-23 (post-audit, commit `deacae1`)
+
+Three of the audit's findings were re-classified after code inspection rather than fixed:
+
+- **G2 (provisionTeam doesn't create seats)** — **not a bug, by design.** `seats_purchased` is the team's budget cap; `inviteSeats` (`src/lib/addie/team/seats.ts:48`) enforces `team.seats_purchased - usedCount >= invitees.length` at invite time. Seats are intentionally not pre-created at purchase; they're created on invite. The schema enforces this via `seats.invited_email NOT NULL`.
+- **G4 (`/api/sandbox/skill` missing)** — **wrong, the route exists at the spec'd path.** Sandbox Spec §9 places skill execution at `POST /api/skill/run` (not `/api/sandbox/skill`). `src/app/api/skill/run/route.ts` is present and tested. The "chat" route the auditor saw at `src/app/api/sandbox/chat/route.ts` is legacy `main` code (imports `@/lib/sandbox/pii-scanner`, the main namespace) and is unrelated to the ADDIE rebuild.
+- **G7 (`pending_entitlements.seat_id` never set)** — **by design.** v1 has no "individual invitee pays at Stripe" flow; team admins pay upfront for N seats and invite. The schema column exists for a future flow but is correctly null in v1.
+
+The remaining four findings were fixed in this batch:
+
+- **G1 fixed.** `markEventSeen` now writes `{stripe_event_id, type, livemode, payload_summary}` matching the `00051` schema. Signature changed from `(event_id: string)` to `(event: Stripe.Event)`.
+- **G3 fixed.** `bindLeadToUser` now called from `handleCheckoutCompleted` when a `user_id` is resolved from the buyer's email. Wrapped in try/catch so a bind failure doesn't kill the webhook (entitlement is already written). Emits `lead_bound_to_user` event on success.
+- **G5 resolved as a decision.** DECISIONS.md entry locks team SKU as one-time payment in v1; no `customer.subscription.*` events needed. Revisit if team pricing pivots to recurring.
+- **G9 fixed.** Stale "ledger table may not exist" comment block removed from `webhook.ts`; the parallel `pending_entitlements` stale-warning branch also removed (table exists per `00051`).
+
+**G6 (anon→lead non-transactional)** ships with Wave 2 as planned — the fix surface overlaps with the gate UI work.
+
+Verification after Wave 1f:
+- `npx tsc --noEmit` → clean
+- `npx vitest run` → 41/41 tests pass
+
+**Wave 2 unblocked.**

@@ -815,3 +815,16 @@ SKU. New addie Stripe webhook endpoint created
 `https://www.aibankinginstitute.com/api/addie/webhooks/stripe`; its secret
 lives in `STRIPE_ADDIE_WEBHOOK_SECRET`. The endpoint will 404 until the
 addie branch merges to main, but no real events fire until then either.
+
+**2026-05-23 — Team SKU is one-time payment in v1, not a subscription
+(closes Wave 1 audit finding G5).** The existing
+`STRIPE_FOUNDATIONS_INSTITUTION_PRICE_ID` price is a one-time payment
+($199/seat × N, paid upfront), matching the existing on-main team purchase
+shape. The ADDIE Auth Spec §6.2 listed
+`customer.subscription.created/updated/deleted` as expected events; those
+are not needed for v1 because there is no recurring billing. The addie
+Stripe webhook handler listens only to `checkout.session.completed` and
+`charge.refunded`. If the team SKU pivots to monthly/annual recurring
+later (renewal cycle, mid-cycle seat add, downgrade), revisit and add the
+subscription events — schema already supports it via
+`teams.stripe_subscription_id`.
