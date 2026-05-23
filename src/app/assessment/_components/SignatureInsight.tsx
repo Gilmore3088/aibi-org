@@ -13,7 +13,7 @@ export function SignatureInsight() {
       aria-label="The signature insight of the AI Readiness Briefing"
     >
       <div className="border-y border-[color:var(--color-ink)]/25 py-8 md:py-10 px-1">
-        <p className="font-serif italic text-[color:var(--color-ink)]/85 text-xl md:text-2xl leading-[1.45] max-w-2xl">
+        <p className="font-serif text-[color:var(--color-ink)]/85 text-xl md:text-2xl leading-[1.45] max-w-2xl">
           {SIGNATURE_INSIGHT}
         </p>
       </div>

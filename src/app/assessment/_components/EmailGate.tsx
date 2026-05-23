@@ -27,6 +27,7 @@ interface EmailGateProps {
 }
 
 type Status = 'idle' | 'submitting' | 'error';
+type ErrorField = 'email' | 'institution' | null;
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -71,6 +72,9 @@ export function EmailGate({
   const [marketingOptIn, setMarketingOptIn] = useState(false);
   const [status, setStatus] = useState<Status>('idle');
   const [message, setMessage] = useState<string | null>(null);
+  const [errorField, setErrorField] = useState<ErrorField>(null);
+  const institutionInputRef = useRef<HTMLInputElement | null>(null);
+  const emailInputRef = useRef<HTMLInputElement | null>(null);
 
   // Auto-skip the gate if the visitor is already signed in. We re-use their
   // auth-session email instead of asking them for it again — the most common
@@ -107,6 +111,7 @@ export function EmailGate({
   async function submit(emailToUse: string): Promise<void> {
     setStatus('submitting');
     setMessage(null);
+    setErrorField(null);
     try {
       const res = await fetch('/api/capture-email', {
         method: 'POST',
@@ -151,6 +156,7 @@ export function EmailGate({
       });
     } catch (err) {
       setStatus('error');
+      setErrorField('email');
       setMessage(err instanceof Error ? err.message : 'Unexpected error.');
     }
   }
@@ -160,17 +166,23 @@ export function EmailGate({
     const trimmedEmail = email.trim();
     if (!EMAIL_RE.test(trimmedEmail)) {
       setStatus('error');
+      setErrorField('email');
       setMessage('Please enter a valid work email.');
+      requestAnimationFrame(() => emailInputRef.current?.focus());
       return;
     }
     // Soft-gate on free-email providers: accept the personal email, but
     // only after the user provides an institution name. Without that
-    // context, the report can't be tailored.
+    // context, the report can't be tailored. Error attaches to the
+    // institution field — that is the missing input — and focus moves
+    // there so the user can fix the actual problem.
     if (isFreeEmailDomain(trimmedEmail) && !institutionName.trim()) {
       setStatus('error');
+      setErrorField('institution');
       setMessage(
-        'Add your institution name so we can tailor your report. A work email also works — but if you prefer a personal address, we just need to know where you work.',
+        'Add your institution name so we can tailor your report — or retake with a work email.',
       );
+      requestAnimationFrame(() => institutionInputRef.current?.focus());
       return;
     }
     await submit(trimmedEmail);
@@ -194,22 +206,25 @@ export function EmailGate({
               id="gate-email"
               label="Work email"
               required
-              error={status === 'error' ? message : null}
+              error={errorField === 'email' ? message : null}
             >
               <input
                 id="gate-email"
+                ref={emailInputRef}
                 type="email"
                 inputMode="email"
                 autoComplete="email"
                 required
                 placeholder="name@yourbank.com"
                 value={email}
-                aria-invalid={status === 'error' || undefined}
+                aria-invalid={errorField === 'email' || undefined}
+                aria-describedby={errorField === 'email' ? 'gate-email-error' : undefined}
                 onChange={(e) => {
                   setEmail(e.target.value);
                   if (status === 'error') {
                     setStatus('idle');
                     setMessage(null);
+                    setErrorField(null);
                   }
                 }}
                 className="w-full px-4 py-3 border border-[color:var(--color-ink)]/20 rounded-[2px] bg-[color:var(--color-linen)] text-[color:var(--color-ink)] font-sans text-base focus:outline-none focus:border-[color:var(--color-terra)]"
@@ -237,15 +252,26 @@ export function EmailGate({
               id="gate-institution"
               label="Institution name"
               hint="Optional — helps us tailor recommendations"
+              error={errorField === 'institution' ? message : null}
             >
               <input
                 id="gate-institution"
+                ref={institutionInputRef}
                 type="text"
                 autoComplete="organization"
                 maxLength={120}
                 placeholder="First Federal Credit Union"
                 value={institutionName}
-                onChange={(e) => setInstitutionName(e.target.value)}
+                aria-invalid={errorField === 'institution' || undefined}
+                aria-describedby={errorField === 'institution' ? 'gate-institution-error' : undefined}
+                onChange={(e) => {
+                  setInstitutionName(e.target.value);
+                  if (errorField === 'institution') {
+                    setStatus('idle');
+                    setMessage(null);
+                    setErrorField(null);
+                  }
+                }}
                 className="w-full px-4 py-3 border border-[color:var(--color-ink)]/20 rounded-[2px] bg-[color:var(--color-linen)] text-[color:var(--color-ink)] font-sans text-base focus:outline-none focus:border-[color:var(--color-terra)]"
               />
             </FormField>
@@ -267,7 +293,7 @@ export function EmailGate({
             <button
               type="submit"
               disabled={status === 'submitting'}
-              className="w-full px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all disabled:opacity-60"
+              className="w-full px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors disabled:opacity-60"
             >
               {status === 'submitting' ? 'Sending…' : 'Show my full results'}
             </button>
@@ -396,7 +422,7 @@ function FormField({
           {required && <span className="ml-1 text-[color:var(--color-terra)]">*</span>}
         </label>
         {hint && !error && (
-          <span className="text-xs text-[color:var(--color-slate)]/80">{hint}</span>
+          <span className="text-xs text-[color:var(--color-slate)]">{hint}</span>
         )}
       </div>
       <div className="mt-1.5">{children}</div>

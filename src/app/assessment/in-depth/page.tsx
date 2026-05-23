@@ -83,12 +83,12 @@ export default async function InDepthAssessmentPage({
         eyebrow: "In-Depth Assessment",
         title: (
           <>
-            The <em className="text-terra">board-ready</em> diagnostic for your
+            The <span className="text-terra">board-ready</span> diagnostic for your
             institution.
           </>
         ),
         lede: (
-          <span className="font-serif italic">
+          <span className="font-serif">
             Forty-eight questions. Twenty minutes. Eight readiness dimensions.
             A written report you can take to your board on Monday.
           </span>
@@ -139,9 +139,9 @@ export default async function InDepthAssessmentPage({
             Two ways in
           </p>
           <h2 className="font-serif text-display-sm md:text-display-md text-ink leading-[1.05] tracking-tight mb-s4 max-w-[22ch]">
-            Curious, or <em className="text-terra italic">deciding</em>?
+            Curious, or <span className="text-terra">deciding</span>?
           </h2>
-          <p className="font-serif italic text-body-lg text-ink/75 max-w-[52ch] mb-s10">
+          <p className="font-serif text-body-lg text-ink/75 max-w-[52ch] mb-s10">
             The free scan tells you roughly where you stand. The In-Depth
             tells you what to do about it — and gives you a document to hand
             your CEO, your board, or your examiner.
@@ -156,7 +156,7 @@ export default async function InDepthAssessmentPage({
               <h3 className="font-serif text-h2 text-ink leading-tight mb-s2">
                 Free Readiness Scan
               </h3>
-              <p className="font-serif italic text-body-md text-ink/75 mb-s5 max-w-[34ch]">
+              <p className="font-serif text-body-md text-ink/75 mb-s5 max-w-[34ch]">
                 Twelve questions. Three minutes. A score and a tier — enough
                 to know which conversation to start at your bank.
               </p>
@@ -185,7 +185,7 @@ export default async function InDepthAssessmentPage({
               <h3 className="font-serif text-h2 text-ink leading-tight mb-s2">
                 In-Depth Assessment
               </h3>
-              <p className="font-serif italic text-body-md text-ink/80 mb-s5 max-w-[42ch]">
+              <p className="font-serif text-body-md text-ink/80 mb-s5 max-w-[42ch]">
                 Forty-eight questions across eight dimensions. A written
                 report with peer-band comparison and a ninety-day playbook
                 keyed to your weakest area.
@@ -245,7 +245,7 @@ export default async function InDepthAssessmentPage({
             What you get, line by line
           </p>
           <h2 className="font-serif text-h1 text-ink leading-tight tracking-tight mb-s8 max-w-[22ch]">
-            Free vs. <em className="text-terra italic">In-Depth.</em>
+            Free vs. <span className="text-terra">In-Depth.</span>
           </h2>
 
           <div className="border border-hairline bg-paper">
@@ -262,7 +262,7 @@ export default async function InDepthAssessmentPage({
                   $99 · Recommended
                 </p>
                 <p className="font-serif text-h3 text-ink mt-s1">
-                  In-Depth <em className="text-terra italic">Assessment</em>
+                  In-Depth <span className="text-terra">Assessment</span>
                 </p>
               </div>
             </div>
