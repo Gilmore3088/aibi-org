@@ -10,14 +10,16 @@
 - Build-task tracking — `Launch_Checklist.md`, `Module_Production_Tracker.md`
 - Content (M0) — `Module_0_Orientation.md`
 - A working UI reference — `LMS_Mockup_Module0.html`
+- **Team onboarding / "start here"** — `Start_Here.md` *(was P2; written 2026-05-23)*
+- **Sandbox Service Technical Spec** — `Sandbox_Service_Tech_Spec.md` *(was P1; written 2026-05-23 — Exercise model, prompt assembly, gateway, output gating, security tests)*
 
 ---
 
 ## 🔧 For Developers (needed)
 
 - [ ] **Technical Design Doc (architecture)** — `P1` — stack choices, service boundaries, repo structure, hosting `[Host]`, env/secrets, CI/CD. *(PRD has only a high-level diagram.)*
-- [ ] **Sandbox Service Technical Spec** — `P1` — the security boundary in detail: provider gateway `[LLM]`, prompt-assembly contract, injection resistance, output gating, rate/cost limits, its API. **Riskiest + most novel component — spec it first.**
-- [ ] **Database schema + RLS spec** — `P1` `[Supabase]` — concrete tables, columns, types, relationships, indexes, and row-level-security policies. *(PRD lists entities only.)*
+- [x] ~~**Sandbox Service Technical Spec** — `P1`~~ — ✅ **done** (`Sandbox_Service_Tech_Spec.md`).
+- [ ] **Database schema + RLS spec** — `P1` `[Supabase]` — concrete tables, columns, types, relationships, indexes, and row-level-security policies. *(PRD lists entities only. **Now the top P1.**)*
 - [ ] **Auth & entitlements spec** — `P1` `[Supabase][Stripe]` — anonymous-view → email-lead → paid states, gating logic after M3, team-seat model, invite/assign/revoke.
 - [ ] **Stripe integration spec** — `P2` `[Stripe]` — products/prices ($99/$295/$199-seat), checkout, webhook → entitlement writes, refunds.
 - [ ] **MailerLite integration spec** — `P2` `[MailerLite]` — lead sync from Supabase, the nurture automation, consent/unsubscribe, transactional sends (invites, assessment delivery).
@@ -38,14 +40,14 @@
 
 ## 🤝 Shared / PM (needed)
 
-- [ ] **Team onboarding / "start here"** — `P2` — one page telling a new dev or designer which docs to read and in what order (the README is the seed of this).
+- [x] ~~**Team onboarding / "start here"** — `P2`~~ — ✅ **done** (`Start_Here.md`).
 - [ ] **Glossary** — `P3` — standalone version of the PRD's terms (blinders, Toolbox, gate, track, light/rich artifact).
 
 ---
 
 ## Recommended build order (the P1s unblock everyone)
-1. **Sandbox Service Technical Spec** — it gates 9 lessons and is the highest-risk build.
-2. **Database schema + RLS** and **Auth & entitlements** — everything reads/writes through these.
+1. ~~**Sandbox Service Technical Spec**~~ — ✅ written 2026-05-23.
+2. **Database schema + RLS** and **Auth & entitlements** — everything reads/writes through these. *(Current top of the queue.)*
 3. **Technical Design Doc** — ties the stack together.
 4. **Design system / UI kit** + **Screen inventory & flows** — unblock design in parallel with backend.
 5. **Security & privacy spec** — needed before the pilot and before banking buyers ask.

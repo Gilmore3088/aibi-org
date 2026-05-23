@@ -40,6 +40,8 @@
 - [ ] `[Stripe]` Gate the assessment behind the $99 purchase. `[MailerLite]` Deliver results + CTA emails.
 
 ## 3 · Controlled AI sandbox *(technical spine — build & validate early)* `[LLM]`
+*Build against the spec: `AiBI_Sandbox_Service_Tech_Spec.md` (build sequence §15, security gates §14).*
+
 - [ ] Provider gateway: one interface fronting Claude (default) / OpenAI / Gemini; failover.
 - [ ] Prompt assembler: hidden system prompt + fixed task scaffold + **bounded learner levers** (input-as-data only).
 - [ ] Output gating: length caps, content screening, strip any system-prompt leakage.

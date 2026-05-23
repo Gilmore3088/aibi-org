@@ -82,6 +82,17 @@ Build specs and learner content live on different layers. Always know which laye
   - When you hit a decision that may already be answered (§14).
 - **How to use it:** Read end-to-end once. Section 6 (functional requirements), §7 (non-functional), §8 (data model), §9 (stack), §10 (architecture) are the dense parts. Reference, don't memorize.
 
+### 3.3a · `AiBI_Sandbox_Service_Tech_Spec.md` — Backend spec for the controlled AI sandbox
+- **What it is:** The technical spec for the security-critical Sandbox Service — the only component that talks to an LLM provider. Defines the **Exercise** abstraction (server-owned config that fully describes a safe interaction), the prompt-assembly contract (the "blinders"), the provider gateway (Anthropic / OpenAI / Google), the output-gating pipeline, the security model (threat model + defenses + honest posture), the API contract, rate limits + cost control, and a security test plan that must pass before pilot.
+- **Authority:** **Source of truth for sandbox implementation.** Elaborates Course PRD §6.2 (FR-S1–S9) and §10 (architecture). Sandbox lessons (2.3, 3.2, 3.5, 4.2–4.4, 5.3) build on top of this.
+- **Who reads it:** Backend developers (every line). Security/privacy reviewer (every line). PM (§1–§5 + §14 test plan). Content authors writing sandbox lessons (§3 Exercise model, §4 prompt assembly, §8 modes) so the lessons fit the rails.
+- **When you use it:**
+  - Building any sandbox endpoint or adapter.
+  - Authoring a new Exercise (content authors write Exercises; the service executes them).
+  - Reviewing a PR that touches LLM calls, prompts, or learner input handling.
+  - Pre-pilot — the §14 acceptance gates are the security sign-off.
+- **How to use it:** Read §1–§5 once for the model. Keep §3 (Exercise schema), §4 (prompt assembly), and §9 (API contract) open when building. Run §14 as a literal test plan.
+
 ### 3.3 · `AiBI_Module_PRDs.md` — Per-module build specs (M0–M5)
 - **What it is:** One PRD per module, all in one file. For each module: purpose, in/out of scope, functional requirements (FR-Mx-N), state & events, dependencies, acceptance criteria, asset inventory.
 - **Authority:** Derived from the course PRD; per-module spec for developers.
@@ -147,9 +158,10 @@ Build specs and learner content live on different layers. Always know which laye
 1. **This doc** (`AiBI_Start_Here.md`) — 15 min.
 2. `AiBI_Foundation_PRD.md` — 30 min. (Skim §1–§5 for context. Read §6 functional requirements, §8 data model, §9 stack, §10 architecture carefully.)
 3. `AiBI_Foundation_Course_ADDIE_Design_v2.md` §2 (the course map) — 10 min. You don't need the rest yet.
-4. `AiBI_Module_PRDs.md` — 15 min for the module you'll build first. Skim the others.
-5. `AiBI_Handoff_Docs_Checklist.md` "For Developers" + recommended build order — 10 min. Know which P1 docs still need writing — you may be the one writing them.
-6. `AiBI_Launch_Checklist.md` §0 (infrastructure) + the section for your workstream — 10 min.
+4. `AiBI_Sandbox_Service_Tech_Spec.md` — 20 min if you're touching anything sandbox-related. Skim §1–§5 otherwise; you'll need it eventually because the sandbox underpins M2–M5.
+5. `AiBI_Module_PRDs.md` — 15 min for the module you'll build first. Skim the others.
+6. `AiBI_Handoff_Docs_Checklist.md` "For Developers" + recommended build order — 10 min. Know which P1 docs still need writing — you may be the one writing them.
+7. `AiBI_Launch_Checklist.md` §0 (infrastructure) + the section for your workstream — 10 min.
 
 ### 4.2 · New designer — first 90 minutes
 1. **This doc** — 15 min.
@@ -183,6 +195,7 @@ Documents drift. When two of them conflict, use this precedence:
 |---|---|
 | What the learner experiences (script, interaction, takeaway) | **Module curriculum doc** (e.g., `AiBI_Module_0_Orientation.md`) |
 | What the developer builds for a module | **`AiBI_Module_PRDs.md`** for that module |
+| How the sandbox is implemented (Exercise model, prompt assembly, gateway, gating, API) | **`AiBI_Sandbox_Service_Tech_Spec.md`** |
 | Pedagogy, course structure, gate philosophy, evaluation | **`AiBI_Foundation_Course_ADDIE_Design_v2.md`** |
 | Product features, data model, stack, integrations | **`AiBI_Foundation_PRD.md`** |
 | Build status / "is it done?" | **`AiBI_Module_Production_Tracker.md`** |
@@ -212,8 +225,8 @@ These don't live in any single doc — they live across all of them.
 
 Per the handoff checklist's recommended build order, the P1s that unblock everyone are:
 
-1. **Sandbox Service Technical Spec** — the riskiest, most novel piece. Gates 9 lessons. Write it first.
-2. **Database schema + RLS spec** — concrete tables for the entities the PRD §8 names.
+1. ~~**Sandbox Service Technical Spec**~~ — ✅ **written** (`AiBI_Sandbox_Service_Tech_Spec.md`, 2026-05-23). Begin implementation against §15 build sequence; §14 security tests are the pre-pilot gate.
+2. **Database schema + RLS spec** — concrete tables for the entities the PRD §8 names. *(Next up.)*
 3. **Auth & entitlements spec** — the anonymous-view → email-lead → paid state machine + the team-seat model.
 4. **Technical Design Doc** — ties the stack together.
 5. **Design system + Screen inventory** — unblock design in parallel with backend.

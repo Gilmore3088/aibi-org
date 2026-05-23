@@ -31,7 +31,7 @@
 ---
 
 ## Shared dependencies (build once — these gate the interactive lessons)
-- [ ] **Controlled sandbox platform** — provider gateway, prompt assembler, output gate, injection guard, provider switcher, save-to-Toolbox. *Blocks 2.3, 3.2, 3.4, 3.5 and all of M4–M5.* `[LLM]`
+- [ ] **Controlled sandbox platform** — provider gateway, prompt assembler, output gate, injection guard, provider switcher, save-to-Toolbox. *Blocks 2.3, 3.2, 3.4, 3.5 and all of M4–M5.* `[LLM]` · *Spec ✅ `AiBI_Sandbox_Service_Tech_Spec.md` (2026-05-23) — build per §15; sign off per §14.*
 - [ ] **Toolbox infrastructure** — create / version / `.md` export / email-or-entitlement-gated save. `[Supabase]`
 - [ ] **Track system** — `profile.track` selection + branched-lesson rendering. *Set in 0.1; consumed by every branch.* `[Supabase]`
 - [ ] **Knowledge-check logging** — capture results for the learning metric. `[Supabase]`
