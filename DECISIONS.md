@@ -707,3 +707,28 @@ deleting** — never assume "stale = dead."
 - **Workflow note.** Bundled destructive git commands (worktree+local+remote in
   one chain) get blocked by the safety classifier; remote-branch deletions must
   run as isolated, explicitly-authorized steps.
+
+**2026-05-23 — Foundation Course rebuilt from scratch on ADDIE
+(`feature/addie-v1`).** New blank-slate course design owned by
+`docs/Foundation-Course-ADDIE/` (Course PRD + ADDIE Design v2 + Module PRDs +
+M0 curriculum + production tracker + launch checklist). Three-layer doc model:
+Course PRD → Module PRDs → Module curriculum docs. Shape: 6 modules (M0–M5) ·
+~22–24 lessons · ≤15 min each · 5 role tracks branched at applied lessons ·
+three-way gate after M3 (Pay / Email-to-keep / Decline → $99 assessment) ·
+controlled "blinders" sandbox as spine (Anthropic default, learner-switchable
+to OpenAI/Gemini) · Toolbox with `.md` export (email- or entitlement-gated
+saving) · $99 Readiness Assessment as 48 Q / 10+ dimensions / four deliverables.
+Confirmed stack: Stripe · Supabase · MailerLite · Resend · LLM APIs. This work
+is **branch-scoped** — does not affect `main` until separately re-reconciled.
+Per operator: comply with existing project structures and terms with **one
+explicit exception — no credential / no certificate in v1.** "Foundations
+Certificate" is dropped from the Foundation Course on this branch; completion
+is tracked but not marketed; `src/lib/certificates/` is unused by the rebuild;
+revisit once there is traction and a recognized credentialing path. Other
+deviations flagged in CLAUDE.md (this branch): course-name shorthand in docs,
+course surface to be reauthored (the existing `/courses/foundation/program`
+is reference only here), existing `/assessment` + `/assessment/in-depth` to
+be reconciled with the 48-Q / 10+ dimension Readiness Assessment spec
+(extending `content/assessments/v2/`, not replacing from scratch), and a new
+Team SKU ($199/seat, 10-seat minimum) with no Stripe price or admin dashboard
+yet on main.

@@ -64,6 +64,45 @@ The AI Banking Institute (AiBI, pronounced "AI-bee") is an AI proficiency and ed
 
 ---
 
+## BRANCH-SCOPED — Foundation Course rebuild on ADDIE (`feature/addie-v1`)
+
+**This branch is a blank-slate rebuild of the Foundation Course using ADDIE.**
+It intentionally diverges from `main` and from prior decisions; nothing here
+ships to production until it has been re-reconciled.
+
+**Canonical docs (this branch wins where it conflicts with main):**
+- `docs/Foundation-Course-ADDIE/AiBI_Foundation_PRD.md` — course-level product/engineering source of truth.
+- `docs/Foundation-Course-ADDIE/AiBI_Foundation_Course_ADDIE_Design_v2.md` — instructional-design source of truth.
+- `docs/Foundation-Course-ADDIE/AiBI_Module_PRDs.md` — per-module build specs (M0–M5).
+- `docs/Foundation-Course-ADDIE/AiBI_Module_0_Orientation.md` — fully-scripted M0 curriculum (template for M1–M5).
+- `docs/Foundation-Course-ADDIE/AiBI_Module_Production_Tracker.md` — production status per module/lesson.
+- `docs/Foundation-Course-ADDIE/AiBI_Launch_Checklist.md` — cross-cutting workstreams.
+
+**Document layers:** Course PRD → Module PRDs → Module curriculum docs.
+
+**Shape of the rebuild (read the PRD + ADDIE doc for detail):**
+- 6 modules (M0 Orientation · M1 Awareness · M2 Access & Workflow · M3 Prompting · **GATE** · M4 Skills · M5 Build), ~22–24 lessons, every lesson ≤15 min.
+- 5 role tracks (Risk & Compliance · Customer-Facing · Back-Office Process · Technical · Leadership); branched only at applied lessons (M1.3, M2.4, M3.5, M4.3) → ~20 track variants.
+- **Three-way gate after M3:** Pay · Email-to-keep · Decline (→ $99 Readiness Assessment nurture). Saving anything (free side) requires an email — every save is a lead.
+- **Controlled "blinders" sandbox** as the technical spine: provider gateway (Anthropic default, learner-switchable to OpenAI/Gemini), hidden system prompt, bounded levers, output gate, injection-resistant. Reused M2 → M5.
+- **Toolbox:** versioned `.md` artifacts; 4 light artifacts free, rich artifacts paid + unlimited.
+- **$99 Readiness Assessment** = 48 questions, 10+ dimensions, four deliverables (scorecard · plan · ideas+prompts · CTAs); both an entry point and the email-lead destination.
+- **Stack confirmed:** Stripe · Supabase · MailerLite · Resend · Anthropic/OpenAI/Gemini.
+
+**Deviations from main (intentional, scoped to this branch):**
+1. **No credential / no certificate in v1.** "Foundations Certificate" is dropped from the Foundation Course on this branch. Completion is tracked but not marketed. `src/lib/certificates/` is not used by the rebuild. *(This is the single explicit deviation called out 2026-05-23 — see DECISIONS.md.)*
+2. **Course name in docs.** The ADDIE docs say "Foundation Course." The CLAUDE.md brand rule ("AiBI-Foundation," singular hyphenated, for credentials/seal/product references) still governs user-facing copy and code identifiers; the docs' shorthand is internal.
+3. **Course surface to be reauthored.** The existing `/courses/foundation/program` route is the old structure; the ADDIE rebuild supersedes its content and likely its route layout. Treat the existing surface as reference only on this branch.
+4. **Existing `/assessment` (12-Q free)** and **`/assessment/in-depth`** ($99, 48-Q, 8 dimensions) get reconciled with the ADDIE Readiness Assessment spec (48-Q, 10+ dimensions, 4 deliverables) — extending the existing `content/assessments/v2/` material, not replacing it from scratch.
+5. **Team SKU** ($199/seat, 10-seat minimum) is new. No Stripe price or admin dashboard exists yet on main.
+
+**Everything else complies with main's existing structure and terms** — brand
+naming rules, the Ledger design system, the stack inventory, the data-discipline
+rule, and all CRITICAL guards above. If a conflict surfaces beyond the five
+deviations above, flag it in a DECISIONS.md entry before acting.
+
+---
+
 ## CRITICAL — NEVER DELETE WITHOUT EXPLICIT CONSENT
 
 **NEVER delete, drop, or destroy ANY external resource (Supabase branches, database tables, Vercel deployments, Stripe products, DNS records, ConvertKit sequences, HubSpot contacts, etc.) without EXPLICIT user approval. This includes "recreating" — deleting and recreating IS deleting. When asking approval for ANY destructive action, use ALL CAPS:**
