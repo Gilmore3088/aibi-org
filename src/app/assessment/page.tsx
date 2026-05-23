@@ -25,6 +25,7 @@ export default function AssessmentPage() {
   const [capturedProfileId, setCapturedProfileId] = useState<string | null>(null);
   const [usedFreeEmail, setUsedFreeEmail] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [restartConfirm, setRestartConfirm] = useState(false);
   const scoreHeadingRef = useRef<HTMLHeadingElement | null>(null);
 
   useEffect(() => {
@@ -102,9 +103,10 @@ export default function AssessmentPage() {
                 tabIndex={-1}
                 className="font-serif text-3xl md:text-5xl leading-tight text-[color:var(--color-ink)] focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--ledger-accent)] focus-visible:outline-offset-4 focus-visible:rounded-sm"
               >
-                Your readiness report is <em className="text-[color:var(--color-terra)]">ready.</em>
+                Your readiness report is{' '}
+                <span className="text-[color:var(--color-terra)]">ready.</span>
               </h2>
-              <p className="font-serif italic text-lg md:text-xl text-[color:var(--color-ink)]/75 max-w-2xl mx-auto leading-relaxed">
+              <p className="font-serif text-lg md:text-xl text-[color:var(--color-ink)]/80 max-w-2xl mx-auto leading-relaxed">
                 Enter your work email to see your score, tier, eight-dimension breakdown, and a starter artifact keyed to your weakest area.
               </p>
             </header>
@@ -144,13 +146,42 @@ export default function AssessmentPage() {
             />
 
             <div className="text-center">
-              <button
-                type="button"
-                onClick={state.restart}
-                className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-ink)]/70 hover:text-[color:var(--color-terra)]"
-              >
-                Start over
-              </button>
+              {restartConfirm ? (
+                <div
+                  className="inline-flex flex-wrap items-center justify-center gap-x-3 gap-y-2"
+                  role="group"
+                  aria-label="Confirm restart"
+                >
+                  <span className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-ink)]/80">
+                    Discard all 12 answers?
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setRestartConfirm(false);
+                      state.restart();
+                    }}
+                    className="min-h-[44px] px-3 py-2 font-mono text-xs uppercase tracking-widest text-[color:var(--color-error)] underline underline-offset-4 hover:text-[color:var(--color-ink)]"
+                  >
+                    Yes, start over
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setRestartConfirm(false)}
+                    className="min-h-[44px] px-3 py-2 font-mono text-xs uppercase tracking-widest text-[color:var(--color-ink)]/80 hover:text-[color:var(--color-ink)]"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setRestartConfirm(true)}
+                  className="min-h-[44px] px-3 py-2 font-mono text-xs uppercase tracking-widest text-[color:var(--color-ink)]/70 hover:text-[color:var(--color-terra)]"
+                >
+                  Start over
+                </button>
+              )}
             </div>
           </div>
         )}
@@ -195,9 +226,12 @@ export default function AssessmentPage() {
 // when real content swaps in.
 function AssessmentSkeleton() {
   return (
-    <main className="min-h-screen" aria-hidden="true">
-      <div className="h-1 bg-[color:var(--color-ink)]/10" />
-      <div className="px-6 py-12 md:py-20">
+    <main className="min-h-screen">
+      <p role="status" aria-live="polite" className="sr-only">
+        Loading the AI Readiness Assessment…
+      </p>
+      <div className="h-1 bg-[color:var(--color-ink)]/10" aria-hidden="true" />
+      <div className="px-6 py-12 md:py-20" aria-hidden="true">
         <div className="w-full max-w-2xl mx-auto animate-pulse">
           <div className="flex items-center justify-between mb-8">
             <div className="h-3 w-32 bg-[color:var(--color-ink)]/10 rounded-sm" />

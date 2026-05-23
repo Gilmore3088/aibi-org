@@ -104,7 +104,7 @@ export function ResultsViewV2({
           <p className="font-serif-sc text-sm uppercase tracking-[0.22em] text-[color:var(--color-terra)]">
             AI Readiness Briefing
           </p>
-          <p className="font-mono text-[12px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/65 shrink-0">
+          <p className="font-mono text-[12px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/80 shrink-0">
             {BRIEFING_DATE_FORMATTER.format(new Date())}
           </p>
         </div>
@@ -114,7 +114,7 @@ export function ResultsViewV2({
             : 'Your assessment, in brief.'}
         </h1>
         <p
-          className="mt-5 font-mono text-[12px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/65"
+          className="mt-5 font-mono text-[12px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/80"
           data-print-hide="true"
         >
           A 5-minute read
@@ -242,7 +242,7 @@ export function ResultsViewV2({
 
             <div className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/15 rounded-[3px] p-7 md:p-9 space-y-7">
               <div>
-                <p className="font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55">
+                <p className="font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/75">
                   Why this is the right starting point
                 </p>
                 <ul className="mt-3 space-y-2">
@@ -259,7 +259,7 @@ export function ResultsViewV2({
               </div>
 
               <div className="border-l-2 border-[color:var(--color-ink)]/20 pl-5">
-                <p className="font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55">
+                <p className="font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/75">
                   What this looks like in practice
                 </p>
                 <p className="mt-2 text-[15px] leading-[1.6] text-[color:var(--color-ink)]/85">
@@ -268,7 +268,7 @@ export function ResultsViewV2({
               </div>
 
               <div>
-                <p className="font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55">
+                <p className="font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/75">
                   Where this works best
                 </p>
                 <ul className="mt-2 grid gap-1 sm:grid-cols-3">
@@ -286,19 +286,19 @@ export function ResultsViewV2({
 
               <dl className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-5 border-t border-[color:var(--color-ink)]/10 text-sm">
                 <div>
-                  <dt className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/55">
+                  <dt className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/75">
                     Risk
                   </dt>
                   <dd className="mt-1 text-[color:var(--color-ink)]">{fastestRoi.riskLevel}</dd>
                 </div>
                 <div>
-                  <dt className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/55">
+                  <dt className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/75">
                     Time saved
                   </dt>
                   <dd className="mt-1 text-[color:var(--color-ink)]">{fastestRoi.timeSaved}</dd>
                 </div>
                 <div>
-                  <dt className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/55">
+                  <dt className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/75">
                     Owner
                   </dt>
                   <dd className="mt-1 text-[color:var(--color-ink)]">{fastestRoi.owner}</dd>
@@ -306,7 +306,7 @@ export function ResultsViewV2({
               </dl>
             </div>
 
-            <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55">
+            <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/75">
               Surfaced by your weakest dimension: {focusGap.label}
             </p>
             <ContinueLink to="section-6" label="Starter prompt" />
@@ -333,9 +333,13 @@ export function ResultsViewV2({
             </p>
             <StarterPrompt prompt={starterPrompt} />
             {starterArtifact && focusGap && (
-              <details className="group border border-[color:var(--color-ink)]/15 rounded-[3px] bg-[color:var(--color-linen)] overflow-hidden" data-print-hide="true">
-                <summary className="cursor-pointer list-none px-5 py-4 flex items-center justify-between font-serif-sc text-[11px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/70 hover:bg-[color:var(--color-parch)] transition-colors">
-                  <span>Show printable starter artifact</span>
+              <details
+                open
+                className="group border border-[color:var(--color-ink)]/15 rounded-[3px] bg-[color:var(--color-linen)] overflow-hidden"
+                data-print-hide="true"
+              >
+                <summary className="cursor-pointer list-none px-5 py-4 flex items-center justify-between font-serif-sc text-[11px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/80 hover:bg-[color:var(--color-parch)] transition-colors">
+                  <span>Printable starter artifact</span>
                   <span aria-hidden className="font-mono text-[12px] transition-transform group-open:rotate-180">▾</span>
                 </summary>
                 <div className="p-5">
@@ -366,7 +370,7 @@ export function ResultsViewV2({
               >
                 {day}
               </span>
-              <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55 mb-1">
+              <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/75 mb-1">
                 Day {day}
               </p>
               <p className="text-[15px] leading-[1.55] text-[color:var(--color-ink)]/85">
@@ -411,7 +415,19 @@ function ContinueLink({ to, label }: { readonly to: string; readonly label: stri
     <div className="pt-6 mb-16" data-print-hide="true">
       <a
         href={`#${to}`}
-        className="inline-flex items-center justify-between gap-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] px-6 py-3 font-sans text-[12px] font-semibold uppercase tracking-[1.4px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors group"
+        onClick={(e) => {
+          // Smooth-scroll happens via CSS (html { scroll-behavior: smooth }),
+          // but Safari iOS doesn't move SR/keyboard focus on hash nav. Do it
+          // explicitly so screen-reader users hear the new section heading.
+          const target = document.getElementById(to);
+          if (target) {
+            e.preventDefault();
+            target.focus({ preventScroll: true });
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            history.replaceState(null, '', `#${to}`);
+          }
+        }}
+        className="inline-flex items-center justify-between gap-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] px-6 py-3 min-h-[44px] font-sans text-[12px] font-semibold uppercase tracking-[1.4px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors group focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--ledger-accent)] focus-visible:outline-offset-2"
       >
         <span>{label}</span>
         <span aria-hidden className="font-mono transition-transform duration-200 group-hover:translate-y-0.5">↓</span>
@@ -473,7 +489,7 @@ function StrengthsChart({
                 </span>
                 <span className="font-mono text-[13px] text-[color:var(--color-ink)]/75 tabular-nums shrink-0">
                   {row.score}/{row.maxScore}
-                  <span className="text-[color:var(--color-ink)]/45"> · {pctLabel}%</span>
+                  <span className="text-[color:var(--color-ink)]/75"> · {pctLabel}%</span>
                 </span>
               </div>
               <div
@@ -534,7 +550,7 @@ function ZoneLegend() {
           <span className="font-serif-sc text-[12px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/80">
             {zone.label}
           </span>
-          <span className="font-mono text-[11px] text-[color:var(--color-ink)]/55 tabular-nums">
+          <span className="font-mono text-[11px] text-[color:var(--color-ink)]/75 tabular-nums">
             {zone.range}
           </span>
         </div>
@@ -613,7 +629,7 @@ function GapCard({ gap }: { readonly gap: RankedDimension }) {
         {content.explanation}
       </p>
       <div className="mt-5">
-        <p className="font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55">
+        <p className="font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/75">
           What this leads to
         </p>
         <ul className="mt-2 space-y-1.5">

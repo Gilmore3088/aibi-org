@@ -165,7 +165,7 @@ export function QuestionCard({
           <button
             type="button"
             onClick={onBack}
-            className="font-sans text-body-sm text-slate hover:text-terra transition-colors duration-fast"
+            className="inline-flex items-center min-h-[44px] px-s3 py-s2 -ml-s3 font-sans text-body-sm text-slate hover:text-terra transition-colors duration-fast focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--ledger-accent)] focus-visible:outline-offset-2"
           >
             ← Back to question {String(questionNumber - 1).padStart(2, "0")}
           </button>
@@ -173,7 +173,7 @@ export function QuestionCard({
           <span />
         )}
         <span className="font-mono text-label-md uppercase tracking-widest text-slate">
-          Tap an answer to continue
+          Choose one to continue
         </span>
       </div>
     </div>
