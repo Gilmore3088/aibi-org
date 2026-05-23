@@ -52,6 +52,8 @@
 - [ ] **Security test:** attempt injection / prompt-extraction / data-paste and confirm all fail.
 
 ## 4 · Web app build *(engineering)*
+*Build against the specs: `AiBI_Technical_Design_Doc.md` (architecture + repo + API surface), `AiBI_Design_System_Spec.md` (UI kit), `AiBI_Screen_Inventory_Spec.md` (screens + flows + states).*
+
 - [ ] Lesson player for all modalities (video/audio/interactive/sandbox/worksheet).
 - [ ] Tier gating: M0–M3 free (no account to view), M4–M5 require paid entitlement.
 - [ ] Role-track selection + branched-lesson rendering.
@@ -69,6 +71,8 @@
 - [ ] Storage buckets for media + exported artifacts.
 
 ## 6 · Payments & entitlements `[Stripe]` `[Supabase]`
+*Build against the spec: `AiBI_Auth_Entitlements_Spec.md` (gate fork §4, lead-bind §5, Stripe webhook §6, team seats §7, acceptance gates §12).*
+
 - [ ] Create Stripe products/prices: Assessment **$99**, Individual **$295**, Team **$199/seat (min 10)**.
 - [ ] Hosted checkout (no card data stored anywhere).
 - [ ] Webhooks → write entitlements into Supabase on successful payment.
@@ -91,6 +95,8 @@
 - [ ] Simple internal dashboard to read the above.
 
 ## 9 · Security, privacy & compliance
+*Build against the spec: `AiBI_Security_Privacy_Spec.md` (test plan §4, honest posture §5, retention/deletion §8, pre-pilot gate §12).*
+
 - [ ] Confirm **no PII / account data / customer data / MNPI** is collectable anywhere (sandbox bounded inputs verified in §3).
 - [ ] Encryption at rest + in transit; secrets server-side only.
 - [ ] Privacy Policy + Terms of Service published and linked.

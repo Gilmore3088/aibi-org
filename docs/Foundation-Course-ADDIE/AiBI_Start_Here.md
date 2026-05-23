@@ -104,6 +104,52 @@ Build specs and learner content live on different layers. Always know which laye
   - Pre-launch — the §12 acceptance gates must all pass.
 - **How to use it:** Read §2 (principles) + §3 (entity overview) once. Then jump to the table you're touching in §5. The migration order in §11 is the build sequence.
 
+### 3.3c · `AiBI_Auth_Entitlements_Spec.md` — Identity ladder, gate fork, Stripe + team seats
+- **What it is:** Server-side flow for the three identity states (anonymous viewer → email lead → authenticated learner) and the transitions between them. Owns the gate-fork endpoints, Stripe checkout + webhook handler, lead-bind, team-seat invite/accept/revoke, marketing-consent rules, and failure-mode recovery.
+- **Authority:** **Source of truth for auth and payments flow.** Implements Course PRD §6.4 (gate), §6.5 (payments), §6.7 (team), §6.8 (auth). Pairs with the Database spec (which owns the data shape) and the Sandbox spec (entitlement check at the LLM boundary).
+- **Who reads it:** Backend developers building checkout, webhook, or gate endpoints. Anyone touching learner state transitions.
+- **When you use it:** Writing any server endpoint that creates a learner, captures a lead, processes a payment, or invites a seat.
+- **How to use it:** Read §1 (the three states) and §4 (gate fork) first; jump to the specific flow you're building. The §12 acceptance gates are the pre-ship checklist.
+
+### 3.3d · `AiBI_Technical_Design_Doc.md` — Engineering blueprint
+- **What it is:** The top-level architecture doc. Stack choices with reasons, service boundaries, repo layout, environments, env-var additions, the API surface, CI/CD, observability, performance budgets, build sequence.
+- **Authority:** **Source of truth for engineering architecture.** Stitches Sandbox + Database + Auth specs together. Names the seams between web app, Sandbox Service, Supabase, Stripe, MailerLite, Resend, and LLM providers.
+- **Who reads it:** Every engineer joining the project. The PM for sequencing.
+- **When you use it:**
+  - Onboarding any new dev.
+  - Scaffolding a new directory or service.
+  - Deciding where new code goes.
+  - Sequencing the cross-team build (§11).
+- **How to use it:** Read end-to-end once. Keep §4 (repo layout) and §7 (API surface) open while building.
+
+### 3.3e · `AiBI_Design_System_Spec.md` — UI kit
+- **What it is:** Visual + interaction language. Color tokens (Ledger, single-sourced), typography (3 families, italics retired), spacing/radii/shadow/motion, component specs (Button, Input, Card, Lesson player, Sandbox controls, Gate fork, Toolbox drawer, Knowledge check, Nav, Modal, Toast), iconography, imagery, voice + microcopy, accessibility, responsive posture, forbidden patterns.
+- **Authority:** **Source of truth for the UI kit.** CLAUDE.md Design Context is the brand law; this doc maps it to components.
+- **Who reads it:** Designers (every line). Frontend developers (every line). Anyone writing UI copy (§8 voice rules).
+- **When you use it:** Designing or building any UI surface. The §11 forbidden-pattern list is the "is this off-brand?" reference.
+- **How to use it:** Read §1–§4 once (aesthetic, color, typography, spacing). Then jump to the component you need in §5.
+
+### 3.3f · `AiBI_Screen_Inventory_Spec.md` — Every screen, every flow
+- **What it is:** The catalogue of ~45 screens we build in v1, the eight primary user flows that connect them, the six baseline states every screen must handle, and mobile considerations. Pairs with the Design System doc — that one covers *how*, this one covers *what + when*.
+- **Authority:** **Source of truth for screens and flows.** If a flow diagram appears elsewhere and conflicts, this doc wins.
+- **Who reads it:** Designers, frontend developers, QA, the PM.
+- **When you use it:**
+  - Sprint planning (which screens are in scope this cycle).
+  - Designing a new screen (check it's in the inventory; if not, add it before building).
+  - QA (the §5 state checklist is the per-screen QA pass).
+- **How to use it:** Read §1 (inventory) + §4 (primary flows) once. Then jump to the screen catalogue in §3 for the one you're working on.
+
+### 3.3g · `AiBI_Security_Privacy_Spec.md` — Consolidated security + privacy posture
+- **What it is:** The system-wide security contract. Data classes, structural enforcement of the data-discipline rule, the prompt-injection test plan, the buyer-facing honest posture (the `/security` one-pager), encryption + secrets posture, OWASP top-10 mapping, retention + deletion, logging + monitoring, incident response, pre-pilot security gate, residual-risk list.
+- **Authority:** **Source of truth for security posture.** Per-component specs (Sandbox §5, Database §12, Auth §9–10) own their internals; this doc owns the system-wide posture and the buyer-facing position.
+- **Who reads it:** Engineers (every line). Security/privacy reviewer (every line). PM (§5 honest posture, §10 incident response, §12 pre-pilot gate).
+- **When you use it:**
+  - Building anything that touches identity, payments, or LLM calls.
+  - Preparing for a banking-buyer security review.
+  - Annual / quarterly security review cycles.
+  - Incident response.
+- **How to use it:** Read §1 (the brand promise), §3 (structural enforcement), and §5 (the honest posture) before any external conversation about security. The §12 pre-pilot gate is the literal checklist before the pilot ships.
+
 ### 3.3 · `AiBI_Module_PRDs.md` — Per-module build specs (M0–M5)
 - **What it is:** One PRD per module, all in one file. For each module: purpose, in/out of scope, functional requirements (FR-Mx-N), state & events, dependencies, acceptance criteria, asset inventory.
 - **Authority:** Derived from the course PRD; per-module spec for developers.
@@ -165,23 +211,25 @@ Build specs and learner content live on different layers. Always know which laye
 
 ## 4 · Reading paths by role
 
-### 4.1 · New developer — first 90 minutes
+### 4.1 · New developer — first 2 hours
 1. **This doc** (`AiBI_Start_Here.md`) — 15 min.
-2. `AiBI_Foundation_PRD.md` — 30 min. (Skim §1–§5 for context. Read §6 functional requirements, §8 data model, §9 stack, §10 architecture carefully.)
-3. `AiBI_Foundation_Course_ADDIE_Design_v2.md` §2 (the course map) — 10 min. You don't need the rest yet.
-4. `AiBI_Database_Schema_RLS_Spec.md` — 20 min. Skim §2 (principles) + §3 (entity overview), then the tables you'll touch. The patterns in §5 are the templates you copy when writing migrations and policies.
-5. `AiBI_Sandbox_Service_Tech_Spec.md` — 20 min if you're touching anything sandbox-related. Skim §1–§5 otherwise; you'll need it eventually because the sandbox underpins M2–M5.
-6. `AiBI_Module_PRDs.md` — 15 min for the module you'll build first. Skim the others.
-7. `AiBI_Handoff_Docs_Checklist.md` "For Developers" + recommended build order — 10 min. Know which P1 docs still need writing — you may be the one writing them.
-8. `AiBI_Launch_Checklist.md` §0 (infrastructure) + the section for your workstream — 10 min.
+2. `AiBI_Technical_Design_Doc.md` — 25 min, end-to-end. Stack, service boundaries, repo layout, environments, API surface, build sequence. This is your map.
+3. `AiBI_Foundation_PRD.md` — 20 min. Skim §1–§5 for context; read §6 (functional requirements), §8 (data model entities), §9 (stack), §10 (architecture).
+4. `AiBI_Database_Schema_RLS_Spec.md` — 20 min. Skim §2 (principles) + §3 (entity overview), then the tables you'll touch.
+5. `AiBI_Auth_Entitlements_Spec.md` — 20 min. §1 identity ladder + §4 gate fork + §6 Stripe. Anything you build that touches a learner row probably crosses this doc.
+6. `AiBI_Sandbox_Service_Tech_Spec.md` — 20 min if touching anything sandbox-related; skim §1–§5 otherwise.
+7. `AiBI_Security_Privacy_Spec.md` — 10 min. §3 structural enforcement + §6 secrets + §12 pre-pilot gate.
+8. `AiBI_Module_PRDs.md` — 10 min for the module you'll build first; skim the others.
+9. `AiBI_Launch_Checklist.md` §0 + your workstream — 10 min.
 
-### 4.2 · New designer — first 90 minutes
+### 4.2 · New designer — first 2 hours
 1. **This doc** — 15 min.
-2. `AiBI_Foundation_Course_ADDIE_Design_v2.md` — 30 min, end-to-end. (Pedagogy drives every UX decision here.)
-3. `AiBI_Module_0_Orientation.md` — 20 min. This is the only fully-imagined learner experience we have; everything else takes its cues from here.
-4. The LMS mockup HTML (open in a browser) — 10 min. Shows the chrome around M0.
-5. `AiBI_Handoff_Docs_Checklist.md` "For Designers" — 5 min. The design system + screen inventory are the first two P1s you own.
-6. `AiBI_Foundation_PRD.md` §6.2 (sandbox), §6.3 (Toolbox), §6.4 (gate) — 10 min. The three surfaces that need the most original design.
+2. `AiBI_Foundation_Course_ADDIE_Design_v2.md` — 25 min, end-to-end. (Pedagogy drives every UX decision here.)
+3. `AiBI_Design_System_Spec.md` — 25 min, end-to-end. The visual + interaction language is the contract you work in.
+4. `AiBI_Screen_Inventory_Spec.md` — 25 min. The list of screens you're designing and the flows that connect them.
+5. `AiBI_Module_0_Orientation.md` — 15 min. The only fully-imagined learner experience we have; everything else takes cues from here.
+6. The LMS mockup HTML (open in a browser) — 10 min. Shows the chrome around M0.
+7. `AiBI_Foundation_PRD.md` §6.2 (sandbox), §6.3 (Toolbox), §6.4 (gate) — 10 min. The three surfaces that need the most original design.
 
 ### 4.3 · New content author / instructional designer — first 90 minutes
 1. **This doc** — 15 min.
@@ -189,13 +237,16 @@ Build specs and learner content live on different layers. Always know which laye
 3. `AiBI_Module_0_Orientation.md` — 20 min. Read it as the **template you will copy** for the module you're authoring.
 4. `AiBI_Module_PRDs.md` — 10 min for the module you'll author first. Note its functional requirements — your content must enable them (the sorter, the A/B sandbox, the gate).
 
-### 4.4 · New PM / lead — first 90 minutes
+### 4.4 · New PM / lead — first 2 hours
 1. **This doc** — 15 min.
-2. `AiBI_Foundation_PRD.md` — 30 min, end-to-end.
+2. `AiBI_Foundation_PRD.md` — 25 min, end-to-end.
 3. `AiBI_Foundation_Course_ADDIE_Design_v2.md` §1 (analysis) + §5 (evaluation) — 15 min.
-4. `AiBI_Launch_Checklist.md` — 15 min, end-to-end. This is your operating manual.
-5. `AiBI_Module_Production_Tracker.md` — 10 min. This is your status board.
-6. `AiBI_Handoff_Docs_Checklist.md` — 5 min. Your P1 backlog of docs to commission.
+4. `AiBI_Technical_Design_Doc.md` §11 (build sequence) + §12 (risks) — 10 min. The path forward and where it can blow up.
+5. `AiBI_Security_Privacy_Spec.md` §5 (honest posture) + §12 (pre-pilot gate) — 10 min. Banking-buyer conversations and the launch gate.
+6. `AiBI_Launch_Checklist.md` — 15 min, end-to-end. Your operating manual.
+7. `AiBI_Module_Production_Tracker.md` — 10 min. Your status board.
+8. `AiBI_Handoff_Docs_Checklist.md` — 5 min. The P1s are done; the P2/P3s are the next backlog.
+9. `AiBI_Screen_Inventory_Spec.md` §1 (inventory) + §4 (primary flows) — 10 min. The shape of what's being built.
 
 ---
 
@@ -209,6 +260,11 @@ Documents drift. When two of them conflict, use this precedence:
 | What the developer builds for a module | **`AiBI_Module_PRDs.md`** for that module |
 | How the sandbox is implemented (Exercise model, prompt assembly, gateway, gating, API) | **`AiBI_Sandbox_Service_Tech_Spec.md`** |
 | Database table shape, columns, indexes, RLS policies | **`AiBI_Database_Schema_RLS_Spec.md`** |
+| Server-side identity/payment flows (gate fork, lead-bind, Stripe webhook, team seats) | **`AiBI_Auth_Entitlements_Spec.md`** |
+| Engineering architecture, repo layout, environments, API surface | **`AiBI_Technical_Design_Doc.md`** |
+| Visual language, component specs, voice rules, accessibility | **`AiBI_Design_System_Spec.md`** |
+| Which screens exist, the flows between them, per-screen states | **`AiBI_Screen_Inventory_Spec.md`** |
+| Security posture, prompt-injection testing, retention + deletion, incident response | **`AiBI_Security_Privacy_Spec.md`** |
 | Pedagogy, course structure, gate philosophy, evaluation | **`AiBI_Foundation_Course_ADDIE_Design_v2.md`** |
 | Product features, data model, stack, integrations | **`AiBI_Foundation_PRD.md`** |
 | Build status / "is it done?" | **`AiBI_Module_Production_Tracker.md`** |
@@ -236,16 +292,19 @@ These don't live in any single doc — they live across all of them.
 
 ## 7 · Where to start *this week*
 
-Per the handoff checklist's recommended build order, the P1s that unblock everyone are:
+All six P1s from the handoff checklist are now written (as of 2026-05-23):
 
-1. ~~**Sandbox Service Technical Spec**~~ — ✅ **written** (`AiBI_Sandbox_Service_Tech_Spec.md`, 2026-05-23). Begin implementation against §15 build sequence; §14 security tests are the pre-pilot gate.
-2. ~~**Database schema + RLS spec**~~ — ✅ **written** (`AiBI_Database_Schema_RLS_Spec.md`, 2026-05-23). Migrations follow §11; §12 acceptance gates must pass.
-3. **Auth & entitlements spec** — the anonymous-view → email-lead → paid state machine + the team-seat model. *(Next up — the schema doc covers the data shape; this doc covers the flow.)*
-4. **Technical Design Doc** — ties the stack together.
-5. **Design system + Screen inventory** — unblock design in parallel with backend.
-6. **Security & privacy spec** — needed before pilot and before banking buyers ask.
+1. ~~**Sandbox Service Technical Spec**~~ — ✅ `AiBI_Sandbox_Service_Tech_Spec.md`. Implementation follows §15; §14 security tests are the pre-pilot gate.
+2. ~~**Database Schema + RLS Spec**~~ — ✅ `AiBI_Database_Schema_RLS_Spec.md`. Migrations follow §11; §12 acceptance gates must pass.
+3. ~~**Auth & Entitlements Spec**~~ — ✅ `AiBI_Auth_Entitlements_Spec.md`. Build the identity-ladder transitions per §4–§7; §12 acceptance gates must pass.
+4. ~~**Technical Design Doc**~~ — ✅ `AiBI_Technical_Design_Doc.md`. The cross-team build sequence is in §11; lock open decision §13 (sandbox deployment target) before sandbox build step 1.
+5. ~~**Design System / UI Kit**~~ — ✅ `AiBI_Design_System_Spec.md`. Components in §5 ship in the order in §12.
+6. ~~**Screen Inventory + Flows**~~ — ✅ `AiBI_Screen_Inventory_Spec.md`. Build order in §7; per-screen state checklist in §5.
+7. ~~**Security & Privacy Spec**~~ — ✅ `AiBI_Security_Privacy_Spec.md`. §12 pre-pilot gate must pass before piloting with any real bank or credit union.
 
-Anything else can wait until those exist.
+**What's left:** the P2/P3 docs in the handoff checklist (Stripe integration spec, MailerLite integration spec, content-model spec, event-taxonomy spec, QA plan, environment runbook, component specs with states, brand & voice guide, accessibility design spec, responsive spec, glossary). None of these block the P1 build path; commission them as the teams hit specific needs.
+
+**The actual next step is engineering.** Start at Technical Design Doc §11 (build sequence) and execute. The doc set is complete enough to begin.
 
 ---
 
