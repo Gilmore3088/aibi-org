@@ -3,6 +3,7 @@
 
 | File | What it is | Authority |
 |---|---|---|
+| `AiBI_Start_Here.md` | **Read this first.** Team orientation: what each doc is for, who reads it when, role-specific reading paths, conflict-resolution rules | **Entry point for new team members** |
 | `AiBI_Foundation_Course_ADDIE_Design_v2.md` | Instructional design — course architecture, modules, gate, sandbox philosophy, evaluation | **Source of truth for design** |
 | `AiBI_Foundation_PRD.md` | Product/engineering requirements — features, data model, stack, assessment spec, decisions | **Source of truth for build** |
 | `AiBI_Foundation_Interactive_Overview.html` | Visual, clickable product overview (open in a browser) | Derived from the two specs above |

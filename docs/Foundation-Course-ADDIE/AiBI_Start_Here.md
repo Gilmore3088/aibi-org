@@ -1,0 +1,247 @@
+# AiBI Foundation — Start Here
+*The orientation document. Read this first. Then read the documents below in the order that matches your role.*
+
+**Project:** The AI Banking Institute · Foundation Course
+**Tagline:** "We turn your bankers into your builders."
+**Branch (build):** `feature/addie-v1` · **Folder:** `docs/Foundation-Course-ADDIE/`
+
+---
+
+## 1 · The product in 60 seconds
+
+The Foundation Course is an exclusively-online, self-paced course that takes a banking professional from **"I've heard of generative AI"** to **"I built something useful this week, and I know the line I can't cross."**
+
+It is also the **top of the commercial funnel** for The AI Banking Institute. Four interlocking systems make it work:
+
+1. **A curriculum engine** — 6 modules, ~22 lessons, every lesson ≤15 min, branched into 5 role tracks.
+2. **A controlled AI sandbox** — on-rails, multi-provider (Anthropic / OpenAI / Gemini), injection-resistant; learners interact with real models inside *bounded levers* — no free-text chat, no way to paste sensitive data.
+3. **A Toolbox** — versioned `.md` artifacts the learner produces; persistence requires an email (free side) or a paid account.
+4. **A freemium gate** — M0–M3 are free, gate after M3, M4–M5 are paid. The gate is a **three-way fork**: Pay · Email-to-keep · Decline → routed to the $99 Readiness Assessment.
+
+A separate **$99 Readiness Assessment** (48 questions, 10+ dimensions, four deliverables) sits both as an entry point to the funnel and as the nurture destination for email leads.
+
+**Pricing:** Assessment $99 · Individual course $295 · Team course $199/seat (10-seat minimum).
+
+**No credential in v1** — completion is tracked but not marketed. Revisit once we have traction and a recognized credentialing path.
+
+---
+
+## 2 · How the documentation works (the 3-layer model)
+
+Build specs and learner content live on different layers. Always know which layer you are in.
+
+```
+   ┌──────────────────────────────────────────────────────────────┐
+   │  LAYER 1 — Vision & strategy                                  │
+   │  ADDIE Design v2 · Interactive Overview (HTML)                │
+   │  "Why does this exist and what is it?"                        │
+   └──────────────────────────────────────────────────────────────┘
+                              ▼
+   ┌──────────────────────────────────────────────────────────────┐
+   │  LAYER 2 — Product/engineering requirements                   │
+   │  Course PRD                ──►  Module PRDs (M0–M5)           │
+   │  "What does the developer build?"                             │
+   └──────────────────────────────────────────────────────────────┘
+                              ▼
+   ┌──────────────────────────────────────────────────────────────┐
+   │  LAYER 3 — Learner content (per module)                       │
+   │  Module 0 Orientation (✅ done)  · M1–M5 curriculum docs (🔲)  │
+   │  "What does the learner see, hear, and do?"                   │
+   └──────────────────────────────────────────────────────────────┘
+
+   Cross-cutting:
+   - Launch Checklist (cross-workstream execution)
+   - Module Production Tracker (per-module build status)
+   - Handoff Docs Checklist (P1/P2/P3 docs still to write)
+   - LMS Mockup (clickable visual prototype)
+```
+
+---
+
+## 3 · The 8 documents — what each is, who reads it, when
+
+### 3.1 · `AiBI_Foundation_Course_ADDIE_Design_v2.md` — Instructional design source of truth
+- **What it is:** The pedagogical blueprint. Built on ADDIE (Analysis → Design → Development → Implementation → Evaluation). Defines the course objectives (Bloom-laddered), the 6-module structure, the 5 role tracks, the lesson template (Hook → Teach → Do → Take → Check), the gate, the sandbox philosophy, and the Kirkpatrick-based evaluation plan.
+- **Authority:** **Source of truth for everything pedagogical.** If the curriculum doc and the ADDIE doc disagree, the ADDIE doc wins.
+- **Who reads it:** Everyone, but in depth — instructional designers, content authors, the PM.
+- **When you use it:**
+  - Before you write or review any lesson content.
+  - When deciding whether something belongs in free vs. paid.
+  - When deciding what counts as a "takeaway."
+  - When measuring whether the course is working (§5).
+- **How to use it:** Read end-to-end once. Then keep it open as a reference while authoring modules. Section 2 is the course map; section 3 is the development plan; section 5 is the evaluation plan.
+
+### 3.2 · `AiBI_Foundation_PRD.md` — Course-level product/engineering source of truth
+- **What it is:** The product requirements document for the *whole* product. Features, non-functional requirements, the data model, the integrations + stack, the technical architecture, the risks, and the resolved/open decisions.
+- **Authority:** **Source of truth for everything product/engineering.** If a module PRD and the course PRD disagree, the course PRD wins.
+- **Who reads it:** Everyone, end-to-end. Dev and PM in depth.
+- **When you use it:**
+  - When scoping any build work.
+  - When you need to know what tool does what (§9 integrations).
+  - When you need the data model (§8).
+  - When you hit a decision that may already be answered (§14).
+- **How to use it:** Read end-to-end once. Section 6 (functional requirements), §7 (non-functional), §8 (data model), §9 (stack), §10 (architecture) are the dense parts. Reference, don't memorize.
+
+### 3.3 · `AiBI_Module_PRDs.md` — Per-module build specs (M0–M5)
+- **What it is:** One PRD per module, all in one file. For each module: purpose, in/out of scope, functional requirements (FR-Mx-N), state & events, dependencies, acceptance criteria, asset inventory.
+- **Authority:** Derived from the course PRD; per-module spec for developers.
+- **Who reads it:** Developers building each module. PM for status tracking.
+- **When you use it:**
+  - When planning a sprint for a module.
+  - When writing acceptance criteria for a PR.
+  - When scoping the interactive/sandbox configs for a module.
+- **How to use it:** When you start a module, read its PRD section once. Use the *Functional requirements* list as your build checklist; use the *Acceptance criteria* as your definition of done.
+
+### 3.4 · `AiBI_Module_0_Orientation.md` — Detailed curriculum for Module 0
+- **What it is:** The fully-scripted curriculum for the two M0 lessons. Two layers per beat: **SCRIPT (verbatim)** for narration, **PRODUCTION** for on-screen elements, b-roll, interactions, timing. Includes all 5-track content for the data-discipline sorter, the Data Discipline Card template, and an M0 production checklist.
+- **Authority:** Detailed spec — the *learner-facing* truth for M0. Also the **template** every other module's curriculum doc must follow.
+- **Who reads it:** Anyone producing M0 (video, design, dev). Anyone authoring M1–M5 curriculum docs reads it as the template.
+- **When you use it:**
+  - Recording video → SCRIPT block is verbatim narration.
+  - Building the track-picker, sorter, Data Discipline Card, or Course Roadmap → PRODUCTION block.
+  - QA → run the production checklist at the bottom + the §CHECK items.
+  - Authoring M1's curriculum doc → copy this file's structure exactly.
+- **How to use it:** This is the gold standard. Treat the shape (Hook → Teach → Do → Take → Check, both SCRIPT + PRODUCTION layers) as **non-negotiable** when writing M1–M5.
+
+### 3.5 · `AiBI_Module_Production_Tracker.md` — Per-module production status
+- **What it is:** A status board. For every module/lesson it lists modality, time budget, branching, interactives, and the takeaway. Each module has a production checklist with ✅ / 🛠 / 🔲 markers. Includes a "shared dependencies" section (build once: sandbox platform, Toolbox infra, track system, knowledge-check logging) and a build-order suggestion.
+- **Authority:** Derivative; the operational tracker.
+- **Who reads it:** PM daily. Everyone else when they want to know "what's done, what's not."
+- **When you use it:**
+  - Standups / status updates.
+  - Sequencing work across modules.
+  - Spotting blockers (e.g., the sandbox platform blocks 9 lessons).
+- **How to use it:** Update the checkbox the moment something flips status. Read top-to-bottom when planning the next week.
+
+### 3.6 · `AiBI_Launch_Checklist.md` — Cross-workstream zero-to-launch plan
+- **What it is:** The whole launch broken into 13 numbered workstreams: infrastructure, content production, the $99 assessment, sandbox, app build, database, payments, email, analytics, security/privacy, legal, QA/pilot, marketing site. Each workstream is a checklist tagged with the relevant tool (`[Stripe]`, `[Supabase]`, `[MailerLite]`, `[LLM]`, `[Host]`).
+- **Authority:** Derivative; the execution plan.
+- **Who reads it:** PM owns it. Everyone references the workstream they own.
+- **When you use it:**
+  - Planning the overall delivery.
+  - Onboarding a new contributor to *their* workstream (jump to that §, ignore the rest).
+  - Pre-launch — the QA section (§11) is the gate.
+- **How to use it:** Read once end-to-end to understand the surface area. Then bookmark the section you own and work it.
+
+### 3.7 · `AiBI_Handoff_Docs_Checklist.md` — Gap list of dev/design/PM docs still to write
+- **What it is:** A catalog of the *additional* documents we still need to write before serious build can start (technical design, sandbox technical spec, schema + RLS, auth & entitlements, Stripe spec, MailerLite spec, content model, event taxonomy, security spec, QA plan, runbook, design system, screen inventory, component specs, brand & voice, a11y spec, responsive spec, team onboarding, glossary). Each is priority-rated **P1** (unblocks build) → **P3** (nice-to-have).
+- **Authority:** Derivative; a gap analysis.
+- **Who reads it:** PM and team leads. Anyone before they say "we're ready to build."
+- **When you use it:**
+  - Sprint planning ("which P1 do we knock out next?").
+  - When a dev or designer says "I don't have what I need."
+- **How to use it:** Work the P1s first, top to bottom. The recommended build order at the bottom is the path: **Sandbox Technical Spec → Schema + RLS → Auth & entitlements → Technical Design Doc → Design system + Screen inventory → Security & privacy spec.**
+
+### 3.8 · `README.md` — The folder index
+- **What it is:** A one-page table listing every file in this folder, what it is, and its authority level. Plus the "confirmed tools" line and the superseded-docs note.
+- **Authority:** Index only.
+- **Who reads it:** Everyone, the moment they open this folder.
+- **When you use it:** The "where do I find X?" moment. Glance, then go to the source.
+- **How to use it:** Don't write content into the README — write content into the relevant doc and add a line to the README pointing to it.
+
+---
+
+## 4 · Reading paths by role
+
+### 4.1 · New developer — first 90 minutes
+1. **This doc** (`AiBI_Start_Here.md`) — 15 min.
+2. `AiBI_Foundation_PRD.md` — 30 min. (Skim §1–§5 for context. Read §6 functional requirements, §8 data model, §9 stack, §10 architecture carefully.)
+3. `AiBI_Foundation_Course_ADDIE_Design_v2.md` §2 (the course map) — 10 min. You don't need the rest yet.
+4. `AiBI_Module_PRDs.md` — 15 min for the module you'll build first. Skim the others.
+5. `AiBI_Handoff_Docs_Checklist.md` "For Developers" + recommended build order — 10 min. Know which P1 docs still need writing — you may be the one writing them.
+6. `AiBI_Launch_Checklist.md` §0 (infrastructure) + the section for your workstream — 10 min.
+
+### 4.2 · New designer — first 90 minutes
+1. **This doc** — 15 min.
+2. `AiBI_Foundation_Course_ADDIE_Design_v2.md` — 30 min, end-to-end. (Pedagogy drives every UX decision here.)
+3. `AiBI_Module_0_Orientation.md` — 20 min. This is the only fully-imagined learner experience we have; everything else takes its cues from here.
+4. The LMS mockup HTML (open in a browser) — 10 min. Shows the chrome around M0.
+5. `AiBI_Handoff_Docs_Checklist.md` "For Designers" — 5 min. The design system + screen inventory are the first two P1s you own.
+6. `AiBI_Foundation_PRD.md` §6.2 (sandbox), §6.3 (Toolbox), §6.4 (gate) — 10 min. The three surfaces that need the most original design.
+
+### 4.3 · New content author / instructional designer — first 90 minutes
+1. **This doc** — 15 min.
+2. `AiBI_Foundation_Course_ADDIE_Design_v2.md` — 45 min, end-to-end. This is your bible.
+3. `AiBI_Module_0_Orientation.md` — 20 min. Read it as the **template you will copy** for the module you're authoring.
+4. `AiBI_Module_PRDs.md` — 10 min for the module you'll author first. Note its functional requirements — your content must enable them (the sorter, the A/B sandbox, the gate).
+
+### 4.4 · New PM / lead — first 90 minutes
+1. **This doc** — 15 min.
+2. `AiBI_Foundation_PRD.md` — 30 min, end-to-end.
+3. `AiBI_Foundation_Course_ADDIE_Design_v2.md` §1 (analysis) + §5 (evaluation) — 15 min.
+4. `AiBI_Launch_Checklist.md` — 15 min, end-to-end. This is your operating manual.
+5. `AiBI_Module_Production_Tracker.md` — 10 min. This is your status board.
+6. `AiBI_Handoff_Docs_Checklist.md` — 5 min. Your P1 backlog of docs to commission.
+
+---
+
+## 5 · Conflict-resolution rules (which doc wins when they disagree)
+
+Documents drift. When two of them conflict, use this precedence:
+
+| Topic | Authoritative doc |
+|---|---|
+| What the learner experiences (script, interaction, takeaway) | **Module curriculum doc** (e.g., `AiBI_Module_0_Orientation.md`) |
+| What the developer builds for a module | **`AiBI_Module_PRDs.md`** for that module |
+| Pedagogy, course structure, gate philosophy, evaluation | **`AiBI_Foundation_Course_ADDIE_Design_v2.md`** |
+| Product features, data model, stack, integrations | **`AiBI_Foundation_PRD.md`** |
+| Build status / "is it done?" | **`AiBI_Module_Production_Tracker.md`** |
+| What still needs to be written | **`AiBI_Handoff_Docs_Checklist.md`** |
+| Workstream sequencing | **`AiBI_Launch_Checklist.md`** |
+
+**If a conflict is structural** (e.g., two docs imply different module counts), stop work and resolve it. Update the lower-authority doc and **add a `DECISIONS.md` entry** at the project root recording what changed and why.
+
+---
+
+## 6 · Non-negotiables (the rules every employee follows)
+
+These don't live in any single doc — they live across all of them.
+
+1. **No PII, no account numbers, no customer data, no MNPI** is ever collected, stored, or transmittable through any course surface. The sandbox's bounded inputs make this structurally impossible — that is the brand promise to banking buyers.
+2. **Every lesson is ≤15 minutes**, end-to-end, including interaction. Hard ceiling.
+3. **Every lesson follows the same shape:** Hook → Teach → Do → Take → Check.
+4. **Branched lessons render all 5 role tracks.** No exceptions.
+5. **Saving anything (free side) requires an email.** Every save is a lead-capture event.
+6. **No credential in v1.** Completion is tracked but not marketed as a credential.
+7. **The sandbox is on-rails.** No free-form chat, ever. Learner input is data, never instruction. The hidden system prompt is non-extractable.
+8. **Accessibility is WCAG 2.1 AA** — captions + transcripts on media, keyboard navigation on every interactive, sufficient contrast.
+
+---
+
+## 7 · Where to start *this week*
+
+Per the handoff checklist's recommended build order, the P1s that unblock everyone are:
+
+1. **Sandbox Service Technical Spec** — the riskiest, most novel piece. Gates 9 lessons. Write it first.
+2. **Database schema + RLS spec** — concrete tables for the entities the PRD §8 names.
+3. **Auth & entitlements spec** — the anonymous-view → email-lead → paid state machine + the team-seat model.
+4. **Technical Design Doc** — ties the stack together.
+5. **Design system + Screen inventory** — unblock design in parallel with backend.
+6. **Security & privacy spec** — needed before pilot and before banking buyers ask.
+
+Anything else can wait until those exist.
+
+---
+
+## 8 · Glossary (the words we use)
+
+- **Blinders** — the controlled-prompt design that lets a learner manipulate bounded levers but never the underlying system prompt.
+- **Gate** — the three-way fork after Module 3 (Pay / Email-to-keep / Decline).
+- **Light artifact vs. rich artifact** — free-tier single takeaway (one card, one map) vs. paid-tier multi-artifact output (Skill + Template + Library unlock, etc.).
+- **Module curriculum doc** — the per-module learner-content spec (Hook → Teach → Do → Take → Check, with SCRIPT + PRODUCTION layers).
+- **Module PRD** — the per-module engineering spec inside `AiBI_Module_PRDs.md`.
+- **Sandbox** — the on-rails, multi-provider playground reused M2 → M5.
+- **Track** — one of five role-based content branches (Risk & Compliance · Customer-Facing · Back-Office Process · Technical · Leadership).
+- **Toolbox** — the learner's persistent, versioned library of created `.md` artifacts.
+
+---
+
+## 9 · Where to ask questions
+
+- **Conflicts between docs** → flag in your PR; resolve via §5 above; record in `DECISIONS.md`.
+- **Missing doc** (you can't build because something isn't written) → check `AiBI_Handoff_Docs_Checklist.md`. If it's a known gap, see who owns it. If it isn't on the list, add it.
+- **Decision you don't want to relitigate later** → write a `DECISIONS.md` entry at the project root the moment you make it.
+
+---
+
+*Last updated 2026-05-23. Owned by James. Update this doc whenever the document set changes.*
