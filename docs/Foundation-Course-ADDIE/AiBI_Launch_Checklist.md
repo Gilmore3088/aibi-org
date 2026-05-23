@@ -33,7 +33,7 @@
 - [ ] `[Supabase]` Store finished media/transcripts; map content to module/lesson/track records.
 
 ## 2 · The $99 Readiness Assessment *(can build in parallel — semi-standalone)*
-- [ ] Write the 48 questions, mapped to 10+ readiness dimensions.
+- [ ] Write the 48 questions, mapped to 8 readiness dimensions.
 - [ ] Build the scoring model (questions → dimension scores).
 - [ ] Build the four deliverables: dimensional scorecard, personalized plan, curated ideas + prompts, CTAs.
 - [ ] Define the profile handoff (track, tool_exposure, comfort_level, dimension scores) → course.

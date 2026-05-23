@@ -787,3 +787,31 @@ shared secret between web app and sandbox), and `ANON_SESSION_COOKIE_SECRET`
 created in Stripe test mode before Wave 1d Stripe checkout work. None of
 these block Wave 1a (migrations are SQL files, not runtime). They block
 Wave 1d.
+
+**2026-05-23 — In-Depth Assessment locked at 8 dimensions, not 10+ (closes
+DB Spec §13 item 5).** The original ADDIE PRD specified "10+ readiness
+dimensions"; the existing on-main implementation under
+`content/assessments/v2/` is 8 dimensions and is the production product
+already selling at $99. Per operator: leave the live product alone, update
+the ADDIE docs to match. The 8 dimensions stand; the 10+ language is gone
+from PRD, Database Spec, Module Production Tracker, Launch Checklist,
+Start Here, and Screen Inventory. `addie.assessment_results.dimension_scores`
+jsonb now expects 8 keys; Wave 3b wires the existing v2 runner to write into
+`addie.assessment_results` rather than building a parallel 10+ surface.
+
+**2026-05-23 — Stripe naming + posture cleanup (test mode).** Two price
+nicknames renamed from "AI Banking Practitioner Course —" to
+"AiBI-Foundation —" (CLAUDE.md 2026-05-11 rename rule applied late). The
+`AiBI-Foundation Course` product description rewritten to a general,
+brand-aligned blurb (no structural details like module count or hour count)
+so it stays correct across both the live 12-module course and the upcoming
+ADDIE rebuild. The leftover $15 "myproduct" (`prod_UTx8gfENDDHA13`)
+archived. The team-seat price already existed —
+`price_1TTmudRy9NIFjtIIEPmR1BpP` ($199/seat) — and is reachable via the
+existing Vercel env var `STRIPE_FOUNDATIONS_INSTITUTION_PRICE_ID` through
+the products.ts fallback chain; no new Vercel env var required for the team
+SKU. New addie Stripe webhook endpoint created
+(`we_1TaOEuRy9NIFjtIIrM032WFg`) pointed at
+`https://www.aibankinginstitute.com/api/addie/webhooks/stripe`; its secret
+lives in `STRIPE_ADDIE_WEBHOOK_SECRET`. The endpoint will 404 until the
+addie branch merges to main, but no real events fire until then either.

@@ -37,7 +37,7 @@ This spec turns the PRD §8 entity list into concrete tables, columns, types, FK
 | SandboxSession | `sandbox_sessions` *(owned by Sandbox spec)* | No raw sensitive data |
 | ToolboxItem (Artifact) | `toolbox_items`, `toolbox_item_versions` | `.md` exportable, versioned |
 | Lead | `leads` | Email-only identity at the gate |
-| AssessmentResult | `assessment_results` | 48 Q · 10+ dimensions · four deliverables |
+| AssessmentResult | `assessment_results` | 48 Q · 8 dimensions · four deliverables |
 | Event | `events` | Analytics spine; PRD FR-N1 — Supabase, no third-party LMS |
 
 **Also owned by the Sandbox spec (not redefined here, just listed):** `exercises`, `sandbox_sessions`. The sandbox spec §10 is authoritative for those two tables; cross-reference only.
@@ -373,7 +373,7 @@ CREATE POLICY "learner writes own versions" ON toolbox_item_versions FOR INSERT
 ```
 
 ### 5.8 · `assessment_results`
-48 questions, 10+ dimensions, four deliverables (scorecard · plan · ideas+prompts · CTAs). The assessment writes; the course reads dimension scores + track/tool_exposure/comfort onto `learner_profiles`.
+48 questions, 8 dimensions, four deliverables (scorecard · plan · ideas+prompts · CTAs). The assessment writes; the course reads dimension scores + track/tool_exposure/comfort onto `learner_profiles`.
 
 ```sql
 CREATE TABLE assessment_results (
@@ -382,7 +382,7 @@ CREATE TABLE assessment_results (
   lead_id          uuid REFERENCES leads(id)      ON DELETE CASCADE,
   email            citext NOT NULL,
   raw_answers      jsonb NOT NULL,                 -- [{question_id, value}]
-  dimension_scores jsonb NOT NULL,                 -- {dim_id: score} (10+ dims)
+  dimension_scores jsonb NOT NULL,                 -- {dim_id: score} (8 dims)
   plan_md          text,                           -- generated personalized plan
   ideas_prompts_md text,                           -- curated ideas + prompts
   ctas_md          text,                           -- recommended next steps
@@ -565,7 +565,7 @@ Each step ships as one migration file (`/supabase/migrations/<ts>_<name>.sql`), 
 2. **Storage of preset context blocks** (sandbox). Sandbox spec stores them in `exercises`; if they grow large, move to a `preset_context_blocks` table referenced by id. Keep small for now.
 3. **`events` retention / partitioning.** High-volume; partition by month if needed. v1: single table + indexes; revisit at first scale check.
 4. **Soft-delete strategy.** Default is hard delete via `ON DELETE CASCADE`. Add `deleted_at` where audit history matters (entitlements? events?) — open question driven by privacy/retention policy (PRD NFR-PRIV2).
-5. **`assessment_results` shape vs. existing `content/assessments/v2/`.** This spec assumes the ADDIE 48-Q / 10+ dimension model. Reconcile with the existing on-main schema before applying (CLAUDE.md flagged this).
+5. ~~**`assessment_results` shape vs. existing `content/assessments/v2/`.**~~ **Resolved 2026-05-23:** ADDIE adopts the existing 8-dimension model from `content/assessments/v2/`. `dimension_scores` jsonb holds 8 keys; Wave 3b wires the runner to write into `addie.assessment_results`. See DECISIONS.md.
 6. **Index for "active entitlement" lookup.** Partial index defined above (`WHERE status='active'`); confirm Postgres planner uses it before relying on it.
 
 ---

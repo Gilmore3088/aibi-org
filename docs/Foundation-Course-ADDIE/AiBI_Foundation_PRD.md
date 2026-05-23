@@ -111,8 +111,8 @@ Learner buys $99 assessment → completes it → profile written (track, tool ex
 - **FR-P5** Team purchase issues N seat invitations; each invitee self-registers.
 
 ### 6.6 Readiness Assessment (a standalone $99 product)
-- **FR-A1 Instrument.** A **48-question** diagnostic scored across **10+ dimensions** of AI readiness (multi-dimensional, not a single score).
-- **FR-A2 Deliverables.** On completion the learner receives: (a) a **dimensional scorecard** across the 10+ dimensions, (b) a **personalized plan**, (c) curated **ideas and prompts** they can use immediately, and (d) **CTAs** (next steps — into the free course, the paid course, or team purchase). These deliverables are what give the $99 product standalone value.
+- **FR-A1 Instrument.** A **48-question** diagnostic scored across **8 dimensions** of AI readiness (multi-dimensional, not a single score).
+- **FR-A2 Deliverables.** On completion the learner receives: (a) a **dimensional scorecard** across the 8 dimensions, (b) a **personalized plan**, (c) curated **ideas and prompts** they can use immediately, and (d) **CTAs** (next steps — into the free course, the paid course, or team purchase). These deliverables are what give the $99 product standalone value.
 - **FR-A3 Profile handoff.** The assessment writes a **profile** keyed to learner identity (email): at minimum `track`, `tool_exposure`, `comfort_level`, plus the dimension scores. The course reads it to (conservatively) pre-select the track and tune the M1.3 branch.
 - **FR-A4 Position.** The assessment may run before the course (entry point) **or** after the gate (the email-lead nurture destination). Same profile-handoff contract either way; when taken after the free course, it also enriches the lead for targeted upsell.
 
@@ -256,7 +256,7 @@ The work of *producing* the complete course, in dependency order. This is course
 **Resolved:**
 1. **Build approach — custom, self-built app.** No third-party LMS, no xAPI. Events logged directly in Supabase. Sandbox embedded in the app.
 2. **Stack — Supabase (DB/auth/storage) + Resend (transactional email) + MailerLite (nurture).** Lead written to Supabase, synced to MailerLite. (See §9.)
-3. **Assessment deliverables — 48 questions, 10+ scored dimensions**, producing a dimensional scorecard + a personalized plan + curated ideas/prompts + CTAs. (See §6.6.)
+3. **Assessment deliverables — 48 questions, 8 scored dimensions**, producing a dimensional scorecard + a personalized plan + curated ideas/prompts + CTAs. (See §6.6.)
 4. **Provider data posture — answered by design** (bounded inputs prevent customer data; commercial APIs don't train on inputs). Buyer-facing one-pager to be confirmed against current vendor terms. (See §7.2.)
 
 **Remaining:**

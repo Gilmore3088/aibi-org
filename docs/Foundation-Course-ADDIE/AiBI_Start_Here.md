@@ -18,7 +18,7 @@ It is also the **top of the commercial funnel** for The AI Banking Institute. Fo
 3. **A Toolbox** — versioned `.md` artifacts the learner produces; persistence requires an email (free side) or a paid account.
 4. **A freemium gate** — M0–M3 are free, gate after M3, M4–M5 are paid. The gate is a **three-way fork**: Pay · Email-to-keep · Decline → routed to the $99 Readiness Assessment.
 
-A separate **$99 Readiness Assessment** (48 questions, 10+ dimensions, four deliverables) sits both as an entry point to the funnel and as the nurture destination for email leads.
+A separate **$99 Readiness Assessment** (48 questions, 8 dimensions, four deliverables) sits both as an entry point to the funnel and as the nurture destination for email leads.
 
 **Pricing:** Assessment $99 · Individual course $295 · Team course $199/seat (10-seat minimum).
 

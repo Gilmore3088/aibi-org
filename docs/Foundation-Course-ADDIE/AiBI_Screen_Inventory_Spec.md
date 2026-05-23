@@ -80,7 +80,7 @@ Each entry lists: identity tier(s), purpose, primary states, and which design-sy
 - **Tier:** all. **Purpose:** explain the $99 In-Depth Assessment; offer free preview if one exists; CTA to purchase.
 - **States:** default · already-purchased (deep-link into the runner).
 - **Components:** hero card · benefits strip (the four deliverables) · proof block · purchase CTA.
-- **Note:** existing `/assessment` (12-Q free) and `/assessment/in-depth` ($99) need reconciliation with the ADDIE 48-Q / 10+ dimension spec (CLAUDE.md flagged). Until that reconciliation lands, this screen continues to point at the existing surfaces.
+- **Note:** existing `/assessment` (12-Q free) and `/assessment/in-depth` ($99, 48-Q / 8 dimensions) are the live surfaces. ADDIE adopts the same 8-dimension model (resolved 2026-05-23 — see DECISIONS.md).
 
 #### `/assessment/in-depth/runner` (the 48-question runner)
 - **Tier:** purchased only. **Purpose:** present the 48 questions, score, generate the four deliverables.

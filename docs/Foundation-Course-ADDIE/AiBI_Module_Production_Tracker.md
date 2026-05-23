@@ -24,7 +24,7 @@
 | Toolbox takeaway templates | ~11 | one+ per module |
 | Controlled sandbox platform | 1 | built once, reused M2→M5 (see Shared Dependencies) |
 | Knowledge-check sets | 24 | 2–3 items per lesson |
-| Readiness Assessment | 1 | 48 Q / 10+ dimensions — separate build (bottom) |
+| Readiness Assessment | 1 | 48 Q / 8 dimensions — separate build (bottom) |
 
 **Progress snapshot:** detailed specs 1/6 · media recorded 0/13 · interactives built 0/9 · sandbox platform 🔲
 
@@ -154,7 +154,7 @@
 ---
 
 ## Readiness Assessment (separate build) — $99
-- [ ] Write 48 questions mapped to 10+ readiness dimensions
+- [ ] Write 48 questions mapped to 8 readiness dimensions
 - [ ] Build scoring model (questions → dimension scores)
 - [ ] Author 4 deliverables: dimensional scorecard · personalized plan · curated ideas + prompts · CTAs
 - [ ] Define profile handoff (track, tool_exposure, comfort_level, dimension scores) → course `[Supabase]`
