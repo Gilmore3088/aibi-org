@@ -21,8 +21,15 @@ const SCHEMA_PUBLIC = 'public' as const;
  */
 export function verifyStripeEvent(rawBody: string, signature: string | null): Stripe.Event {
   if (!signature) throw new Error('Missing stripe-signature header');
-  const secret = process.env.STRIPE_WEBHOOK_SECRET;
-  if (!secret) throw new Error('STRIPE_WEBHOOK_SECRET is not set');
+  // Each Stripe webhook endpoint has its own signing secret. The legacy
+  // /api/webhooks/stripe handler uses STRIPE_WEBHOOK_SECRET; this addie
+  // endpoint has its own secret in STRIPE_ADDIE_WEBHOOK_SECRET. Prefer the
+  // addie var; fall back to STRIPE_WEBHOOK_SECRET only as a convenience for
+  // single-endpoint setups that haven't bothered to split.
+  const secret = process.env.STRIPE_ADDIE_WEBHOOK_SECRET ?? process.env.STRIPE_WEBHOOK_SECRET;
+  if (!secret) {
+    throw new Error('Neither STRIPE_ADDIE_WEBHOOK_SECRET nor STRIPE_WEBHOOK_SECRET is set');
+  }
   return stripe.webhooks.constructEvent(rawBody, signature, secret);
 }
 
