@@ -13,6 +13,7 @@ export default defineConfig({
       'src/**/*.test.ts',
       'src/**/*.test.tsx',
       'content/**/*.test.ts',
+      'sandbox-service/**/*.test.ts',
     ],
     exclude: [
       // Pre-existing tests that import 'node:test' (Node's built-in runner,

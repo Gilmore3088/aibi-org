@@ -45,7 +45,8 @@
     "puppeteer-core": "^24.43.0",
     "react": "^18",
     "react-dom": "^18",
-    "stripe": "^22.0.2"
+    "stripe": "^22.0.2",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.0",
