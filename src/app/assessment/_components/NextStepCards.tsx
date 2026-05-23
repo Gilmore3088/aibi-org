@@ -126,7 +126,7 @@ export function NextStepCards({ tierId }: NextStepCardsProps) {
         {steps.map((step) => (
           <article
             key={step.title}
-            className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-6 md:p-8 flex flex-col hover:border-[color:var(--color-terra)]/30 transition-all duration-200"
+            className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-6 md:p-8 flex flex-col hover:border-[color:var(--color-terra)]/30 transition-colors duration-200"
           >
             <p
               className="font-serif-sc text-[11px] uppercase tracking-[0.2em] mb-4"

@@ -24,7 +24,7 @@ export function TierPreview({ tierLabel, tierColorVar }: TierPreviewProps) {
         Your tier
       </p>
       <p
-        className="font-serif text-5xl md:text-7xl mt-4 leading-none transition-all duration-700 ease-out"
+        className="font-serif text-5xl md:text-7xl mt-4 leading-none transition-opacity duration-700 ease-out"
         style={{
           color: tierColorVar,
           opacity: visible ? 1 : 0,

@@ -74,7 +74,7 @@ export function StarterArtifactCard({
         <button
           type="button"
           onClick={handleCopy}
-          className="inline-block px-5 py-2.5 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
+          className="inline-block px-5 py-2.5 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
         >
           {copied ? 'Copied' : 'Copy to clipboard'}
         </button>

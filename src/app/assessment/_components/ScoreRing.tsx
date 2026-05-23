@@ -18,15 +18,23 @@ const CIRC = 2 * Math.PI * RADIUS;
 
 export function ScoreRing({ score, minScore, maxScore, colorVar, label }: ScoreRingProps) {
   const [animatedPct, setAnimatedPct] = useState(0);
+  const [labelVisible, setLabelVisible] = useState(false);
 
   const targetPct =
     maxScore === minScore ? 0 : (score - minScore) / (maxScore - minScore);
   const clampedTarget = Math.min(Math.max(targetPct, 0), 1);
 
   useEffect(() => {
-    // Start at 0, animate to target on mount
-    const id = requestAnimationFrame(() => setAnimatedPct(clampedTarget));
-    return () => cancelAnimationFrame(id);
+    // Start at 0, animate to target on mount. Fade the numeric label in
+    // shortly after — without this, reduced-motion users see the score
+    // snap with no visual track-the-eye, and motion users see the number
+    // sitting still while the ring travels around it.
+    const ringFrame = requestAnimationFrame(() => setAnimatedPct(clampedTarget));
+    const labelTimer = window.setTimeout(() => setLabelVisible(true), 120);
+    return () => {
+      cancelAnimationFrame(ringFrame);
+      window.clearTimeout(labelTimer);
+    };
   }, [clampedTarget]);
 
   const dashOffset = CIRC * (1 - animatedPct);
@@ -63,7 +71,10 @@ export function ScoreRing({ score, minScore, maxScore, colorVar, label }: ScoreR
             }}
           />
         </svg>
-        <div className="absolute inset-0 flex flex-col items-center justify-center">
+        <div
+          className="absolute inset-0 flex flex-col items-center justify-center transition-opacity duration-500 motion-reduce:duration-200"
+          style={{ opacity: labelVisible ? 1 : 0 }}
+        >
           <span className="font-mono text-6xl text-[color:var(--color-ink)] leading-none tabular-nums">
             {score}
           </span>
