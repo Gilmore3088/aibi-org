@@ -12,6 +12,7 @@
 
 import { notFound } from 'next/navigation';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
+import { isPreviewAuthBypassEnabled } from '@/lib/auth/previewBypass';
 import { loadAssessmentResponse } from '@/lib/assessment/load-response';
 import { ResultsViewV2 } from '@/app/assessment/_components/ResultsViewV2';
 
@@ -23,7 +24,10 @@ interface ResultsPageProps {
 }
 
 export default async function ResultsPage({ params }: ResultsPageProps) {
-  if (!isSupabaseConfigured()) notFound();
+  // Skip the early notFound when the preview bypass is active — the
+  // loader returns synthetic demo data for QA in that path. Production
+  // is inert because the bypass hard-floors on VERCEL_ENV.
+  if (!isSupabaseConfigured() && !isPreviewAuthBypassEnabled()) notFound();
 
   const response = await loadAssessmentResponse(params.id);
   if (!response) notFound();

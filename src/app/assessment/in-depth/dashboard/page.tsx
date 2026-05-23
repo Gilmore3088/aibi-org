@@ -14,6 +14,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
+import { isPreviewAuthBypassEnabled } from '@/lib/auth/previewBypass';
 import { getInDepthEnrollment } from '../_lib/getInDepthEnrollment';
 
 export const metadata: Metadata = {
@@ -25,14 +26,31 @@ export const metadata: Metadata = {
 export const dynamic = 'force-dynamic';
 
 export default async function InDepthDashboardPage() {
+  const bypass = isPreviewAuthBypassEnabled();
+  let enrollment: Awaited<ReturnType<typeof getInDepthEnrollment>> = null;
+
   if (!isSupabaseConfigured()) {
-    redirect('/auth/login?next=/assessment/in-depth/dashboard');
+    if (!bypass) {
+      redirect('/auth/login?next=/assessment/in-depth/dashboard');
+    }
+    // Bypass active — fall through with a synthetic enrollment so the
+    // scaffold's "Your enrollment is active" footer still renders.
+  } else {
+    enrollment = await getInDepthEnrollment();
+    if (!enrollment && !bypass) {
+      redirect('/assessment/in-depth?reason=no-purchase');
+    }
   }
 
-  const enrollment = await getInDepthEnrollment();
-  if (!enrollment) {
-    redirect('/assessment/in-depth?reason=no-purchase');
-  }
+  // Synthesize an enrollment placeholder for the bypass path so the
+  // footer copy compiles. Never reached in production.
+  const enrollmentForDisplay = enrollment ?? {
+    id: 'preview-enrollment',
+    user_id: null,
+    email: 'preview@aibankinginstitute.com',
+    enrolled_at: new Date().toISOString(),
+    stripe_session_id: null,
+  };
 
   return (
     <main style={{ maxWidth: 980, margin: '0 auto', padding: '48px 24px 80px' }}>
@@ -108,10 +126,10 @@ export default async function InDepthDashboardPage() {
         }}
       >
         Your enrollment is active. Reference:{' '}
-        <span style={{ color: 'var(--ledger-ink)' }}>{enrollment.id}</span>
+        <span style={{ color: 'var(--ledger-ink)' }}>{enrollmentForDisplay.id}</span>
         {' · Purchased '}
         <span style={{ color: 'var(--ledger-ink)' }}>
-          {new Date(enrollment.enrolled_at).toLocaleDateString()}
+          {new Date(enrollmentForDisplay.enrolled_at).toLocaleDateString()}
         </span>
       </p>
 

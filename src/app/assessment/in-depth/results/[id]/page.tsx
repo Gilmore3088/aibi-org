@@ -12,6 +12,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
+import { isPreviewAuthBypassEnabled } from '@/lib/auth/previewBypass';
 import { loadAssessmentResponse } from '@/lib/assessment/load-response';
 import { InDepthBriefingView } from './_components/InDepthBriefingView';
 
@@ -30,10 +31,13 @@ interface PageProps {
 }
 
 export default async function InDepthResultsPage({ params }: PageProps) {
-  if (!isSupabaseConfigured()) notFound();
+  // Preview-bypass aware: when Supabase is missing, the loader returns
+  // a deterministic demo response for QA. See loadAssessmentResponse +
+  // isPreviewAuthBypassEnabled for the production hard-floor.
+  if (!isSupabaseConfigured() && !isPreviewAuthBypassEnabled()) notFound();
   const { id } = await params;
 
-  const response = await loadAssessmentResponse(id);
+  const response = await loadAssessmentResponse(id, { indepth: true });
   if (!response) notFound();
 
   return (

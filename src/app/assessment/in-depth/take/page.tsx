@@ -13,6 +13,7 @@ import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
+import { isPreviewAuthBypassEnabled } from '@/lib/auth/previewBypass';
 import { findEnrollmentByEmailOrUserId } from '@/lib/enrollment/findEnrollment';
 import { InDepthRunner } from './_components/InDepthRunner';
 
@@ -27,13 +28,19 @@ export const dynamic = 'force-dynamic';
 
 export default async function InDepthTakePage() {
   if (!isSupabaseConfigured()) {
+    // Preview-only escape hatch — when the bypass is on, render the
+    // runner without gating so QA can step through all 48 questions.
+    // Production is inert because the bypass hard-floors on VERCEL_ENV.
+    if (isPreviewAuthBypassEnabled()) {
+      return <InDepthRunner />;
+    }
     return (
       <main className="px-6 py-20">
         <div className="mx-auto max-w-xl text-center">
           <h1 className="font-serif text-3xl text-[color:var(--color-ink)] mb-4">
             Service unavailable
           </h1>
-          <p className="text-[color:var(--color-ink)]/75">
+          <p className="text-[color:var(--color-ink)]/80">
             The assessment isn&rsquo;t configured in this environment. Try again
             shortly.
           </p>

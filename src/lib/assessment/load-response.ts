@@ -13,6 +13,8 @@ import { getTierV2, getTierInDepth } from '@content/assessments/v2/scoring';
 import type { Tier, DimensionScore } from '@content/assessments/v2/scoring';
 import type { Dimension } from '@content/assessments/v2/types';
 import { parseRole, type Role } from '@content/assessments/v2/role';
+import { isPreviewAuthBypassEnabled } from '@/lib/auth/previewBypass';
+import { buildDemoAssessmentResponse } from '@/lib/auth/previewBypassFixtures';
 
 export interface AssessmentResponseLoaded {
   readonly profileId: string;
@@ -28,8 +30,18 @@ export interface AssessmentResponseLoaded {
 
 export async function loadAssessmentResponse(
   id: string,
+  options: { readonly indepth?: boolean } = {},
 ): Promise<AssessmentResponseLoaded | null> {
-  if (!isSupabaseConfigured()) return null;
+  // Preview-only escape hatch: when Supabase isn't configured AND the
+  // bypass is on, return a deterministic demo response derived from the
+  // id so the results surface renders for QA. Production is inert
+  // because isPreviewAuthBypassEnabled hard-floors on VERCEL_ENV.
+  if (!isSupabaseConfigured()) {
+    if (isPreviewAuthBypassEnabled()) {
+      return buildDemoAssessmentResponse({ id, indepth: options.indepth });
+    }
+    return null;
+  }
   if (!/^[0-9a-f-]{36}$/i.test(id)) return null;
 
   // The id parameter is user_profiles.id, used as a bearer token. The
