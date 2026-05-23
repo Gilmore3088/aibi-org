@@ -31,10 +31,10 @@
 ---
 
 ## Shared dependencies (build once — these gate the interactive lessons)
-- [ ] **Controlled sandbox platform** — provider gateway, prompt assembler, output gate, injection guard, provider switcher, save-to-Toolbox. *Blocks 2.3, 3.2, 3.4, 3.5 and all of M4–M5.* `[LLM]` · *Spec ✅ `AiBI_Sandbox_Service_Tech_Spec.md` (2026-05-23) — build per §15; sign off per §14.*
-- [ ] **Toolbox infrastructure** — create / version / `.md` export / email-or-entitlement-gated save. `[Supabase]`
-- [ ] **Track system** — `profile.track` selection + branched-lesson rendering. *Set in 0.1; consumed by every branch.* `[Supabase]`
-- [ ] **Knowledge-check logging** — capture results for the learning metric. `[Supabase]`
+- [x] **Controlled sandbox platform** — provider gateway, prompt assembler, output gate, injection guard, provider switcher, save-to-Toolbox API. *Blocks 2.3, 3.2, 3.4, 3.5 and all of M4–M5.* `[LLM]` · *Service shipped Wave 1b+1e (2026-05-23); all 8 §14 acceptance tests pass. Save-to-Toolbox UI ships Wave 2a.*
+- [x] **Toolbox infrastructure** — DB tables + RLS + entitlement check + `.md`-export storage bucket + free-tier 4-artifact cap helper. `[Supabase]` *(backend done Wave 1c+1d. Drawer UI + create/version endpoints + `.md` export route ship Wave 2a.)*
+- [x] **Track system** — `addie.track` enum + `addie.learner_profiles.track` + `addie.lesson_track_variants` table + RLS. *Set in 0.1; consumed by every branch.* `[Supabase]` *(schema done Wave 1a. Track-picker UI + branched renderer ship Wave 2a; per-track variant content authored Wave 2b.)*
+- [x] **Knowledge-check logging** — `addie.knowledge_checks` + `addie.knowledge_check_results` (anon-or-user write path) + RLS. `[Supabase]` *(schema done Wave 1c. Write endpoint + UI ship Wave 2a.)*
 
 ---
 

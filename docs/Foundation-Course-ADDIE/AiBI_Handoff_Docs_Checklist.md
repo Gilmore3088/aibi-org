@@ -27,13 +27,13 @@
 - [x] ~~**Sandbox Service Technical Spec** — `P1`~~ — ✅ **done** (`Sandbox_Service_Tech_Spec.md`).
 - [x] ~~**Database schema + RLS spec** — `P1`~~ — ✅ **done** (`Database_Schema_RLS_Spec.md`).
 - [x] ~~**Auth & entitlements spec** — `P1`~~ — ✅ **done** (`Auth_Entitlements_Spec.md`).
-- [ ] **Stripe integration spec** — `P2` `[Stripe]` — products/prices ($99/$295/$199-seat), checkout, webhook → entitlement writes, refunds.
-- [ ] **MailerLite integration spec** — `P2` `[MailerLite]` — lead sync from Supabase, the nurture automation, consent/unsubscribe, transactional sends (invites, assessment delivery).
-- [ ] **Content model / authoring spec** — `P2` — how modules/lessons/tracks/takeaways/checks are stored as data so content updates without a deploy (esp. M1.2's fast-changing tool matrix).
-- [ ] **Event taxonomy / analytics spec** — `P2` `[Supabase]` — the exact events + payloads to log (funnel, gate-fork, Toolbox reuse, check results).
+- [x] ~~**Stripe integration spec** — `P2`~~ — ✅ **closed by code (Wave 1d + 1f, 2026-05-23).** The spec is the code: `src/lib/addie/stripe/{client,products,checkout,webhook}.ts` + `src/app/api/addie/{checkout/*,webhooks/stripe}/route.ts`. Products/prices, checkout, webhook → entitlement writes, refunds, idempotency ledger, signing-secret split (`STRIPE_ADDIE_WEBHOOK_SECRET`) all implemented and documented in DECISIONS.md.
+- [ ] **MailerLite integration spec** — `P2` `[MailerLite]` — lead sync from Supabase **done** at the upsert layer (`src/lib/addie/leads/upsert.ts`); nurture-sequence + Resend-with-signed-token seat invite spec still genuinely needed (Wave 2/3 work).
+- [ ] **Content model / authoring spec** — `P2` — how modules/lessons/tracks/takeaways/checks are stored as data so content updates without a deploy (esp. M1.2's fast-changing tool matrix). *(Schema exists in `addie.modules/lessons/lesson_track_variants/knowledge_checks` per Wave 1; the authoring/CMS workflow spec is still needed for Wave 2b content seeding.)*
+- [ ] **Event taxonomy / analytics spec** — `P2` `[Supabase]` — Wave 1 emit() call sites are the de facto taxonomy so far (`lead_created`, `gate_decision`, `entitlement_granted`, `seat_invited`, `sandbox_run`, etc.); a formal spec with payload shapes still owed before Wave 3 dashboard work.
 - [x] ~~**Security & privacy spec** — `P1`~~ — ✅ **done** (`Security_Privacy_Spec.md`).
-- [ ] **QA / test plan** — `P3` — sandbox safety tests, payment flows, email deliverability, accessibility audit, ≤15-min checks.
-- [ ] **Environment setup / runbook** — `P3` — get-it-running, secrets, deploy.
+- [x] ~~**QA / test plan** — `P3`~~ — ✅ **partial via `sandbox-service/SECURITY_SUITE.md`** (sandbox safety tests, 8/8 §14 acceptance gates pass). Payment-flow + email deliverability + accessibility audit + ≤15-min checks still genuinely needed pre-pilot.
+- [ ] **Environment setup / runbook** — `P3` — get-it-running, secrets, deploy. *(`.env.local` additions documented in DECISIONS.md 2026-05-23; consolidated runbook still owed.)*
 
 ## 🎨 For Designers (needed)
 
@@ -59,6 +59,6 @@
 5. ~~**Design system / UI kit + Screen inventory & flows**~~ — ✅ written 2026-05-23.
 6. ~~**Security & privacy spec**~~ — ✅ written 2026-05-23.
 
-**Engineering can begin.** The cross-team build sequence lives in `AiBI_Technical_Design_Doc.md` §11. The next backlog is the P2s below (integration specs, content model, event taxonomy, brand & voice, accessibility design spec).
+**Engineering is in flight.** Wave 1 (shared dependencies) shipped 2026-05-23 — see `AiBI_Wave_1_Audit_2026-05-23.md` for the gate-by-gate audit and `AiBI_Start_Here.md` §7 for the Wave 2 entry point. Stripe spec closed by code; QA plan partial via `sandbox-service/SECURITY_SUITE.md`. Remaining P2s for Wave 2/3: MailerLite spec (nurture + Resend invites), content model / authoring CMS, event taxonomy formalization, component specs with states, brand & voice, accessibility design spec.
 
 *Then P2s (integrations, content model, components, voice) and P3s (runbook, QA detail, responsive, glossary).*

@@ -290,21 +290,32 @@ These don't live in any single doc — they live across all of them.
 
 ---
 
-## 7 · Where to start *this week*
+## 7 · Where we are *right now* (post-Wave 1, ready for Wave 2)
 
-All six P1s from the handoff checklist are now written (as of 2026-05-23):
+**Wave 1 (shared dependencies) is done as of 2026-05-23.** 17 commits ahead of `main`, all isolated to the `addie.*` Postgres schema + `sandbox-service/` + `src/lib/addie/` + `src/app/api/{addie,sandbox,skill}/`. The existing `/courses/foundation/program` and `public.*` are untouched.
 
-1. ~~**Sandbox Service Technical Spec**~~ — ✅ `AiBI_Sandbox_Service_Tech_Spec.md`. Implementation follows §15; §14 security tests are the pre-pilot gate.
-2. ~~**Database Schema + RLS Spec**~~ — ✅ `AiBI_Database_Schema_RLS_Spec.md`. Migrations follow §11; §12 acceptance gates must pass.
-3. ~~**Auth & Entitlements Spec**~~ — ✅ `AiBI_Auth_Entitlements_Spec.md`. Build the identity-ladder transitions per §4–§7; §12 acceptance gates must pass.
-4. ~~**Technical Design Doc**~~ — ✅ `AiBI_Technical_Design_Doc.md`. The cross-team build sequence is in §11; lock open decision §13 (sandbox deployment target) before sandbox build step 1.
-5. ~~**Design System / UI Kit**~~ — ✅ `AiBI_Design_System_Spec.md`. Components in §5 ship in the order in §12.
-6. ~~**Screen Inventory + Flows**~~ — ✅ `AiBI_Screen_Inventory_Spec.md`. Build order in §7; per-screen state checklist in §5.
-7. ~~**Security & Privacy Spec**~~ — ✅ `AiBI_Security_Privacy_Spec.md`. §12 pre-pilot gate must pass before piloting with any real bank or credit union.
+**What's live:**
+- ✅ 17 SQL migrations applied (19 `addie.*` tables, 4 storage buckets, 4 storage RLS policies, all DB Spec §12 gates pass)
+- ✅ Sandbox Service end-to-end: provider gateway (Anthropic / OpenAI / Gemini) · `Exercise` model + assembler + canary · output gate · `/sandbox/run` + `/sandbox/ab` + `/api/skill/run` · rate limits · daily LLM spend budget + per-provider circuit breaker · **all 8 Sandbox Spec §14 acceptance tests pass**
+- ✅ Auth + payments: HMAC anon-session cookie · gate fork (`capture-email` + `decline`) · Stripe checkout × 3 products · Stripe webhook (path: `/api/addie/webhooks/stripe`, separate from legacy) · team seat invite/accept/revoke
+- ✅ Locked decisions in `DECISIONS.md`: sandbox = Vercel Functions same repo · schema isolated under `addie.*` · ADDIE adopts existing 8-dimension In-Depth model · team SKU is one-time payment in v1
+- ✅ Audit + cleanup: `AiBI_Wave_1_Audit_2026-05-23.md` (full drift + thoroughness audit); Wave 1f cleanup closed audit blockers G1 (webhook ledger column drift), G3 (`bindLeadToUser` wired into webhook), G5 (one-time-payment decision documented), G9 (stale comments)
+- ✅ Tests: `npx tsc --noEmit` clean · `npx vitest run` → 41/41 pass
 
-**What's left:** the P2/P3 docs in the handoff checklist (Stripe integration spec, MailerLite integration spec, content-model spec, event-taxonomy spec, QA plan, environment runbook, component specs with states, brand & voice guide, accessibility design spec, responsive spec, glossary). None of these block the P1 build path; commission them as the teams hit specific needs.
+**Wave 2 (the lesson player + free side + module scaffolding) starts here.** Two sub-waves with one checkpoint between them:
 
-**The actual next step is engineering.** Start at Technical Design Doc §11 (build sequence) and execute. The doc set is complete enough to begin.
+- **Wave 2a — web app shell.** Under `src/app/(addie)/foundation/[moduleId]/[lessonId]/...` and `src/app/(addie)/dashboard/...`. The lesson player (renders video/audio/interactive/sandbox/worksheet modalities), the Toolbox drawer UI, the **three-way gate UI screen** after M3 (Pay / Email-to-keep / Decline), the learner dashboard skeleton, account export/delete pages. Wires the existing API endpoints. Honors Ledger design tokens. Does **not** touch `/courses/foundation/program`.
+
+- **Wave 2b — M0–M3 module scaffolding (parallel — 4 subagents, one per module).** Each subagent seeds `addie.modules`/`lessons`/`lesson_track_variants` from the corresponding spec + M0 curriculum doc, wires the interactives the spec calls for (track picker, off-limits sorter, AI Toolkit Map, A/B sandbox, spot-the-violation, etc.), authors the Toolbox templates per module, wires the knowledge-checks. Sandbox lessons reference the existing `addie.exercises` table; the curriculum agent writes the Exercise rows for that module.
+
+- **Checkpoint 2** — anon → M0 → M3 → gate end-to-end smoke. Pause for review before Wave 3.
+
+**Wave 3** (M4 + M5 paid, $99 assessment surface, team admin dashboard) is downstream of Checkpoint 2 — not yet started.
+
+**Where to look:**
+- For the full Wave 1 audit results (gate-by-gate, with file:line evidence): `AiBI_Wave_1_Audit_2026-05-23.md`
+- For the operational tracker as you build: `AiBI_Module_Production_Tracker.md` (M0–M5 production checklists) and `AiBI_Launch_Checklist.md` (cross-workstream items). **Tick boxes in the same commit that lands the work** — the trackers ran stale through Wave 1 and that's a process bug the team has agreed not to repeat.
+- For locked decisions and intentional deviations from spec: `DECISIONS.md` (entries dated 2026-05-23 cover the Wave 1 architectural calls)
 
 ---
 
