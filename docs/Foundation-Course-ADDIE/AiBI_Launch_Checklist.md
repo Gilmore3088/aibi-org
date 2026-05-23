@@ -61,6 +61,8 @@
 - [ ] Responsive layout; **WCAG 2.1 AA** (captions, transcripts, keyboard nav, contrast).
 
 ## 5 · Database & accounts `[Supabase]`
+*Build against the spec: `AiBI_Database_Schema_RLS_Spec.md` (migration order §11, acceptance gates §12).*
+
 - [ ] Schema for all entities: Learner, Profile, Entitlement, Team, Seat, Module/Lesson, KnowledgeCheck/Result, SandboxSession, ToolboxItem, Lead, AssessmentResult, Event.
 - [ ] Auth: email/password (user-set) + SSO/OAuth for existing accounts; **learners create their own accounts**.
 - [ ] Row-level security so learners only ever see their own data.

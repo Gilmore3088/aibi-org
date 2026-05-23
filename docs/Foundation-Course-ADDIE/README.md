@@ -11,6 +11,7 @@
 | `AiBI_Module_Production_Tracker.md` | Per-module curriculum build needs + status (companion to the launch checklist) | Derived; tracks curriculum production |
 | `AiBI_Module_PRDs.md` | Module-level build specs for all 6 modules (the engineering spec layer) | Derived; per-module requirements |
 | `AiBI_Sandbox_Service_Tech_Spec.md` | Backend technical spec for the controlled AI sandbox — Exercise model, prompt assembly, provider gateway, output gating, security tests | **Source of truth for sandbox implementation** |
+| `AiBI_Database_Schema_RLS_Spec.md` | Concrete Postgres schema + RLS policies for every learner-data table, the identity ladder (anon → lead → learner), migration order, acceptance gates | **Source of truth for database** |
 | `AiBI_Module_0_Orientation.md` | Detailed curriculum for Module 0 (scripts, exercises, takeaway) — the template for all modules | Detailed spec |
 | `AiBI_LMS_Mockup_Module0.html` | Clickable LMS interface mockup with Module 0 fully wired (open in a browser) | Visual prototype |
 | `AiBI_Handoff_Docs_Checklist.md` | What dev/design/PM docs still need writing before build, with priority (P1–P3) and recommended order | Derived; gap checklist |

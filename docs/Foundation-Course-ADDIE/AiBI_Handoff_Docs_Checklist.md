@@ -12,6 +12,7 @@
 - A working UI reference — `LMS_Mockup_Module0.html`
 - **Team onboarding / "start here"** — `Start_Here.md` *(was P2; written 2026-05-23)*
 - **Sandbox Service Technical Spec** — `Sandbox_Service_Tech_Spec.md` *(was P1; written 2026-05-23 — Exercise model, prompt assembly, gateway, output gating, security tests)*
+- **Database schema + RLS spec** — `Database_Schema_RLS_Spec.md` *(was P1; written 2026-05-23 — concrete tables, RLS policies, identity ladder, migration order, acceptance gates)*
 
 ---
 
@@ -19,8 +20,8 @@
 
 - [ ] **Technical Design Doc (architecture)** — `P1` — stack choices, service boundaries, repo structure, hosting `[Host]`, env/secrets, CI/CD. *(PRD has only a high-level diagram.)*
 - [x] ~~**Sandbox Service Technical Spec** — `P1`~~ — ✅ **done** (`Sandbox_Service_Tech_Spec.md`).
-- [ ] **Database schema + RLS spec** — `P1` `[Supabase]` — concrete tables, columns, types, relationships, indexes, and row-level-security policies. *(PRD lists entities only. **Now the top P1.**)*
-- [ ] **Auth & entitlements spec** — `P1` `[Supabase][Stripe]` — anonymous-view → email-lead → paid states, gating logic after M3, team-seat model, invite/assign/revoke.
+- [x] ~~**Database schema + RLS spec** — `P1`~~ — ✅ **done** (`Database_Schema_RLS_Spec.md`).
+- [ ] **Auth & entitlements spec** — `P1` `[Supabase][Stripe]` — anonymous-view → email-lead → paid states, gating logic after M3, team-seat model, invite/assign/revoke. *(Now the top P1. Data shape is covered in `Database_Schema_RLS_Spec.md` §9; this doc covers the server-side flow.)*
 - [ ] **Stripe integration spec** — `P2` `[Stripe]` — products/prices ($99/$295/$199-seat), checkout, webhook → entitlement writes, refunds.
 - [ ] **MailerLite integration spec** — `P2` `[MailerLite]` — lead sync from Supabase, the nurture automation, consent/unsubscribe, transactional sends (invites, assessment delivery).
 - [ ] **Content model / authoring spec** — `P2` — how modules/lessons/tracks/takeaways/checks are stored as data so content updates without a deploy (esp. M1.2's fast-changing tool matrix).
@@ -47,9 +48,10 @@
 
 ## Recommended build order (the P1s unblock everyone)
 1. ~~**Sandbox Service Technical Spec**~~ — ✅ written 2026-05-23.
-2. **Database schema + RLS** and **Auth & entitlements** — everything reads/writes through these. *(Current top of the queue.)*
-3. **Technical Design Doc** — ties the stack together.
-4. **Design system / UI kit** + **Screen inventory & flows** — unblock design in parallel with backend.
-5. **Security & privacy spec** — needed before the pilot and before banking buyers ask.
+2. ~~**Database schema + RLS**~~ — ✅ written 2026-05-23.
+3. **Auth & entitlements** — *(Current top of the queue.)* Builds on the schema + sandbox specs.
+4. **Technical Design Doc** — ties the stack together.
+5. **Design system / UI kit** + **Screen inventory & flows** — unblock design in parallel with backend.
+6. **Security & privacy spec** — needed before the pilot and before banking buyers ask.
 
 *Then P2s (integrations, content model, components, voice) and P3s (runbook, QA detail, responsive, glossary).*
