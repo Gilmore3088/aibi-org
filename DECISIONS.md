@@ -732,3 +732,58 @@ be reconciled with the 48-Q / 10+ dimension Readiness Assessment spec
 (extending `content/assessments/v2/`, not replacing from scratch), and a new
 Team SKU ($199/seat, 10-seat minimum) with no Stripe price or admin dashboard
 yet on main.
+
+**2026-05-23 — Sandbox Service deployment target = Vercel Functions (Node),
+same repo (closes TDD §13 item 1).** Sandbox code lives in `sandbox-service/`
+as a directory-level isolation boundary: only API routes under `src/app/api/`
+import from it, the rest of the web app never does. LLM SDKs + provider keys
++ system prompts are physically scoped to that directory. v1 is non-streaming
+(<3s p50 target), so Vercel function timeouts and cold starts are acceptable.
+If a later v1.5 needs streaming or hits the function ceiling, the directory
+boundary makes extraction to a dedicated Node service a `git mv` away.
+Rejected: dedicated Node service today (extra ops surface for a non-developer
+operator); Next.js API route in the web-app bundle (collapses the security
+boundary the Sandbox Spec §3 requires).
+
+**2026-05-23 — ADDIE schema isolated under a separate `addie.*` Postgres
+schema (overrides DB Spec §11 implicit `public` placement).** The DB Spec was
+written greenfield, but `main` is live with 37 applied migrations and
+collisions on `entitlements`, `toolbox_*`, `user_profiles`, `course_enrollments`,
+and the readiness/assessment columns. Running the spec as-written would
+either fail or, if forced, corrupt live customer data on the shared Supabase
+project. All ADDIE tables therefore live under `addie.*` —
+`addie.learner_profiles`, `addie.entitlements`, `addie.toolbox_items`,
+`addie.events`, etc. RLS, FKs, triggers, and `(select auth.uid())` patterns
+all apply identically. `public.*` is untouched, so the live site is
+unaffected. Eventual merge as the canonical course is a per-table rename
+(or `ALTER SCHEMA addie RENAME TO public_v2` + view shim) decision for a
+later session, not this branch's problem. Rejected: separate Supabase
+project (extra billing + identity split), in-place reconciliation of every
+collision (slowest, riskiest, requires per-collision design we don't have).
+
+**2026-05-23 — ADDIE web-app code namespaced under `(addie)` route group +
+`sandbox-service/` (TDD §4 honored with one tweak).** Route group keeps
+ADDIE pages out of the existing `/courses/foundation/program` tree per the
+branch CLAUDE.md "treat existing surface as reference only" rule. Layout:
+`src/app/(addie)/foundation/[moduleId]/[lessonId]/...` for the course,
+`src/app/(addie)/dashboard/` for the learner home, `src/app/api/sandbox/*`
+for the proxy to `sandbox-service/`. Existing `/courses/foundation/program`
+remains untouched on this branch. Final production routing (whether ADDIE
+takes `/courses/foundation` outright, sits at a new path, or replaces via
+redirect) is a separate decision at merge time, not now.
+
+**2026-05-23 — Env-var gaps surfaced at Wave 0 (operator action required
+before Wave 1d ships).** Present in `.env.local`: Supabase keys, Anthropic,
+OpenAI, Gemini, Stripe live keys + the existing FOUNDATIONS/AIBIP/INDEPTH
+price IDs, MailerLite key + 6 tier groups, Resend API key, CRON_SECRET,
+COMING_SOON. Missing per TDD §6 + CLAUDE.md env block: `RESEND_FROM`,
+`NEXT_PUBLIC_SITE_URL`, `TOOLBOX_IP_HASH_SALT` (likely set in Vercel only,
+not mirrored locally — verify), plus the three branch-new vars
+`SANDBOX_SERVICE_URL` (for production split-deploy, optional in dev when
+the sandbox is invoked in-process), `SANDBOX_SERVICE_INTERNAL_TOKEN` (HMAC
+shared secret between web app and sandbox), and `ANON_SESSION_COOKIE_SECRET`
+(HMAC for the anon_session_id cookie). The new Team-seat price
+(`STRIPE_FOUNDATION_TEAM_SEAT_PRICE_ID`, $199/seat min 10) also needs to be
+created in Stripe test mode before Wave 1d Stripe checkout work. None of
+these block Wave 1a (migrations are SQL files, not runtime). They block
+Wave 1d.
