@@ -13,6 +13,7 @@ import { PaywallPreview } from '@/components/addie/lesson/PaywallPreview';
 import { LessonTOC } from '@/components/addie/lesson/LessonTOC';
 import { extractHeadings } from '@/components/addie/lesson/lessonHeadings';
 import { LessonTutor } from '@/components/addie/lesson/LessonTutor';
+import { LessonSummaryCard } from '@/components/addie/lesson/LessonSummaryCard';
 import { hasAnyFoundationEntitlement } from '@/lib/addie/entitlements/check';
 import type {
   LessonPayload,
@@ -352,6 +353,13 @@ export default async function LessonPage({
       </aside>
       <div className="flex-1 min-w-0">
         <LessonPlayer payload={payload} />
+        {/* AI-generated 3-sentence recap of this lesson. Cached per
+            (lesson, identity) in addie.events. Renders nothing on
+            generation failure. */}
+        <LessonSummaryCard
+          lessonId={params.lessonId}
+          lessonTitle={payload.lesson.title}
+        />
       </div>
       <LessonTOC headings={headings} />
       {/* Tutor places itself: xl rail card under the TOC, otherwise a
