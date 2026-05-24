@@ -12,7 +12,7 @@ import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
-import { isSupabaseConfigured } from '@/lib/supabase/client';
+import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { isPreviewAuthBypassEnabled } from '@/lib/auth/previewBypass';
 import { findEnrollmentByEmailOrUserId } from '@/lib/enrollment/findEnrollment';
 import { InDepthRunner } from './_components/InDepthRunner';
@@ -67,6 +67,19 @@ export default async function InDepthTakePage() {
 
   if (!user || !user.email) {
     redirect('/auth/login?next=/assessment/in-depth/take');
+  }
+
+  // 2FA gate: must have at least one passkey enrolled. See
+  // docs/2fa-migration-plan-2026-05-23.md Phase 5.
+  const admin = createServiceRoleClient();
+  const { count: passkeyCount } = await admin
+    .from('webauthn_credentials')
+    .select('id', { count: 'exact', head: true })
+    .eq('user_id', user.id);
+  if ((passkeyCount ?? 0) === 0) {
+    redirect(
+      `/auth/passkey/enroll?next=${encodeURIComponent('/assessment/in-depth/take')}`,
+    );
   }
 
   const enrollment = await findEnrollmentByEmailOrUserId(supabase, {

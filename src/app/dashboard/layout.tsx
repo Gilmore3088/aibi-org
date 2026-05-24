@@ -16,7 +16,7 @@ import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { cookies, headers } from 'next/headers';
 import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
-import { isSupabaseConfigured } from '@/lib/supabase/client';
+import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { isPreviewAuthBypassEnabled } from '@/lib/auth/previewBypass';
 
 // Authed surface — never index dashboard pages in search engines.
@@ -67,6 +67,23 @@ export default async function DashboardLayout({ children }: { children: ReactNod
 
   if (!user) {
     redirect(loginHref);
+  }
+
+  // 2FA gate (added 2026-05-23, see docs/2fa-migration-plan-2026-05-23.md
+  // Phase 5): every user reaching /dashboard must have at least one
+  // passkey enrolled. Returning password-authed users will pass the
+  // auth.getUser() check above but trip this one — we route them to
+  // enrollment so they leave the session with a real credential.
+  // The check uses the service-role client because the
+  // webauthn_credentials table has no per-row RLS policy for
+  // authenticated users (service-role-only by design).
+  const admin = createServiceRoleClient();
+  const { count } = await admin
+    .from('webauthn_credentials')
+    .select('id', { count: 'exact', head: true })
+    .eq('user_id', user.id);
+  if ((count ?? 0) === 0) {
+    redirect(`/auth/passkey/enroll?next=${encodeURIComponent(nextPath)}`);
   }
 
   return <>{children}</>;

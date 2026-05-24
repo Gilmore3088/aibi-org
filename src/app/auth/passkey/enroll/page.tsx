@@ -31,10 +31,11 @@ export default function PasskeyEnrollPage() {
   const next = sanitizeNext(searchParams.get('next'));
 
   const [deviceLabel, setDeviceLabel] = useState('');
-  const [status, setStatus] = useState<'idle' | 'pending' | 'done' | 'error'>(
-    'idle',
-  );
+  const [status, setStatus] = useState<
+    'idle' | 'pending' | 'codes' | 'done' | 'error'
+  >('idle');
   const [error, setError] = useState<string | null>(null);
+  const [recoveryCodes, setRecoveryCodes] = useState<readonly string[]>([]);
 
   async function handleEnroll() {
     setStatus('pending');
@@ -67,8 +68,25 @@ export default function PasskeyEnrollPage() {
         };
         throw new Error(data.error ?? 'Could not finish enrollment.');
       }
+
+      // Generate backup recovery codes immediately after the passkey
+      // is registered. The user must save these — they're the only
+      // escape hatch if they lose every device with the passkey.
+      const codesRes = await fetch('/api/webauthn/recovery/generate', {
+        method: 'POST',
+      });
+      if (codesRes.ok) {
+        const data = (await codesRes.json()) as { codes?: string[] };
+        if (data.codes && data.codes.length > 0) {
+          setRecoveryCodes(data.codes);
+          setStatus('codes');
+          return;
+        }
+      }
+      // Codes failed (network blip, env not configured) but passkey
+      // enrollment succeeded — let the user through. They can generate
+      // codes later from /dashboard/security.
       setStatus('done');
-      // Short pause so the user sees the success state, then route on.
       setTimeout(() => router.push(next), 800);
     } catch (err) {
       setStatus('error');
@@ -117,7 +135,71 @@ export default function PasskeyEnrollPage() {
             forget.
           </p>
 
-          {status === 'done' ? (
+          {status === 'codes' ? (
+            <div>
+              <LedgerAlert variant="info">
+                Passkey registered. Save these recovery codes.
+              </LedgerAlert>
+              <p
+                style={{
+                  margin: '18px 0 12px',
+                  fontFamily: 'var(--serif)',
+                  fontSize: 15,
+                  lineHeight: 1.55,
+                  color: 'var(--ink-2)',
+                }}
+              >
+                Each code works <strong>once</strong> as a backup if you lose every
+                device with your passkey. Print these or save them in a
+                password manager — they will not be shown again.
+              </p>
+              <div
+                style={{
+                  fontFamily: 'var(--mono)',
+                  fontSize: 14,
+                  letterSpacing: '0.04em',
+                  background: 'var(--paper, #F4F1E7)',
+                  border: '1px solid var(--rule, #D5D1C2)',
+                  borderRadius: 3,
+                  padding: '14px 18px',
+                  margin: '0 0 16px',
+                  whiteSpace: 'pre-wrap',
+                  lineHeight: 1.9,
+                }}
+              >
+                {recoveryCodes.join('\n')}
+              </div>
+              <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+                <LedgerButton
+                  type="button"
+                  variant="ghost"
+                  onClick={() => {
+                    void navigator.clipboard.writeText(recoveryCodes.join('\n'));
+                  }}
+                >
+                  Copy codes
+                </LedgerButton>
+                <LedgerButton
+                  type="button"
+                  variant="ghost"
+                  onClick={() => window.print()}
+                >
+                  Print
+                </LedgerButton>
+              </div>
+              <LedgerButton
+                type="button"
+                variant="primary"
+                block
+                onClick={() => {
+                  setStatus('done');
+                  setTimeout(() => router.push(next), 200);
+                }}
+              >
+                I've saved them — continue
+              </LedgerButton>
+            </div>
+          ) : status === 'done' ? (
             <LedgerAlert variant="info">
               Passkey registered. Redirecting…
             </LedgerAlert>

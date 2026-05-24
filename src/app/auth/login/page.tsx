@@ -288,6 +288,9 @@ export default function LoginPage() {
               fontSize: 11,
               letterSpacing: '0.16em',
               textTransform: 'uppercase',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 8,
             }}
           >
             <button
@@ -298,6 +301,9 @@ export default function LoginPage() {
             >
               {showPasswordFallback ? '← Back to passkey' : 'Use password instead'}
             </button>
+            <Link href="/auth/recovery" className="ledger-link">
+              Lost your passkey? Use a backup code
+            </Link>
           </div>
 
           <div style={{ marginTop: 16 }}>
