@@ -160,8 +160,8 @@ function M0Illustration() {
         <circle cx="80" cy="110" r="58" fill="url(#m0-paper)" stroke="var(--ledger-rule-strong)" strokeWidth="1" />
         <circle cx="80" cy="110" r="46" fill="none" stroke="var(--ledger-rule)" strokeWidth="0.5" />
         <circle cx="80" cy="110" r="32" fill="none" stroke="var(--ledger-rule)" strokeWidth="0.5" />
-        {/* North-east arrow filled with gold */}
-        <path d="M 80 110 L 110 60 L 86 92 Z" fill="url(#m0-gold)" />
+        {/* North-east arrow filled with gold — needle sweep animation */}
+        <path className="addie-illus-needle" d="M 80 110 L 110 60 L 86 92 Z" fill="url(#m0-gold)" />
         {/* South-west arrow filled with ink */}
         <path d="M 80 110 L 50 160 L 74 128 Z" fill="url(#m0-ink)" opacity="0.65" />
         {/* Cardinal markers */}
@@ -172,8 +172,8 @@ function M0Illustration() {
         <circle cx="80" cy="110" r="3" fill="var(--ledger-ink)" />
       </g>
 
-      {/* "You are here" pin */}
-      <g filter="url(#m0-softshadow)">
+      {/* "You are here" pin — soft pulse animation */}
+      <g className="addie-illus-pin" filter="url(#m0-softshadow)">
         <circle cx="220" cy="150" r="14" fill="url(#m0-gold)" />
         <circle cx="220" cy="150" r="6" fill="var(--ledger-paper)" />
         <path d="M 220 164 L 215 178 L 225 178 Z" fill="url(#m0-gold)" />
@@ -213,8 +213,8 @@ function M1Illustration() {
             />
           );
         })}
-        {/* Predicted next — gold filled */}
-        <rect x="202" y="100" width="20" height="22" rx="3" fill="url(#m1-gold)" />
+        {/* Predicted next — gold filled, token pulse animation */}
+        <rect className="addie-illus-predicted" x="202" y="100" width="20" height="22" rx="3" fill="url(#m1-gold)" />
       </g>
 
       {/* Network nodes above and below */}
@@ -282,8 +282,8 @@ function M2Illustration() {
         <rect x="54" y="120" width="78" height="14" rx="3" fill="url(#m2-gold)" opacity="0.9" />
       </g>
 
-      {/* Arrow into the door */}
-      <g stroke="var(--ledger-accent)" strokeWidth="2" fill="none" strokeLinecap="round">
+      {/* Arrow into the door — nudge animation */}
+      <g className="addie-illus-arrow" stroke="var(--ledger-accent)" strokeWidth="2" fill="none" strokeLinecap="round">
         <line x1="140" y1="120" x2="172" y2="120" />
         <path d="M 165 114 L 174 120 L 165 126" />
       </g>
@@ -337,9 +337,9 @@ function M3Illustration() {
         </g>
       ))}
 
-      {/* Output indicator */}
+      {/* Output indicator — bar shimmer animation */}
       <g filter="url(#m3-softshadow)">
-        <rect x="62" y="160" width="200" height="22" rx="3" fill="url(#m3-gold)" />
+        <rect className="addie-illus-response" x="62" y="160" width="200" height="22" rx="3" fill="url(#m3-gold)" />
         <text x="74" y="174" fontFamily="JetBrains Mono, monospace" fontSize="9" fill="var(--ledger-ink)" letterSpacing="1.4" fontWeight="600">
           → RESPONSE
         </text>
@@ -357,7 +357,11 @@ function M4Illustration() {
       {/* transparent: blends with card surface */}
       <ellipse cx="160" cy="110" rx="120" ry="50" fill="url(#m4-glow)" />
 
-      {/* Stacked cards — three rotated slightly */}
+      {/* Stacked cards — three rotated slightly. Outer wrapper carries the
+          CSS shuffle animation (translateY only); inner <g> keeps its SVG
+          rotate attribute — CSS transform on an SVG element would otherwise
+          override the rotation entirely. */}
+      <g className="addie-illus-card-a">
       <g filter="url(#m4-shadow)" transform="rotate(-6 90 130)">
         <rect x="40" y="80" width="100" height="100" rx="6" fill="url(#m4-paper)" stroke="var(--ledger-rule-strong)" strokeWidth="1" />
         <rect x="40" y="80" width="100" height="14" rx="6" fill="var(--ledger-ink)" />
@@ -368,6 +372,7 @@ function M4Illustration() {
         <line x1="50" y1="122" x2="130" y2="122" stroke="var(--ledger-rule)" strokeWidth="1" />
         <line x1="50" y1="134" x2="100" y2="134" stroke="var(--ledger-rule)" strokeWidth="1" />
         <circle cx="56" cy="160" r="6" fill="var(--ledger-accent)" />
+      </g>
       </g>
 
       <g filter="url(#m4-shadow)">
@@ -384,6 +389,7 @@ function M4Illustration() {
         <rect x="130" y="151" width="60" height="10" rx="2" fill="url(#m4-gold)" opacity="0.4" />
       </g>
 
+      <g className="addie-illus-card-c">
       <g filter="url(#m4-shadow)" transform="rotate(8 230 130)">
         <rect x="190" y="80" width="100" height="100" rx="6" fill="url(#m4-paper)" stroke="var(--ledger-rule-strong)" strokeWidth="1" />
         <rect x="190" y="80" width="100" height="14" rx="6" fill="var(--ledger-accent)" />
@@ -393,6 +399,7 @@ function M4Illustration() {
         <line x1="200" y1="110" x2="270" y2="110" stroke="var(--ledger-rule)" strokeWidth="1" />
         <line x1="200" y1="122" x2="280" y2="122" stroke="var(--ledger-rule)" strokeWidth="1" />
         <line x1="200" y1="134" x2="260" y2="134" stroke="var(--ledger-rule)" strokeWidth="1" />
+      </g>
       </g>
     </g>
   );
@@ -438,12 +445,14 @@ function M5Illustration() {
         <circle cx="148" cy="172" r="2" />
       </g>
 
-      {/* Launch arrow — rocket from pinnacle */}
-      <g stroke="var(--ledger-accent)" strokeWidth="2" fill="none" strokeLinecap="round">
-        <line x1="232" y1="40" x2="288" y2="22" />
-        <path d="M 282 18 L 290 22 L 286 30" />
+      {/* Launch arrow — rocket from pinnacle, looping launch animation */}
+      <g className="addie-illus-launch">
+        <g stroke="var(--ledger-accent)" strokeWidth="2" fill="none" strokeLinecap="round">
+          <line x1="232" y1="40" x2="288" y2="22" />
+          <path d="M 282 18 L 290 22 L 286 30" />
+        </g>
+        <circle cx="288" cy="22" r="4" fill="url(#m5-gold)" />
       </g>
-      <circle cx="288" cy="22" r="4" fill="url(#m5-gold)" />
     </g>
   );
 }

@@ -533,13 +533,17 @@
   0%, 100% { opacity: 0.9; }
   50%      { opacity: 0.65; }
 }
+/* Wrapper-group animation: only translate, never rotate. The inner
+   <g transform="rotate(...)"> SVG attribute carries the base tilt; if
+   the CSS keyframe also touched rotate the SVG transform attribute
+   would be overridden and the card would snap flat. */
 @keyframes addie-card-shuffle-a {
-  0%, 100% { transform: translateY(0) rotate(-6deg); }
-  50%      { transform: translateY(-2px) rotate(-5deg); }
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-2px); }
 }
 @keyframes addie-card-shuffle-c {
-  0%, 100% { transform: translateY(0) rotate(8deg); }
-  50%      { transform: translateY(-2px) rotate(9deg); }
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-3px); }
 }
 @keyframes addie-launch {
   0%, 100% { transform: translate(0, 0); opacity: 1; }
