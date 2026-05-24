@@ -530,6 +530,12 @@
 .aibi-briefing .reg-row .status.ok { color: var(--forest); }
 .aibi-briefing .reg-row .status.gap { color: var(--oxblood); }
 .aibi-briefing .reg-row .status.part { color: var(--terra-2); }
+/* A7 (audit 2026-05-24): personalized terrains. weak = examiner-risk
+   posture (oxblood, matches the rest of the destructive vocabulary);
+   strong = defensible / top-decile (forest, matches the existing ok
+   status). part stays gold for mid-band coordinated postures. */
+.aibi-briefing .reg-row .status.weak { color: var(--oxblood); }
+.aibi-briefing .reg-row .status.strong { color: var(--forest); }
 
 /* Action register */
 .aibi-briefing .register {

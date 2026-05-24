@@ -15,6 +15,7 @@ import Link from 'next/link';
 import type { ReactElement } from 'react';
 import type { Tier, DimensionScore } from '@content/assessments/v2/scoring';
 import type { Dimension } from '@content/assessments/v2/types';
+import { DIMENSION_LABELS } from '@content/assessments/v2/types';
 import type { Role } from '@content/assessments/v2/role';
 import {
   buildDimRows,
@@ -107,53 +108,98 @@ function radarLabels(rows: readonly DimRow[]): ReactElement[] {
 // the composed phase, not the stored tier — see derive.ts comments for
 // the reconciliation rationale.
 
-// Reference content — regulatory exhibit is templated, identical for
-// every reader. Framed in the surrounding copy as "the supervisory
-// frame your assessment maps against," not as personal findings.
-const REGULATORY_ROWS = [
+// Audit A7 (2026-05-24): regulatory exhibit was templated with every row
+// carrying statusClass: 'part' and statusLabel: 'Map yours'. CRO and IT
+// Director personas flagged this as "thin ice for an examiner finding"
+// — the section read as personalised but every row showed the same
+// placeholder. Now each row names the v2 dimension(s) it maps against,
+// and personalizeRegulatoryRow() derives a real status from the user's
+// scored terrain on those dimensions. The "Mapped against your..." copy
+// is also rendered from the live data.
+
+interface RegulatoryRow {
+  readonly ref: string;
+  readonly refSub: string;
+  readonly what: string;
+  readonly dimensions: readonly Dimension[];
+}
+
+const REGULATORY_ROWS: readonly RegulatoryRow[] = [
   {
     ref: 'SR 11-7',
     refSub: 'Model Risk Management · 2011 · FRB / OCC',
     what: 'Inventory, validation, and ongoing monitoring of any model used in business decisions.',
-    statusClass: 'part',
-    statusLabel: 'Map yours',
+    dimensions: ['security-posture', 'current-ai-usage'],
   },
   {
     ref: 'FFIEC IT Handbook',
     refSub: 'Mgmt · Architecture · Operations · 2021',
     what: 'Vendor due diligence and concentration risk for material third parties.',
-    statusClass: 'part',
-    statusLabel: 'Map yours',
+    dimensions: ['security-posture', 'leadership-buy-in'],
   },
   {
     ref: 'NCUA 24-CU-XX',
     refSub: 'AI in CU operations · 2024',
     what: 'Board oversight, written policy, and disclosure expectations.',
-    statusClass: 'part',
-    statusLabel: 'Map yours',
+    dimensions: ['leadership-buy-in', 'security-posture'],
   },
   {
     ref: 'FinCEN AML Guidance',
     refSub: 'Innovative approaches · 2018 · Section 314(b)',
     what: 'Innovative approaches to BSA/AML are encouraged when paired with appropriate testing.',
-    statusClass: 'part',
-    statusLabel: 'Map yours',
+    dimensions: ['experimentation-culture', 'security-posture'],
   },
   {
     ref: 'CFPB Fair Lending',
     refSub: 'UDAAP · Reg B / Reg V · 2023 guidance',
     what: 'Disparate-impact testing on any model influencing credit decisions.',
-    statusClass: 'part',
-    statusLabel: 'Map yours',
+    dimensions: ['security-posture', 'builder-potential'],
   },
   {
     ref: 'GLBA · Safeguards',
     refSub: '16 CFR 314 · final rule 2023',
     what: 'Encryption, access controls, and incident response for NPI processed by third parties.',
-    statusClass: 'part',
-    statusLabel: 'Map yours',
+    dimensions: ['security-posture', 'training-infrastructure'],
   },
 ] as const;
+
+interface PersonalizedRegStatus {
+  readonly statusClass: string;     // 'weak' | 'part' | 'strong'
+  readonly statusLabel: string;     // user-facing posture name
+  readonly mappingCopy: string;     // "Mapped against your X (Y/100) and Z (W/100)" sentence
+}
+
+function personalizeRegulatoryRow(
+  row: RegulatoryRow,
+  dimRows: readonly DimRow[],
+): PersonalizedRegStatus {
+  // Pull the user's score for each mapped dimension. Average the
+  // percentages; the floor of the two (or one, depending on count) is
+  // what drives the posture so a strong dim does not mask a weak one.
+  const mapped = row.dimensions
+    .map((dim) => dimRows.find((r) => r.id === dim))
+    .filter((r): r is DimRow => r !== undefined);
+  if (mapped.length === 0) {
+    return { statusClass: 'part', statusLabel: 'Map yours', mappingCopy: '' };
+  }
+  const floorPct = Math.min(...mapped.map((m) => m.pct));
+  // Regulatory posture follows the floor — examiners do not grade on the
+  // average; one weak control is the finding.
+  const statusClass = floorPct < 50 ? 'weak' : floorPct < 75 ? 'part' : 'strong';
+  const statusLabel =
+    floorPct < 50
+      ? 'Exam risk'
+      : floorPct < 75
+        ? 'Coordinated'
+        : floorPct < 90
+          ? 'Defensible'
+          : 'Top decile';
+  const dimList = mapped
+    .map((m) => `${DIMENSION_LABELS[m.id]} (${m.pct}/100)`)
+    .join(' and ');
+  const mappingCopy = `Mapped against your ${dimList}.`;
+  return { statusClass, statusLabel, mappingCopy };
+}
 
 // Action register scaffold. Row 01 is personalized off the lowest
 // dimension. The remaining rows are generic verbs every institution
@@ -619,7 +665,7 @@ export function InDepthBriefingView({
             </div>
             <div>
               <h2>The supervisory frame <em>your posture maps against.</em></h2>
-              <p className="body">Each row names a reference the institute uses when calibrating AI readiness for community banks and credit unions. This is the framework — the personal mapping (which row is defensible, which is a finding) is the work of an Executive Briefing or a Charter cohort engagement. Bring this table to your CRO.</p>
+              <p className="body">Each row names a reference the institute uses when calibrating AI readiness for community banks and credit unions, with your posture against each — driven by the dimensions that most directly inform it. <em>Exam risk</em> is a floor-driven flag: one weak control is the finding. Bring this table to your CRO.</p>
             </div>
           </div>
 
@@ -630,14 +676,19 @@ export function InDepthBriefingView({
               <span className="h">Where your dimensions map</span>
               <span className="h">Your status</span>
             </div>
-            {REGULATORY_ROWS.map((r) => (
-              <div className="reg-row" key={r.ref}>
-                <div className="ref">{r.ref}<small>{r.refSub}</small></div>
-                <div className="what">{r.what}</div>
-                <div className="gap">Mapped against your dimensions in <em>security posture</em>, <em>builder bench</em>, and <em>policy</em> rows of Chapter 02.</div>
-                <div className={`status ${r.statusClass}`}>{r.statusLabel}</div>
-              </div>
-            ))}
+            {REGULATORY_ROWS.map((r) => {
+              const personalized = personalizeRegulatoryRow(r, rows);
+              return (
+                <div className="reg-row" key={r.ref}>
+                  <div className="ref">{r.ref}<small>{r.refSub}</small></div>
+                  <div className="what">{r.what}</div>
+                  <div className="gap">{personalized.mappingCopy}</div>
+                  <div className={`status ${personalized.statusClass}`}>
+                    {personalized.statusLabel}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
