@@ -41,6 +41,9 @@ const CHROMELESS_PATHS: readonly string[] = [
   // /foundation/gate, dashboard, lesson pages, etc.).
   '/foundation',
   '/account',
+  // /foundation-canvas is an operator review surface — renders its own
+  // chrome (the canvas IS the chrome) and must not stack the marketing nav.
+  '/foundation-canvas',
 ];
 
 // 2026-05-17: Cormorant Garamond, DM Sans, and DM Mono removed — they
