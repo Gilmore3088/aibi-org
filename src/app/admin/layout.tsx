@@ -13,6 +13,7 @@ export const dynamic = 'force-dynamic';
 const SUBNAV: ReadonlyArray<{ href: string; label: string }> = [
   { href: '/admin/analytics', label: 'Analytics' },
   { href: '/admin/leads', label: 'Leads' },
+  { href: '/admin/sandbox', label: 'Sandbox' },
 ];
 
 export default async function AdminLayout({ children }: { children: ReactNode }) {
