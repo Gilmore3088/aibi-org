@@ -3,6 +3,7 @@
 // source of truth consumed by every assessment-results surface.
 
 import type { Tier } from './scoring';
+import { percentOfMax, tierFromPct } from './scoring';
 import type { Dimension } from './types';
 
 // ---------------------------------------------------------------------------
@@ -198,11 +199,13 @@ export function getTierMaturity(tierId: Tier['id']): TierMaturity {
 /**
  * Map a per-dimension score (out of maxScore) onto the four-tier ladder.
  *
- * Normalizes against the minimum-possible score (minScore = maxScore / 4,
- * because each question contributes 1 minimum point and 4 maximum points)
- * so the four bands span equal quarters of the achievable range. This
- * matches the overall 12–48 ladder exactly: the quarter-points 21, 30, 39
- * fall at position 0.25, 0.50, 0.75 within the 12–48 range.
+ * Audit A1 (2026-05-24, follow-up): now routes through tierFromPct in
+ * scoring.ts — the same percent-of-max rubric the overall composite uses
+ * (50 / 75 / 90). The prior floor-anchored "equal quarters" thresholds
+ * (0.25 / 0.50 / 0.75 within the maxScore/4 → maxScore range) were the
+ * third scoring engine the audit named; a per-dimension band could
+ * disagree with the overall composite for the same percentage. Single
+ * threshold table, one source of truth.
  *
  * Pass the dimension's actual maxScore — typically 24 (6 questions × 4 points)
  * for the in-depth 48Q assessment, or 4 (1 question × 4 points) for the
@@ -210,17 +213,7 @@ export function getTierMaturity(tierId: Tier['id']): TierMaturity {
  */
 export function scoreToTier(score: number, maxScore: number): Tier['id'] {
   if (maxScore <= 0) return 'starting-point';
-  // Each question contributes 1 minimum point (lowest answer is worth 1) and 4 maximum.
-  // So minScore is always maxScore / 4. The four bands span the resulting range
-  // in equal quarters, matching the overall 12-48 ladder thresholds 21/30/39.
-  const minScore = maxScore / 4;
-  const range = maxScore - minScore;
-  if (range <= 0) return 'starting-point';
-  const position = (score - minScore) / range;
-  if (position >= 0.75) return 'ready-to-scale';
-  if (position >= 0.50) return 'building-momentum';
-  if (position >= 0.25) return 'early-stage';
-  return 'starting-point';
+  return tierFromPct(percentOfMax(score, maxScore)).id;
 }
 
 export function getDimensionTierMeaning(

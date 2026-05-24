@@ -3,12 +3,20 @@
 // Client component for the paid 48-question In-Depth Assessment UI.
 // Reuses QuestionCard / ProgressBar / ScoreRing from the free flow but
 // drives them via useAssessmentInDepth (full 48-question pool, separate
-// sessionStorage key) and posts to /api/assessment/in-depth/submit on
+// localStorage key) and posts to /api/assessment/in-depth/submit on
 // completion (auth + entitlement enforced server-side).
+//
+// Audit A3 (2026-05-24, follow-up): role-pick storage routed through the
+// same TTL-bounded adapter as the answer state so an iOS Safari tab
+// eviction mid-flow does not re-prompt for the role.
 
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAssessmentInDepth } from '../../_lib/useAssessmentInDepth';
+import {
+  loadAssessment,
+  saveAssessment,
+} from '@/app/assessment/_lib/assessment-storage';
 import { QuestionCard } from '@/app/assessment/_components/QuestionCard';
 import { ProgressBar } from '@/app/assessment/_components/ProgressBar';
 import { ScoreRing } from '@/app/assessment/_components/ScoreRing';
@@ -35,25 +43,17 @@ export function InDepthRunner(): React.ReactElement {
     setMounted(true);
     // Restore prior role pick so a refresh mid-assessment does not re-show
     // the picker. Empty string is the marker for "user skipped".
-    try {
-      const saved = sessionStorage.getItem(ROLE_STORAGE_KEY);
-      if (saved !== null) {
-        setRole(parseRole(saved));
-        setRolePicked(true);
-      }
-    } catch {
-      // sessionStorage unavailable (private mode); proceed without persistence.
+    const saved = loadAssessment<string>(ROLE_STORAGE_KEY);
+    if (saved !== null) {
+      setRole(parseRole(saved));
+      setRolePicked(true);
     }
   }, []);
 
   function commitRolePick(picked: Role | null): void {
     setRole(picked);
     setRolePicked(true);
-    try {
-      sessionStorage.setItem(ROLE_STORAGE_KEY, picked ?? '');
-    } catch {
-      // ignore — non-blocking
-    }
+    saveAssessment(ROLE_STORAGE_KEY, picked ?? '');
   }
 
   // Destructure the exact fields we depend on so the dependency list is

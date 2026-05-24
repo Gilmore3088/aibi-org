@@ -304,22 +304,22 @@ function DeliverablePanel() {
           </p>
         </div>
         <div className="space-y-2">
-          {/* Audit A2 (2026-05-24): these labels must match the v2 canonical
-              8 dimensions (DIMENSION_LABELS in content/assessments/v2/types.ts)
-              that the real report uses. Short forms are kept inline for
-              column-width fit; full forms are in DIMENSION_LABELS. */}
+          {/* Audit A2 (2026-05-24, follow-up): labels match the v2 canonical
+              DIMENSION_LABELS strings exactly — the real report uses these
+              names verbatim, so the sample dashboard must too. Column
+              widened, label tracking tightened, font shrunk to fit. */}
           {([
-            ['Current AI', 0.55],
-            ['Experiments', 0.50],
-            ['AI Literacy', 0.65],
-            ['Quick Win', 0.45],
-            ['Leadership', 0.40],
-            ['Security', 0.60],
-            ['Training', 0.35],
-            ['Builders', 0.30],
+            ['Current AI Usage', 0.55],
+            ['Experimentation Culture', 0.50],
+            ['AI Literacy Level', 0.65],
+            ['Quick Win Potential', 0.45],
+            ['Leadership Buy-In', 0.40],
+            ['Security Posture', 0.60],
+            ['Training Infrastructure', 0.35],
+            ['Builder Potential', 0.30],
           ] as const).map(([label, value]) => (
             <div key={label} className="flex items-center gap-3">
-              <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] w-24 shrink-0">
+              <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-[color:var(--color-slate)] w-44 shrink-0 leading-tight">
                 {label}
               </span>
               <div className="flex-1 h-1.5 bg-[color:var(--color-ink)]/10 rounded-sm overflow-hidden">

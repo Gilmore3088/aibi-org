@@ -28,7 +28,12 @@ describe('getTierMaturity', () => {
   });
 });
 
-describe('scoreToTier', () => {
+// scoreToTier now routes through tierFromPct (audit A1 follow-up,
+// 2026-05-24): same percent-of-max rubric the overall composite uses,
+// so per-dimension and overall tiers cannot disagree at equivalent
+// percentages. Thresholds: < 50 starting · 50-74 early · 75-89
+// building · ≥ 90 ready.
+describe('scoreToTier (unified rubric — 50/75/90 pct-of-max)', () => {
   it('returns starting-point when dimension scored at minimum', () => {
     expect(scoreToTier(0, 4)).toBe('starting-point');
   });
@@ -38,20 +43,24 @@ describe('scoreToTier', () => {
   });
 
   it('handles fractional coverage (free 12Q has 1 question per dimension)', () => {
-    expect(scoreToTier(4, 4)).toBe('ready-to-scale');
-    expect(scoreToTier(1, 4)).toBe('starting-point');
+    expect(scoreToTier(4, 4)).toBe('ready-to-scale'); // 100% → ready
+    expect(scoreToTier(1, 4)).toBe('starting-point'); // 25% → starting
   });
 
-  it('matches overall ladder bands at typical maxScore values', () => {
-    // At maxScore=4 (1-question free dim): minScore=1, range=3, bands at 1.75 / 2.5 / 3.25
-    expect(scoreToTier(2, 4)).toBe('early-stage');       // position 0.33
-    expect(scoreToTier(3, 4)).toBe('building-momentum'); // position 0.67
+  it('matches the overall ladder bands at typical maxScore values', () => {
+    // maxScore=4 (1-question free dim): thresholds at 2, 3, 3.6
+    expect(scoreToTier(2, 4)).toBe('early-stage');       // 50%  → early
+    expect(scoreToTier(3, 4)).toBe('building-momentum'); // 75%  → building
+    expect(scoreToTier(4, 4)).toBe('ready-to-scale');    // 100% → ready
 
-    // At maxScore=24 (6-question in-depth dim): minScore=6, range=18, bands at 10.5 / 15 / 19.5
-    expect(scoreToTier(6, 24)).toBe('starting-point');     // position 0
-    expect(scoreToTier(11, 24)).toBe('early-stage');       // position 0.28
-    expect(scoreToTier(15, 24)).toBe('building-momentum'); // position 0.50 (boundary)
-    expect(scoreToTier(20, 24)).toBe('ready-to-scale');    // position 0.78
+    // maxScore=24 (6-question in-depth dim): thresholds at 12, 18, 21.6
+    expect(scoreToTier(6, 24)).toBe('starting-point');     // 25%   → starting
+    expect(scoreToTier(11, 24)).toBe('starting-point');    // 45.8% → starting (was early under floor-anchored)
+    expect(scoreToTier(12, 24)).toBe('early-stage');       // 50%   → early
+    expect(scoreToTier(15, 24)).toBe('early-stage');       // 62.5% → early (was building under floor-anchored)
+    expect(scoreToTier(18, 24)).toBe('building-momentum'); // 75%   → building
+    expect(scoreToTier(20, 24)).toBe('building-momentum'); // 83.3% → building (was ready under floor-anchored)
+    expect(scoreToTier(22, 24)).toBe('ready-to-scale');    // 91.7% → ready
   });
 });
 
