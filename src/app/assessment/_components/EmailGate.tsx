@@ -86,19 +86,22 @@ export function EmailGate({
   // failed. We hide the form during this window so a logged-in user
   // doesn't see an empty gate flash before the auto-submit fires.
   const [authChecking, setAuthChecking] = useState(true);
-  // Tracks whether the current field values came from localStorage so
-  // we can show a "Not you?" affordance. Cleared the moment the user
-  // edits any field — the prefill is no longer "stale" once they start
-  // typing on top of it.
-  const [prefilledFromLocal, setPrefilledFromLocal] = useState(false);
+  // Identity stash from a prior visit. We do NOT prefill the form with
+  // it automatically — that surprises returning users on shared devices
+  // and gets in the way of "I want to use a different email." Instead
+  // the prior identity surfaces as a one-click "Continue as <email>"
+  // shortcut above the form. Empty form is the default; the shortcut
+  // is the opt-in.
+  const [priorIdentity, setPriorIdentity] = useState<{
+    email: string;
+    fullName: string;
+    institutionName: string;
+  } | null>(null);
   const institutionInputRef = useRef<HTMLInputElement | null>(null);
   const emailInputRef = useRef<HTMLInputElement | null>(null);
 
-  // Prefill from localStorage on mount — if the visitor already gave us
-  // identity at a prior EmailGate (returning to retake, or completing
-  // the assessment after browsing other surfaces), don't make them type
-  // it all again. Reads run client-side only; SSR paint shows empty
-  // fields, then the post-mount setState populates.
+  // Read the prior identity stash on mount but don't apply it. The
+  // shortcut button below the form is the user's opt-in to reuse it.
   useEffect(() => {
     if (typeof window === 'undefined') return;
     try {
@@ -110,28 +113,28 @@ export function EmailGate({
         firstName?: unknown;
         institutionName?: unknown;
       };
-      let anyPrefill = false;
-      if (typeof parsed.email === 'string' && EMAIL_RE.test(parsed.email)) {
-        setEmail((current) => current || (parsed.email as string));
-        anyPrefill = true;
-      }
-      const storedName =
+      const priorEmail =
+        typeof parsed.email === 'string' && EMAIL_RE.test(parsed.email)
+          ? parsed.email
+          : null;
+      if (!priorEmail) return;
+      const priorName =
         typeof parsed.fullName === 'string'
           ? parsed.fullName
           : typeof parsed.firstName === 'string'
             ? parsed.firstName
-            : null;
-      if (storedName) {
-        setFirstName((current) => current || storedName);
-        anyPrefill = true;
-      }
-      if (typeof parsed.institutionName === 'string' && parsed.institutionName) {
-        setInstitutionName((current) => current || (parsed.institutionName as string));
-        anyPrefill = true;
-      }
-      if (anyPrefill) setPrefilledFromLocal(true);
+            : '';
+      const priorInstitution =
+        typeof parsed.institutionName === 'string'
+          ? parsed.institutionName
+          : '';
+      setPriorIdentity({
+        email: priorEmail,
+        fullName: priorName,
+        institutionName: priorInstitution,
+      });
     } catch {
-      /* malformed JSON — ignore, render empty form */
+      /* malformed JSON — ignore */
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -298,35 +301,33 @@ export function EmailGate({
             Where should we send your breakdown?
           </h3>
 
-          {prefilledFromLocal && (
-            <div
-              role="status"
-              className="mt-4 -mb-1 flex items-baseline justify-between gap-4 text-[12px]"
+          {priorIdentity && !email && !firstName && !institutionName && (
+            <button
+              type="button"
+              onClick={() => {
+                setEmail(priorIdentity.email);
+                setFirstName(priorIdentity.fullName);
+                setInstitutionName(priorIdentity.institutionName);
+                // Hide the shortcut once consumed — clicking it again
+                // would just rewrite the same values they could now
+                // edit freely.
+                setPriorIdentity(null);
+              }}
+              className="mt-5 -mb-1 w-full text-left border border-[color:var(--color-ink)]/15 bg-[color:var(--color-linen)] hover:bg-[color:var(--color-parch)]/60 px-4 py-3 rounded-[2px] transition-colors group"
             >
-              <span className="font-mono uppercase tracking-[0.16em] text-[color:var(--color-ink)]/70">
-                Prefilled from a prior visit
-              </span>
-              <button
-                type="button"
-                onClick={() => {
-                  setEmail('');
-                  setFirstName('');
-                  setInstitutionName('');
-                  setPrefilledFromLocal(false);
-                  if (typeof window !== 'undefined') {
-                    try {
-                      window.localStorage.removeItem('aibi-user');
-                    } catch {
-                      /* ignore */
-                    }
-                  }
-                  requestAnimationFrame(() => emailInputRef.current?.focus());
-                }}
-                className="font-mono uppercase tracking-[0.16em] text-[color:var(--color-terra)] hover:text-[color:var(--color-ink)] underline underline-offset-4"
-              >
-                Not you? Clear →
-              </button>
-            </div>
+              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/65 mb-1">
+                Continue as
+              </p>
+              <p className="font-sans text-[15px] text-[color:var(--color-ink)] flex items-baseline justify-between gap-3">
+                <span className="truncate">{priorIdentity.email}</span>
+                <span
+                  aria-hidden
+                  className="font-mono text-[11px] uppercase tracking-[0.16em] text-[color:var(--color-terra)] group-hover:text-[color:var(--color-ink)] shrink-0"
+                >
+                  Reuse →
+                </span>
+              </p>
+            </button>
           )}
 
           <form onSubmit={handleSubmit} className="mt-6 space-y-5" noValidate>
