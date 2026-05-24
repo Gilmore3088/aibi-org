@@ -75,6 +75,13 @@ const nextConfig = {
       { source: '/foundations', destination: '/education', permanent: true },
       { source: '/toolbox', destination: '/dashboard/toolbox', permanent: true },
       { source: '/toolbox/:path*', destination: '/dashboard/toolbox/:path*', permanent: true },
+      // Audit A21 (2026-05-24): /my-toolbox was an internal reference
+      // page named confusingly close to /dashboard/toolbox (the user-
+      // facing surface). E2E persona Hattie consistently typed
+      // /my-toolbox expecting to find HER toolbox. Permanent redirect
+      // routes the user-shaped URL to the user-shaped destination.
+      { source: '/my-toolbox', destination: '/dashboard/toolbox', permanent: true },
+      { source: '/my-toolbox/:path*', destination: '/dashboard/toolbox/:path*', permanent: true },
       // /resources root → /research; individual essays remain at /resources/<slug>
       // until Phase 07 migration ports each essay to MDX in content/essays/.
       { source: '/resources', destination: '/research', permanent: true },
