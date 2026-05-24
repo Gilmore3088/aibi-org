@@ -589,9 +589,17 @@ function ClosingCta({ tierId }: { readonly tierId: Tier['id'] }) {
         >
           {cta.primary.label}
         </a>
+        {/* A24 (audit 2026-05-24): one-sentence differentiator under
+            the primary CTA so the buyer can tell the offers apart at
+            first scan. */}
+        {cta.primary.differentiator ? (
+          <p className="mt-3 text-[13px] leading-snug text-[color:var(--color-ink)]/70 max-w-prose">
+            {cta.primary.differentiator}
+          </p>
+        ) : null}
       </article>
       <ul
-        className="border-t border-[color:var(--color-ink)]/15 pt-4 space-y-2"
+        className="border-t border-[color:var(--color-ink)]/15 pt-4 space-y-3"
         data-print-hide="true"
       >
         {[cta.secondary, cta.tertiary].map((offer) => (
@@ -603,6 +611,11 @@ function ClosingCta({ tierId }: { readonly tierId: Tier['id'] }) {
             >
               {offer.label}
             </a>
+            {offer.differentiator ? (
+              <span className="block mt-1 text-[12px] text-[color:var(--color-ink)]/60 normal-case tracking-normal font-sans leading-snug">
+                {offer.differentiator}
+              </span>
+            ) : null}
           </li>
         ))}
       </ul>

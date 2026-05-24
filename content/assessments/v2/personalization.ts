@@ -715,6 +715,13 @@ export const FINANCIAL_IMPLICATIONS: Record<Tier['id'], FinancialImplications> =
 
 export interface CtaOffer {
   readonly label: string;
+  // Audit A24 (2026-05-24): the three free-assessment personas asked
+  // "what does $99 actually buy me?" — the ranked CTA list previously
+  // showed label + href only and never answered. `differentiator` is
+  // the one-sentence answer surfaced under the link in mono caps. Used
+  // primarily on the secondary $99 In-Depth CTA so the buyer can tell
+  // it apart from the $295 Foundation primary at first scan.
+  readonly differentiator?: string;
   readonly href: string;
   /**
    * Plausible event `source` prop. Lets us measure conversion from
@@ -746,16 +753,19 @@ export const TIER_CLOSING_CTA: Record<Tier['id'], TierClosingCta> = {
       "Your score says AI is already being used inside your organization without consistent training or guardrails. The fastest way to fix that is to build internal capability — one workflow owner, one safe-use habit, one repeatable workflow at a time. AiBI-Foundation is twelve self-paced modules built for banking professionals.",
     primary: {
       label: 'Enroll in AiBI-Foundation · $295',
+      differentiator: '24 self-paced lessons across 6 modules + a personal Toolbox you keep — for the bench, not the briefing.',
       href: '/courses/foundation/program',
       source: 'free-results-primary',
     },
     secondary: {
       label: 'Or take the In-Depth Assessment · $99',
+      differentiator: '48 questions, your filing, 90-day register, methodology — board-ready in 20 minutes.',
       href: '/assessment/in-depth',
       source: 'free-results-secondary',
     },
     tertiary: {
       label: 'Request an Executive Briefing',
+      differentiator: 'A 30-minute call with our team. No deck, no pitch — your roadmap.',
       href: '/for-institutions/advisory',
       source: 'free-results-tertiary',
     },
@@ -767,16 +777,19 @@ export const TIER_CLOSING_CTA: Record<Tier['id'], TierClosingCta> = {
       "You have curiosity and a few early wins. The next constraint is not another tool — it is structured AI capability your team can replicate. AiBI-Foundation gives each staff member a safe-use checklist, a prompt builder, and reusable banking workflows. Take it as a team and codify what's already working.",
     primary: {
       label: 'Enroll in AiBI-Foundation · $295',
+      differentiator: '24 self-paced lessons across 6 modules + a personal Toolbox you keep — for the bench, not the briefing.',
       href: '/courses/foundation/program',
       source: 'free-results-primary',
     },
     secondary: {
       label: 'Or take the In-Depth Assessment · $99',
+      differentiator: '48 questions, your filing, 90-day register, methodology — board-ready in 20 minutes.',
       href: '/assessment/in-depth',
       source: 'free-results-secondary',
     },
     tertiary: {
       label: 'Request an Executive Briefing',
+      differentiator: 'A 30-minute call with our team. No deck, no pitch — your roadmap.',
       href: '/for-institutions/advisory',
       source: 'free-results-tertiary',
     },
@@ -788,16 +801,19 @@ export const TIER_CLOSING_CTA: Record<Tier['id'], TierClosingCta> = {
       "Your teams are producing real value with AI. The risk now is that progress depends on a few motivated individuals. AiBI-Foundation turns those individual wins into a shared baseline — every staff member with the same safe-use habits, the same prompt patterns, the same reusable workflows. It is the cheapest path from fragile momentum to repeatable program.",
     primary: {
       label: 'Enroll in AiBI-Foundation · $295',
+      differentiator: '24 self-paced lessons across 6 modules + a personal Toolbox you keep — for the bench, not the briefing.',
       href: '/courses/foundation/program',
       source: 'free-results-primary',
     },
     secondary: {
       label: 'Or take the In-Depth Assessment · $99',
+      differentiator: '48 questions, your filing, 90-day register, methodology — board-ready in 20 minutes.',
       href: '/assessment/in-depth',
       source: 'free-results-secondary',
     },
     tertiary: {
       label: 'Request an Executive Briefing',
+      differentiator: 'A 30-minute call with our team. No deck, no pitch — your roadmap.',
       href: '/for-institutions/advisory',
       source: 'free-results-tertiary',
     },
@@ -809,16 +825,19 @@ export const TIER_CLOSING_CTA: Record<Tier['id'], TierClosingCta> = {
       "Your institution has built real AI capability. The opportunity now is leadership judgment — what to prioritize next, how to measure outcomes, how to defend the program at the board level. Leadership Advisory is fractional Chief AI Officer work for institutions with internal momentum. AiBI-Foundation stays available as the onboarding path for every new hire.",
     primary: {
       label: 'Request a conversation',
+      differentiator: 'A 30-minute call with our team. No deck, no pitch — your next quarter, with our notes.',
       href: '/for-institutions/advisory',
       source: 'free-results-primary',
     },
     secondary: {
       label: 'Onboard new hires with AiBI-Foundation · $295',
+      differentiator: '24 self-paced lessons that bring every new banker to your current baseline.',
       href: '/courses/foundation/program',
       source: 'free-results-secondary',
     },
     tertiary: {
       label: 'Take the In-Depth Assessment · $99',
+      differentiator: '48 questions, your filing, 90-day register, methodology — the audit trail for your AI program.',
       href: '/assessment/in-depth',
       source: 'free-results-tertiary',
     },
