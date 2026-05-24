@@ -29,27 +29,38 @@ export function VideoLessonView({ payload }: VideoLessonViewProps) {
   if (!mediaRef) {
     return (
       <div>
-        {/* Placeholder hero — uses the module illustration on a parchment
-            field so the lesson has visual presence even before the
-            recorded video lands. */}
+        {/* Modern video-frame placeholder — film-strip border, soft accent glow,
+            module illustration centered, prominent duration + play hint. */}
         <div
           role="img"
           aria-label="Video lesson placeholder"
-          className="relative w-full rounded-[4px] border border-[var(--ledger-rule)] bg-[var(--ledger-parch)] overflow-hidden"
+          className="addie-video-frame w-full"
         >
-          <div className="aspect-[16/8] flex items-center justify-center px-8">
-            <div className="w-full max-w-md text-[var(--ledger-muted)]">
+          <div className="aspect-[16/9] flex items-center justify-center px-8 py-6">
+            <div className="w-full max-w-sm text-[var(--ledger-ink-2)]">
               <ModuleIllustration module={moduleKey} />
             </div>
           </div>
-          <div className="absolute top-3 left-3">
-            <span className="addie-chip" data-tone="accent">Video coming · read below</span>
+          <div className="absolute top-4 left-4 flex items-center gap-2">
+            <span className="addie-chip" data-tone="accent">Video in production</span>
           </div>
-          <div className="absolute bottom-3 right-3 font-mono text-[0.7rem] uppercase tracking-[0.16em] text-[var(--ledger-muted)]">
-            {payload.lesson.duration_min} min
+          <div className="absolute bottom-4 right-4 flex items-center gap-3">
+            <span className="font-mono text-[0.7rem] uppercase tracking-[0.16em] text-[var(--ledger-muted)] tabular-nums">
+              {payload.lesson.duration_min}:00
+            </span>
+            <span className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-[var(--ledger-ink)] text-[var(--ledger-paper)]" aria-hidden>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor">
+                <path d="M3 2l9 5-9 5V2z" />
+              </svg>
+            </span>
+          </div>
+          <div className="absolute bottom-4 left-4">
+            <span className="font-mono text-[0.65rem] uppercase tracking-[0.18em] text-[var(--ledger-muted)]">
+              Read along below
+            </span>
           </div>
         </div>
-        <div className="mt-8">
+        <div className="mt-10">
           <LessonBody body={body} />
         </div>
       </div>

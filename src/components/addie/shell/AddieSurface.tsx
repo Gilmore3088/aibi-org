@@ -29,7 +29,9 @@ export function AddieSurface({ readingProgress = false }: AddieSurfaceProps) {
       typeof window !== 'undefined' &&
       window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // Reveal-on-scroll
+    // Reveal-on-scroll — enhancement only. Tags an element with
+    // data-revealed='just-now' when it scrolls in; CSS animates a small
+    // fade-from-translate. Content is ALWAYS visible regardless.
     const targets = Array.from(root.querySelectorAll<HTMLElement>('[data-reveal]'));
     let io: IntersectionObserver | null = null;
     if (!reduce && 'IntersectionObserver' in window) {
@@ -37,16 +39,14 @@ export function AddieSurface({ readingProgress = false }: AddieSurfaceProps) {
         (entries) => {
           for (const e of entries) {
             if (e.isIntersecting) {
-              (e.target as HTMLElement).dataset.revealed = 'true';
+              (e.target as HTMLElement).dataset.revealed = 'just-now';
               io?.unobserve(e.target);
             }
           }
         },
-        { rootMargin: '0px 0px -10% 0px', threshold: 0.05 },
+        { rootMargin: '0px 0px -5% 0px', threshold: 0.01 },
       );
       for (const t of targets) io.observe(t);
-    } else {
-      for (const t of targets) t.dataset.revealed = 'true';
     }
 
     // Reading progress
