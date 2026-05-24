@@ -14,6 +14,7 @@ import { LessonTOC } from '@/components/addie/lesson/LessonTOC';
 import { extractHeadings } from '@/components/addie/lesson/lessonHeadings';
 import { LessonTutor } from '@/components/addie/lesson/LessonTutor';
 import { LessonSummaryCard } from '@/components/addie/lesson/LessonSummaryCard';
+import { M02Experience } from '@/components/addie/lesson/v2/M02Experience';
 import { hasAnyFoundationEntitlement } from '@/lib/addie/entitlements/check';
 import type {
   LessonPayload,
@@ -345,6 +346,29 @@ export default async function LessonPage({
 
   const bodyForToc = payload.variant?.body_md ?? payload.lesson.body_md ?? '';
   const headings = extractHeadings(bodyForToc);
+
+  // v2 lesson shell — currently opt-in per lesson. m0.2 is the first
+  // migration; future lessons add themselves here as the v2 shell rolls out.
+  // See docs/Foundation-Course-ADDIE/AiBI_Lesson_Shell_Migration.md.
+  const useV2Shell = payload.lesson.id === 'm0.2';
+  if (useV2Shell) {
+    const nextHref = payload.siblings?.next
+      ? `/foundation/${payload.siblings.next.moduleId}/${payload.siblings.next.id}`
+      : null;
+    return (
+      <div className="min-h-screen">
+        <M02Experience
+          checks={payload.checks}
+          interactiveExercise={payload.interactiveExercise ?? null}
+          track={payload.activeTrack ?? null}
+          nextHref={nextHref}
+          nextLabel={payload.siblings?.next?.title ?? null}
+        />
+        {/* Tutor remains available across all lesson shells. */}
+        <LessonTutor lessonId={params.lessonId} />
+      </div>
+    );
+  }
 
   return (
     <div className="mx-auto max-w-[1400px] px-4 sm:px-6 py-6 flex flex-col lg:flex-row gap-8 lg:gap-10">
