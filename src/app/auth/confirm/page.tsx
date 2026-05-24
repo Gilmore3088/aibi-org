@@ -123,7 +123,6 @@ export default async function ConfirmPage({ searchParams }: PageProps) {
         <p
           style={{
             fontFamily: "var(--ledger-serif, 'Newsreader', Georgia, serif)",
-            fontStyle: 'italic',
             fontSize: 17,
             lineHeight: 1.5,
             color: 'var(--ledger-ink-2, #1F2A3F)',

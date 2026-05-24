@@ -44,7 +44,7 @@ export default function ForgotPasswordPage() {
         <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', gap: 8 }}>
           <LedgerEyebrow>Reset password</LedgerEyebrow>
           <LedgerH1>
-            Forgot your <em>password?</em>
+            Forgot your <span style={{ color: 'var(--terra)' }}>password?</span>
           </LedgerH1>
         </div>
 
@@ -60,7 +60,7 @@ export default function ForgotPasswordPage() {
             </div>
           ) : (
             <>
-              <p style={{ margin: '0 0 18px', fontFamily: 'var(--serif)', fontSize: 16, lineHeight: 1.5, color: 'var(--ink-2)', fontStyle: 'italic' }}>
+              <p style={{ margin: '0 0 18px', fontFamily: 'var(--serif)', fontSize: 16, lineHeight: 1.5, color: 'var(--ink-2)' }}>
                 Enter the email address linked to your account and we&apos;ll send a reset link.
               </p>
 

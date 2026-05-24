@@ -35,19 +35,42 @@ const SIZE_CLASS: Record<Size, string> = {
   compact: 'px-5 py-3 text-[10px]',
 };
 
-function readLocalEmail(): string | null {
-  if (typeof window === 'undefined') return null;
+interface LocalIdentity {
+  readonly email: string | null;
+  readonly firstName: string | null;
+  readonly institutionName: string | null;
+}
+
+function readLocalIdentity(): LocalIdentity {
+  if (typeof window === 'undefined') {
+    return { email: null, firstName: null, institutionName: null };
+  }
   try {
     const raw = window.localStorage.getItem('aibi-user');
-    if (!raw) return null;
-    const parsed = JSON.parse(raw) as { email?: unknown };
-    if (typeof parsed.email === 'string' && EMAIL_RE.test(parsed.email)) {
-      return parsed.email;
-    }
+    if (!raw) return { email: null, firstName: null, institutionName: null };
+    const parsed = JSON.parse(raw) as {
+      email?: unknown;
+      firstName?: unknown;
+      institutionName?: unknown;
+    };
+    const email =
+      typeof parsed.email === 'string' && EMAIL_RE.test(parsed.email)
+        ? parsed.email
+        : null;
+    const firstName =
+      typeof parsed.firstName === 'string' && parsed.firstName.length > 0
+        ? parsed.firstName
+        : null;
+    const institutionName =
+      typeof parsed.institutionName === 'string' &&
+      parsed.institutionName.length > 0
+        ? parsed.institutionName
+        : null;
+    return { email, firstName, institutionName };
   } catch {
     /* malformed JSON — ignore */
+    return { email: null, firstName: null, institutionName: null };
   }
-  return null;
 }
 
 export function PurchaseButton({
@@ -65,7 +88,8 @@ export function PurchaseButton({
     setError(null);
     trackPurchaseInitiated({ product: 'in-depth-assessment', mode: 'individual' });
 
-    const emailToPass = userEmail ?? readLocalEmail() ?? undefined;
+    const local = readLocalIdentity();
+    const emailToPass = userEmail ?? local.email ?? undefined;
 
     try {
       const response = await fetch('/api/checkout/in-depth', {
@@ -74,6 +98,14 @@ export function PurchaseButton({
         body: JSON.stringify({
           mode: 'individual',
           ...(emailToPass ? { user_email: emailToPass } : {}),
+          // Pass identity through to the checkout endpoint so the
+          // post-Stripe signup link can prefill the buyer's name +
+          // institution. The checkout API forwards these into the
+          // Stripe session's metadata for retrieval on the return path.
+          ...(local.firstName ? { first_name: local.firstName } : {}),
+          ...(local.institutionName
+            ? { institution_name: local.institutionName }
+            : {}),
         }),
       });
 

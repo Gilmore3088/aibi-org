@@ -41,6 +41,15 @@ export interface ProficiencyResult {
 
 export interface UserData {
   readonly email: string;
+  /** Captured at the assessment EmailGate (e.g. "Sarah"). Used to prefill
+   *  downstream forms (Stripe Checkout name, signup full-name) so the
+   *  buyer doesn't re-type identity they just provided. Optional because
+   *  the field itself is optional at the gate. */
+  readonly firstName?: string;
+  /** Captured at the assessment EmailGate or as a soft-gate when a
+   *  free-mail address is used. Used to prefill the signup
+   *  institution-name field. */
+  readonly institutionName?: string;
   readonly readiness?: ReadinessResult;
   readonly proficiency?: ProficiencyResult;
 }
@@ -68,6 +77,34 @@ export function saveReadinessResult(
     ...existing,
     email,
     readiness: { ...result, completedAt: new Date().toISOString() },
+  };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+/**
+ * Persist the buyer's identity (firstName + institutionName) captured at
+ * the EmailGate so downstream surfaces (PurchaseButton, signup form,
+ * dashboard greeting) can prefill instead of re-prompting. Email is
+ * required because UserData is keyed by it.
+ *
+ * Skips localStorage when called on the server.
+ */
+export function saveProfileIdentity(
+  email: string,
+  identity: {
+    readonly firstName?: string | null;
+    readonly institutionName?: string | null;
+  },
+): void {
+  if (typeof window === 'undefined') return;
+  const existing = getUserData();
+  const firstName = identity.firstName?.trim() || existing?.firstName;
+  const institutionName = identity.institutionName?.trim() || existing?.institutionName;
+  const data: UserData = {
+    ...existing,
+    email,
+    ...(firstName ? { firstName } : {}),
+    ...(institutionName ? { institutionName } : {}),
   };
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
 }

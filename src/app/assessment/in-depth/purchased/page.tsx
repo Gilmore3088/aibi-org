@@ -55,17 +55,26 @@ export default async function InDepthPurchasedPage({
     signedInEmail = user?.email ?? null;
   }
 
-  // Recover the email from the Stripe session so the auth links are
-  // pre-filled — buyer typed it once at Stripe Checkout, never again.
+  // Recover identity from the Stripe session metadata so the auth
+  // links can prefill everything the buyer already typed at the free-
+  // flow EmailGate. The PurchaseButton forwarded these into the session
+  // when it called /api/checkout/in-depth — see lib/stripe/get-session-
+  // identity for the read-back contract.
   const sp = (await searchParams) ?? {};
-  const { getSessionEmail } = await import('@/lib/stripe/get-session-email');
-  const stripeEmail = signedInEmail
-    ? null
-    : await getSessionEmail(sp.session_id);
-  const prefillEmail = signedInEmail ?? stripeEmail ?? null;
-  const emailQs = prefillEmail
-    ? `&email=${encodeURIComponent(prefillEmail)}`
-    : '';
+  const { getSessionIdentity } = await import('@/lib/stripe/get-session-identity');
+  const stripeIdentity = signedInEmail
+    ? { email: null, firstName: null, institutionName: null }
+    : await getSessionIdentity(sp.session_id);
+  const prefillEmail = signedInEmail ?? stripeIdentity.email ?? null;
+  const prefillFirstName = signedInEmail ? null : stripeIdentity.firstName;
+  const prefillInstitution = signedInEmail ? null : stripeIdentity.institutionName;
+  const identityQs = [
+    prefillEmail ? `&email=${encodeURIComponent(prefillEmail)}` : '',
+    prefillFirstName ? `&firstName=${encodeURIComponent(prefillFirstName)}` : '',
+    prefillInstitution
+      ? `&institutionName=${encodeURIComponent(prefillInstitution)}`
+      : '',
+  ].join('');
 
   return (
     <main className="px-6 py-14 md:py-20">
@@ -134,13 +143,13 @@ export default async function InDepthPurchasedPage({
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link
-                  href={`/auth/signup?next=/assessment/in-depth/take${emailQs}`}
+                  href={`/auth/signup?next=/assessment/in-depth/take${identityQs}`}
                   className="inline-block bg-[color:var(--color-terra)] text-[color:var(--color-linen)] px-8 py-3 rounded-sm font-mono text-[10px] uppercase tracking-[0.15em] hover:bg-[color:var(--color-terra-light)] transition-colors"
                 >
                   Create my account
                 </Link>
                 <Link
-                  href={`/auth/login?next=/assessment/in-depth/take${emailQs}`}
+                  href={`/auth/login?next=/assessment/in-depth/take${identityQs}`}
                   className="inline-block border border-[color:var(--color-ink)]/20 text-[color:var(--color-ink)] px-8 py-3 rounded-sm font-mono text-[10px] uppercase tracking-[0.15em] hover:bg-[color:var(--color-parch)] transition-colors"
                 >
                   I already have one
@@ -148,7 +157,7 @@ export default async function InDepthPurchasedPage({
               </div>
             </>
           )}
-          <p className="text-xs text-[color:var(--color-ink)]/55 mt-6">
+          <p className="text-xs text-[color:var(--color-ink)]/75 mt-6">
             Trouble? Reply to your receipt email or write to{' '}
             <a
               href="mailto:hello@aibankinginstitute.com"

@@ -21,15 +21,38 @@ const MIN_PASSWORD_LENGTH = 8;
 // a crafted URL. The form's own type="email" validation is the real gate.
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+// Cap prefilled identity values so a crafted URL can't push absurd
+// strings into the form. Mirrors the EmailGate maxLength caps.
+function sanitizePrefill(value: string | null, max: number): string {
+  if (!value) return '';
+  const trimmed = value.trim();
+  if (!trimmed || trimmed.length > max) return '';
+  // Reject any control chars or HTML-ish content.
+  if (/[<>\r\n\t]/.test(trimmed)) return '';
+  return trimmed;
+}
+
 export default function SignupPage() {
   const searchParams = useSearchParams();
   // Same open-redirect defense as /auth/login.
   const redirectTo = sanitizeNext(searchParams.get('next'));
-  // Pre-fill from ?email= so post-Stripe buyers don't re-type the email
-  // they just used at checkout. Keeps the field editable in case Stripe had
-  // a stale address.
+  // Pre-fill from query params so post-Stripe buyers (and any caller
+  // who completed the free EmailGate) don't re-type identity. Email
+  // prefill stays the strict shape check; name + institution accept any
+  // reasonable string. All three remain editable.
   const rawEmail = searchParams.get('email');
   const prefillEmail = rawEmail && EMAIL_RE.test(rawEmail) ? rawEmail : '';
+  // The EmailGate captures `firstName` but the signup form's database
+  // field is `fullName`. Accept either query param so older links and
+  // the new identity hand-off both work; the user can edit before submit.
+  const prefillFullName = sanitizePrefill(
+    searchParams.get('fullName') ?? searchParams.get('firstName'),
+    80,
+  );
+  const prefillInstitution = sanitizePrefill(
+    searchParams.get('institutionName'),
+    120,
+  );
 
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
@@ -88,7 +111,7 @@ export default function SignupPage() {
         <div style={{ width: '100%', maxWidth: 440, display: 'flex', flexDirection: 'column', gap: 24 }}>
           <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', gap: 8 }}>
             <LedgerEyebrow>Account created</LedgerEyebrow>
-            <LedgerH1>Check your <em>inbox.</em></LedgerH1>
+            <LedgerH1>Check your <span style={{ color: 'var(--terra)' }}>inbox.</span></LedgerH1>
           </div>
           <LedgerCard variant="strong">
             <p style={{ margin: 0, fontFamily: 'var(--serif)', fontSize: 18, lineHeight: 1.5, color: 'var(--ink-2)', textAlign: 'center' }}>
@@ -114,7 +137,7 @@ export default function SignupPage() {
       <div style={{ width: '100%', maxWidth: 440, display: 'flex', flexDirection: 'column', gap: 24 }}>
         <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', gap: 8 }}>
           <LedgerEyebrow>Create account</LedgerEyebrow>
-          <LedgerH1>Start <em>here.</em></LedgerH1>
+          <LedgerH1>Start <span style={{ color: 'var(--terra)' }}>here.</span></LedgerH1>
         </div>
 
         <LedgerCard variant="strong">
@@ -132,6 +155,7 @@ export default function SignupPage() {
               autoComplete="name"
               required
               placeholder="Jane Doe"
+              defaultValue={prefillFullName}
             />
             <LedgerField
               label="Email"
@@ -146,7 +170,7 @@ export default function SignupPage() {
               label={
                 <>
                   Institution{' '}
-                  <span style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', textTransform: 'none', letterSpacing: 0, color: 'var(--soft)', fontWeight: 400 }}>
+                  <span style={{ fontFamily: 'var(--serif)', textTransform: 'none', letterSpacing: 0, color: 'var(--soft)', fontWeight: 400 }}>
                     (optional)
                   </span>
                 </>
@@ -155,6 +179,7 @@ export default function SignupPage() {
               type="text"
               autoComplete="organization"
               placeholder="First Community Bank"
+              defaultValue={prefillInstitution}
             />
             <LedgerField
               label="Password"

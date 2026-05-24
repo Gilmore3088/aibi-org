@@ -57,12 +57,12 @@ export default function ResetPasswordPage() {
         <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', gap: 8 }}>
           <LedgerEyebrow>New password</LedgerEyebrow>
           <LedgerH1>
-            Pick a strong <em>one.</em>
+            Pick a strong <span style={{ color: 'var(--terra)' }}>one.</span>
           </LedgerH1>
         </div>
 
         <LedgerCard variant="strong">
-          <p style={{ margin: '0 0 18px', fontFamily: 'var(--serif)', fontSize: 16, lineHeight: 1.5, color: 'var(--ink-2)', fontStyle: 'italic' }}>
+          <p style={{ margin: '0 0 18px', fontFamily: 'var(--serif)', fontSize: 16, lineHeight: 1.5, color: 'var(--ink-2)' }}>
             Choose a password you don&apos;t use anywhere else. Eight characters minimum.
           </p>
 

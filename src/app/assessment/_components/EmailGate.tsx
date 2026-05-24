@@ -1,7 +1,11 @@
 'use client';
 
 import { useEffect, useRef, useState, type FormEvent } from 'react';
-import { saveReadinessResult, type DimensionScoreSerialized } from '@/lib/user-data';
+import {
+  saveReadinessResult,
+  saveProfileIdentity,
+  type DimensionScoreSerialized,
+} from '@/lib/user-data';
 import { trackEmailCaptured } from '@/lib/analytics/events';
 
 interface EmailGateProps {
@@ -146,6 +150,13 @@ export function EmailGate({
         ...(version ? { version } : {}),
         ...(maxScore !== undefined ? { maxScore } : {}),
         ...(dimensionBreakdown ? { dimensionBreakdown } : {}),
+      });
+      // Persist firstName + institutionName separately so downstream
+      // surfaces (Stripe Checkout name field, /auth/signup form,
+      // dashboard greeting) can prefill from one source of truth.
+      saveProfileIdentity(emailToUse, {
+        firstName: firstName.trim() || null,
+        institutionName: institutionName.trim() || null,
       });
       trackEmailCaptured({ tier: tierId });
       onCaptured(emailToUse, {

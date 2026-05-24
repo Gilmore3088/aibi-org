@@ -122,7 +122,7 @@ function MagicLinkForm({ redirectTo, prefillEmail }: { redirectTo: string; prefi
   if (state === 'sent') {
     return (
       <div style={{ padding: '12px 0', textAlign: 'center' }}>
-        <p style={{ margin: 0, fontFamily: 'var(--serif)', fontSize: 18, fontStyle: 'italic', color: 'var(--ink-2)' }}>
+        <p style={{ margin: 0, fontFamily: 'var(--serif)', fontSize: 18, color: 'var(--ink-2)' }}>
           Check your inbox. A sign-in link is on its way.
         </p>
         <p style={{ margin: '8px 0 0', fontFamily: 'var(--mono)', fontSize: 10.5, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--muted)' }}>
@@ -177,7 +177,7 @@ export default function LoginPage() {
       <div style={{ width: '100%', maxWidth: 440, display: 'flex', flexDirection: 'column', gap: 24 }}>
         <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', gap: 8 }}>
           <LedgerEyebrow>Sign in</LedgerEyebrow>
-          <LedgerH1>Welcome <em>back.</em></LedgerH1>
+          <LedgerH1>Welcome <span style={{ color: 'var(--terra)' }}>back.</span></LedgerH1>
         </div>
 
         <LedgerCard variant="strong" className="ledger-auth-card">

@@ -23,6 +23,17 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 interface CheckoutBody {
   mode?: unknown;
   user_email?: unknown;
+  first_name?: unknown;
+  institution_name?: unknown;
+}
+
+function sanitizeIdentityField(value: unknown, max: number): string | undefined {
+  if (typeof value !== 'string') return undefined;
+  const trimmed = value.trim();
+  if (trimmed.length === 0 || trimmed.length > max) return undefined;
+  // Strip control characters; Stripe metadata is a JSON dictionary and
+  // any string is allowed, but we don't want to round-trip newlines.
+  return trimmed.replace(/[\r\n\t]+/g, ' ');
 }
 
 type CheckoutMode = 'individual' | 'institution';
@@ -89,6 +100,8 @@ export async function POST(request: Request) {
 
   const origin = getOrigin(request);
   const userEmail = typeof body.user_email === 'string' ? body.user_email : undefined;
+  const firstName = sanitizeIdentityField(body.first_name, 80);
+  const institutionName = sanitizeIdentityField(body.institution_name, 120);
 
   try {
     const stripe = await getStripe();
@@ -103,6 +116,11 @@ export async function POST(request: Request) {
         mode: 'individual',
         tier: 'individual',
         ...(userEmail ? { user_email: userEmail } : {}),
+        // Forward identity captured at the free-flow EmailGate so the
+        // post-payment signup form can prefill name + institution. Read
+        // back on /assessment/in-depth/purchased via the Stripe session.
+        ...(firstName ? { first_name: firstName } : {}),
+        ...(institutionName ? { institution_name: institutionName } : {}),
       },
       ...(userEmail ? { customer_email: userEmail } : {}),
     });
