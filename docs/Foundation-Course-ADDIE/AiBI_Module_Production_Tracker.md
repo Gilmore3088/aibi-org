@@ -158,11 +158,19 @@
 ---
 
 ## Readiness Assessment (separate build) — $99
-- [ ] Write 48 questions mapped to 8 readiness dimensions
-- [ ] Build scoring model (questions → dimension scores)
-- [ ] Author 4 deliverables: dimensional scorecard · personalized plan · curated ideas + prompts · CTAs
-- [ ] Define profile handoff (track, tool_exposure, comfort_level, dimension scores) → course `[Supabase]`
-- [ ] Gate behind $99 `[Stripe]`; deliver results `[MailerLite]`
+- [x] 48 questions mapped to 8 readiness dimensions *(authored on main in `content/assessments/v2/`; ADDIE adopts the existing model per DECISIONS.md 2026-05-23)*
+- [x] Scoring model *(in `content/assessments/v2/types.ts` + scoring helpers on main)*
+- [x] 4 deliverables surfaced *(Wave 3b: `src/app/(addie)/foundation/assessment/[id]/page.tsx` renders all 4 sections — DimensionScorecard / Personalized plan / Ideas+Prompts / CTAs — from `addie.assessment_results` columns)*
+- [x] Profile handoff defined *(addie.learner_profiles.{track, tool_exposure, comfort_level} columns exist Wave 1a; assessment runner needs to write them — TODO at the runner side, Wave 3c bridge work)*
+- [x] Gate behind $99 *(`STRIPE_INDEPTH_PRICE_ID` checkout via `/api/addie/checkout/assessment`, Wave 1d)*; deliver results *(POST `/api/addie/assessment/results` persists to addie.assessment_results idempotently; GET enforces ownership; MailerLite delivery is the runner's responsibility on main)*
+
+**ADDIE-side persistence shipped Wave 3b (commit pending):** server route at `/api/addie/assessment/results` (POST UPSERT, rate-limited 5/IP/hr; GET ownership-enforced); helper `src/lib/addie/assessment/persist.ts` with idempotency on `stripe_session_id` or `(email, date)`; reader UI at `/foundation/assessment` lists own briefings + `[id]` view renders the 4 deliverables; 8 dimension keys mirror `content/assessments/v2/types.ts` exactly. The on-main 48-Q runner needs a TODO call to the new POST endpoint on completion — bridge wiring is Wave 3c follow-up.
+
+## Team admin dashboard
+
+- [x] Route at `/foundation/dashboard/team` *(Wave 3b)*; auth-gates to teams.admin_user_id; reads `addie.team_progress_v` (counts only, NO artifact bodies per FR-D4); seats table with status pills + invite form + revoke/resend actions; budget math enforced server- and client-side.
+- [x] Resend-invite endpoint at `/api/addie/team/seats/[seatId]/resend` (emits `seat_invite_resent`, distinct from `seat_invited`, so funnel counts stay clean).
+- [ ] Resend transactional template with signed-token link *(MailerLite stub in place; Resend template is a Wave 3c/pre-pilot follow-up per Auth Spec §7.2).*
 
 ---
 

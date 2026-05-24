@@ -163,6 +163,59 @@ export async function acceptSeat(args: AcceptSeatArgs): Promise<AcceptSeatResult
   return { accepted: true };
 }
 
+export interface ResendInviteArgs {
+  readonly seat_id: string;
+  readonly admin_user_id: string;
+}
+
+export interface ResendInviteResult {
+  readonly resent: true;
+  readonly email: string;
+}
+
+/**
+ * Re-fire the invitation email for an outstanding seat. Auth Spec §7.2 follow-up.
+ * Admin-scoped; only the team admin who owns the seat may resend. Emits
+ * `seat_invite_resent` so analytics can distinguish a resend from the original
+ * invite without polluting the seat_invited funnel count.
+ */
+export async function resendSeatInvitation(args: ResendInviteArgs): Promise<ResendInviteResult> {
+  const supa = getAddieServiceClient();
+
+  const { data: seat, error } = await supa
+    .from('seats')
+    .select('id, team_id, invited_email, status, teams!inner(admin_user_id)')
+    .eq('id', args.seat_id)
+    .single();
+  if (error || !seat) throw new Error('Seat not found');
+
+  const teamsField = seat.teams as
+    | { admin_user_id: string }
+    | { admin_user_id: string }[]
+    | null;
+  const ownerId = Array.isArray(teamsField)
+    ? teamsField[0]?.admin_user_id
+    : teamsField?.admin_user_id;
+  if (ownerId !== args.admin_user_id) throw new Error('Forbidden: not team admin');
+
+  if (seat.status !== 'invited') {
+    throw new Error(`Cannot resend invitation for seat with status '${seat.status as string}'`);
+  }
+
+  const email = seat.invited_email as string;
+  await sendInvitation(email, seat.id as string, seat.team_id as string);
+
+  await emit({
+    action: 'seat_invite_resent',
+    user_id: args.admin_user_id,
+    object_type: 'seat',
+    object_id: seat.id as string,
+    payload: { team_id: seat.team_id, email },
+  });
+
+  return { resent: true, email };
+}
+
 export interface RevokeSeatArgs {
   readonly seat_id: string;
   readonly admin_user_id: string;
