@@ -27,10 +27,10 @@ export function GateScreen() {
                 <path d="M10 1L12.6 7.5L19.5 8L14.3 12.8L15.8 19.5L10 16L4.2 19.5L5.7 12.8L0.5 8L7.4 7.5L10 1Z" />
               </svg>
             </div>
-            <h1 className="font-serif text-4xl sm:text-5xl leading-[1.05] tracking-tight">
+            <h1 className="font-serif text-4xl sm:text-5xl leading-[1.05] tracking-tight text-[var(--ledger-paper)]">
               You crossed the free line.
               <br />
-              <span className="text-[var(--ledger-accent)]">Three doors. Pick one.</span>
+              <span className="text-[var(--ledger-paper)]">Three doors. Pick one.</span>
             </h1>
             <p className="mt-5 text-lg text-[var(--ledger-paper)] opacity-80 max-w-2xl mx-auto leading-relaxed">
               The free side ends here. Continue to Modules 4 + 5 and keep

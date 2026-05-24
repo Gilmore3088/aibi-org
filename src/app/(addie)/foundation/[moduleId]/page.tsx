@@ -215,7 +215,7 @@ export default async function ModuleIndexPage({
               <div className="mt-7 flex flex-wrap items-center gap-3">
                 <Link
                   href={beginHref}
-                  className="group inline-flex items-center gap-3 font-mono font-semibold uppercase tracking-[0.14em] text-xs px-6 py-4 rounded-[4px] bg-[var(--ledger-ink)] text-[var(--ledger-paper)] hover:bg-[var(--ledger-ink-2)] transition-colors duration-[160ms] shadow-[0_4px_20px_-6px_rgba(14,27,45,0.4)]"
+                  className="group inline-flex items-center gap-3 font-mono font-semibold uppercase tracking-[0.14em] text-xs px-6 py-4 rounded-[4px] bg-[var(--ledger-ink)] text-[var(--ledger-paper)] hover:bg-[var(--ledger-ink-2)] transition-colors duration-[160ms]"
                 >
                   Begin Module {m.ordinal}
                   <span className="transition-transform duration-[200ms] group-hover:translate-x-1">→</span>
@@ -229,9 +229,7 @@ export default async function ModuleIndexPage({
               </div>
             </div>
             <div className="relative">
-              <div className="absolute -top-4 -left-4 right-8 bottom-8 rounded-[12px] bg-[var(--ledger-tape)] -z-10" aria-hidden />
-              <div className="absolute top-4 left-4 right-0 bottom-0 rounded-[12px] bg-[color-mix(in_srgb,var(--ledger-accent)_18%,var(--ledger-paper))] -z-10" aria-hidden />
-              <div className="relative rounded-[12px] border border-[var(--ledger-rule-strong)] bg-[var(--ledger-paper)] p-5 shadow-[0_24px_60px_-20px_rgba(14,27,45,0.3),0_8px_18px_-8px_rgba(14,27,45,0.18)]">
+              <div className="relative rounded-[4px] border border-[var(--ledger-rule-strong)] bg-[var(--ledger-paper)] p-5 shadow-[var(--ledger-shadow)]">
                 <ModuleIllustration
                   module={m.id}
                   variant="hero"
@@ -284,7 +282,7 @@ export default async function ModuleIndexPage({
             <span className="font-mono uppercase tracking-[0.18em] text-[0.7rem] text-[var(--ledger-accent)]">
               What you&apos;ll build
             </span>
-            <div className="mt-4 rounded-[6px] bg-[var(--ledger-tape)] border border-[var(--ledger-rule)] p-5 sm:p-6">
+            <div className="mt-4 rounded-[4px] bg-[var(--ledger-tape)] border border-[var(--ledger-rule)] p-5 sm:p-6">
               <div className="font-mono uppercase tracking-[0.16em] text-[0.65rem] text-[var(--ledger-muted)] mb-2">
                 Takeaway
               </div>
@@ -317,7 +315,7 @@ export default async function ModuleIndexPage({
               <li key={l.id}>
                 <Link
                   href={`/foundation/${m.id}/${l.id}`}
-                  className="group block rounded-[6px] border border-[var(--ledger-rule)] bg-[var(--ledger-paper)] hover:border-[var(--ledger-ink)] hover:shadow-[var(--ledger-shadow)] transition-all duration-[160ms] p-4 sm:p-5"
+                  className="group block rounded-[3px] border border-[var(--ledger-rule)] bg-[var(--ledger-paper)] hover:border-[var(--ledger-ink)] transition-colors duration-[120ms] p-4 sm:p-5"
                 >
                   <div className="flex items-center gap-4 sm:gap-6">
                     <span className="shrink-0 font-serif text-[2rem] leading-none text-[var(--ledger-accent)] tabular-nums w-12 text-right">
@@ -358,7 +356,7 @@ export default async function ModuleIndexPage({
           <div className="mt-10 flex justify-center">
             <Link
               href={beginHref}
-              className="group inline-flex items-center gap-3 font-mono font-semibold uppercase tracking-[0.14em] text-sm px-7 py-4 rounded-[4px] bg-[var(--ledger-accent)] text-[var(--ledger-ink)] hover:bg-[var(--ledger-paper)] hover:border hover:border-[var(--ledger-ink)] transition-colors duration-[160ms]"
+              className="group inline-flex items-center gap-3 font-mono font-semibold uppercase tracking-[0.14em] text-sm px-7 py-4 rounded-[4px] bg-[var(--ledger-ink)] text-[var(--ledger-paper)] hover:bg-[var(--ledger-ink-2)] transition-colors duration-[160ms]"
             >
               Begin lesson 1 · {firstLesson.title}
               <span className="transition-transform duration-[200ms] group-hover:translate-x-1">→</span>

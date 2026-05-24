@@ -18,7 +18,7 @@ export function TeamHeader({ snapshot }: TeamHeaderProps) {
   return (
     <header className="border-b border-[var(--ledger-rule)] pb-6 mb-8">
       <KickerLabel tone="accent">TEAM ADMIN</KickerLabel>
-      <h1 className="font-newsreader text-3xl text-[var(--ledger-ink)] mt-2">
+      <h1 className="font-serif text-3xl text-[var(--ledger-ink)] mt-2">
         {team.name}
       </h1>
       <p className="mt-2 text-sm text-[var(--ledger-muted)]">

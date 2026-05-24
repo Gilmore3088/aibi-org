@@ -697,7 +697,7 @@ VALUES
     {"id":"a","label":"To let you switch tracks permanently from inside the sandbox","correct":false,"explanation":"Track is changed from account settings, not from the sandbox."},
     {"id":"b","label":"To let you watch the same model handle a different role''s task — a small lesson in why role matters","correct":true,"explanation":"Flipping the role lever shows you how much the role setting shapes the output. That is its own teaching moment."},
     {"id":"c","label":"To allow free-text prompt steering","correct":false,"explanation":"Levers are allowlisted; there is no free-text steering path."},
-    {"id":"d","label":"To unlock the paid tier","correct":false,"explanation":"The paid tier is unlocked through the gate, not through any sandbox lever."}
+    {"id":"d","label":"To open the paid tier","correct":false,"explanation":"The paid tier opens through the gate, not through any sandbox lever."}
   ]'::jsonb
 )
 ON CONFLICT (id) DO UPDATE SET

@@ -41,7 +41,7 @@ export default async function TeamDashboardPage() {
       <main className="max-w-5xl mx-auto px-6 py-10">
         <LedgerCard variant="feature" className="p-8 max-w-2xl mx-auto">
           <KickerLabel tone="accent">TEAM ADMIN</KickerLabel>
-          <h1 className="font-newsreader text-3xl text-[var(--ledger-ink)] mt-2">
+          <h1 className="font-serif text-3xl text-[var(--ledger-ink)] mt-2">
             Sign in to manage your team
           </h1>
           <p className="mt-3 text-[var(--ledger-ink-2)]">
@@ -73,7 +73,7 @@ export default async function TeamDashboardPage() {
       <section aria-labelledby="seats-heading" className="mt-4">
         <h2
           id="seats-heading"
-          className="font-newsreader text-xl text-[var(--ledger-ink)] mb-3"
+          className="font-serif text-xl text-[var(--ledger-ink)] mb-3"
         >
           Seats
         </h2>
@@ -83,7 +83,7 @@ export default async function TeamDashboardPage() {
       <section aria-labelledby="invite-heading" className="mt-10">
         <h2
           id="invite-heading"
-          className="font-newsreader text-xl text-[var(--ledger-ink)] mb-3"
+          className="font-serif text-xl text-[var(--ledger-ink)] mb-3"
         >
           Invite team members
         </h2>

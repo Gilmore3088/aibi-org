@@ -25,7 +25,7 @@ export function ToolboxSummary({ count, unlimited }: ToolboxSummaryProps) {
         {unlimited ? 'Unlimited (paid)' : 'free-tier saves used'}
       </p>
       <Link
-        href="/foundation/foundation/dashboard/toolbox"
+        href="/foundation/dashboard/toolbox"
         className="mt-3 inline-block font-mono uppercase tracking-[0.16em] text-[0.7rem] text-[var(--ledger-accent)] hover:underline"
       >
         Open Toolbox →

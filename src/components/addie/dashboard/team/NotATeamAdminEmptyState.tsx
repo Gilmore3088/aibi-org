@@ -9,7 +9,7 @@ export function NotATeamAdminEmptyState() {
   return (
     <LedgerCard variant="feature" className="p-8 max-w-2xl mx-auto">
       <KickerLabel tone="accent">TEAM ADMIN</KickerLabel>
-      <h1 className="font-newsreader text-3xl text-[var(--ledger-ink)] mt-2">
+      <h1 className="font-serif text-3xl text-[var(--ledger-ink)] mt-2">
         No team on this account
       </h1>
       <p className="mt-3 text-[var(--ledger-ink-2)]">

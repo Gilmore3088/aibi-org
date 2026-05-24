@@ -141,7 +141,7 @@ export default async function FoundationHomePage() {
               <div className="mt-8 flex flex-wrap items-center gap-3">
                 <Link
                   href={firstHref}
-                  className="group inline-flex items-center gap-3 font-mono font-semibold uppercase tracking-[0.14em] text-xs px-6 py-4 rounded-[4px] bg-[var(--ledger-ink)] text-[var(--ledger-paper)] hover:bg-[var(--ledger-ink-2)] transition-colors duration-[160ms] shadow-[0_4px_20px_-6px_rgba(14,27,45,0.4)]"
+                  className="group inline-flex items-center gap-3 font-mono font-semibold uppercase tracking-[0.14em] text-xs px-6 py-4 rounded-[4px] bg-[var(--ledger-ink)] text-[var(--ledger-paper)] hover:bg-[var(--ledger-ink-2)] transition-colors duration-[160ms]"
                 >
                   Start Module 0
                   <span className="transition-transform duration-[200ms] group-hover:translate-x-1">→</span>
@@ -185,9 +185,7 @@ export default async function FoundationHomePage() {
                 className="relative block group"
                 aria-label={`Continue with ${featuredModule.title}`}
               >
-                <div className="absolute -top-4 -left-4 right-8 bottom-8 rounded-[12px] bg-[var(--ledger-tape)] -z-10" aria-hidden />
-                <div className="absolute top-4 left-4 right-0 bottom-0 rounded-[12px] bg-[color-mix(in_srgb,var(--ledger-accent)_18%,var(--ledger-paper))] -z-10" aria-hidden />
-                <article className="relative rounded-[12px] border border-[var(--ledger-rule-strong)] bg-[var(--ledger-paper)] p-6 shadow-[0_24px_60px_-20px_rgba(14,27,45,0.3),0_8px_18px_-8px_rgba(14,27,45,0.18)] transition-transform duration-[200ms] group-hover:-translate-y-1">
+                <article className="relative rounded-[4px] border border-[var(--ledger-rule-strong)] bg-[var(--ledger-paper)] p-6 shadow-[var(--ledger-shadow)] transition-colors duration-[120ms] group-hover:border-[var(--ledger-ink)]">
                   <div className="flex items-center justify-between gap-3 mb-4">
                     <span className="addie-chip" data-tone="accent">
                       {featuredModule.completed > 0 ? 'Continue where you left' : 'Start here'}

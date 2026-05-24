@@ -84,12 +84,12 @@ export function PaywallPreview({
 
             {/* Illustration preview with a lock overlay */}
             <div className="relative">
-              <div className="relative rounded-[12px] border border-[var(--ledger-rule-strong)] bg-[var(--ledger-paper)] p-5 shadow-[0_24px_60px_-20px_rgba(14,27,45,0.3),0_8px_18px_-8px_rgba(14,27,45,0.18)]">
+              <div className="relative rounded-[4px] border border-[var(--ledger-rule-strong)] bg-[var(--ledger-paper)] p-5 shadow-[var(--ledger-shadow)]">
                 <div className="relative">
                   <ModuleIllustration module={moduleKey} variant="hero" />
                   <div
                     aria-hidden
-                    className="absolute inset-0 bg-[var(--ledger-paper)] opacity-60 rounded-[6px]"
+                    className="absolute inset-0 bg-[var(--ledger-paper)] opacity-60 rounded-[3px]"
                   />
                   <div
                     aria-hidden
@@ -142,7 +142,7 @@ export function PaywallPreview({
               <h2 className="font-mono uppercase tracking-[0.18em] text-[0.7rem] text-[var(--ledger-accent)]">
                 What you&apos;d build
               </h2>
-              <div className="mt-4 rounded-[6px] bg-[var(--ledger-tape)] border border-[var(--ledger-rule)] p-5">
+              <div className="mt-4 rounded-[4px] bg-[var(--ledger-tape)] border border-[var(--ledger-rule)] p-5">
                 <div className="font-mono uppercase tracking-[0.16em] text-[0.65rem] text-[var(--ledger-muted)] mb-2">
                   Takeaway
                 </div>
