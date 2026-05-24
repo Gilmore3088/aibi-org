@@ -1,0 +1,288 @@
+/*
+ * addie-course-surface.css — scoped extensions for the Foundation Course
+ * surface only. Loaded by globals.css after tokens-ledger.css; every rule
+ * here is namespaced under .addie-course-surface so it cannot leak into
+ * marketing pages. See DECISIONS.md 2026-05-23 "Foundation course surface
+ * diverges from strict Ledger."
+ *
+ * Constraints retained from Ledger:
+ *   - same color tokens (no new palette)
+ *   - same three type families (Newsreader / Geist / JetBrains Mono)
+ *   - italics still retired (base.css * { font-style: normal !important; })
+ *   - no emoji, no icon libraries, no stock photography
+ *   - oxblood still destructive-only
+ *
+ * Permitted only inside this scope:
+ *   - animated progress arcs + reveal-on-scroll (CSS only, ≤300ms)
+ *   - bespoke SVG line-art illustrations
+ *   - backdrop-blur on sticky chrome
+ *   - two-stop parchment→paper / ink→ink-2 hero gradients (NOT on cards)
+ *   - up to 8px radius on hero cards, full radius on pill chips
+ */
+
+/* ============================================================== */
+/*  1. Reveal-on-scroll                                            */
+/* ============================================================== */
+/* Elements opt in by adding data-reveal. JS toggles data-revealed
+ * via IntersectionObserver. Without JS (RSC initial paint) the
+ * elements remain visible so SSR HTML is always legible.            */
+
+.addie-course-surface [data-reveal] {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .addie-course-surface.js-ready [data-reveal] {
+    opacity: 0;
+    transform: translateY(12px);
+    transition:
+      opacity 280ms cubic-bezier(0.4, 0, 0.2, 1),
+      transform 280ms cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: opacity, transform;
+  }
+  .addie-course-surface.js-ready [data-reveal][data-revealed='true'] {
+    opacity: 1;
+    transform: none;
+  }
+  .addie-course-surface.js-ready [data-reveal][data-reveal-delay='1'] { transition-delay: 60ms; }
+  .addie-course-surface.js-ready [data-reveal][data-reveal-delay='2'] { transition-delay: 120ms; }
+  .addie-course-surface.js-ready [data-reveal][data-reveal-delay='3'] { transition-delay: 180ms; }
+  .addie-course-surface.js-ready [data-reveal][data-reveal-delay='4'] { transition-delay: 240ms; }
+  .addie-course-surface.js-ready [data-reveal][data-reveal-delay='5'] { transition-delay: 300ms; }
+}
+
+/* ============================================================== */
+/*  2. Sticky course chrome + reading progress                     */
+/* ============================================================== */
+.addie-course-surface .addie-sticky-chrome {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: color-mix(in srgb, var(--ledger-bg) 92%, transparent);
+  backdrop-filter: saturate(140%) blur(10px);
+  -webkit-backdrop-filter: saturate(140%) blur(10px);
+  border-bottom: 1px solid var(--ledger-rule);
+}
+
+.addie-course-surface .addie-reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 0%;
+  background: var(--ledger-accent);
+  z-index: 60;
+  transition: width 80ms linear;
+  pointer-events: none;
+}
+
+/* ============================================================== */
+/*  3. Hero backings (two permitted gradients, parchment / ink)    */
+/* ============================================================== */
+.addie-course-surface .addie-hero-parch {
+  background:
+    radial-gradient(80% 60% at 0% 0%,
+      color-mix(in srgb, var(--ledger-tape) 90%, transparent) 0%,
+      transparent 60%),
+    linear-gradient(180deg, var(--ledger-paper), var(--ledger-bg));
+}
+
+.addie-course-surface .addie-hero-ink {
+  background:
+    linear-gradient(135deg, var(--ledger-ink), var(--ledger-ink-2));
+  color: var(--ledger-paper);
+}
+.addie-course-surface .addie-hero-ink h1,
+.addie-course-surface .addie-hero-ink h2,
+.addie-course-surface .addie-hero-ink p {
+  color: var(--ledger-paper);
+}
+
+/* ============================================================== */
+/*  4. Module cards — hover lift + arc                             */
+/* ============================================================== */
+.addie-course-surface .addie-module-card {
+  position: relative;
+  background: var(--ledger-paper);
+  border: 1px solid var(--ledger-rule);
+  border-radius: 6px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  transition:
+    border-color 160ms cubic-bezier(0.4, 0, 0.2, 1),
+    transform 200ms cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+.addie-course-surface .addie-module-card:hover,
+.addie-course-surface .addie-module-card:focus-within {
+  border-color: var(--ledger-ink);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px -8px color-mix(in srgb, var(--ledger-ink) 18%, transparent);
+}
+.addie-course-surface .addie-module-card[data-tier='paid']::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(
+      135deg,
+      transparent 0 14px,
+      color-mix(in srgb, var(--ledger-accent) 5%, transparent) 14px 15px
+    );
+  opacity: 0.35;
+}
+
+/* ============================================================== */
+/*  5. Progress arc + dot row                                      */
+/* ============================================================== */
+.addie-course-surface .addie-progress-arc {
+  --p: 0;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background:
+    conic-gradient(var(--ledger-accent) calc(var(--p) * 1%), var(--ledger-rule) 0);
+  display: grid;
+  place-items: center;
+  position: relative;
+  transition: --p 600ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.addie-course-surface .addie-progress-arc::after {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  background: var(--ledger-paper);
+  border-radius: 50%;
+}
+.addie-course-surface .addie-progress-arc > * {
+  position: relative;
+  z-index: 1;
+}
+
+.addie-course-surface .addie-progress-dots {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+}
+.addie-course-surface .addie-progress-dots .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ledger-rule);
+  transition: background-color 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.addie-course-surface .addie-progress-dots .dot[data-state='done'] {
+  background: var(--ledger-accent);
+}
+.addie-course-surface .addie-progress-dots .dot[data-state='current'] {
+  background: var(--ledger-ink);
+  width: 14px;
+  border-radius: 3px;
+}
+
+/* ============================================================== */
+/*  6. Course path SVG (animated stroke on mount)                  */
+/* ============================================================== */
+@media (prefers-reduced-motion: no-preference) {
+  .addie-course-surface .addie-path-stroke {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation: addie-path-draw 1600ms cubic-bezier(0.4, 0, 0.2, 1) 200ms forwards;
+  }
+  .addie-course-surface .addie-path-pulse {
+    animation: addie-pulse 2400ms ease-in-out infinite;
+  }
+}
+@keyframes addie-path-draw {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes addie-pulse {
+  0%, 100% { opacity: 0.85; }
+  50%      { opacity: 0.45; }
+}
+
+/* ============================================================== */
+/*  7. Pill chips                                                  */
+/* ============================================================== */
+.addie-course-surface .addie-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  border: 1px solid var(--ledger-rule);
+  background: var(--ledger-paper);
+  color: var(--ledger-muted);
+  line-height: 1;
+}
+.addie-course-surface .addie-chip[data-tone='accent'] {
+  border-color: var(--ledger-accent);
+  color: var(--ledger-accent);
+  background: color-mix(in srgb, var(--ledger-accent) 6%, var(--ledger-paper));
+}
+.addie-course-surface .addie-chip[data-tone='ink'] {
+  border-color: var(--ledger-ink);
+  color: var(--ledger-ink);
+  background: var(--ledger-paper);
+}
+.addie-course-surface .addie-chip[data-tone='done'] {
+  border-color: var(--ledger-accent);
+  background: var(--ledger-accent);
+  color: var(--ledger-paper);
+}
+
+/* ============================================================== */
+/*  8. KC widget — success/error micro-animations                  */
+/* ============================================================== */
+@media (prefers-reduced-motion: no-preference) {
+  .addie-course-surface [data-kc-state='correct'] {
+    animation: addie-kc-correct 280ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .addie-course-surface [data-kc-state='wrong'] {
+    animation: addie-kc-wrong 220ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+@keyframes addie-kc-correct {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.015); }
+  100% { transform: scale(1); }
+}
+@keyframes addie-kc-wrong {
+  0%, 100% { transform: translateX(0); }
+  25%      { transform: translateX(-3px); }
+  75%      { transform: translateX(3px); }
+}
+
+/* ============================================================== */
+/*  9. Module illustration sizing                                  */
+/* ============================================================== */
+.addie-course-surface .addie-module-illus {
+  width: 100%;
+  height: auto;
+  max-height: 120px;
+  display: block;
+  color: var(--ledger-ink);
+}
+.addie-course-surface .addie-module-illus [data-accent] {
+  color: var(--ledger-accent);
+}
+
+/* ============================================================== */
+/*  10. Reduce-motion friendliness                                 */
+/* ============================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .addie-course-surface * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

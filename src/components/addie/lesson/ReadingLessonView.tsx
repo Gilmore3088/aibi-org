@@ -1,7 +1,7 @@
-// Reading modality — server component; renders body_md as a simple
-// pre-formatted Newsreader block. Real MDX/markdown rendering can be
-// layered in later; for the player shell, preserving line breaks is enough.
+// Reading modality — server component.
+// Renders body_md via the LessonBody markdown subset renderer.
 
+import { LessonBody } from './LessonBody';
 import type { LessonPayload } from './types';
 
 interface ReadingLessonViewProps {
@@ -17,13 +17,5 @@ export function ReadingLessonView({ payload }: ReadingLessonViewProps) {
       </p>
     );
   }
-  return (
-    <article className="prose max-w-prose font-serif text-[var(--ledger-ink)] text-lg leading-relaxed">
-      {body.split(/\n{2,}/).map((p, i) => (
-        <p key={i} className="mb-4 whitespace-pre-wrap">
-          {p}
-        </p>
-      ))}
-    </article>
-  );
+  return <LessonBody body={body} />;
 }

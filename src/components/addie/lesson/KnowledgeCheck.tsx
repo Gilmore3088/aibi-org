@@ -63,8 +63,10 @@ function KnowledgeCheckItem({ item }: { item: KnowledgeCheckRow }) {
     }
   }
 
+  const kcState = verdict ? (verdict.correct ? 'correct' : 'wrong') : undefined;
+
   return (
-    <LedgerCard className="p-5">
+    <LedgerCard className="p-5" data-kc-state={kcState}>
       <p className="font-serif text-lg text-[var(--ledger-ink)] mb-3">{item.prompt}</p>
       <div role="radiogroup" aria-label="Choose one" className="grid gap-2">
         {item.options.map((opt) => {
@@ -73,7 +75,7 @@ function KnowledgeCheckItem({ item }: { item: KnowledgeCheckRow }) {
           const showRight = verdict && isCorrect;
           const showWrong = verdict && picked && !isCorrect;
           const cls = showRight
-            ? 'border-[var(--ledger-ink)] bg-[var(--ledger-paper)]'
+            ? 'border-[var(--ledger-accent)] bg-[color-mix(in_srgb,var(--ledger-accent)_8%,var(--ledger-paper))]'
             : showWrong
               ? 'border-[var(--ledger-weak)] bg-[var(--ledger-paper)]'
               : 'border-[var(--ledger-rule-strong)] bg-[var(--ledger-paper)] hover:border-[var(--ledger-ink)]';
@@ -89,7 +91,7 @@ function KnowledgeCheckItem({ item }: { item: KnowledgeCheckRow }) {
             >
               <span className="text-[var(--ledger-ink)]">{opt.label}</span>
               {showRight ? (
-                <span className="ml-2 font-mono text-[0.7rem] uppercase tracking-[0.16em] text-[var(--ledger-ink)]">
+                <span className="ml-2 font-mono text-[0.7rem] uppercase tracking-[0.16em] text-[var(--ledger-accent)]">
                   ✓ Correct
                 </span>
               ) : null}
@@ -103,7 +105,9 @@ function KnowledgeCheckItem({ item }: { item: KnowledgeCheckRow }) {
         })}
       </div>
       {verdict?.explanation ? (
-        <p className="mt-3 text-sm text-[var(--ledger-muted)]">{verdict.explanation}</p>
+        <p className="mt-3 text-sm text-[var(--ledger-ink-2)] border-l-2 border-[var(--ledger-accent)] pl-3">
+          {verdict.explanation}
+        </p>
       ) : null}
       {error ? (
         <p role="alert" className="mt-3 text-sm text-[var(--ledger-weak)]">

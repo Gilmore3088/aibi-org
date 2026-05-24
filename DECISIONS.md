@@ -854,3 +854,65 @@ needed today — the events table is the join). Lesson player dispatches on
 `addie.lessons.modality`; Wave 2b authors per-exercise lever payloads for
 the `interactive` and `sandbox` modalities — the shell ships generic
 fallbacks so the loop is provable end-to-end against any seeded row.
+
+
+**2026-05-23 — PostgREST exposure rationale walked back in `00037_addie_schema_init.sql`.**
+The original migration's comment claimed PostgREST exposure wasn't required
+because "client traffic flows through Next.js API routes using the
+service-role client." That conflated transport with authorization: the
+Supabase JS SDK uses PostgREST regardless of where it runs (server
+component, API route, route handler). The schema must be on PostgREST's
+`pgrst.db_schemas` allowlist AND every addie.* table must have role-level
+GRANTs for `service_role` for any read/write to succeed; without that we
+get HTTP 401 / `42501` for every query, which is exactly what the
+2026-05-23 dev-debug session hit (handoff §B1, §B2). The isolation we
+actually wanted — `addie.*` invisible to clients holding the anon key —
+is preserved by keeping `anon`/`authenticated` at USAGE-only on the
+schema; PostgREST cannot serve a table it has no GRANT for, so the
+anon-key surface is unchanged. Codified in
+`00055_addie_grants_and_exposure.sql` along with `ALTER DEFAULT
+PRIVILEGES` so new tables auto-grant.
+
+**2026-05-23 — Anon-session cookie minted in middleware, not in any layout
+or API route.** The Wave 2a design assumed `ensureAnonSession(req, res)`
+would be called inside the few API routes that need it (`gate/decline`,
+`gate/capture-email`). In practice the lesson player's KC submit, Toolbox
+save, and every future "I'm done" completion mark all hit routes that
+read the cookie but don't mint it — so every fresh visitor's first action
+returned 401. Layout-level minting isn't viable (server components can't
+write Set-Cookie in Next 14). Solution: mint in `src/middleware.ts` for
+any `/foundation/*` request, using Web Crypto so the code is
+Edge-runtime safe. The Node-side verifier in
+`src/lib/addie/auth/anonSession.ts` is unchanged — HMAC-SHA256 bytes
+match across `crypto.subtle` and `node:crypto`, so cookies signed in
+middleware verify in API routes.
+
+**2026-05-23 — Foundation course surface diverges from strict Ledger
+(modern e-learning aesthetic permitted under `/foundation`).** Operator
+direction. The Ledger Design System (CLAUDE.md "Design Context")
+mandates "almost no motion," forbids gradients/parallax/scroll-jacking
+and limits illustration to hairline-rule editorial work. Those rules
+are correct for the marketing surfaces (`/`, `/assessment`,
+`/services`, `/about`, `/research`, etc.) — they communicate
+institutional gravity. They are wrong for a paid learning product
+where the visitor needs to feel motion through a journey (six modules,
+progress, unlocks, completion). Inside the `(addie)` route group only
+— specifically `/foundation/*`, `/foundation/dashboard/*`,
+`/foundation/assessment/*`, `/foundation/gate` — the design license
+expands to permit:
+- Animated progress + completion arcs (CSS only, ≤300ms easing).
+- Reveal-on-scroll micro-animations for module/lesson cards.
+- Bespoke SVG line-art illustrations (one per module; in-house, not
+  stock photography).
+- Backdrop blur on sticky course chrome.
+- Two accent gradients (parchment→paper, ink→ink-2) used sparingly as
+  hero backings — not on cards or buttons.
+- Larger radii on hero cards (up to 8px) and pill-shaped progress
+  chips (full radius).
+The rest of Ledger still holds: same color tokens, same three type
+families, italics still retired, no emoji, no stock photography, no
+icon libraries (illustrations are bespoke SVG), oxblood still
+destructive-only. Marketing surfaces remain strict-Ledger. The course
+surface uses the `addie-course-surface` class on its root wrapper so
+the relaxed rules are scoped at the CSS layer and cannot leak.
+
