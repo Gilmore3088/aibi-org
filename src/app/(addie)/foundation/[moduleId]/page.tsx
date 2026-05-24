@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getAddieServiceClient } from '@/lib/addie/supabase/service';
 import { ModuleIllustration } from '@/components/addie/illustrations/ModuleIllustration';
+import { ModuleIntroVideo } from '@/components/addie/shell/ModuleIntroVideo';
 
 export const dynamic = 'force-dynamic';
 
@@ -21,6 +22,10 @@ interface ModuleData {
   hero_image_url: string | null;
   hero_image_alt: string | null;
   hero_image_credit: string | null;
+  intro_video_url: string | null;
+  intro_video_caption_url: string | null;
+  intro_video_duration_s: number | null;
+  intro_video_transcript: string | null;
 }
 
 interface LessonData {
@@ -108,7 +113,7 @@ async function loadModule(moduleId: string): Promise<{
     // original SELECT if the migration hasn't been applied (Postgres 42703).
     let { data: m, error } = await svc
       .from('modules')
-      .select('id, ordinal, title, summary, tier, published, hero_image_url, hero_image_alt, hero_image_credit')
+      .select('id, ordinal, title, summary, tier, published, hero_image_url, hero_image_alt, hero_image_credit, intro_video_url, intro_video_caption_url, intro_video_duration_s, intro_video_transcript')
       .eq('id', moduleId)
       .eq('published', true)
       .maybeSingle();
@@ -141,6 +146,10 @@ async function loadModule(moduleId: string): Promise<{
         hero_image_url: ((m as { hero_image_url?: string | null }).hero_image_url) ?? null,
         hero_image_alt: ((m as { hero_image_alt?: string | null }).hero_image_alt) ?? null,
         hero_image_credit: ((m as { hero_image_credit?: string | null }).hero_image_credit) ?? null,
+        intro_video_url: ((m as { intro_video_url?: string | null }).intro_video_url) ?? null,
+        intro_video_caption_url: ((m as { intro_video_caption_url?: string | null }).intro_video_caption_url) ?? null,
+        intro_video_duration_s: ((m as { intro_video_duration_s?: number | null }).intro_video_duration_s) ?? null,
+        intro_video_transcript: ((m as { intro_video_transcript?: string | null }).intro_video_transcript) ?? null,
       },
       lessons: (ls ?? []).map((l) => ({
         id: l.id as string,
@@ -233,6 +242,21 @@ export default async function ModuleIndexPage({
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Intro video (2-3 min overview) */}
+      <section className="border-t border-[var(--ledger-rule)] bg-[var(--ledger-bg)]">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-10">
+          <ModuleIntroVideo
+            moduleId={m.id}
+            moduleTitle={m.title}
+            moduleOrdinal={m.ordinal}
+            videoUrl={m.intro_video_url}
+            captionUrl={m.intro_video_caption_url}
+            durationS={m.intro_video_duration_s}
+            transcript={m.intro_video_transcript}
+          />
         </div>
       </section>
 

@@ -69,6 +69,12 @@ export function ModuleIllustration({
       viewBox="0 0 320 220"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
+      data-illus-m0={module === 'm0' ? '' : undefined}
+      data-illus-m1={module === 'm1' ? '' : undefined}
+      data-illus-m2={module === 'm2' ? '' : undefined}
+      data-illus-m3={module === 'm3' ? '' : undefined}
+      data-illus-m4={module === 'm4' ? '' : undefined}
+      data-illus-m5={module === 'm5' ? '' : undefined}
       className={`addie-module-illus ${variant === 'hero' ? 'addie-module-illus--hero' : ''} ${className}`}
       preserveAspectRatio="xMidYMid meet"
       {...rest}
