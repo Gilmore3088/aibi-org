@@ -11,6 +11,57 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import { createServerClient } from '@supabase/ssr';
 
+// Addie anon-session minting (Edge-runtime safe — uses Web Crypto, not
+// node:crypto). The Node-side verifier in src/lib/addie/auth/anonSession.ts
+// uses createHmac('sha256'), which produces the same bytes; cookies signed
+// here verify there. Kept inline rather than imported so we don't drag the
+// node:crypto module into the Edge bundle.
+const ADDIE_ANON_COOKIE = 'aibi_addie_anon';
+const ADDIE_COOKIE_MAX_AGE_S = 60 * 60 * 24 * 30; // 30 days
+const ADDIE_PATH_PREFIX = '/foundation';
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+function toHex(buf: ArrayBuffer): string {
+  const bytes = new Uint8Array(buf);
+  let out = '';
+  for (let i = 0; i < bytes.length; i++) out += bytes[i].toString(16).padStart(2, '0');
+  return out;
+}
+
+async function hmacSha256Hex(secret: string, msg: string): Promise<string> {
+  const key = await crypto.subtle.importKey(
+    'raw',
+    new TextEncoder().encode(secret),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['sign'],
+  );
+  const sig = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(msg));
+  return toHex(sig);
+}
+
+async function verifyAddieAnonCookie(value: string | undefined, secret: string): Promise<boolean> {
+  if (!value) return false;
+  const dot = value.indexOf('.');
+  if (dot < 0) return false;
+  const uuid = value.slice(0, dot);
+  const mac = value.slice(dot + 1);
+  if (!UUID_RE.test(uuid)) return false;
+  if (!/^[0-9a-f]+$/i.test(mac) || mac.length !== 64) return false;
+  const expected = await hmacSha256Hex(secret, uuid);
+  // Constant-time compare
+  if (mac.length !== expected.length) return false;
+  let diff = 0;
+  for (let i = 0; i < mac.length; i++) diff |= mac.charCodeAt(i) ^ expected.charCodeAt(i);
+  return diff === 0;
+}
+
+async function mintAddieAnonCookieValue(secret: string): Promise<string> {
+  const uuid = crypto.randomUUID();
+  const mac = await hmacSha256Hex(secret, uuid);
+  return `${uuid}.${mac}`;
+}
+
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
@@ -118,6 +169,34 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
   // Calling getUser() triggers a token refresh if the access token is near expiry.
   // We intentionally ignore the result — route-level auth checks happen in page/layout code.
   await supabase.auth.getUser();
+
+  // Mint the addie anon-session cookie on first hit to any /foundation route.
+  // Knowledge checks, toolbox saves, and gate-decline all require this cookie;
+  // before this fix every fresh visitor's first KC submit returned 401 because
+  // `ensureAnonSession` is only called inside specific API routes the layout
+  // never triggered. See handoff-2026-05-23-addie-wave-1-2-3.md §B3.
+  if (
+    request.nextUrl.pathname === ADDIE_PATH_PREFIX ||
+    request.nextUrl.pathname.startsWith(`${ADDIE_PATH_PREFIX}/`)
+  ) {
+    const secret = process.env.ANON_SESSION_COOKIE_SECRET;
+    if (secret && secret.length >= 16) {
+      const existing = request.cookies.get(ADDIE_ANON_COOKIE)?.value;
+      const valid = await verifyAddieAnonCookie(existing, secret);
+      if (!valid) {
+        const fresh = await mintAddieAnonCookieValue(secret);
+        response.cookies.set(ADDIE_ANON_COOKIE, fresh, {
+          httpOnly: true,
+          sameSite: 'lax',
+          secure: process.env.NODE_ENV === 'production',
+          path: '/',
+          maxAge: ADDIE_COOKIE_MAX_AGE_S,
+        });
+      }
+    }
+    // If the secret isn't set, we deliberately don't mint — the API routes
+    // will surface the misconfiguration via the existing assertEnv path.
+  }
 
   return response;
 }
