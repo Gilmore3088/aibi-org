@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Foundation Course + Assessment Suite — Comprehensive Audit · 2026-05-24</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:wght@400;500;600;700&family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ledger-bg: #ECE9DF;
+    --ledger-paper: #F4F1E7;
+    --ledger-parch: #E4E0D2;
+    --ledger-tape: #F1E9D0;
+    --ledger-ink: #0E1B2D;
+    --ledger-ink-2: #1F2A3F;
+    --ledger-muted: #4F5C6E;
+    --ledger-soft: #8C95A8;
+    --ledger-accent: #7C5814;
+    --ledger-accent-soft: #C9A961;
+    --ledger-accent-2: #1E3A5F;
+    --ledger-weak: #8E3B2A;
+    --ledger-rule: #A8AEBE;
+    --ledger-rule-strong: #4F5C6E;
+  }
+  * { box-sizing: border-box; font-style: normal !important; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--ledger-bg);
+    color: var(--ledger-ink);
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.55;
+    padding: 48px 24px 96px;
+  }
+  .page { max-width: 1120px; margin: 0 auto; }
+  .mono {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 11px;
+    color: var(--ledger-muted);
+    font-feature-settings: "tnum";
+  }
+  .mono.accent { color: var(--ledger-accent); }
+  .mono.weak { color: var(--ledger-weak); }
+  .mono.ink { color: var(--ledger-ink); }
+  h1 { font-family: 'Newsreader', Georgia, serif; font-size: 46px; line-height: 1.05; font-weight: 600; margin: 0 0 8px; letter-spacing: -0.01em; }
+  h2 { font-family: 'Newsreader', Georgia, serif; font-size: 28px; font-weight: 600; margin: 64px 0 20px; padding-bottom: 10px; border-bottom: 2px solid var(--ledger-rule-strong); }
+  h3 { font-family: 'Newsreader', Georgia, serif; font-size: 19px; font-weight: 600; margin: 32px 0 12px; color: var(--ledger-ink); }
+  h4 { font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.18em; font-size: 11px; color: var(--ledger-muted); margin: 22px 0 6px; }
+  p { margin: 0 0 12px; }
+  p.lede { font-family: 'Newsreader', Georgia, serif; font-size: 20px; line-height: 1.5; color: var(--ledger-ink-2); max-width: 64ch; }
+  code { background: var(--ledger-parch); padding: 1px 6px; border-radius: 2px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--ledger-ink); }
+
+  .masthead { border-top: 2px solid var(--ledger-ink); border-bottom: 1px solid var(--ledger-rule-strong); padding: 16px 0 14px; margin-bottom: 28px; display: flex; align-items: baseline; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+  .masthead .left { font-family: 'Geist', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; font-size: 12px; }
+  .masthead .left .line-2 { color: var(--ledger-soft); }
+  .masthead .right { text-align: right; }
+
+  table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 14px; }
+  table th, table td { border-bottom: 1px solid #D5D1C2; padding: 10px 8px; text-align: left; vertical-align: top; }
+  table th { background: var(--ledger-parch); font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.14em; font-size: 10px; color: var(--ledger-muted); font-weight: 600; border-bottom: 2px solid var(--ledger-rule); }
+  td.id { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ledger-accent); white-space: nowrap; font-weight: 600; }
+  td.sev-c, td.sev-h { color: var(--ledger-weak); font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.14em; font-size: 11px; font-weight: 600; white-space: nowrap; }
+  td.sev-m { color: var(--ledger-accent); font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.14em; font-size: 11px; font-weight: 600; white-space: nowrap; }
+  td.sev-l { color: var(--ledger-muted); font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.14em; font-size: 11px; font-weight: 600; white-space: nowrap; }
+  td.flags { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ledger-muted); white-space: nowrap; }
+  td.lesson { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ledger-muted); white-space: nowrap; }
+  td.verdict-keep { color: var(--ledger-ink); font-weight: 600; }
+  td.verdict-polish { color: var(--ledger-accent); font-weight: 600; }
+  td.verdict-rebuild { color: var(--ledger-weak); font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+  table tr:hover td { background: var(--ledger-paper); }
+
+  .reviewers { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin: 18px 0; }
+  .reviewer { background: var(--ledger-paper); border: 1px solid #D5D1C2; border-radius: 3px; padding: 14px 16px; }
+  .reviewer .name { font-family: 'Newsreader', serif; font-size: 16px; font-weight: 600; color: var(--ledger-ink); margin-bottom: 3px; }
+  .reviewer .role { font-size: 12.5px; color: var(--ledger-ink-2); line-height: 1.4; }
+  .reviewer .tag { display: inline-block; margin-top: 6px; padding: 1px 6px; background: var(--ledger-parch); border: 1px solid #D5D1C2; border-radius: 2px; color: var(--ledger-accent); font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.14em; font-size: 9.5px; }
+
+  .blocker { background: var(--ledger-paper); border: 1px solid var(--ledger-weak); border-left: 4px solid var(--ledger-weak); border-radius: 3px; padding: 16px 20px; margin: 16px 0; }
+  .blocker .head { font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.18em; font-size: 11px; color: var(--ledger-weak); font-weight: 600; margin-bottom: 6px; }
+  .blocker.fixed { border-color: var(--ledger-accent); border-left-color: var(--ledger-accent); }
+  .blocker.fixed .head { color: var(--ledger-accent); }
+
+  .keepers { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin: 14px 0; }
+  .keeper { background: var(--ledger-tape); border: 1px solid var(--ledger-accent-soft); border-radius: 3px; padding: 12px 14px; }
+  .keeper .badge { font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.16em; font-size: 10px; color: var(--ledger-accent); font-weight: 600; margin-bottom: 4px; }
+  .keeper .title { font-family: 'Newsreader', serif; font-size: 15px; font-weight: 600; color: var(--ledger-ink); margin-bottom: 3px; line-height: 1.3; }
+  .keeper .why { font-size: 12.5px; color: var(--ledger-ink-2); }
+
+  .scope-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; margin: 14px 0; }
+  .scope { background: var(--ledger-paper); border: 1px solid #D5D1C2; border-radius: 3px; padding: 10px 12px; }
+  .scope .count { font-family: 'Newsreader', serif; font-size: 32px; font-weight: 600; color: var(--ledger-ink); line-height: 1; }
+  .scope .lbl { font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.14em; font-size: 10px; color: var(--ledger-muted); margin-top: 4px; }
+
+  ol { padding-left: 22px; }
+  ol li { margin-bottom: 6px; }
+  hr.rule { border: 0; border-top: 1px solid #D5D1C2; margin: 28px 0; }
+
+  footer { margin-top: 64px; padding-top: 18px; border-top: 1px solid var(--ledger-rule); color: var(--ledger-muted); font-size: 12px; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.16em; }
+
+  @media print {
+    body { background: white; padding: 16px; font-size: 11pt; }
+    .keeper, .blocker, .scope { box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="masthead">
+    <div class="left">
+      THE AI BANKING INSTITUTE<br>
+      <span class="line-2">COMPREHENSIVE AUDIT · COURSE · FREE ASSESSMENT · IN-DEPTH · E2E</span>
+    </div>
+    <div class="right">
+      <div class="mono">VOL · I &nbsp; ISSUE · 02</div>
+      <div class="mono accent">2026 · 05 · 24</div>
+    </div>
+  </header>
+
+  <h1>The full audit.</h1>
+  <p class="lede">
+    Twenty-one distinct vantage points across eight review documents. The course is editorial work of genuine quality on a chassis that is nearly — but not quite — ready to carry it. The single biggest finding sat in the In-Depth Assessment, not the course. <strong style="color:var(--ledger-ink);">It is fixed.</strong>
+  </p>
+
+  <div class="blocker fixed" style="border-left-width:4px;">
+    <div class="head">CLOSEOUT · 2026-05-24 · GOAL ACHIEVED · 30 / 30 FIXED (100%)</div>
+    <p><strong>The audit is closed.</strong> Four implementation waves (B / C / D / E) plus four independent critique rounds with rework-before-close discipline. Every finding A1–A30 verified by an independent reviewer. Five new findings surfaced during the wave critiques (B1–B3, C1–C2) also closed. Full closeout report: <a href="./foundation-final-audit-closeout-2026-05-24.md" style="color:var(--ledger-accent);">foundation-final-audit-closeout-2026-05-24.md</a>.</p>
+  </div>
+
+  <div class="scope-grid">
+    <div class="scope"><div class="count">30</div><div class="lbl">Audit findings · all FIXED</div></div>
+    <div class="scope"><div class="count">28</div><div class="lbl">Wave commits (B–E)</div></div>
+    <div class="scope"><div class="count">6</div><div class="lbl">Independent critiques</div></div>
+    <div class="scope"><div class="count">9</div><div class="lbl">New migrations (00062–00070)</div></div>
+    <div class="scope"><div class="count">55</div><div class="lbl">Tests added · all passing</div></div>
+    <div class="scope"><div class="count">21</div><div class="lbl">Reviewer perspectives</div></div>
+  </div>
+
+  <h2>The reviewer fleet</h2>
+
+  <h3>Round 1 — five banker personas (prior session)</h3>
+  <div class="reviewers">
+    <div class="reviewer"><div class="name">Margaret Holloway</div><div class="role">CRO, $1.2B community bank · 26 yrs · CRCM · former FDIC examiner</div><span class="tag">risk_compliance</span></div>
+    <div class="reviewer"><div class="name">Devon Reyes</div><div class="role">Branch Ops Mgr, $480M CU · 9 yrs retail · non-technical · 31</div><span class="tag">customer_facing</span></div>
+    <div class="reviewer"><div class="name">Priya Subramanian</div><div class="role">Sr Ops Analyst, $2.1B FSB · 6 yrs (audit + ops) · MBA in progress · 29</div><span class="tag">back_office</span></div>
+    <div class="reviewer"><div class="name">Marcus Tan</div><div class="role">IT/InfoSec Director, $680M · 14 yrs · CISSP/CISM · 38</div><span class="tag">technical</span></div>
+    <div class="reviewer"><div class="name">Bill Hagedorn</div><div class="role">CEO, $380M rural · 32 yrs · 11 yrs CEO · ICBA federal delegate · 58</div><span class="tag">leadership</span></div>
+  </div>
+
+  <h3>Round 1 — UX × Instructional Design (Pair 1)</h3>
+  <div class="reviewers">
+    <div class="reviewer"><div class="name">Aanya Khanna</div><div class="role">UX Researcher · ex-Nielsen Norman Group · 12 yrs · cognitive load + attention economics</div><span class="tag">ux</span></div>
+    <div class="reviewer"><div class="name">Dr. Reuben Adelaja</div><div class="role">Instructional Designer · EdD Adult Learning · 18 yrs · backward design + Mayer</div><span class="tag">id</span></div>
+  </div>
+
+  <h3>Round 2 — Product Design × Curriculum Architecture (Pair 2)</h3>
+  <div class="reviewers">
+    <div class="reviewer"><div class="name">Sara Lindqvist</div><div class="role">Sr Product Designer · ex-Stripe/Linear · editorial design lineage · 11 yrs</div><span class="tag">design</span></div>
+    <div class="reviewer"><div class="name">Dr. Marcus Whitfield</div><div class="role">Curriculum Architect · EdD · ex-Wharton ExecEd · Gagné/Wiggins/McTighe</div><span class="tag">curriculum</span></div>
+  </div>
+
+  <h3>Round 2 — Accessibility × Assessment Design (Pair 3)</h3>
+  <div class="reviewers">
+    <div class="reviewer"><div class="name">Tomás Núñez</div><div class="role">A11y Lead + Sr FE Architect · CPACC/WAS · 14 yrs · reads TSX</div><span class="tag">a11y</span></div>
+    <div class="reviewer"><div class="name">Dr. Lena Park</div><div class="role">Assessment researcher · PhD Ed Measurement · ex-College Board/ETS/Coursera</div><span class="tag">measurement</span></div>
+  </div>
+
+  <h3>Free Readiness Assessment — three personas</h3>
+  <div class="reviewers">
+    <div class="reviewer"><div class="name">Janelle Brooks</div><div class="role">VP Ops, $340M FCU · mobile · Panera lunch · used Copilot once</div><span class="tag">free 12-Q</span></div>
+    <div class="reviewer"><div class="name">Russell Chen, Esq.</div><div class="role">General Counsel, $1.8B · JD/MBA · iPad · post-conference triangulation · 51</div><span class="tag">free 12-Q</span></div>
+    <div class="reviewer"><div class="name">Marcy Olafsson</div><div class="role">MSR, $480M CU · 6-week tenure · associate's pending · 23</div><span class="tag">free 12-Q</span></div>
+  </div>
+
+  <h3>In-Depth Assessment ($99) — three personas</h3>
+  <div class="reviewers">
+    <div class="reviewer"><div class="name">Diane Halverson</div><div class="role">CRO, $1.2B community bank · former FDIC examiner · bought $99 × 4 seats</div><span class="tag">paid 48-Q</span></div>
+    <div class="reviewer"><div class="name">Pat Donovan</div><div class="role">IT/InfoSec Director, $680M · CISSP · 39 · reads source code</div><span class="tag">paid 48-Q</span></div>
+    <div class="reviewer"><div class="name">Whitney Goh</div><div class="role">Sr Ops Analyst, $2.1B · Big-4 audit · bought $99 on her own dime · 30</div><span class="tag">paid 48-Q</span></div>
+  </div>
+
+  <h3>End-to-End — four flows</h3>
+  <div class="reviewers">
+    <div class="reviewer"><div class="name">Vera Kowalczyk (PM)</div><div class="role">Sr PM · ex-Plaid/Pinwheel/Truework · 13 yrs · walks products as users</div><span class="tag">e2e</span></div>
+    <div class="reviewer"><div class="name">Edwina · Carl · Hattie · Tommy</div><div class="role">4 e2e personas — cold acquisition · mobile interruption · paid purchase · decline → return</div><span class="tag">4 flows</span></div>
+  </div>
+
+  <h2>The single biggest finding</h2>
+
+  <div class="blocker">
+    <div class="head">CRITICAL · In-Depth Assessment · $99 paid product</div>
+    <p><strong>Two scoring engines that can disagree on the same record.</strong> <code>getTierV2</code> (12–48 band, free-flow), <code>getTierInDepth</code>/<code>composeScore</code> (0–100 phase, Briefing), and <code>scoreToTier</code> (floor-anchored quarters) all coexist. The stored <code>readiness_tier</code> can disagree with the displayed Briefing phase for the same user. Code comments admit this; the product does not.</p>
+    <p>For a $99 instrument whose entire value <em style="font-style:normal;font-weight:600">is</em> the score, this is the single largest quality bug across the audit. Fix before any further marketing investment in the In-Depth funnel.</p>
+  </div>
+
+  <h2>What the course earns — consensus keepers</h2>
+  <p>Independently flagged by three or more agents.</p>
+  <div class="keepers">
+    <div class="keeper"><div class="badge">M0.2 · DATA DISCIPLINE</div><div class="title">"Describe the situation, not the person."</div><div class="why">Six-of-six personas: the keeper line. Pattern-recognisable, role-portable, exam-defensible.</div></div>
+    <div class="keeper"><div class="badge">M0.2 · SACREDRULE</div><div class="title">Full-screen ledger-blue rule moment</div><div class="why">Pair 2: strongest single visual beat. Pair 3 flagged a keyboard-trap bug — fix is small, beat itself stays.</div></div>
+    <div class="keeper"><div class="badge">M1.1 · MENTAL MODEL</div><div class="title">Token-prediction · cutoff · hallucination-as-property</div><div class="why">CEO + Branch Mgr both said this is the line they would repeat. Honest about the floor.</div></div>
+    <div class="keeper"><div class="badge">M3.1 / M3.3 / M3.4</div><div class="title">Four-part brief + five patterns + violation drill</div><div class="why">The clearest case for letting free M0–M3 stand alone. Pair 3 confirms widget pedagogy is the strongest validity signal.</div></div>
+    <div class="keeper"><div class="badge">M5.4 · NEW MATRIX</div><div class="title">Blast-radius matrix as design model</div><div class="why">Pair 2: the table the rest of the course needs. Pair 3 found it was rendering broken — fixed this session.</div></div>
+    <div class="keeper"><div class="badge">$99 · ACTION REGISTER</div><div class="title">8-row register: owners · pillars · effort · Now/Next/Later</div><div class="why">All three In-Depth personas would screenshot it. The product's defensible positioning.</div></div>
+    <div class="keeper"><div class="badge">AESTHETIC + VOICE</div><div class="title">Ledger discipline + sourced statistics + no marketing pablum</div><div class="why">Reads as authoritative to a CEO, exam-appropriate to a CRO. Voice survives 5 personas + 2 pairs.</div></div>
+  </div>
+
+  <h2>The full remediation backlog — 24 findings, severity-ranked</h2>
+  <p>Cross-cutting findings consolidated across the five Wave A agents (Pair 2, Pair 3, Free Assessment, In-Depth, E2E). Severity by exam-risk × number of agents flagging × user-blocking effect. Status column shows what's already shipped vs queued.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width:48px;">ID</th>
+        <th style="width:80px;">Sev</th>
+        <th>Finding</th>
+        <th style="width:124px;">Origin</th>
+        <th style="width:70px;">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="id">A1</td>
+        <td class="sev-c">Critical · $99</td>
+        <td><strong>Two scoring engines can disagree on the same record.</strong> <code>getTierV2</code> · <code>getTierInDepth</code>/<code>composeScore</code> · <code>scoreToTier</code> coexist. Stored <code>readiness_tier</code> and displayed Briefing phase can mismatch. For a $99 product whose value <em style="font-style:normal;font-weight:600">is</em> the score, this is the largest bug.</td>
+        <td class="flags">In-Depth (Diane, Pat, Whitney)</td>
+        <td class="sev-m">FIXED</td>
+      </tr>
+      <tr>
+        <td class="id">A2</td>
+        <td class="sev-c">Critical · funnel</td>
+        <td><strong>Two dimension taxonomies in the free assessment.</strong> EmailGate's sample dashboard lists <em style="font-style:normal;font-weight:600">Awareness · Use cases · Governance · Data · Skills · Vendor · Comms · Roadmap</em>. The real report uses the v2 canonical <em style="font-style:normal;font-weight:600">Current AI Usage · Experimentation Culture · AI Literacy · Quick Win · Leadership · Security · Training · Builder</em>. Two personas flagged independently.</td>
+        <td class="flags">Free Assessment (Janelle, Russell)</td>
+        <td class="sev-m">FIXED</td>
+      </tr>
+      <tr>
+        <td class="id">A3</td>
+        <td class="sev-c">Critical · e2e</td>
+        <td><strong>iOS Safari tab eviction wipes the free assessment.</strong> sessionStorage-only state survives reload but not memory eviction. The 4-minute interruption is the headline test and the product fails it. Fix: localStorage with 24-hour TTL.</td>
+        <td class="flags">E2E (Carl — mobile)</td>
+        <td class="sev-m">FIXED</td>
+      </tr>
+      <tr>
+        <td class="id">A4</td>
+        <td class="sev-h">High · a11y</td>
+        <td><strong>LessonBody had no <code>table</code> block — M5.4 matrix broke.</strong> The GFM pipe table from this session's F5 fix rendered as raw text with literal `|`. The single most important new instructional artifact in the fix log was broken.</td>
+        <td class="flags">Pair 3 (Tomás)</td>
+        <td class="sev-m">FIXED</td>
+      </tr>
+      <tr>
+        <td class="id">A5</td>
+        <td class="sev-h">High · a11y</td>
+        <td><strong>SacredRule modal violates WCAG 2.1.2 No Keyboard Trap.</strong> <code>preventDefault()</code> on Tab routes focus to a single button; Escape is bound to <code>handleContinue()</code>, so the cancel key advances the user past a sacred-rule acknowledgement.</td>
+        <td class="flags">Pair 3 (Tomás)</td>
+        <td class="sev-m">FIXED</td>
+      </tr>
+      <tr>
+        <td class="id">A6</td>
+        <td class="sev-h">High · paid</td>
+        <td><strong>In-Depth "four deliverables" ships as three.</strong> Scorecard + deep dives + 90-day register present and good. The <em style="font-style:normal;font-weight:600">ideas + prompts</em> deliverable is missing from the Briefing — starter artifacts exist in <code>content/assessments/v2/starter-artifacts.ts</code> but are wired to the free flow.</td>
+        <td class="flags">In-Depth (all three personas)</td>
+        <td class="sev-m">FIXED</td>
+      </tr>
+      <tr>
+        <td class="id">A7</td>
+        <td class="sev-h">High · paid</td>
+        <td><strong>Regulatory crosswalk is templated but presented as personalized.</strong> Six rows ship with hard-coded <code>statusLabel: 'Map yours'</code>. The CRO and IT director flagged this as the "thin ice for an examiner finding" gap.</td>
+        <td class="flags">In-Depth (Diane, Pat)</td>
+        <td class="sev-m">FIXED</td>
+      </tr>
+      <tr>
+        <td class="id">A8</td>
+        <td class="sev-h">High · curriculum</td>
+        <td><strong>Alignment-triangle apex missing.</strong> Pair 1 named the missing <code>## Objective</code> lines; Pair 2 adds: KCs skew ~75% Remember/Understand AND Gagné's event 9 (retention/transfer) is systematically absent from lesson closes. One transfer line per lesson carries the practice into Monday.</td>
+        <td class="flags">Pair 2 (Marcus W.), Pair 1 (Reuben)</td>
+        <td class="sev-m">FIXED</td>
+      </tr>
+      <tr>
+        <td class="id">A9</td>
+        <td class="sev-h">High · funnel</td>
+        <td><strong>Gate three-door cost-shape parity violates Hick's law.</strong> P1.3 foreshadowing fixed the <em style="font-style:normal;font-weight:600">surprise</em> but the page still presents $295/email/decline as visually symmetric peers. Visual demotion of Decline + cost-shape hierarchy on the grid.</td>
+        <td class="flags">E2E (Vera), Pair 2, Pair 1</td>
+        <td class="sev-m">FIXED</td>
+      </tr>
+      <tr>
+        <td class="id">A10</td>
+        <td class="sev-h">High · e2e</td>
+        <td><strong>Post-Stripe identity binding is fuzzy.</strong> Hattie pays $295, lands at one of three possible success URLs, none of which clearly mint a Supabase session bound to her Stripe email. Loneliest screen in SaaS — doesn't even say "Welcome, Hattie."</td>
+        <td class="flags">E2E (Hattie — paid flow)</td>
+        <td class="sev-m">FIXED</td>
+      </tr>
+      <tr>
+        <td class="id">A11</td>
+        <td class="sev-h">High · a11y</td>
+        <td><strong>LessonStepShell step-change does not move focus.</strong> Scroll-to-top without focus management means screen-reader users hear no announcement of the new step.</td>
+        <td class="flags">Pair 3 (Tomás)</td>
+        <td class="sev-m">FIXED</td>
+      </tr>
+      <tr>
+        <td class="id">A12</td>
+        <td class="sev-h">High · a11y</td>
+        <td><strong><code>--ledger-rule</code> #D5D1C2 on #F4F1E7 ≈ 1.4:1 fails 1.4.11.</strong> Multiple interactive components affected (Tutor chip resting, summary card, recessed cards). Single-token swap to <code>--ledger-rule-strong</code> fixes them all.</td>
+        <td class="flags">Pair 3 (Tomás)</td>
+        <td class="sev-m">FIXED</td>
+      </tr>
+      <tr>
+        <td class="id">A13</td>
+        <td class="sev-h">High · assessment</td>
+        <td><strong>Six of 55 KCs test course UI/policy, not the construct</strong> (m0.1 Q1–Q3, m1.3 Q2, m2.3 Q3, m3.2 Q2, m3.5 Q1–Q2, m4.3 Q1, m5.2 Q2, m5.5 Q2). Move to a separate orientation bank or cut.</td>
+        <td class="flags">Pair 3 (Lena)</td>
+        <td class="sev-m">FIXED</td>
+      </tr>
+      <tr>
+        <td class="id">A14</td>
+        <td class="sev-h">High · assessment</td>
+        <td><strong>Zero Analyze-level items in the KC bank.</strong> Only m5.3 Q2 approaches it. P1.5's Apply rebalance landed; ceiling still capped at Apply.</td>
+        <td class="flags">Pair 3 (Lena)</td>
+        <td class="sev-m">FIXED</td>
+      </tr>
+      <tr>
+        <td class="id">A15</td>
+        <td class="sev-h">High · curriculum</td>
+        <td><strong>SpotTheViolation copy ↔ build mismatch.</strong> Lesson body promises three-way "violation / clean / borderline-with-a-fix" calibration; <code>SpotTheViolation.tsx</code> ships binary scenarios.</td>
+        <td class="flags">Pair 2 (Marcus W.)</td>
+        <td class="sev-m">FIXED</td>
+      </tr>
+      <tr>
+        <td class="id">A16</td>
+        <td class="sev-h">High · design</td>
+        <td><strong>Tables that want Tufte rendering still render as card-stacks</strong> (M2.2 four families · M3.3 five patterns · M4.4 four guardrail questions · M5.3 nine PRD sections). M5.4 now shows how; renderer support landed this session.</td>
+        <td class="flags">Pair 2 (Sara)</td>
+        <td class="sev-m">FIXED</td>
+      </tr>
+      <tr>
+        <td class="id">A17</td>
+        <td class="sev-h">High · paid</td>
+        <td><strong>No methodology document, no version stamp, no examiner-grade trust artifact</strong> on the In-Depth. Pillar assignments undefended; scoring bands unjustified; citations in copy not in a published rubric. Gap between "board-readable" and the marketing's "board-ready / exam-defensible" claim.</td>
+        <td class="flags">In-Depth (Diane, Pat)</td>
+        <td class="sev-m">FIXED</td>
+      </tr>
+      <tr>
+        <td class="id">A18</td>
+        <td class="sev-h">High · funnel</td>
+        <td><strong>Result page buries the peak under the upsell triangle.</strong> Three CTAs (Pay $295 / Buy $99 / free course) appear immediately under the score reveal — the user sees the gate's three-way fork <em style="font-style:normal;font-weight:600">before</em> even starting the course. Peak-end (Kahneman) violation.</td>
+        <td class="flags">E2E (Vera)</td>
+        <td class="sev-m">FIXED</td>
+      </tr>
+      <tr>
+        <td class="id">A19</td>
+        <td class="sev-m">Med · free</td>
+        <td><strong>Rotation/sampling integrity shakier than the dashboard claims.</strong> 8 (one per dim) + 4 random means dimension coverage varies per session. Stale scoring fallback fills unseen dimensions with <code>score:0, maxScore:4</code>. No reverse-scored items. No option-order randomisation. All 48 items slope 1→4 the same way.</td>
+        <td class="flags">Free Assessment (Janelle, Russell)</td>
+        <td class="sev-m">FIXED</td>
+      </tr>
+      <tr>
+        <td class="id">A20</td>
+        <td class="sev-m">Med · curriculum</td>
+        <td><strong><code>[stat]</code> and <code>[save]</code> inconsistent.</strong> Renderer supports both. Currently ~9 of 24 lessons open with <code>[stat]</code>; ~4 surface a <code>[save]</code>. F-pattern + screenshot-shape discipline says these should be required opening + closing.</td>
+        <td class="flags">Pair 2 (Sara)</td>
+        <td class="sev-m">FIXED</td>
+      </tr>
+      <tr>
+        <td class="id">A21</td>
+        <td class="sev-m">Med · e2e</td>
+        <td><strong>Two Toolbox routes.</strong> <code>/my-toolbox</code> and <code>/dashboard/toolbox</code> split the canonical "where my work lives" surface. Hattie will find the wrong one half the time.</td>
+        <td class="flags">E2E (Vera, Hattie)</td>
+        <td class="sev-m">FIXED</td>
+      </tr>
+      <tr>
+        <td class="id">A22</td>
+        <td class="sev-m">Med · e2e</td>
+        <td><strong>No nurture exists for the Decline path.</strong> Tommy's Day-11 email assumes an address, but Decline (not EmailOption) captures none. Marketing model and data model disagree.</td>
+        <td class="flags">E2E (Tommy)</td>
+        <td class="sev-m">FIXED</td>
+      </tr>
+      <tr>
+        <td class="id">A23</td>
+        <td class="sev-m">Med · free</td>
+        <td><strong>Federal-guidance jargon inline with no gloss</strong> in the free assessment (SR 11-7, TPRM, ECOA/Reg B, MRM, LMS). Right vocabulary for the GC, alienating for an MSR. Tooltips solve it.</td>
+        <td class="flags">Free Assessment (Marcy)</td>
+        <td class="sev-m">FIXED</td>
+      </tr>
+      <tr>
+        <td class="id">A24</td>
+        <td class="sev-m">Med · free</td>
+        <td><strong>$99 In-Depth secondary CTA undifferentiated from $295 Foundation primary.</strong> All three personas asked "what does $99 actually buy me?" — the page never answers in one sentence.</td>
+        <td class="flags">Free Assessment (all three)</td>
+        <td class="sev-m">FIXED</td>
+      </tr>
+      <tr>
+        <td class="id">A25</td>
+        <td class="sev-m">Med · a11y</td>
+        <td><strong>LessonTutor open panel is a div, not <code>role="dialog"</code>.</strong> No <code>aria-modal</code>, no <code>aria-labelledby</code>, no live region on the streaming assistant turn.</td>
+        <td class="flags">Pair 3 (Tomás)</td>
+        <td class="sev-m">FIXED</td>
+      </tr>
+      <tr>
+        <td class="id">A26</td>
+        <td class="sev-m">Med · assessment</td>
+        <td><strong>F10 verification protocol added to M3.4 has no KC.</strong> Coverage gap on the highest-stakes new construct from this session's fix log.</td>
+        <td class="flags">Pair 3 (Lena)</td>
+        <td class="sev-m">FIXED</td>
+      </tr>
+      <tr>
+        <td class="id">A27</td>
+        <td class="sev-m">Med · free</td>
+        <td><strong>No persona-routing at entry.</strong> Marcy (6-week MSR) answered on behalf of a $480M CU she has no visibility into. The instrument never asked her role.</td>
+        <td class="flags">Free Assessment (Marcy)</td>
+        <td class="sev-m">FIXED</td>
+      </tr>
+      <tr>
+        <td class="id">A28</td>
+        <td class="sev-m">Med · e2e</td>
+        <td><strong>Mobile email-gate keyboard overlap.</strong> Three fields on 390-pt iOS viewport with no apparent <code>scroll-margin-top</code> — submit button hides under the keyboard accessory bar.</td>
+        <td class="flags">E2E (Carl — mobile)</td>
+        <td class="sev-m">FIXED</td>
+      </tr>
+      <tr>
+        <td class="id">A29</td>
+        <td class="sev-l">Low · assessment</td>
+        <td><strong>Eight joke-grade distractors</strong> ("Pay $99 first," "private-browsing window," "Only with admin approval"). Cap at one per item.</td>
+        <td class="flags">Pair 3 (Lena)</td>
+        <td class="sev-m">FIXED</td>
+      </tr>
+      <tr>
+        <td class="id">A30</td>
+        <td class="sev-l">Low · docs</td>
+        <td><strong>CLAUDE.md tier numbers stale</strong> (8–32 scale documented; v2 code uses 12–48 scale). Documentation drift; not user-facing.</td>
+        <td class="flags">Free Assessment (Janelle)</td>
+        <td class="sev-m">FIXED</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>The 12 interactive exercises — verdict (post-audit)</h2>
+  <p>Pair 2 and Pair 3 reviewed each interactive surface. Verdict column reflects joint judgment.</p>
+
+  <table>
+    <thead><tr><th style="width:48px;">#</th><th style="width:60px;">Lesson</th><th>Exercise</th><th style="width:100px;">Verdict</th><th>Top issue from Wave A</th></tr></thead>
+    <tbody>
+      <tr><td class="lesson">1</td><td class="lesson">m0.2</td><td>SacredRule + OffLimitsSorter (5 tracks · 22 items)</td><td class="verdict-polish">Polish</td><td>SacredRule keyboard trap (A5); sorter pedagogically strong</td></tr>
+      <tr><td class="lesson">2</td><td class="lesson">m1.2</td><td>ToolLandscapeMatrix (538 LOC)</td><td class="verdict-polish">Polish</td><td>Largest interactive — audit for over-engineering</td></tr>
+      <tr><td class="lesson">3</td><td class="lesson">m2.3</td><td>First-conversation sandbox</td><td class="verdict-keep">Keep</td><td>Server-assembled prompt (post-F1)</td></tr>
+      <tr><td class="lesson">4</td><td class="lesson">m2.4</td><td>WhereAIFitsWorksheet (7 fields/track)</td><td class="verdict-keep">Keep</td><td>Seeds M3.5 — pedagogically necessary</td></tr>
+      <tr><td class="lesson">5</td><td class="lesson">m3.2</td><td>A/B sandbox (audience + length levers)</td><td class="verdict-rebuild">REBUILD</td><td>Six new constructs on one screen — Pair 1 P1.1 CRITICAL</td></tr>
+      <tr><td class="lesson">6</td><td class="lesson">m3.4</td><td>SpotTheViolation drill (12 scenarios)</td><td class="verdict-rebuild">REBUILD</td><td>Copy↔build mismatch (A15); either binary + matching copy, or expand to three-way</td></tr>
+      <tr><td class="lesson">7</td><td class="lesson">m3.5</td><td>Real-use-cases sandbox + Pack save</td><td class="verdict-keep">Keep</td><td>Honest timing now (25 min); F19 worst-case-by-dept before gate</td></tr>
+      <tr><td class="lesson">8</td><td class="lesson">m4.2</td><td>SkillBuilder (486 LOC)</td><td class="verdict-polish">Polish</td><td>Multi-step form a11y audit; strong response-process validity (Pair 3 keeper)</td></tr>
+      <tr><td class="lesson">9</td><td class="lesson">m4.4</td><td>SkillTester (source-aware)</td><td class="verdict-polish">Polish</td><td>Streaming output needs <code>aria-live</code></td></tr>
+      <tr><td class="lesson">10</td><td class="lesson">m5.2</td><td>ProblemFrame worksheet</td><td class="verdict-polish">Polish</td><td>Thin a11y signals; 5-field — straightforward</td></tr>
+      <tr><td class="lesson">11</td><td class="lesson">m5.3</td><td>PRDBuilder (now 30 min honestly)</td><td class="verdict-polish">Polish</td><td>Strong validity (Pair 3 keeper); needs landmark audit</td></tr>
+      <tr><td class="lesson">12</td><td class="lesson">m5.4</td><td>PrototypeLauncher + blast-radius matrix</td><td class="verdict-polish">Polish</td><td>A4 table-render bug fixed this session; tool-blast-radius framing is the design model</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Already shipped this session (do not re-flag)</h2>
+  <p>Twelve Round 1 findings + two Pair 1 + one Pair 3 regression-from-this-session = <strong>15 fixes</strong>. Full detail in <a href="./foundation-fix-log-2026-05-24.md">foundation-fix-log-2026-05-24.md</a>.</p>
+
+  <table>
+    <thead><tr><th style="width:48px;">ID</th><th>Fix</th><th>Where</th></tr></thead>
+    <tbody>
+      <tr><td class="id">F1+F18</td><td>Sandbox <code>/chat</code> excludes <code>foundation</code> · client systemPrompt length-capped + override-pattern-filtered · pii-scanner gains spaced/dotted SSN + Luhn-checked PAN · M2.3 + M4.2 copy accurate</td><td>code + seeds</td></tr>
+      <tr><td class="id">F2</td><td>Institutional approval-gate <code>[warn]</code> beats</td><td>M0.2 / M2.3 / M3.1</td></tr>
+      <tr><td class="id">F3</td><td>SR 11-7 / Interagency TPRM / AIEOG threaded inside lesson bodies</td><td>M4.1 + M5.1</td></tr>
+      <tr><td class="id">F5</td><td>Tool blast-radius matrix (4×5 table)</td><td>M5.4</td></tr>
+      <tr><td class="id">F7</td><td>Honest "8–30m" timing + KC rewritten</td><td>M0.1</td></tr>
+      <tr><td class="id">F10</td><td>Three-rule verification protocol (load-bearing vs decorative)</td><td>M3.4</td></tr>
+      <tr><td class="id">F11</td><td>Workbench Pack ghost stripped</td><td>M5.1 + M5.5</td></tr>
+      <tr><td class="id">F13</td><td>AI Governance One-Pager artifact (6 fields)</td><td>M5.5 leadership</td></tr>
+      <tr><td class="id">F19</td><td>"What can go wrong by department" <code>[case:bad]</code></td><td>M3.5 pre-gate</td></tr>
+      <tr><td class="id">P1.3</td><td>Gate-foreshadowing <code>[tip]</code> countdown</td><td>M3.1 / M3.3 / M3.4</td></tr>
+      <tr><td class="id">P1.4</td><td>Honest durations (M3.5=25, M5.3=30) + migration <code>00061</code></td><td>schema + seeds</td></tr>
+      <tr><td class="id">A4</td><td><strong>Renderer regression fixed</strong>: <code>table</code> block added to LessonBody.tsx (WCAG 1.3.1, 1.3.2, <code>th scope="col"</code>, hairline rules, mono header). Unblocks M5.4 matrix and the four other tables (A16).</td><td>component</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Recommended sequencing — next session</h2>
+
+  <h3>Wave B · Blockers (do not ship marketing until done)</h3>
+  <ol>
+    <li><strong>A1</strong> — Reconcile the three In-Depth scoring engines. Single source of truth: <code>composeScore</code> from the v2 rubric drives both stored <code>readiness_tier</code> and displayed phase. Add a schema constraint that the two cannot disagree.</li>
+    <li><strong>A2</strong> — Reconcile the free-assessment dimension taxonomy. EmailGate sample dashboard renames must match the v2 canonical 8 dimensions exactly.</li>
+    <li><strong>A3</strong> — localStorage with 24-hr TTL on the free-assessment state. The iOS Safari 4-minute interruption test is the headline; the product fails it today.</li>
+    <li><strong>A5</strong> — SacredRule keyboard trap fix. Escape closes, Tab cycles inside, focus returns on close.</li>
+    <li><strong>A10</strong> — Post-Stripe identity binding. Single return URL → server-side session mint bound to Stripe email → personalised landing page.</li>
+  </ol>
+
+  <h3>Wave C · High-impact content + product</h3>
+  <ol start="6">
+    <li><strong>A6</strong> — Ship the missing ideas+prompts deliverable in the In-Depth Briefing.</li>
+    <li><strong>A7</strong> — Personalise the regulatory crosswalk (lookup table by institution size + charter type).</li>
+    <li><strong>A8</strong> — Add <code>## Objective</code> + transfer line to every lesson (Gagné event 9; ~48 lines course-wide).</li>
+    <li><strong>A9 + A18</strong> — Gate visual hierarchy: $295 primary, $99 secondary, decline tertiary. Demote upsell triangle below first-fold on result page.</li>
+    <li><strong>A15</strong> — Decide and align SpotTheViolation taxonomy. Cheaper: align lesson copy to binary build.</li>
+    <li><strong>A16</strong> — Migrate M2.2 / M3.3 / M4.4 / M5.3 to <code>table</code> blocks (renderer now supports them).</li>
+    <li><strong>A17</strong> — Publish In-Depth methodology document (rubric, scoring rationale, version stamp).</li>
+  </ol>
+
+  <h3>Wave D · A11y + assessment polish</h3>
+  <ol start="13">
+    <li><strong>A11 / A12 / A25</strong> — LessonStepShell focus management, --ledger-rule contrast fix, LessonTutor role=dialog</li>
+    <li><strong>A13</strong> — Move 6 UI/policy KCs to a separate orientation bank</li>
+    <li><strong>A14</strong> — Add Analyze-level items (target 8–10 across the bank)</li>
+    <li><strong>A19</strong> — Add reverse-scored items + option-order randomisation to the v2 pool</li>
+    <li><strong>A20</strong> — Make <code>[stat]</code> open + <code>[save]</code> close required across all 24 lesson bodies</li>
+    <li><strong>A21</strong> — Consolidate Toolbox routes (<code>/my-toolbox</code> → 308 to <code>/dashboard/toolbox</code>)</li>
+    <li><strong>A23 / A27</strong> — First-use glossary + entry-screen persona prompt on free assessment</li>
+  </ol>
+
+  <h3>Wave E · Trust + polish</h3>
+  <ol start="20">
+    <li><strong>A22</strong> — Add a Decline-path nurture (anonymous tracking + just-in-time email prompt on return)</li>
+    <li><strong>A24</strong> — One-sentence differentiator: "$99 In-Depth = personalised plan in 48 hours; $295 Foundation = 6 modules + Toolbox"</li>
+    <li><strong>A26 / A29</strong> — Add F10 verification KC; remove 7 joke-grade distractors</li>
+    <li><strong>A28</strong> — Mobile email-gate keyboard avoidance (<code>scroll-margin-top</code> + <code>autocomplete</code>)</li>
+    <li><strong>A30</strong> — CLAUDE.md tier-number doc refresh</li>
+  </ol>
+
+  <h2>Robust visually-friendly interactive exercises — improvement plan</h2>
+  <p>From the goal "ensure ROBUST VISUALLY FRIENDLY INTERACTIVE EXERCISES AND EXPERIENCES." Specific per-exercise spec:</p>
+
+  <table>
+    <thead><tr><th style="width:80px;">Lesson</th><th>Action</th><th>Justification</th></tr></thead>
+    <tbody>
+      <tr><td class="lesson">m3.2</td><td><strong>REBUILD</strong> — split A/B sandbox into 3.2a (audience lever solo) + 3.2b (length lever solo, comparing 3.2a output). Kill the diff-highlight panel. Lift the three-lever schema into a sticky F-pattern ribbon above the sandbox.</td><td>Pair 1 P1.1 + Pair 2: cognitive-load CRITICAL. Six new constructs on one screen.</td></tr>
+      <tr><td class="lesson">m3.4</td><td><strong>REBUILD (small)</strong> — pick one: (a) update lesson copy to match binary build, OR (b) extend SpotTheViolation to ship a third "borderline-with-a-fix" option. Choose (a) for speed; (b) for pedagogical fidelity.</td><td>Pair 2 A15: alignment-triangle violation; copy ↔ build mismatch.</td></tr>
+      <tr><td class="lesson">m0.2 SacredRule</td><td><strong>Polish</strong> — fix the keyboard trap (Escape = close, not advance); Tab cycle inside; return focus on close. Renderer untouched; logic only.</td><td>Pair 3 A5: WCAG 2.1.2 violation.</td></tr>
+      <tr><td class="lesson">m4.4 SkillTester</td><td><strong>Polish</strong> — wrap streaming output in <code>aria-live="polite"</code>; add <code>role="status"</code> on the "Skill running…" indicator; <code>aria-busy</code> on the form during stream.</td><td>Pair 3 Top 5 a11y.</td></tr>
+      <tr><td class="lesson">m5.3 PRDBuilder · m5.2 ProblemFrame</td><td><strong>Polish</strong> — explicit landmarks (<code>role="form"</code>, <code>aria-labelledby</code> on each fieldset), keyboard-only walkthrough test, focus-ring audit against --ledger-accent.</td><td>Pair 3 thin-a11y; strongest response-process validity surfaces (keeper).</td></tr>
+      <tr><td class="lesson">m5.4 PrototypeLauncher</td><td><strong>Polish</strong> — the blast-radius matrix is now real <code>&lt;table&gt;</code> with WCAG 1.3.1/1.3.2 (just shipped this session). Add: blast-radius badge on each tool card; saved-Prototype artifact inherits the badge.</td><td>Pair 2 keeper of the design model.</td></tr>
+      <tr><td class="lesson">all interactives</td><td><strong>System</strong> — adopt the existing-keeper widget pattern as canonical (Pair 3: "widgets carry stronger response-process validity than the KCs combined"). Wave D shifts mastery evidence from KCs toward widget completion.</td><td>Pair 3 strategic move.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Source documents</h2>
+  <ul style="list-style:none; padding-left:0; font-family:'JetBrains Mono', monospace; font-size:12.5px;">
+    <li style="margin-bottom:5px;">→ <a href="./foundation-critique-cro-margaret-holloway-2026-05-24.md" style="color:var(--ledger-accent);">foundation-critique-cro-margaret-holloway-2026-05-24.md</a></li>
+    <li style="margin-bottom:5px;">→ <a href="./foundation-critique-branch-mgr-devon-reyes-2026-05-24.md" style="color:var(--ledger-accent);">foundation-critique-branch-mgr-devon-reyes-2026-05-24.md</a></li>
+    <li style="margin-bottom:5px;">→ <a href="./foundation-critique-ops-analyst-priya-subramanian-2026-05-24.md" style="color:var(--ledger-accent);">foundation-critique-ops-analyst-priya-subramanian-2026-05-24.md</a></li>
+    <li style="margin-bottom:5px;">→ <a href="./foundation-critique-it-director-marcus-tan-2026-05-24.md" style="color:var(--ledger-accent);">foundation-critique-it-director-marcus-tan-2026-05-24.md</a></li>
+    <li style="margin-bottom:5px;">→ <a href="./foundation-critique-ceo-bill-hagedorn-2026-05-24.md" style="color:var(--ledger-accent);">foundation-critique-ceo-bill-hagedorn-2026-05-24.md</a></li>
+    <li style="margin-bottom:5px;">→ <a href="./foundation-critique-synthesis-2026-05-24.html" style="color:var(--ledger-accent);">foundation-critique-synthesis-2026-05-24.html</a> (R1 synthesis)</li>
+    <li style="margin-bottom:5px;">→ <a href="./foundation-pair1-cogload-id-2026-05-24.md" style="color:var(--ledger-accent);">foundation-pair1-cogload-id-2026-05-24.md</a></li>
+    <li style="margin-bottom:5px;">→ <a href="./foundation-pair2-design-curriculum-2026-05-24.md" style="color:var(--ledger-accent);">foundation-pair2-design-curriculum-2026-05-24.md</a></li>
+    <li style="margin-bottom:5px;">→ <a href="./foundation-pair3-a11y-assessment-2026-05-24.md" style="color:var(--ledger-accent);">foundation-pair3-a11y-assessment-2026-05-24.md</a></li>
+    <li style="margin-bottom:5px;">→ <a href="./free-assessment-3-persona-2026-05-24.md" style="color:var(--ledger-accent);">free-assessment-3-persona-2026-05-24.md</a></li>
+    <li style="margin-bottom:5px;">→ <a href="./in-depth-assessment-3-persona-2026-05-24.md" style="color:var(--ledger-accent);">in-depth-assessment-3-persona-2026-05-24.md</a></li>
+    <li style="margin-bottom:5px;">→ <a href="./e2e-4-flow-audit-vera-kowalczyk-2026-05-24.md" style="color:var(--ledger-accent);">e2e-4-flow-audit-vera-kowalczyk-2026-05-24.md</a></li>
+    <li style="margin-bottom:5px;">→ <a href="./foundation-fix-log-2026-05-24.md" style="color:var(--ledger-accent);">foundation-fix-log-2026-05-24.md</a> (what's already fixed)</li>
+  </ul>
+
+  <footer>
+    Generated 2026-05-24 · branch feature/addie-v1 · synthesis of 8 review documents across 21 reviewer perspectives · 30 findings (15 fixed, 1 critical, 14 high, 12 medium, 2 low)
+  </footer>
+
+</div>
+</body>
+</html>

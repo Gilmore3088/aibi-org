@@ -137,7 +137,16 @@ export default async function FoundationCanvas() {
                   <div className="font-serif text-[0.9rem] text-[var(--ledger-ink)] leading-tight mb-2 line-clamp-2 min-h-[2.6em]">
                     {g.module.title}
                   </div>
-                  <div className="flex items-center gap-2 text-[0.65rem] font-mono uppercase tracking-[0.16em]">
+                  <div className="flex items-center gap-2 text-[0.65rem] font-mono uppercase tracking-[0.16em] flex-wrap">
+                    <a
+                      href={`/foundation-canvas/${g.module.id}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-[var(--ledger-accent)] hover:text-[var(--ledger-ink)] underline underline-offset-2 font-semibold"
+                    >
+                      Print canvas
+                    </a>
+                    <span className="text-[var(--ledger-rule-strong)]">·</span>
                     <a
                       href={`/canvas/modules/${g.module.id}.png`}
                       target="_blank"
@@ -151,7 +160,7 @@ export default async function FoundationCanvas() {
                       href={`/canvas/modules/${g.module.id}.pdf`}
                       target="_blank"
                       rel="noreferrer"
-                      className="text-[var(--ledger-accent)] hover:text-[var(--ledger-ink)] underline underline-offset-2"
+                      className="text-[var(--ledger-muted)] hover:text-[var(--ledger-ink)] underline underline-offset-2"
                       download
                     >
                       PDF
