@@ -22,15 +22,45 @@ interface Verdict {
 
 export function KnowledgeCheck({ checks }: KnowledgeCheckProps) {
   if (checks.length === 0) return null;
+  // Audit A13 (2026-05-24): split orientation items out into a separate
+  // group below the construct checks. Construct items are the scored
+  // mastery signal; orientation items are UI / policy housekeeping that
+  // happen to be in MC form. Keeping them visually distinct preserves
+  // the mastery validity Pair 3 (Lena) flagged.
+  const constructs = checks.filter((c) => c.kind !== 'orientation');
+  const orientation = checks.filter((c) => c.kind === 'orientation');
   return (
     <section className="mt-10">
-      <KickerLabel tone="muted">Check</KickerLabel>
-      <h2 className="font-serif text-2xl text-[var(--ledger-ink)] mt-1 mb-4">A quick check</h2>
-      <div className="grid gap-4">
-        {checks.map((c) => (
-          <KnowledgeCheckItem key={c.id} item={c} />
-        ))}
-      </div>
+      {constructs.length > 0 ? (
+        <>
+          <KickerLabel tone="muted">Check</KickerLabel>
+          <h2 className="font-serif text-2xl text-[var(--ledger-ink)] mt-1 mb-4">
+            A quick check
+          </h2>
+          <div className="grid gap-4">
+            {constructs.map((c) => (
+              <KnowledgeCheckItem key={c.id} item={c} />
+            ))}
+          </div>
+        </>
+      ) : null}
+      {orientation.length > 0 ? (
+        <div className={constructs.length > 0 ? 'mt-10 pt-6 border-t border-[var(--ledger-rule)]' : ''}>
+          <KickerLabel tone="muted">Housekeeping</KickerLabel>
+          <h3 className="font-serif text-xl text-[var(--ledger-ink)] mt-1 mb-2">
+            Course-mechanics check
+          </h3>
+          <p className="text-sm text-[var(--ledger-muted)] mb-4 max-w-prose">
+            These are about how the course works, not about today&apos;s lesson.
+            They are not scored against your mastery.
+          </p>
+          <div className="grid gap-4">
+            {orientation.map((c) => (
+              <KnowledgeCheckItem key={c.id} item={c} />
+            ))}
+          </div>
+        </div>
+      ) : null}
     </section>
   );
 }

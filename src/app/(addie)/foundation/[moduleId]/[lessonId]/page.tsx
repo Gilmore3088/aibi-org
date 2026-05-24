@@ -110,7 +110,7 @@ async function loadPayload(
 
     const { data: checks } = await svc
       .from('knowledge_checks')
-      .select('id, lesson_id, ordinal, prompt, options')
+      .select('id, lesson_id, ordinal, prompt, options, kind')
       .eq('lesson_id', lessonId)
       .order('ordinal', { ascending: true });
 

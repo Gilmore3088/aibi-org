@@ -81,6 +81,12 @@ export interface KnowledgeCheckRow {
     correct?: boolean;
     explanation?: string;
   }>;
+  // Audit A13 (2026-05-24): kind discriminates scored learning-objective
+  // checks ('construct', default) from UI/policy/housekeeping checks
+  // ('orientation'). KnowledgeCheck renders orientation items in a
+  // separate group below the scored checks so the mastery signal stays
+  // construct-valid.
+  readonly kind: 'construct' | 'orientation';
 }
 
 /**
