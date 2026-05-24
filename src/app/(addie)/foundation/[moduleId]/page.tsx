@@ -18,6 +18,9 @@ interface ModuleData {
   title: string;
   summary: string | null;
   tier: 'free' | 'paid';
+  hero_image_url: string | null;
+  hero_image_alt: string | null;
+  hero_image_credit: string | null;
 }
 
 interface LessonData {
@@ -101,12 +104,26 @@ async function loadModule(moduleId: string): Promise<{
 } | null> {
   try {
     const svc = getAddieServiceClient();
-    const { data: m, error } = await svc
+    // Try with hero_image_* columns (migration 00058). Fall back to the
+    // original SELECT if the migration hasn't been applied (Postgres 42703).
+    let { data: m, error } = await svc
       .from('modules')
-      .select('id, ordinal, title, summary, tier, published')
+      .select('id, ordinal, title, summary, tier, published, hero_image_url, hero_image_alt, hero_image_credit')
       .eq('id', moduleId)
       .eq('published', true)
       .maybeSingle();
+    if (error) {
+      const fallback = await svc
+        .from('modules')
+        .select('id, ordinal, title, summary, tier, published')
+        .eq('id', moduleId)
+        .eq('published', true)
+        .maybeSingle();
+      // Cast: fallback row omits hero_image_* columns; consumer code below
+      // coalesces them to null via ((m as {...}).x) ?? null.
+      m = fallback.data as typeof m;
+      error = fallback.error;
+    }
     if (error || !m) return null;
     const { data: ls } = await svc
       .from('lessons')
@@ -121,6 +138,9 @@ async function loadModule(moduleId: string): Promise<{
         title: m.title as string,
         summary: (m.summary as string | null) ?? null,
         tier: m.tier as 'free' | 'paid',
+        hero_image_url: ((m as { hero_image_url?: string | null }).hero_image_url) ?? null,
+        hero_image_alt: ((m as { hero_image_alt?: string | null }).hero_image_alt) ?? null,
+        hero_image_credit: ((m as { hero_image_credit?: string | null }).hero_image_credit) ?? null,
       },
       lessons: (ls ?? []).map((l) => ({
         id: l.id as string,
@@ -203,7 +223,13 @@ export default async function ModuleIndexPage({
               <div className="absolute -top-4 -left-4 right-8 bottom-8 rounded-[12px] bg-[var(--ledger-tape)] -z-10" aria-hidden />
               <div className="absolute top-4 left-4 right-0 bottom-0 rounded-[12px] bg-[color-mix(in_srgb,var(--ledger-accent)_18%,var(--ledger-paper))] -z-10" aria-hidden />
               <div className="relative rounded-[12px] border border-[var(--ledger-rule-strong)] bg-[var(--ledger-paper)] p-5 shadow-[0_24px_60px_-20px_rgba(14,27,45,0.3),0_8px_18px_-8px_rgba(14,27,45,0.18)]">
-                <ModuleIllustration module={m.id} variant="hero" />
+                <ModuleIllustration
+                  module={m.id}
+                  variant="hero"
+                  photoUrl={m.hero_image_url}
+                  photoAlt={m.hero_image_alt}
+                  photoCredit={m.hero_image_credit}
+                />
               </div>
             </div>
           </div>

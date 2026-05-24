@@ -15,14 +15,54 @@ interface ModuleIllustrationProps extends SVGProps<SVGSVGElement> {
   readonly module: ModuleKey;
   /** When 'hero', renders at a larger viewBox for module-detail/course-home use. */
   readonly variant?: 'thumb' | 'hero';
+  /**
+   * Optional photographic hero. When provided, renders an <img> inside the
+   * same 320x220 aspect ratio with a hairline parchment frame and a
+   * mono-caps credit overlay. When omitted, falls back to the bespoke SVG.
+   * Source columns: addie.modules.hero_image_{url,alt,credit} (migration 00058).
+   * Per DECISIONS 2026-05-23 photography is permitted inside /foundation/* only.
+   */
+  readonly photoUrl?: string | null;
+  readonly photoAlt?: string | null;
+  readonly photoCredit?: string | null;
 }
 
 export function ModuleIllustration({
   module,
   variant = 'thumb',
   className = '',
+  photoUrl,
+  photoAlt,
+  photoCredit,
   ...rest
 }: ModuleIllustrationProps) {
+  if (photoUrl) {
+    // Photo path: drop the SVG-only props from `rest` (we receive
+    // SVGProps for type-compat with the fallback branch). The wrapper
+    // div carries the same `addie-module-illus` sizing class so layout
+    // is identical, plus `addie-module-photo` for object-fit + frame.
+    return (
+      <div
+        className={`addie-module-illus addie-module-photo ${variant === 'hero' ? 'addie-module-illus--hero' : ''} ${className}`}
+        data-module={module}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element -- intentional plain img: avoids Next/Image config for swappable operator-managed URLs */}
+        <img
+          src={photoUrl}
+          alt={photoAlt ?? ''}
+          loading="lazy"
+          decoding="async"
+          className="addie-module-photo__img"
+        />
+        {photoCredit ? (
+          <span className="addie-module-photo__credit" aria-hidden="true">
+            {photoCredit}
+          </span>
+        ) : null}
+      </div>
+    );
+  }
+
   const Body = ILLUSTRATIONS[module];
   return (
     <svg

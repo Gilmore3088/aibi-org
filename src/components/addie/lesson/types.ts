@@ -49,6 +49,12 @@ export interface ModuleRow {
   readonly title: string;
   readonly tier: 'free' | 'paid';
   readonly summary: string | null;
+  // Optional photographic hero (migration 00058). When hero_image_url is
+  // present, ModuleIllustration renders the photo inside the parchment
+  // frame; otherwise it falls back to the bespoke SVG illustration.
+  readonly hero_image_url?: string | null;
+  readonly hero_image_alt?: string | null;
+  readonly hero_image_credit?: string | null;
 }
 
 export interface TrackVariant {

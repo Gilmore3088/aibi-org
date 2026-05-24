@@ -916,3 +916,8 @@ destructive-only. Marketing surfaces remain strict-Ledger. The course
 surface uses the `addie-course-surface` class on its root wrapper so
 the relaxed rules are scoped at the CSS layer and cannot leak.
 
+
+
+---
+
+**2026-05-23 — Stock photography permitted inside `/foundation/*` via `addie.modules.hero_image_url`.** Marketing surfaces remain strict-Ledger no-photo. The Foundation course module cards and module landings can now optionally display a real photograph (community-bank lobby, branch teller window, conference room, banker at desk) framed in parchment chrome with a hairline rule and a low-opacity mono-caps credit overlay. Migration `00058_addie_modules_hero_image.sql` adds three optional columns to `addie.modules` (`hero_image_url`, `hero_image_alt`, `hero_image_credit`) and seeds curated Unsplash defaults for M0–M5. The bespoke SVG illustrations in `src/components/addie/illustrations/ModuleIllustration.tsx` remain the visual fallback whenever `hero_image_url` is NULL — no code deletion. Operator can swap the Unsplash defaults for licensed or branded photography at any time by `UPDATE`ing the `addie.modules` row — no code change required. CSP `img-src` was extended to allow `https://images.unsplash.com`; additional CDNs are appended to the same directive when other sources are introduced. This is the only place stock photography is permitted in the repo; the broader Ledger rule still holds outside `/foundation/*`.

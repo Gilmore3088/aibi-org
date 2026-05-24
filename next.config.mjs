@@ -139,7 +139,10 @@ const nextConfig = {
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' data: https://fonts.gstatic.com",
       // data:/blob: for image-resize previews and inline SVGs.
-      "img-src 'self' data: blob: https://*.supabase.co https://*.stripe.com https://q.stripe.com",
+      // images.unsplash.com permitted for /foundation/* module hero photography
+      // (migration 00058, DECISIONS 2026-05-23). Operators may add other
+      // licensed-image CDNs here when swapping defaults.
+      "img-src 'self' data: blob: https://*.supabase.co https://*.stripe.com https://q.stripe.com https://images.unsplash.com",
       "media-src 'self' blob:",
       "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.stripe.com https://*.stripe.com https://*.vercel-insights.com https://vitals.vercel-insights.com",
       "frame-src https://js.stripe.com https://hooks.stripe.com https://checkout.stripe.com https://*.calendly.com",

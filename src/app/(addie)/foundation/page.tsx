@@ -36,11 +36,25 @@ async function getSignedInUserId(): Promise<string | null> {
 async function loadModules(userId: string | null): Promise<ModuleWithLessonCount[]> {
   try {
     const svc = getAddieServiceClient();
-    const { data, error } = await svc
+    // Try with hero_image_* columns (migration 00058). If the migration has
+    // not been applied yet, Postgres returns 42703 (undefined column); fall
+    // back to the original SELECT so the page still renders the SVG path.
+    let { data, error } = await svc
       .from('modules')
-      .select('id, ordinal, title, tier, summary, published')
+      .select('id, ordinal, title, tier, summary, published, hero_image_url, hero_image_alt, hero_image_credit')
       .eq('published', true)
       .order('ordinal', { ascending: true });
+    if (error) {
+      const fallback = await svc
+        .from('modules')
+        .select('id, ordinal, title, tier, summary, published')
+        .eq('published', true)
+        .order('ordinal', { ascending: true });
+      // Cast: fallback rows omit the hero_image_* columns; downstream code
+      // already coalesces them to null via the ((m as {...}).x) ?? null path.
+      data = fallback.data as typeof data;
+      error = fallback.error;
+    }
     if (error || !data) return [];
 
     const counts: Record<string, number> = {};
@@ -78,6 +92,9 @@ async function loadModules(userId: string | null): Promise<ModuleWithLessonCount
       title: m.title as string,
       tier: m.tier as 'free' | 'paid',
       summary: (m.summary as string | null) ?? null,
+      hero_image_url: ((m as { hero_image_url?: string | null }).hero_image_url) ?? null,
+      hero_image_alt: ((m as { hero_image_alt?: string | null }).hero_image_alt) ?? null,
+      hero_image_credit: ((m as { hero_image_credit?: string | null }).hero_image_credit) ?? null,
       lesson_count: counts[m.id as string] ?? 0,
       completed: completed[m.id as string] ?? 0,
     }));
@@ -179,7 +196,13 @@ export default async function FoundationHomePage() {
                       Module {featuredModule.ordinal}
                     </span>
                   </div>
-                  <ModuleIllustration module={featuredModule.id as 'm0'} variant="hero" />
+                  <ModuleIllustration
+                    module={featuredModule.id as 'm0'}
+                    variant="hero"
+                    photoUrl={featuredModule.hero_image_url}
+                    photoAlt={featuredModule.hero_image_alt}
+                    photoCredit={featuredModule.hero_image_credit}
+                  />
                   <h2 className="mt-5 font-serif text-2xl text-[var(--ledger-ink)] leading-tight">
                     {featuredModule.title}
                   </h2>
@@ -238,6 +261,9 @@ export default async function FoundationHomePage() {
                     completed={m.completed}
                     current={inProgress}
                     delay={(idx % 5) + 1}
+                    heroImageUrl={m.hero_image_url}
+                    heroImageAlt={m.hero_image_alt}
+                    heroImageCredit={m.hero_image_credit}
                   />
                 </li>
               );
