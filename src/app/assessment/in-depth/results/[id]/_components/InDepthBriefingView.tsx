@@ -125,11 +125,21 @@ interface RegulatoryRow {
 }
 
 const REGULATORY_ROWS: readonly RegulatoryRow[] = [
+  // Mapping rationale per row is published in docs/in-depth-methodology-v2.md
+  // §3 (table). Each row picks the v2 dimension(s) that most directly
+  // determine the institution's posture against that reference.
+  // Wave C critique C1 (2026-05-24): mappings tightened. CFPB Fair
+  // Lending no longer ties to builder-potential (the original picked
+  // it because builders run prototypes; the literature is clear that
+  // disparate-impact testing is a literacy + control problem, not a
+  // builder bench problem). SR 11-7 swapped from current-usage to
+  // training-infrastructure because validation discipline is a
+  // people + process matter, not a tool inventory matter.
   {
     ref: 'SR 11-7',
     refSub: 'Model Risk Management · 2011 · FRB / OCC',
     what: 'Inventory, validation, and ongoing monitoring of any model used in business decisions.',
-    dimensions: ['security-posture', 'current-ai-usage'],
+    dimensions: ['security-posture', 'training-infrastructure'],
   },
   {
     ref: 'FFIEC IT Handbook',
@@ -153,7 +163,7 @@ const REGULATORY_ROWS: readonly RegulatoryRow[] = [
     ref: 'CFPB Fair Lending',
     refSub: 'UDAAP · Reg B / Reg V · 2023 guidance',
     what: 'Disparate-impact testing on any model influencing credit decisions.',
-    dimensions: ['security-posture', 'builder-potential'],
+    dimensions: ['ai-literacy-level', 'security-posture'],
   },
   {
     ref: 'GLBA · Safeguards',

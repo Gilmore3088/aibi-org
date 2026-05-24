@@ -115,14 +115,14 @@ the row's status is derived from the **floor** of those dimensions'
 percentages (not the average). Rationale: examiners do not grade on the
 mean; one weak control is the finding.
 
-| Reference                       | Bound dimensions                                  |
-|---------------------------------|---------------------------------------------------|
-| SR 11-7 (Model Risk Management) | Security Posture · Current AI Usage               |
-| FFIEC IT Handbook               | Security Posture · Leadership Buy-In              |
-| NCUA 24-CU-XX                   | Leadership Buy-In · Security Posture              |
-| FinCEN AML Guidance             | Experimentation Culture · Security Posture        |
-| CFPB Fair Lending               | Security Posture · Builder Potential              |
-| GLBA Safeguards                 | Security Posture · Training Infrastructure        |
+| Reference                       | Bound dimensions                                  | Rationale                                                                                |
+|---------------------------------|---------------------------------------------------|------------------------------------------------------------------------------------------|
+| SR 11-7 (Model Risk Management) | Security Posture · Training Infrastructure        | Validation + ongoing monitoring is a controls + people-process discipline                |
+| FFIEC IT Handbook               | Security Posture · Leadership Buy-In              | Vendor due diligence and TPRM concentration risk are exec-sponsored controls             |
+| NCUA 24-CU-XX                   | Leadership Buy-In · Security Posture              | Board oversight + written policy + disclosure                                            |
+| FinCEN AML Guidance             | Experimentation Culture · Security Posture        | Innovative approaches sanctioned only when paired with controls + testing                |
+| CFPB Fair Lending               | AI Literacy Level · Security Posture              | Disparate-impact recognition is a literacy + model-validation problem, not a builder one |
+| GLBA Safeguards                 | Security Posture · Training Infrastructure        | Encryption + access controls + incident-response readiness                               |
 
 Status thresholds on the floor pct: < 50% → **Exam risk** · 50–74% →
 **Coordinated** · 75–89% → **Defensible** · ≥ 90% → **Top decile**.

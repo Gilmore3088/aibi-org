@@ -5,7 +5,12 @@
 
 -- ── M0 — Orientation ────────────────────────────────────────────────────────
 UPDATE addie.lessons SET
-  objective_md = 'Place yourself on the course map and pick the track that matches the work you actually do.',
+  -- C2 follow-up (audit Wave C critique 2026-05-24): the prior objective
+  -- ("Place yourself on the course map and pick the track…") paraphrased
+  -- what LessonShellHeader already states. Re-cast as a verb the shell
+  -- does not name — telling free-side scope (M0–M3) from paid-side scope
+  -- (M4–M5) so the gate later in the funnel doesn't surprise the learner.
+  objective_md = 'Tell apart what is free in this course (M0–M3) from what is paid (M4–M5), and pick your role track.',
   transfer_md  = 'On Monday, open the Toolbox once and look at what is already in it; that is the shape of what you will be saving for the rest of the course.'
 WHERE id = 'm0.1';
 
