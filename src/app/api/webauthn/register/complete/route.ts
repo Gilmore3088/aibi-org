@@ -53,6 +53,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     response: body.response,
     deviceLabel: body.deviceLabel,
     originOverride,
+    hostOverride: request.headers.get('host') ?? undefined,
   });
 
   if (!result.verified) {

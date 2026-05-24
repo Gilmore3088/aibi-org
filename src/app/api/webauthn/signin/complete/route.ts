@@ -30,6 +30,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   const verifyResult = await completeAuthentication({
     response: body.response,
     originOverride,
+    hostOverride: request.headers.get('host') ?? undefined,
   });
 
   if (!verifyResult.verified || !verifyResult.email) {

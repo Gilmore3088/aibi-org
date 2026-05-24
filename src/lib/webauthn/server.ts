@@ -39,8 +39,17 @@ const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? 'https://aibankinginstitute.com';
 
 /** Apex host of the site (e.g. "aibankinginstitute.com"). WebAuthn binds
- *  credentials to this host; changing it invalidates every passkey. */
-function rpID(): string {
+ *  credentials to this host; the browser refuses any rpID that isn't
+ *  the page's eTLD+1 or a registrable-suffix of it. The hostOverride
+ *  is the live request hostname — callers MUST pass it on preview /
+ *  Vercel deploys, otherwise the SITE_URL hostname leaks through and
+ *  the browser rejects every assertion. */
+function rpID(hostOverride?: string): string {
+  if (hostOverride) {
+    // Strip any port and lowercase. Browser host header is e.g.
+    // "aibi-abc.vercel.app" or "aibankinginstitute.com:443".
+    return hostOverride.split(':')[0]!.toLowerCase();
+  }
   try {
     return new URL(SITE_URL).hostname;
   } catch {
@@ -48,8 +57,8 @@ function rpID(): string {
   }
 }
 
-/** Origin used for assertion verification. Preview deploys have to
- *  pass their own origin; the helper accepts an override. */
+/** Origin used for assertion verification. Caller passes the request's
+ *  origin header for preview deploys. */
 function expectedOrigin(originOverride?: string): string {
   return originOverride ?? SITE_URL;
 }
@@ -62,6 +71,11 @@ interface BeginRegistrationOpts {
   readonly userId: string;
   readonly userEmail: string;
   readonly displayName?: string;
+  /** Live request hostname — required on Vercel preview / any host
+   *  that isn't NEXT_PUBLIC_SITE_URL. The rpID bound into the issued
+   *  options must equal the page's eTLD+1 or the browser will reject
+   *  the attestation. */
+  readonly hostOverride?: string;
 }
 
 export async function beginRegistration(
@@ -83,7 +97,7 @@ export async function beginRegistration(
 
   const optionsForLib: GenerateRegistrationOptionsOpts = {
     rpName: RP_NAME,
-    rpID: rpID(),
+    rpID: rpID(opts.hostOverride),
     userName: opts.userEmail,
     userDisplayName: opts.displayName ?? opts.userEmail,
     // Encode the user id as bytes; some platforms truncate at 64 bytes
@@ -114,6 +128,7 @@ interface CompleteRegistrationOpts {
   readonly userId: string;
   readonly response: RegistrationResponseJSON;
   readonly originOverride?: string;
+  readonly hostOverride?: string;
   readonly deviceLabel?: string;
 }
 
@@ -143,7 +158,7 @@ export async function completeRegistration(
       response: opts.response,
       expectedChallenge: challengeRow.challenge,
       expectedOrigin: expectedOrigin(opts.originOverride),
-      expectedRPID: rpID(),
+      expectedRPID: rpID(opts.hostOverride),
       requireUserVerification: false,
     });
   } catch (err) {
@@ -186,6 +201,7 @@ export async function completeRegistration(
 
 interface BeginAuthenticationOpts {
   readonly email?: string;
+  readonly hostOverride?: string;
 }
 
 export async function beginAuthentication(opts: BeginAuthenticationOpts) {
@@ -221,7 +237,7 @@ export async function beginAuthentication(opts: BeginAuthenticationOpts) {
   }
 
   const options = await generateAuthenticationOptions({
-    rpID: rpID(),
+    rpID: rpID(opts.hostOverride),
     userVerification: 'preferred',
     ...(allowCredentials && allowCredentials.length > 0
       ? { allowCredentials }
@@ -241,6 +257,7 @@ export async function beginAuthentication(opts: BeginAuthenticationOpts) {
 interface CompleteAuthenticationOpts {
   readonly response: AuthenticationResponseJSON;
   readonly originOverride?: string;
+  readonly hostOverride?: string;
 }
 
 interface CompleteAuthenticationResult {
@@ -279,7 +296,7 @@ export async function completeAuthentication(
       response: opts.response,
       expectedChallenge: challengeRow.challenge,
       expectedOrigin: expectedOrigin(opts.originOverride),
-      expectedRPID: rpID(),
+      expectedRPID: rpID(opts.hostOverride),
       credential: {
         id: cred.credential_id as string,
         publicKey: base64UrlToBuffer(cred.public_key as string),

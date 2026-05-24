@@ -22,6 +22,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       ? body.email.trim().toLowerCase()
       : undefined;
 
-  const options = await beginAuthentication({ email });
+  const options = await beginAuthentication({
+    email,
+    hostOverride: request.headers.get('host') ?? undefined,
+  });
   return NextResponse.json(options);
 }

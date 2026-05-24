@@ -8,7 +8,7 @@
 // Response: PublicKeyCredentialCreationOptionsJSON (passed directly to
 //           navigator.credentials.create on the client).
 
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
@@ -17,7 +17,7 @@ import { beginRegistration } from '@/lib/webauthn/server';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-export async function POST(): Promise<NextResponse> {
+export async function POST(request: NextRequest): Promise<NextResponse> {
   if (!isSupabaseConfigured()) {
     return NextResponse.json({ error: 'Auth not configured.' }, { status: 503 });
   }
@@ -46,6 +46,7 @@ export async function POST(): Promise<NextResponse> {
     userEmail: user.email,
     displayName:
       (user.user_metadata?.full_name as string | undefined) ?? user.email,
+    hostOverride: request.headers.get('host') ?? undefined,
   });
 
   return NextResponse.json(options);
