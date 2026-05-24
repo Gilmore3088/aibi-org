@@ -319,13 +319,15 @@ function M3Illustration() {
         OK
       </text>
 
-      {/* Prompt anatomy rows */}
+      {/* Prompt anatomy rows — card spans x=50..270 (width 220); bars
+          start at x=104 with ~8px right inset → max usable bar width = 158.
+          Widths capped to stay inside the card frame. */}
       {[
-        { y: 70, label: 'role', w: 70, c: 'var(--ledger-accent)' },
-        { y: 88, label: 'task', w: 190, c: 'var(--ledger-ink)' },
-        { y: 106, label: 'context', w: 150, c: 'var(--ledger-ink-2)' },
-        { y: 124, label: 'format', w: 110, c: 'var(--ledger-accent-2)' },
-        { y: 142, label: 'constraint', w: 90, c: 'var(--ledger-muted)' },
+        { y: 70, label: 'role', w: 56, c: 'var(--ledger-accent)' },
+        { y: 88, label: 'task', w: 150, c: 'var(--ledger-ink)' },
+        { y: 106, label: 'context', w: 130, c: 'var(--ledger-ink-2)' },
+        { y: 124, label: 'format', w: 96, c: 'var(--ledger-accent-2)' },
+        { y: 142, label: 'constraint', w: 78, c: 'var(--ledger-muted)' },
       ].map((row) => (
         <g key={row.label}>
           <text x="62" y={row.y + 4} fontFamily="JetBrains Mono, monospace" fontSize="7" fill="var(--ledger-muted)" letterSpacing="1.4">
