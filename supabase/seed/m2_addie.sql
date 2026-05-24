@@ -50,49 +50,29 @@ INSERT INTO addie.lessons (
 VALUES (
   'm2.1', 'm2', 1, 'Getting access', 'video', 10,
   false, NULL, NULL,
-  $$# Getting access
+  $$Before you touch a tool you need an account, and the way you get that account quietly signals to your institution how seriously you take the rules. This lesson walks the three decisions that come up in the first thirty seconds — and what to do when the firewall says no.
 
-Before you can use any generative AI tool, you need an account. This lesson
-walks through what that looks like in practice for a community-bank or
-credit-union professional.
+## SCRIPT (verbatim)
 
-## What to expect
-- Most consumer tools (Claude, ChatGPT, Gemini) offer a free tier you can
-  sign up for with a work or personal email and a password. Free tiers are
-  capable enough for everything in this course.
-- "Sign in with Google" or "Sign in with Microsoft" is convenient but ties
-  the account to your workplace identity. Read the screen before you click.
-- If your institution has rolled out a paid plan (Claude for Work, ChatGPT
-  Enterprise, Copilot for Microsoft 365), use the SSO link your IT team
-  sent — not the public sign-up page.
+> "Account setup is two minutes of work and three small judgement calls. Get the judgement calls right and you never have to revisit them.
+>
+> **One: decide whose email signs the account.** Most consumer tools — Claude, ChatGPT, Gemini — let you sign up with a work or a personal email. The free tier on any of them is capable enough for everything in this course. If your institution has rolled out a paid plan (Claude for Work, ChatGPT Enterprise, Microsoft 365 Copilot), use the single sign-on link your IT team sent, not the public sign-up page. If nothing has been rolled out yet, a personal-email free account on your personal device is fine for learning — provided the data rule from Module 0 still holds, which it does.
+>
+> **Two: read the 'Continue with Google' / 'Continue with Microsoft' screen before you click.** That button is convenient. It also ties the account to your workplace identity, which means your institution can see usage data and your IT team can revoke access. For training on your personal time, a plain email-and-password account avoids that entanglement. For tools your institution has actually sanctioned, the SSO button is the right answer — your activity should be visible.
+>
+> **Three: if IT has blocked the domain, do not route around it.** A blocked claude.ai or chat.openai.com at the firewall is almost never 'no forever.' It usually means IT wants visibility, a risk review is in flight, or a vendor decision has not been made. The right next step is to ask which tool is sanctioned for staff use, then use that one. The wrong next step is a personal hotspot on a work device, an emailed file to a personal account, or a screenshot pasted into a chat. Any of those turn a learning question into a data-loss incident.
+>
+> Hold those three together: pick the right identity for the right purpose, read the SSO screen, and treat a firewall block as a signal not a puzzle. The sandbox in Lesson 2.3 runs without any of this — but by Module 3 you will want a real model on a real account, and you want that account set up cleanly the first time."
 
-## If IT has blocked the site
-Some institutions block public AI domains at the firewall. That is not a
-"no forever." It usually means:
-- IT wants visibility into who is using what.
-- A risk review is in progress.
-- A vendor decision has not been made.
+> [tip] If you are not sure whether your institution has a sanctioned tool yet, ask in writing — a short email to IT or your risk officer. The answer is useful either way: a yes gives you the right tool, a no gives you cover to learn on a personal account.
 
-Three calm next steps:
-1. Ask your IT or risk officer which tool is sanctioned for staff use.
-2. Use the sanctioned tool from a sanctioned device.
-3. If nothing is sanctioned yet, work from your personal device on
-   personal time while you learn — and **never** paste customer or
-   confidential information into anything you signed up for personally.
-   (That is Module 0's rule, and it does not relax here.)
+> [warn] The single biggest tripwire in this lesson is the SSO button. Once you've clicked "Continue with [your institution]," the account is wired to your employer. That is correct for sanctioned tools and wrong for everything else. Read the screen.
 
-## SSO basics
-Single sign-on lets the institution control who has access without each
-person managing a separate password. If you see a screen that says
-"Continue with [your institution]," that is SSO. The convenience is
-real; the trade-off is that your activity is more visible to IT. For
-training, that is usually a feature, not a bug.
+## PRODUCTION
 
-## What you'll need for Lesson 2.3
-By the end of this module you will have a working session with a real
-model. You don't need a paid account. A free Claude, ChatGPT, or Gemini
-account is enough — and the sandbox in 2.3 runs without you needing
-anything.
+- Open on a side-by-side: two sign-up screens, one with SSO, one without. Annotate the difference.
+- Build the three judgement calls as three labelled cards as the narrator names them.
+- Closing card holds the data-discipline rule from Module 0 as a footnote — it does not relax in this lesson.
 $$,
   true
 )
@@ -117,52 +97,31 @@ INSERT INTO addie.lessons (
 VALUES (
   'm2.2', 'm2', 2, 'What each tool is for', 'video', 12,
   false, NULL, NULL,
-  $$# What each tool is for
+  $$The tools all look like a chat box. They are not all the same job. Four families show up in a community bank, each with a clear best-fit task — and reaching for the wrong family is the single most common reason a new AI user concludes "this thing isn't very good."
 
-The tools all look like a chat box. They are not all the same job. This
-lesson walks through four families you will run into and what each one
-is best at for a community-bank or credit-union professional.
+## SCRIPT (verbatim)
 
-## 1. The thinking partner
-Claude, ChatGPT, Gemini. Best for: drafting a member email, summarizing
-a long policy in plain English, explaining a concept to a new hire,
-restructuring a meeting note, comparing two options. Treat it like an
-articulate junior colleague who reads fast and never gets tired. It will
-still hallucinate. You still check.
+> "Four families. Same chat-shaped interface. Different jobs. Once you can name the four, you stop fighting the wrong tool.
+>
+> **One: the thinking partner.** Claude, ChatGPT, Gemini. Best for drafting a member email, summarising a long policy in plain English, explaining a concept to a new hire, restructuring a messy meeting note, comparing two options side by side. Treat it like an articulate junior colleague who reads fast, never gets tired, and occasionally confidently invents a fact. It will still hallucinate. You still check. This is where eighty percent of your weekly work lives.
+>
+> **Two: the research assistant.** Perplexity, ChatGPT with search turned on, Claude with search. Best for looking up a public regulation, finding a published study, getting cited links back instead of free-floating prose. The model is paired with a search engine and shows you where the answer came from. Use this whenever 'what is the current rule' matters — last Tuesday's OCC bulletin, a Reg E section, the FDIC's most recent quarterly figure. The citation is the point.
+>
+> **Three: the construction crew.** Replit Agents, Lovable, v0, Claude Code. Best for turning a description into running software — a small internal tool, a dashboard, a script, a prototype. You are not the engineer here. You are the product owner describing what you want. This is where 'vibe coding' lives. It is real, it works, and it is overkill for most of what you do day to day. We touch builders again in Module 5.
+>
+> **Four: the embedded copilot.** Microsoft 365 Copilot, Google Workspace Gemini, Zoom AI Companion. Best when the file, the meeting, or the inbox itself is the input you want help with — summarise this meeting, draft a reply to this email, build a first-pass deck from this Word doc. The advantage is that the tool already sees your environment. The trade-off is that the tool already sees your environment, so the licensing and tenant settings have to be right or the data discipline rule gets quietly violated by the tool itself.
+>
+> Hold those four together as a routing decision: thinking partner for most drafting and analysis, research assistant when the source matters, construction crew when you are building, copilot when the input is the file in front of you. Pick the family that fits the job, not the family that fits the icon on your taskbar."
 
-## 2. The research assistant
-Perplexity, ChatGPT with search, Claude with search. Best for: looking
-up a public regulation, finding a published study, getting cited links
-back instead of just text. The model is paired with a search engine and
-shows you where its answers came from. Use this when "what is the
-current rule" matters and you need a source you can verify.
+> [tip] When a chat answer feels thin, the most common fix is not 'try harder' — it's 'switch families.' If you keep asking a plain thinking-partner for today's prime rate, you will keep getting plausible-sounding wrong answers. Move to a research assistant. Same question, different bucket, real citations.
 
-## 3. The construction crew
-Replit Agent, Lovable, Bolt, Claude Code. Best for: turning a description
-into a working small app, a dashboard, or a script. You are not the
-engineer — you are the product owner describing what you want. This is
-where "vibe coding" lives. It is real, it works, and it is overkill for
-most of what you do day to day. We touch this lightly in Module 5.
+> [warn] An embedded copilot inside Microsoft 365 or Google Workspace can only honour your institution's data boundary if your institution has actually licensed it on the right tenant. The branded button looks the same either way. Confirm with IT before treating a copilot as 'safe by default' for internal documents.
 
-## 4. The embedded copilot
-Microsoft 365 Copilot, Google Workspace Gemini, Zoom AI Companion. Best
-for: summarizing your meetings, drafting a reply in your inbox, building
-the first version of a slide deck from a Word doc. The advantage is that
-it already sees your files and your calendar. The trade-off is that it
-sees your files and your calendar — your institution needs to have
-licensed it on a tenant that respects your data boundary.
+## PRODUCTION
 
-## A working rule
-Pick the tool that fits the job, not the tool you happen to have open.
-A thinking partner is the right answer 80% of the time. A research
-assistant is right when sources matter. A construction crew is right
-when you are building. A copilot is right when the file or the meeting
-is the input.
-
-## What's next
-In Lesson 2.3 you will have your first real conversation with a model
-inside a safe sandbox — no account needed, no real data, just the
-muscle memory of asking and reading the answer.
+- Four labelled cards build in sequence as the narrator names each family. Each card carries the family name, two example tools, and a one-line best-fit task.
+- Close on a routing-card grid: 4 quadrants, each with the one-line job description.
+- Hand off to Lesson 2.3 with a single line: "Next, you talk to one — inside a sandbox so the first contact is safe."
 $$,
   true
 )
@@ -187,23 +146,29 @@ INSERT INTO addie.lessons (
 VALUES (
   'm2.3', 'm2', 3, 'Your first conversation', 'sandbox', 15,
   false, 'm2-3-first-conversation', 'first_conversation',
-  $$# Your first conversation
+  $$First contact. The sandbox below talks to the same Anthropic model you would use on claude.ai, with one difference: the guardrails are appropriate to a training environment, which means you can be curious without being careful. By the time you finish this lesson, the strangeness will be gone and a real model will feel like ordinary software.
 
-This is your first contact with a real model. The sandbox below talks to
-the same Anthropic model you would talk to on claude.ai — only with
-guardrails appropriate to a training environment. Pick a starter prompt
-from the list. If you want to give the model something to work with,
-paste a short public passage (a regulation excerpt, a public policy
-statement) into the optional text box.
+## SCRIPT (verbatim)
 
-The point of this lesson is not to be clever. The point is to feel what
-it is like to ask a model for help and read what comes back. Notice the
-shape of the answer, the tone, the length. Notice what is useful and
-what you would change.
+> "Three things to do in the sandbox, in order. Each one is intentionally small. Cleverness is not the point — the point is to see what the model actually returns to a banker's question.
+>
+> **One: pick a starter prompt from the list.** They are written from the seat of a community-bank or credit-union professional. Pick the one closest to your role; if nothing fits perfectly, pick the one you are most curious about. Hit run.
+>
+> **Two: read the response slowly the first time.** Notice the shape — the way it opens, the way it structures a list, the way it closes. Notice the length, which is usually a hair longer than you would have written yourself. Notice what is useful and what you would cut. The shape is information about the model; it tells you what to ask for next time.
+>
+> **Three: optionally, give the model a short public passage as context.** A paragraph from an interagency advisory. A public CFPB rule summary. A press release from another bank. Paste it into the optional context box, ask the model to summarise or rephrase it, and watch how the answer changes when the model has something concrete to work from. Public material only — the same rule from Module 0 applies, and the sandbox will block a paste that looks like PII.
+>
+> When the response comes back, save it as your First Conversation artifact. You will pull it back out in Module 3 when we look at how prompting changes the answer. That comparison is more useful if today's version is honest — so resist the urge to keep re-running until the answer impresses you. The first imperfect answer is the better starting point."
 
-When the response comes back, save it as your **First Conversation**
-artifact. You will pull it back out in Module 3 when we look at how
-prompting changes the answer.
+> [tip] If the model's first response is shorter than you wanted, tell it: "Give me three more paragraphs of detail on the second point." Specificity is the lever. You do not have to start over.
+
+> [warn] The sandbox will warn you and block the send if your paste contains anything that looks like an account number, SSN, or full member name. The block is a feature. Outside this course, no public tool catches that for you — the discipline has to be yours.
+
+## PRODUCTION
+
+- The sandbox surface is the screen. Narration plays above the sandbox on first visit; replay button after.
+- The starter prompts pre-load with one per role track plus three generic options.
+- "Save to Toolbox" button is highlighted after the first response renders.
 $$,
   true
 )
@@ -229,20 +194,29 @@ INSERT INTO addie.lessons (
 VALUES (
   'm2.4', 'm2', 4, 'Where AI fits in your week', 'worksheet', 10,
   true, 'm2-4-where-ai-fits-worksheet', 'where_ai_fits',
-  $$# Where AI fits in your week
+  $$You have seen the tools, you have had one conversation. Before you leave Module 2, get concrete. Where in your actual week would a model save you time? Vague answers produce vague prompts in Module 3. Specific answers produce a Starter Prompt Pack you reach for on a Monday.
 
-You have seen what the tools are and you have had one conversation.
-Before you leave Module 2, get concrete: where in your week would a
-model actually save you time?
+## SCRIPT (verbatim)
 
-The worksheet below is tailored to your role. Fill in five to seven
-fields with the moments where AI could plausibly help. Be specific — a
-recurring task, a recurring document, a recurring conversation. Keep
-the language honest: "what would I want help with on a Monday at 9am?"
+> "Three rules for filling out the worksheet honestly. Honest beats clever every time, because the worksheet feeds the prompts you will actually build next.
+>
+> **One: pick recurring moments, not exceptional ones.** A vendor question you answer four times a quarter, not the once-in-five-years exam finding. A member email you draft a variant of every week, not the unique escalation. The whole point of a Toolbox is to compress the work you do over and over. One-offs do not earn their place there.
+>
+> **Two: be specific about the artifact, not the wish.** 'Save me time on emails' is a wish. 'Draft a calm reply to a member who feels an overdraft fee was unfair' is an artifact. The first cannot be prompted. The second turns into a working prompt in fifteen minutes. If a field on the worksheet feels generic, ask 'what would the file or message look like at 9am on Monday?' and write that.
+>
+> **Three: name the line you will not cross.** Every track's worksheet ends with the field 'one thing I would never put through any AI tool, no matter how convenient.' That line is yours, not ours. Writing it down now makes it easier to hold later, when a colleague suggests a workaround that feels harmless. Your floor in writing is worth more than your floor in your head.
+>
+> Hold those three together. Recurring not exceptional, artifact not wish, floor in writing. The worksheet you save becomes the seed for your Starter Prompt Pack in Module 3, and the pack is only useful to the degree the worksheet was honest. Take ten minutes."
 
-The worksheet you save here becomes the seed for the **Starter Prompt
-Pack** you build in Module 3. The more honest you are now, the more
-useful that pack will be.
+> [tip] If two of your seven fields end up identical, that is a signal — not a problem. It usually means the underlying work is a single recurring task with two faces. Note that in the margin; it becomes one prompt, not two.
+
+> [warn] Do not fill the worksheet with member names, account numbers, or specifics from a real case in front of you. The point is to describe the shape of the work, not paste the work. The data discipline rule applies inside Toolbox artifacts too.
+
+## PRODUCTION
+
+- The worksheet is the screen. Narration above plays once on first visit.
+- Each field shows a faint placeholder example pulled from the learner's track.
+- "Save to Toolbox" button highlights once five of seven fields have any content.
 $$,
   true
 )
