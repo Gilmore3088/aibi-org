@@ -26,6 +26,11 @@ interface EmailGateProps {
           Lets the post-capture surface show a soft nudge to re-submit with
           a work email. See #189 + 2026-05-18 product call. */
       readonly usedFreeEmail?: boolean;
+      /** True when /api/capture-email provisioned a fresh auth user
+       *  AND issued a session for this visitor. The page-level handler
+       *  uses this to redirect into /auth/passkey/enroll so the new
+       *  session gets a real credential attached. */
+      readonly autoSignedIn?: boolean;
     },
   ) => void;
 }
@@ -189,6 +194,7 @@ export function EmailGate({
         error?: string;
         profileId?: string | null;
         mailerliteTagAdded?: boolean;
+        autoSignedIn?: boolean;
       };
       if (!res.ok) {
         throw new Error(data.error ?? 'Something went wrong. Please try again.');
@@ -215,6 +221,7 @@ export function EmailGate({
         institutionName: institutionName.trim() || undefined,
         profileId: data.profileId ?? null,
         usedFreeEmail: isFreeEmailDomain(emailToUse),
+        autoSignedIn: Boolean(data.autoSignedIn),
       });
     } catch (err) {
       setStatus('error');

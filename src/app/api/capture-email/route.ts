@@ -17,6 +17,7 @@ import {
 } from '@/lib/mailerlite/sequences';
 import { sendAssessmentBreakdown } from '@/lib/resend';
 import { ensureAuthUser } from '@/lib/supabase/auth-admin';
+import { issueSessionForEmail } from '@/lib/webauthn/issue-session';
 import {
   checkEmailCaptureLimit,
   hashIp,
@@ -158,11 +159,13 @@ export async function POST(request: Request) {
     maxScore,
     dimensionBreakdown,
     firstName,
+    institutionName,
     marketingOptIn,
   } = body;
 
   const completedAt = new Date().toISOString();
   const trimmedFirstName = firstName?.trim() || undefined;
+  const trimmedInstitution = institutionName?.trim() || undefined;
 
   // MailerLite fires only when the user explicitly opted in to marketing.
   // Without consent the email is treated as transactional only — assessment
@@ -175,12 +178,41 @@ export async function POST(request: Request) {
     }).catch((err) => console.warn('[capture-email] mailerlite skip', err));
   }
 
-  // Provision a Supabase Auth account for this email (idempotent, fire-and-
-  // forget). Lets the assessment-taker log into /dashboard later without a
-  // separate sign-up step.
-  ensureAuthUser(email).catch((err) =>
-    console.warn('[capture-email] auth-admin skip', err),
-  );
+  // Provision a Supabase Auth account for this email (idempotent).
+  // Pass identity through so the auth user's user_metadata is populated
+  // — the post-assessment "Save your report" prompt routes the user
+  // straight to passkey enrollment, where their name/institution should
+  // already be on the row.
+  //
+  // SECURITY (account-takeover defense):
+  // - When ensureAuthUser CREATED the row (net-new email), the email
+  //   is unclaimed, so we issue a session and push the visitor into
+  //   passkey enrollment. The biometric on their device becomes the
+  //   real credential — anyone trying to take over later needs that
+  //   passkey.
+  // - When the email already existed, we do NOT issue a session. The
+  //   account already has an owner; auto-login on email submission
+  //   would let any visitor type a victim's email and become them.
+  //   Returning users go through the regular /auth/login flow.
+  let autoSignedIn = false;
+  try {
+    const authResult = await ensureAuthUser(email, {
+      fullName: trimmedFirstName ?? null,
+      institutionName: trimmedInstitution ?? null,
+    });
+    if (authResult.created && authResult.userId) {
+      const sessionResult = await issueSessionForEmail(email);
+      autoSignedIn = sessionResult.ok;
+      if (!sessionResult.ok) {
+        console.warn(
+          '[capture-email] session-issue skip:',
+          sessionResult.error,
+        );
+      }
+    }
+  } catch (err) {
+    console.warn('[capture-email] auth-admin skip', err);
+  }
 
   // Persist to Supabase user_profiles when configured.
   // Best-effort: a Supabase failure must not block the response — the
@@ -303,5 +335,10 @@ export async function POST(request: Request) {
     ok: true,
     profileId,
     mailerliteTagAdded: mailerliteTagged,
+    // True when the auth user was created for this email AND a session
+    // was issued. The client uses this to redirect into
+    // /auth/passkey/enroll so the visitor's new session gets a real
+    // credential attached before it expires.
+    autoSignedIn,
   });
 }

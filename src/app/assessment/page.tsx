@@ -125,6 +125,21 @@ export default function AssessmentPage() {
                 setCapturedInstitution(extras.institutionName ?? null);
                 setCapturedProfileId(extras.profileId ?? null);
                 setUsedFreeEmail(extras.usedFreeEmail ?? false);
+
+                // Brand-new email → server issued a session for this
+                // visitor (see /api/capture-email). Push them straight
+                // into passkey enrollment so the session gets a real
+                // credential before it expires. The `next` param brings
+                // them back to /results/<id> after they touch the
+                // sensor. Returning emails skip this branch entirely
+                // (account already has an owner; SaveReportBanner on
+                // the results surface walks them through /auth/login).
+                if (extras.autoSignedIn && extras.profileId) {
+                  const next = `/results/${extras.profileId}`;
+                  window.location.href = `/auth/passkey/enroll?next=${encodeURIComponent(next)}`;
+                  return;
+                }
+
                 // Update the URL bar to the bookmarkable per-profile path
                 // (`/results/${profileId}`). Uses replaceState so the
                 // component stays mounted — no flicker, no remount, no
