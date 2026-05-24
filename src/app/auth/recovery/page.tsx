@@ -57,7 +57,7 @@ export default function RecoveryPage() {
   }
 
   return (
-    <LedgerSurface showHeader={false}>
+    <LedgerSurface showHeader={false} showFooter={false}>
       <div
         style={{
           width: '100%',

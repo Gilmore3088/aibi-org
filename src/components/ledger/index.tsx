@@ -36,6 +36,7 @@ export function LedgerSurface({
   headerRight,
   footer,
   showHeader = true,
+  showFooter = true,
   children,
 }: {
   brandLine1?: string;
@@ -44,6 +45,7 @@ export function LedgerSurface({
   headerRight?: ReactNode;
   footer?: ReactNode;
   showHeader?: boolean;
+  showFooter?: boolean;
   children: ReactNode;
 }) {
   return (
@@ -62,14 +64,15 @@ export function LedgerSurface({
         </header>
       )}
       <main className="ledger-surface__main">{children}</main>
-      {footer ? (
-        <footer className="ledger-surface__footer">{footer}</footer>
-      ) : (
-        <footer className="ledger-surface__footer">
-          <span>© {new Date().getFullYear()} The AI Banking Institute</span>
-          <span>Editorial · Ledger</span>
-        </footer>
-      )}
+      {showFooter &&
+        (footer ? (
+          <footer className="ledger-surface__footer">{footer}</footer>
+        ) : (
+          <footer className="ledger-surface__footer">
+            <span>© {new Date().getFullYear()} The AI Banking Institute</span>
+            <span>Editorial · Ledger</span>
+          </footer>
+        ))}
     </div>
   );
 }
