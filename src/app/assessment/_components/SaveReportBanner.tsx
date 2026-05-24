@@ -63,9 +63,9 @@ export function SaveReportBanner({
       />
       <aside
         aria-label="Save this report to your account"
-        className="max-w-4xl mx-auto mb-10 border border-[color:var(--color-terra)]/40 bg-[color:var(--color-parch)] rounded-[3px] p-5 md:p-6 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-3"
+        className="max-w-4xl mx-auto mb-10 border border-[color:var(--color-terra)]/40 bg-[color:var(--color-parch)] rounded-[3px] p-5 md:p-6 flex flex-col md:flex-row md:items-baseline md:justify-between gap-4 md:gap-x-6"
       >
-        <div className="min-w-0 flex-1">
+        <div className="min-w-0 md:flex-1">
           <p className="font-serif-sc text-[11px] uppercase tracking-[0.22em] text-[color:var(--color-terra)] mb-2">
             Save your report
           </p>
@@ -76,7 +76,7 @@ export function SaveReportBanner({
         </div>
         <Link
           href="/auth/signup?next=/dashboard"
-          className="shrink-0 inline-flex items-center justify-center bg-[color:var(--color-terra)] text-[color:var(--color-linen)] px-6 py-3 rounded-[2px] font-mono text-[11px] uppercase tracking-[0.18em] hover:bg-[color:var(--color-terra-light)] transition-colors"
+          className="self-stretch md:self-auto md:shrink-0 inline-flex items-center justify-center bg-[color:var(--color-terra)] text-[color:var(--color-linen)] px-6 py-3 rounded-[2px] font-mono text-[11px] uppercase tracking-[0.18em] hover:bg-[color:var(--color-terra-light)] transition-colors"
         >
           Create my account →
         </Link>
