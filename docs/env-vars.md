@@ -31,8 +31,10 @@ Use this to diff against `vercel env ls` for each scope. **This list — not the
 |-----|-------|
 | `MAILERLITE_GROUP_ID_ASSESSMENT` | tier-routing group |
 | `MAILERLITE_GROUP_ID_NEWSLETTER` | newsletter group |
+| `MAILERLITE_GROUP_ID_SALES_LEADS` | B2B sales-assist intake (`/foundation/contact-sales`); optional — request is still persisted if unset |
 | `RESEND_FROM` | verified sender, e.g. `hello@aibankinginstitute.com` |
 | `RESEND_FROM_NAME` | display name |
+| `SALES_LEAD_NOTIFY_EMAIL` | internal recipient for new B2B leads; falls back to `RESEND_FROM` if unset |
 
 ### Optional LLM providers (only if enabled in the Toolbox model menu)
 `OPENAI_API_KEY`, `GEMINI_API_KEY`
