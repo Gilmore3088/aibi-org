@@ -67,11 +67,9 @@ export function SaveTakeawayCTA({ lessonId, artifactType }: SaveTakeawayCTAProps
   const meta = ARTIFACT_LABELS[artifactType];
   if (!meta) return null;
 
-  // Lesson bodies should populate a real takeaway payload; until per-
-  // lesson copy is wired in (Tier 4 operator work), we save a small
-  // placeholder so the round-trip is provable end-to-end.
-  const placeholderBody = `# ${meta.title}\n\nFrom lesson ${lessonId}.\n\n${meta.sub}\n`;
-
+  // Body is hydrated server-side from the artifact template (see
+  // src/lib/addie/toolbox/templates.ts) — the lesson surface only
+  // forwards the lesson context.
   return (
     <section
       aria-labelledby="save-takeaway-heading"
@@ -95,8 +93,8 @@ export function SaveTakeawayCTA({ lessonId, artifactType }: SaveTakeawayCTAProps
         <SaveAsArtifactButton
           type={artifactType}
           title={meta.title}
-          body_md={placeholderBody}
           lesson_id={lessonId}
+          lesson_title={meta.title}
         />
       </div>
     </section>

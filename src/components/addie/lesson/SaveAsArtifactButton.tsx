@@ -1,19 +1,29 @@
 'use client';
 
 // SaveAsArtifactButton — used by worksheet + sandbox views to persist the
-// learner's output as a Toolbox artifact. Surfaces the free-tier cap (402)
-// inline with gate-fork copy when the cap is hit.
+// learner's output as a Toolbox artifact. Surfaces:
+//   - 402 (free-tier cap) → cap-reached upsell line with link to /foundation/gate
+//   - 401 (no identity)  → inline mini-gate-fork (Pay · Email · Decline)
+// rendered directly under the button — no page redirect.
+//
+// body_md is optional. When omitted, the server hydrates the matching
+// artifact template (see src/lib/addie/toolbox/templates.ts) so the
+// canonical body cannot be tampered with by the client.
 
 import { useState } from 'react';
 import Link from 'next/link';
 import { LedgerButton } from '@/components/addie/shared/LedgerButton';
+import { InlineGateFork } from '@/components/addie/toolbox/InlineGateFork';
 import type { ArtifactType } from './types';
 
 interface SaveAsArtifactButtonProps {
   readonly type: ArtifactType;
   readonly title: string;
-  readonly body_md: string;
+  /** Optional. When omitted, the server hydrates the artifact template. */
+  readonly body_md?: string;
   readonly lesson_id?: string | null;
+  /** Human-readable lesson title; passed through for template hydration. */
+  readonly lesson_title?: string | null;
   readonly track?: string | null;
   readonly disabled?: boolean;
   readonly disabledReason?: string;
@@ -33,6 +43,7 @@ export function SaveAsArtifactButton({
   title,
   body_md,
   lesson_id = null,
+  lesson_title = null,
   track = null,
   disabled,
   disabledReason,
@@ -43,10 +54,12 @@ export function SaveAsArtifactButton({
   async function save() {
     setState({ kind: 'saving' });
     try {
+      const payload: Record<string, unknown> = { type, title, lesson_id, lesson_title, track };
+      if (body_md !== undefined) payload.body_md = body_md;
       const res = await fetch('/api/addie/toolbox/items', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type, title, body_md, lesson_id, track }),
+        body: JSON.stringify(payload),
       });
       if (res.status === 401) return setState({ kind: 'no_identity' });
       if (res.status === 402) return setState({ kind: 'capped' });
@@ -64,7 +77,10 @@ export function SaveAsArtifactButton({
       <div className="border-l-[2px] border-l-[var(--ledger-ink)] bg-[var(--ledger-paper)] px-3 py-2">
         <p className="text-sm text-[var(--ledger-ink)]">
           Saved to your Toolbox.{' '}
-          <Link href={`/foundation/dashboard/toolbox/${state.id}`} className="underline underline-offset-4">
+          <Link
+            href={`/foundation/dashboard/toolbox/${state.id}`}
+            className="underline underline-offset-4"
+          >
             Open
           </Link>
         </p>
@@ -75,7 +91,7 @@ export function SaveAsArtifactButton({
     return (
       <div className="border-l-[2px] border-l-[var(--ledger-accent)] bg-[var(--ledger-paper)] px-3 py-2">
         <p className="text-sm text-[var(--ledger-ink)]">
-          You&apos;ve saved the free 4. To keep more,{' '}
+          You have saved the free 4. To keep more,{' '}
           <Link href="/foundation/gate" className="underline underline-offset-4">
             choose a path
           </Link>
@@ -86,15 +102,13 @@ export function SaveAsArtifactButton({
   }
   if (state.kind === 'no_identity') {
     return (
-      <div className="border-l-[2px] border-l-[var(--ledger-accent-2)] bg-[var(--ledger-paper)] px-3 py-2">
-        <p className="text-sm text-[var(--ledger-ink)]">
-          Saving requires an email.{' '}
-          <Link href="/foundation/gate" className="underline underline-offset-4">
-            Add yours to keep this
-          </Link>
-          .
-        </p>
-      </div>
+      <InlineGateFork
+        onRetry={() => {
+          setState({ kind: 'idle' });
+          void save();
+        }}
+        onDismiss={() => setState({ kind: 'idle' })}
+      />
     );
   }
   if (state.kind === 'error') {
