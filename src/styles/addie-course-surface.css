@@ -364,12 +364,12 @@
 .addie-course-surface .addie-module-illus {
   width: 100%;
   height: auto;
-  max-height: 120px;
   display: block;
-  color: var(--ledger-ink);
+  border-radius: 6px;
+  overflow: hidden;
 }
-.addie-course-surface .addie-module-illus [data-accent] {
-  color: var(--ledger-accent);
+.addie-course-surface .addie-module-illus--hero {
+  max-height: none;
 }
 
 /* ============================================================== */
