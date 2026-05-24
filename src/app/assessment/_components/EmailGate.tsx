@@ -212,7 +212,7 @@ export function EmailGate({
                     setMessage(null);
                   }
                 }}
-                className="w-full px-4 py-3 border border-[color:var(--color-ink)]/20 rounded-[2px] bg-[color:var(--color-linen)] text-[color:var(--color-ink)] font-sans text-base focus:outline-none focus:border-[color:var(--color-terra)]"
+                className="w-full px-4 py-3 border border-[color:var(--color-ink)]/20 rounded-[2px] bg-[color:var(--color-linen)] text-[color:var(--color-ink)] font-sans text-base focus:outline-none focus:border-[color:var(--color-terra)] [scroll-margin-top:120px] [scroll-margin-bottom:280px]"
               />
             </FormField>
 
@@ -229,7 +229,7 @@ export function EmailGate({
                 placeholder="Sarah"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
-                className="w-full px-4 py-3 border border-[color:var(--color-ink)]/20 rounded-[2px] bg-[color:var(--color-linen)] text-[color:var(--color-ink)] font-sans text-base focus:outline-none focus:border-[color:var(--color-terra)]"
+                className="w-full px-4 py-3 border border-[color:var(--color-ink)]/20 rounded-[2px] bg-[color:var(--color-linen)] text-[color:var(--color-ink)] font-sans text-base focus:outline-none focus:border-[color:var(--color-terra)] [scroll-margin-top:120px] [scroll-margin-bottom:280px]"
               />
             </FormField>
 
@@ -246,7 +246,7 @@ export function EmailGate({
                 placeholder="First Federal Credit Union"
                 value={institutionName}
                 onChange={(e) => setInstitutionName(e.target.value)}
-                className="w-full px-4 py-3 border border-[color:var(--color-ink)]/20 rounded-[2px] bg-[color:var(--color-linen)] text-[color:var(--color-ink)] font-sans text-base focus:outline-none focus:border-[color:var(--color-terra)]"
+                className="w-full px-4 py-3 border border-[color:var(--color-ink)]/20 rounded-[2px] bg-[color:var(--color-linen)] text-[color:var(--color-ink)] font-sans text-base focus:outline-none focus:border-[color:var(--color-terra)] [scroll-margin-top:120px] [scroll-margin-bottom:280px]"
               />
             </FormField>
 
@@ -264,10 +264,16 @@ export function EmailGate({
               </span>
             </label>
 
+            {/* A28 (audit 2026-05-24): the submit button used to hide
+                under the iOS Safari keyboard accessory bar on 390pt
+                viewports. scroll-margin-bottom on the focused inputs
+                (above) gives the form room to push above the keyboard;
+                a matching scroll-margin-bottom on the button itself
+                ensures Tab-into-submit lands the button in view too. */}
             <button
               type="submit"
               disabled={status === 'submitting'}
-              className="w-full px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all disabled:opacity-60"
+              className="w-full px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all disabled:opacity-60 [scroll-margin-bottom:120px]"
             >
               {status === 'submitting' ? 'Sending…' : 'Show my full results'}
             </button>
