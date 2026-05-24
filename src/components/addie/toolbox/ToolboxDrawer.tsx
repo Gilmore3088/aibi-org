@@ -91,7 +91,7 @@ export function ToolboxDrawer({ open, onClose }: ToolboxDrawerProps) {
           )}
         </div>
         <footer className="border-t border-[var(--ledger-rule)] p-3">
-          <Link href="/foundation/foundation/dashboard/toolbox" onClick={onClose}>
+          <Link href="/foundation/dashboard/toolbox" onClick={onClose}>
             <LedgerButton variant="secondary" size="sm" className="w-full">
               Open full Toolbox
             </LedgerButton>

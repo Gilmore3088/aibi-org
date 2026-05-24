@@ -9,6 +9,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { ToolboxLauncher } from '@/components/addie/toolbox/ToolboxLauncher';
 
 interface AddieNavProps {
   readonly courseName?: string;
@@ -28,11 +29,6 @@ const LINKS: ReadonlyArray<{ href: string; label: string; match: (p: string) => 
     href: '/foundation/dashboard',
     label: 'Dashboard',
     match: (p) => p === '/foundation/dashboard',
-  },
-  {
-    href: '/foundation/dashboard/toolbox',
-    label: 'Toolbox',
-    match: (p) => p.startsWith('/foundation/dashboard/toolbox'),
   },
   {
     href: '/foundation/assessment',
@@ -76,15 +72,19 @@ export function AddieNav({ courseName = 'Foundation Course', signedIn = false }:
               </Link>
             );
           })}
+          <span className="ml-2">
+            <ToolboxLauncher />
+          </span>
           <Link
             href={signedIn ? '/account' : '/auth/login'}
-            className="ml-2 font-mono uppercase tracking-[0.16em] text-[0.7rem] px-3 py-1.5 rounded-[2px] border border-[var(--ledger-ink)] text-[var(--ledger-ink)] hover:bg-[var(--ledger-ink)] hover:text-[var(--ledger-paper)] transition-colors duration-[120ms]"
+            className="ml-1 font-mono uppercase tracking-[0.16em] text-[0.7rem] px-3 py-1.5 rounded-[2px] border border-[var(--ledger-ink)] text-[var(--ledger-ink)] hover:bg-[var(--ledger-ink)] hover:text-[var(--ledger-paper)] transition-colors duration-[120ms]"
           >
             {signedIn ? 'Account' : 'Sign in'}
           </Link>
         </div>
-        {/* Mobile: collapse to Account-only — full list on larger screens */}
-        <div className="md:hidden">
+        {/* Mobile: Toolbox + Account */}
+        <div className="md:hidden flex items-center gap-2">
+          <ToolboxLauncher />
           <Link
             href={signedIn ? '/account' : '/auth/login'}
             className="font-mono uppercase tracking-[0.16em] text-[0.7rem] px-3 py-1.5 rounded-[2px] border border-[var(--ledger-ink)] text-[var(--ledger-ink)]"

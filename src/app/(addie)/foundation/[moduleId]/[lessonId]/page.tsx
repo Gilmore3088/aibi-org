@@ -8,6 +8,7 @@ import { createServerClient } from '@supabase/ssr';
 import { getAddieServiceClient } from '@/lib/addie/supabase/service';
 import Link from 'next/link';
 import { LessonPlayer } from '@/components/addie/lesson/LessonPlayer';
+import { CourseSidebar } from '@/components/addie/shell/CourseSidebar';
 import { hasAnyFoundationEntitlement } from '@/lib/addie/entitlements/check';
 import type {
   LessonPayload,
@@ -115,13 +116,12 @@ async function loadPayload(
     // Non-LLM interactive/worksheet widgets need preset_context_blocks bodies.
     // We fetch the full exercise row server-side via service_role and forward
     // ONLY the client-safe fields + preset block bodies. system_prompt and
-    // lever_directives never leave the server.
+    // lever_directives never leave the server. Loaded for every modality so
+    // video + audio lessons that have a paired widget (M0.2, M1.2, M3.4,
+    // M5.2 per Screen Inventory §3.4) can also render it inline.
     let interactiveExercise: InteractiveExercisePayload | null = null;
     const lessonRow = lesson as LessonRow;
-    if (
-      (lessonRow.modality === 'interactive' || lessonRow.modality === 'worksheet') &&
-      lessonRow.exercise_id
-    ) {
+    if (lessonRow.exercise_id) {
       const { data: ex } = await svc
         .from('exercises')
         .select('id, task_scaffold, preset_context_blocks, published')
@@ -241,5 +241,14 @@ export default async function LessonPage({
     }
   }
 
-  return <LessonPlayer payload={payload} />;
+  return (
+    <div className="mx-auto max-w-7xl px-4 sm:px-6 py-6 flex flex-col lg:flex-row gap-8 lg:gap-10">
+      <aside className="lg:order-first">
+        <CourseSidebar activeModuleId={params.moduleId} activeLessonId={params.lessonId} />
+      </aside>
+      <div className="flex-1 min-w-0">
+        <LessonPlayer payload={payload} />
+      </div>
+    </div>
+  );
 }

@@ -15,6 +15,9 @@ import { SandboxLessonView } from './SandboxLessonView';
 import { SandboxABLessonView } from './SandboxABLessonView';
 import { KnowledgeCheck } from './KnowledgeCheck';
 import { NextLessonCTA } from './NextLessonCTA';
+import { EmbeddedExercise } from './EmbeddedExercise';
+import { SaveTakeawayCTA } from './SaveTakeawayCTA';
+import { TrackPickerInline } from './TrackPickerInline';
 import type { LessonPayload } from './types';
 
 interface LessonPlayerProps {
@@ -34,15 +37,35 @@ export function LessonPlayer({
     ? `/foundation/${module.id}/${siblings.next.id}`
     : null;
 
+  // Embed the matching interactive when modality is something else and
+  // the lesson has an exercise_id. The interactive + worksheet modalities
+  // already render their widget as the primary view — skip embed there.
+  const embedExercise =
+    !!payload.interactiveExercise &&
+    payload.lesson.modality !== 'interactive' &&
+    payload.lesson.modality !== 'worksheet';
+
+  // M0.1 carries the track picker per Screen Inventory §3.4.
+  const showTrackPicker = lesson.id === 'm0.1';
+
   return (
-    <article className="mx-auto max-w-3xl px-4 sm:px-6 py-8">
+    <article className="max-w-3xl">
       <LessonShellHeader
         lesson={lesson}
         module={module}
         activeTrack={payload.activeTrack ?? null}
       />
       <ModalityView payload={payload} preferAb={preferAb} />
+      {showTrackPicker ? (
+        <TrackPickerInline initial={payload.activeTrack ?? null} />
+      ) : null}
+      {embedExercise ? <EmbeddedExercise payload={payload} /> : null}
       <KnowledgeCheck checks={checks} />
+      <SaveTakeawayCTA
+        lessonId={lesson.id}
+        artifactType={lesson.takeaway_artifact_type}
+        moduleTier={module.tier}
+      />
       <NextLessonCTA
         nextHref={nextHref}
         nextLabel={siblings?.next?.title}

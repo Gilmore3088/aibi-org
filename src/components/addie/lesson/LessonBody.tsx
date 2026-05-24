@@ -37,12 +37,24 @@ export function LessonBody({ body }: LessonBodyProps) {
 
 // --- Block split ----------------------------------------------------
 
+type CalloutKind = 'tip' | 'warn' | 'save' | 'field';
+
 type Block =
+  | { kind: 'h2'; text: string }
   | { kind: 'h3'; text: string }
   | { kind: 'p'; text: string }
   | { kind: 'ul'; items: string[] }
   | { kind: 'ol'; items: string[] }
-  | { kind: 'quote'; text: string };
+  | { kind: 'quote'; text: string }
+  | { kind: 'callout'; tone: CalloutKind; lines: string[] };
+
+const CALLOUT_RE = /^>\s*\[(tip|warn|save|field)\]\s*(.*)$/i;
+const CALLOUT_META: Record<CalloutKind, { label: string; border: string; bg: string }> = {
+  tip:   { label: 'Try this',     border: 'border-[var(--ledger-accent)]',     bg: 'bg-[color-mix(in_srgb,var(--ledger-accent)_5%,var(--ledger-paper))]' },
+  warn:  { label: 'Watch out',    border: 'border-[var(--ledger-weak)]',       bg: 'bg-[color-mix(in_srgb,var(--ledger-weak)_5%,var(--ledger-paper))]' },
+  save:  { label: 'Save this',    border: 'border-[var(--ledger-ink)]',        bg: 'bg-[var(--ledger-tape)]' },
+  field: { label: 'From the field', border: 'border-[var(--ledger-accent-2)]', bg: 'bg-[color-mix(in_srgb,var(--ledger-accent-2)_4%,var(--ledger-paper))]' },
+};
 
 function splitBlocks(src: string): Block[] {
   const lines = src.split(/\n/);
@@ -59,13 +71,40 @@ function splitBlocks(src: string): Block[] {
       i++;
       continue;
     }
-    if (line.startsWith('> ')) {
+    if (line.startsWith('## ')) {
+      // Some seed bodies use `## SCRIPT (verbatim)` and similar production
+      // markers. Strip the parenthetical noise but keep the heading.
+      const raw = line.slice(3).trim();
+      const cleaned = raw.replace(/\s*\(verbatim\)\s*$/i, '');
+      out.push({ kind: 'h2', text: cleaned });
+      i++;
+      continue;
+    }
+    if (line.startsWith('# ')) {
+      // h1 demoted to h2 in lesson body — H1 belongs to the lesson title.
+      out.push({ kind: 'h2', text: line.slice(2).trim() });
+      i++;
+      continue;
+    }
+    if (line.startsWith('>')) {
+      // Capture the full blockquote (every consecutive '>' line).
       const buf: string[] = [];
-      while (i < lines.length && lines[i].startsWith('> ')) {
-        buf.push(lines[i].slice(2).trim());
+      while (i < lines.length && lines[i].startsWith('>')) {
+        const stripped = lines[i].replace(/^>\s?/, '');
+        buf.push(stripped);
         i++;
       }
-      out.push({ kind: 'quote', text: buf.join(' ') });
+      // Callout detection: first line matches '> [kind] body'.
+      const m = CALLOUT_RE.exec(`> ${buf[0]}`);
+      if (m) {
+        const tone = m[1].toLowerCase() as CalloutKind;
+        const firstBody = m[2];
+        const lines2: string[] = firstBody ? [firstBody] : [];
+        for (let k = 1; k < buf.length; k++) lines2.push(buf[k]);
+        out.push({ kind: 'callout', tone, lines: lines2 });
+      } else {
+        out.push({ kind: 'quote', text: buf.join(' ').trim() });
+      }
       continue;
     }
     if (/^[-*]\s+/.test(line)) {
@@ -107,11 +146,20 @@ function splitBlocks(src: string): Block[] {
 
 function renderBlock(b: Block, key: number): ReactNode {
   switch (b.kind) {
+    case 'h2':
+      return (
+        <h2
+          key={key}
+          className="font-serif text-[1.625rem] leading-tight text-[var(--ledger-ink)] mt-12 mb-4 pb-2 border-b border-[var(--ledger-rule-strong)]"
+        >
+          {renderInline(b.text)}
+        </h2>
+      );
     case 'h3':
       return (
         <h3
           key={key}
-          className="font-serif text-[1.375rem] leading-tight text-[var(--ledger-ink)] mt-8 mb-3"
+          className="font-serif text-[1.375rem] leading-tight text-[var(--ledger-ink)] mt-10 mb-3 flex items-center gap-3 before:content-[''] before:h-px before:w-6 before:bg-[var(--ledger-accent)] before:shrink-0"
         >
           {renderInline(b.text)}
         </h3>
@@ -151,6 +199,24 @@ function renderBlock(b: Block, key: number): ReactNode {
           {renderInline(b.text)}
         </blockquote>
       );
+    case 'callout': {
+      const m = CALLOUT_META[b.tone];
+      return (
+        <aside
+          key={key}
+          className={`my-6 rounded-[4px] border-l-[3px] ${m.border} ${m.bg} px-4 py-3`}
+        >
+          <div className="font-mono uppercase tracking-[0.18em] text-[0.65rem] text-[var(--ledger-muted)] mb-1.5">
+            {m.label}
+          </div>
+          {b.lines.map((ln, j) => (
+            <p key={j} className="text-[var(--ledger-ink)] mb-1.5 last:mb-0">
+              {renderInline(ln)}
+            </p>
+          ))}
+        </aside>
+      );
+    }
   }
 }
 
