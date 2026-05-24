@@ -37,19 +37,23 @@ const SIZE_CLASS: Record<Size, string> = {
 
 interface LocalIdentity {
   readonly email: string | null;
-  readonly firstName: string | null;
+  readonly fullName: string | null;
   readonly institutionName: string | null;
 }
 
 function readLocalIdentity(): LocalIdentity {
   if (typeof window === 'undefined') {
-    return { email: null, firstName: null, institutionName: null };
+    return { email: null, fullName: null, institutionName: null };
   }
   try {
     const raw = window.localStorage.getItem('aibi-user');
-    if (!raw) return { email: null, firstName: null, institutionName: null };
+    if (!raw) return { email: null, fullName: null, institutionName: null };
     const parsed = JSON.parse(raw) as {
       email?: unknown;
+      // The EmailGate now captures a full name; old localStorage rows
+      // may still carry a `firstName` key from before the rename. Read
+      // either so a returning buyer doesn't lose their prefill.
+      fullName?: unknown;
       firstName?: unknown;
       institutionName?: unknown;
     };
@@ -57,19 +61,21 @@ function readLocalIdentity(): LocalIdentity {
       typeof parsed.email === 'string' && EMAIL_RE.test(parsed.email)
         ? parsed.email
         : null;
-    const firstName =
-      typeof parsed.firstName === 'string' && parsed.firstName.length > 0
-        ? parsed.firstName
-        : null;
+    const rawName =
+      typeof parsed.fullName === 'string' && parsed.fullName.length > 0
+        ? parsed.fullName
+        : typeof parsed.firstName === 'string' && parsed.firstName.length > 0
+          ? parsed.firstName
+          : null;
     const institutionName =
       typeof parsed.institutionName === 'string' &&
       parsed.institutionName.length > 0
         ? parsed.institutionName
         : null;
-    return { email, firstName, institutionName };
+    return { email, fullName: rawName, institutionName };
   } catch {
     /* malformed JSON — ignore */
-    return { email: null, firstName: null, institutionName: null };
+    return { email: null, fullName: null, institutionName: null };
   }
 }
 
@@ -102,7 +108,7 @@ export function PurchaseButton({
           // post-Stripe signup link can prefill the buyer's name +
           // institution. The checkout API forwards these into the
           // Stripe session's metadata for retrieval on the return path.
-          ...(local.firstName ? { first_name: local.firstName } : {}),
+          ...(local.fullName ? { full_name: local.fullName } : {}),
           ...(local.institutionName
             ? { institution_name: local.institutionName }
             : {}),

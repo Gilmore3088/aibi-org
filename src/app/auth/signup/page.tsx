@@ -1,10 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 
 import { signUp, sanitizeNext } from '@/lib/supabase/auth';
+import { consumeSignupPrefill } from '@/components/auth/IdentityHandoff';
 import {
   LedgerAlert,
   LedgerButton,
@@ -36,23 +37,35 @@ export default function SignupPage() {
   const searchParams = useSearchParams();
   // Same open-redirect defense as /auth/login.
   const redirectTo = sanitizeNext(searchParams.get('next'));
-  // Pre-fill from query params so post-Stripe buyers (and any caller
-  // who completed the free EmailGate) don't re-type identity. Email
-  // prefill stays the strict shape check; name + institution accept any
-  // reasonable string. All three remain editable.
+
+  // Identity prefill now travels through sessionStorage (set by
+  // <IdentityHandoff> on /assessment/in-depth/purchased) so PII never
+  // hits the URL bar / server logs / Referer headers. The query param
+  // ?email= is kept as a fallback for inbound deep-links from email
+  // campaigns where sessionStorage isn't available.
   const rawEmail = searchParams.get('email');
-  const prefillEmail = rawEmail && EMAIL_RE.test(rawEmail) ? rawEmail : '';
-  // The EmailGate captures `firstName` but the signup form's database
-  // field is `fullName`. Accept either query param so older links and
-  // the new identity hand-off both work; the user can edit before submit.
-  const prefillFullName = sanitizePrefill(
-    searchParams.get('fullName') ?? searchParams.get('firstName'),
-    80,
-  );
-  const prefillInstitution = sanitizePrefill(
-    searchParams.get('institutionName'),
-    120,
-  );
+  const fallbackEmail = rawEmail && EMAIL_RE.test(rawEmail) ? rawEmail : '';
+
+  const [prefillEmail, setPrefillEmail] = useState(fallbackEmail);
+  const [prefillFullName, setPrefillFullName] = useState('');
+  const [prefillInstitution, setPrefillInstitution] = useState('');
+
+  useEffect(() => {
+    // Consume the sessionStorage stash once on mount and clear it so a
+    // refresh / back-button doesn't show stale identity. Controlled
+    // inputs above pick up the new state on the next render.
+    const stashed = consumeSignupPrefill();
+    if (stashed.email && EMAIL_RE.test(stashed.email)) {
+      setPrefillEmail(stashed.email);
+    }
+    const sanitizedName = sanitizePrefill(stashed.fullName ?? null, 80);
+    if (sanitizedName) setPrefillFullName(sanitizedName);
+    const sanitizedInstitution = sanitizePrefill(
+      stashed.institutionName ?? null,
+      120,
+    );
+    if (sanitizedInstitution) setPrefillInstitution(sanitizedInstitution);
+  }, []);
 
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
@@ -155,7 +168,8 @@ export default function SignupPage() {
               autoComplete="name"
               required
               placeholder="Jane Doe"
-              defaultValue={prefillFullName}
+              value={prefillFullName}
+              onChange={(e) => setPrefillFullName(e.target.value)}
             />
             <LedgerField
               label="Email"
@@ -164,7 +178,8 @@ export default function SignupPage() {
               autoComplete="email"
               required
               placeholder="you@yourbank.com"
-              defaultValue={prefillEmail}
+              value={prefillEmail}
+              onChange={(e) => setPrefillEmail(e.target.value)}
             />
             <LedgerField
               label={
@@ -179,7 +194,8 @@ export default function SignupPage() {
               type="text"
               autoComplete="organization"
               placeholder="First Community Bank"
-              defaultValue={prefillInstitution}
+              value={prefillInstitution}
+              onChange={(e) => setPrefillInstitution(e.target.value)}
             />
             <LedgerField
               label="Password"

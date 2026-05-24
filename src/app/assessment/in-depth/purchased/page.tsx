@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { cookies } from 'next/headers';
 import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
+import { IdentityHandoff } from '@/components/auth/IdentityHandoff';
 
 export const metadata: Metadata = {
   title: 'Purchase confirmed | The AI Banking Institute',
@@ -66,18 +67,24 @@ export default async function InDepthPurchasedPage({
     ? { email: null, firstName: null, institutionName: null }
     : await getSessionIdentity(sp.session_id);
   const prefillEmail = signedInEmail ?? stripeIdentity.email ?? null;
-  const prefillFirstName = signedInEmail ? null : stripeIdentity.firstName;
+  const prefillFullName = signedInEmail ? null : stripeIdentity.firstName;
   const prefillInstitution = signedInEmail ? null : stripeIdentity.institutionName;
-  const identityQs = [
-    prefillEmail ? `&email=${encodeURIComponent(prefillEmail)}` : '',
-    prefillFirstName ? `&firstName=${encodeURIComponent(prefillFirstName)}` : '',
-    prefillInstitution
-      ? `&institutionName=${encodeURIComponent(prefillInstitution)}`
-      : '',
-  ].join('');
+  // Identity now travels through sessionStorage via <IdentityHandoff />,
+  // not URL query params. Earlier revisions of this page put email +
+  // firstName + institutionName in /auth/signup?... — that leaks PII into
+  // Vercel access logs, browser history, and the Referer header on any
+  // third-party resource the signup page loads. The handoff stays
+  // inside the tab.
 
   return (
     <main className="px-6 py-14 md:py-20">
+      <IdentityHandoff
+        identity={{
+          email: prefillEmail,
+          fullName: prefillFullName,
+          institutionName: prefillInstitution,
+        }}
+      />
       <div className="mx-auto max-w-3xl">
         <p className="font-serif-sc text-[11px] uppercase tracking-[0.22em] text-[color:var(--color-terra)] mb-3">
           Purchase confirmed
@@ -143,13 +150,13 @@ export default async function InDepthPurchasedPage({
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link
-                  href={`/auth/signup?next=/assessment/in-depth/take${identityQs}`}
+                  href={`/auth/signup?next=/assessment/in-depth/take`}
                   className="inline-block bg-[color:var(--color-terra)] text-[color:var(--color-linen)] px-8 py-3 rounded-sm font-mono text-[10px] uppercase tracking-[0.15em] hover:bg-[color:var(--color-terra-light)] transition-colors"
                 >
                   Create my account
                 </Link>
                 <Link
-                  href={`/auth/login?next=/assessment/in-depth/take${identityQs}`}
+                  href={`/auth/login?next=/assessment/in-depth/take`}
                   className="inline-block border border-[color:var(--color-ink)]/20 text-[color:var(--color-ink)] px-8 py-3 rounded-sm font-mono text-[10px] uppercase tracking-[0.15em] hover:bg-[color:var(--color-parch)] transition-colors"
                 >
                   I already have one

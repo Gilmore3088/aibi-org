@@ -243,16 +243,16 @@ export function EmailGate({
             </FormField>
 
             <FormField
-              id="gate-firstname"
-              label="First name"
+              id="gate-fullname"
+              label="Full name"
               hint="Optional — so we can address you correctly"
             >
               <input
-                id="gate-firstname"
+                id="gate-fullname"
                 type="text"
-                autoComplete="given-name"
+                autoComplete="name"
                 maxLength={80}
-                placeholder="Sarah"
+                placeholder="Sarah Reynolds"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
                 className="w-full px-4 py-3 border border-[color:var(--color-ink)]/20 rounded-[2px] bg-[color:var(--color-linen)] text-[color:var(--color-ink)] font-sans text-base focus:outline-none focus:border-[color:var(--color-terra)]"

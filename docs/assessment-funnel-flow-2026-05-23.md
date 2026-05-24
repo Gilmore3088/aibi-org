@@ -21,13 +21,14 @@ Root cause: `firstName` and `institutionName` were captured at the gate, sent to
 
 - Public route, no auth.
 - 12 questions → EmailGate (one capture).
-- EmailGate **captures**: email, firstName (optional), institutionName (optional), marketingOptIn (optional).
+- EmailGate **captures**: email, fullName (optional, labelled "Full name" with placeholder "Sarah Reynolds"), institutionName (optional), marketingOptIn (optional).
 - POSTs to `/api/capture-email` → MailerLite + Resend + Supabase (server-side persist).
 - Writes to localStorage `aibi-user`:
   - `email` (always)
-  - `firstName` (when provided)
+  - `fullName` (when provided)
   - `institutionName` (when provided)
   - `readiness` (score + tier + dimension breakdown)
+- Legacy `firstName` key from pre-2026-05-23 captures is still read by every consumer for back-compat.
 - Page swaps URL to `/results/<profileId>` via `history.replaceState`.
 
 ### Step 2 — Results display
@@ -52,16 +53,18 @@ URLs are static — identity rides forward via localStorage, not query params.
 
 - Public route.
 - Server tries `supabase.auth.getUser()` → `signedInEmail` (null if not signed in).
+- Renders `<IdentityFreshnessBanner />` near the top: if localStorage holds an identity, surfaces it ("Reading as Sarah · First Federal · Not you? Start fresh →") so the next user on a shared device can wipe stale data before it leaks into Stripe / signup.
 - `PurchaseButton` reads:
   - `userEmail` prop (from server `getUser`), then
-  - localStorage `aibi-user` for email + **firstName + institutionName** (new).
-- On click, POSTs to `/api/checkout/in-depth` with `{ mode, user_email, first_name, institution_name }`.
+  - localStorage `aibi-user` for email + **fullName + institutionName**.
+- On click, POSTs to `/api/checkout/in-depth` with `{ mode, user_email, full_name, institution_name }` (the API accepts `first_name` as a deprecated alias too).
 
 ### Step 4 — `/api/checkout/in-depth`
 
 - Validates body, rate-limits, creates a Stripe Checkout Session with:
   - `customer_email` = the email (Stripe shows it pre-filled at checkout).
-  - `metadata.user_email`, `metadata.first_name` (new), `metadata.institution_name` (new).
+  - `metadata.user_email`, `metadata.full_name`, `metadata.institution_name`.
+- The webhook (`/api/webhooks/stripe`) reads `full_name` + `institution_name` back when provisioning the auth user via `ensureAuthUser(email, identity)`, so the buyer's Supabase `user_metadata` is enriched even on the magic-link-only path (no signup form).
 - Returns the Stripe Checkout URL; client redirects.
 
 ### Step 5 — Stripe Checkout (external)
@@ -74,23 +77,16 @@ URLs are static — identity rides forward via localStorage, not query params.
 - Server route; reads `session_id`.
 - Tries `supabase.auth.getUser()` first. If signed in → "Begin the assessment" CTA → `/assessment/in-depth/take`.
 - If not signed in, calls `getSessionIdentity(session_id)` (new helper, replaces `getSessionEmail`) → returns `{ email, firstName, institutionName }` from Stripe session metadata.
-- Builds the signup/login URLs with **all three** query params:
-
-  ```
-  /auth/signup?next=/assessment/in-depth/take
-              &email=name@bank.com
-              &firstName=Sarah
-              &institutionName=First+Federal
-  ```
+- Stashes identity in **sessionStorage** via `<IdentityHandoff />`. The signup form reads it on mount and clears it. **No PII in the URL** (was previously `?email=&firstName=&institutionName=` which leaked into Vercel access logs, browser history, and the `Referer` header on any third-party resource the signup page loaded).
+- The signup/login deep-link is just `/auth/signup?next=/assessment/in-depth/take` — identity is invisible in the URL bar.
 
 ### Step 7 — `/auth/signup`
 
-- Reads query params:
-  - `?email=` → email field
-  - `?firstName=` (or legacy `?fullName=`) → fullName field
-  - `?institutionName=` → institution field
-- All three are sanitized (length cap + control-char rejection) and editable.
-- Submit calls Supabase signUp with `fullName` + `institutionName` metadata.
+- On mount, calls `consumeSignupPrefill()` which reads + clears the sessionStorage key `aibi-signup-prefill` set by `<IdentityHandoff />`.
+- Falls back to `?email=` URL param if sessionStorage is empty (e.g. an inbound email-campaign link).
+- Form fields for email / full name / institution are **controlled inputs** so the post-mount prefill takes effect without an `defaultValue` flash.
+- Sanitization on each value (length cap + control-char rejection) before setting state.
+- Submit calls Supabase `signUp` with `fullName` + `institutionName` metadata.
 - Supabase sends email-confirmation link → `/auth/callback?next=/assessment/in-depth/take`.
 
 ### Step 8 — `/auth/login` (alternate path)
@@ -131,11 +127,16 @@ URLs are static — identity rides forward via localStorage, not query params.
 ## Verification checklist
 
 - [ ] Complete `/assessment` with email + firstName + institutionName at EmailGate
-- [ ] Open DevTools → Application → Local Storage → `aibi-user` should show `email`, `firstName`, `institutionName`, `readiness`
-- [ ] Click "Take the In-Depth Assessment · $99" on results → land on `/assessment/in-depth`
+- [ ] DevTools → Application → Local Storage → `aibi-user` shows `email`, `fullName`, `institutionName`, `readiness` (no legacy `firstName`)
+- [ ] Open `/assessment/in-depth` → "Reading as Sarah Reynolds · First Federal · Not you? Start fresh →" banner appears
+- [ ] Click "Not you? Start fresh" → banner disappears; `aibi-user` removed from localStorage
+- [ ] Retake free assessment to repopulate identity, return to `/assessment/in-depth`
 - [ ] Click Purchase → Stripe Checkout opens with email pre-filled
 - [ ] Complete a test purchase → land on `/assessment/in-depth/purchased`
-- [ ] If not signed in: "Create my account" link should have `?firstName=`, `?email=`, `?institutionName=` in URL
+- [ ] DevTools → Application → Session Storage → `aibi-signup-prefill` contains `{email, fullName, institutionName}` (gets cleared on the next step)
+- [ ] If not signed in: click "Create my account" → URL is `/auth/signup?next=/assessment/in-depth/take` (**no PII visible**)
 - [ ] On `/auth/signup`: Full name, Email, Institution all pre-filled and editable
+- [ ] Session Storage `aibi-signup-prefill` is now empty (consumed)
 - [ ] Submit signup → confirmation email lands on `/auth/callback?next=/assessment/in-depth/take`
 - [ ] On `/assessment/in-depth/take`: 48 questions + role selector are the only new prompts
+- [ ] Stripe webhook fires → buyer's `auth.users.user_metadata` has `full_name` + `institution_name` populated (verify in Supabase dashboard → Authentication → user row)

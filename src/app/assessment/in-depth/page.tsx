@@ -19,6 +19,7 @@ import { Section } from "@/components/system";
 import { isSupabaseConfigured } from "@/lib/supabase/client";
 import { BRAND } from "@content/copy";
 import { PurchaseButton } from "./_components/PurchaseButton";
+import { IdentityFreshnessBanner } from "./_components/IdentityFreshnessBanner";
 
 export const dynamic = "force-dynamic";
 
@@ -112,6 +113,12 @@ export default async function InDepthAssessmentPage({
         divider: "hairline",
       }}
     >
+      <Section variant="linen" padding="tight" divider="none">
+        <div className="mx-auto max-w-default">
+          <IdentityFreshnessBanner />
+        </div>
+      </Section>
+
       {noPurchase && (
         <Section variant="parch" padding="default" divider="none">
           <div

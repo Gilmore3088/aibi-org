@@ -13,6 +13,11 @@
 
 export interface SessionIdentity {
   readonly email: string | null;
+  /** Buyer's full name as captured at the free-flow EmailGate. The
+   *  field name preserves the legacy `firstName` shape exposed to
+   *  /assessment/in-depth/purchased; the underlying Stripe metadata
+   *  key is `full_name` (with `first_name` fallback for sessions
+   *  created before the rename). */
   readonly firstName: string | null;
   readonly institutionName: string | null;
 }
@@ -46,7 +51,8 @@ export async function getSessionIdentity(
 
     return {
       email: email ?? null,
-      firstName: metadataString('first_name'),
+      firstName:
+        metadataString('full_name') ?? metadataString('first_name'),
       institutionName: metadataString('institution_name'),
     };
   } catch (err) {

@@ -111,9 +111,27 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       // an authenticated session — no separate sign-up step. ensureAuthUser
       // and generateMagicLink both swallow errors and return null, so a
       // failure here doesn't block the rest of the response.
+      //
+      // Pass through full_name + institution_name from the Stripe Session
+      // metadata so the auth user's profile is pre-populated on create —
+      // the buyer who follows the magic-link skip-the-form path still
+      // gets a proper greeting on the dashboard. Values originated at
+      // the free-flow EmailGate (see /api/checkout/in-depth which writes
+      // them into Session metadata).
+      const fullName =
+        typeof session.metadata?.full_name === 'string'
+          ? session.metadata.full_name
+          : typeof session.metadata?.first_name === 'string'
+            ? session.metadata.first_name
+            : null;
+      const institutionName =
+        typeof session.metadata?.institution_name === 'string'
+          ? session.metadata.institution_name
+          : null;
+
       let magicLinkUrl: string | null = null;
       try {
-        await ensureAuthUser(email);
+        await ensureAuthUser(email, { fullName, institutionName });
         magicLinkUrl = await generateMagicLink(email, nextPathForProduct(product));
       } catch (err) {
         console.warn('[webhook] auth-admin magic-link skip', err);

@@ -23,6 +23,15 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 interface CheckoutBody {
   mode?: unknown;
   user_email?: unknown;
+  // Trust boundary: these fields are buyer-supplied claims from the
+  // free-flow EmailGate hand-off, not verified identity. They round-trip
+  // through Stripe Session metadata so the post-Stripe signup form can
+  // prefill them. Self-attack only (the buyer's own session) — no
+  // cross-user vector — but sanitize length / control chars below before
+  // letting them into metadata.
+  full_name?: unknown;
+  /** @deprecated wire-name retained for one release while older clients
+   *  may still send `first_name`. Newer clients send `full_name`. */
   first_name?: unknown;
   institution_name?: unknown;
 }
@@ -100,7 +109,9 @@ export async function POST(request: Request) {
 
   const origin = getOrigin(request);
   const userEmail = typeof body.user_email === 'string' ? body.user_email : undefined;
-  const firstName = sanitizeIdentityField(body.first_name, 80);
+  const fullName =
+    sanitizeIdentityField(body.full_name, 80) ??
+    sanitizeIdentityField(body.first_name, 80);
   const institutionName = sanitizeIdentityField(body.institution_name, 120);
 
   try {
@@ -118,8 +129,10 @@ export async function POST(request: Request) {
         ...(userEmail ? { user_email: userEmail } : {}),
         // Forward identity captured at the free-flow EmailGate so the
         // post-payment signup form can prefill name + institution. Read
-        // back on /assessment/in-depth/purchased via the Stripe session.
-        ...(firstName ? { first_name: firstName } : {}),
+        // back on /assessment/in-depth/purchased via the Stripe session
+        // metadata. The webhook also reads `full_name` to enrich the
+        // auth user's user_metadata on create (see /api/webhooks/stripe).
+        ...(fullName ? { full_name: fullName } : {}),
         ...(institutionName ? { institution_name: institutionName } : {}),
       },
       ...(userEmail ? { customer_email: userEmail } : {}),

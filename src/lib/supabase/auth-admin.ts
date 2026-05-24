@@ -22,6 +22,17 @@ export interface EnsureAuthUserResult {
   readonly skipped?: string;
 }
 
+export interface EnsureAuthUserIdentity {
+  /** Buyer's full name from the free-flow EmailGate. Stored in
+   *  user_metadata.full_name when the auth user is being created here, so
+   *  the buyer's first sign-in shows a proper greeting without requiring
+   *  the signup form. */
+  readonly fullName?: string | null;
+  /** Buyer's institution from the EmailGate, persisted to
+   *  user_metadata.institution_name on create. */
+  readonly institutionName?: string | null;
+}
+
 /**
  * Ensures a Supabase Auth user exists for this email. Idempotent.
  *
@@ -39,7 +50,10 @@ export interface EnsureAuthUserResult {
  *
  * Never throws on "already registered" — that's not an error in our flow.
  */
-export async function ensureAuthUser(email: string): Promise<EnsureAuthUserResult> {
+export async function ensureAuthUser(
+  email: string,
+  identity: EnsureAuthUserIdentity = {},
+): Promise<EnsureAuthUserResult> {
   if (!isSupabaseConfigured()) {
     return { userId: null, created: false, skipped: 'supabase-not-configured' };
   }
@@ -78,6 +92,14 @@ export async function ensureAuthUser(email: string): Promise<EnsureAuthUserResul
     console.warn('[auth-admin] existence check exception:', err);
   }
 
+  // Build user_metadata from supplied identity. Skip empty strings so
+  // we don't overwrite a downstream signup-form value with whitespace.
+  const userMetadata: Record<string, string> = {};
+  const trimmedName = identity.fullName?.trim();
+  if (trimmedName) userMetadata.full_name = trimmedName;
+  const trimmedInstitution = identity.institutionName?.trim();
+  if (trimmedInstitution) userMetadata.institution_name = trimmedInstitution;
+
   // No match — create with CANONICAL email. Storing the canonical form
   // (rather than the as-typed alias) means the next alias purchase from
   // the same Gmail inbox dedupes against this row instead of creating
@@ -85,6 +107,9 @@ export async function ensureAuthUser(email: string): Promise<EnsureAuthUserResul
   const { data: createData, error: createError } = await supabase.auth.admin.createUser({
     email: canonical,
     email_confirm: true,
+    ...(Object.keys(userMetadata).length > 0
+      ? { user_metadata: userMetadata }
+      : {}),
   });
 
   if (!createError && createData.user) {

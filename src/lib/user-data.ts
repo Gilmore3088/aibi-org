@@ -41,10 +41,15 @@ export interface ProficiencyResult {
 
 export interface UserData {
   readonly email: string;
-  /** Captured at the assessment EmailGate (e.g. "Sarah"). Used to prefill
-   *  downstream forms (Stripe Checkout name, signup full-name) so the
-   *  buyer doesn't re-type identity they just provided. Optional because
-   *  the field itself is optional at the gate. */
+  /** Captured at the assessment EmailGate. Used to prefill downstream
+   *  forms (signup full-name field, dashboard greeting). The EmailGate
+   *  field is labelled "Full name"; historical writes stored a first
+   *  name only under the `firstName` key — readers should consult both
+   *  via getUserData (see fullName fallback). */
+  readonly fullName?: string;
+  /** Legacy key — written by the pre-2026-05-23 EmailGate. Retained on
+   *  the type so old localStorage payloads parse without losing data,
+   *  but new writes go to `fullName`. */
   readonly firstName?: string;
   /** Captured at the assessment EmailGate or as a soft-gate when a
    *  free-mail address is used. Used to prefill the signup
@@ -92,20 +97,32 @@ export function saveReadinessResult(
 export function saveProfileIdentity(
   email: string,
   identity: {
+    readonly fullName?: string | null;
+    /** @deprecated Pass `fullName` instead. Accepted as an alias only
+     *  to ease the rename for any older caller. */
     readonly firstName?: string | null;
     readonly institutionName?: string | null;
   },
 ): void {
   if (typeof window === 'undefined') return;
   const existing = getUserData();
-  const firstName = identity.firstName?.trim() || existing?.firstName;
-  const institutionName = identity.institutionName?.trim() || existing?.institutionName;
+  // Prefer the new `fullName` parameter; fall back to legacy `firstName`
+  // alias; finally fall back to whatever was already stored (either key).
+  const fullName =
+    identity.fullName?.trim() ||
+    identity.firstName?.trim() ||
+    existing?.fullName ||
+    existing?.firstName;
+  const institutionName =
+    identity.institutionName?.trim() || existing?.institutionName;
   const data: UserData = {
     ...existing,
     email,
-    ...(firstName ? { firstName } : {}),
+    ...(fullName ? { fullName } : {}),
     ...(institutionName ? { institutionName } : {}),
   };
+  // Drop the legacy key on write so we don't keep both around.
+  delete (data as { firstName?: string }).firstName;
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
 }
 
