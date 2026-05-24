@@ -45,45 +45,32 @@ VALUES (
   NULL,
   NULL,
   $LESSON$
-## Lesson 0.1 — How this course works
+## SCRIPT (verbatim)
 
-If you have been hearing about AI for the last couple of years and feeling
-somewhere between curious and quietly nervous, you are in the right room.
-You do not need to be technical. You do not need to have used any of this
-before. By the end of this course, you will not just understand generative
-AI — you will have built something with it that is useful to your actual
-job. Let's start with how this works.
+> "If you have been hearing about AI for the last couple of years and feeling somewhere between curious and quietly nervous, you are in the right room. You do not need to be technical. You do not need to have used any of this before. By the end of this course, you will not just understand generative AI — you will have built something with it that is useful to your actual job. Let's start with how this works."
 
-### Three things to know before we go anywhere
+> [stat] 6 · 24 · <15m | The full shape of this course | Six modules, ~24 lessons, every lesson under fifteen minutes. Free through Module 3; paid for Modules 4–5. Designed to do between meetings.
 
-**First, how it is built.** Six short modules. No lesson is longer than
-fifteen minutes, so you can do this between meetings. We start simple —
-what this stuff even is — and each module asks a little more of you, until
-you are framing a problem and building a working prototype. You do not
-skip ahead; each step earns the next.
+> "Three things to know before we go anywhere — how it is built, what makes it different, and what costs money. Then you pick your track and we get going.
+>
+> **One: how it is built.** Six short modules. No lesson is longer than fifteen minutes, so you can do this between meetings. We start simple — what this stuff even *is* — and each module asks a little more of you, until you are framing a problem and building a working prototype. You do not skip ahead; each step earns the next.
+>
+> **Two: the Toolbox — the part that makes this course different.** In most training you walk away with a certificate and a vague feeling. Here, you walk away with tools you actually use. Every lesson, you create something real — a prompt, a reusable skill, eventually a small app — and it is saved to your Toolbox. By the end you have a kit you can open on Monday morning and put to work. The course's real output is not a badge. It is the Toolbox.
+>
+> **Three: what is free and what is not — because we would rather just tell you.** The first four modules, including this one, are free. That is where you learn to *use* AI well. After Module 3 there is a gate. Beyond it, you learn to *build* — and that part is paid. There is one small catch even in the free part: to *keep* what you make, you give us an email at the gate, or you upgrade. Nothing saves anonymously. That is it. No surprises."
 
-**Second, the Toolbox — the part that makes this course different.** In
-most training you walk away with a certificate and a vague feeling. Here,
-you walk away with tools you actually use. Every lesson, you create
-something real — a prompt, a reusable skill, eventually a small app — and
-it is saved to your Toolbox. By the end you have a kit you can open on
-Monday morning and put to work. The course's real output is not a badge.
-It is the Toolbox.
+> [save] **From "I've heard of it" → "I built it."** That is the arc. Six modules. Twenty-four lessons. One Toolbox at the end you open on Monday morning.
 
-**Third, what is free and what is not — because we would rather just tell
-you.** The first four modules, including this one, are free. That is
-where you learn to use AI well. After Module 3 there is a gate. Beyond
-it, you learn to build — and that part is paid. There is one small catch
-even in the free part: to keep what you make, you give us an email at
-the gate, or you upgrade. Nothing saves anonymously. That is it. No
-surprises.
+> "Last thing before you start: this course adapts to your role. A compliance officer and a teller and a CIO should not get the same examples — so pick the track closest to your day. You can change it any time. The track picker renders below as part of the lesson."
 
-### Pick your track
+> [tip] If you came from the Readiness Assessment, your track is pre-selected and labelled "Set from your assessment." Change it if your day-to-day shape has shifted; otherwise leave it as is and move on.
 
-Last thing before you start: this course adapts to your role. A
-compliance officer and a teller and a CIO should not get the same
-examples — so pick the track closest to your day. You can change it any
-time. The track picker renders below as part of the lesson.
+## PRODUCTION
+
+- Cold open warm and human; this beat exists to lower the temperature. Tone is dry-reassuring, never cheerleader.
+- The `[stat]` card carries the shape of the course as three numbers (6 · 24 · <15m) — sets reader expectation in one glance.
+- After the SCRIPT block, the TrackPicker component renders five large tappable cards. Track choice persists to `profile.track` and drives every branched lesson downstream.
+- Closing recap: nothing visual; the `[save]` card already carries the line the learner will screenshot.
 $LESSON$,
   true
 )
@@ -118,55 +105,38 @@ VALUES (
   'm0-2-off-limits-sorter',
   'data_discipline_card',
   $LESSON$
-## Lesson 0.2 — The one rule
+## SCRIPT (verbatim)
 
-Before you touch a single AI tool, there is one rule. Just one. Get this
-right, and everything else in this course is safe to explore — you can be
-as bold and curious as you want. Get it wrong, and it is the kind of
-mistake that ends up in an exam finding. So let's make it simple and make
-it stick.
+> "Before you touch a single AI tool, there is one rule. Just one. Get this right, and everything else in this course is safe to explore — you can be as bold and curious as you want. Get it wrong, and it is the kind of mistake that ends up in an exam finding. So let's make it simple and make it stick."
 
-### The rule
+> [stat] 1 | The single rule that governs everything in this course | Never put customer or confidential data into an AI tool. Get this right and the rest is safe to explore.
 
-**Never put customer or confidential data into an AI tool.** No names
-tied to accounts. No account numbers, card numbers, or Social Security
-numbers. No customer financials. And nothing material that is not public
-yet. If you would be uncomfortable reading it aloud in a crowded
-elevator, it does not go in.
+> "The rule reads simply. **Never put customer or confidential data into an AI tool.** No names tied to accounts. No account numbers, card numbers, or Social Security numbers. No customer financials. And nothing material that is not public yet. The elevator test: if you would be uncomfortable reading it aloud in a crowded elevator, it does not go in."
 
-### Why so strict
+> [save] **Describe the situation, not the person.** Strip the name. Strip the number. Generalise the case. The help is almost always available from the anonymised version — and now you have not handed anything to anyone.
 
-Once you paste something into a tool, you have handed it to a system you
-do not control. Depending on the tool, that text can be stored, reviewed,
-or used in ways you cannot take back. For a bank, that is not just
-awkward — it is a regulatory and reputational problem. Consumer chat apps
-and enterprise tools handle your data differently, and most people
-cannot tell which is which in the moment. So we do not gamble. We use
-one habit that works everywhere.
+> "Why so strict? Once you paste something into a tool, you have handed it to a system you do not control. Depending on the tool, that text can be stored, reviewed, or used in ways you cannot take back. For a bank, that is not just awkward — it is a regulatory and reputational problem. Consumer chat apps and enterprise tools handle data differently, and most people cannot tell which is which in the moment. So we do not gamble. We use one habit that works everywhere."
 
-### The move that keeps you working
+> "Here is the part people miss: this rule almost never stops you from getting the help you want. You describe the situation instead of the person. Watch the same ask, two ways."
 
-This rule almost never stops you from getting the help you want. You
-describe the situation instead of the person.
+> [case:bad] The naming version — never type this
+> "Customer Jane Doe, account 4471, balance twelve hundred dollars, is furious about an overdraft fee from last week. Help me draft a calm reply that explains the fee."
+> [outcome] You have just handed a real member, a real account number, and a real balance to a vendor you do not control. This is the kind of thing that ends up in an exam finding.
 
-Do not type: "Customer Jane Doe, account 4471, balance twelve hundred
-dollars, is furious about an overdraft fee."
+> [case:good] The situation version — always type this
+> "A customer is upset about an overdraft fee they feel was unfair. Help me draft a calm, empathetic reply that explains the fee and offers next steps."
+> [outcome] Same help. Zero risk. Same letter quality, none of the file.
 
-Type: "A customer is upset about an overdraft fee and feels it was
-unfair. Help me draft a calm, empathetic reply that explains the fee and
-offers next steps."
+> [warn] Inside this course our practice sandbox is built so you literally cannot paste sensitive data — there are guardrails. But out in the real tools, on your own, there are no guardrails. The habit is what keeps you safe when the training wheels come off.
 
-Same help. Zero risk. That move — **describe the situation, not the
-person** — is one you will use constantly.
+> "The next section makes it concrete for your role. Five quick sort items — which of these is safe to share with an AI tool, which has to be anonymised first, which never goes in at all. Five answers; ninety seconds."
 
-### One more thing
+## PRODUCTION
 
-Inside this course, our practice sandbox is built so you literally
-cannot paste sensitive data — we have put guardrails on it. But out in
-the real tools, on your own, there are no guardrails. So this habit is
-the thing that keeps you safe when the training wheels come off.
-
-The next section makes it concrete for your role.
+- Open on the single big rule card (the `[stat]` block). Tone is serious-but-calm — this is the guardrail that *enables* boldness, not a scolding.
+- The `[save]` callout fixes the most-important line on screen for the screenshot.
+- The two `[case:bad]` and `[case:good]` cards sit side-by-side on desktop, stacked on mobile. Oxblood rule on the bad, ink rule on the good. The headline difference (named vs. anonymised) is the visual lesson.
+- After the SCRIPT block, the off-limits sorter renders with the learner's track-specific items (see `OffLimitsSorter` and the per-track `addie.lesson_track_variants` rows below).
 $LESSON$,
   true
 )

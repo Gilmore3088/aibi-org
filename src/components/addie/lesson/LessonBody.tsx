@@ -68,6 +68,7 @@ function stripProductionBlocks(src: string): string {
 // --- Block split ----------------------------------------------------
 
 type CalloutKind = 'tip' | 'warn' | 'save' | 'field';
+type CaseTone = 'good' | 'bad';
 
 interface Scene {
   intro?: string;
@@ -75,6 +76,19 @@ interface Scene {
   lead?: string;
   body: string;
   conclusion?: boolean;
+}
+
+interface StatBlock {
+  value: string;     // "65%"
+  source: string;    // "FDIC Quarterly Banking Profile, Q4 2024"
+  takeaway: string;  // single-line implication
+}
+
+interface CaseBlock {
+  tone: CaseTone;    // good | bad
+  title: string;     // headline
+  body: string;      // narrative paragraph
+  outcome: string;   // optional one-liner outcome (rendered as footer)
 }
 
 type Block =
@@ -86,9 +100,18 @@ type Block =
   | { kind: 'quote'; text: string }
   | { kind: 'hero_quote'; paras: string[] }
   | { kind: 'scene_set'; scenes: Scene[] }
-  | { kind: 'callout'; tone: CalloutKind; lines: string[] };
+  | { kind: 'callout'; tone: CalloutKind; lines: string[] }
+  | { kind: 'stat'; data: StatBlock }
+  | { kind: 'case_grid'; cases: CaseBlock[] };
 
 const CALLOUT_RE = /^>\s*\[(tip|warn|save|field)\]\s*(.*)$/i;
+// [stat] value | source | takeaway. Pipe-delimited. Value goes huge, source
+// is the mono-caps citation, takeaway is the editorial implication line.
+const STAT_RE = /^>\s*\[stat\]\s*(.*)$/i;
+// [case:good] Title here. The next > lines until [outcome] are the body;
+// [outcome] is the closing one-liner that anchors the card.
+const CASE_RE = /^>\s*\[case:(good|bad)\]\s*(.*)$/i;
+const CASE_OUTCOME_RE = /^>\s*\[outcome\]\s*(.*)$/i;
 const CALLOUT_META: Record<CalloutKind, { label: string; border: string; bg: string }> = {
   tip:   { label: 'Try this',       border: 'border-[var(--ledger-accent)]',   bg: 'bg-[color-mix(in_srgb,var(--ledger-accent)_6%,var(--ledger-paper))]' },
   warn:  { label: 'Watch out',      border: 'border-[var(--ledger-weak)]',     bg: 'bg-[color-mix(in_srgb,var(--ledger-weak)_5%,var(--ledger-paper))]' },
@@ -143,6 +166,55 @@ function splitBlocks(src: string): Block[] {
       }
       // Callout detection on the very first non-empty line.
       const firstNonEmpty = buf.find((x) => x.trim() !== '') ?? '';
+
+      // [stat] — sourced statistic card. Pipe-delimited.
+      const statM = STAT_RE.exec(`> ${firstNonEmpty}`);
+      if (statM) {
+        const parts = statM[1].split('|').map((s) => s.trim());
+        out.push({
+          kind: 'stat',
+          data: {
+            value: parts[0] ?? '',
+            source: parts[1] ?? '',
+            takeaway: parts[2] ?? '',
+          },
+        });
+        continue;
+      }
+
+      // [case:good] / [case:bad] — case-study cards. Auto-grid: consecutive
+      // case blocks in source order get grouped into a single grid block so
+      // the renderer can lay them side-by-side instead of stacked.
+      const caseM = CASE_RE.exec(`> ${firstNonEmpty}`);
+      if (caseM) {
+        const cases: CaseBlock[] = [parseCase(caseM, buf)];
+        // Look ahead: if the next non-empty quote block is also [case:...],
+        // pull it into the same grid. Repeat until the next block isn't a case.
+        while (i < lines.length) {
+          // Skip blank lines between cases.
+          let j = i;
+          while (j < lines.length && lines[j].trim() === '') j++;
+          if (j >= lines.length || !lines[j].startsWith('>')) break;
+          const peekBuf: string[] = [];
+          let k = j;
+          while (k < lines.length && (lines[k].startsWith('>') || (peekBuf.length > 0 && lines[k].trim() === ''))) {
+            if (lines[k].startsWith('>')) {
+              peekBuf.push(lines[k].replace(/^>\s?/, ''));
+            } else {
+              peekBuf.push('');
+            }
+            k++;
+          }
+          const peekFirst = peekBuf.find((x) => x.trim() !== '') ?? '';
+          const peekCase = CASE_RE.exec(`> ${peekFirst}`);
+          if (!peekCase) break;
+          cases.push(parseCase(peekCase, peekBuf));
+          i = k;
+        }
+        out.push({ kind: 'case_grid', cases });
+        continue;
+      }
+
       const m = CALLOUT_RE.exec(`> ${firstNonEmpty}`);
       if (m) {
         const tone = m[1].toLowerCase() as CalloutKind;
@@ -270,6 +342,38 @@ function detectScenes(paras: ReadonlyArray<string>): Scene[] | null {
     } as Scene);
   }
   return scenes;
+}
+
+function parseCase(match: RegExpExecArray, buf: string[]): CaseBlock {
+  const tone = match[1].toLowerCase() as CaseTone;
+  const title = match[2].trim();
+  // Body = everything after the [case:...] line up to but not including [outcome].
+  // Outcome = the trailing [outcome] line if present.
+  const paras = collapseQuoteParas(buf);
+  let outcome = '';
+  const bodyParas: string[] = [];
+  let started = false;
+  for (const p of paras) {
+    if (!started) {
+      // First non-empty para is the [case:...] line itself; skip it.
+      if (CASE_RE.test(`> ${p}`)) {
+        started = true;
+        continue;
+      }
+    }
+    const oM = CASE_OUTCOME_RE.exec(`> ${p}`);
+    if (oM) {
+      outcome = oM[1].trim();
+      continue;
+    }
+    bodyParas.push(p);
+  }
+  return {
+    tone,
+    title,
+    body: bodyParas.join('\n\n').trim(),
+    outcome,
+  };
 }
 
 function collapseQuoteParas(buf: string[]): string[] {
@@ -413,6 +517,90 @@ function renderBlock(b: Block, key: number): ReactNode {
             </p>
           ))}
         </aside>
+      );
+    }
+    case 'stat': {
+      // Sourced-statistic card. Big number in serif, source in mono caps,
+      // takeaway in body serif. Single column always — these earn their
+      // line break above and below.
+      const { value, source, takeaway } = b.data;
+      return (
+        <aside
+          key={key}
+          className="my-8 grid grid-cols-1 sm:grid-cols-[auto_1fr] gap-x-8 gap-y-3 sm:items-center rounded-[6px] border border-[var(--ledger-rule)] bg-[var(--ledger-paper)] px-6 py-6"
+        >
+          <div className="font-serif text-[3.25rem] sm:text-[3.75rem] leading-none text-[var(--ledger-ink)] tabular-nums">
+            {value}
+          </div>
+          <div className="min-w-0">
+            {takeaway ? (
+              <p className="font-serif text-[1.0625rem] leading-snug text-[var(--ledger-ink)]">
+                {renderInline(takeaway)}
+              </p>
+            ) : null}
+            {source ? (
+              <p className="mt-2 font-mono uppercase tracking-[0.16em] text-[0.65rem] text-[var(--ledger-muted)]">
+                Source · {source}
+              </p>
+            ) : null}
+          </div>
+        </aside>
+      );
+    }
+    case 'case_grid': {
+      // 1, 2, or 3+ case-study cards laid out as a grid. Each card carries
+      // a tone (good = ink, bad = oxblood) for the title rule + outcome
+      // footer. Two-up on md, three-up on lg+ when the count allows.
+      const n = b.cases.length;
+      const colsClass =
+        n === 1 ? 'grid-cols-1' :
+        n === 2 ? 'sm:grid-cols-2' :
+        'sm:grid-cols-2 lg:grid-cols-3';
+      return (
+        <div key={key} className={`my-8 grid ${colsClass} gap-4`}>
+          {b.cases.map((c, j) => {
+            const isGood = c.tone === 'good';
+            const accentClass = isGood
+              ? 'border-l-[3px] border-[var(--ledger-ink)]'
+              : 'border-l-[3px] border-[var(--ledger-weak)]';
+            const labelClass = isGood ? 'text-[var(--ledger-ink-2)]' : 'text-[var(--ledger-weak)]';
+            const outcomeClass = isGood
+              ? 'bg-[color-mix(in_srgb,var(--ledger-ink)_4%,var(--ledger-paper))] text-[var(--ledger-ink)]'
+              : 'bg-[color-mix(in_srgb,var(--ledger-weak)_6%,var(--ledger-paper))] text-[var(--ledger-weak)]';
+            return (
+              <section
+                key={j}
+                className={`flex flex-col rounded-[5px] border border-[var(--ledger-rule)] bg-[var(--ledger-paper)] ${accentClass}`}
+              >
+                <header className="px-5 pt-4 pb-2">
+                  <div className={`font-mono uppercase tracking-[0.18em] text-[0.6rem] ${labelClass} mb-1`}>
+                    {isGood ? 'Good use' : 'Bad use'}
+                  </div>
+                  <h4 className="font-serif text-[1.125rem] leading-tight text-[var(--ledger-ink)]">
+                    {renderInline(c.title)}
+                  </h4>
+                </header>
+                {c.body ? (
+                  <div className="px-5 pb-4 font-serif text-[0.95rem] leading-[1.65] text-[var(--ledger-ink-2)] space-y-2 flex-1">
+                    {c.body.split('\n\n').map((para, k) => (
+                      <p key={k}>{renderInline(para.trim())}</p>
+                    ))}
+                  </div>
+                ) : null}
+                {c.outcome ? (
+                  <footer className={`mt-auto px-5 py-3 border-t border-[var(--ledger-rule)] ${outcomeClass}`}>
+                    <span className="font-mono uppercase tracking-[0.16em] text-[0.6rem] block mb-1 opacity-70">
+                      Outcome
+                    </span>
+                    <span className="font-serif text-[0.95rem] leading-snug">
+                      {renderInline(c.outcome)}
+                    </span>
+                  </footer>
+                ) : null}
+              </section>
+            );
+          })}
+        </div>
       );
     }
   }

@@ -202,21 +202,33 @@ Generative AI inside a community bank is mostly boring, and that is the point. T
 
 ## SCRIPT (verbatim)
 
-> "Three good uses first, then the two that look tempting and aren't.
->
-> **One: rewriting a member letter for clarity.** A back-office colleague drafts an overdraft notice. It is technically correct and almost unreadable. They paste the generic, anonymised draft into an assistant — no names, no account numbers — and ask for plain English at an eighth-grade reading level, warm, two sentences shorter. They read the result, edit a verb, send it. Twenty minutes, not an hour. The member gets a letter they can actually understand. The institution has not handed any data to anyone.
->
-> **Two: turning a long PDF into a one-page summary.** A compliance analyst is handed a forty-page interagency guidance document. They drop the public PDF into a summariser, ask for a structured one-pager with section headers and direct quotes for anything load-bearing. They read the summary against the original, catch two paraphrases that softened the rule, and bring the corrected one-pager to their weekly. The committee actually reads it. The committee usually does not.
->
-> **Three: a first-pass training quiz from material you already have.** A learning lead has new-hire content on wire-fraud red flags. They ask an assistant to draft fifteen multiple-choice questions and answers grounded in the material they pasted in. They throw out four, rewrite three, keep eight. They have a usable quiz in twenty minutes — work that would have taken half a day.
->
-> Now the two that look like wins and aren't.
->
-> **Four: pasting a member's full file into a public tool to draft a denial letter.** Name, account number, income, employer, the lot. This is the rule from orientation, and it is the one to be religious about. The fix is to describe the situation, not the person: a small-business member with a thin credit file is being declined for an unsecured line — draft a respectful denial that explains the decision factors at a high level and points to next steps. Same letter. None of the file.
->
-> **Five: letting the model invent a citation.** A leader asks an assistant for the exact text of a regulation. The model produces a paragraph that sounds exactly like a regulation, and the paragraph ends up in a board memo. It is plausible and partly wrong. The fix is mechanical: anything the model claims is a citation, you fetch from the actual source before it leaves your desk. SR 11-7, an OCC bulletin, a section of Reg E — go get the live text. Always.
->
-> Hold the pattern across all five together. Good uses bring public or anonymised material to the model and use the model to compress, rewrite, or draft. Bad uses either send the model sensitive material, or trust it to remember facts it never actually had. Get that pattern and you can sort almost any new use case under a minute."
+> "Most of the gain shows up in the efficiency ratio — the line your CFO watches and your regulator notices. Community banks sit roughly ten points above the industry. Closing the gap is mostly a workflow story, and AI gives you back minutes per task at scale."
+
+> [stat] ~65% | FDIC Quarterly Banking Profile, Q4 2024 | Community-bank median efficiency ratio. Industry-wide sits at 55.7%. The ten-point gap is exactly where AI savings land — fewer minutes per task, repeated thousands of times a quarter.
+
+> "Three good uses first, then the two that look tempting and aren't. The pattern across all five is the same — public or anonymised material in, drafting or compression out, human verification before anything leaves your desk."
+
+> [case:good] Rewriting a member letter for clarity
+> A back-office colleague drafts an overdraft notice. Technically correct, almost unreadable. They paste the generic, anonymised draft into an assistant — no names, no account numbers — and ask for plain English at an eighth-grade reading level, warm, two sentences shorter. They read the result, edit a verb, send it.
+> [outcome] Twenty minutes, not an hour. The member gets a letter they can understand. The institution hands data to no one.
+
+> [case:good] Turning a long PDF into a one-page summary
+> A compliance analyst is handed a forty-page interagency guidance document. They drop the public PDF into a summariser and ask for a structured one-pager with section headers and direct quotes for anything load-bearing. They read the summary against the original, catch two paraphrases that softened the rule, and bring the corrected one-pager to their weekly.
+> [outcome] The committee actually reads it. The committee usually does not.
+
+> [case:good] A first-pass training quiz from material you already have
+> A learning lead has new-hire content on wire-fraud red flags. They ask an assistant to draft fifteen multiple-choice questions and answers grounded in the material pasted in. They throw out four, rewrite three, keep eight.
+> [outcome] A usable quiz in twenty minutes. Half a day's work, compressed.
+
+> [case:bad] Pasting a member's full file into a public tool to draft a denial letter
+> Name, account number, income, employer, the lot. This is the rule from orientation and it is the one to be religious about. The fix is to describe the situation, not the person: a small-business member with a thin credit file is being declined for an unsecured line — draft a respectful denial that explains the decision factors at a high level and points to next steps.
+> [outcome] Same letter. None of the file.
+
+> [case:bad] Letting the model invent a citation
+> A leader asks an assistant for the exact text of a regulation. The model produces a paragraph that sounds exactly like a regulation, and the paragraph ends up in a board memo. It is plausible and partly wrong. The fix is mechanical: anything the model claims is a citation, you fetch from the actual source before it leaves your desk — SR 11-7, an OCC bulletin, a section of Reg E.
+> [outcome] Go get the live text. Always.
+
+> "Hold the pattern together. Good uses bring public or anonymised material to the model and use the model to compress, rewrite, or draft. Bad uses either send the model sensitive material, or trust it to remember facts it never actually had. Get that pattern and you can sort almost any new use case under a minute."
 
 > [tip] Build a personal "before I paste" pause — ten seconds, every time. If you can't say out loud what's in your clipboard without naming a real customer, account, or unreleased number, the answer is no. The pause becomes muscle memory within a week.
 
@@ -224,7 +236,8 @@ Generative AI inside a community bank is mostly boring, and that is the point. T
 
 ## PRODUCTION
 
-- Five labelled cards build in sequence as the narrator works through each example. Good uses in `--ledger-ink`, bad uses in `--ledger-weak` (oxblood).
+- Five labelled cards build in sequence as the narrator works through each example. Good uses carry the ink rule, bad uses carry the oxblood rule (`--ledger-weak`). Each card has a one-line outcome footer.
+- The efficiency-ratio stat card sits high on the page — the data hook that earns the reader's attention before any of the examples land.
 - Close on the pattern card: two columns titled Good and Bad, each with the one-line pattern from the closing paragraph.
 - All institutions and people in the examples are unnamed.
 $body$,

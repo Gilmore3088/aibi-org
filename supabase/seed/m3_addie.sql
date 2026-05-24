@@ -64,17 +64,27 @@ A prompt is not magic words. It is a short brief. Think of the model as the new 
 
 ## SCRIPT (verbatim)
 
-> "Four parts. Role, task, context, format. Most one-line prompts skip three of the four, then the user blames the model. Walk them with me.
->
-> **One: role.** Who should the model pretend to be while it works? 'You are a compliance analyst at a community bank.' 'You are a teller trainer.' 'You are an IT manager evaluating an AI vendor.' One sentence at the top of the prompt changes vocabulary, depth, and assumptions all at once, without you having to enumerate any of them. A model told it is a compliance analyst will use the word 'remediation' where a model with no role would use 'fix.' That single shift is often the difference between an answer your committee can read and an answer you have to rewrite.
->
-> **Two: task.** What do you actually want produced? Not 'help me with this.' Not 'thoughts?' A real task is a verb plus a noun plus an audience. 'Summarise the regulation below for branch tellers.' 'Draft a denial letter for a thin-file small-business member.' 'Explain the difference between Reg E and Reg DD to a new hire.' Verb-noun-audience. If your task does not have all three, the model will silently invent the missing two, and the output will not match what you needed.
->
-> **Three: context.** The material the model needs to do the task. A public rule text. A draft procedure. A description of the situation in the abstract. Anything not already in the model's general knowledge that the task depends on. Context is also exactly the slot where people paste things they should not paste — a real member email, an internal exam finding, a board memo. The data-discipline rule from Module 0 lives here. Stay anonymous, stay public, stay general. If the real thing is too sensitive to paste, describe its shape and ask the model to work from the shape.
->
-> **Four: format and constraints.** What should the output look like and what must it avoid? 'Five bullets, under 150 words, end with one line a teller can read aloud.' 'Do not cite any regulation not named in the source.' 'Do not invent fee amounts or dates.' The model will gladly fill in defaults when you do not set these. The defaults are someone else's defaults, not yours. Spend ten extra seconds naming the shape and you stop the rewrite cycle at the door.
->
-> Hold those four together. Role, task, context, format. The single highest-leverage move in this entire course is moving from one-sentence prompts to four-part briefs. Relevance beats volume. A hundred-word brief that names all four will beat a thousand-word ramble every time. The next lesson shows you the same task under different briefs, side by side, so you can watch the output shift."
+> "Four parts. Role, task, context, format. Most one-line prompts skip three of the four, then the user blames the model. Walk them with me — each part on its own card, then a four-pane example so you can see them assemble into a brief."
+
+> [stat] 4 | The four parts of every prompt brief | Role · Task · Context · Format. Skip any one and the model fills the gap with someone else's defaults — and you spend the next ten minutes rewriting the output instead of using it.
+
+> [case:good] Role — who the model is while it works
+> One sentence at the top of the prompt. "You are a compliance analyst at a community bank." "You are a teller trainer." "You are an IT manager evaluating an AI vendor." That single line shifts vocabulary, depth, and assumptions all at once. A model told it is a compliance analyst will write "remediation" where a model with no role writes "fix."
+> [outcome] An answer your committee can read, not an answer you have to rewrite.
+
+> [case:good] Task — verb · noun · audience
+> Not "help me with this." Not "thoughts?" A real task is a verb plus a noun plus an audience. "Summarise the regulation below for branch tellers." "Draft a denial letter for a thin-file small-business member." "Explain the difference between Reg E and Reg DD to a new hire." If you skip the audience, the model invents one — usually wrong.
+> [outcome] Output that matches the audience you actually need to send it to.
+
+> [case:good] Context — the material the model needs
+> A public rule text. A draft procedure. A description of the situation in the abstract. Anything not in the model's general knowledge that the task depends on. The data-discipline rule from Module 0 lives here — stay anonymous, stay public, stay general. If the real thing is too sensitive to paste, describe its shape and ask the model to work from the shape.
+> [outcome] The model has the facts it needs, and you have not handed sensitive material to anyone.
+
+> [case:good] Format — what the output looks like and what it avoids
+> "Five bullets, under 150 words, end with one line a teller can read aloud." "Do not cite any regulation not named in the source." "Do not invent fee amounts or dates." The model gladly fills in defaults when you do not set these — and the defaults are someone else's, not yours.
+> [outcome] Ten extra seconds at the top kills the rewrite cycle at the door.
+
+> "Hold those four together. The single highest-leverage move in this entire course is moving from one-sentence prompts to four-part briefs. Relevance beats volume. A hundred-word brief that names all four will beat a thousand-word ramble every time. The next lesson shows you the same task under different briefs, side by side, so you can watch the output shift."
 
 > [tip] When a prompt is not working, run a quick self-check: did I name a role, a task with verb-noun-audience, the context the model needs, and the format I want back? Nine times out of ten the missing piece is task-audience or format. Add them, re-run.
 
