@@ -7,6 +7,7 @@ import type { Dimension } from '@content/assessments/v2/types';
 import { ResultsDashboard } from './ResultsDashboard';
 import { NewsletterCTA } from './NewsletterCTA';
 import { PdfDownloadButton } from './PdfDownloadButton';
+import { SaveReportBanner } from './SaveReportBanner';
 import { StarterArtifactCard } from './StarterArtifactCard';
 import { StarterPrompt } from './StarterPrompt';
 import { PracticePicture } from './PracticePicture';
@@ -95,6 +96,15 @@ export function ResultsViewV2({
 
   return (
     <div className="w-full max-w-4xl mx-auto">
+      {/* "Save this report to your account" — only renders when the
+          visitor is not signed in. Auth-checks /api/auth/me and
+          hands identity through sessionStorage to the signup form. */}
+      <SaveReportBanner
+        email={email}
+        fullName={firstName ?? null}
+        institutionName={institutionName ?? null}
+      />
+
       {/* Executive briefing header */}
       <header
         className="mb-14 border-b border-[color:var(--color-ink)]/15 pb-8"
