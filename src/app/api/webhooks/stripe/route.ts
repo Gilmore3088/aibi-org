@@ -22,12 +22,11 @@ import {
   sendIndepthAssessmentPurchase,
 } from '@/lib/resend';
 
-function nextPathForProduct(product: string | undefined): string {
-  if (product === 'in-depth-assessment') return '/assessment/in-depth/take';
-  // Institution leaders land on the same course page as individuals for now;
-  // dedicated leader-dashboard surface is tracked in issue #48.
-  return '/courses/foundation/program';
-}
+// nextPathForProduct was used by the removed generateMagicLink call to
+// route buyers from the welcome email back to their product surface.
+// Since passkey auth replaced magic links (2026-05-23), buyers sign in
+// at /auth/login and the post-login redirect handles routing — no
+// need to encode the deep-link target in the email.
 
 function formatAmount(amountCents: number | null | undefined, currency: string | null | undefined): string {
   if (typeof amountCents !== 'number') return '—';
