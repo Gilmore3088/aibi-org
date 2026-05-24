@@ -12,6 +12,11 @@ export interface LessonHeading {
 const PRODUCTION = /^##\s+PRODUCTION\s*$/i;
 const SKIP_TITLES = /^##\s+(SCRIPT(\s*\([^)]*\))?|SHARED\s+INTRO)\s*$/i;
 const ANY_H2 = /^##\s+/;
+// Mirrors LessonBody's NUM_LEAD: `**One: <lead>.** ...` (or Two/Three/etc.)
+// inside a blockquote line. We surface these as virtual h3 headings so the
+// sticky TOC has anchors on script-only lessons (e.g. m1.1) whose ONLY h2s
+// are the meta-sections we strip (SCRIPT / PRODUCTION).
+export const SCENE_LEAD = /\*\*(One|Two|Three|Four|Five|Six):\s*([^*]+?)\*\*/i;
 
 export function slugifyHeading(text: string): string {
   return text
@@ -51,6 +56,15 @@ export function extractHeadings(body: string): LessonHeading[] {
     } else if (ln.startsWith('# ')) {
       level = 2;
       raw = ln.slice(2).trim();
+    } else {
+      // Virtual h3 from scene leads inside blockquotes. The renderer
+      // (LessonBody → detectScenes → renderScene) turns these into numbered
+      // scene cards whose container also gets id={slugifyHeading(lead)}.
+      const sm = SCENE_LEAD.exec(ln);
+      if (sm) {
+        level = 3;
+        raw = sm[2].trim();
+      }
     }
     if (!level || !raw) continue;
 

@@ -454,11 +454,14 @@ function renderScene(s: Scene, key: number, _total: number): ReactNode {
       </section>
     );
   }
-  // Numbered concept scene
+  // Numbered concept scene. The id matches slugifyHeading(s.lead) so the
+  // sticky TOC's virtual-heading anchors (see lessonHeadings.SCENE_LEAD)
+  // can scroll-to and scroll-spy these cards.
   return (
     <section
       key={key}
-      className="grid grid-cols-[auto_1fr] gap-4 sm:gap-6 rounded-[8px] border border-[var(--ledger-rule)] bg-[var(--ledger-paper)] px-5 sm:px-7 py-6 sm:py-7 shadow-[0_1px_0_color-mix(in_srgb,var(--ledger-ink)_5%,transparent),0_4px_12px_-6px_color-mix(in_srgb,var(--ledger-ink)_10%,transparent)] hover:shadow-[0_2px_0_color-mix(in_srgb,var(--ledger-ink)_8%,transparent),0_8px_22px_-8px_color-mix(in_srgb,var(--ledger-ink)_16%,transparent)] transition-shadow duration-[200ms]"
+      id={s.lead ? slugifyHeading(s.lead) : undefined}
+      className="scroll-mt-24 grid grid-cols-[auto_1fr] gap-4 sm:gap-6 rounded-[8px] border border-[var(--ledger-rule)] bg-[var(--ledger-paper)] px-5 sm:px-7 py-6 sm:py-7 shadow-[0_1px_0_color-mix(in_srgb,var(--ledger-ink)_5%,transparent),0_4px_12px_-6px_color-mix(in_srgb,var(--ledger-ink)_10%,transparent)] hover:shadow-[0_2px_0_color-mix(in_srgb,var(--ledger-ink)_8%,transparent),0_8px_22px_-8px_color-mix(in_srgb,var(--ledger-ink)_16%,transparent)] transition-shadow duration-[200ms]"
     >
       <div className="flex flex-col items-center">
         <div className="font-serif text-[2.75rem] leading-none text-[var(--ledger-accent)] tabular-nums">
