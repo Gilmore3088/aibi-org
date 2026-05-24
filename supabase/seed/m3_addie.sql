@@ -60,46 +60,31 @@ VALUES (
   NULL,
   NULL,
   $LESSON$
-## Lesson 3.1 — Anatomy of a prompt
+A prompt is not magic words. It is a short brief. Think of the model as the new analyst who started this morning — bright, fast, willing, with no context about your bank or the question behind your question. Everything you would write in a one-paragraph email to that analyst belongs in your prompt. Four parts do the heavy lifting; skipping any of them costs you.
 
-A prompt is not magic words. It is a short brief. The model is the new
-analyst who started this morning — bright, fast, willing — but with no
-context about your bank, your role, or the question behind your question.
-Everything you would write in a one-paragraph email to that analyst is
-what belongs in a prompt.
+## SCRIPT (verbatim)
 
-### The four parts that earn their keep
+> "Four parts. Role, task, context, format. Most one-line prompts skip three of the four, then the user blames the model. Walk them with me.
+>
+> **One: role.** Who should the model pretend to be while it works? 'You are a compliance analyst at a community bank.' 'You are a teller trainer.' 'You are an IT manager evaluating an AI vendor.' One sentence at the top of the prompt changes vocabulary, depth, and assumptions all at once, without you having to enumerate any of them. A model told it is a compliance analyst will use the word 'remediation' where a model with no role would use 'fix.' That single shift is often the difference between an answer your committee can read and an answer you have to rewrite.
+>
+> **Two: task.** What do you actually want produced? Not 'help me with this.' Not 'thoughts?' A real task is a verb plus a noun plus an audience. 'Summarise the regulation below for branch tellers.' 'Draft a denial letter for a thin-file small-business member.' 'Explain the difference between Reg E and Reg DD to a new hire.' Verb-noun-audience. If your task does not have all three, the model will silently invent the missing two, and the output will not match what you needed.
+>
+> **Three: context.** The material the model needs to do the task. A public rule text. A draft procedure. A description of the situation in the abstract. Anything not already in the model's general knowledge that the task depends on. Context is also exactly the slot where people paste things they should not paste — a real member email, an internal exam finding, a board memo. The data-discipline rule from Module 0 lives here. Stay anonymous, stay public, stay general. If the real thing is too sensitive to paste, describe its shape and ask the model to work from the shape.
+>
+> **Four: format and constraints.** What should the output look like and what must it avoid? 'Five bullets, under 150 words, end with one line a teller can read aloud.' 'Do not cite any regulation not named in the source.' 'Do not invent fee amounts or dates.' The model will gladly fill in defaults when you do not set these. The defaults are someone else's defaults, not yours. Spend ten extra seconds naming the shape and you stop the rewrite cycle at the door.
+>
+> Hold those four together. Role, task, context, format. The single highest-leverage move in this entire course is moving from one-sentence prompts to four-part briefs. Relevance beats volume. A hundred-word brief that names all four will beat a thousand-word ramble every time. The next lesson shows you the same task under different briefs, side by side, so you can watch the output shift."
 
-**Role.** Who should the model pretend to be while it works? "You are a
-compliance analyst at a community bank." "You are a teller trainer."
-Setting a role changes vocabulary, depth, and assumptions all at once,
-without you having to enumerate them.
+> [tip] When a prompt is not working, run a quick self-check: did I name a role, a task with verb-noun-audience, the context the model needs, and the format I want back? Nine times out of ten the missing piece is task-audience or format. Add them, re-run.
 
-**Task.** What do you actually want produced? Not "help me with this" but
-"summarize the regulation below for branch staff." A task is a verb plus
-a noun plus an audience.
+> [warn] Context is where the data-discipline rule from Module 0 gets quietly broken. The slot that asks for "anything the model needs to know" is exactly the slot where someone pastes a real member file. Describe the situation, not the person — every time, without exception.
 
-**Context.** The material the model needs to do the task. A public rule
-text. A draft procedure. A description of the situation. Anything not in
-the model's general knowledge that the task depends on. This is where the
-data-discipline rule from Module 0 lives: context is exactly the slot
-where people paste things they should not paste. Stay anonymous, stay
-public, stay general.
+## PRODUCTION
 
-**Format and constraints.** What should the output look like and what
-must it avoid? "Five bullets, under 150 words, end with one line a teller
-can read aloud." "Do not invent regulations that are not in the text."
-The model will gladly fill in defaults if you do not set these — and the
-defaults will not match what you needed.
-
-### Why this matters
-
-The single highest-leverage move in this entire course is moving from
-one-sentence prompts to four-part briefs. Relevance beats volume. A
-hundred-word prompt that names the role, task, audience, and format will
-beat a thousand-word prompt that rambles. The next lesson shows you the
-same task under different briefs, side by side, so you can watch the
-output shift.
+- Cold open on a four-pane layout, one pane per part. Each pane lights up as the narrator names it, then the four assemble into a single labelled card titled "The four-part brief."
+- Side example panel renders an actual filled-in prompt under each part as the narrator works through it, accumulating into a complete prompt by the closing line.
+- Closing card holds the four-word mnemonic — Role · Task · Context · Format — for four seconds before the knowledge check.
 $LESSON$,
   true
 )
@@ -131,30 +116,31 @@ VALUES (
   'm3-2-ab-output',
   NULL,
   $LESSON$
-## Lesson 3.2 — How output changes
+You are about to give the same model the same task three times. The source material does not change. The model does not change. The only thing that moves is the brief — audience, length, format. The point of this lesson is not which version reads best. The point is to watch how much the output shifts when you change something small. Once you see it, you stop trusting one-line prompts forever.
 
-You are about to give the same model the same task three times. The
-underlying material does not change. What changes is the brief — the
-audience and the length. The point is not which version is "best." The
-point is that small, bounded choices in your brief move the model a long
-way. You will watch it happen side by side.
+## SCRIPT (verbatim)
 
-### What you will do
+> "Three moves in the sandbox, in order. Each one teaches you something the four-part brief from Lesson 3.1 cannot teach you in the abstract.
+>
+> **One: pick two audience settings and run the same task.** The audience lever offers branch tellers, branch managers, and bank executives. Keep length on medium. Run the task against the public Reg E summary that is preloaded. The two outputs come back side by side. Read across. Notice the vocabulary shift, the depth shift, the way the teller version closes with a line you could read aloud and the executive version closes with a one-paragraph implication. The source did not change. The audience did. That single lever moved the model a long way.
+>
+> **Two: hold audience constant and move the length lever.** Same audience, three lengths — short, medium, long. Run them. The short version is almost too terse to use; the long version drifts into restating the source; the medium one is usually the keeper. This is the lesson everyone learns the hard way in week one of using an assistant: longer is not better. Relevance is better. Length is a knob, not a virtue.
+>
+> **Three: swap the preset to a different public source and re-run your best brief.** Use the second preset — a CFPB rule summary — and see whether your favourite brief from the first two runs still produces a usable result. Sometimes it does. Sometimes the same brief that nailed the Reg E summary feels off against the CFPB material. That tells you the brief was tuned to the source, not to the task. Generalise — make the brief stronger and the source-fit weaker — and you have something that scales.
+>
+> Hold those three together: audience moves vocabulary and depth, length is a knob and not a virtue, and a brief that survives a source swap is a brief that goes into your Toolbox. None of this is theoretical. You are watching the same model do the same task under three different briefs in three minutes.
+>
+> Do not save anything from this sandbox. This lesson is for noticing. The keeper artifact — the Starter Prompt Pack — gets built in 3.5."
 
-Below the lesson body you will see a controlled sandbox with two
-controls: an audience lever (branch tellers, branch managers, bank
-executives) and a length lever (short, medium, long). The task is fixed —
-summarize the regulation excerpt below for the audience the lever names.
-The source material is a public regulatory summary, preloaded as a
-preset; you can leave it as-is or paste another short, public excerpt.
+> [tip] When two side-by-side outputs look similar, change the lever that you suspect matters most and re-run. If the outputs still look similar, the lever does not matter for that task. That is useful information; lock it and move on.
 
-Pick two or three combinations and run them. The system runs them all
-against the same model, with the same task, and shows you the outputs
-side by side. Read across the columns: same source, same model — what
-moved?
+> [warn] It is tempting to keep re-running until you get the output you want, then convince yourself the prompt was good. That is the slot-machine trap. If a brief produces a usable result one time in five, the brief is not yet a working prompt — keep refining the brief, not the dice.
 
-This sandbox is for noticing, not for producing a keeper. The keeper
-comes in 3.5.
+## PRODUCTION
+
+- Sandbox surface dominates the screen. Narration above plays once on first visit; replay button after.
+- Side-by-side renders show two or three outputs in equal columns, each labelled with its lever settings.
+- A faint diff highlight marks paragraphs that changed across runs so the learner can see the shift without reading both versions in full.
 $LESSON$,
   true
 )
@@ -186,12 +172,29 @@ VALUES (
   NULL,
   NULL,
   $LESSON$
-## Lesson 3.3 — Five prompt patterns
+Most useful prompts are one of five shapes. Knowing the shapes saves you from staring at the box at 9am on Monday. Pick the shape that fits the job, fill in the slots, send. This reading walks each pattern with a banking example you can lift today, and ends with the cheat sheet that goes into your Toolbox.
 
-Most useful prompts are one of five shapes. Knowing the shapes saves you
-from staring at the box. Pick the shape that fits the job, fill in the
-slots, send. The reading below walks each pattern with a banking
-example you can lift today.
+## SCRIPT (verbatim)
+
+> "Five patterns. Each one earns its keep in a different situation. Memorise the shapes, not the words.
+>
+> **One: the default brief — role plus task plus format.** Used for the eighty percent of work where you know what you want. Most one-shot prompts double in usefulness when you stop skipping these three lines.
+>
+> **Two: few-shot examples.** Used when you want a specific style or structure. Show the model two short examples, then ask for the third. The model copies the shape of what you showed it more reliably than it follows abstract instructions like 'be more formal.'
+>
+> **Three: the chain-of-thought hint.** Used for anything that requires reasoning — comparing two policies, walking a what-if, pricing a fee scenario. One line is enough: 'walk through your reasoning before you answer.' The output gets noticeably more careful.
+>
+> **Four: constraints — what NOT to do.** Used when the model has been inventing or drifting. Explicit boundaries are the difference between a draft you can use and a draft you have to fact-check line by line.
+>
+> **Five: ask for what is missing.** Used when the model returns a generic, surface-level answer. Flip the move: ask the model what additional context would let it write a sharper version. It will tell you, and the next pass gets dramatically better.
+>
+> Hold those five together. They are not five different tools; they are five moves you combine. A real working prompt for a banker often stacks one, four, and five — a four-part brief, an explicit list of what not to invent, and a closing line asking the model to flag anything it needed but did not have. That stack is the cheat sheet you save at the end of this lesson."
+
+> [tip] When you do not know which pattern to start with, default to pattern one. Adding constraints (pattern four) when the output drifts is the most common second move. Adding examples (pattern two) when the style is off is the third. You rarely need all five at once.
+
+> [warn] The chain-of-thought hint can make the model produce a long preamble before the answer. If you want only the answer, add a constraint: "walk through your reasoning, then output only the final answer marked with a heading." Two patterns, one prompt.
+
+## Reference — the five patterns in full
 
 ### Pattern 1 — Role + Task + Format
 
@@ -254,6 +257,11 @@ These patterns stack. A real working prompt for a banker often combines
 and a single closing line asking the model to flag anything it needed
 that it did not have. That is the cheat sheet you will save in your
 Toolbox at the end of this module.
+
+## PRODUCTION
+
+- Reading lesson — no narration track required, but the cheat-sheet block at the end is downloadable as a one-page PDF for the Toolbox.
+- Five pattern blocks render with their example prompts in monospace so the learner can copy verbatim into the sandbox in Lesson 3.5.
 $LESSON$,
   true
 )
@@ -285,18 +293,29 @@ VALUES (
   'm3-4-spot-the-violation',
   NULL,
   $LESSON$
-## Lesson 3.4 — Spot the violation
+Module 0 set the rule. This lesson drills it. A dozen short scenarios — real-feeling moments from a banking day — and a single question on each: violation, clean use, or borderline case that needs a small fix first? The catch: a few of the borderline cases look exactly like the clean ones until you read them carefully. That is the point.
 
-Module 0 set the rule. This lesson drills the rule. Below are a dozen
-short scenarios — real-feeling moments from a banking day — where
-someone reaches for an AI tool. Your job is to call each one: is this a
-violation of the data-discipline rule, a clean use, or a borderline case
-that needs a small fix first?
+## SCRIPT (verbatim)
 
-After each answer the lesson tells you why, and walks you through the
-anonymization move when there is one. Speed does not matter. Catching
-the borderline cases is what builds the instinct you will use the
-moment you close this tab.
+> "Three things to keep in your head as you go through the twelve.
+>
+> **One: read the whole scenario before you answer.** The violations are not all in the obvious places. Some of them hide in the second sentence — a name dropped into the middle of an otherwise generic situation, a fee amount that ties back to a specific member, a date that narrows the population to one. Slow down. The whole point of the drill is to train the second look.
+>
+> **Two: trust your gut on the borderline cases, then check.** If something feels close to the line — a complaint summary with the institution's name removed but the SAR number still visible, a vendor proposal marked Confidential that you want help reading — the discomfort is information. The lesson will tell you whether the gut call was right. Either way you learn the boundary.
+>
+> **Three: when there is a fix, write the fix.** The lesson shows you the anonymisation move for every violation that has one: strip the name, generalise the situation, describe the shape instead of pasting the file. Read the fix even when you got the call right. The fix is the muscle you use the moment you close this tab.
+>
+> Hold those three together: read fully, trust the discomfort, learn the fix. Speed is not the metric. Calibration is. A banker who catches eleven of twelve borderline cases in a quarter is worth ten bankers who never built the instinct."
+
+> [tip] When you finish the drill, screenshot the two scenarios you found hardest and paste them into your notes. The two cases that almost fooled you are the two patterns you will see again in real life.
+
+> [warn] A scenario can pass the data-discipline rule and still be a bad idea — for example, asking a public tool to draft a press release about a non-public product launch. The rule covers PII and MNPI; judgement covers reputational risk. Both have to be intact.
+
+## PRODUCTION
+
+- The drill widget is the screen. Narration above plays once on first visit.
+- Each scenario card shows the situation, three call options (violation / clean / borderline), and after-answer feedback with the anonymisation fix where applicable.
+- Final card summarises the learner's score with a one-line interpretation ("Strong calibration on PII; revisit borderline cases involving confidential vendor material").
 $LESSON$,
   true
 )
@@ -328,23 +347,29 @@ VALUES (
   'm3-5-real-use-cases',
   'starter_prompt_pack',
   $LESSON$
-## Lesson 3.5 — Real use cases
+The last free lesson. You have the four-part brief from 3.1, the side-by-side intuition from 3.2, the five patterns from 3.3, and the data-discipline drill from 3.4. Now you put it together on a task from your own week. By the end of this lesson, you have something you would actually use on Monday — and a decision about whether to keep building.
 
-The last free lesson. You have the four-part brief from 3.1, the
-side-by-side intuition from 3.2, the patterns cheat sheet from 3.3, and
-the data-discipline drill from 3.4. Now you put it together on a task
-from your own week.
+## SCRIPT (verbatim)
 
-This sandbox is branched by your role track. The framing below adapts
-to the track you picked in Module 0. The sandbox itself defaults to your
-track, but you can flip the role lever to see how another track's task
-shapes the model's response — that is its own small lesson in why role
-matters.
+> "Three moves to land the lesson and the Pack.
+>
+> **One: pick three tasks from your week-two worksheet in Module 2.** The honest ones. Not the impressive ones, the recurring ones. The fee-dispute reply you write every Wednesday. The procedure memo you keep meaning to clean up. The vendor checklist you cobble together each time a new tool comes in the door. Three real tasks become three rows in your Starter Prompt Pack.
+>
+> **Two: draft each prompt against the four-part brief and one pattern.** Role, task, context, format — every time. Then pick one pattern from Lesson 3.3 that fits the job. The fee-dispute reply usually wants constraints (do not invent fee amounts or dates). The procedure rewrite usually wants few-shot (paste two clean memos to show the shape). The vendor checklist usually wants role + constraints (you are an IT manager at a community bank, do not name real vendors). Run each prompt in the sandbox below. Edit until the output is something you would actually send or use.
+>
+> **Three: save the three prompts to your Pack.** Each row carries the prompt itself, one line of when to use it, and a screenshot of the kind of output it produced. That is the Pack — a working set, not a wishlist. Open it Monday at 9am and one of the three will fit the work in front of you.
+>
+> Hold those three together. Three honest tasks, four-part briefs with one pattern each, saved as a working Pack. This is the finish line for the free tier of this course — the artifact you take with you whether you continue into the paid modules or not."
 
-Draft three prompts you would actually use. Each one becomes a row in
-your **Starter Prompt Pack** — the Module 3 takeaway. To keep the Pack,
-you will be asked for an email at the gate that follows this module.
-That is the only catch in the free tier. Nothing saves anonymously.
+> [tip] If you have time, draft a fourth prompt — the one for the task you would most like to hand off but feels too sensitive. Describe the shape of the work without the data, ask the model what it would need, and save the prompt as a placeholder. When your institution sanctions a private model, that placeholder is ready.
+
+> [warn] After this lesson there is a three-way gate. Pay to continue into Modules 4 and 5; give us an email to keep your free Pack and stop here; or decline and walk away. The gate is honest — nothing saves anonymously in the free tier, and we would rather tell you than pretend. The Pack you just built is yours either way; the email keeps it in your Toolbox.
+
+## PRODUCTION
+
+- Sandbox surface dominates. Narration above plays once.
+- "Add to Pack" button highlights after each saved run; the running Pack appears in a sidebar with three slots that fill in order.
+- After the third save, a single CTA card replaces the lesson nav: "You have built your Pack. Choose how to keep it." → gate screen.
 $LESSON$,
   true
 )
