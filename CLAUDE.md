@@ -348,7 +348,7 @@ Must work on mobile in under 3 minutes. One question per view on mobile. Score r
 
 ```typescript
 interface AssessmentState {
-  currentQuestion: number;     // 0–7
+  currentQuestion: number;     // 0–11 (12-question rotation drawn from 48-question pool)
   answers: number[];           // scores 1–4 per question
   phase: 'questions' | 'score' | 'results';
   email: string;
@@ -358,16 +358,29 @@ interface AssessmentState {
 
 ### Scoring Logic
 
+Two canonical scoring rubrics live in [`content/assessments/v2/scoring.ts`](./content/assessments/v2/scoring.ts):
+
 ```typescript
-// Score range is 8–32 (8 questions × 1–4 points each)
-const getTier = (total: number) => {
-  if (total >= 28) return { label: 'Ready to Scale',    color: 'var(--color-sage)' };         // 28–32
-  if (total >= 22) return { label: 'Building Momentum', color: 'var(--color-terra-light)' };  // 22–27
-  if (total >= 15) return { label: 'Early Stage',       color: 'var(--color-terra)' };        // 15–21
-  return               { label: 'Starting Point',       color: 'var(--color-error)' };        // 8–14
-};
-// NEVER hardcode hex values — always reference CSS variables
+// Free 12-question flow — score range 12–48 (12 questions × 1–4 points).
+// Narrative bands, hard-coded for funnel pacing.
+export function getTierV2(total: number): Tier {
+  // 12-22 → Starting Point   (--color-error)
+  // 23-32 → Early Stage      (--color-terra)
+  // 33-40 → Building Momentum (--color-terra-light)
+  // 41-48 → Ready to Scale   (--color-sage)
+}
+
+// In-Depth 48-question flow — raw range 48–192, normalized to percent of max.
+// Same four tier ids as the free flow, but bands are pct-anchored at 50/75/90.
+// composeScore() in scoring.ts is the SINGLE function the in-depth submit
+// path AND the Briefing display call — they cannot drift (audit A1,
+// 2026-05-24 fix). The phase labels (Curious / Coordinated / Programmatic
+// / Native) are editorial aliases for tier ids in the Briefing surface.
+export function getTierInDepth(rawScore: number, maxScore: number): Tier;
+export function composeScore(breakdown): ComposedScore;
 ```
+
+NEVER hardcode hex values — always reference CSS variables (`--ledger-*` for new work).
 
 ### Critical UX Rule
 
@@ -669,7 +682,7 @@ The post-conference email goes out when ALL items are checked:
 
 - [ ] AIBankingInstitute.com DNS live, SSL active *(domains registered ✓)*
 - [ ] Home page rendering correctly desktop + mobile
-- [ ] Assessment: 8 questions functional, scoring correct
+- [ ] Assessment: 12-question rotation (drawn from 48-question pool) functional, scoring correct (12–48 range)
 - [ ] Assessment: **email captured before any score is visible; full report (score + tier + dimension breakdown + starter artifact) renders inline immediately after email submit** (reverses 2026-04-27 decision — see 2026-05-18 DECISIONS.md entry)
 - [ ] Assessment: sessionStorage persistence working (test by refreshing mid-assessment on iPhone)
 - [ ] Assessment: /api/capture-email with rate limiting active

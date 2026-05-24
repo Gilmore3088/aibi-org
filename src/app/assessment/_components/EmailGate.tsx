@@ -304,18 +304,22 @@ function DeliverablePanel() {
           </p>
         </div>
         <div className="space-y-2">
+          {/* Audit A2 (2026-05-24): these labels must match the v2 canonical
+              8 dimensions (DIMENSION_LABELS in content/assessments/v2/types.ts)
+              that the real report uses. Short forms are kept inline for
+              column-width fit; full forms are in DIMENSION_LABELS. */}
           {([
-            ['Awareness', 0.65],
-            ['Use cases', 0.50],
-            ['Governance', 0.40],
-            ['Data', 0.35],
-            ['Skills', 0.55],
-            ['Vendor', 0.70],
-            ['Comms', 0.45],
-            ['Roadmap', 0.30],
+            ['Current AI', 0.55],
+            ['Experiments', 0.50],
+            ['AI Literacy', 0.65],
+            ['Quick Win', 0.45],
+            ['Leadership', 0.40],
+            ['Security', 0.60],
+            ['Training', 0.35],
+            ['Builders', 0.30],
           ] as const).map(([label, value]) => (
             <div key={label} className="flex items-center gap-3">
-              <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] w-20 shrink-0">
+              <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] w-24 shrink-0">
                 {label}
               </span>
               <div className="flex-1 h-1.5 bg-[color:var(--color-ink)]/10 rounded-sm overflow-hidden">
@@ -334,7 +338,7 @@ function DeliverablePanel() {
 
       <ul className="mt-6 space-y-3">
         {[
-          ['Score across 8 dimensions', 'Where you stand on awareness, governance, skills, data, and four more.'],
+          ['Score across 8 dimensions', 'Current AI use, experimentation, literacy, quick wins, leadership, security, training, and builder potential.'],
           ['Tailored starter artifact', 'A copy-paste-ready Markdown deliverable for your weakest dimension.'],
           ['Email copy of both', 'Yours to share with your team, your board, or your examiners.'],
         ].map(([title, body]) => (
