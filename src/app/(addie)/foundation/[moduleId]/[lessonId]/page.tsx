@@ -14,6 +14,8 @@ import { LessonTOC } from '@/components/addie/lesson/LessonTOC';
 import { extractHeadings } from '@/components/addie/lesson/lessonHeadings';
 import { LessonTutor } from '@/components/addie/lesson/LessonTutor';
 import { LessonSummaryCard } from '@/components/addie/lesson/LessonSummaryCard';
+import { MaturityJourney } from '@/components/addie/lesson/MaturityJourney';
+import { ToolboxAccumulation } from '@/components/addie/lesson/ToolboxAccumulation';
 import { M02Experience } from '@/components/addie/lesson/v2/M02Experience';
 import { hasAnyFoundationEntitlement } from '@/lib/addie/entitlements/check';
 import type {
@@ -357,6 +359,7 @@ export default async function LessonPage({
       : null;
     return (
       <div className="min-h-screen">
+        <MaturityJourney variant="compact" />
         <M02Experience
           checks={payload.checks}
           interactiveExercise={payload.interactiveExercise ?? null}
@@ -371,6 +374,8 @@ export default async function LessonPage({
   }
 
   return (
+    <div>
+      <MaturityJourney variant="compact" />
     <div className="mx-auto max-w-[1400px] px-4 sm:px-6 py-6 flex flex-col lg:flex-row gap-8 lg:gap-10">
       <aside className="lg:order-first">
         <CourseSidebar activeModuleId={params.moduleId} activeLessonId={params.lessonId} />
@@ -384,11 +389,18 @@ export default async function LessonPage({
           lessonId={params.lessonId}
           lessonTitle={payload.lesson.title}
         />
+        {/* The Toolbox is EXPERIENCED, not described — visible
+            accumulation at the bottom of every lesson. Per the
+            Transformation Vision. */}
+        <div className="mt-8">
+          <ToolboxAccumulation variant="inline" />
+        </div>
       </div>
       <LessonTOC headings={headings} />
       {/* Tutor places itself: xl rail card under the TOC, otherwise a
           fixed bottom-right chip → full-screen sheet. Always mounted. */}
       <LessonTutor lessonId={params.lessonId} />
+    </div>
     </div>
   );
 }

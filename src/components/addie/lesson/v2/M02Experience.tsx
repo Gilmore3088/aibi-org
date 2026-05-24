@@ -19,14 +19,16 @@ import { LessonStepShell, type Step } from './LessonStepShell';
 import { RuleHeroCard } from './RuleHeroCard';
 import { AnonymizationFlow } from './AnonymizationFlow';
 import { DataDisciplineCardArtifact } from './DataDisciplineCardArtifact';
+import { SacredRule } from './SacredRule';
 import { KnowledgeCheck } from '@/components/addie/lesson/KnowledgeCheck';
+import { ToolboxAccumulation } from '@/components/addie/lesson/ToolboxAccumulation';
 import { OffLimitsSorter } from '@/components/addie/interactives/m0/OffLimitsSorter';
 import type {
   InteractiveExercisePayload,
   KnowledgeCheckRow,
   Track,
 } from '@/components/addie/lesson/types';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 interface M02ExperienceProps {
   readonly checks: ReadonlyArray<KnowledgeCheckRow>;
@@ -93,6 +95,21 @@ export function M02Experience({
 }: M02ExperienceProps) {
   const [stripAcked, setStripAcked] = useState(false);
   const [sortAcked, setSortAcked] = useState(false);
+  // Sacred Rule gate. Shown on first arrival to m0.2; once the learner
+  // acknowledges, sessionStorage remembers so back-and-forth navigation
+  // within the same session doesn't re-trigger the immersion.
+  const [sacredAcked, setSacredAcked] = useState(true); // SSR default
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const k = 'aibi-m02-sacred-acked';
+    setSacredAcked(window.sessionStorage.getItem(k) === '1');
+  }, []);
+  const handleSacredContinue = () => {
+    if (typeof window !== 'undefined') {
+      window.sessionStorage.setItem('aibi-m02-sacred-acked', '1');
+    }
+    setSacredAcked(true);
+  };
 
   const trackLabel = track ? TRACK_LABEL[track] : 'your role';
   const trackOffLimits = track ? TRACK_OFF_LIMITS[track] : FALLBACK_OFF_LIMITS;
@@ -164,10 +181,13 @@ export function M02Experience({
       label: 'Save',
       title: 'Save your Data Discipline Card',
       node: (
-        <DataDisciplineCardArtifact
-          trackLabel={trackLabel}
-          trackOffLimits={trackOffLimits}
-        />
+        <div className="space-y-6">
+          <DataDisciplineCardArtifact
+            trackLabel={trackLabel}
+            trackOffLimits={trackOffLimits}
+          />
+          <ToolboxAccumulation variant="inline" />
+        </div>
       ),
       nextLabel: 'See your recap',
     };
@@ -224,14 +244,25 @@ export function M02Experience({
   }, [stripAcked, sortAcked, checks, interactiveExercise, track, trackLabel, trackOffLimits, nextHref, nextLabel]);
 
   return (
-    <LessonStepShell
-      steps={steps}
-      moduleLabel="Module 0 · Orientation"
-      lessonOrdinalOfTotal="Lesson 2 of 2"
-      lessonTitle="The one rule that matters — data discipline"
-      onComplete={() => {
-        if (nextHref) window.location.href = nextHref;
-      }}
-    />
+    <>
+      {!sacredAcked ? (
+        <SacredRule
+          kicker="Bank-safe AI begins here"
+          rule="Never put customer, member, account, or confidential bank data into a public AI tool."
+          attribution="The one rule · Foundation Course · AiBI"
+          continueLabel="I understand the rule"
+          onContinue={handleSacredContinue}
+        />
+      ) : null}
+      <LessonStepShell
+        steps={steps}
+        moduleLabel="Module 0 · Orientation"
+        lessonOrdinalOfTotal="Lesson 2 of 2"
+        lessonTitle="The one rule that matters — data discipline"
+        onComplete={() => {
+          if (nextHref) window.location.href = nextHref;
+        }}
+      />
+    </>
   );
 }

@@ -40,6 +40,13 @@ export interface ToolboxItemVersion {
 export interface IdentityKey {
   readonly user_id: string | null;
   readonly lead_id: string | null;
+  /**
+   * Read-only fallback for anonymous learners. Writes still require
+   * user_id or lead_id (createItem enforces this). The accumulation
+   * UI on lesson pages reads this so an anon learner sees their own
+   * saved-during-this-session items.
+   */
+  readonly anon_session_id?: string | null;
 }
 
 interface CountResult {
@@ -78,6 +85,7 @@ export async function listItemsFor(identity: IdentityKey): Promise<ToolboxItem[]
     .order('updated_at', { ascending: false });
   if (identity.user_id) q = q.eq('user_id', identity.user_id);
   else if (identity.lead_id) q = q.eq('lead_id', identity.lead_id);
+  else if (identity.anon_session_id) q = q.eq('anon_session_id', identity.anon_session_id);
   else return [];
   const { data, error } = await q;
   if (error) throw new Error(`toolbox list failed: ${error.message}`);

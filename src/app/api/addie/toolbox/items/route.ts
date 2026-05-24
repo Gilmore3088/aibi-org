@@ -17,13 +17,19 @@ export const runtime = 'nodejs';
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const identity = await resolveAddieIdentity(req);
-  if (!identity.user_id && !identity.lead_id) {
+  // Per the Transformation Vision: anon learners need to SEE their
+  // accumulating saves too — visible progress is the product. So we
+  // also surface anon_session_id items here. The save endpoint still
+  // requires user_id/lead_id (no anon writes), so this read-only
+  // fallback can't expose anything the learner didn't already create.
+  if (!identity.user_id && !identity.lead_id && !identity.anon_session_id) {
     return NextResponse.json({ items: [] });
   }
   try {
     const items = await listItemsFor({
       user_id: identity.user_id,
       lead_id: identity.lead_id,
+      anon_session_id: identity.user_id || identity.lead_id ? null : identity.anon_session_id,
     });
     return NextResponse.json({ items });
   } catch (err) {
