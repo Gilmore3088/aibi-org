@@ -90,6 +90,7 @@ const COMING_SOON_BYPASS_PREFIXES: readonly string[] = [
   '/verify',
   '/education',
   '/for-institutions',
+  '/foundation',
   '/courses',
   '/dashboard',
   '/research',
