@@ -11,6 +11,10 @@
     "src/app/api/cron/cleanup-rate-limits/route.ts": {
       "maxDuration": 30,
       "memory": 256
+    },
+    "src/app/api/addie/cron/abandoned-gate/route.ts": {
+      "maxDuration": 60,
+      "memory": 512
     }
   },
   "crons": [
@@ -21,6 +25,10 @@
     {
       "path": "/api/cron/cleanup-rate-limits",
       "schedule": "30 4 * * *"
+    },
+    {
+      "path": "/api/addie/cron/abandoned-gate",
+      "schedule": "0 5 * * *"
     }
   ]
 }

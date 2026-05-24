@@ -8,6 +8,7 @@ import { migrateAnonToLead } from '@/lib/addie/leads/bind';
 import { isValidEmail } from '@/lib/addie/supabase/service';
 import { emit } from '@/lib/addie/events/emit';
 import { enforceEdgeRateLimit } from '@/lib/addie/rateLimit/edge';
+import { subscribeToGateEmail } from '@/lib/mailerlite';
 
 export const runtime = 'nodejs';
 
@@ -70,6 +71,19 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       anon_session_id: anon.id,
       payload: { fork: 'email', tier: 'free', created: lead.created },
     });
+
+    // Lifecycle trigger: dedicated gate-email nurture group. Best-effort —
+    // failures are logged inside the adapter and do not block the response.
+    // No-op when MAILERLITE_GROUP_ID_GATE_EMAIL is unset or SKIP_MAILERLITE=true.
+    try {
+      await subscribeToGateEmail({ email: body.email });
+    } catch (err) {
+      console.warn(
+        '[addie/gate/capture-email] mailerlite gate-email sync failed:',
+        err instanceof Error ? err.message : 'unknown',
+      );
+    }
+
     return NextResponse.json(
       { ok: true, lead_id: lead.id },
       { headers: res.headers },

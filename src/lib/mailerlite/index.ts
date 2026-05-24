@@ -133,3 +133,44 @@ export async function subscribeToNewsletterForm(
     groupIds: [groupId],
   });
 }
+
+/**
+ * Subscribe a learner who picked the email-to-keep fork at the post-M3 gate.
+ * Fires the gate-email nurture automation configured against this group.
+ * No-op when MAILERLITE_GROUP_ID_GATE_EMAIL is unset.
+ */
+export async function subscribeToGateEmail(
+  payload: Omit<MailerLiteSubscribePayload, 'groupIds'>,
+): Promise<SubscribeResult> {
+  const groupId = process.env.MAILERLITE_GROUP_ID_GATE_EMAIL;
+  if (!groupId) {
+    return { status: 'skipped', reason: 'no-group-id' };
+  }
+  return postSubscriber({
+    email: payload.email,
+    firstName: payload.firstName,
+    fields: payload.fields,
+    groupIds: [groupId],
+  });
+}
+
+/**
+ * Subscribe a learner who captured at the gate ≥72h ago and never converted.
+ * Fires the abandoned-gate automation. Assigned by the nightly
+ * /api/addie/cron/abandoned-gate sweeper, never synchronously.
+ * No-op when MAILERLITE_GROUP_ID_GATE_ABANDONED is unset.
+ */
+export async function subscribeToGateAbandoned(
+  payload: Omit<MailerLiteSubscribePayload, 'groupIds'>,
+): Promise<SubscribeResult> {
+  const groupId = process.env.MAILERLITE_GROUP_ID_GATE_ABANDONED;
+  if (!groupId) {
+    return { status: 'skipped', reason: 'no-group-id' };
+  }
+  return postSubscriber({
+    email: payload.email,
+    firstName: payload.firstName,
+    fields: payload.fields,
+    groupIds: [groupId],
+  });
+}
