@@ -16,16 +16,23 @@
 import type { DimensionScore } from '@content/assessments/v2/scoring';
 import type { Dimension } from '@content/assessments/v2/types';
 import { DIMENSION_LABELS } from '@content/assessments/v2/types';
+import {
+  composeScore as composeScoreFromScoring,
+  phaseFromPct,
+  type ComposedScore as ComposedScoreCanonical,
+  type Phase as PhaseCanonical,
+} from '@content/assessments/v2/scoring';
 
 // ── Phase mapping (composite-driven) ────────────────────────────────────────
+// Canonical implementation now lives in scoring.ts so the in-depth submit
+// path stores tier ids derived from the SAME function that drives the
+// Briefing display. (Audit A1 — 2026-05-24 fix.) Local re-exports preserve
+// the existing import surface.
 
-export type Phase = 'Curious' | 'Coordinated' | 'Programmatic' | 'Native';
+export type Phase = PhaseCanonical;
 
 export function phaseForNormalized(pct: number): Phase {
-  if (pct >= 90) return 'Native';
-  if (pct >= 75) return 'Programmatic';
-  if (pct >= 50) return 'Coordinated';
-  return 'Curious';
+  return phaseFromPct(pct);
 }
 
 // ── Pillar mapping ──────────────────────────────────────────────────────────
@@ -45,25 +52,12 @@ export const PILLAR_BY_DIMENSION: Record<Dimension, Pillar> = {
 
 // ── Composed score ──────────────────────────────────────────────────────────
 
-export interface ComposedScore {
-  readonly rawScore: number; // sum of dim scores, e.g. 119
-  readonly rawMax: number; // sum of dim maxScores, e.g. 192
-  readonly normalized: number; // 0..100
-  readonly phase: Phase;
-}
+export type ComposedScore = ComposedScoreCanonical;
 
 export function composeScore(
   breakdown: Record<Dimension, DimensionScore>,
 ): ComposedScore {
-  let rawScore = 0;
-  let rawMax = 0;
-  for (const entry of Object.values(breakdown)) {
-    if (!entry) continue;
-    rawScore += entry.score;
-    rawMax += entry.maxScore;
-  }
-  const normalized = rawMax > 0 ? Math.round((rawScore / rawMax) * 100) : 0;
-  return { rawScore, rawMax, normalized, phase: phaseForNormalized(normalized) };
+  return composeScoreFromScoring(breakdown);
 }
 
 export function normalizeDimension(score: number, maxScore: number): number {

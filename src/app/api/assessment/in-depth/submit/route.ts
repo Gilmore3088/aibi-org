@@ -22,8 +22,8 @@ import { isSupabaseConfigured } from '@/lib/supabase/client';
 import { upsertReadinessResult } from '@/lib/supabase/user-profiles';
 import { questions as canonicalPool } from '@content/assessments/v2/questions';
 import {
+  composeScore,
   getDimensionScores,
-  getTierInDepth,
   type DimensionScore,
 } from '@content/assessments/v2/scoring';
 import { emailVariants } from '@/lib/email/canonicalize';
@@ -158,15 +158,33 @@ export async function POST(request: Request): Promise<NextResponse> {
   // ── Server-side scoring ──────────────────────────────────────────────────
   // Compute everything from the validated (answers, orderedQuestions) pair.
   // No client-supplied scoring fields are read.
+  //
+  // Audit A1 (2026-05-24): tier is now derived from the dimension breakdown
+  // via composeScore — the SAME function that drives the Briefing display.
+  // Storage and display can no longer drift. The maxScore stored matches
+  // composeScore's rawMax so /assessment/in-depth/results/[id] reconciles
+  // exactly with what consumers (dashboard, MailerLite, emails) read from
+  // user_profiles.readiness_tier_id.
   const typedQuestions = orderedQuestions.map((q) => q!);
   const typedAnswers = answers as number[];
-  const score = typedAnswers.reduce((sum, n) => sum + n, 0);
-  const maxScore = EXPECTED_QUESTION_COUNT * 4;
-  const tier = getTierInDepth(score, maxScore);
   const dimensionBreakdown: Record<string, DimensionScore> = getDimensionScores(
     typedAnswers,
     typedQuestions,
   );
+  const composed = composeScore(dimensionBreakdown);
+  const score = composed.rawScore;
+  const maxScore = composed.rawMax;
+  const tier = composed.tier;
+  // Sanity check: with EXPECTED_QUESTION_COUNT validated above, the sum of
+  // the dimension max-scores MUST equal EXPECTED_QUESTION_COUNT * 4. If it
+  // doesn't, the dimension routing has drifted from the question pool.
+  if (maxScore !== EXPECTED_QUESTION_COUNT * 4) {
+    console.error(
+      '[in-depth/submit] dimension max-score sum mismatch:',
+      { maxScore, expected: EXPECTED_QUESTION_COUNT * 4 },
+    );
+    return NextResponse.json({ error: 'Scoring drift detected.' }, { status: 500 });
+  }
 
   // ── Persist the result ───────────────────────────────────────────────────
   const completedAt = new Date().toISOString();

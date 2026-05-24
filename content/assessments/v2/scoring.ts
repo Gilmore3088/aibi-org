@@ -81,11 +81,84 @@ export function getTierInDepth(rawScore: number, maxScore: number): Tier {
   if (maxScore <= 0) {
     throw new Error('getTierInDepth: maxScore must be positive.');
   }
-  const pct = Math.max(0, Math.min(100, (rawScore / maxScore) * 100));
+  return tierFromPct(percentOfMax(rawScore, maxScore));
+}
+
+// ── Canonical percent-based tier rubric ─────────────────────────────────────
+// Single source of truth for the 50/75/90 thresholds. Both getTierInDepth
+// and composeScore route through this function so storage and display
+// cannot drift apart — they are forced into the same threshold table.
+// (Audit A1 — 2026-05-24 fix.)
+//
+// Phase names alias tier ids for the In-Depth Briefing's editorial voice:
+//   Curious        ↔ starting-point     (pct < 50)
+//   Coordinated    ↔ early-stage        (50 ≤ pct < 75)
+//   Programmatic   ↔ building-momentum  (75 ≤ pct < 90)
+//   Native         ↔ ready-to-scale     (pct ≥ 90)
+export type Phase = 'Curious' | 'Coordinated' | 'Programmatic' | 'Native';
+
+export const PHASE_BY_TIER: Record<Tier['id'], Phase> = {
+  'starting-point': 'Curious',
+  'early-stage': 'Coordinated',
+  'building-momentum': 'Programmatic',
+  'ready-to-scale': 'Native',
+};
+
+export const TIER_BY_PHASE: Record<Phase, Tier['id']> = {
+  Curious: 'starting-point',
+  Coordinated: 'early-stage',
+  Programmatic: 'building-momentum',
+  Native: 'ready-to-scale',
+};
+
+export function percentOfMax(rawScore: number, maxScore: number): number {
+  if (maxScore <= 0) return 0;
+  return Math.max(0, Math.min(100, (rawScore / maxScore) * 100));
+}
+
+export function tierFromPct(pct: number): Tier {
   if (pct >= 90) return tiers[3];
   if (pct >= 75) return tiers[2];
   if (pct >= 50) return tiers[1];
   return tiers[0];
+}
+
+export function phaseFromPct(pct: number): Phase {
+  return PHASE_BY_TIER[tierFromPct(pct).id];
+}
+
+// ── Composed score (formerly in results/[id]/_lib/derive.ts) ────────────────
+// Sums a dimension breakdown into composite raw/max/normalized/phase.
+// Co-located with the rest of the scoring primitives so the in-depth
+// submit path can compute storage from the SAME function the Briefing
+// uses for display. Storage and display can never drift again.
+export interface ComposedScore {
+  readonly rawScore: number;
+  readonly rawMax: number;
+  readonly normalized: number;
+  readonly phase: Phase;
+  readonly tier: Tier;
+}
+
+export function composeScore(
+  breakdown: Record<string, { score: number; maxScore: number }>,
+): ComposedScore {
+  let rawScore = 0;
+  let rawMax = 0;
+  for (const entry of Object.values(breakdown)) {
+    if (!entry) continue;
+    rawScore += entry.score;
+    rawMax += entry.maxScore;
+  }
+  // Threshold on the EXACT pct, not the rounded one. The rounded value
+  // is exposed for display only. Without this discipline a raw score
+  // of 172/192 (89.58%) rounds to 90 and tips into ready-to-scale via
+  // composeScore while getTierInDepth (which never rounds) holds at
+  // building-momentum — exactly the storage↔display drift A1 names.
+  const exactPct = percentOfMax(rawScore, rawMax);
+  const normalized = Math.round(exactPct);
+  const tier = tierFromPct(exactPct);
+  return { rawScore, rawMax, normalized, phase: PHASE_BY_TIER[tier.id], tier };
 }
 
 export interface DimensionScore {
