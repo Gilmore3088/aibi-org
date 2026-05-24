@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
 
-import { signIn, signInWithMagicLink, sanitizeNext } from '@/lib/supabase/auth';
+import { signIn, sanitizeNext } from '@/lib/supabase/auth';
 import {
   LedgerAlert,
   LedgerButton,
@@ -13,7 +13,6 @@ import {
   LedgerField,
   LedgerH1,
   LedgerSurface,
-  LedgerToggle,
 } from '@/components/ledger';
 
 // ── Dev bypass ───────────────────────────────────────────────────────────────
@@ -93,65 +92,12 @@ function PasswordForm({ redirectTo, prefillEmail }: { redirectTo: string; prefil
   );
 }
 
-// ── Magic link form ───────────────────────────────────────────────────────────
-
-function MagicLinkForm({ redirectTo, prefillEmail }: { redirectTo: string; prefillEmail: string }) {
-  const [state, setState] = useState<'idle' | 'sent' | 'error'>('idle');
-  const [error, setError] = useState<string | null>(null);
-  const [pending, setPending] = useState(false);
-
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setError(null);
-    setPending(true);
-
-    const data = new FormData(e.currentTarget);
-    const email = data.get('email') as string;
-
-    const result = await signInWithMagicLink(email, redirectTo);
-    setPending(false);
-
-    if (result.error) {
-      setError(result.error);
-      setState('error');
-      return;
-    }
-    setState('sent');
-  }
-
-  if (state === 'sent') {
-    return (
-      <div style={{ padding: '12px 0', textAlign: 'center' }}>
-        <p style={{ margin: 0, fontFamily: 'var(--serif)', fontSize: 18, color: 'var(--ink-2)' }}>
-          Check your inbox. A sign-in link is on its way.
-        </p>
-        <p style={{ margin: '8px 0 0', fontFamily: 'var(--mono)', fontSize: 10.5, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--muted)' }}>
-          The link expires in 1 hour
-        </p>
-      </div>
-    );
-  }
-
-  return (
-    <form onSubmit={handleSubmit} noValidate style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-      {error && <LedgerAlert variant="error">{error}</LedgerAlert>}
-      <LedgerField
-        label="Email"
-        name="email"
-        type="email"
-        autoComplete="email"
-        required
-        placeholder="you@yourbank.com"
-        defaultValue={prefillEmail}
-      />
-      <LedgerButton type="submit" variant="ghost" block disabled={pending} style={{ marginTop: 4 }}>
-        {pending ? 'Sending link…' : 'Send Magic Link'}
-      </LedgerButton>
-    </form>
-  );
-}
-
 // ── Page ──────────────────────────────────────────────────────────────────────
+// Magic-link sign-in was removed 2026-05-23 — a mailbox-only credential
+// is no longer accepted now that we're moving to 2FA. The
+// signInWithMagicLink helper stays in @/lib/supabase/auth for emergency
+// recovery use cases (account recovery flow) but is not surfaced in the
+// UI. See docs/2fa-migration-plan-2026-05-23.md.
 
 // Lenient email-shaped check just to avoid pre-filling random garbage from
 // a crafted URL. The form's own type="email" validation is the real gate.
@@ -169,8 +115,6 @@ export default function LoginPage() {
   const rawEmail = searchParams.get('email');
   const prefillEmail =
     rawEmail && EMAIL_RE_LOGIN.test(rawEmail) ? rawEmail : '';
-
-  const [mode, setMode] = useState<'password' | 'magic'>('password');
 
   return (
     <LedgerSurface showHeader={false}>
@@ -193,23 +137,7 @@ export default function LoginPage() {
             </div>
           )}
 
-          <div style={{ marginBottom: 22 }}>
-            <LedgerToggle
-              value={mode}
-              onChange={setMode}
-              ariaLabel="Sign-in method"
-              options={[
-                { value: 'password', label: 'Password' },
-                { value: 'magic', label: 'Magic Link' },
-              ]}
-            />
-          </div>
-
-          {mode === 'password' ? (
-            <PasswordForm redirectTo={redirectTo} prefillEmail={prefillEmail} />
-          ) : (
-            <MagicLinkForm redirectTo={redirectTo} prefillEmail={prefillEmail} />
-          )}
+          <PasswordForm redirectTo={redirectTo} prefillEmail={prefillEmail} />
 
           <div style={{ marginTop: 16 }}>
             <DevSkipButton />

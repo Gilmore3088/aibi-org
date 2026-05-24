@@ -15,7 +15,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import type Stripe from 'stripe';
 import { track as trackServer } from '@vercel/analytics/server';
 import { provisionEnrollment } from '@/lib/stripe/provision-enrollment';
-import { ensureAuthUser, generateMagicLink } from '@/lib/supabase/auth-admin';
+import { ensureAuthUser } from '@/lib/supabase/auth-admin';
 import {
   sendCoursePurchaseIndividual,
   sendCoursePurchaseInstitution,
@@ -106,18 +106,21 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     const product = session.metadata?.product;
 
     if (email) {
-      // Provision a Supabase auth account for the buyer (idempotent) and
-      // generate a magic link so the buyer's welcome email is one-click into
-      // an authenticated session — no separate sign-up step. ensureAuthUser
-      // and generateMagicLink both swallow errors and return null, so a
+      // Provision a Supabase auth account for the buyer (idempotent).
+      // ensureAuthUser swallows errors and returns a result object, so a
       // failure here doesn't block the rest of the response.
       //
+      // Magic-link generation is intentionally removed (2026-05-23):
+      // we're moving to email + password + TOTP-based 2FA, where a
+      // mailbox-only credential is no longer accepted as a sign-in
+      // factor. The welcome email now points to /auth/login instead of
+      // carrying a one-click link. See
+      // docs/2fa-migration-plan-2026-05-23.md.
+      //
       // Pass through full_name + institution_name from the Stripe Session
-      // metadata so the auth user's profile is pre-populated on create —
-      // the buyer who follows the magic-link skip-the-form path still
-      // gets a proper greeting on the dashboard. Values originated at
-      // the free-flow EmailGate (see /api/checkout/in-depth which writes
-      // them into Session metadata).
+      // metadata so the auth user's profile is pre-populated on create.
+      // Values originate at the free-flow EmailGate (see
+      // /api/checkout/in-depth which writes them into Session metadata).
       const fullName =
         typeof session.metadata?.full_name === 'string'
           ? session.metadata.full_name
@@ -129,12 +132,10 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           ? session.metadata.institution_name
           : null;
 
-      let magicLinkUrl: string | null = null;
       try {
         await ensureAuthUser(email, { fullName, institutionName });
-        magicLinkUrl = await generateMagicLink(email, nextPathForProduct(product));
       } catch (err) {
-        console.warn('[webhook] auth-admin magic-link skip', err);
+        console.warn('[webhook] ensureAuthUser skip', err);
       }
 
       if (result.type === 'individual') {
@@ -142,7 +143,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           sendIndepthAssessmentPurchase({
             email,
             amountPaid,
-            magicLinkUrl: magicLinkUrl ?? undefined,
+
           }).catch((err) =>
             console.warn('[webhook] resend in-depth-assessment skip', err),
           );
@@ -150,7 +151,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           sendCoursePurchaseIndividual({
             email,
             amountPaid,
-            magicLinkUrl: magicLinkUrl ?? undefined,
+
           }).catch((err) => console.warn('[webhook] resend individual skip', err));
         }
       } else if (result.type === 'institution') {
@@ -163,7 +164,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           institutionName,
           seatsPurchased,
           amountPaid,
-          magicLinkUrl: magicLinkUrl ?? undefined,
+
         }).catch((err) => console.warn('[webhook] resend institution skip', err));
       }
     }

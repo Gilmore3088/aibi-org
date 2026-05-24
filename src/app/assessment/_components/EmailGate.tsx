@@ -80,6 +80,43 @@ export function EmailGate({
   const institutionInputRef = useRef<HTMLInputElement | null>(null);
   const emailInputRef = useRef<HTMLInputElement | null>(null);
 
+  // Prefill from localStorage on mount — if the visitor already gave us
+  // identity at a prior EmailGate (returning to retake, or completing
+  // the assessment after browsing other surfaces), don't make them type
+  // it all again. Reads run client-side only; SSR paint shows empty
+  // fields, then the post-mount setState populates.
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try {
+      const raw = window.localStorage.getItem('aibi-user');
+      if (!raw) return;
+      const parsed = JSON.parse(raw) as {
+        email?: unknown;
+        fullName?: unknown;
+        firstName?: unknown;
+        institutionName?: unknown;
+      };
+      if (typeof parsed.email === 'string' && EMAIL_RE.test(parsed.email)) {
+        setEmail((current) => current || parsed.email as string);
+      }
+      const storedName =
+        typeof parsed.fullName === 'string'
+          ? parsed.fullName
+          : typeof parsed.firstName === 'string'
+            ? parsed.firstName
+            : null;
+      if (storedName) {
+        setFirstName((current) => current || storedName);
+      }
+      if (typeof parsed.institutionName === 'string' && parsed.institutionName) {
+        setInstitutionName((current) => current || (parsed.institutionName as string));
+      }
+    } catch {
+      /* malformed JSON — ignore, render empty form */
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // Auto-skip the gate if the visitor is already signed in. We re-use their
   // auth-session email instead of asking them for it again — the most common
   // UX complaint from logged-in users completing the assessment.
