@@ -141,4 +141,91 @@ The user reported "there are a lot of issues" beyond the two named. They are not
 2. Are you willing to add a Playwright dependency? It would have caught all three runtime bugs and is the single biggest quality leverage point for Wave 4.
 3. The audit caught design drift in the schema-init theory; do you want a DECISIONS.md entry walking back the rationale, or just leave the migration comment misleading?
 
-— End of draft. Iterate in next session.
+— End of original draft.
+
+---
+
+## 2026-05-23 session 2 — Tier 1 closed + modern course aesthetic shipped
+
+**Two commits added** on top of `55f86fa`:
+
+- `f1fa58b` — fix(addie): Tier 1 — codify grants/exposure (B1+B2) + anon-session middleware (B3)
+- `dd87203` — feat(addie): modern course aesthetic + lesson chrome lift
+
+### Tier 1 runtime bugs — all FIXED in code
+
+**B1 + B2.** `supabase/migrations/00055_addie_grants_and_exposure.sql`
+codifies `ALTER ROLE authenticator SET pgrst.db_schemas` (append `addie`)
+plus `GRANT ALL ON ALL TABLES/SEQUENCES/ROUTINES IN SCHEMA addie TO
+service_role` and `ALTER DEFAULT PRIVILEGES` so new tables auto-grant.
+**Operator: apply when ready** (`supabase db query --linked` or
+`supabase db push`). Runtime equivalents are already live in the shared
+project per the original handoff — this just makes the state reproducible.
+
+**B3.** Anon-session cookie is now minted by `src/middleware.ts` on first
+hit to any `/foundation/*` route, using Web Crypto so it's Edge-runtime
+safe. Verified: a fresh Playwright context loads `/foundation`, lands the
+`aibi_addie_anon` cookie, then `POST /api/addie/checks/respond` on m1.1
+returns HTTP 200 with a real graded verdict from the DB.
+
+### B4 — route walkthrough completed
+
+Playwright walk of 18 addie routes. All return 200 with real content.
+Findings:
+- AddieNav had `/foundation/foundation/dashboard/toolbox` (double `foundation`) — fixed in the redesign.
+- M4.x routes show the PaywallScreen H1 for anon visitors — that's intended (M4/M5 are paid).
+- Homepage SVG `height="auto"` console warning is preexisting on `/`, not addie.
+
+### Content review — material is healthy
+
+Counted KC rows per lesson (was misreading the seed file earlier):
+- M0: 3 + 5 KCs across 2 lessons
+- M1: 3, 4, 3, 4 across 4 lessons
+- M2: 2, 3, 4, 3 across 4 lessons
+- M3: 2, 3, 3, 3, 3 across 5 lessons
+- M4: 2, 3, 2, 4 across 4 lessons
+- M5: 2, 3, 3, 3, 2 across 5 lessons
+
+All 24 lessons have substantive body_md + at least 2 KCs. Track variants
+exist for the branched lessons (m1.3, m2.4, m3.5, m4.3). Operator
+remainder = the actual video + audio recordings (Tier 4 of the original
+punch list, not engineering).
+
+### UI lift — modern course aesthetic shipped (operator decision 2026-05-23)
+
+DECISIONS.md entry added: inside `/foundation/*` only (scoped via
+`.addie-course-surface` class on the (addie) layout root), the design
+license expands beyond strict Ledger to permit CSS-driven progress
+animations, reveal-on-scroll, bespoke SVG illustrations, sticky chrome
+with backdrop-blur, and two parchment / ink hero gradients. Marketing
+surfaces (`/`, `/assessment`, `/services`, `/about`, etc.) stay
+strict-Ledger. Same color tokens, same three type families, italics
+still retired, no stock photography, no icon library.
+
+Concrete deliverables in `dd87203`:
+- 6 bespoke module illustrations (`src/components/addie/illustrations/ModuleIllustration.tsx`).
+- `addie-course-surface.css` — scoped CSS (reveal/progress/animations).
+- `CoursePathHero` — animated SVG arc through M0→M5.
+- `ModuleCard` — new tile w/ progress arc + hover lift + paid hatch.
+- `AddieSurface` — client enabler (IntersectionObserver + reading-progress bar).
+- `AddieNav` — sticky w/ backdrop-blur, active pill, fixed toolbox href.
+- `/foundation` page — full redesign (hero + grid + why-it-works + closing CTA).
+- `LessonBody` — dependency-free markdown subset renderer.
+- `LessonShellHeader` — async server component with sibling-progress dot strip.
+- Video/Audio views now render body when media isn't published yet (preventing the "empty lesson" state until operator videos land).
+- KnowledgeCheck — micro-animations on correct/wrong via `data-kc-state` hook.
+
+### What's NOT done (next session pickup)
+
+- **Apply migration 00055 to the shared Supabase project** (operator OK in caps required; runtime equivalent already live so the apply is just for reproducibility).
+- **Push `feature/addie-v1`** to surface a preview URL (operator OK required; this is the first push of this branch since the new commits).
+- **Playwright dependency decision** (open Q from original handoff §1). Today's walkthrough used a system Python + Playwright — fine for one-off verification, but not in CI yet.
+- **Tier 2 punch list** from the original handoff is unchanged: wire on-main `/assessment/in-depth` runner → `/api/addie/assessment/results`; lesson-side analytics emits (`lesson_view`, `lesson_complete`, `artifact_save`, `toolbox_reuse`); transactional anon→lead artifact migration.
+- **Tier 3 + Tier 4** unchanged.
+
+### Branch state at session 2 close
+
+- Branch: `feature/addie-v1`, **24 commits ahead of `main`** (+2 this session).
+- HEAD: `dd87203`.
+- Tests: **337/337 pass**. `tsc --noEmit` clean.
+- Visual smoke: all major surfaces (home, lesson, worksheet, gate) verified end-to-end in headless Playwright at 1280×900 + 390×844.
