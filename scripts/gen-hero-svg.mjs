@@ -137,14 +137,14 @@ async function main() {
     ],
   });
 
-  // Post-process: replace Satori's intrinsic width/height attributes with
-  // responsive `width="100%" height="auto"` so the SVG scales to its
-  // parent container at every viewport. The viewBox (preserved by Satori)
-  // handles the aspect ratio. Without this, mobile viewports clip the
-  // headline at the right edge. See #194.
+  // Post-process: replace Satori's intrinsic width/height with responsive
+  // `width="100%"` (no height attribute) so the SVG scales to its parent at
+  // every viewport. The viewBox handles the aspect ratio on its own — an
+  // explicit `height="auto"` is invalid SVG (auto is a CSS value, not an
+  // SVG attribute value) and throws a console error. See #194.
   const responsiveSvg = svg.replace(
     /width="\d+" height="\d+" viewBox/,
-    'width="100%" height="auto" viewBox',
+    'width="100%" viewBox',
   );
 
   await mkdir(dirname(OUTPUT_SVG), { recursive: true });
