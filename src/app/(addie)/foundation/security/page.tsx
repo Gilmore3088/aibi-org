@@ -314,7 +314,7 @@ function DataFlowDiagram() {
           markerHeight="6"
           orient="auto-start-reverse"
         >
-          <path d="M0,0 L10,5 L0,10 z" fill="#0E1B2D" />
+          <path d="M0,0 L10,5 L0,10 z" style={{ fill: 'var(--ledger-ink)' }} />
         </marker>
       </defs>
       {[
@@ -332,8 +332,7 @@ function DataFlowDiagram() {
             height={80}
             rx={3}
             ry={3}
-            fill="#F4F1E7"
-            stroke="#0E1B2D"
+            style={{ fill: 'var(--ledger-paper)', stroke: 'var(--ledger-ink)' }}
             strokeWidth={1}
           />
           <text
@@ -342,7 +341,7 @@ function DataFlowDiagram() {
             textAnchor="middle"
             fontFamily="Newsreader, Georgia, serif"
             fontSize={16}
-            fill="#0E1B2D"
+            style={{ fill: 'var(--ledger-ink)' }}
             fontStyle="normal"
           >
             {node.label}
@@ -353,7 +352,7 @@ function DataFlowDiagram() {
             textAnchor="middle"
             fontFamily="JetBrains Mono, ui-monospace, monospace"
             fontSize={10}
-            fill="#4F5C6E"
+            style={{ fill: 'var(--ledger-muted)' }}
             letterSpacing="1.6"
             fontStyle="normal"
           >
@@ -374,7 +373,7 @@ function DataFlowDiagram() {
           y1={110}
           x2={edge.x2}
           y2={110}
-          stroke="#0E1B2D"
+          style={{ stroke: 'var(--ledger-ink)' }}
           strokeWidth={1}
           markerEnd="url(#arrow)"
         />
@@ -387,7 +386,7 @@ function DataFlowDiagram() {
         fontFamily="JetBrains Mono, ui-monospace, monospace"
         fontSize={11}
         letterSpacing="1.6"
-        fill="#4F5C6E"
+        style={{ fill: 'var(--ledger-muted)' }}
         fontStyle="normal"
       >
         NO PATH TO BANK CORE · NO PATH TO MEMBER DATA
@@ -398,7 +397,7 @@ function DataFlowDiagram() {
         textAnchor="middle"
         fontFamily="Newsreader, Georgia, serif"
         fontSize={14}
-        fill="#0E1B2D"
+        style={{ fill: 'var(--ledger-ink)' }}
         fontStyle="normal"
       >
         Request and response travel the same path. Nothing branches into customer systems.

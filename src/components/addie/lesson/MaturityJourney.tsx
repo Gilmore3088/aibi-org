@@ -14,7 +14,7 @@
 
 import { useEffect, useState } from 'react';
 
-type Stage = 'aware' | 'experimenting' | 'operationalizing' | 'leading' | 'governing';
+type Stage = 'aware' | 'experimenting' | 'operationalizing' | 'leading';
 
 interface MaturitySnapshot {
   readonly stage: Stage;
@@ -27,12 +27,35 @@ const STAGES: ReadonlyArray<{ key: Stage; label: string; verb: string; require: 
   { key: 'experimenting',     label: 'Experimenting',    verb: 'You can use AI safely, every day, on real work.',        require: 'Modules 1–3 complete + 3 saves' },
   { key: 'operationalizing',  label: 'Operationalizing', verb: 'You built reusable skills your team can rely on.',       require: 'Module 4 complete + a working Skill saved' },
   { key: 'leading',           label: 'Leading',          verb: 'You ship prototypes that change how your team works.',   require: 'Module 5 complete + a Prototype saved' },
-  { key: 'governing',         label: 'Governing',        verb: 'You own AI governance for your institution.',            require: 'Specialist (AiBI-S) credential' },
 ];
 
 interface MaturityJourneyProps {
   /** Render style — full bar in dashboard contexts, compact strip everywhere else. */
   readonly variant?: 'compact' | 'full';
+}
+
+// SVG marks replace the ✓ ◉ ○ Unicode glyphs. Brand voice bans emoji-as-
+// decoration; these are inline SVGs sized 10×10 that read as ledger marks.
+function StageMark({ state }: { state: 'done' | 'current' | 'upcoming' }) {
+  if (state === 'done') {
+    return (
+      <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true" className="text-[var(--ledger-ink-2)] shrink-0">
+        <path d="M2 5l2 2 4-4" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    );
+  }
+  if (state === 'current') {
+    return (
+      <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true" className="text-[var(--ledger-accent)] shrink-0">
+        <circle cx="5" cy="5" r="3.5" fill="currentColor" />
+      </svg>
+    );
+  }
+  return (
+    <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true" className="text-[var(--ledger-rule-strong)] shrink-0">
+      <circle cx="5" cy="5" r="3.5" fill="none" stroke="currentColor" strokeWidth="1" />
+    </svg>
+  );
 }
 
 function deriveStage(lessonsCompleted: number, artifactsSaved: number): Stage {
@@ -76,17 +99,29 @@ export function MaturityJourney({ variant = 'compact' }: MaturityJourneyProps) {
   if (variant === 'compact') {
     return (
       <div
-        className="font-mono uppercase tracking-[0.16em] text-[0.6rem] text-[var(--ledger-muted)] py-2 px-3 sm:px-4 border-b border-[var(--ledger-rule)] bg-[var(--ledger-parch)]"
-        aria-label={`AI Readiness Journey: ${STAGES[currentIdx].label} stage`}
+        className="font-mono uppercase tracking-[0.16em] text-[0.6rem] text-[var(--ledger-muted)] py-2 px-3 sm:px-4 border-b border-[var(--ledger-rule)] bg-[var(--ledger-paper)]"
+        aria-label={`Your progress: ${STAGES[currentIdx].label} stage`}
       >
         <div className="max-w-[1800px] mx-auto flex items-center gap-2 flex-wrap">
-          <span className="text-[var(--ledger-accent)] font-semibold">AI Readiness Journey ·</span>
+          <span className="text-[var(--ledger-accent)] font-semibold">Your progress</span>
+          <span className="text-[var(--ledger-rule-strong)]" aria-hidden="true">·</span>
           {STAGES.map((s, i) => {
             const isCurrent = i === currentIdx;
             const isDone = i < currentIdx;
             return (
               <span key={s.key} className="flex items-center gap-1.5">
-                {i > 0 ? <span className="text-[var(--ledger-rule-strong)]">→</span> : null}
+                {i > 0 ? (
+                  <svg
+                    width="10"
+                    height="8"
+                    viewBox="0 0 10 8"
+                    aria-hidden="true"
+                    className="text-[var(--ledger-rule-strong)] shrink-0"
+                  >
+                    <path d="M0 4h8M6 1l3 3-3 3" fill="none" stroke="currentColor" strokeWidth="1" />
+                  </svg>
+                ) : null}
+                <StageMark state={isDone ? 'done' : isCurrent ? 'current' : 'upcoming'} />
                 <span
                   className={
                     'tabular-nums ' +
@@ -97,7 +132,6 @@ export function MaturityJourney({ variant = 'compact' }: MaturityJourneyProps) {
                         : 'text-[var(--ledger-muted)]')
                   }
                 >
-                  {isDone ? '✓ ' : isCurrent ? '◉ ' : '○ '}
                   {s.label}
                 </span>
               </span>
@@ -115,12 +149,12 @@ export function MaturityJourney({ variant = 'compact' }: MaturityJourneyProps) {
   return (
     <section
       className="rounded-[4px] border border-[var(--ledger-rule)] bg-[var(--ledger-paper)] px-6 py-5"
-      aria-label="AI Readiness Journey"
+      aria-label="Your progress"
     >
       <header className="flex items-baseline justify-between mb-4 gap-4">
         <div>
           <div className="font-mono uppercase tracking-[0.18em] text-[0.65rem] text-[var(--ledger-accent)] mb-1">
-            AI Readiness Journey
+            Your progress
           </div>
           <h3 className="font-serif text-xl text-[var(--ledger-ink)]">
             You are <span className="text-[var(--ledger-accent)]">{STAGES[currentIdx].label.toLowerCase()}</span> with AI.
@@ -177,7 +211,7 @@ export function MaturityJourney({ variant = 'compact' }: MaturityJourneyProps) {
       ) : (
         <footer className="mt-4 pt-3 border-t border-[var(--ledger-rule)]">
           <span className="font-mono uppercase tracking-[0.14em] text-[0.6rem] text-[var(--ledger-accent)]">
-            You have completed the Foundation arc. Next: the Specialist (AiBI-S) credential.
+            You have completed the Foundation arc.
           </span>
         </footer>
       )}

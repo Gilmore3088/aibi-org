@@ -238,7 +238,7 @@ export default async function FoundationHomePage() {
             </h2>
           </div>
           <p className="text-sm text-[var(--ledger-muted)] max-w-sm">
-            Six modules. The first four are free; the last two unlock the
+            Six modules. The first four are free; the last two open the
             skills + build work and your unlimited Toolbox.
           </p>
         </div>

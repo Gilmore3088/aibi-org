@@ -1,7 +1,7 @@
 // PaywallPreview — replaces the bare "you can't see this" PaywallScreen
 // with a richer locked-module preview. Shows what the learner WOULD get
 // (module title, what-you-build, lesson outline, illustration teaser),
-// then three doors to unlock.
+// then three doors to keep going.
 
 import Link from 'next/link';
 import { ModuleIllustration } from '@/components/addie/illustrations/ModuleIllustration';
@@ -109,13 +109,13 @@ export function PaywallPreview({
         </div>
       </section>
 
-      {/* What you'd unlock */}
+      {/* What's inside */}
       <section className="border-t border-[var(--ledger-rule)] bg-[var(--ledger-bg)]">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12 grid gap-10 lg:grid-cols-[3fr_2fr]">
           <div>
-            <span className="font-mono uppercase tracking-[0.18em] text-[0.7rem] text-[var(--ledger-accent)]">
-              What you&apos;d unlock
-            </span>
+            <h2 className="font-mono uppercase tracking-[0.18em] text-[0.7rem] text-[var(--ledger-accent)]">
+              What&apos;s inside
+            </h2>
             <ol className="mt-4 space-y-3">
               {lessons.map((l) => (
                 <li key={l.ordinal} className="flex items-start gap-4">
@@ -123,9 +123,12 @@ export function PaywallPreview({
                     {String(l.ordinal).padStart(2, '0')}
                   </span>
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-serif text-lg leading-snug text-[var(--ledger-ink-2)] pt-0.5">
+                    {/* List items, not headings — they belong in the lesson
+                        outline, not the page's heading hierarchy. (Was h3,
+                        which created an h1→h3 jump per the a11y audit.) */}
+                    <p className="font-serif text-lg leading-snug text-[var(--ledger-ink-2)] pt-0.5">
                       {l.title}
-                    </h3>
+                    </p>
                   </div>
                   <span className="shrink-0 font-mono uppercase tracking-[0.14em] text-[0.65rem] text-[var(--ledger-muted)] tabular-nums pt-1">
                     {l.duration_min} min
@@ -136,9 +139,9 @@ export function PaywallPreview({
           </div>
           {takeawayLabel ? (
             <div>
-              <span className="font-mono uppercase tracking-[0.18em] text-[0.7rem] text-[var(--ledger-accent)]">
+              <h2 className="font-mono uppercase tracking-[0.18em] text-[0.7rem] text-[var(--ledger-accent)]">
                 What you&apos;d build
-              </span>
+              </h2>
               <div className="mt-4 rounded-[6px] bg-[var(--ledger-tape)] border border-[var(--ledger-rule)] p-5">
                 <div className="font-mono uppercase tracking-[0.16em] text-[0.65rem] text-[var(--ledger-muted)] mb-2">
                   Takeaway

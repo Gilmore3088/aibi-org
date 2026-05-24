@@ -142,7 +142,7 @@ export default async function DashboardPage() {
         ) : (
           <div className="md:col-span-2">
             <p className="text-[var(--ledger-muted)]">
-              No lessons published yet. Wave 2b will seed them.
+              The course is being prepared. Come back shortly.
             </p>
             <Link href="/foundation" className="mt-3 inline-block">
               <LedgerButton variant="secondary">Open course outline</LedgerButton>
