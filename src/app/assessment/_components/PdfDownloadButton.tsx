@@ -1,19 +1,22 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { SignupModal } from './SignupModal';
 
 type State =
   | { kind: 'warming' }
   | { kind: 'ready' }
-  | { kind: 'auth-prompt' }
   | { kind: 'downloading' }
   | { kind: 'done' }
   | { kind: 'error'; message: string };
 
 interface PdfDownloadButtonProps {
   readonly profileId: string;
-  readonly email: string;
+  /** Kept on the interface for back-compat with the prior signed-in
+   *  auto-fill version; the download itself no longer requires auth.
+   *  The /results/[id] URL is a bearer token — possession is the
+   *  credential, same model as Calendly / Notion / Google Doc share
+   *  links. Gating the PDF added friction with no security benefit. */
+  readonly email?: string;
 }
 
 async function warmPdf(profileId: string): Promise<{ ok: true } | { ok: false; message: string }> {
@@ -33,7 +36,7 @@ async function warmPdf(profileId: string): Promise<{ ok: true } | { ok: false; m
   }
 }
 
-export function PdfDownloadButton({ profileId, email }: PdfDownloadButtonProps) {
+export function PdfDownloadButton({ profileId }: PdfDownloadButtonProps) {
   const [state, setState] = useState<State>({ kind: 'warming' });
 
   useEffect(() => {
@@ -49,24 +52,6 @@ export function PdfDownloadButton({ profileId, email }: PdfDownloadButtonProps) 
   }, [profileId]);
 
   const handleDownload = async () => {
-    // Server-side auth check via /api/auth/me avoids pulling the Supabase
-    // browser SDK into the bundle for the entire assessment route.
-    let signedIn = false;
-    try {
-      const res = await fetch('/api/auth/me', { cache: 'no-store' });
-      if (res.ok) {
-        const data = (await res.json()) as { user: { email: string | null } | null };
-        signedIn = Boolean(data.user?.email);
-      }
-    } catch {
-      // Network down — surface the auth prompt; the user can sign in
-      // and retry instead of seeing a silent failure.
-    }
-    if (!signedIn) {
-      setState({ kind: 'auth-prompt' });
-      return;
-    }
-
     setState({ kind: 'downloading' });
     try {
       let res = await fetch(
@@ -141,13 +126,6 @@ export function PdfDownloadButton({ profileId, email }: PdfDownloadButtonProps) 
           </p>
         )}
       </div>
-      {state.kind === 'auth-prompt' && (
-        <SignupModal
-          email={email}
-          profileId={profileId}
-          onClose={() => setState({ kind: 'ready' })}
-        />
-      )}
     </>
   );
 }

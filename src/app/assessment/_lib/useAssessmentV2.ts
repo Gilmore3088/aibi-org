@@ -62,6 +62,17 @@ function readPersisted(pool: readonly AssessmentQuestion[]): {
 
     if (restored.length !== QUESTIONS_PER_SESSION) return null;
 
+    // Defensive: a session that already answered all 12 questions is
+    // STALE — the user completed the flow previously and is back at
+    // /assessment for a new attempt. Restoring it would drop them into
+    // the score reveal with nothing to do, or (worse) at currentQuestion
+    // = 11 where one more click flips them into "complete" with the old
+    // answers. Treat as a fresh start.
+    if (parsed.answers.length >= QUESTIONS_PER_SESSION) {
+      window.sessionStorage.removeItem(STORAGE_KEY);
+      return null;
+    }
+
     return {
       questions: restored,
       answers: parsed.answers.slice(0, QUESTIONS_PER_SESSION),
@@ -175,6 +186,16 @@ export function useAssessmentV2(): AssessmentState & AssessmentActions {
 
   const advanceToResults = useCallback(() => {
     setPhase('results');
+    // Wipe the in-progress sessionStorage now that the report is the
+    // user's permanent state. Without this, the next visit to /assessment
+    // — even after sign-out — rehydrates the prior answers and drops the
+    // visitor into a half-completed flow. Was deferred when the original
+    // v1 hook was rewritten as v2; surfaced 2026-05-23 when a tester
+    // logged out, opened /assessment, answered one question, and went
+    // straight to the score reveal.
+    if (typeof window !== 'undefined') {
+      window.sessionStorage.removeItem(STORAGE_KEY);
+    }
   }, []);
 
   const getDimensionBreakdown = useCallback((): Record<Dimension, DimensionScore> => {

@@ -98,7 +98,17 @@ export async function POST(request: Request) {
     }
   }
 
-  const { STRIPE_INDEPTH_PRICE_ID } = process.env;
+  const { STRIPE_INDEPTH_PRICE_ID, STRIPE_SECRET_KEY } = process.env;
+  if (!STRIPE_SECRET_KEY) {
+    console.error('[checkout/in-depth] STRIPE_SECRET_KEY is not set.');
+    return NextResponse.json(
+      {
+        error:
+          'Stripe is not configured in this environment. Test the checkout flow on a deployed preview where the live keys are wired.',
+      },
+      { status: 503 },
+    );
+  }
   if (!STRIPE_INDEPTH_PRICE_ID) {
     console.error('[checkout/in-depth] STRIPE_INDEPTH_PRICE_ID is not set.');
     return NextResponse.json(

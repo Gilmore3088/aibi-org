@@ -77,6 +77,10 @@ export function EmailGate({
   const [status, setStatus] = useState<Status>('idle');
   const [message, setMessage] = useState<string | null>(null);
   const [errorField, setErrorField] = useState<ErrorField>(null);
+  // Stays true until the /api/auth/me check has either resolved or
+  // failed. We hide the form during this window so a logged-in user
+  // doesn't see an empty gate flash before the auto-submit fires.
+  const [authChecking, setAuthChecking] = useState(true);
   const institutionInputRef = useRef<HTMLInputElement | null>(null);
   const emailInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -130,17 +134,27 @@ export function EmailGate({
     void (async () => {
       try {
         const res = await fetch('/api/auth/me', { cache: 'no-store' });
-        if (!res.ok) return;
+        if (!res.ok) {
+          if (!cancelled) setAuthChecking(false);
+          return;
+        }
         const data = (await res.json()) as { user: { email: string | null } | null };
         const sessionEmail = data.user?.email;
         if (cancelled || autoSubmittedRef.current) return;
-        if (!sessionEmail || !EMAIL_RE.test(sessionEmail)) return;
+        if (!sessionEmail || !EMAIL_RE.test(sessionEmail)) {
+          setAuthChecking(false);
+          return;
+        }
         autoSubmittedRef.current = true;
         setEmail(sessionEmail);
+        // Stay in authChecking state through submit so we render a
+        // single "Preparing your report…" instead of flashing the form
+        // and then the success state.
         void submit(sessionEmail);
       } catch {
         // Service down or offline — fall through to the manual form. The
         // gate still works; the user just has to type their email.
+        if (!cancelled) setAuthChecking(false);
       }
     })();
     return () => {
@@ -234,6 +248,24 @@ export function EmailGate({
       return;
     }
     await submit(trimmedEmail);
+  }
+
+  // Hide the gate during the initial auth check + auto-submit so a
+  // signed-in visitor never sees the empty form flash. Once we know
+  // they're not signed in (or the check failed), authChecking flips
+  // and the form renders normally.
+  if (authChecking || status === 'submitting') {
+    return (
+      <div
+        className="w-full max-w-5xl mx-auto py-16 text-center"
+        role="status"
+        aria-live="polite"
+      >
+        <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/65">
+          Preparing your report&hellip;
+        </p>
+      </div>
+    );
   }
 
   return (
@@ -340,10 +372,9 @@ export function EmailGate({
 
             <button
               type="submit"
-              disabled={status === 'submitting'}
               className="w-full px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors disabled:opacity-60"
             >
-              {status === 'submitting' ? 'Sending…' : 'Show my full results'}
+              Show my full results
             </button>
           </form>
         </div>
