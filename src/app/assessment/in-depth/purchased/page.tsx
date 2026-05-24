@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { cookies } from 'next/headers';
 import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
+import { MagicLinkPanel } from '@/components/auth/MagicLinkPanel';
 
 export const metadata: Metadata = {
   title: 'Purchase confirmed | The AI Banking Institute',
@@ -118,29 +119,31 @@ export default async function InDepthPurchasedPage({
                 Begin the assessment
               </Link>
             </>
+          ) : prefillEmail ? (
+            // A10 (audit 2026-05-24): the Stripe webhook provisioned the
+            // auth user and emailed a magic link. Tell the buyer that
+            // state instead of asking them to start over.
+            <MagicLinkPanel
+              email={prefillEmail}
+              nextPath="/assessment/in-depth/take"
+              passwordFallbackHref={`/auth/signup?next=/assessment/in-depth/take${emailQs}`}
+              variant="terra"
+            />
           ) : (
             <>
               <p className="text-sm text-[color:var(--color-ink)]/75 mb-5">
-                One last step: {prefillEmail ? 'finish creating' : 'create or sign into'} your
-                account{prefillEmail ? (
-                  <>
-                    {' '}for{' '}
-                    <span className="font-mono text-[color:var(--color-ink)]">
-                      {prefillEmail}
-                    </span>
-                  </>
-                ) : null}{' '}
-                to unlock the assessment. Takes 30 seconds.
+                One last step: create or sign into your account to unlock
+                the assessment. Takes 30 seconds.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link
-                  href={`/auth/signup?next=/assessment/in-depth/take${emailQs}`}
+                  href="/auth/signup?next=/assessment/in-depth/take"
                   className="inline-block bg-[color:var(--color-terra)] text-[color:var(--color-linen)] px-8 py-3 rounded-sm font-mono text-[10px] uppercase tracking-[0.15em] hover:bg-[color:var(--color-terra-light)] transition-colors"
                 >
                   Create my account
                 </Link>
                 <Link
-                  href={`/auth/login?next=/assessment/in-depth/take${emailQs}`}
+                  href="/auth/login?next=/assessment/in-depth/take"
                   className="inline-block border border-[color:var(--color-ink)]/20 text-[color:var(--color-ink)] px-8 py-3 rounded-sm font-mono text-[10px] uppercase tracking-[0.15em] hover:bg-[color:var(--color-parch)] transition-colors"
                 >
                   I already have one

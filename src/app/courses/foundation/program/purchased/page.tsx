@@ -12,6 +12,7 @@ import { cookies } from 'next/headers';
 import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
 import { PrimaryButton, GhostButton } from '@/components/lms';
+import { MagicLinkPanel } from '@/components/auth/MagicLinkPanel';
 
 export const metadata: Metadata = {
   title: 'Welcome to AiBI-Foundation | The AI Banking Institute',
@@ -214,6 +215,17 @@ export default async function AiBIPurchasedPage({
                 Begin Module 1 →
               </PrimaryButton>
             </>
+          ) : prefillEmail ? (
+            // A10 (audit 2026-05-24): the Stripe webhook has already
+            // provisioned a Supabase auth user and emailed a magic link.
+            // Surface that state instead of asking the buyer to create
+            // an account that already exists.
+            <MagicLinkPanel
+              email={prefillEmail}
+              nextPath="/courses/foundation/program"
+              passwordFallbackHref={`/auth/signup?next=/courses/foundation/program${emailQs}`}
+              variant="ledger"
+            />
           ) : (
             <>
               <p
@@ -224,26 +236,19 @@ export default async function AiBIPurchasedPage({
                   lineHeight: 1.6,
                 }}
               >
-                One last step: {prefillEmail ? 'finish creating' : 'create or sign into'} your
-                account{prefillEmail ? (
-                  <>
-                    {' '}for{' '}
-                    <span style={{ fontFamily: 'var(--ledger-mono)', color: 'var(--ledger-ink)' }}>
-                      {prefillEmail}
-                    </span>
-                  </>
-                ) : null} to bind your enrollment. Takes 30 seconds.
+                One last step: create or sign into your account to bind
+                your enrollment. Takes 30 seconds.
               </p>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
                 <PrimaryButton
                   as="a"
-                  href={`/auth/signup?next=/courses/foundation/program${emailQs}`}
+                  href="/auth/signup?next=/courses/foundation/program"
                 >
                   Create my account
                 </PrimaryButton>
                 <GhostButton
                   as="a"
-                  href={`/auth/login?next=/courses/foundation/program${emailQs}`}
+                  href="/auth/login?next=/courses/foundation/program"
                 >
                   I already have one
                 </GhostButton>
