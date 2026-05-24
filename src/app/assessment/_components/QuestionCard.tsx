@@ -128,7 +128,7 @@ export function QuestionCard({
               aria-checked={selected}
               aria-label={`${option.label}${selected ? " (selected)" : ""}`}
               className={cn(
-                "w-full text-left grid grid-cols-[1fr_28px] gap-s4 items-baseline",
+                "w-full text-left grid grid-cols-[20px_1fr] gap-s4 items-baseline",
                 "px-s4 py-s4 border-b border-hairline transition-colors duration-fast",
                 "focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--ledger-accent)] focus-visible:outline-offset-[-2px]",
                 selected
@@ -136,9 +136,6 @@ export function QuestionCard({
                   : "hover:bg-parch/60"
               )}
             >
-              <span className="font-serif text-body-lg md:text-display-xs leading-snug text-ink">
-                {option.label}
-              </span>
               <span
                 aria-hidden="true"
                 className={cn(
@@ -154,6 +151,9 @@ export function QuestionCard({
                     : undefined
                 }
               />
+              <span className="font-serif text-body-lg md:text-display-xs leading-snug text-ink">
+                {option.label}
+              </span>
             </button>
           );
         })}
@@ -172,7 +172,13 @@ export function QuestionCard({
         ) : (
           <span />
         )}
-        <span className="font-mono text-label-md uppercase tracking-widest text-slate">
+        <span
+          aria-live="polite"
+          className={cn(
+            "font-mono text-label-md uppercase tracking-widest transition-opacity duration-fast",
+            selectedPoints === undefined ? "text-ink-2 opacity-100" : "opacity-0"
+          )}
+        >
           Choose one to continue
         </span>
       </div>
