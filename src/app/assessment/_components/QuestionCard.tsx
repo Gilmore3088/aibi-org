@@ -15,12 +15,25 @@
  *   - Prompt heading is focused on question change for screen readers
  */
 
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import type { AssessmentQuestion as V1Question } from "@content/assessments/v1/questions";
 import type { AssessmentQuestion as V2Question } from "@content/assessments/v2/types";
 import { cn } from "@/lib/utils/cn";
 
 type AnyAssessmentQuestion = V1Question | V2Question;
+
+// Fisher-Yates — local copy so the QuestionCard does not pull from
+// content/assessments/v2/rotation (avoids client/server boundary work
+// for a four-element shuffle). Used for option-order randomisation
+// (audit A19).
+function fisherYatesShuffle<T>(array: T[]): T[] {
+  const result = [...array];
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+}
 
 interface QuestionCardProps {
   readonly question: AnyAssessmentQuestion;
@@ -48,8 +61,19 @@ export function QuestionCard({
     promptRef.current?.focus();
   }, [question.id]);
 
+  // Audit A19 (2026-05-24): break the "lowest option is always worst"
+  // position signal that the first 48-item authoring locked in. The
+  // shuffle is computed once per question.id, so navigating back and
+  // forth across the questionnaire does NOT re-shuffle (re-shuffle on
+  // every render would make the UI feel broken). Click handlers still
+  // send option.points so the scoring path is untouched.
+  const displayedOptions = useMemo(
+    () => fisherYatesShuffle([...question.options]),
+    [question.id],
+  );
+
   function handleOptionKeyDown(event: React.KeyboardEvent, idx: number) {
-    const last = question.options.length - 1;
+    const last = displayedOptions.length - 1;
     let nextIdx = idx;
     switch (event.key) {
       case "ArrowDown":
@@ -104,7 +128,7 @@ export function QuestionCard({
         aria-label={question.prompt}
         className="border-t border-strong"
       >
-        {question.options.map((option, idx) => {
+        {displayedOptions.map((option, idx) => {
           const selected = selectedPoints === option.points;
           const tabIndex =
             selectedPoints === undefined

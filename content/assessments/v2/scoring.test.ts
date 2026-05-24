@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   composeScore,
+  getDimensionScores,
   getTierInDepth,
   percentOfMax,
   phaseFromPct,
@@ -31,6 +32,52 @@ describe('SCORE_AUTHORITY.thresholdLogic stays consistent with tiers', () => {
 // tier via composeScore) and the legacy getTierInDepth helper produce
 // identical tier ids for any (sum, max) pair — so any consumer that
 // still imports getTierInDepth gets the same answer as composeScore.
+
+describe('A19 — reverse-scored items', () => {
+  // Build a tiny synthetic question pool to test the scoring transform
+  // in isolation, without depending on the full 48-item pool.
+  function makeQuestion(
+    id: string,
+    dimension:
+      | 'current-ai-usage' | 'experimentation-culture' | 'ai-literacy-level'
+      | 'quick-win-potential' | 'leadership-buy-in' | 'security-posture'
+      | 'training-infrastructure' | 'builder-potential',
+    reverseScored = false,
+  ) {
+    return {
+      id,
+      dimension,
+      prompt: 'x',
+      options: [
+        { label: 'a', points: 1 as const },
+        { label: 'b', points: 2 as const },
+        { label: 'c', points: 3 as const },
+        { label: 'd', points: 4 as const },
+      ] as const,
+      reverseScored,
+    };
+  }
+
+  it('forward-scored points pass through unchanged', () => {
+    const q = makeQuestion('q1', 'current-ai-usage', false);
+    const res = getDimensionScores([3], [q]);
+    expect(res['current-ai-usage'].score).toBe(3);
+    expect(res['current-ai-usage'].maxScore).toBe(4);
+  });
+
+  it('reverse-scored points are flipped: 1→4, 2→3, 3→2, 4→1', () => {
+    const q = makeQuestion('q1', 'current-ai-usage', true);
+    expect(getDimensionScores([1], [q])['current-ai-usage'].score).toBe(4);
+    expect(getDimensionScores([2], [q])['current-ai-usage'].score).toBe(3);
+    expect(getDimensionScores([3], [q])['current-ai-usage'].score).toBe(2);
+    expect(getDimensionScores([4], [q])['current-ai-usage'].score).toBe(1);
+  });
+
+  it('unanswered (0 points) stays 0 even when reverse-scored', () => {
+    const q = makeQuestion('q1', 'current-ai-usage', true);
+    expect(getDimensionScores([0], [q])['current-ai-usage'].score).toBe(0);
+  });
+});
 
 describe('A1 — scoring engine equivalence', () => {
   it('tierFromPct + composeScore + getTierInDepth all agree at boundaries', () => {

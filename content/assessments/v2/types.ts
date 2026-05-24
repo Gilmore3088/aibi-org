@@ -32,4 +32,12 @@ export interface AssessmentQuestion {
   readonly dimension: Dimension;
   readonly prompt: string;
   readonly options: readonly [AssessmentOption, AssessmentOption, AssessmentOption, AssessmentOption];
+  // Audit A19 (2026-05-24): when true, scoring is flipped (5 - points)
+  // so a "high agreement" answer no longer maps to high maturity.
+  // Used to break acquiescence bias when the question wording is itself
+  // reversed (e.g. "Our staff resist AI initiatives"). Authoring of the
+  // matching reverse-worded items is the Wave-E follow-up; the schema
+  // and the scoring transform ship in Wave D so the field can land
+  // without further code changes.
+  readonly reverseScored?: boolean;
 }

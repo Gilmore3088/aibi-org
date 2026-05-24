@@ -175,7 +175,16 @@ export function getDimensionScores(
 
   sessionQuestions.forEach((question, idx) => {
     const dim = question.dimension;
-    const points = answers[idx] ?? 0;
+    const rawPoints = answers[idx] ?? 0;
+    // Audit A19 (2026-05-24): reverse-scored items flip the points so a
+    // "high agreement" answer no longer maps to high maturity. When the
+    // question is reverse-scored AND we have a real (1-4) answer, apply
+    // the 5 - points transform. Unanswered items (0) stay 0 so the
+    // unanswered total is honest.
+    const points =
+      question.reverseScored && rawPoints >= 1 && rawPoints <= 4
+        ? 5 - rawPoints
+        : rawPoints;
     const existing = dimensionMap[dim] ?? { score: 0, maxScore: 0 };
     dimensionMap[dim] = {
       score: existing.score + points,
