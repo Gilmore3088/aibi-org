@@ -104,17 +104,25 @@ INSERT INTO addie.lessons (
   'm1-2-tool-landscape',
   'ai_toolkit_map',
   $body$
-## SCRIPT (intro)
+There are roughly a thousand AI tools that look like they do the same thing. They don't. Almost every one of them sits in one of two buckets, and once you can tell the buckets apart you stop being confused about which tool to reach for on a Monday morning.
 
-> "There are roughly a thousand AI tools that look like they do the same thing. They don't. Almost every one of them is in one of two buckets, and once you can tell the buckets apart you stop being confused about which tool to reach for.
+## SCRIPT (verbatim)
+
+> "Two buckets. That's the whole sort. Get this right and the rest of the noise turns into background.
 >
-> **Assistants** are thinking partners. You talk, they talk back. Claude, ChatGPT, Gemini, Copilot, NotebookLM, Perplexity. Same shape: a chat window. Same job: help you read, write, summarise, decide.
+> **One: assistants are thinking partners.** Claude, ChatGPT, Gemini, Microsoft Copilot, NotebookLM, Perplexity. Same shape — a chat window. Same job — help you read, write, summarise, and decide. You talk, they talk back. Most of the work a community banker does with AI in the first year sits inside this bucket: a clearer member letter, a one-page summary of a forty-page guidance document, a first-draft training quiz.
 >
-> **Builders** are construction crews. You describe what you want, they produce running software — a page, a small app, a working prototype. Lovable, Replit Agents, v0, Cursor, Claude Code, Stitch. You don't chat with them the same way. You brief them.
+> **Two: builders are construction crews.** Lovable, Replit Agents, v0, Cursor, Claude Code, Stitch. You describe what you want, they produce running software — a page, a small internal tool, a working prototype. You don't chat with these the way you chat with an assistant. You brief them. We touch builders lightly in Module 5; for now, just know the bucket exists.
 >
-> The exercise on this page is a sort. We give you the twelve tools we'll reference across this course. You place each one in the right quadrant of a 2×2 — the horizontal axis is the one that matters (assistant or builder), the vertical axis is informational only (most have a free tier and a paid tier).
+> **Three: the verb tells you which bucket a new tool sits in.** When a vendor's marketing leads with *chat, summarise, draft, ask* — assistant. When it leads with *build, ship, deploy, generate the app* — builder. A handful of tools straddle the line: Claude Code is Claude with hands, Copilot writes code from inside a chat. We've put a hint under each one in the exercise.
 >
-> Three rules. **One:** when you're not sure, look at the verb. If the marketing says *chat / summarise / draft*, it's an assistant. If it says *build / ship / deploy*, it's a builder. **Two:** several tools straddle the line — Claude Code is Claude, with hands; Copilot writes code but lives inside chat. We've put a hint under each tool. **Three:** when you submit, we score the horizontal axis only and reveal the vendor link for the tools you placed correctly. Save the result — that becomes your AI Toolkit Map, the first artifact in your Toolbox."
+> The interactive on this page is a sort. Place each of the twelve tools we'll reference in the right quadrant of a 2×2. Horizontal axis is the one that matters — assistant or builder. Vertical axis is informational only — most tools have a free tier and a paid tier; pricing changes every quarter, the bucket does not. When you submit, we score the horizontal axis and reveal the vendor link for the placements you got right. Save the result. It becomes your AI Toolkit Map, the first artifact in your Toolbox.
+>
+> Hold those three together — assistants for thinking, builders for shipping, the verb is your tell — and you can sort any new AI product you see this year inside thirty seconds."
+
+> [tip] When you're stuck on a tool, read its own pricing page. The headline copy will use one set of verbs for assistants ("ask, draft, summarise") and another set for builders ("build, deploy, generate"). The verbs are honest even when the rest of the marketing isn't.
+
+> [warn] Don't waste energy debating whether Claude Code is "really" a builder or "really" an assistant. The bucket is a routing decision, not a religion. When you'd reach for it to write running code, treat it like a builder. When you'd reach for it to read a long file, treat it like an assistant.
 
 ## PRODUCTION
 
@@ -190,26 +198,34 @@ INSERT INTO addie.lessons (
   NULL,
   NULL,
   $body$
+Generative AI inside a community bank is mostly boring, and that is the point. The wins are not flashy. They are fewer minutes spent on the second draft, more minutes spent with the member in front of you. Five examples — three good, two bad. None of these are real institutions; the patterns are.
+
 ## SCRIPT (verbatim)
 
-> "Generative AI inside a community bank is mostly boring, and that is the point. The wins are not flashy. They are *fewer minutes spent on the second draft, more minutes spent with the member in front of you*. Let's walk five examples — three that are good uses, two that look tempting and are bad uses. None of these are real institutions. The numbers are made up. The patterns are real.
+> "Three good uses first, then the two that look tempting and aren't.
 >
-> **Good use one — rewriting a member letter for clarity.** A back-office colleague drafts an overdraft notice. It is technically correct and almost unreadable. They paste the generic, *anonymised* draft into an assistant — no names, no account numbers — and ask: *plain English at an eighth-grade reading level, warm, two sentences shorter*. They read the result, edit a verb, send it. Twenty minutes, not an hour. The member gets a letter they can actually understand.
+> **One: rewriting a member letter for clarity.** A back-office colleague drafts an overdraft notice. It is technically correct and almost unreadable. They paste the generic, anonymised draft into an assistant — no names, no account numbers — and ask for plain English at an eighth-grade reading level, warm, two sentences shorter. They read the result, edit a verb, send it. Twenty minutes, not an hour. The member gets a letter they can actually understand. The institution has not handed any data to anyone.
 >
-> **Good use two — turning a long PDF into a one-page summary.** A compliance analyst is handed a forty-page interagency guidance document. They drop the *public* PDF into a summariser, ask for a structured one-pager with section headers and direct quotes for anything load-bearing. They read the summary against the original, fix two paraphrases that softened the rule, and bring the one-pager to their weekly. The whole guidance now fits on one page their committee will actually read.
+> **Two: turning a long PDF into a one-page summary.** A compliance analyst is handed a forty-page interagency guidance document. They drop the public PDF into a summariser, ask for a structured one-pager with section headers and direct quotes for anything load-bearing. They read the summary against the original, catch two paraphrases that softened the rule, and bring the corrected one-pager to their weekly. The committee actually reads it. The committee usually does not.
 >
-> **Good use three — a first-pass training quiz.** A learning lead has new-hire material on wire fraud red flags. They ask an assistant to draft fifteen multiple-choice questions and answers grounded in the material they pasted in. They throw out four, rewrite three, keep eight. They have a quiz in twenty minutes that would have taken half a day.
+> **Three: a first-pass training quiz from material you already have.** A learning lead has new-hire content on wire-fraud red flags. They ask an assistant to draft fifteen multiple-choice questions and answers grounded in the material they pasted in. They throw out four, rewrite three, keep eight. They have a usable quiz in twenty minutes — work that would have taken half a day.
 >
-> **Bad use one — pasting a member's full file to draft a denial letter.** Name, account number, income, the lot. This is the rule from orientation, and it is the one to be religious about. The fix is to describe the *situation*: *a small-business member with a thin credit file is being declined for an unsecured line — draft a respectful denial that explains the decision factors at a high level and points to next steps.* Same letter. None of the file.
+> Now the two that look like wins and aren't.
 >
-> **Bad use two — letting the model invent a citation.** A leader asks an assistant for the exact text of a regulation, the model produces a paragraph that sounds exactly like a regulation, and it goes into a board memo. The paragraph is plausible and partly wrong. The fix is mechanical: anything the model claims is a citation, you go fetch the actual citation from the actual source before it leaves your desk. Always.
+> **Four: pasting a member's full file into a public tool to draft a denial letter.** Name, account number, income, employer, the lot. This is the rule from orientation, and it is the one to be religious about. The fix is to describe the situation, not the person: a small-business member with a thin credit file is being declined for an unsecured line — draft a respectful denial that explains the decision factors at a high level and points to next steps. Same letter. None of the file.
 >
-> The pattern across all five is the same. **Good uses bring public or anonymised material to the model and use the model to compress, rewrite, or draft.** **Bad uses either send the model sensitive material or trust it to remember facts it never actually had.** Get that pattern, and you can sort almost any new use case in under a minute."
+> **Five: letting the model invent a citation.** A leader asks an assistant for the exact text of a regulation. The model produces a paragraph that sounds exactly like a regulation, and the paragraph ends up in a board memo. It is plausible and partly wrong. The fix is mechanical: anything the model claims is a citation, you fetch from the actual source before it leaves your desk. SR 11-7, an OCC bulletin, a section of Reg E — go get the live text. Always.
+>
+> Hold the pattern across all five together. Good uses bring public or anonymised material to the model and use the model to compress, rewrite, or draft. Bad uses either send the model sensitive material, or trust it to remember facts it never actually had. Get that pattern and you can sort almost any new use case under a minute."
+
+> [tip] Build a personal "before I paste" pause — ten seconds, every time. If you can't say out loud what's in your clipboard without naming a real customer, account, or unreleased number, the answer is no. The pause becomes muscle memory within a week.
+
+> [warn] A model that invents a citation is doing exactly what it was built to do. It is not lying. It is producing the most plausible next chunk of text. The verification habit lives with you, not with the tool.
 
 ## PRODUCTION
 
 - Five labelled cards build in sequence as the narrator works through each example. Good uses in `--ledger-ink`, bad uses in `--ledger-weak` (oxblood).
-- Close on the pattern card: two columns titled *Good* and *Bad*, each with the one-line pattern from the closing paragraph.
+- Close on the pattern card: two columns titled Good and Bad, each with the one-line pattern from the closing paragraph.
 - All institutions and people in the examples are unnamed.
 $body$,
   true
@@ -238,11 +254,13 @@ VALUES (
   $variant$
 > "If you sit in risk or compliance at a community bank or credit union, generative AI changes the shape of your week before it changes the shape of your program. Three honest observations.
 >
-> First, the reading load. You spend hours each week inside guidance, advisories, and exam letters. A capable assistant turns a forty-page interagency document into a structured one-pager you can mark up — section headers, direct quotes for the load-bearing language, a plain-English summary at the top. It does not replace your read. It compresses the second and third reads so you can spend that time on the parts that actually matter to your institution.
+> **One: the reading load gets smaller.** You spend hours each week inside guidance, advisories, and exam letters. A capable assistant turns a forty-page interagency document into a structured one-pager you can mark up — section headers, direct quotes for the load-bearing language, a plain-English summary at the top. It does not replace your read. It compresses the second and third reads so you spend that time on the parts that actually matter to your institution.
 >
-> Second, the drafting load. Risk assessments, vendor questionnaires, policy crosswalks, internal memos. The first draft of any of these is craft work an assistant does well, when you give it public or anonymised material to work from. The model will not know your control environment. You bring the facts; it shapes the prose.
+> **Two: the drafting load gets faster.** Risk assessments, vendor questionnaires, policy crosswalks, internal memos. The first draft of any of these is craft work an assistant does well, when you give it public or anonymised material to work from. The model will not know your control environment. You bring the facts; it shapes the prose. You still own the final read, the citations, and the sign-off.
 >
-> Third, and this is the one regulators will ask about: the same tools your business lines are starting to use are tools you now have to govern. You cannot govern what you do not understand. The point of the next few modules is not to make you a power user. It is to give you enough fluency that when an examiner asks how your institution evaluates generative AI vendors, or how staff are trained on data discipline, you have answers grounded in the same tools your colleagues are using on Monday morning. That is the deliverable. Not enthusiasm — competence."
+> **Three: the governance question lands on your desk.** The same tools your business lines are starting to use are tools you now have to govern, and you cannot govern what you do not understand. The point of the next few modules is not to make you a power user. It is to give you enough fluency that when an examiner asks how your institution evaluates generative AI vendors under the Interagency TPRM Guidance, or how staff are trained on data discipline, you have answers grounded in the same tools your colleagues are using on Monday morning.
+>
+> Hold those three together: less reading time, faster drafts, real governance fluency. That is the deliverable from this course. Not enthusiasm — competence."
 $variant$,
   NULL
 )
@@ -256,15 +274,15 @@ VALUES (
   'm1.3',
   'customer_facing',
   $variant$
-> "If your seat puts you in front of members or customers — frontline, retail, lending — generative AI does not replace the conversation. It cleans up the work *around* the conversation so the conversation itself can be better.
+> "If your seat puts you in front of members or customers — frontline, retail, lending — generative AI does not replace the conversation. It cleans up the work around the conversation so the conversation itself can be better.
 >
-> Three places this shows up. First, written follow-ups. The note after a difficult call. The plain-English explanation of an overdraft policy. The retention message to a small-business owner thinking about leaving for a fintech. These are the second-tier drafts you write at the end of the day when you are tired. An assistant can take a generic, anonymised version of the situation — never the member's file — and give you a calm, warm first draft in thirty seconds. You read it, you edit, you send. The member gets a better letter. You go home.
+> **One: the written follow-ups get easier.** The note after a difficult call. The plain-English explanation of an overdraft policy. The retention message to a small-business owner thinking about leaving for a fintech. These are the second-tier drafts you write at the end of the day when you are tired. An assistant can take a generic, anonymised version of the situation — never the member's file — and give you a calm, warm first draft in thirty seconds. You read it, you edit, you send. The member gets a better letter. You go home.
 >
-> Second, comprehension. A new disclosure, a new product sheet, a new regulation that touches what you say at the desk. An assistant can give you a one-page summary, a list of likely member questions, and a suggested answer for each. You vet it against your training and your manager's guidance, but you do not start from a blank page.
+> **Two: comprehension speeds up.** A new disclosure, a new product sheet, a new regulation that touches what you say at the desk. An assistant gives you a one-page summary, a list of likely member questions, and a suggested answer for each. You vet it against your training and your manager's guidance. You do not start from a blank page.
 >
-> Third, objection-handling practice. You can role-play a tough conversation with an assistant — *a member is upset that a card was declined while they were traveling* — and run it three different ways before you have it for real. It is a low-stakes rehearsal room you did not have last year.
+> **Three: rehearsal becomes a real option.** You can role-play a tough conversation with an assistant — a member is upset that a card was declined while they were travelling — and run it three different ways before you have it for real. It is a low-stakes rehearsal room you did not have last year, and it costs you ten minutes.
 >
-> What does not change: every word that goes to a real member still gets a human read. The model is your prep partner. You are still the one at the desk."
+> Hold those three together: better follow-ups, faster comprehension, a rehearsal room when you need one. What does not change: every word that goes to a real member still gets a human read. The model is your prep partner. You are still the one at the desk."
 $variant$,
   NULL
 )
@@ -280,13 +298,13 @@ VALUES (
   $variant$
 > "Back office and operations is where this technology pays for itself first, quietly, by collapsing the time spent on the work nobody likes doing.
 >
-> Three concrete places. First, internal documentation. The process memo nobody has updated in eighteen months. The procedure that is correct on paper and confusing in practice. An assistant takes the existing memo — no customer data, just the procedure — and rewrites it for clarity, flags the steps that contradict each other, and proposes a one-page quick reference for the team. You review, you correct, you publish. A week of rewrite collapses to an afternoon.
+> **One: internal documentation gets unstuck.** The process memo nobody has updated in eighteen months. The procedure that is correct on paper and confusing in practice. An assistant takes the existing memo — no customer data, just the procedure — and rewrites it for clarity, flags the steps that contradict each other, and proposes a one-page quick reference for the team. You review, you correct, you publish. A week of rewrite collapses to an afternoon.
 >
-> Second, marketing copy from a public source of truth. A new branch hours change. A new product launch. A holiday closure. An assistant drafts the website note, the lobby card text, and the social post in your institution's voice from a single brief. You edit for tone, your compliance partner signs off, you publish. The pipeline gets faster without getting sloppier — because the human reads have not changed.
+> **Two: marketing copy from a public source of truth is a thirty-minute job.** A new branch-hours change. A new product launch. A holiday closure. An assistant drafts the website note, the lobby card text, and the social post in your institution's voice from a single brief. You edit for tone, your compliance partner signs off, you publish. The pipeline gets faster without getting sloppier — because the human reads have not changed.
 >
-> Third, structured data wrangling on safe inputs. Reformatting a vendor's CSV into your template. Cleaning the column headers on a public spreadsheet. Drafting a JSON example for an integration partner. Boring work. The kind of work that takes thirty minutes and breaks your concentration for two hours.
+> **Three: structured data wrangling on safe inputs disappears as a friction.** Reformatting a vendor's CSV into your template. Cleaning the column headers on a public spreadsheet. Drafting a JSON example for an integration partner. Boring work. The kind that takes thirty minutes and breaks your concentration for two hours. An assistant handles the shape, you keep your concentration.
 >
-> What does not change: anything with a member's name attached stays out of public tools. The rule from orientation is your floor here, not your ceiling."
+> Hold those three together: better procedures, faster public-facing copy, fewer thirty-minute interruptions. What does not change: anything with a member's name attached stays out of public tools. The rule from orientation is your floor here, not your ceiling."
 $variant$,
   NULL
 )
@@ -302,13 +320,13 @@ VALUES (
   $variant$
 > "If you are on the IT side of a community bank or credit union, you have probably already been doing some of this and quietly not telling anyone. The point of this course is to make it explicit, repeatable, and defensible.
 >
-> Three places it lands. First, code and configuration. Reading an unfamiliar codebase, drafting a one-off script, explaining a stack trace, sketching a config file. An assistant — or a coding-shaped assistant like Claude Code or Cursor — is a competent pair-programmer for the work that does not justify pulling a colleague off something more important. You still own the merge. The assistant just gets you to the merge faster.
+> **One: code and configuration get a pair-programmer.** Reading an unfamiliar codebase, drafting a one-off script, explaining a stack trace, sketching a config file. An assistant — or a coding-shaped assistant like Claude Code or Cursor — is a competent partner for the work that does not justify pulling a colleague off something more important. You still own the merge. The assistant gets you there faster, and it shows its work so you can read every line before it ships.
 >
-> Second, vendor evaluation. Your institution will be sold AI features by every vendor on your stack over the next eighteen months. You will be the person who has to ask whether the data flow makes sense, whether the contract terms hold up, whether the vendor's own model use is governed. Module five touches a vendor checklist; the deeper work is in the specialist track after this course. For now, fluency is the goal — you cannot ask the right questions about generative AI in a vendor demo if you have never used one.
+> **Two: vendor evaluation gets serious.** Your institution will be sold AI features by every vendor on your stack over the next eighteen months. You will be the person who has to ask whether the data flow makes sense, whether the contract terms hold up under the Interagency TPRM Guidance, whether the vendor's own model use is governed. Module five touches a vendor checklist; the deeper work lives in the AiBI-S specialist track. For now the goal is fluency. You cannot ask the right questions in a vendor demo if you have never used one of these tools yourself.
 >
-> Third, the boring win — drafting documentation. Runbooks, change tickets, post-incident notes. The writing that you know you should produce and that always slips. An assistant takes your bullet points and produces a complete first draft. You review, correct, publish. The institutional memory gets better.
+> **Three: documentation finally gets written.** Runbooks, change tickets, post-incident notes. The writing you know you should produce and that always slips. An assistant takes your bullet points and produces a complete first draft. You review, correct, publish. The institutional memory gets better and your team stops re-solving the same problem every six months.
 >
-> The rule that protects all of this: no credentials, no production data, no customer records in a public tool. Ever. Build the habit now."
+> Hold those three together: code partner, vendor evaluator, documentarian. The rule that protects all of it: no credentials, no production data, no customer records in a public tool. Ever. Build the habit now and the bigger problems never reach you."
 $variant$,
   NULL
 )
@@ -322,13 +340,15 @@ VALUES (
   'm1.3',
   'leadership',
   $variant$
-> "If you are running a community bank or credit union, or running a meaningful part of one, the question on your desk is not *should we use AI*. The question is *what is the smallest competent next step*, and *how do we tell whether the result is real*. Three observations from the seat you are in.
+> "If you are running a community bank or credit union, or running a meaningful part of one, the question on your desk is not should we use AI. The question is what is the smallest competent next step, and how do we tell whether the result is real. Three observations from the seat you are in.
 >
-> First, the strategic risk is not adoption. It is uneven adoption. You will not find out about most of your institution's generative AI use from a memo. You will find out about it because a colleague mentions it in a one-on-one, or because a vendor demos a feature your team already turned on. Your job in this module is not to become a power user. It is to acquire enough fluency that when your CIO, your CRO, and your head of retail are in the room talking about AI, you can ask the questions that close the loop.
+> **One: the strategic risk is not adoption — it is uneven adoption.** You will not find out about most of your institution's generative AI use from a memo. You will find out about it because a colleague mentions it in a one-on-one, or because a vendor demos a feature your team turned on six weeks ago. Your job in this module is not to become a power user. It is to acquire enough fluency that when your CIO, your CRO, and your head of retail are in the room talking about AI, you ask the questions that close the loop.
 >
-> Second, the operational opportunity is not at the model. It is at the workflow. The wins inside a community institution look like *thirty per cent less time on second drafts in compliance*, *a faster turn on member follow-ups in retail*, *a shorter cycle on vendor diligence in IT*. None of those headlines win at a conference. All of them show up in the efficiency ratio if you let them.
+> **Two: the operational opportunity is at the workflow, not the model.** The wins inside a community institution look like thirty percent less time on second drafts in compliance, a faster turn on member follow-ups in retail, a shorter cycle on vendor diligence in IT. None of those headlines wins at a conference. All of them show up in the efficiency ratio — community-bank median sits around 65 percent per FDIC, against industry-wide 55.7 percent — if you let them.
 >
-> Third, the governance question is the one regulators are already asking and will keep asking. By the end of this course you will have personally produced a working prompt, a saved skill, and a small prototype. That is not the deliverable for your institution. It is the deliverable for *you* — the experiential floor that lets you chair the AI conversation without outsourcing it. Everything else builds on that floor."
+> **Three: the governance question is the one regulators are already asking, and will keep asking.** Bank Director's 2024 survey found 66 percent of banks discussing AI budget; Gartner says 55 percent have no governance framework yet. By the end of this course you will have personally produced a working prompt, a saved skill, and a small prototype. That is not the deliverable for your institution. It is the deliverable for you — the experiential floor that lets you chair the AI conversation without outsourcing it.
+>
+> Hold those three together: uneven adoption is the real risk, the workflow is where the win lives, and governance fluency is what keeps the regulator conversation calm. Everything else in this course builds on that floor."
 $variant$,
   NULL
 )
