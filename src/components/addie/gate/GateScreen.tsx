@@ -41,16 +41,24 @@ export function GateScreen() {
         </div>
       </section>
 
-      {/* Three doors */}
+      {/* A9 + A18 (audit 2026-05-24): three doors with explicit visual
+          hierarchy. Equal-width parity violated Hick's law — three peer
+          options force a fork instead of presenting the recommended
+          path. Now: Pay is the primary hero card (full row, paid-tier
+          styling); Email is the secondary side-by-side card; Decline
+          is the tertiary text-styled option below the fold. */}
       <section className="mx-auto max-w-6xl px-4 sm:px-6 -mt-8 pb-12 relative">
-        <div className="grid gap-5 md:grid-cols-3">
-          <div className="addie-module-card" data-tier="paid">
-            <PayOptionCard kind="individual" />
-          </div>
+        {/* Primary — Pay (visual weight first, recommended path) */}
+        <div className="addie-module-card mb-6" data-tier="paid" data-emphasis="hero">
+          <PayOptionCard kind="individual" />
+        </div>
+        {/* Secondary — Email-to-keep (smaller weight, real path) */}
+        <div className="grid gap-5 md:grid-cols-[3fr_2fr] items-stretch">
           <div className="addie-module-card">
             <EmailOptionForm />
           </div>
-          <div className="addie-module-card">
+          {/* Tertiary — Decline (smallest weight, plain styling) */}
+          <div className="addie-module-card" data-emphasis="tertiary">
             <DeclineOption />
           </div>
         </div>

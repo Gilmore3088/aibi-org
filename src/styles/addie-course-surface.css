@@ -208,6 +208,37 @@
 .addie-course-surface .addie-module-card[data-tier='paid']::after {
   background: linear-gradient(90deg, var(--ledger-accent), color-mix(in srgb, var(--ledger-accent) 60%, var(--ledger-ink-2)));
 }
+/* A9 + A18 (audit 2026-05-24): visual hierarchy on the gate's three
+   doors. data-emphasis='hero' is the recommended Pay option — a full-
+   width hero with stronger shadow and a gold ribbon. data-emphasis=
+   'tertiary' is Decline — visually quieter so the recommended path
+   reads first. */
+.addie-course-surface .addie-module-card[data-emphasis='hero'] {
+  padding: 2rem 2.25rem;
+  box-shadow:
+    0 1px 0 color-mix(in srgb, var(--ledger-ink) 5%, transparent),
+    0 8px 22px -8px color-mix(in srgb, var(--ledger-ink) 18%, transparent),
+    0 2px 6px -2px color-mix(in srgb, var(--ledger-ink) 8%, transparent);
+}
+.addie-course-surface .addie-module-card[data-emphasis='hero']::after {
+  height: 4px;
+}
+.addie-course-surface .addie-module-card[data-emphasis='tertiary'] {
+  background: var(--ledger-paper);
+  border-color: color-mix(in srgb, var(--ledger-rule) 80%, transparent);
+  box-shadow: none;
+  padding: 1.25rem 1.5rem;
+}
+.addie-course-surface .addie-module-card[data-emphasis='tertiary']::after {
+  background: color-mix(in srgb, var(--ledger-muted) 40%, transparent);
+  height: 2px;
+}
+.addie-course-surface .addie-module-card[data-emphasis='tertiary']:hover,
+.addie-course-surface .addie-module-card[data-emphasis='tertiary']:focus-within {
+  transform: none;
+  box-shadow:
+    0 2px 8px -3px color-mix(in srgb, var(--ledger-ink) 10%, transparent);
+}
 .addie-course-surface .addie-module-card:hover,
 .addie-course-surface .addie-module-card:focus-within {
   border-color: var(--ledger-ink);
