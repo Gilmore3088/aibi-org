@@ -10,6 +10,8 @@ import Link from 'next/link';
 import { LessonPlayer } from '@/components/addie/lesson/LessonPlayer';
 import { CourseSidebar } from '@/components/addie/shell/CourseSidebar';
 import { PaywallPreview } from '@/components/addie/lesson/PaywallPreview';
+import { LessonTOC } from '@/components/addie/lesson/LessonTOC';
+import { extractHeadings } from '@/components/addie/lesson/lessonHeadings';
 import { hasAnyFoundationEntitlement } from '@/lib/addie/entitlements/check';
 import type {
   LessonPayload,
@@ -339,14 +341,18 @@ export default async function LessonPage({
     }
   }
 
+  const bodyForToc = payload.variant?.body_md ?? payload.lesson.body_md ?? '';
+  const headings = extractHeadings(bodyForToc);
+
   return (
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 py-6 flex flex-col lg:flex-row gap-8 lg:gap-10">
+    <div className="mx-auto max-w-[1400px] px-4 sm:px-6 py-6 flex flex-col lg:flex-row gap-8 lg:gap-10">
       <aside className="lg:order-first">
         <CourseSidebar activeModuleId={params.moduleId} activeLessonId={params.lessonId} />
       </aside>
       <div className="flex-1 min-w-0">
         <LessonPlayer payload={payload} />
       </div>
+      <LessonTOC headings={headings} />
     </div>
   );
 }

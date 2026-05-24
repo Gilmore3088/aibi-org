@@ -15,6 +15,7 @@
 //   - [tip] / [warn] / [save] / [field] callouts render as cards.
 
 import type { ReactNode } from 'react';
+import { slugifyHeading } from './lessonHeadings';
 
 interface LessonBodyProps {
   readonly body: string;
@@ -295,7 +296,7 @@ function renderBlock(b: Block, key: number): ReactNode {
   switch (b.kind) {
     case 'h2':
       return (
-        <div key={key} className="mt-12 mb-5 flex items-center gap-4">
+        <div key={key} id={slugifyHeading(b.text)} className="mt-12 mb-5 flex items-center gap-4 scroll-mt-24">
           <span className="font-mono uppercase tracking-[0.2em] text-[0.7rem] text-[var(--ledger-accent)]">§</span>
           <h2 className="font-serif text-[1.5rem] leading-tight text-[var(--ledger-ink)]">
             {renderInline(b.text)}
@@ -307,7 +308,8 @@ function renderBlock(b: Block, key: number): ReactNode {
       return (
         <h3
           key={key}
-          className="font-serif text-[1.25rem] leading-tight text-[var(--ledger-ink)] mt-9 mb-3"
+          id={slugifyHeading(b.text)}
+          className="font-serif text-[1.25rem] leading-tight text-[var(--ledger-ink)] mt-9 mb-3 scroll-mt-24"
         >
           {renderInline(b.text)}
         </h3>
