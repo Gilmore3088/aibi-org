@@ -6,7 +6,9 @@ import { notFound } from 'next/navigation';
 import { cookies } from 'next/headers';
 import { createServerClient } from '@supabase/ssr';
 import { getAddieServiceClient } from '@/lib/addie/supabase/service';
+import Link from 'next/link';
 import { LessonPlayer } from '@/components/addie/lesson/LessonPlayer';
+import { hasAnyFoundationEntitlement } from '@/lib/addie/entitlements/check';
 import type {
   LessonPayload,
   LessonRow,
@@ -165,6 +167,63 @@ async function loadPayload(
   }
 }
 
+async function getAuthUserId(): Promise<string | null> {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!supabaseUrl || !supabaseAnonKey) return null;
+  try {
+    const cookieStore = await cookies();
+    const supa = createServerClient(supabaseUrl, supabaseAnonKey, {
+      cookies: {
+        getAll: () => cookieStore.getAll(),
+        setAll: () => {
+          /* no-op */
+        },
+      },
+    });
+    const { data } = await supa.auth.getUser();
+    return data.user?.id ?? null;
+  } catch {
+    return null;
+  }
+}
+
+function PaywallScreen({
+  moduleTitle,
+  moduleId,
+}: {
+  readonly moduleTitle: string;
+  readonly moduleId: string;
+}) {
+  return (
+    <article className="mx-auto max-w-2xl px-4 sm:px-6 py-16 text-center">
+      <p className="font-mono uppercase tracking-wider text-xs text-[var(--ledger-muted)]">
+        Paid module · {moduleId}
+      </p>
+      <h1 className="mt-3 font-serif text-3xl text-[var(--ledger-ink)]">
+        {moduleTitle}
+      </h1>
+      <p className="mt-4 text-[var(--ledger-ink-2)]">
+        This module is part of the paid Foundation course. You can buy individual
+        access for $295, or your team admin can invite you to a team seat.
+      </p>
+      <div className="mt-8 flex flex-col items-center gap-3">
+        <Link href="/foundation/gate" className="inline-block">
+          <span className="font-mono uppercase tracking-wider text-sm rounded-[2px] border border-[var(--ledger-ink)] bg-[var(--ledger-ink)] text-[var(--ledger-paper)] px-5 py-2.5">
+            See your options →
+          </span>
+        </Link>
+        <Link
+          href="/foundation"
+          className="text-sm text-[var(--ledger-muted)] underline underline-offset-4"
+        >
+          Back to course home
+        </Link>
+      </div>
+    </article>
+  );
+}
+
 export default async function LessonPage({
   params,
 }: {
@@ -172,5 +231,15 @@ export default async function LessonPage({
 }) {
   const payload = await loadPayload(params.moduleId, params.lessonId);
   if (!payload) notFound();
+
+  // Paid-tier gate. Service-role fetch bypassed RLS, so enforce here.
+  if (payload.module.tier === 'paid') {
+    const userId = await getAuthUserId();
+    const hasAccess = userId ? await hasAnyFoundationEntitlement(userId) : false;
+    if (!hasAccess) {
+      return <PaywallScreen moduleTitle={payload.module.title} moduleId={payload.module.id} />;
+    }
+  }
+
   return <LessonPlayer payload={payload} />;
 }

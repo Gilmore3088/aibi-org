@@ -125,14 +125,15 @@
 | 4.3 Build a skill for your role | Interactive | 15 | **×5 tracks** | skill builder | **Working Skill** |
 | 4.4 Test, refine, guardrail-check | Interactive | 12 | — | skill builder | — |
 
-- [ ] Detailed curriculum doc
-- [ ] Record + edit 1 video (4.1)
-- [ ] Build the **skill-builder** interactive (input slots / defaults / save) on the sandbox rail
-- [ ] Author 4.3 ×5 track skill builds (Reg-E summarizer, member-comms clarifier, competitor-research compiler, etc.)
-- [ ] Author **Skill Template** + unlock full Prompt Library
-- [ ] Entitlement gating verified `[Supabase][Stripe]`
-- [ ] Captions + transcript; ~8 knowledge-check items
-- [ ] QA: ≤15 min, accessibility
+- [x] Module + 4 lesson rows + 5 m4.3 track variants seeded *(supabase/seed/m4_addie.sql, Wave 3a)*
+- [ ] Record + edit 1 video (4.1) *(media production — operator work)*
+- [x] **Skill-builder** interactive *(SkillBuilder widget Wave 3a; template + role-skill modes; multi-step form; persists addie.toolbox_items.body_md = JSON matching sandbox-service/handlers/skill.ts SkillBody)*
+- [x] 4.3 ×5 track skill builds *(track_defaults block in m4-3-role-skill exercise; SkillBuilder pre-selects per-track defaults)*
+- [x] **Skill Template** + working-skill templates *(content/addie/toolbox-templates/m4/*.md)*
+- [x] Entitlement gating *(addie.lessons paid-tier RLS + explicit `hasAnyFoundationEntitlement` check at lesson page renders Paywall for paid modules without active entitlement)* `[Supabase][Stripe]`
+- [x] ~8 knowledge-check items seeded
+- [ ] Captions + transcript *(media production)*
+- [ ] QA: ≤15 min, accessibility *(post-pilot)*
 
 ## M5 · From idea to prototype — agents & building — *(Paid · 5 lessons)*
 **Detailed spec:** 🔲 · **Takeaways:** Agent Blueprint · PRD · Prototype · Problem Backlog
@@ -145,13 +146,14 @@
 | 5.4 Build a prototype | Interactive | 15 | — | builder + link-out | Prototype |
 | 5.5 Where to go next | Audio | 8 | — | — | — |
 
-- [ ] Detailed curriculum doc
-- [ ] Record + edit 2 videos + 1 audio (5.5)
-- [ ] Build problem-framing worksheet + PRD builder interactive
-- [ ] Build 5.4 prototype flow (link-out to Lovable / Replit / Claude Code)
-- [ ] Author **Agent Blueprint · PRD · Problem Backlog** templates
-- [ ] Captions + transcripts; ~10 knowledge-check items
-- [ ] QA: ≤15 min, accessibility
+- [x] Module + 5 lesson rows seeded *(supabase/seed/m5_addie.sql, Wave 3a; no branched lessons in M5 per spec)*
+- [ ] Record + edit 2 videos + 1 audio (5.5) *(media production — operator work; 5.1 + 5.5 narration scripts seeded as body_md)*
+- [x] Problem-framing worksheet + PRD builder *(ProblemFrame + PRDBuilder widgets Wave 3a; PRDBuilder enforces ≥6 of 9 sections before save)*
+- [x] 5.4 prototype flow *(PrototypeLauncher widget Wave 3a; link-out to Lovable / Replit Agents / Claude Code / v0; saves type='prototype' artifact)*
+- [x] **Agent Blueprint · PRD · Problem Backlog · Prototype** templates *(content/addie/toolbox-templates/m5/*.md, all 4 ship — agent-blueprint is bonus per the migration 00038 enum)*
+- [x] ~10 knowledge-check items seeded
+- [ ] Captions + transcripts *(media production)*
+- [ ] QA: ≤15 min, accessibility *(post-pilot)*
 
 ---
 

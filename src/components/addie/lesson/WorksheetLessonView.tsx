@@ -11,6 +11,7 @@ import { KickerLabel } from '@/components/addie/shared/KickerLabel';
 import { SaveAsArtifactButton } from './SaveAsArtifactButton';
 import { detectPII, PIIWarning } from '@/components/addie/shared/PIIWarning';
 import { WhereAIFitsWorksheet } from '@/components/addie/interactives/m2/WhereAIFitsWorksheet';
+import { ProblemFrame } from '@/components/addie/interactives/m5/ProblemFrame';
 import type { LessonPayload } from './types';
 
 interface WorksheetSlot {
@@ -39,6 +40,18 @@ export function WorksheetLessonView({ payload }: WorksheetLessonViewProps) {
       <WhereAIFitsWorksheet
         exerciseDescriptor={payload.interactiveExercise}
         track={payload.activeTrack ?? null}
+      />
+    );
+  }
+  if (
+    payload.lesson.exercise_id === 'm5-2-problem-frame' &&
+    payload.interactiveExercise
+  ) {
+    return (
+      <ProblemFrame
+        exerciseDescriptor={payload.interactiveExercise}
+        track={payload.activeTrack ?? null}
+        lessonId={payload.lesson.id}
       />
     );
   }
