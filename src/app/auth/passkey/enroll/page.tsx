@@ -196,7 +196,7 @@ export default function PasskeyEnrollPage() {
                   setTimeout(() => router.push(next), 200);
                 }}
               >
-                I've saved them — continue
+                I&apos;ve saved them — continue
               </LedgerButton>
             </div>
           ) : status === 'done' ? (
