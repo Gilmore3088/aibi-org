@@ -26,6 +26,16 @@ const LINKS: ReadonlyArray<{ href: string; label: string; match: (p: string) => 
       p === '/foundation/gate',
   },
   {
+    href: '/foundation/pricing',
+    label: 'Pricing',
+    match: (p) => p === '/foundation/pricing',
+  },
+  {
+    href: '/foundation/for-community-banks',
+    label: 'For banks',
+    match: (p) => p === '/foundation/for-community-banks',
+  },
+  {
     href: '/foundation/dashboard',
     label: 'Dashboard',
     match: (p) => p === '/foundation/dashboard',
