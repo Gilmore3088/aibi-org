@@ -86,6 +86,11 @@ export function EmailGate({
   // failed. We hide the form during this window so a logged-in user
   // doesn't see an empty gate flash before the auto-submit fires.
   const [authChecking, setAuthChecking] = useState(true);
+  // Tracks whether the current field values came from localStorage so
+  // we can show a "Not you?" affordance. Cleared the moment the user
+  // edits any field — the prefill is no longer "stale" once they start
+  // typing on top of it.
+  const [prefilledFromLocal, setPrefilledFromLocal] = useState(false);
   const institutionInputRef = useRef<HTMLInputElement | null>(null);
   const emailInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -105,8 +110,10 @@ export function EmailGate({
         firstName?: unknown;
         institutionName?: unknown;
       };
+      let anyPrefill = false;
       if (typeof parsed.email === 'string' && EMAIL_RE.test(parsed.email)) {
-        setEmail((current) => current || parsed.email as string);
+        setEmail((current) => current || (parsed.email as string));
+        anyPrefill = true;
       }
       const storedName =
         typeof parsed.fullName === 'string'
@@ -116,10 +123,13 @@ export function EmailGate({
             : null;
       if (storedName) {
         setFirstName((current) => current || storedName);
+        anyPrefill = true;
       }
       if (typeof parsed.institutionName === 'string' && parsed.institutionName) {
         setInstitutionName((current) => current || (parsed.institutionName as string));
+        anyPrefill = true;
       }
+      if (anyPrefill) setPrefilledFromLocal(true);
     } catch {
       /* malformed JSON — ignore, render empty form */
     }
@@ -287,6 +297,37 @@ export function EmailGate({
           <h3 className="font-serif text-3xl leading-tight text-[color:var(--color-ink)]">
             Where should we send your breakdown?
           </h3>
+
+          {prefilledFromLocal && (
+            <div
+              role="status"
+              className="mt-4 -mb-1 flex items-baseline justify-between gap-4 text-[12px]"
+            >
+              <span className="font-mono uppercase tracking-[0.16em] text-[color:var(--color-ink)]/70">
+                Prefilled from a prior visit
+              </span>
+              <button
+                type="button"
+                onClick={() => {
+                  setEmail('');
+                  setFirstName('');
+                  setInstitutionName('');
+                  setPrefilledFromLocal(false);
+                  if (typeof window !== 'undefined') {
+                    try {
+                      window.localStorage.removeItem('aibi-user');
+                    } catch {
+                      /* ignore */
+                    }
+                  }
+                  requestAnimationFrame(() => emailInputRef.current?.focus());
+                }}
+                className="font-mono uppercase tracking-[0.16em] text-[color:var(--color-terra)] hover:text-[color:var(--color-ink)] underline underline-offset-4"
+              >
+                Not you? Clear →
+              </button>
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} className="mt-6 space-y-5" noValidate>
             <FormField
