@@ -48,6 +48,7 @@ export async function GET(
 
 interface PatchBody {
   body_md?: unknown;
+  title?: unknown;
 }
 
 export async function PATCH(
@@ -66,11 +67,17 @@ export async function PATCH(
   if (typeof body.body_md !== 'string' || body.body_md.length === 0 || body.body_md.length > 50000) {
     return NextResponse.json({ error: 'invalid_body_md' }, { status: 400 });
   }
+  const title =
+    typeof body.title === 'string' && body.title.trim().length > 0 && body.title.length <= 200
+      ? body.title
+      : undefined;
   try {
-    const out = await appendVersion(params.id, body.body_md, {
-      user_id: r.identity.user_id,
-      lead_id: r.identity.lead_id,
-    });
+    const out = await appendVersion(
+      params.id,
+      body.body_md,
+      { user_id: r.identity.user_id, lead_id: r.identity.lead_id },
+      { title },
+    );
     if (!out) return NextResponse.json({ error: 'not_found' }, { status: 404 });
     return NextResponse.json(out);
   } catch (err) {

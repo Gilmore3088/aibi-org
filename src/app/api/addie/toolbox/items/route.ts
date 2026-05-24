@@ -11,6 +11,7 @@ import {
   listItemsFor,
   FREE_TIER_ARTIFACT_CAP,
 } from '@/lib/addie/toolbox/items';
+import { resolveBody } from '@/lib/addie/toolbox/templates';
 
 export const runtime = 'nodejs';
 
@@ -37,6 +38,7 @@ interface CreateBody {
   title?: unknown;
   body_md?: unknown;
   lesson_id?: unknown;
+  lesson_title?: unknown;
   track?: unknown;
 }
 
@@ -73,20 +75,38 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   if (typeof body.title !== 'string' || body.title.trim().length === 0 || body.title.length > 200) {
     return NextResponse.json({ error: 'invalid_title' }, { status: 400 });
   }
-  if (typeof body.body_md !== 'string' || body.body_md.length === 0 || body.body_md.length > 50000) {
+  // body_md is optional — when omitted, the server hydrates the matching
+  // artifact template so client code cannot tamper with the canonical body.
+  const clientBody = typeof body.body_md === 'string' ? body.body_md : null;
+  if (clientBody !== null && (clientBody.length === 0 || clientBody.length > 50000)) {
     return NextResponse.json({ error: 'invalid_body_md' }, { status: 400 });
   }
   const lesson_id =
-    typeof body.lesson_id === 'string' && body.lesson_id.length <= 32 ? body.lesson_id : null;
+    typeof body.lesson_id === 'string' && body.lesson_id.length <= 64 ? body.lesson_id : null;
+  const lesson_title =
+    typeof body.lesson_title === 'string' && body.lesson_title.length <= 200
+      ? body.lesson_title
+      : null;
   const track =
     typeof body.track === 'string' && VALID_TRACKS.has(body.track) ? body.track : null;
+
+  const title = body.title.trim();
+  const finalBody =
+    clientBody ??
+    (await resolveBody({
+      artifact_type: body.type,
+      title,
+      lesson_id,
+      lesson_title,
+      track,
+    }));
 
   try {
     const result = await createItem({
       identity: { user_id: identity.user_id, lead_id: identity.lead_id },
       type: body.type,
-      title: body.title.trim(),
-      body_md: body.body_md,
+      title,
+      body_md: finalBody,
       lesson_id,
       track,
     });

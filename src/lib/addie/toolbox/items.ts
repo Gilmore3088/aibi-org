@@ -17,7 +17,8 @@ export type ArtifactType =
   | 'agent_blueprint'
   | 'prd'
   | 'prototype'
-  | 'problem_backlog';
+  | 'problem_backlog'
+  | 'where_ai_fits';
 
 export interface ToolboxItem {
   readonly id: string;
@@ -154,6 +155,7 @@ export async function appendVersion(
   id: string,
   body_md: string,
   identity: IdentityKey,
+  opts?: { title?: string },
 ): Promise<{ version: number } | null> {
   const existing = await getItem(id, identity);
   if (!existing) return null;
@@ -163,8 +165,10 @@ export async function appendVersion(
     .from('toolbox_item_versions')
     .insert({ item_id: id, version: nextVersion, body_md });
   if (error) throw new Error(`toolbox version insert failed: ${error.message}`);
-  // touch parent
-  await supa.from('toolbox_items').update({ updated_at: new Date().toISOString() }).eq('id', id);
+  // touch parent (and optionally rename in the same write)
+  const update: Record<string, unknown> = { updated_at: new Date().toISOString() };
+  if (opts?.title && opts.title.trim().length > 0) update.title = opts.title.trim();
+  await supa.from('toolbox_items').update(update).eq('id', id);
   return { version: nextVersion };
 }
 
@@ -188,6 +192,7 @@ const ARTIFACT_TYPES: ReadonlySet<ArtifactType> = new Set<ArtifactType>([
   'prd',
   'prototype',
   'problem_backlog',
+  'where_ai_fits',
 ]);
 
 export function isArtifactType(v: unknown): v is ArtifactType {
