@@ -110,8 +110,65 @@ async function loadPayload(
       .eq('published', true)
       .order('ordinal', { ascending: true });
     const idx = (siblings ?? []).findIndex((s) => s.id === lessonId);
-    const prev = idx > 0 ? siblings![idx - 1] : null;
-    const next = siblings && idx >= 0 && idx < siblings.length - 1 ? siblings[idx + 1] : null;
+    const prevWithin = idx > 0 ? siblings![idx - 1] : null;
+    const nextWithin =
+      siblings && idx >= 0 && idx < siblings.length - 1 ? siblings[idx + 1] : null;
+
+    // Cross-module continuation: when we're on the last lesson of a module,
+    // look up the next module's first lesson so the player flows continuously
+    // without bouncing through /foundation/dashboard.
+    let next = nextWithin;
+    let prev = prevWithin;
+    let nextModuleId: string | null = null;
+    let prevModuleId: string | null = null;
+    if (!nextWithin) {
+      const { data: nextMod } = await svc
+        .from('modules')
+        .select('id, ordinal')
+        .eq('published', true)
+        .gt('ordinal', (m as { ordinal: number }).ordinal)
+        .order('ordinal', { ascending: true })
+        .limit(1)
+        .maybeSingle();
+      if (nextMod) {
+        const { data: firstOfNext } = await svc
+          .from('lessons')
+          .select('id, ordinal, title')
+          .eq('module_id', nextMod.id as string)
+          .eq('published', true)
+          .order('ordinal', { ascending: true })
+          .limit(1)
+          .maybeSingle();
+        if (firstOfNext) {
+          next = firstOfNext;
+          nextModuleId = nextMod.id as string;
+        }
+      }
+    }
+    if (!prevWithin) {
+      const { data: prevMod } = await svc
+        .from('modules')
+        .select('id, ordinal')
+        .eq('published', true)
+        .lt('ordinal', (m as { ordinal: number }).ordinal)
+        .order('ordinal', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      if (prevMod) {
+        const { data: lastOfPrev } = await svc
+          .from('lessons')
+          .select('id, ordinal, title')
+          .eq('module_id', prevMod.id as string)
+          .eq('published', true)
+          .order('ordinal', { ascending: false })
+          .limit(1)
+          .maybeSingle();
+        if (lastOfPrev) {
+          prev = lastOfPrev;
+          prevModuleId = prevMod.id as string;
+        }
+      }
+    }
 
     // Non-LLM interactive/worksheet widgets need preset_context_blocks bodies.
     // We fetch the full exercise row server-side via service_role and forward
@@ -155,8 +212,20 @@ async function loadPayload(
       activeTrack,
       checks: (checks ?? []) as KnowledgeCheckRow[],
       siblings: {
-        prev: prev ? { id: prev.id as string, title: prev.title as string } : null,
-        next: next ? { id: next.id as string, title: next.title as string } : null,
+        prev: prev
+          ? {
+              id: prev.id as string,
+              title: prev.title as string,
+              moduleId: prevModuleId ?? moduleId,
+            }
+          : null,
+        next: next
+          ? {
+              id: next.id as string,
+              title: next.title as string,
+              moduleId: nextModuleId ?? moduleId,
+            }
+          : null,
       },
       interactiveExercise,
       gateNext,

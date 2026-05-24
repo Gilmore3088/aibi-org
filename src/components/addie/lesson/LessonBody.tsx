@@ -68,6 +68,14 @@ function stripProductionBlocks(src: string): string {
 
 type CalloutKind = 'tip' | 'warn' | 'save' | 'field';
 
+interface Scene {
+  intro?: string;
+  numeral?: string;
+  lead?: string;
+  body: string;
+  conclusion?: boolean;
+}
+
 type Block =
   | { kind: 'h2'; text: string }
   | { kind: 'h3'; text: string }
@@ -76,6 +84,7 @@ type Block =
   | { kind: 'ol'; items: string[] }
   | { kind: 'quote'; text: string }
   | { kind: 'hero_quote'; paras: string[] }
+  | { kind: 'scene_set'; scenes: Scene[] }
   | { kind: 'callout'; tone: CalloutKind; lines: string[] };
 
 const CALLOUT_RE = /^>\s*\[(tip|warn|save|field)\]\s*(.*)$/i;
@@ -150,11 +159,16 @@ function splitBlocks(src: string): Block[] {
         out.push({ kind: 'callout', tone, lines: collapseQuoteParas(cleaned) });
         continue;
       }
-      // Decide hero vs short pullquote: hero if it spans 2+ paragraphs
-      // OR a single paragraph longer than ~280 chars.
       const paras = collapseQuoteParas(buf);
       const total = paras.join(' ').length;
-      if (paras.length >= 2 || total > 280) {
+      // Scene detection: if the quote contains "One:" / "Two:" / "Three:"
+      // bold leads, break it into numbered scene cards instead of one
+      // continuous hero quote. This is the pattern most SCRIPT sections
+      // follow (intro setup → 3 concepts → conclusion).
+      const scenes = detectScenes(paras);
+      if (scenes) {
+        out.push({ kind: 'scene_set', scenes });
+      } else if (paras.length >= 2 || total > 280) {
         out.push({ kind: 'hero_quote', paras });
       } else {
         out.push({ kind: 'quote', text: paras.join(' ') });
@@ -200,6 +214,61 @@ function splitBlocks(src: string): Block[] {
     sawFirstParagraph = true;
   }
   return out;
+}
+
+// Scene detection — the narration shape we see in M1.1, M2 etc is:
+//   intro paragraph(s)
+//   "**One: <lead>.** <body>"
+//   "**Two: <lead>.** <body>"
+//   "**Three: <lead>.** <body>"
+//   closing paragraph(s)
+// If we see 2+ such numbered leads, render as a scene set.
+const NUM_LEAD = /^\*\*(One|Two|Three|Four|Five|Six):\s*([^*]+?)\*\*\s*(.*)$/i;
+const NUM_TO_ORDINAL: Record<string, string> = {
+  one: '01', two: '02', three: '03', four: '04', five: '05', six: '06',
+};
+
+function detectScenes(paras: ReadonlyArray<string>): Scene[] | null {
+  const numberedIdx: number[] = [];
+  paras.forEach((p, i) => {
+    if (NUM_LEAD.test(p)) numberedIdx.push(i);
+  });
+  if (numberedIdx.length < 2) return null;
+
+  const scenes: Scene[] = [];
+  const firstNumIdx = numberedIdx[0];
+  if (firstNumIdx > 0) {
+    scenes.push({ intro: paras.slice(0, firstNumIdx).join('\n\n'), body: '' });
+  }
+  for (let k = 0; k < numberedIdx.length; k++) {
+    const start = numberedIdx[k];
+    const end = k + 1 < numberedIdx.length ? numberedIdx[k + 1] : paras.length;
+    const m = NUM_LEAD.exec(paras[start])!;
+    const num = m[1].toLowerCase();
+    const lead = m[2].trim();
+    const tail = m[3].trim();
+    const restParas = paras.slice(start + 1, end);
+    const body = [tail, ...restParas].filter(Boolean).join('\n\n');
+    scenes.push({
+      numeral: NUM_TO_ORDINAL[num] ?? '',
+      lead,
+      body,
+    });
+  }
+  // Trailing conclusion paragraph(s) after the last numbered block
+  // are already included in the last scene's body via the slice above —
+  // but if the closing paragraph clearly recaps ("Hold those three"),
+  // promote it to a conclusion scene.
+  const lastScene = scenes[scenes.length - 1];
+  const recapMatch = lastScene.body.match(/\n\n(Hold those|Together|In short|Taken together)[^]*$/i);
+  if (recapMatch) {
+    lastScene.body = lastScene.body.slice(0, recapMatch.index).trim();
+    scenes.push({
+      conclusion: true,
+      body: recapMatch[0].trim(),
+    } as Scene);
+  }
+  return scenes;
 }
 
 function collapseQuoteParas(buf: string[]): string[] {
@@ -319,6 +388,13 @@ function renderBlock(b: Block, key: number): ReactNode {
           </div>
         </section>
       );
+    case 'scene_set': {
+      return (
+        <div key={key} className="my-10 space-y-5">
+          {b.scenes.map((s, j) => renderScene(s, j, b.scenes.length))}
+        </div>
+      );
+    }
     case 'callout': {
       const m = CALLOUT_META[b.tone];
       return (
@@ -338,6 +414,72 @@ function renderBlock(b: Block, key: number): ReactNode {
       );
     }
   }
+}
+
+// --- Scene rendering -------------------------------------------------
+
+function renderScene(s: Scene, key: number, _total: number): ReactNode {
+  if (s.intro) {
+    return (
+      <section
+        key={key}
+        className="rounded-[8px] border border-[var(--ledger-rule)] bg-[var(--ledger-paper)] px-6 sm:px-7 py-6 sm:py-7 relative overflow-hidden"
+      >
+        <span
+          aria-hidden
+          className="absolute -top-2 -left-2 font-serif text-[3rem] leading-none text-[var(--ledger-accent)] opacity-30 select-none"
+        >
+          &ldquo;
+        </span>
+        <p className="font-serif text-[1.0625rem] leading-[1.75] text-[var(--ledger-ink-2)] pl-6 first-letter:font-serif first-letter:text-[3rem] first-letter:leading-[0.85] first-letter:font-semibold first-letter:float-left first-letter:pr-3 first-letter:pt-1 first-letter:text-[var(--ledger-ink)]">
+          {renderInline(s.intro.replace(/\n\n/g, ' '))}
+        </p>
+      </section>
+    );
+  }
+  if (s.conclusion) {
+    return (
+      <section
+        key={key}
+        className="rounded-[8px] bg-[var(--ledger-ink)] text-[var(--ledger-paper)] px-6 sm:px-7 py-6 sm:py-7 relative"
+      >
+        <div className="font-mono uppercase tracking-[0.18em] text-[0.65rem] text-[var(--ledger-accent)] mb-3">
+          Mental model
+        </div>
+        <p className="font-serif text-[1.0625rem] leading-[1.7] text-[var(--ledger-paper)]">
+          {renderInline(s.body.replace(/\n\n/g, ' '))}
+        </p>
+      </section>
+    );
+  }
+  // Numbered concept scene
+  return (
+    <section
+      key={key}
+      className="grid grid-cols-[auto_1fr] gap-4 sm:gap-6 rounded-[8px] border border-[var(--ledger-rule)] bg-[var(--ledger-paper)] px-5 sm:px-7 py-6 sm:py-7 shadow-[0_1px_0_color-mix(in_srgb,var(--ledger-ink)_5%,transparent),0_4px_12px_-6px_color-mix(in_srgb,var(--ledger-ink)_10%,transparent)] hover:shadow-[0_2px_0_color-mix(in_srgb,var(--ledger-ink)_8%,transparent),0_8px_22px_-8px_color-mix(in_srgb,var(--ledger-ink)_16%,transparent)] transition-shadow duration-[200ms]"
+    >
+      <div className="flex flex-col items-center">
+        <div className="font-serif text-[2.75rem] leading-none text-[var(--ledger-accent)] tabular-nums">
+          {s.numeral}
+        </div>
+        <div className="mt-2 w-px flex-1 bg-[var(--ledger-rule-strong)] min-h-[40px]" aria-hidden />
+      </div>
+      <div className="min-w-0">
+        {s.lead ? (
+          <h4 className="font-serif text-[1.25rem] leading-tight text-[var(--ledger-ink)] mb-3">
+            {renderInline(s.lead)}
+          </h4>
+        ) : null}
+        {s.body ? (
+          <div className="font-serif text-[1rem] leading-[1.7] text-[var(--ledger-ink-2)] space-y-3">
+            {s.body.split('\n\n').map((para, j) => (
+              <p key={j}>{renderInline(para.trim())}</p>
+            ))}
+          </div>
+        ) : null}
+      </div>
+    </section>
+  );
 }
 
 // --- Inline ---------------------------------------------------------

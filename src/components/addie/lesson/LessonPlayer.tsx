@@ -18,6 +18,7 @@ import { NextLessonCTA } from './NextLessonCTA';
 import { EmbeddedExercise } from './EmbeddedExercise';
 import { SaveTakeawayCTA } from './SaveTakeawayCTA';
 import { TrackPickerInline } from './TrackPickerInline';
+import { LessonStickyNav } from './LessonStickyNav';
 import type { LessonPayload } from './types';
 
 interface LessonPlayerProps {
@@ -34,8 +35,12 @@ export function LessonPlayer({
   const preferAb = preferAbProp ?? payload.lesson.id === 'm3.2';
   const { lesson, module, checks, siblings } = payload;
   const nextHref = siblings?.next
-    ? `/foundation/${module.id}/${siblings.next.id}`
+    ? `/foundation/${siblings.next.moduleId}/${siblings.next.id}`
     : null;
+  const prevHref = siblings?.prev
+    ? `/foundation/${siblings.prev.moduleId}/${siblings.prev.id}`
+    : null;
+  const crossesModule = siblings?.next?.moduleId !== module.id;
 
   // Embed the matching interactive when modality is something else and
   // the lesson has an exercise_id. The interactive + worksheet modalities
@@ -69,7 +74,15 @@ export function LessonPlayer({
       <NextLessonCTA
         nextHref={nextHref}
         nextLabel={siblings?.next?.title}
+        nextCrossesModule={crossesModule}
         endOfCourse={!siblings?.next}
+        gateNext={payload.gateNext ?? false}
+      />
+      <LessonStickyNav
+        prevHref={prevHref}
+        prevLabel={siblings?.prev?.title ?? null}
+        nextHref={nextHref}
+        nextLabel={siblings?.next?.title ?? null}
         gateNext={payload.gateNext ?? false}
       />
     </article>

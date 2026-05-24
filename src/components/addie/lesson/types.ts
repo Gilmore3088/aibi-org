@@ -106,10 +106,10 @@ export interface LessonPayload {
   /** Learner's currently selected track (for the player header chip). */
   readonly activeTrack?: Track | null;
   readonly checks: ReadonlyArray<KnowledgeCheckRow>;
-  /** Sibling lesson ids for next/prev nav. */
+  /** Sibling lesson ids for next/prev nav — may point into the next/prev module. */
   readonly siblings?: {
-    readonly prev: { id: string; title: string } | null;
-    readonly next: { id: string; title: string } | null;
+    readonly prev: { id: string; title: string; moduleId: string } | null;
+    readonly next: { id: string; title: string; moduleId: string } | null;
   };
   /** Non-LLM interactive descriptor for modality='interactive' or 'worksheet'. */
   readonly interactiveExercise?: InteractiveExercisePayload | null;
