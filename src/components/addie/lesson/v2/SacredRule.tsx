@@ -9,7 +9,7 @@
 //   - Black ink background (--ledger-ink), covers the entire viewport
 //   - Centered single statement at display scale
 //   - "BANK-SAFE AI BEGINS HERE" mono-caps kicker above
-//   - No nav chrome until tap-anywhere to advance
+//   - No nav chrome; CTA is the only commit surface
 //   - Subtle gold rule line beneath the statement
 //   - Enter, Space, or "I'm ready" button advances (commit gestures only)
 //
