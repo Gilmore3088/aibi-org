@@ -9,6 +9,7 @@ import { getAddieServiceClient } from '@/lib/addie/supabase/service';
 import Link from 'next/link';
 import { LessonPlayer } from '@/components/addie/lesson/LessonPlayer';
 import { CourseSidebar } from '@/components/addie/shell/CourseSidebar';
+import { PaywallPreview } from '@/components/addie/lesson/PaywallPreview';
 import { hasAnyFoundationEntitlement } from '@/lib/addie/entitlements/check';
 import type {
   LessonPayload,
@@ -295,40 +296,21 @@ async function getAuthUserId(): Promise<string | null> {
   }
 }
 
-function PaywallScreen({
-  moduleTitle,
-  moduleId,
-}: {
-  readonly moduleTitle: string;
-  readonly moduleId: string;
-}) {
-  return (
-    <article className="mx-auto max-w-2xl px-4 sm:px-6 py-16 text-center">
-      <p className="font-mono uppercase tracking-wider text-xs text-[var(--ledger-muted)]">
-        Paid module · {moduleId}
-      </p>
-      <h1 className="mt-3 font-serif text-3xl text-[var(--ledger-ink)]">
-        {moduleTitle}
-      </h1>
-      <p className="mt-4 text-[var(--ledger-ink-2)]">
-        This module is part of the paid Foundation course. You can buy individual
-        access for $295, or your team admin can invite you to a team seat.
-      </p>
-      <div className="mt-8 flex flex-col items-center gap-3">
-        <Link href="/foundation/gate" className="inline-block">
-          <span className="font-mono uppercase tracking-wider text-sm rounded-[2px] border border-[var(--ledger-ink)] bg-[var(--ledger-ink)] text-[var(--ledger-paper)] px-5 py-2.5">
-            See your options →
-          </span>
-        </Link>
-        <Link
-          href="/foundation"
-          className="text-sm text-[var(--ledger-muted)] underline underline-offset-4"
-        >
-          Back to course home
-        </Link>
-      </div>
-    </article>
-  );
+async function loadLockedModuleLessons(
+  moduleId: string,
+): Promise<Array<{ ordinal: number; title: string; duration_min: number }>> {
+  try {
+    const svc = getAddieServiceClient();
+    const { data } = await svc
+      .from('lessons')
+      .select('ordinal, title, duration_min')
+      .eq('module_id', moduleId)
+      .eq('published', true)
+      .order('ordinal', { ascending: true });
+    return ((data as Array<{ ordinal: number; title: string; duration_min: number }> | null) ?? []);
+  } catch {
+    return [];
+  }
 }
 
 export default async function LessonPage({
@@ -344,7 +326,16 @@ export default async function LessonPage({
     const userId = await getAuthUserId();
     const hasAccess = userId ? await hasAnyFoundationEntitlement(userId) : false;
     if (!hasAccess) {
-      return <PaywallScreen moduleTitle={payload.module.title} moduleId={payload.module.id} />;
+      const lockedLessons = await loadLockedModuleLessons(payload.module.id);
+      return (
+        <PaywallPreview
+          moduleId={payload.module.id}
+          moduleOrdinal={payload.module.ordinal}
+          moduleTitle={payload.module.title}
+          moduleSummary={payload.module.summary}
+          lessons={lockedLessons}
+        />
+      );
     }
   }
 
