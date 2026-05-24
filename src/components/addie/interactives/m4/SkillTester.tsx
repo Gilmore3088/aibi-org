@@ -301,7 +301,7 @@ export function SkillTester({
                 className={`block w-full text-left p-3 rounded-[3px] border transition-colors duration-[120ms] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--ledger-ink)] ${
                   selected
                     ? 'border-[var(--ledger-accent)] bg-[var(--ledger-paper)]'
-                    : 'border-[var(--ledger-rule)] bg-[var(--ledger-paper)] hover:border-[var(--ledger-rule-strong)]'
+                    : 'border-[var(--ledger-rule-strong)] bg-[var(--ledger-paper)] hover:border-[var(--ledger-ink)]'
                 }`}
               >
                 <KickerLabel tone={selected ? 'accent' : 'muted'}>{skill.type}</KickerLabel>

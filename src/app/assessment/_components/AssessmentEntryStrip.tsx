@@ -26,6 +26,7 @@ export function AssessmentEntryStrip() {
   const [role, setRole] = useState<Role | null>(null);
   const [hydrated, setHydrated] = useState(false);
   const [dismissed, setDismissed] = useState(false);
+  const [glossOpen, setGlossOpen] = useState(false);
 
   useEffect(() => {
     const saved = loadAssessment<string>(ROLE_KEY);
@@ -109,15 +110,33 @@ export function AssessmentEntryStrip() {
 
         {/* A23 — glossary strip */}
         <div className="pt-3 border-t border-[color:var(--ledger-rule)]">
-          <p className="font-mono uppercase tracking-[0.18em] text-[9.5px] text-[color:var(--ledger-muted)] mb-1.5 font-semibold">
-            Acronyms you may see — hover any term for the plain-English version
-          </p>
+          <div className="flex items-baseline justify-between gap-3 mb-1.5">
+            <p className="font-mono uppercase tracking-[0.18em] text-[9.5px] text-[color:var(--ledger-muted)] font-semibold">
+              Acronyms you may see — hover or focus any term
+            </p>
+            <button
+              type="button"
+              onClick={() => setGlossOpen((v) => !v)}
+              aria-expanded={glossOpen}
+              aria-controls="entry-glossary-expanded"
+              className="font-mono uppercase tracking-[0.16em] text-[9.5px] text-[color:var(--ledger-accent)] hover:text-[color:var(--ledger-ink)]"
+            >
+              {glossOpen ? 'Hide list' : 'Show list'}
+            </button>
+          </div>
           <p className="text-[12.5px] text-[color:var(--ledger-ink-2)] leading-relaxed">
             {GLOSSARY.map((g, i) => (
               <span key={g.term}>
+                {/* A23 rework (Wave D critique): <abbr> alone is not
+                    focusable, so keyboard / touch users could not reach
+                    the gloss. tabIndex={0} puts it in the tab order;
+                    aria-label provides the same gloss to screen readers
+                    on focus (title alone is unreliable in SR contexts). */}
                 <abbr
                   title={g.gloss}
-                  className="font-mono uppercase tracking-[0.04em] no-underline border-b border-dotted border-[color:var(--ledger-accent)] cursor-help text-[color:var(--ledger-ink)]"
+                  aria-label={`${g.term} — ${g.gloss}`}
+                  tabIndex={0}
+                  className="font-mono uppercase tracking-[0.04em] no-underline border-b border-dotted border-[color:var(--ledger-accent)] cursor-help text-[color:var(--ledger-ink)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--ledger-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--ledger-paper)] rounded-[1px]"
                 >
                   {g.term}
                 </abbr>
@@ -125,6 +144,25 @@ export function AssessmentEntryStrip() {
               </span>
             ))}
           </p>
+          {/* Touch-user / no-hover fallback — explicit definitions list
+              keyed by id, reachable via the Show list expander above. */}
+          {glossOpen ? (
+            <dl
+              id="entry-glossary-expanded"
+              className="mt-3 grid gap-1.5 text-[12.5px]"
+            >
+              {GLOSSARY.map((g) => (
+                <div key={g.term} className="grid grid-cols-[110px_1fr] gap-2 items-baseline">
+                  <dt className="font-mono uppercase tracking-[0.08em] text-[color:var(--ledger-ink)]">
+                    {g.term}
+                  </dt>
+                  <dd className="text-[color:var(--ledger-ink-2)] leading-snug m-0">
+                    {g.gloss}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          ) : null}
         </div>
       </div>
     </aside>

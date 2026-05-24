@@ -37,6 +37,35 @@ export function LessonTutor({ lessonId }: LessonTutorProps) {
   const [pending, setPending] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
   const transcriptRef = useRef<HTMLDivElement | null>(null);
+  // A25 rework (Wave D critique 2026-05-24): the panel is full-screen
+  // on mobile (fixed inset-0) and modal in effect — assistive tech
+  // should treat it as aria-modal=true. On xl+ it becomes a side rail
+  // with the page still readable; aria-modal=false is correct there.
+  // Track viewport via matchMedia so the attribute reflects reality.
+  const [isModal, setIsModal] = useState(false);
+  // Refs for initial focus on open + return focus on close (the audit
+  // explicitly listed both as missing).
+  const closeButtonRef = useRef<HTMLButtonElement | null>(null);
+  const openTriggerRef = useRef<HTMLButtonElement | null>(null);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const mq = window.matchMedia('(max-width: 1279px)');
+    const apply = () => setIsModal(mq.matches);
+    apply();
+    mq.addEventListener('change', apply);
+    return () => mq.removeEventListener('change', apply);
+  }, []);
+
+  // Initial focus on open → close button (predictable starting point).
+  // Return focus to the open trigger on close.
+  useEffect(() => {
+    if (open) {
+      requestAnimationFrame(() => closeButtonRef.current?.focus());
+    } else {
+      openTriggerRef.current?.focus();
+    }
+  }, [open]);
 
   // Auto-scroll to the latest turn as it streams in.
   useEffect(() => {
@@ -199,6 +228,7 @@ export function LessonTutor({ lessonId }: LessonTutorProps) {
   if (!open) {
     return (
       <button
+        ref={openTriggerRef}
         type="button"
         onClick={() => setOpen(true)}
         className="fixed top-24 right-4 z-30 inline-flex items-center gap-2 px-3 py-1.5 rounded-[2px] border border-[var(--ledger-rule-strong)] bg-[var(--ledger-paper)] text-[var(--ledger-ink)] hover:border-[var(--ledger-ink)] transition-colors duration-[120ms]"
@@ -224,7 +254,7 @@ export function LessonTutor({ lessonId }: LessonTutorProps) {
   return (
     <div
       role="dialog"
-      aria-modal="false"
+      aria-modal={isModal}
       aria-labelledby="addie-tutor-title"
       className="fixed inset-0 xl:inset-auto xl:top-[88px] xl:right-4 xl:w-[26rem] xl:h-[calc(100vh-104px)] z-50 flex flex-col bg-[var(--ledger-paper)] border border-[var(--ledger-rule-strong)] xl:rounded-[3px] shadow-[var(--ledger-shadow)]"
     >
@@ -252,6 +282,7 @@ export function LessonTutor({ lessonId }: LessonTutorProps) {
             </button>
           ) : null}
           <button
+            ref={closeButtonRef}
             type="button"
             onClick={() => setOpen(false)}
             className="font-mono text-[0.65rem] uppercase tracking-[0.16em] text-[var(--ledger-muted)] hover:text-[var(--ledger-ink)]"

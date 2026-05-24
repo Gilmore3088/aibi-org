@@ -207,9 +207,12 @@ export function OffLimitsSorter({
                 'rounded-[2px] border px-4 py-3 ' +
                 'font-mono text-xs uppercase tracking-[0.18em] ' +
                 'transition-colors duration-[120ms] ' +
-                'border-[var(--ledger-rule)] bg-[var(--ledger-paper)] ' +
+                // A12 rework (Wave D critique 2026-05-24): button resting
+                // border was --ledger-rule (~1.4:1) — fails 1.4.11. Swap
+                // resting + hover to --ledger-rule-strong / --ledger-ink.
+                'border-[var(--ledger-rule-strong)] bg-[var(--ledger-paper)] ' +
                 'text-[var(--ledger-ink)] ' +
-                'hover:border-[var(--ledger-rule-strong)] ' +
+                'hover:border-[var(--ledger-ink)] ' +
                 'focus:outline-none focus:ring-2 focus:ring-[var(--ledger-accent)] focus:ring-offset-2 ' +
                 'disabled:cursor-not-allowed disabled:opacity-70'
               }

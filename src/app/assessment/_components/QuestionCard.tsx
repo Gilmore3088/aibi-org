@@ -35,6 +35,28 @@ function fisherYatesShuffle<T>(array: T[]): T[] {
   return result;
 }
 
+// Audit A19 rework (Wave D critique 2026-05-24): the first pass used
+// useMemo([question.id]) which re-shuffled when the learner navigated
+// back to a prior question, because React unmounts/remounts the card
+// per-question. The critique was right — re-shuffle on revisit reads
+// as a UX bug. Cache the per-question order at module scope (one
+// cache per page session) so back/forward stays stable. Keyed by
+// `${dimension}:${id}` to keep the cache distinct across v1 and v2
+// question types.
+const OPTION_ORDER_CACHE = new Map<string, number[]>();
+
+function stableShuffledIndices(
+  cacheKey: string,
+  optionCount: number,
+): number[] {
+  const cached = OPTION_ORDER_CACHE.get(cacheKey);
+  if (cached && cached.length === optionCount) return cached;
+  const indices = Array.from({ length: optionCount }, (_, i) => i);
+  const shuffled = fisherYatesShuffle(indices);
+  OPTION_ORDER_CACHE.set(cacheKey, shuffled);
+  return shuffled;
+}
+
 interface QuestionCardProps {
   readonly question: AnyAssessmentQuestion;
   readonly questionNumber: number;
@@ -61,16 +83,19 @@ export function QuestionCard({
     promptRef.current?.focus();
   }, [question.id]);
 
-  // Audit A19 (2026-05-24): break the "lowest option is always worst"
-  // position signal that the first 48-item authoring locked in. The
-  // shuffle is computed once per question.id, so navigating back and
-  // forth across the questionnaire does NOT re-shuffle (re-shuffle on
-  // every render would make the UI feel broken). Click handlers still
-  // send option.points so the scoring path is untouched.
-  const displayedOptions = useMemo(
-    () => fisherYatesShuffle([...question.options]),
-    [question.id],
-  );
+  // Audit A19 (2026-05-24, rework after Wave D critique): break the
+  // "lowest option is always worst" position signal. The shuffle is
+  // resolved through a module-scope cache keyed on question.id, so
+  // navigating back to a prior question RESTORES the prior order
+  // rather than re-shuffling it (the first pass naïvely used
+  // useMemo([question.id]) which re-fires on remount). Click
+  // handlers still send option.points so the scoring path is
+  // untouched.
+  const cacheKey = `${question.dimension}:${question.id}`;
+  const displayedOptions = useMemo(() => {
+    const order = stableShuffledIndices(cacheKey, question.options.length);
+    return order.map((i) => question.options[i]);
+  }, [cacheKey, question.options]);
 
   function handleOptionKeyDown(event: React.KeyboardEvent, idx: number) {
     const last = displayedOptions.length - 1;

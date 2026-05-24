@@ -39,7 +39,9 @@ export function ModelPicker({ value, onChange, compact = false }: Props) {
         gap: 4,
         padding: 3,
         background: 'var(--ledger-paper)',
-        border: '1px solid var(--ledger-rule)',
+        // A12 rework (Wave D critique 2026-05-24): interactive picker
+        // border was --ledger-rule (~1.4:1) — fails 1.4.11.
+        border: '1px solid var(--ledger-rule-strong)',
         borderRadius: 3,
       }}
     >

@@ -38,6 +38,12 @@ interface ResultsViewV2Props {
   readonly firstName?: string | null;
   readonly institutionName?: string | null;
   readonly profileId: string | null;
+  // Audit A27 (rework — Wave D critique 2026-05-24): role picked on the
+  // entry strip threads through so the report can frame results in the
+  // language of the learner's role. Optional; nullable means "no pick"
+  // and the report falls back to the generic banker framing.
+  readonly role?: import('@content/assessments/v2/role').Role | null;
+  readonly roleLabel?: string | null;
 }
 
 interface RankedDimension {
@@ -84,6 +90,7 @@ export function ResultsViewV2({
   firstName,
   institutionName,
   profileId,
+  roleLabel,
 }: ResultsViewV2Props) {
   const subjectName = institutionName?.trim() || 'Your institution';
   const grouped = groupDimensions(dimensionBreakdown);
@@ -113,6 +120,16 @@ export function ResultsViewV2({
             ? `${firstName.trim()}, here is your assessment in brief.`
             : 'Your assessment, in brief.'}
         </h1>
+        {/* A27 rework (Wave D critique 2026-05-24): role pick from the
+            entry strip is named here so the report reads framed for the
+            learner's vantage point. Renders only when the strip
+            captured a role; absence reads as the generic banker frame
+            with no extra noise. */}
+        {roleLabel ? (
+          <p className="mt-3 font-mono text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-terra)]">
+            Framed for · {roleLabel}
+          </p>
+        ) : null}
         <p
           className="mt-5 font-mono text-[12px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/65"
           data-print-hide="true"

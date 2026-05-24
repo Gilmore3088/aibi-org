@@ -96,7 +96,7 @@ export async function CourseSidebar({ activeModuleId, activeLessonId }: CourseSi
           return (
             <li key={m.id}>
               <details open={isActive} className="group">
-                <summary className="cursor-pointer list-none flex items-center justify-between gap-2 px-3 py-2 rounded-[3px] border border-[var(--ledger-rule)] bg-[var(--ledger-paper)] hover:border-[var(--ledger-ink)] transition-colors duration-[120ms]">
+                <summary className="cursor-pointer list-none flex items-center justify-between gap-2 px-3 py-2 rounded-[3px] border border-[var(--ledger-rule-strong)] bg-[var(--ledger-paper)] hover:border-[var(--ledger-ink)] transition-colors duration-[120ms]">
                   <div className="flex items-baseline gap-2 min-w-0">
                     <span className="font-mono uppercase tracking-[0.16em] text-[0.65rem] text-[var(--ledger-muted)] shrink-0">
                       M{m.ordinal}

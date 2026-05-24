@@ -7,6 +7,8 @@ import { QuestionCard } from './_components/QuestionCard';
 import { ProgressBar } from './_components/ProgressBar';
 import { EmailGate } from './_components/EmailGate';
 import { AssessmentEntryStrip } from './_components/AssessmentEntryStrip';
+import { loadAssessment } from './_lib/assessment-storage';
+import { ROLE_META, parseRole, type Role } from '@content/assessments/v2/role';
 
 // ResultsViewV2 is a ~25 KB source component (drags in PdfDownloadButton +
 // SignupModal + result-rendering helpers). It only renders after the user
@@ -26,7 +28,19 @@ export default function AssessmentPage() {
   const [capturedProfileId, setCapturedProfileId] = useState<string | null>(null);
   const [usedFreeEmail, setUsedFreeEmail] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [pickedRole, setPickedRole] = useState<Role | null>(null);
   const scoreHeadingRef = useRef<HTMLHeadingElement | null>(null);
+
+  // Audit A27 rework (Wave D critique 2026-05-24): read the role the
+  // learner picked on the entry strip so it can thread into the report
+  // copy (ResultsViewV2 renders "Framed for · <role>" when present).
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const saved = loadAssessment<string>('aibi-assessment-role');
+    if (saved && saved !== 'dismissed') {
+      setPickedRole(parseRole(saved));
+    }
+  }, []);
 
   useEffect(() => {
     setMounted(true);
@@ -191,6 +205,8 @@ export default function AssessmentPage() {
               firstName={capturedFirstName}
               institutionName={capturedInstitution}
               profileId={capturedProfileId}
+              role={pickedRole}
+              roleLabel={pickedRole ? ROLE_META[pickedRole].label : null}
             />
           </>
         )}
