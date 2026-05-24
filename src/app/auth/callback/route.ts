@@ -167,6 +167,16 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         console.warn('[auth/callback] back-fill failed:', err);
       }
     }
+    // After email-confirmation signup, push the user into passkey
+    // enrollment. Returning users (magiclink type used for recovery, or
+    // a re-confirmation) get the same treatment — if they don't have a
+    // passkey yet, this is where we ask for one. The enrollment page
+    // honours ?next= so they end up where they intended after enrol.
+    // Decision 2026-05-23 — see docs/2fa-migration-plan-2026-05-23.md.
+    if (type === 'signup' || type === 'email' || type === 'magiclink') {
+      const enrollUrl = `${origin}/auth/passkey/enroll?next=${encodeURIComponent(safeNext)}`;
+      return buildResponse(enrollUrl);
+    }
     return buildResponse(`${origin}${safeNext}`);
   }
 
