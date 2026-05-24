@@ -126,18 +126,30 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
     if (!isBypassed) {
       const rewriteUrl = request.nextUrl.clone();
       rewriteUrl.pathname = COMING_SOON_PATH;
-      const rewriteResponse = NextResponse.rewrite(rewriteUrl);
+      const requestHeaders = new Headers(request.headers);
+      requestHeaders.set('x-pathname', COMING_SOON_PATH);
+      const rewriteResponse = NextResponse.rewrite(rewriteUrl, {
+        request: { headers: requestHeaders },
+      });
       rewriteResponse.headers.set('x-pathname', COMING_SOON_PATH);
       return rewriteResponse;
     }
   }
 
+  // Set x-pathname on the forwarded REQUEST headers so RSC layouts can
+  // read it via `next/headers`. Setting it only on the response header
+  // (as we did before 2026-05-24) did NOT reach Server Components, so
+  // CHROMELESS_PATHS in app/layout.tsx never matched and the global
+  // SiteNav leaked onto /foundation/* and /admin/*.
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set('x-pathname', request.nextUrl.pathname);
+
   // Start with a mutable response so we can write cookies onto it.
   let response = NextResponse.next({
-    request: { headers: request.headers },
+    request: { headers: requestHeaders },
   });
 
-  // Always forward the pathname header regardless of Supabase config.
+  // Mirror the header on the response too for any client-side reader.
   response.headers.set('x-pathname', request.nextUrl.pathname);
 
   // If Supabase is not configured (local dev without .env.local), skip session refresh.
@@ -156,8 +168,12 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
         // Write each cookie onto the request (so downstream server code sees it)
         // and onto the response (so the browser receives it).
         cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
+        // Reuse the same x-pathname-augmented headers so RSC still sees the
+        // real pathname after Supabase rewrites the response.
+        const nextHeaders = new Headers(request.headers);
+        nextHeaders.set('x-pathname', request.nextUrl.pathname);
         response = NextResponse.next({
-          request: { headers: request.headers },
+          request: { headers: nextHeaders },
         });
         response.headers.set('x-pathname', request.nextUrl.pathname);
         cookiesToSet.forEach(({ name, value, options }) =>

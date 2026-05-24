@@ -48,8 +48,17 @@ export function PayOptionCard({ kind }: PayOptionCardProps) {
         body: JSON.stringify(kind === 'team' ? { seats: 10 } : {}),
       });
       if (!res.ok) {
-        const body = (await res.json().catch(() => ({}))) as { error?: string; message?: string };
-        setError(body.message ?? body.error ?? `HTTP ${res.status}`);
+        const body = (await res.json().catch(() => ({}))) as {
+          error?: string;
+          message?: string;
+          detail?: string;
+        };
+        // Surface the most specific message available. `detail` carries the
+        // underlying reason (e.g. "STRIPE_SECRET_KEY is not set") so the
+        // operator/learner sees an actionable cause instead of "HTTP 500".
+        setError(
+          body.detail ?? body.message ?? body.error ?? `Checkout failed (HTTP ${res.status}).`,
+        );
         return;
       }
       const data = (await res.json()) as { url?: string };

@@ -35,6 +35,12 @@ const CHROMELESS_PATHS: readonly string[] = [
   // /admin/* is the operator analytics surface — renders its own
   // minimal admin chrome and must not surface marketing nav.
   '/admin',
+  // /foundation/* and /account/* live in the (addie) route group whose
+  // layout renders its own AddieNav + AddieFooter. Without this the
+  // marketing SiteNav stacks on top of AddieNav (two navs visible on
+  // /foundation/gate, dashboard, lesson pages, etc.).
+  '/foundation',
+  '/account',
 ];
 
 // 2026-05-17: Cormorant Garamond, DM Sans, and DM Mono removed — they
