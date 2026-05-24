@@ -63,49 +63,29 @@ VALUES (
   NULL,
   NULL,
   $LESSON$
-## Lesson 4.1 — What a skill is
+A skill is one of your good prompts, saved with the choices already made, ready to run on new material on Monday morning without retyping anything. That is the whole concept. Everything else in this module is mechanics — and the mechanics are what take you from a clever one-off prompt to a personal library your team can rely on.
 
-A skill is one of your good prompts, saved with the choices already made,
-ready to run on new material on Monday morning without retyping anything.
+## SCRIPT (verbatim)
 
-That is the whole concept. Everything else in this module is the
-mechanics.
+> "Three things to understand about skills before you build one. They make every other decision in this module obvious.
+>
+> **One: saved beats remembered, every single time.** You wrote a strong prompt in Module 3 — role, task, context, format, the constraint that stopped the model inventing citations. Two weeks from now, when a new SR letter drops or a similar member complaint hits the queue, you will not retype that prompt from scratch. You will either reach for the saved version, or you will write a worse one because you are in a hurry. Saving the prompt is the move. Locking the choices that made it work is the move underneath the move.
+>
+> **Two: a skill is two parts — locked choices, and input slots.** Locked choices are the decisions that make your prompt work for this shape of task — the role the model plays, the audience it writes for, the length, the constraint about citations, the closing instruction to flag what was missing. These do not change between runs; you set them once. Input slots are the bits that do change every time — the rule excerpt, the complaint summary, the vendor category. You name each slot, you give it a one-line help label, and the skill prompts you for it the next time you run it. That is the whole anatomy.
+>
+> **Three: a skill is not an agent.** It does not run on its own. It does not chain into other skills. It does not browse the web or read your inbox. It is one named, parameterised prompt with the choices locked and the slots labelled. That bounded scope is the feature, not the limitation — it is what makes the skill safe to hand to a colleague, safe to run on a regular cadence, and safe to defend in front of a regulator. Agents are Module 5; today we are building one reliable named prompt at a time.
+>
+> Hold those three together. Saved beats remembered, the anatomy is choices plus slots, and the scope is bounded on purpose. If you can build one of these, you can build twenty. That personal library is what makes the rest of Module 4 worth the price."
 
-### Why saved beats remembered
+> [tip] Pick your first skill from the prompt in your Starter Prompt Pack you have run at least twice already. A skill is most useful when it codifies something you have done by hand enough times to know what the locked choices should be.
 
-You wrote a strong prompt in Module 3 — role, task, audience, format,
-constraint, the closing line that asked the model to flag what was
-missing. Two weeks from now, when a new SR letter drops or a similar
-member complaint hits the queue, you will not retype that prompt from
-scratch. You will either reach for the saved version, or you will write
-a worse one because you are in a hurry.
+> [warn] Resist the temptation to build a skill that does five things. A skill that summarises, drafts, and audits in one run is three skills jammed together, and it will be hard to debug when one of the three drifts. One skill, one shape of task. Build twenty narrow skills, not three wide ones.
 
-Saving the prompt is one move. Locking in the choices — the role, the
-audience, the format — is the second move. After that, only the new
-material changes. You pass in the latest rule excerpt or the new
-complaint description, the locked choices stay put, the model handles
-it the same way every time.
+## PRODUCTION
 
-### The two parts of a skill
-
-**Locked choices.** The decisions that make your prompt work for this
-shape of task: the role the model plays, the audience it writes for,
-the length, the constraint about not inventing citations. These do not
-change between runs. You lock them in once.
-
-**Input slots.** The bits that change every time: the rule text, the
-complaint summary, the vendor name. You name them ("rule excerpt,"
-"complaint summary"), you give them a one-line help label, and the
-skill prompts you for them the next time you run it.
-
-### What this is not
-
-It is not an agent. It does not run on its own. It does not chain into
-other skills. It is one named, parameterized prompt with the choices
-locked. If you can build one of these, you can build twenty, and that
-is the personal library that makes Module 4 worth the price.
-
-The next three lessons build, fork, and test exactly one skill each.
+- Cold open on a card titled "saved beats remembered," then build the two-part anatomy diagram (locked choices on the left, input slots on the right, the unified skill in the middle) as the narrator names each part.
+- Reference card at the close: "A skill is one named, parameterised prompt — bounded scope is the feature."
+- Hand off to 4.2 with a single line: "Now you build one."
 $LESSON$,
   true
 )
@@ -137,34 +117,31 @@ VALUES (
   'm4-2-build-first-skill',
   'skill_template',
   $LESSON$
-## Lesson 4.2 — Build your first skill
+The Skill Builder below takes one of the prompts you already wrote in Module 3 and turns it into a saved, parameterised template you can run next week with new material. Four steps. Fifteen minutes. You walk out with a Skill Template artifact in your Toolbox and a working understanding of the difference between a one-off prompt and a saved skill.
 
-The Skill Builder below takes one of the prompts you already wrote in
-Module 3 and turns it into a saved, parameterized template you can run
-next week with new material.
+## SCRIPT (verbatim)
 
-### What you will do
+> "Four steps in the builder. Each one takes a minute or two. Skip any of them and the skill works once and breaks the second time.
+>
+> **One: pick a source exercise.** The most natural choice is one of the prompts from your Starter Prompt Pack — the Reg-E summariser, the member-comms reply, the vendor checklist, whichever recurs most in your week. If you would rather start from the side-by-side A/B exercise in 3.2, the builder accepts that too — you lock in the audience and length you preferred and turn it into a saved skill. Either way, the source decides what controls the skill exposes.
+>
+> **Two: lock the choices.** For each control the source exercise carried — role, audience, length, format, the constraints you added — make a decision. Either fix it (always teller audience, always five bullets, always 'do not invent citations') or mark it 'let me choose at run time.' Fixed choices give you consistency; runtime choices give you flexibility. Most working skills are mostly fixed with one or two runtime levers — that is the right ratio and the builder defaults to it.
+>
+> **Three: name your input slots.** These are the bits that change every run. Give each slot a short, banker-readable name — 'rule_excerpt' not 'input_1,' 'complaint_summary' not 'text' — and a one-line help label that future-you will read in a hurry. The help label is where you remind yourself what kind of material goes in: 'paste the public regulatory text only — no member identifiers,' or 'describe the situation in two sentences, no names.' Slots without help labels become trip-hazards three months later.
+>
+> **Four: save.** The saved skill becomes a Skill Template artifact in your Toolbox. Lesson 4.3 will turn it into a Working Skill tuned to your role. Lesson 4.4 will run it on new material and add the guardrail notes that travel with the skill. Each save is versioned, so you can keep iterating without losing the version that already worked.
+>
+> Hold those four together. Source, locked choices, named slots, save. The pattern works for every shape of task and it scales — by the end of this module you will have built three skills using exactly the same four steps."
 
-You will work through four short steps. First, pick a source exercise —
-one of the prompts you wrote in 3.5 is the obvious choice, but the 3.2
-A/B exercise also works if you want to lock in an audience and a
-length and reuse it. Second, lock the choices: for each control the
-source exercise exposed, either fix it (always teller-audience, always
-short length) or mark it as "let me choose at run time." Third, name
-your input slots — the bits that change every run, with a short help
-label so the skill knows what to ask you for. Fourth, save.
+> [tip] Name your skill the way you would name a procedure document, not the way you would name a file. "Reg summary for tellers" is a name your future self will recognise. "untitled_skill_v3_FINAL" is not.
 
-The saved skill becomes a Skill Template artifact in your Toolbox.
-Lesson 4.3 will turn it into a Working Skill tuned to your role.
-Lesson 4.4 will run it on new material and add a guardrail note.
+> [warn] The skill runner enforces the same PII screen the sandbox does. A slot value that trips the screen — a real name plus an account number, a full SSN, a draft SAR narrative — is rejected before the model sees it. The screen is not a substitute for the data-discipline rule; it is a backstop. The habit is still yours.
 
-### What stays the same
+## PRODUCTION
 
-The data-discipline rule. Skills do not relax it. The input slots are
-for descriptions of situations and public material — never customer
-identifiers, never MNPI, never internal supervisory content. The skill
-runner enforces the same PII screens the sandbox does; a slot value
-that trips the screen will be rejected before the model sees it.
+- Skill Builder is the screen. Narration above plays once on first visit.
+- Four step indicators across the top fill in as the learner advances; each one carries the one-line description from the SCRIPT.
+- Save button highlights once all four steps are complete; the saved Skill Template appears in a sidebar Toolbox preview.
 $LESSON$,
   true
 )
@@ -196,16 +173,29 @@ VALUES (
   'm4-3-role-skill',
   'skill',
   $LESSON$
-## Lesson 4.3 — Build a skill for your role
+The Skill Builder is back, this time pre-loaded with a starting point tuned to your role. Per-track framing sits below this paragraph; the builder defaults to the source exercise and slot labels most useful for that track. You can take the defaults, or you can swap the source and rename the slots — the framework is identical to 4.2.
 
-The Skill Builder is back, this time pre-loaded with a starting point
-tuned to your role. Per-track framing sits above this paragraph; the
-builder defaults to the source exercise and slot labels most useful
-for that track. You can take the defaults, or you can swap the source
-and rename the slots — the framework is the same.
+## SCRIPT (verbatim)
 
-Save the result as your first Working Skill. The next lesson will
-run it on new material.
+> "Three things to do differently this time, even though the builder looks the same.
+>
+> **One: trust the pre-load — then question it.** Your track variant pre-loads the source exercise and slot labels we have seen work well for that role. Read them. If they fit your week, accept the defaults and move to step two. If they do not — if you are a compliance officer who reads more vendor questionnaires than SR letters, or a back-office lead whose recurring task is press releases rather than process memos — swap the source. The track defaults are a starting point, not a verdict.
+>
+> **Two: tune the locked choices to your institution, not just your role.** Two community banks the same size will have different language for the same thing — 'member' versus 'customer,' 'branch' versus 'store,' 'CCO' versus 'BSA officer.' Edit the locked role text and the constraint language so the output sounds like your institution at a glance. A skill that lands in your tone the first time you read it is a skill you will keep using; one that needs a tone edit every run will quietly disappear from your Toolbox.
+>
+> **Three: save as a Working Skill, not a draft.** A Working Skill is the version you would hand to a colleague today and trust them to use without retraining. If yours is not at that bar yet, that is fine — but say so in the name ('Reg summary for tellers — draft, needs one more pass') so future-you knows what you are looking at. The Toolbox does not judge; clarity does.
+>
+> Hold those three together. Trust the pre-load, tune to your institution, save honestly. The next lesson runs this exact skill on new material and walks the guardrail check that turns it from a working skill into a defensible one."
+
+> [tip] If your role's pre-loaded source does not match your seat, treat that as a signal worth a note. The Toolbox tracks which track-default sources get most often swapped, and the swap pattern feeds back into the curriculum for the next cohort.
+
+> [warn] Do not save a Working Skill with the test placeholder text still in the input slots. Empty slots are correct; placeholders like "[paste rule here]" can leak into a real run if you are tired. The builder warns; the warning is worth heeding.
+
+## PRODUCTION
+
+- Skill Builder pre-loads per `profile.track`. Track-defaulted controls show a small "track default" badge that the learner can override.
+- Save button writes a Working Skill to the Toolbox under a Module-4 collection.
+- Hand-off card after save: "Run this skill on new material" → links to 4.4.
 $LESSON$,
   true
 )
@@ -237,35 +227,29 @@ VALUES (
   'm4-4-test-refine',
   NULL,
   $LESSON$
-## Lesson 4.4 — Test, refine, guardrail-check
+A skill that has never been run on new material is a guess. This lesson turns it into a verified piece of your toolkit — and attaches the guardrail notes that travel with the skill the next time you or a colleague runs it.
 
-A skill that has never been run on new material is a guess. This lesson
-turns it into a verified piece of your toolkit.
+## SCRIPT (verbatim)
 
-### What you will do
+> "Three moves, in order. They look small. Together they are the difference between a clever saved prompt and a defensible piece of work.
+>
+> **One: run the skill on realistic new material.** Pick one of the skills you built in 4.2 or 4.3 from the list below. Fill the input slots with realistic synthetic material — a public regulator text the skill has not seen, a described situation in your own words, a generic vendor proposal stripped of identifiers. Run it. Read the output as if it had just landed in your inbox at 3pm on a busy Thursday: would you send it, forward it to your manager, or fix it first? Be honest. The point of the run is to find the gap between what you hoped for and what showed up.
+>
+> **Two: walk the four-question guardrail check.** The right-hand panel asks four short questions, and you write a one-line note for each. Does the output cite anything that does not appear in the slot material? Would you be comfortable sending this to a member or a regulator as-is? Where does it need a human pass before it leaves your screen? What is the one input pattern that would break this skill? The four notes attach to the skill's saved record so future-you, or a colleague you hand it to, opens it already knowing where the soft spots are.
+>
+> **Three: refine and re-save.** If the output drifted in a predictable way — invented citations, drifted off tone, missed the audience — edit the locked choices in the skill (add a constraint, sharpen the role, tighten the format) and re-run. The Toolbox versions skills automatically, so the previous version is still there if you change your mind. When the output lands cleanly twice in a row on different inputs, mark the skill 'verified' and move on. Two clean runs is the bar; perfection is a trap.
+>
+> Hold those three together. Real run, four-question check, refine and re-save. The data-discipline rule keeps customer data out at the input. The guardrail check keeps weak output from getting forwarded. Both layers travel with the skill — and when you hand a skill to a colleague, you are handing them both the saved prompt and your notes on what to watch for. That is the move that turns a clever prompt into a piece of work your team can rely on."
 
-Pick one of the skills you built in 4.2 or 4.3 from the list below.
-Fill the input slots with realistic material — public regulator text,
-a described situation, a generic vendor proposal. Run it. Read the
-output as if it had just landed in your inbox: would you send it,
-forward it, or fix it first?
+> [tip] Save your guardrail notes in the same plain-English voice you would use in a hand-off conversation. "Watch for invented Reg numbers — verify against the source text" reads better in three months than "validate citation accuracy."
 
-Then run the guardrail check. The right-hand panel walks four short
-questions — does the output cite anything from the slot material?
-Would you be comfortable sending this to a member as-is? Could a
-regulator question this output? Where does it need a human pass before
-it leaves your screen? Write a one-line note for each. The notes
-attach to the skill's saved record so future-you knows what to watch
-for the next time you run it.
+> [warn] A skill that needs more than four guardrail notes is probably trying to do too much. Split it into two smaller skills, each with one or two notes, and you will end up with two pieces of work you trust instead of one piece of work you do not.
 
-### Why guardrails go on the skill, not on the prompt
+## PRODUCTION
 
-The data-discipline rule keeps customer data out. The guardrail check
-keeps weak output from getting forwarded. Both layers matter, and both
-travel with the skill — when you hand a skill to a colleague, you are
-handing them both the saved prompt and your notes on what to watch for.
-That is the difference between a clever prompt and a piece of work
-your team can rely on.
+- Skill runner is the main surface; guardrail-check panel docks to the right.
+- After the four notes are written, the "verified" badge becomes available; clicking it stamps the skill record and updates the Toolbox listing.
+- Module-end summary card surfaces the count of verified skills the learner built across 4.2, 4.3, and 4.4.
 $LESSON$,
   true
 )
