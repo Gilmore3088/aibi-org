@@ -150,18 +150,15 @@ function splitBlocks(src: string): Block[] {
       continue;
     }
     if (line.startsWith('>')) {
-      // Capture the full blockquote.
+      // Capture the full blockquote. End at the first BARE blank line —
+      // that's how authors separate one block from the next. Paragraph
+      // breaks INSIDE a quote use the canonical `>` empty marker
+      // (a line that's just `>` or `> `), which still starts with `>`
+      // and is preserved.
       const buf: string[] = [];
-      while (i < lines.length && (lines[i].startsWith('>') || (buf.length > 0 && lines[i].trim() === ''))) {
-        // Allow blank lines inside a > block (they appear as "> " with
-        // nothing after, but some authors write a real blank line
-        // between > paragraphs).
-        if (lines[i].startsWith('>')) {
-          const stripped = lines[i].replace(/^>\s?/, '');
-          buf.push(stripped);
-        } else {
-          buf.push(''); // paragraph break inside quote
-        }
+      while (i < lines.length && lines[i].startsWith('>')) {
+        const stripped = lines[i].replace(/^>\s?/, '');
+        buf.push(stripped);
         i++;
       }
       // Callout detection on the very first non-empty line.
@@ -197,12 +194,8 @@ function splitBlocks(src: string): Block[] {
           if (j >= lines.length || !lines[j].startsWith('>')) break;
           const peekBuf: string[] = [];
           let k = j;
-          while (k < lines.length && (lines[k].startsWith('>') || (peekBuf.length > 0 && lines[k].trim() === ''))) {
-            if (lines[k].startsWith('>')) {
-              peekBuf.push(lines[k].replace(/^>\s?/, ''));
-            } else {
-              peekBuf.push('');
-            }
+          while (k < lines.length && lines[k].startsWith('>')) {
+            peekBuf.push(lines[k].replace(/^>\s?/, ''));
             k++;
           }
           const peekFirst = peekBuf.find((x) => x.trim() !== '') ?? '';
