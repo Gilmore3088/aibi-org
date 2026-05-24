@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import {
   forwardRef,
+  useId,
   type ButtonHTMLAttributes,
   type InputHTMLAttributes,
   type ReactNode,
@@ -154,7 +155,8 @@ export const LedgerField = forwardRef<
   HTMLInputElement,
   InputHTMLAttributes<HTMLInputElement> & FieldProps
 >(function LedgerField({ label, trailing, id, ...inputProps }, ref) {
-  const inputId = id ?? `ledger-field-${Math.random().toString(36).slice(2, 9)}`;
+  const autoId = useId();
+  const inputId = id ?? `ledger-field-${autoId}`;
   return (
     <div className="ledger-field">
       <div className={trailing ? 'flex items-baseline justify-between' : ''}>
@@ -170,7 +172,8 @@ export const LedgerTextarea = forwardRef<
   HTMLTextAreaElement,
   TextareaHTMLAttributes<HTMLTextAreaElement> & { label: ReactNode }
 >(function LedgerTextarea({ label, id, ...textareaProps }, ref) {
-  const inputId = id ?? `ledger-textarea-${Math.random().toString(36).slice(2, 9)}`;
+  const autoId = useId();
+  const inputId = id ?? `ledger-textarea-${autoId}`;
   return (
     <div className="ledger-field">
       <label htmlFor={inputId}>{label}</label>
@@ -183,7 +186,8 @@ export const LedgerSelect = forwardRef<
   HTMLSelectElement,
   SelectHTMLAttributes<HTMLSelectElement> & { label: ReactNode; children: ReactNode }
 >(function LedgerSelect({ label, id, children, ...selectProps }, ref) {
-  const inputId = id ?? `ledger-select-${Math.random().toString(36).slice(2, 9)}`;
+  const autoId = useId();
+  const inputId = id ?? `ledger-select-${autoId}`;
   return (
     <div className="ledger-field">
       <label htmlFor={inputId}>{label}</label>
