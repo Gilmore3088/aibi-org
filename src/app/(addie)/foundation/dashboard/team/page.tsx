@@ -48,7 +48,7 @@ export default async function TeamDashboardPage() {
             Use the admin email tied to your team purchase.
           </p>
           <div className="mt-6">
-            <Link href="/auth/sign-in?next=/foundation/dashboard/team">
+            <Link href="/auth/login?next=/foundation/dashboard/team">
               <LedgerButton variant="primary">SIGN IN</LedgerButton>
             </Link>
           </div>

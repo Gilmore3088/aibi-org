@@ -19,7 +19,7 @@ const COPY: Record<PayKind, { kicker: string; title: string; price: string; body
     kicker: 'Continue',
     title: 'Foundation Course',
     price: '$295',
-    body: 'M4 + M5 unlocked. Unlimited Toolbox. Lifetime access. One learner.',
+    body: 'M4 + M5 access. Unlimited Toolbox. Lifetime access. One learner.',
     cta: 'Pay $295',
     path: '/api/addie/checkout/individual',
   },

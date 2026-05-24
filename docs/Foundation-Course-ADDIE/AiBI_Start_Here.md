@@ -290,9 +290,32 @@ These don't live in any single doc — they live across all of them.
 
 ---
 
-## 7 · Where we are *right now* (post-Wave 1, ready for Wave 2)
+## 7 · Where we are *right now* (post-Wave 1 + 2 + 3, ready for merge)
 
-**Wave 1 (shared dependencies) is done as of 2026-05-23.** 17 commits ahead of `main`, all isolated to the `addie.*` Postgres schema + `sandbox-service/` + `src/lib/addie/` + `src/app/api/{addie,sandbox,skill}/`. The existing `/courses/foundation/program` and `public.*` are untouched.
+**Waves 1 + 2 + 3 all shipped on 2026-05-23.** 20 commits ahead of `main`, all isolated to the `addie.*` Postgres schema + `sandbox-service/` + `src/lib/addie/` + `src/app/(addie)/` + `src/app/api/{addie,sandbox,skill}/`. The existing `/courses/foundation/program` and `public.*` are untouched. 337/337 tests pass, `npx tsc --noEmit` clean. Final e2e drift audit at `AiBI_Wave_1_2_3_Audit_2026-05-23.md` returned a **Conditional GO for merge** verdict (zero hard blockers; the one soft blocker — an `/auth/sign-in` href that should have been `/auth/login` — landed in the same commit as the audit).
+
+**Wave 4 follow-ups (recommended right after merge, not blocking):**
+- Wire the on-main `/assessment/in-depth` 48-Q runner to POST `/api/addie/assessment/results` on completion (closes the FR-A profile-handoff bridge).
+- Add lesson-side analytics emits (`lesson_view`, `lesson_complete`, `artifact_save`, `toolbox_reuse`) from the LessonPlayer/SaveAsArtifactButton flows.
+- Resend signed-token invite template to replace the MailerLite seat-invite stub.
+- MailerLite unsubscribe webhook → flip `addie.leads.marketing_opt_in`.
+- Make the anon→lead artifact migration transactional (currently sequential).
+
+**Pre-pilot operator work** (engineering can't do, captured in `AiBI_Launch_Checklist.md` §1, §7, §9, §10, §11):
+- Record + edit + caption + transcribe ~13 videos + 2 audio lessons + 5 m1.3 audio variants.
+- Stripe live-mode price IDs (currently using test mode env vars).
+- MailerLite assessment and nurture sequences authored.
+- Privacy Policy + ToS published; `/security` posture page; vendor commercial-API data terms verified.
+- Resolve employment / IP / conflict-of-interest position before commercial sales.
+- Full A11y audit + iPhone Safari pass.
+
+**Below: the original "post-Wave-1" snapshot is preserved for the historical record of what was true at each wave's end.**
+
+---
+
+### Snapshot at the end of Wave 1 (kept for historical reference)
+
+**Wave 1 (shared dependencies) was done as of 2026-05-23.** 17 commits ahead of `main`, all isolated to the `addie.*` Postgres schema + `sandbox-service/` + `src/lib/addie/` + `src/app/api/{addie,sandbox,skill}/`. The existing `/courses/foundation/program` and `public.*` are untouched.
 
 **What's live:**
 - ✅ 17 SQL migrations applied (19 `addie.*` tables, 4 storage buckets, 4 storage RLS policies, all DB Spec §12 gates pass)
