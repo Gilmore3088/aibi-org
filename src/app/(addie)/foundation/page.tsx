@@ -1,14 +1,13 @@
-// /foundation — course home. Server component that loads modules from
-// addie.modules and the learner's progress if signed in. Renders the
-// CoursePathHero (animated arc through the 6 modules) plus a grid of
-// ModuleCards with progress arcs.
+// /foundation — course home. Modern course aesthetic per DECISIONS
+// 2026-05-23: Stripe Press / Maven energy — oversized display type,
+// dimensional illustrated module cards, generous whitespace.
 
 import Link from 'next/link';
 import { cookies } from 'next/headers';
 import { createServerClient } from '@supabase/ssr';
 import { getAddieServiceClient } from '@/lib/addie/supabase/service';
-import { CoursePathHero } from '@/components/addie/shell/CoursePathHero';
 import { ModuleCard } from '@/components/addie/shell/ModuleCard';
+import { ModuleIllustration } from '@/components/addie/illustrations/ModuleIllustration';
 import type { ModuleRow } from '@/components/addie/lesson/types';
 
 export const dynamic = 'force-dynamic';
@@ -25,12 +24,7 @@ async function getSignedInUserId(): Promise<string | null> {
   try {
     const store = await cookies();
     const supa = createServerClient(url, key, {
-      cookies: {
-        getAll: () => store.getAll(),
-        setAll: () => {
-          /* read-only */
-        },
-      },
+      cookies: { getAll: () => store.getAll(), setAll: () => {} },
     });
     const { data } = await supa.auth.getUser();
     return data.user?.id ?? null;
@@ -51,7 +45,6 @@ async function loadModules(userId: string | null): Promise<ModuleWithLessonCount
 
     const counts: Record<string, number> = {};
     const completed: Record<string, number> = {};
-
     for (const m of data) {
       const moduleId = m.id as string;
       const { count } = await svc
@@ -62,10 +55,7 @@ async function loadModules(userId: string | null): Promise<ModuleWithLessonCount
       counts[moduleId] = count ?? 0;
       completed[moduleId] = 0;
     }
-
     if (userId) {
-      // Optional: completed-lesson count via events table. Soft-fail if the
-      // event shape isn't what we expect — the page still renders.
       try {
         const { data: doneRows } = await svc
           .from('events')
@@ -82,7 +72,6 @@ async function loadModules(userId: string | null): Promise<ModuleWithLessonCount
         /* ignore */
       }
     }
-
     return data.map((m) => ({
       id: m.id as string,
       ordinal: m.ordinal as number,
@@ -105,42 +94,46 @@ export default async function FoundationHomePage() {
   const totalLessons = modules.reduce((n, m) => n + m.lesson_count, 0);
   const totalDone = modules.reduce((n, m) => n + m.completed, 0);
   const overallPct = totalLessons > 0 ? Math.round((totalDone / totalLessons) * 100) : 0;
-  const currentOrdinal =
-    modules.find((m) => m.completed < m.lesson_count)?.ordinal ?? modules.length;
   const firstHref = modules[0] ? `/foundation/${modules[0].id}/m0.1` : '#';
+  const featuredModule =
+    modules.find((m) => m.completed > 0 && m.completed < m.lesson_count) ?? modules[0];
 
   return (
-    <main className="addie-course-surface__page">
-      {/* Hero */}
+    <main>
+      {/* Hero — Stripe Press / Maven scale */}
       <section className="addie-hero-parch">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-16">
-          <div className="grid gap-10 lg:grid-cols-[3fr_2fr] items-center">
-            <div data-reveal>
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+          <div className="grid gap-12 lg:grid-cols-[5fr_4fr] items-center">
+            <div className="relative z-10">
               <span className="addie-chip" data-tone="accent">
-                Foundation · 6 modules · {totalLessons} lessons
+                Foundation Course · {modules.length} modules · {totalLessons} lessons
               </span>
-              <h1 className="mt-4 font-serif text-4xl sm:text-5xl text-[var(--ledger-ink)] leading-[1.05] tracking-tight">
-                From &ldquo;I&apos;ve heard of generative AI&rdquo; to
+              <h1 className="mt-5 font-serif text-[2.75rem] sm:text-[3.5rem] lg:text-[4.25rem] leading-[0.98] tracking-[-0.02em] text-[var(--ledger-ink)]">
+                Generative AI,
                 <br />
-                <span className="text-[var(--ledger-accent)]">&ldquo;I built something useful this week.&rdquo;</span>
+                <span className="text-[var(--ledger-accent)]">on the job.</span>
+                <br />
+                <span className="text-[var(--ledger-ink-2)] opacity-80">By Monday.</span>
               </h1>
-              <p className="mt-5 max-w-xl text-lg text-[var(--ledger-ink-2)] leading-relaxed">
-                Six modules. Every lesson under fifteen minutes. The first four
-                are free; the last two unlock the skills + build work. You can
-                start anonymously and bring your own role into every example.
+              <p className="mt-6 max-w-xl text-lg sm:text-xl leading-[1.55] text-[var(--ledger-ink-2)]">
+                A short course for community bankers and credit-union staff.
+                Built around the role you actually have. Every lesson under
+                fifteen minutes; every module produces something you can
+                use the next morning.
               </p>
-              <div className="mt-7 flex flex-wrap items-center gap-3">
+              <div className="mt-8 flex flex-wrap items-center gap-3">
                 <Link
                   href={firstHref}
-                  className="inline-flex items-center gap-2 font-mono font-semibold uppercase tracking-[0.16em] text-xs px-5 py-3 rounded-[3px] bg-[var(--ledger-ink)] text-[var(--ledger-paper)] hover:bg-[var(--ledger-ink-2)] transition-colors duration-[120ms]"
+                  className="group inline-flex items-center gap-3 font-mono font-semibold uppercase tracking-[0.14em] text-xs px-6 py-4 rounded-[4px] bg-[var(--ledger-ink)] text-[var(--ledger-paper)] hover:bg-[var(--ledger-ink-2)] transition-colors duration-[160ms] shadow-[0_4px_20px_-6px_rgba(14,27,45,0.4)]"
                 >
-                  Start Module 0 →
+                  Start Module 0
+                  <span className="transition-transform duration-[200ms] group-hover:translate-x-1">→</span>
                 </Link>
                 <Link
-                  href="/foundation/dashboard"
-                  className="inline-flex items-center gap-2 font-mono font-semibold uppercase tracking-[0.16em] text-xs px-5 py-3 rounded-[3px] border border-[var(--ledger-ink)] text-[var(--ledger-ink)] hover:bg-[var(--ledger-paper)] transition-colors duration-[120ms]"
+                  href="#path"
+                  className="font-mono font-semibold uppercase tracking-[0.14em] text-xs px-5 py-4 rounded-[4px] border border-[var(--ledger-ink)] text-[var(--ledger-ink)] hover:bg-[var(--ledger-ink)] hover:text-[var(--ledger-paper)] transition-colors duration-[160ms]"
                 >
-                  Open dashboard
+                  See the path
                 </Link>
                 {userId ? (
                   <span className="addie-chip" data-tone="ink">
@@ -148,32 +141,91 @@ export default async function FoundationHomePage() {
                   </span>
                 ) : null}
               </div>
+
+              {/* Three at-a-glance metrics */}
+              <div className="mt-12 grid grid-cols-3 gap-4 max-w-md">
+                {[
+                  { v: '6', label: 'modules' },
+                  { v: '24', label: 'lessons' },
+                  { v: '<15m', label: 'each' },
+                ].map((s) => (
+                  <div key={s.label}>
+                    <div className="font-serif text-[2.25rem] leading-none text-[var(--ledger-ink)] tabular-nums">
+                      {s.v}
+                    </div>
+                    <div className="mt-1 font-mono uppercase tracking-[0.16em] text-[0.65rem] text-[var(--ledger-muted)]">
+                      {s.label}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
-            <aside data-reveal data-reveal-delay="2" className="lg:pl-6">
-              <CoursePathHero currentOrdinal={currentOrdinal} />
-            </aside>
+
+            {/* Featured module illustration card — dimensional, big */}
+            {featuredModule ? (
+              <Link
+                href={`/foundation/${featuredModule.id}`}
+                className="relative block group"
+                aria-label={`Continue with ${featuredModule.title}`}
+              >
+                <div className="absolute -top-4 -left-4 right-8 bottom-8 rounded-[12px] bg-[var(--ledger-tape)] -z-10" aria-hidden />
+                <div className="absolute top-4 left-4 right-0 bottom-0 rounded-[12px] bg-[color-mix(in_srgb,var(--ledger-accent)_18%,var(--ledger-paper))] -z-10" aria-hidden />
+                <article className="relative rounded-[12px] border border-[var(--ledger-rule-strong)] bg-[var(--ledger-paper)] p-6 shadow-[0_24px_60px_-20px_rgba(14,27,45,0.3),0_8px_18px_-8px_rgba(14,27,45,0.18)] transition-transform duration-[200ms] group-hover:-translate-y-1">
+                  <div className="flex items-center justify-between gap-3 mb-4">
+                    <span className="addie-chip" data-tone="accent">
+                      {featuredModule.completed > 0 ? 'Continue where you left' : 'Start here'}
+                    </span>
+                    <span className="font-mono uppercase tracking-[0.16em] text-[0.65rem] text-[var(--ledger-muted)]">
+                      Module {featuredModule.ordinal}
+                    </span>
+                  </div>
+                  <ModuleIllustration module={featuredModule.id as 'm0'} variant="hero" />
+                  <h2 className="mt-5 font-serif text-2xl text-[var(--ledger-ink)] leading-tight">
+                    {featuredModule.title}
+                  </h2>
+                  {featuredModule.summary ? (
+                    <p className="mt-2 text-sm text-[var(--ledger-ink-2)] leading-relaxed">
+                      {featuredModule.summary}
+                    </p>
+                  ) : null}
+                  <div className="mt-5 pt-4 border-t border-[var(--ledger-rule)] flex items-center justify-between gap-3">
+                    <span className="font-mono uppercase tracking-[0.16em] text-[0.7rem] text-[var(--ledger-muted)]">
+                      {featuredModule.lesson_count} lessons
+                    </span>
+                    <span className="font-mono uppercase tracking-[0.16em] text-[0.75rem] text-[var(--ledger-ink)] inline-flex items-center gap-1.5 group-hover:gap-2.5 transition-all duration-[160ms]">
+                      {featuredModule.completed > 0 ? 'Continue' : 'Begin'} →
+                    </span>
+                  </div>
+                </article>
+              </Link>
+            ) : null}
           </div>
         </div>
       </section>
 
       {/* Module grid */}
-      <section className="mx-auto max-w-6xl px-4 sm:px-6 py-12">
-        <div className="flex items-baseline justify-between gap-4 mb-6">
-          <h2 className="font-serif text-2xl text-[var(--ledger-ink)]">The path</h2>
-          <span className="font-mono uppercase tracking-[0.16em] text-[0.7rem] text-[var(--ledger-muted)]">
-            Designed for community banks &amp; credit unions
-          </span>
+      <section id="path" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
+        <div className="grid gap-4 sm:flex sm:items-end sm:justify-between mb-10">
+          <div>
+            <span className="font-mono uppercase tracking-[0.18em] text-[0.7rem] text-[var(--ledger-accent)]">
+              The path
+            </span>
+            <h2 className="mt-2 font-serif text-3xl sm:text-4xl text-[var(--ledger-ink)] leading-tight">
+              From your first prompt to your first prototype.
+            </h2>
+          </div>
+          <p className="text-sm text-[var(--ledger-muted)] max-w-sm">
+            Six modules. The first four are free; the last two unlock the
+            skills + build work and your unlimited Toolbox.
+          </p>
         </div>
 
         {modules.length === 0 ? (
-          <p className="text-[var(--ledger-muted)]">
-            No published modules yet.
-          </p>
+          <p className="text-[var(--ledger-muted)]">No published modules yet.</p>
         ) : (
-          <ol className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <ol className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {modules.map((m, idx) => {
-              const inProgress =
-                m.completed > 0 && m.completed < m.lesson_count;
+              const inProgress = m.completed > 0 && m.completed < m.lesson_count;
               return (
                 <li key={m.id}>
                   <ModuleCard
@@ -194,53 +246,59 @@ export default async function FoundationHomePage() {
         )}
       </section>
 
-      {/* Why this course */}
-      <section className="bg-[var(--ledger-paper)] border-y border-[var(--ledger-rule)]">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 py-12 grid gap-8 md:grid-cols-3">
-          {[
-            {
-              k: 'Built for the role you actually have',
-              v: 'Every applied lesson branches into Risk &amp; Compliance, Customer-Facing, Back-Office, Technical, or Leadership. You see the example for your seat.',
-            },
-            {
-              k: 'You leave with artifacts, not just notes',
-              v: 'A Data Discipline Card, an AI Toolkit Map, a First Conversation transcript, a Starter Prompt Pack — saved to your Toolbox and exportable as .md.',
-            },
-            {
-              k: 'Safe to practice, hard to misuse',
-              v: 'The sandbox is bounded by design: no PII, no member data, no internal docs — a controlled environment so you can build confidence before you build at work.',
-            },
-          ].map((c, i) => (
-            <div key={c.k} data-reveal data-reveal-delay={(i + 1) as number}>
-              <span className="addie-chip">Why it works</span>
-              <h3 className="mt-3 font-serif text-xl text-[var(--ledger-ink)]">{c.k}</h3>
-              <p
-                className="mt-2 text-[var(--ledger-ink-2)] leading-relaxed"
-                // dangerouslySetInnerHTML used here only for the literal &amp; entity in copy
-                dangerouslySetInnerHTML={{ __html: c.v }}
-              />
-            </div>
-          ))}
+      {/* Pillars */}
+      <section className="border-t border-[var(--ledger-rule)] bg-[var(--ledger-paper)]">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
+          <div className="grid gap-12 lg:grid-cols-3">
+            {[
+              {
+                num: '01',
+                k: 'Built for the role you have',
+                v: 'Every applied lesson branches into Risk & Compliance, Customer-Facing, Back-Office, Technical, or Leadership. You see the example for your seat — not a generic one.',
+              },
+              {
+                num: '02',
+                k: 'You leave with artifacts',
+                v: 'A Data Discipline Card, an AI Toolkit Map, a First Conversation transcript, a Starter Prompt Pack — saved to your Toolbox and exportable as Markdown.',
+              },
+              {
+                num: '03',
+                k: 'Safe to practice',
+                v: 'The sandbox is bounded by design: no PII, no member data, no internal docs. A controlled environment so you build confidence before you build at work.',
+              },
+            ].map((c) => (
+              <div key={c.num}>
+                <div className="font-mono uppercase tracking-[0.18em] text-[0.7rem] text-[var(--ledger-accent)] tabular-nums">
+                  {c.num}
+                </div>
+                <h3 className="mt-2 font-serif text-2xl text-[var(--ledger-ink)] leading-tight">{c.k}</h3>
+                <p className="mt-3 text-[var(--ledger-ink-2)] leading-relaxed">{c.v}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* Closing CTA */}
+      {/* Closing */}
       <section className="addie-hero-ink">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6 py-14 text-center">
-          <span className="addie-chip" data-tone="done">Ready</span>
-          <h2 className="mt-4 font-serif text-3xl sm:text-4xl">
-            One lesson is enough to feel the difference.
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 py-16 lg:py-20 text-center relative">
+          <span className="addie-chip" data-tone="done">Ten minutes</span>
+          <h2 className="mt-5 font-serif text-3xl sm:text-5xl leading-[1.05]">
+            One lesson is enough
+            <br />
+            to feel the difference.
           </h2>
-          <p className="mt-3 text-[var(--ledger-paper)] opacity-80 max-w-2xl mx-auto">
-            Module 0 is two short lessons: how the course works, and the one
-            rule that matters before any tool appears. Ten minutes.
+          <p className="mt-5 text-[var(--ledger-paper)] opacity-80 max-w-2xl mx-auto text-lg">
+            Module 0 is two short lessons: how this course works, and the
+            one rule that matters before any AI tool appears.
           </p>
-          <div className="mt-7">
+          <div className="mt-8">
             <Link
               href={firstHref}
-              className="inline-flex items-center gap-2 font-mono font-semibold uppercase tracking-[0.16em] text-xs px-6 py-3 rounded-[3px] bg-[var(--ledger-accent)] text-[var(--ledger-ink)] hover:opacity-95 transition-opacity duration-[120ms]"
+              className="group inline-flex items-center gap-3 font-mono font-semibold uppercase tracking-[0.14em] text-sm px-7 py-4 rounded-[4px] bg-[var(--ledger-accent)] text-[var(--ledger-ink)] hover:bg-[var(--ledger-paper)] transition-colors duration-[160ms]"
             >
-              Start Module 0 →
+              Start Module 0
+              <span className="transition-transform duration-[200ms] group-hover:translate-x-1">→</span>
             </Link>
           </div>
         </div>
