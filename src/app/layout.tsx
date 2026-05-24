@@ -32,6 +32,9 @@ const CHROMELESS_PATHS: readonly string[] = [
   // internal lockup via showHeader={false} so there's no duplicate mark.
   // CourseShell's sidebar + breadcrumb cover the course tree only.
   '/redesign-checklist',
+  // /admin/* is the operator analytics surface — renders its own
+  // minimal admin chrome and must not surface marketing nav.
+  '/admin',
 ];
 
 // 2026-05-17: Cormorant Garamond, DM Sans, and DM Mono removed — they
