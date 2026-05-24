@@ -6,6 +6,8 @@
 // against `LessonPayload` (see ./types.ts) — the schema is the contract.
 
 import { LessonShellHeader } from './LessonShellHeader';
+import { LessonObjectiveBeat } from './LessonObjectiveBeat';
+import { LessonTransferBeat } from './LessonTransferBeat';
 import { ReadingLessonView } from './ReadingLessonView';
 import { VideoLessonView } from './VideoLessonView';
 import { AudioLessonView } from './AudioLessonView';
@@ -54,12 +56,15 @@ export function LessonPlayer({
   const showTrackPicker = lesson.id === 'm0.1';
 
   return (
-    <article className="max-w-3xl">
+    <article className="max-w-[68ch] mx-auto text-[1.05rem] leading-[1.65]">
       <LessonShellHeader
         lesson={lesson}
         module={module}
         activeTrack={payload.activeTrack ?? null}
       />
+      {/* A8 (2026-05-24): alignment-triangle apex — lesson reads the
+          observable behavior before the body. */}
+      <LessonObjectiveBeat objective={lesson.objective_md} />
       <ModalityView payload={payload} preferAb={preferAb} />
       {showTrackPicker ? (
         <TrackPickerInline initial={payload.activeTrack ?? null} />
@@ -71,6 +76,9 @@ export function LessonPlayer({
         artifactType={lesson.takeaway_artifact_type}
         moduleTier={module.tier}
       />
+      {/* A8 (2026-05-24): Gagné event 9 — last instructional beat before
+          the next-lesson CTA tells the learner what to do on Monday. */}
+      <LessonTransferBeat transfer={lesson.transfer_md} />
       <NextLessonCTA
         nextHref={nextHref}
         nextLabel={siblings?.next?.title}

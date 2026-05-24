@@ -18,6 +18,8 @@ const basePayload: LessonPayload = {
     exercise_id: 'm2-3-first-conversation',
     takeaway_artifact_type: 'first_conversation',
     body_md: null,
+    objective_md: null,
+    transfer_md: null,
     published: true,
   },
   module: {

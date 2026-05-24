@@ -16,6 +16,9 @@ import { LessonTutor } from '@/components/addie/lesson/LessonTutor';
 import { LessonSummaryCard } from '@/components/addie/lesson/LessonSummaryCard';
 import { MaturityJourney } from '@/components/addie/lesson/MaturityJourney';
 import { ToolboxAccumulation } from '@/components/addie/lesson/ToolboxAccumulation';
+import { TrackChrome } from '@/components/addie/lesson/TrackChrome';
+import { MaturityCelebration } from '@/components/addie/lesson/MaturityCelebration';
+import { ProactiveTutorSuggestion } from '@/components/addie/lesson/ProactiveTutorSuggestion';
 import { M02Experience } from '@/components/addie/lesson/v2/M02Experience';
 import { hasAnyFoundationEntitlement } from '@/lib/addie/entitlements/check';
 import type {
@@ -71,7 +74,7 @@ async function loadPayload(
     const { data: lesson } = await svc
       .from('lessons')
       .select(
-        'id, module_id, ordinal, title, modality, duration_min, is_branched, exercise_id, takeaway_artifact_type, body_md, published',
+        'id, module_id, ordinal, title, modality, duration_min, is_branched, exercise_id, takeaway_artifact_type, body_md, objective_md, transfer_md, published',
       )
       .eq('id', lessonId)
       .eq('module_id', moduleId)
@@ -358,8 +361,7 @@ export default async function LessonPage({
       ? `/foundation/${payload.siblings.next.moduleId}/${payload.siblings.next.id}`
       : null;
     return (
-      <div className="min-h-screen">
-        <MaturityJourney variant="compact" />
+      <div className="min-h-screen pb-32">
         <M02Experience
           checks={payload.checks}
           interactiveExercise={payload.interactiveExercise ?? null}
@@ -373,14 +375,22 @@ export default async function LessonPage({
     );
   }
 
+  // MaturityJourney intentionally NOT rendered on individual lesson pages —
+  // the breadcrumb + sidebar already locate the learner, and stacking a 4th
+  // horizontal nav strip above the lesson body crowds the read. The arc is
+  // surfaced on /foundation home + /foundation/dashboard.
   return (
     <div>
-      <MaturityJourney variant="compact" />
-    <div className="mx-auto max-w-[1400px] px-4 sm:px-6 py-6 flex flex-col lg:flex-row gap-8 lg:gap-10">
+    <div className="mx-auto max-w-[1320px] px-4 sm:px-6 py-6 pb-32 flex flex-col lg:flex-row gap-8 lg:gap-10">
       <aside className="lg:order-first">
         <CourseSidebar activeModuleId={params.moduleId} activeLessonId={params.lessonId} />
       </aside>
-      <div className="flex-1 min-w-0">
+      <div className="flex-1 min-w-0 lg:max-w-[700px]">
+        <TrackChrome
+          activeTrack={payload.activeTrack ?? null}
+          moduleId={params.moduleId}
+          lessonId={params.lessonId}
+        />
         <LessonPlayer payload={payload} />
         {/* AI-generated 3-sentence recap of this lesson. Cached per
             (lesson, identity) in addie.events. Renders nothing on
@@ -389,6 +399,10 @@ export default async function LessonPage({
           lessonId={params.lessonId}
           lessonTitle={payload.lesson.title}
         />
+        {/* Proactive tutor: pattern-detection over saved artifacts.
+            Renders nothing when no pattern matches; dismissals
+            persist per pattern. */}
+        <ProactiveTutorSuggestion />
         {/* The Toolbox is EXPERIENCED, not described — visible
             accumulation at the bottom of every lesson. Per the
             Transformation Vision. */}
@@ -401,6 +415,8 @@ export default async function LessonPage({
           fixed bottom-right chip → full-screen sheet. Always mounted. */}
       <LessonTutor lessonId={params.lessonId} />
     </div>
+    {/* Stage celebration: client-side, fires once per stage threshold cross. */}
+    <MaturityCelebration />
     </div>
   );
 }

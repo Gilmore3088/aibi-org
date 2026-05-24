@@ -18,6 +18,8 @@ const payload: LessonPayload = {
     exercise_id: 'm3-2-ab-output',
     takeaway_artifact_type: 'starter_prompt_pack',
     body_md: null,
+    objective_md: null,
+    transfer_md: null,
     published: true,
   },
   module: {

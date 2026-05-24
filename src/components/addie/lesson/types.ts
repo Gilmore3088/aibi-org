@@ -40,6 +40,12 @@ export interface LessonRow {
   readonly exercise_id: string | null;
   readonly takeaway_artifact_type: ArtifactType | null;
   readonly body_md: string | null;
+  // Audit A8 (2026-05-24): alignment-triangle apex + Gagné event 9.
+  // objective_md states the verb-first observable behavior the lesson
+  // builds toward; transfer_md is the Monday-morning action that
+  // converts the lesson outcome into the learner's actual job.
+  readonly objective_md: string | null;
+  readonly transfer_md: string | null;
   readonly published: boolean;
 }
 
