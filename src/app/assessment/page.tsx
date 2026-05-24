@@ -6,6 +6,7 @@ import { useAssessmentV2, QUESTIONS_PER_SESSION } from './_lib/useAssessmentV2';
 import { QuestionCard } from './_components/QuestionCard';
 import { ProgressBar } from './_components/ProgressBar';
 import { EmailGate } from './_components/EmailGate';
+import { AssessmentEntryStrip } from './_components/AssessmentEntryStrip';
 
 // ResultsViewV2 is a ~25 KB source component (drags in PdfDownloadButton +
 // SignupModal + result-rendering helpers). It only renders after the user
@@ -67,6 +68,14 @@ export default function AssessmentPage() {
     <main className="min-h-screen">
       <h1 className="sr-only">AI Readiness Assessment</h1>
       <ProgressBar progress={state.phase === 'questions' ? state.progress : 1} />
+
+      {/* A23 + A27 (audit 2026-05-24): optional role pick + glossary
+          tooltips above the first question. Dismissible — the strip
+          should not feel gated. Mounts only during the questions
+          phase so it does not clutter the score/results phases. */}
+      {state.phase === 'questions' && state.currentQuestion === 0 ? (
+        <AssessmentEntryStrip />
+      ) : null}
 
       <div className="px-6 py-12 md:py-20">
         {state.phase === 'questions' && state.selectedQuestions.length > 0 && (
