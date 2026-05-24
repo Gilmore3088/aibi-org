@@ -662,6 +662,65 @@
   margin-top: 3px; text-transform: uppercase;
 }
 
+/* CH 05 — Ideas + prompts (A6 fix, audit 2026-05-24) */
+.aibi-briefing .ideas-list {
+  display: flex; flex-direction: column; gap: 0;
+}
+.aibi-briefing .idea-card {
+  padding: 36px 0 40px; border-top: 1px solid var(--rule-strong);
+}
+.aibi-briefing .idea-card:last-child { border-bottom: 1px solid var(--rule-strong); }
+.aibi-briefing .idea-head { margin-bottom: 22px; }
+.aibi-briefing .idea-meta {
+  display: flex; justify-content: space-between; align-items: baseline;
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--muted); font-weight: 600;
+  margin-bottom: 14px;
+}
+.aibi-briefing .idea-meta .idea-pct {
+  color: var(--terra); font-variant-numeric: tabular-nums;
+}
+.aibi-briefing .idea-title {
+  font-family: var(--serif); font-weight: 500; font-size: clamp(24px, 2.6vw, 32px);
+  letter-spacing: -0.022em; line-height: 1.1; margin: 0 0 10px; max-width: 28ch;
+}
+.aibi-briefing .idea-sub {
+  font-family: var(--serif); font-size: 16px; line-height: 1.5;
+  color: var(--ink-2); margin: 0; max-width: 56ch;
+}
+.aibi-briefing .idea-block { margin-top: 22px; max-width: 66ch; }
+.aibi-briefing .idea-block-label {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.20em;
+  text-transform: uppercase; color: var(--muted); font-weight: 600;
+  margin: 0 0 10px;
+}
+.aibi-briefing .idea-actions {
+  margin: 0; padding-left: 22px; counter-reset: idea;
+}
+.aibi-briefing .idea-actions li {
+  font-family: var(--serif); font-size: 16px; line-height: 1.55;
+  color: var(--ink); margin: 0 0 10px;
+}
+.aibi-briefing .idea-prompt {
+  margin: 0; padding: 18px 22px; background: var(--tape);
+  border-left: 3px solid var(--terra);
+  font-family: var(--serif); font-size: 15.5px; line-height: 1.55;
+  color: var(--ink); font-style: normal;
+}
+.aibi-briefing .idea-prompt-note {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em;
+  color: var(--muted); margin: 8px 0 0; line-height: 1.4;
+}
+.aibi-briefing .idea-footer-note {
+  margin: 28px 0 0; padding-top: 18px; border-top: 1px solid var(--rule);
+  font-family: var(--serif); font-size: 14px; color: var(--ink-2);
+  max-width: 60ch;
+}
+.aibi-briefing .idea-footer-note code {
+  font-family: var(--mono); font-size: 12px; background: var(--parch);
+  padding: 1px 6px; border-radius: 2px; color: var(--ink);
+}
+
 /* Return to dashboard strip */
 .aibi-briefing .docback {
   padding: 36px 0 32px; border-top: 1px solid var(--rule);

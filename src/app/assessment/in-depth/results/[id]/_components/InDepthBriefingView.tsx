@@ -29,6 +29,7 @@ import {
   shortDate,
   type DimRow,
 } from '../_lib/derive';
+import { selectIdeasAndPromptsRows } from '../_lib/ideas-and-prompts';
 import { PersonalizationStripe } from './PersonalizationStripe';
 
 interface Props {
@@ -311,6 +312,11 @@ export function InDepthBriefingView({
   const phase = composite.phase;
   const insight = insightForPhase(phase);
   const register = buildRegister(hook.imperative);
+  // A6 — three lowest dimensions get a starter artifact (the fourth
+  // marketed deliverable). Each card shows the "this week" actions and
+  // the starter prompt, extracted from the same source the free flow
+  // uses, so the two surfaces stay in sync.
+  const ideasCards = selectIdeasAndPromptsRows(rows);
 
   // Radar uses the 8 dimension percentages in display order.
   const radarSeries = rows.map((r) => r.pct);
@@ -366,14 +372,15 @@ export function InDepthBriefingView({
         <div className="contents-grid">
           <div>
             <h2>The <em>briefing.</em></h2>
-            <span className="h-sub">Five sections · ~ 18 min read</span>
+            <span className="h-sub">Six sections · ~ 20 min read</span>
           </div>
           <div className="toc">
             <a href="#ch01"><span className="n">01</span><span className="t">The synthesis<small>Composite score · phase · the big finding</small></span><span className="pg">p. 02</span></a>
             <a href="#ch02"><span className="n">02</span><span className="t">The eight dimensions, at a glance<small>One line per dimension · scores · pillars</small></span><span className="pg">p. 03</span></a>
             <a href="#ch03"><span className="n">03</span><span className="t">Dimension deep dives<small>Narrative · score · three recommendations each</small></span><span className="pg">p. 04</span></a>
             <a href="#ch04"><span className="n">04</span><span className="t">Regulatory frame<small>SR 11-7 · FFIEC · NCUA · FinCEN · CFPB · GLBA</small></span><span className="pg">p. 06</span></a>
-            <a href="#ch05"><span className="n">05</span><span className="t">Your action register + re-read<small>Eight verbs · owners · 90-day window</small></span><span className="pg">p. 07</span></a>
+            <a href="#ch05"><span className="n">05</span><span className="t">Ideas + prompts<small>Three starter artifacts you can send on Monday</small></span><span className="pg">p. 07</span></a>
+            <a href="#ch06"><span className="n">06</span><span className="t">Your action register + re-read<small>Eight verbs · owners · 90-day window</small></span><span className="pg">p. 08</span></a>
           </div>
         </div>
       </section>
@@ -635,12 +642,63 @@ export function InDepthBriefingView({
         </div>
       </section>
 
-      {/* ── CH 05 — Action register + re-read ─────────────────────────── */}
+      {/* ── CH 05 — Ideas + prompts (A6, audit 2026-05-24) ───────────── */}
       <section className="chapter" id="ch05">
         <div className="container">
           <div className="ch-head">
             <div className="left">
-              <div className="num">Chapter <em>05</em><br />Your action register</div>
+              <div className="num">Chapter <em>05</em><br />Ideas + prompts</div>
+            </div>
+            <div>
+              <h2>Three artifacts you can <em>send on Monday.</em></h2>
+              <p className="body">For your three lowest dimensions, a copy-pasteable starter — the actions to assign this week, and a prompt to send to your team. Tested in the free flow; reproduced here against your specific gaps so the work begins before the briefing closes.</p>
+            </div>
+          </div>
+
+          <div className="ideas-list">
+            {ideasCards.map((card) => (
+              <article className="idea-card" key={card.dimension}>
+                <header className="idea-head">
+                  <div className="idea-meta">
+                    <span className="idea-code">{card.dimCode} · {card.dimLabel}</span>
+                    <span className="idea-pct">{card.pct}/100</span>
+                  </div>
+                  <h3 className="idea-title">{card.artifactTitle}</h3>
+                  <p className="idea-sub">{card.artifactSubtitle}</p>
+                </header>
+
+                {card.thisWeek.length > 0 && (
+                  <div className="idea-block">
+                    <h4 className="idea-block-label">This week</h4>
+                    <ol className="idea-actions">
+                      {card.thisWeek.map((item, i) => (
+                        <li key={i}>{item}</li>
+                      ))}
+                    </ol>
+                  </div>
+                )}
+
+                {card.starterPrompt && (
+                  <div className="idea-block">
+                    <h4 className="idea-block-label">Starter prompt — send to your team</h4>
+                    <blockquote className="idea-prompt">{card.starterPrompt}</blockquote>
+                    <p className="idea-prompt-note">Paste into the chat tool your team already uses. The prompt is generic; the response will be local.</p>
+                  </div>
+                )}
+              </article>
+            ))}
+          </div>
+
+          <p className="idea-footer-note">Each starter exists in long-form at <code>{`/dashboard/toolbox`}</code> for download or copy. The Briefing prints the highest-signal blocks; the full artifact stays in your account.</p>
+        </div>
+      </section>
+
+      {/* ── CH 06 — Action register + re-read ─────────────────────────── */}
+      <section className="chapter" id="ch06">
+        <div className="container">
+          <div className="ch-head">
+            <div className="left">
+              <div className="num">Chapter <em>06</em><br />Your action register</div>
             </div>
             <div>
               <h2>Eight verbs, <em>in order, with owners.</em></h2>
