@@ -55,31 +55,34 @@ VALUES (
   NULL,
   NULL,
   $LESSON$
-You will hear three words used interchangeably in the trade press: assistant, skill, and agent. They are not the same thing, and the difference matters the moment you start building. This lesson names the three honestly — and tells you what is and is not realistic to deploy in a community bank in 2026.
+Assistant, skill, agent. Used interchangeably in trade press; not the same thing. The difference matters the moment you build.
 
 ## SCRIPT (verbatim)
 
-> "Three shapes. Three honest definitions. Then one rule for the rest of this module."
-
-> [stat] 3 | Shapes of AI work, ordered by how short the human review loop becomes | Assistant (every loop) → Skill (shorter loop) → Agent (the loop runs inside bounds). Whether step three is a person or a model, the shape of the work is identical.
+> [stat] 3 | Shapes of AI work, by review-loop length | Assistant (every loop) → Skill (shorter loop) → Agent (loop runs inside bounds).
 
 > [case:good] Assistant — the chat box
-> You ask, it answers, you decide what to do with the answer. The conversation is the product. Everything from Module 3 — the four-part brief, the Starter Prompt Pack — lives at this layer. Every step is reviewed by a human.
-> [outcome] Highest fidelity, slowest cadence. The right shape for any output that goes to a member or a regulator.
+> Ask, answer, you decide. Everything in M3 lives here. Every step reviewed.
+> [outcome] Highest fidelity, slowest cadence. Right for member- or regulator-facing output.
 
 > [case:good] Skill — the assistant with a job
-> You set it up once — system prompt, allowed inputs, what good output looks like — and you reuse it many times against the same shape of task. The Workbench Pack you built in Module 4 is five skills. The skill does one thing the same way every call. The human is still in every loop; the loop is just shorter.
-> [outcome] The right shape for recurring drafting and analysis work. Consistency + speed without giving up review.
+> Set up once; reuse many times against the same shape of task. Your Module 4 Toolbox holds your saved Skills (m4.2 first one, m4.3 role-specific, m4.4 source-aware). Human in every loop; the loop is shorter.
+> [outcome] Recurring drafting and analysis. Consistency + speed without giving up review.
 
-> [case:bad] Agent — a string of AI steps that take actions
-> Step one decides what to do. Step two does it. Step three checks the result. Step four loops back if the result is not good enough, or stops if it is. Somewhere inside that loop the agent is allowed to take actions — read a file, write a record, call an API, send a message — without asking you first. Today's agents get confused outside their sandbox, invent steps that look sensible and are not, and occasionally take an action the loop did not catch.
-> [outcome] Not yet ready for member-facing banking flows. Useful for internal-only prototypes; never connected to systems of record without a real human review point.
+> [case:bad] Agent — AI steps that take actions
+> Step 1 decides. Step 2 acts. Step 3 checks. Step 4 loops or stops. Inside that loop the agent takes actions — reads, writes, calls APIs — without asking. Today's agents drift, invent plausible-wrong steps, occasionally act outside the loop.
+> [outcome] Not yet ready for member-facing flows. Useful for internal prototypes; never on systems of record without a real review point.
 
-> "Hold those three together — assistant in every loop, skill in a shorter loop, agent that takes actions inside bounds — and you have the right map for the rest of this module. The framing for all three is the same: goal, steps, data per step, what to never do, where the human reviews. We teach the shape at the level you can ship this week."
+> [tip] Spot an oversold agent demo: "What happens if step 3 returns a plausibly wrong result?" If the answer is a hand-wave, there is no review point.
 
-> [tip] The fastest way to spot an oversold agent demo is to ask "what happens if step three returns a result that's plausibly wrong?" If the answer is a hand-wave, the agent has no real review point and should not run anywhere near a member.
+> [warn] Drafts are not deployments. Do not put a draft in front of a member, connect it to a system of record, or give it permission to move money.
 
-> [warn] Anything you prototype in this module is a draft. Drafts are not deployments. Do not put a draft in front of a member, do not connect it to a system of record, do not give it permission to move money. The Foundation Course teaches you how to frame, scope, and prototype well enough that the people who can ship it build on what you handed them. That is the bridge from banker to builder.
+> [case:good] The regulator framework that already covers this
+> Three documents govern most of what your bank does with AI — none of them are new, all of them apply: **SR 11-7** (model risk management — Skills and agents that produce output used in business decisions are models); **Interagency Guidance on Third-Party Relationships: Risk Management** (June 2023 — every provider in your AI stack is a third party, including Anthropic, OpenAI, Google); **OCC Bulletin 2023-17** (operational resilience for vendor concentration). Add the **AIEOG AI Lexicon** (Feb 2026) for the official US-government working definitions. None of this requires a new program — it requires you to recognise that the program you already have applies.
+> [outcome] Your AI prototype is a model run by a third party. SR 11-7 and TPRM are the floor.
+
+## What you build this module
+M5.2 → **Problem Backlog**. M5.3 → **PRD**. M5.4 → **Prototype URL**. M5.5 → what comes next.
 
 ## What you will build in this module
 
@@ -121,27 +124,35 @@ VALUES (
   'm5-2-problem-frame',
   'problem_backlog',
   $LESSON$
-The single most common failure mode in early AI projects is building the wrong thing well. Not "the model was bad" — the model was fine. The problem the team built for was not the problem anyone on the floor actually had. The fix is to write the problem down before you build, in a shape a builder can read in thirty seconds and say either "yes, I can help with that" or "you are pointed at the wrong thing."
+Most early AI projects fail by building the wrong thing well. The fix: write the problem down before you build, in a shape a builder reads in thirty seconds.
 
 ## SCRIPT (verbatim)
 
-> "Five questions. Each one tightens the frame. Answer them for one real problem on your desk this week — not a hypothetical, not a roadmap item, a thing that costs you time or attention right now.
->
-> **One: who.** Who has this problem? A specific role at your bank. Not 'customers' — which customers. Not 'the team' — which team. 'A teller on the consumer line Tuesday afternoon' is a who. 'The bank' is not. The narrower this is, the better every other answer gets.
->
-> **Two: what breaks.** What does the bad day look like? A concrete moment, not an abstract metric. 'Tuesday afternoon a member calls about a hold and the teller needs forty minutes to figure out which hold and why' is more useful than 'service times are too long.' Concrete moments are what a builder can build for. Abstract metrics are what consultants chase.
->
-> **Three: current workaround.** What does the person actually do today when this happens? They do something. Even if the something is 'they suffer and the member hangs up.' Naming the workaround tells the builder where the floor is. If the workaround is 'we transfer to the BSA officer,' the prototype needs to be at least as fast and at least as accurate as that. If the workaround is 'nothing — we apologise,' the floor is lower than you might think.
->
-> **Four: what good looks like.** If the problem were solved, what would the Tuesday afternoon look like instead? Describe the moment, not the solution. 'The teller answers in under five minutes with the right explanation' is a frame. 'We deploy an agent' is not — that is a guess at the means. Means are easy. Outcomes are the whole point.
->
-> **Five: why now.** Is there an external pressure — a regulator deadline, a churn spike, a competitor — or is this a problem you have been carrying for years that just got hot? 'Why now' tells you whether you have permission to build, or whether you are about to fight for budget. Both answers are useful; pretending you do not need to know is not.
->
-> Hold those five together. Who, what breaks, current workaround, what good looks like, why now. Three filled frames make a problem backlog. The best one becomes your Lesson 5.3 PRD. The other two stay in your Toolbox for later — most people end up building one of them inside six months."
+> [stat] 5 | Five questions, one frame | Who · What breaks · Current workaround · What good looks like · Why now. Three filled frames = Problem Backlog.
 
-> [tip] If two of your three problems share the same "who," that is a signal — the underlying problem is bigger than either symptom. Frame the bigger problem too; it usually becomes the better PRD.
+> [case:good] Who
+> A specific role. "A teller on the consumer line Tuesday afternoon," not "customers" or "the team."
+> [outcome] Narrower who → better every other answer.
 
-> [warn] A problem framed in solution language ("we need an agent that monitors holds") cannot be PRD'd, because every reader will picture a different agent. Force the frame back to outcome language and the conversation gets honest fast.
+> [case:good] What breaks
+> Concrete moment, not abstract metric. "Tuesday a member calls about a hold; teller needs forty minutes" beats "service times are too long."
+> [outcome] Builders build for moments. Consultants chase metrics.
+
+> [case:good] Current workaround
+> What the person actually does today. Transfer to BSA officer? Apologise? Even "suffer and the member hangs up" is information.
+> [outcome] The workaround tells the builder where the floor is.
+
+> [case:good] What good looks like
+> Describe the moment, not the solution. "Teller answers in under five minutes with the right explanation" is a frame. "Deploy an agent" is a guess at the means.
+> [outcome] Means are easy. Outcomes are the point.
+
+> [case:good] Why now
+> External pressure (regulator, churn, competitor) or year-old pain that just got hot? Tells you whether you have permission or a budget fight ahead.
+> [outcome] Pretending not to need to know is not useful.
+
+> [tip] Two problems share the same "who"? The underlying problem is bigger than either symptom — frame it too.
+
+> [warn] Solution-language frames ("we need an agent that monitors holds") cannot be PRD'd — every reader pictures a different agent.
 
 ## PRODUCTION
 
@@ -174,30 +185,54 @@ VALUES (
   3,
   'Writing a lightweight PRD',
   'interactive',
-  15,
+  30,
   false,
   'm5-3-prd-builder',
   'prd',
   $LESSON$
-A product requirements document does not have to be long. The version that keeps a small build honest fits on one page, takes thirty minutes to write the first time and ten minutes the next, and is the single most useful artifact you can hand a builder — including a model — when you want a real thing back.
+One-page PRD. Plan **30 minutes** the first time, 10 the next. The single most useful artifact when you want a builder — model or human — to come back with a real thing.
 
 ## SCRIPT (verbatim)
 
-> "Three things about a working PRD before we walk the nine sections. They are what separates a one-page PRD that ships from a one-page PRD that gets ignored.
->
-> **One: a PRD is a contract, not a wish list.** Every line on the page is a promise to build or a promise not to build. Lines that mean neither are noise, and noise is what makes long PRDs unreadable. If a sentence does not narrow the build, cut it. The builder reads ten pages of careful PRD the same way they read one — looking for what is in scope and what is out.
->
-> **Two: the goal sentence is the whole PRD compressed.** One sentence, outcome not feature. 'A teller can find the right hold explanation in under two minutes' is a goal a builder can build for. 'We will build a hold-explainer skill' is a feature disguised as a goal, and it tells the builder nothing about whether they succeeded. Spend ten minutes on the goal sentence; the other eight sections fall out of it.
->
-> **Three: the non-goals section is what stops scope creep.** Two or three lines. 'Not replacing the core system. Not handling escalations. Not for customer-facing surfaces yet.' Every PRD that ships had non-goals. Every PRD that turned into a quarter-long mess did not. Non-goals are the most useful section and the one people skip first.
->
-> Hold those three together — contract not wish list, outcome goal in one sentence, non-goals named explicitly — and the builder walks the remaining six sections in fifteen minutes. The PRD builder below produces a single markdown file. Save it. Lesson 5.4's prototyping tools read this kind of document extremely well; pasting your PRD into Lovable, Replit, Claude Code, or v0 is often the entire prompt you need."
+> [stat] 3 | Three rules before nine sections | Contract not wish list · Goal in one sentence · Non-goals stop scope creep.
 
-> [tip] Write the success criteria right after the goal, not at the end. If you cannot name two or three measurable outcomes the moment after you write the goal, the goal is still too fuzzy. Tighten the goal first, then the criteria are easy.
+> [case:good] Contract, not wish list
+> Every line is a promise to build or not build. If a sentence doesn't narrow the build, cut it.
+> [outcome] Builders read ten pages the same way as one — for what's in scope.
 
-> [warn] A success criterion that reads "people will say they like it" fails the bar. The bar is something you could measure without asking anyone — time saved, errors avoided, completions before escalation. If the only signal is sentiment, you cannot tell whether the prototype worked or whether the team is being polite.
+> [case:good] Goal sentence = whole PRD compressed
+> Outcome, not feature. "A teller finds the right hold explanation in under two minutes." Not "we will build a hold-explainer skill."
+> [outcome] Spend ten minutes on the goal. The other eight sections fall out.
 
-## Reference — the nine sections in full
+> [case:good] Non-goals stop scope creep
+> Two or three lines. "Not replacing the core system. Not handling escalations. Not for customer-facing yet." Every shipped PRD had them.
+> [outcome] The most useful section and the one people skip first.
+
+> [tip] Write success criteria right after the goal. If you can't name two or three measurable outcomes immediately, the goal is still fuzzy.
+
+> [warn] "People will say they like it" fails the bar. Measure without asking — time saved, errors avoided, completions before escalation.
+
+## Reference — the nine sections at a glance
+
+Audit A16 (2026-05-24): the nine PRD sections render as one reference
+table so the entire artifact shape is visible in one scan, with the
+length budget for each section spelled out. The prose paragraphs below
+the table remain for the per-section depth.
+
+| # | Section | What goes here | Length budget |
+|---|---|---|---|
+| 1 | Goal | One sentence. Outcome you want, not the feature you imagine. | 1 sentence |
+| 2 | Non-goals | What this is explicitly NOT trying to do. | 2–3 lines |
+| 3 | Users | Title, team, what they were doing the minute before. | 1 paragraph |
+| 4 | Constraints | What must be true to ship — time, budget, data discipline, regulatory. | 3–5 bullets |
+| 5 | Success criteria | Measurable outcomes — time saved, errors avoided, completions before escalation. | 2–3 metrics |
+| 6 | Scope (in) | Pieces you are building. More than 7 = too big for one week. | 3–7 bullets |
+| 7 | Scope (out) | Pieces you are deferring. Same length as in-scope. | 3–7 bullets |
+| 8 | Dependencies | What must be in place before you start, and who owns each. | 2–5 named items |
+| 9 | Risks | Two or three ways this gets ugly + the mitigation or de-scope move. | 2–3 risks |
+
+The prose below walks each section in turn. Use the table for the next
+PRD you draft; the prose is for the one you stall on.
 
 **Goal.** One sentence. The outcome you want, not the feature you imagine.
 
@@ -253,29 +288,48 @@ VALUES (
   'm5-4-prototype-launch',
   'prototype',
   $LESSON$
-The in-app time for this lesson is fifteen minutes. The actual build is the next hour or two of your week, in the tool of your choice, outside this course. We do not embed the builder — you use your own account, your own keys, your own work. We hand you the PRD you wrote in 5.3, point you at four prototyping tools, and ask you to come back with a URL.
+Fifteen minutes here; the build is the next hour or two outside this course. Bring back a URL.
 
 ## SCRIPT (verbatim)
 
-> "Three things to get right before you open the prototyping tool. The build itself is the easy part once these three are settled.
->
-> **One: pick the tool that fits the shape of what you are building.** Four candidates, each best at a different shape. Lovable for marketing pages and small web apps — the things you would have asked a designer-developer to put together in a weekend. Replit Agents when you want a working piece of software at the end, a script or small tool that actually runs. Claude Code when you want real files in a real project with version control that another developer at the bank could pick up and continue. v0 for UI/UX prototypes that render as React and act as clickable mockups your team can react to. Match the tool to the artifact, not to the brand you have heard most about. The launcher below maps each tool to the PRD shapes it handles best.
->
-> **Two: open the tool in a new tab and paste your PRD as the opening prompt.** Your saved PRD from 5.3 is a complete brief — goal, non-goals, users, constraints, success criteria, scope. Every modern prototyping tool reads that shape well. Paste the whole document. Resist the urge to summarise; the constraints and non-goals are exactly what stops the tool from drifting into a generic build. Then iterate for an hour. Two hours if the prototype is more involved. The first useful version usually arrives in the second iteration, not the first.
->
-> **Three: build against synthetic data, every time.** Everything Module 0 said about not pasting customer data into AI tools applies tenfold here. A prototype builder is an AI tool with extra hands — file system access, code execution, sometimes a deploy step. Use invented names, invented account shapes, invented amounts. If your prototype needs realistic banking material to make the demo land, use the synthetic patterns from Module 4. The temptation to paste real records 'to make the demo more compelling' is the single most expensive mistake learners make at this stage. Do not be the test case.
->
-> Hold those three together. Right tool for the shape, PRD as opening prompt, synthetic data only. When you come back, paste the URL into the launcher and write a one-paragraph description of what it does. That is your Prototype artifact — saved in your Toolbox, ready to share when someone asks 'what are you working on?'"
+> [stat] 4 | Four prototyping tools, four shapes | Lovable (pages/apps) · Replit Agents (running scripts) · Claude Code (real files + version control) · v0 (React UI mockups).
 
-> [tip] "Done enough" means a stakeholder can click through it, the core moment from the PRD's goal works end-to-end, and you would walk a peer through it without apologising. Rough edges fine. Missing edge cases fine. Screenshot not fine — you need a live link, even if it is gated behind auth.
+> [case:good] Pick the tool that fits the artifact
+> Match the tool to what you are producing, not to the brand you have heard about most. The launcher maps each to the PRD shapes it handles best.
+> [outcome] One PRD → one tool → one prototype.
 
-> [warn] The prototype builder will sometimes suggest pulling in "a sample of real customer data to make the demo more realistic." The right answer is always no. Build with synthetic; the demo lands the same and the audit trail stays clean.
+> [case:good] PRD as opening prompt
+> Paste the whole document. Constraints and non-goals are what stops the tool drifting into a generic build. Iterate for an hour. The useful version arrives on the second iteration, not the first.
+> [outcome] Do not summarise. Paste it all.
+
+> [case:good] Synthetic data only
+> Prototype builders have hands — file access, code execution, deploy steps. Invented names, account shapes, amounts. M4's synthetic patterns are the template.
+> [outcome] "Paste real records to make the demo land" is the most expensive mistake at this stage.
+
+> [tip] "Done enough" = a stakeholder clicks through, the PRD's core moment works end-to-end, you walk a peer through without apologising. Live link required — screenshot does not count.
+
+> [warn] Builders will sometimes suggest "a sample of real customer data." Answer: no. Synthetic. Always.
+
+> [case:good] Tool · what it produces · where it runs · what IT needs to know
+> The four tools land in different blast-radius zones. Match the tool to the artifact AND to your institution's tolerance:
+>
+> | Tool | What it produces | Where the code runs | Hands on real systems? | IT-handoff line |
+> |---|---|---|---|---|
+> | **v0** (Vercel) | React UI mockups, design surfaces only | Browser preview + Vercel sandbox | No. Static front-end only. | Lowest blast radius. Treat the output as a wireframe. |
+> | **Lovable** | Pages + small web apps with optional Supabase backend | Vendor cloud; you get a shareable URL | Backend only if you wire one up. No access to your stack. | Self-contained vendor app. List the vendor under TPRM before connecting any non-synthetic data. |
+> | **Replit Agents** | Running scripts and small apps inside a Replit dev container | Replit cloud container with internet + shell + arbitrary package install | Inside the container, yes. Outside (your machine, your bank's systems) no — unless you explicitly export and run code. | Medium blast radius. Anything the agent installs lives in their environment, not yours. Vendor onboarding required before connecting any real source. |
+> | **Claude Code** | Real files + git history on your laptop, runs as you authorise | Your machine. Shell + file system + browser + git access, with explicit-permission prompts. | Yes — within whatever your laptop can reach. | Highest blast radius. Run it from a clean directory, on synthetic data, with `--restrict` permissions until IT signs off on a wider scope. |
+>
+> [outcome] Pick the smallest blast radius that produces the artifact you actually need. v0 for a UI demo. Lovable for a working web demo. Replit Agents for a script or small backend. Claude Code only when the prototype IS code your team will continue — and then only after IT has scoped its permissions.
+
+> [warn] **Before you ship a URL from any of these tools to a stakeholder**, send the tool name and a one-line description to your IT director. None of these are "free trial" decisions if real bank data is in scope. Under the Interagency TPRM Guidance (June 2023), each is a third-party relationship the moment you connect anything beyond synthetic data.
 
 ## PRODUCTION
 
-- Launcher UI lists four prototyping tools as cards, each with a one-line description and a "match to your PRD" indicator.
-- After the learner returns and submits a URL + description, the launcher shows the saved Prototype artifact in the Toolbox sidebar.
-- Closing card: "You shipped a prototype. That is the bridge from banker to builder."
+- Launcher UI lists four prototyping tools as cards, each with a one-line description, a blast-radius badge (low/med/high), and a "match to your PRD" indicator.
+- The blast-radius matrix renders inline above the launcher on first visit; collapsible after.
+- After the learner returns and submits a URL + description, the launcher shows the saved Prototype artifact in the Toolbox sidebar with the tool's blast-radius badge inherited.
+- Closing card: "You shipped a prototype. That is the bridge from banker to builder. The IT-handoff line is what keeps the bridge open."
 $LESSON$,
   true
 )
@@ -307,28 +361,47 @@ VALUES (
   NULL,
   NULL,
   $LESSON$
-You finished. That is the part most people skip past, so do not skip it yet. Six modules ago you opened this course wondering whether AI was useful in a community bank or just loud. You now have a Data Discipline Card you would defend in a meeting, an AI Toolkit Map for your shop, a First Conversation framing for your team, a Starter Prompt Pack you can lift on Monday, a Workbench Pack with five working skills, a Problem Backlog with three real problems, a PRD for the best one, and a prototype URL you built yourself. That is not AI literacy. That is a practice.
+You finished. You now hold a Data Discipline Card, an AI Toolkit Map, a First Conversation, a Starter Prompt Pack, three saved Skills in your Toolbox (M4.2–M4.4), a Problem Backlog, a PRD, and a prototype URL. That is not AI literacy. That is a practice.
 
 ## SCRIPT (verbatim)
 
-> "Three things to settle before you close the tab. They decide whether the practice you just built lasts a quarter or a year.
->
-> **One: pick one direction for the next ninety days.** Most learners who finish this course go in three directions and none of them are wrong. The first is deepen one skill — pick one of the five Workbench skills, sharpen it for a month, and quietly become the person at the bank who can hand-roll a useful AI workflow on demand. The second is bring a peer along — walk one teammate through the modules, which is how a practice becomes a culture. The third is build the prototype out — take the Lesson 5.4 URL, find one stakeholder who cares, and turn it from a draft into a small real thing. Pick one. Doing all three at once is how the practice fades by month two.
->
-> **Two: know what comes after the Foundation Course.** Beyond this course, the Institute is shaping two further credentials. AiBI-S, Specialist, goes deep on one operational area you have already chosen — Operations, Lending, Risk, IT. AiBI-L, Leader, is for the people who will own AI as a function inside their institution. Neither is open yet. We are not making promises about dates. We will tell you when they are ready, and the easiest way to hear is to keep your Toolbox saved with us. There is no scarcity script here — you have the artifacts, you do not need the badges to do the work.
->
-> **Three: keep the practice shipping.** The practice fades fastest when you stop producing artifacts. Pick one small artifact a week — a refined prompt, a new skill, a tightened PRD, a one-page summary you would not have written before. Add it to your Toolbox. Open the Toolbox when a colleague asks you a question you have already answered. The Toolbox is a memory aid; the work is yours, and the work that compounds is the work that gets shipped.
->
-> Hold those three together. One direction for ninety days, the next two credentials when they open, and one shipped artifact a week. Close the tab. Open one prompt from your Pack. Use it before you stand up from this desk. That is the whole point."
+> [stat] 3 | Three things before you close the tab | Pick one ninety-day direction · Know what comes next · Ship one artifact a week.
 
-> [tip] If you cannot decide between the three ninety-day directions, default to "bring a peer along." Teaching someone else what you just learned is the single fastest way to find out what you actually understand and what you only think you do.
+> [case:good] Pick one direction for ninety days
+> Deepen one skill (become the in-house AI workflow person), bring a peer along (practice → culture), or build out the prototype (draft → real thing).
+> [outcome] Pick one. All three at once is how the practice fades by month two.
 
-> [warn] The fastest way to lose this practice is to wait for permission. Nobody at your institution is going to walk up and ask whether you have started using AI for that recurring task. You will start, you will ship a small thing, and the conversation about scale will come to you because the artifacts are already there.
+> [case:good] What comes after Foundation
+> AiBI-S (Specialist — Operations, Lending, Risk, IT). AiBI-L (Leader — own AI as a function). Neither open yet; no scarcity script. Keep your Toolbox saved with us to hear first.
+> [outcome] You have the artifacts. You do not need the badges to do the work.
+
+> [case:good] Ship one artifact a week
+> A refined prompt. A new skill. A tightened PRD. The Toolbox is memory; the work is yours.
+> [outcome] The work that compounds is the work that gets shipped.
+
+> [tip] Can't decide on a direction? Default to "bring a peer along." Teaching is the fastest way to find what you actually understand.
+
+> [warn] The fastest way to lose the practice is to wait for permission. Nobody walks up and asks. You start; the conversation about scale comes to you.
+
+> [case:good] For leaders — the institutional brief
+> If you are an executive or board member, the practice you finished is one half of the work. The other half is the institutional decision: what does our bank do about AI in the next ninety days, and who decides what? Pull the patterns you have already produced into a one-page brief your board chair, examiner, or peer at the ICBA conference can read in under five minutes.
+> [outcome] **AI Governance One-Pager** (printable) — six fields:
+> 1. **Scope** — three or four use cases sanctioned (drawn from your Problem Backlog).
+> 2. **Off-limits** — the data-discipline rule, named documents (SR 11-7, Interagency TPRM Guidance June 2023, AIEOG AI Lexicon Feb 2026).
+> 3. **Vendor list** — every AI provider currently in use, with TPRM status.
+> 4. **Roles** — who decides scope, who reviews outputs, who briefs the board.
+> 5. **Risk-appetite statement** — what does the bank tolerate (e.g. "internal drafting only; no member-facing or system-of-record automation in the first ninety days").
+> 6. **Review cadence** — quarterly, with a single named owner.
+>
+> This is the document the leadership track has been building toward across M0–M5. It is also the document a community-bank CEO can hand to a KDOB, FDIC, OCC, or NCUA examiner without flinching.
+
+Close the tab. Open one prompt from your Pack. Use it before you stand up.
 
 ## PRODUCTION
 
 - Audio lesson — body_md serves as the narration transcript.
 - Close on the artifact-count card: list of every Toolbox artifact the learner produced across M0–M5, with a single CTA: "Open your Toolbox."
+- The [case:good] **AI Governance One-Pager** renders as a downloadable artifact card for leadership-track learners; for other tracks it renders as an optional preview ("if you bring this to your leadership"). When the Toolbox accumulator includes a Problem Backlog + PRD, the one-pager template pre-fills Scope, Off-limits, and Roles.
 - Final still: "From 'I've heard of it' → 'I built it.' The bridge held."
 $LESSON$,
   true

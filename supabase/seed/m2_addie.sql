@@ -50,31 +50,27 @@ INSERT INTO addie.lessons (
 VALUES (
   'm2.1', 'm2', 1, 'Getting access', 'video', 10,
   false, NULL, NULL,
-  $$Before you touch a tool you need an account, and the way you get that account quietly signals to your institution how seriously you take the rules. This lesson walks the three decisions that come up in the first thirty seconds — and what to do when the firewall says no.
+  $$Account setup is two minutes of work and three judgement calls. Get them right and you never revisit.
 
 ## SCRIPT (verbatim)
 
-> "Account setup is two minutes of work and three small judgement calls. Get the judgement calls right and you never have to revisit them."
-
-> [stat] 3 | Judgement calls in the first thirty seconds of sign-up | Whose email signs the account · what the SSO button actually does · what to do when IT has blocked the domain. Get all three right and you never revisit them.
+> [stat] 3 | First-thirty-seconds judgement calls | Whose email signs the account · what the SSO button actually does · what to do when IT has blocked the domain.
 
 > [case:good] Pick the right identity for the right purpose
-> Most consumer tools — Claude, ChatGPT, Gemini — let you sign up with a work or a personal email. The free tier on any of them is capable enough for everything in this course. If your institution has rolled out a paid plan (Claude for Work, ChatGPT Enterprise, Microsoft 365 Copilot), use the single sign-on link IT sent. If nothing has been rolled out yet, a personal-email free account on your personal device is fine for learning — the Module 0 data rule still holds.
-> [outcome] Two minutes of decision, sets you up cleanly for the rest of the course.
+> Consumer tools (Claude, ChatGPT, Gemini) accept work or personal email — free tier is fine for this course. Sanctioned enterprise tool? Use the SSO link IT sent.
+> [outcome] Clean setup for the rest of the course.
 
 > [case:good] Read the SSO screen before you click
-> The "Continue with Google" / "Continue with Microsoft" button is convenient. It also ties the account to your workplace identity, which means the institution can see usage data and IT can revoke access. For training on personal time, plain email-and-password avoids that entanglement. For tools your institution has actually sanctioned, SSO is the right answer — your activity should be visible.
-> [outcome] You make the visibility choice deliberately, not by reflex.
+> "Continue with Google/Microsoft" ties the account to your workplace identity. Right answer for sanctioned tools; wrong answer for everything else.
+> [outcome] Make the visibility choice deliberately, not by reflex.
 
 > [case:bad] Routing around an IT firewall block
-> A blocked claude.ai or chat.openai.com at the firewall is almost never "no forever." It usually means IT wants visibility, a risk review is in flight, or a vendor decision has not been made. A personal hotspot on a work device, an emailed file to a personal account, or a screenshot pasted into a chat will turn a learning question into a data-loss incident.
-> [outcome] Ask which tool is sanctioned. Use that one. The block is a signal, not a puzzle.
+> A block is almost never "no forever" — it means IT wants visibility or a vendor decision is pending. Personal hotspots and emailed files turn a learning question into a data-loss incident.
+> [outcome] Ask which tool is sanctioned. The block is a signal, not a puzzle.
 
-> "Hold those three together: pick the right identity for the right purpose, read the SSO screen, and treat a firewall block as a signal not a puzzle. The sandbox in Lesson 2.3 runs without any of this — but by Module 3 you will want a real model on a real account, and you want that account set up cleanly the first time."
+> [tip] If you are not sure your institution has a sanctioned tool, ask in writing — yes gives you the right tool, no gives you cover to learn on personal accounts.
 
-> [tip] If you are not sure whether your institution has a sanctioned tool yet, ask in writing — a short email to IT or your risk officer. The answer is useful either way: a yes gives you the right tool, a no gives you cover to learn on a personal account.
-
-> [warn] The single biggest tripwire in this lesson is the SSO button. Once you've clicked "Continue with [your institution]," the account is wired to your employer. That is correct for sanctioned tools and wrong for everything else. Read the screen.
+> [warn] The SSO button is the biggest tripwire. Once you have clicked "Continue with [institution]" the account is wired to your employer. Read the screen.
 
 ## PRODUCTION
 
@@ -106,25 +102,27 @@ INSERT INTO addie.lessons (
 VALUES (
   'm2.2', 'm2', 2, 'What each tool is for', 'video', 12,
   false, NULL, NULL,
-  $$The tools all look like a chat box. They are not all the same job. Four families show up in a community bank, each with a clear best-fit task — and reaching for the wrong family is the single most common reason a new AI user concludes "this thing isn't very good."
+  $$Same chat-shaped interface, four different jobs. Reach for the wrong family and "this thing isn't very good."
 
 ## SCRIPT (verbatim)
 
-> "Four families. Same chat-shaped interface. Different jobs. Once you can name the four, you stop fighting the wrong tool.
->
-> **One: the thinking partner.** Claude, ChatGPT, Gemini. Best for drafting a member email, summarising a long policy in plain English, explaining a concept to a new hire, restructuring a messy meeting note, comparing two options side by side. Treat it like an articulate junior colleague who reads fast, never gets tired, and occasionally confidently invents a fact. It will still hallucinate. You still check. This is where eighty percent of your weekly work lives.
->
-> **Two: the research assistant.** Perplexity, ChatGPT with search turned on, Claude with search. Best for looking up a public regulation, finding a published study, getting cited links back instead of free-floating prose. The model is paired with a search engine and shows you where the answer came from. Use this whenever 'what is the current rule' matters — last Tuesday's OCC bulletin, a Reg E section, the FDIC's most recent quarterly figure. The citation is the point.
->
-> **Three: the construction crew.** Replit Agents, Lovable, v0, Claude Code. Best for turning a description into running software — a small internal tool, a dashboard, a script, a prototype. You are not the engineer here. You are the product owner describing what you want. This is where 'vibe coding' lives. It is real, it works, and it is overkill for most of what you do day to day. We touch builders again in Module 5.
->
-> **Four: the embedded copilot.** Microsoft 365 Copilot, Google Workspace Gemini, Zoom AI Companion. Best when the file, the meeting, or the inbox itself is the input you want help with — summarise this meeting, draft a reply to this email, build a first-pass deck from this Word doc. The advantage is that the tool already sees your environment. The trade-off is that the tool already sees your environment, so the licensing and tenant settings have to be right or the data discipline rule gets quietly violated by the tool itself.
->
-> Hold those four together as a routing decision: thinking partner for most drafting and analysis, research assistant when the source matters, construction crew when you are building, copilot when the input is the file in front of you. Pick the family that fits the job, not the family that fits the icon on your taskbar."
+> [stat] 4 | Four tool families | Thinking partner · Research assistant · Construction crew · Embedded copilot. Pick the family that fits the job, not the icon on your taskbar.
 
-> [tip] When a chat answer feels thin, the most common fix is not 'try harder' — it's 'switch families.' If you keep asking a plain thinking-partner for today's prime rate, you will keep getting plausible-sounding wrong answers. Move to a research assistant. Same question, different bucket, real citations.
+Audit A16 (2026-05-24): the four families render as a single table so the
+columns line up and the eye can compare best-fit work side-by-side. The
+[case:good] card stack version cluttered the visual rhythm — Pair 2 (Sara)
+flagged it as a Tufte-rendering opportunity the renderer now supports.
 
-> [warn] An embedded copilot inside Microsoft 365 or Google Workspace can only honour your institution's data boundary if your institution has actually licensed it on the right tenant. The branded button looks the same either way. Confirm with IT before treating a copilot as 'safe by default' for internal documents.
+| Family | Example tools | What it is best at | Watch-out |
+|---|---|---|---|
+| Thinking partner | Claude · ChatGPT · Gemini | Drafting, summarising, explaining, comparing — 80% of weekly AI work | Reads like an articulate junior colleague. Verify the load-bearing parts. |
+| Research assistant | Perplexity · ChatGPT search · Claude search | Live web with citations — "what is the current rule" questions | The citation is the point — open it before quoting. |
+| Construction crew | Replit Agents · Lovable · v0 · Claude Code | Briefs in, working software out — you are product owner, not engineer | Real, works, overkill for daily work. Module 5 territory. |
+| Embedded copilot | M365 Copilot · Workspace Gemini · Zoom AI | The file, meeting, or inbox is the input — already inside your tools | Licensing and tenant settings must be right or data discipline breaks at the tool. |
+
+> [tip] Thin answer? The fix is usually "switch families," not "try harder." Plain thinking-partner cannot tell you today's prime — move to a research assistant.
+
+> [warn] Branded copilot buttons look identical whether licensed on the right tenant or not. Confirm with IT before trusting any copilot with internal documents.
 
 ## PRODUCTION
 
@@ -155,23 +153,31 @@ INSERT INTO addie.lessons (
 VALUES (
   'm2.3', 'm2', 3, 'Your first conversation', 'sandbox', 15,
   false, 'm2-3-first-conversation', 'first_conversation',
-  $$First contact. The sandbox below talks to the same Anthropic model you would use on claude.ai, with one difference: the guardrails are appropriate to a training environment, which means you can be curious without being careful. By the time you finish this lesson, the strangeness will be gone and a real model will feel like ordinary software.
+  $$First contact. The sandbox talks to the same Anthropic model as claude.ai, with training-appropriate guardrails. By the end, a real model feels like ordinary software.
 
 ## SCRIPT (verbatim)
 
-> "Three things to do in the sandbox, in order. Each one is intentionally small. Cleverness is not the point — the point is to see what the model actually returns to a banker's question.
->
-> **One: pick a starter prompt from the list.** They are written from the seat of a community-bank or credit-union professional. Pick the one closest to your role; if nothing fits perfectly, pick the one you are most curious about. Hit run.
->
-> **Two: read the response slowly the first time.** Notice the shape — the way it opens, the way it structures a list, the way it closes. Notice the length, which is usually a hair longer than you would have written yourself. Notice what is useful and what you would cut. The shape is information about the model; it tells you what to ask for next time.
->
-> **Three: optionally, give the model a short public passage as context.** A paragraph from an interagency advisory. A public CFPB rule summary. A press release from another bank. Paste it into the optional context box, ask the model to summarise or rephrase it, and watch how the answer changes when the model has something concrete to work from. Public material only — the same rule from Module 0 applies, and the sandbox will block a paste that looks like PII.
->
-> When the response comes back, save it as your First Conversation artifact. You will pull it back out in Module 3 when we look at how prompting changes the answer. That comparison is more useful if today's version is honest — so resist the urge to keep re-running until the answer impresses you. The first imperfect answer is the better starting point."
+> [stat] 3 | Three small moves | Pick a starter · Read slowly · Add public context (optional). Cleverness is not the point.
 
-> [tip] If the model's first response is shorter than you wanted, tell it: "Give me three more paragraphs of detail on the second point." Specificity is the lever. You do not have to start over.
+> [case:good] One — pick a starter prompt
+> Written from a community-bank seat. Closest to your role, or most curious. Hit run.
+> [outcome] No setup required. The model answers.
 
-> [warn] The sandbox will warn you and block the send if your paste contains anything that looks like an account number, SSN, or full member name. The block is a feature. Outside this course, no public tool catches that for you — the discipline has to be yours.
+> [case:good] Two — read the first response slowly
+> Notice shape, length, what's useful, what you would cut. The shape tells you what to ask for next time.
+> [outcome] Information about the model, not just an answer.
+
+> [case:good] Three — give it a public passage as context (optional)
+> Interagency advisory paragraph, public CFPB summary, another bank's press release. Watch the answer change when the model has something concrete to work from.
+> [outcome] Public material only. The PII-block fires if you forget.
+
+> [warn] "Public" is the floor, not the ceiling. Your bank may treat regulator correspondence, supervisory letters, vendor proposals marked Confidential, or examiner draft findings as gated even when the underlying source is published. Asking a model about a public document is fine; pasting a document your institution has not cleared for external channels is a different question. **When in doubt, check the policy and the channel before the paste.**
+
+> [tip] Short response? Say "give me three more paragraphs on the second point." Specificity is the lever. Do not start over.
+
+> [warn] The sandbox catches the shapes the screen can see — formatted SSNs (dashed, spaced, dotted), 8–12-digit account-number runs, Luhn-valid payment-card numbers, emails, phone numbers, DOB-in-context. It does **not** detect names or free-text descriptions of real members. Treat the screen as a backstop; the habit is yours. (Outside this course, no public tool catches even what this one does.)
+
+Save the response as your First Conversation. Module 3 pulls it back out for comparison — so resist re-running until "impressive." The first honest answer is the better starting point.
 
 ## PRODUCTION
 
@@ -203,23 +209,29 @@ INSERT INTO addie.lessons (
 VALUES (
   'm2.4', 'm2', 4, 'Where AI fits in your week', 'worksheet', 10,
   true, 'm2-4-where-ai-fits-worksheet', 'where_ai_fits',
-  $$You have seen the tools, you have had one conversation. Before you leave Module 2, get concrete. Where in your actual week would a model save you time? Vague answers produce vague prompts in Module 3. Specific answers produce a Starter Prompt Pack you reach for on a Monday.
+  $$Where would a model save you time *this* week? Vague answers produce vague prompts in M3. Specific answers seed your Starter Prompt Pack.
 
 ## SCRIPT (verbatim)
 
-> "Three rules for filling out the worksheet honestly. Honest beats clever every time, because the worksheet feeds the prompts you will actually build next.
->
-> **One: pick recurring moments, not exceptional ones.** A vendor question you answer four times a quarter, not the once-in-five-years exam finding. A member email you draft a variant of every week, not the unique escalation. The whole point of a Toolbox is to compress the work you do over and over. One-offs do not earn their place there.
->
-> **Two: be specific about the artifact, not the wish.** 'Save me time on emails' is a wish. 'Draft a calm reply to a member who feels an overdraft fee was unfair' is an artifact. The first cannot be prompted. The second turns into a working prompt in fifteen minutes. If a field on the worksheet feels generic, ask 'what would the file or message look like at 9am on Monday?' and write that.
->
-> **Three: name the line you will not cross.** Every track's worksheet ends with the field 'one thing I would never put through any AI tool, no matter how convenient.' That line is yours, not ours. Writing it down now makes it easier to hold later, when a colleague suggests a workaround that feels harmless. Your floor in writing is worth more than your floor in your head.
->
-> Hold those three together. Recurring not exceptional, artifact not wish, floor in writing. The worksheet you save becomes the seed for your Starter Prompt Pack in Module 3, and the pack is only useful to the degree the worksheet was honest. Take ten minutes."
+> [stat] 3 | Three rules for filling honestly | Recurring not exceptional · Artifact not wish · Floor in writing. Honest beats clever.
 
-> [tip] If two of your seven fields end up identical, that is a signal — not a problem. It usually means the underlying work is a single recurring task with two faces. Note that in the margin; it becomes one prompt, not two.
+> [case:good] Recurring, not exceptional
+> The vendor question you answer four times a quarter, not the once-in-five-years finding. Toolboxes compress repeated work.
+> [outcome] One-offs do not earn their place.
 
-> [warn] Do not fill the worksheet with member names, account numbers, or specifics from a real case in front of you. The point is to describe the shape of the work, not paste the work. The data discipline rule applies inside Toolbox artifacts too.
+> [case:good] Artifact, not wish
+> "Save me time on emails" cannot be prompted. "Draft a calm reply to a member who feels an overdraft fee was unfair" can.
+> [outcome] Generic field? Ask what it looks like at 9am Monday.
+
+> [case:good] Name the line you will not cross
+> The last field — "one thing I would never put through any AI tool" — is yours, not ours.
+> [outcome] A floor in writing holds when a colleague suggests a workaround.
+
+> [tip] Two identical fields = one recurring task with two faces. Note in the margin; it becomes one prompt.
+
+> [warn] No real names, accounts, or case specifics inside the worksheet. Data-discipline applies inside Toolbox artifacts too.
+
+Ten minutes. The worksheet seeds your Starter Prompt Pack in Module 3.
 
 ## PRODUCTION
 
@@ -485,9 +497,7 @@ VALUES (
     {"id":"c","label":"You need a paid account to get longer answers.","correct":false,"explanation":"Length is about asking, not about tier."}
   ]$$::jsonb
 )
-ON CONFLICT (id) DO UPDATE SET
-  lesson_id = EXCLUDED.lesson_id,
-  ordinal = EXCLUDED.ordinal,
+ON CONFLICT (lesson_id, ordinal) DO UPDATE SET
   prompt = EXCLUDED.prompt,
   options = EXCLUDED.options;
 

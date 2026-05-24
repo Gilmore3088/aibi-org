@@ -63,31 +63,33 @@ VALUES (
   NULL,
   NULL,
   $LESSON$
-A skill is one of your good prompts, saved with the choices already made, ready to run on new material on Monday morning without retyping anything. That is the whole concept. Everything else in this module is mechanics — and the mechanics are what take you from a clever one-off prompt to a personal library your team can rely on.
+A skill is your good prompt, saved with the choices locked, ready to run on Monday without retyping anything.
 
 ## SCRIPT (verbatim)
 
-> "Three things to understand about skills before you build one. They make every other decision in this module obvious."
+> [stat] 2 | Parts of every skill | Locked choices (role · audience · length · constraints) + input slots (what changes run-to-run). Set the locked parts once; the slots prompt you next time.
 
-> [stat] 2 | Parts of every skill | Locked choices (role · audience · length · constraints) + input slots (the bits that change run to run). Set the locked parts once; the slots prompt you next time.
+> [case:good] Saved beats remembered, every time
+> Strong prompt in M3 — role, task, context, format, the constraint that stopped invented citations. Two weeks later you reach for the saved version or write a worse one in a hurry.
+> [outcome] The move underneath the move.
 
-> [case:good] Saved beats remembered, every single time
-> You wrote a strong prompt in Module 3 — role, task, context, format, the constraint that stopped the model inventing citations. Two weeks from now, when a new SR letter drops or a similar member complaint hits the queue, you will not retype that prompt from scratch. You either reach for the saved version, or you write a worse one because you are in a hurry.
-> [outcome] Save the prompt. Lock the choices underneath. The move and the move underneath the move.
+> [case:good] Anatomy — locked choices + input slots
+> Locked: role, audience, length, constraints, closing instruction. Slots: rule excerpt, complaint summary, vendor category. Name each slot with a banker-readable label.
+> [outcome] Choices freeze. Consistency is automatic.
 
-> [case:good] The anatomy — locked choices and input slots
-> Locked choices are the decisions that make your prompt work for this shape of task — the role the model plays, the audience it writes for, the length, the constraint about citations, the closing instruction to flag what was missing. Input slots are the bits that change every time — the rule excerpt, the complaint summary, the vendor category. Name each slot, give it a one-line help label.
-> [outcome] The skill prompts you for the slots next time. Choices stay frozen. Consistency is automatic.
+> [case:good] Bounded scope is the feature
+> A skill does not chain, browse, or read your inbox. One named, parameterised prompt. That boundary makes it safe to hand off, safe on a cadence, safe to defend.
+> [outcome] Agents are M5. Today: one reliable named prompt.
 
-> [case:good] Bounded scope is the feature, not the limit
-> A skill does not run on its own. It does not chain into other skills. It does not browse the web or read your inbox. It is one named, parameterised prompt with the choices locked and the slots labelled. That bounded scope is what makes the skill safe to hand to a colleague, safe to run on a regular cadence, and safe to defend in front of a regulator.
-> [outcome] Agents are Module 5. Today: one reliable named prompt at a time.
+> [tip] Pick your first skill from a Starter Pack prompt you have run at least twice. You only know the locked choices after using it by hand.
 
-> "Hold those three together. Saved beats remembered, the anatomy is choices plus slots, and the scope is bounded on purpose. If you can build one of these, you can build twenty. That personal library is what makes the rest of Module 4 worth the price."
+> [warn] Avoid skills that do five things. Three jammed together is hard to debug. Build twenty narrow skills, not three wide ones.
 
-> [tip] Pick your first skill from the prompt in your Starter Prompt Pack you have run at least twice already. A skill is most useful when it codifies something you have done by hand enough times to know what the locked choices should be.
+> [case:good] A recurring Skill against rule text is a model under SR 11-7
+> A saved prompt you reuse twenty times against the same family of inputs is — under the Federal Reserve's [SR 11-7 framework](https://www.federalreserve.gov/supervisionreg/srletters/sr1107.htm) — a "quantitative or qualitative method that produces output to be used in business decisions." That does not make Skills bad. It means treat each Skill as a low-tier model: name it, version it, note the intended use, name the human reviewer, and decide whether it generates anything member-facing or regulator-facing.
+> [outcome] Skills you keep get a name, a version, a stated use, and a reviewer. The artifact card in your Toolbox carries those four fields.
 
-> [warn] Resist the temptation to build a skill that does five things. A skill that summarises, drafts, and audits in one run is three skills jammed together, and it will be hard to debug when one of the three drifts. One skill, one shape of task. Build twenty narrow skills, not three wide ones.
+> [tip] **Three regulator anchors to remember:** **SR 11-7** (model risk management — applies whenever an output is used in a business decision); **Interagency Guidance on Third-Party Relationships: Risk Management** (June 2023) (TPRM — applies when the model is run by a vendor — i.e. Anthropic, OpenAI, Google); **the AIEOG AI Lexicon** (Feb 2026, Treasury/FBIIC/FSSCC — the official US-government working definitions for hallucination, governance, HITL, third-party AI risk, explainability).
 
 ## PRODUCTION
 
@@ -95,6 +97,7 @@ A skill is one of your good prompts, saved with the choices already made, ready 
 - Three [case:good] cards in a 3-up grid: the why, the what, the scope-as-feature.
 - Reference card at the close: "A skill is one named, parameterised prompt — bounded scope is the feature."
 - Hand off to 4.2 with a single line: "Now you build one."
+- The SR 11-7 / TPRM / AIEOG callouts ladder up to the Toolbox artifact metadata — name, version, intended use, reviewer.
 $LESSON$,
   true
 )
@@ -126,25 +129,31 @@ VALUES (
   'm4-2-build-first-skill',
   'skill_template',
   $LESSON$
-The Skill Builder below takes one of the prompts you already wrote in Module 3 and turns it into a saved, parameterised template you can run next week with new material. Four steps. Fifteen minutes. You walk out with a Skill Template artifact in your Toolbox and a working understanding of the difference between a one-off prompt and a saved skill.
+Take an M3 prompt and turn it into a parameterised template. Four steps, fifteen minutes, one Skill Template in your Toolbox.
 
 ## SCRIPT (verbatim)
 
-> "Four steps in the builder. Each one takes a minute or two. Skip any of them and the skill works once and breaks the second time.
->
-> **One: pick a source exercise.** The most natural choice is one of the prompts from your Starter Prompt Pack — the Reg-E summariser, the member-comms reply, the vendor checklist, whichever recurs most in your week. If you would rather start from the side-by-side A/B exercise in 3.2, the builder accepts that too — you lock in the audience and length you preferred and turn it into a saved skill. Either way, the source decides what controls the skill exposes.
->
-> **Two: lock the choices.** For each control the source exercise carried — role, audience, length, format, the constraints you added — make a decision. Either fix it (always teller audience, always five bullets, always 'do not invent citations') or mark it 'let me choose at run time.' Fixed choices give you consistency; runtime choices give you flexibility. Most working skills are mostly fixed with one or two runtime levers — that is the right ratio and the builder defaults to it.
->
-> **Three: name your input slots.** These are the bits that change every run. Give each slot a short, banker-readable name — 'rule_excerpt' not 'input_1,' 'complaint_summary' not 'text' — and a one-line help label that future-you will read in a hurry. The help label is where you remind yourself what kind of material goes in: 'paste the public regulatory text only — no member identifiers,' or 'describe the situation in two sentences, no names.' Slots without help labels become trip-hazards three months later.
->
-> **Four: save.** The saved skill becomes a Skill Template artifact in your Toolbox. Lesson 4.3 will turn it into a Working Skill tuned to your role. Lesson 4.4 will run it on new material and add the guardrail notes that travel with the skill. Each save is versioned, so you can keep iterating without losing the version that already worked.
->
-> Hold those four together. Source, locked choices, named slots, save. The pattern works for every shape of task and it scales — by the end of this module you will have built three skills using exactly the same four steps."
+> [stat] 4 | Four-step builder | Source · Lock choices · Name slots · Save. Skip any one and the skill works once, breaks the second time.
 
-> [tip] Name your skill the way you would name a procedure document, not the way you would name a file. "Reg summary for tellers" is a name your future self will recognise. "untitled_skill_v3_FINAL" is not.
+> [case:good] One — pick a source
+> A Starter Pack prompt you have run twice. The source decides what controls the skill exposes.
+> [outcome] Reg-E summariser, member-comms reply, vendor checklist — pick the recurring one.
 
-> [warn] The skill runner enforces the same PII screen the sandbox does. A slot value that trips the screen — a real name plus an account number, a full SSN, a draft SAR narrative — is rejected before the model sees it. The screen is not a substitute for the data-discipline rule; it is a backstop. The habit is still yours.
+> [case:good] Two — lock the choices
+> Each control: fix it (always teller audience, always five bullets) or mark "choose at run time." Mostly-fixed with one or two runtime levers is the right ratio.
+> [outcome] Consistency where it matters, flexibility where it doesn't.
+
+> [case:good] Three — name your slots
+> Short banker-readable name + one-line help label future-you will read in a hurry. "rule_excerpt — paste public reg text only, no identifiers" survives three months.
+> [outcome] Unlabelled slots are trip-hazards.
+
+> [case:good] Four — save
+> Skill Template lands in your Toolbox. 4.3 tunes it to your role; 4.4 verifies on new material. Every save is versioned.
+> [outcome] Iterate without losing the version that worked.
+
+> [tip] Name your skill like a procedure, not a file. "Reg summary for tellers" beats "untitled_skill_v3_FINAL."
+
+> [warn] The skill runner enforces the same PII screen as the sandbox — formatted SSNs (dashed, spaced, dotted), 8–12-digit account-number runs, Luhn-valid payment-card numbers, emails, phone numbers, and DOB-in-context are rejected before the model sees them. Names, free-text descriptions of real members, and paraphrased SAR content are **not** detected by regex. The screen is a backstop; the data-discipline rule lives with you.
 
 ## PRODUCTION
 
@@ -182,23 +191,27 @@ VALUES (
   'm4-3-role-skill',
   'skill',
   $LESSON$
-The Skill Builder is back, this time pre-loaded with a starting point tuned to your role. Per-track framing sits below this paragraph; the builder defaults to the source exercise and slot labels most useful for that track. You can take the defaults, or you can swap the source and rename the slots — the framework is identical to 4.2.
+Same builder, pre-loaded for your role. Per-track framing below; you can take the defaults or swap the source.
 
 ## SCRIPT (verbatim)
 
-> "Three things to do differently this time, even though the builder looks the same.
->
-> **One: trust the pre-load — then question it.** Your track variant pre-loads the source exercise and slot labels we have seen work well for that role. Read them. If they fit your week, accept the defaults and move to step two. If they do not — if you are a compliance officer who reads more vendor questionnaires than SR letters, or a back-office lead whose recurring task is press releases rather than process memos — swap the source. The track defaults are a starting point, not a verdict.
->
-> **Two: tune the locked choices to your institution, not just your role.** Two community banks the same size will have different language for the same thing — 'member' versus 'customer,' 'branch' versus 'store,' 'CCO' versus 'BSA officer.' Edit the locked role text and the constraint language so the output sounds like your institution at a glance. A skill that lands in your tone the first time you read it is a skill you will keep using; one that needs a tone edit every run will quietly disappear from your Toolbox.
->
-> **Three: save as a Working Skill, not a draft.** A Working Skill is the version you would hand to a colleague today and trust them to use without retraining. If yours is not at that bar yet, that is fine — but say so in the name ('Reg summary for tellers — draft, needs one more pass') so future-you knows what you are looking at. The Toolbox does not judge; clarity does.
->
-> Hold those three together. Trust the pre-load, tune to your institution, save honestly. The next lesson runs this exact skill on new material and walks the guardrail check that turns it from a working skill into a defensible one."
+> [stat] 3 | Three differences this time | Trust the pre-load · Tune to your institution · Save as a Working Skill.
 
-> [tip] If your role's pre-loaded source does not match your seat, treat that as a signal worth a note. The Toolbox tracks which track-default sources get most often swapped, and the swap pattern feeds back into the curriculum for the next cohort.
+> [case:good] Trust the pre-load — then question it
+> Read the defaults. Fit your week? Move on. Don't fit (you read vendor questionnaires more than SR letters)? Swap the source.
+> [outcome] Track defaults are a starting point, not a verdict.
 
-> [warn] Do not save a Working Skill with the test placeholder text still in the input slots. Empty slots are correct; placeholders like "[paste rule here]" can leak into a real run if you are tired. The builder warns; the warning is worth heeding.
+> [case:good] Tune to your institution, not just your role
+> "Member" vs "customer." "CCO" vs "BSA officer." Edit the locked role and constraint language until the output sounds like your bank at a glance.
+> [outcome] A skill that lands in your tone the first read is one you keep using.
+
+> [case:good] Save as a Working Skill
+> The version you would hand to a colleague today and trust without retraining. Not at that bar? Say so in the name ("draft, needs one more pass").
+> [outcome] The Toolbox does not judge; clarity does.
+
+> [tip] Pre-loaded source doesn't fit your seat? Worth a note — the Toolbox tracks which defaults get swapped most.
+
+> [warn] Never save with placeholder text still in the slots. Empty is correct; "[paste rule here]" can leak into a real run.
 
 ## PRODUCTION
 
@@ -236,23 +249,38 @@ VALUES (
   'm4-4-test-refine',
   NULL,
   $LESSON$
-A skill that has never been run on new material is a guess. This lesson turns it into a verified piece of your toolkit — and attaches the guardrail notes that travel with the skill the next time you or a colleague runs it.
+A skill never run on new material is a guess. Three moves turn it into a verified piece of your toolkit.
 
 ## SCRIPT (verbatim)
 
-> "Three moves, in order. They look small. Together they are the difference between a clever saved prompt and a defensible piece of work.
->
-> **One: run the skill on realistic new material.** Pick one of the skills you built in 4.2 or 4.3 from the list below. Fill the input slots with realistic synthetic material — a public regulator text the skill has not seen, a described situation in your own words, a generic vendor proposal stripped of identifiers. Run it. Read the output as if it had just landed in your inbox at 3pm on a busy Thursday: would you send it, forward it to your manager, or fix it first? Be honest. The point of the run is to find the gap between what you hoped for and what showed up.
->
-> **Two: walk the four-question guardrail check.** The right-hand panel asks four short questions, and you write a one-line note for each. Does the output cite anything that does not appear in the slot material? Would you be comfortable sending this to a member or a regulator as-is? Where does it need a human pass before it leaves your screen? What is the one input pattern that would break this skill? The four notes attach to the skill's saved record so future-you, or a colleague you hand it to, opens it already knowing where the soft spots are.
->
-> **Three: refine and re-save.** If the output drifted in a predictable way — invented citations, drifted off tone, missed the audience — edit the locked choices in the skill (add a constraint, sharpen the role, tighten the format) and re-run. The Toolbox versions skills automatically, so the previous version is still there if you change your mind. When the output lands cleanly twice in a row on different inputs, mark the skill 'verified' and move on. Two clean runs is the bar; perfection is a trap.
->
-> Hold those three together. Real run, four-question check, refine and re-save. The data-discipline rule keeps customer data out at the input. The guardrail check keeps weak output from getting forwarded. Both layers travel with the skill — and when you hand a skill to a colleague, you are handing them both the saved prompt and your notes on what to watch for. That is the move that turns a clever prompt into a piece of work your team can rely on."
+> [stat] 3 | Three moves | Run on new material · Four-question guardrail check · Refine and re-save.
 
-> [tip] Save your guardrail notes in the same plain-English voice you would use in a hand-off conversation. "Watch for invented Reg numbers — verify against the source text" reads better in three months than "validate citation accuracy."
+> [case:good] One — run on new material
+> Realistic synthetic input: public reg text the skill has not seen, situation in your own words, generic vendor proposal stripped of identifiers. Read as if it landed at 3pm Thursday — send, forward, or fix?
+> [outcome] Find the gap between hoped-for and actual.
 
-> [warn] A skill that needs more than four guardrail notes is probably trying to do too much. Split it into two smaller skills, each with one or two notes, and you will end up with two pieces of work you trust instead of one piece of work you do not.
+> [case:good] Two — four-question guardrail check
+> Walk the four prompts below in order. Four notes attach to the saved record. Future-you opens it knowing the soft spots.
+> [outcome] One scan, four notes — promotion-or-archive call in under five minutes.
+
+Audit A16 (2026-05-24): the four-question guardrail check renders as a
+table so the learner can scan the prompts in one beat and the notes line
+up against them on the saved Skill record.
+
+| # | Guardrail question | What a clean answer looks like | Note format on the Skill record |
+|---|---|---|---|
+| 1 | Did it cite anything outside the slot material? | "No — everything attributed to the input I provided." | "Source-bound" or "Add constraint: cite only from input" |
+| 2 | Would you be comfortable sending this as-is? | "Yes" or a one-line list of what you would change first | "Send-ready" or "Soft spot: <what to fix>" |
+| 3 | Where does it still need a human pass? | A specific paragraph or claim, not "the whole thing" | "Human pass needed at <paragraph>" |
+| 4 | What input pattern would break it? | A realistic edge case in plain English, not a hypothetical | "Watch for: <pattern>" |
+
+> [case:good] Three — refine and re-save
+> Drift predictably? Edit locked choices (add a constraint, sharpen the role, tighten the format). Two clean runs on different inputs = verified.
+> [outcome] Two clean runs is the bar. Perfection is a trap.
+
+> [tip] Write guardrail notes in plain English. "Watch for invented Reg numbers — verify against source" beats "validate citation accuracy."
+
+> [warn] More than four notes = the skill is trying to do too much. Split it.
 
 ## PRODUCTION
 
