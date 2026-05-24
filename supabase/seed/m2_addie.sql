@@ -54,15 +54,23 @@ VALUES (
 
 ## SCRIPT (verbatim)
 
-> "Account setup is two minutes of work and three small judgement calls. Get the judgement calls right and you never have to revisit them.
->
-> **One: decide whose email signs the account.** Most consumer tools — Claude, ChatGPT, Gemini — let you sign up with a work or a personal email. The free tier on any of them is capable enough for everything in this course. If your institution has rolled out a paid plan (Claude for Work, ChatGPT Enterprise, Microsoft 365 Copilot), use the single sign-on link your IT team sent, not the public sign-up page. If nothing has been rolled out yet, a personal-email free account on your personal device is fine for learning — provided the data rule from Module 0 still holds, which it does.
->
-> **Two: read the 'Continue with Google' / 'Continue with Microsoft' screen before you click.** That button is convenient. It also ties the account to your workplace identity, which means your institution can see usage data and your IT team can revoke access. For training on your personal time, a plain email-and-password account avoids that entanglement. For tools your institution has actually sanctioned, the SSO button is the right answer — your activity should be visible.
->
-> **Three: if IT has blocked the domain, do not route around it.** A blocked claude.ai or chat.openai.com at the firewall is almost never 'no forever.' It usually means IT wants visibility, a risk review is in flight, or a vendor decision has not been made. The right next step is to ask which tool is sanctioned for staff use, then use that one. The wrong next step is a personal hotspot on a work device, an emailed file to a personal account, or a screenshot pasted into a chat. Any of those turn a learning question into a data-loss incident.
->
-> Hold those three together: pick the right identity for the right purpose, read the SSO screen, and treat a firewall block as a signal not a puzzle. The sandbox in Lesson 2.3 runs without any of this — but by Module 3 you will want a real model on a real account, and you want that account set up cleanly the first time."
+> "Account setup is two minutes of work and three small judgement calls. Get the judgement calls right and you never have to revisit them."
+
+> [stat] 3 | Judgement calls in the first thirty seconds of sign-up | Whose email signs the account · what the SSO button actually does · what to do when IT has blocked the domain. Get all three right and you never revisit them.
+
+> [case:good] Pick the right identity for the right purpose
+> Most consumer tools — Claude, ChatGPT, Gemini — let you sign up with a work or a personal email. The free tier on any of them is capable enough for everything in this course. If your institution has rolled out a paid plan (Claude for Work, ChatGPT Enterprise, Microsoft 365 Copilot), use the single sign-on link IT sent. If nothing has been rolled out yet, a personal-email free account on your personal device is fine for learning — the Module 0 data rule still holds.
+> [outcome] Two minutes of decision, sets you up cleanly for the rest of the course.
+
+> [case:good] Read the SSO screen before you click
+> The "Continue with Google" / "Continue with Microsoft" button is convenient. It also ties the account to your workplace identity, which means the institution can see usage data and IT can revoke access. For training on personal time, plain email-and-password avoids that entanglement. For tools your institution has actually sanctioned, SSO is the right answer — your activity should be visible.
+> [outcome] You make the visibility choice deliberately, not by reflex.
+
+> [case:bad] Routing around an IT firewall block
+> A blocked claude.ai or chat.openai.com at the firewall is almost never "no forever." It usually means IT wants visibility, a risk review is in flight, or a vendor decision has not been made. A personal hotspot on a work device, an emailed file to a personal account, or a screenshot pasted into a chat will turn a learning question into a data-loss incident.
+> [outcome] Ask which tool is sanctioned. Use that one. The block is a signal, not a puzzle.
+
+> "Hold those three together: pick the right identity for the right purpose, read the SSO screen, and treat a firewall block as a signal not a puzzle. The sandbox in Lesson 2.3 runs without any of this — but by Module 3 you will want a real model on a real account, and you want that account set up cleanly the first time."
 
 > [tip] If you are not sure whether your institution has a sanctioned tool yet, ask in writing — a short email to IT or your risk officer. The answer is useful either way: a yes gives you the right tool, a no gives you cover to learn on a personal account.
 
@@ -71,7 +79,8 @@ VALUES (
 ## PRODUCTION
 
 - Open on a side-by-side: two sign-up screens, one with SSO, one without. Annotate the difference.
-- Build the three judgement calls as three labelled cards as the narrator names them.
+- The [stat] card carries the three-decision shape as a single number before the case cards expand each one.
+- The two [case:good] cards sit on top, the [case:bad] card below — the negative example earns its own row so the firewall-routing pattern lands hard.
 - Closing card holds the data-discipline rule from Module 0 as a footnote — it does not relax in this lesson.
 $$,
   true

@@ -59,19 +59,27 @@ You will hear three words used interchangeably in the trade press: assistant, sk
 
 ## SCRIPT (verbatim)
 
-> "Three shapes. Three honest definitions. Then one rule for the rest of this module.
->
-> **One: an assistant is the chat box.** You ask, it answers, you decide what to do with the answer. The conversation is the product. Everything you built in Module 3 — the four-part brief, the Starter Prompt Pack — lives at this layer. The human is in every loop.
->
-> **Two: a skill is the assistant with a job.** You set it up once — system prompt, allowed inputs, what good output looks like — and you reuse it many times against the same shape of task. The Workbench Pack you built in Module 4 is five skills. The skill does one thing and does it the same way every time you call it. The human is still in every loop, but the loop is shorter.
->
-> **Three: an agent is a string of AI steps with a goal.** Step one decides what to do. Step two does it. Step three checks the result. Step four loops back if the result is not good enough, or stops if it is. Somewhere inside that loop the agent is allowed to take actions — read a file, write a record, call an API, send a message — without asking you first. That is the honest definition. The part that gets oversold is the word 'autonomous.' Today's agents are autonomous inside a tight, bounded sandbox. They get confused outside it. They invent steps that look sensible and are not. They occasionally take an action you did not authorise because the loop did not check carefully enough. None of that is acceptable on a member-facing banking flow yet.
->
-> Hold those three together — assistant in every loop, skill in a shorter loop, agent that takes actions inside bounds — and you have the right map for the rest of this module. The framing for all three is the same: goal, steps, data per step, what to never do, where the human reviews. Whether step three is a person or a model, the shape of the work is identical. We teach the shape at the level you can ship this week."
+> "Three shapes. Three honest definitions. Then one rule for the rest of this module."
+
+> [stat] 3 | Shapes of AI work, ordered by how short the human review loop becomes | Assistant (every loop) → Skill (shorter loop) → Agent (the loop runs inside bounds). Whether step three is a person or a model, the shape of the work is identical.
+
+> [case:good] Assistant — the chat box
+> You ask, it answers, you decide what to do with the answer. The conversation is the product. Everything from Module 3 — the four-part brief, the Starter Prompt Pack — lives at this layer. Every step is reviewed by a human.
+> [outcome] Highest fidelity, slowest cadence. The right shape for any output that goes to a member or a regulator.
+
+> [case:good] Skill — the assistant with a job
+> You set it up once — system prompt, allowed inputs, what good output looks like — and you reuse it many times against the same shape of task. The Workbench Pack you built in Module 4 is five skills. The skill does one thing the same way every call. The human is still in every loop; the loop is just shorter.
+> [outcome] The right shape for recurring drafting and analysis work. Consistency + speed without giving up review.
+
+> [case:bad] Agent — a string of AI steps that take actions
+> Step one decides what to do. Step two does it. Step three checks the result. Step four loops back if the result is not good enough, or stops if it is. Somewhere inside that loop the agent is allowed to take actions — read a file, write a record, call an API, send a message — without asking you first. Today's agents get confused outside their sandbox, invent steps that look sensible and are not, and occasionally take an action the loop did not catch.
+> [outcome] Not yet ready for member-facing banking flows. Useful for internal-only prototypes; never connected to systems of record without a real human review point.
+
+> "Hold those three together — assistant in every loop, skill in a shorter loop, agent that takes actions inside bounds — and you have the right map for the rest of this module. The framing for all three is the same: goal, steps, data per step, what to never do, where the human reviews. We teach the shape at the level you can ship this week."
 
 > [tip] The fastest way to spot an oversold agent demo is to ask "what happens if step three returns a result that's plausibly wrong?" If the answer is a hand-wave, the agent has no real review point and should not run anywhere near a member.
 
-> [warn] Anything you prototype in this module is a draft. Drafts are not deployments. Do not put a draft in front of a member, do not connect it to a system of record, do not give it permission to move money. The Foundation Course teaches you how to frame, scope, and prototype well enough that the people who can ship it build on what you handed them. That is the bridge from banker to builder, and that is plenty for one course.
+> [warn] Anything you prototype in this module is a draft. Drafts are not deployments. Do not put a draft in front of a member, do not connect it to a system of record, do not give it permission to move money. The Foundation Course teaches you how to frame, scope, and prototype well enough that the people who can ship it build on what you handed them. That is the bridge from banker to builder.
 
 ## What you will build in this module
 
@@ -79,8 +87,8 @@ Lesson 5.2 walks you through writing a **problem backlog** — three problems on
 
 ## PRODUCTION
 
-- Cold open on the three-shape diagram: assistant / skill / agent as three concentric boxes, the outer one carrying the human review point.
-- Animate the loop-shortening as the narrator names each shape.
+- Cold open on the [stat] card "3 shapes" — the loop-shortening diagram is the visual anchor for the whole module.
+- The three [case] cards land in order: assistant good, skill good, agent bad — the oxblood "bad" on the agent card is the editorial position, not a value judgment on the technology.
 - Closing card: "Draft, not deployment. Banker to builder. That is the bridge."
 $LESSON$,
   true

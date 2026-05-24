@@ -67,15 +67,23 @@ A skill is one of your good prompts, saved with the choices already made, ready 
 
 ## SCRIPT (verbatim)
 
-> "Three things to understand about skills before you build one. They make every other decision in this module obvious.
->
-> **One: saved beats remembered, every single time.** You wrote a strong prompt in Module 3 — role, task, context, format, the constraint that stopped the model inventing citations. Two weeks from now, when a new SR letter drops or a similar member complaint hits the queue, you will not retype that prompt from scratch. You will either reach for the saved version, or you will write a worse one because you are in a hurry. Saving the prompt is the move. Locking the choices that made it work is the move underneath the move.
->
-> **Two: a skill is two parts — locked choices, and input slots.** Locked choices are the decisions that make your prompt work for this shape of task — the role the model plays, the audience it writes for, the length, the constraint about citations, the closing instruction to flag what was missing. These do not change between runs; you set them once. Input slots are the bits that do change every time — the rule excerpt, the complaint summary, the vendor category. You name each slot, you give it a one-line help label, and the skill prompts you for it the next time you run it. That is the whole anatomy.
->
-> **Three: a skill is not an agent.** It does not run on its own. It does not chain into other skills. It does not browse the web or read your inbox. It is one named, parameterised prompt with the choices locked and the slots labelled. That bounded scope is the feature, not the limitation — it is what makes the skill safe to hand to a colleague, safe to run on a regular cadence, and safe to defend in front of a regulator. Agents are Module 5; today we are building one reliable named prompt at a time.
->
-> Hold those three together. Saved beats remembered, the anatomy is choices plus slots, and the scope is bounded on purpose. If you can build one of these, you can build twenty. That personal library is what makes the rest of Module 4 worth the price."
+> "Three things to understand about skills before you build one. They make every other decision in this module obvious."
+
+> [stat] 2 | Parts of every skill | Locked choices (role · audience · length · constraints) + input slots (the bits that change run to run). Set the locked parts once; the slots prompt you next time.
+
+> [case:good] Saved beats remembered, every single time
+> You wrote a strong prompt in Module 3 — role, task, context, format, the constraint that stopped the model inventing citations. Two weeks from now, when a new SR letter drops or a similar member complaint hits the queue, you will not retype that prompt from scratch. You either reach for the saved version, or you write a worse one because you are in a hurry.
+> [outcome] Save the prompt. Lock the choices underneath. The move and the move underneath the move.
+
+> [case:good] The anatomy — locked choices and input slots
+> Locked choices are the decisions that make your prompt work for this shape of task — the role the model plays, the audience it writes for, the length, the constraint about citations, the closing instruction to flag what was missing. Input slots are the bits that change every time — the rule excerpt, the complaint summary, the vendor category. Name each slot, give it a one-line help label.
+> [outcome] The skill prompts you for the slots next time. Choices stay frozen. Consistency is automatic.
+
+> [case:good] Bounded scope is the feature, not the limit
+> A skill does not run on its own. It does not chain into other skills. It does not browse the web or read your inbox. It is one named, parameterised prompt with the choices locked and the slots labelled. That bounded scope is what makes the skill safe to hand to a colleague, safe to run on a regular cadence, and safe to defend in front of a regulator.
+> [outcome] Agents are Module 5. Today: one reliable named prompt at a time.
+
+> "Hold those three together. Saved beats remembered, the anatomy is choices plus slots, and the scope is bounded on purpose. If you can build one of these, you can build twenty. That personal library is what makes the rest of Module 4 worth the price."
 
 > [tip] Pick your first skill from the prompt in your Starter Prompt Pack you have run at least twice already. A skill is most useful when it codifies something you have done by hand enough times to know what the locked choices should be.
 
@@ -83,7 +91,8 @@ A skill is one of your good prompts, saved with the choices already made, ready 
 
 ## PRODUCTION
 
-- Cold open on a card titled "saved beats remembered," then build the two-part anatomy diagram (locked choices on the left, input slots on the right, the unified skill in the middle) as the narrator names each part.
+- Cold open on the [stat] card "2 parts" — the anatomy lands before the cases expand it.
+- Three [case:good] cards in a 3-up grid: the why, the what, the scope-as-feature.
 - Reference card at the close: "A skill is one named, parameterised prompt — bounded scope is the feature."
 - Hand off to 4.2 with a single line: "Now you build one."
 $LESSON$,
