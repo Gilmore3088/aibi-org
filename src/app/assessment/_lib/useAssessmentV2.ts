@@ -9,8 +9,17 @@ import { questions as questionPool } from '@content/assessments/v2/questions';
 import { selectQuestions } from '@content/assessments/v2/rotation';
 import { getTierV2, getDimensionScores, type Tier, type DimensionScore } from '@content/assessments/v2/scoring';
 import type { AssessmentQuestion, Dimension } from '@content/assessments/v2/types';
+import {
+  clearAssessment,
+  loadAssessment,
+  saveAssessment,
+} from './assessment-storage';
 
 export const QUESTIONS_PER_SESSION = 12;
+// Audit A3 (2026-05-24): now backed by localStorage (24-hour TTL) so iOS
+// Safari tab eviction during a mid-assessment interruption no longer
+// drops the user back to question one. Storage adapter is in
+// assessment-storage.ts.
 const STORAGE_KEY = 'aibi-assessment-v2';
 
 export type AssessmentPhase = 'questions' | 'score' | 'results';
@@ -45,34 +54,28 @@ function readPersisted(pool: readonly AssessmentQuestion[]): {
   answers: number[];
   currentQuestion: number;
 } | null {
-  if (typeof window === 'undefined') return null;
-  try {
-    const raw = window.sessionStorage.getItem(STORAGE_KEY);
-    if (!raw) return null;
-    const parsed = JSON.parse(raw) as PersistedState;
-    if (!Array.isArray(parsed.selectedQuestionIds)) return null;
-    if (!Array.isArray(parsed.answers)) return null;
-    if (typeof parsed.currentQuestion !== 'number') return null;
+  const parsed = loadAssessment<PersistedState>(STORAGE_KEY);
+  if (!parsed) return null;
+  if (!Array.isArray(parsed.selectedQuestionIds)) return null;
+  if (!Array.isArray(parsed.answers)) return null;
+  if (typeof parsed.currentQuestion !== 'number') return null;
 
-    // Rebuild selected questions from IDs to preserve order
-    const poolById = new Map(pool.map((q) => [q.id, q]));
-    const restored = parsed.selectedQuestionIds
-      .map((id) => poolById.get(id))
-      .filter((q): q is AssessmentQuestion => q !== undefined);
+  // Rebuild selected questions from IDs to preserve order
+  const poolById = new Map(pool.map((q) => [q.id, q]));
+  const restored = parsed.selectedQuestionIds
+    .map((id) => poolById.get(id))
+    .filter((q): q is AssessmentQuestion => q !== undefined);
 
-    if (restored.length !== QUESTIONS_PER_SESSION) return null;
+  if (restored.length !== QUESTIONS_PER_SESSION) return null;
 
-    return {
-      questions: restored,
-      answers: parsed.answers.slice(0, QUESTIONS_PER_SESSION),
-      currentQuestion: Math.min(
-        Math.max(parsed.currentQuestion, 0),
-        QUESTIONS_PER_SESSION - 1
-      ),
-    };
-  } catch {
-    return null;
-  }
+  return {
+    questions: restored,
+    answers: parsed.answers.slice(0, QUESTIONS_PER_SESSION),
+    currentQuestion: Math.min(
+      Math.max(parsed.currentQuestion, 0),
+      QUESTIONS_PER_SESSION - 1
+    ),
+  };
 }
 
 export function useAssessmentV2(): AssessmentState & AssessmentActions {
@@ -106,7 +109,6 @@ export function useAssessmentV2(): AssessmentState & AssessmentActions {
   // Persist answers and question selection on every change
   useEffect(() => {
     if (!hydrated) return;
-    if (typeof window === 'undefined') return;
     if (selectedQuestions.length === 0) return;
     if (answers.length === 0 && currentQuestion === 0) return;
 
@@ -115,7 +117,7 @@ export function useAssessmentV2(): AssessmentState & AssessmentActions {
       answers,
       currentQuestion,
     };
-    window.sessionStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+    saveAssessment(STORAGE_KEY, payload);
   }, [answers, currentQuestion, selectedQuestions, hydrated]);
 
   const totalScore = answers.reduce((sum, n) => sum + n, 0);
@@ -168,9 +170,7 @@ export function useAssessmentV2(): AssessmentState & AssessmentActions {
     setCurrentQuestion(0);
     setPhase('questions');
     setSelectedQuestions(selectQuestions(questionPool));
-    if (typeof window !== 'undefined') {
-      window.sessionStorage.removeItem(STORAGE_KEY);
-    }
+    clearAssessment(STORAGE_KEY);
   }, []);
 
   const advanceToResults = useCallback(() => {
