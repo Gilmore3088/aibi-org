@@ -97,7 +97,7 @@ function Defs({ moduleKey }: { moduleKey: ModuleKey }) {
 function M0Illustration() {
   return (
     <g>
-      <rect width="320" height="220" fill="url(#m0-paper)" rx="6" />
+      {/* transparent: blends with card surface */}
       <ellipse cx="80" cy="110" rx="80" ry="80" fill="url(#m0-glow)" />
 
       {/* Path through the modules */}
@@ -146,7 +146,7 @@ function M0Illustration() {
 function M1Illustration() {
   return (
     <g>
-      <rect width="320" height="220" fill="url(#m1-paper)" rx="6" />
+      {/* transparent: blends with card surface */}
       <ellipse cx="160" cy="110" rx="120" ry="60" fill="url(#m1-glow)" />
 
       {/* Token stream rectangles (decreasing opacity = older context) */}
@@ -208,7 +208,7 @@ function M1Illustration() {
 function M2Illustration() {
   return (
     <g>
-      <rect width="320" height="220" fill="url(#m2-paper)" rx="6" />
+      {/* transparent: blends with card surface */}
 
       {/* Far doorway frame */}
       <g filter="url(#m2-shadow)">
@@ -257,7 +257,7 @@ function M2Illustration() {
 function M3Illustration() {
   return (
     <g>
-      <rect width="320" height="220" fill="url(#m3-paper)" rx="6" />
+      {/* transparent: blends with card surface */}
 
       {/* Back card */}
       <g filter="url(#m3-shadow)">
@@ -306,7 +306,7 @@ function M3Illustration() {
 function M4Illustration() {
   return (
     <g>
-      <rect width="320" height="220" fill="url(#m4-paper)" rx="6" />
+      {/* transparent: blends with card surface */}
       <ellipse cx="160" cy="110" rx="120" ry="50" fill="url(#m4-glow)" />
 
       {/* Stacked cards — three rotated slightly */}
@@ -357,7 +357,7 @@ function M4Illustration() {
 function M5Illustration() {
   return (
     <g>
-      <rect width="320" height="220" fill="url(#m5-paper)" rx="6" />
+      {/* transparent: blends with card surface */}
       <ellipse cx="180" cy="180" rx="120" ry="22" fill="url(#m5-glow)" />
 
       {/* Ground line */}
