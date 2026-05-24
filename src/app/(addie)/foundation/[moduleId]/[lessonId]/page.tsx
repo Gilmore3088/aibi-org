@@ -12,6 +12,7 @@ import { CourseSidebar } from '@/components/addie/shell/CourseSidebar';
 import { PaywallPreview } from '@/components/addie/lesson/PaywallPreview';
 import { LessonTOC } from '@/components/addie/lesson/LessonTOC';
 import { extractHeadings } from '@/components/addie/lesson/lessonHeadings';
+import { LessonTutor } from '@/components/addie/lesson/LessonTutor';
 import { hasAnyFoundationEntitlement } from '@/lib/addie/entitlements/check';
 import type {
   LessonPayload,
@@ -353,6 +354,9 @@ export default async function LessonPage({
         <LessonPlayer payload={payload} />
       </div>
       <LessonTOC headings={headings} />
+      {/* Tutor places itself: xl rail card under the TOC, otherwise a
+          fixed bottom-right chip → full-screen sheet. Always mounted. */}
+      <LessonTutor lessonId={params.lessonId} />
     </div>
   );
 }
