@@ -82,6 +82,26 @@ export interface KnowledgeCheckRow {
  * do NOT receive this payload; they call /api/sandbox/run with the
  * exerciseId and the service-role server loads the full row server-side.
  */
+export interface SandboxLeverOption {
+  readonly id: string;
+  readonly label: string;
+}
+
+export interface SandboxLeverDescriptor {
+  readonly key: string;
+  readonly label: string;
+  readonly type: 'toggle' | 'select';
+  readonly options: ReadonlyArray<SandboxLeverOption>;
+}
+
+export interface SandboxDataSlotDescriptor {
+  readonly key: string;
+  readonly label: string;
+  readonly maxChars: number;
+  readonly required: boolean;
+  readonly piiCheck: true;
+}
+
 export interface InteractiveExercisePayload {
   readonly id: string; // alias of exercise_id for widget structural compat
   readonly exercise_id: string;
@@ -92,6 +112,16 @@ export interface InteractiveExercisePayload {
     /** JSON-encoded payload string; widgets parse with their own validators. */
     readonly body?: string;
   }>;
+  /** Client-safe lever descriptors — option ids + labels only. NEVER carries lever_directives. */
+  readonly levers?: ReadonlyArray<SandboxLeverDescriptor>;
+  /** Client-safe data-slot descriptors. */
+  readonly data_slots?: ReadonlyArray<SandboxDataSlotDescriptor>;
+  /** Server-default provider hint for the sandbox view. */
+  readonly default_provider?: 'anthropic' | 'openai' | 'google';
+  /** Whether the learner may switch providers. */
+  readonly allow_provider_switch?: boolean;
+  /** Exercise mode — single | ab | skill. */
+  readonly mode?: 'single' | 'ab' | 'skill';
 }
 
 /**

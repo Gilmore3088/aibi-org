@@ -181,7 +181,9 @@ async function loadPayload(
     if (lessonRow.exercise_id) {
       const { data: ex } = await svc
         .from('exercises')
-        .select('id, task_scaffold, preset_context_blocks, published')
+        .select(
+          'id, mode, task_scaffold, preset_context_blocks, levers, data_slots, default_provider, allow_provider_switch, published',
+        )
         .eq('id', lessonRow.exercise_id)
         .eq('published', true)
         .maybeSingle();
@@ -191,11 +193,47 @@ async function loadPayload(
           label: string;
           body?: string;
         }>) ?? [];
+        // Strip lever option payloads to client-safe id+label shape; the
+        // server-only lever_directives never reach this query (we don't
+        // select them). Same for system_prompt.
+        const rawLevers = (ex.levers as unknown as Array<{
+          key: string;
+          label: string;
+          type: 'toggle' | 'select';
+          options: Array<{ id: string; label: string }>;
+        }>) ?? [];
+        const levers = rawLevers.map((l) => ({
+          key: l.key,
+          label: l.label,
+          type: l.type,
+          options: (l.options ?? []).map((o) => ({ id: o.id, label: o.label })),
+        }));
+        const rawSlots = (ex.data_slots as unknown as Array<{
+          key: string;
+          label: string;
+          maxChars: number;
+          required: boolean;
+          piiCheck: true;
+        }>) ?? [];
+        const data_slots = rawSlots.map((s) => ({
+          key: s.key,
+          label: s.label,
+          maxChars: s.maxChars,
+          required: s.required,
+          piiCheck: true as const,
+        }));
         interactiveExercise = {
           id: ex.id as string,
           exercise_id: ex.id as string,
           task_scaffold: (ex.task_scaffold as string | null) ?? null,
           preset_context_blocks: blocks,
+          levers,
+          data_slots,
+          default_provider:
+            (ex.default_provider as 'anthropic' | 'openai' | 'google' | null) ??
+            'anthropic',
+          allow_provider_switch: Boolean(ex.allow_provider_switch),
+          mode: (ex.mode as 'single' | 'ab' | 'skill' | null) ?? 'single',
         };
       }
     }
