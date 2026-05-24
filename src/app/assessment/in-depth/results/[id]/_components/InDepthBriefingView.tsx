@@ -812,6 +812,26 @@ export function InDepthBriefingView({
                   <div className="v">{email}<small>Same email · same instrument</small></div>
                 </div>
               </div>
+              {/* A17 (audit 2026-05-24): methodology document is the
+                  examiner-grade trust artifact paid buyers can hand to
+                  their CRO. Links the calibration trail to the filing
+                  trail. */}
+              <p style={{
+                marginTop: 22,
+                fontFamily: 'var(--ledger-serif)',
+                fontSize: 14,
+                lineHeight: 1.55,
+                color: 'var(--ledger-ink-2)',
+              }}>
+                Methodology, rubric, and threshold rationale are published in{' '}
+                <Link
+                  href="/methodology"
+                  style={{ color: 'var(--ledger-accent)', textDecoration: 'underline' }}
+                >
+                  the In-Depth methodology document (v2.0)
+                </Link>
+                {' '}— hand it to your CRO with the filing reference above.
+              </p>
             </div>
           </div>
         </div>
