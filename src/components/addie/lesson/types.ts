@@ -26,7 +26,8 @@ export type ArtifactType =
   | 'agent_blueprint'
   | 'prd'
   | 'prototype'
-  | 'problem_backlog';
+  | 'problem_backlog'
+  | 'where_ai_fits';
 
 export interface LessonRow {
   readonly id: string;
@@ -71,6 +72,29 @@ export interface KnowledgeCheckRow {
 }
 
 /**
+ * The interactive-exercise descriptor forwarded to non-LLM widgets
+ * (OffLimitsSorter, ToolLandscapeMatrix, SpotTheViolation, WhereAIFitsWorksheet).
+ *
+ * NOTE: this includes preset_context_blocks bodies because non-LLM
+ * interactives need them to render items/scenarios. system_prompt and
+ * lever_directives are NEVER forwarded — those stay strictly inside the
+ * sandbox-service for LLM-touching exercises. Sandbox lessons (mode=single/ab/skill)
+ * do NOT receive this payload; they call /api/sandbox/run with the
+ * exerciseId and the service-role server loads the full row server-side.
+ */
+export interface InteractiveExercisePayload {
+  readonly id: string; // alias of exercise_id for widget structural compat
+  readonly exercise_id: string;
+  readonly task_scaffold: string | null;
+  readonly preset_context_blocks: ReadonlyArray<{
+    readonly id: string;
+    readonly label: string;
+    /** JSON-encoded payload string; widgets parse with their own validators. */
+    readonly body?: string;
+  }>;
+}
+
+/**
  * The shape the LessonPlayer expects. Sandbox/interactive lessons may
  * additionally surface an exercise_id; the modality view dispatches on it.
  */
@@ -87,4 +111,8 @@ export interface LessonPayload {
     readonly prev: { id: string; title: string } | null;
     readonly next: { id: string; title: string } | null;
   };
+  /** Non-LLM interactive descriptor for modality='interactive' or 'worksheet'. */
+  readonly interactiveExercise?: InteractiveExercisePayload | null;
+  /** True when the next-CTA should route to the gate (post-m3.5). */
+  readonly gateNext?: boolean;
 }

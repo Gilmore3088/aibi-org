@@ -47,16 +47,16 @@
 | 0.2 The one rule: data discipline | Video | 8 | content per track | off-limits sorter | **Data Discipline Card** |
 
 - [x] Detailed curriculum doc
-- [ ] Record + edit 2 videos
-- [ ] Captions + transcripts (×2)
-- [ ] Build track-selection interaction (writes `profile.track`)
-- [ ] Build "off-limits in your world" sorter (×5 track variants)
-- [ ] Author Course Roadmap generator + **Data Discipline Card** template (5 track blocks)
-- [ ] Wire 6 knowledge-check items
-- [ ] QA: ≤15 min, accessibility (WCAG 2.1 AA)
+- [ ] Record + edit 2 videos *(media production — operator work; backend wired)*
+- [ ] Captions + transcripts (×2) *(media production)*
+- [x] Track-selection interaction *(TrackPicker shipped Wave 2a; server action writes addie.learner_profiles.track)*
+- [x] Off-limits-in-your-world sorter *(OffLimitsSorter widget Wave 2b; 5 track filters; tests 4/4)*
+- [x] Course Roadmap + Data Discipline Card templates *(content/addie/toolbox-templates/m0/*.md, Wave 2b)*
+- [x] 6 knowledge-check items *(addie.knowledge_checks rows seeded Wave 2b)*
+- [ ] QA: ≤15 min, accessibility (WCAG 2.1 AA) *(post-pilot)*
 
 ## M1 · What generative AI is — *(Free · 4 lessons)*
-**Detailed spec:** 🔲 · **Takeaway:** AI Toolkit Map
+**Detailed spec:** ✅ seeded in `supabase/seed/m1_addie.sql` (Wave 2b) · **Takeaway:** AI Toolkit Map
 
 | Lesson | Modality | ~min | Branched | Interactive | Takeaway contribution |
 |---|---|---|---|---|---|
@@ -65,16 +65,16 @@
 | 1.3 Why this matters for your role | Audio | 8 | **×5 tracks** | — | — |
 | 1.4 Good vs. bad use in a bank | Video | 9 | — | — | — |
 
-- [ ] Detailed curriculum doc
-- [ ] Record + edit 3 videos + **1 audio (×5 track variants)**
-- [ ] Captions + transcripts (all)
-- [ ] Build tool-landscape sortable matrix interaction
-- [ ] Author **AI Toolkit Map** template
-- [ ] Wire ~10 knowledge-check items
-- [ ] QA: ≤15 min, accessibility
+- [x] Module + 4 lesson rows + 5 m1.3 track variants seeded
+- [ ] Record + edit 3 videos + **1 audio (×5 track variants)** *(media production — operator work)*
+- [ ] Captions + transcripts (all) *(media production)*
+- [x] Tool-landscape sortable matrix interaction *(ToolLandscapeMatrix Wave 2b; 12 tools; tests 6/6)*
+- [x] AI Toolkit Map template *(content/addie/toolbox-templates/m1/ai-toolkit-map.md)*
+- [x] 10 knowledge-check items seeded
+- [ ] QA: ≤15 min, accessibility *(post-pilot)*
 
 ## M2 · Access & workflow — *(Free · 4 lessons)*
-**Detailed spec:** 🔲 · **Takeaway:** First Conversation transcript · **⚠ first sandbox lesson (2.3)**
+**Detailed spec:** ✅ seeded in `supabase/seed/m2_addie.sql` (Wave 2b) · **Takeaway:** First Conversation transcript · **⚠ first sandbox lesson (2.3) — wired**
 
 | Lesson | Modality | ~min | Branched | Interactive | Takeaway contribution |
 |---|---|---|---|---|---|
@@ -83,16 +83,17 @@
 | 2.3 Your first conversation | **Sandbox** | 15 | — | controlled sandbox | First Conversation transcript |
 | 2.4 Where AI fits in your week | Worksheet | 10 | **×5 tracks** | worksheet | — |
 
-- [ ] Detailed curriculum doc
-- [ ] Record + edit 2 videos
-- [ ] **Sandbox config for 2.3** (hidden system prompt + fixed task + bounded levers + gating)
-- [ ] Build "where AI fits your week" worksheet (×5 track variants)
-- [ ] Author First Conversation save flow
-- [ ] Captions + transcripts; ~10 knowledge-check items
-- [ ] QA: ≤15 min, accessibility · *requires sandbox platform live*
+- [x] Module + 4 lesson rows + 5 m2.4 track variants seeded
+- [ ] Record + edit 2 videos *(media production — operator work)*
+- [x] **Sandbox config for 2.3** *(`m2-3-first-conversation` Exercise row: canary `[[AIBI-SYS-7Q]]`, 4 starter-prompt levers, 1 PII-checked data slot, 200-word synthetic-regulation preset, gating 600 tokens/3500 chars, Anthropic default with switcher)*
+- [x] "Where AI fits your week" worksheet ×5 track variants *(WhereAIFitsWorksheet widget Wave 2b; tests 4/4)*
+- [x] First Conversation save flow *(SaveAsArtifactButton in SandboxLessonView → `addie.toolbox_items` type='first_conversation')*
+- [x] ~10 knowledge-check items seeded
+- [ ] Captions + transcripts *(media production)*
+- [ ] QA: ≤15 min, accessibility · *requires sandbox platform live* *(sandbox platform live since Wave 1e; A11y pass deferred to pilot)*
 
 ## M3 · Talking to the machine — prompting — *(Free · 5 lessons · last free module)*
-**Detailed spec:** 🔲 · **Takeaway:** Starter Prompt Pack (3 prompts) · **gate follows this module**
+**Detailed spec:** ✅ seeded in `supabase/seed/m3_addie.sql` (Wave 2b) · **Takeaway:** Starter Prompt Pack (3 prompts) · **gate follows this module — wired**
 
 | Lesson | Modality | ~min | Branched | Interactive | Takeaway contribution |
 |---|---|---|---|---|---|
@@ -102,14 +103,15 @@
 | 3.4 Banking no-nos deep dive | Video + interactive | 12 | — | spot-the-violation | — |
 | 3.5 Real use cases | **Sandbox** | 15 | **×5 tracks** | controlled sandbox | **Starter Prompt Pack** |
 
-- [ ] Detailed curriculum doc
-- [ ] Record + edit 3 videos (3.1, 3.3, 3.4)
-- [ ] **Sandbox config for 3.2 (A/B mode) and 3.5 (×5 track tasks)**
-- [ ] Build "spot-the-violation" interactive (3.4)
-- [ ] Author prompting cheat sheet + **Starter Prompt Pack** template
-- [ ] Build the **three-way gate screen** (Pay / Email / Decline) at module end `[Stripe][MailerLite]`
-- [ ] Captions + transcripts; ~12 knowledge-check items
-- [ ] QA: ≤15 min, accessibility
+- [x] Module + 5 lesson rows + 5 m3.5 track variants seeded
+- [ ] Record + edit 3 videos (3.1, 3.3, 3.4) *(media production — operator work)*
+- [x] **Sandbox configs**: `m3-2-ab-output` (mode=ab, 2 levers audience×length, PII-checked reg_text slot), `m3-5-real-use-cases` (mode=single with role lever for 5-track conditional directives, required PII-checked use_case_brief slot)
+- [x] Spot-the-violation interactive *(SpotTheViolation widget Wave 2b; 12 scenarios; tests 4/4)*
+- [x] Prompting cheat sheet + Starter Prompt Pack template *(content/addie/toolbox-templates/m3/*.md)*
+- [x] Three-way gate screen at module end *(Wave 2a: GateScreen + EmailOptionForm + PayOptionCard + DeclineOption → wired via `gateTrigger.ts` + `gateNext` payload field; on m3.5 completion the NextLessonCTA routes to /foundation/gate)* `[Stripe][MailerLite]`
+- [x] ~12 knowledge-check items seeded
+- [ ] Captions + transcripts *(media production)*
+- [ ] QA: ≤15 min, accessibility *(post-pilot)*
 
 ## ═══ GATE (pay or email) ═══
 

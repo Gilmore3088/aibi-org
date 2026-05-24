@@ -14,7 +14,12 @@ import type {
   TrackVariant,
   KnowledgeCheckRow,
   Track,
+  InteractiveExercisePayload,
 } from '@/components/addie/lesson/types';
+import {
+  GATE_TRIGGER_MODULE_ID,
+  GATE_TRIGGER_LESSON_ID,
+} from '@/lib/addie/courses/gateTrigger';
 
 export const dynamic = 'force-dynamic';
 
@@ -105,8 +110,44 @@ async function loadPayload(
     const prev = idx > 0 ? siblings![idx - 1] : null;
     const next = siblings && idx >= 0 && idx < siblings.length - 1 ? siblings[idx + 1] : null;
 
+    // Non-LLM interactive/worksheet widgets need preset_context_blocks bodies.
+    // We fetch the full exercise row server-side via service_role and forward
+    // ONLY the client-safe fields + preset block bodies. system_prompt and
+    // lever_directives never leave the server.
+    let interactiveExercise: InteractiveExercisePayload | null = null;
+    const lessonRow = lesson as LessonRow;
+    if (
+      (lessonRow.modality === 'interactive' || lessonRow.modality === 'worksheet') &&
+      lessonRow.exercise_id
+    ) {
+      const { data: ex } = await svc
+        .from('exercises')
+        .select('id, task_scaffold, preset_context_blocks, published')
+        .eq('id', lessonRow.exercise_id)
+        .eq('published', true)
+        .maybeSingle();
+      if (ex) {
+        const blocks = (ex.preset_context_blocks as unknown as Array<{
+          id: string;
+          label: string;
+          body?: string;
+        }>) ?? [];
+        interactiveExercise = {
+          id: ex.id as string,
+          exercise_id: ex.id as string,
+          task_scaffold: (ex.task_scaffold as string | null) ?? null,
+          preset_context_blocks: blocks,
+        };
+      }
+    }
+
+    // m3.5 completion routes to the three-way gate, not the next module.
+    const gateNext =
+      lessonRow.module_id === GATE_TRIGGER_MODULE_ID &&
+      lessonRow.id === GATE_TRIGGER_LESSON_ID;
+
     return {
-      lesson: lesson as LessonRow,
+      lesson: lessonRow,
       module: m as ModuleRow,
       variant,
       activeTrack,
@@ -115,6 +156,8 @@ async function loadPayload(
         prev: prev ? { id: prev.id as string, title: prev.title as string } : null,
         next: next ? { id: next.id as string, title: next.title as string } : null,
       },
+      interactiveExercise,
+      gateNext,
     };
   } catch (err) {
     console.warn('[lesson page] load failed:', err);

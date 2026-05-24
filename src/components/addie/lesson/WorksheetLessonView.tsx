@@ -1,14 +1,16 @@
 'use client';
 
 // Worksheet modality — form-style prompts. Wave 2a delivers a generic
-// "fill the slots → render markdown → save" worksheet. Wave 2b authors
-// per-lesson exercise configs that drive the prompt shape.
+// "fill the slots → render markdown → save" worksheet. Wave 2b registered
+// the M2.4 WhereAIFitsWorksheet; this view dispatches to it when the
+// exercise_id matches, falling back to the generic 3-slot worksheet.
 
 import { useMemo, useState } from 'react';
 import { LedgerInput } from '@/components/addie/shared/LedgerInput';
 import { KickerLabel } from '@/components/addie/shared/KickerLabel';
 import { SaveAsArtifactButton } from './SaveAsArtifactButton';
 import { detectPII, PIIWarning } from '@/components/addie/shared/PIIWarning';
+import { WhereAIFitsWorksheet } from '@/components/addie/interactives/m2/WhereAIFitsWorksheet';
 import type { LessonPayload } from './types';
 
 interface WorksheetSlot {
@@ -28,8 +30,19 @@ interface WorksheetLessonViewProps {
 }
 
 export function WorksheetLessonView({ payload }: WorksheetLessonViewProps) {
-  // Worksheet slot config will be authored per-exercise in Wave 2b. Until
-  // then, the fallback set demonstrates the loop end-to-end.
+  // Per-exercise worksheet widgets registered in Wave 2b.
+  if (
+    payload.lesson.exercise_id === 'm2-4-where-ai-fits-worksheet' &&
+    payload.interactiveExercise
+  ) {
+    return (
+      <WhereAIFitsWorksheet
+        exerciseDescriptor={payload.interactiveExercise}
+        track={payload.activeTrack ?? null}
+      />
+    );
+  }
+
   const slots = FALLBACK_SLOTS;
   const [values, setValues] = useState<Record<string, string>>({});
 

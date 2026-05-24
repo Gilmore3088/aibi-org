@@ -8,9 +8,28 @@ interface NextLessonCTAProps {
   readonly nextHref?: string | null;
   readonly nextLabel?: string;
   readonly endOfCourse?: boolean;
+  /** When true, override the normal next/end-of-course path with the gate fork. */
+  readonly gateNext?: boolean;
 }
 
-export function NextLessonCTA({ nextHref, nextLabel, endOfCourse }: NextLessonCTAProps) {
+export function NextLessonCTA({
+  nextHref,
+  nextLabel,
+  endOfCourse,
+  gateNext,
+}: NextLessonCTAProps) {
+  if (gateNext) {
+    return (
+      <div className="mt-10 border-t border-[var(--ledger-rule)] pt-6 flex items-center justify-between gap-4">
+        <p className="font-serif text-lg text-[var(--ledger-ink)]">
+          You&apos;ve finished the free side. Pick how you want to continue.
+        </p>
+        <Link href="/foundation/gate" className="shrink-0">
+          <LedgerButton variant="primary">Continue →</LedgerButton>
+        </Link>
+      </div>
+    );
+  }
   if (!nextHref) {
     if (endOfCourse) {
       return (

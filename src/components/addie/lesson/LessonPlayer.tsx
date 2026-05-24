@@ -23,7 +23,12 @@ interface LessonPlayerProps {
   readonly preferAb?: boolean;
 }
 
-export function LessonPlayer({ payload, preferAb = false }: LessonPlayerProps) {
+export function LessonPlayer({
+  payload,
+  preferAb: preferAbProp,
+}: LessonPlayerProps) {
+  // M3.2 is the A/B sandbox; M3.5 + sandbox lessons default to single mode.
+  const preferAb = preferAbProp ?? payload.lesson.id === 'm3.2';
   const { lesson, module, checks, siblings } = payload;
   const nextHref = siblings?.next
     ? `/foundation/${module.id}/${siblings.next.id}`
@@ -42,6 +47,7 @@ export function LessonPlayer({ payload, preferAb = false }: LessonPlayerProps) {
         nextHref={nextHref}
         nextLabel={siblings?.next?.title}
         endOfCourse={!siblings?.next}
+        gateNext={payload.gateNext ?? false}
       />
     </article>
   );
