@@ -193,37 +193,50 @@ export function LessonTutor({ lessonId }: LessonTutorProps) {
     setQuestion('');
   }, [pending]);
 
-  // ── Collapsed state: single fixed chip on all viewports ────
-  // Sits above the lesson-shell's bottom sticky pill (~bottom-16) so it
-  // doesn't overlap the prev/next nav. The open state takes over with a
-  // proper overlay; no layout entanglement with the TOC.
+  // ── Collapsed state ────
+  // Quiet chip docked top-right inside the right rail, out of the way of
+  // the bottom sticky-nav pill. No competing floating CTAs at the bottom.
   if (!open) {
     return (
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="fixed bottom-20 right-4 z-40 flex items-baseline gap-2 px-4 py-2 rounded-[2px] bg-[var(--ledger-ink)] text-[var(--ledger-paper)] shadow-[var(--ledger-shadow)] hover:bg-[var(--ledger-ink-2)] transition-colors duration-[120ms]"
+        className="fixed top-24 right-4 z-30 inline-flex items-center gap-2 px-3 py-1.5 rounded-[2px] border border-[var(--ledger-rule-strong)] bg-[var(--ledger-paper)] text-[var(--ledger-ink)] hover:border-[var(--ledger-ink)] transition-colors duration-[120ms]"
         aria-label="Open the lesson tutor"
       >
-        <span className="font-mono uppercase tracking-[0.16em] text-[0.65rem] text-[var(--ledger-accent)]">
-          Tutor
-        </span>
-        <span className="font-mono uppercase tracking-[0.16em] text-[0.7rem]">
-          Ask about this lesson
+        <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" className="text-[var(--ledger-accent)]">
+          <circle cx="6" cy="6" r="5" fill="none" stroke="currentColor" strokeWidth="1" />
+          <path d="M6 3v3l2 1" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
+        </svg>
+        <span className="font-mono uppercase tracking-[0.16em] text-[0.6rem]">
+          Ask
         </span>
       </button>
     );
   }
 
   // ── Open state (full panel) ─────────────────────────────────
+  // A25 (audit 2026-05-24): the open panel is now a proper role=dialog
+  // with aria-labelledby pointing at the panel title. The transcript
+  // region carries aria-live='polite' so streaming assistant turns are
+  // announced to screen-reader users. aria-busy on the form mirrors
+  // the pending state for assistive tech.
   return (
-    <div className="fixed inset-0 xl:inset-auto xl:top-[88px] xl:right-4 xl:w-[26rem] xl:h-[calc(100vh-104px)] z-50 flex flex-col bg-[var(--ledger-paper)] border border-[var(--ledger-rule-strong)] xl:rounded-[3px] shadow-[var(--ledger-shadow)]">
+    <div
+      role="dialog"
+      aria-modal="false"
+      aria-labelledby="addie-tutor-title"
+      className="fixed inset-0 xl:inset-auto xl:top-[88px] xl:right-4 xl:w-[26rem] xl:h-[calc(100vh-104px)] z-50 flex flex-col bg-[var(--ledger-paper)] border border-[var(--ledger-rule-strong)] xl:rounded-[3px] shadow-[var(--ledger-shadow)]"
+    >
       <header className="flex items-baseline justify-between px-4 py-3 border-b border-[var(--ledger-rule)]">
         <div>
           <div className="font-mono uppercase tracking-[0.18em] text-[0.65rem] text-[var(--ledger-accent)]">
             Lesson tutor
           </div>
-          <h2 className="font-serif text-base text-[var(--ledger-ink)] leading-tight mt-0.5">
+          <h2
+            id="addie-tutor-title"
+            className="font-serif text-base text-[var(--ledger-ink)] leading-tight mt-0.5"
+          >
             Trained on this lesson
           </h2>
         </div>
@@ -249,7 +262,14 @@ export function LessonTutor({ lessonId }: LessonTutorProps) {
         </div>
       </header>
 
-      <div ref={transcriptRef} className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
+      <div
+        ref={transcriptRef}
+        className="flex-1 overflow-y-auto px-4 py-4 space-y-4"
+        role="log"
+        aria-live="polite"
+        aria-atomic="false"
+        aria-relevant="additions"
+      >
         {turns.length === 0 ? (
           <div className="text-sm text-[var(--ledger-ink-2)] leading-relaxed">
             <p>
@@ -297,6 +317,7 @@ export function LessonTutor({ lessonId }: LessonTutorProps) {
 
       <form
         className="border-t border-[var(--ledger-rule)] p-3"
+        aria-busy={pending}
         onSubmit={(e) => {
           e.preventDefault();
           ask();

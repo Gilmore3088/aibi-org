@@ -91,6 +91,10 @@ interface CaseBlock {
   outcome: string;   // optional one-liner outcome (rendered as footer)
 }
 
+interface TableBlockRow {
+  cells: string[];
+}
+
 type Block =
   | { kind: 'h2'; text: string }
   | { kind: 'h3'; text: string }
@@ -102,7 +106,8 @@ type Block =
   | { kind: 'scene_set'; scenes: Scene[] }
   | { kind: 'callout'; tone: CalloutKind; lines: string[] }
   | { kind: 'stat'; data: StatBlock }
-  | { kind: 'case_grid'; cases: CaseBlock[] };
+  | { kind: 'case_grid'; cases: CaseBlock[] }
+  | { kind: 'table'; header: string[]; rows: TableBlockRow[] };
 
 const CALLOUT_RE = /^>\s*\[(tip|warn|save|field)\]\s*(.*)$/i;
 // [stat] value | source | takeaway. Pipe-delimited. Value goes huge, source
@@ -258,6 +263,34 @@ function splitBlocks(src: string): Block[] {
         i++;
       }
       out.push({ kind: 'ol', items });
+      continue;
+    }
+    // GitHub-flavoured pipe table: `| h1 | h2 |` then `|---|---|` then rows.
+    // Detected as: current line starts and ends with `|` and the *next* line
+    // is a separator (pipes + dashes only). Renders as a real <table>.
+    // Added 2026-05-24 to support the M5.4 blast-radius matrix (F5 fix).
+    if (
+      line.trim().startsWith('|') &&
+      line.trim().endsWith('|') &&
+      i + 1 < lines.length &&
+      /^\s*\|?\s*:?-{2,}.*\|/.test(lines[i + 1])
+    ) {
+      const splitRow = (raw: string): string[] => {
+        const trimmed = raw.trim().replace(/^\|/, '').replace(/\|$/, '');
+        return trimmed.split('|').map((c) => c.trim());
+      };
+      const header = splitRow(line);
+      const rows: TableBlockRow[] = [];
+      i += 2; // skip the header and the separator
+      while (
+        i < lines.length &&
+        lines[i].trim().startsWith('|') &&
+        lines[i].trim().endsWith('|')
+      ) {
+        rows.push({ cells: splitRow(lines[i]) });
+        i++;
+      }
+      out.push({ kind: 'table', header, rows });
       continue;
     }
     // Paragraph
@@ -457,33 +490,19 @@ function renderBlock(b: Block, key: number): ReactNode {
         </blockquote>
       );
     case 'hero_quote':
+      // Calmer treatment: a single parchment block with a thin gold rule
+      // on the left. No drop-cap, no giant quote glyph, no shadow — the
+      // hero quote must share the same visual language as case_grid,
+      // stat, and callout so the page reads as one document.
       return (
         <section
           key={key}
-          className="my-10 rounded-[6px] border border-[var(--ledger-rule)] bg-[var(--ledger-paper)] shadow-[var(--ledger-shadow)] overflow-hidden"
+          className="my-8 border-l-2 border-[var(--ledger-accent)] bg-[var(--ledger-paper)] px-5 py-5 sm:px-6 sm:py-6 rounded-r-[3px]"
         >
-          <div className="px-6 sm:px-8 py-7 sm:py-8 relative">
-            <span
-              aria-hidden
-              className="absolute top-3 left-4 font-serif text-[3rem] leading-none text-[var(--ledger-accent)] opacity-60 select-none"
-            >
-              &ldquo;
-            </span>
-            <div className="pl-8 space-y-4 font-serif text-[1.125rem] leading-[1.75] text-[var(--ledger-ink)]">
-              {b.paras.map((para, j) => {
-                if (j === 0) {
-                  return (
-                    <p
-                      key={j}
-                      className="first-letter:font-serif first-letter:text-[3rem] first-letter:leading-[0.85] first-letter:font-semibold first-letter:float-left first-letter:pr-3 first-letter:pt-1 first-letter:text-[var(--ledger-ink)]"
-                    >
-                      {renderInline(para)}
-                    </p>
-                  );
-                }
-                return <p key={j}>{renderInline(para)}</p>;
-              })}
-            </div>
+          <div className="space-y-3 font-serif text-[1.05rem] leading-[1.65] text-[var(--ledger-ink)]">
+            {b.paras.map((para, j) => (
+              <p key={j}>{renderInline(para)}</p>
+            ))}
           </div>
         </section>
       );
@@ -520,7 +539,7 @@ function renderBlock(b: Block, key: number): ReactNode {
       return (
         <aside
           key={key}
-          className="my-8 grid grid-cols-1 sm:grid-cols-[auto_1fr] gap-x-8 gap-y-3 sm:items-center rounded-[6px] border border-[var(--ledger-rule)] bg-[var(--ledger-paper)] px-6 py-6"
+          className="my-8 grid grid-cols-1 sm:grid-cols-[auto_1fr] gap-x-8 gap-y-3 sm:items-center rounded-[6px] border border-[var(--ledger-rule-strong)] bg-[var(--ledger-paper)] px-6 py-6"
         >
           <div className="font-serif text-[3.25rem] sm:text-[3.75rem] leading-none text-[var(--ledger-ink)] tabular-nums">
             {value}
@@ -563,7 +582,7 @@ function renderBlock(b: Block, key: number): ReactNode {
             return (
               <section
                 key={j}
-                className={`flex flex-col rounded-[5px] border border-[var(--ledger-rule)] bg-[var(--ledger-paper)] ${accentClass}`}
+                className={`flex flex-col rounded-[5px] border border-[var(--ledger-rule-strong)] bg-[var(--ledger-paper)] ${accentClass}`}
               >
                 <header className="px-5 pt-4 pb-2">
                   <div className={`font-mono uppercase tracking-[0.18em] text-[0.6rem] ${labelClass} mb-1`}>
@@ -596,6 +615,49 @@ function renderBlock(b: Block, key: number): ReactNode {
         </div>
       );
     }
+    case 'table': {
+      // Real <table> with WCAG 1.3.1/1.3.2 semantics. Header cells use
+      // scope="col"; body cells render inline markdown. Ledger-styled —
+      // hairline rules from --ledger-rule, mono caps header row in
+      // --ledger-muted, tabular numbers on the body. Horizontal scroll
+      // wrapper for narrow viewports; the matrix is dense by design.
+      return (
+        <div key={key} className="my-8 overflow-x-auto">
+          <table className="w-full border-collapse text-[0.95rem] tabular-nums">
+            <thead>
+              <tr className="border-b border-[var(--ledger-rule-strong)]">
+                {b.header.map((h, j) => (
+                  <th
+                    key={j}
+                    scope="col"
+                    className="text-left align-bottom px-3 py-2 font-mono uppercase tracking-[0.14em] text-[0.65rem] text-[var(--ledger-muted)]"
+                  >
+                    {renderInline(h)}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {b.rows.map((r, j) => (
+                <tr
+                  key={j}
+                  className="border-b border-[var(--ledger-rule)] last:border-b-0"
+                >
+                  {r.cells.map((c, k) => (
+                    <td
+                      key={k}
+                      className="align-top px-3 py-2.5 text-[var(--ledger-ink)] leading-snug"
+                    >
+                      {renderInline(c)}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      );
+    }
   }
 }
 
@@ -603,18 +665,15 @@ function renderBlock(b: Block, key: number): ReactNode {
 
 function renderScene(s: Scene, key: number, _total: number): ReactNode {
   if (s.intro) {
+    // Calm lesson intro — no drop-cap, no giant quote glyph, no shadow.
+    // Just a confident lede paragraph in the body face, matching every
+    // other block on the page.
     return (
       <section
         key={key}
-        className="rounded-[8px] border border-[var(--ledger-rule)] bg-[var(--ledger-paper)] px-6 sm:px-7 py-6 sm:py-7 relative overflow-hidden"
+        className="border-l-2 border-[var(--ledger-accent)] bg-[var(--ledger-paper)] rounded-r-[3px] px-5 sm:px-6 py-4 sm:py-5"
       >
-        <span
-          aria-hidden
-          className="absolute -top-2 -left-2 font-serif text-[3rem] leading-none text-[var(--ledger-accent)] opacity-30 select-none"
-        >
-          &ldquo;
-        </span>
-        <p className="font-serif text-[1.0625rem] leading-[1.75] text-[var(--ledger-ink-2)] pl-6 first-letter:font-serif first-letter:text-[3rem] first-letter:leading-[0.85] first-letter:font-semibold first-letter:float-left first-letter:pr-3 first-letter:pt-1 first-letter:text-[var(--ledger-ink)]">
+        <p className="font-serif text-[1.05rem] leading-[1.65] text-[var(--ledger-ink-2)]">
           {renderInline(s.intro.replace(/\n\n/g, ' '))}
         </p>
       </section>
@@ -638,32 +697,30 @@ function renderScene(s: Scene, key: number, _total: number): ReactNode {
   // Numbered concept scene. The id matches slugifyHeading(s.lead) so the
   // sticky TOC's virtual-heading anchors (see lessonHeadings.SCENE_LEAD)
   // can scroll-to and scroll-spy these cards.
+  // Calmer numbered scene: the numeral is a mono-caps kicker, not a giant
+  // serif numeral that competes with the lesson title. Shadow removed —
+  // the gold rule does the work. Shares visual language with case_grid.
   return (
     <section
       key={key}
       id={s.lead ? slugifyHeading(s.lead) : undefined}
-      className="scroll-mt-24 grid grid-cols-[auto_1fr] gap-4 sm:gap-6 rounded-[8px] border border-[var(--ledger-rule)] bg-[var(--ledger-paper)] px-5 sm:px-7 py-6 sm:py-7 shadow-[0_1px_0_color-mix(in_srgb,var(--ledger-ink)_5%,transparent),0_4px_12px_-6px_color-mix(in_srgb,var(--ledger-ink)_10%,transparent)] hover:shadow-[0_2px_0_color-mix(in_srgb,var(--ledger-ink)_8%,transparent),0_8px_22px_-8px_color-mix(in_srgb,var(--ledger-ink)_16%,transparent)] transition-shadow duration-[200ms]"
+      className="scroll-mt-24 border-l-2 border-[var(--ledger-accent)] bg-[var(--ledger-paper)] rounded-r-[3px] px-5 sm:px-6 py-4 sm:py-5"
     >
-      <div className="flex flex-col items-center">
-        <div className="font-serif text-[2.75rem] leading-none text-[var(--ledger-accent)] tabular-nums">
-          {s.numeral}
+      <div className="font-mono uppercase tracking-[0.18em] text-[0.6rem] text-[var(--ledger-accent)] mb-1.5 tabular-nums">
+        {s.numeral}
+      </div>
+      {s.lead ? (
+        <h4 className="font-serif text-[1.125rem] leading-tight text-[var(--ledger-ink)] mb-2">
+          {renderInline(s.lead)}
+        </h4>
+      ) : null}
+      {s.body ? (
+        <div className="font-serif text-[0.95rem] leading-[1.65] text-[var(--ledger-ink-2)] space-y-2.5">
+          {s.body.split('\n\n').map((para, j) => (
+            <p key={j}>{renderInline(para.trim())}</p>
+          ))}
         </div>
-        <div className="mt-2 w-px flex-1 bg-[var(--ledger-rule-strong)] min-h-[40px]" aria-hidden />
-      </div>
-      <div className="min-w-0">
-        {s.lead ? (
-          <h4 className="font-serif text-[1.25rem] leading-tight text-[var(--ledger-ink)] mb-3">
-            {renderInline(s.lead)}
-          </h4>
-        ) : null}
-        {s.body ? (
-          <div className="font-serif text-[1rem] leading-[1.7] text-[var(--ledger-ink-2)] space-y-3">
-            {s.body.split('\n\n').map((para, j) => (
-              <p key={j}>{renderInline(para.trim())}</p>
-            ))}
-          </div>
-        ) : null}
-      </div>
+      ) : null}
     </section>
   );
 }

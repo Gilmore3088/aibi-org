@@ -14,7 +14,7 @@
 // panels. The shell owns step state, progress UI, navigation, and the
 // keyboard model.
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 export interface Step {
   readonly id: string;
@@ -45,6 +45,8 @@ export function LessonStepShell({
   const [idx, setIdx] = useState(0);
   const step = steps[idx];
   const isLast = idx === steps.length - 1;
+  const stepHeadingRef = useRef<HTMLHeadingElement | null>(null);
+  const lastIdxRef = useRef(idx);
 
   const goTo = useCallback(
     (n: number) => {
@@ -55,6 +57,22 @@ export function LessonStepShell({
     },
     [steps.length],
   );
+
+  // Audit A11 (2026-05-24): scroll-to-top alone leaves keyboard / screen-
+  // reader users unannounced of the new step. Move focus to the step
+  // heading on idx change so the assistive-tech reading order restarts
+  // at the new step's title. tabIndex={-1} keeps the heading out of the
+  // normal tab order while still focusable programmatically.
+  useEffect(() => {
+    if (idx !== lastIdxRef.current) {
+      lastIdxRef.current = idx;
+      // Defer to next paint so the new heading text is in the DOM before
+      // focus() — without the rAF, screen readers can read the old text.
+      requestAnimationFrame(() => {
+        stepHeadingRef.current?.focus();
+      });
+    }
+  }, [idx]);
 
   const next = useCallback(() => {
     if (step.nextDisabled) return;
@@ -149,8 +167,17 @@ export function LessonStepShell({
       </div>
 
       {/* The focused step panel */}
-      <section key={step.id} className="min-h-[60vh]">
-        <h2 className="font-serif text-[1.75rem] sm:text-[2.25rem] leading-tight text-[var(--ledger-ink)] mb-6">
+      <section
+        key={step.id}
+        className="min-h-[60vh]"
+        aria-labelledby={`step-heading-${step.id}`}
+      >
+        <h2
+          id={`step-heading-${step.id}`}
+          ref={stepHeadingRef}
+          tabIndex={-1}
+          className="font-serif text-[1.75rem] sm:text-[2.25rem] leading-tight text-[var(--ledger-ink)] mb-6 outline-none focus-visible:ring-2 focus-visible:ring-[var(--ledger-accent)] focus-visible:ring-offset-4 focus-visible:ring-offset-[var(--ledger-bg)]"
+        >
           {step.title}
         </h2>
         <div>{step.node}</div>
