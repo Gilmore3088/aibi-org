@@ -120,6 +120,56 @@ After premise-checking each item against the live code post-PR9/PR10:
 **Net:** 5 of 8 Phase 4 items closed (G1, G2, G4, G7, G8). 3 remain
 (G3, G5, G6). G6 needs a product call.
 
+---
+
+## 2026-05-25 (extended session — PRs 13–23)
+
+User said "move forward" after the original 15-task tier list. Took
+that as authorization to proceed on everything that doesn't require
+production-touching actions (migration apply, push). Eleven more PRs
+landed:
+
+| Commit | Phase | Scope |
+|---|---|---|
+| `67f79fa` → `c892bbb` | 1 PR1–PR8 + PR18 | Already documented above + M3.3 split |
+| `e59f15d` | 2 PR13 | (already noted) workbench_pack enum + Pack type + tests |
+| `526e5c3` | 2 PR14 | (already noted) WorkbenchPackBuilder component |
+| `56140c5` | 2 PR15 | (already noted) M4 curriculum doc annotation |
+| `d87fcd8` | 2 PR16 | Paid Workbench Shell (3-pane source/controls/output layout) |
+| `5fbe6db` | 3 PR17 | Artifact Review Shell (generalised) + WorkbenchPackArtifact variant |
+| `c892bbb` | 1 PR18 | M3.3 structural split — 3.3a (default brief) + 3.3b (advanced patterns); ordinal renumber m3.4→5, m3.5→6 |
+| `e59f15d` | 2 PR19 | M4 takeaway_artifact_type → workbench_pack + shell_kind=step |
+| `3cfaf8f` | 2 PR20 | M5 re-thread (5.3 retitled) + Board AI Brief leadership variant on m5.2 + M5.5 closing-copy reconciliation |
+| `c36f69c` | 3 PR21 | New m4.5 "What can go wrong, by department" lesson (CEO Bill F4) |
+| `590eb20` | 3 PR22 | SeatAllocationTree component (CEO Bill F5) |
+| `de01a88` | 3 PR23 | 4 new leadership-track variants (m1.1, m3.1, m3.4, m4.4) — lifts branched count from 5/24 to 10/24 |
+
+### Phase status at end of extended session
+
+| Phase | Status |
+|---|---|
+| **Phase 0** | ✅ done (rebased onto addie-v1, plan + spec + indexes committed) |
+| **Phase 1** | ✅ done — 13 free lessons on step shell (M0.1 exception, M0.2 already), M3.3 structurally split into 3.3a + 3.3b, Gloss component + glossary shipped, AiToolAnatomy in M0.1, timing-honesty pass across course + marketing |
+| **Phase 2** | ✅ done — workbench_pack enum + type + tests, WorkbenchPackBuilder component, 3-pane Paid Workbench Shell, M4 lessons wired to Pack, M5 Project Brief re-threaded to drive Pack, Board AI Brief leadership variant on m5.2, M5.5 closing copy reconciled. Curriculum doc annotated. **Open follow-up:** the M4 lesson body_md still describes the prior Skill arc; the SAVE flow produces a Pack but the read still says "Skill." Body re-author is content work, not infra. |
+| **Phase 3** | ✅ done — Artifact Review Shell generalised + Pack variant, m4.5 worst-case-by-department lesson (CEO Bill's #1 add), SeatAllocationTree component (CEO Bill's #2 add), 4 new leadership branches (m1.1 / m3.1 / m3.4 / m4.4) bringing branched count to the 10/24 floor. **Open follow-up:** wire SeatAllocationTree into `/foundation/for-community-banks` or the gate sidebar (IA decision). |
+| **Phase 4** | 5/8 done after reconciliation (G1/G2/G4/G7/G8). **Open:** G3 verify, G5 E2E walk, G6 product call. |
+
+### Remaining items that genuinely need operator input
+
+1. **Apply migrations `00073` (shell_kind) + `00074` (workbench_pack)** to the linked Supabase. Without these, every M0–M3 step-shell flip and every M4 Pack flow is inert in production.
+2. **Re-apply the m0–m5 seeds** to pick up all the body_md / shell_kind / takeaway_artifact_type / track-variant changes across PR2–PR23.
+3. **Push `feature/addie-v1` to origin** for a Vercel preview URL.
+4. **G6 toolbox routes** — pick canonical between `/my-toolbox` and `/dashboard/toolbox`.
+5. **M4 lesson body_md re-author around the Pack vocabulary** — content work; current bodies still read as the Skill arc even though the SAVE flow produces a Pack.
+6. **SeatAllocationTree IA placement** — pricing page, for-community-banks page, gate sidebar, or standalone `/foundation/seats`.
+7. **Mobile / Playwright QA pass** on the step-shell migrations.
+
+### Session totals (final)
+
+- Commits since session start (`b1d9795`): **28**
+- New PRs landed this session: **23 (PR1–PR23)** plus 3 WIP-triage commits + 1 gitignore commit + 1 cherry-pick + 2 handoff/reconciliation commits.
+- All 4 phases substantively built. Production application gated on operator approval per CLAUDE.md.
+
 ## Notes for the next session
 
 1. **Migration 00073 must land** before any of the step-shell flips
