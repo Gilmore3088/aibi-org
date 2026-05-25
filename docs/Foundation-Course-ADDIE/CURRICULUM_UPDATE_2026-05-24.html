@@ -1,0 +1,584 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AiBI Foundation — Curriculum Update · 2026-05-24</title>
+<style>
+:root {
+  --ledger-bg: #ECE9DF; --ledger-paper: #F4F1E7; --ledger-parch: #E4E0D2;
+  --ledger-tape: #F1E9D0; --ledger-ink: #0E1B2D; --ledger-ink-2: #1F2A3F;
+  --ledger-muted: #4F5C6E; --ledger-soft: #8C95A8; --ledger-accent: #7C5814;
+  --ledger-accent-2: #1E3A5F; --ledger-weak: #8E3B2A;
+  --ledger-rule: #D5D1C2; --ledger-rule-strong: #A8AEBE;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; padding: 48px 28px 96px;
+  background: var(--ledger-bg);
+  color: var(--ledger-ink);
+  font-family: ui-serif, Georgia, "Times New Roman", serif;
+  font-size: 16px; line-height: 1.55;
+}
+.wrap { max-width: 1280px; margin: 0 auto; }
+header.page { border-bottom: 1px solid var(--ledger-rule); padding-bottom: 32px; margin-bottom: 40px; }
+.kicker {
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  text-transform: uppercase; letter-spacing: 0.18em;
+  font-size: 11px; color: var(--ledger-accent); font-weight: 600;
+  margin-bottom: 8px;
+}
+h1 { font-size: 38px; line-height: 1.1; margin: 0 0 12px; font-weight: 500; }
+h2 { font-size: 22px; line-height: 1.2; margin: 0 0 6px; font-weight: 500; }
+h3 { font-size: 16px; margin: 24px 0 8px; font-weight: 600; }
+.lede { font-size: 17px; color: var(--ledger-ink-2); max-width: 70ch; }
+.muted { color: var(--ledger-muted); }
+.tab { font-variant-numeric: tabular-nums; font-family: ui-monospace, Menlo, Consolas, monospace; }
+.chip {
+  display: inline-block; padding: 2px 8px; border-radius: 2px;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em;
+}
+.chip.free { background: color-mix(in srgb, var(--ledger-accent-2) 8%, var(--ledger-paper)); color: var(--ledger-accent-2); }
+.chip.paid { background: color-mix(in srgb, var(--ledger-accent) 15%, var(--ledger-paper)); color: var(--ledger-accent); }
+.rollup {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px; margin: 28px 0 12px;
+}
+.stat {
+  border-left: 2px solid var(--ledger-accent);
+  background: var(--ledger-paper); padding: 14px 16px;
+  border-radius: 3px;
+}
+.stat .n { font-size: 30px; line-height: 1; }
+.stat .l { font-size: 11px; color: var(--ledger-muted); margin-top: 6px;
+  text-transform: uppercase; letter-spacing: 0.14em;
+  font-family: ui-monospace, Menlo, Consolas, monospace; }
+section.module {
+  margin-top: 36px; background: var(--ledger-paper);
+  border: 1px solid var(--ledger-rule); border-radius: 4px;
+  padding: 24px 24px 20px;
+}
+.mhead { margin-bottom: 14px; }
+.meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 13px; margin-top: 6px; }
+table {
+  width: 100%; border-collapse: collapse; margin-top: 8px;
+  font-size: 13px;
+}
+.ltable th {
+  text-align: left; font-weight: 600;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  text-transform: uppercase; letter-spacing: 0.14em;
+  font-size: 10px; color: var(--ledger-muted);
+  padding: 8px 6px; border-bottom: 1px solid var(--ledger-rule);
+}
+.ltable td {
+  padding: 10px 6px; border-bottom: 1px solid var(--ledger-rule);
+  vertical-align: top;
+}
+.ltable .lid { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 12px; color: var(--ledger-accent); }
+.ltable .ltitle { max-width: 280px; }
+.ltable .mod, .ltable .branch, .ltable .ix, .ltable .take { color: var(--ledger-ink-2); }
+.ltable .cut { color: var(--ledger-accent); font-weight: 600; }
+details.div {
+  margin-top: 6px; border-left: 2px solid var(--ledger-weak);
+  padding-left: 10px; font-size: 12px; color: var(--ledger-ink-2);
+}
+details.div summary {
+  cursor: pointer; color: var(--ledger-weak);
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  text-transform: uppercase; letter-spacing: 0.14em; font-size: 10px;
+}
+.dtable th, .dtable td {
+  font-size: 12px; padding: 6px; border-bottom: 1px solid var(--ledger-rule);
+  text-align: left;
+}
+.cross, .gaps {
+  background: var(--ledger-paper); border: 1px solid var(--ledger-rule);
+  border-radius: 4px; padding: 24px; margin-top: 28px;
+}
+.cross table td, .gaps table td { padding: 8px 6px; border-bottom: 1px solid var(--ledger-rule); vertical-align: top; font-size: 13px; }
+.cross table th, .gaps table th {
+  text-align: left;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  text-transform: uppercase; letter-spacing: 0.14em;
+  font-size: 10px; color: var(--ledger-muted);
+  padding: 8px 6px; border-bottom: 1px solid var(--ledger-rule);
+}
+.status { font-size: 14px; }
+hr { border: none; border-top: 1px solid var(--ledger-rule); margin: 32px 0; }
+.toc { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+.toc a {
+  display: inline-block; padding: 4px 10px;
+  border: 1px solid var(--ledger-rule); border-radius: 2px;
+  color: var(--ledger-ink); text-decoration: none; font-size: 13px;
+}
+.toc a:hover { border-color: var(--ledger-ink); }
+footer { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--ledger-rule); font-size: 12px; color: var(--ledger-muted); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="page">
+  <div class="kicker">AiBI Foundation Course · Curriculum update · 2026-05-24</div>
+  <h1>What's spec'd, what shipped, what's left.</h1>
+  <p class="lede">A single-page audit of every module in the AiBI Foundation Course — comparing the PRD spec, the implementation seed, and the actual lesson endpoints. Body-text reduction this session: <strong>44% overall</strong> across all 24 lessons. Tests: <strong>405 / 405</strong>. Typecheck clean. Every lesson endpoint returns 200.</p>
+  <div class="rollup">
+    <div class="stat"><div class="n tab">6</div><div class="l">Modules</div></div>
+    <div class="stat"><div class="n tab">24</div><div class="l">Lessons (all endpoints 200)</div></div>
+    <div class="stat"><div class="n tab">3</div><div class="l">Module curriculum docs ✅ (M0 · M4 · M5)</div></div>
+    <div class="stat"><div class="n tab">−44%</div><div class="l">Body-text reduction</div></div>
+  </div>
+  <div class="toc">
+    <a href="#M0">M0 · Orientation</a><a href="#M1">M1 · What generative AI is</a><a href="#M2">M2 · Access &amp; workflow</a><a href="#M3">M3 · Talking to the machine — prompting</a><a href="#GATE">GATE · GATE — Three-way fork</a><a href="#M4">M4 · Automating the repetitive: skills</a><a href="#M5">M5 · From idea to prototype</a>
+    <a href="#cross">Cross-cutting</a>
+    <a href="#gaps">Gaps</a>
+  </div>
+</header>
+
+
+    <section class="module" id="M0">
+      <header class="mhead">
+        <div class="kicker">MODULE · M0</div>
+        <h2>Orientation</h2>
+        <div class="meta">
+          <span class="chip free">Free</span>
+          <span class="muted">~15 min</span>
+          <span class="muted">·</span>
+          <span class="muted">Curriculum doc: AiBI_Module_0_Orientation.md (✅ original)</span>
+          <span class="muted">·</span><span class="muted tab">Body text cut <strong>45%</strong> (1222 → 665 words)</span>
+        </div>
+      </header>
+      <table class="ltable">
+        <thead><tr><th>ID</th><th>Lesson</th><th>Modality</th><th>Min</th><th>Branched</th><th>Interactive</th><th>Takeaway</th><th>Before</th><th>After</th><th>Cut</th></tr></thead>
+        <tbody>
+    <tr>
+      <td class="lid">m0.1</td>
+      <td class="ltitle">How this course works + your Toolbox</td>
+      <td class="mod">video</td>
+      <td class="dur tab">7m</td>
+      <td class="branch">—</td>
+      <td class="ix">Track picker</td>
+      <td class="take">Course Roadmap (light)</td>
+      <td class="wc tab">593</td>
+      <td class="wc tab">343</td>
+      <td class="cut tab">42%</td>
+    </tr>
+    <tr>
+      <td class="lid">m0.2</td>
+      <td class="ltitle">The one rule that matters: data discipline</td>
+      <td class="mod">video</td>
+      <td class="dur tab">8m</td>
+      <td class="branch">×5</td>
+      <td class="ix">Off-limits sorter</td>
+      <td class="take">Data Discipline Card</td>
+      <td class="wc tab">629</td>
+      <td class="wc tab">322</td>
+      <td class="cut tab">48%</td>
+    </tr></tbody>
+      </table>
+    </section>
+    <section class="module" id="M1">
+      <header class="mhead">
+        <div class="kicker">MODULE · M1</div>
+        <h2>What generative AI is</h2>
+        <div class="meta">
+          <span class="chip free">Free</span>
+          <span class="muted">~39 min</span>
+          <span class="muted">·</span>
+          <span class="muted">Curriculum doc: seed-only (✅ this session: implementation truth)</span>
+          <span class="muted">·</span><span class="muted tab">Body text cut <strong>46%</strong> (2012 → 1077 words)</span>
+        </div>
+      </header>
+      <table class="ltable">
+        <thead><tr><th>ID</th><th>Lesson</th><th>Modality</th><th>Min</th><th>Branched</th><th>Interactive</th><th>Takeaway</th><th>Before</th><th>After</th><th>Cut</th></tr></thead>
+        <tbody>
+    <tr>
+      <td class="lid">m1.1</td>
+      <td class="ltitle">What it actually is (and isn&#x27;t)</td>
+      <td class="mod">video</td>
+      <td class="dur tab">10m</td>
+      <td class="branch">—</td>
+      <td class="ix">—</td>
+      <td class="take">—</td>
+      <td class="wc tab">493</td>
+      <td class="wc tab">275</td>
+      <td class="cut tab">44%</td>
+    </tr>
+    <tr>
+      <td class="lid">m1.2</td>
+      <td class="ltitle">Tool landscape: assistants vs builders</td>
+      <td class="mod">interactive</td>
+      <td class="dur tab">12m</td>
+      <td class="branch">—</td>
+      <td class="ix">ToolLandscapeMatrix</td>
+      <td class="take">AI Toolkit Map</td>
+      <td class="wc tab">556</td>
+      <td class="wc tab">295</td>
+      <td class="cut tab">46%</td>
+    </tr>
+    <tr>
+      <td class="lid">m1.3</td>
+      <td class="ltitle">Why this matters for your role</td>
+      <td class="mod">audio</td>
+      <td class="dur tab">8m</td>
+      <td class="branch">×5</td>
+      <td class="ix">—</td>
+      <td class="take">—</td>
+      <td class="wc tab">148</td>
+      <td class="wc tab">103</td>
+      <td class="cut tab">30%</td>
+    </tr>
+    <tr>
+      <td class="lid">m1.4</td>
+      <td class="ltitle">Good vs bad use in a bank</td>
+      <td class="mod">video</td>
+      <td class="dur tab">9m</td>
+      <td class="branch">—</td>
+      <td class="ix">—</td>
+      <td class="take">—</td>
+      <td class="wc tab">815</td>
+      <td class="wc tab">404</td>
+      <td class="cut tab">50%</td>
+    </tr></tbody>
+      </table>
+    </section>
+    <section class="module" id="M2">
+      <header class="mhead">
+        <div class="kicker">MODULE · M2</div>
+        <h2>Access &amp; workflow</h2>
+        <div class="meta">
+          <span class="chip free">Free</span>
+          <span class="muted">~47 min</span>
+          <span class="muted">·</span>
+          <span class="muted">Curriculum doc: seed-only</span>
+          <span class="muted">·</span><span class="muted tab">Body text cut <strong>44%</strong> (2214 → 1232 words)</span>
+        </div>
+      </header>
+      <table class="ltable">
+        <thead><tr><th>ID</th><th>Lesson</th><th>Modality</th><th>Min</th><th>Branched</th><th>Interactive</th><th>Takeaway</th><th>Before</th><th>After</th><th>Cut</th></tr></thead>
+        <tbody>
+    <tr>
+      <td class="lid">m2.1</td>
+      <td class="ltitle">Getting access</td>
+      <td class="mod">video</td>
+      <td class="dur tab">10m</td>
+      <td class="branch">—</td>
+      <td class="ix">—</td>
+      <td class="take">—</td>
+      <td class="wc tab">649</td>
+      <td class="wc tab">337</td>
+      <td class="cut tab">48%</td>
+    </tr>
+    <tr>
+      <td class="lid">m2.2</td>
+      <td class="ltitle">What each tool is for</td>
+      <td class="mod">video</td>
+      <td class="dur tab">12m</td>
+      <td class="branch">—</td>
+      <td class="ix">—</td>
+      <td class="take">—</td>
+      <td class="wc tab">624</td>
+      <td class="wc tab">349</td>
+      <td class="cut tab">44%</td>
+    </tr>
+    <tr>
+      <td class="lid">m2.3</td>
+      <td class="ltitle">Your first conversation</td>
+      <td class="mod">sandbox</td>
+      <td class="dur tab">15m</td>
+      <td class="branch">—</td>
+      <td class="ix">Controlled sandbox</td>
+      <td class="take">First Conversation transcript</td>
+      <td class="wc tab">483</td>
+      <td class="wc tab">290</td>
+      <td class="cut tab">39%</td>
+    </tr>
+    <tr>
+      <td class="lid">m2.4</td>
+      <td class="ltitle">Where AI fits in your week</td>
+      <td class="mod">worksheet</td>
+      <td class="dur tab">10m</td>
+      <td class="branch">×5</td>
+      <td class="ix">Worksheet</td>
+      <td class="take">—</td>
+      <td class="wc tab">458</td>
+      <td class="wc tab">256</td>
+      <td class="cut tab">44%</td>
+    </tr></tbody>
+      </table>
+    </section>
+    <section class="module" id="M3">
+      <header class="mhead">
+        <div class="kicker">MODULE · M3</div>
+        <h2>Talking to the machine — prompting</h2>
+        <div class="meta">
+          <span class="chip free">Free (last)</span>
+          <span class="muted">~69 min</span>
+          <span class="muted">·</span>
+          <span class="muted">Curriculum doc: seed-only</span>
+          <span class="muted">·</span><span class="muted tab">Body text cut <strong>40%</strong> (3346 → 1996 words)</span>
+        </div>
+      </header>
+      <table class="ltable">
+        <thead><tr><th>ID</th><th>Lesson</th><th>Modality</th><th>Min</th><th>Branched</th><th>Interactive</th><th>Takeaway</th><th>Before</th><th>After</th><th>Cut</th></tr></thead>
+        <tbody>
+    <tr>
+      <td class="lid">m3.1</td>
+      <td class="ltitle">Anatomy of a prompt</td>
+      <td class="mod">video</td>
+      <td class="dur tab">12m</td>
+      <td class="branch">—</td>
+      <td class="ix">—</td>
+      <td class="take">—</td>
+      <td class="wc tab">743</td>
+      <td class="wc tab">397</td>
+      <td class="cut tab">46%</td>
+    </tr>
+    <tr>
+      <td class="lid">m3.2</td>
+      <td class="ltitle">How output changes — same task, different brief</td>
+      <td class="mod">sandbox (A/B)</td>
+      <td class="dur tab">15m</td>
+      <td class="branch">—</td>
+      <td class="ix">A/B sandbox</td>
+      <td class="take">—</td>
+      <td class="wc tab">600</td>
+      <td class="wc tab">299</td>
+      <td class="cut tab">50%</td>
+    </tr>
+    <tr>
+      <td class="lid">m3.3</td>
+      <td class="ltitle">Patterns: five prompt shapes</td>
+      <td class="mod">reading</td>
+      <td class="dur tab">12m</td>
+      <td class="branch">—</td>
+      <td class="ix">—</td>
+      <td class="take">Cheat sheet</td>
+      <td class="wc tab">995</td>
+      <td class="wc tab">653</td>
+      <td class="cut tab">34%</td>
+    </tr>
+    <tr>
+      <td class="lid">m3.4</td>
+      <td class="ltitle">Banking no-nos: spot the violation</td>
+      <td class="mod">interactive</td>
+      <td class="dur tab">12m</td>
+      <td class="branch">—</td>
+      <td class="ix">SpotTheViolation</td>
+      <td class="take">—</td>
+      <td class="wc tab">466</td>
+      <td class="wc tab">280</td>
+      <td class="cut tab">39%</td>
+    </tr>
+    <tr>
+      <td class="lid">m3.5</td>
+      <td class="ltitle">Real use cases: build your Starter Prompt Pack</td>
+      <td class="mod">sandbox</td>
+      <td class="dur tab">15m</td>
+      <td class="branch">×5</td>
+      <td class="ix">Sandbox</td>
+      <td class="take">Starter Prompt Pack</td>
+      <td class="wc tab">542</td>
+      <td class="wc tab">367</td>
+      <td class="cut tab">32%</td>
+    </tr></tbody>
+      </table>
+    </section>
+    <section class="module" id="GATE">
+      <header class="mhead">
+        <div class="kicker">MODULE · GATE</div>
+        <h2>GATE — Three-way fork</h2>
+        <div class="meta">
+          <span class="chip free">—</span>
+          <span class="muted">—</span>
+          <span class="muted">·</span>
+          <span class="muted">Curriculum doc: wired (FR-M3-5)</span>
+          
+        </div>
+      </header>
+      <table class="ltable">
+        <thead><tr><th>ID</th><th>Lesson</th><th>Modality</th><th>Min</th><th>Branched</th><th>Interactive</th><th>Takeaway</th><th>Before</th><th>After</th><th>Cut</th></tr></thead>
+        <tbody>
+    <tr>
+      <td class="lid">gate</td>
+      <td class="ltitle">Pay · Email-to-keep · Decline</td>
+      <td class="mod">screen</td>
+      <td class="dur tab">0m</td>
+      <td class="branch">—</td>
+      <td class="ix">GateScreen</td>
+      <td class="take">—</td>
+      <td class="wc tab">—</td>
+      <td class="wc tab">—</td>
+      <td class="cut tab">—</td>
+    </tr></tbody>
+      </table>
+    </section>
+    <section class="module" id="M4">
+      <header class="mhead">
+        <div class="kicker">MODULE · M4</div>
+        <h2>Automating the repetitive: skills</h2>
+        <div class="meta">
+          <span class="chip paid">Paid</span>
+          <span class="muted">~52 min</span>
+          <span class="muted">·</span>
+          <span class="muted">Curriculum doc: AiBI_Module_4_Skills.md (✅ this session)</span>
+          <span class="muted">·</span><span class="muted tab">Body text cut <strong>49%</strong> (2323 → 1181 words)</span>
+        </div>
+      </header>
+      <table class="ltable">
+        <thead><tr><th>ID</th><th>Lesson</th><th>Modality</th><th>Min</th><th>Branched</th><th>Interactive</th><th>Takeaway</th><th>Before</th><th>After</th><th>Cut</th></tr></thead>
+        <tbody>
+    <tr>
+      <td class="lid">m4.1</td>
+      <td class="ltitle">What a skill is</td>
+      <td class="mod">video</td>
+      <td class="dur tab">10m</td>
+      <td class="branch">—</td>
+      <td class="ix">—</td>
+      <td class="take">—</td>
+      <td class="wc tab">616</td>
+      <td class="wc tab">306</td>
+      <td class="cut tab">50%</td>
+    </tr>
+    <tr>
+      <td class="lid">m4.2</td>
+      <td class="ltitle">Build your first skill</td>
+      <td class="mod">interactive</td>
+      <td class="dur tab">15m</td>
+      <td class="branch">—</td>
+      <td class="ix">SkillBuilder</td>
+      <td class="take">Skill Template</td>
+      <td class="wc tab">598</td>
+      <td class="wc tab">319</td>
+      <td class="cut tab">46%</td>
+    </tr>
+    <tr>
+      <td class="lid">m4.3</td>
+      <td class="ltitle">Build a skill for your role<details class="div"><summary>Spec ⇄ Shipped divergences (2)</summary><table class="dtable"><tr><th>Item</th><th>PRD</th><th>Shipped</th><th>Resolution</th></tr><tr><td>Back-Office role default</td><td>PRD: &quot;press-release generator&quot;</td><td>Shipped: &quot;Process rewrite to one page&quot;</td><td><strong>seed wins</strong></td></tr><tr><td>Leadership role default</td><td>PRD: &quot;ten competitors research compiler&quot;</td><td>Shipped: &quot;Board memo, one page&quot;</td><td><strong>seed wins</strong></td></tr></table></details></td>
+      <td class="mod">interactive</td>
+      <td class="dur tab">15m</td>
+      <td class="branch">×5</td>
+      <td class="ix">SkillBuilder</td>
+      <td class="take">Working Skill</td>
+      <td class="wc tab">512</td>
+      <td class="wc tab">275</td>
+      <td class="cut tab">46%</td>
+    </tr>
+    <tr>
+      <td class="lid">m4.4</td>
+      <td class="ltitle">Test, refine, guardrail-check<details class="div"><summary>Spec ⇄ Shipped divergences (1)</summary><table class="dtable"><tr><th>Item</th><th>PRD</th><th>Shipped</th><th>Resolution</th></tr><tr><td>Guardrail check timing</td><td>PRD: validated before save (FR-M4-3)</td><td>Shipped: PII screen at save time + 4 guardrail notes after a clean run</td><td><strong>both layers exist</strong></td></tr></table></details></td>
+      <td class="mod">interactive</td>
+      <td class="dur tab">12m</td>
+      <td class="branch">—</td>
+      <td class="ix">SkillBuilder</td>
+      <td class="take">Verified Skill (extends 4.3)</td>
+      <td class="wc tab">597</td>
+      <td class="wc tab">281</td>
+      <td class="cut tab">52%</td>
+    </tr></tbody>
+      </table>
+    </section>
+    <section class="module" id="M5">
+      <header class="mhead">
+        <div class="kicker">MODULE · M5</div>
+        <h2>From idea to prototype</h2>
+        <div class="meta">
+          <span class="chip paid">Paid</span>
+          <span class="muted">~62 min</span>
+          <span class="muted">·</span>
+          <span class="muted">Curriculum doc: AiBI_Module_5_Prototypes.md (✅ this session)</span>
+          <span class="muted">·</span><span class="muted tab">Body text cut <strong>43%</strong> (3414 → 1914 words)</span>
+        </div>
+      </header>
+      <table class="ltable">
+        <thead><tr><th>ID</th><th>Lesson</th><th>Modality</th><th>Min</th><th>Branched</th><th>Interactive</th><th>Takeaway</th><th>Before</th><th>After</th><th>Cut</th></tr></thead>
+        <tbody>
+    <tr>
+      <td class="lid">m5.1</td>
+      <td class="ltitle">What an agent is — honestly<details class="div"><summary>Spec ⇄ Shipped divergences (1)</summary><table class="dtable"><tr><th>Item</th><th>PRD</th><th>Shipped</th><th>Resolution</th></tr><tr><td>Agent Blueprint placement</td><td>PRD: first-class M5.1 takeaway (FR-M5-4)</td><td>Shipped: now produced by a 90-sec Do interaction in 5.1</td><td><strong>PRD wins; amended</strong></td></tr></table></details></td>
+      <td class="mod">video</td>
+      <td class="dur tab">12m</td>
+      <td class="branch">—</td>
+      <td class="ix">—</td>
+      <td class="take">Agent Blueprint</td>
+      <td class="wc tab">787</td>
+      <td class="wc tab">477</td>
+      <td class="cut tab">39%</td>
+    </tr>
+    <tr>
+      <td class="lid">m5.2</td>
+      <td class="ltitle">Framing a problem worth building for</td>
+      <td class="mod">worksheet</td>
+      <td class="dur tab">12m</td>
+      <td class="branch">—</td>
+      <td class="ix">ProblemFrame</td>
+      <td class="take">Problem Backlog</td>
+      <td class="wc tab">634</td>
+      <td class="wc tab">348</td>
+      <td class="cut tab">45%</td>
+    </tr>
+    <tr>
+      <td class="lid">m5.3</td>
+      <td class="ltitle">Writing a lightweight PRD</td>
+      <td class="mod">interactive</td>
+      <td class="dur tab">15m</td>
+      <td class="branch">—</td>
+      <td class="ix">PRDBuilder</td>
+      <td class="take">PRD</td>
+      <td class="wc tab">699</td>
+      <td class="wc tab">463</td>
+      <td class="cut tab">33%</td>
+    </tr>
+    <tr>
+      <td class="lid">m5.4</td>
+      <td class="ltitle">Build a prototype<details class="div"><summary>Spec ⇄ Shipped divergences (1)</summary><table class="dtable"><tr><th>Item</th><th>PRD</th><th>Shipped</th><th>Resolution</th></tr><tr><td>Prototyping tools</td><td>PRD: Lovable · Replit · Claude Code (3)</td><td>Shipped: Lovable · Replit Agents · Claude Code · v0 (4)</td><td><strong>seed wins; v0 added for clickable React mockups</strong></td></tr></table></details></td>
+      <td class="mod">interactive</td>
+      <td class="dur tab">15m</td>
+      <td class="branch">—</td>
+      <td class="ix">PrototypeLauncher</td>
+      <td class="take">Prototype URL</td>
+      <td class="wc tab">644</td>
+      <td class="wc tab">298</td>
+      <td class="cut tab">53%</td>
+    </tr>
+    <tr>
+      <td class="lid">m5.5</td>
+      <td class="ltitle">Where to go next</td>
+      <td class="mod">audio</td>
+      <td class="dur tab">8m</td>
+      <td class="branch">—</td>
+      <td class="ix">—</td>
+      <td class="take">—</td>
+      <td class="wc tab">650</td>
+      <td class="wc tab">328</td>
+      <td class="cut tab">49%</td>
+    </tr></tbody>
+      </table>
+    </section>
+
+<section id="cross" class="cross">
+  <div class="kicker">Cross-cutting capabilities</div>
+  <h2>Shared dependencies — built once, used everywhere.</h2>
+  <table>
+    <thead><tr><th>Capability</th><th>Source</th><th>Shipped state</th><th>Status</th></tr></thead>
+    <tbody><tr><td>Controlled sandbox platform</td><td>spec ✅</td><td>Wave 1b+1e — all 8 §14 acceptance tests pass; canary + PII gate + provider switcher live</td><td class="status">✅</td></tr><tr><td>Toolbox infra (versioned .md, RLS, free-tier cap)</td><td>spec ✅</td><td>Wave 1c+1d backend; Wave 2a UI; 4-artifact free cap; unlimited paid</td><td class="status">✅</td></tr><tr><td>Track system (5 tracks, profile.track)</td><td>spec ✅</td><td>Wave 1a schema; Wave 2a TrackPicker; per-track variant content authored</td><td class="status">✅</td></tr><tr><td>Knowledge-check logging</td><td>spec ✅</td><td>Wave 1c schema + Wave 2a write endpoint; 64 KC rows seeded across modules</td><td class="status">✅</td></tr><tr><td>Three-way gate after M3 (Pay · Email · Decline)</td><td>spec ✅</td><td>Wave 2a — GateScreen + EmailOptionForm + PayOptionCard + DeclineOption; wired via gateTrigger</td><td class="status">✅</td></tr><tr><td>Entitlement gating for M4/M5</td><td>spec ✅</td><td>Stripe-driven RLS + hasAnyFoundationEntitlement; paid modules show PaywallPreview without entitlement</td><td class="status">✅</td></tr><tr><td>Lesson body text-reduction pass</td><td>this session</td><td>All 24 lesson body_md restructured; -44% overall (range 40%–49% per module)</td><td class="status">✅</td></tr><tr><td>Maturity arc (Aware → Governing) UI</td><td>this session</td><td>MaturityJourney component + /api/addie/maturity endpoint; SVG marks (no emoji)</td><td class="status">✅</td></tr><tr><td>Toolbox accumulation feedback</td><td>this session</td><td>ToolboxAccumulation widget; pulses on aibi:artifact-saved event</td><td class="status">✅</td></tr><tr><td>Sacred Rule immersive moment</td><td>this session</td><td>Full-bleed dark mode for m0.2; focus management + scroll lock + tab trap</td><td class="status">✅</td></tr><tr><td>Track-aware lesson chrome (governance margin notes)</td><td>next</td><td>TrackChrome component scaffolded; wiring + 15 hook seeds pending</td><td class="status">🛠</td></tr><tr><td>Maturity-stage celebration transition</td><td>next</td><td>Component pending</td><td class="status">🔲</td></tr><tr><td>Resend transactional template for team-seat invites</td><td>next</td><td>MailerLite stub in place; Resend template pending</td><td class="status">🔲</td></tr><tr><td>Proactive tutor pattern-detection</td><td>next</td><td>Scaffold pending</td><td class="status">🔲</td></tr><tr><td>A11y QA pass (WCAG 2.1 AA)</td><td>next</td><td>Per-lesson static audit pending</td><td class="status">🔲</td></tr><tr><td>Video recording (~13 lessons)</td><td>media production</td><td>Camera/mic work — not engineering scope</td><td class="status">🔲</td></tr><tr><td>Audio recording (2 lessons, 1 with ×5 track variants)</td><td>media production</td><td>5 m1.3 variants + 1 m5.5 — not engineering scope</td><td class="status">🔲</td></tr></tbody>
+  </table>
+</section>
+
+<section id="gaps" class="gaps">
+  <div class="kicker">Open gaps</div>
+  <h2>What remains, by ownership.</h2>
+  <table>
+    <thead><tr><th>Item</th><th>Owner</th><th>Notes</th></tr></thead>
+    <tbody><tr><td>Apply six seed files to linked Supabase</td><td class="muted">operator</td><td>Edits are staged; seeds idempotent (ON CONFLICT DO UPDATE). Operator gate per CLAUDE.md.</td></tr><tr><td>Regenerate canvas thumbnails after seed apply</td><td class="muted">operator</td><td>python3 /tmp/aibi_canvas.py — Playwright re-screenshot of all 24 lessons + 6 module bundles.</td></tr><tr><td>M1 / M2 / M3 detailed curriculum docs (Module_N.md)</td><td class="muted">engineering</td><td>M0/M4/M5 done. M1–M3 are seed-only.</td></tr><tr><td>Wire TrackChrome into lesson page + add hook seeds</td><td class="muted">engineering</td><td>15 governance hooks defined (3 per track × 5 tracks); component built; not yet rendered.</td></tr><tr><td>Proactive tutor scaffold</td><td class="muted">engineering</td><td>&quot;I notice 3 overdraft prompts — combine into a Skill?&quot; Pattern detection over toolbox_items.</td></tr><tr><td>Maturity-stage celebration on threshold cross</td><td class="muted">engineering</td><td>Fires when /api/addie/maturity stage changes; small modal + sound suppressed.</td></tr><tr><td>Resend invite template (signed token link)</td><td class="muted">engineering</td><td>Auth Spec §7.2. React-Email or HTML template + wired send.</td></tr><tr><td>A11y pass — focus indicators, heading hierarchy, alt text</td><td class="muted">engineering</td><td>Per-lesson; deferred post-pilot per tracker.</td></tr></tbody>
+  </table>
+</section>
+
+<footer>
+  Sources · <code>AiBI_Foundation_Course_ADDIE_Design_v2.md</code> · <code>AiBI_Module_PRDs.md</code> · <code>AiBI_Module_Production_Tracker.md</code> · <code>supabase/seed/m{0..5}_addie.sql</code> · <code>docs/handoffs/addie-status-2026-05-24-text-cut.md</code> · live dev server at <code>localhost:3000/foundation-canvas</code>. Body-text word counts computed from the diff between current worktree and <code>git HEAD</code>. <br>Generated 2026-05-24 by ADDIE-v1 worktree. Open this file in any browser; no JS, no external dependencies, no fonts loaded.
+</footer>
+
+</div>
+</body>
+</html>

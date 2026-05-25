@@ -708,216 +708,83 @@ deleting** — never assume "stale = dead."
   one chain) get blocked by the safety classifier; remote-branch deletions must
   run as isolated, explicitly-authorized steps.
 
-**2026-05-23 — Foundation Course rebuilt from scratch on ADDIE
-(`feature/addie-v1`).** New blank-slate course design owned by
-`docs/Foundation-Course-ADDIE/` (Course PRD + ADDIE Design v2 + Module PRDs +
-M0 curriculum + production tracker + launch checklist). Three-layer doc model:
-Course PRD → Module PRDs → Module curriculum docs. Shape: 6 modules (M0–M5) ·
-~22–24 lessons · ≤15 min each · 5 role tracks branched at applied lessons ·
-three-way gate after M3 (Pay / Email-to-keep / Decline → $99 assessment) ·
-controlled "blinders" sandbox as spine (Anthropic default, learner-switchable
-to OpenAI/Gemini) · Toolbox with `.md` export (email- or entitlement-gated
-saving) · $99 Readiness Assessment as 48 Q / 10+ dimensions / four deliverables.
-Confirmed stack: Stripe · Supabase · MailerLite · Resend · LLM APIs. This work
-is **branch-scoped** — does not affect `main` until separately re-reconciled.
-Per operator: comply with existing project structures and terms with **one
-explicit exception — no credential / no certificate in v1.** "Foundations
-Certificate" is dropped from the Foundation Course on this branch; completion
-is tracked but not marketed; `src/lib/certificates/` is unused by the rebuild;
-revisit once there is traction and a recognized credentialing path. Other
-deviations flagged in CLAUDE.md (this branch): course-name shorthand in docs,
-course surface to be reauthored (the existing `/courses/foundation/program`
-is reference only here), existing `/assessment` + `/assessment/in-depth` to
-be reconciled with the 48-Q / 10+ dimension Readiness Assessment spec
-(extending `content/assessments/v2/`, not replacing from scratch), and a new
-Team SKU ($199/seat, 10-seat minimum) with no Stripe price or admin dashboard
-yet on main.
+**2026-05-25 — Foundation UX recovery: four directional decisions locked after
+multi-discipline review.** Two parallel inputs landed: the 2026-05-25 CEO/CMO/
+Product review of the live Foundation experience, and the 2026-05-24 reviewer
+fleet (CEO Bill Hagedorn $380M, CRO Margaret Holloway $1.2B, Branch Mgr Devon
+Reyes $480M CU, Sr PM Vera Kowalczyk e2e flows) plus the comprehensive audit.
+Consensus: M0–M3 is the strongest banker-facing AI orientation any of the
+reviewers had seen in two years; the paid M4–M5 arc and the systems wiring
+that ties everything together are under-built for the $295 / institutional
+price points. After a directional-decisions pass the operator locked four
+calls in [`Plans/aibi-foundations-ux-recovery-2026-05-25.md`](./Plans/aibi-foundations-ux-recovery-2026-05-25.md):
 
-**2026-05-23 — Sandbox Service deployment target = Vercel Functions (Node),
-same repo (closes TDD §13 item 1).** Sandbox code lives in `sandbox-service/`
-as a directory-level isolation boundary: only API routes under `src/app/api/`
-import from it, the rest of the web app never does. LLM SDKs + provider keys
-+ system prompts are physically scoped to that directory. v1 is non-streaming
-(<3s p50 target), so Vercel function timeouts and cold starts are acceptable.
-If a later v1.5 needs streaming or hits the function ceiling, the directory
-boundary makes extraction to a dedicated Node service a `git mv` away.
-Rejected: dedicated Node service today (extra ops surface for a non-developer
-operator); Next.js API route in the web-app bundle (collapses the security
-boundary the Sandbox Spec §3 requires).
+- **(1) Phase 1 is the Guided Lesson Shell extraction + migrating M0–M3 onto
+  it.** Today's M0 has two custom shells (`M01Experience`, `M02Experience`)
+  and everything else runs through the generic `LessonPlayer`; the migration
+  doc (`docs/Foundation-Course-ADDIE/AiBI_Lesson_Shell_Migration.md`) exists
+  but only m0.2 was migrated. Phase 1 extracts `LessonStepShell` as the
+  canonical container and migrates the rest of M0–M3 onto it. Vocabulary
+  asides, "<15 min" timing honesty, and the typography-restraint pass land
+  inside each migration commit (one touch per file).
+- **(2) M4's primary paid artifact becomes the Workbench Pack, replacing
+  "AI Work Profile."** Pack shape (combining the 2026-05-25 review's
+  pedagogical fields with CRO Margaret's governance requirements under
+  SR 11-7): `source_packet · prompt_used · first_output · review_tags ·
+  improved_output · questions_to_confirm · final_work_product` plus
+  `version · approver · use_boundary · validation_notes`. Changes
+  `addie.lessons.takeaway_artifact_type` enum, `AiBI_Module_4_Skills.md`,
+  M4.1–M4.4 lesson seeds, the SkillBuilder interactive (becomes
+  `WorkbenchPackBuilder`), and M5.5 closing copy (which already references
+  "Workbench Pack" as if it exists).
+- **(3) M5 stays "Projects and Context (Write a Project Brief)" per the
+  curriculum spine in `content/courses/foundation-program/`** — *not*
+  rescoped to "Reusable Briefs / Teaching AI Your Style / Repeatable
+  Workflows / First Workbench Pack" as the original review suggested.
+  The user's framing — prompts → skills → agents → ideas + prototypes —
+  already maps cleanly onto the existing 12-module spine (M3 = Prompts;
+  M5/M6 = Skills; M8 = Agents; M10–M12 = Ideas + Prototypes). M5 is
+  re-threaded so the Project Brief drives a new Workbench Pack run on
+  the learner's real project (M4 teaches Pack mechanics on synthetic
+  scenarios; M5 teaches the Brief skill that lets the Pack apply at
+  work). Leadership-track variant of M5 becomes the Board AI Brief +
+  Risk Appetite Statement template (addresses CEO Bill's
+  institutional-deliverable gap; previously his single biggest miss).
+- **(4) Tagline kept: "Turning Bankers into Builders."** The original
+  review recommended repositioning to "Safely turn everyday banking
+  work into reviewable AI-assisted outputs." Founder call: keep the
+  tagline; re-evaluate after Phase 2 lands, since the course
+  experience itself will tell us whether the framing is honest.
+  Taglines are cheap to change later; the recovery work is what
+  proves which framing is true.
 
-**2026-05-23 — ADDIE schema isolated under a separate `addie.*` Postgres
-schema (overrides DB Spec §11 implicit `public` placement).** The DB Spec was
-written greenfield, but `main` is live with 37 applied migrations and
-collisions on `entitlements`, `toolbox_*`, `user_profiles`, `course_enrollments`,
-and the readiness/assessment columns. Running the spec as-written would
-either fail or, if forced, corrupt live customer data on the shared Supabase
-project. All ADDIE tables therefore live under `addie.*` —
-`addie.learner_profiles`, `addie.entitlements`, `addie.toolbox_items`,
-`addie.events`, etc. RLS, FKs, triggers, and `(select auth.uid())` patterns
-all apply identically. `public.*` is untouched, so the live site is
-unaffected. Eventual merge as the canonical course is a per-table rename
-(or `ALTER SCHEMA addie RENAME TO public_v2` + view shim) decision for a
-later session, not this branch's problem. Rejected: separate Supabase
-project (extra billing + identity split), in-place reconciliation of every
-collision (slowest, riskiest, requires per-collision design we don't have).
+**Working agreement reaffirmed.** The user's `lock and refine, don't
+re-reframe` rule (memory: `feedback_lock_and_refine`) was invoked
+during the discussion — Phases 1+ build module-by-module concretely
+against locked decisions; no further high-level structural pivots
+without a Decisions Log entry. **Phasing is now Shell first (Phase 1),
+Workbench Pack + M5 re-thread (Phase 2), Artifact Review Shell +
+leadership-track depth (Phase 3), funnel/systems wiring (Phase 4)** —
+Vera's e2e findings (sessionStorage → localStorage, post-Stripe auth
+binding, result-page CTA repositioning, gate cost-shape parity,
+toolbox-route consolidation) are real and high-impact but live in a
+wiring layer separate from the lesson work, so they get their own
+phase rather than blocking Phase 1.
 
-**2026-05-23 — ADDIE web-app code namespaced under `(addie)` route group +
-`sandbox-service/` (TDD §4 honored with one tweak).** Route group keeps
-ADDIE pages out of the existing `/courses/foundation/program` tree per the
-branch CLAUDE.md "treat existing surface as reference only" rule. Layout:
-`src/app/(addie)/foundation/[moduleId]/[lessonId]/...` for the course,
-`src/app/(addie)/dashboard/` for the learner home, `src/app/api/sandbox/*`
-for the proxy to `sandbox-service/`. Existing `/courses/foundation/program`
-remains untouched on this branch. Final production routing (whether ADDIE
-takes `/courses/foundation` outright, sits at a new path, or replaces via
-redirect) is a separate decision at merge time, not now.
-
-**2026-05-23 — Env-var gaps surfaced at Wave 0 (operator action required
-before Wave 1d ships).** Present in `.env.local`: Supabase keys, Anthropic,
-OpenAI, Gemini, Stripe live keys + the existing FOUNDATIONS/AIBIP/INDEPTH
-price IDs, MailerLite key + 6 tier groups, Resend API key, CRON_SECRET,
-COMING_SOON. Missing per TDD §6 + CLAUDE.md env block: `RESEND_FROM`,
-`NEXT_PUBLIC_SITE_URL`, `TOOLBOX_IP_HASH_SALT` (likely set in Vercel only,
-not mirrored locally — verify), plus the three branch-new vars
-`SANDBOX_SERVICE_URL` (for production split-deploy, optional in dev when
-the sandbox is invoked in-process), `SANDBOX_SERVICE_INTERNAL_TOKEN` (HMAC
-shared secret between web app and sandbox), and `ANON_SESSION_COOKIE_SECRET`
-(HMAC for the anon_session_id cookie). The new Team-seat price
-(`STRIPE_FOUNDATION_TEAM_SEAT_PRICE_ID`, $199/seat min 10) also needs to be
-created in Stripe test mode before Wave 1d Stripe checkout work. None of
-these block Wave 1a (migrations are SQL files, not runtime). They block
-Wave 1d.
-
-**2026-05-23 — In-Depth Assessment locked at 8 dimensions, not 10+ (closes
-DB Spec §13 item 5).** The original ADDIE PRD specified "10+ readiness
-dimensions"; the existing on-main implementation under
-`content/assessments/v2/` is 8 dimensions and is the production product
-already selling at $99. Per operator: leave the live product alone, update
-the ADDIE docs to match. The 8 dimensions stand; the 10+ language is gone
-from PRD, Database Spec, Module Production Tracker, Launch Checklist,
-Start Here, and Screen Inventory. `addie.assessment_results.dimension_scores`
-jsonb now expects 8 keys; Wave 3b wires the existing v2 runner to write into
-`addie.assessment_results` rather than building a parallel 10+ surface.
-
-**2026-05-23 — Stripe naming + posture cleanup (test mode).** Two price
-nicknames renamed from "AI Banking Practitioner Course —" to
-"AiBI-Foundation —" (CLAUDE.md 2026-05-11 rename rule applied late). The
-`AiBI-Foundation Course` product description rewritten to a general,
-brand-aligned blurb (no structural details like module count or hour count)
-so it stays correct across both the live 12-module course and the upcoming
-ADDIE rebuild. The leftover $15 "myproduct" (`prod_UTx8gfENDDHA13`)
-archived. The team-seat price already existed —
-`price_1TTmudRy9NIFjtIIEPmR1BpP` ($199/seat) — and is reachable via the
-existing Vercel env var `STRIPE_FOUNDATIONS_INSTITUTION_PRICE_ID` through
-the products.ts fallback chain; no new Vercel env var required for the team
-SKU. New addie Stripe webhook endpoint created
-(`we_1TaOEuRy9NIFjtIIrM032WFg`) pointed at
-`https://www.aibankinginstitute.com/api/addie/webhooks/stripe`; its secret
-lives in `STRIPE_ADDIE_WEBHOOK_SECRET`. The endpoint will 404 until the
-addie branch merges to main, but no real events fire until then either.
-
-**2026-05-23 — Team SKU is one-time payment in v1, not a subscription
-(closes Wave 1 audit finding G5).** The existing
-`STRIPE_FOUNDATIONS_INSTITUTION_PRICE_ID` price is a one-time payment
-($199/seat × N, paid upfront), matching the existing on-main team purchase
-shape. The ADDIE Auth Spec §6.2 listed
-`customer.subscription.created/updated/deleted` as expected events; those
-are not needed for v1 because there is no recurring billing. The addie
-Stripe webhook handler listens only to `checkout.session.completed` and
-`charge.refunded`. If the team SKU pivots to monthly/annual recurring
-later (renewal cycle, mid-cycle seat add, downgrade), revisit and add the
-subscription events — schema already supports it via
-`teams.stripe_subscription_id`.
-
-**2026-05-23 — Wave 2a shell adds 7 small API routes alongside the UI.**
-Wave 2a's primary scope is the learner-facing web app shell (lesson player,
-Toolbox UI, three-way gate UI, dashboard, account pages) under
-`src/app/(addie)/...`. To make the UI functional end-to-end without waiting
-on a separate API agent, this wave also lands the small server endpoints
-the UI needs: knowledge-check grader
-(`POST /api/addie/checks/respond`), Toolbox CRUD
-(`GET|POST /api/addie/toolbox/items`,
-`GET|PATCH|DELETE /api/addie/toolbox/items/[id]`,
-`GET /api/addie/toolbox/items/[id]/export` → streams `.md`), and stub
-account endpoints (`POST /api/account/export`,
-`POST /api/account/delete`) that return 501 until the operator runbook +
-real export/delete pipelines ship. Each route is <100 LOC; rate-limited
-where appropriate (checks: 20/IP/hr, toolbox create: 30/IP/hr); the
-server-side 4-artifact free-tier cap lives in
-`src/lib/addie/toolbox/items.ts` (`FREE_TIER_ARTIFACT_CAP = 4`,
-enforced before insert) and `hasAnyFoundationEntitlement` exempts paid
-learners. Identity is resolved through a new shared helper
-`src/lib/addie/auth/resolveIdentity.ts` that returns `{user_id, anon_session_id, lead_id}`,
-deriving `lead_id` from the most recent `addie.events` row keyed by the
-HMAC-signed anon-session cookie (no separate `anon_sessions` table is
-needed today — the events table is the join). Lesson player dispatches on
-`addie.lessons.modality`; Wave 2b authors per-exercise lever payloads for
-the `interactive` and `sandbox` modalities — the shell ships generic
-fallbacks so the loop is provable end-to-end against any seeded row.
-
-
-**2026-05-23 — PostgREST exposure rationale walked back in `00037_addie_schema_init.sql`.**
-The original migration's comment claimed PostgREST exposure wasn't required
-because "client traffic flows through Next.js API routes using the
-service-role client." That conflated transport with authorization: the
-Supabase JS SDK uses PostgREST regardless of where it runs (server
-component, API route, route handler). The schema must be on PostgREST's
-`pgrst.db_schemas` allowlist AND every addie.* table must have role-level
-GRANTs for `service_role` for any read/write to succeed; without that we
-get HTTP 401 / `42501` for every query, which is exactly what the
-2026-05-23 dev-debug session hit (handoff §B1, §B2). The isolation we
-actually wanted — `addie.*` invisible to clients holding the anon key —
-is preserved by keeping `anon`/`authenticated` at USAGE-only on the
-schema; PostgREST cannot serve a table it has no GRANT for, so the
-anon-key surface is unchanged. Codified in
-`00055_addie_grants_and_exposure.sql` along with `ALTER DEFAULT
-PRIVILEGES` so new tables auto-grant.
-
-**2026-05-23 — Anon-session cookie minted in middleware, not in any layout
-or API route.** The Wave 2a design assumed `ensureAnonSession(req, res)`
-would be called inside the few API routes that need it (`gate/decline`,
-`gate/capture-email`). In practice the lesson player's KC submit, Toolbox
-save, and every future "I'm done" completion mark all hit routes that
-read the cookie but don't mint it — so every fresh visitor's first action
-returned 401. Layout-level minting isn't viable (server components can't
-write Set-Cookie in Next 14). Solution: mint in `src/middleware.ts` for
-any `/foundation/*` request, using Web Crypto so the code is
-Edge-runtime safe. The Node-side verifier in
-`src/lib/addie/auth/anonSession.ts` is unchanged — HMAC-SHA256 bytes
-match across `crypto.subtle` and `node:crypto`, so cookies signed in
-middleware verify in API routes.
-
-**2026-05-23 — Foundation course surface diverges from strict Ledger
-(modern e-learning aesthetic permitted under `/foundation`).** Operator
-direction. The Ledger Design System (CLAUDE.md "Design Context")
-mandates "almost no motion," forbids gradients/parallax/scroll-jacking
-and limits illustration to hairline-rule editorial work. Those rules
-are correct for the marketing surfaces (`/`, `/assessment`,
-`/services`, `/about`, `/research`, etc.) — they communicate
-institutional gravity. They are wrong for a paid learning product
-where the visitor needs to feel motion through a journey (six modules,
-progress, unlocks, completion). Inside the `(addie)` route group only
-— specifically `/foundation/*`, `/foundation/dashboard/*`,
-`/foundation/assessment/*`, `/foundation/gate` — the design license
-expands to permit:
-- Animated progress + completion arcs (CSS only, ≤300ms easing).
-- Reveal-on-scroll micro-animations for module/lesson cards.
-- Bespoke SVG line-art illustrations (one per module; in-house, not
-  stock photography).
-- Backdrop blur on sticky course chrome.
-- Two accent gradients (parchment→paper, ink→ink-2) used sparingly as
-  hero backings — not on cards or buttons.
-- Larger radii on hero cards (up to 8px) and pill-shaped progress
-  chips (full radius).
-The rest of Ledger still holds: same color tokens, same three type
-families, italics still retired, no emoji, no stock photography, no
-icon libraries (illustrations are bespoke SVG), oxblood still
-destructive-only. Marketing surfaces remain strict-Ledger. The course
-surface uses the `addie-course-surface` class on its root wrapper so
-the relaxed rules are scoped at the CSS layer and cannot leak.
-
-
-
----
-
-**2026-05-23 — Stock photography permitted inside `/foundation/*` via `addie.modules.hero_image_url`.** Marketing surfaces remain strict-Ledger no-photo. The Foundation course module cards and module landings can now optionally display a real photograph (community-bank lobby, branch teller window, conference room, banker at desk) framed in parchment chrome with a hairline rule and a low-opacity mono-caps credit overlay. Migration `00058_addie_modules_hero_image.sql` adds three optional columns to `addie.modules` (`hero_image_url`, `hero_image_alt`, `hero_image_credit`) and seeds curated Unsplash defaults for M0–M5. The bespoke SVG illustrations in `src/components/addie/illustrations/ModuleIllustration.tsx` remain the visual fallback whenever `hero_image_url` is NULL — no code deletion. Operator can swap the Unsplash defaults for licensed or branded photography at any time by `UPDATE`ing the `addie.modules` row — no code change required. CSP `img-src` was extended to allow `https://images.unsplash.com`; additional CDNs are appended to the same directive when other sources are introduced. This is the only place stock photography is permitted in the repo; the broader Ledger rule still holds outside `/foundation/*`.
+**Phase 0 (today).** Operator-canvas scripts (`scripts/aibi_canvas.py`,
+`scripts/aibi_module_bundles.py`) retitled to make their operator-only
+review framing explicit so future audits don't read storyboard-style
+PDFs as learner UI (already on `feature/addie-v1` in commit `b1d9795`;
+carried forward to `feature/addie-v2` today by copying both files).
+The recovery plan itself was rewritten from the original "proposed"
+draft into an "active" plan that records the four locked decisions,
+synthesizes 14 net-new findings from the 2026-05-24 reviewer fleet
+that the prior draft didn't yet capture, and lays out concrete
+Phase 1 workstreams (A: Shell extraction · B: M0–M3 migration · C:
+inline content polish · D: acceptance). Branched from `main`
+(`3774d75`) — not from `addie-v1` — to start clean; six review
+documents, three curriculum docs, and the two canvas scripts were
+copied across explicitly so the recovery plan has its source
+material on hand. The 683MB `addie-v1-stash/` snapshot directory
+sitting on `feature/addie-v1` was not carried forward (looks like a
+prior-session safety backup; flagged for separate cleanup).
