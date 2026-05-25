@@ -35,41 +35,74 @@ function isPlausibleYear(digits: string): boolean {
 // ---------------------------------------------------------------------------
 
 function detectSSN(text: string): string | null {
-  // XXX-XX-XXXX  (dashes required for the formatted variant)
-  const dashPattern = /\b(\d{3})-(\d{2})-(\d{4})\b/g;
-  let m: RegExpExecArray | null;
-  while ((m = dashPattern.exec(text)) !== null) {
-    // Reject if the last group looks like a year and the first two
-    // groups could be a date component (e.g. "123-45-2024" is unlikely
-    // to be a date, but we still flag it as a potential SSN since the
-    // full pattern is 3-2-4 digits).
-    // Real SSNs never start with 000, 666, or 9xx per SSA rules, but
-    // we flag them anyway — better a false positive on a weird number
-    // than a missed real SSN.
-    return (
-      'This message appears to contain a Social Security number. ' +
-      'Use the sample data provided instead.'
-    );
+  const ssnReason =
+    'This message appears to contain a Social Security number. ' +
+    'Use the sample data provided instead.';
+
+  // XXX-XX-XXXX  (dashed variant)
+  if (/\b\d{3}-\d{2}-\d{4}\b/.test(text)) {
+    return ssnReason;
   }
 
-  // 9 consecutive digits that are NOT part of a longer digit string.
+  // XXX XX XXXX  (space-separated variant — F18 hardening 2026-05-24)
+  if (/(?<!\d)\d{3}\s\d{2}\s\d{4}(?!\d)/.test(text)) {
+    return ssnReason;
+  }
+
+  // XXX.XX.XXXX  (dot-separated variant)
+  if (/(?<!\d)\d{3}\.\d{2}\.\d{4}(?!\d)/.test(text)) {
+    return ssnReason;
+  }
+
+  // 9 consecutive digits that are NOT part of a longer digit string,
+  // and NOT immediately preceded by '$' (dollar amount).
   const nineDigits = /(?<!\d)(\d{9})(?!\d)/g;
+  let m: RegExpExecArray | null;
   while ((m = nineDigits.exec(text)) !== null) {
-    const _digits = m[1];
-    // Exclude if embedded in a dollar amount context (preceded by $ or
-    // followed by common currency/percent indicators).
     const before = text.slice(Math.max(0, m.index - 1), m.index);
     if (before === '$') continue;
+    return ssnReason;
+  }
 
-    // Exclude if it looks like a phone number without separators —
-    // phone detection handles those separately with area-code heuristics.
-    // Here we only flag pure 9-digit sequences as potential SSNs.
+  return null;
+}
+
+// Luhn checksum for credit-card PAN validation. Returns true when the
+// digit sequence passes the standard mod-10 check. Used by detectPAN —
+// added 2026-05-24 (F18) to close the "no PAN/Luhn check on the chat
+// path" gap surfaced by the IT/InfoSec critique.
+function passesLuhn(digits: string): boolean {
+  if (digits.length < 13 || digits.length > 19) return false;
+  let sum = 0;
+  let alternate = false;
+  for (let i = digits.length - 1; i >= 0; i--) {
+    let n = parseInt(digits[i], 10);
+    if (Number.isNaN(n)) return false;
+    if (alternate) {
+      n *= 2;
+      if (n > 9) n -= 9;
+    }
+    sum += n;
+    alternate = !alternate;
+  }
+  return sum % 10 === 0;
+}
+
+function detectPAN(text: string): string | null {
+  // 13–19 digit sequences with optional - or space separators between
+  // 4-digit groups (catches the most common print formats: 4242 4242
+  // 4242 4242, 4242-4242-4242-4242, 4242424242424242).
+  const groupedPan = /(?<!\d)((?:\d[\s-]?){12,18}\d)(?!\d)/g;
+  let m: RegExpExecArray | null;
+  while ((m = groupedPan.exec(text)) !== null) {
+    const digits = m[1].replace(/[\s-]/g, '');
+    if (digits.length < 13 || digits.length > 19) continue;
+    if (!passesLuhn(digits)) continue;
     return (
-      'This message appears to contain a Social Security number. ' +
+      'This message appears to contain a credit card or payment card number. ' +
       'Use the sample data provided instead.'
     );
   }
-
   return null;
 }
 
@@ -154,8 +187,10 @@ function detectDOB(text: string): string | null {
 // ---------------------------------------------------------------------------
 
 export function scanForPII(text: string): ScanResult {
-  // Run detectors in priority order (most sensitive first).
-  const detectors = [detectSSN, detectEmail, detectDOB, detectPhone, detectAccountNumber];
+  // Run detectors in priority order (most sensitive first). PAN before
+  // account-number because the Luhn check is more specific and we want
+  // the more accurate error message when the input matches.
+  const detectors = [detectSSN, detectPAN, detectEmail, detectDOB, detectPhone, detectAccountNumber];
 
   for (const detect of detectors) {
     const reason = detect(text);

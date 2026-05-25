@@ -45,25 +45,27 @@ VALUES (
   NULL,
   NULL,
   $LESSON$
+You do not need to be technical. By the end of this course you will have built something useful with AI for your actual job.
+
 ## SCRIPT (verbatim)
 
-> "If you have been hearing about AI for the last couple of years and feeling somewhere between curious and quietly nervous, you are in the right room. You do not need to be technical. You do not need to have used any of this before. By the end of this course, you will not just understand generative AI — you will have built something with it that is useful to your actual job. Let's start with how this works."
+> [stat] 6 · 24 · 8–30m | The shape of the course | Six modules, 24 lessons. Most fit between meetings (8–15 min). A handful of working lessons run longer because you actually build something: M3.2 (A/B sandbox, ~20m), M3.5 (Starter Prompt Pack, 25m), M5.3 (PRD draft, 30m). Free through Module 3; paid for M4–M5.
 
-> [stat] 6 · 24 · <15m | The full shape of this course | Six modules, ~24 lessons, every lesson under fifteen minutes. Free through Module 3; paid for Modules 4–5. Designed to do between meetings.
+> [case:good] How it is built
+> Six short modules. Start with what AI *is*; each module asks a little more, until you are framing a problem and building a working prototype.
+> [outcome] No skipping ahead — each step earns the next.
 
-> "Three things to know before we go anywhere — how it is built, what makes it different, and what costs money. Then you pick your track and we get going.
->
-> **One: how it is built.** Six short modules. No lesson is longer than fifteen minutes, so you can do this between meetings. We start simple — what this stuff even *is* — and each module asks a little more of you, until you are framing a problem and building a working prototype. You do not skip ahead; each step earns the next.
->
-> **Two: the Toolbox — the part that makes this course different.** In most training you walk away with a certificate and a vague feeling. Here, you walk away with tools you actually use. Every lesson, you create something real — a prompt, a reusable skill, eventually a small app — and it is saved to your Toolbox. By the end you have a kit you can open on Monday morning and put to work. The course's real output is not a badge. It is the Toolbox.
->
-> **Three: what is free and what is not — because we would rather just tell you.** The first four modules, including this one, are free. That is where you learn to *use* AI well. After Module 3 there is a gate. Beyond it, you learn to *build* — and that part is paid. There is one small catch even in the free part: to *keep* what you make, you give us an email at the gate, or you upgrade. Nothing saves anonymously. That is it. No surprises."
+> [case:good] The Toolbox — what makes this course different
+> Every lesson produces something real — a prompt, a reusable skill, eventually a small app — and saves it to your Toolbox.
+> [outcome] The real output is not a badge. It is a kit you open Monday morning and use.
 
-> [save] **From "I've heard of it" → "I built it."** That is the arc. Six modules. Twenty-four lessons. One Toolbox at the end you open on Monday morning.
+> [case:good] What is free, what is not
+> Modules 0–3 free (learn to *use* AI well). After M3 there is a gate. Modules 4–5 paid (learn to *build*). To keep free saves, give an email at the gate or upgrade. Nothing saves anonymously.
+> [outcome] No surprises. We would rather just tell you.
 
-> "Last thing before you start: this course adapts to your role. A compliance officer and a teller and a CIO should not get the same examples — so pick the track closest to your day. You can change it any time. The track picker renders below as part of the lesson."
+> [save] **From "I've heard of it" → "I built it."** Six modules. Twenty-four lessons. One Toolbox on Monday morning.
 
-> [tip] If you came from the Readiness Assessment, your track is pre-selected and labelled "Set from your assessment." Change it if your day-to-day shape has shifted; otherwise leave it as is and move on.
+> [tip] If you came from the Readiness Assessment, your track is pre-selected. Change it any time from settings. Pick the track closest to your day below.
 
 ## PRODUCTION
 
@@ -105,31 +107,27 @@ VALUES (
   'm0-2-off-limits-sorter',
   'data_discipline_card',
   $LESSON$
+One rule. Get it right and the rest of this course is safe to explore.
+
 ## SCRIPT (verbatim)
 
-> "Before you touch a single AI tool, there is one rule. Just one. Get this right, and everything else in this course is safe to explore — you can be as bold and curious as you want. Get it wrong, and it is the kind of mistake that ends up in an exam finding. So let's make it simple and make it stick."
+> [stat] 1 | The single rule | Never put customer or confidential data into an AI tool. No names tied to accounts. No account numbers, card numbers, SSNs. No customer financials. Nothing material before public.
 
-> [stat] 1 | The single rule that governs everything in this course | Never put customer or confidential data into an AI tool. Get this right and the rest is safe to explore.
-
-> "The rule reads simply. **Never put customer or confidential data into an AI tool.** No names tied to accounts. No account numbers, card numbers, or Social Security numbers. No customer financials. And nothing material that is not public yet. The elevator test: if you would be uncomfortable reading it aloud in a crowded elevator, it does not go in."
-
-> [save] **Describe the situation, not the person.** Strip the name. Strip the number. Generalise the case. The help is almost always available from the anonymised version — and now you have not handed anything to anyone.
-
-> "Why so strict? Once you paste something into a tool, you have handed it to a system you do not control. Depending on the tool, that text can be stored, reviewed, or used in ways you cannot take back. For a bank, that is not just awkward — it is a regulatory and reputational problem. Consumer chat apps and enterprise tools handle data differently, and most people cannot tell which is which in the moment. So we do not gamble. We use one habit that works everywhere."
-
-> "Here is the part people miss: this rule almost never stops you from getting the help you want. You describe the situation instead of the person. Watch the same ask, two ways."
+> [save] **Describe the situation, not the person.** The help is almost always available from the anonymised version — and you have not handed anything to anyone.
 
 > [case:bad] The naming version — never type this
-> "Customer Jane Doe, account 4471, balance twelve hundred dollars, is furious about an overdraft fee from last week. Help me draft a calm reply that explains the fee."
-> [outcome] You have just handed a real member, a real account number, and a real balance to a vendor you do not control. This is the kind of thing that ends up in an exam finding.
+> "Customer Jane Doe, account 4471, balance twelve hundred dollars, is furious about an overdraft fee. Help me draft a calm reply."
+> [outcome] You have handed a real member, account number, and balance to a vendor you do not control. This ends up in an exam finding.
 
 > [case:good] The situation version — always type this
 > "A customer is upset about an overdraft fee they feel was unfair. Help me draft a calm, empathetic reply that explains the fee and offers next steps."
-> [outcome] Same help. Zero risk. Same letter quality, none of the file.
+> [outcome] Same help. Zero risk.
 
-> [warn] Inside this course our practice sandbox is built so you literally cannot paste sensitive data — there are guardrails. But out in the real tools, on your own, there are no guardrails. The habit is what keeps you safe when the training wheels come off.
+> [warn] This course's sandbox blocks sensitive paste shapes (formatted SSNs, account-number runs, Luhn-valid payment cards, emails, phone numbers, DOB-in-context). Real tools do not. Names and free-text descriptions of members are **not** caught by any screen. The habit is what keeps you safe when the training wheels come off.
 
-> "The next section makes it concrete for your role. Five quick sort items — which of these is safe to share with an AI tool, which has to be anonymised first, which never goes in at all. Five answers; ninety seconds."
+> [warn] "Public" does not always mean "free to paste." Your bank may route public regulator guidance, supervisory correspondence, or vendor proposals through a controlled channel before they leave its environment — even when the source document itself is published. **Check your institution's policy before pasting anything you did not write.** When in doubt, route the request through your CCO, your audit liaison, or your model-risk function. The course teaches the floor; your institutional approval gate sits on top of it.
+
+> [tip] Five sort items below — safe to share, anonymise first, or never. Ninety seconds, scoped to your role.
 
 ## PRODUCTION
 
@@ -352,10 +350,10 @@ VALUES
   'm0.1', 1,
   'How long is the longest lesson in this course?',
   '[
-    {"id":"a","label":"30 minutes","correct":false,"explanation":"Lessons are deliberately short — never more than 15 minutes."},
-    {"id":"b","label":"15 minutes or less","correct":true,"explanation":"Every lesson is capped at 15 minutes so it fits between meetings."},
-    {"id":"c","label":"45 minutes","correct":false,"explanation":"Lessons are short on purpose — 15 minutes is the ceiling."},
-    {"id":"d","label":"It varies by track","correct":false,"explanation":"Length is uniform; only the examples branch by track."}
+    {"id":"a","label":"45 minutes","correct":false,"explanation":"No lesson runs 45 minutes; the longest working lessons cap around 25 minutes."},
+    {"id":"b","label":"Always 15 minutes or less","correct":false,"explanation":"Most lessons fit 8–15 minutes, but a handful of working lessons (M3.2, M3.5, M5.3) run 20–25 minutes because you build something."},
+    {"id":"c","label":"8–25 minutes — most fit between meetings; the build lessons run longer","correct":true,"explanation":"Honest answer. Read-and-think lessons sit at 8–15 minutes; lessons where you build (M3.2 sandbox, M3.5 prompt pack, M5.3 problem framing) run 20–25 minutes."},
+    {"id":"d","label":"It varies by track","correct":false,"explanation":"Length is uniform across tracks; only the examples branch by role."}
   ]'::jsonb
 ),
 (

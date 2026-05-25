@@ -73,9 +73,10 @@ export function LessonStickyNav({
             </span>
           </Link>
         ) : (
-          <span className="px-3 py-2 font-mono uppercase tracking-[0.14em] text-[0.65rem] text-[var(--ledger-muted)]">
-            Start
-          </span>
+          // First lesson in the course — no Prev. Render an invisible
+          // spacer (not a "Start" label) so the bar reads as one CTA
+          // (Next), not two competing ones.
+          <span className="px-3 py-2" aria-hidden="true" />
         )}
 
         <span className="hidden md:inline font-mono text-[0.55rem] uppercase tracking-[0.2em] text-[var(--ledger-muted)] px-2 border-x border-[var(--ledger-rule)]">

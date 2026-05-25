@@ -6,6 +6,7 @@
 // the transcript is the primary content with a "audio coming" pill.
 
 import { LessonBody } from './LessonBody';
+import { RoleSimulation } from './RoleSimulation';
 import type { LessonPayload } from './types';
 
 interface AudioLessonViewProps {
@@ -41,6 +42,12 @@ export function AudioLessonView({ payload }: AudioLessonViewProps) {
           No transcript has been published for this lesson yet.
         </p>
       )}
+      {/* RoleSimulation is contextual to the per-role lesson (m1.3). It
+          renders nothing unless we have a track AND a seeded scenario for
+          that track. Currently seeded: risk_compliance + customer_facing. */}
+      {payload.lesson.id === 'm1.3' && payload.activeTrack ? (
+        <RoleSimulation track={payload.activeTrack} lessonId={payload.lesson.id} />
+      ) : null}
     </div>
   );
 }

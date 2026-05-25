@@ -44,20 +44,8 @@ export function VideoLessonView({ payload }: VideoLessonViewProps) {
           <div className="absolute top-4 left-4 flex items-center gap-2">
             <span className="addie-chip" data-tone="accent">Video in production</span>
           </div>
-          <div className="absolute bottom-4 right-4 flex items-center gap-3">
-            <span className="font-mono text-[0.7rem] uppercase tracking-[0.16em] text-[var(--ledger-muted)] tabular-nums">
-              {payload.lesson.duration_min}:00
-            </span>
-            <span className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-[var(--ledger-ink)] text-[var(--ledger-paper)]" aria-hidden>
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor">
-                <path d="M3 2l9 5-9 5V2z" />
-              </svg>
-            </span>
-          </div>
-          <div className="absolute bottom-4 left-4">
-            <span className="font-mono text-[0.65rem] uppercase tracking-[0.18em] text-[var(--ledger-muted)]">
-              Read along below
-            </span>
+          <div className="absolute bottom-4 right-4 font-mono text-[0.7rem] uppercase tracking-[0.16em] text-[var(--ledger-muted)] tabular-nums">
+            {payload.lesson.duration_min} min · video in production
           </div>
         </div>
         <div className="mt-10">

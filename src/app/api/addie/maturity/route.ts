@@ -1,49 +1,67 @@
 // GET /api/addie/maturity
 //
 // Returns the learner's maturity-arc snapshot: lessonsCompleted +
-// artifactsSaved + derived stage. Per the transformation vision doc,
-// the Aware → Governing arc is the actual curriculum; this endpoint
-// is the source of truth the MaturityJourney component reads.
+// artifactsSaved. The MaturityJourney component derives the stage from
+// these counts client-side (so we don't need to redeploy the API to
+// retune thresholds).
 //
-// v1 derivation:
-//   - lessonsCompleted = distinct lesson_id with action='lesson_complete'
-//   - artifactsSaved   = count of addie.toolbox_items rows
+// Identity resolution priority — matches the toolbox route:
+//   user_id  →  lead_id  →  anon_session_id
 //
-// Both lookups are scoped to the current identity (user_id OR anon_session_id).
+// Authenticated learners must see their real counts; the previous
+// implementation only checked anon_session_id and silently zero'd
+// every paid user.
 
 import { NextResponse, type NextRequest } from 'next/server';
 import { getAddieServiceClient } from '@/lib/addie/supabase/service';
-import { readAnonSession } from '@/lib/addie/auth/anonSession';
+import { resolveAddieIdentity } from '@/lib/addie/auth/resolveIdentity';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
+interface MaturityResponse {
+  lessonsCompleted: number;
+  artifactsSaved: number;
+}
+
+const EMPTY: MaturityResponse = { lessonsCompleted: 0, artifactsSaved: 0 };
+
 export async function GET(req: NextRequest): Promise<NextResponse> {
-  const anonId = readAnonSession(req).id;
-  if (!anonId) {
-    return NextResponse.json({ lessonsCompleted: 0, artifactsSaved: 0 });
+  const identity = await resolveAddieIdentity(req);
+  if (!identity.user_id && !identity.lead_id && !identity.anon_session_id) {
+    return NextResponse.json(EMPTY);
   }
 
   try {
     const svc = getAddieServiceClient();
 
-    // Count distinct completed lessons for this identity.
+    // Build identity filter for events + toolbox_items. Priority order:
+    // user_id wins, then lead_id, then anon_session_id. We OR them so a
+    // learner who logs in mid-session still sees their anon-era progress
+    // (events keep both columns populated during the bind window).
+    const idColumns: Array<{ col: 'user_id' | 'lead_id' | 'anon_session_id'; val: string }> = [];
+    if (identity.user_id) idColumns.push({ col: 'user_id', val: identity.user_id });
+    if (identity.lead_id) idColumns.push({ col: 'lead_id', val: identity.lead_id });
+    if (identity.anon_session_id) idColumns.push({ col: 'anon_session_id', val: identity.anon_session_id });
+
+    const orFilter = idColumns.map((c) => `${c.col}.eq.${c.val}`).join(',');
+
     const { data: completes } = await svc
       .from('events')
       .select('object_id')
       .eq('action', 'lesson_complete')
-      .eq('anon_session_id', anonId)
+      .or(orFilter)
       .not('object_id', 'is', null);
+
     const distinct = new Set<string>();
     for (const row of (completes ?? []) as { object_id: string | null }[]) {
       if (row.object_id) distinct.add(row.object_id);
     }
 
-    // Count saved artifacts (Toolbox items) for this identity.
     const { count: artifactsSaved } = await svc
       .from('toolbox_items')
       .select('*', { count: 'exact', head: true })
-      .eq('anon_session_id', anonId);
+      .or(orFilter);
 
     return NextResponse.json({
       lessonsCompleted: distinct.size,
@@ -51,6 +69,6 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     });
   } catch (err) {
     console.warn('[addie/maturity] failed:', err instanceof Error ? err.message : err);
-    return NextResponse.json({ lessonsCompleted: 0, artifactsSaved: 0 });
+    return NextResponse.json(EMPTY);
   }
 }

@@ -15,10 +15,29 @@ import { rateLimitOrFail } from '@/lib/api/rate-limit';
 
 const MAX_MESSAGE_LENGTH = 4000;
 const MAX_MESSAGES = 20;
+const MAX_SYSTEM_PROMPT_LENGTH = 8000;
 const VALID_PROVIDERS = ['claude'] as const;
-// 'aibi-p' kept for legacy clients that have not refreshed; new clients send
-// 'foundation'. Both are accepted by the sandbox API.
-const VALID_PRODUCTS = ['aibi-p', 'foundation', 'aibi-s', 'aibi-l'] as const;
+// Legacy AiBI-P practice sandbox + advanced credentials only. The ADDIE
+// Foundation Course (M0–M5) routes through /api/sandbox/run and /api/sandbox/ab,
+// which assemble the system_prompt server-side from addie.exercises. The
+// 'foundation' product is INTENTIONALLY EXCLUDED here so the course cannot
+// reach this endpoint with a client-supplied systemPrompt — see the F1
+// reconciliation in docs/reviews/foundation-critique-it-director-marcus-tan-2026-05-24.md
+// (2026-05-24). If a foundation lesson needs free-form chat, build it on
+// /run with a sandboxed exercise row.
+const VALID_PRODUCTS = ['aibi-p', 'aibi-s', 'aibi-l'] as const;
+
+// System-prompt-override patterns that are rejected before any provider
+// call. Belt-and-suspenders defence — the canonical fix for the Foundation
+// Course is to route through /run instead. These cover the most common
+// jailbreak openings (override directives + role hijacks).
+const SYSTEM_PROMPT_OVERRIDE_PATTERNS = [
+  /\bignore\s+(all\s+)?previous\s+instructions/i,
+  /\bdisregard\s+(all\s+)?prior\s+(rules|instructions|prompts)/i,
+  /\b(you|act)\s+(are|as)\s+(now\s+)?(an?\s+)?(unrestricted|jailbroken|dan|developer\s+mode)/i,
+  /<\|im_start\|>system/i,
+  /\bsystem\s*:\s*you\s+(are|will)/i,
+];
 
 type Provider = (typeof VALID_PROVIDERS)[number];
 type Product = (typeof VALID_PRODUCTS)[number];
@@ -145,6 +164,30 @@ export async function POST(request: Request) {
       { error: 'systemPrompt must be a non-empty string.' },
       { status: 400 },
     );
+  }
+
+  if (systemPrompt.length > MAX_SYSTEM_PROMPT_LENGTH) {
+    return NextResponse.json(
+      { error: `systemPrompt exceeds maximum length of ${MAX_SYSTEM_PROMPT_LENGTH} characters.` },
+      { status: 400 },
+    );
+  }
+
+  // Reject obvious system-prompt-override attempts on the client-supplied
+  // prompt. The canonical defence for the Foundation Course is to route
+  // through /run with a server-assembled prompt — this is belt-and-
+  // suspenders for the legacy AiBI-P / AiBI-S / AiBI-L surfaces.
+  for (const pattern of SYSTEM_PROMPT_OVERRIDE_PATTERNS) {
+    if (pattern.test(systemPrompt)) {
+      return NextResponse.json(
+        {
+          error:
+            'systemPrompt contains a pattern that looks like an override or role hijack. ' +
+            'Re-frame the prompt without override directives.',
+        },
+        { status: 422 },
+      );
+    }
   }
 
   // 2c. Extract latest user message for security scans

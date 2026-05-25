@@ -52,21 +52,23 @@ INSERT INTO addie.lessons (
   NULL,
   NULL,
   $body$
+A modern model is a **predictive token engine**. Pattern-completion at scale. Not knowing, not believing — just producing the next most-plausible chunk of text.
+
 ## SCRIPT (verbatim)
 
-> "Before we talk about what generative AI can do for you, let's get honest about what it actually is — because most of the noise you've been hearing is people skipping this part.
->
-> A modern model — Claude, ChatGPT, Gemini, the rest of them — is a **predictive token engine**. That is the whole thing. You give it some text, it produces the next most-plausible chunk of text, then the next, then the next, until it stops. It doesn't *know* anything. It doesn't *believe* anything. It doesn't have a window into your bank's core, your loan tape, or this morning's news. It is pattern-completion at scale.
->
-> Three properties drop out of that, and they matter for every decision you'll make in this course.
->
-> **One: there is a training cutoff.** The model was trained on a snapshot of text that ended on a specific date. Anything after that date — a rate change, a new rule, the OCC bulletin from last Tuesday — it doesn't know unless you tell it. There is no live wire to the internet, no live wire to your core, no live wire to your e-mail. If you want it to know something, you put it in the prompt.
->
-> **Two: no real-time knowledge means no real-time anything.** It cannot check a balance. It cannot look up today's prime. It cannot read a member's file. If the answer requires a fact that lives in a system, you bring the fact to the model — the model does not go get it.
->
-> **Three: hallucination is a property, not a bug.** Because the engine's job is to produce the most plausible next chunk of text, when it doesn't have the answer it will still produce something that *sounds* like an answer. Confident, fluent, and wrong. That is not the model malfunctioning. That is the model doing exactly what it was built to do. Your job — every single time — is to read the output like a banker reads a loan file: assume nothing, verify the numbers, check the citations, decide whether to use it.
->
-> Hold those three together and you have the right mental model for everything that follows. It is a *predictive token engine*, with a *training cutoff*, and *no live knowledge of your bank*. That is what you are working with. It is genuinely useful, and it is not magic."
+> [stat] 3 | Three properties of every model | Training cutoff · No live knowledge · Hallucination as a property. Hold these together and the rest of the course makes sense.
+
+> [case:good] Training cutoff
+> The model was trained on text up to a specific date. Anything after — a rate change, last Tuesday's OCC bulletin — it does not know unless you put it in the prompt.
+> [outcome] No live wire to the internet, your core, your email.
+
+> [case:good] No live knowledge of your bank
+> Cannot check a balance. Cannot look up today's prime. Cannot read a member file.
+> [outcome] You bring the fact to the model. The model does not go get it.
+
+> [case:good] Hallucination is a property, not a bug
+> When the model has no answer it produces the most plausible one anyway. Confident, fluent, sometimes wrong.
+> [outcome] Read every output like a loan file. Verify citations. Decide whether to use it.
 
 ## PRODUCTION
 
@@ -104,25 +106,29 @@ INSERT INTO addie.lessons (
   'm1-2-tool-landscape',
   'ai_toolkit_map',
   $body$
-There are roughly a thousand AI tools that look like they do the same thing. They don't. Almost every one of them sits in one of two buckets, and once you can tell the buckets apart you stop being confused about which tool to reach for on a Monday morning.
+A thousand AI tools that look the same. Almost every one sits in one of two buckets.
 
 ## SCRIPT (verbatim)
 
-> "Two buckets. That's the whole sort. Get this right and the rest of the noise turns into background.
->
-> **One: assistants are thinking partners.** Claude, ChatGPT, Gemini, Microsoft Copilot, NotebookLM, Perplexity. Same shape — a chat window. Same job — help you read, write, summarise, and decide. You talk, they talk back. Most of the work a community banker does with AI in the first year sits inside this bucket: a clearer member letter, a one-page summary of a forty-page guidance document, a first-draft training quiz.
->
-> **Two: builders are construction crews.** Lovable, Replit Agents, v0, Cursor, Claude Code, Stitch. You describe what you want, they produce running software — a page, a small internal tool, a working prototype. You don't chat with these the way you chat with an assistant. You brief them. We touch builders lightly in Module 5; for now, just know the bucket exists.
->
-> **Three: the verb tells you which bucket a new tool sits in.** When a vendor's marketing leads with *chat, summarise, draft, ask* — assistant. When it leads with *build, ship, deploy, generate the app* — builder. A handful of tools straddle the line: Claude Code is Claude with hands, Copilot writes code from inside a chat. We've put a hint under each one in the exercise.
->
-> The interactive on this page is a sort. Place each of the twelve tools we'll reference in the right quadrant of a 2×2. Horizontal axis is the one that matters — assistant or builder. Vertical axis is informational only — most tools have a free tier and a paid tier; pricing changes every quarter, the bucket does not. When you submit, we score the horizontal axis and reveal the vendor link for the placements you got right. Save the result. It becomes your AI Toolkit Map, the first artifact in your Toolbox.
->
-> Hold those three together — assistants for thinking, builders for shipping, the verb is your tell — and you can sort any new AI product you see this year inside thirty seconds."
+> [stat] 2 | Two buckets, one verb-test | Assistants are thinking partners · Builders are construction crews · The verb in the marketing tells you which.
 
-> [tip] When you're stuck on a tool, read its own pricing page. The headline copy will use one set of verbs for assistants ("ask, draft, summarise") and another set for builders ("build, deploy, generate"). The verbs are honest even when the rest of the marketing isn't.
+> [case:good] Assistants — thinking partners
+> Claude, ChatGPT, Gemini, Copilot, NotebookLM, Perplexity. A chat window. Talk, they talk back. Most of the first year's wins live here: clearer letters, one-page summaries, draft quizzes.
+> [outcome] Reach for these to read, write, summarise, decide.
 
-> [warn] Don't waste energy debating whether Claude Code is "really" a builder or "really" an assistant. The bucket is a routing decision, not a religion. When you'd reach for it to write running code, treat it like a builder. When you'd reach for it to read a long file, treat it like an assistant.
+> [case:good] Builders — construction crews
+> Lovable, Replit Agents, v0, Cursor, Claude Code, Stitch. You brief them; they produce running software. Touched lightly in Module 5.
+> [outcome] Reach for these to build, ship, deploy.
+
+> [case:good] The verb is your tell
+> *Chat · summarise · draft · ask* → assistant. *Build · ship · deploy · generate* → builder. The marketing copy is honest even when the rest isn't.
+> [outcome] Sort any new AI product in under thirty seconds.
+
+> [tip] Read the vendor's pricing page. The verbs there give the bucket away faster than any review.
+
+> [warn] The bucket is a routing decision, not a religion. Claude Code is a builder when you write code with it, an assistant when you read files with it.
+
+Sort the 12 tools below into the 2×2. Submit. Save the result — that is your AI Toolkit Map.
 
 ## PRODUCTION
 
@@ -161,7 +167,9 @@ INSERT INTO addie.lessons (
   $body$
 ## SHARED INTRO
 
-> "This lesson is the one where the course speaks directly to your seat. Up to now we have been talking about what generative AI *is*. Now we are going to talk about what it changes about *your* week — specifically — at a community bank or credit union. The audio you are about to hear is the variant for the track you picked in orientation. If you ever want to hear what another role hears, you can switch tracks from your profile and replay. Headphones in. Eight minutes."
+> [stat] 8m | Audio for your role | Eight minutes on what generative AI changes about *your* week, specifically. Switch tracks any time to hear another seat.
+
+> [tip] Headphones in. The audio is your track's variant; the player and transcript render below.
 
 ## PRODUCTION
 
@@ -198,41 +206,35 @@ INSERT INTO addie.lessons (
   NULL,
   NULL,
   $body$
-Generative AI inside a community bank is mostly boring, and that is the point. The wins are not flashy. They are fewer minutes spent on the second draft, more minutes spent with the member in front of you. Five examples — three good, two bad. None of these are real institutions; the patterns are.
+The wins are not flashy. Fewer minutes on the second draft; more minutes with the member in front of you. Five examples — three good, two bad.
 
 ## SCRIPT (verbatim)
 
-> "Most of the gain shows up in the efficiency ratio — the line your CFO watches and your regulator notices. Community banks sit roughly ten points above the industry. Closing the gap is mostly a workflow story, and AI gives you back minutes per task at scale."
-
-> [stat] ~65% | FDIC Quarterly Banking Profile, Q4 2024 | Community-bank median efficiency ratio. Industry-wide sits at 55.7%. The ten-point gap is exactly where AI savings land — fewer minutes per task, repeated thousands of times a quarter.
-
-> "Three good uses first, then the two that look tempting and aren't. The pattern across all five is the same — public or anonymised material in, drafting or compression out, human verification before anything leaves your desk."
+> [stat] ~65% | FDIC Quarterly Banking Profile, Q4 2024 | Community-bank median efficiency ratio. Industry-wide sits at 55.7%. The 10-point gap is exactly where AI savings land — minutes per task, repeated thousands of times a quarter.
 
 > [case:good] Rewriting a member letter for clarity
-> A back-office colleague drafts an overdraft notice. Technically correct, almost unreadable. They paste the generic, anonymised draft into an assistant — no names, no account numbers — and ask for plain English at an eighth-grade reading level, warm, two sentences shorter. They read the result, edit a verb, send it.
-> [outcome] Twenty minutes, not an hour. The member gets a letter they can understand. The institution hands data to no one.
+> Generic, anonymised draft into an assistant. Ask for plain English at an eighth-grade reading level, warm, two sentences shorter. Edit a verb, send.
+> [outcome] Twenty minutes, not an hour. Data hands to no one.
 
-> [case:good] Turning a long PDF into a one-page summary
-> A compliance analyst is handed a forty-page interagency guidance document. They drop the public PDF into a summariser and ask for a structured one-pager with section headers and direct quotes for anything load-bearing. They read the summary against the original, catch two paraphrases that softened the rule, and bring the corrected one-pager to their weekly.
-> [outcome] The committee actually reads it. The committee usually does not.
+> [case:good] Long PDF → one-page summary
+> Forty-page interagency document, structured one-pager with section headers and direct quotes for load-bearing language. Read against the original, catch the paraphrases that softened the rule.
+> [outcome] The committee actually reads it.
 
-> [case:good] A first-pass training quiz from material you already have
-> A learning lead has new-hire content on wire-fraud red flags. They ask an assistant to draft fifteen multiple-choice questions and answers grounded in the material pasted in. They throw out four, rewrite three, keep eight.
-> [outcome] A usable quiz in twenty minutes. Half a day's work, compressed.
+> [case:good] First-pass training quiz from existing material
+> Fifteen multiple-choice questions grounded in pasted material. Throw out four, rewrite three, keep eight.
+> [outcome] Half a day's work, compressed to twenty minutes.
 
-> [case:bad] Pasting a member's full file into a public tool to draft a denial letter
-> Name, account number, income, employer, the lot. This is the rule from orientation and it is the one to be religious about. The fix is to describe the situation, not the person: a small-business member with a thin credit file is being declined for an unsecured line — draft a respectful denial that explains the decision factors at a high level and points to next steps.
+> [case:bad] Pasting a member's full file to draft a denial letter
+> Name, account, income, employer — all of it. The fix: describe the situation, not the person.
 > [outcome] Same letter. None of the file.
 
 > [case:bad] Letting the model invent a citation
-> A leader asks an assistant for the exact text of a regulation. The model produces a paragraph that sounds exactly like a regulation, and the paragraph ends up in a board memo. It is plausible and partly wrong. The fix is mechanical: anything the model claims is a citation, you fetch from the actual source before it leaves your desk — SR 11-7, an OCC bulletin, a section of Reg E.
-> [outcome] Go get the live text. Always.
+> Plausible paragraph that sounds like a regulation, ends up in a board memo. Partly wrong.
+> [outcome] Go fetch the live text — SR 11-7, OCC bulletins, Reg E — always.
 
-> "Hold the pattern together. Good uses bring public or anonymised material to the model and use the model to compress, rewrite, or draft. Bad uses either send the model sensitive material, or trust it to remember facts it never actually had. Get that pattern and you can sort almost any new use case under a minute."
+> [tip] Ten-second "before I paste" pause. If you cannot say your clipboard contents aloud without naming a real customer or unreleased number, the answer is no.
 
-> [tip] Build a personal "before I paste" pause — ten seconds, every time. If you can't say out loud what's in your clipboard without naming a real customer, account, or unreleased number, the answer is no. The pause becomes muscle memory within a week.
-
-> [warn] A model that invents a citation is doing exactly what it was built to do. It is not lying. It is producing the most plausible next chunk of text. The verification habit lives with you, not with the tool.
+> [warn] A model that invents a citation is doing exactly what it was built to do. The verification habit lives with you.
 
 ## PRODUCTION
 
