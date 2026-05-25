@@ -426,16 +426,44 @@ institutional brief variant.
 
 ### Phase 4 — Funnel wiring (Vera's findings)
 
-- G1. `sessionStorage` → `localStorage` (TTL 24h) for assessment
-      flight-state
-- G2. "Welcome back" personalization on `/foundation` after email
-      capture
-- G3. Result-page CTA repositioning (let the score breathe)
-- G4. Gate cost-shape parity fix (demote Decline below the grid)
-- G5. Stripe `success_url` + auth-binding flow
-- G6. Toolbox route consolidation
-- G7. `ResultsViewV2` loading skeleton
-- G8. Email subject lines lead with score
+**Reassessed 2026-05-25 against the live code.** The original synthesis
+treated several items as open that had already been addressed by
+2026-05-24 audit work. Live-code status:
+
+- G1. ✅ **ALREADY DONE** — `sessionStorage` → `localStorage` with 24h
+      TTL shipped via Audit A3, `src/app/assessment/_lib/assessment-storage.ts`.
+      Single adapter, localStorage primary + sessionStorage fallback for
+      private-mode Safari. Tested.
+- G2. ✅ **DONE this session** — Welcome-back personalization (commit
+      `431a46f`). `WelcomeBackGreeting` client component reads the
+      stored first_name and renders above the hero on `/foundation`.
+- G3. Result-page CTA repositioning — **status to verify**. Original
+      Vera finding said three CTAs stack on top of the score. Worth
+      re-walking `ResultsViewV2` against current state before scoping.
+- G4. ✅ **ALREADY DONE** — Gate cost-shape parity fix via Audit A9 +
+      A18 (2026-05-24). `GateScreen` already promotes Pay to hero card,
+      Email to secondary side-by-side, Decline to tertiary text below
+      the fold. Comment at `GateScreen.tsx` line 44-49 documents the
+      hierarchy.
+- G5. Stripe `success_url` + auth-binding flow — **status open**. Vera
+      flagged 3 candidate landing URLs; needs an E2E walk to confirm
+      which fires post-checkout.
+- G6. Toolbox route consolidation — **product call needed**.
+      `/my-toolbox` and `/dashboard/toolbox` both exist but appear to
+      serve different purposes (`/my-toolbox` is a learner-facing
+      artifact library; `/dashboard/toolbox` is the operator/admin
+      surface). Not a simple duplicate; consolidation is a product
+      call, not a wiring fix.
+- G7. ✅ **DONE this session** — `ResultsViewV2` loading skeleton
+      (commit `57947f4`).
+- G8. ✅ **ALREADY DONE** — assessment-breakdown email subject already
+      reads `Your AI readiness score — ${tierLabel}`
+      (`src/lib/resend/index.ts` line 116). Subject already leads with
+      the score.
+
+**Net:** 5 of 8 Phase 4 items are closed (G1, G2, G4, G7, G8). 3
+remain (G3, G5, G6) and each needs verification or a product call
+before engineering scope can be set.
 
 ---
 

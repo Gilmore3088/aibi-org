@@ -99,14 +99,26 @@ All E-line items from the recovery plan still open:
 
 ### Phase 4 — Funnel wiring
 
-- [x] G1 — sessionStorage → localStorage (already done before this session — Audit A3, 2026-05-24)
-- [x] G2 — Welcome-back personalization (PR10)
-- [ ] G3 — Result-page CTA repositioning (Vera: let the score breathe)
-- [ ] G4 — Gate cost-shape parity (demote Decline below the grid)
-- [ ] G5 — Stripe `success_url` + auth binding
-- [ ] G6 — Toolbox route consolidation (`/my-toolbox` vs `/dashboard/toolbox`)
-- [x] G7 — ResultsViewV2 loading skeleton (PR9)
-- [ ] G8 — Email subject lines lead with score
+After premise-checking each item against the live code post-PR9/PR10:
+
+- [x] G1 — sessionStorage → localStorage (already done — Audit A3, 2026-05-24)
+- [x] G2 — Welcome-back personalization (PR10, `431a46f`)
+- [ ] G3 — Result-page CTA repositioning — verify against current
+       `ResultsViewV2` shape before scoping
+- [x] G4 — Gate cost-shape parity (already done — Audit A9 + A18, 2026-05-24;
+       `GateScreen.tsx` line 44-49 documents the Pay-hero / Email-secondary /
+       Decline-tertiary hierarchy)
+- [ ] G5 — Stripe `success_url` + auth binding — open; needs E2E walk
+- [ ] G6 — Toolbox route consolidation — `/my-toolbox` (learner-facing)
+       and `/dashboard/toolbox` (operator surface) appear to serve
+       different purposes; product call before consolidation
+- [x] G7 — ResultsViewV2 loading skeleton (PR9, `57947f4`)
+- [x] G8 — Email subject lines lead with score — already done;
+       assessment-breakdown reads `Your AI readiness score — ${tierLabel}`
+       (`src/lib/resend/index.ts` line 116)
+
+**Net:** 5 of 8 Phase 4 items closed (G1, G2, G4, G7, G8). 3 remain
+(G3, G5, G6). G6 needs a product call.
 
 ## Notes for the next session
 
