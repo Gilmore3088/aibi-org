@@ -117,7 +117,7 @@ with sync_playwright() as p:
               .lesson-cover{padding:18px 32px;background:#E4E0D2;border-top:1px solid #D5D1C2;border-bottom:1px solid #D5D1C2;font-family:monospace;text-transform:uppercase;letter-spacing:0.18em;font-size:11px;color:#7C5814;page-break-before:always;}
               iframe{width:1280px;height:""" + str(MAX_LESSON_H) + """px;border:0;display:block;}
             </style></head><body>""")
-            f.write(f"<div class='cover'><div class='kicker'>Module bundle · {mid.upper()}</div><h1>{mtitle}</h1><div class='sub'>{len(lesson_ids)} lessons captured at 1280px wide</div></div>")
+            f.write(f"<div class='cover'><div class='kicker'>Operator review · {mid.upper()}</div><h1>{mtitle}</h1><div class='sub'>{len(lesson_ids)} lessons · this is an internal review capture, not the learner UI</div></div>")
             for lid in lesson_ids:
                 f.write(f"<div class='lesson-cover'>Lesson {lid}</div>")
                 f.write(f"<iframe src='http://localhost:3000/foundation/{mid}/{lid}'></iframe>")

@@ -147,7 +147,7 @@ with open(f"{OUT_DIR}/canvas.html", "w") as f:
 </style></head>
 <body>
   <h1>Foundation Course — full canvas</h1>
-  <div class="sub">Every lesson · v1 + v2 lesson shells · captured at 1280 × 900</div>
+  <div class="sub">Foundation Course · operator review surface (not learner-facing)</div>
 """)
     # Index captured by label
     cap = {label: (label, badge, out) for (label, badge, out) in captured}
