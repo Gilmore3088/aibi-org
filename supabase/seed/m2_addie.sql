@@ -714,3 +714,10 @@ ON CONFLICT (id) DO UPDATE SET
   entitlement = EXCLUDED.entitlement,
   published = EXCLUDED.published,
   updated_at = now();
+
+----------------------------------------------------------------------
+-- Phase 1 Guided Lesson Shell — opt all four M2 lessons into
+-- LessonStepShell (2026-05-25). See migration 00073 + LessonStepPlayer.
+-- PR4 of the Phase 1 Foundation UX recovery.
+----------------------------------------------------------------------
+UPDATE addie.lessons SET shell_kind = 'step' WHERE id IN ('m2.1', 'm2.2', 'm2.3', 'm2.4');
