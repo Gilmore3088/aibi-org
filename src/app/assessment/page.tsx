@@ -17,7 +17,14 @@ import { ROLE_META, parseRole, type Role } from '@content/assessments/v2/role';
 // answering questions by the time this is needed.
 const ResultsViewV2 = dynamic(
   () => import('./_components/ResultsViewV2').then((mod) => mod.ResultsViewV2),
-  { ssr: false },
+  {
+    ssr: false,
+    // Vera G7 (2026-05-25 e2e audit): a 200–400ms white flash on LTE
+    // between email-gate submit and the rendered report makes the peak
+    // moment feel broken. ResultsSkeleton matches the score-ring +
+    // dashboard card layout so the swap-in doesn't reflow.
+    loading: ResultsSkeleton,
+  },
 );
 
 export default function AssessmentPage() {
@@ -210,6 +217,45 @@ export default function AssessmentPage() {
             />
           </>
         )}
+      </div>
+    </main>
+  );
+}
+
+// Loading skeleton for the lazy-imported ResultsViewV2 chunk. Matches the
+// score-ring + tier card + dimension breakdown shape so the result reveal
+// doesn't flash white on slow connections (Vera G7, 2026-05-25). Held in
+// this file so the dynamic() call above can reference it without circular
+// import.
+function ResultsSkeleton() {
+  return (
+    <main className="min-h-screen" aria-hidden="true">
+      <div className="h-1 bg-[color:var(--color-ink)]/10" />
+      <div className="px-6 py-12 md:py-16">
+        <div className="w-full max-w-3xl mx-auto animate-pulse">
+          {/* Score ring placeholder */}
+          <div className="flex flex-col items-center mb-12">
+            <div className="h-3 w-40 bg-[color:var(--color-ink)]/10 rounded-sm mb-4" />
+            <div className="h-44 w-44 rounded-full bg-[color:var(--color-ink)]/10" />
+            <div className="h-4 w-32 bg-[color:var(--color-ink)]/10 rounded-sm mt-5" />
+          </div>
+          {/* Tier card placeholder */}
+          <div className="border border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)] rounded-sm p-6 mb-8">
+            <div className="h-3 w-24 bg-[color:var(--color-ink)]/10 rounded-sm mb-3" />
+            <div className="h-6 w-3/4 bg-[color:var(--color-ink)]/10 rounded-sm mb-3" />
+            <div className="h-3 w-full bg-[color:var(--color-ink)]/10 rounded-sm mb-2" />
+            <div className="h-3 w-5/6 bg-[color:var(--color-ink)]/10 rounded-sm" />
+          </div>
+          {/* Dimension breakdown grid placeholder */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
+              <div
+                key={i}
+                className="h-20 border border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)] rounded-sm"
+              />
+            ))}
+          </div>
+        </div>
       </div>
     </main>
   );
