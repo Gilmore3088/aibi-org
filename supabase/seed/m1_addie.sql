@@ -230,7 +230,7 @@ The wins are not flashy. Fewer minutes on the second draft; more minutes with th
 
 > [case:bad] Letting the model invent a citation
 > Plausible paragraph that sounds like a regulation, ends up in a board memo. Partly wrong.
-> [outcome] Go fetch the live text — SR 11-7, OCC bulletins, Reg E — always.
+> [outcome] Go fetch the live text — [[Gloss:SR 11-7]], [[Gloss:OCC]] bulletins, [[Gloss:Reg E]] — always.
 
 > [tip] Ten-second "before I paste" pause. If you cannot say your clipboard contents aloud without naming a real customer or unreleased number, the answer is no.
 

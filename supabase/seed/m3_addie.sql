@@ -327,7 +327,7 @@ Twelve short scenarios. One question each: violation or not a violation? Some of
 
 > [tip] Screenshot the two hardest scenarios. The ones that almost fooled you are the patterns you will see in real life.
 
-> [warn] Passing data-discipline does not make a use case safe. Asking a public tool to draft a press release about a non-public product launch passes PII rules and still violates MNPI. Both have to be intact.
+> [warn] Passing data-discipline does not make a use case safe. Asking a public tool to draft a press release about a non-public product launch passes PII rules and still violates [[Gloss:MNPI]]. Both have to be intact.
 
 > [case:good] Verify the load-bearing claims, every time
 > Hallucination is a property of the engine, not a bug. The countermeasure is verification — and verification has a protocol, not a vibe.

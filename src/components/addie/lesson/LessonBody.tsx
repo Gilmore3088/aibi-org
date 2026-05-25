@@ -16,6 +16,7 @@
 
 import type { ReactNode } from 'react';
 import { slugifyHeading } from './lessonHeadings';
+import { Gloss } from './Gloss';
 
 interface LessonBodyProps {
   readonly body: string;
@@ -732,6 +733,17 @@ function renderInline(src: string): ReactNode[] {
   let i = 0;
   let key = 0;
   while (i < src.length) {
+    // [[Gloss:TERM]] — inline first-use vocabulary aside (Phase 1 / PR8,
+    // 2026-05-25). Matched first so the literal '[[' doesn't fall into
+    // the link [text](href) matcher below.
+    if (src[i] === '[' && src[i + 1] === '[') {
+      const gm = src.slice(i).match(/^\[\[Gloss:([^\]]+)\]\]/);
+      if (gm) {
+        tokens.push(<Gloss key={key++} term={gm[1]} />);
+        i += gm[0].length;
+        continue;
+      }
+    }
     const lm = src.slice(i).match(/^\[([^\]]+)\]\(([^)]+)\)/);
     if (lm) {
       tokens.push(
