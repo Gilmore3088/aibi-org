@@ -21,6 +21,7 @@ const basePayload: LessonPayload = {
     objective_md: null,
     transfer_md: null,
     published: true,
+    shell_kind: 'legacy',
   },
   module: {
     id: 'm2',

@@ -47,6 +47,12 @@ export interface LessonRow {
   readonly objective_md: string | null;
   readonly transfer_md: string | null;
   readonly published: boolean;
+  // Phase 1 Guided Lesson Shell migration (2026-05-25):
+  // 'legacy' = LessonPlayer (long-scroll), 'step' = LessonStepShell
+  // (focused step-by-step via LessonStepPlayer adapter). Default 'legacy'.
+  // M01Experience / M02Experience routes branch on lesson_id and ignore
+  // this column. See migration 00073.
+  readonly shell_kind: 'step' | 'legacy';
 }
 
 export interface ModuleRow {

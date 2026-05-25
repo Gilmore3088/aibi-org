@@ -76,7 +76,7 @@ async function loadPayload(
     const { data: lesson } = await svc
       .from('lessons')
       .select(
-        'id, module_id, ordinal, title, modality, duration_min, is_branched, exercise_id, takeaway_artifact_type, body_md, objective_md, transfer_md, published',
+        'id, module_id, ordinal, title, modality, duration_min, is_branched, exercise_id, takeaway_artifact_type, body_md, objective_md, transfer_md, published, shell_kind',
       )
       .eq('id', lessonId)
       .eq('module_id', moduleId)
