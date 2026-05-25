@@ -15,6 +15,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { AnonymizationFlow } from './AnonymizationFlow';
 import { TRACKS, type Track } from '@/components/addie/shell/TrackPicker';
+import { AiToolAnatomy } from '@/components/addie/illustrations/AiToolAnatomy';
 
 interface M01ExperienceProps {
   readonly initialTrack: Track | null;
@@ -140,6 +141,20 @@ export function M01Experience({ initialTrack, nextHref }: M01ExperienceProps) {
           on Monday.
         </p>
       </header>
+
+      {/* AiToolAnatomy (Branch Mgr Devon finding #9, 2026-05-25): never-
+          touched-an-AI-tool anchor before the proof moment. A learner can
+          orient on the four basic regions (history / answer / input /
+          send) before the course starts asking them to interact. */}
+      <section className="mb-14" aria-labelledby="tool-anatomy-heading">
+        <div className="font-mono uppercase tracking-[0.18em] text-[0.7rem] text-[var(--ledger-accent)] mb-2">
+          Before we start · what an AI tool looks like
+        </div>
+        <h2 id="tool-anatomy-heading" className="sr-only">
+          What an AI tool looks like
+        </h2>
+        <AiToolAnatomy />
+      </section>
 
       {/* Proof moment — practice the move BEFORE the value bullets */}
       <section className="mb-14" aria-labelledby="proof-heading">
