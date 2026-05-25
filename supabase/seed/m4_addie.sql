@@ -677,3 +677,25 @@ ON CONFLICT (id) DO UPDATE SET
   gating                = EXCLUDED.gating,
   entitlement           = EXCLUDED.entitlement,
   published             = EXCLUDED.published;
+
+----------------------------------------------------------------------
+-- Phase 2 PR19 — M4 takeaway_artifact_type → workbench_pack (2026-05-25)
+--
+-- Wires every M4 lesson to the new composite Workbench Pack artifact
+-- (recovery plan Decision #2 + DECISIONS 2026-05-25). The PR also
+-- opts each lesson into LessonStepShell so the wired render lands at
+-- the same time as the artifact-type flip.
+--
+-- The lesson body_md content below still describes the prior
+-- "Skill / Skill Template / Verified Skill" arc — full body re-author
+-- is a separate content PR. Until then, the bodies read as legacy
+-- text but the SAVE flow produces a Pack via WorkbenchPackBuilder.
+--
+-- Requires migration 00074 (workbench_pack enum value) to be applied
+-- to the linked Supabase first; until then this UPDATE will fail the
+-- enum check.
+----------------------------------------------------------------------
+UPDATE addie.lessons
+SET takeaway_artifact_type = 'workbench_pack',
+    shell_kind             = 'step'
+WHERE id IN ('m4.1', 'm4.2', 'm4.3', 'm4.4');
