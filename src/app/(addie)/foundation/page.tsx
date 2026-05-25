@@ -9,6 +9,7 @@ import { getAddieServiceClient } from '@/lib/addie/supabase/service';
 import { ModuleCard } from '@/components/addie/shell/ModuleCard';
 import { ModuleIllustration } from '@/components/addie/illustrations/ModuleIllustration';
 import type { ModuleRow } from '@/components/addie/lesson/types';
+import { WelcomeBackGreeting } from './_components/WelcomeBackGreeting';
 
 export const dynamic = 'force-dynamic';
 
@@ -122,6 +123,7 @@ export default async function FoundationHomePage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
           <div className="grid gap-12 lg:grid-cols-[5fr_4fr] items-center">
             <div className="relative z-10">
+              <WelcomeBackGreeting />
               <span className="addie-chip" data-tone="accent">
                 Foundation Course · {modules.length} modules · {totalLessons} lessons
               </span>

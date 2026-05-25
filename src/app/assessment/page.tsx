@@ -7,7 +7,7 @@ import { QuestionCard } from './_components/QuestionCard';
 import { ProgressBar } from './_components/ProgressBar';
 import { EmailGate } from './_components/EmailGate';
 import { AssessmentEntryStrip } from './_components/AssessmentEntryStrip';
-import { loadAssessment } from './_lib/assessment-storage';
+import { loadAssessment, saveAssessment } from './_lib/assessment-storage';
 import { ROLE_META, parseRole, type Role } from '@content/assessments/v2/role';
 
 // ResultsViewV2 is a ~25 KB source component (drags in PdfDownloadButton +
@@ -150,6 +150,12 @@ export default function AssessmentPage() {
               onCaptured={(email, extras) => {
                 setCapturedEmail(email);
                 setCapturedFirstName(extras.firstName ?? null);
+                // Vera G2 (2026-05-25): persist first_name so downstream
+                // surfaces (/foundation, the course shell) can greet the
+                // learner by name. assessment-storage carries the 24h TTL.
+                if (extras.firstName) {
+                  saveAssessment('aibi-learner-first-name', extras.firstName);
+                }
                 setCapturedInstitution(extras.institutionName ?? null);
                 setCapturedProfileId(extras.profileId ?? null);
                 setUsedFreeEmail(extras.usedFreeEmail ?? false);
