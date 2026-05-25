@@ -60,6 +60,10 @@ const ARTIFACT_LABELS: Record<ArtifactType, { title: string; sub: string }> = {
     title: 'Where AI Fits This Week',
     sub: 'Your week, mapped to AI moves.',
   },
+  workbench_pack: {
+    title: 'Workbench Pack',
+    sub: 'Source · prompt · output · review · improved · questions · final.',
+  },
 };
 
 export function SaveTakeawayCTA({ lessonId, artifactType }: SaveTakeawayCTAProps) {

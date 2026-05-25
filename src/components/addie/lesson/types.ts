@@ -27,7 +27,14 @@ export type ArtifactType =
   | 'prd'
   | 'prototype'
   | 'problem_backlog'
-  | 'where_ai_fits';
+  | 'where_ai_fits'
+  // Phase 2 (2026-05-25) — M4's primary paid artifact. One composite
+  // toolbox_items row holding source_packet, prompt_used,
+  // first_output, review_tags, improved_output, questions_to_confirm,
+  // final_work_product + governance metadata (version, approver,
+  // use_boundary, validation_notes). See migration 00074 + recovery
+  // plan §"Workbench Pack".
+  | 'workbench_pack';
 
 export interface LessonRow {
   readonly id: string;

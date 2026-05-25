@@ -1,0 +1,21 @@
+-- 00074_addie_artifact_type_workbench_pack.sql
+-- Add 'workbench_pack' to the addie.artifact_type enum.
+--
+-- Phase 2 of the 2026-05-25 Foundation UX recovery plan (Decision #2:
+-- M4's primary paid artifact becomes the Workbench Pack, replacing the
+-- "AI Work Profile" / Skill artifact-set as the saved unit).
+--
+-- The Pack is one composite document per the plan's documented default
+-- (open question #1) — a single addie.toolbox_items row holding the
+-- full Pack shape: source_packet, prompt_used, first_output,
+-- review_tags, improved_output, questions_to_confirm,
+-- final_work_product + governance metadata (version, approver,
+-- use_boundary, validation_notes).
+--
+-- The enum addition is non-destructive (ADD VALUE). Existing rows
+-- using 'skill', 'skill_template', etc. are unaffected. The full
+-- M4 lesson-seed re-author replaces those references with
+-- 'workbench_pack' in a follow-up migration once the
+-- WorkbenchPackBuilder UI lands.
+
+ALTER TYPE addie.artifact_type ADD VALUE IF NOT EXISTS 'workbench_pack';
