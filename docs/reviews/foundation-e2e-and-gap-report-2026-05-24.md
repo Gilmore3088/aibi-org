@@ -2,9 +2,14 @@
 
 **Branch:** `feature/addie-v1`
 **Working tree:** `/Users/jgmbp/Projects/TheAiBankingInstitute/.worktrees/addie-v1`
-**Commits in scope:** `7f6d1cb` (whole-course audit fixes) + `f93983b` (per-page specialist fixes).
+**Commits in scope (this session):**
+- `7f6d1cb` — whole-course UI specialist audit fixes (HIGH-tier)
+- `f93983b` — per-page UI specialist fixes (BLOCKER + HIGH cluster)
+- `031fdd4` — added `addie.lessons.objective_md` + `transfer_md` (root cause of lesson-route 404)
+- `bc0c147` — M0 v2 data-discipline drill design spec
+- `aae499b` — M0 Wave A: PRD content alignment (Strip / Card / Recap)
 
-This report closes out the goal "resolve the specialist reports once complete · launch end-to-end test · review original documents and identify where we are missing or gaps."
+This report closes out the goals "resolve the specialist reports", "launch end-to-end test", "review original documents and identify where we are missing or gaps", and "PRD: Module 0 Update — Data Discipline."
 
 ## 1 · End-to-end checks (code + route layer)
 
@@ -12,127 +17,114 @@ This report closes out the goal "resolve the specialist reports once complete ·
 | --- | --- |
 | `npx tsc --noEmit` (excluding `addie-v1-stash/`) | **0 errors** |
 | `npx next lint --quiet` | **clean** (only the pre-existing plugin-config conflict warning) |
-| `git status` (audit-related paths) | clean (committed in `f93983b`) |
 | Route coverage probe (35 surfaces) | **35 / 35 return 200** |
-| `grep -REn 'unlock' src/app/(addie)/foundation src/components/addie supabase/seed` | 0 user-facing leaks (one occurrence in `m4_addie.sql:489` is the legitimate phrase "leaving a lever unlocked") |
-| `grep -REn 'AiBI-S/' src/components/addie/lesson` | 0 |
-| `grep -REn 'font-newsreader' src/components src/app/(addie)` | 0 |
-| `grep -REn 'foundation/foundation' src/components src/app/(addie)` | 1 — a code comment, not a link |
-| Inline-SVG raw hex in `/foundation/security` | 0 |
-| `bg-[var(--ledger-parch)]` paired with body prose on MaturityJourney compact strip | replaced with `--ledger-paper` |
-
-**Routes probed (all 200):**
-
-```
-/  /assessment  /assessment/in-depth
-/foundation  /foundation/security  /foundation/privacy  /foundation/terms  /foundation/cookies
-/foundation/for-community-banks  /foundation/contact-sales  /foundation/pricing
-/foundation/gate  /foundation/assessment  /foundation/dashboard
-/foundation/dashboard/team  /foundation/dashboard/toolbox
-/foundation/m0 .. /foundation/m5
-/foundation/m0/m0.1  /foundation/m0/m0.2  /foundation/m1/m1.1  /foundation/m3/m3.5
-/foundation/m4/m4.1  /foundation/m5/m5.1
-/foundation-canvas  /foundation-canvas/m0 .. /foundation-canvas/m5
-```
-
-> **Important caveat on the lesson-route 200s.** Next.js' `notFound()` resolves to a 200 with the not-found shell rendered. The m0 and m4 per-page specialists confirmed by HTML diff that **every `/foundation/<moduleId>/<lessonId>` route currently returns the byte-identical not-found page**. This is not a UI bug — see Gap §3 below.
+| `grep -REn 'unlock'` foundation source + components + seeds | 0 user-facing leaks |
+| `grep -REn 'AiBI-S/'` lesson components | 0 |
+| `grep -REn 'font-newsreader'` foundation source | 0 |
+| `grep -REn 'foundation/foundation'` foundation source + components | 1 — a code comment, not a link |
+| `grep -En 'fill="#|stroke="#'` `/foundation/security` SVG | 0 |
+| `addie.lessons` rows fetchable from server | **YES** (was the lesson-404 blocker; root cause was missing schema columns, not missing tables) |
+| Module 0 v2 Strip step (Playwright) | 4 sensitive tokens, "Same work. Safer input.", "Safe situation", "Safe prompt", "Copy prompt" all render after Strip-all |
 
 ## 2 · Specialist reports resolved
 
-Seven specialist reports landed:
+Seven specialist reports written this session:
 
 | Report | Findings | Status |
 | --- | --- | --- |
-| Whole-course audit (`foundation-ui-specialist-audit-2026-05-24.md`) | 25 (0 B · 6 H · 9 M · 10 L) | HIGH addressed in `7f6d1cb`; fix-log notes the deferrals |
+| Whole-course audit | 25 (0 B · 6 H · 9 M · 10 L) | HIGH addressed in `7f6d1cb`; fix-log notes deferrals |
 | `/foundation` home | 8 (0 B · 3 H · 2 M · 3 L) | HIGH addressed in `f93983b` |
-| `/foundation/gate` | 10 (1 B · 3 H · 3 M · 3 L) | BLOCKER + 2 of 3 HIGH addressed in `f93983b` (shared CSS) |
-| `/foundation/m0` + lessons | 20 (2 B · 6 H · 5 M · 7 L) | One BLOCKER addressed (radii/shadow on module page); the lesson-route 404 BLOCKER is the deployment gap below |
+| `/foundation/gate` | 10 (1 B · 3 H · 3 M · 3 L) | BLOCKER + 2 of 3 HIGH addressed in `f93983b` |
+| `/foundation/m0` + lessons | 20 (2 B · 6 H · 5 M · 7 L) | Module-page BLOCKER addressed; lesson-route 404 fixed in `031fdd4` |
 | `/foundation/m3` + m3.5 | 12 (0 B · 2 H · 7 M · 3 L) | HIGH addressed in `f93983b`; seed "unlock" fixed |
-| `/foundation/m4` | 12 (1 B · 3 H · 3 M · 4 L) | BLOCKER = same lesson-route 404; module-page HIGH (CTA contrast + shadow) addressed in `f93983b` |
-| `/foundation/dashboard` + `toolbox` + `team` | 9 (1 B · 1 H · 1 M · 6 L) | BLOCKER (broken `/foundation/foundation/...` link) + HIGH (`font-newsreader` no-op on 3 surfaces) addressed in `f93983b` |
+| `/foundation/m4` | 12 (1 B · 3 H · 3 M · 4 L) | Lesson-route 404 BLOCKER fixed in `031fdd4`; module-page HIGH addressed in `f93983b` |
+| `/foundation/dashboard` + `toolbox` + `team` | 9 (1 B · 1 H · 1 M · 6 L) | BLOCKER (broken `/foundation/foundation/...` link) + HIGH (`font-newsreader` no-op) addressed in `f93983b` |
 
-**Deferred** (logged in `foundation-ui-specialist-fix-log-2026-05-24.md`):
-- F10 — PaywallPreview lesson-specific teaser (structural, separate plan).
-- Radii sweep — `rounded-[6px]/[8px]` literals still in `LessonSummaryCard`, `LessonBody`, `NextLessonCTA`, `v2/RuleHeroCard`, `v2/M02Experience`, `v2/DataDisciplineCardArtifact`.
-- `<em>`/`not-italic`/`italic-off` cleanup pass.
-- Body-on-parch sweep on `DeliverableSection`, `SkillBuilder`, `SeatStatusPill`.
-- Lesson Shell Migration (`AiBI_Lesson_Shell_Migration.md`) — 23 of 24 free lessons still on the legacy template.
+## 3 · Module 0 v2 PRD — what shipped vs what's deferred
 
-## 3 · Gap analysis — code vs. canonical ADDIE docs
+The PRD's six-step drill (Rule / Strip / Sort / Check / Save / Recap) already had its scaffolding on this branch via the `M02Experience` v2 shell. This session aligned the content layer to the PRD; some chrome + new infrastructure work is deferred to follow-up tickets.
 
-Cross-referenced shipped state against `docs/Foundation-Course-ADDIE/`:
+### Shipped this session (commit `aae499b`)
 
-### 3.1 · BLOCKER · ADDIE schema not deployed to Supabase
-
-**Evidence.** Direct query against the Supabase project the dev server connects to:
-
-```
-public.lessons   → MISSING (table not in schema cache)
-public.modules   → not verified (further direct queries refused by auto-mode)
-```
-
-**Cause.** 34 ADDIE migrations (`supabase/migrations/00037_addie_*.sql` … `00070_addie_*.sql`) plus 6 lesson seeds (`supabase/seed/m{0..5}_addie.sql`) have never been applied to the connected Supabase. Result: `loadPayload()` in `[lessonId]/page.tsx:82` returns `null` because the lessons query finds no row, and `notFound()` fires at line 332.
-
-**Why this is the dominant gap.** Without the schema:
-- No lesson surface renders content.
-- No paywall gate is exercised (the paid-tier check never matters when no row loads).
-- No knowledge-check writes, no Toolbox saves, no track variants.
-- The whole free → gate → paid funnel is non-functional in the dev environment.
-
-**What this means for the canvas work.** The `/foundation-canvas/*` operator surfaces still render — they pull lesson rows when present and gracefully render empty when not — but the per-lesson PNG bundles (which were generated previously and live in `public/canvas/`) are the only thing the canvas can show right now.
-
-**What's needed.** Decision + execution by the user:
-
-> ⚠️ APPLY THE 34 ADDIE MIGRATIONS + 6 SEEDS TO THE LINKED SUPABASE PROJECT?
-
-Per branch-scoped CLAUDE.md, applying production migrations requires explicit consent and is out of scope without it. The migrations are non-destructive (additive — new tables in the `addie.*` namespace + companion seeds), but they still touch a shared Supabase instance.
-
-### 3.2 · BLOCKER · Media production lag
-
-The Module Production Tracker (`AiBI_Module_Production_Tracker.md`) is candid: of 13 planned video lessons, **0 are recorded**. Audio lessons 1.3 (×5 track variants) and 5.5 — same. Tracker notes this is "media production — operator work; backend wired." Not an engineering gap, but a launch-blocker if it slips.
-
-### 3.3 · HIGH · Three Foundation pages not in the canonical inventory
-
-The Screen Inventory (`AiBI_Screen_Inventory_Spec.md` §1) lists "roughly 45 screens." Routes that exist in shipped code but are not in the inventory:
-
-| Route | Status |
+| PRD step | Change |
 | --- | --- |
-| `/foundation/security`, `/foundation/privacy`, `/foundation/terms`, `/foundation/cookies` | Built but not catalogued — Screen Inventory has `/security` at site level only. The `/foundation/*` variants are likely duplicates of marketing pages and should either be removed or documented as the "in-course" copies. |
-| `/foundation/for-community-banks`, `/foundation/contact-sales`, `/foundation/pricing` | Built but not in Screen Inventory §3. Likely additions made during the brand refresh — need a paragraph each in §3.1 (Marketing). |
+| 02 Strip | `AnonymizationFlow` extended from 2 to **4 sensitive tokens** matching the PRD example sentence ("Maria Lopez, account ending 4421, … $128 … wants a response by Friday"). Per-tap feedback (`aria-live="polite"`). "Safe situation" + "Safe prompt" panels reveal on all-stripped. "Copy prompt" button writes the PRD-exact safe prompt to clipboard. "Same work. Safer input." kicker reveals. Radii tightened from 5px to 3px. |
+| 05 Save | `DataDisciplineCardArtifact` gained the four PRD subsections previously missing: the pattern line, the Examples block, and the three-column Allowed / Needs Review / Keep Out reference. "When in doubt" copy tightened to PRD wording. |
+| 06 Recap | Five-bullet `What you learned` per PRD §10 Screen 6 (was four). |
 
-### 3.4 · HIGH · Detailed module specs incomplete
+### Already on this branch (no change needed)
 
-Tracker calls "detailed specs 3/6" — M0 · M4 · M5 have full curriculum docs (`AiBI_Module_0_Orientation.md`, `AiBI_Module_4_Skills.md`, `AiBI_Module_5_Prototypes.md`). **M1, M2, M3 are seed-only**: rows in `supabase/seed/m{1,2,3}_addie.sql` but no companion curriculum markdown explaining the why/how, knowledge-check rationale, or track-variant copy. The Wave-2b text-density cut shrank body content 44% across modules; without specs, future content edits lose their constitution.
+| PRD step | Existing component | Notes |
+| --- | --- | --- |
+| 01 Rule | `RuleHeroCard` + `SacredRule` overlay | Rule + move + test copy already PRD-aligned. |
+| 03 Sort | `OffLimitsSorter` | Three-bucket UI (Allowed / Needs Review / Off-Limits) already present with per-item feedback and track-aware item filtering (7 universal + 3 role-specific per track). |
+| 04 Check | `KnowledgeCheck` widget + 3 seeded m0.2 KC rows | Q1, Q2, Q3 prompts and correct-answer rationale already PRD-aligned. Verified live in `addie.knowledge_checks`. |
 
-### 3.5 · MEDIUM · Lesson Shell Migration plan exists but not executed
+### Deferred (next-up tickets)
 
-`AiBI_Lesson_Shell_Migration.md` defines the migration target. Only `m0.2` ships the v2 shell (`M02Experience`); the other 23 free lessons still render the legacy hero-illustration + scrolling-body template. The whole-course audit F21 surfaced this; the per-page m0 specialist confirmed v2 introduces its own pattern divergence (`rounded-[5px]`/`[6px]` cards-with-parch-footers, literal ✓/× glyphs as icons). The migration needs a clean target spec before it scales.
+1. **Hybrid AI Coach drawer** (PRD §11 + spec §4). Six static-answer chips + bounded free-text route. Overlaps with the existing `LessonTutor` component — needs its own short design conversation to decide whether to extend `LessonTutor` to surface chips or to ship a separate `LessonCoachDrawer`. Branch-scoped CLAUDE.md does not have an opinion either way.
+2. **Six-step chrome polish** — collapse the course outline to a drawer-only mount; bottom sticky CTA on mobile; lesson-progress stepper labels capped at 6 visually-distinct chips.
+3. **m0.1 light copy + chrome pass** — PRD scope explicitly includes copy/Toolbox-preview/role-track-confirmation polish on Lesson 1; not touched this session.
+4. **Analytics persistence** — PRD §15/§16 events (`StripItActivityResult`, `SortActivityResult`, coach interactions) need to write to `addie.events` rows. The schema accepts arbitrary jsonb payload; only the wiring is missing.
+5. **Email capture at card save for anon learners** — branch policy ("every save is a lead") already implies it; verify the existing flow on the Save step routes anon users to the email modal instead of failing silently.
 
-### 3.6 · MEDIUM · `PaywallPreview` does not honour the Screen Inventory's per-lesson promise
+## 4 · Gap analysis vs canonical ADDIE docs
 
-Screen Inventory §3 implies each lesson page has its own state (anon → upgrade), and the m4 specialist confirms `PaywallPreview` reuses one component across all 9 paid lessons with module-level data only. This is the F10 finding from the whole-course audit; the H1→H2 kicker promotion ships, but the lesson-specific teaser is still owed.
+### 4.1 · BLOCKER (resolved this session) · Lesson route 404
 
-### 3.7 · LOW · Tracker checkbox debt
+**Earlier gap report flagged this as a deployment gap.** Under Supabase MCP inspection, the ADDIE schema is fully deployed in the `addie.*` namespace (24 lesson rows, 6 modules, 55 KCs). Actual root cause: code drift — `loadPayload()` selected `objective_md, transfer_md` columns referenced by `LessonPlayer`'s `LessonObjectiveBeat` + `LessonTransferBeat`, but the migration adding those nullable text columns was never written. Migration `00071_addie_lessons_add_objective_transfer_md.sql` shipped in `031fdd4`. Every lesson route now renders real content (113–130 KB free, 73 KB locked paid).
 
-The Module Production Tracker shows two known-bug fixes for 2026-05-24 already ticked (`/api/addie/maturity` identity + SacredRule a11y) but the tracker has not been amended to record the UI-specialist commits (`7f6d1cb`, `f93983b`). Per the user's standing rule "tick the tracker in the SAME COMMIT that lands the work" this is a small but real maintenance miss this session.
+### 4.2 · HIGH · Media production lag (unchanged)
 
-## 4 · Recommended next actions, in order
+Module Production Tracker: 0 of 13 planned video lessons recorded. Operator scope, not engineering.
 
-1. **Decision needed: apply ADDIE migrations + seeds to Supabase** (Gap 3.1). Until this is done, nothing under `/foundation/<moduleId>/<lessonId>` renders content; the canvas review surface is the only window into the curriculum work.
-2. **Update the Module Production Tracker** to record `7f6d1cb` + `f93983b` and the per-page reports (Gap 3.7).
-3. **Author M1, M2, M3 curriculum docs** to bring detailed specs to 6/6 (Gap 3.4).
-4. **Catalogue the seven missing routes** in the Screen Inventory (Gap 3.3).
-5. **Execute the deferred radii sweep** across `LessonSummaryCard`, `LessonBody`, `NextLessonCTA`, `v2/*` to retire `rounded-[5/6/8/10/12]px` literals.
-6. **F10 — per-lesson PaywallPreview teaser** (whole-course audit follow-up).
-7. **Lesson Shell Migration** (Gap 3.5) once a clean v2 target is locked in.
+### 4.3 · HIGH · Three Foundation pages not in Screen Inventory (unchanged)
 
-## 5 · Files committed in this session
+`/foundation/security`, `/foundation/privacy`, `/foundation/terms`, `/foundation/cookies` (duplicates of marketing pages) and `/foundation/for-community-banks`, `/foundation/contact-sales`, `/foundation/pricing` (refresh additions) need entries in `AiBI_Screen_Inventory_Spec.md` §3.1.
+
+### 4.4 · HIGH · Detailed module specs incomplete (unchanged)
+
+M0 · M4 · M5 have curriculum docs. M1, M2, M3 are seed-only. The 2026-05-24 text-density cut shrank body content 44% across modules; without specs, future content edits lose their constitution.
+
+### 4.5 · MEDIUM · Lesson Shell Migration plan exists but not executed (unchanged)
+
+m0.2 is the only lesson on the v2 shell. The other 23 free lessons still render the legacy hero-illustration + scrolling-body template. The migration target is now better-defined since m0.2 received Wave A content alignment.
+
+### 4.6 · MEDIUM · `PaywallPreview` still byte-identical across 9 paid lessons (F10, unchanged)
+
+Whole-course audit follow-up: thread `lessonRow` into the paywall so each locked lesson renders its own teaser, or redirect `/foundation/m4|m5/<lessonId>` → `/foundation/m4|m5` for non-entitled viewers.
+
+### 4.7 · LOW · Tracker checkbox debt
+
+The Module Production Tracker has not been updated to record commits `7f6d1cb`, `f93983b`, `031fdd4`, `bc0c147`, `aae499b`. Per the user's standing rule "tick the tracker in the SAME COMMIT that lands the work" this is a small but real maintenance miss this session.
+
+## 5 · Recommended next actions, in order
+
+1. **Decision: how should the M0 Coach drawer relate to the existing `LessonTutor`?** Extend `LessonTutor` to expose chips OR ship a separate `LessonCoachDrawer`. ~30 min design conversation; then ship.
+2. **Chrome polish wave** — outline drawer-only, bottom sticky CTA, six-step visual stepper. Can land in one commit.
+3. **m0.1 light copy + chrome pass** — surface the Toolbox preview right rail, confirm role-track on entry, replace any "video in production" placeholder copy with the operational orientation language the PRD specifies.
+4. **Analytics persistence** — wire `addie.events` writes for Strip / Sort completions and coach interactions.
+5. **F10 — per-lesson PaywallPreview teaser** (whole-course audit follow-up).
+6. **Lesson Shell Migration** — roll the v2 shell pattern out from m0.2 to the other 23 free lessons; the M02Experience template is now closer to PRD-shape and the right model.
+7. **Author M1, M2, M3 curriculum docs** to bring detailed specs to 6/6.
+8. **Update the Module Production Tracker** to record this session's commits.
+
+## 6 · Files committed in this session (chronological)
 
 ```
 7f6d1cb · fix(foundation-ui): F1-F4, F8, F25 from UI specialist audit
-f93983b · fix(foundation-ui): per-page specialist findings (BLOCKER + HIGH cluster)
+f93983b · fix(foundation-ui): per-page specialist findings — BLOCKER + HIGH cluster
+158e94a · docs(reviews): E2E + gap report 2026-05-24 (this file's predecessor)
+031fdd4 · fix(addie): add lessons.objective_md + transfer_md (root cause of lesson 404s)
+bc0c147 · docs(spec): M0 v2 data-discipline drill design
+aae499b · feat(m0.2): wave A — PRD content alignment (Strip / Card / Recap)
 ```
 
-## 6 · Verification surface
+## 7 · Canvas state
 
-The canvas system (`/foundation-canvas`) remains the operator's review surface — every per-module print-to-PDF page renders, with m3 still appending the post-M3 gate. The seven specialist reports live alongside this gap report in `docs/reviews/foundation-ui-specialist-*-2026-05-24.md`; the brief at `foundation-ui-specialist-brief.md` is the contract for re-dispatching the specialist against any future page change.
+Canvas PNG + PDF bundles regenerated against the live (now-rendering) lesson routes:
+- `public/canvas/<lesson>.png` × 25 — refreshed.
+- `public/canvas/modules/m0.{png,pdf}` — re-stitched after the Wave A content edits so the strip step's new copy appears in the operator review surface.
+- `/foundation-canvas/m0..m5` — all 200; `/foundation-canvas/m3` still appends the post-M3 gate.
+
+`public/canvas/` is gitignored by design — regenerable artefacts; the dev server serves them directly.
