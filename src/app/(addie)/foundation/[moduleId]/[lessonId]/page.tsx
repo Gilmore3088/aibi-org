@@ -20,6 +20,7 @@ import { TrackChrome } from '@/components/addie/lesson/TrackChrome';
 import { MaturityCelebration } from '@/components/addie/lesson/MaturityCelebration';
 import { ProactiveTutorSuggestion } from '@/components/addie/lesson/ProactiveTutorSuggestion';
 import { M02Experience } from '@/components/addie/lesson/v2/M02Experience';
+import { M01Experience } from '@/components/addie/lesson/v2/M01Experience';
 import { LessonCoachDrawer } from '@/components/addie/lesson/v2/LessonCoachDrawer';
 import { hasAnyFoundationEntitlement } from '@/lib/addie/entitlements/check';
 import type {
@@ -352,6 +353,19 @@ export default async function LessonPage({
 
   const bodyForToc = payload.variant?.body_md ?? payload.lesson.body_md ?? '';
   const headings = extractHeadings(bodyForToc);
+
+  // m0.1 — onboarding shell (not a lesson page). Per 2026-05-24 critique:
+  // the first screen sells "why I'm here," not "what lesson am I in."
+  if (payload.lesson.id === 'm0.1') {
+    return (
+      <div className="min-h-screen pb-32">
+        <M01Experience
+          initialTrack={payload.activeTrack ?? null}
+          nextHref="/foundation/m0/m0.2"
+        />
+      </div>
+    );
+  }
 
   // v2 lesson shell — currently opt-in per lesson. m0.2 is the first
   // migration; future lessons add themselves here as the v2 shell rolls out.
