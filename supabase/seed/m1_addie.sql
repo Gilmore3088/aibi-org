@@ -586,7 +586,9 @@ ON CONFLICT (id) DO UPDATE
       published             = EXCLUDED.published;
 
 ----------------------------------------------------------------------
--- 4. Phase 1 Guided Lesson Shell — opt m1.1 into LessonStepShell
---    (2026-05-25). See migration 00073 + LessonStepPlayer.
+-- 4. Phase 1 Guided Lesson Shell — opt all four M1 lessons into
+--    LessonStepShell (2026-05-25). See migration 00073 +
+--    LessonStepPlayer. m1.1 flipped in PR2 (dfaae29); m1.2 / m1.3 / m1.4
+--    added in PR3 of the Phase 1 Foundation UX recovery.
 ----------------------------------------------------------------------
-UPDATE addie.lessons SET shell_kind = 'step' WHERE id = 'm1.1';
+UPDATE addie.lessons SET shell_kind = 'step' WHERE id IN ('m1.1', 'm1.2', 'm1.3', 'm1.4');
