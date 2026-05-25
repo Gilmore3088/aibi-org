@@ -592,3 +592,41 @@ ON CONFLICT (id) DO UPDATE
 --    added in PR3 of the Phase 1 Foundation UX recovery.
 ----------------------------------------------------------------------
 UPDATE addie.lessons SET shell_kind = 'step' WHERE id IN ('m1.1', 'm1.2', 'm1.3', 'm1.4');
+
+----------------------------------------------------------------------
+-- Phase 3 PR23 — Leadership-track variant for m1.1 (2026-05-25)
+-- CEO Bill Hagedorn: leadership track is 5/24 branched, needs 10/24
+-- to read as a real track and not "grace notes."
+----------------------------------------------------------------------
+INSERT INTO addie.lesson_track_variants (lesson_id, track, body_md, media_ref)
+VALUES (
+  'm1.1',
+  'leadership',
+  $VAR$## What it actually is — for the room that decides
+
+You already know what a model is — your CIO told you, your CRO told you, three vendor reps told you, and they all said something slightly different. Here is the version that survives the board meeting.
+
+**A model is a predictive token engine.** Pattern-completion at scale. Not knowing. Not believing. Just producing the next most-plausible chunk of text given everything it has seen before.
+
+Three properties to memorise — these are the lines you can say aloud at a board meeting and have them land:
+
+1. **Training cutoff.** The model was trained on text up to a specific date. Anything after — a rate change announced last Tuesday, an [[Gloss:OCC]] bulletin from this morning, your bank's last earnings — it does not know unless you put it in the prompt.
+
+2. **No live knowledge of your institution.** It cannot check a balance. It cannot read a member file. It cannot see today's prime rate. You bring the fact to the model. The model does not go get it.
+
+3. **Hallucination is a property, not a bug.** When the model has no answer it produces the most plausible one anyway. Confident. Fluent. Sometimes wrong. The verification habit lives with you, the reader.
+
+### Why these three matter at your level
+
+The three properties are the entire frame for your AI strategy. **(1)** decides what you bring into the prompt and what stays outside (your bank's [[Gloss:MNPI]] policy). **(2)** decides what classes of use case are feasible (anything that needs live data needs an integration, not just a prompt). **(3)** decides what kind of governance you need (a verification step on every output, with named approvers for outputs that leave the institution — see [[Gloss:SR 11-7]]).
+
+When the next vendor walks in claiming their "AI agent" knows your loan portfolio in real time, the answer is one of: (a) it has an integration into your core; or (b) they are conflating "trained on banking text" with "knows your bank." Almost always (b).
+
+> [tip] Memorise the three properties. They are the version of "AI literacy" that survives a board chair's eye-roll.
+$VAR$,
+  NULL
+)
+ON CONFLICT (lesson_id, track) DO UPDATE SET body_md = EXCLUDED.body_md;
+
+-- m1.1 is_branched flip so loadPayload() actually looks up the variant
+UPDATE addie.lessons SET is_branched = true WHERE id = 'm1.1';

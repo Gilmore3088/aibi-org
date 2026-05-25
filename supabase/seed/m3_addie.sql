@@ -1116,3 +1116,65 @@ INSERT INTO addie.knowledge_checks (id, lesson_id, ordinal, prompt, options) VAL
  ]'::jsonb)
 ON CONFLICT (id) DO UPDATE
 SET prompt = EXCLUDED.prompt, options = EXCLUDED.options;
+
+----------------------------------------------------------------------
+-- Phase 3 PR23 — leadership-track variants on m3.1 + m3.4 (2026-05-25)
+-- CEO Bill Hagedorn target: 10/24 branched lessons. Adds two more.
+----------------------------------------------------------------------
+INSERT INTO addie.lesson_track_variants (lesson_id, track, body_md, media_ref)
+VALUES (
+  'm3.1',
+  'leadership',
+  $VAR$## The default brief — for the room that decides
+
+You will reach for this shape nine times out of ten. The four parts — **Role · Task · Context · Format** — are also the four questions to ask the next vendor who pitches you an "AI agent" that will "just figure it out."
+
+### The leadership variant of each part
+
+**Role.** Most CEO prompts begin with "You are a Chief of Staff," not "You are a compliance analyst." That single word changes the model's audience-tuning more than any other lever. For a board memo, "You are a Chief Risk Officer briefing a board chair who is a retired ag-bank president" lands sharper than "You are an AI assistant."
+
+**Task.** Always observable + measurable. "Summarize" is fine. "Argue against the SS&C proposal in three sentences a $400M-bank board chair would find rigorous" is sharper. The narrower the task, the more useful the output.
+
+**Context.** Public material only — read CLAUDE.md on [[Gloss:MNPI]]. For leadership work that means: yes to a competitor's published earnings, no to your own pre-release; yes to a public regulator letter, no to your last exam's MRA language; yes to the AIEOG Lexicon definitions, no to your acquisition target's data room.
+
+**Format.** "One page" is a length cap; that's good. Better: "One page, three sections (Situation / Decision / Risk), close with one question I should ask the board." Tells the model the *shape of the conversation* you are about to have.
+
+### The vendor-pitch version of the same brief
+
+When the next core vendor pitches an "AI agent" for loan decisions, your interview is the same four parts:
+- Role — who has the agent been told it is, and is that role appropriate for member-facing work?
+- Task — is the task observable, or is it "approve loans" with hand-waves?
+- Context — what data does the agent see, and how does it leave your environment?
+- Format — what does the agent produce, who reviews it, and where does the override land?
+
+If any of the four answers is a hand-wave, the agent is not ready for your bank.
+$VAR$,
+  NULL
+),
+(
+  'm3.4',
+  'leadership',
+  $VAR$## Banking no-nos — the version the AI risk committee runs
+
+The twelve violation scenarios are good for any seat. Your seat reads them differently. As a CEO, the question on each scenario is not "would I catch this" — it's "would my staff catch this, and what is my evidence."
+
+### Three categories that matter most at your level
+
+**1. [[Gloss:MNPI]] in vendor pipelines.** Scenarios 10 (pre-release earnings) and 7 (cardholder lists for campaign targeting) are the ones that disclose to a board. Most banks have data-discipline policies that name PII but quietly omit MNPI. The fix is a one-line addition: "MNPI may not enter any AI tool, approved or otherwise, until public release."
+
+**2. Supervisory content in unsanctioned tooling.** Scenario 3 (SAR narrative drafting in ChatGPT) and the implicit case behind several others — exam findings, examiner correspondence, MRA / MRIA language — are statutory. Your CCO knows. Your front-line staff need to be told.
+
+**3. Vendor-onboarding-bypass on prototypes.** Scenario 5 (production logs into ChatGPT) and scenario 12's footnote (a "free" prototype tool used with institution data) are the same failure mode: someone built a prototype on a vendor your TPRM function never diligenced. The fix is a written rule: any new AI tool used with bank-internal information needs vendor onboarding before first paste — and the onboarding can be lightweight, but it must exist.
+
+### Take this lesson into your next AI risk committee
+
+The twelve scenarios are a ready-made agenda. Each one resolves to a one-line written control. Twelve controls written this quarter is a defensible governance posture.
+
+> [tip] Make the M3.4 drill a quarterly stand-up. New staff take it on hire. Senior staff retake it annually. The Toolbox keeps the results.
+$VAR$,
+  NULL
+)
+ON CONFLICT (lesson_id, track) DO UPDATE SET body_md = EXCLUDED.body_md;
+
+-- Flip m3.1 and m3.4 to is_branched so loadPayload looks up the variants
+UPDATE addie.lessons SET is_branched = true WHERE id IN ('m3.1', 'm3.4');

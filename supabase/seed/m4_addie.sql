@@ -792,3 +792,45 @@ SET
   transfer_md           = EXCLUDED.transfer_md,
   shell_kind            = EXCLUDED.shell_kind,
   published             = EXCLUDED.published;
+
+----------------------------------------------------------------------
+-- Phase 3 PR23 — leadership-track variant on m4.4 (2026-05-25)
+-- CEO Bill Hagedorn target: 10/24 branched lessons (4th of 4 added).
+----------------------------------------------------------------------
+INSERT INTO addie.lesson_track_variants (lesson_id, track, body_md, media_ref)
+VALUES (
+  'm4.4',
+  'leadership',
+  $VAR$## Test, refine, governance overlay — for the room that decides
+
+The standard m4.4 walks you through a four-question guardrail check on a saved Pack. The leadership version of the same lesson adds one more move on top: deciding whether the Pack you just built is **personal sandbox** or **named-task production**, and what that decision implies for your institution.
+
+### The two-state question
+
+Every Pack lives in one of two states:
+
+- **personal sandbox** — the Pack runs on synthetic inputs only, in your own workbench, for your own thinking. No member-facing outputs. No board-facing outputs. No recurring use against rule text. The governance overlay is light: data discipline, M3.4 violation rules, the four-question guardrail check.
+
+- **named-task production** — the Pack will run recurrently on real institution material to produce outputs that leave the learner's desktop. Under any reasonable reading of [[Gloss:SR 11-7]], that Pack is a model. It needs an approver named, a validation record written, a use boundary documented, and an inventory entry in your model risk function. The Pack carries the governance fields (version, approver, useBoundary, validationNotes) specifically so this transition is documented and re-openable.
+
+### What the CEO does with this
+
+For each Pack your team saves in M4, the CEO's question is:
+1. Is this Pack in personal sandbox or named-task production?
+2. If production: who is the approver, and what is the validation record?
+3. If the answer to (2) is "the learner saved it on their laptop," the Pack is not in production — it is shadow IT, and it needs to be either lifted into your model risk function or pulled back to sandbox use.
+
+This is the conversation that turns the M4 deliverable from "18 staff each have a Toolbox" into "we have a written AI model inventory" — which is the conversation your next examiner is going to want to have.
+
+### The governance fieldset is the artifact
+
+The four governance fields on every Pack (version, approver, use boundary, validation notes) are the artifact a CCO can hand to an examiner. They're small. They're written. They survive personnel turnover. They are exactly the documentation [[Gloss:SR 11-7]] expects.
+
+> [tip] Make the governance fieldset on the WorkbenchPackBuilder a quarterly review. Every Pack flipped to "named-task production" gets a fifteen-minute conversation between the learner who owns it and your model risk lead.
+$VAR$,
+  NULL
+)
+ON CONFLICT (lesson_id, track) DO UPDATE SET body_md = EXCLUDED.body_md;
+
+-- Flip m4.4 to is_branched
+UPDATE addie.lessons SET is_branched = true WHERE id = 'm4.4';
