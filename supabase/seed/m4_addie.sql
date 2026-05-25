@@ -699,3 +699,96 @@ UPDATE addie.lessons
 SET takeaway_artifact_type = 'workbench_pack',
     shell_kind             = 'step'
 WHERE id IN ('m4.1', 'm4.2', 'm4.3', 'm4.4');
+
+----------------------------------------------------------------------
+-- Phase 3 PR21 — m4.5 "What can go wrong, by department" (2026-05-25)
+--
+-- CEO Bill Hagedorn's 2026-05-24 single-most-valuable-add request:
+-- the worst-case-scenarios walkthrough that explicitly names the
+-- failure modes that put a community bank in an MRA. Lives as a new
+-- M4 lesson (ordinal 5) — after the M4 Pack-building arc, before M5
+-- — so a learner who paid for the M4+M5 entitlement walks through it
+-- with a Pack in hand to anchor the abstract risks to a real artifact.
+----------------------------------------------------------------------
+
+INSERT INTO addie.lessons (
+  id, module_id, ordinal, title, modality, duration_min,
+  is_branched, exercise_id, takeaway_artifact_type, body_md,
+  objective_md, transfer_md, published, shell_kind
+)
+VALUES (
+  'm4.5',
+  'm4',
+  5,
+  'What can go wrong, by department',
+  'reading',
+  18,
+  false,
+  NULL,
+  NULL,
+  $LESSON$
+Every AI failure in a bank lives in one of five departments. Naming the worst-case scenario in each one — concretely, with named regulations and named failure modes — is the difference between "AI risk" as a vague worry and "AI risk" as a board memo.
+
+## SCRIPT (verbatim)
+
+> [stat] 5 | Five worst-case scenarios | Lending · Compliance · Operations · Marketing · Leadership. Each one names a specific failure mode that has landed real community banks in real supervisory trouble.
+
+This lesson is the one CEO Bill Hagedorn asked for after walking the 2026-05-24 review: "the single most valuable lesson you could add for me." Use it as the prompt for your bank's own AI risk-committee stand-up — name your version of each scenario, then write the control.
+
+### 1 · Lending — hallucinated reg cites in adverse-action letters
+
+> [case:bad] A junior loan officer pastes a denial summary into a consumer LLM and asks for a "ECOA-compliant adverse action letter." The model produces a clean letter that cites [[Gloss:ECOA / Reg B]] §1002.9(b)(2) — a real section — and quotes language that sounds plausibly like the rule but is not the rule. The officer sends the letter.
+> [outcome] The member calls a legal-aid clinic. Six months later, the bank is in fair-lending crosshairs because the citation is wrong AND the reason given was not the actual decisioning reason. The MRA writes itself.
+
+The fix is not "don't use AI" — the fix is the four-question guardrail check (M4.4) on every adverse-action letter draft, with the actual reg text loaded as the [[Gloss:Reg E]] / [[Gloss:ECOA / Reg B]] context AND a human reviewer who reads the cite back against the source. The Pack carries that workflow.
+
+### 2 · Compliance — disparate-impact risk in loan-decision drafting
+
+> [case:bad] A bank's risk team builds a "Skill" that scores loan applications using public underwriting patterns. The Skill runs against 800 applications in a quarter. Nobody validates the score against protected-class outcomes. Six months later an exam pulls fair-lending statistics and the bank's CCO can't explain why the approval rate for one demographic dropped 9 percentage points.
+> [outcome] The Skill is, under any reasonable reading of [[Gloss:SR 11-7]], a model. Unvalidated. The fact that it was "just a saved prompt" does not survive the supervisory interview.
+
+This is exactly the M4.4 governance-metadata case (use_boundary = "named-task production") that the Workbench Pack's approver + validation_notes fields exist for. A Pack run recurrently against credit decisions needs a named approver from the model risk function and a documented validation record before it leaves a learner's desktop.
+
+### 3 · Operations — third-party-risk angle on consumer LLMs
+
+> [case:bad] An ops manager builds a prototype in a vendor's web IDE to triage hold-resolution requests faster. The prototype includes a PRD that names the bank's internal workflow, the team that owns it, and three recurring pain points. The PRD is pasted into the vendor tool. Six months later that vendor's terms-of-service get audited and the bank learns the prototype inputs were retained for "service improvement."
+> [outcome] The prompt was "anonymous" but the institutional context — the bank's workflow design — was not. That is now a vendor's training data. The Interagency TPRM Guidance (Jun 2023) and OCC Bulletin 2023-17 apply to every consumer LLM the bank's staff touches with institution-derived material.
+
+The fix: any prototype tool used with institution-derived material needs the same vendor-onboarding diligence as a core-banking vendor. M5.4's "blast radius matrix" is the foreground tool; this is the consequence if the matrix is skipped.
+
+### 4 · Marketing — MNPI exposure on pre-release product launches
+
+> [case:bad] A marketing analyst asks a consumer AI tool to draft launch copy for a fee product that has not been publicly announced. The data-discipline rule (M0.2) is followed — no member data, no PII. But the product name, the launch date, the differentiator language, and the targeting strategy are all in the prompt. That is [[Gloss:MNPI]] in a vendor's pipeline.
+> [outcome] The launch leaks via a competitor's adjacent training data exposure. The bank's M&A advisor calls. The CCO can't reconstruct who in the org leaked it because everyone was "following the AI policy."
+
+The fix is the MNPI half of the data-discipline rule (M3.4): public material that the bank intends to keep private until release is MNPI until that release happens. The Pack's use_boundary = "personal sandbox" flag covers this — a Pack that touches pre-release material does not leave the sandbox.
+
+### 5 · Leadership — vendor-pitch credulity
+
+> [case:bad] A core vendor pitches an "AI agent" that will "automate the loan approval workflow end-to-end." The CEO is intrigued. The demo is slick. The agent's failure mode — when step 3 of the loop returns a plausibly wrong result — is hand-waved. The bank buys.
+> [outcome] Twelve months later the bank has a vendor relationship for a tool that produces auditable decisions only when the vendor's prompts hold, and the bank's model risk function inherited a model they did not write, can not inspect, and can not validate.
+
+The fix is the M5.1 question every CEO should ask the next three vendor reps that walk in: "Show me what happens at step 3 if the model returns a plausibly wrong result. Where is the review point? Who owns the override?" If the answer is a hand-wave, walk.
+
+## Closing
+
+The five scenarios above are not hypothetical. Each one maps to a real supervisory finding pattern from 2023–2025 — public regulator commentary names the shapes, even when individual banks are not named. Your CRO knows these. Your CCO knows these. The point of this lesson is so that you, as the CEO buying 18 seats for your staff, can name them too.
+
+> [tip] Take this lesson into your next AI risk committee meeting. The five scenarios are the agenda.
+$LESSON$,
+  'Name each department''s worst-case AI failure mode in one sentence, with the named regulation it implicates, sufficient to brief a board chair or examiner unprompted.',
+  'Bring this lesson into your next AI risk-committee meeting and use the five scenarios as the agenda — one named owner per scenario, one written control per scenario, by quarter-end.',
+  true,
+  'step'
+)
+ON CONFLICT (id) DO UPDATE
+SET
+  ordinal               = EXCLUDED.ordinal,
+  title                 = EXCLUDED.title,
+  modality              = EXCLUDED.modality,
+  duration_min          = EXCLUDED.duration_min,
+  body_md               = EXCLUDED.body_md,
+  objective_md          = EXCLUDED.objective_md,
+  transfer_md           = EXCLUDED.transfer_md,
+  shell_kind            = EXCLUDED.shell_kind,
+  published             = EXCLUDED.published;
