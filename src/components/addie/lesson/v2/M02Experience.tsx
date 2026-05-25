@@ -218,10 +218,11 @@ export function M02Experience({
               What you learned
             </div>
             <ul className="space-y-1.5 font-serif text-[0.95rem] text-[var(--ledger-ink-2)]">
-              <li>✓ The one rule — what never goes into AI</li>
-              <li>✓ How to strip identifiers</li>
-              <li>✓ How to describe the situation, not the person</li>
-              <li>✓ How to sort safe / review / off-limits examples for {trackLabel}</li>
+              <li>✓ Identify customer / member / account data</li>
+              <li>✓ Strip identifying details from a prompt</li>
+              <li>✓ Keep the situation while removing the person</li>
+              <li>✓ Sort examples into Allowed / Needs Review / Off-Limits</li>
+              <li>✓ Use the Data Discipline Card when unsure</li>
             </ul>
           </article>
 

@@ -68,6 +68,9 @@ export function DataDisciplineCardArtifact({
             <div className="font-mono uppercase tracking-[0.16em] text-[0.6rem] text-[var(--ledger-muted)] mb-2">
               The pattern
             </div>
+            <p className="font-mono text-[0.85rem] text-[var(--ledger-ink-2)] mb-3">
+              Real detail → safe situation → AI prompt
+            </p>
             <ol className="space-y-1.5 font-serif text-[0.95rem] text-[var(--ledger-ink-2)]">
               <li>1. <strong className="font-semibold text-[var(--ledger-ink)]">Strip</strong> names, account numbers, SSNs, balances, real loan details.</li>
               <li>2. <strong className="font-semibold text-[var(--ledger-ink)]">Generalize</strong> to "a customer", "an account", "an unsecured loan".</li>
@@ -77,12 +80,64 @@ export function DataDisciplineCardArtifact({
 
           <section>
             <div className="font-mono uppercase tracking-[0.16em] text-[0.6rem] text-[var(--ledger-muted)] mb-2">
+              Examples
+            </div>
+            <ul className="space-y-1 font-mono text-[0.8rem] text-[var(--ledger-ink-2)]">
+              <li>Customer name → [customer]</li>
+              <li>Account number → [account identifier removed]</li>
+              <li>Loan file → [loan file, no borrower details]</li>
+              <li>Complaint → [anonymized service scenario]</li>
+              <li>Dollar amount tied to a real account → [generalized amount or remove]</li>
+            </ul>
+          </section>
+
+          <section className="grid sm:grid-cols-3 gap-4">
+            <div>
+              <div className="font-mono uppercase tracking-[0.16em] text-[0.6rem] text-[var(--ledger-accent-2)] mb-1.5">
+                Allowed
+              </div>
+              <ul className="space-y-1 font-serif text-[0.85rem] text-[var(--ledger-ink-2)]">
+                <li>Public information</li>
+                <li>Made-up examples</li>
+                <li>Training examples</li>
+                <li>Fully anonymized situations</li>
+              </ul>
+            </div>
+            <div>
+              <div className="font-mono uppercase tracking-[0.16em] text-[0.6rem] text-[var(--ledger-accent)] mb-1.5">
+                Needs Review
+              </div>
+              <ul className="space-y-1 font-serif text-[0.85rem] text-[var(--ledger-ink-2)]">
+                <li>Internal reports</li>
+                <li>Meeting notes</li>
+                <li>Internal procedures</li>
+                <li>Redacted sensitive narratives</li>
+                <li>Anything confidential even without customer names</li>
+              </ul>
+            </div>
+            <div>
+              <div className="font-mono uppercase tracking-[0.16em] text-[0.6rem] text-[var(--ledger-weak)] mb-1.5">
+                Keep Out
+              </div>
+              <ul className="space-y-1 font-serif text-[0.85rem] text-[var(--ledger-ink-2)]">
+                <li>Names tied to accounts</li>
+                <li>Account numbers</li>
+                <li>Card numbers</li>
+                <li>SSNs / tax IDs</li>
+                <li>Customer financials</li>
+                <li>Confidential non-public bank information</li>
+              </ul>
+            </div>
+          </section>
+
+          <section>
+            <div className="font-mono uppercase tracking-[0.16em] text-[0.6rem] text-[var(--ledger-muted)] mb-2">
               Off-limits in your world · {trackLabel}
             </div>
             <ul className="space-y-1 font-serif text-[0.95rem] text-[var(--ledger-ink-2)]">
               {trackOffLimits.map((item, i) => (
                 <li key={i} className="flex gap-2">
-                  <span className="text-[var(--ledger-weak)] shrink-0">×</span>
+                  <span className="text-[var(--ledger-weak)] shrink-0" aria-hidden>×</span>
                   <span>{item}</span>
                 </li>
               ))}
@@ -94,7 +149,7 @@ export function DataDisciplineCardArtifact({
               When in doubt
             </div>
             <p className="font-serif text-[0.95rem] leading-snug text-[var(--ledger-ink)]">
-              Redact more or don&apos;t paste. The help is almost always available from the anonymized version.
+              Redact more, use approved tools, or ask your manager / compliance team.
             </p>
           </section>
         </div>
