@@ -584,3 +584,9 @@ ON CONFLICT (id) DO UPDATE
       gating                = EXCLUDED.gating,
       entitlement           = EXCLUDED.entitlement,
       published             = EXCLUDED.published;
+
+----------------------------------------------------------------------
+-- 4. Phase 1 Guided Lesson Shell — opt m1.1 into LessonStepShell
+--    (2026-05-25). See migration 00073 + LessonStepPlayer.
+----------------------------------------------------------------------
+UPDATE addie.lessons SET shell_kind = 'step' WHERE id = 'm1.1';

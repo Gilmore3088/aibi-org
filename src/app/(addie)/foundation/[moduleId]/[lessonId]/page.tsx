@@ -8,6 +8,14 @@ import { createServerClient } from '@supabase/ssr';
 import { getAddieServiceClient } from '@/lib/addie/supabase/service';
 import Link from 'next/link';
 import { LessonPlayer } from '@/components/addie/lesson/LessonPlayer';
+import { LessonStepPlayer } from '@/components/addie/lesson/LessonStepPlayer';
+import { ModalityView } from '@/components/addie/lesson/ModalityView';
+import { LessonObjectiveBeat } from '@/components/addie/lesson/LessonObjectiveBeat';
+import { LessonTransferBeat } from '@/components/addie/lesson/LessonTransferBeat';
+import { NextLessonCTA } from '@/components/addie/lesson/NextLessonCTA';
+import { EmbeddedExercise } from '@/components/addie/lesson/EmbeddedExercise';
+import { KnowledgeCheck } from '@/components/addie/lesson/KnowledgeCheck';
+import { SaveTakeawayCTA } from '@/components/addie/lesson/SaveTakeawayCTA';
 import { CourseSidebar } from '@/components/addie/shell/CourseSidebar';
 import { PaywallPreview } from '@/components/addie/lesson/PaywallPreview';
 import { LessonTOC } from '@/components/addie/lesson/LessonTOC';
@@ -388,6 +396,59 @@ export default async function LessonPage({
             Hybrid free-text route deferred (next-up ticket). */}
         <LessonCoachDrawer />
         {/* Generic tutor remains available across other lesson shells. */}
+        <LessonTutor lessonId={params.lessonId} />
+      </div>
+    );
+  }
+
+  // Phase 1 Guided Lesson Shell (2026-05-25). Opt-in per lesson via
+  // addie.lessons.shell_kind = 'step'. M0.1 + M0.2 branch on lesson_id
+  // above and ignore this column. Everything else falls through to
+  // LessonPlayer (legacy long-scroll) unless flipped to 'step' here.
+  if (payload.lesson.shell_kind === 'step') {
+    const nextHref = payload.siblings?.next
+      ? `/foundation/${payload.siblings.next.moduleId}/${payload.siblings.next.id}`
+      : null;
+    const crossesModule = payload.siblings?.next?.moduleId !== payload.module.id;
+    const embedExercise =
+      !!payload.interactiveExercise &&
+      payload.lesson.modality !== 'interactive' &&
+      payload.lesson.modality !== 'worksheet';
+
+    return (
+      <div className="min-h-screen pb-32">
+        <LessonStepPlayer
+          payload={payload}
+          objectiveNode={
+            payload.lesson.objective_md ? (
+              <LessonObjectiveBeat objective={payload.lesson.objective_md} />
+            ) : undefined
+          }
+          modalityNode={<ModalityView payload={payload} />}
+          exerciseNode={embedExercise ? <EmbeddedExercise payload={payload} /> : undefined}
+          knowledgeCheckNode={<KnowledgeCheck checks={payload.checks} />}
+          saveTakeawayNode={
+            <SaveTakeawayCTA
+              lessonId={payload.lesson.id}
+              artifactType={payload.lesson.takeaway_artifact_type}
+              moduleTier={payload.module.tier}
+            />
+          }
+          transferNode={
+            payload.lesson.transfer_md ? (
+              <LessonTransferBeat transfer={payload.lesson.transfer_md} />
+            ) : undefined
+          }
+          nextCTANode={
+            <NextLessonCTA
+              nextHref={nextHref}
+              nextLabel={payload.siblings?.next?.title}
+              nextCrossesModule={crossesModule}
+              endOfCourse={!payload.siblings?.next}
+              gateNext={payload.gateNext ?? false}
+            />
+          }
+        />
         <LessonTutor lessonId={params.lessonId} />
       </div>
     );

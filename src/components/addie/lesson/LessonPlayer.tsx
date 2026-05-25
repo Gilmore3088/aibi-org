@@ -8,13 +8,7 @@
 import { LessonShellHeader } from './LessonShellHeader';
 import { LessonObjectiveBeat } from './LessonObjectiveBeat';
 import { LessonTransferBeat } from './LessonTransferBeat';
-import { ReadingLessonView } from './ReadingLessonView';
-import { VideoLessonView } from './VideoLessonView';
-import { AudioLessonView } from './AudioLessonView';
-import { WorksheetLessonView } from './WorksheetLessonView';
-import { InteractiveLessonView } from './InteractiveLessonView';
-import { SandboxLessonView } from './SandboxLessonView';
-import { SandboxABLessonView } from './SandboxABLessonView';
+import { ModalityView } from './ModalityView';
 import { KnowledgeCheck } from './KnowledgeCheck';
 import { NextLessonCTA } from './NextLessonCTA';
 import { EmbeddedExercise } from './EmbeddedExercise';
@@ -97,35 +91,3 @@ export function LessonPlayer({
   );
 }
 
-function ModalityView({
-  payload,
-  preferAb,
-}: {
-  readonly payload: LessonPayload;
-  readonly preferAb: boolean;
-}) {
-  switch (payload.lesson.modality) {
-    case 'reading':
-      return <ReadingLessonView payload={payload} />;
-    case 'video':
-      return <VideoLessonView payload={payload} />;
-    case 'audio':
-      return <AudioLessonView payload={payload} />;
-    case 'worksheet':
-      return <WorksheetLessonView payload={payload} />;
-    case 'interactive':
-      return <InteractiveLessonView payload={payload} />;
-    case 'sandbox':
-      return preferAb ? (
-        <SandboxABLessonView payload={payload} />
-      ) : (
-        <SandboxLessonView payload={payload} />
-      );
-    default:
-      return (
-        <p className="text-[var(--ledger-muted)]">
-          Unsupported modality: {payload.lesson.modality}
-        </p>
-      );
-  }
-}
