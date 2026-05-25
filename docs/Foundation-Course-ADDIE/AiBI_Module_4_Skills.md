@@ -1,15 +1,37 @@
 # Module 4 — Automating the repetitive: skills *(detailed curriculum)*
-### AiBI Foundation Course · "We turn your bankers into your builders."
+### AiBI Foundation Course · "Turning Bankers into Builders."
+
+> **⚠ 2026-05-25 — Curriculum pivot in flight.** Per the
+> [recovery plan](../../Plans/aibi-foundations-ux-recovery-2026-05-25.md)
+> Decision #2 + DECISIONS.md 2026-05-25 entry, M4's primary paid
+> artifact changes from the "Skill / Skill Template / Verified Skill"
+> set documented below to a single composite **Workbench Pack**.
+> The Pack shape is:
+> `source_packet · prompt_used · first_output · review_tags ·
+> improved_output · questions_to_confirm · final_work_product` +
+> governance metadata (`version · approver · use_boundary ·
+> validation_notes`). See
+> [`src/lib/addie/artifacts/workbench-pack.ts`](../../src/lib/addie/artifacts/workbench-pack.ts)
+> for the canonical type, and
+> [`src/components/addie/interactives/m4/WorkbenchPackBuilder.tsx`](../../src/components/addie/interactives/m4/WorkbenchPackBuilder.tsx)
+> for the builder component.
+>
+> The curriculum body below still describes the **prior Skill arc**
+> — kept for historical reference until the Pack-based lesson
+> re-author lands (recovery plan Phase 2 step E5). Read it as
+> background, not as the spec for new work.
 
 | | |
 |---|---|
 | **Tier** | Paid (first paid module — entry through the post-M3 gate) |
 | **Lessons** | 4 (1 video · 3 interactive · 1 branched ×5 tracks) |
 | **Total runtime** | ~52 min |
-| **Sandbox** | Reuses the controlled sandbox from M2/M3; the Skill Builder writes to it |
-| **Module takeaways** | **Skill Template** (4.2) · **Working Skill** for your role (4.3) · **Verified Skill** with guardrail notes (4.4) |
+| **Sandbox** | Reuses the controlled sandbox from M2/M3; the WorkbenchPackBuilder writes to it |
+| **Module takeaways (Phase 2 target)** | One **Workbench Pack** per lab. Replaces the prior Skill Template / Working Skill / Verified Skill artifact-set. |
+| **Module takeaways (legacy spec, still seeded today)** | **Skill Template** (4.2) · **Working Skill** for your role (4.3) · **Verified Skill** with guardrail notes (4.4) — see the historical body below |
 | **Entitlement effects on entering M4** | The Module-3 gate purchase unlocks: **(1) the full Prompt Library**, **(2) unlimited Toolbox saves** (the free 4-artifact cap lifts), and **(3) every paid module** (M4 + M5). Surfaced once on lesson 4.1 open. |
-| **Module objective** | The learner can convert a prompt from their Starter Pack into a parameterised, named, versioned Skill that runs on new material in 30 seconds — and can defend the guardrails attached to it. |
+| **Module objective (Phase 2 target)** | The learner can take a synthetic banking source through the seven Pack regions on the workbench, save the composite Pack with governance metadata attached, and export it as plain markdown to use outside the Toolbox in their bank's sanctioned AI tool. |
+| **Module objective (legacy spec)** | The learner can convert a prompt from their Starter Pack into a parameterised, named, versioned Skill that runs on new material in 30 seconds — and can defend the guardrails attached to it. |
 
 **How to read this spec.** Same rail as M0: every lesson is **Hook → Teach → Do → Take → Check**, with **SCRIPT (verbatim)** and **PRODUCTION** layers. Lesson 4.3 is branched ×5 tracks; track variants live in `addie.lesson_track_variants` (seeded in `supabase/seed/m4_addie.sql`).
 
