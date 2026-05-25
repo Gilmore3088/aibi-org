@@ -1,0 +1,747 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Foundation Course — Five-Persona Critique Synthesis · 2026-05-24</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:wght@400;500;600;700&family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ledger-bg: #ECE9DF;
+    --ledger-paper: #F4F1E7;
+    --ledger-parch: #E4E0D2;
+    --ledger-tape: #F1E9D0;
+    --ledger-ink: #0E1B2D;
+    --ledger-ink-2: #1F2A3F;
+    --ledger-muted: #4F5C6E;
+    --ledger-soft: #8C95A8;
+    --ledger-accent: #7C5814;
+    --ledger-accent-soft: #C9A961;
+    --ledger-accent-2: #1E3A5F;
+    --ledger-weak: #8E3B2A;
+    --ledger-rule: #D5D1C2;
+    --ledger-rule-strong: #A8AEBE;
+  }
+  * { box-sizing: border-box; font-style: normal !important; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--ledger-bg);
+    color: var(--ledger-ink);
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.55;
+    padding: 48px 24px 96px;
+  }
+  .page { max-width: 1080px; margin: 0 auto; }
+  .mono {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 11px;
+    color: var(--ledger-muted);
+    font-feature-settings: "tnum";
+  }
+  .mono.accent { color: var(--ledger-accent); }
+  .mono.weak { color: var(--ledger-weak); }
+  .mono.ink { color: var(--ledger-ink); }
+  h1 {
+    font-family: 'Newsreader', Georgia, serif;
+    font-size: 44px;
+    line-height: 1.05;
+    font-weight: 600;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+  }
+  h2 {
+    font-family: 'Newsreader', Georgia, serif;
+    font-size: 26px;
+    font-weight: 600;
+    margin: 56px 0 18px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--ledger-rule);
+  }
+  h3 {
+    font-family: 'Newsreader', Georgia, serif;
+    font-size: 18px;
+    font-weight: 600;
+    margin: 28px 0 10px;
+    color: var(--ledger-ink);
+  }
+  p { margin: 0 0 12px; }
+  p.lede {
+    font-family: 'Newsreader', Georgia, serif;
+    font-size: 19px;
+    line-height: 1.5;
+    color: var(--ledger-ink-2);
+    max-width: 64ch;
+  }
+  hr.rule { border: 0; border-top: 1px solid var(--ledger-rule); margin: 32px 0; }
+  hr.rule-strong { border: 0; border-top: 1px solid var(--ledger-rule-strong); margin: 32px 0; }
+
+  /* Masthead */
+  .masthead {
+    border-top: 2px solid var(--ledger-ink);
+    border-bottom: 1px solid var(--ledger-rule-strong);
+    padding: 16px 0 14px;
+    margin-bottom: 28px;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .masthead .left { font-family: 'Geist', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; font-size: 12px; }
+  .masthead .left .line-2 { color: var(--ledger-soft); }
+  .masthead .right { text-align: right; }
+
+  /* Reviewer cards */
+  .reviewers {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 14px;
+    margin: 18px 0 8px;
+  }
+  .reviewer {
+    background: var(--ledger-paper);
+    border: 1px solid var(--ledger-rule);
+    border-radius: 3px;
+    padding: 14px 14px 12px;
+  }
+  .reviewer .name {
+    font-family: 'Newsreader', serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--ledger-ink);
+    margin-bottom: 2px;
+  }
+  .reviewer .role { font-size: 13px; color: var(--ledger-ink-2); margin-bottom: 8px; line-height: 1.35; }
+  .reviewer .track { display: inline-block; margin-top: 4px; padding: 1px 6px; background: var(--ledger-parch); border: 1px solid var(--ledger-rule); border-radius: 2px; color: var(--ledger-accent); }
+
+  /* Backlog table */
+  table.backlog {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0 8px;
+    font-size: 14px;
+  }
+  table.backlog th, table.backlog td {
+    border-bottom: 1px solid var(--ledger-rule);
+    padding: 12px 10px;
+    text-align: left;
+    vertical-align: top;
+  }
+  table.backlog th {
+    background: var(--ledger-parch);
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 10px;
+    color: var(--ledger-muted);
+    font-weight: 600;
+    border-bottom: 1px solid var(--ledger-rule-strong);
+  }
+  table.backlog td.id { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--ledger-accent); white-space: nowrap; font-weight: 600; }
+  table.backlog td.sev-h { color: var(--ledger-weak); font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.14em; font-size: 11px; font-weight: 600; white-space: nowrap; }
+  table.backlog td.sev-m { color: var(--ledger-accent); font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.14em; font-size: 11px; font-weight: 600; white-space: nowrap; }
+  table.backlog td.sev-l { color: var(--ledger-muted); font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.14em; font-size: 11px; font-weight: 600; white-space: nowrap; }
+  table.backlog td.flags { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ledger-muted); white-space: nowrap; letter-spacing: 0.08em; }
+  table.backlog td.title { color: var(--ledger-ink); }
+  table.backlog td.title strong { font-weight: 600; }
+  table.backlog td.title .lessons { display: block; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ledger-muted); margin-top: 4px; letter-spacing: 0.04em; }
+  table.backlog tr:hover td { background: var(--ledger-paper); }
+
+  /* Verdict matrix */
+  table.matrix {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  table.matrix th, table.matrix td {
+    border-bottom: 1px solid var(--ledger-rule);
+    padding: 11px 10px;
+    text-align: left;
+    vertical-align: top;
+  }
+  table.matrix th {
+    background: var(--ledger-parch);
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 10px;
+    color: var(--ledger-muted);
+    font-weight: 600;
+    border-bottom: 1px solid var(--ledger-rule-strong);
+  }
+  table.matrix td.persona { font-weight: 600; }
+  table.matrix td.green { color: var(--ledger-ink); }
+  table.matrix td.amber { color: var(--ledger-accent); }
+  table.matrix td.red { color: var(--ledger-weak); }
+
+  /* Persona deep-dive */
+  .persona-cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin: 16px 0;
+  }
+  .persona-card {
+    background: var(--ledger-paper);
+    border: 1px solid var(--ledger-rule);
+    border-left: 3px solid var(--ledger-accent);
+    border-radius: 3px;
+    padding: 20px 22px;
+  }
+  .persona-card.cro { border-left-color: var(--ledger-weak); }
+  .persona-card.branch { border-left-color: var(--ledger-accent); }
+  .persona-card.ops { border-left-color: var(--ledger-accent-2); }
+  .persona-card.it { border-left-color: var(--ledger-weak); }
+  .persona-card.ceo { border-left-color: var(--ledger-accent); }
+  .persona-card h3 { margin-top: 0; }
+  .persona-card .verdict-pill {
+    display: inline-block;
+    padding: 2px 8px;
+    background: var(--ledger-tape);
+    border: 1px solid var(--ledger-rule);
+    border-radius: 2px;
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 10px;
+    color: var(--ledger-ink);
+    margin-left: 8px;
+    font-weight: 600;
+  }
+  .persona-card ol { margin: 10px 0 6px 22px; padding: 0; }
+  .persona-card ol li { margin-bottom: 6px; }
+  .persona-card .file {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--ledger-muted);
+    letter-spacing: 0.06em;
+    margin-top: 14px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--ledger-rule);
+  }
+  .persona-card .file a { color: var(--ledger-accent); text-decoration: none; border-bottom: 1px solid var(--ledger-rule); }
+  .persona-card .file a:hover { color: var(--ledger-ink); border-bottom-color: var(--ledger-ink); }
+
+  /* Consensus strength callouts */
+  .keepers {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+    margin: 14px 0;
+  }
+  .keeper {
+    background: var(--ledger-tape);
+    border: 1px solid var(--ledger-accent-soft);
+    border-radius: 3px;
+    padding: 14px 16px;
+  }
+  .keeper .badge {
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 10px;
+    color: var(--ledger-accent);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .keeper .title { font-family: 'Newsreader', serif; font-size: 16px; font-weight: 600; color: var(--ledger-ink); margin-bottom: 4px; }
+  .keeper .why { font-size: 13px; color: var(--ledger-ink-2); }
+
+  /* Code/red flag block */
+  .redflag {
+    background: var(--ledger-paper);
+    border: 1px solid var(--ledger-weak);
+    border-left: 4px solid var(--ledger-weak);
+    border-radius: 3px;
+    padding: 18px 22px;
+    margin: 14px 0;
+  }
+  .redflag .header {
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 11px;
+    color: var(--ledger-weak);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .redflag code { background: var(--ledger-parch); padding: 1px 6px; border-radius: 2px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--ledger-ink); }
+
+  /* Footer */
+  footer {
+    margin-top: 64px;
+    padding-top: 18px;
+    border-top: 1px solid var(--ledger-rule-strong);
+    color: var(--ledger-muted);
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+  }
+
+  /* Print */
+  @media print {
+    body { background: white; padding: 16px; font-size: 11pt; }
+    .reviewer, .persona-card, .keeper, .redflag, table.backlog th, table.matrix th { box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="masthead">
+    <div class="left">
+      THE AI BANKING INSTITUTE<br>
+      <span class="line-2">FOUNDATION COURSE · CRITIQUE SYNTHESIS</span>
+    </div>
+    <div class="right">
+      <div class="mono">VOL · I &nbsp; ISSUE · 01</div>
+      <div class="mono accent">2026 · 05 · 24</div>
+    </div>
+  </header>
+
+  <h1>Five Bankers Walk the Course.</h1>
+  <p class="lede">
+    Five banker personas — a CRO, a branch manager, a senior operations analyst, an IT director, and a community-bank CEO — walked every lesson of the Foundation Course (M0–M5, free and paid) and the post-M3 gate. Each applied their domain lens and a battery of modern UX heuristics. This is the consolidated finding.
+  </p>
+
+  <div class="reviewers">
+    <div class="reviewer">
+      <div class="mono accent">CRO · $1.2B</div>
+      <div class="name">Margaret Holloway</div>
+      <div class="role">Cascade Community Bank · 26 yrs · former FDIC examiner · CRCM</div>
+      <div class="mono"><span class="track">risk_compliance</span></div>
+    </div>
+    <div class="reviewer">
+      <div class="mono accent">BRANCH OPS · $480M</div>
+      <div class="name">Devon Reyes</div>
+      <div class="role">North Star Credit Union · 9 yrs retail · non-technical · 31</div>
+      <div class="mono"><span class="track">customer_facing</span></div>
+    </div>
+    <div class="reviewer">
+      <div class="mono accent">SR OPS ANALYST · $2.1B</div>
+      <div class="name">Priya Subramanian</div>
+      <div class="role">Heritage FSB · 6 yrs (2 Big-4 audit + 4 back-office) · MBA in progress · 29</div>
+      <div class="mono"><span class="track">back_office</span></div>
+    </div>
+    <div class="reviewer">
+      <div class="mono accent">IT/INFOSEC · $680M</div>
+      <div class="name">Marcus Tan</div>
+      <div class="role">Lakeside Community Bank · 14 yrs · CISSP/CISM · technical · 38</div>
+      <div class="mono"><span class="track">technical</span></div>
+    </div>
+    <div class="reviewer">
+      <div class="mono accent">CEO · $380M</div>
+      <div class="name">Bill Hagedorn</div>
+      <div class="role">First Plains Bank &amp; Trust · 32 yrs · 11 yrs CEO · ICBA federal delegate · 58</div>
+      <div class="mono"><span class="track">leadership</span></div>
+    </div>
+  </div>
+
+  <h2>What the course earns</h2>
+  <p>Consensus — at least three of five personas independently called these out as keepers.</p>
+
+  <div class="keepers">
+    <div class="keeper">
+      <div class="badge">M0.2 · DATA DISCIPLINE</div>
+      <div class="title">"Describe the situation, not the person."</div>
+      <div class="why">CRO, Branch Mgr, CEO, IT, Ops — five-of-five — call this the course's keeper line. Pattern-recognisable, role-portable, exam-defensible.</div>
+    </div>
+    <div class="keeper">
+      <div class="badge">M1.1 · MENTAL MODEL</div>
+      <div class="title">Token-prediction · training cutoff · hallucination-as-property</div>
+      <div class="why">CEO &amp; Branch Mgr both flagged the framing as the thing they would repeat to a board or to a teller. Honest about the floor, not over-claimed.</div>
+    </div>
+    <div class="keeper">
+      <div class="badge">M3.1 / M3.3 / M3.4</div>
+      <div class="title">Four-part brief + five patterns + violation drill</div>
+      <div class="why">The most-praised paid-equivalent free content. Ops Analyst, Branch Mgr, CRO, CEO all named at least one. The clearest case for letting M0–M3 stand alone.</div>
+    </div>
+    <div class="keeper">
+      <div class="badge">M5.1 · AGENT-HONESTY</div>
+      <div class="title">"Drafts are not deployments."</div>
+      <div class="why">IT Director &amp; CEO both flagged the honesty about where agents are not ready. Rare for AI marketing material to volunteer this.</div>
+    </div>
+    <div class="keeper">
+      <div class="badge">AESTHETIC + SOURCING</div>
+      <div class="title">Ledger design + named statistics + no marketing pablum</div>
+      <div class="why">No "FFIEC-aware." No "supercharge." Sources are named and date-stamped. The aesthetic reads as authoritative to a CEO and exam-appropriate to a CRO.</div>
+    </div>
+    <div class="keeper">
+      <div class="badge">SECURITY · TECHNICAL TRACK</div>
+      <div class="title">M2.1 SSO tripwire · M3.4 MNPI / PII separation</div>
+      <div class="why">IT Director called both "best-in-class" for banker-targeted training. The off-limits list extending into creds/logs/configs on the technical track variant holds.</div>
+    </div>
+  </div>
+
+  <h2>Remediation backlog</h2>
+  <p>Cross-cutting findings, severity-ranked by exam-risk × number of personas flagging × user-blocking effect. Each row names the lessons affected and the originating reviewers.</p>
+
+  <table class="backlog">
+    <thead>
+      <tr>
+        <th style="width: 60px;">ID</th>
+        <th style="width: 84px;">Severity</th>
+        <th>Finding</th>
+        <th style="width: 130px;">Flagged by</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="id">F1</td>
+        <td class="sev-h">High · sec</td>
+        <td class="title">
+          <strong>Sandbox "injection-resistant" claim does not survive a code read.</strong>
+          <code style="background: var(--ledger-parch); padding: 1px 6px; border-radius: 2px; font-family: 'JetBrains Mono', monospace; font-size: 12px;">/api/sandbox/chat</code> accepts client-supplied <code style="background: var(--ledger-parch); padding: 1px 6px; border-radius: 2px; font-family: 'JetBrains Mono', monospace; font-size: 12px;">systemPrompt</code> and passes it to Anthropic; <code style="background: var(--ledger-parch); padding: 1px 6px; border-radius: 2px; font-family: 'JetBrains Mono', monospace; font-size: 12px;">injection-filter.ts</code> scans only the latest user message with a liberal allowlist. The <code style="background: var(--ledger-parch); padding: 1px 6px; border-radius: 2px; font-family: 'JetBrains Mono', monospace; font-size: 12px;">/run</code> and <code style="background: var(--ledger-parch); padding: 1px 6px; border-radius: 2px; font-family: 'JetBrains Mono', monospace; font-size: 12px;">/ab</code> paths are server-assembled and stronger — the split is invisible to learners. Lesson copy overstates what regex catches; no name detector despite the warning copy.
+          <span class="lessons">Lessons: M2.3 · M4.2 &nbsp;·&nbsp; Code: src/app/api/sandbox/chat/route.ts:102,189 · src/lib/addie/sandbox/injection-filter.ts · pii-scanner.ts</span>
+        </td>
+        <td class="flags">Marcus</td>
+      </tr>
+      <tr>
+        <td class="id">F2</td>
+        <td class="sev-h">High · reg</td>
+        <td class="title">
+          <strong>"Public material" framed as binary, not as institutional process.</strong>
+          M0.2 / M2.3 / M3.1 tell learners to paste CFPB summaries and interagency advisories into consumer LLMs as context. Most likely path to an exam finding — what a bank <em style="font-style: normal; font-weight: 600;">asks about</em> a public document can leak supervisory posture. No acknowledgement of institutional approval gates.
+          <span class="lessons">Lessons: M0.2 · M2.3 · M3.1</span>
+        </td>
+        <td class="flags">Margaret</td>
+      </tr>
+      <tr>
+        <td class="id">F3</td>
+        <td class="sev-h">High · reg</td>
+        <td class="title">
+          <strong>No SR 11-7 / FFIEC / AIEOG thread inside the lesson bodies.</strong>
+          These appear in gate marketing copy and in the Decisions Log but not in the curriculum itself. A saved "Working Skill" used recurrently against rule text is a model under any reasonable SR 11-7 reading; M4 builds ten of them and walks away.
+          <span class="lessons">Lessons: M3.4 · M4.* · M5.1</span>
+        </td>
+        <td class="flags">Margaret · Bill · Marcus</td>
+      </tr>
+      <tr>
+        <td class="id">F4</td>
+        <td class="sev-h">High · ux</td>
+        <td class="title">
+          <strong>M4 → M5 scaffolding cliff.</strong>
+          M4 builds saved-prompt "skills" cleanly. M5 jumps to writing PRDs (a 200-level skill never preceded by anything similar) and off-ramps to four prototyping tools "for an hour or two outside this course." Non-developer learners will pick the wrong tool and conclude AI doesn't work.
+          <span class="lessons">Lessons: M4.4 → M5.1 · M5.4</span>
+        </td>
+        <td class="flags">Priya · Devon · Bill</td>
+      </tr>
+      <tr>
+        <td class="id">F5</td>
+        <td class="sev-h">High · sec</td>
+        <td class="title">
+          <strong>M5.4 ships the biggest IT risk with one "synthetic data" bullet.</strong>
+          Lovable (browser-only mockup), Replit Agents (remote dev-container with internet), Claude Code (agent-with-shell on the learner's laptop), and v0 (React UI mockups) have wildly different blast radii. Course treats them as interchangeable. Needs a tool-blast-radius matrix and an IT-handoff line.
+          <span class="lessons">Lessons: M5.4 · M5.5</span>
+        </td>
+        <td class="flags">Marcus · Priya · Margaret</td>
+      </tr>
+      <tr>
+        <td class="id">F6</td>
+        <td class="sev-m">Med · ux</td>
+        <td class="title">
+          <strong>Acronym wall on first appearance.</strong>
+          SR 11-7, MNPI, OCC, Reg E, ECOA, "few-shot," "chain-of-thought," "PRD" all land without plain-English glossing the first time a learner sees them. A six-week MSR glazes over at M1.4 and is lost by M5. Fix: hover glossary or one-line aside on first use.
+          <span class="lessons">Lessons: M1.3 · M1.4 · M3.3 · M5.1 (multi-lesson)</span>
+        </td>
+        <td class="flags">Devon · Bill · Priya</td>
+      </tr>
+      <tr>
+        <td class="id">F7</td>
+        <td class="sev-m">Med · ux</td>
+        <td class="title">
+          <strong>The "&lt;15 min per lesson" promise from M0.1 cracks at M3.</strong>
+          Honest estimates: M3.2 ≈ 25 min, M3.5 ≈ 35–45 min, M5.3 lesson body itself admits 30–60 min. Either retime the M0.1 promise or split the long lessons.
+          <span class="lessons">Lessons: M3.2 · M3.5 · M5.3</span>
+        </td>
+        <td class="flags">Devon · Priya</td>
+      </tr>
+      <tr>
+        <td class="id">F8</td>
+        <td class="sev-m">Med · reg</td>
+        <td class="title">
+          <strong>"Working Skill" naming convention will not survive an exam.</strong>
+          Toolbox artifacts ("draft, needs one more pass") lack version history, approver field, validation evidence, or use-boundary metadata. Acceptable for a personal toolkit; insufficient for any recurring member-/board-facing output.
+          <span class="lessons">Lessons: M4.* · M5.5</span>
+        </td>
+        <td class="flags">Margaret · Marcus</td>
+      </tr>
+      <tr>
+        <td class="id">F9</td>
+        <td class="sev-m">Med · ux</td>
+        <td class="title">
+          <strong>Concept-stability problem — six near-synonyms in circulation.</strong>
+          Prompt · Starter Prompt Pack · Working Skill · Skill Template · Workbench Pack · Toolbox card · Toolbox artifact. "Skill" defined formally in M4, but the concept enters M3.5. Pick one vocabulary or define the relationships in M0.1.
+          <span class="lessons">Lessons: M0.1 → M5.5 (vocabulary)</span>
+        </td>
+        <td class="flags">Priya · Devon</td>
+      </tr>
+      <tr>
+        <td class="id">F10</td>
+        <td class="sev-m">Med · reg</td>
+        <td class="title">
+          <strong>Hallucination is taught, verification discipline is not.</strong>
+          Two sentences on "verify citations" — no protocol for what to verify (every claim vs load-bearing), against what, with what evidence retained. Course teaches the failure mode without the countermeasure.
+          <span class="lessons">Lessons: M1.4 · M3.4</span>
+        </td>
+        <td class="flags">Margaret · Bill</td>
+      </tr>
+      <tr>
+        <td class="id">F11</td>
+        <td class="sev-m">Med · ux</td>
+        <td class="title">
+          <strong>Workbench Pack is a ghost artifact.</strong>
+          Named in M5.1 and M5.5 as something the learner produces — not in the <code style="background: var(--ledger-parch); padding: 1px 6px; border-radius: 2px; font-family: 'JetBrains Mono', monospace; font-size: 11px;">artifact_type</code> enum and no lesson generates it. Either missing M4 lesson or stale copy from an earlier draft. Visible content bug.
+          <span class="lessons">Lessons: M5.1 · M5.5</span>
+        </td>
+        <td class="flags">Priya</td>
+      </tr>
+      <tr>
+        <td class="id">F12</td>
+        <td class="sev-m">Med · ux</td>
+        <td class="title">
+          <strong>M0 skips the "here's what an AI tool looks like" onboarding.</strong>
+          A non-technical learner reaches M2.3 still not knowing where to type or where the answer appears. Add a 30-second annotated still before M1.1's token-prediction explanation.
+          <span class="lessons">Lessons: M0.1 · pre-M1.1</span>
+        </td>
+        <td class="flags">Devon</td>
+      </tr>
+      <tr>
+        <td class="id">F13</td>
+        <td class="sev-m">Med · biz</td>
+        <td class="title">
+          <strong>M5 ends with a personal practice, not an institutional decision.</strong>
+          End of M5.5 leaves a CEO with a prototype URL and "ship one artifact a week." No AI governance one-pager, no risk-appetite statement, no KDOB/FDIC briefing format. The leadership track should fold an institutional brief INTO M5.
+          <span class="lessons">Lessons: M5.5 (leadership track)</span>
+        </td>
+        <td class="flags">Bill · Margaret</td>
+      </tr>
+      <tr>
+        <td class="id">F14</td>
+        <td class="sev-m">Med · biz</td>
+        <td class="title">
+          <strong>Leadership track is thin — only 5 of 24 lessons branched for it.</strong>
+          The five (M0.2, M1.3, M2.4, M3.5, M4.3) are well-written but speak slightly past a $380M bank. Nineteen lessons are generic body. Calling it a "leadership track" overclaims.
+          <span class="lessons">Lessons: branched coverage (track-variant rows)</span>
+        </td>
+        <td class="flags">Bill</td>
+      </tr>
+      <tr>
+        <td class="id">F15</td>
+        <td class="sev-m">Med · biz</td>
+        <td class="title">
+          <strong>Back-office track misses the seat it claims.</strong>
+          Bundles marketing + product + ops; M4.3 "competitor-research compiler" is a marketing job, not ops. Course never mentions spreadsheets / Excel / Copilot-in-Excel despite back-office work being almost entirely files-with-PII. Acknowledges the data problem in M0.2 and provides no path forward.
+          <span class="lessons">Lessons: M4.3 · back-office track variants</span>
+        </td>
+        <td class="flags">Priya</td>
+      </tr>
+      <tr>
+        <td class="id">F16</td>
+        <td class="sev-m">Med · biz</td>
+        <td class="title">
+          <strong>customer_facing track misses denial letters and collections.</strong>
+          The two highest-stakes recurring artifacts for junior loan officers and front-line staff. Currently only fee-complaint replies are covered.
+          <span class="lessons">Lessons: customer_facing track variants</span>
+        </td>
+        <td class="flags">Devon</td>
+      </tr>
+      <tr>
+        <td class="id">F17</td>
+        <td class="sev-m">Med · sec</td>
+        <td class="title">
+          <strong>TPRM/3rd-party-risk thread is named once and dropped.</strong>
+          M1.3 (technical track) names it, then silence. M2.2 lists 15+ vendor tools by brand with zero vendor-onboarding framing. Strongest single curriculum gap for IT/InfoSec.
+          <span class="lessons">Lessons: M1.3 · M2.2 · M5.4</span>
+        </td>
+        <td class="flags">Marcus</td>
+      </tr>
+      <tr>
+        <td class="id">F18</td>
+        <td class="sev-l">Low · ux</td>
+        <td class="title">
+          <strong>PII regex is weaker than the lesson promises.</strong>
+          <code style="background: var(--ledger-parch); padding: 1px 6px; border-radius: 2px; font-family: 'JetBrains Mono', monospace; font-size: 11px;">pii-scanner.ts</code> misses spaced SSNs, no PAN/Luhn check on the chat path, the 8-digit "plausible year" guard is shallow. M0.2's "habit keeps you safe when training wheels come off" framing is honest; M2.3 / M4.2 enumerated claims need softening.
+          <span class="lessons">Code: src/lib/addie/sandbox/pii-scanner.ts</span>
+        </td>
+        <td class="flags">Marcus</td>
+      </tr>
+      <tr>
+        <td class="id">F19</td>
+        <td class="sev-l">Low · ux</td>
+        <td class="title">
+          <strong>No "what can go wrong, by department" lesson.</strong>
+          Worst-case scenarios — hallucinated citations in adverse-action letters, disparate impact in lending prompts, third-party risk on consumer LLMs — would convert a fence-sitting CEO into a confident buyer.
+          <span class="lessons">Proposed addition</span>
+        </td>
+        <td class="flags">Bill</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>The single biggest red flag</h2>
+
+  <div class="redflag">
+    <div class="header">CODE · COPY MISMATCH</div>
+    <p>
+      Marcus's code read found that <code>src/app/api/sandbox/chat/route.ts:102,189</code> accepts a client-supplied <code>systemPrompt</code> string and passes it directly to Anthropic. Lesson copy in <strong>M2.3</strong> and <strong>M4.2</strong> describes the sandbox as <em style="font-style: normal; font-weight: 600;">injection-resistant</em> with a paste-time PII gate. The <code>/run</code> and <code>/ab</code> endpoints meet that description; <code>/chat</code> does not — yet the lesson UI shows learners no signal which endpoint they are exercising.
+    </p>
+    <p>
+      <strong>This is the only finding in the fleet that requires a code + copy reconciliation before any wider deployment.</strong> Either harden <code>/chat</code> to match the other two paths, or rewrite the M2.3 / M4.2 copy to describe the actual guarantee per endpoint.
+    </p>
+  </div>
+
+  <h2>Verdict matrix — would you deploy?</h2>
+
+  <table class="matrix">
+    <thead>
+      <tr>
+        <th>Persona</th>
+        <th>Free M0–M3</th>
+        <th>Paid M4–M5</th>
+        <th>How many seats</th>
+        <th>Conditions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="persona">Margaret · CRO</td>
+        <td class="green">Yes · all 220 FTE</td>
+        <td class="amber">Pilot only</td>
+        <td>14 risk staff</td>
+        <td>Governance overlay on every saved Skill</td>
+      </tr>
+      <tr>
+        <td class="persona">Devon · Branch Mgr</td>
+        <td class="green">Yes · pilot 8–10, then expand</td>
+        <td class="red">Not for front-line</td>
+        <td>0–2 senior MSRs</td>
+        <td>Reframe M5 at gate; add denial-letter content</td>
+      </tr>
+      <tr>
+        <td class="persona">Priya · Ops Analyst</td>
+        <td class="green">Yes · all 24</td>
+        <td class="amber">2 builders, not 4</td>
+        <td>2 of 24</td>
+        <td>"Ship prototype URL in 30 days" gate before remaining $590</td>
+      </tr>
+      <tr>
+        <td class="persona">Marcus · IT Director</td>
+        <td class="green">Yes · all 140</td>
+        <td class="amber">Conditional</td>
+        <td>~6 with IT review</td>
+        <td>Sandbox copy/code reconciled · M5.4 blast-radius matrix · TPRM thread</td>
+      </tr>
+      <tr>
+        <td class="persona">Bill · CEO</td>
+        <td class="green">Yes · all 60 FTE</td>
+        <td class="amber">Builders only</td>
+        <td>6 of 60 (not 18)</td>
+        <td>Add institutional-brief output to M5; add "what can go wrong by dept"</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Persona deep-dives</h2>
+
+  <div class="persona-cards">
+
+    <div class="persona-card cro">
+      <h3>Margaret Holloway · CRO, Cascade Community Bank ($1.2B) <span class="verdict-pill">Deploy M0–M3 · pilot M4 · not M5</span></h3>
+      <ol>
+        <li><strong>"Public material" is binary in the course, institutional in practice</strong> — most likely path to an exam finding. (F2)</li>
+        <li><strong>No SR 11-7 / FFIEC / AIEOG framing in lesson bodies</strong> — only in gate marketing. M4 builds ten Skills used as models without saying so. (F3)</li>
+        <li><strong>M5.4 sends bankers to four prototyping tools with one control</strong> — under Interagency TPRM (2023) + OCC 2023-17, that is one control among many. (F5)</li>
+        <li><strong>"Working Skill" naming convention will not survive an exam</strong> — no version history, approver, validation evidence, or use boundary. (F8)</li>
+        <li><strong>Hallucination is taught, verification discipline is not</strong> — failure mode without countermeasure. (F10)</li>
+      </ol>
+      <div class="file">→ <a href="./foundation-critique-cro-margaret-holloway-2026-05-24.md">foundation-critique-cro-margaret-holloway-2026-05-24.md</a> · 2,700 words</div>
+    </div>
+
+    <div class="persona-card branch">
+      <h3>Devon Reyes · Branch Ops Manager, North Star CU ($480M) <span class="verdict-pill">Pilot M0–M3 · skip M5 for front-line</span></h3>
+      <ol>
+        <li><strong>Acronym walls block new staff</strong> — six-week MSRs glaze at M1.4, lost by M5. (F6)</li>
+        <li><strong>"&lt;15 min per lesson" cracks at M3</strong> — honest estimates 25–45 min. (F7)</li>
+        <li><strong>M5 isn't aimed at front-line but the gate sells it the same to everyone</strong>. Reframe at gate. (F4)</li>
+        <li><strong>M0 skips "here's what an AI tool looks like"</strong> — non-technical learner reaches M2.3 still not knowing where to type. (F12)</li>
+        <li><strong>customer_facing track misses denial letters and collections</strong> — highest-stakes recurring artifacts not covered. (F16)</li>
+      </ol>
+      <div class="file">→ <a href="./foundation-critique-branch-mgr-devon-reyes-2026-05-24.md">foundation-critique-branch-mgr-devon-reyes-2026-05-24.md</a> · 3,000 words</div>
+    </div>
+
+    <div class="persona-card ops">
+      <h3>Priya Subramanian · Sr Operations Analyst, Heritage FSB ($2.1B) <span class="verdict-pill">Roll M0–M3 to all · pay for 2 builders, not 4</span></h3>
+      <ol>
+        <li><strong>Free side (M0–M3) is the better product</strong>. M0.2, M3.1, M3.3, M3.4 are genuinely useful for an Ops team.</li>
+        <li><strong>M4 → M5 is a scaffolding cliff</strong> — saved-skill to PRD-to-Lovable jump skips two steps. (F4)</li>
+        <li><strong>Workbench Pack is a ghost artifact</strong> — named but never produced. (F11)</li>
+        <li><strong>Concept-stability problem — six near-synonyms in circulation</strong>. (F9)</li>
+        <li><strong>Back-office track misses the seat</strong>. No Excel, no Copilot-in-Excel, M4.3 is a marketing example. (F15)</li>
+      </ol>
+      <div class="file">→ <a href="./foundation-critique-ops-analyst-priya-subramanian-2026-05-24.md">foundation-critique-ops-analyst-priya-subramanian-2026-05-24.md</a> · 3,000 words</div>
+    </div>
+
+    <div class="persona-card it">
+      <h3>Marcus Tan · IT/InfoSec Director, Lakeside Community Bank ($680M) <span class="verdict-pill">Conditional · reconcile sandbox first</span></h3>
+      <ol>
+        <li><strong>"Injection-resistant sandbox" does not survive a code read</strong>. <code>/api/sandbox/chat</code> takes client systemPrompt; PII scanner is weaker than lesson copy claims. (F1, F18)</li>
+        <li><strong>PII regex is weaker than the lesson promises</strong> — spaced SSNs missed, no PAN/Luhn on chat path. (F18)</li>
+        <li><strong>M5.4 ships my biggest IT risk with one "synthetic data" bullet</strong> — four prototyping tools have very different blast radii. (F5)</li>
+        <li><strong>TPRM/3rd-party-risk thread named once and dropped</strong> — M2.2 names 15+ vendors with zero onboarding framing. (F17)</li>
+        <li><strong>Course is genuinely strong where it had to be</strong> — M0.2 (technical variant), M2.1 SSO tripwire, M3.4 MNPI/PII distinction, M5.1 honesty are keepers.</li>
+      </ol>
+      <div class="file">→ <a href="./foundation-critique-it-director-marcus-tan-2026-05-24.md">foundation-critique-it-director-marcus-tan-2026-05-24.md</a> · 2,200 words</div>
+    </div>
+
+    <div class="persona-card ceo">
+      <h3>Bill Hagedorn · CEO, First Plains Bank &amp; Trust ($380M) <span class="verdict-pill">Deploy free to 60 · paid to 6</span></h3>
+      <ol>
+        <li><strong>Course earns trust on data discipline and regulator realism, not on AI hype</strong>. M0.2 · M1.1 · M5.1 are the three lines for the board.</li>
+        <li><strong>Leadership track is thin — 5 of 24 branched</strong>. Course with leadership grace notes, not a leadership track. (F14)</li>
+        <li><strong>M5 ends with a personal practice, not an institutional decision</strong>. No AI governance one-pager, no risk-appetite statement, no KDOB/FDIC briefing format. (F13)</li>
+        <li><strong>Regulator literacy is asserted, not demonstrated</strong>. SR 11-7, TPRM, AIEOG missing from lesson bodies. (F3)</li>
+        <li><strong>$295 × 18 is wrong — should be free × 60 + paid × ~6</strong>. M4–M5 are builder modules; most community-bank staff aren't builders. Add a "who gets M4–M5" decision tree to M3.5. Add "what can go wrong, by department." (F19)</li>
+      </ol>
+      <div class="file">→ <a href="./foundation-critique-ceo-bill-hagedorn-2026-05-24.md">foundation-critique-ceo-bill-hagedorn-2026-05-24.md</a> · 2,650 words</div>
+    </div>
+  </div>
+
+  <h2>Recommended sequencing</h2>
+  <p>Order by exam-risk × cost-to-fix. Item 1 is a blocker before any wider deployment; the rest can run in parallel.</p>
+  <ol>
+    <li><strong>Reconcile sandbox copy ↔ code</strong> (F1, F18). Either harden <code style="background: var(--ledger-parch); padding: 1px 6px; border-radius: 2px; font-family: 'JetBrains Mono', monospace; font-size: 13px;">/api/sandbox/chat</code> to match <code style="background: var(--ledger-parch); padding: 1px 6px; border-radius: 2px; font-family: 'JetBrains Mono', monospace; font-size: 13px;">/run</code> and <code style="background: var(--ledger-parch); padding: 1px 6px; border-radius: 2px; font-family: 'JetBrains Mono', monospace; font-size: 13px;">/ab</code>, or rewrite M2.3 / M4.2 to describe the actual guarantee per endpoint. <em style="font-style: normal; font-weight: 600;">Blocker for any wider deployment.</em></li>
+    <li><strong>Add an SR 11-7 / TPRM thread into M3.4 / M4.* / M5.1 lesson bodies</strong> (F3, F8, F17). Cite the named documents with section-level plain-English restatements per the M1.1 pattern.</li>
+    <li><strong>Build the M5.4 tool-blast-radius matrix</strong> (F5). One card: tool · what it produces · where it runs · what IT needs to know · synthetic-data discipline. Add an IT-handoff line before the "shipped a prototype" close.</li>
+    <li><strong>Bridge the M4 → M5 cliff</strong> (F4, F9). Add a transitional lesson (or expand M5.1) that walks from saved Skill → PRD → tool-choice. Settle on one vocabulary across the M3.5–M5.5 span.</li>
+    <li><strong>Resolve the Workbench Pack ghost</strong> (F11). Either ship the missing M4 lesson that produces it, or strip the references from M5.1 / M5.5.</li>
+    <li><strong>Acknowledge institutional approval gates</strong> (F2). One callout per affected lesson: "your bank may have a policy on what leaves your environment, even when the source is public — check it first."</li>
+    <li><strong>Retime the &lt;15 min promise</strong> (F7). Either split M3.2 / M3.5 / M5.3 into shorter lessons, or change the M0.1 promise to "≤25 min for the longest lessons."</li>
+    <li><strong>First-use glossary</strong> (F6). One-line aside the first time each banking acronym (SR 11-7, MNPI, OCC, Reg E, ECOA) and AI term (few-shot, chain-of-thought, PRD) appears. Persist across the session.</li>
+    <li><strong>Track-variant content gaps</strong> (F14, F15, F16). Add: leadership institutional-brief artifact in M5.5; back-office Excel/Copilot pattern in M4.*; customer_facing denial-letter + collections drills.</li>
+    <li><strong>"What can go wrong, by department" lesson</strong> (F19). Inserts before the gate; converts hesitant buyers.</li>
+    <li><strong>M0 onboarding still</strong> (F12). 30-second annotated screenshot before M1.1 — "here is where you type, here is the answer."</li>
+  </ol>
+
+  <h2>Source critiques</h2>
+  <ul style="list-style: none; padding-left: 0;">
+    <li class="mono" style="font-size: 13px; color: var(--ledger-ink); margin-bottom: 6px; font-family: 'JetBrains Mono', monospace;">→ <a href="./foundation-critique-cro-margaret-holloway-2026-05-24.md" style="color: var(--ledger-accent);">foundation-critique-cro-margaret-holloway-2026-05-24.md</a> · 2,700 words</li>
+    <li class="mono" style="font-size: 13px; color: var(--ledger-ink); margin-bottom: 6px; font-family: 'JetBrains Mono', monospace;">→ <a href="./foundation-critique-branch-mgr-devon-reyes-2026-05-24.md" style="color: var(--ledger-accent);">foundation-critique-branch-mgr-devon-reyes-2026-05-24.md</a> · 3,000 words</li>
+    <li class="mono" style="font-size: 13px; color: var(--ledger-ink); margin-bottom: 6px; font-family: 'JetBrains Mono', monospace;">→ <a href="./foundation-critique-ops-analyst-priya-subramanian-2026-05-24.md" style="color: var(--ledger-accent);">foundation-critique-ops-analyst-priya-subramanian-2026-05-24.md</a> · 3,000 words</li>
+    <li class="mono" style="font-size: 13px; color: var(--ledger-ink); margin-bottom: 6px; font-family: 'JetBrains Mono', monospace;">→ <a href="./foundation-critique-it-director-marcus-tan-2026-05-24.md" style="color: var(--ledger-accent);">foundation-critique-it-director-marcus-tan-2026-05-24.md</a> · 2,200 words</li>
+    <li class="mono" style="font-size: 13px; color: var(--ledger-ink); margin-bottom: 6px; font-family: 'JetBrains Mono', monospace;">→ <a href="./foundation-critique-ceo-bill-hagedorn-2026-05-24.md" style="color: var(--ledger-accent);">foundation-critique-ceo-bill-hagedorn-2026-05-24.md</a> · 2,650 words</li>
+  </ul>
+
+  <footer>
+    Generated 2026-05-24 · branch feature/addie-v1 · synthesis of five-persona walkthrough · M0–M5 + gate
+  </footer>
+
+</div>
+</body>
+</html>

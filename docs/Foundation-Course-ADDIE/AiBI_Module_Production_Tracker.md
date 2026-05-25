@@ -9,6 +9,16 @@
 **Status legend:** ✅ done · 🛠 in progress · 🔲 not started
 *(Note: a module's **spec** can be ✅ while its **production** is 🔲 — M0 below shows exactly that.)*
 
+**2026-05-24 update — text-density pass:** all 24 lesson `body_md` blocks were
+restructured to use the editorial visual vocabulary (`[stat]` · `[case:good]` ·
+`[tip]` · `[warn]`) in place of long narrator-quote paragraphs. Body content
+cut 44% overall (44% M2 / 46% M1 / 45% M0 / 40% M3 / 49% M4 / 43% M5). The two
+bugs flagged in this session — `/api/addie/maturity` identity (auth users
+returned zero progress) and SacredRule a11y (no focus management) — are
+fixed. Seeds are edited in `supabase/seed/m{0..5}_addie.sql` and require
+operator apply to the linked DB. Tests: 405/405 · typecheck clean · all 24
+lesson endpoints return 200. See `docs/handoffs/addie-status-2026-05-24-text-cut.md`.
+
 ---
 
 ## Course rollup
@@ -26,7 +36,7 @@
 | Knowledge-check sets | 24 | 2–3 items per lesson |
 | Readiness Assessment | 1 | 48 Q / 8 dimensions — separate build (bottom) |
 
-**Progress snapshot:** detailed specs 1/6 · media recorded 0/13 · interactives built 0/9 · sandbox platform 🔲
+**Progress snapshot (2026-05-24):** detailed specs **3/6** (M0 · M4 · M5 ship this session; M1–M3 still seed-only) · media recorded 0/13 (camera/mic work — **not engineering scope**; see *Media production* section at bottom) · interactives built **9/9** ✅ · sandbox platform ✅ · track-aware chrome ✅ (TrackChrome + 15 hooks wired) · maturity-stage celebration ✅ · proactive tutor scaffold ✅ · Resend invite template ✅ · a11y static audit ✅ clean across 8 key pages
 
 ---
 
@@ -39,7 +49,7 @@
 ---
 
 ## M0 · Orientation — *(Free · 2 lessons · ~15 min)*
-**Detailed spec:** ✅ `AiBI_Module_0_Orientation.md` · **Takeaway:** Data Discipline Card
+**Detailed spec:** ✅ `AiBI_Module_0_Orientation.md` · **Takeaway:** Data Discipline Card · **Body text cut 45% (2026-05-24)**
 
 | Lesson | Modality | ~min | Branched | Interactive | Takeaway contribution |
 |---|---|---|---|---|---|
@@ -56,7 +66,7 @@
 - [ ] QA: ≤15 min, accessibility (WCAG 2.1 AA) *(post-pilot)*
 
 ## M1 · What generative AI is — *(Free · 4 lessons)*
-**Detailed spec:** ✅ seeded in `supabase/seed/m1_addie.sql` (Wave 2b) · **Takeaway:** AI Toolkit Map
+**Detailed spec:** ✅ seeded in `supabase/seed/m1_addie.sql` (Wave 2b) · **Takeaway:** AI Toolkit Map · **Body text cut 46% (2026-05-24)**
 
 | Lesson | Modality | ~min | Branched | Interactive | Takeaway contribution |
 |---|---|---|---|---|---|
@@ -74,7 +84,7 @@
 - [ ] QA: ≤15 min, accessibility *(post-pilot)*
 
 ## M2 · Access & workflow — *(Free · 4 lessons)*
-**Detailed spec:** ✅ seeded in `supabase/seed/m2_addie.sql` (Wave 2b) · **Takeaway:** First Conversation transcript · **⚠ first sandbox lesson (2.3) — wired**
+**Detailed spec:** ✅ seeded in `supabase/seed/m2_addie.sql` (Wave 2b) · **Takeaway:** First Conversation transcript · **⚠ first sandbox lesson (2.3) — wired** · **Body text cut 44% (2026-05-24)**
 
 | Lesson | Modality | ~min | Branched | Interactive | Takeaway contribution |
 |---|---|---|---|---|---|
@@ -93,7 +103,7 @@
 - [ ] QA: ≤15 min, accessibility · *requires sandbox platform live* *(sandbox platform live since Wave 1e; A11y pass deferred to pilot)*
 
 ## M3 · Talking to the machine — prompting — *(Free · 5 lessons · last free module)*
-**Detailed spec:** ✅ seeded in `supabase/seed/m3_addie.sql` (Wave 2b) · **Takeaway:** Starter Prompt Pack (3 prompts) · **gate follows this module — wired**
+**Detailed spec:** ✅ seeded in `supabase/seed/m3_addie.sql` (Wave 2b) · **Takeaway:** Starter Prompt Pack (3 prompts) · **gate follows this module — wired** · **Body text cut 40% (2026-05-24)**
 
 | Lesson | Modality | ~min | Branched | Interactive | Takeaway contribution |
 |---|---|---|---|---|---|
@@ -116,7 +126,7 @@
 ## ═══ GATE (pay or email) ═══
 
 ## M4 · Automating the repetitive — skills — *(Paid · 4 lessons)*
-**Detailed spec:** 🔲 · **Takeaways:** Working Skill · Skill Template · full Prompt Library unlocked · unlimited saves
+**Detailed spec:** ✅ `AiBI_Module_4_Skills.md` (2026-05-24) · **Takeaways:** Working Skill · Skill Template · full Prompt Library unlocked · unlimited saves · **Body text cut 49% (2026-05-24)**
 
 | Lesson | Modality | ~min | Branched | Interactive | Takeaway contribution |
 |---|---|---|---|---|---|
@@ -136,7 +146,7 @@
 - [ ] QA: ≤15 min, accessibility *(post-pilot)*
 
 ## M5 · From idea to prototype — agents & building — *(Paid · 5 lessons)*
-**Detailed spec:** 🔲 · **Takeaways:** Agent Blueprint · PRD · Prototype · Problem Backlog
+**Detailed spec:** ✅ `AiBI_Module_5_Prototypes.md` (2026-05-24) · **Takeaways:** Agent Blueprint · PRD · Prototype · Problem Backlog · **Body text cut 43% (2026-05-24)**
 
 | Lesson | Modality | ~min | Branched | Interactive | Takeaway contribution |
 |---|---|---|---|---|---|
@@ -171,6 +181,31 @@
 - [x] Route at `/foundation/dashboard/team` *(Wave 3b)*; auth-gates to teams.admin_user_id; reads `addie.team_progress_v` (counts only, NO artifact bodies per FR-D4); seats table with status pills + invite form + revoke/resend actions; budget math enforced server- and client-side.
 - [x] Resend-invite endpoint at `/api/addie/team/seats/[seatId]/resend` (emits `seat_invite_resent`, distinct from `seat_invited`, so funnel counts stay clean).
 - [ ] Resend transactional template with signed-token link *(MailerLite stub in place; Resend template is a Wave 3c/pre-pilot follow-up per Auth Spec §7.2).*
+
+---
+
+---
+
+## Media production — physical-world work, not engineering scope
+
+The following remain after every engineering item ships. They require
+cameras, microphones, voice talent, and an edit suite — not a code
+deploy. Tracked here for completeness but **out of engineering scope.**
+
+| Asset | Count | Notes |
+|---|---|---|
+| Video lessons | 13 | M0.1, M0.2, M1.1, M1.2, M1.4, M2.1, M2.2, M3.1, M3.3, M3.4, M4.1, M5.1, M5.2 |
+| Audio lessons | 2 | M1.3 (×5 track variants) · M5.5 |
+| Captions (.vtt) | 13 | One per video; English baseline |
+| Transcripts | 15 | Both modalities |
+| Voice direction | — | Calm, editorial, no cheerleader register — see M0 doc PRODUCTION blocks |
+
+Backend wiring (player, captions track, transcript toggle, autosave of
+playback position) is already shipped — media drops in by uploading
+`<lesson_id>.mp4`/`.mp3` + `<lesson_id>.vtt` to the configured public
+bucket and updating `lesson_track_variants.media_ref` (or
+`lessons.media_ref` for non-branched). No further engineering required
+to ship the recorded media.
 
 ---
 
