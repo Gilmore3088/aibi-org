@@ -151,7 +151,7 @@ export default function ForCommunityBanksPage() {
               <dl className="mt-5 divide-y divide-[var(--ledger-rule)]">
                 {[
                   { k: 'Format', v: 'Self-paced, online' },
-                  { k: 'Lesson length', v: 'Under fifteen minutes each' },
+                  { k: 'Lesson length', v: 'Most under fifteen minutes; deep drills 20–45' },
                   { k: 'Modules', v: 'Six · ~22 lessons' },
                   { k: 'Seat minimum', v: 'Ten' },
                   { k: 'Per-seat price', v: '$199' },

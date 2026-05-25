@@ -59,8 +59,8 @@ interface FaqItem {
 
 const FAQ: readonly FaqItem[] = [
   {
-    q: 'Is the course really under four hours of content?',
-    a: 'Yes. Six modules, twenty-something lessons, every lesson capped at fifteen minutes. The work between lessons — saving artifacts to your Toolbox, practicing in the sandbox — is what makes it stick, but the lessons themselves are short by design.',
+    q: 'How much course content is there?',
+    a: 'Six modules, twenty-four lessons. Most lessons run under fifteen minutes; the deeper practice drills in Module 3 (the A/B sandbox, the violation drill, the Starter Prompt Pack build) honestly take 20–45 minutes — the timing card on each lesson shows the banded estimate. The work between lessons — saving artifacts to your Toolbox, practicing in the sandbox — is what makes it stick.',
   },
   {
     q: 'Can I expense this to my L&D budget?',

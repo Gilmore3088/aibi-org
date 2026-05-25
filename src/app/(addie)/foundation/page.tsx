@@ -134,9 +134,10 @@ export default async function FoundationHomePage() {
               </h1>
               <p className="mt-6 max-w-xl text-lg sm:text-xl leading-[1.55] text-[var(--ledger-ink-2)]">
                 A short course for community bankers and credit-union staff.
-                Built around the role you actually have. Every lesson under
-                fifteen minutes; every module produces something you can
-                use the next morning.
+                Built around the role you actually have. Most lessons run
+                under fifteen minutes; deep practice drills clearly flagged
+                at 20–45. Every module produces something you can use the
+                next morning.
               </p>
               <div className="mt-8 flex flex-wrap items-center gap-3">
                 <Link

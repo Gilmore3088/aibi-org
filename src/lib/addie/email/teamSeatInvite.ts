@@ -60,8 +60,9 @@ function renderHtml(p: TeamSeatInviteParams): string {
             <tr>
               <td style="padding:16px 32px 0 32px;font-size:16px;line-height:1.6;color:#1F2A3F;">
                 <p style="margin:0 0 14px 0;">
-                  You have a seat in the AiBI Foundation Course — six modules, twenty-four lessons,
-                  every lesson under fifteen minutes, designed to do between meetings.
+                  You have a seat in the AiBI Foundation Course — six modules, twenty-four lessons.
+                  Most lessons run under fifteen minutes; the deeper drills take 20–45. Designed
+                  to do between meetings.
                 </p>
                 <p style="margin:0 0 14px 0;">
                   Accept the invite below to set up your account. Your progress, prompts,
@@ -122,7 +123,8 @@ function renderText(p: TeamSeatInviteParams): string {
 
 ${p.inviterName} has added you to ${p.institutionName}'s team at the AI
 Banking Institute. You have a seat in the AiBI Foundation Course — six
-modules, twenty-four lessons, every lesson under fifteen minutes.
+modules, twenty-four lessons. Most lessons run under fifteen minutes;
+the deeper drills take 20–45.
 
 Accept your seat: ${p.inviteUrl}
 Link expires ${expires}.
