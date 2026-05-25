@@ -188,7 +188,7 @@ Most useful prompts take one of five shapes. Pick the shape, fill the slots, sen
 
 ## SCRIPT (verbatim)
 
-> [stat] 5 | Five patterns that earn their keep | Default brief · Few-shot · Chain-of-thought · Constraints · Ask what's missing. Memorise the shapes, not the words.
+> [stat] 5 | Five patterns that earn their keep | Default brief · Show examples first · Make it think out loud · Constraints · Ask what's missing. Memorise the shapes, not the words.
 
 Audit A16 (2026-05-24): the five patterns are also rendered as a single
 reference table so the scan is one glance, not five cards. The H3 sections
@@ -197,14 +197,14 @@ below remain as the per-pattern deep dive.
 | # | Pattern | When to reach for it | Slot to fill |
 |---|---|---|---|
 | 1 | Role + Task + Format | Default brief — most one-shot questions get twice as useful with these three lines | Who · what to do · what output should look like |
-| 2 | Few-shot examples | Style or structure is off — show two examples, ask for the third | Two complete input → output pairs, then your real input |
-| 3 | Chain-of-thought hint | Reasoning required — comparing policies, what-ifs, fee scenarios | "Walk through your reasoning, then answer." One line is enough. |
+| 2 | Show examples first (few-shot) | Style or structure is off — show two examples, ask for the third | Two complete input → output pairs, then your real input |
+| 3 | Make it think out loud (chain-of-thought) | Reasoning required — comparing policies, what-ifs, fee scenarios | "Walk through your reasoning, then answer." One line is enough. |
 | 4 | Constraints | Drafts read invented — pin down what is out of bounds | "Do not invent X, Y, Z. If not in the source, say so." |
 | 5 | Ask for what is missing | Output is generic — flip the move and ask the model what it needs | "Before drafting, tell me what context would sharpen this." |
 
 > [tip] Stuck? Default to pattern one. Add constraints (4) when output drifts. Add examples (2) when style is off. You rarely need all five.
 
-> [warn] Chain-of-thought makes the model preamble. Want only the answer? "Walk through reasoning, then output only the final answer marked with a heading." Two patterns, one prompt.
+> [warn] Asking the model to think out loud makes it preamble. Want only the answer? "Walk through reasoning, then output only the final answer marked with a heading." Two patterns, one prompt.
 
 > [tip] Two lessons until the gate. After M3.5 — pay for M4–M5, give us an email to keep your Pack, or walk. Nothing surprise about it.
 
@@ -220,7 +220,7 @@ once you stop skipping these three lines.
 > change below for branch tellers. Five bullets, under 150 words, end
 > with one line tellers can read aloud to a member at the window.
 
-### Pattern 2 — Few-shot examples
+### Pattern 2 — Show examples first *(few-shot)*
 
 When you want a specific style or structure, show two short examples
 before asking for the third. The model copies the shape of what you
@@ -233,7 +233,7 @@ showed it more reliably than it follows abstract instructions.
 > card and needs help quickly." Now rewrite: "Loan denied, customer
 > confused."
 
-### Pattern 3 — Chain-of-thought hint
+### Pattern 3 — Make it think out loud *(chain-of-thought)*
 
 For anything that requires reasoning — comparing two policies, walking
 a what-if, pricing a fee scenario — ask the model to think before it
