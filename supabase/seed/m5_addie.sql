@@ -687,3 +687,99 @@ ON CONFLICT (id) DO UPDATE SET
   gating                = EXCLUDED.gating,
   entitlement           = EXCLUDED.entitlement,
   published             = EXCLUDED.published;
+
+----------------------------------------------------------------------
+-- Phase 2 PR20 — M5 re-thread + Leadership Board AI Brief variant
+-- + M5.5 closing copy (2026-05-25)
+--
+-- Per recovery plan Decision #3: M5 stays as "Projects and Context
+-- (Write a Project Brief)" per the curriculum spine, re-threaded so
+-- the Project Brief drives a Workbench Pack run on a real project of
+-- the learner's own. M5 also opts onto LessonStepShell to match the
+-- rest of M0–M3 (recovery plan note: Phase 1 explicitly didn't touch
+-- M4/M5; PR20 brings M5 into the shell now that the Pack is wired).
+--
+-- Leadership-track variant of m5.2 ProblemFrame becomes the Board AI
+-- Brief + Risk Appetite Statement template — addresses CEO Bill's
+-- single-biggest finding ("no institutional readiness deliverable").
+----------------------------------------------------------------------
+
+-- 1. Opt M5 lessons onto LessonStepShell.
+UPDATE addie.lessons
+SET shell_kind = 'step'
+WHERE id IN ('m5.1', 'm5.2', 'm5.3', 'm5.4', 'm5.5');
+
+-- 2. Re-thread the M5.3 PRD-builder lesson to point at the Pack as
+-- the output target. Title + body framing call out that the PRD is
+-- the source-of-truth doc the learner feeds into a real Pack run.
+UPDATE addie.lessons
+SET title = 'Project Brief → Workbench Pack: drive a real Pack run on your own work'
+WHERE id = 'm5.3';
+
+-- 3. M5.5 closing copy reconciled with the Pack shape. The previous
+-- body referenced "Workbench Pack" as if it existed; now it does, and
+-- the closing recap names the artifact correctly.
+UPDATE addie.lessons
+SET body_md = $LESSON$
+You finished. You now hold a Data Discipline Card, an AI Toolkit Map, a First Conversation transcript, a Where-AI-Fits worksheet, a Starter Prompt Pack, and — for paid learners — a Workbench Pack you can re-open and run again next week.
+
+## SCRIPT (verbatim)
+
+> [stat] 6 | Six artifacts in your Toolbox | The free side leaves you with five reference cards. The paid side adds the Workbench Pack — the seven-region template you can re-run any time real banking work shows up that fits the shape.
+
+That is not AI literacy. That is a practice.
+
+### What to do next
+
+> [case:good] Deepen one skill | Pick one of the four advanced patterns from 3.3b and run it on a real piece of your work this week. The default brief from 3.3a covers 80% of cases; the advanced patterns earn their keep on the other 20%.
+> [outcome] One more named move in your prompting toolkit.
+
+> [case:good] Bring a peer along | Forward your Toolbox link to one colleague. The Pack travels — Copy-as-Markdown lets them run it inside the tool your bank has sanctioned.
+> [outcome] A second person at your institution using the same vocabulary.
+
+> [case:good] Build out the prototype | If M5.4 left you with a prototype URL, share it with the one person inside your bank who would benefit most. The next step is feedback, not features.
+> [outcome] A real conversation about a real artifact.
+
+> [tip] The AiBI-S (Specialist) and AiBI-L (Leader) credentials are not open yet. No scarcity script. The Foundation Course finishes here.
+
+> [warn] What you built is yours to use, not yours to deploy at scale. Any Pack that will run recurrently against member-facing or board-facing work needs your institution's governance overlay — model risk inventory, approver named, use-boundary flipped to "named-task production." That conversation is on you and your CRO, not on this course.
+$LESSON$
+WHERE id = 'm5.5';
+
+-- 4. Leadership-track variant of m5.2 (ProblemFrame) becomes the
+-- Board AI Brief + Risk Appetite Statement. Per CEO Bill's #1
+-- request: a one-page institutional readiness deliverable authored
+-- inside M5, not punted to the $99 assessment.
+INSERT INTO addie.lesson_track_variants (lesson_id, track, body_md, media_ref)
+VALUES (
+  'm5.2',
+  'leadership',
+  $VAR$## Problem framing — for the institution, not the desk
+
+The leadership track's M5.2 deliverable is different from the other tracks. Where a back-office or compliance learner frames one specific recurring problem, the leadership learner authors a **one-page institutional readiness brief**: a document a CEO can hand to a board chair, an examiner, or a CRO and have the AI conversation land.
+
+### The brief has three parts
+
+**1. Risk appetite statement (3–4 sentences).**
+What kinds of AI use cases is the institution willing to fund, with what guardrails, in the next four quarters? Name the floor (data discipline + MNPI policy) and the ceiling (no member-facing autonomous decisions). The statement is the document the board signs off on.
+
+**2. AI use case inventory (top 5).**
+Five named candidate use cases, one line each. Format:
+  *Department · use case · expected lift · risk tier · who owns governance.*
+Example: *"Compliance · Reg-E summary drafting for tellers · ~6 hrs/wk recovered · Tier 1 (low) · CCO."*
+
+**3. Investment + seat-allocation call (one paragraph).**
+Of your 60 (or 220, or 1,400) FTE, name the 4–6 who get M4–M5 paid seats and why. State the budget. State what they're expected to ship in 90 days.
+
+### Why this is M5.2's leadership deliverable, not a separate purchase
+
+CEO Bill Hagedorn (2026-05-24 review): "M5.5 closes with three personal choices… I run a $380M bank with a board that will ask me 'so what did you decide?'" The course gives 18 staff each a Toolbox; this leadership variant gives the CEO an authored one-pager the board recognizes as an AI strategy.
+
+### Walk it now
+
+The Pack workbench in the next lesson (M5.3) will help you produce this brief — Project Brief as source, the three sections above as your output target, your real institution's data as the substrate. The Pack you save is your institutional readiness brief, versioned in the Toolbox, exportable as markdown.
+$VAR$,
+  NULL
+)
+ON CONFLICT (lesson_id, track) DO UPDATE
+SET body_md = EXCLUDED.body_md;
