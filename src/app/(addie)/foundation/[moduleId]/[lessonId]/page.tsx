@@ -20,6 +20,7 @@ import { TrackChrome } from '@/components/addie/lesson/TrackChrome';
 import { MaturityCelebration } from '@/components/addie/lesson/MaturityCelebration';
 import { ProactiveTutorSuggestion } from '@/components/addie/lesson/ProactiveTutorSuggestion';
 import { M02Experience } from '@/components/addie/lesson/v2/M02Experience';
+import { LessonCoachDrawer } from '@/components/addie/lesson/v2/LessonCoachDrawer';
 import { hasAnyFoundationEntitlement } from '@/lib/addie/entitlements/check';
 import type {
   LessonPayload,
@@ -369,7 +370,10 @@ export default async function LessonPage({
           nextHref={nextHref}
           nextLabel={payload.siblings?.next?.title ?? null}
         />
-        {/* Tutor remains available across all lesson shells. */}
+        {/* PRD §11 — m0.2-scoped Coach drawer with six static chip answers.
+            Hybrid free-text route deferred (next-up ticket). */}
+        <LessonCoachDrawer />
+        {/* Generic tutor remains available across other lesson shells. */}
         <LessonTutor lessonId={params.lessonId} />
       </div>
     );
