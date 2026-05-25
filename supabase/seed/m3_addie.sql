@@ -959,3 +959,15 @@ ON CONFLICT (id) DO UPDATE SET
   gating                = EXCLUDED.gating,
   entitlement           = EXCLUDED.entitlement,
   published             = EXCLUDED.published;
+
+----------------------------------------------------------------------
+-- Phase 1 Guided Lesson Shell — opt M3 lessons into LessonStepShell
+-- (2026-05-25). See migration 00073 + LessonStepPlayer. PR5 of the
+-- Phase 1 Foundation UX recovery.
+--
+-- M3.3 is intentionally EXCLUDED: per the 2026-05-24 reviewer fleet
+-- (Pair 1 cogload + Branch Mgr Devon) it carries 5 prompt patterns in
+-- one lesson and needs to split into 3.3a (default brief) + 3.3b
+-- (advanced patterns). The split is its own PR (PR6).
+----------------------------------------------------------------------
+UPDATE addie.lessons SET shell_kind = 'step' WHERE id IN ('m3.1', 'm3.2', 'm3.4', 'm3.5');
