@@ -971,3 +971,148 @@ ON CONFLICT (id) DO UPDATE SET
 -- (advanced patterns). The split is its own PR (PR6).
 ----------------------------------------------------------------------
 UPDATE addie.lessons SET shell_kind = 'step' WHERE id IN ('m3.1', 'm3.2', 'm3.4', 'm3.5');
+
+----------------------------------------------------------------------
+-- Phase 1 PR18 — M3.3 structural split (2026-05-25)
+--
+-- Per recovery-plan finding (Pair 1 cogload CRITICAL + Branch Mgr
+-- Devon vocabulary): five prompt patterns in one lesson is past the
+-- working-memory limit for first exposure. Split into:
+--   m3.3  → "3.3a · Default brief" (ord=3, ~12min, pattern 1 only)
+--   m3.3b → "3.3b · Advanced patterns" (ord=4, ~15min, patterns 2-5)
+-- Then bump m3.4 → ord=5 and m3.5 → ord=6 to make room.
+--
+-- m3.3 keeps its id so M3.5's existing "starter-pack" reference and
+-- the existing knowledge_check rows attached to m3.3 stay valid —
+-- they're now the 3.3a checks.
+----------------------------------------------------------------------
+
+-- 1. Slim m3.3 down to default-brief-only content + rename.
+UPDATE addie.lessons
+SET
+  title        = '3.3a · Default brief: Role · Task · Context · Format',
+  duration_min = 12,
+  body_md      = $LESSON$
+The default brief is the prompt shape you'll reach for nine times out of ten. Four parts, in order: who the model should be, what to do, what material to work from, what the output should look like.
+
+## SCRIPT (verbatim)
+
+> [stat] 4 | The four parts of every working prompt | Role · Task · Context · Format. Skip any one and the model fills the gap with someone else's defaults.
+
+| # | Part | What it does | One-line example |
+|---|---|---|---|
+| 1 | Role | Tells the model who to be | "You are a compliance analyst at a community bank." |
+| 2 | Task | Tells the model what to do | "Summarize the change below for branch tellers." |
+| 3 | Context | Gives the model the material | (paste the public rule excerpt) |
+| 4 | Format | Constrains the output shape | "Five bullets, under 150 words, end with one line tellers can read aloud." |
+
+> [tip] When a prompt isn't working, audit the four parts. Nine times out of ten the missing piece is task-audience or format.
+
+> [warn] Context is where data-discipline breaks. "Anything the model needs to know" is the slot where people paste real member files. Describe the situation, not the person — every time. Even "public" material (regulator letters, vendor proposals, confidential-marked drafts) may need to clear your institutional approval channel before it leaves your environment.
+
+### Putting it together — the full default brief
+
+> You are a compliance analyst at a community bank. Summarize the [[Gloss:Reg E]] change below for branch tellers. Five bullets, under 150 words, end with one line tellers can read aloud to a member at the window.
+>
+> [paste the public CFPB summary or the FRB amendment text here]
+
+That's the whole pattern. The other four advanced shapes (next lesson) only come out when this default isn't enough.
+$LESSON$,
+  shell_kind   = 'step'
+WHERE id = 'm3.3';
+
+-- 2. m3.4 bumps to ordinal 5 to make room for m3.3b at ordinal 4.
+UPDATE addie.lessons SET ordinal = 5 WHERE id = 'm3.4';
+
+-- 3. m3.5 bumps to ordinal 6.
+UPDATE addie.lessons SET ordinal = 6 WHERE id = 'm3.5';
+
+-- 4. Insert the new m3.3b lesson (advanced patterns).
+INSERT INTO addie.lessons (
+  id, module_id, ordinal, title, modality, duration_min,
+  is_branched, exercise_id, takeaway_artifact_type, body_md,
+  objective_md, transfer_md, published, shell_kind
+)
+VALUES (
+  'm3.3b',
+  'm3',
+  4,
+  '3.3b · Advanced patterns: when the default brief is not enough',
+  'reading',
+  15,
+  false,
+  NULL,
+  NULL,
+  $LESSON$
+The default brief from 3.3a covers most one-shot prompts. Four advanced patterns cover the rest. Reach for them only when the default brief misfires in a specific, named way.
+
+## SCRIPT (verbatim)
+
+> [stat] 4 | Four advanced patterns | Show examples first · Make it think out loud · Constraints · Ask what is missing. Each one fixes a specific failure mode the default brief left on the table.
+
+| Pattern | Reach for it when | The slot to fill |
+|---|---|---|
+| 1. Show examples first *(few-shot)* | Style or structure is off — the model is doing the right thing in the wrong shape | Two complete input→output pairs, then your real input |
+| 2. Make it think out loud *(chain-of-thought)* | Reasoning is required — comparing policies, what-ifs, fee scenarios | "Walk through your reasoning, then give me the answer." One line is enough. |
+| 3. Constraints | The output reads invented — pin down what's out of bounds | "Do not invent X, Y, Z. If it's not in the source, say so." |
+| 4. Ask what is missing | The output is generic — the model didn't have enough to specialize on | "Before drafting, tell me what additional context would let you write a sharper version." |
+
+### Pattern 1 — Show examples first
+
+When you want a specific style or structure, show two short examples before asking for the third. The model copies the shape of what you showed it more reliably than it follows abstract instructions.
+
+> Rewrite each customer complaint summary in a calm, empathetic tone. Example 1: "Late fee dispute, customer unhappy" → "A member is upset about a late fee they feel was unfair." Example 2: "Lost card, customer angry" → "A member is frustrated after losing their debit card and needs help quickly." Now rewrite: "Loan denied, customer confused."
+
+### Pattern 2 — Make it think out loud
+
+For anything that requires reasoning — comparing policies, walking a what-if, pricing a fee scenario — ask the model to think before it answers. The output gets noticeably more careful.
+
+> Walk through the steps you would take before answering. Then give me your answer. Question: under our overdraft policy below, does a $4 latte purchase that goes $0.30 negative trigger a fee, and what should I tell the member?
+
+> [warn] Asking the model to think out loud makes it preamble. Want only the answer? "Walk through reasoning, then output only the final answer marked with a heading." Two patterns, one prompt.
+
+### Pattern 3 — Constraints
+
+The model will gladly invent. Tell it what is out of bounds. Constraints are the difference between a draft you can use and a draft you have to fact-check line by line.
+
+> Do not cite any regulation that is not named in the text I provide. Do not invent fee amounts or dates. If something is not in the source, say "not specified in the source."
+
+### Pattern 4 — Ask what is missing
+
+When the model gives you a generic answer, the cause is almost always that you did not give it enough to specialize on. Flip the move: ask the model what it would need to do a better job.
+
+> Before drafting, tell me what additional context would let you write a sharper version. Then draft the version you can with what I gave you.
+
+### Putting them together
+
+These patterns stack. A real working prompt for a banker often combines the default brief (Role · Task · Context · Format) with constraints (3) and a chain-of-thought line (2) for any reasoning step. Few-shot (1) becomes useful when output shape matters more than substance; "ask what is missing" (4) is the recovery move when something has clearly gone generic.
+$LESSON$,
+  NULL,
+  NULL,
+  true,
+  'step'
+)
+ON CONFLICT (id) DO UPDATE
+SET
+  ordinal      = EXCLUDED.ordinal,
+  title        = EXCLUDED.title,
+  modality     = EXCLUDED.modality,
+  duration_min = EXCLUDED.duration_min,
+  body_md      = EXCLUDED.body_md,
+  shell_kind   = EXCLUDED.shell_kind,
+  published    = EXCLUDED.published;
+
+-- 5. One knowledge check for m3.3b so the LessonStepPlayer "Check"
+-- step has content. (Single-question minimum; richer checks land
+-- in a follow-up content pass.)
+INSERT INTO addie.knowledge_checks (id, lesson_id, ordinal, prompt, options) VALUES
+('11111111-3300-0000-000b-000000000001', 'm3.3b', 1,
+ 'You ask the model to compare two competing policy interpretations and the answer feels rushed. Which advanced pattern is the strongest first move?',
+ '[
+   {"id":"a","label":"Show examples first","correct":false,"explanation":"Examples-first is best when style or structure is off, not when the reasoning step is light."},
+   {"id":"b","label":"Make it think out loud","correct":true,"explanation":"Right. Chain-of-thought is the reasoning-required pattern — one line asking the model to walk its steps before answering."},
+   {"id":"c","label":"Constraints","correct":false,"explanation":"Constraints pin down what is out of bounds. Useful, but the rushed-answer failure is about reasoning, not fabrication."},
+   {"id":"d","label":"Ask what is missing","correct":false,"explanation":"That pattern fixes generic answers, not rushed ones. Try chain-of-thought first."}
+ ]'::jsonb)
+ON CONFLICT (id) DO UPDATE
+SET prompt = EXCLUDED.prompt, options = EXCLUDED.options;
