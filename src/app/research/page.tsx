@@ -219,7 +219,7 @@ export default async function ResearchArchivePage() {
           </>
         ),
         actions: [
-          { label: 'Take the assessment first', href: '/assessment', variant: 'gold' },
+          { label: 'Take the assessment', href: '/assessment', variant: 'gold' },
           { label: 'See the curriculum', href: '/education', variant: 'ghost-dark' },
         ],
       }}

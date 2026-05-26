@@ -476,7 +476,7 @@ export default function AssessmentLandingPage() {
                 <li><CheckIcon className="mk-ic" />Briefing for leadership</li>
               </ul>
               <Button variant="ink" size="lg" href="/for-institutions">
-                Book Briefing
+                Book a briefing
               </Button>
             </div>
           </div>

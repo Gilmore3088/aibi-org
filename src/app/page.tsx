@@ -718,7 +718,7 @@ export default function HomePage() {
         heading={<>Build confidence. Keep control.</>}
         body={<>A practical path for financial professionals to assess, train, practice, and document AI-supported work.</>}
         actions={[
-          { label: 'Start Free Assessment', href: '/assessment', variant: 'gold' },
+          { label: 'Take the assessment', href: '/assessment', variant: 'gold' },
           { label: 'Preview Toolbox', href: '/my-toolbox', variant: 'ghost-dark' },
         ]}
       />
