@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sketch · Short Landing · AiBI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="_mockup.css">
+  <style>
+    /* Audience pills */
+    .aud-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+    .aud-row .aud { padding: 5px 11px; border-radius: 999px; border: 1px solid rgba(244,241,231,0.18); background: rgba(244,241,231,0.05); font-size: 11px; font-weight: 700; letter-spacing: 0.06em; color: rgba(244,241,231,0.7); }
+
+    /* Hero product visual (right side of hero) */
+    .hpv { position: relative; }
+    .hpv .deco-corner { position: absolute; right: -24px; top: -24px; width: 112px; height: 112px; border: 1px solid rgba(200,162,74,0.30); border-radius: 50%; pointer-events: none; }
+    .hpv .deco-glow { position: absolute; left: -32px; bottom: -32px; width: 144px; height: 144px; background: rgba(200,162,74,0.10); filter: blur(36px); border-radius: 50%; pointer-events: none; }
+    .hpv-card { position: relative; background: #fff; color: var(--ink); border-radius: 28px; overflow: hidden; box-shadow: 0 30px 60px -20px rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.08); }
+    .hpv-head { padding: 16px 20px; background: var(--cream); border-bottom: 1px solid var(--slate-200); display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+    .hpv-head .k { font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-deep); }
+    .hpv-head .t { font-size: 18px; font-weight: 600; margin-top: 2px; }
+    .hpv-head .pill { background: rgba(4,120,87,0.12); color: var(--emerald-700); padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 700; }
+    .hpv-grid { display: grid; grid-template-columns: 1fr; }
+    @media (min-width: 720px) { .hpv-grid { grid-template-columns: 0.42fr 0.58fr; } }
+    .hpv-left { background: var(--ink); color: #fff; padding: 20px; border-right: 1px solid rgba(255,255,255,0.05); }
+    .hpv-left .k { font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-soft); }
+    .hpv-left .score { display: flex; align-items: flex-end; gap: 6px; margin-top: 12px; }
+    .hpv-left .v { font-size: 56px; font-weight: 700; color: var(--gold-soft); line-height: 1; }
+    .hpv-left .u { font-size: 13px; color: rgba(255,255,255,0.5); padding-bottom: 6px; }
+    .hpv-left .gap { margin-top: 14px; padding: 10px 12px; background: rgba(255,255,255,0.10); border-radius: 10px; font-size: 13px; font-weight: 700; color: var(--gold-soft); }
+    .hpv-left .items { margin-top: 18px; display: grid; gap: 8px; }
+    .hpv-left .item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: rgba(255,255,255,0.10); border-radius: 10px; font-size: 13px; color: rgba(255,255,255,0.8); }
+    .hpv-left .item svg { color: var(--gold); flex: none; }
+    .hpv-right { padding: 20px; display: grid; gap: 12px; }
+    .hpv-row { display: flex; gap: 12px; align-items: center; padding: 14px 16px; background: #fff; border: 1px solid rgba(7,26,47,0.10); border-radius: 14px; }
+    .hpv-row .pic { width: 40px; height: 40px; border-radius: 12px; background: var(--cream); color: var(--gold-deep); display: inline-flex; align-items: center; justify-content: center; flex: none; }
+    .hpv-row .nm { font-weight: 700; font-size: 14px; }
+    .hpv-row .meta { font-size: 12px; color: var(--slate-500); margin-top: 2px; }
+    .hpv-row .badge { margin-left: auto; font-size: 11px; font-weight: 700; color: var(--gold-deep); }
+    .hpv-row.cream { background: var(--cream); border-color: rgba(7,26,47,0.06); }
+    .hpv-row.cream .pic { background: #fff; color: var(--gold); }
+    .hpv-saved { background: var(--ink); color: #fff; padding: 16px 18px; border-radius: 14px; }
+    .hpv-saved .k { font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-soft); }
+    .hpv-saved .nm { font-weight: 700; font-size: 18px; margin-top: 6px; }
+    .hpv-saved .stats { margin-top: 12px; display: grid; gap: 8px; grid-template-columns: 1fr 1fr 1fr; }
+    .hpv-saved .stat { background: rgba(255,255,255,0.10); padding: 10px 12px; border-radius: 10px; }
+    .hpv-saved .stat .k { color: rgba(255,255,255,0.5); font-size: 10px; }
+    .hpv-saved .stat .v { color: var(--gold-soft); font-weight: 700; font-size: 13px; margin-top: 2px; }
+
+    /* Value path scope cards */
+    .scope-head { display: grid; gap: 24px; grid-template-columns: 1fr; margin-bottom: 32px; align-items: end; }
+    @media (min-width: 980px) { .scope-head { grid-template-columns: 0.42fr 0.58fr; } }
+    .scope-head p.lede-l { font-size: 17px; color: var(--slate-600); line-height: 1.65; }
+    .scope-grid { display: grid; gap: 16px; grid-template-columns: 1fr; }
+    @media (min-width: 700px) { .scope-grid { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 1100px) { .scope-grid { grid-template-columns: repeat(4, 1fr); } }
+    .scope-card { background: #fff; border: 1px solid rgba(7,26,47,0.10); border-radius: 20px; padding: 22px; transition: transform .12s, box-shadow .12s; }
+    .scope-card:hover { transform: translateY(-3px); box-shadow: 0 20px 40px -22px rgba(0,0,0,0.18); }
+    .scope-card .top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+    .scope-card .top svg { color: var(--gold); }
+    .scope-card .num { font-size: 13px; font-weight: 700; color: var(--gold-deep); }
+    .scope-card h3 { font-size: 22px; font-weight: 600; margin: 18px 0 8px; line-height: 1.2; }
+    .scope-card p { color: var(--slate-600); font-size: 13px; margin: 0; }
+
+    /* ROI calculator */
+    .roi-head { display: flex; justify-content: space-between; align-items: end; gap: 20px; flex-wrap: wrap; margin-bottom: 32px; }
+    .roi-head h2 { max-width: 26ch; }
+    .roi-head .role-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+    .roi-head .role-pill { background: var(--cream); padding: 7px 13px; border-radius: 999px; font-size: 12px; font-weight: 700; color: var(--ink); }
+
+    .roi-card { background: #fff; border: 1px solid rgba(7,26,47,0.10); border-radius: 28px; overflow: hidden; box-shadow: 0 24px 50px -20px rgba(0,0,0,0.18); }
+    .roi-top { background: var(--ink); color: #fff; padding: 22px 24px; display: flex; justify-content: space-between; align-items: center; gap: 14px; }
+    .roi-top .k { font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-soft); }
+    .roi-top .t { font-size: 24px; font-weight: 600; margin-top: 4px; }
+    .roi-top svg { color: var(--gold); width: 28px; height: 28px; }
+    .roi-grid { display: grid; grid-template-columns: 1fr; }
+    @media (min-width: 900px) { .roi-grid { grid-template-columns: 0.48fr 0.52fr; } }
+    .roi-controls { background: var(--cream); padding: 24px; border-right: 1px solid var(--slate-200); border-bottom: 1px solid var(--slate-200); }
+    .rng { margin-bottom: 22px; }
+    .rng:last-child { margin-bottom: 0; }
+    .rng .top { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 10px; }
+    .rng .lab { font-size: 13px; font-weight: 600; color: var(--slate-600); }
+    .rng .v { padding: 4px 12px; background: #fff; border-radius: 999px; font-size: 13px; font-weight: 700; color: var(--gold-deep); font-variant-numeric: tabular-nums; min-width: 60px; text-align: center; }
+    .rng input[type=range] {
+      -webkit-appearance: none; appearance: none;
+      width: 100%; height: 4px; background: var(--slate-200); border-radius: 999px; outline: none; cursor: pointer;
+    }
+    .rng input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 20px; height: 20px; border-radius: 50%; background: var(--ink); border: 3px solid var(--gold); cursor: grab; }
+    .rng input[type=range]::-moz-range-thumb { width: 20px; height: 20px; border-radius: 50%; background: var(--ink); border: 3px solid var(--gold); cursor: grab; }
+
+    .roi-result { padding: 24px; }
+    .roi-hero { background: var(--ink); color: #fff; padding: 22px 24px; border-radius: 18px; }
+    .roi-hero .k { color: rgba(255,255,255,0.55); font-size: 13px; }
+    .roi-hero .v { font-size: 48px; font-weight: 700; color: var(--gold-soft); margin-top: 6px; line-height: 1; font-variant-numeric: tabular-nums; }
+    .roi-hero .meta { color: rgba(255,255,255,0.6); font-size: 13px; margin-top: 10px; line-height: 1.55; }
+    .roi-metrics { margin-top: 16px; display: grid; gap: 10px; grid-template-columns: 1fr 1fr; }
+    .mx { background: var(--cream); padding: 12px 14px; border-radius: 12px; }
+    .mx .k { font-size: 11px; color: var(--slate-500); }
+    .mx .v { font-weight: 700; font-size: 16px; margin-top: 4px; font-variant-numeric: tabular-nums; }
+    .roi-note { color: var(--slate-500); font-size: 12px; margin-top: 14px; line-height: 1.6; }
+  </style>
+</head>
+<body>
+
+<header class="shell-header">
+  <div class="container header-inner">
+    <a class="brand" href="mockup.html">
+      <span class="seal"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg></span>
+      <span><span class="wm-1">The AI Banking Institute</span><br><span class="wm-2">AI training for banking teams</span></span>
+    </a>
+    <nav class="nav">
+      <a class="on" href="landing-short.html">Home</a>
+      <a href="course.html">Course</a>
+      <a href="assessment.html">Assessment</a>
+      <a href="sandbox.html">Sandbox</a>
+      <a href="toolbox.html">Toolbox</a>
+      <a href="teams.html">Teams</a>
+    </nav>
+    <a class="btn btn-gold" href="assessment.html">Get Readiness Score</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="deco"><div class="deco-ring"></div><div class="deco-blur"></div></div>
+  <div class="container hero-inner">
+    <div>
+      <div class="eyebrow">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="16" r="1"/><rect x="3" y="10" width="18" height="12" rx="2"/><path d="M7 10V7a5 5 0 0 1 9.33-2.5"/></svg>
+        Practical AI enablement for banks
+      </div>
+      <h1>AI training that becomes real banking work.</h1>
+      <p class="lede">Assess readiness, train by role, practice safely, and build reusable prompts, skills, SOPs, and review checklists.</p>
+      <div class="aud-row">
+        <span class="aud">Banks</span>
+        <span class="aud">Credit unions</span>
+        <span class="aud">Compliance</span>
+        <span class="aud">Retail</span>
+        <span class="aud">Operations</span>
+      </div>
+      <div class="ctas">
+        <a class="btn btn-lg btn-gold" href="assessment.html">
+          Get My AI Readiness Score
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a class="btn btn-lg btn-ghost-dark" href="toolbox.html">See What Learners Build</a>
+      </div>
+    </div>
+
+    <div class="hpv">
+      <div class="deco-corner"></div>
+      <div class="deco-glow"></div>
+      <div class="hpv-card">
+        <div class="hpv-head">
+          <div>
+            <div class="k">AiBI Workbench</div>
+            <div class="t">From lesson to reusable workflow</div>
+          </div>
+          <span class="pill">Review-ready</span>
+        </div>
+        <div class="hpv-grid">
+          <div class="hpv-left">
+            <div class="k">Sample readiness score</div>
+            <div class="score"><div class="v">62</div><div class="u">/100</div></div>
+            <div class="gap">Gap: workflow documentation</div>
+            <div class="items">
+              <div class="item">
+                <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                Role path selected
+              </div>
+              <div class="item">
+                <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                Sandbox assigned
+              </div>
+              <div class="item">
+                <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                Workflow saved
+              </div>
+            </div>
+          </div>
+          <div class="hpv-right">
+            <div class="hpv-row">
+              <span class="pic"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span>
+              <div>
+                <div class="nm">Foundation Course</div>
+                <div class="meta">Prompt → Skill → Workflow</div>
+              </div>
+              <span class="badge">In progress</span>
+            </div>
+            <div class="hpv-row cream">
+              <span class="pic"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.8L20 10l-4.6 3.4L17.2 20 12 16.6 6.8 20l1.8-6.6L4 10l6.1-1.2z"/></svg></span>
+              <div>
+                <div class="nm">Sandbox Practice</div>
+                <div class="meta">Procedure cleanup, safe sample data</div>
+              </div>
+            </div>
+            <div class="hpv-saved">
+              <div class="k">Saved Toolbox Asset</div>
+              <div class="nm">Procedure-to-Job-Aid Skill</div>
+              <div class="stats">
+                <div class="stat"><div class="k">Type</div><div class="v">Skill</div></div>
+                <div class="stat"><div class="k">Risk</div><div class="v">Medium</div></div>
+                <div class="stat"><div class="k">Review</div><div class="v">Required</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VALUE PATH -->
+<section class="std">
+  <div class="container">
+    <div class="scope-head">
+      <div>
+        <div class="section-head" style="margin-bottom:0">
+          <div class="k">Value Path</div>
+          <h2 style="margin-top:8px">From awareness to reviewed workflows.</h2>
+        </div>
+      </div>
+      <p class="lede-l">AiBI closes the execution gap: find readiness gaps, train by role, practice with safe scenarios, then save reviewed workflows and skills.</p>
+    </div>
+    <div class="scope-grid">
+      <div class="scope-card">
+        <div class="top"><svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg><span class="num">01</span></div>
+        <h3>Find gaps</h3><p>See readiness by role.</p>
+      </div>
+      <div class="scope-card">
+        <div class="top"><svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg><span class="num">02</span></div>
+        <h3>Train by role</h3><p>Build practical AI skill.</p>
+      </div>
+      <div class="scope-card">
+        <div class="top"><svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.8L20 10l-4.6 3.4L17.2 20 12 16.6 6.8 20l1.8-6.6L4 10l6.1-1.2z"/></svg><span class="num">03</span></div>
+        <h3>Practice safely</h3><p>Use guided sample scenarios.</p>
+      </div>
+      <div class="scope-card">
+        <div class="top"><svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 12 17 2 12"/><polygon points="12 2 22 7 12 12 2 7"/></svg><span class="num">04</span></div>
+        <h3>Save workflows</h3><p>Create reviewed assets.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ROI CALCULATOR -->
+<section class="std" style="background:#fff">
+  <div class="container">
+    <div class="roi-head">
+      <div class="section-head" style="margin-bottom:0">
+        <div class="k">Impact</div>
+        <h2 style="margin-top:8px">What could one hour saved per employee be worth?</h2>
+      </div>
+      <div class="role-pills">
+        <span class="role-pill">Compliance</span>
+        <span class="role-pill">Retail</span>
+        <span class="role-pill">Marketing</span>
+        <span class="role-pill">Operations</span>
+      </div>
+    </div>
+
+    <div class="roi-card">
+      <div class="roi-top">
+        <div>
+          <div class="k">Impact Calculator</div>
+          <div class="t">Savings calculator</div>
+        </div>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="10" y2="10"/><line x1="12" y1="10" x2="14" y2="10"/><line x1="16" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="10" y2="14"/><line x1="12" y1="14" x2="14" y2="14"/><line x1="16" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="10" y2="18"/><line x1="12" y1="18" x2="14" y2="18"/><line x1="16" y1="18" x2="16" y2="18"/></svg>
+      </div>
+      <div class="roi-grid">
+        <div class="roi-controls">
+          <div class="rng">
+            <div class="top"><span class="lab">Employees trained</span><span class="v" id="v-emp">50</span></div>
+            <input type="range" min="5" max="500" step="5" value="50" id="r-emp">
+          </div>
+          <div class="rng">
+            <div class="top"><span class="lab">Hours saved / month / user</span><span class="v" id="v-hrs">2</span></div>
+            <input type="range" min="1" max="10" step="1" value="2" id="r-hrs">
+          </div>
+          <div class="rng">
+            <div class="top"><span class="lab">Fully loaded hourly rate</span><span class="v" id="v-rate">$45</span></div>
+            <input type="range" min="25" max="125" step="5" value="45" id="r-rate">
+          </div>
+          <div class="rng">
+            <div class="top"><span class="lab">Adoption rate</span><span class="v" id="v-adopt">30%</span></div>
+            <input type="range" min="10" max="100" step="5" value="30" id="r-adopt">
+          </div>
+        </div>
+        <div class="roi-result">
+          <div class="roi-hero">
+            <div class="k">Estimated annual value</div>
+            <div class="v" id="v-annual">$16,200</div>
+            <div class="meta">Conservative estimate based only on time savings.</div>
+          </div>
+          <div class="roi-metrics">
+            <div class="mx"><div class="k">Active users</div><div class="v" id="v-users">15</div></div>
+            <div class="mx"><div class="k">Hours / month</div><div class="v" id="v-monthly-hrs">30</div></div>
+            <div class="mx"><div class="k">Monthly value</div><div class="v" id="v-monthly-val">$1,350</div></div>
+            <div class="mx"><div class="k">Training cost</div><div class="v">$295 / user</div></div>
+          </div>
+          <div class="roi-note">Upside not included: reduced rework, better documentation, faster review cycles, stronger controls.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="container">
+    <div class="cta-band">
+      <div>
+        <div class="k">The goal is not to teach AI as a topic.</div>
+        <h2>Start with readiness. Leave with reviewed workflows.</h2>
+      </div>
+      <div class="cta-actions">
+        <a class="btn btn-lg btn-gold" href="assessment.html">Get My AI Readiness Score</a>
+        <a class="btn btn-lg btn-ghost-dark" href="toolbox.html">See What Learners Build</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ribbon">SKETCH · <span>Short Landing</span></div>
+
+<script>
+  const fmt = v => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(v);
+
+  function recalc() {
+    const emp = +document.getElementById('r-emp').value;
+    const hrs = +document.getElementById('r-hrs').value;
+    const rate = +document.getElementById('r-rate').value;
+    const adopt = +document.getElementById('r-adopt').value;
+    document.getElementById('v-emp').textContent = emp.toLocaleString();
+    document.getElementById('v-hrs').textContent = hrs;
+    document.getElementById('v-rate').textContent = '$' + rate;
+    document.getElementById('v-adopt').textContent = adopt + '%';
+    const users = Math.round(emp * (adopt / 100));
+    const monthlyHrs = users * hrs;
+    const monthlyVal = monthlyHrs * rate;
+    const annualVal = monthlyVal * 12;
+    document.getElementById('v-users').textContent = users.toLocaleString();
+    document.getElementById('v-monthly-hrs').textContent = monthlyHrs.toLocaleString();
+    document.getElementById('v-monthly-val').textContent = fmt(monthlyVal);
+    document.getElementById('v-annual').textContent = fmt(annualVal);
+  }
+  ['r-emp','r-hrs','r-rate','r-adopt'].forEach(id => document.getElementById(id).addEventListener('input', recalc));
+  recalc();
+</script>
+
+</body>
+</html>

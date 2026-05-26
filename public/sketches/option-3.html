@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sketch · Option 3 (Expressive) · AiBI Homepage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/sketches/_shared.css">
+  <style>
+    /* Option 3 — Expressive: dark ink hero with live preview switcher, dark inset on path builder.
+       Same Ledger tokens, more "platform" energy. */
+
+    .hero-3 { background: var(--ledger-ink); color: var(--ledger-paper); padding: 80px 0 72px; position: relative; }
+    .hero-3 .container { display: grid; grid-template-columns: 1fr 1.05fr; gap: 56px; align-items: center; }
+    @media (max-width: 980px) { .hero-3 .container { grid-template-columns: 1fr; } }
+    .hero-3 .kicker { color: #E6D39B; margin-bottom: 18px; }
+    .hero-3 .h1 { color: var(--ledger-paper); }
+    .hero-3 .lede { color: rgba(244,241,231,0.7); max-width: 52ch; }
+    .hero-3 .ctas { display: flex; gap: 12px; margin-top: 28px; }
+
+    /* Preview switcher card sits on dark ground */
+    .preview {
+      background: var(--ledger-paper); color: var(--ledger-ink);
+      border-radius: 4px; box-shadow: var(--ledger-shadow);
+      border: 1px solid rgba(244,241,231,0.08);
+      overflow: hidden;
+    }
+    .preview .top { display: flex; justify-content: space-between; align-items: center; padding: 18px 22px; border-bottom: 1px solid var(--ledger-rule); background: var(--ledger-bg); }
+    .preview .top .l { font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ledger-accent); }
+    .preview .top .r { font-family: "Newsreader", Georgia, serif; font-weight: 600; font-size: 18px; }
+
+    .preview .tabs { display: grid; grid-template-columns: repeat(3, 1fr); border-bottom: 1px solid var(--ledger-rule); }
+    .preview .tabs button { background: transparent; border: 0; border-right: 1px solid var(--ledger-rule); padding: 14px 16px; font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ledger-slate); cursor: pointer; }
+    .preview .tabs button:last-child { border-right: 0; }
+    .preview .tabs button.on { color: var(--ledger-ink); background: var(--ledger-bg); border-bottom: 2px solid var(--ledger-accent); margin-bottom: -1px; font-weight: 600; }
+
+    .preview .body { padding: 24px; display: grid; grid-template-columns: 0.5fr 0.5fr; gap: 20px; min-height: 320px; }
+    @media (max-width: 720px) { .preview .body { grid-template-columns: 1fr; } }
+    .preview .stat { padding: 18px; background: var(--ledger-bg); border: 1px solid var(--ledger-rule); border-radius: 3px; }
+    .preview .stat .k { font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ledger-slate); }
+    .preview .stat .v { font-family: "Newsreader", Georgia, serif; font-weight: 600; font-size: 72px; line-height: 0.95; margin-top: 8px; }
+    .preview .stat .u { font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: 0.14em; color: var(--ledger-slate); margin-top: 6px; }
+    .preview .list { display: grid; gap: 8px; align-content: start; }
+    .preview .list .row { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; background: var(--ledger-bg); border: 1px solid var(--ledger-rule); border-radius: 3px; font-size: 13px; }
+    .preview .list .row .v { font-family: "JetBrains Mono", monospace; font-size: 11px; color: var(--ledger-accent); }
+
+    /* Hero corner mark — single hairline arc, no blur/gradient */
+    .corner-mark {
+      position: absolute; right: 0; top: 0; width: 280px; height: 280px;
+      border-left: 1px solid rgba(230, 211, 155, 0.18);
+      border-bottom: 1px solid rgba(230, 211, 155, 0.18);
+      pointer-events: none;
+    }
+
+    /* Product trio — dark-on-paper stacked cards with gold rule top */
+    .trio3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .trio3 .card3 { background: var(--ledger-paper); border: 1px solid var(--ledger-rule); border-radius: 3px; padding: 0; overflow: hidden; box-shadow: var(--ledger-shadow); }
+    .trio3 .card3 .rule { height: 3px; background: var(--ledger-accent); }
+    .trio3 .card3 .inner { padding: 28px; display: grid; gap: 14px; }
+    .trio3 .card3 .head { display: flex; justify-content: space-between; align-items: baseline; }
+    .trio3 .card3 .num { font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: 0.16em; color: var(--ledger-accent); }
+    .trio3 .card3 .price { font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: 0.14em; color: var(--ledger-slate); }
+    .trio3 .card3 .title { font-family: "Newsreader", Georgia, serif; font-weight: 600; font-size: 28px; line-height: 1.1; }
+    .trio3 .card3 .meta { font-size: 14px; color: var(--ledger-slate); }
+    .trio3 .card3 .out { padding: 14px 16px; background: var(--ledger-bg); border: 1px solid var(--ledger-rule); font-size: 14px; }
+    .trio3 .card3 .next { padding-top: 4px; }
+    @media (max-width: 860px) { .trio3 { grid-template-columns: 1fr; } }
+
+    /* Path builder — dark inset on parchment ground */
+    .pb3 { background: var(--ledger-paper); border: 1px solid var(--ledger-rule); border-radius: 4px; overflow: hidden; box-shadow: var(--ledger-shadow); display: grid; grid-template-columns: 0.42fr 0.58fr; }
+    .pb3 .controls { background: var(--ledger-ink); color: var(--ledger-paper); padding: 32px; }
+    .pb3 .controls h4 { font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: #E6D39B; margin: 0 0 14px; font-weight: 600; }
+    .pb3 .controls h4 + h4 { margin-top: 24px; }
+    .pb3 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .pb3 .chip { font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; padding: 9px 13px; border: 1px solid rgba(244,241,231,0.18); border-radius: 2px; background: transparent; color: rgba(244,241,231,0.72); cursor: pointer; }
+    .pb3 .chip.on { background: var(--ledger-accent); color: var(--ledger-paper); border-color: var(--ledger-accent); }
+    .pb3 .rx { padding: 32px; display: grid; gap: 18px; align-content: start; }
+    .pb3 .rx .top { display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 14px; border-bottom: 1px solid var(--ledger-rule); }
+    .pb3 .rx .top .t { font-family: "Newsreader", Georgia, serif; font-size: 24px; font-weight: 600; }
+    .pb3 .rx .path { font-family: "JetBrains Mono", monospace; font-size: 12px; line-height: 1.7; color: var(--ledger-ink); padding: 14px 16px; background: var(--ledger-bg); border-left: 2px solid var(--ledger-accent); }
+    .pb3 .rx .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .pb3 .rx .pair > div { padding: 14px 16px; background: var(--ledger-bg); border: 1px solid var(--ledger-rule); border-radius: 3px; }
+    .pb3 .rx .pair .l { font-family: "JetBrains Mono", monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ledger-slate); margin-bottom: 6px; }
+    .pb3 .rx .why { background: var(--ledger-ink); color: #E6D39B; padding: 18px 20px; border-radius: 3px; font-family: "Newsreader", Georgia, serif; font-size: 20px; line-height: 1.35; }
+    @media (max-width: 980px) { .pb3 { grid-template-columns: 1fr; } }
+
+    /* Role preview — split card, dark left, light right */
+    .role3 { background: var(--ledger-paper); border: 1px solid var(--ledger-rule); border-radius: 4px; overflow: hidden; box-shadow: var(--ledger-shadow); display: grid; grid-template-columns: 0.55fr 0.45fr; }
+    .role3 .left { background: var(--ledger-ink); color: var(--ledger-paper); padding: 36px; }
+    .role3 .left .label { font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: 0.18em; color: #E6D39B; text-transform: uppercase; }
+    .role3 .left h3 { font-family: "Newsreader", Georgia, serif; font-weight: 600; font-size: 40px; line-height: 1.05; margin: 12px 0 24px; }
+    .role3 .clip { background: var(--ledger-paper); color: var(--ledger-ink); border-radius: 3px; padding: 22px; box-shadow: var(--ledger-shadow); }
+    .role3 .clip .top { display: flex; justify-content: space-between; padding-bottom: 12px; border-bottom: 2px solid var(--ledger-ink); margin-bottom: 14px; }
+    .role3 .clip .top .k { font-family: "JetBrains Mono", monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ledger-accent); }
+    .role3 .clip .row { display: grid; grid-template-columns: 90px 1fr; gap: 12px; padding: 8px 0; border-bottom: 1px dotted var(--ledger-rule); font-size: 13px; }
+    .role3 .clip .row .k { font-family: "JetBrains Mono", monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ledger-slate); }
+    .role3 .right { padding: 36px; }
+    .role3 .right .label { font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: 0.18em; color: var(--ledger-accent); text-transform: uppercase; margin-bottom: 16px; display: block; }
+    .role3 .right .row { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; background: var(--ledger-bg); border: 1px solid var(--ledger-rule); border-radius: 3px; margin-bottom: 10px; font-size: 14px; }
+    .role3 .right .row .name { font-weight: 600; }
+    .role3 .right .row .arr { color: var(--ledger-slate); }
+    .role3 .role-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+    .role3 .role-tabs button { font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; padding: 8px 12px; border-radius: 2px; background: var(--ledger-paper); border: 1px solid var(--ledger-rule-strong); cursor: pointer; }
+    .role3 .role-tabs button.on { background: var(--ledger-ink); color: var(--ledger-paper); border-color: var(--ledger-ink); }
+    @media (max-width: 980px) { .role3 { grid-template-columns: 1fr; } }
+
+    /* Sandbox — same as Option 1 (this isn't where Option 3 needs more energy) */
+    .steps { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--ledger-rule); border-radius: 3px; background: var(--ledger-paper); margin-bottom: 18px; }
+    .steps > div { padding: 20px 22px; border-right: 1px solid var(--ledger-rule); }
+    .steps > div:last-child { border-right: 0; }
+    .steps .n { font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: 0.16em; color: var(--ledger-accent); }
+    .steps .t { font-family: "Newsreader", Georgia, serif; font-weight: 600; font-size: 20px; margin-top: 6px; }
+    .steps .d { font-size: 13px; color: var(--ledger-slate); margin-top: 4px; }
+    .sample { background: var(--ledger-paper); border: 1px solid var(--ledger-rule); border-radius: 3px; padding: 24px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
+    .sample > div { padding: 0 20px; border-right: 1px dotted var(--ledger-rule); }
+    .sample > div:first-child { padding-left: 0; }
+    .sample > div:last-child { padding-right: 0; border-right: 0; }
+    .sample .k { font-family: "JetBrains Mono", monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ledger-slate); }
+    .sample .v { font-size: 15px; margin-top: 8px; }
+    @media (max-width: 860px) { .steps, .sample { grid-template-columns: 1fr; } .steps > div { border-right: 0; border-bottom: 1px solid var(--ledger-rule); } .sample > div { border-right: 0; padding: 12px 0; } }
+
+    /* CTA — dark band with gold rule */
+    .cta3 { background: var(--ledger-ink); color: var(--ledger-paper); border-top: 3px solid var(--ledger-accent); padding: 64px 0; }
+    .cta3 .container { display: grid; grid-template-columns: 1.6fr 1fr; gap: 48px; align-items: center; }
+    .cta3 .kicker { color: #E6D39B; }
+    .cta3 .lede { color: rgba(244,241,231,0.7); }
+    @media (max-width: 860px) { .cta3 .container { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+<header class="site">
+  <div class="container">
+    <a class="wordmark" href="/sketches/option-3.html">
+      <span class="l1">The AI Banking</span>
+      <span class="l2">Institute</span>
+    </a>
+    <nav class="primary">
+      <a class="active" href="#">Home</a>
+      <a href="#">Course</a>
+      <a href="#">Assessment</a>
+      <a href="#">Sandbox</a>
+      <a href="#">Toolbox</a>
+      <a href="#">Teams</a>
+    </nav>
+    <a class="btn primary arrow" href="#">Start Free</a>
+  </div>
+</header>
+
+<!-- HERO (dark ground + live preview card) -->
+<section class="hero-3">
+  <div class="corner-mark"></div>
+  <div class="container">
+    <div>
+      <p class="kicker">Built for banks, credit unions, regulated teams</p>
+      <h1 class="h1 serif">Train people to use AI without losing control.</h1>
+      <p class="lede" style="margin-top:20px">
+        Assess readiness, practice safely, and turn useful prompts into documented workflows.
+      </p>
+      <div class="ctas">
+        <a class="btn gold arrow" href="#">Start Free Assessment</a>
+        <a class="btn ghost on-dark" href="#">Preview the Course</a>
+      </div>
+    </div>
+
+    <div class="preview" id="hero-preview">
+      <div class="top">
+        <span class="l">Platform preview</span>
+        <span class="r">Learner Command Center</span>
+      </div>
+      <div class="tabs" id="hero-tabs">
+        <button class="on" data-k="assessment">Assessment</button>
+        <button data-k="sandbox">Sandbox</button>
+        <button data-k="toolbox">Toolbox</button>
+      </div>
+      <div class="body" id="hero-body">
+        <!-- filled by JS -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCT TRIO -->
+<section>
+  <div class="container">
+    <div class="section-head">
+      <p class="kicker">Product Suite</p>
+      <h2 class="h2 serif">A clear path from interest to implementation.</h2>
+    </div>
+    <div class="trio3">
+      <div class="card3">
+        <div class="rule"></div>
+        <div class="inner">
+          <div class="head"><span class="num">№ 01</span><span class="price">Free · 3 min</span></div>
+          <div class="title">Readiness Assessment</div>
+          <div class="meta">8 questions · individual baseline</div>
+          <div class="out"><strong>Outcome:</strong> readiness score + starter artifact</div>
+          <a class="btn primary arrow next" href="#">Start here</a>
+        </div>
+      </div>
+      <div class="card3">
+        <div class="rule"></div>
+        <div class="inner">
+          <div class="head"><span class="num">№ 02</span><span class="price">$99 · 48 questions</span></div>
+          <div class="title">Maturity Assessment</div>
+          <div class="meta">Role-specific plan + dimension report</div>
+          <div class="out"><strong>Outcome:</strong> training plan with named gaps</div>
+          <a class="btn primary arrow next" href="#">Go deeper</a>
+        </div>
+      </div>
+      <div class="card3">
+        <div class="rule"></div>
+        <div class="inner">
+          <div class="head"><span class="num">№ 03</span><span class="price">$295 · self-paced</span></div>
+          <div class="title">Foundation Course</div>
+          <div class="meta">Course + toolbox · 4 modules</div>
+          <div class="out"><strong>Outcome:</strong> reusable workflows you can ship</div>
+          <a class="btn primary arrow next" href="#">Build capability</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PATH BUILDER -->
+<section>
+  <div class="container">
+    <div class="section-head">
+      <p class="kicker">Interactive Guidance</p>
+      <h2 class="h2 serif">Find your next best step.</h2>
+      <p class="lede">Select a role and a goal. We'll show you the path, the artifact you produce, and the value signal it sends to your examiner.</p>
+    </div>
+
+    <div class="pb3">
+      <div class="controls">
+        <h4>Role</h4>
+        <div class="chips">
+          <button class="chip on">Compliance</button>
+          <button class="chip">Retail</button>
+          <button class="chip">Marketing</button>
+          <button class="chip">Operations</button>
+        </div>
+        <h4>Goal</h4>
+        <div class="chips">
+          <button class="chip on">Document AI use safely</button>
+          <button class="chip">Save time on repeat work</button>
+          <button class="chip">Train my team</button>
+          <button class="chip">Build approved workflows</button>
+        </div>
+      </div>
+      <div class="rx">
+        <div class="top">
+          <div>
+            <p class="kicker muted" style="margin-bottom:6px">Recommended path</p>
+            <div class="t">Compliance · Document AI use safely</div>
+          </div>
+        </div>
+        <div class="path">Maturity Assessment&nbsp;&nbsp;→&nbsp;&nbsp;Foundation Course&nbsp;&nbsp;→&nbsp;&nbsp;Workflow SOP</div>
+        <div class="pair">
+          <div><div class="l">Artifact</div>AI use-case review packet</div>
+          <div><div class="l">Value signal</div>Examiner-ready documentation</div>
+        </div>
+        <div class="why">"Reduce ambiguity before AI tools touch regulated work."</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ROLE PREVIEW -->
+<section>
+  <div class="container">
+    <div class="section-head">
+      <p class="kicker">Role Previews</p>
+      <h2 class="h2 serif">Show the artifact. Then teach the skill.</h2>
+    </div>
+
+    <div class="role-tabs role3" style="margin-bottom:18px">
+      <div class="role-tabs">
+        <button class="on">Compliance</button>
+        <button>Branch / Retail</button>
+        <button>Marketing</button>
+      </div>
+    </div>
+
+    <div class="role3">
+      <div class="left">
+        <span class="label">Compliance</span>
+        <h3>Workflow Review Packet</h3>
+        <div class="clip">
+          <div class="top">
+            <span class="k">Artifact preview</span>
+            <span class="k">Pack v1</span>
+          </div>
+          <div class="row"><span class="k">Owner</span><span>Department lead</span></div>
+          <div class="row"><span class="k">Status</span><span><strong>Ready with review</strong></span></div>
+          <div class="row"><span class="k">Review</span><span>Human approval required</span></div>
+        </div>
+      </div>
+      <div class="right">
+        <span class="label">Outputs</span>
+        <div class="row"><span class="name">AI use-case checklist</span><span class="arr">→</span></div>
+        <div class="row"><span class="name">Examiner-ready SOP</span><span class="arr">→</span></div>
+        <div class="row"><span class="name">Human review log</span><span class="arr">→</span></div>
+        <div style="margin-top:18px"><a class="btn primary arrow" href="#">View sample artifact</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SANDBOX -->
+<section>
+  <div class="container">
+    <div class="section-head">
+      <p class="kicker">Less lecture. More reps.</p>
+      <h2 class="h2 serif">A controlled place to test, compare, and improve.</h2>
+    </div>
+
+    <div class="steps">
+      <div><div class="n">Step 1</div><div class="t">Pick role</div><div class="d">Compliance, retail, marketing, ops.</div></div>
+      <div><div class="n">Step 2</div><div class="t">Load scenario</div><div class="d">Realistic synthetic data only.</div></div>
+      <div><div class="n">Step 3</div><div class="t">Review output</div><div class="d">Run accuracy + risk checklist.</div></div>
+      <div><div class="n">Step 4</div><div class="t">Save asset</div><div class="d">Promote to a reusable skill.</div></div>
+    </div>
+
+    <div class="sample">
+      <div><div class="k">Input</div><div class="v">Dense internal procedure</div></div>
+      <div><div class="k">Output</div><div class="v">Frontline job aid</div></div>
+      <div><div class="k">Review</div><div class="v">Manager review</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta3">
+  <div class="container">
+    <div>
+      <p class="kicker">The AI Banking Institute</p>
+      <h2 class="h1 serif" style="color:var(--ledger-paper);margin-top:10px">Build confidence. Keep control.</h2>
+      <p class="lede" style="margin-top:14px">A practical path for financial professionals to assess, train, practice, and document AI-supported work.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <a class="btn gold arrow" href="#">Start Free Assessment</a>
+      <a class="btn ghost on-dark" href="#">Preview Toolbox</a>
+    </div>
+  </div>
+</section>
+
+<div class="ribbon">
+  Sketch
+  <a href="/sketches/option-1.html">Opt 1</a>
+  <a href="/sketches/option-3.html" class="active">Opt 3</a>
+</div>
+
+<script>
+  // Hero preview switcher — vanilla, no framework, just shows the interaction shape.
+  const data = {
+    assessment: {
+      label: "Readiness",
+      title: "Snapshot",
+      score: "62", unit: "of 100",
+      items: [["Governance", "72"], ["Tool fluency", "58"], ["Risk awareness", "64"], ["Workflow fit", "55"]],
+    },
+    sandbox: {
+      label: "Practice",
+      title: "Scenarios",
+      score: "04", unit: "in queue",
+      items: [["Procedure cleanup", "Ready"], ["Complaint summary", "Ready"], ["Campaign draft", "Ready"], ["Adverse action letter", "Locked"]],
+    },
+    toolbox: {
+      label: "Toolbox",
+      title: "Reusable assets",
+      score: "18", unit: "saved",
+      items: [["Prompt library", "12"], ["Workflow SOPs", "4"], ["Risk checklists", "6"], ["Role playbooks", "3"]],
+    },
+  };
+  function render(key) {
+    const d = data[key];
+    document.getElementById("hero-body").innerHTML =
+      `<div class="stat">
+         <div class="k">${d.label}</div>
+         <div class="v">${d.score}</div>
+         <div class="u">${d.unit}</div>
+       </div>
+       <div class="list">
+         ${d.items.map(([k, v]) => `<div class="row"><span>${k}</span><span class="v">${v}</span></div>`).join("")}
+       </div>`;
+  }
+  document.querySelectorAll("#hero-tabs button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll("#hero-tabs button").forEach(b => b.classList.remove("on"));
+      btn.classList.add("on");
+      render(btn.dataset.k);
+    });
+  });
+  render("assessment");
+</script>
+
+</body>
+</html>

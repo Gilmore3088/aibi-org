@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex" />
+<title>Launch Action Board · The AI Banking Institute</title>
+<style>
+  :root {
+    --bg:#ECE9DF; --paper:#F4F1E7; --parch:#E4E0D2; --tape:#F1E9D0;
+    --ink:#0E1B2D; --ink2:#1F2A3F; --muted:#5C6B82; --soft:#8C95A8;
+    --accent:#B5862A; --accent-l:#C99A40; --accent2:#1E3A5F; --weak:#8E3B2A;
+    --rule:#D5D1C2; --rule-strong:#A8AEBE;
+    --serif:"Iowan Old Style",Georgia,"Times New Roman",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    --mono:"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+    --ok:#3F6B4C;
+  }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans); font-size:15px; line-height:1.55; -webkit-font-smoothing:antialiased; }
+  .wrap { max-width:1160px; margin:0 auto; padding:48px 32px 96px; }
+
+  header { border-bottom:2px solid var(--ink); padding-bottom:24px; }
+  .kicker { font-family:var(--mono); font-size:11px; letter-spacing:.22em; text-transform:uppercase; color:var(--accent); margin:0 0 12px; }
+  h1 { font-family:var(--serif); font-weight:600; font-size:clamp(34px,5vw,56px); line-height:1.0; letter-spacing:-.02em; margin:0 0 10px; }
+  .sub { font-family:var(--serif); font-style:italic; font-size:19px; color:var(--ink2); margin:0; max-width:66ch; }
+  .meta { font-family:var(--mono); font-size:11px; letter-spacing:.04em; color:var(--muted); margin-top:14px; }
+
+  .stats { display:grid; grid-template-columns:repeat(4,1fr); border-top:1px solid var(--rule-strong); border-bottom:1px solid var(--rule); margin:28px 0 40px; }
+  .stat { padding:16px 18px; border-right:1px solid var(--rule); }
+  .stat:last-child { border-right:none; }
+  .stat .k { font-family:var(--mono); font-size:9px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); }
+  .stat .v { font-family:var(--serif); font-weight:600; font-size:34px; line-height:1; margin-top:6px; }
+  .stat .v.red { color:var(--weak); } .stat .v.gold { color:var(--accent); } .stat .v.green { color:var(--ok); }
+  .stat .s { font-size:12px; color:var(--muted); margin-top:3px; }
+
+  .toc { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:40px; }
+  .toc a { font-family:var(--mono); font-size:11px; letter-spacing:.04em; text-decoration:none; color:var(--ink2); border:1px solid var(--rule); padding:5px 10px; border-radius:2px; background:var(--paper); }
+  .toc a:hover { border-color:var(--accent); color:var(--accent); }
+
+  section { margin-bottom:52px; scroll-margin-top:24px; }
+  h2 { font-family:var(--serif); font-weight:600; font-size:28px; letter-spacing:-.015em; margin:0 0 4px; display:flex; align-items:baseline; gap:12px; }
+  h2 .num { font-family:var(--mono); font-size:13px; color:var(--accent); letter-spacing:.1em; }
+  .sec-note { color:var(--muted); font-size:13.5px; margin:0 0 18px; max-width:74ch; }
+
+  /* Owner pills */
+  .own { display:inline-flex; align-items:center; gap:5px; font-family:var(--mono); font-size:9.5px; letter-spacing:.1em; text-transform:uppercase; padding:3px 8px; border-radius:2px; white-space:nowrap; font-weight:600; }
+  .own.you { background:rgba(142,59,42,.1); color:var(--weak); border:1px solid rgba(142,59,42,.4); }
+  .own.agent { background:rgba(63,107,76,.13); color:var(--ok); border:1px solid rgba(63,107,76,.4); }
+  .own.both { background:rgba(30,58,95,.1); color:var(--accent2); border:1px solid rgba(30,58,95,.35); }
+  .eff { font-family:var(--mono); font-size:10px; color:var(--muted); letter-spacing:.04em; }
+
+  /* Next-3 action cards */
+  .next3 { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  .acard { background:var(--paper); border:1px solid var(--rule); border-top:3px solid var(--weak); border-radius:3px; padding:20px 22px; position:relative; }
+  .acard .n { font-family:var(--serif); font-weight:600; font-size:40px; line-height:1; color:var(--weak); opacity:.9; }
+  .acard h3 { font-family:var(--serif); font-size:19px; font-weight:600; margin:8px 0 8px; line-height:1.2; }
+  .acard p { font-size:13px; color:var(--ink2); margin:0 0 12px; }
+  .acard .why { font-size:12.5px; color:var(--muted); border-top:1px solid var(--rule); padding-top:10px; }
+  .acard .why b { color:var(--ink); font-weight:600; }
+
+  /* Dependency map */
+  .depwrap { background:var(--paper); border:1px solid var(--rule); border-radius:3px; padding:18px 20px 8px; }
+  .depmap { width:100%; height:auto; display:block; }
+  .depmap text { font-family:var(--sans); }
+  .depmap .nlabel { font-weight:600; }
+  .depmap .nsub { font-family:var(--mono); }
+  .depmap .tier { font-family:var(--mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase; fill:var(--muted); }
+  .depmap .div { stroke:var(--rule-strong); stroke-width:1; stroke-dasharray:4 4; }
+  .depmap .divlabel { font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; fill:var(--weak); }
+  .deplegend { display:flex; flex-wrap:wrap; gap:8px 16px; align-items:center; margin-top:14px; padding-top:12px; border-top:1px solid var(--rule); }
+  .deplegend span { font-family:var(--mono); font-size:10px; letter-spacing:.06em; color:var(--muted); display:inline-flex; align-items:center; gap:6px; }
+  .swatch { width:14px; height:14px; border-radius:2px; display:inline-block; }
+
+  /* Checklists by dashboard */
+  .dash-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; }
+  .board { background:var(--paper); border:1px solid var(--rule); border-radius:3px; padding:18px 20px; }
+  .board h3 { font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--accent); margin:0 0 4px; display:flex; align-items:center; justify-content:space-between; }
+  .board .cnt { color:var(--muted); font-size:10px; }
+  .board ul { list-style:none; margin:10px 0 0; padding:0; }
+  .board li { font-size:13px; color:var(--ink2); padding:6px 0 6px 22px; position:relative; border-bottom:1px dotted var(--rule); line-height:1.45; }
+  .board li:last-child { border-bottom:none; }
+  .board li::before { content:"☐"; position:absolute; left:0; top:5px; color:var(--rule-strong); font-size:13px; }
+  .board li .tag { font-family:var(--mono); font-size:10px; color:var(--accent2); }
+  .board li.crit::before { color:var(--weak); }
+  .board li.crit { font-weight:500; color:var(--ink); }
+
+  /* Tables */
+  table { width:100%; border-collapse:collapse; background:var(--paper); border:1px solid var(--rule); border-radius:3px; overflow:hidden; }
+  thead th { text-align:left; font-family:var(--mono); font-size:9.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); padding:11px 14px; background:var(--parch); border-bottom:1px solid var(--rule); }
+  tbody td { padding:11px 14px; border-bottom:1px solid var(--rule); vertical-align:top; font-size:13.5px; }
+  tbody tr:last-child td { border-bottom:none; }
+  tbody tr:hover { background:var(--tape); }
+  code { font-family:var(--mono); font-size:12px; background:rgba(14,27,45,.05); padding:1px 5px; border-radius:2px; }
+  .note { color:var(--muted); font-size:12.5px; }
+
+  .iss { display:inline-block; font-family:var(--mono); font-size:11px; padding:1px 6px; border-radius:2px; text-decoration:none; margin:1px 3px 1px 0; border:1px solid var(--rule-strong); color:var(--accent2); background:var(--bg); white-space:nowrap; }
+  .iss:hover { border-color:var(--accent2); }
+  .iss.block { color:var(--weak); border-color:rgba(142,59,42,.5); }
+  .iss.done { color:var(--ok); border-color:rgba(63,107,76,.45); text-decoration:line-through; }
+  .dash { color:var(--soft); }
+
+  .decision { background:var(--tape); border:1px solid var(--rule); border-left:3px solid var(--accent); border-radius:3px; padding:12px 16px; margin-bottom:10px; font-size:13.5px; }
+  .decision b { color:var(--ink); }
+
+  .done-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:8px 16px; }
+  .done-item { font-size:13px; color:var(--muted); padding:6px 0 6px 20px; position:relative; }
+  .done-item::before { content:"✓"; position:absolute; left:0; color:var(--ok); font-weight:700; }
+  .done-item b { color:var(--ink2); font-weight:500; }
+
+  footer { margin-top:56px; padding-top:20px; border-top:1px solid var(--rule); font-family:var(--mono); font-size:10.5px; letter-spacing:.04em; color:var(--soft); }
+  .legendbar { display:flex; flex-wrap:wrap; gap:10px 14px; align-items:center; margin:30px 0 36px; padding:12px 16px; background:var(--paper); border:1px solid var(--rule); border-radius:3px; }
+  .legendbar .lab { font-family:var(--mono); font-size:9.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); }
+
+  @media (max-width:820px){ .next3,.dash-grid,.done-grid{grid-template-columns:1fr;} .stats{grid-template-columns:repeat(2,1fr);} .chain .row{grid-template-columns:1fr;gap:6px;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <p class="kicker">Launch War Room · Internal</p>
+    <h1>Launch Action Board</h1>
+    <p class="sub">What's blocking launch, who owns each action, and what each one unblocks — ordered by leverage. Pages are functionally built; this is the punch-list to ship.</p>
+    <p class="meta">The AI Banking Institute · aibankinginstitute.com · 2026-05-21 · source: tasks/PATH-FORWARD.md + launch-checklist + open issues</p>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><div class="k">Launch-blocker issues</div><div class="v red">8</div><div class="s">+ ~495 checklist items</div></div>
+    <div class="stat"><div class="k">Operator actions (🔒 you)</div><div class="v red">~45</div><div class="s">across 6 dashboards</div></div>
+    <div class="stat"><div class="k">Agent-ready (🤖)</div><div class="v gold">~240</div><div class="s">tests gated on env keys</div></div>
+    <div class="stat"><div class="k">Shipped this session</div><div class="v green">3 PRs</div><div class="s">#234 · #252 · #255</div></div>
+  </div>
+
+  <div class="legendbar">
+    <span class="lab">Owner</span>
+    <span class="own you">🔒 You-only</span>
+    <span class="own agent">🤖 Agent</span>
+    <span class="own both">🤝 Collaborative</span>
+    <span class="lab" style="margin-left:10px">Issues</span>
+    <span class="iss block">#000 blocker</span>
+    <span class="iss done">#000 done</span>
+  </div>
+
+  <nav class="toc">
+    <a href="#next3">🚦 Next 3 actions</a>
+    <a href="#path">🕸️ Dependency map</a>
+    <a href="#lms">🔬 LMS deep-dive</a>
+    <a href="#operator">🔒 Operator blockers</a>
+    <a href="#agent">🤖 Agent queue</a>
+    <a href="#collab">🤝 Collaborative</a>
+    <a href="#decisions">⚖️ Decisions</a>
+    <a href="#shipped">✅ Shipped</a>
+  </nav>
+
+  <!-- NEXT 3 -->
+  <section id="next3">
+    <h2><span class="num">🚦</span> The next 3 actions</h2>
+    <p class="sec-note">Highest unblock ratio. All three are <span class="own you">🔒 You-only</span> — they need your dashboards/credentials. After these, ~75% of remaining §3–§19 work becomes autonomous.</p>
+    <div class="next3">
+      <div class="acard">
+        <div class="n">1</div>
+        <h3>Pull Supabase env keys to <code>.env.local</code></h3>
+        <p>Service role + anon + URL. <span class="eff">⏱ 5 min · Vercel dashboard</span></p>
+        <div class="why"><b>Unblocks:</b> §3 auth, §4 free, §5 in-depth, §6 purchase, §7 modules, §8 exam, §19 cross-browser — <b>200+ Playwright tests</b> can't run without it.</div>
+      </div>
+      <div class="acard">
+        <div class="n">2</div>
+        <h3>Fix 4 Supabase Auth email templates</h3>
+        <p>Change <code>next=/dashboard</code> → <code>{{ .RedirectTo }}</code>. <span class="eff">⏱ ~15 min · Supabase dashboard</span></p>
+        <div class="why"><b>Unblocks:</b> §2 (all), §9 email round-trips, real signups. Right now signup-confirm, magic-link, password reset + email change are <b>broken in prod</b>.</div>
+      </div>
+      <div class="acard">
+        <div class="n">3</div>
+        <h3>Verify DNS + SSL</h3>
+        <p>Apex + www A/AAAA → Vercel; <code>.org</code> 301 → <code>.com</code>; SSL valid. <span class="eff">⏱ ~20 min · DNS / Vercel</span></p>
+        <div class="why"><b>Unblocks:</b> §20 launch-day smoke. Production traffic can't land correctly until this is right.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEPENDENCY MAP -->
+  <section id="path">
+    <h2><span class="num">🕸️</span> Dependency map</h2>
+    <p class="sec-note">What blocks what. Follow the <b style="color:var(--weak)">thick oxblood line</b> — that's the master key (your Supabase keys) that unlocks the whole test suite. The <b style="color:var(--weak)">red track at the bottom</b> is the LMS product-quality blocker: it's <b>not gated by any of the infra/test work</b> and right now it isn't even scoped. Launch needs <em>both</em> tracks done.</p>
+    <div class="depwrap">
+      <svg class="depmap" viewBox="0 0 1120 600" role="img" aria-label="Launch dependency map">
+        <defs>
+          <marker id="aGrey" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#5C6B82"/></marker>
+          <marker id="aRed" markerWidth="10" markerHeight="10" refX="7.5" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#8E3B2A"/></marker>
+          <marker id="aNavy" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#1E3A5F"/></marker>
+        </defs>
+
+        <!-- tier labels -->
+        <text class="tier" x="24" y="36">🔒 You unblock</text>
+        <text class="tier" x="440" y="36">This work opens up</text>
+        <text class="tier" x="955" y="36">→ Launch</text>
+
+        <!-- ===== ARROWS (drawn first, behind nodes) ===== -->
+        <!-- critical: U.1 -> suite -->
+        <path d="M239,95 C330,95 350,105 440,108" fill="none" stroke="#8E3B2A" stroke-width="3" marker-end="url(#aRed)"/>
+        <!-- Stripe -> suite -->
+        <path d="M239,305 C340,300 360,150 440,128" fill="none" stroke="#1E3A5F" stroke-width="1.5" marker-end="url(#aNavy)"/>
+        <!-- U.6 -> auth/email -->
+        <path d="M239,165 C330,170 350,200 440,205" fill="none" stroke="#8E3B2A" stroke-width="2" marker-end="url(#aRed)"/>
+        <!-- Stripe/rename -> rollout -->
+        <path d="M239,305 C340,308 360,300 440,300" fill="none" stroke="#1E3A5F" stroke-width="1.5" marker-end="url(#aNavy)"/>
+        <!-- U.4 DNS -> smoke -->
+        <path d="M239,235 C480,232 560,255 760,258" fill="none" stroke="#8E3B2A" stroke-width="2" marker-end="url(#aRed)"/>
+        <!-- suite -> smoke -->
+        <path d="M690,130 C720,160 730,215 760,245" fill="none" stroke="#5C6B82" stroke-width="1.5" marker-end="url(#aGrey)"/>
+        <!-- suite -> launch -->
+        <path d="M690,100 C820,100 880,235 955,258" fill="none" stroke="#5C6B82" stroke-width="1.5" marker-end="url(#aGrey)"/>
+        <!-- auth/email -> launch -->
+        <path d="M690,210 C820,210 880,255 955,268" fill="none" stroke="#5C6B82" stroke-width="1.5" marker-end="url(#aGrey)"/>
+        <!-- rollout -> launch -->
+        <path d="M690,300 C820,300 880,285 955,278" fill="none" stroke="#5C6B82" stroke-width="1.5" marker-end="url(#aGrey)"/>
+        <!-- smoke -> launch -->
+        <path d="M910,258 C930,262 938,268 955,270" fill="none" stroke="#5C6B82" stroke-width="1.5" marker-end="url(#aGrey)"/>
+        <!-- LMS readiness -> sellable -->
+        <path d="M264,478 C340,478 360,478 440,478" fill="none" stroke="#8E3B2A" stroke-width="3" marker-end="url(#aRed)"/>
+        <!-- sellable -> launch -->
+        <path d="M690,475 C840,475 890,320 955,292" fill="none" stroke="#8E3B2A" stroke-width="3" marker-end="url(#aRed)"/>
+
+        <!-- ===== NODES ===== -->
+        <!-- A column (you) -->
+        <g>
+          <rect x="24" y="70" width="215" height="50" rx="3" fill="rgba(142,59,42,.10)" stroke="#8E3B2A"/>
+          <text class="nlabel" x="36" y="92" font-size="13" fill="#0E1B2D">U.1 · Supabase env keys</text>
+          <text class="nsub" x="36" y="108" font-size="10.5" fill="#5C6B82">🔒 5 min · the master key</text>
+        </g>
+        <g>
+          <rect x="24" y="140" width="215" height="50" rx="3" fill="rgba(142,59,42,.10)" stroke="#8E3B2A"/>
+          <text class="nlabel" x="36" y="162" font-size="13" fill="#0E1B2D">U.6 · Auth email templates</text>
+          <text class="nsub" x="36" y="178" font-size="10.5" fill="#5C6B82">🔒 15 min</text>
+        </g>
+        <g>
+          <rect x="24" y="210" width="215" height="50" rx="3" fill="rgba(142,59,42,.10)" stroke="#8E3B2A"/>
+          <text class="nlabel" x="36" y="232" font-size="13" fill="#0E1B2D">U.4 · DNS + SSL</text>
+          <text class="nsub" x="36" y="248" font-size="10.5" fill="#5C6B82">🔒 20 min</text>
+        </g>
+        <g>
+          <rect x="24" y="280" width="215" height="50" rx="3" fill="rgba(142,59,42,.10)" stroke="#8E3B2A"/>
+          <text class="nlabel" x="36" y="302" font-size="13" fill="#0E1B2D">Stripe test mode + rename</text>
+          <text class="nsub" x="36" y="318" font-size="10.5" fill="#5C6B82">🔒 dashboard</text>
+        </g>
+
+        <!-- B column (work) -->
+        <g>
+          <rect x="440" y="70" width="250" height="86" rx="3" fill="rgba(63,107,76,.12)" stroke="#3F6B4C"/>
+          <text class="nlabel" x="454" y="98" font-size="14" fill="#0E1B2D">E2E test suite</text>
+          <text class="nsub" x="454" y="118" font-size="11" fill="#1F2A3F">§3–§8 + §19 · ~234 items</text>
+          <text class="nsub" x="454" y="140" font-size="10.5" fill="#3F6B4C">🤖 agent · gated on U.1</text>
+        </g>
+        <g>
+          <rect x="440" y="185" width="250" height="50" rx="3" fill="rgba(30,58,95,.10)" stroke="#1E3A5F"/>
+          <text class="nlabel" x="454" y="207" font-size="13" fill="#0E1B2D">§2 auth · §9 email round-trip</text>
+          <text class="nsub" x="454" y="223" font-size="10.5" fill="#1E3A5F">🤝 gated on U.6</text>
+        </g>
+        <g>
+          <rect x="440" y="280" width="250" height="50" rx="3" fill="rgba(30,58,95,.10)" stroke="#1E3A5F"/>
+          <text class="nlabel" x="454" y="302" font-size="13" fill="#0E1B2D">Foundation rollout · #152</text>
+          <text class="nsub" x="454" y="318" font-size="10.5" fill="#1E3A5F">🤝 24h gap rule</text>
+        </g>
+
+        <!-- C column -->
+        <g>
+          <rect x="760" y="233" width="150" height="50" rx="3" fill="rgba(30,58,95,.10)" stroke="#1E3A5F"/>
+          <text class="nlabel" x="772" y="255" font-size="13" fill="#0E1B2D">§20 launch smoke</text>
+          <text class="nsub" x="772" y="271" font-size="10.5" fill="#1E3A5F">🤝 real-money test</text>
+        </g>
+        <g>
+          <rect x="955" y="233" width="140" height="84" rx="42" fill="#0E1B2D" stroke="#0E1B2D"/>
+          <text class="nlabel" x="1025" y="270" font-size="16" fill="#F4F1E7" text-anchor="middle">LAUNCH</text>
+          <text x="1025" y="292" font-size="18" text-anchor="middle">🎯</text>
+        </g>
+
+        <!-- divider -->
+        <line class="div" x1="24" y1="400" x2="1095" y2="400"/>
+        <text class="divlabel" x="24" y="420">⚠ Parallel blocker — NOT gated by anything above · blocks "sellable", not "works"</text>
+
+        <!-- LMS track -->
+        <g>
+          <rect x="24" y="445" width="240" height="66" rx="3" fill="var(--tape)" stroke="#8E3B2A" stroke-dasharray="5 4" stroke-width="2"/>
+          <text class="nlabel" x="36" y="468" font-size="13" fill="#8E3B2A">🔴 LMS product-readiness</text>
+          <text class="nsub" x="36" y="485" font-size="10.5" fill="#5C6B82">NOT YET SCOPED</text>
+          <text class="nsub" x="36" y="500" font-size="10.5" fill="#5C6B82">"can't charge $295 for this"</text>
+        </g>
+        <g>
+          <rect x="440" y="448" width="250" height="60" rx="3" fill="var(--tape)" stroke="#8E3B2A" stroke-width="1.5"/>
+          <text class="nlabel" x="454" y="473" font-size="13" fill="#0E1B2D">Good enough to charge $295</text>
+          <text class="nsub" x="454" y="492" font-size="10.5" fill="#8E3B2A">the real product bar</text>
+        </g>
+
+        <!-- no-gate footnote -->
+        <text x="24" y="558" font-size="11.5" fill="#5C6B82" font-family="-apple-system,sans-serif">
+          <tspan font-weight="600">No gate — do anytime, but none of these make it sellable:</tspan> §10 marketing E2E (🤖) · LMS code-splits #240–251 (🤖 cosmetic) · #238 brand finish (🤖)
+        </text>
+      </svg>
+      <div class="deplegend">
+        <span><i class="swatch" style="background:rgba(142,59,42,.5)"></i>🔒 You / critical path</span>
+        <span><i class="swatch" style="background:rgba(63,107,76,.5)"></i>🤖 Agent work</span>
+        <span><i class="swatch" style="background:rgba(30,58,95,.4)"></i>🤝 Collaborative</span>
+        <span><i class="swatch" style="background:var(--ink)"></i>🎯 Launch</span>
+        <span><i class="swatch" style="background:var(--tape);border:1.5px dashed #8E3B2A"></i>🔴 Not yet scoped</span>
+      </div>
+    </div>
+    <p class="sec-note" style="margin-top:16px"><b>The honest read this map forces:</b> even if you do all 3 operator tasks and I run all 234 tests, you still can't launch — because the bottom red track (LMS good enough for $295) isn't done <em>or even written down yet</em>. That's the gap your gut was flagging. It deserves to be the #1 workstream, and defining it needs your eyes on the actual course.</p>
+  </section>
+
+  <!-- LMS DEEP-DIVE -->
+  <section id="lms">
+    <h2><span class="num">🔬</span> LMS deep-dive <span class="eff" style="font-size:13px">— the red box, unpacked (audit 2026-05-21)</span></h2>
+    <p class="sec-note">A three-angle investigation of the Foundation course confirmed all three gut-checks: competing structures, stale styling, incomplete content. This is the work that makes it sellable — none of it is tracked in the launch checklist. <b>→ Full breakdown + every LMS ticket: <a href="lms-hub.html" style="color:var(--accent2)">LMS Consolidation Hub</a></b></p>
+
+    <div class="next3" style="grid-template-columns:repeat(3,1fr)">
+      <div class="acard" style="border-top-color:var(--accent2)">
+        <div class="n" style="color:var(--accent2);font-size:26px">A · Structure</div>
+        <h3>Multiple competing systems</h3>
+        <p>Module content is split across <b>3 files</b> the page tries in sequence (<code>module-N.ts</code> → <code>v4-expanded-modules.ts</code> → <code>module-activities.ts</code>) — a hidden, un-auditable migration state.</p>
+        <div class="why">
+          <b>Stale / dead:</b> <code>/courses/foundation-preview</code> + <code>/lms-preview</code> still routable (pre-redesign prototypes) · <code>public/lms-prototype/</code> + <code>public/AiBI-P/</code> mockups · 12+ one-off activity forms with no registry · <code>PILLAR_META</code> still on retired sage/cobalt/terra colors.
+        </div>
+      </div>
+      <div class="acard" style="border-top-color:var(--accent)">
+        <div class="n" style="color:var(--accent);font-size:26px">B · Styling</div>
+        <h3>Old fonts across the journey</h3>
+        <p>Onboarding, settings &amp; certificate use <b>DM Sans / Cormorant / DM Mono</b> — not the Ledger fonts. ~10 files, 56 hardcoded font refs.</p>
+        <div class="why">
+          <b>Worse:</b> the two shared renderers for <em>every module's lesson text + tables</em> (<code>MarkdownRenderer</code>, <code>ContentTable</code>) still use the legacy <code>--color-*</code> palette. So stale styling shows up system-wide, not just in a couple of pages. Core shell + buttons are clean.
+        </div>
+      </div>
+      <div class="acard">
+        <div class="n" style="font-size:26px">C · Content</div>
+        <h3>~60% complete — blocks $295</h3>
+        <p>Modules <b>1–4, 9–12 real</b> (1,200–1,800 words, tables, artifacts). Modules <b>5–8 are skeletons</b> — teaching text not wired in, activities are hollow textboxes.</p>
+        <div class="why">
+          <b>Across all 12:</b> activities have <b>no worked examples / scaffolding</b> · banking specificity thin (generic AI patterns, not the sourced FDIC / Jack Henry / Cornerstone data the brand requires) · artifacts named but not templated.
+        </div>
+      </div>
+    </div>
+
+    <table style="margin-top:20px">
+      <thead><tr><th>Per-module content state</th><th>Modules</th><th>State</th></tr></thead>
+      <tbody>
+        <tr><td>Substantive — real teaching, tables, working activity + artifact</td><td><code>1, 2, 3, 4, 9, 10, 11, 12</code></td><td><span class="own agent" style="background:rgba(63,107,76,.13);color:var(--ok);border-color:rgba(63,107,76,.4)">✓ Real</span></td></tr>
+        <tr><td>Skeleton — teaching text orphaned in v4 file, not rendered; hollow single-textbox activity; no tables/examples/artifact</td><td><code>5, 6, 7, 8</code></td><td><span class="own you">⚠ Thin / stub</span></td></tr>
+        <tr><td>Scaffolding (worked examples, guided prompts) on activities</td><td><code>— none —</code></td><td><span class="own you">✗ Missing everywhere</span></td></tr>
+      </tbody>
+    </table>
+
+    <p class="sec-note" style="margin-top:18px"><b>Honest readiness verdict:</b> not sellable at $295 today. The three things that close the gap, in priority order: <b>(1)</b> finish modules 5–8 + add activity scaffolding/examples across all 12; <b>(2)</b> migrate onboarding/settings/certificate + the two content renderers off DM Sans/Cormorant + legacy colors onto Ledger; <b>(3)</b> retire the dead prototypes and collapse the 3-file content split to one source. <em>(1) is content work — your call on who/how. (2) and (3) are code work I can do.</em></p>
+  </section>
+
+  <!-- OPERATOR -->
+  <section id="operator">
+    <h2><span class="num">🔒</span> Operator blockers <span class="eff" style="font-size:13px">— grouped by dashboard so you can batch</span></h2>
+    <p class="sec-note">~45 actions only you can do. Critical-path items are marked in oxblood. Batch by dashboard to minimize context-switching.</p>
+    <div class="dash-grid">
+
+      <div class="board">
+        <h3>Vercel <span class="cnt">5 items</span></h3>
+        <ul>
+          <li class="crit">U.1 Pull Supabase keys → <code>.env.local</code> <span class="tag">(unblocks 200+ tests)</span></li>
+          <li>U.2 Rotate service-role / Stripe webhook / Resend / MailerLite keys + mark Sensitive <span class="note">§1.5–.8</span></li>
+          <li>U.3 <code>vercel env ls</code> — verify all names present <span class="note">§1.9</span></li>
+          <li>Add <code>STRIPE_FOUNDATION_PRICE_ID</code> + institution price ID <span class="note">(Foundation rollout)</span></li>
+          <li>U.5 (optional) password-protect preview <span class="note">§1.17</span></li>
+        </ul>
+      </div>
+
+      <div class="board">
+        <h3>Supabase <span class="cnt">9 items</span></h3>
+        <ul>
+          <li class="crit">U.6 Fix 4 Auth email templates → <code>{{ .RedirectTo }}</code> <span class="tag">(unblocks signup)</span></li>
+          <li>Site URL = <code>www.aibankinginstitute.com</code> <span class="note">§2.27</span></li>
+          <li>Redirect URLs: www, apex, localhost, staging <span class="note">§2.28</span></li>
+          <li>SMTP sender = <code>hello@…</code> lowercase <span class="note">§2.29</span></li>
+          <li>Apply <code>00028_add_foundation_product_value</code></li>
+          <li>+24h gap → apply <code>00029_backfill_foundation_product</code></li>
+          <li>Smoke: signup→confirm, magic-link, reset, email-change <span class="note">§2.30–.34</span></li>
+          <li>§18.469 Clean <code>+alias</code> test rows in auth.users</li>
+          <li>§18.473/.474 Verify no test data in users / enrollments</li>
+        </ul>
+      </div>
+
+      <div class="board">
+        <h3>Stripe <span class="cnt">7 items</span> <a class="iss block" href="https://github.com/Gilmore3088/aibi-org/issues/152">#152</a></h3>
+        <ul>
+          <li>Product name = <code>AiBI-Foundation Course</code></li>
+          <li>In-Depth product = <code>In-Depth Assessment</code></li>
+          <li>Foundation desc mentions "lifetime access"</li>
+          <li>Banker-readable statement descriptors</li>
+          <li>Metadata: <code>canonical_slug=foundation</code>, <code>legacy_slug=aibi-p</code></li>
+          <li>Deactivate "myproduct" test stray <span class="note">§18.476</span></li>
+          <li>Verify prod products renamed <span class="note">§18.475</span></li>
+        </ul>
+      </div>
+
+      <div class="board">
+        <h3>Resend + MailerLite <span class="cnt">10 items</span></h3>
+        <ul>
+          <li class="crit">U.9 Fix 5 Resend templates for "AiBI-P" leakage: results-breakdown, purchase ×2, cert-issued, inquiry-ack</li>
+          <li>U.8 Recreate 5 MailerLite automations if any reference AiBI-P: newsletter welcome + 4 tier sequences</li>
+        </ul>
+      </div>
+
+      <div class="board">
+        <h3>DNS / SSL <span class="cnt">2 items</span></h3>
+        <ul>
+          <li class="crit">U.4 Apex + www → Vercel; <code>.org</code> 301 → <code>.com</code>; SSL valid <span class="note">§1.11–.14</span></li>
+          <li>Canonical = www <span class="note">§1.15</span></li>
+        </ul>
+      </div>
+
+      <div class="board">
+        <h3>Search Console + observability <span class="cnt">9 items</span></h3>
+        <ul>
+          <li>Submit sitemap → Google + Bing; verify both domains <span class="note">§14.411–.414</span></li>
+          <li>Sentry / error tracking <span class="note">§15.428</span></li>
+          <li>Slack alert on 500 spike <span class="note">§15.429</span></li>
+          <li>Stripe Radar fraud detection <span class="note">§15.430</span></li>
+          <li>Supabase error-rate alert &gt;2% <span class="note">§15.431</span></li>
+          <li>Vercel deploy notifications <span class="note">§15.432</span></li>
+        </ul>
+      </div>
+
+      <div class="board">
+        <h3>Final pre-launch §20 <span class="cnt">9 items</span> <a class="iss block" href="https://github.com/Gilmore3088/aibi-org/issues/151">#151</a></h3>
+        <ul>
+          <li>Real-money test + refund: Foundation $295 <span class="note">.506</span></li>
+          <li>Real-money test + refund: In-Depth $99 <span class="note">.507</span></li>
+          <li>Calendly on real iPhone Safari <span class="note">.511</span></li>
+          <li>Stripe Checkout on real iPhone Safari <span class="note">.512</span></li>
+          <li>Magic-link round-trip on real iPhone <span class="note">.513</span></li>
+          <li>Supabase backup/restore procedure <span class="note">.516</span></li>
+          <li>On-call rotation + escalation <span class="note">.517</span></li>
+          <li>Draft + schedule launch email <span class="note">.518–.519</span></li>
+        </ul>
+      </div>
+
+      <div class="board">
+        <h3>Customer comms (launch day) <span class="cnt">3 items</span></h3>
+        <ul>
+          <li>AiBI-P → Foundation rename email to existing enrollments</li>
+          <li>30-day in-app banner on /dashboard + /courses/foundation/program/*</li>
+          <li>Support one-pager pre-pasted into Notion</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- AGENT -->
+  <section id="agent">
+    <h2><span class="num">🤖</span> Agent queue <span class="eff" style="font-size:13px">— I can do these once unblocked</span></h2>
+    <p class="sec-note">Most are gated on <b>U.1 (Supabase env keys)</b>. §10 needs no gate — I can start now. Tell me to go on any row.</p>
+    <table>
+      <thead><tr><th>Work</th><th>Owner</th><th>Open items</th><th>Gated on</th><th>Effort</th></tr></thead>
+      <tbody>
+        <tr><td>§10 E2E marketing pages <a class="iss block" href="https://github.com/Gilmore3088/aibi-org/issues/141">#141</a></td><td><span class="own agent">🤖</span></td><td>30</td><td class="note"><b>None — ready now</b></td><td class="eff">2–3h</td></tr>
+        <tr><td>§11.508 deployed-HTML banned-word grep</td><td><span class="own agent">🤖</span></td><td>1</td><td class="note">latest main deployed ✓</td><td class="eff">5 min</td></tr>
+        <tr><td>§12 a11y on 3 auth-gated routes</td><td><span class="own agent">🤖</span></td><td>3</td><td class="note">none for routes</td><td class="eff">30 min</td></tr>
+        <tr><td>§3 E2E auth flows <a class="iss block" href="https://github.com/Gilmore3088/aibi-org/issues/134">#134</a></td><td><span class="own agent">🤖</span></td><td>~21</td><td class="note">U.1</td><td class="eff">2–4h</td></tr>
+        <tr><td>§4 E2E free assessment <a class="iss block" href="https://github.com/Gilmore3088/aibi-org/issues/135">#135</a></td><td><span class="own agent">🤖</span></td><td>~30</td><td class="note">U.1 (+ some standalone)</td><td class="eff">3–5h</td></tr>
+        <tr><td>§5 E2E In-Depth <a class="iss block" href="https://github.com/Gilmore3088/aibi-org/issues/136">#136</a></td><td><span class="own agent">🤖</span></td><td>~38</td><td class="note">U.1 + Stripe test mode</td><td class="eff">4–6h</td></tr>
+        <tr><td>§6 E2E course purchase <a class="iss block" href="https://github.com/Gilmore3088/aibi-org/issues/137">#137</a></td><td><span class="own agent">🤖</span></td><td>25</td><td class="note">U.1 + Stripe test mode</td><td class="eff">3–4h</td></tr>
+        <tr><td>§7 E2E course modules <a class="iss block" href="https://github.com/Gilmore3088/aibi-org/issues/138">#138</a></td><td><span class="own agent">🤖</span></td><td>60</td><td class="note">U.1 + seeded enrollment</td><td class="eff">6–8h</td></tr>
+        <tr><td>§8 E2E exam + cert <a class="iss block" href="https://github.com/Gilmore3088/aibi-org/issues/139">#139</a></td><td><span class="own agent">🤖</span></td><td>35</td><td class="note">U.1 + exam_results schema</td><td class="eff">3–5h</td></tr>
+        <tr><td>§19 cross-browser matrix <a class="iss block" href="https://github.com/Gilmore3088/aibi-org/issues/150">#150</a></td><td><span class="own agent">🤖</span></td><td>25</td><td class="note">U.1 for authed flows</td><td class="eff">2–3h</td></tr>
+        <tr><td>LMS file-split backlog <a class="iss" href="https://github.com/Gilmore3088/aibi-org/issues/233">#233</a> (#240–#251)</td><td><span class="own agent">🤖</span></td><td>10</td><td class="note">none — ready now</td><td class="eff">~1h each</td></tr>
+        <tr><td>Brand finish — last 5 Terra routes <a class="iss" href="https://github.com/Gilmore3088/aibi-org/issues/238">#238</a></td><td><span class="own agent">🤖</span></td><td>1</td><td class="note">none — ready now</td><td class="eff">1–2h</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- COLLAB -->
+  <section id="collab">
+    <h2><span class="num">🤝</span> Collaborative <span class="eff" style="font-size:13px">— I build, you verify</span></h2>
+    <table>
+      <thead><tr><th>Task</th><th>I do</th><th>You do</th></tr></thead>
+      <tbody>
+        <tr><td>C.1 · §9 email round-trip tests <a class="iss block" href="https://github.com/Gilmore3088/aibi-org/issues/140">#140</a></td><td class="note">write test code</td><td class="note">confirm emails land in inbox</td></tr>
+        <tr><td>C.2 · §15 analytics <a class="iss" href="https://github.com/Gilmore3088/aibi-org/issues/146">#146</a></td><td class="note">add event-firing code</td><td class="note">set up dashboards</td></tr>
+        <tr><td>C.5 · Free-assessment post-deploy QA (H1–H4)</td><td class="note">shipped (PR #172)</td><td class="note">walk 4 tiers desktop+iPhone, 4 PDFs, Plausible event, prod smoke</td></tr>
+        <tr><td>C.4 · Any push to <code>main</code></td><td class="note">prepare PR + checks</td><td class="note">explicit approval each time (CLAUDE.md)</td></tr>
+        <tr><td>M5 Activity 5.2 visual change (live via #255)</td><td class="note">shipped</td><td class="note">eyeball Acceptable Use Card field styling on prod</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- DECISIONS -->
+  <section id="decisions">
+    <h2><span class="num">⚖️</span> Decisions to close <span class="eff" style="font-size:13px">— need your call before related work proceeds</span></h2>
+    <div class="decision"><b>#229 🔒 Toolbox kits:</b> 3 of 4 are metadata-only. Ship with 1 kit, or block launch on SME content (#184)? <span class="note">launch-blocker</span></div>
+    <div class="decision"><b>#187 🔒 Auth:</b> keep magic-link for launch, or build email+password / SSO / MFA first? Affects every gated route. <span class="note">launch-blocker</span></div>
+    <div class="decision"><b>#250 🤖 skillBuilderData.ts:</b> confirm pure-data files are exempt from the 300-line rule (recommend yes → close issue).</div>
+    <div class="decision"><b>#251 🔒 Onboarding:</b> "Free tiers / None" re-edit — add a DB column, use a sentinel value, or accept the heuristic?</div>
+    <div class="decision"><b>§17.465 🔒</b> Keep <code>/lms-preview</code> as design reference or delete? <a class="iss" href="https://github.com/Gilmore3088/aibi-org/issues/148">#148</a></div>
+    <div class="decision"><b>Perf Wave C 🔒</b> Drop Cormorant SC for Geist tracked-uppercase? <a class="iss" href="https://github.com/Gilmore3088/aibi-org/issues/144">#144</a></div>
+    <div class="decision"><b>§16.450 🔒</b> Pen-test — hire a firm or skip pre-launch?</div>
+  </section>
+
+  <!-- SHIPPED -->
+  <section id="shipped">
+    <h2><span class="num">✅</span> Shipped recently <span class="eff" style="font-size:13px">— momentum</span></h2>
+    <div class="done-grid">
+      <div class="done-item"><b>#234</b> Ledger token sweep + harden + extract (LMS/Foundation)</div>
+      <div class="done-item"><b>#252</b> program/page.tsx 707→116 — closed #239</div>
+      <div class="done-item"><b>#255</b> shared ActivityFields — closed #244 + #246</div>
+      <div class="done-item"><b>§13</b> Lighthouse — all gates HIT on prod (mobile 98)</div>
+      <div class="done-item"><b>§14</b> SEO — sitemap, canonicals, OG, JSON-LD (#165/#167/#173)</div>
+      <div class="done-item"><b>§16</b> Security — rate limits + CSP enforced (#165/#166/#168)</div>
+      <div class="done-item"><b>§17</b> LMS reskin code — all 7 PRs merged</div>
+      <div class="done-item"><b>#172</b> Free-assessment output revision (5 tracks)</div>
+      <div class="done-item"><b>Perf</b> −73KB /dashboard, −84KB /assessment, −64KB marketing</div>
+      <div class="done-item"><b>Foundation rename</b> code shipped (operator rollout remains)</div>
+    </div>
+  </section>
+
+  <footer>
+    Launch Action Board · 2026-05-21 · derived from tasks/PATH-FORWARD.md + launch-checklist.md + open issues · issue links → github.com/Gilmore3088/aibi-org · regenerate after operator items land
+  </footer>
+
+</div>
+</body>
+</html>

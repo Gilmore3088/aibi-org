@@ -1,0 +1,684 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sketch · Lending Playbook · AiBI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="_mockup.css">
+  <style>
+    /* Snapshot card */
+    .snap { background: #fff; color: var(--ink); border-radius: 28px; overflow: hidden; box-shadow: 0 30px 60px -20px rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.08); }
+    .snap .head { padding: 20px 22px; background: var(--cream); border-bottom: 1px solid var(--slate-200); }
+    .snap .head .k { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-deep); }
+    .snap .head .t { font-size: 22px; font-weight: 600; margin-top: 4px; }
+    .snap .quick { display: grid; grid-template-columns: 1fr; }
+    @media (min-width: 600px) { .snap .quick { grid-template-columns: repeat(3, 1fr); } }
+    .snap .q { padding: 20px; border-right: 1px solid var(--slate-200); border-bottom: 1px solid var(--slate-200); }
+    .snap .q:last-child { border-right: 0; }
+    .snap .q svg { color: var(--gold); margin-bottom: 14px; }
+    .snap .q .l { font-size: 12px; color: var(--slate-500); }
+    .snap .q .v { font-weight: 700; font-size: 18px; margin-top: 4px; }
+    .snap .ms { padding: 20px; display: grid; gap: 12px; grid-template-columns: 1fr; }
+    @media (min-width: 600px) { .snap .ms { grid-template-columns: 1fr 1fr; } }
+    .ms-row { padding: 14px 16px; background: #fff; border: 1px solid rgba(7,26,47,0.10); border-radius: 14px; }
+    .ms-row .top { display: flex; justify-content: space-between; margin-bottom: 8px; }
+    .ms-row .l { font-size: 12px; font-weight: 600; color: var(--slate-500); }
+    .ms-row .v { font-size: 12px; font-weight: 700; color: var(--gold-deep); }
+    .ms-row .bar { height: 6px; background: var(--slate-200); border-radius: 999px; overflow: hidden; }
+    .ms-row .fill { height: 100%; background: var(--gold); }
+    .snap .path { margin: 0 20px 20px; padding: 18px 20px; background: var(--ink); color: #fff; border-radius: 14px; }
+    .snap .path .l { font-size: 13px; color: rgba(255,255,255,0.55); }
+    .snap .path .v { font-size: 18px; font-weight: 700; color: var(--gold-soft); margin-top: 6px; line-height: 1.35; }
+
+    /* Use case cards */
+    .uses { display: grid; gap: 16px; grid-template-columns: 1fr; }
+    @media (min-width: 760px) { .uses { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 1100px) { .uses { grid-template-columns: 1fr 1fr 1fr 1fr; } }
+    .uc { background: #fff; border: 1px solid rgba(7,26,47,0.10); border-radius: 24px; padding: 24px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); transition: transform .12s, box-shadow .12s; }
+    .uc:hover { transform: translateY(-4px); box-shadow: 0 24px 40px -20px rgba(0,0,0,0.15); }
+    .uc .top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .uc .top svg { color: var(--gold); }
+    .uc .risk { padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; }
+    .uc .risk.high { background: rgba(142,59,42,0.15); color: #8E3B2A; }
+    .uc .risk.med { background: rgba(200,162,74,0.20); color: var(--gold-deep); }
+    .uc .risk.low { background: rgba(4,120,87,0.15); color: var(--emerald-700); }
+    .uc h3 { font-size: 18px; font-weight: 600; margin: 0 0 10px; line-height: 1.3; }
+    .uc p { color: var(--slate-600); font-size: 13px; margin: 0 0 16px; min-height: 56px; }
+    .uc .art { padding: 12px 14px; background: var(--cream); border-radius: 14px; }
+    .uc .art .l { font-size: 11px; color: var(--slate-500); font-weight: 600; }
+    .uc .art .v { font-weight: 700; margin-top: 4px; font-size: 14px; }
+
+    /* Operating model */
+    .om { background: #fff; border: 1px solid rgba(7,26,47,0.10); border-radius: 32px; box-shadow: 0 24px 40px -20px rgba(0,0,0,0.15); overflow: hidden; display: grid; grid-template-columns: 1fr; }
+    @media (min-width: 1100px) { .om { grid-template-columns: repeat(4, 1fr); } }
+    .om > div { padding: 28px; border-right: 1px solid var(--slate-200); border-bottom: 1px solid var(--slate-200); }
+    .om > div:last-child { border-right: 0; border-bottom: 0; }
+    .om .top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+    .om .pic { width: 44px; height: 44px; border-radius: 14px; background: var(--ink); color: var(--gold); display: inline-flex; align-items: center; justify-content: center; }
+    .om .step { font-size: 14px; font-weight: 700; color: var(--gold-deep); }
+    .om h3 { font-size: 22px; font-weight: 600; margin: 0 0 10px; }
+    .om p { color: var(--slate-600); font-size: 13px; margin: 0 0 18px; }
+    .om .art { padding: 12px 16px; background: var(--cream); border-radius: 14px; }
+    .om .art .l { font-size: 11px; color: var(--slate-500); }
+    .om .art .v { font-weight: 700; margin-top: 4px; font-size: 13px; }
+
+    /* Scenario practice */
+    .sc-grid { display: grid; gap: 32px; grid-template-columns: 1fr; align-items: center; }
+    @media (min-width: 1024px) { .sc-grid { grid-template-columns: 0.4fr 0.6fr; } }
+    .sc-tabs { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+    .sc-tabs button { padding: 12px 18px; border-radius: 12px; border: 0; background: var(--cream); color: var(--ink); font-weight: 600; font-size: 14px; cursor: pointer; }
+    .sc-tabs button:hover { background: var(--cream-2); }
+    .sc-tabs button.on { background: var(--ink); color: #fff; }
+    .sc-card { background: var(--cream); border: 1px solid rgba(7,26,47,0.10); border-radius: 32px; overflow: hidden; box-shadow: 0 24px 40px -20px rgba(0,0,0,0.15); }
+    .sc-head { background: var(--ink); color: #fff; padding: 24px; display: flex; justify-content: space-between; align-items: center; }
+    .sc-head .k { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-soft); }
+    .sc-head .t { font-size: 24px; font-weight: 600; margin-top: 6px; }
+    .sc-body { display: grid; grid-template-columns: 1fr; }
+    @media (min-width: 760px) { .sc-body { grid-template-columns: 1fr 1fr 1fr; } }
+    .sc-body .blk { padding: 24px; background: #fff; border-right: 1px solid var(--slate-200); border-bottom: 1px solid var(--slate-200); }
+    .sc-body .blk:last-child { border-right: 0; }
+    .sc-body .blk.gold { background: rgba(200,162,74,0.18); }
+    .sc-body .blk .l { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--slate-400); }
+    .sc-body .blk.gold .l { color: var(--gold-deep); }
+    .sc-body .blk .v { margin-top: 14px; font-weight: 600; font-size: 14px; line-height: 1.55; }
+
+    /* Training + checklist */
+    .train-grid { display: grid; gap: 32px; grid-template-columns: 1fr; align-items: start; }
+    @media (min-width: 1024px) { .train-grid { grid-template-columns: 0.58fr 0.42fr; } }
+    .mods { display: grid; gap: 16px; grid-template-columns: 1fr; }
+    @media (min-width: 760px) { .mods { grid-template-columns: 1fr 1fr; } }
+    .mod-card { background: #fff; border: 1px solid rgba(7,26,47,0.10); border-radius: 24px; padding: 24px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+    .mod-card svg { color: var(--gold); }
+    .mod-card h3 { font-size: 20px; font-weight: 600; margin: 18px 0 10px; }
+    .mod-card p { color: var(--slate-600); font-size: 14px; margin: 0; }
+    .checklist { background: var(--cream); border: 1px solid rgba(7,26,47,0.10); border-radius: 32px; overflow: hidden; box-shadow: 0 24px 40px -20px rgba(0,0,0,0.15); }
+    .checklist .head { padding: 24px; background: var(--ink); color: #fff; }
+    .checklist .head .k { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-soft); }
+    .checklist .head .t { font-size: 22px; font-weight: 600; margin-top: 6px; }
+    .checklist .body { padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+    .check-row { display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px; background: #fff; border-radius: 14px; }
+    .check-row svg { color: var(--gold); flex: none; margin-top: 2px; }
+    .check-row .t { font-weight: 600; font-size: 14px; }
+
+    /* Evidence */
+    .ev-grid { display: grid; gap: 32px; grid-template-columns: 1fr; align-items: start; }
+    @media (min-width: 1024px) { .ev-grid { grid-template-columns: 0.42fr 0.58fr; } }
+    .ev-panel { background: var(--ink); color: #fff; border-radius: 32px; padding: 28px; box-shadow: 0 24px 40px -20px rgba(0,0,0,0.30); }
+    .ev-panel .k { font-size: 13px; color: rgba(255,255,255,0.6); }
+    .ev-panel .v { font-size: 48px; font-weight: 700; color: var(--gold-soft); margin-top: 8px; line-height: 1; }
+    .ev-panel p { color: rgba(255,255,255,0.7); margin-top: 16px; }
+    .ev-cards { display: grid; gap: 16px; grid-template-columns: 1fr; }
+    @media (min-width: 760px) { .ev-cards { grid-template-columns: 1fr 1fr; } }
+    .ev-card { background: var(--cream); border: 1px solid rgba(7,26,47,0.10); border-radius: 24px; padding: 24px; }
+    .ev-card .num { width: 40px; height: 40px; border-radius: 14px; background: var(--gold); color: var(--ink); display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; }
+    .ev-card h3 { font-size: 20px; font-weight: 600; margin: 18px 0 10px; }
+    .ev-card p { color: var(--slate-600); font-size: 14px; margin: 0; }
+
+    /* Toolbox assets */
+    .tb-section { background: var(--ink); color: #fff; padding: 56px 0; }
+    .tb-grid { display: grid; gap: 32px; grid-template-columns: 1fr; align-items: center; }
+    @media (min-width: 1024px) { .tb-grid { grid-template-columns: 0.42fr 0.58fr; } }
+    .tb-section .k { font-size: 14px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold-soft); }
+    .tb-section h2 { font-size: clamp(28px, 3.6vw, 44px); font-weight: 600; margin: 8px 0 0; line-height: 1.08; letter-spacing: -0.015em; }
+    .tb-section p { color: rgba(255,255,255,0.65); margin: 16px 0 0; }
+    .tb-card { background: #fff; color: var(--ink); border-radius: 32px; overflow: hidden; box-shadow: 0 24px 40px -20px rgba(0,0,0,0.40); display: grid; grid-template-columns: 1fr; }
+    @media (min-width: 760px) { .tb-card { grid-template-columns: 0.46fr 0.54fr; } }
+    .tb-list { background: var(--cream); padding: 24px; }
+    .tb-list .k { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-deep); margin-bottom: 16px; }
+    .tb-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; background: #fff; border-radius: 14px; margin-bottom: 10px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+    .tb-row .nm { font-weight: 600; font-size: 14px; }
+    .tb-row .ty { font-size: 11px; color: var(--slate-500); margin-top: 2px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+    .tb-row .st { padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; }
+    .tb-row .st.ready { background: rgba(4,120,87,0.15); color: var(--emerald-700); }
+    .tb-row .st.draft { background: rgba(200,162,74,0.20); color: var(--gold-deep); }
+    .tb-feat { padding: 24px; }
+    .tb-feat .feat { background: var(--ink); color: #fff; padding: 24px; border-radius: 18px; }
+    .tb-feat .feat .k { color: rgba(255,255,255,0.55); font-size: 13px; }
+    .tb-feat .feat h3 { font-size: 26px; font-weight: 700; color: var(--gold-soft); margin: 8px 0 12px; line-height: 1.15; }
+    .tb-feat .feat p { color: rgba(255,255,255,0.7); margin: 0; font-size: 14px; }
+    .tb-feat .actions { display: grid; gap: 10px; grid-template-columns: 1fr 1fr; margin-top: 18px; }
+
+    /* ---- Bespoke: Adverse-action draft tuner ---- */
+    .aa-grid { display: grid; gap: 28px; grid-template-columns: 1fr; align-items: start; }
+    @media (min-width: 1024px) { .aa-grid { grid-template-columns: 0.42fr 0.58fr; } }
+    .aa-controls { background: var(--cream); border: 1px solid rgba(7,26,47,0.10); border-radius: 24px; padding: 24px; }
+    .aa-controls .k { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-deep); }
+    .aa-controls h3 { font-size: 22px; font-weight: 600; margin: 6px 0 8px; }
+    .aa-controls p { color: var(--slate-600); font-size: 13px; margin: 0 0 18px; }
+    .aa-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .aa-chip { padding: 8px 14px; border-radius: 999px; background: #fff; border: 1px solid var(--slate-200); font-size: 12px; font-weight: 700; letter-spacing: 0.06em; color: var(--slate-600); cursor: pointer; transition: background .12s, color .12s, border-color .12s; }
+    .aa-chip:hover { background: var(--cream-2); }
+    .aa-chip.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+    .aa-meta { margin-top: 18px; padding: 14px 16px; background: #fff; border: 1px solid rgba(7,26,47,0.10); border-radius: 14px; display: flex; justify-content: space-between; align-items: center; }
+    .aa-meta .l { font-size: 11px; color: var(--slate-500); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+    .aa-meta .v { font-weight: 700; color: var(--ink); font-size: 14px; }
+    .aa-meta .v.red { color: #8E3B2A; }
+    .aa-meta .v.amber { color: var(--gold-deep); }
+    .aa-meta .v.green { color: var(--emerald-700); }
+    .aa-letter { background: #fff; border: 1px solid rgba(7,26,47,0.10); border-radius: 24px; box-shadow: 0 24px 40px -20px rgba(0,0,0,0.15); overflow: hidden; }
+    .aa-letter .head { background: var(--ink); color: #fff; padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; }
+    .aa-letter .head .k { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-soft); }
+    .aa-letter .head .t { font-size: 18px; font-weight: 600; margin-top: 4px; }
+    .aa-letter .body { padding: 28px; font-size: 14px; line-height: 1.7; color: var(--slate-600); }
+    .aa-letter .body strong { color: var(--ink); }
+    .aa-letter .body .reason-list { margin: 10px 0 14px 22px; padding: 0; }
+    .aa-letter .body .reason-list li { margin-bottom: 4px; }
+    .aa-letter .body .req { background: rgba(200,162,74,0.14); padding: 12px 14px; border-left: 3px solid var(--gold); border-radius: 4px; margin: 12px 0; font-size: 13px; }
+    .aa-letter .footnote { padding: 14px 24px; background: var(--cream); font-size: 12px; color: var(--slate-500); border-top: 1px solid var(--slate-200); }
+  </style>
+</head>
+<body>
+
+<header class="shell-header">
+  <div class="container header-inner">
+    <a class="brand" href="mockup.html">
+      <span class="seal"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg></span>
+      <span><span class="wm-1">The AI Banking Institute</span><br><span class="wm-2">Role Playbook · Lending</span></span>
+    </a>
+    <nav class="nav">
+      <a href="mockup.html">Home</a>
+      <a href="course.html">Course</a>
+      <a href="assessment.html">Assessment</a>
+      <a href="sandbox.html">Sandbox</a>
+      <a class="on" href="toolbox.html">Toolbox</a>
+      <a href="teams.html">Teams</a>
+    </nav>
+    <a class="btn btn-gold" href="#">Save Lending Playbook</a>
+  </div>
+  <div class="container">
+    <nav class="nav-mobile">
+      <a href="mockup.html">Home</a>
+      <a href="course.html">Course</a>
+      <a href="assessment.html">Assessment</a>
+      <a href="sandbox.html">Sandbox</a>
+      <a class="on" href="toolbox.html">Toolbox</a>
+      <a href="teams.html">Teams</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="deco"><div class="deco-ring"></div><div class="deco-blur"></div></div>
+  <div class="container hero-inner">
+    <div>
+      <div class="eyebrow">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Consumer Lending Playbook
+      </div>
+      <h1>Faster files, defensible decisions.</h1>
+      <p class="lede">A role-specific playbook for consumer lenders, underwriters, and credit administration — write better credit memos, draft compliant adverse-action notices, and keep an audit trail that survives an ECOA second look.</p>
+      <div class="ctas">
+        <a class="btn btn-lg btn-gold" href="#">Start Lending Path
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a class="btn btn-lg btn-ghost-dark" href="#">Preview Artifacts</a>
+      </div>
+    </div>
+
+    <div class="snap">
+      <div class="head">
+        <div class="k">Playbook Snapshot</div>
+        <div class="t">Consumer Lending AI Map</div>
+      </div>
+      <div class="quick">
+        <div class="q">
+          <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          <div class="l">Primary Goal</div><div class="v">Defensible files</div>
+        </div>
+        <div class="q">
+          <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          <div class="l">Core Artifact</div><div class="v">Credit memo</div>
+        </div>
+        <div class="q">
+          <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <div class="l">Risk Focus</div><div class="v">ECOA / Reg B</div>
+        </div>
+      </div>
+      <div class="ms">
+        <div class="ms-row"><div class="top"><div class="l">Memo discipline</div><div class="v">54/100</div></div><div class="bar"><div class="fill" style="width:54%"></div></div></div>
+        <div class="ms-row"><div class="top"><div class="l">Adverse-action craft</div><div class="v">41/100</div></div><div class="bar"><div class="fill" style="width:41%"></div></div></div>
+        <div class="ms-row"><div class="top"><div class="l">Disparate-impact awareness</div><div class="v">62/100</div></div><div class="bar"><div class="fill" style="width:62%"></div></div></div>
+        <div class="ms-row"><div class="top"><div class="l">Exception logging</div><div class="v">38/100</div></div><div class="bar"><div class="fill" style="width:38%"></div></div></div>
+      </div>
+      <div class="path">
+        <div class="l">Recommended path</div>
+        <div class="v">File Quality Self-Audit → Adverse-Action Lab → Memo Builder → 2nd-Signer Review</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- USE-CASE MAP -->
+<section class="std">
+  <div class="container">
+    <div class="section-head">
+      <div class="k">Use-Case Map</div>
+      <h2>Where lending can use AiBI without inviting an exam finding.</h2>
+      <p>Lending is the highest-risk surface for AI in a community bank. These are the use cases worth the effort.</p>
+    </div>
+    <div class="uses">
+      <div class="uc">
+        <div class="top">
+          <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          <span class="risk med">MED RISK</span>
+        </div>
+        <h3>Draft a credit memo from a complete file</h3>
+        <p>Turn application + bureau + bank statements into a structured memo with strengths, weaknesses, mitigants, and recommendation.</p>
+        <div class="art"><div class="l">Artifact</div><div class="v">Credit memo (committee-ready)</div></div>
+      </div>
+      <div class="uc">
+        <div class="top">
+          <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/></svg>
+          <span class="risk high">HIGH RISK</span>
+        </div>
+        <h3>Draft an adverse-action notice</h3>
+        <p>Reason codes are picked by a human; AI only assembles the Reg B-compliant prose around them. Letter is reviewed before it goes out.</p>
+        <div class="art"><div class="l">Artifact</div><div class="v">Reg B-compliant denial letter</div></div>
+      </div>
+      <div class="uc">
+        <div class="top">
+          <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          <span class="risk low">LOW RISK</span>
+        </div>
+        <h3>Summarize a borrower's bank-statement activity</h3>
+        <p>Pulls deposit patterns, NSF history, and recurring obligations from sanitized statement extracts. Underwriter still owns the number.</p>
+        <div class="art"><div class="l">Artifact</div><div class="v">Cash-flow summary sheet</div></div>
+      </div>
+      <div class="uc">
+        <div class="top">
+          <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          <span class="risk med">MED RISK</span>
+        </div>
+        <h3>Log and explain a policy exception</h3>
+        <p>Captures the exception, the compensating factor, and the 2nd-signer rationale in the format your exception register expects.</p>
+        <div class="art"><div class="l">Artifact</div><div class="v">Exception register entry</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OPERATING MODEL -->
+<section class="std" style="background:var(--cream);border-top:1px solid rgba(7,26,47,0.06)">
+  <div class="container">
+    <div class="section-head">
+      <div class="k">Lending Operating Model</div>
+      <h2>The four steps a lender actually does, in order.</h2>
+      <p>Pre-screen the file. Build the case. Communicate the decision. Leave a trail an examiner can read.</p>
+    </div>
+    <div class="om">
+      <div>
+        <div class="top"><span class="pic"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span><span class="step">01</span></div>
+        <h3>Pre-screen</h3>
+        <p>Check completeness, identify missing stipulations, and surface obvious policy hits before the file goes to underwriting.</p>
+        <div class="art"><div class="l">Artifact produced</div><div class="v">Stipulation list + completeness flag</div></div>
+      </div>
+      <div>
+        <div class="top"><span class="pic"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span><span class="step">02</span></div>
+        <h3>Underwriting Assist</h3>
+        <p>Build a credit memo: capacity, capital, conditions, collateral, character — with sourced numbers and a draft recommendation.</p>
+        <div class="art"><div class="l">Artifact produced</div><div class="v">Credit memo draft (human-finalized)</div></div>
+      </div>
+      <div>
+        <div class="top"><span class="pic"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/></svg></span><span class="step">03</span></div>
+        <h3>Adverse Action</h3>
+        <p>Lender picks the principal reasons. AI assembles the Reg B-compliant letter, ECOA notice, and FCRA disclosures around them.</p>
+        <div class="art"><div class="l">Artifact produced</div><div class="v">Denial letter + reason coding</div></div>
+      </div>
+      <div>
+        <div class="top"><span class="pic"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg></span><span class="step">04</span></div>
+        <h3>Audit Trail</h3>
+        <p>Each AI-assisted artifact is tagged with prompt version, reviewer, exceptions taken, and where the source data came from.</p>
+        <div class="art"><div class="l">Artifact produced</div><div class="v">File-level audit log</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BESPOKE: Adverse-Action Draft Tuner -->
+<section class="std" style="background:#fff">
+  <div class="container">
+    <div class="section-head">
+      <div class="k">Live Tool · Adverse-Action Tuner</div>
+      <h2>Pick the reasons. Watch the letter rebuild.</h2>
+      <p>The lender owns the reason coding. The tool assembles the Reg B-compliant prose around it — and tells you when the combination needs a second reviewer.</p>
+    </div>
+    <div class="aa-grid">
+      <div class="aa-controls">
+        <div class="k">Principal reasons</div>
+        <h3>Up to 4 specific reasons</h3>
+        <p>Per Reg B §1002.9(b)(2), the notice must state the specific principal reasons for the action. Generic "did not meet our standards" is non-compliant.</p>
+        <div class="aa-chips" id="aa-chips">
+          <button class="aa-chip" data-r="income">Insufficient income</button>
+          <button class="aa-chip" data-r="dti">Excessive debt-to-income</button>
+          <button class="aa-chip" data-r="history">Limited credit history</button>
+          <button class="aa-chip" data-r="delinq">Recent delinquencies</button>
+          <button class="aa-chip" data-r="collateral">Collateral value insufficient</button>
+          <button class="aa-chip" data-r="employment">Length of employment</button>
+          <button class="aa-chip" data-r="bureau">Information from credit bureau</button>
+        </div>
+        <div class="aa-meta">
+          <div><div class="l">Reasons selected</div><div class="v" id="aa-count">0 of 4</div></div>
+          <div><div class="l">Review path</div><div class="v" id="aa-path">Standard</div></div>
+        </div>
+        <div class="aa-meta">
+          <div><div class="l">Reg B compliant?</div><div class="v red" id="aa-comply">Not yet — pick at least one</div></div>
+        </div>
+      </div>
+
+      <div class="aa-letter">
+        <div class="head">
+          <div>
+            <div class="k">Draft · adverse-action notice</div>
+            <div class="t">For internal review only</div>
+          </div>
+          <svg style="width:24px;height:24px;color:var(--gold)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        </div>
+        <div class="body" id="aa-letter">
+          <p><strong>[Date]</strong></p>
+          <p><strong>[Applicant name]<br>[Applicant address]</strong></p>
+          <p>Dear [Applicant],</p>
+          <p>Thank you for your recent application for a [loan product]. After careful review of the information you provided, we are unable to approve your request at this time.</p>
+          <div class="req"><em>Select one or more reasons at left to populate the principal-reasons block required by ECOA / Regulation B §1002.9(b)(2).</em></div>
+          <p>You have the right to a statement of specific reasons for this action. You may also obtain a copy of any consumer report used in connection with this application within 60 days of receiving this notice, at no charge, from the consumer reporting agency identified below.</p>
+          <p>If you have questions, please contact our lending office.</p>
+          <p>Sincerely,<br>[Lender name]<br>[Title]</p>
+        </div>
+        <div class="footnote">Includes Reg B §1002.9 notice · FCRA §615(a) credit-score disclosure (when bureau reason selected) · ECOA non-discrimination notice. Final letter requires human review before sending.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCENARIO PRACTICE -->
+<section class="std">
+  <div class="container">
+    <div class="sc-grid">
+      <div>
+        <div class="section-head">
+          <div class="k">Scenario Practice</div>
+          <h2>Three reps every consumer lender should run.</h2>
+          <p>Sandbox scenarios let lenders practice with synthetic files before AI touches a real application.</p>
+        </div>
+        <div class="sc-tabs" id="sc-tabs">
+          <button class="on" data-k="Memo">Credit Memo</button>
+          <button data-k="Cashflow">Cash-Flow Read</button>
+          <button data-k="Exception">Exception Log</button>
+        </div>
+      </div>
+
+      <div class="sc-card">
+        <div class="sc-head">
+          <div>
+            <div class="k">Active Sandbox Scenario</div>
+            <div class="t" id="sc-title">Auto Loan · Credit Memo Draft</div>
+          </div>
+          <svg style="width:32px;height:32px;color:var(--gold)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        </div>
+        <div class="sc-body">
+          <div class="blk"><div class="l">Input</div><div class="v" id="sc-in">Synthetic auto-loan file: applicant earns $58k W-2, FICO 692, 38% DTI, requesting $24k for a used 2022 SUV with $26k NADA value.</div></div>
+          <div class="blk"><div class="l">Prompt</div><div class="v" id="sc-pr">Draft a credit memo using the 5 Cs. Pull capacity, capital, collateral, conditions, and character from the file. Flag any data points that conflict. Recommend approve / counter / decline with reasoning the loan committee can defend.</div></div>
+          <div class="blk gold"><div class="l">Expected Output</div><div class="v" id="sc-ou">Structured memo: strengths, weaknesses, mitigants, recommendation, and a "needs from applicant" list. No fabricated bureau detail.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRAINING + CHECKLIST -->
+<section class="std" style="background:var(--cream);border-top:1px solid rgba(7,26,47,0.06)">
+  <div class="container">
+    <div class="train-grid">
+      <div>
+        <div class="section-head">
+          <div class="k">Recommended Training Path</div>
+          <h2>What lenders should take next.</h2>
+          <p>Four modules that map directly to the consumer-lending file flow.</p>
+        </div>
+        <div class="mods">
+          <div class="mod-card">
+            <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+            <h3>Memo Craft</h3>
+            <p>Write a credit memo where every number is traceable to a document in the file.</p>
+          </div>
+          <div class="mod-card">
+            <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/></svg>
+            <h3>Adverse Action</h3>
+            <p>Pick specific principal reasons, assemble Reg B prose, and avoid disparate impact in language.</p>
+          </div>
+          <div class="mod-card">
+            <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <h3>File Self-Audit</h3>
+            <p>Run your own file through a fair-lending lens before the second signer does.</p>
+          </div>
+          <div class="mod-card">
+            <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+            <h3>Exception Discipline</h3>
+            <p>Document what policy you bent, the compensating factor, and who approved it.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="checklist">
+        <div class="head">
+          <div class="k">Pre-send Checklist</div>
+          <div class="t">Before any lending letter or memo goes out</div>
+        </div>
+        <div class="body">
+          <div class="check-row"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><div class="t">Reason codes were picked by a lender, not the model</div></div>
+          <div class="check-row"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><div class="t">Specific principal reasons stated (Reg B §1002.9)</div></div>
+          <div class="check-row"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><div class="t">FCRA credit-score disclosure attached when bureau data used</div></div>
+          <div class="check-row"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><div class="t">No protected-class language in the prose</div></div>
+          <div class="check-row"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><div class="t">Numbers in the memo tie to a document in the file</div></div>
+          <div class="check-row"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><div class="t">Notice sent within 30 days of completed application</div></div>
+          <div class="check-row"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><div class="t">Audit log includes prompt version + reviewer initials</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EVIDENCE PACK -->
+<section class="std" style="background:#fff">
+  <div class="container">
+    <div class="ev-grid">
+      <div>
+        <div class="section-head">
+          <div class="k">Evidence Pack</div>
+          <h2>What a lender produces from the playbook.</h2>
+          <p>Each artifact is a real lending work product — not a summary slide. Designed to drop into a loan file, a second-signer review, or a fair-lending workpaper.</p>
+        </div>
+        <div class="ev-panel">
+          <div class="k">Evidence readiness</div>
+          <div class="v">4-part packet</div>
+          <p>Memo, denial letter, exception entry, and audit log — each tagged with prompt version and reviewer initials.</p>
+        </div>
+      </div>
+      <div class="ev-cards">
+        <div class="ev-card"><div class="num">1</div><h3>Annotated credit memo</h3><p>Capacity, capital, collateral, conditions, character — with the source document cited next to each number.</p></div>
+        <div class="ev-card"><div class="num">2</div><h3>Reg B-compliant denial letter</h3><p>Specific principal reasons, ECOA notice, FCRA disclosure (when applicable), and reviewer signature line.</p></div>
+        <div class="ev-card"><div class="num">3</div><h3>Exception register entry</h3><p>Policy bent, compensating factor, 2nd-signer name, and rationale in plain English.</p></div>
+        <div class="ev-card"><div class="num">4</div><h3>File-level audit log</h3><p>Which artifacts were AI-assisted, the prompt version used, who reviewed them, and when.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TOOLBOX ASSETS -->
+<section class="tb-section">
+  <div class="container tb-grid">
+    <div>
+      <div class="k">Toolbox Assets</div>
+      <h2>Templates a lender will actually open.</h2>
+      <p>Built around the credit file lifecycle. Drop into your origination system — no consulting deck required.</p>
+    </div>
+    <div class="tb-card">
+      <div class="tb-list">
+        <div class="k">Included Assets</div>
+        <div class="tb-row"><div><div class="nm">Credit Memo Template</div><div class="ty">Template</div></div><span class="st ready">Ready</span></div>
+        <div class="tb-row"><div><div class="nm">Adverse-Action Reason Library</div><div class="ty">Reference</div></div><span class="st ready">Ready</span></div>
+        <div class="tb-row"><div><div class="nm">Stipulation Checklist</div><div class="ty">Checklist</div></div><span class="st ready">Ready</span></div>
+        <div class="tb-row"><div><div class="nm">Exception Register Workbook</div><div class="ty">Template</div></div><span class="st ready">Ready</span></div>
+        <div class="tb-row"><div><div class="nm">Fair-Lending Self-Review Card</div><div class="ty">Reference</div></div><span class="st draft">Draft</span></div>
+      </div>
+      <div class="tb-feat">
+        <div class="feat">
+          <div class="k">Featured asset</div>
+          <h3>Adverse-Action Reason Library</h3>
+          <p>A bank-tuned list of principal reasons mapped to Reg B § 1002.9 categories — picked by the lender, assembled by the tool, reviewed before send.</p>
+        </div>
+        <div class="actions">
+          <a class="btn btn-ink" style="justify-content:center" href="#">Preview
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </a>
+          <a class="btn btn-ghost-light" style="justify-content:center" href="#">Download
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="container">
+    <div class="cta-band">
+      <div>
+        <div class="k">Consumer Lending Playbook</div>
+        <h2>A defensible file is the only file worth writing.</h2>
+        <p>Take the path, build the evidence pack, and unlock the lending toolbox — without rewriting your credit policy.</p>
+      </div>
+      <div class="cta-actions">
+        <a class="btn btn-lg btn-gold" href="#">Start Lending Path</a>
+        <a class="btn btn-lg btn-ghost-dark" href="toolbox.html">See All Playbooks</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ribbon">SKETCH · <span>Lending Playbook</span></div>
+
+<script>
+  /* Scenario tabs */
+  const SCENARIOS = {
+    Memo: {
+      title: "Auto Loan · Credit Memo Draft",
+      input: "Synthetic auto-loan file: applicant earns $58k W-2, FICO 692, 38% DTI, requesting $24k for a used 2022 SUV with $26k NADA value.",
+      prompt: "Draft a credit memo using the 5 Cs. Pull capacity, capital, collateral, conditions, and character from the file. Flag any data points that conflict. Recommend approve / counter / decline with reasoning the loan committee can defend.",
+      output: "Structured memo: strengths, weaknesses, mitigants, recommendation, and a \"needs from applicant\" list. No fabricated bureau detail.",
+    },
+    Cashflow: {
+      title: "Personal Loan · Cash-Flow Read",
+      input: "90 days of sanitized bank statements: regular payroll deposits, two NSFs in month 1, recurring auto and rent debits, no large unexplained deposits.",
+      prompt: "Summarize the deposit cadence, recurring obligations, and any patterns that affect repayment capacity. List anything I should ask the applicant about. Do not infer income beyond what's documented.",
+      output: "A one-page cash-flow read: average monthly inflows, recurring outflows, anomalies (the two NSFs), and three borrower-clarification questions.",
+    },
+    Exception: {
+      title: "Policy Exception · Register Entry",
+      input: "Approved a personal loan at 45% DTI when policy ceiling is 42%. Compensating factor: 14 months reserves, stable 6-year employment.",
+      prompt: "Draft an exception register entry. State the policy bent, the compensating factor in plain English, the 2nd-signer name and rationale, and the monitoring trigger if the loan goes 30+ days past due.",
+      output: "Register-ready entry: policy reference, exception, mitigant, approver chain, and the early-warning trigger.",
+    },
+  };
+  function renderScenario(k) {
+    const s = SCENARIOS[k];
+    document.getElementById('sc-title').textContent = s.title;
+    document.getElementById('sc-in').textContent = s.input;
+    document.getElementById('sc-pr').textContent = s.prompt;
+    document.getElementById('sc-ou').textContent = s.output;
+  }
+  document.querySelectorAll('#sc-tabs button').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('#sc-tabs button').forEach(x => x.classList.remove('on'));
+      b.classList.add('on');
+      renderScenario(b.dataset.k);
+    });
+  });
+
+  /* Adverse-action tuner */
+  const REASON_TEXT = {
+    income:      "Income is insufficient for the amount of credit requested.",
+    dti:         "Total monthly debt obligations are excessive relative to income.",
+    history:     "Length of credit history is insufficient.",
+    delinq:      "Delinquent past or present credit obligations.",
+    collateral:  "Value or type of collateral is not sufficient.",
+    employment:  "Length of employment is insufficient.",
+    bureau:      "Information obtained from a consumer reporting agency.",
+  };
+  const HIGH_SENSITIVITY = ["bureau"];        // triggers FCRA score disclosure
+  const SECOND_SIGNER    = ["delinq","dti"];  // bank-policy escalation example
+
+  const selected = new Set();
+
+  function renderLetter() {
+    const body = document.getElementById('aa-letter');
+    const reasonsHTML = selected.size === 0
+      ? `<div class="req"><em>Select one or more reasons at left to populate the principal-reasons block required by ECOA / Regulation B §1002.9(b)(2).</em></div>`
+      : `<p><strong>Principal reasons for this decision:</strong></p>
+         <ul class="reason-list">${Array.from(selected).map(r => `<li>${REASON_TEXT[r]}</li>`).join('')}</ul>`;
+
+    const fcraBlock = selected.has('bureau')
+      ? `<div class="req"><strong>FCRA notice (auto-attached):</strong> A consumer report was used in part to make this decision. You may obtain a free copy of your report from [credit reporting agency] within 60 days. Your credit score on file at the time was [score], range [low–high]. Key factors: [list].</div>`
+      : '';
+
+    body.innerHTML = `
+      <p><strong>[Date]</strong></p>
+      <p><strong>[Applicant name]<br>[Applicant address]</strong></p>
+      <p>Dear [Applicant],</p>
+      <p>Thank you for your recent application for a [loan product]. After careful review of the information you provided, we are unable to approve your request at this time.</p>
+      ${reasonsHTML}
+      ${fcraBlock}
+      <p>You have the right to a statement of specific reasons for this action. Under the Equal Credit Opportunity Act, creditors are prohibited from discriminating against applicants on the basis of race, color, religion, national origin, sex, marital status, age (provided the applicant has the capacity to contract); because all or part of the applicant's income derives from any public assistance program; or because the applicant has in good faith exercised any right under the Consumer Credit Protection Act.</p>
+      <p>If you have questions, please contact our lending office.</p>
+      <p>Sincerely,<br>[Lender name]<br>[Title]</p>
+    `;
+
+    document.getElementById('aa-count').textContent = `${selected.size} of 4`;
+
+    const comply = document.getElementById('aa-comply');
+    if (selected.size === 0) {
+      comply.textContent = "Not yet — pick at least one";
+      comply.className = "v red";
+    } else if (selected.size > 4) {
+      comply.textContent = "Too many — narrow to top 4";
+      comply.className = "v amber";
+    } else {
+      comply.textContent = "Yes — Reg B §1002.9(b)(2) satisfied";
+      comply.className = "v green";
+    }
+
+    const path = document.getElementById('aa-path');
+    const needsEscalation = Array.from(selected).some(r => SECOND_SIGNER.includes(r));
+    const needsFcra       = Array.from(selected).some(r => HIGH_SENSITIVITY.includes(r));
+    if (needsEscalation && needsFcra) {
+      path.textContent = "2nd-signer + FCRA";
+      path.className = "v red";
+    } else if (needsEscalation) {
+      path.textContent = "2nd-signer review";
+      path.className = "v amber";
+    } else if (needsFcra) {
+      path.textContent = "FCRA disclosure";
+      path.className = "v amber";
+    } else {
+      path.textContent = "Standard";
+      path.className = "v green";
+    }
+  }
+
+  document.querySelectorAll('#aa-chips .aa-chip').forEach(c => {
+    c.addEventListener('click', () => {
+      const r = c.dataset.r;
+      if (selected.has(r)) { selected.delete(r); c.classList.remove('on'); }
+      else if (selected.size < 4) { selected.add(r); c.classList.add('on'); }
+      else { /* cap at 4 */ }
+      renderLetter();
+    });
+  });
+</script>
+
+</body>
+</html>

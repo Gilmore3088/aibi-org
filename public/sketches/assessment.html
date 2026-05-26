@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sketch · Assessment · AiBI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="_mockup.css">
+  <style>
+    /* Sample report preview card on hero */
+    .report { background: #fff; color: var(--ink); border-radius: 28px; overflow: hidden; box-shadow: 0 30px 60px -20px rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.08); display: grid; grid-template-columns: 1fr; }
+    @media (min-width: 720px) { .report { grid-template-columns: 0.42fr 0.58fr; } }
+    .report .left { background: var(--ink); color: #fff; padding: 28px; }
+    .report .left .k { font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold-soft); }
+    .report .left .v { font-size: 96px; font-weight: 600; color: var(--gold-soft); line-height: 0.95; margin-top: 12px; }
+    .report .left .u { color: rgba(255,255,255,0.5); }
+    .report .left .tier { margin-top: 20px; padding: 12px 16px; border: 1px solid rgba(200,162,74,0.40); border-radius: 12px; background: rgba(200,162,74,0.10); display: flex; gap: 10px; align-items: center; color: var(--gold-soft); font-weight: 700; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; }
+    .report .right { padding: 24px; }
+    .report .right .k { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-deep); }
+    .report .dims { margin-top: 16px; display: grid; gap: 12px; grid-template-columns: 1fr 1fr; }
+    .dim { background: var(--cream); padding: 14px 16px; border-radius: 16px; }
+    .dim .row { display: flex; justify-content: space-between; margin-bottom: 8px; }
+    .dim .nm { font-weight: 600; font-size: 13px; }
+    .dim .lv { font-size: 12px; color: var(--gold-deep); font-weight: 700; }
+    .dim .bar { height: 6px; background: var(--slate-200); border-radius: 999px; overflow: hidden; }
+    .dim .fill { height: 100%; background: var(--gold); }
+
+    /* Free / Paid / Team trio */
+    .tier-grid { display: grid; gap: 20px; grid-template-columns: 1fr; }
+    @media (min-width: 860px) { .tier-grid { grid-template-columns: repeat(3, 1fr); } }
+    .tier { background: #fff; border: 1px solid rgba(7,26,47,0.10); border-radius: 24px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.04); transition: transform .12s, box-shadow .12s; }
+    .tier:hover { transform: translateY(-4px); box-shadow: 0 24px 40px -20px rgba(0,0,0,0.20); }
+    .tier .bar { height: 8px; background: var(--gold); }
+    .tier.featured .bar { height: 12px; }
+    .tier.featured { box-shadow: 0 24px 50px -20px rgba(0,0,0,0.30); }
+    .tier .body { padding: 28px; }
+    .tier .lab { font-size: 14px; font-weight: 700; color: var(--gold-deep); }
+    .tier h3 { font-size: 26px; font-weight: 600; margin: 8px 0 12px; }
+    .tier .price { display: flex; align-items: baseline; gap: 6px; margin-bottom: 16px; }
+    .tier .price .v { font-size: 40px; font-weight: 700; }
+    .tier .price .u { color: var(--slate-500); font-size: 14px; }
+    .tier .desc { color: var(--slate-600); margin-bottom: 20px; min-height: 60px; }
+    .tier ul { list-style: none; padding: 0; margin: 0 0 24px; }
+    .tier li { display: flex; gap: 10px; align-items: flex-start; padding: 6px 0; font-size: 14px; }
+    .tier li svg { color: var(--gold); flex: none; margin-top: 3px; }
+    .tier .cta { width: 100%; justify-content: center; }
+
+    /* 8 dimensions list */
+    .dims-grid { display: grid; gap: 16px; grid-template-columns: 1fr; }
+    @media (min-width: 760px) { .dims-grid { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 1024px) { .dims-grid { grid-template-columns: 1fr 1fr 1fr 1fr; } }
+    .dcard { background: #fff; border: 1px solid rgba(7,26,47,0.10); border-radius: 20px; padding: 20px; }
+    .dcard .pic { width: 40px; height: 40px; border-radius: 12px; background: var(--ink); color: var(--gold); display: inline-flex; align-items: center; justify-content: center; margin-bottom: 12px; }
+    .dcard h4 { font-size: 16px; font-weight: 700; margin: 0 0 4px; }
+    .dcard p { font-size: 13px; color: var(--slate-600); margin: 0 0 12px; }
+    .dcard .scale { display: flex; gap: 4px; }
+    .dcard .scale span { flex: 1; height: 4px; border-radius: 2px; background: var(--slate-200); }
+    .dcard .scale span.on { background: var(--gold); }
+
+    /* Steps */
+    .flow { background: #fff; border: 1px solid rgba(7,26,47,0.10); border-radius: 24px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); overflow: hidden; }
+    .flow .head { padding: 20px 24px; background: var(--ink); color: #fff; display: flex; justify-content: space-between; align-items: center; }
+    .flow .head .k { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-soft); }
+    .flow .head .t { font-size: 22px; font-weight: 600; margin-top: 4px; }
+    .flow .steps { display: grid; grid-template-columns: repeat(4, 1fr); }
+    @media (max-width: 760px) { .flow .steps { grid-template-columns: 1fr 1fr; } }
+    .flow .steps > div { padding: 24px; border-right: 1px solid var(--slate-200); border-bottom: 1px solid var(--slate-200); }
+    .flow .steps > div:last-child { border-right: 0; }
+    .flow .steps .n { font-size: 14px; font-weight: 700; color: var(--gold-deep); margin-bottom: 6px; }
+    .flow .steps .t { font-weight: 600; }
+    .flow .steps .d { font-size: 12px; color: var(--slate-500); margin-top: 4px; }
+  </style>
+</head>
+<body>
+
+<header class="shell-header">
+  <div class="container header-inner">
+    <a class="brand" href="mockup.html">
+      <span class="seal"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg></span>
+      <span><span class="wm-1">The AI Banking Institute</span><br><span class="wm-2">Regulated Intelligence</span></span>
+    </a>
+    <nav class="nav">
+      <a href="mockup.html">Home</a>
+      <a href="course.html">Course</a>
+      <a class="on" href="assessment.html">Assessment</a>
+      <a href="sandbox.html">Sandbox</a>
+      <a href="toolbox.html">Toolbox</a>
+      <a href="teams.html">Teams</a>
+    </nav>
+    <a class="btn btn-gold" href="#">Start Free</a>
+  </div>
+  <div class="container">
+    <nav class="nav-mobile">
+      <a href="mockup.html">Home</a>
+      <a href="course.html">Course</a>
+      <a class="on" href="assessment.html">Assessment</a>
+      <a href="sandbox.html">Sandbox</a>
+      <a href="toolbox.html">Toolbox</a>
+      <a href="teams.html">Teams</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="deco"><div class="deco-ring"></div><div class="deco-blur"></div></div>
+  <div class="container hero-inner">
+    <div>
+      <div class="eyebrow">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 14l4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></svg>
+        Assessments · Free baseline + $99 in-depth
+      </div>
+      <h1>Turn vague AI readiness into a clear action plan.</h1>
+      <p class="lede">Start with a free 12-question baseline. When you're ready to act, the 48-question In-Depth shows you exactly where the gaps are and what to do next.</p>
+      <div class="ctas">
+        <a class="btn btn-lg btn-gold" href="#">Start Free Assessment
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a class="btn btn-lg btn-ghost-dark" href="#">See a Sample Report</a>
+      </div>
+    </div>
+
+    <div class="report">
+      <div class="left">
+        <div class="k">Sample report</div>
+        <div class="v">62</div>
+        <div class="u">/ 100 readiness</div>
+        <div class="tier">
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          Building Momentum
+        </div>
+      </div>
+      <div class="right">
+        <div class="k">8 Dimensions</div>
+        <div class="dims">
+          <div class="dim"><div class="row"><span class="nm">Governance</span><span class="lv">High</span></div><div class="bar"><div class="fill" style="width:72%"></div></div></div>
+          <div class="dim"><div class="row"><span class="nm">Tool fluency</span><span class="lv">Med</span></div><div class="bar"><div class="fill" style="width:58%"></div></div></div>
+          <div class="dim"><div class="row"><span class="nm">Risk awareness</span><span class="lv">High</span></div><div class="bar"><div class="fill" style="width:75%"></div></div></div>
+          <div class="dim"><div class="row"><span class="nm">Workflow fit</span><span class="lv">Med</span></div><div class="bar"><div class="fill" style="width:55%"></div></div></div>
+          <div class="dim"><div class="row"><span class="nm">Data judgment</span><span class="lv">Low</span></div><div class="bar"><div class="fill" style="width:42%"></div></div></div>
+          <div class="dim"><div class="row"><span class="nm">Documentation</span><span class="lv">Med</span></div><div class="bar"><div class="fill" style="width:60%"></div></div></div>
+          <div class="dim"><div class="row"><span class="nm">Role readiness</span><span class="lv">Med</span></div><div class="bar"><div class="fill" style="width:65%"></div></div></div>
+          <div class="dim"><div class="row"><span class="nm">Leadership</span><span class="lv">High</span></div><div class="bar"><div class="fill" style="width:80%"></div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LIVE MINI-QUIZ ============================================== -->
+<section class="std" style="background:#fff">
+  <div class="container">
+    <div class="section-head">
+      <div class="k">Try it · 4 sample questions · No email needed</div>
+      <h2>Feel the assessment before you start it.</h2>
+      <p>Answer a few questions to see how scoring works. Your score builds live; tier and dimension bars update as you click. Nothing saved, nothing emailed.</p>
+    </div>
+
+    <div class="quiz">
+      <div class="quiz-card">
+        <div class="quiz-progress">
+          <div class="qp-dots" id="qp-dots"></div>
+          <div class="qp-meta"><span id="qp-num">Question 1</span> of 4</div>
+        </div>
+
+        <div id="quiz-stage">
+          <!-- Question stage filled by JS -->
+        </div>
+
+        <div class="quiz-foot">
+          <button class="btn btn-ghost-light" id="quiz-reset">
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+            Reset
+          </button>
+          <div id="quiz-cta-row" style="display:none">
+            <a class="btn btn-lg btn-gold" href="#">Take the full 12-question Free Assessment
+              <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="quiz-side">
+        <div class="qs-head">
+          <div class="k">Live score</div>
+          <div class="qs-num"><span id="qs-score" class="tnum">—</span><span class="qs-of">/ 100</span></div>
+          <div class="qs-tier" id="qs-tier">Answer to start</div>
+        </div>
+        <div class="qs-dims" id="qs-dims">
+          <!-- dim bars filled by JS -->
+        </div>
+        <div class="qs-foot" id="qs-foot">
+          <p>The full free assessment scores all <strong>8 dimensions</strong> across <strong>12 questions</strong> in about three minutes.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Quiz styles (page-scoped) */
+  .quiz { display: grid; gap: 24px; grid-template-columns: 1fr; }
+  @media (min-width: 960px) { .quiz { grid-template-columns: 1.1fr 0.9fr; } }
+  .quiz-card { background: #fff; border: 1px solid rgba(7,26,47,0.10); border-radius: 32px; padding: 32px; box-shadow: 0 24px 40px -20px rgba(0,0,0,0.15); display: flex; flex-direction: column; min-height: 460px; }
+  .quiz-progress { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; }
+  .qp-dots { display: flex; gap: 6px; }
+  .qp-dots .d { width: 28px; height: 4px; border-radius: 2px; background: var(--slate-200); transition: background .2s; }
+  .qp-dots .d.on { background: var(--gold); }
+  .qp-dots .d.done { background: var(--ink); }
+  .qp-meta { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 12px; color: var(--slate-500); letter-spacing: 0.08em; }
+  .quiz-q { flex: 1; }
+  .quiz-q .k { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-deep); }
+  .quiz-q h3 { font-size: 24px; font-weight: 600; margin: 12px 0 24px; line-height: 1.25; max-width: 36ch; }
+  .quiz-answers { display: grid; gap: 10px; }
+  .quiz-answers button { text-align: left; background: var(--cream); border: 1px solid transparent; border-radius: 14px; padding: 14px 18px; font-size: 14px; font-weight: 500; color: var(--ink); cursor: pointer; transition: background .12s, border-color .12s, transform .08s; display: flex; align-items: center; gap: 12px; }
+  .quiz-answers button:hover { background: var(--cream-2); border-color: rgba(200,162,74,0.40); }
+  .quiz-answers button .dot { width: 18px; height: 18px; border-radius: 999px; border: 2px solid var(--slate-200); flex: none; transition: border-color .12s, background .12s; }
+  .quiz-answers button:hover .dot { border-color: var(--gold); }
+  .quiz-answers button.chosen { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .quiz-answers button.chosen .dot { background: var(--gold); border-color: var(--gold); }
+  .quiz-foot { display: flex; justify-content: space-between; align-items: center; padding-top: 24px; border-top: 1px solid var(--slate-200); margin-top: 24px; gap: 12px; flex-wrap: wrap; }
+
+  .quiz-side { background: var(--ink); color: #fff; border-radius: 32px; padding: 32px; box-shadow: 0 24px 40px -20px rgba(0,0,0,0.30); display: flex; flex-direction: column; }
+  .qs-head { border-bottom: 1px solid rgba(255,255,255,0.10); padding-bottom: 20px; margin-bottom: 20px; }
+  .qs-head .k { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-soft); }
+  .qs-num { display: flex; align-items: baseline; gap: 8px; margin-top: 10px; }
+  .qs-num #qs-score { font-size: 72px; font-weight: 600; color: var(--gold-soft); line-height: 1; transition: color .3s; font-variant-numeric: tabular-nums; }
+  .qs-of { color: rgba(255,255,255,0.5); font-size: 14px; }
+  .qs-tier { margin-top: 14px; display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.7); transition: background .2s, color .2s, border-color .2s; }
+  .qs-tier.t1 { background: rgba(142,59,42,0.30); border-color: rgba(142,59,42,0.60); color: #f4c8b8; }
+  .qs-tier.t2 { background: rgba(200,162,74,0.20); border-color: rgba(200,162,74,0.50); color: var(--gold-soft); }
+  .qs-tier.t3 { background: rgba(200,162,74,0.35); border-color: var(--gold); color: var(--gold-soft); }
+  .qs-tier.t4 { background: rgba(4,120,87,0.30); border-color: rgba(4,120,87,0.70); color: #a7f3d0; }
+  .qs-dims { display: grid; gap: 10px; flex: 1; }
+  .qs-dims .qd { background: rgba(255,255,255,0.06); border-radius: 12px; padding: 10px 14px; }
+  .qs-dims .qd .top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+  .qs-dims .qd .nm { font-size: 12px; font-weight: 600; }
+  .qs-dims .qd .vv { font-size: 11px; color: var(--gold-soft); font-weight: 700; letter-spacing: 0.06em; }
+  .qs-dims .qd .bar { height: 4px; background: rgba(255,255,255,0.10); border-radius: 999px; overflow: hidden; }
+  .qs-dims .qd .fill { height: 100%; background: var(--gold); width: 0; transition: width .5s cubic-bezier(0.2, 0.8, 0.2, 1); }
+  .qs-foot { font-size: 13px; color: rgba(255,255,255,0.55); padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.10); margin-top: 18px; }
+  .qs-foot strong { color: #fff; }
+</style>
+
+<!-- TIER GRID -->
+<section class="std">
+  <div class="container">
+    <div class="section-head">
+      <div class="k">Pick your starting point</div>
+      <h2>Three assessments. One readiness signal.</h2>
+      <p>Start free, upgrade when you want detail, expand when you want institution-wide.</p>
+    </div>
+    <div class="tier-grid">
+      <div class="tier">
+        <div class="bar"></div>
+        <div class="body">
+          <div class="lab">Free</div>
+          <h3>Readiness Baseline</h3>
+          <div class="price"><div class="v">$0</div><div class="u">/ 3 min</div></div>
+          <p class="desc">A quick signal for individuals. Score + tier + the dimension you're weakest on.</p>
+          <ul>
+            <li><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>12 questions, mobile-friendly</li>
+            <li><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Score, tier, top gap</li>
+            <li><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Starter artifact emailed</li>
+          </ul>
+          <a class="btn btn-lg btn-ink cta" href="#">Start Free</a>
+        </div>
+      </div>
+
+      <div class="tier featured">
+        <div class="bar"></div>
+        <div class="body">
+          <div class="lab">$99 · Most Popular</div>
+          <h3>In-Depth Report</h3>
+          <div class="price"><div class="v">$99</div><div class="u">/ one-time</div></div>
+          <p class="desc">The 48-question maturity assessment. Role-specific recommendations + the training path that closes your gaps.</p>
+          <ul>
+            <li><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>All 8 dimensions scored</li>
+            <li><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Role-specific action plan</li>
+            <li><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Examiner-ready PDF</li>
+            <li><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>30-day refund</li>
+          </ul>
+          <a class="btn btn-lg btn-gold cta" href="#">Get In-Depth · $99</a>
+        </div>
+      </div>
+
+      <div class="tier">
+        <div class="bar"></div>
+        <div class="body">
+          <div class="lab">Institutional</div>
+          <h3>Team View</h3>
+          <div class="price"><div class="v">Custom</div><div class="u">/ contact</div></div>
+          <p class="desc">Aggregated readiness for your whole institution. Department breakdowns + assigned training paths.</p>
+          <ul>
+            <li><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Department dashboards</li>
+            <li><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>SSO + admin roles</li>
+            <li><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Briefing for leadership</li>
+          </ul>
+          <a class="btn btn-lg btn-ink cta" href="#">Book Briefing</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 8 DIMENSIONS -->
+<section class="std" style="background:#fff">
+  <div class="container">
+    <div class="section-head">
+      <div class="k">What we measure</div>
+      <h2>Eight readiness dimensions.</h2>
+      <p>Each dimension scores 1–4. The In-Depth report shows your level on each and the exact gap to close.</p>
+    </div>
+    <div class="dims-grid">
+      <div class="dcard"><span class="pic"><svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span><h4>Governance</h4><p>Policy, approvals, and oversight rituals.</p><div class="scale"><span class="on"></span><span class="on"></span><span class="on"></span><span></span></div></div>
+      <div class="dcard"><span class="pic"><svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/></svg></span><h4>Tool fluency</h4><p>Comfort using AI tools day-to-day.</p><div class="scale"><span class="on"></span><span class="on"></span><span></span><span></span></div></div>
+      <div class="dcard"><span class="pic"><svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg></span><h4>Risk awareness</h4><p>What can go wrong, and what you watch for.</p><div class="scale"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span></div></div>
+      <div class="dcard"><span class="pic"><svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span><h4>Workflow fit</h4><p>Where AI belongs in the actual work.</p><div class="scale"><span class="on"></span><span class="on"></span><span></span><span></span></div></div>
+      <div class="dcard"><span class="pic"><svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.7 4 3 9 3s9-1.3 9-3V5"/></svg></span><h4>Data judgment</h4><p>What goes to a model and what doesn't.</p><div class="scale"><span class="on"></span><span></span><span></span><span></span></div></div>
+      <div class="dcard"><span class="pic"><svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span><h4>Documentation</h4><p>What you write down for the examiner.</p><div class="scale"><span class="on"></span><span class="on"></span><span class="on"></span><span></span></div></div>
+      <div class="dcard"><span class="pic"><svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></span><h4>Role readiness</h4><p>People prepared for their specific job.</p><div class="scale"><span class="on"></span><span class="on"></span><span class="on"></span><span></span></div></div>
+      <div class="dcard"><span class="pic"><svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span><h4>Leadership support</h4><p>Sponsorship and budget alignment.</p><div class="scale"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FLOW -->
+<section class="std">
+  <div class="container">
+    <div class="section-head">
+      <div class="k">How it works</div>
+      <h2>Four steps. Three minutes for the free one.</h2>
+    </div>
+    <div class="flow">
+      <div class="head"><div><div class="k">Assessment</div><div class="t">Readiness flow</div></div>
+        <svg style="width:32px;height:32px;color:var(--gold)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+      </div>
+      <div class="steps">
+        <div><div class="n">Step 1</div><div class="t">Answer 12 questions</div><div class="d">Multiple choice, one screen each on mobile.</div></div>
+        <div><div class="n">Step 2</div><div class="t">See your score</div><div class="d">62/100. Tier. Top gap. Inline, no email gate.</div></div>
+        <div><div class="n">Step 3</div><div class="t">Get your report</div><div class="d">8 dimensions + starter artifact emailed.</div></div>
+        <div><div class="n">Step 4</div><div class="t">(Optional) Upgrade</div><div class="d">$99 In-Depth · 48 questions · full plan.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="container">
+    <div class="cta-band">
+      <div>
+        <div class="k">Assessments</div>
+        <h2>You can't fix what you can't see.</h2>
+        <p>The free baseline takes three minutes and shows you the dimension to fix first. No commitment, no sales call.</p>
+      </div>
+      <div class="cta-actions">
+        <a class="btn btn-lg btn-gold" href="#">Start Free</a>
+        <a class="btn btn-lg btn-ghost-dark" href="#">Get In-Depth · $99</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ribbon">SKETCH · <span>Assessment</span></div>
+
+<script>
+  /* ---------- Live mini-quiz ---------- */
+  const QUIZ = [
+    { dim: "Governance",     q: "Does your institution have a written AI use policy?",
+      answers: [["No policy", 1], ["Draft circulating", 2], ["Approved, not adopted", 3], ["Approved + actively followed", 4]] },
+    { dim: "Tool fluency",   q: "How often do you use an AI tool in your weekly work?",
+      answers: [["Never", 1], ["Once a month or less", 2], ["A few times a week", 3], ["Daily", 4]] },
+    { dim: "Risk awareness", q: "What goes into a model when you use one for work?",
+      answers: [["Whatever I'm working on", 1], ["I avoid obvious PII", 2], ["I follow our data rule list", 3], ["I check + log every input", 4]] },
+    { dim: "Documentation",  q: "Could you show an examiner how an AI-assisted task was done?",
+      answers: [["No", 1], ["Maybe, if I dug", 2], ["Yes — I keep notes", 3], ["Yes — full audit trail"], 4] }
+  ];
+  // Patch malformed last entry safely
+  QUIZ[3].answers = [["No", 1], ["Maybe, if I dug", 2], ["Yes — I keep notes", 3], ["Yes — full audit trail", 4]];
+
+  const ALL_DIMS = ["Governance","Tool fluency","Risk awareness","Workflow fit","Data judgment","Documentation","Role readiness","Leadership"];
+  // Reasonable baseline so the side panel isn't empty when the user starts
+  const BASELINE = { "Workflow fit":2, "Data judgment":2, "Role readiness":2, "Leadership":3 };
+
+  let qIdx = 0;
+  const dimScores = {};
+
+  function tierFor(score) {
+    if (score >= 80) return { label: "Ready to Scale", cls: "t4" };
+    if (score >= 60) return { label: "Building Momentum", cls: "t3" };
+    if (score >= 40) return { label: "Early Stage", cls: "t2" };
+    return { label: "Starting Point", cls: "t1" };
+  }
+
+  function renderDots() {
+    const el = document.getElementById("qp-dots");
+    el.innerHTML = QUIZ.map((_, i) => {
+      const cls = i < qIdx ? "done" : (i === qIdx ? "on" : "");
+      return `<div class="d ${cls}"></div>`;
+    }).join("");
+    document.getElementById("qp-num").textContent = qIdx >= QUIZ.length ? "Complete" : `Question ${qIdx + 1}`;
+  }
+
+  function renderDims() {
+    const el = document.getElementById("qs-dims");
+    el.innerHTML = ALL_DIMS.map(d => {
+      const raw = dimScores[d] ?? BASELINE[d];
+      const pct = raw ? Math.round((raw / 4) * 100) : 0;
+      const lvl = pct >= 75 ? "High" : pct >= 50 ? "Med" : pct >= 25 ? "Low" : "—";
+      return `<div class="qd">
+        <div class="top"><span class="nm">${d}</span><span class="vv">${lvl}</span></div>
+        <div class="bar"><div class="fill" style="width:${pct}%"></div></div>
+      </div>`;
+    }).join("");
+  }
+
+  function computeScore() {
+    // Score = average of answered + baseline, normalized to /100
+    const all = ALL_DIMS.map(d => dimScores[d] ?? BASELINE[d] ?? 0);
+    const filled = all.filter(v => v > 0);
+    if (!filled.length) return null;
+    const avg = filled.reduce((a,b) => a+b, 0) / filled.length;
+    return Math.round((avg / 4) * 100);
+  }
+
+  function animateScore(from, to) {
+    const el = document.getElementById("qs-score");
+    const dur = 600, t0 = performance.now();
+    function tick(t) {
+      const k = Math.min(1, (t - t0) / dur);
+      const eased = 1 - Math.pow(1 - k, 3);
+      const v = Math.round(from + (to - from) * eased);
+      el.textContent = v;
+      if (k < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  function renderStage() {
+    if (qIdx >= QUIZ.length) {
+      renderDone(); return;
+    }
+    const q = QUIZ[qIdx];
+    document.getElementById("quiz-stage").innerHTML = `
+      <div class="quiz-q">
+        <div class="k">Dimension · ${q.dim}</div>
+        <h3>${q.q}</h3>
+        <div class="quiz-answers">
+          ${q.answers.map(([txt, val]) => `<button data-val="${val}"><span class="dot"></span>${txt}</button>`).join("")}
+        </div>
+      </div>`;
+    document.querySelectorAll("#quiz-stage .quiz-answers button").forEach(b => {
+      b.addEventListener("click", () => {
+        document.querySelectorAll("#quiz-stage .quiz-answers button").forEach(x => x.classList.remove("chosen"));
+        b.classList.add("chosen");
+        const val = parseInt(b.dataset.val, 10);
+        const prevScore = computeScore() ?? 0;
+        dimScores[q.dim] = val;
+        const newScore = computeScore();
+        animateScore(prevScore, newScore);
+        const t = tierFor(newScore);
+        const tierEl = document.getElementById("qs-tier");
+        tierEl.textContent = t.label;
+        tierEl.className = "qs-tier " + t.cls;
+        renderDims();
+        setTimeout(() => { qIdx++; renderDots(); renderStage(); }, 380);
+      });
+    });
+  }
+
+  function renderDone() {
+    const score = computeScore();
+    const t = tierFor(score);
+    document.getElementById("quiz-stage").innerHTML = `
+      <div class="quiz-q">
+        <div class="k">Sample complete · 4 of 8 dimensions touched</div>
+        <h3>You're at <span style="color:var(--gold-deep)">${score}</span> on this sample. Tier: <strong>${t.label}</strong>.</h3>
+        <p style="color:var(--slate-600);font-size:15px;margin:0 0 16px;max-width:50ch">
+          The full free assessment asks 12 questions covering all 8 dimensions and includes your weakest area + a starter artifact.
+        </p>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px">
+          <a class="btn btn-lg btn-ink" href="results.html">See Your Full Results →</a>
+          <a class="btn btn-lg btn-ghost-light" href="#">Or jump to In-Depth · $99</a>
+        </div>
+      </div>`;
+    document.getElementById("quiz-cta-row").style.display = "block";
+  }
+
+  document.getElementById("quiz-reset").addEventListener("click", () => {
+    qIdx = 0;
+    for (const k of Object.keys(dimScores)) delete dimScores[k];
+    document.getElementById("qs-score").textContent = "—";
+    document.getElementById("qs-tier").textContent = "Answer to start";
+    document.getElementById("qs-tier").className = "qs-tier";
+    document.getElementById("quiz-cta-row").style.display = "none";
+    renderDots(); renderDims(); renderStage();
+  });
+
+  renderDots(); renderDims(); renderStage();
+</script>
+
+</body>
+</html>

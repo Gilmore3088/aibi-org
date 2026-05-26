@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sketch · Course · AiBI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="_mockup.css">
+  <style>
+    /* Course-specific */
+    .curric { background: #fff; color: var(--ink); border-radius: 28px; overflow: hidden; box-shadow: 0 30px 60px -20px rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.08); }
+    .curric .head { padding: 18px 22px; background: var(--cream); border-bottom: 1px solid var(--slate-200); display: flex; justify-content: space-between; align-items: center; }
+    .curric .head .k { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-deep); }
+    .curric .head .t { font-size: 18px; font-weight: 600; margin-top: 2px; }
+    .curric .body { padding: 20px; }
+    .curric .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding-bottom: 16px; border-bottom: 1px solid var(--slate-200); margin-bottom: 16px; }
+    .curric .meta div { background: var(--cream); padding: 14px 16px; border-radius: 12px; }
+    .curric .meta .k { font-size: 11px; color: var(--slate-500); letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; }
+    .curric .meta .v { font-weight: 700; margin-top: 4px; font-size: 18px; }
+    .curric .row { display: flex; gap: 14px; align-items: center; padding: 12px; border-radius: 12px; }
+    .curric .row + .row { margin-top: 6px; }
+    .curric .row .num { width: 28px; height: 28px; border-radius: 999px; background: var(--ink); color: var(--gold); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px; flex: none; }
+    .curric .row.done .num { background: var(--gold); color: var(--ink); }
+    .curric .row .nm { font-weight: 600; flex: 1; }
+    .curric .row .st { font-size: 11px; color: var(--slate-500); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+    .curric .row.cur { background: var(--cream); }
+
+    .modules { display: grid; gap: 20px; grid-template-columns: 1fr; }
+    @media (min-width: 760px) { .modules { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 1100px) { .modules { grid-template-columns: 1fr 1fr 1fr; } }
+    .mod { background: #fff; border: 1px solid rgba(7,26,47,0.10); border-radius: 24px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.04); transition: transform .12s, box-shadow .12s; }
+    .mod:hover { transform: translateY(-4px); box-shadow: 0 24px 40px -20px rgba(0,0,0,0.20); }
+    .mod .bar { height: 6px; background: var(--gold); }
+    .mod .body { padding: 24px; }
+    .mod .top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+    .mod .num { font-size: 14px; font-weight: 700; color: var(--gold-deep); }
+    .mod h3 { font-size: 22px; font-weight: 600; margin: 8px 0 8px; line-height: 1.2; }
+    .mod p { color: var(--slate-600); font-size: 14px; margin: 0 0 16px; }
+    .mod .meta { font-size: 12px; color: var(--slate-500); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+
+    .build { background: #fff; border: 1px solid rgba(7,26,47,0.10); border-radius: 32px; padding: 32px; box-shadow: 0 24px 40px -20px rgba(0,0,0,0.15); display: grid; gap: 32px; grid-template-columns: 1fr; }
+    @media (min-width: 900px) { .build { grid-template-columns: 0.45fr 0.55fr; } }
+    .build .left .k { font-size: 14px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold-deep); }
+    .build .left h3 { font-size: clamp(24px,3vw,36px); font-weight: 600; margin: 8px 0 16px; line-height: 1.1; letter-spacing: -0.01em; }
+    .build .left p { color: var(--slate-600); margin: 0 0 16px; }
+    .build .left ul { padding-left: 20px; color: var(--slate-600); font-size: 15px; }
+    .build .left li { padding: 4px 0; }
+    .pack { background: var(--cream); border-radius: 20px; padding: 20px; }
+    .pack .top { display: flex; justify-content: space-between; align-items: center; padding-bottom: 14px; border-bottom: 1px solid var(--slate-200); margin-bottom: 14px; }
+    .pack .top .k { font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-deep); }
+    .pack .top .n { font-weight: 700; }
+    .pack .row { display: grid; grid-template-columns: 90px 1fr; gap: 12px; padding: 10px 0; border-bottom: 1px dotted var(--slate-200); font-size: 13px; }
+    .pack .row .k { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--slate-500); }
+    .pack .row .v { font-weight: 600; }
+    .pack .stamp { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; background: rgba(200,162,74,0.20); color: var(--gold-deep); font-weight: 700; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 14px; }
+
+    .pricing { background: var(--ink); color: #fff; border-radius: 32px; padding: 40px; border: 1px solid rgba(200,162,74,0.25); display: grid; gap: 32px; grid-template-columns: 1fr; }
+    @media (min-width: 760px) { .pricing { grid-template-columns: 0.5fr 0.5fr; align-items: center; } }
+    .pricing .k { font-size: 14px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold-soft); }
+    .pricing .price { display: flex; align-items: baseline; gap: 8px; margin: 16px 0 8px; }
+    .pricing .price .v { font-size: 72px; font-weight: 600; color: var(--gold-soft); line-height: 1; }
+    .pricing .price .u { font-size: 14px; color: rgba(255,255,255,0.55); }
+    .pricing p { color: rgba(255,255,255,0.7); margin: 0 0 24px; max-width: 36ch; }
+    .pricing ul { list-style: none; padding: 0; margin: 0; }
+    .pricing li { display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: rgba(255,255,255,0.06); border-radius: 12px; margin-bottom: 8px; font-size: 14px; }
+    .pricing li svg { color: var(--gold); }
+  </style>
+</head>
+<body>
+
+<header class="shell-header">
+  <div class="container header-inner">
+    <a class="brand" href="mockup.html">
+      <span class="seal"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg></span>
+      <span><span class="wm-1">The AI Banking Institute</span><br><span class="wm-2">Regulated Intelligence</span></span>
+    </a>
+    <nav class="nav">
+      <a href="mockup.html">Home</a>
+      <a class="on" href="course.html">Course</a>
+      <a href="assessment.html">Assessment</a>
+      <a href="sandbox.html">Sandbox</a>
+      <a href="toolbox.html">Toolbox</a>
+      <a href="teams.html">Teams</a>
+    </nav>
+    <a class="btn btn-gold" href="#">Enroll · $295</a>
+  </div>
+  <div class="container">
+    <nav class="nav-mobile">
+      <a href="mockup.html">Home</a>
+      <a class="on" href="course.html">Course</a>
+      <a href="assessment.html">Assessment</a>
+      <a href="sandbox.html">Sandbox</a>
+      <a href="toolbox.html">Toolbox</a>
+      <a href="teams.html">Teams</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="deco"><div class="deco-ring"></div><div class="deco-blur"></div></div>
+  <div class="container hero-inner">
+    <div>
+      <div class="eyebrow">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+        Foundation Course · $295 · Self-paced
+      </div>
+      <h1>A practical course for bankers who need to build safely.</h1>
+      <p class="lede">Short lessons, guided practice, and work products that go straight into your toolkit. Built for one banker at a time — no cohorts, no calendars.</p>
+      <div class="ctas">
+        <a class="btn btn-lg btn-gold" href="#">Enroll Now · $295
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a class="btn btn-lg btn-ghost-dark" href="#">Preview Module 1 (Free)</a>
+      </div>
+    </div>
+
+    <div class="cmp">
+      <div class="cmp-top">
+        <div>
+          <div class="cmp-k">Course Preview</div>
+          <div class="cmp-t">Prompt → Skill → Workflow</div>
+        </div>
+        <div class="cmp-price">$295</div>
+      </div>
+      <div class="cmp-grid">
+        <div class="cmp-list">
+          <div class="cmp-list-k">Learning Path</div>
+          <div id="cmp-modules"></div>
+        </div>
+        <div class="cmp-detail" id="cmp-detail">
+          <!-- filled by JS -->
+        </div>
+      </div>
+    </div>
+
+    <style>
+      /* ===== Course Module Preview (interactive) ===== */
+      .cmp { background: #fff; color: var(--ink); border-radius: 28px; overflow: hidden; box-shadow: 0 30px 60px -20px rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.08); }
+      .cmp-top { background: var(--ink); color: #fff; padding: 22px 24px; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+      .cmp-k { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-soft); }
+      .cmp-t { font-size: 22px; font-weight: 600; margin-top: 4px; }
+      .cmp-price { background: var(--gold); color: var(--ink); padding: 10px 18px; border-radius: 14px; font-weight: 700; font-size: 14px; }
+      .cmp-grid { display: grid; grid-template-columns: 1fr; }
+      @media (min-width: 760px) { .cmp-grid { grid-template-columns: 0.48fr 0.52fr; } }
+      .cmp-list { background: var(--cream); padding: 20px; border-right: 1px solid var(--slate-200); }
+      .cmp-list-k { font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-deep); margin-bottom: 14px; }
+      .cmp-mod { display: flex; align-items: center; gap: 12px; width: 100%; padding: 12px 14px; border-radius: 14px; background: #fff; border: 0; cursor: pointer; text-align: left; margin-bottom: 8px; transition: background .12s; }
+      .cmp-mod:hover { background: var(--slate-50); }
+      .cmp-mod.on { background: var(--ink); color: #fff; }
+      .cmp-mod .icon { width: 36px; height: 36px; border-radius: 10px; background: var(--cream); color: var(--gold-deep); display: inline-flex; align-items: center; justify-content: center; flex: none; }
+      .cmp-mod.on .icon { background: var(--gold); color: var(--ink); }
+      .cmp-mod .meta { font-size: 11px; opacity: 0.65; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 700; }
+      .cmp-mod .name { font-weight: 600; margin-top: 2px; }
+      .cmp-detail { padding: 24px; }
+      .cmp-detail .icon { width: 48px; height: 48px; border-radius: 12px; background: var(--ink); color: var(--gold); display: inline-flex; align-items: center; justify-content: center; margin-bottom: 18px; }
+      .cmp-detail .k { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-deep); }
+      .cmp-detail h3 { font-size: 28px; font-weight: 600; margin: 8px 0 8px; line-height: 1.15; }
+      .cmp-detail p.desc { color: var(--slate-600); margin: 0 0 14px; font-size: 14px; }
+      .cmp-info { margin-top: 10px; padding: 14px 16px; border-radius: 14px; background: var(--cream); }
+      .cmp-info.line { background: transparent; border: 1px solid rgba(7,26,47,0.10); }
+      .cmp-info .k { font-size: 12px; color: var(--slate-500); letter-spacing: 0; text-transform: none; font-weight: 500; }
+      .cmp-info .v { font-weight: 700; margin-top: 4px; font-size: 14px; }
+    </style>
+    <div style="display:none">
+      <div class="meta">
+          <div><div class="k">Modules</div><div class="v">5</div></div>
+          <div><div class="k">Time</div><div class="v">~6 hrs</div></div>
+          <div><div class="k">Format</div><div class="v">Self-paced</div></div>
+        </div>
+        <div class="row done"><div class="num">1</div><div class="nm">AI Landscape</div><div class="st">Complete</div></div>
+        <div class="row cur"><div class="num">2</div><div class="nm">Prompt Foundations</div><div class="st">In progress</div></div>
+        <div class="row"><div class="num">3</div><div class="nm">Skills</div><div class="st">Locked</div></div>
+        <div class="row"><div class="num">4</div><div class="nm">Workflows</div><div class="st">Locked</div></div>
+        <div class="row"><div class="num">5</div><div class="nm">Agents</div><div class="st">Locked</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT YOU'LL BUILD -->
+<section class="std">
+  <div class="container">
+    <div class="section-head">
+      <div class="k">What you'll build</div>
+      <h2>A reusable Workbench Pack you can hand to a manager Monday.</h2>
+    </div>
+    <div class="build">
+      <div class="left">
+        <div class="k">Artifact preview</div>
+        <h3>The Workbench Pack</h3>
+        <p>Every module ends with a saved artifact. By the end of the course you've built a complete Pack — your prompts, your workflow SOPs, your risk checklists, your role playbooks. It travels with you, not us.</p>
+        <ul>
+          <li>4 substantive lab exercises (Data, Compliance, Loan, Ops)</li>
+          <li>Banker-contextual review tags on every output</li>
+          <li>Realistic synthetic scenarios — never real banking material</li>
+          <li>Exports as PDF, docx, or copy-to-clipboard prompt blocks</li>
+        </ul>
+        <span class="stamp">
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          Examiner-ready format
+        </span>
+      </div>
+      <div class="pack">
+        <div class="top">
+          <div class="k">Workbench Pack · v1</div>
+          <div class="n">CB · Compliance</div>
+        </div>
+        <div class="row"><div class="k">Lab 1</div><div class="v">Data summarization — Branch deposits Q3</div></div>
+        <div class="row"><div class="k">Lab 2</div><div class="v">Procedure cleanup — KYC refresh SOP</div></div>
+        <div class="row"><div class="k">Lab 3</div><div class="v">Loan review — Decline letter draft</div></div>
+        <div class="row"><div class="k">Lab 4</div><div class="v">Ops playbook — Incident response runbook</div></div>
+        <div class="row"><div class="k">Review</div><div class="v">Human approval log attached</div></div>
+        <div class="row"><div class="k">Owner</div><div class="v">Lisa M. · Compliance Lead</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODULES -->
+<section class="std" style="background:#fff">
+  <div class="container">
+    <div class="section-head">
+      <div class="k">Curriculum</div>
+      <h2>Five modules. Each one ends with something useful.</h2>
+      <p>Lessons are short (15–30 min). Every module pairs concept video with a hands-on lab and saves work to your Pack.</p>
+    </div>
+    <div class="modules">
+      <div class="mod"><div class="bar"></div><div class="body">
+        <div class="top"><span class="pic-ink-gold"><svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/></svg></span><span class="num">01</span></div>
+        <h3>AI Landscape</h3><p>Models, tools, limits, and fit. What's available, what it does well, where it fails.</p>
+        <div class="meta">6 lessons · 50 min · Free preview</div>
+      </div></div>
+      <div class="mod"><div class="bar"></div><div class="body">
+        <div class="top"><span class="pic-ink-gold"><svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span><span class="num">02</span></div>
+        <h3>Prompt Foundations</h3><p>Clear instructions with built-in review standards. The way bankers should write to a model.</p>
+        <div class="meta">8 lessons · 75 min</div>
+      </div></div>
+      <div class="mod"><div class="bar"></div><div class="body">
+        <div class="top"><span class="pic-ink-gold"><svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4M14 12h4"/></svg></span><span class="num">03</span></div>
+        <h3>Skills</h3><p>Turn prompts into repeatable assets. Saved, named, tagged, owned.</p>
+        <div class="meta">7 lessons · 80 min</div>
+      </div></div>
+      <div class="mod"><div class="bar"></div><div class="body">
+        <div class="top"><span class="pic-ink-gold"><svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span><span class="num">04</span></div>
+        <h3>Workflows</h3><p>Document input, output, review, and retention. The unit examiners actually look at.</p>
+        <div class="meta">9 lessons · 90 min · Workbench Pack lab</div>
+      </div></div>
+      <div class="mod"><div class="bar"></div><div class="body">
+        <div class="top"><span class="pic-ink-gold"><svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.8L20 10l-4.6 3.4L17.2 20 12 16.6 6.8 20l1.8-6.6L4 10l6.1-1.2z"/></svg></span><span class="num">05</span></div>
+        <h3>Agents</h3><p>Triggers, controls, and escalation. Where automation is appropriate and where it isn't.</p>
+        <div class="meta">6 lessons · 70 min</div>
+      </div></div>
+      <div class="mod" style="background:var(--cream)"><div class="bar"></div><div class="body">
+        <div class="top"><span class="pic-gold-ink"><svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 12 17 2 12"/><polygon points="12 2 22 7 12 12 2 7"/></svg></span><span class="num" style="color:var(--ink)">Bonus</span></div>
+        <h3>Toolbox unlocked</h3><p>Course completion unlocks the full Toolbox: 18 reusable assets, role playbooks, and the prompt library — yours to keep.</p>
+        <div class="meta">Lifetime access · No subscription</div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="std">
+  <div class="container">
+    <div class="pricing">
+      <div>
+        <div class="k">One-time · No subscription</div>
+        <div class="price"><div class="v">$295</div><div class="u">/ seat</div></div>
+        <p>Lifetime access to course, Workbench Pack, and the unlocked Toolbox. Institution seats available at volume pricing.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <a class="btn btn-lg btn-gold" href="#">Enroll Now</a>
+          <a class="btn btn-lg btn-ghost-dark" href="#">Team Pricing →</a>
+        </div>
+      </div>
+      <ul>
+        <li><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>5 modules + bonus Toolbox</li>
+        <li><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>4 substantive lab exercises</li>
+        <li><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Workbench Pack you keep</li>
+        <li><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Foundation Certificate on completion</li>
+        <li><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Self-paced · No cohorts</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="container">
+    <div class="cta-band">
+      <div>
+        <div class="k">Foundation Course</div>
+        <h2>Build the skill. Keep the artifact.</h2>
+        <p>Six hours, five modules, one Workbench Pack you can show your team. Start with the free preview — no email gate.</p>
+      </div>
+      <div class="cta-actions">
+        <a class="btn btn-lg btn-gold" href="#">Enroll · $295</a>
+        <a class="btn btn-lg btn-ghost-dark" href="#">Preview Module 1</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ribbon">SKETCH · <span>Course</span></div>
+
+<script>
+  const MODULES = [
+    { title: "AI Landscape", desc: "Models, tools, limits, and fit. What's available, what it does well, where it fails.",
+      activity: "Map three AI tools to a banking task and rate fit/risk.",
+      artifact: "AI tool-fit decision sheet (saved to your Pack).",
+      icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/></svg>',
+      meta: "6 lessons · 50 min" },
+    { title: "Prompt Foundations", desc: "Clear instructions with built-in review standards. The way bankers should write to a model.",
+      activity: "Rewrite a vague prompt three times until the output passes the review checklist.",
+      artifact: "Reviewed prompt template (saved to your Pack).",
+      icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>',
+      meta: "8 lessons · 75 min" },
+    { title: "Skills", desc: "Turn prompts into repeatable assets. Saved, named, tagged, owned.",
+      activity: "Promote two working prompts into named, tagged Skills with run histories.",
+      artifact: "Two saved Skills with metadata + owner.",
+      icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4M14 12h4"/></svg>',
+      meta: "7 lessons · 80 min" },
+    { title: "Workflows", desc: "Document input, output, review, and retention. The unit examiners actually look at.",
+      activity: "Document a real banking workflow as an SOP with retention + review attached.",
+      artifact: "Workbench Pack workflow SOP (the unit examiners look at).",
+      icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>',
+      meta: "9 lessons · 90 min · Pack lab" },
+    { title: "Agents", desc: "Triggers, controls, and escalation. Where automation is appropriate and where it isn't.",
+      activity: "Decide for three scenarios whether to ship an agent or keep it human-in-the-loop.",
+      artifact: "Agent fit/risk worksheet (kept in your Pack).",
+      icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.8L20 10l-4.6 3.4L17.2 20 12 16.6 6.8 20l1.8-6.6L4 10l6.1-1.2z"/></svg>',
+      meta: "6 lessons · 70 min" },
+  ];
+
+  let active = 0;
+  function renderModules() {
+    document.getElementById('cmp-modules').innerHTML = MODULES.map((m, i) => `
+      <button class="cmp-mod ${i === active ? 'on' : ''}" data-i="${i}">
+        <span class="icon">${m.icon.replace('<svg', '<svg style="width:20px;height:20px"')}</span>
+        <div>
+          <div class="meta">Module ${i + 1}</div>
+          <div class="name">${m.title}</div>
+        </div>
+      </button>`).join('');
+    document.querySelectorAll('.cmp-mod').forEach(b => {
+      b.addEventListener('click', () => { active = parseInt(b.dataset.i, 10); renderModules(); renderDetail(); });
+    });
+  }
+  function renderDetail() {
+    const m = MODULES[active];
+    document.getElementById('cmp-detail').innerHTML = `
+      <span class="icon">${m.icon.replace('<svg', '<svg style="width:24px;height:24px"')}</span>
+      <div class="k">Selected · ${m.meta}</div>
+      <h3>${m.title}</h3>
+      <p class="desc">${m.desc}</p>
+      <div class="cmp-info"><div class="k">Practice activity</div><div class="v">${m.activity}</div></div>
+      <div class="cmp-info line"><div class="k">Learner leaves with</div><div class="v">${m.artifact}</div></div>`;
+  }
+  renderModules();
+  renderDetail();
+</script>
+
+</body>
+</html>

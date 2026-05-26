@@ -1,0 +1,92 @@
+/* Mockup design system tokens — 2026-05-26.
+ *
+ * Replaces Ledger (tokens-ledger.css) as the canonical brand system.
+ * See DECISIONS.md 2026-05-26 entry for the shift rationale.
+ *
+ * Source of truth: /Users/jgmbp/Downloads/aibi_homepage_mockup.jsx,
+ * mirrored in public/sketches/_mockup.css and the individual sketch
+ * pages (mockup.html, assessment.html, results.html, course.html,
+ * sandbox.html, teams.html, toolbox.html, tool-skill-builder.html,
+ * tool-saved-skill.html, playbook-*.html).
+ *
+ * Tokens use bare names (--ink, --gold) rather than --mockup-* prefixes
+ * to keep React ports byte-for-byte identical to the source sketches.
+ * Ledger tokens (--ledger-*) coexist on yet-to-migrate surfaces during
+ * the migration window. Both can be loaded at the same time without
+ * collision because the namespaces are disjoint.
+ */
+
+:root {
+  /* Ink (primary dark) */
+  --ink:        #071A2F;
+  --ink-2:      #0B2745;
+
+  /* Gold (single accent — emphasis and primary CTA) */
+  --gold:       #C8A24A;
+  --gold-2:     #D8B867;   /* hover */
+  --gold-soft:  #E6D39B;   /* on-dark text accent */
+  --gold-deep:  #9A7A2F;   /* on-light kicker / metadata */
+
+  /* Cream (page + recessed surface) */
+  --cream:      #F7F3EA;
+  --cream-2:    #EFE7D7;
+
+  /* Slate scale (neutral text + surfaces) */
+  --slate-50:   #F8FAFC;
+  --slate-100:  #F1F5F9;
+  --slate-200:  #E2E8F0;
+  --slate-400:  #94A3B8;
+  --slate-500:  #64748B;
+  --slate-600:  #475569;
+
+  /* Emerald (success / saved confirmation) */
+  --emerald-50:  #ECFDF5;
+  --emerald-700: #047857;
+  --emerald-800: #065F46;
+
+  /* Tinted overlays (gold at alphas — for chips, fills, on-dark accents) */
+  --gold-a10:   rgba(200, 162, 74, 0.10);
+  --gold-a20:   rgba(200, 162, 74, 0.20);
+  --gold-a30:   rgba(200, 162, 74, 0.30);
+  --gold-a40:   rgba(200, 162, 74, 0.40);
+  --gold-soft-a55: rgba(200, 162, 74, 0.55);
+
+  /* On-dark neutrals */
+  --on-dark-08: rgba(255, 255, 255, 0.08);
+  --on-dark-10: rgba(255, 255, 255, 0.10);
+  --on-dark-20: rgba(255, 255, 255, 0.20);
+  --on-dark-50: rgba(255, 255, 255, 0.50);
+  --on-dark-65: rgba(255, 255, 255, 0.65);
+  --on-dark-70: rgba(255, 255, 255, 0.70);
+  --on-dark-80: rgba(255, 255, 255, 0.80);
+
+  /* Ink at alpha (hairlines + soft borders on light surfaces) */
+  --ink-a10:    rgba(7, 26, 47, 0.10);
+  --ink-a15:    rgba(7, 26, 47, 0.15);
+
+  /* Radii — mockup system uses generous radii (12–32px) */
+  --r-pill:     999px;
+  --r-sm:       8px;
+  --r-md:       12px;
+  --r-lg:       16px;
+  --r-xl:       24px;
+  --r-2xl:      28px;
+  --r-3xl:      32px;
+
+  /* Shadows */
+  --shadow-card:    0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-soft:    0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-hover:   0 6px 20px -10px rgba(0, 0, 0, 0.18);
+  --shadow-feature: 0 24px 40px -20px rgba(0, 0, 0, 0.20);
+  --shadow-hero:    0 30px 60px -20px rgba(0, 0, 0, 0.45), 0 12px 30px -12px rgba(0, 0, 0, 0.30);
+  --shadow-ink:     0 24px 40px -20px rgba(0, 0, 0, 0.30);
+
+  /* Motion */
+  --t-fast:  .12s;
+  --t-med:   .2s;
+  --ease:    cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Container */
+  --container-max: 1280px;
+  --container-pad: 24px;
+}

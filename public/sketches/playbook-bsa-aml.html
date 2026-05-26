@@ -1,0 +1,687 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sketch · BSA / AML Playbook · AiBI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="_mockup.css">
+  <style>
+    .snap { background: #fff; color: var(--ink); border-radius: 28px; overflow: hidden; box-shadow: 0 30px 60px -20px rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.08); }
+    .snap .head { padding: 20px 22px; background: var(--cream); border-bottom: 1px solid var(--slate-200); }
+    .snap .head .k { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-deep); }
+    .snap .head .t { font-size: 22px; font-weight: 600; margin-top: 4px; }
+    .snap .quick { display: grid; grid-template-columns: 1fr; }
+    @media (min-width: 600px) { .snap .quick { grid-template-columns: repeat(3, 1fr); } }
+    .snap .q { padding: 20px; border-right: 1px solid var(--slate-200); border-bottom: 1px solid var(--slate-200); }
+    .snap .q:last-child { border-right: 0; }
+    .snap .q svg { color: var(--gold); margin-bottom: 14px; }
+    .snap .q .l { font-size: 12px; color: var(--slate-500); }
+    .snap .q .v { font-weight: 700; font-size: 18px; margin-top: 4px; }
+    .snap .ms { padding: 20px; display: grid; gap: 12px; grid-template-columns: 1fr; }
+    @media (min-width: 600px) { .snap .ms { grid-template-columns: 1fr 1fr; } }
+    .ms-row { padding: 14px 16px; background: #fff; border: 1px solid rgba(7,26,47,0.10); border-radius: 14px; }
+    .ms-row .top { display: flex; justify-content: space-between; margin-bottom: 8px; }
+    .ms-row .l { font-size: 12px; font-weight: 600; color: var(--slate-500); }
+    .ms-row .v { font-size: 12px; font-weight: 700; color: var(--gold-deep); }
+    .ms-row .bar { height: 6px; background: var(--slate-200); border-radius: 999px; overflow: hidden; }
+    .ms-row .fill { height: 100%; background: var(--gold); }
+    .snap .path { margin: 0 20px 20px; padding: 18px 20px; background: var(--ink); color: #fff; border-radius: 14px; }
+    .snap .path .l { font-size: 13px; color: rgba(255,255,255,0.55); }
+    .snap .path .v { font-size: 18px; font-weight: 700; color: var(--gold-soft); margin-top: 6px; line-height: 1.35; }
+
+    .uses { display: grid; gap: 16px; grid-template-columns: 1fr; }
+    @media (min-width: 760px) { .uses { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 1100px) { .uses { grid-template-columns: 1fr 1fr 1fr 1fr; } }
+    .uc { background: #fff; border: 1px solid rgba(7,26,47,0.10); border-radius: 24px; padding: 24px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); transition: transform .12s, box-shadow .12s; }
+    .uc:hover { transform: translateY(-4px); box-shadow: 0 24px 40px -20px rgba(0,0,0,0.15); }
+    .uc .top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .uc .top svg { color: var(--gold); }
+    .uc .risk { padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; }
+    .uc .risk.high { background: rgba(142,59,42,0.15); color: #8E3B2A; }
+    .uc .risk.med { background: rgba(200,162,74,0.20); color: var(--gold-deep); }
+    .uc .risk.low { background: rgba(4,120,87,0.15); color: var(--emerald-700); }
+    .uc h3 { font-size: 18px; font-weight: 600; margin: 0 0 10px; line-height: 1.3; }
+    .uc p { color: var(--slate-600); font-size: 13px; margin: 0 0 16px; min-height: 56px; }
+    .uc .art { padding: 12px 14px; background: var(--cream); border-radius: 14px; }
+    .uc .art .l { font-size: 11px; color: var(--slate-500); font-weight: 600; }
+    .uc .art .v { font-weight: 700; margin-top: 4px; font-size: 14px; }
+
+    .om { background: #fff; border: 1px solid rgba(7,26,47,0.10); border-radius: 32px; box-shadow: 0 24px 40px -20px rgba(0,0,0,0.15); overflow: hidden; display: grid; grid-template-columns: 1fr; }
+    @media (min-width: 1100px) { .om { grid-template-columns: repeat(4, 1fr); } }
+    .om > div { padding: 28px; border-right: 1px solid var(--slate-200); border-bottom: 1px solid var(--slate-200); }
+    .om > div:last-child { border-right: 0; border-bottom: 0; }
+    .om .top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+    .om .pic { width: 44px; height: 44px; border-radius: 14px; background: var(--ink); color: var(--gold); display: inline-flex; align-items: center; justify-content: center; }
+    .om .step { font-size: 14px; font-weight: 700; color: var(--gold-deep); }
+    .om h3 { font-size: 22px; font-weight: 600; margin: 0 0 10px; }
+    .om p { color: var(--slate-600); font-size: 13px; margin: 0 0 18px; }
+    .om .art { padding: 12px 16px; background: var(--cream); border-radius: 14px; }
+    .om .art .l { font-size: 11px; color: var(--slate-500); }
+    .om .art .v { font-weight: 700; margin-top: 4px; font-size: 13px; }
+
+    .sc-grid { display: grid; gap: 32px; grid-template-columns: 1fr; align-items: center; }
+    @media (min-width: 1024px) { .sc-grid { grid-template-columns: 0.4fr 0.6fr; } }
+    .sc-tabs { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+    .sc-tabs button { padding: 12px 18px; border-radius: 12px; border: 0; background: var(--cream); color: var(--ink); font-weight: 600; font-size: 14px; cursor: pointer; }
+    .sc-tabs button:hover { background: var(--cream-2); }
+    .sc-tabs button.on { background: var(--ink); color: #fff; }
+    .sc-card { background: var(--cream); border: 1px solid rgba(7,26,47,0.10); border-radius: 32px; overflow: hidden; box-shadow: 0 24px 40px -20px rgba(0,0,0,0.15); }
+    .sc-head { background: var(--ink); color: #fff; padding: 24px; display: flex; justify-content: space-between; align-items: center; }
+    .sc-head .k { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-soft); }
+    .sc-head .t { font-size: 24px; font-weight: 600; margin-top: 6px; }
+    .sc-body { display: grid; grid-template-columns: 1fr; }
+    @media (min-width: 760px) { .sc-body { grid-template-columns: 1fr 1fr 1fr; } }
+    .sc-body .blk { padding: 24px; background: #fff; border-right: 1px solid var(--slate-200); border-bottom: 1px solid var(--slate-200); }
+    .sc-body .blk:last-child { border-right: 0; }
+    .sc-body .blk.gold { background: rgba(200,162,74,0.18); }
+    .sc-body .blk .l { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--slate-400); }
+    .sc-body .blk.gold .l { color: var(--gold-deep); }
+    .sc-body .blk .v { margin-top: 14px; font-weight: 600; font-size: 14px; line-height: 1.55; }
+
+    .train-grid { display: grid; gap: 32px; grid-template-columns: 1fr; align-items: start; }
+    @media (min-width: 1024px) { .train-grid { grid-template-columns: 0.58fr 0.42fr; } }
+    .mods { display: grid; gap: 16px; grid-template-columns: 1fr; }
+    @media (min-width: 760px) { .mods { grid-template-columns: 1fr 1fr; } }
+    .mod-card { background: #fff; border: 1px solid rgba(7,26,47,0.10); border-radius: 24px; padding: 24px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+    .mod-card svg { color: var(--gold); }
+    .mod-card h3 { font-size: 20px; font-weight: 600; margin: 18px 0 10px; }
+    .mod-card p { color: var(--slate-600); font-size: 14px; margin: 0; }
+    .checklist { background: var(--cream); border: 1px solid rgba(7,26,47,0.10); border-radius: 32px; overflow: hidden; box-shadow: 0 24px 40px -20px rgba(0,0,0,0.15); }
+    .checklist .head { padding: 24px; background: var(--ink); color: #fff; }
+    .checklist .head .k { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-soft); }
+    .checklist .head .t { font-size: 22px; font-weight: 600; margin-top: 6px; }
+    .checklist .body { padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+    .check-row { display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px; background: #fff; border-radius: 14px; }
+    .check-row svg { color: var(--gold); flex: none; margin-top: 2px; }
+    .check-row .t { font-weight: 600; font-size: 14px; }
+
+    .ev-grid { display: grid; gap: 32px; grid-template-columns: 1fr; align-items: start; }
+    @media (min-width: 1024px) { .ev-grid { grid-template-columns: 0.42fr 0.58fr; } }
+    .ev-panel { background: var(--ink); color: #fff; border-radius: 32px; padding: 28px; box-shadow: 0 24px 40px -20px rgba(0,0,0,0.30); }
+    .ev-panel .k { font-size: 13px; color: rgba(255,255,255,0.6); }
+    .ev-panel .v { font-size: 48px; font-weight: 700; color: var(--gold-soft); margin-top: 8px; line-height: 1; }
+    .ev-panel p { color: rgba(255,255,255,0.7); margin-top: 16px; }
+    .ev-cards { display: grid; gap: 16px; grid-template-columns: 1fr; }
+    @media (min-width: 760px) { .ev-cards { grid-template-columns: 1fr 1fr; } }
+    .ev-card { background: var(--cream); border: 1px solid rgba(7,26,47,0.10); border-radius: 24px; padding: 24px; }
+    .ev-card .num { width: 40px; height: 40px; border-radius: 14px; background: var(--gold); color: var(--ink); display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; }
+    .ev-card h3 { font-size: 20px; font-weight: 600; margin: 18px 0 10px; }
+    .ev-card p { color: var(--slate-600); font-size: 14px; margin: 0; }
+
+    .tb-section { background: var(--ink); color: #fff; padding: 56px 0; }
+    .tb-grid { display: grid; gap: 32px; grid-template-columns: 1fr; align-items: center; }
+    @media (min-width: 1024px) { .tb-grid { grid-template-columns: 0.42fr 0.58fr; } }
+    .tb-section .k { font-size: 14px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold-soft); }
+    .tb-section h2 { font-size: clamp(28px, 3.6vw, 44px); font-weight: 600; margin: 8px 0 0; line-height: 1.08; letter-spacing: -0.015em; }
+    .tb-section p { color: rgba(255,255,255,0.65); margin: 16px 0 0; }
+    .tb-card { background: #fff; color: var(--ink); border-radius: 32px; overflow: hidden; box-shadow: 0 24px 40px -20px rgba(0,0,0,0.40); display: grid; grid-template-columns: 1fr; }
+    @media (min-width: 760px) { .tb-card { grid-template-columns: 0.46fr 0.54fr; } }
+    .tb-list { background: var(--cream); padding: 24px; }
+    .tb-list .k { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-deep); margin-bottom: 16px; }
+    .tb-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; background: #fff; border-radius: 14px; margin-bottom: 10px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+    .tb-row .nm { font-weight: 600; font-size: 14px; }
+    .tb-row .ty { font-size: 11px; color: var(--slate-500); margin-top: 2px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+    .tb-row .st { padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; }
+    .tb-row .st.ready { background: rgba(4,120,87,0.15); color: var(--emerald-700); }
+    .tb-row .st.draft { background: rgba(200,162,74,0.20); color: var(--gold-deep); }
+    .tb-feat { padding: 24px; }
+    .tb-feat .feat { background: var(--ink); color: #fff; padding: 24px; border-radius: 18px; }
+    .tb-feat .feat .k { color: rgba(255,255,255,0.55); font-size: 13px; }
+    .tb-feat .feat h3 { font-size: 26px; font-weight: 700; color: var(--gold-soft); margin: 8px 0 12px; line-height: 1.15; }
+    .tb-feat .feat p { color: rgba(255,255,255,0.7); margin: 0; font-size: 14px; }
+    .tb-feat .actions { display: grid; gap: 10px; grid-template-columns: 1fr 1fr; margin-top: 18px; }
+
+    /* ---- Bespoke: SAR decision tree ---- */
+    .sar-grid { display: grid; gap: 28px; grid-template-columns: 1fr; align-items: start; }
+    @media (min-width: 1024px) { .sar-grid { grid-template-columns: 0.5fr 0.5fr; } }
+    .sar-panel { background: var(--cream); border: 1px solid rgba(7,26,47,0.10); border-radius: 24px; padding: 24px; }
+    .sar-panel .k { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-deep); }
+    .sar-panel h3 { font-size: 22px; font-weight: 600; margin: 6px 0 8px; }
+    .sar-panel p { color: var(--slate-600); font-size: 13px; margin: 0 0 18px; }
+    .sar-q { padding: 16px; background: #fff; border: 1px solid var(--slate-200); border-radius: 14px; margin-bottom: 12px; }
+    .sar-q .ql { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--slate-500); margin-bottom: 8px; }
+    .sar-q .qt { font-weight: 600; font-size: 14px; color: var(--ink); margin-bottom: 12px; line-height: 1.4; }
+    .sar-q .qopt { display: flex; gap: 8px; flex-wrap: wrap; }
+    .sar-q .qopt button { padding: 8px 16px; border-radius: 10px; background: var(--cream); border: 1px solid var(--slate-200); font-size: 12px; font-weight: 700; letter-spacing: 0.06em; color: var(--slate-600); cursor: pointer; }
+    .sar-q .qopt button:hover { background: var(--cream-2); }
+    .sar-q .qopt button.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+    .sar-out { background: #fff; border: 1px solid rgba(7,26,47,0.10); border-radius: 24px; box-shadow: 0 24px 40px -20px rgba(0,0,0,0.15); overflow: hidden; position: sticky; top: 80px; }
+    .sar-out .head { background: var(--ink); color: #fff; padding: 20px 24px; }
+    .sar-out .head .k { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-soft); }
+    .sar-out .head .t { font-size: 22px; font-weight: 600; margin-top: 4px; }
+    .sar-out .body { padding: 24px; }
+    .sar-rec { padding: 18px 20px; border-radius: 14px; margin-bottom: 14px; font-weight: 600; font-size: 16px; line-height: 1.4; }
+    .sar-rec.file { background: rgba(142,59,42,0.10); color: #8E3B2A; border-left: 4px solid #8E3B2A; }
+    .sar-rec.investigate { background: rgba(200,162,74,0.15); color: var(--gold-deep); border-left: 4px solid var(--gold); }
+    .sar-rec.nosar { background: rgba(4,120,87,0.10); color: var(--emerald-800); border-left: 4px solid var(--emerald-700); }
+    .sar-rec.pending { background: var(--cream); color: var(--slate-600); border-left: 4px solid var(--slate-400); }
+    .sar-meta { padding: 14px 16px; background: var(--cream); border-radius: 10px; margin-bottom: 10px; font-size: 13px; line-height: 1.55; color: var(--slate-600); }
+    .sar-meta strong { color: var(--ink); }
+    .sar-meta .label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-deep); display: block; margin-bottom: 4px; }
+    .sar-reset { margin-top: 12px; }
+  </style>
+</head>
+<body>
+
+<header class="shell-header">
+  <div class="container header-inner">
+    <a class="brand" href="mockup.html">
+      <span class="seal"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg></span>
+      <span><span class="wm-1">The AI Banking Institute</span><br><span class="wm-2">Role Playbook · BSA / AML</span></span>
+    </a>
+    <nav class="nav">
+      <a href="mockup.html">Home</a>
+      <a href="course.html">Course</a>
+      <a href="assessment.html">Assessment</a>
+      <a href="sandbox.html">Sandbox</a>
+      <a class="on" href="toolbox.html">Toolbox</a>
+      <a href="teams.html">Teams</a>
+    </nav>
+    <a class="btn btn-gold" href="#">Save BSA Playbook</a>
+  </div>
+  <div class="container">
+    <nav class="nav-mobile">
+      <a href="mockup.html">Home</a>
+      <a href="course.html">Course</a>
+      <a href="assessment.html">Assessment</a>
+      <a href="sandbox.html">Sandbox</a>
+      <a class="on" href="toolbox.html">Toolbox</a>
+      <a href="teams.html">Teams</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="deco"><div class="deco-ring"></div><div class="deco-blur"></div></div>
+  <div class="container hero-inner">
+    <div>
+      <div class="eyebrow">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        BSA / AML Investigator Playbook
+      </div>
+      <h1>Write the narrative an examiner reads twice.</h1>
+      <p class="lede">A role-specific playbook for BSA officers, analysts, and investigators. Tighter narratives, defensible no-SAR decisions, and an alert disposition queue you can keep up with.</p>
+      <div class="ctas">
+        <a class="btn btn-lg btn-gold" href="#">Start BSA Path
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a class="btn btn-lg btn-ghost-dark" href="#">Preview Artifacts</a>
+      </div>
+    </div>
+
+    <div class="snap">
+      <div class="head">
+        <div class="k">Playbook Snapshot</div>
+        <div class="t">BSA / AML AI Enablement Map</div>
+      </div>
+      <div class="quick">
+        <div class="q">
+          <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <div class="l">Primary Goal</div><div class="v">Defensible narrative</div>
+        </div>
+        <div class="q">
+          <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          <div class="l">Core Artifact</div><div class="v">SAR narrative</div>
+        </div>
+        <div class="q">
+          <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <div class="l">Risk Focus</div><div class="v">30-day clock</div>
+        </div>
+      </div>
+      <div class="ms">
+        <div class="ms-row"><div class="top"><div class="l">Narrative craft (5 Ws)</div><div class="v">61/100</div></div><div class="bar"><div class="fill" style="width:61%"></div></div></div>
+        <div class="ms-row"><div class="top"><div class="l">No-SAR documentation</div><div class="v">44/100</div></div><div class="bar"><div class="fill" style="width:44%"></div></div></div>
+        <div class="ms-row"><div class="top"><div class="l">Structuring pattern read</div><div class="v">57/100</div></div><div class="bar"><div class="fill" style="width:57%"></div></div></div>
+        <div class="ms-row"><div class="top"><div class="l">Alert disposition turnaround</div><div class="v">36/100</div></div><div class="bar"><div class="fill" style="width:36%"></div></div></div>
+      </div>
+      <div class="path">
+        <div class="l">Recommended path</div>
+        <div class="v">Pattern Reads → SAR Narrative Craft → No-SAR Memos → Alert Backlog Sprint</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- USE-CASE MAP -->
+<section class="std">
+  <div class="container">
+    <div class="section-head">
+      <div class="k">Use-Case Map</div>
+      <h2>Where BSA can use AiBI without crossing the line.</h2>
+      <p>AI assists the narrative. It does not make the decision. The investigator owns every SAR filed, and every alert closed.</p>
+    </div>
+    <div class="uses">
+      <div class="uc">
+        <div class="top">
+          <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+          <span class="risk high">HIGH RISK</span>
+        </div>
+        <h3>Draft a SAR narrative from a case file</h3>
+        <p>5 Ws + so what. Tool drafts; investigator owns. Filing decision is human.</p>
+        <div class="art"><div class="l">Artifact</div><div class="v">SAR narrative draft (FinCEN style)</div></div>
+      </div>
+      <div class="uc">
+        <div class="top">
+          <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          <span class="risk high">HIGH RISK</span>
+        </div>
+        <h3>Document a defensible no-SAR decision</h3>
+        <p>"What I saw, what I considered, why this is not reportable" — in the format an examiner expects, with the analyst's name.</p>
+        <div class="art"><div class="l">Artifact</div><div class="v">No-SAR memo to file</div></div>
+      </div>
+      <div class="uc">
+        <div class="top">
+          <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          <span class="risk med">MED RISK</span>
+        </div>
+        <h3>Summarize transaction patterns from an export</h3>
+        <p>Reads sanitized transaction extract and surfaces clustering, round-dollar deposits, structuring-shaped patterns. Tool does not score; analyst does.</p>
+        <div class="art"><div class="l">Artifact</div><div class="v">Pattern read summary</div></div>
+      </div>
+      <div class="uc">
+        <div class="top">
+          <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          <span class="risk low">LOW RISK</span>
+        </div>
+        <h3>Build a CIP refresh letter for a CDD review</h3>
+        <p>Drafts the "we need updated information" outreach in plain English, with the regulator-required documentation list.</p>
+        <div class="art"><div class="l">Artifact</div><div class="v">CDD refresh outreach letter</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OPERATING MODEL -->
+<section class="std" style="background:var(--cream);border-top:1px solid rgba(7,26,47,0.06)">
+  <div class="container">
+    <div class="section-head">
+      <div class="k">BSA / AML Operating Model</div>
+      <h2>The investigator's actual loop.</h2>
+      <p>Detect. Investigate. Document. Decide. Each step has an artifact and a name attached.</p>
+    </div>
+    <div class="om">
+      <div>
+        <div class="top"><span class="pic"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span><span class="step">01</span></div>
+        <h3>Detect</h3>
+        <p>Alert hits from the monitoring system, frontline referral, or manual review. Each gets a case ID and an owner the same day.</p>
+        <div class="art"><div class="l">Artifact produced</div><div class="v">Case open + owner assigned</div></div>
+      </div>
+      <div>
+        <div class="top"><span class="pic"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></span><span class="step">02</span></div>
+        <h3>Investigate</h3>
+        <p>Pull transaction history, KYC file, related accounts. AI summarizes patterns; analyst confirms, reads, and decides what's noise.</p>
+        <div class="art"><div class="l">Artifact produced</div><div class="v">Pattern summary + analyst notes</div></div>
+      </div>
+      <div>
+        <div class="top"><span class="pic"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span><span class="step">03</span></div>
+        <h3>Document</h3>
+        <p>Either draft the SAR narrative or write the no-SAR memo. The decision must be defensible at exam regardless of direction.</p>
+        <div class="art"><div class="l">Artifact produced</div><div class="v">SAR narrative or no-SAR memo</div></div>
+      </div>
+      <div>
+        <div class="top"><span class="pic"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span><span class="step">04</span></div>
+        <h3>Decide</h3>
+        <p>BSA officer signs off. SARs filed within 30 days of detection (60 if no suspect). Decision is logged with reviewer.</p>
+        <div class="art"><div class="l">Artifact produced</div><div class="v">Filed SAR or closed case + sign-off</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BESPOKE: SAR Decision Tree -->
+<section class="std" style="background:#fff">
+  <div class="container">
+    <div class="section-head">
+      <div class="k">Live Tool · SAR Decision Tree</div>
+      <h2>Walk the four questions. Get a defensible direction.</h2>
+      <p>This is a decision <em>aid</em>, not a decision. Every output ends with "BSA officer must confirm before filing." Synthetic facts only.</p>
+    </div>
+    <div class="sar-grid">
+      <div class="sar-panel">
+        <div class="k">Walk the file</div>
+        <h3>Four questions, in order</h3>
+        <p>Based on FinCEN SAR-filing thresholds (31 CFR 1020.320) and the FFIEC BSA/AML Examination Manual.</p>
+
+        <div class="sar-q" data-q="suspect">
+          <div class="ql">Question 1</div>
+          <div class="qt">Is there an identifiable transaction or pattern that has no apparent lawful purpose, given what we know about this customer?</div>
+          <div class="qopt"><button data-v="yes">Yes</button><button data-v="no">No</button><button data-v="unsure">Unsure</button></div>
+        </div>
+
+        <div class="sar-q" data-q="amount">
+          <div class="ql">Question 2</div>
+          <div class="qt">Does the aggregate involve $5,000 or more (or any amount if insider abuse is suspected)?</div>
+          <div class="qopt"><button data-v="yes">Yes — $5k+</button><button data-v="insider">Any amount — insider</button><button data-v="no">No — under $5k</button></div>
+        </div>
+
+        <div class="sar-q" data-q="structuring">
+          <div class="ql">Question 3</div>
+          <div class="qt">Is there a pattern that looks like structuring — multiple deposits or withdrawals just below the $10,000 CTR threshold, especially across days or branches?</div>
+          <div class="qopt"><button data-v="yes">Yes — pattern present</button><button data-v="no">No</button></div>
+        </div>
+
+        <div class="sar-q" data-q="customer">
+          <div class="ql">Question 4</div>
+          <div class="qt">Is the activity unusual relative to the customer's known profile, occupation, and historical activity (CDD baseline)?</div>
+          <div class="qopt"><button data-v="yes">Yes — outside baseline</button><button data-v="no">No — fits profile</button></div>
+        </div>
+      </div>
+
+      <div class="sar-out">
+        <div class="head">
+          <div class="k">Recommendation</div>
+          <div class="t" id="sar-title">Awaiting answers</div>
+        </div>
+        <div class="body">
+          <div class="sar-rec pending" id="sar-rec">Answer the four questions at left. The recommendation will update as you go.</div>
+          <div class="sar-meta"><span class="label">Filing window</span><span id="sar-window">SAR must be filed within 30 days of initial detection (60 if suspect is unknown). Continuing-activity SARs every 90 days.</span></div>
+          <div class="sar-meta"><span class="label">Citation</span><span id="sar-cite">31 CFR 1020.320 · FFIEC BSA/AML Exam Manual · FinCEN SAR Narrative Guidance</span></div>
+          <div class="sar-meta"><span class="label">What to do next</span><span id="sar-next">Pick answers to populate next steps.</span></div>
+          <button class="btn btn-ghost-light sar-reset" id="sar-reset">Reset</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCENARIO PRACTICE -->
+<section class="std">
+  <div class="container">
+    <div class="sc-grid">
+      <div>
+        <div class="section-head">
+          <div class="k">Scenario Practice</div>
+          <h2>Three reps every BSA analyst should run.</h2>
+          <p>Sandbox scenarios use synthetic transaction extracts — no real customer data, ever.</p>
+        </div>
+        <div class="sc-tabs" id="sc-tabs">
+          <button class="on" data-k="Narrative">SAR Narrative</button>
+          <button data-k="NoSAR">No-SAR Memo</button>
+          <button data-k="Pattern">Pattern Read</button>
+        </div>
+      </div>
+
+      <div class="sc-card">
+        <div class="sc-head">
+          <div>
+            <div class="k">Active Sandbox Scenario</div>
+            <div class="t" id="sc-title">SAR Narrative · Structuring Pattern</div>
+          </div>
+          <svg style="width:32px;height:32px;color:var(--gold)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+        </div>
+        <div class="sc-body">
+          <div class="blk"><div class="l">Input</div><div class="v" id="sc-in">Synthetic case: 8 cash deposits between $9,200 and $9,800 over 11 business days, two branches, single personal account. Customer is a small-business sole proprietor whose CDD profile cites monthly cash deposits in the $2k–$4k range.</div></div>
+          <div class="blk"><div class="l">Prompt</div><div class="v" id="sc-pr">Draft a SAR narrative using the FinCEN 5 Ws (who, what, when, where, why suspicious). Stay factual. Do not characterize intent. End with "BSA officer to confirm filing decision."</div></div>
+          <div class="blk gold"><div class="l">Expected Output</div><div class="v" id="sc-ou">Chronological narrative, factual tone, total aggregate amount stated, deviation from CDD baseline stated, and explicit human-confirmation reminder. No legal conclusions.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRAINING + CHECKLIST -->
+<section class="std" style="background:var(--cream);border-top:1px solid rgba(7,26,47,0.06)">
+  <div class="container">
+    <div class="train-grid">
+      <div>
+        <div class="section-head">
+          <div class="k">Recommended Training Path</div>
+          <h2>What BSA staff should take next.</h2>
+          <p>Four modules built around the investigator workday.</p>
+        </div>
+        <div class="mods">
+          <div class="mod-card">
+            <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            <h3>Pattern Reads</h3>
+            <p>Structuring, smurfing, round-dollar cadence, geographic clustering. AI surfaces; analyst calls.</p>
+          </div>
+          <div class="mod-card">
+            <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+            <h3>SAR Narrative Craft</h3>
+            <p>5 Ws + so what. Factual tone, no characterization of intent, no legal conclusions.</p>
+          </div>
+          <div class="mod-card">
+            <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            <h3>No-SAR Memos</h3>
+            <p>The hardest discipline. Document the decision <em>not</em> to file in a way that survives the next exam.</p>
+          </div>
+          <div class="mod-card">
+            <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <h3>Backlog Discipline</h3>
+            <p>30-day SAR clock, 60-day if suspect unknown, 90-day continuing-activity cadence — and how AI helps you keep them.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="checklist">
+        <div class="head">
+          <div class="k">Pre-file Checklist</div>
+          <div class="t">Before any SAR or no-SAR closes</div>
+        </div>
+        <div class="body">
+          <div class="check-row"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><div class="t">Narrative covers 5 Ws (who / what / when / where / why suspicious)</div></div>
+          <div class="check-row"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><div class="t">No characterization of intent or legal conclusion</div></div>
+          <div class="check-row"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><div class="t">Aggregate amount and date range stated explicitly</div></div>
+          <div class="check-row"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><div class="t">CDD baseline cited (or noted as missing — and refresh triggered)</div></div>
+          <div class="check-row"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><div class="t">Customer name, address, account number, SSN/TIN, DOB verified</div></div>
+          <div class="check-row"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><div class="t">No tipping — customer not informed a SAR is being considered</div></div>
+          <div class="check-row"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><div class="t">BSA officer signature recorded; filing within 30 / 60 day window</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EVIDENCE PACK -->
+<section class="std" style="background:#fff">
+  <div class="container">
+    <div class="ev-grid">
+      <div>
+        <div class="section-head">
+          <div class="k">Evidence Pack</div>
+          <h2>What an investigator produces from the playbook.</h2>
+          <p>Exam-ready. Each artifact answers what an FFIEC reviewer asks first.</p>
+        </div>
+        <div class="ev-panel">
+          <div class="k">Evidence readiness</div>
+          <div class="v">4-part packet</div>
+          <p>Case file, pattern read, decision memo, and reviewer sign-off — keyed to the case ID.</p>
+        </div>
+      </div>
+      <div class="ev-cards">
+        <div class="ev-card"><div class="num">1</div><h3>Case file index</h3><p>Trigger source (system alert / referral / manual), opened date, owner, CDD profile snapshot.</p></div>
+        <div class="ev-card"><div class="num">2</div><h3>Pattern read</h3><p>Aggregate amount, date range, branches, channel mix, and deviation from baseline.</p></div>
+        <div class="ev-card"><div class="num">3</div><h3>Decision memo</h3><p>SAR narrative <em>or</em> no-SAR memo — same level of rigor either way.</p></div>
+        <div class="ev-card"><div class="num">4</div><h3>Reviewer sign-off</h3><p>BSA officer name, date, filing window honored, continuing-activity flag set if applicable.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TOOLBOX ASSETS -->
+<section class="tb-section">
+  <div class="container tb-grid">
+    <div>
+      <div class="k">Toolbox Assets</div>
+      <h2>Templates that survive an exam.</h2>
+      <p>FFIEC- and FinCEN-aligned, drafted by working investigators.</p>
+    </div>
+    <div class="tb-card">
+      <div class="tb-list">
+        <div class="k">Included Assets</div>
+        <div class="tb-row"><div><div class="nm">SAR Narrative Template (5 Ws)</div><div class="ty">Template</div></div><span class="st ready">Ready</span></div>
+        <div class="tb-row"><div><div class="nm">No-SAR Memo Template</div><div class="ty">Template</div></div><span class="st ready">Ready</span></div>
+        <div class="tb-row"><div><div class="nm">Structuring Pattern Card</div><div class="ty">Reference</div></div><span class="st ready">Ready</span></div>
+        <div class="tb-row"><div><div class="nm">CDD Refresh Outreach</div><div class="ty">Template</div></div><span class="st ready">Ready</span></div>
+        <div class="tb-row"><div><div class="nm">Continuing-Activity Tracker</div><div class="ty">Template</div></div><span class="st draft">Draft</span></div>
+      </div>
+      <div class="tb-feat">
+        <div class="feat">
+          <div class="k">Featured asset</div>
+          <h3>No-SAR Memo Template</h3>
+          <p>Every BSA program has them. Few have them in a defensible format. This is the one your next examiner will read first.</p>
+        </div>
+        <div class="actions">
+          <a class="btn btn-ink" style="justify-content:center" href="#">Preview
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </a>
+          <a class="btn btn-ghost-light" style="justify-content:center" href="#">Download
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="container">
+    <div class="cta-band">
+      <div>
+        <div class="k">BSA / AML Playbook</div>
+        <h2>The decision is yours. The draft is faster.</h2>
+        <p>Take the path, build the evidence pack, and unlock the BSA toolbox — without giving the model the file-or-don't call.</p>
+      </div>
+      <div class="cta-actions">
+        <a class="btn btn-lg btn-gold" href="#">Start BSA Path</a>
+        <a class="btn btn-lg btn-ghost-dark" href="toolbox.html">See All Playbooks</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ribbon">SKETCH · <span>BSA / AML Playbook</span></div>
+
+<script>
+  /* Scenario tabs */
+  const SCENARIOS = {
+    Narrative: {
+      title: "SAR Narrative · Structuring Pattern",
+      input: "Synthetic case: 8 cash deposits between $9,200 and $9,800 over 11 business days, two branches, single personal account. Customer is a small-business sole proprietor whose CDD profile cites monthly cash deposits in the $2k–$4k range.",
+      prompt: "Draft a SAR narrative using the FinCEN 5 Ws (who, what, when, where, why suspicious). Stay factual. Do not characterize intent. End with \"BSA officer to confirm filing decision.\"",
+      output: "Chronological narrative, factual tone, total aggregate amount stated, deviation from CDD baseline stated, and explicit human-confirmation reminder. No legal conclusions.",
+    },
+    NoSAR: {
+      title: "No-SAR Memo · Wire Above Threshold",
+      input: "Customer wired $42,000 to a U.S.-domestic title company. CDD profile shows pending home purchase, with realtor and lender confirmations in the file. No OFAC hit.",
+      prompt: "Write a no-SAR memo to file. State what was reviewed, what was considered, what aligned with CDD baseline, and why filing is not warranted. Sign with analyst initials and date.",
+      output: "Two-paragraph no-SAR memo with case ID, what was reviewed, CDD alignment cited, OFAC clear, analyst initials, and a 90-day re-review trigger if same pattern repeats.",
+    },
+    Pattern: {
+      title: "Pattern Read · Multi-Branch Cash",
+      input: "Sanitized 60-day extract: 23 cash deposits across 4 branches, ranging $1,500–$3,400. Customer is a food-truck operator. CDD baseline cites weekly cash receipts $1k–$5k.",
+      prompt: "Summarize the deposit pattern. Note clustering, branch mix, and round-dollar cadence. Compare to CDD baseline. Do not score risk. Surface anything an analyst should ask about.",
+      output: "Pattern read: cadence, geographic spread, round-dollar count, alignment with baseline (in this case: aligned), and three analyst-clarification questions if any anomalies persist.",
+    },
+  };
+  function renderScenario(k) {
+    const s = SCENARIOS[k];
+    document.getElementById('sc-title').textContent = s.title;
+    document.getElementById('sc-in').textContent = s.input;
+    document.getElementById('sc-pr').textContent = s.prompt;
+    document.getElementById('sc-ou').textContent = s.output;
+  }
+  document.querySelectorAll('#sc-tabs button').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('#sc-tabs button').forEach(x => x.classList.remove('on'));
+      b.classList.add('on');
+      renderScenario(b.dataset.k);
+    });
+  });
+
+  /* SAR decision tree */
+  const answers = { suspect: null, amount: null, structuring: null, customer: null };
+
+  document.querySelectorAll('.sar-q').forEach(q => {
+    const key = q.dataset.q;
+    q.querySelectorAll('button').forEach(b => {
+      b.addEventListener('click', () => {
+        q.querySelectorAll('button').forEach(x => x.classList.remove('on'));
+        b.classList.add('on');
+        answers[key] = b.dataset.v;
+        renderRec();
+      });
+    });
+  });
+
+  function renderRec() {
+    const rec = document.getElementById('sar-rec');
+    const title = document.getElementById('sar-title');
+    const window = document.getElementById('sar-window');
+    const next = document.getElementById('sar-next');
+
+    const answered = Object.values(answers).filter(v => v !== null).length;
+    if (answered === 0) {
+      title.textContent = "Awaiting answers";
+      rec.className = "sar-rec pending";
+      rec.textContent = "Answer the four questions at left. The recommendation will update as you go.";
+      next.textContent = "Pick answers to populate next steps.";
+      return;
+    }
+
+    const { suspect, amount, structuring, customer } = answers;
+
+    // No suspicious activity at all → close cleanly with no-SAR memo
+    if (suspect === "no" && structuring === "no" && customer === "no") {
+      title.textContent = "Close — no SAR";
+      rec.className = "sar-rec nosar";
+      rec.textContent = "No SAR. Document a no-SAR memo to file.";
+      window.textContent = "No filing window applies. Set a 90-day re-review only if pattern recurs.";
+      next.textContent = "Write the no-SAR memo (what reviewed, what considered, alignment with CDD baseline). Analyst initials. BSA officer sign-off.";
+      return;
+    }
+
+    // Structuring pattern OR insider abuse → file regardless of $5k threshold
+    if (structuring === "yes" || amount === "insider") {
+      title.textContent = "File a SAR";
+      rec.className = "sar-rec file";
+      rec.textContent = structuring === "yes"
+        ? "File a SAR. Structuring pattern + activity outside customer baseline meets the threshold under 31 CFR 1020.320."
+        : "File a SAR. Insider-abuse cases have no minimum dollar threshold.";
+      window.textContent = "File within 30 days of initial detection (60 if suspect unknown). Continuing-activity SAR every 90 days if the pattern persists.";
+      next.textContent = "Draft the SAR narrative (5 Ws). Confirm subject identification (name, DOB, SSN/TIN, address). BSA officer must confirm before filing.";
+      return;
+    }
+
+    // Apparent suspicion + $5k+ + outside baseline → file
+    if (suspect === "yes" && amount === "yes" && customer === "yes") {
+      title.textContent = "File a SAR";
+      rec.className = "sar-rec file";
+      rec.textContent = "File a SAR. Suspicious activity, aggregate meets $5k threshold, and activity is outside customer's CDD baseline.";
+      window.textContent = "File within 30 days of initial detection (60 if suspect unknown).";
+      next.textContent = "Draft the SAR narrative. Cite CDD baseline deviation explicitly. BSA officer signs before filing.";
+      return;
+    }
+
+    // Apparent suspicion but under $5k and not structuring / insider
+    if (suspect === "yes" && amount === "no" && structuring === "no") {
+      title.textContent = "Investigate further";
+      rec.className = "sar-rec investigate";
+      rec.textContent = "Continue investigating. Below the $5k threshold today — but aggregate across related accounts and 30-day lookback before closing.";
+      window.textContent = "30-day clock has not started until detection is confirmed. Document timeline.";
+      next.textContent = "Pull related accounts, 30-day lookback, related-party check. Re-walk this tree after aggregating.";
+      return;
+    }
+
+    // Default: continue investigating
+    title.textContent = "Investigate further";
+    rec.className = "sar-rec investigate";
+    rec.textContent = "Indeterminate. Pull additional documentation before deciding.";
+    window.textContent = "Filing window not yet triggered.";
+    next.textContent = "Expand the review: related accounts, longer lookback, CDD refresh. Re-answer the tree once you have the full picture.";
+  }
+
+  document.getElementById('sar-reset').addEventListener('click', () => {
+    Object.keys(answers).forEach(k => answers[k] = null);
+    document.querySelectorAll('.sar-q button').forEach(b => b.classList.remove('on'));
+    renderRec();
+  });
+</script>
+
+</body>
+</html>

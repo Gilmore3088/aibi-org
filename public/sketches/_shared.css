@@ -1,0 +1,123 @@
+/* Sketch-only stylesheet. Mirrors src/styles/tokens-ledger.css for standalone HTML.
+   Throwaway — used to evaluate homepage layout/IA before committing. */
+
+:root {
+  --ledger-bg:           #ECE9DF;
+  --ledger-paper:        #F4F1E7;
+  --ledger-paper-warm:   #FAF7EE;
+  --ledger-parch:        #E4E0D2;
+  --ledger-parch-dark:   #D5D1C2;
+  --ledger-tape:         #F1E9D0;
+  --ledger-ink:          #0E1B2D;
+  --ledger-ink-2:        #1F2A3F;
+  --ledger-slate:        #4F5C6E;
+  --ledger-soft:         #8C95A8;
+  --ledger-accent:       #7C5814;
+  --ledger-accent-light: #94701C;
+  --ledger-accent-a08:   rgba(124, 88, 20, 0.08);
+  --ledger-accent-a12:   rgba(124, 88, 20, 0.12);
+  --ledger-accent-a20:   rgba(124, 88, 20, 0.20);
+  --ledger-accent-2:     #1E3A5F;
+  --ledger-rule:         #D5D1C2;
+  --ledger-rule-strong:  #A8AEBE;
+  --ledger-shadow:       0 1px 0 rgba(14, 27, 45, 0.04), 0 14px 40px -28px rgba(14, 27, 45, 0.18);
+}
+
+* { box-sizing: border-box; font-style: normal !important; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--ledger-bg);
+  color: var(--ledger-ink);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "tnum" 1, "lnum" 1;
+}
+
+/* Type ramps */
+.serif  { font-family: "Newsreader", "Iowan Old Style", Georgia, serif; font-weight: 500; letter-spacing: -0.01em; }
+.mono   { font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace; }
+.kicker { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ledger-accent); }
+.kicker.muted { color: var(--ledger-slate); }
+.h1     { font-family: "Newsreader", Georgia, serif; font-weight: 600; font-size: clamp(40px, 6vw, 72px); line-height: 1.04; letter-spacing: -0.015em; margin: 0; }
+.h2     { font-family: "Newsreader", Georgia, serif; font-weight: 600; font-size: clamp(28px, 3.6vw, 44px); line-height: 1.08; letter-spacing: -0.01em; margin: 0; }
+.h3     { font-family: "Newsreader", Georgia, serif; font-weight: 600; font-size: 22px; line-height: 1.2; margin: 0; }
+.lede   { font-size: 18px; line-height: 1.55; color: var(--ledger-slate); max-width: 60ch; }
+
+/* Building blocks */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+.rule { height: 1px; background: var(--ledger-rule); border: 0; margin: 0; }
+.rule-strong { height: 1px; background: var(--ledger-rule-strong); border: 0; margin: 0; }
+.muted { color: var(--ledger-slate); }
+.tnum  { font-variant-numeric: tabular-nums; }
+
+/* Header / nav */
+header.site {
+  border-bottom: 1px solid var(--ledger-rule);
+  background: var(--ledger-bg);
+  position: sticky; top: 0; z-index: 50;
+}
+header.site .container { display: flex; align-items: center; justify-content: space-between; padding-top: 18px; padding-bottom: 18px; }
+.wordmark { display: flex; flex-direction: column; line-height: 1; gap: 2px; }
+.wordmark .l1 { font-family: ui-sans-serif, system-ui, sans-serif; font-weight: 700; font-size: 14px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ledger-ink); }
+.wordmark .l2 { font-family: ui-sans-serif, system-ui, sans-serif; font-weight: 700; font-size: 14px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ledger-soft); }
+nav.primary { display: flex; gap: 4px; }
+nav.primary a {
+  font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--ledger-ink-2); text-decoration: none; padding: 10px 14px; border-radius: 2px;
+}
+nav.primary a:hover { color: var(--ledger-ink); background: var(--ledger-paper); }
+nav.primary a.active { color: var(--ledger-ink); background: var(--ledger-parch); }
+
+/* Buttons */
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; border-radius: 2px; font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; text-decoration: none; border: 1px solid transparent; cursor: pointer; }
+.btn.primary { background: var(--ledger-ink); color: var(--ledger-paper); }
+.btn.primary:hover { background: #1A2942; }
+.btn.ghost { background: transparent; color: var(--ledger-ink); border-color: var(--ledger-rule-strong); }
+.btn.ghost:hover { background: var(--ledger-paper); }
+.btn.on-dark.ghost { color: #F4F1E7; border-color: rgba(244,241,231,0.25); }
+.btn.on-dark.ghost:hover { background: rgba(244,241,231,0.06); }
+.btn.gold { background: var(--ledger-accent); color: var(--ledger-paper); }
+.btn.gold:hover { background: var(--ledger-accent-light); }
+.arrow::after { content: "→"; font-family: ui-sans-serif, system-ui, sans-serif; }
+
+/* Section spacing */
+section { padding: 72px 0; }
+section.tight { padding: 48px 0; }
+section + section { border-top: 1px solid var(--ledger-rule); }
+
+/* Section heads */
+.section-head { display: grid; gap: 14px; margin-bottom: 40px; max-width: 720px; }
+
+/* Cards (Ledger discipline: 3–4px radius, hairline border, single shadow only on hero) */
+.card { background: var(--ledger-paper); border: 1px solid var(--ledger-rule); border-radius: 3px; padding: 24px; }
+.card.hero-card { box-shadow: var(--ledger-shadow); border-radius: 4px; }
+.card .label { font-family: "JetBrains Mono", monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ledger-accent); margin-bottom: 12px; }
+
+/* Grids */
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+@media (max-width: 860px) {
+  .grid-3, .grid-2 { grid-template-columns: 1fr; }
+}
+
+/* Dimension bars */
+.dim { padding: 14px 16px; background: var(--ledger-bg); border: 1px solid var(--ledger-rule); border-radius: 3px; }
+.dim .row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
+.dim .name { font-size: 13px; font-weight: 600; }
+.dim .val { font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: 0.1em; color: var(--ledger-slate); }
+.dim .bar { height: 4px; background: var(--ledger-parch); border-radius: 999px; overflow: hidden; }
+.dim .fill { height: 100%; background: var(--ledger-accent); }
+
+/* Sketch ribbon */
+.ribbon {
+  position: fixed; bottom: 16px; right: 16px; z-index: 1000;
+  background: var(--ledger-ink); color: var(--ledger-paper); padding: 8px 12px;
+  font-family: "JetBrains Mono", monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+  border-radius: 2px;
+}
+.ribbon a { color: var(--ledger-paper); opacity: 0.7; margin-left: 12px; }
+.ribbon a.active { opacity: 1; color: #E6D39B; }
+</content>
+</invoke>

@@ -42,6 +42,7 @@ const COMING_SOON_BYPASS_PREFIXES: readonly string[] = [
   '/courses',
   '/dashboard',
   '/research',
+  '/sketches',
 ];
 
 // Exact paths that must always render their real content even in coming-soon

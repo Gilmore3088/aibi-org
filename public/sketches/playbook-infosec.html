@@ -1,0 +1,702 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sketch · IT / InfoSec Playbook · AiBI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="_mockup.css">
+  <style>
+    .snap { background: #fff; color: var(--ink); border-radius: 28px; overflow: hidden; box-shadow: 0 30px 60px -20px rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.08); }
+    .snap .head { padding: 20px 22px; background: var(--cream); border-bottom: 1px solid var(--slate-200); }
+    .snap .head .k { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-deep); }
+    .snap .head .t { font-size: 22px; font-weight: 600; margin-top: 4px; }
+    .snap .quick { display: grid; grid-template-columns: 1fr; }
+    @media (min-width: 600px) { .snap .quick { grid-template-columns: repeat(3, 1fr); } }
+    .snap .q { padding: 20px; border-right: 1px solid var(--slate-200); border-bottom: 1px solid var(--slate-200); }
+    .snap .q:last-child { border-right: 0; }
+    .snap .q svg { color: var(--gold); margin-bottom: 14px; }
+    .snap .q .l { font-size: 12px; color: var(--slate-500); }
+    .snap .q .v { font-weight: 700; font-size: 18px; margin-top: 4px; }
+    .snap .ms { padding: 20px; display: grid; gap: 12px; grid-template-columns: 1fr; }
+    @media (min-width: 600px) { .snap .ms { grid-template-columns: 1fr 1fr; } }
+    .ms-row { padding: 14px 16px; background: #fff; border: 1px solid rgba(7,26,47,0.10); border-radius: 14px; }
+    .ms-row .top { display: flex; justify-content: space-between; margin-bottom: 8px; }
+    .ms-row .l { font-size: 12px; font-weight: 600; color: var(--slate-500); }
+    .ms-row .v { font-size: 12px; font-weight: 700; color: var(--gold-deep); }
+    .ms-row .bar { height: 6px; background: var(--slate-200); border-radius: 999px; overflow: hidden; }
+    .ms-row .fill { height: 100%; background: var(--gold); }
+    .snap .path { margin: 0 20px 20px; padding: 18px 20px; background: var(--ink); color: #fff; border-radius: 14px; }
+    .snap .path .l { font-size: 13px; color: rgba(255,255,255,0.55); }
+    .snap .path .v { font-size: 18px; font-weight: 700; color: var(--gold-soft); margin-top: 6px; line-height: 1.35; }
+
+    .uses { display: grid; gap: 16px; grid-template-columns: 1fr; }
+    @media (min-width: 760px) { .uses { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 1100px) { .uses { grid-template-columns: 1fr 1fr 1fr 1fr; } }
+    .uc { background: #fff; border: 1px solid rgba(7,26,47,0.10); border-radius: 24px; padding: 24px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); transition: transform .12s, box-shadow .12s; }
+    .uc:hover { transform: translateY(-4px); box-shadow: 0 24px 40px -20px rgba(0,0,0,0.15); }
+    .uc .top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .uc .top svg { color: var(--gold); }
+    .uc .risk { padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; }
+    .uc .risk.high { background: rgba(142,59,42,0.15); color: #8E3B2A; }
+    .uc .risk.med { background: rgba(200,162,74,0.20); color: var(--gold-deep); }
+    .uc .risk.low { background: rgba(4,120,87,0.15); color: var(--emerald-700); }
+    .uc h3 { font-size: 18px; font-weight: 600; margin: 0 0 10px; line-height: 1.3; }
+    .uc p { color: var(--slate-600); font-size: 13px; margin: 0 0 16px; min-height: 56px; }
+    .uc .art { padding: 12px 14px; background: var(--cream); border-radius: 14px; }
+    .uc .art .l { font-size: 11px; color: var(--slate-500); font-weight: 600; }
+    .uc .art .v { font-weight: 700; margin-top: 4px; font-size: 14px; }
+
+    .om { background: #fff; border: 1px solid rgba(7,26,47,0.10); border-radius: 32px; box-shadow: 0 24px 40px -20px rgba(0,0,0,0.15); overflow: hidden; display: grid; grid-template-columns: 1fr; }
+    @media (min-width: 1100px) { .om { grid-template-columns: repeat(4, 1fr); } }
+    .om > div { padding: 28px; border-right: 1px solid var(--slate-200); border-bottom: 1px solid var(--slate-200); }
+    .om > div:last-child { border-right: 0; border-bottom: 0; }
+    .om .top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+    .om .pic { width: 44px; height: 44px; border-radius: 14px; background: var(--ink); color: var(--gold); display: inline-flex; align-items: center; justify-content: center; }
+    .om .step { font-size: 14px; font-weight: 700; color: var(--gold-deep); }
+    .om h3 { font-size: 22px; font-weight: 600; margin: 0 0 10px; }
+    .om p { color: var(--slate-600); font-size: 13px; margin: 0 0 18px; }
+    .om .art { padding: 12px 16px; background: var(--cream); border-radius: 14px; }
+    .om .art .l { font-size: 11px; color: var(--slate-500); }
+    .om .art .v { font-weight: 700; margin-top: 4px; font-size: 13px; }
+
+    .sc-grid { display: grid; gap: 32px; grid-template-columns: 1fr; align-items: center; }
+    @media (min-width: 1024px) { .sc-grid { grid-template-columns: 0.4fr 0.6fr; } }
+    .sc-tabs { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+    .sc-tabs button { padding: 12px 18px; border-radius: 12px; border: 0; background: var(--cream); color: var(--ink); font-weight: 600; font-size: 14px; cursor: pointer; }
+    .sc-tabs button:hover { background: var(--cream-2); }
+    .sc-tabs button.on { background: var(--ink); color: #fff; }
+    .sc-card { background: var(--cream); border: 1px solid rgba(7,26,47,0.10); border-radius: 32px; overflow: hidden; box-shadow: 0 24px 40px -20px rgba(0,0,0,0.15); }
+    .sc-head { background: var(--ink); color: #fff; padding: 24px; display: flex; justify-content: space-between; align-items: center; }
+    .sc-head .k { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-soft); }
+    .sc-head .t { font-size: 24px; font-weight: 600; margin-top: 6px; }
+    .sc-body { display: grid; grid-template-columns: 1fr; }
+    @media (min-width: 760px) { .sc-body { grid-template-columns: 1fr 1fr 1fr; } }
+    .sc-body .blk { padding: 24px; background: #fff; border-right: 1px solid var(--slate-200); border-bottom: 1px solid var(--slate-200); }
+    .sc-body .blk:last-child { border-right: 0; }
+    .sc-body .blk.gold { background: rgba(200,162,74,0.18); }
+    .sc-body .blk .l { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--slate-400); }
+    .sc-body .blk.gold .l { color: var(--gold-deep); }
+    .sc-body .blk .v { margin-top: 14px; font-weight: 600; font-size: 14px; line-height: 1.55; }
+
+    .train-grid { display: grid; gap: 32px; grid-template-columns: 1fr; align-items: start; }
+    @media (min-width: 1024px) { .train-grid { grid-template-columns: 0.58fr 0.42fr; } }
+    .mods { display: grid; gap: 16px; grid-template-columns: 1fr; }
+    @media (min-width: 760px) { .mods { grid-template-columns: 1fr 1fr; } }
+    .mod-card { background: #fff; border: 1px solid rgba(7,26,47,0.10); border-radius: 24px; padding: 24px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+    .mod-card svg { color: var(--gold); }
+    .mod-card h3 { font-size: 20px; font-weight: 600; margin: 18px 0 10px; }
+    .mod-card p { color: var(--slate-600); font-size: 14px; margin: 0; }
+    .checklist { background: var(--cream); border: 1px solid rgba(7,26,47,0.10); border-radius: 32px; overflow: hidden; box-shadow: 0 24px 40px -20px rgba(0,0,0,0.15); }
+    .checklist .head { padding: 24px; background: var(--ink); color: #fff; }
+    .checklist .head .k { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-soft); }
+    .checklist .head .t { font-size: 22px; font-weight: 600; margin-top: 6px; }
+    .checklist .body { padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+    .check-row { display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px; background: #fff; border-radius: 14px; }
+    .check-row svg { color: var(--gold); flex: none; margin-top: 2px; }
+    .check-row .t { font-weight: 600; font-size: 14px; }
+
+    .ev-grid { display: grid; gap: 32px; grid-template-columns: 1fr; align-items: start; }
+    @media (min-width: 1024px) { .ev-grid { grid-template-columns: 0.42fr 0.58fr; } }
+    .ev-panel { background: var(--ink); color: #fff; border-radius: 32px; padding: 28px; box-shadow: 0 24px 40px -20px rgba(0,0,0,0.30); }
+    .ev-panel .k { font-size: 13px; color: rgba(255,255,255,0.6); }
+    .ev-panel .v { font-size: 48px; font-weight: 700; color: var(--gold-soft); margin-top: 8px; line-height: 1; }
+    .ev-panel p { color: rgba(255,255,255,0.7); margin-top: 16px; }
+    .ev-cards { display: grid; gap: 16px; grid-template-columns: 1fr; }
+    @media (min-width: 760px) { .ev-cards { grid-template-columns: 1fr 1fr; } }
+    .ev-card { background: var(--cream); border: 1px solid rgba(7,26,47,0.10); border-radius: 24px; padding: 24px; }
+    .ev-card .num { width: 40px; height: 40px; border-radius: 14px; background: var(--gold); color: var(--ink); display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; }
+    .ev-card h3 { font-size: 20px; font-weight: 600; margin: 18px 0 10px; }
+    .ev-card p { color: var(--slate-600); font-size: 14px; margin: 0; }
+
+    .tb-section { background: var(--ink); color: #fff; padding: 56px 0; }
+    .tb-grid { display: grid; gap: 32px; grid-template-columns: 1fr; align-items: center; }
+    @media (min-width: 1024px) { .tb-grid { grid-template-columns: 0.42fr 0.58fr; } }
+    .tb-section .k { font-size: 14px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold-soft); }
+    .tb-section h2 { font-size: clamp(28px, 3.6vw, 44px); font-weight: 600; margin: 8px 0 0; line-height: 1.08; letter-spacing: -0.015em; }
+    .tb-section p { color: rgba(255,255,255,0.65); margin: 16px 0 0; }
+    .tb-card { background: #fff; color: var(--ink); border-radius: 32px; overflow: hidden; box-shadow: 0 24px 40px -20px rgba(0,0,0,0.40); display: grid; grid-template-columns: 1fr; }
+    @media (min-width: 760px) { .tb-card { grid-template-columns: 0.46fr 0.54fr; } }
+    .tb-list { background: var(--cream); padding: 24px; }
+    .tb-list .k { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-deep); margin-bottom: 16px; }
+    .tb-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; background: #fff; border-radius: 14px; margin-bottom: 10px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+    .tb-row .nm { font-weight: 600; font-size: 14px; }
+    .tb-row .ty { font-size: 11px; color: var(--slate-500); margin-top: 2px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+    .tb-row .st { padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; }
+    .tb-row .st.ready { background: rgba(4,120,87,0.15); color: var(--emerald-700); }
+    .tb-row .st.draft { background: rgba(200,162,74,0.20); color: var(--gold-deep); }
+    .tb-feat { padding: 24px; }
+    .tb-feat .feat { background: var(--ink); color: #fff; padding: 24px; border-radius: 18px; }
+    .tb-feat .feat .k { color: rgba(255,255,255,0.55); font-size: 13px; }
+    .tb-feat .feat h3 { font-size: 26px; font-weight: 700; color: var(--gold-soft); margin: 8px 0 12px; line-height: 1.15; }
+    .tb-feat .feat p { color: rgba(255,255,255,0.7); margin: 0; font-size: 14px; }
+    .tb-feat .actions { display: grid; gap: 10px; grid-template-columns: 1fr 1fr; margin-top: 18px; }
+
+    /* ---- Bespoke: Data classification matrix ---- */
+    .dc-grid { display: grid; gap: 28px; grid-template-columns: 1fr; align-items: start; }
+    @media (min-width: 1024px) { .dc-grid { grid-template-columns: 0.42fr 0.58fr; } }
+    .dc-panel { background: var(--cream); border: 1px solid rgba(7,26,47,0.10); border-radius: 24px; padding: 24px; }
+    .dc-panel .k { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-deep); }
+    .dc-panel h3 { font-size: 22px; font-weight: 600; margin: 6px 0 8px; }
+    .dc-panel p { color: var(--slate-600); font-size: 13px; margin: 0 0 18px; }
+    .dc-tiers { display: grid; gap: 10px; }
+    .dc-tier { padding: 16px; background: #fff; border: 1px solid var(--slate-200); border-radius: 14px; cursor: pointer; transition: all .12s; }
+    .dc-tier:hover { background: var(--cream-2); }
+    .dc-tier.on { border-color: var(--ink); background: var(--ink); color: #fff; box-shadow: 0 12px 24px -10px rgba(0,0,0,0.25); }
+    .dc-tier .tlabel { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-deep); }
+    .dc-tier.on .tlabel { color: var(--gold-soft); }
+    .dc-tier .ttitle { font-size: 16px; font-weight: 700; margin: 4px 0; }
+    .dc-tier .texam { font-size: 12px; color: var(--slate-500); line-height: 1.4; }
+    .dc-tier.on .texam { color: rgba(255,255,255,0.7); }
+
+    .dc-result { background: #fff; border: 1px solid rgba(7,26,47,0.10); border-radius: 24px; box-shadow: 0 24px 40px -20px rgba(0,0,0,0.15); overflow: hidden; }
+    .dc-result .head { background: var(--ink); color: #fff; padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; }
+    .dc-result .head .k { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-soft); }
+    .dc-result .head .t { font-size: 22px; font-weight: 600; margin-top: 4px; }
+    .dc-result .badge { padding: 6px 12px; border-radius: 999px; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; }
+    .dc-result .badge.green { background: rgba(4,120,87,0.18); color: #fff; }
+    .dc-result .badge.amber { background: rgba(200,162,74,0.30); color: #fff; }
+    .dc-result .badge.red { background: rgba(142,59,42,0.30); color: #fff; }
+    .dc-result .body { padding: 24px; }
+    .dc-tools-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--slate-500); margin-bottom: 10px; }
+    .dc-tools { display: grid; gap: 10px; margin-bottom: 18px; }
+    .dc-tool { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; border-radius: 10px; background: var(--cream); }
+    .dc-tool .nm { font-weight: 600; font-size: 14px; color: var(--ink); }
+    .dc-tool .ty { font-size: 11px; color: var(--slate-500); font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-top: 2px; }
+    .dc-tool .verdict { padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; }
+    .dc-tool .verdict.allow { background: rgba(4,120,87,0.18); color: var(--emerald-800); }
+    .dc-tool .verdict.review { background: rgba(200,162,74,0.20); color: var(--gold-deep); }
+    .dc-tool .verdict.block { background: rgba(142,59,42,0.15); color: #8E3B2A; }
+    .dc-controls { display: grid; gap: 8px; padding: 14px 16px; background: var(--cream); border-radius: 12px; font-size: 13px; color: var(--slate-600); }
+    .dc-controls .cnam { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-deep); margin-bottom: 4px; }
+    .dc-controls ul { margin: 0; padding-left: 22px; }
+    .dc-controls li { margin-bottom: 4px; }
+  </style>
+</head>
+<body>
+
+<header class="shell-header">
+  <div class="container header-inner">
+    <a class="brand" href="mockup.html">
+      <span class="seal"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg></span>
+      <span><span class="wm-1">The AI Banking Institute</span><br><span class="wm-2">Role Playbook · IT / InfoSec</span></span>
+    </a>
+    <nav class="nav">
+      <a href="mockup.html">Home</a>
+      <a href="course.html">Course</a>
+      <a href="assessment.html">Assessment</a>
+      <a href="sandbox.html">Sandbox</a>
+      <a class="on" href="toolbox.html">Toolbox</a>
+      <a href="teams.html">Teams</a>
+    </nav>
+    <a class="btn btn-gold" href="#">Save InfoSec Playbook</a>
+  </div>
+  <div class="container">
+    <nav class="nav-mobile">
+      <a href="mockup.html">Home</a>
+      <a href="course.html">Course</a>
+      <a href="assessment.html">Assessment</a>
+      <a href="sandbox.html">Sandbox</a>
+      <a class="on" href="toolbox.html">Toolbox</a>
+      <a href="teams.html">Teams</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="deco"><div class="deco-ring"></div><div class="deco-blur"></div></div>
+  <div class="container hero-inner">
+    <div>
+      <div class="eyebrow">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        IT / InfoSec Playbook
+      </div>
+      <h1>Approve AI tools without losing the keys.</h1>
+      <p class="lede">A role-specific playbook for IT and information security teams. Classify the data, pick the tool, document the control. GLBA, FFIEC, and your TPRM program — all in one decision flow.</p>
+      <div class="ctas">
+        <a class="btn btn-lg btn-gold" href="#">Start InfoSec Path
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a class="btn btn-lg btn-ghost-dark" href="#">Preview Artifacts</a>
+      </div>
+    </div>
+
+    <div class="snap">
+      <div class="head">
+        <div class="k">Playbook Snapshot</div>
+        <div class="t">InfoSec AI Enablement Map</div>
+      </div>
+      <div class="quick">
+        <div class="q">
+          <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <div class="l">Primary Goal</div><div class="v">Controlled adoption</div>
+        </div>
+        <div class="q">
+          <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          <div class="l">Core Artifact</div><div class="v">Tool inventory</div>
+        </div>
+        <div class="q">
+          <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <div class="l">Risk Focus</div><div class="v">GLBA / data egress</div>
+        </div>
+      </div>
+      <div class="ms">
+        <div class="ms-row"><div class="top"><div class="l">Tool inventory</div><div class="v">52/100</div></div><div class="bar"><div class="fill" style="width:52%"></div></div></div>
+        <div class="ms-row"><div class="top"><div class="l">Data classification</div><div class="v">58/100</div></div><div class="bar"><div class="fill" style="width:58%"></div></div></div>
+        <div class="ms-row"><div class="top"><div class="l">Vendor due diligence</div><div class="v">45/100</div></div><div class="bar"><div class="fill" style="width:45%"></div></div></div>
+        <div class="ms-row"><div class="top"><div class="l">Monitoring + DLP</div><div class="v">40/100</div></div><div class="bar"><div class="fill" style="width:40%"></div></div></div>
+      </div>
+      <div class="path">
+        <div class="l">Recommended path</div>
+        <div class="v">Tool Inventory → Classification Matrix → Vendor Review → Monitoring Plan</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- USE-CASE MAP -->
+<section class="std">
+  <div class="container">
+    <div class="section-head">
+      <div class="k">Use-Case Map</div>
+      <h2>Where IT/InfoSec can use AiBI to govern AI adoption.</h2>
+      <p>The goal isn't to block. It's to publish the rule so the business stops asking, "Can I use this?" once a week.</p>
+    </div>
+    <div class="uses">
+      <div class="uc">
+        <div class="top">
+          <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          <span class="risk med">MED RISK</span>
+        </div>
+        <h3>Build the AI tool inventory</h3>
+        <p>Every AI tool in use across the bank — sanctioned and shadow. Tool name, vendor, data class processed, owner, contract status.</p>
+        <div class="art"><div class="l">Artifact</div><div class="v">AI tool inventory (live)</div></div>
+      </div>
+      <div class="uc">
+        <div class="top">
+          <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7v10l10 5 10-5V7L12 2z"/><polyline points="2 7 12 12 22 7"/><line x1="12" y1="22" x2="12" y2="12"/></svg>
+          <span class="risk high">HIGH RISK</span>
+        </div>
+        <h3>Classify data flowing into AI tools</h3>
+        <p>Public, internal, confidential, restricted PII. The classification drives the tool list — not the other way around.</p>
+        <div class="art"><div class="l">Artifact</div><div class="v">Data classification matrix</div></div>
+      </div>
+      <div class="uc">
+        <div class="top">
+          <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          <span class="risk med">MED RISK</span>
+        </div>
+        <h3>Draft a vendor due-diligence questionnaire</h3>
+        <p>Aligned to FFIEC TPRM + Interagency Guidance. SOC 2 status, data retention, model-training policy, sub-processors, geography.</p>
+        <div class="art"><div class="l">Artifact</div><div class="v">Vendor DDQ packet</div></div>
+      </div>
+      <div class="uc">
+        <div class="top">
+          <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          <span class="risk low">LOW RISK</span>
+        </div>
+        <h3>Write the "AI tool incident" tabletop</h3>
+        <p>What if a sanctioned LLM hallucinated PII into an email draft? Tabletop the response, log the lesson, update the runbook.</p>
+        <div class="art"><div class="l">Artifact</div><div class="v">Incident tabletop + runbook delta</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OPERATING MODEL -->
+<section class="std" style="background:var(--cream);border-top:1px solid rgba(7,26,47,0.06)">
+  <div class="container">
+    <div class="section-head">
+      <div class="k">InfoSec Operating Model</div>
+      <h2>Four steps. Same as every other control discipline.</h2>
+      <p>Inventory what's used. Classify what flows. Control how it flows. Monitor what actually happens.</p>
+    </div>
+    <div class="om">
+      <div>
+        <div class="top"><span class="pic"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span><span class="step">01</span></div>
+        <h3>Inventory</h3>
+        <p>Every AI tool in use — sanctioned and shadow. Add the SaaS apps, browser extensions, and the laptop installs.</p>
+        <div class="art"><div class="l">Artifact produced</div><div class="v">AI tool inventory (live register)</div></div>
+      </div>
+      <div>
+        <div class="top"><span class="pic"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7v10l10 5 10-5V7L12 2z"/><polyline points="2 7 12 12 22 7"/></svg></span><span class="step">02</span></div>
+        <h3>Classify</h3>
+        <p>Map the data the business wants to push into each tool. Public, internal, confidential, restricted PII. Match each to a control tier.</p>
+        <div class="art"><div class="l">Artifact produced</div><div class="v">Data class × tool matrix</div></div>
+      </div>
+      <div>
+        <div class="top"><span class="pic"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span><span class="step">03</span></div>
+        <h3>Control</h3>
+        <p>Publish the allow / review / block list. SSO, conditional access, browser DLP, contract review. Make the rule cheaper than the workaround.</p>
+        <div class="art"><div class="l">Artifact produced</div><div class="v">Published AI use standard</div></div>
+      </div>
+      <div>
+        <div class="top"><span class="pic"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span><span class="step">04</span></div>
+        <h3>Monitor</h3>
+        <p>Egress logs, DLP hits, SaaS discovery, incident reviews. Update the matrix monthly.</p>
+        <div class="art"><div class="l">Artifact produced</div><div class="v">Monthly AI exposure report</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BESPOKE: Data classification matrix -->
+<section class="std" style="background:#fff">
+  <div class="container">
+    <div class="section-head">
+      <div class="k">Live Tool · Classification Matrix</div>
+      <h2>Pick the data class. The allowed-tools list rebuilds.</h2>
+      <p>This is the synthetic policy your bank should publish — keyed to your tool list, not to a vendor brochure. Examples below; classes and tools should be replaced with your bank's standard.</p>
+    </div>
+    <div class="dc-grid">
+      <div class="dc-panel">
+        <div class="k">Data class in scope</div>
+        <h3>Pick what's being sent to the AI tool</h3>
+        <p>Aligned to NIST 800-171 / FFIEC IT Handbook classifications. GLBA "nonpublic personal information" maps to Restricted PII.</p>
+        <div class="dc-tiers" id="dc-tiers">
+          <div class="dc-tier on" data-r="public">
+            <div class="tlabel">Tier 1 · Public</div>
+            <div class="ttitle">Public</div>
+            <div class="texam">Marketing copy, press release drafts, published rate sheets, anonymized product descriptions.</div>
+          </div>
+          <div class="dc-tier" data-r="internal">
+            <div class="tlabel">Tier 2 · Internal</div>
+            <div class="ttitle">Internal</div>
+            <div class="texam">Procedure drafts, training materials, generic SOPs, internal memos with no customer or financial detail.</div>
+          </div>
+          <div class="dc-tier" data-r="confidential">
+            <div class="tlabel">Tier 3 · Confidential</div>
+            <div class="ttitle">Confidential (business)</div>
+            <div class="texam">Strategic plans, board materials, vendor pricing, anonymized aggregate financials, employee records without SSN.</div>
+          </div>
+          <div class="dc-tier" data-r="pii">
+            <div class="tlabel">Tier 4 · Restricted PII</div>
+            <div class="ttitle">Restricted PII / GLBA NPI</div>
+            <div class="texam">Customer name + account number, SSN, DOB, balance, transaction history, loan file content, SAR-related material.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dc-result">
+        <div class="head">
+          <div>
+            <div class="k">Allowed tools + controls</div>
+            <div class="t" id="dc-title">Public — broad allowance</div>
+          </div>
+          <span class="badge green" id="dc-badge">LOW RISK</span>
+        </div>
+        <div class="body">
+          <div class="dc-tools-label">AI tools — verdict for this data class</div>
+          <div class="dc-tools" id="dc-tools"></div>
+          <div class="dc-controls" id="dc-controls"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCENARIO PRACTICE -->
+<section class="std">
+  <div class="container">
+    <div class="sc-grid">
+      <div>
+        <div class="section-head">
+          <div class="k">Scenario Practice</div>
+          <h2>Three reps every InfoSec team should run.</h2>
+          <p>Sandbox scenarios let the team practice classification, vendor DDQ, and incident response with synthetic facts.</p>
+        </div>
+        <div class="sc-tabs" id="sc-tabs">
+          <button class="on" data-k="Classify">Classification Case</button>
+          <button data-k="Vendor">Vendor DDQ</button>
+          <button data-k="Incident">Incident Tabletop</button>
+        </div>
+      </div>
+
+      <div class="sc-card">
+        <div class="sc-head">
+          <div>
+            <div class="k">Active Sandbox Scenario</div>
+            <div class="t" id="sc-title">Classification · Lending Memo Draft</div>
+          </div>
+          <svg style="width:32px;height:32px;color:var(--gold)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <div class="sc-body">
+          <div class="blk"><div class="l">Input</div><div class="v" id="sc-in">A lender wants to use a public LLM to polish the prose of an internal credit memo. The memo contains the borrower's name, address, FICO, and balance information.</div></div>
+          <div class="blk"><div class="l">Prompt</div><div class="v" id="sc-pr">Classify the data in this memo against our four-tier matrix. List what must be redacted before any external tool can touch it, and what the lender can do instead within our sanctioned stack.</div></div>
+          <div class="blk gold"><div class="l">Expected Output</div><div class="v" id="sc-ou">Classification: Restricted PII / GLBA NPI. Required redactions: name, address, FICO, balance. Alternative: use the bank's enterprise-tenant LLM with DLP — no public-tool route.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRAINING + CHECKLIST -->
+<section class="std" style="background:var(--cream);border-top:1px solid rgba(7,26,47,0.06)">
+  <div class="container">
+    <div class="train-grid">
+      <div>
+        <div class="section-head">
+          <div class="k">Recommended Training Path</div>
+          <h2>What IT/InfoSec staff should take next.</h2>
+          <p>Four modules built around publishing the rule, not policing every prompt.</p>
+        </div>
+        <div class="mods">
+          <div class="mod-card">
+            <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+            <h3>Tool Inventory</h3>
+            <p>SaaS discovery, browser-extension audit, employee survey. The inventory is the foundation of every other control.</p>
+          </div>
+          <div class="mod-card">
+            <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7v10l10 5 10-5V7L12 2z"/><polyline points="2 7 12 12 22 7"/></svg>
+            <h3>Classification</h3>
+            <p>Four tiers, plain language, real examples. The classification has to be teachable in 10 minutes.</p>
+          </div>
+          <div class="mod-card">
+            <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/></svg>
+            <h3>Vendor TPRM</h3>
+            <p>FFIEC + Interagency Guidance. SOC 2, sub-processors, training-data policy, contract clauses that actually matter.</p>
+          </div>
+          <div class="mod-card">
+            <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            <h3>Monitoring</h3>
+            <p>Egress logs, DLP, SaaS discovery, monthly exposure report to the IT committee.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="checklist">
+        <div class="head">
+          <div class="k">Pre-approval Checklist</div>
+          <div class="t">Before any AI tool goes on the allow list</div>
+        </div>
+        <div class="body">
+          <div class="check-row"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><div class="t">Vendor SOC 2 Type II current; report reviewed</div></div>
+          <div class="check-row"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><div class="t">Contract prohibits training on bank inputs (or carve-out documented)</div></div>
+          <div class="check-row"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><div class="t">SSO + MFA enforced; no shared accounts</div></div>
+          <div class="check-row"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><div class="t">Data class explicitly named on the tool card (public / internal / confidential / PII)</div></div>
+          <div class="check-row"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><div class="t">Retention policy aligned to bank schedule</div></div>
+          <div class="check-row"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><div class="t">Geographic processing within US (or approved exception)</div></div>
+          <div class="check-row"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><div class="t">Business owner named; review cadence set (annual minimum)</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EVIDENCE PACK -->
+<section class="std" style="background:#fff">
+  <div class="container">
+    <div class="ev-grid">
+      <div>
+        <div class="section-head">
+          <div class="k">Evidence Pack</div>
+          <h2>What InfoSec hands the IT committee and the examiner.</h2>
+          <p>The artifacts behind "we know what's running and we know what data it touches."</p>
+        </div>
+        <div class="ev-panel">
+          <div class="k">Evidence readiness</div>
+          <div class="v">4-part packet</div>
+          <p>Inventory, classification matrix, vendor DDQ, monthly monitoring report — keyed to the bank's IT risk register.</p>
+        </div>
+      </div>
+      <div class="ev-cards">
+        <div class="ev-card"><div class="num">1</div><h3>AI tool inventory</h3><p>Name, vendor, owner, data class, contract status, last review. Live.</p></div>
+        <div class="ev-card"><div class="num">2</div><h3>Classification matrix</h3><p>Data class × tool × control. The published rule the business reads.</p></div>
+        <div class="ev-card"><div class="num">3</div><h3>Vendor DDQ packet</h3><p>SOC 2, sub-processors, training-data clause, retention, geography. Per tool.</p></div>
+        <div class="ev-card"><div class="num">4</div><h3>Monthly exposure report</h3><p>SaaS discovery hits, DLP events, policy exceptions, incidents — for the IT committee.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TOOLBOX ASSETS -->
+<section class="tb-section">
+  <div class="container tb-grid">
+    <div>
+      <div class="k">Toolbox Assets</div>
+      <h2>The standards and forms a small InfoSec team will use.</h2>
+      <p>Designed for a bank with one or two security FTEs, not a Fortune 500 GRC team.</p>
+    </div>
+    <div class="tb-card">
+      <div class="tb-list">
+        <div class="k">Included Assets</div>
+        <div class="tb-row"><div><div class="nm">AI Tool Inventory Register</div><div class="ty">Template</div></div><span class="st ready">Ready</span></div>
+        <div class="tb-row"><div><div class="nm">Data Classification Matrix</div><div class="ty">Reference</div></div><span class="st ready">Ready</span></div>
+        <div class="tb-row"><div><div class="nm">AI Vendor DDQ</div><div class="ty">Template</div></div><span class="st ready">Ready</span></div>
+        <div class="tb-row"><div><div class="nm">Acceptable Use — AI Tools</div><div class="ty">Reference</div></div><span class="st ready">Ready</span></div>
+        <div class="tb-row"><div><div class="nm">Incident Tabletop Pack</div><div class="ty">Template</div></div><span class="st draft">Draft</span></div>
+      </div>
+      <div class="tb-feat">
+        <div class="feat">
+          <div class="k">Featured asset</div>
+          <h3>Data Classification Matrix</h3>
+          <p>Four tiers × your tool list. The one-page reference that ends the "can I use ChatGPT for this?" question — keyed to GLBA NPI definitions and the FFIEC IT booklet.</p>
+        </div>
+        <div class="actions">
+          <a class="btn btn-ink" style="justify-content:center" href="#">Preview
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </a>
+          <a class="btn btn-ghost-light" style="justify-content:center" href="#">Download
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="container">
+    <div class="cta-band">
+      <div>
+        <div class="k">IT / InfoSec Playbook</div>
+        <h2>Publish the rule. Stop policing every prompt.</h2>
+        <p>Take the path, build the evidence pack, and unlock the InfoSec toolbox — without writing a new policy from scratch.</p>
+      </div>
+      <div class="cta-actions">
+        <a class="btn btn-lg btn-gold" href="#">Start InfoSec Path</a>
+        <a class="btn btn-lg btn-ghost-dark" href="toolbox.html">See All Playbooks</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ribbon">SKETCH · <span>IT / InfoSec Playbook</span></div>
+
+<script>
+  /* Scenario tabs */
+  const SCENARIOS = {
+    Classify: {
+      title: "Classification · Lending Memo Draft",
+      input: "A lender wants to use a public LLM to polish the prose of an internal credit memo. The memo contains the borrower's name, address, FICO, and balance information.",
+      prompt: "Classify the data in this memo against our four-tier matrix. List what must be redacted before any external tool can touch it, and what the lender can do instead within our sanctioned stack.",
+      output: "Classification: Restricted PII / GLBA NPI. Required redactions: name, address, FICO, balance. Alternative: use the bank's enterprise-tenant LLM with DLP — no public-tool route.",
+    },
+    Vendor: {
+      title: "Vendor DDQ · New AI Note-taker",
+      input: "Lending wants to bring in an AI meeting note-taker for loan committee. Vendor is a 3-year-old SaaS with SOC 2 Type II.",
+      prompt: "Draft the AI-specific DDQ questions. Cover training-data clause, sub-processors, audio retention, transcript egress, US data residency, and what the bank can do if the vendor is acquired.",
+      output: "DDQ section: 12 AI-specific questions, mapped to FFIEC TPRM. Each has a pass/fail threshold and an escalation path if the answer is unclear.",
+    },
+    Incident: {
+      title: "Incident Tabletop · PII in Email Draft",
+      input: "A staff member used a sanctioned LLM to draft a customer email. The draft accidentally included a different customer's balance. The draft was sent before review.",
+      prompt: "Run a 30-minute tabletop. Cover: detection path, customer notification timing, internal escalation, root cause (prompt? prior conversation state?), runbook update, and lesson for staff.",
+      output: "Tabletop output: detection trace, GLBA notification consideration, root-cause hypothesis, two runbook deltas, and a 1-paragraph lesson for the next staff bulletin.",
+    },
+  };
+  function renderScenario(k) {
+    const s = SCENARIOS[k];
+    document.getElementById('sc-title').textContent = s.title;
+    document.getElementById('sc-in').textContent = s.input;
+    document.getElementById('sc-pr').textContent = s.prompt;
+    document.getElementById('sc-ou').textContent = s.output;
+  }
+  document.querySelectorAll('#sc-tabs button').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('#sc-tabs button').forEach(x => x.classList.remove('on'));
+      b.classList.add('on');
+      renderScenario(b.dataset.k);
+    });
+  });
+
+  /* Data classification matrix */
+  const TOOLS = [
+    { nm: "Public ChatGPT / Claude (free or consumer)",      ty: "Consumer LLM" },
+    { nm: "Enterprise LLM (bank-tenant, contracted)",        ty: "Sanctioned LLM" },
+    { nm: "Microsoft Copilot for M365 (bank tenant)",        ty: "Productivity AI" },
+    { nm: "Vendor AI inside core / LOS",                     ty: "Embedded AI" },
+    { nm: "Browser AI extensions (uncontracted)",            ty: "Browser plug-in" },
+    { nm: "AI meeting note-taker (under DDQ)",               ty: "Meeting AI" },
+  ];
+
+  /* For each data class, give a verdict per tool index */
+  const MATRIX = {
+    public: {
+      title: "Public — broad allowance",
+      badge: "LOW RISK", badgeClass: "green",
+      verdicts: ["allow","allow","allow","allow","review","review"],
+      controls: [
+        "Standard acceptable-use policy applies.",
+        "Log usage if material content is published externally.",
+        "Browser extensions still require InfoSec review before install.",
+      ],
+    },
+    internal: {
+      title: "Internal — sanctioned tools only",
+      badge: "MED RISK", badgeClass: "amber",
+      verdicts: ["block","allow","allow","allow","review","review"],
+      controls: [
+        "Public consumer LLMs blocked at SSO and browser layer.",
+        "Use the bank-tenant enterprise LLM with DLP enabled.",
+        "Note-taker only after vendor DDQ + signed DPA.",
+      ],
+    },
+    confidential: {
+      title: "Confidential — controlled use",
+      badge: "MED RISK", badgeClass: "amber",
+      verdicts: ["block","review","review","allow","block","review"],
+      controls: [
+        "Enterprise LLM requires manager pre-approval per project.",
+        "Document who can see the prompt history and who can export it.",
+        "Browser extensions blocked at policy layer.",
+        "Embedded AI inside core/LOS uses existing vendor controls.",
+      ],
+    },
+    pii: {
+      title: "Restricted PII / GLBA NPI — narrow rails only",
+      badge: "HIGH RISK", badgeClass: "red",
+      verdicts: ["block","review","block","allow","block","block"],
+      controls: [
+        "No general-purpose LLMs receive NPI without explicit, contracted, in-tenant deployment with audit logging.",
+        "Embedded AI inside the core/LOS is the safe route — already under contract + SOC 2 + bank's own access controls.",
+        "GLBA notification process referenced if NPI is exposed externally.",
+        "Browser extensions and meeting note-takers are not approved for any conversation containing NPI.",
+        "Manager + InfoSec sign-off required before any exception is logged.",
+      ],
+    },
+  };
+
+  function verdictPill(v) {
+    if (v === "allow")  return `<span class="verdict allow">ALLOW</span>`;
+    if (v === "review") return `<span class="verdict review">REVIEW</span>`;
+    return                     `<span class="verdict block">BLOCK</span>`;
+  }
+
+  function render(tier) {
+    const m = MATRIX[tier];
+    document.getElementById('dc-title').textContent = m.title;
+    const badge = document.getElementById('dc-badge');
+    badge.className = `badge ${m.badgeClass}`;
+    badge.textContent = m.badge;
+
+    document.getElementById('dc-tools').innerHTML = TOOLS.map((t, i) => `
+      <div class="dc-tool">
+        <div><div class="nm">${t.nm}</div><div class="ty">${t.ty}</div></div>
+        ${verdictPill(m.verdicts[i])}
+      </div>
+    `).join("");
+
+    document.getElementById('dc-controls').innerHTML = `
+      <div class="cnam">Controls for this tier</div>
+      <ul>${m.controls.map(c => `<li>${c}</li>`).join("")}</ul>
+    `;
+  }
+
+  document.querySelectorAll('.dc-tier').forEach(t => {
+    t.addEventListener('click', () => {
+      document.querySelectorAll('.dc-tier').forEach(x => x.classList.remove('on'));
+      t.classList.add('on');
+      render(t.dataset.r);
+    });
+  });
+
+  render('public');
+</script>
+
+</body>
+</html>
