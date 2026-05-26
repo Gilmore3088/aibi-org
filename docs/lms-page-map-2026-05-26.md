@@ -95,7 +95,8 @@ For each route:
 - **What:** Per-learner toolkit — the saved artifacts from each module.
 - **Auth state:** Enrolled.
 - **Today:** Lists artifacts with strong citation language (e.g. "Regulatory Cheatsheet" cites AIEOG vocabulary).
-- **Mockup needed?** **Yes — Priority 2.** This is the "what's in the box" payoff page.
+- **Decision 2026-05-26:** Merging into `/dashboard/toolbox` as the **"My Saved" tab**. Route becomes a 308 redirect to `/dashboard/toolbox?tab=saved` once the tab ships. Until then, the page stays live.
+- **Mockup needed?** **No standalone mockup** — the work happens as part of the `/dashboard/toolbox` "My Saved" tab in Wave 2.
 
 #### `/courses/foundation/program/prompt-library`
 - **What:** Redirects to `/dashboard/toolbox/library`.
@@ -178,7 +179,12 @@ These cross-cutting questions need a design decision before any single surface s
 ### Operator decisions logged 2026-05-26
 
 1. **Sidebar vs top-nav for CourseShell?** — **SIDEBAR. Locked 2026-05-26.** Compared via [`/sketches/lms-shell-options.html`](/sketches/lms-shell-options.html). Existing `CourseShell` already implements the sidebar pattern — the mockup pass restyles it with the mockup palette (gold accent, ink fill, Inter type, pillar-grouped module list, always-on progress block). No structural refactor needed.
-2. **Where does the Toolbox live across `/my-toolbox`, `/dashboard/toolbox`, `/program/toolkit`?** — **Decision deferred.** The three routes serve three different relationships to assets (pre-purchase demo / shared Library + Cookbook / per-learner toolkit). They are not duplicates. Reconciliation deferred until the LMS mockup commits to a chrome.
+2. **Where does the Toolbox live across `/my-toolbox`, `/dashboard/toolbox`, `/program/toolkit`?** — **MERGE INTO ONE SURFACE. Locked 2026-05-26.** Single Toolbox at `/dashboard/toolbox` with three tabs:
+   - **Library** — Institute-curated banker-vetted prompts
+   - **Cookbook** — multi-step recipes
+   - **My Saved** — the learner's own artifacts from course modules (subsumes today's `/program/toolkit`)
+
+   `/my-toolbox` stays as the public preview/demo (pre-purchase marketing). `/program/toolkit` becomes a redirect to `/dashboard/toolbox?tab=saved` **once the "My Saved" tab is built** (Wave 2 mockup work). Don't ship the redirect today — users would land on an empty surface. In-course links inside modules will point at `/dashboard/toolbox?tab=saved` after the merge.
 3. **Module-level navigation pattern (tabs vs sub-routes)?** — **Decision deferred.** Today's `ModuleTabs` (in-page Learn it / Try it / Use it / Save it) stays as the working assumption; the mockup pass will revisit if a sub-route pattern emerges naturally.
 4. **Saved artifacts: card or row, one design or per-surface?** — **One design.** Library + Cookbook + Toolkit all share the same saved-artifact card. Build it once.
 5. **Credential display format (middle dot vs em-dash)?** — **Not a priority.** The audit flagged the em-dash on the live cert; leave as-is for now and revisit when the certificate page enters Wave 1 mockups.
