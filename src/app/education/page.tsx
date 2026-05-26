@@ -66,7 +66,7 @@ const COURSES: CatalogTile[] = [
       { label: 'Cost', value: '$295 · $199/seat at 10+' },
     ],
     cta: 'View the curriculum →',
-    href: '/courses/foundation/program',
+    href: '/courses/foundation/program/purchase',
   },
 ];
 
@@ -205,7 +205,7 @@ export default function EducationPage() {
       }
       heroActions={[
         { label: 'Take the assessment', href: '/assessment', variant: 'gold' },
-        { label: 'View the curriculum', href: '/courses/foundation/program', variant: 'ghost-dark' },
+        { label: 'View the curriculum', href: '/courses/foundation/program/purchase', variant: 'ghost-dark' },
       ]}
       sections={[
         {
