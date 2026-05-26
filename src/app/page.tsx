@@ -4,7 +4,7 @@ import HomePage from './_client';
 
 const TITLE = `${BRAND.name} — ${BRAND.tagline}`;
 const DESCRIPTION =
-  'Free AI readiness assessment for community banks and credit unions — a score, tier, and starter artifact in three minutes. Earn the AiBI-Foundation credential.';
+  'Free AI readiness assessment for community banks and credit unions. Score, tier, and starter artifact in three minutes.';
 
 export const metadata: Metadata = {
   alternates: { canonical: '/' },

@@ -3,7 +3,7 @@ import CoursesIndexPage from './_client';
 
 const TITLE = 'Courses';
 const DESCRIPTION =
-  'AiBI-Foundation — the standard AI proficiency credential for community bankers. Twelve modules, banker-vetted scenarios, certificate on completion.';
+  "AiBI-Foundation — the Institute's AI proficiency credential for community bankers. Twelve modules, banker-vetted scenarios, certificate on completion.";
 
 export const metadata: Metadata = {
   alternates: { canonical: '/courses' },

@@ -3,7 +3,7 @@ import PlaygroundPage from './_client';
 
 const TITLE = 'Playground';
 const DESCRIPTION =
-  'Try AI on banker-shaped scenarios — no signup. Compare model outputs, save prompts, and see what banker-vetted AI looks like before you enroll.';
+  'Try real AI on banker-shaped scenarios — no signup. Compare model outputs, save prompts, and see the work the Institute trains bankers to produce.';
 
 export const metadata: Metadata = {
   alternates: { canonical: '/playground' },
