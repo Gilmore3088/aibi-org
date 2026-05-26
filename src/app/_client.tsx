@@ -76,12 +76,6 @@ const ToolboxStackIcon = (p: IconProps) => (
     <polygon points="12 2 22 7 12 12 2 7" />
   </svg>
 );
-const CheckIcon = (p: IconProps) => (
-  <svg {...sw(p)}>
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-    <polyline points="22 4 12 14.01 9 11.01" />
-  </svg>
-);
 const GitMergeIcon = (p: IconProps) => (
   <svg {...sw(p)}>
     <circle cx="6" cy="19" r="3" />
