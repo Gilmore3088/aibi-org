@@ -342,7 +342,18 @@ export default async function LessonPage({
   if (!payload) notFound();
 
   // Paid-tier gate. Service-role fetch bypassed RLS, so enforce here.
-  if (payload.module.tier === 'paid') {
+  //
+  // SKIP_ENROLLMENT_GATE env var (2026-05-25): preview/local-only escape
+  // hatch so paid content renders without a Stripe purchase. Three-layer
+  // safety mirroring previewBypass.ts:
+  //   1. Hard floor: VERCEL_ENV === 'production' → always enforce, regardless of env.
+  //   2. Explicit opt-in: SKIP_ENROLLMENT_GATE=true → bypass.
+  //   3. No auto-fire — bypass requires the explicit env-var opt-in.
+  const enrollmentGateBypassed =
+    process.env.VERCEL_ENV !== 'production' &&
+    process.env.SKIP_ENROLLMENT_GATE === 'true';
+
+  if (payload.module.tier === 'paid' && !enrollmentGateBypassed) {
     const userId = await getAuthUserId();
     const hasAccess = userId ? await hasAnyFoundationEntitlement(userId) : false;
     if (!hasAccess) {
