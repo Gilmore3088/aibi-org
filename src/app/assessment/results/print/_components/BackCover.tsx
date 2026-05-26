@@ -16,7 +16,7 @@ export function BackCover() {
       <div>
         <p
           className="pdf-eyebrow"
-          style={{ color: 'var(--color-terra-light)' }}
+          style={{ color: 'var(--gold-2)' }}
         >
           The AI Banking Institute
         </p>

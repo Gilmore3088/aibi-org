@@ -60,7 +60,7 @@ export function DefendBeat({
       {phase === 'memo' && (
         <button
           onClick={() => setPhase('rebuttal')}
-          className="px-6 py-3 bg-[color:var(--color-cobalt)] text-white rounded"
+          className="px-6 py-3 bg-[color:var(--ink-2)] text-white rounded"
         >
           Write my rebuttal
         </button>

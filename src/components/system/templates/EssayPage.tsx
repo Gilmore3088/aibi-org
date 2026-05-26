@@ -49,12 +49,12 @@ export function EssayPage({
       <Section variant="linen" divider="hairline" padding="hero" container="narrow">
         <Link
           href="/research"
-          className="font-serif-sc text-label-md uppercase tracking-widest text-slate hover:text-terra transition-colors duration-fast"
+          className="font-serif-sc text-label-md uppercase tracking-widest text-slate hover:text-gold transition-colors duration-fast"
         >
           ← The AI Banking Brief
         </Link>
         {category && (
-          <p className="font-serif-sc text-label-md uppercase tracking-widest text-terra mt-s8">
+          <p className="font-serif-sc text-label-md uppercase tracking-widest text-gold mt-s8">
             {category}
           </p>
         )}
@@ -84,13 +84,13 @@ export function EssayPage({
           <ul className="space-y-s2 font-mono text-mono-sm tabular-nums text-ink/80">
             {sources.map((src, idx) => (
               <li key={idx} className="flex gap-s2">
-                <span className="text-terra">{String(idx + 1).padStart(2, "0")}</span>
+                <span className="text-gold">{String(idx + 1).padStart(2, "0")}</span>
                 {src.url ? (
                   <a
                     href={src.url}
                     target="_blank"
                     rel="noreferrer"
-                    className="text-ink hover:text-terra"
+                    className="text-ink hover:text-gold"
                   >
                     {src.label}
                   </a>

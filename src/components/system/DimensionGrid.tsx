@@ -28,20 +28,20 @@ export interface DimensionGridProps {
 }
 
 const ACCENT_BG: Record<NonNullable<DimensionScore["accent"]>, string> = {
-  terra: "bg-terra",
-  cobalt: "bg-cobalt",
-  sage: "bg-sage",
+  terra: "bg-gold",
+  cobalt: "bg-ink-2",
+  sage: "bg-ink-2",
   error: "bg-error",
 };
 
 const TAG_CLASS: Record<NonNullable<DimensionTag>, { wrap: string; label: string }> = {
-  "act-first": { wrap: "bg-terra-pale", label: "act first" },
-  strength: { wrap: "bg-sage-pale", label: "strength" },
+  "act-first": { wrap: "bg-cream-2", label: "act first" },
+  strength: { wrap: "bg-cream-2", label: "strength" },
 };
 
 const TAG_TEXT: Record<NonNullable<DimensionTag>, string> = {
   "act-first": "text-error",
-  strength: "text-sage",
+  strength: "text-ink-2",
 };
 
 export function DimensionGrid({ dimensions, className }: DimensionGridProps) {

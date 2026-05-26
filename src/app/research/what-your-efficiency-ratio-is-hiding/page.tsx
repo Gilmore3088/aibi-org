@@ -35,7 +35,7 @@ export default function EfficiencyRatioArticle() {
     <main className="px-6 py-14 md:py-20">
       <article className="max-w-3xl mx-auto">
         <header className="mb-12">
-          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-4">
+          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--gold)] mb-4">
             Financial Performance &middot; April 2026
           </p>
           <h1 className="font-serif text-5xl md:text-6xl text-[color:var(--color-ink)] leading-[1.05] mb-6">
@@ -92,7 +92,7 @@ export default function EfficiencyRatioArticle() {
               key={stat.label}
               className="border border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)] p-6"
             >
-              <dt className="font-mono text-4xl md:text-5xl text-[color:var(--color-terra)] leading-none tabular-nums">
+              <dt className="font-mono text-4xl md:text-5xl text-[color:var(--gold)] leading-none tabular-nums">
                 {stat.figure}
               </dt>
               <dd className="text-sm text-[color:var(--color-ink)]/75 mt-3 leading-relaxed">
@@ -236,7 +236,7 @@ export default function EfficiencyRatioArticle() {
         </section>
 
         <aside className="mt-16 bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-8 md:p-10 text-center">
-          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
+          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
             Start here
           </p>
           <h3 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] mb-4">
@@ -250,13 +250,13 @@ export default function EfficiencyRatioArticle() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/#roi"
-              className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
+              className="inline-block px-8 py-4 bg-[color:var(--gold)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] active:scale-[0.98] transition-all"
             >
               Run the ROI Calculator
             </Link>
             <Link
               href="/for-institutions"
-              className="inline-block px-8 py-4 border border-[color:var(--color-ink)]/20 text-[color:var(--color-ink)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)] active:scale-[0.98] transition-all"
+              className="inline-block px-8 py-4 border border-[color:var(--color-ink)]/20 text-[color:var(--color-ink)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:border-[color:var(--gold)] hover:text-[color:var(--gold)] active:scale-[0.98] transition-all"
             >
               Book an Executive Briefing
             </Link>

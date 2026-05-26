@@ -78,14 +78,14 @@ export function ModuleNavigator({ modules, className }: ModuleNavigatorProps) {
                         lesson.state === "complete"
                           ? "text-success"
                           : lesson.state === "current"
-                            ? "text-terra"
+                            ? "text-gold"
                             : "text-slate"
                       )}
                     >
                       {lesson.state === "complete" ? "✓" : lesson.state === "current" ? "→" : "·"}
                     </span>
                     {lesson.href && lesson.state !== "current" ? (
-                      <Link href={lesson.href} className="hover:text-terra">
+                      <Link href={lesson.href} className="hover:text-gold">
                         {lesson.title}
                       </Link>
                     ) : (
@@ -111,7 +111,7 @@ function ModuleHead({ module: mod }: { readonly module: ModuleEntry }) {
         mod.state !== "locked" && mod.state !== "current" && "hover:bg-parch-dark"
       )}
     >
-      <span className="font-mono text-mono-sm tabular-nums text-terra">
+      <span className="font-mono text-mono-sm tabular-nums text-gold">
         {String(mod.number).padStart(2, "0")}
       </span>
       <span className="font-serif text-body-md leading-snug">

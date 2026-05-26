@@ -78,7 +78,7 @@ export function WaitlistForm({ initialInterest }: WaitlistFormProps) {
     >
       <h2
         id={headingId}
-        className="font-serif-sc text-[11px] tracking-[0.22em] uppercase text-[color:var(--color-terra)]"
+        className="font-serif-sc text-[11px] tracking-[0.22em] uppercase text-[color:var(--gold)]"
       >
         Get notified
       </h2>
@@ -102,7 +102,7 @@ export function WaitlistForm({ initialInterest }: WaitlistFormProps) {
                   setInterest(value);
                   resetStatusOnEdit();
                 }}
-                className="shrink-0 accent-[color:var(--color-terra)]"
+                className="shrink-0 accent-[color:var(--gold)]"
               />
               <span>{label}</span>
             </label>
@@ -127,7 +127,7 @@ export function WaitlistForm({ initialInterest }: WaitlistFormProps) {
               resetStatusOnEdit();
             }}
             autoComplete="given-name"
-            className="mt-2 w-full bg-[color:var(--color-linen)] border border-[color:var(--color-ink)]/15 px-3 py-2.5 text-[14px] text-[color:var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)]"
+            className="mt-2 w-full bg-[color:var(--color-linen)] border border-[color:var(--color-ink)]/15 px-3 py-2.5 text-[14px] text-[color:var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)]"
           />
         </div>
         <div>
@@ -146,7 +146,7 @@ export function WaitlistForm({ initialInterest }: WaitlistFormProps) {
               resetStatusOnEdit();
             }}
             autoComplete="organization"
-            className="mt-2 w-full bg-[color:var(--color-linen)] border border-[color:var(--color-ink)]/15 px-3 py-2.5 text-[14px] text-[color:var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)]"
+            className="mt-2 w-full bg-[color:var(--color-linen)] border border-[color:var(--color-ink)]/15 px-3 py-2.5 text-[14px] text-[color:var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)]"
           />
         </div>
       </div>
@@ -168,7 +168,7 @@ export function WaitlistForm({ initialInterest }: WaitlistFormProps) {
         }}
         autoComplete="email"
         placeholder="you@bank.com"
-        className="mt-2 w-full bg-[color:var(--color-linen)] border border-[color:var(--color-ink)]/15 px-3 py-2.5 text-[14px] text-[color:var(--color-ink)] placeholder:text-[color:var(--color-ink)]/35 focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)]"
+        className="mt-2 w-full bg-[color:var(--color-linen)] border border-[color:var(--color-ink)]/15 px-3 py-2.5 text-[14px] text-[color:var(--color-ink)] placeholder:text-[color:var(--color-ink)]/35 focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)]"
       />
 
       <label
@@ -183,7 +183,7 @@ export function WaitlistForm({ initialInterest }: WaitlistFormProps) {
             setMarketingOptIn(event.target.checked);
             resetStatusOnEdit();
           }}
-          className="mt-0.5 shrink-0 accent-[color:var(--color-terra)]"
+          className="mt-0.5 shrink-0 accent-[color:var(--gold)]"
         />
         <span>Also send the AI Banking Brief — weekly, short, easy to unsubscribe.</span>
       </label>
@@ -191,14 +191,14 @@ export function WaitlistForm({ initialInterest }: WaitlistFormProps) {
       <button
         type="submit"
         disabled={status === 'saving'}
-        className="mt-6 w-full bg-[color:var(--color-terra)] text-[color:var(--color-linen)] disabled:opacity-50 px-5 py-3 font-sans text-[12px] font-semibold uppercase tracking-[1.2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
+        className="mt-6 w-full bg-[color:var(--gold)] text-[color:var(--color-linen)] disabled:opacity-50 px-5 py-3 font-sans text-[12px] font-semibold uppercase tracking-[1.2px] hover:bg-[color:var(--gold-2)] transition-colors"
       >
         {status === 'saving' ? 'Saving…' : 'Notify me'}
       </button>
 
       <div role="status" aria-live="polite" className="mt-3 min-h-[1.25rem]">
         {status === 'saved' && (
-          <p className="text-[13px] text-[color:var(--color-terra)]">
+          <p className="text-[13px] text-[color:var(--gold)]">
             Thanks. We will email you when {SELECTED_LABEL[interest]} opens.
           </p>
         )}

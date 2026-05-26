@@ -35,13 +35,13 @@ export function Cta({ href, variant = "primary", tone = "default", className, ch
   if (variant === "primary") {
     visual =
       tone === "dark"
-        ? "bg-bone text-terra px-s7 py-s4 rounded-sharp text-mono-sm uppercase tracking-wider hover:bg-cream"
-        : "bg-terra text-linen px-s7 py-s4 rounded-sharp text-mono-sm uppercase tracking-wider hover:bg-terra-light";
+        ? "bg-bone text-gold px-s7 py-s4 rounded-sharp text-mono-sm uppercase tracking-wider hover:bg-cream"
+        : "bg-gold text-linen px-s7 py-s4 rounded-sharp text-mono-sm uppercase tracking-wider hover:bg-gold-2";
   } else {
     visual =
       tone === "dark"
         ? "text-bone border-b border-bone pb-[2px] text-body-md hover:text-cream hover:border-cream"
-        : "text-terra border-b border-terra pb-[2px] text-body-md hover:text-terra-light hover:border-terra-light";
+        : "text-gold border-b border-gold pb-[2px] text-body-md hover:text-gold-2 hover:border-gold-2";
   }
 
   return (

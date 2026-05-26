@@ -45,7 +45,7 @@ export function CertificationLadder({ rungs, className }: CertificationLadderPro
           className="border-l-0 border-r-0 border-t-0 border-b-0"
         >
           <p className="font-mono text-label-sm uppercase tracking-widest text-slate mb-s2">
-            <span className="text-terra mr-s2">{rung.stepLabel}</span>
+            <span className="text-gold mr-s2">{rung.stepLabel}</span>
             {rung.level}
           </p>
           <PillarCard.Title level={3}>{rung.code}</PillarCard.Title>
@@ -56,7 +56,7 @@ export function CertificationLadder({ rungs, className }: CertificationLadderPro
           )}
           <Link
             href={rung.href}
-            className="text-terra border-b border-terra pb-[1px] text-body-sm font-medium hover:text-terra-light hover:border-terra-light transition-colors"
+            className="text-gold border-b border-gold pb-[1px] text-body-sm font-medium hover:text-gold-2 hover:border-gold-2 transition-colors"
           >
             {rung.comingSoon ? "Join the waitlist" : "Program detail"} →
           </Link>

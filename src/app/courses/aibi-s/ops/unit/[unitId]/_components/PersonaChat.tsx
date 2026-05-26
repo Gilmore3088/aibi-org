@@ -68,7 +68,7 @@ export function PersonaChat({
           <li
             key={i}
             className={`p-3 rounded ${t.role === 'persona'
-              ? 'bg-[color:var(--color-cobalt)]/5 border-l-2 border-[color:var(--color-cobalt)]'
+              ? 'bg-[color:var(--ink-2)]/5 border-l-2 border-[color:var(--ink-2)]'
               : 'bg-white border-l-2 border-[color:var(--color-ink)]/20'}`}
           >
             <p className="text-xs uppercase tracking-wide mb-1 text-[color:var(--color-ink)]/50">
@@ -84,7 +84,7 @@ export function PersonaChat({
       {firstPersonaFetchNeeded && !loading && (
         <button
           onClick={() => fetchPersonaTurn([])}
-          className="px-4 py-2 bg-[color:var(--color-cobalt)] text-white rounded"
+          className="px-4 py-2 bg-[color:var(--ink-2)] text-white rounded"
         >
           Open the probe
         </button>
@@ -102,7 +102,7 @@ export function PersonaChat({
           <button
             disabled={!draft.trim()}
             onClick={sendLearnerTurn}
-            className="px-4 py-2 bg-[color:var(--color-cobalt)] text-white rounded disabled:opacity-40"
+            className="px-4 py-2 bg-[color:var(--ink-2)] text-white rounded disabled:opacity-40"
           >
             Send response
           </button>
@@ -114,7 +114,7 @@ export function PersonaChat({
       {exhausted && (
         <button
           onClick={onGrade}
-          className="px-6 py-3 bg-[color:var(--color-sage)] text-white rounded"
+          className="px-6 py-3 bg-[color:var(--ink-2)] text-white rounded"
         >
           Probe complete — grade my defense
         </button>

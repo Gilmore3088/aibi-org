@@ -28,7 +28,7 @@ export interface PillarCardProps {
 export function PillarCard({ pillar, stripe = true, surface = "parch", className, children }: PillarCardProps) {
   const surfaceClass =
     surface === "linen" ? "bg-linen text-ink" : surface === "dark" ? "bg-ink text-bone" : "bg-parch text-ink";
-  const stripeColor = pillar ? PILLAR_COLORS[pillar] : "var(--color-terra)";
+  const stripeColor = pillar ? PILLAR_COLORS[pillar] : "var(--gold)";
 
   return (
     <article className={cn("relative border border-hairline", surfaceClass, className)}>

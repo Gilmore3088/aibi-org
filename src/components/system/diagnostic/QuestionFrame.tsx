@@ -49,7 +49,7 @@ export function QuestionFrame({
     <div className={cn("grid lg:grid-cols-[1.6fr_1fr] border-b border-hairline", className)}>
       {/* Main column */}
       <div className="bg-linen px-s9 py-s10 lg:border-r lg:border-hairline">
-        <p className="font-mono text-label-sm uppercase tracking-widest text-terra mb-s4">
+        <p className="font-mono text-label-sm uppercase tracking-widest text-gold mb-s4">
           {dimensionLabel}
         </p>
         <h1 className="font-serif text-display-sm md:text-display-md text-ink leading-tight tracking-tightish">
@@ -74,7 +74,7 @@ export function QuestionFrame({
                     selected && "bg-parch"
                   )}
                 >
-                  <span className="font-mono text-mono-sm uppercase tracking-wide text-terra pt-[2px]">
+                  <span className="font-mono text-mono-sm uppercase tracking-wide text-gold pt-[2px]">
                     {String(answer.score).padStart(2, "0")}
                   </span>
                   <span className="text-body-md md:text-body-lg text-ink leading-snug">
@@ -90,14 +90,14 @@ export function QuestionFrame({
                     className={cn(
                       "self-center w-[14px] h-[14px] border rounded-full",
                       selected
-                        ? "border-terra bg-terra/[0.0001]"
+                        ? "border-gold bg-gold/[0.0001]"
                         : "border-hairline"
                     )}
                     style={
                       selected
                         ? {
                             background:
-                              "radial-gradient(circle, var(--color-terra) 50%, transparent 52%)",
+                              "radial-gradient(circle, var(--gold) 50%, transparent 52%)",
                           }
                         : undefined
                     }
@@ -111,7 +111,7 @@ export function QuestionFrame({
 
       {/* Aside */}
       <aside className="bg-parch px-s9 py-s10" aria-label="Why this question">
-        <p className="font-mono text-label-sm uppercase tracking-widest text-terra mb-s4">
+        <p className="font-mono text-label-sm uppercase tracking-widest text-gold mb-s4">
           Why this question
         </p>
         <h2 className="font-serif text-body-lg md:text-display-xs text-ink leading-snug mb-s4">

@@ -68,7 +68,7 @@ export function AuthDropdown({ email, displayName }: Props) {
         className="flex items-center gap-2 group"
       >
         {/* Avatar circle */}
-        <span className="h-8 w-8 rounded-full bg-[color:var(--color-terra)] text-[color:var(--color-linen)] flex items-center justify-center font-sans text-xs font-semibold select-none group-hover:bg-[color:var(--color-terra-light)] transition-colors">
+        <span className="h-8 w-8 rounded-full bg-[color:var(--gold)] text-[color:var(--color-linen)] flex items-center justify-center font-sans text-xs font-semibold select-none group-hover:bg-[color:var(--gold-2)] transition-colors">
           {initials}
         </span>
         {/* Display name — hidden on small screens */}
@@ -108,7 +108,7 @@ export function AuthDropdown({ email, displayName }: Props) {
               href={item.href}
               role="menuitem"
               onClick={() => setOpen(false)}
-              className="block px-3 py-2 font-sans text-sm text-[color:var(--color-ink)]/80 hover:text-[color:var(--color-terra)] hover:bg-[color:var(--color-parch-dark)] transition-colors"
+              className="block px-3 py-2 font-sans text-sm text-[color:var(--color-ink)]/80 hover:text-[color:var(--gold)] hover:bg-[color:var(--color-parch-dark)] transition-colors"
             >
               {item.label}
             </Link>

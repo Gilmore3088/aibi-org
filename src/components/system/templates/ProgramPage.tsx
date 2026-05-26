@@ -83,7 +83,7 @@ export function ProgramPage({
         <div className="bg-linen px-s7 py-s12 md:py-s16">
           <div className="max-w-wide mx-auto grid gap-s10 md:grid-cols-[1.5fr_1fr] md:items-end">
             <div>
-              <p className="font-serif-sc text-label-md uppercase tracking-widest text-terra mb-s4">
+              <p className="font-serif-sc text-label-md uppercase tracking-widest text-gold mb-s4">
                 {level}
               </p>
               <h1 className="font-serif text-display-lg md:text-display-xl text-ink leading-tight tracking-tightish">
@@ -91,7 +91,7 @@ export function ProgramPage({
               </h1>
               <p className="font-serif italic text-body-lg text-slate mt-s2">{designation}</p>
               {tagline && (
-                <p className="font-serif italic text-body-lg text-terra mt-s4">{tagline}</p>
+                <p className="font-serif italic text-body-lg text-gold mt-s4">{tagline}</p>
               )}
               <p className="text-body-lg text-ink/80 leading-relaxed mt-s5 max-w-narrow">{lede}</p>
               <div className="mt-s8 flex flex-wrap items-center gap-s6">
@@ -131,7 +131,7 @@ export function ProgramPage({
               key={outcome}
               className="flex gap-s3 text-body-md leading-relaxed text-ink/80 border-b border-hairline pb-s3"
             >
-              <span aria-hidden="true" className="font-mono text-terra mt-[6px]">
+              <span aria-hidden="true" className="font-mono text-gold mt-[6px]">
                 —
               </span>
               <span>{outcome}</span>
@@ -166,7 +166,7 @@ export function ProgramPage({
             <tbody>
               {modules.map((mod) => (
                 <tr key={mod.number} className="border-b border-hairline align-top">
-                  <td className="p-s4 font-mono text-mono-sm tabular-nums text-terra">
+                  <td className="p-s4 font-mono text-mono-sm tabular-nums text-gold">
                     {String(mod.number).padStart(2, "0")}
                   </td>
                   <td className="p-s4">

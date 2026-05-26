@@ -81,7 +81,7 @@ export function ExecSummary({ tier, tierId, score, maxScore }: ExecSummaryProps)
                   fontSize: '9pt',
                   letterSpacing: '0.18em',
                   textTransform: 'uppercase',
-                  color: 'var(--color-terra)',
+                  color: 'var(--gold)',
                   margin: 0,
                 }}
               >

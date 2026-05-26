@@ -36,7 +36,7 @@ export function SectionHeader({
   className,
 }: SectionHeaderProps) {
   const showPrefix = Boolean(number || label);
-  const prefixColor = tone === "terra" ? "text-terra" : "text-cream";
+  const prefixColor = tone === "terra" ? "text-gold" : "text-cream";
   const subtitleColor = tone === "terra" ? "text-slate" : "text-cream";
   const titleColor = tone === "terra" ? "text-ink" : "text-bone";
 

@@ -45,16 +45,21 @@ const config: Config = {
         "ledger-rule":         "var(--ledger-rule)",
         "ledger-rule-strong":  "var(--ledger-rule-strong)",
 
-        // Pillar
-        terra: "var(--color-terra)",
-        "terra-light": "var(--color-terra-light)",
-        "terra-pale": "var(--color-terra-pale)",
-        sage: "var(--color-sage)",
-        "sage-pale": "var(--color-sage-pale)",
-        cobalt: "var(--color-cobalt)",
-        "cobalt-pale": "var(--color-cobalt-pale)",
-        amber: "var(--color-amber)",
-        "amber-light": "var(--color-amber-light)",
+        // 2026-05-26: Pillar palette (terra / sage / cobalt / amber)
+        // RETIRED. Source code no longer references these utilities;
+        // the aliases below stay as visual no-op fallbacks routed at
+        // the mockup palette so any straggler in MDX / imported HTML
+        // still renders correctly. Delete this block once external
+        // content surfaces are fully migrated.
+        terra: "var(--gold)",
+        "terra-light": "var(--gold-2)",
+        "terra-pale": "var(--cream-2)",
+        sage: "var(--ink-2)",
+        "sage-pale": "var(--cream-2)",
+        cobalt: "var(--ink-2)",
+        "cobalt-pale": "var(--cream-2)",
+        amber: "var(--gold)",
+        "amber-light": "var(--gold-2)",
 
         // Surfaces
         linen: "var(--color-linen)",

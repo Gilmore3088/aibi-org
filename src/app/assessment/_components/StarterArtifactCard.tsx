@@ -55,8 +55,8 @@ export function StarterArtifactCard({
   }
 
   return (
-    <section className="border border-[color:var(--color-terra)]/30 bg-[color:var(--color-parch)] rounded-[3px] p-8 md:p-10 print-avoid-break">
-      <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
+    <section className="border border-[color:var(--gold)]/30 bg-[color:var(--color-parch)] rounded-[3px] p-8 md:p-10 print-avoid-break">
+      <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
         Your starter artifact
       </p>
       <p className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-slate)] mb-6">
@@ -74,14 +74,14 @@ export function StarterArtifactCard({
         <button
           type="button"
           onClick={handleCopy}
-          className="inline-block px-5 py-2.5 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
+          className="inline-block px-5 py-2.5 bg-[color:var(--gold)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] active:scale-[0.98] transition-all"
         >
           {copied ? 'Copied' : 'Copy to clipboard'}
         </button>
         <button
           type="button"
           onClick={handleDownload}
-          className="inline-block px-5 py-2.5 border border-[color:var(--color-ink)]/25 text-[color:var(--color-ink)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)] transition-colors"
+          className="inline-block px-5 py-2.5 border border-[color:var(--color-ink)]/25 text-[color:var(--color-ink)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:border-[color:var(--gold)] hover:text-[color:var(--gold)] transition-colors"
         >
           {downloaded ? 'Downloaded' : `Download .md`}
         </button>

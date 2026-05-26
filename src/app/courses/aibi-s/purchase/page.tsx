@@ -91,10 +91,10 @@ export default async function AiBISPurchasePage() {
 
       {/* Eyebrow */}
       <div className="flex items-center gap-3 mb-6">
-        <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--color-cobalt)]">
+        <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--ink-2)]">
           AiBI-S
         </span>
-        <div className="h-px w-8 bg-[color:var(--color-cobalt)]/30" aria-hidden="true" />
+        <div className="h-px w-8 bg-[color:var(--ink-2)]/30" aria-hidden="true" />
         <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--color-slate)]">
           Banking AI Specialist
         </span>
@@ -103,7 +103,7 @@ export default async function AiBISPurchasePage() {
       {/* Heading */}
       <h1 className="font-serif text-4xl lg:text-5xl font-bold leading-[1.05] mb-6 text-[color:var(--color-ink)]">
         Enroll in{' '}
-        <span className="text-[color:var(--color-cobalt)] italic">AiBI-S</span>
+        <span className="text-[color:var(--ink-2)] italic">AiBI-S</span>
       </h1>
 
       <p className="font-serif italic text-lg text-[color:var(--color-slate)] leading-relaxed mb-10">
@@ -131,7 +131,7 @@ export default async function AiBISPurchasePage() {
           </p>
           <Link
             href="/courses/foundation/program/purchase"
-            className="inline-block font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-cobalt)] hover:opacity-70 transition-opacity focus:outline-none focus:ring-2 focus:ring-[color:var(--color-cobalt)] focus:ring-offset-2 rounded-sm"
+            className="inline-block font-mono text-[10px] uppercase tracking-widest text-[color:var(--ink-2)] hover:opacity-70 transition-opacity focus:outline-none focus:ring-2 focus:ring-[color:var(--ink-2)] focus:ring-offset-2 rounded-sm"
           >
             Enroll in AiBI-Foundation first
           </Link>
@@ -139,7 +139,7 @@ export default async function AiBISPurchasePage() {
       )}
 
       {/* Pricing block */}
-      <div className="bg-[color:var(--color-parch)] border border-[color:var(--color-cobalt)]/20 rounded-sm p-8 mb-10">
+      <div className="bg-[color:var(--color-parch)] border border-[color:var(--ink-2)]/20 rounded-sm p-8 mb-10">
         <div className="flex items-baseline gap-2 mb-1">
           <span
             className="font-mono text-5xl font-bold text-[color:var(--color-ink)] tabular-nums"
@@ -162,7 +162,7 @@ export default async function AiBISPurchasePage() {
             className="block font-mono text-[10px] uppercase tracking-[0.15em] text-[color:var(--color-ink)] mb-3"
           >
             Select your role track
-            <span className="text-[color:var(--color-cobalt)] ml-1" aria-label="required">*</span>
+            <span className="text-[color:var(--ink-2)] ml-1" aria-label="required">*</span>
           </label>
           <p className="font-sans text-xs text-[color:var(--color-slate)] mb-3">
             Your track determines platform-specific content in Week 2 and the designation on your credential.
@@ -171,7 +171,7 @@ export default async function AiBISPurchasePage() {
           <select
             id="role-track-select"
             name="role_track"
-            className="w-full px-4 py-3 bg-[color:var(--color-linen)] border border-[color:var(--color-cobalt)]/20 rounded-sm font-sans text-sm text-[color:var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-cobalt)] focus:ring-offset-1"
+            className="w-full px-4 py-3 bg-[color:var(--color-linen)] border border-[color:var(--ink-2)]/20 rounded-sm font-sans text-sm text-[color:var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--ink-2)] focus:ring-offset-1"
             required
             defaultValue=""
           >
@@ -192,7 +192,7 @@ export default async function AiBISPurchasePage() {
               const meta = ROLE_TRACK_META[track];
               return (
                 <div key={track} className="flex items-start gap-2">
-                  <span className="shrink-0 font-mono text-[9px] uppercase tracking-widest text-[color:var(--color-cobalt)] mt-0.5 w-20">
+                  <span className="shrink-0 font-mono text-[9px] uppercase tracking-widest text-[color:var(--ink-2)] mt-0.5 w-20">
                     {meta.code.replace('/', '')}
                   </span>
                   <p className="font-sans text-xs text-[color:var(--color-slate)] leading-relaxed">
@@ -212,7 +212,7 @@ export default async function AiBISPurchasePage() {
             type="button"
             disabled
             aria-disabled="true"
-            className="w-full px-8 py-4 rounded-sm font-mono text-[10px] uppercase tracking-[0.15em] bg-[color:var(--color-cobalt)]/30 text-[color:var(--color-linen)]/50 cursor-not-allowed"
+            className="w-full px-8 py-4 rounded-sm font-mono text-[10px] uppercase tracking-[0.15em] bg-[color:var(--ink-2)]/30 text-[color:var(--color-linen)]/50 cursor-not-allowed"
           >
             Complete AiBI-Foundation First
           </button>
@@ -257,7 +257,7 @@ export default async function AiBISPurchasePage() {
           {COURSE_FEATURES.map((feature) => (
             <li key={feature} className="flex items-start gap-3">
               <span
-                className="mt-1 h-1.5 w-1.5 rounded-full bg-[color:var(--color-cobalt)] flex-shrink-0"
+                className="mt-1 h-1.5 w-1.5 rounded-full bg-[color:var(--ink-2)] flex-shrink-0"
                 aria-hidden="true"
               />
               <span className="font-serif text-[color:var(--color-slate)] leading-relaxed text-sm">
@@ -269,7 +269,7 @@ export default async function AiBISPurchasePage() {
       </section>
 
       {/* Back link */}
-      <div className="pt-6 border-t border-[color:var(--color-cobalt)]/10">
+      <div className="pt-6 border-t border-[color:var(--ink-2)]/10">
         <Link
           href="/courses/aibi-s"
           className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-slate)] hover:text-[color:var(--color-ink)] transition-colors"

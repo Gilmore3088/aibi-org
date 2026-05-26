@@ -53,7 +53,7 @@ export function StarterPromptAndPlan({ focusGapId }: StarterPromptAndPlanProps) 
         <ol
           style={{
             marginTop: '0.4in',
-            borderLeft: '2pt solid var(--color-terra)',
+            borderLeft: '2pt solid var(--gold)',
             paddingLeft: '0.4in',
             listStyle: 'none',
             display: 'flex',
@@ -69,7 +69,7 @@ export function StarterPromptAndPlan({ focusGapId }: StarterPromptAndPlanProps) 
                   fontSize: '9pt',
                   letterSpacing: '0.18em',
                   textTransform: 'uppercase',
-                  color: 'var(--color-terra)',
+                  color: 'var(--gold)',
                   margin: 0,
                   fontWeight: 600,
                 }}

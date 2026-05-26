@@ -62,7 +62,7 @@ h1, h2, h3, h4 {
   left: var(--space-4);
   z-index: var(--z-skip);
   padding: var(--space-3) var(--space-6);
-  background: var(--color-terra);
+  background: var(--gold);
   color: var(--color-linen);
   text-decoration: none;
   font-family: var(--font-sans);

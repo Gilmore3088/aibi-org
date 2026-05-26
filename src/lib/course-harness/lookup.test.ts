@@ -5,7 +5,7 @@ import type { ResolvedCourseView } from './types';
 const VIEW: ResolvedCourseView = {
   config: {
     slug: 'test',
-    brand: { name: 'Test', shortCode: 'T', wordmark: 'Test', accentColorVar: 'var(--color-terra)' },
+    brand: { name: 'Test', shortCode: 'T', wordmark: 'Test', accentColorVar: 'var(--gold)' },
     terminology: { itemLabel: 'Unit', sectionLabel: 'Phase' },
     sections: [],
   },

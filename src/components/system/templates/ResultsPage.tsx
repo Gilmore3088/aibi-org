@@ -117,7 +117,7 @@ export function ResultsPage({
         <div className="grid gap-s10 md:grid-cols-[auto_1fr_auto] md:items-center">
           <ScoreRing score={score} maxScore={maxScore} />
           <div>
-            <p className="font-serif-sc text-label-md uppercase tracking-widest text-terra mb-s3">
+            <p className="font-serif-sc text-label-md uppercase tracking-widest text-gold mb-s3">
               Your readiness profile
             </p>
             <h1 className="font-serif text-display-lg text-ink leading-tight tracking-tightish">
@@ -231,7 +231,7 @@ export function ResultsPage({
         <div className="grid sm:grid-cols-3 gap-px bg-hairline border-y border-strong mt-s6">
           {nextSteps.map((step) => (
             <article key={step.title} className="bg-linen p-s6">
-              <p className="font-mono text-label-md uppercase tracking-widest text-terra mb-s2">
+              <p className="font-mono text-label-md uppercase tracking-widest text-gold mb-s2">
                 {step.stepLabel}
               </p>
               <h3 className="font-serif text-display-xs leading-snug mb-s3">{step.title}</h3>

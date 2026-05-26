@@ -44,7 +44,7 @@ export function Footer() {
             <p className="font-serif text-xl text-[color:var(--color-ink)]">
               The AI Banking Institute
             </p>
-            <p className="font-serif-sc text-base text-[color:var(--color-terra)] tracking-wide mt-1 mb-4">
+            <p className="font-serif-sc text-base text-[color:var(--gold)] tracking-wide mt-1 mb-4">
               Turning Bankers into Builders
             </p>
             <p className="text-sm text-[color:var(--color-ink)]/70 leading-relaxed">
@@ -66,7 +66,7 @@ export function Footer() {
                     <li key={link.href}>
                       <Link
                         href={link.href}
-                        className="text-sm text-[color:var(--color-ink)]/75 hover:text-[color:var(--color-terra)] transition-colors"
+                        className="text-sm text-[color:var(--color-ink)]/75 hover:text-[color:var(--gold)] transition-colors"
                       >
                         {link.label}
                       </Link>

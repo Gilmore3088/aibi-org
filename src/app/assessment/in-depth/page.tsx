@@ -83,7 +83,7 @@ export default async function InDepthAssessmentPage({
         eyebrow: "In-Depth Assessment",
         title: (
           <>
-            The <em className="text-terra">board-ready</em> diagnostic for your
+            The <em className="text-gold">board-ready</em> diagnostic for your
             institution.
           </>
         ),
@@ -103,7 +103,7 @@ export default async function InDepthAssessmentPage({
             />
             <a
               href="#compare"
-              className="font-mono text-mono-sm uppercase tracking-widest text-ink border-b border-ink hover:text-terra hover:border-terra"
+              className="font-mono text-mono-sm uppercase tracking-widest text-ink border-b border-ink hover:text-gold hover:border-gold"
             >
               Compare with the free scan →
             </a>
@@ -116,9 +116,9 @@ export default async function InDepthAssessmentPage({
         <Section variant="parch" padding="default" divider="none">
           <div
             role="status"
-            className="mx-auto max-w-default border border-terra/30 bg-terra/5 px-s6 py-s5 rounded-sharp"
+            className="mx-auto max-w-default border border-gold/30 bg-gold/5 px-s6 py-s5 rounded-sharp"
           >
-            <p className="font-mono text-mono-sm uppercase tracking-widest text-terra mb-s2">
+            <p className="font-mono text-mono-sm uppercase tracking-widest text-gold mb-s2">
               Purchase required
             </p>
             <p className="font-serif text-body-md text-ink leading-relaxed">
@@ -135,11 +135,11 @@ export default async function InDepthAssessmentPage({
           deliverables, pricing, and CTA all stacked inside it. */}
       <Section id="compare" variant="linen" padding="default" divider="none">
         <div className="max-w-default mx-auto">
-          <p className="font-mono text-label-md uppercase tracking-widest text-terra mb-s3">
+          <p className="font-mono text-label-md uppercase tracking-widest text-gold mb-s3">
             Two ways in
           </p>
           <h2 className="font-serif text-display-sm md:text-display-md text-ink leading-[1.05] tracking-tight mb-s4 max-w-[22ch]">
-            Curious, or <em className="text-terra italic">deciding</em>?
+            Curious, or <em className="text-gold italic">deciding</em>?
           </h2>
           <p className="font-serif italic text-body-lg text-ink/75 max-w-[52ch] mb-s10">
             The free scan tells you roughly where you stand. The In-Depth
@@ -175,11 +175,11 @@ export default async function InDepthAssessmentPage({
             </article>
 
             {/* IN-DEPTH — recommended, gold-bordered, fully loaded */}
-            <article className="relative border-2 border-terra bg-paper p-s7 md:p-s8 flex flex-col shadow-[0_18px_44px_-32px_rgba(14,27,45,0.32)]">
-              <span className="absolute -top-[14px] left-s6 bg-terra text-linen font-mono text-mono-xs uppercase tracking-widest px-s3 py-s1 rounded-sharp">
+            <article className="relative border-2 border-gold bg-paper p-s7 md:p-s8 flex flex-col shadow-[0_18px_44px_-32px_rgba(14,27,45,0.32)]">
+              <span className="absolute -top-[14px] left-s6 bg-gold text-linen font-mono text-mono-xs uppercase tracking-widest px-s3 py-s1 rounded-sharp">
                 Recommended
               </span>
-              <p className="font-mono text-mono-xs uppercase tracking-widest text-terra mb-s3">
+              <p className="font-mono text-mono-xs uppercase tracking-widest text-gold mb-s3">
                 For decision-makers
               </p>
               <h3 className="font-serif text-h2 text-ink leading-tight mb-s2">
@@ -211,7 +211,7 @@ export default async function InDepthAssessmentPage({
               </p>
 
               <div className="mt-s7 pt-s5 border-t border-hairline">
-                <p className="font-mono text-mono-xs uppercase tracking-widest text-terra mb-s4">
+                <p className="font-mono text-mono-xs uppercase tracking-widest text-gold mb-s4">
                   What&apos;s in the report
                 </p>
                 <ul className="space-y-s3">
@@ -225,7 +225,7 @@ export default async function InDepthAssessmentPage({
                       key={item}
                       className="grid grid-cols-[1.25rem_1fr] gap-s2 items-start font-serif text-body-md text-ink leading-snug"
                     >
-                      <span aria-hidden="true" className="text-terra pt-[2px]">
+                      <span aria-hidden="true" className="text-gold pt-[2px]">
                         —
                       </span>
                       <span>{item}</span>
@@ -241,11 +241,11 @@ export default async function InDepthAssessmentPage({
       {/* DETAILED COMPARE — side-by-side ledger table */}
       <Section variant="parch" padding="default" divider="none">
         <div className="max-w-default mx-auto">
-          <p className="font-mono text-label-md uppercase tracking-widest text-terra mb-s3">
+          <p className="font-mono text-label-md uppercase tracking-widest text-gold mb-s3">
             What you get, line by line
           </p>
           <h2 className="font-serif text-h1 text-ink leading-tight tracking-tight mb-s8 max-w-[22ch]">
-            Free vs. <em className="text-terra italic">In-Depth.</em>
+            Free vs. <em className="text-gold italic">In-Depth.</em>
           </h2>
 
           <div className="border border-hairline bg-paper">
@@ -257,12 +257,12 @@ export default async function InDepthAssessmentPage({
                 </p>
                 <p className="font-serif text-h3 text-ink mt-s1">Readiness Scan</p>
               </div>
-              <div className="p-s5 border-l border-hairline bg-terra/5">
-                <p className="font-mono text-mono-xs uppercase tracking-widest text-terra">
+              <div className="p-s5 border-l border-hairline bg-gold/5">
+                <p className="font-mono text-mono-xs uppercase tracking-widest text-gold">
                   $99 · Recommended
                 </p>
                 <p className="font-serif text-h3 text-ink mt-s1">
-                  In-Depth <em className="text-terra italic">Assessment</em>
+                  In-Depth <em className="text-gold italic">Assessment</em>
                 </p>
               </div>
             </div>
@@ -280,7 +280,7 @@ export default async function InDepthAssessmentPage({
                 <div className="p-s5 border-l border-hairline font-serif text-body-md text-ink/70">
                   {row.free}
                 </div>
-                <div className="p-s5 border-l border-hairline bg-terra/5 font-serif text-body-md text-ink">
+                <div className="p-s5 border-l border-hairline bg-gold/5 font-serif text-body-md text-ink">
                   {row.inDepth}
                 </div>
               </div>
@@ -291,12 +291,12 @@ export default async function InDepthAssessmentPage({
               <div className="p-s5 border-l border-hairline">
                 <Link
                   href="/assessment"
-                  className="font-mono text-mono-sm uppercase tracking-widest text-ink border-b border-ink hover:text-terra hover:border-terra"
+                  className="font-mono text-mono-sm uppercase tracking-widest text-ink border-b border-ink hover:text-gold hover:border-gold"
                 >
                   Take the free scan →
                 </Link>
               </div>
-              <div className="p-s5 border-l border-hairline bg-terra/5">
+              <div className="p-s5 border-l border-hairline bg-gold/5">
                 <PurchaseButton
                   userEmail={signedInEmail ?? undefined}
                   label="Purchase In-Depth · $99"
@@ -312,7 +312,7 @@ export default async function InDepthAssessmentPage({
             at ten or more. Email{" "}
             <a
               href={`mailto:${BRAND.emails.contact}?subject=In-Depth%20Assessment%20%E2%80%94%2010%2B%20seats`}
-              className="text-terra border-b border-terra hover:text-terra-light hover:border-terra-light"
+              className="text-gold border-b border-gold hover:text-gold-2 hover:border-gold-2"
             >
               {BRAND.emails.contact}
             </a>{" "}

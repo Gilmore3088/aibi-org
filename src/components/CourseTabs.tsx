@@ -43,7 +43,7 @@ export function CourseTabs({
   storagePrefix,
   legacyStoragePrefix,
   segmentNumber,
-  accentColor = 'var(--color-terra)',
+  accentColor = 'var(--gold)',
   learnContent,
   practiceContent,
   applyContent,

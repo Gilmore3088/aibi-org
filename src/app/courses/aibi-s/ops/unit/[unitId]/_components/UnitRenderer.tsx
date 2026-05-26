@@ -55,7 +55,7 @@ export function UnitRenderer({ unit, resolvedItem, resolvedSection, config }: Un
       <article className="mx-auto px-8 lg:px-16 py-4">
         <CourseTabs
           storageKey="aibi-s-u-1.1"
-          accentColor="var(--color-cobalt)"
+          accentColor="var(--ink-2)"
           tabs={[
             {
               id: 'learn',

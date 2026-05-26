@@ -55,7 +55,7 @@ export async function SiteNav() {
           style={{ lineHeight: 0.95 }}
         >
           <span
-            className="font-sans uppercase text-ink group-hover:text-terra transition-colors duration-fast"
+            className="font-sans uppercase text-ink group-hover:text-gold transition-colors duration-fast"
             style={{ fontWeight: 700, fontSize: 14, letterSpacing: '-0.005em', lineHeight: 1 }}
           >
             The AI Banking
@@ -80,7 +80,7 @@ export async function SiteNav() {
                   "font-serif-sc text-mono-sm uppercase tracking-widest hidden lg:inline transition-colors duration-fast",
                   active
                     ? "text-ink border-b border-ink pb-[2px]"
-                    : "text-ink/75 hover:text-terra"
+                    : "text-ink/75 hover:text-gold"
                 )}
               >
                 {link.label}
@@ -89,7 +89,7 @@ export async function SiteNav() {
           })}
           <Link
             href="/assessment/start"
-            className="hidden md:inline-block font-sans text-mono-sm font-medium uppercase tracking-wider rounded-sharp bg-terra text-linen px-s5 py-s2 hover:bg-terra-light transition-colors duration-fast"
+            className="hidden md:inline-block font-sans text-mono-sm font-medium uppercase tracking-wider rounded-sharp bg-gold text-linen px-s5 py-s2 hover:bg-gold-2 transition-colors duration-fast"
           >
             Take Assessment
           </Link>

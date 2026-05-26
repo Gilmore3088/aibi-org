@@ -80,7 +80,7 @@ export function PracticePicturePage({ tierId }: PracticePicturePageProps) {
                 fontSize: '9.5pt',
                 letterSpacing: '0.18em',
                 textTransform: 'uppercase',
-                color: 'var(--color-terra)',
+                color: 'var(--gold)',
                 margin: 0,
                 paddingTop: '0.04in',
               }}

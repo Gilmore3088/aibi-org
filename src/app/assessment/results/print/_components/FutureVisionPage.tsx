@@ -41,7 +41,7 @@ export function FutureVisionPage() {
                 fontFamily: 'var(--font-mono)',
                 fontVariantNumeric: 'tabular-nums',
                 fontSize: '10pt',
-                color: 'var(--color-terra)',
+                color: 'var(--gold)',
                 letterSpacing: '0.1em',
               }}
             >

@@ -63,7 +63,7 @@ function CardGrid({ table }: ContentTableProps) {
       {table.rows.map((row, rowIndex) => (
         <div
           key={rowIndex}
-          className="border border-[color:var(--color-ink)]/10 rounded-[3px] bg-[color:var(--color-parch)] border-t-2 border-t-[color:var(--color-terra)]"
+          className="border border-[color:var(--color-ink)]/10 rounded-[3px] bg-[color:var(--color-parch)] border-t-2 border-t-[color:var(--gold)]"
         >
           {/* Card title — platform name */}
           <div className="px-4 pt-4 pb-2">

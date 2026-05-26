@@ -43,7 +43,7 @@ export function EssayArchive({ items, basePath = "/research", className }: Essay
             <div>
               <EssayMeta date={item.date} category={item.category} className="md:hidden mb-s2" />
               {item.category && (
-                <p className="hidden md:block font-mono text-label-sm uppercase tracking-widest text-terra mb-s1">
+                <p className="hidden md:block font-mono text-label-sm uppercase tracking-widest text-gold mb-s1">
                   {item.category}
                 </p>
               )}
@@ -55,7 +55,7 @@ export function EssayArchive({ items, basePath = "/research", className }: Essay
             <span className="hidden md:block font-mono text-mono-sm tabular-nums text-slate text-right">
               {item.readMinutes ? `${item.readMinutes} min` : ""}
             </span>
-            <span aria-hidden="true" className="hidden md:block text-terra text-right">
+            <span aria-hidden="true" className="hidden md:block text-gold text-right">
               →
             </span>
           </Link>

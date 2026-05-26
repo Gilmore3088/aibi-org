@@ -120,7 +120,7 @@ export function ROICalculatorBody({
         <p className="font-serif-sc text-[11px] uppercase tracking-[0.15em] text-[color:var(--color-ink)]/70 mb-3">
           Estimated annual labor hours recaptured
         </p>
-        <p className="font-mono text-5xl md:text-6xl text-[color:var(--color-terra)] leading-none tabular-nums">
+        <p className="font-mono text-5xl md:text-6xl text-[color:var(--gold)] leading-none tabular-nums">
           {formatCurrency(result.mid)}
         </p>
         <p className="font-mono text-xs text-[color:var(--color-ink)]/70 mt-3 leading-snug">
@@ -137,7 +137,7 @@ export function ROICalculatorBody({
               ? () => trackBriefingBooked({ source: briefingSource })
               : undefined
           }
-          className="mt-6 inline-block px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
+          className="mt-6 inline-block px-6 py-3 bg-[color:var(--gold)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] active:scale-[0.98] transition-all"
         >
           {ctaLabel}
         </a>
@@ -174,7 +174,7 @@ function Slider({ label, value, min, max, step, onChange, display }: SliderProps
         step={step}
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="w-full accent-[color:var(--color-terra)]"
+        className="w-full accent-[color:var(--gold)]"
       />
     </div>
   );

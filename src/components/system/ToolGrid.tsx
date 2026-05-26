@@ -49,7 +49,7 @@ export function ToolGrid({ tools = TOOLS, className }: ToolGridProps) {
           key={group.category}
           className="grid grid-cols-[10rem_1fr] gap-s6 py-s5 items-baseline"
         >
-          <dt className="font-mono text-label-md uppercase tracking-widest text-terra">
+          <dt className="font-mono text-label-md uppercase tracking-widest text-gold">
             {group.label}
           </dt>
           <dd className="font-serif text-body-lg text-ink leading-snug">

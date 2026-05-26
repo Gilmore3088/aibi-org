@@ -102,7 +102,7 @@ export default function AssessmentPage() {
                 tabIndex={-1}
                 className="font-serif text-3xl md:text-5xl leading-tight text-[color:var(--color-ink)] focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--ledger-accent)] focus-visible:outline-offset-4 focus-visible:rounded-sm"
               >
-                Your readiness report is <em className="text-[color:var(--color-terra)]">ready.</em>
+                Your readiness report is <em className="text-[color:var(--gold)]">ready.</em>
               </h2>
               <p className="font-serif italic text-lg md:text-xl text-[color:var(--color-ink)]/75 max-w-2xl mx-auto leading-relaxed">
                 Enter your work email to see your score, tier, eight-dimension breakdown, and a starter artifact keyed to your weakest area.
@@ -147,7 +147,7 @@ export default function AssessmentPage() {
               <button
                 type="button"
                 onClick={state.restart}
-                className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-ink)]/70 hover:text-[color:var(--color-terra)]"
+                className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-ink)]/70 hover:text-[color:var(--gold)]"
               >
                 Start over
               </button>
@@ -162,7 +162,7 @@ export default function AssessmentPage() {
                 className="max-w-3xl mx-auto mb-8 border border-[color:var(--color-ink)]/15 bg-[color:var(--ledger-paper)] px-5 py-4 rounded-[2px] text-sm leading-relaxed text-[color:var(--ledger-ink)]"
                 aria-label="Personal email notice"
               >
-                <p className="font-mono text-[10.5px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] mb-1.5">
+                <p className="font-mono text-[10.5px] uppercase tracking-[0.18em] text-[color:var(--gold)] mb-1.5">
                   Note
                 </p>
                 <p>

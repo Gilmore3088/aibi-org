@@ -64,7 +64,7 @@ export async function HomeContextStrip() {
         </p>
         <Link
           href={`/courses/foundation/program/${enrollment.current_module}`}
-          className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] hover:text-[color:var(--color-ink)]"
+          className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--gold)] hover:text-[color:var(--color-ink)]"
         >
           Resume course →
         </Link>
@@ -100,7 +100,7 @@ export async function HomeContextStrip() {
         </p>
         <Link
           href="/courses/foundation/program"
-          className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] hover:text-[color:var(--color-ink)]"
+          className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--gold)] hover:text-[color:var(--color-ink)]"
         >
           Explore the AiBI-Foundation course →
         </Link>
@@ -122,7 +122,7 @@ export async function HomeContextStrip() {
       </p>
       <Link
         href="/assessment/start"
-        className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-terra)] hover:text-[color:var(--color-ink)]"
+        className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--gold)] hover:text-[color:var(--color-ink)]"
       >
         Take the assessment →
       </Link>

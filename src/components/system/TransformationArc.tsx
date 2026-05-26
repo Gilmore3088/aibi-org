@@ -44,7 +44,7 @@ export function TransformationArc({ stages, className }: TransformationArcProps)
             className="bg-linen p-s6"
             aria-current={idx === stages.length - 1 ? "step" : undefined}
           >
-            <p className="font-mono text-label-sm uppercase tracking-widest text-terra mb-s3">
+            <p className="font-mono text-label-sm uppercase tracking-widest text-gold mb-s3">
               {stage.stageLabel}
             </p>
             <h4 className="font-serif text-display-xs leading-snug mb-s3">{stage.title}</h4>
@@ -52,7 +52,7 @@ export function TransformationArc({ stages, className }: TransformationArcProps)
             <ul className="border-t border-hairline pt-s3 space-y-s1 text-body-sm">
               {stage.attributes.map((attr) => (
                 <li key={attr} className="flex gap-s2">
-                  <span aria-hidden="true" className="font-mono text-terra">
+                  <span aria-hidden="true" className="font-mono text-gold">
                     —
                   </span>
                   <span>{attr}</span>
@@ -63,7 +63,7 @@ export function TransformationArc({ stages, className }: TransformationArcProps)
           {idx < stages.length - 1 && (
             <div
               aria-hidden="true"
-              className="bg-linen hidden lg:grid place-items-center text-terra font-mono"
+              className="bg-linen hidden lg:grid place-items-center text-gold font-mono"
             >
               →
             </div>

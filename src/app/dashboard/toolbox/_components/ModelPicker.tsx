@@ -42,7 +42,7 @@ export function ModelPicker({ value, onChange, disabled }: Props) {
       </label>
       <select
         id="toolbox-model-picker"
-        className="border border-ink/20 rounded px-3 py-2 bg-linen text-ink focus:outline-none focus:ring-2 focus:ring-terra"
+        className="border border-ink/20 rounded px-3 py-2 bg-linen text-ink focus:outline-none focus:ring-2 focus:ring-gold"
         value={compositeValue}
         disabled={disabled}
         onChange={(e) => {

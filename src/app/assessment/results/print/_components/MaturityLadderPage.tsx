@@ -62,13 +62,13 @@ export function MaturityLadderPage({ tierId }: MaturityLadderPageProps) {
                   alignItems: 'center',
                   justifyContent: 'center',
                   background: isCurrent
-                    ? 'var(--color-terra)'
+                    ? 'var(--gold)'
                     : isBelow
                       ? 'var(--color-ink)'
                       : 'var(--color-linen)',
                   color: isCurrent || isBelow ? 'var(--color-linen)' : 'var(--color-ink)',
                   border: isCurrent
-                    ? '2pt solid var(--color-terra)'
+                    ? '2pt solid var(--gold)'
                     : isBelow
                       ? '0.5pt solid var(--color-ink)'
                       : '0.5pt solid var(--color-ink)',
@@ -82,7 +82,7 @@ export function MaturityLadderPage({ tierId }: MaturityLadderPageProps) {
                     fontFamily: 'var(--font-serif)',
                     fontSize: '13pt',
                     margin: 0,
-                    color: isCurrent ? 'var(--color-terra)' : 'var(--color-ink)',
+                    color: isCurrent ? 'var(--gold)' : 'var(--color-ink)',
                   }}
                 >
                   {rung.label}
@@ -94,7 +94,7 @@ export function MaturityLadderPage({ tierId }: MaturityLadderPageProps) {
                       fontSize: '8pt',
                       letterSpacing: '0.22em',
                       textTransform: 'uppercase',
-                      color: 'var(--color-terra)',
+                      color: 'var(--gold)',
                     }}
                   >
                     You are here

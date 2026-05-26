@@ -61,7 +61,7 @@ export function SignupModal({ email, profileId, onClose }: SignupModalProps) {
         {status === 'idle' && (
           <button
             onClick={handleSend}
-            className="w-full px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[12px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
+            className="w-full px-6 py-3 bg-[color:var(--gold)] text-[color:var(--color-linen)] font-sans text-[12px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] transition-colors"
           >
             Send my sign-in link
           </button>
@@ -75,7 +75,7 @@ export function SignupModal({ email, profileId, onClose }: SignupModalProps) {
 
         {status === 'sent' && (
           <div>
-            <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] mb-3">
+            <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[color:var(--gold)] mb-3">
               Check your inbox
             </p>
             <p className="text-[14px] text-[color:var(--color-ink)]/75 leading-[1.55]">
@@ -95,7 +95,7 @@ export function SignupModal({ email, profileId, onClose }: SignupModalProps) {
             </p>
             <button
               onClick={handleSend}
-              className="w-full px-6 py-3 border border-[color:var(--color-ink)]/30 text-[color:var(--color-ink)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:border-[color:var(--color-terra)] transition-colors"
+              className="w-full px-6 py-3 border border-[color:var(--color-ink)]/30 text-[color:var(--color-ink)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:border-[color:var(--gold)] transition-colors"
             >
               Resend link
             </button>
@@ -104,7 +104,7 @@ export function SignupModal({ email, profileId, onClose }: SignupModalProps) {
 
         <button
           onClick={onClose}
-          className="mt-6 block w-full text-[12px] text-[color:var(--color-ink)]/55 hover:text-[color:var(--color-terra)] transition-colors"
+          className="mt-6 block w-full text-[12px] text-[color:var(--color-ink)]/55 hover:text-[color:var(--gold)] transition-colors"
         >
           Maybe later
         </button>

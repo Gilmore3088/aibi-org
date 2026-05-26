@@ -143,11 +143,11 @@ export function InDepthRunner(): React.ReactElement {
       <main className="min-h-screen">
         <ProgressBar progress={0} />
         <div className="px-6 py-12 md:py-16 max-w-4xl mx-auto">
-          <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-[color:var(--color-terra)] mb-3 font-semibold">
+          <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-[color:var(--gold)] mb-3 font-semibold">
             Before we begin
           </p>
           <h1 className="font-serif text-3xl md:text-5xl text-[color:var(--color-ink)] leading-[1.02] tracking-tight">
-            Which seat are you reading <em className="text-[color:var(--color-terra)]">from?</em>
+            Which seat are you reading <em className="text-[color:var(--gold)]">from?</em>
           </h1>
           <p className="font-serif italic text-lg text-[color:var(--color-ink)]/75 mt-4 leading-relaxed max-w-[58ch]">
             Your Briefing will be framed for your seat. Optional &mdash; skip and you&apos;ll still get the full diagnosis.
@@ -164,7 +164,7 @@ export function InDepthRunner(): React.ReactElement {
                     key={id}
                     className={`relative block border-2 rounded-[3px] p-5 cursor-pointer transition-all ${
                       selected
-                        ? 'border-[color:var(--color-terra)] bg-[color:var(--color-terra)]/[0.04] shadow-[0_8px_22px_-18px_rgba(14,27,45,0.30)]'
+                        ? 'border-[color:var(--gold)] bg-[color:var(--gold)]/[0.04] shadow-[0_8px_22px_-18px_rgba(14,27,45,0.30)]'
                         : 'border-[color:var(--color-ink)]/12 hover:border-[color:var(--color-ink)]/35 hover:bg-[color:var(--color-parch)]/40'
                     }`}
                   >
@@ -179,7 +179,7 @@ export function InDepthRunner(): React.ReactElement {
                     <div className="flex items-start gap-4">
                       <div className={`flex-none w-10 h-10 grid place-items-center rounded-[2px] transition-colors ${
                         selected
-                          ? 'bg-[color:var(--color-terra)] text-[color:var(--color-linen)]'
+                          ? 'bg-[color:var(--gold)] text-[color:var(--color-linen)]'
                           : 'bg-[color:var(--color-parch)] text-[color:var(--color-ink)]/80'
                       }`}>
                         <RoleIcon id={id} />
@@ -193,7 +193,7 @@ export function InDepthRunner(): React.ReactElement {
                         </span>
                       </div>
                       {selected && (
-                        <span className="flex-none w-5 h-5 grid place-items-center rounded-full bg-[color:var(--color-terra)] text-[color:var(--color-linen)] text-[11px] font-bold">
+                        <span className="flex-none w-5 h-5 grid place-items-center rounded-full bg-[color:var(--gold)] text-[color:var(--color-linen)] text-[11px] font-bold">
                           ✓
                         </span>
                       )}
@@ -209,7 +209,7 @@ export function InDepthRunner(): React.ReactElement {
               type="button"
               onClick={() => commitRolePick(role)}
               disabled={role === null}
-              className="font-mono text-[11px] uppercase tracking-[0.18em] font-semibold px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] rounded-[1px] disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[color:var(--color-terra-light)] transition-colors"
+              className="font-mono text-[11px] uppercase tracking-[0.18em] font-semibold px-8 py-4 bg-[color:var(--gold)] text-[color:var(--color-linen)] rounded-[1px] disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[color:var(--gold-2)] transition-colors"
             >
               Begin assessment →
             </button>
@@ -287,7 +287,7 @@ export function InDepthRunner(): React.ReactElement {
                       // Re-trigger via a no-op state change.
                       state.advanceToResults();
                     }}
-                    className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-terra)] hover:opacity-80"
+                    className="font-mono text-xs uppercase tracking-widest text-[color:var(--gold)] hover:opacity-80"
                   >
                     Retry
                   </button>

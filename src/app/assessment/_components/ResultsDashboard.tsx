@@ -69,7 +69,7 @@ export function ResultsDashboard({
       className="space-y-8"
       style={{ animation: 'fadeInUp 700ms cubic-bezier(0.22, 1, 0.36, 1) 200ms both' }}
     >
-      <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
+      <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--gold)]">
         Diagnosis
       </p>
 
@@ -78,7 +78,7 @@ export function ResultsDashboard({
         className="font-serif text-3xl md:text-5xl leading-[1.05] tracking-[-0.01em] text-[color:var(--color-ink)] max-w-3xl"
       >
         {subjectName} is in the{' '}
-        <span className="text-[color:var(--color-terra)]">{persona.label}</span> phase.
+        <span className="text-[color:var(--gold)]">{persona.label}</span> phase.
       </h2>
       <p className="text-base md:text-lg text-[color:var(--color-ink)]/75 leading-relaxed max-w-2xl">
         {persona.oneLine}
@@ -121,7 +121,7 @@ export function ResultsDashboard({
         <div className="border-t border-[color:var(--color-ink)]/15 px-7 md:px-9 py-5 bg-[color:var(--color-parch)] flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
           <p className="font-serif-sc text-[13px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/75">
             Rung{' '}
-            <span className="text-[color:var(--color-terra)] font-mono tabular-nums tracking-normal text-[15px]">
+            <span className="text-[color:var(--gold)] font-mono tabular-nums tracking-normal text-[15px]">
               {rungIndex + 1}
             </span>{' '}
             of 6 ·{' '}
@@ -155,7 +155,7 @@ function TierSeal({
       <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/65 tabular-nums">
         Rung {rungIndex + 1} of 6
       </p>
-      <p className="font-serif text-[18px] text-[color:var(--color-terra)] leading-tight mt-1.5">
+      <p className="font-serif text-[18px] text-[color:var(--gold)] leading-tight mt-1.5">
         {rungLabel}
       </p>
     </div>
@@ -174,7 +174,7 @@ function DimensionBar({ row }: { readonly row: RankedRow }) {
     ? 'bg-[color:var(--color-error)]'
     : isStrong
       ? 'bg-[color:var(--color-ink)]/70'
-      : 'bg-[color:var(--color-terra)]';
+      : 'bg-[color:var(--gold)]';
 
   return (
     <li className="grid grid-cols-[1fr_auto] gap-x-4 items-baseline">

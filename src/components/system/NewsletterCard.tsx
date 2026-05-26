@@ -100,7 +100,7 @@ export function NewsletterCard({
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="you@yourbank.com"
-          className="border border-hairline bg-linen px-s3 py-s2 text-body-sm font-sans rounded-sharp focus:border-terra focus:outline-none"
+          className="border border-hairline bg-linen px-s3 py-s2 text-body-sm font-sans rounded-sharp focus:border-gold focus:outline-none"
           disabled={status === "submitting" || status === "success"}
         />
         {/* Honeypot — bots fill every field, humans don't see this.
@@ -119,7 +119,7 @@ export function NewsletterCard({
         <button
           type="submit"
           disabled={status === "submitting" || status === "success"}
-          className="bg-terra text-linen px-s5 py-s2 rounded-sharp font-sans font-medium text-mono-sm uppercase tracking-wider hover:bg-terra-light transition-colors duration-fast disabled:opacity-60"
+          className="bg-gold text-linen px-s5 py-s2 rounded-sharp font-sans font-medium text-mono-sm uppercase tracking-wider hover:bg-gold-2 transition-colors duration-fast disabled:opacity-60"
         >
           {status === "submitting" ? "..." : status === "success" ? "Done" : "Subscribe"}
         </button>

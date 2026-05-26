@@ -30,7 +30,7 @@ export function SkillGrid({ skills = SKILLS, className }: SkillGridProps) {
           role="listitem"
           className="bg-parch px-s5 py-s5 grid grid-rows-[auto_1fr_auto] gap-s2"
         >
-          <p className="font-mono text-mono-sm tabular-nums text-terra">
+          <p className="font-mono text-mono-sm tabular-nums text-gold">
             {String(idx + 1).padStart(2, "0")}
           </p>
           <p className="font-serif text-body-lg md:text-display-xs leading-snug text-ink">

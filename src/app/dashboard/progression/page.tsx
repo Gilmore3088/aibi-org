@@ -18,22 +18,22 @@ const CERT_LEVELS: readonly CertLevel[] = [
   {
     code: 'foundation',
     label: 'AiBI-Foundation',
-    color: 'var(--color-terra)',
-    colorBg: 'var(--color-terra-pale)',
+    color: 'var(--gold)',
+    colorBg: 'var(--cream-2)',
     product: 'Foundation',
   },
   {
     code: 'aibi-s',
     label: 'AiBI-S',
-    color: 'var(--color-cobalt)',
-    colorBg: 'var(--color-cobalt-pale)',
+    color: 'var(--ink-2)',
+    colorBg: 'var(--cream-2)',
     product: 'Specialist',
   },
   {
     code: 'aibi-l',
     label: 'AiBI-L',
-    color: 'var(--color-sage)',
-    colorBg: 'var(--color-sage-pale)',
+    color: 'var(--ink-2)',
+    colorBg: 'var(--cream-2)',
     product: 'Leader',
   },
 ] as const;
@@ -350,20 +350,20 @@ function NextStepBanner({ enrollments }: { enrollments: readonly MockEnrollment[
   const hasL = enrollments.some((e) => e.product === 'aibi-l' && e.completed_at);
   const sEnrollment = enrollments.find((e) => e.product === 'aibi-s');
 
-  let accent = 'var(--color-terra)';
+  let accent = 'var(--gold)';
   let heading = 'Start with AiBI-Foundation';
   let body = 'Build your AI foundation. The Foundation certification is where every transformation begins.';
   let href = '/courses/foundation/program/purchase';
   let cta = 'View AiBI-Foundation';
 
   if (hasP && hasS && hasL) {
-    accent = 'var(--color-sage)';
+    accent = 'var(--ink-2)';
     heading = "You've completed the full certification ladder";
     body = 'AiBI-Foundation · AiBI-S · AiBI-L earned. You are now equipped to lead AI transformation across your institution.';
     href = '/education';
     cta = 'View education';
   } else if (hasP && hasS) {
-    accent = 'var(--color-sage)';
+    accent = 'var(--ink-2)';
     heading = 'Lead the transformation — AiBI-L workshop';
     body = 'You have built personal and departmental AI capability. The Leader workshop gives you the strategic tools to drive institution-wide change.';
     href = '/coming-soon?interest=leader';
@@ -372,7 +372,7 @@ function NextStepBanner({ enrollments }: { enrollments: readonly MockEnrollment[
     const roleLabel = sEnrollment?.role_track
       ? roleTrackLabel(sEnrollment.role_track)
       : 'your role';
-    accent = 'var(--color-cobalt)';
+    accent = 'var(--ink-2)';
     heading = `Ready for AiBI-S? Your ${roleLabel} track is waiting.`;
     body = 'You have demonstrated personal AI proficiency. The Specialist level expands that capability across your entire department.';
     href = '/coming-soon?interest=specialist';
@@ -447,7 +447,7 @@ export default function ProgressionPage() {
 
         {/* Header */}
         <header className="mb-12">
-          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
+          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
             <Link href="/dashboard" className="hover:opacity-70 transition-opacity">Dashboard</Link>
             <span className="mx-2 text-[color:var(--color-ink)]/30">/</span>
             Certification Journey
@@ -480,7 +480,7 @@ export default function ProgressionPage() {
                       style={{
                         backgroundColor:
                           getStatus(CERT_LEVELS[idx + 1].code) !== 'locked'
-                            ? 'var(--color-terra)'
+                            ? 'var(--gold)'
                             : 'var(--color-ink)',
                         opacity: getStatus(CERT_LEVELS[idx + 1].code) !== 'locked' ? 0.4 : 0.1,
                       }}
@@ -501,22 +501,22 @@ export default function ProgressionPage() {
             <MetricTile
               value={metrics.skillsBuilt}
               label="Skills built"
-              accent="var(--color-terra)"
+              accent="var(--gold)"
             />
             <MetricTile
               value={metrics.hoursSavedPerYear}
               label="Hours saved / yr"
-              accent="var(--color-cobalt)"
+              accent="var(--ink-2)"
             />
             <MetricTile
               value={metrics.workflowsAutomated}
               label="Workflows automated"
-              accent="var(--color-sage)"
+              accent="var(--ink-2)"
             />
             <MetricTile
               value={metrics.quickWinsLogged}
               label="Quick wins logged"
-              accent="var(--color-terra)"
+              accent="var(--gold)"
             />
           </div>
         </section>
@@ -573,7 +573,7 @@ export default function ProgressionPage() {
                     className="w-12 rounded-t-[2px]"
                     style={{
                       height: `${Math.round((assessmentScore / assessmentMax) * 100)}%`,
-                      backgroundColor: 'var(--color-terra)',
+                      backgroundColor: 'var(--gold)',
                     }}
                   />
                   <span className="font-mono text-[10px] tabular-nums text-[color:var(--color-slate)]">
@@ -586,7 +586,7 @@ export default function ProgressionPage() {
                 <p className="font-serif text-lg text-[color:var(--color-ink)]">
                   Current readiness score
                 </p>
-                <p className="font-mono text-2xl tabular-nums text-[color:var(--color-terra)]">
+                <p className="font-mono text-2xl tabular-nums text-[color:var(--gold)]">
                   {assessmentScore}
                   <span className="text-sm text-[color:var(--color-slate)] ml-1">/ {assessmentMax}</span>
                 </p>
@@ -599,7 +599,7 @@ export default function ProgressionPage() {
               <div className="mt-4">
                 <Link
                   href="/assessment/start"
-                  className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] border-b border-[color:var(--color-terra)] pb-0.5 hover:opacity-70 transition-opacity"
+                  className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--gold)] border-b border-[color:var(--gold)] pb-0.5 hover:opacity-70 transition-opacity"
                 >
                   Retake assessment
                 </Link>
@@ -612,7 +612,7 @@ export default function ProgressionPage() {
         {assessmentScore === null && !isDev && (
           <section className="mb-10">
             <div className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-8 text-center">
-              <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
+              <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
                 Readiness score
               </p>
               <p className="text-sm text-[color:var(--color-slate)] leading-relaxed mb-4 max-w-md mx-auto">
@@ -620,7 +620,7 @@ export default function ProgressionPage() {
               </p>
               <Link
                 href="/assessment/start"
-                className="inline-block px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
+                className="inline-block px-6 py-3 bg-[color:var(--gold)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] active:scale-[0.98] transition-all"
               >
                 Take the free assessment
               </Link>

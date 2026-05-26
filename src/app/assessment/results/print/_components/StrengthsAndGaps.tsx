@@ -31,7 +31,7 @@ function rankDimensions(
 
 function bandColor(pct: number): string {
   if (pct < 0.5) return 'var(--color-error)';
-  if (pct < 0.75) return 'var(--color-terra)';
+  if (pct < 0.75) return 'var(--gold)';
   return 'var(--color-ink)';
 }
 

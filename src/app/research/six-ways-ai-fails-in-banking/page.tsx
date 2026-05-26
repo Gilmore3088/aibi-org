@@ -51,7 +51,7 @@ export default function SixWaysAIFailsArticle() {
     <main className="px-6 py-14 md:py-20">
       <article className="max-w-3xl mx-auto">
         <header className="mb-12">
-          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-4">
+          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--gold)] mb-4">
             Risk &amp; Governance &middot; April 2026
           </p>
           <h1 className="font-serif text-5xl md:text-6xl text-[color:var(--color-ink)] leading-[1.05] mb-6">
@@ -314,7 +314,7 @@ export default function SixWaysAIFailsArticle() {
               key={p.number}
               className="border border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)] p-6"
             >
-              <dt className="font-mono text-4xl md:text-5xl text-[color:var(--color-terra)] leading-none tabular-nums">
+              <dt className="font-mono text-4xl md:text-5xl text-[color:var(--gold)] leading-none tabular-nums">
                 {p.number}
               </dt>
               <dd className="font-serif text-lg text-[color:var(--color-ink)] mt-2 mb-3 leading-snug">
@@ -362,7 +362,7 @@ export default function SixWaysAIFailsArticle() {
         </section>
 
         <aside className="mt-16 bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-8 md:p-10 text-center">
-          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
+          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
             AiBI-Foundation Certification
           </p>
           <h3 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] mb-4">
@@ -376,7 +376,7 @@ export default function SixWaysAIFailsArticle() {
           </p>
           <Link
             href="/education"
-            className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
+            className="inline-block px-8 py-4 bg-[color:var(--gold)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] active:scale-[0.98] transition-all"
           >
             View the AiBI-Foundation Certification
           </Link>

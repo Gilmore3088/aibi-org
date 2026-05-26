@@ -24,7 +24,7 @@ function getStepsForTier(tierId: Tier['id']): readonly NextStep[] {
             'Forty-eight questions across eight readiness dimensions. A consulting-grade report with peer-band comparison and a starting playbook keyed to your lowest-scoring areas.',
           href: '/assessment/in-depth',
           cta: 'See the In-Depth Assessment',
-          accent: 'var(--color-cobalt)',
+          accent: 'var(--ink-2)',
           primary: true,
         },
         {
@@ -34,7 +34,7 @@ function getStepsForTier(tierId: Tier['id']): readonly NextStep[] {
             'Twelve self-paced modules that build hands-on AI proficiency for every staff member. Lifetime access to modules, artifacts, and the prompt library. Earn the AiBI-Foundation credential on reviewed work.',
           href: '/courses/foundation/program',
           cta: 'Explore AiBI-Foundation',
-          accent: 'var(--color-terra)',
+          accent: 'var(--gold)',
         },
       ];
 
@@ -47,7 +47,7 @@ function getStepsForTier(tierId: Tier['id']): readonly NextStep[] {
             'Forty-eight questions across eight readiness dimensions. Diagnose where momentum is real and where you are still relying on heroics — with an anonymized rollup if your team takes it too.',
           href: '/assessment/in-depth',
           cta: 'See the In-Depth Assessment',
-          accent: 'var(--color-cobalt)',
+          accent: 'var(--ink-2)',
           primary: true,
         },
         {
@@ -57,7 +57,7 @@ function getStepsForTier(tierId: Tier['id']): readonly NextStep[] {
             'Give your early adopters governed, repeatable AI skills. Twelve self-paced modules with practice reps and artifacts. Lifetime access. AiBI-Foundation credential on reviewed work.',
           href: '/courses/foundation/program',
           cta: 'Explore AiBI-Foundation',
-          accent: 'var(--color-terra)',
+          accent: 'var(--gold)',
         },
       ];
 
@@ -70,7 +70,7 @@ function getStepsForTier(tierId: Tier['id']): readonly NextStep[] {
             'You have traction. AiBI-S will focus on workflow automation, agents, internal AI systems, and team-level rollout after Foundation is validated.',
           href: '/coming-soon?interest=specialist',
           cta: 'Join AiBI-S Waitlist',
-          accent: 'var(--color-cobalt)',
+          accent: 'var(--ink-2)',
           primary: true,
         },
         {
@@ -80,7 +80,7 @@ function getStepsForTier(tierId: Tier['id']): readonly NextStep[] {
             'Five to 25 managers from one institution go through the Specialist track together. Shared kickoff, group reporting, and team pricing. Leave with a prioritized automation roadmap your team owns.',
           href: '/for-institutions',
           cta: 'See enrollment options',
-          accent: 'var(--color-terra)',
+          accent: 'var(--gold)',
         },
       ];
 
@@ -93,7 +93,7 @@ function getStepsForTier(tierId: Tier['id']): readonly NextStep[] {
             'AiBI-L will focus on executive confidence, governance, rollout, and institution-level AI leadership after the Foundation loop is validated.',
           href: '/coming-soon?interest=leader',
           cta: 'Join AiBI-L Waitlist',
-          accent: 'var(--color-sage)',
+          accent: 'var(--ink-2)',
           primary: true,
         },
         {
@@ -103,7 +103,7 @@ function getStepsForTier(tierId: Tier['id']): readonly NextStep[] {
             'A recurring cohort cadence — Foundation, Specialist, and Leader — scheduled so every banker, new or tenured, has a path to proficiency. Leadership Advisory available alongside for your AI leader.',
           href: '/for-institutions',
           cta: 'See enrollment options',
-          accent: 'var(--color-terra)',
+          accent: 'var(--gold)',
         },
       ];
   }
@@ -126,7 +126,7 @@ export function NextStepCards({ tierId }: NextStepCardsProps) {
         {steps.map((step) => (
           <article
             key={step.title}
-            className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-6 md:p-8 flex flex-col hover:border-[color:var(--color-terra)]/30 transition-all duration-200"
+            className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-6 md:p-8 flex flex-col hover:border-[color:var(--gold)]/30 transition-all duration-200"
           >
             <p
               className="font-serif-sc text-[11px] uppercase tracking-[0.2em] mb-4"
@@ -148,8 +148,8 @@ export function NextStepCards({ tierId }: NextStepCardsProps) {
                 className={
                   'block text-center px-6 py-3 font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] transition-colors ' +
                   (step.primary
-                    ? 'bg-[color:var(--color-terra)] text-[color:var(--color-linen)] hover:bg-[color:var(--color-terra-light)]'
-                    : 'border border-[color:var(--color-ink)]/30 text-[color:var(--color-ink)] hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)]')
+                    ? 'bg-[color:var(--gold)] text-[color:var(--color-linen)] hover:bg-[color:var(--gold-2)]'
+                    : 'border border-[color:var(--color-ink)]/30 text-[color:var(--color-ink)] hover:border-[color:var(--gold)] hover:text-[color:var(--gold)]')
                 }
               >
                 {step.cta}
@@ -160,8 +160,8 @@ export function NextStepCards({ tierId }: NextStepCardsProps) {
                 className={
                   'block text-center px-6 py-3 font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] transition-colors ' +
                   (step.primary
-                    ? 'bg-[color:var(--color-terra)] text-[color:var(--color-linen)] hover:bg-[color:var(--color-terra-light)]'
-                    : 'border border-[color:var(--color-ink)]/30 text-[color:var(--color-ink)] hover:border-[color:var(--color-terra)] hover:text-[color:var(--color-terra)]')
+                    ? 'bg-[color:var(--gold)] text-[color:var(--color-linen)] hover:bg-[color:var(--gold-2)]'
+                    : 'border border-[color:var(--color-ink)]/30 text-[color:var(--color-ink)] hover:border-[color:var(--gold)] hover:text-[color:var(--gold)]')
                 }
               >
                 {step.cta}
@@ -175,13 +175,13 @@ export function NextStepCards({ tierId }: NextStepCardsProps) {
       <div className="flex flex-wrap items-center justify-center gap-4 mt-8">
         <Link
           href="/education"
-          className="py-2 px-1 font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-terra)] border-b border-[color:var(--color-terra)] hover:opacity-70 transition-opacity"
+          className="py-2 px-1 font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--gold)] border-b border-[color:var(--gold)] hover:opacity-70 transition-opacity"
         >
           Browse education
         </Link>
         <Link
           href="/dashboard"
-          className="py-2 px-1 font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/60 border-b border-[color:var(--color-ink)]/20 hover:text-[color:var(--color-terra)] hover:border-[color:var(--color-terra)] transition-colors"
+          className="py-2 px-1 font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/60 border-b border-[color:var(--color-ink)]/20 hover:text-[color:var(--gold)] hover:border-[color:var(--gold)] transition-colors"
         >
           Go to your dashboard
         </Link>

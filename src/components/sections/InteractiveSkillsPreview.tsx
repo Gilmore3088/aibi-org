@@ -104,7 +104,7 @@ export function InteractiveSkillsPreview({
         {/* Section header */}
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-s6 mb-s10">
           <div className="max-w-narrow">
-            <p className="font-serif-sc text-label-md uppercase tracking-widest text-terra mb-s4">
+            <p className="font-serif-sc text-label-md uppercase tracking-widest text-gold mb-s4">
               {eyebrow}
             </p>
             <h2 className="font-serif text-display-md md:text-display-lg text-ink leading-tight">
@@ -116,7 +116,7 @@ export function InteractiveSkillsPreview({
           </div>
           <Link
             href="/courses/foundation/program"
-            className="inline-flex w-fit items-center font-serif-sc text-mono-sm uppercase tracking-widest text-terra border-b border-terra pb-[2px] hover:text-terra-light hover:border-terra-light transition-colors"
+            className="inline-flex w-fit items-center font-serif-sc text-mono-sm uppercase tracking-widest text-gold border-b border-gold pb-[2px] hover:text-gold-2 hover:border-gold-2 transition-colors"
           >
             View the curriculum →
           </Link>
@@ -140,7 +140,7 @@ export function InteractiveSkillsPreview({
                 >
                   <span
                     aria-hidden="true"
-                    className="font-mono text-mono-sm tabular-nums pt-s1 text-ink/30 group-open:text-terra transition-colors"
+                    className="font-mono text-mono-sm tabular-nums pt-s1 text-ink/30 group-open:text-gold transition-colors"
                   >
                     {String(index + 1).padStart(2, '0')}
                   </span>
@@ -154,7 +154,7 @@ export function InteractiveSkillsPreview({
                   </span>
                   <span
                     aria-hidden="true"
-                    className="font-mono text-mono-md text-ink/40 group-open:text-terra pt-s1 transition-transform duration-medium group-open:rotate-90"
+                    className="font-mono text-mono-md text-ink/40 group-open:text-gold pt-s1 transition-transform duration-medium group-open:rotate-90"
                   >
                     ›
                   </span>
@@ -186,7 +186,7 @@ export function InteractiveSkillsPreview({
                   {isActive && (
                     <span
                       aria-hidden="true"
-                      className="pointer-events-none absolute inset-x-0 -inset-y-px border border-terra"
+                      className="pointer-events-none absolute inset-x-0 -inset-y-px border border-gold"
                     />
                   )}
                   <button
@@ -202,7 +202,7 @@ export function InteractiveSkillsPreview({
                     <span
                       aria-hidden="true"
                       className={`font-mono text-mono-sm tabular-nums pt-s1 transition-colors ${
-                        isActive ? 'text-terra' : 'text-ink/30'
+                        isActive ? 'text-gold' : 'text-ink/30'
                       }`}
                     >
                       {String(index + 1).padStart(2, '0')}
@@ -260,7 +260,7 @@ function PlatformsPanel() {
   return (
     <article className="bg-parch border border-hairline">
       <header className="px-s5 md:px-s6 py-s4 border-b border-hairline">
-        <p className="font-serif-sc text-label-sm uppercase tracking-widest text-terra">
+        <p className="font-serif-sc text-label-sm uppercase tracking-widest text-gold">
           Platforms we teach
         </p>
       </header>
@@ -270,7 +270,7 @@ function PlatformsPanel() {
             key={group.category}
             className="grid grid-cols-1 gap-s2 sm:grid-cols-[7rem_1fr] sm:gap-s5 sm:items-baseline px-s5 md:px-s6 py-s4"
           >
-            <dt className="font-mono text-label-md uppercase tracking-widest text-terra">
+            <dt className="font-mono text-label-md uppercase tracking-widest text-gold">
               {group.label}
             </dt>
             <dd className="font-serif text-body-lg text-ink leading-snug">
@@ -310,7 +310,7 @@ function SkillsPanel() {
   return (
     <article className="bg-parch border border-hairline">
       <header className="px-s5 md:px-s6 py-s4 border-b border-hairline">
-        <p className="font-serif-sc text-label-sm uppercase tracking-widest text-terra">
+        <p className="font-serif-sc text-label-sm uppercase tracking-widest text-gold">
           Flagship Skills
         </p>
       </header>
@@ -320,7 +320,7 @@ function SkillsPanel() {
             key={group.dept}
             className="grid grid-cols-1 gap-s2 sm:grid-cols-[6rem_1fr] sm:gap-s5 px-s5 md:px-s6 py-s4"
           >
-            <dt className="font-mono text-label-md uppercase tracking-widest text-terra pt-s1">
+            <dt className="font-mono text-label-md uppercase tracking-widest text-gold pt-s1">
               {group.dept}
             </dt>
             <dd>
@@ -359,7 +359,7 @@ function AgentsPanel() {
   return (
     <article className="bg-parch border border-hairline">
       <header className="px-s5 md:px-s6 py-s4 border-b border-hairline">
-        <p className="font-serif-sc text-label-sm uppercase tracking-widest text-terra">
+        <p className="font-serif-sc text-label-sm uppercase tracking-widest text-gold">
           Flagship Agents
         </p>
       </header>
@@ -369,7 +369,7 @@ function AgentsPanel() {
             key={group.dept}
             className="grid grid-cols-1 gap-s2 sm:grid-cols-[6rem_1fr] sm:gap-s5 px-s5 md:px-s6 py-s4"
           >
-            <dt className="font-mono text-label-md uppercase tracking-widest text-terra pt-s1">
+            <dt className="font-mono text-label-md uppercase tracking-widest text-gold pt-s1">
               {group.dept}
             </dt>
             <dd>
@@ -409,7 +409,7 @@ function PromptsPanel() {
   return (
     <article className="bg-parch border border-hairline">
       <header className="px-s5 md:px-s6 py-s4 border-b border-hairline">
-        <p className="font-serif-sc text-label-sm uppercase tracking-widest text-terra">
+        <p className="font-serif-sc text-label-sm uppercase tracking-widest text-gold">
           Flagship Prompts
         </p>
       </header>
@@ -419,7 +419,7 @@ function PromptsPanel() {
             key={group.role}
             className="grid grid-cols-1 gap-s2 sm:grid-cols-[6rem_1fr] sm:gap-s5 px-s5 md:px-s6 py-s4"
           >
-            <dt className="font-mono text-label-md uppercase tracking-widest text-terra pt-s1">
+            <dt className="font-mono text-label-md uppercase tracking-widest text-gold pt-s1">
               {group.role}
             </dt>
             <dd>

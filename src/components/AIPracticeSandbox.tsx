@@ -182,7 +182,7 @@ export function AIPracticeSandbox({
   moduleId,
   product,
   sandboxConfig,
-  accentColor = 'var(--color-terra)',
+  accentColor = 'var(--gold)',
 }: AIPracticeSandboxProps) {
   const [messages, setMessages] = useState<SandboxMessage[]>([]);
   const [input, setInput] = useState('');
@@ -611,7 +611,7 @@ export function AIPracticeSandbox({
                         <button
                           type="button"
                           onClick={() => handleCopy(msg.content, idx)}
-                          className="font-mono text-[9px] uppercase tracking-[1.2px] text-[color:var(--color-slate)] hover:text-[color:var(--color-terra)] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)] focus:ring-offset-1 rounded-[2px]"
+                          className="font-mono text-[9px] uppercase tracking-[1.2px] text-[color:var(--color-slate)] hover:text-[color:var(--gold)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:ring-offset-1 rounded-[2px]"
                           aria-label={copiedIdx === idx ? 'Copied to clipboard' : 'Copy response to clipboard'}
                         >
                           {copiedIdx === idx ? 'Copied' : 'Copy'}

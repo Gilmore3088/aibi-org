@@ -69,9 +69,9 @@ export function RadarChart({ scores, size = 280 }: RadarChartProps) {
       {/* Data polygon */}
       <polygon
         points={polygonPoints((i) => (scores[i].pct / 100) * radius)}
-        fill="var(--color-terra)"
+        fill="var(--gold)"
         fillOpacity={0.15}
-        stroke="var(--color-terra)"
+        stroke="var(--gold)"
         strokeWidth={2}
       />
 
@@ -85,7 +85,7 @@ export function RadarChart({ scores, size = 280 }: RadarChartProps) {
             cx={x}
             cy={y}
             r={4}
-            fill="var(--color-terra)"
+            fill="var(--gold)"
           />
         );
       })}

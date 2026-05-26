@@ -34,7 +34,7 @@ export function EditorialQuote({
 }: EditorialQuoteProps) {
   const isDark = variant === "dark";
   const bg = isDark ? "bg-ink text-bone" : "bg-transparent text-ink";
-  const accent = isDark ? "text-cream" : "text-terra";
+  const accent = isDark ? "text-cream" : "text-gold";
   const attrColor = isDark ? "text-cream" : "text-slate";
   const sizeClass = size === "lg" ? "text-display-xs md:text-display-sm" : "text-body-lg";
 
