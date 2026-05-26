@@ -68,7 +68,7 @@ const DOWNLOADS: { title: string; desc: string; href: string; meta: string }[] =
   },
   {
     title: 'Platform feature reference card',
-    desc: 'Quick reference for AiBI capabilities, assessment dimensions, and credential paths.',
+    desc: "Quick reference for the Institute's capabilities, assessment dimensions, and credential paths.",
     href: '/artifacts/platform-feature-reference-card.pdf',
     meta: 'PDF · 1 page',
   },
