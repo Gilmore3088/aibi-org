@@ -117,10 +117,12 @@ export default function ForInstitutionsPage() {
             <EyebrowChip icon={<BuildingIcon className="mk-ic" />}>
               Institutions & Teams · For community banks & credit unions
             </EyebrowChip>
-            <h1>Use assessment data to focus training where it matters.</h1>
+            <h1>Capability — not a platform.</h1>
             <p className="mk-lede">
-              For banks and credit unions that want adoption, governance alignment, and capability
-              building — not a sprawling AI policy doc that no one reads.
+              An education engagement for community banks and credit unions.
+              <strong> No software seats. No vendor lock-in.</strong> Three ways to bring
+              capability into your bank: a coached cohort, an institution-wide rollout, or
+              leadership advisory.
             </p>
             <div className="mk-ctas">
               <Button variant="gold" size="lg" href="/briefing-preview">
@@ -194,6 +196,156 @@ export default function ForInstitutionsPage() {
           </div>
         </div>
       </section>
+
+      {/* THREE WAYS TO BUILD — restored from main */}
+      <Section variant="std" surface="white">
+        <SectionHead
+          kicker="Engagement"
+          heading={<>Three ways to build.</>}
+          lede={
+            <>
+              Free diagnostic, per-banker enrollment, or institution-wide rollout. Each
+              ends with reviewed work product — not a policy doc nobody reads.
+            </>
+          }
+        />
+        <div
+          style={{
+            display: 'grid',
+            gap: 20,
+            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+            marginTop: 32,
+          }}
+        >
+          {[
+            {
+              scale: 'Free · diagnostic',
+              name: 'Readiness Assessment',
+              tagline: 'Twelve questions, three minutes — see where you stand.',
+              included: [
+                'Your readiness score and tier',
+                'The dimension dragging you down',
+                'A starter artifact you can take to your team this week',
+              ],
+              ctaHref: '/assessment',
+              ctaLabel: 'Begin the assessment',
+              ctaVariant: 'ink' as const,
+            },
+            {
+              scale: 'Per-banker',
+              name: 'AiBI-Foundation course',
+              tagline: 'Self-paced, scored on reviewed work.',
+              included: [
+                'Twelve self-paced modules',
+                'Three reviewed AI artifacts per practitioner',
+                '$295 individual · $199/seat at 10+ · lifetime access',
+              ],
+              ctaHref: '/courses/foundation/program',
+              ctaLabel: 'View the curriculum',
+              ctaVariant: 'ink' as const,
+            },
+            {
+              scale: 'Institution-wide',
+              name: 'Organizational Rollout',
+              tagline:
+                'A coached cohort, an aggregate dashboard, a defensible posture.',
+              included: [
+                '10-seat coached cohort over eight weeks',
+                'Institutional readiness baseline + post-engagement diagnostic',
+                'Aggregate dashboard for your champion',
+              ],
+              ctaHref: '/briefing-preview',
+              ctaLabel: 'Request a pilot',
+              ctaVariant: 'gold' as const,
+            },
+          ].map((tier) => (
+            <article
+              key={tier.name}
+              style={{
+                background: 'var(--cream)',
+                border: '1px solid var(--ink-a10)',
+                borderRadius: 16,
+                padding: 28,
+                display: 'flex',
+                flexDirection: 'column',
+              }}
+            >
+              <p
+                style={{
+                  fontSize: 12,
+                  fontWeight: 700,
+                  letterSpacing: '0.18em',
+                  textTransform: 'uppercase',
+                  color: 'var(--gold-deep)',
+                  margin: '0 0 12px',
+                }}
+              >
+                {tier.scale}
+              </p>
+              <h3
+                style={{
+                  fontSize: 24,
+                  fontWeight: 600,
+                  lineHeight: 1.2,
+                  color: 'var(--ink)',
+                  margin: '0 0 8px',
+                }}
+              >
+                {tier.name}
+              </h3>
+              <p
+                style={{
+                  fontSize: 15,
+                  lineHeight: 1.55,
+                  color: 'var(--slate-600)',
+                  margin: '0 0 16px',
+                }}
+              >
+                {tier.tagline}
+              </p>
+              <ul
+                style={{
+                  listStyle: 'none',
+                  padding: '16px 0',
+                  margin: '0 0 20px',
+                  borderTop: '1px solid var(--ink-a10)',
+                  borderBottom: '1px solid var(--ink-a10)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 8,
+                }}
+              >
+                {tier.included.map((item) => (
+                  <li
+                    key={item}
+                    style={{
+                      display: 'grid',
+                      gridTemplateColumns: '14px 1fr',
+                      gap: 10,
+                      fontSize: 14,
+                      lineHeight: 1.5,
+                      color: 'var(--ink)',
+                    }}
+                  >
+                    <span
+                      aria-hidden="true"
+                      style={{ color: 'var(--gold-deep)', fontWeight: 700 }}
+                    >
+                      —
+                    </span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <div style={{ marginTop: 'auto' }}>
+                <Button variant={tier.ctaVariant} size="md" href={tier.ctaHref}>
+                  {tier.ctaLabel}
+                </Button>
+              </div>
+            </article>
+          ))}
+        </div>
+      </Section>
 
       {/* 5-STEP CHAIN */}
       <Section variant="std">

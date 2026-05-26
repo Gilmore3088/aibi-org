@@ -1,10 +1,43 @@
 import type { Metadata } from 'next';
 import { MockupShell } from '@/components/mockup';
+import { PRINCIPLES } from '@content/copy';
 
 export const metadata: Metadata = {
   title: 'About — The AI Banking Institute',
-  description: 'Why we built The AI Banking Institute — and what we believe about AI in regulated finance.',
+  description:
+    'The AI Banking Institute exists for the community banks and credit unions that anchor towns and neighborhoods — not for the twenty largest banks. Here is why.',
   alternates: { canonical: '/about' },
+};
+
+const COL_STYLE: React.CSSProperties = {
+  background: '#fff',
+  border: '1px solid var(--ink-a10)',
+  borderRadius: 16,
+  padding: 28,
+};
+
+const KICKER: React.CSSProperties = {
+  fontSize: 12,
+  fontWeight: 700,
+  letterSpacing: '0.18em',
+  textTransform: 'uppercase',
+  color: 'var(--gold-deep)',
+  margin: '0 0 12px',
+};
+
+const HEADING: React.CSSProperties = {
+  fontSize: 22,
+  fontWeight: 600,
+  lineHeight: 1.25,
+  color: 'var(--ink)',
+  margin: '0 0 12px',
+};
+
+const BODY: React.CSSProperties = {
+  fontSize: 15,
+  lineHeight: 1.6,
+  color: 'var(--slate-600)',
+  margin: 0,
 };
 
 export default function AboutPage() {
@@ -12,32 +45,185 @@ export default function AboutPage() {
     <MockupShell
       activePath="/about"
       eyebrow="About · The AI Banking Institute"
-      title={<>Built by bankers, for bankers.</>}
-      lede="We started The AI Banking Institute because the AI training community banks were being sold did not survive contact with an exam, a board meeting, or a teller line."
+      title={
+        <>
+          For the community banks and credit unions that{' '}
+          <span style={{ color: 'var(--gold-soft)' }}>anchor towns</span> — not
+          the twenty largest banks.
+        </>
+      }
+      lede={
+        <>
+          Built on regulator-aligned criteria. Tuition published. Methodology
+          published. We started The AI Banking Institute because the AI
+          training community banks were being sold did not survive contact
+          with an exam, a board meeting, or a teller line.
+        </>
+      }
       heroActions={[
-        { label: 'Take the Assessment', href: '/assessment', variant: 'gold' },
-        { label: 'Book a Briefing', href: '/briefing-preview', variant: 'ghost-dark' },
+        { label: 'Take the assessment', href: '/assessment', variant: 'gold' },
+        { label: 'Book a briefing', href: '/briefing-preview', variant: 'ghost-dark' },
       ]}
+      heroAside={
+        <aside
+          style={{
+            background: 'rgba(255,255,255,0.06)',
+            border: '1px solid rgba(255,255,255,0.18)',
+            borderRadius: 24,
+            padding: 32,
+            color: '#fff',
+            textAlign: 'center',
+          }}
+        >
+          <p
+            style={{
+              ...KICKER,
+              color: 'var(--gold-soft)',
+              textAlign: 'center',
+              margin: '0 0 16px',
+            }}
+          >
+            Who we serve
+          </p>
+          <p
+            style={{
+              fontSize: 'clamp(56px, 9vw, 96px)',
+              fontWeight: 700,
+              lineHeight: 1,
+              fontVariantNumeric: 'tabular-nums',
+              margin: '0 0 12px',
+              color: '#fff',
+              letterSpacing: '-0.02em',
+            }}
+          >
+            8,400
+          </p>
+          <p
+            style={{
+              fontSize: 14,
+              fontWeight: 600,
+              letterSpacing: '0.06em',
+              color: 'rgba(255,255,255,0.92)',
+              margin: '0 0 6px',
+            }}
+          >
+            Community banks &amp; credit unions
+          </p>
+          <p
+            style={{
+              fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
+              fontSize: 12,
+              letterSpacing: '0.1em',
+              textTransform: 'uppercase',
+              color: 'rgba(255,255,255,0.6)',
+              margin: 0,
+            }}
+          >
+            FDIC + NCUA · 2025
+          </p>
+        </aside>
+      }
       sections={[
         {
-          kicker: 'What we believe',
-          heading: <>AI is most valuable when it is reviewed.</>,
-          lede: <>The fastest path to safe adoption is not a longer policy doc — it is documented, reviewed workflows that pass an exam on the merits.</>,
+          kicker: 'Mission',
+          heading: <>For the institutions that anchor towns.</>,
+          lede: (
+            <>
+              We turn bankers into builders. Not efficiency ratios, though we
+              improve those. Not compliance readiness, though we build that
+              too. Those are the outcomes. The mission is something more
+              human: giving people who care deeply about their work a new set
+              of tools and watching what they build with them.
+            </>
+          ),
+          body: (
+            <div
+              style={{
+                display: 'grid',
+                gap: 20,
+                gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+                marginTop: 32,
+              }}
+            >
+              <div style={COL_STYLE}>
+                <p style={KICKER}>Not for</p>
+                <h3 style={HEADING}>The twenty largest banks.</h3>
+                <p style={BODY}>
+                  They have the budgets, the teams, the consultants.
+                </p>
+              </div>
+              <div style={COL_STYLE}>
+                <p style={KICKER}>Built for</p>
+                <h3 style={HEADING}>The institutions that anchor towns.</h3>
+                <p style={BODY}>
+                  Community banks and credit unions with passion, knowledge,
+                  and relationships no technology can replicate.
+                </p>
+              </div>
+              <div style={COL_STYLE}>
+                <p style={KICKER}>What we built</p>
+                <h3 style={HEADING}>A framework that puts AI in their hands.</h3>
+                <p style={BODY}>
+                  Not the vendor&rsquo;s. Not a hired expert&rsquo;s. Theirs.
+                </p>
+              </div>
+            </div>
+          ),
         },
         {
           kicker: 'How we work',
-          heading: <>Education-first. Implementation as the optional second act.</>,
-          lede: <>Most institutions do not need a fractional CAIO. They need a curriculum their staff can finish, a sandbox they can practice in, and a toolbox of artifacts they can ship. We sell that. The advisory layer is for cohorts that need it.</>,
+          heading: <>Six principles, applied without exception.</>,
+          lede: <>Internal rules, made public.</>,
           surface: 'white',
+          body: (
+            <div
+              style={{
+                display: 'grid',
+                gap: 24,
+                gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+                marginTop: 32,
+              }}
+            >
+              {PRINCIPLES.map((p) => (
+                <article
+                  key={p.number}
+                  style={{
+                    background: 'var(--cream)',
+                    border: '1px solid var(--ink-a10)',
+                    borderRadius: 16,
+                    padding: 28,
+                  }}
+                >
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'baseline',
+                      marginBottom: 16,
+                    }}
+                  >
+                    <p style={{ ...KICKER, margin: 0 }}>{p.number}</p>
+                  </div>
+                  <h3 style={HEADING}>{p.title}</h3>
+                  <p style={BODY}>{p.body}</p>
+                </article>
+              ))}
+            </div>
+          ),
         },
       ]}
       ctaBand={{
         kicker: 'The AI Banking Institute',
         heading: <>Start with the readiness assessment. Or book a briefing.</>,
-        body: <>Three minutes, zero commitment. The institutions that win with AI are the ones whose staff can use it safely Monday.</>,
+        body: (
+          <>
+            Three minutes, zero commitment. The institutions that win with AI
+            are the ones whose staff can use it safely Monday.
+          </>
+        ),
         actions: [
-          { label: 'Start Free Assessment', href: '/assessment', variant: 'gold' },
-          { label: 'Book Briefing', href: '/briefing-preview', variant: 'ghost-dark' },
+          { label: 'Take the assessment', href: '/assessment', variant: 'gold' },
+          { label: 'Book a briefing', href: '/briefing-preview', variant: 'ghost-dark' },
         ],
       }}
     />
