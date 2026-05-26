@@ -1,0 +1,371 @@
+/* Mockup design system — shared component CSS.
+ *
+ * Extracted from public/sketches/_mockup.css + the inline <style>
+ * blocks in public/sketches/mockup.html. Companion to tokens-mockup.css.
+ *
+ * Class-based to keep React ports byte-for-byte identical to the source
+ * sketches. Imported once via globals.css. Components in
+ * src/components/mockup/ reference these class names directly.
+ *
+ * Source of truth lives in the sketches — when a sketch diverges, this
+ * file should be updated to match, not the other way around.
+ */
+
+/* ============================================================
+   Body / type baseline
+   ============================================================ */
+
+body.mockup,
+.mockup-scope {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--font-inter), "Inter", ui-sans-serif, system-ui,
+    -apple-system, "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+.mockup-scope a { color: inherit; }
+.mockup-scope button { font-family: inherit; }
+
+/* ============================================================
+   Layout primitives
+   ============================================================ */
+
+.mk-container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--container-pad);
+}
+
+section.mk-std { padding: 56px 0; }
+
+.mk-section-head { margin-bottom: 32px; }
+.mk-section-head .k {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+}
+.mk-section-head h2 {
+  font-size: clamp(28px, 3.4vw, 44px);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+  margin: 8px 0 0;
+}
+.mk-section-head p {
+  color: var(--slate-600);
+  margin: 16px 0 0;
+  max-width: 60ch;
+}
+
+/* ============================================================
+   Header / chrome
+   ============================================================ */
+
+.mk-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  border-bottom: 1px solid var(--ink-a10);
+  background: rgba(247, 243, 234, 0.92);
+  backdrop-filter: saturate(180%) blur(14px);
+}
+.mk-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 0;
+  gap: 24px;
+}
+.mk-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+  text-decoration: none;
+}
+.mk-brand .mk-seal {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--r-md);
+  background: var(--ink);
+  color: var(--gold);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  flex: none;
+}
+.mk-brand .mk-wm-1 {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  line-height: 1;
+}
+.mk-brand .mk-wm-2 {
+  font-size: 12px;
+  color: var(--slate-500);
+  margin-top: 2px;
+  line-height: 1.1;
+}
+
+.mk-nav {
+  display: none;
+  gap: 4px;
+  padding: 4px;
+  background: #fff;
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-soft);
+}
+@media (min-width: 1180px) {
+  .mk-nav { display: inline-flex; }
+}
+.mk-nav a {
+  padding: 8px 16px;
+  border: 0;
+  background: transparent;
+  border-radius: var(--r-md);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--slate-600);
+  text-decoration: none;
+  transition: background var(--t-fast);
+}
+.mk-nav a:hover { background: var(--cream); }
+.mk-nav a.is-active {
+  background: var(--ink);
+  color: #fff;
+}
+
+.mk-nav-mobile {
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  margin: 0 0 16px;
+  background: #fff;
+  border-radius: var(--r-lg);
+  overflow-x: auto;
+  box-shadow: var(--shadow-soft);
+}
+@media (min-width: 1180px) {
+  .mk-nav-mobile { display: none; }
+}
+.mk-nav-mobile a {
+  flex: none;
+  padding: 8px 16px;
+  border: 0;
+  background: transparent;
+  border-radius: var(--r-md);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--slate-600);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.mk-nav-mobile a.is-active {
+  background: var(--ink);
+  color: #fff;
+}
+
+/* ============================================================
+   Buttons
+   ============================================================ */
+
+.mk-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: var(--r-md);
+  padding: 0 20px;
+  height: 40px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  text-decoration: none;
+  transition: background var(--t-fast), border-color var(--t-fast),
+    transform var(--t-fast);
+  font-family: inherit;
+}
+.mk-btn-gold { background: var(--gold); color: var(--ink); }
+.mk-btn-gold:hover { background: var(--gold-2); }
+.mk-btn-ink { background: var(--ink); color: #fff; }
+.mk-btn-ink:hover { background: var(--ink-2); }
+.mk-btn-ghost-dark {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  border-color: var(--on-dark-20);
+}
+.mk-btn-ghost-dark:hover { background: var(--on-dark-10); }
+.mk-btn-ghost-light {
+  background: #fff;
+  color: var(--ink);
+  border-color: var(--slate-200);
+}
+.mk-btn-ghost-light:hover { background: var(--slate-50); }
+.mk-btn-lg {
+  height: 48px;
+  padding: 0 24px;
+  font-size: 16px;
+  border-radius: var(--r-md);
+}
+
+/* Icon size helpers — used inside buttons + chips */
+.mk-ic { width: 16px; height: 16px; flex: none; }
+.mk-ic-lg { width: 20px; height: 20px; flex: none; }
+.mk-ic-xl { width: 24px; height: 24px; flex: none; }
+
+/* ============================================================
+   Cards + infoboxes
+   ============================================================ */
+
+.mk-card-white {
+  background: #fff;
+  border: 1px solid var(--ink-a10);
+  border-radius: var(--r-xl);
+  padding: 24px;
+  box-shadow: var(--shadow-card);
+}
+.mk-card-cream {
+  background: var(--cream);
+  border: 1px solid var(--ink-a10);
+  border-radius: var(--r-xl);
+  padding: 24px;
+}
+.mk-card-shadow { box-shadow: var(--shadow-feature); }
+
+.mk-infobox {
+  padding: 16px;
+  border-radius: var(--r-lg);
+  background: var(--cream);
+}
+.mk-infobox.mk-line {
+  background: transparent;
+  border: 1px solid var(--ink-a10);
+}
+.mk-infobox .mk-k {
+  color: var(--slate-500);
+  font-size: 14px;
+}
+.mk-infobox .mk-v {
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+/* Icon badges (ink+gold or gold+ink, 48×48) */
+.mk-icon-ink {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--r-md);
+  background: var(--ink);
+  color: var(--gold);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.mk-icon-gold {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--r-lg);
+  background: var(--gold);
+  color: var(--ink);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ============================================================
+   Eyebrow chip (used on hero, role cards, etc.)
+   ============================================================ */
+
+.mk-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--gold-a40);
+  background: var(--gold-a10);
+  color: var(--gold-soft);
+  font-size: 14px;
+}
+
+/* ============================================================
+   CTA band (dark section block on every page)
+   ============================================================ */
+
+.mk-cta {
+  background: var(--ink);
+  color: #fff;
+  padding: 64px 0;
+}
+.mk-cta-band {
+  display: grid;
+  gap: 32px;
+  grid-template-columns: 1fr;
+  padding: 32px;
+  border-radius: var(--r-3xl);
+  border: 1px solid rgba(200, 162, 74, 0.25);
+  background: rgba(255, 255, 255, 0.05);
+}
+@media (min-width: 720px) {
+  .mk-cta-band {
+    grid-template-columns: 0.65fr 0.35fr;
+    padding: 48px;
+  }
+}
+.mk-cta-band .mk-k {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold-soft);
+}
+.mk-cta-band h2 {
+  font-size: clamp(32px, 4.5vw, 60px);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin: 12px 0 0;
+  max-width: 16ch;
+}
+.mk-cta-band p {
+  color: var(--on-dark-65);
+  margin: 20px 0 0;
+  max-width: 36ch;
+}
+.mk-cta-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  justify-content: center;
+}
+
+/* ============================================================
+   Sketch ribbon (development only)
+   ============================================================ */
+
+.mk-ribbon {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  z-index: 1000;
+  background: var(--ink);
+  color: #fff;
+  padding: 10px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  border-radius: var(--r-sm);
+  box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.4);
+}
+.mk-ribbon span { color: var(--gold-soft); }

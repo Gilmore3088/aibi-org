@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { headers } from 'next/headers';
 import {
   Cormorant_SC,
+  Inter,
   Newsreader,
   JetBrains_Mono,
 } from 'next/font/google';
@@ -107,6 +108,17 @@ const jetbrainsMono = JetBrains_Mono({
   display: 'swap',
 });
 
+// Inter — primary mockup-system font (2026-05-26). Weights 400/500/600/700/800
+// cover every observed use in public/sketches/_mockup.css and the per-page
+// sketches. Exposed as --font-inter; mockup.css references it via the
+// "Inter" family-name fallback chain so a missing variable still resolves.
+const inter = Inter({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-inter',
+  display: 'swap',
+});
+
 // Apex `aibankinginstitute.com` 301s to `www.aibankinginstitute.com` at the
 // edge (Vercel + DNS), so the www subdomain is the canonical host. Default
 // to it explicitly here — the BRAND.domains.primary value is the apex used
@@ -190,7 +202,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
 
       <body
-        className={`${cormorantSC.variable} ${newsreaderHero.variable} ${newsreaderHeavy.variable} ${GeistSans.variable} ${jetbrainsMono.variable} flex flex-col min-h-screen`}
+        className={`${cormorantSC.variable} ${newsreaderHero.variable} ${newsreaderHeavy.variable} ${GeistSans.variable} ${jetbrainsMono.variable} ${inter.variable} flex flex-col min-h-screen`}
       >
         {!chromeless && (
           <a href="#main-content" className="skip-link">
