@@ -35,6 +35,7 @@ const CHROMELESS_PATHS: readonly string[] = [
   '/dashboard',
   '/courses/foundation/program',
   '/redesign-audit',
+  '/auth',
   '/about',
   '/faq',
   '/security',
