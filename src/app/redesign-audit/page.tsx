@@ -157,9 +157,11 @@ export default function RedesignAuditPage() {
                   { name: 'Phase 1 — library', pct: 100 },
                   { name: 'Phase 2 — page ports', pct: 100 },
                   { name: 'Phase 3+4 — gap pages', pct: 100 },
-                  { name: 'Phase 5a — dashboard', pct: 30 },
-                  { name: 'Phase 5b — LMS interior', pct: 20 },
-                  { name: 'Phase 6 — cleanup', pct: 15 },
+                  { name: 'Phase 5a — dashboard', pct: 70 },
+                  { name: 'Phase 5b — LMS interior', pct: 65 },
+                  { name: 'Phase 5c — auth surfaces', pct: 75 },
+                  { name: 'Phase 6 — token remap', pct: 80 },
+                  { name: 'Phase 6 — file deletion', pct: 0 },
                   { name: 'Push to remote', pct: 0 },
                 ].map((d) => (
                   <div key={d.name} className="mk-hdim">
