@@ -1,33 +1,38 @@
 /* Ledger primitives — shared CSS for the React components in this folder.
  *
+ * 2026-05-26 redesign sprint: scoped vars now read from the upstream
+ * --ledger-* tokens (defined in src/styles/tokens-ledger.css), which
+ * themselves resolve to mockup palette values. Net effect: every Ledger
+ * component renders with mockup colors + Inter font without rewriting
+ * the component markup. Surfaces port to native mockup components over
+ * time; this aliasing keeps the visual contract correct in the meantime.
+ *
  * Scoped under .ledger so every Ledger surface gets the unprefixed token
  * names (--ink, --paper, --terra, ...) without colliding with the legacy
  * --color-* token system in use elsewhere on the site. Pages that opt in
  * wrap their content in <LedgerSurface> (or .ledger directly).
- *
- * Mirrors the Ledger color and type contract from /design-system.
  */
 
 .ledger {
-  --bg: #ECE9DF;
-  --paper: #F4F1E7;
-  --parch: #E4E0D2;
-  --parch-dark: #D5D1C2;
-  --tape: #F1E9D0;
-  --ink: #0E1B2D;
-  --ink-2: #1F2A3F;
-  --slate: var(--ledger-slate, #4F5C6E);
-  --muted: var(--ledger-muted, #4F5C6E);
-  --soft: var(--ledger-soft, #8C95A8);
+  --bg: var(--ledger-bg);
+  --paper: var(--ledger-paper);
+  --parch: var(--ledger-parch);
+  --parch-dark: var(--ledger-parch-dark);
+  --tape: var(--ledger-tape);
+  --ink: var(--ledger-ink);
+  --ink-2: var(--ledger-ink-2);
+  --slate: var(--ledger-slate, #64748B);
+  --muted: var(--ledger-muted, #64748B);
+  --soft: var(--ledger-soft, #94A3B8);
   --terra: var(--ledger-accent);
-  --terra-2: #8E6620;
-  --weak: #8E3B2A;
-  --rule: #D5D1C2;
-  --rule-strong: #A8AEBE;
+  --terra-2: var(--ledger-accent-light);
+  --weak: var(--ledger-weak);
+  --rule: var(--ledger-rule);
+  --rule-strong: var(--ledger-rule-strong);
 
-  --serif: var(--font-newsreader-hero), var(--font-newsreader-heavy), 'Iowan Old Style', Georgia, serif;
-  --sans: var(--font-geist-sans), -apple-system, system-ui, sans-serif;
-  --mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+  --serif: var(--ledger-serif);
+  --sans: var(--ledger-sans);
+  --mono: var(--ledger-mono);
 
   background: var(--bg);
   color: var(--ink);

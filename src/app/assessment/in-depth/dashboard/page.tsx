@@ -4,11 +4,6 @@
 // surfaces are scaffolded as explicit "Coming soon" sections until the
 // supporting schema (institution_invites table), email-send wiring
 // (mailerlite / resend templates), and Stripe seat-tier pricing land.
-//
-// Access gate today: any In-Depth Assessment buyer can reach this page;
-// the scaffold messaging makes clear that invite + aggregate are not
-// yet active. Once schema lands, the gate tightens to
-// institution_enrollments.role = 'leader'.
 
 import type { Metadata } from 'next';
 import Link from 'next/link';
@@ -35,40 +30,14 @@ export default async function InDepthDashboardPage() {
   }
 
   return (
-    <main style={{ maxWidth: 980, margin: '0 auto', padding: '48px 24px 80px' }}>
-      <p
-        style={{
-          fontFamily: 'var(--ledger-mono)',
-          fontSize: 11,
-          letterSpacing: '0.18em',
-          textTransform: 'uppercase',
-          color: 'var(--ledger-accent)',
-          margin: '0 0 8px',
-        }}
-      >
+    <main className="mx-auto max-w-[980px] px-6 py-12 md:py-16">
+      <p className="font-serif-sc text-[11px] uppercase tracking-[0.22em] text-[color:var(--gold)] mb-2">
         In-Depth · Cohort dashboard
       </p>
-      <h1
-        style={{
-          fontFamily: 'var(--ledger-serif)',
-          fontSize: 'clamp(36px, 4vw, 52px)',
-          lineHeight: 1.05,
-          letterSpacing: '-0.02em',
-          margin: '0 0 8px',
-          color: 'var(--ledger-ink)',
-        }}
-      >
+      <h1 className="font-serif text-4xl md:text-5xl font-bold leading-[1.05] tracking-[-0.02em] text-[color:var(--color-ink)] mb-2">
         Your institution&rsquo;s cohort
       </h1>
-      <p
-        style={{
-          fontFamily: 'var(--ledger-serif)',
-          fontStyle: 'italic',
-          fontSize: 17,
-          color: 'var(--ledger-ink-2)',
-          margin: '0 0 40px',
-        }}
-      >
+      <p className="text-base md:text-lg text-[color:var(--color-ink)]/75 leading-relaxed mb-10 max-w-2xl">
         Invite staff, monitor completion, and review aggregate readiness
         across the eight dimensions.
       </p>
@@ -97,27 +66,20 @@ export default async function InDepthDashboardPage() {
         ctaLabel="Open the Toolbox"
       />
 
-      <p
-        style={{
-          marginTop: 48,
-          paddingTop: 24,
-          borderTop: '1px solid var(--ledger-rule)',
-          fontFamily: 'var(--ledger-mono)',
-          fontSize: 11,
-          letterSpacing: '0.04em',
-          color: 'var(--ledger-muted)',
-        }}
-      >
+      <p className="mt-12 pt-6 border-t border-[color:var(--color-ink)]/10 font-mono text-[11px] tracking-[0.04em] text-[color:var(--color-ink)]/60">
         Your enrollment is active. Reference:{' '}
-        <span style={{ color: 'var(--ledger-ink)' }}>{enrollment.id}</span>
+        <span className="text-[color:var(--color-ink)]">{enrollment.id}</span>
         {' · Purchased '}
-        <span style={{ color: 'var(--ledger-ink)' }}>
+        <span className="text-[color:var(--color-ink)]">
           {new Date(enrollment.enrolled_at).toLocaleDateString()}
         </span>
       </p>
 
-      <p style={{ marginTop: 24, fontSize: 13, color: 'var(--ledger-muted)' }}>
-        <Link href="/dashboard/assessments" style={{ color: 'var(--ledger-accent)' }}>
+      <p className="mt-6 text-sm text-[color:var(--color-ink)]/60">
+        <Link
+          href="/dashboard/assessments"
+          className="text-[color:var(--gold)] hover:text-[color:var(--gold-2)] underline"
+        >
           See your assessment history →
         </Link>
       </p>
@@ -133,58 +95,19 @@ function ScaffoldCard(props: {
   readonly ctaLabel: string;
 }) {
   return (
-    <section
-      style={{
-        border: '1px solid var(--ledger-rule)',
-        background: 'var(--ledger-paper)',
-        padding: '24px 28px',
-        marginBottom: 20,
-      }}
-    >
-      <p
-        style={{
-          fontFamily: 'var(--ledger-mono)',
-          fontSize: 10,
-          letterSpacing: '0.18em',
-          textTransform: 'uppercase',
-          color: 'var(--ledger-muted)',
-          margin: '0 0 6px',
-        }}
-      >
+    <section className="rounded-[3px] border border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)] px-7 py-6 mb-5">
+      <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/60 mb-1.5">
         {props.kicker} · Coming soon
       </p>
-      <h2
-        style={{
-          fontFamily: 'var(--ledger-serif)',
-          fontSize: 24,
-          lineHeight: 1.2,
-          color: 'var(--ledger-ink)',
-          margin: '0 0 8px',
-        }}
-      >
+      <h2 className="font-serif text-2xl leading-tight text-[color:var(--color-ink)] mb-2">
         {props.title}
       </h2>
-      <p
-        style={{
-          fontSize: 15,
-          lineHeight: 1.55,
-          color: 'var(--ledger-ink-2)',
-          margin: '0 0 12px',
-          maxWidth: '70ch',
-        }}
-      >
+      <p className="text-[15px] leading-[1.55] text-[color:var(--color-ink)]/80 mb-3 max-w-[70ch]">
         {props.body}
       </p>
       <Link
         href={props.ctaHref}
-        style={{
-          fontFamily: 'var(--ledger-mono)',
-          fontSize: 11,
-          letterSpacing: '0.16em',
-          textTransform: 'uppercase',
-          color: 'var(--ledger-accent)',
-          textDecoration: 'none',
-        }}
+        className="font-mono text-[11px] uppercase tracking-[0.16em] text-[color:var(--gold)] hover:text-[color:var(--gold-2)] no-underline"
       >
         {props.ctaLabel} →
       </Link>
