@@ -173,13 +173,15 @@ For each route:
 
 ## Things the mockups must answer
 
-These cross-cutting questions need a design decision before any single surface ships:
+These cross-cutting questions need a design decision before any single surface ships.
 
-1. **Sidebar vs top-nav for CourseShell?** Today is sidebar via `CourseShell`. Per memory, the LMS should feel like a "calm operating system." Does the sidebar survive the mockup-system refresh?
-2. **Where does the Toolbox live in the LMS tree?** `/program/toolkit` (per-learner), `/dashboard/toolbox` (paid product), `/my-toolbox` (mockup preview). Three surfaces, one concept. Mockups should reconcile.
-3. **Module-level navigation pattern.** Current `ModuleTabs` swaps tabs in-page. Does the mockup keep tabs, or split into sub-routes?
-4. **Saved artifacts: card or row?** Toolkit + Library + Cookbook all surface artifacts. Should they share one card design?
-5. **Credential display format.** Middle dot vs em-dash on the certificate. Audit-blocker on the live cert today.
+### Operator decisions logged 2026-05-26
+
+1. **Sidebar vs top-nav for CourseShell?** — **Comparing both.** Side-by-side mockup at [`/sketches/lms-shell-options.html`](/sketches/lms-shell-options.html) toggles between the two layouts on a Module 4 frame. Pick one before any LMS implementation.
+2. **Where does the Toolbox live across `/my-toolbox`, `/dashboard/toolbox`, `/program/toolkit`?** — **Decision deferred.** The three routes serve three different relationships to assets (pre-purchase demo / shared Library + Cookbook / per-learner toolkit). They are not duplicates. Reconciliation deferred until the LMS mockup commits to a chrome.
+3. **Module-level navigation pattern (tabs vs sub-routes)?** — **Decision deferred.** Today's `ModuleTabs` (in-page Learn it / Try it / Use it / Save it) stays as the working assumption; the mockup pass will revisit if a sub-route pattern emerges naturally.
+4. **Saved artifacts: card or row, one design or per-surface?** — **One design.** Library + Cookbook + Toolkit all share the same saved-artifact card. Build it once.
+5. **Credential display format (middle dot vs em-dash)?** — **Not a priority.** The audit flagged the em-dash on the live cert; leave as-is for now and revisit when the certificate page enters Wave 1 mockups.
 
 ## What this map does not cover
 
