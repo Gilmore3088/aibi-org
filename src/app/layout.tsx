@@ -18,11 +18,23 @@ import './globals.css';
 // top would produce a duplicate logo (or, in the case of the design system
 // reference, would frame a pixel-faithful mockup with extraneous chrome).
 const CHROMELESS_PATHS: readonly string[] = [
+  // 2026-05-26 redesign sprint — every route ported to the mockup design
+  // system renders its own SiteHeader from @/components/mockup. As each
+  // route migrates, it joins this list. When all routes have migrated
+  // the global SiteNav is removed entirely.
+  '/',
+  '/assessment',
+  '/results',
+  '/courses',
+  '/playground',
+  '/practice',
+  '/my-toolbox',
+  '/for-institutions',
+
+  // Pre-existing chromeless routes (own brand lockup or no chrome by design)
   '/coming-soon',
   '/design-system',
   '/user-home',
-  '/my-toolbox',
-  '/playground',
   '/faq',
   '/preview-home',
   '/briefing-preview',
