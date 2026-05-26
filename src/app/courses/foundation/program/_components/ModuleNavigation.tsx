@@ -58,8 +58,8 @@ export function ModuleNavigation({
             className="inline-flex items-center gap-2 bg-[color:var(--ledger-parch)] text-[color:var(--ledger-muted)] px-6 py-2.5 rounded-sm font-mono text-[11px] uppercase tracking-widest cursor-not-allowed"
             role="button"
             aria-disabled="true"
-            aria-label="Complete all activities to unlock the next module"
-            title="Complete all activities to unlock"
+            aria-label="Complete all activities to open the next module"
+            title="Complete all activities to open the next module"
           >
             Next Module
             <svg

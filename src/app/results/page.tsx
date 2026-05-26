@@ -192,7 +192,7 @@ ${DIMENSIONS.map((d) => `- **${d.label}** — ${d.score}/100. ${d.note}`).join('
             <EyebrowChip icon={<GaugeIcon className="mk-ic" />}>AI Readiness Result</EyebrowChip>
             <h1>Your AI readiness snapshot.</h1>
             <p className="mk-lede">
-              You have enough awareness to begin building, but the next unlock is documentation:
+              You have enough awareness to begin building, but the next step is documentation:
               turning AI-supported work into reviewed, reusable workflows.
             </p>
             <div className="mk-ctas">

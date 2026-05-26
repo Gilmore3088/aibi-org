@@ -262,25 +262,22 @@ export default async function CertificatePage() {
               </div>
 
               {/* Next steps promotion card */}
-              <div className="bg-[var(--ledger-accent)] text-white rounded-sm p-6 flex flex-col justify-center">
+              <div className="bg-[var(--gold)] text-white rounded-sm p-6 flex flex-col justify-center">
                 <p className="text-xs uppercase tracking-widest font-sans mb-2 opacity-80">
                   What&rsquo;s Next
                 </p>
-                <h3
-                  className="text-2xl font-bold mb-4"
-                  style={{ fontFamily: 'Cormorant, Georgia, serif' }}
-                >
-                  Continue Your Journey
+                <h3 className="text-2xl font-bold mb-4">
+                  Apply the credential.
                 </h3>
                 <p className="text-xs leading-relaxed mb-5 opacity-90 font-sans">
-                  Your AiBI-Foundation credential will open the door to the Specialist
-                  track when advanced training launches.
+                  Bring AiBI-Foundation into your institution. Coached cohorts at
+                  $199/seat for ten or more. Aggregate dashboard for your champion.
                 </p>
                 <a
-                  href="/coming-soon?interest=specialist"
-                  className="inline-block text-center bg-[var(--ledger-paper)] text-[var(--ledger-accent)] text-xs font-bold font-sans py-2.5 px-4 rounded-sm hover:bg-white transition-colors"
+                  href="/for-institutions"
+                  className="inline-block text-center bg-[var(--cream-2)] text-[var(--gold)] text-xs font-bold font-sans py-2.5 px-4 rounded-sm hover:bg-white transition-colors"
                 >
-                  Join Specialist Waitlist
+                  See institutional engagement
                 </a>
               </div>
             </div>

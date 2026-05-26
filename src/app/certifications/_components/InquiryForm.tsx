@@ -7,8 +7,6 @@ type Status = 'idle' | 'submitting' | 'success' | 'error';
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const TRACKS = [
   'AiBI-Foundation',
-  'Banking AI Specialist (AiBI-S)',
-  'Banking AI Leader (AiBI-L)',
   'Not sure yet',
 ] as const;
 

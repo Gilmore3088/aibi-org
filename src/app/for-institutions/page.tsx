@@ -356,7 +356,7 @@ export default function ForInstitutionsPage() {
         <div className="mk-chain">
           {[
             { icon: TargetIcon, num: '01 · Assess', h: 'Where you are', p: 'Every employee takes the assessment. Org and department breakdowns surface where the readiness gaps live.' },
-            { icon: LayersIcon, num: '02 · Train', h: 'Where you should go', p: 'Assign Foundation course seats by role. Specialist tracks (AiBI-S/Compliance, /Lending, /Ops) for the people who need them.' },
+            { icon: LayersIcon, num: '02 · Train', h: 'Where you should go', p: 'Assign Foundation course seats by role. Pair the institutional rollout with a coached cohort for the people who need depth.' },
             { icon: FileIcon, num: '03 · Document', h: "What you've done", p: 'Workbench Packs and Toolbox artifacts become your AI use-case inventory — examiner-ready out of the box.' },
             { icon: LockIcon, num: '04 · Govern', h: 'How you stay safe', p: 'Approval rituals and data rules reinforced through the same artifacts staff already use day to day.' },
             { icon: NetworkIcon, num: '05 · Consult', h: "What's next", p: 'Optional Leadership Advisory — a fractional Chief AI Officer for institutions running real cohorts.' },

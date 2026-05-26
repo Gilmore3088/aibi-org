@@ -2,7 +2,7 @@
 
 // /courses/foundation/program/quick-wins — Quick Win Tracker
 // Course completers log automations they've built and time saved.
-// Encouragement milestone: 3 wins unlocks a recommendation letter template.
+// Encouragement milestone: 3 wins earns the recommendation-letter template.
 //
 // Client Component: form state + client-side fetch via /api/courses/log-quick-win
 // Department pre-filled from onboarding primary_role stored in sessionStorage.
@@ -235,7 +235,7 @@ export function QuickWinsClient() {
             </span>{' '}
             quick wins. Your{' '}
             <span className="font-bold">recommendation letter template</span> is
-            unlocked — download it from your{' '}
+            ready — download it from your{' '}
             <Link
               href="/courses/foundation/program/certificate"
               className="underline hover:text-[color:var(--ledger-accent)] transition-colors"

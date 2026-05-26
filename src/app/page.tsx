@@ -479,7 +479,7 @@ export default function HomePage() {
               Interactive Guidance
             </div>
             <h2 style={{ fontSize: 'clamp(28px, 3.6vw, 44px)', fontWeight: 600, margin: '8px 0 0', lineHeight: 1.08, letterSpacing: '-0.015em' }}>
-              Help users find their next best step.
+              Find your next best step.
             </h2>
             <p className="mk-lede">Select a role and goal to see the path, artifact, and business value.</p>
           </div>

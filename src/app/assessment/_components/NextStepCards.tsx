@@ -65,19 +65,19 @@ function getStepsForTier(tierId: Tier['id']): readonly NextStep[] {
       return [
         {
           label: 'Recommended',
-          title: 'Join the Specialist waitlist',
+          title: 'Start the AiBI-Foundation course',
           description:
-            'You have traction. AiBI-S will focus on workflow automation, agents, internal AI systems, and team-level rollout after Foundation is validated.',
-          href: '/coming-soon?interest=specialist',
-          cta: 'Join AiBI-S Waitlist',
+            'You have traction. Twelve self-paced modules to build the prompts, agents, and AI workflows your daily banking work demands — and earn the credential your examiner respects.',
+          href: '/courses/foundation/program/purchase',
+          cta: 'Enroll · $295',
           accent: 'var(--ink-2)',
           primary: true,
         },
         {
           label: 'Enroll your team',
-          title: 'Run a Specialist cohort with your department',
+          title: 'Run a coached cohort',
           description:
-            'Five to 25 managers from one institution go through the Specialist track together. Shared kickoff, group reporting, and team pricing. Leave with a prioritized automation roadmap your team owns.',
+            'Ten seats over eight weeks. Shared kickoff, group reporting, and institutional pricing at $199/seat. Leave with reviewed AI artifacts your team owns.',
           href: '/for-institutions',
           cta: 'See enrollment options',
           accent: 'var(--gold)',
@@ -88,11 +88,11 @@ function getStepsForTier(tierId: Tier['id']): readonly NextStep[] {
       return [
         {
           label: 'Recommended',
-          title: 'Join the Leader waitlist',
+          title: 'Book an executive briefing',
           description:
-            'AiBI-L will focus on executive confidence, governance, rollout, and institution-level AI leadership after the Foundation loop is validated.',
-          href: '/coming-soon?interest=leader',
-          cta: 'Join AiBI-L Waitlist',
+            'Bring your leadership. The Institute walks your team through what governance, examiner-readiness, and institution-wide rollout actually look like — with the regulatory references named.',
+          href: '/for-institutions/advisory',
+          cta: 'Book a briefing',
           accent: 'var(--ink-2)',
           primary: true,
         },
@@ -100,7 +100,7 @@ function getStepsForTier(tierId: Tier['id']): readonly NextStep[] {
           label: 'Build enduring capability',
           title: 'Institution-wide capability program',
           description:
-            'A recurring cohort cadence — Foundation, Specialist, and Leader — scheduled so every banker, new or tenured, has a path to proficiency. Leadership Advisory available alongside for your AI leader.',
+            'A coached cohort, an aggregate dashboard for your champion, and a defensible posture. Leadership Advisory available alongside for your AI leader.',
           href: '/for-institutions',
           cta: 'See enrollment options',
           accent: 'var(--gold)',

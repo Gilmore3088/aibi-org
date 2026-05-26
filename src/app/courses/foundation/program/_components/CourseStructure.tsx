@@ -65,7 +65,7 @@ export function CourseStructure({
             color: 'var(--ledger-muted)',
           }}
         >
-          4 pillars &middot; {totalModules} modules
+          {totalModules} modules &middot; self-paced
         </span>
       </div>
       <p

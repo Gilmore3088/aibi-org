@@ -5,7 +5,7 @@ import { MockupShell } from '@/components/mockup';
 export const metadata: Metadata = {
   title: 'Education | The AI Banking Institute',
   description:
-    'Free classes and three certification tracks for community banks and credit unions. Start with the AI Readiness Assessment, then earn AiBI-Foundation, AiBI-S, or AiBI-L credentials.',
+    'Free assessments and the AiBI-Foundation course for community banks and credit unions. Start with the AI Readiness Assessment, then earn the AiBI-Foundation credential.',
   alternates: { canonical: '/education' },
 };
 
@@ -198,9 +198,10 @@ export default function EducationPage() {
       title={<>Use our assessments to measure you or your team&rsquo;s readiness.</>}
       lede={
         <>
-          Free classes and three certification tracks for community banks and credit
-          unions. Start with the AI Readiness Assessment, then earn AiBI-Foundation,
-          AiBI-S, or AiBI-L credentials. Tuition published. Methodology published.
+          Free assessments and the AiBI-Foundation course for community banks and
+          credit unions. Start with the AI Readiness Assessment, then earn the
+          AiBI-Foundation credential your examiner respects. Tuition published.
+          Methodology published.
         </>
       }
       heroActions={[
@@ -258,17 +259,6 @@ export default function EducationPage() {
                 <CatalogTileCard key={tile.title} tile={tile} />
               ))}
             </div>
-          ),
-        },
-        {
-          kicker: 'Next credentials',
-          heading: <>AiBI-S Specialist and AiBI-L Leader.</>,
-          lede: (
-            <>
-              Specialist and Leader credentials ship after the Foundation is validated
-              with real learners. Join the waitlist from the dashboard or request a
-              briefing for institutional cohorts.
-            </>
           ),
         },
       ]}

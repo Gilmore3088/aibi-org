@@ -3,7 +3,7 @@ import { MockupShell } from '@/components/mockup';
 
 export const metadata: Metadata = {
   title: 'Certifications — The AI Banking Institute',
-  description: 'AiBI-Foundation, AiBI-S (Specialist), and AiBI-L (Leader) — credentials for bankers building safely with AI.',
+  description: 'AiBI-Foundation — the credential for bankers building safely with AI. Earned by completing reviewed work products.',
   alternates: { canonical: '/certifications' },
 };
 
@@ -12,37 +12,32 @@ export default function CertificationsPage() {
     <MockupShell
       activePath="/certifications"
       eyebrow="Credentials · For bankers"
-      title={<>Three credentials. Real work behind each.</>}
-      lede="Every credential is earned by completing reviewed work products — not by clicking through a video. The Foundation Certificate ships with the course. Specialist (AiBI-S) and Leader (AiBI-L) tracks open after that."
+      title={<>The credential your examiner respects.</>}
+      lede="AiBI-Foundation is earned by completing reviewed work products — not by clicking through a video. Your Workbench Pack is reviewed by the Institute, and the certificate ships with a public verification URL."
       heroActions={[
         { label: 'Enroll in Foundation', href: '/courses/foundation', variant: 'gold' },
-        { label: 'Inquire about AiBI-S/L', href: '/for-institutions/advisory', variant: 'ghost-dark' },
+        { label: 'See the curriculum', href: '/education', variant: 'ghost-dark' },
       ]}
       sections={[
         {
-          kicker: 'Foundation',
-          heading: <>AiBI-Foundation · Earned by completing the course.</>,
+          kicker: 'How it works',
+          heading: <>Earned by doing the work.</>,
           lede: <>Submit your Workbench Pack at the end of the course. Pack is reviewed by the Institute; certificate issued with verification link.</>,
         },
         {
-          kicker: 'Specialist',
-          heading: <>AiBI-S · Role-specific specialist.</>,
-          lede: <>Build a role-specific evidence pack: AiBI-S/Compliance, AiBI-S/Lending, AiBI-S/Marketing, AiBI-S/Ops. Inquiry-only during the pilot phase.</>,
+          kicker: 'What you get',
+          heading: <>Verifiable. Portable. Public.</>,
+          lede: <>Every credential ships with a public verification URL and a downloadable evidence summary. Display it on LinkedIn, share it with your examiner, attach it to a board memo.</>,
           surface: 'white',
-        },
-        {
-          kicker: 'Leader',
-          heading: <>AiBI-L · For the person leading institution-wide adoption.</>,
-          lede: <>Demonstrate a cohort rollout, a documented verdict cycle, and reviewer-ready evidence across two business lines. Inquiry-only during pilot.</>,
         },
       ]}
       ctaBand={{
         kicker: 'Certifications',
-        heading: <>Credentials banks and credit unions can verify.</>,
-        body: <>Every credential ships with a public verification URL and a downloadable evidence summary. No bottomless training catalog — earn the credential by doing the work.</>,
+        heading: <>A credential banks and credit unions can verify.</>,
+        body: <>No bottomless training catalog — earn the credential by doing the work. Aligned with SR 11-7, TPRM, ECOA / Reg B, and the AIEOG AI Lexicon.</>,
         actions: [
           { label: 'Enroll in Foundation', href: '/courses/foundation', variant: 'gold' },
-          { label: 'Inquire (Specialist / Leader)', href: '/for-institutions/advisory', variant: 'ghost-dark' },
+          { label: 'View the curriculum', href: '/education', variant: 'ghost-dark' },
         ],
       }}
     />

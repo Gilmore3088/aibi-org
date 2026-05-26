@@ -175,7 +175,7 @@ export default async function PlaybookPage({ params }: { params: Promise<{ role:
       <Section variant="std">
         <SectionHead
           kicker="Toolbox Assets"
-          heading={<>The playbook unlocks real tools.</>}
+          heading={<>The playbook ships real tools.</>}
           lede={<>A strong role playbook ends with downloadable, customizable work products — not slides.</>}
         />
         <div className="mk-cats">

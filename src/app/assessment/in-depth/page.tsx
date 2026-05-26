@@ -123,7 +123,7 @@ export default async function InDepthAssessmentPage({
             </p>
             <p className="font-serif text-body-md text-ink leading-relaxed">
               The forty-eight-question In-Depth Assessment is paid. Purchase a
-              seat below to unlock it. Already paid? Make sure you are signed
+              seat below to open it. Already paid? Make sure you are signed
               in with the same email you used at checkout.
             </p>
           </div>
@@ -308,7 +308,7 @@ export default async function InDepthAssessmentPage({
           </div>
 
           <p className="font-serif text-body-md text-ink/75 mt-s6 max-w-[60ch]">
-            Want your whole team to benefit? Per-seat pricing of $79 unlocks
+            Want your whole team to benefit? Per-seat pricing of $79/seat opens
             at ten or more. Email{" "}
             <a
               href={`mailto:${BRAND.emails.contact}?subject=In-Depth%20Assessment%20%E2%80%94%2010%2B%20seats`}

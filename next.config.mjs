@@ -98,10 +98,17 @@ const nextConfig = {
       // program). Use temporary (302) so we can flip when Wave D migrates.
       { source: '/education/practitioner', destination: '/courses/foundation/program', permanent: false },
       { source: '/education/practitioner/:path*', destination: '/courses/foundation/program/:path*', permanent: false },
-      { source: '/education/specialist', destination: '/coming-soon?interest=specialist', permanent: false },
-      { source: '/education/specialist/:path*', destination: '/coming-soon?interest=specialist', permanent: false },
-      { source: '/education/leader', destination: '/coming-soon?interest=leader', permanent: false },
-      { source: '/education/leader/:path*', destination: '/coming-soon?interest=leader', permanent: false },
+      // /education/specialist and /education/leader retired 2026-05-26;
+      // redirect to the catalog so legacy links don't 404.
+      { source: '/education/specialist', destination: '/education', permanent: true },
+      { source: '/education/specialist/:path*', destination: '/education', permanent: true },
+      { source: '/education/leader', destination: '/education', permanent: true },
+      { source: '/education/leader/:path*', destination: '/education', permanent: true },
+      // /courses/aibi-s and /courses/aibi-l retired 2026-05-26.
+      { source: '/courses/aibi-s', destination: '/education', permanent: true },
+      { source: '/courses/aibi-s/:path*', destination: '/education', permanent: true },
+      { source: '/courses/aibi-l', destination: '/education', permanent: true },
+      { source: '/courses/aibi-l/:path*', destination: '/education', permanent: true },
       { source: '/consulting', destination: '/for-institutions/advisory', permanent: true },
     ];
   },
