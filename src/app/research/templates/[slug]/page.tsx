@@ -4,12 +4,10 @@
 // copy, and adapt. Content lives in src/app/research/templates/data.ts.
 
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import {
   SiteHeader,
   Section,
-  SectionHead,
   Button,
   EyebrowChip,
   CtaBand,
