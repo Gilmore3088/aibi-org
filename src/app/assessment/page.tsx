@@ -233,17 +233,18 @@ export default function AssessmentLandingPage() {
             <EyebrowChip icon={<GaugeIcon className="mk-ic" />}>
               Assessments · Free baseline + $99 in-depth
             </EyebrowChip>
-            <h1>Turn vague AI readiness into a clear action plan.</h1>
+            <h1>See where you stand. Find the dimension dragging you down.</h1>
             <p className="mk-lede">
-              Start with a free 12-question baseline. When you're ready to act, the 48-question
-              In-Depth shows you exactly where the gaps are and what to do next.
+              Twelve questions, three minutes. You leave with your readiness score, your tier, and
+              a starter artifact you can take to your team this week. When you're ready to act,
+              the 48-question In-Depth shows you exactly where the gaps are and what to do next.
             </p>
             <div className="mk-ctas">
               <Button variant="gold" size="lg" href="/assessment/take">
-                Start Free Assessment <ArrowR className="mk-ic" />
+                Take the assessment <ArrowR className="mk-ic" />
               </Button>
               <Button variant="ghost-dark" size="lg" href="#mini-quiz">
-                See a Sample Report
+                See a sample report
               </Button>
             </div>
           </div>
@@ -419,12 +420,12 @@ export default function AssessmentLandingPage() {
                 <div className="mk-u">/ 3 min</div>
               </div>
               <p className="mk-desc">
-                A quick signal for individuals. Score + tier + the dimension you're weakest on.
+                Twelve questions, three minutes — see where you stand.
               </p>
               <ul>
-                <li><CheckIcon className="mk-ic" />12 questions, mobile-friendly</li>
-                <li><CheckIcon className="mk-ic" />Score, tier, top gap</li>
-                <li><CheckIcon className="mk-ic" />Starter artifact emailed</li>
+                <li><CheckIcon className="mk-ic" />Your readiness score and tier</li>
+                <li><CheckIcon className="mk-ic" />The dimension dragging you down</li>
+                <li><CheckIcon className="mk-ic" />A starter artifact you can take to your team this week</li>
               </ul>
               <Button variant="ink" size="lg" href="/assessment/take" className="mk-cta">
                 Start Free

@@ -212,10 +212,49 @@ const HERO_SIDE: Record<
   },
 };
 
-const SUITE = [
-  { num: '01', label: 'Free', title: 'Readiness Assessment', icon: CheckSquareIcon, outcome: 'Baseline score', next: 'Start here', href: '/assessment' },
-  { num: '02', label: '$99', title: 'Maturity Assessment', icon: BarsIcon, outcome: 'Role-specific plan', next: 'Go deeper', href: '/assessment/in-depth' },
-  { num: '03', label: '$295', title: 'Foundation Course', icon: LayersIcon, outcome: 'Reusable workflows', next: 'Build capability', href: '/courses/foundation' },
+const SUITE: {
+  num: string;
+  label: string;
+  title: string;
+  icon: typeof CheckSquareIcon;
+  body: string;
+  outcome: string;
+  next: string;
+  href: string;
+}[] = [
+  {
+    num: '01',
+    label: 'Free',
+    title: 'Readiness Assessment',
+    icon: CheckSquareIcon,
+    body:
+      'Twelve questions, three minutes. A score, a tier, and a tailored starter artifact you can take to your team this week.',
+    outcome: 'Score, tier, top gap',
+    next: 'Start here',
+    href: '/assessment',
+  },
+  {
+    num: '02',
+    label: '$99 · $79 at 10+ by request',
+    title: 'In-Depth Assessment',
+    icon: BarsIcon,
+    body:
+      'You leave with your in-depth score, AI assets you can use immediately, and a playbook to launch your first AI win. Anonymized team rollup included.',
+    outcome: 'Role-specific action plan',
+    next: 'Go deeper',
+    href: '/assessment/in-depth',
+  },
+  {
+    num: '03',
+    label: '$295 · $199 at 10+ · Lifetime access',
+    title: 'AiBI-Foundation',
+    icon: LayersIcon,
+    body:
+      'Learn how to build the prompts, agents, and AI workflows your daily banking work demands — and earn the AiBI-Foundation credential your examiner respects.',
+    outcome: 'Reusable workflows + credential',
+    next: 'View the curriculum',
+    href: '/courses/foundation',
+  },
 ];
 
 type PBRole = 'Compliance' | 'Retail' | 'Marketing' | 'Operations';
@@ -290,14 +329,16 @@ export default function HomePage() {
             </EyebrowChip>
             <h1>Train people to use AI without losing control.</h1>
             <p className="mk-lede">
-              Assess readiness, practice safely, and turn useful prompts into documented workflows.
+              Independent AI assessment and education for community banks and credit unions.
+              Assess readiness, practice safely, and turn useful prompts into documented workflows
+              your examiner respects.
             </p>
             <div className="mk-ctas">
               <Button variant="gold" size="lg" href="/assessment">
-                Start Free Assessment <ArrowGlyph />
+                Take the assessment <ArrowGlyph />
               </Button>
-              <Button variant="ghost-dark" size="lg" href="/courses">
-                Preview Course
+              <Button variant="ghost-dark" size="lg" href="/courses/foundation">
+                View the curriculum
               </Button>
             </div>
           </div>
@@ -379,7 +420,7 @@ export default function HomePage() {
       <Section variant="std">
         <SectionHead kicker="Product Suite" heading={<>A clear path from interest to implementation.</>} />
         <div className="mk-suite">
-          {SUITE.map(({ num, label, title, icon: Icon, outcome, next, href }) => (
+          {SUITE.map(({ num, label, title, icon: Icon, body, outcome, next, href }) => (
             <Link key={num} className="mk-scard" href={href} aria-label={title}>
               <div className="mk-top-rule" />
               <div className="mk-body">
@@ -391,6 +432,16 @@ export default function HomePage() {
                 </div>
                 <div className="mk-lbl">{label}</div>
                 <h3>{title}</h3>
+                <p
+                  style={{
+                    marginTop: 12,
+                    color: 'var(--slate-600)',
+                    fontSize: 15,
+                    lineHeight: 1.55,
+                  }}
+                >
+                  {body}
+                </p>
                 <div className="mk-infobox">
                   <div className="mk-k">Outcome</div>
                   <div className="mk-v">{outcome}</div>
