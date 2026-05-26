@@ -16,6 +16,8 @@ import { SkillTester } from '@/components/addie/interactives/m4/SkillTester';
 import { WorkbenchPackBuilder } from '@/components/addie/interactives/m4/WorkbenchPackBuilder';
 import { PRDBuilder } from '@/components/addie/interactives/m5/PRDBuilder';
 import { PrototypeLauncher } from '@/components/addie/interactives/m5/PrototypeLauncher';
+import { savePack } from '@/lib/addie/artifacts/savePack';
+import type { WorkbenchPackContent } from '@/lib/addie/artifacts/workbench-pack';
 
 interface InteractiveLessonViewProps {
   readonly payload: LessonPayload;
@@ -25,6 +27,15 @@ export function InteractiveLessonView({ payload }: InteractiveLessonViewProps) {
   const exerciseId = payload.lesson.exercise_id;
   const descriptor = payload.interactiveExercise ?? null;
   const track = payload.activeTrack ?? null;
+
+  const handleSavePack = async (pack: WorkbenchPackContent): Promise<void> => {
+    await savePack({
+      pack,
+      lessonId: payload.lesson.id,
+      lessonTitle: payload.lesson.title,
+      track,
+    });
+  };
 
   if (exerciseId && descriptor) {
     switch (exerciseId) {
@@ -38,18 +49,21 @@ export function InteractiveLessonView({ payload }: InteractiveLessonViewProps) {
         return (
           <WorkbenchPackBuilder
             initialSourcePacket={'A draft adverse-action letter (synthetic): a $5,800 unsecured loan denial. The denial reason field reads "credit history insufficient." The letter as drafted does not name the specific reasons under ECOA/Reg B. Tighten the writing and surface a complete reason list. Do not invent reasons not implied by "credit history insufficient." Member: synthetic; no real identifiers.'}
+            onSave={handleSavePack}
           />
         );
       case 'm4-3-role-skill':
         return (
           <WorkbenchPackBuilder
             initialSourcePacket={'A track-defaulted synthetic source for your role. Edit Region 01 to your week\'s most-recurring artifact: vendor questionnaire response, Reg-E summary for tellers, process-memo rewrite, board talking points, or member-fee-complaint reply.'}
+            onSave={handleSavePack}
           />
         );
       case 'm4-4-test-refine':
         return (
           <WorkbenchPackBuilder
             initialSourcePacket={'Test the Pack you built in M4.2 or M4.3 on a NEW realistic synthetic source — different complaint, different reg excerpt, different proposal. Walk the four guardrail questions. Flip use_boundary to "named-task production" only if the Pack will run recurrently against real institution material.'}
+            onSave={handleSavePack}
           />
         );
       case 'm5-3-prd-builder':
