@@ -1,0 +1,464 @@
+/* eslint-disable react/no-unescaped-entities */
+'use client';
+
+// no runtime state needed
+import {
+  SiteHeader,
+  Section,
+  SectionHead,
+  Button,
+  EyebrowChip,
+  CtaBand,
+} from '@/components/mockup';
+
+type IconProps = { className?: string; size?: number };
+const sw = (p: IconProps) => ({
+  className: p.className,
+  width: p.size,
+  height: p.size,
+  viewBox: '0 0 24 24',
+  fill: 'none',
+  stroke: 'currentColor',
+  strokeWidth: 2,
+  strokeLinecap: 'round' as const,
+  strokeLinejoin: 'round' as const,
+  'aria-hidden': true,
+});
+
+const BuildingIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-4" /></svg>);
+const BarsIcon = (p: IconProps) => (<svg {...sw(p)}><line x1="12" y1="20" x2="12" y2="10" /><line x1="18" y1="20" x2="18" y2="4" /><line x1="6" y1="20" x2="6" y2="16" /></svg>);
+const ArrowR = (p: IconProps) => (<svg {...sw(p)}><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>);
+const TargetIcon = (p: IconProps) => (<svg {...sw(p)}><circle cx="12" cy="12" r="10" /><circle cx="12" cy="12" r="6" /><circle cx="12" cy="12" r="2" /></svg>);
+const LayersIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M22 10v6M2 10l10-5 10 5-10 5z" /></svg>);
+const FileIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>);
+const LockIcon = (p: IconProps) => (<svg {...sw(p)}><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>);
+const NetworkIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M20 7h-9M14 17H5" /><circle cx="17" cy="17" r="3" /><circle cx="7" cy="7" r="3" /></svg>);
+const ShieldIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>);
+const UsersIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /></svg>);
+const SendIcon = (p: IconProps) => (<svg {...sw(p)}><line x1="22" y1="2" x2="11" y2="13" /><polygon points="22 2 15 22 11 13 2 9 22 2" /></svg>);
+const StarIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M12 3l1.9 5.8L20 10l-4.6 3.4L17.2 20 12 16.6 6.8 20l1.8-6.6L4 10l6.1-1.2z" /></svg>);
+const ChatIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" /><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" /></svg>);
+const CheckIcon = (p: IconProps) => (<svg {...sw(p)}><polyline points="20 6 9 17 4 12" /></svg>);
+
+export default function ForInstitutionsPage() {
+  return (
+    <div className="mockup-scope">
+      <SiteHeader activePath="/for-institutions" cta={{ label: 'Book a briefing', href: '/for-institutions/advisory' }} />
+
+      {/* HERO */}
+      <section className="mk-hero">
+        <div className="mk-deco">
+          <div className="mk-deco-ring" />
+          <div className="mk-deco-blur" />
+        </div>
+        <div className="mk-container mk-hero-inner">
+          <div>
+            <EyebrowChip icon={<BuildingIcon className="mk-ic" />}>
+              Institutions & Teams · For community banks & credit unions
+            </EyebrowChip>
+            <h1>Capability — not a platform.</h1>
+            <p className="mk-lede">
+              An education engagement for community banks and credit unions.
+            </p>
+            <ul
+              style={{
+                listStyle: 'none',
+                padding: 0,
+                margin: '20px 0 0',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 10,
+                fontSize: 15,
+                fontWeight: 600,
+                color: 'var(--gold-soft)',
+              }}
+            >
+              <li>A coached cohort.</li>
+              <li>An institution-wide rollout.</li>
+              <li>Leadership advisory.</li>
+            </ul>
+            <p
+              style={{
+                marginTop: 14,
+                paddingTop: 12,
+                borderTop: '1px solid rgba(255,255,255,0.12)',
+                color: 'rgba(255,255,255,0.62)',
+                fontSize: 13,
+                fontWeight: 500,
+              }}
+            >
+              No software seats. No vendor lock-in.
+            </p>
+            <div className="mk-ctas">
+              <Button variant="gold" size="lg" href="/for-institutions/advisory">
+                Book a briefing <ArrowR className="mk-ic" />
+              </Button>
+              <Button variant="ghost-dark" size="lg" href="/education">
+                See pricing
+              </Button>
+            </div>
+          </div>
+
+          <div className="mk-dash">
+            <div className="mk-head">
+              <div>
+                <div className="mk-k">Institution Dashboard</div>
+                <div className="mk-t">First National · Sample</div>
+              </div>
+              <BarsIcon size={32} />
+            </div>
+            <div className="mk-body">
+              <div className="mk-topline">
+                <div>
+                  <div className="mk-k">Assessed</div>
+                  <div className="mk-v">124</div>
+                  <div className="mk-u">of 142 staff</div>
+                </div>
+                <div>
+                  <div className="mk-k">Org score</div>
+                  <div className="mk-v">61</div>
+                  <div className="mk-u">/ 100 readiness</div>
+                </div>
+                <div>
+                  <div className="mk-k">Trained</div>
+                  <div className="mk-v">38</div>
+                  <div className="mk-u">Foundation done</div>
+                </div>
+              </div>
+              <div
+                style={{
+                  fontSize: 11,
+                  fontWeight: 700,
+                  letterSpacing: '0.14em',
+                  textTransform: 'uppercase',
+                  color: 'var(--gold-deep)',
+                  marginBottom: 12,
+                }}
+              >
+                Training focus by department
+              </div>
+              <div className="mk-dept">
+                {[
+                  ['Compliance', 'High', 72],
+                  ['Retail', 'Med', 58],
+                  ['Marketing', 'Med', 64],
+                  ['Operations', 'Low', 49],
+                ].map(([nm, level, pct]) => (
+                  <div key={nm} className="mk-d-row">
+                    <div className="mk-top">
+                      <div className="mk-nm">{nm}</div>
+                      <div className="mk-vv">
+                        {pct} / {level}
+                      </div>
+                    </div>
+                    <div className="mk-bar">
+                      <div className="mk-fill" style={{ width: `${pct as number}%` }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* THREE WAYS TO BUILD — restored from main */}
+      <Section variant="std" surface="white">
+        <SectionHead
+          kicker="Engagement"
+          heading={<>Three ways to build.</>}
+          lede={
+            <>
+              Free diagnostic, per-banker enrollment, or institution-wide rollout. Each
+              ends with reviewed work product — not a policy doc nobody reads.
+            </>
+          }
+        />
+        <div
+          style={{
+            display: 'grid',
+            gap: 20,
+            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+            marginTop: 32,
+          }}
+        >
+          {[
+            {
+              scale: 'Free · diagnostic',
+              name: 'Readiness Assessment',
+              tagline: 'Twelve questions, three minutes — see where you stand.',
+              included: [
+                'Your readiness score and tier',
+                'The dimension dragging you down',
+                'A starter artifact you can take to your team this week',
+              ],
+              ctaHref: '/assessment',
+              ctaLabel: 'Take the assessment',
+              ctaVariant: 'ink' as const,
+            },
+            {
+              scale: 'Per-banker',
+              name: 'AiBI-Foundation course',
+              tagline: 'Self-paced, scored on reviewed work.',
+              included: [
+                'Twelve self-paced modules',
+                'Three reviewed AI artifacts per practitioner',
+                '$295 individual · $199/seat at 10+ · lifetime access',
+              ],
+              ctaHref: '/courses/foundation/program',
+              ctaLabel: 'View the curriculum',
+              ctaVariant: 'ink' as const,
+            },
+            {
+              scale: 'Institution-wide',
+              name: 'Organizational Rollout',
+              tagline:
+                'A coached cohort, an aggregate dashboard, a defensible posture.',
+              included: [
+                '10-seat coached cohort over eight weeks',
+                'Institutional readiness baseline + post-engagement diagnostic',
+                'Aggregate dashboard for your champion',
+              ],
+              ctaHref: '/for-institutions/advisory',
+              ctaLabel: 'Request a pilot',
+              ctaVariant: 'gold' as const,
+            },
+          ].map((tier) => (
+            <article
+              key={tier.name}
+              style={{
+                background: 'var(--cream)',
+                border: '1px solid var(--ink-a10)',
+                borderRadius: 16,
+                padding: 28,
+                display: 'flex',
+                flexDirection: 'column',
+              }}
+            >
+              <p
+                style={{
+                  fontSize: 12,
+                  fontWeight: 700,
+                  letterSpacing: '0.18em',
+                  textTransform: 'uppercase',
+                  color: 'var(--gold-deep)',
+                  margin: '0 0 12px',
+                }}
+              >
+                {tier.scale}
+              </p>
+              <h3
+                style={{
+                  fontSize: 24,
+                  fontWeight: 600,
+                  lineHeight: 1.2,
+                  color: 'var(--ink)',
+                  margin: '0 0 8px',
+                }}
+              >
+                {tier.name}
+              </h3>
+              <p
+                style={{
+                  fontSize: 15,
+                  lineHeight: 1.55,
+                  color: 'var(--slate-600)',
+                  margin: '0 0 16px',
+                }}
+              >
+                {tier.tagline}
+              </p>
+              <ul
+                style={{
+                  listStyle: 'none',
+                  padding: '16px 0',
+                  margin: '0 0 20px',
+                  borderTop: '1px solid var(--ink-a10)',
+                  borderBottom: '1px solid var(--ink-a10)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 8,
+                }}
+              >
+                {tier.included.map((item) => (
+                  <li
+                    key={item}
+                    style={{
+                      display: 'grid',
+                      gridTemplateColumns: '14px 1fr',
+                      gap: 10,
+                      fontSize: 14,
+                      lineHeight: 1.5,
+                      color: 'var(--ink)',
+                    }}
+                  >
+                    <span
+                      aria-hidden="true"
+                      style={{ color: 'var(--gold-deep)', fontWeight: 700 }}
+                    >
+                      —
+                    </span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <div style={{ marginTop: 'auto' }}>
+                <Button variant={tier.ctaVariant} size="md" href={tier.ctaHref}>
+                  {tier.ctaLabel}
+                </Button>
+              </div>
+            </article>
+          ))}
+        </div>
+      </Section>
+
+      {/* 5-STEP CHAIN */}
+      <Section variant="std">
+        <SectionHead
+          kicker="How institutions work with us"
+          heading={<>Assess. Train. Document. Govern. Consult.</>}
+          lede={<>Five steps, in order. We don't do the policy doc. We do the work that lets you write a credible policy doc later.</>}
+        />
+        <div className="mk-chain">
+          {[
+            { icon: TargetIcon, num: '01 · Assess', h: 'Where you are', p: 'Every employee takes the assessment. Org and department breakdowns surface where the readiness gaps live.' },
+            { icon: LayersIcon, num: '02 · Train', h: 'Where you should go', p: 'Assign Foundation course seats by role. Pair the institutional rollout with a coached cohort for the people who need depth.' },
+            { icon: FileIcon, num: '03 · Document', h: "What you've done", p: 'Workbench Packs and Toolbox artifacts become your AI use-case inventory — examiner-ready out of the box.' },
+            { icon: LockIcon, num: '04 · Govern', h: 'How you stay safe', p: 'Approval rituals and data rules reinforced through the same artifacts staff already use day to day.' },
+            { icon: NetworkIcon, num: '05 · Consult', h: "What's next", p: 'Optional Leadership Advisory — a fractional Chief AI Officer for institutions running real cohorts.' },
+          ].map(({ icon: Icon, num, h, p }) => (
+            <div key={num} className="mk-step">
+              <span className="mk-pic">
+                <Icon size={24} />
+              </span>
+              <div className="mk-num">{num}</div>
+              <h3>{h}</h3>
+              <p>{p}</p>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      {/* DEPARTMENT BREAKDOWN */}
+      <Section variant="std" surface="white">
+        <SectionHead
+          kicker="What the dashboard shows"
+          heading={<>Readiness, by department, in plain language.</>}
+          lede={<>You see exactly which teams are ready to use AI safely, which need training, and which need both — without policy theater.</>}
+        />
+        <div className="mk-by-dept">
+          <div className="mk-dept-grid">
+            {[
+              { icon: ShieldIcon, nm: 'Compliance', ct: '18 staff', score: 72, pill: 'is-hi', label: 'Ready' },
+              { icon: UsersIcon, nm: 'Retail / Branch', ct: '64 staff', score: 58, pill: 'is-me', label: 'Training needed' },
+              { icon: SendIcon, nm: 'Marketing', ct: '8 staff', score: 64, pill: 'is-me', label: 'Training needed' },
+              { icon: StarIcon, nm: 'Operations', ct: '22 staff', score: 49, pill: 'is-lo', label: 'High risk gap' },
+              { icon: FileIcon, nm: 'Lending', ct: '16 staff', score: 66, pill: 'is-me', label: 'Training needed' },
+              { icon: ChatIcon, nm: 'Leadership', ct: '14 staff', score: 78, pill: 'is-hi', label: 'Ready' },
+            ].map(({ icon: Icon, nm, ct, score, pill, label }) => (
+              <div key={nm} className="mk-dpt">
+                <div className="mk-lhs">
+                  <span className="mk-pic">
+                    <Icon size={18} />
+                  </span>
+                  <div>
+                    <div className="mk-nm">{nm}</div>
+                    <div className="mk-ct">{ct}</div>
+                  </div>
+                </div>
+                <div className="mk-score">{score}</div>
+                <span className={`mk-pill ${pill}`}>{label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Section>
+
+      {/* BRIEFING */}
+      <Section variant="std">
+        <div className="mk-briefing">
+          <div>
+            <div className="mk-k">Free · 30 minutes</div>
+            <h3>Start with an Executive Briefing.</h3>
+            <p>
+              Bring your leadership team. We walk through the assessment, the dashboard, and what
+              a 90-day rollout looks like at an institution your size. No slides, no sales pitch.
+            </p>
+            <Button variant="gold" size="lg" href="/for-institutions/advisory">
+              Book a briefing <ArrowR className="mk-ic" />
+            </Button>
+          </div>
+          <ul>
+            <li><CheckIcon className="mk-ic" />Demo on real institution data (yours or comparable)</li>
+            <li><CheckIcon className="mk-ic" />FDIC peer comparison for your asset class</li>
+            <li><CheckIcon className="mk-ic" />90-day rollout plan tailored to your shape</li>
+            <li><CheckIcon className="mk-ic" />Pricing for your headcount & departments</li>
+          </ul>
+        </div>
+      </Section>
+
+
+      {/* PRICING / ADVISORY */}
+      <Section variant="std" surface="white">
+        <SectionHead kicker="How to engage" heading={<>Two ways to work with us.</>} />
+        <div className="mk-contact-grid">
+          <div className="mk-ccard">
+            <div className="mk-lab">Self-serve</div>
+            <h3>Institution Seats</h3>
+            <div className="mk-price">
+              <div className="mk-v">$195</div>
+              <div className="mk-u">/ seat · volume pricing</div>
+            </div>
+            <p>
+              Buy Foundation Course seats in bulk. Admin dashboard. Assessment aggregated to org
+              level. Toolbox shared across staff.
+            </p>
+            <ul>
+              <li><CheckIcon className="mk-ic" />Volume discount from 10 seats</li>
+              <li><CheckIcon className="mk-ic" />Admin assigns & tracks training</li>
+              <li><CheckIcon className="mk-ic" />SSO available at 25+ seats</li>
+            </ul>
+            <Button variant="ink" size="lg" href="/for-institutions/advisory">
+              Get a Quote <ArrowR className="mk-ic" />
+            </Button>
+          </div>
+          <div className="mk-ccard">
+            <div className="mk-lab">Hands-on</div>
+            <h3>Leadership Advisory</h3>
+            <div className="mk-price">
+              <div className="mk-v">Custom</div>
+              <div className="mk-u">/ contact for engagement</div>
+            </div>
+            <p>
+              Fractional Chief AI Officer. Quarterly working sessions with leadership, monthly
+              cohort reviews, examiner-ready documentation throughout.
+            </p>
+            <ul>
+              <li><CheckIcon className="mk-ic" />Includes all course + toolbox access</li>
+              <li><CheckIcon className="mk-ic" />Custom playbooks for your institution</li>
+              <li><CheckIcon className="mk-ic" />Direct line to founder</li>
+            </ul>
+            <Button variant="gold" size="lg" href="/for-institutions/advisory">
+              Book a briefing <ArrowR className="mk-ic" />
+            </Button>
+          </div>
+        </div>
+      </Section>
+
+      <CtaBand
+        kicker="Institutions & Teams"
+        heading={<>Train the people who already run the bank.</>}
+        body={
+          <>
+            The institutions that win with AI aren't the ones with the slickest policy doc.
+            They're the ones whose staff can actually use it.
+          </>
+        }
+        actions={[
+          { label: 'Book a briefing', href: '/for-institutions/advisory', variant: 'gold' },
+          { label: 'See pricing', href: '/education', variant: 'ghost-dark' },
+        ]}
+      />
+    </div>
+  );
+}
