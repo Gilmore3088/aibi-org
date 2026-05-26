@@ -50,11 +50,41 @@ export default function SecurityPage() {
       title={<>AI governance built for institutions that get examined.</>}
       lede={
         <>
-          Aligned with <strong>SR 11-7</strong>, the <strong>Interagency TPRM Guidance</strong>,{' '}
-          <strong>ECOA / Reg B</strong>, and the <strong>AIEOG AI Lexicon</strong> — published by
-          the US Treasury, FBIIC, and FSSCC in February 2026, the first official cross-agency
-          vocabulary for financial AI governance. If your board has been asking whether AI is
-          safe for a regulated institution, the answer is not a brochure. It is a framework.
+          <span style={{ display: 'block', marginBottom: 16 }}>
+            If your board has been asking whether AI is safe for a regulated institution,
+            the answer is not a brochure. It is a framework.
+          </span>
+          <span
+            style={{
+              display: 'block',
+              fontSize: 14,
+              fontWeight: 600,
+              letterSpacing: '0.04em',
+              textTransform: 'uppercase',
+              color: 'var(--gold-soft)',
+              marginBottom: 10,
+            }}
+          >
+            Aligned with
+          </span>
+          <ul
+            style={{
+              listStyle: 'none',
+              padding: 0,
+              margin: 0,
+              display: 'grid',
+              gap: 8,
+              gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+              fontSize: 15,
+              fontWeight: 600,
+              color: 'rgba(255,255,255,0.92)',
+            }}
+          >
+            <li>SR 11-7 — Model Risk</li>
+            <li>Interagency TPRM Guidance</li>
+            <li>ECOA / Reg B</li>
+            <li>AIEOG AI Lexicon (US Treasury, FBIIC, FSSCC · Feb 2026)</li>
+          </ul>
         </>
       }
       heroAside={

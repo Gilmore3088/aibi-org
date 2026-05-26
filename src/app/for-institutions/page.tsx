@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 'use client';
 
-import { useMemo, useState } from 'react';
+// no runtime state needed
 import {
   SiteHeader,
   Section,
@@ -40,67 +40,7 @@ const StarIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M12 3l1.9 5.8L20 10
 const ChatIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" /><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" /></svg>);
 const CheckIcon = (p: IconProps) => (<svg {...sw(p)}><polyline points="20 6 9 17 4 12" /></svg>);
 
-type AssetClass = 'community' | 'mid' | 'large';
-const CLASS_MULT: Record<AssetClass, number> = { community: 1.0, mid: 0.95, large: 0.9 };
-const CLASS_LABEL: Record<AssetClass, [string, string]> = {
-  community: ['Community', '< $1B'],
-  mid: ['Mid-size', '$1B – $10B'],
-  large: ['Large', '$10B+'],
-};
-
-const DEPTS = ['compliance', 'retail', 'marketing', 'lending', 'operations', 'leadership'] as const;
-type Dept = (typeof DEPTS)[number];
-const DEPT_LABEL: Record<Dept, string> = {
-  compliance: 'Compliance',
-  retail: 'Retail',
-  marketing: 'Marketing',
-  lending: 'Lending',
-  operations: 'Operations',
-  leadership: 'Leadership',
-};
-
-function seatPrice(staff: number): { p: number; tier: string } {
-  if (staff >= 100) return { p: 145, tier: '100+ seats' };
-  if (staff >= 50) return { p: 195, tier: '50+ seats' };
-  if (staff >= 25) return { p: 245, tier: '25+ seats' };
-  return { p: 295, tier: 'Standard' };
-}
-function rolloutWindow(staff: number) {
-  if (staff >= 200) return '12–16 weeks';
-  if (staff >= 100) return '10–12 weeks';
-  if (staff >= 50) return '8–10 weeks';
-  if (staff >= 25) return '6–8 weeks';
-  return '4–6 weeks';
-}
-
 export default function ForInstitutionsPage() {
-  const [staff, setStaff] = useState(120);
-  const [cls, setCls] = useState<AssetClass>('community');
-  const [depts, setDepts] = useState<Set<Dept>>(
-    () => new Set<Dept>(['compliance', 'retail', 'marketing', 'lending']),
-  );
-
-  const calc = useMemo(() => {
-    const { p: base, tier } = seatPrice(staff);
-    const price = Math.round(base * CLASS_MULT[cls]);
-    return {
-      price,
-      tier,
-      total: price * staff,
-      hours: staff * 6,
-      window: rolloutWindow(staff),
-    };
-  }, [staff, cls]);
-
-  function toggleDept(d: Dept) {
-    setDepts((cur) => {
-      const next = new Set(cur);
-      if (next.has(d)) next.delete(d);
-      else next.add(d);
-      return next;
-    });
-  }
-
   return (
     <div className="mockup-scope">
       <SiteHeader activePath="/for-institutions" cta={{ label: 'Book a briefing', href: '/for-institutions/advisory' }} />
@@ -119,16 +59,42 @@ export default function ForInstitutionsPage() {
             <h1>Capability — not a platform.</h1>
             <p className="mk-lede">
               An education engagement for community banks and credit unions.
-              <strong> No software seats. No vendor lock-in.</strong> Three ways to bring
-              capability into your bank: a coached cohort, an institution-wide rollout, or
-              leadership advisory.
+            </p>
+            <ul
+              style={{
+                listStyle: 'none',
+                padding: 0,
+                margin: '20px 0 0',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 10,
+                fontSize: 15,
+                fontWeight: 600,
+                color: 'var(--gold-soft)',
+              }}
+            >
+              <li>A coached cohort.</li>
+              <li>An institution-wide rollout.</li>
+              <li>Leadership advisory.</li>
+            </ul>
+            <p
+              style={{
+                marginTop: 14,
+                paddingTop: 12,
+                borderTop: '1px solid rgba(255,255,255,0.12)',
+                color: 'rgba(255,255,255,0.62)',
+                fontSize: 13,
+                fontWeight: 500,
+              }}
+            >
+              No software seats. No vendor lock-in.
             </p>
             <div className="mk-ctas">
               <Button variant="gold" size="lg" href="/for-institutions/advisory">
                 Book a briefing <ArrowR className="mk-ic" />
               </Button>
-              <Button variant="ghost-dark" size="lg" href="#sizer">
-                See Team Pricing
+              <Button variant="ghost-dark" size="lg" href="/education">
+                See pricing
               </Button>
             </div>
           </div>
@@ -431,117 +397,6 @@ export default function ForInstitutionsPage() {
         </div>
       </Section>
 
-      {/* SIZER */}
-      <Section variant="std" surface="white" id="sizer">
-        <SectionHead
-          kicker="Size your rollout"
-          heading={<>What would this look like for your institution?</>}
-          lede={<>Adjust your staff count and asset class. Seat price, total cost, and rollout timeline update live.</>}
-        />
-
-        <div className="mk-sizer">
-          <div className="mk-sizer-card">
-            <div className="mk-sz-row">
-              <div className="mk-sz-label">Total staff</div>
-              <div className="mk-sz-value">{staff.toLocaleString('en-US')}</div>
-            </div>
-            <input
-              type="range"
-              min={10}
-              max={500}
-              step={5}
-              value={staff}
-              onChange={(e) => setStaff(parseInt(e.target.value, 10))}
-              className="mk-sz-slider"
-              aria-label="Total staff"
-            />
-            <div className="mk-sz-ticks">
-              <span>10</span>
-              <span>100</span>
-              <span>250</span>
-              <span>500</span>
-            </div>
-
-            <div className="mk-sz-block">
-              <div className="mk-sz-label">Asset class</div>
-              <div className="mk-sz-pills">
-                {(Object.keys(CLASS_LABEL) as AssetClass[]).map((c) => {
-                  const [t, sub] = CLASS_LABEL[c];
-                  return (
-                    <button
-                      key={c}
-                      type="button"
-                      onClick={() => setCls(c)}
-                      className={`mk-sz-pill${cls === c ? ' is-active' : ''}`}
-                    >
-                      {t}
-                      <br />
-                      <span>{sub}</span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div className="mk-sz-block">
-              <div className="mk-sz-label">Departments included</div>
-              <div className="mk-sz-pills">
-                {DEPTS.map((d) => (
-                  <button
-                    key={d}
-                    type="button"
-                    onClick={() => toggleDept(d)}
-                    className={`mk-sz-pill${depts.has(d) ? ' is-active' : ''}`}
-                  >
-                    {DEPT_LABEL[d]}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          <div className="mk-sizer-result">
-            <div className="mk-sr-head">
-              <span className="mk-lab">Live estimate</span>
-              <span className="mk-cnt">{depts.size} departments</span>
-            </div>
-            <div className="mk-sr-price">
-              <div className="mk-sr-price-v">
-                <span className="mk-dollar">$</span>
-                <span className="mk-num">{calc.price}</span>
-              </div>
-              <div className="mk-sr-price-u">per seat · {calc.tier}</div>
-            </div>
-            <div className="mk-sr-total">
-              <div className="mk-sr-total-row">
-                <span className="mk-k">Total seats</span>
-                <span className="mk-v">{staff.toLocaleString('en-US')}</span>
-              </div>
-              <div className="mk-sr-total-row">
-                <span className="mk-k">Total investment</span>
-                <span className="mk-v">${calc.total.toLocaleString('en-US')}</span>
-              </div>
-              <div className="mk-sr-total-row">
-                <span className="mk-k">Rollout window</span>
-                <span className="mk-v">{calc.window}</span>
-              </div>
-              <div className="mk-sr-total-row">
-                <span className="mk-k">Training hours</span>
-                <span className="mk-v">{calc.hours.toLocaleString('en-US')} hrs</span>
-              </div>
-            </div>
-            <div className="mk-sr-cta">
-              <Button variant="gold" size="lg" href="/for-institutions/advisory">
-                Get this quote in writing <ArrowR className="mk-ic" />
-              </Button>
-            </div>
-            <div className="mk-sr-foot">
-              Estimate includes Foundation Course seats, Toolbox access, and aggregated assessment
-              dashboard. Volume tier at 25+ ($245), 50+ ($195), 100+ ($145).
-            </div>
-          </div>
-        </div>
-      </Section>
 
       {/* PRICING / ADVISORY */}
       <Section variant="std" surface="white">
@@ -601,7 +456,7 @@ export default function ForInstitutionsPage() {
         }
         actions={[
           { label: 'Book a briefing', href: '/for-institutions/advisory', variant: 'gold' },
-          { label: 'Get Seat Pricing', href: '#sizer', variant: 'ghost-dark' },
+          { label: 'See pricing', href: '/education', variant: 'ghost-dark' },
         ]}
       />
     </div>

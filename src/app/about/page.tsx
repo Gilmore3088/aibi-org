@@ -54,10 +54,31 @@ export default function AboutPage() {
       }
       lede={
         <>
-          Built on regulator-aligned criteria. Tuition published. Methodology
-          published. We started The AI Banking Institute because the AI
-          training community banks were being sold did not survive contact
-          with an exam, a board meeting, or a teller line.
+          <span style={{ display: 'block', marginBottom: 18 }}>
+            We started The AI Banking Institute because the AI training community
+            banks were being sold did not survive contact with an exam, a board
+            meeting, or a teller line.
+          </span>
+          <ul
+            style={{
+              listStyle: 'none',
+              padding: 0,
+              margin: 0,
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '8px 14px',
+              fontSize: 14,
+              fontWeight: 600,
+              color: 'var(--gold-soft)',
+              letterSpacing: '0.02em',
+            }}
+          >
+            <li>Regulator-aligned criteria.</li>
+            <li aria-hidden style={{ opacity: 0.4 }}>·</li>
+            <li>Tuition published.</li>
+            <li aria-hidden style={{ opacity: 0.4 }}>·</li>
+            <li>Methodology published.</li>
+          </ul>
         </>
       }
       heroActions={[

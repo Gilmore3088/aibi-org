@@ -198,10 +198,27 @@ export default function EducationPage() {
       title={<>Use our assessments to measure you or your team&rsquo;s readiness.</>}
       lede={
         <>
-          Free assessments and the AiBI-Foundation course for community banks and
-          credit unions. Start with the AI Readiness Assessment, then earn the
-          AiBI-Foundation credential your examiner respects. Tuition published.
-          Methodology published.
+          <span style={{ display: 'block', marginBottom: 18 }}>
+            Free assessments and the AiBI-Foundation course — for community banks
+            and credit unions.
+          </span>
+          <ol
+            style={{
+              listStyle: 'none',
+              padding: 0,
+              margin: 0,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 10,
+              fontSize: 15,
+              fontWeight: 600,
+              color: 'var(--gold-soft)',
+            }}
+          >
+            <li>1 · Take the free Readiness Assessment.</li>
+            <li>2 · Go deeper with the $99 In-Depth Assessment.</li>
+            <li>3 · Earn the AiBI-Foundation credential your examiner respects.</li>
+          </ol>
         </>
       }
       heroActions={[
