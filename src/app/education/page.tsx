@@ -279,7 +279,8 @@ export default function EducationPage() {
           <>
             AiBI-Foundation team pricing starts at 10 seats ($199/seat) with lifetime
             access. Institution-wide rollouts include a coached cohort and an
-            aggregate dashboard for your champion.
+            aggregate dashboard for your champion.{' '}
+            <strong>No software seats. No vendor lock-in.</strong>
           </>
         ),
         actions: [

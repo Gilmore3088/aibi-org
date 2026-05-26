@@ -131,21 +131,20 @@ export default function ToolboxPage() {
         <div className="mk-container mk-hero-inner">
           <div>
             <EyebrowChip icon={<StackIcon className="mk-ic" />}>
-              Toolbox preview · 18 sample assets · Demo
+              Toolbox preview · 18 sample assets
             </EyebrowChip>
             <h1>A working kit, not a PDF graveyard.</h1>
             <p className="mk-lede">
               A preview of what your AiBI-Foundation Toolbox holds — substantive prompts,
               workflow SOPs, risk checklists, role playbooks, and saved skills. Built to use,
-              not to read. <strong>Enroll in the AiBI-Foundation course to open
-              your live Toolbox</strong> with your own saved assets.
+              not to read.
             </p>
             <div className="mk-ctas">
-              <Button variant="gold" size="lg" href="/courses/foundation/program/purchase">
-                Enroll · $295 <ArrowR className="mk-ic" />
+              <Button variant="gold" size="lg" href="#categories">
+                Browse the preview <ArrowR className="mk-ic" />
               </Button>
-              <Button variant="ghost-dark" size="lg" href="#categories">
-                Browse the preview
+              <Button variant="ghost-dark" size="lg" href="/courses/foundation/program/purchase">
+                Enroll for live access · $295
               </Button>
             </div>
           </div>

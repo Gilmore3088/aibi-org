@@ -539,8 +539,8 @@ export default function AssessmentLandingPage() {
           <div className="mk-steps">
             {[
               { n: 'Step 1', t: 'Answer 12 questions', d: 'Multiple choice, one screen each on mobile.' },
-              { n: 'Step 2', t: 'See your score', d: '62/100. Tier. Top gap. Inline, no email gate.' },
-              { n: 'Step 3', t: 'Get your report', d: '8 dimensions + starter artifact emailed.' },
+              { n: 'Step 2', t: 'Enter work email', d: 'One field. We use it to send the report — never sold, never shared.' },
+              { n: 'Step 3', t: 'See your report inline', d: '62/100. Tier. Top gap. Dimension breakdown. Starter artifact.' },
               { n: 'Step 4', t: '(Optional) Upgrade', d: '$99 In-Depth · 48 questions · full plan.' },
             ].map((s) => (
               <div key={s.n}>

@@ -214,7 +214,8 @@ const HERO_SIDE: Record<
 
 const SUITE: {
   num: string;
-  label: string;
+  price: string;
+  priceNote?: string;
   title: string;
   icon: typeof CheckSquareIcon;
   body: string;
@@ -224,7 +225,7 @@ const SUITE: {
 }[] = [
   {
     num: '01',
-    label: 'Free',
+    price: 'Free',
     title: 'Readiness Assessment',
     icon: CheckSquareIcon,
     body:
@@ -235,7 +236,8 @@ const SUITE: {
   },
   {
     num: '02',
-    label: '$99 · $79 at 10+ by request',
+    price: '$99',
+    priceNote: '$79/seat at 10+ by request',
     title: 'In-Depth Assessment',
     icon: BarsIcon,
     body:
@@ -246,7 +248,8 @@ const SUITE: {
   },
   {
     num: '03',
-    label: '$295 · $199 at 10+ · Lifetime access',
+    price: '$295',
+    priceNote: '$199/seat at 10+ · Lifetime access',
     title: 'AiBI-Foundation',
     icon: LayersIcon,
     body:
@@ -331,7 +334,7 @@ export default function HomePage() {
             <p className="mk-lede">
               Independent AI assessment and education for community banks and credit unions.
               Assess readiness, practice safely, and turn useful prompts into documented workflows
-              your examiner respects.
+              your examiner respects. <strong>No software seats. No vendor lock-in.</strong>
             </p>
             <div className="mk-ctas">
               <Button variant="gold" size="lg" href="/assessment">
@@ -348,11 +351,11 @@ export default function HomePage() {
 
       <Section variant="std">
         <SectionHead
-          kicker="Inside the platform"
-          heading={<>One command center. Three places it sends you.</>}
+          kicker="How the Institute works"
+          heading={<>One place to start. Three things you walk out with.</>}
           lede={
             <>
-              Every learner lands in the same view: take an assessment, run a scenario, or pull from the toolbox. Click a tab to preview what's inside.
+              Every learner enters the same way: take an assessment, practice in a scenario, or pull a tool from the toolbox. Click a tab to see what each one ships.
             </>
           }
         />
@@ -360,8 +363,8 @@ export default function HomePage() {
           <div className="mk-hp-card">
             <div className="mk-head">
               <div>
-                <div className="mk-k">Platform Preview</div>
-                <div className="mk-t">Learner Command Center</div>
+                <div className="mk-k">Inside the Institute</div>
+                <div className="mk-t">Where each learner begins</div>
               </div>
               <PlayCircleIcon className="mk-ic-lg" size={32} />
             </div>
@@ -420,7 +423,7 @@ export default function HomePage() {
       <Section variant="std">
         <SectionHead kicker="Product Suite" heading={<>A clear path from interest to implementation.</>} />
         <div className="mk-suite">
-          {SUITE.map(({ num, label, title, icon: Icon, body, outcome, next, href }) => (
+          {SUITE.map(({ num, price, priceNote, title, icon: Icon, body, outcome, next, href }) => (
             <Link key={num} className="mk-scard" href={href} aria-label={title}>
               <div className="mk-top-rule" />
               <div className="mk-body">
@@ -430,7 +433,20 @@ export default function HomePage() {
                   </span>
                   <span className="mk-num">{num}</span>
                 </div>
-                <div className="mk-lbl">{label}</div>
+                <div className="mk-lbl">{price}</div>
+                {priceNote && (
+                  <div
+                    style={{
+                      fontSize: 12,
+                      color: 'var(--slate-500)',
+                      fontWeight: 500,
+                      letterSpacing: '0.02em',
+                      marginTop: 2,
+                    }}
+                  >
+                    {priceNote}
+                  </div>
+                )}
                 <h3>{title}</h3>
                 <p
                   style={{

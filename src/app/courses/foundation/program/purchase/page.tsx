@@ -240,11 +240,24 @@ export default async function PurchasePage() {
               color: 'var(--ledger-ink)',
             }}
           >
-            AI Banking{' '}
+            AiBI-
             <em style={{ color: 'var(--ledger-accent)', fontStyle: 'normal', fontWeight: 500 }}>
               Foundation.
             </em>
           </h1>
+          <p
+            style={{
+              fontFamily: 'var(--ledger-serif)',
+              fontSize: 18,
+              lineHeight: 1.5,
+              color: 'var(--ledger-accent)',
+              margin: '0 0 12px',
+              maxWidth: '60ch',
+              fontWeight: 600,
+            }}
+          >
+            The credential your examiner respects.
+          </p>
           <p
             style={{
               fontFamily: 'var(--ledger-serif)',
