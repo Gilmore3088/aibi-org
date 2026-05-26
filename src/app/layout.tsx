@@ -33,6 +33,7 @@ const CHROMELESS_PATHS: readonly string[] = [
   '/for-institutions',
   '/playbooks',
   '/dashboard',
+  '/courses/foundation/program',
   '/about',
   '/faq',
   '/security',
