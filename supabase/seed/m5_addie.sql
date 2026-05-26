@@ -716,6 +716,42 @@ UPDATE addie.lessons
 SET title = 'Project Brief → Workbench Pack: drive a real Pack run on your own work'
 WHERE id = 'm5.3';
 
+-- 2a. Re-author m5.3 body around the nine-section Project Brief that
+-- drives a real Pack run (2026-05-25 follow-up sync; mirrors live DB
+-- exactly so re-running this seed reproduces production state).
+UPDATE addie.lessons SET body_md = $LESSON$
+You wrote a Pack on a synthetic source in M4. Now you write a Project Brief that drives the Pack on a real project of your own. The Brief is the document that frames the work; the Pack is the saved record of doing the work.
+
+## SCRIPT (verbatim)
+
+> [stat] 1 | One Project Brief drives one real Pack run | The brief is short (one page) and dense (every section earns its place). The Pack run that follows is the proof the brief was sharp enough to drive real work.
+
+A Project Brief has nine sections. None of them are optional; most of them are two sentences.
+
+**1. Goal in one sentence.** "Reduce the average teller time on a fee-dispute reply by 40%."
+
+**2. Non-goals.** What this brief is explicitly NOT trying to fix. "Not improving the underlying fee policy; not changing the dispute-resolution workflow."
+
+**3. Audience.** Who reads the output. Member? Teller? Branch manager? Examiner? Each audience changes the prompt's tone and format.
+
+**4. Source materials.** What public material the Pack will use as context. Anonymized examples, public reg text, generic process documents. Never customer data; never MNPI.
+
+**5. Constraints.** What is out of bounds. Named regulations to not invent. Tone bands the output must stay inside. Length caps.
+
+**6. Success criteria.** What "good enough to send" looks like, written as observable checks. "Teller can read aloud in 30 seconds; no invented citations; member name not present."
+
+**7. Risk + governance owner.** Use boundary the Pack will run under (personal sandbox / named-task production). If production, who is the approver.
+
+**8. Time budget.** How long the brief author expects the first Pack run to take. Honest estimate.
+
+**9. Question for the model.** One line the model can answer that proves the brief is sharp enough. If the model has to come back asking for clarification, the brief was thin.
+
+> [tip] Write the brief on paper first. Nine sections in two sentences each = 18 sentences = ~10 minutes. The Pack run that follows takes another 20–30 minutes the first time.
+
+> [warn] Brief constraints (5) and success criteria (6) are where the Pack's review tags (M4) come from. If the brief is sloppy here, the Pack you produce will be sloppy in the same places.
+$LESSON$
+WHERE id = 'm5.3';
+
 -- 3. M5.5 closing copy reconciled with the Pack shape. The previous
 -- body referenced "Workbench Pack" as if it existed; now it does, and
 -- the closing recap names the artifact correctly.

@@ -840,15 +840,17 @@ UPDATE addie.lessons SET is_branched = true WHERE id = 'm4.4';
 -- vocabulary (2026-05-25). Replaces the prior Skill / SkillTemplate /
 -- VerifiedSkill arc so the body reads consistent with the
 -- WorkbenchPackBuilder + workbench_pack takeaway_artifact_type.
+--
+-- 2026-05-25 follow-up sync: bodies for m4.1–m4.4 mirror the live DB
+-- exactly so re-running this seed against a fresh Supabase reproduces
+-- the production state (closes the #1 footgun from the
+-- 2026-05-25 handoff).
 ----------------------------------------------------------------------
 
 UPDATE addie.lessons SET title = 'What a Workbench Pack is' WHERE id = 'm4.1';
 UPDATE addie.lessons SET title = 'Build your first Pack' WHERE id = 'm4.2';
 UPDATE addie.lessons SET title = 'Build a Pack for your role' WHERE id = 'm4.3';
 UPDATE addie.lessons SET title = 'Test, refine, governance overlay' WHERE id = 'm4.4';
-
--- Bodies follow — these mirror the live DB state after PR24 applied
--- via Supabase MCP. Re-running the seed restores them to this state.
 
 UPDATE addie.lessons SET body_md = $BODY$
 A Workbench Pack is the saved record of one real piece of work moved from input to send-ready output, with the model's contribution shown — and reviewed — in between. It is the M4 unit. The whole module produces a library of them.
@@ -859,14 +861,67 @@ A Workbench Pack is the saved record of one real piece of work moved from input 
 
 Three things to understand before you build one.
 
-**One: a Pack is not a prompt.** A prompt is one turn. A Pack is the whole sequence — the source you brought, the prompt you sent, what came back, what was wrong with it, what you changed, the questions you confirmed before sending, and the artifact you actually used.
+**One: a Pack is not a prompt.** A prompt is one turn. A Pack is the whole sequence — the source you brought, the prompt you sent, what came back, what was wrong with it, what you changed, the questions you confirmed before sending, and the artifact you actually used. Future-you re-opens the Pack and sees not just *what* you produced but *how you got there*.
 
-**Two: a Pack is one composite document, not five separate files.** One row in your Toolbox. Re-openable, re-runnable, exportable as plain markdown so the recipe travels into whatever AI tool your bank has sanctioned.
+**Two: a Pack is one composite document, not five separate files.** One row in your Toolbox. Re-openable, re-runnable, exportable as plain markdown so the recipe travels into whatever AI tool your bank has sanctioned. "Copy as Markdown" is the move that makes a Pack useful beyond the Toolbox.
 
-**Three: the governance strip is the documentation a CRO needs.** Use boundary, version, approver, validation notes. These four fields are why your model risk function can defend the Pack under [[Gloss:SR 11-7]]. Skip them in personal use; fill them the moment a Pack moves into a workflow that touches member-facing work.
+**Three: the governance strip is the documentation a CRO needs.** Use boundary ("personal sandbox" or "named-task production"), version, approver, validation notes. These four fields are why your model risk function can defend the Pack under SR 11-7. Skip them in personal use; fill them the moment a Pack moves into a workflow that touches member-facing work.
+
+> [tip] If you've never seen one before: the Pack on the next lesson loads with a synthetic banking source. Run through the seven regions once before you start thinking about your own work.
 $BODY$
 WHERE id = 'm4.1';
 
--- (m4.2, m4.3, m4.4 body_md content live in the DB via PR24 MCP apply;
--- abbreviated here. Full bodies in DB; this seed block can be expanded
--- to full text in a follow-up sync PR.)
+UPDATE addie.lessons SET body_md = $BODY$
+Take a synthetic source through the workbench: input → prompt → output → review → improved → confirm → final. The save lives in your Toolbox as one Workbench Pack you can re-open any time real work shows up that fits the shape.
+
+## SCRIPT (verbatim)
+
+> [stat] 4 | Four moves, four save points | Source the material · Send the prompt · Tag what is wrong with the first output · Sign off on the final. The Pack collects all four.
+
+Four things to do, in order, on the workbench:
+
+**One: bring a source.** The lab loads a synthetic banking artifact — adverse-action letter draft, vendor proposal stub, complaint summary. Real data discipline applies: synthetic only. The source is what the Pack will frame the rest of the work against.
+
+**Two: send a prompt that names role, task, format.** The M3.1 default brief works here. Constraints (3.3b pattern 3) work if the source includes named regulations the model should not invent around. Type the prompt; send.
+
+**Three: review tags.** The first output is almost never the send-ready output. Click the banker-context chips that apply — fabricated citation, tone off for member-facing, too long, missing constraint, MNPI risk, invented number. The tags become your re-prompt context for the improved output.
+
+**Four: confirm + save.** Four questions: did it cite outside the source? Comfortable sending as-is? Where does it need a human pass? What input would break this Pack? Answer; save. The Pack lands in your Toolbox.
+
+> [warn] The PII screen on the input box blocks obvious patterns — account numbers, SSNs, full names. It is a backstop, not a substitute for the data-discipline habit. The habit is what carries when you take the Pack into a tool your bank approved that does not have a screen.
+$BODY$
+WHERE id = 'm4.2';
+
+UPDATE addie.lessons SET body_md = $BODY$
+Same workbench. This time the source is pre-loaded for your role — Reg E summary for compliance, member-comms reply for customer-facing, process memo for back-office, vendor questionnaire for technical, board talking-points for leadership. Tune to your institution, then save.
+
+## SCRIPT (verbatim)
+
+> [stat] 1 | One Pack you would hand to a colleague today | A Pack is not a Pack until you could hand it to a colleague and have them run it cold. That is the bar for a saved Pack on this lesson.
+
+Three moves on a track-defaulted Pack:
+
+**One: trust the pre-load, then question it.** If the source and the suggested prompt fit your week, accept them. If they don't — if you read vendor questionnaires more than Reg E updates — swap the source.
+
+**Two: tune to your institution.** "Member" vs. "customer." "CCO" vs. "BSA officer." Edit the prompt's role and constraint language until the output sounds like your bank at a glance.
+
+**Three: save at the would-hand-to-a-colleague bar.** Not at that bar yet? Flip the use_boundary to "personal sandbox" and the title to draft. The governance strip exists so you can save messy work without pretending it is production.
+$BODY$
+WHERE id = 'm4.3';
+
+UPDATE addie.lessons SET body_md = $BODY$
+A saved Pack is the artifact; the four-question guardrail check is what turns it from a guess into something you would defend. Three moves on every Pack before it leaves the workbench.
+
+## SCRIPT (verbatim)
+
+> [stat] 4 | Four questions every Pack carries | Citations outside the source? · Send as-is? · Where does it need a human pass? · One input pattern that would break it?
+
+**One: run on realistic new material.** A Pack tested only on its training source is a guess. Load a fresh synthetic source — different complaint, different rule excerpt, different proposal — and run the Pack again. Read the output as if it arrived at 3pm Thursday: send, forward, or fix?
+
+**Two: walk the four questions.** Answer each in writing. The Pack's validation_notes field carries the answers — that field is what your model risk function reads when the Pack ever moves to named-task production.
+
+**Three: decide the use boundary.** If the Pack will only ever run on synthetic in your workbench, leave use_boundary at "personal sandbox." If it will be re-run against real institution material with outputs that leave your desktop, flip it to "named-task production" — and the next conversation is with your CRO before the Pack runs again.
+
+> [warn] More than four guardrail notes signals the Pack is doing too much. Split it. Two narrow Packs each defended on four notes beat one wide Pack defended on twelve.
+$BODY$
+WHERE id = 'm4.4';
