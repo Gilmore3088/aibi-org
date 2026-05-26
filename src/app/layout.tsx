@@ -46,8 +46,6 @@ const CHROMELESS_PATHS: readonly string[] = [
   // Pre-existing chromeless routes (own brand lockup or no chrome by design)
   '/coming-soon',
   '/design-system',
-  '/lms-preview',
-  '/courses/foundation-preview',
   // /courses/foundation/program and /auth intentionally NOT chromeless —
   // both need the global SiteNav. /auth surfaces drop the LedgerSurface
   // internal lockup via showHeader={false} so there's no duplicate mark.

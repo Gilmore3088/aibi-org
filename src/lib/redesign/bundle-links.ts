@@ -13,9 +13,11 @@
  * gracefully instead of 404'ing. Add to the map as new routes ship.
  */
 
+// Bundles still mapped to live routes. Entries for surfaces that were
+// archived into docs/brand-refresh-2026-05-09/promoted/ during the
+// 2026-05 migration (AI Banking Institute, AI Readiness Briefing,
+// User Home, LMS Prototype, courses/foundation.html) were removed.
 const BUNDLE_TO_ROUTE: Record<string, string> = {
-  'AI Banking Institute.html': '/',
-  'AI Readiness Briefing.html': '/for-institutions/advisory',
   'Design System.html': '/design-system',
   'My Toolbox.html': '/my-toolbox',
   'My Toolbox v1.html': '/my-toolbox',
@@ -26,7 +28,6 @@ const BUNDLE_TO_ROUTE: Record<string, string> = {
   'Playground.html': '/playground',
   'Playground v1.html': '/playground',
   'Playground v2.html': '/playground',
-  'LMS Prototype.html': '/lms-preview',
 };
 
 export function rewriteBundleLinks(html: string): string {
