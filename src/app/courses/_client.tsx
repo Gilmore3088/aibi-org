@@ -2,6 +2,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import {
   SiteHeader,
   Section,
@@ -37,6 +38,26 @@ const StackIcon = (p: IconProps) => (<svg {...sw(p)}><polyline points="22 12 12 
 const CheckIcon = (p: IconProps) => (<svg {...sw(p)}><polyline points="20 6 9 17 4 12" /></svg>);
 const CheckSquareIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M9 11l3 3L22 4" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" /></svg>);
 const ArrowR = (p: IconProps) => (<svg {...sw(p)}><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>);
+const PlayIcon = (p: IconProps) => (<svg {...sw(p)}><polygon points="6 4 20 12 6 20 6 4" fill="currentColor" stroke="none" /></svg>);
+const FlaskIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M10 2v7.31" /><path d="M14 9.3V2" /><path d="M8.5 2h7" /><path d="M14 9.3a6.5 6.5 0 1 1-4 0" /></svg>);
+
+// ---------- What you build (4 artifacts) ----------
+
+const WHAT_YOU_BUILD: { title: string; body: string; icon: typeof CheckSquareIcon }[] = [
+  { title: 'Prompt Card', body: 'A reviewed, reusable prompt with role, task, constraints, and a review checklist baked in.', icon: ChatIcon },
+  { title: 'Saved Skill', body: 'A named, tagged skill with run history — promote a working prompt into a team asset.', icon: RectIcon },
+  { title: 'Workflow SOP', body: 'Input, output, retention, and review documented as an examiner-readable workflow.', icon: FileIcon },
+  { title: 'Review Checklist', body: 'A human-approval log attached to every AI-assisted artifact you produce.', icon: CheckIcon },
+];
+
+// ---------- Inside one lesson (the loop) ----------
+
+const LESSON_STEPS: { step: string; title: string; body: string; icon: typeof CheckSquareIcon }[] = [
+  { step: 'watch', title: 'Watch', body: '5–8 minute concept video. Why the technique works, where it fails.', icon: PlayIcon },
+  { step: 'practice', title: 'Practice', body: 'Run a sandbox scenario with realistic synthetic banking data.', icon: FlaskIcon },
+  { step: 'build', title: 'Build', body: 'Save the working output as a reusable asset to your Toolbox.', icon: RectIcon },
+  { step: 'review', title: 'Review', body: 'Run the human-approval checklist before the artifact goes into real work.', icon: CheckIcon },
+];
 
 // ---------- Module data ----------
 
@@ -105,19 +126,19 @@ export default function CoursesIndexPage() {
         <div className="mk-container mk-hero-inner">
           <div>
             <EyebrowChip icon={<LayersIcon className="mk-ic" />}>
-              Foundation Course · $295 · Self-paced
+              AiBI-Foundation · $295 · Self-paced
             </EyebrowChip>
-            <h1>A practical course for bankers who need to build safely.</h1>
+            <h1>Learn AI by building reviewed banking workflows.</h1>
             <p className="mk-lede">
-              Short lessons, guided practice, and work products that go straight into your toolkit.
-              Built for one banker at a time — no cohorts, no calendars.
+              A self-paced course for bankers who need practical AI skills, safe practice, and reusable
+              work products — not generic AI theory.
             </p>
             <div className="mk-ctas">
-              <Button variant="gold" size="lg" href="/courses/foundation/program/purchase">
-                Enroll · $295 <ArrowR className="mk-ic" />
+              <Button variant="gold" size="lg" href="#curriculum">
+                View curriculum <ArrowR className="mk-ic" />
               </Button>
-              <Button variant="ghost-dark" size="lg" href="/courses/foundation-preview">
-                Preview Module 1 (Free)
+              <Button variant="ghost-dark" size="lg" href="#what-you-build">
+                See what learners build
               </Button>
             </div>
           </div>
@@ -174,56 +195,84 @@ export default function CoursesIndexPage() {
         </div>
       </section>
 
-      {/* WHAT YOU'LL BUILD */}
+      {/* SMALL ASSESSMENT REDIRECT STRIP */}
+      <div className="mk-strip">
+        <div className="mk-container">
+          <span>Not sure where to start? Take the free readiness check first.</span>
+          <Link href="/assessment" className="mk-strip-link">
+            Free Readiness Assessment <ArrowR className="mk-ic" />
+          </Link>
+        </div>
+      </div>
+
+      {/* WHAT YOU BUILD — 4 artifact cards */}
+      <Section variant="std" surface="white">
+        <SectionHead
+          kicker="What you build"
+          heading={<>Four artifacts you keep and reuse.</>}
+        />
+        <div id="what-you-build" className="mk-build4">
+          {WHAT_YOU_BUILD.map(({ title, body, icon: Icon }) => (
+            <div key={title} className="mk-build-card">
+              <span className="mk-pic-ink-gold">
+                <Icon size={22} />
+              </span>
+              <h3>{title}</h3>
+              <p>{body}</p>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      {/* INSIDE ONE LESSON */}
       <Section variant="std">
         <SectionHead
-          kicker="What you'll build"
-          heading={<>A reusable Workbench Pack you can hand to a manager Monday.</>}
+          kicker="Inside one lesson"
+          heading={<>Watch → Practice → Build → Review.</>}
+          lede={
+            <>
+              Every module follows the same loop. Short concept video, hands-on lab, saved artifact,
+              human review checklist.
+            </>
+          }
         />
-        <div className="mk-build">
-          <div className="mk-left">
-            <div className="mk-k">Artifact preview</div>
-            <h3>The Workbench Pack</h3>
-            <p>
-              Every module ends with a saved artifact. By the end of the course you've built a
-              complete Pack — your prompts, your workflow SOPs, your risk checklists, your role
-              playbooks. It travels with you, not us.
-            </p>
-            <ul>
-              <li>4 substantive lab exercises (Data, Compliance, Loan, Ops)</li>
-              <li>Banker-contextual review tags on every output</li>
-              <li>Realistic synthetic scenarios — never real banking material</li>
-              <li>Exports as PDF, docx, or copy-to-clipboard prompt blocks</li>
-            </ul>
-            <span className="mk-stamp">
-              <CheckSquareIcon className="mk-ic" />
-              Examiner-ready format
-            </span>
-          </div>
-          <div className="mk-pack">
-            <div className="mk-top">
-              <div className="mk-k">Workbench Pack · v1</div>
-              <div className="mk-n">CB · Compliance</div>
-            </div>
-            {[
-              ['Lab 1', 'Data summarization — Branch deposits Q3'],
-              ['Lab 2', 'Procedure cleanup — KYC refresh SOP'],
-              ['Lab 3', 'Loan review — Decline letter draft'],
-              ['Lab 4', 'Ops playbook — Incident response runbook'],
-              ['Review', 'Human approval log attached'],
-              ['Owner', 'Lisa M. · Compliance Lead'],
-            ].map(([k, v]) => (
-              <div key={k} className="mk-row">
-                <div className="mk-k">{k}</div>
-                <div className="mk-v">{v}</div>
+        <div className="mk-lesson">
+          <div className="mk-lesson-steps">
+            {LESSON_STEPS.map(({ step, title, body, icon: Icon }, i) => (
+              <div key={step} className="mk-lesson-step">
+                <span className="mk-pic">
+                  <Icon size={20} />
+                </span>
+                <div className="mk-lesson-meta">Step {i + 1}</div>
+                <div className="mk-lesson-name">{title}</div>
+                <p>{body}</p>
               </div>
             ))}
+          </div>
+          <div className="mk-lesson-card">
+            <div className="mk-top">
+              <div className="mk-k">Lesson preview · Module 2</div>
+              <div className="mk-n">Prompt Foundations</div>
+            </div>
+            <div className="mk-lesson-row">
+              <div className="mk-k">Prompt structure</div>
+              <div className="mk-v">Role · Task · Context · Constraints · Output · Review</div>
+            </div>
+            <div className="mk-lesson-row">
+              <div className="mk-k">Practice activity</div>
+              <div className="mk-v">Rewrite a weak prompt until it passes the review checklist</div>
+            </div>
+            <div className="mk-lesson-row">
+              <div className="mk-k">Saved to Toolbox</div>
+              <div className="mk-v">Reviewed Prompt Card</div>
+            </div>
           </div>
         </div>
       </Section>
 
       {/* MODULES */}
       <Section variant="std" surface="white">
+        <div id="curriculum" />
         <SectionHead
           kicker="Curriculum"
           heading={<>Five modules. Each one ends with something useful.</>}
@@ -277,51 +326,76 @@ export default function CoursesIndexPage() {
         </div>
       </Section>
 
-      {/* PRICING */}
+      {/* CREDENTIAL */}
       <Section variant="std">
+        <SectionHead
+          kicker="Credential"
+          heading={<>Earn AiBI-Foundation by submitting reviewed work.</>}
+          lede={
+            <>
+              Completion is not a multiple-choice quiz. You earn the credential by working through
+              every module and submitting your reviewed artifacts.
+            </>
+          }
+        />
+        <div className="mk-credential">
+          {[
+            { k: 'Complete lessons', v: 'Watch and finish every module in the curriculum.' },
+            { k: 'Pass review activity', v: 'Each lab requires a human-approval checklist on the output.' },
+            { k: 'Submit artifacts', v: 'Three reviewed AI artifacts saved to your Toolbox.' },
+            { k: 'Credential', v: 'AiBI-Foundation · The AI Banking Institute on completion.' },
+          ].map(({ k, v }) => (
+            <div key={k} className="mk-credential-row">
+              <span className="mk-pic-ink-gold">
+                <CheckSquareIcon size={18} />
+              </span>
+              <div>
+                <div className="mk-k">{k}</div>
+                <div className="mk-v">{v}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      {/* PRICING */}
+      <Section variant="std" surface="white">
         <div className="mk-pricing">
           <div>
             <div className="mk-k">One-time · No subscription</div>
             <div className="mk-price">
               <div className="mk-v">$295</div>
-              <div className="mk-u">/ seat</div>
+              <div className="mk-u">individual</div>
             </div>
             <p>
-              Lifetime access to course, Workbench Pack, and your full Toolbox. Institution
-              seats available at volume pricing.
+              Includes course, sandbox practice, Toolbox assets, reviewed artifacts, and the
+              AiBI-Foundation credential. Team pricing available at 10+ seats.
             </p>
             <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
               <Button variant="gold" size="lg" href="/courses/foundation/program/purchase">
-                Enroll · $295
+                Enroll in AiBI-Foundation
               </Button>
               <Button variant="ghost-dark" size="lg" href="/for-institutions">
-                Team Pricing <ArrowR className="mk-ic" />
+                Ask about team enrollment <ArrowR className="mk-ic" />
               </Button>
             </div>
           </div>
           <ul>
-            <li><CheckIcon className="mk-ic" />5 modules + bonus Toolbox</li>
-            <li><CheckIcon className="mk-ic" />4 substantive lab exercises</li>
-            <li><CheckIcon className="mk-ic" />Workbench Pack you keep</li>
-            <li><CheckIcon className="mk-ic" />Foundation Certificate on completion</li>
-            <li><CheckIcon className="mk-ic" />Self-paced · No cohorts</li>
+            <li><CheckIcon className="mk-ic" />Self-paced · Lifetime access</li>
+            <li><CheckIcon className="mk-ic" />Sandbox practice + Toolbox assets</li>
+            <li><CheckIcon className="mk-ic" />Three reviewed artifacts you keep</li>
+            <li><CheckIcon className="mk-ic" />AiBI-Foundation credential on completion</li>
           </ul>
         </div>
       </Section>
 
-      {/* CTA */}
+      {/* FINAL CTA */}
       <CtaBand
-        kicker="Foundation Course"
-        heading={<>Build the skill. Keep the artifact.</>}
-        body={
-          <>
-            Six hours, five modules, one Workbench Pack you can show your team. Start with the
-            free preview — no email gate.
-          </>
-        }
+        heading={<>Ready to build your first reviewed AI workflow?</>}
+        body={<>Three reviewed artifacts. One credential. No subscription.</>}
         actions={[
-          { label: 'Enroll · $295', href: '/courses/foundation/program/purchase', variant: 'gold' },
-          { label: 'Preview Module 1', href: '/courses/foundation-preview', variant: 'ghost-dark' },
+          { label: 'Enroll in AiBI-Foundation', href: '/courses/foundation/program/purchase', variant: 'gold' },
+          { label: 'Ask about team enrollment', href: '/for-institutions', variant: 'ghost-dark' },
         ]}
       />
     </div>

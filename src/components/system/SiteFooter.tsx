@@ -22,7 +22,7 @@ const LINK_GROUPS: readonly LinkGroup[] = [
     label: "Start here",
     links: [
       { href: "/assessment/start", label: "Take the assessment" },
-      { href: "/education", label: "Education" },
+      { href: "/courses", label: "Course" },
       { href: "/for-institutions", label: "For institutions" },
       { href: "/research", label: "Research" },
     ],

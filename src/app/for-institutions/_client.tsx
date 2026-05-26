@@ -93,7 +93,7 @@ export default function ForInstitutionsPage() {
               <Button variant="gold" size="lg" href="/for-institutions/advisory">
                 Book a briefing <ArrowR className="mk-ic" />
               </Button>
-              <Button variant="ghost-dark" size="lg" href="/education">
+              <Button variant="ghost-dark" size="lg" href="/courses">
                 See pricing
               </Button>
             </div>

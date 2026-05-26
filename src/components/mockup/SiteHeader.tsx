@@ -3,8 +3,8 @@ import { Button } from './Button';
 
 const PRIMARY_NAV: { label: string; href: string }[] = [
   { label: 'Home', href: '/' },
-  { label: 'Course', href: '/courses' },
   { label: 'Assessment', href: '/assessment' },
+  { label: 'Course', href: '/courses' },
   { label: 'Sandbox', href: '/playground' },
   { label: 'Toolbox', href: '/my-toolbox' },
   { label: 'Teams', href: '/for-institutions' },

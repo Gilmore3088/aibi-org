@@ -19,7 +19,7 @@ export function Paywall() {
       </p>
       <div className="mt-10 flex flex-col gap-4 sm:flex-row">
         <Link
-          href="/education"
+          href="/courses"
           className="inline-flex items-center justify-center rounded-[2px] bg-[color:var(--ledger-accent)] px-6 py-3 font-sans text-[11px] font-semibold uppercase tracking-[1.2px] text-[color:var(--ledger-bg)] hover:bg-[color:var(--ledger-accent)]"
         >
           Browse Courses

@@ -69,10 +69,15 @@ const nextConfig = {
   // without having to know the canonical routes.
   async redirects() {
     return [
-      { source: '/courses', destination: '/education', permanent: true },
-      { source: '/certifications', destination: '/education', permanent: true },
+      // 2026-05-26: /courses is now the canonical Course landing.
+      // /education is retired as a tab and redirects to /courses; the
+      // 2026-04-17 catalog-style page is replaced by a course-focused
+      // page at /courses (see src/app/courses/_client.tsx).
+      { source: '/education', destination: '/courses', permanent: true },
+      { source: '/education/:path*', destination: '/courses', permanent: true },
+      { source: '/certifications', destination: '/courses', permanent: true },
       { source: '/services', destination: '/for-institutions', permanent: true },
-      { source: '/foundations', destination: '/education', permanent: true },
+      { source: '/foundations', destination: '/courses', permanent: true },
       { source: '/toolbox', destination: '/dashboard/toolbox', permanent: true },
       { source: '/toolbox/:path*', destination: '/dashboard/toolbox/:path*', permanent: true },
       // 2026-05-26: /resources → /research consolidation. Article folders
@@ -99,16 +104,17 @@ const nextConfig = {
       { source: '/education/practitioner', destination: '/courses/foundation/program', permanent: false },
       { source: '/education/practitioner/:path*', destination: '/courses/foundation/program/:path*', permanent: false },
       // /education/specialist and /education/leader retired 2026-05-26;
-      // redirect to the catalog so legacy links don't 404.
-      { source: '/education/specialist', destination: '/education', permanent: true },
-      { source: '/education/specialist/:path*', destination: '/education', permanent: true },
-      { source: '/education/leader', destination: '/education', permanent: true },
-      { source: '/education/leader/:path*', destination: '/education', permanent: true },
+      // legacy paths now resolve to the Course landing (/education itself
+      // also redirects to /courses — see the top of this list).
+      { source: '/education/specialist', destination: '/courses', permanent: true },
+      { source: '/education/specialist/:path*', destination: '/courses', permanent: true },
+      { source: '/education/leader', destination: '/courses', permanent: true },
+      { source: '/education/leader/:path*', destination: '/courses', permanent: true },
       // /courses/aibi-s and /courses/aibi-l retired 2026-05-26.
-      { source: '/courses/aibi-s', destination: '/education', permanent: true },
-      { source: '/courses/aibi-s/:path*', destination: '/education', permanent: true },
-      { source: '/courses/aibi-l', destination: '/education', permanent: true },
-      { source: '/courses/aibi-l/:path*', destination: '/education', permanent: true },
+      { source: '/courses/aibi-s', destination: '/courses', permanent: true },
+      { source: '/courses/aibi-s/:path*', destination: '/courses', permanent: true },
+      { source: '/courses/aibi-l', destination: '/courses', permanent: true },
+      { source: '/courses/aibi-l/:path*', destination: '/courses', permanent: true },
       { source: '/consulting', destination: '/for-institutions/advisory', permanent: true },
       // 2026-05-26: /results used to render a full sample report
       // (score, tier, dimensions) on a public URL with no email gate

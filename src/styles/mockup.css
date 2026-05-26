@@ -2585,3 +2585,137 @@ section.mk-std { padding: 56px 0; }
 .mk-impact-meta {
   font-size: 13px; color: rgba(255,255,255,0.62); font-weight: 500;
 }
+
+/* ============================================================
+   Course page rework (2026-05-26)
+   ============================================================ */
+
+/* Small assessment redirect strip */
+.mk-strip {
+  background: var(--cream-2);
+  border-bottom: 1px solid var(--slate-200);
+  padding: 14px 0;
+  font-size: 14px;
+}
+.mk-strip .mk-container {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; flex-wrap: wrap;
+}
+.mk-strip > .mk-container > span { color: var(--slate-600); font-weight: 500; }
+.mk-strip-link {
+  color: var(--ink); font-weight: 600; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 6px;
+  border-bottom: 2px solid var(--gold); padding-bottom: 2px;
+}
+.mk-strip-link:hover { color: var(--gold-deep); }
+
+/* What you build — 4 artifact cards */
+.mk-build4 {
+  display: grid; gap: 16px; grid-template-columns: 1fr;
+}
+@media (min-width: 640px) { .mk-build4 { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1024px) { .mk-build4 { grid-template-columns: repeat(4, 1fr); } }
+.mk-build-card {
+  background: #fff; padding: 24px;
+  border: 1px solid var(--slate-200); border-radius: var(--r-2xl);
+  box-shadow: var(--shadow-soft);
+  display: flex; flex-direction: column; gap: 10px;
+}
+.mk-build-card .mk-pic-ink-gold {
+  width: 40px; height: 40px; border-radius: var(--r-md);
+  background: var(--ink); color: var(--gold);
+  display: inline-flex; align-items: center; justify-content: center;
+  margin-bottom: 6px;
+}
+.mk-build-card h3 {
+  font-size: 18px; font-weight: 700; color: var(--ink);
+  margin: 0; line-height: 1.25;
+}
+.mk-build-card p {
+  font-size: 14px; line-height: 1.55; color: var(--slate-600);
+  margin: 0;
+}
+
+/* Inside one lesson */
+.mk-lesson {
+  display: grid; gap: 24px; grid-template-columns: 1fr;
+}
+@media (min-width: 900px) { .mk-lesson { grid-template-columns: 1fr 1fr; } }
+.mk-lesson-steps {
+  display: grid; gap: 12px; grid-template-columns: 1fr;
+}
+@media (min-width: 500px) { .mk-lesson-steps { grid-template-columns: 1fr 1fr; } }
+.mk-lesson-step {
+  background: var(--cream); padding: 20px;
+  border-radius: var(--r-xl); border: 1px solid var(--slate-200);
+}
+.mk-lesson-step .mk-pic {
+  width: 36px; height: 36px; border-radius: var(--r-md);
+  background: var(--ink); color: var(--gold);
+  display: inline-flex; align-items: center; justify-content: center;
+  margin-bottom: 12px;
+}
+.mk-lesson-meta {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--gold-deep);
+}
+.mk-lesson-name {
+  font-size: 18px; font-weight: 700; color: var(--ink);
+  margin: 2px 0 8px;
+}
+.mk-lesson-step p {
+  font-size: 14px; line-height: 1.5; color: var(--slate-600);
+  margin: 0;
+}
+.mk-lesson-card {
+  background: var(--ink); color: #fff;
+  border-radius: var(--r-2xl); padding: 28px;
+  box-shadow: var(--shadow-feature);
+  display: flex; flex-direction: column; gap: 14px;
+}
+.mk-lesson-card .mk-top {
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+}
+.mk-lesson-card .mk-k {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--gold-soft);
+}
+.mk-lesson-card .mk-n {
+  font-size: 20px; font-weight: 700; margin-top: 4px;
+}
+.mk-lesson-row {
+  display: flex; flex-direction: column; gap: 4px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.mk-lesson-row:last-child { border-bottom: 0; }
+.mk-lesson-row .mk-v {
+  font-size: 15px; font-weight: 600; color: #fff; line-height: 1.4;
+}
+
+/* Credential rows */
+.mk-credential {
+  display: grid; gap: 12px; grid-template-columns: 1fr;
+  max-width: 800px;
+}
+@media (min-width: 720px) { .mk-credential { grid-template-columns: 1fr 1fr; } }
+.mk-credential-row {
+  display: flex; gap: 14px; align-items: flex-start;
+  background: #fff; padding: 18px 20px;
+  border: 1px solid var(--slate-200); border-radius: var(--r-xl);
+}
+.mk-credential-row .mk-pic-ink-gold {
+  width: 36px; height: 36px; border-radius: var(--r-md);
+  background: var(--ink); color: var(--gold);
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.mk-credential-row .mk-k {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--gold-deep);
+}
+.mk-credential-row .mk-v {
+  font-size: 15px; line-height: 1.5; color: var(--slate-600);
+  font-weight: 500; margin-top: 4px;
+}
