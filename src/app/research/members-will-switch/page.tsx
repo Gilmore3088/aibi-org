@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { ArticleShell } from "@/components/mockup";
 
 export const metadata: Metadata = {
   title: 'Members Will Switch. The Question Is To Whom.',
@@ -32,6 +33,7 @@ const STAT_CARDS = [
 
 export default function MembersWillSwitchArticle() {
   return (
+    <ArticleShell>
     <main className="px-6 py-14 md:py-20">
       <article className="max-w-3xl mx-auto">
         <header className="mb-12">
@@ -204,5 +206,6 @@ export default function MembersWillSwitchArticle() {
         </footer>
       </article>
     </main>
+    </ArticleShell>
   );
 }

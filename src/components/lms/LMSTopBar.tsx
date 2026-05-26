@@ -10,8 +10,8 @@ export function LMSTopBar({ crumbs, right }: Props) {
     <div
       className="lms-topbar"
       style={{
-        background: 'var(--ledger-bg)',
-        borderBottom: '1px solid var(--ledger-rule)',
+        background: 'var(--cream)',
+        borderBottom: '1px solid var(--ink-a10)',
         padding: '14px 28px',
         display: 'flex',
         alignItems: 'center',
@@ -22,12 +22,12 @@ export function LMSTopBar({ crumbs, right }: Props) {
       <nav
         aria-label="Breadcrumb"
         style={{
-          fontFamily: 'var(--ledger-sans)',
+          fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
           fontWeight: 700,
           fontSize: 12,
           letterSpacing: '-0.005em',
           textTransform: 'uppercase',
-          color: 'var(--ledger-slate)',
+          color: 'var(--slate-600)',
           lineHeight: 1,
         }}
       >
@@ -48,8 +48,8 @@ export function LMSTopBar({ crumbs, right }: Props) {
               style={{
                 color:
                   i === crumbs.length - 1
-                    ? 'var(--ledger-ink)'
-                    : 'var(--ledger-slate)',
+                    ? 'var(--ink)'
+                    : 'var(--slate-600)',
               }}
             >
               {c}

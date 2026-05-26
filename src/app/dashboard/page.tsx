@@ -177,7 +177,7 @@ export default function DashboardPage() {
     heroPrimary = { href: '/assessment/in-depth/take', label: 'Take your In-Depth assessment' };
     heroSecondary = { href: `/practice/${currentRep.id}`, label: "Try today's rep" };
     heroLede =
-      'Your In-Depth Assessment is unlocked. Forty-eight questions across eight dimensions — about twelve minutes — for a personalized Briefing and ninety-day action register.';
+      'Your In-Depth Assessment is ready. Forty-eight questions across eight dimensions — about twelve minutes — for a personalized Briefing and ninety-day action register.';
   } else if (stepAssessment) {
     // Free assessment only — sell the In-Depth.
     heroPrimary = { href: '/assessment/in-depth', label: 'Take In-Depth · $99' };
@@ -627,7 +627,7 @@ export default function DashboardPage() {
               </div>
 
               <div className="feat">
-                <div className="ftxt">What unlocks on enrollment</div>
+                <div className="ftxt">What ships on enrollment</div>
                 <FeatureRow svg={
                   <svg viewBox="0 0 32 32" fill="none" stroke="var(--ledger-accent)" strokeWidth="1.4" strokeLinejoin="round">
                     <rect x="6" y="8" width="20" height="18" fill="var(--ledger-accent-a20)" />

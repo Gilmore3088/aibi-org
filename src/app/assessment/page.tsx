@@ -426,7 +426,7 @@ export default function AssessmentLandingPage() {
                 <li><CheckIcon className="mk-ic" />The dimension dragging you down</li>
                 <li><CheckIcon className="mk-ic" />A starter artifact you can take to your team this week</li>
               </ul>
-              <Button variant="ink" size="lg" href="/assessment/take" className="mk-cta">
+              <Button variant="ink" size="lg" href="/assessment/take">
                 Start Free
               </Button>
             </div>
@@ -451,7 +451,7 @@ export default function AssessmentLandingPage() {
                 <li><CheckIcon className="mk-ic" />Examiner-ready PDF</li>
                 <li><CheckIcon className="mk-ic" />30-day refund</li>
               </ul>
-              <Button variant="gold" size="lg" href="/assessment/in-depth" className="mk-cta">
+              <Button variant="gold" size="lg" href="/assessment/in-depth">
                 Get In-Depth · $99
               </Button>
             </div>
@@ -475,7 +475,7 @@ export default function AssessmentLandingPage() {
                 <li><CheckIcon className="mk-ic" />SSO + admin roles</li>
                 <li><CheckIcon className="mk-ic" />Briefing for leadership</li>
               </ul>
-              <Button variant="ink" size="lg" href="/for-institutions" className="mk-cta">
+              <Button variant="ink" size="lg" href="/for-institutions">
                 Book Briefing
               </Button>
             </div>
@@ -539,8 +539,8 @@ export default function AssessmentLandingPage() {
           <div className="mk-steps">
             {[
               { n: 'Step 1', t: 'Answer 12 questions', d: 'Multiple choice, one screen each on mobile.' },
-              { n: 'Step 2', t: 'See your score', d: '62/100. Tier. Top gap. Inline, no email gate.' },
-              { n: 'Step 3', t: 'Get your report', d: '8 dimensions + starter artifact emailed.' },
+              { n: 'Step 2', t: 'Enter work email', d: 'One field. We use it to send the report — never sold, never shared.' },
+              { n: 'Step 3', t: 'See your report inline', d: '62/100. Tier. Top gap. Dimension breakdown. Starter artifact.' },
               { n: 'Step 4', t: '(Optional) Upgrade', d: '$99 In-Depth · 48 questions · full plan.' },
             ].map((s) => (
               <div key={s.n}>

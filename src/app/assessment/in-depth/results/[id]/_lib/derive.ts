@@ -349,7 +349,7 @@ const DEEP_DIVE_CONTENT: Record<Dimension, DimContent> = {
       headline: 'AI is in use, but unevenly — the map is the gap.',
       narrative: [
         'Mid-range scores here usually mean a handful of departments have integrated AI tools and the rest have not. The cause is not technology — it is uneven sponsorship.',
-        'The single fastest unlock is to map current usage so the gaps stop being invisible.',
+        'The fastest move is to map current usage so the gaps stop being invisible.',
       ],
       recommendations: [
         'Run a 30-day usage audit. One row per department: tool, frequency, primary use case.',

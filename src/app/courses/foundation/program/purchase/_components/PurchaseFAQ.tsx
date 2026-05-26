@@ -50,16 +50,16 @@ export function PurchaseFAQ() {
           gap: 10,
           paddingBottom: 18,
           marginBottom: 24,
-          borderBottom: '1px solid var(--ledger-rule-strong)',
+          borderBottom: '1px solid var(--ink-a10)',
         }}
       >
         <span
           style={{
-            fontFamily: 'var(--ledger-mono)',
+            fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
             fontSize: 11,
             letterSpacing: '0.22em',
             textTransform: 'uppercase',
-            color: 'var(--ledger-accent)',
+            color: 'var(--gold)',
             fontWeight: 600,
           }}
         >
@@ -67,13 +67,13 @@ export function PurchaseFAQ() {
         </span>
         <h2
           style={{
-            fontFamily: 'var(--ledger-serif)',
+            fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
             fontWeight: 500,
             fontSize: 'clamp(34px, 4vw, 48px)',
             lineHeight: 1,
             letterSpacing: '-0.025em',
             margin: 0,
-            color: 'var(--ledger-ink)',
+            color: 'var(--ink)',
           }}
         >
           Asked and answered.
@@ -84,7 +84,7 @@ export function PurchaseFAQ() {
         style={{
           display: 'flex',
           flexDirection: 'column',
-          borderTop: '1px solid var(--ledger-rule)',
+          borderTop: '1px solid var(--ink-a10)',
         }}
       >
         {QUESTIONS.map((item, i) => (
@@ -92,7 +92,7 @@ export function PurchaseFAQ() {
             key={item.q}
             open={item.defaultOpen}
             style={{
-              borderBottom: '1px solid var(--ledger-rule)',
+              borderBottom: '1px solid var(--ink-a10)',
             }}
           >
             <summary
@@ -108,10 +108,10 @@ export function PurchaseFAQ() {
             >
               <span
                 style={{
-                  fontFamily: 'var(--ledger-mono)',
+                  fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
                   fontSize: 11,
                   letterSpacing: '0.18em',
-                  color: 'var(--ledger-muted)',
+                  color: 'var(--slate-500)',
                   fontWeight: 600,
                 }}
               >
@@ -119,12 +119,12 @@ export function PurchaseFAQ() {
               </span>
               <span
                 style={{
-                  fontFamily: 'var(--ledger-serif)',
+                  fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
                   fontWeight: 500,
                   fontSize: 19,
                   lineHeight: 1.3,
                   letterSpacing: '-0.015em',
-                  color: 'var(--ledger-ink)',
+                  color: 'var(--ink)',
                 }}
               >
                 {item.q}
@@ -132,9 +132,9 @@ export function PurchaseFAQ() {
               <span
                 aria-hidden="true"
                 style={{
-                  fontFamily: 'var(--ledger-serif)',
+                  fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
                   fontSize: 22,
-                  color: 'var(--ledger-muted)',
+                  color: 'var(--slate-500)',
                   lineHeight: 1,
                 }}
               >
@@ -144,10 +144,10 @@ export function PurchaseFAQ() {
             <div style={{ padding: '0 0 22px 60px', maxWidth: '80ch' }}>
               <p
                 style={{
-                  fontFamily: 'var(--ledger-sans)',
+                  fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
                   fontSize: 15,
                   lineHeight: 1.6,
-                  color: 'var(--ledger-ink-2)',
+                  color: 'var(--ink-2)',
                   margin: 0,
                 }}
               >

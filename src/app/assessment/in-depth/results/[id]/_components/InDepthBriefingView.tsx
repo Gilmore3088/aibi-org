@@ -473,7 +473,7 @@ export function InDepthBriefingView({
             </div>
             <div>
               <h2>The eight dimensions, <em>at a glance.</em></h2>
-              <p className="body">Each line is one of the eight dimensions the assessment calibrated. Scores are shown as the raw points awarded out of the maximum for that dimension; bars are colored by terrain — oxblood for under half, gold for half to three-quarters, forest above. The four pillars (Strategy · Risk · Stack · Talent) are noted at right.</p>
+              <p className="body">Each line is one of the eight dimensions the assessment calibrated. Scores are shown as the raw points awarded out of the maximum for that dimension; bars are colored by terrain — oxblood for under half, gold for half to three-quarters, forest above. Dimension groupings (Strategy · Risk · Stack · Talent) are noted at right.</p>
             </div>
           </div>
 
@@ -575,7 +575,7 @@ export function InDepthBriefingView({
                       <div className="meta">
                         Phase posture<strong>{row.terrain === 'strong' ? 'Strong' : row.terrain === 'mid' ? 'Coordinated' : 'Curious'}</strong>
                         Normalized<strong>{row.pct} / 100</strong>
-                        Pillar<strong>{row.pillar}</strong>
+                        <strong>{row.pillar}</strong>
                       </div>
                     </div>
                     <div className="bar-detail">
@@ -650,7 +650,7 @@ export function InDepthBriefingView({
 
           <div className="register">
             <div className="reg-head">
-              <span>#</span><span>Action</span><span>Owner</span><span>Due</span><span>Pillar</span><span>Effort</span><span>Status</span>
+              <span>#</span><span>Action</span><span>Owner</span><span>Due</span><span>Group</span><span>Effort</span><span>Status</span>
             </div>
 
             {register.map((row) => (

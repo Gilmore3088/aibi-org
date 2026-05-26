@@ -12,7 +12,7 @@ const baseStyle: CSSProperties = {
   display: 'inline-flex',
   alignItems: 'center',
   gap: 10,
-  fontFamily: 'var(--ledger-mono)',
+  fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
   fontSize: 11,
   letterSpacing: '0.16em',
   textTransform: 'uppercase',
@@ -30,8 +30,8 @@ export function PrimaryButton(props: ButtonOrAnchorProps & ExtraProps) {
   const { as, children, style, ...rest } = props as ButtonOrAnchorProps & ExtraProps & { as?: 'button' | 'a' };
   const merged: CSSProperties = {
     ...baseStyle,
-    background: hovered ? 'var(--ledger-accent)' : 'var(--ledger-ink)',
-    color: 'var(--ledger-paper)',
+    background: hovered ? 'var(--gold)' : 'var(--ink)',
+    color: 'var(--cream-2)',
     ...style,
   };
   if (as === 'a') {
@@ -64,8 +64,8 @@ export function GhostButton(props: ButtonOrAnchorProps & ExtraProps) {
   const merged: CSSProperties = {
     ...baseStyle,
     background: 'transparent',
-    color: hovered ? 'var(--ledger-accent)' : 'var(--ledger-ink)',
-    border: `1px solid ${hovered ? 'var(--ledger-accent)' : 'var(--ledger-rule-strong)'}`,
+    color: hovered ? 'var(--gold)' : 'var(--ink)',
+    border: `1px solid ${hovered ? 'var(--gold)' : 'var(--ink-a10)'}`,
     padding: '12px 18px',
     ...style,
   };

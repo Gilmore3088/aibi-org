@@ -53,11 +53,11 @@ export function getAssessmentNextStep(tierId: Tier['id']): AssessmentNextStep {
       };
     case 'building-momentum':
       return {
-        title: 'Move From Usage to Measured Wins',
+        title: 'Move from usage to measured wins.',
         description:
-          'Your next step is documenting use cases, practice habits, and outcomes that leaders can trust.',
-        href: '/coming-soon?interest=specialist',
-        cta: 'Join Specialist Waitlist',
+          'Your next step is the AiBI-Foundation course — twelve modules to turn experimentation into documented workflows your examiner respects.',
+        href: '/courses/foundation/program/purchase',
+        cta: 'Enroll · $295',
       };
     case 'ready-to-scale':
       return {

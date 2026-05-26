@@ -34,9 +34,9 @@ export function CourseShell({ modules, completed, current, learner, children }: 
       style={{
         display: 'grid',
         minHeight: '100vh',
-        background: 'var(--ledger-bg)',
-        color: 'var(--ledger-ink)',
-        fontFamily: 'var(--ledger-sans)',
+        background: 'var(--cream)',
+        color: 'var(--ink)',
+        fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
       }}
     >
       <LMSSidebar

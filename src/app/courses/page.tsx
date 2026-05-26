@@ -266,9 +266,9 @@ export default function CoursesIndexPage() {
                 </span>
                 <span className="mk-num" style={{ color: 'var(--ink)' }}>Bonus</span>
               </div>
-              <h3>Toolbox unlocked</h3>
+              <h3>Full Toolbox access</h3>
               <p>
-                Course completion unlocks the full Toolbox: 18 reusable assets, role playbooks, and
+                Course completion opens the full Toolbox: 18 reusable assets, role playbooks, and
                 the prompt library — yours to keep.
               </p>
               <div className="mk-meta">Lifetime access · No subscription</div>
@@ -287,7 +287,7 @@ export default function CoursesIndexPage() {
               <div className="mk-u">/ seat</div>
             </div>
             <p>
-              Lifetime access to course, Workbench Pack, and the unlocked Toolbox. Institution
+              Lifetime access to course, Workbench Pack, and your full Toolbox. Institution
               seats available at volume pricing.
             </p>
             <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>

@@ -38,8 +38,8 @@ export function ModelPicker({ value, onChange, compact = false }: Props) {
         display: 'inline-flex',
         gap: 4,
         padding: 3,
-        background: 'var(--ledger-paper)',
-        border: '1px solid var(--ledger-rule)',
+        background: 'var(--cream-2)',
+        border: '1px solid var(--ink-a10)',
         borderRadius: 3,
       }}
     >
@@ -51,16 +51,16 @@ export function ModelPicker({ value, onChange, compact = false }: Props) {
           alignItems: 'center',
           gap: 6,
           padding: compact ? '4px 10px' : '6px 12px',
-          background: active ? 'var(--ledger-ink)' : 'transparent',
+          background: active ? 'var(--ink)' : 'transparent',
           color: active
-            ? 'var(--ledger-paper)'
+            ? 'var(--cream-2)'
             : hot
-              ? 'var(--ledger-accent)'
-              : 'var(--ledger-ink-2)',
+              ? 'var(--gold)'
+              : 'var(--ink-2)',
           border: 'none',
           borderRadius: 2,
           cursor: 'pointer',
-          fontFamily: 'var(--ledger-mono)',
+          fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
           fontSize: compact ? 10 : 11,
           letterSpacing: '0.16em',
           textTransform: 'uppercase',
@@ -86,9 +86,8 @@ export function ModelPicker({ value, onChange, compact = false }: Props) {
                 height: compact ? 14 : 16,
                 borderRadius: '50%',
                 border: '1px solid currentColor',
-                fontFamily: 'var(--ledger-serif)',
-                fontStyle: 'italic',
-                fontSize: compact ? 9 : 10,
+                fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
+                                fontSize: compact ? 9 : 10,
                 lineHeight: 1,
                 textTransform: 'none',
                 letterSpacing: 0,

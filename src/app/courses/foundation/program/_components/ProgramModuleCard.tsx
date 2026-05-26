@@ -108,7 +108,7 @@ export function ProgramModuleCard({
       <div
         style={{ ...cardStyle, cursor: 'not-allowed' }}
         aria-disabled
-        title="Complete the previous module to unlock"
+        title="Complete the previous module to open"
       >
         {interior}
       </div>

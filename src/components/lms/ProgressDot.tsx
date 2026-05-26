@@ -22,7 +22,7 @@ export function ProgressDot({ status, size = 10 }: Props) {
       <span
         role="img"
         aria-label="Complete"
-        style={{ ...common, background: 'var(--ledger-accent-2)' }}
+        style={{ ...common, background: 'var(--ink-2)' }}
       />
     );
   }
@@ -33,8 +33,8 @@ export function ProgressDot({ status, size = 10 }: Props) {
         aria-label="Current"
         style={{
           ...common,
-          background: 'var(--ledger-accent)',
-          boxShadow: '0 0 0 4px var(--ledger-accent-soft)',
+          background: 'var(--gold)',
+          boxShadow: '0 0 0 4px rgba(200, 162, 74, 0.18)',
         }}
       />
     );
@@ -45,7 +45,7 @@ export function ProgressDot({ status, size = 10 }: Props) {
       aria-label="Locked"
       style={{
         ...common,
-        border: '1.5px solid var(--ledger-rule-strong)',
+        border: '1.5px solid var(--ink-a10)',
         background: 'transparent',
       }}
     />

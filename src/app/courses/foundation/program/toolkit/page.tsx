@@ -462,7 +462,7 @@ export default async function ToolkitPage() {
                     <Link
                       href={`/courses/foundation/program/${artifact.module}`}
                       className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[color:var(--ledger-parch)] text-[color:var(--ledger-muted)] text-[10px] font-mono uppercase tracking-widest rounded-sm"
-                      aria-label={`Go to Module ${artifact.module} to unlock this artifact`}
+                      aria-label={`Go to Module  to open this artifact`}
                     >
                       Locked
                     </Link>

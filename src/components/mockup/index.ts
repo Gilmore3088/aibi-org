@@ -25,3 +25,5 @@ export type { EyebrowChipProps } from './EyebrowChip';
 
 export { MockupShell } from './MockupShell';
 export type { MockupShellProps, MockupShellBlock } from './MockupShell';
+
+export { ArticleShell } from './ArticleShell';

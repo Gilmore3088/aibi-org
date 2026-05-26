@@ -13,7 +13,7 @@ import { getEnrollment } from '../_lib/getEnrollment';
 export const metadata: Metadata = {
   title: 'Quick Wins | AiBI-Foundation | The AI Banking Institute',
   description:
-    'Log automations you built and time saved. Hit three wins to unlock a recommendation letter template.',
+    'Log automations you built and time saved. Log three wins and the recommendation-letter template is yours.',
 };
 
 export default async function QuickWinsPage() {

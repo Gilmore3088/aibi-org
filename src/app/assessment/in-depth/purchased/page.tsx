@@ -15,7 +15,7 @@ import { isSupabaseConfigured } from '@/lib/supabase/client';
 export const metadata: Metadata = {
   title: 'Purchase confirmed | The AI Banking Institute',
   description:
-    'Your In-Depth AI Readiness Assessment is unlocked. Sign in to start the 48-question diagnostic.',
+    'Your In-Depth AI Readiness Assessment is ready. Sign in to start the 48-question diagnostic.',
   robots: { index: false, follow: false },
 };
 
@@ -74,7 +74,7 @@ export default async function InDepthPurchasedPage({
           Purchase confirmed
         </p>
         <h1 className="font-serif text-4xl md:text-5xl font-bold leading-tight text-[color:var(--color-ink)] mb-5">
-          Your In-Depth Assessment is unlocked.
+          Your In-Depth Assessment is ready.
         </h1>
         <p className="text-base md:text-lg text-[color:var(--color-ink)]/75 leading-relaxed mb-8 max-w-2xl">
           Thanks for your purchase. A receipt is on its way from Stripe, and
@@ -130,7 +130,7 @@ export default async function InDepthPurchasedPage({
                     </span>
                   </>
                 ) : null}{' '}
-                to unlock the assessment. Takes 30 seconds.
+                to open the assessment. Takes 30 seconds.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link
@@ -170,7 +170,7 @@ export default async function InDepthPurchasedPage({
           <p className="text-sm md:text-[14.5px] leading-relaxed text-[color:var(--ledger-ink-2)] mb-5 max-w-[60ch]">
             Read-only access to the Library and Cookbook — banker-vetted
             prompts you can copy into Claude, ChatGPT, or Gemini. Build and
-            Playground unlock with the AiBI-Foundation course.
+            Playground access with the AiBI-Foundation course.
           </p>
           <div className="flex flex-wrap gap-4">
             <Link

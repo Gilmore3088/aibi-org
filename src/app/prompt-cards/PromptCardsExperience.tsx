@@ -359,10 +359,10 @@ function LeadModal({ onClose, onUnlocked }: { readonly onClose: () => void; read
         body: JSON.stringify({ email, role, institutionType, assetSize }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error ?? 'Could not unlock cards.');
+      if (!res.ok) throw new Error(data.error ?? 'Could not load the cards.');
       onUnlocked();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Could not unlock cards.');
+      setError(err instanceof Error ? err.message : 'Could not load the cards.');
     } finally {
       setSubmitting(false);
     }

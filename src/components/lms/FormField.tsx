@@ -13,33 +13,33 @@ interface BaseProps {
 
 const labelStyle: CSSProperties = {
   display: 'block',
-  fontFamily: 'var(--ledger-mono)',
+  fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
   fontSize: 9.5,
   letterSpacing: '0.18em',
   textTransform: 'uppercase',
-  color: 'var(--ledger-muted)',
+  color: 'var(--slate-500)',
   marginBottom: 6,
 };
 
 const requiredMarkStyle: CSSProperties = {
   marginLeft: 6,
-  color: 'var(--ledger-weak)',
+  color: 'var(--gold-deep)',
 };
 
 const hintStyle: CSSProperties = {
   marginTop: 6,
-  fontFamily: 'var(--ledger-mono)',
+  fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
   fontSize: 10,
   letterSpacing: '0.04em',
-  color: 'var(--ledger-slate)',
+  color: 'var(--slate-600)',
 };
 
 const errorStyle: CSSProperties = {
   marginTop: 6,
-  fontFamily: 'var(--ledger-mono)',
+  fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
   fontSize: 10.5,
   letterSpacing: '0.04em',
-  color: 'var(--ledger-weak)',
+  color: 'var(--gold-deep)',
 };
 
 /**
@@ -85,11 +85,11 @@ export function ledgerInputStyle({ invalid, multi }: InputStyleOptions = {}): CS
     width: '100%',
     padding: '10px 12px',
     borderRadius: 2,
-    border: `1px solid ${invalid ? 'var(--ledger-weak)' : 'var(--ledger-rule-strong)'}`,
-    background: 'var(--ledger-bg)',
-    fontFamily: multi ? 'var(--ledger-mono)' : 'var(--ledger-sans)',
+    border: `1px solid ${invalid ? 'var(--gold-deep)' : 'var(--ink-a10)'}`,
+    background: 'var(--cream)',
+    fontFamily: multi ? 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace' : 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
     fontSize: multi ? 12.5 : 13.5,
-    color: 'var(--ledger-ink)',
+    color: 'var(--ink)',
     resize: multi ? 'vertical' : undefined,
   };
 }
