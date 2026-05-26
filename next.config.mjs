@@ -110,6 +110,12 @@ const nextConfig = {
       { source: '/courses/aibi-l', destination: '/education', permanent: true },
       { source: '/courses/aibi-l/:path*', destination: '/education', permanent: true },
       { source: '/consulting', destination: '/for-institutions/advisory', permanent: true },
+      // 2026-05-26: /results used to render a full sample report
+      // (score, tier, dimensions) on a public URL with no email gate
+      // — direct violation of the email-gate UX contract. The demo
+      // moved to /results/sample with prominent "SAMPLE" badges; this
+      // 308 keeps old bookmarks landing somewhere sensible.
+      { source: '/results', destination: '/assessment', permanent: true },
     ];
   },
   // Security headers applied to every route.

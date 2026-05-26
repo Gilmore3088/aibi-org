@@ -151,25 +151,30 @@ export default function ResultsPage() {
   }
 
   function downloadSummary() {
-    const md = `# AI Readiness Snapshot
+    const md = `# AI Readiness Snapshot — SAMPLE
 
-**Score:** 62 / 100
-**Maturity:** Structured Beginner
-**Role:** Compliance
-**Top gap:** Workflow documentation
-**Artifact:** AI use-case review packet
+> This is an illustrative sample of the report you receive after
+> taking the free 12-question AI Readiness Assessment. The numbers
+> below are not real; take the assessment to receive your own.
+> https://aibankinginstitute.com/assessment
+
+**Score:** 62 / 100 *(sample)*
+**Maturity:** Structured Beginner *(sample)*
+**Role:** Compliance *(sample)*
+**Top gap:** Workflow documentation *(sample)*
+**Artifact:** AI use-case review packet *(sample)*
 
 ## Path
 Foundation Course → Workflow SOP → AI Use-Case Checklist
 
-## Dimensions
+## Dimensions *(sample)*
 ${DIMENSIONS.map((d) => `- **${d.label}** — ${d.score}/100. ${d.note}`).join('\n')}
 `;
     const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'aibi-readiness-summary.md';
+    a.download = 'aibi-readiness-sample-report.md';
     a.click();
     URL.revokeObjectURL(url);
     setDownloaded(true);
@@ -179,7 +184,33 @@ ${DIMENSIONS.map((d) => `- **${d.label}** — ${d.score}/100. ${d.note}`).join('
 
   return (
     <div className="mockup-scope">
-      <SiteHeader activePath="/assessment" cta={{ label: 'Start Course', href: '/courses/foundation' }} />
+      <SiteHeader activePath="/assessment" cta={{ label: 'Take the assessment', href: '/assessment' }} />
+
+      {/* SAMPLE STRIP — top banner makes the demo nature unmistakable */}
+      <div
+        role="note"
+        style={{
+          background: 'var(--gold)',
+          color: 'var(--ink)',
+          padding: '12px 24px',
+          textAlign: 'center',
+          fontSize: 14,
+          fontWeight: 600,
+          letterSpacing: '0.02em',
+        }}
+      >
+        <strong style={{ letterSpacing: '0.18em', textTransform: 'uppercase' }}>
+          Sample report
+        </strong>{' '}
+        — illustrative data only. Your real readiness report renders inline after you{' '}
+        <a
+          href="/assessment"
+          style={{ color: 'var(--ink)', textDecoration: 'underline', fontWeight: 700 }}
+        >
+          take the 12-question assessment
+        </a>
+        .
+      </div>
 
       {/* HERO */}
       <section className="mk-hero">
@@ -189,19 +220,22 @@ ${DIMENSIONS.map((d) => `- **${d.label}** — ${d.score}/100. ${d.note}`).join('
         </div>
         <div className="mk-container mk-hero-inner">
           <div>
-            <EyebrowChip icon={<GaugeIcon className="mk-ic" />}>AI Readiness Result</EyebrowChip>
-            <h1>Your AI readiness snapshot.</h1>
+            <EyebrowChip icon={<GaugeIcon className="mk-ic" />}>
+              Sample report · Yours after the 12-question assessment
+            </EyebrowChip>
+            <h1>What your AI readiness snapshot will look like.</h1>
             <p className="mk-lede">
-              You have enough awareness to begin building, but the next step is documentation:
-              turning AI-supported work into reviewed, reusable workflows.
+              A walkthrough of the report you receive after the free 12-question assessment.
+              Every score below is illustrative — the real assessment takes three minutes and
+              your own report renders inline once you submit your email.
             </p>
             <div className="mk-ctas">
-              <Button variant="gold" size="lg" href="/courses/foundation">
-                Start Foundation Course <ArrowR className="mk-ic" />
+              <Button variant="gold" size="lg" href="/assessment">
+                Take the assessment <ArrowR className="mk-ic" />
               </Button>
               <Button variant="ghost-dark" size="lg" onClick={downloadSummary}>
                 <DownloadIcon className="mk-ic" />
-                {downloaded ? 'Downloaded' : 'Download Summary'}
+                {downloaded ? 'Downloaded' : 'Download sample (.md)'}
               </Button>
             </div>
           </div>
