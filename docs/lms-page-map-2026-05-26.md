@@ -177,7 +177,7 @@ These cross-cutting questions need a design decision before any single surface s
 
 ### Operator decisions logged 2026-05-26
 
-1. **Sidebar vs top-nav for CourseShell?** — **Comparing both.** Side-by-side mockup at [`/sketches/lms-shell-options.html`](/sketches/lms-shell-options.html) toggles between the two layouts on a Module 4 frame. Pick one before any LMS implementation.
+1. **Sidebar vs top-nav for CourseShell?** — **SIDEBAR. Locked 2026-05-26.** Compared via [`/sketches/lms-shell-options.html`](/sketches/lms-shell-options.html). Existing `CourseShell` already implements the sidebar pattern — the mockup pass restyles it with the mockup palette (gold accent, ink fill, Inter type, pillar-grouped module list, always-on progress block). No structural refactor needed.
 2. **Where does the Toolbox live across `/my-toolbox`, `/dashboard/toolbox`, `/program/toolkit`?** — **Decision deferred.** The three routes serve three different relationships to assets (pre-purchase demo / shared Library + Cookbook / per-learner toolkit). They are not duplicates. Reconciliation deferred until the LMS mockup commits to a chrome.
 3. **Module-level navigation pattern (tabs vs sub-routes)?** — **Decision deferred.** Today's `ModuleTabs` (in-page Learn it / Try it / Use it / Save it) stays as the working assumption; the mockup pass will revisit if a sub-route pattern emerges naturally.
 4. **Saved artifacts: card or row, one design or per-surface?** — **One design.** Library + Cookbook + Toolkit all share the same saved-artifact card. Build it once.
