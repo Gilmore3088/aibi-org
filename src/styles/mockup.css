@@ -1254,3 +1254,193 @@ section.mk-std { padding: 56px 0; }
 }
 .mk-team-card .mk-sig svg { color: var(--gold); flex: none; margin-top: 2px; }
 .mk-team-card .mk-sig .mk-t { font-size: 13px; font-weight: 500; line-height: 1.5; }
+
+/* ============================================================
+   Course page — sections specific to /courses
+   ============================================================ */
+
+/* Hero interactive course module preview */
+.mk-cmp {
+  background: #fff; color: var(--ink);
+  border-radius: var(--r-2xl); overflow: hidden;
+  box-shadow: var(--shadow-hero);
+  border: 1px solid var(--on-dark-08);
+}
+.mk-cmp-top {
+  background: var(--ink); color: #fff;
+  padding: 22px 24px;
+  display: flex; justify-content: space-between; align-items: center; gap: 16px;
+}
+.mk-cmp .mk-cmp-k {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--gold-soft);
+}
+.mk-cmp .mk-cmp-t { font-size: 22px; font-weight: 600; margin-top: 4px; }
+.mk-cmp-price {
+  background: var(--gold); color: var(--ink);
+  padding: 10px 18px; border-radius: 14px;
+  font-weight: 700; font-size: 14px;
+}
+.mk-cmp-grid { display: grid; grid-template-columns: 1fr; }
+@media (min-width: 760px) { .mk-cmp-grid { grid-template-columns: 0.48fr 0.52fr; } }
+.mk-cmp-list {
+  background: var(--cream); padding: 20px;
+  border-right: 1px solid var(--slate-200);
+}
+.mk-cmp-list-k {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--gold-deep); margin-bottom: 14px;
+}
+.mk-cmp-mod {
+  display: flex; align-items: center; gap: 12px; width: 100%;
+  padding: 12px 14px; border-radius: 14px;
+  background: #fff; border: 0; cursor: pointer; text-align: left;
+  margin-bottom: 8px; transition: background var(--t-fast);
+  font-family: inherit;
+}
+.mk-cmp-mod:hover { background: var(--slate-50); }
+.mk-cmp-mod.is-active { background: var(--ink); color: #fff; }
+.mk-cmp-mod .mk-cmp-icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: var(--cream); color: var(--gold-deep);
+  display: inline-flex; align-items: center; justify-content: center; flex: none;
+}
+.mk-cmp-mod.is-active .mk-cmp-icon { background: var(--gold); color: var(--ink); }
+.mk-cmp-mod .mk-cmp-meta {
+  font-size: 11px; opacity: 0.65;
+  letter-spacing: 0.06em; text-transform: uppercase; font-weight: 700;
+}
+.mk-cmp-mod .mk-cmp-name { font-weight: 600; margin-top: 2px; }
+.mk-cmp-detail { padding: 24px; }
+.mk-cmp-detail .mk-cmp-icon {
+  width: 48px; height: 48px; border-radius: var(--r-md);
+  background: var(--ink); color: var(--gold);
+  display: inline-flex; align-items: center; justify-content: center;
+  margin-bottom: 18px;
+}
+.mk-cmp-detail .mk-cmp-k {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--gold-deep);
+}
+.mk-cmp-detail h3 { font-size: 28px; font-weight: 600; margin: 8px 0 8px; line-height: 1.15; }
+.mk-cmp-detail .mk-cmp-desc { color: var(--slate-600); margin: 0 0 14px; font-size: 14px; }
+.mk-cmp-info {
+  margin-top: 10px; padding: 14px 16px;
+  border-radius: 14px; background: var(--cream);
+}
+.mk-cmp-info.mk-line { background: transparent; border: 1px solid var(--ink-a10); }
+.mk-cmp-info .mk-cmp-k {
+  font-size: 12px; color: var(--slate-500);
+  letter-spacing: 0; text-transform: none; font-weight: 500;
+}
+.mk-cmp-info .mk-cmp-v { font-weight: 700; margin-top: 4px; font-size: 14px; }
+
+/* Workbench Pack build section */
+.mk-build {
+  background: #fff; border: 1px solid var(--ink-a10);
+  border-radius: var(--r-3xl); padding: 32px;
+  box-shadow: 0 24px 40px -20px rgba(0, 0, 0, 0.15);
+  display: grid; gap: 32px; grid-template-columns: 1fr;
+}
+@media (min-width: 900px) { .mk-build { grid-template-columns: 0.45fr 0.55fr; } }
+.mk-build .mk-left .mk-k {
+  font-size: 14px; font-weight: 700; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--gold-deep);
+}
+.mk-build .mk-left h3 {
+  font-size: clamp(24px, 3vw, 36px); font-weight: 600;
+  margin: 8px 0 16px; line-height: 1.1; letter-spacing: -0.01em;
+}
+.mk-build .mk-left p { color: var(--slate-600); margin: 0 0 16px; }
+.mk-build .mk-left ul { padding-left: 20px; color: var(--slate-600); font-size: 15px; }
+.mk-build .mk-left li { padding: 4px 0; }
+.mk-pack { background: var(--cream); border-radius: 20px; padding: 20px; }
+.mk-pack .mk-top {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-bottom: 14px; border-bottom: 1px solid var(--slate-200);
+  margin-bottom: 14px;
+}
+.mk-pack .mk-top .mk-k {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--gold-deep);
+}
+.mk-pack .mk-top .mk-n { font-weight: 700; }
+.mk-pack .mk-row {
+  display: grid; grid-template-columns: 90px 1fr; gap: 12px;
+  padding: 10px 0; border-bottom: 1px dotted var(--slate-200); font-size: 13px;
+}
+.mk-pack .mk-row .mk-k {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--slate-500);
+}
+.mk-pack .mk-row .mk-v { font-weight: 600; }
+.mk-pack .mk-stamp {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 12px; border-radius: var(--r-pill);
+  background: var(--gold-a20); color: var(--gold-deep);
+  font-weight: 700; font-size: 11px; letter-spacing: 0.1em;
+  text-transform: uppercase; margin-top: 14px;
+}
+
+/* Modules grid */
+.mk-modules { display: grid; gap: 20px; grid-template-columns: 1fr; }
+@media (min-width: 760px) { .mk-modules { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1100px) { .mk-modules { grid-template-columns: 1fr 1fr 1fr; } }
+.mk-mod {
+  background: #fff; border: 1px solid var(--ink-a10);
+  border-radius: var(--r-xl); overflow: hidden;
+  box-shadow: var(--shadow-card);
+  transition: transform var(--t-fast), box-shadow var(--t-fast);
+}
+.mk-mod:hover { transform: translateY(-4px); box-shadow: var(--shadow-feature); }
+.mk-mod .mk-bar { height: 6px; background: var(--gold); }
+.mk-mod .mk-body { padding: 24px; }
+.mk-mod .mk-top {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 24px;
+}
+.mk-mod .mk-num { font-size: 14px; font-weight: 700; color: var(--gold-deep); }
+.mk-mod h3 { font-size: 22px; font-weight: 600; margin: 8px 0 8px; line-height: 1.2; }
+.mk-mod p { color: var(--slate-600); font-size: 14px; margin: 0 0 16px; }
+.mk-mod .mk-meta {
+  font-size: 12px; color: var(--slate-500);
+  font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+}
+
+/* Pricing dark band */
+.mk-pricing {
+  background: var(--ink); color: #fff;
+  border-radius: var(--r-3xl); padding: 40px;
+  border: 1px solid rgba(200, 162, 74, 0.25);
+  display: grid; gap: 32px; grid-template-columns: 1fr;
+}
+@media (min-width: 760px) { .mk-pricing { grid-template-columns: 0.5fr 0.5fr; align-items: center; } }
+.mk-pricing .mk-k {
+  font-size: 14px; font-weight: 700; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--gold-soft);
+}
+.mk-pricing .mk-price { display: flex; align-items: baseline; gap: 8px; margin: 16px 0 8px; }
+.mk-pricing .mk-price .mk-v {
+  font-size: 72px; font-weight: 600; color: var(--gold-soft); line-height: 1;
+}
+.mk-pricing .mk-price .mk-u { font-size: 14px; color: var(--on-dark-50); }
+.mk-pricing p { color: var(--on-dark-70); margin: 0 0 24px; max-width: 36ch; }
+.mk-pricing ul { list-style: none; padding: 0; margin: 0; }
+.mk-pricing li {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 14px; background: rgba(255, 255, 255, 0.06);
+  border-radius: var(--r-md); margin-bottom: 8px; font-size: 14px;
+}
+.mk-pricing li svg { color: var(--gold); }
+
+/* Generic icon-badge utilities for hero / module cards */
+.mk-pic-ink-gold {
+  width: 48px; height: 48px; border-radius: var(--r-md);
+  background: var(--ink); color: var(--gold);
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.mk-pic-gold-ink {
+  width: 48px; height: 48px; border-radius: var(--r-lg);
+  background: var(--gold); color: var(--ink);
+  display: inline-flex; align-items: center; justify-content: center;
+}
