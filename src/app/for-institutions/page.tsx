@@ -1,124 +1,458 @@
-import type { Metadata } from "next";
-import { MarketingPage } from "@/components/system/templates";
-import {
-  Section,
-  SectionHeader,
-  Cta,
-  ProductMark,
-  type ProductMarkKind,
-} from "@/components/system";
-import { CTAS } from "@content/copy";
+/* eslint-disable react/no-unescaped-entities */
+'use client';
 
-export const metadata: Metadata = {
-  alternates: { canonical: '/for-institutions' },
-  title: "For Institutions | The AI Banking Institute",
-  description:
-    "Three ways to bring AiBI capability into your bank — without buying a platform. Coached cohort · institution-wide program · leadership advisory.",
+import { useMemo, useState } from 'react';
+import {
+  SiteHeader,
+  Section,
+  SectionHead,
+  Button,
+  ArrowGlyph,
+  EyebrowChip,
+  CtaBand,
+} from '@/components/mockup';
+
+type IconProps = { className?: string; size?: number };
+const sw = (p: IconProps) => ({
+  className: p.className,
+  width: p.size,
+  height: p.size,
+  viewBox: '0 0 24 24',
+  fill: 'none',
+  stroke: 'currentColor',
+  strokeWidth: 2,
+  strokeLinecap: 'round' as const,
+  strokeLinejoin: 'round' as const,
+  'aria-hidden': true,
+});
+
+const BuildingIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-4" /></svg>);
+const BarsIcon = (p: IconProps) => (<svg {...sw(p)}><line x1="12" y1="20" x2="12" y2="10" /><line x1="18" y1="20" x2="18" y2="4" /><line x1="6" y1="20" x2="6" y2="16" /></svg>);
+const ArrowR = (p: IconProps) => (<svg {...sw(p)}><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>);
+const TargetIcon = (p: IconProps) => (<svg {...sw(p)}><circle cx="12" cy="12" r="10" /><circle cx="12" cy="12" r="6" /><circle cx="12" cy="12" r="2" /></svg>);
+const LayersIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M22 10v6M2 10l10-5 10 5-10 5z" /></svg>);
+const FileIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>);
+const LockIcon = (p: IconProps) => (<svg {...sw(p)}><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>);
+const NetworkIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M20 7h-9M14 17H5" /><circle cx="17" cy="17" r="3" /><circle cx="7" cy="7" r="3" /></svg>);
+const ShieldIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>);
+const UsersIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /></svg>);
+const SendIcon = (p: IconProps) => (<svg {...sw(p)}><line x1="22" y1="2" x2="11" y2="13" /><polygon points="22 2 15 22 11 13 2 9 22 2" /></svg>);
+const StarIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M12 3l1.9 5.8L20 10l-4.6 3.4L17.2 20 12 16.6 6.8 20l1.8-6.6L4 10l6.1-1.2z" /></svg>);
+const ChatIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" /><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" /></svg>);
+const CheckIcon = (p: IconProps) => (<svg {...sw(p)}><polyline points="20 6 9 17 4 12" /></svg>);
+
+type AssetClass = 'community' | 'mid' | 'large';
+const CLASS_MULT: Record<AssetClass, number> = { community: 1.0, mid: 0.95, large: 0.9 };
+const CLASS_LABEL: Record<AssetClass, [string, string]> = {
+  community: ['Community', '< $1B'],
+  mid: ['Mid-size', '$1B – $10B'],
+  large: ['Large', '$10B+'],
 };
 
+const DEPTS = ['compliance', 'retail', 'marketing', 'lending', 'operations', 'leadership'] as const;
+type Dept = (typeof DEPTS)[number];
+const DEPT_LABEL: Record<Dept, string> = {
+  compliance: 'Compliance',
+  retail: 'Retail',
+  marketing: 'Marketing',
+  lending: 'Lending',
+  operations: 'Operations',
+  leadership: 'Leadership',
+};
+
+function seatPrice(staff: number): { p: number; tier: string } {
+  if (staff >= 100) return { p: 145, tier: '100+ seats' };
+  if (staff >= 50) return { p: 195, tier: '50+ seats' };
+  if (staff >= 25) return { p: 245, tier: '25+ seats' };
+  return { p: 295, tier: 'Standard' };
+}
+function rolloutWindow(staff: number) {
+  if (staff >= 200) return '12–16 weeks';
+  if (staff >= 100) return '10–12 weeks';
+  if (staff >= 50) return '8–10 weeks';
+  if (staff >= 25) return '6–8 weeks';
+  return '4–6 weeks';
+}
+
 export default function ForInstitutionsPage() {
+  const [staff, setStaff] = useState(120);
+  const [cls, setCls] = useState<AssetClass>('community');
+  const [depts, setDepts] = useState<Set<Dept>>(
+    () => new Set<Dept>(['compliance', 'retail', 'marketing', 'lending']),
+  );
+
+  const calc = useMemo(() => {
+    const { p: base, tier } = seatPrice(staff);
+    const price = Math.round(base * CLASS_MULT[cls]);
+    return {
+      price,
+      tier,
+      total: price * staff,
+      hours: staff * 6,
+      window: rolloutWindow(staff),
+    };
+  }, [staff, cls]);
+
+  function toggleDept(d: Dept) {
+    setDepts((cur) => {
+      const next = new Set(cur);
+      if (next.has(d)) next.delete(d);
+      else next.add(d);
+      return next;
+    });
+  }
+
   return (
-    <MarketingPage
-      hero={{
-        eyebrow: "For Banks & Credit Unions",
-        title: (
-          <>
-            Capability, <em className="text-terra">not a platform.</em>
-          </>
-        ),
-        lede: (
-          <span className="font-serif italic">
-            An education engagement for community banks and credit unions.
-            No software seats. No vendor lock-in.
-          </span>
-        ),
-        primaryCta: CTAS.beginAssessment,
-        secondaryCta: CTAS.requestPilot,
-        divider: "hairline",
-      }}
-    >
-      {/* Three ways to build */}
-      <Section variant="linen" padding="default">
-        <SectionHeader
-          label="Engagement"
-          title="Three ways to build."
-        />
-        <div className="grid md:grid-cols-3 gap-px bg-hairline border-y border-strong mt-s6">
-          {([
-            {
-              scale: "Free · diagnostic",
-              name: "Readiness Assessment",
-              tagline: "Twelve questions, three minutes — see where you stand.",
-              mark: "assessment-free",
-              included: [
-                "Your readiness score and tier",
-                "The dimension dragging you down",
-                "A starter artifact you can take to your team this week",
-              ],
-              cta: { href: "/assessment", label: "Begin the assessment" },
-            },
-            {
-              scale: "Per-banker",
-              name: "Courses",
-              tagline: "AiBI-Foundation. Self-paced, scored on reviewed work.",
-              mark: "course-foundation",
-              included: [
-                "Twelve self-paced modules",
-                "Three reviewed AI artifacts per practitioner",
-                "$295 individual · $199/seat at 10+",
-              ],
-              cta: { href: "/courses/foundation/program", label: "View the curriculum" },
-            },
-            {
-              scale: "Institution-wide",
-              name: "Organizational Rollout",
-              tagline: "A coached cohort, an aggregate dashboard, a defensible posture.",
-              mark: "institution-cohort",
-              included: [
-                "10-seat coached cohort over eight weeks",
-                "Institutional readiness baseline + post-engagement diagnostic",
-                "Aggregate dashboard for your champion",
-              ],
-              cta: {
-                href: process.env.NEXT_PUBLIC_CALENDLY_URL ?? "#inquiry",
-                label: "Request a pilot",
-              },
-            },
-          ] as const satisfies readonly { readonly mark: ProductMarkKind; readonly scale: string; readonly name: string; readonly tagline: string; readonly included: readonly string[]; readonly cta: { readonly href: string; readonly label: string } }[]).map((tier) => (
-            <article
-              key={tier.name}
-              className="bg-linen px-s6 py-s8 flex flex-col"
-            >
-              <ProductMark kind={tier.mark} size={48} className="mb-s4" />
-              <p className="font-mono text-label-sm uppercase tracking-widest text-terra mb-s3">
-                {tier.scale}
-              </p>
-              <h3 className="font-serif text-display-sm leading-snug text-ink">
-                {tier.name}
-              </h3>
-              <p className="font-serif italic text-body-md text-slate leading-snug mt-s2">
-                {tier.tagline}
-              </p>
-              <ul className="border-y border-hairline py-s4 my-s5 space-y-s2 text-body-sm">
-                {tier.included.map((item) => (
-                  <li key={item} className="grid grid-cols-[14px_1fr] gap-s2 items-start">
-                    <span aria-hidden="true" className="font-mono text-terra leading-snug">
-                      —
-                    </span>
-                    <span className="text-ink/80 leading-snug">{item}</span>
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-auto">
-                <Cta variant="secondary" href={tier.cta.href}>
-                  {tier.cta.label} →
-                </Cta>
+    <div className="mockup-scope">
+      <SiteHeader activePath="/for-institutions" cta={{ label: 'Book Briefing', href: '/briefing-preview' }} />
+
+      {/* HERO */}
+      <section className="mk-hero">
+        <div className="mk-deco">
+          <div className="mk-deco-ring" />
+          <div className="mk-deco-blur" />
+        </div>
+        <div className="mk-container mk-hero-inner">
+          <div>
+            <EyebrowChip icon={<BuildingIcon className="mk-ic" />}>
+              Institutions & Teams · For community banks & credit unions
+            </EyebrowChip>
+            <h1>Use assessment data to focus training where it matters.</h1>
+            <p className="mk-lede">
+              For banks and credit unions that want adoption, governance alignment, and capability
+              building — not a sprawling AI policy doc that no one reads.
+            </p>
+            <div className="mk-ctas">
+              <Button variant="gold" size="lg" href="/briefing-preview">
+                Book Executive Briefing <ArrowR className="mk-ic" />
+              </Button>
+              <Button variant="ghost-dark" size="lg" href="#sizer">
+                See Team Pricing
+              </Button>
+            </div>
+          </div>
+
+          <div className="mk-dash">
+            <div className="mk-head">
+              <div>
+                <div className="mk-k">Institution Dashboard</div>
+                <div className="mk-t">First National · Sample</div>
               </div>
-            </article>
+              <BarsIcon size={32} />
+            </div>
+            <div className="mk-body">
+              <div className="mk-topline">
+                <div>
+                  <div className="mk-k">Assessed</div>
+                  <div className="mk-v">124</div>
+                  <div className="mk-u">of 142 staff</div>
+                </div>
+                <div>
+                  <div className="mk-k">Org score</div>
+                  <div className="mk-v">61</div>
+                  <div className="mk-u">/ 100 readiness</div>
+                </div>
+                <div>
+                  <div className="mk-k">Trained</div>
+                  <div className="mk-v">38</div>
+                  <div className="mk-u">Foundation done</div>
+                </div>
+              </div>
+              <div
+                style={{
+                  fontSize: 11,
+                  fontWeight: 700,
+                  letterSpacing: '0.14em',
+                  textTransform: 'uppercase',
+                  color: 'var(--gold-deep)',
+                  marginBottom: 12,
+                }}
+              >
+                Training focus by department
+              </div>
+              <div className="mk-dept">
+                {[
+                  ['Compliance', 'High', 72],
+                  ['Retail', 'Med', 58],
+                  ['Marketing', 'Med', 64],
+                  ['Operations', 'Low', 49],
+                ].map(([nm, level, pct]) => (
+                  <div key={nm} className="mk-d-row">
+                    <div className="mk-top">
+                      <div className="mk-nm">{nm}</div>
+                      <div className="mk-vv">
+                        {pct} / {level}
+                      </div>
+                    </div>
+                    <div className="mk-bar">
+                      <div className="mk-fill" style={{ width: `${pct as number}%` }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 5-STEP CHAIN */}
+      <Section variant="std">
+        <SectionHead
+          kicker="How institutions work with us"
+          heading={<>Assess. Train. Document. Govern. Consult.</>}
+          lede={<>Five steps, in order. We don't do the policy doc. We do the work that lets you write a credible policy doc later.</>}
+        />
+        <div className="mk-chain">
+          {[
+            { icon: TargetIcon, num: '01 · Assess', h: 'Where you are', p: 'Every employee takes the assessment. Org and department breakdowns surface where the readiness gaps live.' },
+            { icon: LayersIcon, num: '02 · Train', h: 'Where you should go', p: 'Assign Foundation course seats by role. Specialist tracks (AiBI-S/Compliance, /Lending, /Ops) for the people who need them.' },
+            { icon: FileIcon, num: '03 · Document', h: "What you've done", p: 'Workbench Packs and Toolbox artifacts become your AI use-case inventory — examiner-ready out of the box.' },
+            { icon: LockIcon, num: '04 · Govern', h: 'How you stay safe', p: 'Approval rituals and data rules reinforced through the same artifacts staff already use day to day.' },
+            { icon: NetworkIcon, num: '05 · Consult', h: "What's next", p: 'Optional Leadership Advisory — a fractional Chief AI Officer for institutions running real cohorts.' },
+          ].map(({ icon: Icon, num, h, p }) => (
+            <div key={num} className="mk-step">
+              <span className="mk-pic">
+                <Icon size={24} />
+              </span>
+              <div className="mk-num">{num}</div>
+              <h3>{h}</h3>
+              <p>{p}</p>
+            </div>
           ))}
         </div>
       </Section>
 
-    </MarketingPage>
+      {/* DEPARTMENT BREAKDOWN */}
+      <Section variant="std" surface="white">
+        <SectionHead
+          kicker="What the dashboard shows"
+          heading={<>Readiness, by department, in plain language.</>}
+          lede={<>You see exactly which teams are ready to use AI safely, which need training, and which need both — without policy theater.</>}
+        />
+        <div className="mk-by-dept">
+          <div className="mk-dept-grid">
+            {[
+              { icon: ShieldIcon, nm: 'Compliance', ct: '18 staff', score: 72, pill: 'is-hi', label: 'Ready' },
+              { icon: UsersIcon, nm: 'Retail / Branch', ct: '64 staff', score: 58, pill: 'is-me', label: 'Training needed' },
+              { icon: SendIcon, nm: 'Marketing', ct: '8 staff', score: 64, pill: 'is-me', label: 'Training needed' },
+              { icon: StarIcon, nm: 'Operations', ct: '22 staff', score: 49, pill: 'is-lo', label: 'High risk gap' },
+              { icon: FileIcon, nm: 'Lending', ct: '16 staff', score: 66, pill: 'is-me', label: 'Training needed' },
+              { icon: ChatIcon, nm: 'Leadership', ct: '14 staff', score: 78, pill: 'is-hi', label: 'Ready' },
+            ].map(({ icon: Icon, nm, ct, score, pill, label }) => (
+              <div key={nm} className="mk-dpt">
+                <div className="mk-lhs">
+                  <span className="mk-pic">
+                    <Icon size={18} />
+                  </span>
+                  <div>
+                    <div className="mk-nm">{nm}</div>
+                    <div className="mk-ct">{ct}</div>
+                  </div>
+                </div>
+                <div className="mk-score">{score}</div>
+                <span className={`mk-pill ${pill}`}>{label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Section>
+
+      {/* BRIEFING */}
+      <Section variant="std">
+        <div className="mk-briefing">
+          <div>
+            <div className="mk-k">Free · 30 minutes</div>
+            <h3>Start with an Executive Briefing.</h3>
+            <p>
+              Bring your leadership team. We walk through the assessment, the dashboard, and what
+              a 90-day rollout looks like at an institution your size. No slides, no sales pitch.
+            </p>
+            <Button variant="gold" size="lg" href="/briefing-preview">
+              Book a Briefing <ArrowR className="mk-ic" />
+            </Button>
+          </div>
+          <ul>
+            <li><CheckIcon className="mk-ic" />Demo on real institution data (yours or comparable)</li>
+            <li><CheckIcon className="mk-ic" />FDIC peer comparison for your asset class</li>
+            <li><CheckIcon className="mk-ic" />90-day rollout plan tailored to your shape</li>
+            <li><CheckIcon className="mk-ic" />Pricing for your headcount & departments</li>
+          </ul>
+        </div>
+      </Section>
+
+      {/* SIZER */}
+      <Section variant="std" surface="white" id="sizer">
+        <SectionHead
+          kicker="Size your rollout"
+          heading={<>What would this look like for your institution?</>}
+          lede={<>Adjust your staff count and asset class. Seat price, total cost, and rollout timeline update live.</>}
+        />
+
+        <div className="mk-sizer">
+          <div className="mk-sizer-card">
+            <div className="mk-sz-row">
+              <div className="mk-sz-label">Total staff</div>
+              <div className="mk-sz-value">{staff.toLocaleString('en-US')}</div>
+            </div>
+            <input
+              type="range"
+              min={10}
+              max={500}
+              step={5}
+              value={staff}
+              onChange={(e) => setStaff(parseInt(e.target.value, 10))}
+              className="mk-sz-slider"
+              aria-label="Total staff"
+            />
+            <div className="mk-sz-ticks">
+              <span>10</span>
+              <span>100</span>
+              <span>250</span>
+              <span>500</span>
+            </div>
+
+            <div className="mk-sz-block">
+              <div className="mk-sz-label">Asset class</div>
+              <div className="mk-sz-pills">
+                {(Object.keys(CLASS_LABEL) as AssetClass[]).map((c) => {
+                  const [t, sub] = CLASS_LABEL[c];
+                  return (
+                    <button
+                      key={c}
+                      type="button"
+                      onClick={() => setCls(c)}
+                      className={`mk-sz-pill${cls === c ? ' is-active' : ''}`}
+                    >
+                      {t}
+                      <br />
+                      <span>{sub}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="mk-sz-block">
+              <div className="mk-sz-label">Departments included</div>
+              <div className="mk-sz-pills">
+                {DEPTS.map((d) => (
+                  <button
+                    key={d}
+                    type="button"
+                    onClick={() => toggleDept(d)}
+                    className={`mk-sz-pill${depts.has(d) ? ' is-active' : ''}`}
+                  >
+                    {DEPT_LABEL[d]}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="mk-sizer-result">
+            <div className="mk-sr-head">
+              <span className="mk-lab">Live estimate</span>
+              <span className="mk-cnt">{depts.size} departments</span>
+            </div>
+            <div className="mk-sr-price">
+              <div className="mk-sr-price-v">
+                <span className="mk-dollar">$</span>
+                <span className="mk-num">{calc.price}</span>
+              </div>
+              <div className="mk-sr-price-u">per seat · {calc.tier}</div>
+            </div>
+            <div className="mk-sr-total">
+              <div className="mk-sr-total-row">
+                <span className="mk-k">Total seats</span>
+                <span className="mk-v">{staff.toLocaleString('en-US')}</span>
+              </div>
+              <div className="mk-sr-total-row">
+                <span className="mk-k">Total investment</span>
+                <span className="mk-v">${calc.total.toLocaleString('en-US')}</span>
+              </div>
+              <div className="mk-sr-total-row">
+                <span className="mk-k">Rollout window</span>
+                <span className="mk-v">{calc.window}</span>
+              </div>
+              <div className="mk-sr-total-row">
+                <span className="mk-k">Training hours</span>
+                <span className="mk-v">{calc.hours.toLocaleString('en-US')} hrs</span>
+              </div>
+            </div>
+            <div className="mk-sr-cta">
+              <Button variant="gold" size="lg" href="/briefing-preview">
+                Get this quote in writing <ArrowR className="mk-ic" />
+              </Button>
+            </div>
+            <div className="mk-sr-foot">
+              Estimate includes Foundation Course seats, Toolbox access, and aggregated assessment
+              dashboard. Volume tier at 25+ ($245), 50+ ($195), 100+ ($145).
+            </div>
+          </div>
+        </div>
+      </Section>
+
+      {/* PRICING / ADVISORY */}
+      <Section variant="std" surface="white">
+        <SectionHead kicker="How to engage" heading={<>Two ways to work with us.</>} />
+        <div className="mk-contact-grid">
+          <div className="mk-ccard">
+            <div className="mk-lab">Self-serve</div>
+            <h3>Institution Seats</h3>
+            <div className="mk-price">
+              <div className="mk-v">$195</div>
+              <div className="mk-u">/ seat · volume pricing</div>
+            </div>
+            <p>
+              Buy Foundation Course seats in bulk. Admin dashboard. Assessment aggregated to org
+              level. Toolbox shared across staff.
+            </p>
+            <ul>
+              <li><CheckIcon className="mk-ic" />Volume discount from 10 seats</li>
+              <li><CheckIcon className="mk-ic" />Admin assigns & tracks training</li>
+              <li><CheckIcon className="mk-ic" />SSO available at 25+ seats</li>
+            </ul>
+            <Button variant="ink" size="lg" href="/briefing-preview">
+              Get a Quote <ArrowR className="mk-ic" />
+            </Button>
+          </div>
+          <div className="mk-ccard">
+            <div className="mk-lab">Hands-on</div>
+            <h3>Leadership Advisory</h3>
+            <div className="mk-price">
+              <div className="mk-v">Custom</div>
+              <div className="mk-u">/ contact for engagement</div>
+            </div>
+            <p>
+              Fractional Chief AI Officer. Quarterly working sessions with leadership, monthly
+              cohort reviews, examiner-ready documentation throughout.
+            </p>
+            <ul>
+              <li><CheckIcon className="mk-ic" />Includes all course + toolbox access</li>
+              <li><CheckIcon className="mk-ic" />Custom playbooks for your institution</li>
+              <li><CheckIcon className="mk-ic" />Direct line to founder</li>
+            </ul>
+            <Button variant="gold" size="lg" href="/briefing-preview">
+              Book Briefing <ArrowR className="mk-ic" />
+            </Button>
+          </div>
+        </div>
+      </Section>
+
+      <CtaBand
+        kicker="Institutions & Teams"
+        heading={<>Train the people who already run the bank.</>}
+        body={
+          <>
+            The institutions that win with AI aren't the ones with the slickest policy doc.
+            They're the ones whose staff can actually use it.
+          </>
+        }
+        actions={[
+          { label: 'Book Executive Briefing', href: '/briefing-preview', variant: 'gold' },
+          { label: 'Get Seat Pricing', href: '#sizer', variant: 'ghost-dark' },
+        ]}
+      />
+    </div>
   );
 }
