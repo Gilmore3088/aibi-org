@@ -7,7 +7,6 @@ import {
   Section,
   SectionHead,
   Button,
-  ArrowGlyph,
   EyebrowChip,
   CtaBand,
 } from '@/components/mockup';

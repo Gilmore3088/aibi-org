@@ -5,9 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import {
   SiteHeader,
   Section,
-  SectionHead,
   Button,
-  ArrowGlyph,
   EyebrowChip,
   CtaBand,
 } from '@/components/mockup';

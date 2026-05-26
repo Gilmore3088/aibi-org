@@ -11,7 +11,6 @@ import { SiteHeader, Section, SectionHead, EyebrowChip, CtaBand } from './index'
 import { Button, ArrowGlyph } from './Button';
 import type { CtaAction } from './CtaBand';
 
-type IconProps = { className?: string; size?: number };
 const ChipBookIcon = ({ className }: { className?: string }) => (
   <svg
     className={className}

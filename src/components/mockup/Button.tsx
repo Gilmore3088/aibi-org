@@ -59,7 +59,11 @@ export function Button(props: ButtonProps) {
       );
     }
     return (
-      <Link className={cls} href={href} {...(rest as any)}>
+      <Link
+        className={cls}
+        href={href}
+        {...(rest as Omit<React.ComponentProps<typeof Link>, 'href' | 'className'>)}
+      >
         {children}
       </Link>
     );

@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import {
   SiteHeader,
   Section,
