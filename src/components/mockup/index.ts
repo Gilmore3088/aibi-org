@@ -22,3 +22,6 @@ export type { CtaBandProps, CtaAction } from './CtaBand';
 
 export { EyebrowChip } from './EyebrowChip';
 export type { EyebrowChipProps } from './EyebrowChip';
+
+export { MockupShell } from './MockupShell';
+export type { MockupShellProps, MockupShellBlock } from './MockupShell';

@@ -1,36 +1,39 @@
-import { LedgerArticle } from '@/components/ledger';
+import type { Metadata } from 'next';
+import { MockupShell } from '@/components/mockup';
 
-export const metadata = {
-  title: 'Privacy Policy | The AI Banking Institute',
+export const metadata: Metadata = {
+  title: 'Privacy — The AI Banking Institute',
+  description: 'How The AI Banking Institute collects, uses, and protects your data.',
+  alternates: { canonical: '/privacy' },
 };
 
 export default function PrivacyPage() {
   return (
-    <LedgerArticle eyebrow="Privacy" title={<>Privacy <em>policy.</em></>}>
-      <p>
-        The AI Banking Institute collects only the information needed to operate
-        assessments, courses, payments, learner progress, support, and
-        institution reporting.
-      </p>
-      <p>
-        Assessment answers, readiness scores, course activity responses, saved
-        prompts, practice completions, and certificate records may be stored to
-        provide learner progress and institutional training visibility.
-      </p>
-      <p>
-        Learners should not submit customer PII, account numbers, credit
-        decisions, SAR information, or other highly restricted banking data into
-        course exercises, prompt fields, or practice areas.
-      </p>
-      <p>
-        Payment processing is handled by Stripe. Authentication and course data
-        are handled through Supabase. Analytics may be used to improve product
-        flow and launch readiness.
-      </p>
-      <p>
-        For privacy or data handling questions, contact support using the
-        institution contact path provided by your course sponsor.
-      </p>
-    </LedgerArticle>
+    <MockupShell
+      activePath="/about"
+      eyebrow="Legal · Privacy"
+      title={<>What we collect. What we do not.</>}
+      lede="We collect the minimum needed to run the assessment, deliver the course, and send the emails you opt into. We never sell data. Member or customer data from your institution never enters any model."
+      sections={[
+        {
+          kicker: 'What we collect',
+          heading: <>Email, assessment responses, course progress.</>,
+          lede: <>If you opt into the newsletter, your email goes to MailerLite. Assessment responses live in Supabase. Course progress lives in Supabase. That is it.</>,
+        },
+        {
+          kicker: 'What we do not',
+          heading: <>No tracking pixels in emails. No third-party data brokers. No sale.</>,
+          lede: <>Analytics is first-party (Vercel Analytics) and IP-aggregated. We do not enrich your data with third-party sources. Full text of the policy is available on request.</>,
+          surface: 'white',
+        },
+      ]}
+      ctaBand={{
+        heading: <>Questions about how your data is handled?</>,
+        body: <>Email hello@aibankinginstitute.com — we answer privacy questions personally.</>,
+        actions: [
+          { label: 'Email us', href: 'mailto:hello@aibankinginstitute.com', variant: 'gold' },
+        ],
+      }}
+    />
   );
 }

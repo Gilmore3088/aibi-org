@@ -1,31 +1,39 @@
-import { LedgerArticle } from '@/components/ledger';
+import type { Metadata } from 'next';
+import { MockupShell } from '@/components/mockup';
 
-export const metadata = {
-  title: 'Terms of Use | The AI Banking Institute',
+export const metadata: Metadata = {
+  title: 'Terms — The AI Banking Institute',
+  description: 'Terms of service for The AI Banking Institute.',
+  alternates: { canonical: '/terms' },
 };
 
 export default function TermsPage() {
   return (
-    <LedgerArticle eyebrow="Terms" title={<>Terms of <em>use.</em></>}>
-      <p>
-        The AI Banking Institute provides educational content, practice
-        exercises, prompts, artifacts, assessments, and certification workflows
-        for community financial institutions.
-      </p>
-      <p>
-        Course materials are for training and internal capability building. They
-        are not legal, compliance, credit, security, accounting, or regulatory
-        advice.
-      </p>
-      <p>
-        Learners are responsible for following their institution&apos;s AI, data
-        handling, customer privacy, vendor management, and compliance policies.
-      </p>
-      <p>
-        Certificates indicate completion of the stated course requirements. They
-        do not authorize a learner to make regulated decisions without
-        institution oversight.
-      </p>
-    </LedgerArticle>
+    <MockupShell
+      activePath="/about"
+      eyebrow="Legal · Terms of Service"
+      title={<>The shortest possible terms.</>}
+      lede="You buy a seat, you get the course and toolbox. Refund window is 30 days. We do not use your data to train models. You do not redistribute course content. That is most of it."
+      sections={[
+        {
+          kicker: 'What you get',
+          heading: <>Course access, sandbox access, toolbox artifacts.</>,
+          lede: <>Lifetime access to the version of the course you bought, plus reasonable updates. Sandbox access for the duration of your account. Downloadable Toolbox artifacts are yours to keep and modify internally.</>,
+        },
+        {
+          kicker: 'What we expect',
+          heading: <>No redistribution. No model training on our content.</>,
+          lede: <>You may not redistribute the course or Toolbox to non-purchasers. You may not use our content to train a model. Both rules exist to keep prices low for individual bankers.</>,
+          surface: 'white',
+        },
+      ]}
+      ctaBand={{
+        heading: <>Questions about the terms?</>,
+        body: <>Email hello@aibankinginstitute.com — short answers, no legalese.</>,
+        actions: [
+          { label: 'Email us', href: 'mailto:hello@aibankinginstitute.com', variant: 'gold' },
+        ],
+      }}
+    />
   );
 }

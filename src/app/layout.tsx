@@ -32,6 +32,15 @@ const CHROMELESS_PATHS: readonly string[] = [
   '/my-toolbox',
   '/for-institutions',
   '/playbooks',
+  '/about',
+  '/faq',
+  '/security',
+  '/certifications',
+  '/education',
+  '/briefing-preview',
+  '/privacy',
+  '/terms',
+  '/ai-use-disclaimer',
 
   // Pre-existing chromeless routes (own brand lockup or no chrome by design)
   '/coming-soon',
