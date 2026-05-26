@@ -65,7 +65,6 @@ const ROUTES = [
   // engines can answer policy queries directly.
   { path: '/privacy', priority: 0.3, changeFrequency: 'yearly' as const },
   { path: '/terms', priority: 0.3, changeFrequency: 'yearly' as const },
-  { path: '/faq', priority: 0.5, changeFrequency: 'monthly' as const },
   { path: '/ai-use-disclaimer', priority: 0.3, changeFrequency: 'yearly' as const },
 ];
 

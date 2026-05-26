@@ -16,7 +16,7 @@ export default function CertificationsPage() {
       lede="Every credential is earned by completing reviewed work products — not by clicking through a video. The Foundation Certificate ships with the course. Specialist (AiBI-S) and Leader (AiBI-L) tracks open after that."
       heroActions={[
         { label: 'Enroll in Foundation', href: '/courses/foundation', variant: 'gold' },
-        { label: 'Inquire about AiBI-S/L', href: '/briefing-preview', variant: 'ghost-dark' },
+        { label: 'Inquire about AiBI-S/L', href: '/for-institutions/advisory', variant: 'ghost-dark' },
       ]}
       sections={[
         {
@@ -42,7 +42,7 @@ export default function CertificationsPage() {
         body: <>Every credential ships with a public verification URL and a downloadable evidence summary. No bottomless training catalog — earn the credential by doing the work.</>,
         actions: [
           { label: 'Enroll in Foundation', href: '/courses/foundation', variant: 'gold' },
-          { label: 'Inquire (Specialist / Leader)', href: '/briefing-preview', variant: 'ghost-dark' },
+          { label: 'Inquire (Specialist / Leader)', href: '/for-institutions/advisory', variant: 'ghost-dark' },
         ],
       }}
     />

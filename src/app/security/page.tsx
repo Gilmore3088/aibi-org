@@ -191,7 +191,7 @@ export default function SecurityPage() {
         ),
         actions: [
           { label: 'See how we work', href: '/for-institutions', variant: 'gold' },
-          { label: 'Book a briefing', href: '/briefing-preview', variant: 'ghost-dark' },
+          { label: 'Book a briefing', href: '/for-institutions/advisory', variant: 'ghost-dark' },
         ],
       }}
     />

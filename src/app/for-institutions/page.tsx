@@ -104,7 +104,7 @@ export default function ForInstitutionsPage() {
 
   return (
     <div className="mockup-scope">
-      <SiteHeader activePath="/for-institutions" cta={{ label: 'Book Briefing', href: '/briefing-preview' }} />
+      <SiteHeader activePath="/for-institutions" cta={{ label: 'Book Briefing', href: '/for-institutions/advisory' }} />
 
       {/* HERO */}
       <section className="mk-hero">
@@ -125,7 +125,7 @@ export default function ForInstitutionsPage() {
               leadership advisory.
             </p>
             <div className="mk-ctas">
-              <Button variant="gold" size="lg" href="/briefing-preview">
+              <Button variant="gold" size="lg" href="/for-institutions/advisory">
                 Book Executive Briefing <ArrowR className="mk-ic" />
               </Button>
               <Button variant="ghost-dark" size="lg" href="#sizer">
@@ -254,7 +254,7 @@ export default function ForInstitutionsPage() {
                 'Institutional readiness baseline + post-engagement diagnostic',
                 'Aggregate dashboard for your champion',
               ],
-              ctaHref: '/briefing-preview',
+              ctaHref: '/for-institutions/advisory',
               ctaLabel: 'Request a pilot',
               ctaVariant: 'gold' as const,
             },
@@ -419,7 +419,7 @@ export default function ForInstitutionsPage() {
               Bring your leadership team. We walk through the assessment, the dashboard, and what
               a 90-day rollout looks like at an institution your size. No slides, no sales pitch.
             </p>
-            <Button variant="gold" size="lg" href="/briefing-preview">
+            <Button variant="gold" size="lg" href="/for-institutions/advisory">
               Book a Briefing <ArrowR className="mk-ic" />
             </Button>
           </div>
@@ -532,7 +532,7 @@ export default function ForInstitutionsPage() {
               </div>
             </div>
             <div className="mk-sr-cta">
-              <Button variant="gold" size="lg" href="/briefing-preview">
+              <Button variant="gold" size="lg" href="/for-institutions/advisory">
                 Get this quote in writing <ArrowR className="mk-ic" />
               </Button>
             </div>
@@ -564,7 +564,7 @@ export default function ForInstitutionsPage() {
               <li><CheckIcon className="mk-ic" />Admin assigns & tracks training</li>
               <li><CheckIcon className="mk-ic" />SSO available at 25+ seats</li>
             </ul>
-            <Button variant="ink" size="lg" href="/briefing-preview">
+            <Button variant="ink" size="lg" href="/for-institutions/advisory">
               Get a Quote <ArrowR className="mk-ic" />
             </Button>
           </div>
@@ -584,7 +584,7 @@ export default function ForInstitutionsPage() {
               <li><CheckIcon className="mk-ic" />Custom playbooks for your institution</li>
               <li><CheckIcon className="mk-ic" />Direct line to founder</li>
             </ul>
-            <Button variant="gold" size="lg" href="/briefing-preview">
+            <Button variant="gold" size="lg" href="/for-institutions/advisory">
               Book Briefing <ArrowR className="mk-ic" />
             </Button>
           </div>
@@ -601,7 +601,7 @@ export default function ForInstitutionsPage() {
           </>
         }
         actions={[
-          { label: 'Book Executive Briefing', href: '/briefing-preview', variant: 'gold' },
+          { label: 'Book Executive Briefing', href: '/for-institutions/advisory', variant: 'gold' },
           { label: 'Get Seat Pricing', href: '#sizer', variant: 'ghost-dark' },
         ]}
       />

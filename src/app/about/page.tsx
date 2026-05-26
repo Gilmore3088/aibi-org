@@ -62,7 +62,7 @@ export default function AboutPage() {
       }
       heroActions={[
         { label: 'Take the assessment', href: '/assessment', variant: 'gold' },
-        { label: 'Book a briefing', href: '/briefing-preview', variant: 'ghost-dark' },
+        { label: 'Book a briefing', href: '/for-institutions/advisory', variant: 'ghost-dark' },
       ]}
       heroAside={
         <aside
@@ -223,7 +223,7 @@ export default function AboutPage() {
         ),
         actions: [
           { label: 'Take the assessment', href: '/assessment', variant: 'gold' },
-          { label: 'Book a briefing', href: '/briefing-preview', variant: 'ghost-dark' },
+          { label: 'Book a briefing', href: '/for-institutions/advisory', variant: 'ghost-dark' },
         ],
       }}
     />
