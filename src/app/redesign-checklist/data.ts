@@ -21,14 +21,9 @@ export const CHECKLIST: readonly ChecklistCategory[] = [
     description: 'Pixel-faithful Ledger from claude.ai/design exports.',
     items: [
       { path: '/design-system', note: '21 sections — typography, buttons, pills, cards, sidebar, tables, model picker, etc.' },
-      { path: '/preview-home', note: 'Marketing landing mockup' },
-      { path: '/user-home', note: 'Dashboard mockup ("Hello, James")' },
-      { path: '/my-toolbox', note: 'Interactive — filter chips, modal, drawer, search' },
+      { path: '/my-toolbox', note: 'Interactive — filter chips, modal, drawer, search. Source-of-truth design for the in-flight /dashboard/toolbox rebuild.' },
       { path: '/playground', note: 'Multi-model prompt playground (interactive)' },
-      { path: '/faq', note: 'FAQ accordion' },
-      { path: '/briefing-preview', note: 'Assessment results briefing' },
-      { path: '/lms-preview', note: 'LMS prototype (iframed React app)' },
-      { path: '/courses/foundation-preview', note: 'Pre-purchase course landing' },
+      { path: '/faq', note: 'FAQ accordion (also wired into the public sitemap)' },
     ],
   },
   {
@@ -110,7 +105,7 @@ export const CHECKLIST: readonly ChecklistCategory[] = [
   {
     id: 'dashboard',
     title: 'Dashboard',
-    description: 'Existing dashboard. Will be replaced by /user-home + /my-toolbox.',
+    description: 'Live dashboard in Ledger. The /my-toolbox prototype is being ported into /dashboard/toolbox separately — see Plans/toolbox-prototype-port.md.',
     items: [
       { path: '/dashboard' },
       { path: '/dashboard/progression' },

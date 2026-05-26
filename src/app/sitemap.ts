@@ -26,7 +26,6 @@ const ROUTES = [
   // Foundation course purchase page — public (no auth gate), the Stripe checkout
   // surface. /courses/foundation/program itself is auth-gated (307 → /auth/login)
   // and is intentionally excluded so search engines don't index login redirects.
-  // /courses/foundation-preview is also excluded — it carries `robots: noindex`.
   {
     path: '/courses/foundation/program/purchase',
     priority: 0.85,
