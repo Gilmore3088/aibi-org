@@ -17,6 +17,9 @@ import { isSupabaseConfigured } from '@/lib/supabase/client';
 import { EnrollButton } from './EnrollButton';
 import { foundationCourseConfig, FOUNDATION_TOTAL_MINUTES } from '@content/courses/foundation-program';
 import { CourseShell, LMSTopBar, PrimaryButton, toLMSModules, type LMSModule } from '@/components/lms';
+import { CurriculumByPillar } from './_components/CurriculumByPillar';
+import { PurchaseFAQ } from './_components/PurchaseFAQ';
+import { FinalCTA } from './_components/FinalCTA';
 
 export const metadata: Metadata = {
   title: 'Enroll in AiBI-Foundation | The AI Banking Institute',
@@ -258,6 +261,7 @@ export default async function PurchasePage() {
 
           {/* Enroll strip — ink card with price + EnrollButton */}
           <div
+            id="enroll"
             style={{
               marginTop: 32,
               display: 'grid',
@@ -268,6 +272,7 @@ export default async function PurchasePage() {
               color: 'var(--ledger-paper)',
               padding: '22px 26px',
               borderRadius: 2,
+              scrollMarginTop: 80,
             }}
           >
             <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
@@ -592,6 +597,15 @@ export default async function PurchasePage() {
           </ul>
         </section>
 
+        {/* Curriculum — pillar-grouped module list (added 2026-05-26 from
+            the /courses/foundation-preview prototype) */}
+        <CurriculumByPillar />
+
+        {/* FAQ accordion */}
+        <PurchaseFAQ />
+
+        {/* Final CTA — closes with one anchor back to the enroll strip */}
+        <FinalCTA />
       </div>
     </CourseShell>
   );
