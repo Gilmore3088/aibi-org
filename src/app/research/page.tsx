@@ -1,9 +1,8 @@
-// /research — The AI Banking Brief
+// /research — AI Banking Resources hub.
 //
-// 2026-05-26 rework: the page is the public face of the Brief.
-// Sections: hero (Brief branding) → Signal Board → Featured Brief →
-// Latest Briefs → newsletter CTA. The archive page itself stays as
-// the entry point; "View all briefs" routes to a future /research/archive.
+// 2026-05-26 rework: the page is the public Resources hub, not just
+// the Brief archive. It surfaces every practical thing the Institute
+// publishes — templates, playbooks, the Brief, assessments, downloads.
 
 import type { Metadata } from 'next';
 import Link from 'next/link';
@@ -16,23 +15,24 @@ import {
   CtaBand,
 } from '@/components/mockup';
 import { listAllEssays } from '@content/essays/_lib/registry';
+import { PLAYBOOK_INDEX } from '@/app/playbooks/data';
+import { TEMPLATES } from './templates/data';
 
 export const metadata: Metadata = {
   alternates: { canonical: '/research' },
-  title: 'AI Banking Brief',
+  title: 'AI Banking Resources',
   description:
-    'AI banking research, translated for community institutions. Sourced trends, regulatory signals, and practical takeaways for banks and credit unions adopting AI safely.',
+    'Templates, playbooks, briefs, and practical artifacts for community banks and credit unions adopting AI safely.',
   openGraph: {
-    title: 'AI Banking Brief',
+    title: 'AI Banking Resources',
     description:
-      'AI banking research, translated for community institutions. Sourced trends, regulatory signals, and practical takeaways.',
+      'Templates, playbooks, briefs, and practical artifacts for community banks and credit unions adopting AI safely.',
     url: '/research',
     type: 'website',
   },
   twitter: {
-    title: 'AI Banking Brief',
-    description:
-      'AI banking research, translated for community institutions.',
+    title: 'AI Banking Resources',
+    description: 'Templates, playbooks, briefs, and practical artifacts.',
   },
 };
 
@@ -59,66 +59,18 @@ const SIGNALS: { signal: string; source: string; detail: string }[] = [
   },
 ];
 
-type ArtifactCategory = 'Governance' | 'Compliance' | 'Staff card' | 'Reference';
-type ArtifactFormat = 'Markdown' | 'PDF';
-
-interface PracticalArtifact {
-  readonly title: string;
-  readonly dek: string;
-  readonly href: string;
-  readonly category: ArtifactCategory;
-  readonly format: ArtifactFormat;
-}
-
-const PRACTICAL_ARTIFACTS: readonly PracticalArtifact[] = [
+const DOWNLOADS: { title: string; desc: string; href: string; meta: string }[] = [
   {
-    title: 'AI Use-Case Inventory',
-    dek: 'One-page register of every AI-touched workflow at your institution. The cheapest examiner-readiness move in community banking.',
-    href: '/artifacts/ai-use-case-inventory.md',
-    category: 'Governance',
-    format: 'Markdown',
+    title: 'Regulatory cheatsheet',
+    desc: 'One-page reference: SR 11-7, Interagency TPRM, ECOA/Reg B, AIEOG AI Lexicon.',
+    href: '/artifacts/regulatory-cheatsheet.pdf',
+    meta: 'PDF · 1 page',
   },
   {
-    title: 'Fair-Lending Review Checklist for AI-Assisted Processes',
-    dek: 'Pre-deployment and recurring-review checklist for any AI process that touches credit decisions, pricing, or marketing eligibility.',
-    href: '/artifacts/fair-lending-ai-review-checklist.md',
-    category: 'Compliance',
-    format: 'Markdown',
-  },
-  {
-    title: 'Data Handling Reference Card',
-    dek: 'Green / Yellow / Red data classes, the placeholder pattern, and the questions staff should ask before pasting anything into an AI tool.',
-    href: '/artifacts/data-handling-reference-card.md',
-    category: 'Staff card',
-    format: 'Markdown',
-  },
-  {
-    title: 'Red / Yellow / Green AI Use Card',
-    dek: 'A short staff-facing classification of which AI uses are safe, which need approved tools, and which to avoid.',
-    href: '/downloads/red-yellow-green-use-card.pdf',
-    category: 'Staff card',
-    format: 'PDF',
-  },
-  {
-    title: 'Safe AI Use Checklist',
-    dek: 'A reflex for the moment before staff paste anything into a chat tool. Strip data, ask clearly, fact-check, escalate the risky calls.',
-    href: '/downloads/safe-ai-use-checklist.pdf',
-    category: 'Staff card',
-    format: 'PDF',
-  },
-  {
-    title: 'Regulatory Cheatsheet',
-    dek: 'One-page reference for the regulations community banks need to know when adopting AI: SR 11-7, ECOA / Reg B, TPRM, the AIEOG Lexicon.',
-    href: '/downloads/regulatory-cheatsheet.pdf',
-    category: 'Reference',
-    format: 'PDF',
-  },
-  {
-    title: 'Platform Feature Reference Card',
-    dek: 'Quick reference for AI features baked into the platforms your institution likely already uses.',
-    href: '/downloads/platform-feature-reference-card.pdf',
-    category: 'Reference',
-    format: 'PDF',
+    title: 'Platform feature reference card',
+    desc: 'Quick reference for AiBI capabilities, assessment dimensions, and credential paths.',
+    href: '/artifacts/platform-feature-reference-card.pdf',
+    meta: 'PDF · 1 page',
   },
 ];
 
@@ -127,14 +79,17 @@ function formatDate(iso: string): string {
   return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 }
 
-export default async function ResearchArchivePage() {
+export default async function ResourcesHubPage() {
   const essays = await listAllEssays();
   const featured = essays[0];
   const latest = essays.slice(1, 4);
 
   return (
     <div className="mockup-scope">
-      <SiteHeader activePath="/research" cta={{ label: 'Subscribe to the Brief', href: '#subscribe' }} />
+      <SiteHeader
+        activePath="/research"
+        cta={{ label: 'Subscribe to the Brief', href: '#subscribe' }}
+      />
 
       {/* HERO */}
       <section className="mk-hero">
@@ -144,18 +99,18 @@ export default async function ResearchArchivePage() {
         </div>
         <div className="mk-container mk-hero-inner">
           <div>
-            <EyebrowChip>The AI Banking Brief</EyebrowChip>
-            <h1>AI banking research, translated for community institutions.</h1>
+            <EyebrowChip>AI Banking Resources</EyebrowChip>
+            <h1>Practical AI resources for community banks and credit unions.</h1>
             <p className="mk-lede">
-              Sourced trends, regulatory signals, and practical takeaways for banks and credit
-              unions adopting AI safely.
+              Templates, role playbooks, sourced briefs, and downloadable references. Adapt before
+              adopting — every starter names a section your institution should change.
             </p>
             <div className="mk-ctas">
-              <Button variant="gold" size="lg" href="#subscribe">
-                Subscribe to the Brief
+              <Button variant="gold" size="lg" href="#templates">
+                Browse templates
               </Button>
-              <Button variant="ghost-dark" size="lg" href="#latest">
-                Read the latest
+              <Button variant="ghost-dark" size="lg" href="#subscribe">
+                Subscribe to the Brief
               </Button>
             </div>
           </div>
@@ -192,12 +147,118 @@ export default async function ResearchArchivePage() {
         </div>
       </Section>
 
+      {/* TEMPLATES */}
+      <Section variant="std">
+        <div id="templates" />
+        <SectionHead
+          kicker="Templates & checklists"
+          heading={<>Starter documents your team can adapt today.</>}
+          lede={
+            <>
+              Each template names a section to change. Bring it to your committee, your auditor,
+              and your examiner before adoption.
+            </>
+          }
+        />
+        <div className="mk-resources-grid">
+          {TEMPLATES.map((t) => (
+            <Link key={t.slug} href={`/research/templates/${t.slug}`} className="mk-resource-card">
+              <div className="mk-resource-tag">Template</div>
+              <h3>{t.title}</h3>
+              <p>{t.dek}</p>
+              <div className="mk-resource-foot">
+                <span>{t.audience}</span>
+                <span>{t.readMinutes} min</span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </Section>
+
+      {/* PLAYBOOKS */}
+      <Section variant="std" surface="white">
+        <div id="playbooks" />
+        <SectionHead
+          kicker="Role playbooks"
+          heading={<>Use cases and artifacts by role.</>}
+          lede={
+            <>
+              Six role playbooks covering compliance, retail, marketing, lending, BSA/AML, and
+              IT/InfoSec. Each lists role-specific AI use cases, the artifacts produced, and the
+              review path.
+            </>
+          }
+        />
+        <div className="mk-resources-grid mk-resources-3up">
+          {PLAYBOOK_INDEX.map((p) => (
+            <Link key={p.slug} href={`/playbooks/${p.slug}`} className="mk-resource-card">
+              <div className="mk-resource-tag">Playbook</div>
+              <h3>{p.title}</h3>
+              <p>{p.desc}</p>
+              <div className="mk-resource-foot">
+                <span>By role</span>
+                <span>Read →</span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </Section>
+
+      {/* ASSESSMENTS */}
+      <Section variant="std">
+        <SectionHead
+          kicker="Assessments"
+          heading={<>Measure where you stand.</>}
+        />
+        <div className="mk-resources-grid mk-resources-2up">
+          <Link href="/assessment" className="mk-resource-card">
+            <div className="mk-resource-tag">Free</div>
+            <h3>Free AI Readiness Assessment</h3>
+            <p>Three minutes. Score, tier, top gap, and a starter artifact you can take to your team this week.</p>
+            <div className="mk-resource-foot">
+              <span>12 questions · 3 min</span>
+              <span>Take it →</span>
+            </div>
+          </Link>
+          <Link href="/assessment/in-depth" className="mk-resource-card">
+            <div className="mk-resource-tag">$99</div>
+            <h3>In-Depth Assessment</h3>
+            <p>The 48-question maturity assessment. Role-specific plan and a reviewer-ready PDF report.</p>
+            <div className="mk-resource-foot">
+              <span>48 questions · 20 min</span>
+              <span>Go deeper →</span>
+            </div>
+          </Link>
+        </div>
+      </Section>
+
+      {/* DOWNLOADS */}
+      <Section variant="std" surface="white">
+        <SectionHead
+          kicker="Downloads"
+          heading={<>One-page references.</>}
+        />
+        <div className="mk-resources-grid mk-resources-2up">
+          {DOWNLOADS.map((d) => (
+            <a key={d.href} href={d.href} target="_blank" rel="noopener noreferrer" className="mk-resource-card">
+              <div className="mk-resource-tag">PDF</div>
+              <h3>{d.title}</h3>
+              <p>{d.desc}</p>
+              <div className="mk-resource-foot">
+                <span>{d.meta}</span>
+                <span>Download →</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </Section>
+
       {/* LATEST BRIEFS */}
       <Section variant="std">
         <div id="latest" />
         <SectionHead
-          kicker="Latest Briefs"
-          heading={<>Recent essays from the Brief.</>}
+          kicker="The AI Banking Brief"
+          heading={<>Recent essays.</>}
         />
         <div className="mk-brief-latest">
           {latest.map((e) => (
