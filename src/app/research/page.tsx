@@ -1,28 +1,62 @@
-// /research — The AI Banking Brief (archive)
+// /research — The AI Banking Brief
 //
-// 2026-05-26 rewrite: dropped the 866-line bespoke magazine-cover
-// prototype + its 1230-line stylesheet. The archive now renders as
-// a clean MockupShell-based listing of every published essay, on
-// the same design system as the rest of the marketing surface.
-// Bespoke `aibi-research` / `ticker` / `dot` classes retired.
+// 2026-05-26 rework: the page is the public face of the Brief.
+// Sections: hero (Brief branding) → Signal Board → Featured Brief →
+// Latest Briefs → newsletter CTA. The archive page itself stays as
+// the entry point; "View all briefs" routes to a future /research/archive.
 
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { MockupShell } from '@/components/mockup';
+import {
+  SiteHeader,
+  Section,
+  SectionHead,
+  Button,
+  EyebrowChip,
+  CtaBand,
+} from '@/components/mockup';
 import { listAllEssays } from '@content/essays/_lib/registry';
 
 export const metadata: Metadata = {
   alternates: { canonical: '/research' },
-  title: 'Research — The AI Banking Brief',
+  title: 'AI Banking Brief',
   description:
-    'Sourced AI research, field notes, and practical artifacts for community banks and credit unions adopting AI safely.',
+    'AI banking research, translated for community institutions. Sourced trends, regulatory signals, and practical takeaways for banks and credit unions adopting AI safely.',
+  openGraph: {
+    title: 'AI Banking Brief',
+    description:
+      'AI banking research, translated for community institutions. Sourced trends, regulatory signals, and practical takeaways.',
+    url: '/research',
+    type: 'website',
+  },
+  twitter: {
+    title: 'AI Banking Brief',
+    description:
+      'AI banking research, translated for community institutions.',
+  },
 };
 
-const TICKER: { kicker: string; text: string }[] = [
-  { kicker: 'FDIC', text: 'Community-bank median efficiency ratio ~65% · Q4 2024 QBP' },
-  { kicker: 'Gartner', text: '66% of banks discussing AI budget · Bank Director 2024 (via Jack Henry)' },
-  { kicker: 'Personetics', text: '84% would switch FIs for AI-driven financial insights · 2025 (via Apiture)' },
-  { kicker: 'GAO', text: 'GAO 25-107197 · no AI-specific banking framework yet · May 2025' },
+const SIGNALS: { signal: string; source: string; detail: string }[] = [
+  {
+    signal: 'Efficiency pressure',
+    source: 'FDIC · Q4 2024',
+    detail: 'Community-bank median efficiency ratio sits at ~65%.',
+  },
+  {
+    signal: 'AI budget conversations',
+    source: 'Bank Director 2024 · via Jack Henry',
+    detail: '66% of banks are now discussing AI budget allocations.',
+  },
+  {
+    signal: 'Consumer expectations',
+    source: 'Personetics 2025 · via Apiture',
+    detail: '84% would switch FIs for AI-driven financial insights.',
+  },
+  {
+    signal: 'Regulatory uncertainty',
+    source: 'GAO 25-107197 · May 2025',
+    detail: 'No comprehensive AI-specific banking framework yet.',
+  },
 ];
 
 type ArtifactCategory = 'Governance' | 'Compliance' | 'Staff card' | 'Reference';
@@ -95,327 +129,117 @@ function formatDate(iso: string): string {
 
 export default async function ResearchArchivePage() {
   const essays = await listAllEssays();
+  const featured = essays[0];
+  const latest = essays.slice(1, 4);
 
   return (
-    <MockupShell
-      activePath="/research"
-      eyebrow="The AI Banking Brief · sourced research"
-      title={<>What the Institute is reading. What it means for your bank.</>}
-      lede={
-        <>
-          Sourced AI research, field notes, and practical artifacts for community banks
-          and credit unions adopting AI safely. Every claim cites a named source.
-        </>
-      }
-      heroActions={[
-        { label: 'Take the assessment', href: '/assessment', variant: 'gold' },
-        { label: 'View the curriculum', href: '/education', variant: 'ghost-dark' },
-      ]}
-      heroAside={
-        <aside
-          style={{
-            background: 'rgba(255,255,255,0.06)',
-            border: '1px solid rgba(255,255,255,0.18)',
-            borderRadius: 24,
-            padding: 28,
-            color: '#fff',
-          }}
-        >
-          <p
-            style={{
-              fontSize: 12,
-              fontWeight: 700,
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
-              color: 'var(--gold-soft)',
-              margin: '0 0 16px',
-            }}
-          >
-            Sourced data, named publishers
-          </p>
-          <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-            {TICKER.map((t) => (
-              <li
-                key={t.kicker}
-                style={{
-                  padding: '12px 0',
-                  borderTop: '1px solid rgba(255,255,255,0.10)',
-                  fontSize: 13,
-                  lineHeight: 1.5,
-                  color: 'rgba(255,255,255,0.85)',
-                }}
-              >
-                <span
-                  style={{
-                    display: 'inline-block',
-                    fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
-                    fontSize: 11,
-                    letterSpacing: '0.16em',
-                    textTransform: 'uppercase',
-                    color: 'var(--gold-soft)',
-                    marginRight: 8,
-                    fontWeight: 700,
-                  }}
-                >
-                  {t.kicker}
-                </span>
-                {t.text}
-              </li>
-            ))}
-          </ul>
-        </aside>
-      }
-      sections={[
-        {
-          kicker: 'Practical artifacts',
-          heading: <>One-page templates you can use this week.</>,
-          body: (
-            <>
-              <p
-                style={{
-                  fontSize: 15,
-                  lineHeight: 1.6,
-                  color: 'var(--slate-600)',
-                  margin: '16px 0 32px',
-                  maxWidth: 640,
-                }}
-              >
-                Free downloads. No email required. Each one is a working
-                template — bring it to your next AI committee meeting, adapt it
-                to your institution, and put it to work.
-              </p>
-              <div
-                style={{
-                  display: 'grid',
-                  gap: 20,
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-                }}
-              >
-                {PRACTICAL_ARTIFACTS.map((a) => (
-                  <a
-                    key={a.href}
-                    href={a.href}
-                    download
-                    style={{
-                      background: '#fff',
-                      border: '1px solid var(--ink-a10)',
-                      borderRadius: 16,
-                      padding: 28,
-                      textDecoration: 'none',
-                      color: 'inherit',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      transition: 'transform 120ms, box-shadow 120ms',
-                    }}
-                  >
-                    <div
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'baseline',
-                        marginBottom: 12,
-                        gap: 12,
-                      }}
-                    >
-                      <span
-                        style={{
-                          fontFamily:
-                            'ui-monospace, SFMono-Regular, Menlo, monospace',
-                          fontSize: 11,
-                          letterSpacing: '0.16em',
-                          textTransform: 'uppercase',
-                          color: 'var(--gold-deep)',
-                          fontWeight: 700,
-                        }}
-                      >
-                        {a.category}
-                      </span>
-                      <span
-                        style={{
-                          fontSize: 11,
-                          fontWeight: 700,
-                          letterSpacing: '0.16em',
-                          textTransform: 'uppercase',
-                          color: 'var(--slate-500)',
-                          border: '1px solid var(--ink-a10)',
-                          borderRadius: 999,
-                          padding: '3px 10px',
-                          whiteSpace: 'nowrap',
-                        }}
-                      >
-                        {a.format}
-                      </span>
-                    </div>
-                    <h3
-                      style={{
-                        fontSize: 20,
-                        fontWeight: 600,
-                        lineHeight: 1.3,
-                        color: 'var(--ink)',
-                        margin: '0 0 12px',
-                      }}
-                    >
-                      {a.title}
-                    </h3>
-                    <p
-                      style={{
-                        fontSize: 14,
-                        lineHeight: 1.55,
-                        color: 'var(--slate-600)',
-                        margin: '0 0 20px',
-                        flex: 1,
-                      }}
-                    >
-                      {a.dek}
-                    </p>
-                    <div
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'flex-end',
-                        alignItems: 'center',
-                        marginTop: 'auto',
-                        paddingTop: 16,
-                        borderTop: '1px solid var(--ink-a10)',
-                        fontSize: 13,
-                      }}
-                    >
-                      <span
-                        style={{
-                          color: 'var(--ink)',
-                          fontWeight: 600,
-                          borderBottom: '2px solid var(--gold)',
-                          paddingBottom: 2,
-                        }}
-                      >
-                        Download →
-                      </span>
-                    </div>
-                  </a>
-                ))}
-              </div>
-            </>
-          ),
-        },
-        {
-          kicker: 'Archive',
-          heading: <>Every published essay, newest first.</>,
-          body: (
-            <div
-              style={{
-                display: 'grid',
-                gap: 20,
-                gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-                marginTop: 32,
-              }}
-            >
-              {essays.map((e) => (
-                <Link
-                  key={e.slug}
-                  href={e.href}
-                  style={{
-                    background: '#fff',
-                    border: '1px solid var(--ink-a10)',
-                    borderRadius: 16,
-                    padding: 28,
-                    textDecoration: 'none',
-                    color: 'inherit',
-                    transition: 'transform 120ms, box-shadow 120ms',
-                    display: 'flex',
-                    flexDirection: 'column',
-                  }}
-                >
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'baseline',
-                      marginBottom: 12,
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
-                        fontSize: 11,
-                        letterSpacing: '0.16em',
-                        textTransform: 'uppercase',
-                        color: 'var(--gold-deep)',
-                        fontWeight: 700,
-                      }}
-                    >
-                      {e.category}
-                    </span>
-                    <span style={{ fontSize: 12, color: 'var(--slate-500)' }}>
-                      {e.readMinutes} min read
-                    </span>
-                  </div>
-                  <h3
-                    style={{
-                      fontSize: 22,
-                      fontWeight: 600,
-                      lineHeight: 1.25,
-                      color: 'var(--ink)',
-                      margin: '0 0 12px',
-                    }}
-                  >
-                    {e.title}
-                  </h3>
-                  {e.dek && (
-                    <p
-                      style={{
-                        fontSize: 15,
-                        lineHeight: 1.55,
-                        color: 'var(--slate-600)',
-                        margin: '0 0 20px',
-                        flex: 1,
-                      }}
-                    >
-                      {e.dek}
-                    </p>
-                  )}
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      marginTop: 'auto',
-                      paddingTop: 16,
-                      borderTop: '1px solid var(--ink-a10)',
-                      fontSize: 13,
-                      color: 'var(--slate-500)',
-                    }}
-                  >
-                    <span>{formatDate(e.date)}</span>
-                    <span
-                      style={{
-                        color: 'var(--ink)',
-                        fontWeight: 600,
-                        borderBottom: '2px solid var(--gold)',
-                        paddingBottom: 2,
-                      }}
-                    >
-                      Read →
-                    </span>
-                  </div>
-                </Link>
-              ))}
+    <div className="mockup-scope">
+      <SiteHeader activePath="/research" cta={{ label: 'Subscribe to the Brief', href: '#subscribe' }} />
+
+      {/* HERO */}
+      <section className="mk-hero">
+        <div className="mk-deco">
+          <div className="mk-deco-ring" />
+          <div className="mk-deco-blur" />
+        </div>
+        <div className="mk-container mk-hero-inner">
+          <div>
+            <EyebrowChip>The AI Banking Brief</EyebrowChip>
+            <h1>AI banking research, translated for community institutions.</h1>
+            <p className="mk-lede">
+              Sourced trends, regulatory signals, and practical takeaways for banks and credit
+              unions adopting AI safely.
+            </p>
+            <div className="mk-ctas">
+              <Button variant="gold" size="lg" href="#subscribe">
+                Subscribe to the Brief
+              </Button>
+              <Button variant="ghost-dark" size="lg" href="#latest">
+                Read the latest
+              </Button>
             </div>
-          ),
-        },
-      ]}
-      ctaBand={{
-        kicker: 'Want the Brief?',
-        heading: <>Sourced AI research, every other Friday.</>,
-        body: (
+          </div>
+
+          {featured && (
+            <Link href={featured.href} className="mk-brief-featured-hero">
+              <div className="mk-k">Featured Brief</div>
+              <h2>{featured.title}</h2>
+              {featured.dek && <p>{featured.dek}</p>}
+              <div className="mk-brief-meta">
+                <span>{featured.category}</span>
+                <span>{formatDate(featured.date)}</span>
+                <span>{featured.readMinutes} min read</span>
+              </div>
+            </Link>
+          )}
+        </div>
+      </section>
+
+      {/* SIGNAL BOARD */}
+      <Section variant="std" surface="white">
+        <SectionHead
+          kicker="This month's signals"
+          heading={<>What we&rsquo;re tracking right now.</>}
+        />
+        <div className="mk-signals">
+          {SIGNALS.map((s) => (
+            <div key={s.signal} className="mk-signal-card">
+              <div className="mk-signal-name">{s.signal}</div>
+              <div className="mk-signal-detail">{s.detail}</div>
+              <div className="mk-signal-source">{s.source}</div>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      {/* LATEST BRIEFS */}
+      <Section variant="std">
+        <div id="latest" />
+        <SectionHead
+          kicker="Latest Briefs"
+          heading={<>Recent essays from the Brief.</>}
+        />
+        <div className="mk-brief-latest">
+          {latest.map((e) => (
+            <Link key={e.slug} href={e.href} className="mk-brief-card">
+              <div className="mk-brief-meta">
+                <span>{e.category}</span>
+                <span>{e.readMinutes} min read</span>
+              </div>
+              <h3>{e.title}</h3>
+              {e.dek && <p>{e.dek}</p>}
+              <div className="mk-brief-foot">
+                <span>{formatDate(e.date)}</span>
+                <span className="mk-brief-read">Read →</span>
+              </div>
+            </Link>
+          ))}
+        </div>
+        {essays.length > 4 && (
+          <div className="mk-brief-all">
+            <Button variant="ink" href="/research/archive">
+              View all briefs ({essays.length})
+            </Button>
+          </div>
+        )}
+      </Section>
+
+      {/* NEWSLETTER CTA */}
+      <div id="subscribe" />
+      <CtaBand
+        kicker="The AI Banking Brief"
+        heading={<>Get the AI Banking Brief every other Friday.</>}
+        body={
           <>
-            One short email. Sourced statistics, named publishers, and what each finding
-            means for community banks and credit unions. No promotional copy.
+            One short email with sourced AI signals and what they mean for community banks and
+            credit unions. No promotional copy.
           </>
-        ),
-        actions: [
-          { label: 'Take the assessment', href: '/assessment', variant: 'gold' },
-          { label: 'See the curriculum', href: '/education', variant: 'ghost-dark' },
-        ],
-      }}
-    />
+        }
+        actions={[
+          { label: 'Subscribe to the Brief', href: '/assessment#newsletter', variant: 'gold' },
+          { label: 'Take the readiness assessment', href: '/assessment', variant: 'ghost-dark' },
+        ]}
+      />
+    </div>
   );
 }
