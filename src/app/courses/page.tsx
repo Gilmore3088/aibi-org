@@ -114,7 +114,7 @@ export default function CoursesIndexPage() {
             </p>
             <div className="mk-ctas">
               <Button variant="gold" size="lg" href="/courses/foundation/program/purchase">
-                Enroll Now · $295 <ArrowR className="mk-ic" />
+                Enroll · $295 <ArrowR className="mk-ic" />
               </Button>
               <Button variant="ghost-dark" size="lg" href="/courses/foundation-preview">
                 Preview Module 1 (Free)
@@ -292,7 +292,7 @@ export default function CoursesIndexPage() {
             </p>
             <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
               <Button variant="gold" size="lg" href="/courses/foundation/program/purchase">
-                Enroll Now
+                Enroll · $295
               </Button>
               <Button variant="ghost-dark" size="lg" href="/for-institutions">
                 Team Pricing <ArrowR className="mk-ic" />

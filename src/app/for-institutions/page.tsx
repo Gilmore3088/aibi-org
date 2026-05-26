@@ -103,7 +103,7 @@ export default function ForInstitutionsPage() {
 
   return (
     <div className="mockup-scope">
-      <SiteHeader activePath="/for-institutions" cta={{ label: 'Book Briefing', href: '/for-institutions/advisory' }} />
+      <SiteHeader activePath="/for-institutions" cta={{ label: 'Book a briefing', href: '/for-institutions/advisory' }} />
 
       {/* HERO */}
       <section className="mk-hero">
@@ -125,7 +125,7 @@ export default function ForInstitutionsPage() {
             </p>
             <div className="mk-ctas">
               <Button variant="gold" size="lg" href="/for-institutions/advisory">
-                Book Executive Briefing <ArrowR className="mk-ic" />
+                Book a briefing <ArrowR className="mk-ic" />
               </Button>
               <Button variant="ghost-dark" size="lg" href="#sizer">
                 See Team Pricing
@@ -227,7 +227,7 @@ export default function ForInstitutionsPage() {
                 'A starter artifact you can take to your team this week',
               ],
               ctaHref: '/assessment',
-              ctaLabel: 'Begin the assessment',
+              ctaLabel: 'Take the assessment',
               ctaVariant: 'ink' as const,
             },
             {
@@ -419,7 +419,7 @@ export default function ForInstitutionsPage() {
               a 90-day rollout looks like at an institution your size. No slides, no sales pitch.
             </p>
             <Button variant="gold" size="lg" href="/for-institutions/advisory">
-              Book a Briefing <ArrowR className="mk-ic" />
+              Book a briefing <ArrowR className="mk-ic" />
             </Button>
           </div>
           <ul>
@@ -584,7 +584,7 @@ export default function ForInstitutionsPage() {
               <li><CheckIcon className="mk-ic" />Direct line to founder</li>
             </ul>
             <Button variant="gold" size="lg" href="/for-institutions/advisory">
-              Book Briefing <ArrowR className="mk-ic" />
+              Book a briefing <ArrowR className="mk-ic" />
             </Button>
           </div>
         </div>
@@ -600,7 +600,7 @@ export default function ForInstitutionsPage() {
           </>
         }
         actions={[
-          { label: 'Book Executive Briefing', href: '/for-institutions/advisory', variant: 'gold' },
+          { label: 'Book a briefing', href: '/for-institutions/advisory', variant: 'gold' },
           { label: 'Get Seat Pricing', href: '#sizer', variant: 'ghost-dark' },
         ]}
       />

@@ -97,7 +97,7 @@ export default function PlaybooksIndexPage() {
         body={<>Each playbook is built around the same operating model so the institution gets a coherent rollout instead of six disconnected efforts.</>}
         actions={[
           { label: 'Start the Course', href: '/courses/foundation', variant: 'gold' },
-          { label: 'Book Briefing', href: '/for-institutions/advisory', variant: 'ghost-dark' },
+          { label: 'Book a briefing', href: '/for-institutions/advisory', variant: 'ghost-dark' },
         ]}
       />
     </div>

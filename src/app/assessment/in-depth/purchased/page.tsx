@@ -115,7 +115,7 @@ export default async function InDepthPurchasedPage({
                 href="/assessment/in-depth/take"
                 className="inline-block bg-[color:var(--gold)] text-[color:var(--color-linen)] px-8 py-3 rounded-sm font-mono text-[10px] uppercase tracking-[0.15em] hover:bg-[color:var(--gold-2)] transition-colors"
               >
-                Begin the assessment
+                Take the assessment
               </Link>
             </>
           ) : (
