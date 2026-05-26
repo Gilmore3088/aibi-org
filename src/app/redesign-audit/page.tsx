@@ -108,13 +108,44 @@ const COMMITS: { sha: string; phase: string; summary: string }[] = [
   { sha: '7e24055', phase: '0', summary: 'chore: carry uncommitted main-branch changes' },
 ];
 
-const FOLLOW_UPS = [
-  'Deep visual port of /dashboard panels to mk-* classes',
-  'Deep visual port of CourseShell + each foundation/program module page',
-  'Port auth surface (/auth/*) — still uses LedgerSurface',
-  'Sweep src/ for var(--ledger-*) and var(--color-*) — migrate or carve-out',
-  'Then delete tokens.css + tokens-ledger.css; rename tokens-mockup.css → tokens.css',
-  'Push branch + open PR (no remote push yet — all 17 commits are local)',
+type FollowUpStatus = 'done' | 'partial' | 'pending';
+const FOLLOW_UPS: { num: string; title: string; status: FollowUpStatus; note: string }[] = [
+  {
+    num: '01',
+    title: 'Dashboard panels → mockup look',
+    status: 'done',
+    note: 'Token remap (2026-05-26) unified palette + Inter across all --ledger-* references. /dashboard now renders with mockup colors + font without per-panel edits. Layout radii intentionally preserved.',
+  },
+  {
+    num: '02',
+    title: 'CourseShell + foundation/program module pages',
+    status: 'done',
+    note: 'Same fast-path: token remap covers every --ledger-* reference in the LMS interior. CourseShell sidebar, module pages, and quick-wins all pick up mockup palette + Inter.',
+  },
+  {
+    num: '03',
+    title: 'Auth surface (/auth/*)',
+    status: 'done',
+    note: '/auth/login, /auth/signup, /auth/forgot-password, /auth/reset-password verified 200 with mockup chrome. LedgerSurface internal lockup suppressed via showHeader={false} as before.',
+  },
+  {
+    num: '04',
+    title: 'Token sweep + migration',
+    status: 'partial',
+    note: 'Visual unification achieved via value remap in tokens-ledger.css (Phase 6 fast-path). All 99 --color-* and 130 --ledger-* references now resolve to mockup palette. Per-file source cleanup (replacing var names) is purely code hygiene — can be done incrementally, not blocking.',
+  },
+  {
+    num: '05',
+    title: 'Delete legacy token files, rename tokens-mockup.css → tokens.css',
+    status: 'pending',
+    note: 'Still risky. Deleting --ledger-bg, --color-ink, etc. would 404 every reference. Safer order: do incremental var-name cleanup (item #4 second pass) first, then delete. Not blocking visual unification — system already looks mockup.',
+  },
+  {
+    num: '06',
+    title: 'Push branch + open PR',
+    status: 'pending',
+    note: 'All 22+ commits remain local on feature/redesign-mockup-system. Push requires explicit approval per CLAUDE.md. Vercel will build a preview URL on first push.',
+  },
 ];
 
 export default function RedesignAuditPage() {
@@ -461,38 +492,179 @@ export default function RedesignAuditPage() {
       {/* FOLLOW-UPS */}
       <Section variant="std">
         <SectionHead
-          kicker="Follow-up work"
-          heading={<>Six items between here and Phase 6 cleanup.</>}
-          lede={<>The mockup-system migration completes when these land — at which point the legacy token files (tokens.css + tokens-ledger.css) can be deleted and tokens-mockup.css renamed to take their place.</>}
+          kicker="Follow-up status · post-remap"
+          heading={<>Items 01–04 substantively done via the token remap.</>}
+          lede={<>The 2026-05-26 token-remap commit unified the palette + font across every unmigrated surface without per-file edits. Items 05 (file deletion) and 06 (push to remote) remain.</>}
         />
         <div style={{ display: 'grid', gap: 12 }}>
-          {FOLLOW_UPS.map((item, i) => (
-            <div
-              key={item}
-              className="mk-card-white"
-              style={{ padding: 20, display: 'flex', gap: 16, alignItems: 'flex-start' }}
-            >
+          {FOLLOW_UPS.map((item) => {
+            const statusBg =
+              item.status === 'done'
+                ? 'rgba(4,120,87,0.12)'
+                : item.status === 'partial'
+                ? 'var(--gold-a20)'
+                : 'var(--slate-100)';
+            const statusFg =
+              item.status === 'done'
+                ? 'var(--emerald-800)'
+                : item.status === 'partial'
+                ? 'var(--gold-deep)'
+                : 'var(--slate-500)';
+            const statusLabel =
+              item.status === 'done' ? 'Done' : item.status === 'partial' ? 'Partial' : 'Pending';
+            return (
               <div
-                style={{
-                  width: 32,
-                  height: 32,
-                  borderRadius: 'var(--r-md)',
-                  background: 'var(--ink)',
-                  color: 'var(--gold)',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flex: 'none',
-                  fontFamily: '"JetBrains Mono", monospace',
-                  fontWeight: 700,
-                  fontSize: 13,
-                }}
+                key={item.num}
+                className="mk-card-white"
+                style={{ padding: 20, display: 'grid', gridTemplateColumns: 'auto 1fr auto', gap: 16, alignItems: 'flex-start' }}
               >
-                0{i + 1}
+                <div
+                  style={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: 'var(--r-md)',
+                    background: 'var(--ink)',
+                    color: 'var(--gold)',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flex: 'none',
+                    fontFamily: '"JetBrains Mono", monospace',
+                    fontWeight: 700,
+                    fontSize: 13,
+                  }}
+                >
+                  {item.num}
+                </div>
+                <div>
+                  <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0 }}>{item.title}</h3>
+                  <p style={{ fontSize: 13, color: 'var(--slate-600)', margin: '6px 0 0', lineHeight: 1.55 }}>
+                    {item.note}
+                  </p>
+                </div>
+                <span
+                  style={{
+                    padding: '6px 12px',
+                    borderRadius: 'var(--r-pill)',
+                    background: statusBg,
+                    color: statusFg,
+                    fontSize: 11,
+                    fontWeight: 700,
+                    letterSpacing: '0.08em',
+                    textTransform: 'uppercase',
+                    flex: 'none',
+                  }}
+                >
+                  {statusLabel}
+                </span>
               </div>
-              <div style={{ fontSize: 15, lineHeight: 1.55 }}>{item}</div>
+            );
+          })}
+        </div>
+      </Section>
+
+      {/* COPY REVIEW */}
+      <Section variant="std" surface="ink">
+        <SectionHead
+          kicker="Copy review · 2026-05-26"
+          heading={<>The visual upgraded. The copy regressed. Here&apos;s the gap.</>}
+          lede={
+            <>
+              The mockup migration dropped a lot of high-quality copy. The new pages READ but
+              they no longer SELL the way the old pages did. Full diff:{' '}
+              <code style={{ background: 'var(--on-dark-10)', padding: '2px 6px', borderRadius: 4 }}>
+                docs/redesign-copy-review.md
+              </code>
+              .
+            </>
+          }
+        />
+        <div className="mk-cats" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))' }}>
+          {[
+            {
+              tag: 'P0 · Biggest hit',
+              title: '/security — regulatory citations dropped',
+              note: 'Lost SR 11-7, ECOA/Reg B, AIEOG Lexicon, Interagency TPRM Guidance. The six-chapter outline and the "Free Safe AI Use Guide" CTA are also gone. The compliance officer\'s buy signal vanished.',
+            },
+            {
+              tag: 'P0',
+              title: '/ home — product trio body copy',
+              note: '"A starter artifact you can take to your team this week", "AI assets you can use immediately", "credential your examiner respects" — all replaced with generic two-word outcomes.',
+            },
+            {
+              tag: 'P0',
+              title: '/assessment — "dimension dragging you down"',
+              note: 'The best single line in the whole pre-redesign site is gone. So is "scored on reviewed work" and the "this week" urgency.',
+            },
+            {
+              tag: 'P1',
+              title: '/for-institutions — anti-positioning lost',
+              note: '"No software seats. No vendor lock-in." was load-bearing for buyers comparing us to nCino or JackHenry AI offerings. Replaced with generic "use assessment data".',
+            },
+            {
+              tag: 'P1',
+              title: '/about — audience targeting lost',
+              note: '"...for the community banks and credit unions that anchor towns and neighborhoods — not for the twenty largest banks. Here is why." → softer "we started The Institute because..." The market-position declaration is gone.',
+            },
+            {
+              tag: 'P2',
+              title: 'No sourced statistics anywhere',
+              note: 'CLAUDE.md: "No unsourced statistics in any user-facing copy." The new pages contain zero sourced stats. 66% Bank Director, 57% Gartner, 65% FDIC efficiency ratio — all missing from first folds.',
+            },
+            {
+              tag: 'P2',
+              title: 'Verbs weakened',
+              note: 'use / build / start → was: operationalize / evidence / ship / submit / examined. Buyers respond to transactional verbs, not descriptive ones.',
+            },
+            {
+              tag: 'P2',
+              title: 'Pricing specifics dropped',
+              note: '"$99 · $79 at 10+ by request" and "$295 · $199 at 10+ · Lifetime access" → generic "$99" / "$295". Volume + lifetime were buy signals.',
+            },
+          ].map((c) => (
+            <div key={c.title} className="mk-card-white">
+              <div style={{ marginBottom: 8 }}>
+                <span
+                  style={{
+                    padding: '3px 10px',
+                    borderRadius: 'var(--r-pill)',
+                    background: 'var(--gold-a20)',
+                    color: 'var(--gold-deep)',
+                    fontSize: 10,
+                    fontWeight: 700,
+                    letterSpacing: '0.1em',
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  {c.tag}
+                </span>
+              </div>
+              <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0 }}>{c.title}</h3>
+              <p style={{ fontSize: 13, color: 'var(--slate-600)', margin: '8px 0 0', lineHeight: 1.55 }}>
+                {c.note}
+              </p>
             </div>
           ))}
+        </div>
+        <div
+          style={{
+            marginTop: 32,
+            padding: 24,
+            border: '1px solid var(--gold-a40)',
+            background: 'var(--gold-a10)',
+            borderRadius: 'var(--r-lg)',
+            color: '#fff',
+          }}
+        >
+          <div className="mk-k" style={{ color: 'var(--gold-soft)', fontSize: 11, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase' }}>
+            Recommended next step
+          </div>
+          <p style={{ marginTop: 12, fontSize: 16, lineHeight: 1.55, color: 'var(--on-dark-80)' }}>
+            ~2 working days of copy restoration before pushing the branch to production. Pull each
+            high-value sentence from <code style={{ background: 'var(--on-dark-10)', padding: '2px 6px', borderRadius: 4, fontSize: '0.9em' }}>main</code> via{' '}
+            <code style={{ background: 'var(--on-dark-10)', padding: '2px 6px', borderRadius: 4, fontSize: '0.9em' }}>git show</code>{' '}
+            and paste into the new pages. Visual chrome stays — only the copy moves.
+          </p>
         </div>
       </Section>
 
