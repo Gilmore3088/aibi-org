@@ -5,13 +5,13 @@ import {
   trackAssessmentStart,
   trackAssessmentComplete,
 } from '@/lib/analytics/events';
-import { questions as questionPool } from '@content/assessments/v2/questions';
-import { selectQuestions } from '@content/assessments/v2/rotation';
-import { getTierV2, getDimensionScores, type Tier, type DimensionScore } from '@content/assessments/v2/scoring';
-import type { AssessmentQuestion, Dimension } from '@content/assessments/v2/types';
+import { questions as questionPool } from '@content/assessments/v3/questions';
+import { selectQuestions } from '@content/assessments/v3/rotation';
+import { getTierV3, getDimensionScores, type Tier, type DimensionScore } from '@content/assessments/v3/scoring';
+import type { AssessmentQuestion, Dimension } from '@content/assessments/v3/types';
 
 export const QUESTIONS_PER_SESSION = 12;
-const STORAGE_KEY = 'aibi-assessment-v2';
+const STORAGE_KEY = 'aibi-assessment-v3';
 
 export type AssessmentPhase = 'questions' | 'score' | 'results';
 
@@ -120,7 +120,7 @@ export function useAssessmentV2(): AssessmentState & AssessmentActions {
 
   const totalScore = answers.reduce((sum, n) => sum + n, 0);
   const isComplete = answers.length === QUESTIONS_PER_SESSION;
-  const tier = isComplete ? getTierV2(totalScore) : null;
+  const tier = isComplete ? getTierV3(totalScore) : null;
   const progress = answers.length / QUESTIONS_PER_SESSION;
 
   // Fire assessment_complete once when the score phase first becomes visible.
