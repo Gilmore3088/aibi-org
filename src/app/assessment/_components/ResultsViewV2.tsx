@@ -95,7 +95,9 @@ export function ResultsViewV2({
 
   return (
     <div className="w-full max-w-4xl mx-auto">
-      {/* Executive briefing header */}
+      {/* Executive briefing header — newspaper masthead lockup.
+          Pub-line + dateline + "Prepared for" recipient block ported from
+          /briefing-preview prototype (2026-05-26 Ledger migration). */}
       <header
         className="mb-14 border-b border-[color:var(--color-ink)]/15 pb-8"
         style={{ animation: 'fadeInUp 600ms cubic-bezier(0.22, 1, 0.36, 1) both' }}
@@ -103,6 +105,9 @@ export function ResultsViewV2({
         <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 mb-4">
           <p className="font-serif-sc text-sm uppercase tracking-[0.22em] text-[color:var(--color-terra)]">
             AI Readiness Briefing
+            <span className="font-mono text-[11px] tracking-[0.2em] text-[color:var(--color-ink)]/55 ml-3">
+              · The AI Banking Institute · Confidential
+            </span>
           </p>
           <p className="font-mono text-[12px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/65 shrink-0">
             {BRIEFING_DATE_FORMATTER.format(new Date())}
@@ -113,6 +118,22 @@ export function ResultsViewV2({
             ? `${firstName.trim()}, here is your assessment in brief.`
             : 'Your assessment, in brief.'}
         </h1>
+        {(firstName || institutionName) && (
+          <p className="mt-4 font-mono text-[11px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/65">
+            Prepared for{' '}
+            <span className="text-[color:var(--color-ink)] font-semibold">
+              {firstName?.trim() || 'You'}
+            </span>
+            {institutionName?.trim() ? (
+              <>
+                {' · '}
+                <span className="text-[color:var(--color-ink)] font-semibold">
+                  {institutionName.trim()}
+                </span>
+              </>
+            ) : null}
+          </p>
+        )}
         <p
           className="mt-5 font-mono text-[12px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/65"
           data-print-hide="true"
