@@ -12,6 +12,7 @@ import { ToolLandscapeMatrix } from '@/components/addie/interactives/m1/ToolLand
 import { SpotTheViolation } from '@/components/addie/interactives/m3/SpotTheViolation';
 import { SkillBuilder } from '@/components/addie/interactives/m4/SkillBuilder';
 import { SkillTester } from '@/components/addie/interactives/m4/SkillTester';
+import { WorkbenchPackBuilder } from '@/components/addie/interactives/m4/WorkbenchPackBuilder';
 import { PRDBuilder } from '@/components/addie/interactives/m5/PRDBuilder';
 import { PrototypeLauncher } from '@/components/addie/interactives/m5/PrototypeLauncher';
 import { ProblemFrame } from '@/components/addie/interactives/m5/ProblemFrame';
@@ -68,11 +69,11 @@ function labelFor(id: string): string {
     case 'm3-4-spot-the-violation':
       return 'Spot the violation';
     case 'm4-2-build-first-skill':
-      return 'Build your first skill';
+      return 'Build your first Workbench Pack';
     case 'm4-3-role-skill':
-      return 'Build a skill for your role';
+      return 'Build a Pack for your role';
     case 'm4-4-test-refine':
-      return 'Test + refine the skill';
+      return 'Test + refine the Pack';
     case 'm5-2-problem-frame':
       return 'Frame the problem';
     case 'm5-3-prd-builder':
@@ -96,11 +97,23 @@ function renderWidget(id: string, descriptor: any, track: any): JSX.Element | nu
     case 'm3-4-spot-the-violation':
       return <SpotTheViolation exerciseDescriptor={descriptor} />;
     case 'm4-2-build-first-skill':
-      return <SkillBuilder exerciseDescriptor={descriptor} mode="template" track={track} />;
+      return (
+        <WorkbenchPackBuilder
+          initialSourcePacket={'A draft adverse-action letter (synthetic): a $5,800 unsecured loan denial. The denial reason field reads "credit history insufficient." The letter as drafted does not name the specific reasons under ECOA/Reg B. Tighten the writing and surface a complete reason list. Do not invent reasons not implied by "credit history insufficient." Member: synthetic; no real identifiers.'}
+        />
+      );
     case 'm4-3-role-skill':
-      return <SkillBuilder exerciseDescriptor={descriptor} mode="role-skill" track={track} />;
+      return (
+        <WorkbenchPackBuilder
+          initialSourcePacket={'A track-defaulted synthetic source for your role. (Track pre-load wiring is a follow-up — for now, edit Region 01 to your week\'s most-recurring artifact: vendor questionnaire response, Reg-E summary for tellers, process-memo rewrite, board talking points, or member-fee-complaint reply.)'}
+        />
+      );
     case 'm4-4-test-refine':
-      return <SkillTester exerciseDescriptor={descriptor} />;
+      return (
+        <WorkbenchPackBuilder
+          initialSourcePacket={'Test the Pack you built in M4.2 or M4.3 on a NEW realistic synthetic source — different complaint, different reg excerpt, different proposal. Walk the four guardrail questions. Flip use_boundary to "named-task production" only if the Pack will run recurrently against real institution material with outputs that leave your desktop.'}
+        />
+      );
     case 'm5-2-problem-frame':
       return <ProblemFrame exerciseDescriptor={descriptor} track={track} />;
     case 'm5-3-prd-builder':

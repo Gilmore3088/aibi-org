@@ -13,6 +13,7 @@ import { ToolLandscapeMatrix } from '@/components/addie/interactives/m1/ToolLand
 import { SpotTheViolation } from '@/components/addie/interactives/m3/SpotTheViolation';
 import { SkillBuilder } from '@/components/addie/interactives/m4/SkillBuilder';
 import { SkillTester } from '@/components/addie/interactives/m4/SkillTester';
+import { WorkbenchPackBuilder } from '@/components/addie/interactives/m4/WorkbenchPackBuilder';
 import { PRDBuilder } from '@/components/addie/interactives/m5/PRDBuilder';
 import { PrototypeLauncher } from '@/components/addie/interactives/m5/PrototypeLauncher';
 
@@ -34,11 +35,23 @@ export function InteractiveLessonView({ payload }: InteractiveLessonViewProps) {
       case 'm3-4-spot-the-violation':
         return <SpotTheViolation exerciseDescriptor={descriptor} />;
       case 'm4-2-build-first-skill':
-        return <SkillBuilder exerciseDescriptor={descriptor} mode="template" track={track} />;
+        return (
+          <WorkbenchPackBuilder
+            initialSourcePacket={'A draft adverse-action letter (synthetic): a $5,800 unsecured loan denial. The denial reason field reads "credit history insufficient." The letter as drafted does not name the specific reasons under ECOA/Reg B. Tighten the writing and surface a complete reason list. Do not invent reasons not implied by "credit history insufficient." Member: synthetic; no real identifiers.'}
+          />
+        );
       case 'm4-3-role-skill':
-        return <SkillBuilder exerciseDescriptor={descriptor} mode="role-skill" track={track} />;
+        return (
+          <WorkbenchPackBuilder
+            initialSourcePacket={'A track-defaulted synthetic source for your role. Edit Region 01 to your week\'s most-recurring artifact: vendor questionnaire response, Reg-E summary for tellers, process-memo rewrite, board talking points, or member-fee-complaint reply.'}
+          />
+        );
       case 'm4-4-test-refine':
-        return <SkillTester exerciseDescriptor={descriptor} />;
+        return (
+          <WorkbenchPackBuilder
+            initialSourcePacket={'Test the Pack you built in M4.2 or M4.3 on a NEW realistic synthetic source — different complaint, different reg excerpt, different proposal. Walk the four guardrail questions. Flip use_boundary to "named-task production" only if the Pack will run recurrently against real institution material.'}
+          />
+        );
       case 'm5-3-prd-builder':
         return <PRDBuilder exerciseDescriptor={descriptor} track={track} />;
       case 'm5-4-prototype-launch':
