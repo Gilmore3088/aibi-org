@@ -2,7 +2,6 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import {
   SiteHeader,
   Section,
@@ -95,40 +94,6 @@ const VALUE_PATH: { step: string; title: string; body: string; icon: (p: IconPro
   { step: 'Build', title: 'Save reviewed workflows', body: 'Prompts, SOPs, and review checklists you keep — reusable across your team.', icon: ToolboxStackIcon },
 ];
 
-const SUITE: {
-  num: string;
-  price: string;
-  title: string;
-  icon: (p: IconProps) => JSX.Element;
-  body: string;
-  href: string;
-}[] = [
-  {
-    num: '01',
-    price: 'Free',
-    title: 'Readiness Assessment',
-    icon: CheckSquareIcon,
-    body: 'Three minutes. Score, tier, top gap.',
-    href: '/assessment',
-  },
-  {
-    num: '02',
-    price: '$99',
-    title: 'In-Depth Assessment',
-    icon: BarsIcon,
-    body: '48 questions. Role-specific plan and report.',
-    href: '/assessment/in-depth',
-  },
-  {
-    num: '03',
-    price: '$295',
-    title: 'AiBI-Foundation',
-    icon: LayersIcon,
-    body: 'Training, practice, toolbox, credential.',
-    href: '/courses/foundation',
-  },
-];
-
 // ---------- Page ----------
 
 export default function HomePage() {
@@ -189,37 +154,6 @@ export default function HomePage() {
               <h3 className="mk-vp-title">{title}</h3>
               <p className="mk-vp-body">{body}</p>
             </div>
-          ))}
-        </div>
-      </Section>
-
-      <Section variant="std">
-        <SectionHead kicker="Product suite" heading={<>Three ways in. One credential out.</>} />
-        <div className="mk-suite">
-          {SUITE.map(({ num, price, title, icon: Icon, body, href }) => (
-            <Link key={num} className="mk-scard" href={href} aria-label={title}>
-              <div className="mk-top-rule" />
-              <div className="mk-body">
-                <div className="mk-row">
-                  <span className="mk-pic">
-                    <Icon className="mk-ic-lg" size={20} />
-                  </span>
-                  <span className="mk-num">{num}</span>
-                </div>
-                <div className="mk-lbl">{price}</div>
-                <h3>{title}</h3>
-                <p
-                  style={{
-                    marginTop: 12,
-                    color: 'var(--slate-600)',
-                    fontSize: 15,
-                    lineHeight: 1.55,
-                  }}
-                >
-                  {body}
-                </p>
-              </div>
-            </Link>
           ))}
         </div>
       </Section>
