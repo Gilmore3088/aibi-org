@@ -23,7 +23,7 @@
 //
 // Wiring into M4 lessons is a follow-up PR.
 
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   packToMarkdown,
   isPackComplete,
@@ -37,6 +37,12 @@ interface WorkbenchPackBuilderProps {
   readonly reviewTagSuggestions?: ReadonlyArray<string>;
   /** Called when the learner clicks "Save Pack" with a complete Pack. */
   readonly onSave?: (pack: WorkbenchPackContent) => void | Promise<void>;
+  /**
+   * Called on every state change with the current Pack snapshot. Used by
+   * PaidWorkbenchShell wrappers to render derived Source / Output previews
+   * outside the form (#5, 2026-05-25 hybrid).
+   */
+  readonly onChange?: (pack: WorkbenchPackContent) => void;
 }
 
 const DEFAULT_GUARDRAIL_QUESTIONS: ReadonlyArray<string> = [
@@ -59,6 +65,7 @@ export function WorkbenchPackBuilder({
   initialSourcePacket = '',
   reviewTagSuggestions = DEFAULT_TAG_SUGGESTIONS,
   onSave,
+  onChange,
 }: WorkbenchPackBuilderProps) {
   const [sourcePacket, setSourcePacket] = useState(initialSourcePacket);
   const [promptUsed, setPromptUsed] = useState('');
@@ -101,6 +108,10 @@ export function WorkbenchPackBuilder({
   );
 
   const complete = useMemo(() => isPackComplete(pack), [pack]);
+
+  useEffect(() => {
+    if (onChange) onChange(pack);
+  }, [pack, onChange]);
 
   const toggleTag = useCallback((tag: string) => {
     setReviewTags((prev) =>
