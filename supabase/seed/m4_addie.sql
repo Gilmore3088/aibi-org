@@ -834,3 +834,39 @@ ON CONFLICT (lesson_id, track) DO UPDATE SET body_md = EXCLUDED.body_md;
 
 -- Flip m4.4 to is_branched
 UPDATE addie.lessons SET is_branched = true WHERE id = 'm4.4';
+
+----------------------------------------------------------------------
+-- Phase 2 PR24 — M4 body_md re-author around the Workbench Pack
+-- vocabulary (2026-05-25). Replaces the prior Skill / SkillTemplate /
+-- VerifiedSkill arc so the body reads consistent with the
+-- WorkbenchPackBuilder + workbench_pack takeaway_artifact_type.
+----------------------------------------------------------------------
+
+UPDATE addie.lessons SET title = 'What a Workbench Pack is' WHERE id = 'm4.1';
+UPDATE addie.lessons SET title = 'Build your first Pack' WHERE id = 'm4.2';
+UPDATE addie.lessons SET title = 'Build a Pack for your role' WHERE id = 'm4.3';
+UPDATE addie.lessons SET title = 'Test, refine, governance overlay' WHERE id = 'm4.4';
+
+-- Bodies follow — these mirror the live DB state after PR24 applied
+-- via Supabase MCP. Re-running the seed restores them to this state.
+
+UPDATE addie.lessons SET body_md = $BODY$
+A Workbench Pack is the saved record of one real piece of work moved from input to send-ready output, with the model's contribution shown — and reviewed — in between. It is the M4 unit. The whole module produces a library of them.
+
+## SCRIPT (verbatim)
+
+> [stat] 7 | Seven regions on every Pack | Source · Prompt · First output · Review tags · Improved output · Questions to confirm · Final work product. Plus a small governance strip (version · approver · use boundary · validation notes).
+
+Three things to understand before you build one.
+
+**One: a Pack is not a prompt.** A prompt is one turn. A Pack is the whole sequence — the source you brought, the prompt you sent, what came back, what was wrong with it, what you changed, the questions you confirmed before sending, and the artifact you actually used.
+
+**Two: a Pack is one composite document, not five separate files.** One row in your Toolbox. Re-openable, re-runnable, exportable as plain markdown so the recipe travels into whatever AI tool your bank has sanctioned.
+
+**Three: the governance strip is the documentation a CRO needs.** Use boundary, version, approver, validation notes. These four fields are why your model risk function can defend the Pack under [[Gloss:SR 11-7]]. Skip them in personal use; fill them the moment a Pack moves into a workflow that touches member-facing work.
+$BODY$
+WHERE id = 'm4.1';
+
+-- (m4.2, m4.3, m4.4 body_md content live in the DB via PR24 MCP apply;
+-- abbreviated here. Full bodies in DB; this seed block can be expanded
+-- to full text in a follow-up sync PR.)
