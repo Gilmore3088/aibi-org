@@ -6,14 +6,15 @@ import { test, expect } from '@playwright/test';
 // page or basic routing.
 
 test.describe('marketing smoke', () => {
-  test('homepage renders with tagline', async ({ page }) => {
+  test('homepage renders with hero headline', async ({ page }) => {
     await page.goto('/');
     await expect(page).toHaveTitle(/AI Banking Institute/i);
-    // The tagline is non-negotiable per CLAUDE.md (2026-04-15 decision).
-    // It appears in the hero H1 and again in the SiteFooter wordmark; scope
-    // to the hero heading so the assertion stays specific.
+    // The mockup-system hero H1 (2026-05-26): "Train people to use AI
+    // without losing control." The legacy "Turning Bankers into Builders"
+    // tagline still appears in the SiteFooter wordmark and in metadata
+    // titles — this assertion scopes to the hero H1 specifically.
     await expect(
-      page.getByRole('heading', { level: 1, name: /Turning Bankers into Builders/i }),
+      page.getByRole('heading', { level: 1, name: /Train people to use AI without losing control/i }),
     ).toBeVisible();
   });
 
