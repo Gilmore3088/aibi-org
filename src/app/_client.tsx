@@ -61,12 +61,6 @@ const LayersIcon = (p: IconProps) => (
     <path d="M6 12v5c3 3 9 3 12 0v-5" />
   </svg>
 );
-const PlayCircleIcon = (p: IconProps) => (
-  <svg {...sw(p)}>
-    <circle cx="12" cy="12" r="10" />
-    <polygon points="10 8 16 12 10 16 10 8" />
-  </svg>
-);
 const FlaskIcon = (p: IconProps) => (
   <svg {...sw(p)}>
     <path d="M10 2v7.31" />
@@ -180,38 +174,6 @@ const HERO_DIMS = [
   { name: 'Leadership', level: 'High', pct: 80 },
 ];
 
-type SideKey = 'Assessment' | 'Sandbox' | 'Toolbox';
-
-const HERO_SIDE: Record<
-  SideKey,
-  { label: string; title: string; score: string; unit: string; icon: typeof CheckSquareIcon; items: string[] }
-> = {
-  Assessment: {
-    label: 'Assessment',
-    title: 'Readiness Snapshot',
-    score: '62',
-    unit: '/100',
-    icon: CheckSquareIcon,
-    items: ['Governance', 'Tool confidence', 'Workflow fit', 'Risk awareness'],
-  },
-  Sandbox: {
-    label: 'Sandbox',
-    title: 'Guided Practice',
-    score: '04',
-    unit: 'scenarios',
-    icon: FlaskIcon,
-    items: ['Choose role', 'Use sample data', 'Review output', 'Save skill'],
-  },
-  Toolbox: {
-    label: 'Toolbox',
-    title: 'Reusable Assets',
-    score: '18',
-    unit: 'assets',
-    icon: ToolboxStackIcon,
-    items: ['Prompt cards', 'Workflow docs', 'Risk checklists', 'Playbooks'],
-  },
-};
-
 const SUITE: {
   num: string;
   price: string;
@@ -289,7 +251,6 @@ const SCEN: Record<ScenarioKey, { name: string; input: string; output: string; r
 // ---------- Page ----------
 
 export default function HomePage() {
-  const [sideKey, setSideKey] = useState<SideKey>('Assessment');
   const [pbRole, setPbRole] = useState<PBRole>('Compliance');
   const [pbGoal, setPbGoal] = useState<PBGoal>('Document AI use safely');
   const [roleKey, setRoleKey] = useState<RoleKey>('Compliance');
@@ -310,8 +271,6 @@ export default function HomePage() {
     ]);
   }
 
-  const side = HERO_SIDE[sideKey];
-  const SideIcon = side.icon;
   const pb = PB_RECS[pbRole];
   const role = ROLES[roleKey];
   const scen = SCEN[scenKey];
@@ -375,77 +334,6 @@ export default function HomePage() {
           <HeroReportCard />
         </div>
       </section>
-
-      <Section variant="std">
-        <SectionHead
-          kicker="How the Institute works"
-          heading={<>One place to start. Three things you walk out with.</>}
-          lede={
-            <>
-              Every learner enters the same way: take an assessment, practice in a scenario, or pull a tool from the toolbox. Click a tab to see what each one ships.
-            </>
-          }
-        />
-        <div className="mk-pp">
-          <div className="mk-hp-card">
-            <div className="mk-head">
-              <div>
-                <div className="mk-k">Inside the Institute</div>
-                <div className="mk-t">Where each learner begins</div>
-              </div>
-              <PlayCircleIcon className="mk-ic-lg" size={32} />
-            </div>
-            <div className="mk-body">
-              <div className="mk-product-grid">
-                {[
-                  { icon: CheckSquareIcon, title: 'Readiness Assessment', meta: '3 min' },
-                  { icon: BarsIcon, title: 'Maturity Assessment', meta: '48 questions' },
-                  { icon: LayersIcon, title: 'Foundation Course', meta: 'Course + toolbox' },
-                ].map(({ icon: Icon, title, meta }) => (
-                  <div key={title} className="mk-pcard">
-                    <span className="mk-pic">
-                      <Icon className="mk-ic-lg" size={20} />
-                    </span>
-                    <div className="mk-pt">{title}</div>
-                    <div className="mk-pm">{meta}</div>
-                  </div>
-                ))}
-              </div>
-              <div className="mk-path-row">
-                <div className="mk-k">Learner Path</div>
-                <div className="mk-t">Assess → Practice → Build</div>
-                <div className="mk-path-tabs">
-                  {(['Assessment', 'Sandbox', 'Toolbox'] as SideKey[]).map((k) => (
-                    <button key={k} onClick={() => setSideKey(k)} className={sideKey === k ? 'is-active' : ''}>
-                      {k}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="mk-hp-side">
-            <span className="mk-pic">
-              <SideIcon className="mk-ic-lg" size={24} />
-            </span>
-            <div className="mk-k">{side.label}</div>
-            <h3>{side.title}</h3>
-            <div className="mk-score">
-              <div className="mk-v">{side.score}</div>
-              <div className="mk-u">{side.unit}</div>
-            </div>
-            <div className="mk-items">
-              {side.items.map((item) => (
-                <div key={item} className="mk-item">
-                  <CheckIcon size={16} />
-                  {item}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </Section>
 
       <Section variant="std">
         <SectionHead kicker="Product Suite" heading={<>A clear path from interest to implementation.</>} />
