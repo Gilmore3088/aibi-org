@@ -17,9 +17,9 @@ export const metadata: Metadata = {
 function StatusIndicator({ status }: { readonly status: ItemStatus }) {
   switch (status) {
     case 'completed':
-      return <span className="text-[color:var(--color-sage)] font-mono text-xs" aria-label="Complete">&#10003;</span>;
+      return <span className="text-[color:var(--ink-2)] font-mono text-xs" aria-label="Complete">&#10003;</span>;
     case 'current':
-      return <span className="font-mono text-xs" style={{ color: 'var(--color-cobalt)' }} aria-label="Current">&#8594;</span>;
+      return <span className="font-mono text-xs" style={{ color: 'var(--ink-2)' }} aria-label="Current">&#8594;</span>;
     case 'locked':
       return <span className="text-[color:var(--color-ink)]/30 font-mono text-xs" aria-label="Locked">&#128274;</span>;
     case 'coming-soon':

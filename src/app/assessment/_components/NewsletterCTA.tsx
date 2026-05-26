@@ -42,8 +42,8 @@ export function NewsletterCTA({ email }: NewsletterCTAProps) {
 
   if (status === 'subscribed') {
     return (
-      <div className="border border-[color:var(--color-sage)]/30 bg-[color:var(--color-sage)]/5 p-6 text-center">
-        <p className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-sage)] mb-2">
+      <div className="border border-[color:var(--ink-2)]/30 bg-[color:var(--ink-2)]/5 p-6 text-center">
+        <p className="font-mono text-xs uppercase tracking-widest text-[color:var(--ink-2)] mb-2">
           Subscribed
         </p>
         <p className="font-serif text-xl text-[color:var(--color-ink)]">
@@ -69,7 +69,7 @@ export function NewsletterCTA({ email }: NewsletterCTAProps) {
         type="button"
         onClick={handleSubscribe}
         disabled={status === 'submitting'}
-        className="inline-block px-6 py-3 border border-[color:var(--color-terra)] text-[color:var(--color-terra)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra)] hover:text-[color:var(--color-linen)] transition-colors disabled:opacity-60"
+        className="inline-block px-6 py-3 border border-[color:var(--gold)] text-[color:var(--gold)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold)] hover:text-[color:var(--color-linen)] transition-colors disabled:opacity-60"
       >
         {status === 'submitting' ? 'Adding you…' : 'Add me to the Brief'}
       </button>

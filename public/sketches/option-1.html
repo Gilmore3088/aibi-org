@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sketch · Option 1 (Editorial) · AiBI Homepage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/sketches/_shared.css">
+  <style>
+    /* Option 1 — Editorial: parchment-first, typographic, hairline rules. */
+    .hero-1 { background: var(--ledger-bg); padding: 88px 0 64px; }
+    .hero-1 .container { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 64px; align-items: end; }
+    @media (max-width: 980px) { .hero-1 .container { grid-template-columns: 1fr; } }
+    .hero-1 .kicker { margin-bottom: 20px; }
+    .hero-1 .ctas { display: flex; gap: 12px; margin-top: 28px; }
+
+    .ledger-card { background: var(--ledger-paper); border: 1px solid var(--ledger-rule); border-radius: 4px; padding: 28px; box-shadow: var(--ledger-shadow); }
+    .ledger-card .top { display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 14px; border-bottom: 1px solid var(--ledger-rule); margin-bottom: 18px; }
+    .ledger-card .score-row { display: grid; grid-template-columns: auto 1fr; gap: 24px; align-items: end; padding: 8px 0 18px; border-bottom: 1px solid var(--ledger-rule); margin-bottom: 18px; }
+    .ledger-card .score { font-family: "Newsreader", Georgia, serif; font-weight: 600; font-size: 96px; line-height: 0.9; letter-spacing: -0.02em; }
+    .ledger-card .score-meta { font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ledger-slate); }
+    .ledger-card .dims { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    /* Product trio — numbered editorial list */
+    .trio { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-top: 1px solid var(--ledger-rule); border-bottom: 1px solid var(--ledger-rule); }
+    .trio > * + * { border-left: 1px solid var(--ledger-rule); }
+    .trio .item { padding: 32px 28px; display: grid; gap: 16px; }
+    .trio .num { font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: 0.16em; color: var(--ledger-accent); }
+    .trio .price { font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: 0.14em; color: var(--ledger-slate); }
+    .trio .title { font-family: "Newsreader", Georgia, serif; font-weight: 600; font-size: 26px; line-height: 1.1; }
+    .trio .meta { font-size: 14px; color: var(--ledger-slate); }
+    .trio .out { padding-top: 14px; border-top: 1px solid var(--ledger-rule); font-size: 14px; }
+    .trio .link { font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ledger-ink); text-decoration: none; }
+    .trio .link:hover { color: var(--ledger-accent); }
+    @media (max-width: 860px) { .trio { grid-template-columns: 1fr; } .trio > * + * { border-left: 0; border-top: 1px solid var(--ledger-rule); } }
+
+    /* Path builder — editorial: chips left, prescription right, single hairline card */
+    .pb { background: var(--ledger-paper); border: 1px solid var(--ledger-rule); border-radius: 3px; display: grid; grid-template-columns: 0.4fr 0.6fr; }
+    .pb .controls { padding: 32px; border-right: 1px solid var(--ledger-rule); }
+    .pb .controls h4 { font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ledger-slate); margin: 0 0 14px; font-weight: 600; }
+    .pb .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+    .pb .chip { font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; padding: 8px 12px; border: 1px solid var(--ledger-rule-strong); border-radius: 2px; background: var(--ledger-bg); cursor: pointer; }
+    .pb .chip.on { background: var(--ledger-ink); color: var(--ledger-paper); border-color: var(--ledger-ink); }
+    .pb .rx { padding: 32px; display: grid; gap: 18px; align-content: start; }
+    .pb .rx .path { font-family: "JetBrains Mono", monospace; font-size: 12px; line-height: 1.7; color: var(--ledger-ink); padding: 14px 16px; background: var(--ledger-bg); border-left: 2px solid var(--ledger-accent); }
+    .pb .rx .why { font-family: "Newsreader", Georgia, serif; font-size: 22px; line-height: 1.3; }
+    .pb .rx .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .pb .rx .pair > div { padding: 14px 16px; background: var(--ledger-bg); border: 1px solid var(--ledger-rule); }
+    .pb .rx .pair .l { font-family: "JetBrains Mono", monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ledger-slate); margin-bottom: 6px; }
+    @media (max-width: 980px) { .pb { grid-template-columns: 1fr; } .pb .controls { border-right: 0; border-bottom: 1px solid var(--ledger-rule); } }
+
+    /* Role preview — masthead style with artifact "newspaper clipping" */
+    .role { display: grid; grid-template-columns: 0.4fr 0.6fr; gap: 48px; align-items: start; }
+    .role .tabs { display: flex; flex-direction: column; gap: 2px; border-left: 2px solid var(--ledger-rule); }
+    .role .tabs button { background: transparent; border: 0; text-align: left; padding: 14px 18px; font-family: ui-sans-serif, system-ui, sans-serif; font-size: 16px; font-weight: 500; color: var(--ledger-slate); cursor: pointer; border-left: 2px solid transparent; margin-left: -2px; }
+    .role .tabs button.on { color: var(--ledger-ink); border-left-color: var(--ledger-accent); font-weight: 600; }
+    .role .clipping { background: var(--ledger-paper); border: 1px solid var(--ledger-rule); border-radius: 4px; padding: 28px; box-shadow: var(--ledger-shadow); }
+    .role .clipping .masthead { display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 14px; border-bottom: 2px solid var(--ledger-ink); margin-bottom: 18px; }
+    .role .clipping h3 { font-family: "Newsreader", Georgia, serif; font-weight: 600; font-size: 36px; margin: 8px 0 18px; line-height: 1.05; }
+    .role .clipping .field { display: grid; grid-template-columns: 100px 1fr; gap: 16px; padding: 10px 0; border-bottom: 1px dotted var(--ledger-rule); font-size: 14px; }
+    .role .clipping .field .k { font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ledger-slate); }
+    .role .clipping ul { margin: 18px 0 0; padding-left: 20px; }
+    .role .clipping li { padding: 6px 0; font-size: 15px; }
+    @media (max-width: 980px) { .role { grid-template-columns: 1fr; } }
+
+    /* Sandbox — four-step ledger row, sample data inset */
+    .steps { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--ledger-rule); border-radius: 3px; background: var(--ledger-paper); margin-bottom: 18px; }
+    .steps > div { padding: 20px 22px; border-right: 1px solid var(--ledger-rule); }
+    .steps > div:last-child { border-right: 0; }
+    .steps .n { font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: 0.16em; color: var(--ledger-accent); }
+    .steps .t { font-family: "Newsreader", Georgia, serif; font-weight: 600; font-size: 20px; margin-top: 6px; }
+    .steps .d { font-size: 13px; color: var(--ledger-slate); margin-top: 4px; }
+    .sample { background: var(--ledger-paper); border: 1px solid var(--ledger-rule); border-radius: 3px; padding: 24px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
+    .sample > div { padding: 0 20px; border-right: 1px dotted var(--ledger-rule); }
+    .sample > div:first-child { padding-left: 0; }
+    .sample > div:last-child { padding-right: 0; border-right: 0; }
+    .sample .k { font-family: "JetBrains Mono", monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ledger-slate); }
+    .sample .v { font-size: 15px; margin-top: 8px; }
+    @media (max-width: 860px) { .steps, .sample { grid-template-columns: 1fr; } .steps > div { border-right: 0; border-bottom: 1px solid var(--ledger-rule); } .sample > div { border-right: 0; padding: 12px 0; } }
+
+    .cta-band { background: var(--ledger-paper); border: 1px solid var(--ledger-rule); border-radius: 4px; padding: 56px; display: grid; grid-template-columns: 1.5fr 1fr; gap: 48px; align-items: center; box-shadow: var(--ledger-shadow); }
+    @media (max-width: 860px) { .cta-band { grid-template-columns: 1fr; padding: 32px; } }
+  </style>
+</head>
+<body>
+
+<header class="site">
+  <div class="container">
+    <a class="wordmark" href="/sketches/option-1.html">
+      <span class="l1">The AI Banking</span>
+      <span class="l2">Institute</span>
+    </a>
+    <nav class="primary">
+      <a class="active" href="#">Home</a>
+      <a href="#">Course</a>
+      <a href="#">Assessment</a>
+      <a href="#">Sandbox</a>
+      <a href="#">Toolbox</a>
+      <a href="#">Teams</a>
+    </nav>
+    <a class="btn primary arrow" href="#">Start Free</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero-1">
+  <div class="container">
+    <div>
+      <p class="kicker">Vol. I · No. 1 · For banks &amp; credit unions</p>
+      <h1 class="h1 serif">Train people to use AI<br>without losing control.</h1>
+      <p class="lede" style="margin-top:20px">
+        Assess readiness, practice safely, and turn useful prompts into documented workflows.
+        Built for community banks, credit unions, and regulated teams.
+      </p>
+      <div class="ctas">
+        <a class="btn primary arrow" href="#">Start Free Assessment</a>
+        <a class="btn ghost" href="#">Preview the Course</a>
+      </div>
+    </div>
+
+    <div class="ledger-card">
+      <div class="top">
+        <span class="kicker muted">Readiness · sample</span>
+        <span class="mono" style="font-size:11px;color:var(--ledger-slate);letter-spacing:0.16em;text-transform:uppercase">Reg. Intelligence</span>
+      </div>
+      <div class="score-row">
+        <div class="score tnum">62</div>
+        <div>
+          <div class="score-meta">of 100</div>
+          <div style="margin-top:8px;font-size:14px;color:var(--ledger-slate)">Tier: <strong style="color:var(--ledger-ink)">Building Momentum</strong></div>
+        </div>
+      </div>
+      <div class="dims">
+        <div class="dim"><div class="row"><span class="name">Governance</span><span class="val tnum">72</span></div><div class="bar"><div class="fill" style="width:72%"></div></div></div>
+        <div class="dim"><div class="row"><span class="name">Tool fluency</span><span class="val tnum">58</span></div><div class="bar"><div class="fill" style="width:58%"></div></div></div>
+        <div class="dim"><div class="row"><span class="name">Risk awareness</span><span class="val tnum">64</span></div><div class="bar"><div class="fill" style="width:64%"></div></div></div>
+        <div class="dim"><div class="row"><span class="name">Workflow fit</span><span class="val tnum">55</span></div><div class="bar"><div class="fill" style="width:55%"></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCT TRIO -->
+<section>
+  <div class="container">
+    <div class="section-head">
+      <p class="kicker">Product Suite</p>
+      <h2 class="h2 serif">A clear path from interest to implementation.</h2>
+    </div>
+    <div class="trio">
+      <div class="item">
+        <span class="num">№ 01 · Free</span>
+        <div class="title">Readiness Assessment</div>
+        <div class="meta">8 questions · ~3 minutes · individual</div>
+        <div class="out"><strong>Outcome:</strong> baseline score and starter artifact.</div>
+        <a class="link arrow" href="#">Start here</a>
+      </div>
+      <div class="item">
+        <span class="num">№ 02 · $99</span>
+        <div class="title">Maturity Assessment</div>
+        <div class="meta">48 questions · role-specific report</div>
+        <div class="out"><strong>Outcome:</strong> training plan with named gaps.</div>
+        <a class="link arrow" href="#">Go deeper</a>
+      </div>
+      <div class="item">
+        <span class="num">№ 03 · $295</span>
+        <div class="title">Foundation Course</div>
+        <div class="meta">Course + toolbox · self-paced</div>
+        <div class="out"><strong>Outcome:</strong> reusable workflows you can ship.</div>
+        <a class="link arrow" href="#">Build capability</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PATH BUILDER -->
+<section>
+  <div class="container">
+    <div class="section-head">
+      <p class="kicker">Interactive Guidance</p>
+      <h2 class="h2 serif">Find your next best step.</h2>
+      <p class="lede">Select a role and a goal. We'll show you the path, the artifact you produce, and the value signal it sends to your examiner.</p>
+    </div>
+
+    <div class="pb">
+      <div class="controls">
+        <h4>Role</h4>
+        <div class="chips">
+          <button class="chip on">Compliance</button>
+          <button class="chip">Retail</button>
+          <button class="chip">Marketing</button>
+          <button class="chip">Operations</button>
+        </div>
+        <h4>Goal</h4>
+        <div class="chips">
+          <button class="chip on">Document AI use safely</button>
+          <button class="chip">Save time on repeat work</button>
+          <button class="chip">Train my team</button>
+          <button class="chip">Build approved workflows</button>
+        </div>
+      </div>
+      <div class="rx">
+        <div>
+          <p class="kicker muted" style="margin-bottom:8px">Recommended path</p>
+          <div class="path">Maturity Assessment&nbsp;&nbsp;→&nbsp;&nbsp;Foundation Course&nbsp;&nbsp;→&nbsp;&nbsp;Workflow SOP</div>
+        </div>
+        <div class="pair">
+          <div><div class="l">Artifact</div>AI use-case review packet</div>
+          <div><div class="l">Value signal</div>Examiner-ready documentation</div>
+        </div>
+        <p class="why">Reduce ambiguity before AI tools touch regulated work.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ROLE PREVIEW -->
+<section>
+  <div class="container">
+    <div class="section-head">
+      <p class="kicker">Role Previews</p>
+      <h2 class="h2 serif">Show the artifact. Then teach the skill.</h2>
+      <p class="lede">Learners see the practical output before the lesson begins — the thing they'll hand to a manager on Monday.</p>
+    </div>
+
+    <div class="role">
+      <div class="tabs">
+        <button class="on">Compliance</button>
+        <button>Branch / Retail</button>
+        <button>Marketing</button>
+        <button>Operations</button>
+      </div>
+      <div class="clipping">
+        <div class="masthead">
+          <p class="kicker muted">Artifact preview</p>
+          <p class="mono" style="font-size:11px;color:var(--ledger-slate)">Compliance · Workflow Pack</p>
+        </div>
+        <h3>Workflow Review Packet</h3>
+        <div class="field"><div class="k">Owner</div><div>Department lead</div></div>
+        <div class="field"><div class="k">Status</div><div><strong>Ready with review</strong></div></div>
+        <div class="field"><div class="k">Review</div><div>Human approval required before release</div></div>
+        <p class="kicker muted" style="margin-top:22px">Includes</p>
+        <ul>
+          <li>AI use-case checklist</li>
+          <li>Examiner-ready SOP</li>
+          <li>Human review log</li>
+        </ul>
+        <div style="margin-top:24px"><a class="btn primary arrow" href="#">View sample artifact</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SANDBOX -->
+<section>
+  <div class="container">
+    <div class="section-head">
+      <p class="kicker">Less lecture. More reps.</p>
+      <h2 class="h2 serif">A controlled place to test, compare, and improve.</h2>
+    </div>
+
+    <div class="steps">
+      <div><div class="n">Step 1</div><div class="t">Pick role</div><div class="d">Compliance, retail, marketing, ops.</div></div>
+      <div><div class="n">Step 2</div><div class="t">Load scenario</div><div class="d">Realistic synthetic data only.</div></div>
+      <div><div class="n">Step 3</div><div class="t">Review output</div><div class="d">Run accuracy + risk checklist.</div></div>
+      <div><div class="n">Step 4</div><div class="t">Save asset</div><div class="d">Promote to a reusable skill.</div></div>
+    </div>
+
+    <div class="sample">
+      <div><div class="k">Input</div><div class="v">Dense internal procedure</div></div>
+      <div><div class="k">Output</div><div class="v">Frontline job aid</div></div>
+      <div><div class="k">Review</div><div class="v">Manager review</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section>
+  <div class="container">
+    <div class="cta-band">
+      <div>
+        <p class="kicker">The AI Banking Institute</p>
+        <h2 class="h2 serif" style="margin-top:10px">Build confidence. Keep control.</h2>
+        <p class="lede" style="margin-top:14px">A practical path for financial professionals to assess, train, practice, and document AI-supported work.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <a class="btn primary arrow" href="#">Start Free Assessment</a>
+        <a class="btn ghost" href="#">Preview Toolbox</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ribbon">
+  Sketch
+  <a href="/sketches/option-1.html" class="active">Opt 1</a>
+  <a href="/sketches/option-3.html">Opt 3</a>
+</div>
+
+</body>
+</html>

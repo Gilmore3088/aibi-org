@@ -29,7 +29,7 @@ export function SampleQuestion() {
         </div>
 
         <div className="bg-[color:var(--color-linen)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-8 md:p-10">
-          <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
+          <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
             {SAMPLE.dimension}
           </p>
           <h3 className="font-serif text-2xl md:text-3xl text-[color:var(--color-ink)] leading-tight mb-8">
@@ -47,15 +47,15 @@ export function SampleQuestion() {
                   className={
                     'w-full text-left px-5 py-4 border transition-colors flex gap-4 items-start ' +
                     (isSelected
-                      ? 'border-[color:var(--color-terra)] bg-[color:var(--color-terra-pale)]/30'
-                      : 'border-[color:var(--color-ink)]/15 hover:border-[color:var(--color-terra)] hover:bg-[color:var(--color-terra-pale)]/10')
+                      ? 'border-[color:var(--gold)] bg-[color:var(--cream-2)]/30'
+                      : 'border-[color:var(--color-ink)]/15 hover:border-[color:var(--gold)] hover:bg-[color:var(--cream-2)]/10')
                   }
                 >
                   <span
                     className={
                       'flex-shrink-0 w-8 h-8 rounded-full border flex items-center justify-center font-mono text-xs mt-0.5 transition-colors ' +
                       (isSelected
-                        ? 'border-[color:var(--color-terra)] bg-[color:var(--color-terra)] text-[color:var(--color-linen)]'
+                        ? 'border-[color:var(--gold)] bg-[color:var(--gold)] text-[color:var(--color-linen)]'
                         : 'border-[color:var(--color-ink)]/30 text-[color:var(--color-ink)]/70')
                     }
                   >
@@ -79,7 +79,7 @@ export function SampleQuestion() {
               </p>
               <Link
                 href="/assessment/start"
-                className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
+                className="inline-block px-8 py-4 bg-[color:var(--gold)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] active:scale-[0.98] transition-all"
               >
                 Take the Full Assessment
               </Link>

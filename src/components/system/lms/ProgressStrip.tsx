@@ -59,7 +59,7 @@ export function ProgressStrip({
             aria-label={`Course progress: ${pct}%`}
           >
             <span
-              className="block h-full w-full bg-terra origin-left transition-transform duration-slow"
+              className="block h-full w-full bg-gold origin-left transition-transform duration-slow"
               style={{ transform: `scaleX(${pct / 100})` }}
             />
           </div>

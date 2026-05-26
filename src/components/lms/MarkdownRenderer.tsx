@@ -22,7 +22,7 @@ function renderBlock(block: string): string {
   if (trimmed.startsWith('> ')) {
     const quoteLines = trimmed.split('\n').map((l) => l.replace(/^>\s?/, '').trim());
     const quoteHtml = quoteLines.map((l) => parseInline(l)).join('<br/>');
-    return `<blockquote class="my-6 border-l-[3px] border-[color:var(--color-terra)] bg-[color:var(--color-parch)] px-6 py-5 rounded-r-[2px]"><p class="font-serif italic text-base text-[color:var(--color-ink)] leading-relaxed">${quoteHtml}</p></blockquote>`;
+    return `<blockquote class="my-6 border-l-[3px] border-[color:var(--gold)] bg-[color:var(--color-parch)] px-6 py-5 rounded-r-[2px]"><p class="font-serif italic text-base text-[color:var(--color-ink)] leading-relaxed">${quoteHtml}</p></blockquote>`;
   }
 
   // Heading: ### Heading Text

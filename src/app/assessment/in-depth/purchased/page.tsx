@@ -70,7 +70,7 @@ export default async function InDepthPurchasedPage({
   return (
     <main className="px-6 py-14 md:py-20">
       <div className="mx-auto max-w-3xl">
-        <p className="font-serif-sc text-[11px] uppercase tracking-[0.22em] text-[color:var(--color-terra)] mb-3">
+        <p className="font-serif-sc text-[11px] uppercase tracking-[0.22em] text-[color:var(--gold)] mb-3">
           Purchase confirmed
         </p>
         <h1 className="font-serif text-4xl md:text-5xl font-bold leading-tight text-[color:var(--color-ink)] mb-5">
@@ -81,8 +81,8 @@ export default async function InDepthPurchasedPage({
           a welcome email with the assessment link will follow within minutes.
         </p>
 
-        <section className="border border-[color:var(--color-terra)]/20 bg-[color:var(--color-parch)] rounded-[3px] p-6 md:p-8 mb-10">
-          <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-4">
+        <section className="border border-[color:var(--gold)]/20 bg-[color:var(--color-parch)] rounded-[3px] p-6 md:p-8 mb-10">
+          <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--gold)] mb-4">
             What you get
           </p>
           <ul className="space-y-3">
@@ -92,7 +92,7 @@ export default async function InDepthPurchasedPage({
                 className="flex gap-3 text-sm md:text-base text-[color:var(--color-ink)]/85"
               >
                 <span
-                  className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-terra)] shrink-0"
+                  className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--gold)] shrink-0"
                   aria-hidden="true"
                 />
                 <span>{line}</span>
@@ -113,7 +113,7 @@ export default async function InDepthPurchasedPage({
               </p>
               <Link
                 href="/assessment/in-depth/take"
-                className="inline-block bg-[color:var(--color-terra)] text-[color:var(--color-linen)] px-8 py-3 rounded-sm font-mono text-[10px] uppercase tracking-[0.15em] hover:bg-[color:var(--color-terra-light)] transition-colors"
+                className="inline-block bg-[color:var(--gold)] text-[color:var(--color-linen)] px-8 py-3 rounded-sm font-mono text-[10px] uppercase tracking-[0.15em] hover:bg-[color:var(--gold-2)] transition-colors"
               >
                 Begin the assessment
               </Link>
@@ -135,7 +135,7 @@ export default async function InDepthPurchasedPage({
               <div className="flex flex-wrap gap-4">
                 <Link
                   href={`/auth/signup?next=/assessment/in-depth/take${emailQs}`}
-                  className="inline-block bg-[color:var(--color-terra)] text-[color:var(--color-linen)] px-8 py-3 rounded-sm font-mono text-[10px] uppercase tracking-[0.15em] hover:bg-[color:var(--color-terra-light)] transition-colors"
+                  className="inline-block bg-[color:var(--gold)] text-[color:var(--color-linen)] px-8 py-3 rounded-sm font-mono text-[10px] uppercase tracking-[0.15em] hover:bg-[color:var(--gold-2)] transition-colors"
                 >
                   Create my account
                 </Link>
@@ -152,7 +152,7 @@ export default async function InDepthPurchasedPage({
             Trouble? Reply to your receipt email or write to{' '}
             <a
               href="mailto:hello@aibankinginstitute.com"
-              className="underline hover:text-[color:var(--color-terra)]"
+              className="underline hover:text-[color:var(--gold)]"
             >
               hello@aibankinginstitute.com
             </a>

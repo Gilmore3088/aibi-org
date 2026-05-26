@@ -120,7 +120,7 @@ export function PdfDownloadButton({ profileId, email }: PdfDownloadButtonProps) 
         {state.kind === 'ready' && (
           <button
             onClick={handleDownload}
-            className="px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[12px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
+            className="px-6 py-3 bg-[color:var(--gold)] text-[color:var(--color-linen)] font-sans text-[12px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] transition-colors"
           >
             Download PDF
           </button>
@@ -131,7 +131,7 @@ export function PdfDownloadButton({ profileId, email }: PdfDownloadButtonProps) 
           </p>
         )}
         {state.kind === 'done' && (
-          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-terra)]">
+          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[color:var(--gold)]">
             Downloaded
           </p>
         )}

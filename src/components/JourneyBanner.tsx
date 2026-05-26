@@ -25,8 +25,8 @@ const JOURNEY_STEPS: Record<string, JourneyStep> = {
     body: 'AiBI-S is coming after Foundation is validated. It will focus on workflow automation, agents, internal AI systems, and team-level rollout.',
     href: '/coming-soon?interest=specialist',
     cta: 'Join AiBI-S Waitlist',
-    accent: 'var(--color-amber)',
-    accentBg: 'var(--color-terra-pale)',
+    accent: 'var(--gold)',
+    accentBg: 'var(--cream-2)',
   },
   'aibi-s': {
     label: 'Next in your journey',
@@ -34,8 +34,8 @@ const JOURNEY_STEPS: Record<string, JourneyStep> = {
     body: 'AiBI-L is coming after Foundation is validated. It will focus on executive confidence, governance, rollout, and institution-level AI leadership.',
     href: '/coming-soon?interest=leader',
     cta: 'Join AiBI-L Waitlist',
-    accent: 'var(--color-cobalt)',
-    accentBg: 'var(--color-cobalt-pale)',
+    accent: 'var(--ink-2)',
+    accentBg: 'var(--cream-2)',
   },
   'aibi-l': {
     label: 'Full certification ladder complete',
@@ -43,8 +43,8 @@ const JOURNEY_STEPS: Record<string, JourneyStep> = {
     body: 'AiBI-Foundation, AiBI-S, and AiBI-L earned. View your complete certification journey and cumulative impact metrics on your dashboard.',
     href: '/dashboard/progression',
     cta: 'View your journey',
-    accent: 'var(--color-terra)',
-    accentBg: 'var(--color-terra-pale)',
+    accent: 'var(--gold)',
+    accentBg: 'var(--cream-2)',
   },
 } as const;
 

@@ -182,7 +182,7 @@ export function EmailGate({
         <DeliverablePanel />
 
         <div className="bg-[color:var(--color-parch)] p-8 md:p-10 lg:p-12">
-          <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
+          <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
             See your full results
           </p>
           <h3 className="font-serif text-3xl leading-tight text-[color:var(--color-ink)]">
@@ -212,7 +212,7 @@ export function EmailGate({
                     setMessage(null);
                   }
                 }}
-                className="w-full px-4 py-3 border border-[color:var(--color-ink)]/20 rounded-[2px] bg-[color:var(--color-linen)] text-[color:var(--color-ink)] font-sans text-base focus:outline-none focus:border-[color:var(--color-terra)]"
+                className="w-full px-4 py-3 border border-[color:var(--color-ink)]/20 rounded-[2px] bg-[color:var(--color-linen)] text-[color:var(--color-ink)] font-sans text-base focus:outline-none focus:border-[color:var(--gold)]"
               />
             </FormField>
 
@@ -229,7 +229,7 @@ export function EmailGate({
                 placeholder="Sarah"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
-                className="w-full px-4 py-3 border border-[color:var(--color-ink)]/20 rounded-[2px] bg-[color:var(--color-linen)] text-[color:var(--color-ink)] font-sans text-base focus:outline-none focus:border-[color:var(--color-terra)]"
+                className="w-full px-4 py-3 border border-[color:var(--color-ink)]/20 rounded-[2px] bg-[color:var(--color-linen)] text-[color:var(--color-ink)] font-sans text-base focus:outline-none focus:border-[color:var(--gold)]"
               />
             </FormField>
 
@@ -246,7 +246,7 @@ export function EmailGate({
                 placeholder="First Federal Credit Union"
                 value={institutionName}
                 onChange={(e) => setInstitutionName(e.target.value)}
-                className="w-full px-4 py-3 border border-[color:var(--color-ink)]/20 rounded-[2px] bg-[color:var(--color-linen)] text-[color:var(--color-ink)] font-sans text-base focus:outline-none focus:border-[color:var(--color-terra)]"
+                className="w-full px-4 py-3 border border-[color:var(--color-ink)]/20 rounded-[2px] bg-[color:var(--color-linen)] text-[color:var(--color-ink)] font-sans text-base focus:outline-none focus:border-[color:var(--gold)]"
               />
             </FormField>
 
@@ -255,7 +255,7 @@ export function EmailGate({
                 type="checkbox"
                 checked={marketingOptIn}
                 onChange={(e) => setMarketingOptIn(e.target.checked)}
-                className="mt-1 shrink-0 h-4 w-4 accent-[color:var(--color-terra)]"
+                className="mt-1 shrink-0 h-4 w-4 accent-[color:var(--gold)]"
               />
               <span>
                 Also subscribe me to{' '}
@@ -267,7 +267,7 @@ export function EmailGate({
             <button
               type="submit"
               disabled={status === 'submitting'}
-              className="w-full px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all disabled:opacity-60"
+              className="w-full px-6 py-3 bg-[color:var(--gold)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] active:scale-[0.98] transition-all disabled:opacity-60"
             >
               {status === 'submitting' ? 'Sending…' : 'Show my full results'}
             </button>
@@ -284,7 +284,7 @@ export function EmailGate({
 function DeliverablePanel() {
   return (
     <div className="bg-[color:var(--color-linen)] p-8 md:p-10 lg:p-12 border-b lg:border-b-0 lg:border-r border-[color:var(--color-ink)]/10">
-      <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
+      <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
         What you get
       </p>
       <h3 className="font-serif text-3xl leading-tight text-[color:var(--color-ink)]">
@@ -320,7 +320,7 @@ function DeliverablePanel() {
               </span>
               <div className="flex-1 h-1.5 bg-[color:var(--color-ink)]/10 rounded-sm overflow-hidden">
                 <div
-                  className="h-full bg-[color:var(--color-terra)]"
+                  className="h-full bg-[color:var(--gold)]"
                   style={{ width: `${value * 100}%` }}
                 />
               </div>
@@ -339,7 +339,7 @@ function DeliverablePanel() {
           ['Email copy of both', 'Yours to share with your team, your board, or your examiners.'],
         ].map(([title, body]) => (
           <li key={title} className="flex gap-3">
-            <span className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-terra)] shrink-0" />
+            <span className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--gold)] shrink-0" />
             <div>
               <p className="font-serif text-base text-[color:var(--color-ink)]">{title}</p>
               <p className="text-sm text-[color:var(--color-slate)] leading-relaxed">{body}</p>
@@ -359,8 +359,8 @@ function TrustStrip() {
         ['What we store', 'Your email, answers, and score. Removable on request — email hello@aibankinginstitute.com.'],
         ['No surprise sales calls', 'Briefings happen by request only. We will not cold-call your line.'],
       ].map(([title, body]) => (
-        <div key={title} className="border-l-2 border-[color:var(--color-terra)]/40 pl-3">
-          <p className="font-serif-sc text-[10px] uppercase tracking-[0.18em] text-[color:var(--color-terra)]">
+        <div key={title} className="border-l-2 border-[color:var(--gold)]/40 pl-3">
+          <p className="font-serif-sc text-[10px] uppercase tracking-[0.18em] text-[color:var(--gold)]">
             {title}
           </p>
           <p className="mt-1 text-xs text-[color:var(--color-slate)] leading-relaxed">{body}</p>
@@ -393,7 +393,7 @@ function FormField({
           className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]"
         >
           {label}
-          {required && <span className="ml-1 text-[color:var(--color-terra)]">*</span>}
+          {required && <span className="ml-1 text-[color:var(--gold)]">*</span>}
         </label>
         {hint && !error && (
           <span className="text-xs text-[color:var(--color-slate)]/80">{hint}</span>

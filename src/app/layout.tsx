@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { headers } from 'next/headers';
 import {
   Cormorant_SC,
+  Inter,
   Newsreader,
   JetBrains_Mono,
 } from 'next/font/google';
@@ -17,16 +18,38 @@ import './globals.css';
 // top would produce a duplicate logo (or, in the case of the design system
 // reference, would frame a pixel-faithful mockup with extraneous chrome).
 const CHROMELESS_PATHS: readonly string[] = [
+  // 2026-05-26 redesign sprint — every route ported to the mockup design
+  // system renders its own SiteHeader from @/components/mockup. As each
+  // route migrates, it joins this list. When all routes have migrated
+  // the global SiteNav is removed entirely.
+  '/',
+  '/assessment',
+  '/assessment/take',
+  '/results',
+  '/courses',
+  '/playground',
+  '/practice',
+  '/my-toolbox',
+  '/for-institutions',
+  '/playbooks',
+  '/dashboard',
+  '/courses/foundation/program',
+  '/auth',
+  '/about',
+  '/security',
+  '/certifications',
+  '/education',
+  '/privacy',
+  '/terms',
+  '/ai-use-disclaimer',
+
+  // Pre-existing chromeless routes (own brand lockup or no chrome by design)
   '/coming-soon',
   '/design-system',
-  '/my-toolbox',
-  '/playground',
-  '/faq',
   // /courses/foundation/program and /auth intentionally NOT chromeless —
   // both need the global SiteNav. /auth surfaces drop the LedgerSurface
   // internal lockup via showHeader={false} so there's no duplicate mark.
   // CourseShell's sidebar + breadcrumb cover the course tree only.
-  '/redesign-checklist',
 ];
 
 // 2026-05-17: Cormorant Garamond, DM Sans, and DM Mono removed — they
@@ -99,6 +122,17 @@ const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
   weight: ['400', '600'],
   variable: '--font-jetbrains-mono',
+  display: 'swap',
+});
+
+// Inter — primary mockup-system font (2026-05-26). Weights 400/500/600/700/800
+// cover every observed use in public/sketches/_mockup.css and the per-page
+// sketches. Exposed as --font-inter; mockup.css references it via the
+// "Inter" family-name fallback chain so a missing variable still resolves.
+const inter = Inter({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-inter',
   display: 'swap',
 });
 
@@ -185,7 +219,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
 
       <body
-        className={`${cormorantSC.variable} ${newsreaderHero.variable} ${newsreaderHeavy.variable} ${GeistSans.variable} ${jetbrainsMono.variable} flex flex-col min-h-screen`}
+        className={`${cormorantSC.variable} ${newsreaderHero.variable} ${newsreaderHeavy.variable} ${GeistSans.variable} ${jetbrainsMono.variable} ${inter.variable} flex flex-col min-h-screen`}
       >
         {!chromeless && (
           <a href="#main-content" className="skip-link">

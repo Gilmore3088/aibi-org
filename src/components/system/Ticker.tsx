@@ -99,7 +99,7 @@ function TickerItemRow({ item }: { readonly item: TickerItem }) {
     <>
       <span
         aria-hidden="true"
-        className="font-mono text-[10px] uppercase tracking-[0.18em] text-terra"
+        className="font-mono text-[10px] uppercase tracking-[0.18em] text-gold"
       >
         {kicker}
       </span>
@@ -120,7 +120,7 @@ function TickerItemRow({ item }: { readonly item: TickerItem }) {
     return (
       <Link
         href={item.href}
-        className="flex flex-wrap items-baseline gap-x-s4 gap-y-1 hover:text-terra transition-colors"
+        className="flex flex-wrap items-baseline gap-x-s4 gap-y-1 hover:text-gold transition-colors"
       >
         {body}
       </Link>

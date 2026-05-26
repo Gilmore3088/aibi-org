@@ -14,9 +14,9 @@ const RANK_STYLES: Record<
   { readonly border: string; readonly numberColor: string; readonly accent: string }
 > = {
   primary: {
-    border: '1.25pt solid var(--color-terra)',
-    numberColor: 'var(--color-terra)',
-    accent: 'var(--color-terra)',
+    border: '1.25pt solid var(--gold)',
+    numberColor: 'var(--gold)',
+    accent: 'var(--gold)',
   },
   secondary: {
     border: '0.5pt solid var(--color-ink)',
@@ -102,7 +102,7 @@ export function NextStepsTrio({ tierId }: NextStepsTrioProps) {
                       fontSize: '7.5pt',
                       letterSpacing: '0.2em',
                       textTransform: 'uppercase',
-                      color: 'var(--color-terra)',
+                      color: 'var(--gold)',
                       marginTop: '0.08in',
                     }}
                   >

@@ -30,7 +30,7 @@ export default function AiBISPrototypeLanding() {
   return (
     <main className="max-w-4xl mx-auto py-12 px-4 space-y-12">
       <header className="space-y-3">
-        <p className="text-xs font-mono uppercase tracking-wider text-[color:var(--color-cobalt)]">
+        <p className="text-xs font-mono uppercase tracking-wider text-[color:var(--ink-2)]">
           AiBI-S · Banking AI Specialist · Prototype
         </p>
         <h1 className="font-serif text-5xl">Choose your track</h1>
@@ -47,12 +47,12 @@ export default function AiBISPrototypeLanding() {
             {t.active ? (
               <Link
                 href={`/courses/aibi-s/${t.code}`}
-                className="block border-2 border-[color:var(--color-cobalt)] p-6 rounded hover:bg-[color:var(--color-parch)] transition"
+                className="block border-2 border-[color:var(--ink-2)] p-6 rounded hover:bg-[color:var(--color-parch)] transition"
               >
                 <p className="font-mono text-xs mb-1">AiBI-S/{t.code}</p>
                 <p className="font-serif text-2xl">{t.label}</p>
                 <p className="text-sm mt-2">{t.tagline}</p>
-                <p className="text-xs mt-3 text-[color:var(--color-cobalt)] font-semibold">Active in prototype →</p>
+                <p className="text-xs mt-3 text-[color:var(--ink-2)] font-semibold">Active in prototype →</p>
               </Link>
             ) : (
               <div className="block border border-[color:var(--color-ink)]/15 p-6 rounded opacity-60 cursor-not-allowed">

@@ -33,7 +33,7 @@ export function TransformationFlow({ stages, className }: TransformationFlowProp
       >
         <path
           d="M 60 80 Q 250 0 500 60 Q 750 120 940 40"
-          stroke="var(--color-terra)"
+          stroke="var(--gold)"
           strokeWidth="1.5"
           fill="none"
           strokeDasharray="4 6"
@@ -51,7 +51,7 @@ export function TransformationFlow({ stages, className }: TransformationFlowProp
             )}
             aria-current={idx === stages.length - 1 ? "step" : undefined}
           >
-            <p className="font-mono text-display-md tabular-nums text-terra leading-none mb-s4">
+            <p className="font-mono text-display-md tabular-nums text-gold leading-none mb-s4">
               {stage.index}
             </p>
             <p className="font-mono text-label-md uppercase tracking-widest text-slate mb-s4">

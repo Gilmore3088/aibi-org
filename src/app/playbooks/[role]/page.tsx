@@ -1,0 +1,211 @@
+/* eslint-disable react/no-unescaped-entities */
+import { notFound } from 'next/navigation';
+import {
+  SiteHeader,
+  Section,
+  SectionHead,
+  Button,
+  EyebrowChip,
+  CtaBand,
+} from '@/components/mockup';
+import { PLAYBOOKS, type RoleSlug } from '../data';
+
+export function generateStaticParams() {
+  return (Object.keys(PLAYBOOKS) as RoleSlug[]).map((role) => ({ role }));
+}
+
+type IconProps = { className?: string; size?: number };
+const sw = (p: IconProps) => ({
+  className: p.className,
+  width: p.size,
+  height: p.size,
+  viewBox: '0 0 24 24',
+  fill: 'none',
+  stroke: 'currentColor',
+  strokeWidth: 2,
+  strokeLinecap: 'round' as const,
+  strokeLinejoin: 'round' as const,
+  'aria-hidden': true,
+});
+
+const ShieldIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>);
+const ArrowR = (p: IconProps) => (<svg {...sw(p)}><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>);
+const FileIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>);
+const ChatIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>);
+const LockIcon = (p: IconProps) => (<svg {...sw(p)}><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>);
+const TargetIcon = (p: IconProps) => (<svg {...sw(p)}><circle cx="12" cy="12" r="10" /><circle cx="12" cy="12" r="6" /><circle cx="12" cy="12" r="2" /></svg>);
+const StarIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M12 3l1.9 5.8L20 10l-4.6 3.4L17.2 20 12 16.6 6.8 20l1.8-6.6L4 10l6.1-1.2z" /></svg>);
+const CheckIcon = (p: IconProps) => (<svg {...sw(p)}><polyline points="20 6 9 17 4 12" /></svg>);
+
+export default async function PlaybookPage({ params }: { params: Promise<{ role: string }> }) {
+  const { role } = await params;
+  const data = PLAYBOOKS[role as RoleSlug];
+  if (!data) notFound();
+
+  return (
+    <div className="mockup-scope">
+      <SiteHeader activePath="/playbooks" cta={{ label: 'Start Course', href: '/courses/foundation' }} />
+
+      {/* HERO */}
+      <section className="mk-hero">
+        <div className="mk-deco">
+          <div className="mk-deco-ring" />
+          <div className="mk-deco-blur" />
+        </div>
+        <div className="mk-container mk-hero-inner">
+          <div>
+            <EyebrowChip icon={<ShieldIcon className="mk-ic" />}>{data.eyebrow}</EyebrowChip>
+            <h1>{data.title}</h1>
+            <p className="mk-lede">{data.lede}</p>
+            <div className="mk-ctas">
+              <Button variant="gold" size="lg" href="/courses/foundation">
+                Start {data.eyebrow.split(' ')[0]} Path <ArrowR className="mk-ic" />
+              </Button>
+              <Button variant="ghost-dark" size="lg" href="/my-toolbox">
+                Preview Artifacts
+              </Button>
+            </div>
+          </div>
+
+          <div className="mk-pb-snap">
+            <div className="mk-head">
+              <div className="mk-k">Playbook Snapshot</div>
+              <div className="mk-t">{data.snapTitle}</div>
+            </div>
+            <div className="mk-quick">
+              {data.snapQuick.map((q, i) => (
+                <div key={q.label} className="mk-q">
+                  {i === 0 && <LockIcon size={24} />}
+                  {i === 1 && <FileIcon size={24} />}
+                  {i === 2 && <TargetIcon size={24} />}
+                  <div className="mk-l">{q.label}</div>
+                  <div className="mk-v">{q.value}</div>
+                </div>
+              ))}
+            </div>
+            <div className="mk-ms">
+              {data.snapMaturity.map((m) => (
+                <div key={m.name} className="mk-ms-row">
+                  <div className="mk-top">
+                    <div className="mk-l">{m.name}</div>
+                    <div className="mk-v">{m.pct}/100</div>
+                  </div>
+                  <div className="mk-bar">
+                    <div className="mk-fill" style={{ width: `${m.pct}%` }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="mk-path">
+              <div className="mk-l">Recommended path</div>
+              <div className="mk-v">{data.snapPath}</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* USE-CASE MAP */}
+      <Section variant="std">
+        <SectionHead kicker="Use-Case Map" heading={<>{data.usesHeading}</>} lede={<>Concrete, role-specific use cases replace generic AI advice.</>} />
+        <div className="mk-uses">
+          {data.uses.map((u, i) => (
+            <div key={u.title} className="mk-uc">
+              <div className="mk-top">
+                {i % 4 === 0 && <FileIcon size={24} />}
+                {i % 4 === 1 && <ShieldIcon size={24} />}
+                {i % 4 === 2 && <ChatIcon size={24} />}
+                {i % 4 === 3 && <CheckIcon size={24} />}
+                <span className={`mk-risk is-${u.risk}`}>{u.risk.toUpperCase()} RISK</span>
+              </div>
+              <h3>{u.title}</h3>
+              <p>{u.desc}</p>
+              <div className="mk-art">
+                <div className="mk-l">Artifact</div>
+                <div className="mk-v">{u.artifact}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      {/* OPERATING MODEL */}
+      <Section variant="std" surface="cream">
+        <SectionHead kicker={`${data.eyebrow.split(' ')[0]} Operating Model`} heading={<>{data.opHeading}</>} />
+        <div className="mk-om">
+          {data.ops.map((op, i) => (
+            <div key={op.step}>
+              <div className="mk-top">
+                <span className="mk-pic">
+                  {i % 4 === 0 && <CheckIcon size={20} />}
+                  {i % 4 === 1 && <ShieldIcon size={20} />}
+                  {i % 4 === 2 && <StarIcon size={20} />}
+                  {i % 4 === 3 && <FileIcon size={20} />}
+                </span>
+                <span className="mk-step">{op.step}</span>
+              </div>
+              <h3>{op.title}</h3>
+              <p>{op.desc}</p>
+              <div className="mk-art">
+                <div className="mk-l">Artifact produced</div>
+                <div className="mk-v">{op.artifact}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      {/* REVIEW CHECKLIST */}
+      <Section variant="std" surface="white">
+        <SectionHead kicker="Review Checklist" heading={<>Before AI output is used.</>} />
+        <div className="mk-by-dept">
+          <div className="mk-dept-grid">
+            {data.checklist.map((line) => (
+              <div key={line} className="mk-dpt" style={{ gridTemplateColumns: 'auto 1fr' }}>
+                <span className="mk-pic">
+                  <CheckIcon size={18} />
+                </span>
+                <div className="mk-nm">{line}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Section>
+
+      {/* TOOLBOX ASSETS */}
+      <Section variant="std">
+        <SectionHead
+          kicker="Toolbox Assets"
+          heading={<>The playbook unlocks real tools.</>}
+          lede={<>A strong role playbook ends with downloadable, customizable work products — not slides.</>}
+        />
+        <div className="mk-cats">
+          {data.assets.map((a) => (
+            <div key={a.name} className="mk-cat">
+              <div className="mk-bar" />
+              <div className="mk-body">
+                <div className="mk-top">
+                  <span className="mk-pic">
+                    <FileIcon size={20} />
+                  </span>
+                  <span className={`mk-risk is-${a.status === 'Ready' ? 'low' : 'med'}`}>{a.status}</span>
+                </div>
+                <h3 style={{ fontSize: 18 }}>{a.name}</h3>
+                <p style={{ minHeight: 'auto' }}>{a.type}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      <CtaBand
+        kicker={`${data.eyebrow}`}
+        heading={<>{data.cta.heading}</>}
+        body={<>{data.cta.body}</>}
+        actions={[
+          { label: 'Start the Course', href: '/courses/foundation', variant: 'gold' },
+          { label: 'Browse Toolbox', href: '/my-toolbox', variant: 'ghost-dark' },
+        ]}
+      />
+    </div>
+  );
+}

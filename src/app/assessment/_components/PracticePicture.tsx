@@ -18,7 +18,7 @@ export function PracticePicture({ tierId }: PracticePictureProps) {
   const rows = PRACTICE_PICTURE[tierId];
   return (
     <section className="space-y-6" aria-labelledby="practice-picture-heading">
-      <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
+      <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--gold)]">
         What this looks like in practice
       </p>
       <h2
@@ -40,7 +40,7 @@ export function PracticePicture({ tierId }: PracticePictureProps) {
             className="border border-[color:var(--color-ink)]/25 rounded-[3px] bg-[color:var(--color-linen)] p-6 md:p-7 flex flex-col gap-4"
           >
             <header className="flex items-baseline justify-between gap-4 pb-4 border-b border-[color:var(--color-ink)]/20">
-              <p className="font-serif-sc text-[13px] uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
+              <p className="font-serif-sc text-[13px] uppercase tracking-[0.2em] text-[color:var(--gold)]">
                 {row.role}
               </p>
               <p className="font-mono text-[11px] tabular-nums text-[color:var(--color-ink)]/50 tracking-[0.16em]">

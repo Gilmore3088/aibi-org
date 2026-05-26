@@ -32,9 +32,9 @@ const ACCENT_BORDER: Record<NonNullable<MarginaliaProps["accent"]>, string> = {
 };
 
 const ACCENT_TEXT: Record<NonNullable<MarginaliaProps["accent"]>, string> = {
-  terra: "text-terra",
-  sage: "text-sage",
-  cobalt: "text-cobalt",
+  terra: "text-gold",
+  sage: "text-ink-2",
+  cobalt: "text-ink-2",
   amber: "text-amber",
 };
 

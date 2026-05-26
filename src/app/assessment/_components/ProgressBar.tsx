@@ -14,7 +14,7 @@ export function ProgressBar({ progress }: ProgressBarProps) {
       aria-valuemax={100}
     >
       <div
-        className="h-full bg-[color:var(--color-terra)] transition-all duration-500 ease-out"
+        className="h-full bg-[color:var(--gold)] transition-all duration-500 ease-out"
         style={{ width: `${pct}%` }}
       />
     </div>

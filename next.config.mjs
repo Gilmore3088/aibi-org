@@ -75,9 +75,14 @@ const nextConfig = {
       { source: '/foundations', destination: '/education', permanent: true },
       { source: '/toolbox', destination: '/dashboard/toolbox', permanent: true },
       { source: '/toolbox/:path*', destination: '/dashboard/toolbox/:path*', permanent: true },
-      // /resources root → /research; individual essays remain at /resources/<slug>
-      // until Phase 07 migration ports each essay to MDX in content/essays/.
+      // 2026-05-26: /resources → /research consolidation. Article folders
+      // were moved to src/app/research/<slug>/ so they render at the new
+      // URLs natively (the static routes take precedence over the dynamic
+      // [slug] catch-all in /research). These permanent redirects preserve
+      // every external link to the old URLs (newsletters, social shares,
+      // search results).
       { source: '/resources', destination: '/research', permanent: true },
+      { source: '/resources/:slug*', destination: '/research/:slug*', permanent: true },
       // Foundation rename (2026-05-10) — every legacy /courses/aibi-p path
       // redirects to /courses/foundation/program. permanent: true emits HTTP
       // 308 (method-preserving, cacheable, search-engine-friendly). Keep

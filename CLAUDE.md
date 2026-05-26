@@ -96,15 +96,15 @@ The user is not a developer. Before implementing anything proposed:
 | Task | Command |
 |------|---------|
 | Dev server (main) | `cd ~/Projects/TheAiBankingInstitute && npm run dev` |
-| Dev server (feature) | `cd ~/Projects/aibi-<feature> && npm run dev` |
+| Dev server (feature) | `cd ~/Projects/TheAiBankingInstitute/.worktrees/<feature> && npm run dev` |
 | Build | `npm run build` (in relevant worktree) |
 | Type check | `npx tsc --noEmit` |
 | Lint | `npm run lint` |
 | Open a preview (de facto staging) | `git push origin feature/<n>` — Vercel auto-builds and surfaces a preview URL on the PR |
 | Push to production | `cd ~/Projects/TheAiBankingInstitute && git merge feature/<n> && git push origin main` |
 | List worktrees | `git worktree list` |
-| Add feature worktree | `git worktree add ../aibi-<n> feature/<n>` |
-| Remove worktree | `git worktree remove ../aibi-<n>` |
+| Add feature worktree | `git worktree add .worktrees/<n> -b feature/<n> main` |
+| Remove worktree | `git worktree remove .worktrees/<n>` |
 
 *Push commands require explicit user approval before execution.*
 
@@ -127,23 +127,30 @@ The user is not a developer. Before implementing anything proposed:
 | Directory | Branch | Purpose |
 |-----------|--------|---------|
 | `~/Projects/TheAiBankingInstitute` | main (permanent) | Home base, production code, plans, CLAUDE.md |
-| `~/Projects/aibi-<feature>` | feature/* (temporary) | Per-feature, removed when merged |
+| `~/Projects/TheAiBankingInstitute/.worktrees/<feature>` | feature/* (temporary) | Per-feature, removed when merged |
+
+**Worktrees are CORRALLED under `.worktrees/` inside the project — never as
+sibling folders in `~/Projects`** (decision 2026-05-22). A worktree is the
+same repo (one `.git`, shared history), just a second working dir for a
+branch; `.worktrees/` keeps them out of `~/Projects` so the home directory
+doesn't accumulate one folder per feature. `.worktrees/` is hidden from the
+main working tree via `.git/info/exclude` (local, never committed).
 
 There is no separate `staging` environment. Vercel auto-deploys every
 non-main push as a **preview URL** (`https://aibi-<hash>-…vercel.app`);
-that is the testing surface. The `~/Projects/aibi-staging` worktree
-and the `staging` git branch are legacy from an abandoned staging
-plan — both should be removed once any in-flight work is rebased.
+that is the testing surface.
 
 **Starting a feature worktree:**
 ```bash
-cd ~/Projects/TheAiBankingInstitute && git worktree add ../aibi-<n> -b feature/<n> main
-ln -s ~/Projects/TheAiBankingInstitute/.env.local ../aibi-<n>/.env.local
-cd ../aibi-<n> && npm install
+cd ~/Projects/TheAiBankingInstitute
+git worktree add .worktrees/<n> -b feature/<n> main
+ln -s ~/Projects/TheAiBankingInstitute/.env.local .worktrees/<n>/.env.local
+cd .worktrees/<n> && npm install
 ```
 
 **Rules:**
 - `~/Projects/TheAiBankingInstitute` stays on `main` — never switch it to a feature branch
+- All worktrees live under `.worktrees/` — never create sibling `~/Projects/aibi-<feature>` folders
 - `.env.local` lives in `~/Projects/TheAiBankingInstitute` and is symlinked into feature worktrees
 - Never stash — commit WIP instead (`git commit -m "WIP: ..."`)
 
@@ -539,48 +546,60 @@ Never write "AiBI helps..." or "the AiBI approach..." in body copy. Use
 
 ### Color Variables — Never Hardcode Hex
 
-**Two systems coexist during the 2026-05-09 brand refresh.** Legacy Terra/Sage/Cobalt
-tokens stay in `src/styles/tokens.css` for surfaces not yet migrated. New Ledger
-tokens live in `src/styles/tokens-ledger.css` and are the target system. New work
-uses Ledger; migrated surfaces drop Terra references. When migration completes,
-`tokens.css` is deleted and `tokens-ledger.css` is renamed to take its place.
+**Three systems coexist during migration (2026-05-26 → end-of-sprint).**
+The mockup system replaces Ledger as the target. Ledger replaced
+Terra/Sage/Cobalt. As surfaces migrate, layers below the target are dropped
+file by file. When the redesign sprint completes, both `tokens.css` and
+`tokens-ledger.css` are deleted and `tokens-mockup.css` is renamed to take
+their place. See the 2026-05-26 DECISIONS.md entry for the rationale.
 
-**Ledger (target — use for all new and migrated work):**
+**Mockup (target — use for all new and migrated work):**
 
-```css
---ledger-bg:           #ECE9DF   /* page field — linen */
---ledger-paper:        #F4F1E7   /* card field */
---ledger-parch:        #E4E0D2   /* recessed surfaces */
---ledger-tape:         #F1E9D0   /* highlight tape (reviewer notes) */
---ledger-ink:          #0E1B2D   /* primary text, primary fill */
---ledger-ink-2:        #1F2A3F   /* secondary text */
---ledger-muted:        #4F5C6E   /* muted text (darkened 2026-05-21 from #5C6B82 for WCAG AA) */
---ledger-soft:         #8C95A8   /* softest text — wordmark line 2 (logotype; WCAG-exempt) */
---ledger-accent:       #7C5814   /* gold — emphasis, primary CTA alt (darkened 2026-05-21 from #B5862A for WCAG AA; SINGLE SOURCE for all gold) */
---ledger-accent-2:     #1E3A5F   /* navy — secondary accent */
---ledger-weak:         #8E3B2A   /* oxblood — destructive only */
---ledger-rule:         #D5D1C2   /* hairline divider */
---ledger-rule-strong:  #A8AEBE   /* strong rule — section heads */
-```
-
-**Legacy (Terra/Sage/Cobalt — do not use for new work):**
+Defined in `src/styles/tokens-mockup.css`. Source of truth:
+`public/sketches/_mockup.css` + per-page sketches in `public/sketches/`.
 
 ```css
---color-terra:        #b5512e   /* superseded by --ledger-accent */
---color-sage:         #4a6741   /* retired — pillar discipline gone */
---color-cobalt:       #2d4a7a   /* superseded by --ledger-accent-2 */
---color-ink:          #1e1a14   /* superseded by --ledger-ink */
---color-parch:        #f5f0e6   /* superseded by --ledger-paper */
---color-linen:        #f9f6f0   /* superseded by --ledger-bg */
---color-error:        #9b2226   /* superseded by --ledger-weak */
+/* Ink */
+--ink:       #071A2F   /* primary dark — hero, dark sections, CTA */
+--ink-2:     #0B2745   /* hover on ink buttons */
+
+/* Gold — single accent (emphasis + primary CTA) */
+--gold:      #C8A24A   /* primary accent */
+--gold-2:    #D8B867   /* hover */
+--gold-soft: #E6D39B   /* on-dark text accent (kickers, ledes) */
+--gold-deep: #9A7A2F   /* on-light kicker / metadata */
+
+/* Cream — page and recessed surfaces */
+--cream:     #F7F3EA
+--cream-2:   #EFE7D7
+
+/* Slate scale — neutral text + surfaces (Tailwind palette) */
+--slate-50:  #F8FAFC
+--slate-100: #F1F5F9
+--slate-200: #E2E8F0
+--slate-400: #94A3B8
+--slate-500: #64748B
+--slate-600: #475569
+
+/* Emerald — saved/success confirmation only */
+--emerald-700: #047857
+--emerald-800: #065F46
 ```
 
-**Pillar color discipline (sage = Pillar A, cobalt = Pillar B, terra = Pillar C)
-is retired with the Ledger refresh.** Ledger uses one accent (gold) for emphasis
-and oxblood for destructive states. The 4-pillar curriculum structure
-(Awareness · Understanding · Creation · Application) shown in the new LMS
-prototype carries soft pillar marks for navigation but they do not enforce a
-visual grammar. See the 2026-05-09 Decisions Log entry.
+**Ledger (legacy — do not use for new work; remove from migrated surfaces):**
+Tokens in `src/styles/tokens-ledger.css`. Old palette: `--ledger-ink #0E1B2D`,
+`--ledger-accent #7C5814` (darkened gold), `--ledger-bg #ECE9DF` (linen),
+`--ledger-paper #F4F1E7`, etc. Retained while LMS interior and
+sub-routes still reference them; sweep when the surface is ported.
+
+**Legacy Terra/Sage/Cobalt (dead — keep out of new work):**
+`--color-terra #b5512e`, `--color-sage #4a6741`, `--color-cobalt #2d4a7a`,
+etc. Removed from migrated surfaces.
+
+**Pillar color discipline is retired.** The mockup system uses one accent
+(gold) for emphasis only. The 4-pillar curriculum structure
+(Awareness · Understanding · Creation · Application) in the LMS
+remains as a content frame but does not carry a visual grammar.
 
 ---
 
@@ -721,7 +740,7 @@ Run `/simplify` before committing. Skip for trivial one-liners.
 **Promoting to production:**
 1. `cd ~/Projects/TheAiBankingInstitute && git merge feature/<n>`
 2. `git push origin main` (with explicit user approval)
-3. `git worktree remove ../aibi-<n>`
+3. `git worktree remove .worktrees/<n>`
 
 ---
 
@@ -758,69 +777,86 @@ Moved to [`DECISIONS.md`](./DECISIONS.md) — chronological record of overrides 
 
 ## Design Context
 
-**Canonical source (2026-05-09 onward):**
-`docs/brand-refresh-2026-05-09/project/Design System.html` plus the
-adjoining `AI Readiness Briefing.html` and `LMS Prototype.html`.
+**Canonical source (2026-05-26 onward):**
+`public/sketches/mockup.html` (home) and the per-page sketches in
+`public/sketches/` — they are the literal HTML port of
+`/Users/jgmbp/Downloads/aibi_homepage_mockup.jsx` and adjacent JSX files.
+The shared chrome lives in `public/sketches/_mockup.css`. The
+React-ported tokens live in `src/styles/tokens-mockup.css`.
 
-**Aesthetic:** "Newspaper bones, software polish." Editorial ledger:
-parchment field, ink type, gold accent, oxblood for destructive states.
-Authoritative, dry, slightly editorial. References: financial print
-publications, hand-kept ledgers.
+The 2026-05-09 Ledger refresh was retired on 2026-05-26 in favor of
+this mockup system. See DECISIONS.md for the shift rationale. Ledger
+references in not-yet-migrated surfaces (LMS interior, dashboard
+internals) are temporary and removed as each surface ports.
 
-**Emotional goals:** Authority + Trust, Aspiration + Pride.
+**Aesthetic:** Modern editorial-meets-software. Dark navy hero with a
+warm cream page, brighter gold as a focused accent, rounded card-based
+composition, generous whitespace, restrained drop shadows on
+interactive cards. References: financial print publications styled for
+a 2026 SaaS audience — credible but warm, deliberate but inviting.
 
-**Accessibility:** WCAG 2.1 AA.
+**Emotional goals:** Authority + Trust, Aspiration + Confidence.
 
-**Color:** Gold (`--ledger-accent` **`#7C5814`** — darkened 2026-05-21 from
-`#B5862A` for WCAG AA; old gold failed at 2.69:1 as text) for emphasis only —
-never decoration. **Single-sourced:** the gold lives only in `--ledger-accent`
-(+ derived `--ledger-warn`, `--ledger-accent-soft`, and `--ledger-accent-a06..a40`
-tint tokens). All CSS + inline-DOM SVG/styles reference `var(--ledger-accent)`;
-only non-CSS contexts (Satori OG image, static favicon `.svg`, vanilla-JS chart
-constants, server-generated downloads) carry a literal `#7C5814`. **Change the
-gold in one place: `tokens-ledger.css`.** Oxblood (`--ledger-weak` `#8E3B2A`)
-for destructive / late / failed only — never marketing. Navy
-(`--ledger-accent-2` `#1E3A5F`) as a secondary accent. Muted/slate secondary
-text is `--ledger-muted`/`--ledger-slate` `#4F5C6E` (darkened from `#5C6B82` for
-AA). Body text on Paper or BG, never on Parch (insufficient contrast). The
-pillar color discipline (sage / cobalt / terra) is retired.
+**Accessibility:** WCAG 2.1 AA. Verify contrast on every new pairing;
+gold (`#C8A24A`) on dark navy passes; gold on cream does NOT pass for
+body text — reserve gold-on-cream for kickers/metadata/headlines only.
+Body text on cream uses `--ink`/`--slate-600`.
 
-**Typography:** Newsreader (display, ledes, quotes, wordmark) ·
-Geist (body, UI labels, sans buttons) · JetBrains Mono (kickers,
-metadata, code, version + status pills, tabular numbers). Three families;
-do not add a fourth. **Italics are retired site-wide (2026-05-21):** a
-universal `*{font-style:normal!important}` rule in `base.css` kills all
-italics (default `<em>`, the `italic` utility, inline styles, per-stylesheet
-rules, and browser-rendered SVG `<text>`); server-rendered images (Satori OG,
-hero SVG) are roman at source. Emphasis is carried by color + weight, never
-slant. (This supersedes the former "italics signal voice" rule.) Caps +
-0.16–0.20em tracking only on mono; never track sans.
+**Color:** Single primary accent — gold (`#C8A24A`). Used for
+emphasis, primary CTA fill, and on-dark kickers. Never decorative.
+Navy `--ink` (`#071A2F`) for primary fills and dark sections. Cream
+`#F7F3EA` for page surfaces. Slate scale for neutral text. Emerald
+(`#047857`) only for saved/success confirmation toasts. No oxblood,
+no terra, no sage — old pillar discipline is gone.
+
+**Typography:** **Inter** for everything (display, body, UI). Weights
+400/500/600/700/800. Font fallback chain
+`"Inter", ui-sans-serif, system-ui, -apple-system, "Helvetica Neue",
+Arial, sans-serif` already wired in `_mockup.css` and `tokens-mockup.css`.
+Newsreader, Geist, and JetBrains Mono from the Ledger era are retained
+on un-ported surfaces during migration but new work uses Inter only.
+Italics remain retired site-wide (`*{font-style:normal!important}` in
+`base.css`); emphasis carried by weight (600/700) and color.
 
 **Design principles:**
-1. Content is the design — restraint over decoration
-2. Every number earns its place — sourced, mono, tabular-nums
-3. Institutional, not promotional — consulting materials, not SaaS
-4. Lines do real work — they replace boxes and shadows
-5. Accessible by default — WCAG 2.1 AA, focus rings, skip links
+1. Show the artifact — every section leads with the practical thing the
+   product produces (a sample report card, a scenario, a saved prompt).
+2. Interactive previews where possible — tabs, scenario pickers, role
+   tabs. Static screenshots are last resort.
+3. Specific over clever — concrete numbers, scenario names, role labels.
+4. Two-tone restraint — at most two surfaces per section (dark + cream,
+   or white + cream). No tertiary color noise.
+5. Accessible by default — WCAG 2.1 AA, focus rings, skip links, real
+   semantic HTML.
 
-**Wordmark:** Two-line lockup, both lines Geist 700 UPPER, line-height
-1.0, 0–2px gap. Line 1 in `--ledger-ink`, line 2 in `--ledger-soft`.
-Sans-serif. No italics. No symbol. No monogram. No circular seal — the
-old AiBI seal is retired with this refresh.
+**Wordmark:** Inline `seal` + two-line text. Seal = 40×40 navy square
+(`--ink`), 12px radius, gold landmark icon (`--gold`). Text line 1
+"The AI Banking Institute" (14px, weight 600, navy). Text line 2
+"Regulated Intelligence" (12px, slate-500, weight 400). No symbol-only
+lockup; the brand always appears as seal + name.
 
-**Radii:** 2px (buttons, inputs, chips) · 3px (cards, sidebars, sections)
-· 4px (hero cards). One shadow only — `--ledger-shadow` — and only on
-hero/feature cards; nothing else gets a shadow.
+**Radii:**
+- 12px — buttons, pill tabs, small infoboxes
+- 16px — feature pieces, scenario cards, list rows
+- 24px — content cards, suite cards
+- 28px / 32px — hero cards, role cards, large feature cards
+- 999px — chips, eyebrow pills
 
-**Motion:** Almost none. 120ms (UI) / 200ms (page transitions),
-cubic-bezier(0.4, 0, 0.2, 1). Hover = border darken. No skeleton
+**Shadows:** Three approved levels —
+- `--shadow-soft` (`0 1px 2px rgba(0,0,0,.06)`) — nav, pcards
+- `--shadow-feature` (`0 24px 40px -20px rgba(0,0,0,.20)`) — interactive cards
+- `--shadow-hero` (`0 30px 60px -20px rgba(0,0,0,.45)`) — hero report card
+
+**Motion:** 120ms UI / 200ms page transitions,
+cubic-bezier(0.4, 0, 0.2, 1). Hover transforms are small (translateY(-4px))
+on pcards/scards only; rest are color/border-color shifts. No skeleton
 shimmers, no parallax, no scroll-jacking, no spring physics.
 
-**Voice:** Editorial first, promotional never. Lead with the artifact,
+**Voice:** Editorial-first, promotional-never. Lead with the artifact,
 not the tool. Specific over clever. No exclamation points. No emoji
 (unless quoting someone using one). Banned words: supercharge, unlock,
 revolutionize, leverage, synergy, AI-powered, users (use "you").
 
-**Never:** gradients, drop shadows beyond `--ledger-shadow` on hero
-cards, rounded corners >4px, emoji, icon libraries, stock photos,
-dark mode, "AI-powered" badges, sentence-case CTAs (mono caps only).
+**Never:** gradients, terra/sage/cobalt/oxblood, icon libraries, stock
+photos, dark mode, "AI-powered" badges, sentence-case CTAs (UPPER on
+button labels), italics, more than one accent color in a single section.

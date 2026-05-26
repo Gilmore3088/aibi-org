@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sketch · Compliance Playbook · AiBI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="_mockup.css">
+  <style>
+    /* Hero snapshot card (right side of hero) */
+    .snap { background: #fff; color: var(--ink); border-radius: 28px; overflow: hidden; box-shadow: 0 30px 60px -20px rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.08); }
+    .snap .head { padding: 20px 22px; background: var(--cream); border-bottom: 1px solid var(--slate-200); }
+    .snap .head .k { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-deep); }
+    .snap .head .t { font-size: 22px; font-weight: 600; margin-top: 4px; }
+    .snap .quick { display: grid; grid-template-columns: 1fr; }
+    @media (min-width: 600px) { .snap .quick { grid-template-columns: repeat(3, 1fr); } }
+    .snap .q { padding: 20px; border-right: 1px solid var(--slate-200); border-bottom: 1px solid var(--slate-200); }
+    .snap .q:last-child { border-right: 0; }
+    .snap .q svg { color: var(--gold); margin-bottom: 14px; }
+    .snap .q .l { font-size: 12px; color: var(--slate-500); }
+    .snap .q .v { font-weight: 700; font-size: 18px; margin-top: 4px; }
+    .snap .ms { padding: 20px; display: grid; gap: 12px; grid-template-columns: 1fr; }
+    @media (min-width: 600px) { .snap .ms { grid-template-columns: 1fr 1fr; } }
+    .ms-row { padding: 14px 16px; background: #fff; border: 1px solid rgba(7,26,47,0.10); border-radius: 14px; }
+    .ms-row .top { display: flex; justify-content: space-between; margin-bottom: 8px; }
+    .ms-row .l { font-size: 12px; font-weight: 600; color: var(--slate-500); }
+    .ms-row .v { font-size: 12px; font-weight: 700; color: var(--gold-deep); }
+    .ms-row .bar { height: 6px; background: var(--slate-200); border-radius: 999px; overflow: hidden; }
+    .ms-row .fill { height: 100%; background: var(--gold); }
+    .snap .path { margin: 0 20px 20px; padding: 18px 20px; background: var(--ink); color: #fff; border-radius: 14px; }
+    .snap .path .l { font-size: 13px; color: rgba(255,255,255,0.55); }
+    .snap .path .v { font-size: 18px; font-weight: 700; color: var(--gold-soft); margin-top: 6px; line-height: 1.35; }
+
+    /* Use case cards */
+    .uses { display: grid; gap: 16px; grid-template-columns: 1fr; }
+    @media (min-width: 760px) { .uses { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 1100px) { .uses { grid-template-columns: 1fr 1fr 1fr 1fr; } }
+    .uc { background: #fff; border: 1px solid rgba(7,26,47,0.10); border-radius: 24px; padding: 24px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); transition: transform .12s, box-shadow .12s; }
+    .uc:hover { transform: translateY(-4px); box-shadow: 0 24px 40px -20px rgba(0,0,0,0.15); }
+    .uc .top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .uc .top svg { color: var(--gold); }
+    .uc .risk { padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; }
+    .uc .risk.high { background: rgba(142,59,42,0.15); color: #8E3B2A; }
+    .uc .risk.med { background: rgba(200,162,74,0.20); color: var(--gold-deep); }
+    .uc .risk.low { background: rgba(4,120,87,0.15); color: var(--emerald-700); }
+    .uc h3 { font-size: 18px; font-weight: 600; margin: 0 0 10px; line-height: 1.3; }
+    .uc p { color: var(--slate-600); font-size: 13px; margin: 0 0 16px; min-height: 56px; }
+    .uc .art { padding: 12px 14px; background: var(--cream); border-radius: 14px; }
+    .uc .art .l { font-size: 11px; color: var(--slate-500); font-weight: 600; }
+    .uc .art .v { font-weight: 700; margin-top: 4px; font-size: 14px; }
+
+    /* Operating model strip */
+    .om { background: #fff; border: 1px solid rgba(7,26,47,0.10); border-radius: 32px; box-shadow: 0 24px 40px -20px rgba(0,0,0,0.15); overflow: hidden; display: grid; grid-template-columns: 1fr; }
+    @media (min-width: 1100px) { .om { grid-template-columns: repeat(4, 1fr); } }
+    .om > div { padding: 28px; border-right: 1px solid var(--slate-200); border-bottom: 1px solid var(--slate-200); }
+    .om > div:last-child { border-right: 0; border-bottom: 0; }
+    .om .top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+    .om .pic { width: 44px; height: 44px; border-radius: 14px; background: var(--ink); color: var(--gold); display: inline-flex; align-items: center; justify-content: center; }
+    .om .step { font-size: 14px; font-weight: 700; color: var(--gold-deep); }
+    .om h3 { font-size: 22px; font-weight: 600; margin: 0 0 10px; }
+    .om p { color: var(--slate-600); font-size: 13px; margin: 0 0 18px; }
+    .om .art { padding: 12px 16px; background: var(--cream); border-radius: 14px; }
+    .om .art .l { font-size: 11px; color: var(--slate-500); }
+    .om .art .v { font-weight: 700; margin-top: 4px; font-size: 13px; }
+
+    /* Scenario practice */
+    .sc-grid { display: grid; gap: 32px; grid-template-columns: 1fr; align-items: center; }
+    @media (min-width: 1024px) { .sc-grid { grid-template-columns: 0.4fr 0.6fr; } }
+    .sc-tabs { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+    .sc-tabs button { padding: 12px 18px; border-radius: 12px; border: 0; background: var(--cream); color: var(--ink); font-weight: 600; font-size: 14px; cursor: pointer; }
+    .sc-tabs button:hover { background: var(--cream-2); }
+    .sc-tabs button.on { background: var(--ink); color: #fff; }
+    .sc-card { background: var(--cream); border: 1px solid rgba(7,26,47,0.10); border-radius: 32px; overflow: hidden; box-shadow: 0 24px 40px -20px rgba(0,0,0,0.15); }
+    .sc-head { background: var(--ink); color: #fff; padding: 24px; display: flex; justify-content: space-between; align-items: center; }
+    .sc-head .k { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-soft); }
+    .sc-head .t { font-size: 24px; font-weight: 600; margin-top: 6px; }
+    .sc-body { display: grid; grid-template-columns: 1fr; }
+    @media (min-width: 760px) { .sc-body { grid-template-columns: 1fr 1fr 1fr; } }
+    .sc-body .blk { padding: 24px; background: #fff; border-right: 1px solid var(--slate-200); border-bottom: 1px solid var(--slate-200); }
+    .sc-body .blk:last-child { border-right: 0; }
+    .sc-body .blk.gold { background: rgba(200,162,74,0.18); }
+    .sc-body .blk .l { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--slate-400); }
+    .sc-body .blk.gold .l { color: var(--gold-deep); }
+    .sc-body .blk .v { margin-top: 14px; font-weight: 600; font-size: 14px; line-height: 1.55; }
+
+    /* Recommended training */
+    .train-grid { display: grid; gap: 32px; grid-template-columns: 1fr; align-items: start; }
+    @media (min-width: 1024px) { .train-grid { grid-template-columns: 0.58fr 0.42fr; } }
+    .mods { display: grid; gap: 16px; grid-template-columns: 1fr; }
+    @media (min-width: 760px) { .mods { grid-template-columns: 1fr 1fr; } }
+    .mod-card { background: #fff; border: 1px solid rgba(7,26,47,0.10); border-radius: 24px; padding: 24px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+    .mod-card svg { color: var(--gold); }
+    .mod-card h3 { font-size: 20px; font-weight: 600; margin: 18px 0 10px; }
+    .mod-card p { color: var(--slate-600); font-size: 14px; margin: 0; }
+
+    .checklist { background: var(--cream); border: 1px solid rgba(7,26,47,0.10); border-radius: 32px; overflow: hidden; box-shadow: 0 24px 40px -20px rgba(0,0,0,0.15); }
+    .checklist .head { padding: 24px; background: var(--ink); color: #fff; }
+    .checklist .head .k { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-soft); }
+    .checklist .head .t { font-size: 22px; font-weight: 600; margin-top: 6px; }
+    .checklist .body { padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+    .check-row { display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px; background: #fff; border-radius: 14px; }
+    .check-row svg { color: var(--gold); flex: none; margin-top: 2px; }
+    .check-row .t { font-weight: 600; font-size: 14px; }
+
+    /* Evidence pack */
+    .ev-grid { display: grid; gap: 32px; grid-template-columns: 1fr; align-items: start; }
+    @media (min-width: 1024px) { .ev-grid { grid-template-columns: 0.42fr 0.58fr; } }
+    .ev-panel { background: var(--ink); color: #fff; border-radius: 32px; padding: 28px; box-shadow: 0 24px 40px -20px rgba(0,0,0,0.30); }
+    .ev-panel .k { font-size: 13px; color: rgba(255,255,255,0.6); }
+    .ev-panel .v { font-size: 48px; font-weight: 700; color: var(--gold-soft); margin-top: 8px; line-height: 1; }
+    .ev-panel p { color: rgba(255,255,255,0.7); margin-top: 16px; }
+    .ev-cards { display: grid; gap: 16px; grid-template-columns: 1fr; }
+    @media (min-width: 760px) { .ev-cards { grid-template-columns: 1fr 1fr; } }
+    .ev-card { background: var(--cream); border: 1px solid rgba(7,26,47,0.10); border-radius: 24px; padding: 24px; }
+    .ev-card .num { width: 40px; height: 40px; border-radius: 14px; background: var(--gold); color: var(--ink); display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; }
+    .ev-card h3 { font-size: 20px; font-weight: 600; margin: 18px 0 10px; }
+    .ev-card p { color: var(--slate-600); font-size: 14px; margin: 0; }
+
+    /* Toolbox assets section */
+    .tb-section { background: var(--ink); color: #fff; padding: 56px 0; }
+    .tb-grid { display: grid; gap: 32px; grid-template-columns: 1fr; align-items: center; }
+    @media (min-width: 1024px) { .tb-grid { grid-template-columns: 0.42fr 0.58fr; } }
+    .tb-section .k { font-size: 14px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold-soft); }
+    .tb-section h2 { font-size: clamp(28px, 3.6vw, 44px); font-weight: 600; margin: 8px 0 0; line-height: 1.08; letter-spacing: -0.015em; }
+    .tb-section p { color: rgba(255,255,255,0.65); margin: 16px 0 0; }
+    .tb-card { background: #fff; color: var(--ink); border-radius: 32px; overflow: hidden; box-shadow: 0 24px 40px -20px rgba(0,0,0,0.40); display: grid; grid-template-columns: 1fr; }
+    @media (min-width: 760px) { .tb-card { grid-template-columns: 0.46fr 0.54fr; } }
+    .tb-list { background: var(--cream); padding: 24px; }
+    .tb-list .k { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-deep); margin-bottom: 16px; }
+    .tb-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; background: #fff; border-radius: 14px; margin-bottom: 10px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+    .tb-row .nm { font-weight: 600; font-size: 14px; }
+    .tb-row .ty { font-size: 11px; color: var(--slate-500); margin-top: 2px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+    .tb-row .st { padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; }
+    .tb-row .st.ready { background: rgba(4,120,87,0.15); color: var(--emerald-700); }
+    .tb-row .st.draft { background: rgba(200,162,74,0.20); color: var(--gold-deep); }
+    .tb-feat { padding: 24px; }
+    .tb-feat .feat { background: var(--ink); color: #fff; padding: 24px; border-radius: 18px; }
+    .tb-feat .feat .k { color: rgba(255,255,255,0.55); font-size: 13px; }
+    .tb-feat .feat h3 { font-size: 26px; font-weight: 700; color: var(--gold-soft); margin: 8px 0 12px; line-height: 1.15; }
+    .tb-feat .feat p { color: rgba(255,255,255,0.7); margin: 0; font-size: 14px; }
+    .tb-feat .actions { display: grid; gap: 10px; grid-template-columns: 1fr 1fr; margin-top: 18px; }
+  </style>
+</head>
+<body>
+
+<header class="shell-header">
+  <div class="container header-inner">
+    <a class="brand" href="mockup.html">
+      <span class="seal"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg></span>
+      <span><span class="wm-1">The AI Banking Institute</span><br><span class="wm-2">Role Playbook · Compliance</span></span>
+    </a>
+    <nav class="nav">
+      <a href="mockup.html">Home</a>
+      <a href="course.html">Course</a>
+      <a href="assessment.html">Assessment</a>
+      <a href="sandbox.html">Sandbox</a>
+      <a class="on" href="toolbox.html">Toolbox</a>
+      <a href="teams.html">Teams</a>
+    </nav>
+    <a class="btn btn-gold" href="#">Save Playbook</a>
+  </div>
+  <div class="container">
+    <nav class="nav-mobile">
+      <a href="mockup.html">Home</a>
+      <a href="course.html">Course</a>
+      <a href="assessment.html">Assessment</a>
+      <a href="sandbox.html">Sandbox</a>
+      <a class="on" href="toolbox.html">Toolbox</a>
+      <a href="teams.html">Teams</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="deco"><div class="deco-ring"></div><div class="deco-blur"></div></div>
+  <div class="container hero-inner">
+    <div>
+      <div class="eyebrow">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Compliance Officer Playbook
+      </div>
+      <h1>Use AI without creating invisible risk.</h1>
+      <p class="lede">A role-specific playbook for compliance teams to evaluate use cases, document workflows, review AI outputs, and help business teams adopt AI safely.</p>
+      <div class="ctas">
+        <a class="btn btn-lg btn-gold" href="#">Start Compliance Path
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a class="btn btn-lg btn-ghost-dark" href="#">Preview Artifacts</a>
+      </div>
+    </div>
+
+    <div class="snap">
+      <div class="head">
+        <div class="k">Playbook Snapshot</div>
+        <div class="t">Compliance AI Enablement Map</div>
+      </div>
+      <div class="quick">
+        <div class="q">
+          <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <div class="l">Primary Goal</div><div class="v">Safe adoption</div>
+        </div>
+        <div class="q">
+          <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          <div class="l">Core Artifact</div><div class="v">Workflow SOP</div>
+        </div>
+        <div class="q">
+          <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <div class="l">Risk Focus</div><div class="v">Data + review</div>
+        </div>
+      </div>
+      <div class="ms">
+        <div class="ms-row"><div class="top"><div class="l">Governance clarity</div><div class="v">72/100</div></div><div class="bar"><div class="fill" style="width:72%"></div></div></div>
+        <div class="ms-row"><div class="top"><div class="l">Workflow documentation</div><div class="v">46/100</div></div><div class="bar"><div class="fill" style="width:46%"></div></div></div>
+        <div class="ms-row"><div class="top"><div class="l">Data handling judgment</div><div class="v">58/100</div></div><div class="bar"><div class="fill" style="width:58%"></div></div></div>
+        <div class="ms-row"><div class="top"><div class="l">Human review discipline</div><div class="v">64/100</div></div><div class="bar"><div class="fill" style="width:64%"></div></div></div>
+      </div>
+      <div class="path">
+        <div class="l">Recommended path</div>
+        <div class="v">Maturity Assessment → Foundation Course → Workflow SOP → Sandbox Review</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- USE-CASE MAP -->
+<section class="std">
+  <div class="container">
+    <div class="section-head">
+      <div class="k">Use-Case Map</div>
+      <h2>Where compliance can use AiBI immediately.</h2>
+      <p>Concrete, role-specific use cases replace generic AI advice.</p>
+    </div>
+    <div class="uses">
+      <div class="uc">
+        <div class="top">
+          <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          <span class="risk med">MED RISK</span>
+        </div>
+        <h3>Document an AI-assisted workflow</h3>
+        <p>Turns informal AI use into a reviewable operating procedure.</p>
+        <div class="art"><div class="l">Artifact</div><div class="v">Examiner-ready workflow SOP</div></div>
+      </div>
+      <div class="uc">
+        <div class="top">
+          <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span class="risk high">HIGH RISK</span>
+        </div>
+        <h3>Review a proposed AI use case</h3>
+        <p>Creates a consistent screen before teams adopt AI for real work.</p>
+        <div class="art"><div class="l">Artifact</div><div class="v">AI use-case risk checklist</div></div>
+      </div>
+      <div class="uc">
+        <div class="top">
+          <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          <span class="risk med">MED RISK</span>
+        </div>
+        <h3>Summarize regulatory guidance</h3>
+        <p>Helps staff understand guidance faster while preserving human review.</p>
+        <div class="art"><div class="l">Artifact</div><div class="v">Plain-English guidance brief</div></div>
+      </div>
+      <div class="uc">
+        <div class="top">
+          <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          <span class="risk low">LOW RISK</span>
+        </div>
+        <h3>Create a human review checklist</h3>
+        <p>Makes accuracy, data handling, and approval expectations explicit.</p>
+        <div class="art"><div class="l">Artifact</div><div class="v">Output review checklist</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OPERATING MODEL -->
+<section class="std" style="background:var(--cream);border-top:1px solid rgba(7,26,47,0.06)">
+  <div class="container">
+    <div class="section-head">
+      <div class="k">Compliance Operating Model</div>
+      <h2>Move from ad hoc AI use to governed adoption.</h2>
+      <p>This gives compliance a repeatable path for evaluating, testing, approving, and evidencing AI-supported work.</p>
+    </div>
+    <div class="om">
+      <div>
+        <div class="top"><span class="pic"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span><span class="step">01</span></div>
+        <h3>Intake</h3>
+        <p>Capture the business purpose, tool, user role, and data involved before anyone operationalizes the idea.</p>
+        <div class="art"><div class="l">Artifact produced</div><div class="v">Use-case intake form</div></div>
+      </div>
+      <div>
+        <div class="top"><span class="pic"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span><span class="step">02</span></div>
+        <h3>Risk Triage</h3>
+        <p>Classify the use case by customer impact, data sensitivity, automation level, and review needs.</p>
+        <div class="art"><div class="l">Artifact produced</div><div class="v">Risk tier + review path</div></div>
+      </div>
+      <div>
+        <div class="top"><span class="pic"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.31"/><path d="M14 9.3V2"/><path d="M8.5 2h7"/><path d="M14 9.3a6.5 6.5 0 1 1-4 0"/></svg></span><span class="step">03</span></div>
+        <h3>Controlled Practice</h3>
+        <p>Test the workflow in the sandbox using fictional or sanitized data before using it for real work.</p>
+        <div class="art"><div class="l">Artifact produced</div><div class="v">Sandbox output + notes</div></div>
+      </div>
+      <div>
+        <div class="top"><span class="pic"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span><span class="step">04</span></div>
+        <h3>Approval &amp; Evidence</h3>
+        <p>Document the final workflow, approval owner, retention rule, and human review expectations.</p>
+        <div class="art"><div class="l">Artifact produced</div><div class="v">Approved workflow packet</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCENARIO PRACTICE -->
+<section class="std" style="background:#fff">
+  <div class="container">
+    <div class="sc-grid">
+      <div>
+        <div class="section-head">
+          <div class="k">Scenario Practice</div>
+          <h2>Turn policy awareness into safe reps.</h2>
+          <p>Sandbox scenarios let compliance practice reviewing AI use before business teams use it in production.</p>
+        </div>
+        <div class="sc-tabs" id="sc-tabs">
+          <button class="on" data-k="Workflow">Workflow</button>
+          <button data-k="Guidance">Guidance</button>
+          <button data-k="Checklist">Checklist</button>
+        </div>
+      </div>
+
+      <div class="sc-card">
+        <div class="sc-head">
+          <div>
+            <div class="k">Active Sandbox Scenario</div>
+            <div class="t" id="sc-title">Workflow Documentation Scenario</div>
+          </div>
+          <svg style="width:32px;height:32px;color:var(--gold)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.31"/><path d="M14 9.3V2"/><path d="M8.5 2h7"/><path d="M14 9.3a6.5 6.5 0 1 1-4 0"/></svg>
+        </div>
+        <div class="sc-body">
+          <div class="blk"><div class="l">Input</div><div class="v" id="sc-in">A lending operations team wants to use AI to summarize internal policy updates.</div></div>
+          <div class="blk"><div class="l">Prompt</div><div class="v" id="sc-pr">Help document this AI-assisted workflow. Identify tool, input data, output, human reviewer, approval step, and retention rule.</div></div>
+          <div class="blk gold"><div class="l">Expected Output</div><div class="v" id="sc-ou">A structured workflow SOP with data rules, review owner, and approval checkpoint.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRAINING + CHECKLIST -->
+<section class="std">
+  <div class="container">
+    <div class="train-grid">
+      <div>
+        <div class="section-head">
+          <div class="k">Recommended Training Path</div>
+          <h2>The playbook tells compliance what to take next.</h2>
+          <p>Each role ties to course modules, toolbox assets, and sandbox exercises.</p>
+        </div>
+        <div class="mods">
+          <div class="mod-card">
+            <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <h3>Prompt Foundations</h3>
+            <p>Write prompts with role, task, constraints, and review expectations.</p>
+          </div>
+          <div class="mod-card">
+            <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4M14 12h4"/></svg>
+            <h3>Workflows</h3>
+            <p>Document input, output, review owner, sign-off, and retention.</p>
+          </div>
+          <div class="mod-card">
+            <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <h3>Risk &amp; Review</h3>
+            <p>Identify when AI output needs escalation or approval.</p>
+          </div>
+          <div class="mod-card">
+            <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.8L20 10l-4.6 3.4L17.2 20 12 16.6 6.8 20l1.8-6.6L4 10l6.1-1.2z"/></svg>
+            <h3>Agent Readiness</h3>
+            <p>Define boundaries, triggers, escalation rules, and audit trail needs.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="checklist">
+        <div class="head">
+          <div class="k">Review Checklist</div>
+          <div class="t">Before AI output is used</div>
+        </div>
+        <div class="body">
+          <div class="check-row"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><div class="t">No customer data entered into public AI tools</div></div>
+          <div class="check-row"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><div class="t">Output reviewed by accountable human owner</div></div>
+          <div class="check-row"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><div class="t">Use case mapped to business purpose</div></div>
+          <div class="check-row"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><div class="t">Retention rule defined before use</div></div>
+          <div class="check-row"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><div class="t">Escalation path documented</div></div>
+          <div class="check-row"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><div class="t">Final output labeled as reviewed or draft</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EVIDENCE PACK -->
+<section class="std" style="background:#fff">
+  <div class="container">
+    <div class="ev-grid">
+      <div>
+        <div class="section-head">
+          <div class="k">Evidence Pack</div>
+          <h2>Make the compliance value visible.</h2>
+          <p>The playbook shows exactly what evidence a learner produces for internal review, management, or exam readiness.</p>
+        </div>
+        <div class="ev-panel">
+          <div class="k">Evidence readiness</div>
+          <div class="v">4-part packet</div>
+          <p>Use-case summary, data boundary, review standard, and retention rule.</p>
+        </div>
+      </div>
+      <div class="ev-cards">
+        <div class="ev-card"><div class="num">1</div><h3>Use-case summary</h3><p>Business purpose, user role, tool used, and workflow owner.</p></div>
+        <div class="ev-card"><div class="num">2</div><h3>Data boundary</h3><p>What data may be entered, what data is prohibited, and what must be redacted.</p></div>
+        <div class="ev-card"><div class="num">3</div><h3>Review standard</h3><p>Who reviews the output, what they check, and when escalation is required.</p></div>
+        <div class="ev-card"><div class="num">4</div><h3>Retention rule</h3><p>Where outputs are stored, how long they are kept, and how reviewed versions are labeled.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TOOLBOX ASSETS -->
+<section class="tb-section">
+  <div class="container tb-grid">
+    <div>
+      <div class="k">Toolbox Assets</div>
+      <h2>The playbook unlocks real tools.</h2>
+      <p>A strong role playbook ends with downloadable, customizable work products — not slides.</p>
+    </div>
+    <div class="tb-card">
+      <div class="tb-list">
+        <div class="k">Included Assets</div>
+        <div class="tb-row"><div><div class="nm">AI Use-Case Intake Form</div><div class="ty">Template</div></div><span class="st ready">Ready</span></div>
+        <div class="tb-row"><div><div class="nm">Workflow SOP Template</div><div class="ty">Template</div></div><span class="st ready">Ready</span></div>
+        <div class="tb-row"><div><div class="nm">Human Review Checklist</div><div class="ty">Checklist</div></div><span class="st ready">Ready</span></div>
+        <div class="tb-row"><div><div class="nm">Data Handling Reference Card</div><div class="ty">Reference</div></div><span class="st ready">Ready</span></div>
+        <div class="tb-row"><div><div class="nm">Model Output Risk Labels</div><div class="ty">Reference</div></div><span class="st draft">Draft</span></div>
+      </div>
+      <div class="tb-feat">
+        <div class="feat">
+          <div class="k">Featured asset</div>
+          <h3>Workflow SOP Template</h3>
+          <p>Documents tool used, data entered, output created, review step, approval owner, and retention rule.</p>
+        </div>
+        <div class="actions">
+          <a class="btn btn-ink" style="justify-content:center" href="#">Preview
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </a>
+          <a class="btn btn-ghost-light" style="justify-content:center" href="#">Download
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="container">
+    <div class="cta-band">
+      <div>
+        <div class="k">Compliance Officer Playbook</div>
+        <h2>Safe AI use is a compliance product.</h2>
+        <p>Take the path, build the evidence pack, and unlock the toolbox — all in one cohort-free flow.</p>
+      </div>
+      <div class="cta-actions">
+        <a class="btn btn-lg btn-gold" href="#">Start Compliance Path</a>
+        <a class="btn btn-lg btn-ghost-dark" href="toolbox.html">See All Playbooks</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ribbon">SKETCH · <span>Compliance Playbook</span></div>
+
+<script>
+  const SCENARIOS = {
+    Workflow: {
+      title: "Workflow Documentation Scenario",
+      input: "A lending operations team wants to use AI to summarize internal policy updates.",
+      prompt: "Help document this AI-assisted workflow. Identify tool, input data, output, human reviewer, approval step, and retention rule.",
+      output: "A structured workflow SOP with data rules, review owner, and approval checkpoint.",
+    },
+    Guidance: {
+      title: "Regulatory Guidance Summary",
+      input: "A team needs a plain-English summary of new internal AI use guidance.",
+      prompt: "Summarize this guidance for frontline staff. Keep it plain-English, identify what not to do, and include escalation notes.",
+      output: "A staff-ready guidance brief with risk notes and manager review language.",
+    },
+    Checklist: {
+      title: "Output Review Checklist",
+      input: "Marketing wants to use AI to draft campaign copy for a deposit promotion.",
+      prompt: "Create a review checklist for AI-generated campaign copy. Include accuracy, claims, disclosures, UDAAP, and approval ownership.",
+      output: "A checklist that routes AI-generated copy through marketing and compliance review.",
+    },
+  };
+  function renderScenario(k) {
+    const s = SCENARIOS[k];
+    document.getElementById('sc-title').textContent = s.title;
+    document.getElementById('sc-in').textContent = s.input;
+    document.getElementById('sc-pr').textContent = s.prompt;
+    document.getElementById('sc-ou').textContent = s.output;
+  }
+  document.querySelectorAll('#sc-tabs button').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('#sc-tabs button').forEach(x => x.classList.remove('on'));
+      b.classList.add('on');
+      renderScenario(b.dataset.k);
+    });
+  });
+</script>
+
+</body>
+</html>

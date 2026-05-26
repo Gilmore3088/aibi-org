@@ -81,7 +81,7 @@ export function SiteFooter({ showNewsletter = true }: SiteFooterProps = {}) {
               </span>
             </div>
             <p
-              className="font-mono text-terra mt-s4 mb-s5"
+              className="font-mono text-gold mt-s4 mb-s5"
               style={{ fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 600 }}
             >
               Turning Bankers into Builders
@@ -102,7 +102,7 @@ export function SiteFooter({ showNewsletter = true }: SiteFooterProps = {}) {
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-body-sm text-ink/75 hover:text-terra transition-colors duration-fast"
+                      className="text-body-sm text-ink/75 hover:text-gold transition-colors duration-fast"
                     >
                       {link.label}
                     </Link>
@@ -128,7 +128,7 @@ export function SiteFooter({ showNewsletter = true }: SiteFooterProps = {}) {
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className="text-slate hover:text-terra transition-colors duration-fast"
+                  className="text-slate hover:text-gold transition-colors duration-fast"
                 >
                   {link.label}
                 </Link>

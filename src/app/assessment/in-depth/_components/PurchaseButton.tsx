@@ -98,7 +98,7 @@ export function PurchaseButton({
         type="button"
         onClick={handleClick}
         disabled={pending}
-        className={`inline-flex items-center justify-center bg-[color:var(--color-terra)] text-[color:var(--color-linen)] rounded-sm font-mono uppercase tracking-[0.15em] hover:bg-[color:var(--color-terra-light)] disabled:opacity-60 disabled:cursor-not-allowed transition-colors w-fit ${SIZE_CLASS[size]}`}
+        className={`inline-flex items-center justify-center bg-[color:var(--gold)] text-[color:var(--color-linen)] rounded-sm font-mono uppercase tracking-[0.15em] hover:bg-[color:var(--gold-2)] disabled:opacity-60 disabled:cursor-not-allowed transition-colors w-fit ${SIZE_CLASS[size]}`}
       >
         {pending ? pendingLabel : label}
       </button>

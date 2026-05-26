@@ -1,0 +1,611 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Sketch · LMS shell — Sidebar vs Top-nav · AiBI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_mockup.css">
+<style>
+  body { background: var(--cream); }
+
+  /* --- Toggle bar at the top --- */
+  .toggle {
+    position: sticky; top: 0; z-index: 50;
+    background: #fff; border-bottom: 1px solid rgba(7,26,47,0.10);
+    padding: 14px 0;
+  }
+  .toggle .inner {
+    max-width: 1200px; margin: 0 auto; padding: 0 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .toggle .k {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--gold-deep);
+  }
+  .toggle .t { font-size: 16px; font-weight: 600; color: var(--ink); }
+  .toggle .pills { display: inline-flex; background: var(--cream); padding: 4px; border-radius: 999px; }
+  .toggle .pills button {
+    appearance: none; border: 0; background: transparent;
+    padding: 8px 16px; border-radius: 999px;
+    font-family: inherit; font-size: 13px; font-weight: 600; color: var(--slate-600);
+    cursor: pointer;
+  }
+  .toggle .pills button.on {
+    background: var(--ink); color: #fff;
+  }
+
+  /* --- Hide whichever layout isn't selected --- */
+  body[data-view="sidebar"] .layout-topnav { display: none; }
+  body[data-view="topnav"]  .layout-sidebar { display: none; }
+
+  /* ============================================================ */
+  /*  OPTION A — SIDEBAR                                          */
+  /* ============================================================ */
+  .layout-sidebar { display: grid; grid-template-columns: 280px 1fr; min-height: calc(100vh - 60px); }
+  .layout-sidebar .side {
+    background: var(--ink); color: #fff;
+    padding: 32px 24px;
+    border-right: 1px solid rgba(255,255,255,0.10);
+  }
+  .layout-sidebar .side .brand-row {
+    display: flex; align-items: center; gap: 12px;
+    padding-bottom: 20px; margin-bottom: 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.10);
+  }
+  .layout-sidebar .side .seal {
+    width: 36px; height: 36px; border-radius: 10px;
+    background: var(--gold); color: var(--ink);
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .layout-sidebar .side .seal svg { width: 18px; height: 18px; }
+  .layout-sidebar .side .wm-1 { font-size: 13px; font-weight: 600; color: #fff; }
+  .layout-sidebar .side .wm-2 { font-size: 11px; color: var(--gold-soft); }
+
+  .layout-sidebar .side .k {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--gold-soft);
+    margin: 24px 0 12px;
+  }
+  .layout-sidebar .side .progress-block {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 24px;
+  }
+  .layout-sidebar .side .progress-block .v {
+    font-size: 28px; font-weight: 700; color: var(--gold-soft);
+    line-height: 1;
+  }
+  .layout-sidebar .side .progress-block .u {
+    font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 4px;
+  }
+  .layout-sidebar .side .bar {
+    height: 6px; background: rgba(255,255,255,0.12); border-radius: 999px;
+    margin-top: 12px; overflow: hidden;
+  }
+  .layout-sidebar .side .bar .fill {
+    height: 100%; width: 33%; background: var(--gold); border-radius: 999px;
+  }
+  .layout-sidebar .side ol.modules {
+    list-style: none; padding: 0; margin: 0;
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .layout-sidebar .side .mod-link {
+    display: grid; grid-template-columns: 28px 1fr 18px; gap: 10px; align-items: center;
+    padding: 10px 12px; border-radius: 10px;
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+    font-size: 14px; font-weight: 500;
+  }
+  .layout-sidebar .side .mod-link:hover { background: rgba(255,255,255,0.06); color: #fff; }
+  .layout-sidebar .side .mod-link.cur {
+    background: rgba(200,162,74,0.18);
+    color: #fff; font-weight: 600;
+    border-left: 3px solid var(--gold); padding-left: 9px;
+  }
+  .layout-sidebar .side .mod-link.done .num { background: var(--gold); color: var(--ink); }
+  .layout-sidebar .side .mod-link .num {
+    width: 22px; height: 22px; border-radius: 999px;
+    background: rgba(255,255,255,0.10); color: rgba(255,255,255,0.7);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700;
+  }
+  .layout-sidebar .side .mod-link.cur .num { background: var(--gold); color: var(--ink); }
+  .layout-sidebar .side .mod-link .pillar {
+    font-size: 10px; color: rgba(255,255,255,0.4); letter-spacing: 0.04em;
+  }
+  .layout-sidebar .side .footer-links {
+    margin-top: 24px; padding-top: 16px;
+    border-top: 1px solid rgba(255,255,255,0.10);
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .layout-sidebar .side .footer-links a {
+    color: rgba(255,255,255,0.7); text-decoration: none;
+    font-size: 13px; padding: 6px 0;
+  }
+  .layout-sidebar .side .footer-links a:hover { color: #fff; }
+
+  /* ============================================================ */
+  /*  OPTION B — TOP-NAV                                          */
+  /* ============================================================ */
+  .layout-topnav { background: var(--cream); }
+  .layout-topnav .topbar {
+    background: var(--ink); color: #fff;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .layout-topnav .topbar .inner {
+    max-width: 1200px; margin: 0 auto; padding: 16px 24px;
+    display: flex; align-items: center; gap: 24px;
+  }
+  .layout-topnav .topbar .brand-row {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .layout-topnav .topbar .seal {
+    width: 32px; height: 32px; border-radius: 8px;
+    background: var(--gold); color: var(--ink);
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .layout-topnav .topbar .seal svg { width: 16px; height: 16px; }
+  .layout-topnav .topbar .wm-1 { font-size: 13px; font-weight: 600; color: #fff; }
+  .layout-topnav .topbar .wm-2 { font-size: 11px; color: var(--gold-soft); }
+  .layout-topnav .topbar .progress {
+    display: flex; align-items: center; gap: 12px;
+    margin-left: auto; font-size: 13px;
+  }
+  .layout-topnav .topbar .progress .v {
+    font-weight: 700; color: var(--gold-soft); font-size: 15px;
+  }
+  .layout-topnav .topbar .progress .bar {
+    width: 100px; height: 4px; background: rgba(255,255,255,0.12); border-radius: 999px; overflow: hidden;
+  }
+  .layout-topnav .topbar .progress .bar .fill {
+    height: 100%; width: 33%; background: var(--gold); border-radius: 999px;
+  }
+  .layout-topnav .topbar a.exit {
+    color: rgba(255,255,255,0.7); text-decoration: none;
+    font-size: 13px; padding-left: 16px; border-left: 1px solid rgba(255,255,255,0.10);
+  }
+
+  /* Module rail — horizontal */
+  .layout-topnav .modulebar {
+    background: #fff;
+    border-bottom: 1px solid rgba(7,26,47,0.10);
+    overflow-x: auto;
+  }
+  .layout-topnav .modulebar .inner {
+    max-width: 1200px; margin: 0 auto; padding: 0 24px;
+    display: flex; gap: 6px;
+  }
+  .layout-topnav .modulebar a.mod-link {
+    display: flex; align-items: center; gap: 10px;
+    padding: 14px 16px; min-width: max-content;
+    color: var(--slate-600); text-decoration: none;
+    font-size: 13px; font-weight: 600;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -1px;
+  }
+  .layout-topnav .modulebar a.mod-link:hover { color: var(--ink); }
+  .layout-topnav .modulebar a.mod-link.cur {
+    color: var(--ink); border-bottom-color: var(--gold);
+  }
+  .layout-topnav .modulebar a.mod-link.done .num { background: var(--gold); color: var(--ink); }
+  .layout-topnav .modulebar a.mod-link .num {
+    width: 22px; height: 22px; border-radius: 999px;
+    background: var(--cream-2); color: var(--slate-500);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700;
+  }
+  .layout-topnav .modulebar a.mod-link.cur .num { background: var(--ink); color: var(--gold); }
+
+  /* ============================================================ */
+  /*  SHARED — module content body (same for both options)        */
+  /* ============================================================ */
+  .content {
+    padding: 40px 32px 80px;
+  }
+  .layout-topnav .content {
+    max-width: 1100px; margin: 0 auto;
+  }
+  .layout-sidebar .content {
+    max-width: 880px;
+  }
+  .content .crumb {
+    font-size: 12px; color: var(--slate-500); margin-bottom: 16px;
+    letter-spacing: 0.04em;
+  }
+  .content .crumb a { color: var(--slate-500); text-decoration: none; }
+  .content .crumb a:hover { color: var(--gold-deep); }
+  .content .crumb .sep { margin: 0 8px; color: var(--slate-200); }
+  .content .kicker {
+    font-size: 12px; font-weight: 700; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--gold-deep); margin: 0 0 12px;
+  }
+  .content h1 {
+    font-size: clamp(28px, 4vw, 44px); font-weight: 600;
+    line-height: 1.1; color: var(--ink);
+    margin: 0 0 16px; letter-spacing: -0.015em;
+  }
+  .content .lede {
+    font-size: 18px; line-height: 1.5; color: var(--slate-600);
+    margin: 0 0 32px; max-width: 60ch;
+  }
+  .content .module-tabs {
+    display: flex; gap: 4px;
+    background: #fff; padding: 6px; border-radius: 999px;
+    border: 1px solid rgba(7,26,47,0.10);
+    width: max-content; margin-bottom: 32px;
+  }
+  .content .module-tabs button {
+    appearance: none; border: 0; background: transparent;
+    padding: 10px 18px; border-radius: 999px;
+    font-family: inherit; font-size: 13px; font-weight: 600; color: var(--slate-600);
+    cursor: pointer;
+  }
+  .content .module-tabs button.on {
+    background: var(--ink); color: #fff;
+  }
+  .content .labs {
+    display: grid; gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  }
+  .content .lab {
+    background: #fff;
+    border: 1px solid rgba(7,26,47,0.10);
+    border-radius: 16px;
+    padding: 24px;
+  }
+  .content .lab .bar { height: 4px; background: var(--gold); margin: -24px -24px 20px; border-radius: 16px 16px 0 0; }
+  .content .lab .pill {
+    display: inline-block;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--gold-deep);
+    margin-bottom: 12px;
+  }
+  .content .lab h3 { font-size: 18px; font-weight: 600; color: var(--ink); margin: 0 0 8px; }
+  .content .lab p { font-size: 14px; line-height: 1.5; color: var(--slate-600); margin: 0 0 16px; }
+  .content .lab .meta { font-size: 12px; color: var(--slate-500); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+
+  .pack-cta {
+    margin-top: 40px; padding: 28px;
+    background: var(--ink); color: #fff;
+    border-radius: 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 20px;
+  }
+  .pack-cta .left .k {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--gold-soft); margin-bottom: 8px;
+  }
+  .pack-cta .left h3 { font-size: 22px; font-weight: 600; margin: 0 0 6px; }
+  .pack-cta .left p { font-size: 14px; color: rgba(255,255,255,0.7); margin: 0; max-width: 56ch; }
+  .pack-cta .btn {
+    background: var(--gold); color: var(--ink); border: 0;
+    padding: 14px 22px; border-radius: 12px; font-weight: 700; font-size: 14px;
+    cursor: pointer; white-space: nowrap;
+  }
+
+  /* Annotation strip below */
+  .notes {
+    background: #fff; border-top: 1px solid rgba(7,26,47,0.10);
+    padding: 32px 24px;
+  }
+  .notes .inner { max-width: 1100px; margin: 0 auto; }
+  .notes h4 {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--gold-deep);
+    margin: 0 0 12px;
+  }
+  .notes .grid {
+    display: grid; gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  }
+  .notes .grid div { font-size: 14px; line-height: 1.5; color: var(--slate-600); }
+  .notes .grid div strong { color: var(--ink); display: block; margin-bottom: 4px; font-size: 13px; }
+</style>
+</head>
+<body data-view="sidebar">
+
+<!-- TOGGLE BAR -->
+<div class="toggle">
+  <div class="inner">
+    <div>
+      <div class="k">LMS shell sketch</div>
+      <div class="t">Module 4 · The AI Workbench</div>
+    </div>
+    <div class="pills">
+      <button id="btn-sidebar" class="on">Sidebar layout</button>
+      <button id="btn-topnav">Top-nav layout</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- OPTION A — SIDEBAR                                            -->
+<!-- ============================================================ -->
+<div class="layout-sidebar">
+  <aside class="side">
+    <a class="brand-row" href="#" style="text-decoration: none;">
+      <span class="seal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="22" x2="21" y2="22"/>
+          <line x1="6" y1="18" x2="6" y2="11"/>
+          <line x1="10" y1="18" x2="10" y2="11"/>
+          <line x1="14" y1="18" x2="14" y2="11"/>
+          <line x1="18" y1="18" x2="18" y2="11"/>
+          <polygon points="12 2 20 7 4 7"/>
+        </svg>
+      </span>
+      <span>
+        <div class="wm-1">AiBI-Foundation</div>
+        <div class="wm-2">Your enrollment</div>
+      </span>
+    </a>
+
+    <div class="k">Progress</div>
+    <div class="progress-block">
+      <div class="v">4 / 12</div>
+      <div class="u">Modules complete</div>
+      <div class="bar"><div class="fill"></div></div>
+    </div>
+
+    <div class="k">Awareness</div>
+    <ol class="modules">
+      <li><a class="mod-link done" href="#"><span class="num">1</span><span>Why AI matters at your bank</span><span></span></a></li>
+      <li><a class="mod-link done" href="#"><span class="num">2</span><span>The boundary, in plain terms</span><span></span></a></li>
+      <li><a class="mod-link done" href="#"><span class="num">3</span><span>Where AI fits the work</span><span></span></a></li>
+    </ol>
+
+    <div class="k">Understanding</div>
+    <ol class="modules">
+      <li><a class="mod-link cur" href="#"><span class="num">4</span><span>The AI Workbench</span><span></span></a></li>
+      <li><a class="mod-link" href="#"><span class="num">5</span><span>Teaching AI your style</span><span></span></a></li>
+      <li><a class="mod-link" href="#"><span class="num">6</span><span>Reviewing AI output</span><span></span></a></li>
+    </ol>
+
+    <div class="k">Creation</div>
+    <ol class="modules">
+      <li><a class="mod-link" href="#"><span class="num">7</span><span>Saving the work</span><span></span></a></li>
+      <li><a class="mod-link" href="#"><span class="num">8</span><span>Sharing the work</span><span></span></a></li>
+      <li><a class="mod-link" href="#"><span class="num">9</span><span>Building your toolbox</span><span></span></a></li>
+    </ol>
+
+    <div class="k">Application</div>
+    <ol class="modules">
+      <li><a class="mod-link" href="#"><span class="num">10</span><span>Compliance walkthrough</span><span></span></a></li>
+      <li><a class="mod-link" href="#"><span class="num">11</span><span>Member service walkthrough</span><span></span></a></li>
+      <li><a class="mod-link" href="#"><span class="num">12</span><span>Submit your work</span><span></span></a></li>
+    </ol>
+
+    <div class="footer-links">
+      <a href="#">My Toolkit</a>
+      <a href="#">Tool Guides</a>
+      <a href="#">Settings</a>
+      <a href="#">Exit to dashboard →</a>
+    </div>
+  </aside>
+
+  <main class="content">
+    <div class="crumb">
+      <a href="#">Dashboard</a><span class="sep">/</span>
+      <a href="#">AiBI-Foundation</a><span class="sep">/</span>
+      <a href="#">Understanding</a><span class="sep">/</span>
+      <span>Module 4</span>
+    </div>
+    <p class="kicker">Module 4 · Understanding</p>
+    <h1>The AI Workbench.</h1>
+    <p class="lede">
+      Four labs — Data, Compliance, Loan, Operations — and one Workbench Pack you take with you.
+      The skills here become the prompts your team will actually use on Monday.
+    </p>
+
+    <div class="module-tabs">
+      <button class="on">Learn it</button>
+      <button>Try it</button>
+      <button>Use it</button>
+      <button>Save it</button>
+    </div>
+
+    <div class="labs">
+      <article class="lab"><div class="bar"></div>
+        <span class="pill">Lab 1 · Data</span>
+        <h3>Cleaning messy data</h3>
+        <p>Take a CSV of member transactions, ask the AI to flag anomalies, and review what the model surfaced.</p>
+        <div class="meta">20 min · Safe sample data</div>
+      </article>
+      <article class="lab"><div class="bar"></div>
+        <span class="pill">Lab 2 · Compliance</span>
+        <h3>Drafting a review packet</h3>
+        <p>Turn a policy document into an examiner-ready review packet with named owners and a verdict log.</p>
+        <div class="meta">30 min · Workbench template</div>
+      </article>
+      <article class="lab"><div class="bar"></div>
+        <span class="pill">Lab 3 · Loan</span>
+        <h3>Summarizing loan files</h3>
+        <p>Use the workbench to summarize a sample commercial loan file into a credit-memo skeleton.</p>
+        <div class="meta">25 min · Synthetic file</div>
+      </article>
+      <article class="lab"><div class="bar"></div>
+        <span class="pill">Lab 4 · Ops</span>
+        <h3>Procedure cleanup</h3>
+        <p>Rewrite a dense internal procedure as a frontline job aid with a manager-review checklist.</p>
+        <div class="meta">20 min · Real procedure</div>
+      </article>
+    </div>
+
+    <div class="pack-cta">
+      <div class="left">
+        <div class="k">Save to Workbench Pack</div>
+        <h3>Your saved work from this module.</h3>
+        <p>Each lab produces a saved prompt with the review tags baked in. Your Workbench Pack travels with you to every later module.</p>
+      </div>
+      <button class="btn">Open my Pack →</button>
+    </div>
+  </main>
+</div>
+
+<!-- ============================================================ -->
+<!-- OPTION B — TOP-NAV                                            -->
+<!-- ============================================================ -->
+<div class="layout-topnav">
+  <div class="topbar">
+    <div class="inner">
+      <a class="brand-row" href="#" style="text-decoration: none; color: inherit;">
+        <span class="seal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="22" x2="21" y2="22"/>
+            <line x1="6" y1="18" x2="6" y2="11"/>
+            <line x1="10" y1="18" x2="10" y2="11"/>
+            <line x1="14" y1="18" x2="14" y2="11"/>
+            <line x1="18" y1="18" x2="18" y2="11"/>
+            <polygon points="12 2 20 7 4 7"/>
+          </svg>
+        </span>
+        <span>
+          <div class="wm-1">AiBI-Foundation</div>
+          <div class="wm-2">Your enrollment</div>
+        </span>
+      </a>
+      <div class="progress">
+        <span class="v">4 / 12</span>
+        <span class="bar"><span class="fill"></span></span>
+        <span>modules</span>
+        <a class="exit" href="#">Exit to dashboard →</a>
+      </div>
+    </div>
+  </div>
+
+  <nav class="modulebar">
+    <div class="inner">
+      <a class="mod-link done" href="#"><span class="num">1</span>Why AI matters</a>
+      <a class="mod-link done" href="#"><span class="num">2</span>The boundary</a>
+      <a class="mod-link done" href="#"><span class="num">3</span>Where AI fits</a>
+      <a class="mod-link cur" href="#"><span class="num">4</span>The AI Workbench</a>
+      <a class="mod-link" href="#"><span class="num">5</span>Your style</a>
+      <a class="mod-link" href="#"><span class="num">6</span>Reviewing output</a>
+      <a class="mod-link" href="#"><span class="num">7</span>Saving</a>
+      <a class="mod-link" href="#"><span class="num">8</span>Sharing</a>
+      <a class="mod-link" href="#"><span class="num">9</span>Toolbox</a>
+      <a class="mod-link" href="#"><span class="num">10</span>Compliance</a>
+      <a class="mod-link" href="#"><span class="num">11</span>Member service</a>
+      <a class="mod-link" href="#"><span class="num">12</span>Submit</a>
+    </div>
+  </nav>
+
+  <main class="content">
+    <div class="crumb">
+      <a href="#">Dashboard</a><span class="sep">/</span>
+      <a href="#">AiBI-Foundation</a><span class="sep">/</span>
+      <a href="#">Understanding</a><span class="sep">/</span>
+      <span>Module 4</span>
+    </div>
+    <p class="kicker">Module 4 · Understanding</p>
+    <h1>The AI Workbench.</h1>
+    <p class="lede">
+      Four labs — Data, Compliance, Loan, Operations — and one Workbench Pack you take with you.
+      The skills here become the prompts your team will actually use on Monday.
+    </p>
+
+    <div class="module-tabs">
+      <button class="on">Learn it</button>
+      <button>Try it</button>
+      <button>Use it</button>
+      <button>Save it</button>
+    </div>
+
+    <div class="labs">
+      <article class="lab"><div class="bar"></div>
+        <span class="pill">Lab 1 · Data</span>
+        <h3>Cleaning messy data</h3>
+        <p>Take a CSV of member transactions, ask the AI to flag anomalies, and review what the model surfaced.</p>
+        <div class="meta">20 min · Safe sample data</div>
+      </article>
+      <article class="lab"><div class="bar"></div>
+        <span class="pill">Lab 2 · Compliance</span>
+        <h3>Drafting a review packet</h3>
+        <p>Turn a policy document into an examiner-ready review packet with named owners and a verdict log.</p>
+        <div class="meta">30 min · Workbench template</div>
+      </article>
+      <article class="lab"><div class="bar"></div>
+        <span class="pill">Lab 3 · Loan</span>
+        <h3>Summarizing loan files</h3>
+        <p>Use the workbench to summarize a sample commercial loan file into a credit-memo skeleton.</p>
+        <div class="meta">25 min · Synthetic file</div>
+      </article>
+      <article class="lab"><div class="bar"></div>
+        <span class="pill">Lab 4 · Ops</span>
+        <h3>Procedure cleanup</h3>
+        <p>Rewrite a dense internal procedure as a frontline job aid with a manager-review checklist.</p>
+        <div class="meta">20 min · Real procedure</div>
+      </article>
+    </div>
+
+    <div class="pack-cta">
+      <div class="left">
+        <div class="k">Save to Workbench Pack</div>
+        <h3>Your saved work from this module.</h3>
+        <p>Each lab produces a saved prompt with the review tags baked in. Your Workbench Pack travels with you to every later module.</p>
+      </div>
+      <button class="btn">Open my Pack →</button>
+    </div>
+  </main>
+</div>
+
+<!-- Annotation strip -->
+<div class="notes">
+  <div class="inner">
+    <h4 id="notes-title">Why this layout works — Sidebar</h4>
+    <div class="grid" id="notes-grid">
+      <div><strong>Always-on context</strong>The progress block + module list stay visible while reading any module. No "where am I?" moments.</div>
+      <div><strong>Pillar grouping</strong>The four curriculum pillars (Awareness · Understanding · Creation · Application) cluster the 12 modules into digestible chunks.</div>
+      <div><strong>Familiar pattern</strong>Reads like Notion / Linear / most LMS products. Bankers don't have to learn a new shape.</div>
+      <div><strong>Real estate cost</strong>280px gone from the content area on desktop. Mobile collapses to a slide-out drawer.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const body = document.body;
+  const a = document.getElementById('btn-sidebar');
+  const b = document.getElementById('btn-topnav');
+  const title = document.getElementById('notes-title');
+  const grid = document.getElementById('notes-grid');
+
+  const NOTES = {
+    sidebar: {
+      title: 'Why this layout works — Sidebar',
+      items: [
+        ['Always-on context', 'The progress block + module list stay visible while reading any module. No "where am I?" moments.'],
+        ['Pillar grouping', 'The four curriculum pillars (Awareness · Understanding · Creation · Application) cluster the 12 modules into digestible chunks.'],
+        ['Familiar pattern', "Reads like Notion / Linear / most LMS products. Bankers don't have to learn a new shape."],
+        ['Real estate cost', '280px gone from the content area on desktop. Mobile collapses to a slide-out drawer.'],
+      ],
+    },
+    topnav: {
+      title: 'Why this layout works — Top-nav',
+      items: [
+        ['Edge-to-edge content', 'Full reading width. The module body breathes. Better for long-form lessons.'],
+        ['Linear module sense', 'A horizontal rail of 1-2-3-…-12 makes the path feel like a finite project, not a tree of options.'],
+        ['Pairs with marketing chrome', 'Matches the SiteHeader pattern used on /, /education, /assessment. One mental model across the site.'],
+        ['Pillar visibility cost', 'Pillars (Awareness / Understanding / …) disappear from the chrome. Have to be reintroduced in module-card metadata.'],
+      ],
+    },
+  };
+
+  function render(view) {
+    body.dataset.view = view;
+    a.classList.toggle('on', view === 'sidebar');
+    b.classList.toggle('on', view === 'topnav');
+    title.textContent = NOTES[view].title;
+    grid.innerHTML = NOTES[view].items
+      .map(([k, v]) => '<div><strong>' + k + '</strong>' + v + '</div>')
+      .join('');
+  }
+  a.addEventListener('click', () => render('sidebar'));
+  b.addEventListener('click', () => render('topnav'));
+</script>
+
+</body>
+</html>

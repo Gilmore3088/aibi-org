@@ -78,13 +78,13 @@ export function QuestionCard({
       {/* Editorial header — NN / NN · DIMENSION */}
       <div className="flex items-baseline justify-between mb-s8">
         <p className="font-mono text-mono-sm tabular-nums uppercase tracking-wider text-slate">
-          <span className="text-terra">
+          <span className="text-gold">
             {String(questionNumber).padStart(2, "0")}
           </span>
           <span className="mx-s2 text-slate">/</span>
           <span>{String(totalQuestions).padStart(2, "0")}</span>
         </p>
-        <p className="font-serif-sc text-label-md uppercase tracking-widest text-terra">
+        <p className="font-serif-sc text-label-md uppercase tracking-widest text-gold">
           {question.dimension}
         </p>
       </div>
@@ -143,12 +143,12 @@ export function QuestionCard({
                 aria-hidden="true"
                 className={cn(
                   "self-center w-[14px] h-[14px] rounded-full border transition-colors duration-fast",
-                  selected ? "border-terra" : "border-hairline"
+                  selected ? "border-gold" : "border-hairline"
                 )}
                 style={
                   selected
                     ? {
-                        background: "var(--color-terra)",
+                        background: "var(--gold)",
                         boxShadow: "inset 0 0 0 3px var(--color-parch)",
                       }
                     : undefined
@@ -165,7 +165,7 @@ export function QuestionCard({
           <button
             type="button"
             onClick={onBack}
-            className="font-sans text-body-sm text-slate hover:text-terra transition-colors duration-fast"
+            className="font-sans text-body-sm text-slate hover:text-gold transition-colors duration-fast"
           >
             ← Back to question {String(questionNumber - 1).padStart(2, "0")}
           </button>

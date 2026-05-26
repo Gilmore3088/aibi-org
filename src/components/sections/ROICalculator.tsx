@@ -13,7 +13,7 @@ export function ROICalculator() {
     >
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
-          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-4">
+          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--gold)] mb-4">
             ROI Model
           </p>
           <h2 className="font-serif text-4xl md:text-5xl text-[color:var(--color-ink)] max-w-3xl mx-auto leading-tight">

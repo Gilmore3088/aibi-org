@@ -63,7 +63,7 @@ export function InquiryForm() {
   if (status === 'success') {
     return (
       <div className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-10 text-center">
-        <p className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-sage)] mb-3">
+        <p className="font-mono text-xs uppercase tracking-widest text-[color:var(--ink-2)] mb-3">
           Inquiry received
         </p>
         <h3 className="font-serif text-3xl text-[color:var(--color-ink)] mb-4">
@@ -79,7 +79,7 @@ export function InquiryForm() {
 
   return (
     <div className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-8 md:p-10">
-      <p className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-terra)] mb-3">
+      <p className="font-mono text-xs uppercase tracking-widest text-[color:var(--gold)] mb-3">
         Request cohort information
       </p>
       <h3 className="font-serif text-3xl text-[color:var(--color-ink)] mb-4">
@@ -101,7 +101,7 @@ export function InquiryForm() {
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="mt-1 w-full px-4 py-3 border border-[color:var(--color-ink)]/20 rounded-[2px] bg-[color:var(--color-linen)] text-[color:var(--color-ink)] font-sans focus:outline-none focus:border-[color:var(--color-terra)]"
+              className="mt-1 w-full px-4 py-3 border border-[color:var(--color-ink)]/20 rounded-[2px] bg-[color:var(--color-linen)] text-[color:var(--color-ink)] font-sans focus:outline-none focus:border-[color:var(--gold)]"
             />
           </label>
           <label className="block">
@@ -113,7 +113,7 @@ export function InquiryForm() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 w-full px-4 py-3 border border-[color:var(--color-ink)]/20 rounded-[2px] bg-[color:var(--color-linen)] text-[color:var(--color-ink)] font-sans focus:outline-none focus:border-[color:var(--color-terra)]"
+              className="mt-1 w-full px-4 py-3 border border-[color:var(--color-ink)]/20 rounded-[2px] bg-[color:var(--color-linen)] text-[color:var(--color-ink)] font-sans focus:outline-none focus:border-[color:var(--gold)]"
             />
           </label>
         </div>
@@ -126,7 +126,7 @@ export function InquiryForm() {
             required
             value={institution}
             onChange={(e) => setInstitution(e.target.value)}
-            className="mt-1 w-full px-4 py-3 border border-[color:var(--color-ink)]/20 rounded-[2px] bg-[color:var(--color-linen)] text-[color:var(--color-ink)] font-sans focus:outline-none focus:border-[color:var(--color-terra)]"
+            className="mt-1 w-full px-4 py-3 border border-[color:var(--color-ink)]/20 rounded-[2px] bg-[color:var(--color-linen)] text-[color:var(--color-ink)] font-sans focus:outline-none focus:border-[color:var(--gold)]"
           />
         </label>
         <label className="block">
@@ -137,7 +137,7 @@ export function InquiryForm() {
             value={track}
             onChange={(e) => setTrack(e.target.value as (typeof TRACKS)[number])}
             aria-label="Certification track"
-            className="mt-1 w-full px-4 py-3 border border-[color:var(--color-ink)]/20 rounded-[2px] bg-[color:var(--color-linen)] text-[color:var(--color-ink)] font-sans focus:outline-none focus:border-[color:var(--color-terra)]"
+            className="mt-1 w-full px-4 py-3 border border-[color:var(--color-ink)]/20 rounded-[2px] bg-[color:var(--color-linen)] text-[color:var(--color-ink)] font-sans focus:outline-none focus:border-[color:var(--gold)]"
           >
             {TRACKS.map((t) => (
               <option key={t} value={t}>
@@ -154,13 +154,13 @@ export function InquiryForm() {
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             rows={4}
-            className="mt-1 w-full px-4 py-3 border border-[color:var(--color-ink)]/20 rounded-[2px] bg-[color:var(--color-linen)] text-[color:var(--color-ink)] font-sans focus:outline-none focus:border-[color:var(--color-terra)] resize-none"
+            className="mt-1 w-full px-4 py-3 border border-[color:var(--color-ink)]/20 rounded-[2px] bg-[color:var(--color-linen)] text-[color:var(--color-ink)] font-sans focus:outline-none focus:border-[color:var(--gold)] resize-none"
           />
         </label>
         <button
           type="submit"
           disabled={status === 'submitting'}
-          className="w-full px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all disabled:opacity-60"
+          className="w-full px-6 py-3 bg-[color:var(--gold)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] active:scale-[0.98] transition-all disabled:opacity-60"
         >
           {status === 'submitting' ? 'Sending…' : 'Submit inquiry'}
         </button>

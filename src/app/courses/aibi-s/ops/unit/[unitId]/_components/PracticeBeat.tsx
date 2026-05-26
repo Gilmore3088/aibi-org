@@ -35,9 +35,9 @@ export function PracticeBeat({
                 className={`w-full text-left p-4 border rounded transition
                   ${isSelected
                     ? opt.isCorrect
-                      ? 'border-[color:var(--color-sage)] bg-[color:var(--color-sage)]/10'
+                      ? 'border-[color:var(--ink-2)] bg-[color:var(--ink-2)]/10'
                       : 'border-[color:var(--color-error)] bg-[color:var(--color-error)]/5'
-                    : 'border-[color:var(--color-ink)]/20 hover:border-[color:var(--color-cobalt)]'}
+                    : 'border-[color:var(--color-ink)]/20 hover:border-[color:var(--ink-2)]'}
                   ${revealed && !isSelected ? 'opacity-50' : ''}`}
               >
                 {opt.label}
@@ -59,7 +59,7 @@ export function PracticeBeat({
       {chosen && (
         <button
           onClick={onAdvance}
-          className="px-6 py-3 bg-[color:var(--color-cobalt)] text-white rounded hover:opacity-90"
+          className="px-6 py-3 bg-[color:var(--ink-2)] text-white rounded hover:opacity-90"
         >
           {chosen.isCorrect ? 'Continue to Apply →' : 'Try again from here — or continue anyway →'}
         </button>

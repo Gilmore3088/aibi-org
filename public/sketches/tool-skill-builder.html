@@ -1,0 +1,903 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sketch · Skill Builder · AiBI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="_mockup.css">
+  <style>
+    /* Hero snapshot card */
+    .snap { background: #fff; color: var(--ink); border-radius: 28px; overflow: hidden; box-shadow: 0 30px 60px -20px rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.08); }
+    .snap .head { padding: 22px; background: var(--cream); }
+    .snap .head .k { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-deep); }
+    .snap .head .t { font-size: 24px; font-weight: 600; margin-top: 6px; }
+    .snap .stats { display: grid; grid-template-columns: 1fr 1fr; }
+    @media (min-width: 600px) { .snap .stats { grid-template-columns: repeat(4, 1fr); } }
+    .snap .stat { padding: 20px; border-right: 1px solid var(--slate-200); border-bottom: 1px solid var(--slate-200); }
+    .snap .stat:last-child { border-right: 0; }
+    .snap .stat svg { color: var(--gold); margin-bottom: 14px; }
+    .snap .stat .l { font-size: 12px; color: var(--slate-500); }
+    .snap .stat .v { font-weight: 700; font-size: 20px; margin-top: 4px; }
+    .snap .bar-wrap { padding: 20px; }
+    .snap .bar { height: 8px; background: var(--slate-100); border-radius: 999px; overflow: hidden; }
+    .snap .bar .fill { height: 100%; background: var(--gold); transition: width .35s cubic-bezier(0.2,0.8,0.2,1); }
+    .snap .pills { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 16px; }
+    @media (min-width: 600px) { .snap .pills { grid-template-columns: repeat(3, 1fr); } }
+    .pill-st { padding: 12px 14px; border-radius: 14px; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+    .pill-st.on { background: rgba(4,120,87,0.12); color: var(--emerald-800); }
+    .pill-st.off { background: var(--slate-50); color: var(--slate-500); }
+    .pill-st .mark { font-weight: 800; }
+
+    /* Two-column body */
+    .builder { display: grid; gap: 24px; grid-template-columns: 1fr; padding: 40px 0; }
+    @media (min-width: 1100px) { .builder { grid-template-columns: 0.38fr 0.62fr; align-items: start; } }
+    .col { display: grid; gap: 20px; }
+
+    /* Panel base — softer, no big shadow */
+    .panel { background: #fff; border: 1px solid rgba(7,26,47,0.08); border-radius: 20px; overflow: hidden; }
+    .panel.shadowed { box-shadow: 0 8px 24px -16px rgba(0,0,0,0.18); }
+    .panel-head { padding: 18px 22px 14px; }
+    .panel-head .k { font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-deep); }
+    .panel-head h3 { font-size: 18px; font-weight: 600; margin: 4px 0 0; line-height: 1.25; }
+    .panel-body { padding: 0 22px 22px; }
+
+    /* Compact option groups (inline pills) */
+    .og-row { display: grid; gap: 14px; grid-template-columns: 1fr; }
+    @media (min-width: 700px) { .og-row { grid-template-columns: 1.4fr 0.8fr 0.8fr; } }
+    .opt-g.compact .lab { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--slate-500); font-weight: 700; margin-bottom: 6px; }
+    .opt-g.compact .list { display: flex; flex-wrap: wrap; gap: 6px; }
+    .opt-g.compact .list button { padding: 7px 11px; font-size: 12px; font-weight: 600; border-radius: 999px; border: 1px solid var(--slate-200); background: #fff; color: var(--slate-600); cursor: pointer; }
+    .opt-g.compact .list button:hover { background: var(--cream); }
+    .opt-g.compact .list button.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+    .opt-g.compact.gold .list button.on { background: var(--gold); color: var(--ink); border-color: var(--gold); }
+    .og-rule { height: 1px; background: var(--slate-200); margin: 18px 0 4px; }
+
+    /* Companion ribbon (slim) */
+    .comp-ribbon {
+      background: var(--ink); color: #fff;
+      border-radius: 16px; padding: 16px 18px;
+      display: grid; gap: 14px; align-items: center;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 760px) { .comp-ribbon { grid-template-columns: auto 1fr auto; } }
+    .cr-score { display: flex; flex-direction: column; gap: 6px; min-width: 120px; }
+    .cr-num { font-family: "JetBrains Mono", monospace; font-size: 28px; font-weight: 700; color: var(--gold-soft); line-height: 1; font-variant-numeric: tabular-nums; }
+    .cr-of { font-size: 13px; color: rgba(255,255,255,0.45); font-weight: 500; margin-left: 4px; }
+    .cr-bar { height: 4px; background: rgba(255,255,255,0.10); border-radius: 999px; overflow: hidden; width: 100%; max-width: 120px; }
+    .cr-fill { height: 100%; background: var(--gold); transition: width .35s cubic-bezier(0.2,0.8,0.2,1); }
+    .cr-rec .cr-title { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-soft); margin-bottom: 4px; }
+    .cr-rec .cr-body { font-size: 13px; color: rgba(255,255,255,0.78); line-height: 1.5; }
+    .cr-fixes { display: flex; flex-wrap: wrap; gap: 6px; }
+    .cr-fixes button { padding: 8px 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.18); background: rgba(255,255,255,0.06); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: 0.04em; cursor: pointer; }
+    .cr-fixes button:hover { background: var(--gold); color: var(--ink); border-color: var(--gold); }
+    .cr-ready { padding: 8px 14px; border-radius: 999px; background: rgba(4,120,87,0.20); color: #a7f3d0; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; white-space: nowrap; }
+
+    /* Companion */
+    .comp .top { background: var(--ink); color: #fff; padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; gap: 14px; }
+    .comp .top .k { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-soft); }
+    .comp .top .t { font-size: 22px; font-weight: 600; margin-top: 4px; }
+    .comp .top .icon { width: 48px; height: 48px; border-radius: 16px; background: var(--gold); color: var(--ink); display: inline-flex; align-items: center; justify-content: center; }
+    .comp .body { padding: 20px 24px 24px; }
+    .comp .score { background: var(--cream); border-radius: 16px; padding: 14px 16px; }
+    .comp .score .row { display: flex; justify-content: space-between; align-items: center; }
+    .comp .score .l { font-size: 14px; font-weight: 600; color: var(--slate-600); }
+    .comp .score .v { font-size: 22px; font-weight: 700; color: var(--gold-deep); }
+    .comp .score .bar { margin-top: 12px; height: 6px; background: var(--slate-200); border-radius: 999px; overflow: hidden; }
+    .comp .score .fill { height: 100%; background: var(--gold); transition: width .3s; }
+    .comp .rec { margin-top: 16px; padding: 14px 16px; border: 1px solid rgba(200,162,74,0.30); background: rgba(200,162,74,0.10); border-radius: 16px; }
+    .comp .rec .title { font-weight: 700; }
+    .comp .rec .body { font-size: 13px; color: var(--slate-600); margin-top: 6px; line-height: 1.55; }
+    .comp .fixes { margin-top: 16px; display: grid; gap: 8px; grid-template-columns: 1fr 1fr 1fr; }
+    .comp .fixes button { padding: 12px; background: var(--ink); color: #fff; border: 0; border-radius: 12px; font-size: 12px; font-weight: 700; cursor: pointer; }
+    .comp .fixes button:hover { background: var(--ink-2); }
+    .comp .ready { margin-top: 16px; padding: 14px 16px; background: rgba(4,120,87,0.12); color: var(--emerald-800); border-radius: 14px; font-weight: 600; font-size: 14px; }
+
+    /* Helpcallout */
+    .callout { margin-top: 18px; padding: 14px 16px; border: 1px solid rgba(200,162,74,0.30); background: rgba(200,162,74,0.10); border-radius: 16px; display: flex; gap: 12px; align-items: flex-start; }
+    .callout svg { color: var(--gold-deep); flex: none; margin-top: 2px; }
+    .callout .ttl { font-weight: 700; }
+    .callout .bd { font-size: 13px; color: var(--slate-600); margin-top: 4px; line-height: 1.55; }
+
+    /* Option groups */
+    .opt-g { margin-top: 18px; }
+    .opt-g .lab { font-size: 13px; font-weight: 600; color: var(--slate-600); margin-bottom: 10px; }
+    .opt-g .list { display: grid; gap: 8px; grid-template-columns: 1fr 1fr; }
+    .opt-g .list button { background: var(--cream); border: 0; padding: 12px 14px; border-radius: 12px; text-align: left; font-size: 13px; font-weight: 600; color: var(--ink); cursor: pointer; }
+    .opt-g .list button:hover { background: var(--cream-2); }
+    .opt-g .list button.on { background: var(--ink); color: #fff; }
+    .opt-g.gold .list button.on { background: var(--gold); color: var(--ink); }
+
+    /* Form fields — tighter */
+    .field { margin-top: 14px; display: block; }
+    .field .lab { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--slate-600); }
+    .field .help { font-size: 11px; color: var(--slate-400); margin-top: 3px; line-height: 1.45; font-weight: 500; }
+    .field input, .field textarea {
+      margin-top: 6px; width: 100%;
+      padding: 10px 12px; font-size: 13px; line-height: 1.55;
+      background: #fff; border: 1px solid var(--slate-200); border-radius: 10px;
+      font-family: inherit; color: var(--ink); outline: none;
+      transition: border-color .12s, background .12s;
+    }
+    .field input { height: 38px; font-weight: 600; }
+    .field textarea { min-height: 76px; resize: vertical; }
+    .field input:focus, .field textarea:focus { border-color: var(--gold); background: var(--cream); }
+
+    /* Main output tabs */
+    .mp-tabs { display: flex; flex-wrap: wrap; gap: 8px; padding: 16px 20px; background: var(--cream); border-bottom: 1px solid var(--slate-200); justify-content: space-between; align-items: center; }
+    .mp-tabs .left { display: flex; flex-wrap: wrap; gap: 8px; }
+    .mp-tab { background: #fff; border: 0; padding: 8px 16px; border-radius: 12px; font-size: 13px; font-weight: 600; color: var(--slate-600); cursor: pointer; }
+    .mp-tab:hover { background: var(--slate-50); }
+    .mp-tab.on { background: var(--ink); color: #fff; }
+    .mp-actions { display: flex; gap: 8px; }
+    .mp-actions .btn { height: 36px; padding: 0 14px; font-size: 12px; }
+
+    /* Skill output panel */
+    .so-head { background: var(--ink); color: #fff; padding: 24px; display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; }
+    .so-head .k { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-soft); }
+    .so-head .t { font-size: 26px; font-weight: 600; margin-top: 6px; line-height: 1.15; }
+    .so-head .risk { padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; }
+    .so-head .risk.high { background: rgba(239,68,68,0.18); color: #fda4a4; }
+    .so-head .risk.med { background: rgba(200,162,74,0.25); color: var(--gold-soft); }
+    .so-head .risk.low { background: rgba(4,120,87,0.20); color: #6ee7b7; }
+    .so-body { padding: 24px; }
+    .so-mini { display: grid; gap: 12px; grid-template-columns: 1fr; margin-bottom: 18px; }
+    @media (min-width: 600px) { .so-mini { grid-template-columns: 1fr 1fr 1fr; } }
+    .mini { background: var(--cream); padding: 14px 16px; border-radius: 14px; }
+    .mini .k { font-size: 12px; color: var(--slate-500); }
+    .mini .v { font-weight: 700; margin-top: 4px; font-size: 14px; }
+    .so-ready { padding: 18px 20px; border: 1px solid rgba(7,26,47,0.10); border-radius: 18px; margin-bottom: 18px; }
+    .so-ready .row { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .so-ready .row .k { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-deep); }
+    .so-ready .row .meta { font-size: 12px; color: var(--slate-500); margin-top: 4px; }
+    .so-ready .row .pill { background: var(--cream); padding: 4px 12px; border-radius: 999px; font-size: 13px; font-weight: 700; color: var(--gold-deep); }
+    .so-ready .ttl { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-deep); }
+    .so-ready .body { font-size: 14px; line-height: 1.55; color: var(--slate-700); margin-top: 8px; }
+
+    .so-pair { display: grid; gap: 16px; grid-template-columns: 1fr; margin-bottom: 18px; }
+    @media (min-width: 760px) { .so-pair { grid-template-columns: 1fr 1fr; } }
+    .so-list { padding: 18px 20px; border: 1px solid rgba(7,26,47,0.10); border-radius: 18px; }
+    .so-list .top { display: flex; align-items: center; gap: 10px; }
+    .so-list .top svg { color: var(--gold); }
+    .so-list .k { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-deep); }
+    .so-list .items { margin-top: 12px; display: grid; gap: 10px; }
+    .so-list .row { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; line-height: 1.55; }
+    .so-list .row svg { color: var(--gold); flex: none; margin-top: 3px; }
+
+    .so-out { background: var(--cream); border-radius: 18px; padding: 18px 20px; margin-bottom: 18px; }
+    .so-out .k { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-deep); }
+    .so-out .grid { margin-top: 12px; display: grid; gap: 8px; grid-template-columns: 1fr; }
+    @media (min-width: 600px) { .so-out .grid { grid-template-columns: 1fr 1fr; } }
+    .so-out .chip { background: #fff; padding: 10px 12px; border-radius: 10px; font-size: 13px; font-weight: 600; }
+
+    .so-cta { display: grid; gap: 10px; grid-template-columns: 1fr; }
+    @media (min-width: 600px) { .so-cta { grid-template-columns: 1fr 1fr 1fr; } }
+    .so-cta .btn { width: 100%; justify-content: center; height: 44px; }
+    .so-saved { margin-top: 16px; padding: 14px 16px; background: rgba(4,120,87,0.12); color: var(--emerald-800); border-radius: 14px; font-weight: 600; font-size: 14px; }
+
+    /* Markdown panel */
+    .md-panel { padding: 24px; }
+    .md-panel pre { max-height: 540px; overflow: auto; background: var(--ink); color: #f0e8cb; border-radius: 16px; padding: 22px; font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 13px; line-height: 1.65; white-space: pre-wrap; word-break: break-word; margin: 0; }
+    .md-panel .top { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; }
+    .md-panel .top .k { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-deep); }
+    .md-panel .top h3 { font-size: 22px; font-weight: 600; margin: 4px 0 0; }
+
+    /* Versions panel */
+    .ver-panel { padding: 24px; }
+    .ver-panel .top { margin-bottom: 18px; }
+    .ver-panel .top .k { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-deep); }
+    .ver-panel .top h3 { font-size: 22px; font-weight: 600; margin: 4px 0 0; }
+    .ver-row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding: 16px 18px; border: 1px solid rgba(7,26,47,0.10); background: var(--cream); border-radius: 16px; margin-bottom: 10px; align-items: center; }
+    .ver-row .label { font-weight: 700; }
+    .ver-row .meta { font-size: 13px; color: var(--slate-500); margin-top: 2px; }
+
+    /* Help panel */
+    .help-panel { padding: 24px; }
+    .help-panel .top { margin-bottom: 18px; }
+    .help-panel .top .k { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-deep); }
+    .help-panel .top h3 { font-size: 22px; font-weight: 600; margin: 4px 0 0; }
+    .help-panel .top p { color: var(--slate-600); margin-top: 8px; line-height: 1.55; font-size: 14px; }
+    .help-grid { display: grid; gap: 16px; grid-template-columns: 1fr; }
+    @media (min-width: 760px) { .help-grid { grid-template-columns: 1fr 1fr; } }
+    .help-card { padding: 18px 20px; border: 1px solid rgba(7,26,47,0.10); border-radius: 18px; }
+    .help-card .top { display: flex; align-items: center; gap: 10px; }
+    .help-card .top svg { color: var(--gold); }
+    .help-card .k { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-deep); }
+    .help-card .items { margin-top: 12px; display: grid; gap: 10px; }
+    .help-card .item { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; line-height: 1.55; }
+    .help-card .item svg { color: var(--gold); flex: none; margin-top: 3px; }
+    .qc-card { background: var(--cream); padding: 14px 16px; border-radius: 14px; }
+    .qc-card .nm { font-weight: 700; }
+    .qc-card .hint { font-size: 13px; color: var(--slate-600); margin-top: 4px; line-height: 1.55; }
+    .rule-thumb { margin-top: 16px; padding: 18px 20px; background: var(--ink); color: #fff; border-radius: 18px; }
+    .rule-thumb .ttl { color: var(--gold-soft); font-weight: 700; font-size: 14px; }
+    .rule-thumb p { font-size: 14px; color: rgba(255,255,255,0.7); margin: 8px 0 0; line-height: 1.55; }
+
+    /* Toolbox preview card */
+    .tbp .top { background: var(--cream); padding: 20px 24px; }
+    .tbp .top .k { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-deep); }
+    .tbp .top .t { font-size: 22px; font-weight: 600; margin-top: 6px; }
+    .tbp .body { padding: 24px; }
+    .tbp .feat { background: var(--ink); color: #fff; padding: 18px 20px; border-radius: 16px; display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; }
+    .tbp .feat .role { color: rgba(255,255,255,0.55); font-size: 13px; }
+    .tbp .feat .nm { color: var(--gold-soft); font-weight: 700; font-size: 22px; margin-top: 6px; line-height: 1.15; }
+    .tbp .feat .risk { background: rgba(255,255,255,0.10); padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; }
+    .tbp .mini-row { margin-top: 16px; display: grid; gap: 10px; grid-template-columns: 1fr; }
+    @media (min-width: 600px) { .tbp .mini-row { grid-template-columns: 1fr 1fr 1fr; } }
+    .tbp .desc { margin-top: 16px; padding: 14px 16px; border: 1px solid rgba(7,26,47,0.10); border-radius: 14px; }
+    .tbp .desc .k { font-size: 12px; color: var(--slate-500); }
+    .tbp .desc .v { font-size: 13px; color: var(--slate-700); margin-top: 6px; line-height: 1.55; }
+  </style>
+</head>
+<body>
+
+<header class="shell-header">
+  <div class="container header-inner">
+    <a class="brand" href="mockup.html">
+      <span class="seal"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg></span>
+      <span><span class="wm-1">The AI Banking Institute</span><br><span class="wm-2">Toolbox · Skill Builder</span></span>
+    </a>
+    <nav class="nav">
+      <a href="mockup.html">Home</a>
+      <a href="course.html">Course</a>
+      <a href="assessment.html">Assessment</a>
+      <a href="sandbox.html">Sandbox</a>
+      <a class="on" href="toolbox.html">Toolbox</a>
+      <a href="teams.html">Teams</a>
+    </nav>
+    <a class="btn btn-gold" href="toolbox.html">Open Toolbox</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="deco"><div class="deco-ring"></div><div class="deco-blur"></div></div>
+  <div class="container hero-inner">
+    <div>
+      <div class="eyebrow">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4M14 12h4"/></svg>
+        Toolbox Tool · Skill Builder
+      </div>
+      <h1>Turn a good prompt into a governed skill.</h1>
+      <p class="lede">Build, review, version, copy, download, and save a reusable AI skill as a Markdown asset in your Toolbox.</p>
+      <div class="ctas">
+        <button class="btn btn-lg btn-gold" id="hero-save">
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/></svg>
+          Save Skill
+        </button>
+        <button class="btn btn-lg btn-ghost-dark" id="hero-copy">
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          <span id="hero-copy-label">Copy Markdown</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="snap">
+      <div class="head">
+        <div class="k">Builder Snapshot</div>
+        <div class="t">Build → Review → Save → Version</div>
+      </div>
+      <div class="stats">
+        <div class="stat">
+          <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>
+          <div class="l">Completeness</div><div class="v" id="sn-complete">100%</div>
+        </div>
+        <div class="stat">
+          <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <div class="l">Risk</div><div class="v" id="sn-risk">Medium</div>
+        </div>
+        <div class="stat">
+          <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          <div class="l">Status</div><div class="v" id="sn-status">Draft</div>
+        </div>
+        <div class="stat">
+          <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9"/><polyline points="3 4 3 12 11 12"/></svg>
+          <div class="l">Versions</div><div class="v" id="sn-versions">1</div>
+        </div>
+      </div>
+      <div class="bar-wrap">
+        <div class="bar"><div class="fill" id="sn-bar" style="width:100%"></div></div>
+        <div class="pills">
+          <div class="pill-st on" id="pill-signed"><span class="mark">✓</span>Signed-in save</div>
+          <div class="pill-st on" id="pill-ready"><span class="mark">✓</span>Ready to save</div>
+          <div class="pill-st off" id="pill-copied"><span class="mark">—</span>Copied</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BUILDER BODY -->
+<section style="background:var(--cream)">
+  <div class="container builder">
+
+    <!-- LEFT COLUMN -->
+    <div class="col">
+
+      <!-- Single combined panel: Config pills + Form fields -->
+      <div class="panel">
+        <div class="panel-head">
+          <div class="k">Define the skill</div>
+          <h3>Role, risk, and inputs</h3>
+        </div>
+        <div class="panel-body">
+          <div class="og-row">
+            <div class="opt-g compact" id="og-role"><div class="lab">Role</div><div class="list"></div></div>
+            <div class="opt-g compact gold" id="og-risk"><div class="lab">Risk</div><div class="list"></div></div>
+            <div class="opt-g compact" id="og-status"><div class="lab">Status</div><div class="list"></div></div>
+          </div>
+          <div class="og-rule"></div>
+          <div id="form-fields"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="col">
+
+      <!-- Companion ribbon (slim) -->
+      <div class="comp-ribbon">
+        <div class="cr-score">
+          <div class="cr-num"><span id="comp-score">96</span><span class="cr-of">/100</span></div>
+          <div class="cr-bar"><div class="cr-fill" id="comp-bar" style="width:96%"></div></div>
+        </div>
+        <div class="cr-rec">
+          <div class="cr-title" id="comp-rec-title">Companion recommendation</div>
+          <div class="cr-body" id="comp-rec-body">Ready for human review. Save a version before distribution.</div>
+        </div>
+        <div class="cr-fixes" id="comp-fixes" style="display:none">
+          <button data-fix="guardrails">Fix guardrails</button>
+          <button data-fix="output">Fix output</button>
+          <button data-fix="retention">Fix retention</button>
+        </div>
+        <div class="cr-ready" id="comp-ready" style="display:none">✓ Ready to save</div>
+      </div>
+
+      <!-- Tabbed output -->
+      <div class="panel shadowed">
+        <div class="mp-tabs">
+          <div class="left">
+            <button class="mp-tab on" data-panel="Output">Output</button>
+            <button class="mp-tab" data-panel="Markdown">Markdown</button>
+            <button class="mp-tab" data-panel="Versions">Versions</button>
+          </div>
+          <div class="mp-actions">
+            <button class="btn btn-ghost-light" id="mp-copy">
+              <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              <span>Copy</span>
+            </button>
+            <button class="btn btn-ghost-light" id="mp-download">
+              <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              .md
+            </button>
+          </div>
+        </div>
+        <div id="mp-output"></div>
+        <div id="mp-markdown" style="display:none"></div>
+        <div id="mp-versions" style="display:none"></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="container">
+    <div class="cta-band">
+      <div>
+        <div class="k">Skill Builder</div>
+        <h2>From prompt to governed skill, in one screen.</h2>
+        <p>The Skill Builder is one of seven tools that ship in the Toolbox. Build something today, save it tonight, ship it Monday.</p>
+      </div>
+      <div class="cta-actions">
+        <a class="btn btn-lg btn-gold" href="toolbox.html">Browse the Toolbox</a>
+        <a class="btn btn-lg btn-ghost-dark" href="course.html">Take the Course</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ribbon">SKETCH · <span>Skill Builder</span></div>
+
+<script>
+/* ============================================================
+   Skill Builder — full interactive port of aibi_skill_builder_tool_page.jsx
+   All state in plain JS, all DOM updates via render functions.
+   ============================================================ */
+
+const ROLES = ["Compliance", "Retail", "Marketing", "Operations", "Lending"];
+const RISKS = ["Low", "Medium", "High"];
+const STATUSES = ["Draft", "Reviewed", "Approved"];
+
+const EXAMPLES = {
+  Compliance: {
+    name: "Compliance AI Use-Case Intake Skill",
+    purpose: "Convert a proposed AI use case into a structured intake summary for compliance review.",
+    task: "Summarize and structure AI use-case notes for review.",
+    inputs: "Business purpose, proposed tool, user role, data category, expected output, reviewer.",
+    guardrails: "Use only approved, redacted, or fictional inputs. No customer data. Flag missing reviewer and require human approval before use.",
+    output: "Business purpose, tool, user role, data classification, output description, approval checkpoint, risks.",
+    retention: "Save the reviewed skill output to the user's toolbox and retain reviewed workflow packets according to internal policy.",
+  },
+  Retail: {
+    name: "Branch Coaching Scenario Skill",
+    purpose: "Turn a customer service situation into a coaching guide for frontline staff.",
+    task: "Create a coaching guide from a realistic customer interaction scenario.",
+    inputs: "Fictional scenario summary, customer need, product or service area, desired tone, manager notes.",
+    guardrails: "Use fictional scenarios only. Avoid legal, credit, or account-specific advice. Require manager review before team use.",
+    output: "Scenario summary, coaching points, suggested language, escalation note, manager checklist.",
+    retention: "Save finalized coaching assets in the user's toolbox and review before team distribution.",
+  },
+  Marketing: {
+    name: "Campaign Review Prep Skill",
+    purpose: "Prepare AI-generated marketing copy for internal review before use.",
+    task: "Convert campaign notes into draft copy and a compliance review checklist.",
+    inputs: "Campaign goal, audience, product, offer, required disclosures, channel.",
+    guardrails: "Flag claims, missing disclosures, urgency language, and possible UDAAP concerns. Require marketing and compliance approval.",
+    output: "Draft copy, claim flags, disclosure checklist, approval route, open questions.",
+    retention: "Save reviewed campaign drafts and checklist versions according to marketing approval procedures.",
+  },
+  Operations: {
+    name: "Procedure-to-Job-Aid Skill",
+    purpose: "Turn dense internal procedures into clear operational job aids.",
+    task: "Rewrite procedure content into frontline-ready steps.",
+    inputs: "Procedure text, audience, process owner, exceptions, review owner.",
+    guardrails: "Do not change policy meaning. Flag ambiguity. Require manager review before publishing.",
+    output: "Purpose, numbered steps, exceptions, risk notes, reviewer checklist.",
+    retention: "Save reviewed job aids and source procedure references in the user's toolbox.",
+  },
+  Lending: {
+    name: "Loan File Summary Skill",
+    purpose: "Structure redacted internal loan file notes into a review-ready summary.",
+    task: "Summarize file notes for internal review and follow-up planning.",
+    inputs: "Redacted loan notes, missing items, requested action, reviewer role.",
+    guardrails: "No customer identifiers. No credit decisioning. Output is draft support only and requires human review.",
+    output: "Summary, missing items, follow-up questions, review owner, risk flags.",
+    retention: "Save only redacted, reviewed outputs in the toolbox. Do not store customer identifiers.",
+  },
+};
+
+const FIELD_HELP = {
+  name: "Use a clear action-oriented name. Good: Procedure-to-Job-Aid Skill. Weak: AI prompt.",
+  purpose: "Explain the business problem this solves. Keep it specific and role-aware.",
+  task: "Describe the repeatable work this skill performs. Avoid one-off requests.",
+  inputs: "List only the inputs the user is allowed to provide. Be explicit about data boundaries.",
+  guardrails: "State what the skill must not do. Include data restrictions, approval needs, and escalation triggers.",
+  output: "Use comma-separated output sections. These become repeatable headings in the exported skill.",
+  retention: "Tell the user where the output should be saved, what not to retain, and when review is required.",
+};
+
+const REVIEW_ITEMS = [
+  "Allowed inputs are clearly defined",
+  "Prohibited data is listed",
+  "Human reviewer is identified",
+  "Output is labeled as draft or reviewed",
+  "Escalation rule is included",
+  "Retention rule is defined",
+];
+
+const BEST_PRACTICES = [
+  "Build skills for repeatable work, not one-off questions.",
+  "Define allowed inputs before writing prompt instructions.",
+  "Separate draft output from reviewed or approved output.",
+  "Include a human review owner for medium and high-risk skills.",
+  "Use fictional, redacted, or approved internal data only.",
+  "Save a new version when purpose, guardrails, or output format changes.",
+];
+
+const QUALITY_CHECKS = [
+  { label: "Specific purpose", hint: "The skill solves a real recurring workflow." },
+  { label: "Clear inputs", hint: "The user knows exactly what information is allowed." },
+  { label: "Guardrails", hint: "The skill says what not to enter or produce." },
+  { label: "Review owner", hint: "A human reviewer is named before use." },
+  { label: "Output format", hint: "The answer is structured and repeatable." },
+  { label: "Retention rule", hint: "The user knows what to save and where." },
+];
+
+const STATE = {
+  isSignedIn: true,
+  role: "Compliance",
+  risk: "Medium",
+  status: "Draft",
+  activePanel: "Output",
+  form: { ...EXAMPLES.Compliance },
+  saved: false,
+  copied: false,
+  versions: [
+    { id: 1, label: "v1 Draft", createdAt: "Just now", role: "Compliance", risk: "Medium", status: "Draft", form: { ...EXAMPLES.Compliance } },
+  ],
+};
+
+function slugify(value) {
+  return value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+}
+
+function completeness() {
+  const f = STATE.form;
+  const fields = [f.name, f.purpose, f.task, f.inputs, f.guardrails, f.output, f.retention];
+  const filled = fields.filter(v => v && v.trim()).length;
+  return Math.round((filled / fields.length) * 100);
+}
+
+function readyToSave() {
+  return STATE.isSignedIn && completeness() === 100;
+}
+
+function companion() {
+  const f = STATE.form;
+  const issues = [];
+  const input = (f.inputs || "").toLowerCase();
+  const guard = (f.guardrails || "").toLowerCase();
+  const ret = (f.retention || "").toLowerCase();
+  const outCount = (f.output || "").split(",").filter(p => p.trim()).length;
+
+  if ((f.purpose || "").length < 60) issues.push({ msg: "Tighten the purpose so the business problem is obvious.", fix: null });
+  if (!input.includes("customer") && !input.includes("redacted")) issues.push({ msg: "Clarify allowed inputs and explicitly address customer or redacted data.", fix: null });
+  if (!guard.includes("review") || !guard.includes("approval")) issues.push({ msg: "Strengthen guardrails with review and approval requirements.", fix: "guardrails" });
+  if (outCount < 4) issues.push({ msg: "Structure the output with at least four repeatable sections.", fix: "output" });
+  if (!ret.includes("save") && !ret.includes("retain")) issues.push({ msg: "Define where outputs are saved or retained.", fix: "retention" });
+
+  const c = completeness();
+  const score = Math.max(35, Math.min(100, c - issues.length * 7 + (STATE.risk === "Low" ? 5 : 0)));
+  return {
+    issues,
+    score,
+    ready: issues.length === 0,
+    next: issues[0] ? issues[0].msg : "Ready for human review. Save a version before distribution.",
+  };
+}
+
+function buildMarkdown() {
+  const f = STATE.form;
+  const out = (f.output || "")
+    .split(",")
+    .map(s => s.trim())
+    .filter(Boolean)
+    .map(s => `- ${s}`)
+    .join("\n");
+  const review = REVIEW_ITEMS.map(s => `- [ ] ${s}`).join("\n");
+  return `# ${f.name}
+
+**Role:** ${STATE.role}
+**Risk Level:** ${STATE.risk}
+**Status:** ${STATE.status}
+
+## Purpose
+${f.purpose}
+
+## When to Use
+Use this skill when a team needs to ${(f.task || "").toLowerCase()}
+
+## Required Inputs
+${f.inputs}
+
+## Data Rules and Guardrails
+${f.guardrails}
+
+## Prompt Instructions
+Act as a banking AI workflow assistant. Complete the task using only the approved inputs. Follow the data rules and guardrails. Produce the expected output format. Flag missing information, uncertainty, or escalation needs. Do not treat the output as final approval.
+
+## Expected Output Format
+${out}
+
+## Review Checklist
+${review}
+
+## Retention Guidance
+${f.retention}
+`;
+}
+
+/* ----- Mutators ----- */
+function changeRole(next) {
+  STATE.role = next;
+  STATE.form = { ...EXAMPLES[next] };
+  STATE.status = "Draft";
+  STATE.saved = false;
+  STATE.copied = false;
+  renderAll();
+}
+function setRisk(next)   { STATE.risk = next; STATE.saved = false; renderAll(); }
+function setStatus(next) { STATE.status = next; STATE.saved = false; renderAll(); }
+function updateField(field, val) {
+  STATE.form[field] = val;
+  STATE.saved = false;
+  STATE.copied = false;
+  renderDerived(); // skip re-binding form (preserves focus)
+}
+function applyFix(type) {
+  if (type === "guardrails") {
+    STATE.form.guardrails = "Use only approved, redacted, or fictional inputs. Do not include customer identifiers, confidential records, or account-level data. Flag uncertainty, missing reviewer, policy ambiguity, and any output that could be used without human approval.";
+  } else if (type === "output") {
+    STATE.form.output = "Purpose, approved inputs used, draft output, risk flags, missing information, reviewer checklist, approval checkpoint, retention note";
+  } else if (type === "retention") {
+    STATE.form.retention = "Save only reviewed versions to the user's toolbox or approved internal repository. Do not retain customer identifiers or unreviewed outputs as final records. Keep version history when the skill changes.";
+  }
+  STATE.saved = false;
+  renderAll();
+}
+function saveVersion() {
+  if (!readyToSave()) return;
+  const v = {
+    id: STATE.versions.length + 1,
+    label: `v${STATE.versions.length + 1} ${STATE.status}`,
+    createdAt: "Just now",
+    role: STATE.role, risk: STATE.risk, status: STATE.status,
+    form: { ...STATE.form },
+  };
+  STATE.versions = [v, ...STATE.versions];
+  STATE.saved = true;
+  renderAll();
+}
+function restoreVersion(id) {
+  const v = STATE.versions.find(x => x.id === id);
+  if (!v) return;
+  STATE.role = v.role;
+  STATE.risk = v.risk;
+  STATE.status = v.status;
+  STATE.form = { ...v.form };
+  STATE.saved = false;
+  renderAll();
+}
+async function copyMarkdown() {
+  const text = buildMarkdown();
+  try {
+    if (navigator.clipboard) await navigator.clipboard.writeText(text);
+    else {
+      const ta = document.createElement('textarea');
+      ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+    }
+    STATE.copied = true;
+    renderDerived();
+    setTimeout(() => { STATE.copied = false; renderDerived(); }, 2200);
+  } catch (e) { /* ignore */ }
+}
+function downloadMarkdown() {
+  const blob = new Blob([buildMarkdown()], { type: "text/markdown;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `${slugify(STATE.form.name || "aibi-skill")}.md`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+function setPanel(p) {
+  STATE.activePanel = p;
+  renderMainPanel();
+  document.querySelectorAll('.mp-tab').forEach(b => b.classList.toggle('on', b.dataset.panel === p));
+}
+
+/* ----- Render functions ----- */
+function renderSnapshot() {
+  const c = completeness();
+  document.getElementById('sn-complete').textContent = c + '%';
+  document.getElementById('sn-risk').textContent = STATE.risk;
+  document.getElementById('sn-status').textContent = STATE.status;
+  document.getElementById('sn-versions').textContent = STATE.versions.length;
+  document.getElementById('sn-bar').style.width = c + '%';
+  const rdy = readyToSave();
+  document.getElementById('pill-signed').className = 'pill-st ' + (STATE.isSignedIn ? 'on' : 'off');
+  document.getElementById('pill-signed').firstChild.textContent = STATE.isSignedIn ? '✓' : '—';
+  document.getElementById('pill-ready').className = 'pill-st ' + (rdy ? 'on' : 'off');
+  document.getElementById('pill-ready').firstChild.textContent = rdy ? '✓' : '—';
+  document.getElementById('pill-copied').className = 'pill-st ' + (STATE.copied ? 'on' : 'off');
+  document.getElementById('pill-copied').firstChild.textContent = STATE.copied ? '✓' : '—';
+}
+function renderCompanion() {
+  const co = companion();
+  document.getElementById('comp-score').textContent = co.score;
+  document.getElementById('comp-bar').style.width = co.score + '%';
+  document.getElementById('comp-rec-title').textContent = co.ready ? 'Ready for review' : 'Companion recommendation';
+  document.getElementById('comp-rec-body').textContent = co.next;
+  document.getElementById('comp-fixes').style.display = co.ready ? 'none' : 'grid';
+  document.getElementById('comp-ready').style.display = co.ready ? 'block' : 'none';
+}
+function renderOptionGroups() {
+  function make(id, items, current, onClick, gold) {
+    const g = document.getElementById(id).querySelector('.list');
+    g.innerHTML = items.map(it => `<button data-v="${it}" class="${it === current ? 'on' : ''}">${it}</button>`).join('');
+    g.querySelectorAll('button').forEach(b => b.addEventListener('click', () => onClick(b.dataset.v)));
+  }
+  make('og-role', ROLES, STATE.role, changeRole);
+  make('og-risk', RISKS, STATE.risk, setRisk);
+  make('og-status', STATUSES, STATE.status, setStatus);
+}
+function renderForm() {
+  const fields = [
+    { k: 'name',      label: 'Skill name',         textarea: false },
+    { k: 'purpose',   label: 'Purpose',            textarea: true },
+    { k: 'task',      label: 'Recurring task',     textarea: true },
+    { k: 'inputs',    label: 'Allowed inputs',     textarea: true },
+    { k: 'guardrails',label: 'Guardrails',         textarea: true },
+    { k: 'output',    label: 'Expected output',    textarea: true },
+    { k: 'retention', label: 'Retention guidance', textarea: true },
+  ];
+  const root = document.getElementById('form-fields');
+  root.innerHTML = fields.map(f => {
+    const help = FIELD_HELP[f.k] || '';
+    const ctrl = f.textarea
+      ? `<textarea data-k="${f.k}">${STATE.form[f.k] || ''}</textarea>`
+      : `<input data-k="${f.k}" value="${(STATE.form[f.k] || '').replace(/"/g,'&quot;')}" />`;
+    return `<label class="field">
+      <span class="lab">${f.label}</span>
+      <span class="help">${help}</span>
+      ${ctrl}
+    </label>`;
+  }).join('');
+  root.querySelectorAll('input,textarea').forEach(el => {
+    el.addEventListener('input', e => updateField(e.target.dataset.k, e.target.value));
+  });
+}
+function renderToolboxPreview() { /* removed in cleanup */ }
+function renderMainPanel() {
+  const out  = document.getElementById('mp-output');
+  const md   = document.getElementById('mp-markdown');
+  const ver  = document.getElementById('mp-versions');
+  out.style.display = md.style.display = ver.style.display = 'none';
+  if (STATE.activePanel === 'Output')   { out.style.display = 'block';  renderOutputPanel(); }
+  if (STATE.activePanel === 'Markdown') { md.style.display = 'block';   renderMarkdownPanel(); }
+  if (STATE.activePanel === 'Versions') { ver.style.display = 'block';  renderVersionPanel(); }
+}
+function renderOutputPanel() {
+  const f = STATE.form;
+  const co = companion();
+  const riskCls = STATE.risk === 'High' ? 'high' : STATE.risk === 'Medium' ? 'med' : 'low';
+  const outItems = (f.output || '').split(',').map(s => s.trim()).filter(Boolean);
+  document.getElementById('mp-output').innerHTML = `
+    <div class="so-head">
+      <div>
+        <div class="k">Skill Output</div>
+        <div class="t">${f.name}</div>
+      </div>
+      <span class="risk ${riskCls}">${STATE.risk} risk</span>
+    </div>
+    <div class="so-body">
+      <div class="so-mini">
+        <div class="mini"><div class="k">Role</div><div class="v">${STATE.role}</div></div>
+        <div class="mini"><div class="k">Owner</div><div class="v">Department lead</div></div>
+        <div class="mini"><div class="k">Status</div><div class="v">${STATE.status}</div></div>
+      </div>
+      <div class="so-ready">
+        <div class="row">
+          <div>
+            <div class="k">Companion Readiness</div>
+            <div class="meta">${co.ready ? 'Ready for review' : co.issues.length + ' improvement area' + (co.issues.length === 1 ? '' : 's')}</div>
+          </div>
+          <span class="pill">${co.score}/100</span>
+        </div>
+        <div class="ttl">Purpose</div>
+        <div class="body">${f.purpose}</div>
+      </div>
+      <div class="so-pair">
+        <div class="so-list">
+          <div class="top"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="16" r="1"/><rect x="3" y="10" width="18" height="12" rx="2"/><path d="M7 10V7a5 5 0 0 1 9.33-2.5"/></svg><div class="k">Input Rules</div></div>
+          <div class="items">
+            ${[f.inputs, "Do not include customer names, account numbers, SSNs, or confidential records.", "Use fictional, redacted, or internal process data only."].map(i => `<div class="row"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>${i}</div>`).join('')}
+          </div>
+        </div>
+        <div class="so-list">
+          <div class="top"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><div class="k">Review Checklist</div></div>
+          <div class="items">
+            ${REVIEW_ITEMS.slice(0, 4).map(i => `<div class="row"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>${i}</div>`).join('')}
+          </div>
+        </div>
+      </div>
+      <div class="so-out">
+        <div class="k">Expected Output Format</div>
+        <div class="grid">${outItems.map(i => `<div class="chip">${i}</div>`).join('')}</div>
+      </div>
+      <div class="so-cta">
+        <button class="btn btn-ink" id="so-save" ${readyToSave() ? '' : 'disabled'}>
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/></svg>
+          ${STATE.saved ? 'Saved' : 'Save Version'}
+        </button>
+        <button class="btn btn-ghost-light">
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          Preview
+        </button>
+        <button class="btn btn-ghost-light">
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg>
+          Assign
+        </button>
+      </div>
+      ${STATE.saved ? '<div class="so-saved">Skill saved to toolbox with a new version.</div>' : ''}
+    </div>`;
+  const saveBtn = document.getElementById('so-save');
+  if (saveBtn) saveBtn.addEventListener('click', saveVersion);
+}
+function renderMarkdownPanel() {
+  document.getElementById('mp-markdown').className = 'md-panel';
+  document.getElementById('mp-markdown').innerHTML = `
+    <div class="top">
+      <div>
+        <div class="k">Markdown Export</div>
+        <h3>Copy or download the skill as .md</h3>
+      </div>
+    </div>
+    <pre>${buildMarkdown().replace(/[<>&]/g, m => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[m]))}</pre>`;
+}
+function renderVersionPanel() {
+  document.getElementById('mp-versions').className = 'ver-panel';
+  document.getElementById('mp-versions').innerHTML = `
+    <div class="top">
+      <div class="k">Version History</div>
+      <h3>Restore, compare, or continue from a saved version.</h3>
+    </div>
+    ${STATE.versions.map(v => `
+      <div class="ver-row">
+        <div>
+          <div class="label">${v.label}</div>
+          <div class="meta">${v.form.name} · ${v.role} · ${v.risk} risk · ${v.createdAt}</div>
+        </div>
+        <button class="btn btn-ghost-light" data-id="${v.id}">
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+          Restore
+        </button>
+      </div>`).join('')}`;
+  document.querySelectorAll('#mp-versions .ver-row button').forEach(b => {
+    b.addEventListener('click', () => restoreVersion(parseInt(b.dataset.id, 10)));
+  });
+}
+function renderHelpPanel() {
+  document.getElementById('mp-help').className = 'help-panel';
+  document.getElementById('mp-help').innerHTML = `
+    <div class="top">
+      <div class="k">Builder Help</div>
+      <h3>Build the best version of the skill.</h3>
+      <p>A skill should be specific enough to reuse, controlled enough to review, and structured enough to produce a consistent output.</p>
+    </div>
+    <div class="help-grid">
+      <div class="help-card">
+        <div class="top"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg><div class="k">Best Practices</div></div>
+        <div class="items">
+          ${BEST_PRACTICES.map(b => `<div class="item"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>${b}</div>`).join('')}
+        </div>
+      </div>
+      <div class="help-card">
+        <div class="top"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><div class="k">Quality Checks</div></div>
+        <div class="items">
+          ${QUALITY_CHECKS.map(q => `<div class="qc-card"><div class="nm">${q.label}</div><div class="hint">${q.hint}</div></div>`).join('')}
+        </div>
+      </div>
+    </div>
+    <div class="rule-thumb">
+      <div class="ttl">Rule of thumb</div>
+      <p>If the skill could influence a customer-facing output, financial decision, compliance obligation, or retained business record, treat it as reviewed work and require a human approval step.</p>
+    </div>`;
+}
+
+function renderDerived() {
+  renderSnapshot();
+  renderCompanion();
+  renderToolboxPreview();
+  renderMainPanel();
+}
+function renderAll() {
+  renderSnapshot();
+  renderCompanion();
+  renderOptionGroups();
+  renderForm();
+  renderToolboxPreview();
+  renderMainPanel();
+}
+
+/* ----- Event wiring (one-time) ----- */
+document.querySelectorAll('.mp-tab').forEach(b => b.addEventListener('click', () => setPanel(b.dataset.panel)));
+document.getElementById('mp-copy').addEventListener('click', copyMarkdown);
+document.getElementById('mp-download').addEventListener('click', downloadMarkdown);
+document.getElementById('hero-save').addEventListener('click', saveVersion);
+document.getElementById('hero-copy').addEventListener('click', async () => {
+  await copyMarkdown();
+  document.getElementById('hero-copy-label').textContent = 'Copied!';
+  setTimeout(() => { document.getElementById('hero-copy-label').textContent = 'Copy Markdown'; }, 1800);
+});
+document.querySelectorAll('#comp-fixes button').forEach(b => b.addEventListener('click', () => applyFix(b.dataset.fix)));
+
+renderAll();
+</script>
+
+</body>
+</html>

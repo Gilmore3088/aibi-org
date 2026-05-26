@@ -1,63 +1,71 @@
-/* Ledger design tokens — additive layer for the 2026-05-09 brand refresh.
+/* Ledger design tokens — REMAPPED to the mockup design system (2026-05-26).
  *
- * Source of truth: docs/brand-refresh-2026-05-09/project/Design System.html
+ * Visual unification phase of the redesign sprint: rather than rewriting
+ * 130+ files that reference --ledger-*, the token VALUES here resolve to
+ * mockup palette equivalents. Every page that uses --ledger-ink renders
+ * as mockup navy. Every page that uses --ledger-accent renders as mockup
+ * gold. The site visually unifies in one commit.
  *
- * These tokens coexist with the legacy Terra/Sage/Cobalt tokens in tokens.css
- * during migration. As surfaces are refactored onto Ledger, they should
- * reference these names directly. When the migration is complete this file
- * replaces tokens.css and the legacy variables are deleted.
+ * The shape of the contract is preserved (variable names, color slots).
+ * Only the values move. Layout/radii/spacing/shadow tokens are
+ * intentionally unchanged because the existing pages were laid out
+ * against Ledger's tight radii — changing those would break layouts.
+ * Pages that use the new mockup radii (12-32px) reference the bare
+ * --r-md/--r-lg/etc tokens from tokens-mockup.css directly.
  *
- * Naming follows the bundle exactly so that snippets pasted from the
- * Design System / Briefing / LMS prototypes drop in without rewriting.
+ * Original Ledger values are preserved in comments for revert safety.
+ *
+ * See tokens.css for the legacy --color-* → --ledger-* aliasing layer.
+ * See tokens-mockup.css for the canonical mockup palette.
  */
 
 :root {
-  /* ---- Ledger · Foundation ------------------------------------------- */
-  --ledger-bg:           #ECE9DF;        /* page field — linen */
-  --ledger-paper:        #F4F1E7;        /* card field */
-  --ledger-paper-warm:   #FAF7EE;        /* warm card field — v5 toolbox tiles, sits brighter on paper */
-  --ledger-parch:        #E4E0D2;        /* recessed surfaces */
-  --ledger-parch-dark:   #D5D1C2;        /* divider on parch */
-  --ledger-tape:         #F1E9D0;        /* highlight tape (reviewer notes) */
+  /* ---- Ledger · Foundation (remapped to mockup cream palette) -------- */
+  --ledger-bg:           #F7F3EA;        /* mockup cream (was #ECE9DF Ledger linen) */
+  --ledger-paper:        #FFFFFF;        /* white card (was #F4F1E7 Ledger paper) */
+  --ledger-paper-warm:   #FAF7EE;        /* kept — warm card field */
+  --ledger-parch:        #EFE7D7;        /* mockup cream-2 (was #E4E0D2 Ledger parch) */
+  --ledger-parch-dark:   #E2E8F0;        /* mockup slate-200 (was #D5D1C2) */
+  --ledger-tape:         #F1E9D0;        /* kept — highlight tape */
 
-  /* ---- Ledger · Ink & type ------------------------------------------- */
-  --ledger-ink:          #0E1B2D;        /* primary text, primary fill */
-  --ledger-ink-2:        #1F2A3F;        /* secondary text */
-  --ledger-slate:        #4F5C6E;        /* muted text */
-  --ledger-muted:        #4F5C6E;        /* alias of slate */
-  --ledger-soft:         #8C95A8;        /* softest text — wordmark line 2 */
+  /* ---- Ledger · Ink & type (remapped to mockup ink + slate) ---------- */
+  --ledger-ink:          #071A2F;        /* mockup ink (was #0E1B2D Ledger ink) */
+  --ledger-ink-2:        #0B2745;        /* mockup ink-2 (was #1F2A3F) */
+  --ledger-slate:        #64748B;        /* mockup slate-500 (was #4F5C6E) */
+  --ledger-muted:        #64748B;        /* alias of slate */
+  --ledger-soft:         #94A3B8;        /* mockup slate-400 (was #8C95A8) */
 
-  /* ---- Ledger · Accents ---------------------------------------------- */
-  --ledger-accent:       #7C5814;        /* gold (darkened 2026-05-21 for WCAG AA — text on linen/paper now ≥4.5:1; was #B5862A which failed at 2.69:1) */
-  --ledger-accent-light: #94701C;        /* gold hover (darkened to match) */
-  --ledger-terra:        #7C5814;        /* legacy text-terra/bg-terra alias → darkened gold (keeps homepage tiles consistent) */
-  --ledger-terra-light:  #94701C;
+  /* ---- Ledger · Accents (remapped to mockup brighter gold) ----------- */
+  --ledger-accent:       #C8A24A;        /* mockup gold (was #7C5814 Ledger darkened gold) */
+  --ledger-accent-light: #D8B867;        /* mockup gold-2 (was #94701C) */
+  --ledger-terra:        #C8A24A;        /* legacy terra alias → mockup gold */
+  --ledger-terra-light:  #D8B867;
   --ledger-accent-soft:  color-mix(in srgb, var(--ledger-accent) 10%, transparent);
-  /* Translucent gold tints — single-sourced (new gold rgb 124,88,20). Update here if the gold changes. */
-  --ledger-accent-a06:   rgba(124, 88, 20, 0.06);
-  --ledger-accent-a08:   rgba(124, 88, 20, 0.08);
-  --ledger-accent-a10:   rgba(124, 88, 20, 0.10);
-  --ledger-accent-a12:   rgba(124, 88, 20, 0.12);
-  --ledger-accent-a18:   rgba(124, 88, 20, 0.18);
-  --ledger-accent-a20:   rgba(124, 88, 20, 0.20);
-  --ledger-accent-a22:   rgba(124, 88, 20, 0.22);
-  --ledger-accent-a25:   rgba(124, 88, 20, 0.25);
-  --ledger-accent-a30:   rgba(124, 88, 20, 0.30);
-  --ledger-accent-a40:   rgba(124, 88, 20, 0.40);
-  --ledger-accent-2:     #1E3A5F;        /* navy — secondary accent */
-  --ledger-warn:       var(--ledger-accent);        /* gold doubles as warn */
-  --ledger-weak:         #8E3B2A;        /* oxblood — destructive only */
+  /* Translucent gold tints — rgb shifted to mockup gold (200, 162, 74). */
+  --ledger-accent-a06:   rgba(200, 162, 74, 0.06);
+  --ledger-accent-a08:   rgba(200, 162, 74, 0.08);
+  --ledger-accent-a10:   rgba(200, 162, 74, 0.10);
+  --ledger-accent-a12:   rgba(200, 162, 74, 0.12);
+  --ledger-accent-a18:   rgba(200, 162, 74, 0.18);
+  --ledger-accent-a20:   rgba(200, 162, 74, 0.20);
+  --ledger-accent-a22:   rgba(200, 162, 74, 0.22);
+  --ledger-accent-a25:   rgba(200, 162, 74, 0.25);
+  --ledger-accent-a30:   rgba(200, 162, 74, 0.30);
+  --ledger-accent-a40:   rgba(200, 162, 74, 0.40);
+  --ledger-accent-2:     #0B2745;        /* mockup ink-2 doubles as secondary accent (was #1E3A5F navy) */
+  --ledger-warn:       var(--ledger-accent);
+  --ledger-weak:         #8E3B2A;        /* kept — oxblood for destructive only */
 
-  /* ---- Ledger · Rules ------------------------------------------------ */
-  --ledger-rule:         #D5D1C2;        /* hairline */
-  --ledger-rule-strong:  #A8AEBE;        /* strong rule */
+  /* ---- Ledger · Rules (kept; subtle dividers don't need remap) ------- */
+  --ledger-rule:         #E2E8F0;        /* mockup slate-200 (was #D5D1C2) */
+  --ledger-rule-strong:  #94A3B8;        /* mockup slate-400 (was #A8AEBE) */
 
-  /* ---- Ledger · Typography ------------------------------------------- */
-  --ledger-serif:        var(--font-newsreader-hero), var(--font-newsreader-heavy), "Newsreader Fallback", "Iowan Old Style", Georgia, serif;
-  --ledger-sans:         var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  /* ---- Ledger · Typography (remapped to Inter) ----------------------- */
+  --ledger-serif:        var(--font-inter), "Inter", ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --ledger-sans:         var(--font-inter), "Inter", ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
   --ledger-mono:         var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  /* ---- Ledger · Spacing scale (8-pt baseline) ------------------------ */
+  /* ---- Ledger · Spacing scale (8-pt baseline; kept) ------------------ */
   --ledger-s-1:          4px;
   --ledger-s-2:          8px;
   --ledger-s-3:          12px;
@@ -68,14 +76,18 @@
   --ledger-s-8:          64px;
   --ledger-s-9:          96px;
 
-  /* ---- Ledger · Radii ------------------------------------------------ */
+  /* ---- Ledger · Radii (kept tight) ----------------------------------- */
+  /* NOTE: intentionally unchanged. Pages laid out against the 2-4px
+   * Ledger radii system would break visually if these jumped to the
+   * mockup 12-32px scale. Mockup-scope pages reference the bare
+   * --r-md/--r-lg/etc tokens directly from tokens-mockup.css. */
   --ledger-r-1:          2px;            /* buttons, inputs, chips */
   --ledger-r-2:          3px;            /* cards, sidebars, sections */
   --ledger-r-3:          4px;            /* hero / phase cards */
 
-  /* ---- Ledger · Shadow (one only) ------------------------------------ */
-  --ledger-shadow:       0 1px 0 rgba(14, 27, 45, 0.04),
-                         0 14px 40px -28px rgba(14, 27, 45, 0.18);
+  /* ---- Ledger · Shadow (kept) ---------------------------------------- */
+  --ledger-shadow:       0 1px 0 rgba(7, 26, 47, 0.04),
+                         0 14px 40px -28px rgba(7, 26, 47, 0.18);
 
   /* ---- Ledger · Layout shell (LMS) ----------------------------------- */
   --ledger-sidebar:      280px;

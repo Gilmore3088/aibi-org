@@ -1,220 +1,231 @@
-import type { Metadata } from "next";
-import type { ReactNode } from "react";
-import { MarketingPage } from "@/components/system/templates";
-import { Section, SectionHeader, EditorialQuote } from "@/components/system";
-import { BRAND, PRINCIPLES, CTAS } from "@content/copy";
-
-const PRINCIPLE_GLYPHS: Record<string, ReactNode> = {
-  "01": (
-    <svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true">
-      <circle cx="16" cy="12" r="5" fill="currentColor" />
-      <rect x="4" y="22" width="24" height="1" fill="currentColor" />
-      <rect x="4" y="26" width="24" height="1" fill="currentColor" opacity="0.4" />
-    </svg>
-  ),
-  "02": (
-    <svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.5">
-      <path d="M9 6 L4 6 L4 26 L9 26" />
-      <path d="M23 6 L28 6 L28 26 L23 26" />
-      <rect x="13" y="13" width="6" height="6" fill="currentColor" stroke="none" />
-    </svg>
-  ),
-  "03": (
-    <svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true">
-      {[8, 13, 18, 23].map((y) => (
-        <rect key={y} x="4" y={y} width="24" height="1.5" fill="currentColor" />
-      ))}
-    </svg>
-  ),
-  "04": (
-    <svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.5">
-      <rect x="6" y="4" width="20" height="24" />
-      <path d="M11 16 L15 20 L22 11" strokeWidth="2" strokeLinecap="square" />
-    </svg>
-  ),
-  "05": (
-    <svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true">
-      {[
-        [4, 14], [10, 18], [16, 10], [22, 22], [28, 16],
-      ].map(([x, h], i) => (
-        <rect key={i} x={x - 1} y={28 - h} width="2" height={h} fill="currentColor" />
-      ))}
-    </svg>
-  ),
-  "06": (
-    <svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true">
-      <rect x="4" y="11" width="24" height="2.5" fill="currentColor" />
-      <rect x="4" y="18" width="24" height="2.5" fill="currentColor" />
-    </svg>
-  ),
-};
+import type { Metadata } from 'next';
+import { MockupShell } from '@/components/mockup';
+import { PRINCIPLES } from '@content/copy';
 
 export const metadata: Metadata = {
-  alternates: { canonical: '/about' },
-  title: `About — ${BRAND.name}`,
+  title: 'About — The AI Banking Institute',
   description:
-    "The AI Banking Institute exists for the community banks and credit unions that anchor towns and neighborhoods — not for the twenty largest banks. Here is why.",
+    'The AI Banking Institute exists for the community banks and credit unions that anchor towns and neighborhoods — not for the twenty largest banks. Here is why.',
+  alternates: { canonical: '/about' },
+};
+
+const COL_STYLE: React.CSSProperties = {
+  background: '#fff',
+  border: '1px solid var(--ink-a10)',
+  borderRadius: 16,
+  padding: 28,
+};
+
+const KICKER: React.CSSProperties = {
+  fontSize: 12,
+  fontWeight: 700,
+  letterSpacing: '0.18em',
+  textTransform: 'uppercase',
+  color: 'var(--gold-deep)',
+  margin: '0 0 12px',
+};
+
+const HEADING: React.CSSProperties = {
+  fontSize: 22,
+  fontWeight: 600,
+  lineHeight: 1.25,
+  color: 'var(--ink)',
+  margin: '0 0 12px',
+};
+
+const BODY: React.CSSProperties = {
+  fontSize: 15,
+  lineHeight: 1.6,
+  color: 'var(--slate-600)',
+  margin: 0,
 };
 
 export default function AboutPage() {
   return (
-    <MarketingPage
-      hero={{
-        eyebrow: "About the Institute",
-        title: (
+    <MockupShell
+      activePath="/about"
+      eyebrow="About · The AI Banking Institute"
+      title={
+        <>
+          For the community banks and credit unions that{' '}
+          <span style={{ color: 'var(--gold-soft)' }}>anchor towns</span> — not
+          the twenty largest banks.
+        </>
+      }
+      lede={
+        <>
+          Built on regulator-aligned criteria. Tuition published. Methodology
+          published. We started The AI Banking Institute because the AI
+          training community banks were being sold did not survive contact
+          with an exam, a board meeting, or a teller line.
+        </>
+      }
+      heroActions={[
+        { label: 'Take the assessment', href: '/assessment', variant: 'gold' },
+        { label: 'Book a briefing', href: '/for-institutions/advisory', variant: 'ghost-dark' },
+      ]}
+      heroAside={
+        <aside
+          style={{
+            background: 'rgba(255,255,255,0.06)',
+            border: '1px solid rgba(255,255,255,0.18)',
+            borderRadius: 24,
+            padding: 32,
+            color: '#fff',
+            textAlign: 'center',
+          }}
+        >
+          <p
+            style={{
+              ...KICKER,
+              color: 'var(--gold-soft)',
+              textAlign: 'center',
+              margin: '0 0 16px',
+            }}
+          >
+            Who we serve
+          </p>
+          <p
+            style={{
+              fontSize: 'clamp(56px, 9vw, 96px)',
+              fontWeight: 700,
+              lineHeight: 1,
+              fontVariantNumeric: 'tabular-nums',
+              margin: '0 0 12px',
+              color: '#fff',
+              letterSpacing: '-0.02em',
+            }}
+          >
+            8,400
+          </p>
+          <p
+            style={{
+              fontSize: 14,
+              fontWeight: 600,
+              letterSpacing: '0.06em',
+              color: 'rgba(255,255,255,0.92)',
+              margin: '0 0 6px',
+            }}
+          >
+            Community banks &amp; credit unions
+          </p>
+          <p
+            style={{
+              fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
+              fontSize: 12,
+              letterSpacing: '0.1em',
+              textTransform: 'uppercase',
+              color: 'rgba(255,255,255,0.6)',
+              margin: 0,
+            }}
+          >
+            FDIC + NCUA · 2025
+          </p>
+        </aside>
+      }
+      sections={[
+        {
+          kicker: 'Mission',
+          heading: <>For the institutions that anchor towns.</>,
+          lede: (
+            <>
+              We turn bankers into builders. Not efficiency ratios, though we
+              improve those. Not compliance readiness, though we build that
+              too. Those are the outcomes. The mission is something more
+              human: giving people who care deeply about their work a new set
+              of tools and watching what they build with them.
+            </>
+          ),
+          body: (
+            <div
+              style={{
+                display: 'grid',
+                gap: 20,
+                gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+                marginTop: 32,
+              }}
+            >
+              <div style={COL_STYLE}>
+                <p style={KICKER}>Not for</p>
+                <h3 style={HEADING}>The twenty largest banks.</h3>
+                <p style={BODY}>
+                  They have the budgets, the teams, the consultants.
+                </p>
+              </div>
+              <div style={COL_STYLE}>
+                <p style={KICKER}>Built for</p>
+                <h3 style={HEADING}>The institutions that anchor towns.</h3>
+                <p style={BODY}>
+                  Community banks and credit unions with passion, knowledge,
+                  and relationships no technology can replicate.
+                </p>
+              </div>
+              <div style={COL_STYLE}>
+                <p style={KICKER}>What we built</p>
+                <h3 style={HEADING}>A framework that puts AI in their hands.</h3>
+                <p style={BODY}>
+                  Not the vendor&rsquo;s. Not a hired expert&rsquo;s. Theirs.
+                </p>
+              </div>
+            </div>
+          ),
+        },
+        {
+          kicker: 'How we work',
+          heading: <>Six principles, applied without exception.</>,
+          lede: <>Internal rules, made public.</>,
+          surface: 'white',
+          body: (
+            <div
+              style={{
+                display: 'grid',
+                gap: 24,
+                gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+                marginTop: 32,
+              }}
+            >
+              {PRINCIPLES.map((p) => (
+                <article
+                  key={p.number}
+                  style={{
+                    background: 'var(--cream)',
+                    border: '1px solid var(--ink-a10)',
+                    borderRadius: 16,
+                    padding: 28,
+                  }}
+                >
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'baseline',
+                      marginBottom: 16,
+                    }}
+                  >
+                    <p style={{ ...KICKER, margin: 0 }}>{p.number}</p>
+                  </div>
+                  <h3 style={HEADING}>{p.title}</h3>
+                  <p style={BODY}>{p.body}</p>
+                </article>
+              ))}
+            </div>
+          ),
+        },
+      ]}
+      ctaBand={{
+        kicker: 'The AI Banking Institute',
+        heading: <>Start with the readiness assessment. Or book a briefing.</>,
+        body: (
           <>
-            An education company for community banks
-            and <em className="not-italic text-terra">credit unions.</em>
+            Three minutes, zero commitment. The institutions that win with AI
+            are the ones whose staff can use it safely Monday.
           </>
         ),
-        tagline: "Built on regulator-aligned criteria. Tuition published. Methodology published.",
-        lede: BRAND.mission,
-        primaryCta: CTAS.beginAssessment,
+        actions: [
+          { label: 'Take the assessment', href: '/assessment', variant: 'gold' },
+          { label: 'Book a briefing', href: '/for-institutions/advisory', variant: 'ghost-dark' },
+        ],
       }}
-    >
-      {/* Mission monument + three-card distillation */}
-      <Section variant="parchDark" padding="default">
-        <div className="grid md:grid-cols-[1fr_auto] gap-s10 items-center">
-          <p className="font-serif italic text-display-lg leading-[1.02] text-terra max-w-narrow">
-            For the institutions that anchor towns.
-          </p>
-          {/* Stat monument — sourced */}
-          <div className="md:text-right border-l md:border-l border-hairline md:pl-s10">
-            <p className="font-mono text-[clamp(4rem,12vw,9rem)] leading-none tabular-nums text-ink tracking-tight">
-              8,400
-            </p>
-            <p className="font-serif-sc text-label-md uppercase tracking-widest text-ink/60 mt-s3">
-              Community banks &amp; credit unions
-            </p>
-            <p className="font-mono text-mono-xs uppercase tracking-wider text-ink/45 mt-s1">
-              FDIC + NCUA · 2025
-            </p>
-          </div>
-        </div>
-
-        <div className="grid md:grid-cols-3 gap-px bg-hairline border-y border-strong mt-s10">
-          <div className="bg-parch p-s6">
-            {/* Glyph — single tall column = the few towers */}
-            <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true" className="text-terra mb-s4">
-              <rect x="18" y="4" width="4" height="32" fill="currentColor" />
-              <line x1="4" y1="36" x2="36" y2="36" stroke="currentColor" strokeWidth="1" />
-            </svg>
-            <p className="font-serif-sc text-label-md uppercase tracking-widest text-terra mb-s3">
-              Not for
-            </p>
-            <p className="font-serif text-display-xs leading-snug text-ink">
-              The twenty largest banks.
-            </p>
-            <p className="text-body-sm text-ink/75 leading-relaxed mt-s3">
-              They have the budgets, the teams, the consultants.
-            </p>
-          </div>
-
-          <div className="bg-parch p-s6">
-            {/* Glyph — row of varied bars = the many community institutions */}
-            <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true" className="text-terra mb-s4">
-              {[
-                [4, 20], [9, 14], [14, 22], [19, 12],
-                [24, 18], [29, 16], [34, 24],
-              ].map(([x, h], i) => (
-                <rect key={i} x={x} y={36 - h} width="2" height={h} fill="currentColor" />
-              ))}
-              <line x1="2" y1="36" x2="38" y2="36" stroke="currentColor" strokeWidth="1" />
-            </svg>
-            <p className="font-serif-sc text-label-md uppercase tracking-widest text-terra mb-s3">
-              Built for
-            </p>
-            <p className="font-serif text-display-xs leading-snug text-ink">
-              The institutions that anchor towns.
-            </p>
-            <p className="text-body-sm text-ink/75 leading-relaxed mt-s3">
-              Community banks and credit unions with passion, knowledge, and relationships
-              no technology can replicate.
-            </p>
-          </div>
-
-          <div className="bg-parch p-s6">
-            {/* Glyph — open framework holding a tool inside */}
-            <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true" className="text-terra mb-s4">
-              <rect x="4" y="4" width="32" height="32" stroke="currentColor" strokeWidth="1" fill="none" />
-              <rect x="14" y="14" width="12" height="12" fill="currentColor" />
-            </svg>
-            <p className="font-serif-sc text-label-md uppercase tracking-widest text-terra mb-s3">
-              What we built
-            </p>
-            <p className="font-serif text-display-xs leading-snug text-ink">
-              A framework that puts AI in their hands.
-            </p>
-            <p className="text-body-sm text-ink/75 leading-relaxed mt-s3">
-              Not the vendor&rsquo;s. Not a hired expert&rsquo;s. Theirs.
-            </p>
-          </div>
-        </div>
-      </Section>
-
-      {/* Editorial pull quote — the mission rendered as content */}
-      <Section variant="dark" padding="default" container="narrow">
-        <EditorialQuote variant="dark" size="lg" attribution="Mission · The AI Banking Institute">
-          We turn bankers into builders. Not efficiency ratios, though we improve those.
-          Not compliance readiness, though we build that too. Those are the outcomes. The
-          mission is something more human: giving people who care deeply about their work
-          a new set of tools and watching what they build with them.
-        </EditorialQuote>
-      </Section>
-
-      {/* §01 — Principles */}
-      <Section variant="linen" padding="default">
-        <SectionHeader
-          number="01"
-          label="How we work"
-          title="Six principles, applied without exception."
-          subtitle="Internal rules, made public."
-        />
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-hairline border-y border-hairline mt-s10">
-          {PRINCIPLES.map((p) => (
-            <div key={p.number} className="bg-linen p-s8 lg:p-s10">
-              <div className="flex items-start justify-between mb-s6">
-                <span className="text-terra">{PRINCIPLE_GLYPHS[p.number]}</span>
-                <span className="font-mono text-mono-sm uppercase tracking-wider text-ink/40 tabular-nums">
-                  {p.number}
-                </span>
-              </div>
-              <h3 className="font-serif text-display-xs leading-snug text-ink mb-s3">
-                {p.title}
-              </h3>
-              <p className="text-body-sm text-ink/75 leading-relaxed">{p.body}</p>
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      {/* §02 — Contact */}
-      <Section variant="dark" padding="default" divider="none">
-        <div className="grid md:grid-cols-[1.4fr_1fr] gap-s10 items-center">
-          <div>
-            <p className="font-serif-sc text-label-md uppercase tracking-widest text-cream mb-s3">
-              Talk to the Institute
-            </p>
-            <h2 className="font-serif text-display-md text-bone leading-tight">
-              Press, partnerships, examiner inquiries, or program questions.
-            </h2>
-            <p className="text-body-md text-cream mt-s4 leading-relaxed">
-              We respond within one business day.
-            </p>
-          </div>
-          <div className="md:text-right">
-            <p className="font-mono text-label-md uppercase tracking-widest text-cream/70 mb-s2">
-              Mail
-            </p>
-            <a
-              href={`mailto:${BRAND.emails.contact}`}
-              className="font-serif text-display-xs text-bone border-b border-bone/60 hover:text-cream hover:border-cream pb-[2px]"
-            >
-              {BRAND.emails.contact}
-            </a>
-          </div>
-        </div>
-      </Section>
-    </MarketingPage>
+    />
   );
 }

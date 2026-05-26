@@ -108,7 +108,7 @@ export function ROIDossier() {
     <Section variant="parch" padding="default" id="roi-dossier">
       <div className="max-w-default mx-auto">
         <h2 className="font-serif text-display-lg md:text-display-xl text-ink leading-[1.05] tracking-tightish text-center">
-          Hours saved. Dollars saved. <em className="text-terra">Your numbers.</em>
+          Hours saved. Dollars saved. <em className="text-gold">Your numbers.</em>
         </h2>
         <p className="font-serif italic text-body-lg text-ink/80 leading-relaxed mt-s3 max-w-[56ch] mx-auto text-center">
           Annual time and dollar impact, scaled to your team and the range of
@@ -184,7 +184,7 @@ export function ROIDossier() {
         <div className="mt-s10 text-center">
           <p className="font-serif text-display-sm md:text-display-md text-ink leading-snug max-w-[40ch] mx-auto">
             What if we could save you{" "}
-            <span className="font-mono tabular-nums text-terra">
+            <span className="font-mono tabular-nums text-gold">
               {fmtCurrency(result.low)}
             </span>
             ?
@@ -195,7 +195,7 @@ export function ROIDossier() {
           <div className="mt-s6">
             <Link
               href="/assessment/in-depth"
-              className="inline-block font-sans text-mono-md font-medium uppercase tracking-wider rounded-sharp bg-terra text-linen px-s8 py-s4 hover:bg-terra-light transition-colors duration-fast"
+              className="inline-block font-sans text-mono-md font-medium uppercase tracking-wider rounded-sharp bg-gold text-linen px-s8 py-s4 hover:bg-gold-2 transition-colors duration-fast"
             >
               Take the In-Depth Assessment · $99 →
             </Link>
@@ -242,7 +242,7 @@ function ResultCell({ label, amount, tone }: ResultCellProps) {
       <p
         className={cn(
           "font-mono text-label-sm uppercase tracking-widest mb-s3",
-          isPrimary ? "text-terra" : "text-slate"
+          isPrimary ? "text-gold" : "text-slate"
         )}
       >
         {label}

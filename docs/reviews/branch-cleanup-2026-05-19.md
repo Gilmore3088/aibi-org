@@ -1,5 +1,20 @@
 # Branch cleanup — 2026-05-19
 
+> **RESOLVED 2026-05-21 — the 4 HOLD worktrees are all closed out.** A follow-up
+> cleanup pass investigated each before deleting:
+> - `design-2.0` — retired. Visual direction conflicted with the shipped Ledger
+>   refresh; its only unique surface (instructor/reviewer grading loop) was
+>   explicitly declined by the operator.
+> - `feature/mailerlite-automations` — retired. MailerLite work already on main;
+>   rest superseded/retired/unwanted.
+> - `feature/wave-1-bucket-a` / `feature/wave-2-bucket-b` — **content rescued**
+>   (governance + maturity + score-authority) onto main via **PR #276**, then
+>   retired.
+>
+> Same pass pruned the remote: **77 → 7 branches** (70 deleted: 64 merged + 5
+> closed-unmerged + 1 superseded docs). Kept: 4 open-PR branches + `content-engine`,
+> `sandbox-multi-provider`, `auth-audit`. See DECISIONS 2026-05-21.
+
 **Trigger:** session-start `git worktree list` showed 21 worktrees, 24 local branches, and 5 orphan directories that weren't git worktrees at all. Multiple branches stale or superseded; risk of merge conflicts and tree clutter.
 
 **Method:** systematic per-branch review — last commit, ahead/behind main, PR state (open/merged/closed/none), connection check (downstream branches, referenced issues), supersession check (work landed via a different SHA?).

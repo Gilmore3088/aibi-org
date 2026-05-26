@@ -71,7 +71,7 @@ export function KPIRibbon({ items, padded = false, className, ariaLabel = "Key m
             {item.value}
           </p>
           {item.delta && (
-            <p className="font-mono text-mono-sm tabular-nums text-terra mt-s1">{item.delta}</p>
+            <p className="font-mono text-mono-sm tabular-nums text-gold mt-s1">{item.delta}</p>
           )}
           {item.desc && <p className="text-body-sm text-ink/80 mt-s2 leading-snug">{item.desc}</p>}
           {item.source && (

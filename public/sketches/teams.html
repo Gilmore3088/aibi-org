@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sketch · Teams · AiBI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="_mockup.css">
+  <style>
+    /* Hero dashboard preview */
+    .dash { background: #fff; color: var(--ink); border-radius: 28px; overflow: hidden; box-shadow: 0 30px 60px -20px rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.08); }
+    .dash .head { padding: 18px 22px; background: var(--cream); border-bottom: 1px solid var(--slate-200); display: flex; justify-content: space-between; align-items: center; }
+    .dash .head .k { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-deep); }
+    .dash .head .t { font-size: 18px; font-weight: 600; margin-top: 2px; }
+    .dash .body { padding: 24px; }
+    .dash .topline { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; padding-bottom: 16px; border-bottom: 1px solid var(--slate-200); margin-bottom: 18px; }
+    .dash .topline div { background: var(--cream); padding: 14px; border-radius: 12px; }
+    .dash .topline .k { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--slate-500); }
+    .dash .topline .v { font-size: 28px; font-weight: 700; margin-top: 4px; line-height: 1; }
+    .dash .topline .u { font-size: 11px; color: var(--slate-500); }
+    .dash .dept { display: flex; flex-direction: column; gap: 14px; }
+    .dash .d-row .top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+    .dash .d-row .nm { font-weight: 600; font-size: 14px; }
+    .dash .d-row .vv { font-size: 12px; color: var(--gold-deep); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    .dash .d-row .bar { height: 8px; background: var(--slate-200); border-radius: 999px; overflow: hidden; }
+    .dash .d-row .fill { height: 100%; background: var(--gold); }
+
+    /* 5-step chain */
+    .chain { display: grid; gap: 16px; grid-template-columns: 1fr; }
+    @media (min-width: 760px) { .chain { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 1100px) { .chain { grid-template-columns: repeat(5, 1fr); } }
+    .step { background: #fff; border: 1px solid rgba(7,26,47,0.10); border-radius: 20px; padding: 24px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); position: relative; }
+    .step .num { font-size: 14px; font-weight: 700; letter-spacing: 0.18em; color: var(--gold-deep); margin-bottom: 12px; }
+    .step .pic { width: 44px; height: 44px; border-radius: 12px; background: var(--ink); color: var(--gold); display: inline-flex; align-items: center; justify-content: center; margin-bottom: 12px; }
+    .step h3 { font-size: 20px; font-weight: 600; margin: 0 0 8px; }
+    .step p { color: var(--slate-600); font-size: 14px; margin: 0; }
+
+    /* Department breakdown */
+    .by-dept { background: #fff; border: 1px solid rgba(7,26,47,0.10); border-radius: 32px; padding: 32px; box-shadow: 0 24px 40px -20px rgba(0,0,0,0.15); }
+    .dept-grid { display: grid; gap: 16px; grid-template-columns: 1fr; }
+    @media (min-width: 760px) { .dept-grid { grid-template-columns: 1fr 1fr; } }
+    .dpt {
+      display: grid; grid-template-columns: 1fr auto auto; gap: 16px; align-items: center;
+      padding: 16px 20px; background: var(--cream); border-radius: 16px;
+    }
+    .dpt .lhs { display: flex; align-items: center; gap: 12px; }
+    .dpt .pic { width: 36px; height: 36px; border-radius: 10px; background: var(--ink); color: var(--gold); display: inline-flex; align-items: center; justify-content: center; flex: none; }
+    .dpt .nm { font-weight: 600; }
+    .dpt .ct { font-size: 11px; color: var(--slate-500); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-top: 2px; }
+    .dpt .score { font-size: 22px; font-weight: 700; }
+    .dpt .pill { padding: 6px 12px; border-radius: 999px; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    .dpt .pill.hi { background: rgba(4,120,87,0.15); color: var(--emerald-700); }
+    .dpt .pill.me { background: rgba(200,162,74,0.20); color: var(--gold-deep); }
+    .dpt .pill.lo { background: rgba(142,59,42,0.15); color: #8E3B2A; }
+
+    /* Briefing card */
+    .briefing {
+      background: var(--ink); color: #fff; border-radius: 32px; padding: 40px;
+      border: 1px solid rgba(200,162,74,0.25); display: grid; gap: 32px;
+      grid-template-columns: 1fr; align-items: center;
+    }
+    @media (min-width: 900px) { .briefing { grid-template-columns: 0.55fr 0.45fr; } }
+    .briefing .k { font-size: 14px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold-soft); }
+    .briefing h3 { font-size: clamp(28px, 4vw, 44px); font-weight: 600; margin: 12px 0 16px; line-height: 1.05; letter-spacing: -0.02em; }
+    .briefing p { color: rgba(255,255,255,0.7); margin: 0 0 24px; }
+    .briefing ul { list-style: none; padding: 0; margin: 0; }
+    .briefing li { display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: rgba(255,255,255,0.06); border-radius: 12px; margin-bottom: 8px; font-size: 14px; }
+    .briefing li svg { color: var(--gold); }
+
+    /* Pricing/contact */
+    .contact-grid { display: grid; gap: 20px; grid-template-columns: 1fr; }
+    @media (min-width: 760px) { .contact-grid { grid-template-columns: 1fr 1fr; } }
+    .ccard { background: #fff; border: 1px solid rgba(7,26,47,0.10); border-radius: 24px; padding: 28px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+    .ccard .lab { font-size: 14px; font-weight: 700; color: var(--gold-deep); }
+    .ccard h3 { font-size: 24px; font-weight: 600; margin: 8px 0 12px; }
+    .ccard p { color: var(--slate-600); margin: 0 0 20px; }
+    .ccard .price { display: flex; align-items: baseline; gap: 6px; margin-bottom: 20px; }
+    .ccard .price .v { font-size: 32px; font-weight: 700; }
+    .ccard .price .u { color: var(--slate-500); font-size: 13px; }
+    .ccard ul { list-style: none; padding: 0; margin: 0 0 20px; }
+    .ccard li { display: flex; gap: 10px; align-items: flex-start; padding: 6px 0; font-size: 14px; }
+    .ccard li svg { color: var(--gold); flex: none; margin-top: 3px; }
+  </style>
+</head>
+<body>
+
+<header class="shell-header">
+  <div class="container header-inner">
+    <a class="brand" href="mockup.html">
+      <span class="seal"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg></span>
+      <span><span class="wm-1">The AI Banking Institute</span><br><span class="wm-2">Regulated Intelligence</span></span>
+    </a>
+    <nav class="nav">
+      <a href="mockup.html">Home</a>
+      <a href="course.html">Course</a>
+      <a href="assessment.html">Assessment</a>
+      <a href="sandbox.html">Sandbox</a>
+      <a href="toolbox.html">Toolbox</a>
+      <a class="on" href="teams.html">Teams</a>
+    </nav>
+    <a class="btn btn-gold" href="#">Book Briefing</a>
+  </div>
+  <div class="container">
+    <nav class="nav-mobile">
+      <a href="mockup.html">Home</a>
+      <a href="course.html">Course</a>
+      <a href="assessment.html">Assessment</a>
+      <a href="sandbox.html">Sandbox</a>
+      <a href="toolbox.html">Toolbox</a>
+      <a class="on" href="teams.html">Teams</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="deco"><div class="deco-ring"></div><div class="deco-blur"></div></div>
+  <div class="container hero-inner">
+    <div>
+      <div class="eyebrow">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-4"/></svg>
+        Institutions &amp; Teams · For community banks &amp; credit unions
+      </div>
+      <h1>Use assessment data to focus training where it matters.</h1>
+      <p class="lede">For banks and credit unions that want adoption, governance alignment, and capability building — not a sprawling AI policy doc that no one reads.</p>
+      <div class="ctas">
+        <a class="btn btn-lg btn-gold" href="#">Book Executive Briefing
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a class="btn btn-lg btn-ghost-dark" href="#">See Team Pricing</a>
+      </div>
+    </div>
+
+    <div class="dash">
+      <div class="head">
+        <div><div class="k">Institution Dashboard</div><div class="t">First National · Sample</div></div>
+        <svg style="width:32px;height:32px;color:var(--gold)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>
+      </div>
+      <div class="body">
+        <div class="topline">
+          <div><div class="k">Assessed</div><div class="v">124</div><div class="u">of 142 staff</div></div>
+          <div><div class="k">Org score</div><div class="v">61</div><div class="u">/ 100 readiness</div></div>
+          <div><div class="k">Trained</div><div class="v">38</div><div class="u">Foundation done</div></div>
+        </div>
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold-deep);margin-bottom:12px">Training focus by department</div>
+        <div class="dept">
+          <div class="d-row"><div class="top"><div class="nm">Compliance</div><div class="vv">72 / High</div></div><div class="bar"><div class="fill" style="width:72%"></div></div></div>
+          <div class="d-row"><div class="top"><div class="nm">Retail</div><div class="vv">58 / Med</div></div><div class="bar"><div class="fill" style="width:58%"></div></div></div>
+          <div class="d-row"><div class="top"><div class="nm">Marketing</div><div class="vv">64 / Med</div></div><div class="bar"><div class="fill" style="width:64%"></div></div></div>
+          <div class="d-row"><div class="top"><div class="nm">Operations</div><div class="vv">49 / Low</div></div><div class="bar"><div class="fill" style="width:49%"></div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5-STEP CHAIN -->
+<section class="std">
+  <div class="container">
+    <div class="section-head">
+      <div class="k">How institutions work with us</div>
+      <h2>Assess. Train. Document. Govern. Consult.</h2>
+      <p>Five steps, in order. We don't do the policy doc. We do the work that lets you write a credible policy doc later.</p>
+    </div>
+    <div class="chain">
+      <div class="step">
+        <span class="pic"><svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>
+        <div class="num">01 · Assess</div><h3>Where you are</h3><p>Every employee takes the assessment. Org and department breakdowns surface where the readiness gaps live.</p>
+      </div>
+      <div class="step">
+        <span class="pic"><svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/></svg></span>
+        <div class="num">02 · Train</div><h3>Where you should go</h3><p>Assign Foundation course seats by role. Specialist tracks (AiBI-S/Compliance, /Lending, /Ops) for the people who need them.</p>
+      </div>
+      <div class="step">
+        <span class="pic"><svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>
+        <div class="num">03 · Document</div><h3>What you've done</h3><p>Workbench Packs and Toolbox artifacts become your AI use-case inventory — examiner-ready out of the box.</p>
+      </div>
+      <div class="step">
+        <span class="pic"><svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+        <div class="num">04 · Govern</div><h3>How you stay safe</h3><p>Approval rituals and data rules reinforced through the same artifacts staff already use day to day.</p>
+      </div>
+      <div class="step">
+        <span class="pic"><svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-9M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg></span>
+        <div class="num">05 · Consult</div><h3>What's next</h3><p>Optional Leadership Advisory — a fractional Chief AI Officer for institutions running real cohorts.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEPARTMENT BREAKDOWN -->
+<section class="std" style="background:#fff">
+  <div class="container">
+    <div class="section-head">
+      <div class="k">What the dashboard shows</div>
+      <h2>Readiness, by department, in plain language.</h2>
+      <p>You see exactly which teams are ready to use AI safely, which need training, and which need both — without policy theater.</p>
+    </div>
+    <div class="by-dept">
+      <div class="dept-grid">
+        <div class="dpt">
+          <div class="lhs"><span class="pic"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span><div><div class="nm">Compliance</div><div class="ct">18 staff</div></div></div>
+          <div class="score">72</div><span class="pill hi">Ready</span>
+        </div>
+        <div class="dpt">
+          <div class="lhs"><span class="pic"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></span><div><div class="nm">Retail / Branch</div><div class="ct">64 staff</div></div></div>
+          <div class="score">58</div><span class="pill me">Training needed</span>
+        </div>
+        <div class="dpt">
+          <div class="lhs"><span class="pic"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></span><div><div class="nm">Marketing</div><div class="ct">8 staff</div></div></div>
+          <div class="score">64</div><span class="pill me">Training needed</span>
+        </div>
+        <div class="dpt">
+          <div class="lhs"><span class="pic"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.8L20 10l-4.6 3.4L17.2 20 12 16.6 6.8 20l1.8-6.6L4 10l6.1-1.2z"/></svg></span><div><div class="nm">Operations</div><div class="ct">22 staff</div></div></div>
+          <div class="score">49</div><span class="pill lo">High risk gap</span>
+        </div>
+        <div class="dpt">
+          <div class="lhs"><span class="pic"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg></span><div><div class="nm">Lending</div><div class="ct">16 staff</div></div></div>
+          <div class="score">66</div><span class="pill me">Training needed</span>
+        </div>
+        <div class="dpt">
+          <div class="lhs"><span class="pic"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span><div><div class="nm">Leadership</div><div class="ct">14 staff</div></div></div>
+          <div class="score">78</div><span class="pill hi">Ready</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BRIEFING -->
+<section class="std">
+  <div class="container">
+    <div class="briefing">
+      <div>
+        <div class="k">Free · 30 minutes</div>
+        <h3>Start with an Executive Briefing.</h3>
+        <p>Bring your leadership team. We walk through the assessment, the dashboard, and what a 90-day rollout looks like at an institution your size. No slides, no sales pitch.</p>
+        <a class="btn btn-lg btn-gold" href="#">Book a Briefing →</a>
+      </div>
+      <ul>
+        <li><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Demo on real institution data (yours or comparable)</li>
+        <li><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>FDIC peer comparison for your asset class</li>
+        <li><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>90-day rollout plan tailored to your shape</li>
+        <li><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Pricing for your headcount &amp; departments</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SIZER ============================================== -->
+<section class="std" style="background:#fff">
+  <div class="container">
+    <div class="section-head">
+      <div class="k">Size your rollout</div>
+      <h2>What would this look like for your institution?</h2>
+      <p>Adjust your staff count and asset class. Seat price, total cost, and rollout timeline update live.</p>
+    </div>
+
+    <div class="sizer">
+      <div class="sizer-card">
+        <div class="sz-row">
+          <div class="sz-label">Total staff</div>
+          <div class="sz-value tnum" id="sz-staff-val">120</div>
+        </div>
+        <input type="range" min="10" max="500" step="5" value="120" id="sz-staff" class="sz-slider" />
+        <div class="sz-ticks"><span>10</span><span>100</span><span>250</span><span>500</span></div>
+
+        <div class="sz-block">
+          <div class="sz-label">Asset class</div>
+          <div class="sz-pills" id="sz-class">
+            <button class="sz-pill on" data-c="community" data-mult="1.00">Community<br><span>&lt; $1B</span></button>
+            <button class="sz-pill" data-c="mid" data-mult="0.95">Mid-size<br><span>$1B – $10B</span></button>
+            <button class="sz-pill" data-c="large" data-mult="0.90">Large<br><span>$10B+</span></button>
+          </div>
+        </div>
+
+        <div class="sz-block">
+          <div class="sz-label">Departments included</div>
+          <div class="sz-pills sz-checks" id="sz-depts">
+            <button class="sz-pill on" data-d="compliance">Compliance</button>
+            <button class="sz-pill on" data-d="retail">Retail</button>
+            <button class="sz-pill on" data-d="marketing">Marketing</button>
+            <button class="sz-pill on" data-d="lending">Lending</button>
+            <button class="sz-pill" data-d="operations">Operations</button>
+            <button class="sz-pill" data-d="leadership">Leadership</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="sizer-result">
+        <div class="sr-head">
+          <span class="lab">Live estimate</span>
+          <span class="cnt"><span id="sz-depts-count">4</span> departments</span>
+        </div>
+        <div class="sr-price">
+          <div class="sr-price-v"><span class="dollar">$</span><span class="tnum" id="sz-price">245</span></div>
+          <div class="sr-price-u">per seat · <span id="sz-tier-label">25+ seats</span></div>
+        </div>
+        <div class="sr-total">
+          <div class="sr-total-row">
+            <span class="k">Total seats</span><span class="v tnum" id="sz-seats">120</span>
+          </div>
+          <div class="sr-total-row">
+            <span class="k">Total investment</span><span class="v tnum">$<span id="sz-total">29,400</span></span>
+          </div>
+          <div class="sr-total-row">
+            <span class="k">Rollout window</span><span class="v" id="sz-window">8–10 weeks</span>
+          </div>
+          <div class="sr-total-row">
+            <span class="k">Training hours</span><span class="v tnum"><span id="sz-hours">720</span> hrs</span>
+          </div>
+        </div>
+        <div class="sr-cta">
+          <a class="btn btn-lg btn-gold" href="#">Get this quote in writing →</a>
+        </div>
+        <div class="sr-foot" id="sz-foot">Estimate includes Foundation Course seats, Toolbox access, and aggregated assessment dashboard. Volume tier at 25+ ($245), 50+ ($195), 100+ ($145).</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .sizer { display: grid; gap: 24px; grid-template-columns: 1fr; }
+  @media (min-width: 960px) { .sizer { grid-template-columns: 1.05fr 0.95fr; align-items: start; } }
+  .sizer-card { background: var(--cream); border: 1px solid rgba(7,26,47,0.10); border-radius: 28px; padding: 32px; }
+  .sz-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; }
+  .sz-label { font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--slate-500); }
+  .sz-value { font-size: 36px; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--ink); }
+  .sz-slider {
+    -webkit-appearance: none; appearance: none;
+    width: 100%; height: 4px; background: var(--slate-200); border-radius: 999px; outline: none; cursor: pointer;
+  }
+  .sz-slider::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 24px; height: 24px; border-radius: 50%; background: var(--ink); border: 3px solid var(--gold);
+    cursor: grab; transition: transform .12s;
+  }
+  .sz-slider::-webkit-slider-thumb:active { cursor: grabbing; transform: scale(1.1); }
+  .sz-slider::-moz-range-thumb {
+    width: 24px; height: 24px; border-radius: 50%; background: var(--ink); border: 3px solid var(--gold); cursor: grab;
+  }
+  .sz-ticks { display: flex; justify-content: space-between; margin-top: 8px; font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 11px; color: var(--slate-400); letter-spacing: 0.08em; }
+  .sz-block { margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--slate-200); }
+  .sz-block .sz-label { margin-bottom: 14px; display: block; }
+  .sz-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+  .sz-pill {
+    padding: 12px 16px; border-radius: 14px; border: 1px solid var(--slate-200); background: #fff;
+    font-size: 13px; font-weight: 600; cursor: pointer; color: var(--ink); line-height: 1.3; text-align: left;
+    transition: background .12s, border-color .12s, color .12s;
+  }
+  .sz-pill:hover { background: var(--cream-2); border-color: var(--gold); }
+  .sz-pill.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .sz-pill span { font-size: 11px; opacity: 0.6; letter-spacing: 0.06em; font-weight: 600; }
+  .sz-checks .sz-pill { padding: 10px 14px; }
+
+  .sizer-result { background: var(--ink); color: #fff; border-radius: 28px; padding: 32px; box-shadow: 0 24px 40px -20px rgba(0,0,0,0.30); }
+  .sr-head { display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.10); margin-bottom: 20px; }
+  .sr-head .lab { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-soft); }
+  .sr-head .cnt { font-family: "JetBrains Mono", monospace; font-size: 11px; color: rgba(255,255,255,0.5); letter-spacing: 0.08em; }
+  .sr-price { display: flex; align-items: baseline; gap: 12px; margin-bottom: 24px; }
+  .sr-price-v { display: flex; align-items: baseline; }
+  .sr-price-v .dollar { color: var(--gold-soft); font-size: 24px; font-weight: 600; margin-right: 4px; }
+  .sr-price-v .tnum { font-size: 64px; font-weight: 700; color: var(--gold-soft); line-height: 1; font-variant-numeric: tabular-nums; }
+  .sr-price-u { color: rgba(255,255,255,0.55); font-size: 13px; padding-bottom: 6px; }
+  .sr-total { display: flex; flex-direction: column; gap: 6px; padding: 16px; background: rgba(255,255,255,0.06); border-radius: 14px; }
+  .sr-total-row { display: flex; justify-content: space-between; align-items: baseline; padding: 8px 0; border-bottom: 1px dotted rgba(255,255,255,0.10); font-size: 14px; }
+  .sr-total-row:last-child { border-bottom: 0; }
+  .sr-total-row .k { color: rgba(255,255,255,0.65); }
+  .sr-total-row .v { font-weight: 700; }
+  .sr-cta { margin-top: 20px; }
+  .sr-cta .btn { width: 100%; justify-content: center; }
+  .sr-foot { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 16px; line-height: 1.55; }
+</style>
+
+<!-- PRICING / ADVISORY -->
+<section class="std" style="background:#fff">
+  <div class="container">
+    <div class="section-head">
+      <div class="k">How to engage</div>
+      <h2>Two ways to work with us.</h2>
+    </div>
+    <div class="contact-grid">
+      <div class="ccard">
+        <div class="lab">Self-serve</div>
+        <h3>Institution Seats</h3>
+        <div class="price"><div class="v">$195</div><div class="u">/ seat · volume pricing</div></div>
+        <p>Buy Foundation Course seats in bulk. Admin dashboard. Assessment aggregated to org level. Toolbox shared across staff.</p>
+        <ul>
+          <li><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Volume discount from 10 seats</li>
+          <li><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Admin assigns &amp; tracks training</li>
+          <li><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>SSO available at 25+ seats</li>
+        </ul>
+        <a class="btn btn-lg btn-ink" href="#">Get a Quote →</a>
+      </div>
+      <div class="ccard">
+        <div class="lab">Hands-on</div>
+        <h3>Leadership Advisory</h3>
+        <div class="price"><div class="v">Custom</div><div class="u">/ contact for engagement</div></div>
+        <p>Fractional Chief AI Officer. Quarterly working sessions with leadership, monthly cohort reviews, examiner-ready documentation throughout.</p>
+        <ul>
+          <li><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Includes all course + toolbox access</li>
+          <li><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Custom playbooks for your institution</li>
+          <li><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Direct line to founder</li>
+        </ul>
+        <a class="btn btn-lg btn-gold" href="#">Book Briefing →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="container">
+    <div class="cta-band">
+      <div>
+        <div class="k">Institutions &amp; Teams</div>
+        <h2>Train the people who already run the bank.</h2>
+        <p>The institutions that win with AI aren't the ones with the slickest policy doc. They're the ones whose staff can actually use it.</p>
+      </div>
+      <div class="cta-actions">
+        <a class="btn btn-lg btn-gold" href="#">Book Executive Briefing</a>
+        <a class="btn btn-lg btn-ghost-dark" href="#">Get Seat Pricing</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ribbon">SKETCH · <span>Teams</span></div>
+
+<script>
+  /* ---------- Institution Sizer ---------- */
+  const SZ = {
+    staff: 120,
+    classMult: 1.0,
+    depts: new Set(["compliance","retail","marketing","lending"]),
+  };
+
+  function seatPrice(staff) {
+    if (staff >= 100) return { p: 145, tier: "100+ seats" };
+    if (staff >= 50)  return { p: 195, tier: "50+ seats" };
+    if (staff >= 25)  return { p: 245, tier: "25+ seats" };
+    return { p: 295, tier: "Standard" };
+  }
+  function rolloutWindow(staff) {
+    if (staff >= 200) return "12–16 weeks";
+    if (staff >= 100) return "10–12 weeks";
+    if (staff >= 50)  return "8–10 weeks";
+    if (staff >= 25)  return "6–8 weeks";
+    return "4–6 weeks";
+  }
+  function fmt(n) { return n.toLocaleString('en-US'); }
+
+  function recalc() {
+    const staff = SZ.staff;
+    const { p: base, tier } = seatPrice(staff);
+    const price = Math.round(base * SZ.classMult);
+    const total = price * staff;
+    const hours = staff * 6; // 6 hrs per learner (Foundation course)
+
+    document.getElementById('sz-staff-val').textContent = fmt(staff);
+    document.getElementById('sz-price').textContent = fmt(price);
+    document.getElementById('sz-tier-label').textContent = tier;
+    document.getElementById('sz-seats').textContent = fmt(staff);
+    document.getElementById('sz-total').textContent = fmt(total);
+    document.getElementById('sz-window').textContent = rolloutWindow(staff);
+    document.getElementById('sz-hours').textContent = fmt(hours);
+    document.getElementById('sz-depts-count').textContent = SZ.depts.size;
+  }
+
+  document.getElementById('sz-staff').addEventListener('input', e => {
+    SZ.staff = parseInt(e.target.value, 10);
+    recalc();
+  });
+  document.querySelectorAll('#sz-class .sz-pill').forEach(p => {
+    p.addEventListener('click', () => {
+      document.querySelectorAll('#sz-class .sz-pill').forEach(x => x.classList.remove('on'));
+      p.classList.add('on');
+      SZ.classMult = parseFloat(p.dataset.mult);
+      recalc();
+    });
+  });
+  document.querySelectorAll('#sz-depts .sz-pill').forEach(p => {
+    p.addEventListener('click', () => {
+      p.classList.toggle('on');
+      const d = p.dataset.d;
+      if (p.classList.contains('on')) SZ.depts.add(d); else SZ.depts.delete(d);
+      recalc();
+    });
+  });
+
+  recalc();
+</script>
+
+</body>
+</html>

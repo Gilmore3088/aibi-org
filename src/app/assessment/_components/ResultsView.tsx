@@ -19,7 +19,7 @@ export function ResultsView({ score, tier, answers, email }: ResultsViewProps) {
     <div className="w-full max-w-3xl mx-auto space-y-16">
       {/* Confirmation header */}
       <div className="text-center" data-print-hide="true">
-        <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-2">
+        <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--gold)] mb-2">
           Your AI Readiness Results
         </p>
         <p className="text-sm text-[color:var(--color-ink)]/70">
@@ -77,7 +77,7 @@ export function ResultsView({ score, tier, answers, email }: ResultsViewProps) {
                       className={
                         'h-2 flex-1 ' +
                         (bar <= points
-                          ? 'bg-[color:var(--color-terra)]'
+                          ? 'bg-[color:var(--gold)]'
                           : 'bg-[color:var(--color-ink)]/10')
                       }
                     />

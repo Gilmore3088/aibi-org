@@ -76,7 +76,7 @@ export function MarketingPage({ hero, kpis, closing, children, className }: Mark
         <div className={cn("grid gap-s10", hasAside && "lg:grid-cols-[1.5fr_1fr] lg:items-end")}>
           <div>
             {hero.eyebrow && (
-              <p className="font-serif-sc text-label-md uppercase tracking-widest text-terra mb-s4">
+              <p className="font-serif-sc text-label-md uppercase tracking-widest text-gold mb-s4">
                 {hero.eyebrow}
               </p>
             )}
@@ -106,7 +106,7 @@ export function MarketingPage({ hero, kpis, closing, children, className }: Mark
               </h1>
             )}
             {hero.tagline && (
-              <p className="font-serif italic text-body-lg text-terra mt-s4">{hero.tagline}</p>
+              <p className="font-serif italic text-body-lg text-gold mt-s4">{hero.tagline}</p>
             )}
             {hero.lede && (
               <p className="text-body-lg text-ink/80 leading-relaxed mt-s3 max-w-narrow">

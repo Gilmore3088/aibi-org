@@ -1,14 +1,19 @@
 // /courses/foundation — canonical course URL
 //
-// With the 2026-05-11 reversal of the four-track family, AiBI-Foundation
-// is one course. The active product page lives at
-// /courses/foundation/program (route shape inherited from the original
-// rename — see Plans/_archive/refactor-aibi-p-to-foundation-migration.md, Conflict
-// 1 → Option B). This top-level route redirects there so visitors who
-// typed the shorter URL land on the actual course page.
+// The marketing landing for AiBI-Foundation lives at /courses (the
+// catalog page covers Foundation in full — syllabus, $295 pricing,
+// enrollment CTA). This top-level redirect ensures the shorter URL
+// lands on the public marketing page instead of bouncing visitors
+// into the gated LMS at /courses/foundation/program.
+//
+// Operator decision 2026-05-26: drop the redirect-into-LMS bug —
+// the consumer journey is now Foundation link → /courses → Enroll
+// → /courses/foundation/program/purchase (Stripe).
 
 import { redirect } from 'next/navigation';
 
 export default function FoundationOverviewPage() {
-  redirect('/courses/foundation/program');
+  // /courses itself 308s to /education (see next.config.mjs).
+  // Send the consumer there directly to skip the redirect chain.
+  redirect('/education');
 }

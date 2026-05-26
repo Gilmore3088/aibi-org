@@ -3,7 +3,7 @@
  *
  * Components import named tokens from this module instead of typing CSS
  * variable strings inline. Use the helper `cssVar('terra')` to produce a
- * `var(--color-terra)` string when you need it as inline-style or in
+ * `var(--gold)` string when you need it as inline-style or in
  * `<svg>` attributes.
  *
  * Intent contract: docs/superpowers/design-system/03-tokens.md
@@ -15,34 +15,34 @@
 // ---- Color · Pillar (discipline rule applies) -------------------------------
 
 export const PILLAR_COLORS = {
-  awareness: 'var(--color-sage)', // Pillar A
-  understanding: 'var(--color-cobalt)', // Pillar B (also security)
-  creation: 'var(--color-amber)', // Pillar C
-  application: 'var(--color-terra)', // Pillar D + brand signal
+  awareness: 'var(--ink-2)', // Pillar A
+  understanding: 'var(--ink-2)', // Pillar B (also security)
+  creation: 'var(--gold)', // Pillar C
+  application: 'var(--gold)', // Pillar D + brand signal
 } as const;
 
 export type Pillar = keyof typeof PILLAR_COLORS;
 
 export const PILLAR_PALE = {
-  awareness: 'var(--color-sage-pale)',
-  understanding: 'var(--color-cobalt-pale)',
-  creation: 'var(--color-amber-light)', // amber has no -pale; use -light
-  application: 'var(--color-terra-pale)',
+  awareness: 'var(--cream-2)',
+  understanding: 'var(--cream-2)',
+  creation: 'var(--gold-2)', // amber has no -pale; use -light
+  application: 'var(--cream-2)',
 } as const;
 
 // ---- Color · All tokens -----------------------------------------------------
 
 export const COLORS = {
   // Pillar
-  terra: 'var(--color-terra)',
-  terraLight: 'var(--color-terra-light)',
-  terraPale: 'var(--color-terra-pale)',
-  sage: 'var(--color-sage)',
-  sagePale: 'var(--color-sage-pale)',
-  cobalt: 'var(--color-cobalt)',
-  cobaltPale: 'var(--color-cobalt-pale)',
-  amber: 'var(--color-amber)',
-  amberLight: 'var(--color-amber-light)',
+  terra: 'var(--gold)',
+  terraLight: 'var(--gold-2)',
+  terraPale: 'var(--cream-2)',
+  sage: 'var(--ink-2)',
+  sagePale: 'var(--cream-2)',
+  cobalt: 'var(--ink-2)',
+  cobaltPale: 'var(--cream-2)',
+  amber: 'var(--gold)',
+  amberLight: 'var(--gold-2)',
 
   // Surfaces
   linen: 'var(--color-linen)',
@@ -72,9 +72,9 @@ export type ColorToken = keyof typeof COLORS;
 // These are *roles* mapped to color tokens, used by ScoreRing and tier badges.
 export const TIER_COLORS = {
   'starting-point': 'var(--color-error)',
-  'early-stage': 'var(--color-terra)',
-  'building-momentum': 'var(--color-terra-light)',
-  'ready-to-scale': 'var(--color-sage)',
+  'early-stage': 'var(--gold)',
+  'building-momentum': 'var(--gold-2)',
+  'ready-to-scale': 'var(--ink-2)',
 } as const;
 
 export type Tier = keyof typeof TIER_COLORS;

@@ -38,7 +38,11 @@ export default async function CourseLayout({ children }: CourseLayoutProps) {
   // Preview/local bypass — skip auth + onboarding gates entirely when
   // PREVIEW_AUTH_BYPASS=true on a non-production environment.
   if (isPreviewAuthBypassEnabled()) {
-    return <>{children}</>;
+    return (
+      <div className="mockup-scope">
+        {children}
+      </div>
+    );
   }
 
   const headersList = await headers();
@@ -99,5 +103,9 @@ export default async function CourseLayout({ children }: CourseLayoutProps) {
     }
   }
 
-  return <>{children}</>;
+  return (
+    <div className="mockup-scope">
+      {children}
+    </div>
+  );
 }

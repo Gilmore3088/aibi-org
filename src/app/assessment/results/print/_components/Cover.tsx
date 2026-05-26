@@ -165,7 +165,7 @@ export function Cover({
                 style={{
                   fontFamily: 'var(--font-serif)',
                   fontSize: '13pt',
-                  color: 'var(--color-terra)',
+                  color: 'var(--gold)',
                   margin: '0.04in 0 0 0',
                   lineHeight: 1.1,
                 }}
@@ -213,7 +213,7 @@ export function Cover({
                       style={{
                         fontFamily: 'var(--font-mono)',
                         fontSize: '11pt',
-                        color: isCritical ? 'var(--color-error)' : 'var(--color-terra)',
+                        color: isCritical ? 'var(--color-error)' : 'var(--gold)',
                         fontVariantNumeric: 'tabular-nums',
                       }}
                     >

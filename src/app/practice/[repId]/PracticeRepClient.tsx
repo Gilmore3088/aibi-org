@@ -78,18 +78,18 @@ export function PracticeRepClient({ rep }: PracticeRepClientProps) {
         <nav aria-label="Breadcrumb">
           <Link
             href="/dashboard"
-            className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/50 hover:text-[color:var(--color-terra)] transition-colors"
+            className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/50 hover:text-[color:var(--gold)] transition-colors"
           >
             Dashboard
           </Link>
           <span className="mx-2 text-[color:var(--color-ink)]/20">/</span>
-          <span className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-terra)]">
+          <span className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--gold)]">
             Practice
           </span>
         </nav>
 
         <header className="border-b border-[color:var(--color-ink)]/10 pb-8">
-          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
+          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
             {rep.timeEstimateMinutes} minute AI rep · {rep.safetyLevel.toUpperCase()} use
           </p>
           <h1 className="font-serif text-4xl md:text-5xl text-[color:var(--color-ink)] leading-tight">
@@ -106,7 +106,7 @@ export function PracticeRepClient({ rep }: PracticeRepClientProps) {
             <InfoBlock title="Scenario">{rep.scenario}</InfoBlock>
             <InfoBlock title="Task">{rep.task}</InfoBlock>
             <div className="border border-[color:var(--color-ink)]/10 rounded-[3px] p-5 bg-[color:var(--color-parch)]">
-              <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
+              <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
                 Constraints
               </p>
               <ul className="space-y-2">
@@ -120,7 +120,7 @@ export function PracticeRepClient({ rep }: PracticeRepClientProps) {
           </aside>
 
           <section className="border border-[color:var(--color-ink)]/10 rounded-[3px] p-5 md:p-6">
-            <label className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
+            <label className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--gold)]">
               Your prompt or response
             </label>
             <div className="mt-3 bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[2px] p-4">
@@ -135,7 +135,7 @@ export function PracticeRepClient({ rep }: PracticeRepClientProps) {
               value={response}
               onChange={(event) => setResponse(event.target.value)}
               rows={10}
-              className="mt-4 w-full rounded-[2px] border border-[color:var(--color-ink)]/15 bg-[color:var(--color-linen)] p-4 text-sm text-[color:var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-terra)]"
+              className="mt-4 w-full rounded-[2px] border border-[color:var(--color-ink)]/15 bg-[color:var(--color-linen)] p-4 text-sm text-[color:var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)]"
               placeholder="Write your prompt, revised message, or answer here..."
             />
             <div className="mt-4 flex flex-col sm:flex-row sm:items-center gap-3">
@@ -143,7 +143,7 @@ export function PracticeRepClient({ rep }: PracticeRepClientProps) {
                 type="button"
                 onClick={handleSubmit}
                 disabled={response.trim().length < 20}
-                className="px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] disabled:opacity-40 disabled:cursor-not-allowed font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
+                className="px-6 py-3 bg-[color:var(--gold)] text-[color:var(--color-linen)] disabled:opacity-40 disabled:cursor-not-allowed font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] transition-colors"
               >
                 Submit Practice Rep
               </button>
@@ -164,7 +164,7 @@ export function PracticeRepClient({ rep }: PracticeRepClientProps) {
           <section className="space-y-6">
             <div className="grid lg:grid-cols-2 gap-6">
               <article className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-6">
-                <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
+                <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
                   Model answer
                 </p>
                 <p className="text-sm text-[color:var(--color-ink)]/80 leading-relaxed">
@@ -172,7 +172,7 @@ export function PracticeRepClient({ rep }: PracticeRepClientProps) {
                 </p>
               </article>
               <article className="border border-[color:var(--color-ink)]/10 rounded-[3px] p-6">
-                <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
+                <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
                   What good looks like
                 </p>
                 <ul className="space-y-2">
@@ -187,9 +187,9 @@ export function PracticeRepClient({ rep }: PracticeRepClientProps) {
                 </p>
               </article>
             </div>
-            <article className="border border-[color:var(--color-terra)]/25 rounded-[3px] bg-[color:var(--color-parch)] p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <article className="border border-[color:var(--gold)]/25 rounded-[3px] bg-[color:var(--color-parch)] p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <div>
-                <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-2">
+                <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--gold)] mb-2">
                   Completion
                 </p>
                 <p className="text-sm text-[color:var(--color-ink)]/75 leading-relaxed">
@@ -201,7 +201,7 @@ export function PracticeRepClient({ rep }: PracticeRepClientProps) {
                 type="button"
                 onClick={handleComplete}
                 disabled={saving}
-                className="px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] disabled:opacity-40 disabled:cursor-not-allowed font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
+                className="px-6 py-3 bg-[color:var(--gold)] text-[color:var(--color-linen)] disabled:opacity-40 disabled:cursor-not-allowed font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] transition-colors"
               >
                 {saving ? 'Saving...' : 'Mark Complete'}
               </button>
@@ -229,7 +229,7 @@ function InfoBlock({
 }) {
   return (
     <div className="border border-[color:var(--color-ink)]/10 rounded-[3px] p-5">
-      <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
+      <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
         {title}
       </p>
       <p className="text-sm text-[color:var(--color-ink)]/75 leading-relaxed">

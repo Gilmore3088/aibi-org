@@ -84,7 +84,7 @@ every outstanding work item as 🤖 autonomous / 🔒 you-only /
 | [`docs/reviews/auth-e2e-2026-05-17.md`](../docs/reviews/auth-e2e-2026-05-17.md) | Auth E2E report | Findings 1+3 fixed; 2 unblocked 2026-05-17 |
 | [`docs/reviews/a11y-audit-2026-05-17.md`](../docs/reviews/a11y-audit-2026-05-17.md) | Accessibility audit | 7/7 public routes clean |
 | [`docs/reviews/site-wide-audit-2026-05-19.md`](../docs/reviews/site-wide-audit-2026-05-19.md) | Site-wide audit | PR #235 open; follow-ups tracked as issues #236, #237, #238 |
-| [`docs/reviews/branch-cleanup-2026-05-19.md`](../docs/reviews/branch-cleanup-2026-05-19.md) | Branch cleanup pass | 21→10 worktrees, 24→10 branches, 5→0 orphan dirs. 4 worktrees HOLD: design-2.0, mailerlite, wave-1, wave-2. |
+| [`docs/reviews/branch-cleanup-2026-05-19.md`](../docs/reviews/branch-cleanup-2026-05-19.md) | Branch cleanup pass | ✅ **CLOSED 2026-05-21** — the 4 HOLD worktrees (design-2.0, mailerlite, wave-1, wave-2) all retired; wave content rescued via #276; remote pruned 77→7. See resolution note in the doc + DECISIONS 2026-05-21. |
 | [`docs/manual-verification-runbook.md`](../docs/manual-verification-runbook.md) | Runbook | Used during launch QA |
 | [`docs/brand-refresh-2026-05-09/MERGE-ROADMAP.md`](../docs/brand-refresh-2026-05-09/MERGE-ROADMAP.md) | Migration plan | Ledger rollout phases 1–5 |
 | [`docs/brand-refresh-2026-05-09/MANUAL-ACTIONS.md`](../docs/brand-refresh-2026-05-09/MANUAL-ACTIONS.md) | Manual steps | Figma / Resend / Vercel dashboard work |

@@ -18,7 +18,7 @@ export function MaturityLadder({ tierId }: MaturityLadderProps) {
 
   return (
     <section className="space-y-8" aria-labelledby="maturity-ladder-heading">
-      <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
+      <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--gold)]">
         Maturity ladder
       </p>
       <h2
@@ -52,7 +52,7 @@ export function MaturityLadder({ tierId }: MaturityLadderProps) {
                 className={
                   'absolute -left-[37px] top-1 inline-flex items-center justify-center h-7 w-7 rounded-full font-mono text-[11px] tabular-nums font-semibold ' +
                   (isCurrent
-                    ? 'bg-[color:var(--color-terra)] text-[color:var(--color-linen)] ring-4 ring-[color:var(--color-terra)]/20'
+                    ? 'bg-[color:var(--gold)] text-[color:var(--color-linen)] ring-4 ring-[color:var(--gold)]/20'
                     : isBelow
                       ? 'bg-[color:var(--color-ink)]/70 text-[color:var(--color-linen)]'
                       : 'bg-[color:var(--color-linen)] text-[color:var(--color-ink)]/60 border border-[color:var(--color-ink)]/30')
@@ -65,14 +65,14 @@ export function MaturityLadder({ tierId }: MaturityLadderProps) {
                   className={
                     'font-serif text-xl leading-tight ' +
                     (isCurrent
-                      ? 'text-[color:var(--color-terra)]'
+                      ? 'text-[color:var(--gold)]'
                       : 'text-[color:var(--color-ink)]')
                   }
                 >
                   {rung.label}
                 </h3>
                 {isCurrent ? (
-                  <span className="font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-terra)]">
+                  <span className="font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--gold)]">
                     You are here
                   </span>
                 ) : null}

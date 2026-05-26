@@ -18,7 +18,7 @@ export default function EfficiencyRatioWorkbookPage() {
           <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60 mb-4">
             <Link
               href="/for-institutions"
-              className="hover:text-[color:var(--color-terra)] transition-colors"
+              className="hover:text-[color:var(--gold)] transition-colors"
             >
               For institutions
             </Link>
@@ -44,7 +44,7 @@ export default function EfficiencyRatioWorkbookPage() {
         className="px-6 py-12 md:py-16 border-t border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)]"
       >
         <div className="max-w-4xl mx-auto">
-          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
+          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
             The four inputs
           </p>
           <h2
@@ -119,7 +119,7 @@ export default function EfficiencyRatioWorkbookPage() {
         className="px-6 py-14 md:py-20 border-t border-[color:var(--color-ink)]/10"
       >
         <div className="max-w-4xl mx-auto">
-          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
+          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
             Calculator
           </p>
           <h2
@@ -145,7 +145,7 @@ export default function EfficiencyRatioWorkbookPage() {
         className="px-6 py-14 md:py-20 border-t border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)]"
       >
         <div className="max-w-3xl mx-auto">
-          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
+          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
             How to read your result
           </p>
           <h2
@@ -192,7 +192,7 @@ export default function EfficiencyRatioWorkbookPage() {
       {/* Closing CTA */}
       <section className="px-6 py-14 md:py-20 border-t border-[color:var(--color-ink)]/10">
         <div className="max-w-3xl mx-auto bg-[color:var(--color-ink)] text-[color:var(--color-linen)] p-10 md:p-14 text-center">
-          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra-pale)] mb-3">
+          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--cream-2)] mb-3">
             Next step
           </p>
           <h2 className="font-serif text-3xl md:text-4xl mb-4">
@@ -211,7 +211,7 @@ export default function EfficiencyRatioWorkbookPage() {
               'https://calendly.com/aibi/executive-briefing'
             }
             source="services"
-            className="inline-block px-8 py-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] active:scale-[0.98] transition-all"
+            className="inline-block px-8 py-4 bg-[color:var(--gold)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] active:scale-[0.98] transition-all"
           >
             Book an Executive Briefing
           </BriefingButton>

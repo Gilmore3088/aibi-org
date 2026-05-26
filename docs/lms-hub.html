@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex" />
+<title>LMS Consolidation Hub · The AI Banking Institute</title>
+<style>
+  :root {
+    --bg:#ECE9DF; --paper:#F4F1E7; --parch:#E4E0D2; --tape:#F1E9D0;
+    --ink:#0E1B2D; --ink2:#1F2A3F; --muted:#5C6B82; --soft:#8C95A8;
+    --accent:#B5862A; --accent-l:#C99A40; --accent2:#1E3A5F; --weak:#8E3B2A;
+    --rule:#D5D1C2; --rule-strong:#A8AEBE; --ok:#3F6B4C;
+    --serif:"Iowan Old Style",Georgia,"Times New Roman",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    --mono:"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans); font-size:15px; line-height:1.55; -webkit-font-smoothing:antialiased; }
+  .wrap { max-width:1120px; margin:0 auto; padding:48px 32px 96px; }
+
+  header { border-bottom:2px solid var(--ink); padding-bottom:24px; }
+  .kicker { font-family:var(--mono); font-size:11px; letter-spacing:.22em; text-transform:uppercase; color:var(--accent); margin:0 0 12px; }
+  .kicker a { color:var(--accent2); text-decoration:none; }
+  h1 { font-family:var(--serif); font-weight:600; font-size:clamp(34px,5vw,54px); line-height:1.0; letter-spacing:-.02em; margin:0 0 10px; }
+  .sub { font-family:var(--serif); font-style:italic; font-size:19px; color:var(--ink2); margin:0; max-width:66ch; }
+  .meta { font-family:var(--mono); font-size:11px; letter-spacing:.04em; color:var(--muted); margin-top:14px; }
+
+  .verdict { background:var(--ink); color:var(--paper); border-radius:3px; padding:20px 24px; margin:26px 0 8px; }
+  .verdict .lab { font-family:var(--mono); font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--accent-l); margin:0 0 8px; }
+  .verdict p { margin:0; font-size:15px; line-height:1.6; color:rgba(244,241,231,.92); }
+  .verdict b { color:#fff; }
+
+  .stats { display:grid; grid-template-columns:repeat(4,1fr); border-top:1px solid var(--rule-strong); border-bottom:1px solid var(--rule); margin:28px 0 36px; }
+  .stat { padding:16px 18px; border-right:1px solid var(--rule); }
+  .stat:last-child { border-right:none; }
+  .stat .k { font-family:var(--mono); font-size:9px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); }
+  .stat .v { font-family:var(--serif); font-weight:600; font-size:32px; line-height:1; margin-top:6px; }
+  .stat .v.red{color:var(--weak);} .stat .v.gold{color:var(--accent);} .stat .v.green{color:var(--ok);}
+  .stat .s { font-size:12px; color:var(--muted); margin-top:3px; }
+
+  .toc { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:40px; }
+  .toc a { font-family:var(--mono); font-size:11px; letter-spacing:.04em; text-decoration:none; color:var(--ink2); border:1px solid var(--rule); padding:5px 10px; border-radius:2px; background:var(--paper); }
+  .toc a:hover { border-color:var(--accent); color:var(--accent); }
+
+  section { margin-bottom:48px; scroll-margin-top:24px; }
+  h2 { font-family:var(--serif); font-weight:600; font-size:27px; letter-spacing:-.015em; margin:0 0 4px; display:flex; align-items:baseline; gap:12px; }
+  h2 .num { font-family:var(--mono); font-size:13px; color:var(--accent); letter-spacing:.1em; }
+  .sec-note { color:var(--muted); font-size:13.5px; margin:0 0 18px; max-width:76ch; }
+
+  .cards3 { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  .acard { background:var(--paper); border:1px solid var(--rule); border-top:3px solid var(--muted); border-radius:3px; padding:18px 20px; }
+  .acard h3 { font-family:var(--serif); font-size:18px; font-weight:600; margin:6px 0 8px; line-height:1.2; }
+  .acard .n { font-family:var(--mono); font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); }
+  .acard p { font-size:13px; color:var(--ink2); margin:0 0 10px; }
+  .acard .why { font-size:12px; color:var(--muted); border-top:1px solid var(--rule); padding-top:10px; }
+  .acard .why b { color:var(--ink); }
+
+  table { width:100%; border-collapse:collapse; background:var(--paper); border:1px solid var(--rule); border-radius:3px; overflow:hidden; }
+  thead th { text-align:left; font-family:var(--mono); font-size:9.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); padding:11px 14px; background:var(--parch); border-bottom:1px solid var(--rule); }
+  tbody td { padding:11px 14px; border-bottom:1px solid var(--rule); vertical-align:top; font-size:13.5px; }
+  tbody tr:last-child td { border-bottom:none; }
+  tbody tr:hover { background:var(--tape); }
+  code { font-family:var(--mono); font-size:12px; background:rgba(14,27,45,.05); padding:1px 5px; border-radius:2px; }
+  .note { color:var(--muted); font-size:12.5px; }
+
+  .pill { display:inline-flex; align-items:center; gap:5px; font-family:var(--mono); font-size:9.5px; letter-spacing:.08em; text-transform:uppercase; padding:3px 8px; border-radius:2px; white-space:nowrap; font-weight:600; }
+  .pill.real { background:rgba(63,107,76,.13); color:var(--ok); border:1px solid rgba(63,107,76,.4); }
+  .pill.stub { background:rgba(142,59,42,.1); color:var(--weak); border:1px solid rgba(142,59,42,.4); }
+  .pill.miss { background:rgba(142,59,42,.16); color:var(--weak); border:1px solid rgba(142,59,42,.5); }
+  .pill.retire { background:rgba(140,149,168,.16); color:var(--muted); border:1px solid rgba(140,149,168,.45); }
+
+  .iss { display:inline-block; font-family:var(--mono); font-size:11px; padding:1px 6px; border-radius:2px; text-decoration:none; margin:1px 2px 1px 0; border:1px solid var(--rule-strong); color:var(--accent2); background:var(--bg); white-space:nowrap; }
+  .iss:hover { border-color:var(--accent2); }
+  .iss.block { color:var(--weak); border-color:rgba(142,59,42,.5); }
+  .iss.done { color:var(--ok); border-color:rgba(63,107,76,.45); text-decoration:line-through; }
+  .iss.epic { color:var(--accent); border-color:rgba(181,134,42,.5); }
+  .iss.new { color:var(--weak); border-color:rgba(142,59,42,.5); background:rgba(142,59,42,.06); font-weight:600; }
+  .dash { color:var(--soft); }
+
+  .ownt { font-family:var(--mono); font-size:10px; letter-spacing:.06em; padding:2px 6px; border-radius:2px; white-space:nowrap; }
+  .ownt.you { background:rgba(142,59,42,.1); color:var(--weak); }
+  .ownt.agent { background:rgba(63,107,76,.13); color:var(--ok); }
+  .ownt.both { background:rgba(30,58,95,.1); color:var(--accent2); }
+
+  .notes { background:var(--tape); border:1px dashed var(--rule-strong); border-radius:3px; padding:20px 24px; min-height:120px; }
+  .notes h3 { font-family:var(--mono); font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin:0 0 12px; }
+  .notes ul { margin:0; padding-left:18px; }
+  .notes li { font-size:13.5px; color:var(--ink2); margin-bottom:8px; }
+  .notes .empty { color:var(--soft); font-style:italic; font-size:13px; }
+
+  footer { margin-top:56px; padding-top:20px; border-top:1px solid var(--rule); font-family:var(--mono); font-size:10.5px; letter-spacing:.04em; color:var(--soft); }
+  .legendbar { display:flex; flex-wrap:wrap; gap:8px 14px; align-items:center; margin:0 0 30px; padding:12px 16px; background:var(--paper); border:1px solid var(--rule); border-radius:3px; }
+  .legendbar .lab { font-family:var(--mono); font-size:9.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); }
+
+  @media (max-width:820px){ .cards3{grid-template-columns:1fr;} .stats{grid-template-columns:repeat(2,1fr);} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <p class="kicker">LMS Consolidation Hub · <a href="page-tree-status-2026-05-21.html">← back to launch board</a></p>
+    <h1>Foundation LMS — everything in one place</h1>
+    <p class="sub">The single home for the AI Banking course / LMS: what's real, what's stale, what's incomplete, every related ticket, and the work that isn't ticketed yet. Built from the 2026-05-21 three-angle audit.</p>
+    <p class="meta">The AI Banking Institute · scope: /courses/foundation/** · src/lib/lms/** · content/courses/foundation-program/** · 2026-05-21</p>
+  </header>
+
+  <div class="verdict">
+    <p class="lab">Honest verdict</p>
+    <p><b>Not sellable at $295 today.</b> The course is ~60% complete: modules 1–4 and 9–12 are substantive, but <b>5–8 are skeletons</b> and <b>no module has activity scaffolding</b>. On top of that, learners see <b>old fonts</b> across onboarding, every lesson body, and the certificate, and there are <b>multiple competing structures + dead prototypes</b> still shipping. None of this is in the launch checklist — it lives here now.</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="k">Modules substantive</div><div class="v green">8 / 12</div><div class="s">1–4, 9–12</div></div>
+    <div class="stat"><div class="k">Modules skeleton</div><div class="v red">4</div><div class="s">5, 6, 7, 8</div></div>
+    <div class="stat"><div class="k">Modules w/ scaffolding</div><div class="v red">0</div><div class="s">no worked examples anywhere</div></div>
+    <div class="stat"><div class="k">Dead / stale surfaces</div><div class="v gold">5</div><div class="s">retire candidates</div></div>
+  </div>
+
+  <div class="legendbar">
+    <span class="lab">Issue state</span>
+    <span class="iss">#000 tracked</span>
+    <span class="iss block">#000 blocker</span>
+    <span class="iss done">#000 closed</span>
+    <span class="iss new">NEW needs ticket</span>
+    <span class="lab" style="margin-left:8px">Owner</span>
+    <span class="ownt you">🔒 you</span>
+    <span class="ownt agent">🤖 agent</span>
+    <span class="ownt both">🤝 both</span>
+  </div>
+
+  <nav class="toc">
+    <a href="#findings">🔬 Findings</a>
+    <a href="#modules">📚 Module-by-module</a>
+    <a href="#dead">🗑️ Dead / stale</a>
+    <a href="#content">✍️ Content tickets</a>
+    <a href="#styling">🎨 Styling tickets</a>
+    <a href="#structure">🧱 Structure tickets</a>
+    <a href="#quality">🔧 Code-quality tickets</a>
+    <a href="#testing">✅ Testing / launch</a>
+    <a href="#adjacent">🧩 Adjacent surfaces</a>
+    <a href="#notes">🗒️ Notes</a>
+  </nav>
+
+  <!-- FINDINGS -->
+  <section id="findings">
+    <h2><span class="num">🔬</span> The three findings</h2>
+    <p class="sec-note">From the 2026-05-21 audit. Every gut-check confirmed.</p>
+    <div class="cards3">
+      <div class="acard" style="border-top-color:var(--accent2)">
+        <div class="n">A · Structure</div>
+        <h3>Competing systems</h3>
+        <p>Module content is split across <b>3 files</b> the page tries in sequence — <code>module-N.ts</code> → <code>v4-expanded-modules.ts</code> → <code>module-activities.ts</code>. Hidden, un-auditable.</p>
+        <div class="why"><b>Plus:</b> 2 dead preview routes still live · old prototype bundles · 12+ one-off activity forms with no registry.</div>
+      </div>
+      <div class="acard" style="border-top-color:var(--accent)">
+        <div class="n">B · Styling</div>
+        <h3>Old fonts everywhere learners look</h3>
+        <p>Onboarding, settings &amp; certificate on <b>DM Sans / Cormorant / DM Mono</b> (not Ledger). ~10 files, 56 refs.</p>
+        <div class="why"><b>Worse:</b> the shared <code>MarkdownRenderer</code> + <code>ContentTable</code> render <em>every lesson body + table</em> on the legacy color palette — stale styling is system-wide.</div>
+      </div>
+      <div class="acard" style="border-top-color:var(--weak)">
+        <div class="n">C · Content</div>
+        <h3>~60% complete</h3>
+        <p>Modules <b>5–8 skeleton</b>; teaching text written but not wired in; activities are hollow textboxes.</p>
+        <div class="why"><b>All 12:</b> no worked examples / scaffolding · banking specificity thin · artifacts named but not templated.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODULES -->
+  <section id="modules">
+    <h2><span class="num">📚</span> Module-by-module</h2>
+    <p class="sec-note">What a learner actually gets in each of the 12 modules.</p>
+    <table>
+      <thead><tr><th>#</th><th>Title</th><th>Content</th><th>Activity</th><th>What it needs</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>AI for Your Workday</td><td><span class="pill real">Real</span></td><td><span class="pill real">Complete + artifact</span></td><td class="note">Add worked examples to activity</td></tr>
+        <tr><td>2</td><td>What AI Is and Is Not</td><td><span class="pill real">Real</span></td><td><span class="pill real">Complete</span></td><td class="note">Add worked examples</td></tr>
+        <tr><td>3</td><td>Prompting Fundamentals</td><td><span class="pill real">Real</span></td><td><span class="pill real">Complete</span></td><td class="note">Add worked examples</td></tr>
+        <tr><td>4</td><td>Your AI Work Profile</td><td><span class="pill real">Real</span></td><td><span class="pill real">Complete + card</span></td><td class="note">Add worked examples</td></tr>
+        <tr><td>5</td><td>Projects and Context</td><td><span class="pill stub">Thin / stub</span></td><td><span class="pill stub">Hollow textbox</span></td><td class="note"><b>Wire in v4 teaching; real activity + Project Brief template</b></td></tr>
+        <tr><td>6</td><td>Files &amp; Document Workflows</td><td><span class="pill stub">Thin / stub</span></td><td><span class="pill stub">Hollow textbox</span></td><td class="note"><b>Wire in v4 teaching; real activity + Workflow Prompt template</b></td></tr>
+        <tr><td>7</td><td>AI Tools Landscape</td><td><span class="pill stub">Thin / stub</span></td><td><span class="pill stub">Hollow textbox</span></td><td class="note"><b>Wire in v4 teaching; tables; Tool Choice Map template</b></td></tr>
+        <tr><td>8</td><td>Agents &amp; Workflow Thinking</td><td><span class="pill stub">Thin / stub</span></td><td><span class="pill stub">Hollow textbox</span></td><td class="note"><b>Wire in v4 teaching; Workflow Map template</b></td></tr>
+        <tr><td>9</td><td>Safe AI Use in Banking</td><td><span class="pill real">Real</span></td><td><span class="pill real">Complete + checklist</span></td><td class="note">Add worked examples</td></tr>
+        <tr><td>10</td><td>Role-Based Use Cases</td><td><span class="pill real">Real</span></td><td><span class="pill real">Complete + card</span></td><td class="note">Verify module-10.ts wires to v4</td></tr>
+        <tr><td>11</td><td>Personal Prompt Library</td><td><span class="pill real">Real</span></td><td><span class="pill real">Complete + card</span></td><td class="note">Verify wiring</td></tr>
+        <tr><td>12</td><td>Final Foundation Lab</td><td><span class="pill real">Real</span></td><td><span class="pill real">Complete + pledge</span></td><td class="note">Verify wiring</td></tr>
+      </tbody>
+    </table>
+    <p class="sec-note" style="margin-top:14px"><span class="pill miss">Cross-cutting</span> &nbsp;Zero modules have activity <b>scaffolding</b> (worked examples / guided prompts) · banking specificity is generic, not sourced (FDIC / Jack Henry / Cornerstone data absent from teaching) · artifacts are named but not templated.</p>
+  </section>
+
+  <!-- DEAD -->
+  <section id="dead">
+    <h2><span class="num">🗑️</span> Dead / stale — retire candidates</h2>
+    <p class="sec-note">Pre-redesign leftovers still shipping. None linked from the live course. Safe to remove (code work, 🤖).</p>
+    <table>
+      <thead><tr><th>Thing</th><th>What it is</th><th>Action</th><th>Ticket</th></tr></thead>
+      <tbody>
+        <tr><td><code>/courses/foundation-preview</code></td><td class="note">Static HTML mockup, pre-Ledger (Apr 2026)</td><td><span class="pill retire">Retire</span></td><td><span class="iss new">NEW</span></td></tr>
+        <tr><td><code>/lms-preview</code> + <code>public/lms-prototype/</code></td><td class="note">Iframe prototype, CDN React at runtime</td><td><span class="pill retire">Retire</span></td><td><a class="iss" href="https://github.com/Gilmore3088/aibi-org/issues/148">#148</a></td></tr>
+        <tr><td><code>public/AiBI-P/</code></td><td class="note">Original HTML course mockups, superseded</td><td><span class="pill retire">Retire</span></td><td><span class="iss new">NEW</span></td></tr>
+        <tr><td><code>PILLAR_META</code> sage/cobalt/terra</td><td class="note">Retired pillar colors in <code>types.ts</code></td><td><span class="pill retire">Migrate → Ledger</span></td><td><span class="iss new">NEW</span></td></tr>
+        <tr><td>3-file content split</td><td class="note">module-N.ts / v4-expanded / module-activities — same module, 3 places</td><td><span class="pill retire">Consolidate → 1 source</span></td><td><span class="iss new">NEW</span></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- CONTENT -->
+  <section id="content">
+    <h2><span class="num">✍️</span> Content tickets <span class="eff" style="font-family:var(--mono);font-size:12px;color:var(--weak);letter-spacing:.1em">THE $295 BLOCKER</span></h2>
+    <p class="sec-note">The work that actually makes it sellable. Mostly <b>untracked</b> and mostly <span class="ownt you">🔒 your call</span> — needs subject-matter content, not just code.</p>
+    <table>
+      <thead><tr><th>Work</th><th>Owner</th><th>Ticket</th></tr></thead>
+      <tbody>
+        <tr><td>Finish modules <b>5–8</b> — wire in teaching, real activities, tables, artifact templates</td><td><span class="ownt you">🔒 you / SME</span></td><td><span class="iss new">NEW</span></td></tr>
+        <tr><td>Add activity <b>scaffolding</b> (worked examples, guided prompts) across all 12</td><td><span class="ownt you">🔒 you / SME</span></td><td><span class="iss new">NEW</span></td></tr>
+        <tr><td>Inject <b>banking specificity</b> — sourced FDIC / Jack Henry / Cornerstone data, real community-bank scenarios</td><td><span class="ownt you">🔒 you / SME</span></td><td><span class="iss new">NEW</span></td></tr>
+        <tr><td>Template the named <b>artifacts</b> (Project Brief, Workflow Prompt, Tool Choice Map, Workflow Map)</td><td><span class="ownt both">🤝 both</span></td><td><span class="iss new">NEW</span></td></tr>
+        <tr><td>Foundation key takeaways + work-products RLS (polish &amp; parity)</td><td><span class="ownt both">🤝 both</span></td><td><a class="iss" href="https://github.com/Gilmore3088/aibi-org/issues/157">#157</a></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- STYLING -->
+  <section id="styling">
+    <h2><span class="num">🎨</span> Styling tickets</h2>
+    <p class="sec-note">Migrate the course off old fonts + legacy colors onto Ledger. Pure code — <span class="ownt agent">🤖 I can do these</span>.</p>
+    <table>
+      <thead><tr><th>Work</th><th>Owner</th><th>Ticket</th></tr></thead>
+      <tbody>
+        <tr><td>Migrate <b>onboarding + settings + certificate</b> off DM Sans / Cormorant / DM Mono → Ledger fonts (~10 files)</td><td><span class="ownt agent">🤖</span></td><td><span class="iss new">NEW</span></td></tr>
+        <tr><td>Migrate <code>MarkdownRenderer</code> + <code>ContentTable</code> off legacy <code>--color-*</code> → <code>--ledger-*</code> (affects every lesson body + table)</td><td><span class="ownt agent">🤖</span></td><td><span class="iss new">NEW</span></td></tr>
+        <tr><td>§17 token consolidation + <code>/lms-preview</code> decision</td><td><span class="ownt both">🤝</span></td><td><a class="iss" href="https://github.com/Gilmore3088/aibi-org/issues/148">#148</a></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- STRUCTURE -->
+  <section id="structure">
+    <h2><span class="num">🧱</span> Structure tickets</h2>
+    <p class="sec-note">Make the architecture legible. Code work — <span class="ownt agent">🤖</span>, but (1) is a design decision worth your nod first.</p>
+    <table>
+      <thead><tr><th>Work</th><th>Owner</th><th>Ticket</th></tr></thead>
+      <tbody>
+        <tr><td>Collapse the <b>3-file content split</b> into one source of truth per module</td><td><span class="ownt both">🤝</span></td><td><span class="iss new">NEW</span></td></tr>
+        <tr><td>Build an <b>activity-form registry</b> (module → which custom form) instead of implicit component wiring</td><td><span class="ownt agent">🤖</span></td><td><span class="iss new">NEW</span></td></tr>
+        <tr><td>Verify <code>canAccessModule</code> signature mismatch (from audit)</td><td><span class="ownt agent">🤖</span></td><td><a class="iss" href="https://github.com/Gilmore3088/aibi-org/issues/242">#242</a></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- QUALITY -->
+  <section id="quality">
+    <h2><span class="num">🔧</span> Code-quality tickets <span class="eff" style="font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.1em">(#233 AUDIT FAMILY)</span></h2>
+    <p class="sec-note">File-size / refactor backlog. Honest note: these are <b>cosmetic code hygiene — they do NOT make the course sellable</b>. Low priority vs content. 3 already shipped this session.</p>
+    <table>
+      <thead><tr><th>Work</th><th>Owner</th><th>Ticket</th></tr></thead>
+      <tbody>
+        <tr><td>Parent audit (indexes the rest)</td><td><span class="ownt agent">🤖</span></td><td><a class="iss epic" href="https://github.com/Gilmore3088/aibi-org/issues/233">#233</a></td></tr>
+        <tr><td>program/page.tsx split · activity-fields shared</td><td><span class="ownt agent">🤖</span></td><td><a class="iss done" href="https://github.com/Gilmore3088/aibi-org/issues/239">#239</a><a class="iss done" href="https://github.com/Gilmore3088/aibi-org/issues/244">#244</a><a class="iss done" href="https://github.com/Gilmore3088/aibi-org/issues/246">#246</a></td></tr>
+        <tr><td>Split oversized files (toolkit, purchase, module, quick-wins, SkillDiagnosis, ToolGuide, post-assessment, certificate)</td><td><span class="ownt agent">🤖</span></td><td><a class="iss" href="https://github.com/Gilmore3088/aibi-org/issues/240">#240</a><a class="iss" href="https://github.com/Gilmore3088/aibi-org/issues/241">#241</a><a class="iss" href="https://github.com/Gilmore3088/aibi-org/issues/242">#242</a><a class="iss" href="https://github.com/Gilmore3088/aibi-org/issues/243">#243</a><a class="iss" href="https://github.com/Gilmore3088/aibi-org/issues/245">#245</a><a class="iss" href="https://github.com/Gilmore3088/aibi-org/issues/247">#247</a><a class="iss" href="https://github.com/Gilmore3088/aibi-org/issues/248">#248</a><a class="iss" href="https://github.com/Gilmore3088/aibi-org/issues/249">#249</a></td></tr>
+        <tr><td>skillBuilderData exemption decision · onboarding free-tiers/none re-edit</td><td><span class="ownt both">🤝</span></td><td><a class="iss" href="https://github.com/Gilmore3088/aibi-org/issues/250">#250</a><a class="iss" href="https://github.com/Gilmore3088/aibi-org/issues/251">#251</a></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- TESTING -->
+  <section id="testing">
+    <h2><span class="num">✅</span> Testing / launch</h2>
+    <p class="sec-note">E2E coverage for the course. Gated on operator env keys (see launch board). Launch-blockers.</p>
+    <table>
+      <thead><tr><th>Work</th><th>Owner</th><th>Ticket</th></tr></thead>
+      <tbody>
+        <tr><td>§6 course purchase + enrollment E2E</td><td><span class="ownt agent">🤖</span></td><td><a class="iss block" href="https://github.com/Gilmore3088/aibi-org/issues/137">#137</a></td></tr>
+        <tr><td>§7 course modules + activities E2E</td><td><span class="ownt agent">🤖</span></td><td><a class="iss block" href="https://github.com/Gilmore3088/aibi-org/issues/138">#138</a></td></tr>
+        <tr><td>§8 Foundation exam + certificate E2E</td><td><span class="ownt agent">🤖</span></td><td><a class="iss block" href="https://github.com/Gilmore3088/aibi-org/issues/139">#139</a></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ADJACENT -->
+  <section id="adjacent">
+    <h2><span class="num">🧩</span> Adjacent surfaces</h2>
+    <p class="sec-note">Part of the broader learning product but separate from the Foundation course core. Tracked here so nothing falls through.</p>
+    <table>
+      <thead><tr><th>Surface</th><th>Work</th><th>Ticket</th></tr></thead>
+      <tbody>
+        <tr><td>Toolbox (paid)</td><td class="note">v5 Ledger port · 3/4 kits metadata-only (blocker) · post-payment onboarding · real kit content (SME) · starter tier</td><td><a class="iss" href="https://github.com/Gilmore3088/aibi-org/issues/228">#228</a><a class="iss block" href="https://github.com/Gilmore3088/aibi-org/issues/229">#229</a><a class="iss" href="https://github.com/Gilmore3088/aibi-org/issues/231">#231</a><a class="iss" href="https://github.com/Gilmore3088/aibi-org/issues/184">#184</a><a class="iss" href="https://github.com/Gilmore3088/aibi-org/issues/219">#219</a></td></tr>
+        <tr><td>Practice Sandbox</td><td class="note">Phase 2 multi-provider + prod hardening</td><td><a class="iss" href="https://github.com/Gilmore3088/aibi-org/issues/158">#158</a></td></tr>
+        <tr><td>AiBI-S course</td><td class="note">Sandbox exercises (6 weeks)</td><td><a class="iss" href="https://github.com/Gilmore3088/aibi-org/issues/159">#159</a></td></tr>
+        <tr><td>AiBI-L course</td><td class="note">Sandbox exercises (4 sessions) + shared infra</td><td><a class="iss" href="https://github.com/Gilmore3088/aibi-org/issues/160">#160</a></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- NOTES -->
+  <section id="notes">
+    <h2><span class="num">🗒️</span> Consolidation notes</h2>
+    <p class="sec-note">Running scratch area — as LMS notes/decisions surface, they land here before becoming tickets. (Tell me what to add; I'll keep it current.)</p>
+    <div class="notes">
+      <h3>Open questions / decisions</h3>
+      <ul>
+        <li><b>Modules 5–8 content:</b> who writes it, and to what bar? This is the single biggest gate to charging $295.</li>
+        <li><b>Scaffolding model:</b> what does a "good" activity look like — worked example + guided prompt + sample output? Define once, apply to all 12.</li>
+        <li><b>3-file → 1 source:</b> agree the target shape before I consolidate, so content edits live in one obvious place.</li>
+        <li><b>Promote NEW items to real GitHub issues?</b> Several findings above have no ticket yet — say the word and I'll file them so this hub maps 1:1 to the issue tracker.</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>
+    LMS Consolidation Hub · 2026-05-21 · static snapshot from the three-angle audit + open issues · issue links → github.com/Gilmore3088/aibi-org · ask to regenerate after changes
+  </footer>
+
+</div>
+</body>
+</html>

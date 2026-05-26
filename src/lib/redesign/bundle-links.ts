@@ -28,7 +28,6 @@ const BUNDLE_TO_ROUTE: Record<string, string> = {
   'Playground.html': '/playground',
   'Playground v1.html': '/playground',
   'Playground v2.html': '/playground',
-  'FAQ.html': '/faq',
 };
 
 export function rewriteBundleLinks(html: string): string {

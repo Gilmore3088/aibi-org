@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sketch · Readiness Results · AiBI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="_mockup.css">
+  <style>
+    /* Score card on hero — split dark/light */
+    .scard { background: #fff; color: var(--ink); border-radius: 28px; overflow: hidden; box-shadow: 0 30px 60px -20px rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.08); }
+    .scard .grid { display: grid; grid-template-columns: 1fr; }
+    @media (min-width: 760px) { .scard .grid { grid-template-columns: 0.42fr 0.58fr; } }
+    .scard .left { background: var(--ink); color: #fff; padding: 28px; }
+    .scard .left .k { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-soft); }
+    .scard .left .v { font-size: 80px; font-weight: 700; color: var(--gold-soft); line-height: 0.95; margin-top: 14px; font-variant-numeric: tabular-nums; }
+    .scard .left .u { color: rgba(255,255,255,0.5); font-size: 14px; }
+    .scard .left .tier { margin-top: 22px; padding: 14px 16px; background: rgba(255,255,255,0.10); border-radius: 14px; }
+    .scard .left .tier .l { color: rgba(255,255,255,0.55); font-size: 13px; }
+    .scard .left .tier .t { font-size: 22px; font-weight: 700; margin-top: 4px; }
+    .scard .right { padding: 22px; }
+    .scard .right .k { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-deep); }
+    .scard .right h3 { font-size: 24px; font-weight: 600; margin: 6px 0 16px; line-height: 1.2; }
+    .scard .right .mrow { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: var(--cream); border-radius: 12px; margin-bottom: 8px; }
+    .scard .right .mrow svg { color: var(--gold); flex: none; }
+    .scard .right .mrow .lk { font-size: 11px; color: var(--slate-500); }
+    .scard .right .mrow .vv { font-weight: 700; font-size: 14px; margin-top: 2px; }
+    .scard .right .path { margin-top: 14px; padding: 14px 16px; background: var(--cream); border-radius: 14px; }
+    .scard .right .path .l { font-size: 11px; color: var(--slate-500); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    .scard .right .path .v { margin-top: 6px; font-weight: 700; font-size: 14px; line-height: 1.5; }
+
+    /* Dimension breakdown */
+    .dim-head { display: grid; gap: 24px; grid-template-columns: 1fr; margin-bottom: 28px; align-items: end; }
+    @media (min-width: 980px) { .dim-head { grid-template-columns: 0.38fr 0.62fr; } }
+    .dim-head .lede-l { font-size: 16px; color: var(--slate-600); line-height: 1.6; }
+    .dim-grid { display: grid; gap: 16px; grid-template-columns: 1fr; }
+    @media (min-width: 700px) { .dim-grid { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 1100px) { .dim-grid { grid-template-columns: repeat(5, 1fr); } }
+    .dim-card { background: #fff; border: 1px solid rgba(7,26,47,0.10); border-radius: 20px; padding: 18px; }
+    .dim-card .top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+    .dim-card .top svg { color: var(--gold); }
+    .dim-card .badge { padding: 3px 10px; border-radius: 999px; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; }
+    .dim-card .badge.strong { background: rgba(4,120,87,0.12); color: var(--emerald-700); }
+    .dim-card .badge.dev    { background: rgba(200,162,74,0.20); color: var(--gold-deep); }
+    .dim-card .badge.early  { background: rgba(142,59,42,0.15); color: #8E3B2A; }
+    .dim-card h3 { font-size: 17px; font-weight: 600; margin: 14px 0 12px; line-height: 1.2; }
+    .dim-card .bar { height: 4px; background: var(--slate-100); border-radius: 999px; overflow: hidden; }
+    .dim-card .fill { height: 100%; background: var(--gold); transition: width .8s cubic-bezier(0.2,0.8,0.2,1); }
+    .dim-card .pct { font-size: 13px; font-weight: 700; color: var(--gold-deep); margin: 10px 0; font-variant-numeric: tabular-nums; }
+    .dim-card .note { font-size: 12px; color: var(--slate-600); line-height: 1.55; }
+
+    /* Next steps */
+    .next-head { display: grid; gap: 24px; grid-template-columns: 1fr; margin-bottom: 0; align-items: start; }
+    @media (min-width: 980px) { .next-head { grid-template-columns: 0.36fr 0.64fr; } }
+    .next-head .desc { font-size: 16px; color: var(--slate-600); line-height: 1.65; margin-top: 14px; }
+    .next-grid { display: grid; gap: 16px; grid-template-columns: 1fr; }
+    @media (min-width: 760px) { .next-grid { grid-template-columns: 1fr 1fr 1fr; } }
+    .next-card { background: var(--cream); border: 1px solid rgba(7,26,47,0.08); border-radius: 20px; padding: 22px; transition: transform .12s, box-shadow .12s; }
+    .next-card:hover { transform: translateY(-3px); box-shadow: 0 20px 40px -22px rgba(0,0,0,0.18); }
+    .next-card svg { color: var(--gold); }
+    .next-card h3 { font-size: 22px; font-weight: 600; margin: 18px 0 8px; line-height: 1.2; }
+    .next-card p { color: var(--slate-600); font-size: 13px; margin: 0 0 16px; line-height: 1.55; }
+    .next-card .link { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; color: var(--ink); text-decoration: none; }
+    .next-card .link svg { color: var(--gold); }
+
+    /* Artifacts + email + team grid */
+    .art-grid { display: grid; gap: 28px; grid-template-columns: 1fr; align-items: start; }
+    @media (min-width: 1024px) { .art-grid { grid-template-columns: 0.56fr 0.44fr; } }
+    .art-card { background: #fff; border: 1px solid rgba(7,26,47,0.10); border-radius: 28px; overflow: hidden; box-shadow: 0 24px 40px -20px rgba(0,0,0,0.15); }
+    .art-head { background: var(--ink); color: #fff; padding: 22px 24px; }
+    .art-head .k { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-soft); }
+    .art-head .t { font-size: 24px; font-weight: 600; margin-top: 6px; }
+    .art-body { display: grid; grid-template-columns: 1fr; }
+    @media (min-width: 600px) { .art-body { grid-template-columns: 1fr 1fr; } }
+    .art-cell { padding: 22px; border-right: 1px solid var(--slate-200); border-bottom: 1px solid var(--slate-200); }
+    .art-cell:nth-child(2n) { border-right: 0; }
+    .art-cell svg { color: var(--gold); }
+    .art-cell .nm { font-weight: 700; margin-top: 16px; font-size: 16px; }
+    .art-cell .ty { font-size: 12px; color: var(--slate-500); margin-top: 4px; font-weight: 600; }
+
+    .side-col { display: grid; gap: 18px; }
+    .email-card { background: #fff; border: 1px solid rgba(7,26,47,0.10); border-radius: 24px; padding: 24px; }
+    .email-card .head { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; }
+    .email-card .head svg { color: var(--gold); flex: none; margin-top: 4px; }
+    .email-card h3 { font-size: 22px; font-weight: 600; margin: 0; line-height: 1.2; }
+    .email-card p { color: var(--slate-600); font-size: 13px; margin: 6px 0 0; line-height: 1.55; }
+    .email-form { display: grid; gap: 10px; grid-template-columns: 1fr; }
+    @media (min-width: 500px) { .email-form { grid-template-columns: 1fr auto; } }
+    .email-form input { height: 44px; padding: 0 14px; font-size: 14px; background: var(--cream); border: 1px solid var(--slate-200); border-radius: 12px; outline: none; font-family: inherit; color: var(--ink); }
+    .email-form input:focus { border-color: var(--gold); background: #fff; }
+    .email-toast { display: none; margin-top: 14px; padding: 12px 14px; background: rgba(4,120,87,0.12); color: var(--emerald-800); border-radius: 12px; font-weight: 600; font-size: 13px; }
+    .email-toast.on { display: block; }
+
+    .team-card { background: #fff; border: 1px solid rgba(7,26,47,0.10); border-radius: 24px; padding: 24px; }
+    .team-card .k { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-deep); }
+    .team-card h3 { font-size: 20px; font-weight: 600; margin: 8px 0 16px; line-height: 1.25; }
+    .team-card .sig { display: flex; gap: 10px; padding: 12px 14px; background: var(--cream); border-radius: 12px; margin-bottom: 8px; }
+    .team-card .sig svg { color: var(--gold); flex: none; margin-top: 2px; }
+    .team-card .sig .t { font-size: 13px; font-weight: 500; line-height: 1.5; }
+  </style>
+</head>
+<body>
+
+<header class="shell-header">
+  <div class="container header-inner">
+    <a class="brand" href="mockup.html">
+      <span class="seal"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg></span>
+      <span><span class="wm-1">The AI Banking Institute</span><br><span class="wm-2">Readiness Results</span></span>
+    </a>
+    <nav class="nav">
+      <a href="mockup.html">Home</a>
+      <a href="course.html">Course</a>
+      <a class="on" href="assessment.html">Assessment</a>
+      <a href="sandbox.html">Sandbox</a>
+      <a href="toolbox.html">Toolbox</a>
+      <a href="teams.html">Teams</a>
+    </nav>
+    <a class="btn btn-gold" href="course.html">Start Course</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="deco"><div class="deco-ring"></div><div class="deco-blur"></div></div>
+  <div class="container hero-inner">
+    <div>
+      <div class="eyebrow">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 14l4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></svg>
+        AI Readiness Result
+      </div>
+      <h1>Your AI readiness snapshot.</h1>
+      <p class="lede">You have enough awareness to begin building, but the next unlock is documentation: turning AI-supported work into reviewed, reusable workflows.</p>
+      <div class="ctas">
+        <a class="btn btn-lg btn-gold" href="course.html">
+          Start Foundation Course
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <button class="btn btn-lg btn-ghost-dark" id="dl-summary">
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span id="dl-label">Download Summary</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="scard">
+      <div class="grid">
+        <div class="left">
+          <div class="k">Readiness Score</div>
+          <div class="v">62</div>
+          <div class="u">/ 100</div>
+          <div class="tier">
+            <div class="l">Maturity level</div>
+            <div class="t">Structured Beginner</div>
+          </div>
+        </div>
+        <div class="right">
+          <div class="k">Recommended Path</div>
+          <h3>Build your first reviewed workflow.</h3>
+          <div class="mrow">
+            <svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><path d="M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9c2.04 0 3.92.68 5.43 1.83"/></svg>
+            <div><div class="lk">Role</div><div class="vv">Compliance</div></div>
+          </div>
+          <div class="mrow">
+            <svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+            <div><div class="lk">Top gap</div><div class="vv">Workflow documentation</div></div>
+          </div>
+          <div class="mrow">
+            <svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <div><div class="lk">Artifact</div><div class="vv">AI use-case review packet</div></div>
+          </div>
+          <div class="path">
+            <div class="l">Path</div>
+            <div class="v">Foundation Course → Workflow SOP → AI Use-Case Checklist</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIMENSION BREAKDOWN -->
+<section class="std">
+  <div class="container">
+    <div class="dim-head">
+      <div class="section-head" style="margin-bottom:0">
+        <div class="k">Dimension Breakdown</div>
+        <h2 style="margin-top:8px">Where you are ready, and where structure is needed.</h2>
+      </div>
+      <p class="lede-l">Your score suggests the next step is not more AI theory. It's turning usage into reviewed, repeatable workflows.</p>
+    </div>
+    <div class="dim-grid" id="dim-grid"></div>
+  </div>
+</section>
+
+<!-- NEXT STEPS -->
+<section class="std" style="background:#fff">
+  <div class="container">
+    <div class="next-head">
+      <div class="section-head" style="margin-bottom:0">
+        <div class="k">Next Steps</div>
+        <h2 style="margin-top:8px">A practical path, not a vague score.</h2>
+        <p class="desc">The result should immediately tell you what to do, what you'll build, and why it matters.</p>
+      </div>
+      <div class="next-grid">
+        <div class="next-card">
+          <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          <h3>Take Foundation Course</h3>
+          <p>Learn the prompt, skill, workflow, and review model.</p>
+          <a class="link" href="course.html">Start course <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+        </div>
+        <div class="next-card">
+          <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          <h3>Build Workflow SOP</h3>
+          <p>Document tool, data, output, review owner, and retention rule.</p>
+          <a class="link" href="tool-skill-builder.html">Preview SOP <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+        </div>
+        <div class="next-card">
+          <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.8L20 10l-4.6 3.4L17.2 20 12 16.6 6.8 20l1.8-6.6L4 10l6.1-1.2z"/></svg>
+          <h3>Practice in Sandbox</h3>
+          <p>Use a safe compliance scenario before applying AI to real work.</p>
+          <a class="link" href="sandbox.html">Open sandbox <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ARTIFACTS + EMAIL + TEAM -->
+<section class="std">
+  <div class="container">
+    <div class="art-grid">
+
+      <div class="art-card">
+        <div class="art-head">
+          <div class="k">Recommended Artifacts</div>
+          <div class="t">What you should build next</div>
+        </div>
+        <div class="art-body">
+          <div class="art-cell">
+            <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            <div class="nm">AI Use-Case Checklist</div><div class="ty">Checklist</div>
+          </div>
+          <div class="art-cell">
+            <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <div class="nm">Workflow SOP Template</div><div class="ty">Template</div>
+          </div>
+          <div class="art-cell">
+            <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <div class="nm">Human Review Log</div><div class="ty">Review</div>
+          </div>
+          <div class="art-cell">
+            <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4M14 12h4"/></svg>
+            <div class="nm">Compliance Skill Builder</div><div class="ty">Tool</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="side-col">
+        <div class="email-card">
+          <div class="head">
+            <svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg>
+            <div>
+              <h3>Send the full summary</h3>
+              <p>Get the score, dimension breakdown, recommended path, and next-step artifacts as a PDF.</p>
+            </div>
+          </div>
+          <form class="email-form" id="email-form" onsubmit="return false;">
+            <input id="email-input" type="email" placeholder="you@institution.com" />
+            <button class="btn btn-gold" type="submit" id="email-btn">Send PDF</button>
+          </form>
+          <div class="email-toast" id="email-toast">✓ Summary on its way. Check your inbox in a minute.</div>
+        </div>
+
+        <div class="team-card">
+          <div class="k">Team Signal</div>
+          <h3>Could this become a department opportunity?</h3>
+          <div class="sig"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg><div class="t">Multiple learners with low documentation scores</div></div>
+          <div class="sig"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg><div class="t">Departments using AI without common review steps</div></div>
+          <div class="sig"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg><div class="t">Need for role-based training rollout</div></div>
+          <div class="sig"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg><div class="t">Opportunity to standardize approved workflows</div></div>
+          <a class="btn btn-ghost-light" href="teams.html" style="margin-top:16px;height:42px">Explore Team Dashboard</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="container">
+    <div class="cta-band">
+      <div>
+        <div class="k">Recommended next step</div>
+        <h2>Start with documentation. Leave with reviewed workflows.</h2>
+        <p>The Foundation Course helps you turn AI awareness into prompts, skills, SOPs, checklists, and sandbox-tested workflows.</p>
+      </div>
+      <div class="cta-actions">
+        <a class="btn btn-lg btn-gold" href="course.html">Start Foundation Course</a>
+        <a class="btn btn-lg btn-ghost-dark" href="toolbox.html">Preview Toolbox</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ribbon">SKETCH · <span>Readiness Results</span></div>
+
+<script>
+const dimensions = [
+  { label: "Tool fluency",   score: 68, note: "Can use common AI tools, but needs stronger tool selection judgment." },
+  { label: "Data judgment",  score: 72, note: "Understands sensitive data concerns and needs repeatable rules." },
+  { label: "Documentation",  score: 44, note: "Biggest gap. AI-supported work is not yet easy to review or evidence." },
+  { label: "Human review",   score: 58, note: "Review happens, but criteria and ownership need to be clearer." },
+  { label: "Repeatability",  score: 52, note: "Some saved prompts, but not yet governed skills or workflows." },
+];
+
+function band(score) {
+  if (score >= 76) return { label: "Strong", cls: "strong" };
+  if (score >= 56) return { label: "Developing", cls: "dev" };
+  return { label: "Needs structure", cls: "early" };
+}
+
+function renderDims() {
+  document.getElementById('dim-grid').innerHTML = dimensions.map(d => {
+    const b = band(d.score);
+    return `<div class="dim-card">
+      <div class="top">
+        <svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>
+        <span class="badge ${b.cls}">${b.label}</span>
+      </div>
+      <h3>${d.label}</h3>
+      <div class="bar"><div class="fill" style="width:0%" data-w="${d.score}"></div></div>
+      <div class="pct">${d.score}/100</div>
+      <div class="note">${d.note}</div>
+    </div>`;
+  }).join('');
+  // animate bars after mount
+  requestAnimationFrame(() => {
+    document.querySelectorAll('.dim-card .fill').forEach(el => { el.style.width = el.dataset.w + '%'; });
+  });
+}
+renderDims();
+
+document.getElementById('email-form').addEventListener('submit', () => {
+  const input = document.getElementById('email-input');
+  if (!input.value.trim()) return;
+  document.getElementById('email-toast').classList.add('on');
+  document.getElementById('email-btn').innerHTML = '✓ Sent';
+  setTimeout(() => {
+    document.getElementById('email-toast').classList.remove('on');
+    document.getElementById('email-btn').textContent = 'Send PDF';
+  }, 4500);
+});
+
+document.getElementById('dl-summary').addEventListener('click', () => {
+  const md = `# AI Readiness Snapshot
+
+**Score:** 62 / 100
+**Maturity:** Structured Beginner
+**Role:** Compliance
+**Top gap:** Workflow documentation
+**Artifact:** AI use-case review packet
+
+## Path
+Foundation Course → Workflow SOP → AI Use-Case Checklist
+
+## Dimensions
+${dimensions.map(d => `- **${d.label}** — ${d.score}/100. ${d.note}`).join('\\n')}
+`;
+  const blob = new Blob([md], { type: "text/markdown;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'aibi-readiness-summary.md'; a.click();
+  URL.revokeObjectURL(url);
+  document.getElementById('dl-label').textContent = 'Downloaded';
+  setTimeout(() => document.getElementById('dl-label').textContent = 'Download Summary', 1800);
+});
+</script>
+
+</body>
+</html>

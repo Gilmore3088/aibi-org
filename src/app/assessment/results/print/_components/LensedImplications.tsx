@@ -26,7 +26,7 @@ export function LensedImplications({ tierId }: LensedImplicationsProps) {
           <div
             key={lens.label}
             style={{
-              borderLeft: '2pt solid var(--color-terra)',
+              borderLeft: '2pt solid var(--gold)',
               paddingLeft: '0.3in',
               paddingTop: '0.1in',
               paddingBottom: '0.1in',
@@ -38,7 +38,7 @@ export function LensedImplications({ tierId }: LensedImplicationsProps) {
                 fontSize: '10pt',
                 letterSpacing: '0.18em',
                 textTransform: 'uppercase',
-                color: 'var(--color-terra)',
+                color: 'var(--gold)',
                 margin: 0,
               }}
             >

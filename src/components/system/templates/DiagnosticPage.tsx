@@ -53,7 +53,7 @@ export function DiagnosticPage({
             Readiness Diagnostic
           </span>
           <span className="font-mono text-mono-sm tabular-nums text-ink">
-            Question <span className="text-terra">{String(questionNumber).padStart(2, "0")}</span>{" "}
+            Question <span className="text-gold">{String(questionNumber).padStart(2, "0")}</span>{" "}
             <span className="text-slate">of</span>{" "}
             {String(totalQuestions).padStart(2, "0")}
           </span>
@@ -66,14 +66,14 @@ export function DiagnosticPage({
             aria-label={`Question ${questionNumber} of ${totalQuestions}`}
           >
             <span
-              className="absolute inset-y-0 left-0 bg-terra transition-[width] duration-medium"
+              className="absolute inset-y-0 left-0 bg-gold transition-[width] duration-medium"
               style={{ width: `${pct}%` }}
             />
           </div>
           {saveAndContinueHref && (
             <Link
               href={saveAndContinueHref}
-              className="font-sans text-body-sm text-slate border-b border-dotted border-slate pb-[1px] hover:text-terra hover:border-terra"
+              className="font-sans text-body-sm text-slate border-b border-dotted border-slate pb-[1px] hover:text-gold hover:border-gold"
             >
               Save & continue later
             </Link>
@@ -92,7 +92,7 @@ export function DiagnosticPage({
           {prevHref ? (
             <Link
               href={prevHref}
-              className="font-sans text-body-sm text-slate hover:text-terra transition-colors duration-fast"
+              className="font-sans text-body-sm text-slate hover:text-gold transition-colors duration-fast"
             >
               ← Back to question {String(Math.max(1, questionNumber - 1)).padStart(2, "0")}
             </Link>
@@ -105,8 +105,8 @@ export function DiagnosticPage({
           onClick={onNext}
           disabled={nextDisabled || !onNext}
           className={cn(
-            "bg-terra text-linen px-s7 py-s4 rounded-sharp font-sans text-mono-sm font-medium uppercase tracking-wider",
-            "hover:bg-terra-light transition-colors duration-fast",
+            "bg-gold text-linen px-s7 py-s4 rounded-sharp font-sans text-mono-sm font-medium uppercase tracking-wider",
+            "hover:bg-gold-2 transition-colors duration-fast",
             "disabled:opacity-60 disabled:cursor-not-allowed"
           )}
         >

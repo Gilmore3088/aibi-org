@@ -16,7 +16,7 @@ interface CourseTabsProps {
 export function CourseTabs({
   tabs,
   storageKey,
-  accentColor = 'var(--color-terra)',
+  accentColor = 'var(--gold)',
   initialTabId,
 }: CourseTabsProps) {
   const firstEnabled = tabs.find((t) => !t.disabled)?.id;

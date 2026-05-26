@@ -50,7 +50,7 @@ export function LessonResources({
           <ul className="space-y-s2 text-body-sm">
             {tools.map((tool) => (
               <li key={tool.name} className="grid grid-cols-[10px_1fr] gap-s2 items-baseline">
-                <span aria-hidden="true" className="block w-[6px] h-[6px] bg-terra rounded-full mt-[6px]" />
+                <span aria-hidden="true" className="block w-[6px] h-[6px] bg-gold rounded-full mt-[6px]" />
                 <span>
                   <span className="font-medium">{tool.name}</span>
                   {tool.note && <span className="text-slate"> — {tool.note}</span>}
@@ -70,12 +70,12 @@ export function LessonResources({
             >
               <Link
                 href={res.href}
-                className="grid grid-cols-[44px_1fr] gap-s2 hover:text-terra transition-colors duration-fast"
+                className="grid grid-cols-[44px_1fr] gap-s2 hover:text-gold transition-colors duration-fast"
               >
                 <span className="font-mono text-label-sm uppercase tracking-wide text-slate">
                   {res.type}
                 </span>
-                <span className="text-terra">{res.title}</span>
+                <span className="text-gold">{res.title}</span>
               </Link>
             </li>
           ))}

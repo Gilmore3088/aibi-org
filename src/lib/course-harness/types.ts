@@ -8,7 +8,7 @@ export interface CourseBrand {
   readonly name: string;              // 'AiBI-Foundation'
   readonly shortCode: string;         // 'AiBI-Foundation'
   readonly wordmark: string;          // displayed in sidebar
-  readonly accentColorVar: string;    // 'var(--color-terra)' | 'var(--color-cobalt)' | ...
+  readonly accentColorVar: string;    // 'var(--gold)' | 'var(--ink-2)' | ...
 }
 
 export interface CourseTerminology {

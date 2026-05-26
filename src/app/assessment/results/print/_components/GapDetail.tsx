@@ -73,7 +73,7 @@ export function GapDetail({ dimensionId, score, maxScore, pageNumber }: GapDetai
             fontSize: '9pt',
             letterSpacing: '0.18em',
             textTransform: 'uppercase',
-            color: 'var(--color-terra)',
+            color: 'var(--gold)',
             margin: 0,
           }}
         >

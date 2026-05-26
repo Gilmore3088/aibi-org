@@ -28,12 +28,12 @@ export function CaptureBeat({
       {!captured ? (
         <button
           onClick={onCapture}
-          className="px-6 py-3 bg-[color:var(--color-cobalt)] text-white rounded hover:opacity-90"
+          className="px-6 py-3 bg-[color:var(--ink-2)] text-white rounded hover:opacity-90"
         >
           Capture to portfolio
         </button>
       ) : (
-        <p className="text-[color:var(--color-sage)] font-semibold">
+        <p className="text-[color:var(--ink-2)] font-semibold">
           Captured at {state.capturedAt}
         </p>
       )}

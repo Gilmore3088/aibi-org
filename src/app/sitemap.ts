@@ -34,28 +34,29 @@ const ROUTES = [
   { path: '/security', priority: 0.85, changeFrequency: 'monthly' as const },
   { path: '/about', priority: 0.75, changeFrequency: 'monthly' as const },
 
-  // Research hub + every published essay (resources/* will migrate to
-  // research/* in Phase 07; both URL families stay indexable until then).
+  // Research hub + every published essay. The six legacy /resources/<slug>
+  // paths permanently redirect to /research/<slug> via next.config — only
+  // the canonical /research/* URLs ship in the sitemap.
   { path: '/research', priority: 0.7, changeFrequency: 'weekly' as const },
-  { path: '/resources/the-widening-ai-gap', priority: 0.8, changeFrequency: 'monthly' as const },
-  { path: '/resources/members-will-switch', priority: 0.8, changeFrequency: 'monthly' as const },
+  { path: '/research/the-widening-ai-gap', priority: 0.8, changeFrequency: 'monthly' as const },
+  { path: '/research/members-will-switch', priority: 0.8, changeFrequency: 'monthly' as const },
   {
-    path: '/resources/six-ways-ai-fails-in-banking',
+    path: '/research/six-ways-ai-fails-in-banking',
     priority: 0.8,
     changeFrequency: 'monthly' as const,
   },
   {
-    path: '/resources/ai-governance-without-the-jargon',
+    path: '/research/ai-governance-without-the-jargon',
     priority: 0.8,
     changeFrequency: 'monthly' as const,
   },
   {
-    path: '/resources/the-skill-not-the-prompt',
+    path: '/research/the-skill-not-the-prompt',
     priority: 0.8,
     changeFrequency: 'monthly' as const,
   },
   {
-    path: '/resources/what-your-efficiency-ratio-is-hiding',
+    path: '/research/what-your-efficiency-ratio-is-hiding',
     priority: 0.8,
     changeFrequency: 'monthly' as const,
   },
@@ -64,7 +65,6 @@ const ROUTES = [
   // engines can answer policy queries directly.
   { path: '/privacy', priority: 0.3, changeFrequency: 'yearly' as const },
   { path: '/terms', priority: 0.3, changeFrequency: 'yearly' as const },
-  { path: '/faq', priority: 0.5, changeFrequency: 'monthly' as const },
   { path: '/ai-use-disclaimer', priority: 0.3, changeFrequency: 'yearly' as const },
 ];
 

@@ -35,7 +35,7 @@ export function ApplyBeat({
       <button
         disabled={!canAdvance}
         onClick={onAdvance}
-        className="px-6 py-3 bg-[color:var(--color-cobalt)] text-white rounded disabled:opacity-40 hover:opacity-90"
+        className="px-6 py-3 bg-[color:var(--ink-2)] text-white rounded disabled:opacity-40 hover:opacity-90"
       >
         Continue to Defend →
       </button>

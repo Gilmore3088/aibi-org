@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sketch · Sandbox · AiBI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="_mockup.css">
+  <style>
+    /* Hero workbench preview */
+    .wb { background: #fff; color: var(--ink); border-radius: 28px; overflow: hidden; box-shadow: 0 30px 60px -20px rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.08); }
+    .wb .head { padding: 18px 22px; background: var(--ink); color: #fff; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .wb .head .k { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-soft); }
+    .wb .head .t { font-size: 18px; font-weight: 600; margin-top: 2px; }
+    .wb .head .pill { background: rgba(200,162,74,0.20); color: var(--gold-soft); padding: 6px 12px; border-radius: 999px; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+    .wb .grid { display: grid; grid-template-columns: 1fr; }
+    @media (min-width: 720px) { .wb .grid { grid-template-columns: 0.42fr 0.58fr; } }
+    .wb .left { padding: 22px; background: var(--cream); border-right: 1px solid var(--slate-200); }
+    .wb .left .k { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--slate-500); }
+    .wb .left .input { margin-top: 10px; background: #fff; border-radius: 12px; padding: 14px; font-size: 13px; color: var(--slate-600); line-height: 1.5; border: 1px solid var(--slate-200); min-height: 160px; }
+    .wb .right { padding: 22px; }
+    .wb .right .k { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-deep); }
+    .wb .right .out { margin-top: 10px; background: var(--cream); border-radius: 12px; padding: 14px; font-size: 13px; line-height: 1.5; min-height: 160px; }
+    .wb .right .out strong { color: var(--ink); }
+    .wb .actions { padding: 16px 22px; border-top: 1px solid var(--slate-200); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+    .wb .actions .lhs { display: flex; align-items: center; gap: 12px; }
+    .wb .actions .chip { background: var(--cream); padding: 6px 12px; border-radius: 999px; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink); }
+    .wb .actions .chip.gold { background: rgba(200,162,74,0.20); color: var(--gold-deep); }
+
+    /* Steps strip */
+    .steps-strip { background: var(--ink); color: #fff; border-radius: 24px; padding: 28px; display: grid; grid-template-columns: 1fr; gap: 0; overflow: hidden; }
+    @media (min-width: 760px) { .steps-strip { grid-template-columns: repeat(4, 1fr); padding: 0; } }
+    .steps-strip > div { padding: 28px; border-bottom: 1px solid rgba(255,255,255,0.10); }
+    @media (min-width: 760px) { .steps-strip > div { border-right: 1px solid rgba(255,255,255,0.10); border-bottom: 0; } .steps-strip > div:last-child { border-right: 0; } }
+    .steps-strip .pic { width: 44px; height: 44px; border-radius: 12px; background: rgba(200,162,74,0.20); color: var(--gold); display: inline-flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+    .steps-strip .n { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-soft); }
+    .steps-strip h3 { font-size: 20px; font-weight: 600; margin: 6px 0 8px; }
+    .steps-strip p { color: rgba(255,255,255,0.65); font-size: 14px; margin: 0; }
+
+    /* Scenario library */
+    .scen-grid { display: grid; gap: 16px; grid-template-columns: 1fr; }
+    @media (min-width: 760px) { .scen-grid { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 1100px) { .scen-grid { grid-template-columns: 1fr 1fr 1fr; } }
+    .scen { background: #fff; border: 1px solid rgba(7,26,47,0.10); border-radius: 20px; padding: 24px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); transition: transform .12s, box-shadow .12s, border-color .12s; cursor: pointer; }
+    .scen:hover { transform: translateY(-4px); border-color: var(--gold); box-shadow: 0 24px 40px -20px rgba(0,0,0,0.15); }
+    .scen .top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .scen .pic { width: 40px; height: 40px; border-radius: 12px; background: var(--ink); color: var(--gold); display: inline-flex; align-items: center; justify-content: center; }
+    .scen .role { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-deep); }
+    .scen h3 { font-size: 18px; font-weight: 600; margin: 0 0 8px; }
+    .scen p { color: var(--slate-600); font-size: 13px; margin: 0 0 16px; min-height: 56px; }
+    .scen .meta { display: flex; justify-content: space-between; font-size: 12px; color: var(--slate-500); padding-top: 12px; border-top: 1px solid var(--slate-200); }
+
+    /* Save to toolbox */
+    .save { background: #fff; border: 1px solid rgba(7,26,47,0.10); border-radius: 32px; padding: 40px; box-shadow: 0 24px 40px -20px rgba(0,0,0,0.15); display: grid; gap: 32px; grid-template-columns: 1fr; align-items: center; }
+    @media (min-width: 900px) { .save { grid-template-columns: 0.5fr 0.5fr; } }
+    .save .k { font-size: 14px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold-deep); }
+    .save h3 { font-size: clamp(24px, 3vw, 36px); font-weight: 600; margin: 8px 0 16px; line-height: 1.1; letter-spacing: -0.01em; }
+    .save p { color: var(--slate-600); margin: 0 0 24px; }
+    .saved { background: var(--cream); border-radius: 20px; padding: 20px; }
+    .saved .top { display: flex; justify-content: space-between; align-items: center; padding-bottom: 14px; border-bottom: 1px solid var(--slate-200); margin-bottom: 14px; }
+    .saved .top .k { font-size: 11px; color: var(--gold-deep); }
+    .saved .item { display: flex; align-items: center; gap: 12px; padding: 12px; background: #fff; border-radius: 12px; margin-bottom: 8px; }
+    .saved .item:last-child { margin-bottom: 0; }
+    .saved .item svg { color: var(--gold); flex: none; }
+    .saved .item .nm { font-weight: 600; flex: 1; }
+    .saved .item .meta { font-size: 11px; color: var(--slate-500); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+  </style>
+</head>
+<body>
+
+<header class="shell-header">
+  <div class="container header-inner">
+    <a class="brand" href="mockup.html">
+      <span class="seal"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg></span>
+      <span><span class="wm-1">The AI Banking Institute</span><br><span class="wm-2">Regulated Intelligence</span></span>
+    </a>
+    <nav class="nav">
+      <a href="mockup.html">Home</a>
+      <a href="course.html">Course</a>
+      <a href="assessment.html">Assessment</a>
+      <a class="on" href="sandbox.html">Sandbox</a>
+      <a href="toolbox.html">Toolbox</a>
+      <a href="teams.html">Teams</a>
+    </nav>
+    <a class="btn btn-gold" href="#">Try a Scenario</a>
+  </div>
+  <div class="container">
+    <nav class="nav-mobile">
+      <a href="mockup.html">Home</a>
+      <a href="course.html">Course</a>
+      <a href="assessment.html">Assessment</a>
+      <a class="on" href="sandbox.html">Sandbox</a>
+      <a href="toolbox.html">Toolbox</a>
+      <a href="teams.html">Teams</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="deco"><div class="deco-ring"></div><div class="deco-blur"></div></div>
+  <div class="container hero-inner">
+    <div>
+      <div class="eyebrow">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.31"/><path d="M14 9.3V2"/><path d="M8.5 2h7"/><path d="M14 9.3a6.5 6.5 0 1 1-4 0"/></svg>
+        Sandbox · Realistic synthetic data · Always safe
+      </div>
+      <h1>A safe practice field for real banking work.</h1>
+      <p class="lede">Run a realistic scenario, compare model outputs, apply your review checklist, and save the work as a prompt. No real customer data ever touches a model.</p>
+      <div class="ctas">
+        <a class="btn btn-lg btn-gold" href="#">Try a Scenario
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a class="btn btn-lg btn-ghost-dark" href="#">See the Workbench</a>
+      </div>
+    </div>
+
+    <div class="wb">
+      <div class="head">
+        <div><div class="k">Sandbox · Try a scenario</div><div class="t" id="wb-title">Procedure Cleanup · Compliance</div></div>
+        <span class="pill">Safe sample data</span>
+      </div>
+      <div class="wb-pills" id="wb-pills">
+        <button class="wb-pill on" data-k="procedure">Procedure Cleanup</button>
+        <button class="wb-pill" data-k="complaint">Complaint Summary</button>
+        <button class="wb-pill" data-k="campaign">Campaign Draft</button>
+      </div>
+      <div class="grid">
+        <div class="left">
+          <div class="k">Input · synthetic data</div>
+          <div class="input" id="wb-input"></div>
+        </div>
+        <div class="right">
+          <div class="k" id="wb-out-label">Output · ready to run</div>
+          <div class="out" id="wb-output"><span class="hint">Click <strong>Run</strong> to generate sample output.</span></div>
+        </div>
+      </div>
+      <div class="actions">
+        <div class="lhs" id="wb-tags">
+          <span style="font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--slate-500);margin-right:4px">Review tags:</span>
+          <button class="wb-tag" data-t="accurate">Accurate</button>
+          <button class="wb-tag" data-t="risk">Risk-aware</button>
+          <button class="wb-tag" data-t="tone">Tone</button>
+        </div>
+        <div style="display:flex;gap:10px">
+          <button class="btn btn-ghost-light" id="wb-run">
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Run
+          </button>
+          <button class="btn btn-ink" id="wb-save" disabled>
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/></svg>
+            Save to Toolbox
+          </button>
+        </div>
+      </div>
+      <div class="wb-toast" id="wb-toast">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Saved to your Toolbox.
+      </div>
+    </div>
+
+    <style>
+      .wb-pills { display: flex; flex-wrap: wrap; gap: 8px; padding: 14px 22px 0; }
+      .wb-pill { padding: 8px 14px; border-radius: 999px; border: 1px solid var(--slate-200); background: #fff; font-size: 12px; font-weight: 700; letter-spacing: 0.06em; cursor: pointer; color: var(--slate-600); }
+      .wb-pill:hover { background: var(--cream); }
+      .wb-pill.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+      .wb .out .hint { color: var(--slate-400); font-style: normal; }
+      .wb .out.running::after { content: "▍"; animation: cursor 0.8s steps(1) infinite; color: var(--gold); }
+      @keyframes cursor { 50% { opacity: 0; } }
+      .wb-tag { padding: 6px 12px; border-radius: 999px; border: 1px solid var(--slate-200); background: #fff; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; color: var(--slate-500); }
+      .wb-tag:hover { border-color: var(--gold); color: var(--ink); }
+      .wb-tag.on { background: rgba(200,162,74,0.20); border-color: var(--gold); color: var(--gold-deep); }
+      .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+      .wb-toast { display: none; align-items: center; gap: 10px; padding: 12px 18px; border-top: 1px solid var(--slate-200); background: rgba(4,120,87,0.10); color: var(--emerald-800); font-weight: 600; font-size: 14px; }
+      .wb-toast.on { display: flex; }
+      .wb-toast svg { color: var(--emerald-700); }
+    </style>
+  </div>
+</section>
+
+<!-- 4-STEP FLOW -->
+<section class="std">
+  <div class="container">
+    <div class="section-head">
+      <div class="k">The flow</div>
+      <h2>Four steps. Each one ends with something saved.</h2>
+    </div>
+    <div class="steps-strip">
+      <div>
+        <span class="pic"><svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></span>
+        <div class="n">Step 1</div><h3>Choose</h3><p>Pick role and scenario. We provide realistic synthetic material.</p>
+      </div>
+      <div>
+        <span class="pic"><svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+        <div class="n">Step 2</div><h3>Practice</h3><p>Prompt with sample data. Compare outputs from different models.</p>
+      </div>
+      <div>
+        <span class="pic"><svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><polyline points="9 12 11 14 14 9"/></svg></span>
+        <div class="n">Step 3</div><h3>Review</h3><p>Run the accuracy + risk checklist. Tag what's good, flag what isn't.</p>
+      </div>
+      <div>
+        <span class="pic"><svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg></span>
+        <div class="n">Step 4</div><h3>Save</h3><p>Promote to a reusable prompt. Goes into your Toolbox.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCENARIO LIBRARY -->
+<section class="std" style="background:#fff">
+  <div class="container">
+    <div class="section-head">
+      <div class="k">Scenario library</div>
+      <h2>Eighteen realistic scenarios. More added monthly.</h2>
+      <p>Every scenario uses synthetic data — never real customer material. Each one teaches a specific judgment call.</p>
+    </div>
+    <div class="scen-grid">
+      <div class="scen">
+        <div class="top"><span class="pic"><svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span><span class="role">Compliance</span></div>
+        <h3>Procedure Cleanup</h3><p>Take a dense internal procedure and turn it into a frontline job aid without losing the legal meaning.</p>
+        <div class="meta"><span>~12 min</span><span>3 review tags</span></div>
+      </div>
+      <div class="scen">
+        <div class="top"><span class="pic"><svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span><span class="role">Compliance</span></div>
+        <h3>Complaint Summary</h3><p>Read a member's complaint notes and produce a one-page summary with proposed next steps.</p>
+        <div class="meta"><span>~10 min</span><span>4 review tags</span></div>
+      </div>
+      <div class="scen">
+        <div class="top"><span class="pic"><svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></span><span class="role">Marketing</span></div>
+        <h3>Campaign Draft</h3><p>Generate three email variations for a product offer with disclosure flags surfaced automatically.</p>
+        <div class="meta"><span>~15 min</span><span>5 review tags</span></div>
+      </div>
+      <div class="scen">
+        <div class="top"><span class="pic"><svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span><span class="role">Branch / Retail</span></div>
+        <h3>Service Recovery</h3><p>Member arrives upset about a hold. Generate a coaching script for the frontline.</p>
+        <div class="meta"><span>~8 min</span><span>3 review tags</span></div>
+      </div>
+      <div class="scen">
+        <div class="top"><span class="pic"><svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span><span class="role">Lending</span></div>
+        <h3>Adverse Action Letter</h3><p>Draft an ECOA-compliant decline letter from a denial decision summary.</p>
+        <div class="meta"><span>~14 min</span><span>5 review tags</span></div>
+      </div>
+      <div class="scen">
+        <div class="top"><span class="pic"><svg class="ic-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.8L20 10l-4.6 3.4L17.2 20 12 16.6 6.8 20l1.8-6.6L4 10l6.1-1.2z"/></svg></span><span class="role">Operations</span></div>
+        <h3>Incident Runbook</h3><p>Transform a Slack thread into a structured incident runbook with owner + escalation path.</p>
+        <div class="meta"><span>~16 min</span><span>4 review tags</span></div>
+      </div>
+    </div>
+    <div style="text-align:center; margin-top:32px"><a class="btn btn-lg btn-ink" href="#">Browse all 18 scenarios →</a></div>
+  </div>
+</section>
+
+<!-- SAVE TO TOOLBOX -->
+<section class="std">
+  <div class="container">
+    <div class="save">
+      <div>
+        <div class="k">Save / build</div>
+        <h3>Practice once. Use forever.</h3>
+        <p>Anything useful that you produce in the Sandbox can be promoted to your Toolbox as a saved prompt — with the same review tags and best-practice craft. Your team can copy from it; your manager can review it; the examiner can see it.</p>
+        <a class="btn btn-lg btn-ink" href="toolbox.html">See the Toolbox →</a>
+      </div>
+      <div class="saved">
+        <div class="top">
+          <div class="k">Your Toolbox · recent</div>
+          <span style="font-size:11px;color:var(--slate-500);font-weight:700;letter-spacing:0.1em;text-transform:uppercase">3 of 18</span>
+        </div>
+        <div class="item"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><div class="nm">KYC frontline guide</div><div class="meta">Just saved</div></div>
+        <div class="item"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg><div class="nm">Complaint summary template</div><div class="meta">3 days ago</div></div>
+        <div class="item"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg><div class="nm">Email disclosure check</div><div class="meta">1 week ago</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="container">
+    <div class="cta-band">
+      <div>
+        <div class="k">Sandbox</div>
+        <h2>Less lecture. More reps.</h2>
+        <p>The fastest way to learn what AI can do in a regulated environment is to use it in one — safely.</p>
+      </div>
+      <div class="cta-actions">
+        <a class="btn btn-lg btn-gold" href="#">Try a Scenario</a>
+        <a class="btn btn-lg btn-ghost-dark" href="#">Compare with a Demo</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ribbon">SKETCH · <span>Sandbox</span></div>
+
+<script>
+  /* ---------- Interactive Workbench ---------- */
+  const WB = {
+    procedure: {
+      title: "Procedure Cleanup · Compliance",
+      input: "All KYC refresh requests for accounts opened prior to 2022 shall undergo a documentation review per BSA §1020.220, including but not limited to government-issued ID, secondary address verification, and any updated beneficial ownership disclosures for legal entity customers as required under FinCEN's CDD rule...",
+      output: "**KYC Refresh: Quick Guide**\n\nFor accounts opened before 2022, collect three items:\n  1. Government-issued ID\n  2. Secondary address proof\n  3. For business accounts, updated beneficial-ownership info\n\n**If unsure:** route to Compliance review before continuing.",
+      outLabel: "Output · frontline job aid"
+    },
+    complaint: {
+      title: "Complaint Summary · Compliance",
+      input: "Member called 03/14 — frustrated about a 5-day hold on a $4,200 mobile deposit. Says she was told 'just a couple days' at the branch. Hold released on 03/19 but she missed a car payment. Wants the late fee reimbursed and an explanation of when holds apply.",
+      output: "**Member Complaint — Summary**\n\n• Issue: 5-day hold on $4,200 mobile deposit caused a missed car payment.\n• Member expectation: ~2 days, as stated at branch.\n• Resolution requested: late-fee reimbursement + clear hold policy explanation.\n\n**Next steps:** verify late fee, document branch-script gap for retraining, route to Member Services for outreach.",
+      outLabel: "Output · summary + next steps"
+    },
+    campaign: {
+      title: "Campaign Draft · Marketing",
+      input: "New 4.5% APY high-yield savings account, FDIC insured, no minimum balance, limited-time intro rate for 6 months then 3.8% APY. Target: existing checking customers.",
+      output: "**Subject:** Earn 4.5% on your savings — start in two minutes\n\nYou already trust us with your checking. Now put your savings to work at **4.5% APY** for the first 6 months — no minimums, no hidden fees, FDIC insured.\n\n→ Open in two minutes\n\n*Disclosure: Intro rate of 4.5% APY for first 6 months. Standard rate (currently 3.8% APY) applies thereafter. FDIC insured to applicable limits.*",
+      outLabel: "Output · email + disclosure flag"
+    }
+  };
+
+  let wbKey = "procedure", wbRunning = false, wbHasRun = false, wbTimer = null;
+
+  function wbLoad(key) {
+    wbKey = key;
+    wbHasRun = false;
+    if (wbTimer) { clearInterval(wbTimer); wbTimer = null; }
+    const d = WB[key];
+    document.getElementById('wb-title').textContent = d.title;
+    document.getElementById('wb-input').textContent = d.input;
+    document.getElementById('wb-out-label').textContent = "Output · ready to run";
+    document.getElementById('wb-output').innerHTML = '<span class="hint">Click <strong>Run</strong> to generate sample output.</span>';
+    document.getElementById('wb-output').classList.remove('running');
+    document.getElementById('wb-save').disabled = true;
+    document.getElementById('wb-toast').classList.remove('on');
+    document.querySelectorAll('.wb-tag').forEach(t => t.classList.remove('on'));
+  }
+
+  function wbRun() {
+    if (wbRunning) return;
+    wbRunning = true;
+    document.getElementById('wb-save').disabled = true;
+    document.getElementById('wb-toast').classList.remove('on');
+    const out = document.getElementById('wb-output');
+    out.classList.add('running');
+    document.getElementById('wb-out-label').textContent = WB[wbKey].outLabel;
+    const full = WB[wbKey].output;
+    out.innerHTML = '';
+    let i = 0;
+    const speed = Math.max(8, Math.min(20, Math.floor(1400 / full.length)));
+    wbTimer = setInterval(() => {
+      if (i >= full.length) {
+        clearInterval(wbTimer);
+        out.classList.remove('running');
+        // Convert **bold** to strong, \n to <br>
+        out.innerHTML = full
+          .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+          .replace(/\*(.+?)\*/g, '<em>$1</em>')
+          .replace(/\n/g, '<br>');
+        wbRunning = false;
+        wbHasRun = true;
+        document.getElementById('wb-save').disabled = false;
+        return;
+      }
+      out.textContent += full[i];
+      i++;
+    }, speed);
+  }
+
+  function wbSave() {
+    if (!wbHasRun) return;
+    const btn = document.getElementById('wb-save');
+    btn.innerHTML = '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Saved';
+    btn.disabled = true;
+    document.getElementById('wb-toast').classList.add('on');
+  }
+
+  document.querySelectorAll('#wb-pills .wb-pill').forEach(p => {
+    p.addEventListener('click', () => {
+      document.querySelectorAll('#wb-pills .wb-pill').forEach(x => x.classList.remove('on'));
+      p.classList.add('on');
+      wbLoad(p.dataset.k);
+    });
+  });
+  document.querySelectorAll('.wb-tag').forEach(t => {
+    t.addEventListener('click', () => t.classList.toggle('on'));
+  });
+  document.getElementById('wb-run').addEventListener('click', wbRun);
+  document.getElementById('wb-save').addEventListener('click', wbSave);
+  wbLoad('procedure');
+</script>
+
+</body>
+</html>

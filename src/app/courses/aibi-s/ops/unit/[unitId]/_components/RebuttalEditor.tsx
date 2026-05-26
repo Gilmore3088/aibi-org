@@ -26,7 +26,7 @@ export function RebuttalEditor({
         <button
           disabled={value.trim().length < 50}
           onClick={onSubmit}
-          className="px-6 py-3 bg-[color:var(--color-cobalt)] text-white rounded disabled:opacity-40 hover:opacity-90"
+          className="px-6 py-3 bg-[color:var(--ink-2)] text-white rounded disabled:opacity-40 hover:opacity-90"
         >
           Submit rebuttal — open the probe
         </button>

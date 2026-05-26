@@ -1,204 +1,292 @@
-import type { Metadata } from "next";
-import { MarketingPage } from "@/components/system/templates";
-import {
-  Section,
-  SectionHeader,
-  Cta,
-  Marginalia,
-  SkillGrid,
-  ProductMark,
-  type ProductMarkKind,
-} from "@/components/system";
-import { InteractiveSkillsPreview } from "@/components/sections/InteractiveSkillsPreview";
-import { InquiryForm } from "@/app/certifications/_components/InquiryForm";
-import { modules } from "@content/courses/foundation-program";
-import { getEnrollment as getPEnrollment } from "@/app/courses/foundation/program/_lib/getEnrollment";
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import { MockupShell } from '@/components/mockup';
 
 export const metadata: Metadata = {
-  alternates: { canonical: '/education' },
-  title: "Education | The AI Banking Institute",
+  title: 'Education | The AI Banking Institute',
   description:
-    "Free classes and three certification tracks for community banks and credit unions. Start with the AI Readiness Assessment, then earn AiBI-Foundation, AiBI-S, or AiBI-L credentials.",
+    'Free classes and three certification tracks for community banks and credit unions. Start with the AI Readiness Assessment, then earn AiBI-Foundation, AiBI-S, or AiBI-L credentials.',
+  alternates: { canonical: '/education' },
 };
 
-export default async function EducationPage() {
-  const pEnrollment = await getPEnrollment();
-  const completedCount = pEnrollment?.completed_modules?.length ?? 0;
-  const isPEnrolled = pEnrollment !== null;
+interface CatalogTile {
+  tag: string;
+  tagTone: 'free' | 'paid';
+  title: string;
+  subtitle: string;
+  facts: { label: string; value: string }[];
+  cta: string;
+  href: string;
+}
 
-  interface AssessmentTile {
-    readonly tag: string;
-    readonly tagTone: "free" | "paid";
-    readonly title: string;
-    readonly subtitle: string;
-    readonly facts: readonly { readonly label: string; readonly value: string }[];
-    readonly cta: string;
-    readonly href: string;
-    readonly mark: ProductMarkKind;
-  }
+const ASSESSMENTS: CatalogTile[] = [
+  {
+    tag: 'Free',
+    tagTone: 'free',
+    title: 'Free AI Readiness Assessment',
+    subtitle:
+      'A quick diagnostic for your institution. Score, tier, and a tailored starter artifact you can take to your team this week.',
+    facts: [
+      { label: 'Questions', value: '12' },
+      { label: 'Time', value: '3 min' },
+      { label: 'Format', value: 'Self-serve · mobile-ready' },
+      { label: 'Cost', value: 'Free' },
+    ],
+    cta: 'Take the free assessment →',
+    href: '/assessment',
+  },
+  {
+    tag: '$99 · $79 at 10+ by request',
+    tagTone: 'paid',
+    title: 'In-Depth Assessment',
+    subtitle:
+      'Forty-eight questions across eight readiness dimensions. Individual report, plus an anonymized aggregate dashboard for institution leaders.',
+    facts: [
+      { label: 'Questions', value: '48' },
+      { label: 'Time', value: '20 min' },
+      { label: 'Format', value: 'Individual + institution rollup' },
+      { label: 'Cost', value: '$99 · $79/seat at 10+' },
+    ],
+    cta: 'Begin the In-Depth Assessment →',
+    href: '/assessment/in-depth',
+  },
+];
 
-  const assessments: readonly AssessmentTile[] = [
-    {
-      tag: "Free",
-      tagTone: "free",
-      title: "Free AI Readiness Assessment",
-      mark: "assessment-free",
-      subtitle:
-        "A quick diagnostic for your institution. Score, tier, and a tailored starter artifact you can take to your team this week.",
-      facts: [
-        { label: "Questions", value: "12" },
-        { label: "Time", value: "3 min" },
-        { label: "Format", value: "Self-serve · mobile-ready" },
-        { label: "Cost", value: "Free — no email gate to see your score" },
-      ],
-      cta: "Take the free assessment →",
-      href: "/assessment/start",
-    },
-    {
-      tag: "$99 · $79 at 10+ by request",
-      tagTone: "paid",
-      title: "In-Depth Assessment",
-      mark: "assessment-indepth",
-      subtitle:
-        "Forty-eight questions across eight readiness dimensions. Individual report, plus an anonymized aggregate dashboard for institution leaders.",
-      facts: [
-        { label: "Questions", value: "48" },
-        { label: "Time", value: "20 min" },
-        { label: "Format", value: "Individual + institution rollup" },
-        { label: "Cost", value: "$99 individual · $79/seat at 10+ by request" },
-      ],
-      cta: "Begin the In-Depth Assessment →",
-      href: "/assessment/in-depth",
-    },
-  ];
+const COURSES: CatalogTile[] = [
+  {
+    tag: '$295 · $199 at 10+ · lifetime access',
+    tagTone: 'paid',
+    title: 'AiBI-Foundation',
+    subtitle:
+      'Twelve self-paced modules. Three reviewed AI artifacts per practitioner. Earn the AiBI-Foundation credential your examiner respects.',
+    facts: [
+      { label: 'Modules', value: '12' },
+      { label: 'Artifacts', value: '3 reviewed' },
+      { label: 'Format', value: 'Self-paced, scored on reviewed work' },
+      { label: 'Cost', value: '$295 · $199/seat at 10+' },
+    ],
+    cta: 'View the curriculum →',
+    href: '/courses/foundation/program/purchase',
+  },
+];
 
+const TILE: React.CSSProperties = {
+  background: '#fff',
+  border: '1px solid var(--ink-a10)',
+  borderRadius: 16,
+  padding: 28,
+  display: 'flex',
+  flexDirection: 'column',
+};
+
+const TAG_FREE: React.CSSProperties = {
+  display: 'inline-block',
+  fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
+  fontSize: 11,
+  fontWeight: 700,
+  letterSpacing: '0.18em',
+  textTransform: 'uppercase',
+  color: 'var(--gold-deep)',
+  border: '1px solid var(--gold-deep)',
+  padding: '4px 10px',
+  borderRadius: 999,
+  marginBottom: 20,
+};
+
+const TAG_PAID: React.CSSProperties = {
+  ...TAG_FREE,
+  background: 'var(--cream-2)',
+};
+
+const TITLE_STYLE: React.CSSProperties = {
+  fontSize: 24,
+  fontWeight: 600,
+  lineHeight: 1.2,
+  color: 'var(--ink)',
+  margin: '0 0 12px',
+};
+
+const SUB_STYLE: React.CSSProperties = {
+  fontSize: 15,
+  lineHeight: 1.6,
+  color: 'var(--slate-600)',
+  margin: '0 0 20px',
+};
+
+const DL_STYLE: React.CSSProperties = {
+  display: 'grid',
+  gridTemplateColumns: '1fr 1fr',
+  borderTop: '1px solid var(--ink-a10)',
+  borderBottom: '1px solid var(--ink-a10)',
+  margin: '0 0 20px',
+};
+
+const CTA_STYLE: React.CSSProperties = {
+  marginTop: 'auto',
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: 6,
+  fontSize: 14,
+  fontWeight: 600,
+  color: 'var(--ink)',
+  textDecoration: 'none',
+  borderBottom: '2px solid var(--gold)',
+  paddingBottom: 2,
+  alignSelf: 'flex-start',
+};
+
+function CatalogTileCard({ tile }: { tile: CatalogTile }) {
   return (
-    <MarketingPage
-      hero={{
-        eyebrow: "Education",
-        title: <>Use our assessments to measure you or your team&rsquo;s readiness.</>,
-        divider: "hairline",
-        aside: isPEnrolled ? (
-          <Marginalia label="Your progress">
-            <h4 className="font-serif text-display-xs leading-snug">
-              {completedCount}/{modules.length} modules complete
-            </h4>
-            <p className="font-serif italic text-body-sm text-slate mt-s1 mb-s4">
-              AiBI-Foundation · in progress
-            </p>
-            <Cta href="/courses/foundation/program" variant="secondary">
-              Resume the program →
-            </Cta>
-          </Marginalia>
-        ) : undefined,
-        payload: (
-          <div className="grid md:grid-cols-2 gap-px bg-hairline border-y border-strong">
-            {assessments.map((a) => (
-              <article key={a.title} className="bg-linen p-s8 lg:p-s10 flex flex-col">
-                <ProductMark kind={a.mark} size={48} className="mb-s4" />
-                <div className="flex items-center mb-s5">
-                  <span
-                    className={
-                      a.tagTone === "free"
-                        ? "font-serif-sc text-mono-sm uppercase tracking-widest text-terra border border-terra px-s3 py-[3px]"
-                        : "font-serif-sc text-mono-sm uppercase tracking-widest text-terra bg-parch-dark border border-terra px-s3 py-[3px]"
-                    }
-                  >
-                    {a.tag}
-                  </span>
-                </div>
-                <h3 className="font-serif text-display-sm leading-snug mb-s3">{a.title}</h3>
-                <p className="text-body-md leading-relaxed text-ink/80 mb-s6">{a.subtitle}</p>
-                <dl className="grid grid-cols-2 border-y border-strong mb-s6">
-                  {a.facts.map((f, i) => {
-                    const isStat = i < 2;
-                    const isLeft = i % 2 === 0;
-                    const isTopRow = i < 2;
-                    return (
-                      <div
-                        key={f.label}
-                        className={[
-                          "py-s4",
-                          isLeft ? "pr-s5" : "pl-s5",
-                          !isLeft && "border-l border-hairline",
-                          isTopRow && "border-b border-hairline",
-                        ]
-                          .filter(Boolean)
-                          .join(" ")}
-                      >
-                        <dt className="font-mono text-mono-xs uppercase tracking-widest text-ink/55 mb-s2">
-                          {f.label}
-                        </dt>
-                        {isStat ? (
-                          <dd className="font-serif italic text-4xl md:text-5xl text-terra leading-none tabular-nums">
-                            {f.value}
-                          </dd>
-                        ) : (
-                          <dd className="font-serif text-body-md text-ink leading-snug">
-                            {f.value}
-                          </dd>
-                        )}
-                      </div>
-                    );
-                  })}
-                </dl>
-                <div className="mt-auto">
-                  <Cta variant="secondary" href={a.href}>
-                    {a.cta}
-                  </Cta>
-                </div>
-              </article>
-            ))}
-          </div>
+    <article style={TILE}>
+      <span style={tile.tagTone === 'free' ? TAG_FREE : TAG_PAID}>{tile.tag}</span>
+      <h3 style={TITLE_STYLE}>{tile.title}</h3>
+      <p style={SUB_STYLE}>{tile.subtitle}</p>
+      <dl style={DL_STYLE}>
+        {tile.facts.map((f, i) => {
+          const isLeft = i % 2 === 0;
+          const isTopRow = i < 2;
+          return (
+            <div
+              key={f.label}
+              style={{
+                padding: '14px 0',
+                paddingRight: isLeft ? 20 : 0,
+                paddingLeft: isLeft ? 0 : 20,
+                borderLeft: !isLeft ? '1px solid var(--ink-a10)' : undefined,
+                borderBottom: isTopRow ? '1px solid var(--ink-a10)' : undefined,
+              }}
+            >
+              <dt
+                style={{
+                  fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
+                  fontSize: 11,
+                  letterSpacing: '0.16em',
+                  textTransform: 'uppercase',
+                  color: 'var(--slate-500)',
+                  margin: '0 0 6px',
+                }}
+              >
+                {f.label}
+              </dt>
+              <dd
+                style={{
+                  fontSize: 16,
+                  fontWeight: 600,
+                  color: 'var(--ink)',
+                  margin: 0,
+                  lineHeight: 1.3,
+                }}
+              >
+                {f.value}
+              </dd>
+            </div>
+          );
+        })}
+      </dl>
+      <Link href={tile.href} style={CTA_STYLE}>
+        {tile.cta}
+      </Link>
+    </article>
+  );
+}
+
+export default function EducationPage() {
+  return (
+    <MockupShell
+      activePath="/courses"
+      eyebrow="Education · Free + paid · Self-paced"
+      title={<>Use our assessments to measure you or your team&rsquo;s readiness.</>}
+      lede={
+        <>
+          Free classes and three certification tracks for community banks and credit
+          unions. Start with the AI Readiness Assessment, then earn AiBI-Foundation,
+          AiBI-S, or AiBI-L credentials. Tuition published. Methodology published.
+        </>
+      }
+      heroActions={[
+        { label: 'Take the assessment', href: '/assessment', variant: 'gold' },
+        { label: 'View the curriculum', href: '/courses/foundation/program/purchase', variant: 'ghost-dark' },
+      ]}
+      sections={[
+        {
+          kicker: 'Assessments',
+          heading: <>Measure where you stand. Before you spend.</>,
+          lede: (
+            <>
+              Most learners start here. The free assessment surfaces the gap; the
+              In-Depth Assessment quantifies it and hands you a written report with
+              peer-band comparison.
+            </>
+          ),
+          body: (
+            <div
+              style={{
+                display: 'grid',
+                gap: 20,
+                gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+                marginTop: 32,
+              }}
+            >
+              {ASSESSMENTS.map((tile) => (
+                <CatalogTileCard key={tile.title} tile={tile} />
+              ))}
+            </div>
+          ),
+        },
+        {
+          kicker: 'Course',
+          heading: <>Build the credential your examiner respects.</>,
+          lede: (
+            <>
+              The AiBI-Foundation course is twelve self-paced modules ending in three
+              reviewed AI artifacts per practitioner. Self-paced, scored on reviewed
+              work — not a multiple-choice quiz.
+            </>
+          ),
+          surface: 'white',
+          body: (
+            <div
+              style={{
+                display: 'grid',
+                gap: 20,
+                gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+                marginTop: 32,
+                maxWidth: 720,
+              }}
+            >
+              {COURSES.map((tile) => (
+                <CatalogTileCard key={tile.title} tile={tile} />
+              ))}
+            </div>
+          ),
+        },
+        {
+          kicker: 'Next credentials',
+          heading: <>AiBI-S Specialist and AiBI-L Leader.</>,
+          lede: (
+            <>
+              Specialist and Leader credentials ship after the Foundation is validated
+              with real learners. Join the waitlist from the dashboard or request a
+              briefing for institutional cohorts.
+            </>
+          ),
+        },
+      ]}
+      ctaBand={{
+        kicker: 'Team & institutional enrollment',
+        heading: <>Need team certification or executive workshops?</>,
+        body: (
+          <>
+            AiBI-Foundation team pricing starts at 10 seats ($199/seat) with lifetime
+            access. Institution-wide rollouts include a coached cohort and an
+            aggregate dashboard for your champion.
+          </>
         ),
+        actions: [
+          { label: 'See institutional engagement', href: '/for-institutions', variant: 'gold' },
+          { label: 'Book a briefing', href: '/for-institutions/advisory', variant: 'ghost-dark' },
+        ],
       }}
-    >
-
-      {/* Capabilities preview — interactive tabs */}
-      <InteractiveSkillsPreview />
-
-      {/* Skills — what practitioners can do on day one */}
-      <Section variant="linen" padding="default">
-        <SectionHeader
-          label="Skills"
-          title="What practitioners can do on day one."
-        />
-        <SkillGrid className="mt-s8" />
-      </Section>
-
-      {/* Inquiry */}
-      <Section variant="parch" padding="default" container="narrow" id="inquiry-form">
-        <SectionHeader
-          label="Talk to us"
-          title="Questions before you commit?"
-        />
-        <div className="mt-s6">
-          <InquiryForm />
-        </div>
-      </Section>
-
-      {/* §05 — Team / institutional CTA */}
-      <Section variant="dark" divider="none" padding="default">
-        <div className="grid md:grid-cols-[1.4fr_1fr] gap-s10 items-center">
-          <div>
-            <p className="font-serif-sc text-label-md uppercase tracking-widest text-cream mb-s3">
-              Team and institutional enrollment
-            </p>
-            <h2 className="font-serif text-display-md text-bone leading-tight">
-              Need team certification or executive workshops?
-            </h2>
-            <p className="text-body-md text-cream mt-s4 leading-relaxed max-w-narrow">
-              AiBI-Foundation team pricing starts at 10 seats. Specialist and Leader
-              programs are coming after the Foundation is validated with real learners.
-            </p>
-          </div>
-          <div>
-            <Cta href="/for-institutions" tone="dark">
-              Read the institutional engagement page →
-            </Cta>
-          </div>
-        </div>
-      </Section>
-    </MarketingPage>
+    />
   );
 }

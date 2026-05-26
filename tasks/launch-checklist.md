@@ -450,6 +450,13 @@ post-conference launch email going out. Each item is sized to take
 
 ## §12. Accessibility audit (363–387)
 
+> **2026-05-21 code pass** (PRs #273/#274/#275 + prior #269/#270; see #143 comment):
+> contrast tokens (gold `#7C5814`, muted/slate `#4F5C6E`, readable `text-dust`→`text-slate`)
+> and toolbox input labels shipped. Items 375/377/385/386 verified satisfied in code
+> below. Remaining are operator-only: the axe-core route runs (363–370), in-browser
+> contrast spot-checks (372), focus-order (376), ARIA-runtime/modal behavior (379/381–384),
+> and NVDA/VoiceOver (387).
+
 - [ ] 363. Run axe-core on `/` — zero serious/critical issues
 - [ ] 364. Run axe on `/assessment`
 - [ ] 365. Run axe on `/assessment/in-depth`
@@ -462,9 +469,9 @@ post-conference launch email going out. Each item is sized to take
 - [ ] 372. Color contrast: all UI text (buttons, labels) ≥4.5:1
 - [ ] 373. Color contrast: gold accent text on linen passes AA
 - [ ] 374. Color contrast: muted text on parch passes AA
-- [ ] 375. Focus rings visible on every interactive element
+- [x] 375. Focus rings visible on every interactive element — global `*:focus-visible` gold ring in `base.css`
 - [ ] 376. Focus order matches visual order on every page
-- [ ] 377. All images have meaningful alt text or `alt=""` if decorative
+- [x] 377. All images have meaningful alt text or `alt=""` if decorative — N/A: no `<img>`/`<Image>` in tree (SVG/CSS; meaningful SVGs already `aria-label`'d)
 - [ ] 378. All form inputs have associated labels (htmlFor)
 - [ ] 379. Required fields marked with both visual + aria-required
 - [ ] 380. Error messages associated via aria-describedby
@@ -472,8 +479,8 @@ post-conference launch email going out. Each item is sized to take
 - [ ] 382. Modal/drawer traps focus when open
 - [ ] 383. Esc closes modals/drawers
 - [ ] 384. Heading hierarchy logical (no h2 inside h4)
-- [ ] 385. Landmark regions present (main, nav, footer)
-- [ ] 386. Reduced-motion preference respected (no autoplay animations)
+- [x] 385. Landmark regions present (main, nav, footer) — `<main>`/`<nav>`/`<footer>` across routes
+- [x] 386. Reduced-motion preference respected (no autoplay animations) — global `@media (prefers-reduced-motion: reduce)` kill-switch in `base.css`
 - [ ] 387. Test with NVDA (Windows) and VoiceOver (Mac) on key flows
 
 ## §13. Performance (388–402)

@@ -1,0 +1,1017 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sketch · AiBI Homepage (mockup port)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================================
+       Faithful port of /Users/jgmbp/Downloads/aibi_homepage_mockup.jsx.
+       Same palette, same radii, same shadows, same interactivity.
+       Brand name preserved; everything else matches the JSX.
+       Throwaway sketch — replace once approved.
+       ============================================================ */
+
+    :root {
+      --ink:        #071A2F;
+      --ink-2:      #0B2745;
+      --gold:       #C8A24A;
+      --gold-2:     #D8B867;
+      --gold-soft:  #E6D39B;
+      --gold-deep:  #9A7A2F;
+      --cream:      #F7F3EA;
+      --cream-2:    #EFE7D7;
+      --slate-50:   #F8FAFC;
+      --slate-100:  #F1F5F9;
+      --slate-200:  #E2E8F0;
+      --slate-400:  #94A3B8;
+      --slate-500:  #64748B;
+      --slate-600:  #475569;
+      --emerald-50: #ECFDF5;
+      --emerald-800:#065F46;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: "Inter", ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+    button { font-family: inherit; }
+    a { color: inherit; }
+
+    /* ---------- shell ---------- */
+    .shell-header {
+      position: sticky; top: 0; z-index: 50;
+      border-bottom: 1px solid rgba(7, 26, 47, 0.10);
+      background: rgba(247, 243, 234, 0.92);
+      backdrop-filter: saturate(180%) blur(14px);
+    }
+    .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+    .header-inner { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; gap: 24px; }
+    .brand { display: inline-flex; align-items: center; gap: 12px; background: transparent; border: 0; padding: 0; cursor: pointer; text-align: left; }
+    .brand .seal {
+      width: 40px; height: 40px; border-radius: 12px;
+      background: var(--ink); color: var(--gold);
+      display: inline-flex; align-items: center; justify-content: center;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+      flex: none;
+    }
+    .brand .wm-1 { font-size: 14px; font-weight: 600; letter-spacing: 0.02em; }
+    .brand .wm-2 { font-size: 12px; color: var(--slate-500); margin-top: 2px; }
+    .nav {
+      display: none; gap: 4px; padding: 4px;
+      background: #fff; border-radius: 16px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+    }
+    @media (min-width: 1180px) { .nav { display: inline-flex; } }
+    .nav button, .nav a {
+      padding: 8px 16px; border: 0; background: transparent; border-radius: 12px;
+      font-size: 14px; font-weight: 600; color: var(--slate-600); cursor: pointer; transition: background .12s;
+      text-decoration: none; display: inline-block;
+    }
+    .nav button:hover, .nav a:hover { background: var(--cream); }
+    .nav button.on, .nav a.on { background: var(--ink); color: #fff; }
+    .nav-mobile {
+      display: flex; gap: 8px; padding: 8px; margin: 0 0 16px;
+      background: #fff; border-radius: 16px; overflow-x: auto;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+    }
+    @media (min-width: 1180px) { .nav-mobile { display: none; } }
+    .nav-mobile button, .nav-mobile a {
+      flex: none; padding: 8px 16px; border: 0; background: transparent; border-radius: 12px;
+      font-size: 14px; font-weight: 600; color: var(--slate-600); cursor: pointer;
+      text-decoration: none; display: inline-block;
+    }
+    .nav-mobile button.on, .nav-mobile a.on { background: var(--ink); color: #fff; }
+
+    /* ---------- buttons ---------- */
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      border-radius: 12px; padding: 0 20px; height: 40px;
+      font-size: 14px; font-weight: 600; cursor: pointer; border: 1px solid transparent;
+      text-decoration: none; transition: background .12s, border-color .12s, transform .12s;
+    }
+    .btn-gold { background: var(--gold); color: var(--ink); }
+    .btn-gold:hover { background: var(--gold-2); }
+    .btn-ink  { background: var(--ink); color: #fff; }
+    .btn-ink:hover { background: var(--ink-2); }
+    .btn-ghost-dark { background: rgba(255,255,255,0.05); color: #fff; border-color: rgba(255,255,255,0.2); }
+    .btn-ghost-dark:hover { background: rgba(255,255,255,0.10); }
+    .btn-lg { height: 48px; padding: 0 24px; font-size: 16px; border-radius: 12px; }
+    .ic { width: 16px; height: 16px; flex: none; }
+    .ic-lg { width: 20px; height: 20px; flex: none; }
+
+    /* ---------- hero ---------- */
+    .hero {
+      position: relative; overflow: hidden;
+      background: var(--ink); color: #fff;
+    }
+    .hero .deco { position: absolute; inset: 0; opacity: 0.7; pointer-events: none; }
+    .hero .deco-ring {
+      position: absolute; right: -96px; top: -96px;
+      width: 320px; height: 320px; border-radius: 50%;
+      border: 1px solid rgba(200, 162, 74, 0.30);
+    }
+    .hero .deco-blur {
+      position: absolute; left: 0; bottom: 0;
+      width: 288px; height: 288px;
+      background: rgba(200, 162, 74, 0.10);
+      filter: blur(64px);
+    }
+    .hero-inner {
+      position: relative; display: grid; gap: 48px;
+      padding: 64px 0; grid-template-columns: 1fr;
+    }
+    @media (min-width: 1024px) {
+      .hero-inner { grid-template-columns: 0.9fr 1.1fr; align-items: center; gap: 48px; }
+    }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 16px; border-radius: 999px;
+      border: 1px solid rgba(200, 162, 74, 0.40);
+      background: rgba(200, 162, 74, 0.10);
+      color: var(--gold-soft); font-size: 14px;
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-size: clamp(40px, 6vw, 72px); font-weight: 600; line-height: 1.04;
+      letter-spacing: -0.02em; margin: 0; max-width: 18ch;
+    }
+    .hero .lede {
+      font-size: 18px; line-height: 1.7; color: rgba(255,255,255,0.70);
+      margin-top: 20px; max-width: 36ch;
+    }
+    .hero .ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+
+    /* hero preview card (left big card, right slim card) */
+    .hp { display: grid; gap: 16px; grid-template-columns: 1fr; }
+    @media (min-width: 720px) { .hp { grid-template-columns: 0.64fr 0.36fr; } }
+    .hp-card {
+      background: #fff; color: var(--ink);
+      border-radius: 28px; overflow: hidden;
+      box-shadow: 0 30px 60px -20px rgba(0,0,0,0.45), 0 12px 30px -12px rgba(0,0,0,0.30);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .hp-card .head {
+      padding: 16px 20px; background: var(--cream);
+      border-bottom: 1px solid var(--slate-200);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .hp-card .head .k { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-deep); }
+    .hp-card .head .t { font-size: 18px; font-weight: 600; }
+    .hp-card .body { padding: 20px; }
+    .product-grid { display: grid; gap: 16px; grid-template-columns: 1fr; }
+    @media (min-width: 640px) { .product-grid { grid-template-columns: repeat(3, 1fr); } }
+    .pcard {
+      background: #fff; border: 1px solid var(--slate-200); border-radius: 16px;
+      padding: 16px; text-align: left; cursor: pointer; transition: transform .12s, box-shadow .12s, border-color .12s;
+    }
+    .pcard:hover { transform: translateY(-4px); border-color: var(--gold); box-shadow: 0 6px 20px -10px rgba(0,0,0,0.18); }
+    .pcard .pic { width: 40px; height: 40px; border-radius: 12px; background: var(--ink); color: var(--gold); display: inline-flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+    .pcard .lbl { font-size: 12px; font-weight: 700; color: var(--gold-deep); }
+    .pcard .pt { font-size: 14px; font-weight: 600; margin-top: 4px; line-height: 1.4; }
+    .pcard .pm { font-size: 12px; color: var(--slate-500); margin-top: 12px; }
+    .path-row {
+      margin-top: 20px; padding: 20px;
+      background: var(--cream); border: 1px solid var(--slate-200); border-radius: 16px;
+    }
+    .path-row .k { font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--slate-500); }
+    .path-row .t { font-size: 22px; font-weight: 600; margin-top: 4px; }
+    .path-tabs { margin-top: 16px; display: grid; gap: 12px; grid-template-columns: 1fr; }
+    @media (min-width: 640px) { .path-tabs { grid-template-columns: repeat(3, 1fr); } }
+    .path-tabs button {
+      border: 0; padding: 12px 16px; border-radius: 12px; text-align: left;
+      font-size: 14px; font-weight: 600; cursor: pointer;
+      background: #fff; color: var(--slate-600); transition: background .12s;
+    }
+    .path-tabs button:hover { background: var(--slate-50); }
+    .path-tabs button.on { background: var(--ink); color: #fff; }
+
+    .hp-side {
+      background: rgba(255,255,255,0.10); color: #fff;
+      border-radius: 28px; padding: 20px; backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.10);
+    }
+    .hp-side .pic { width: 48px; height: 48px; border-radius: 16px; background: var(--gold); color: var(--ink); display: inline-flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+    .hp-side .k { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-soft); }
+    .hp-side h3 { font-size: 24px; font-weight: 600; margin: 8px 0 0; }
+    .hp-side .score { display: flex; align-items: flex-end; gap: 8px; margin: 24px 0; }
+    .hp-side .score .v { font-size: 60px; font-weight: 600; color: var(--gold-soft); line-height: 1; }
+    .hp-side .score .u { font-size: 14px; color: rgba(255,255,255,0.50); padding-bottom: 8px; }
+    .hp-side .items { display: flex; flex-direction: column; gap: 12px; }
+    .hp-side .item { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 12px; background: rgba(255,255,255,0.10); font-size: 14px; color: rgba(255,255,255,0.80); }
+    .hp-side .item svg { color: var(--gold); }
+
+    /* ---------- section heads ---------- */
+    section.std { padding: 56px 0; }
+    .section-head { margin-bottom: 32px; }
+    .section-head .k { font-size: 14px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold-deep); }
+    .section-head h2 { font-size: clamp(28px, 3.4vw, 44px); font-weight: 600; line-height: 1.08; letter-spacing: -0.015em; margin: 8px 0 0; }
+    .section-head p { color: var(--slate-600); margin: 16px 0 0; max-width: 60ch; }
+
+    /* ---------- product suite ---------- */
+    .suite { display: grid; gap: 20px; grid-template-columns: 1fr; }
+    @media (min-width: 860px) { .suite { grid-template-columns: repeat(3, 1fr); } }
+    .scard {
+      background: #fff; border: 1px solid rgba(7,26,47,0.10); border-radius: 24px;
+      overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+      transition: transform .12s, box-shadow .12s;
+    }
+    .scard:hover { transform: translateY(-4px); box-shadow: 0 24px 40px -20px rgba(0,0,0,0.20); }
+    .scard .top-rule { height: 8px; background: var(--gold); }
+    .scard .body { padding: 24px; }
+    .scard .row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
+    .scard .pic { width: 48px; height: 48px; border-radius: 12px; background: var(--ink); color: var(--gold); display: inline-flex; align-items: center; justify-content: center; }
+    .scard .num { font-size: 14px; font-weight: 700; color: var(--gold-deep); }
+    .scard .lbl { font-size: 14px; font-weight: 700; color: var(--gold-deep); }
+    .scard h3 { font-size: 24px; font-weight: 600; margin: 8px 0 0; line-height: 1.2; }
+    .infobox { margin-top: 16px; padding: 16px; border-radius: 16px; background: var(--cream); }
+    .infobox.line { background: transparent; border: 1px solid rgba(7,26,47,0.10); }
+    .infobox .k { color: var(--slate-500); font-size: 14px; }
+    .infobox .v { font-weight: 600; margin-top: 4px; }
+
+    /* ---------- path builder ---------- */
+    .pb-section { background: var(--ink); color: #fff; padding: 56px 0; }
+    .pb-section .lede { color: rgba(255,255,255,0.65); margin-top: 16px; }
+    .pb-grid { display: grid; gap: 32px; grid-template-columns: 1fr; align-items: center; }
+    @media (min-width: 1024px) { .pb-grid { grid-template-columns: 0.42fr 0.58fr; } }
+    .pb-card { background: #fff; color: var(--ink); border-radius: 32px; overflow: hidden; box-shadow: 0 30px 60px -20px rgba(0,0,0,0.40); border: 1px solid rgba(255,255,255,0.10); }
+    .pb-grid-inner { display: grid; grid-template-columns: 1fr; }
+    @media (min-width: 720px) { .pb-grid-inner { grid-template-columns: 0.42fr 0.58fr; } }
+    .pb-controls { background: var(--cream); padding: 24px; }
+    .pb-rx { padding: 24px; }
+    .pb-rx .rxhead { display: flex; align-items: center; justify-content: space-between; padding-bottom: 20px; border-bottom: 1px solid var(--slate-200); margin-bottom: 24px; }
+    .pb-rx .rxhead .k { font-size: 12px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-deep); }
+    .pb-rx .rxhead .t { font-size: 22px; font-weight: 600; margin-top: 8px; }
+    .pb-rx .iconbox { margin-top: 16px; padding: 20px; border: 1px solid rgba(7,26,47,0.10); border-radius: 16px; }
+    .pb-rx .iconbox svg { color: var(--gold); margin-bottom: 16px; }
+    .pb-rx .pair { display: grid; gap: 16px; grid-template-columns: 1fr; }
+    @media (min-width: 640px) { .pb-rx .pair { grid-template-columns: 1fr 1fr; } }
+    .pb-rx .why { margin-top: 16px; padding: 20px; border-radius: 16px; background: var(--ink); color: #fff; }
+    .pb-rx .why .k { font-size: 14px; color: rgba(255,255,255,0.55); }
+    .pb-rx .why .v { font-size: 18px; font-weight: 600; color: var(--gold-soft); margin-top: 4px; }
+    .opt-group { margin-top: 20px; }
+    .opt-group .lab { font-size: 14px; font-weight: 600; color: var(--slate-600); margin-bottom: 12px; }
+    .opt-list { display: grid; gap: 8px; }
+    .opt-list button {
+      border: 0; padding: 12px 16px; border-radius: 12px; text-align: left;
+      font-size: 14px; font-weight: 600; cursor: pointer; background: #fff; color: var(--slate-600);
+    }
+    .opt-list button:hover { background: var(--slate-50); }
+    .opt-list button.on { background: var(--ink); color: #fff; }
+    .opt-list.gold button.on { background: var(--gold); color: var(--ink); }
+
+    /* ---------- role preview ---------- */
+    .role-grid { display: grid; gap: 40px; grid-template-columns: 1fr; align-items: center; }
+    @media (min-width: 1024px) { .role-grid { grid-template-columns: 0.36fr 0.64fr; } }
+    .role-tabs { display: flex; flex-wrap: wrap; gap: 12px; }
+    .role-tabs button {
+      border: 0; padding: 12px 16px; border-radius: 12px; cursor: pointer;
+      font-size: 14px; font-weight: 600;
+      background: var(--cream); color: var(--ink);
+    }
+    .role-tabs button:hover { background: var(--cream-2); }
+    .role-tabs button.on { background: var(--ink); color: #fff; }
+    .role-card { background: var(--cream); border: 1px solid rgba(7,26,47,0.10); border-radius: 32px; overflow: hidden; box-shadow: 0 24px 40px -20px rgba(0,0,0,0.18); }
+    .role-grid-inner { display: grid; grid-template-columns: 1fr; }
+    @media (min-width: 720px) { .role-grid-inner { grid-template-columns: 0.55fr 0.45fr; } }
+    .role-left { background: var(--ink); color: #fff; padding: 28px; }
+    .role-left .pic { width: 48px; height: 48px; border-radius: 16px; background: var(--gold); color: var(--ink); display: inline-flex; align-items: center; justify-content: center; margin-bottom: 32px; }
+    .role-left .k { font-size: 14px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold-soft); }
+    .role-left h3 { font-size: 36px; font-weight: 600; margin: 12px 0 0; line-height: 1.05; }
+    .mini { margin-top: 32px; padding: 20px; background: #fff; color: var(--ink); border-radius: 16px; box-shadow: 0 24px 40px -20px rgba(0,0,0,0.40); }
+    .mini .top { display: flex; justify-content: space-between; align-items: center; padding-bottom: 16px; border-bottom: 1px solid var(--slate-200); margin-bottom: 20px; }
+    .mini .top .k { font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-deep); }
+    .mini .top .n { font-weight: 600; }
+    .mini .row { display: grid; grid-template-columns: 0.4fr 0.6fr; gap: 12px; margin-bottom: 12px; }
+    .mini .row:last-child { margin-bottom: 0; }
+    .mini .cell { padding: 12px; border-radius: 12px; font-size: 12px; }
+    .mini .cell.key { background: var(--cream); color: var(--slate-500); }
+    .mini .cell.val { background: var(--cream); color: var(--ink); font-weight: 600; }
+    .mini .cell.status { background: rgba(200,162,74,0.20); color: var(--ink); font-weight: 600; }
+    .role-right { padding: 28px; }
+    .role-right .k { font-size: 14px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-deep); }
+    .out-list { margin-top: 20px; display: flex; flex-direction: column; gap: 16px; }
+    .out-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px; background: #fff; border-radius: 16px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+    .out-row .ll { display: flex; align-items: center; gap: 12px; font-weight: 600; }
+    .out-row .ll svg { color: var(--gold); }
+
+    /* ---------- sandbox preview ---------- */
+    .sb-grid { display: grid; gap: 32px; grid-template-columns: 1fr; align-items: center; }
+    @media (min-width: 1024px) { .sb-grid { grid-template-columns: 0.58fr 0.42fr; } }
+    .sb-card { background: #fff; border: 1px solid rgba(7,26,47,0.10); border-radius: 32px; overflow: hidden; box-shadow: 0 24px 40px -20px rgba(0,0,0,0.18); }
+    .sb-head { padding: 20px 24px; background: var(--ink); color: #fff; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .sb-head .k { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-soft); }
+    .sb-head .t { font-size: 22px; font-weight: 600; margin-top: 4px; }
+    .sb-steps { display: grid; grid-template-columns: repeat(4, 1fr); }
+    @media (max-width: 720px) { .sb-steps { grid-template-columns: 1fr 1fr; } }
+    .sb-steps > div { padding: 20px; border-right: 1px solid var(--slate-200); border-bottom: 1px solid var(--slate-200); }
+    .sb-steps > div:last-child { border-right: 0; }
+    .sb-steps .n { font-weight: 600; }
+    .sb-steps .d { font-size: 12px; color: var(--slate-500); margin-top: 4px; }
+    .sb-body { background: var(--cream); padding: 24px; }
+    .sb-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+    .sb-pills button { padding: 8px 16px; border: 0; border-radius: 999px; font-size: 12px; font-weight: 700; cursor: pointer; background: #fff; color: var(--slate-600); }
+    .sb-pills button.on { background: var(--ink); color: #fff; }
+    .sb-scenario { background: #fff; padding: 20px; border-radius: 16px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+    .sb-scenario .stop { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+    .sb-scenario .badge { background: var(--ink); color: #fff; padding: 6px 12px; border-radius: 999px; font-size: 12px; }
+    .sb-fields { display: grid; gap: 12px; grid-template-columns: 1fr; }
+    @media (min-width: 720px) { .sb-fields { grid-template-columns: repeat(3, 1fr); } }
+    .sb-field { padding: 16px; border-radius: 12px; background: var(--slate-50); }
+    .sb-field.gold { background: rgba(200,162,74,0.20); }
+    .sb-field .k { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--slate-400); }
+    .sb-field.gold .k { color: var(--gold-deep); }
+    .sb-field .v { font-weight: 600; margin-top: 12px; }
+
+    .sb-right .grid { display: grid; gap: 16px; grid-template-columns: 1fr 1fr; margin-top: 24px; }
+    .sb-feat { padding: 20px; background: #fff; border-radius: 16px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+    .sb-feat svg { color: var(--gold); margin-bottom: 16px; }
+    .sb-feat .f { font-weight: 600; }
+
+    /* ---------- CTA ---------- */
+    .cta { background: var(--ink); color: #fff; padding: 64px 0; }
+    .cta-band {
+      display: grid; gap: 32px; grid-template-columns: 1fr;
+      padding: 32px; border-radius: 32px; border: 1px solid rgba(200,162,74,0.25);
+      background: rgba(255,255,255,0.05);
+    }
+    @media (min-width: 720px) { .cta-band { grid-template-columns: 0.65fr 0.35fr; padding: 48px; } }
+    .cta-band .k { font-size: 14px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold-soft); }
+    .cta-band h2 { font-size: clamp(32px, 4.5vw, 60px); font-weight: 600; line-height: 1.05; letter-spacing: -0.02em; margin: 12px 0 0; max-width: 16ch; }
+    .cta-band p { color: rgba(255,255,255,0.65); margin: 20px 0 0; max-width: 36ch; }
+    .cta-actions { display: flex; flex-direction: column; gap: 12px; justify-content: center; }
+
+    /* sketch ribbon */
+    .ribbon {
+      position: fixed; bottom: 16px; right: 16px; z-index: 1000;
+      background: var(--ink); color: #fff; padding: 10px 14px;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+      border-radius: 10px; box-shadow: 0 12px 30px -10px rgba(0,0,0,0.4);
+    }
+    .ribbon span { color: var(--gold-soft); }
+  </style>
+</head>
+<body>
+
+<!-- ============================= SHELL ============================= -->
+<header class="shell-header">
+  <div class="container header-inner">
+    <button class="brand" onclick="setPage('Home')">
+      <span class="seal" aria-hidden="true">
+        <!-- Landmark icon -->
+        <svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg>
+      </span>
+      <span>
+        <span class="wm-1">The AI Banking Institute</span><br>
+        <span class="wm-2">Regulated Intelligence</span>
+      </span>
+    </button>
+
+    <nav class="nav" id="nav-desktop">
+      <a class="on" href="mockup.html" data-page="Home" style="text-decoration:none">Home</a>
+      <a href="course.html" data-page="Course" style="text-decoration:none">Course</a>
+      <a href="assessment.html" data-page="Assessment" style="text-decoration:none">Assessment</a>
+      <a href="sandbox.html" data-page="Sandbox" style="text-decoration:none">Sandbox</a>
+      <a href="toolbox.html" data-page="Toolbox" style="text-decoration:none">Toolbox</a>
+      <a href="teams.html" data-page="Teams" style="text-decoration:none">Teams</a>
+    </nav>
+
+    <a class="btn btn-gold" href="#">Start Free</a>
+  </div>
+  <div class="container">
+    <nav class="nav-mobile" id="nav-mobile">
+      <a class="on" href="mockup.html" data-page="Home" style="text-decoration:none">Home</a>
+      <a href="course.html" data-page="Course" style="text-decoration:none">Course</a>
+      <a href="assessment.html" data-page="Assessment" style="text-decoration:none">Assessment</a>
+      <a href="sandbox.html" data-page="Sandbox" style="text-decoration:none">Sandbox</a>
+      <a href="toolbox.html" data-page="Toolbox" style="text-decoration:none">Toolbox</a>
+      <a href="teams.html" data-page="Teams" style="text-decoration:none">Teams</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============================= HERO ============================= -->
+<section class="hero">
+  <div class="deco">
+    <div class="deco-ring"></div>
+    <div class="deco-blur"></div>
+  </div>
+  <div class="container hero-inner">
+    <div>
+      <div class="eyebrow">
+        <!-- LockKeyhole -->
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="16" r="1"/><rect x="3" y="10" width="18" height="12" rx="2"/><path d="M7 10V7a5 5 0 0 1 9.33-2.5"/></svg>
+        Built for banks, credit unions, and regulated teams
+      </div>
+      <h1>Train people to use AI without losing control.</h1>
+      <p class="lede">Assess readiness, practice safely, and turn useful prompts into documented workflows.</p>
+      <div class="ctas">
+        <a class="btn btn-lg btn-gold" href="#">Start Free Assessment
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a class="btn btn-lg btn-ghost-dark" href="#">Preview Course</a>
+      </div>
+    </div>
+
+    <!-- Hero report card — split dark/light, single clean visual -->
+    <div class="hreport">
+      <div class="hreport-left">
+        <div class="k">Sample report</div>
+        <div class="v tnum">62</div>
+        <div class="u">/ 100 readiness</div>
+        <div class="tier">
+          <svg style="width:16px;height:16px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          Building Momentum
+        </div>
+      </div>
+      <div class="hreport-right">
+        <div class="k">8 Dimensions</div>
+        <div class="hdims">
+          <div class="hdim"><div class="row"><span class="nm">Governance</span><span class="lv">High</span></div><div class="bar"><div class="fill" style="width:72%"></div></div></div>
+          <div class="hdim"><div class="row"><span class="nm">Tool fluency</span><span class="lv">Med</span></div><div class="bar"><div class="fill" style="width:58%"></div></div></div>
+          <div class="hdim"><div class="row"><span class="nm">Risk awareness</span><span class="lv">High</span></div><div class="bar"><div class="fill" style="width:75%"></div></div></div>
+          <div class="hdim"><div class="row"><span class="nm">Workflow fit</span><span class="lv">Med</span></div><div class="bar"><div class="fill" style="width:55%"></div></div></div>
+          <div class="hdim"><div class="row"><span class="nm">Data judgment</span><span class="lv">Low</span></div><div class="bar"><div class="fill" style="width:42%"></div></div></div>
+          <div class="hdim"><div class="row"><span class="nm">Documentation</span><span class="lv">Med</span></div><div class="bar"><div class="fill" style="width:60%"></div></div></div>
+          <div class="hdim"><div class="row"><span class="nm">Role readiness</span><span class="lv">Med</span></div><div class="bar"><div class="fill" style="width:65%"></div></div></div>
+          <div class="hdim"><div class="row"><span class="nm">Leadership</span><span class="lv">High</span></div><div class="bar"><div class="fill" style="width:80%"></div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= PLATFORM PREVIEW (moved out of hero) ============================= -->
+<section class="std">
+  <div class="container">
+    <div class="section-head">
+      <div class="k">Inside the platform</div>
+      <h2>One command center. Three places it sends you.</h2>
+      <p>Every learner lands in the same view: take an assessment, run a scenario, or pull from the toolbox. Click a tab to preview what's inside.</p>
+    </div>
+    <div class="pp">
+      <!-- Left: Learner Command Center -->
+      <div class="hp-card">
+        <div class="head">
+          <div>
+            <div class="k">Platform Preview</div>
+            <div class="t">Learner Command Center</div>
+          </div>
+          <svg class="ic-lg" style="width:32px;height:32px;color:var(--gold)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+        </div>
+        <div class="body">
+          <div class="product-grid">
+            <div class="pcard">
+              <span class="pic"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>
+              <div class="pt">Readiness Assessment</div>
+              <div class="pm">3 min</div>
+            </div>
+            <div class="pcard">
+              <span class="pic"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg></span>
+              <div class="pt">Maturity Assessment</div>
+              <div class="pm">48 questions</div>
+            </div>
+            <div class="pcard">
+              <span class="pic"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></span>
+              <div class="pt">Foundation Course</div>
+              <div class="pm">Course + toolbox</div>
+            </div>
+          </div>
+          <div class="path-row">
+            <div class="k">Learner Path</div>
+            <div class="t">Assess → Practice → Build</div>
+            <div class="path-tabs" id="hero-tabs">
+              <button class="on" data-k="Assessment">Assessment</button>
+              <button data-k="Sandbox">Sandbox</button>
+              <button data-k="Toolbox">Toolbox</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Right: live preview side card (interactive) -->
+      <div class="hp-side hp-side-light" id="hp-side"></div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Hero report card — split dark/light, single clean visual */
+  .hreport {
+    background: #fff; color: var(--ink);
+    border-radius: 28px; overflow: hidden;
+    box-shadow: 0 30px 60px -20px rgba(0,0,0,0.45);
+    border: 1px solid rgba(255,255,255,0.08);
+    display: grid; grid-template-columns: 1fr;
+  }
+  @media (min-width: 720px) { .hreport { grid-template-columns: 0.42fr 0.58fr; } }
+  .hreport-left { background: var(--ink); color: #fff; padding: 28px; }
+  .hreport-left .k { font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold-soft); }
+  .hreport-left .v { font-size: 96px; font-weight: 600; color: var(--gold-soft); line-height: 0.95; margin-top: 12px; }
+  .hreport-left .u { color: rgba(255,255,255,0.5); }
+  .hreport-left .tier { margin-top: 20px; padding: 12px 16px; border: 1px solid rgba(200,162,74,0.40); border-radius: 12px; background: rgba(200,162,74,0.10); display: flex; gap: 10px; align-items: center; color: var(--gold-soft); font-weight: 700; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; }
+  .hreport-right { padding: 24px; }
+  .hreport-right .k { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-deep); }
+  .hdims { margin-top: 16px; display: grid; gap: 12px; grid-template-columns: 1fr 1fr; }
+  .hdim { background: var(--cream); padding: 14px 16px; border-radius: 16px; }
+  .hdim .row { display: flex; justify-content: space-between; margin-bottom: 8px; }
+  .hdim .nm { font-weight: 600; font-size: 13px; }
+  .hdim .lv { font-size: 12px; color: var(--gold-deep); font-weight: 700; }
+  .hdim .bar { height: 6px; background: var(--slate-200); border-radius: 999px; overflow: hidden; }
+  .hdim .fill { height: 100%; background: var(--gold); }
+
+  /* Platform Preview section — same hp-card/hp-side, light-theme side variant */
+  .pp { display: grid; gap: 16px; grid-template-columns: 1fr; }
+  @media (min-width: 720px) { .pp { grid-template-columns: 0.64fr 0.36fr; } }
+  .hp-side-light { background: var(--ink); color: #fff; border: 0; }
+</style>
+
+<!-- ============================= PRODUCT SUITE ============================= -->
+<section class="std">
+  <div class="container">
+    <div class="section-head">
+      <div class="k">Product Suite</div>
+      <h2>A clear path from interest to implementation.</h2>
+    </div>
+    <div class="suite">
+      <div class="scard">
+        <div class="top-rule"></div>
+        <div class="body">
+          <div class="row">
+            <span class="pic">
+              <svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            </span>
+            <span class="num">01</span>
+          </div>
+          <div class="lbl">Free</div>
+          <h3>Readiness Assessment</h3>
+          <div class="infobox"><div class="k">Outcome</div><div class="v">Baseline score</div></div>
+          <div class="infobox line"><div class="k">Next action</div><div class="v">Start here</div></div>
+        </div>
+      </div>
+      <div class="scard">
+        <div class="top-rule"></div>
+        <div class="body">
+          <div class="row">
+            <span class="pic">
+              <svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>
+            </span>
+            <span class="num">02</span>
+          </div>
+          <div class="lbl">$99</div>
+          <h3>Maturity Assessment</h3>
+          <div class="infobox"><div class="k">Outcome</div><div class="v">Role-specific plan</div></div>
+          <div class="infobox line"><div class="k">Next action</div><div class="v">Go deeper</div></div>
+        </div>
+      </div>
+      <div class="scard">
+        <div class="top-rule"></div>
+        <div class="body">
+          <div class="row">
+            <span class="pic">
+              <svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            </span>
+            <span class="num">03</span>
+          </div>
+          <div class="lbl">$295</div>
+          <h3>Foundation Course</h3>
+          <div class="infobox"><div class="k">Outcome</div><div class="v">Reusable workflows</div></div>
+          <div class="infobox line"><div class="k">Next action</div><div class="v">Build capability</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= PATH BUILDER ============================= -->
+<section class="pb-section">
+  <div class="container pb-grid">
+    <div>
+      <div class="k" style="color:var(--gold-soft);font-size:14px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase">Interactive Guidance</div>
+      <h2 style="font-size:clamp(28px,3.6vw,44px);font-weight:600;margin:8px 0 0;line-height:1.08;letter-spacing:-0.015em">Help users find their next best step.</h2>
+      <p class="lede">Select a role and goal to see the path, artifact, and business value.</p>
+    </div>
+    <div class="pb-card">
+      <div class="pb-grid-inner">
+        <div class="pb-controls">
+          <div class="opt-group">
+            <div class="lab">Role</div>
+            <div class="opt-list" id="pb-roles">
+              <button class="on" data-v="Compliance">Compliance</button>
+              <button data-v="Retail">Retail</button>
+              <button data-v="Marketing">Marketing</button>
+              <button data-v="Operations">Operations</button>
+            </div>
+          </div>
+          <div class="opt-group">
+            <div class="lab">Goal</div>
+            <div class="opt-list gold" id="pb-goals">
+              <button class="on" data-v="Document AI use safely">Document AI use safely</button>
+              <button data-v="Save time on repeat work">Save time on repeat work</button>
+              <button data-v="Train my team">Train my team</button>
+              <button data-v="Build approved workflows">Build approved workflows</button>
+            </div>
+          </div>
+        </div>
+        <div class="pb-rx">
+          <div class="rxhead">
+            <div>
+              <div class="k">Recommended Path</div>
+              <div class="t" id="pb-title">Compliance · Document AI use safely</div>
+            </div>
+            <svg class="ic-lg" style="width:32px;height:32px;color:var(--gold)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/><circle cx="18" cy="5" r="3"/></svg>
+          </div>
+          <div class="infobox"><div class="k">Path</div><div class="v" id="pb-path">Maturity Assessment → Foundation Course → Workflow SOP</div></div>
+          <div class="pair">
+            <div class="iconbox">
+              <svg class="ic-lg" style="width:24px;height:24px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              <div class="k" style="color:var(--slate-500);font-size:14px">Artifact</div>
+              <div class="v" id="pb-artifact" style="margin-top:4px;font-weight:600">AI use-case review packet</div>
+            </div>
+            <div class="iconbox">
+              <svg class="ic-lg" style="width:24px;height:24px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+              <div class="k" style="color:var(--slate-500);font-size:14px">Value signal</div>
+              <div class="v" id="pb-metric" style="margin-top:4px;font-weight:600">Examiner-ready documentation</div>
+            </div>
+          </div>
+          <div class="why">
+            <div class="k">Why it matters</div>
+            <div class="v" id="pb-value">Reduce ambiguity before AI tools touch regulated work.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= ROLE PREVIEW ============================= -->
+<section class="std" style="background:#fff">
+  <div class="container role-grid">
+    <div>
+      <div class="section-head">
+        <div class="k">Role Previews</div>
+        <h2>Show the artifact. Then teach the skill.</h2>
+        <p>Learners see the practical output before the lesson begins.</p>
+      </div>
+      <div class="role-tabs" id="role-tabs">
+        <button class="on" data-v="Compliance">Compliance</button>
+        <button data-v="Retail">Branch / Retail</button>
+        <button data-v="Marketing">Marketing</button>
+      </div>
+    </div>
+    <div class="role-card">
+      <div class="role-grid-inner">
+        <div class="role-left">
+          <span class="pic" id="role-icon">
+            <svg class="ic-lg" style="width:28px;height:28px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </span>
+          <div class="k" id="role-name">Compliance</div>
+          <h3 id="role-artifact">Workflow Review Packet</h3>
+          <div class="mini">
+            <div class="top">
+              <div class="k">Artifact Preview</div>
+              <div class="n" id="role-artifact-2">Workflow Review Packet</div>
+            </div>
+            <div class="row">
+              <div class="cell key">Owner</div>
+              <div class="cell val">Department lead</div>
+            </div>
+            <div class="row">
+              <div class="cell key">Status</div>
+              <div class="cell status" id="role-status">Ready with review</div>
+            </div>
+            <div class="row">
+              <div class="cell key">Review</div>
+              <div class="cell val">Human approval</div>
+            </div>
+          </div>
+        </div>
+        <div class="role-right">
+          <div class="k">Outputs</div>
+          <div class="out-list" id="role-outputs">
+            <!-- filled by JS -->
+          </div>
+          <a class="btn btn-ink" style="margin-top:24px" href="#">View sample artifact
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= SANDBOX ============================= -->
+<section class="std">
+  <div class="container sb-grid">
+    <div class="sb-card">
+      <div class="sb-head">
+        <div>
+          <div class="k">Sandbox</div>
+          <div class="t">Practice Lab</div>
+        </div>
+        <svg class="ic-lg" style="width:32px;height:32px;color:var(--gold)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.31"/><path d="M14 9.3V2"/><path d="M8.5 2h7"/><path d="M14 9.3a6.5 6.5 0 1 1-4 0"/></svg>
+      </div>
+      <div class="sb-steps">
+        <div><div class="n">Pick role</div><div class="d">Step 1</div></div>
+        <div><div class="n">Load scenario</div><div class="d">Step 2</div></div>
+        <div><div class="n">Review result</div><div class="d">Step 3</div></div>
+        <div><div class="n">Save asset</div><div class="d">Step 4</div></div>
+      </div>
+      <div class="sb-body">
+        <div class="sb-pills" id="sb-pills">
+          <button class="on" data-v="Procedure">Procedure Cleanup</button>
+          <button data-v="Complaint">Complaint Summary</button>
+          <button data-v="Campaign">Campaign Draft</button>
+        </div>
+        <div class="sb-scenario">
+          <div class="stop">
+            <div style="font-weight:600">Scenario: <span id="sb-name">Procedure Cleanup</span></div>
+            <span class="badge">Safe sample data</span>
+          </div>
+          <div class="sb-fields">
+            <div class="sb-field"><div class="k">Input</div><div class="v" id="sb-input">Dense internal procedure</div></div>
+            <div class="sb-field"><div class="k">Output</div><div class="v" id="sb-output">Frontline job aid</div></div>
+            <div class="sb-field gold"><div class="k">Review</div><div class="v" id="sb-review">Manager review</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="sb-right">
+      <div class="section-head">
+        <div class="k">Less lecture. More reps.</div>
+        <h2>A controlled place to test, compare, and improve.</h2>
+      </div>
+      <div class="grid">
+        <div class="sb-feat">
+          <svg class="ic-lg" style="width:24px;height:24px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          <div class="f">Sample banking scenarios</div>
+        </div>
+        <div class="sb-feat">
+          <svg class="ic-lg" style="width:24px;height:24px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <div class="f">Output review checklists</div>
+        </div>
+        <div class="sb-feat">
+          <svg class="ic-lg" style="width:24px;height:24px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="21" y1="4" x2="14" y2="4"/><line x1="10" y1="4" x2="3" y2="4"/><line x1="21" y1="12" x2="12" y2="12"/><line x1="8" y1="12" x2="3" y2="12"/><line x1="21" y1="20" x2="16" y2="20"/><line x1="12" y1="20" x2="3" y2="20"/><line x1="14" y1="2" x2="14" y2="6"/><line x1="8" y1="10" x2="8" y2="14"/><line x1="16" y1="18" x2="16" y2="22"/></svg>
+          <div class="f">Prompt comparison</div>
+        </div>
+        <div class="sb-feat">
+          <svg class="ic-lg" style="width:24px;height:24px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.8L20 10l-4.6 3.4L17.2 20 12 16.6 6.8 20l1.8-6.6L4 10l6.1-1.2z"/></svg>
+          <div class="f">Saveable skills</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= SAVE TO TOOLBOX ============================= -->
+<section class="std">
+  <div class="container">
+    <div class="section-head">
+      <div class="k">Save to Toolbox</div>
+      <h2>Useful work becomes a reusable asset.</h2>
+      <p>Anything that runs in the Sandbox can be saved as a prompt card and added to your Toolbox — with the review tags and craft baked in.</p>
+    </div>
+
+    <div class="stb">
+      <div class="stb-card">
+        <div class="stb-top">
+          <span class="lab">Sandbox Output · Compliance</span>
+          <span class="ic-pill"><svg style="width:16px;height:16px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Reviewed</span>
+        </div>
+        <h3 class="stb-title">Procedure Cleanup Prompt</h3>
+        <div class="stb-body">
+          <div class="stb-label">Prompt</div>
+          <div class="stb-prompt">Rewrite this internal procedure as a frontline job aid. Use plain language, numbered steps, risk notes, and a manager review checklist.</div>
+        </div>
+        <div class="stb-meta">
+          <div class="stb-cell"><div class="k">Type</div><div class="v">Prompt Card</div></div>
+          <div class="stb-cell"><div class="k">Role</div><div class="v">Operations</div></div>
+          <div class="stb-cell gold"><div class="k">Review</div><div class="v">Manager</div></div>
+        </div>
+        <button class="btn-save" id="btn-save">
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/></svg>
+          <span>Save to Toolbox</span>
+        </button>
+        <div class="stb-toast" id="stb-toast">
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Saved. This asset now appears in your Toolbox.
+        </div>
+      </div>
+
+      <div class="stb-tb">
+        <div class="stb-tb-head">
+          <span class="lab">Your Toolbox · live</span>
+          <span class="cnt" id="stb-count">3 prompts</span>
+        </div>
+        <div class="stb-tb-list" id="stb-list">
+          <div class="stb-row"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg><div><div class="nm">KYC frontline guide</div><div class="meta">Compliance · 2 days ago</div></div></div>
+          <div class="stb-row"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><div><div class="nm">Complaint summary template</div><div class="meta">Compliance · 3 days ago</div></div></div>
+          <div class="stb-row"><svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg><div><div class="nm">Email disclosure check</div><div class="meta">Marketing · 1 week ago</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .stb { display: grid; gap: 24px; grid-template-columns: 1fr; }
+  @media (min-width: 960px) { .stb { grid-template-columns: 1.1fr 0.9fr; } }
+  .stb-card { background: #fff; border: 1px solid rgba(7,26,47,0.10); border-radius: 32px; padding: 28px; box-shadow: 0 24px 40px -20px rgba(0,0,0,0.15); }
+  .stb-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .stb-top .lab { font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-deep); }
+  .stb-top .ic-pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; background: var(--cream); font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink); }
+  .stb-top .ic-pill svg { color: var(--gold); }
+  .stb-title { font-size: 28px; font-weight: 600; margin: 4px 0 18px; line-height: 1.15; }
+  .stb-body { background: var(--cream); border-radius: 16px; padding: 18px 20px; margin-bottom: 18px; }
+  .stb-label { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--slate-500); }
+  .stb-prompt { margin-top: 8px; font-size: 14px; line-height: 1.55; color: var(--slate-600); }
+  .stb-meta { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+  .stb-cell { padding: 12px 14px; background: var(--slate-50); border-radius: 12px; }
+  .stb-cell.gold { background: rgba(200,162,74,0.20); }
+  .stb-cell .k { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--slate-500); }
+  .stb-cell.gold .k { color: var(--gold-deep); }
+  .stb-cell .v { font-weight: 700; margin-top: 4px; font-size: 14px; }
+  .btn-save { width: 100%; height: 52px; border-radius: 14px; background: var(--ink); color: #fff; border: 0; cursor: pointer; font-weight: 700; font-size: 15px; display: flex; align-items: center; justify-content: center; gap: 10px; transition: background .15s, transform .08s; }
+  .btn-save:hover { background: var(--ink-2); }
+  .btn-save.saved { background: var(--gold); color: var(--ink); }
+  .stb-toast { display: none; align-items: center; gap: 10px; margin-top: 14px; padding: 14px 16px; border-radius: 12px; background: rgba(4,120,87,0.12); color: var(--emerald-800); font-weight: 600; font-size: 14px; }
+  .stb-toast svg { color: var(--emerald-700); }
+  .stb-toast.on { display: flex; }
+
+  .stb-tb { background: var(--ink); color: #fff; border-radius: 32px; padding: 28px; box-shadow: 0 24px 40px -20px rgba(0,0,0,0.30); }
+  .stb-tb-head { display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.10); margin-bottom: 16px; }
+  .stb-tb-head .lab { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-soft); }
+  .stb-tb-head .cnt { font-family: "JetBrains Mono", monospace; font-size: 11px; color: rgba(255,255,255,0.5); letter-spacing: 0.08em; }
+  .stb-tb-list { display: flex; flex-direction: column; gap: 8px; }
+  .stb-row { display: flex; align-items: center; gap: 14px; padding: 14px 16px; background: rgba(255,255,255,0.06); border-radius: 12px; transition: background .2s; }
+  .stb-row.new { background: rgba(200,162,74,0.22); animation: flash 1.2s ease-out; }
+  @keyframes flash { 0% { background: rgba(200,162,74,0.55); } 100% { background: rgba(200,162,74,0.22); } }
+  .stb-row svg { color: var(--gold); flex: none; }
+  .stb-row .nm { font-weight: 600; font-size: 14px; }
+  .stb-row .meta { font-size: 11px; color: rgba(255,255,255,0.5); letter-spacing: 0.06em; text-transform: uppercase; font-weight: 700; margin-top: 2px; }
+</style>
+
+<!-- ============================= CTA ============================= -->
+<section class="cta">
+  <div class="container">
+    <div class="cta-band">
+      <div>
+        <div class="k">The AI Banking Institute</div>
+        <h2>Build confidence. Keep control.</h2>
+        <p>A practical path for financial professionals to assess, train, practice, and document AI-supported work.</p>
+      </div>
+      <div class="cta-actions">
+        <a class="btn btn-lg btn-gold" href="#">Start Free Assessment</a>
+        <a class="btn btn-lg btn-ghost-dark" href="#">Preview Toolbox</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ribbon">SKETCH · <span>mockup port</span></div>
+
+<script>
+  /* ---------- nav (visual only) ---------- */
+  function setPage(p) {
+    document.querySelectorAll('#nav-desktop button, #nav-mobile button').forEach(b => {
+      b.classList.toggle('on', b.dataset.page === p);
+    });
+  }
+  document.querySelectorAll('#nav-desktop button, #nav-mobile button').forEach(b => {
+    b.addEventListener('click', () => setPage(b.dataset.page));
+  });
+
+  /* ---------- hero side card switcher ---------- */
+  const HERO = {
+    Assessment: { label: 'Assessment', title: 'Readiness Snapshot', score: '62', unit: '/100',
+      icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 14l4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></svg>',
+      items: ['Governance', 'Tool confidence', 'Workflow fit', 'Risk awareness'] },
+    Sandbox: { label: 'Sandbox', title: 'Guided Practice', score: '04', unit: 'scenarios',
+      icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.31"/><path d="M14 9.3V2"/><path d="M8.5 2h7"/><path d="M14 9.3a6.5 6.5 0 1 1-4 0"/></svg>',
+      items: ['Choose role', 'Use sample data', 'Review output', 'Save skill'] },
+    Toolbox: { label: 'Toolbox', title: 'Reusable Assets', score: '18', unit: 'assets',
+      icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 19 12 24 2 19"/><polyline points="22 12 12 17 2 12"/><polygon points="12 2 22 7 12 12 2 7"/></svg>',
+      items: ['Prompt cards', 'Workflow docs', 'Risk checklists', 'Playbooks'] },
+  };
+  function renderSide(key) {
+    const d = HERO[key];
+    document.getElementById('hp-side').innerHTML =
+      `<span class="pic">${d.icon.replace('<svg', '<svg style="width:24px;height:24px"')}</span>
+       <div class="k">${d.label}</div>
+       <h3>${d.title}</h3>
+       <div class="score"><div class="v">${d.score}</div><div class="u">${d.unit}</div></div>
+       <div class="items">
+         ${d.items.map(i => `<div class="item"><svg style="width:16px;height:16px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>${i}</div>`).join('')}
+       </div>`;
+  }
+  document.querySelectorAll('#hero-tabs button').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('#hero-tabs button').forEach(x => x.classList.remove('on'));
+      b.classList.add('on');
+      renderSide(b.dataset.k);
+    });
+  });
+  renderSide('Assessment');
+
+  /* ---------- path builder ---------- */
+  const RECS = {
+    Compliance:  { path: 'Maturity Assessment → Foundation Course → Workflow SOP', artifact: 'AI use-case review packet', metric: 'Examiner-ready documentation', value: 'Reduce ambiguity before AI tools touch regulated work.' },
+    Retail:      { path: 'Free Assessment → Foundation Course → Branch Playbook', artifact: 'Frontline coaching and service recovery kit', metric: 'Faster staff enablement', value: 'Give managers practical tools for coaching and customer scenarios.' },
+    Marketing:   { path: 'Maturity Assessment → Sandbox → Campaign Review Workflow', artifact: 'AI-assisted campaign checklist', metric: 'Cleaner review cycles', value: 'Move faster without skipping disclosures, review, or brand standards.' },
+    Operations:  { path: 'Foundation Course → Toolbox → Procedure Skill', artifact: 'Procedure cleanup builder', metric: 'Less rework', value: 'Turn messy process knowledge into repeatable internal assets.' },
+  };
+  let pbRole = 'Compliance', pbGoal = 'Document AI use safely';
+  function renderPB() {
+    const r = RECS[pbRole];
+    document.getElementById('pb-title').textContent = `${pbRole} · ${pbGoal}`;
+    document.getElementById('pb-path').textContent = r.path;
+    document.getElementById('pb-artifact').textContent = r.artifact;
+    document.getElementById('pb-metric').textContent = r.metric;
+    document.getElementById('pb-value').textContent = r.value;
+  }
+  document.querySelectorAll('#pb-roles button').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('#pb-roles button').forEach(x => x.classList.remove('on'));
+      b.classList.add('on'); pbRole = b.dataset.v; renderPB();
+    });
+  });
+  document.querySelectorAll('#pb-goals button').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('#pb-goals button').forEach(x => x.classList.remove('on'));
+      b.classList.add('on'); pbGoal = b.dataset.v; renderPB();
+    });
+  });
+
+  /* ---------- role preview ---------- */
+  const ROLES = {
+    Compliance: { title: 'Compliance', artifact: 'Workflow Review Packet', status: 'Ready with review',
+      outputs: ['AI use-case checklist', 'Examiner-ready SOP', 'Human review log'] },
+    Retail:     { title: 'Branch / Retail', artifact: 'Frontline Coaching Kit', status: 'Manager approved',
+      outputs: ['Scenario scripts', 'Job aids', 'Service recovery prompts'] },
+    Marketing:  { title: 'Marketing', artifact: 'Campaign Review Workspace', status: 'Review required',
+      outputs: ['Draft variations', 'Disclosure checklist', 'Approval workflow'] },
+  };
+  function renderRole(key) {
+    const r = ROLES[key];
+    document.getElementById('role-name').textContent = r.title;
+    document.getElementById('role-artifact').textContent = r.artifact;
+    document.getElementById('role-artifact-2').textContent = r.artifact;
+    document.getElementById('role-status').textContent = r.status;
+    document.getElementById('role-outputs').innerHTML = r.outputs.map(o =>
+      `<div class="out-row"><div class="ll"><svg style="width:20px;height:20px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>${o}</div><svg style="width:16px;height:16px;color:var(--slate-400)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>`).join('');
+  }
+  document.querySelectorAll('#role-tabs button').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('#role-tabs button').forEach(x => x.classList.remove('on'));
+      b.classList.add('on'); renderRole(b.dataset.v);
+    });
+  });
+  renderRole('Compliance');
+
+  /* ---------- sandbox ---------- */
+  const SCEN = {
+    Procedure: { name: 'Procedure Cleanup', input: 'Dense internal procedure', output: 'Frontline job aid', review: 'Manager review' },
+    Complaint: { name: 'Complaint Summary', input: 'Sample complaint notes', output: 'Issue summary and next steps', review: 'Compliance review' },
+    Campaign:  { name: 'Campaign Draft', input: 'Product offer brief', output: 'Email copy and risk flags', review: 'Marketing and compliance' },
+  };
+  /* ---------- Save to Toolbox ---------- */
+  document.getElementById('btn-save').addEventListener('click', function() {
+    if (this.classList.contains('saved')) return;
+    this.classList.add('saved');
+    this.querySelector('span').textContent = 'Saved to Toolbox';
+    document.getElementById('stb-toast').classList.add('on');
+    const list = document.getElementById('stb-list');
+    const row = document.createElement('div');
+    row.className = 'stb-row new';
+    row.innerHTML = '<svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 12 17 2 12"/><polygon points="12 2 22 7 12 12 2 7"/></svg><div><div class="nm">Procedure Cleanup Prompt</div><div class="meta">Operations · Just saved</div></div>';
+    list.insertBefore(row, list.firstChild);
+    document.getElementById('stb-count').textContent = (list.children.length) + ' prompts';
+  });
+
+  document.querySelectorAll('#sb-pills button').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('#sb-pills button').forEach(x => x.classList.remove('on'));
+      b.classList.add('on');
+      const s = SCEN[b.dataset.v];
+      document.getElementById('sb-name').textContent = s.name;
+      document.getElementById('sb-input').textContent = s.input;
+      document.getElementById('sb-output').textContent = s.output;
+      document.getElementById('sb-review').textContent = s.review;
+    });
+  });
+</script>
+
+</body>
+</html>

@@ -32,7 +32,7 @@ export function RubricScore({
       <p className="text-sm text-[color:var(--color-slate)]">{score.feedback}</p>
       <button
         onClick={onContinue}
-        className="px-6 py-3 bg-[color:var(--color-cobalt)] text-white rounded"
+        className="px-6 py-3 bg-[color:var(--ink-2)] text-white rounded"
       >
         Continue to Refine →
       </button>
