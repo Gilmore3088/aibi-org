@@ -30,8 +30,8 @@ const NAV_SECTIONS = [
 ] as const;
 
 const shellStyle: React.CSSProperties = {
-  background: 'var(--ledger-paper)',
-  borderRight: '1px solid var(--ledger-rule)',
+  background: 'var(--cream-2)',
+  borderRight: '1px solid var(--ink-a10)',
   minHeight: '100vh',
   position: 'sticky',
   top: 0,
@@ -42,11 +42,11 @@ const shellStyle: React.CSSProperties = {
 
 const brandWrap: React.CSSProperties = {
   padding: '24px 22px 20px',
-  borderBottom: '1px solid var(--ledger-rule)',
+  borderBottom: '1px solid var(--ink-a10)',
 };
 
 const brandLine: React.CSSProperties = {
-  fontFamily: 'var(--ledger-sans)',
+  fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
   fontWeight: 700,
   fontSize: 20,
   letterSpacing: '-0.005em',
@@ -76,8 +76,8 @@ export function LMSSidebar({ modules, completed, current, learner, mobile, onNav
       data-testid="lms-sidebar"
     >
       <div style={brandWrap}>
-        <div style={{ ...brandLine, color: 'var(--ledger-ink)' }}>The AI Banking</div>
-        <div style={{ ...brandLine, color: 'var(--ledger-slate)', marginTop: 2 }}>
+        <div style={{ ...brandLine, color: 'var(--ink)' }}>The AI Banking</div>
+        <div style={{ ...brandLine, color: 'var(--slate-600)', marginTop: 2 }}>
           Institute
         </div>
       </div>
@@ -98,15 +98,15 @@ export function LMSSidebar({ modules, completed, current, learner, mobile, onNav
                 alignItems: 'center',
                 gap: 10,
                 width: '100%',
-                background: active ? 'var(--ledger-accent-soft)' : 'transparent',
+                background: active ? 'rgba(200, 162, 74, 0.18)' : 'transparent',
                 textAlign: 'left',
                 padding: '9px 16px',
-                color: active ? 'var(--ledger-accent)' : 'var(--ledger-ink)',
-                fontFamily: 'var(--ledger-sans)',
+                color: active ? 'var(--gold)' : 'var(--ink)',
+                fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
                 fontSize: 13,
                 fontWeight: active ? 600 : 500,
                 borderLeft: active
-                  ? '2px solid var(--ledger-accent)'
+                  ? '2px solid var(--gold)'
                   : '2px solid transparent',
                 textDecoration: 'none',
               }}
@@ -117,22 +117,22 @@ export function LMSSidebar({ modules, completed, current, learner, mobile, onNav
         })}
       </nav>
 
-      <div style={{ borderTop: '1px solid var(--ledger-rule)', marginTop: 6 }} />
+      <div style={{ borderTop: '1px solid var(--ink-a10)', marginTop: 6 }} />
 
       <div style={{ padding: '10px 0 24px', overflowY: 'auto', flex: 1 }}>
         <div
           style={{
             padding: '18px 22px 10px',
-            fontFamily: 'var(--ledger-sans)',
+            fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
             fontWeight: 700,
             fontSize: 11,
             letterSpacing: '-0.005em',
             textTransform: 'uppercase',
-            color: 'var(--ledger-slate)',
+            color: 'var(--slate-600)',
             lineHeight: 1,
           }}
         >
-          <span style={{ color: 'var(--ledger-ink)' }}>AiBI</span> Foundation
+          <span style={{ color: 'var(--ink)' }}>AiBI</span> Foundation
         </div>
         {LMS_PILLARS.map((pillar) => {
           const mods = modules.filter((m) => m.pillar === pillar.id);
@@ -158,12 +158,12 @@ export function LMSSidebar({ modules, completed, current, learner, mobile, onNav
                 />
                 <span
                   style={{
-                    fontFamily: 'var(--ledger-sans)',
+                    fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
                     fontWeight: 700,
                     fontSize: 11,
                     letterSpacing: '-0.005em',
                     textTransform: 'uppercase',
-                    color: 'var(--ledger-ink)',
+                    color: 'var(--ink)',
                     lineHeight: 1,
                   }}
                 >
@@ -188,9 +188,9 @@ export function LMSSidebar({ modules, completed, current, learner, mobile, onNav
                       >
                         <span
                           style={{
-                            fontFamily: 'var(--ledger-mono)',
+                            fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
                             fontSize: 10,
-                            color: 'var(--ledger-muted)',
+                            color: 'var(--slate-500)',
                             marginRight: 6,
                           }}
                         >
@@ -200,9 +200,9 @@ export function LMSSidebar({ modules, completed, current, learner, mobile, onNav
                       </span>
                       <span
                         style={{
-                          fontFamily: 'var(--ledger-mono)',
+                          fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
                           fontSize: 9.5,
-                          color: 'var(--ledger-muted)',
+                          color: 'var(--slate-500)',
                         }}
                       >
                         {m.mins}m
@@ -216,21 +216,21 @@ export function LMSSidebar({ modules, completed, current, learner, mobile, onNav
                     alignItems: 'center',
                     width: '100%',
                     background: active
-                      ? 'var(--ledger-accent-soft)'
+                      ? 'rgba(200, 162, 74, 0.18)'
                       : 'transparent',
                     textAlign: 'left',
                     padding: '7px 22px',
                     color: locked
                       ? 'rgba(14,27,45,0.35)'
                       : active
-                        ? 'var(--ledger-accent)'
-                        : 'var(--ledger-ink-2)',
-                    fontFamily: 'var(--ledger-sans)',
+                        ? 'var(--gold)'
+                        : 'var(--ink-2)',
+                    fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
                     fontSize: 12.5,
                     fontWeight: active ? 600 : 500,
                     opacity: locked ? 0.6 : 1,
                     borderLeft: active
-                      ? '2px solid var(--ledger-accent)'
+                      ? '2px solid var(--gold)'
                       : '2px solid transparent',
                     textDecoration: 'none',
                   };
@@ -261,7 +261,7 @@ export function LMSSidebar({ modules, completed, current, learner, mobile, onNav
       {learner ? (
         <div
           style={{
-            borderTop: '1px solid var(--ledger-rule)',
+            borderTop: '1px solid var(--ink-a10)',
             padding: '14px 18px',
             display: 'flex',
             alignItems: 'center',
@@ -273,13 +273,12 @@ export function LMSSidebar({ modules, completed, current, learner, mobile, onNav
               width: 32,
               height: 32,
               borderRadius: '50%',
-              background: 'var(--ledger-parch-dark)',
-              color: 'var(--ledger-ink)',
+              background: 'var(--cream-2)',
+              color: 'var(--ink)',
               display: 'grid',
               placeItems: 'center',
-              fontFamily: 'var(--ledger-serif)',
-              fontStyle: 'italic',
-              fontSize: 14,
+              fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
+                            fontSize: 14,
               fontWeight: 500,
             }}
           >
@@ -292,7 +291,7 @@ export function LMSSidebar({ modules, completed, current, learner, mobile, onNav
           <div style={{ minWidth: 0 }}>
             <div
               style={{
-                fontFamily: 'var(--ledger-serif)',
+                fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
                 fontSize: 14,
                 lineHeight: 1.1,
                 fontWeight: 500,
@@ -302,11 +301,11 @@ export function LMSSidebar({ modules, completed, current, learner, mobile, onNav
             </div>
             <div
               style={{
-                fontFamily: 'var(--ledger-mono)',
+                fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
                 fontSize: 9.5,
                 letterSpacing: '0.16em',
                 textTransform: 'uppercase',
-                color: 'var(--ledger-muted)',
+                color: 'var(--slate-500)',
                 marginTop: 2,
               }}
             >

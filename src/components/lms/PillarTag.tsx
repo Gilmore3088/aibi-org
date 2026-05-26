@@ -22,7 +22,7 @@ export function PillarTag({ pillarId, size = 'sm' }: Props) {
       />
       <span
         style={{
-          fontFamily: 'var(--ledger-mono)',
+          fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
           fontSize: big ? 10.5 : 9.5,
           letterSpacing: '0.18em',
           textTransform: 'uppercase',

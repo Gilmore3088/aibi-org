@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { ArticleShell } from "@/components/mockup";
 
 export const metadata: Metadata = {
   title: "The Skill, Not the Prompt — Why Community Bankers Need a Different Frame for AI",
@@ -37,6 +38,7 @@ const FIVE_COMPONENTS = [
 
 export default function TheSkillNotThePromptArticle() {
   return (
+    <ArticleShell>
     <main className="px-6 py-14 md:py-20">
       <article className="max-w-3xl mx-auto">
         <header className="mb-12">
@@ -309,5 +311,6 @@ export default function TheSkillNotThePromptArticle() {
         </footer>
       </article>
     </main>
+    </ArticleShell>
   );
 }

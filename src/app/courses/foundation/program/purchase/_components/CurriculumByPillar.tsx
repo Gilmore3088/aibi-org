@@ -31,16 +31,16 @@ export function CurriculumByPillar() {
           gap: 10,
           paddingBottom: 18,
           marginBottom: 32,
-          borderBottom: '1px solid var(--ledger-rule-strong)',
+          borderBottom: '1px solid var(--ink-a10)',
         }}
       >
         <span
           style={{
-            fontFamily: 'var(--ledger-mono)',
+            fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
             fontSize: 11,
             letterSpacing: '0.22em',
             textTransform: 'uppercase',
-            color: 'var(--ledger-accent)',
+            color: 'var(--gold)',
             fontWeight: 600,
           }}
         >
@@ -48,13 +48,13 @@ export function CurriculumByPillar() {
         </span>
         <h2
           style={{
-            fontFamily: 'var(--ledger-serif)',
+            fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
             fontWeight: 500,
             fontSize: 'clamp(34px, 4vw, 48px)',
             lineHeight: 1,
             letterSpacing: '-0.025em',
             margin: 0,
-            color: 'var(--ledger-ink)',
+            color: 'var(--ink)',
           }}
         >
           From cautious to capable in twelve modules.
@@ -72,7 +72,7 @@ export function CurriculumByPillar() {
           <div
             key={pillar.id}
             style={{
-              borderBottom: '1px solid var(--ledger-rule)',
+              borderBottom: '1px solid var(--ink-a10)',
               paddingBottom: 28,
               marginBottom: 28,
             }}
@@ -84,17 +84,17 @@ export function CurriculumByPillar() {
                 gap: 18,
                 marginBottom: 16,
                 paddingBottom: 10,
-                borderBottom: '1px dashed var(--ledger-rule)',
+                borderBottom: '1px dashed var(--ink-a10)',
                 flexWrap: 'wrap',
               }}
             >
               <span
                 style={{
-                  fontFamily: 'var(--ledger-mono)',
+                  fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
                   fontSize: 11,
                   letterSpacing: '0.22em',
                   textTransform: 'uppercase',
-                  color: 'var(--ledger-accent)',
+                  color: 'var(--gold)',
                   fontWeight: 700,
                 }}
               >
@@ -102,11 +102,11 @@ export function CurriculumByPillar() {
               </span>
               <span
                 style={{
-                  fontFamily: 'var(--ledger-mono)',
+                  fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
                   fontSize: 10,
                   letterSpacing: '0.18em',
                   textTransform: 'uppercase',
-                  color: 'var(--ledger-muted)',
+                  color: 'var(--slate-500)',
                   marginLeft: 'auto',
                   fontWeight: 600,
                 }}
@@ -124,16 +124,16 @@ export function CurriculumByPillar() {
                   gap: 24,
                   alignItems: 'center',
                   padding: '14px 8px',
-                  borderBottom: '1px solid var(--ledger-rule)',
+                  borderBottom: '1px solid var(--ink-a10)',
                 }}
               >
                 <div
                   style={{
-                    fontFamily: 'var(--ledger-serif)',
+                    fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
                     fontSize: 26,
                     lineHeight: 1,
                     letterSpacing: '-0.02em',
-                    color: 'var(--ledger-ink)',
+                    color: 'var(--ink)',
                     fontWeight: 500,
                     minWidth: 44,
                   }}
@@ -143,13 +143,13 @@ export function CurriculumByPillar() {
                 <div>
                   <h4
                     style={{
-                      fontFamily: 'var(--ledger-serif)',
+                      fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
                       fontWeight: 500,
                       fontSize: 19,
                       lineHeight: 1.2,
                       letterSpacing: '-0.015em',
                       margin: 0,
-                      color: 'var(--ledger-ink)',
+                      color: 'var(--ink)',
                     }}
                   >
                     {mod.title}
@@ -157,20 +157,20 @@ export function CurriculumByPillar() {
                 </div>
                 <div
                   style={{
-                    fontFamily: 'var(--ledger-sans)',
+                    fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
                     fontSize: 13,
                     lineHeight: 1.4,
-                    color: 'var(--ledger-muted)',
+                    color: 'var(--slate-500)',
                     fontWeight: 500,
                   }}
                 >
                   <span
                     style={{
-                      fontFamily: 'var(--ledger-mono)',
+                      fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
                       fontSize: 9,
                       letterSpacing: '0.2em',
                       textTransform: 'uppercase',
-                      color: 'var(--ledger-muted)',
+                      color: 'var(--slate-500)',
                       fontWeight: 600,
                       display: 'block',
                       marginBottom: 3,
@@ -182,11 +182,11 @@ export function CurriculumByPillar() {
                 </div>
                 <div
                   style={{
-                    fontFamily: 'var(--ledger-mono)',
+                    fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
                     fontSize: 10.5,
                     letterSpacing: '0.18em',
                     textTransform: 'uppercase',
-                    color: 'var(--ledger-muted)',
+                    color: 'var(--slate-500)',
                     fontWeight: 600,
                     textAlign: 'right',
                   }}

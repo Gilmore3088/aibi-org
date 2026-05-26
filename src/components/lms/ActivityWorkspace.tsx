@@ -43,8 +43,8 @@ export function ActivityWorkspace({
   return (
     <div
       style={{
-        background: 'var(--ledger-paper)',
-        border: '1px solid var(--ledger-rule)',
+        background: 'var(--cream-2)',
+        border: '1px solid var(--ink-a10)',
         borderRadius: 3,
         overflow: 'hidden',
         marginBottom: 28,
@@ -57,27 +57,27 @@ export function ActivityWorkspace({
           alignItems: 'center',
           gap: 12,
           padding: '12px 18px',
-          borderBottom: '1px solid var(--ledger-rule)',
-          background: 'var(--ledger-parch)',
+          borderBottom: '1px solid var(--ink-a10)',
+          background: 'var(--cream-2)',
           flexWrap: 'wrap',
         }}
       >
         <span
           style={{
-            fontFamily: 'var(--ledger-mono)',
+            fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
             fontSize: 10.5,
             letterSpacing: '0.18em',
             textTransform: 'uppercase',
-            color: 'var(--ledger-accent)',
+            color: 'var(--gold)',
           }}
         >
           Activity {activityId}
         </span>
         <span
           style={{
-            fontFamily: 'var(--ledger-serif)',
+            fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
             fontSize: 16,
-            color: 'var(--ledger-ink)',
+            color: 'var(--ink)',
             fontWeight: 500,
           }}
         >
@@ -91,10 +91,10 @@ export function ActivityWorkspace({
               gap: 6,
               padding: '3px 9px',
               borderRadius: 2,
-              border: '1px solid var(--ledger-accent-2)',
+              border: '1px solid var(--ink-2)',
               background: 'rgba(30,58,95,0.08)',
-              color: 'var(--ledger-accent-2)',
-              fontFamily: 'var(--ledger-mono)',
+              color: 'var(--ink-2)',
+              fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
               fontSize: 10,
               letterSpacing: '0.16em',
               textTransform: 'uppercase',
@@ -116,10 +116,9 @@ export function ActivityWorkspace({
           <p
             style={{
               margin: '0 0 18px',
-              fontFamily: 'var(--ledger-serif)',
-              fontStyle: 'italic',
-              fontSize: 15,
-              color: 'var(--ledger-ink-2)',
+              fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
+                            fontSize: 15,
+              color: 'var(--ink-2)',
               lineHeight: 1.55,
             }}
           >

@@ -106,11 +106,11 @@ export default async function PurchasePage() {
         <div style={{ maxWidth: 720, margin: '0 auto', padding: '64px 36px' }}>
           <div
             style={{
-              fontFamily: 'var(--ledger-mono)',
+              fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
               fontSize: 10.5,
               letterSpacing: '0.2em',
               textTransform: 'uppercase',
-              color: 'var(--ledger-accent)',
+              color: 'var(--gold)',
               marginBottom: 14,
             }}
           >
@@ -118,28 +118,27 @@ export default async function PurchasePage() {
           </div>
           <h1
             style={{
-              fontFamily: 'var(--ledger-serif)',
+              fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
               fontWeight: 500,
               fontSize: 'clamp(36px, 4.5vw, 52px)',
               lineHeight: 1.05,
               letterSpacing: '-0.025em',
               margin: '0 0 16px',
-              color: 'var(--ledger-ink)',
+              color: 'var(--ink)',
             }}
           >
             You&rsquo;re in the{' '}
-            <em style={{ color: 'var(--ledger-accent)', fontStyle: 'normal' }}>
+            <em style={{ color: 'var(--gold)', fontStyle: 'normal' }}>
               AiBI-Foundation
             </em>{' '}
             program.
           </h1>
           <p
             style={{
-              fontFamily: 'var(--ledger-serif)',
-              fontStyle: 'italic',
-              fontSize: 18,
+              fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
+                            fontSize: 18,
               lineHeight: 1.5,
-              color: 'var(--ledger-ink-2)',
+              color: 'var(--ink-2)',
               margin: '0 0 32px',
               maxWidth: '60ch',
             }}
@@ -161,12 +160,12 @@ export default async function PurchasePage() {
                 alignItems: 'center',
                 gap: 8,
                 background: 'transparent',
-                color: 'var(--ledger-ink)',
-                border: '1px solid var(--ledger-rule-strong)',
+                color: 'var(--ink)',
+                border: '1px solid var(--ink-a10)',
                 padding: '12px 18px',
                 borderRadius: 2,
                 cursor: 'pointer',
-                fontFamily: 'var(--ledger-mono)',
+                fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
                 fontSize: 11,
                 letterSpacing: '0.16em',
                 textTransform: 'uppercase',
@@ -192,11 +191,11 @@ export default async function PurchasePage() {
         right={
           <span
             style={{
-              fontFamily: 'var(--ledger-mono)',
+              fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
               fontSize: 10.5,
               letterSpacing: '0.16em',
               textTransform: 'uppercase',
-              color: 'var(--ledger-muted)',
+              color: 'var(--slate-500)',
             }}
           >
             Not yet enrolled
@@ -217,40 +216,40 @@ export default async function PurchasePage() {
           >
             <span
               style={{
-                fontFamily: 'var(--ledger-mono)',
+                fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
                 fontSize: 10.5,
                 letterSpacing: '0.2em',
                 textTransform: 'uppercase',
-                color: 'var(--ledger-accent)',
+                color: 'var(--gold)',
               }}
             >
               Enroll · AiBI-Foundation
             </span>
-            <span style={{ flex: 1, height: 1, background: 'var(--ledger-rule)' }} />
+            <span style={{ flex: 1, height: 1, background: 'var(--ink-a10)' }} />
           </div>
 
           <h1
             style={{
-              fontFamily: 'var(--ledger-serif)',
+              fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
               fontWeight: 500,
               fontSize: 'clamp(46px, 6vw, 76px)',
               lineHeight: 0.98,
               letterSpacing: '-0.035em',
               margin: '0 0 18px',
-              color: 'var(--ledger-ink)',
+              color: 'var(--ink)',
             }}
           >
             AiBI-
-            <em style={{ color: 'var(--ledger-accent)', fontStyle: 'normal', fontWeight: 500 }}>
+            <em style={{ color: 'var(--gold)', fontStyle: 'normal', fontWeight: 500 }}>
               Foundation.
             </em>
           </h1>
           <p
             style={{
-              fontFamily: 'var(--ledger-serif)',
+              fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
               fontSize: 18,
               lineHeight: 1.5,
-              color: 'var(--ledger-accent)',
+              color: 'var(--gold)',
               margin: '0 0 12px',
               maxWidth: '60ch',
               fontWeight: 600,
@@ -260,11 +259,10 @@ export default async function PurchasePage() {
           </p>
           <p
             style={{
-              fontFamily: 'var(--ledger-serif)',
-              fontStyle: 'italic',
-              fontSize: 22,
+              fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
+                            fontSize: 22,
               lineHeight: 1.4,
-              color: 'var(--ledger-ink-2)',
+              color: 'var(--ink-2)',
               margin: '0 0 12px',
               maxWidth: '60ch',
             }}
@@ -281,8 +279,8 @@ export default async function PurchasePage() {
               gridTemplateColumns: 'auto 1fr auto',
               gap: 24,
               alignItems: 'center',
-              background: 'var(--ledger-ink)',
-              color: 'var(--ledger-paper)',
+              background: 'var(--ink)',
+              color: 'var(--cream-2)',
               padding: '22px 26px',
               borderRadius: 2,
               scrollMarginTop: 80,
@@ -291,7 +289,7 @@ export default async function PurchasePage() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
               <span
                 style={{
-                  fontFamily: 'var(--ledger-mono)',
+                  fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
                   fontSize: 10,
                   letterSpacing: '0.2em',
                   textTransform: 'uppercase',
@@ -302,10 +300,10 @@ export default async function PurchasePage() {
               </span>
               <span
                 style={{
-                  fontFamily: 'var(--ledger-mono)',
+                  fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
                   fontSize: 11,
                   letterSpacing: '0.16em',
-                  color: 'var(--ledger-accent)',
+                  color: 'var(--gold)',
                 }}
               >
                 $199 at 10+ seats
@@ -314,7 +312,7 @@ export default async function PurchasePage() {
             <div>
               <h2
                 style={{
-                  fontFamily: 'var(--ledger-serif)',
+                  fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
                   fontWeight: 500,
                   fontSize: 32,
                   lineHeight: 1.1,
@@ -345,8 +343,8 @@ export default async function PurchasePage() {
               marginTop: 18,
               display: 'grid',
               gridTemplateColumns: 'repeat(4, 1fr)',
-              borderTop: '1px solid var(--ledger-rule-strong)',
-              borderBottom: '1px solid var(--ledger-rule)',
+              borderTop: '1px solid var(--ink-a10)',
+              borderBottom: '1px solid var(--ink-a10)',
             }}
           >
             {[
@@ -367,34 +365,34 @@ export default async function PurchasePage() {
                 key={r.k}
                 style={{
                   padding: '18px 22px',
-                  borderRight: i < 3 ? '1px solid var(--ledger-rule)' : 'none',
+                  borderRight: i < 3 ? '1px solid var(--ink-a10)' : 'none',
                 }}
               >
                 <div
                   style={{
-                    fontFamily: 'var(--ledger-mono)',
+                    fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
                     fontSize: 9.5,
                     letterSpacing: '0.2em',
                     textTransform: 'uppercase',
-                    color: 'var(--ledger-muted)',
+                    color: 'var(--slate-500)',
                   }}
                 >
                   {r.k}
                 </div>
                 <div
                   style={{
-                    fontFamily: 'var(--ledger-serif)',
+                    fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
                     fontWeight: 500,
                     fontSize: 28,
                     letterSpacing: '-0.02em',
                     lineHeight: 1,
                     marginTop: 6,
-                    color: 'var(--ledger-ink)',
+                    color: 'var(--ink)',
                   }}
                 >
                   {r.v}
                 </div>
-                <div style={{ fontSize: 12, color: 'var(--ledger-slate)', marginTop: 4 }}>
+                <div style={{ fontSize: 12, color: 'var(--slate-600)', marginTop: 4 }}>
                   {r.sub}
                 </div>
               </div>
@@ -413,19 +411,19 @@ export default async function PurchasePage() {
         >
           <div
             style={{
-              border: '1px solid var(--ledger-rule)',
+              border: '1px solid var(--ink-a10)',
               padding: 26,
-              background: 'var(--ledger-paper)',
+              background: 'var(--cream-2)',
               borderRadius: 3,
             }}
           >
             <div
               style={{
-                fontFamily: 'var(--ledger-mono)',
+                fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
                 fontSize: 10.5,
                 letterSpacing: '0.2em',
                 textTransform: 'uppercase',
-                color: 'var(--ledger-accent)',
+                color: 'var(--gold)',
                 marginBottom: 14,
               }}
             >
@@ -447,7 +445,7 @@ export default async function PurchasePage() {
                     display: 'flex',
                     gap: 10,
                     fontSize: 14,
-                    color: 'var(--ledger-ink-2)',
+                    color: 'var(--ink-2)',
                     lineHeight: 1.5,
                   }}
                 >
@@ -456,7 +454,7 @@ export default async function PurchasePage() {
                       marginTop: 7,
                       width: 6,
                       height: 6,
-                      background: 'var(--ledger-accent)',
+                      background: 'var(--gold)',
                       flex: 'none',
                     }}
                   />
@@ -468,19 +466,19 @@ export default async function PurchasePage() {
 
           <div
             style={{
-              border: '1px solid var(--ledger-rule)',
+              border: '1px solid var(--ink-a10)',
               padding: 26,
-              background: 'var(--ledger-parch)',
+              background: 'var(--cream-2)',
               borderRadius: 3,
             }}
           >
             <div
               style={{
-                fontFamily: 'var(--ledger-mono)',
+                fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
                 fontSize: 10.5,
                 letterSpacing: '0.2em',
                 textTransform: 'uppercase',
-                color: 'var(--ledger-accent)',
+                color: 'var(--gold)',
                 marginBottom: 14,
               }}
             >
@@ -491,10 +489,10 @@ export default async function PurchasePage() {
                 <div key={r.title}>
                   <div
                     style={{
-                      fontFamily: 'var(--ledger-serif)',
+                      fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
                       fontSize: 16,
                       fontWeight: 500,
-                      color: 'var(--ledger-ink)',
+                      color: 'var(--ink)',
                     }}
                   >
                     {r.title}
@@ -502,7 +500,7 @@ export default async function PurchasePage() {
                   <div
                     style={{
                       fontSize: 12.5,
-                      color: 'var(--ledger-slate)',
+                      color: 'var(--slate-600)',
                       lineHeight: 1.5,
                     }}
                   >
@@ -517,9 +515,9 @@ export default async function PurchasePage() {
         {/* Lifetime access — what is included */}
         <section
           style={{
-            background: 'var(--ledger-parch)',
+            background: 'var(--cream-2)',
             padding: '28px 32px',
-            border: '1px solid var(--ledger-rule)',
+            border: '1px solid var(--ink-a10)',
             borderRadius: 3,
             display: 'grid',
             gridTemplateColumns: '0.8fr 1.2fr',
@@ -530,11 +528,11 @@ export default async function PurchasePage() {
           <div>
             <div
               style={{
-                fontFamily: 'var(--ledger-mono)',
+                fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
                 fontSize: 10.5,
                 letterSpacing: '0.2em',
                 textTransform: 'uppercase',
-                color: 'var(--ledger-accent)',
+                color: 'var(--gold)',
                 marginBottom: 10,
               }}
             >
@@ -542,12 +540,12 @@ export default async function PurchasePage() {
             </div>
             <h2
               style={{
-                fontFamily: 'var(--ledger-serif)',
+                fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
                 fontWeight: 500,
                 fontSize: 26,
                 letterSpacing: '-0.02em',
                 margin: 0,
-                color: 'var(--ledger-ink)',
+                color: 'var(--ink)',
                 lineHeight: 1.15,
               }}
             >
@@ -556,7 +554,7 @@ export default async function PurchasePage() {
             <p
               style={{
                 fontSize: 13.5,
-                color: 'var(--ledger-slate)',
+                color: 'var(--slate-600)',
                 lineHeight: 1.6,
                 margin: '10px 0 0',
               }}
@@ -590,7 +588,7 @@ export default async function PurchasePage() {
                   gridTemplateColumns: '10px 1fr',
                   gap: 10,
                   fontSize: 13.5,
-                  color: 'var(--ledger-ink-2)',
+                  color: 'var(--ink-2)',
                   lineHeight: 1.5,
                   alignItems: 'start',
                 }}
@@ -601,7 +599,7 @@ export default async function PurchasePage() {
                     marginTop: 7,
                     width: 6,
                     height: 6,
-                    background: 'var(--ledger-accent)',
+                    background: 'var(--gold)',
                   }}
                 />
                 {item}

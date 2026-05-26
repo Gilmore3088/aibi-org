@@ -12,15 +12,15 @@ export function FinalCTA() {
       style={{
         margin: '64px 0 0',
         padding: '64px 36px',
-        background: 'var(--ledger-ink)',
-        color: 'var(--ledger-paper)',
+        background: 'var(--ink)',
+        color: 'var(--cream-2)',
         borderRadius: 3,
         textAlign: 'center',
       }}
     >
       <h2
         style={{
-          fontFamily: 'var(--ledger-serif)',
+          fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
           fontWeight: 500,
           fontSize: 'clamp(28px, 3.4vw, 42px)',
           lineHeight: 1.1,
@@ -32,7 +32,7 @@ export function FinalCTA() {
         The shortest path to using AI at your{' '}
         <em
           style={{
-            color: 'var(--ledger-accent)',
+            color: 'var(--gold)',
             fontStyle: 'normal',
             fontWeight: 500,
           }}
@@ -55,9 +55,9 @@ export function FinalCTA() {
             alignItems: 'center',
             gap: 10,
             padding: '14px 26px',
-            background: 'var(--ledger-accent)',
-            color: 'var(--ledger-paper)',
-            fontFamily: 'var(--ledger-mono)',
+            background: 'var(--gold)',
+            color: 'var(--cream-2)',
+            fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
             fontSize: 11.5,
             fontWeight: 600,
             letterSpacing: '0.18em',
@@ -70,7 +70,7 @@ export function FinalCTA() {
           <span
             aria-hidden="true"
             style={{
-              fontFamily: 'var(--ledger-serif)',
+              fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
               fontSize: 16,
               lineHeight: 0,
             }}

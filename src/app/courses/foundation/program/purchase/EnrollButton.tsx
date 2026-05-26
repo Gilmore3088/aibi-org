@@ -24,12 +24,12 @@ export function EnrollButton({ userEmail }: EnrollButtonProps) {
   if (!userEmail) {
     return (
       <div className="text-center">
-        <p className="font-mono text-[11px] text-[color:var(--ledger-muted)] mb-3">
+        <p className="font-mono text-[11px] text-[color:var(--slate-500)] mb-3">
           You must be signed in to enroll.
         </p>
         <Link
           href="/auth/login?next=/courses/foundation/program/purchase"
-          className="inline-block w-full bg-[color:var(--ledger-accent)] text-[color:var(--ledger-bg)] px-8 py-4 rounded-sm font-mono text-[10px] uppercase tracking-[0.15em] text-center hover:bg-[color:var(--ledger-accent-light)] transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-2"
+          className="inline-block w-full bg-[color:var(--gold)] text-[color:var(--cream)] px-8 py-4 rounded-sm font-mono text-[10px] uppercase tracking-[0.15em] text-center hover:bg-[color:var(--gold-2)] transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:ring-offset-2"
         >
           Sign in to enroll
         </Link>
@@ -73,10 +73,10 @@ export function EnrollButton({ userEmail }: EnrollButtonProps) {
         aria-disabled={loading}
         className={[
           'w-full px-8 py-4 rounded-sm font-mono text-[10px] uppercase tracking-[0.15em] transition-colors',
-          'focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-2',
+          'focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:ring-offset-2',
           loading
-            ? 'bg-[color:var(--ledger-accent)]/60 text-[color:var(--ledger-bg)]/70 cursor-wait'
-            : 'bg-[color:var(--ledger-accent)] text-[color:var(--ledger-bg)] hover:bg-[color:var(--ledger-accent-light)] cursor-pointer',
+            ? 'bg-[color:var(--gold)]/60 text-[color:var(--cream)]/70 cursor-wait'
+            : 'bg-[color:var(--gold)] text-[color:var(--cream)] hover:bg-[color:var(--gold-2)] cursor-pointer',
         ].join(' ')}
       >
         {loading ? 'Redirecting to checkout\u2026' : 'Enroll Now \u2014 $295'}
@@ -85,7 +85,7 @@ export function EnrollButton({ userEmail }: EnrollButtonProps) {
       {error && (
         <p
           role="alert"
-          className="mt-3 font-mono text-[11px] text-[color:var(--ledger-weak)] text-center"
+          className="mt-3 font-mono text-[11px] text-[color:var(--gold-deep)] text-center"
         >
           {error}
         </p>

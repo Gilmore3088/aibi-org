@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { ArticleShell } from "@/components/mockup";
 
 export const metadata: Metadata = {
   title: 'The Widening AI Gap — What the Evident AI Index Means for Community Banks',
@@ -18,6 +19,7 @@ const STAT_CARDS = [
 
 export default function WideningGapArticle() {
   return (
+    <ArticleShell>
     <main className="px-6 py-14 md:py-20">
       <article className="max-w-3xl mx-auto">
         <header className="mb-12">
@@ -196,5 +198,6 @@ export default function WideningGapArticle() {
         </footer>
       </article>
     </main>
+    </ArticleShell>
   );
 }
