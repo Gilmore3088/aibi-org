@@ -2264,3 +2264,112 @@ section.mk-std { padding: 56px 0; }
 .mk-sr-cta { margin-top: 20px; }
 .mk-sr-cta .mk-btn { width: 100%; justify-content: center; }
 .mk-sr-foot { font-size: 12px; color: var(--on-dark-50); margin-top: 16px; line-height: 1.55; }
+
+/* ============================================================
+   Role Playbooks — /playbooks/[role]
+   ============================================================ */
+
+/* Hero snapshot (shared with skill builder pattern) */
+.mk-pb-snap {
+  background: #fff; color: var(--ink);
+  border-radius: var(--r-2xl); overflow: hidden;
+  box-shadow: var(--shadow-hero);
+  border: 1px solid var(--on-dark-08);
+}
+.mk-pb-snap .mk-head { padding: 22px; background: var(--cream); }
+.mk-pb-snap .mk-head .mk-k {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--gold-deep);
+}
+.mk-pb-snap .mk-head .mk-t { font-size: 22px; font-weight: 600; margin-top: 6px; }
+.mk-pb-snap .mk-quick {
+  display: grid; grid-template-columns: 1fr; gap: 0;
+}
+@media (min-width: 600px) { .mk-pb-snap .mk-quick { grid-template-columns: 1fr 1fr 1fr; } }
+.mk-pb-snap .mk-q {
+  padding: 20px;
+  border-right: 1px solid var(--slate-200);
+  border-bottom: 1px solid var(--slate-200);
+}
+.mk-pb-snap .mk-q:last-child { border-right: 0; }
+.mk-pb-snap .mk-q svg { color: var(--gold); margin-bottom: 10px; }
+.mk-pb-snap .mk-q .mk-l { font-size: 12px; color: var(--slate-500); }
+.mk-pb-snap .mk-q .mk-v { font-weight: 700; font-size: 16px; margin-top: 4px; }
+.mk-pb-snap .mk-ms { padding: 20px; }
+.mk-pb-snap .mk-ms-row { margin-bottom: 12px; }
+.mk-pb-snap .mk-ms-row:last-child { margin-bottom: 0; }
+.mk-pb-snap .mk-ms-row .mk-top {
+  display: flex; justify-content: space-between; margin-bottom: 6px;
+}
+.mk-pb-snap .mk-ms-row .mk-l { font-size: 12px; font-weight: 600; color: var(--slate-600); }
+.mk-pb-snap .mk-ms-row .mk-v {
+  font-size: 12px; color: var(--gold-deep); font-weight: 700;
+}
+.mk-pb-snap .mk-ms-row .mk-bar {
+  height: 4px; background: var(--slate-200);
+  border-radius: var(--r-pill); overflow: hidden;
+}
+.mk-pb-snap .mk-ms-row .mk-fill { height: 100%; background: var(--gold); }
+.mk-pb-snap .mk-path {
+  margin: 0 20px 20px; padding: 14px 16px;
+  background: var(--ink); color: #fff; border-radius: 14px;
+}
+.mk-pb-snap .mk-path .mk-l { font-size: 11px; color: var(--on-dark-65); }
+.mk-pb-snap .mk-path .mk-v {
+  font-weight: 700; color: var(--gold-soft); font-size: 13px; margin-top: 4px;
+}
+
+/* Use-case map cards */
+.mk-uses { display: grid; gap: 16px; grid-template-columns: 1fr; }
+@media (min-width: 760px) { .mk-uses { grid-template-columns: 1fr 1fr; } }
+.mk-uc {
+  background: #fff; border: 1px solid var(--ink-a10);
+  border-radius: 20px; padding: 20px;
+  box-shadow: var(--shadow-card);
+}
+.mk-uc .mk-top {
+  display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;
+}
+.mk-uc .mk-top svg { color: var(--gold); }
+.mk-risk {
+  padding: 4px 10px; border-radius: var(--r-pill);
+  font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+}
+.mk-risk.is-high { background: rgba(142, 59, 42, 0.15); color: #8E3B2A; }
+.mk-risk.is-med { background: var(--gold-a20); color: var(--gold-deep); }
+.mk-risk.is-low { background: rgba(4, 120, 87, 0.15); color: var(--emerald-700); }
+.mk-uc h3 { font-size: 18px; font-weight: 600; margin: 0 0 8px; }
+.mk-uc p { color: var(--slate-600); font-size: 13px; margin: 0 0 14px; }
+.mk-uc .mk-art {
+  padding: 10px 12px; background: var(--cream); border-radius: var(--r-md);
+}
+.mk-uc .mk-art .mk-l { font-size: 11px; color: var(--slate-500); letter-spacing: 0.06em; }
+.mk-uc .mk-art .mk-v { font-weight: 700; font-size: 13px; margin-top: 2px; }
+
+/* Operating Model (4-step) */
+.mk-om { display: grid; gap: 16px; grid-template-columns: 1fr; }
+@media (min-width: 760px) { .mk-om { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1100px) { .mk-om { grid-template-columns: repeat(4, 1fr); } }
+.mk-om > div {
+  background: #fff; border: 1px solid var(--ink-a10);
+  border-radius: 20px; padding: 24px; box-shadow: var(--shadow-card);
+}
+.mk-om .mk-top {
+  display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;
+}
+.mk-om .mk-pic {
+  width: 40px; height: 40px; border-radius: var(--r-md);
+  background: var(--ink); color: var(--gold);
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.mk-om .mk-step {
+  font-size: 14px; font-weight: 700; color: var(--gold-deep);
+  letter-spacing: 0.1em;
+}
+.mk-om h3 { font-size: 18px; font-weight: 600; margin: 0 0 8px; }
+.mk-om p { color: var(--slate-600); font-size: 13px; margin: 0 0 14px; }
+.mk-om .mk-art {
+  padding: 10px 12px; background: var(--cream); border-radius: var(--r-md);
+}
+.mk-om .mk-art .mk-l { font-size: 11px; color: var(--slate-500); }
+.mk-om .mk-art .mk-v { font-weight: 700; font-size: 13px; margin-top: 2px; }
