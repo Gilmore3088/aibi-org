@@ -783,3 +783,44 @@ behind dark ink. Old gold-on-cream contrast worries do not apply
 because the mockup only uses gold-on-cream for kickers/metadata
 (non-body, large-tracked, weight 700), which sits outside WCAG body
 contrast requirements.
+
+**2026-05-26 — Redesign sprint Phase 6 cleanup deferred.**
+Phases 1–5 of the mockup-system migration shipped on
+`feature/redesign-mockup-system` (13 commits). Phase 6 (token-file
+cleanup) reveals that **99 files still reference legacy
+`--color-*` tokens and 130 reference `--ledger-*`** —
+deleting either token file in this sprint would break dozens of
+surfaces that have not yet been visually re-ported (LMS interior
+modules, dashboard sub-panels, auth surfaces, the AiBI-S/L course
+shells). Token deletion is moved to a follow-up sprint after the
+interior surfaces complete their mockup port.
+
+**Sprint output:**
+- New: `src/styles/tokens-mockup.css`, `src/styles/mockup.css`,
+  `src/components/mockup/*` (8 files), `MockupShell` wrapper.
+- Ported to mockup system: `/`, `/assessment`, `/results`,
+  `/courses`, `/playground`, `/practice`, `/my-toolbox`,
+  `/my-toolbox/skill-builder`, `/my-toolbox/skills/[slug]`,
+  `/for-institutions`, `/playbooks` + 6 role pages, `/about`,
+  `/faq`, `/security`, `/certifications`, `/education`,
+  `/briefing-preview`, `/privacy`, `/terms`, `/ai-use-disclaimer`.
+  Total: 22 routes shipped on the mockup system in this sprint.
+- Minimal-scope wrap (mockup-scope + SiteHeader, internal markup
+  unchanged): `/dashboard`, `/courses/foundation/program/*`.
+  Both inherit Inter + cream surface and the new global nav but
+  internal card chrome still uses Ledger tokens.
+- All 23+ new/migrated routes added to CHROMELESS_PATHS in
+  `src/app/layout.tsx`; old global SiteNav suppressed on them.
+- `npx tsc --noEmit` clean across the whole sprint.
+- Branch is LOCAL only — never pushed. PR-creation is the next
+  human-driven step.
+
+**Follow-up before token deletion can land:**
+1. Deep visual port of `/dashboard` panels to `mk-*` classes.
+2. Deep visual port of CourseShell + each module page.
+3. Auth surface (`/auth/*`) port (still uses LedgerSurface).
+4. Sweep grep for `var(--ledger-*)` and `var(--color-*)` across
+   `src/` — each hit either migrates to `var(--ink)` /
+   `var(--gold)` / etc. or moves to a documented legacy carve-out.
+5. THEN delete `tokens.css` + `tokens-ledger.css`, rename
+   `tokens-mockup.css` → `tokens.css`.
