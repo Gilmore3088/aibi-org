@@ -681,7 +681,7 @@ export default function DashboardPage() {
 
             <div className="res-grid">
               <ResourceCard
-                href="/resources/the-skill-not-the-prompt"
+                href="/research/the-skill-not-the-prompt"
                 tag="Briefing"
                 title={<>The <em>skill</em>, not the prompt.</>}
                 meta="Briefing · 8 min read"
@@ -695,7 +695,7 @@ export default function DashboardPage() {
                 }
               />
               <ResourceCard
-                href="/resources/six-ways-ai-fails-in-banking"
+                href="/research/six-ways-ai-fails-in-banking"
                 tag="Briefing"
                 title={<>Six ways AI <em>fails</em> in banking.</>}
                 meta="Briefing · 10 min read"
@@ -712,7 +712,7 @@ export default function DashboardPage() {
                 }
               />
               <ResourceCard
-                href="/resources/ai-governance-without-the-jargon"
+                href="/research/ai-governance-without-the-jargon"
                 tag="Briefing"
                 title={<>AI governance, <em>without</em> the jargon.</>}
                 meta="Briefing · 12 min read"
@@ -767,7 +767,7 @@ export default function DashboardPage() {
                 ))}
               </div>
               <div className="cta-col">
-                <Link href="/resources/the-skill-not-the-prompt" className="btn btn-primary">
+                <Link href="/research/the-skill-not-the-prompt" className="btn btn-primary">
                   Read the briefing <span className="arrow">→</span>
                 </Link>
                 <span className="meta">The skill, not the prompt</span>

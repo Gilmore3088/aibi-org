@@ -19,7 +19,7 @@ export interface EssayArchiveItem {
   readonly date: string;
   readonly category?: string;
   readonly readMinutes?: number;
-  /** Per-item href. Overrides basePath. Used by legacy essays at /resources/<slug>. */
+  /** Per-item href. Overrides basePath. Used by legacy essays at /research/<slug>. */
   readonly href?: string;
 }
 
