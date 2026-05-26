@@ -426,7 +426,7 @@ export default function AssessmentLandingPage() {
                 <li><CheckIcon className="mk-ic" />The dimension dragging you down</li>
                 <li><CheckIcon className="mk-ic" />A starter artifact you can take to your team this week</li>
               </ul>
-              <Button variant="ink" size="lg" href="/assessment/take" className="mk-cta">
+              <Button variant="ink" size="lg" href="/assessment/take">
                 Start Free
               </Button>
             </div>
@@ -451,7 +451,7 @@ export default function AssessmentLandingPage() {
                 <li><CheckIcon className="mk-ic" />Examiner-ready PDF</li>
                 <li><CheckIcon className="mk-ic" />30-day refund</li>
               </ul>
-              <Button variant="gold" size="lg" href="/assessment/in-depth" className="mk-cta">
+              <Button variant="gold" size="lg" href="/assessment/in-depth">
                 Get In-Depth · $99
               </Button>
             </div>
@@ -475,7 +475,7 @@ export default function AssessmentLandingPage() {
                 <li><CheckIcon className="mk-ic" />SSO + admin roles</li>
                 <li><CheckIcon className="mk-ic" />Briefing for leadership</li>
               </ul>
-              <Button variant="ink" size="lg" href="/for-institutions" className="mk-cta">
+              <Button variant="ink" size="lg" href="/for-institutions">
                 Book Briefing
               </Button>
             </div>
