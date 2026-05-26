@@ -1071,3 +1071,186 @@ section.mk-std { padding: 56px 0; }
   margin-top: 18px;
 }
 .mk-qs-foot strong { color: #fff; }
+
+/* ============================================================
+   Results page — sections specific to /results
+   ============================================================ */
+
+/* Score card (right-side path / role / gap / artifact summary) */
+.mk-rcard {
+  background: #fff; color: var(--ink);
+  border-radius: var(--r-2xl); overflow: hidden;
+  box-shadow: var(--shadow-hero);
+  border: 1px solid var(--on-dark-08);
+}
+.mk-rcard .mk-grid { display: grid; grid-template-columns: 1fr; }
+@media (min-width: 760px) { .mk-rcard .mk-grid { grid-template-columns: 0.42fr 0.58fr; } }
+.mk-rcard .mk-left { background: var(--ink); color: #fff; padding: 28px; }
+.mk-rcard .mk-left .mk-k {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--gold-soft);
+}
+.mk-rcard .mk-left .mk-v {
+  font-size: 80px; font-weight: 700; color: var(--gold-soft);
+  line-height: 0.95; margin-top: 14px; font-variant-numeric: tabular-nums;
+}
+.mk-rcard .mk-left .mk-u { color: var(--on-dark-50); font-size: 14px; }
+.mk-rcard .mk-left .mk-tier-box {
+  margin-top: 22px; padding: 14px 16px;
+  background: var(--on-dark-10); border-radius: 14px;
+}
+.mk-rcard .mk-left .mk-tier-box .mk-l { color: var(--on-dark-65); font-size: 13px; }
+.mk-rcard .mk-left .mk-tier-box .mk-t { font-size: 22px; font-weight: 700; margin-top: 4px; }
+.mk-rcard .mk-right { padding: 22px; }
+.mk-rcard .mk-right .mk-k {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--gold-deep);
+}
+.mk-rcard .mk-right h3 { font-size: 24px; font-weight: 600; margin: 6px 0 16px; line-height: 1.2; }
+.mk-mrow {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 14px; background: var(--cream); border-radius: var(--r-md);
+  margin-bottom: 8px;
+}
+.mk-mrow svg { color: var(--gold); flex: none; }
+.mk-mrow .mk-lk { font-size: 11px; color: var(--slate-500); }
+.mk-mrow .mk-vv { font-weight: 700; font-size: 14px; margin-top: 2px; }
+.mk-rcard .mk-path {
+  margin-top: 14px; padding: 14px 16px; background: var(--cream); border-radius: 14px;
+}
+.mk-rcard .mk-path .mk-l {
+  font-size: 11px; color: var(--slate-500); font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+}
+.mk-rcard .mk-path .mk-v { margin-top: 6px; font-weight: 700; font-size: 14px; line-height: 1.5; }
+
+/* Dimension breakdown grid (5 cards) */
+.mk-dim-head {
+  display: grid; gap: 24px; grid-template-columns: 1fr;
+  margin-bottom: 28px; align-items: end;
+}
+@media (min-width: 980px) { .mk-dim-head { grid-template-columns: 0.38fr 0.62fr; } }
+.mk-dim-head .mk-lede-l { font-size: 16px; color: var(--slate-600); line-height: 1.6; }
+.mk-dim-grid { display: grid; gap: 16px; grid-template-columns: 1fr; }
+@media (min-width: 700px) { .mk-dim-grid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1100px) { .mk-dim-grid { grid-template-columns: repeat(5, 1fr); } }
+.mk-dim-card {
+  background: #fff; border: 1px solid var(--ink-a10);
+  border-radius: 20px; padding: 18px;
+}
+.mk-dim-card .mk-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.mk-dim-card .mk-top svg { color: var(--gold); }
+.mk-dim-badge {
+  padding: 3px 10px; border-radius: var(--r-pill);
+  font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+}
+.mk-dim-badge.is-strong { background: rgba(4, 120, 87, 0.12); color: var(--emerald-700); }
+.mk-dim-badge.is-dev    { background: var(--gold-a20); color: var(--gold-deep); }
+.mk-dim-badge.is-early  { background: rgba(142, 59, 42, 0.15); color: #8E3B2A; }
+.mk-dim-card h3 { font-size: 17px; font-weight: 600; margin: 14px 0 12px; line-height: 1.2; }
+.mk-dim-card .mk-bar {
+  height: 4px; background: var(--slate-100);
+  border-radius: var(--r-pill); overflow: hidden;
+}
+.mk-dim-card .mk-fill {
+  height: 100%; background: var(--gold);
+  transition: width .8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.mk-dim-card .mk-pct {
+  font-size: 13px; font-weight: 700; color: var(--gold-deep);
+  margin: 10px 0; font-variant-numeric: tabular-nums;
+}
+.mk-dim-card .mk-note { font-size: 12px; color: var(--slate-600); line-height: 1.55; }
+
+/* Next steps cards */
+.mk-next-head {
+  display: grid; gap: 24px; grid-template-columns: 1fr; align-items: start;
+}
+@media (min-width: 980px) { .mk-next-head { grid-template-columns: 0.36fr 0.64fr; } }
+.mk-next-head .mk-desc { font-size: 16px; color: var(--slate-600); line-height: 1.65; margin-top: 14px; }
+.mk-next-grid { display: grid; gap: 16px; grid-template-columns: 1fr; }
+@media (min-width: 760px) { .mk-next-grid { grid-template-columns: 1fr 1fr 1fr; } }
+.mk-next-card {
+  background: var(--cream); border: 1px solid rgba(7, 26, 47, 0.08);
+  border-radius: 20px; padding: 22px;
+  transition: transform var(--t-fast), box-shadow var(--t-fast);
+}
+.mk-next-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 40px -22px rgba(0, 0, 0, 0.18);
+}
+.mk-next-card svg { color: var(--gold); }
+.mk-next-card h3 { font-size: 22px; font-weight: 600; margin: 18px 0 8px; line-height: 1.2; }
+.mk-next-card p { color: var(--slate-600); font-size: 13px; margin: 0 0 16px; line-height: 1.55; }
+.mk-next-card .mk-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 13px; font-weight: 700; color: var(--ink); text-decoration: none;
+}
+.mk-next-card .mk-link svg { color: var(--gold); }
+
+/* Artifacts + email + team grid */
+.mk-art-grid { display: grid; gap: 28px; grid-template-columns: 1fr; align-items: start; }
+@media (min-width: 1024px) { .mk-art-grid { grid-template-columns: 0.56fr 0.44fr; } }
+.mk-art-card {
+  background: #fff; border: 1px solid var(--ink-a10);
+  border-radius: var(--r-2xl); overflow: hidden;
+  box-shadow: 0 24px 40px -20px rgba(0, 0, 0, 0.15);
+}
+.mk-art-head { background: var(--ink); color: #fff; padding: 22px 24px; }
+.mk-art-head .mk-k {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--gold-soft);
+}
+.mk-art-head .mk-t { font-size: 24px; font-weight: 600; margin-top: 6px; }
+.mk-art-body { display: grid; grid-template-columns: 1fr; }
+@media (min-width: 600px) { .mk-art-body { grid-template-columns: 1fr 1fr; } }
+.mk-art-cell {
+  padding: 22px;
+  border-right: 1px solid var(--slate-200);
+  border-bottom: 1px solid var(--slate-200);
+}
+.mk-art-cell:nth-child(2n) { border-right: 0; }
+.mk-art-cell svg { color: var(--gold); }
+.mk-art-cell .mk-nm { font-weight: 700; margin-top: 16px; font-size: 16px; }
+.mk-art-cell .mk-ty { font-size: 12px; color: var(--slate-500); margin-top: 4px; font-weight: 600; }
+
+.mk-side-col { display: grid; gap: 18px; }
+.mk-email-card {
+  background: #fff; border: 1px solid var(--ink-a10);
+  border-radius: var(--r-xl); padding: 24px;
+}
+.mk-email-card .mk-head { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; }
+.mk-email-card .mk-head svg { color: var(--gold); flex: none; margin-top: 4px; }
+.mk-email-card h3 { font-size: 22px; font-weight: 600; margin: 0; line-height: 1.2; }
+.mk-email-card p { color: var(--slate-600); font-size: 13px; margin: 6px 0 0; line-height: 1.55; }
+.mk-email-form { display: grid; gap: 10px; grid-template-columns: 1fr; }
+@media (min-width: 500px) { .mk-email-form { grid-template-columns: 1fr auto; } }
+.mk-email-form input {
+  height: 44px; padding: 0 14px; font-size: 14px;
+  background: var(--cream); border: 1px solid var(--slate-200);
+  border-radius: var(--r-md); outline: none;
+  font-family: inherit; color: var(--ink);
+}
+.mk-email-form input:focus { border-color: var(--gold); background: #fff; }
+.mk-email-toast {
+  display: none; margin-top: 14px; padding: 12px 14px;
+  background: rgba(4, 120, 87, 0.12); color: var(--emerald-800);
+  border-radius: var(--r-md); font-weight: 600; font-size: 13px;
+}
+.mk-email-toast.is-shown { display: block; }
+
+.mk-team-card {
+  background: #fff; border: 1px solid var(--ink-a10);
+  border-radius: var(--r-xl); padding: 24px;
+}
+.mk-team-card .mk-k {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--gold-deep);
+}
+.mk-team-card h3 { font-size: 20px; font-weight: 600; margin: 8px 0 16px; line-height: 1.25; }
+.mk-team-card .mk-sig {
+  display: flex; gap: 10px; padding: 12px 14px;
+  background: var(--cream); border-radius: var(--r-md); margin-bottom: 8px;
+}
+.mk-team-card .mk-sig svg { color: var(--gold); flex: none; margin-top: 2px; }
+.mk-team-card .mk-sig .mk-t { font-size: 13px; font-weight: 500; line-height: 1.5; }

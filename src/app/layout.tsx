@@ -24,12 +24,14 @@ const CHROMELESS_PATHS: readonly string[] = [
   // the global SiteNav is removed entirely.
   '/',
   '/assessment',
+  '/assessment/take',
   '/results',
   '/courses',
   '/playground',
   '/practice',
   '/my-toolbox',
   '/for-institutions',
+  '/playbooks',
 
   // Pre-existing chromeless routes (own brand lockup or no chrome by design)
   '/coming-soon',
