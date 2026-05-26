@@ -119,9 +119,35 @@ export default function ForInstitutionsPage() {
             <h1>Capability — not a platform.</h1>
             <p className="mk-lede">
               An education engagement for community banks and credit unions.
-              <strong> No software seats. No vendor lock-in.</strong> Three ways to bring
-              capability into your bank: a coached cohort, an institution-wide rollout, or
-              leadership advisory.
+            </p>
+            <ul
+              style={{
+                listStyle: 'none',
+                padding: 0,
+                margin: '20px 0 0',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 10,
+                fontSize: 15,
+                fontWeight: 600,
+                color: 'var(--gold-soft)',
+              }}
+            >
+              <li>A coached cohort.</li>
+              <li>An institution-wide rollout.</li>
+              <li>Leadership advisory.</li>
+            </ul>
+            <p
+              style={{
+                marginTop: 14,
+                paddingTop: 12,
+                borderTop: '1px solid rgba(255,255,255,0.12)',
+                color: 'rgba(255,255,255,0.62)',
+                fontSize: 13,
+                fontWeight: 500,
+              }}
+            >
+              No software seats. No vendor lock-in.
             </p>
             <div className="mk-ctas">
               <Button variant="gold" size="lg" href="/for-institutions/advisory">

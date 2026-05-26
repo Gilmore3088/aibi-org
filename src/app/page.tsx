@@ -333,8 +333,35 @@ export default function HomePage() {
             <h1>Train people to use AI without losing control.</h1>
             <p className="mk-lede">
               Independent AI assessment and education for community banks and credit unions.
-              Assess readiness, practice safely, and turn useful prompts into documented workflows
-              your examiner respects. <strong>No software seats. No vendor lock-in.</strong>
+            </p>
+            <ul
+              style={{
+                listStyle: 'none',
+                padding: 0,
+                margin: '20px 0 0',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 10,
+                color: 'var(--gold-soft)',
+                fontSize: 15,
+                fontWeight: 600,
+              }}
+            >
+              <li>Assess readiness in three minutes.</li>
+              <li>Practice safely. Build reviewed workflows.</li>
+              <li>Earn the credential your examiner respects.</li>
+            </ul>
+            <p
+              style={{
+                marginTop: 14,
+                paddingTop: 12,
+                borderTop: '1px solid rgba(255,255,255,0.12)',
+                color: 'rgba(255,255,255,0.62)',
+                fontSize: 13,
+                fontWeight: 500,
+              }}
+            >
+              No software seats. No vendor lock-in.
             </p>
             <div className="mk-ctas">
               <Button variant="gold" size="lg" href="/assessment">
