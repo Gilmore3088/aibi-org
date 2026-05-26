@@ -2719,3 +2719,27 @@ section.mk-std { padding: 56px 0; }
   font-size: 15px; line-height: 1.5; color: var(--slate-600);
   font-weight: 500; margin-top: 4px;
 }
+
+/* ============================================================
+   Assessment page rework (2026-05-26)
+   ============================================================ */
+
+/* Small footer line under hero CTAs */
+.mk-hero-foot {
+  margin-top: 16px;
+  font-size: 13px; font-weight: 500;
+  color: rgba(255,255,255,0.62);
+}
+
+/* Compact 8-dim grid — kill the scale bars, tighten text */
+.mk-dims-compact .mk-dcard .mk-scale { display: none; }
+.mk-dims-compact .mk-dcard {
+  padding: 20px;
+}
+.mk-dims-compact .mk-dcard h4 {
+  font-size: 16px; font-weight: 700; margin: 8px 0 2px;
+}
+.mk-dims-compact .mk-dcard p {
+  font-size: 13px; line-height: 1.4; color: var(--slate-600);
+  margin: 0;
+}
