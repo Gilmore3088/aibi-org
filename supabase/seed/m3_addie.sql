@@ -623,37 +623,41 @@ VALUES
     {"id":"d","label":"The output is too long to save","correct":false,"explanation":"Output length is gated; that is not the reason."}
   ]'::jsonb
 ),
+-- 2026-05-25: m3.3 was split into 3.3a (Default brief) + new m3.3b
+-- (Advanced patterns). These three KCs are re-authored to test the
+-- default brief — Role · Task · Context · Format — instead of the
+-- pattern 2-5 material that now lives on m3.3b.
 (
   'a0000000-0000-4000-a000-00000000f331'::uuid,
   'm3.3', 1,
-  'You want the model to mimic a specific writing style. Which pattern fits best?',
+  'Which four parts make up the default prompt brief?',
   '[
-    {"id":"a","label":"Constraints","correct":false,"explanation":"Constraints tell it what not to do; they do not teach style."},
-    {"id":"b","label":"Few-shot examples","correct":true,"explanation":"Showing two short examples of the style and asking for a third is the most reliable way to get a specific shape of output."},
-    {"id":"c","label":"Ask for what is missing","correct":false,"explanation":"That helps when you suspect the model needs more context, not when you want a style copied."},
-    {"id":"d","label":"Role plus task","correct":false,"explanation":"Role helps with vocabulary and depth; few-shot is better for style mimicry."}
+    {"id":"a","label":"Role · Task · Context · Format","correct":true,"explanation":"The four parts of the default brief, in order. Skip any one and the model fills the gap with someone else''s defaults."},
+    {"id":"b","label":"Role · Audience · Format · Examples","correct":false,"explanation":"Examples is one of the advanced patterns (3.3b), not part of the default brief. Audience usually lives inside the Task or Format slot."},
+    {"id":"c","label":"Goal · Constraints · Examples · Format","correct":false,"explanation":"Constraints and Examples are advanced patterns from 3.3b. The default brief is simpler."},
+    {"id":"d","label":"Input · Process · Output · Review","correct":false,"explanation":"That describes a workflow, not a prompt. The default brief names how to ASK the model, not how to evaluate what comes back."}
   ]'::jsonb
 ),
 (
   'a0000000-0000-4000-a000-00000000f332'::uuid,
   'm3.3', 2,
-  'The model keeps inventing regulations that do not exist in your source text. Which pattern fixes that?',
+  'A teller is filling in the four parts of a default brief. Which part is the most common place the data-discipline rule gets broken?',
   '[
-    {"id":"a","label":"Few-shot examples","correct":false,"explanation":"Examples teach shape, not what to avoid."},
-    {"id":"b","label":"Chain-of-thought hint","correct":false,"explanation":"Walking through reasoning helps with logic, not with hallucinated citations."},
-    {"id":"c","label":"Constraints","correct":true,"explanation":"Explicit constraints — \"do not cite any regulation not named in the source; say \\\"not specified in the source\\\" otherwise\" — are the standard fix."},
-    {"id":"d","label":"Role plus task","correct":false,"explanation":"Role and task set the scene but do not stop invention."}
+    {"id":"a","label":"Role — claiming a title the model can''t verify","correct":false,"explanation":"Role is a framing choice, not a data exposure. Claiming a title in a prompt does not leak member data."},
+    {"id":"b","label":"Task — asking for something out of policy","correct":false,"explanation":"Out-of-policy tasks are a different failure mode (M3.4 / M0.2), not the data-discipline slot."},
+    {"id":"c","label":"Context — pasting real member detail instead of describing the situation","correct":true,"explanation":"Context is where data-discipline breaks. The slot reads as \"anything the model needs to know\" and people paste real member files. Describe the situation, not the person — every time."},
+    {"id":"d","label":"Format — asking for too long an output","correct":false,"explanation":"Length is a quality problem, not a data-handling one."}
   ]'::jsonb
 ),
 (
   'a0000000-0000-4000-a000-00000000f333'::uuid,
   'm3.3', 3,
-  'The model gives you a generic, surface-level answer. What is the most useful next move from the cheat sheet?',
+  'Your prompt is not producing what you need. The lesson recommends one diagnostic move before anything else. Which?',
   '[
-    {"id":"a","label":"Add another constraint","correct":false,"explanation":"Constraints narrow output but do not give the model more to work with."},
-    {"id":"b","label":"Ask the model what additional context it would need to do a sharper job","correct":true,"explanation":"That is the \"ask for what is missing\" pattern — it tells you exactly what to add to the brief on the next pass."},
-    {"id":"c","label":"Switch to a different provider","correct":false,"explanation":"A different model rarely fixes a thin brief."},
-    {"id":"d","label":"Re-run the same prompt three more times","correct":false,"explanation":"Re-running the same brief gives you variations on the same generic answer."}
+    {"id":"a","label":"Try a different model","correct":false,"explanation":"A different model rarely fixes a thin brief. The shape of the prompt is doing most of the work."},
+    {"id":"b","label":"Audit the four parts — nine times out of ten the missing piece is task-audience or format","correct":true,"explanation":"The diagnostic move from the lesson. Read each of the four parts; the missing piece is almost always task-audience or format."},
+    {"id":"c","label":"Add a chain-of-thought step","correct":false,"explanation":"Chain-of-thought (\"make it think out loud\") is an advanced pattern from 3.3b. Reach for it after the default brief is sound, not before."},
+    {"id":"d","label":"Paste an example output from a colleague","correct":false,"explanation":"Examples-first is an advanced pattern from 3.3b. Audit the default brief first — most of the time the four parts are the fix."}
   ]'::jsonb
 ),
 (
