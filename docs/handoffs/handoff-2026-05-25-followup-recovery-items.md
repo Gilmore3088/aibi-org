@@ -51,9 +51,9 @@
 
 12. `addie-v1-stash/` (683 MB) still on disk.
 
-### New (surfaced this session)
+### New (surfaced + closed this session)
 
-13. **m4.5 seed ↔ live body_md divergence.** During the #1 sync I noticed the seed body for m4.5 (the "What can go wrong, by department" lesson from PR21) is longer and richer than the live DB body — live got compressed somewhere between PR21 landing and the morning handoff. Not in scope per the morning handoff's #1 instruction. Direction call needed: restore live to seed (re-seed → fuller body returns) or accept the compressed live and sync seed down to match.
+13. ~~**m4.5 seed ↔ live body_md divergence.**~~ **Closed.** Live restored to seed (1990 → 5945 chars) via direct UPDATE against Supabase. Fuller pedagogical version (CEO Bill framing + per-scenario "The fix is…" paragraphs + `[[Gloss:…]]` markers + full closing paragraph) is now live. Seed already carries this body, so re-seed is idempotent.
 
 ---
 
@@ -74,8 +74,8 @@ The three known footguns from the morning handoff remain accurate **with one upd
 | | |
 |---|---|
 | Commits this session | 4 |
-| Open items from morning handoff closed | 4 of 12 (#1, #2, #4, #5) |
-| Open items remaining | 8 (#3, #6, #7, #8, #9, #10, #11, #12) + #13 new |
+| Open items from morning handoff closed | 5 of 12 (#1, #2, #4, #5, #10 — push landed) |
+| Open items remaining | 7 (#3, #6, #7, #8, #9, #11, #12); #13 also closed |
 | New files | `src/lib/addie/artifacts/savePack.ts`, `src/components/addie/lesson/v2/M4PaidWorkbench.tsx` |
 | Migrations applied | 0 (none needed this session) |
-| Live Supabase rows touched | 3 (m3.3 knowledge_check ids `…f331`, `…f332`, `…f333`) |
+| Live Supabase rows touched | 4 (m3.3 knowledge_check ids `…f331`, `…f332`, `…f333`; addie.lessons row `m4.5`) |
