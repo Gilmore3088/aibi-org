@@ -19,14 +19,9 @@ import './globals.css';
 const CHROMELESS_PATHS: readonly string[] = [
   '/coming-soon',
   '/design-system',
-  '/user-home',
   '/my-toolbox',
   '/playground',
   '/faq',
-  '/preview-home',
-  '/briefing-preview',
-  '/lms-preview',
-  '/courses/foundation-preview',
   // /courses/foundation/program and /auth intentionally NOT chromeless —
   // both need the global SiteNav. /auth surfaces drop the LedgerSurface
   // internal lockup via showHeader={false} so there's no duplicate mark.
