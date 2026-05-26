@@ -707,3 +707,79 @@ deleting** — never assume "stale = dead."
 - **Workflow note.** Bundled destructive git commands (worktree+local+remote in
   one chain) get blocked by the safety classifier; remote-branch deletions must
   run as isolated, explicitly-authorized steps.
+
+**2026-05-22 — Module 4 prototype deepened beyond LOCKED 2026-05-21 spec.**
+The locked M4 in `docs/foundation-course-modules.md` defined a light
+6-step activation module (feel-seen → meet sandbox → press Run on
+pre-loaded notes → compare 3 tools → personalize → profile). The user's
+session feedback (2026-05-22) called several pieces filler — the
+"what's holding you back" tile-quiz, the "tap each guarantee" tile-quiz,
+non-messy source material — and asked for "a lot of depth" now that M4
+is the first paid module. The HTML prototype
+(`.superpowers/brainstorm/.../module-4-experience.html`) was rebuilt to
+4 substantive steps: (1) **Why a Sandbox** — stated reasons (our
+choice, not their quiz); (2) **First run** — picker of 4 genuinely raw
+banking sources (member voicemail, branch ops transcript, complaint
+thread, SOP excerpt §4.2) + visible M3-moves prompt builder + model
+selector (Claude/ChatGPT/Gemini/Copilot); (3) **Compare the models** —
+plain-English depth on all four models, same source carried through, 3
+output voices, pick-your-fit; (4) **Practice + Profile** — source × task
+× model × M3-move toggles with substantial realistic outputs, ending
+inline with the editable My AI Work Profile card. **Scope boundary
+kept:** document workflows still belong to M6, the green/yellow/red
+safe-to-share framework still belongs to M9 (M4 carries only a
+one-line bridge). To port: log this in the curriculum doc as a v2 of
+the M4 spec, and wire the multi-provider Sandbox engine
+(`src/lib/ai-harness/`) behind enrollment gating.
+
+**2026-05-26 — Ledger retired in favor of mockup design system.**
+The 2026-05-09 Ledger brand refresh (parchment field, ink, darkened
+gold #7C5814, 2-4px radii, single hero shadow, Newsreader + Geist +
+JetBrains Mono, italics-retired, oxblood for destructive) is
+superseded by a new mockup system sourced from
+`/Users/jgmbp/Downloads/aibi_homepage_mockup.jsx` and its sibling
+sketches (`public/sketches/mockup.html` + per-page ports).
+
+**What changes:**
+- Palette: ink `#071A2F`, gold `#C8A24A`, cream `#F7F3EA`, slate scale,
+  emerald for success. No oxblood / terra / sage.
+- Typography: Inter for everything (400/500/600/700/800). Newsreader,
+  Geist, JetBrains Mono retired on new work.
+- Radii: 12 / 16 / 24 / 28 / 32 px. (Ledger's 2-4px ceiling is gone.)
+- Shadows: three levels — `--shadow-soft`, `--shadow-feature`,
+  `--shadow-hero`. Heavier than Ledger's single hero shadow.
+- Composition: warm-cream page + dark-navy hero/CTA sections, rounded
+  card-based blocks, interactive previews (tabs, scenario pickers).
+- One accent (gold) rule survives; pillar color discipline stays
+  retired.
+
+**What stays:**
+- Italics off site-wide (`base.css *{font-style:normal!important}`).
+- Editorial voice (no supercharge / unlock / leverage / synergy /
+  AI-powered).
+- WCAG 2.1 AA accessibility floor.
+- Two-line wordmark, but now with a seal mark (40×40 navy square +
+  gold landmark icon) preceding the text — replaces the seal-less
+  Ledger wordmark.
+
+**Migration mechanics:**
+- New token file: `src/styles/tokens-mockup.css` (bare names —
+  `--ink`, `--gold`, `--cream`, slate scale, gold/ink alphas, radii,
+  shadows). Imported alongside Ledger tokens in `globals.css` during
+  migration.
+- Ledger tokens (`tokens-ledger.css`) stay loaded while LMS interior,
+  dashboard, and auth surfaces still reference `--ledger-*` vars.
+- Phase 6 of the redesign sprint deletes both `tokens.css` (legacy
+  Terra) and `tokens-ledger.css`, then renames `tokens-mockup.css`.
+- Branch: `feature/redesign-mockup-system` (worktree at
+  `.worktrees/redesign-mockup-system`).
+
+**Rationale.** Ledger was reviewed against the mockup direction the
+user explored in JSX sketches over 2026-05-23..25 and the mockup feel
+won — warmer, more product-forward, retains the editorial bones but
+reads as software rather than print. The brighter gold is intentional
+and used only on dark surfaces (where contrast is ample) or as fill
+behind dark ink. Old gold-on-cream contrast worries do not apply
+because the mockup only uses gold-on-cream for kickers/metadata
+(non-body, large-tracked, weight 700), which sits outside WCAG body
+contrast requirements.
