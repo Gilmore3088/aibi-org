@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
+import { SiteHeader } from '@/components/mockup';
 import { getUserDataWithSupabaseFallback, type UserData } from '@/lib/user-data';
 import { modules } from '@content/courses/foundation-program';
 import {
@@ -207,7 +208,8 @@ export default function DashboardPage() {
   ];
 
   return (
-    <>
+    <div className="mockup-scope">
+      <SiteHeader activePath="/dashboard" cta={{ label: 'Start a Lesson', href: '/courses/foundation/program' }} />
       <style jsx global>{dashboardStyles}</style>
 
       <main className="ledger-dash">
@@ -774,7 +776,7 @@ export default function DashboardPage() {
           </div>
         </section>
       </main>
-    </>
+    </div>
   );
 }
 
