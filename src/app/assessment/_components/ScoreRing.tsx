@@ -64,17 +64,42 @@ export function ScoreRing({ score, minScore, maxScore, colorVar, label }: ScoreR
           />
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="font-mono text-6xl text-[color:var(--ink)] leading-none tabular-nums">
+          <span
+            className="leading-none tabular-nums"
+            style={{
+              fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
+              fontSize: 72,
+              fontWeight: 700,
+              letterSpacing: '-0.025em',
+              color: 'var(--ink)',
+            }}
+          >
             {score}
           </span>
-          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--slate-600)] mt-3">
+          <span
+            className="mt-3"
+            style={{
+              fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
+              fontSize: 11,
+              fontWeight: 700,
+              textTransform: 'uppercase',
+              letterSpacing: '0.18em',
+              color: 'var(--slate-500)',
+            }}
+          >
             out of {maxScore}
           </span>
         </div>
       </div>
       <p
-        className="font-serif-sc text-2xl md:text-3xl mt-6 text-center uppercase"
-        style={{ color: colorVar }}
+        className="mt-6 text-center"
+        style={{
+          fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
+          fontSize: 'clamp(20px, 2.4vw, 28px)',
+          fontWeight: 700,
+          letterSpacing: '-0.015em',
+          color: colorVar,
+        }}
       >
         {label}
       </p>

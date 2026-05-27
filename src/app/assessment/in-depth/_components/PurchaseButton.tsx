@@ -29,10 +29,12 @@ interface PurchaseButtonProps {
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-const SIZE_CLASS: Record<Size, string> = {
-  card: 'px-8 py-3 text-[10px]',
-  hero: 'px-10 py-4 text-[11px]',
-  compact: 'px-5 py-3 text-[10px]',
+// Inline-style size map — mockup-system pill buttons with consistent
+// padding + font scale across hero / card / compact surfaces.
+const SIZE_STYLE: Record<Size, React.CSSProperties> = {
+  card: { padding: '14px 26px', fontSize: 13 },
+  hero: { padding: '16px 32px', fontSize: 14 },
+  compact: { padding: '12px 22px', fontSize: 12 },
 };
 
 function readLocalEmail(): string | null {
@@ -98,12 +100,40 @@ export function PurchaseButton({
         type="button"
         onClick={handleClick}
         disabled={pending}
-        className={`inline-flex items-center justify-center bg-[color:var(--gold)] text-[color:var(--cream)] rounded-sm font-mono uppercase tracking-[0.15em] hover:bg-[color:var(--gold-2)] disabled:opacity-60 disabled:cursor-not-allowed transition-colors w-fit ${SIZE_CLASS[size]}`}
+        className="inline-flex items-center justify-center w-fit"
+        style={{
+          background: 'var(--gold)',
+          color: 'var(--ink)',
+          borderRadius: 12,
+          border: 'none',
+          fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
+          fontWeight: 700,
+          letterSpacing: '0.14em',
+          textTransform: 'uppercase',
+          cursor: pending ? 'not-allowed' : 'pointer',
+          opacity: pending ? 0.6 : 1,
+          transition: 'background-color 120ms',
+          ...SIZE_STYLE[size],
+        }}
+        onMouseEnter={(e) => {
+          if (!pending) e.currentTarget.style.background = 'var(--gold-2)';
+        }}
+        onMouseLeave={(e) => {
+          if (!pending) e.currentTarget.style.background = 'var(--gold)';
+        }}
       >
         {pending ? pendingLabel : label}
       </button>
       {error && (
-        <p className="text-sm text-[color:#9b2226]" role="alert">
+        <p
+          role="alert"
+          style={{
+            fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
+            fontSize: 14,
+            color: 'var(--ink)',
+            margin: 0,
+          }}
+        >
           {error}
         </p>
       )}

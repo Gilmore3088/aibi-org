@@ -178,14 +178,14 @@ export function EmailGate({
 
   return (
     <div className="w-full max-w-5xl mx-auto">
-      <div className="grid lg:grid-cols-[1fr_1fr] gap-0 border border-[color:var(--ink)]/10 rounded-[3px] overflow-hidden">
+      <div className="grid lg:grid-cols-[1fr_1fr] gap-0 border border-[color:var(--ink)]/10 rounded-3xl overflow-hidden" style={{ boxShadow: 'var(--shadow-feature)' }}>
         <DeliverablePanel />
 
         <div className="bg-[color:#FFFFFF] p-8 md:p-10 lg:p-12">
-          <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
+          <p className="text-[11px] uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
             See your full results
           </p>
-          <h3 className="font-serif text-3xl leading-tight text-[color:var(--ink)]">
+          <h3 className="text-3xl leading-tight text-[color:var(--ink)]">
             Where should we send your breakdown?
           </h3>
 
@@ -284,10 +284,10 @@ export function EmailGate({
 function DeliverablePanel() {
   return (
     <div className="bg-[color:var(--cream)] p-8 md:p-10 lg:p-12 border-b lg:border-b-0 lg:border-r border-[color:var(--ink)]/10">
-      <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
+      <p className="text-[11px] uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
         What you get
       </p>
-      <h3 className="font-serif text-3xl leading-tight text-[color:var(--ink)]">
+      <h3 className="text-3xl leading-tight text-[color:var(--ink)]">
         A working diagnostic, not a teaser.
       </h3>
 
@@ -296,10 +296,10 @@ function DeliverablePanel() {
         aria-hidden="true"
       >
         <div className="flex items-baseline justify-between mb-3">
-          <p className="font-serif-sc text-[10px] uppercase tracking-[0.18em] text-[color:var(--slate-600)]">
+          <p className="text-[10px] uppercase tracking-[0.18em] text-[color:var(--slate-600)]">
             Readiness breakdown
           </p>
-          <p className="font-mono text-[10px] tabular-nums text-[color:var(--slate-600)]">
+          <p className="text-[10px] tabular-nums text-[color:var(--slate-600)]">
             8 dimensions
           </p>
         </div>
@@ -315,7 +315,7 @@ function DeliverablePanel() {
             ['Roadmap', 0.30],
           ] as const).map(([label, value]) => (
             <div key={label} className="flex items-center gap-3">
-              <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--slate-600)] w-20 shrink-0">
+              <span className="text-[10px] uppercase tracking-widest text-[color:var(--slate-600)] w-20 shrink-0">
                 {label}
               </span>
               <div className="flex-1 h-1.5 bg-[color:var(--ink)]/10 rounded-sm overflow-hidden">
@@ -327,7 +327,7 @@ function DeliverablePanel() {
             </div>
           ))}
         </div>
-        <p className="mt-3 font-mono text-[9px] uppercase tracking-widest text-[color:var(--slate-600)]">
+        <p className="mt-3 text-[9px] uppercase tracking-widest text-[color:var(--slate-600)]">
           Sample only — yours will reflect your actual answers
         </p>
       </div>
@@ -341,7 +341,7 @@ function DeliverablePanel() {
           <li key={title} className="flex gap-3">
             <span className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--gold)] shrink-0" />
             <div>
-              <p className="font-serif text-base text-[color:var(--ink)]">{title}</p>
+              <p className="text-base text-[color:var(--ink)]">{title}</p>
               <p className="text-sm text-[color:var(--slate-600)] leading-relaxed">{body}</p>
             </div>
           </li>
@@ -389,7 +389,7 @@ function FormField({
       <div className="flex items-baseline justify-between gap-3">
         <label
           htmlFor={id}
-          className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--slate-600)]"
+          className="text-[10px] uppercase tracking-widest text-[color:var(--slate-600)]"
         >
           {label}
           {required && <span className="ml-1 text-[color:var(--gold)]">*</span>}
@@ -405,7 +405,7 @@ function FormField({
           className="mt-1.5 text-xs text-[color:#9b2226] flex items-start gap-1.5"
           role="alert"
         >
-          <span aria-hidden="true" className="font-mono leading-tight">!</span>
+          <span aria-hidden="true" className="leading-tight">!</span>
           <span>{error}</span>
         </p>
       )}
