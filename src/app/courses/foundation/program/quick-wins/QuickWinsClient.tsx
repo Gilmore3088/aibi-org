@@ -2,12 +2,14 @@
 
 // /courses/foundation/program/quick-wins — Quick Win Tracker
 // Course completers log automations they've built and time saved.
-// Encouragement milestone: 3 wins earns the recommendation-letter template.
+// Three wins produces the recommendation-letter template — the practical
+// artifact each set of wins is for.
 //
 // Client Component: form state + client-side fetch via /api/courses/log-quick-win
 // Department pre-filled from onboarding primary_role stored in sessionStorage.
 
 import { useState, useEffect, useCallback } from 'react';
+import type { CSSProperties } from 'react';
 import Link from 'next/link';
 import {
   QUICK_WIN_TOOLS as TOOLS,
@@ -65,6 +67,47 @@ function quarterlyHours(win: QuickWin): number {
   const runsPerWeek = WEEKLY_RUNS[win.frequency] ?? 1;
   return (runsPerWeek * 13 * win.time_saved_minutes) / 60;
 }
+
+// ---- Shared styles ----
+
+const kickerStyle: CSSProperties = {
+  fontSize: 11,
+  fontWeight: 600,
+  letterSpacing: '0.2em',
+  textTransform: 'uppercase',
+  color: 'var(--gold-deep)',
+  margin: 0,
+};
+
+const fieldLabelStyle: CSSProperties = {
+  display: 'block',
+  fontSize: 11,
+  fontWeight: 600,
+  letterSpacing: '0.16em',
+  textTransform: 'uppercase',
+  color: 'var(--slate-600)',
+  marginBottom: 8,
+};
+
+const inputStyle: CSSProperties = {
+  width: '100%',
+  background: 'var(--cream)',
+  border: '1px solid var(--ink-a10)',
+  borderRadius: 12,
+  padding: '12px 14px',
+  fontSize: 14,
+  color: 'var(--ink)',
+  outline: 'none',
+  fontFamily: 'inherit',
+};
+
+const statCardStyle: CSSProperties = {
+  background: 'var(--cream-2)',
+  border: '1px solid var(--ink-a10)',
+  borderRadius: 16,
+  padding: 20,
+  boxShadow: 'var(--shadow-soft)',
+};
 
 // ---- Main Component ----
 
@@ -157,110 +200,224 @@ export function QuickWinsClient() {
 
       {/* Breadcrumb */}
       <nav className="mb-8" aria-label="Breadcrumb">
-        <ol className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)]">
+        <ol
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
+            fontSize: 11,
+            fontWeight: 600,
+            letterSpacing: '0.16em',
+            textTransform: 'uppercase',
+            color: 'var(--slate-500)',
+            margin: 0,
+            padding: 0,
+            listStyle: 'none',
+          }}
+        >
           <li>
             <Link
               href="/courses/foundation/program"
-              className="hover:text-[color:var(--ledger-accent)] transition-colors"
+              style={{ color: 'var(--slate-500)', textDecoration: 'none' }}
             >
               AiBI-Foundation
             </Link>
           </li>
           <li aria-hidden="true">/</li>
-          <li className="text-[color:var(--ledger-ink)]">Quick Wins</li>
+          <li style={{ color: 'var(--ink)' }}>Quick Wins</li>
         </ol>
       </nav>
 
       {/* Page header */}
-      <header className="mb-10">
-        <div className="flex items-center gap-3 mb-4">
-          <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--ledger-accent)]">
-            Post-Course
-          </span>
-          <div className="h-px w-8 bg-[color:var(--ledger-accent)]/30" aria-hidden="true" />
-          <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--ledger-muted)]">
-            Value Log
-          </span>
+      <header style={{ marginBottom: 40 }}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 14,
+            marginBottom: 18,
+          }}
+        >
+          <span style={kickerStyle}>AiBI-Foundation · Value log</span>
+          <span style={{ flex: 1, height: 1, background: 'var(--ink-a10)' }} aria-hidden="true" />
         </div>
 
-        <h1 className="font-serif text-3xl sm:text-4xl font-bold text-[color:var(--ledger-ink)] mb-4">
-          Quick Win Tracker
+        <h1
+          style={{
+            fontWeight: 700,
+            fontSize: 'clamp(36px, 4.6vw, 56px)',
+            lineHeight: 1.05,
+            letterSpacing: '-0.025em',
+            color: 'var(--ink)',
+            margin: '0 0 16px',
+          }}
+        >
+          Quick win tracker
         </h1>
 
-        <p className="font-sans text-base text-[color:var(--ledger-ink)]/80 leading-relaxed max-w-2xl">
-          Log every workflow you&apos;ve automated. Each entry builds your professional
-          record and proves the return on your AI Foundation training.
+        <p
+          style={{
+            fontSize: 19,
+            lineHeight: 1.45,
+            color: 'var(--slate-600)',
+            margin: 0,
+            maxWidth: '60ch',
+          }}
+        >
+          Log every workflow you have automated. Each entry builds your professional
+          record and proves the return on your AiBI-Foundation training.
         </p>
       </header>
 
       {/* Stats row */}
-      <div className="grid grid-cols-2 gap-4 mb-10">
-        <div
-          className="bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-accent)]/10 rounded-sm p-5"
-          aria-label="Time saved this quarter"
-        >
-          <div className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] mb-1">
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(2, 1fr)',
+          gap: 16,
+          marginBottom: 40,
+        }}
+      >
+        <div style={statCardStyle} aria-label="Time saved this quarter">
+          <p
+            style={{
+              ...kickerStyle,
+              color: 'var(--slate-500)',
+              marginBottom: 6,
+            }}
+          >
             Saved this quarter
-          </div>
-          <div className="font-mono text-3xl font-bold text-[color:var(--ledger-accent)] tabular-nums">
+          </p>
+          <div
+            style={{
+              fontSize: 36,
+              fontWeight: 700,
+              color: 'var(--ink)',
+              fontVariantNumeric: 'tabular-nums',
+              letterSpacing: '-0.02em',
+            }}
+          >
             {totalQuarterlyHours.toFixed(1)}
-            <span className="text-base font-normal text-[color:var(--ledger-muted)] ml-1">hrs</span>
+            <span
+              style={{
+                fontSize: 16,
+                fontWeight: 400,
+                color: 'var(--slate-500)',
+                marginLeft: 6,
+              }}
+            >
+              hrs
+            </span>
           </div>
         </div>
 
-        <div
-          className="bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-accent)]/10 rounded-sm p-5"
-          aria-label="Quick wins logged"
-        >
-          <div className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] mb-1">
+        <div style={statCardStyle} aria-label="Quick wins logged">
+          <p
+            style={{
+              ...kickerStyle,
+              color: 'var(--slate-500)',
+              marginBottom: 6,
+            }}
+          >
             Wins logged
-          </div>
-          <div className="font-mono text-3xl font-bold text-[color:var(--ledger-ink)] tabular-nums">
+          </p>
+          <div
+            style={{
+              fontSize: 36,
+              fontWeight: 700,
+              color: 'var(--ink)',
+              fontVariantNumeric: 'tabular-nums',
+              letterSpacing: '-0.02em',
+            }}
+          >
             {wins.length}
           </div>
         </div>
       </div>
 
-      {/* Encouragement banner */}
+      {/* Artifact banner — recommendation letter template */}
       <div
-        className="mb-10 border border-[color:var(--ledger-accent-2)]/30 bg-[color:var(--ledger-accent-2)]/5 rounded-sm px-5 py-4"
+        style={{
+          marginBottom: 40,
+          borderLeft: '3px solid var(--gold)',
+          background: 'var(--cream-2)',
+          borderRadius: 16,
+          padding: '18px 20px',
+        }}
         role="status"
         aria-live="polite"
       >
+        <p style={{ ...kickerStyle, marginBottom: 6 }}>Artifact · Recommendation letter</p>
         {winsToGo === 0 ? (
-          <p className="font-sans text-sm text-[color:var(--ledger-ink)] leading-relaxed">
+          <p
+            style={{
+              fontSize: 15,
+              color: 'var(--ink)',
+              lineHeight: 1.55,
+              margin: 0,
+            }}
+          >
             You have logged{' '}
-            <span className="font-mono font-bold text-[color:var(--ledger-accent-2)] tabular-nums">
+            <span
+              style={{
+                fontWeight: 700,
+                fontVariantNumeric: 'tabular-nums',
+                color: 'var(--ink)',
+              }}
+            >
               {wins.length}
             </span>{' '}
-            quick wins. Your{' '}
-            <span className="font-bold">recommendation letter template</span> is
-            ready — download it from your{' '}
+            quick wins. Your <span style={{ fontWeight: 700 }}>recommendation-letter template</span>{' '}
+            is ready — download it from your{' '}
             <Link
               href="/courses/foundation/program/certificate"
-              className="underline hover:text-[color:var(--ledger-accent)] transition-colors"
+              style={{
+                color: 'var(--ink)',
+                textDecoration: 'underline',
+                textUnderlineOffset: 2,
+              }}
             >
               certificate page
             </Link>
             .
           </p>
         ) : (
-          <p className="font-sans text-sm text-[color:var(--ledger-ink)] leading-relaxed">
+          <p
+            style={{
+              fontSize: 15,
+              color: 'var(--ink)',
+              lineHeight: 1.55,
+              margin: 0,
+            }}
+          >
             Log{' '}
-            <span className="font-mono font-bold text-[color:var(--ledger-accent-2)] tabular-nums">
+            <span
+              style={{
+                fontWeight: 700,
+                fontVariantNumeric: 'tabular-nums',
+                color: 'var(--ink)',
+              }}
+            >
               {winsToGo}
             </span>{' '}
-            more quick {winsToGo === 1 ? 'win' : 'wins'} to earn a{' '}
-            <span className="font-bold">recommendation letter template</span>.
+            more quick {winsToGo === 1 ? 'win' : 'wins'} and the{' '}
+            <span style={{ fontWeight: 700 }}>recommendation-letter template</span> is yours — a
+            ready-to-edit letter your manager can sign that cites the wins you logged here.
           </p>
         )}
       </div>
 
       {/* Log form */}
-      <section aria-labelledby="log-form-heading" className="mb-14">
+      <section aria-labelledby="log-form-heading" style={{ marginBottom: 56 }}>
         <h2
           id="log-form-heading"
-          className="font-serif text-xl font-bold text-[color:var(--ledger-ink)] mb-6"
+          style={{
+            fontWeight: 700,
+            fontSize: 24,
+            letterSpacing: '-0.02em',
+            color: 'var(--ink)',
+            margin: '0 0 24px',
+          }}
         >
           Log a new quick win
         </h2>
@@ -268,7 +425,15 @@ export function QuickWinsClient() {
         {error && (
           <div
             role="alert"
-            className="mb-5 px-4 py-3 border border-[color:var(--ledger-weak)]/30 bg-[color:var(--ledger-weak)]/5 rounded-sm font-sans text-sm text-[color:var(--ledger-weak)]"
+            style={{
+              marginBottom: 20,
+              padding: '12px 16px',
+              border: '1px solid var(--ink-a15)',
+              background: 'var(--cream-2)',
+              borderRadius: 12,
+              fontSize: 14,
+              color: 'var(--ink)',
+            }}
           >
             {error}
           </div>
@@ -278,20 +443,29 @@ export function QuickWinsClient() {
           <div
             role="status"
             aria-live="polite"
-            className="mb-5 px-4 py-3 border border-[color:var(--ledger-accent-2)]/30 bg-[color:var(--ledger-accent-2)]/5 rounded-sm font-sans text-sm text-[color:var(--ledger-ink)]"
+            style={{
+              marginBottom: 20,
+              padding: '12px 16px',
+              border: '1px solid var(--emerald-700)',
+              background: 'var(--cream-2)',
+              borderRadius: 12,
+              fontSize: 14,
+              color: 'var(--emerald-800)',
+            }}
           >
             {successMsg}
           </div>
         )}
 
-        <form onSubmit={(e) => void handleSubmit(e)} noValidate className="space-y-5">
+        <form
+          onSubmit={(e) => void handleSubmit(e)}
+          noValidate
+          style={{ display: 'flex', flexDirection: 'column', gap: 20 }}
+        >
 
           {/* Description */}
           <div>
-            <label
-              htmlFor="qw-description"
-              className="block font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] mb-2"
-            >
+            <label htmlFor="qw-description" style={fieldLabelStyle}>
               What did you automate?
             </label>
             <input
@@ -302,17 +476,20 @@ export function QuickWinsClient() {
               placeholder='e.g. "Weekly exception report analysis"'
               value={form.description}
               onChange={(e) => handleField('description', e.target.value)}
-              className="w-full bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-accent)]/20 rounded-sm px-4 py-3 font-sans text-sm text-[color:var(--ledger-ink)] placeholder:text-[color:var(--ledger-soft)]/60 focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)]/40"
+              style={inputStyle}
             />
           </div>
 
           {/* Tool + Skill row */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+              gap: 20,
+            }}
+          >
             <div>
-              <label
-                htmlFor="qw-tool"
-                className="block font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] mb-2"
-              >
+              <label htmlFor="qw-tool" style={fieldLabelStyle}>
                 Which tool?
               </label>
               <select
@@ -320,7 +497,7 @@ export function QuickWinsClient() {
                 required
                 value={form.tool}
                 onChange={(e) => handleField('tool', e.target.value)}
-                className="w-full bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-accent)]/20 rounded-sm px-4 py-3 font-sans text-sm text-[color:var(--ledger-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)]/40"
+                style={inputStyle}
               >
                 <option value="">Select tool</option>
                 {TOOLS.map((t) => (
@@ -332,10 +509,7 @@ export function QuickWinsClient() {
             </div>
 
             <div>
-              <label
-                htmlFor="qw-skill"
-                className="block font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] mb-2"
-              >
+              <label htmlFor="qw-skill" style={fieldLabelStyle}>
                 Which skill?
               </label>
               <input
@@ -346,18 +520,21 @@ export function QuickWinsClient() {
                 placeholder='e.g. "RTFC Framework" or "custom workflow"'
                 value={form.skillName}
                 onChange={(e) => handleField('skillName', e.target.value)}
-                className="w-full bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-accent)]/20 rounded-sm px-4 py-3 font-sans text-sm text-[color:var(--ledger-ink)] placeholder:text-[color:var(--ledger-soft)]/60 focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)]/40"
+                style={inputStyle}
               />
             </div>
           </div>
 
           {/* Frequency + Time row */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+              gap: 20,
+            }}
+          >
             <div>
-              <label
-                htmlFor="qw-frequency"
-                className="block font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] mb-2"
-              >
+              <label htmlFor="qw-frequency" style={fieldLabelStyle}>
                 How often?
               </label>
               <select
@@ -365,7 +542,7 @@ export function QuickWinsClient() {
                 required
                 value={form.frequency}
                 onChange={(e) => handleField('frequency', e.target.value)}
-                className="w-full bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-accent)]/20 rounded-sm px-4 py-3 font-sans text-sm text-[color:var(--ledger-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)]/40"
+                style={inputStyle}
               >
                 <option value="">Select frequency</option>
                 {FREQUENCIES.map((f) => (
@@ -377,10 +554,7 @@ export function QuickWinsClient() {
             </div>
 
             <div>
-              <label
-                htmlFor="qw-time"
-                className="block font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] mb-2"
-              >
+              <label htmlFor="qw-time" style={fieldLabelStyle}>
                 Time saved per use
               </label>
               <select
@@ -388,7 +562,7 @@ export function QuickWinsClient() {
                 required
                 value={form.timeSavedMinutes || ''}
                 onChange={(e) => handleField('timeSavedMinutes', Number(e.target.value))}
-                className="w-full bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-accent)]/20 rounded-sm px-4 py-3 font-sans text-sm text-[color:var(--ledger-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)]/40"
+                style={inputStyle}
               >
                 <option value="">Select time</option>
                 {TIME_OPTIONS.map((t) => (
@@ -402,10 +576,7 @@ export function QuickWinsClient() {
 
           {/* Department */}
           <div>
-            <label
-              htmlFor="qw-department"
-              className="block font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] mb-2"
-            >
+            <label htmlFor="qw-department" style={fieldLabelStyle}>
               Department
             </label>
             <input
@@ -416,17 +587,32 @@ export function QuickWinsClient() {
               placeholder='e.g. "Compliance" or "Lending"'
               value={form.department}
               onChange={(e) => handleField('department', e.target.value)}
-              className="w-full bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-accent)]/20 rounded-sm px-4 py-3 font-sans text-sm text-[color:var(--ledger-ink)] placeholder:text-[color:var(--ledger-soft)]/60 focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)]/40"
+              style={inputStyle}
             />
           </div>
 
           <button
             type="submit"
             disabled={!isFormValid() || submitting}
-            className="mt-2 bg-[color:var(--ledger-accent)] hover:bg-[color:var(--ledger-accent-light)] disabled:opacity-40 disabled:cursor-not-allowed text-[color:var(--ledger-bg)] px-6 py-3 rounded-sm font-mono text-[10px] uppercase tracking-widest font-bold transition-colors"
+            style={{
+              marginTop: 8,
+              alignSelf: 'flex-start',
+              padding: '14px 24px',
+              background: 'var(--ink)',
+              color: 'var(--cream-2)',
+              fontSize: 11,
+              fontWeight: 600,
+              letterSpacing: '0.18em',
+              textTransform: 'uppercase',
+              borderRadius: 12,
+              border: 'none',
+              cursor: !isFormValid() || submitting ? 'not-allowed' : 'pointer',
+              opacity: !isFormValid() || submitting ? 0.4 : 1,
+              transition: 'background-color var(--t-fast) var(--ease)',
+            }}
             aria-busy={submitting}
           >
-            {submitting ? 'Logging...' : 'Log Quick Win'}
+            {submitting ? 'LOGGING...' : 'LOG QUICK WIN'}
           </button>
         </form>
       </section>
@@ -435,50 +621,110 @@ export function QuickWinsClient() {
       <section aria-labelledby="wins-list-heading">
         <h2
           id="wins-list-heading"
-          className="font-serif text-xl font-bold text-[color:var(--ledger-ink)] mb-6"
+          style={{
+            fontWeight: 700,
+            fontSize: 24,
+            letterSpacing: '-0.02em',
+            color: 'var(--ink)',
+            margin: '0 0 24px',
+          }}
         >
           Your wins
         </h2>
 
         {loading && (
-          <p className="font-sans text-sm text-[color:var(--ledger-muted)]">Loading...</p>
+          <p style={{ fontSize: 14, color: 'var(--slate-500)', margin: 0 }}>Loading...</p>
         )}
 
         {!loading && wins.length === 0 && (
-          <p className="font-sans text-sm text-[color:var(--ledger-ink)]/60">
+          <p style={{ fontSize: 14, color: 'var(--slate-500)', margin: 0 }}>
             No quick wins logged yet. Use the form above to add your first one.
           </p>
         )}
 
         {!loading && wins.length > 0 && (
-          <ol className="space-y-4" aria-label="Logged quick wins">
+          <ol
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 12,
+              margin: 0,
+              padding: 0,
+              listStyle: 'none',
+            }}
+            aria-label="Logged quick wins"
+          >
             {wins.map((win) => (
               <li
                 key={win.id}
-                className="bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-accent)]/10 rounded-sm px-5 py-4"
+                style={{
+                  background: 'var(--cream-2)',
+                  border: '1px solid var(--ink-a10)',
+                  borderRadius: 16,
+                  padding: '18px 20px',
+                  boxShadow: 'var(--shadow-soft)',
+                }}
               >
-                <div className="flex items-start justify-between gap-4">
-                  <p className="font-serif text-sm font-bold text-[color:var(--ledger-ink)] leading-snug flex-1">
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    justifyContent: 'space-between',
+                    gap: 16,
+                  }}
+                >
+                  <p
+                    style={{
+                      fontSize: 15,
+                      fontWeight: 600,
+                      color: 'var(--ink)',
+                      lineHeight: 1.4,
+                      flex: 1,
+                      margin: 0,
+                    }}
+                  >
                     {win.description}
                   </p>
-                  <span className="font-mono text-sm font-bold text-[color:var(--ledger-accent)] tabular-nums shrink-0">
+                  <span
+                    style={{
+                      fontSize: 14,
+                      fontWeight: 700,
+                      color: 'var(--ink)',
+                      fontVariantNumeric: 'tabular-nums',
+                      flexShrink: 0,
+                    }}
+                  >
                     {minutesToLabel(win.time_saved_minutes)}
                   </span>
                 </div>
 
-                <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1">
-                  <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)]">
-                    {toolLabel(win.tool)}
-                  </span>
-                  <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)]">
-                    {win.skill_name}
-                  </span>
-                  <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)]">
-                    {win.frequency}
-                  </span>
-                  <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)]">
-                    {win.department}
-                  </span>
+                <div
+                  style={{
+                    marginTop: 10,
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: '4px 16px',
+                  }}
+                >
+                  {[
+                    toolLabel(win.tool),
+                    win.skill_name,
+                    win.frequency,
+                    win.department,
+                  ].map((meta, i) => (
+                    <span
+                      key={`${win.id}-meta-${i}`}
+                      style={{
+                        fontSize: 11,
+                        fontWeight: 600,
+                        letterSpacing: '0.16em',
+                        textTransform: 'uppercase',
+                        color: 'var(--slate-500)',
+                      }}
+                    >
+                      {meta}
+                    </span>
+                  ))}
                 </div>
               </li>
             ))}

@@ -4,6 +4,7 @@
 // Allows filtering by banking role. Renders OutputExampleCard for each result.
 
 import { useState, useMemo } from 'react';
+import type { CSSProperties } from 'react';
 import type { PromptRole } from '@content/courses/foundation-program/prompt-library';
 import {
   OUTPUT_EXAMPLES,
@@ -23,6 +24,40 @@ const ROLE_FILTER_OPTIONS: readonly { value: RoleFilter; label: string }[] = [
   })),
 ];
 
+const filterCardStyle: CSSProperties = {
+  background: 'var(--cream-2)',
+  border: '1px solid var(--ink-a10)',
+  borderRadius: 24,
+  padding: 20,
+  boxShadow: 'var(--shadow-soft)',
+};
+
+const kickerStyle: CSSProperties = {
+  fontSize: 11,
+  fontWeight: 600,
+  letterSpacing: '0.2em',
+  textTransform: 'uppercase',
+  color: 'var(--gold-deep)',
+  margin: '0 0 12px',
+};
+
+function pillStyle(isActive: boolean): CSSProperties {
+  return {
+    padding: '8px 14px',
+    fontSize: 11,
+    fontWeight: 600,
+    letterSpacing: '0.16em',
+    textTransform: 'uppercase',
+    borderRadius: 999,
+    cursor: 'pointer',
+    transition:
+      'background-color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease)',
+    background: isActive ? 'var(--ink)' : 'transparent',
+    color: isActive ? 'var(--cream-2)' : 'var(--ink)',
+    border: isActive ? '1px solid var(--ink)' : '1px solid var(--ink-a10)',
+  };
+}
+
 export function OutputGalleryClient() {
   const [activeRole, setActiveRole] = useState<RoleFilter>('all');
 
@@ -33,65 +68,52 @@ export function OutputGalleryClient() {
   const totalCount = OUTPUT_EXAMPLES.length;
 
   return (
-    <div className="space-y-8">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
       {/* Role filter pills */}
       <div
-        className="bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-parch)] rounded-sm p-4"
+        style={filterCardStyle}
         role="group"
         aria-label="Filter by role"
       >
-        <div className="text-[10px] font-mono uppercase tracking-widest text-[color:var(--ledger-muted)] mb-3">
-          Filter by Role
-        </div>
-        <div className="flex flex-wrap gap-2">
+        <p style={kickerStyle}>Filter by role</p>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
           {ROLE_FILTER_OPTIONS.map((opt) => {
             const isActive = activeRole === opt.value;
-            const roleMeta =
-              opt.value !== 'all' ? OUTPUT_ROLE_META[opt.value as PromptRole] : null;
-
             return (
               <button
                 key={opt.value}
                 type="button"
                 onClick={() => setActiveRole(opt.value)}
                 aria-pressed={isActive}
-                className="px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.15em] rounded-sm transition-colors focus-visible:outline-2 focus-visible:outline-[color:var(--ledger-accent)]"
-                style={
-                  isActive
-                    ? {
-                        backgroundColor: roleMeta
-                          ? roleMeta.colorVar
-                          : 'var(--ledger-accent)',
-                        color: 'var(--ledger-bg)',
-                        border: '1px solid transparent',
-                      }
-                    : {
-                        backgroundColor: 'transparent',
-                        color: 'var(--ledger-ink)',
-                        border: '1px solid var(--ledger-parch)',
-                      }
-                }
+                style={pillStyle(isActive)}
               >
-                {opt.label}
+                {opt.label.toUpperCase()}
               </button>
             );
           })}
         </div>
 
-        <p className="mt-3 font-mono text-[11px] text-[color:var(--ledger-muted)]">
+        <p
+          style={{
+            marginTop: 14,
+            fontSize: 13,
+            color: 'var(--slate-500)',
+            margin: '14px 0 0',
+          }}
+        >
           Showing {filtered.length} of {totalCount} examples
         </p>
       </div>
 
       {/* Results */}
       {filtered.length === 0 ? (
-        <div className="text-center py-12">
-          <p className="font-sans text-sm text-[color:var(--ledger-muted)]">
+        <div style={{ textAlign: 'center', padding: '48px 0' }}>
+          <p style={{ fontSize: 14, color: 'var(--slate-500)', margin: 0 }}>
             No examples match the selected filter.
           </p>
         </div>
       ) : (
-        <div className="space-y-4">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           {filtered.map((example) => (
             <OutputExampleCard key={example.id} example={example} />
           ))}

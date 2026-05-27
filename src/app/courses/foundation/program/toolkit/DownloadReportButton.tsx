@@ -31,17 +31,32 @@ export function DownloadReportButton({ enrollmentId }: DownloadReportButtonProps
     <button
       type="button"
       onClick={() => { void handleDownload(); }}
-      className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[color:var(--ledger-accent)] text-[color:var(--ledger-accent)] hover:bg-[color:var(--ledger-accent)] hover:text-[color:var(--ledger-bg)] text-[10px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-2"
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: 6,
+        padding: '8px 14px',
+        border: '1px solid var(--ink-a10)',
+        background: 'var(--cream)',
+        color: 'var(--ink)',
+        fontSize: 11,
+        fontWeight: 600,
+        letterSpacing: '0.16em',
+        textTransform: 'uppercase',
+        borderRadius: 12,
+        cursor: 'pointer',
+        transition: 'background-color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease)',
+      }}
       aria-label="Download AiBI-Foundation Transformation Report PDF"
     >
-      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+      <svg style={{ width: 12, height: 12 }} fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
         <path
           fillRule="evenodd"
           d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
           clipRule="evenodd"
         />
       </svg>
-      Download Report
+      DOWNLOAD REPORT
     </button>
   );
 }
