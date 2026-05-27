@@ -2,8 +2,10 @@
 
 // TimeSavingsCard — shown after each activity completion.
 // Displays per-activity time savings and a cumulative total across all
-// completed modules. All numbers rendered in DM Mono per design system.
-// CSS variables only — no hardcoded hex values.
+// completed modules.
+//
+// Ported to mockup design system 2026-05-27 (Inter, ink/cream/gold,
+// tabular-nums for numerics).
 //
 // Data lives in _lib/activitySavings.ts so the post-course assessment
 // can derive its headline number from the same source.
@@ -22,6 +24,14 @@ function getCumulativeOneTimeMinutes(upToModule: number): number {
   return total;
 }
 
+const TNUM: React.CSSProperties = { fontVariantNumeric: 'tabular-nums' };
+const KICKER: React.CSSProperties = {
+  fontSize: 10,
+  fontWeight: 600,
+  letterSpacing: '0.22em',
+  textTransform: 'uppercase',
+};
+
 interface TimeSavingsCardProps {
   readonly moduleNumber: number;
 }
@@ -36,58 +46,64 @@ export function TimeSavingsCard({ moduleNumber }: TimeSavingsCardProps) {
 
   return (
     <div
-      className="mt-4 p-5 bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-parch)] rounded-sm"
+      style={{
+        marginTop: 16,
+        padding: 20,
+        background: 'var(--cream)',
+        border: '1px solid var(--ink-a10)',
+        borderRadius: 'var(--r-md)',
+      }}
       aria-label="Time savings estimate"
     >
-      <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent-2)] mb-3">
+      <p style={{ ...KICKER, color: 'var(--gold-deep)', margin: '0 0 12px' }}>
         Time savings estimate
       </p>
 
       {/* Per-activity savings */}
-      <div className="mb-4">
-        <p className="font-sans text-xs text-[color:var(--ledger-muted)] mb-1">
+      <div style={{ marginBottom: 16 }}>
+        <p style={{ fontSize: 12, color: 'var(--slate-500)', margin: '0 0 4px' }}>
           {savings.activityLabel}
         </p>
 
         {savings.mode === 'recurring' && (
           <>
-            <p className="font-sans text-sm text-[color:var(--ledger-ink)]">
-              <span className="font-mono" style={{ fontFeatureSettings: '"tnum"' }}>
-                {savings.perUseMinutes}
-              </span>
-              {' '}min saved per use &middot;{' '}
-              <span className="text-[color:var(--ledger-muted)]">{savings.usageLabel}</span>
+            <p style={{ fontSize: 14, color: 'var(--ink)', margin: 0 }}>
+              <span style={TNUM}>{savings.perUseMinutes}</span>{' '}
+              min saved per use &middot;{' '}
+              <span style={{ color: 'var(--slate-500)' }}>{savings.usageLabel}</span>
             </p>
-            <p className="font-sans text-sm font-semibold text-[color:var(--ledger-ink)] mt-1">
-              <span className="font-mono" style={{ fontFeatureSettings: '"tnum"' }}>
-                {savings.annualHours}
-              </span>
-              {' '}hours saved per year
+            <p
+              style={{
+                fontSize: 14,
+                fontWeight: 600,
+                color: 'var(--ink)',
+                margin: '4px 0 0',
+              }}
+            >
+              <span style={TNUM}>{savings.annualHours}</span> hours saved per year
             </p>
           </>
         )}
 
         {savings.mode === 'one-time' && (
-          <p className="font-sans text-sm font-semibold text-[color:var(--ledger-ink)]">
-            <span className="font-mono" style={{ fontFeatureSettings: '"tnum"' }}>
-              {savings.oneTimeMinutes}
-            </span>
-            {' '}minutes saved &middot; one-time
+          <p
+            style={{ fontSize: 14, fontWeight: 600, color: 'var(--ink)', margin: 0 }}
+          >
+            <span style={TNUM}>{savings.oneTimeMinutes}</span>{' '}
+            minutes saved &middot; one-time
           </p>
         )}
 
         {savings.mode === 'ongoing' && savings.perUseMinutes > 0 && (
-          <p className="font-sans text-sm text-[color:var(--ledger-ink)]">
-            <span className="font-mono" style={{ fontFeatureSettings: '"tnum"' }}>
-              {savings.perUseMinutes}
-            </span>
-            {' '}min per use &middot;{' '}
-            <span className="text-[color:var(--ledger-muted)]">{savings.usageLabel}</span>
+          <p style={{ fontSize: 14, color: 'var(--ink)', margin: 0 }}>
+            <span style={TNUM}>{savings.perUseMinutes}</span>{' '}
+            min per use &middot;{' '}
+            <span style={{ color: 'var(--slate-500)' }}>{savings.usageLabel}</span>
           </p>
         )}
 
         {savings.mode === 'ongoing' && savings.perUseMinutes === 0 && (
-          <p className="font-sans text-sm text-[color:var(--ledger-muted)]">
+          <p style={{ fontSize: 14, color: 'var(--slate-500)', margin: 0 }}>
             {savings.usageLabel}
           </p>
         )}
@@ -96,30 +112,30 @@ export function TimeSavingsCard({ moduleNumber }: TimeSavingsCardProps) {
       {/* Cumulative total */}
       {showCumulative && (cumulativeHours > 0 || cumulativeOneTime > 0) && (
         <div
-          className="pt-3 border-t border-[color:var(--ledger-parch)]"
+          style={{ paddingTop: 12, borderTop: '1px solid var(--ink-a10)' }}
           aria-label="Cumulative savings to date"
         >
-          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] mb-2">
+          <p style={{ ...KICKER, color: 'var(--slate-500)', margin: '0 0 8px' }}>
             Cumulative across completed modules
           </p>
           {cumulativeHours > 0 && (
-            <p className="font-sans text-sm text-[color:var(--ledger-ink)]">
+            <p style={{ fontSize: 14, color: 'var(--ink)', margin: 0 }}>
               <span
-                className="font-mono text-base font-bold text-[color:var(--ledger-accent)]"
-                style={{ fontFeatureSettings: '"tnum"' }}
+                style={{
+                  ...TNUM,
+                  fontSize: 16,
+                  fontWeight: 700,
+                  color: 'var(--gold-deep)',
+                }}
               >
                 {cumulativeHours}
-              </span>
-              {' '}hrs/year recurring savings
+              </span>{' '}
+              hrs/year recurring savings
             </p>
           )}
           {cumulativeOneTime > 0 && (
-            <p className="font-sans text-xs text-[color:var(--ledger-muted)] mt-0.5">
-              +{' '}
-              <span className="font-mono" style={{ fontFeatureSettings: '"tnum"' }}>
-                {cumulativeOneTime}
-              </span>
-              {' '}min in one-time savings
+            <p style={{ fontSize: 12, color: 'var(--slate-500)', margin: '2px 0 0' }}>
+              + <span style={TNUM}>{cumulativeOneTime}</span> min in one-time savings
             </p>
           )}
         </div>

@@ -3,7 +3,9 @@
 // TransformationCard — summary card shown after post-course assessment completion.
 // Displays score delta, tier change, skills built, and hours saved/year.
 // Includes a share-result CTA (copies summary text to clipboard).
-// CSS variables only. DM Mono for all numbers. Institutional, not gamified.
+//
+// Ported to mockup design system 2026-05-27 (Inter, ink/cream/gold,
+// tabular-nums via fontVariantNumeric).
 
 import { useState, useCallback } from 'react';
 
@@ -54,6 +56,14 @@ function CheckIcon() {
   );
 }
 
+const TNUM: React.CSSProperties = { fontVariantNumeric: 'tabular-nums' };
+const KICKER: React.CSSProperties = {
+  fontSize: 10,
+  fontWeight: 600,
+  letterSpacing: '0.22em',
+  textTransform: 'uppercase',
+};
+
 export function TransformationCard({
   preScore,
   postScore,
@@ -76,7 +86,6 @@ export function TransformationCard({
         : '/api/courses/generate-transformation-report';
       const res = await fetch(url);
       if (!res.ok) {
-        // Silently fail — don't block the results page with an error modal
         return;
       }
       const blob = await res.blob();
@@ -89,7 +98,7 @@ export function TransformationCard({
       document.body.removeChild(a);
       URL.revokeObjectURL(objectUrl);
     } catch {
-      // Network error — silently fail
+      // network failure — silently skip
     } finally {
       setDownloading(false);
     }
@@ -121,46 +130,96 @@ export function TransformationCard({
       setCopied(true);
       setTimeout(() => setCopied(false), 2500);
     } catch {
-      // Clipboard API unavailable — silently fail.
+      // clipboard unavailable — silently fail
     }
   }, [shareSummary]);
 
+  const primaryBtn: React.CSSProperties = {
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: 8,
+    padding: '10px 20px',
+    background: 'var(--ink)',
+    color: '#FFFFFF',
+    fontSize: 11,
+    fontWeight: 700,
+    letterSpacing: '0.12em',
+    textTransform: 'uppercase',
+    borderRadius: 'var(--r-md)',
+    textDecoration: 'none',
+    border: 'none',
+    cursor: 'pointer',
+  };
+
+  const secondaryBtn: React.CSSProperties = {
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: 8,
+    padding: '10px 20px',
+    background: '#FFFFFF',
+    color: 'var(--ink)',
+    fontSize: 11,
+    fontWeight: 700,
+    letterSpacing: '0.12em',
+    textTransform: 'uppercase',
+    borderRadius: 'var(--r-md)',
+    border: '1px solid var(--ink-a15)',
+    cursor: 'pointer',
+  };
+
   return (
     <div
-      className="border-l-4 bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-ink)]/10 rounded-sm p-6 sm:p-8"
-      style={{ borderLeftColor: postTierColorVar }}
+      style={{
+        background: 'var(--cream)',
+        border: '1px solid var(--ink-a10)',
+        borderLeft: `4px solid ${postTierColorVar}`,
+        borderRadius: 'var(--r-lg)',
+        padding: 'clamp(24px, 4vw, 32px)',
+        boxShadow: 'var(--shadow-soft)',
+      }}
       aria-label="Transformation summary"
     >
-      <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent)] mb-4">
+      <p style={{ ...KICKER, color: 'var(--gold-deep)', margin: '0 0 16px' }}>
         AiBI-Foundation Complete
       </p>
 
       {/* Stat grid */}
       <dl
-        className="grid grid-cols-2 gap-x-6 gap-y-5 mb-8"
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+          columnGap: 24,
+          rowGap: 20,
+          marginBottom: 28,
+        }}
         aria-label="Course outcomes"
       >
         {/* Score */}
         <div>
-          <dt className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] mb-1">
-            Score
-          </dt>
-          <dd className="font-mono text-2xl tabular-nums" style={{ color: 'var(--ledger-ink)' }}>
+          <dt style={{ ...KICKER, color: 'var(--slate-500)', margin: '0 0 4px' }}>Score</dt>
+          <dd style={{ ...TNUM, fontSize: 24, fontWeight: 700, color: 'var(--ink)', margin: 0 }}>
             {preScore !== null ? (
               <>
-                <span className="text-[color:var(--ledger-muted)]">{preScore}</span>
-                {' '}<span className="text-base text-[color:var(--ledger-muted)]">→</span>{' '}
+                <span style={{ color: 'var(--slate-500)' }}>{preScore}</span>{' '}
+                <span style={{ fontSize: 16, color: 'var(--slate-500)' }}>→</span>{' '}
                 <span style={{ color: postTierColorVar }}>{postScore}</span>
               </>
             ) : (
               <span style={{ color: postTierColorVar }}>{postScore}</span>
             )}
-            <span className="text-sm font-normal text-[color:var(--ledger-muted)]"> / 48</span>
+            <span style={{ fontSize: 14, fontWeight: 400, color: 'var(--slate-500)' }}>
+              {' '}/ 48
+            </span>
           </dd>
           {scoreImprovement && (
             <dd
-              className="font-mono text-xs tabular-nums mt-0.5"
-              style={{ color: postTierColorVar }}
+              style={{
+                ...TNUM,
+                fontSize: 12,
+                fontWeight: 600,
+                color: postTierColorVar,
+                margin: '2px 0 0',
+              }}
             >
               {scoreImprovement}
             </dd>
@@ -169,15 +228,30 @@ export function TransformationCard({
 
         {/* Tier */}
         <div>
-          <dt className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] mb-1">
-            Tier
-          </dt>
+          <dt style={{ ...KICKER, color: 'var(--slate-500)', margin: '0 0 4px' }}>Tier</dt>
           <dd
-            className="font-mono text-sm uppercase tracking-wide font-semibold leading-snug"
-            style={{ color: postTierColorVar }}
+            style={{
+              fontSize: 13,
+              fontWeight: 700,
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+              color: postTierColorVar,
+              margin: 0,
+              lineHeight: 1.3,
+            }}
           >
             {tierChanged && preTierLabel && (
-              <span className="text-[color:var(--ledger-muted)] text-xs block normal-case tracking-normal font-normal mb-0.5">
+              <span
+                style={{
+                  display: 'block',
+                  fontSize: 11,
+                  fontWeight: 400,
+                  letterSpacing: 0,
+                  textTransform: 'none',
+                  color: 'var(--slate-500)',
+                  marginBottom: 2,
+                }}
+              >
                 {preTierLabel} →
               </span>
             )}
@@ -187,31 +261,36 @@ export function TransformationCard({
 
         {/* Skills built */}
         <div>
-          <dt className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] mb-1">
+          <dt style={{ ...KICKER, color: 'var(--slate-500)', margin: '0 0 4px' }}>
             Skills Built
           </dt>
-          <dd className="font-mono text-2xl tabular-nums text-[color:var(--ledger-ink)]">
+          <dd style={{ ...TNUM, fontSize: 24, fontWeight: 700, color: 'var(--ink)', margin: 0 }}>
             {skillsBuilt}
           </dd>
         </div>
 
         {/* Hours saved */}
         <div>
-          <dt className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] mb-1">
+          <dt style={{ ...KICKER, color: 'var(--slate-500)', margin: '0 0 4px' }}>
             Hrs Saved / Year
           </dt>
-          <dd className="font-mono text-2xl tabular-nums text-[color:var(--ledger-ink)]">
+          <dd style={{ ...TNUM, fontSize: 24, fontWeight: 700, color: 'var(--ink)', margin: 0 }}>
             {annualHoursSaved}
           </dd>
         </div>
       </dl>
 
       {/* Action row */}
-      <div className="flex flex-wrap gap-3 pt-5 border-t border-[color:var(--ledger-ink)]/10">
-        <a
-          href="/courses/foundation/program/certificate"
-          className="inline-flex items-center gap-2 px-5 py-2.5 bg-[color:var(--ledger-accent)] hover:bg-[color:var(--ledger-accent-light)] text-[color:var(--ledger-bg)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-2"
-        >
+      <div
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: 12,
+          paddingTop: 20,
+          borderTop: '1px solid var(--ink-a10)',
+        }}
+      >
+        <a href="/courses/foundation/program/certificate" style={primaryBtn}>
           View Certificate
           <ArrowIcon />
         </a>
@@ -219,7 +298,7 @@ export function TransformationCard({
         <button
           type="button"
           onClick={handleCopy}
-          className="inline-flex items-center gap-2 px-5 py-2.5 border border-[color:var(--ledger-accent)]/30 hover:border-[color:var(--ledger-accent)] text-[color:var(--ledger-ink)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-2 bg-transparent"
+          style={secondaryBtn}
           aria-live="polite"
           aria-label={copied ? 'Result copied to clipboard' : 'Copy result summary to clipboard'}
         >
@@ -235,9 +314,15 @@ export function TransformationCard({
 
         <button
           type="button"
-          onClick={() => { void handleDownloadReport(); }}
+          onClick={() => {
+            void handleDownloadReport();
+          }}
           disabled={downloading}
-          className="inline-flex items-center gap-2 px-5 py-2.5 border border-[color:var(--ledger-accent)]/30 hover:border-[color:var(--ledger-accent)] text-[color:var(--ledger-ink)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-2 bg-transparent disabled:opacity-50 disabled:cursor-not-allowed"
+          style={{
+            ...secondaryBtn,
+            opacity: downloading ? 0.5 : 1,
+            cursor: downloading ? 'not-allowed' : 'pointer',
+          }}
           aria-label="Download Transformation Report PDF"
         >
           {downloading ? (

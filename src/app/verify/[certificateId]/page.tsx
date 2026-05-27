@@ -1,13 +1,12 @@
+// Public certificate-verification surface — /verify/[certificateId].
+//
+// Ported to mockup design system 2026-05-27 (Inter, ink/cream/gold). Mirrors
+// the credential lockup from the on-screen certificate page (navy seal,
+// gold landmark, middle-dot credential format).
+
 import type { Metadata } from 'next';
 
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
-import {
-  LedgerCard,
-  LedgerEyebrow,
-  LedgerH1,
-  LedgerLede,
-  LedgerSurface,
-} from '@/components/ledger';
 
 interface CertificateVerificationResult {
   readonly holder_name: string;
@@ -32,11 +31,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 async function fetchCertificate(
   certificateId: string,
 ): Promise<CertificateVerificationResult | null> {
-  // Server-side service-role read. The "Public read certificates" anon RLS
-  // policy was dropped (migration 00036) because USING (true) let anyone with
-  // the public anon key enumerate the whole table. Verification is read by a
-  // specific certificate_id (bearer-token semantics) so service role here
-  // returns only the three public fields for the one credential being checked.
   if (!isSupabaseConfigured()) return null;
 
   const supabase = createServiceRoleClient();
@@ -60,39 +54,104 @@ function formatDate(isoString: string): string {
   }).format(new Date(isoString));
 }
 
+const INTER_STACK =
+  '"Inter", ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
+
+const KICKER: React.CSSProperties = {
+  fontFamily: INTER_STACK,
+  fontSize: 11,
+  fontWeight: 600,
+  letterSpacing: '0.22em',
+  textTransform: 'uppercase',
+  color: 'var(--gold-deep)',
+  margin: 0,
+};
+
+const META_LABEL: React.CSSProperties = {
+  fontFamily: INTER_STACK,
+  fontSize: 10,
+  fontWeight: 600,
+  letterSpacing: '0.22em',
+  textTransform: 'uppercase',
+  color: 'var(--slate-500)',
+  margin: 0,
+};
+
 // ── Sub-components ────────────────────────────────────────────────────────────
+
+function Surface({ children }: { children: React.ReactNode }) {
+  return (
+    <main
+      style={{
+        minHeight: '100vh',
+        background: 'var(--cream)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '48px 24px',
+        fontFamily: INTER_STACK,
+      }}
+    >
+      {children}
+    </main>
+  );
+}
+
+function Seal() {
+  return (
+    <div
+      aria-hidden
+      style={{
+        width: 56,
+        height: 56,
+        background: 'var(--ink)',
+        borderRadius: 14,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        boxShadow: 'var(--shadow-soft)',
+      }}
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="var(--gold)"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        style={{ width: 28, height: 28 }}
+      >
+        <path d="M3 10 L12 4 L21 10" />
+        <path d="M5 10 V19" />
+        <path d="M9 10 V19" />
+        <path d="M15 10 V19" />
+        <path d="M19 10 V19" />
+        <path d="M3 20 H21" />
+      </svg>
+    </div>
+  );
+}
 
 function DataRow({ label, value, last }: { label: string; value: string; last?: boolean }) {
   return (
     <div
       style={{
-        paddingBottom: 18,
-        borderBottom: last ? 'none' : '1px solid var(--rule)',
-        marginBottom: last ? 0 : 18,
+        paddingBottom: 16,
+        borderBottom: last ? 'none' : '1px solid var(--ink-a10)',
+        marginBottom: last ? 0 : 16,
       }}
     >
-      <p
-        style={{
-          margin: 0,
-          fontFamily: 'var(--mono)',
-          fontSize: 9.5,
-          letterSpacing: '0.22em',
-          textTransform: 'uppercase',
-          color: 'var(--muted)',
-          fontWeight: 600,
-        }}
-      >
-        {label}
-      </p>
+      <p style={META_LABEL}>{label}</p>
       <p
         style={{
           margin: '6px 0 0',
-          fontFamily: 'var(--serif)',
-          fontSize: 22,
+          fontFamily: INTER_STACK,
+          fontSize: 18,
           color: 'var(--ink)',
-          lineHeight: 1.25,
+          lineHeight: 1.3,
           letterSpacing: '-0.01em',
-          fontWeight: 500,
+          fontWeight: 600,
         }}
       >
         {value}
@@ -105,37 +164,66 @@ function DataRow({ label, value, last }: { label: string; value: string; last?: 
 
 function NotFoundContent() {
   return (
-    <div style={{ width: '100%', maxWidth: 480, display: 'flex', flexDirection: 'column', gap: 24 }}>
-      <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', gap: 8 }}>
-        <LedgerEyebrow>Verify · not found</LedgerEyebrow>
-        <LedgerH1>Certificate <em>not found.</em></LedgerH1>
+    <div
+      style={{
+        width: '100%',
+        maxWidth: 480,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 24,
+      }}
+    >
+      <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <p style={KICKER}>Verify · Not Found</p>
+        <h1
+          style={{
+            fontFamily: INTER_STACK,
+            fontSize: 'clamp(28px, 4vw, 38px)',
+            fontWeight: 700,
+            color: 'var(--ink)',
+            letterSpacing: '-0.02em',
+            margin: 0,
+          }}
+        >
+          Certificate not found.
+        </h1>
       </div>
-      <LedgerCard variant="strong">
+      <div
+        style={{
+          background: '#FFFFFF',
+          border: '1px solid var(--ink-a10)',
+          borderRadius: 'var(--r-lg)',
+          padding: '28px 24px',
+          boxShadow: 'var(--shadow-soft)',
+        }}
+      >
         <p
           style={{
             margin: 0,
-            fontFamily: 'var(--serif)',
-            fontStyle: 'italic',
-            fontSize: 17,
-            lineHeight: 1.5,
-            color: 'var(--ink-2)',
+            fontFamily: INTER_STACK,
+            fontSize: 15,
+            lineHeight: 1.6,
+            color: 'var(--slate-600)',
             textAlign: 'center',
           }}
         >
           The certificate ID you entered could not be verified. Check the ID and
           try again.
         </p>
-      </LedgerCard>
+      </div>
       <p
         style={{
           textAlign: 'center',
-          fontFamily: 'var(--serif)',
-          fontSize: 15,
-          color: 'var(--ink-2)',
+          fontFamily: INTER_STACK,
+          fontSize: 13,
+          color: 'var(--slate-600)',
           margin: 0,
         }}
       >
-        <a href="https://aibankinginstitute.com" className="ledger-link">
+        <a
+          href="https://aibankinginstitute.com"
+          style={{ color: 'var(--ink)', fontWeight: 600 }}
+        >
           Return to The AI Banking Institute
         </a>
       </p>
@@ -149,16 +237,16 @@ export default async function CertificateVerificationPage({ params }: PageProps)
 
   if (!certificate) {
     return (
-      <LedgerSurface>
+      <Surface>
         <NotFoundContent />
-      </LedgerSurface>
+      </Surface>
     );
   }
 
   const issuedDate = formatDate(certificate.issued_at);
 
   return (
-    <LedgerSurface>
+    <Surface>
       <div
         style={{
           width: '100%',
@@ -168,68 +256,95 @@ export default async function CertificateVerificationPage({ params }: PageProps)
           gap: 24,
         }}
       >
-        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', gap: 8 }}>
-          <LedgerEyebrow>Credential verified</LedgerEyebrow>
-          <LedgerH1>This credential is <em>authentic.</em></LedgerH1>
-          <LedgerLede>
+        {/* Header */}
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 4 }}>
+            <Seal />
+          </div>
+          <p style={KICKER}>Credential Verified</p>
+          <h1
+            style={{
+              fontFamily: INTER_STACK,
+              fontSize: 'clamp(28px, 4vw, 38px)',
+              fontWeight: 700,
+              color: 'var(--ink)',
+              letterSpacing: '-0.02em',
+              lineHeight: 1.1,
+              margin: 0,
+            }}
+          >
+            This credential is authentic.
+          </h1>
+          <p
+            style={{
+              fontFamily: INTER_STACK,
+              fontSize: 14,
+              color: 'var(--slate-600)',
+              margin: 0,
+            }}
+          >
             Issued by The AI Banking Institute · ID {certificateId}
-          </LedgerLede>
+          </p>
         </div>
 
-        <LedgerCard variant="strong">
-          <div style={{ marginBottom: 22 }}>
-            <p
-              style={{
-                margin: 0,
-                fontFamily: 'var(--mono)',
-                fontSize: 9.5,
-                letterSpacing: '0.22em',
-                textTransform: 'uppercase',
-                color: 'var(--muted)',
-                fontWeight: 600,
-              }}
-            >
-              Holder
-            </p>
+        {/* Credential card */}
+        <article
+          style={{
+            background: '#FFFFFF',
+            border: '1px solid var(--ink-a10)',
+            borderRadius: 'var(--r-lg)',
+            padding: '32px 28px',
+            boxShadow: 'var(--shadow-feature)',
+          }}
+        >
+          <div style={{ marginBottom: 20 }}>
+            <p style={META_LABEL}>Holder</p>
             <h2
               style={{
-                margin: '6px 0 0',
-                fontFamily: 'var(--serif)',
-                fontSize: 36,
-                fontWeight: 500,
+                margin: '8px 0 0',
+                fontFamily: INTER_STACK,
+                fontSize: 'clamp(26px, 3vw, 32px)',
+                fontWeight: 700,
                 color: 'var(--ink)',
                 lineHeight: 1.1,
                 letterSpacing: '-0.02em',
-                paddingBottom: 18,
-                borderBottom: '1px solid var(--rule)',
+                paddingBottom: 20,
+                borderBottom: '1px solid var(--ink-a10)',
               }}
             >
               {certificate.holder_name}
             </h2>
           </div>
 
-          <DataRow label="Designation" value={certificate.designation} />
-          <DataRow label="Date issued" value={issuedDate} />
-          <DataRow label="Issuing institution" value="The AI Banking Institute" last />
-        </LedgerCard>
+          <DataRow
+            label="Designation"
+            value={`${certificate.designation} · The AI Banking Institute`}
+          />
+          <DataRow label="Date Issued" value={issuedDate} />
+          <DataRow label="Issuing Institution" value="The AI Banking Institute" last />
+        </article>
 
         <p
           style={{
             textAlign: 'center',
-            fontFamily: 'var(--mono)',
-            fontSize: 10.5,
+            fontFamily: INTER_STACK,
+            fontSize: 11,
+            fontWeight: 600,
             letterSpacing: '0.16em',
             textTransform: 'uppercase',
-            color: 'var(--muted)',
+            color: 'var(--slate-500)',
             margin: 0,
           }}
         >
           The AI Banking Institute ·{' '}
-          <a href="https://aibankinginstitute.com" className="ledger-link">
+          <a
+            href="https://aibankinginstitute.com"
+            style={{ color: 'var(--ink)', textDecoration: 'none' }}
+          >
             AIBankingInstitute.com
           </a>
         </p>
       </div>
-    </LedgerSurface>
+    </Surface>
   );
 }

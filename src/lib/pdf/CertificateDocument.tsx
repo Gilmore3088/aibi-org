@@ -2,21 +2,22 @@
 // Rendered server-side via @react-pdf/renderer renderToBuffer().
 // Must NOT be imported in Client Components — PDF renderer is server-only.
 //
-// Typography per CERT-02 (non-negotiable):
-//   Recipient name: Cormorant Bold, 28pt
-//   Designation:    Cormorant Bold uppercase + letterSpacing, 18pt
-//   Institution:    Cormorant Bold uppercase + letterSpacing, 14pt
-//   Date issued:    DM Mono, 12pt
-//   Certificate ID: DM Mono, 10pt
-//   Verify URL:     DM Mono, 10pt
-//   Assessment note: Cormorant Italic, 10pt
-//   AiBI seal watermark: 8% opacity text-based seal (no image dependency)
+// Ported to mockup design system 2026-05-27. Visual alignment with the
+// on-screen certificate (src/app/courses/foundation/program/certificate/page.tsx):
+//   - Cream page background (#F7F3EA), navy ink (#071A2F)
+//   - Navy seal (rounded square) with gold (#C8A24A) landmark glyph
+//   - "AiBI-Foundation · The AI Banking Institute" credential format
+//   - Gold hairline accent under the recipient name
+//   - Cormorant retained for the recipient name + "Certificate of Completion"
+//     header (institutional gravitas on the printed page); DM Mono for
+//     labels, metadata, and footer. Inter is not embedded for PDF use, so
+//     DM Mono stands in for it on small-cap labels — visually consistent
+//     with the on-screen mockup's letter-spaced uppercase treatment.
 
 import React from 'react';
 import path from 'node:path';
-import { Document, Page, Text, View, StyleSheet, Font } from '@react-pdf/renderer';
+import { Document, Page, Text, View, Svg, Path, StyleSheet, Font } from '@react-pdf/renderer';
 
-// Register brand fonts once at module load (safe at module scope for Next.js serverless).
 Font.register({
   family: 'Cormorant',
   fonts: [
@@ -46,262 +47,191 @@ export interface CertificateDocumentProps {
   readonly verificationUrl: string;
 }
 
-// Brand constants (CLAUDE.md — never hardcode hex, but react-pdf requires literals)
-const TERRA = '#b5512e';
-const TERRA_BORDER = 'rgba(154,64,40,0.2)';
-const TERRA_BORDER_INNER = 'rgba(154,64,40,0.1)';
-const PARCH = '#f5f0e6';
-const INK = '#1e1a14';
-const PRIMARY = '#9a4028';
-const MUTED = '#8a7060';
+// Mockup brand colors — react-pdf requires literal hex.
+const INK = '#071A2F';
+const INK_A10 = 'rgba(7, 26, 47, 0.10)';
+const INK_A15 = 'rgba(7, 26, 47, 0.15)';
+const CREAM = '#F7F3EA';
+const GOLD = '#C8A24A';
+const GOLD_DEEP = '#9A7A2F';
+const SLATE_500 = '#64748B';
+const SLATE_600 = '#475569';
 
 const styles = StyleSheet.create({
   page: {
-    backgroundColor: PARCH,
-    fontFamily: 'Cormorant',
+    backgroundColor: CREAM,
     color: INK,
     padding: 0,
+    fontFamily: 'DM Mono',
   },
 
-  // Outer border container
   outerBorder: {
-    margin: 24,
+    margin: 28,
     flex: 1,
-    border: '1px solid rgba(154,64,40,0.2)',
+    border: `1px solid ${INK_A10}`,
     position: 'relative',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: 32,
+    padding: 40,
   },
 
-  // Inner border rule (inset 4px from outer)
   innerBorder: {
     position: 'absolute',
-    top: 4,
-    left: 4,
-    right: 4,
-    bottom: 4,
-    border: '0.5px solid rgba(154,64,40,0.1)',
+    top: 8,
+    left: 8,
+    right: 8,
+    bottom: 8,
+    border: `0.5px solid ${INK_A10}`,
   },
 
-  // AiBI seal watermark — centered, 8% opacity
-  sealWatermark: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+  header: {
     alignItems: 'center',
-    justifyContent: 'center',
-    opacity: 0.08,
-  },
-  sealWatermarkCircle: {
-    width: 280,
-    height: 280,
-    borderRadius: 140,
-    borderWidth: 8,
-    borderColor: INK,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  sealWatermarkInnerCircle: {
-    width: 250,
-    height: 250,
-    borderRadius: 125,
-    borderWidth: 2,
-    borderColor: INK,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'column',
-  },
-  sealWatermarkText: {
-    fontFamily: 'Cormorant',
-    fontWeight: 'bold',
-    fontSize: 72,
-    color: INK,
-    letterSpacing: 4,
-  },
-  sealWatermarkSubtext: {
-    fontFamily: 'Cormorant',
-    fontSize: 14,
-    color: INK,
-    textTransform: 'uppercase',
-    letterSpacing: 3,
     marginTop: 4,
   },
 
-  // Header section
-  header: {
+  sealOuter: {
+    width: 72,
+    height: 72,
+    backgroundColor: INK,
+    borderRadius: 16,
     alignItems: 'center',
-    marginTop: 8,
+    justifyContent: 'center',
+    marginBottom: 24,
   },
-  presentsText: {
-    fontFamily: 'Cormorant',
-    fontStyle: 'italic',
-    fontSize: 14,
-    color: PRIMARY,
-    marginBottom: 8,
+
+  kicker: {
+    fontFamily: 'DM Mono',
+    fontSize: 10,
+    color: GOLD_DEEP,
+    textTransform: 'uppercase',
+    letterSpacing: 3,
+    marginBottom: 16,
   },
   certificateTitle: {
     fontFamily: 'Cormorant',
     fontWeight: 'bold',
-    fontSize: 36,
+    fontSize: 32,
     color: INK,
     textTransform: 'uppercase',
     letterSpacing: 4,
-    marginBottom: 12,
+    marginBottom: 14,
+    textAlign: 'center',
   },
   divider: {
-    width: 120,
+    width: 96,
     height: 1,
-    backgroundColor: TERRA,
-    opacity: 0.4,
+    backgroundColor: GOLD,
+    opacity: 0.6,
   },
 
-  // Recipient section
   recipient: {
     alignItems: 'center',
-    paddingVertical: 16,
+    paddingVertical: 18,
   },
   honorsText: {
-    fontFamily: 'Cormorant',
-    fontStyle: 'italic',
-    fontSize: 12,
-    color: MUTED,
+    fontFamily: 'DM Mono',
+    fontSize: 11,
+    color: SLATE_600,
     marginBottom: 12,
   },
   holderName: {
     fontFamily: 'Cormorant',
     fontWeight: 'bold',
-    fontSize: 28,
-    color: PRIMARY,
-    marginBottom: 14,
+    fontSize: 36,
+    color: INK,
+    marginBottom: 16,
     textAlign: 'center',
+    letterSpacing: -0.5,
   },
   curriculumLabel: {
-    fontFamily: 'Cormorant',
-    fontSize: 9,
-    color: INK,
-    textTransform: 'uppercase',
-    letterSpacing: 2,
+    fontFamily: 'DM Mono',
+    fontSize: 10,
+    color: SLATE_600,
     marginBottom: 8,
   },
   designation: {
     fontFamily: 'Cormorant',
     fontWeight: 'bold',
-    fontSize: 18,
+    fontSize: 22,
     color: INK,
-    textTransform: 'uppercase',
-    letterSpacing: 2,
     textAlign: 'center',
+    letterSpacing: 1,
   },
   institution: {
-    fontFamily: 'Cormorant',
-    fontWeight: 'bold',
-    fontSize: 14,
-    color: MUTED,
-    textTransform: 'uppercase',
-    letterSpacing: 1.5,
-    marginTop: 6,
+    fontFamily: 'DM Mono',
+    fontSize: 11,
+    color: SLATE_600,
+    marginTop: 8,
     textAlign: 'center',
+    letterSpacing: 1,
   },
 
-  // Bottom three-column section
   bottomSection: {
     width: '100%',
     flexDirection: 'row',
     alignItems: 'flex-end',
-    paddingHorizontal: 16,
-    paddingBottom: 8,
+    paddingHorizontal: 8,
+    paddingBottom: 4,
+    borderTopWidth: 1,
+    borderTopColor: INK_A10,
+    paddingTop: 20,
   },
 
-  // Left: metadata
   metadataColumn: {
     flex: 1,
     flexDirection: 'column',
     gap: 10,
   },
   metadataItem: {
-    borderBottomWidth: 0.5,
-    borderBottomColor: TERRA_BORDER,
-    paddingBottom: 4,
-    marginBottom: 2,
+    marginBottom: 4,
   },
   metadataLabel: {
-    fontFamily: 'Cormorant',
+    fontFamily: 'DM Mono',
     fontSize: 7,
-    color: MUTED,
+    color: SLATE_500,
     textTransform: 'uppercase',
-    letterSpacing: 1.5,
+    letterSpacing: 2,
     marginBottom: 3,
   },
   metadataDate: {
     fontFamily: 'DM Mono',
-    fontSize: 12,
+    fontSize: 11,
     color: INK,
   },
   metadataCertId: {
     fontFamily: 'DM Mono',
-    fontSize: 10,
+    fontSize: 9,
     color: INK,
+    letterSpacing: 0.5,
   },
 
-  // Center: seal
   sealColumn: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  sealCircle: {
-    width: 88,
-    height: 88,
-    borderRadius: 44,
-    borderWidth: 3,
-    borderColor: TERRA_BORDER,
+  sealColumnSquare: {
+    width: 44,
+    height: 44,
+    backgroundColor: INK,
+    borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  sealInnerCircle: {
-    width: 76,
-    height: 76,
-    borderRadius: 38,
-    borderWidth: 1,
-    borderColor: TERRA_BORDER_INNER,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'column',
-  },
-  sealText: {
-    fontFamily: 'Cormorant',
-    fontWeight: 'bold',
-    fontStyle: 'italic',
-    fontSize: 20,
-    color: PRIMARY,
-  },
-  sealSubtext: {
-    fontFamily: 'Cormorant',
-    fontSize: 6,
-    color: MUTED,
-    textTransform: 'uppercase',
-    letterSpacing: 1,
-    marginTop: 2,
   },
 
-  // Right: signature
   signatureColumn: {
     flex: 1,
     alignItems: 'flex-end',
   },
   signatureBlock: {
     alignItems: 'flex-end',
-    maxWidth: 160,
+    maxWidth: 180,
   },
   signatureName: {
     fontFamily: 'Cormorant',
     fontWeight: 'bold',
-    fontStyle: 'italic',
     fontSize: 16,
     color: INK,
     marginBottom: 4,
@@ -310,44 +240,55 @@ const styles = StyleSheet.create({
   signatureLine: {
     width: 160,
     height: 0.5,
-    backgroundColor: INK,
+    backgroundColor: INK_A15,
     marginBottom: 4,
-    opacity: 0.4,
   },
   signatureTitle: {
-    fontFamily: 'Cormorant',
+    fontFamily: 'DM Mono',
     fontSize: 7,
-    color: MUTED,
+    color: SLATE_500,
     textTransform: 'uppercase',
-    letterSpacing: 1,
+    letterSpacing: 1.5,
     textAlign: 'right',
   },
 
-  // Footer
   footer: {
     position: 'absolute',
-    bottom: 14,
-    left: 56,
-    right: 56,
+    bottom: 16,
+    left: 64,
+    right: 64,
     alignItems: 'center',
   },
   footerVerifyUrl: {
     fontFamily: 'DM Mono',
-    fontSize: 10,
-    color: MUTED,
-    opacity: 0.7,
+    fontSize: 9,
+    color: SLATE_500,
     textAlign: 'center',
+    letterSpacing: 0.5,
   },
   assessmentNote: {
-    fontFamily: 'Cormorant',
-    fontStyle: 'italic',
-    fontSize: 10,
-    color: MUTED,
-    opacity: 0.8,
+    fontFamily: 'DM Mono',
+    fontSize: 8,
+    color: SLATE_500,
     textAlign: 'center',
     marginTop: 4,
+    letterSpacing: 0.5,
   },
 });
+
+// Landmark glyph — matches the on-screen wordmark seal (columned facade).
+function LandmarkSvg({ size }: { size: number }) {
+  return (
+    <Svg viewBox="0 0 24 24" width={size} height={size}>
+      <Path d="M3 10 L12 4 L21 10" stroke={GOLD} strokeWidth={1.6} fill="none" />
+      <Path d="M5 10 L5 19" stroke={GOLD} strokeWidth={1.6} fill="none" />
+      <Path d="M9 10 L9 19" stroke={GOLD} strokeWidth={1.6} fill="none" />
+      <Path d="M15 10 L15 19" stroke={GOLD} strokeWidth={1.6} fill="none" />
+      <Path d="M19 10 L19 19" stroke={GOLD} strokeWidth={1.6} fill="none" />
+      <Path d="M3 20 L21 20" stroke={GOLD} strokeWidth={1.6} fill="none" />
+    </Svg>
+  );
+}
 
 export function CertificateDocument({
   holderName,
@@ -357,46 +298,39 @@ export function CertificateDocument({
   certificateId,
   verificationUrl,
 }: CertificateDocumentProps) {
+  const credentialLine = designation.includes('·')
+    ? designation
+    : `${designation} · ${issuingInstitution}`;
+
   return (
-    <Document title={`Certificate of Achievement — ${holderName} — The AI Banking Institute`}>
+    <Document title={`Certificate of Completion — ${holderName} — The AI Banking Institute`}>
       <Page size="LETTER" orientation="landscape" style={styles.page}>
         <View style={styles.outerBorder}>
-          {/* Inner ruling border */}
           <View style={styles.innerBorder} />
 
-          {/* AiBI seal watermark — 8% opacity, centered behind content */}
-          <View style={styles.sealWatermark}>
-            <View style={styles.sealWatermarkCircle}>
-              <View style={styles.sealWatermarkInnerCircle}>
-                <Text style={styles.sealWatermarkText}>AiBI</Text>
-                <Text style={styles.sealWatermarkSubtext}>Institutional</Text>
-              </View>
-            </View>
-          </View>
-
-          {/* Institutional header */}
+          {/* Header: seal + kicker + title + gold divider */}
           <View style={styles.header}>
-            <Text style={styles.presentsText}>AI Banking Institute Presents</Text>
-            <Text style={styles.certificateTitle}>Certificate of Achievement</Text>
+            <View style={styles.sealOuter}>
+              <LandmarkSvg size={36} />
+            </View>
+            <Text style={styles.kicker}>The AI Banking Institute</Text>
+            <Text style={styles.certificateTitle}>Certificate of Completion</Text>
             <View style={styles.divider} />
           </View>
 
-          {/* Recipient section */}
+          {/* Recipient */}
           <View style={styles.recipient}>
-            <Text style={styles.honorsText}>
-              This honors the distinguished performance of
-            </Text>
+            <Text style={styles.honorsText}>This certifies that</Text>
             <Text style={styles.holderName}>{holderName}</Text>
-            <Text style={styles.curriculumLabel}>
-              For completing the specialized curriculum of
-            </Text>
-            <Text style={styles.designation}>{designation}</Text>
-            <Text style={styles.institution}>{issuingInstitution}</Text>
+            <Text style={styles.curriculumLabel}>has completed the curriculum of</Text>
+            <Text style={styles.designation}>{credentialLine}</Text>
+            {!designation.includes('·') && (
+              <Text style={styles.institution}>· The AI Banking Institute ·</Text>
+            )}
           </View>
 
-          {/* Bottom: metadata | seal | signature */}
+          {/* Bottom: metadata | small seal | signature */}
           <View style={styles.bottomSection}>
-            {/* Left — Issue Date + Certificate ID */}
             <View style={styles.metadataColumn}>
               <View style={styles.metadataItem}>
                 <Text style={styles.metadataLabel}>Issue Date</Text>
@@ -408,24 +342,17 @@ export function CertificateDocument({
               </View>
             </View>
 
-            {/* Center — AiBI seal */}
             <View style={styles.sealColumn}>
-              <View style={styles.sealCircle}>
-                <View style={styles.sealInnerCircle}>
-                  <Text style={styles.sealText}>AiBI</Text>
-                  <Text style={styles.sealSubtext}>Institutional</Text>
-                </View>
+              <View style={styles.sealColumnSquare}>
+                <LandmarkSvg size={22} />
               </View>
             </View>
 
-            {/* Right — Signature */}
             <View style={styles.signatureColumn}>
               <View style={styles.signatureBlock}>
                 <Text style={styles.signatureName}>The Digital Curator</Text>
                 <View style={styles.signatureLine} />
-                <Text style={styles.signatureTitle}>
-                  The Digital Curator, AI Banking Institute
-                </Text>
+                <Text style={styles.signatureTitle}>The AI Banking Institute</Text>
               </View>
             </View>
           </View>
@@ -434,7 +361,7 @@ export function CertificateDocument({
           <View style={styles.footer}>
             <Text style={styles.footerVerifyUrl}>{verificationUrl}</Text>
             <Text style={styles.assessmentNote}>
-              Assessed by skill submission and work product -- not a test score
+              Assessed by skill submission and work product — not a test score
             </Text>
           </View>
         </View>
