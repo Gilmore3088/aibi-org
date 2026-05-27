@@ -5,8 +5,8 @@
 // message, and hint line. The input itself is supplied as children so callers
 // can choose <input>, <textarea>, <select>, or a custom control.
 //
-// The `ledgerInputStyle` export name is retained for backward compatibility
-// with existing consumers; the returned styles use mockup tokens.
+// Returns mockup-token input styles. Was previously named `ledgerInputStyle`
+// during the Ledger era; renamed to `mockupInputStyle` 2026-05-27.
 
 import type { CSSProperties, ReactNode } from 'react';
 
@@ -92,11 +92,9 @@ interface InputStyleOptions {
 
 /**
  * Standard mockup-system input style. Use on <input>, <textarea>, and
- * <select>. The export name `ledgerInputStyle` is preserved for backward
- * compatibility with existing call sites; the returned tokens are
- * mockup-system (Inter, ink/cream/gold, 12px radius).
+ * <select>. Returns Inter typography, ink/cream/gold tokens, 12px radius.
  */
-export function ledgerInputStyle({ invalid, multi }: InputStyleOptions = {}): CSSProperties {
+export function mockupInputStyle({ invalid, multi }: InputStyleOptions = {}): CSSProperties {
   return {
     width: '100%',
     padding: '10px 12px',
