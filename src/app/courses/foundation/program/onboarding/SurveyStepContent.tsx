@@ -48,6 +48,16 @@ const helperStyle: CSSProperties = {
   margin: 0,
 };
 
+const contextStyle: CSSProperties = {
+  fontFamily: INTER_STACK,
+  fontSize: 14,
+  fontWeight: 400,
+  lineHeight: 1.55,
+  color: 'var(--slate-600)',
+  margin: '8px 0 0',
+  maxWidth: '52ch',
+};
+
 function optionButtonStyle(isSelected: boolean): CSSProperties {
   return {
     padding: '18px 20px',
@@ -108,8 +118,12 @@ export function SurveyStepContent({
       {step === 1 && (
         <section style={{ display: 'flex', flexDirection: 'column', gap: 22 }}>
           <div>
-            <span style={eyebrowStyle}>Foundational ecosystem</span>
-            <h2 style={questionTitleStyle}>Does your institution use Microsoft 365?</h2>
+            <span style={eyebrowStyle}>Question 1 of 3</span>
+            <h2 style={questionTitleStyle}>Does your institution run on Microsoft 365?</h2>
+            <p style={contextStyle}>
+              Decides whether we surface Copilot patterns or stick to neutral
+              tooling.
+            </p>
           </div>
           <div
             className="grid grid-cols-1 sm:grid-cols-3 gap-3"
@@ -138,10 +152,13 @@ export function SurveyStepContent({
       {step === 2 && (
         <section style={{ display: 'flex', flexDirection: 'column', gap: 22 }}>
           <div>
-            <span style={eyebrowStyle}>Personal capability</span>
+            <span style={eyebrowStyle}>Question 2 of 3</span>
             <h2 style={questionTitleStyle}>
-              Do you currently have any personal AI subscriptions?
+              Which AI tools do you use today?
             </h2>
+            <p style={contextStyle}>
+              Sets the baseline. We won&rsquo;t teach what you already do.
+            </p>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }} role="group" aria-label="AI subscription options">
             <p style={helperStyle}>Select all that apply</p>
@@ -206,8 +223,12 @@ export function SurveyStepContent({
       {step === 3 && (
         <section style={{ display: 'flex', flexDirection: 'column', gap: 22 }}>
           <div>
-            <span style={eyebrowStyle}>Persona mapping</span>
-            <h2 style={questionTitleStyle}>What is your primary role at your institution?</h2>
+            <span style={eyebrowStyle}>Question 3 of 3</span>
+            <h2 style={questionTitleStyle}>What&rsquo;s your primary role?</h2>
+            <p style={contextStyle}>
+              Determines the first prompt you save and the scenarios you see in
+              Modules 4 through 8.
+            </p>
           </div>
           <div
             className="grid grid-cols-2 md:grid-cols-3 gap-3"

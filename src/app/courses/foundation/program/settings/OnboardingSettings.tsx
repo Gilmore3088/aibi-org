@@ -1,11 +1,13 @@
 'use client';
 
 // OnboardingSettings — pre-populated form for updating onboarding answers.
-// Reuses the same three-question structure as OnboardingSurvey.tsx.
 // Submits to /api/courses/save-onboarding (overwrites onboarding_answers).
-// Keyboard accessible: all form elements reachable via Tab, selectable via Enter/Space.
 //
-// 2026-05-27: ported to mockup design system (Inter, ink/cream/gold).
+// 2026-05-27 (audit §13): redesigned to lead with what the learner CAN
+// change — a "Your current setup" summary card with the active values
+// and a short note on how each affects the experience — followed by the
+// edit panel that reuses SettingsQuestions. Account/sign-out lives in a
+// small footer panel. Low-density utility surface; copy stays short.
 
 import React, { useState, useCallback, useEffect, type CSSProperties } from 'react';
 import { useRouter } from 'next/navigation';
@@ -28,6 +30,24 @@ const AI_SUBSCRIPTION_OPTIONS = [
 type ExclusiveValue = 'free_tiers' | 'none';
 
 const KNOWN_SUBSCRIPTIONS = new Set<string>(AI_SUBSCRIPTION_OPTIONS);
+
+const ROLE_LABEL: Record<LearnerRole, string> = {
+  lending: 'Lending',
+  operations: 'Operations',
+  compliance: 'Compliance',
+  finance: 'Finance',
+  marketing: 'Marketing',
+  it: 'IT',
+  retail: 'Retail',
+  executive: 'Executive',
+  other: 'Other',
+};
+
+const M365_LABEL: Record<OnboardingAnswers['uses_m365'], string> = {
+  yes: 'Yes — your institution uses M365',
+  no: 'Not currently',
+  not_sure: 'Not sure',
+};
 
 interface OnboardingSettingsProps {
   readonly enrollmentId: string;
@@ -53,17 +73,98 @@ function deriveInitialFormState(answers: OnboardingAnswers | null): FormState {
 
   const subscriptions = answers.personal_ai_subscriptions as string[];
   const knownSubs = subscriptions.filter((s) => KNOWN_SUBSCRIPTIONS.has(s));
-  const hasExclusive = knownSubs.length === 0 && subscriptions.length === 0;
 
-  // Cannot distinguish 'free_tiers' from 'none' from an empty array;
-  // default to null for exclusive_selection when pre-populating.
   return {
     uses_m365: answers.uses_m365,
     personal_ai_subscriptions: knownSubs,
-    exclusive_selection: hasExclusive ? null : null,
+    exclusive_selection: null,
     primary_role: answers.primary_role,
   };
 }
+
+// ---------------------------------------------------------------------------
+// Styles
+// ---------------------------------------------------------------------------
+
+const kickerStyle: CSSProperties = {
+  fontFamily: INTER_STACK,
+  fontSize: 11,
+  fontWeight: 700,
+  letterSpacing: '0.22em',
+  textTransform: 'uppercase',
+  color: 'var(--gold-deep)',
+  margin: 0,
+};
+
+const summaryCardStyle: CSSProperties = {
+  background: 'var(--cream)',
+  border: '1px solid var(--ink-a10)',
+  borderRadius: 24,
+  padding: '24px 26px',
+  boxShadow: 'var(--shadow-soft)',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 18,
+};
+
+const summaryRowStyle: CSSProperties = {
+  display: 'grid',
+  gridTemplateColumns: 'minmax(140px, 180px) 1fr',
+  gap: 16,
+  alignItems: 'baseline',
+  padding: '12px 0',
+  borderTop: '1px solid var(--ink-a10)',
+};
+
+const summaryLabelStyle: CSSProperties = {
+  fontFamily: INTER_STACK,
+  fontSize: 11,
+  fontWeight: 700,
+  letterSpacing: '0.18em',
+  textTransform: 'uppercase',
+  color: 'var(--slate-500)',
+  margin: 0,
+};
+
+const summaryValueStyle: CSSProperties = {
+  fontFamily: INTER_STACK,
+  fontSize: 15,
+  fontWeight: 600,
+  color: 'var(--ink)',
+  margin: 0,
+  lineHeight: 1.4,
+};
+
+const summaryNoteStyle: CSSProperties = {
+  fontFamily: INTER_STACK,
+  fontSize: 13,
+  fontWeight: 400,
+  color: 'var(--slate-600)',
+  margin: '4px 0 0',
+  lineHeight: 1.55,
+};
+
+const editPanelStyle: CSSProperties = {
+  background: '#FFFFFF',
+  border: '1px solid var(--ink-a10)',
+  borderRadius: 24,
+  padding: '28px 28px 32px',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 32,
+};
+
+const accountFooterStyle: CSSProperties = {
+  background: 'var(--cream)',
+  border: '1px solid var(--ink-a10)',
+  borderRadius: 16,
+  padding: '18px 22px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  gap: 16,
+  flexWrap: 'wrap',
+};
 
 const primaryButtonStyle: CSSProperties = {
   display: 'inline-flex',
@@ -71,16 +172,16 @@ const primaryButtonStyle: CSSProperties = {
   gap: 10,
   padding: '12px 26px',
   borderRadius: 12,
-  background: 'var(--ink)',
-  color: 'var(--cream)',
+  background: 'var(--gold)',
+  color: 'var(--ink)',
   fontFamily: INTER_STACK,
   fontSize: 12,
   fontWeight: 700,
   letterSpacing: '0.16em',
   textTransform: 'uppercase',
-  border: '1px solid var(--ink)',
+  border: '1px solid var(--gold)',
   cursor: 'pointer',
-  transition: 'background var(--t-fast) var(--ease)',
+  transition: 'background var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease)',
 };
 
 const backLinkStyle: CSSProperties = {
@@ -93,6 +194,29 @@ const backLinkStyle: CSSProperties = {
   textDecoration: 'none',
 };
 
+const signOutLinkStyle: CSSProperties = {
+  fontFamily: INTER_STACK,
+  fontSize: 11,
+  fontWeight: 700,
+  letterSpacing: '0.18em',
+  textTransform: 'uppercase',
+  color: 'var(--ink)',
+  textDecoration: 'none',
+};
+
+// ---------------------------------------------------------------------------
+// Helpers — render current values for the summary card
+// ---------------------------------------------------------------------------
+
+function describeSubscriptions(subs: readonly string[]): string {
+  if (subs.length === 0) return 'No paid AI subscriptions on file';
+  return subs.join(' · ');
+}
+
+// ---------------------------------------------------------------------------
+// Component
+// ---------------------------------------------------------------------------
+
 export function OnboardingSettings({ enrollmentId, currentAnswers }: OnboardingSettingsProps) {
   const router = useRouter();
   const [form, setForm] = useState<FormState>(() => deriveInitialFormState(currentAnswers));
@@ -100,7 +224,6 @@ export function OnboardingSettings({ enrollmentId, currentAnswers }: OnboardingS
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [savedMessage, setSavedMessage] = useState(false);
 
-  // Fade out the "Saved" confirmation after 2 seconds
   useEffect(() => {
     if (!savedMessage) return;
     const timer = setTimeout(() => setSavedMessage(false), 2000);
@@ -173,24 +296,16 @@ export function OnboardingSettings({ enrollmentId, currentAnswers }: OnboardingS
     }
   };
 
+  // ---- Current values for the summary card (from saved answers, not form) ----
+  const savedRole = currentAnswers?.primary_role ?? null;
+  const savedM365 = currentAnswers?.uses_m365 ?? null;
+  const savedSubs = currentAnswers?.personal_ai_subscriptions ?? [];
+
   return (
-    <div>
-      {/* Page heading */}
-      <div style={{ marginBottom: 36 }}>
-        <p
-          style={{
-            fontFamily: INTER_STACK,
-            fontSize: 11,
-            fontWeight: 700,
-            letterSpacing: '0.22em',
-            textTransform: 'uppercase',
-            color: 'var(--gold-deep)',
-            margin: 0,
-            marginBottom: 10,
-          }}
-        >
-          Settings
-        </p>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 36 }}>
+      {/* Page heading — compact, utility-grade */}
+      <header>
+        <p style={kickerStyle}>Settings</p>
         <h1
           style={{
             fontFamily: INTER_STACK,
@@ -199,115 +314,268 @@ export function OnboardingSettings({ enrollmentId, currentAnswers }: OnboardingS
             lineHeight: 1.1,
             letterSpacing: '-0.02em',
             color: 'var(--ink)',
-            margin: 0,
-            marginBottom: 10,
+            margin: '12px 0 8px',
           }}
         >
-          Update your profile
+          Your profile
         </h1>
         <p
           style={{
             fontFamily: INTER_STACK,
             fontSize: 14,
-            fontWeight: 400,
-            lineHeight: 1.6,
             color: 'var(--slate-600)',
             margin: 0,
+            maxWidth: '60ch',
           }}
         >
-          Changes take effect on your next page load.
+          The course personalises examples, role paths, and recommended skills
+          from these answers. Update them whenever your work shifts.
         </p>
-      </div>
+      </header>
 
-      <form
-        onSubmit={(e) => {
-          void handleSubmit(e);
-        }}
-        style={{ display: 'flex', flexDirection: 'column', gap: 40 }}
-      >
-        <SettingsQuestions
-          uses_m365={form.uses_m365}
-          personal_ai_subscriptions={form.personal_ai_subscriptions}
-          exclusive_selection={form.exclusive_selection}
-          primary_role={form.primary_role}
-          onM365Select={handleM365Select}
-          onSubscriptionCheckbox={handleSubscriptionCheckbox}
-          onExclusiveSelect={handleExclusiveSelect}
-          onRoleSelect={handleRoleSelect}
-        />
-
-        {/* Error message */}
-        {errorMessage && (
-          <div
-            role="alert"
-            style={{
-              padding: '14px 18px',
-              borderRadius: 12,
-              background: 'var(--cream-2)',
-              border: '1px solid var(--gold-deep)',
-              color: 'var(--gold-deep)',
-              fontFamily: INTER_STACK,
-              fontSize: 13,
-              fontWeight: 600,
-            }}
-          >
-            {errorMessage}
-          </div>
-        )}
-
-        {/* Save confirmation */}
-        {savedMessage && (
-          <div
-            role="status"
-            aria-live="polite"
-            style={{
-              padding: '14px 18px',
-              borderRadius: 12,
-              background: 'var(--emerald-50, #ECFDF5)',
-              border: '1px solid var(--emerald-700)',
-              color: 'var(--emerald-800)',
-              fontFamily: INTER_STACK,
-              fontSize: 13,
-              fontWeight: 600,
-              transition: 'opacity var(--t-med) var(--ease)',
-            }}
-          >
-            Profile saved successfully.
-          </div>
-        )}
-
-        {/* Footer actions */}
+      {/* Your current setup — leads with what's active */}
+      <section style={summaryCardStyle} aria-labelledby="current-setup-heading">
         <div
           style={{
             display: 'flex',
-            alignItems: 'center',
+            alignItems: 'baseline',
             justifyContent: 'space-between',
-            paddingTop: 24,
-            borderTop: '1px solid var(--ink-a10)',
+            gap: 12,
           }}
         >
-          <Link
-            href="/courses/foundation/program"
-            className="focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
-            style={backLinkStyle}
-          >
-            &larr; Back to course
-          </Link>
-
-          <button
-            type="submit"
-            disabled={!canSave || isSubmitting}
-            className="focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+          <h2
+            id="current-setup-heading"
             style={{
-              ...primaryButtonStyle,
-              opacity: !canSave || isSubmitting ? 0.4 : 1,
-              cursor: !canSave || isSubmitting ? 'not-allowed' : 'pointer',
+              fontFamily: INTER_STACK,
+              fontSize: 18,
+              fontWeight: 700,
+              color: 'var(--ink)',
+              margin: 0,
             }}
           >
-            {isSubmitting ? 'Saving…' : 'Save changes'}
-          </button>
+            Your current setup
+          </h2>
+          {currentAnswers && (
+            <a
+              href="#edit"
+              style={{
+                fontFamily: INTER_STACK,
+                fontSize: 11,
+                fontWeight: 700,
+                letterSpacing: '0.18em',
+                textTransform: 'uppercase',
+                color: 'var(--ink)',
+                textDecoration: 'none',
+              }}
+            >
+              Edit below ↓
+            </a>
+          )}
         </div>
-      </form>
+
+        {!currentAnswers ? (
+          <p
+            style={{
+              fontFamily: INTER_STACK,
+              fontSize: 14,
+              color: 'var(--slate-600)',
+              margin: 0,
+            }}
+          >
+            You have not completed onboarding yet. Answer the questions below
+            to personalise the course.
+          </p>
+        ) : (
+          <>
+            <div style={{ ...summaryRowStyle, borderTop: 'none', paddingTop: 0 }}>
+              <p style={summaryLabelStyle}>Primary role</p>
+              <div>
+                <p style={summaryValueStyle}>
+                  {savedRole ? ROLE_LABEL[savedRole] : '—'}
+                </p>
+                <p style={summaryNoteStyle}>
+                  Steers the role path, sandbox scenarios, and which skills
+                  surface first.
+                </p>
+              </div>
+            </div>
+
+            <div style={summaryRowStyle}>
+              <p style={summaryLabelStyle}>Microsoft 365</p>
+              <div>
+                <p style={summaryValueStyle}>
+                  {savedM365 ? M365_LABEL[savedM365] : '—'}
+                </p>
+                <p style={summaryNoteStyle}>
+                  Determines whether Module 7 examples lead with Copilot or a
+                  standalone tool.
+                </p>
+              </div>
+            </div>
+
+            <div style={summaryRowStyle}>
+              <p style={summaryLabelStyle}>AI subscriptions</p>
+              <div>
+                <p style={summaryValueStyle}>{describeSubscriptions(savedSubs)}</p>
+                <p style={summaryNoteStyle}>
+                  Sandbox prompts default to a tool you already have access to.
+                </p>
+              </div>
+            </div>
+          </>
+        )}
+      </section>
+
+      {/* Edit panel */}
+      <section id="edit" style={editPanelStyle} aria-labelledby="edit-heading">
+        <div>
+          <p style={kickerStyle}>Edit</p>
+          <h2
+            id="edit-heading"
+            style={{
+              fontFamily: INTER_STACK,
+              fontSize: 22,
+              fontWeight: 700,
+              color: 'var(--ink)',
+              margin: '8px 0 6px',
+              lineHeight: 1.2,
+            }}
+          >
+            Change any answer
+          </h2>
+          <p
+            style={{
+              fontFamily: INTER_STACK,
+              fontSize: 13,
+              color: 'var(--slate-600)',
+              margin: 0,
+            }}
+          >
+            Changes take effect on your next page load.
+          </p>
+        </div>
+
+        <form
+          onSubmit={(e) => {
+            void handleSubmit(e);
+          }}
+          style={{ display: 'flex', flexDirection: 'column', gap: 36 }}
+        >
+          <SettingsQuestions
+            uses_m365={form.uses_m365}
+            personal_ai_subscriptions={form.personal_ai_subscriptions}
+            exclusive_selection={form.exclusive_selection}
+            primary_role={form.primary_role}
+            onM365Select={handleM365Select}
+            onSubscriptionCheckbox={handleSubscriptionCheckbox}
+            onExclusiveSelect={handleExclusiveSelect}
+            onRoleSelect={handleRoleSelect}
+          />
+
+          {errorMessage && (
+            <div
+              role="alert"
+              style={{
+                padding: '14px 18px',
+                borderRadius: 12,
+                background: 'var(--cream-2)',
+                border: '1px solid var(--gold-deep)',
+                color: 'var(--gold-deep)',
+                fontFamily: INTER_STACK,
+                fontSize: 13,
+                fontWeight: 600,
+              }}
+            >
+              {errorMessage}
+            </div>
+          )}
+
+          {savedMessage && (
+            <div
+              role="status"
+              aria-live="polite"
+              style={{
+                padding: '14px 18px',
+                borderRadius: 12,
+                background: 'var(--emerald-50, #ECFDF5)',
+                border: '1px solid var(--emerald-700)',
+                color: 'var(--emerald-800)',
+                fontFamily: INTER_STACK,
+                fontSize: 13,
+                fontWeight: 600,
+                transition: 'opacity var(--t-med) var(--ease)',
+              }}
+            >
+              Profile saved successfully.
+            </div>
+          )}
+
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              paddingTop: 24,
+              borderTop: '1px solid var(--ink-a10)',
+            }}
+          >
+            <Link
+              href="/courses/foundation/program"
+              className="focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+              style={backLinkStyle}
+            >
+              &larr; Back to course
+            </Link>
+
+            <button
+              type="submit"
+              disabled={!canSave || isSubmitting}
+              className="focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+              style={{
+                ...primaryButtonStyle,
+                opacity: !canSave || isSubmitting ? 0.4 : 1,
+                cursor: !canSave || isSubmitting ? 'not-allowed' : 'pointer',
+              }}
+            >
+              {isSubmitting ? 'Saving…' : 'Save changes'}
+            </button>
+          </div>
+        </form>
+      </section>
+
+      {/* Account footer — small, utility */}
+      <section style={accountFooterStyle} aria-label="Account">
+        <div>
+          <p style={kickerStyle}>Account</p>
+          <p
+            style={{
+              fontFamily: INTER_STACK,
+              fontSize: 13,
+              color: 'var(--slate-600)',
+              margin: '6px 0 0',
+            }}
+          >
+            Manage your sign-in session or contact support if your enrolment
+            email changes.
+          </p>
+        </div>
+        <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
+          <a
+            href="mailto:hello@aibankinginstitute.com"
+            style={signOutLinkStyle}
+            className="focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+          >
+            Change email
+          </a>
+          <Link
+            href="/auth/signout"
+            style={signOutLinkStyle}
+            className="focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+          >
+            Sign out
+          </Link>
+        </div>
+      </section>
     </div>
   );
 }

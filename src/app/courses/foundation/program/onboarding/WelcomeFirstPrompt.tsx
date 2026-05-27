@@ -144,7 +144,7 @@ export function WelcomeFirstPrompt({ onContinue }: WelcomeFirstPromptProps) {
     >
       <div className="max-w-3xl mx-auto">
         <p style={{ ...eyebrowStyle, marginBottom: 14 }}>
-          Your first AI win — under 90 seconds
+          Run your first banker prompt · Under 90 seconds
         </p>
         <h1
           style={{
@@ -159,7 +159,7 @@ export function WelcomeFirstPrompt({ onContinue }: WelcomeFirstPromptProps) {
           }}
           className="md:text-5xl"
         >
-          Before the survey, see what AI can do for you.
+          Rewrite a rushed staff note into a clear bulletin.
         </h1>
         <p
           style={{
@@ -173,10 +173,10 @@ export function WelcomeFirstPrompt({ onContinue }: WelcomeFirstPromptProps) {
             maxWidth: 640,
           }}
         >
-          Below is a real internal email a banker might write in a hurry. Click the
-          button to ask AI to rewrite it. The output you get is yours — copy it,
-          tweak it, send it. This is the kind of small, daily win the rest of the
-          course is built around.
+          Below is a real internal email a community banker might write in a
+          hurry. Run it through the AI sandbox. The cleaned-up version is yours
+          to copy, tweak, and send. This is the shape of every workflow you
+          finish in the course.
         </p>
 
         <section
@@ -206,7 +206,7 @@ export function WelcomeFirstPrompt({ onContinue }: WelcomeFirstPromptProps) {
         {phase === 'idle' && (
           <div className="flex justify-center">
             <button type="button" onClick={runPrompt} style={primaryButtonStyle}>
-              Try this with AI
+              RUN THIS PROMPT →
             </button>
           </div>
         )}
@@ -274,17 +274,17 @@ export function WelcomeFirstPrompt({ onContinue }: WelcomeFirstPromptProps) {
             <p
               style={{
                 fontFamily: INTER_STACK,
-                fontSize: 22,
+                fontSize: 20,
                 fontWeight: 600,
-                lineHeight: 1.35,
+                lineHeight: 1.4,
                 letterSpacing: '-0.01em',
                 color: 'var(--ink)',
                 maxWidth: 640,
                 margin: 0,
               }}
             >
-              That is the floor. Every module from here gives you one of these — a
-              specific banker workflow you can use the day you learn it.
+              That&rsquo;s the floor. Next: three questions so we can tune the
+              rest of the course to your role.
             </p>
             <button
               ref={continueRef}
@@ -292,7 +292,7 @@ export function WelcomeFirstPrompt({ onContinue }: WelcomeFirstPromptProps) {
               onClick={onContinue}
               style={primaryButtonStyle}
             >
-              Continue to your onboarding survey →
+              CONTINUE — THREE QUESTIONS →
             </button>
           </div>
         )}
@@ -313,7 +313,7 @@ export function WelcomeFirstPrompt({ onContinue }: WelcomeFirstPromptProps) {
             </p>
             <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center', gap: 14 }}>
               <button type="button" onClick={runPrompt} style={primaryButtonStyle}>
-                Try again
+                TRY AGAIN
               </button>
               <button type="button" onClick={onContinue} style={linkButtonStyle}>
                 Skip to survey →

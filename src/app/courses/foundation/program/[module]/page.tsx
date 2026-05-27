@@ -27,12 +27,12 @@ import type { Activity, ExpandedModule } from '@content/courses/foundation-progr
 import { ContentTable } from '@/components/lms/ContentTable';
 import { LearnSection } from '../_components/LearnSection';
 import { ModuleContentClient } from '../_components/ModuleContentClient';
-import { Tabbed } from '@/lib/lms/module-body';
+import { SubTaskProgressStrip, type SubTaskItem } from './_local/SubTaskProgressStrip';
+import { CollapsibleBoundary } from './_local/CollapsibleBoundary';
 import {
   CourseShell,
   LMSTopBar,
   PillarTag,
-  ProgressDot,
   getModuleStatus,
   toLMSModules,
   type LMSModule,
@@ -165,12 +165,45 @@ export default async function ModulePage({ params }: ModulePageParams) {
       : status === 'completed'
         ? 'Completed'
         : 'Locked';
-  const statusColor =
-    status === 'current'
-      ? 'var(--gold-deep)'
-      : status === 'completed'
-        ? 'var(--emerald-700)'
-        : 'var(--slate-500)';
+  // Approximate per-sub-task minutes by splitting the module estimate.
+  // The content data has no per-sub-task breakdown (see report); these
+  // proportions match the audit's example pattern (12 / 18 / 25 / 0).
+  const totalMin = mod.estimatedMinutes;
+  const takeawayMin = Math.max(5, Math.round(totalMin * 0.22));
+  const sandboxMin = Math.max(5, Math.round(totalMin * 0.32));
+  const submitMin = Math.max(5, totalMin - takeawayMin - sandboxMin);
+  const hasSandbox = Boolean(SANDBOX_CONFIGS[moduleNum]);
+
+  const subTaskItems: SubTaskItem[] = [
+    {
+      id: 'st-takeaway',
+      label: 'Takeaway',
+      minutes: takeawayMin,
+      status: isAlreadyCompleted ? 'done' : 'current',
+    },
+    ...(hasSandbox
+      ? [
+          {
+            id: 'st-sandbox',
+            label: 'Sandbox',
+            minutes: sandboxMin,
+            status: (isAlreadyCompleted ? 'done' : 'pending') as SubTaskItem['status'],
+          },
+        ]
+      : []),
+    {
+      id: 'st-submit',
+      label: 'Submit',
+      minutes: submitMin,
+      status: isAlreadyCompleted ? 'done' : 'pending',
+    },
+    {
+      id: 'st-saved',
+      label: 'Saved artifact',
+      minutes: null,
+      status: isAlreadyCompleted ? 'done' : 'pending',
+    },
+  ];
 
   return (
     <CourseShell
@@ -205,235 +238,317 @@ export default async function ModulePage({ params }: ModulePageParams) {
           color: 'var(--ink)',
         }}
       >
-        <div style={{ maxWidth: 1180, margin: '0 auto', padding: '40px 36px 24px' }}>
-          {/* Module header */}
-          <header>
+        <div style={{ maxWidth: 1180, margin: '0 auto', padding: '40px 36px 16px' }}>
+          {/* Module header — dark-band + white-body card (matches /program
+              home's ThisWeeksModule pattern; ports course.html .curric). */}
+          <header
+            style={{
+              background: '#FFFFFF',
+              border: '1px solid var(--slate-200)',
+              borderRadius: 28,
+              overflow: 'hidden',
+              boxShadow: 'var(--shadow-hero)',
+            }}
+          >
+            {/* Dark navy band — pillar tag, module kicker pill, status */}
             <div
               style={{
+                background: 'var(--ink)',
+                color: '#fff',
+                padding: 'clamp(18px, 2.4vw, 22px) clamp(20px, 3vw, 28px)',
                 display: 'flex',
                 alignItems: 'center',
-                gap: 18,
-                marginBottom: 20,
+                gap: 14,
                 flexWrap: 'wrap',
               }}
             >
               <PillarTag pillarId={pillarId} />
-              <span style={META_STYLE}>
-                Module {String(mod.number).padStart(2, '0')} · {mod.estimatedMinutes} min
-              </span>
-              <span style={{ flex: 1, height: 1, background: 'var(--ink-a10)' }} />
-              <ProgressDot status={status} />
               <span
                 style={{
-                  ...META_STYLE,
-                  color: statusColor,
-                  fontWeight: 600,
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  padding: '6px 14px',
+                  borderRadius: 999,
+                  background: 'var(--gold-a20)',
+                  color: 'var(--gold-soft)',
+                  fontFamily: MOCKUP_FONT,
+                  fontSize: 11,
+                  fontWeight: 700,
+                  letterSpacing: '0.18em',
+                  textTransform: 'uppercase',
+                }}
+              >
+                Module {String(mod.number).padStart(2, '0')} · {titleMain}
+                {titleTail ? ` — ${titleTail}` : ''}
+              </span>
+              <span style={{ flex: 1, minWidth: 12 }} />
+              <span
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 10,
+                  fontFamily: MOCKUP_FONT,
+                  color: status === 'locked' ? 'var(--on-dark-50)' : 'var(--gold-soft)',
+                  fontWeight: 700,
                   textTransform: 'uppercase',
                   letterSpacing: '0.14em',
                   fontSize: 11,
+                  whiteSpace: 'nowrap',
                 }}
               >
+                <span
+                  aria-hidden="true"
+                  style={{
+                    width: 8,
+                    height: 8,
+                    borderRadius: '50%',
+                    background: status === 'current' || status === 'completed' ? 'var(--gold)' : 'transparent',
+                    border: status === 'locked' ? '1.5px solid var(--on-dark-50)' : 'none',
+                    boxShadow:
+                      status === 'current' ? '0 0 0 4px var(--gold-a20)' : 'none',
+                    display: 'inline-block',
+                    flex: 'none',
+                  }}
+                />
                 {statusLabel}
               </span>
             </div>
 
-            <h1
+            {/* White body — kicker, H1, goal, loop ribbon */}
+            <div style={{ padding: 'clamp(28px, 3.4vw, 40px)' }}>
+              <p style={{ ...KICKER_STYLE, margin: '0 0 8px' }}>You walk away with</p>
+              <h1
+                style={{
+                  fontFamily: MOCKUP_FONT,
+                  fontWeight: 700,
+                  fontSize: 'clamp(32px, 4.2vw, 48px)',
+                  lineHeight: 1.06,
+                  letterSpacing: '-0.025em',
+                  margin: '0 0 14px',
+                  color: 'var(--ink)',
+                }}
+              >
+                {mod.keyOutput}
+              </h1>
+
+              <p
+                style={{
+                  fontFamily: MOCKUP_FONT,
+                  fontSize: 17,
+                  lineHeight: 1.5,
+                  color: 'var(--slate-600)',
+                  margin: '0 0 18px',
+                  maxWidth: '72ch',
+                  fontWeight: 400,
+                }}
+              >
+                {goalLine}
+              </p>
+
+              {/* Compacted loop ribbon — single row, smaller. */}
+              <div
+                aria-label="Module loop"
+                style={{
+                  display: 'flex',
+                  gap: 8,
+                  flexWrap: 'wrap',
+                  alignItems: 'center',
+                  fontFamily: MOCKUP_FONT,
+                  fontSize: 12,
+                  fontWeight: 600,
+                  color: 'var(--slate-600)',
+                  letterSpacing: '0.04em',
+                }}
+              >
+                <span style={META_STYLE}>{mod.estimatedMinutes} min total</span>
+                <span style={{ color: 'var(--slate-400)' }}>·</span>
+                <span>Learn it</span>
+                <span style={{ color: 'var(--slate-400)' }}>→</span>
+                <span>Try it</span>
+                <span style={{ color: 'var(--slate-400)' }}>→</span>
+                <span>Use it</span>
+                <span style={{ color: 'var(--slate-400)' }}>→</span>
+                <span>Save it</span>
+              </div>
+            </div>
+          </header>
+        </div>
+
+        {/* Sticky sub-task progress strip — primary in-page nav (audit §3 structural). */}
+        <div style={{ maxWidth: 1180, margin: '0 auto', padding: '0 36px' }}>
+          <SubTaskProgressStrip items={subTaskItems} />
+        </div>
+
+        {/* Scroll-through sections — each sub-task anchored, no tabs. */}
+        <article style={{ maxWidth: 1180, margin: '0 auto', padding: '24px 36px 80px' }}>
+          <section
+            id="st-takeaway"
+            aria-labelledby="st-takeaway-h"
+            style={{ scrollMarginTop: 160, paddingTop: 12 }}
+          >
+            <h2
+              id="st-takeaway-h"
               style={{
                 fontFamily: MOCKUP_FONT,
+                fontSize: 13,
                 fontWeight: 700,
-                fontSize: 'clamp(36px, 4.8vw, 54px)',
-                lineHeight: 1.06,
-                letterSpacing: '-0.02em',
-                margin: '0 0 14px',
-                color: 'var(--ink)',
+                letterSpacing: '0.18em',
+                textTransform: 'uppercase',
+                color: 'var(--gold-deep)',
+                margin: '0 0 16px',
               }}
             >
-              {titleMain}
-              {titleTail && (
-                <span
-                  style={{
-                    color: 'var(--gold-deep)',
-                    fontWeight: 600,
-                  }}
-                >
-                  {' — '}
-                  {titleTail}
-                </span>
-              )}
-            </h1>
+              Takeaway · {takeawayMin} min
+            </h2>
+            <LearnSection
+              sections={expandedModule?.sections ?? []}
+              keyTakeaways={expandedModule?.takeaways}
+              moduleNumber={moduleNum}
+            />
+            <CollapsibleBoundary defaultOpen={moduleNum === 1}>
+              <BankingBoundaryGrid moduleNumber={moduleNum} />
+            </CollapsibleBoundary>
+            {moduleTables && moduleTables.length > 0 && (
+              <div style={{ marginTop: 24 }}>
+                {moduleTables.map((table) => (
+                  <ContentTable key={table.id} table={table} />
+                ))}
+              </div>
+            )}
+          </section>
 
-            <p
+          {hasSandbox && (
+            <section
+              id="st-sandbox"
+              aria-labelledby="st-sandbox-h"
+              style={{ scrollMarginTop: 160, paddingTop: 48 }}
+            >
+              <h2
+                id="st-sandbox-h"
+                style={{
+                  fontFamily: MOCKUP_FONT,
+                  fontSize: 13,
+                  fontWeight: 700,
+                  letterSpacing: '0.18em',
+                  textTransform: 'uppercase',
+                  color: 'var(--gold-deep)',
+                  margin: '0 0 16px',
+                }}
+              >
+                Sandbox · {sandboxMin} min
+              </h2>
+              <AIPracticeSandbox
+                moduleId={`aibi-p-module-${moduleNum}`}
+                product="foundation"
+                sandboxConfig={SANDBOX_CONFIGS[moduleNum]!}
+              />
+              {moduleNum === 3 && (
+                <MiniTutorialList
+                  tutorials={M3_TUTORIALS}
+                  heading="First-try tutorials"
+                  intro="Step-by-step walkthroughs for your first real banking task on each platform. Pick the one that matches what you already have access to."
+                />
+              )}
+              {moduleNum === 7 && (
+                <MiniTutorialList
+                  tutorials={M7_TUTORIALS}
+                  heading="Skill-builder tutorials"
+                  intro="Worked examples of the anatomy-of-a-skill pattern applied to common banking workflows. Open the platform you use, copy the prompt, work through the steps."
+                />
+              )}
+            </section>
+          )}
+
+          <section
+            id="st-submit"
+            aria-labelledby="st-submit-h"
+            style={{ scrollMarginTop: 160, paddingTop: 48 }}
+          >
+            <h2
+              id="st-submit-h"
               style={{
                 fontFamily: MOCKUP_FONT,
-                fontSize: 19,
-                lineHeight: 1.5,
-                color: 'var(--slate-600)',
-                margin: '0 0 18px',
-                maxWidth: '72ch',
-                fontWeight: 400,
+                fontSize: 13,
+                fontWeight: 700,
+                letterSpacing: '0.18em',
+                textTransform: 'uppercase',
+                color: 'var(--gold-deep)',
+                margin: '0 0 16px',
               }}
             >
-              {goalLine}
-            </p>
+              Submit · {submitMin} min
+            </h2>
+            <ModuleContentClient
+              activities={moduleActivities}
+              enrollmentId={enrollment.id}
+              moduleNumber={moduleNum}
+              existingResponses={existingResponses}
+              isLastModule={isLastModule}
+              isAlreadyCompleted={isAlreadyCompleted}
+              tables={moduleTables}
+              learnerRole={
+                enrollment.onboarding_answers
+                  ? getRoleSpotlight(enrollment.onboarding_answers)
+                  : 'other'
+              }
+            />
+          </section>
 
-            {/* Artifact-forward callout — the practical thing this module produces. */}
+          <section
+            id="st-saved"
+            aria-labelledby="st-saved-h"
+            style={{ scrollMarginTop: 160, paddingTop: 48 }}
+          >
+            <h2
+              id="st-saved-h"
+              style={{
+                fontFamily: MOCKUP_FONT,
+                fontSize: 13,
+                fontWeight: 700,
+                letterSpacing: '0.18em',
+                textTransform: 'uppercase',
+                color: 'var(--gold-deep)',
+                margin: '0 0 12px',
+              }}
+            >
+              Saved artifact
+            </h2>
             <div
               style={{
-                marginTop: 6,
-                padding: '18px 22px',
+                padding: '20px 22px',
                 background: 'white',
-                border: '1px solid var(--ink-a10)',
-                borderRadius: 'var(--r-lg, 16px)',
+                border: '1px solid var(--ink-a10, rgba(7,26,47,0.10))',
+                borderRadius: 16,
                 boxShadow: 'var(--shadow-soft)',
-                display: 'flex',
-                gap: 16,
-                alignItems: 'flex-start',
-                flexWrap: 'wrap',
               }}
             >
-              <span style={KICKER_STYLE}>You walk away with</span>
-              <span
+              <p
                 style={{
+                  fontFamily: MOCKUP_FONT,
                   fontSize: 15,
                   fontWeight: 600,
                   color: 'var(--ink)',
-                  flex: '1 1 320px',
+                  margin: '0 0 6px',
                   lineHeight: 1.5,
                 }}
               >
                 {mod.keyOutput}
-              </span>
+              </p>
+              <p
+                style={{
+                  fontFamily: MOCKUP_FONT,
+                  fontSize: 14,
+                  color: 'var(--slate-600)',
+                  margin: 0,
+                  lineHeight: 1.55,
+                }}
+              >
+                {isAlreadyCompleted
+                  ? 'Saved to your library. Open the Submit step above to review or revise your response.'
+                  : 'Once you complete the Submit step above, your response is saved here as a reusable artifact in your library.'}
+              </p>
             </div>
-
-            {/*
-              Canonical module loop indicator (issue #104 §6). Four steps,
-              mockup-styled as a numbered ribbon of pcards.
-            */}
-            <ol
-              aria-label="Module loop"
-              style={{
-                listStyle: 'none',
-                padding: 0,
-                margin: '22px 0 0',
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-                gap: 12,
-              }}
-            >
-              {[
-                { n: '01', label: 'Learn it.' },
-                { n: '02', label: 'Try it.' },
-                { n: '03', label: 'Use it.' },
-                { n: '04', label: 'Save it.' },
-              ].map((step) => (
-                <li
-                  key={step.n}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'baseline',
-                    gap: 10,
-                    padding: '12px 14px',
-                    background: 'var(--cream-2)',
-                    border: '1px solid var(--ink-a10)',
-                    borderRadius: 'var(--r-md, 12px)',
-                  }}
-                >
-                  <span
-                    style={{
-                      fontFamily: MOCKUP_FONT,
-                      fontSize: 11,
-                      fontWeight: 700,
-                      color: 'var(--gold-deep)',
-                      letterSpacing: '0.14em',
-                    }}
-                  >
-                    {step.n}
-                  </span>
-                  <span
-                    style={{
-                      fontFamily: MOCKUP_FONT,
-                      fontSize: 14,
-                      fontWeight: 600,
-                      color: 'var(--ink)',
-                    }}
-                  >
-                    {step.label}
-                  </span>
-                </li>
-              ))}
-            </ol>
-          </header>
-        </div>
-
-        {/* Tabbed content (Learn / Practice / Apply) — behavior preserved.
-            Mockup gold accent is passed through the existing accentColor prop;
-            the inner tab chrome lives in shared CourseTabs (out of scope for
-            this pass). */}
-        <article style={{ maxWidth: 1180, margin: '0 auto', padding: '4px 36px 80px' }}>
-          <Tabbed
-            storagePrefix="foundations-m"
-            legacyStoragePrefix="aibi-p-m"
-            moduleNumber={moduleNum}
-            accentColor="var(--gold)"
-            learnContent={
-              <>
-                <LearnSection
-                  sections={expandedModule?.sections ?? []}
-                  keyTakeaways={expandedModule?.takeaways}
-                  moduleNumber={moduleNum}
-                />
-                <BankingBoundary moduleNumber={moduleNum} />
-                {moduleTables && moduleTables.length > 0 && (
-                  <div style={{ marginTop: 24 }}>
-                    {moduleTables.map((table) => (
-                      <ContentTable key={table.id} table={table} />
-                    ))}
-                  </div>
-                )}
-              </>
-            }
-            practiceContent={
-              <>
-                {SANDBOX_CONFIGS[moduleNum] && (
-                  <AIPracticeSandbox
-                    moduleId={`aibi-p-module-${moduleNum}`}
-                    product="foundation"
-                    sandboxConfig={SANDBOX_CONFIGS[moduleNum]!}
-                  />
-                )}
-                {moduleNum === 3 && (
-                  <MiniTutorialList
-                    tutorials={M3_TUTORIALS}
-                    heading="First-try tutorials"
-                    intro="Step-by-step walkthroughs for your first real banking task on each platform. Pick the one that matches what you already have access to."
-                  />
-                )}
-                {moduleNum === 7 && (
-                  <MiniTutorialList
-                    tutorials={M7_TUTORIALS}
-                    heading="Skill-builder tutorials"
-                    intro="Worked examples of the anatomy-of-a-skill pattern applied to common banking workflows. Open the platform you use, copy the prompt, work through the steps."
-                  />
-                )}
-              </>
-            }
-            applyContent={
-              <ModuleContentClient
-                activities={moduleActivities}
-                enrollmentId={enrollment.id}
-                moduleNumber={moduleNum}
-                existingResponses={existingResponses}
-                isLastModule={isLastModule}
-                isAlreadyCompleted={isAlreadyCompleted}
-                tables={moduleTables}
-                learnerRole={
-                  enrollment.onboarding_answers
-                    ? getRoleSpotlight(enrollment.onboarding_answers)
-                    : 'other'
-                }
-              />
-            }
-          />
+          </section>
         </article>
       </div>
     </CourseShell>
@@ -471,65 +586,46 @@ function buildV4Activity(module: ExpandedModule): Activity {
   };
 }
 
-function BankingBoundary({ moduleNumber }: { readonly moduleNumber: number }) {
+function BankingBoundaryGrid({ moduleNumber }: { readonly moduleNumber: number }) {
   const boundary = BANKING_BOUNDARIES[moduleNumber] ?? BANKING_BOUNDARIES.default;
 
   return (
-    <section
+    <div
       style={{
-        marginTop: 32,
-        border: '1px solid var(--ink-a10)',
-        borderRadius: 'var(--r-xl, 24px)',
-        background: 'white',
-        boxShadow: 'var(--shadow-soft)',
-        padding: 28,
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+        gap: 22,
         fontFamily: MOCKUP_FONT,
       }}
     >
-      <p
-        style={{
-          ...KICKER_STYLE,
-          margin: '0 0 16px',
-        }}
-      >
-        Banking Boundary
-      </p>
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-          gap: 22,
-        }}
-      >
-        {boundary.map(([title, body]) => (
-          <div key={title}>
-            <h2
-              style={{
-                fontFamily: MOCKUP_FONT,
-                fontSize: 16,
-                fontWeight: 700,
-                color: 'var(--ink)',
-                margin: '0 0 6px',
-                letterSpacing: '-0.005em',
-              }}
-            >
-              {title}
-            </h2>
-            <p
-              style={{
-                fontSize: 14,
-                color: 'var(--slate-600)',
-                lineHeight: 1.55,
-                margin: 0,
-                fontWeight: 400,
-              }}
-            >
-              {body}
-            </p>
-          </div>
-        ))}
-      </div>
-    </section>
+      {boundary.map(([title, body]) => (
+        <div key={title}>
+          <h3
+            style={{
+              fontFamily: MOCKUP_FONT,
+              fontSize: 15,
+              fontWeight: 700,
+              color: 'var(--ink)',
+              margin: '0 0 6px',
+              letterSpacing: '-0.005em',
+            }}
+          >
+            {title}
+          </h3>
+          <p
+            style={{
+              fontSize: 14,
+              color: 'var(--slate-600)',
+              lineHeight: 1.55,
+              margin: 0,
+              fontWeight: 400,
+            }}
+          >
+            {body}
+          </p>
+        </div>
+      ))}
+    </div>
   );
 }
 

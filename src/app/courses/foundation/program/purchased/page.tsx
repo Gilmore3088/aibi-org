@@ -6,12 +6,20 @@
 // confuse the "I just bought this, where's my course?" mental model. Once
 // they sign in, the binding completes and /courses/foundation/program
 // renders the full LMS shell.
+//
+// 2026-05-27 redesign (audit §4): the page no longer re-sells the course
+// with a HIGHLIGHTS bullet list. The buyer already bought. Instead it
+// answers "what happens now" in the first viewport with a three-step
+// action ladder, and shows the artifact they're about to produce — a
+// real saved-prompt preview card. Sign-in CTA is step 1 of the ladder,
+// not a separate section. Receipt + access info is a quiet strip.
 
 import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
 import { PrimaryButton, GhostButton } from '@/components/lms';
+import { SavedPromptPreview } from './_local/SavedPromptPreview';
 
 export const metadata: Metadata = {
   title: 'Welcome to AiBI-Foundation | The AI Banking Institute',
@@ -21,13 +29,6 @@ export const metadata: Metadata = {
 };
 
 export const dynamic = 'force-dynamic';
-
-const HIGHLIGHTS = [
-  '12 self-paced modules built around AI Use Cards',
-  'Banking-specific practice reps you keep and reuse',
-  'Work-product assessment + the AiBI-Foundation credential',
-  'Lifetime access to course materials',
-] as const;
 
 interface AiBIPurchasedPageProps {
   readonly searchParams?: Promise<{ readonly session_id?: string }>;
@@ -68,15 +69,18 @@ export default async function AiBIPurchasedPage({
     ? `&email=${encodeURIComponent(prefillEmail)}`
     : '';
 
+  const step1Done = Boolean(signedInEmail);
+
   return (
     <main
       style={{
         background: 'var(--cream)',
         minHeight: '70vh',
-        padding: '56px 24px',
+        padding: '56px 24px 80px',
       }}
     >
-      <div style={{ maxWidth: 720, margin: '0 auto' }}>
+      <div style={{ maxWidth: 880, margin: '0 auto' }}>
+        {/* Eyebrow strip */}
         <div
           style={{
             display: 'flex',
@@ -88,8 +92,8 @@ export default async function AiBIPurchasedPage({
           <span
             style={{
               fontSize: 11,
-              fontWeight: 600,
-              letterSpacing: '0.2em',
+              fontWeight: 700,
+              letterSpacing: '0.22em',
               textTransform: 'uppercase',
               color: 'var(--gold-deep)',
             }}
@@ -99,10 +103,11 @@ export default async function AiBIPurchasedPage({
           <span style={{ flex: 1, height: 1, background: 'var(--ink-a10)' }} />
         </div>
 
+        {/* Hero — what happens in the first 30 minutes */}
         <h1
           style={{
             fontWeight: 700,
-            fontSize: 'clamp(40px, 5.2vw, 60px)',
+            fontSize: 'clamp(36px, 5vw, 56px)',
             lineHeight: 1.04,
             letterSpacing: '-0.03em',
             margin: '0 0 16px',
@@ -111,150 +116,159 @@ export default async function AiBIPurchasedPage({
         >
           Welcome to AiBI-Foundation.
         </h1>
-
         <p
           style={{
             fontSize: 19,
-            lineHeight: 1.45,
+            lineHeight: 1.5,
             color: 'var(--slate-600)',
-            margin: '0 0 32px',
+            margin: '0 0 40px',
             maxWidth: '60ch',
           }}
         >
-          Thanks for your purchase. A receipt is on its way from Stripe, and a
-          welcome email with the course link will follow within minutes.
+          In your first thirty minutes you&rsquo;ll sign in, open Module 1, and
+          save a banking prompt you can reuse the same day.
         </p>
 
-        <section
+        {/* Two-column: action ladder + saved-prompt preview */}
+        <div
           style={{
-            border: '1px solid var(--ink-a10)',
-            background: 'var(--cream-2)',
-            borderRadius: 24,
-            padding: '24px 26px',
-            marginBottom: 40,
-            boxShadow: 'var(--shadow-soft)',
+            display: 'grid',
+            gap: 32,
+            gridTemplateColumns: 'minmax(0, 1.4fr) minmax(0, 1fr)',
+            alignItems: 'start',
+            marginBottom: 48,
+          }}
+          className="purchased-grid"
+        >
+          {/* Action ladder */}
+          <section aria-label="Next steps">
+            <p
+              style={{
+                fontSize: 11,
+                fontWeight: 700,
+                letterSpacing: '0.22em',
+                textTransform: 'uppercase',
+                color: 'var(--gold-deep)',
+                margin: '0 0 18px',
+              }}
+            >
+              What happens now
+            </p>
+
+            <ol
+              style={{
+                listStyle: 'none',
+                padding: 0,
+                margin: 0,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 14,
+              }}
+            >
+              <ActionStep
+                index={1}
+                done={step1Done}
+                title={
+                  step1Done
+                    ? `Signed in as ${signedInEmail}`
+                    : 'Sign in to bind your enrollment'
+                }
+                body={
+                  step1Done
+                    ? 'Your purchase is bound to this account. You can begin Module 1 below.'
+                    : prefillEmail
+                      ? `We pre-filled ${prefillEmail} from your receipt. Takes about 30 seconds.`
+                      : 'Create or sign into your account. Takes about 30 seconds.'
+                }
+                action={
+                  step1Done ? null : (
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexWrap: 'wrap',
+                        gap: 12,
+                        marginTop: 14,
+                      }}
+                    >
+                      <PrimaryButton
+                        as="a"
+                        href={`/auth/signup?next=/courses/foundation/program${emailQs}`}
+                      >
+                        CREATE MY ACCOUNT
+                      </PrimaryButton>
+                      <GhostButton
+                        as="a"
+                        href={`/auth/login?next=/courses/foundation/program${emailQs}`}
+                      >
+                        I ALREADY HAVE ONE
+                      </GhostButton>
+                    </div>
+                  )
+                }
+              />
+              <ActionStep
+                index={2}
+                done={false}
+                title="Open Module 1: Foundations"
+                body="About 35 minutes. Read the takeaway, run one sandbox prompt, and submit your first work product."
+                action={
+                  step1Done ? (
+                    <div style={{ marginTop: 14 }}>
+                      <PrimaryButton
+                        as="a"
+                        href="/courses/foundation/program"
+                      >
+                        BEGIN MODULE 1 →
+                      </PrimaryButton>
+                    </div>
+                  ) : null
+                }
+              />
+              <ActionStep
+                index={3}
+                done={false}
+                title="Save your first prompt"
+                body="By the end of Module 3 you&rsquo;ll save your first reusable banker prompt to your Toolbox. The card on the right is the shape it takes."
+                action={null}
+              />
+            </ol>
+          </section>
+
+          {/* Saved-prompt preview — the artifact */}
+          <SavedPromptPreview />
+        </div>
+
+        {/* Quiet receipt + access strip */}
+        <section
+          aria-label="Receipt and access"
+          style={{
+            borderTop: '1px solid var(--ink-a10)',
+            paddingTop: 22,
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: 14,
+            alignItems: 'baseline',
+            justifyContent: 'space-between',
+            fontSize: 13,
+            color: 'var(--slate-500)',
+            lineHeight: 1.6,
           }}
         >
-          <p
-            style={{
-              fontSize: 11,
-              fontWeight: 600,
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
-              color: 'var(--gold-deep)',
-              margin: '0 0 14px',
-            }}
-          >
-            What you get
-          </p>
-          <ul
-            style={{
-              margin: 0,
-              padding: 0,
-              listStyle: 'none',
-              display: 'grid',
-              gap: 10,
-            }}
-          >
-            {HIGHLIGHTS.map((line) => (
-              <li
-                key={line}
-                style={{
-                  display: 'flex',
-                  gap: 10,
-                  fontSize: 15,
-                  color: 'var(--slate-600)',
-                  lineHeight: 1.55,
-                }}
-              >
-                <span
-                  aria-hidden="true"
-                  style={{
-                    marginTop: 7,
-                    width: 6,
-                    height: 6,
-                    borderRadius: 999,
-                    background: 'var(--gold)',
-                    flex: 'none',
-                  }}
-                />
-                <span>{line}</span>
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        <section style={{ borderTop: '1px solid var(--ink-a10)', paddingTop: 28 }}>
-          {signedInEmail ? (
-            <>
-              <p
-                style={{
-                  fontSize: 14,
-                  color: 'var(--slate-600)',
-                  margin: '0 0 18px',
-                  lineHeight: 1.6,
-                }}
-              >
-                You&rsquo;re signed in as{' '}
-                <span
-                  style={{
-                    fontWeight: 600,
-                    color: 'var(--ink)',
-                  }}
-                >
-                  {signedInEmail}
+          <span>
+            A Stripe receipt and a welcome email are on their way
+            {prefillEmail ? (
+              <>
+                {' '}to{' '}
+                <span style={{ fontWeight: 600, color: 'var(--ink)' }}>
+                  {prefillEmail}
                 </span>
-                . Module 1 takes about 35 minutes.
-              </p>
-              <PrimaryButton as="a" href="/courses/foundation/program">
-                BEGIN MODULE 1 →
-              </PrimaryButton>
-            </>
-          ) : (
-            <>
-              <p
-                style={{
-                  fontSize: 14,
-                  color: 'var(--slate-600)',
-                  margin: '0 0 18px',
-                  lineHeight: 1.6,
-                }}
-              >
-                One last step: {prefillEmail ? 'finish creating' : 'create or sign into'} your
-                account{prefillEmail ? (
-                  <>
-                    {' '}for{' '}
-                    <span style={{ fontWeight: 600, color: 'var(--ink)' }}>
-                      {prefillEmail}
-                    </span>
-                  </>
-                ) : null} to bind your enrollment. Takes 30 seconds.
-              </p>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
-                <PrimaryButton
-                  as="a"
-                  href={`/auth/signup?next=/courses/foundation/program${emailQs}`}
-                >
-                  CREATE MY ACCOUNT
-                </PrimaryButton>
-                <GhostButton
-                  as="a"
-                  href={`/auth/login?next=/courses/foundation/program${emailQs}`}
-                >
-                  I ALREADY HAVE ONE
-                </GhostButton>
-              </div>
-            </>
-          )}
-          <p
-            style={{
-              fontSize: 13,
-              color: 'var(--slate-500)',
-              margin: '24px 0 0',
-              lineHeight: 1.55,
-            }}
-          >
-            Trouble? Reply to your receipt email or write to{' '}
+              </>
+            ) : null}
+            .
+          </span>
+          <span>Lifetime access · 12 modules · One credential</span>
+          <span>
+            Trouble?{' '}
             <a
               href="mailto:hello@aibankinginstitute.com"
               style={{
@@ -264,63 +278,89 @@ export default async function AiBIPurchasedPage({
             >
               hello@aibankinginstitute.com
             </a>
-            .
-          </p>
-        </section>
-
-        <section
-          style={{
-            marginTop: 40,
-            border: '1px solid var(--ink-a10)',
-            borderLeft: '4px solid var(--gold)',
-            background: 'var(--cream-2)',
-            borderRadius: 24,
-            padding: '24px 26px',
-            boxShadow: 'var(--shadow-soft)',
-          }}
-        >
-          <p
-            style={{
-              fontSize: 11,
-              fontWeight: 600,
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
-              color: 'var(--gold-deep)',
-              margin: '0 0 10px',
-            }}
-          >
-            Included with your purchase
-          </p>
-          <h2
-            style={{
-              fontWeight: 700,
-              fontSize: 24,
-              lineHeight: 1.15,
-              letterSpacing: '-0.02em',
-              color: 'var(--ink)',
-              margin: '0 0 10px',
-            }}
-          >
-            Your Banking AI Toolbox
-          </h2>
-          <p
-            style={{
-              fontSize: 15,
-              lineHeight: 1.6,
-              color: 'var(--slate-600)',
-              margin: '0 0 18px',
-              maxWidth: '60ch',
-            }}
-          >
-            The full workbench: Library, Build, Playground, My Toolbox, and
-            Cookbook. Twelve banker-built prompts are live today, with more
-            landing as the role kits roll out.
-          </p>
-          <PrimaryButton as="a" href="/dashboard/toolbox">
-            OPEN THE TOOLBOX →
-          </PrimaryButton>
+          </span>
         </section>
       </div>
+
+      <style>{`
+        @media (max-width: 760px) {
+          .purchased-grid {
+            grid-template-columns: minmax(0, 1fr) !important;
+          }
+        }
+      `}</style>
     </main>
+  );
+}
+
+// --- Local helpers ---------------------------------------------------------
+
+interface ActionStepProps {
+  readonly index: number;
+  readonly done: boolean;
+  readonly title: string;
+  readonly body: string;
+  readonly action: React.ReactNode | null;
+}
+
+function ActionStep({ index, done, title, body, action }: ActionStepProps) {
+  return (
+    <li
+      style={{
+        display: 'grid',
+        gridTemplateColumns: '44px 1fr',
+        gap: 16,
+        padding: '18px 20px',
+        borderRadius: 16,
+        border: `1px solid ${done ? 'var(--emerald-700)' : 'var(--ink-a10)'}`,
+        background: done ? 'var(--cream-2)' : '#FFFFFF',
+        boxShadow: 'var(--shadow-soft)',
+      }}
+    >
+      <span
+        aria-hidden="true"
+        style={{
+          width: 36,
+          height: 36,
+          borderRadius: 12,
+          background: done ? 'var(--emerald-700)' : 'var(--ink)',
+          color: 'var(--cream)',
+          display: 'inline-flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: 14,
+          fontWeight: 700,
+          fontVariantNumeric: 'tabular-nums',
+          flexShrink: 0,
+        }}
+      >
+        {done ? '✓' : index}
+      </span>
+      <div>
+        <h2
+          style={{
+            margin: 0,
+            fontSize: 16,
+            fontWeight: 700,
+            letterSpacing: '-0.01em',
+            color: 'var(--ink)',
+            lineHeight: 1.3,
+          }}
+        >
+          {title}
+        </h2>
+        <p
+          style={{
+            margin: '6px 0 0',
+            fontSize: 14,
+            lineHeight: 1.55,
+            color: 'var(--slate-600)',
+          }}
+        >
+          {body}
+        </p>
+        {action}
+      </div>
+    </li>
   );
 }

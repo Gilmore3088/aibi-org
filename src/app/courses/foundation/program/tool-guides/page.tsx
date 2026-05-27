@@ -1,9 +1,14 @@
 // /courses/foundation/program/tool-guides — Platform deep-dive guides page.
 //
 // Server Component. Renders all 6 platform guides (ChatGPT, Claude,
-// Copilot, Gemini, NotebookLM, Perplexity) from the canonical
+// Copilot, Gemini, NotebookLM, Perplexity) inline from the canonical
 // ALL_TOOL_GUIDES array. Each guide is rendered through the shared
-// <ToolGuide> client component.
+// <ToolGuide> client component, which already drives its own collapsible
+// accordion for getting-started / pricing / use-cases / data-safety / pro-tips.
+//
+// A top-of-page <ToolGuideFilter /> lets the banker pick a workflow
+// ("drafting", "summarizing", "scenario-building", "chat") and dims
+// platforms that don't fit — filter is reveal-by-use-case, not gate.
 //
 // Default order is set by ALL_TOOL_GUIDES in
 // content/courses/foundation-program/tool-guides/index.ts. A future
@@ -16,12 +21,32 @@ import { redirect } from 'next/navigation';
 import { CourseShellWrapper } from '@/components/lms/CourseShellWrapper';
 import { ToolGuide } from '../_components/ToolGuide';
 import { getEnrollment } from '../_lib/getEnrollment';
-import { ALL_TOOL_GUIDES } from '@content/courses/foundation-program/tool-guides';
+import {
+  ALL_TOOL_GUIDES,
+  type PlatformId,
+} from '@content/courses/foundation-program/tool-guides';
+import {
+  ToolGuideFilter,
+  type UseCaseFilter,
+} from './_local/ToolGuideFilter';
 
 export const metadata: Metadata = {
   title: 'Platform Deep Dive Guides | AiBI-Foundation | The AI Banking Institute',
   description:
     'In-depth guides for the six AI platforms most relevant to community banking: ChatGPT, Claude, Microsoft Copilot, Google Gemini, NotebookLM, and Perplexity. Getting started, banking use cases, data safety, and pro tips.',
+};
+
+// Per-platform workflow tags — drive the filter. Sourced from each guide's
+// bankingUseCases (the substantive content already on disk). Drafting,
+// summarizing, scenario-building, and chat are the four buckets the
+// banker thinks in; every platform is tagged for the buckets it serves.
+const PLATFORM_TAGS: Readonly<Record<PlatformId, readonly UseCaseFilter[]>> = {
+  chatgpt: ['drafting', 'summarizing', 'scenario-building', 'chat'],
+  claude: ['drafting', 'summarizing', 'scenario-building'],
+  copilot: ['drafting', 'summarizing', 'chat'],
+  gemini: ['summarizing', 'scenario-building', 'chat'],
+  notebooklm: ['summarizing'],
+  perplexity: ['summarizing', 'chat'],
 };
 
 const kicker = {
@@ -42,7 +67,7 @@ export default async function ToolGuidesPage() {
 
   return (
     <CourseShellWrapper crumbs={['Education', 'AiBI-Foundation', 'Platform Guides']}>
-      <header style={{ marginBottom: 40 }}>
+      <header style={{ marginBottom: 32 }}>
         <div
           style={{
             display: 'flex',
@@ -65,121 +90,82 @@ export default async function ToolGuidesPage() {
             color: 'var(--ink)',
           }}
         >
-          Platform deep-dive guides
+          Pick the platform that fits the job.
         </h1>
 
         <p
           style={{
-            fontSize: 19,
-            lineHeight: 1.45,
+            fontSize: 18,
+            lineHeight: 1.5,
             color: 'var(--slate-600)',
-            margin: '0 0 12px',
-            maxWidth: '60ch',
-          }}
-        >
-          Six platforms, end-to-end — built for community banking.
-        </p>
-        <p
-          style={{
-            color: 'var(--slate-600)',
-            fontSize: 15,
-            lineHeight: 1.6,
             margin: 0,
             maxWidth: '64ch',
           }}
         >
-          Each guide covers getting started, pricing tiers with banking
-          verdicts, five banking use cases with copy-paste prompts,
-          custom-instruction templates, data safety for institutional
-          use, and five pro tips. Use these as reference alongside
-          Module 3 (First Try) and Module 4 (Platform Features Deep
-          Dive).
+          Six platforms, end-to-end — built for community banking. Filter by
+          the workflow you&rsquo;re trying to run, then expand a platform to see
+          getting-started steps, pricing, banking use cases, custom
+          instructions, data-safety guidance, and pro tips inline.
         </p>
       </header>
 
-      {/* Platform jump navigation */}
-      <nav
-        aria-label="Jump to platform"
-        style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          gap: 8,
-          marginBottom: 40,
-          padding: 16,
-          background: 'var(--cream-2)',
-          border: '1px solid var(--ink-a10)',
-          borderRadius: 16,
-        }}
-      >
-        <span
-          style={{
-            ...kicker,
-            alignSelf: 'center',
-            marginRight: 6,
-            color: 'var(--slate-500)',
-          }}
-        >
-          Jump to:
-        </span>
-        {ALL_TOOL_GUIDES.map((g) => (
-          <a
-            key={g.platformId}
-            href={`#guide-${g.platformId}`}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              padding: '6px 12px',
-              fontSize: 11,
-              fontWeight: 600,
-              letterSpacing: '0.14em',
-              textTransform: 'uppercase',
-              borderRadius: 999,
-              background: 'var(--ink)',
-              color: 'var(--cream-2)',
-              textDecoration: 'none',
-            }}
-          >
-            {g.platformLabel}
-          </a>
-        ))}
-      </nav>
+      {/* Top filter — reveals platforms by workflow */}
+      <ToolGuideFilter platformTags={PLATFORM_TAGS} />
 
-      {/* Guide sections — one per platform from ALL_TOOL_GUIDES */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 64 }}>
+      {/* All 6 platforms — inline. ToolGuide handles its own accordion. */}
+      <div data-tool-guides-root style={{ display: 'flex', flexDirection: 'column', gap: 56 }}>
         {ALL_TOOL_GUIDES.map((guide) => (
           <section
             key={guide.platformId}
             id={`guide-${guide.platformId}`}
+            data-platform-id={guide.platformId}
             aria-labelledby={`heading-${guide.platformId}`}
           >
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 14,
-                marginBottom: 20,
-              }}
-            >
-              <h2
-                id={`heading-${guide.platformId}`}
+            <div style={{ marginBottom: 18 }}>
+              <div
                 style={{
-                  fontWeight: 700,
-                  fontSize: 26,
-                  letterSpacing: '-0.02em',
-                  color: 'var(--ink)',
-                  margin: 0,
+                  display: 'flex',
+                  alignItems: 'baseline',
+                  gap: 14,
+                  marginBottom: 8,
                 }}
               >
-                {guide.platformLabel}
-              </h2>
-              <div
-                aria-hidden="true"
+                <h2
+                  id={`heading-${guide.platformId}`}
+                  style={{
+                    fontWeight: 700,
+                    fontSize: 28,
+                    letterSpacing: '-0.02em',
+                    color: 'var(--ink)',
+                    margin: 0,
+                  }}
+                >
+                  {guide.platformLabel}
+                </h2>
+                <div
+                  aria-hidden="true"
+                  style={{
+                    flex: 1,
+                    height: 1,
+                    background: 'var(--ink-a10)',
+                    alignSelf: 'center',
+                  }}
+                />
+              </div>
+              <p
                 style={{
-                  flex: 1,
-                  height: 1,
-                  background: 'var(--ink-a10)',
+                  fontSize: 15,
+                  lineHeight: 1.55,
+                  color: 'var(--slate-600)',
+                  margin: 0,
+                  maxWidth: '70ch',
                 }}
-              />
+              >
+                <strong style={{ color: 'var(--ink)', fontWeight: 600 }}>
+                  You need this if:
+                </strong>{' '}
+                {guide.tagline}
+              </p>
             </div>
             <ToolGuide guide={guide} />
           </section>

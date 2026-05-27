@@ -1,9 +1,14 @@
 import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
-import { FOUNDATION_ARTIFACTS } from '@content/practice-reps/foundation-program';
+import {
+  FOUNDATION_ARTIFACTS,
+  getPracticeRepById,
+} from '@content/practice-reps/foundation-program';
 import { PrimaryButton, GhostButton } from '@/components/lms';
 import { CourseShellWrapper } from '@/components/lms/CourseShellWrapper';
 import { ArtifactStatusPanel } from './ArtifactStatusPanel';
+import { ArtifactBody } from './_local/ArtifactBody';
+import { ArtifactActions } from './_local/ArtifactActions';
 import { getEnrollment } from '../../_lib/getEnrollment';
 
 interface ArtifactPageProps {
@@ -25,6 +30,9 @@ export function generateMetadata({ params }: ArtifactPageProps) {
   };
 }
 
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.aibankinginstitute.com';
+
 export default async function ArtifactDetailPage({ params }: ArtifactPageProps) {
   const artifact = FOUNDATION_ARTIFACTS.find((item) => item.id === params.artifactId);
 
@@ -39,18 +47,18 @@ export default async function ArtifactDetailPage({ params }: ArtifactPageProps) 
     redirect('/courses/foundation/program/purchase');
   }
 
+  const source = getPracticeRepById(artifact.sourceActivityId);
+  const shareUrl = `${SITE_URL}/courses/foundation/program/artifacts/${artifact.id}`;
+  const copyText = source
+    ? `${artifact.title}\n\nScenario: ${source.scenario}\n\nPrompt:\n${source.starterPrompt}\n\nModel output:\n${source.modelAnswer}`
+    : `${artifact.title}\n\n${artifact.description}`;
+
   return (
     <CourseShellWrapper
       crumbs={['Education', 'AiBI-Foundation', `Module ${artifact.moduleNumber}`, 'Artifact']}
-      contentMaxWidth={760}
+      contentMaxWidth={1040}
     >
-      <header
-        style={{
-          borderBottom: '1px solid var(--ink-a10)',
-          paddingBottom: 28,
-          marginBottom: 32,
-        }}
-      >
+      <header style={{ marginBottom: 28 }}>
         <p
           style={{
             fontSize: 11,
@@ -66,10 +74,10 @@ export default async function ArtifactDetailPage({ params }: ArtifactPageProps) 
         <h1
           style={{
             fontWeight: 700,
-            fontSize: 'clamp(32px, 4vw, 46px)',
+            fontSize: 'clamp(30px, 4vw, 44px)',
             lineHeight: 1.08,
             letterSpacing: '-0.025em',
-            margin: '0 0 16px',
+            margin: '0 0 14px',
             color: 'var(--ink)',
           }}
         >
@@ -77,38 +85,68 @@ export default async function ArtifactDetailPage({ params }: ArtifactPageProps) 
         </h1>
         <p
           style={{
-            fontSize: 16,
+            fontSize: 17,
             color: 'var(--slate-600)',
             lineHeight: 1.6,
             margin: 0,
-            maxWidth: '60ch',
+            maxWidth: '64ch',
           }}
         >
           {artifact.description}
         </p>
       </header>
 
-      <section
+      <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-          gap: 14,
-          marginBottom: 32,
+          gridTemplateColumns: 'minmax(0, 1fr) minmax(240px, 300px)',
+          gap: 28,
+          alignItems: 'start',
         }}
       >
-        <ArtifactStatusPanel artifactId={artifact.id} />
-        <DetailBlock title="Source activity" body={artifact.sourceActivityId} />
-        <DetailBlock
-          title="Certification evidence"
-          body={
-            artifact.countsTowardCertificate
-              ? 'Counts toward AiBI-Foundation certification.'
-              : 'Practice artifact only.'
-          }
-        />
-      </section>
+        {/* Hero IS the artifact — large white card */}
+        <ArtifactBody artifact={artifact} source={source} />
 
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
+        {/* Compact sidebar — status + metadata */}
+        <aside
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 14,
+            position: 'sticky',
+            top: 24,
+          }}
+        >
+          <ArtifactStatusPanel artifactId={artifact.id} />
+
+          <MetaPanel
+            items={[
+              { label: 'Module', value: `Module ${artifact.moduleNumber}` },
+              { label: 'Format', value: artifact.format },
+              { label: 'Source activity', value: artifact.sourceActivityId },
+              {
+                label: 'Certification',
+                value: artifact.countsTowardCertificate
+                  ? 'Counts toward AiBI-Foundation'
+                  : 'Practice artifact only',
+              },
+            ]}
+          />
+
+          <ArtifactActions copyText={copyText} shareUrl={shareUrl} />
+        </aside>
+      </div>
+
+      {/* Action row — primary moves at the foot of the artifact */}
+      <div
+        style={{
+          marginTop: 28,
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: 12,
+          alignItems: 'center',
+        }}
+      >
         {artifact.downloadHref ? (
           <PrimaryButton as="a" href={artifact.downloadHref}>
             DOWNLOAD
@@ -118,6 +156,9 @@ export default async function ArtifactDetailPage({ params }: ArtifactPageProps) 
             OPEN SOURCE ACTIVITY
           </PrimaryButton>
         )}
+        <GhostButton as="a" href="/dashboard/toolbox/library">
+          EDIT IN TOOLBOX
+        </GhostButton>
         <GhostButton as="a" href="/courses/foundation/program/gallery">
           BROWSE GALLERY
         </GhostButton>
@@ -142,12 +183,10 @@ export default async function ArtifactDetailPage({ params }: ArtifactPageProps) 
   );
 }
 
-function DetailBlock({
-  title,
-  body,
+function MetaPanel({
+  items,
 }: {
-  readonly title: string;
-  readonly body: string;
+  readonly items: ReadonlyArray<{ readonly label: string; readonly value: string }>;
 }) {
   return (
     <article
@@ -157,30 +196,37 @@ function DetailBlock({
         background: 'var(--cream-2)',
         padding: 18,
         boxShadow: 'var(--shadow-soft)',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 12,
       }}
     >
-      <p
-        style={{
-          fontSize: 10,
-          fontWeight: 600,
-          letterSpacing: '0.2em',
-          textTransform: 'uppercase',
-          color: 'var(--gold-deep)',
-          margin: '0 0 8px',
-        }}
-      >
-        {title}
-      </p>
-      <p
-        style={{
-          fontSize: 13,
-          color: 'var(--slate-600)',
-          lineHeight: 1.55,
-          margin: 0,
-        }}
-      >
-        {body}
-      </p>
+      {items.map((item) => (
+        <div key={item.label}>
+          <p
+            style={{
+              fontSize: 10,
+              fontWeight: 600,
+              letterSpacing: '0.2em',
+              textTransform: 'uppercase',
+              color: 'var(--gold-deep)',
+              margin: '0 0 4px',
+            }}
+          >
+            {item.label}
+          </p>
+          <p
+            style={{
+              fontSize: 13.5,
+              color: 'var(--ink)',
+              lineHeight: 1.5,
+              margin: 0,
+            }}
+          >
+            {item.value}
+          </p>
+        </div>
+      ))}
     </article>
   );
 }
