@@ -73,16 +73,21 @@ export default function AssessmentPage() {
           const completePct = Math.round((state.currentQuestion / QUESTIONS_PER_SESSION) * 100);
           return (
             <div className="mk-take-inner">
-              {/* Persistent dark navy hero — live score panel */}
+              {/* Persistent dark navy hero — live score panel.
+                  Copy is intentionally minimal here. The user clicked
+                  a "Take the assessment" CTA to land on this page, so
+                  selling the assessment again is redundant — the next
+                  question should be the focus. */}
               <section className="mk-take-q-hero">
                 <div className="mk-take-q-hero-copy">
                   <div className="mk-take-q-hero-chip">
-                    <span className="mk-dot" /> {QUESTIONS_PER_SESSION} questions · about 3 minutes
+                    <span className="mk-dot" /> Question {state.currentQuestion + 1} of {QUESTIONS_PER_SESSION}
                   </div>
-                  <h2>Get your AI readiness score.</h2>
+                  <h2>Answer the question below.</h2>
                   <p>
-                    One question per screen. Twelve questions, about three minutes.
-                    Your tier and dimension breakdown are revealed at the end.
+                    Pick the option that&rsquo;s closest to true for your
+                    institution today. There&rsquo;s no right answer — only
+                    your honest read.
                   </p>
                 </div>
                 <div className="mk-take-q-card">
