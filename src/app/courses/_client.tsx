@@ -35,7 +35,6 @@ const FileIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M14 2H6a2 2 0 0 0-2
 const StarIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M12 3l1.9 5.8L20 10l-4.6 3.4L17.2 20 12 16.6 6.8 20l1.8-6.6L4 10l6.1-1.2z" /></svg>);
 const StackIcon = (p: IconProps) => (<svg {...sw(p)}><polyline points="22 12 12 17 2 12" /><polygon points="12 2 22 7 12 12 2 7" /></svg>);
 const CheckIcon = (p: IconProps) => (<svg {...sw(p)}><polyline points="20 6 9 17 4 12" /></svg>);
-const CheckSquareIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M9 11l3 3L22 4" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" /></svg>);
 const ArrowR = (p: IconProps) => (<svg {...sw(p)}><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>);
 const PlayIcon = (p: IconProps) => (<svg {...sw(p)}><polygon points="6 4 20 12 6 20 6 4" fill="currentColor" stroke="none" /></svg>);
 const FlaskIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M10 2v7.31" /><path d="M14 9.3V2" /><path d="M8.5 2h7" /><path d="M14 9.3a6.5 6.5 0 1 1-4 0" /></svg>);
@@ -45,7 +44,7 @@ const FlaskIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M10 2v7.31" /><pat
 type Artifact = {
   title: string;
   kicker: string;
-  icon: typeof CheckSquareIcon;
+  icon: (p: IconProps) => JSX.Element;
   inputLabel: string;
   input: string;
   outputLabel: string;
@@ -98,7 +97,7 @@ const ARTIFACTS: Artifact[] = [
 
 // ---------- Inside one lesson (auto-cycling loop) ----------
 
-type LessonStep = { step: string; title: string; body: string; icon: typeof CheckSquareIcon };
+type LessonStep = { step: string; title: string; body: string; icon: (p: IconProps) => JSX.Element };
 const LESSON_STEPS: LessonStep[] = [
   { step: 'watch', title: 'Watch', body: '5–8 minute concept video. Why the technique works, where it fails.', icon: PlayIcon },
   { step: 'practice', title: 'Practice', body: 'Run a sandbox scenario with realistic synthetic banking data.', icon: FlaskIcon },
