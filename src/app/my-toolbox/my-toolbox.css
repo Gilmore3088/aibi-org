@@ -12,7 +12,7 @@
 .mt-page{
     --paper:#F4F1E7; --paper-2:#EDE8DA; --parch:#E4E0D2; --parch-dark:#D5D1C2; --tape:#F1E9D0;
     --ink:#0E1B2D; --ink-2:#1F2A3F; --muted:#5C6B82; --soft:#8C95A8;
-    --terra:var(--ledger-accent); --terra-2:#8E6212; --terra-soft:var(--ledger-accent-a10);
+    --terra:#C8A24A; --terra-2:#8E6212; --terra-soft:rgba(200,162,74,0.10);
     --green:#1F8A5B; --navy:#1E3A5F; --weak:#8E3B2A;
     --rule:rgba(14,27,45,0.10); --rule-2:rgba(14,27,45,0.22);
     --serif:'Newsreader',Georgia,serif;
@@ -29,7 +29,7 @@
   .mt-page .container{max-width:var(--maxw);margin:0 auto;padding:0 28px}
 
   /* NAV */
-  .mt-page .nav{position:sticky;top:0;z-index:30;background:var(--ledger-paper);border-bottom:1px solid var(--rule)}
+  .mt-page .nav{position:sticky;top:0;z-index:30;background:#F7F3EA;border-bottom:1px solid var(--rule)}
   .mt-page .nav-inner{max-width:var(--maxw);margin:0 auto;padding:13px 28px;display:flex;align-items:center;justify-content:space-between;gap:24px}
   .mt-page .nav-mark{font-family:var(--sans);font-weight:700;font-size:12px;letter-spacing:-0.005em;text-transform:uppercase;line-height:1}
   .mt-page .nav-mark .l2{color:var(--soft);font-weight:600;margin-top:2px;display:block}
@@ -202,7 +202,7 @@
   
   /* ACTION OVERLAY — quick actions on hover */
   .mt-page .tile{position:relative}
-  .mt-page .tile .actions{position:absolute;top:8px;right:8px;display:flex;gap:2px;background:var(--ledger-paper);border:1px solid var(--rule-2);opacity:0;transform:translateY(-2px);transition:opacity 0.12s, transform 0.12s;z-index:2}
+  .mt-page .tile .actions{position:absolute;top:8px;right:8px;display:flex;gap:2px;background:#F7F3EA;border:1px solid var(--rule-2);opacity:0;transform:translateY(-2px);transition:opacity 0.12s, transform 0.12s;z-index:2}
   .mt-page .tile:hover .actions{opacity:1;transform:translateY(0)}
   .mt-page .tile .act{width:28px;height:28px;display:grid;place-items:center;background:transparent;border:none;cursor:pointer;color:var(--ink-2);border-right:1px solid var(--rule)}
   .mt-page .tile .act:last-child{border-right:none}
@@ -232,7 +232,7 @@
   .mt-page .tile:hover .pin-mark{display:none}
 
   /* SHARED-WITH-YOU SHELF */
-  .mt-page .swy{margin-top:24px;background:linear-gradient(to bottom, var(--ledger-accent-a06), transparent);border:1px solid var(--ledger-accent-a30);padding:18px 22px 20px;position:relative}
+  .mt-page .swy{margin-top:24px;background:linear-gradient(to bottom, rgba(200,162,74,0.06), transparent);border:1px solid rgba(200,162,74,0.30);padding:18px 22px 20px;position:relative}
   .mt-page .swy::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--terra)}
   .mt-page .swy-h{display:flex;align-items:baseline;gap:14px;margin-bottom:14px}
   .mt-page .swy-h .l{font-family:var(--mono);font-size:9.5px;letter-spacing:0.22em;text-transform:uppercase;color:var(--terra);font-weight:700}

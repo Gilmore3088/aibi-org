@@ -22,11 +22,11 @@
   --slate: #5C6B82;
   --muted: #5C6B82;
   --soft: #8C95A8;
-  --accent: var(--ledger-accent);          /* gold */
-  --accent-light: var(--ledger-accent-light);
-  --accent-soft: var(--ledger-accent-a10);
+  --accent: #C8A24A;          /* gold */
+  --accent-light: #D8B867;
+  --accent-soft: rgba(200,162,74,0.10);
   --accent-2: #1E3A5F;        /* navy */
-  --warn: var(--ledger-accent);
+  --warn: #C8A24A;
   --weak: #8E3B2A;            /* oxblood — destructive, errors */
   --tape: #F1E9D0;            /* highlight tape */
   --rule: #D5D1C2;
