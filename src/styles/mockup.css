@@ -1375,33 +1375,186 @@ section.mk-std { padding: 56px 0; }
 @media (min-width: 768px) { .mk-take-inner { padding: 80px 24px 120px; } }
 
 .mk-take-score {
-  max-width: 720px; margin: 0 auto;
+  max-width: 1200px; margin: 0 auto;
   display: flex; flex-direction: column; gap: 40px;
 }
-.mk-take-score-head {
-  text-align: center;
-  display: flex; flex-direction: column; gap: 16px;
+
+/* Dark navy snapshot section — score reveal, no email yet */
+.mk-take-snap {
+  background: var(--ink); color: #fff;
+  border-radius: var(--r-2xl);
+  padding: 40px 32px;
+  display: grid; gap: 32px; grid-template-columns: 1fr;
+  position: relative; overflow: hidden;
+  outline: none;
 }
-.mk-take-score-head .mk-k {
+.mk-take-snap:focus-visible {
+  outline: 2px solid var(--gold); outline-offset: 4px;
+}
+@media (min-width: 900px) {
+  .mk-take-snap { grid-template-columns: 0.76fr 1.24fr; padding: 56px 48px; gap: 56px; align-items: center; }
+}
+.mk-take-snap-copy h2 {
+  font-size: clamp(32px, 5vw, 56px);
+  font-weight: 700; line-height: 1.05;
+  letter-spacing: -0.02em; margin: 16px 0 20px;
+}
+.mk-take-snap-k {
   font-size: 11px; font-weight: 700; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--gold-soft);
+  margin: 0;
+}
+.mk-take-snap-lede {
+  font-size: 17px; line-height: 1.55;
+  color: rgba(255,255,255,0.70);
+  margin: 0; max-width: 50ch;
+}
+.mk-take-snap-lede strong { color: var(--gold-soft); font-weight: 700; }
+
+.mk-take-snap-card {
+  background: #fff; color: var(--ink);
+  border-radius: var(--r-2xl); overflow: hidden;
+  box-shadow: var(--shadow-hero);
+}
+.mk-take-snap-score {
+  background: var(--ink); color: #fff;
+  padding: 32px;
+  display: grid; gap: 20px; grid-template-columns: 1fr;
+}
+@media (min-width: 720px) {
+  .mk-take-snap-score { grid-template-columns: 0.44fr 0.56fr; align-items: center; gap: 32px; padding: 36px 40px; }
+}
+.mk-take-snap-score .mk-k {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--gold-soft);
+}
+.mk-take-snap-num {
+  display: flex; align-items: baseline; gap: 8px;
+  margin-top: 12px;
+}
+.mk-take-snap-num .mk-v {
+  font-size: 72px; font-weight: 700; color: var(--gold-soft);
+  line-height: 1; letter-spacing: -0.03em;
+}
+.mk-take-snap-num .mk-u {
+  font-size: 16px; color: rgba(255,255,255,0.50);
+  font-weight: 500;
+}
+.mk-take-snap-tier {
+  background: rgba(255,255,255,0.08); padding: 16px 20px;
+  border-radius: var(--r-lg);
+}
+.mk-take-snap-tier-v {
+  font-size: 22px; font-weight: 700; color: #fff;
+  margin: 4px 0 0;
+}
+.mk-take-snap-meta {
+  background: #fff; padding: 20px 24px;
+  display: grid; gap: 12px; grid-template-columns: 1fr;
+  border-top: 1px solid var(--slate-200);
+}
+@media (min-width: 560px) {
+  .mk-take-snap-meta { grid-template-columns: repeat(3, 1fr); }
+}
+.mk-take-snap-meta-card {
+  background: var(--cream); padding: 14px 16px;
+  border: 1px solid var(--slate-200); border-radius: var(--r-md);
+}
+.mk-take-snap-meta-card .mk-k {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.22em;
   text-transform: uppercase; color: var(--gold-deep);
   margin: 0;
 }
-.mk-take-score-h {
-  font-size: clamp(28px, 4vw, 44px);
-  font-weight: 700; line-height: 1.15;
-  letter-spacing: -0.02em; color: var(--ink);
+.mk-take-snap-meta-v {
+  font-size: 17px; font-weight: 700; color: var(--ink);
+  margin: 6px 0 0;
+}
+
+/* Insight card — 3-column on cream */
+.mk-take-insight {
+  background: #fff;
+  border: 1px solid var(--slate-200); border-radius: var(--r-2xl);
+  box-shadow: var(--shadow-soft);
+  display: grid; gap: 0; grid-template-columns: 1fr;
+}
+@media (min-width: 900px) { .mk-take-insight { grid-template-columns: repeat(3, 1fr); } }
+.mk-take-insight-col {
+  padding: 28px;
+  border-bottom: 1px solid var(--slate-200);
+}
+.mk-take-insight-col:last-child { border-bottom: 0; }
+@media (min-width: 900px) {
+  .mk-take-insight-col {
+    border-right: 1px solid var(--slate-200);
+    border-bottom: 0;
+  }
+  .mk-take-insight-col:last-child { border-right: 0; }
+}
+.mk-take-insight .mk-k {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--gold-deep);
+  margin: 0 0 10px;
+}
+.mk-take-insight-col h3 {
+  font-size: 22px; font-weight: 700; line-height: 1.2;
+  color: var(--ink); margin: 0 0 12px;
+}
+.mk-take-insight-col p {
+  font-size: 14px; line-height: 1.55; color: var(--slate-600);
   margin: 0;
 }
-.mk-take-score-h:focus { outline: none; }
-.mk-take-score-h:focus-visible {
-  outline: 2px solid var(--gold);
-  outline-offset: 6px; border-radius: 4px;
+.mk-take-insight-col p strong { color: var(--ink); font-weight: 700; }
+.mk-take-insight-list {
+  list-style: none; padding: 0; margin: 0;
+  display: grid; gap: 8px;
 }
-.mk-take-score-lede {
-  font-size: 17px; line-height: 1.55; color: var(--slate-600);
-  max-width: 560px; margin: 0 auto;
+.mk-take-insight-list li {
+  background: var(--cream); padding: 10px 14px;
+  border-radius: var(--r-md);
+  font-size: 13px; font-weight: 600; color: var(--slate-600);
 }
+.mk-take-insight-link {
+  display: flex; flex-direction: column; gap: 2px;
+  background: var(--cream); padding: 14px 16px;
+  border-radius: var(--r-md);
+  text-decoration: none; color: var(--ink);
+  margin-bottom: 10px;
+  transition: background 120ms, transform 120ms;
+}
+.mk-take-insight-link:hover { background: var(--cream-2); transform: translateX(2px); }
+.mk-take-insight-link:last-child { margin-bottom: 0; }
+.mk-take-insight-link strong { font-size: 14px; font-weight: 700; color: var(--ink); }
+.mk-take-insight-link span { font-size: 12px; color: var(--slate-500); }
+
+/* Email capture — dark navy band wrapping EmailGate */
+.mk-take-send {
+  background: var(--ink); color: #fff;
+  border-radius: var(--r-2xl);
+  padding: 40px 32px;
+}
+@media (min-width: 720px) { .mk-take-send { padding: 48px; } }
+.mk-take-send header { max-width: 720px; margin-bottom: 28px; }
+.mk-take-send header .mk-k {
+  font-size: 12px; font-weight: 700; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--gold-soft);
+  margin: 0;
+}
+.mk-take-send header h2 {
+  font-size: clamp(26px, 3.5vw, 40px); font-weight: 700;
+  letter-spacing: -0.02em; line-height: 1.1;
+  margin: 12px 0 14px;
+}
+.mk-take-send header p {
+  font-size: 16px; line-height: 1.55;
+  color: rgba(255,255,255,0.62);
+  margin: 0; max-width: 60ch;
+}
+.mk-take-send-form {
+  background: #fff; color: var(--ink);
+  border-radius: var(--r-xl);
+  padding: 24px;
+}
+@media (min-width: 720px) { .mk-take-send-form { padding: 28px 32px; } }
 
 .mk-take-restart { text-align: center; }
 .mk-take-restart-btn {
