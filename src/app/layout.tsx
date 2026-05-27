@@ -9,6 +9,7 @@ import {
 import { GeistSans } from 'geist/font/sans';
 import { Analytics } from '@vercel/analytics/next';
 import { SiteNav, SiteFooter } from '@/components/system';
+import { MockupSiteFooter } from '@/components/mockup';
 import { BRAND } from '@content/copy';
 import { organizationJsonLd, websiteJsonLd, jsonLdString } from '@/lib/seo/jsonld';
 import './globals.css';
@@ -195,11 +196,28 @@ export const metadata: Metadata = {
   },
 };
 
+// Chromeless routes that should still have NO footer at all. Truly-bare
+// surfaces — operator tools, the pre-launch holding page, and signed-in
+// app shells that own their own bottom chrome.
+const FOOTERLESS_PATHS: readonly string[] = [
+  '/coming-soon',
+  '/design-system',
+  '/auth',
+  '/dashboard',
+  '/courses/foundation/program',
+  '/assessment/take',
+  '/assessment/in-depth/take',
+];
+
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const pathname = (await headers()).get('x-pathname') ?? '/';
   const chromeless = CHROMELESS_PATHS.some(
     (path) => pathname === path || pathname.startsWith(`${path}/`),
   );
+  const footerless = FOOTERLESS_PATHS.some(
+    (path) => pathname === path || pathname.startsWith(`${path}/`),
+  );
+  const showMockupFooter = chromeless && !footerless;
 
   return (
     <html lang="en">
@@ -230,6 +248,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           {children}
         </div>
         {!chromeless && <SiteFooter />}
+        {showMockupFooter && <MockupSiteFooter />}
         <Analytics />
       </body>
     </html>

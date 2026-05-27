@@ -194,6 +194,7 @@ export const module4: Module = {
       format: 'pdf',
       triggeredBy: '4.1',
       dynamic: false,
+      downloadHref: '/downloads/platform-feature-reference-card.pdf',
     },
   ],
 } as const;

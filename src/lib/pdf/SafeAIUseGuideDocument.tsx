@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities, @typescript-eslint/no-unused-vars */
 // SafeAIUseGuideDocument — React PDF document component for the Safe AI Use Guide.
 // Rendered server-side via @react-pdf/renderer renderToBuffer().
-// Pillar B artifact: cobalt (#2d4a7a) primary, terracotta accents, parchment backgrounds.
+// Brand system: mockup tokens — ink (#071A2F) primary, gold (#C8A24A) accents, cream (#F7F3EA) backgrounds.
 // Must NOT be imported in Client Components — PDF renderer is server-only.
 //
 // Fonts must be registered by the caller before rendering (see route.ts).
@@ -13,19 +13,19 @@ import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
 // ---------------------------------------------------------------------------
 // Brand constants — never hardcode hex elsewhere in this file
 // ---------------------------------------------------------------------------
-const COBALT = '#2d4a7a';
-const COBALT_DARK = '#1e3356';
-const COBALT_PALE = '#dde4ef';
-const TERRA = '#b5512e';
-const TERRA_PALE = '#f0c4ab';
-const PARCH = '#f5f0e6';
-const PARCH_MID = '#ebe4d4';
-const INK = '#1e1a14';
-const SAGE = '#4a6741';
-const ERROR_RED = '#9b2226';
+const COBALT = '#071A2F';
+const COBALT_DARK = '#0B2745';
+const COBALT_PALE = '#F1F5F9';
+const TERRA = '#C8A24A';
+const TERRA_PALE = '#E6D39B';
+const PARCH = '#F7F3EA';
+const PARCH_MID = '#EFE7D7';
+const INK = '#071A2F';
+const SAGE = '#047857';
+const ERROR_RED = '#991B1B';
 const WHITE = '#ffffff';
-const BORDER = '#d9cfc0';
-const COBALT_BORDER = '#7a94bc';
+const BORDER = '#E2E8F0';
+const COBALT_BORDER = '#94A3B8';
 
 const VERSION = 'v1.0';
 const VERSION_DATE = 'April 2026';

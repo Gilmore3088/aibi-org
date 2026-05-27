@@ -132,6 +132,58 @@ export default function SecurityPage() {
             Maps directly to SR 11-7 and the AIEOG AI Lexicon.
           </p>
           <GuideRequestForm />
+
+          {/* Companion takeaways — direct download, no gate. Pair the full 48-page guide
+              with two single-page artifacts a banker can print and tape to a wall. */}
+          <div
+            style={{
+              marginTop: 28,
+              paddingTop: 20,
+              borderTop: '1px solid rgba(255,255,255,0.16)',
+            }}
+          >
+            <div
+              style={{
+                fontSize: 11,
+                letterSpacing: '1.8px',
+                textTransform: 'uppercase',
+                color: 'rgba(255,255,255,0.55)',
+                fontWeight: 600,
+                marginBottom: 12,
+              }}
+            >
+              Companion takeaways
+            </div>
+            <a
+              href="/downloads/safe-ai-use-checklist.pdf"
+              download
+              style={{
+                display: 'block',
+                color: '#fff',
+                textDecoration: 'none',
+                padding: '10px 0',
+                borderBottom: '1px solid rgba(255,255,255,0.10)',
+                fontSize: 14,
+                fontWeight: 500,
+              }}
+            >
+              Safe AI Use Checklist (PDF) →
+            </a>
+            <a
+              href="/downloads/red-yellow-green-use-card.pdf"
+              download
+              style={{
+                display: 'block',
+                color: '#fff',
+                textDecoration: 'none',
+                padding: '10px 0',
+                fontSize: 14,
+                fontWeight: 500,
+              }}
+            >
+              Red / Yellow / Green Use Card (PDF) →
+            </a>
+          </div>
         </aside>
       }
       sections={[

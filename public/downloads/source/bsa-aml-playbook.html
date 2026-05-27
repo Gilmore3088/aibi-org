@@ -1,0 +1,937 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The BSA / AML Officer's AI-Native Playbook — The AI Banking Institute</title>
+<link rel="stylesheet" href="_brand.css">
+<style>
+  /* Long-doc tuning */
+  .page { padding-bottom: 0.95in; }
+  .page h2 { font-size: 20pt; }
+  .page h3 { font-size: 12pt; margin: 10pt 0 4pt; }
+  .page h4 { font-size: 10.5pt; margin: 8pt 0 4pt; }
+  .page p, .page li { font-size: 10pt; line-height: 1.55; }
+  .toc { background:#fff; border:1px solid var(--slate-200); border-radius:14pt; padding:14pt 18pt; box-shadow:var(--shadow-soft); margin: 8pt 0 14pt; }
+  .toc ol { columns: 2; column-gap: 22pt; margin: 4pt 0 0 18pt; }
+  .toc li { margin: 2pt 0; font-size: 10pt; }
+  .play-head { background: var(--ink); color:#fff; border-radius: 14pt; padding: 10pt 14pt; margin: 10pt 0 8pt; }
+  .play-head .num { font-size: 8.5pt; letter-spacing: 2px; text-transform: uppercase; color: var(--gold-soft); font-weight: 700; }
+  .play-head h2 { color:#fff; margin: 3pt 0 0; font-size: 16pt; }
+  .play-head .sub { color: #D8E0EA; font-size: 10pt; margin-top: 3pt; }
+  .principle { background: var(--cream-2); border-radius: 12pt; padding: 12pt 16pt; font-weight: 600; color: var(--ink); margin: 12pt 0; border-left: 3pt solid var(--gold); font-size: 11pt; }
+  .prompt {
+    background: var(--ink); color: #E9EEF6;
+    border-radius: 10pt; padding: 11pt 14pt; margin: 8pt 0;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 8.5pt; line-height: 1.5; white-space: pre-wrap;
+  }
+  .prompt .label { display:block; font-size:8pt; letter-spacing:1.5px; text-transform:uppercase; color:var(--gold-soft); font-weight:700; margin-bottom: 6pt; font-family: 'Inter', sans-serif; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12pt; margin: 10pt 0; }
+  .two-col .card { background: #fff; border:1px solid var(--slate-200); border-radius: 12pt; padding: 12pt 14pt; box-shadow: var(--shadow-soft); }
+  .two-col .card h4 { margin-top: 0; }
+  .two-col .card ul { margin: 4pt 0 0 16pt; }
+  .two-col .card li { font-size: 9.5pt; }
+  table { font-size: 9.5pt; }
+  th { font-size: 8.5pt; }
+  .risk-band { padding: 12pt 16pt; }
+  .risk-band h4 { font-size: 11pt; }
+  .risk-band ul { margin-left: 16pt; }
+  .risk-band li { font-size: 9.5pt; }
+  .small-checklist li { font-size: 10pt; margin: 3pt 0; list-style: none; padding-left: 18pt; position: relative; }
+  .small-checklist li::before { content: "☐"; position: absolute; left: 0; color: var(--gold-deep); font-weight: 700; }
+  .play-meta { font-size: 9pt; line-height: 1.5; margin: 10pt 0 4pt; color: var(--slate-600); border-top: 1px solid var(--slate-200); padding-top: 6pt; }
+  .play-meta strong { color: var(--ink-2); }
+</style>
+</head>
+<body>
+
+<section class="cover">
+  <div class="seal">
+    <div class="seal-mark">A</div>
+    <div class="seal-text">
+      <div class="seal-name">The AI Banking Institute</div>
+      <div class="seal-tag">Turning Bankers into Builders</div>
+    </div>
+  </div>
+  <div>
+    <div class="kicker">Role playbook · BSA / AML · v2.0</div>
+    <h1>The BSA / AML Officer's AI-Native Playbook</h1>
+    <p class="lede">Sharper narratives. Cleaner documentation. Safer automation. A practical operating playbook for BSA/AML leaders at community banks and credit unions who want to use AI without weakening judgment, violating data boundaries, or creating unexplainable compliance risk.</p>
+  </div>
+  <div class="footer-row">
+    <div>The AI Banking Institute · 2026</div>
+    <div>AIBankingInstitute.com</div>
+  </div>
+</section>
+
+<!-- Section 1: Executive Snapshot -->
+<section class="page">
+  <div class="section-kicker">Section 1 · Executive Snapshot</div>
+  <h2>The operating rule</h2>
+  <div class="principle">AI prepares. Humans decide. Evidence proves.</div>
+  <p>AI can help analysts draft, structure, summarize, compare, train, and document. It cannot own the suspicious-activity judgment, final SAR decision, sanctions disposition, investigation closure, or regulatory accountability.</p>
+
+  <div class="toc">
+    <div class="section-kicker" style="margin-top:0;">What's inside</div>
+    <ol>
+      <li>Executive snapshot</li>
+      <li>The terrain &amp; the red line</li>
+      <li>AI-native operating model</li>
+      <li>Prepare vs. decide matrix</li>
+      <li>Risk classification (R/Y/G)</li>
+      <li>Monday morning starter kit</li>
+      <li>Five BSA/AML plays</li>
+      <li>Copy-paste templates</li>
+      <li>30-day implementation path</li>
+      <li>Measurement model</li>
+      <li>Evidence packet requirements</li>
+      <li>Board / management summary</li>
+      <li>What good looks like</li>
+      <li>Next step</li>
+    </ol>
+  </div>
+
+  <h3>Who this is for</h3>
+  <ul>
+    <li>BSA / AML Officers</li>
+    <li>Compliance Officers overseeing financial-crime controls</li>
+    <li>AML Analysts and team leads</li>
+    <li>Operations leaders supporting alert disposition and case documentation</li>
+    <li>InfoSec / vendor-risk partners evaluating approved AI tools</li>
+    <li>Executives asking where AI can safely help the BSA function</li>
+  </ul>
+
+  <h3>The problem</h3>
+  <p>BSA/AML work is overloaded with manual drafting, inconsistent documentation, alert noise, analyst training burden, and institutional knowledge trapped in senior staff members' heads. AI can reduce that burden, but BSA/AML has one of the hardest data boundaries in the bank. SAR information, customer NPI, transaction-level detail, case notes, and investigation records cannot be casually pasted into public AI tools.</p>
+
+  <h3>The opportunity</h3>
+  <p>Used correctly, AI can help BSA/AML teams improve SAR narrative structure, standardize CDD baseline language, generate synthetic training scenarios, draft procedure documentation, summarize typologies and false-positive patterns, prepare alert-tuning conversations, build repeatable review checklists, and document evidence consistently.</p>
+
+  <h3>What this playbook gives you</h3>
+  <ol>
+    <li>A clear data-boundary model for AI use.</li>
+    <li>Five practical BSA/AML plays.</li>
+    <li>Copy/paste prompts and templates.</li>
+    <li>Human review checkpoints.</li>
+    <li>A 30-day implementation plan.</li>
+    <li>Evidence packet requirements.</li>
+    <li>Metrics to prove value without weakening control.</li>
+  </ol>
+
+  <div class="page-footer"><div class="brand">The AI Banking Institute · Turning Bankers into Builders</div><div>BSA/AML Playbook · 1</div></div>
+</section>
+
+<!-- Section 2 & 3: Terrain + Operating Model -->
+<section class="page">
+  <div class="section-kicker">Section 2 · The terrain</div>
+  <h2>BSA/AML lives behind a hard line</h2>
+  <p>BSA/AML is not a casual AI experimentation area. It includes customer data, restricted SAR information, law-enforcement-sensitive workflows, confidential investigation notes, and high-stakes regulatory obligations.</p>
+
+  <div class="callout">
+    <div class="label">The red line</div>
+    <p>No customer name, account number, transaction detail, SAR narrative, case note, alert detail, or investigation record goes into a public AI tool. The plays in this document are designed for de-identified patterns, synthetic scenarios, templates, procedure drafts, aggregated metrics, or approved enterprise environments with documented data-handling terms.</p>
+  </div>
+
+  <h3>What AI is genuinely good for in BSA/AML</h3>
+  <ul>
+    <li><strong>Pattern description</strong> — structuring, layering, funnel accounts, unusual cash activity, business-purpose mismatch, rapid movement of funds.</li>
+    <li><strong>Narrative scaffolding</strong> — organizing analyst notes into the who / what / when / where / why / how structure.</li>
+    <li><strong>CDD baseline documentation</strong> — describing expected activity for customer segments in plain language.</li>
+    <li><strong>Procedure writing</strong> — turning tacit senior-officer knowledge into written SOPs.</li>
+    <li><strong>Training scenarios</strong> — synthetic case patterns for analyst practice.</li>
+    <li><strong>Aggregate alert analysis</strong> — summarizing false-positive patterns at the typology level.</li>
+  </ul>
+
+  <h3>AI should not independently decide</h3>
+  <ul>
+    <li>Whether to file a SAR.</li>
+    <li>Whether activity is suspicious.</li>
+    <li>Whether an alert should be closed.</li>
+    <li>Whether a sanctions match is a true match.</li>
+    <li>Whether an investigation is complete.</li>
+    <li>Whether a customer's risk rating changes.</li>
+  </ul>
+
+  <hr style="border:none; border-top:1px solid var(--slate-200); margin: 20pt 0;">
+
+  <div class="section-kicker">Section 3 · The AI-native operating model</div>
+  <h2>Five layers of a control system</h2>
+  <p>A modern BSA/AML playbook is not just a procedural binder for CDD, EDD, monitoring, SARs, and CTRs. It is a control system that defines what AI may prepare, what humans must decide, what evidence must be retained, what data may be used, which tools are approved, which outputs require review, and how the institution proves the workflow is working.</p>
+
+  <h3>Layer 1 — Data Boundary</h3>
+  <p>Public · Internal · Confidential · Customer NPI · SAR-restricted · Law-enforcement-sensitive. Public AI tools stay in the Public / generic / synthetic / redacted lane only.</p>
+
+  <h3>Layer 2 — AI Workbench</h3>
+  <p>AI may assist with drafting, summarizing, pattern description, training scenario generation, typology research, and procedure structuring.</p>
+
+  <h3>Layer 3 — Human Decision Gates</h3>
+  <p>A qualified human must decide or sign off on: SAR filing, final SAR narratives, alert closure, sanctions disposition, investigation closure, risk-rating changes, and escalation to law enforcement or senior management.</p>
+
+  <h3>Layer 4 — Validation and Monitoring</h3>
+  <p>Track output quality, reviewer changes, false-positive themes, analyst overrides, escalations, exceptions, rework, and drift in alert patterns or typology language.</p>
+
+  <h3>Layer 5 — Evidence and Explainability</h3>
+  <p>Retain source material, prompt, AI output, reviewer name, review changes, final decision, timestamp, and retention location. If the institution cannot reconstruct why an alert, narrative, or output was accepted, changed, escalated, or rejected, the workflow is not ready.</p>
+
+  <div class="page-footer"><div class="brand">AIBankingInstitute.com</div><div>BSA/AML Playbook · 2</div></div>
+</section>
+
+<!-- Section 4: Prepare vs Decide matrix -->
+<section class="page">
+  <div class="section-kicker">Section 4 · Prepare vs. decide</div>
+  <h2>AI can prepare. Humans must decide.</h2>
+
+  <table>
+    <thead><tr><th>Workflow</th><th>AI can prepare</th><th>Human must decide</th><th>Evidence retained</th></tr></thead>
+    <tbody>
+      <tr><td><strong>SAR narrative</strong></td><td>Structure, draft sections, missing-fact flags</td><td>Whether to file and final wording</td><td>Draft, reviewer edits, source notes, final support</td></tr>
+      <tr><td><strong>Sanctions alert</strong></td><td>Entity research summary, false-positive rationale draft</td><td>Ambiguous match disposition</td><td>Sources reviewed, reviewer, disposition</td></tr>
+      <tr><td><strong>KYB / UBO</strong></td><td>Ownership structure summary from approved sources</td><td>Beneficial ownership conclusion</td><td>Source docs, reviewer, final profile</td></tr>
+      <tr><td><strong>CDD baseline</strong></td><td>Segment baseline description</td><td>Customer-specific risk rating</td><td>Baseline, reviewer, approval date</td></tr>
+      <tr><td><strong>Alert tuning</strong></td><td>Pattern summary, false-positive themes</td><td>Threshold or scenario changes</td><td>Aggregate inputs, tuning recommendation, final decision</td></tr>
+      <tr><td><strong>Analyst training</strong></td><td>Synthetic case narratives</td><td>Training evaluation and analyst readiness</td><td>Scenario, answer key, trainer notes</td></tr>
+      <tr><td><strong>Procedure writing</strong></td><td>SOP draft from approved process notes</td><td>Final procedure approval</td><td>Draft, approver, published SOP</td></tr>
+    </tbody>
+  </table>
+
+  <hr style="border:none; border-top:1px solid var(--slate-200); margin: 20pt 0;">
+
+  <div class="section-kicker">Section 5 · Risk classification</div>
+  <h2>Three lanes for BSA/AML AI use</h2>
+
+  <div class="risk-band green">
+    <div class="head"><div class="dot"></div><h4>Green — generally safe with synthetic or public information</h4></div>
+    <ul>
+      <li>Generate synthetic training scenarios.</li>
+      <li>Draft internal typology explainers.</li>
+      <li>Summarize public FinCEN guidance.</li>
+      <li>Create onboarding quizzes.</li>
+      <li>Build blank templates.</li>
+      <li>Draft SOP structure without customer facts.</li>
+    </ul>
+    <p class="note">Rules: no customer data; no SAR content; no investigation details; human review before distribution.</p>
+  </div>
+
+  <div class="risk-band yellow">
+    <div class="head"><div class="dot"></div><h4>Yellow — approved tool only, with redaction and review</h4></div>
+    <ul>
+      <li>Draft CDD segment baseline descriptions.</li>
+      <li>Structure redacted analyst notes.</li>
+      <li>Summarize aggregate alert patterns.</li>
+      <li>Draft internal procedures.</li>
+      <li>Create false-positive pattern summaries from aggregate data.</li>
+    </ul>
+    <p class="note">Rules: approved tool only; strip customer identifiers; no transaction-level details in public tools; human review required; retain reviewed version only.</p>
+  </div>
+
+  <div class="risk-band red">
+    <div class="head"><div class="dot"></div><h4>Red — restricted or prohibited except in approved enterprise workflow</h4></div>
+    <ul>
+      <li>SAR narratives using real case facts.</li>
+      <li>Alert disposition using customer-level data.</li>
+      <li>Sanctions match decisions.</li>
+      <li>Investigation closure.</li>
+      <li>Customer risk-rating updates.</li>
+      <li>Transaction-monitoring model changes.</li>
+    </ul>
+    <p class="note">Rules: no public AI tools; approved enterprise environment only; documented data-handling terms; human sign-off; evidence retained; potential model-risk / vendor-risk review depending on use.</p>
+  </div>
+
+  <div class="page-footer"><div class="brand">The AI Banking Institute · Turning Bankers into Builders</div><div>BSA/AML Playbook · 3</div></div>
+</section>
+
+<!-- Section 6: Monday Morning Starter Kit -->
+<section class="page">
+  <div class="section-kicker">Section 6 · Monday morning starter kit</div>
+  <h2>Pick one safe first play</h2>
+  <p>Start with one of these:</p>
+  <ol>
+    <li>CDD segment baseline builder.</li>
+    <li>Synthetic analyst training scenario.</li>
+    <li>Procedure-to-SOP draft.</li>
+    <li>SAR narrative structure checklist using fictional facts.</li>
+    <li>Aggregate false-positive pattern summary.</li>
+  </ol>
+
+  <h3>The five-step pattern</h3>
+  <ol>
+    <li>Pick the workflow.</li>
+    <li>Confirm the data boundary.</li>
+    <li>Use the provided prompt or template.</li>
+    <li>Review the output with a qualified human.</li>
+    <li>Save the reviewed artifact and note the retention location.</li>
+  </ol>
+
+  <div class="callout">
+    <div class="label">Do not start with</div>
+    <ul style="margin: 6pt 0 0 18pt;">
+      <li>Real SAR narratives.</li>
+      <li>Real alert detail.</li>
+      <li>Customer transaction data.</li>
+      <li>Sanctions match decisions.</li>
+      <li>Case closure recommendations.</li>
+      <li>Customer risk scoring.</li>
+    </ul>
+  </div>
+
+  <div class="page-footer"><div class="brand">AIBankingInstitute.com</div><div>BSA/AML Playbook · 4</div></div>
+</section>
+
+<!-- Section 7 · Play 1 -->
+<section class="page">
+  <div class="section-kicker">Section 7 · Five plays</div>
+  <div class="play-head">
+    <div class="num">Play 1</div>
+    <h2>Better SAR narrative scaffolding</h2>
+    <div class="sub">Help analysts organize SAR narratives around who, what, when, where, why, and how — without owning the suspicious-activity judgment.</div>
+  </div>
+
+  <h3>Why it matters</h3>
+  <p>SAR narratives are often inconsistent because they are written by analysts with different experience levels under time pressure. AI can help standardize structure without owning the suspicious-activity judgment.</p>
+
+  <div class="two-col">
+    <div class="card">
+      <h4>Approved inputs</h4>
+      <ul>
+        <li><strong>Public tools:</strong> synthetic case facts, training examples, blank SAR narrative template, fictional typology notes.</li>
+        <li><strong>Approved enterprise tools only:</strong> redacted analyst notes, approved internal templates, controlled case-support notes if permitted by tool terms and policy.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Prohibited inputs</h4>
+      <ul>
+        <li>Customer names.</li>
+        <li>Account numbers.</li>
+        <li>Transaction-level detail.</li>
+        <li>SAR narratives from real filings.</li>
+        <li>Case management exports.</li>
+        <li>Confidential investigation notes in public tools.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="prompt"><span class="label">Prompt template · SAR narrative scaffold</span>You are a BSA/AML quality reviewer helping structure a draft SAR narrative.
+
+Use only the facts provided below. Do not invent facts, dates, names, account activity, transaction amounts, or suspicious-activity conclusions.
+
+Organize the narrative into:
+  1. Who is involved
+  2. What activity occurred
+  3. When the activity occurred
+  4. Where the activity occurred
+  5. Why the activity is unusual
+  6. How the activity fits the typology
+  7. Missing facts to verify
+  8. Reviewer checklist
+
+Label the output as draft support only. The analyst owns the final SAR narrative and filing decision.
+
+Facts:
+[INSERT FICTIONAL OR APPROVED / REDACTED FACTS]</div>
+
+  <div class="two-col">
+    <div class="card">
+      <h4>Expected output</h4>
+      <ul>
+        <li>Draft narrative structure.</li>
+        <li>Missing-fact list.</li>
+        <li>Analyst review checklist.</li>
+        <li>Typology alignment notes.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Human review &amp; evidence</h4>
+      <ul>
+        <li>BSA analyst for first review.</li>
+        <li>BSA officer or designated reviewer for final narrative approval.</li>
+        <li>Retain: input facts, scaffold output, analyst edits, reviewer sign-off, final narrative support location.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h4>Metrics to track</h4>
+  <ul>
+    <li>Draft time per narrative.</li>
+    <li>Reviewer rework rate.</li>
+    <li>Missing-fact flags per draft.</li>
+    <li>Narrative quality review results.</li>
+  </ul>
+
+  <div class="page-footer"><div class="brand">The AI Banking Institute · Turning Bankers into Builders</div><div>BSA/AML Playbook · 5</div></div>
+</section>
+
+<!-- Play 2 -->
+<section class="page">
+  <div class="play-head">
+    <div class="num">Play 2</div>
+    <h2>De-noise the alert queue</h2>
+    <div class="sub">Summarize false-positive patterns at the typology level to prepare for alert-tuning conversations.</div>
+  </div>
+
+  <h3>Why it matters</h3>
+  <p>Analysts often know which alerts are noisy, but that knowledge sits in frustration, not structured evidence. AI can help convert aggregate patterns into a cleaner tuning conversation.</p>
+
+  <div class="two-col">
+    <div class="card">
+      <h4>Approved inputs</h4>
+      <ul>
+        <li>Aggregate alert counts.</li>
+        <li>Typology labels.</li>
+        <li>False-positive reason categories.</li>
+        <li>Quarter-over-quarter trend summaries.</li>
+        <li>Analyst feedback themes without customer detail.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Prohibited inputs</h4>
+      <ul>
+        <li>Individual alert records.</li>
+        <li>Customer names.</li>
+        <li>Transaction details.</li>
+        <li>Case notes.</li>
+        <li>SAR references.</li>
+        <li>Investigation files.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="prompt"><span class="label">Prompt template · False-positive pattern summary</span>You are assisting a BSA officer preparing for a quarterly alert-tuning discussion.
+
+Use only the aggregate pattern data below. Do not make a tuning decision. Summarize the major false-positive themes and prepare questions for the AML vendor or model owner.
+
+Output:
+  1. Top alert types by false-positive volume
+  2. Pattern description for each alert type
+  3. Likely source of noise
+  4. Questions for vendor / model owner
+  5. Data needed before any tuning decision
+  6. Human decision checklist
+
+Aggregate data:
+[INSERT AGGREGATE COUNTS AND PATTERN DESCRIPTIONS]</div>
+
+  <div class="two-col">
+    <div class="card">
+      <h4>Expected output</h4>
+      <ul>
+        <li>Quarterly false-positive summary.</li>
+        <li>Tuning discussion agenda.</li>
+        <li>Questions for vendor / model owner.</li>
+        <li>Human decision checklist.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Human review &amp; evidence</h4>
+      <ul>
+        <li>BSA officer reviews and determines whether any tuning action is warranted.</li>
+        <li>Retain: aggregate input data, AI summary, vendor discussion notes, final tuning or no-change decision.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h4>Metrics to track</h4>
+  <ul>
+    <li>False-positive rate by alert type.</li>
+    <li>Analyst hours spent on top noisy alerts.</li>
+    <li>Number of vendor questions resolved.</li>
+    <li>Tuning decision cycle time.</li>
+  </ul>
+
+  <div class="page-footer"><div class="brand">AIBankingInstitute.com</div><div>BSA/AML Playbook · 6</div></div>
+</section>
+
+<!-- Play 3 -->
+<section class="page">
+  <div class="play-head">
+    <div class="num">Play 3</div>
+    <h2>CDD baseline builder</h2>
+    <div class="sub">Draft plain-English expected-activity descriptions for customer segments.</div>
+  </div>
+
+  <h3>Why it matters</h3>
+  <p>Senior analysts often understand what normal looks like for customer segments, but that knowledge is not always documented in files or onboarding material.</p>
+
+  <div class="two-col">
+    <div class="card">
+      <h4>Approved inputs</h4>
+      <ul>
+        <li>Generic segment descriptions.</li>
+        <li>Product types.</li>
+        <li>Business type.</li>
+        <li>Expected activity pattern by segment.</li>
+        <li>Public business description.</li>
+        <li>Senior analyst notes without customer identifiers.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Prohibited inputs</h4>
+      <ul>
+        <li>Customer name.</li>
+        <li>Account number.</li>
+        <li>Actual transaction-level activity.</li>
+        <li>Real balances.</li>
+        <li>SAR or alert notes.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="prompt"><span class="label">Prompt template · CDD segment baseline</span>You are helping a BSA officer draft a plain-English CDD baseline for a customer segment.
+
+Do not describe a specific customer. Do not include customer names, account numbers, balances, or transaction-level activity.
+
+Segment:
+[SEGMENT NAME]
+
+Known expected activity:
+[GENERIC ACTIVITY PATTERN]
+
+Output:
+  1. One-paragraph expected activity baseline
+  2. Common variations that may still be normal
+  3. Activity that may require review
+  4. Questions an analyst should ask when activity differs
+  5. Reviewer checklist
+
+Label this as a draft baseline requiring BSA officer approval.</div>
+
+  <div class="two-col">
+    <div class="card">
+      <h4>Expected output</h4>
+      <ul>
+        <li>One-paragraph CDD baseline.</li>
+        <li>Common variations.</li>
+        <li>Escalation triggers.</li>
+        <li>Analyst review questions.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Human review &amp; evidence</h4>
+      <ul>
+        <li>Senior BSA officer approves each baseline before use.</li>
+        <li>Retain: segment definition, draft baseline, reviewer approval, date added to library.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h4>Metrics to track</h4>
+  <ul>
+    <li>Number of segment baselines created.</li>
+    <li>Analyst onboarding time.</li>
+    <li>File documentation consistency.</li>
+    <li>Reviewer corrections per baseline.</li>
+  </ul>
+
+  <div class="page-footer"><div class="brand">The AI Banking Institute · Turning Bankers into Builders</div><div>BSA/AML Playbook · 7</div></div>
+</section>
+
+<!-- Play 4 -->
+<section class="page">
+  <div class="play-head">
+    <div class="num">Play 4</div>
+    <h2>Synthetic training scenario generator</h2>
+    <div class="sub">Create synthetic BSA/AML practice cases for analyst training.</div>
+  </div>
+
+  <h3>Why it matters</h3>
+  <p>Analysts need reps. Real cases are sensitive. Synthetic cases let analysts practice typology recognition without exposing customer data.</p>
+
+  <div class="two-col">
+    <div class="card">
+      <h4>Approved inputs</h4>
+      <ul>
+        <li>Typology name.</li>
+        <li>Difficulty level.</li>
+        <li>Training objective.</li>
+        <li>Fictional customer profile.</li>
+        <li>Fictional activity pattern.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Prohibited inputs</h4>
+      <ul>
+        <li>Real cases.</li>
+        <li>Real SARs.</li>
+        <li>Real alert details.</li>
+        <li>Customer identifiers.</li>
+        <li>Case management records.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="prompt"><span class="label">Prompt template · Synthetic BSA training scenario</span>Create a synthetic BSA/AML training scenario for analyst practice.
+
+Typology:
+[STRUCTURING / LAYERING / FUNNEL ACCOUNT / BUSINESS-PURPOSE MISMATCH / OTHER]
+
+Difficulty:
+[BEGINNER / INTERMEDIATE / ADVANCED]
+
+Requirements:
+  - Use fictional names and fictional activity only
+  - Include enough details for an analyst to identify the typology
+  - Do not include real customer data
+  - Provide an answer key for the trainer
+  - Include three discussion questions
+  - Include one misleading but plausible fact that should not drive the conclusion
+
+Output:
+  1. Scenario narrative
+  2. Analyst task
+  3. Expected observations
+  4. Trainer answer key
+  5. Discussion questions
+  6. Risk notes</div>
+
+  <div class="two-col">
+    <div class="card">
+      <h4>Expected output</h4>
+      <ul>
+        <li>Synthetic case narrative.</li>
+        <li>Analyst exercise.</li>
+        <li>Answer key.</li>
+        <li>Discussion questions.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Human review &amp; evidence</h4>
+      <ul>
+        <li>Trainer or BSA officer reviews before use.</li>
+        <li>Retain: scenario prompt, scenario output, trainer answer key, training date, analyst completion notes.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h4>Metrics to track</h4>
+  <ul>
+    <li>Number of training scenarios created.</li>
+    <li>Analyst completion rate.</li>
+    <li>Assessment scores.</li>
+    <li>Typology recognition improvement.</li>
+  </ul>
+
+  <div class="page-footer"><div class="brand">AIBankingInstitute.com</div><div>BSA/AML Playbook · 8</div></div>
+</section>
+
+<!-- Play 5 -->
+<section class="page">
+  <div class="play-head">
+    <div class="num">Play 5</div>
+    <h2>Procedure writing on demand</h2>
+    <div class="sub">Turn senior officer knowledge into written SOPs.</div>
+  </div>
+
+  <h3>Why it matters</h3>
+  <p>BSA/AML procedures often live in the head of the senior officer. AI can structure dictated process knowledge into a reviewable SOP.</p>
+
+  <div class="two-col">
+    <div class="card">
+      <h4>Approved inputs</h4>
+      <ul>
+        <li>Process transcript.</li>
+        <li>Approved procedure notes.</li>
+        <li>Internal process outline without customer details.</li>
+        <li>Review owner.</li>
+        <li>Escalation rules.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Prohibited inputs</h4>
+      <ul>
+        <li>Customer records.</li>
+        <li>Real case facts.</li>
+        <li>SAR information.</li>
+        <li>Investigation notes.</li>
+        <li>Confidential examiner correspondence in public tools.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="prompt"><span class="label">Prompt template · BSA procedure-to-SOP</span>You are helping a BSA officer convert process notes into a written SOP.
+
+Do not add policy requirements that are not in the notes. Flag missing information with [VERIFY]. Do not include customer data or case details.
+
+Process notes:
+[INSERT APPROVED PROCESS NOTES]
+
+Output:
+  1. Purpose
+  2. When to use this procedure
+  3. Roles and responsibilities
+  4. Step-by-step process
+  5. Escalation triggers
+  6. Required documentation
+  7. Review checklist
+  8. Retention guidance
+  9. Open questions marked [VERIFY]
+
+Label the output as a draft SOP requiring BSA officer and compliance review.</div>
+
+  <div class="two-col">
+    <div class="card">
+      <h4>Expected output</h4>
+      <ul>
+        <li>Draft SOP.</li>
+        <li>Open-question list.</li>
+        <li>Review checklist.</li>
+        <li>Retention guidance.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Human review &amp; evidence</h4>
+      <ul>
+        <li>BSA officer and compliance officer approve before publication.</li>
+        <li>Retain: source notes, draft SOP, reviewer edits, final approved SOP, publication date.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h4>Metrics to track</h4>
+  <ul>
+    <li>SOPs drafted.</li>
+    <li>SOPs approved.</li>
+    <li>Review cycle time.</li>
+    <li>Training use.</li>
+    <li>Exceptions reduced.</li>
+  </ul>
+
+  <div class="page-footer"><div class="brand">The AI Banking Institute · Turning Bankers into Builders</div><div>BSA/AML Playbook · 9</div></div>
+</section>
+
+<!-- Section 8: Templates -->
+<section class="page">
+  <div class="section-kicker">Section 8 · Copy-paste templates</div>
+  <h2>Five reusable templates</h2>
+
+  <h3>Template 1 · BSA/AML AI use-case intake form</h3>
+  <table>
+    <thead><tr><th>Field</th><th>Response</th></tr></thead>
+    <tbody>
+      <tr><td>Use case name</td><td></td></tr>
+      <tr><td>Business purpose</td><td></td></tr>
+      <tr><td>BSA/AML process affected</td><td></td></tr>
+      <tr><td>Proposed tool</td><td></td></tr>
+      <tr><td>Tool approval status</td><td></td></tr>
+      <tr><td>User role</td><td></td></tr>
+      <tr><td>Input data class</td><td>Public / Internal / Confidential / Customer NPI / SAR-restricted</td></tr>
+      <tr><td>Output type</td><td>Draft / Summary / Checklist / Recommendation / Decision support</td></tr>
+      <tr><td>Risk tier</td><td>Green / Yellow / Red</td></tr>
+      <tr><td>Human reviewer</td><td></td></tr>
+      <tr><td>Approval checkpoint</td><td></td></tr>
+      <tr><td>Retention rule</td><td></td></tr>
+      <tr><td>Escalation trigger</td><td></td></tr>
+      <tr><td>Initial reviewer notes</td><td></td></tr>
+    </tbody>
+  </table>
+
+  <h3>Template 2 · SAR narrative review checklist</h3>
+  <ul class="small-checklist">
+    <li>The narrative explains who, what, when, where, why, and how.</li>
+    <li>The narrative uses only verified facts.</li>
+    <li>No AI-introduced fact remains unsupported.</li>
+    <li>Missing facts were reviewed or removed.</li>
+    <li>The analyst owns the suspicious-activity judgment.</li>
+    <li>The BSA officer or designated reviewer approved the final language.</li>
+    <li>The support file points to source evidence.</li>
+    <li>The AI output is retained only according to approved procedure.</li>
+  </ul>
+
+  <h3>Template 3 · CDD baseline library entry</h3>
+  <table>
+    <thead><tr><th>Field</th><th>Response</th></tr></thead>
+    <tbody>
+      <tr><td>Segment name</td><td></td></tr>
+      <tr><td>Segment description</td><td></td></tr>
+      <tr><td>Expected products</td><td></td></tr>
+      <tr><td>Expected activity</td><td></td></tr>
+      <tr><td>Normal variations</td><td></td></tr>
+      <tr><td>Review triggers</td><td></td></tr>
+      <tr><td>Analyst questions</td><td></td></tr>
+      <tr><td>Approved by</td><td></td></tr>
+      <tr><td>Approval date</td><td></td></tr>
+      <tr><td>Review cadence</td><td></td></tr>
+    </tbody>
+  </table>
+
+  <div class="page-footer"><div class="brand">AIBankingInstitute.com</div><div>BSA/AML Playbook · 10</div></div>
+</section>
+
+<section class="page">
+  <h3>Template 4 · Synthetic scenario trainer sheet</h3>
+  <table>
+    <thead><tr><th>Field</th><th>Response</th></tr></thead>
+    <tbody>
+      <tr><td>Scenario name</td><td></td></tr>
+      <tr><td>Typology</td><td></td></tr>
+      <tr><td>Difficulty</td><td></td></tr>
+      <tr><td>Training objective</td><td></td></tr>
+      <tr><td>Scenario summary</td><td></td></tr>
+      <tr><td>Analyst task</td><td></td></tr>
+      <tr><td>Expected observations</td><td></td></tr>
+      <tr><td>Answer key</td><td></td></tr>
+      <tr><td>Discussion questions</td><td></td></tr>
+      <tr><td>Trainer notes</td><td></td></tr>
+    </tbody>
+  </table>
+
+</section>
+
+<section class="page">
+  <div class="section-kicker">Section 8 · Copy-paste templates · continued</div>
+  <h2>Template 5 · AI-supported BSA evidence packet</h2>
+  
+  <p>For each AI-supported BSA workflow, retain:</p>
+  <ul class="small-checklist">
+    <li>Use-case summary.</li>
+    <li>Tool used.</li>
+    <li>Tool approval status.</li>
+    <li>Input data class.</li>
+    <li>Prompt or instruction.</li>
+    <li>Source material used.</li>
+    <li>AI output.</li>
+    <li>Reviewer name.</li>
+    <li>Reviewer changes.</li>
+    <li>Final disposition.</li>
+    <li>Approval date.</li>
+    <li>Retention location.</li>
+  </ul>
+
+  <hr style="border:none; border-top:1px solid var(--slate-200); margin: 20pt 0;">
+
+  <div class="section-kicker">Section 9 · The 30-day implementation path</div>
+  <h2>Week-by-week outcomes</h2>
+
+  <h3>Week 1 — confirm boundaries and pick one play</h3>
+  <p><strong>Outcome:</strong> approved enterprise tool status confirmed with Compliance and InfoSec; public AI red-line rules distributed to BSA team; one safe first play selected; data-boundary matrix reviewed.<br>
+  <strong>Recommended first play:</strong> CDD baseline builder or synthetic training scenarios.<br>
+  <strong>Evidence:</strong> signed red-line rules, use-case intake form, approved input list.</p>
+
+  <h3>Week 2 — build and test the first artifact</h3>
+  <p><strong>Outcome:</strong> first prompt or template drafted; sandbox test completed using synthetic or approved redacted data; human review checklist applied; initial output saved as draft.<br>
+  <strong>Evidence:</strong> prompt, draft output, reviewer notes, improvement log.</p>
+
+  <h3>Week 3 — expand to a second play</h3>
+  <p><strong>Outcome:</strong> add a second use case (procedure writing or CDD baseline library); create two to three reviewed artifacts; begin measuring time saved or quality improvement.<br>
+  <strong>Evidence:</strong> two reviewed artifacts, measurement tracker, review checklist.</p>
+
+  <h3>Week 4 — review, decide, and formalize</h3>
+  <p><strong>Outcome:</strong> BSA officer reviews pilot outputs; Compliance confirms whether the workflow can continue; InfoSec confirms approved tool / data-boundary status; next month's use cases prioritized.<br>
+  <strong>Evidence:</strong> 30-day pilot summary, final approved artifacts, go / no-go / revise decision, next-step roadmap.</p>
+</section>
+
+<!-- Section 10 + 11 -->
+<section class="page">
+  <div class="section-kicker">Section 10 · Measurement model</div>
+  <h2>Measure one operational improvement per play</h2>
+
+  <table>
+    <thead><tr><th>Play</th><th>Primary metrics</th></tr></thead>
+    <tbody>
+      <tr><td><strong>SAR narrative scaffolding</strong></td><td>Draft time per narrative · Reviewer correction rate · Missing facts flagged · Narrative quality score</td></tr>
+      <tr><td><strong>Alert queue patterning</strong></td><td>Analyst hours on top false-positive alert types · False-positive patterns identified · Vendor questions resolved · Tuning decision cycle time</td></tr>
+      <tr><td><strong>CDD baseline builder</strong></td><td>Baselines created · Analyst onboarding time · File consistency score · Reviewer corrections</td></tr>
+      <tr><td><strong>Synthetic training</strong></td><td>Scenarios created · Analyst training reps completed · Assessment score improvement · Trainer prep time saved</td></tr>
+      <tr><td><strong>Procedure writing</strong></td><td>SOPs drafted · SOPs approved · Review cycle time · Exceptions reduced</td></tr>
+    </tbody>
+  </table>
+
+  <hr style="border:none; border-top:1px solid var(--slate-200); margin: 14pt 0;">
+
+  <div class="section-kicker">Section 11 · Evidence packet</div>
+  <h2>What to save for every AI-supported play</h2>
+
+  <h3>Minimum evidence packet</h3>
+  <ol>
+    <li>Use-case intake form.</li>
+    <li>Data-boundary classification.</li>
+    <li>Prompt or instruction.</li>
+    <li>Input source description.</li>
+    <li>AI output.</li>
+    <li>Human reviewer.</li>
+    <li>Reviewer changes.</li>
+    <li>Final approved version.</li>
+    <li>Retention location.</li>
+    <li>Next review date.</li>
+  </ol>
+
+  <h3>Approved evidence labels</h3>
+  <ul>
+    <li>Draft AI output — not approved.</li>
+    <li>Reviewed AI-assisted output.</li>
+    <li>Approved SOP.</li>
+    <li>Synthetic training scenario.</li>
+    <li>Aggregate analysis only.</li>
+    <li>Enterprise tool required.</li>
+    <li>Public AI prohibited.</li>
+  </ul>
+
+  <div class="page-footer"><div class="brand">AIBankingInstitute.com</div><div>BSA/AML Playbook · 12</div></div>
+</section>
+
+<!-- Section 12 + 13 + 14 -->
+<section class="page">
+  <div class="section-kicker">Section 12 · Board / management summary</div>
+  <h2>One-slide review format</h2>
+
+  <table>
+    <thead><tr><th>Item</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td>Use case selected</td><td></td></tr>
+      <tr><td>Tool approved</td><td></td></tr>
+      <tr><td>Data class</td><td></td></tr>
+      <tr><td>Risk tier</td><td></td></tr>
+      <tr><td>Human reviewer</td><td></td></tr>
+      <tr><td>Artifacts created</td><td></td></tr>
+      <tr><td>Time saved</td><td></td></tr>
+      <tr><td>Quality improvement</td><td></td></tr>
+      <tr><td>Issues found</td><td></td></tr>
+      <tr><td><strong>Decision</strong></td><td>Continue / revise / stop</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Board-level message</h3>
+  <div class="callout">
+    <p>The BSA/AML team piloted AI-supported drafting and documentation using approved data boundaries and human review. AI did not make suspicious-activity decisions, close investigations, or file SARs. The pilot produced reviewed artifacts, measured time savings, and established an evidence-retention pattern for future AI-supported work.</p>
+  </div>
+
+  <hr style="border:none; border-top:1px solid var(--slate-200); margin: 20pt 0;">
+
+  <div class="section-kicker">Section 13 · What good looks like</div>
+  <h2>The seven questions every BSA team should answer at day 30</h2>
+  <ol>
+    <li>What AI use cases are allowed?</li>
+    <li>What data is prohibited?</li>
+    <li>What tool may be used?</li>
+    <li>Who reviews the output?</li>
+    <li>What evidence is retained?</li>
+    <li>What metric proves value?</li>
+    <li>Which use cases remain off-limits?</li>
+  </ol>
+
+  <h3>Maturity target</h3>
+  <p>The goal is not full automation. The goal is controlled capability. At the end of the first month, the institution should have one approved AI-assisted BSA workflow, one reviewed artifact, one prompt or template saved for reuse, one human review checklist, one evidence packet, and one measurable result.</p>
+
+  <hr style="border:none; border-top:1px solid var(--slate-200); margin: 20pt 0;">
+
+  <div class="section-kicker">Section 14 · Next step</div>
+  <h2>The AiBI path</h2>
+  <ol>
+    <li>Take the AI Readiness Assessment.</li>
+    <li>Assign the BSA/AML team to the Foundation Course.</li>
+    <li>Complete the Red / Yellow / Green Use Card and Safe AI Use Checklist.</li>
+    <li>Run the BSA/AML synthetic scenario sandbox.</li>
+    <li>Build the first BSA/AML workflow SOP.</li>
+    <li>Save the reviewed asset to the Toolbox.</li>
+    <li>Reassess after 90 days.</li>
+  </ol>
+
+  <div class="principle">AI is not the analyst. AI is the workbench. The analyst still investigates. The BSA officer still decides. The institution still owns the filing, the control, and the evidence. The value of AI in BSA/AML is not replacing judgment — it is making judgment easier to document, easier to review, and easier to defend.</div>
+
+  <div class="cite">
+    Sources: 31 CFR 1020.320 (SAR information confidentiality); FinCEN SAR narrative guidance; GLBA / Regulation P; Interagency Third-Party Risk Management Guidance; SR 11-7 (Federal Reserve); AIEOG AI Lexicon (US Treasury / FBIIC / FSSCC, February 2026); AiBI Foundations curriculum.
+  </div>
+
+  <div class="page-footer"><div class="brand">The AI Banking Institute · Turning Bankers into Builders</div><div>BSA/AML Playbook · 13</div></div>
+</section>
+
+</body>
+</html>

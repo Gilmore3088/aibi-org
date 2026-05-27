@@ -19,7 +19,9 @@ export function organizationJsonLd(): Record<string, unknown> {
     name: 'The AI Banking Institute',
     alternateName: 'AiBI',
     url: SITE_URL,
-    logo: `${SITE_URL}/aibi-logo.svg`,
+    // Resolves to the served favicon mark at app/icon.svg. The legacy
+    // /aibi-logo.svg path 404'd — no such asset in public/.
+    logo: `${SITE_URL}/icon.svg`,
     slogan: 'Turning Bankers into Builders',
     description:
       'The AI Banking Institute helps community banks and credit unions build AI proficiency through assessment, certification, and curriculum aligned with SR 11-7, TPRM, ECOA / Reg B, and the AIEOG AI Lexicon.',

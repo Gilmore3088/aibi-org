@@ -1,0 +1,591 @@
+'use client';
+
+import type { Tier, DimensionScore } from '@content/assessments/v3/scoring';
+import { DIMENSION_LABELS } from '@content/assessments/v3/types';
+import type { Dimension } from '@content/assessments/v3/types';
+import { ResultsDashboardV3 } from './ResultsDashboardV3';
+import { NewsletterCTA } from './NewsletterCTA';
+import { PdfDownloadButton } from './PdfDownloadButton';
+import { StarterArtifactCard } from './StarterArtifactCard';
+import { StarterPrompt } from './StarterPrompt';
+import { PracticePicture } from './PracticePicture';
+import { MaturityLadder } from './MaturityLadder';
+import { SignatureInsight } from './SignatureInsight';
+import { getStarterArtifact } from '@content/assessments/v3/starter-artifacts';
+import {
+  BIG_INSIGHT,
+  GAP_CONTENT,
+  RECOMMENDATIONS,
+  STARTER_PROMPTS,
+  SEVEN_DAY_PLAN,
+  FINANCIAL_IMPLICATIONS,
+  TIER_CLOSING_CTA,
+} from '@content/assessments/v3/personalization';
+
+const BRIEFING_DATE_FORMATTER = new Intl.DateTimeFormat('en-US', {
+  month: 'long',
+  day: 'numeric',
+  year: 'numeric',
+});
+
+interface ResultsViewV3Props {
+  readonly score: number;
+  readonly tier: Tier;
+  readonly tierId: Tier['id'];
+  readonly dimensionBreakdown: Record<Dimension, DimensionScore>;
+  readonly email: string;
+  readonly firstName?: string | null;
+  readonly institutionName?: string | null;
+  readonly profileId: string | null;
+}
+
+interface RankedDimension {
+  readonly id: Dimension;
+  readonly label: string;
+  readonly score: number;
+  readonly maxScore: number;
+  readonly pct: number;
+}
+
+function groupDimensions(
+  dimensionBreakdown: Record<Dimension, DimensionScore>,
+): {
+  readonly all: readonly RankedDimension[];
+  readonly critical: readonly RankedDimension[];
+  readonly developing: readonly RankedDimension[];
+  readonly strong: readonly RankedDimension[];
+} {
+  const all: RankedDimension[] = (Object.entries(dimensionBreakdown) as [Dimension, DimensionScore][])
+    .filter(([, data]) => data.maxScore > 0)
+    .map(([id, data]) => ({
+      id,
+      label: DIMENSION_LABELS[id],
+      score: data.score,
+      maxScore: data.maxScore,
+      pct: data.score / data.maxScore,
+    }))
+    .sort((a, b) => a.pct - b.pct);
+
+  return {
+    all,
+    critical: all.filter((d) => d.pct < 0.5),
+    developing: all.filter((d) => d.pct >= 0.5 && d.pct < 0.75),
+    strong: all.filter((d) => d.pct >= 0.75),
+  };
+}
+
+export function ResultsViewV3({
+  score,
+  tier,
+  tierId,
+  dimensionBreakdown,
+  email,
+  firstName,
+  institutionName,
+  profileId,
+}: ResultsViewV3Props) {
+  const subjectName = institutionName?.trim() || 'Your institution';
+  const grouped = groupDimensions(dimensionBreakdown);
+  const focusGap =
+    grouped.critical[0] ?? grouped.developing[0] ?? grouped.all[0] ?? null;
+  const fastestRoi = focusGap ? RECOMMENDATIONS[focusGap.id] : null;
+  const starterPrompt = focusGap ? STARTER_PROMPTS[focusGap.id] : null;
+  const starterArtifact = focusGap ? getStarterArtifact(focusGap.id) : null;
+
+  return (
+    <div className="w-full max-w-4xl mx-auto">
+      <header
+        className="mb-14 border-b border-[color:var(--color-ink)]/15 pb-8"
+        style={{ animation: 'fadeInUp 600ms cubic-bezier(0.22, 1, 0.36, 1) both' }}
+      >
+        <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 mb-4">
+          <p className="font-serif-sc text-sm uppercase tracking-[0.22em] text-[color:var(--color-terra)]">
+            AI Readiness Briefing
+          </p>
+          <p className="font-mono text-[12px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/65 shrink-0">
+            {BRIEFING_DATE_FORMATTER.format(new Date())}
+          </p>
+        </div>
+        <h1 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] leading-tight">
+          {firstName
+            ? `${firstName.trim()}, here is your assessment in brief.`
+            : 'Your assessment, in brief.'}
+        </h1>
+        <p
+          className="mt-5 font-mono text-[12px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/65"
+          data-print-hide="true"
+        >
+          A 5-minute read
+        </p>
+      </header>
+
+      <SectionAnchor id="section-1" />
+      <ResultsDashboardV3
+        score={score}
+        tier={tier}
+        tierId={tierId}
+        subjectName={subjectName}
+        dimensionBreakdown={dimensionBreakdown}
+      />
+      <ContinueLink to="section-1a" label="What this looks like in practice" />
+
+      <SectionAnchor id="section-1a" />
+      <SignatureInsight />
+
+      <SectionAnchor id="section-1b" />
+      <PracticePicture tierId={tierId} />
+      <ContinueLink to="section-2" label="The big insight" />
+
+      <SectionAnchor id="section-2" />
+      <section className="space-y-8" aria-labelledby="section-2-heading">
+        <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
+          The big insight
+        </p>
+        <h2 id="section-2-heading" className="sr-only">The big insight</h2>
+        <div className="bg-[color:var(--color-ink)] text-[color:var(--color-linen)] rounded-[3px] p-8 md:p-10">
+          <p className="font-serif text-2xl md:text-3xl leading-snug">
+            {BIG_INSIGHT[tierId]}
+          </p>
+        </div>
+        <ContinueLink to="section-2b" label="Implications for your institution" />
+      </section>
+
+      <SectionAnchor id="section-2b" />
+      <section className="space-y-6" aria-labelledby="section-2b-heading">
+        <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
+          Implications for financial professionals
+        </p>
+        <h2
+          id="section-2b-heading"
+          className="font-serif text-3xl md:text-4xl leading-tight text-[color:var(--color-ink)]"
+        >
+          In operating terms.
+        </h2>
+        <dl className="border-t border-[color:var(--color-ink)]/15">
+          <ImplicationRow
+            label="Operational efficiency"
+            body={FINANCIAL_IMPLICATIONS[tierId].operational}
+          />
+          <ImplicationRow
+            label="Risk management"
+            body={FINANCIAL_IMPLICATIONS[tierId].risk}
+          />
+          <ImplicationRow
+            label="Cost & dependency"
+            body={FINANCIAL_IMPLICATIONS[tierId].cost}
+          />
+        </dl>
+        <ContinueLink to="section-4" label="Where you're strong vs exposed" />
+      </section>
+
+      <SectionAnchor id="section-4" />
+      <section className="space-y-8" aria-labelledby="section-4-heading">
+        <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
+          Strengths and gaps
+        </p>
+        <h2
+          id="section-4-heading"
+          className="font-serif text-3xl md:text-4xl leading-tight text-[color:var(--color-ink)]"
+        >
+          Where you&apos;re strong. Where you&apos;re exposed.
+        </h2>
+
+        <StrengthsChart rows={grouped.all} />
+
+        {grouped.critical.length > 0 && (
+          <div className="space-y-5 pt-2">
+            <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-error)] flex items-center gap-2">
+              <span aria-hidden className="inline-block h-2 w-2 rounded-full bg-[color:var(--color-error)]" />
+              Closest look · your biggest gaps
+            </p>
+            <div className="grid gap-5">
+              {grouped.critical.map((gap) => (
+                <GapCard key={gap.id} gap={gap} />
+              ))}
+            </div>
+          </div>
+        )}
+
+        <ContinueLink to="section-4b" label="Where this leads" />
+      </section>
+
+      <SectionAnchor id="section-4b" />
+      <MaturityLadder tierId={tierId} />
+      <ContinueLink to="section-5" label="Your first move" />
+
+      {fastestRoi && focusGap && (
+        <>
+          <SectionAnchor id="section-5" />
+          <section className="space-y-6" aria-labelledby="section-5-heading">
+            <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
+              Your first AI move
+            </p>
+            <h2
+              id="section-5-heading"
+              className="font-serif text-3xl md:text-5xl leading-[1.05] tracking-[-0.01em] text-[color:var(--color-ink)]"
+            >
+              Start with {fastestRoi.title.toLowerCase()}.
+            </h2>
+
+            <div className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/15 rounded-[3px] p-7 md:p-9 space-y-7">
+              <div>
+                <p className="font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55">
+                  Why this is the right starting point
+                </p>
+                <ul className="mt-3 space-y-2">
+                  {fastestRoi.whyRightNow.map((reason) => (
+                    <li
+                      key={reason}
+                      className="text-[15px] leading-[1.55] text-[color:var(--color-ink)]/85 flex gap-3"
+                    >
+                      <span aria-hidden className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-terra)] shrink-0" />
+                      <span>{reason}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="border-l-2 border-[color:var(--color-ink)]/20 pl-5">
+                <p className="font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55">
+                  What this looks like in practice
+                </p>
+                <p className="mt-2 text-[15px] leading-[1.6] text-[color:var(--color-ink)]/85">
+                  {fastestRoi.inPractice}
+                </p>
+              </div>
+
+              <div>
+                <p className="font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55">
+                  Where this works best
+                </p>
+                <ul className="mt-2 grid gap-1 sm:grid-cols-3">
+                  {fastestRoi.worksBestFor.map((useCase) => (
+                    <li
+                      key={useCase}
+                      className="text-[14px] text-[color:var(--color-ink)]/75 flex gap-2"
+                    >
+                      <span aria-hidden className="font-mono text-[color:var(--color-terra)]">·</span>
+                      <span>{useCase}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <dl className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-5 border-t border-[color:var(--color-ink)]/10 text-sm">
+                <div>
+                  <dt className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/55">
+                    Risk
+                  </dt>
+                  <dd className="mt-1 text-[color:var(--color-ink)]">{fastestRoi.riskLevel}</dd>
+                </div>
+                <div>
+                  <dt className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/55">
+                    Time saved
+                  </dt>
+                  <dd className="mt-1 text-[color:var(--color-ink)]">{fastestRoi.timeSaved}</dd>
+                </div>
+                <div>
+                  <dt className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/55">
+                    Owner
+                  </dt>
+                  <dd className="mt-1 text-[color:var(--color-ink)]">{fastestRoi.owner}</dd>
+                </div>
+              </dl>
+            </div>
+
+            <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55">
+              Surfaced by your weakest dimension: {focusGap.label}
+            </p>
+            <ContinueLink to="section-6" label="Starter prompt" />
+          </section>
+        </>
+      )}
+
+      {starterPrompt && (
+        <>
+          <SectionAnchor id="section-6" />
+          <section className="space-y-5" aria-labelledby="section-6-heading">
+            <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
+              Starter prompt
+            </p>
+            <h2
+              id="section-6-heading"
+              className="font-serif text-3xl md:text-4xl leading-tight text-[color:var(--color-ink)]"
+            >
+              Copy it. Run it. Refine it.
+            </h2>
+            <p className="text-[16px] leading-[1.6] text-[color:var(--color-ink)]/80 max-w-2xl">
+              Take this prompt to the AI tool your institution already trusts. Run it on a real workflow this week. Bring back what worked and what did not.
+            </p>
+            <StarterPrompt prompt={starterPrompt} />
+            {starterArtifact && focusGap && (
+              <details className="group border border-[color:var(--color-ink)]/15 rounded-[3px] bg-[color:var(--color-linen)] overflow-hidden" data-print-hide="true">
+                <summary className="cursor-pointer list-none px-5 py-4 flex items-center justify-between font-serif-sc text-[11px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/70 hover:bg-[color:var(--color-parch)] transition-colors">
+                  <span>Show printable starter artifact</span>
+                  <span aria-hidden className="font-mono text-[12px] transition-transform group-open:rotate-180">▾</span>
+                </summary>
+                <div className="p-5">
+                  <StarterArtifactCard artifact={starterArtifact} tierLabel={tier.label} topGapLabel={focusGap.label} />
+                </div>
+              </details>
+            )}
+            <ContinueLink to="section-7" label="Your 7-day plan" />
+          </section>
+        </>
+      )}
+
+      <SectionAnchor id="section-7" />
+      <section className="space-y-6 mb-20" aria-labelledby="section-7-heading">
+        <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
+          Your 7-day AI activation plan
+        </p>
+        <h2 id="section-7-heading" className="font-serif text-3xl md:text-4xl leading-tight text-[color:var(--color-ink)]">
+          What to do this week.
+        </h2>
+        <ol className="border-l-2 border-[color:var(--color-terra)]/40 space-y-5 pl-6">
+          {SEVEN_DAY_PLAN.map(({ day, action }) => (
+            <li key={day} className="relative">
+              <span
+                aria-hidden
+                className="absolute -left-[34px] top-0 inline-flex items-center justify-center h-6 w-6 rounded-full bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-mono text-[11px] tabular-nums font-semibold"
+              >
+                {day}
+              </span>
+              <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55 mb-1">
+                Day {day}
+              </p>
+              <p className="text-[15px] leading-[1.55] text-[color:var(--color-ink)]/85">
+                {action}
+              </p>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <SectionAnchor id="section-9" />
+      <ClosingCta tierId={tierId} />
+
+      <div className="mt-16 border-t border-[color:var(--color-ink)]/15 pt-12" data-print-hide="true">
+        <NewsletterCTA email={email} />
+      </div>
+
+      {profileId ? <PdfDownloadButton profileId={profileId} email={email} /> : null}
+    </div>
+  );
+}
+
+function SectionAnchor({ id }: { readonly id: string }) {
+  return <span id={id} tabIndex={-1} className="block scroll-mt-16 outline-none" />;
+}
+
+function ContinueLink({ to, label }: { readonly to: string; readonly label: string }) {
+  return (
+    <div className="pt-6 mb-16" data-print-hide="true">
+      <a
+        href={`#${to}`}
+        className="inline-flex items-center justify-between gap-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] px-6 py-3 font-sans text-[12px] font-semibold uppercase tracking-[1.4px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors group"
+      >
+        <span>{label}</span>
+        <span aria-hidden className="font-mono transition-transform duration-200 group-hover:translate-y-0.5">↓</span>
+      </a>
+    </div>
+  );
+}
+
+function ImplicationRow({ label, body }: { readonly label: string; readonly body: string }) {
+  return (
+    <div className="grid gap-3 md:grid-cols-[200px_1fr] md:gap-8 py-5 border-b border-[color:var(--color-ink)]/15">
+      <dt className="font-serif-sc text-[11px] uppercase tracking-[0.22em] text-[color:var(--color-terra)] md:pt-1">
+        {label}
+      </dt>
+      <dd className="text-[15px] leading-[1.6] text-[color:var(--color-ink)]/85">
+        {body}
+      </dd>
+    </div>
+  );
+}
+
+function StrengthsChart({
+  rows,
+}: {
+  readonly rows: ReadonlyArray<RankedDimension>;
+}) {
+  return (
+    <figure
+      className="border border-[color:var(--color-ink)]/20 rounded-[3px] bg-[color:var(--color-linen)] p-7 md:p-9"
+      aria-label="Twelve-dimension readiness chart, sorted weakest first"
+    >
+      <ZoneLegend />
+      <ul className="space-y-4 mt-6">
+        {rows.map((row) => {
+          const zone =
+            row.pct < 0.5 ? 'critical' : row.pct >= 0.75 ? 'strong' : 'developing';
+          const fill =
+            zone === 'critical'
+              ? 'bg-[color:var(--color-error)]'
+              : zone === 'strong'
+                ? 'bg-[color:var(--color-ink)]/75'
+                : 'bg-[color:var(--color-terra)]';
+          const pctLabel = Math.round(row.pct * 100);
+          return (
+            <li key={row.id} className="space-y-2">
+              <div className="flex items-baseline justify-between gap-3">
+                <span className="min-w-0 font-serif text-[17px] md:text-[18px] text-[color:var(--color-ink)] truncate leading-tight">
+                  {row.label}
+                </span>
+                <span className="font-mono text-[13px] text-[color:var(--color-ink)]/75 tabular-nums shrink-0">
+                  {row.score}/{row.maxScore}
+                  <span className="text-[color:var(--color-ink)]/45"> · {pctLabel}%</span>
+                </span>
+              </div>
+              <div
+                className="relative h-4 bg-[color:var(--color-ink)]/8"
+                role="presentation"
+              >
+                <div
+                  className={'absolute inset-y-0 left-0 ' + fill}
+                  style={{ width: `${Math.max(row.pct * 100, 2)}%` }}
+                />
+                <span
+                  aria-hidden
+                  className="absolute top-0 bottom-0 w-[1px] bg-[color:var(--color-ink)]/25"
+                  style={{ left: '50%' }}
+                />
+                <span
+                  aria-hidden
+                  className="absolute top-0 bottom-0 w-[1px] bg-[color:var(--color-ink)]/25"
+                  style={{ left: '75%' }}
+                />
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+    </figure>
+  );
+}
+
+function ZoneLegend() {
+  const zones: ReadonlyArray<{
+    readonly label: string;
+    readonly className: string;
+    readonly range: string;
+  }> = [
+    { label: 'Critical', className: 'bg-[color:var(--color-error)]', range: '< 50%' },
+    { label: 'Developing', className: 'bg-[color:var(--color-terra)]', range: '50–74%' },
+    { label: 'Strong', className: 'bg-[color:var(--color-ink)]/75', range: '≥ 75%' },
+  ];
+  return (
+    <div className="flex flex-wrap items-baseline gap-x-6 gap-y-2 pb-4 border-b border-[color:var(--color-ink)]/20">
+      {zones.map((zone) => (
+        <div key={zone.label} className="flex items-center gap-2.5">
+          <span aria-hidden className={'inline-block h-3 w-6 ' + zone.className} />
+          <span className="font-serif-sc text-[12px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/80">
+            {zone.label}
+          </span>
+          <span className="font-mono text-[11px] text-[color:var(--color-ink)]/55 tabular-nums">
+            {zone.range}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function ClosingCta({ tierId }: { readonly tierId: Tier['id'] }) {
+  const cta = TIER_CLOSING_CTA[tierId];
+  return (
+    <section aria-labelledby="section-9-heading" className="space-y-6">
+      <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
+        {cta.eyebrow}
+      </p>
+      <h2
+        id="section-9-heading"
+        className="font-serif text-3xl md:text-4xl leading-tight text-[color:var(--color-ink)]"
+      >
+        {cta.headline}
+      </h2>
+      <article className="border-2 border-[color:var(--color-terra)] rounded-[3px] p-6 md:p-8 bg-[color:var(--color-linen)]">
+        <p className="text-[15px] leading-[1.6] text-[color:var(--color-ink)]/85">
+          {cta.body}
+        </p>
+        <a
+          href={cta.primary.href}
+          data-print-hide="true"
+          data-plausible-event-source={cta.primary.source}
+          className="mt-6 inline-block px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
+        >
+          {cta.primary.label}
+        </a>
+      </article>
+      <ul
+        className="border-t border-[color:var(--color-ink)]/15 pt-4 space-y-2"
+        data-print-hide="true"
+      >
+        {[cta.secondary, cta.tertiary].map((offer) => (
+          <li key={offer.source} className="leading-snug">
+            <a
+              href={offer.href}
+              data-plausible-event-source={offer.source}
+              className="font-serif-sc text-[12px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/70 hover:text-[color:var(--color-terra)] underline underline-offset-4 decoration-[color:var(--color-ink)]/25 hover:decoration-[color:var(--color-terra)] transition-colors"
+            >
+              {offer.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+function GapCard({ gap }: { readonly gap: RankedDimension }) {
+  const content = GAP_CONTENT[gap.id];
+  if (!content) return null;
+  return (
+    <article className="border-l-2 border-[color:var(--color-error)] bg-[color:var(--color-linen)] rounded-[3px] p-6">
+      <header className="flex items-baseline justify-between gap-4">
+        <h3 className="min-w-0 font-serif text-xl md:text-2xl text-[color:var(--color-ink)] break-words">
+          {gap.label}
+        </h3>
+        <span className="font-mono text-xs text-[color:var(--color-slate)] tabular-nums shrink-0">
+          {gap.score}/{gap.maxScore}
+        </span>
+      </header>
+      <p className="mt-3 text-[15px] leading-[1.6] text-[color:var(--color-ink)]/80">
+        {content.explanation}
+      </p>
+      <div className="mt-5">
+        <p className="font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55">
+          What this leads to
+        </p>
+        <ul className="mt-2 space-y-1.5">
+          {content.impacts.map((impact) => (
+            <li
+              key={impact}
+              className="text-[14px] leading-[1.55] text-[color:var(--color-ink)]/85 flex gap-3"
+            >
+              <span aria-hidden className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-ink)]/30 shrink-0" />
+              <span>{impact}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="mt-5">
+        <p className="font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-terra)]">
+          What good looks like
+        </p>
+        <ul className="mt-2 space-y-1.5">
+          {content.whatGoodLooksLike.map((vision) => (
+            <li
+              key={vision}
+              className="text-[14px] leading-[1.55] text-[color:var(--color-ink)]/85 flex gap-3"
+            >
+              <span aria-hidden className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-terra)] shrink-0" />
+              <span>{vision}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </article>
+  );
+}

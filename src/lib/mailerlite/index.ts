@@ -133,3 +133,30 @@ export async function subscribeToNewsletterForm(
     groupIds: [groupId],
   });
 }
+
+/**
+ * Subscribe a visitor who requested a role-playbook PDF. Role is stored as
+ * a custom field so a single group can fan out to per-role segments in
+ * MailerLite. No-op when MAILERLITE_GROUP_ID_PLAYBOOK is unset.
+ */
+export async function subscribeToPlaybookForm(
+  payload: Omit<MailerLiteSubscribePayload, 'groupIds'> & {
+    role: string;
+    institution?: string;
+  },
+): Promise<SubscribeResult> {
+  const groupId = process.env.MAILERLITE_GROUP_ID_PLAYBOOK;
+  if (!groupId) {
+    return { status: 'skipped', reason: 'no-group-id' };
+  }
+  return postSubscriber({
+    email: payload.email,
+    firstName: payload.firstName,
+    fields: {
+      ...(payload.fields ?? {}),
+      playbook_role: payload.role,
+      ...(payload.institution ? { institution: payload.institution } : {}),
+    },
+    groupIds: [groupId],
+  });
+}

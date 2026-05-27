@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Regulatory Cheatsheet — The AI Banking Institute</title>
+<link rel="stylesheet" href="_brand.css">
+<style>
+  .page h2 { font-size: 22pt; }
+  .page h3 { font-size: 12pt; margin: 10pt 0 4pt; }
+  .page p, .page li, .page td { font-size: 9pt; line-height: 1.5; }
+  table { font-size: 8.5pt; border: 1px solid var(--slate-200); border-radius: 12pt; }
+  th { font-size: 8pt; background: var(--cream-2); color: var(--ink); }
+  th, td { padding: 7pt 9pt; vertical-align: top; }
+  td:first-child, th:first-child { width: 14%; }
+  td:nth-child(2), th:nth-child(2) { width: 16%; }
+  .two-col-defs { display: grid; grid-template-columns: 1fr 1fr; gap: 12pt; margin: 10pt 0; }
+  .def { background: #fff; border: 1px solid var(--slate-200); border-radius: 12pt; padding: 11pt 14pt; }
+  .def h4 { margin: 0 0 4pt; font-size: 11pt; color: var(--ink); }
+  .def p { font-size: 9pt; margin: 0; color: var(--slate-600); }
+  .source-note { background: var(--cream-2); border-left: 3pt solid var(--gold); padding: 9pt 12pt; border-radius: 8pt; margin: 12pt 0; font-size: 9pt; }
+  .source-note strong { color: var(--gold-deep); }
+</style>
+</head>
+<body>
+
+<section class="cover">
+  <div class="seal">
+    <div class="seal-mark">A</div>
+    <div class="seal-text">
+      <div class="seal-name">The AI Banking Institute</div>
+      <div class="seal-tag">Turning Bankers into Builders</div>
+    </div>
+  </div>
+  <div>
+    <div class="kicker">Foundations · Module 1 reference · v2.0</div>
+    <h1>The Regulatory Cheatsheet</h1>
+    <p class="lede">Five frameworks applied to AI in community banking. The current regulatory landscape on one card — and the staff-level implications of each.</p>
+  </div>
+  <div class="footer-row">
+    <div>The AI Banking Institute · 2026</div>
+    <div>AIBankingInstitute.com</div>
+  </div>
+</section>
+
+<section class="page">
+  <div class="section-kicker">Five regulatory frameworks</div>
+  <h2>What examiners apply to AI today</h2>
+  <p>No single law governs AI in banking. These five existing frameworks have been extended to cover it. Per GAO-25-107197 (May 2025), no comprehensive AI-specific banking regulation yet exists — these are the frameworks examiners apply today.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Framework</th>
+        <th>Regulator</th>
+        <th>How it applies to AI</th>
+        <th>Staff-level impact</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>SR 11-7</strong></td>
+        <td>Federal Reserve / OCC</td>
+        <td>Any AI used in credit underwriting, fraud detection, or risk scoring qualifies as a "model" requiring validation, documentation, ongoing monitoring, and governance.</td>
+        <td>Be able to explain what the AI tool does, its known limitations, and how its outputs are validated. Explainability is a regulatory requirement, not optional.</td>
+      </tr>
+      <tr>
+        <td><strong>Interagency TPRM</strong></td>
+        <td>OCC / FDIC / NCUA / CFPB</td>
+        <td>Every AI vendor tool — including Microsoft Copilot, ChatGPT Enterprise, and AI-enabled core features — requires a third-party risk assessment before deployment.</td>
+        <td>Do not activate new AI vendor tools without IT and compliance completing TPRM review. Free-tier and personal accounts are not exempt from institutional policy.</td>
+      </tr>
+      <tr>
+        <td><strong>ECOA / Reg B</strong></td>
+        <td>CFPB</td>
+        <td>AI-driven lending and credit models must provide specific, human-readable adverse-action reasons. Black-box "score too low" outputs do not satisfy ECOA requirements.</td>
+        <td>If AI touches any lending or credit decision, adverse-action explanations must be traceable, specific, and understandable to the customer — not just the model.</td>
+      </tr>
+      <tr>
+        <td><strong>BSA / AML</strong></td>
+        <td>FinCEN</td>
+        <td>AI transaction-monitoring systems must meet the same documentation and auditability standards as manual SAR processes. AI alerts do not reduce examiner scrutiny.</td>
+        <td>AI-generated SAR recommendations require human review and approval before filing. Regulatory accountability remains with staff — the AI does not carry it.</td>
+      </tr>
+      <tr>
+        <td><strong>AIEOG AI Lexicon</strong></td>
+        <td>US Treasury / FBIIC / FSSCC</td>
+        <td>Published February 2026. Establishes shared regulatory definitions for hallucination, AI governance, AI use case inventory, HITL, third-party AI risk, and explainability.</td>
+        <td>Align your institution's AI policy language with AIEOG Lexicon definitions. Inconsistent terminology in policy documents creates examination risk.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="source-note">
+    <strong>Examination context.</strong> Per GAO-25-107197 (May 2025), no comprehensive AI-specific banking statute exists. SR 11-7, Interagency TPRM Guidance, ECOA / Reg B, and BSA/AML are the current examination frameworks regulators apply to AI systems. The AIEOG AI Lexicon (February 2026) establishes the shared vocabulary regulators will use.
+  </div>
+</section>
+
+<section class="page">
+  <div class="section-kicker">AIEOG AI Lexicon</div>
+  <h2>Six terms every banker needs to know</h2>
+  <p>Source: US Treasury / FBIIC / FSSCC — February 2026. Regulators will use this vocabulary in AI-related examination findings. Align your institution's AI policy language with these definitions to reduce examination risk.</p>
+
+  <div class="two-col-defs">
+    <div class="def">
+      <h4>Hallucination</h4>
+      <p>An AI output that is factually incorrect, fabricated, or misleading, presented with apparent confidence. Distinct from ordinary model error — specifically refers to outputs lacking grounding in source data. Regulators treat hallucination risk as a governance and disclosure concern.</p>
+    </div>
+    <div class="def">
+      <h4>HITL (Human-in-the-Loop)</h4>
+      <p>A design pattern in which a human reviews or approves AI-generated outputs before they are acted upon. Required for any AI system that makes or influences material decisions affecting customers. HITL cannot be delegated away by policy — it must be operationally enforced.</p>
+    </div>
+    <div class="def">
+      <h4>AI Governance</h4>
+      <p>The policies, processes, roles, and organizational structures that define how an institution develops, acquires, deploys, monitors, and retires AI systems. Applies to the institutional AI program as a whole, not to individual models in isolation.</p>
+    </div>
+    <div class="def">
+      <h4>Third-Party AI Risk</h4>
+      <p>Risks arising from AI systems operated by vendors or service providers. Interagency TPRM guidance requires the same risk-assessment rigor for AI-enabled vendor tools as for any other critical third party — including cloud-hosted AI APIs.</p>
+    </div>
+    <div class="def">
+      <h4>AI Use Case Inventory</h4>
+      <p>A structured, maintained record of all AI systems and tools in active use at an institution, including purpose, data inputs, outputs, and applicable risk controls. Treated as a baseline AI governance requirement by examiners and regulators.</p>
+    </div>
+    <div class="def">
+      <h4>Explainability</h4>
+      <p>The capacity of an AI system to provide human-understandable reasons for its outputs. SR 11-7 requires conceptual soundness and transparency for model outputs used in decisions with regulatory implications. A model that cannot explain itself does not meet examination standards.</p>
+    </div>
+  </div>
+
+  <div class="source-note">
+    <strong>Examination risk note.</strong> Regulators will use AIEOG Lexicon definitions in AI-related examination findings. If your institution's AI policy uses different terminology for hallucination, HITL, or explainability, examiners may interpret that as a governance gap. Review your AI policy language against this vocabulary before your next examination cycle.
+  </div>
+
+  <div class="cite">
+    Sources: GAO-25-107197 (May 2025); SR 11-7 (Federal Reserve); Interagency TPRM Guidance; ECOA / Regulation B (CFPB); FinCEN BSA/AML guidance; AIEOG AI Lexicon (US Treasury / FBIIC / FSSCC, February 2026); AiBI Foundations curriculum, Module 1.
+  </div>
+</section>
+
+</body>
+</html>

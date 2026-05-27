@@ -174,7 +174,7 @@ export function NextStepCards({ tierId }: NextStepCardsProps) {
       {/* Secondary navigation */}
       <div className="flex flex-wrap items-center justify-center gap-4 mt-8">
         <Link
-          href="/education"
+          href="/courses"
           className="py-2 px-1 font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--gold)] border-b border-[color:var(--gold)] hover:opacity-70 transition-opacity"
         >
           Browse education
