@@ -1,5 +1,13 @@
 'use client';
 
+// Shared LMS form field primitive — mockup design system (Wave 1, 2026-05-27).
+// Renders a small-caps Inter kicker label, optional required marker, error
+// message, and hint line. The input itself is supplied as children so callers
+// can choose <input>, <textarea>, <select>, or a custom control.
+//
+// The `ledgerInputStyle` export name is retained for backward compatibility
+// with existing consumers; the returned styles use mockup tokens.
+
 import type { CSSProperties, ReactNode } from 'react';
 
 interface BaseProps {
@@ -11,11 +19,15 @@ interface BaseProps {
   readonly children: ReactNode;
 }
 
+const INTER_STACK =
+  'var(--font-inter, Inter), ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
+
 const labelStyle: CSSProperties = {
   display: 'block',
-  fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-  fontSize: 9.5,
-  letterSpacing: '0.18em',
+  fontFamily: INTER_STACK,
+  fontSize: 11,
+  fontWeight: 700,
+  letterSpacing: '0.16em',
   textTransform: 'uppercase',
   color: 'var(--slate-500)',
   marginBottom: 6,
@@ -28,22 +40,24 @@ const requiredMarkStyle: CSSProperties = {
 
 const hintStyle: CSSProperties = {
   marginTop: 6,
-  fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-  fontSize: 10,
-  letterSpacing: '0.04em',
+  fontFamily: INTER_STACK,
+  fontSize: 12,
+  fontWeight: 500,
+  letterSpacing: '0.01em',
   color: 'var(--slate-600)',
 };
 
 const errorStyle: CSSProperties = {
   marginTop: 6,
-  fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-  fontSize: 10.5,
-  letterSpacing: '0.04em',
+  fontFamily: INTER_STACK,
+  fontSize: 12,
+  fontWeight: 600,
+  letterSpacing: '0.01em',
   color: 'var(--gold-deep)',
 };
 
 /**
- * Ledger-styled form field wrapper. Renders a mono uppercase kicker label
+ * Shared LMS form field wrapper. Renders an Inter small-caps kicker label
  * plus optional required marker, error message, and hint line. The actual
  * input is supplied as children so callers can choose <input>, <textarea>,
  * <select>, or a custom control.
@@ -77,18 +91,21 @@ interface InputStyleOptions {
 }
 
 /**
- * Standard Ledger input style — matches the prototype's FormField input
- * styling. Use on <input>, <textarea>, and <select>.
+ * Standard mockup-system input style. Use on <input>, <textarea>, and
+ * <select>. The export name `ledgerInputStyle` is preserved for backward
+ * compatibility with existing call sites; the returned tokens are
+ * mockup-system (Inter, ink/cream/gold, 12px radius).
  */
 export function ledgerInputStyle({ invalid, multi }: InputStyleOptions = {}): CSSProperties {
   return {
     width: '100%',
     padding: '10px 12px',
-    borderRadius: 2,
+    borderRadius: 12,
     border: `1px solid ${invalid ? 'var(--gold-deep)' : 'var(--ink-a10)'}`,
     background: 'var(--cream)',
-    fontFamily: multi ? 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace' : 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
-    fontSize: multi ? 12.5 : 13.5,
+    fontFamily: INTER_STACK,
+    fontSize: multi ? 13 : 14,
+    fontWeight: 500,
     color: 'var(--ink)',
     resize: multi ? 'vertical' : undefined,
   };
