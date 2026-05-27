@@ -2,6 +2,10 @@
 // Server component. Authenticates the user, looks up their certificate,
 // and renders download + LinkedIn placeholder sections.
 // Per CERT-04: learner can download PDF from this page.
+//
+// Ported to the mockup design system 2026-05-27 (Inter, ink/cream/gold).
+// PDF rendering pathway is independent (src/lib/pdf/CertificateDocument)
+// and intentionally unchanged.
 
 import { redirect } from 'next/navigation';
 import { getEnrollment } from '../_lib/getEnrollment';
@@ -24,15 +28,59 @@ export const metadata = {
   description: 'Download your AiBI-Foundation certificate.',
 };
 
+// Shared inline styles — kept here rather than a CSS module so this file
+// stays self-contained and matches the per-page sketch convention.
+const INTER_STACK =
+  '"Inter", ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
+
+const KICKER: React.CSSProperties = {
+  fontFamily: INTER_STACK,
+  fontSize: 11,
+  fontWeight: 600,
+  letterSpacing: '0.22em',
+  textTransform: 'uppercase',
+  color: 'var(--gold-deep)',
+  margin: 0,
+};
+
+const META_LABEL: React.CSSProperties = {
+  fontFamily: INTER_STACK,
+  fontSize: 10,
+  fontWeight: 600,
+  letterSpacing: '0.18em',
+  textTransform: 'uppercase',
+  color: 'var(--slate-500)',
+  margin: 0,
+};
+
 export default async function CertificatePage() {
   if (!isSupabaseConfigured()) {
     return (
-      <main className="min-h-screen bg-[var(--ledger-paper)] flex items-center justify-center px-4">
-        <div className="max-w-md text-center">
-          <h1 className="text-2xl font-bold text-[var(--ledger-ink)] mb-4">
+      <main
+        style={{
+          minHeight: '100vh',
+          background: 'var(--cream)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '24px',
+          fontFamily: INTER_STACK,
+        }}
+      >
+        <div style={{ maxWidth: 420, textAlign: 'center' }}>
+          <h1
+            style={{
+              fontFamily: INTER_STACK,
+              fontSize: 28,
+              fontWeight: 700,
+              color: 'var(--ink)',
+              margin: '0 0 12px',
+              letterSpacing: '-0.01em',
+            }}
+          >
             Service Unavailable
           </h1>
-          <p className="text-[var(--ledger-muted)]">
+          <p style={{ color: 'var(--slate-600)', fontSize: 15, margin: 0 }}>
             The certificate service is not configured. Please contact support.
           </p>
         </div>
@@ -63,120 +111,202 @@ export default async function CertificatePage() {
   return (
     <CourseShellWrapper
       crumbs={['Education', 'AiBI-Foundation', 'Certificate']}
-      contentMaxWidth={760}
+      contentMaxWidth={780}
     >
-      <div>
+      <div style={{ fontFamily: INTER_STACK, color: 'var(--ink)' }}>
         {/* Page header */}
-        <div style={{ marginBottom: 40, textAlign: 'center' }}>
-          <p
-            style={{
-              fontFamily: 'var(--ledger-mono)',
-              fontSize: 11,
-              letterSpacing: '0.22em',
-              textTransform: 'uppercase',
-              color: 'var(--ledger-accent)',
-              margin: '0 0 12px',
-            }}
-          >
-            The AI Banking Institute
-          </p>
+        <header style={{ marginBottom: 40, textAlign: 'center' }}>
+          <p style={{ ...KICKER, marginBottom: 12 }}>The AI Banking Institute</p>
           <h1
             style={{
-              fontFamily: 'var(--ledger-serif)',
-              fontWeight: 500,
-              fontSize: 'clamp(36px, 4.5vw, 52px)',
-              lineHeight: 1.05,
-              letterSpacing: '-0.025em',
+              fontFamily: INTER_STACK,
+              fontWeight: 700,
+              fontSize: 'clamp(34px, 4.5vw, 48px)',
+              lineHeight: 1.08,
+              letterSpacing: '-0.02em',
               margin: '0 0 12px',
-              color: 'var(--ledger-ink)',
+              color: 'var(--ink)',
             }}
           >
-            {certificate ? 'Your Certificate' : 'Certificate Pending'}
+            {certificate ? 'Your Credential' : 'Credential Pending'}
           </h1>
           {certificate && (
-            <p className="text-[var(--ledger-muted)] font-sans text-sm">
+            <p
+              style={{
+                fontFamily: INTER_STACK,
+                fontSize: 14,
+                color: 'var(--slate-600)',
+                margin: 0,
+              }}
+            >
               Awarded to{' '}
-              <span className="text-[var(--ledger-ink)] font-semibold">{certificate.holder_name}</span>{' '}
+              <span style={{ color: 'var(--ink)', fontWeight: 600 }}>
+                {certificate.holder_name}
+              </span>{' '}
               on {formatDate(certificate.issued_at)}
             </p>
           )}
-        </div>
+        </header>
 
         {certificate ? (
           <>
-            {/* Certificate details card */}
-            <div
-              className="bg-[var(--ledger-paper)] border border-[color-mix(in srgb, var(--ledger-accent) 20%, transparent)] rounded-sm p-8 mb-8 relative overflow-hidden"
+            {/* The credential document itself */}
+            <article
+              aria-label="AiBI-Foundation credential"
+              style={{
+                position: 'relative',
+                background: 'var(--cream)',
+                border: '1px solid var(--ink-a10)',
+                borderRadius: 'var(--r-xl)',
+                padding: 'clamp(40px, 6vw, 64px) clamp(28px, 5vw, 56px)',
+                marginBottom: 32,
+                boxShadow: 'var(--shadow-feature)',
+                overflow: 'hidden',
+              }}
             >
-              {/* Inner ruling border */}
+              {/* Inner ruling — a single hairline frame keeps the document feel
+                  without resorting to ornament. */}
               <div
-                className="absolute inset-1 border border-[color-mix(in srgb, var(--ledger-accent) 10%, transparent)] pointer-events-none"
+                aria-hidden
+                style={{
+                  position: 'absolute',
+                  inset: 14,
+                  border: '1px solid var(--ink-a10)',
+                  borderRadius: 'calc(var(--r-xl) - 8px)',
+                  pointerEvents: 'none',
+                }}
               />
 
-              <div className="text-center relative z-10">
-                <p
-                  className="font-serif text-sm italic text-[var(--ledger-muted)] mb-2"
-                  style={{ fontFamily: 'Cormorant, Georgia, serif' }}
-                >
-                  AI Banking Institute Presents
-                </p>
-                <p
-                  className="text-3xl font-bold text-[var(--ledger-ink)] uppercase tracking-widest mb-6"
-                  style={{ fontFamily: 'Cormorant, Georgia, serif' }}
-                >
-                  Certificate of Achievement
+              {/* Seal — the navy square + gold landmark icon lockup */}
+              <div
+                style={{
+                  position: 'relative',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  marginBottom: 28,
+                  zIndex: 1,
+                }}
+              >
+                <Seal />
+              </div>
+
+              <div style={{ position: 'relative', textAlign: 'center', zIndex: 1 }}>
+                <p style={{ ...KICKER, marginBottom: 18 }}>
+                  Certificate of Completion
                 </p>
 
-                <div className="w-16 h-px bg-[var(--ledger-accent)] opacity-40 mx-auto mb-6" />
-
                 <p
-                  className="font-serif text-sm italic text-[var(--ledger-muted)] mb-3"
-                  style={{ fontFamily: 'Cormorant, Georgia, serif' }}
+                  style={{
+                    fontFamily: INTER_STACK,
+                    fontSize: 13,
+                    fontWeight: 500,
+                    color: 'var(--slate-600)',
+                    margin: '0 0 10px',
+                  }}
                 >
-                  This honors the distinguished performance of
+                  This certifies that
                 </p>
                 <p
-                  className="text-3xl font-bold text-[var(--ledger-accent)] mb-4"
-                  style={{ fontFamily: 'Cormorant, Georgia, serif' }}
+                  style={{
+                    fontFamily: INTER_STACK,
+                    fontSize: 'clamp(28px, 4vw, 38px)',
+                    fontWeight: 700,
+                    color: 'var(--ink)',
+                    letterSpacing: '-0.015em',
+                    margin: '0 0 18px',
+                  }}
                 >
                   {certificate.holder_name}
                 </p>
-                <p className="text-xs uppercase tracking-widest text-[var(--ledger-ink)] font-sans mb-2">
-                  For completing the specialized curriculum of
+
+                {/* Hairline divider */}
+                <div
+                  aria-hidden
+                  style={{
+                    width: 72,
+                    height: 1,
+                    background: 'var(--gold)',
+                    opacity: 0.6,
+                    margin: '0 auto 18px',
+                  }}
+                />
+
+                <p
+                  style={{
+                    fontFamily: INTER_STACK,
+                    fontSize: 13,
+                    fontWeight: 500,
+                    color: 'var(--slate-600)',
+                    margin: '0 0 10px',
+                  }}
+                >
+                  has completed the curriculum of
                 </p>
                 <p
-                  className="text-xl font-bold text-[var(--ledger-ink)] uppercase tracking-wide"
-                  style={{ fontFamily: 'Cormorant SC, Cormorant, Georgia, serif' }}
+                  style={{
+                    fontFamily: INTER_STACK,
+                    fontSize: 'clamp(20px, 2.4vw, 24px)',
+                    fontWeight: 700,
+                    color: 'var(--ink)',
+                    letterSpacing: '0.01em',
+                    margin: 0,
+                  }}
                 >
                   AiBI-Foundation
                 </p>
                 <p
-                  className="text-sm font-bold text-[var(--ledger-muted)] uppercase tracking-wider mt-1"
-                  style={{ fontFamily: 'Cormorant SC, Cormorant, Georgia, serif' }}
+                  style={{
+                    fontFamily: INTER_STACK,
+                    fontSize: 13,
+                    fontWeight: 500,
+                    color: 'var(--slate-600)',
+                    letterSpacing: '0.02em',
+                    margin: '6px 0 0',
+                  }}
                 >
-                  The AI Banking Institute
+                  · The AI Banking Institute ·
                 </p>
               </div>
 
-              <div className="mt-8 pt-6 border-t border-[color-mix(in srgb, var(--ledger-accent) 15%, transparent)] grid grid-cols-2 gap-4 text-sm relative z-10">
+              {/* Issue + ID metadata strip */}
+              <div
+                style={{
+                  position: 'relative',
+                  zIndex: 1,
+                  marginTop: 36,
+                  paddingTop: 24,
+                  borderTop: '1px solid var(--ink-a10)',
+                  display: 'grid',
+                  gridTemplateColumns: '1fr 1fr',
+                  gap: 16,
+                }}
+              >
                 <div>
-                  <p className="text-xs uppercase tracking-widest text-[var(--ledger-muted)] font-sans mb-1">
-                    Issue Date
-                  </p>
+                  <p style={{ ...META_LABEL, marginBottom: 6 }}>Issued</p>
                   <p
-                    className="text-[var(--ledger-ink)]"
-                    style={{ fontFamily: 'DM Mono, Courier New, monospace', fontSize: '12px' }}
+                    style={{
+                      fontFamily: INTER_STACK,
+                      fontSize: 13,
+                      fontWeight: 500,
+                      color: 'var(--ink)',
+                      margin: 0,
+                    }}
                   >
                     {formatDate(certificate.issued_at)}
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs uppercase tracking-widest text-[var(--ledger-muted)] font-sans mb-1">
-                    Certificate ID
-                  </p>
+                  <p style={{ ...META_LABEL, marginBottom: 6 }}>Credential ID</p>
                   <p
-                    className="text-[var(--ledger-ink)]"
-                    style={{ fontFamily: 'DM Mono, Courier New, monospace', fontSize: '10px' }}
+                    style={{
+                      fontFamily: INTER_STACK,
+                      fontSize: 12,
+                      fontWeight: 500,
+                      color: 'var(--ink)',
+                      letterSpacing: '0.04em',
+                      margin: 0,
+                      wordBreak: 'break-all',
+                    }}
                   >
                     {certificate.certificate_id}
                   </p>
@@ -184,115 +314,309 @@ export default async function CertificatePage() {
               </div>
 
               {verificationUrl && (
-                <div className="mt-4 text-center relative z-10">
+                <div
+                  style={{
+                    position: 'relative',
+                    zIndex: 1,
+                    marginTop: 16,
+                    textAlign: 'center',
+                  }}
+                >
                   <a
                     href={verificationUrl}
-                    className="text-[var(--ledger-muted)] hover:text-[var(--ledger-accent)] transition-colors"
                     style={{
-                      fontFamily: 'DM Mono, Courier New, monospace',
-                      fontSize: '10px',
+                      fontFamily: INTER_STACK,
+                      fontSize: 11,
+                      fontWeight: 500,
+                      letterSpacing: '0.04em',
+                      color: 'var(--slate-500)',
+                      textDecoration: 'none',
+                      borderBottom: '1px solid transparent',
                     }}
                   >
                     Verify at {verificationUrl}
                   </a>
                 </div>
               )}
-            </div>
+            </article>
 
-            {/* Next Steps section */}
-            <div className="grid md:grid-cols-3 gap-6">
-              <div className="md:col-span-2 grid sm:grid-cols-2 gap-4">
-                {/* LinkedIn placeholder card */}
-                <div className="bg-white border border-[color-mix(in srgb, var(--ledger-accent) 10%, transparent)] rounded-sm p-6">
-                  <div className="w-8 h-8 bg-[var(--ledger-accent)] rounded-sm flex items-center justify-center mb-3">
-                    <span className="text-white text-xs font-bold font-sans">in</span>
-                  </div>
-                  <h3 className="font-bold text-[var(--ledger-ink)] font-sans mb-2 text-sm">
-                    Add to LinkedIn
-                  </h3>
-                  <p className="text-xs text-[var(--ledger-muted)] font-sans leading-relaxed mb-3">
-                    LinkedIn badge integration coming soon. In the meantime, you can reference
-                    your credential as:
-                  </p>
-                  <p
-                    className="text-xs text-[var(--ledger-ink)] bg-[var(--ledger-paper)] p-3 rounded-sm leading-relaxed"
-                    style={{ fontFamily: 'DM Mono, Courier New, monospace' }}
+            {/* Action grid */}
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+                gap: 16,
+                marginBottom: 32,
+              }}
+            >
+              {/* LinkedIn placeholder */}
+              <section
+                style={{
+                  background: '#FFFFFF',
+                  border: '1px solid var(--ink-a10)',
+                  borderRadius: 'var(--r-lg)',
+                  padding: 24,
+                  boxShadow: 'var(--shadow-soft)',
+                }}
+              >
+                <div
+                  style={{
+                    width: 36,
+                    height: 36,
+                    background: 'var(--ink)',
+                    borderRadius: 8,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginBottom: 14,
+                  }}
+                >
+                  <span
+                    style={{
+                      color: 'var(--gold-soft)',
+                      fontFamily: INTER_STACK,
+                      fontSize: 13,
+                      fontWeight: 700,
+                      letterSpacing: '-0.02em',
+                    }}
                   >
-                    AiBI-Foundation &mdash; The AI Banking Institute
-                    <br />
-                    Verified at aibankinginstitute.com/verify/{certificate.certificate_id}
-                  </p>
+                    in
+                  </span>
                 </div>
-
-                {/* Download PDF card */}
-                <div className="bg-white border border-[color-mix(in srgb, var(--ledger-accent) 10%, transparent)] rounded-sm p-6">
-                  <div className="w-8 h-8 bg-[var(--ledger-accent-2)] rounded-sm flex items-center justify-center mb-3">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                      className="w-4 h-4 text-white"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M10 3a.75.75 0 01.75.75v9.69l2.72-2.72a.75.75 0 111.06 1.06l-4 4a.75.75 0 01-1.06 0l-4-4a.75.75 0 111.06-1.06l2.72 2.72V3.75A.75.75 0 0110 3z"
-                        clipRule="evenodd"
-                      />
-                      <path
-                        fillRule="evenodd"
-                        d="M3 14.75a.75.75 0 01.75-.75h12.5a.75.75 0 010 1.5H3.75a.75.75 0 01-.75-.75z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </div>
-                  <h3 className="font-bold text-[var(--ledger-ink)] font-sans mb-2 text-sm">
-                    Download PDF
-                  </h3>
-                  <p className="text-xs text-[var(--ledger-muted)] font-sans leading-relaxed mb-4">
-                    High-resolution vector format suitable for institutional framing.
-                  </p>
-                  <a
-                    href={`/api/courses/generate-certificate?enrollmentId=${enrollment.id}`}
-                    download={`AiBI-Foundation-Certificate-${certificate.certificate_id}.pdf`}
-                    className="inline-block w-full text-center bg-[var(--ledger-accent)] text-white text-xs font-semibold font-sans py-2.5 px-4 rounded-sm hover:bg-[var(--ledger-accent-light)] transition-colors"
-                  >
-                    Download Certificate PDF
-                  </a>
-                </div>
-              </div>
-
-              {/* Next steps promotion card */}
-              <div className="bg-[var(--gold)] text-white rounded-sm p-6 flex flex-col justify-center">
-                <p className="text-xs uppercase tracking-widest font-sans mb-2 opacity-80">
-                  What&rsquo;s Next
-                </p>
-                <h3 className="text-2xl font-bold mb-4">
-                  Apply the credential.
+                <h3
+                  style={{
+                    fontFamily: INTER_STACK,
+                    fontSize: 15,
+                    fontWeight: 700,
+                    color: 'var(--ink)',
+                    margin: '0 0 8px',
+                  }}
+                >
+                  Add to LinkedIn
                 </h3>
-                <p className="text-xs leading-relaxed mb-5 opacity-90 font-sans">
-                  Bring AiBI-Foundation into your institution. Coached cohorts at
-                  $199/seat for ten or more. Aggregate dashboard for your champion.
+                <p
+                  style={{
+                    fontFamily: INTER_STACK,
+                    fontSize: 13,
+                    lineHeight: 1.55,
+                    color: 'var(--slate-600)',
+                    margin: '0 0 14px',
+                  }}
+                >
+                  LinkedIn badge integration is coming. In the meantime,
+                  reference your credential as:
+                </p>
+                <p
+                  style={{
+                    fontFamily: INTER_STACK,
+                    fontSize: 12,
+                    fontWeight: 500,
+                    lineHeight: 1.55,
+                    color: 'var(--ink)',
+                    background: 'var(--cream)',
+                    border: '1px solid var(--ink-a10)',
+                    borderRadius: 8,
+                    padding: 12,
+                    margin: 0,
+                  }}
+                >
+                  AiBI-Foundation · The AI Banking Institute
+                  <br />
+                  Verified at aibankinginstitute.com/verify/{certificate.certificate_id}
+                </p>
+              </section>
+
+              {/* Download PDF */}
+              <section
+                style={{
+                  background: '#FFFFFF',
+                  border: '1px solid var(--ink-a10)',
+                  borderRadius: 'var(--r-lg)',
+                  padding: 24,
+                  boxShadow: 'var(--shadow-soft)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+              >
+                <div
+                  style={{
+                    width: 36,
+                    height: 36,
+                    background: 'var(--gold)',
+                    borderRadius: 8,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginBottom: 14,
+                  }}
+                  aria-hidden
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    style={{ width: 18, height: 18, color: 'var(--ink)' }}
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 3a.75.75 0 01.75.75v9.69l2.72-2.72a.75.75 0 111.06 1.06l-4 4a.75.75 0 01-1.06 0l-4-4a.75.75 0 111.06-1.06l2.72 2.72V3.75A.75.75 0 0110 3z"
+                      clipRule="evenodd"
+                    />
+                    <path
+                      fillRule="evenodd"
+                      d="M3 14.75a.75.75 0 01.75-.75h12.5a.75.75 0 010 1.5H3.75a.75.75 0 01-.75-.75z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
+                <h3
+                  style={{
+                    fontFamily: INTER_STACK,
+                    fontSize: 15,
+                    fontWeight: 700,
+                    color: 'var(--ink)',
+                    margin: '0 0 8px',
+                  }}
+                >
+                  Download PDF
+                </h3>
+                <p
+                  style={{
+                    fontFamily: INTER_STACK,
+                    fontSize: 13,
+                    lineHeight: 1.55,
+                    color: 'var(--slate-600)',
+                    margin: '0 0 16px',
+                    flex: 1,
+                  }}
+                >
+                  High-resolution vector format, suitable for framing
+                  or sharing with your board.
                 </p>
                 <a
-                  href="/for-institutions"
-                  className="inline-block text-center bg-[var(--cream-2)] text-[var(--gold)] text-xs font-bold font-sans py-2.5 px-4 rounded-sm hover:bg-white transition-colors"
+                  href={`/api/courses/generate-certificate?enrollmentId=${enrollment.id}`}
+                  download={`AiBI-Foundation-Certificate-${certificate.certificate_id}.pdf`}
+                  style={{
+                    display: 'block',
+                    textAlign: 'center',
+                    background: 'var(--ink)',
+                    color: '#FFFFFF',
+                    fontFamily: INTER_STACK,
+                    fontSize: 12,
+                    fontWeight: 700,
+                    letterSpacing: '0.12em',
+                    textTransform: 'uppercase',
+                    padding: '12px 16px',
+                    borderRadius: 'var(--r-md)',
+                    textDecoration: 'none',
+                  }}
                 >
-                  See institutional engagement
+                  Download Certificate
                 </a>
-              </div>
+              </section>
+
+              {/* What's next — institutional CTA, on-dark + gold accent */}
+              <section
+                style={{
+                  background: 'var(--ink)',
+                  color: '#FFFFFF',
+                  borderRadius: 'var(--r-lg)',
+                  padding: 24,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  boxShadow: 'var(--shadow-feature)',
+                }}
+              >
+                <div>
+                  <p
+                    style={{
+                      ...KICKER,
+                      color: 'var(--gold-soft)',
+                      marginBottom: 12,
+                    }}
+                  >
+                    What&rsquo;s Next
+                  </p>
+                  <h3
+                    style={{
+                      fontFamily: INTER_STACK,
+                      fontSize: 22,
+                      fontWeight: 700,
+                      letterSpacing: '-0.01em',
+                      color: '#FFFFFF',
+                      margin: '0 0 12px',
+                    }}
+                  >
+                    Bring it to your institution.
+                  </h3>
+                  <p
+                    style={{
+                      fontFamily: INTER_STACK,
+                      fontSize: 13,
+                      lineHeight: 1.6,
+                      color: 'var(--on-dark-80)',
+                      margin: '0 0 18px',
+                    }}
+                  >
+                    Coached cohorts at $199 per seat for ten or more. Aggregate
+                    dashboard for your champion.
+                  </p>
+                </div>
+                <a
+                  href="/for-institutions"
+                  style={{
+                    display: 'block',
+                    textAlign: 'center',
+                    background: 'var(--gold)',
+                    color: 'var(--ink)',
+                    fontFamily: INTER_STACK,
+                    fontSize: 12,
+                    fontWeight: 700,
+                    letterSpacing: '0.12em',
+                    textTransform: 'uppercase',
+                    padding: '12px 16px',
+                    borderRadius: 'var(--r-md)',
+                    textDecoration: 'none',
+                  }}
+                >
+                  See Institutional Engagement
+                </a>
+              </section>
             </div>
           </>
         ) : (
           /* Certificate not yet issued */
-          <div className="text-center bg-[var(--ledger-paper)] border border-[color-mix(in srgb, var(--ledger-accent) 15%, transparent)] rounded-sm p-12">
-            <div className="w-16 h-16 bg-[color-mix(in srgb, var(--ledger-accent) 10%, transparent)] rounded-full flex items-center justify-center mx-auto mb-6">
+          <div
+            style={{
+              textAlign: 'center',
+              background: 'var(--cream)',
+              border: '1px solid var(--ink-a10)',
+              borderRadius: 'var(--r-xl)',
+              padding: '56px 32px',
+              boxShadow: 'var(--shadow-soft)',
+            }}
+          >
+            <div
+              style={{
+                width: 64,
+                height: 64,
+                background: 'var(--gold-a20)',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: '0 auto 24px',
+              }}
+              aria-hidden
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="1.5"
-                className="w-8 h-8 text-[var(--ledger-accent)]"
+                style={{ width: 32, height: 32, color: 'var(--gold-deep)' }}
               >
                 <path
                   strokeLinecap="round"
@@ -302,18 +626,45 @@ export default async function CertificatePage() {
               </svg>
             </div>
             <h2
-              className="text-2xl font-bold text-[var(--ledger-ink)] mb-3"
-              style={{ fontFamily: 'Cormorant, Georgia, serif' }}
+              style={{
+                fontFamily: INTER_STACK,
+                fontSize: 24,
+                fontWeight: 700,
+                color: 'var(--ink)',
+                letterSpacing: '-0.01em',
+                margin: '0 0 12px',
+              }}
             >
-              Your Certificate Is Being Generated
+              Your credential is being generated
             </h2>
-            <p className="text-[var(--ledger-muted)] font-sans text-sm mb-6 max-w-md mx-auto">
-              Your submission has been reviewed and approved. Your certificate will
-              appear here shortly. Please refresh this page in a moment.
+            <p
+              style={{
+                fontFamily: INTER_STACK,
+                fontSize: 14,
+                lineHeight: 1.6,
+                color: 'var(--slate-600)',
+                maxWidth: 460,
+                margin: '0 auto 28px',
+              }}
+            >
+              Your submission has been reviewed and approved. The credential
+              will appear here shortly. Refresh this page in a moment.
             </p>
             <a
               href="/courses/foundation/program/certificate"
-              className="inline-block bg-[var(--ledger-accent)] text-white text-xs font-semibold font-sans py-2.5 px-6 rounded-sm hover:bg-[var(--ledger-accent-light)] transition-colors"
+              style={{
+                display: 'inline-block',
+                background: 'var(--ink)',
+                color: '#FFFFFF',
+                fontFamily: INTER_STACK,
+                fontSize: 12,
+                fontWeight: 700,
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                padding: '12px 24px',
+                borderRadius: 'var(--r-md)',
+                textDecoration: 'none',
+              }}
             >
               Refresh Page
             </a>
@@ -321,5 +672,49 @@ export default async function CertificatePage() {
         )}
       </div>
     </CourseShellWrapper>
+  );
+}
+
+/**
+ * Seal — navy square with gold landmark glyph. Matches the CLAUDE.md
+ * wordmark spec (40×40, 12px radius, gold landmark on ink). Used here
+ * standalone (centered on the credential) rather than paired with the
+ * two-line wordmark text; the credential body already names the
+ * Institute, so a symbol-only seal reads cleanly without duplication.
+ */
+function Seal() {
+  return (
+    <div
+      aria-hidden
+      style={{
+        width: 56,
+        height: 56,
+        background: 'var(--ink)',
+        borderRadius: 14,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        boxShadow: 'var(--shadow-soft)',
+      }}
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="var(--gold)"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        style={{ width: 28, height: 28 }}
+      >
+        {/* Stylized landmark — columned facade */}
+        <path d="M3 10 L12 4 L21 10" />
+        <path d="M5 10 V19" />
+        <path d="M9 10 V19" />
+        <path d="M15 10 V19" />
+        <path d="M19 10 V19" />
+        <path d="M3 20 H21" />
+      </svg>
+    </div>
   );
 }
