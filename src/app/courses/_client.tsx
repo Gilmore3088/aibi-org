@@ -153,7 +153,7 @@ export default function CoursesIndexPage() {
           <div className="mk-deco-ring" />
           <div className="mk-deco-blur" />
         </div>
-        <div className="mk-container mk-hero-inner">
+        <div className="mk-container mk-hero-inner mk-hero-inner-full">
           <div>
             <EyebrowChip icon={<GradCapIcon className="mk-ic" />}>
               AiBI-Foundation · self-paced

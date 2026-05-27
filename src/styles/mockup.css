@@ -1057,6 +1057,13 @@ section.mk-std { padding: 56px 0; }
 .mk-quiz-status svg { color: var(--gold-deep); flex: none; }
 .mk-quiz-foot.mk-quiz-foot-end { justify-content: flex-end; }
 
+/* Hero with only a copy column (no right-side card) — center the
+   text block and cap line length so the H1 doesn't sit far left
+   on wide viewports. */
+.mk-hero-inner-full { grid-template-columns: 1fr !important; max-width: 920px; }
+.mk-hero-inner-full h1 { max-width: 18ch; }
+.mk-hero-inner-full .mk-lede { max-width: 56ch; }
+
 /* ============================================================
    /courses — Foundation course landing (2026-05-26)
    Static sections with illustration-style animated module demos
