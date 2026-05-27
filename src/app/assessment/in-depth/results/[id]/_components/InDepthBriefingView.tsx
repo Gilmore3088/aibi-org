@@ -425,11 +425,11 @@ export function InDepthBriefingView({
                 <polygon
                   className="you"
                   points={radarPoints(radarSeries)}
-                  fill="var(--ledger-accent-a22)"
-                  stroke="var(--ledger-accent)"
+                  fill="var(--gold-a20)"
+                  stroke="var(--gold)"
                   strokeWidth={1.8}
                 />
-                <g className="dots" fill="var(--ledger-accent)">
+                <g className="dots" fill="var(--gold)">
                   {RADAR_ANGLES.map((angle, i) => {
                     const pct = Math.max(0, Math.min(100, radarSeries[i] ?? 0));
                     const r = (pct / 100) * RADAR_RADIUS;
@@ -440,11 +440,11 @@ export function InDepthBriefingView({
                 </g>
                 <g
                   className="labels"
-                  fontFamily="'JetBrains Mono', monospace"
+                  fontFamily="Inter, ui-sans-serif, system-ui, sans-serif"
                   fontSize={10}
                   letterSpacing={1.4}
-                  fill="#0E1B2D"
-                  fontWeight={600}
+                  fill="#071A2F"
+                  fontWeight={700}
                 >
                   {radarLabels(rows)}
                 </g>

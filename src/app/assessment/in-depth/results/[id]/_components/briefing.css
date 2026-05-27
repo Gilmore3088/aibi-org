@@ -1,43 +1,41 @@
 /*
- * In-Depth Briefing styles — ported from the Claude Design handoff bundle
- * (docs/brand-refresh-2026-05-09/project/assessment/In-Depth Briefing.html).
+ * In-Depth Briefing styles — ported to the mockup design system 2026-05-27.
  *
  * All rules scoped under .aibi-briefing so the design's short class names
- * (.dim-row, .gantt, .composite, etc.) cannot leak into the wider app. The
- * scope wrapper also declares the local color/typography variables so the
- * design tokens map cleanly onto the Ledger system declared in
- * src/styles/tokens-ledger.css.
+ * (.dim-row, .gantt, .composite, etc.) cannot leak into the wider app.
+ * Tokens resolved from src/styles/tokens-mockup.css. Italics retired
+ * site-wide; emphasis carried by weight and color.
  */
 
 .aibi-briefing {
-  /* Ledger token aliases — kept matching the design source names so future
-   * snippets paste cleanly. These all resolve from --ledger-* upstream. */
-  --bg: var(--ledger-bg);
-  --paper: var(--ledger-paper);
-  --paper-2: #EDE8DA;
-  --parch: var(--ledger-parch);
-  --parch-dark: var(--ledger-parch-dark);
-  --tape: var(--ledger-tape);
-  --ink: var(--ledger-ink);
-  --ink-2: var(--ledger-ink-2);
-  --slate: var(--ledger-slate);
-  --muted: var(--ledger-muted);
-  --soft: var(--ledger-soft);
-  --terra: var(--ledger-accent);
-  --terra-2: #8E6212;
-  --terra-soft: #EFE5C2;
-  --navy: var(--ledger-accent-2);
-  --oxblood: var(--ledger-weak);
-  --forest: #4A6B47;
-  --plum: #5A3A5E;
-  --rule: rgba(14, 27, 45, 0.10);
-  --rule-strong: rgba(14, 27, 45, 0.22);
-  --serif: var(--ledger-serif);
-  --sans: var(--ledger-sans);
-  --mono: var(--ledger-mono);
+  /* Local token aliases — map mockup tokens onto the short names used
+   * throughout the original design source so the class rules stay legible. */
+  --bg: var(--cream);
+  --paper: #ffffff;
+  --paper-2: var(--cream);
+  --parch: var(--cream);
+  --parch-dark: var(--cream-2);
+  --tape: var(--cream-2);
+  --ink: var(--ink);
+  --ink-2: var(--ink-2);
+  --slate: var(--slate-600);
+  --muted: var(--slate-500);
+  --soft: var(--slate-400);
+  --terra: var(--gold-deep);
+  --terra-2: var(--gold-deep);
+  --terra-soft: var(--gold-soft);
+  --navy: var(--ink);
+  --oxblood: var(--ink);
+  --forest: var(--emerald-700);
+  --plum: var(--ink-2);
+  --rule: var(--ink-a10);
+  --rule-strong: var(--ink-a15);
+  --serif: "Inter", ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --mono: "Inter", ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
   --maxw: 1180px;
 
-  background: var(--paper);
+  background: var(--cream);
   color: var(--ink);
   font-family: var(--sans);
   font-size: 14.5px;
@@ -48,275 +46,274 @@
 .aibi-briefing *::before,
 .aibi-briefing *::after { box-sizing: border-box; }
 .aibi-briefing a { color: inherit; text-decoration: none; }
-.aibi-briefing em { font-style: italic; }
+.aibi-briefing em { font-style: normal; font-weight: 700; color: var(--gold-deep); }
 .aibi-briefing .container { max-width: var(--maxw); margin: 0 auto; padding: 0 32px; }
 .aibi-briefing .eyebrow {
   font-family: var(--mono); font-size: 11px; letter-spacing: 0.22em;
-  text-transform: uppercase; color: var(--muted); font-weight: 600;
+  text-transform: uppercase; color: var(--slate-500); font-weight: 700;
 }
 
 /* TOP STRIP */
 .aibi-briefing .strip {
-  background: var(--ink); color: var(--paper); padding: 10px 0;
-  font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.20em;
-  text-transform: uppercase; font-weight: 500;
+  background: var(--ink); color: #fff; padding: 10px 0;
+  font-size: 10.5px; letter-spacing: 0.20em;
+  text-transform: uppercase; font-weight: 600;
 }
 .aibi-briefing .strip-row {
   display: flex; justify-content: space-between; align-items: center;
   gap: 18px; flex-wrap: wrap;
 }
-.aibi-briefing .strip-row .conf { color: var(--terra-soft); }
+.aibi-briefing .strip-row .conf { color: var(--gold-soft); }
 
 /* MASTHEAD */
 .aibi-briefing .mast {
-  padding: 54px 0 36px; border-bottom: 3px double var(--ink); position: relative;
+  padding: 54px 0 36px;
+  border-bottom: 1px solid var(--ink-a15);
+  position: relative;
 }
 .aibi-briefing .mast .l1 {
-  font-family: var(--mono); font-size: 11px; letter-spacing: 0.24em;
-  text-transform: uppercase; color: var(--muted); font-weight: 600;
+  font-size: 11px; letter-spacing: 0.24em;
+  text-transform: uppercase; color: var(--slate-500); font-weight: 700;
   margin-bottom: 18px; display: flex; justify-content: space-between; align-items: center;
 }
 .aibi-briefing .mast h1 {
-  font-family: var(--serif); font-weight: 500;
-  font-size: clamp(56px, 7.4vw, 112px); line-height: 0.94;
-  letter-spacing: -0.038em; margin: 0 0 18px; max-width: 18ch;
+  font-weight: 700;
+  font-size: clamp(48px, 6.4vw, 88px); line-height: 1.0;
+  letter-spacing: -0.025em; margin: 0 0 18px; max-width: 22ch; color: var(--ink);
 }
-.aibi-briefing .mast h1 em { color: var(--terra); font-weight: 500; }
+.aibi-briefing .mast h1 em { color: var(--gold-deep); font-weight: 700; }
 .aibi-briefing .mast .deck {
-  font-family: var(--serif); font-size: 22px; line-height: 1.45;
-  color: var(--ink-2); max-width: 54ch; margin: 0; font-weight: 400;
+  font-size: 20px; line-height: 1.5;
+  color: var(--slate-600); max-width: 60ch; margin: 0; font-weight: 400;
 }
-.aibi-briefing .mast .deck em { color: var(--terra); }
+.aibi-briefing .mast .deck em { color: var(--gold-deep); font-weight: 600; }
 
 .aibi-briefing .filing-meta {
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 0;
-  margin-top: 46px; border: 1px solid var(--rule-strong); background: var(--paper-2);
+  margin-top: 46px; border: 1px solid var(--ink-a15); background: #fff;
+  border-radius: 16px; overflow: hidden;
 }
-.aibi-briefing .filing-meta > div { padding: 20px; border-right: 1px solid var(--rule); }
+.aibi-briefing .filing-meta > div { padding: 20px; border-right: 1px solid var(--ink-a10); }
 .aibi-briefing .filing-meta > div:last-child { border-right: none; }
 .aibi-briefing .filing-meta .lbl {
-  font-family: var(--mono); font-size: 10px; letter-spacing: 0.20em;
-  text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 6px;
+  font-size: 10px; letter-spacing: 0.20em;
+  text-transform: uppercase; color: var(--slate-500); font-weight: 700; margin-bottom: 6px;
 }
 .aibi-briefing .filing-meta .val {
-  font-family: var(--serif); font-weight: 500; font-size: 19px;
-  letter-spacing: -0.01em; line-height: 1.2;
+  font-weight: 600; font-size: 18px;
+  letter-spacing: -0.01em; line-height: 1.25; color: var(--ink);
 }
-.aibi-briefing .filing-meta .val em { color: var(--terra); }
+.aibi-briefing .filing-meta .val em { color: var(--gold-deep); font-weight: 700; }
 .aibi-briefing .filing-meta .val small {
-  display: block; font-family: var(--mono); font-style: normal; font-size: 10px;
-  letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted);
-  font-weight: 500; margin-top: 4px;
+  display: block; font-size: 10px;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--slate-500);
+  font-weight: 600; margin-top: 4px;
 }
 
 /* CONTENTS */
-.aibi-briefing .contents { padding: 54px 0; border-bottom: 1px solid var(--rule); }
+.aibi-briefing .contents { padding: 54px 0; border-bottom: 1px solid var(--ink-a10); }
 .aibi-briefing .contents-grid {
-  /* Fixed left rail keeps the section heading in a tight margin column.
-   * The prior 1fr 2fr fluid split stranded "The briefing." H2 in the
-   * page margin at wide viewports — section labels are short, the body
-   * column carries the weight. */
   display: grid; grid-template-columns: 240px 1fr; gap: 56px; align-items: flex-start;
 }
 .aibi-briefing .contents h2 {
-  font-family: var(--serif); font-weight: 500; font-size: 46px;
-  letter-spacing: -0.025em; margin: 0; line-height: 0.98;
+  font-weight: 700; font-size: 42px;
+  letter-spacing: -0.025em; margin: 0; line-height: 1.05; color: var(--ink);
 }
-.aibi-briefing .contents h2 em { color: var(--terra); }
+.aibi-briefing .contents h2 em { color: var(--gold-deep); }
 .aibi-briefing .contents .h-sub {
-  font-family: var(--mono); font-size: 11px; letter-spacing: 0.22em;
-  text-transform: uppercase; color: var(--muted); font-weight: 600;
+  font-size: 11px; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--slate-500); font-weight: 700;
   margin-top: 14px; padding-top: 14px; border-top: 2px solid var(--ink); display: block;
 }
 .aibi-briefing .toc { display: flex; flex-direction: column; }
 .aibi-briefing .toc a {
   display: grid; grid-template-columns: 42px 1fr auto; gap: 16px;
-  padding: 14px 0; border-bottom: 1px solid var(--rule); align-items: baseline;
-  transition: color 0.15s;
+  padding: 14px 0; border-bottom: 1px solid var(--ink-a10); align-items: baseline;
+  transition: color 0.12s;
 }
-.aibi-briefing .toc a:first-child { border-top: 1px solid var(--rule-strong); }
-.aibi-briefing .toc a:hover { color: var(--terra); }
+.aibi-briefing .toc a:first-child { border-top: 1px solid var(--ink-a15); }
+.aibi-briefing .toc a:hover { color: var(--gold-deep); }
 .aibi-briefing .toc .n {
-  font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em;
-  color: var(--terra); font-weight: 600;
+  font-size: 11px; letter-spacing: 0.14em;
+  color: var(--gold-deep); font-weight: 700;
 }
 .aibi-briefing .toc .t {
-  font-family: var(--serif); font-size: 20px; letter-spacing: -0.015em; line-height: 1.2;
+  font-size: 19px; letter-spacing: -0.015em; line-height: 1.25;
+  font-weight: 600; color: var(--ink);
 }
 .aibi-briefing .toc .t small {
-  display: block; font-family: var(--sans); font-size: 12.5px; color: var(--muted);
-  margin-top: 2px; letter-spacing: 0; line-height: 1.4;
+  display: block; font-size: 12.5px; color: var(--slate-500);
+  margin-top: 4px; letter-spacing: 0; line-height: 1.4; font-weight: 400;
 }
 .aibi-briefing .toc .pg {
-  font-family: var(--mono); font-size: 11px; letter-spacing: 0.10em;
-  color: var(--muted); font-weight: 500;
+  font-size: 11px; letter-spacing: 0.10em;
+  color: var(--slate-500); font-weight: 600;
 }
 
 /* SECTIONS */
 .aibi-briefing section.chapter {
-  padding: 80px 0; border-bottom: 1px solid var(--rule); position: relative;
+  padding: 80px 0; border-bottom: 1px solid var(--ink-a10); position: relative;
 }
-.aibi-briefing section.chapter.shaded { background: var(--paper-2); }
+.aibi-briefing section.chapter.shaded { background: var(--cream-2); }
 .aibi-briefing .ch-head {
-  /* Fixed left rail (240px) — same rationale as .contents-grid. The
-   * "Chapter NN · title" kicker is short; allowing it to expand to 1fr
-   * pushed the chapter heading off into the right half of the page. */
   display: grid; grid-template-columns: 240px 1fr; gap: 56px;
   margin-bottom: 48px; align-items: flex-end;
 }
 .aibi-briefing .ch-head .left .num {
-  font-family: var(--mono); font-size: 11px; letter-spacing: 0.24em;
-  text-transform: uppercase; color: var(--muted); font-weight: 600;
+  font-size: 11px; letter-spacing: 0.24em;
+  text-transform: uppercase; color: var(--slate-500); font-weight: 700;
   padding-top: 14px; border-top: 2px solid var(--ink); margin-bottom: 18px;
 }
 .aibi-briefing .ch-head .left .num em {
-  font-family: var(--serif); font-style: italic; font-weight: 500;
-  color: var(--terra); font-size: 36px; letter-spacing: -0.02em;
+  font-weight: 700; color: var(--gold-deep);
+  font-size: 32px; letter-spacing: -0.02em;
   line-height: 1; display: block; margin-top: 14px; text-transform: none;
 }
 .aibi-briefing .ch-head h2 {
-  font-family: var(--serif); font-weight: 500;
-  font-size: clamp(36px, 4.2vw, 56px); line-height: 1.04;
-  letter-spacing: -0.028em; margin: 0; max-width: 18ch;
+  font-weight: 700;
+  font-size: clamp(32px, 4vw, 52px); line-height: 1.08;
+  letter-spacing: -0.025em; margin: 0; max-width: 22ch; color: var(--ink);
 }
-.aibi-briefing .ch-head h2 em { color: var(--terra); }
+.aibi-briefing .ch-head h2 em { color: var(--gold-deep); }
 .aibi-briefing .ch-head .body {
-  font-family: var(--serif); font-size: 18px; line-height: 1.5;
-  color: var(--ink-2); margin: 18px 0 0; max-width: 48ch;
+  font-size: 17px; line-height: 1.6;
+  color: var(--slate-600); margin: 18px 0 0; max-width: 56ch;
 }
 
 /* CH 01 — Synthesis */
 .aibi-briefing .synth-grid {
-  display: grid; grid-template-columns: 1.1fr 1fr; gap: 40px; align-items: stretch;
+  display: grid; grid-template-columns: 1.1fr 1fr; gap: 32px; align-items: stretch;
 }
 .aibi-briefing .composite {
-  background: var(--paper); border: 1px solid var(--rule-strong);
-  padding: 36px 36px 32px; display: flex; flex-direction: column; gap: 22px;
+  background: #fff; border: 1px solid var(--ink-a15);
+  padding: 32px; display: flex; flex-direction: column; gap: 20px;
+  border-radius: 24px;
 }
 .aibi-briefing .composite .lbl {
-  font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.22em;
-  text-transform: uppercase; color: var(--muted); font-weight: 600;
+  font-size: 11px; letter-spacing: 0.20em;
+  text-transform: uppercase; color: var(--slate-500); font-weight: 700;
 }
 .aibi-briefing .composite .score-row {
   display: flex; align-items: flex-end; justify-content: space-between;
-  gap: 18px; border-bottom: 3px double var(--ink); padding-bottom: 18px;
+  gap: 18px; border-bottom: 1px solid var(--ink-a15); padding-bottom: 18px;
 }
 .aibi-briefing .composite .score {
-  font-family: var(--serif); font-weight: 500; font-size: 130px;
-  letter-spacing: -0.04em; line-height: 0.9; color: var(--terra);
+  font-weight: 700; font-size: 112px;
+  letter-spacing: -0.04em; line-height: 0.9; color: var(--gold-deep);
 }
 .aibi-briefing .composite .score small {
-  font-family: var(--serif); font-size: 42px; color: var(--muted); letter-spacing: -0.02em;
+  font-size: 36px; color: var(--slate-500); letter-spacing: -0.02em; font-weight: 500;
 }
 .aibi-briefing .composite .phase-box { flex: 1; text-align: right; }
 .aibi-briefing .composite .phase-box .phase {
-  font-family: var(--serif); font-style: italic; font-weight: 500;
-  font-size: 30px; letter-spacing: -0.015em; line-height: 1;
+  font-weight: 700;
+  font-size: 26px; letter-spacing: -0.015em; line-height: 1.1;
   color: var(--ink); margin-bottom: 8px;
 }
 .aibi-briefing .composite .phase-box .stage {
-  font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.20em;
-  text-transform: uppercase; color: var(--muted); font-weight: 600;
+  font-size: 11px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--slate-500); font-weight: 700;
 }
 .aibi-briefing .composite .radar {
   display: block; width: 100%; height: auto; max-width: 460px; margin: 8px auto -4px;
 }
 .aibi-briefing .composite .radar-legend {
   display: flex; justify-content: center; gap: 28px; padding-top: 14px;
-  border-top: 1px solid var(--rule); font-family: var(--mono); font-size: 10px;
-  letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted);
-  font-weight: 600; align-items: center;
+  border-top: 1px solid var(--ink-a10); font-size: 10px;
+  letter-spacing: 0.18em; text-transform: uppercase; color: var(--slate-500);
+  font-weight: 700; align-items: center;
 }
 .aibi-briefing .composite .radar-legend .sw { display: inline-flex; align-items: center; gap: 8px; }
-.aibi-briefing .composite .radar-legend i { display: inline-block; width: 16px; height: 10px; }
-.aibi-briefing .composite .radar-legend .sw-you { background: var(--ledger-accent-a22); border: 1.8px solid var(--ledger-accent); }
+.aibi-briefing .composite .radar-legend i { display: inline-block; width: 16px; height: 10px; border-radius: 2px; }
+.aibi-briefing .composite .radar-legend .sw-you { background: var(--gold-a20); border: 1.8px solid var(--gold); }
 
 .aibi-briefing .insight {
-  background: var(--paper); border: 1px solid var(--rule-strong);
-  padding: 36px; display: flex; flex-direction: column; gap: 18px; position: relative;
+  background: #fff; border: 1px solid var(--ink-a15);
+  padding: 32px; display: flex; flex-direction: column; gap: 16px; position: relative;
+  border-radius: 24px;
 }
 .aibi-briefing .insight .lbl {
-  font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.22em;
-  text-transform: uppercase; color: var(--terra); font-weight: 600;
+  font-size: 11px; letter-spacing: 0.20em;
+  text-transform: uppercase; color: var(--gold-deep); font-weight: 700;
 }
 .aibi-briefing .insight .pull {
-  font-family: var(--serif); font-weight: 500; font-size: 28px;
-  letter-spacing: -0.018em; line-height: 1.22; color: var(--ink); margin: 0;
+  font-weight: 700; font-size: 26px;
+  letter-spacing: -0.018em; line-height: 1.25; color: var(--ink); margin: 0;
 }
-.aibi-briefing .insight .pull em { color: var(--terra); font-style: italic; }
+.aibi-briefing .insight .pull em { color: var(--gold-deep); }
 .aibi-briefing .insight .body {
-  font-family: var(--serif); font-size: 17px; line-height: 1.55;
-  color: var(--ink-2); margin: 0;
+  font-size: 16px; line-height: 1.6;
+  color: var(--slate-600); margin: 0;
 }
 
 /* THIS WEEK callout */
 .aibi-briefing .thisweek {
   display: grid; grid-template-columns: auto 1fr auto; gap: 32px;
   align-items: center; padding: 22px 28px; background: var(--ink);
-  color: var(--paper); margin-bottom: 36px; border-left: 6px solid var(--terra);
+  color: #fff; margin-bottom: 36px; border-left: 6px solid var(--gold);
+  border-radius: 16px;
 }
 .aibi-briefing .thisweek .tag {
-  font-family: var(--mono); font-size: 10px; letter-spacing: 0.24em;
-  text-transform: uppercase; color: var(--terra-soft); font-weight: 600; line-height: 1.4;
+  font-size: 10px; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--gold-soft); font-weight: 700; line-height: 1.4;
 }
 .aibi-briefing .thisweek .tag em {
-  font-family: var(--serif); font-style: italic; font-weight: 500;
-  color: var(--paper); text-transform: none; font-size: 13px;
-  letter-spacing: -0.005em; display: block; margin-top: 4px;
+  font-weight: 600; color: #fff; text-transform: none;
+  font-size: 13px; letter-spacing: -0.005em; display: block; margin-top: 4px;
 }
 .aibi-briefing .thisweek .verb {
-  font-family: var(--serif); font-weight: 500; font-size: 24px;
-  letter-spacing: -0.018em; line-height: 1.3; color: var(--paper);
+  font-weight: 700; font-size: 22px;
+  letter-spacing: -0.018em; line-height: 1.3; color: #fff;
 }
-.aibi-briefing .thisweek .verb em { color: var(--terra); font-style: italic; }
+.aibi-briefing .thisweek .verb em { color: var(--gold-soft); }
 .aibi-briefing .thisweek .who {
-  text-align: right; font-family: var(--mono); font-size: 10px;
-  letter-spacing: 0.20em; text-transform: uppercase; color: var(--terra-soft);
-  font-weight: 600; line-height: 1.5;
+  text-align: right; font-size: 10px;
+  letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-soft);
+  font-weight: 700; line-height: 1.5;
 }
 .aibi-briefing .thisweek .who strong {
-  display: block; font-family: var(--serif); font-style: italic;
-  font-weight: 500; color: var(--paper); text-transform: none;
-  font-size: 16px; letter-spacing: -0.005em; margin-top: 4px;
+  display: block; font-weight: 700; color: #fff;
+  text-transform: none; font-size: 16px; letter-spacing: -0.005em; margin-top: 4px;
 }
 
 /* RUBRIC timeline */
 .aibi-briefing .rubric-timeline {
   margin-bottom: 32px; padding: 42px 32px 24px;
-  border: 1px solid var(--rule-strong); background: var(--paper); position: relative;
+  border: 1px solid var(--ink-a15); background: #fff; position: relative;
+  border-radius: 24px;
 }
 .aibi-briefing .rt-track { position: relative; height: 30px; margin: 0 12%; }
 .aibi-briefing .rt-line {
   position: absolute; top: 50%; left: 0; right: 0; height: 2px;
-  background: var(--parch-dark); transform: translateY(-50%);
+  background: var(--cream-2); transform: translateY(-50%);
 }
 .aibi-briefing .rt-fill {
   position: absolute; top: 50%; left: 0; height: 2px;
-  background: var(--terra); transform: translateY(-50%); z-index: 1;
+  background: var(--gold); transform: translateY(-50%); z-index: 1;
 }
 .aibi-briefing .rt-node {
   position: absolute; top: 50%; transform: translate(-50%, -50%); z-index: 2;
 }
 .aibi-briefing .rt-dot {
   display: block; width: 18px; height: 18px; border-radius: 50%;
-  background: var(--paper); border: 2px solid var(--ink-2);
-  box-shadow: 0 0 0 4px var(--paper);
+  background: #fff; border: 2px solid var(--ink-2);
+  box-shadow: 0 0 0 4px #fff;
 }
 .aibi-briefing .rt-dot.done { background: var(--ink); border-color: var(--ink); }
 .aibi-briefing .rt-dot.now {
-  background: var(--terra); border-color: var(--terra-2);
-  box-shadow: 0 0 0 4px var(--paper), 0 0 0 7px var(--ledger-accent-a20);
+  background: var(--gold); border-color: var(--gold-deep);
+  box-shadow: 0 0 0 4px #fff, 0 0 0 7px var(--gold-a20);
 }
 .aibi-briefing .rt-here {
   position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
-  background: var(--ink); color: var(--paper); padding: 6px 12px;
-  font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em;
-  text-transform: uppercase; font-weight: 600; white-space: nowrap; line-height: 1.2;
+  background: var(--ink); color: #fff; padding: 6px 12px;
+  font-size: 10px; letter-spacing: 0.18em;
+  text-transform: uppercase; font-weight: 700; white-space: nowrap; line-height: 1.2;
+  border-radius: 8px;
 }
 .aibi-briefing .rt-here em {
-  font-family: var(--serif); font-style: italic; font-weight: 500;
-  color: var(--terra-soft); text-transform: none; font-size: 13px;
-  letter-spacing: -0.005em; margin-left: 6px;
+  font-weight: 700; color: var(--gold-soft); text-transform: none;
+  font-size: 13px; letter-spacing: -0.005em; margin-left: 6px;
 }
 .aibi-briefing .rt-here::after {
   content: ""; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
@@ -326,367 +323,364 @@
   display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-top: 18px;
 }
 .aibi-briefing .rt-labels > div {
-  padding: 0 18px; text-align: center; border-right: 1px dashed var(--rule);
+  padding: 0 18px; text-align: center; border-right: 1px dashed var(--ink-a10);
 }
 .aibi-briefing .rt-labels > div:last-child { border-right: none; }
 .aibi-briefing .rt-labels .phs {
-  font-family: var(--serif); font-weight: 500; font-size: 22px;
-  letter-spacing: -0.018em; line-height: 1.1; margin-bottom: 6px;
+  font-weight: 700; font-size: 20px;
+  letter-spacing: -0.018em; line-height: 1.15; margin-bottom: 6px; color: var(--ink);
 }
-.aibi-briefing .rt-labels .phs em { color: var(--terra); font-style: italic; }
+.aibi-briefing .rt-labels .phs em { color: var(--gold-deep); }
 .aibi-briefing .rt-labels .dsc {
-  font-family: var(--serif); font-size: 13.5px; line-height: 1.4;
-  color: var(--ink-2); font-style: italic;
+  font-size: 13.5px; line-height: 1.45; color: var(--slate-600);
 }
 
 /* CH 02 — Dimensions index */
 .aibi-briefing .dim-index {
-  border: 1px solid var(--rule-strong); background: var(--paper-2);
+  border: 1px solid var(--ink-a15); background: #fff; border-radius: 24px; overflow: hidden;
 }
 .aibi-briefing .dim-row {
   display: grid; grid-template-columns: 60px 1.5fr 1fr 1fr 90px 28px;
-  gap: 24px; padding: 18px 26px; border-bottom: 1px solid var(--rule);
-  align-items: center; transition: background 0.15s;
+  gap: 24px; padding: 18px 26px; border-bottom: 1px solid var(--ink-a10);
+  align-items: center; transition: background 0.12s;
 }
 .aibi-briefing .dim-row:last-child { border-bottom: none; }
-.aibi-briefing .dim-row:hover { background: var(--paper); }
+.aibi-briefing .dim-row:hover { background: var(--cream); }
 .aibi-briefing .dim-row .n {
-  font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em;
-  color: var(--terra); font-weight: 600;
+  font-size: 11px; letter-spacing: 0.14em;
+  color: var(--gold-deep); font-weight: 700;
 }
 .aibi-briefing .dim-row .nm {
-  font-family: var(--serif); font-weight: 500; font-size: 19px;
-  letter-spacing: -0.013em; line-height: 1.2;
+  font-weight: 600; font-size: 18px;
+  letter-spacing: -0.012em; line-height: 1.25; color: var(--ink);
 }
 .aibi-briefing .dim-row .nm small {
-  display: block; font-family: var(--sans); font-size: 12.5px; color: var(--muted);
-  margin-top: 3px; line-height: 1.4; font-weight: 400; letter-spacing: 0;
+  display: block; font-size: 12.5px; color: var(--slate-500);
+  margin-top: 4px; line-height: 1.4; font-weight: 400; letter-spacing: 0;
 }
 .aibi-briefing .dim-row .pillar {
-  font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.18em;
-  text-transform: uppercase; color: var(--muted); font-weight: 600;
+  font-size: 9.5px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--slate-500); font-weight: 700;
 }
 .aibi-briefing .dim-row .bar {
-  height: 7px; background: var(--parch-dark); position: relative; border-radius: 0;
+  height: 7px; background: var(--cream-2); position: relative; border-radius: 4px; overflow: hidden;
 }
 .aibi-briefing .dim-row .bar i {
   position: absolute; left: 0; top: 0; bottom: 0; background: var(--ink);
 }
-.aibi-briefing .dim-row .bar.weak i { background: var(--oxblood); }
-.aibi-briefing .dim-row .bar.mid i { background: var(--terra); }
-.aibi-briefing .dim-row .bar.strong i { background: var(--forest); }
+.aibi-briefing .dim-row .bar.weak i { background: var(--ink); }
+.aibi-briefing .dim-row .bar.mid i { background: var(--gold); }
+.aibi-briefing .dim-row .bar.strong i { background: var(--emerald-700); }
 .aibi-briefing .dim-row .sc {
-  font-family: var(--serif); font-weight: 500; font-size: 26px;
-  letter-spacing: -0.015em; text-align: right; line-height: 1;
+  font-weight: 700; font-size: 26px;
+  letter-spacing: -0.015em; text-align: right; line-height: 1; color: var(--ink);
 }
 .aibi-briefing .dim-row .sc small {
-  font-family: var(--mono); font-style: normal; font-size: 9px;
-  letter-spacing: 0.16em; color: var(--muted); font-weight: 500;
-  display: block; text-transform: uppercase; margin-top: 4px;
+  font-size: 9px; letter-spacing: 0.16em; color: var(--slate-500);
+  font-weight: 600; display: block; text-transform: uppercase; margin-top: 4px;
 }
 .aibi-briefing .dim-row .arrow {
-  font-family: var(--serif); font-style: italic; color: var(--muted);
-  text-align: right; font-size: 18px;
+  color: var(--slate-500); text-align: right; font-size: 18px; font-weight: 500;
 }
 
 /* CH 03 — Deep dives */
 .aibi-briefing .deep {
-  display: grid; grid-template-columns: 1.1fr 1fr; gap: 42px;
-  padding: 36px 0; border-top: 1px solid var(--rule);
-  border-bottom: 1px solid var(--rule); position: relative;
+  display: grid; grid-template-columns: 1.1fr 1fr; gap: 36px;
+  padding: 36px 0; border-top: 1px solid var(--ink-a10);
+  border-bottom: 1px solid var(--ink-a10); position: relative;
 }
 .aibi-briefing .deep + .deep { border-top: none; }
 .aibi-briefing .deep .left {
   display: flex; flex-direction: column; gap: 18px;
 }
 .aibi-briefing .deep .left .id {
-  font-family: var(--mono); font-size: 11px; letter-spacing: 0.20em;
-  text-transform: uppercase; color: var(--muted); font-weight: 600;
+  font-size: 11px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--slate-500); font-weight: 700;
 }
 .aibi-briefing .deep .left .id em {
-  color: var(--terra); font-family: var(--serif); font-style: italic;
-  font-weight: 500; font-size: 14px; letter-spacing: -0.005em;
-  text-transform: none; margin-left: 8px;
+  color: var(--gold-deep); font-weight: 700;
+  font-size: 13px; letter-spacing: 0.05em;
+  text-transform: uppercase; margin-left: 8px;
 }
 .aibi-briefing .deep .left h3 {
-  font-family: var(--serif); font-weight: 500; font-size: 32px;
-  letter-spacing: -0.022em; line-height: 1.1; margin: 0;
+  font-weight: 700; font-size: 30px;
+  letter-spacing: -0.022em; line-height: 1.15; margin: 0; color: var(--ink);
 }
-.aibi-briefing .deep .left h3 em { color: var(--terra); }
+.aibi-briefing .deep .left h3 em { color: var(--gold-deep); }
 .aibi-briefing .deep .left .narr {
-  font-family: var(--serif); font-size: 17px; line-height: 1.55;
-  color: var(--ink-2); margin: 0;
+  font-size: 16px; line-height: 1.6;
+  color: var(--slate-600); margin: 0;
 }
 .aibi-briefing .deep .right {
   display: flex; flex-direction: column; gap: 18px;
 }
 .aibi-briefing .deep-card {
-  border: 1px solid var(--rule-strong); background: var(--paper);
+  border: 1px solid var(--ink-a15); background: #fff;
+  border-radius: 24px; overflow: hidden;
 }
 .aibi-briefing .deep-card .hd {
   display: flex; justify-content: space-between; align-items: baseline;
-  padding: 14px 18px; border-bottom: 1px solid var(--rule); background: var(--paper-2);
+  padding: 14px 18px; border-bottom: 1px solid var(--ink-a10); background: var(--cream);
 }
 .aibi-briefing .deep-card .hd .k {
-  font-family: var(--mono); font-size: 10px; letter-spacing: 0.20em;
-  text-transform: uppercase; color: var(--muted); font-weight: 600;
+  font-size: 10px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--slate-500); font-weight: 700;
 }
 .aibi-briefing .deep-card .hd .v {
-  font-family: var(--serif); font-style: italic; font-weight: 500;
-  font-size: 18px; color: var(--ink); letter-spacing: -0.01em;
+  font-weight: 700; font-size: 17px; color: var(--ink); letter-spacing: -0.01em;
 }
 .aibi-briefing .deep-card .scoreblock {
   padding: 18px 18px 22px; display: grid; grid-template-columns: auto 1fr;
   gap: 16px; align-items: center;
 }
 .aibi-briefing .deep-card .scoreblock .big {
-  font-family: var(--serif); font-weight: 500; font-size: 54px;
-  line-height: 0.9; letter-spacing: -0.03em; color: var(--terra);
+  font-weight: 700; font-size: 48px;
+  line-height: 0.9; letter-spacing: -0.03em; color: var(--gold-deep);
 }
 .aibi-briefing .deep-card .scoreblock .big small {
-  font-family: var(--serif); font-size: 22px; color: var(--muted);
+  font-size: 20px; color: var(--slate-500); font-weight: 500;
 }
 .aibi-briefing .deep-card .scoreblock .meta {
-  display: flex; flex-direction: column; gap: 6px; font-family: var(--mono);
+  display: flex; flex-direction: column; gap: 6px;
   font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--muted); font-weight: 500; line-height: 1.3;
+  color: var(--slate-500); font-weight: 600; line-height: 1.3;
 }
 .aibi-briefing .deep-card .scoreblock .meta strong {
-  font-family: var(--serif); font-style: italic; font-weight: 500;
-  color: var(--ink); text-transform: none; font-size: 14px;
+  font-weight: 700; color: var(--ink);
+  text-transform: none; font-size: 14px;
   letter-spacing: -0.005em; margin-left: 6px;
 }
 .aibi-briefing .deep-card .bar-detail { padding: 0 18px 18px; }
 .aibi-briefing .deep-card .bar-detail .bar {
-  height: 10px; background: var(--parch-dark); position: relative;
+  height: 10px; background: var(--cream-2); position: relative; border-radius: 4px; overflow: hidden;
 }
 .aibi-briefing .deep-card .bar-detail .bar i {
-  position: absolute; left: 0; top: 0; bottom: 0; background: var(--terra);
+  position: absolute; left: 0; top: 0; bottom: 0; background: var(--gold);
 }
-.aibi-briefing .deep-card .bar-detail .bar.weak i { background: var(--oxblood); }
-.aibi-briefing .deep-card .bar-detail .bar.strong i { background: var(--forest); }
+.aibi-briefing .deep-card .bar-detail .bar.weak i { background: var(--ink); }
+.aibi-briefing .deep-card .bar-detail .bar.strong i { background: var(--emerald-700); }
 .aibi-briefing .deep-card .bar-detail .ticks {
   position: relative; height: 18px; margin-top: 6px;
 }
 .aibi-briefing .deep-card .bar-detail .ticks span {
-  position: absolute; top: 0; font-family: var(--mono); font-size: 9.5px;
-  letter-spacing: 0.14em; color: var(--muted); transform: translateX(-50%); font-weight: 500;
+  position: absolute; top: 0; font-size: 9.5px;
+  letter-spacing: 0.14em; color: var(--slate-500); transform: translateX(-50%);
+  font-weight: 600; text-transform: uppercase;
 }
 .aibi-briefing .deep-card .bar-detail .ticks span.now {
-  color: var(--terra-2); font-weight: 700;
+  color: var(--gold-deep); font-weight: 700;
 }
-.aibi-briefing .deep-card .actions { padding: 0; border-top: 1px solid var(--rule); }
+.aibi-briefing .deep-card .actions { padding: 0; border-top: 1px solid var(--ink-a10); }
 .aibi-briefing .deep-card .actions h5 {
-  font-family: var(--mono); font-size: 10px; letter-spacing: 0.20em;
-  text-transform: uppercase; color: var(--muted); margin: 0;
-  padding: 14px 18px 8px; font-weight: 600;
+  font-size: 10px; letter-spacing: 0.20em;
+  text-transform: uppercase; color: var(--slate-500); margin: 0;
+  padding: 14px 18px 8px; font-weight: 700;
 }
 .aibi-briefing .deep-card .actions ol {
-  margin: 0; padding: 0 18px 18px 36px; font-family: var(--serif);
-  font-size: 15.5px; line-height: 1.5; color: var(--ink-2);
+  margin: 0; padding: 0 18px 18px 36px;
+  font-size: 15.5px; line-height: 1.55; color: var(--slate-600);
 }
 .aibi-briefing .deep-card .actions ol li { margin-bottom: 8px; padding-left: 6px; }
 .aibi-briefing .deep-card .actions ol li::marker {
-  color: var(--terra); font-family: var(--mono); font-weight: 600; font-size: 13px;
+  color: var(--gold-deep); font-weight: 700; font-size: 13px;
 }
-.aibi-briefing .deep-card .actions ol li em { font-style: italic; color: var(--ink); }
+.aibi-briefing .deep-card .actions ol li em { color: var(--ink); font-weight: 700; }
 
 /* Regulatory exhibit */
 .aibi-briefing .reg-table {
-  border: 1px solid var(--rule-strong); background: var(--paper-2);
+  border: 1px solid var(--ink-a15); background: #fff; border-radius: 24px; overflow: hidden;
 }
 .aibi-briefing .reg-row {
   display: grid; grid-template-columns: 130px 1.4fr 1.2fr 100px; gap: 24px;
-  padding: 20px 24px; border-bottom: 1px solid var(--rule); align-items: flex-start;
+  padding: 20px 24px; border-bottom: 1px solid var(--ink-a10); align-items: flex-start;
 }
 .aibi-briefing .reg-row:last-child { border-bottom: none; }
 .aibi-briefing .reg-row.head {
-  background: var(--ink); color: var(--paper); padding: 13px 24px;
+  background: var(--ink); color: #fff; padding: 13px 24px;
 }
 .aibi-briefing .reg-row.head .h {
-  font-family: var(--mono); font-size: 10px; letter-spacing: 0.20em;
-  text-transform: uppercase; color: var(--paper); font-weight: 600;
+  font-size: 10px; letter-spacing: 0.20em;
+  text-transform: uppercase; color: #fff; font-weight: 700;
 }
 .aibi-briefing .reg-row .ref {
-  font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em;
-  color: var(--ink); font-weight: 600; line-height: 1.4;
+  font-size: 12px; letter-spacing: 0.06em;
+  color: var(--ink); font-weight: 700; line-height: 1.4;
 }
 .aibi-briefing .reg-row .ref small {
-  display: block; font-family: var(--serif); font-style: italic;
-  font-weight: 400; font-size: 13px; color: var(--muted);
-  letter-spacing: -0.005em; text-transform: none; margin-top: 4px;
+  display: block; font-weight: 400; font-size: 13px; color: var(--slate-500);
+  letter-spacing: 0; text-transform: none; margin-top: 4px;
 }
 .aibi-briefing .reg-row .what {
-  font-family: var(--serif); font-size: 16px; line-height: 1.5; color: var(--ink);
+  font-size: 15.5px; line-height: 1.55; color: var(--ink);
 }
 .aibi-briefing .reg-row .gap {
-  font-family: var(--serif); font-size: 15.5px; line-height: 1.5; color: var(--ink-2);
+  font-size: 15px; line-height: 1.55; color: var(--slate-600);
 }
-.aibi-briefing .reg-row .gap em { color: var(--terra); }
+.aibi-briefing .reg-row .gap em { color: var(--gold-deep); font-weight: 700; }
 .aibi-briefing .reg-row .status {
-  font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em;
-  text-transform: uppercase; font-weight: 600; text-align: right; padding-top: 2px;
+  font-size: 10px; letter-spacing: 0.16em;
+  text-transform: uppercase; font-weight: 700; text-align: right; padding-top: 2px;
 }
-.aibi-briefing .reg-row .status.ok { color: var(--forest); }
-.aibi-briefing .reg-row .status.gap { color: var(--oxblood); }
-.aibi-briefing .reg-row .status.part { color: var(--terra-2); }
+.aibi-briefing .reg-row .status.ok { color: var(--emerald-700); }
+.aibi-briefing .reg-row .status.gap { color: var(--ink); }
+.aibi-briefing .reg-row .status.part { color: var(--gold-deep); }
 
 /* Action register */
 .aibi-briefing .register {
-  border: 1px solid var(--rule-strong); background: var(--paper);
+  border: 1px solid var(--ink-a15); background: #fff; border-radius: 24px; overflow: hidden;
 }
 .aibi-briefing .reg-head {
   display: grid;
   grid-template-columns: 40px 1fr 130px 90px 90px 70px 90px;
-  gap: 18px; padding: 14px 22px; background: var(--ink); color: var(--paper);
-  font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em;
-  text-transform: uppercase; font-weight: 600;
+  gap: 18px; padding: 14px 22px; background: var(--ink); color: #fff;
+  font-size: 10px; letter-spacing: 0.18em;
+  text-transform: uppercase; font-weight: 700;
 }
 .aibi-briefing .reg-line {
   display: grid;
   grid-template-columns: 40px 1fr 130px 90px 90px 70px 90px;
-  gap: 18px; padding: 16px 22px; border-bottom: 1px solid var(--rule);
+  gap: 18px; padding: 16px 22px; border-bottom: 1px solid var(--ink-a10);
   align-items: center;
 }
 .aibi-briefing .reg-line:last-child { border-bottom: none; }
-.aibi-briefing .reg-line:nth-child(even) { background: var(--paper-2); }
+.aibi-briefing .reg-line:nth-child(even) { background: var(--cream); }
 .aibi-briefing .reg-line .num {
-  font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em;
-  color: var(--terra); font-weight: 600;
+  font-size: 11px; letter-spacing: 0.12em;
+  color: var(--gold-deep); font-weight: 700;
 }
 .aibi-briefing .reg-line .act {
-  font-family: var(--serif); font-size: 16px; line-height: 1.35;
-  letter-spacing: -0.005em; color: var(--ink);
+  font-size: 16px; line-height: 1.4;
+  letter-spacing: -0.005em; color: var(--ink); font-weight: 500;
 }
-.aibi-briefing .reg-line .act em { color: var(--terra); font-style: italic; }
+.aibi-briefing .reg-line .act em { color: var(--gold-deep); font-weight: 700; }
 .aibi-briefing .reg-line .act small {
-  display: block; font-family: var(--sans); font-size: 11.5px;
-  color: var(--muted); margin-top: 3px; letter-spacing: 0; font-weight: 400;
+  display: block; font-size: 12px;
+  color: var(--slate-500); margin-top: 4px; letter-spacing: 0; font-weight: 400;
+  line-height: 1.45;
 }
 .aibi-briefing .reg-line .own,
 .aibi-briefing .reg-line .due,
 .aibi-briefing .reg-line .pil,
 .aibi-briefing .reg-line .eff,
 .aibi-briefing .reg-line .stat {
-  font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em;
-  text-transform: uppercase; color: var(--ink-2); font-weight: 600; line-height: 1.4;
+  font-size: 10px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--slate-600); font-weight: 700; line-height: 1.4;
 }
 .aibi-briefing .reg-line .own strong {
-  display: block; font-family: var(--serif); font-style: italic;
-  font-weight: 500; color: var(--ink); text-transform: none;
+  display: block; font-weight: 700; color: var(--ink); text-transform: none;
   font-size: 13px; letter-spacing: -0.005em; margin-bottom: 2px;
 }
 .aibi-briefing .reg-line .due em {
-  font-family: var(--serif); font-style: italic; font-weight: 500;
-  color: var(--terra); font-size: 13px; letter-spacing: -0.005em;
+  font-weight: 700; color: var(--gold-deep); font-size: 13px; letter-spacing: -0.005em;
   text-transform: none; display: block; margin-bottom: 2px;
 }
 .aibi-briefing .reg-line .eff { text-align: center; }
 .aibi-briefing .reg-line .eff .dot {
   display: inline-block; width: 8px; height: 8px; border-radius: 50%;
-  background: var(--terra); margin-right: 2px;
+  background: var(--gold); margin-right: 2px;
 }
 .aibi-briefing .reg-line .eff .dot.off {
-  background: transparent; border: 1px solid var(--rule-strong);
+  background: transparent; border: 1px solid var(--ink-a15);
 }
 .aibi-briefing .reg-line .stat { text-align: right; }
-.aibi-briefing .reg-line .stat.go { color: var(--forest); }
-.aibi-briefing .reg-line .stat.now { color: var(--terra-2); }
-.aibi-briefing .reg-line .stat.next { color: var(--muted); }
+.aibi-briefing .reg-line .stat.go { color: var(--emerald-700); }
+.aibi-briefing .reg-line .stat.now { color: var(--gold-deep); }
+.aibi-briefing .reg-line .stat.next { color: var(--slate-500); }
 
 .aibi-briefing .reg-line .own.open-seat {
-  background: linear-gradient(180deg, var(--terra-soft) 0%, var(--paper) 100%);
-  border: 1px solid var(--terra); padding: 5px 8px;
+  background: var(--gold-a10);
+  border: 1px solid var(--gold); padding: 5px 8px;
   display: flex; flex-direction: column; gap: 1px; align-self: center;
+  border-radius: 8px;
 }
 .aibi-briefing .reg-line .own.open-seat .l1 {
-  font-family: var(--serif); font-style: italic; font-weight: 500;
-  font-size: 14px; color: var(--terra-2); letter-spacing: -0.01em;
-  display: flex; align-items: center; gap: 5px; line-height: 1.1;
+  font-weight: 700; font-size: 13px; color: var(--gold-deep); letter-spacing: -0.005em;
+  display: flex; align-items: center; gap: 5px; line-height: 1.1; text-transform: none;
 }
 .aibi-briefing .reg-line .own.open-seat .l1::before {
-  content: "▲"; font-style: normal; color: var(--terra); font-size: 9px;
+  content: "▲"; color: var(--gold-deep); font-size: 9px;
 }
 .aibi-briefing .reg-line .own.open-seat .l2 {
-  font-family: var(--mono); font-size: 8.5px; letter-spacing: 0.16em;
-  text-transform: uppercase; color: var(--muted); font-weight: 600; line-height: 1.2;
+  font-size: 8.5px; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--slate-500); font-weight: 700; line-height: 1.2;
 }
 
 /* Slippage rule */
 .aibi-briefing .slippage {
-  margin-top: 24px; padding: 16px 22px; background: var(--tape);
-  border-left: 3px solid var(--terra);
+  margin-top: 24px; padding: 16px 22px; background: var(--cream-2);
+  border-left: 3px solid var(--gold);
   display: flex; gap: 14px; align-items: flex-start;
+  border-radius: 12px;
 }
 .aibi-briefing .slippage .tag {
-  font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.20em;
-  text-transform: uppercase; font-weight: 600; color: var(--terra-2);
+  font-size: 9.5px; letter-spacing: 0.20em;
+  text-transform: uppercase; font-weight: 700; color: var(--gold-deep);
   white-space: nowrap; padding-top: 3px;
 }
 .aibi-briefing .slippage .copy {
-  font-family: var(--serif); font-size: 15px; line-height: 1.5;
-  color: var(--ink); margin: 0; flex: 1;
+  font-size: 15px; line-height: 1.55; color: var(--ink); margin: 0; flex: 1;
 }
-.aibi-briefing .slippage .copy em { font-style: italic; color: var(--terra-2); }
+.aibi-briefing .slippage .copy em { color: var(--gold-deep); font-weight: 700; }
 
 /* Re-read / certification */
 .aibi-briefing .certify { display: block; padding-top: 8px; }
 .aibi-briefing .reread {
-  background: var(--paper-2); border: 1px solid var(--rule-strong); padding: 30px;
+  background: #fff; border: 1px solid var(--ink-a15); padding: 32px;
+  border-radius: 24px;
 }
 .aibi-briefing .reread h4 {
-  font-family: var(--serif); font-weight: 500; font-size: 28px;
-  letter-spacing: -0.02em; margin: 0 0 14px; line-height: 1.05;
+  font-weight: 700; font-size: 28px;
+  letter-spacing: -0.02em; margin: 0 0 14px; line-height: 1.1; color: var(--ink);
 }
-.aibi-briefing .reread h4 em { color: var(--terra); }
+.aibi-briefing .reread h4 em { color: var(--gold-deep); }
 .aibi-briefing .reread p {
-  font-family: var(--serif); font-size: 16px; line-height: 1.5;
-  color: var(--ink-2); margin: 0 0 16px; max-width: 44ch;
+  font-size: 16px; line-height: 1.6;
+  color: var(--slate-600); margin: 0 0 16px; max-width: 60ch;
 }
 .aibi-briefing .reread .dates {
-  display: flex; gap: 24px; padding-top: 16px; border-top: 1px solid var(--rule-strong);
+  display: flex; gap: 24px; padding-top: 16px; border-top: 1px solid var(--ink-a15);
 }
 .aibi-briefing .reread .dates > div { flex: 1; }
 .aibi-briefing .reread .dates .k {
-  font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em;
-  text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 4px;
+  font-size: 10px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--slate-500); font-weight: 700; margin-bottom: 4px;
 }
 .aibi-briefing .reread .dates .v {
-  font-family: var(--serif); font-weight: 500; font-size: 20px;
-  letter-spacing: -0.015em; line-height: 1.1;
+  font-weight: 700; font-size: 20px;
+  letter-spacing: -0.015em; line-height: 1.15; color: var(--ink);
 }
-.aibi-briefing .reread .dates .v em { color: var(--terra); }
+.aibi-briefing .reread .dates .v em { color: var(--gold-deep); }
 .aibi-briefing .reread .dates .v small {
-  display: block; font-family: var(--mono); font-style: normal; font-size: 10px;
-  letter-spacing: 0.14em; color: var(--muted); font-weight: 500;
-  margin-top: 3px; text-transform: uppercase;
+  display: block; font-size: 10px;
+  letter-spacing: 0.14em; color: var(--slate-500); font-weight: 600;
+  margin-top: 4px; text-transform: uppercase;
 }
 
 /* Return to dashboard strip */
 .aibi-briefing .docback {
-  padding: 36px 0 32px; border-top: 1px solid var(--rule);
+  padding: 36px 0 32px; border-top: 1px solid var(--ink-a10);
 }
 .aibi-briefing .docback-link {
-  font-family: var(--mono); font-size: 12px; font-weight: 600;
+  font-size: 12px; font-weight: 700;
   letter-spacing: 0.18em; text-transform: uppercase;
   color: var(--ink); text-decoration: none;
   border-bottom: 1px solid var(--ink); padding-bottom: 2px;
-  transition: color .15s, border-color .15s;
+  transition: color .12s, border-color .12s;
 }
 .aibi-briefing .docback-link:hover {
-  color: var(--terra); border-bottom-color: var(--terra);
+  color: var(--gold-deep); border-bottom-color: var(--gold-deep);
 }
 
 /* Footer */
 .aibi-briefing .docfoot {
-  padding: 36px 0; background: var(--parch); color: var(--slate);
-  font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em;
-  text-transform: uppercase; font-weight: 500;
+  padding: 36px 0; background: var(--cream-2); color: var(--slate-600);
+  font-size: 11px; letter-spacing: 0.16em;
+  text-transform: uppercase; font-weight: 600;
 }
 .aibi-briefing .docfoot-row {
   display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap;
 }
-.aibi-briefing .docfoot a:hover { color: var(--terra); }
+.aibi-briefing .docfoot a:hover { color: var(--gold-deep); }
 
 @media (max-width: 980px) {
   .aibi-briefing .filing-meta { grid-template-columns: 1fr 1fr; }
@@ -708,62 +702,55 @@
 }
 
 /* ── Personalization stripe ─────────────────────────────────────── */
-/* Foundation course recommendation block (#97). Sits at the end of
- * the Briefing inside its own chapter section, reusing the .ch-head
- * pattern for the diagnosis half and adding .recs for the three
- * Foundation module cards underneath. */
 .aibi-briefing .recs {
   margin-top: 48px;
   padding: 36px 0 0;
-  border-top: 1px solid var(--rule);
+  border-top: 1px solid var(--ink-a10);
 }
 .aibi-briefing .recs-head {
   display: flex; align-items: center; gap: 14px; margin-bottom: 14px;
 }
 .aibi-briefing .recs-kicker {
-  font-family: var(--mono);
   font-size: 11px; letter-spacing: 0.22em;
-  text-transform: uppercase; color: var(--terra);
-  font-weight: 600;
+  text-transform: uppercase; color: var(--gold-deep);
+  font-weight: 700;
 }
-.aibi-briefing .recs-rule { flex: 1; height: 1px; background: var(--rule); }
+.aibi-briefing .recs-rule { flex: 1; height: 1px; background: var(--ink-a10); }
 .aibi-briefing .recs-deck {
-  font-family: var(--serif); font-size: 17px; line-height: 1.55;
-  color: var(--ink-2); max-width: 60ch; margin: 0 0 22px;
+  font-size: 17px; line-height: 1.6;
+  color: var(--slate-600); max-width: 64ch; margin: 0 0 22px;
 }
-.aibi-briefing .recs-deck em { color: var(--terra); font-style: italic; }
+.aibi-briefing .recs-deck em { color: var(--gold-deep); font-weight: 700; }
 .aibi-briefing .recs-list {
   list-style: none; padding: 0; margin: 0;
   display: grid; gap: 0;
 }
 .aibi-briefing .recs-list .rec {
   padding: 22px 0;
-  border-top: 1px solid var(--rule);
+  border-top: 1px solid var(--ink-a10);
   display: grid;
   grid-template-columns: 1fr;
   gap: 8px;
 }
 .aibi-briefing .recs-list .rec:last-child {
-  border-bottom: 1px solid var(--rule);
+  border-bottom: 1px solid var(--ink-a10);
 }
 .aibi-briefing .recs-list .rec-head {
   display: flex; align-items: baseline; gap: 14px;
 }
 .aibi-briefing .recs-list .rec-num {
-  font-family: var(--mono);
   font-size: 12px; letter-spacing: 0.18em;
-  color: var(--terra); font-weight: 600;
+  color: var(--gold-deep); font-weight: 700;
 }
 .aibi-briefing .recs-list .rec-title {
-  font-family: var(--serif);
-  font-size: 19px; font-weight: 500;
-  line-height: 1.3; color: var(--ink);
+  font-size: 19px; font-weight: 700;
+  line-height: 1.3; color: var(--ink); letter-spacing: -0.015em;
 }
-.aibi-briefing .recs-list .rec-title em { color: var(--terra); font-style: italic; }
+.aibi-briefing .recs-list .rec-title em { color: var(--gold-deep); }
 .aibi-briefing .recs-list .rec-why {
-  font-family: var(--serif); font-size: 15px; line-height: 1.55;
-  color: var(--slate); margin: 0;
-  max-width: 64ch;
+  font-size: 15px; line-height: 1.6;
+  color: var(--slate-600); margin: 0;
+  max-width: 68ch;
 }
 .aibi-briefing .recs-cta {
   margin-top: 28px;
@@ -771,32 +758,30 @@
 }
 .aibi-briefing .recs-cta-primary {
   display: inline-block;
-  background: var(--terra);
-  color: var(--linen, #f9f6f0);
-  padding: 14px 26px;
-  border-radius: 2px;
-  font-family: var(--mono);
+  background: var(--gold);
+  color: #fff;
+  padding: 14px 28px;
+  border-radius: 12px;
   font-size: 11px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: 700;
   transition: background 120ms ease;
 }
-.aibi-briefing .recs-cta-primary:hover { background: var(--terra-light, var(--terra)); }
+.aibi-briefing .recs-cta-primary:hover { background: var(--gold-2); }
 .aibi-briefing .recs-cta-secondary {
   display: inline-block;
-  border: 1px solid var(--rule-strong, var(--rule));
+  border: 1px solid var(--ink-a15);
   color: var(--ink);
-  padding: 13px 24px;
-  border-radius: 2px;
-  font-family: var(--mono);
+  padding: 13px 26px;
+  border-radius: 12px;
   font-size: 11px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: 700;
   transition: border-color 120ms ease, color 120ms ease;
 }
 .aibi-briefing .recs-cta-secondary:hover {
-  border-color: var(--terra);
-  color: var(--terra);
+  border-color: var(--gold);
+  color: var(--gold-deep);
 }

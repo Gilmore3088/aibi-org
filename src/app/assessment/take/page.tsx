@@ -64,7 +64,13 @@ export default function AssessmentPage() {
   }
 
   return (
-    <main className="min-h-screen">
+    <main
+      className="min-h-screen"
+      style={{
+        background: 'var(--cream)',
+        fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
+      }}
+    >
       <h1 className="sr-only">AI Readiness Assessment</h1>
       <ProgressBar progress={state.phase === 'questions' ? state.progress : 1} />
 
@@ -93,18 +99,41 @@ export default function AssessmentPage() {
                 materially lower bounce risk than it did at 8 questions. */}
             <header className="text-center space-y-4">
               <p
-                className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-ink)]/70"
+                className="uppercase"
+                style={{
+                  fontSize: 12,
+                  fontWeight: 700,
+                  letterSpacing: '0.18em',
+                  color: 'var(--slate-500)',
+                }}
               >
                 12 of 12 · Diagnostic complete
               </p>
               <h2
                 ref={scoreHeadingRef}
                 tabIndex={-1}
-                className="font-serif text-3xl md:text-5xl leading-tight text-[color:var(--color-ink)] focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--ledger-accent)] focus-visible:outline-offset-4 focus-visible:rounded-sm"
+                className="focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
+                style={{
+                  fontSize: 'clamp(32px, 4.5vw, 52px)',
+                  fontWeight: 700,
+                  lineHeight: 1.1,
+                  letterSpacing: '-0.02em',
+                  color: 'var(--ink)',
+                  outlineColor: 'var(--gold)',
+                  borderRadius: 4,
+                }}
               >
-                Your readiness report is <em className="text-[color:var(--gold)]">ready.</em>
+                Your readiness report is{' '}
+                <span style={{ color: 'var(--gold-deep)' }}>ready.</span>
               </h2>
-              <p className="font-serif italic text-lg md:text-xl text-[color:var(--color-ink)]/75 max-w-2xl mx-auto leading-relaxed">
+              <p
+                className="max-w-2xl mx-auto"
+                style={{
+                  fontSize: 18,
+                  lineHeight: 1.6,
+                  color: 'var(--slate-600)',
+                }}
+              >
                 Enter your work email to see your score, tier, eight-dimension breakdown, and a starter artifact keyed to your weakest area.
               </p>
             </header>
@@ -147,9 +176,22 @@ export default function AssessmentPage() {
               <button
                 type="button"
                 onClick={state.restart}
-                className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-ink)]/70 hover:text-[color:var(--gold)]"
+                className="uppercase transition-colors"
+                style={{
+                  fontSize: 11,
+                  fontWeight: 700,
+                  letterSpacing: '0.18em',
+                  color: 'var(--slate-500)',
+                  transitionDuration: '120ms',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = 'var(--gold-deep)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = 'var(--slate-500)';
+                }}
               >
-                Start over
+                START OVER
               </button>
             </div>
           </div>
@@ -159,17 +201,35 @@ export default function AssessmentPage() {
           <>
             {usedFreeEmail && (
               <aside
-                className="max-w-3xl mx-auto mb-8 border border-[color:var(--color-ink)]/15 bg-[color:var(--ledger-paper)] px-5 py-4 rounded-[2px] text-sm leading-relaxed text-[color:var(--ledger-ink)]"
+                className="max-w-3xl mx-auto mb-8"
                 aria-label="Personal email notice"
+                style={{
+                  border: '1px solid var(--ink-a15)',
+                  background: '#fff',
+                  padding: '16px 20px',
+                  borderRadius: 12,
+                  fontSize: 14,
+                  lineHeight: 1.6,
+                  color: 'var(--ink)',
+                }}
               >
-                <p className="font-mono text-[10.5px] uppercase tracking-[0.18em] text-[color:var(--gold)] mb-1.5">
+                <p
+                  className="uppercase"
+                  style={{
+                    fontSize: 11,
+                    fontWeight: 700,
+                    letterSpacing: '0.18em',
+                    color: 'var(--gold-deep)',
+                    marginBottom: 6,
+                  }}
+                >
                   Note
                 </p>
                 <p>
                   You submitted a personal email. The report below is tailored
-                  using the institution you provided. If you’d prefer follow-up
+                  using the institution you provided. If you&rsquo;d prefer follow-up
                   emails to land at your work address, just retake the
-                  assessment with your work email and we’ll merge the records.
+                  assessment with your work email and we&rsquo;ll merge the records.
                 </p>
               </aside>
             )}
@@ -195,21 +255,34 @@ export default function AssessmentPage() {
 // when real content swaps in.
 function AssessmentSkeleton() {
   return (
-    <main className="min-h-screen" aria-hidden="true">
-      <div className="h-1 bg-[color:var(--color-ink)]/10" />
+    <main
+      className="min-h-screen"
+      aria-hidden="true"
+      style={{
+        background: 'var(--cream)',
+        fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
+      }}
+    >
+      <div style={{ height: 4, background: 'var(--ink-a10)' }} />
       <div className="px-6 py-12 md:py-20">
         <div className="w-full max-w-2xl mx-auto animate-pulse">
           <div className="flex items-center justify-between mb-8">
-            <div className="h-3 w-32 bg-[color:var(--color-ink)]/10 rounded-sm" />
-            <div className="h-3 w-24 bg-[color:var(--color-ink)]/10 rounded-sm" />
+            <div style={{ height: 12, width: 128, background: 'var(--ink-a10)', borderRadius: 4 }} />
+            <div style={{ height: 12, width: 96, background: 'var(--ink-a10)', borderRadius: 4 }} />
           </div>
-          <div className="h-10 w-full bg-[color:var(--color-ink)]/10 rounded-sm mb-3" />
-          <div className="h-10 w-3/4 bg-[color:var(--color-ink)]/10 rounded-sm mb-10" />
+          <div style={{ height: 40, width: '100%', background: 'var(--ink-a10)', borderRadius: 6, marginBottom: 12 }} />
+          <div style={{ height: 40, width: '75%', background: 'var(--ink-a10)', borderRadius: 6, marginBottom: 40 }} />
           <div className="space-y-3">
             {[0, 1, 2, 3].map((i) => (
               <div
                 key={i}
-                className="h-16 w-full border border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)] rounded-sm"
+                style={{
+                  height: 64,
+                  width: '100%',
+                  border: '1px solid var(--ink-a10)',
+                  background: '#fff',
+                  borderRadius: 12,
+                }}
               />
             ))}
           </div>

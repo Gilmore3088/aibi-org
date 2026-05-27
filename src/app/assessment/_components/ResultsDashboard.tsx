@@ -43,13 +43,10 @@ function rank(
 }
 
 /**
- * Top-of-page diagnostic dashboard. Replaces the prior single-ring
- * diagnosis with a denser panel: score ring + tier badge on the left,
- * all eight dimensions ranked weakest-first on the right, and a
- * "rung 3 of 6" footer that previews the maturity ladder below. Goal
- * is to put every number a reader will care about above the fold and
- * connect fluidly into the maturity ladder + signature insight that
- * follow.
+ * Top-of-page diagnostic dashboard. Ported to the mockup design system
+ * (2026-05-27). Score ring + tier badge on the left, eight-dimension
+ * ranked list on the right, maturity-ladder footer ribbon. All
+ * Ledger token references retired.
  */
 export function ResultsDashboard({
   score,
@@ -67,28 +64,69 @@ export function ResultsDashboard({
     <section
       aria-labelledby="dashboard-heading"
       className="space-y-8"
-      style={{ animation: 'fadeInUp 700ms cubic-bezier(0.22, 1, 0.36, 1) 200ms both' }}
+      style={{
+        fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
+        animation: 'fadeInUp 700ms cubic-bezier(0.22, 1, 0.36, 1) 200ms both',
+      }}
     >
-      <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--gold)]">
+      <p
+        className="uppercase"
+        style={{
+          fontSize: 12,
+          fontWeight: 700,
+          letterSpacing: '0.2em',
+          color: 'var(--gold-deep)',
+        }}
+      >
         Diagnosis
       </p>
 
       <h2
         id="dashboard-heading"
-        className="font-serif text-3xl md:text-5xl leading-[1.05] tracking-[-0.01em] text-[color:var(--color-ink)] max-w-3xl"
+        className="max-w-3xl"
+        style={{
+          fontSize: 'clamp(32px, 4.5vw, 52px)',
+          fontWeight: 700,
+          lineHeight: 1.08,
+          letterSpacing: '-0.02em',
+          color: 'var(--ink)',
+        }}
       >
         {subjectName} is in the{' '}
-        <span className="text-[color:var(--gold)]">{persona.label}</span> phase.
+        <span style={{ color: 'var(--gold-deep)' }}>{persona.label}</span> phase.
       </h2>
-      <p className="text-base md:text-lg text-[color:var(--color-ink)]/75 leading-relaxed max-w-2xl">
+      <p
+        className="max-w-2xl"
+        style={{
+          fontSize: 18,
+          lineHeight: 1.6,
+          color: 'var(--slate-600)',
+        }}
+      >
         {persona.oneLine}
       </p>
 
       {/* Dashboard panel — stacks on mobile, side-by-side on md+ */}
-      <div className="border border-[color:var(--color-ink)]/20 rounded-[3px] bg-[color:var(--color-linen)] overflow-hidden">
+      <div
+        style={{
+          background: 'var(--cream)',
+          borderRadius: 24,
+          border: '1px solid var(--ink-a10)',
+          overflow: 'hidden',
+        }}
+      >
         <div className="grid md:grid-cols-[minmax(280px,320px)_1fr] gap-0">
           {/* Left — Ring + tier seal */}
-          <div className="flex flex-col items-center gap-6 p-7 md:p-9 border-b md:border-b-0 md:border-r border-[color:var(--color-ink)]/15 bg-[color:var(--color-parch)]">
+          <div
+            className="flex flex-col items-center md:border-b-0 md:border-r"
+            style={{
+              gap: 24,
+              padding: 36,
+              background: '#fff',
+              borderBottom: '1px solid var(--ink-a10)',
+              borderRightColor: 'var(--ink-a10)',
+            }}
+          >
             <ScoreRing
               score={score}
               minScore={12}
@@ -100,12 +138,28 @@ export function ResultsDashboard({
           </div>
 
           {/* Right — 8-dimension chart */}
-          <div className="p-7 md:p-9">
-            <div className="flex items-baseline justify-between mb-6">
-              <p className="font-serif-sc text-[13px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/75">
+          <div style={{ padding: 36 }}>
+            <div className="flex items-baseline justify-between" style={{ marginBottom: 24 }}>
+              <p
+                className="uppercase"
+                style={{
+                  fontSize: 12,
+                  fontWeight: 700,
+                  letterSpacing: '0.18em',
+                  color: 'var(--ink)',
+                }}
+              >
                 Readiness by dimension
               </p>
-              <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/55 tabular-nums">
+              <p
+                className="uppercase tabular-nums"
+                style={{
+                  fontSize: 11,
+                  fontWeight: 600,
+                  letterSpacing: '0.16em',
+                  color: 'var(--slate-500)',
+                }}
+              >
                 Weakest first
               </p>
             </div>
@@ -117,19 +171,60 @@ export function ResultsDashboard({
           </div>
         </div>
 
-        {/* Footer ribbon — bridges into the maturity ladder */}
-        <div className="border-t border-[color:var(--color-ink)]/15 px-7 md:px-9 py-5 bg-[color:var(--color-parch)] flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
-          <p className="font-serif-sc text-[13px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/75">
+        {/* Footer ribbon */}
+        <div
+          className="flex flex-wrap items-baseline justify-between"
+          style={{
+            borderTop: '1px solid var(--ink-a10)',
+            padding: '20px 36px',
+            background: 'var(--cream-2)',
+            columnGap: 24,
+            rowGap: 8,
+          }}
+        >
+          <p
+            className="uppercase"
+            style={{
+              fontSize: 12,
+              fontWeight: 700,
+              letterSpacing: '0.18em',
+              color: 'var(--ink)',
+            }}
+          >
             Rung{' '}
-            <span className="text-[color:var(--gold)] font-mono tabular-nums tracking-normal text-[15px]">
+            <span
+              className="tabular-nums"
+              style={{
+                color: 'var(--gold-deep)',
+                fontWeight: 700,
+                letterSpacing: 'normal',
+                fontSize: 15,
+              }}
+            >
               {rungIndex + 1}
             </span>{' '}
             of 6 ·{' '}
-            <span className="text-[color:var(--color-ink)] font-serif normal-case tracking-normal text-[16px]">
+            <span
+              style={{
+                color: 'var(--ink)',
+                fontWeight: 600,
+                letterSpacing: 'normal',
+                textTransform: 'none',
+                fontSize: 16,
+              }}
+            >
               {rungLabel}
             </span>
           </p>
-          <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-[color:var(--color-ink)]/65">
+          <p
+            className="uppercase"
+            style={{
+              fontSize: 11,
+              fontWeight: 600,
+              letterSpacing: '0.16em',
+              color: 'var(--slate-500)',
+            }}
+          >
             The ladder is below ↓
           </p>
         </div>
@@ -137,11 +232,6 @@ export function ResultsDashboard({
     </section>
   );
 }
-
-// ---------------------------------------------------------------------------
-// Tier seal — a small ledger-style stamp showing the rung position.
-// Stays inside the Ledger discipline: no gradients, hairline rule only.
-// ---------------------------------------------------------------------------
 
 function TierSeal({
   rungIndex,
@@ -151,50 +241,89 @@ function TierSeal({
   readonly rungLabel: string;
 }) {
   return (
-    <div className="border border-[color:var(--color-ink)]/40 rounded-[3px] px-5 py-3 text-center max-w-[15rem] bg-[color:var(--color-linen)]">
-      <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/65 tabular-nums">
+    <div
+      className="text-center"
+      style={{
+        border: '1px solid var(--ink-a15)',
+        borderRadius: 12,
+        padding: '12px 20px',
+        maxWidth: '15rem',
+        background: 'var(--cream)',
+      }}
+    >
+      <p
+        className="uppercase tabular-nums"
+        style={{
+          fontSize: 11,
+          fontWeight: 700,
+          letterSpacing: '0.2em',
+          color: 'var(--slate-500)',
+        }}
+      >
         Rung {rungIndex + 1} of 6
       </p>
-      <p className="font-serif text-[18px] text-[color:var(--gold)] leading-tight mt-1.5">
+      <p
+        style={{
+          fontSize: 18,
+          fontWeight: 600,
+          color: 'var(--gold-deep)',
+          lineHeight: 1.15,
+          marginTop: 6,
+        }}
+      >
         {rungLabel}
       </p>
     </div>
   );
 }
 
-// ---------------------------------------------------------------------------
-// Dimension bar — label · 4-segment fill · score numerator
-// ---------------------------------------------------------------------------
-
 function DimensionBar({ row }: { readonly row: RankedRow }) {
   const filled = Math.round(row.pct * 4);
   const isCritical = row.pct < 0.5;
   const isStrong = row.pct >= 0.75;
-  const fillColor = isCritical
-    ? 'bg-[color:var(--color-error)]'
+  // No oxblood/forest. Critical = ink; strong = emerald; mid = gold.
+  const fillBg = isCritical
+    ? 'var(--ink)'
     : isStrong
-      ? 'bg-[color:var(--color-ink)]/70'
-      : 'bg-[color:var(--gold)]';
+      ? 'var(--emerald-700)'
+      : 'var(--gold)';
 
   return (
     <li className="grid grid-cols-[1fr_auto] gap-x-4 items-baseline">
       <div className="min-w-0">
-        <div className="flex items-baseline justify-between gap-3 mb-2">
-          <span className="min-w-0 font-serif text-[17px] text-[color:var(--color-ink)] truncate leading-tight">
+        <div className="flex items-baseline justify-between gap-3" style={{ marginBottom: 8 }}>
+          <span
+            className="min-w-0 truncate"
+            style={{
+              fontSize: 17,
+              fontWeight: 600,
+              color: 'var(--ink)',
+              lineHeight: 1.2,
+            }}
+          >
             {row.label}
           </span>
-          <span className="font-mono text-[13px] text-[color:var(--color-ink)]/75 tabular-nums shrink-0">
+          <span
+            className="tabular-nums shrink-0"
+            style={{
+              fontSize: 13,
+              fontWeight: 600,
+              color: 'var(--slate-600)',
+            }}
+          >
             {row.score}/{row.maxScore}
           </span>
         </div>
-        <div className="flex gap-[3px]" aria-hidden>
+        <div className="flex" style={{ gap: 3 }} aria-hidden>
           {[0, 1, 2, 3].map((bar) => (
             <div
               key={bar}
-              className={
-                'h-[9px] flex-1 ' +
-                (bar < filled ? fillColor : 'bg-[color:var(--color-ink)]/10')
-              }
+              style={{
+                height: 9,
+                flex: 1,
+                background: bar < filled ? fillBg : 'var(--ink-a10)',
+                borderRadius: 2,
+              }}
             />
           ))}
         </div>

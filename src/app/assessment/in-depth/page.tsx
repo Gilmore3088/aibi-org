@@ -83,12 +83,12 @@ export default async function InDepthAssessmentPage({
         eyebrow: "In-Depth Assessment",
         title: (
           <>
-            The <em className="text-gold">board-ready</em> diagnostic for your
+            The <span className="text-gold">board-ready</span> diagnostic for your
             institution.
           </>
         ),
         lede: (
-          <span className="font-serif italic">
+          <span>
             Forty-eight questions. Twenty minutes. Eight readiness dimensions.
             A written report you can take to your board on Monday.
           </span>
@@ -97,7 +97,7 @@ export default async function InDepthAssessmentPage({
           <div className="flex flex-wrap items-center gap-s6">
             <PurchaseButton
               userEmail={signedInEmail ?? undefined}
-              label="Purchase In-Depth · $99"
+              label="PURCHASE IN-DEPTH · $99"
               pendingLabel="Starting checkout…"
               size="hero"
             />
@@ -105,7 +105,7 @@ export default async function InDepthAssessmentPage({
               href="#compare"
               className="font-mono text-mono-sm uppercase tracking-widest text-ink border-b border-ink hover:text-gold hover:border-gold"
             >
-              Compare with the free scan →
+              COMPARE WITH THE FREE SCAN →
             </a>
           </div>
         ),
@@ -121,7 +121,7 @@ export default async function InDepthAssessmentPage({
             <p className="font-mono text-mono-sm uppercase tracking-widest text-gold mb-s2">
               Purchase required
             </p>
-            <p className="font-serif text-body-md text-ink leading-relaxed">
+            <p className="text-body-md text-ink leading-relaxed">
               The forty-eight-question In-Depth Assessment is paid. Purchase a
               seat below to open it. Already paid? Make sure you are signed
               in with the same email you used at checkout.
@@ -138,10 +138,10 @@ export default async function InDepthAssessmentPage({
           <p className="font-mono text-label-md uppercase tracking-widest text-gold mb-s3">
             Two ways in
           </p>
-          <h2 className="font-serif text-display-sm md:text-display-md text-ink leading-[1.05] tracking-tight mb-s4 max-w-[22ch]">
-            Curious, or <em className="text-gold italic">deciding</em>?
+          <h2 className="text-display-sm md:text-display-md text-ink leading-[1.05] tracking-tight mb-s4 max-w-[22ch] font-bold">
+            Curious, or <span className="text-gold">deciding</span>?
           </h2>
-          <p className="font-serif italic text-body-lg text-ink/75 max-w-[52ch] mb-s10">
+          <p className="text-body-lg text-ink/75 max-w-[52ch] mb-s10">
             The free scan tells you roughly where you stand. The In-Depth
             tells you what to do about it — and gives you a document to hand
             your CEO, your board, or your examiner.
@@ -153,21 +153,21 @@ export default async function InDepthAssessmentPage({
               <p className="font-mono text-mono-xs uppercase tracking-widest text-slate mb-s3">
                 For the curious
               </p>
-              <h3 className="font-serif text-h2 text-ink leading-tight mb-s2">
+              <h3 className="text-h2 text-ink leading-tight mb-s2 font-bold">
                 Free Readiness Scan
               </h3>
-              <p className="font-serif italic text-body-md text-ink/75 mb-s5 max-w-[34ch]">
+              <p className="text-body-md text-ink/75 mb-s5 max-w-[34ch]">
                 Twelve questions. Three minutes. A score and a tier — enough
                 to know which conversation to start at your bank.
               </p>
-              <p className="font-mono text-display-sm tabular-nums text-ink leading-none mb-s5">
+              <p className="font-mono text-display-sm tabular-nums text-ink leading-none mb-s5 font-bold">
                 Free
               </p>
               <Link
                 href="/assessment"
                 className="inline-flex items-center justify-center px-s5 py-s3 border border-ink text-ink font-mono text-mono-sm uppercase tracking-widest hover:bg-ink hover:text-linen transition-colors rounded-sharp text-center"
               >
-                Take the free scan →
+                TAKE THE FREE SCAN →
               </Link>
               <p className="font-mono text-mono-xs uppercase tracking-wider text-slate mt-s4">
                 No account required
@@ -182,17 +182,17 @@ export default async function InDepthAssessmentPage({
               <p className="font-mono text-mono-xs uppercase tracking-widest text-gold mb-s3">
                 For decision-makers
               </p>
-              <h3 className="font-serif text-h2 text-ink leading-tight mb-s2">
+              <h3 className="text-h2 text-ink leading-tight mb-s2 font-bold">
                 In-Depth Assessment
               </h3>
-              <p className="font-serif italic text-body-md text-ink/80 mb-s5 max-w-[42ch]">
+              <p className="text-body-md text-ink/80 mb-s5 max-w-[42ch]">
                 Forty-eight questions across eight dimensions. A written
                 report with peer-band comparison and a ninety-day playbook
                 keyed to your weakest area.
               </p>
 
               <div className="flex items-baseline gap-s4 mb-s5">
-                <p className="font-mono text-display-md tabular-nums text-ink leading-none">
+                <p className="font-mono text-display-md tabular-nums text-ink leading-none font-bold">
                   $99
                 </p>
                 <p className="font-mono text-mono-xs uppercase tracking-widest text-slate">
@@ -223,7 +223,7 @@ export default async function InDepthAssessmentPage({
                   ].map((item) => (
                     <li
                       key={item}
-                      className="grid grid-cols-[1.25rem_1fr] gap-s2 items-start font-serif text-body-md text-ink leading-snug"
+                      className="grid grid-cols-[1.25rem_1fr] gap-s2 items-start text-body-md text-ink leading-snug"
                     >
                       <span aria-hidden="true" className="text-gold pt-[2px]">
                         —
@@ -244,8 +244,8 @@ export default async function InDepthAssessmentPage({
           <p className="font-mono text-label-md uppercase tracking-widest text-gold mb-s3">
             What you get, line by line
           </p>
-          <h2 className="font-serif text-h1 text-ink leading-tight tracking-tight mb-s8 max-w-[22ch]">
-            Free vs. <em className="text-gold italic">In-Depth.</em>
+          <h2 className="text-h1 text-ink leading-tight tracking-tight mb-s8 max-w-[22ch] font-bold">
+            Free vs. <span className="text-gold">In-Depth.</span>
           </h2>
 
           <div className="border border-hairline bg-paper">
@@ -255,14 +255,14 @@ export default async function InDepthAssessmentPage({
                 <p className="font-mono text-mono-xs uppercase tracking-widest text-slate">
                   Free
                 </p>
-                <p className="font-serif text-h3 text-ink mt-s1">Readiness Scan</p>
+                <p className="text-h3 text-ink mt-s1 font-semibold">Readiness Scan</p>
               </div>
               <div className="p-s5 border-l border-hairline bg-gold/5">
                 <p className="font-mono text-mono-xs uppercase tracking-widest text-gold">
                   $99 · Recommended
                 </p>
-                <p className="font-serif text-h3 text-ink mt-s1">
-                  In-Depth <em className="text-gold italic">Assessment</em>
+                <p className="text-h3 text-ink mt-s1 font-semibold">
+                  In-Depth <span className="text-gold">Assessment</span>
                 </p>
               </div>
             </div>
@@ -277,10 +277,10 @@ export default async function InDepthAssessmentPage({
                 <div className="p-s5 font-mono text-mono-sm uppercase tracking-widest text-ink/80">
                   {row.label}
                 </div>
-                <div className="p-s5 border-l border-hairline font-serif text-body-md text-ink/70">
+                <div className="p-s5 border-l border-hairline text-body-md text-ink/70">
                   {row.free}
                 </div>
-                <div className="p-s5 border-l border-hairline bg-gold/5 font-serif text-body-md text-ink">
+                <div className="p-s5 border-l border-hairline bg-gold/5 text-body-md text-ink">
                   {row.inDepth}
                 </div>
               </div>
@@ -293,13 +293,13 @@ export default async function InDepthAssessmentPage({
                   href="/assessment"
                   className="font-mono text-mono-sm uppercase tracking-widest text-ink border-b border-ink hover:text-gold hover:border-gold"
                 >
-                  Take the free scan →
+                  TAKE THE FREE SCAN →
                 </Link>
               </div>
               <div className="p-s5 border-l border-hairline bg-gold/5">
                 <PurchaseButton
                   userEmail={signedInEmail ?? undefined}
-                  label="Purchase In-Depth · $99"
+                  label="PURCHASE IN-DEPTH · $99"
                   pendingLabel="Starting checkout…"
                   size="compact"
                 />
@@ -307,7 +307,7 @@ export default async function InDepthAssessmentPage({
             </div>
           </div>
 
-          <p className="font-serif text-body-md text-ink/75 mt-s6 max-w-[60ch]">
+          <p className="text-body-md text-ink/75 mt-s6 max-w-[60ch]">
             Want your whole team to benefit? Per-seat pricing of $79/seat opens
             at ten or more. Email{" "}
             <a
