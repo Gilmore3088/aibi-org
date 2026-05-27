@@ -33,7 +33,6 @@ import {
   CourseShell,
   LMSTopBar,
   PillarTag,
-  ProgressDot,
   getModuleStatus,
   toLMSModules,
   type LMSModule,
@@ -166,13 +165,6 @@ export default async function ModulePage({ params }: ModulePageParams) {
       : status === 'completed'
         ? 'Completed'
         : 'Locked';
-  const statusColor =
-    status === 'current'
-      ? 'var(--gold-deep)'
-      : status === 'completed'
-        ? 'var(--emerald-700)'
-        : 'var(--slate-500)';
-
   // Approximate per-sub-task minutes by splitting the module estimate.
   // The content data has no per-sub-task breakdown (see report); these
   // proportions match the audit's example pattern (12 / 18 / 25 / 0).
@@ -247,92 +239,137 @@ export default async function ModulePage({ params }: ModulePageParams) {
         }}
       >
         <div style={{ maxWidth: 1180, margin: '0 auto', padding: '40px 36px 16px' }}>
-          {/* Module header — H1 promoted to keyOutput (audit §3 minor). */}
-          <header>
+          {/* Module header — dark-band + white-body card (matches /program
+              home's ThisWeeksModule pattern; ports course.html .curric). */}
+          <header
+            style={{
+              background: '#FFFFFF',
+              border: '1px solid var(--slate-200)',
+              borderRadius: 28,
+              overflow: 'hidden',
+              boxShadow: 'var(--shadow-hero)',
+            }}
+          >
+            {/* Dark navy band — pillar tag, module kicker pill, status */}
             <div
               style={{
+                background: 'var(--ink)',
+                color: '#fff',
+                padding: 'clamp(18px, 2.4vw, 22px) clamp(20px, 3vw, 28px)',
                 display: 'flex',
                 alignItems: 'center',
-                gap: 18,
-                marginBottom: 18,
+                gap: 14,
                 flexWrap: 'wrap',
               }}
             >
               <PillarTag pillarId={pillarId} />
-              <span style={KICKER_STYLE}>
+              <span
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  padding: '6px 14px',
+                  borderRadius: 999,
+                  background: 'rgba(200, 162, 74, 0.18)',
+                  color: 'var(--gold-soft)',
+                  fontFamily: MOCKUP_FONT,
+                  fontSize: 11,
+                  fontWeight: 700,
+                  letterSpacing: '0.18em',
+                  textTransform: 'uppercase',
+                }}
+              >
                 Module {String(mod.number).padStart(2, '0')} · {titleMain}
                 {titleTail ? ` — ${titleTail}` : ''}
               </span>
-              <span style={{ flex: 1, height: 1, background: 'var(--ink-a10)' }} />
-              <ProgressDot status={status} />
+              <span style={{ flex: 1, minWidth: 12 }} />
               <span
                 style={{
-                  ...META_STYLE,
-                  color: statusColor,
-                  fontWeight: 600,
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 10,
+                  fontFamily: MOCKUP_FONT,
+                  color: status === 'locked' ? 'rgba(255,255,255,0.55)' : 'var(--gold-soft)',
+                  fontWeight: 700,
                   textTransform: 'uppercase',
                   letterSpacing: '0.14em',
                   fontSize: 11,
+                  whiteSpace: 'nowrap',
                 }}
               >
+                <span
+                  aria-hidden="true"
+                  style={{
+                    width: 8,
+                    height: 8,
+                    borderRadius: '50%',
+                    background: status === 'current' || status === 'completed' ? 'var(--gold)' : 'transparent',
+                    border: status === 'locked' ? '1.5px solid rgba(255,255,255,0.4)' : 'none',
+                    boxShadow:
+                      status === 'current' ? '0 0 0 4px rgba(200, 162, 74, 0.22)' : 'none',
+                    display: 'inline-block',
+                    flex: 'none',
+                  }}
+                />
                 {statusLabel}
               </span>
             </div>
 
-            {/* H1: the artifact this module produces (audit §3, item 1). */}
-            <p style={{ ...KICKER_STYLE, margin: '0 0 8px' }}>You walk away with</p>
-            <h1
-              style={{
-                fontFamily: MOCKUP_FONT,
-                fontWeight: 700,
-                fontSize: 'clamp(32px, 4.2vw, 48px)',
-                lineHeight: 1.08,
-                letterSpacing: '-0.02em',
-                margin: '0 0 14px',
-                color: 'var(--ink)',
-              }}
-            >
-              {mod.keyOutput}
-            </h1>
+            {/* White body — kicker, H1, goal, loop ribbon */}
+            <div style={{ padding: 'clamp(28px, 3.4vw, 40px)' }}>
+              <p style={{ ...KICKER_STYLE, margin: '0 0 8px' }}>You walk away with</p>
+              <h1
+                style={{
+                  fontFamily: MOCKUP_FONT,
+                  fontWeight: 700,
+                  fontSize: 'clamp(32px, 4.2vw, 48px)',
+                  lineHeight: 1.06,
+                  letterSpacing: '-0.025em',
+                  margin: '0 0 14px',
+                  color: 'var(--ink)',
+                }}
+              >
+                {mod.keyOutput}
+              </h1>
 
-            <p
-              style={{
-                fontFamily: MOCKUP_FONT,
-                fontSize: 17,
-                lineHeight: 1.5,
-                color: 'var(--slate-600)',
-                margin: '0 0 14px',
-                maxWidth: '72ch',
-                fontWeight: 400,
-              }}
-            >
-              {goalLine}
-            </p>
+              <p
+                style={{
+                  fontFamily: MOCKUP_FONT,
+                  fontSize: 17,
+                  lineHeight: 1.5,
+                  color: 'var(--slate-600)',
+                  margin: '0 0 18px',
+                  maxWidth: '72ch',
+                  fontWeight: 400,
+                }}
+              >
+                {goalLine}
+              </p>
 
-            {/* Compacted loop ribbon — single row, smaller (audit §3, item 2). */}
-            <div
-              aria-label="Module loop"
-              style={{
-                display: 'flex',
-                gap: 8,
-                flexWrap: 'wrap',
-                alignItems: 'center',
-                fontFamily: MOCKUP_FONT,
-                fontSize: 12,
-                fontWeight: 600,
-                color: 'var(--slate-600)',
-                letterSpacing: '0.04em',
-              }}
-            >
-              <span style={META_STYLE}>{mod.estimatedMinutes} min total</span>
-              <span style={{ color: 'var(--slate-400)' }}>·</span>
-              <span>Learn it</span>
-              <span style={{ color: 'var(--slate-400)' }}>→</span>
-              <span>Try it</span>
-              <span style={{ color: 'var(--slate-400)' }}>→</span>
-              <span>Use it</span>
-              <span style={{ color: 'var(--slate-400)' }}>→</span>
-              <span>Save it</span>
+              {/* Compacted loop ribbon — single row, smaller. */}
+              <div
+                aria-label="Module loop"
+                style={{
+                  display: 'flex',
+                  gap: 8,
+                  flexWrap: 'wrap',
+                  alignItems: 'center',
+                  fontFamily: MOCKUP_FONT,
+                  fontSize: 12,
+                  fontWeight: 600,
+                  color: 'var(--slate-600)',
+                  letterSpacing: '0.04em',
+                }}
+              >
+                <span style={META_STYLE}>{mod.estimatedMinutes} min total</span>
+                <span style={{ color: 'var(--slate-400)' }}>·</span>
+                <span>Learn it</span>
+                <span style={{ color: 'var(--slate-400)' }}>→</span>
+                <span>Try it</span>
+                <span style={{ color: 'var(--slate-400)' }}>→</span>
+                <span>Use it</span>
+                <span style={{ color: 'var(--slate-400)' }}>→</span>
+                <span>Save it</span>
+              </div>
             </div>
           </header>
         </div>
