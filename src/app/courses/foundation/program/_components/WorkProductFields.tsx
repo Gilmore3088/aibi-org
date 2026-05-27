@@ -58,12 +58,12 @@ export function isFormValid(values: FormValues, skillFilePath: string | null): b
 }
 
 const baseTextAreaClass =
-  'w-full border rounded-sm px-3 py-2 text-sm font-sans bg-white text-[color:var(--ledger-ink)] placeholder:text-[color:var(--ledger-soft)] focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] transition-shadow resize-y';
+  'w-full border rounded-lg px-3 py-2 text-sm font-sans bg-white text-[color:var(--ink)] placeholder:text-[color:var(--slate-400)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:border-[color:var(--gold)] transition-shadow resize-y';
 
 function errorBorderClass(hasError: boolean): string {
   return hasError
-    ? 'border-[color:var(--ledger-weak)]'
-    : 'border-[color:var(--ledger-parch)]';
+    ? 'border-[color:var(--gold-deep)]'
+    : 'border-[color:var(--ink-a10)]';
 }
 
 export interface TextAreaFieldProps {
@@ -96,10 +96,10 @@ export function TextAreaField({
     <div className="mb-6">
       <label
         htmlFor={id}
-        className="block font-sans text-sm font-semibold text-[color:var(--ledger-ink)] mb-1"
+        className="block font-sans text-sm font-semibold text-[color:var(--ink)] mb-1"
       >
         {label}
-        <span className="ml-1 text-[color:var(--ledger-weak)] text-xs" aria-label="required">
+        <span className="ml-1 text-[color:var(--gold-deep)] text-xs" aria-label="required">
           *
         </span>
       </label>
@@ -115,13 +115,13 @@ export function TextAreaField({
         aria-invalid={hasError}
         aria-required
       />
-      <p id={hintId} className="mt-1 text-[11px] font-mono text-[color:var(--ledger-muted)]">
+      <p id={hintId} className="mt-1 text-[11px] font-sans text-[color:var(--slate-500)]">
         {value.length}/{minLength} characters minimum
       </p>
       {hasError && (
         <p
           id={errorId}
-          className="mt-1 text-[color:var(--ledger-weak)] font-mono text-xs"
+          className="mt-1 text-[color:var(--gold-deep)] font-sans text-xs"
           role="alert"
         >
           Error: {error}

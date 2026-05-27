@@ -38,24 +38,24 @@ const buttonStyle: CSSProperties = {
   display: 'inline-flex',
   alignItems: 'center',
   gap: 10,
-  fontFamily: 'var(--ledger-mono)',
+  fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
   fontSize: 11,
   letterSpacing: '0.16em',
   textTransform: 'uppercase',
-  fontWeight: 600,
+  fontWeight: 700,
   padding: '12px 20px',
-  borderRadius: 2,
+  borderRadius: 12,
   cursor: 'pointer',
   border: 'none',
-  background: 'var(--ledger-ink)',
-  color: 'var(--ledger-paper)',
-  transition: 'background .18s ease',
+  background: 'var(--ink)',
+  color: 'var(--cream)',
+  transition: 'background var(--t-fast) var(--ease)',
 };
 
 const disabledButtonStyle: CSSProperties = {
   ...buttonStyle,
-  background: 'var(--ledger-rule-strong)',
-  color: 'var(--ledger-paper)',
+  background: 'var(--slate-200)',
+  color: 'var(--slate-500)',
   cursor: 'not-allowed',
 };
 
@@ -208,11 +208,13 @@ export function ActivityForm({
               style={{
                 marginTop: 14,
                 padding: '10px 12px',
-                borderLeft: '2px solid var(--ledger-weak)',
-                background: 'rgba(142,59,42,0.06)',
-                color: 'var(--ledger-ink)',
-                fontFamily: 'var(--ledger-sans)',
+                borderLeft: '2px solid var(--gold-deep)',
+                background: 'var(--cream-2)',
+                color: 'var(--ink)',
+                fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
                 fontSize: 13,
+                borderTopRightRadius: 8,
+                borderBottomRightRadius: 8,
               }}
               role="alert"
             >
@@ -224,7 +226,7 @@ export function ActivityForm({
             style={{
               marginTop: 18,
               paddingTop: 14,
-              borderTop: '1px solid var(--ledger-rule)',
+              borderTop: '1px solid var(--ink-a10)',
             }}
           >
             <button
