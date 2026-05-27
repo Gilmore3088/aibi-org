@@ -25,6 +25,69 @@ const TICKER: { kicker: string; text: string }[] = [
   { kicker: 'GAO', text: 'GAO 25-107197 · no AI-specific banking framework yet · May 2025' },
 ];
 
+type ArtifactCategory = 'Governance' | 'Compliance' | 'Staff card' | 'Reference';
+type ArtifactFormat = 'Markdown' | 'PDF';
+
+interface PracticalArtifact {
+  readonly title: string;
+  readonly dek: string;
+  readonly href: string;
+  readonly category: ArtifactCategory;
+  readonly format: ArtifactFormat;
+}
+
+const PRACTICAL_ARTIFACTS: readonly PracticalArtifact[] = [
+  {
+    title: 'AI Use-Case Inventory',
+    dek: 'One-page register of every AI-touched workflow at your institution. The cheapest examiner-readiness move in community banking.',
+    href: '/artifacts/ai-use-case-inventory.md',
+    category: 'Governance',
+    format: 'Markdown',
+  },
+  {
+    title: 'Fair-Lending Review Checklist for AI-Assisted Processes',
+    dek: 'Pre-deployment and recurring-review checklist for any AI process that touches credit decisions, pricing, or marketing eligibility.',
+    href: '/artifacts/fair-lending-ai-review-checklist.md',
+    category: 'Compliance',
+    format: 'Markdown',
+  },
+  {
+    title: 'Data Handling Reference Card',
+    dek: 'Green / Yellow / Red data classes, the placeholder pattern, and the questions staff should ask before pasting anything into an AI tool.',
+    href: '/artifacts/data-handling-reference-card.md',
+    category: 'Staff card',
+    format: 'Markdown',
+  },
+  {
+    title: 'Red / Yellow / Green AI Use Card',
+    dek: 'A short staff-facing classification of which AI uses are safe, which need approved tools, and which to avoid.',
+    href: '/downloads/red-yellow-green-use-card.pdf',
+    category: 'Staff card',
+    format: 'PDF',
+  },
+  {
+    title: 'Safe AI Use Checklist',
+    dek: 'A reflex for the moment before staff paste anything into a chat tool. Strip data, ask clearly, fact-check, escalate the risky calls.',
+    href: '/downloads/safe-ai-use-checklist.pdf',
+    category: 'Staff card',
+    format: 'PDF',
+  },
+  {
+    title: 'Regulatory Cheatsheet',
+    dek: 'One-page reference for the regulations community banks need to know when adopting AI: SR 11-7, ECOA / Reg B, TPRM, the AIEOG Lexicon.',
+    href: '/downloads/regulatory-cheatsheet.pdf',
+    category: 'Reference',
+    format: 'PDF',
+  },
+  {
+    title: 'Platform Feature Reference Card',
+    dek: 'Quick reference for AI features baked into the platforms your institution likely already uses.',
+    href: '/downloads/platform-feature-reference-card.pdf',
+    category: 'Reference',
+    format: 'PDF',
+  },
+];
+
 function formatDate(iso: string): string {
   const d = new Date(iso);
   return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
@@ -103,6 +166,136 @@ export default async function ResearchArchivePage() {
         </aside>
       }
       sections={[
+        {
+          kicker: 'Practical artifacts',
+          heading: <>One-page templates you can use this week.</>,
+          body: (
+            <>
+              <p
+                style={{
+                  fontSize: 15,
+                  lineHeight: 1.6,
+                  color: 'var(--slate-600)',
+                  margin: '16px 0 32px',
+                  maxWidth: 640,
+                }}
+              >
+                Free downloads. No email required. Each one is a working
+                template — bring it to your next AI committee meeting, adapt it
+                to your institution, and put it to work.
+              </p>
+              <div
+                style={{
+                  display: 'grid',
+                  gap: 20,
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+                }}
+              >
+                {PRACTICAL_ARTIFACTS.map((a) => (
+                  <a
+                    key={a.href}
+                    href={a.href}
+                    download
+                    style={{
+                      background: '#fff',
+                      border: '1px solid var(--ink-a10)',
+                      borderRadius: 16,
+                      padding: 28,
+                      textDecoration: 'none',
+                      color: 'inherit',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      transition: 'transform 120ms, box-shadow 120ms',
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'baseline',
+                        marginBottom: 12,
+                        gap: 12,
+                      }}
+                    >
+                      <span
+                        style={{
+                          fontFamily:
+                            'ui-monospace, SFMono-Regular, Menlo, monospace',
+                          fontSize: 11,
+                          letterSpacing: '0.16em',
+                          textTransform: 'uppercase',
+                          color: 'var(--gold-deep)',
+                          fontWeight: 700,
+                        }}
+                      >
+                        {a.category}
+                      </span>
+                      <span
+                        style={{
+                          fontSize: 11,
+                          fontWeight: 700,
+                          letterSpacing: '0.16em',
+                          textTransform: 'uppercase',
+                          color: 'var(--slate-500)',
+                          border: '1px solid var(--ink-a10)',
+                          borderRadius: 999,
+                          padding: '3px 10px',
+                          whiteSpace: 'nowrap',
+                        }}
+                      >
+                        {a.format}
+                      </span>
+                    </div>
+                    <h3
+                      style={{
+                        fontSize: 20,
+                        fontWeight: 600,
+                        lineHeight: 1.3,
+                        color: 'var(--ink)',
+                        margin: '0 0 12px',
+                      }}
+                    >
+                      {a.title}
+                    </h3>
+                    <p
+                      style={{
+                        fontSize: 14,
+                        lineHeight: 1.55,
+                        color: 'var(--slate-600)',
+                        margin: '0 0 20px',
+                        flex: 1,
+                      }}
+                    >
+                      {a.dek}
+                    </p>
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        alignItems: 'center',
+                        marginTop: 'auto',
+                        paddingTop: 16,
+                        borderTop: '1px solid var(--ink-a10)',
+                        fontSize: 13,
+                      }}
+                    >
+                      <span
+                        style={{
+                          color: 'var(--ink)',
+                          fontWeight: 600,
+                          borderBottom: '2px solid var(--gold)',
+                          paddingBottom: 2,
+                        }}
+                      >
+                        Download →
+                      </span>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </>
+          ),
+        },
         {
           kicker: 'Archive',
           heading: <>Every published essay, newest first.</>,
