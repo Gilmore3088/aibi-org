@@ -2,13 +2,13 @@
 
 // Shared activity field renderers used by ActivityForm and
 // AcceptableUseCardForm. Both consume the shared <FormField> wrapper +
-// ledgerInputStyle so every activity form looks and behaves identically
+// mockupInputStyle so every activity form looks and behaves identically
 // (radio / select / textarea / text), with consistent label, error, and
 // hint treatment plus A11Y wiring.
 
 import type { CSSProperties } from 'react';
 import type { ActivityField } from '@content/courses/foundation-program';
-import { FormField, ledgerInputStyle } from '@/components/lms';
+import { FormField, mockupInputStyle } from '@/components/lms';
 
 const INTER_STACK = 'Inter, ui-sans-serif, system-ui, sans-serif';
 const MONO_STACK = 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace';
@@ -149,7 +149,7 @@ export function ActivityInteractiveField({
           name={field.id}
           value={value}
           onChange={(e) => onChange(field.id, e.target.value)}
-          style={ledgerInputStyle({ invalid: hasError })}
+          style={mockupInputStyle({ invalid: hasError })}
           aria-invalid={hasError}
           aria-required={field.required}
         >
@@ -174,7 +174,7 @@ export function ActivityInteractiveField({
           value={value}
           rows={4}
           onChange={(e) => onChange(field.id, e.target.value)}
-          style={ledgerInputStyle({ invalid: hasError, multi: true })}
+          style={mockupInputStyle({ invalid: hasError, multi: true })}
           aria-invalid={hasError}
           aria-required={field.required}
         />
@@ -191,7 +191,7 @@ export function ActivityInteractiveField({
         placeholder={field.placeholder}
         value={value}
         onChange={(e) => onChange(field.id, e.target.value)}
-        style={ledgerInputStyle({ invalid: hasError })}
+        style={mockupInputStyle({ invalid: hasError })}
         aria-invalid={hasError}
         aria-required={field.required}
       />

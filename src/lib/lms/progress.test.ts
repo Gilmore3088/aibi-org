@@ -9,7 +9,7 @@ const sampleConfig: CourseConfig = {
     name: 'Sample Course',
     shortCode: 'Sample',
     wordmark: 'SAMPLE',
-    accentColorVar: 'var(--ledger-accent)',
+    accentColorVar: 'var(--gold)',
   },
   terminology: { itemLabel: 'Module', sectionLabel: 'Section' },
   promise: 'Test the harness contract.',
