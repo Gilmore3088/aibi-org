@@ -3,6 +3,9 @@
 
 import Link from 'next/link';
 
+const FONT_INTER =
+  'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
+
 interface HeroIntroProps {
   readonly completedCount: number;
   readonly promise: string;
@@ -18,15 +21,17 @@ export function HeroIntro({ completedCount, promise, fetchFailed }: HeroIntroPro
           alignItems: 'center',
           gap: 14,
           marginBottom: 24,
+          fontFamily: FONT_INTER,
         }}
       >
         <span
           style={{
-            fontFamily: 'var(--ledger-mono)',
-            fontSize: 10.5,
+            fontFamily: FONT_INTER,
+            fontSize: 11,
+            fontWeight: 700,
             letterSpacing: '0.2em',
             textTransform: 'uppercase',
-            color: 'var(--ledger-accent)',
+            color: 'var(--gold-deep)',
           }}
         >
           {completedCount > 0 ? 'Welcome back' : 'Begin here'}
@@ -35,40 +40,39 @@ export function HeroIntro({ completedCount, promise, fetchFailed }: HeroIntroPro
           style={{
             flex: 1,
             height: 1,
-            background: 'var(--ledger-rule)',
+            background: 'var(--ink-a10)',
           }}
         />
       </div>
 
       <h1
         style={{
-          fontFamily: 'var(--ledger-serif)',
-          fontWeight: 500,
+          fontFamily: FONT_INTER,
+          fontWeight: 800,
           fontSize: 'clamp(46px, 6vw, 76px)',
-          lineHeight: 0.98,
+          lineHeight: 1.02,
           letterSpacing: '-0.035em',
           margin: '0 0 18px',
-          color: 'var(--ledger-ink)',
+          color: 'var(--ink)',
         }}
       >
         AI Banking{' '}
-        <em
+        <span
           style={{
-            color: 'var(--ledger-accent)',
-            fontStyle: 'normal',
-            fontWeight: 500,
+            color: 'var(--gold-deep)',
+            fontWeight: 800,
           }}
         >
           Foundation.
-        </em>
+        </span>
       </h1>
       <p
         style={{
-          fontFamily: 'var(--ledger-serif)',
-          fontStyle: 'italic',
+          fontFamily: FONT_INTER,
+          fontWeight: 400,
           fontSize: 22,
           lineHeight: 1.4,
-          color: 'var(--ledger-ink-2)',
+          color: 'var(--slate-600)',
           margin: '0 0 12px',
           maxWidth: '62ch',
         }}
@@ -81,16 +85,18 @@ export function HeroIntro({ completedCount, promise, fetchFailed }: HeroIntroPro
           style={{
             marginTop: 24,
             padding: '12px 16px',
-            borderLeft: '2px solid var(--ledger-weak)',
-            background: 'rgba(142,59,42,0.06)',
+            borderLeft: '2px solid var(--gold-deep)',
+            background: 'var(--cream-2)',
+            borderRadius: 12,
+            fontFamily: FONT_INTER,
             fontSize: 14,
-            color: 'var(--ledger-ink)',
+            color: 'var(--ink)',
           }}
         >
           Couldn&rsquo;t load your progress right now.{' '}
           <Link
             href="/auth/login"
-            style={{ textDecoration: 'underline', color: 'var(--ledger-ink)' }}
+            style={{ textDecoration: 'underline', color: 'var(--ink)' }}
           >
             Sign in
           </Link>{' '}

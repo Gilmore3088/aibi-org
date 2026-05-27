@@ -3,6 +3,34 @@
 
 import { FOUNDATION_ARTIFACTS } from '@content/courses/foundation-program';
 
+const FONT_INTER =
+  'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
+
+const KICKER_STYLE: React.CSSProperties = {
+  fontFamily: FONT_INTER,
+  fontSize: 11,
+  fontWeight: 700,
+  letterSpacing: '0.2em',
+  textTransform: 'uppercase',
+  color: 'var(--gold-deep)',
+  marginBottom: 14,
+};
+
+const ARTIFACT_TITLE_STYLE: React.CSSProperties = {
+  fontFamily: FONT_INTER,
+  fontSize: 16,
+  fontWeight: 700,
+  color: 'var(--ink)',
+};
+
+const ARTIFACT_BODY_STYLE: React.CSSProperties = {
+  fontFamily: FONT_INTER,
+  fontSize: 13,
+  color: 'var(--slate-600)',
+  lineHeight: 1.55,
+  marginTop: 2,
+};
+
 const LEARNER_OUTCOMES = [
   'Choose the right prompt strategy for the job',
   'Write safer, clearer prompts for daily banking work',
@@ -12,28 +40,6 @@ const LEARNER_OUTCOMES = [
   'Use AI for communication, meetings, policy review, and productivity',
 ] as const;
 
-const KICKER_STYLE: React.CSSProperties = {
-  fontFamily: 'var(--ledger-mono)',
-  fontSize: 10.5,
-  letterSpacing: '0.2em',
-  textTransform: 'uppercase',
-  color: 'var(--ledger-accent)',
-  marginBottom: 14,
-};
-
-const ARTIFACT_TITLE_STYLE: React.CSSProperties = {
-  fontFamily: 'var(--ledger-serif)',
-  fontSize: 16,
-  fontWeight: 500,
-  color: 'var(--ledger-ink)',
-};
-
-const ARTIFACT_BODY_STYLE: React.CSSProperties = {
-  fontSize: 12.5,
-  color: 'var(--ledger-slate)',
-  lineHeight: 1.5,
-};
-
 export function OutcomesPanel() {
   return (
     <section
@@ -42,14 +48,16 @@ export function OutcomesPanel() {
         gridTemplateColumns: '1fr 0.85fr',
         gap: 28,
         marginBottom: 64,
+        fontFamily: FONT_INTER,
       }}
     >
       <div
         style={{
-          border: '1px solid var(--ledger-rule)',
-          padding: 26,
-          background: 'var(--ledger-paper)',
-          borderRadius: 3,
+          border: '1px solid var(--ink-a10)',
+          padding: 28,
+          background: '#FFFFFF',
+          borderRadius: 24,
+          boxShadow: 'var(--shadow-soft)',
         }}
       >
         <div style={KICKER_STYLE}>What you will be able to do</div>
@@ -67,18 +75,21 @@ export function OutcomesPanel() {
               key={outcome}
               style={{
                 display: 'flex',
-                gap: 10,
+                gap: 12,
+                fontFamily: FONT_INTER,
                 fontSize: 14,
-                color: 'var(--ledger-ink-2)',
+                color: 'var(--ink)',
                 lineHeight: 1.5,
               }}
             >
               <span
+                aria-hidden="true"
                 style={{
-                  marginTop: 7,
+                  marginTop: 8,
                   width: 6,
                   height: 6,
-                  background: 'var(--ledger-accent)',
+                  background: 'var(--gold)',
+                  borderRadius: 999,
                   flex: 'none',
                 }}
               />
@@ -90,14 +101,15 @@ export function OutcomesPanel() {
 
       <div
         style={{
-          border: '1px solid var(--ledger-rule)',
-          padding: 26,
-          background: 'var(--ledger-parch)',
-          borderRadius: 3,
+          border: '1px solid var(--ink-a10)',
+          padding: 28,
+          background: 'var(--cream-2)',
+          borderRadius: 24,
+          boxShadow: 'var(--shadow-soft)',
         }}
       >
         <div style={KICKER_STYLE}>Required outputs</div>
-        <div style={{ display: 'grid', gap: 14 }}>
+        <div style={{ display: 'grid', gap: 16 }}>
           {FOUNDATION_ARTIFACTS.map((artifact) => (
             <div key={artifact.id}>
               <div style={ARTIFACT_TITLE_STYLE}>{artifact.title}</div>
