@@ -88,10 +88,8 @@ export function ResultsViewV3({
   dimensionBreakdown,
   email,
   firstName,
-  institutionName,
   profileId,
 }: ResultsViewV3Props) {
-  const subjectName = institutionName?.trim() || 'your institution';
   const grouped = groupDimensions(dimensionBreakdown);
   const focusGap =
     grouped.critical[0] ?? grouped.developing[0] ?? grouped.all[0] ?? null;
@@ -107,10 +105,10 @@ export function ResultsViewV3({
         score={score}
         tier={tier}
         firstName={firstName}
-        subjectName={subjectName}
         focusGap={focusGap}
         fastestRoi={fastestRoi}
         starterArtifact={starterArtifact}
+        cta={cta}
       />
 
       <DimensionGrid rows={grouped.all} />
@@ -127,9 +125,7 @@ export function ResultsViewV3({
 
       <MaturityLadder tierId={tierId} />
 
-      {fastestRoi && focusGap && (
-        <FirstMoveCard fastestRoi={fastestRoi} focusGap={focusGap} />
-      )}
+      {fastestRoi && <FirstMoveCard fastestRoi={fastestRoi} />}
 
       {starterPrompt && (
         <StarterPromptSection
@@ -161,21 +157,21 @@ function HeroSplitCard({
   score,
   tier,
   firstName,
-  subjectName,
   focusGap,
   fastestRoi,
   starterArtifact,
+  cta,
 }: {
   readonly score: number;
   readonly tier: Tier;
   readonly firstName?: string | null;
-  readonly subjectName: string;
   readonly focusGap: RankedDimension | null;
   readonly fastestRoi: Recommendation | null;
   readonly starterArtifact: StarterArtifact | null;
+  readonly cta: ClosingCta;
 }) {
   const greeting = firstName?.trim()
-    ? `${firstName.trim()}, here is your AI readiness snapshot.`
+    ? `${firstName.trim()}, your AI readiness snapshot.`
     : 'Your AI readiness snapshot.';
   return (
     <header className="space-y-10">
@@ -187,9 +183,22 @@ function HeroSplitCard({
         <h1 className="text-[clamp(32px,5vw,56px)] leading-[1.05] tracking-[-0.01em] font-semibold text-[color:var(--ink)]">
           {greeting}
         </h1>
-        <p className="text-[16px] md:text-[17px] leading-[1.6] text-[color:var(--slate-600)] max-w-2xl">
-          A snapshot of where {subjectName} stands across twelve dimensions of AI readiness — and what to build next.
-        </p>
+        <div className="flex flex-wrap gap-3 pt-2">
+          <a
+            href={cta.primary.href}
+            data-plausible-event-source={cta.primary.source}
+            className="inline-flex items-center justify-center px-6 py-3.5 rounded-[12px] bg-[color:var(--ink)] text-white text-[13px] font-bold uppercase tracking-[0.1em] transition-colors hover:bg-[color:var(--ink-2)]"
+          >
+            {cta.primary.label}
+          </a>
+          <a
+            href={cta.secondary.href}
+            data-plausible-event-source={cta.secondary.source}
+            className="inline-flex items-center justify-center px-6 py-3.5 rounded-[12px] bg-white border border-[color:var(--ink-a15)] text-[color:var(--ink)] text-[13px] font-bold uppercase tracking-[0.1em] transition-colors hover:bg-[color:var(--cream)]"
+          >
+            {cta.secondary.label}
+          </a>
+        </div>
       </div>
 
       <article
@@ -267,19 +276,10 @@ function PathRow({ label, value }: { readonly label: string; readonly value: str
 function DimensionGrid({ rows }: { readonly rows: ReadonlyArray<RankedDimension> }) {
   return (
     <section className="space-y-8">
-      <SectionKicker>
-        <div className="space-y-2">
-          <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[color:var(--gold-deep)]">
-            Dimension Breakdown
-          </p>
-          <h2 className="text-[28px] md:text-[36px] leading-tight tracking-[-0.01em] font-semibold text-[color:var(--ink)]">
-            Where you&apos;re ready. Where structure is needed.
-          </h2>
-        </div>
-        <p className="text-[15px] md:text-[16px] leading-[1.6] text-[color:var(--slate-600)] max-w-md">
-          Twelve dimensions, scored on the answers you gave. Strong areas are leverage. Critical areas are the order of work.
-        </p>
-      </SectionKicker>
+      <SectionKicker
+        kicker="Dimension Breakdown"
+        heading={<>Where you&apos;re ready. Where structure is needed.</>}
+      />
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {rows.map((row) => (
           <DimCard key={row.id} row={row} />
@@ -349,19 +349,7 @@ function DimCard({ row }: { readonly row: RankedDimension }) {
 function CriticalGapsSection({ gaps }: { readonly gaps: ReadonlyArray<RankedDimension> }) {
   return (
     <section className="space-y-8">
-      <SectionKicker>
-        <div className="space-y-2">
-          <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[color:var(--gold-deep)]">
-            Closest look
-          </p>
-          <h2 className="text-[28px] md:text-[36px] leading-tight tracking-[-0.01em] font-semibold text-[color:var(--ink)]">
-            Where you&apos;re most exposed.
-          </h2>
-        </div>
-        <p className="text-[15px] md:text-[16px] leading-[1.6] text-[color:var(--slate-600)] max-w-md">
-          The dimensions below scored under 50%. Each describes what the gap looks like in practice — and what good looks like instead.
-        </p>
-      </SectionKicker>
+      <SectionKicker kicker="Closest look" heading="Where you’re most exposed." />
       <div className="grid gap-5">
         {gaps.map((gap) => (
           <GapCard key={gap.id} gap={gap} />
@@ -491,19 +479,7 @@ function ImplicationsGrid({
   ];
   return (
     <section className="space-y-8">
-      <SectionKicker>
-        <div className="space-y-2">
-          <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[color:var(--gold-deep)]">
-            Implications
-          </p>
-          <h2 className="text-[28px] md:text-[36px] leading-tight tracking-[-0.01em] font-semibold text-[color:var(--ink)]">
-            In operating terms.
-          </h2>
-        </div>
-        <p className="text-[15px] md:text-[16px] leading-[1.6] text-[color:var(--slate-600)] max-w-md">
-          What your score means for the parts of the bank a regulator and a CFO actually care about.
-        </p>
-      </SectionKicker>
+      <SectionKicker kicker="Implications" heading="In operating terms." />
       <div className="grid gap-4 md:grid-cols-3">
         {rows.map((row) => (
           <article
@@ -529,10 +505,8 @@ function ImplicationsGrid({
 
 function FirstMoveCard({
   fastestRoi,
-  focusGap,
 }: {
   readonly fastestRoi: NonNullable<Recommendation>;
-  readonly focusGap: RankedDimension;
 }) {
   return (
     <section className="space-y-6">
@@ -576,29 +550,11 @@ function FirstMoveCard({
               {fastestRoi.inPractice}
             </p>
           </div>
-          <div>
-            <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-[color:var(--slate-600)]">
-              Where this works best
-            </p>
-            <ul className="mt-3 grid gap-2 sm:grid-cols-3">
-              {fastestRoi.worksBestFor.map((useCase) => (
-                <li
-                  key={useCase}
-                  className="px-3.5 py-2.5 rounded-[12px] bg-[color:var(--cream)] text-[13px] font-semibold text-[color:var(--ink)]"
-                >
-                  {useCase}
-                </li>
-              ))}
-            </ul>
-          </div>
           <dl className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 border-t border-[color:var(--ink-a10)]">
             <MetaCell label="Risk" value={fastestRoi.riskLevel} />
             <MetaCell label="Time saved" value={fastestRoi.timeSaved} />
             <MetaCell label="Owner" value={fastestRoi.owner} />
           </dl>
-          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[color:var(--slate-600)]">
-            Surfaced by your weakest dimension: {focusGap.label}
-          </p>
         </div>
       </article>
     </section>
@@ -635,19 +591,7 @@ function StarterPromptSection({
 }) {
   return (
     <section className="space-y-6">
-      <SectionKicker>
-        <div className="space-y-2">
-          <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[color:var(--gold-deep)]">
-            Starter prompt
-          </p>
-          <h2 className="text-[28px] md:text-[36px] leading-tight tracking-[-0.01em] font-semibold text-[color:var(--ink)]">
-            Copy it. Run it. Refine it.
-          </h2>
-        </div>
-        <p className="text-[15px] md:text-[16px] leading-[1.6] text-[color:var(--slate-600)] max-w-md">
-          Take this prompt to the AI tool your institution already trusts. Run it on a real workflow this week. Bring back what worked and what did not.
-        </p>
-      </SectionKicker>
+      <SectionKicker kicker="Starter prompt" heading="Copy it. Run it. Refine it." />
       <StarterPrompt prompt={starterPrompt} />
       {starterArtifact && focusGap && (
         <details
@@ -683,19 +627,7 @@ function StarterPromptSection({
 function SevenDayPlanGrid() {
   return (
     <section className="space-y-8">
-      <SectionKicker>
-        <div className="space-y-2">
-          <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[color:var(--gold-deep)]">
-            Your 7-day AI activation plan
-          </p>
-          <h2 className="text-[28px] md:text-[36px] leading-tight tracking-[-0.01em] font-semibold text-[color:var(--ink)]">
-            What to do this week.
-          </h2>
-        </div>
-        <p className="text-[15px] md:text-[16px] leading-[1.6] text-[color:var(--slate-600)] max-w-md">
-          One concrete action per day. Designed for a banker with a regular schedule and no AI sandbox of their own.
-        </p>
-      </SectionKicker>
+      <SectionKicker kicker="Your 7-day plan" heading="What to do this week." />
       <ol className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
         {SEVEN_DAY_PLAN.map(({ day, action }) => (
           <li
@@ -708,10 +640,7 @@ function SevenDayPlanGrid() {
             >
               {day}
             </span>
-            <p className="mt-3 text-[11px] font-bold uppercase tracking-[0.18em] text-[color:var(--slate-600)]">
-              Day {day}
-            </p>
-            <p className="mt-2 text-[15px] leading-[1.55] text-[color:var(--ink)]/85">
+            <p className="mt-3 text-[15px] leading-[1.55] text-[color:var(--ink)]/85">
               {action}
             </p>
           </li>
@@ -775,10 +704,15 @@ function ClosingCtaBand({ cta }: { readonly cta: ClosingCta }) {
 /* Shared helpers                                                       */
 /* -------------------------------------------------------------------- */
 
-function SectionKicker({ children }: { readonly children: React.ReactNode }) {
+function SectionKicker({ kicker, heading }: { readonly kicker: string; readonly heading: React.ReactNode }) {
   return (
-    <header className="grid gap-6 md:grid-cols-[0.55fr_0.45fr] md:items-end">
-      {children}
+    <header className="space-y-2">
+      <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[color:var(--gold-deep)]">
+        {kicker}
+      </p>
+      <h2 className="text-[28px] md:text-[36px] leading-tight tracking-[-0.01em] font-semibold text-[color:var(--ink)] max-w-3xl">
+        {heading}
+      </h2>
     </header>
   );
 }
