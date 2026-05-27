@@ -49,12 +49,6 @@ const CheckIcon = (p: IconProps) => (
     <polyline points="20 6 9 17 4 12" />
   </svg>
 );
-const PauseIcon = (p: IconProps) => (
-  <svg {...sw(p)}>
-    <rect x="6" y="4" width="4" height="16" />
-    <rect x="14" y="4" width="4" height="16" />
-  </svg>
-);
 const PlayCircleIcon = (p: IconProps) => (
   <svg {...sw(p)}>
     <circle cx="12" cy="12" r="10" />
@@ -243,13 +237,6 @@ export default function AssessmentLandingPage() {
   const tier = score === null ? null : tierFor(score);
   const autoVal = DEMO_ANSWERS[qIdx];
   const showHighlight = phase === 'highlight' || phase === 'score';
-  const statusLabel = paused
-    ? 'Paused — move away to resume'
-    : phase === 'question'
-      ? 'Reading question…'
-      : phase === 'highlight'
-        ? 'Selecting an answer…'
-        : 'Updating score…';
 
   return (
     <div className="mockup-scope">
@@ -373,11 +360,7 @@ export default function AssessmentLandingPage() {
               </div>
             </div>
 
-            <div className="mk-quiz-foot">
-              <span className="mk-quiz-status">
-                <PauseIcon size={14} />
-                {statusLabel}
-              </span>
+            <div className="mk-quiz-foot mk-quiz-foot-end">
               <Button variant="gold" size="lg" href="/assessment/take">
                 Take the real assessment <ArrowR className="mk-ic" />
               </Button>

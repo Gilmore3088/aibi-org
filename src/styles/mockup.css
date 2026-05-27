@@ -1041,6 +1041,7 @@ section.mk-std { padding: 56px 0; }
   letter-spacing: 0.02em;
 }
 .mk-quiz-status svg { color: var(--gold-deep); flex: none; }
+.mk-quiz-foot.mk-quiz-foot-end { justify-content: flex-end; }
 
 /* ============================================================
    /assessment/take — assessment runner page (2026-05-26)
