@@ -44,12 +44,12 @@ export function SignupModal({ email, profileId, onClose }: SignupModalProps) {
       onClick={onClose}
     >
       <div
-        className="bg-[color:var(--cream)] border border-[color:var(--ink)]/15 rounded-[3px] p-8 max-w-md w-[90%]"
+        className="bg-[color:var(--cream)] border border-[color:var(--ink)]/15 rounded-2xl p-8 max-w-md w-[90%]"
         onClick={(e) => e.stopPropagation()}
       >
         <h2
           id="signup-modal-title"
-          className="font-serif text-2xl text-[color:var(--ink)] mb-3"
+          className="text-2xl text-[color:var(--ink)] mb-3"
         >
           Create an account to download
         </h2>
@@ -61,21 +61,21 @@ export function SignupModal({ email, profileId, onClose }: SignupModalProps) {
         {status === 'idle' && (
           <button
             onClick={handleSend}
-            className="w-full px-6 py-3 bg-[color:var(--gold)] text-[color:var(--cream)] font-sans text-[12px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] transition-colors"
+            className="w-full px-6 py-3 bg-[color:var(--gold)] text-[color:var(--cream)] font-sans text-[12px] font-semibold uppercase tracking-[1.2px] rounded-xl hover:bg-[color:var(--gold-2)] transition-colors"
           >
             Send my sign-in link
           </button>
         )}
 
         {status === 'sending' && (
-          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[color:var(--ink)]/55 text-center">
+          <p className="text-[11px] uppercase tracking-[0.18em] text-[color:var(--ink)]/55 text-center">
             Sending&hellip;
           </p>
         )}
 
         {status === 'sent' && (
           <div>
-            <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[color:var(--gold)] mb-3">
+            <p className="text-[11px] uppercase tracking-[0.18em] text-[color:var(--gold)] mb-3">
               Check your inbox
             </p>
             <p className="text-[14px] text-[color:var(--ink)]/75 leading-[1.55]">
@@ -87,7 +87,7 @@ export function SignupModal({ email, profileId, onClose }: SignupModalProps) {
 
         {status === 'error' && (
           <div>
-            <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[color:#9b2226] mb-2">
+            <p className="text-[11px] uppercase tracking-[0.18em] text-[color:#9b2226] mb-2">
               Something went wrong
             </p>
             <p className="text-[14px] text-[color:var(--ink)]/75 mb-4">
@@ -95,7 +95,7 @@ export function SignupModal({ email, profileId, onClose }: SignupModalProps) {
             </p>
             <button
               onClick={handleSend}
-              className="w-full px-6 py-3 border border-[color:var(--ink)]/30 text-[color:var(--ink)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:border-[color:var(--gold)] transition-colors"
+              className="w-full px-6 py-3 border border-[color:var(--ink)]/30 text-[color:var(--ink)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-xl hover:border-[color:var(--gold)] transition-colors"
             >
               Resend link
             </button>

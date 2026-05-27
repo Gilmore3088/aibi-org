@@ -43,10 +43,10 @@ export function NewsletterCTA({ email }: NewsletterCTAProps) {
   if (status === 'subscribed') {
     return (
       <div className="border border-[color:var(--ink-2)]/30 bg-[color:var(--ink-2)]/5 p-6 text-center">
-        <p className="font-mono text-xs uppercase tracking-widest text-[color:var(--ink-2)] mb-2">
+        <p className="text-xs uppercase tracking-widest text-[color:var(--ink-2)] mb-2">
           Subscribed
         </p>
-        <p className="font-serif text-xl text-[color:var(--ink)]">
+        <p className="text-xl text-[color:var(--ink)]">
           You are on the list. The next AI Banking Brief is headed your way.
         </p>
       </div>
@@ -55,10 +55,10 @@ export function NewsletterCTA({ email }: NewsletterCTAProps) {
 
   return (
     <div className="border border-[color:var(--ink)]/10 bg-[color:var(--cream)] p-6 md:p-8 text-center">
-      <p className="font-mono text-xs uppercase tracking-widest text-[color:var(--ink)]/70 mb-3">
+      <p className="text-xs uppercase tracking-widest text-[color:var(--ink)]/70 mb-3">
         Not ready for a conversation?
       </p>
-      <h3 className="font-serif text-2xl md:text-3xl text-[color:var(--ink)] mb-3">
+      <h3 className="text-2xl md:text-3xl text-[color:var(--ink)] mb-3">
         Get the AI Banking Brief
       </h3>
       <p className="text-[color:var(--ink)]/70 max-w-lg mx-auto mb-5 leading-relaxed">
@@ -69,7 +69,7 @@ export function NewsletterCTA({ email }: NewsletterCTAProps) {
         type="button"
         onClick={handleSubscribe}
         disabled={status === 'submitting'}
-        className="inline-block px-6 py-3 border border-[color:var(--gold)] text-[color:var(--gold)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold)] hover:text-[color:var(--cream)] transition-colors disabled:opacity-60"
+        className="inline-block px-6 py-3 border border-[color:var(--gold)] text-[color:var(--gold)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-xl hover:bg-[color:var(--gold)] hover:text-[color:var(--cream)] transition-colors disabled:opacity-60"
       >
         {status === 'submitting' ? 'Adding you…' : 'Add me to the Brief'}
       </button>

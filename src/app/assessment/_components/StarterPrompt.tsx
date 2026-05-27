@@ -25,19 +25,19 @@ export function StarterPrompt({ prompt }: StarterPromptProps) {
 
   return (
     <section
-      className="border border-[color:var(--ink)]/15 rounded-[3px] bg-[color:var(--ink)] text-[color:var(--cream)] overflow-hidden print-avoid-break"
+      className="border border-[color:var(--ink)]/15 rounded-2xl bg-[color:var(--ink)] text-[color:var(--cream)] overflow-hidden print-avoid-break"
       data-print-hide="true"
       aria-label="Starter prompt"
     >
       <div className="flex items-center justify-between px-5 py-3 border-b border-[color:var(--cream)]/15">
-        <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--cream)]/65">
+        <p className="text-[10px] uppercase tracking-[0.22em] text-[color:var(--cream)]/65">
           {prompt.label}
         </p>
-        <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--cream)]/45">
+        <span className="text-[10px] uppercase tracking-[0.22em] text-[color:var(--cream)]/45">
           AiBI starter
         </span>
       </div>
-      <pre className="px-5 py-5 font-mono text-[13px] leading-[1.6] text-[color:var(--cream)] whitespace-pre-wrap break-words">
+      <pre className="px-5 py-5 text-[13px] leading-[1.6] text-[color:var(--cream)] whitespace-pre-wrap break-words">
         {prompt.prompt}
       </pre>
       <div className="flex flex-col sm:flex-row gap-0 border-t border-[color:var(--cream)]/15">

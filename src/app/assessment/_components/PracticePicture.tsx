@@ -18,12 +18,12 @@ export function PracticePicture({ tierId }: PracticePictureProps) {
   const rows = PRACTICE_PICTURE[tierId];
   return (
     <section className="space-y-6" aria-labelledby="practice-picture-heading">
-      <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--gold)]">
+      <p className="text-xs uppercase tracking-[0.2em] text-[color:var(--gold)]">
         What this looks like in practice
       </p>
       <h2
         id="practice-picture-heading"
-        className="font-serif text-3xl md:text-4xl leading-tight text-[color:var(--ink)]"
+        className="text-3xl md:text-4xl leading-tight text-[color:var(--ink)]"
       >
         How this shows up inside the bank.
       </h2>
@@ -37,13 +37,13 @@ export function PracticePicture({ tierId }: PracticePictureProps) {
         {rows.map((row, idx) => (
           <article
             key={row.role}
-            className="border border-[color:var(--ink)]/25 rounded-[3px] bg-[color:var(--cream)] p-6 md:p-7 flex flex-col gap-4"
+            className="border border-[color:var(--ink)]/25 rounded-2xl bg-[color:var(--cream)] p-6 md:p-7 flex flex-col gap-4"
           >
             <header className="flex items-baseline justify-between gap-4 pb-4 border-b border-[color:var(--ink)]/20">
-              <p className="font-serif-sc text-[13px] uppercase tracking-[0.2em] text-[color:var(--gold)]">
+              <p className="text-[13px] uppercase tracking-[0.2em] text-[color:var(--gold)]">
                 {row.role}
               </p>
-              <p className="font-mono text-[11px] tabular-nums text-[color:var(--ink)]/50 tracking-[0.16em]">
+              <p className="text-[11px] tabular-nums text-[color:var(--ink)]/50 tracking-[0.16em]">
                 {String(idx + 1).padStart(2, '0')} / {String(rows.length).padStart(2, '0')}
               </p>
             </header>

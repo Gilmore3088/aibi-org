@@ -18,12 +18,12 @@ export function MaturityLadder({ tierId }: MaturityLadderProps) {
 
   return (
     <section className="space-y-8" aria-labelledby="maturity-ladder-heading">
-      <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--gold)]">
+      <p className="text-xs uppercase tracking-[0.2em] text-[color:var(--gold)]">
         Maturity ladder
       </p>
       <h2
         id="maturity-ladder-heading"
-        className="font-serif text-3xl md:text-4xl leading-tight text-[color:var(--ink)]"
+        className="text-3xl md:text-4xl leading-tight text-[color:var(--ink)]"
       >
         Where you are. Where this leads.
       </h2>
@@ -50,7 +50,7 @@ export function MaturityLadder({ tierId }: MaturityLadderProps) {
               <span
                 aria-hidden
                 className={
-                  'absolute -left-[37px] top-1 inline-flex items-center justify-center h-7 w-7 rounded-full font-mono text-[11px] tabular-nums font-semibold ' +
+                  'absolute -left-[37px] top-1 inline-flex items-center justify-center h-7 w-7 rounded-full text-[11px] tabular-nums font-semibold ' +
                   (isCurrent
                     ? 'bg-[color:var(--gold)] text-[color:var(--cream)] ring-4 ring-[color:var(--gold)]/20'
                     : isBelow
@@ -63,7 +63,7 @@ export function MaturityLadder({ tierId }: MaturityLadderProps) {
               <div className="flex items-baseline gap-3 flex-wrap">
                 <h3
                   className={
-                    'font-serif text-xl leading-tight ' +
+                    'text-xl leading-tight ' +
                     (isCurrent
                       ? 'text-[color:var(--gold)]'
                       : 'text-[color:var(--ink)]')
@@ -72,7 +72,7 @@ export function MaturityLadder({ tierId }: MaturityLadderProps) {
                   {rung.label}
                 </h3>
                 {isCurrent ? (
-                  <span className="font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--gold)]">
+                  <span className="text-[10px] uppercase tracking-[0.22em] text-[color:var(--gold)]">
                     You are here
                   </span>
                 ) : null}

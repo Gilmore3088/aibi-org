@@ -20,11 +20,11 @@ export function TierPreview({ tierLabel, tierColorVar }: TierPreviewProps) {
 
   return (
     <div className="flex flex-col items-center text-center">
-      <p className="font-mono text-xs uppercase tracking-widest text-[color:var(--ink)]/70">
+      <p className="text-xs uppercase tracking-widest text-[color:var(--ink)]/70">
         Your tier
       </p>
       <p
-        className="font-serif text-5xl md:text-7xl mt-4 leading-none transition-all duration-700 ease-out"
+        className="text-5xl md:text-7xl mt-4 leading-none transition-all duration-700 ease-out"
         style={{
           color: tierColorVar,
           opacity: visible ? 1 : 0,
