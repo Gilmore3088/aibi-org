@@ -1042,6 +1042,108 @@ section.mk-std { padding: 56px 0; }
 }
 .mk-quiz-status svg { color: var(--gold-deep); flex: none; }
 
+/* ============================================================
+   /assessment/take — assessment runner page (2026-05-26)
+   ============================================================ */
+.mk-take {
+  min-height: calc(100vh - 80px);
+  background: var(--cream);
+}
+.mk-take-inner {
+  padding: 48px 24px 80px;
+}
+@media (min-width: 768px) { .mk-take-inner { padding: 80px 24px 120px; } }
+
+.mk-take-score {
+  max-width: 720px; margin: 0 auto;
+  display: flex; flex-direction: column; gap: 40px;
+}
+.mk-take-score-head {
+  text-align: center;
+  display: flex; flex-direction: column; gap: 16px;
+}
+.mk-take-score-head .mk-k {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--gold-deep);
+  margin: 0;
+}
+.mk-take-score-h {
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 700; line-height: 1.15;
+  letter-spacing: -0.02em; color: var(--ink);
+  margin: 0;
+}
+.mk-take-score-h:focus { outline: none; }
+.mk-take-score-h:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 6px; border-radius: 4px;
+}
+.mk-take-score-lede {
+  font-size: 17px; line-height: 1.55; color: var(--slate-600);
+  max-width: 560px; margin: 0 auto;
+}
+
+.mk-take-restart { text-align: center; }
+.mk-take-restart-btn {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--slate-500);
+  background: none; border: none; cursor: pointer;
+  font-family: inherit; padding: 8px 12px;
+  transition: color 120ms;
+}
+.mk-take-restart-btn:hover { color: var(--gold-deep); }
+
+.mk-take-note {
+  max-width: 720px; margin: 0 auto 32px;
+  background: var(--cream-2);
+  border: 1px solid var(--slate-200);
+  border-left: 3px solid var(--gold);
+  border-radius: var(--r-md);
+  padding: 18px 22px;
+}
+.mk-take-note .mk-k {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--gold-deep);
+  margin: 0 0 6px;
+}
+.mk-take-note p:last-child {
+  font-size: 14px; line-height: 1.55; color: var(--ink);
+  margin: 0;
+}
+
+/* Pre-hydration skeleton */
+.mk-take-progress-skeleton {
+  height: 4px; background: var(--slate-200);
+}
+.mk-take-skeleton {
+  width: 100%; max-width: 720px; margin: 0 auto;
+  animation: mk-pulse 1.5s ease-in-out infinite;
+}
+.mk-take-skeleton-row {
+  display: flex; justify-content: space-between;
+  margin-bottom: 32px;
+}
+.mk-take-skeleton-bar {
+  height: 12px; background: var(--slate-200);
+  border-radius: 2px;
+}
+.mk-take-skeleton-options {
+  display: flex; flex-direction: column; gap: 12px;
+  margin-top: 32px;
+}
+.mk-take-skeleton-opt {
+  height: 64px; border: 1px solid var(--slate-200);
+  background: #fff; border-radius: var(--r-md);
+}
+.mk-w-24 { width: 96px; }
+.mk-w-32 { width: 128px; }
+.mk-w-75 { width: 75%; }
+.mk-h-10 { height: 40px; margin-bottom: 12px; }
+@keyframes mk-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
 .mk-quiz-side {
   background: var(--ink); color: #fff;
   border-radius: var(--r-3xl); padding: 32px;
