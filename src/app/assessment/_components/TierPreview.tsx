@@ -20,7 +20,7 @@ export function TierPreview({ tierLabel, tierColorVar }: TierPreviewProps) {
 
   return (
     <div className="flex flex-col items-center text-center">
-      <p className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-ink)]/70">
+      <p className="font-mono text-xs uppercase tracking-widest text-[color:var(--ink)]/70">
         Your tier
       </p>
       <p
@@ -33,7 +33,7 @@ export function TierPreview({ tierLabel, tierColorVar }: TierPreviewProps) {
       >
         {tierLabel}
       </p>
-      <p className="font-sans text-base md:text-lg text-[color:var(--color-ink)]/70 mt-6 max-w-md">
+      <p className="font-sans text-base md:text-lg text-[color:var(--ink)]/70 mt-6 max-w-md">
         Your exact score, an 8-dimension breakdown, and what this means for the
         next 90 days are below &mdash; just enter your email.
       </p>

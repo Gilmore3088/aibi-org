@@ -15,7 +15,7 @@ export function GapDetail({ dimensionId, score, maxScore, pageNumber }: GapDetai
 
   return (
     <article className="pdf-page" data-pdf-page={`gap-${dimensionId}`}>
-      <p className="pdf-eyebrow" style={{ color: 'var(--color-error)' }}>
+      <p className="pdf-eyebrow" style={{ color: '#9b2226' }}>
         Critical gap
       </p>
 
@@ -25,10 +25,10 @@ export function GapDetail({ dimensionId, score, maxScore, pageNumber }: GapDetai
         </h2>
         <span
           style={{
-            fontFamily: 'var(--font-mono)',
+            fontFamily: 'ui-monospace, "SF Mono", Menlo, Consolas, monospace',
             fontVariantNumeric: 'tabular-nums',
             fontSize: '11pt',
-            color: 'var(--color-slate)',
+            color: 'var(--slate-600)',
           }}
         >
           {score} / {maxScore}
@@ -42,11 +42,11 @@ export function GapDetail({ dimensionId, score, maxScore, pageNumber }: GapDetai
       <div style={{ marginTop: '0.4in' }}>
         <p
           style={{
-            fontFamily: 'var(--font-serif-sc)',
+            fontFamily: 'Georgia, "Times New Roman", serif',
             fontSize: '9pt',
             letterSpacing: '0.18em',
             textTransform: 'uppercase',
-            color: 'var(--color-ink)',
+            color: 'var(--ink)',
             opacity: 0.6,
             margin: 0,
           }}
@@ -69,7 +69,7 @@ export function GapDetail({ dimensionId, score, maxScore, pageNumber }: GapDetai
       <div style={{ marginTop: '0.3in' }}>
         <p
           style={{
-            fontFamily: 'var(--font-serif-sc)',
+            fontFamily: 'Georgia, "Times New Roman", serif',
             fontSize: '9pt',
             letterSpacing: '0.18em',
             textTransform: 'uppercase',

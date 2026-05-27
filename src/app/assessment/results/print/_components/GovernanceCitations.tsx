@@ -25,15 +25,15 @@ export function GovernanceCitations() {
           <div
             key={cite.source}
             style={{
-              borderTop: '0.25pt solid var(--color-ink)',
+              borderTop: '0.25pt solid var(--ink)',
               paddingTop: '0.18in',
             }}
           >
             <dt
               style={{
-                fontFamily: 'var(--font-serif)',
+                fontFamily: 'Georgia, "Times New Roman", serif',
                 fontSize: '11.5pt',
-                color: 'var(--color-ink)',
+                color: 'var(--ink)',
                 margin: 0,
               }}
             >
@@ -41,11 +41,11 @@ export function GovernanceCitations() {
             </dt>
             <p
               style={{
-                fontFamily: 'var(--font-mono)',
+                fontFamily: 'ui-monospace, "SF Mono", Menlo, Consolas, monospace',
                 fontSize: '8.5pt',
                 letterSpacing: '0.12em',
                 textTransform: 'uppercase',
-                color: 'var(--color-slate)',
+                color: 'var(--slate-600)',
                 marginTop: '0.05in',
               }}
             >

@@ -23,13 +23,13 @@ export function StarterPromptAndPlan({ focusGapId }: StarterPromptAndPlanProps) 
         <pre
           style={{
             marginTop: '0.4in',
-            background: 'var(--color-parch)',
-            border: '0.5pt solid var(--color-ink)',
+            background: '#FFFFFF',
+            border: '0.5pt solid var(--ink)',
             padding: '0.3in',
-            fontFamily: 'var(--font-mono)',
+            fontFamily: 'ui-monospace, "SF Mono", Menlo, Consolas, monospace',
             fontSize: '9.5pt',
             lineHeight: 1.5,
-            color: 'var(--color-ink)',
+            color: 'var(--ink)',
             whiteSpace: 'pre-wrap',
             wordBreak: 'break-word',
           }}
@@ -65,7 +65,7 @@ export function StarterPromptAndPlan({ focusGapId }: StarterPromptAndPlanProps) 
             <li key={day} style={{ position: 'relative' }}>
               <p
                 style={{
-                  fontFamily: 'var(--font-mono)',
+                  fontFamily: 'ui-monospace, "SF Mono", Menlo, Consolas, monospace',
                   fontSize: '9pt',
                   letterSpacing: '0.18em',
                   textTransform: 'uppercase',

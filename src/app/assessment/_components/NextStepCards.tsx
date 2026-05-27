@@ -119,14 +119,14 @@ export function NextStepCards({ tierId }: NextStepCardsProps) {
 
   return (
     <section data-print-hide="true">
-      <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-6">
+      <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--ink)]/70 mb-6">
         Choose your next step
       </p>
       <div className="grid md:grid-cols-2 gap-6">
         {steps.map((step) => (
           <article
             key={step.title}
-            className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-6 md:p-8 flex flex-col hover:border-[color:var(--gold)]/30 transition-all duration-200"
+            className="bg-[color:#FFFFFF] border border-[color:var(--ink)]/10 rounded-[3px] p-6 md:p-8 flex flex-col hover:border-[color:var(--gold)]/30 transition-all duration-200"
           >
             <p
               className="font-serif-sc text-[11px] uppercase tracking-[0.2em] mb-4"
@@ -134,10 +134,10 @@ export function NextStepCards({ tierId }: NextStepCardsProps) {
             >
               {step.label}
             </p>
-            <h3 className="font-serif text-2xl text-[color:var(--color-ink)] leading-tight mb-4">
+            <h3 className="font-serif text-2xl text-[color:var(--ink)] leading-tight mb-4">
               {step.title}
             </h3>
-            <p className="text-sm text-[color:var(--color-ink)]/75 leading-relaxed mb-6 flex-1">
+            <p className="text-sm text-[color:var(--ink)]/75 leading-relaxed mb-6 flex-1">
               {step.description}
             </p>
             {isExternal(step.href) ? (
@@ -148,8 +148,8 @@ export function NextStepCards({ tierId }: NextStepCardsProps) {
                 className={
                   'block text-center px-6 py-3 font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] transition-colors ' +
                   (step.primary
-                    ? 'bg-[color:var(--gold)] text-[color:var(--color-linen)] hover:bg-[color:var(--gold-2)]'
-                    : 'border border-[color:var(--color-ink)]/30 text-[color:var(--color-ink)] hover:border-[color:var(--gold)] hover:text-[color:var(--gold)]')
+                    ? 'bg-[color:var(--gold)] text-[color:var(--cream)] hover:bg-[color:var(--gold-2)]'
+                    : 'border border-[color:var(--ink)]/30 text-[color:var(--ink)] hover:border-[color:var(--gold)] hover:text-[color:var(--gold)]')
                 }
               >
                 {step.cta}
@@ -160,8 +160,8 @@ export function NextStepCards({ tierId }: NextStepCardsProps) {
                 className={
                   'block text-center px-6 py-3 font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] transition-colors ' +
                   (step.primary
-                    ? 'bg-[color:var(--gold)] text-[color:var(--color-linen)] hover:bg-[color:var(--gold-2)]'
-                    : 'border border-[color:var(--color-ink)]/30 text-[color:var(--color-ink)] hover:border-[color:var(--gold)] hover:text-[color:var(--gold)]')
+                    ? 'bg-[color:var(--gold)] text-[color:var(--cream)] hover:bg-[color:var(--gold-2)]'
+                    : 'border border-[color:var(--ink)]/30 text-[color:var(--ink)] hover:border-[color:var(--gold)] hover:text-[color:var(--gold)]')
                 }
               >
                 {step.cta}
@@ -181,7 +181,7 @@ export function NextStepCards({ tierId }: NextStepCardsProps) {
         </Link>
         <Link
           href="/dashboard"
-          className="py-2 px-1 font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/60 border-b border-[color:var(--color-ink)]/20 hover:text-[color:var(--gold)] hover:border-[color:var(--gold)] transition-colors"
+          className="py-2 px-1 font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--ink)]/60 border-b border-[color:var(--ink)]/20 hover:text-[color:var(--gold)] hover:border-[color:var(--gold)] transition-colors"
         >
           Go to your dashboard
         </Link>

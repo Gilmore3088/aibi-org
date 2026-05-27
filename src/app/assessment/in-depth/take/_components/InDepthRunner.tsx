@@ -114,14 +114,14 @@ export function InDepthRunner(): React.ReactElement {
   if (!mounted || state.questionCount === 0) {
     return (
       <main className="min-h-screen" aria-hidden="true">
-        <div className="h-1 bg-[color:var(--color-ink)]/10" />
+        <div className="h-1 bg-[color:var(--ink)]/10" />
         <div className="px-6 py-20 max-w-2xl mx-auto animate-pulse">
-          <div className="h-10 w-3/4 bg-[color:var(--color-ink)]/10 rounded-sm mb-3" />
-          <div className="h-10 w-1/2 bg-[color:var(--color-ink)]/10 rounded-sm mb-10" />
+          <div className="h-10 w-3/4 bg-[color:var(--ink)]/10 rounded-sm mb-3" />
+          <div className="h-10 w-1/2 bg-[color:var(--ink)]/10 rounded-sm mb-10" />
           {[0, 1, 2, 3].map((i) => (
             <div
               key={i}
-              className="h-16 w-full border border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)] rounded-sm mb-3"
+              className="h-16 w-full border border-[color:var(--ink)]/10 bg-[color:#FFFFFF] rounded-sm mb-3"
             />
           ))}
         </div>
@@ -146,10 +146,10 @@ export function InDepthRunner(): React.ReactElement {
           <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-[color:var(--gold)] mb-3 font-semibold">
             Before we begin
           </p>
-          <h1 className="font-serif text-3xl md:text-5xl text-[color:var(--color-ink)] leading-[1.02] tracking-tight">
+          <h1 className="font-serif text-3xl md:text-5xl text-[color:var(--ink)] leading-[1.02] tracking-tight">
             Which seat are you reading <em className="text-[color:var(--gold)]">from?</em>
           </h1>
-          <p className="font-serif italic text-lg text-[color:var(--color-ink)]/75 mt-4 leading-relaxed max-w-[58ch]">
+          <p className="font-serif italic text-lg text-[color:var(--ink)]/75 mt-4 leading-relaxed max-w-[58ch]">
             Your Briefing will be framed for your seat. Optional &mdash; skip and you&apos;ll still get the full diagnosis.
           </p>
 
@@ -165,7 +165,7 @@ export function InDepthRunner(): React.ReactElement {
                     className={`relative block border-2 rounded-[3px] p-5 cursor-pointer transition-all ${
                       selected
                         ? 'border-[color:var(--gold)] bg-[color:var(--gold)]/[0.04] shadow-[0_8px_22px_-18px_rgba(14,27,45,0.30)]'
-                        : 'border-[color:var(--color-ink)]/12 hover:border-[color:var(--color-ink)]/35 hover:bg-[color:var(--color-parch)]/40'
+                        : 'border-[color:var(--ink)]/12 hover:border-[color:var(--ink)]/35 hover:bg-[color:#FFFFFF]/40'
                     }`}
                   >
                     <input
@@ -179,21 +179,21 @@ export function InDepthRunner(): React.ReactElement {
                     <div className="flex items-start gap-4">
                       <div className={`flex-none w-10 h-10 grid place-items-center rounded-[2px] transition-colors ${
                         selected
-                          ? 'bg-[color:var(--gold)] text-[color:var(--color-linen)]'
-                          : 'bg-[color:var(--color-parch)] text-[color:var(--color-ink)]/80'
+                          ? 'bg-[color:var(--gold)] text-[color:var(--cream)]'
+                          : 'bg-[color:#FFFFFF] text-[color:var(--ink)]/80'
                       }`}>
                         <RoleIcon id={id} />
                       </div>
                       <div className="min-w-0 flex-1">
-                        <span className="font-serif text-lg text-[color:var(--color-ink)] leading-tight block">
+                        <span className="font-serif text-lg text-[color:var(--ink)] leading-tight block">
                           {meta.label}
                         </span>
-                        <span className="block text-sm text-[color:var(--color-ink)]/70 mt-1.5 leading-snug">
+                        <span className="block text-sm text-[color:var(--ink)]/70 mt-1.5 leading-snug">
                           {meta.description}
                         </span>
                       </div>
                       {selected && (
-                        <span className="flex-none w-5 h-5 grid place-items-center rounded-full bg-[color:var(--gold)] text-[color:var(--color-linen)] text-[11px] font-bold">
+                        <span className="flex-none w-5 h-5 grid place-items-center rounded-full bg-[color:var(--gold)] text-[color:var(--cream)] text-[11px] font-bold">
                           ✓
                         </span>
                       )}
@@ -209,14 +209,14 @@ export function InDepthRunner(): React.ReactElement {
               type="button"
               onClick={() => commitRolePick(role)}
               disabled={role === null}
-              className="font-mono text-[11px] uppercase tracking-[0.18em] font-semibold px-8 py-4 bg-[color:var(--gold)] text-[color:var(--color-linen)] rounded-[1px] disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[color:var(--gold-2)] transition-colors"
+              className="font-mono text-[11px] uppercase tracking-[0.18em] font-semibold px-8 py-4 bg-[color:var(--gold)] text-[color:var(--cream)] rounded-[1px] disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[color:var(--gold-2)] transition-colors"
             >
               Begin assessment →
             </button>
             <button
               type="button"
               onClick={() => commitRolePick(null)}
-              className="font-mono text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/60 hover:text-[color:var(--color-ink)] border-b border-[color:var(--color-ink)]/30 hover:border-[color:var(--color-ink)] pb-0.5"
+              className="font-mono text-[11px] uppercase tracking-[0.18em] text-[color:var(--ink)]/60 hover:text-[color:var(--ink)] border-b border-[color:var(--ink)]/30 hover:border-[color:var(--ink)] pb-0.5"
             >
               Skip for now
             </button>
@@ -246,7 +246,7 @@ export function InDepthRunner(): React.ReactElement {
         {state.phase === 'score' && state.tier && (
           <div className="max-w-3xl mx-auto space-y-10">
             <div className="flex flex-col items-center text-center">
-              <p className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-ink)]/70 mb-6">
+              <p className="font-mono text-xs uppercase tracking-widest text-[color:var(--ink)]/70 mb-6">
                 Your In-Depth Readiness Score
               </p>
               <ScoreRing
@@ -259,24 +259,24 @@ export function InDepthRunner(): React.ReactElement {
               <h2
                 ref={scoreHeadingRef}
                 tabIndex={-1}
-                className="font-serif text-3xl md:text-4xl mt-8 max-w-xl text-[color:var(--color-ink)] focus:outline-none"
+                className="font-serif text-3xl md:text-4xl mt-8 max-w-xl text-[color:var(--ink)] focus:outline-none"
               >
                 {state.tier.headline}
               </h2>
-              <p className="text-lg text-[color:var(--color-ink)]/75 mt-4 max-w-2xl leading-relaxed">
+              <p className="text-lg text-[color:var(--ink)]/75 mt-4 max-w-2xl leading-relaxed">
                 {state.tier.summary}
               </p>
             </div>
 
             <div className="text-center">
               {submit.kind === 'submitting' && (
-                <p className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-ink)]/70">
+                <p className="font-mono text-xs uppercase tracking-widest text-[color:var(--ink)]/70">
                   Saving your full breakdown&hellip;
                 </p>
               )}
               {submit.kind === 'error' && (
                 <div className="space-y-3">
-                  <p className="text-sm text-[color:var(--color-error)]" role="alert">
+                  <p className="text-sm text-[color:#9b2226]" role="alert">
                     {submit.message}
                   </p>
                   <button

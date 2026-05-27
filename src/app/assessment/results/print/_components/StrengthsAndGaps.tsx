@@ -30,9 +30,9 @@ function rankDimensions(
 }
 
 function bandColor(pct: number): string {
-  if (pct < 0.5) return 'var(--color-error)';
+  if (pct < 0.5) return '#9b2226';
   if (pct < 0.75) return 'var(--gold)';
-  return 'var(--color-ink)';
+  return 'var(--ink)';
 }
 
 export function StrengthsAndGaps({ dimensionBreakdown }: StrengthsAndGapsProps) {
@@ -45,7 +45,7 @@ export function StrengthsAndGaps({ dimensionBreakdown }: StrengthsAndGapsProps) 
         Where you&rsquo;re strong vs exposed.
       </h2>
 
-      <p className="pdf-body" style={{ marginTop: '0.2in', fontSize: '10pt', color: 'var(--color-slate)' }}>
+      <p className="pdf-body" style={{ marginTop: '0.2in', fontSize: '10pt', color: 'var(--slate-600)' }}>
         Ordered weakest to strongest. Red bars indicate critical gaps; terra indicates developing areas; neutral indicates strengths.
       </p>
 
@@ -53,13 +53,13 @@ export function StrengthsAndGaps({ dimensionBreakdown }: StrengthsAndGapsProps) 
         {dims.map((dim) => (
           <div key={dim.id} style={{ display: 'flex', flexDirection: 'column', gap: '0.05in' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-              <span style={{ fontFamily: 'var(--font-serif)', fontSize: '12pt' }}>{dim.label}</span>
+              <span style={{ fontFamily: 'Georgia, "Times New Roman", serif', fontSize: '12pt' }}>{dim.label}</span>
               <span
                 style={{
-                  fontFamily: 'var(--font-mono)',
+                  fontFamily: 'ui-monospace, "SF Mono", Menlo, Consolas, monospace',
                   fontVariantNumeric: 'tabular-nums',
                   fontSize: '10pt',
-                  color: 'var(--color-slate)',
+                  color: 'var(--slate-600)',
                 }}
               >
                 {dim.score} / {dim.maxScore}

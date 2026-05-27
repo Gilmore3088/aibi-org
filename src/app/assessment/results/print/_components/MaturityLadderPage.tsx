@@ -33,7 +33,7 @@ export function MaturityLadderPage({ tierId }: MaturityLadderPageProps) {
         style={{
           marginTop: '0.4in',
           paddingLeft: '0.5in',
-          borderLeft: '0.75pt solid var(--color-ink)',
+          borderLeft: '0.75pt solid var(--ink)',
           listStyle: 'none',
           display: 'flex',
           flexDirection: 'column',
@@ -54,7 +54,7 @@ export function MaturityLadderPage({ tierId }: MaturityLadderPageProps) {
                   width: '0.4in',
                   height: '0.4in',
                   borderRadius: '50%',
-                  fontFamily: 'var(--font-mono)',
+                  fontFamily: 'ui-monospace, "SF Mono", Menlo, Consolas, monospace',
                   fontSize: '10pt',
                   fontVariantNumeric: 'tabular-nums',
                   fontWeight: 600,
@@ -64,14 +64,14 @@ export function MaturityLadderPage({ tierId }: MaturityLadderPageProps) {
                   background: isCurrent
                     ? 'var(--gold)'
                     : isBelow
-                      ? 'var(--color-ink)'
-                      : 'var(--color-linen)',
-                  color: isCurrent || isBelow ? 'var(--color-linen)' : 'var(--color-ink)',
+                      ? 'var(--ink)'
+                      : 'var(--cream)',
+                  color: isCurrent || isBelow ? 'var(--cream)' : 'var(--ink)',
                   border: isCurrent
                     ? '2pt solid var(--gold)'
                     : isBelow
-                      ? '0.5pt solid var(--color-ink)'
-                      : '0.5pt solid var(--color-ink)',
+                      ? '0.5pt solid var(--ink)'
+                      : '0.5pt solid var(--ink)',
                 }}
               >
                 {idx + 1}
@@ -79,10 +79,10 @@ export function MaturityLadderPage({ tierId }: MaturityLadderPageProps) {
               <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.18in', flexWrap: 'wrap' }}>
                 <h3
                   style={{
-                    fontFamily: 'var(--font-serif)',
+                    fontFamily: 'Georgia, "Times New Roman", serif',
                     fontSize: '13pt',
                     margin: 0,
-                    color: isCurrent ? 'var(--gold)' : 'var(--color-ink)',
+                    color: isCurrent ? 'var(--gold)' : 'var(--ink)',
                   }}
                 >
                   {rung.label}
@@ -90,7 +90,7 @@ export function MaturityLadderPage({ tierId }: MaturityLadderPageProps) {
                 {isCurrent ? (
                   <span
                     style={{
-                      fontFamily: 'var(--font-serif-sc)',
+                      fontFamily: 'Georgia, "Times New Roman", serif',
                       fontSize: '8pt',
                       letterSpacing: '0.22em',
                       textTransform: 'uppercase',
@@ -107,7 +107,7 @@ export function MaturityLadderPage({ tierId }: MaturityLadderPageProps) {
                   marginTop: '0.06in',
                   fontSize: '10pt',
                   maxWidth: '5.6in',
-                  color: isBelow ? 'var(--color-slate)' : 'var(--color-ink)',
+                  color: isBelow ? 'var(--slate-600)' : 'var(--ink)',
                 }}
               >
                 {rung.description}

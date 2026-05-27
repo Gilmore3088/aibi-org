@@ -6,7 +6,7 @@ export function ProgressBar({ progress }: ProgressBarProps) {
   const pct = Math.min(Math.max(progress, 0), 1) * 100;
   return (
     <div
-      className="w-full h-[2px] bg-[color:var(--color-ink)]/10"
+      className="w-full h-[2px] bg-[color:var(--ink)]/10"
       role="progressbar"
       aria-label="Assessment progress"
       aria-valuenow={Math.round(pct)}

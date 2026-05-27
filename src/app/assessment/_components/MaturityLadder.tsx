@@ -23,11 +23,11 @@ export function MaturityLadder({ tierId }: MaturityLadderProps) {
       </p>
       <h2
         id="maturity-ladder-heading"
-        className="font-serif text-3xl md:text-4xl leading-tight text-[color:var(--color-ink)]"
+        className="font-serif text-3xl md:text-4xl leading-tight text-[color:var(--ink)]"
       >
         Where you are. Where this leads.
       </h2>
-      <p className="text-[15px] leading-[1.6] text-[color:var(--color-ink)]/75 max-w-2xl">
+      <p className="text-[15px] leading-[1.6] text-[color:var(--ink)]/75 max-w-2xl">
         Six stages describe the arc from individual experimentation to
         institutional advantage. Your current rung is pinned below.
         The rungs above it are the trajectory — not a promise, but the
@@ -35,7 +35,7 @@ export function MaturityLadder({ tierId }: MaturityLadderProps) {
       </p>
 
       <ol
-        className="border-l-2 border-[color:var(--color-ink)]/20 space-y-6 pl-7"
+        className="border-l-2 border-[color:var(--ink)]/20 space-y-6 pl-7"
         aria-label="Six-rung AI maturity ladder"
       >
         {MATURITY_LADDER.map((rung, idx) => {
@@ -52,10 +52,10 @@ export function MaturityLadder({ tierId }: MaturityLadderProps) {
                 className={
                   'absolute -left-[37px] top-1 inline-flex items-center justify-center h-7 w-7 rounded-full font-mono text-[11px] tabular-nums font-semibold ' +
                   (isCurrent
-                    ? 'bg-[color:var(--gold)] text-[color:var(--color-linen)] ring-4 ring-[color:var(--gold)]/20'
+                    ? 'bg-[color:var(--gold)] text-[color:var(--cream)] ring-4 ring-[color:var(--gold)]/20'
                     : isBelow
-                      ? 'bg-[color:var(--color-ink)]/70 text-[color:var(--color-linen)]'
-                      : 'bg-[color:var(--color-linen)] text-[color:var(--color-ink)]/60 border border-[color:var(--color-ink)]/30')
+                      ? 'bg-[color:var(--ink)]/70 text-[color:var(--cream)]'
+                      : 'bg-[color:var(--cream)] text-[color:var(--ink)]/60 border border-[color:var(--ink)]/30')
                 }
               >
                 {idx + 1}
@@ -66,7 +66,7 @@ export function MaturityLadder({ tierId }: MaturityLadderProps) {
                     'font-serif text-xl leading-tight ' +
                     (isCurrent
                       ? 'text-[color:var(--gold)]'
-                      : 'text-[color:var(--color-ink)]')
+                      : 'text-[color:var(--ink)]')
                   }
                 >
                   {rung.label}
@@ -81,8 +81,8 @@ export function MaturityLadder({ tierId }: MaturityLadderProps) {
                 className={
                   'mt-2 text-[14.5px] leading-[1.55] ' +
                   (isBelow
-                    ? 'text-[color:var(--color-ink)]/55'
-                    : 'text-[color:var(--color-ink)]/80')
+                    ? 'text-[color:var(--ink)]/55'
+                    : 'text-[color:var(--ink)]/80')
                 }
               >
                 {rung.description}

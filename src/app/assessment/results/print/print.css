@@ -11,7 +11,7 @@ html, body {
   margin: 0;
   padding: 0;
   background: #ffffff;
-  color: var(--color-ink);
+  color: var(--ink);
   font-family: var(--font-sans);
   -webkit-print-color-adjust: exact;
   print-color-adjust: exact;
@@ -32,16 +32,16 @@ html, body {
 .pdf-page-footer {
   margin-top: auto;
   padding-top: 0.5in;
-  font-family: var(--font-mono);
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   font-size: 9pt;
-  color: var(--color-slate);
-  border-top: 0.5pt solid var(--color-ink);
+  color: var(--slate-600);
+  border-top: 0.5pt solid var(--ink);
   display: flex;
   justify-content: space-between;
 }
 
 .pdf-eyebrow {
-  font-family: var(--font-serif-sc);
+  font-family: Georgia, "Times New Roman", serif;
   font-size: 10pt;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -50,24 +50,24 @@ html, body {
 }
 
 .pdf-h1 {
-  font-family: var(--font-serif);
+  font-family: Georgia, "Times New Roman", serif;
   font-size: 36pt;
   line-height: 1.1;
   margin: 0;
-  color: var(--color-ink);
+  color: var(--ink);
 }
 
 .pdf-h2 {
-  font-family: var(--font-serif);
+  font-family: Georgia, "Times New Roman", serif;
   font-size: 22pt;
   line-height: 1.15;
   margin: 0;
-  color: var(--color-ink);
+  color: var(--ink);
 }
 
 .pdf-body {
   font-family: var(--font-sans);
   font-size: 11pt;
   line-height: 1.55;
-  color: var(--color-ink);
+  color: var(--ink);
 }

@@ -30,15 +30,15 @@ export function FutureVisionPage() {
               display: 'grid',
               gridTemplateColumns: '0.5in 1fr',
               alignItems: 'baseline',
-              borderTop: idx === 0 ? '0.25pt solid var(--color-ink)' : 'none',
-              borderBottom: '0.25pt solid var(--color-ink)',
+              borderTop: idx === 0 ? '0.25pt solid var(--ink)' : 'none',
+              borderBottom: '0.25pt solid var(--ink)',
               paddingTop: '0.18in',
               paddingBottom: '0.18in',
             }}
           >
             <span
               style={{
-                fontFamily: 'var(--font-mono)',
+                fontFamily: 'ui-monospace, "SF Mono", Menlo, Consolas, monospace',
                 fontVariantNumeric: 'tabular-nums',
                 fontSize: '10pt',
                 color: 'var(--gold)',

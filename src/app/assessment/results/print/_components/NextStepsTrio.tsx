@@ -19,14 +19,14 @@ const RANK_STYLES: Record<
     accent: 'var(--gold)',
   },
   secondary: {
-    border: '0.5pt solid var(--color-ink)',
-    numberColor: 'var(--color-ink)',
-    accent: 'var(--color-ink)',
+    border: '0.5pt solid var(--ink)',
+    numberColor: 'var(--ink)',
+    accent: 'var(--ink)',
   },
   tertiary: {
-    border: '0.25pt solid var(--color-slate)',
-    numberColor: 'var(--color-slate)',
-    accent: 'var(--color-slate)',
+    border: '0.25pt solid var(--slate-600)',
+    numberColor: 'var(--slate-600)',
+    accent: 'var(--slate-600)',
   },
 };
 
@@ -67,13 +67,13 @@ export function NextStepsTrio({ tierId }: NextStepsTrioProps) {
                 paddingLeft: isPrimary ? '0.1in' : 0,
                 paddingRight: isPrimary ? '0.1in' : 0,
                 paddingBottom: isPrimary ? '0.15in' : 0,
-                background: isPrimary ? 'var(--color-parch)' : 'transparent',
+                background: isPrimary ? '#FFFFFF' : 'transparent',
               }}
             >
               <div>
                 <p
                   style={{
-                    fontFamily: 'var(--font-mono)',
+                    fontFamily: 'ui-monospace, "SF Mono", Menlo, Consolas, monospace',
                     fontVariantNumeric: 'tabular-nums',
                     fontSize: '20pt',
                     color: rankStyle.numberColor,
@@ -85,11 +85,11 @@ export function NextStepsTrio({ tierId }: NextStepsTrioProps) {
                 </p>
                 <p
                   style={{
-                    fontFamily: 'var(--font-serif-sc)',
+                    fontFamily: 'Georgia, "Times New Roman", serif',
                     fontSize: '8pt',
                     letterSpacing: '0.18em',
                     textTransform: 'uppercase',
-                    color: 'var(--color-slate)',
+                    color: 'var(--slate-600)',
                     marginTop: '0.1in',
                   }}
                 >
@@ -98,7 +98,7 @@ export function NextStepsTrio({ tierId }: NextStepsTrioProps) {
                 {isPrimary ? (
                   <p
                     style={{
-                      fontFamily: 'var(--font-serif-sc)',
+                      fontFamily: 'Georgia, "Times New Roman", serif',
                       fontSize: '7.5pt',
                       letterSpacing: '0.2em',
                       textTransform: 'uppercase',
@@ -116,7 +116,7 @@ export function NextStepsTrio({ tierId }: NextStepsTrioProps) {
                     className="pdf-body"
                     style={{
                       fontSize: isPrimary ? '15pt' : '13pt',
-                      fontFamily: 'var(--font-serif)',
+                      fontFamily: 'Georgia, "Times New Roman", serif',
                       margin: 0,
                     }}
                   >
@@ -125,10 +125,10 @@ export function NextStepsTrio({ tierId }: NextStepsTrioProps) {
                   {step.price ? (
                     <span
                       style={{
-                        fontFamily: 'var(--font-mono)',
+                        fontFamily: 'ui-monospace, "SF Mono", Menlo, Consolas, monospace',
                         fontVariantNumeric: 'tabular-nums',
                         fontSize: '9pt',
-                        color: 'var(--color-slate)',
+                        color: 'var(--slate-600)',
                         letterSpacing: '0.04em',
                       }}
                     >
@@ -150,7 +150,7 @@ export function NextStepsTrio({ tierId }: NextStepsTrioProps) {
                   className="pdf-body"
                   style={{
                     marginTop: '0.15in',
-                    fontFamily: 'var(--font-serif)',
+                    fontFamily: 'Georgia, "Times New Roman", serif',
                     fontStyle: 'italic',
                     fontSize: '10pt',
                     color: rankStyle.accent,

@@ -30,10 +30,10 @@ export default async function InDepthTakePage() {
     return (
       <main className="px-6 py-20">
         <div className="mx-auto max-w-xl text-center">
-          <h1 className="font-serif text-3xl text-[color:var(--color-ink)] mb-4">
+          <h1 className="font-serif text-3xl text-[color:var(--ink)] mb-4">
             Service unavailable
           </h1>
-          <p className="text-[color:var(--color-ink)]/75">
+          <p className="text-[color:var(--ink)]/75">
             The assessment isn&rsquo;t configured in this environment. Try again
             shortly.
           </p>
