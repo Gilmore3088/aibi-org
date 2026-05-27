@@ -71,6 +71,7 @@ export interface ArtifactDefinition {
   readonly format: 'pdf' | 'md' | 'pdf+md';
   readonly triggeredBy: string;     // activity ID or "module-complete"
   readonly dynamic: boolean;        // true if personalized from learner data
+  readonly downloadHref?: string;   // public URL for static artifacts; absent for dynamic
 }
 
 export interface Module {

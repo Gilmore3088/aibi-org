@@ -9,6 +9,7 @@ import {
   CtaBand,
 } from '@/components/mockup';
 import { PLAYBOOKS, type RoleSlug } from '../data';
+import { PlaybookDownloadButton } from '../_components/PlaybookDownloadButton';
 
 export function generateStaticParams() {
   return (Object.keys(PLAYBOOKS) as RoleSlug[]).map((role) => ({ role }));
@@ -61,9 +62,10 @@ export default async function PlaybookPage({ params }: { params: Promise<{ role:
               <Button variant="gold" size="lg" href="/courses/foundation">
                 Start {data.eyebrow.split(' ')[0]} Path <ArrowR className="mk-ic" />
               </Button>
-              <Button variant="ghost-dark" size="lg" href="/my-toolbox">
-                Preview Artifacts
-              </Button>
+              <PlaybookDownloadButton
+                role={role}
+                roleTitle={data.eyebrow.replace(/ Playbook$/, '')}
+              />
             </div>
           </div>
 

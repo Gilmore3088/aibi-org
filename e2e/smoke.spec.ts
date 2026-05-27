@@ -9,12 +9,10 @@ test.describe('marketing smoke', () => {
   test('homepage renders with hero headline', async ({ page }) => {
     await page.goto('/');
     await expect(page).toHaveTitle(/AI Banking Institute/i);
-    // The mockup-system hero H1 (2026-05-26): "Train people to use AI
-    // without losing control." The legacy "Turning Bankers into Builders"
-    // tagline still appears in the SiteFooter wordmark and in metadata
-    // titles — this assertion scopes to the hero H1 specifically.
+    // Current hero H1 (2026-05-26 rewrite):
+    // "AI training that becomes real banking work."
     await expect(
-      page.getByRole('heading', { level: 1, name: /Train people to use AI without losing control/i }),
+      page.getByRole('heading', { level: 1, name: /AI training that becomes real banking work/i }),
     ).toBeVisible();
   });
 
@@ -72,9 +70,10 @@ test.describe('marketing smoke', () => {
     expect(bodyText.length).toBeGreaterThan(100);
   });
 
-  test('education hub renders', async ({ page }) => {
+  test('legacy /education redirects to /courses', async ({ page }) => {
+    // /education was retired 2026-05-26; /courses is the canonical course page.
     await page.goto('/education');
-    await expect(page).toHaveURL(/\/education/);
+    await expect(page).toHaveURL(/\/courses/);
   });
 
   test('for-institutions renders', async ({ page }) => {

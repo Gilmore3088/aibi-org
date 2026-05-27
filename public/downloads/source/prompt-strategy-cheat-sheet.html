@@ -1,0 +1,671 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Banker's Prompt Strategy Cheat Sheet — The AI Banking Institute</title>
+<link rel="stylesheet" href="_brand.css">
+<style>
+  .page h2 { font-size: 20pt; }
+  .page h3 { font-size: 12pt; margin: 10pt 0 4pt; }
+  .page h4 { font-size: 10.5pt; margin: 8pt 0 4pt; }
+  .page p, .page li { font-size: 10pt; line-height: 1.55; }
+  .toc { background:#fff; border:1px solid var(--slate-200); border-radius:14pt; padding:14pt 18pt; margin: 8pt 0 14pt; }
+  .toc ol { columns: 2; column-gap: 22pt; margin: 4pt 0 0 18pt; }
+  .toc li { margin: 2pt 0; font-size: 10pt; }
+  .principle { background: var(--cream-2); border-radius: 12pt; padding: 12pt 16pt; font-weight: 600; color: var(--ink); margin: 12pt 0; border-left: 3pt solid var(--gold); font-size: 11pt; }
+  .prompt {
+    background: var(--ink); color: #E9EEF6;
+    border-radius: 10pt; padding: 11pt 14pt; margin: 8pt 0;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 8.5pt; line-height: 1.5; white-space: pre-wrap;
+  }
+  .prompt .label { display:block; font-size:8pt; letter-spacing:1.5px; text-transform:uppercase; color:var(--gold-soft); font-weight:700; margin-bottom: 6pt; font-family: 'Inter', sans-serif; }
+  .card-head { background: var(--ink); color: #fff; border-radius: 12pt 12pt 0 0; padding: 10pt 14pt; margin-top: 14pt; }
+  .card-head .num { font-size: 8pt; letter-spacing: 2px; text-transform: uppercase; color: var(--gold-soft); font-weight: 700; }
+  .card-head h3 { margin: 2pt 0 0; color: #fff; font-size: 13pt; }
+  .card-head .use { color: #D8E0EA; font-size: 9.5pt; margin-top: 2pt; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12pt; margin: 10pt 0; }
+  .two-col .card { background: #fff; border:1px solid var(--slate-200); border-radius: 12pt; padding: 12pt 14pt; }
+  .two-col .card h4 { margin-top: 0; }
+  .two-col .card ul { margin: 4pt 0 0 16pt; }
+  .two-col .card li { font-size: 9.5pt; }
+  table { font-size: 9.5pt; }
+  th { font-size: 8.5pt; }
+  .small-checklist li { font-size: 10pt; margin: 3pt 0; list-style: none; padding-left: 18pt; position: relative; }
+  .small-checklist li::before { content: "☐"; position: absolute; left: 0; color: var(--gold-deep); font-weight: 700; }
+  .vs { display: grid; grid-template-columns: 1fr 1fr; gap: 12pt; margin: 10pt 0; }
+  .vs .col { background: #fff; border:1px solid var(--slate-200); border-radius: 12pt; padding: 12pt 14pt; }
+  .vs .col.bad { border-left: 3pt solid #DC2626; }
+  .vs .col.good { border-left: 3pt solid var(--emerald-700); }
+  .vs .label { font-size: 8pt; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700; margin-bottom: 6pt; }
+  .vs .bad .label { color: #991B1B; }
+  .vs .good .label { color: var(--emerald-700); }
+  .risk-band { padding: 12pt 16pt; }
+  .risk-band h4 { font-size: 11pt; }
+  .risk-band ul { margin-left: 16pt; }
+  .risk-band li { font-size: 9.5pt; }
+</style>
+</head>
+<body>
+
+<section class="cover">
+  <div class="seal">
+    <div class="seal-mark">A</div>
+    <div class="seal-text">
+      <div class="seal-name">The AI Banking Institute</div>
+      <div class="seal-tag">Turning Bankers into Builders</div>
+    </div>
+  </div>
+  <div>
+    <div class="kicker">Cheat sheet · v2.0</div>
+    <h1>The Banker's Prompt Strategy Cheat Sheet</h1>
+    <p class="lede">Better prompts. Safer inputs. More reusable outputs. A practical prompting reference for banking professionals who need useful AI output without leaking data, weakening review discipline, or turning a chat response into an unapproved business record.</p>
+  </div>
+  <div class="footer-row">
+    <div>The AI Banking Institute · 2026</div>
+    <div>AIBankingInstitute.com</div>
+  </div>
+</section>
+
+<section class="page">
+  <div class="section-kicker">Section 1 · The 10-second safety spine</div>
+  <h2>One question before every prompt</h2>
+  <div class="principle">Strip the specifics. Keep the structure. Ask clearly. Verify before use.</div>
+  <p>Before writing any prompt, ask one question: <strong>Would I be comfortable if this prompt appeared outside the bank?</strong> If the answer is no, stop and either strip the sensitive details, use an approved internal tool, or escalate.</p>
+
+  <div class="toc">
+    <div class="section-kicker" style="margin-top:0;">What's inside</div>
+    <ol>
+      <li>The 10-second safety spine</li>
+      <li>Green / yellow / red prompt safety</li>
+      <li>The basic prompt recipe</li>
+      <li>The RCFC + R banker pattern</li>
+      <li>The enterprise prompt standard</li>
+      <li>The trust-check reflex</li>
+      <li>Daily prompt cards for bankers</li>
+      <li>The style and context brief</li>
+      <li>Advanced: prompt chaining</li>
+      <li>Advanced: the XML sandwich</li>
+      <li>Advanced: rationale, not hidden reasoning</li>
+      <li>Advanced: few-shot examples</li>
+      <li>Advanced: assistant prompt anatomy</li>
+      <li>The prompt escalator</li>
+      <li>Prompt quality checklist</li>
+      <li>Prompt-to-skill upgrade</li>
+      <li>The final rule</li>
+    </ol>
+  </div>
+
+  <h3>The core safety move</h3>
+  <div class="vs">
+    <div class="col bad">
+      <div class="label">Instead of this</div>
+      <p style="font-family: ui-monospace, Menlo, monospace; font-size: 9.5pt; color: var(--ink);">John Smith has account 123456 and a $42,000 CD maturing on June 14.</p>
+    </div>
+    <div class="col good">
+      <div class="label">Use this</div>
+      <p style="font-family: ui-monospace, Menlo, monospace; font-size: 9.5pt; color: var(--ink);">[CUSTOMER] has [ACCOUNT TYPE] with [AMOUNT] maturing on [DATE].</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="card">
+      <h4>Safe placeholders</h4>
+      <ul>
+        <li><code>[CUSTOMER]</code>, <code>[FIRST NAME]</code></li>
+        <li><code>[ACCOUNT TYPE]</code>, <code>[ACCOUNT NUMBER]</code></li>
+        <li><code>[DATE]</code>, <code>[AMOUNT]</code></li>
+        <li><code>[BRANCH]</code>, <code>[PRODUCT]</code></li>
+        <li><code>[DOCUMENT]</code>, <code>[POLICY SECTION]</code></li>
+        <li><code>[NEXT STEP]</code>, <code>[REVIEWER]</code></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Never put these in a public AI tool</h4>
+      <ul>
+        <li>Customer names · account numbers · SSNs · DOBs.</li>
+        <li>Addresses, phone numbers, email addresses.</li>
+        <li>Account balances · transaction details · credit file details.</li>
+        <li>SAR / AML investigation information.</li>
+        <li>Authentication details.</li>
+        <li>Confidential examiner correspondence.</li>
+        <li>Legal advice requests.</li>
+        <li>Confidential vendor contracts.</li>
+        <li>Passwords, API keys, tokens, system credentials.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- Section 2 -->
+<section class="page">
+  <div class="section-kicker">Section 2 · Green / yellow / red prompt safety</div>
+  <h2>Three lanes for every prompt</h2>
+
+  <div class="risk-band green">
+    <div class="head"><div class="dot"></div><h4>Green — usually safe</h4></div>
+    <p>Use when the prompt contains no sensitive data and the output is not customer-impacting. Examples: draft a fictional training scenario; summarize a public regulator bulletin; brainstorm branch huddle topics; rewrite a generic internal note; create a blank checklist; build a prompt template.</p>
+    <p class="note"><strong>Rule:</strong> if you could write it on a whiteboard in the break room, it is usually Green.</p>
+  </div>
+
+  <div class="risk-band yellow">
+    <div class="head"><div class="dot"></div><h4>Yellow — approved tool and human review required</h4></div>
+    <p>Use when the output could be seen by a customer, examiner, manager, or downstream business process. Examples: customer-facing email copy; summarize internal procedures; rewrite campaign language; create operational checklists; prepare meeting summaries from redacted notes; draft policy training materials.</p>
+    <p class="note"><strong>Rule:</strong> if a customer, examiner, or decision-maker could read it, a qualified human reviews it before use.</p>
+  </div>
+
+  <div class="risk-band red">
+    <div class="head"><div class="dot"></div><h4>Red — do not use public AI tools</h4></div>
+    <p>Use an approved enterprise workflow only, if allowed at all. Examples: credit decisions; adverse-action reasoning; SAR narratives; AML alert disposition; fraud conclusions; authentication decisions; legal or compliance determinations; customer-specific financial advice; account-specific analysis.</p>
+    <p class="note"><strong>Rule:</strong> if the output could affect a customer, financial decision, control, or regulatory filing, treat it as Red until Compliance says otherwise.</p>
+  </div>
+</section>
+
+<!-- Section 3 -->
+<section class="page">
+  <div class="section-kicker">Section 3 · The basic prompt recipe</div>
+  <h2>Four moves to get from generic to useful</h2>
+
+  <h3>1 · Say what you want</h3>
+  <div class="vs">
+    <div class="col bad">
+      <div class="label">Weak</div>
+      <p>Help with this.</p>
+    </div>
+    <div class="col good">
+      <div class="label">Better</div>
+      <p>Rewrite this internal email so the action, owner, and deadline are clear.</p>
+    </div>
+  </div>
+
+  <h3>2 · Give the background</h3>
+  <p>Tell the AI who the audience is, what the situation is, and what matters. Example: <em style="font-style:normal; font-weight:600;">"This is for branch managers. The tone should be warm, direct, and operational. The goal is to reduce confusion before Monday morning."</em></p>
+
+  <h3>3 · Show what good looks like</h3>
+  <p>Give the format, example, or success criteria. Example: <em style="font-style:normal; font-weight:600;">"Output three bullets, each under 20 words, followed by one closing sentence."</em></p>
+
+  <h3>4 · Refine what comes back</h3>
+  <p>Do not just say "try again." Improve the prompt. Better refinements:</p>
+  <ul>
+    <li>Add a clearer role.</li>
+    <li>Add missing context.</li>
+    <li>Tighten the format.</li>
+    <li>Add constraints.</li>
+    <li>Ask for options.</li>
+    <li>Add review criteria.</li>
+  </ul>
+
+  <hr style="border:none; border-top:1px solid var(--slate-200); margin: 14pt 0;">
+
+  <div class="section-kicker">Section 4 · The RCFC + R banker pattern</div>
+  <h2>Five lines, every time</h2>
+
+  <table>
+    <thead><tr><th style="width:8%">Line</th><th style="width:22%">Stands for</th><th>What goes here</th></tr></thead>
+    <tbody>
+      <tr><td><strong>R</strong></td><td>Role</td><td>Who should the AI act as?</td></tr>
+      <tr><td><strong>C</strong></td><td>Context</td><td>What background does it need?</td></tr>
+      <tr><td><strong>F</strong></td><td>Format</td><td>What should the output look like?</td></tr>
+      <tr><td><strong>C</strong></td><td>Constraints</td><td>What must it not do?</td></tr>
+      <tr><td><strong>R</strong></td><td>Review</td><td>Who reviews it before use?</td></tr>
+    </tbody>
+  </table>
+
+  <div class="principle">If your prompt does not start with "You are…," you are probably leaving quality on the table.</div>
+
+  <div class="vs">
+    <div class="col bad">
+      <div class="label">Weak prompt</div>
+      <p style="font-family: ui-monospace, Menlo, monospace; font-size: 9pt;">Write a follow-up email.</p>
+    </div>
+    <div class="col good">
+      <div class="label">Strong banking prompt</div>
+      <p style="font-family: ui-monospace, Menlo, monospace; font-size: 8.5pt; color: var(--ink);">Role: You are a relationship banker at a community bank.
+Context: [CUSTOMER] missed a follow-up call about [PRODUCT]. Use placeholders only.
+Format: One short email under 120 words with a clear next step.
+Constraints: Do not invent rates, fees, deadlines, eligibility, or promises. No exclamation points.
+Review: The banker will personalize and send. This is a draft.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Section 5 + 6 -->
+<section class="page">
+  <div class="section-kicker">Section 5 · The enterprise prompt standard</div>
+  <h2>Three required elements for higher-risk work</h2>
+
+  <h3>1 · Situational context</h3>
+  <p><em style="font-style:normal; font-weight:600;">"A branch manager needs to explain a policy update to frontline staff before tomorrow's huddle."</em></p>
+
+  <h3>2 · Professional role</h3>
+  <p><em style="font-style:normal; font-weight:600;">"You are a retail banking operations trainer writing for frontline branch staff."</em></p>
+
+  <h3>3 · Explicit constraints</h3>
+  <p><em style="font-style:normal; font-weight:600;">"Do not change policy meaning. Do not add requirements. Flag unclear sections with [VERIFY]. Include escalation triggers."</em></p>
+
+  <hr style="border:none; border-top:1px solid var(--slate-200); margin: 14pt 0;">
+
+  <div class="section-kicker">Section 6 · The trust-check reflex</div>
+  <h2>Verify four things before using AI output</h2>
+
+  <div class="two-col">
+    <div class="card">
+      <h4>1 · Numbers</h4>
+      <p>Rates, fees, APYs, balances, dates, percentages, dollar amounts, counts, ratios.</p>
+      <p style="font-weight:600; color: var(--ink); margin-top: 6pt;">If a number matters, verify it at the source.</p>
+    </div>
+    <div class="card">
+      <h4>2 · Dates</h4>
+      <p>Effective dates, deadlines, maturity dates, statement dates, policy dates, filing dates, review dates.</p>
+      <p style="font-weight:600; color: var(--ink); margin-top: 6pt;">AI can be confidently wrong about time.</p>
+    </div>
+    <div class="card">
+      <h4>3 · Names and citations</h4>
+      <p>Regulation names, agency names, document titles, policy names, source citations, quoted language.</p>
+      <p style="font-weight:600; color: var(--ink); margin-top: 6pt;">If AI cites it, look it up.</p>
+    </div>
+    <div class="card">
+      <h4>4 · Policy &amp; compliance claims</h4>
+      <p>Internal policy requirements, legal standards, compliance obligations, product disclosures, adverse-action language, BSA/AML statements, privacy requirements.</p>
+      <p style="font-weight:600; color: var(--ink); margin-top: 6pt;">AI can summarize. It cannot be the final compliance reviewer.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Section 7 - Daily Prompt Cards -->
+<section class="page">
+  <div class="section-kicker">Section 7 · Daily prompt cards for bankers</div>
+  <h2>Six reusable cards</h2>
+
+  <div class="card-head">
+    <div class="num">Card 1</div>
+    <h3>Rewrite Card</h3>
+    <div class="use">Use when an internal message is unclear.</div>
+  </div>
+  <div class="prompt"><span class="label">Prompt</span>You are a banking operations editor.
+
+Rewrite the message below so the action, owner, deadline, and escalation path are clear. Keep the meaning the same. Do not add new policy requirements. Flag unclear items with [VERIFY].
+
+Output:
+  1. Revised message
+  2. Action owner
+  3. Deadline
+  4. Open questions
+  5. Escalation note
+
+Message: [PASTE SAFE / APPROVED TEXT]</div>
+
+  <div class="card-head">
+    <div class="num">Card 2</div>
+    <h3>Summarize Card</h3>
+    <div class="use">Use for meetings, huddles, and internal notes.</div>
+  </div>
+  <div class="prompt"><span class="label">Prompt</span>You are helping a bank team create a structured meeting summary.
+
+Use only the notes below. Do not add facts. Do not include customer identifiers. Flag missing owners or dates with [VERIFY].
+
+Output:
+  1. Key decisions
+  2. Action items
+  3. Owners
+  4. Due dates
+  5. Open questions
+  6. Risks or escalation items
+
+Notes: [PASTE REDACTED NOTES]</div>
+
+  <div class="card-head">
+    <div class="num">Card 3</div>
+    <h3>Document Translation Brief</h3>
+    <div class="use">Use when dense procedures need to become role-specific job aids.</div>
+  </div>
+  <div class="prompt"><span class="label">Prompt</span>You are a banking procedure translator writing for [ROLE].
+
+Translate the procedure section below into plain language. Do not change policy meaning. Do not add requirements. Flag unclear or missing information with [VERIFY].
+
+Output:
+  1. What changed
+  2. What [ROLE] needs to do
+  3. What not to do
+  4. When to escalate
+  5. Manager checklist
+
+Procedure section: [PASTE APPROVED PROCEDURE TEXT]</div>
+</section>
+
+<section class="page">
+  <div class="card-head">
+    <div class="num">Card 4</div>
+    <h3>Review Checklist Card</h3>
+    <div class="use">Use when AI-generated output needs review.</div>
+  </div>
+  <div class="prompt"><span class="label">Prompt</span>You are a banking risk reviewer.
+
+Create a review checklist for the AI-generated output below. Check for accuracy, data sensitivity, customer impact, disclosure needs, compliance risk, unsupported claims, and retention requirements.
+
+Output:
+  1. Review checklist
+  2. Risk flags
+  3. Required source checks
+  4. Approval owner
+  5. Retention note
+
+Output to review: [PASTE AI OUTPUT]</div>
+
+  <div class="card-head">
+    <div class="num">Card 5</div>
+    <h3>Options Card</h3>
+    <div class="use">Use when you need choices, not one answer.</div>
+  </div>
+  <div class="prompt"><span class="label">Prompt</span>You are helping a banking team compare options.
+
+Create three options for [TASK]. For each option, include:
+  1. Best use case
+  2. Strength
+  3. Risk
+  4. Review need
+  5. Recommendation
+
+Constraints: Do not invent data. Flag missing context with [VERIFY].
+
+Task: [INSERT TASK]</div>
+
+  <div class="card-head">
+    <div class="num">Card 6</div>
+    <h3>Manager Coaching Card</h3>
+    <div class="use">Use when a manager needs coaching language.</div>
+  </div>
+  <div class="prompt"><span class="label">Prompt</span>You are a branch manager preparing coaching notes for a frontline banker.
+
+Use the fictional scenario below. Do not include real customer data. Keep the tone supportive and specific.
+
+Output:
+  1. What the banker did well
+  2. Coaching opportunity
+  3. Suggested phrasing
+  4. Practice scenario
+  5. Escalation reminder
+
+Scenario: [INSERT FICTIONAL SCENARIO]</div>
+</section>
+
+<!-- Section 8 -->
+<section class="page">
+  <div class="section-kicker">Section 8 · The style and context brief</div>
+  <h2>If you repeat context, save it as a brief</h2>
+  <p>If you repeat the same background more than three times a week, create a reusable brief. Paste it at the top of a session or save it as a custom assistant instruction.</p>
+
+  <div class="prompt"><span class="label">Banker style brief template</span>I work as [ROLE] at a [BANK / CREDIT UNION TYPE].
+My audience is usually [AUDIENCE].
+
+My writing style should be:
+  - [TRAIT 1]
+  - [TRAIT 2]
+  - [TRAIT 3]
+
+Avoid:
+  - hype
+  - unsupported claims
+  - legal conclusions
+  - compliance determinations
+  - invented rates, fees, dates, or deadlines
+  - customer-specific facts
+
+Always:
+  - ask for missing context when needed
+  - use placeholders instead of customer data
+  - flag uncertain items with [VERIFY]
+  - identify review owner when output could be used at work
+  - label output as draft unless approved
+
+My preferred output format is:
+[INSERT FORMAT]
+
+Approved examples of good output:
+[INSERT EXAMPLES]</div>
+</section>
+
+<!-- Section 9 prompt chaining -->
+<section class="page">
+  <div class="section-kicker">Section 9 · Advanced strategy · Prompt chaining</div>
+  <h2>Split complex banking work into stages</h2>
+  <p>Do not ask one prompt to do everything. For complex banking work, split the task into smaller prompts.</p>
+
+  <h3>Example · procedure-to-job-aid chain</h3>
+  <div class="prompt"><span class="label">Prompt 1 · Extract</span>Identify the key steps, roles, exceptions, and terms from this procedure. Do not rewrite yet. Flag unclear items with [VERIFY].</div>
+  <div class="prompt"><span class="label">Prompt 2 · Transform</span>Using the extracted steps, create a plain-English job aid for [ROLE]. Preserve policy meaning. Include numbered steps and escalation triggers.</div>
+  <div class="prompt"><span class="label">Prompt 3 · Review</span>Create a manager review checklist for the job aid. Include accuracy, missing steps, escalation clarity, and retention guidance.</div>
+  <div class="prompt"><span class="label">Prompt 4 · Finalize</span>Revise the job aid using the review notes. Keep the output concise and label it as draft pending manager approval.</div>
+
+  <h3>Why chaining works</h3>
+  <ul>
+    <li>Reduces hallucination risk.</li>
+    <li>Reviews each stage.</li>
+    <li>Catches errors earlier.</li>
+    <li>Creates better evidence.</li>
+    <li>Preserves source meaning.</li>
+    <li>Avoids giant unreviewable outputs.</li>
+  </ul>
+</section>
+
+<!-- Section 10 XML Sandwich -->
+<section class="page">
+  <div class="section-kicker">Section 10 · Advanced strategy · The XML sandwich</div>
+  <h2>Separate instructions from source material</h2>
+  <p>When a prompt contains both instructions and source material, separate them clearly. Use tags like <code>&lt;instructions&gt;</code>, <code>&lt;source&gt;</code>, <code>&lt;policy&gt;</code>, <code>&lt;notes&gt;</code>, <code>&lt;output_format&gt;</code>, <code>&lt;constraints&gt;</code>.</p>
+
+  <div class="prompt"><span class="label">XML sandwich template</span>&lt;instructions&gt;
+You are a banking procedure translator. Convert the source text into a frontline job aid for [ROLE]. Preserve meaning. Do not add requirements. Flag uncertainty with [VERIFY].
+&lt;/instructions&gt;
+
+&lt;constraints&gt;
+No customer data. No policy changes. No legal conclusions. Output is a draft pending manager review.
+&lt;/constraints&gt;
+
+&lt;source&gt;
+[PASTE APPROVED SOURCE TEXT]
+&lt;/source&gt;
+
+&lt;output_format&gt;
+  1. Purpose
+  2. What changed
+  3. Steps
+  4. Exceptions
+  5. Escalation triggers
+  6. Manager checklist
+&lt;/output_format&gt;</div>
+
+  <h3>Why this works</h3>
+  <p>The tags separate what the AI should do from the material it should analyze. This matters when working with policies, procedures, loan notes, meeting transcripts, regulatory guidance, campaign briefs, complaint summaries, and vendor documents.</p>
+</section>
+
+<!-- Section 11 -->
+<section class="page">
+  <div class="section-kicker">Section 11 · Advanced strategy · Rationale, not hidden reasoning</div>
+  <h2>Traceable evidence without overconfident prose</h2>
+  <p>For banking work, you want traceability without asking the model to expose long private reasoning.</p>
+
+  <div class="vs">
+    <div class="col bad">
+      <div class="label">Avoid</div>
+      <p>"Think step by step and show all your reasoning."</p>
+    </div>
+    <div class="col good">
+      <div class="label">Better</div>
+      <p>"Provide a concise rationale for each recommendation. Cite the source section or note used. Flag assumptions with [ASSUMPTION] and uncertainties with [VERIFY]."</p>
+    </div>
+  </div>
+
+  <div class="prompt"><span class="label">Rationale prompt template</span>For each recommendation, provide:
+  1. Recommendation
+  2. Source used
+  3. Rationale in two sentences or less
+  4. Assumptions
+  5. Items to verify
+  6. Human reviewer</div>
+
+  <h3>Why this is safer</h3>
+  <p>It produces reviewable evidence without creating long, messy, overconfident reasoning that a banker may mistake for authority.</p>
+
+  <hr style="border:none; border-top:1px solid var(--slate-200); margin: 14pt 0;">
+
+  <div class="section-kicker">Section 12 · Advanced strategy · Few-shot examples</div>
+  <h2>Show the AI what good looks like</h2>
+  <p>When you need consistency, show the AI examples.</p>
+
+  <div class="prompt"><span class="label">Basic pattern</span>Here are two examples of good output. Match the structure, tone, and level of detail.
+
+Example 1:
+[INSERT]
+
+Example 2:
+[INSERT]
+
+Now produce the same type of output for:
+[INSERT NEW INPUT]</div>
+
+  <h3>Best uses in banking</h3>
+  <ul>
+    <li>Adverse-action language training examples.</li>
+    <li>Branch service recovery scripts.</li>
+    <li>Campaign copy style.</li>
+    <li>Executive report summaries.</li>
+    <li>Complaint categorization.</li>
+    <li>Procedure job aids.</li>
+    <li>Call summary formats.</li>
+  </ul>
+  <p><strong>Guardrail:</strong> only use examples that are approved, synthetic, anonymized, or safe for the tool being used.</p>
+</section>
+
+<!-- Section 13 -->
+<section class="page">
+  <div class="section-kicker">Section 13 · Advanced strategy · Assistant prompt anatomy</div>
+  <h2>Five areas for any custom assistant or skill</h2>
+
+  <h3>1 · Identity</h3>
+  <div class="vs">
+    <div class="col bad">
+      <div class="label">Weak</div>
+      <p>"You are a helpful assistant."</p>
+    </div>
+    <div class="col good">
+      <div class="label">Better</div>
+      <p>"You are a senior community-bank compliance analyst helping draft internal review checklists from approved policy text."</p>
+    </div>
+  </div>
+
+  <h3>2 · Behavior rules</h3>
+  <div class="two-col">
+    <div class="card">
+      <h4>Always</h4>
+      <ul>
+        <li>Cite uploaded source sections when available.</li>
+        <li>Flag uncertainty with <code>[VERIFY]</code>.</li>
+        <li>Identify human review owner.</li>
+        <li>Label outputs as draft unless approved.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Never</h4>
+      <ul>
+        <li>Invent rates, dates, fees, or policy requirements.</li>
+        <li>Use customer identifiers.</li>
+        <li>Make legal, credit, compliance, or regulatory determinations.</li>
+        <li>Present draft output as final approval.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>3 · Task scope</h3>
+  <p><em style="font-style:normal; font-weight:600;">"You help convert approved internal procedure text into frontline job aids. You do not change policy meaning or approve procedures."</em></p>
+
+  <h3>4 · Output format</h3>
+  <p><em style="font-style:normal; font-weight:600;">"Always output: Purpose, Steps, Exceptions, Escalation Triggers, Review Checklist, Retention Note."</em></p>
+
+  <h3>5 · Knowledge context</h3>
+  <p><em style="font-style:normal; font-weight:600;">"Use the uploaded procedure, brand voice guide, or policy manual as the source. If the answer is not in the source, say [VERIFY]."</em></p>
+</section>
+
+<!-- Section 14 + 15 -->
+<section class="page">
+  <div class="section-kicker">Section 14 · The prompt escalator</div>
+  <h2>When the output is weak, upgrade the prompt one line at a time</h2>
+  <ol>
+    <li><strong>Sharpen the role.</strong> "You are a banker." → "You are a branch operations manager writing a job aid for new tellers."</li>
+    <li><strong>Add context.</strong> Audience, product, process, goal, and what has already happened.</li>
+    <li><strong>Specify format.</strong> Tell the AI exactly how to structure the answer.</li>
+    <li><strong>Add constraints.</strong> Tell the AI what not to do.</li>
+    <li><strong>Ask for options.</strong> Ask for three options when quality matters.</li>
+    <li><strong>Add review.</strong> Tell the AI who reviews the output and what they check.</li>
+  </ol>
+
+  <hr style="border:none; border-top:1px solid var(--slate-200); margin: 14pt 0;">
+
+  <div class="section-kicker">Section 15 · Prompt quality checklist</div>
+  <h2>Confirm before saving or reusing</h2>
+  <ul class="small-checklist">
+    <li>It starts with a specific role.</li>
+    <li>It gives enough context.</li>
+    <li>It defines the output format.</li>
+    <li>It states what not to do.</li>
+    <li>It uses placeholders instead of customer data.</li>
+    <li>It flags uncertain items with <code>[VERIFY]</code>.</li>
+    <li>It identifies the human reviewer.</li>
+    <li>It says whether the output is draft, reviewed, or approved.</li>
+    <li>It includes retention guidance if output will be saved.</li>
+    <li>It does not ask AI to make a final decision.</li>
+  </ul>
+</section>
+
+<!-- Section 16 + 17 -->
+<section class="page">
+  <div class="section-kicker">Section 16 · Prompt-to-skill upgrade</div>
+  <h2>A prompt becomes a skill when it is reusable, controlled, and reviewable</h2>
+
+  <div class="two-col">
+    <div class="card">
+      <h4>Prompt</h4>
+      <p>A one-time instruction.</p>
+    </div>
+    <div class="card">
+      <h4>Prompt card</h4>
+      <p>A reusable prompt pattern.</p>
+    </div>
+  </div>
+
+  <h3>Skill</h3>
+  <p>A governed reusable asset with purpose, allowed inputs, prohibited inputs, guardrails, output format, review owner, retention rule, and version history.</p>
+
+  <h3>Skill builder template</h3>
+  <table>
+    <thead><tr><th>Field</th><th>Response</th></tr></thead>
+    <tbody>
+      <tr><td>Skill name</td><td></td></tr>
+      <tr><td>Role</td><td></td></tr>
+      <tr><td>Purpose</td><td></td></tr>
+      <tr><td>Recurring task</td><td></td></tr>
+      <tr><td>Allowed inputs</td><td></td></tr>
+      <tr><td>Prohibited inputs</td><td></td></tr>
+      <tr><td>Guardrails</td><td></td></tr>
+      <tr><td>Expected output</td><td></td></tr>
+      <tr><td>Human reviewer</td><td></td></tr>
+      <tr><td>Retention rule</td><td></td></tr>
+      <tr><td>Risk tier</td><td>Green / Yellow / Red</td></tr>
+      <tr><td>Version</td><td></td></tr>
+    </tbody>
+  </table>
+
+  <hr style="border:none; border-top:1px solid var(--slate-200); margin: 14pt 0;">
+
+  <div class="section-kicker">Section 17 · The final rule</div>
+  <h2>Controlled delegation, not clever wording</h2>
+  <p>Do not ask AI to be responsible. Ask AI to be useful. The banker remains responsible for the data entered, the source checked, the output used, the customer impact, the review decision, and the retained record.</p>
+  <div class="principle">Good prompting is not clever wording. Good prompting is controlled delegation.</div>
+
+  <div class="cite">
+    Source: AiBI Foundations curriculum, Module 3 — Reusable Prompt Cards.
+  </div>
+</section>
+
+</body>
+</html>

@@ -1,12 +1,15 @@
 import Link from 'next/link';
 import { Button } from './Button';
 
+// Public marketing nav — buyer-facing destinations only.
+// Sandbox + Toolbox are product surfaces that confuse first-time visitors;
+// they live inside the signed-in experience (dashboard chrome) and as
+// references inside the course/assessment pages, not in the top nav.
 const PRIMARY_NAV: { label: string; href: string }[] = [
   { label: 'Home', href: '/' },
-  { label: 'Course', href: '/courses' },
   { label: 'Assessment', href: '/assessment' },
-  { label: 'Sandbox', href: '/playground' },
-  { label: 'Toolbox', href: '/my-toolbox' },
+  { label: 'Course', href: '/courses' },
+  { label: 'Resources', href: '/research' },
   { label: 'Teams', href: '/for-institutions' },
 ];
 
@@ -14,13 +17,13 @@ export interface SiteHeaderProps {
   /** Active route path (e.g. '/courses'). The matching nav item gets the
    * active styling. Pass `undefined` to render no active state. */
   activePath?: string;
-  /** Primary CTA in the top-right. Defaults to "Start Free" → /assessment. */
+  /** Primary CTA in the top-right. Defaults to "Get readiness score" → /assessment. */
   cta?: { label: string; href: string };
 }
 
 export function SiteHeader({
   activePath,
-  cta = { label: 'Start Free', href: '/assessment' },
+  cta = { label: 'Get readiness score', href: '/assessment' },
 }: SiteHeaderProps) {
   return (
     <header className="mk-header">
@@ -45,11 +48,7 @@ export function SiteHeader({
               <polygon points="12 2 20 7 4 7" />
             </svg>
           </span>
-          <span>
-            <span className="mk-wm-1">The AI Banking Institute</span>
-            <br />
-            <span className="mk-wm-2">Regulated Intelligence</span>
-          </span>
+          <span className="mk-wm-1">The AI Banking Institute</span>
         </Link>
 
         <nav className="mk-nav" aria-label="Primary">

@@ -1,0 +1,661 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Compliance Officer's AI-Native Playbook — The AI Banking Institute</title>
+<link rel="stylesheet" href="_brand.css">
+<style>
+  .page { padding-bottom: 0.95in; }
+  .page h2 { font-size: 20pt; }
+  .page h3 { font-size: 12pt; margin: 10pt 0 4pt; }
+  .page h4 { font-size: 10.5pt; margin: 8pt 0 4pt; }
+  .page p, .page li { font-size: 10pt; line-height: 1.55; }
+  .toc { background:#fff; border:1px solid var(--slate-200); border-radius:14pt; padding:14pt 18pt; box-shadow:var(--shadow-soft); margin: 8pt 0 14pt; }
+  .toc ol { columns: 2; column-gap: 22pt; margin: 4pt 0 0 18pt; }
+  .toc li { margin: 2pt 0; font-size: 10pt; }
+  .play-head { background: var(--ink); color:#fff; border-radius: 14pt; padding: 10pt 14pt; margin: 10pt 0 8pt; }
+  .play-head .num { font-size: 8.5pt; letter-spacing: 2px; text-transform: uppercase; color: var(--gold-soft); font-weight: 700; }
+  .play-head h2 { color:#fff; margin: 3pt 0 0; font-size: 16pt; }
+  .play-head .sub { color: #D8E0EA; font-size: 10pt; margin-top: 3pt; }
+  .principle { background: var(--cream-2); border-radius: 12pt; padding: 12pt 16pt; font-weight: 600; color: var(--ink); margin: 12pt 0; border-left: 3pt solid var(--gold); font-size: 11pt; }
+  .prompt {
+    background: var(--ink); color: #E9EEF6;
+    border-radius: 10pt; padding: 11pt 14pt; margin: 8pt 0;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 8.5pt; line-height: 1.5; white-space: pre-wrap;
+  }
+  .prompt .label { display:block; font-size:8pt; letter-spacing:1.5px; text-transform:uppercase; color:var(--gold-soft); font-weight:700; margin-bottom: 6pt; font-family: 'Inter', sans-serif; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12pt; margin: 10pt 0; }
+  .two-col .card { background: #fff; border:1px solid var(--slate-200); border-radius: 12pt; padding: 12pt 14pt; box-shadow: var(--shadow-soft); }
+  .two-col .card h4 { margin-top: 0; }
+  .two-col .card ul { margin: 4pt 0 0 16pt; }
+  .two-col .card li { font-size: 9.5pt; }
+  table { font-size: 9.5pt; }
+  th { font-size: 8.5pt; }
+  .risk-band { padding: 12pt 16pt; }
+  .risk-band h4 { font-size: 11pt; }
+  .risk-band ul { margin-left: 16pt; }
+  .risk-band li { font-size: 9.5pt; }
+  .small-checklist li { font-size: 10pt; margin: 3pt 0; list-style: none; padding-left: 18pt; position: relative; }
+  .small-checklist li::before { content: "☐"; position: absolute; left: 0; color: var(--gold-deep); font-weight: 700; }
+  .play-meta { font-size: 9pt; line-height: 1.5; margin: 10pt 0 4pt; color: var(--slate-600); border-top: 1px solid var(--slate-200); padding-top: 6pt; }
+  .play-meta strong { color: var(--ink-2); }
+</style>
+</head>
+<body>
+
+<section class="cover">
+  <div class="seal">
+    <div class="seal-mark">A</div>
+    <div class="seal-text">
+      <div class="seal-name">The AI Banking Institute</div>
+      <div class="seal-tag">Turning Bankers into Builders</div>
+    </div>
+  </div>
+  <div>
+    <div class="kicker">Role playbook · Compliance · v2.0</div>
+    <h1>The Compliance Officer's AI-Native Playbook</h1>
+    <p class="lede">From AI policy to enforceable AI governance. A practical operating playbook for compliance officers at community banks and credit unions moving from AI curiosity to controlled adoption.</p>
+  </div>
+  <div class="footer-row">
+    <div>The AI Banking Institute · 2026</div>
+    <div>AIBankingInstitute.com</div>
+  </div>
+</section>
+
+<!-- Section 1 -->
+<section class="page">
+  <div class="section-kicker">Section 1 · Executive Snapshot</div>
+  <h2>The operating principle</h2>
+  <div class="principle">Policy tells people what is allowed. Architecture, review, evidence, and cadence prove it is controlled.</div>
+  <p>The compliance officer's role is no longer only to review policies after the fact. In an AI-enabled institution, compliance helps define the approved path before AI touches customer-facing work, retained records, regulated decisions, confidential data, or examiner-facing outputs.</p>
+
+  <div class="toc">
+    <div class="section-kicker" style="margin-top:0;">What's inside</div>
+    <ol>
+      <li>Executive snapshot</li>
+      <li>The compliance landscape now</li>
+      <li>The modern AI compliance operating model</li>
+      <li>Architectural compliance</li>
+      <li>Prepare vs. decide matrix</li>
+      <li>Risk-tiering model</li>
+      <li>Five compliance plays</li>
+      <li>Compliance templates</li>
+      <li>90-day implementation plan</li>
+      <li>What success looks like</li>
+      <li>Recommended AiBI path</li>
+      <li>Final operating principle</li>
+    </ol>
+  </div>
+
+  <h3>Who this is for</h3>
+  <ul>
+    <li>Compliance Officers.</li>
+    <li>Chief Risk Officers.</li>
+    <li>Internal Audit partners.</li>
+    <li>Legal and regulatory review teams.</li>
+    <li>AI governance committee members.</li>
+    <li>Department leaders proposing AI-supported workflows.</li>
+    <li>Executives asking how to let teams use AI without losing control.</li>
+  </ul>
+
+  <h3>The core problem</h3>
+  <p>AI adoption is happening faster than governance can be written. Employees want to use AI to summarize, draft, compare, explain, research, and automate. Vendors are embedding AI into products. Business teams are experimenting before controls are fully defined. Meanwhile, existing banking obligations still apply: adverse action rules, model risk management, third-party risk management, privacy, fair lending, complaint handling, records retention, and board oversight.</p>
+  <p>The compliance risk is not simply "AI is risky." The real risk is invisible AI use: no inventory, no review path, no data boundary, no evidence, no owner, and no record of how AI-supported work became official work.</p>
+
+  <h3>The compliance opportunity</h3>
+  <p>A practical AI compliance program does not need to start as a 200-page framework. It should start with:</p>
+  <ol>
+    <li>A one-page acceptable use standard.</li>
+    <li>A living AI use-case inventory.</li>
+    <li>A risk-tiering model.</li>
+    <li>A human review standard.</li>
+    <li>A third-party AI intake question set.</li>
+    <li>An evidence packet for reviewed workflows.</li>
+    <li>A board-ready quarterly AI governance update.</li>
+  </ol>
+
+  <h3>What this playbook gives you</h3>
+  <ul>
+    <li>A modern AI compliance operating model.</li>
+    <li>Five practical compliance plays.</li>
+    <li>Copy-paste templates.</li>
+    <li>A 90-day implementation plan.</li>
+    <li>A use-case intake form.</li>
+    <li>A risk-tiering framework.</li>
+    <li>A workflow evidence packet.</li>
+    <li>Board reporting structure.</li>
+    <li>Controls for AI gateways, human review, and ongoing validation.</li>
+  </ul>
+</section>
+
+<!-- Section 2 -->
+<section class="page">
+  <div class="section-kicker">Section 2 · The compliance landscape now</div>
+  <h2>Existing rules still apply</h2>
+  <p>There may not be one single AI-specific banking rulebook that tells every community bank exactly what to do. That does not mean the field is empty. The compliance officer should map AI use to existing obligations, including:</p>
+  <ul>
+    <li>Fair lending and adverse-action requirements.</li>
+    <li>Model risk management expectations.</li>
+    <li>Third-party risk management.</li>
+    <li>Privacy and customer-data protection.</li>
+    <li>Bank Secrecy Act / AML obligations.</li>
+    <li>Complaint handling and UDAAP risk.</li>
+    <li>Records retention.</li>
+    <li>Board and management oversight.</li>
+    <li>Vendor and subcontractor risk.</li>
+  </ul>
+
+  <h3>The black-box excuse is over</h3>
+  <p>If AI is used in a credit-related workflow, the institution must still be able to explain the actual reasons behind an adverse action. A complex algorithm is not a valid reason for failing to provide specific and accurate principal reasons.</p>
+  <div class="principle">If the bank cannot explain the decision, the bank cannot safely rely on the system.</div>
+  <p>This applies especially to credit decisioning, adverse action drafting, credit risk ranking, loan pricing support, credit-line recommendations, and informal AI scoring tools used by lending teams.</p>
+
+</section>
+
+<section class="page">
+  <div class="section-kicker">Section 2 · The compliance landscape now · continued</div>
+  <h2>Global regulatory direction matters even for U.S. community banks</h2>
+  
+  <p>Even if a community bank is not directly subject to every international framework, global regulation shows where expectations are heading. Creditworthiness and credit scoring are treated as high-risk AI uses in major regulatory frameworks. Financial institutions are expected to understand AI materiality, complexity, reliance, data governance, transparency, and human oversight. AI governance is moving from ethical principles to operational controls.</p>
+  <div class="principle">The safest U.S. posture is to build explainability, human review, data governance, and evidence retention now — before a specific examiner request forces the issue.</div>
+</section>
+
+<!-- Section 3 -->
+<section class="page">
+  <div class="section-kicker">Section 3 · Operating model</div>
+  <h2>Five layers of a modern AI compliance program</h2>
+
+  <h3>Layer 1 · Policy</h3>
+  <p>Policy sets the expectation. It answers: which tools are approved, what data may be used, which workflows are prohibited, which outputs require review, who owns exceptions, and what must be retained.</p>
+
+  <h3>Layer 2 · Inventory</h3>
+  <p>Inventory shows where AI is used. It captures use case, tool, department, user role, data class, risk tier, human reviewer, approval checkpoint, review cadence, and last-reviewed date.</p>
+
+  <h3>Layer 3 · Architecture</h3>
+  <p>Architecture enforces the rules. This may include an approved AI tools list, a central AI gateway or approved access path, role-based access controls, data-loss prevention rules, prompt and output logging, input sanitization, output validation, vendor restrictions, and private or enterprise AI environments. The point is not to buy more software for its own sake — it is to prevent policies from depending entirely on memory and good intentions.</p>
+
+  <h3>Layer 4 · Human review</h3>
+  <p>Human review defines where AI stops. The institution should explicitly identify who reviews the output, what they check, what sources they compare against, what gets escalated, what becomes final, and what is retained.</p>
+
+  <h3>Layer 5 · Evidence and monitoring</h3>
+  <p>Evidence proves control. Monitoring proves the workflow remains safe over time. For higher-risk AI use, compliance should expect review logs, output sampling, exception tracking, drift monitoring where applicable, model or tool change tracking, vendor refresh cadence, board reporting, and reassessment after material changes.</p>
+</section>
+
+<!-- Section 4 -->
+<section class="page">
+  <div class="section-kicker">Section 4 · Architectural compliance</div>
+  <h2>Policy must become a control</h2>
+  <p>Written policies are necessary, but they are not enough. A policy says, "Do not paste customer data into public AI." A control helps ensure that customer data does not actually leave the approved environment.</p>
+
+  <h3>What architectural compliance means</h3>
+  <p>AI rules are embedded into the workflow, tool stack, or approval path. Examples: employees use an approved AI gateway instead of public tools; the gateway logs prompts and outputs; sensitive data patterns are blocked or flagged; tools are restricted by role and data class; high-risk workflows require approval before output is used; AI-assisted outputs are labeled as draft, reviewed, or approved; records are saved to an approved repository.</p>
+
+  <h3>Central AI gateway pattern</h3>
+  <p>A centralized AI gateway can route AI traffic through a controlled layer. Potential controls: approved model access, role-based permissions, prompt and output logging, data-loss prevention checks, token or usage limits, prohibited-data detection, human review triggers, and audit trail generation. Compliance does not need to own the gateway, but compliance should define the rules the gateway enforces.</p>
+
+  <h3>Dual-layer guardrails</h3>
+  <div class="two-col">
+    <div class="card">
+      <h4>Input guardrails — before the request reaches the model</h4>
+      <ul>
+        <li>Customer names.</li>
+        <li>Account numbers.</li>
+        <li>Social Security numbers.</li>
+        <li>Dates of birth.</li>
+        <li>Transaction-level detail.</li>
+        <li>Confidential documents.</li>
+        <li>Examiner correspondence.</li>
+        <li>Legal or compliance determinations.</li>
+        <li>Prompt-injection instructions.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Output guardrails — before the output is used</h4>
+      <ul>
+        <li>Unsupported factual claims.</li>
+        <li>Invented citations.</li>
+        <li>Customer data leakage.</li>
+        <li>Missing disclosures.</li>
+        <li>Confident but unverifiable statements.</li>
+        <li>Legal conclusions.</li>
+        <li>Credit or adverse-action reasoning.</li>
+        <li>Unapproved final decisions.</li>
+      </ul>
+    </div>
+  </div>
+
+</section>
+
+<section class="page">
+  <div class="section-kicker">Section 4 · Architectural compliance · continued</div>
+  <h2>Private AI / enterprise AI pattern</h2>
+  
+  <p>Some workflows may require enterprise, private-cloud, or on-premises AI environments. This becomes more important when the workflow involves confidential internal procedures, customer NPI, regulated workflows, vendor data, security controls, AML / fraud data, customer communication, or credit / lending workflows.</p>
+  <div class="principle">The more sensitive the data and the more consequential the output, the more controlled the environment must be.</div>
+</section>
+
+<!-- Section 5: Prepare vs Decide -->
+<section class="page">
+  <div class="section-kicker">Section 5 · Prepare vs. decide</div>
+  <h2>What AI can prepare and what humans must decide</h2>
+  <table>
+    <thead><tr><th>Workflow</th><th>AI can prepare</th><th>Human must decide</th><th>Evidence retained</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Internal guidance summary</strong></td><td>Plain-English summary, staff FAQ, training aid</td><td>Whether guidance is accurate and approved</td><td>Source, draft, reviewer, approved version</td></tr>
+      <tr><td><strong>Marketing copy</strong></td><td>Draft options, claim flags, disclosure checklist</td><td>Whether copy is approved for use</td><td>Draft, review checklist, compliance approval</td></tr>
+      <tr><td><strong>Adverse-action support</strong></td><td>Plain-language draft from human-provided principal reasons</td><td>Final reasons and final notice</td><td>File source, reviewer, final notice</td></tr>
+      <tr><td><strong>Complaint response support</strong></td><td>Draft response structure, issue summary</td><td>Final response and customer-impact decision</td><td>Complaint file, draft, reviewer, final response</td></tr>
+      <tr><td><strong>BSA / AML support</strong></td><td>Case structure, typology summary, missing-fact flags</td><td>SAR filing, investigation closure, alert disposition</td><td>Source notes, reviewer, final disposition</td></tr>
+      <tr><td><strong>Vendor AI review</strong></td><td>Intake summary, question list, contract issue flags</td><td>Vendor approval or rejection</td><td>Due diligence record, sign-off, conditions</td></tr>
+      <tr><td><strong>Board update</strong></td><td>Draft narrative and risk-tier summary</td><td>Final board report and governance decisions</td><td>Inventory, summary, board packet</td></tr>
+    </tbody>
+  </table>
+
+  <hr style="border:none; border-top:1px solid var(--slate-200); margin: 14pt 0;">
+
+  <div class="section-kicker">Section 6 · Risk-tiering model</div>
+  <h2>Three lanes for compliance AI use</h2>
+
+  <div class="risk-band green">
+    <div class="head"><div class="dot"></div><h4>Green — generally safe with public, synthetic, or non-sensitive information</h4></div>
+    <ul>
+      <li>Brainstorm training scenarios.</li>
+      <li>Summarize public regulatory guidance.</li>
+      <li>Draft internal learning aids.</li>
+      <li>Create blank templates.</li>
+      <li>Generate fictional practice cases.</li>
+    </ul>
+    <p class="note">Controls: no customer data; no confidential records; human review before distribution.</p>
+  </div>
+
+  <div class="risk-band yellow">
+    <div class="head"><div class="dot"></div><h4>Yellow — approved tool, redaction, and human review required</h4></div>
+    <ul>
+      <li>Customer-facing draft language.</li>
+      <li>Internal summaries of policies.</li>
+      <li>Procedure drafts.</li>
+      <li>Marketing campaign copy.</li>
+      <li>Complaint response drafts.</li>
+      <li>Operational checklists.</li>
+      <li>AI-assisted vendor review summaries.</li>
+    </ul>
+    <p class="note">Controls: approved tool only; data boundary documented; human reviewer identified; output labeled draft until reviewed; retention rule defined.</p>
+  </div>
+
+  <div class="risk-band red">
+    <div class="head"><div class="dot"></div><h4>Red — restricted workflow requiring formal review and controlled environment</h4></div>
+    <ul>
+      <li>Credit decisioning.</li>
+      <li>Adverse-action reasoning.</li>
+      <li>BSA / AML alert disposition.</li>
+      <li>SAR filing decisions.</li>
+      <li>Fraud investigation closure.</li>
+      <li>Customer authentication or security controls.</li>
+      <li>Legal or compliance determinations.</li>
+      <li>Model-based decisions or rankings.</li>
+    </ul>
+    <p class="note">Controls: no public AI tools; approved enterprise environment only; compliance / legal / risk review; human decision required; evidence packet retained; model-risk or vendor-risk review as applicable.</p>
+  </div>
+</section>
+
+<!-- Play 1 -->
+<section class="page">
+  <div class="section-kicker">Section 7 · Five compliance plays</div>
+  <div class="play-head">
+    <div class="num">Play 1</div>
+    <h2>Issue a one-page AI acceptable use standard</h2>
+    <div class="sub">Give every employee a plain-English expectation for AI use.</div>
+  </div>
+
+  <h3>Why it matters</h3>
+  <p>If AI appears in an exam, audit, complaint, or incident, one of the first questions will be: <strong>What does your policy say?</strong> A simple approved standard is better than a missing answer.</p>
+
+  <div class="two-col">
+    <div class="card">
+      <h4>What the standard covers</h4>
+      <ul>
+        <li>Approved tools.</li>
+        <li>Prohibited tools.</li>
+        <li>Data boundaries.</li>
+        <li>Customer data rules.</li>
+        <li>The review rule.</li>
+        <li>Risk tiers.</li>
+        <li>Escalation triggers.</li>
+        <li>Output labeling.</li>
+        <li>Retention expectations.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>What it does not need on day one</h4>
+      <ul>
+        <li>Full model-risk taxonomy.</li>
+        <li>Quantitative validation plan for every AI use.</li>
+        <li>Complete vendor inventory.</li>
+        <li>200-page AI governance framework.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="prompt"><span class="label">Copy-paste · AI Acceptable Use Standard skeleton</span>Employees may use approved AI tools for drafting, summarizing, brainstorming, structuring, and training support when the input data is allowed and the output is reviewed before use.
+
+Employees may not enter customer NPI, account information, confidential records, examiner correspondence, legal advice requests, or regulated decision information into public AI tools.
+
+Any AI output that could affect a customer, examiner, policy, control, financial decision, complaint, credit action, or retained business record must be reviewed by a qualified human before use.
+
+AI output must be labeled as draft, reviewed, or approved. Reviewed outputs must be retained according to the applicable recordkeeping procedure.
+
+When uncertain, classify the use case as higher risk and escalate to Compliance.</div>
+
+  <p class="play-meta"><strong>Artifact:</strong> one-page AI Acceptable Use Standard. <strong>Metrics:</strong> policy approved · employees notified · departments briefed · exceptions logged.</p>
+</section>
+
+<!-- Play 2 -->
+<section class="page">
+  <div class="play-head">
+    <div class="num">Play 2</div>
+    <h2>Build the AI use-case inventory</h2>
+    <div class="sub">Create a living inventory of where AI is used or proposed across the institution.</div>
+  </div>
+
+  <h3>Why it matters</h3>
+  <p>Compliance cannot govern invisible use. A simple working inventory gives compliance, risk, audit, and leadership a shared map.</p>
+
+  <h3>Inventory fields</h3>
+  <table>
+    <thead><tr><th>Field</th><th>What goes here</th></tr></thead>
+    <tbody>
+      <tr><td>Use case</td><td>Plain-English description</td></tr>
+      <tr><td>Department</td><td>Who uses it</td></tr>
+      <tr><td>Tool</td><td>Vendor, product, model, or platform</td></tr>
+      <tr><td>User role</td><td>Who enters the request</td></tr>
+      <tr><td>Data class</td><td>Public / internal / confidential / customer NPI</td></tr>
+      <tr><td>Output type</td><td>Draft / summary / decision support / communication</td></tr>
+      <tr><td>Risk tier</td><td>Green / Yellow / Red</td></tr>
+      <tr><td>Human reviewer</td><td>Who signs off</td></tr>
+      <tr><td>Approval status</td><td>Proposed / piloting / approved / retired</td></tr>
+      <tr><td>Review cadence</td><td>Monthly / quarterly / annually</td></tr>
+      <tr><td>Last reviewed</td><td>Date</td></tr>
+      <tr><td>Evidence location</td><td>Where supporting records live</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Sample rows</h3>
+  <table>
+    <thead><tr><th>Use case</th><th>Department</th><th>Tool</th><th>Data class</th><th>Tier</th><th>Reviewer</th></tr></thead>
+    <tbody>
+      <tr><td>Draft internal AI training summary</td><td>HR / Training</td><td>Approved assistant</td><td>Internal</td><td>Yellow</td><td>Training manager</td></tr>
+      <tr><td>Summarize branch FAQ themes</td><td>Retail</td><td>Approved assistant</td><td>Redacted / aggregate</td><td>Yellow</td><td>Retail ops lead</td></tr>
+      <tr><td>Draft adverse-action language</td><td>Lending</td><td>Controlled workflow only</td><td>Customer / credit</td><td>Red</td><td>Underwriter + compliance</td></tr>
+      <tr><td>Generate synthetic BSA training cases</td><td>BSA / AML</td><td>Approved assistant</td><td>Synthetic</td><td>Green</td><td>BSA officer</td></tr>
+    </tbody>
+  </table>
+
+  <p class="play-meta"><strong>Artifact:</strong> AI use-case inventory. <strong>Metrics:</strong> use cases inventoried · percentage risk-tiered · percentage with named reviewer · number retired or escalated.</p>
+</section>
+
+<!-- Play 3 -->
+<section class="page">
+  <div class="play-head">
+    <div class="num">Play 3</div>
+    <h2>Map third-party AI into TPRM</h2>
+    <div class="sub">Update third-party risk management intake so AI-enabled vendor products are identified and reviewed.</div>
+  </div>
+
+  <h3>Why it matters</h3>
+  <p>AI inside a vendor product is still third-party risk. The compliance officer should not discover AI functionality only after a vendor is live.</p>
+
+  <h3>Vendor intake questions</h3>
+  <ol>
+    <li>Does the product include AI, machine learning, generative AI, or automated decisioning functionality?</li>
+    <li>What function does the AI perform?</li>
+    <li>Is customer data processed by the AI system?</li>
+    <li>Is customer data used to train or improve models?</li>
+    <li>Where is data processed and stored?</li>
+    <li>What subprocessors are involved?</li>
+    <li>What logs are retained?</li>
+    <li>Can the institution opt out of model training?</li>
+    <li>What human review or override controls exist?</li>
+    <li>Does the AI touch credit, fraud, AML, authentication, complaints, or customer communications?</li>
+    <li>What documentation is available for model design, testing, limitations, monitoring, and incidents?</li>
+    <li>How does the vendor notify clients of material model or data-handling changes?</li>
+  </ol>
+
+  <h3>AI vendor verdict memo</h3>
+  <table>
+    <thead><tr><th>Field</th><th>Response</th></tr></thead>
+    <tbody>
+      <tr><td>Vendor / product</td><td></td></tr>
+      <tr><td>AI functionality</td><td></td></tr>
+      <tr><td>Banking function supported</td><td></td></tr>
+      <tr><td>Data classes processed</td><td></td></tr>
+      <tr><td>Customer impact</td><td></td></tr>
+      <tr><td>Regulatory area affected</td><td></td></tr>
+      <tr><td>Risk tier</td><td></td></tr>
+      <tr><td>Required controls</td><td></td></tr>
+      <tr><td>Contract issues</td><td></td></tr>
+      <tr><td><strong>Approval decision</strong></td><td>Approved / conditional / rejected</td></tr>
+      <tr><td>Review cadence</td><td></td></tr>
+      <tr><td>Owner</td><td></td></tr>
+    </tbody>
+  </table>
+
+  <p class="play-meta"><strong>Artifact:</strong> AI Vendor Review Addendum + verdict memo. <strong>Metrics:</strong> top vendors reviewed · AI functionality identified · contract gaps logged · conditional approvals tracked.</p>
+</section>
+
+<!-- Play 4 -->
+<section class="page">
+  <div class="play-head">
+    <div class="num">Play 4</div>
+    <h2>Walk the credit / adverse-action path</h2>
+    <div class="sub">Make sure any AI touching credit, denial support, customer explanation, or adverse action has documented human review.</div>
+  </div>
+
+  <h3>Why it matters</h3>
+  <p>Credit is the highest-stakes AI lane. If AI drafts or influences adverse-action language, the institution must still provide specific and accurate principal reasons based on the actual file.</p>
+
+  <div class="callout">
+    <div class="label">Red line</div>
+    <p>Do not allow an AI system to generate, send, or finalize customer-facing adverse-action language without documented human review. Do not allow informal AI scoring or ranking of credit applications without model-risk and compliance review.</p>
+  </div>
+
+  <h3>Required workflow</h3>
+  <ol>
+    <li>Human underwriter identifies principal reasons from the file.</li>
+    <li>AI may draft clearer language only from those human-provided reasons.</li>
+    <li>Human reviewer compares every sentence to the source file.</li>
+    <li>Unsupported or invented language is removed.</li>
+    <li>Final notice is approved by the authorized reviewer.</li>
+    <li>Evidence packet is retained.</li>
+  </ol>
+
+  <h3>Adverse-action AI review checklist</h3>
+  <ul class="small-checklist">
+    <li>Principal reasons came from the actual file.</li>
+    <li>AI did not introduce new reasons.</li>
+    <li>Reasons are specific and accurate.</li>
+    <li>Human reviewer re-derived the reasons.</li>
+    <li>Final language matches approved templates.</li>
+    <li>Final notice is saved with reviewer sign-off.</li>
+  </ul>
+
+  <p class="play-meta"><strong>Artifact:</strong> credit / adverse-action AI control map. <strong>Metrics:</strong> adverse-action workflows reviewed · unsupported AI phrases removed · reviewer correction rate · compliance exceptions.</p>
+</section>
+
+<!-- Play 5 -->
+<section class="page">
+  <div class="play-head">
+    <div class="num">Play 5</div>
+    <h2>Create the quarterly AI governance update</h2>
+    <div class="sub">Give the board and executive team a repeatable view of AI usage, risk, changes, and next steps.</div>
+  </div>
+
+  <h3>Why it matters</h3>
+  <p>The board does not need a technical AI lecture. It needs a clear governance rhythm.</p>
+
+  <h3>Board update structure</h3>
+  <ol>
+    <li><strong>Where AI is used.</strong> Total use cases, count by risk tier, count by department.</li>
+    <li><strong>What changed.</strong> New use cases, retired use cases, exceptions, vendor changes, incidents or near misses.</li>
+    <li><strong>What is coming.</strong> Next use case under review, training needs, policy updates, vendor reviews, risk decisions needed.</li>
+  </ol>
+
+  <h3>Board dashboard table</h3>
+  <table>
+    <thead><tr><th>Metric</th><th>Current quarter</th><th>Prior quarter</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>Total AI use cases</td><td></td><td></td><td></td></tr>
+      <tr><td>Green use cases</td><td></td><td></td><td></td></tr>
+      <tr><td>Yellow use cases</td><td></td><td></td><td></td></tr>
+      <tr><td>Red exceptions</td><td></td><td></td><td></td></tr>
+      <tr><td>Use cases with named reviewer</td><td></td><td></td><td></td></tr>
+      <tr><td>Use cases past review date</td><td></td><td></td><td></td></tr>
+      <tr><td>Vendor AI reviews completed</td><td></td><td></td><td></td></tr>
+      <tr><td>Training completions</td><td></td><td></td><td></td></tr>
+    </tbody>
+  </table>
+
+  <p class="play-meta"><strong>Artifact:</strong> Quarterly AI Governance Update. <strong>Metrics:</strong> board updates delivered · inventory completeness · review-cadence compliance · open issues closed.</p>
+</section>
+
+<!-- Section 8 templates -->
+<section class="page">
+  <div class="section-kicker">Section 8 · Compliance templates</div>
+  <h2>Four reusable artifacts</h2>
+
+  <h3>Template 1 · AI use-case intake form</h3>
+  <table>
+    <thead><tr><th>Field</th><th>Response</th></tr></thead>
+    <tbody>
+      <tr><td>Use case name</td><td></td></tr>
+      <tr><td>Department</td><td></td></tr>
+      <tr><td>Business purpose</td><td></td></tr>
+      <tr><td>Proposed tool</td><td></td></tr>
+      <tr><td>User role</td><td></td></tr>
+      <tr><td>Input data</td><td></td></tr>
+      <tr><td>Data class</td><td>Public / Internal / Confidential / Customer NPI</td></tr>
+      <tr><td>Output type</td><td>Draft / Summary / Recommendation / Decision support</td></tr>
+      <tr><td>Customer impact</td><td>Yes / No</td></tr>
+      <tr><td>Regulatory area</td><td>Credit / BSA / Fraud / Marketing / Complaints / Operations / Other</td></tr>
+      <tr><td>Risk tier</td><td>Green / Yellow / Red</td></tr>
+      <tr><td>Human reviewer</td><td></td></tr>
+      <tr><td>Approval checkpoint</td><td></td></tr>
+      <tr><td>Retention rule</td><td></td></tr>
+      <tr><td>Escalation trigger</td><td></td></tr>
+      <tr><td><strong>Approval decision</strong></td><td>Approved / Conditional / Rejected</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Template 2 · AI workflow SOP outline</h3>
+  <ol>
+    <li>Workflow name.</li>
+    <li>Business purpose.</li>
+    <li>Approved tool.</li>
+    <li>Allowed inputs.</li>
+    <li>Prohibited inputs.</li>
+    <li>AI output description.</li>
+    <li>Human reviewer.</li>
+    <li>Review standard.</li>
+    <li>Approval checkpoint.</li>
+    <li>Retention rule.</li>
+    <li>Escalation triggers.</li>
+  </ol>
+</section>
+
+<section class="page">
+  <div class="section-kicker">Section 8 · Compliance templates · continued</div>
+  <h2>Templates 3 &amp; 4</h2>
+  <h3>Template 3 · AI output review checklist</h3>
+  <ul class="small-checklist">
+    <li>Output is labeled draft, reviewed, or approved.</li>
+    <li>Source material was identified.</li>
+    <li>Numbers, dates, citations, and claims were verified.</li>
+    <li>Customer data was not entered into an unapproved tool.</li>
+    <li>Output does not make legal, credit, compliance, or regulatory determinations.</li>
+    <li>Human reviewer is authorized to approve the work.</li>
+    <li>Escalation triggers were considered.</li>
+    <li>Final version was saved in the approved location.</li>
+  </ul>
+
+  <h3>Template 4 · AI evidence packet</h3>
+  <p>For each Yellow or Red use case, retain:</p>
+  <ul class="small-checklist">
+    <li>Use-case intake form.</li>
+    <li>Tool approval status.</li>
+    <li>Data classification.</li>
+    <li>Prompt or instruction.</li>
+    <li>Source material description.</li>
+    <li>AI output.</li>
+    <li>Human reviewer.</li>
+    <li>Reviewer changes.</li>
+    <li>Final approved output.</li>
+    <li>Approval date.</li>
+    <li>Retention location.</li>
+    <li>Next review date.</li>
+  </ul>
+
+  <hr style="border:none; border-top:1px solid var(--slate-200); margin: 14pt 0;">
+
+  <div class="section-kicker">Section 9 · 90-day implementation plan</div>
+  <h2>From standing still to first quarterly cycle</h2>
+
+  <h3>Days 1 – 30 · Establish the baseline</h3>
+  <p><strong>Outcomes:</strong> one-page acceptable use standard approved; Safe AI Use Checklist distributed; Red / Yellow / Green Use Card distributed; AI use-case inventory started; first three use cases entered; Compliance and InfoSec agree on public-tool red lines.<br>
+  <strong>Artifacts:</strong> acceptable use standard · use-case inventory · data boundary guide.</p>
+
+  <h3>Days 31 – 60 · Build the review system</h3>
+  <p><strong>Outcomes:</strong> TPRM intake updated for AI functionality; top vendors reviewed for AI functionality; first Yellow use case reviewed and signed off; adverse-action workflow mapped if applicable; human review checklist adopted.<br>
+  <strong>Artifacts:</strong> AI vendor review addendum · AI workflow SOP · output review checklist · credit / adverse-action control map.</p>
+
+  <h3>Days 61 – 90 · Create the governance rhythm</h3>
+  <p><strong>Outcomes:</strong> inventory reaches at least 20 use cases or all known use cases; quarterly AI board update delivered; first reviewed workflow evidence packet completed; training plan assigned by role; exceptions and open risks documented.<br>
+  <strong>Artifacts:</strong> quarterly AI governance update · evidence packet · training path map · 90-day compliance summary.</p>
+</section>
+
+<!-- Final section -->
+<section class="page">
+  <div class="section-kicker">Section 10 · What success looks like</div>
+  <h2>Nine questions the compliance officer can answer at day 90</h2>
+  <ol>
+    <li>What does your AI policy say?</li>
+    <li>Where is AI used in the institution?</li>
+    <li>Which tools are approved?</li>
+    <li>What data is allowed?</li>
+    <li>Which workflows are Green, Yellow, and Red?</li>
+    <li>Who reviews AI output?</li>
+    <li>What evidence is retained?</li>
+    <li>What changed since last quarter?</li>
+    <li>What use case is next?</li>
+  </ol>
+
+  <div class="principle">The goal is not to eliminate AI risk. The goal is to make AI use visible, reviewed, explainable, and governed.</div>
+
+  <hr style="border:none; border-top:1px solid var(--slate-200); margin: 14pt 0;">
+
+  <div class="section-kicker">Section 11 · Recommended AiBI path</div>
+  <h2>From assessment to operating rhythm</h2>
+  <ol>
+    <li>Take the free AI Readiness Assessment.</li>
+    <li>Complete the In-Depth Assessment for compliance and department leads.</li>
+    <li>Assign the Foundation Course to high-leverage employees.</li>
+    <li>Use the Compliance Playbook to build the acceptable use standard and inventory.</li>
+    <li>Use the Skill Builder to create an AI Use-Case Intake Skill.</li>
+    <li>Use the Sandbox to practice reviewing workflows with fictional data.</li>
+    <li>Save the AI Workflow SOP and Output Review Checklist to the Toolbox.</li>
+    <li>Reassess after 90 days.</li>
+  </ol>
+
+  <hr style="border:none; border-top:1px solid var(--slate-200); margin: 14pt 0;">
+
+  <div class="section-kicker">Section 12 · Final operating principle</div>
+  <h2>Make the approved path easier than the shadow path</h2>
+  <p>Compliance does not need to stop AI adoption. Compliance needs to make the approved path easier than the shadow path. That means clear rules, approved tools, visible inventory, human review, evidence packets, board cadence, and continuous monitoring.</p>
+  <div class="principle">AI can draft. AI can summarize. AI can structure. AI can accelerate. But the institution still owns the decision, the customer impact, the retained record, and the control environment.</div>
+
+  <div class="cite">
+    Sources: ECOA / Regulation B; SR 11-7 (Federal Reserve model risk management); Interagency Third-Party Risk Management Guidance; GLBA / Regulation P; AIEOG AI Lexicon (US Treasury / FBIIC / FSSCC, February 2026); GAO-25-107197 (May 2025); AiBI Foundations curriculum.
+  </div>
+</section>
+
+</body>
+</html>

@@ -9,11 +9,16 @@
 //
 // If we later want a fully authenticated dashboard view of the same
 // data, that's a separate route that requires login — not this one.
+//
+// 2026-05-27: v3 detection added. Stored responses tagged with
+// version='v3' render against ResultsViewV3 (12-dimension content);
+// v2 / v1 / null continue to render ResultsViewV2.
 
 import { notFound } from 'next/navigation';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
 import { loadAssessmentResponse } from '@/lib/assessment/load-response';
 import { ResultsViewV2 } from '@/app/assessment/_components/ResultsViewV2';
+import { ResultsViewV3 } from '@/app/assessment/_components/ResultsViewV3';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -29,17 +34,30 @@ export default async function ResultsPage({ params }: ResultsPageProps) {
   if (!response) notFound();
 
   return (
-    <main className="min-h-screen bg-[color:var(--color-linen)] py-12 px-4">
-      <ResultsViewV2
-        score={response.score}
-        tier={response.tier}
-        tierId={response.tierId}
-        dimensionBreakdown={response.dimensionBreakdown}
-        email={response.email}
-        firstName={null}
-        institutionName={null}
-        profileId={response.profileId}
-      />
+    <main className="min-h-screen bg-[color:var(--cream)] py-12 px-4">
+      {response.version === 'v3' ? (
+        <ResultsViewV3
+          score={response.score}
+          tier={response.tier}
+          tierId={response.tierId}
+          dimensionBreakdown={response.dimensionBreakdown}
+          email={response.email}
+          firstName={null}
+          institutionName={null}
+          profileId={response.profileId}
+        />
+      ) : (
+        <ResultsViewV2
+          score={response.score}
+          tier={response.tier}
+          tierId={response.tierId}
+          dimensionBreakdown={response.dimensionBreakdown}
+          email={response.email}
+          firstName={null}
+          institutionName={null}
+          profileId={response.profileId}
+        />
+      )}
     </main>
   );
 }

@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Red / Yellow / Green AI Use Card — The AI Banking Institute</title>
+<link rel="stylesheet" href="_brand.css">
+</head>
+<body>
+
+<section class="cover">
+  <div class="seal">
+    <div class="seal-mark">A</div>
+    <div class="seal-text">
+      <div class="seal-name">The AI Banking Institute</div>
+      <div class="seal-tag">Turning Bankers into Builders</div>
+    </div>
+  </div>
+  <div>
+    <div class="kicker">Team Huddle Card · v1.0</div>
+    <h1>Red, Yellow, Green: a one-glance AI use card</h1>
+    <p class="lede">A two-page team huddle card. Print it. Tape it next to the coffee machine. Everyone in your bank should be able to classify an AI use case in under ten seconds.</p>
+  </div>
+  <div class="footer-row">
+    <div>The AI Banking Institute · 2026</div>
+    <div>AIBankingInstitute.com</div>
+  </div>
+</section>
+
+<section class="page">
+  <div class="section-kicker">Decide in ten seconds</div>
+  <h2>The three lanes</h2>
+  <p>Every use case your team brings to AI fits in one of three lanes. The lanes are not about what AI <em style="font-style:normal; font-weight:600;">can</em> do — they are about what your bank will let it do without a second pair of human eyes.</p>
+
+  <div class="risk-band green">
+    <div class="head"><div class="dot"></div><h4>Green — usually safe with no sensitive data</h4></div>
+    <ul>
+      <li>Drafting internal memos that do not name customers.</li>
+      <li>Brainstorming training scenarios and discussion questions.</li>
+      <li>Summarizing public documents — FFIEC bulletins, regulator press releases, your own published policies.</li>
+      <li>Building reusable templates with <code>[CUSTOMER]</code>, <code>[ACCOUNT TYPE]</code>, <code>[DATE]</code> placeholders.</li>
+    </ul>
+    <p class="note">Rule: if you'd be comfortable putting it on a whiteboard in the break room, it is green.</p>
+  </div>
+
+  <div class="risk-band yellow">
+    <div class="head"><div class="dot"></div><h4>Yellow — approved tool only, strip sensitive data, human review before use</h4></div>
+    <ul>
+      <li>Customer-facing draft language — emails, voicemail scripts, branch signage copy.</li>
+      <li>Internal summaries of policies or examiner correspondence.</li>
+      <li>Operational checklists and procedure drafts.</li>
+      <li>First-pass financial or risk analysis where AI is the calculator, not the decision-maker.</li>
+    </ul>
+    <p class="note">Rule: if a customer or examiner could read it, it is yellow. A qualified human signs off before it leaves the building.</p>
+  </div>
+
+  <div class="risk-band red">
+    <div class="head"><div class="dot"></div><h4>Red — do not use public AI tools</h4></div>
+    <ul>
+      <li>Customer PII, NPI, account records, balances, transaction-level data.</li>
+      <li>Credit decisions, adverse action reasoning, or anything in the ECOA / Reg B path.</li>
+      <li>Legal, regulatory, or compliance determinations.</li>
+      <li>Authentication, fraud workflows, or any record tied to a security control.</li>
+    </ul>
+    <p class="note">Rule: if a regulator would expect a documented model under SR 11-7, it does not belong in a public chat tool.</p>
+  </div>
+
+  <div class="page-footer"><div class="brand">The AI Banking Institute · Turning Bankers into Builders</div><div>Page 1 of 2</div></div>
+</section>
+
+<section class="page">
+  <div class="section-kicker">Apply it on Monday</div>
+  <h2>The review rule</h2>
+  <p>If an AI output could affect a customer, an examiner, a policy, a control, or a financial decision, a qualified human must review it before use. No exceptions.</p>
+
+  <h3>What "qualified human review" means</h3>
+  <ul>
+    <li>The reviewer has the authority to sign off on the work in its non-AI form.</li>
+    <li>The reviewer compares the AI output against a known source — your policy, your data, your written procedure — not against memory.</li>
+    <li>The reviewer flags uncertain claims with <code>[VERIFY]</code> and does not pass them downstream.</li>
+  </ul>
+
+  <h3>Three questions to ask before you paste</h3>
+  <ol>
+    <li><strong>Whose data is in this prompt?</strong> If the answer involves a real customer, escalate or strip.</li>
+    <li><strong>Who is the audience for the output?</strong> Internal-only is yellow at worst. Customer or examiner is yellow with mandatory review.</li>
+    <li><strong>What happens if the AI is confidently wrong?</strong> If the answer is "we lose a customer," "we miss a control," or "we file an inaccurate report," classify it red and use an approved internal workflow.</li>
+  </ol>
+
+  <div class="callout">
+    <div class="label">Citations</div>
+    <p>This card aligns with the AIEOG AI Lexicon definitions for AI governance, human-in-the-loop, and third-party AI risk (US Treasury / FBIIC / FSSCC, Feb 2026), and with the Federal Reserve guidance on model risk management (SR 11-7).</p>
+  </div>
+
+  <h3>When in doubt</h3>
+  <p>Classify higher. A yellow use treated like a green use is how banks end up in front of examiners. A red use treated like a yellow use is how banks end up in the press. There is no penalty for being conservative with a tool your team is still learning.</p>
+
+  <div class="page-footer"><div class="brand">AIBankingInstitute.com</div><div>Page 2 of 2</div></div>
+</section>
+
+</body>
+</html>

@@ -1,228 +1,321 @@
-// /research — The AI Banking Brief (archive)
+// /research — AI Banking Resources hub.
 //
-// 2026-05-26 rewrite: dropped the 866-line bespoke magazine-cover
-// prototype + its 1230-line stylesheet. The archive now renders as
-// a clean MockupShell-based listing of every published essay, on
-// the same design system as the rest of the marketing surface.
-// Bespoke `aibi-research` / `ticker` / `dot` classes retired.
+// 2026-05-27 rework: the page is the public downloads library. Every
+// practical artifact the Institute publishes — playbooks, cheatsheets,
+// reference cards, checklists, inline templates — is listed here.
+// The "AI Banking Brief" framing was retired on 2026-05-27; this page
+// is downloads + templates only.
 
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { MockupShell } from '@/components/mockup';
-import { listAllEssays } from '@content/essays/_lib/registry';
+import {
+  SiteHeader,
+  Section,
+  SectionHead,
+  Button,
+  EyebrowChip,
+  CtaBand,
+} from '@/components/mockup';
+import { PLAYBOOK_INDEX } from '@/app/playbooks/data';
+import { TEMPLATES } from './templates/data';
 
 export const metadata: Metadata = {
   alternates: { canonical: '/research' },
-  title: 'Research — The AI Banking Brief',
+  title: 'Resources & downloads',
   description:
-    'Sourced AI research, field notes, and practical artifacts for community banks and credit unions adopting AI safely.',
+    'Role playbooks, cheatsheets, reference cards, and starter templates for community banks and credit unions adopting AI safely.',
+  openGraph: {
+    title: 'Resources & downloads',
+    description:
+      'Role playbooks, cheatsheets, reference cards, and starter templates for community banks and credit unions adopting AI safely.',
+    url: '/research',
+    type: 'website',
+  },
+  twitter: {
+    title: 'Resources & downloads',
+    description: 'Role playbooks, cheatsheets, and starter templates.',
+  },
 };
 
-const TICKER: { kicker: string; text: string }[] = [
-  { kicker: 'FDIC', text: 'Community-bank median efficiency ratio ~65% · Q4 2024 QBP' },
-  { kicker: 'Gartner', text: '66% of banks discussing AI budget · Bank Director 2024 (via Jack Henry)' },
-  { kicker: 'Personetics', text: '84% would switch FIs for AI-driven financial insights · 2025 (via Apiture)' },
-  { kicker: 'GAO', text: 'GAO 25-107197 · no AI-specific banking framework yet · May 2025' },
-];
-
-function formatDate(iso: string): string {
-  const d = new Date(iso);
-  return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+interface DownloadItem {
+  readonly title: string;
+  readonly desc: string;
+  readonly href: string;
+  readonly meta: string;
 }
 
-export default async function ResearchArchivePage() {
-  const essays = await listAllEssays();
+const REFERENCE_CARDS: readonly DownloadItem[] = [
+  {
+    title: 'Safe AI Use Checklist',
+    desc: 'A reflex for the moment before staff paste anything into a chat tool. Strip data, ask clearly, fact-check, escalate.',
+    href: '/downloads/safe-ai-use-checklist.pdf',
+    meta: 'PDF · Staff card',
+  },
+  {
+    title: 'Red / Yellow / Green AI Use Card',
+    desc: 'Short staff-facing classification of which AI uses are safe, which need approved tools, and which to avoid.',
+    href: '/downloads/red-yellow-green-use-card.pdf',
+    meta: 'PDF · Staff card',
+  },
+  {
+    title: 'Regulatory Cheatsheet',
+    desc: 'One-page reference: SR 11-7, ECOA / Reg B, Interagency TPRM, and the AIEOG AI Lexicon.',
+    href: '/downloads/regulatory-cheatsheet.pdf',
+    meta: 'PDF · Reference',
+  },
+  {
+    title: 'Platform Feature Reference Card',
+    desc: 'Quick reference for the AI features baked into platforms your institution likely already uses.',
+    href: '/downloads/platform-feature-reference-card.pdf',
+    meta: 'PDF · Reference',
+  },
+  {
+    title: 'Prompt Strategy Cheat Sheet',
+    desc: 'A short guide to writing prompts that produce safe, on-brief, reviewable AI output.',
+    href: '/downloads/prompt-strategy-cheat-sheet.pdf',
+    meta: 'PDF · Staff card',
+  },
+];
 
+const NEW_ARTIFACTS: readonly DownloadItem[] = [
+  {
+    title: 'AI Use-Case Inventory',
+    desc: 'Register template for documenting every AI use case in your institution — purpose, data, owner, review cadence.',
+    href: '/artifacts/ai-use-case-inventory.md',
+    meta: 'Markdown · Register',
+  },
+  {
+    title: 'Data Handling Reference Card',
+    desc: 'Green / Yellow / Red staff card mapping common data types to allowed AI surfaces.',
+    href: '/artifacts/data-handling-reference-card.md',
+    meta: 'Markdown · Staff card',
+  },
+  {
+    title: 'Fair-Lending AI Review Checklist',
+    desc: 'Pre-deployment plus recurring review checklist for any AI used in lending decisions.',
+    href: '/artifacts/fair-lending-ai-review-checklist.md',
+    meta: 'Markdown · Checklist',
+  },
+];
+
+const SAMPLES: readonly DownloadItem[] = [
+  {
+    title: 'Sample Readiness Report',
+    desc: 'Example of the full PDF report buyers receive after the In-Depth Assessment — score, dimensions, role plan.',
+    href: '/downloads/sample-readiness-report.pdf',
+    meta: 'PDF · Sample',
+  },
+  {
+    title: 'In-Depth Assessment Playbook',
+    desc: 'What the $99 In-Depth Assessment covers, how to use the report, and what to bring to your AI committee.',
+    href: '/downloads/in-depth-playbook.pdf',
+    meta: 'PDF · Buyer guide',
+  },
+];
+
+export default function ResourcesHubPage() {
   return (
-    <MockupShell
-      activePath="/research"
-      eyebrow="The AI Banking Brief · sourced research"
-      title={<>What the Institute is reading. What it means for your bank.</>}
-      lede={
-        <>
-          Sourced AI research, field notes, and practical artifacts for community banks
-          and credit unions adopting AI safely. Every claim cites a named source.
-        </>
-      }
-      heroActions={[
-        { label: 'Take the assessment', href: '/assessment', variant: 'gold' },
-        { label: 'View the curriculum', href: '/education', variant: 'ghost-dark' },
-      ]}
-      heroAside={
-        <aside
-          style={{
-            background: 'rgba(255,255,255,0.06)',
-            border: '1px solid rgba(255,255,255,0.18)',
-            borderRadius: 24,
-            padding: 28,
-            color: '#fff',
-          }}
-        >
-          <p
-            style={{
-              fontSize: 12,
-              fontWeight: 700,
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
-              color: 'var(--gold-soft)',
-              margin: '0 0 16px',
-            }}
-          >
-            Sourced data, named publishers
-          </p>
-          <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-            {TICKER.map((t) => (
-              <li
-                key={t.kicker}
-                style={{
-                  padding: '12px 0',
-                  borderTop: '1px solid rgba(255,255,255,0.10)',
-                  fontSize: 13,
-                  lineHeight: 1.5,
-                  color: 'rgba(255,255,255,0.85)',
-                }}
-              >
-                <span
-                  style={{
-                    display: 'inline-block',
-                    fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
-                    fontSize: 11,
-                    letterSpacing: '0.16em',
-                    textTransform: 'uppercase',
-                    color: 'var(--gold-soft)',
-                    marginRight: 8,
-                    fontWeight: 700,
-                  }}
-                >
-                  {t.kicker}
-                </span>
-                {t.text}
-              </li>
-            ))}
-          </ul>
-        </aside>
-      }
-      sections={[
-        {
-          kicker: 'Archive',
-          heading: <>Every published essay, newest first.</>,
-          body: (
-            <div
-              style={{
-                display: 'grid',
-                gap: 20,
-                gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-                marginTop: 32,
-              }}
-            >
-              {essays.map((e) => (
-                <Link
-                  key={e.slug}
-                  href={e.href}
-                  style={{
-                    background: '#fff',
-                    border: '1px solid var(--ink-a10)',
-                    borderRadius: 16,
-                    padding: 28,
-                    textDecoration: 'none',
-                    color: 'inherit',
-                    transition: 'transform 120ms, box-shadow 120ms',
-                    display: 'flex',
-                    flexDirection: 'column',
-                  }}
-                >
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'baseline',
-                      marginBottom: 12,
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
-                        fontSize: 11,
-                        letterSpacing: '0.16em',
-                        textTransform: 'uppercase',
-                        color: 'var(--gold-deep)',
-                        fontWeight: 700,
-                      }}
-                    >
-                      {e.category}
-                    </span>
-                    <span style={{ fontSize: 12, color: 'var(--slate-500)' }}>
-                      {e.readMinutes} min read
-                    </span>
-                  </div>
-                  <h3
-                    style={{
-                      fontSize: 22,
-                      fontWeight: 600,
-                      lineHeight: 1.25,
-                      color: 'var(--ink)',
-                      margin: '0 0 12px',
-                    }}
-                  >
-                    {e.title}
-                  </h3>
-                  {e.dek && (
-                    <p
-                      style={{
-                        fontSize: 15,
-                        lineHeight: 1.55,
-                        color: 'var(--slate-600)',
-                        margin: '0 0 20px',
-                        flex: 1,
-                      }}
-                    >
-                      {e.dek}
-                    </p>
-                  )}
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      marginTop: 'auto',
-                      paddingTop: 16,
-                      borderTop: '1px solid var(--ink-a10)',
-                      fontSize: 13,
-                      color: 'var(--slate-500)',
-                    }}
-                  >
-                    <span>{formatDate(e.date)}</span>
-                    <span
-                      style={{
-                        color: 'var(--ink)',
-                        fontWeight: 600,
-                        borderBottom: '2px solid var(--gold)',
-                        paddingBottom: 2,
-                      }}
-                    >
-                      Read →
-                    </span>
-                  </div>
-                </Link>
-              ))}
+    <div className="mockup-scope">
+      <SiteHeader activePath="/research" />
+
+      {/* HERO */}
+      <section className="mk-hero">
+        <div className="mk-deco">
+          <div className="mk-deco-ring" />
+          <div className="mk-deco-blur" />
+        </div>
+        <div className="mk-container mk-hero-inner">
+          <div>
+            <EyebrowChip>Resources &middot; Free downloads</EyebrowChip>
+            <h1>Practical artifacts for community banks and credit unions.</h1>
+            <p className="mk-lede">
+              Role playbooks, cheatsheets, reference cards, and starter templates.
+              Every artifact is sourced and adaptable &mdash; bring it to your committee,
+              your auditor, and your examiner before adoption.
+            </p>
+            <div className="mk-ctas">
+              <Button variant="gold" size="lg" href="#playbooks">
+                Browse role playbooks
+              </Button>
+              <Button variant="ghost-dark" size="lg" href="#downloads">
+                Jump to downloads
+              </Button>
             </div>
-          ),
-        },
-      ]}
-      ctaBand={{
-        kicker: 'Want the Brief?',
-        heading: <>Sourced AI research, every other Friday.</>,
-        body: (
+          </div>
+        </div>
+      </section>
+
+      {/* ROLE PLAYBOOKS */}
+      <Section variant="std" surface="white">
+        <div id="playbooks" />
+        <SectionHead
+          kicker="Role playbooks"
+          heading={<>Six playbooks. One for each role that runs the bank.</>}
+          lede={
+            <>
+              Each playbook lists role-specific AI use cases, the artifacts produced,
+              the review path, and the Toolbox assets that ship with it. Open the
+              detail page to read the playbook online or download the PDF.
+            </>
+          }
+        />
+        <div className="mk-resources-grid mk-resources-3up">
+          {PLAYBOOK_INDEX.map((p) => (
+            <Link
+              key={p.slug}
+              href={`/playbooks/${p.slug}`}
+              className="mk-resource-card"
+            >
+              <div className="mk-resource-tag">Playbook</div>
+              <h3>{p.title}</h3>
+              <p>{p.desc}</p>
+              <div className="mk-resource-foot">
+                <span>By role</span>
+                <span>Open &rarr;</span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </Section>
+
+      {/* DOWNLOADS — REFERENCE CARDS */}
+      <Section variant="std">
+        <div id="downloads" />
+        <SectionHead
+          kicker="Cheatsheets &amp; reference cards"
+          heading={<>One-page references your staff can keep on their desk.</>}
+          lede={
+            <>
+              Free downloads. No email gate. Each one names a section your
+              institution should change before adopting.
+            </>
+          }
+        />
+        <div className="mk-resources-grid mk-resources-3up">
+          {REFERENCE_CARDS.map((d) => (
+            <a
+              key={d.href}
+              href={d.href}
+              download
+              className="mk-resource-card"
+            >
+              <div className="mk-resource-tag">PDF</div>
+              <h3>{d.title}</h3>
+              <p>{d.desc}</p>
+              <div className="mk-resource-foot">
+                <span>{d.meta}</span>
+                <span>Download &rarr;</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </Section>
+
+      {/* NEW ARTIFACTS (.md) */}
+      <Section variant="std" surface="white">
+        <SectionHead
+          kicker="Starter artifacts"
+          heading={<>Editable templates you can adapt today.</>}
+          lede={
+            <>
+              Markdown files you can copy into your own docs, edit, and circulate.
+              Built around sourced regulation and named guidance.
+            </>
+          }
+        />
+        <div className="mk-resources-grid mk-resources-3up">
+          {NEW_ARTIFACTS.map((d) => (
+            <a
+              key={d.href}
+              href={d.href}
+              download
+              className="mk-resource-card"
+            >
+              <div className="mk-resource-tag">Markdown</div>
+              <h3>{d.title}</h3>
+              <p>{d.desc}</p>
+              <div className="mk-resource-foot">
+                <span>{d.meta}</span>
+                <span>Download &rarr;</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </Section>
+
+      {/* INLINE TEMPLATES */}
+      <Section variant="std">
+        <SectionHead
+          kicker="Inline templates"
+          heading={<>Longer-form starter documents.</>}
+          lede={
+            <>
+              Read these on the site, then adapt for your institution. Each cites the
+              named regulation or guidance it&rsquo;s grounded in.
+            </>
+          }
+        />
+        <div className="mk-resources-grid mk-resources-2up">
+          {TEMPLATES.map((t) => (
+            <Link
+              key={t.slug}
+              href={`/research/templates/${t.slug}`}
+              className="mk-resource-card"
+            >
+              <div className="mk-resource-tag">Template</div>
+              <h3>{t.title}</h3>
+              <p>{t.dek}</p>
+              <div className="mk-resource-foot">
+                <span>{t.audience}</span>
+                <span>{t.readMinutes} min</span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </Section>
+
+      {/* SAMPLES */}
+      <Section variant="std" surface="white">
+        <SectionHead
+          kicker="See it before you buy"
+          heading={<>Sample reports and buyer guides.</>}
+        />
+        <div className="mk-resources-grid mk-resources-2up">
+          {SAMPLES.map((d) => (
+            <a
+              key={d.href}
+              href={d.href}
+              download
+              className="mk-resource-card"
+            >
+              <div className="mk-resource-tag">PDF</div>
+              <h3>{d.title}</h3>
+              <p>{d.desc}</p>
+              <div className="mk-resource-foot">
+                <span>{d.meta}</span>
+                <span>Download &rarr;</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </Section>
+
+      {/* ASSESSMENTS CTA */}
+      <CtaBand
+        kicker="Measure where you stand"
+        heading={<>Two assessments. Same scoring engine.</>}
+        body={
           <>
-            One short email. Sourced statistics, named publishers, and what each finding
-            means for community banks and credit unions. No promotional copy.
+            The free assessment gives you a tier and your top gap in three minutes.
+            The In-Depth assessment goes deep on eight dimensions and ships a
+            reviewer-ready PDF.
           </>
-        ),
-        actions: [
-          { label: 'Take the assessment', href: '/assessment', variant: 'gold' },
-          { label: 'See the curriculum', href: '/education', variant: 'ghost-dark' },
-        ],
-      }}
-    />
+        }
+        actions={[
+          { label: 'Free assessment', href: '/assessment', variant: 'gold' },
+          { label: 'In-Depth ($99)', href: '/assessment/in-depth', variant: 'ghost-dark' },
+        ]}
+      />
+    </div>
   );
 }
