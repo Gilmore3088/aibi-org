@@ -29,6 +29,23 @@ function allModulesComplete(completedModules: readonly number[]): boolean {
   return ALL_MODULES.every((m) => completedModules.includes(m));
 }
 
+const kicker = {
+  fontSize: 11,
+  fontWeight: 600,
+  letterSpacing: '0.2em',
+  textTransform: 'uppercase' as const,
+  color: 'var(--gold-deep)',
+};
+
+const statusPanel = {
+  border: '1px solid var(--ink-a10)',
+  borderLeft: '4px solid var(--gold)',
+  background: 'var(--cream-2)',
+  borderRadius: 24,
+  padding: '22px 24px',
+  boxShadow: 'var(--shadow-soft)',
+};
+
 export default async function SubmitPage() {
   const enrollment = await getEnrollment();
 
@@ -68,42 +85,26 @@ export default async function SubmitPage() {
             marginBottom: 18,
           }}
         >
-          <span
-            style={{
-              fontFamily: 'var(--ledger-mono)',
-              fontSize: 10.5,
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
-              color: 'var(--ledger-accent)',
-            }}
-          >
-            AiBI-Foundation Certification
-          </span>
-          <span style={{ flex: 1, height: 1, background: 'var(--ledger-rule)' }} />
+          <span style={kicker}>AiBI-Foundation Credential</span>
+          <span style={{ flex: 1, height: 1, background: 'var(--ink-a10)' }} />
         </div>
         <h1
           style={{
-            fontFamily: 'var(--ledger-serif)',
-            fontWeight: 500,
-            fontSize: 'clamp(40px, 5vw, 60px)',
-            lineHeight: 1.02,
-            letterSpacing: '-0.03em',
+            fontWeight: 700,
+            fontSize: 'clamp(36px, 4.6vw, 56px)',
+            lineHeight: 1.05,
+            letterSpacing: '-0.025em',
             margin: '0 0 16px',
-            color: 'var(--ledger-ink)',
+            color: 'var(--ink)',
           }}
         >
-          Work Product{' '}
-          <em style={{ color: 'var(--ledger-accent)', fontStyle: 'normal', fontWeight: 500 }}>
-            Submission.
-          </em>
+          Work product submission
         </h1>
         <p
           style={{
-            fontFamily: 'var(--ledger-serif)',
-            fontStyle: 'italic',
-            fontSize: 20,
+            fontSize: 19,
             lineHeight: 1.45,
-            color: 'var(--ledger-ink-2)',
+            color: 'var(--slate-600)',
             margin: 0,
             maxWidth: '60ch',
           }}
@@ -115,38 +116,62 @@ export default async function SubmitPage() {
       </header>
 
       <article>
-
-        {/* Module completion gate */}
         {!modulesComplete && (
-          <div className="border border-[color:var(--ledger-parch)] border-l-4 rounded-sm p-6 bg-[color:var(--ledger-paper)]"
-               style={{ borderLeftColor: 'var(--ledger-accent)' }}>
-            <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent)] mb-2">
-              Course Incomplete
-            </p>
-            <p className="font-sans text-base text-[color:var(--ledger-ink)] mb-4">
+          <div style={statusPanel}>
+            <p style={{ ...kicker, margin: '0 0 8px' }}>Course incomplete</p>
+            <p
+              style={{
+                fontSize: 16,
+                color: 'var(--ink)',
+                margin: '0 0 16px',
+                lineHeight: 1.55,
+              }}
+            >
               Complete all 12 modules before submitting your work product.
             </p>
             <a
               href="/courses/foundation/program"
-              className="inline-block px-5 py-2 border border-[color:var(--ledger-accent)] text-[color:var(--ledger-accent)] hover:bg-[color:var(--ledger-accent)] hover:text-[color:var(--ledger-bg)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-2"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                padding: '10px 18px',
+                borderRadius: 12,
+                background: 'var(--ink)',
+                color: 'var(--cream-2)',
+                fontSize: 11,
+                fontWeight: 600,
+                letterSpacing: '0.16em',
+                textTransform: 'uppercase',
+                textDecoration: 'none',
+              }}
             >
-              Return to Course
+              Return to course
             </a>
           </div>
         )}
 
-        {/* Submission status — pending or resubmitted */}
         {modulesComplete && submission &&
           (submission.review_status === 'pending' || submission.review_status === 'resubmitted') && (
-          <div className="border border-[color:var(--ledger-parch)] border-l-4 rounded-sm p-6 bg-[color:var(--ledger-paper)]"
-               style={{ borderLeftColor: 'var(--ledger-accent-2)' }}>
-            <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent-2)] mb-2">
-              Under Review
-            </p>
-            <p className="font-sans text-base text-[color:var(--ledger-ink)] mb-2">
+          <div style={statusPanel}>
+            <p style={{ ...kicker, margin: '0 0 8px' }}>Under review</p>
+            <p
+              style={{
+                fontSize: 16,
+                color: 'var(--ink)',
+                margin: '0 0 6px',
+                lineHeight: 1.55,
+              }}
+            >
               Your submission is under review.
             </p>
-            <p className="font-sans text-sm text-[color:var(--ledger-muted)]">
+            <p
+              style={{
+                fontSize: 14,
+                color: 'var(--slate-500)',
+                margin: 0,
+                lineHeight: 1.55,
+              }}
+            >
               Submitted{' '}
               {new Date(submission.submitted_at).toLocaleDateString('en-US', {
                 year: 'numeric',
@@ -158,26 +183,53 @@ export default async function SubmitPage() {
           </div>
         )}
 
-        {/* Submission status — approved */}
         {modulesComplete && submission && submission.review_status === 'approved' && (
-          <div className="border border-[color:var(--ledger-parch)] border-l-4 rounded-sm p-6 bg-[color:var(--ledger-paper)]"
-               style={{ borderLeftColor: 'var(--ledger-accent-2)' }}>
-            <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent-2)] mb-2">
+          <div
+            style={{
+              ...statusPanel,
+              borderLeftColor: 'var(--emerald-700)',
+            }}
+          >
+            <p
+              style={{
+                ...kicker,
+                color: 'var(--emerald-700)',
+                margin: '0 0 8px',
+              }}
+            >
               Approved
             </p>
-            <p className="font-sans text-base text-[color:var(--ledger-ink)] mb-4">
+            <p
+              style={{
+                fontSize: 16,
+                color: 'var(--ink)',
+                margin: '0 0 16px',
+                lineHeight: 1.55,
+              }}
+            >
               Your work product has been approved. Your AiBI-Foundation credential has been issued.
             </p>
             <a
               href="/courses/foundation/program/certificate"
-              className="inline-block px-5 py-2 bg-[color:var(--ledger-accent-2)] hover:opacity-90 text-[color:var(--ledger-bg)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-opacity focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent-2)] focus:ring-offset-2"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                padding: '10px 18px',
+                borderRadius: 12,
+                background: 'var(--emerald-700)',
+                color: 'var(--cream)',
+                fontSize: 11,
+                fontWeight: 600,
+                letterSpacing: '0.16em',
+                textTransform: 'uppercase',
+                textDecoration: 'none',
+              }}
             >
-              View Certificate
+              View certificate
             </a>
           </div>
         )}
 
-        {/* Submission form — initial or resubmission */}
         {modulesComplete && (!submission || submission.review_status === 'failed') && (
           <WorkProductForm
             enrollmentId={enrollment.id}
@@ -185,7 +237,6 @@ export default async function SubmitPage() {
             reviewFeedback={submission?.review_feedback ?? null}
           />
         )}
-
       </article>
     </CourseShellWrapper>
   );

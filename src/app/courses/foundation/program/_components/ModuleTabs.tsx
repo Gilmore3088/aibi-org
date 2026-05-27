@@ -3,6 +3,7 @@
 // ModuleTabs — three-tab layout for module content: Learn / Practice / Apply.
 // Breaks the long single-scroll module page into focused phases.
 // Tab state persists in sessionStorage so refreshing keeps the learner's place.
+// Mockup pill chrome: gold for active, slate for inactive, ink fill on hover.
 
 import { useState, useEffect, type ReactNode } from 'react';
 import { migrateStorageKey } from '@/lib/storage/migrate';
@@ -14,9 +15,9 @@ interface Tab {
 }
 
 const TABS: readonly Tab[] = [
-  { id: 'learn', label: 'Learn', sublabel: 'Read the material' },
-  { id: 'practice', label: 'Practice', sublabel: 'Try it with AI' },
-  { id: 'apply', label: 'Apply', sublabel: 'Complete activities' },
+  { id: 'learn', label: 'Learn it', sublabel: 'Read the material' },
+  { id: 'practice', label: 'Try it', sublabel: 'Try it with AI' },
+  { id: 'apply', label: 'Use it', sublabel: 'Complete activities' },
 ] as const;
 
 interface ModuleTabsProps {
@@ -29,7 +30,7 @@ interface ModuleTabsProps {
 
 export function ModuleTabs({
   moduleNumber,
-  accentColor = 'var(--ledger-accent)',
+  accentColor = 'var(--gold)',
   learnContent,
   practiceContent,
   applyContent,
@@ -37,6 +38,7 @@ export function ModuleTabs({
   const storageKey = `foundations-m${moduleNumber}-tab`;
   const legacyStorageKey = `aibi-p-m${moduleNumber}-tab`;
   const [activeTab, setActiveTab] = useState('learn');
+  const [hoverId, setHoverId] = useState<string | null>(null);
 
   // Restore tab from sessionStorage. Migrate the 2026-05-09 rename in
   // place so learners with in-flight state don't lose their tab choice.
@@ -51,7 +53,6 @@ export function ModuleTabs({
   function selectTab(tabId: string) {
     setActiveTab(tabId);
     sessionStorage.setItem(storageKey, tabId);
-    // Scroll to top of content area
     window.scrollTo({ top: 280, behavior: 'smooth' });
   }
 
@@ -62,67 +63,100 @@ export function ModuleTabs({
 
   return (
     <div>
-      {/* Tab bar */}
+      {/* Tab pill rail */}
       <div
-        className="border-b border-[color:var(--ledger-ink)]/10 mb-8"
         role="tablist"
         aria-label="Module sections"
+        style={{
+          display: 'inline-flex',
+          gap: 8,
+          padding: 6,
+          marginBottom: 32,
+          background: 'var(--cream-2)',
+          border: '1px solid var(--ink-a10)',
+          borderRadius: 999,
+        }}
       >
-        <div className="flex gap-0">
-          {visibleTabs.map((tab, idx) => {
-            const isActive = activeTab === tab.id;
-            return (
-              <button
-                key={tab.id}
-                type="button"
-                role="tab"
-                aria-selected={isActive}
-                aria-controls={`panel-${tab.id}`}
-                id={`tab-${tab.id}`}
-                onClick={() => selectTab(tab.id)}
-                className={[
-                  'flex-1 py-4 px-4 text-center transition-all duration-200 relative',
-                  'focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-t-[2px]',
-                  isActive
-                    ? 'bg-[color:var(--ledger-paper)]'
-                    : 'hover:bg-[color:var(--ledger-paper)]/50',
-                ].join(' ')}
+        {visibleTabs.map((tab, idx) => {
+          const isActive = activeTab === tab.id;
+          const isHover = hoverId === tab.id && !isActive;
+
+          const bg = isActive
+            ? accentColor
+            : isHover
+              ? 'var(--ink)'
+              : 'transparent';
+          const fg = isActive
+            ? 'var(--ink)'
+            : isHover
+              ? 'var(--cream)'
+              : 'var(--slate-600)';
+          const numFg = isActive
+            ? 'var(--ink)'
+            : isHover
+              ? 'var(--gold-soft)'
+              : 'var(--slate-400)';
+
+          return (
+            <button
+              key={tab.id}
+              type="button"
+              role="tab"
+              aria-selected={isActive}
+              aria-controls={`panel-${tab.id}`}
+              id={`tab-${tab.id}`}
+              onClick={() => selectTab(tab.id)}
+              onMouseEnter={() => setHoverId(tab.id)}
+              onMouseLeave={() => setHoverId(null)}
+              onFocus={() => setHoverId(tab.id)}
+              onBlur={() => setHoverId(null)}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 10,
+                padding: '10px 18px',
+                background: bg,
+                color: fg,
+                border: 'none',
+                borderRadius: 999,
+                cursor: 'pointer',
+                fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
+                fontSize: 12,
+                fontWeight: 600,
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                transition: 'background var(--t-fast) var(--ease), color var(--t-fast) var(--ease)',
+              }}
+            >
+              <span
                 style={{
-                  focusRingColor: accentColor,
-                } as React.CSSProperties}
+                  fontVariantNumeric: 'tabular-nums',
+                  fontWeight: 700,
+                  fontSize: 11,
+                  color: numFg,
+                }}
+                aria-hidden="true"
               >
-                <div className="flex items-center justify-center gap-2 mb-1">
-                  <span
-                    className="font-mono text-sm tabular-nums"
-                    style={{ color: isActive ? accentColor : 'var(--ledger-ink)', opacity: isActive ? 1 : 0.3 }}
-                  >
-                    {idx + 1}
-                  </span>
-                  <span
-                    className="font-serif-sc text-sm uppercase tracking-[0.12em]"
-                    style={{ color: isActive ? accentColor : 'var(--ledger-ink)', opacity: isActive ? 1 : 0.6 }}
-                  >
-                    {tab.label}
-                  </span>
-                </div>
-                <p
-                  className="font-sans text-[10px] text-[color:var(--ledger-muted)]"
-                  style={{ opacity: isActive ? 1 : 0.5 }}
-                >
-                  {tab.sublabel}
-                </p>
-                {/* Active indicator */}
-                {isActive && (
-                  <div
-                    className="absolute bottom-0 left-0 right-0 h-[2px]"
-                    style={{ backgroundColor: accentColor }}
-                  />
-                )}
-              </button>
-            );
-          })}
-        </div>
+                {String(idx + 1).padStart(2, '0')}
+              </span>
+              <span>{tab.label}</span>
+            </button>
+          );
+        })}
       </div>
+
+      {/* Active tab sublabel — small editorial line */}
+      <p
+        style={{
+          margin: '0 0 24px',
+          fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
+          fontSize: 12,
+          color: 'var(--slate-500)',
+          letterSpacing: '0.04em',
+        }}
+      >
+        {visibleTabs.find((t) => t.id === activeTab)?.sublabel}
+      </p>
 
       {/* Tab panels */}
       <div

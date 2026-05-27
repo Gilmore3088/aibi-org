@@ -13,7 +13,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
-import { CourseShellWrapper } from "@/components/lms/CourseShellWrapper";
+import { CourseShellWrapper } from '@/components/lms/CourseShellWrapper';
 import { ToolGuide } from '../_components/ToolGuide';
 import { getEnrollment } from '../_lib/getEnrollment';
 import { ALL_TOOL_GUIDES } from '@content/courses/foundation-program/tool-guides';
@@ -22,6 +22,14 @@ export const metadata: Metadata = {
   title: 'Platform Deep Dive Guides | AiBI-Foundation | The AI Banking Institute',
   description:
     'In-depth guides for the six AI platforms most relevant to community banking: ChatGPT, Claude, Microsoft Copilot, Google Gemini, NotebookLM, and Perplexity. Getting started, banking use cases, data safety, and pro tips.',
+};
+
+const kicker = {
+  fontSize: 11,
+  fontWeight: 600,
+  letterSpacing: '0.2em',
+  textTransform: 'uppercase' as const,
+  color: 'var(--gold-deep)',
 };
 
 export default async function ToolGuidesPage() {
@@ -43,44 +51,28 @@ export default async function ToolGuidesPage() {
             marginBottom: 18,
           }}
         >
-          <span
-            style={{
-              fontFamily: 'var(--ledger-mono)',
-              fontSize: 10.5,
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
-              color: 'var(--ledger-accent)',
-            }}
-          >
-            Deep Dive · Platform Reference
-          </span>
-          <span style={{ flex: 1, height: 1, background: 'var(--ledger-rule)' }} />
+          <span style={kicker}>Deep dive · Platform reference</span>
+          <span style={{ flex: 1, height: 1, background: 'var(--ink-a10)' }} />
         </div>
 
         <h1
           style={{
-            fontFamily: 'var(--ledger-serif)',
-            fontWeight: 500,
-            fontSize: 'clamp(40px, 5vw, 60px)',
-            lineHeight: 1.02,
-            letterSpacing: '-0.03em',
+            fontWeight: 700,
+            fontSize: 'clamp(36px, 4.6vw, 56px)',
+            lineHeight: 1.05,
+            letterSpacing: '-0.025em',
             margin: '0 0 16px',
-            color: 'var(--ledger-ink)',
+            color: 'var(--ink)',
           }}
         >
-          Platform Deep Dive{' '}
-          <em style={{ color: 'var(--ledger-accent)', fontStyle: 'normal', fontWeight: 500 }}>
-            Guides.
-          </em>
+          Platform deep-dive guides
         </h1>
 
         <p
           style={{
-            fontFamily: 'var(--ledger-serif)',
-            fontStyle: 'italic',
-            fontSize: 20,
+            fontSize: 19,
             lineHeight: 1.45,
-            color: 'var(--ledger-ink-2)',
+            color: 'var(--slate-600)',
             margin: '0 0 12px',
             maxWidth: '60ch',
           }}
@@ -89,8 +81,8 @@ export default async function ToolGuidesPage() {
         </p>
         <p
           style={{
-            color: 'var(--ledger-slate)',
-            fontSize: 14.5,
+            color: 'var(--slate-600)',
+            fontSize: 15,
             lineHeight: 1.6,
             margin: 0,
             maxWidth: '64ch',
@@ -107,18 +99,45 @@ export default async function ToolGuidesPage() {
 
       {/* Platform jump navigation */}
       <nav
-        className="flex flex-wrap gap-2 mb-10 p-4 bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-parch)] rounded-sm"
         aria-label="Jump to platform"
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: 8,
+          marginBottom: 40,
+          padding: 16,
+          background: 'var(--cream-2)',
+          border: '1px solid var(--ink-a10)',
+          borderRadius: 16,
+        }}
       >
-        <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] self-center mr-2">
+        <span
+          style={{
+            ...kicker,
+            alignSelf: 'center',
+            marginRight: 6,
+            color: 'var(--slate-500)',
+          }}
+        >
           Jump to:
         </span>
         {ALL_TOOL_GUIDES.map((g) => (
           <a
             key={g.platformId}
             href={`#guide-${g.platformId}`}
-            className="inline-flex items-center px-3 py-1.5 text-[10px] font-mono uppercase tracking-widest rounded-sm text-[color:var(--ledger-bg)] transition-opacity hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-1"
-            style={{ backgroundColor: g.colorVar }}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              padding: '6px 12px',
+              fontSize: 11,
+              fontWeight: 600,
+              letterSpacing: '0.14em',
+              textTransform: 'uppercase',
+              borderRadius: 999,
+              background: 'var(--ink)',
+              color: 'var(--cream-2)',
+              textDecoration: 'none',
+            }}
           >
             {g.platformLabel}
           </a>
@@ -126,24 +145,40 @@ export default async function ToolGuidesPage() {
       </nav>
 
       {/* Guide sections — one per platform from ALL_TOOL_GUIDES */}
-      <div className="space-y-16">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 64 }}>
         {ALL_TOOL_GUIDES.map((guide) => (
           <section
             key={guide.platformId}
             id={`guide-${guide.platformId}`}
             aria-labelledby={`heading-${guide.platformId}`}
           >
-            <div className="flex items-center gap-4 mb-5">
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 14,
+                marginBottom: 20,
+              }}
+            >
               <h2
                 id={`heading-${guide.platformId}`}
-                className="font-serif text-2xl font-bold text-[color:var(--ledger-ink)]"
+                style={{
+                  fontWeight: 700,
+                  fontSize: 26,
+                  letterSpacing: '-0.02em',
+                  color: 'var(--ink)',
+                  margin: 0,
+                }}
               >
                 {guide.platformLabel}
               </h2>
               <div
-                className="flex-1 h-px"
-                style={{ backgroundColor: guide.colorVar, opacity: 0.3 }}
                 aria-hidden="true"
+                style={{
+                  flex: 1,
+                  height: 1,
+                  background: 'var(--ink-a10)',
+                }}
               />
             </div>
             <ToolGuide guide={guide} />
@@ -152,13 +187,39 @@ export default async function ToolGuidesPage() {
       </div>
 
       {/* Footer guidance */}
-      <footer className="mt-16 pt-8 border-t border-[color:var(--ledger-parch)]">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+      <footer
+        style={{
+          marginTop: 64,
+          paddingTop: 32,
+          borderTop: '1px solid var(--ink-a10)',
+        }}
+      >
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+            gap: 32,
+          }}
+        >
           <div>
-            <h2 className="font-serif text-lg font-bold text-[color:var(--ledger-ink)] mb-2">
+            <h2
+              style={{
+                fontWeight: 700,
+                fontSize: 18,
+                color: 'var(--ink)',
+                margin: '0 0 8px',
+              }}
+            >
               How to use these guides
             </h2>
-            <p className="font-sans text-sm text-[color:var(--ledger-ink)]/80 leading-relaxed">
+            <p
+              style={{
+                fontSize: 14,
+                color: 'var(--slate-600)',
+                lineHeight: 1.6,
+                margin: 0,
+              }}
+            >
               Open the section that matches your immediate need. Copy a prompt
               directly from any use case box and paste it into the platform.
               Start with the Free tier where available — every platform offers
@@ -166,34 +227,36 @@ export default async function ToolGuidesPage() {
             </p>
           </div>
           <div>
-            <h2 className="font-serif text-lg font-bold text-[color:var(--ledger-ink)] mb-2">
+            <h2
+              style={{
+                fontWeight: 700,
+                fontSize: 18,
+                color: 'var(--ink)',
+                margin: '0 0 8px',
+              }}
+            >
               Related course content
             </h2>
-            <ul className="space-y-2">
-              <li>
-                <Link
-                  href="/courses/foundation/program/3"
-                  className="font-sans text-sm text-[color:var(--ledger-accent)] hover:underline underline-offset-2 focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-1 rounded-sm"
-                >
-                  Module 3 — What You Already Have + Activation
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/courses/foundation/program/4"
-                  className="font-sans text-sm text-[color:var(--ledger-accent)] hover:underline underline-offset-2 focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-1 rounded-sm"
-                >
-                  Module 4 — Platform Features Deep Dive
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/dashboard/toolbox/library"
-                  className="font-sans text-sm text-[color:var(--ledger-accent)] hover:underline underline-offset-2 focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-1 rounded-sm"
-                >
-                  Toolbox Library
-                </Link>
-              </li>
+            <ul style={{ listStyle: 'none', margin: 0, padding: 0 }}>
+              {[
+                { href: '/courses/foundation/program/3', label: 'Module 3 — What You Already Have + Activation' },
+                { href: '/courses/foundation/program/4', label: 'Module 4 — Platform Features Deep Dive' },
+                { href: '/dashboard/toolbox/library', label: 'Toolbox Library' },
+              ].map((item) => (
+                <li key={item.href} style={{ marginBottom: 8 }}>
+                  <Link
+                    href={item.href}
+                    style={{
+                      fontSize: 14,
+                      color: 'var(--gold-deep)',
+                      textDecoration: 'underline',
+                      textUnderlineOffset: 2,
+                    }}
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
         </div>

@@ -4,9 +4,9 @@
 // modules 3 (first AI tries) and 7 (skill anatomy) to surface the
 // curated M3_TUTORIALS and M7_TUTORIALS arrays from prompt-library.ts.
 //
-// Renders each tutorial as an accordion-style <details> block with
-// numbered steps, the recommended prompt, and a "what went well /
-// what to watch for" reflection.
+// Mockup chrome: cream surface, ink type, gold-deep eyebrows, slate
+// metadata. Each tutorial leads with its artifact — the prompt the
+// learner will run.
 
 import type { MiniTutorial } from '@content/courses/foundation-program/prompt-library';
 
@@ -27,6 +27,26 @@ const PLATFORM_LABEL: Record<string, string> = {
   perplexity: 'Perplexity',
 };
 
+const fontStack = 'Inter, ui-sans-serif, system-ui, sans-serif';
+
+const eyebrow: React.CSSProperties = {
+  fontFamily: fontStack,
+  fontSize: 10,
+  fontWeight: 700,
+  letterSpacing: '0.20em',
+  textTransform: 'uppercase',
+  color: 'var(--gold-deep)',
+};
+
+const metaLabel: React.CSSProperties = {
+  fontFamily: fontStack,
+  fontSize: 10,
+  fontWeight: 600,
+  letterSpacing: '0.16em',
+  textTransform: 'uppercase',
+  color: 'var(--slate-500)',
+};
+
 export function MiniTutorialList({
   tutorials,
   heading = 'Platform tutorials',
@@ -35,37 +55,20 @@ export function MiniTutorialList({
   if (tutorials.length === 0) return null;
 
   return (
-    <section style={{ marginTop: 32 }}>
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 14,
-          marginBottom: 14,
-        }}
-      >
-        <span
-          style={{
-            fontFamily: 'var(--ledger-mono)',
-            fontSize: 10,
-            letterSpacing: '0.18em',
-            textTransform: 'uppercase',
-            color: 'var(--ledger-muted)',
-          }}
-        >
-          Step-by-step
-        </span>
-        <span style={{ flex: 1, height: 1, background: 'var(--ledger-rule)' }} />
+    <section style={{ marginTop: 40 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 14 }}>
+        <span style={{ ...eyebrow, color: 'var(--slate-500)' }}>Step-by-step</span>
+        <span style={{ flex: 1, height: 1, background: 'var(--ink-a10)' }} />
       </div>
 
       <h3
         style={{
-          fontFamily: 'var(--ledger-serif)',
-          fontWeight: 500,
-          fontSize: 24,
+          fontFamily: fontStack,
+          fontWeight: 700,
+          fontSize: 26,
           letterSpacing: '-0.02em',
-          margin: '0 0 8px',
-          color: 'var(--ledger-ink)',
+          color: 'var(--ink)',
+          margin: '0 0 10px',
         }}
       >
         {heading}
@@ -74,10 +77,11 @@ export function MiniTutorialList({
       {intro && (
         <p
           style={{
-            color: 'var(--ledger-slate)',
-            fontSize: 14,
+            fontFamily: fontStack,
+            color: 'var(--slate-600)',
+            fontSize: 15,
             lineHeight: 1.6,
-            margin: '0 0 20px',
+            margin: '0 0 24px',
             maxWidth: '64ch',
           }}
         >
@@ -90,20 +94,22 @@ export function MiniTutorialList({
           <details
             key={tutorial.id}
             style={{
-              border: '1px solid var(--ledger-rule)',
-              borderRadius: 3,
-              background: 'var(--ledger-paper)',
+              border: '1px solid var(--ink-a10)',
+              borderRadius: 16,
+              background: 'var(--cream)',
+              boxShadow: 'var(--shadow-soft)',
               padding: 0,
+              overflow: 'hidden',
             }}
           >
             <summary
               style={{
                 cursor: 'pointer',
-                padding: '14px 18px',
-                fontFamily: 'var(--ledger-sans)',
-                fontSize: 14,
-                fontWeight: 500,
-                color: 'var(--ledger-ink)',
+                padding: '16px 20px',
+                fontFamily: fontStack,
+                fontSize: 15,
+                fontWeight: 600,
+                color: 'var(--ink)',
                 listStyle: 'none',
                 display: 'flex',
                 alignItems: 'center',
@@ -113,58 +119,53 @@ export function MiniTutorialList({
             >
               <span
                 style={{
-                  fontFamily: 'var(--ledger-mono)',
-                  fontSize: 9.5,
-                  letterSpacing: '0.16em',
-                  textTransform: 'uppercase',
-                  color: 'var(--ledger-muted)',
-                  padding: '2px 6px',
-                  background: 'var(--ledger-parch)',
-                  borderRadius: 2,
+                  ...metaLabel,
+                  padding: '4px 10px',
+                  background: 'var(--cream-2)',
+                  border: '1px solid var(--ink-a10)',
+                  borderRadius: 999,
+                  color: 'var(--slate-600)',
                 }}
               >
                 {PLATFORM_LABEL[tutorial.platform] ?? tutorial.platform}
               </span>
               <span style={{ flex: 1 }}>{tutorial.title}</span>
-              <span
-                style={{
-                  fontFamily: 'var(--ledger-mono)',
-                  fontSize: 10,
-                  color: 'var(--ledger-muted)',
-                }}
-              >
-                {tutorial.timeEstimate}
-              </span>
+              <span style={metaLabel}>{tutorial.timeEstimate}</span>
             </summary>
 
-            <div style={{ padding: '0 18px 18px', borderTop: '1px solid var(--ledger-rule)' }}>
+            <div
+              style={{
+                padding: '0 22px 22px',
+                borderTop: '1px solid var(--ink-a10)',
+              }}
+            >
               <p
                 style={{
-                  color: 'var(--ledger-ink-2)',
-                  fontSize: 14,
+                  fontFamily: fontStack,
+                  color: 'var(--ink)',
+                  fontSize: 15,
                   lineHeight: 1.65,
-                  margin: '16px 0 20px',
+                  margin: '18px 0 22px',
                 }}
               >
                 {tutorial.introduction}
               </p>
 
-              <ol style={{ paddingLeft: 20, margin: '0 0 20px' }}>
+              <ol style={{ paddingLeft: 20, margin: '0 0 22px' }}>
                 {tutorial.steps.map((step) => (
                   <li
                     key={step.stepNumber}
                     style={{
                       marginBottom: 14,
+                      fontFamily: fontStack,
                       fontSize: 14,
                       lineHeight: 1.6,
-                      color: 'var(--ledger-ink-2)',
+                      color: 'var(--ink)',
                     }}
                   >
-                    <div style={{ fontWeight: 500, color: 'var(--ledger-ink)' }}>
-                      {step.instruction}
-                    </div>
+                    <div style={{ fontWeight: 600 }}>{step.instruction}</div>
                     {step.detail && (
-                      <div style={{ marginTop: 4, color: 'var(--ledger-slate)' }}>
+                      <div style={{ marginTop: 4, color: 'var(--slate-600)' }}>
                         {step.detail}
                       </div>
                     )}
@@ -174,31 +175,29 @@ export function MiniTutorialList({
 
               <div
                 style={{
-                  background: 'var(--ledger-parch)',
-                  border: '1px solid var(--ledger-rule)',
-                  borderRadius: 3,
-                  padding: 14,
-                  marginBottom: 16,
+                  background: 'var(--ink)',
+                  border: '1px solid var(--ink)',
+                  borderRadius: 12,
+                  padding: 16,
+                  marginBottom: 18,
                 }}
               >
                 <div
                   style={{
-                    fontFamily: 'var(--ledger-mono)',
-                    fontSize: 10,
-                    letterSpacing: '0.16em',
-                    textTransform: 'uppercase',
-                    color: 'var(--ledger-muted)',
-                    marginBottom: 8,
+                    ...eyebrow,
+                    color: 'var(--gold-soft)',
+                    marginBottom: 10,
                   }}
                 >
                   Prompt to use
                 </div>
                 <pre
                   style={{
-                    fontFamily: 'var(--ledger-mono)',
-                    fontSize: 12,
-                    lineHeight: 1.55,
-                    color: 'var(--ledger-ink)',
+                    fontFamily:
+                      'ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace',
+                    fontSize: 13,
+                    lineHeight: 1.6,
+                    color: 'var(--cream)',
                     whiteSpace: 'pre-wrap',
                     margin: 0,
                   }}
@@ -210,28 +209,18 @@ export function MiniTutorialList({
               <div
                 style={{
                   display: 'grid',
-                  gridTemplateColumns: '1fr 1fr',
-                  gap: 14,
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+                  gap: 16,
                 }}
               >
                 <div>
-                  <div
-                    style={{
-                      fontFamily: 'var(--ledger-mono)',
-                      fontSize: 10,
-                      letterSpacing: '0.16em',
-                      textTransform: 'uppercase',
-                      color: 'var(--ledger-muted)',
-                      marginBottom: 6,
-                    }}
-                  >
-                    What went well
-                  </div>
+                  <div style={{ ...metaLabel, marginBottom: 6 }}>What went well</div>
                   <p
                     style={{
-                      fontSize: 13,
-                      lineHeight: 1.55,
-                      color: 'var(--ledger-ink-2)',
+                      fontFamily: fontStack,
+                      fontSize: 14,
+                      lineHeight: 1.6,
+                      color: 'var(--ink)',
                       margin: 0,
                     }}
                   >
@@ -239,23 +228,13 @@ export function MiniTutorialList({
                   </p>
                 </div>
                 <div>
-                  <div
-                    style={{
-                      fontFamily: 'var(--ledger-mono)',
-                      fontSize: 10,
-                      letterSpacing: '0.16em',
-                      textTransform: 'uppercase',
-                      color: 'var(--ledger-muted)',
-                      marginBottom: 6,
-                    }}
-                  >
-                    What to watch for
-                  </div>
+                  <div style={{ ...metaLabel, marginBottom: 6 }}>What to watch for</div>
                   <p
                     style={{
-                      fontSize: 13,
-                      lineHeight: 1.55,
-                      color: 'var(--ledger-ink-2)',
+                      fontFamily: fontStack,
+                      fontSize: 14,
+                      lineHeight: 1.6,
+                      color: 'var(--ink)',
                       margin: 0,
                     }}
                   >

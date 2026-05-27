@@ -8,15 +8,16 @@
 //   3. My Subscription Inventory — M2 survey results
 //   4. What I Automated — M9 capstone summary
 //
-// Design: parchment background, Cormorant headings, card layout per section.
+// Design: mockup system (cream surface, ink primary, gold accent).
 // WCAG 2.1 AA; no hardcoded hex — CSS variables only.
 
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
+import type { CSSProperties } from 'react';
 import { getEnrollment } from '../_lib/getEnrollment';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
-import { CourseShellWrapper } from "@/components/lms/CourseShellWrapper";
+import { CourseShellWrapper } from '@/components/lms/CourseShellWrapper';
 import { DownloadSkillButton } from './DownloadSkillButton';
 import { DownloadReportButton } from './DownloadReportButton';
 import {
@@ -155,33 +156,90 @@ const DEV_ACTIVITY_RESPONSES: Record<string, Record<string, string>> = {
   },
 };
 
+// ---- Shared styles ----
+
+const kickerStyle: CSSProperties = {
+  fontSize: 11,
+  fontWeight: 600,
+  letterSpacing: '0.2em',
+  textTransform: 'uppercase',
+  color: 'var(--gold-deep)',
+  margin: 0,
+};
+
+const sectionCardStyle: CSSProperties = {
+  background: 'var(--cream-2)',
+  border: '1px solid var(--ink-a10)',
+  borderRadius: 24,
+  padding: 28,
+  marginBottom: 24,
+  boxShadow: 'var(--shadow-soft)',
+};
+
+const itemCardStyle: CSSProperties = {
+  border: '1px solid var(--ink-a10)',
+  borderRadius: 16,
+  padding: 18,
+  background: 'var(--cream)',
+};
+
+const ghostLinkStyle: CSSProperties = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: 6,
+  padding: '8px 14px',
+  border: '1px solid var(--ink-a10)',
+  color: 'var(--slate-500)',
+  fontSize: 11,
+  fontWeight: 600,
+  letterSpacing: '0.16em',
+  textTransform: 'uppercase',
+  borderRadius: 12,
+  textDecoration: 'none',
+};
+
+const accentLinkStyle: CSSProperties = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: 6,
+  padding: '8px 14px',
+  border: '1px solid var(--gold)',
+  color: 'var(--gold-deep)',
+  fontSize: 11,
+  fontWeight: 600,
+  letterSpacing: '0.16em',
+  textTransform: 'uppercase',
+  borderRadius: 12,
+  textDecoration: 'none',
+};
+
 // ---- Section card wrapper ----
 
 function SectionCard({
   title,
   label,
-  labelColor,
   children,
 }: {
   readonly title: string;
   readonly label: string;
-  readonly labelColor: string;
   readonly children: React.ReactNode;
 }) {
+  const slug = label.replace(/\s+/g, '-').toLowerCase();
   return (
     <section
-      className="bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-parch)] rounded-sm p-6 mb-6"
-      aria-labelledby={`section-${label.replace(/\s+/g, '-').toLowerCase()}`}
+      style={sectionCardStyle}
+      aria-labelledby={`section-${slug}`}
     >
-      <p
-        className="font-mono text-[10px] uppercase tracking-widest mb-1"
-        style={{ color: labelColor }}
-      >
-        {label}
-      </p>
+      <p style={{ ...kickerStyle, marginBottom: 4 }}>{label}</p>
       <h2
-        id={`section-${label.replace(/\s+/g, '-').toLowerCase()}`}
-        className="font-serif text-2xl font-bold text-[color:var(--ledger-ink)] mb-5"
+        id={`section-${slug}`}
+        style={{
+          fontWeight: 700,
+          fontSize: 24,
+          letterSpacing: '-0.02em',
+          color: 'var(--ink)',
+          margin: '0 0 20px',
+        }}
       >
         {title}
       </h2>
@@ -194,7 +252,9 @@ function SectionCard({
 
 function EmptyState({ message }: { readonly message: string }) {
   return (
-    <p className="font-sans text-sm text-[color:var(--ledger-muted)]">{message}</p>
+    <p style={{ fontSize: 14, color: 'var(--slate-500)', margin: 0 }}>
+      {message}
+    </p>
   );
 }
 
@@ -207,7 +267,6 @@ export default async function ToolkitPage() {
     redirect('/courses/foundation/program/purchase');
   }
 
-  // Fetch activity responses — all modules in a single query
   const activityResponses: Record<string, Record<string, string>> = {};
 
   if (isSupabaseConfigured()) {
@@ -223,7 +282,6 @@ export default async function ToolkitPage() {
       }
     }
   } else {
-    // Dev mode — use placeholder data
     Object.assign(activityResponses, DEV_ACTIVITY_RESPONSES);
   }
 
@@ -242,12 +300,7 @@ export default async function ToolkitPage() {
     m7SkillMd && m8Response ? generateIteratedMarkdown(m7SkillMd, m8Response) : null;
   const m8Filename = m8IteratedMd ? buildIteratedFilename(m7SkillMd ?? '') : 'Banking-AI-Skill-v1.1.md';
 
-  // Subscription inventory
   const inventoryResponse = activityResponses['2.1'];
-
-  // Capstone data from work_submissions (read separately if Supabase is configured)
-  // For simplicity, surface M9 capstone data from the work_submissions annotation
-  // In dev mode this is shown as a summary derived from DEV placeholders.
 
   const completedModules = enrollment.completed_modules;
   const m7Complete = completedModules.includes(7);
@@ -264,42 +317,26 @@ export default async function ToolkitPage() {
             marginBottom: 18,
           }}
         >
-          <span
-            style={{
-              fontFamily: 'var(--ledger-mono)',
-              fontSize: 10.5,
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
-              color: 'var(--ledger-accent)',
-            }}
-          >
-            AiBI-Foundation · Accumulated Assets
-          </span>
-          <span style={{ flex: 1, height: 1, background: 'var(--ledger-rule)' }} />
+          <span style={kickerStyle}>AiBI-Foundation · Accumulated assets</span>
+          <span style={{ flex: 1, height: 1, background: 'var(--ink-a10)' }} />
         </div>
         <h1
           style={{
-            fontFamily: 'var(--ledger-serif)',
-            fontWeight: 500,
-            fontSize: 'clamp(40px, 5vw, 60px)',
-            lineHeight: 1.02,
-            letterSpacing: '-0.03em',
+            fontWeight: 700,
+            fontSize: 'clamp(36px, 4.6vw, 56px)',
+            lineHeight: 1.05,
+            letterSpacing: '-0.025em',
             margin: '0 0 16px',
-            color: 'var(--ledger-ink)',
+            color: 'var(--ink)',
           }}
         >
-          My{' '}
-          <em style={{ color: 'var(--ledger-accent)', fontStyle: 'normal', fontWeight: 500 }}>
-            AI Toolkit.
-          </em>
+          My AI toolkit
         </h1>
         <p
           style={{
-            fontFamily: 'var(--ledger-serif)',
-            fontStyle: 'italic',
-            fontSize: 20,
+            fontSize: 19,
             lineHeight: 1.45,
-            color: 'var(--ledger-ink-2)',
+            color: 'var(--slate-600)',
             margin: 0,
             maxWidth: '60ch',
           }}
@@ -310,19 +347,32 @@ export default async function ToolkitPage() {
       </header>
 
       <article>
-
         {/* 1 — My Skills */}
-        <SectionCard title="My Skills" label="Skills" labelColor="var(--ledger-accent)">
-          <div className="space-y-4">
-
+        <SectionCard title="My skills" label="Skills">
+          <div style={{ display: 'grid', gap: 14 }}>
             {/* M7 skill */}
-            <div className="border border-[color:var(--ledger-parch)] rounded-sm p-4 bg-white/30">
-              <div className="flex items-start justify-between gap-4 flex-wrap">
-                <div className="flex-1 min-w-0">
-                  <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent)] mb-1">
-                    Module 7 — My First Skill
+            <div style={itemCardStyle}>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  justifyContent: 'space-between',
+                  gap: 16,
+                  flexWrap: 'wrap',
+                }}
+              >
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <p style={{ ...kickerStyle, marginBottom: 4 }}>
+                    Module 7 — My first skill
                   </p>
-                  <p className="font-sans text-sm font-semibold text-[color:var(--ledger-ink)] mb-1">
+                  <p
+                    style={{
+                      fontSize: 15,
+                      fontWeight: 600,
+                      color: 'var(--ink)',
+                      margin: '0 0 4px',
+                    }}
+                  >
                     {m7SkillMd
                       ? (() => {
                           const match = /^# (.+?) - v1/m.exec(m7SkillMd);
@@ -330,7 +380,7 @@ export default async function ToolkitPage() {
                         })()
                       : 'Banking AI Skill v1.0'}
                   </p>
-                  <p className="font-sans text-xs text-[color:var(--ledger-muted)]">
+                  <p style={{ fontSize: 13, color: 'var(--slate-500)', margin: 0 }}>
                     {m7SkillMd
                       ? 'Five-component RTFC skill built during Module 7. Ready to paste into ChatGPT, Claude, or Gemini.'
                       : m7Complete
@@ -347,7 +397,7 @@ export default async function ToolkitPage() {
                 ) : (
                   <Link
                     href="/courses/foundation/program/7"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[color:var(--ledger-parch)] text-[color:var(--ledger-muted)] text-[10px] font-mono uppercase tracking-widest rounded-sm"
+                    style={ghostLinkStyle}
                     aria-label="Go to Module 7 to build your skill"
                   >
                     Go to Module 7
@@ -357,13 +407,28 @@ export default async function ToolkitPage() {
             </div>
 
             {/* M8 iterated skill */}
-            <div className="border border-[color:var(--ledger-parch)] rounded-sm p-4 bg-white/30">
-              <div className="flex items-start justify-between gap-4 flex-wrap">
-                <div className="flex-1 min-w-0">
-                  <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent)] mb-1">
-                    Module 8 — Iterated Skill
+            <div style={itemCardStyle}>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  justifyContent: 'space-between',
+                  gap: 16,
+                  flexWrap: 'wrap',
+                }}
+              >
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <p style={{ ...kickerStyle, marginBottom: 4 }}>
+                    Module 8 — Iterated skill
                   </p>
-                  <p className="font-sans text-sm font-semibold text-[color:var(--ledger-ink)] mb-1">
+                  <p
+                    style={{
+                      fontSize: 15,
+                      fontWeight: 600,
+                      color: 'var(--ink)',
+                      margin: '0 0 4px',
+                    }}
+                  >
                     {m8IteratedMd
                       ? (() => {
                           const match = /^# (.+?) - v1/m.exec(m7SkillMd ?? '');
@@ -371,7 +436,7 @@ export default async function ToolkitPage() {
                         })()
                       : 'Banking AI Skill v1.1'}
                   </p>
-                  <p className="font-sans text-xs text-[color:var(--ledger-muted)]">
+                  <p style={{ fontSize: 13, color: 'var(--slate-500)', margin: 0 }}>
                     {m8IteratedMd
                       ? 'Stress-tested and revised version of your Module 7 skill with iteration log embedded.'
                       : m8Complete
@@ -379,8 +444,15 @@ export default async function ToolkitPage() {
                         : 'Complete Module 8 to test and iterate your skill.'}
                   </p>
                   {m8Response?.['revision-notes'] && (
-                    <p className="font-sans text-xs text-[color:var(--ledger-ink)] mt-2 leading-relaxed">
-                      <span className="font-semibold">Revision notes: </span>
+                    <p
+                      style={{
+                        fontSize: 13,
+                        color: 'var(--ink)',
+                        marginTop: 8,
+                        lineHeight: 1.55,
+                      }}
+                    >
+                      <span style={{ fontWeight: 600 }}>Revision notes: </span>
                       {m8Response['revision-notes'].slice(0, 160)}
                       {m8Response['revision-notes'].length > 160 ? '…' : ''}
                     </p>
@@ -395,7 +467,7 @@ export default async function ToolkitPage() {
                 ) : (
                   <Link
                     href="/courses/foundation/program/8"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[color:var(--ledger-parch)] text-[color:var(--ledger-muted)] text-[10px] font-mono uppercase tracking-widest rounded-sm"
+                    style={ghostLinkStyle}
                     aria-label="Go to Module 8 to iterate your skill"
                   >
                     Go to Module 8
@@ -403,68 +475,88 @@ export default async function ToolkitPage() {
                 )}
               </div>
             </div>
-
           </div>
         </SectionCard>
 
         {/* 2 — My Artifacts */}
-        <SectionCard title="My Artifacts" label="Artifacts" labelColor="var(--ledger-accent-2)">
-          <div className="space-y-3">
+        <SectionCard title="My artifacts" label="Artifacts">
+          <div style={{ display: 'grid', gap: 12 }}>
             {ARTIFACTS.map((artifact) => {
-              const isUnlocked = completedModules.includes(artifact.module);
+              const isAvailable = completedModules.includes(artifact.module);
               return (
                 <div
                   key={artifact.id}
-                  className={[
-                    'border rounded-sm p-4 flex items-start justify-between gap-4 flex-wrap',
-                    isUnlocked
-                      ? 'border-[color:var(--ledger-parch)] bg-white/30'
-                      : 'border-[color:var(--ledger-parch)] bg-[color:var(--ledger-parch)]/30 opacity-60',
-                  ].join(' ')}
+                  style={{
+                    ...itemCardStyle,
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    justifyContent: 'space-between',
+                    gap: 16,
+                    flexWrap: 'wrap',
+                    opacity: isAvailable ? 1 : 0.6,
+                  }}
                 >
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1 flex-wrap">
-                      <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent-2)]">
-                        Module {artifact.module}
-                      </p>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 8,
+                        flexWrap: 'wrap',
+                        marginBottom: 4,
+                      }}
+                    >
+                      <p style={kickerStyle}>Module {artifact.module}</p>
                       <span
-                        className="font-mono text-[9px] uppercase tracking-widest px-1.5 py-0.5 rounded-sm border"
                         style={{
-                          borderColor: 'var(--ledger-accent-2)',
-                          color: 'var(--ledger-accent-2)',
+                          fontSize: 10,
+                          fontWeight: 600,
+                          letterSpacing: '0.16em',
+                          textTransform: 'uppercase',
+                          padding: '2px 8px',
+                          borderRadius: 999,
+                          border: '1px solid var(--gold)',
+                          color: 'var(--gold-deep)',
                         }}
                       >
                         {artifact.format}
                       </span>
                     </div>
-                    <p className="font-sans text-sm font-semibold text-[color:var(--ledger-ink)] mb-0.5">
+                    <p
+                      style={{
+                        fontSize: 15,
+                        fontWeight: 600,
+                        color: 'var(--ink)',
+                        margin: '0 0 4px',
+                      }}
+                    >
                       {artifact.title}
                     </p>
-                    <p className="font-sans text-xs text-[color:var(--ledger-muted)] leading-relaxed">
+                    <p
+                      style={{
+                        fontSize: 13,
+                        color: 'var(--slate-500)',
+                        lineHeight: 1.55,
+                        margin: 0,
+                      }}
+                    >
                       {artifact.description}
                     </p>
                   </div>
-                  {isUnlocked ? (
+                  {isAvailable ? (
                     <Link
                       href={`/courses/foundation/program/${artifact.module}`}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[color:var(--ledger-accent-2)] text-[color:var(--ledger-accent-2)] hover:bg-[color:var(--ledger-accent-2)] hover:text-[color:var(--ledger-bg)] text-[10px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent-2)] focus:ring-offset-2"
+                      style={accentLinkStyle}
                     >
-                      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                        <path
-                          fillRule="evenodd"
-                          d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
                       Re-download
                     </Link>
                   ) : (
                     <Link
                       href={`/courses/foundation/program/${artifact.module}`}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[color:var(--ledger-parch)] text-[color:var(--ledger-muted)] text-[10px] font-mono uppercase tracking-widest rounded-sm"
-                      aria-label={`Go to Module  to open this artifact`}
+                      style={ghostLinkStyle}
+                      aria-label={`Go to Module ${artifact.module} to access this artifact`}
                     >
-                      Locked
+                      Pending
                     </Link>
                   )}
                 </div>
@@ -474,37 +566,58 @@ export default async function ToolkitPage() {
         </SectionCard>
 
         {/* 3 — My Subscription Inventory */}
-        <SectionCard
-          title="My Subscription Inventory"
-          label="Subscription Inventory"
-          labelColor="var(--ledger-accent-2)"
-        >
+        <SectionCard title="My subscription inventory" label="Subscription inventory">
           {inventoryResponse ? (
-            <div className="space-y-2">
-              <p className="font-sans text-xs text-[color:var(--ledger-muted)] mb-4 leading-relaxed">
+            <div>
+              <p
+                style={{
+                  fontSize: 13,
+                  color: 'var(--slate-500)',
+                  marginBottom: 16,
+                  lineHeight: 1.55,
+                }}
+              >
                 Recorded during Module 2. Update by revisiting{' '}
                 <Link
                   href="/courses/foundation/program/2"
-                  className="underline underline-offset-2 text-[color:var(--ledger-ink)] hover:text-[color:var(--ledger-accent)] transition-colors"
+                  style={{
+                    color: 'var(--ink)',
+                    textDecoration: 'underline',
+                    textUnderlineOffset: 2,
+                  }}
                 >
                   Module 2
                 </Link>
                 .
               </p>
-              <div className="grid gap-2">
-                {Object.entries(PLATFORM_LABELS).map(([fieldId, platformName]) => {
+              <div style={{ display: 'grid', gap: 0 }}>
+                {Object.entries(PLATFORM_LABELS).map(([fieldId, platformName], i, arr) => {
                   const rawValue = inventoryResponse[fieldId] ?? '';
                   const displayValue = ACCESS_LABELS[rawValue] ?? rawValue;
                   return (
                     <div
                       key={fieldId}
-                      className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 py-2.5 border-b border-[color:var(--ledger-parch)] last:border-0"
+                      style={{
+                        display: 'flex',
+                        flexWrap: 'wrap',
+                        gap: 16,
+                        padding: '10px 0',
+                        borderBottom:
+                          i === arr.length - 1 ? 'none' : '1px solid var(--ink-a10)',
+                      }}
                     >
-                      <span className="font-sans text-sm font-semibold text-[color:var(--ledger-ink)] sm:w-56 shrink-0">
+                      <span
+                        style={{
+                          fontSize: 14,
+                          fontWeight: 600,
+                          color: 'var(--ink)',
+                          flex: '0 0 220px',
+                        }}
+                      >
                         {platformName}
                       </span>
-                      <span className="font-sans text-sm text-[color:var(--ledger-muted)]">
-                        {displayValue || <em>No selection recorded</em>}
+                      <span style={{ fontSize: 14, color: 'var(--slate-500)' }}>
+                        {displayValue || 'No selection recorded'}
                       </span>
                     </div>
                   );
@@ -517,31 +630,43 @@ export default async function ToolkitPage() {
         </SectionCard>
 
         {/* 4 — What I Automated */}
-        <SectionCard
-          title="What I Automated"
-          label="Capstone Summary"
-          labelColor="var(--ledger-accent)"
-        >
+        <SectionCard title="What I automated" label="Capstone summary">
           {m8Response && m7SkillMd ? (
-            <div className="space-y-4">
-              <p className="font-sans text-xs text-[color:var(--ledger-muted)] leading-relaxed mb-4">
+            <div style={{ display: 'grid', gap: 16 }}>
+              <p
+                style={{
+                  fontSize: 13,
+                  color: 'var(--slate-500)',
+                  lineHeight: 1.55,
+                  margin: 0,
+                }}
+              >
                 Summary of your Module 9 capstone: the workflow you automated, the quality
                 standard your work product was built to meet, and the iteration path that
                 got you there.
               </p>
 
-              {/* Skill summary */}
-              <div className="border-l-4 pl-4 py-1" style={{ borderColor: 'var(--ledger-accent)' }}>
-                <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent)] mb-1">
-                  Skill Used for Capstone
-                </p>
-                <p className="font-sans text-sm text-[color:var(--ledger-ink)] leading-relaxed">
+              <div
+                style={{
+                  borderLeft: '3px solid var(--gold)',
+                  paddingLeft: 14,
+                }}
+              >
+                <p style={{ ...kickerStyle, marginBottom: 4 }}>Skill used for capstone</p>
+                <p
+                  style={{
+                    fontSize: 14,
+                    color: 'var(--ink)',
+                    lineHeight: 1.55,
+                    margin: 0,
+                  }}
+                >
                   {(() => {
                     const match = /^# (.+?) - v1/m.exec(m7SkillMd);
                     return match ? match[1].trim() : 'Banking AI Skill';
                   })()}{' '}
                   {m8Response['sharing-ladder-level'] ? (
-                    <span className="text-[color:var(--ledger-muted)]">
+                    <span style={{ color: 'var(--slate-500)' }}>
                       — Sharing level:{' '}
                       {
                         {
@@ -556,54 +681,87 @@ export default async function ToolkitPage() {
                 </p>
               </div>
 
-              {/* Automation type from stress test */}
               {m8Response['test-input-1'] && (
-                <div className="border-l-4 pl-4 py-1" style={{ borderColor: 'var(--ledger-accent)' }}>
-                  <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent)] mb-1">
-                    Tested Against
-                  </p>
-                  <p className="font-sans text-sm text-[color:var(--ledger-ink)] leading-relaxed">
+                <div
+                  style={{
+                    borderLeft: '3px solid var(--gold)',
+                    paddingLeft: 14,
+                  }}
+                >
+                  <p style={{ ...kickerStyle, marginBottom: 4 }}>Tested against</p>
+                  <p
+                    style={{
+                      fontSize: 14,
+                      color: 'var(--ink)',
+                      lineHeight: 1.55,
+                      margin: 0,
+                    }}
+                  >
                     {m8Response['test-input-1']}
                   </p>
                 </div>
               )}
 
-              {/* Revision summary */}
               {m8Response['revision-notes'] && (
-                <div className="border-l-4 pl-4 py-1" style={{ borderColor: 'var(--ledger-accent-2)' }}>
-                  <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent-2)] mb-1">
-                    Iteration Improvements
-                  </p>
-                  <p className="font-sans text-sm text-[color:var(--ledger-ink)] leading-relaxed">
+                <div
+                  style={{
+                    borderLeft: '3px solid var(--gold)',
+                    paddingLeft: 14,
+                  }}
+                >
+                  <p style={{ ...kickerStyle, marginBottom: 4 }}>Iteration improvements</p>
+                  <p
+                    style={{
+                      fontSize: 14,
+                      color: 'var(--ink)',
+                      lineHeight: 1.55,
+                      margin: 0,
+                    }}
+                  >
                     {m8Response['revision-notes']}
                   </p>
                 </div>
               )}
 
-              {/* Quality standard */}
-              <div className="border-l-4 pl-4 py-1" style={{ borderColor: 'var(--ledger-accent-2)' }}>
-                <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent-2)] mb-1">
-                  Quality Standard Met
-                </p>
-                <p className="font-sans text-sm text-[color:var(--ledger-ink)] leading-relaxed">
+              <div
+                style={{
+                  borderLeft: '3px solid var(--gold)',
+                  paddingLeft: 14,
+                }}
+              >
+                <p style={{ ...kickerStyle, marginBottom: 4 }}>Quality standard met</p>
+                <p
+                  style={{
+                    fontSize: 14,
+                    color: 'var(--ink)',
+                    lineHeight: 1.55,
+                    margin: 0,
+                  }}
+                >
                   Five-dimension AiBI-Foundation rubric: Accuracy (hard gate), Completeness,
                   Tone, Judgment, and Skill Quality.
                 </p>
               </div>
 
-              <div className="pt-2">
+              <div style={{ paddingTop: 4 }}>
                 <Link
                   href="/courses/foundation/program/submit"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-[color:var(--ledger-accent)] hover:bg-[color:var(--ledger-accent-light)] text-[color:var(--ledger-bg)] text-[10px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-2"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 10,
+                    padding: '12px 20px',
+                    background: 'var(--ink)',
+                    color: 'var(--cream-2)',
+                    fontSize: 11,
+                    fontWeight: 600,
+                    letterSpacing: '0.16em',
+                    textTransform: 'uppercase',
+                    borderRadius: 12,
+                    textDecoration: 'none',
+                  }}
                 >
-                  Submit Work Product
-                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                    <path
-                      fillRule="evenodd"
-                      d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
+                  Submit work product →
                 </Link>
               </div>
             </div>
@@ -613,21 +771,37 @@ export default async function ToolkitPage() {
         </SectionCard>
 
         {/* 5 — Transformation Report */}
-        <SectionCard
-          title="Transformation Report"
-          label="Course Report"
-          labelColor="var(--ledger-accent)"
-        >
-          <div className="border border-[color:var(--ledger-parch)] rounded-sm p-4 bg-white/30">
-            <div className="flex items-start justify-between gap-4 flex-wrap">
-              <div className="flex-1 min-w-0">
-                <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent)] mb-1">
-                  AiBI-Foundation Complete
-                </p>
-                <p className="font-sans text-sm font-semibold text-[color:var(--ledger-ink)] mb-1">
+        <SectionCard title="Transformation report" label="Course report">
+          <div style={itemCardStyle}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'flex-start',
+                justifyContent: 'space-between',
+                gap: 16,
+                flexWrap: 'wrap',
+              }}
+            >
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <p style={{ ...kickerStyle, marginBottom: 4 }}>AiBI-Foundation complete</p>
+                <p
+                  style={{
+                    fontSize: 15,
+                    fontWeight: 600,
+                    color: 'var(--ink)',
+                    margin: '0 0 4px',
+                  }}
+                >
                   AiBI-Foundation Transformation Report
                 </p>
-                <p className="font-sans text-xs text-[color:var(--ledger-muted)] leading-relaxed">
+                <p
+                  style={{
+                    fontSize: 13,
+                    color: 'var(--slate-500)',
+                    lineHeight: 1.55,
+                    margin: 0,
+                  }}
+                >
                   Five-page PDF summarising your pre/post assessment comparison, skills built,
                   estimated annual time savings, quick wins logged, and course completion
                   status. The document a learner shows their manager.
@@ -637,7 +811,6 @@ export default async function ToolkitPage() {
             </div>
           </div>
         </SectionCard>
-
       </article>
     </CourseShellWrapper>
   );

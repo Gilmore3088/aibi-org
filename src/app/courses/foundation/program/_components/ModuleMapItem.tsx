@@ -1,9 +1,9 @@
-// ModuleMapItem — single row in the 9-module course map
-// Server Component: pure display
+// ModuleMapItem — single row in the 9-module course map.
+// Server Component, pure display. Mockup chrome: ink text, gold accent for
+// progress + current state, slate for locked. Pillar color discipline retired.
 
 import Link from 'next/link';
 import type { Module } from '@content/courses/foundation-program';
-import { PILLAR_META } from '@content/courses/foundation-program';
 
 export type ModuleStatus = 'completed' | 'current' | 'locked';
 
@@ -19,66 +19,121 @@ function formatMinutes(minutes: number): string {
   return remainder > 0 ? `${hours}h ${remainder}m` : `${hours}h`;
 }
 
+const metaStyle: React.CSSProperties = {
+  fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
+  fontSize: 10,
+  fontWeight: 600,
+  letterSpacing: '0.18em',
+  textTransform: 'uppercase',
+};
+
 export function ModuleMapItem({ module: mod, status }: ModuleMapItemProps) {
   const formattedNumber = String(mod.number).padStart(2, '0');
-  const pillarMeta = PILLAR_META[mod.pillar];
   const isLocked = status === 'locked';
+  const isCurrent = status === 'current';
+  const isComplete = status === 'completed';
+
+  const numberColor = isLocked
+    ? 'var(--slate-400)'
+    : isCurrent
+      ? 'var(--gold-deep)'
+      : 'var(--ink)';
 
   const content = (
     <>
       {/* Module number */}
       <div
-        className="font-mono text-sm font-bold mt-1 w-6 shrink-0"
-        style={{ color: isLocked ? 'var(--ledger-muted)' : pillarMeta.colorVar }}
+        style={{
+          fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
+          fontSize: 14,
+          fontWeight: 700,
+          fontVariantNumeric: 'tabular-nums',
+          marginTop: 2,
+          width: 28,
+          flexShrink: 0,
+          color: numberColor,
+        }}
         aria-hidden="true"
       >
         {formattedNumber}
       </div>
 
       {/* Module content */}
-      <div className="flex-1 min-w-0">
-        {/* Title */}
-        <h4 className="font-serif font-bold text-[color:var(--ledger-ink)] mb-2 leading-tight">
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <h4
+          style={{
+            fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
+            fontSize: 16,
+            fontWeight: 700,
+            color: 'var(--ink)',
+            marginBottom: 8,
+            lineHeight: 1.3,
+          }}
+        >
           {mod.title}
         </h4>
 
-        {/* Key output */}
-        <p className="font-mono text-[10px] text-[color:var(--ledger-muted)] mb-2 uppercase tracking-wider leading-relaxed">
+        <p
+          style={{
+            ...metaStyle,
+            color: 'var(--slate-500)',
+            margin: '0 0 10px',
+            lineHeight: 1.5,
+          }}
+        >
           {mod.keyOutput}
         </p>
 
         {/* Progress bar */}
-        <div className="h-px w-full bg-[color:var(--ledger-accent)]/10 relative overflow-hidden mb-2">
-          {status === 'completed' && (
+        <div
+          style={{
+            height: 2,
+            width: '100%',
+            background: 'var(--ink-a10)',
+            position: 'relative',
+            overflow: 'hidden',
+            marginBottom: 8,
+            borderRadius: 999,
+          }}
+        >
+          {isComplete && (
             <div
-              className="absolute left-0 top-0 h-full"
-              style={{ width: '100%', backgroundColor: pillarMeta.colorVar }}
+              style={{
+                position: 'absolute',
+                left: 0,
+                top: 0,
+                height: '100%',
+                width: '100%',
+                background: 'var(--gold)',
+              }}
             />
           )}
-          {status === 'current' && (
+          {isCurrent && (
             <div
-              className="absolute left-0 top-0 h-[1.5px]"
-              style={{ width: '33%', backgroundColor: pillarMeta.colorVar }}
+              style={{
+                position: 'absolute',
+                left: 0,
+                top: 0,
+                height: '100%',
+                width: '33%',
+                background: 'var(--gold)',
+              }}
             />
           )}
         </div>
 
-        {/* Status text */}
-        {status === 'completed' && (
-          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)]">
+        {isComplete && (
+          <p style={{ ...metaStyle, color: 'var(--slate-500)', margin: 0 }}>
             Completed · {formatMinutes(mod.estimatedMinutes)}
           </p>
         )}
-        {status === 'current' && (
-          <p
-            className="font-mono text-[10px] uppercase tracking-widest font-bold"
-            style={{ color: pillarMeta.colorVar }}
-          >
-            In Progress
+        {isCurrent && (
+          <p style={{ ...metaStyle, color: 'var(--gold-deep)', fontWeight: 700, margin: 0 }}>
+            In progress
           </p>
         )}
-        {status === 'locked' && (
-          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)]">
+        {isLocked && (
+          <p style={{ ...metaStyle, color: 'var(--slate-400)', margin: 0 }}>
             Locked · {formatMinutes(mod.estimatedMinutes)}
           </p>
         )}
@@ -88,7 +143,14 @@ export function ModuleMapItem({ module: mod, status }: ModuleMapItemProps) {
 
   if (isLocked) {
     return (
-      <div className="flex gap-4 items-start opacity-40">
+      <div
+        style={{
+          display: 'flex',
+          gap: 16,
+          alignItems: 'flex-start',
+          opacity: 0.45,
+        }}
+      >
         {content}
       </div>
     );
@@ -97,7 +159,15 @@ export function ModuleMapItem({ module: mod, status }: ModuleMapItemProps) {
   return (
     <Link
       href={`/courses/foundation/program/${mod.number}`}
-      className="flex gap-4 items-start group hover:translate-x-1 transition-transform duration-200 focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-2 rounded-sm"
+      className="group"
+      style={{
+        display: 'flex',
+        gap: 16,
+        alignItems: 'flex-start',
+        textDecoration: 'none',
+        color: 'inherit',
+        transition: 'transform var(--t-fast) var(--ease)',
+      }}
     >
       {content}
     </Link>
