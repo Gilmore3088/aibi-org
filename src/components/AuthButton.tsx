@@ -36,7 +36,7 @@ function SignInLink() {
   return (
     <Link
       href="/auth/login"
-      className="font-serif-sc text-xs uppercase text-[color:var(--color-ink)]/75 hover:text-[color:var(--gold)] transition-colors hidden md:inline"
+      className="font-serif-sc text-xs uppercase text-[color:var(--ink)]/75 hover:text-[color:var(--gold)] transition-colors hidden md:inline"
     >
       Sign In
     </Link>

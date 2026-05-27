@@ -94,7 +94,7 @@ export function MobileNav() {
         onClick={() => setOpen(!open)}
         aria-expanded={open}
         aria-label={open ? 'Close menu' : 'Open menu'}
-        className="p-3 -mr-3 text-[color:var(--color-ink)] hover:text-[color:var(--gold)] transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:ring-offset-2 rounded-[2px]"
+        className="p-3 -mr-3 text-[color:var(--ink)] hover:text-[color:var(--gold)] transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:ring-offset-2 rounded-[2px]"
       >
         {open ? (
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
@@ -112,7 +112,7 @@ export function MobileNav() {
         <>
           {/* Backdrop */}
           <div
-            className="fixed inset-0 z-40 bg-[color:var(--color-ink)]/30"
+            className="fixed inset-0 z-40 bg-[color:var(--ink)]/30"
             onClick={close}
             aria-hidden="true"
           />
@@ -123,7 +123,7 @@ export function MobileNav() {
             role="dialog"
             aria-modal="true"
             aria-label="Mobile navigation"
-            className="fixed top-0 right-0 z-50 h-full w-72 bg-[color:var(--color-linen)] border-l border-[color:var(--color-ink)]/10 overflow-y-auto"
+            className="fixed top-0 right-0 z-50 h-full w-72 bg-[color:var(--cream)] border-l border-[color:var(--ink)]/10 overflow-y-auto"
           >
             {/* Close button */}
             <div className="flex justify-end p-5">
@@ -132,7 +132,7 @@ export function MobileNav() {
                 type="button"
                 onClick={close}
                 aria-label="Close menu"
-                className="p-3 text-[color:var(--color-ink)] hover:text-[color:var(--gold)] transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] rounded-[2px]"
+                className="p-3 text-[color:var(--ink)] hover:text-[color:var(--gold)] transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] rounded-[2px]"
               >
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
                   <path d="M5 5l10 10M15 5L5 15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
@@ -151,8 +151,8 @@ export function MobileNav() {
                     className={[
                       'block py-3 px-3 font-serif-sc text-sm uppercase tracking-[0.15em] rounded-[2px] transition-colors',
                       isActive
-                        ? 'text-[color:var(--gold)] bg-[color:var(--color-parch)]'
-                        : 'text-[color:var(--color-ink)]/75 hover:text-[color:var(--gold)] hover:bg-[color:var(--color-parch)]',
+                        ? 'text-[color:var(--gold)] bg-[color:#FFFFFF]'
+                        : 'text-[color:var(--ink)]/75 hover:text-[color:var(--gold)] hover:bg-[color:#FFFFFF]',
                     ].join(' ')}
                   >
                     {link.label}
@@ -161,12 +161,12 @@ export function MobileNav() {
               })}
 
               {/* Divider */}
-              <div className="h-px bg-[color:var(--color-ink)]/10 my-4" aria-hidden="true" />
+              <div className="h-px bg-[color:var(--ink)]/10 my-4" aria-hidden="true" />
 
               {/* Assessment CTA */}
               <Link
                 href="/assessment/start"
-                className="block w-full text-center py-3 px-4 bg-[color:var(--gold)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] transition-colors"
+                className="block w-full text-center py-3 px-4 bg-[color:var(--gold)] text-[color:var(--cream)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] transition-colors"
               >
                 Take Assessment
               </Link>

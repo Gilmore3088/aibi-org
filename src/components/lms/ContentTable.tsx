@@ -14,17 +14,17 @@ const CARD_GRID_THRESHOLD = 8;
 function TableView({ table }: ContentTableProps) {
   return (
     <div
-      className="overflow-x-auto -webkit-overflow-scrolling-touch rounded-sm border border-[color:var(--color-parch-dark)]"
+      className="overflow-x-auto -webkit-overflow-scrolling-touch rounded-sm border border-[color:var(--cream-2)]"
       style={{ WebkitOverflowScrolling: 'touch' }}
     >
       <table className="w-full text-sm border-collapse min-w-[600px]">
         <thead>
-          <tr className="bg-[color:var(--color-parch-dark)]">
+          <tr className="bg-[color:var(--cream-2)]">
             {table.columns.map((col) => (
               <th
                 key={col.key}
                 scope="col"
-                className="px-4 py-3 text-left font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] whitespace-nowrap"
+                className="px-4 py-3 text-left font-mono text-[10px] uppercase tracking-widest text-[color:var(--slate-600)] whitespace-nowrap"
               >
                 {col.header}
               </th>
@@ -35,12 +35,12 @@ function TableView({ table }: ContentTableProps) {
           {table.rows.map((row, rowIndex) => (
             <tr
               key={rowIndex}
-              className="border-t border-[color:var(--color-parch-dark)] hover:bg-[color:var(--color-parch)] transition-colors"
+              className="border-t border-[color:var(--cream-2)] hover:bg-[color:#FFFFFF] transition-colors"
             >
               {table.columns.map((col) => (
                 <td
                   key={col.key}
-                  className="px-4 py-3 text-[color:var(--color-ink)] align-top text-sm leading-relaxed"
+                  className="px-4 py-3 text-[color:var(--ink)] align-top text-sm leading-relaxed"
                 >
                   {row[col.key] ?? ''}
                 </td>
@@ -63,11 +63,11 @@ function CardGrid({ table }: ContentTableProps) {
       {table.rows.map((row, rowIndex) => (
         <div
           key={rowIndex}
-          className="border border-[color:var(--color-ink)]/10 rounded-[3px] bg-[color:var(--color-parch)] border-t-2 border-t-[color:var(--gold)]"
+          className="border border-[color:var(--ink)]/10 rounded-[3px] bg-[color:#FFFFFF] border-t-2 border-t-[color:var(--gold)]"
         >
           {/* Card title — platform name */}
           <div className="px-4 pt-4 pb-2">
-            <h3 className="font-serif text-lg text-[color:var(--color-ink)] leading-snug">
+            <h3 className="font-serif text-lg text-[color:var(--ink)] leading-snug">
               {row[titleColumn.key] ?? ''}
             </h3>
           </div>
@@ -76,10 +76,10 @@ function CardGrid({ table }: ContentTableProps) {
           <div className="px-4 pb-4 space-y-2">
             {metaColumns.map((col) => (
               <div key={col.key}>
-                <span className="font-mono text-[9px] uppercase tracking-widest text-[color:var(--color-slate)] block mb-0.5">
+                <span className="font-mono text-[9px] uppercase tracking-widest text-[color:var(--slate-600)] block mb-0.5">
                   {col.header}
                 </span>
-                <span className="text-sm text-[color:var(--color-ink)] leading-relaxed block">
+                <span className="text-sm text-[color:var(--ink)] leading-relaxed block">
                   {row[col.key] ?? ''}
                 </span>
               </div>
@@ -97,7 +97,7 @@ export function ContentTable({ table }: ContentTableProps) {
   return (
     <div className="mb-12">
       {/* Caption */}
-      <p className="font-serif text-lg font-bold text-[color:var(--color-ink)] mb-3">
+      <p className="font-serif text-lg font-bold text-[color:var(--ink)] mb-3">
         {table.caption}
       </p>
 

@@ -3,8 +3,8 @@
  */
 
 html, body {
-  background: var(--color-linen);
-  color: var(--color-ink);
+  background: var(--cream);
+  color: var(--ink);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -63,7 +63,7 @@ h1, h2, h3, h4 {
   z-index: var(--z-skip);
   padding: var(--space-3) var(--space-6);
   background: var(--gold);
-  color: var(--color-linen);
+  color: var(--cream);
   text-decoration: none;
   font-family: var(--font-sans);
   font-size: var(--text-body-sm);

@@ -35,17 +35,17 @@ const FOOTER_GROUPS: readonly FooterGroup[] = [
 
 export function Footer() {
   return (
-    <footer className="border-t border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)] mt-16">
+    <footer className="border-t border-[color:var(--ink)]/10 bg-[color:#FFFFFF] mt-16">
       <div className="max-w-6xl mx-auto px-6 py-12">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-10">
           <div className="max-w-md">
-            <p className="font-serif text-xl text-[color:var(--color-ink)]">
+            <p className="font-serif text-xl text-[color:var(--ink)]">
               The AI Banking Institute
             </p>
             <p className="font-serif-sc text-base text-[color:var(--gold)] tracking-wide mt-1 mb-4">
               Turning Bankers into Builders
             </p>
-            <p className="text-sm text-[color:var(--color-ink)]/70 leading-relaxed">
+            <p className="text-sm text-[color:var(--ink)]/70 leading-relaxed">
               AI proficiency built exclusively for community banks and credit
               unions. Aligned with SR 11-7, Interagency TPRM Guidance, ECOA/Reg B,
               and the AIEOG AI Lexicon. Serving FDIC-Insured Institutions and
@@ -56,7 +56,7 @@ export function Footer() {
           <nav className="grid grid-cols-2 md:grid-cols-3 gap-x-10 gap-y-6">
             {FOOTER_GROUPS.map((group) => (
               <div key={group.label}>
-                <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-slate)] mb-3">
+                <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--slate-600)] mb-3">
                   {group.label}
                 </p>
                 <ul className="space-y-2">
@@ -64,7 +64,7 @@ export function Footer() {
                     <li key={link.href}>
                       <Link
                         href={link.href}
-                        className="text-sm text-[color:var(--color-ink)]/75 hover:text-[color:var(--gold)] transition-colors"
+                        className="text-sm text-[color:var(--ink)]/75 hover:text-[color:var(--gold)] transition-colors"
                       >
                         {link.label}
                       </Link>
@@ -76,7 +76,7 @@ export function Footer() {
           </nav>
         </div>
 
-        <div className="border-t border-[color:var(--color-ink)]/10 mt-10 pt-6 flex flex-col md:flex-row md:items-center md:justify-between gap-3 text-xs text-[color:var(--color-slate)] font-mono">
+        <div className="border-t border-[color:var(--ink)]/10 mt-10 pt-6 flex flex-col md:flex-row md:items-center md:justify-between gap-3 text-xs text-[color:var(--slate-600)] font-mono">
           <p>&copy; {new Date().getFullYear()} The AI Banking Institute. All rights reserved.</p>
           <p>AIBankingInstitute.com &middot; AIBankingInstitute.org</p>
         </div>

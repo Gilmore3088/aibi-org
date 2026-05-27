@@ -40,10 +40,10 @@ export default function MembersWillSwitchArticle() {
           <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--gold)] mb-4">
             Industry Analysis &middot; April 2026
           </p>
-          <h1 className="font-serif text-5xl md:text-6xl text-[color:var(--color-ink)] leading-[1.05] mb-6">
+          <h1 className="font-serif text-5xl md:text-6xl text-[color:var(--ink)] leading-[1.05] mb-6">
             Members will switch. The question is to whom.
           </h1>
-          <p className="text-xl text-[color:var(--color-ink)]/75 leading-relaxed">
+          <p className="text-xl text-[color:var(--ink)]/75 leading-relaxed">
             If your institution still thinks of AI as an internal efficiency
             project, the 2025 consumer survey data should reframe the
             conversation. For a growing share of your members, AI is not a
@@ -51,8 +51,8 @@ export default function MembersWillSwitchArticle() {
           </p>
         </header>
 
-        <section className="space-y-6 text-[color:var(--color-ink)]/85 leading-relaxed text-lg">
-          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] pt-6">
+        <section className="space-y-6 text-[color:var(--ink)]/85 leading-relaxed text-lg">
+          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] pt-6">
             The headline: 84%.
           </h2>
           <p>
@@ -72,7 +72,7 @@ export default function MembersWillSwitchArticle() {
             two blocks over.
           </p>
 
-          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] pt-6">
+          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] pt-6">
             Who is most at risk.
           </h2>
           <p>
@@ -89,7 +89,7 @@ export default function MembersWillSwitchArticle() {
             whether your technology strategy keeps pace or not.
           </p>
 
-          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] pt-6">
+          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] pt-6">
             The four numbers.
           </h2>
         </section>
@@ -98,23 +98,23 @@ export default function MembersWillSwitchArticle() {
           {STAT_CARDS.map((stat) => (
             <div
               key={stat.label}
-              className="border border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)] p-6"
+              className="border border-[color:var(--ink)]/10 bg-[color:#FFFFFF] p-6"
             >
               <dt className="font-mono text-4xl md:text-5xl text-[color:var(--gold)] leading-none tabular-nums">
                 {stat.figure}
               </dt>
-              <dd className="text-sm text-[color:var(--color-ink)]/75 mt-3 leading-relaxed">
+              <dd className="text-sm text-[color:var(--ink)]/75 mt-3 leading-relaxed">
                 {stat.label}
               </dd>
-              <p className="font-mono text-[10px] text-[color:var(--color-slate)] mt-3">
+              <p className="font-mono text-[10px] text-[color:var(--slate-600)] mt-3">
                 {stat.source}
               </p>
             </div>
           ))}
         </dl>
 
-        <section className="space-y-6 text-[color:var(--color-ink)]/85 leading-relaxed text-lg">
-          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] pt-6">
+        <section className="space-y-6 text-[color:var(--ink)]/85 leading-relaxed text-lg">
+          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] pt-6">
             What &ldquo;AI-driven financial insights&rdquo; actually means.
           </h2>
           <p>
@@ -133,7 +133,7 @@ export default function MembersWillSwitchArticle() {
             for this work &mdash; if their staff know how to build it.
           </p>
 
-          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] pt-6">
+          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] pt-6">
             The community bank advantage.
           </h2>
           <p>
@@ -152,7 +152,7 @@ export default function MembersWillSwitchArticle() {
             came back to raise a family.
           </p>
 
-          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] pt-6">
+          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] pt-6">
             Three specific moves.
           </h2>
           <p>
@@ -176,28 +176,28 @@ export default function MembersWillSwitchArticle() {
           </p>
         </section>
 
-        <aside className="mt-16 bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-8 md:p-10 text-center">
+        <aside className="mt-16 bg-[color:#FFFFFF] border border-[color:var(--ink)]/10 rounded-[3px] p-8 md:p-10 text-center">
           <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
             Start here
           </p>
-          <h3 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] mb-4">
+          <h3 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] mb-4">
             See where your institution stands in under three minutes.
           </h3>
-          <p className="text-[color:var(--color-ink)]/75 max-w-xl mx-auto mb-6 leading-relaxed">
+          <p className="text-[color:var(--ink)]/75 max-w-xl mx-auto mb-6 leading-relaxed">
             Eight questions, one score, four tier placements. Your results
             come with a dimension breakdown and a clear view of what to do
             first.
           </p>
           <Link
             href="/assessment/start"
-            className="inline-block px-8 py-4 bg-[color:var(--gold)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] active:scale-[0.98] transition-all"
+            className="inline-block px-8 py-4 bg-[color:var(--gold)] text-[color:var(--cream)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] active:scale-[0.98] transition-all"
           >
             Take the Free Assessment
           </Link>
         </aside>
 
-        <footer className="mt-16 pt-8 border-t border-[color:var(--color-ink)]/10">
-          <p className="font-mono text-xs text-[color:var(--color-ink)]/70 leading-relaxed">
+        <footer className="mt-16 pt-8 border-t border-[color:var(--ink)]/10">
+          <p className="font-mono text-xs text-[color:var(--ink)]/70 leading-relaxed">
             <strong>Sources:</strong> Apiture, The Digital Loyalty Dividend
             (2025), citing Personetics 2025 consumer research and Motley Fool
             survey data. Apiture, Digital Transformation for Community Banks

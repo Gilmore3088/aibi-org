@@ -81,7 +81,7 @@ export function CourseTabs({
     <div>
       {/* Tab bar — sticky below module header */}
       <div
-        className="sticky top-[120px] z-30 bg-[color:var(--color-linen)] border-b border-[color:var(--color-ink)]/10 mb-6"
+        className="sticky top-[120px] z-30 bg-[color:var(--cream)] border-b border-[color:var(--ink)]/10 mb-6"
         role="tablist"
         aria-label="Course sections"
       >
@@ -101,8 +101,8 @@ export function CourseTabs({
                   'flex-1 py-4 px-4 text-center transition-all duration-200 relative',
                   'focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-t-[2px]',
                   isActive
-                    ? 'bg-[color:var(--color-parch)]'
-                    : 'hover:bg-[color:var(--color-parch)]/50',
+                    ? 'bg-[color:#FFFFFF]'
+                    : 'hover:bg-[color:#FFFFFF]/50',
                 ].join(' ')}
                 style={{
                   focusRingColor: accentColor,
@@ -111,19 +111,19 @@ export function CourseTabs({
                 <div className="flex items-center justify-center gap-2 mb-1">
                   <span
                     className="font-mono text-sm tabular-nums"
-                    style={{ color: isActive ? accentColor : 'var(--color-ink)', opacity: isActive ? 1 : 0.3 }}
+                    style={{ color: isActive ? accentColor : 'var(--ink)', opacity: isActive ? 1 : 0.3 }}
                   >
                     {idx + 1}
                   </span>
                   <span
                     className="font-serif-sc text-sm uppercase tracking-[0.12em]"
-                    style={{ color: isActive ? accentColor : 'var(--color-ink)', opacity: isActive ? 1 : 0.6 }}
+                    style={{ color: isActive ? accentColor : 'var(--ink)', opacity: isActive ? 1 : 0.6 }}
                   >
                     {tab.label}
                   </span>
                 </div>
                 <p
-                  className="font-sans text-[10px] text-[color:var(--color-slate)]"
+                  className="font-sans text-[10px] text-[color:var(--slate-600)]"
                   style={{ opacity: isActive ? 1 : 0.5 }}
                 >
                   {tab.sublabel}

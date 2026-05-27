@@ -26,10 +26,10 @@ export default function WideningGapArticle() {
           <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--gold)] mb-4">
             Industry Analysis &middot; April 2026
           </p>
-          <h1 className="font-serif text-5xl md:text-6xl text-[color:var(--color-ink)] leading-[1.05] mb-6">
+          <h1 className="font-serif text-5xl md:text-6xl text-[color:var(--ink)] leading-[1.05] mb-6">
             The widening AI gap &mdash; and what it means for community banks.
           </h1>
-          <p className="text-xl text-[color:var(--color-ink)]/75 leading-relaxed">
+          <p className="text-xl text-[color:var(--ink)]/75 leading-relaxed">
             The October 2025 Evident AI Index is the fourth consecutive annual
             benchmark of AI maturity at the 50 largest banks in North America,
             Europe, and APAC. For community banks and credit unions, the
@@ -38,8 +38,8 @@ export default function WideningGapArticle() {
           </p>
         </header>
 
-        <section className="space-y-6 text-[color:var(--color-ink)]/85 leading-relaxed text-lg">
-          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] pt-6">
+        <section className="space-y-6 text-[color:var(--ink)]/85 leading-relaxed text-lg">
+          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] pt-6">
             The top-10 are accelerating 2.3× faster than the rest.
           </h2>
           <p>
@@ -59,7 +59,7 @@ export default function WideningGapArticle() {
             as a cohort.
           </p>
 
-          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] pt-6">
+          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] pt-6">
             Talent is the flywheel.
           </h2>
           <p>
@@ -78,7 +78,7 @@ export default function WideningGapArticle() {
             use cases.
           </p>
 
-          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] pt-6">
+          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] pt-6">
             Community banks cannot hire their way to parity.
           </h2>
           <p>
@@ -97,7 +97,7 @@ export default function WideningGapArticle() {
             peer across town does?&rdquo;
           </p>
 
-          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] pt-6">
+          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] pt-6">
             The numbers, in one table.
           </h2>
         </section>
@@ -106,20 +106,20 @@ export default function WideningGapArticle() {
           {STAT_CARDS.map((stat) => (
             <div
               key={stat.label}
-              className="border border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)] p-6"
+              className="border border-[color:var(--ink)]/10 bg-[color:#FFFFFF] p-6"
             >
               <dt className="font-mono text-4xl md:text-5xl text-[color:var(--gold)] leading-none">
                 {stat.figure}
               </dt>
-              <dd className="text-sm text-[color:var(--color-ink)]/75 mt-3 leading-relaxed">
+              <dd className="text-sm text-[color:var(--ink)]/75 mt-3 leading-relaxed">
                 {stat.label}
               </dd>
             </div>
           ))}
         </dl>
 
-        <section className="space-y-6 text-[color:var(--color-ink)]/85 leading-relaxed text-lg">
-          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] pt-6">
+        <section className="space-y-6 text-[color:var(--ink)]/85 leading-relaxed text-lg">
+          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] pt-6">
             What community banks should do about it.
           </h2>
           <p>
@@ -147,7 +147,7 @@ export default function WideningGapArticle() {
             measure will outperform community banks that do not.
           </p>
 
-          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] pt-6">
+          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] pt-6">
             Where The AI Banking Institute fits.
           </h2>
           <p>
@@ -167,28 +167,28 @@ export default function WideningGapArticle() {
           </p>
         </section>
 
-        <aside className="mt-16 bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-8 md:p-10 text-center">
+        <aside className="mt-16 bg-[color:#FFFFFF] border border-[color:var(--ink)]/10 rounded-[3px] p-8 md:p-10 text-center">
           <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
             Start here
           </p>
-          <h3 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] mb-4">
+          <h3 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] mb-4">
             See where your institution stands in under three minutes.
           </h3>
-          <p className="text-[color:var(--color-ink)]/75 max-w-xl mx-auto mb-6 leading-relaxed">
+          <p className="text-[color:var(--ink)]/75 max-w-xl mx-auto mb-6 leading-relaxed">
             The free AI readiness assessment scores you on eight dimensions,
             places you in one of four tiers, and names the single move that
             compounds fastest over the next ninety days.
           </p>
           <Link
             href="/assessment/start"
-            className="inline-block px-8 py-4 bg-[color:var(--gold)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] active:scale-[0.98] transition-all"
+            className="inline-block px-8 py-4 bg-[color:var(--gold)] text-[color:var(--cream)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] active:scale-[0.98] transition-all"
           >
             Take the Free Assessment
           </Link>
         </aside>
 
-        <footer className="mt-16 pt-8 border-t border-[color:var(--color-ink)]/10">
-          <p className="font-mono text-xs text-[color:var(--color-ink)]/70 leading-relaxed">
+        <footer className="mt-16 pt-8 border-t border-[color:var(--ink)]/10">
+          <p className="font-mono text-xs text-[color:var(--ink)]/70 leading-relaxed">
             <strong>Sources:</strong> Evident AI Index &mdash; Key Findings Report,
             October 2025 (Evident Insights Ltd, n=50 banks). FDIC Quarterly
             Banking Profile Q4 2024. Bank Director 2024 Technology Survey (via

@@ -55,10 +55,10 @@ export default function AIGovernanceWithoutJargonArticle() {
           <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--gold)] mb-4">
             Regulatory Guidance &middot; April 2026
           </p>
-          <h1 className="font-serif text-5xl md:text-6xl text-[color:var(--color-ink)] leading-[1.05] mb-6">
+          <h1 className="font-serif text-5xl md:text-6xl text-[color:var(--ink)] leading-[1.05] mb-6">
             AI governance without the jargon.
           </h1>
-          <p className="text-xl text-[color:var(--color-ink)]/75 leading-relaxed">
+          <p className="text-xl text-[color:var(--ink)]/75 leading-relaxed">
             There is no single AI banking law. What exists is a set of
             extensions: five existing regulatory frameworks that have been
             stretched to cover artificial intelligence. The US Government
@@ -70,8 +70,8 @@ export default function AIGovernanceWithoutJargonArticle() {
           </p>
         </header>
 
-        <section className="space-y-6 text-[color:var(--color-ink)]/85 leading-relaxed text-lg">
-          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] pt-6">
+        <section className="space-y-6 text-[color:var(--ink)]/85 leading-relaxed text-lg">
+          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] pt-6">
             The five frameworks, in plain language.
           </h2>
           <p>
@@ -85,7 +85,7 @@ export default function AIGovernanceWithoutJargonArticle() {
             a starting point for having the right conversations.
           </p>
 
-          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] pt-6">
+          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] pt-6">
             SR&nbsp;11-7 &mdash; Model Risk Management.
           </h2>
           <p>
@@ -121,7 +121,7 @@ export default function AIGovernanceWithoutJargonArticle() {
             provide human-understandable reasons for its outputs.&rdquo;
           </p>
 
-          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] pt-6">
+          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] pt-6">
             TPRM &mdash; Third-Party Risk Management.
           </h2>
           <p>
@@ -151,7 +151,7 @@ export default function AIGovernanceWithoutJargonArticle() {
             months. It needs to happen.
           </p>
 
-          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] pt-6">
+          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] pt-6">
             ECOA / Reg B &mdash; Equal Credit Opportunity.
           </h2>
           <p>
@@ -180,7 +180,7 @@ export default function AIGovernanceWithoutJargonArticle() {
             responsible for satisfying them.
           </p>
 
-          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] pt-6">
+          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] pt-6">
             BSA / AML &mdash; Bank Secrecy Act.
           </h2>
           <p>
@@ -210,7 +210,7 @@ export default function AIGovernanceWithoutJargonArticle() {
             appropriate documentation.
           </p>
 
-          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] pt-6">
+          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] pt-6">
             The AIEOG AI Lexicon &mdash; the new vocabulary.
           </h2>
           <p>
@@ -245,7 +245,7 @@ export default function AIGovernanceWithoutJargonArticle() {
             equivalent but different language create avoidable friction.
           </p>
 
-          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] pt-6">
+          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] pt-6">
             The five frameworks, in one table.
           </h2>
         </section>
@@ -254,26 +254,26 @@ export default function AIGovernanceWithoutJargonArticle() {
           {FRAMEWORKS.map((f) => (
             <div
               key={f.code}
-              className="border border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)] p-6"
+              className="border border-[color:var(--ink)]/10 bg-[color:#FFFFFF] p-6"
             >
               <dt className="font-mono text-xl text-[color:var(--gold)] leading-none tabular-nums mb-1">
                 {f.code}
               </dt>
-              <dd className="font-serif text-base text-[color:var(--color-ink)] mb-3 leading-snug">
+              <dd className="font-serif text-base text-[color:var(--ink)] mb-3 leading-snug">
                 {f.fullName}
               </dd>
-              <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-[color:var(--color-ink)]/50 mb-3">
+              <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-[color:var(--ink)]/50 mb-3">
                 {f.body} &middot; {f.level}
               </p>
-              <p className="font-serif text-base text-[color:var(--color-ink)]/75 leading-relaxed italic">
+              <p className="font-serif text-base text-[color:var(--ink)]/75 leading-relaxed italic">
                 &ldquo;{f.oneLiner}&rdquo;
               </p>
             </div>
           ))}
         </dl>
 
-        <section className="space-y-6 text-[color:var(--color-ink)]/85 leading-relaxed text-lg">
-          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] pt-6">
+        <section className="space-y-6 text-[color:var(--ink)]/85 leading-relaxed text-lg">
+          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] pt-6">
             The governance gap is not a knowledge gap.
           </h2>
           <p>
@@ -301,14 +301,14 @@ export default function AIGovernanceWithoutJargonArticle() {
           </p>
         </section>
 
-        <aside className="mt-16 bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-8 md:p-10 text-center">
+        <aside className="mt-16 bg-[color:#FFFFFF] border border-[color:var(--ink)]/10 rounded-[3px] p-8 md:p-10 text-center">
           <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
             Executive Briefing
           </p>
-          <h3 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] mb-4">
+          <h3 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] mb-4">
             Get a governance baseline in 45 minutes.
           </h3>
-          <p className="text-[color:var(--color-ink)]/75 max-w-xl mx-auto mb-6 leading-relaxed">
+          <p className="text-[color:var(--ink)]/75 max-w-xl mx-auto mb-6 leading-relaxed">
             The free Executive Briefing maps your institution against all five
             frameworks, identifies your highest-priority governance gaps, and
             gives you three specific actions you can take before your next
@@ -316,14 +316,14 @@ export default function AIGovernanceWithoutJargonArticle() {
           </p>
           <Link
             href="/for-institutions"
-            className="inline-block px-8 py-4 bg-[color:var(--gold)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] active:scale-[0.98] transition-all"
+            className="inline-block px-8 py-4 bg-[color:var(--gold)] text-[color:var(--cream)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] active:scale-[0.98] transition-all"
           >
             Book an Executive Briefing
           </Link>
         </aside>
 
-        <footer className="mt-16 pt-8 border-t border-[color:var(--color-ink)]/10">
-          <p className="font-mono text-xs text-[color:var(--color-ink)]/70 leading-relaxed">
+        <footer className="mt-16 pt-8 border-t border-[color:var(--ink)]/10">
+          <p className="font-mono text-xs text-[color:var(--ink)]/70 leading-relaxed">
             <strong>Sources:</strong> GAO-25-107197, US Government
             Accountability Office, May 2025 (no comprehensive AI-specific
             banking regulation confirmed). AIEOG AI Lexicon, US Treasury /

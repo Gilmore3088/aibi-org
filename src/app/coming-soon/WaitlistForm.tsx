@@ -74,7 +74,7 @@ export function WaitlistForm({ initialInterest }: WaitlistFormProps) {
       onSubmit={handleSubmit}
       aria-labelledby={headingId}
       aria-busy={status === 'saving'}
-      className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/15 p-6 md:p-7"
+      className="bg-[color:#FFFFFF] border border-[color:var(--ink)]/15 p-6 md:p-7"
     >
       <h2
         id={headingId}
@@ -84,14 +84,14 @@ export function WaitlistForm({ initialInterest }: WaitlistFormProps) {
       </h2>
 
       <fieldset className="mt-5">
-        <legend className="font-serif-sc text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60">
+        <legend className="font-serif-sc text-[10px] uppercase tracking-[0.2em] text-[color:var(--ink)]/60">
           What are you looking for?
         </legend>
         <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-1">
           {INTEREST_OPTIONS.map(({ value, label }) => (
             <label
               key={value}
-              className="flex items-center gap-2 py-2 min-h-[44px] cursor-pointer text-[14px] text-[color:var(--color-ink)]/85"
+              className="flex items-center gap-2 py-2 min-h-[44px] cursor-pointer text-[14px] text-[color:var(--ink)]/85"
             >
               <input
                 type="radio"
@@ -114,9 +114,9 @@ export function WaitlistForm({ initialInterest }: WaitlistFormProps) {
         <div>
           <label
             htmlFor={firstNameId}
-            className="block font-serif-sc text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60"
+            className="block font-serif-sc text-[10px] uppercase tracking-[0.2em] text-[color:var(--ink)]/60"
           >
-            First name <span className="text-[color:var(--color-ink)]/35 normal-case tracking-normal">(optional)</span>
+            First name <span className="text-[color:var(--ink)]/35 normal-case tracking-normal">(optional)</span>
           </label>
           <input
             id={firstNameId}
@@ -127,15 +127,15 @@ export function WaitlistForm({ initialInterest }: WaitlistFormProps) {
               resetStatusOnEdit();
             }}
             autoComplete="given-name"
-            className="mt-2 w-full bg-[color:var(--color-linen)] border border-[color:var(--color-ink)]/15 px-3 py-2.5 text-[14px] text-[color:var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)]"
+            className="mt-2 w-full bg-[color:var(--cream)] border border-[color:var(--ink)]/15 px-3 py-2.5 text-[14px] text-[color:var(--ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)]"
           />
         </div>
         <div>
           <label
             htmlFor={institutionId}
-            className="block font-serif-sc text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60"
+            className="block font-serif-sc text-[10px] uppercase tracking-[0.2em] text-[color:var(--ink)]/60"
           >
-            Institution <span className="text-[color:var(--color-ink)]/35 normal-case tracking-normal">(optional)</span>
+            Institution <span className="text-[color:var(--ink)]/35 normal-case tracking-normal">(optional)</span>
           </label>
           <input
             id={institutionId}
@@ -146,14 +146,14 @@ export function WaitlistForm({ initialInterest }: WaitlistFormProps) {
               resetStatusOnEdit();
             }}
             autoComplete="organization"
-            className="mt-2 w-full bg-[color:var(--color-linen)] border border-[color:var(--color-ink)]/15 px-3 py-2.5 text-[14px] text-[color:var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)]"
+            className="mt-2 w-full bg-[color:var(--cream)] border border-[color:var(--ink)]/15 px-3 py-2.5 text-[14px] text-[color:var(--ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)]"
           />
         </div>
       </div>
 
       <label
         htmlFor={emailId}
-        className="mt-4 block font-serif-sc text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60"
+        className="mt-4 block font-serif-sc text-[10px] uppercase tracking-[0.2em] text-[color:var(--ink)]/60"
       >
         Work email
       </label>
@@ -168,12 +168,12 @@ export function WaitlistForm({ initialInterest }: WaitlistFormProps) {
         }}
         autoComplete="email"
         placeholder="you@bank.com"
-        className="mt-2 w-full bg-[color:var(--color-linen)] border border-[color:var(--color-ink)]/15 px-3 py-2.5 text-[14px] text-[color:var(--color-ink)] placeholder:text-[color:var(--color-ink)]/35 focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)]"
+        className="mt-2 w-full bg-[color:var(--cream)] border border-[color:var(--ink)]/15 px-3 py-2.5 text-[14px] text-[color:var(--ink)] placeholder:text-[color:var(--ink)]/35 focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)]"
       />
 
       <label
         htmlFor={newsletterId}
-        className="mt-4 flex items-start gap-2 text-[13px] text-[color:var(--color-ink)]/75 cursor-pointer leading-snug"
+        className="mt-4 flex items-start gap-2 text-[13px] text-[color:var(--ink)]/75 cursor-pointer leading-snug"
       >
         <input
           id={newsletterId}
@@ -191,7 +191,7 @@ export function WaitlistForm({ initialInterest }: WaitlistFormProps) {
       <button
         type="submit"
         disabled={status === 'saving'}
-        className="mt-6 w-full bg-[color:var(--gold)] text-[color:var(--color-linen)] disabled:opacity-50 px-5 py-3 font-sans text-[12px] font-semibold uppercase tracking-[1.2px] hover:bg-[color:var(--gold-2)] transition-colors"
+        className="mt-6 w-full bg-[color:var(--gold)] text-[color:var(--cream)] disabled:opacity-50 px-5 py-3 font-sans text-[12px] font-semibold uppercase tracking-[1.2px] hover:bg-[color:var(--gold-2)] transition-colors"
       >
         {status === 'saving' ? 'Saving…' : 'Notify me'}
       </button>
@@ -203,11 +203,11 @@ export function WaitlistForm({ initialInterest }: WaitlistFormProps) {
           </p>
         )}
         {status === 'error' && (
-          <p className="text-[13px] text-[color:var(--color-error)]">
+          <p className="text-[13px] text-[color:#9b2226]">
             Could not save. Try again, or email{' '}
             <a
               href="mailto:hello@aibankinginstitute.com"
-              className="underline decoration-[color:var(--color-error)]/40 underline-offset-2"
+              className="underline decoration-[color:#9b2226]/40 underline-offset-2"
             >
               hello@aibankinginstitute.com
             </a>

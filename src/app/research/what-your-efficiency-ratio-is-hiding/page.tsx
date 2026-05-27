@@ -40,10 +40,10 @@ export default function EfficiencyRatioArticle() {
           <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--gold)] mb-4">
             Financial Performance &middot; April 2026
           </p>
-          <h1 className="font-serif text-5xl md:text-6xl text-[color:var(--color-ink)] leading-[1.05] mb-6">
+          <h1 className="font-serif text-5xl md:text-6xl text-[color:var(--ink)] leading-[1.05] mb-6">
             What your efficiency ratio is hiding.
           </h1>
-          <p className="text-xl text-[color:var(--color-ink)]/75 leading-relaxed">
+          <p className="text-xl text-[color:var(--ink)]/75 leading-relaxed">
             The efficiency ratio is one of banking&rsquo;s most honest
             metrics. It measures what portion of operating revenue is consumed
             by operating expenses &mdash; and it does not forgive. Community
@@ -54,8 +54,8 @@ export default function EfficiencyRatioArticle() {
           </p>
         </header>
 
-        <section className="space-y-6 text-[color:var(--color-ink)]/85 leading-relaxed text-lg">
-          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] pt-6">
+        <section className="space-y-6 text-[color:var(--ink)]/85 leading-relaxed text-lg">
+          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] pt-6">
             What the efficiency ratio actually measures.
           </h2>
           <p>
@@ -83,7 +83,7 @@ export default function EfficiencyRatioArticle() {
             The ratio points at the problem. Finding it requires going deeper.
           </p>
 
-          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] pt-6">
+          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] pt-6">
             The four numbers.
           </h2>
         </section>
@@ -92,23 +92,23 @@ export default function EfficiencyRatioArticle() {
           {STAT_CARDS.map((stat) => (
             <div
               key={stat.label}
-              className="border border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)] p-6"
+              className="border border-[color:var(--ink)]/10 bg-[color:#FFFFFF] p-6"
             >
               <dt className="font-mono text-4xl md:text-5xl text-[color:var(--gold)] leading-none tabular-nums">
                 {stat.figure}
               </dt>
-              <dd className="text-sm text-[color:var(--color-ink)]/75 mt-3 leading-relaxed">
+              <dd className="text-sm text-[color:var(--ink)]/75 mt-3 leading-relaxed">
                 {stat.label}
               </dd>
-              <p className="font-mono text-[10px] text-[color:var(--color-ink)]/50 mt-2">
+              <p className="font-mono text-[10px] text-[color:var(--ink)]/50 mt-2">
                 {stat.source}
               </p>
             </div>
           ))}
         </dl>
 
-        <section className="space-y-6 text-[color:var(--color-ink)]/85 leading-relaxed text-lg">
-          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] pt-6">
+        <section className="space-y-6 text-[color:var(--ink)]/85 leading-relaxed text-lg">
+          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] pt-6">
             Where the inefficiency lives &mdash; and what AI can touch.
           </h2>
           <p>
@@ -177,7 +177,7 @@ export default function EfficiencyRatioArticle() {
             is why the high-ROI use cases above deserve first priority.
           </p>
 
-          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] pt-6">
+          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] pt-6">
             How to calculate what it is worth at your institution.
           </h2>
           <p>
@@ -207,7 +207,7 @@ export default function EfficiencyRatioArticle() {
             investment decision.
           </p>
 
-          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] pt-6">
+          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] pt-6">
             The governance constraint on efficiency gains.
           </h2>
           <p>
@@ -237,14 +237,14 @@ export default function EfficiencyRatioArticle() {
           </p>
         </section>
 
-        <aside className="mt-16 bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-8 md:p-10 text-center">
+        <aside className="mt-16 bg-[color:#FFFFFF] border border-[color:var(--ink)]/10 rounded-[3px] p-8 md:p-10 text-center">
           <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
             Start here
           </p>
-          <h3 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] mb-4">
+          <h3 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] mb-4">
             Model the ROI for your institution.
           </h3>
-          <p className="text-[color:var(--color-ink)]/75 max-w-xl mx-auto mb-8 leading-relaxed">
+          <p className="text-[color:var(--ink)]/75 max-w-xl mx-auto mb-8 leading-relaxed">
             The ROI calculator on the homepage estimates annualized savings
             from a single workflow improvement, based on your actual FTE count
             and compensation numbers. Takes 90 seconds.
@@ -252,21 +252,21 @@ export default function EfficiencyRatioArticle() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/#roi"
-              className="inline-block px-8 py-4 bg-[color:var(--gold)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] active:scale-[0.98] transition-all"
+              className="inline-block px-8 py-4 bg-[color:var(--gold)] text-[color:var(--cream)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] active:scale-[0.98] transition-all"
             >
               Run the ROI Calculator
             </Link>
             <Link
               href="/for-institutions"
-              className="inline-block px-8 py-4 border border-[color:var(--color-ink)]/20 text-[color:var(--color-ink)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:border-[color:var(--gold)] hover:text-[color:var(--gold)] active:scale-[0.98] transition-all"
+              className="inline-block px-8 py-4 border border-[color:var(--ink)]/20 text-[color:var(--ink)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:border-[color:var(--gold)] hover:text-[color:var(--gold)] active:scale-[0.98] transition-all"
             >
               Book an Executive Briefing
             </Link>
           </div>
         </aside>
 
-        <footer className="mt-16 pt-8 border-t border-[color:var(--color-ink)]/10">
-          <p className="font-mono text-xs text-[color:var(--color-ink)]/70 leading-relaxed">
+        <footer className="mt-16 pt-8 border-t border-[color:var(--ink)]/10">
+          <p className="font-mono text-xs text-[color:var(--ink)]/70 leading-relaxed">
             <strong>Sources:</strong> FDIC CEIC data, 1992&ndash;2025 (community
             bank median efficiency ratio ~65%). FDIC Quarterly Banking Profile
             Q4 2024 (industry-wide efficiency ratio ~55.7%). Bank Director 2024
