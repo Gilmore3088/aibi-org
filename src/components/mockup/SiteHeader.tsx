@@ -48,11 +48,7 @@ export function SiteHeader({
               <polygon points="12 2 20 7 4 7" />
             </svg>
           </span>
-          <span>
-            <span className="mk-wm-1">The AI Banking Institute</span>
-            <br />
-            <span className="mk-wm-2">Regulated Intelligence</span>
-          </span>
+          <span className="mk-wm-1">The AI Banking Institute</span>
         </Link>
 
         <nav className="mk-nav" aria-label="Primary">
