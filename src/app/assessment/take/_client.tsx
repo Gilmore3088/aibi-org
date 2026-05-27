@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { SiteHeader } from '@/components/mockup';
 import { useAssessmentV2, QUESTIONS_PER_SESSION } from '../_lib/useAssessmentV2';
-import { QuestionCard } from '../_components/QuestionCard';
 import { ProgressBar } from '../_components/ProgressBar';
 import { EmailGate } from '../_components/EmailGate';
 
@@ -54,24 +53,125 @@ export default function AssessmentPage() {
     <div className="mockup-scope">
       <SiteHeader
         activePath="/assessment"
-        cta={{ label: 'Back to assessments', href: '/assessment' }}
+        cta={{ label: 'Restart', href: '#restart' }}
       />
       <main className="mk-take">
         <h1 className="sr-only">AI Readiness Assessment</h1>
         <ProgressBar progress={state.phase === 'questions' ? state.progress : 1} />
 
+        {state.phase === 'questions' && state.selectedQuestions.length > 0 && (() => {
+          const q = state.selectedQuestions[state.currentQuestion];
+          const selected = state.answers[state.currentQuestion];
+          const liveScore = state.answers
+            .filter((a) => a > 0)
+            .reduce((sum, a, _, arr) => sum + a / arr.length / 4 * 100, 0);
+          const livePct = Math.round(liveScore || 0);
+          const liveBand = livePct === 0
+            ? 'Pending'
+            : livePct >= 80 ? 'Ready to Scale'
+            : livePct >= 60 ? 'Building Momentum'
+            : livePct >= 40 ? 'Early Stage'
+            : 'Starting Point';
+          const breakdown = state.getDimensionBreakdown();
+          const topEntry = Object.entries(breakdown)
+            .filter(([, v]) => v.score > 0)
+            .sort((a, b) => a[1].score / a[1].maxScore - b[1].score / b[1].maxScore)[0];
+          const topGapLabel = topEntry?.[1].label ?? 'Pending';
+          const completePct = Math.round((state.currentQuestion / QUESTIONS_PER_SESSION) * 100);
+          return (
+            <>
+              {/* Persistent dark navy hero — live score panel */}
+              <section className="mk-take-q-hero">
+                <div className="mk-take-q-hero-copy">
+                  <div className="mk-take-q-hero-chip">
+                    <span className="mk-dot" /> {QUESTIONS_PER_SESSION} questions · about 3 minutes
+                  </div>
+                  <h2>Get your AI readiness score.</h2>
+                  <p>
+                    One question per screen. Live scoring. Your final result shows your tier,
+                    top gap, and starter artifact.
+                  </p>
+                </div>
+                <div className="mk-take-q-card">
+                  <div className="mk-take-q-card-score">
+                    <p className="mk-k">Live score</p>
+                    <div className="mk-take-q-card-num">
+                      <span className="mk-v">{livePct}</span>
+                      <span className="mk-u">/ 100</span>
+                    </div>
+                    <div className="mk-take-q-card-tier">
+                      <p className="mk-k">Tier</p>
+                      <p className="mk-take-q-card-tier-v">{liveBand}</p>
+                    </div>
+                  </div>
+                  <div className="mk-take-q-card-progress">
+                    <p className="mk-k">Assessment Progress</p>
+                    <h3>
+                      Question {state.currentQuestion + 1} of {QUESTIONS_PER_SESSION}
+                    </h3>
+                    <div className="mk-take-q-card-track">
+                      <div
+                        className="mk-take-q-card-fill"
+                        style={{ width: `${state.progress * 100}%` }}
+                      />
+                    </div>
+                    <div className="mk-take-q-card-meta">
+                      <div className="mk-take-snap-meta-card">
+                        <p className="mk-k">Answered</p>
+                        <p className="mk-take-snap-meta-v">{state.currentQuestion}</p>
+                      </div>
+                      <div className="mk-take-snap-meta-card">
+                        <p className="mk-k">Top gap</p>
+                        <p className="mk-take-snap-meta-v">{topGapLabel}</p>
+                      </div>
+                      <div className="mk-take-snap-meta-card">
+                        <p className="mk-k">Complete</p>
+                        <p className="mk-take-snap-meta-v">{completePct}%</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              {/* Side-by-side question panel */}
+              <section className="mk-take-q-panel" aria-label="Question">
+                <div className="mk-take-q-prompt">
+                  <p className="mk-k">{q.dimension}</p>
+                  <h2>{q.prompt}</h2>
+                  {state.currentQuestion > 0 && (
+                    <button
+                      type="button"
+                      className="mk-take-q-back"
+                      onClick={state.goBack}
+                    >
+                      ← Back
+                    </button>
+                  )}
+                </div>
+                <div className="mk-take-q-options">
+                  {q.options.map((opt) => {
+                    const isSelected = selected === opt.points;
+                    return (
+                      <button
+                        key={opt.label}
+                        type="button"
+                        onClick={() => state.answer(opt.points)}
+                        className={`mk-take-q-option${isSelected ? ' is-selected' : ''}`}
+                      >
+                        <span className="mk-take-q-option-label">{opt.label}</span>
+                        <span className="mk-take-q-option-mark" aria-hidden="true">
+                          {isSelected ? '✓' : '→'}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </section>
+            </>
+          );
+        })()}
+
         <div className="mk-take-inner">
-          {state.phase === 'questions' && state.selectedQuestions.length > 0 && (
-            <QuestionCard
-              question={state.selectedQuestions[state.currentQuestion]}
-              questionNumber={state.currentQuestion + 1}
-              totalQuestions={QUESTIONS_PER_SESSION}
-              selectedPoints={state.answers[state.currentQuestion]}
-              onAnswer={state.answer}
-              onBack={state.goBack}
-              canGoBack={state.currentQuestion > 0}
-            />
-          )}
 
           {state.phase === 'score' && state.tier && (() => {
             const breakdown = state.getDimensionBreakdown();

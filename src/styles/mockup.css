@@ -1556,6 +1556,185 @@ section.mk-std { padding: 56px 0; }
 }
 @media (min-width: 720px) { .mk-take-send-form { padding: 28px 32px; } }
 
+/* ============================================================
+   Question flow — persistent hero + side-by-side question panel
+   (2026-05-26 mockup port)
+   ============================================================ */
+
+.mk-take-q-hero {
+  background: var(--ink); color: #fff;
+  padding: 40px 24px;
+  display: grid; gap: 32px; grid-template-columns: 1fr;
+  position: relative; overflow: hidden;
+}
+@media (min-width: 960px) {
+  .mk-take-q-hero {
+    padding: 56px 48px;
+    grid-template-columns: 0.72fr 1.28fr;
+    gap: 48px;
+    align-items: center;
+  }
+}
+.mk-take-q-hero-chip {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(200, 162, 74, 0.10);
+  border: 1px solid rgba(200, 162, 74, 0.40);
+  border-radius: var(--r-pill);
+  padding: 8px 16px;
+  font-size: 13px; font-weight: 600; color: var(--gold-soft);
+  margin-bottom: 18px;
+}
+.mk-take-q-hero-chip .mk-dot {
+  width: 6px; height: 6px; background: var(--gold); border-radius: 999px;
+}
+.mk-take-q-hero-copy h2 {
+  font-size: clamp(32px, 5vw, 56px);
+  font-weight: 700; letter-spacing: -0.02em; line-height: 1.05;
+  margin: 0;
+}
+.mk-take-q-hero-copy p {
+  margin-top: 18px;
+  font-size: 16px; line-height: 1.55;
+  color: rgba(255,255,255,0.70);
+  max-width: 50ch;
+}
+
+.mk-take-q-card {
+  background: #fff; color: var(--ink);
+  border-radius: var(--r-2xl); overflow: hidden;
+  box-shadow: var(--shadow-hero);
+}
+.mk-take-q-card-score {
+  background: var(--ink); color: #fff;
+  padding: 24px;
+}
+@media (min-width: 720px) {
+  .mk-take-q-card {
+    display: grid; grid-template-columns: 0.38fr 0.62fr;
+  }
+  .mk-take-q-card-score { padding: 28px; }
+}
+.mk-take-q-card-score .mk-k {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--gold-soft);
+  margin: 0;
+}
+.mk-take-q-card-num {
+  margin-top: 20px;
+  display: flex; align-items: baseline; gap: 6px;
+}
+.mk-take-q-card-num .mk-v {
+  font-size: 56px; font-weight: 700; color: var(--gold-soft);
+  line-height: 1; letter-spacing: -0.03em;
+}
+.mk-take-q-card-num .mk-u {
+  font-size: 14px; color: rgba(255,255,255,0.50);
+}
+.mk-take-q-card-tier {
+  margin-top: 20px;
+  background: rgba(255,255,255,0.10);
+  border-radius: var(--r-lg);
+  padding: 14px 16px;
+}
+.mk-take-q-card-tier-v {
+  font-size: 18px; font-weight: 700; color: #fff;
+  margin: 4px 0 0;
+}
+.mk-take-q-card-progress {
+  padding: 24px;
+}
+@media (min-width: 720px) { .mk-take-q-card-progress { padding: 28px; } }
+.mk-take-q-card-progress .mk-k {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--gold-deep);
+  margin: 0;
+}
+.mk-take-q-card-progress h3 {
+  margin: 6px 0 16px;
+  font-size: 22px; font-weight: 700; color: var(--ink);
+}
+.mk-take-q-card-track {
+  height: 10px; background: var(--slate-100);
+  border-radius: var(--r-pill); overflow: hidden;
+}
+.mk-take-q-card-fill {
+  height: 100%; background: var(--gold);
+  transition: width .35s ease;
+  border-radius: var(--r-pill);
+}
+.mk-take-q-card-meta {
+  margin-top: 18px;
+  display: grid; gap: 10px; grid-template-columns: 1fr;
+}
+@media (min-width: 480px) {
+  .mk-take-q-card-meta { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* Question panel — side by side */
+.mk-take-q-panel {
+  max-width: 1200px; margin: 0 auto;
+  padding: 48px 24px 80px;
+  display: grid; gap: 32px; grid-template-columns: 1fr;
+}
+@media (min-width: 960px) {
+  .mk-take-q-panel { grid-template-columns: 0.42fr 0.58fr; gap: 48px; align-items: start; padding: 64px 32px 96px; }
+}
+.mk-take-q-prompt .mk-k {
+  font-size: 12px; font-weight: 700; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--gold-deep);
+  margin: 0 0 12px;
+}
+.mk-take-q-prompt h2 {
+  font-size: clamp(26px, 4vw, 42px);
+  font-weight: 700; letter-spacing: -0.02em; line-height: 1.15;
+  color: var(--ink); margin: 0;
+}
+.mk-take-q-back {
+  margin-top: 24px;
+  background: #fff;
+  border: 1px solid var(--slate-200); border-radius: var(--r-md);
+  padding: 10px 16px;
+  font-family: inherit; font-size: 14px; font-weight: 600;
+  color: var(--ink); cursor: pointer;
+  transition: border-color 120ms, background 120ms;
+}
+.mk-take-q-back:hover { border-color: var(--gold); background: var(--cream); }
+
+.mk-take-q-options {
+  display: flex; flex-direction: column; gap: 12px;
+}
+.mk-take-q-option {
+  background: var(--cream);
+  border: 1px solid var(--slate-200); border-radius: var(--r-xl);
+  padding: 20px 22px;
+  text-align: left; cursor: pointer;
+  font-family: inherit; color: var(--ink);
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px;
+  transition: transform 120ms, border-color 120ms, box-shadow 120ms, background 120ms;
+}
+.mk-take-q-option:hover {
+  transform: translateY(-2px);
+  border-color: var(--gold);
+  box-shadow: var(--shadow-soft);
+}
+.mk-take-q-option.is-selected {
+  background: rgba(200, 162, 74, 0.18);
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(200, 162, 74, 0.20);
+}
+.mk-take-q-option-label {
+  font-size: 16px; font-weight: 600; line-height: 1.35;
+}
+.mk-take-q-option-mark {
+  font-size: 20px; color: var(--gold-deep); flex: none;
+  font-weight: 700;
+}
+.mk-take-q-option:hover .mk-take-q-option-mark,
+.mk-take-q-option.is-selected .mk-take-q-option-mark {
+  color: var(--gold);
+}
+
 .mk-take-restart { text-align: center; }
 .mk-take-restart-btn {
   font-size: 11px; font-weight: 700; letter-spacing: 0.18em;
