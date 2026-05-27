@@ -9,7 +9,7 @@ interface EmailGateProps {
   readonly tierId: string;
   readonly tierLabel: string;
   readonly answers: readonly number[];
-  readonly version?: 'v1' | 'v2';
+  readonly version?: 'v1' | 'v2' | 'v3';
   readonly maxScore?: number;
   readonly dimensionBreakdown?: Record<string, DimensionScoreSerialized>;
   readonly onCaptured: (
