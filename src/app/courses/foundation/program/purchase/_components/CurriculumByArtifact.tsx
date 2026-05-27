@@ -79,7 +79,7 @@ export function CurriculumByArtifact() {
               <summary
                 style={{
                   display: 'grid',
-                  gridTemplateColumns: '64px 1fr auto',
+                  gridTemplateColumns: '40px 1fr auto',
                   gap: 18,
                   alignItems: 'center',
                   padding: '18px 24px',
@@ -89,15 +89,22 @@ export function CurriculumByArtifact() {
                 }}
               >
                 <span
+                  aria-label={`Module ${m.number}`}
                   style={{
-                    fontSize: 12,
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: 36,
+                    height: 36,
+                    borderRadius: 999,
+                    background: 'var(--ink)',
+                    color: 'var(--gold)',
+                    fontSize: 13,
                     fontWeight: 700,
-                    letterSpacing: '0.1em',
-                    textTransform: 'uppercase',
-                    color: 'var(--gold-deep)',
+                    flex: 'none',
                   }}
                 >
-                  Module {m.number}
+                  {String(m.number).padStart(2, '0')}
                 </span>
                 <span
                   style={{
@@ -133,7 +140,7 @@ export function CurriculumByArtifact() {
 
               <div
                 style={{
-                  padding: '4px 24px 22px 88px',
+                  padding: '4px 24px 22px 82px',
                   fontFamily: INTER_STACK,
                   fontSize: 14,
                   color: 'var(--slate-600)',
