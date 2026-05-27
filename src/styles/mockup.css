@@ -1044,6 +1044,236 @@ section.mk-std { padding: 56px 0; }
 .mk-quiz-foot.mk-quiz-foot-end { justify-content: flex-end; }
 
 /* ============================================================
+   /courses rework (2026-05-26): Artifact Reel + Lesson Loop +
+   compact Curriculum (replaces What-you-build, Inside-one-lesson,
+   Modules grid, Credential)
+   ============================================================ */
+
+/* Artifact Reel — auto-cycling */
+.mk-reel {
+  max-width: 920px; margin: 0 auto;
+  display: flex; flex-direction: column; gap: 24px;
+}
+.mk-reel-dots {
+  display: flex; gap: 8px; justify-content: center;
+}
+.mk-reel-dot {
+  width: 32px; height: 4px; border-radius: var(--r-pill);
+  background: var(--slate-200); border: 0; padding: 0;
+  cursor: pointer; transition: background 200ms, width 200ms;
+}
+.mk-reel-dot.is-active {
+  background: var(--gold); width: 56px;
+}
+.mk-reel-dot:hover { background: var(--gold-deep); }
+
+.mk-reel-card {
+  background: #fff;
+  border: 1px solid var(--slate-200); border-radius: var(--r-2xl);
+  padding: 32px;
+  box-shadow: var(--shadow-soft);
+}
+@media (min-width: 720px) { .mk-reel-card { padding: 40px; } }
+.mk-reel-card.is-animated {
+  animation: mk-reel-in .5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+@keyframes mk-reel-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.mk-reel-head {
+  display: flex; gap: 16px; align-items: center; margin-bottom: 24px;
+}
+.mk-reel-head .mk-pic-ink-gold {
+  width: 44px; height: 44px; border-radius: var(--r-md);
+  background: var(--ink); color: var(--gold);
+  display: inline-flex; align-items: center; justify-content: center;
+  flex: none;
+}
+.mk-reel-head .mk-k {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--gold-deep);
+}
+.mk-reel-head h3 {
+  font-size: 22px; font-weight: 700; color: var(--ink);
+  margin: 2px 0 0; line-height: 1.2;
+}
+.mk-reel-flow {
+  display: grid; gap: 20px; grid-template-columns: 1fr;
+  align-items: center;
+}
+@media (min-width: 720px) {
+  .mk-reel-flow { grid-template-columns: 1fr auto 1fr; gap: 24px; }
+}
+.mk-reel-step {
+  background: var(--cream); padding: 18px 20px;
+  border: 1px solid var(--slate-200); border-radius: var(--r-lg);
+}
+.mk-reel-step .mk-k {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--slate-500);
+  margin-bottom: 8px;
+}
+.mk-reel-text {
+  font-size: 14px; line-height: 1.5; color: var(--ink);
+  font-weight: 500;
+}
+.mk-reel-step-out {
+  background: var(--cream-2);
+  border-color: var(--gold);
+  border-left: 3px solid var(--gold);
+}
+.mk-reel-step-out .mk-k { color: var(--gold-deep); }
+.mk-reel-arrow {
+  font-size: 28px; font-weight: 800; color: var(--gold);
+  text-align: center; justify-self: center;
+}
+.mk-reel-meta {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 600; color: var(--gold-deep);
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--slate-200);
+}
+.mk-reel-meta svg { color: var(--gold-deep); }
+@media (prefers-reduced-motion: reduce) {
+  .mk-reel-card.is-animated { animation: none; }
+}
+
+/* Lesson Loop — Watch → Practice → Build → Review */
+.mk-loop {
+  max-width: 1000px; margin: 0 auto;
+}
+.mk-loop-track {
+  height: 4px; background: var(--slate-200);
+  border-radius: var(--r-pill); overflow: hidden;
+  margin-bottom: 24px;
+}
+.mk-loop-fill {
+  height: 100%; background: var(--gold);
+  transition: width var(--t-fast) linear;
+  border-radius: var(--r-pill);
+}
+.mk-loop-steps {
+  display: grid; gap: 12px; grid-template-columns: 1fr;
+}
+@media (min-width: 640px) { .mk-loop-steps { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1024px) { .mk-loop-steps { grid-template-columns: repeat(4, 1fr); } }
+.mk-loop-step {
+  background: var(--cream); padding: 24px;
+  border: 1px solid var(--slate-200); border-radius: var(--r-xl);
+  display: flex; flex-direction: column; gap: 8px;
+  opacity: 0.5;
+  transition: opacity .35s ease, transform .35s ease, border-color .35s ease, background .35s ease;
+}
+.mk-loop-step.is-done { opacity: 1; }
+.mk-loop-step.is-active {
+  opacity: 1;
+  background: #fff;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(200, 162, 74, 0.18);
+  transform: translateY(-2px);
+}
+.mk-loop-step .mk-pic {
+  width: 40px; height: 40px; border-radius: var(--r-md);
+  background: var(--ink); color: var(--gold);
+  display: inline-flex; align-items: center; justify-content: center;
+  margin-bottom: 6px;
+  transition: transform .35s ease;
+}
+.mk-loop-step.is-active .mk-pic { transform: scale(1.08); }
+.mk-loop-name {
+  font-size: 18px; font-weight: 700; color: var(--ink);
+}
+.mk-loop-step p {
+  font-size: 13px; line-height: 1.5; color: var(--slate-600);
+  margin: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .mk-loop-step { opacity: 1; transition: none; }
+  .mk-loop-fill { transition: none; }
+}
+
+/* Curriculum — compact accordion rows */
+.mk-curr {
+  max-width: 800px; margin: 0 auto;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.mk-curr-row {
+  position: relative;
+  background: #fff; border: 1px solid var(--slate-200);
+  border-radius: var(--r-lg);
+  padding: 18px 22px;
+  text-align: left; font-family: inherit; cursor: pointer;
+  display: grid; gap: 14px;
+  grid-template-columns: auto auto 1fr auto;
+  align-items: center;
+  transition: border-color 120ms, box-shadow 120ms, background 120ms;
+}
+.mk-curr-row:hover {
+  border-color: var(--gold);
+  box-shadow: var(--shadow-soft);
+}
+.mk-curr-row.is-open {
+  border-color: var(--gold);
+  background: var(--cream);
+}
+.mk-curr-num {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--gold-deep);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+.mk-curr-icon {
+  width: 36px; height: 36px; border-radius: var(--r-md);
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.mk-pic-ink-gold.mk-curr-icon { background: var(--ink); color: var(--gold); }
+.mk-pic-gold-ink.mk-curr-icon { background: var(--gold); color: var(--ink); }
+.mk-curr-main {
+  display: flex; flex-direction: column; gap: 2px; min-width: 0;
+}
+.mk-curr-title {
+  font-size: 16px; font-weight: 700; color: var(--ink);
+  line-height: 1.25;
+}
+.mk-curr-meta {
+  font-size: 12px; color: var(--slate-500); font-weight: 500;
+}
+.mk-curr-chev {
+  font-size: 22px; font-weight: 600; color: var(--gold-deep);
+  width: 24px; text-align: center;
+}
+.mk-curr-detail {
+  grid-column: 1 / -1;
+  margin-top: 14px; padding-top: 14px;
+  border-top: 1px solid var(--slate-200);
+  animation: mk-curr-in .25s ease both;
+}
+.mk-curr-detail .mk-k {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--gold-deep);
+  margin-bottom: 6px;
+}
+.mk-curr-art {
+  font-size: 15px; line-height: 1.55; color: var(--ink);
+  font-weight: 500;
+}
+@keyframes mk-curr-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.mk-curr-bonus {
+  background: var(--ink); color: #fff;
+  border-radius: var(--r-lg); padding: 18px 22px;
+  display: grid; gap: 14px;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  margin-top: 8px;
+}
+.mk-curr-bonus .mk-curr-title { color: #fff; }
+.mk-curr-bonus .mk-curr-meta { color: rgba(255,255,255,0.62); }
+
+/* ============================================================
    /assessment/take — assessment runner page (2026-05-26)
    ============================================================ */
 .mk-take {

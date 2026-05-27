@@ -1,8 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 'use client';
 
-import { useState } from 'react';
-import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import {
   SiteHeader,
   Section,
@@ -41,23 +40,74 @@ const ArrowR = (p: IconProps) => (<svg {...sw(p)}><line x1="5" y1="12" x2="19" y
 const PlayIcon = (p: IconProps) => (<svg {...sw(p)}><polygon points="6 4 20 12 6 20 6 4" fill="currentColor" stroke="none" /></svg>);
 const FlaskIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M10 2v7.31" /><path d="M14 9.3V2" /><path d="M8.5 2h7" /><path d="M14 9.3a6.5 6.5 0 1 1-4 0" /></svg>);
 
-// ---------- What you build (4 artifacts) ----------
+// ---------- Artifact reel (auto-cycling) ----------
 
-const WHAT_YOU_BUILD: { title: string; body: string; icon: typeof CheckSquareIcon }[] = [
-  { title: 'Prompt Card', body: 'A reviewed, reusable prompt with role, task, constraints, and a review checklist baked in.', icon: ChatIcon },
-  { title: 'Saved Skill', body: 'A named, tagged skill with run history — promote a working prompt into a team asset.', icon: RectIcon },
-  { title: 'Workflow SOP', body: 'Input, output, retention, and review documented as an examiner-readable workflow.', icon: FileIcon },
-  { title: 'Review Checklist', body: 'A human-approval log attached to every AI-assisted artifact you produce.', icon: CheckIcon },
+type Artifact = {
+  title: string;
+  kicker: string;
+  icon: typeof CheckSquareIcon;
+  inputLabel: string;
+  input: string;
+  outputLabel: string;
+  output: string;
+  meta: string;
+};
+
+const ARTIFACTS: Artifact[] = [
+  {
+    title: 'Prompt Card',
+    kicker: 'Output of Module 2 · Prompt Foundations',
+    icon: ChatIcon,
+    inputLabel: 'You write',
+    input: 'A weak prompt: "Help me with this procedure."',
+    outputLabel: 'You leave with',
+    output: 'A reviewed prompt with role, task, constraints, and review checklist — ready to reuse.',
+    meta: 'Saved to your Toolbox',
+  },
+  {
+    title: 'Saved Skill',
+    kicker: 'Output of Module 3 · Skills',
+    icon: RectIcon,
+    inputLabel: 'You promote',
+    input: 'A working prompt you ran three times with the same banker context.',
+    outputLabel: 'You leave with',
+    output: 'A named, tagged Skill with run history — promote a prompt into a team asset.',
+    meta: 'Owner attached · Versioned',
+  },
+  {
+    title: 'Workflow SOP',
+    kicker: 'Output of Module 4 · Workflows',
+    icon: FileIcon,
+    inputLabel: 'You document',
+    input: 'A real banking workflow that uses AI somewhere in the chain.',
+    outputLabel: 'You leave with',
+    output: 'Input, output, retention, and review documented — the unit examiners actually read.',
+    meta: 'Examiner-readable format',
+  },
+  {
+    title: 'Review Checklist',
+    kicker: 'Output of every module',
+    icon: CheckIcon,
+    inputLabel: 'You attach',
+    input: 'A named reviewer to each AI-assisted artifact before it goes into real work.',
+    outputLabel: 'You leave with',
+    output: 'A human-approval log on every output — what got reviewed, by whom, when.',
+    meta: 'Audit-trail ready',
+  },
 ];
 
-// ---------- Inside one lesson (the loop) ----------
+// ---------- Inside one lesson (auto-cycling loop) ----------
 
-const LESSON_STEPS: { step: string; title: string; body: string; icon: typeof CheckSquareIcon }[] = [
+type LessonStep = { step: string; title: string; body: string; icon: typeof CheckSquareIcon };
+const LESSON_STEPS: LessonStep[] = [
   { step: 'watch', title: 'Watch', body: '5–8 minute concept video. Why the technique works, where it fails.', icon: PlayIcon },
   { step: 'practice', title: 'Practice', body: 'Run a sandbox scenario with realistic synthetic banking data.', icon: FlaskIcon },
   { step: 'build', title: 'Build', body: 'Save the working output as a reusable asset to your Toolbox.', icon: RectIcon },
   { step: 'review', title: 'Review', body: 'Run the human-approval checklist before the artifact goes into real work.', icon: CheckIcon },
 ];
+
+const ARTIFACT_MS = 5000;
+const LESSON_STEP_MS = 1500;
 
 // ---------- Module data ----------
 
@@ -113,6 +163,29 @@ export default function CoursesIndexPage() {
   const m = MODULES[active];
   const ActiveIcon = m.icon;
 
+  // Artifact reel — auto-cycle every 5s through ARTIFACTS, hover pauses
+  const [artIdx, setArtIdx] = useState(0);
+  const [artPaused, setArtPaused] = useState(false);
+  useEffect(() => {
+    if (artPaused) return;
+    const t = setTimeout(() => setArtIdx((i) => (i + 1) % ARTIFACTS.length), ARTIFACT_MS);
+    return () => clearTimeout(t);
+  }, [artIdx, artPaused]);
+  const art = ARTIFACTS[artIdx];
+  const ArtIcon = art.icon;
+
+  // Lesson loop — each of Watch/Practice/Build/Review lights up for 1.5s
+  const [lessonIdx, setLessonIdx] = useState(0);
+  const [lessonPaused, setLessonPaused] = useState(false);
+  useEffect(() => {
+    if (lessonPaused) return;
+    const t = setTimeout(() => setLessonIdx((i) => (i + 1) % LESSON_STEPS.length), LESSON_STEP_MS);
+    return () => clearTimeout(t);
+  }, [lessonIdx, lessonPaused]);
+
+  // Curriculum module expand — click a module to reveal its artifact inline
+  const [openMod, setOpenMod] = useState<number | null>(null);
+
   return (
     <div className="mockup-scope">
       <SiteHeader activePath="/courses" cta={{ label: 'Enroll · $295', href: '/courses/foundation/program/purchase' }} />
@@ -141,6 +214,13 @@ export default function CoursesIndexPage() {
                 See what learners build
               </Button>
             </div>
+            <p className="mk-hero-foot">
+              Not sure where to start?{' '}
+              <a href="/assessment" className="mk-hero-foot-link">
+                Take the free readiness check first
+              </a>
+              .
+            </p>
           </div>
 
           <div className="mk-cmp">
@@ -195,166 +275,141 @@ export default function CoursesIndexPage() {
         </div>
       </section>
 
-      {/* SMALL ASSESSMENT REDIRECT STRIP */}
-      <div className="mk-strip">
-        <div className="mk-container">
-          <span>Not sure where to start? Take the free readiness check first.</span>
-          <Link href="/assessment" className="mk-strip-link">
-            Free Readiness Assessment <ArrowR className="mk-ic" />
-          </Link>
-        </div>
-      </div>
-
-      {/* WHAT YOU BUILD — 4 artifact cards */}
+      {/* ARTIFACT REEL — auto-cycling */}
       <Section variant="std" surface="white">
+        <div id="what-you-build" />
         <SectionHead
           kicker="What you build"
-          heading={<>Four artifacts you keep and reuse.</>}
+          heading={<>Four artifacts. One Toolbox.</>}
         />
-        <div id="what-you-build" className="mk-build4">
-          {WHAT_YOU_BUILD.map(({ title, body, icon: Icon }) => (
-            <div key={title} className="mk-build-card">
+        <div
+          className="mk-reel"
+          onMouseEnter={() => setArtPaused(true)}
+          onMouseLeave={() => setArtPaused(false)}
+        >
+          <div className="mk-reel-dots">
+            {ARTIFACTS.map((a, i) => (
+              <button
+                key={a.title}
+                type="button"
+                onClick={() => setArtIdx(i)}
+                className={`mk-reel-dot${i === artIdx ? ' is-active' : ''}`}
+                aria-label={`Show ${a.title}`}
+              />
+            ))}
+          </div>
+
+          <div key={artIdx} className="mk-reel-card is-animated">
+            <div className="mk-reel-head">
               <span className="mk-pic-ink-gold">
-                <Icon size={22} />
+                <ArtIcon size={22} />
               </span>
-              <h3>{title}</h3>
-              <p>{body}</p>
+              <div>
+                <div className="mk-k">{art.kicker}</div>
+                <h3>{art.title}</h3>
+              </div>
             </div>
-          ))}
+            <div className="mk-reel-flow">
+              <div className="mk-reel-step">
+                <div className="mk-k">{art.inputLabel}</div>
+                <div className="mk-reel-text">{art.input}</div>
+              </div>
+              <div className="mk-reel-arrow" aria-hidden="true">→</div>
+              <div className="mk-reel-step mk-reel-step-out">
+                <div className="mk-k">{art.outputLabel}</div>
+                <div className="mk-reel-text">{art.output}</div>
+                <div className="mk-reel-meta">
+                  <CheckIcon size={14} /> {art.meta}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </Section>
 
-      {/* INSIDE ONE LESSON */}
+      {/* LESSON LOOP — auto-cycling */}
       <Section variant="std">
         <SectionHead
           kicker="Inside one lesson"
           heading={<>Watch → Practice → Build → Review.</>}
-          lede={
-            <>
-              Every module follows the same loop. Short concept video, hands-on lab, saved artifact,
-              human review checklist.
-            </>
-          }
         />
-        <div className="mk-lesson">
-          <div className="mk-lesson-steps">
-            {LESSON_STEPS.map(({ step, title, body, icon: Icon }, i) => (
-              <div key={step} className="mk-lesson-step">
-                <span className="mk-pic">
-                  <Icon size={20} />
-                </span>
-                <div className="mk-lesson-meta">Step {i + 1}</div>
-                <div className="mk-lesson-name">{title}</div>
-                <p>{body}</p>
-              </div>
-            ))}
+        <div
+          className="mk-loop"
+          onMouseEnter={() => setLessonPaused(true)}
+          onMouseLeave={() => setLessonPaused(false)}
+        >
+          <div className="mk-loop-track">
+            <div
+              className="mk-loop-fill"
+              style={{ width: `${((lessonIdx + 1) / LESSON_STEPS.length) * 100}%` }}
+            />
           </div>
-          <div className="mk-lesson-card">
-            <div className="mk-top">
-              <div className="mk-k">Lesson preview · Module 2</div>
-              <div className="mk-n">Prompt Foundations</div>
-            </div>
-            <div className="mk-lesson-row">
-              <div className="mk-k">Prompt structure</div>
-              <div className="mk-v">Role · Task · Context · Constraints · Output · Review</div>
-            </div>
-            <div className="mk-lesson-row">
-              <div className="mk-k">Practice activity</div>
-              <div className="mk-v">Rewrite a weak prompt until it passes the review checklist</div>
-            </div>
-            <div className="mk-lesson-row">
-              <div className="mk-k">Saved to Toolbox</div>
-              <div className="mk-v">Reviewed Prompt Card</div>
-            </div>
+          <div className="mk-loop-steps">
+            {LESSON_STEPS.map(({ step, title, body, icon: Icon }, i) => {
+              const state = i === lessonIdx ? 'is-active' : i < lessonIdx ? 'is-done' : '';
+              return (
+                <div key={step} className={`mk-loop-step ${state}`}>
+                  <span className="mk-pic">
+                    <Icon size={20} />
+                  </span>
+                  <div className="mk-loop-name">{title}</div>
+                  <p>{body}</p>
+                </div>
+              );
+            })}
           </div>
         </div>
       </Section>
 
-      {/* MODULES */}
+      {/* CURRICULUM — tight, click to expand */}
       <Section variant="std" surface="white">
         <div id="curriculum" />
         <SectionHead
           kicker="Curriculum"
-          heading={<>Five modules. Each one ends with something useful.</>}
-          lede={
-            <>
-              Lessons are short (15–30 min). Every module pairs concept video with a hands-on lab
-              and saves work to your Pack.
-            </>
-          }
+          heading={<>Five modules. Tap to see what you build.</>}
         />
-        <div className="mk-modules">
+        <div className="mk-curr">
           {MODULES.map((mod, i) => {
             const Icon = mod.icon;
+            const isOpen = openMod === i;
             return (
-              <div key={mod.title} className="mk-mod">
-                <div className="mk-bar" />
-                <div className="mk-body">
-                  <div className="mk-top">
-                    <span className="mk-pic-ink-gold">
-                      <Icon size={24} />
-                    </span>
-                    <span className="mk-num">0{i + 1}</span>
-                  </div>
-                  <h3>{mod.title}</h3>
-                  <p>{mod.desc}</p>
-                  <div className="mk-meta">
+              <button
+                key={mod.title}
+                type="button"
+                className={`mk-curr-row${isOpen ? ' is-open' : ''}`}
+                onClick={() => setOpenMod(isOpen ? null : i)}
+                aria-expanded={isOpen}
+              >
+                <span className="mk-curr-num">0{i + 1}</span>
+                <span className="mk-pic-ink-gold mk-curr-icon">
+                  <Icon size={20} />
+                </span>
+                <div className="mk-curr-main">
+                  <div className="mk-curr-title">{mod.title}</div>
+                  <div className="mk-curr-meta">
                     {mod.meta}
                     {i === 0 && ' · Free preview'}
                   </div>
                 </div>
-              </div>
+                <span className="mk-curr-chev" aria-hidden="true">{isOpen ? '−' : '+'}</span>
+                {isOpen && (
+                  <div className="mk-curr-detail">
+                    <div className="mk-k">You leave with</div>
+                    <div className="mk-curr-art">{mod.artifact}</div>
+                  </div>
+                )}
+              </button>
             );
           })}
-          <div className="mk-mod" style={{ background: 'var(--cream)' }}>
-            <div className="mk-bar" />
-            <div className="mk-body">
-              <div className="mk-top">
-                <span className="mk-pic-gold-ink">
-                  <StackIcon size={24} />
-                </span>
-                <span className="mk-num" style={{ color: 'var(--ink)' }}>Bonus</span>
-              </div>
-              <h3>Full Toolbox access</h3>
-              <p>
-                Course completion opens the full Toolbox: 18 reusable assets, role playbooks, and
-                the prompt library — yours to keep.
-              </p>
-              <div className="mk-meta">Lifetime access · No subscription</div>
+          <div className="mk-curr-bonus">
+            <span className="mk-pic-gold-ink mk-curr-icon">
+              <StackIcon size={20} />
+            </span>
+            <div className="mk-curr-main">
+              <div className="mk-curr-title">Bonus · Full Toolbox access</div>
+              <div className="mk-curr-meta">Lifetime · 18 reusable assets, role playbooks, prompt library</div>
             </div>
           </div>
-        </div>
-      </Section>
-
-      {/* CREDENTIAL */}
-      <Section variant="std">
-        <SectionHead
-          kicker="Credential"
-          heading={<>Earn AiBI-Foundation by submitting reviewed work.</>}
-          lede={
-            <>
-              Completion is not a multiple-choice quiz. You earn the credential by working through
-              every module and submitting your reviewed artifacts.
-            </>
-          }
-        />
-        <div className="mk-credential">
-          {[
-            { k: 'Complete lessons', v: 'Watch and finish every module in the curriculum.' },
-            { k: 'Pass review activity', v: 'Each lab requires a human-approval checklist on the output.' },
-            { k: 'Submit artifacts', v: 'Three reviewed AI artifacts saved to your Toolbox.' },
-            { k: 'Credential', v: 'AiBI-Foundation · The AI Banking Institute on completion.' },
-          ].map(({ k, v }) => (
-            <div key={k} className="mk-credential-row">
-              <span className="mk-pic-ink-gold">
-                <CheckSquareIcon size={18} />
-              </span>
-              <div>
-                <div className="mk-k">{k}</div>
-                <div className="mk-v">{v}</div>
-              </div>
-            </div>
-          ))}
         </div>
       </Section>
 
