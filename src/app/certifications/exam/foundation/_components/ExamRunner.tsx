@@ -12,25 +12,33 @@
 // On finish, posts the attempt summary to /api/certifications/exam/submit.
 // Submission is best-effort — the API is currently a stub. Failure does not
 // block the learner from seeing their result.
+//
+// 2026-05-27: Ported to the mockup design system. Calm, focused assessment
+// surface — Inter typography, navy/cream/gold/slate tokens, no italics,
+// no "unlock" / "earn" language. The exam reads like a serious credential
+// sitting, not a game.
 
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { useExam } from '../../_lib/useExam';
+
+const INTER_STACK =
+  'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
 
 const buttonPrimary: CSSProperties = {
   display: 'inline-flex',
   alignItems: 'center',
   gap: 10,
   padding: '12px 22px',
-  borderRadius: 2,
-  background: 'var(--ledger-ink)',
-  color: 'var(--ledger-paper)',
+  borderRadius: 12,
+  background: 'var(--ink)',
+  color: 'var(--cream)',
   border: 'none',
   cursor: 'pointer',
-  fontFamily: 'var(--ledger-mono)',
+  fontFamily: INTER_STACK,
   fontSize: 11,
   letterSpacing: '0.16em',
   textTransform: 'uppercase',
-  fontWeight: 600,
+  fontWeight: 700,
 };
 
 const buttonGhost: CSSProperties = {
@@ -38,24 +46,34 @@ const buttonGhost: CSSProperties = {
   alignItems: 'center',
   gap: 10,
   padding: '11px 20px',
-  borderRadius: 2,
+  borderRadius: 12,
   background: 'transparent',
-  color: 'var(--ledger-ink)',
-  border: '1px solid var(--ledger-rule-strong)',
+  color: 'var(--ink)',
+  border: '1px solid var(--ink-a15)',
   cursor: 'pointer',
-  fontFamily: 'var(--ledger-mono)',
+  fontFamily: INTER_STACK,
   fontSize: 11,
   letterSpacing: '0.16em',
   textTransform: 'uppercase',
-  fontWeight: 600,
+  fontWeight: 700,
 };
 
 const kickerStyle: CSSProperties = {
-  fontFamily: 'var(--ledger-mono)',
-  fontSize: 10.5,
+  fontFamily: INTER_STACK,
+  fontSize: 11,
+  fontWeight: 700,
   letterSpacing: '0.2em',
   textTransform: 'uppercase',
-  color: 'var(--ledger-accent)',
+  color: 'var(--gold-deep)',
+};
+
+const mutedKickerStyle: CSSProperties = {
+  fontFamily: INTER_STACK,
+  fontSize: 11,
+  fontWeight: 700,
+  letterSpacing: '0.18em',
+  textTransform: 'uppercase',
+  color: 'var(--slate-500)',
 };
 
 export function ExamRunner() {
@@ -127,17 +145,18 @@ export function ExamRunner() {
     return (
       <section>
         <ProgressBar current={exam.currentIndex + 1} total={exam.questions.length} answered={answered} />
-        <div style={{ marginTop: 24, ...kickerStyle }}>
+        <div style={{ marginTop: 24, ...mutedKickerStyle }}>
           Question {exam.currentIndex + 1} of {exam.questions.length}
         </div>
         <h2
           style={{
-            fontFamily: 'var(--ledger-serif)',
+            fontFamily: INTER_STACK,
+            fontWeight: 700,
             fontSize: 'clamp(22px, 2.6vw, 28px)',
             lineHeight: 1.35,
             letterSpacing: '-0.01em',
             margin: '10px 0 22px',
-            color: 'var(--ledger-ink)',
+            color: 'var(--ink)',
           }}
         >
           {question.stem}
@@ -158,23 +177,26 @@ export function ExamRunner() {
                   alignItems: 'baseline',
                   textAlign: 'left',
                   padding: '14px 18px',
-                  background: active ? 'var(--ledger-paper)' : 'var(--ledger-bg)',
-                  border: `1px solid ${active ? 'var(--ledger-ink)' : 'var(--ledger-rule)'}`,
-                  borderRadius: 3,
+                  background: active ? 'var(--cream-2)' : 'var(--cream)',
+                  border: `1px solid ${active ? 'var(--ink)' : 'var(--ink-a10)'}`,
+                  borderRadius: 12,
                   cursor: 'pointer',
-                  fontFamily: 'var(--ledger-sans)',
-                  fontSize: 14.5,
-                  color: 'var(--ledger-ink)',
+                  fontFamily: INTER_STACK,
+                  fontSize: 15,
+                  fontWeight: 500,
+                  color: 'var(--ink)',
                   lineHeight: 1.5,
+                  transition: 'border-color 120ms cubic-bezier(0.4, 0, 0.2, 1), background 120ms cubic-bezier(0.4, 0, 0.2, 1)',
                 }}
               >
                 <span
                   style={{
-                    fontFamily: 'var(--ledger-mono)',
+                    fontFamily: INTER_STACK,
                     fontSize: 11,
-                    letterSpacing: '0.08em',
+                    fontWeight: 700,
+                    letterSpacing: '0.12em',
                     textTransform: 'uppercase',
-                    color: active ? 'var(--ledger-accent)' : 'var(--ledger-muted)',
+                    color: active ? 'var(--gold-deep)' : 'var(--slate-500)',
                   }}
                 >
                   {opt.key}
@@ -189,7 +211,7 @@ export function ExamRunner() {
           style={{
             marginTop: 28,
             paddingTop: 18,
-            borderTop: '1px solid var(--ledger-rule)',
+            borderTop: '1px solid var(--ink-a10)',
             display: 'flex',
             justifyContent: 'space-between',
             gap: 12,
@@ -205,7 +227,7 @@ export function ExamRunner() {
               cursor: exam.currentIndex === 0 ? 'not-allowed' : 'pointer',
             }}
           >
-            ← Previous
+            ← PREVIOUS
           </button>
           {isLast ? (
             <button
@@ -218,7 +240,7 @@ export function ExamRunner() {
                 cursor: allAnswered ? 'pointer' : 'not-allowed',
               }}
             >
-              Submit Exam →
+              SUBMIT EXAM
             </button>
           ) : (
             <button
@@ -231,7 +253,7 @@ export function ExamRunner() {
                 cursor: selected ? 'pointer' : 'not-allowed',
               }}
             >
-              Next →
+              NEXT →
             </button>
           )}
         </div>
@@ -246,42 +268,34 @@ export function ExamRunner() {
 function IntroPhase({ onStart }: { readonly onStart: () => void }) {
   return (
     <section>
-      <p style={{ ...kickerStyle, margin: '0 0 14px' }}>Final exam</p>
+      <p style={{ ...kickerStyle, margin: '0 0 14px' }}>Final Exam</p>
       <h1
         style={{
-          fontFamily: 'var(--ledger-serif)',
-          fontWeight: 500,
-          fontSize: 'clamp(40px, 5vw, 58px)',
+          fontFamily: INTER_STACK,
+          fontWeight: 700,
+          fontSize: 'clamp(36px, 5vw, 54px)',
           lineHeight: 1.05,
-          letterSpacing: '-0.03em',
+          letterSpacing: '-0.025em',
           margin: '0 0 14px',
-          color: 'var(--ledger-ink)',
+          color: 'var(--ink)',
         }}
       >
-        AiBI-Foundation{' '}
-        <em
-          style={{
-            color: 'var(--ledger-accent)',
-            fontStyle: 'italic',
-            fontWeight: 400,
-          }}
-        >
-          proficiency exam.
-        </em>
+        AiBI-Foundation proficiency exam.
       </h1>
       <p
         style={{
-          fontFamily: 'var(--ledger-serif)',
-          fontStyle: 'italic',
-          fontSize: 19,
-          lineHeight: 1.5,
-          color: 'var(--ledger-ink-2)',
+          fontFamily: INTER_STACK,
+          fontSize: 17,
+          fontWeight: 400,
+          lineHeight: 1.55,
+          color: 'var(--slate-600)',
           margin: '0 0 26px',
           maxWidth: '60ch',
         }}
       >
         Twelve questions drawn at random across the five proficiency
-        topics. No time limit. Take your time.
+        topics. No time limit. Answer each question once. Submit when
+        every question has a response.
       </p>
       <ul
         style={{
@@ -295,10 +309,10 @@ function IntroPhase({ onStart }: { readonly onStart: () => void }) {
       >
         {[
           'Gen AI Fundamentals',
-          'Prompting & the RTFC Framework',
+          'Prompting and the RTFC Framework',
           'Safe Use in Regulated Institutions',
           'Use Case Identification',
-          'Measurement & Accountability',
+          'Measurement and Accountability',
         ].map((label) => (
           <li
             key={label}
@@ -306,16 +320,18 @@ function IntroPhase({ onStart }: { readonly onStart: () => void }) {
               display: 'flex',
               alignItems: 'baseline',
               gap: 10,
-              fontFamily: 'var(--ledger-sans)',
+              fontFamily: INTER_STACK,
               fontSize: 14,
-              color: 'var(--ledger-ink-2)',
+              fontWeight: 500,
+              color: 'var(--slate-600)',
             }}
           >
             <span
               style={{
                 width: 6,
                 height: 6,
-                background: 'var(--ledger-accent)',
+                background: 'var(--gold)',
+                borderRadius: 999,
                 flex: 'none',
                 marginTop: 5,
               }}
@@ -326,7 +342,7 @@ function IntroPhase({ onStart }: { readonly onStart: () => void }) {
         ))}
       </ul>
       <button type="button" onClick={onStart} style={buttonPrimary}>
-        Begin Exam →
+        BEGIN EXAM
       </button>
     </section>
   );
@@ -348,11 +364,12 @@ function ProgressBar({
         style={{
           display: 'flex',
           justifyContent: 'space-between',
-          fontFamily: 'var(--ledger-mono)',
-          fontSize: 10,
+          fontFamily: INTER_STACK,
+          fontSize: 10.5,
+          fontWeight: 700,
           letterSpacing: '0.16em',
           textTransform: 'uppercase',
-          color: 'var(--ledger-muted)',
+          color: 'var(--slate-500)',
           marginBottom: 8,
         }}
       >
@@ -365,8 +382,8 @@ function ProgressBar({
         style={{
           width: '100%',
           height: 4,
-          background: 'var(--ledger-parch)',
-          borderRadius: 2,
+          background: 'var(--ink-a10)',
+          borderRadius: 999,
           overflow: 'hidden',
         }}
         role="progressbar"
@@ -379,7 +396,7 @@ function ProgressBar({
           style={{
             width: `${pct}%`,
             height: '100%',
-            background: 'var(--ledger-accent)',
+            background: 'var(--gold)',
             transition: 'width .25s ease',
           }}
         />
@@ -403,13 +420,13 @@ function ResultsPhase({
       <p style={{ ...kickerStyle, margin: '0 0 14px' }}>Results</p>
       <h1
         style={{
-          fontFamily: 'var(--ledger-serif)',
-          fontWeight: 500,
-          fontSize: 'clamp(36px, 4.5vw, 52px)',
+          fontFamily: INTER_STACK,
+          fontWeight: 700,
+          fontSize: 'clamp(34px, 4.5vw, 48px)',
           lineHeight: 1.1,
           letterSpacing: '-0.025em',
           margin: '0 0 16px',
-          color: 'var(--ledger-ink)',
+          color: 'var(--ink)',
         }}
       >
         {proficiency.headline}
@@ -422,44 +439,47 @@ function ResultsPhase({
           alignItems: 'center',
           marginBottom: 30,
           padding: '24px 26px',
-          border: '1px solid var(--ledger-rule)',
-          borderRadius: 3,
-          background: 'var(--ledger-paper)',
+          border: '1px solid var(--ink-a10)',
+          borderRadius: 24,
+          background: 'var(--cream-2)',
+          boxShadow: 'var(--shadow-soft)',
         }}
       >
         <div>
           <div
             style={{
-              fontFamily: 'var(--ledger-mono)',
-              fontSize: 9.5,
+              fontFamily: INTER_STACK,
+              fontSize: 10.5,
+              fontWeight: 700,
               letterSpacing: '0.2em',
               textTransform: 'uppercase',
-              color: 'var(--ledger-muted)',
+              color: 'var(--slate-500)',
             }}
           >
             Score
           </div>
           <div
             style={{
-              fontFamily: 'var(--ledger-serif)',
+              fontFamily: INTER_STACK,
               fontSize: 56,
-              fontWeight: 500,
+              fontWeight: 700,
               letterSpacing: '-0.03em',
               lineHeight: 1,
               marginTop: 4,
-              color: 'var(--ledger-ink)',
+              color: 'var(--ink)',
             }}
           >
             {exam.pctCorrect}%
           </div>
           <div
             style={{
-              marginTop: 6,
-              fontFamily: 'var(--ledger-mono)',
-              fontSize: 10.5,
+              marginTop: 8,
+              fontFamily: INTER_STACK,
+              fontSize: 11,
+              fontWeight: 700,
               letterSpacing: '0.16em',
               textTransform: 'uppercase',
-              color: 'var(--ledger-accent)',
+              color: 'var(--gold-deep)',
             }}
           >
             {proficiency.label}
@@ -468,10 +488,11 @@ function ResultsPhase({
         <p
           style={{
             margin: 0,
-            fontFamily: 'var(--ledger-sans)',
-            fontSize: 14.5,
+            fontFamily: INTER_STACK,
+            fontSize: 15,
+            fontWeight: 500,
             lineHeight: 1.6,
-            color: 'var(--ledger-ink-2)',
+            color: 'var(--slate-600)',
           }}
         >
           {proficiency.summary}
@@ -480,12 +501,12 @@ function ResultsPhase({
 
       <h2
         style={{
-          fontFamily: 'var(--ledger-serif)',
+          fontFamily: INTER_STACK,
           fontSize: 22,
-          fontWeight: 500,
+          fontWeight: 700,
           letterSpacing: '-0.01em',
           margin: '0 0 14px',
-          color: 'var(--ledger-ink)',
+          color: 'var(--ink)',
         }}
       >
         Topic breakdown
@@ -507,39 +528,38 @@ function ResultsPhase({
               gridTemplateColumns: '1fr auto auto',
               gap: 14,
               alignItems: 'center',
-              padding: '12px 16px',
-              border: '1px solid var(--ledger-rule)',
-              borderRadius: 3,
-              background: 'var(--ledger-bg)',
+              padding: '14px 18px',
+              border: '1px solid var(--ink-a10)',
+              borderRadius: 16,
+              background: 'var(--cream)',
             }}
           >
             <span
               style={{
-                fontFamily: 'var(--ledger-serif)',
+                fontFamily: INTER_STACK,
                 fontSize: 15,
-                fontWeight: 500,
-                color: 'var(--ledger-ink)',
+                fontWeight: 600,
+                color: 'var(--ink)',
               }}
             >
               {t.label}
             </span>
             <span
               style={{
-                fontFamily: 'var(--ledger-mono)',
-                fontSize: 12,
-                letterSpacing: '0.04em',
-                color: 'var(--ledger-slate)',
+                fontFamily: INTER_STACK,
+                fontSize: 13,
+                fontWeight: 500,
+                color: 'var(--slate-500)',
               }}
             >
               {t.correct} / {t.total}
             </span>
             <span
               style={{
-                fontFamily: 'var(--ledger-mono)',
-                fontSize: 12,
-                letterSpacing: '0.04em',
-                color: 'var(--ledger-ink)',
-                fontWeight: 600,
+                fontFamily: INTER_STACK,
+                fontSize: 13,
+                fontWeight: 700,
+                color: 'var(--ink)',
                 minWidth: 44,
                 textAlign: 'right',
               }}
@@ -552,20 +572,21 @@ function ResultsPhase({
 
       <div
         style={{
-          padding: '20px 22px',
-          border: '1px solid var(--ledger-rule)',
-          borderRadius: 3,
-          background: 'var(--ledger-parch)',
+          padding: '22px 24px',
+          border: '1px solid var(--ink-a10)',
+          borderRadius: 16,
+          background: 'var(--cream-2)',
           marginBottom: 24,
         }}
       >
         <p
           style={{
-            fontFamily: 'var(--ledger-mono)',
-            fontSize: 10.5,
+            fontFamily: INTER_STACK,
+            fontSize: 11,
+            fontWeight: 700,
             letterSpacing: '0.18em',
             textTransform: 'uppercase',
-            color: 'var(--ledger-accent)',
+            color: 'var(--gold-deep)',
             margin: '0 0 10px',
           }}
         >
@@ -574,10 +595,11 @@ function ResultsPhase({
         <p
           style={{
             margin: 0,
-            fontFamily: 'var(--ledger-sans)',
-            fontSize: 14.5,
+            fontFamily: INTER_STACK,
+            fontSize: 15,
+            fontWeight: 500,
             lineHeight: 1.6,
-            color: 'var(--ledger-ink-2)',
+            color: 'var(--slate-600)',
           }}
         >
           {proficiency.recommendation}
@@ -586,29 +608,45 @@ function ResultsPhase({
 
       <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
         <button type="button" onClick={exam.retake} style={buttonGhost}>
-          Retake exam
+          RETAKE EXAM
         </button>
         {submitState === 'submitting' && (
           <span
             style={{
-              fontFamily: 'var(--ledger-mono)',
-              fontSize: 10.5,
+              fontFamily: INTER_STACK,
+              fontSize: 11,
+              fontWeight: 600,
               letterSpacing: '0.16em',
               textTransform: 'uppercase',
-              color: 'var(--ledger-muted)',
+              color: 'var(--slate-500)',
             }}
           >
             Saving attempt…
           </span>
         )}
+        {submitState === 'submitted' && (
+          <span
+            style={{
+              fontFamily: INTER_STACK,
+              fontSize: 11,
+              fontWeight: 700,
+              letterSpacing: '0.16em',
+              textTransform: 'uppercase',
+              color: 'var(--emerald-700)',
+            }}
+          >
+            Attempt saved
+          </span>
+        )}
         {submitState === 'error' && (
           <span
             style={{
-              fontFamily: 'var(--ledger-mono)',
-              fontSize: 10.5,
+              fontFamily: INTER_STACK,
+              fontSize: 11,
+              fontWeight: 600,
               letterSpacing: '0.16em',
               textTransform: 'uppercase',
-              color: 'var(--ledger-weak)',
+              color: 'var(--gold-deep)',
             }}
           >
             Could not save attempt (your result is still on screen).
