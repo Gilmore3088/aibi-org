@@ -8,6 +8,7 @@
 // `.in('slug', […])` query rather than per-step round-trips.
 
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
 import { getPaidToolboxAccess } from '@/lib/toolbox/access';
 import { getRecipeBySlug } from '@/lib/toolbox/recipes';
@@ -18,18 +19,6 @@ import { TrackRecipeView } from '../_components/TrackRecipeView';
 interface PageProps {
   readonly params: { slug: string };
 }
-
-const PILLAR_LABEL: Record<'A' | 'B' | 'C', string> = {
-  A: 'Accessible',
-  B: 'Boundary-Safe',
-  C: 'Capable',
-};
-
-const PILLAR_COLOR: Record<'A' | 'B' | 'C', string> = {
-  A: 'var(--ledger-accent)',
-  B: 'var(--ledger-accent-2)',
-  C: 'var(--ledger-accent)',
-};
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const recipe = await getRecipeBySlug(params.slug);
@@ -66,44 +55,48 @@ export default async function CookbookRecipePage({ params }: PageProps) {
   const slugToLibraryId = await resolveLibrarySkillIds(uniqueSlugs);
 
   return (
-    <main className="mx-auto max-w-3xl px-6 py-12">
+    <main className="min-h-screen bg-[color:var(--cream)]">
       <TrackRecipeView slug={recipe.slug} />
-      <header className="mb-10">
-        <div className="flex items-center gap-2">
-          <span
-            className="inline-block h-2 w-2 rounded-full"
-            style={{ backgroundColor: PILLAR_COLOR[recipe.pillar] }}
-            aria-label={`Pillar ${recipe.pillar} (${PILLAR_LABEL[recipe.pillar]})`}
-          />
-          <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--ledger-accent)]">
+      <div className="border-b border-[color:var(--ink-a10)] bg-white">
+        <div className="mx-auto max-w-3xl px-6 py-10 lg:px-10">
+          <Link
+            href="/dashboard/toolbox/cookbook"
+            className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[color:var(--slate-500)] hover:text-[color:var(--ink)]"
+          >
+            ← BACK TO COOKBOOK
+          </Link>
+          <p className="mt-4 text-[11px] font-semibold uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
             Cookbook · {recipe.category}
           </p>
-        </div>
-        <h1 className="mt-2 font-serif text-4xl text-[color:var(--ledger-ink)]">
-          {recipe.title}
-        </h1>
-        <p className="mt-4 leading-relaxed text-[color:var(--ledger-muted)]">
-          {recipe.overview}
-        </p>
-        {recipe.compliance_notes ? (
-          <p className="mt-4 border-l-4 border-[color:var(--ledger-accent-2)] pl-4 text-sm text-[color:var(--ledger-muted)]">
-            <strong>Compliance:</strong> {recipe.compliance_notes}
+          <h1 className="mt-2 text-4xl font-bold leading-tight text-[color:var(--ink)] md:text-5xl">
+            {recipe.title}
+          </h1>
+          <p className="mt-4 text-base leading-relaxed text-[color:var(--slate-600)]">
+            {recipe.overview}
           </p>
-        ) : null}
-      </header>
+          {recipe.compliance_notes ? (
+            <p className="mt-5 rounded-[12px] border-l-4 border-[color:var(--gold)] bg-[color:var(--cream-2)] py-3 pl-4 pr-4 text-sm text-[color:var(--slate-600)]">
+              <strong className="font-semibold text-[color:var(--ink)]">Compliance:</strong>{' '}
+              {recipe.compliance_notes}
+            </p>
+          ) : null}
+        </div>
+      </div>
 
-      <ol className="space-y-12">
-        {recipe.steps.map((step, idx) => (
-          <li key={`${step.skill_slug}-${idx}`}>
-            <RecipeStep
-              index={idx + 1}
-              recipeSlug={recipe.slug}
-              step={step}
-              librarySkillId={slugToLibraryId[step.skill_slug]}
-            />
-          </li>
-        ))}
-      </ol>
+      <div className="mx-auto max-w-3xl px-6 py-12 lg:px-10">
+        <ol className="space-y-8">
+          {recipe.steps.map((step, idx) => (
+            <li key={`${step.skill_slug}-${idx}`}>
+              <RecipeStep
+                index={idx + 1}
+                recipeSlug={recipe.slug}
+                step={step}
+                librarySkillId={slugToLibraryId[step.skill_slug]}
+              />
+            </li>
+          ))}
+        </ol>
+      </div>
     </main>
   );
 }

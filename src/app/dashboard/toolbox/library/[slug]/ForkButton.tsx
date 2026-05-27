@@ -49,12 +49,12 @@ export function ForkButton({ librarySkillId, versionId }: ForkButtonProps) {
         type="button"
         onClick={onSave}
         disabled={pending}
-        className="inline-flex items-center bg-[color:var(--ledger-accent)] px-5 py-2.5 font-mono text-[11px] uppercase tracking-widest text-white transition-colors hover:bg-[color:var(--ledger-accent)] disabled:opacity-60"
+        className="inline-flex items-center rounded-[12px] bg-[color:var(--ink)] px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[1.2px] text-white transition-colors hover:bg-[color:var(--ink-2)] disabled:opacity-60"
       >
-        {pending ? 'Saving…' : 'Save to Toolbox'}
+        {pending ? 'SAVING…' : 'SAVE TO TOOLBOX'}
       </button>
       {error && (
-        <p role="alert" className="text-xs text-[color:var(--ledger-weak)]">
+        <p role="alert" className="text-xs text-[color:var(--slate-600)]">
           {error}
         </p>
       )}
