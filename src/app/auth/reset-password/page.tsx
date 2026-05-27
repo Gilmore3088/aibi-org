@@ -1,21 +1,120 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, type CSSProperties, type ReactNode } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 import { updatePassword } from '@/lib/supabase/auth';
-import {
-  LedgerAlert,
-  LedgerButton,
-  LedgerCard,
-  LedgerEyebrow,
-  LedgerField,
-  LedgerH1,
-  LedgerSurface,
-} from '@/components/ledger';
 
 const MIN_PASSWORD_LENGTH = 8;
+
+const cardStyle: CSSProperties = {
+  width: '100%',
+  maxWidth: 440,
+  background: '#fff',
+  borderRadius: 24,
+  border: '1px solid var(--slate-200)',
+  boxShadow: 'var(--shadow-feature)',
+  padding: 32,
+};
+
+const eyebrowStyle: CSSProperties = {
+  fontSize: 11,
+  fontWeight: 700,
+  letterSpacing: '0.16em',
+  textTransform: 'uppercase',
+  color: 'var(--gold-deep)',
+  margin: 0,
+};
+
+const h1Style: CSSProperties = {
+  fontSize: 32,
+  fontWeight: 700,
+  lineHeight: 1.1,
+  letterSpacing: '-0.02em',
+  color: 'var(--ink)',
+  margin: '6px 0 0',
+};
+
+const labelStyle: CSSProperties = {
+  fontSize: 12,
+  fontWeight: 600,
+  letterSpacing: '0.02em',
+  color: 'var(--slate-600)',
+  display: 'block',
+  marginBottom: 6,
+};
+
+const inputStyle: CSSProperties = {
+  width: '100%',
+  height: 44,
+  padding: '0 14px',
+  borderRadius: 12,
+  border: '1px solid var(--slate-200)',
+  background: '#fff',
+  color: 'var(--ink)',
+  fontSize: 15,
+  fontFamily: 'inherit',
+  outline: 'none',
+};
+
+const primaryBtnStyle: CSSProperties = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: 8,
+  width: '100%',
+  height: 48,
+  borderRadius: 12,
+  background: 'var(--gold)',
+  color: 'var(--ink)',
+  fontSize: 13,
+  fontWeight: 700,
+  letterSpacing: '0.08em',
+  textTransform: 'uppercase',
+  border: 'none',
+  cursor: 'pointer',
+  fontFamily: 'inherit',
+  marginTop: 4,
+};
+
+const alertStyle: CSSProperties = {
+  borderRadius: 12,
+  border: '1px solid rgba(180, 60, 50, 0.35)',
+  background: 'rgba(180, 60, 50, 0.06)',
+  color: '#7A1F18',
+  padding: '10px 14px',
+  fontSize: 14,
+  lineHeight: 1.45,
+};
+
+const linkStyle: CSSProperties = {
+  color: 'var(--gold-deep)',
+  fontWeight: 600,
+  textDecoration: 'underline',
+  textUnderlineOffset: 3,
+};
+
+const footerStyle: CSSProperties = {
+  textAlign: 'center',
+  fontSize: 14,
+  color: 'var(--slate-600)',
+  margin: 0,
+};
+
+function Field({
+  label,
+  ...rest
+}: React.InputHTMLAttributes<HTMLInputElement> & { label: ReactNode }) {
+  return (
+    <div style={{ marginBottom: 14 }}>
+      <label htmlFor={rest.name} style={labelStyle}>
+        {label}
+      </label>
+      <input id={rest.name} style={inputStyle} {...rest} />
+    </div>
+  );
+}
 
 export default function ResetPasswordPage() {
   const router = useRouter();
@@ -52,56 +151,52 @@ export default function ResetPasswordPage() {
   }
 
   return (
-    <LedgerSurface showHeader={false}>
-      <div style={{ width: '100%', maxWidth: 440, display: 'flex', flexDirection: 'column', gap: 24 }}>
-        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', gap: 8 }}>
-          <LedgerEyebrow>New password</LedgerEyebrow>
-          <LedgerH1>
-            Pick a strong <em>one.</em>
-          </LedgerH1>
-        </div>
-
-        <LedgerCard variant="strong">
-          <p style={{ margin: '0 0 18px', fontFamily: 'var(--serif)', fontSize: 16, lineHeight: 1.5, color: 'var(--ink-2)', fontStyle: 'italic' }}>
-            Choose a password you don&apos;t use anywhere else. Eight characters minimum.
-          </p>
-
-          {error && (
-            <div style={{ marginBottom: 14 }}>
-              <LedgerAlert variant="error">{error}</LedgerAlert>
-            </div>
-          )}
-
-          <form onSubmit={handleSubmit} noValidate style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-            <LedgerField
-              label="New password"
-              name="password"
-              type="password"
-              autoComplete="new-password"
-              required
-              minLength={MIN_PASSWORD_LENGTH}
-              placeholder={`${MIN_PASSWORD_LENGTH}+ characters`}
-            />
-            <LedgerField
-              label="Confirm password"
-              name="confirmPassword"
-              type="password"
-              autoComplete="new-password"
-              required
-              placeholder="••••••••"
-            />
-            <LedgerButton type="submit" variant="primary" block disabled={pending}>
-              {pending ? 'Updating…' : 'Update password'}
-            </LedgerButton>
-          </form>
-        </LedgerCard>
-
-        <p style={{ textAlign: 'center', fontFamily: 'var(--serif)', fontSize: 15, color: 'var(--ink-2)', margin: 0 }}>
-          <Link href="/auth/login" className="ledger-link">
-            Back to sign in
-          </Link>
-        </p>
+    <div style={{ width: '100%', maxWidth: 440, display: 'flex', flexDirection: 'column', gap: 20 }}>
+      <div style={{ textAlign: 'center' }}>
+        <p style={eyebrowStyle}>New password</p>
+        <h1 style={h1Style}>Pick a strong one.</h1>
       </div>
-    </LedgerSurface>
+
+      <div style={cardStyle}>
+        <p style={{ margin: '0 0 16px', fontSize: 15, lineHeight: 1.5, color: 'var(--slate-600)' }}>
+          Choose a password you don&apos;t use anywhere else. Eight characters minimum.
+        </p>
+
+        {error && (
+          <div role="alert" style={{ ...alertStyle, marginBottom: 14 }}>
+            {error}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} noValidate>
+          <Field
+            label="New password"
+            name="password"
+            type="password"
+            autoComplete="new-password"
+            required
+            minLength={MIN_PASSWORD_LENGTH}
+            placeholder={`${MIN_PASSWORD_LENGTH}+ characters`}
+          />
+          <Field
+            label="Confirm password"
+            name="confirmPassword"
+            type="password"
+            autoComplete="new-password"
+            required
+            placeholder="••••••••"
+          />
+          <button type="submit" style={primaryBtnStyle} disabled={pending}>
+            {pending ? 'UPDATING…' : 'UPDATE PASSWORD'}
+          </button>
+        </form>
+      </div>
+
+      <p style={footerStyle}>
+        <Link href="/auth/login" style={linkStyle}>
+          Back to sign in
+        </Link>
+      </p>
+    </div>
   );
 }
