@@ -25,27 +25,27 @@ export function StarterPrompt({ prompt }: StarterPromptProps) {
 
   return (
     <section
-      className="border border-[color:var(--color-ink)]/15 rounded-[3px] bg-[color:var(--color-ink)] text-[color:var(--color-linen)] overflow-hidden print-avoid-break"
+      className="border border-[color:var(--ink)]/15 rounded-[3px] bg-[color:var(--ink)] text-[color:var(--cream)] overflow-hidden print-avoid-break"
       data-print-hide="true"
       aria-label="Starter prompt"
     >
-      <div className="flex items-center justify-between px-5 py-3 border-b border-[color:var(--color-linen)]/15">
-        <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-linen)]/65">
+      <div className="flex items-center justify-between px-5 py-3 border-b border-[color:var(--cream)]/15">
+        <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--cream)]/65">
           {prompt.label}
         </p>
-        <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-linen)]/45">
+        <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--cream)]/45">
           AiBI starter
         </span>
       </div>
-      <pre className="px-5 py-5 font-mono text-[13px] leading-[1.6] text-[color:var(--color-linen)] whitespace-pre-wrap break-words">
+      <pre className="px-5 py-5 font-mono text-[13px] leading-[1.6] text-[color:var(--cream)] whitespace-pre-wrap break-words">
         {prompt.prompt}
       </pre>
-      <div className="flex flex-col sm:flex-row gap-0 border-t border-[color:var(--color-linen)]/15">
+      <div className="flex flex-col sm:flex-row gap-0 border-t border-[color:var(--cream)]/15">
         <button
           type="button"
           onClick={handleCopy}
           aria-label="Copy starter prompt to clipboard"
-          className="flex-1 px-5 py-3 font-sans text-[11px] font-semibold uppercase tracking-[1.2px] text-[color:var(--color-linen)] hover:bg-[color:var(--color-linen)]/10 transition-colors border-b sm:border-b-0 sm:border-r border-[color:var(--color-linen)]/15"
+          className="flex-1 px-5 py-3 font-sans text-[11px] font-semibold uppercase tracking-[1.2px] text-[color:var(--cream)] hover:bg-[color:var(--cream)]/10 transition-colors border-b sm:border-b-0 sm:border-r border-[color:var(--cream)]/15"
         >
           {copied ? 'Copied' : 'Copy prompt'}
         </button>
@@ -53,7 +53,7 @@ export function StarterPrompt({ prompt }: StarterPromptProps) {
           href={chatGptUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex-1 px-5 py-3 text-center font-sans text-[11px] font-semibold uppercase tracking-[1.2px] text-[color:var(--color-linen)] hover:bg-[color:var(--color-linen)]/10 transition-colors"
+          className="flex-1 px-5 py-3 text-center font-sans text-[11px] font-semibold uppercase tracking-[1.2px] text-[color:var(--cream)] hover:bg-[color:var(--cream)]/10 transition-colors"
         >
           Try this now →
         </a>

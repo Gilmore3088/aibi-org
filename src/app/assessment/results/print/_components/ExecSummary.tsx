@@ -19,7 +19,7 @@ export function ExecSummary({ tier, tierId, score, maxScore }: ExecSummaryProps)
       <div style={{ marginTop: '0.4in', display: 'flex', alignItems: 'baseline', gap: '0.5in' }}>
         <span
           style={{
-            fontFamily: 'var(--font-mono)',
+            fontFamily: 'ui-monospace, "SF Mono", Menlo, Consolas, monospace',
             fontVariantNumeric: 'tabular-nums',
             fontSize: '48pt',
             color: tier.colorVar,
@@ -29,12 +29,12 @@ export function ExecSummary({ tier, tierId, score, maxScore }: ExecSummaryProps)
         >
           {score}
         </span>
-        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '14pt', color: 'var(--color-slate)' }}>
+        <span style={{ fontFamily: 'ui-monospace, "SF Mono", Menlo, Consolas, monospace', fontSize: '14pt', color: 'var(--slate-600)' }}>
           / {maxScore}
         </span>
         <span
           style={{
-            fontFamily: 'var(--font-serif-sc)',
+            fontFamily: 'Georgia, "Times New Roman", serif',
             fontSize: '12pt',
             letterSpacing: '0.18em',
             textTransform: 'uppercase',
@@ -52,10 +52,10 @@ export function ExecSummary({ tier, tierId, score, maxScore }: ExecSummaryProps)
         {persona.oneLine}
       </p>
 
-      <div style={{ marginTop: '0.5in', borderTop: '0.5pt solid var(--color-ink)', paddingTop: '0.3in' }}>
+      <div style={{ marginTop: '0.5in', borderTop: '0.5pt solid var(--ink)', paddingTop: '0.3in' }}>
         <p
           className="pdf-eyebrow"
-          style={{ color: 'var(--color-ink)', opacity: 0.6, fontSize: '9pt', marginBottom: '0.2in' }}
+          style={{ color: 'var(--ink)', opacity: 0.6, fontSize: '9pt', marginBottom: '0.2in' }}
         >
           What this means in operating terms
         </p>
@@ -72,12 +72,12 @@ export function ExecSummary({ tier, tierId, score, maxScore }: ExecSummaryProps)
                 gridTemplateColumns: '1.2in 1fr',
                 gap: '0.3in',
                 padding: '0.15in 0',
-                borderBottom: '0.25pt solid var(--color-ink)',
+                borderBottom: '0.25pt solid var(--ink)',
               }}
             >
               <dt
                 style={{
-                  fontFamily: 'var(--font-serif-sc)',
+                  fontFamily: 'Georgia, "Times New Roman", serif',
                   fontSize: '9pt',
                   letterSpacing: '0.18em',
                   textTransform: 'uppercase',

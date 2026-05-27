@@ -824,3 +824,86 @@ interior surfaces complete their mockup port.
    `var(--gold)` / etc. or moves to a documented legacy carve-out.
 5. THEN delete `tokens.css` + `tokens-ledger.css`, rename
    `tokens-mockup.css` → `tokens.css`.
+
+
+**2026-05-27 — Assessment v3 shipped; Ledger fully evicted; coming-soon
+removed.** Five PRs landed in one session covering the largest design and
+content cleanup since the Ledger refresh:
+
+- **#289 — Free assessment v3 downstream content.** v3 question pool (12 flat
+  questions, 12 readiness dimensions, 12–48 score range) had shipped earlier
+  as questions + scoring only; the results UI rendered garbage for v3
+  dimension keys. This session authored `content/assessments/v3/{personalization,starter-artifacts,profiles}.ts`
+  (PERSONAS, BIG_INSIGHT, SIGNATURE_INSIGHT, GAP_CONTENT, RECOMMENDATIONS,
+  STARTER_PROMPTS, FINANCIAL_IMPLICATIONS, TIER_CLOSING_CTA, PRACTICE_PICTURE,
+  MATURITY_LADDER, plus per-dimension starter-artifact markdown), built
+  `ResultsViewV3` + `ResultsDashboardV3`, and wired the assessment page to
+  use V3. Version union widened to `'v1' | 'v2' | 'v3'` across EmailGate,
+  `/api/capture-email`, `user-data`, `user-profiles`. Voice editing pass on
+  the 12 dimensions is queued for the operator.
+
+- **#290 — Practical research artifacts surfaced.** Added a "Practical
+  artifacts" section to `/research` with seven downloads. Three new
+  authored: AI Use-Case Inventory (matches the essay's referenced template),
+  Data Handling Reference Card, Fair-Lending AI Review Checklist. Four
+  existing artifacts in `public/artifacts/` that had zero discovery surface
+  are now linked: Red/Yellow/Green Use Card, Safe AI Use Checklist,
+  Regulatory Cheatsheet (PDF), Platform Feature Reference Card (PDF).
+
+- **#291 — LMS Wave 1–6 mockup port.** 109 files migrated from Ledger to
+  mockup tokens across six waves spawned in parallel agent batches:
+  Wave 1 surfaces (`/program`, `[module]`, `/purchase`, `/certificate`);
+  Wave 2 shared LMS components (HeroIntro, ResumeStrip, ProgramStatsRow,
+  OutcomesPanel, CourseStructure, ProgramModuleCard, ModuleTabs, etc. plus
+  CertificateDocument PDF + `/verify/[id]` + 6 peripheral pages); Wave 3
+  deep activity components (Skill family, Drill family, Activity/Work/
+  Iteration family, ModuleContentClient, FormField, module loading);
+  Wave 4 peripheral clients (Onboarding survey + steps, Settings,
+  ArtifactStatusPanel, PostAssessment, Gallery, QuickWins, Download
+  buttons); Wave 5 Dashboard + Toolbox (Dashboard core, ToolboxApp,
+  ToolboxHomeV5, ContextStrip, SourceBacklink, Library, Cookbook,
+  KindPicker, Paywall, TemplateBuilder, UsageMeter, ForkButton, RecipeStep);
+  Wave 6 site-wide remainder (Auth (6), Assessment + In-Depth (8),
+  Certifications exam + Advisory + Security + ProductMark, site root +
+  error/404 + opengraph). Em-dash → middle dot on credential format fixed;
+  "AiBI Foundation" → "AiBI-Foundation" hero corrections; "credential your
+  examiner respects" line restored on purchase. Pillar color discipline
+  formally retired in components (sage/cobalt/terra collapse to ink/gold).
+
+- **#292 — Ledger eviction.** After Waves 1–6 finished, ran the final
+  cleanup: deleted `src/components/ledger/` library (0 import sites
+  confirmed), renamed `ledgerInputStyle` → `mockupInputStyle` across the
+  FormField primitive + 4 call sites in ActivityFields, ported the 5
+  static HTML/CSS/JS sketches (`playground`, `design-system/_body.html`,
+  `my-toolbox`) off `var(--ledger-*)` to literal mockup hex, updated
+  `tokens.css` legacy `--color-*` aliases to inline mockup hex (replacing
+  the `var(--ledger-*, fallback)` bridge), deleted `src/styles/tokens-ledger.css`
+  and removed its `@import` from `globals.css`. Two test fixtures and a
+  handful of Ledger-era comments cleaned up.
+
+- **#293 — Token alias cleanup + coming-soon removal.** 62 files migrated
+  from `var(--color-*)` legacy aliases to direct mockup tokens (`var(--ink)`,
+  `var(--gold)`, `var(--cream)`, slate scale, emerald-700) across the print
+  results route (13), assessment v2 components + In-Depth (20), research
+  essays + site chrome + homepage sections + practice/prompt-cards/dashboard/
+  certifications/coming-soon/course-harness (29). After only one file
+  references `--color-*` (`/results/[id]/page.tsx`, blocked on v3 branch
+  convergence). Then ripped out the coming-soon takedown gate: deleted
+  `src/app/coming-soon/`, deleted `src/app/api/waitlist/`, stripped the
+  COMING_SOON_MODE branch + bypass lists from `src/middleware.ts`, removed
+  `/coming-soon` from CHROMELESS_PATHS in `layout.tsx`. The `COMING_SOON`
+  env var is now inert; safe to delete from Vercel + `.env.local`.
+
+**Net state at end of session.** Ledger design system is functionally gone
+from every rendering surface in `src/app/`, `src/components/`, and
+`src/lib/`. Only `src/styles/tokens.css` remains (holding legacy
+`--color-*` aliases as a thin compat layer pointing at mockup hex
+literals); deletion is queued behind one remaining `/results/[id]`
+consumer that needs v3 plumbing after the five PRs converge on main.
+
+**Sprint output:** 39 commits across 5 feature branches, ~10,000+ lines
+added, ~5,500+ lines deleted, 4 parallel-agent waves, build green
+end-to-end on each PR. The "background-agent storm" pattern surfaced
+twice (one over-staging incident, one peer-WIP absorption) — flagged in
+memory `feedback_background_agent_storm.md` and the second batch of
+agents was given explicit `git add` hygiene rules that held.

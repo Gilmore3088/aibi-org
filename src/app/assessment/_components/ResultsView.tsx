@@ -22,7 +22,7 @@ export function ResultsView({ score, tier, answers, email }: ResultsViewProps) {
         <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--gold)] mb-2">
           Your AI Readiness Results
         </p>
-        <p className="text-sm text-[color:var(--color-ink)]/70">
+        <p className="text-sm text-[color:var(--ink)]/70">
           Results delivered to {email}
         </p>
       </div>
@@ -36,17 +36,17 @@ export function ResultsView({ score, tier, answers, email }: ResultsViewProps) {
           colorVar={tier.colorVar}
           label={tier.label}
         />
-        <h2 className="font-serif text-3xl md:text-4xl text-center mt-8 max-w-xl text-[color:var(--color-ink)]">
+        <h2 className="font-serif text-3xl md:text-4xl text-center mt-8 max-w-xl text-[color:var(--ink)]">
           {tier.headline}
         </h2>
-        <p className="text-lg text-[color:var(--color-ink)]/75 text-center mt-4 max-w-2xl leading-relaxed">
+        <p className="text-lg text-[color:var(--ink)]/75 text-center mt-4 max-w-2xl leading-relaxed">
           {tier.summary}
         </p>
       </div>
 
       {/* What your score means — personalized interpretation */}
-      <section className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-8 md:p-10 print-avoid-break">
-        <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-4">
+      <section className="bg-[color:#FFFFFF] border border-[color:var(--ink)]/10 rounded-[3px] p-8 md:p-10 print-avoid-break">
+        <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--ink)]/70 mb-4">
           What your score means
         </p>
         <ScoreInterpretation score={score} tierId={tier.id} />
@@ -54,7 +54,7 @@ export function ResultsView({ score, tier, answers, email }: ResultsViewProps) {
 
       {/* 8-dimension breakdown */}
       <section className="print-avoid-break">
-        <h3 className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 mb-6">
+        <h3 className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--ink)]/70 mb-6">
           Your 8-dimension breakdown
         </h3>
         <div className="space-y-4">
@@ -63,10 +63,10 @@ export function ResultsView({ score, tier, answers, email }: ResultsViewProps) {
             return (
               <div key={q.id} className="space-y-2">
                 <div className="flex items-baseline justify-between">
-                  <span className="font-serif text-lg text-[color:var(--color-ink)]">
+                  <span className="font-serif text-lg text-[color:var(--ink)]">
                     {q.dimension}
                   </span>
-                  <span className="font-mono text-xs text-[color:var(--color-slate)] tabular-nums">
+                  <span className="font-mono text-xs text-[color:var(--slate-600)] tabular-nums">
                     {points} / 4
                   </span>
                 </div>
@@ -78,7 +78,7 @@ export function ResultsView({ score, tier, answers, email }: ResultsViewProps) {
                         'h-2 flex-1 ' +
                         (bar <= points
                           ? 'bg-[color:var(--gold)]'
-                          : 'bg-[color:var(--color-ink)]/10')
+                          : 'bg-[color:var(--ink)]/10')
                       }
                     />
                   ))}
@@ -100,7 +100,7 @@ export function ResultsView({ score, tier, answers, email }: ResultsViewProps) {
       {/* Download */}
       <div className="text-center" data-print-hide="true">
         <PrintButton />
-        <p className="font-mono text-[10px] text-[color:var(--color-slate)] mt-3">
+        <p className="font-mono text-[10px] text-[color:var(--slate-600)] mt-3">
           Use your browser&rsquo;s &ldquo;Save as PDF&rdquo; option from the
           print dialog to save a copy for your team.
         </p>
@@ -135,7 +135,7 @@ function ScoreInterpretation({
   switch (tierId) {
     case 'starting-point':
       return (
-        <div className="space-y-3 text-[color:var(--color-ink)]/80 leading-relaxed">
+        <div className="space-y-3 text-[color:var(--ink)]/80 leading-relaxed">
           <p>
             Based on your score of <strong className="font-mono tabular-nums">{score}/32</strong>:
             your institution is at the beginning of its AI journey. Most staff
@@ -147,7 +147,7 @@ function ScoreInterpretation({
             that move fastest from here are the ones that start with staff
             literacy — not with a vendor purchase or a committee.
           </p>
-          <p className="font-medium text-[color:var(--color-ink)]">
+          <p className="font-medium text-[color:var(--ink)]">
             Our recommendation: build foundational AI literacy across your team
             before investing in tools or automation. The AI Foundations course
             is designed exactly for this moment.
@@ -156,7 +156,7 @@ function ScoreInterpretation({
       );
     case 'early-stage':
       return (
-        <div className="space-y-3 text-[color:var(--color-ink)]/80 leading-relaxed">
+        <div className="space-y-3 text-[color:var(--ink)]/80 leading-relaxed">
           <p>
             Based on your score of <strong className="font-mono tabular-nums">{score}/32</strong>:
             your institution has early adopters experimenting with AI, but
@@ -168,7 +168,7 @@ function ScoreInterpretation({
             minutes a week never tells the operations team, and the operations
             team never tells the board.
           </p>
-          <p className="font-medium text-[color:var(--color-ink)]">
+          <p className="font-medium text-[color:var(--ink)]">
             Our recommendation: a free Executive Briefing to map the pockets of
             activity already happening inside your institution and design a
             path from scattered experiments to a coordinated program.
@@ -177,7 +177,7 @@ function ScoreInterpretation({
       );
     case 'building-momentum':
       return (
-        <div className="space-y-3 text-[color:var(--color-ink)]/80 leading-relaxed">
+        <div className="space-y-3 text-[color:var(--ink)]/80 leading-relaxed">
           <p>
             Based on your score of <strong className="font-mono tabular-nums">{score}/32</strong>:
             your institution has real traction. Multiple teams are using AI,
@@ -188,7 +188,7 @@ function ScoreInterpretation({
             unless the early wins are documented with hard numbers — hours
             recaptured, dollars saved, processes eliminated.
           </p>
-          <p className="font-medium text-[color:var(--color-ink)]">
+          <p className="font-medium text-[color:var(--ink)]">
             Our recommendation: run a Specialist cohort for a department.
             Your managers work through real automation candidates together,
             with optional Pilot Advisory coaching alongside. You leave with
@@ -198,7 +198,7 @@ function ScoreInterpretation({
       );
     case 'ready-to-scale':
       return (
-        <div className="space-y-3 text-[color:var(--color-ink)]/80 leading-relaxed">
+        <div className="space-y-3 text-[color:var(--ink)]/80 leading-relaxed">
           <p>
             Based on your score of <strong className="font-mono tabular-nums">{score}/32</strong>:
             your institution is positioned to lead its peer group. You have
@@ -211,7 +211,7 @@ function ScoreInterpretation({
             looks like in two years. The question is whether you codify what
             works fast enough to compound the advantage.
           </p>
-          <p className="font-medium text-[color:var(--color-ink)]">
+          <p className="font-medium text-[color:var(--ink)]">
             Our recommendation: an institution-wide capability program. A
             recurring cohort cadence so every banker — new or tenured — has a
             path to proficiency, with Leadership Advisory coaching for your AI

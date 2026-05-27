@@ -21,18 +21,18 @@ export function PracticePicturePage({ tierId }: PracticePicturePageProps) {
       <figure
         style={{
           marginTop: '0.25in',
-          borderTop: '0.5pt solid var(--color-ink)',
-          borderBottom: '0.5pt solid var(--color-ink)',
+          borderTop: '0.5pt solid var(--ink)',
+          borderBottom: '0.5pt solid var(--ink)',
           padding: '0.22in 0',
         }}
       >
         <p
           style={{
-            fontFamily: 'var(--font-serif)',
+            fontFamily: 'Georgia, "Times New Roman", serif',
             fontStyle: 'italic',
             fontSize: '13.5pt',
             lineHeight: 1.45,
-            color: 'var(--color-ink)',
+            color: 'var(--ink)',
             margin: 0,
             maxWidth: '6in',
           }}
@@ -67,16 +67,16 @@ export function PracticePicturePage({ tierId }: PracticePicturePageProps) {
               display: 'grid',
               gridTemplateColumns: '1.6in 1fr',
               gap: '0.3in',
-              borderTop: '0.5pt solid var(--color-ink)',
+              borderTop: '0.5pt solid var(--ink)',
               borderBottom:
-                idx === rows.length - 1 ? '0.5pt solid var(--color-ink)' : 'none',
+                idx === rows.length - 1 ? '0.5pt solid var(--ink)' : 'none',
               paddingTop: '0.18in',
               paddingBottom: '0.18in',
             }}
           >
             <p
               style={{
-                fontFamily: 'var(--font-serif-sc)',
+                fontFamily: 'Georgia, "Times New Roman", serif',
                 fontSize: '9.5pt',
                 letterSpacing: '0.18em',
                 textTransform: 'uppercase',

@@ -64,12 +64,12 @@ function SampleDataViewer({
     const headers = lines[0]?.split(',') ?? [];
     const rows = lines.slice(1).map((line) => line.split(','));
     return (
-      <div className="max-h-64 overflow-auto rounded-[2px] border border-[color:var(--color-ink)]/10">
+      <div className="max-h-64 overflow-auto rounded-[2px] border border-[color:var(--ink)]/10">
         <table className="w-full text-left">
-          <thead className="sticky top-0 bg-[color:var(--color-parch)]">
+          <thead className="sticky top-0 bg-[color:#FFFFFF]">
             <tr>
               {headers.map((h, i) => (
-                <th key={i} className="px-3 py-2 font-mono text-[9px] uppercase tracking-wider text-[color:var(--color-slate)] border-b border-[color:var(--color-ink)]/10 whitespace-nowrap">
+                <th key={i} className="px-3 py-2 font-mono text-[9px] uppercase tracking-wider text-[color:var(--slate-600)] border-b border-[color:var(--ink)]/10 whitespace-nowrap">
                   {h.trim()}
                 </th>
               ))}
@@ -77,9 +77,9 @@ function SampleDataViewer({
           </thead>
           <tbody>
             {rows.map((row, i) => (
-              <tr key={i} className="border-b border-[color:var(--color-ink)]/5 hover:bg-[color:var(--color-parch)]/50">
+              <tr key={i} className="border-b border-[color:var(--ink)]/5 hover:bg-[color:#FFFFFF]/50">
                 {row.map((cell, j) => (
-                  <td key={j} className="px-3 py-2 font-sans text-xs text-[color:var(--color-ink)] whitespace-nowrap">
+                  <td key={j} className="px-3 py-2 font-sans text-xs text-[color:var(--ink)] whitespace-nowrap">
                     {cell.trim()}
                   </td>
                 ))}
@@ -100,14 +100,14 @@ function SampleDataViewer({
     const previewLines = lines.slice(0, 4);
     const remaining = lines.length - previewLines.length;
     return (
-      <div className="rounded-[2px] bg-[color:var(--color-parch)] p-4 space-y-2">
+      <div className="rounded-[2px] bg-[color:#FFFFFF] p-4 space-y-2">
         {previewLines.map((line, i) => (
-          <p key={i} className="font-sans text-xs text-[color:var(--color-ink)]/80 leading-relaxed truncate">
+          <p key={i} className="font-sans text-xs text-[color:var(--ink)]/80 leading-relaxed truncate">
             {line.replace(/[#*_`]/g, '')}
           </p>
         ))}
         {remaining > 0 && (
-          <p className="font-mono text-[9px] text-[color:var(--color-slate)] uppercase tracking-wider mt-2">
+          <p className="font-mono text-[9px] text-[color:var(--slate-600)] uppercase tracking-wider mt-2">
             + {remaining} more lines loaded into AI context
           </p>
         )}
@@ -130,15 +130,15 @@ function SampleDataViewer({
         return (
           <div
             key={idx}
-            className="rounded-[2px] border border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)] overflow-hidden"
+            className="rounded-[2px] border border-[color:var(--ink)]/10 bg-[color:#FFFFFF] overflow-hidden"
           >
             <button
               type="button"
               onClick={() => setExpandedCard(isExpanded ? null : idx)}
-              className="w-full flex items-center justify-between gap-3 px-4 py-3 text-left hover:bg-[color:var(--color-parch-dark)] transition-colors"
+              className="w-full flex items-center justify-between gap-3 px-4 py-3 text-left hover:bg-[color:var(--cream-2)] transition-colors"
               aria-expanded={isExpanded}
             >
-              <span className="font-sans text-sm font-medium text-[color:var(--color-ink)] leading-snug">
+              <span className="font-sans text-sm font-medium text-[color:var(--ink)] leading-snug">
                 {card.title}
               </span>
               <svg
@@ -153,15 +153,15 @@ function SampleDataViewer({
             </button>
 
             {isExpanded && card.body && (
-              <div className="px-4 pb-3 border-t border-[color:var(--color-ink)]/5">
-                <p className="font-sans text-xs text-[color:var(--color-ink)]/75 leading-relaxed mt-2 mb-3">
+              <div className="px-4 pb-3 border-t border-[color:var(--ink)]/5">
+                <p className="font-sans text-xs text-[color:var(--ink)]/75 leading-relaxed mt-2 mb-3">
                   {card.body}
                 </p>
                 <button
                   type="button"
                   onClick={() => onSendToChat(`Analyze Scenario: ${card.title}\n\n${card.body}`)}
                   className="font-sans text-[10px] font-semibold uppercase tracking-[1.2px] rounded-[2px] px-3 py-1.5 transition-colors hover:opacity-80"
-                  style={{ color: 'var(--color-linen)', backgroundColor: accentColor }}
+                  style={{ color: 'var(--cream)', backgroundColor: accentColor }}
                 >
                   Ask AI about this
                 </button>
@@ -437,7 +437,7 @@ export function AIPracticeSandbox({
   // -------------------------------------------------------------------------
 
   return (
-    <div className="w-full rounded-[3px] border border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)] p-6 md:p-8">
+    <div className="w-full rounded-[3px] border border-[color:var(--ink)]/10 bg-[color:#FFFFFF] p-6 md:p-8">
       {/* Header */}
       <div className="mb-6 flex items-start justify-between">
         <div>
@@ -447,13 +447,13 @@ export function AIPracticeSandbox({
           >
             AI Practice Sandbox
           </h3>
-          <p className="mt-1 font-mono text-[10px] uppercase tracking-[1.2px] text-[color:var(--color-slate)]">
+          <p className="mt-1 font-mono text-[10px] uppercase tracking-[1.2px] text-[color:var(--slate-600)]">
             {moduleId.replace(/-/g, ' ')}
           </p>
         </div>
         <div
           className="font-mono text-sm tabular-nums"
-          style={{ color: remainingMessages < 5 ? 'var(--color-error)' : 'var(--color-slate)' }}
+          style={{ color: remainingMessages < 5 ? '#9b2226' : 'var(--slate-600)' }}
           aria-label={`${messageCount} of ${MAX_MESSAGES} messages used`}
         >
           {messageCount}/{MAX_MESSAGES}
@@ -461,7 +461,7 @@ export function AIPracticeSandbox({
       </div>
 
       {/* Provider tabs */}
-      <div className="mb-4 flex gap-1 border-b border-[color:var(--color-ink)]/10">
+      <div className="mb-4 flex gap-1 border-b border-[color:var(--ink)]/10">
         {PROVIDERS.map((provider) => (
           <button
             key={provider.id}
@@ -471,7 +471,7 @@ export function AIPracticeSandbox({
             className={`px-3 py-2 font-mono text-[11px] uppercase tracking-[1.2px] transition-colors focus:outline-none focus:ring-1 ${
               provider.enabled
                 ? 'border-b-2 font-semibold'
-                : 'cursor-not-allowed text-[color:var(--color-slate)]/50'
+                : 'cursor-not-allowed text-[color:var(--slate-600)]/50'
             }`}
             style={
               provider.enabled
@@ -488,13 +488,13 @@ export function AIPracticeSandbox({
       </div>
 
       {/* Sample data section */}
-      <div className="mb-4 rounded-[2px] border border-[color:var(--color-ink)]/10 bg-[color:var(--color-linen)] p-4">
+      <div className="mb-4 rounded-[2px] border border-[color:var(--ink)]/10 bg-[color:var(--cream)] p-4">
         <div className="flex items-center justify-between gap-4">
           <div className="min-w-0 flex-1">
-            <p className="font-sans text-sm font-semibold text-[color:var(--color-ink)]">
+            <p className="font-sans text-sm font-semibold text-[color:var(--ink)]">
               {selectedData.label}
             </p>
-            <p className="mt-0.5 font-sans text-xs text-[color:var(--color-slate)]">
+            <p className="mt-0.5 font-sans text-xs text-[color:var(--slate-600)]">
               {selectedData.description}
             </p>
           </div>
@@ -503,7 +503,7 @@ export function AIPracticeSandbox({
               <select
                 value={selectedDataIndex}
                 onChange={(e) => setSelectedDataIndex(Number(e.target.value))}
-                className="rounded-[2px] border border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)] px-2 py-1 font-mono text-[11px] text-[color:var(--color-ink)] focus:outline-none focus:ring-1"
+                className="rounded-[2px] border border-[color:var(--ink)]/10 bg-[color:#FFFFFF] px-2 py-1 font-mono text-[11px] text-[color:var(--ink)] focus:outline-none focus:ring-1"
                 style={{ focusRingColor: accentColor } as React.CSSProperties}
                 aria-label="Select sample dataset"
               >
@@ -516,7 +516,7 @@ export function AIPracticeSandbox({
             )}
             <button
               onClick={() => setDataExpanded((prev) => !prev)}
-              className="rounded-[2px] border border-[color:var(--color-ink)]/10 px-3 py-1 font-sans text-[11px] font-semibold uppercase tracking-[1.2px] transition-colors hover:bg-[color:var(--color-parch)] focus:outline-none focus:ring-1"
+              className="rounded-[2px] border border-[color:var(--ink)]/10 px-3 py-1 font-sans text-[11px] font-semibold uppercase tracking-[1.2px] transition-colors hover:bg-[color:#FFFFFF] focus:outline-none focus:ring-1"
               style={{ color: accentColor }}
               aria-label={dataExpanded ? 'Hide sample data' : 'View sample data'}
               aria-expanded={dataExpanded}
@@ -539,7 +539,7 @@ export function AIPracticeSandbox({
                 }}
               />
             ) : (
-              <p className="font-mono text-xs text-[color:var(--color-slate)] p-3">Loading...</p>
+              <p className="font-mono text-xs text-[color:var(--slate-600)] p-3">Loading...</p>
             )}
           </div>
         )}
@@ -548,7 +548,7 @@ export function AIPracticeSandbox({
       {/* Suggested prompts — hidden when data viewer is expanded (cards have their own "Ask AI" buttons) */}
       {messages.length === 0 && !dataExpanded && (
         <div className="mb-4">
-          <p className="mb-2 font-serif-sc text-[11px] uppercase tracking-[1.2px] text-[color:var(--color-slate)]">
+          <p className="mb-2 font-serif-sc text-[11px] uppercase tracking-[1.2px] text-[color:var(--slate-600)]">
             Get started
           </p>
           <div className="flex flex-wrap gap-2">
@@ -556,7 +556,7 @@ export function AIPracticeSandbox({
               <button
                 key={idx}
                 onClick={() => handlePromptClick(prompt)}
-                className="rounded-[2px] border border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)] px-3 py-2 text-left font-sans text-sm text-[color:var(--color-ink)] transition-colors hover:border-current focus:outline-none focus:ring-1"
+                className="rounded-[2px] border border-[color:var(--ink)]/10 bg-[color:#FFFFFF] px-3 py-2 text-left font-sans text-sm text-[color:var(--ink)] transition-colors hover:border-current focus:outline-none focus:ring-1"
                 style={
                   {
                     '--tw-ring-color': accentColor,
@@ -579,13 +579,13 @@ export function AIPracticeSandbox({
       {/* Chat area */}
       <div
         ref={chatContainerRef}
-        className="mb-4 min-h-[200px] max-h-[400px] overflow-y-auto rounded-[2px] border border-[color:var(--color-ink)]/10 bg-[color:var(--color-linen)] p-4"
+        className="mb-4 min-h-[200px] max-h-[400px] overflow-y-auto rounded-[2px] border border-[color:var(--ink)]/10 bg-[color:var(--cream)] p-4"
         role="log"
         aria-label="Conversation history"
         aria-live="polite"
       >
         {messages.length === 0 && !streaming ? (
-          <p className="py-8 text-center font-sans text-sm text-[color:var(--color-slate)]">
+          <p className="py-8 text-center font-sans text-sm text-[color:var(--slate-600)]">
             Select a suggested prompt or type your own message to begin.
           </p>
         ) : (
@@ -598,20 +598,20 @@ export function AIPracticeSandbox({
                 <div
                   className={`max-w-[85%] rounded-[2px] px-4 py-3 ${
                     msg.role === 'user'
-                      ? 'bg-[color:var(--color-parch)]'
-                      : 'bg-[color:var(--color-linen)] border border-[color:var(--color-ink)]/5'
+                      ? 'bg-[color:#FFFFFF]'
+                      : 'bg-[color:var(--cream)] border border-[color:var(--ink)]/5'
                   }`}
                 >
                   {msg.role === 'assistant' && (
                     <div className="mb-1 flex items-center justify-between gap-3">
-                      <span className="font-mono text-[9px] uppercase tracking-[1.2px] text-[color:var(--color-slate)]">
+                      <span className="font-mono text-[9px] uppercase tracking-[1.2px] text-[color:var(--slate-600)]">
                         Claude
                       </span>
                       {msg.content && (
                         <button
                           type="button"
                           onClick={() => handleCopy(msg.content, idx)}
-                          className="font-mono text-[9px] uppercase tracking-[1.2px] text-[color:var(--color-slate)] hover:text-[color:var(--gold)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:ring-offset-1 rounded-[2px]"
+                          className="font-mono text-[9px] uppercase tracking-[1.2px] text-[color:var(--slate-600)] hover:text-[color:var(--gold)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:ring-offset-1 rounded-[2px]"
                           aria-label={copiedIdx === idx ? 'Copied to clipboard' : 'Copy response to clipboard'}
                         >
                           {copiedIdx === idx ? 'Copied' : 'Copy'}
@@ -619,7 +619,7 @@ export function AIPracticeSandbox({
                       )}
                     </div>
                   )}
-                  <div className="text-sm font-sans text-[color:var(--color-ink)]">
+                  <div className="text-sm font-sans text-[color:var(--ink)]">
                     {msg.role === 'assistant' ? renderMarkdown(msg.content) : msg.content}
                   </div>
                 </div>
@@ -627,7 +627,7 @@ export function AIPracticeSandbox({
             ))}
             {streaming && messages.length > 0 && messages[messages.length - 1].content === '' && (
               <div className="flex justify-start">
-                <span className="font-sans text-sm text-[color:var(--color-slate)]">
+                <span className="font-sans text-sm text-[color:var(--slate-600)]">
                   Thinking...
                 </span>
               </div>
@@ -638,7 +638,7 @@ export function AIPracticeSandbox({
 
       {/* Error display */}
       {error && (
-        <p className="mb-3 font-sans text-sm text-[color:var(--color-error)]" role="alert">
+        <p className="mb-3 font-sans text-sm text-[color:#9b2226]" role="alert">
           {error}
         </p>
       )}
@@ -654,7 +654,7 @@ export function AIPracticeSandbox({
             disabled={streaming}
             placeholder={streaming ? 'Thinking...' : 'Type your message...'}
             rows={1}
-            className="flex-1 resize-none rounded-[2px] border border-[color:var(--color-ink)]/10 bg-[color:var(--color-linen)] px-4 py-2.5 font-sans text-sm text-[color:var(--color-ink)] placeholder:text-[color:var(--color-slate)] focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-60"
+            className="flex-1 resize-none rounded-[2px] border border-[color:var(--ink)]/10 bg-[color:var(--cream)] px-4 py-2.5 font-sans text-sm text-[color:var(--ink)] placeholder:text-[color:var(--slate-600)] focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-60"
             style={
               {
                 '--tw-ring-color': accentColor,
@@ -678,18 +678,18 @@ export function AIPracticeSandbox({
 
         {/* PII warning */}
         {piiWarning && (
-          <p className="mt-2 font-sans text-xs text-[color:var(--color-error)]" role="alert">
+          <p className="mt-2 font-sans text-xs text-[color:#9b2226]" role="alert">
             {piiWarning}
           </p>
         )}
       </div>
 
       {/* Footer actions */}
-      <div className="flex items-center gap-3 border-t border-[color:var(--color-ink)]/10 pt-4">
+      <div className="flex items-center gap-3 border-t border-[color:var(--ink)]/10 pt-4">
         <button
           onClick={downloadConversation}
           disabled={messages.length === 0}
-          className="rounded-[2px] border border-[color:var(--color-ink)]/10 px-3 py-1.5 font-serif-sc text-[11px] uppercase tracking-[1.2px] text-[color:var(--color-ink)] transition-colors hover:bg-[color:var(--color-linen)] focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-40"
+          className="rounded-[2px] border border-[color:var(--ink)]/10 px-3 py-1.5 font-serif-sc text-[11px] uppercase tracking-[1.2px] text-[color:var(--ink)] transition-colors hover:bg-[color:var(--cream)] focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-40"
           style={{ ['--tw-ring-color' as string]: accentColor }}
           aria-label="Download conversation as markdown"
         >
@@ -698,7 +698,7 @@ export function AIPracticeSandbox({
         <button
           onClick={resetChat}
           disabled={messages.length === 0}
-          className="rounded-[2px] border border-[color:var(--color-ink)]/10 px-3 py-1.5 font-serif-sc text-[11px] uppercase tracking-[1.2px] text-[color:var(--color-ink)] transition-colors hover:bg-[color:var(--color-linen)] focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-40"
+          className="rounded-[2px] border border-[color:var(--ink)]/10 px-3 py-1.5 font-serif-sc text-[11px] uppercase tracking-[1.2px] text-[color:var(--ink)] transition-colors hover:bg-[color:var(--cream)] focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-40"
           style={{ ['--tw-ring-color' as string]: accentColor }}
           aria-label="Reset conversation"
         >

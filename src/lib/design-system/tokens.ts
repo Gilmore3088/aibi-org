@@ -45,21 +45,21 @@ export const COLORS = {
   amberLight: 'var(--gold-2)',
 
   // Surfaces
-  linen: 'var(--color-linen)',
-  parch: 'var(--color-parch)',
-  parchDark: 'var(--color-parch-dark)',
-  ink: 'var(--color-ink)',
+  linen: 'var(--cream)',
+  parch: '#FFFFFF',
+  parchDark: 'var(--cream-2)',
+  ink: 'var(--ink)',
 
   // Text
-  slate: 'var(--color-slate)',
-  dust: 'var(--color-dust)',
-  bone: 'var(--color-bone)',
-  cream: 'var(--color-cream)',
+  slate: 'var(--slate-600)',
+  dust: 'var(--slate-400)',
+  bone: '#FFFFFF',
+  cream: 'var(--cream-2)',
 
   // Semantic
-  error: 'var(--color-error)',
-  success: 'var(--color-success)',
-  warning: 'var(--color-warning)',
+  error: '#9b2226',
+  success: 'var(--emerald-700)',
+  warning: 'var(--gold-deep)',
 
   // Dividers
   hairline: 'var(--divider-hairline)',
@@ -71,7 +71,7 @@ export type ColorToken = keyof typeof COLORS;
 // ---- Tier colors (assessment results) ---------------------------------------
 // These are *roles* mapped to color tokens, used by ScoreRing and tier badges.
 export const TIER_COLORS = {
-  'starting-point': 'var(--color-error)',
+  'starting-point': '#9b2226',
   'early-stage': 'var(--gold)',
   'building-momentum': 'var(--gold-2)',
   'ready-to-scale': 'var(--ink-2)',
@@ -169,7 +169,7 @@ export const Z = {
  *   <circle stroke={cssVar('terra')} />
  */
 export function cssVar(name: string): string {
-  return `var(--color-${name}, var(--${name}))`;
+  return `var(--${name})`;
 }
 
 /**

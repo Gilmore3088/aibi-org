@@ -68,12 +68,12 @@ export function Cover({
         <h1 className="pdf-h1">AI Readiness Briefing</h1>
         <p
           style={{
-            fontFamily: 'var(--font-serif)',
+            fontFamily: 'Georgia, "Times New Roman", serif',
             fontStyle: 'italic',
             fontSize: '17pt',
             lineHeight: 1.3,
             marginTop: '0.35in',
-            color: 'var(--color-slate)',
+            color: 'var(--slate-600)',
             maxWidth: '6in',
           }}
         >
@@ -85,8 +85,8 @@ export function Cover({
       <div
         style={{
           marginTop: '0.7in',
-          border: '0.75pt solid var(--color-ink)',
-          background: 'var(--color-parch)',
+          border: '0.75pt solid var(--ink)',
+          background: '#FFFFFF',
         }}
       >
         <div
@@ -98,7 +98,7 @@ export function Cover({
           {/* Left — score + tier seal */}
           <div
             style={{
-              borderRight: '0.5pt solid var(--color-ink)',
+              borderRight: '0.5pt solid var(--ink)',
               padding: '0.3in 0.3in 0.3in 0.35in',
               display: 'flex',
               flexDirection: 'column',
@@ -108,11 +108,11 @@ export function Cover({
           >
             <p
               style={{
-                fontFamily: 'var(--font-serif-sc)',
+                fontFamily: 'Georgia, "Times New Roman", serif',
                 fontSize: '8pt',
                 letterSpacing: '0.22em',
                 textTransform: 'uppercase',
-                color: 'var(--color-slate)',
+                color: 'var(--slate-600)',
                 margin: 0,
               }}
             >
@@ -120,10 +120,10 @@ export function Cover({
             </p>
             <p
               style={{
-                fontFamily: 'var(--font-serif)',
+                fontFamily: 'Georgia, "Times New Roman", serif',
                 fontSize: '42pt',
                 lineHeight: 1,
-                color: 'var(--color-ink)',
+                color: 'var(--ink)',
                 margin: 0,
                 fontVariantNumeric: 'tabular-nums',
               }}
@@ -131,9 +131,9 @@ export function Cover({
               {score}
               <span
                 style={{
-                  fontFamily: 'var(--font-mono)',
+                  fontFamily: 'ui-monospace, "SF Mono", Menlo, Consolas, monospace',
                   fontSize: '14pt',
-                  color: 'var(--color-slate)',
+                  color: 'var(--slate-600)',
                   marginLeft: '0.08in',
                 }}
               >
@@ -143,18 +143,18 @@ export function Cover({
             <div
               style={{
                 marginTop: '0.05in',
-                border: '0.5pt solid var(--color-ink)',
+                border: '0.5pt solid var(--ink)',
                 padding: '0.08in 0.18in',
-                background: 'var(--color-linen)',
+                background: 'var(--cream)',
               }}
             >
               <p
                 style={{
-                  fontFamily: 'var(--font-mono)',
+                  fontFamily: 'ui-monospace, "SF Mono", Menlo, Consolas, monospace',
                   fontSize: '8pt',
                   letterSpacing: '0.2em',
                   textTransform: 'uppercase',
-                  color: 'var(--color-slate)',
+                  color: 'var(--slate-600)',
                   margin: 0,
                   fontVariantNumeric: 'tabular-nums',
                 }}
@@ -163,7 +163,7 @@ export function Cover({
               </p>
               <p
                 style={{
-                  fontFamily: 'var(--font-serif)',
+                  fontFamily: 'Georgia, "Times New Roman", serif',
                   fontSize: '13pt',
                   color: 'var(--gold)',
                   margin: '0.04in 0 0 0',
@@ -179,11 +179,11 @@ export function Cover({
           <div style={{ padding: '0.3in 0.35in' }}>
             <p
               style={{
-                fontFamily: 'var(--font-serif-sc)',
+                fontFamily: 'Georgia, "Times New Roman", serif',
                 fontSize: '8pt',
                 letterSpacing: '0.22em',
                 textTransform: 'uppercase',
-                color: 'var(--color-slate)',
+                color: 'var(--slate-600)',
                 margin: 0,
               }}
             >
@@ -206,14 +206,14 @@ export function Cover({
                       borderBottom:
                         idx === top3Weakest.length - 1
                           ? 'none'
-                          : '0.25pt solid var(--color-ink)',
+                          : '0.25pt solid var(--ink)',
                     }}
                   >
                     <span
                       style={{
-                        fontFamily: 'var(--font-mono)',
+                        fontFamily: 'ui-monospace, "SF Mono", Menlo, Consolas, monospace',
                         fontSize: '11pt',
-                        color: isCritical ? 'var(--color-error)' : 'var(--gold)',
+                        color: isCritical ? '#9b2226' : 'var(--gold)',
                         fontVariantNumeric: 'tabular-nums',
                       }}
                     >
@@ -221,18 +221,18 @@ export function Cover({
                     </span>
                     <span
                       style={{
-                        fontFamily: 'var(--font-serif)',
+                        fontFamily: 'Georgia, "Times New Roman", serif',
                         fontSize: '11pt',
-                        color: 'var(--color-ink)',
+                        color: 'var(--ink)',
                       }}
                     >
                       {row.label}
                     </span>
                     <span
                       style={{
-                        fontFamily: 'var(--font-mono)',
+                        fontFamily: 'ui-monospace, "SF Mono", Menlo, Consolas, monospace',
                         fontSize: '9pt',
-                        color: 'var(--color-slate)',
+                        color: 'var(--slate-600)',
                         fontVariantNumeric: 'tabular-nums',
                         letterSpacing: '0.04em',
                       }}
@@ -249,30 +249,30 @@ export function Cover({
         {/* Footer ribbon */}
         <div
           style={{
-            borderTop: '0.5pt solid var(--color-ink)',
+            borderTop: '0.5pt solid var(--ink)',
             padding: '0.14in 0.35in',
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'baseline',
-            background: 'var(--color-linen)',
+            background: 'var(--cream)',
           }}
         >
           <span
             style={{
-              fontFamily: 'var(--font-serif-sc)',
+              fontFamily: 'Georgia, "Times New Roman", serif',
               fontSize: '9pt',
               letterSpacing: '0.18em',
               textTransform: 'uppercase',
-              color: 'var(--color-slate)',
+              color: 'var(--slate-600)',
             }}
           >
             {firstName ? `${firstName.trim()} · ${subjectName}` : subjectName}
           </span>
           <span
             style={{
-              fontFamily: 'var(--font-mono)',
+              fontFamily: 'ui-monospace, "SF Mono", Menlo, Consolas, monospace',
               fontSize: '9pt',
-              color: 'var(--color-slate)',
+              color: 'var(--slate-600)',
               fontVariantNumeric: 'tabular-nums',
             }}
           >

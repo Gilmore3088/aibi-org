@@ -55,18 +55,18 @@ export function StarterArtifactCard({
   }
 
   return (
-    <section className="border border-[color:var(--gold)]/30 bg-[color:var(--color-parch)] rounded-[3px] p-8 md:p-10 print-avoid-break">
+    <section className="border border-[color:var(--gold)]/30 bg-[color:#FFFFFF] rounded-[3px] p-8 md:p-10 print-avoid-break">
       <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
         Your starter artifact
       </p>
-      <p className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-slate)] mb-6">
+      <p className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--slate-600)] mb-6">
         Tailored to your top gap: {topGapLabel} · {tierLabel}
       </p>
 
-      <h3 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] leading-tight mb-3">
+      <h3 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] leading-tight mb-3">
         {artifact.title}
       </h3>
-      <p className="text-base text-[color:var(--color-ink)]/75 leading-relaxed mb-8 max-w-2xl">
+      <p className="text-base text-[color:var(--ink)]/75 leading-relaxed mb-8 max-w-2xl">
         {artifact.subtitle}
       </p>
 
@@ -74,34 +74,34 @@ export function StarterArtifactCard({
         <button
           type="button"
           onClick={handleCopy}
-          className="inline-block px-5 py-2.5 bg-[color:var(--gold)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] active:scale-[0.98] transition-all"
+          className="inline-block px-5 py-2.5 bg-[color:var(--gold)] text-[color:var(--cream)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] active:scale-[0.98] transition-all"
         >
           {copied ? 'Copied' : 'Copy to clipboard'}
         </button>
         <button
           type="button"
           onClick={handleDownload}
-          className="inline-block px-5 py-2.5 border border-[color:var(--color-ink)]/25 text-[color:var(--color-ink)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:border-[color:var(--gold)] hover:text-[color:var(--gold)] transition-colors"
+          className="inline-block px-5 py-2.5 border border-[color:var(--ink)]/25 text-[color:var(--ink)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:border-[color:var(--gold)] hover:text-[color:var(--gold)] transition-colors"
         >
           {downloaded ? 'Downloaded' : `Download .md`}
         </button>
-        <span className="font-mono text-[10px] text-[color:var(--color-slate)]">
+        <span className="font-mono text-[10px] text-[color:var(--slate-600)]">
           {artifact.filename}
         </span>
         {copyFailed && (
           <span
             role="alert"
-            className="font-mono text-[10px] text-[color:var(--color-error)]"
+            className="font-mono text-[10px] text-[color:#9b2226]"
           >
             Copy unavailable in this browser — use Download instead.
           </span>
         )}
       </div>
 
-      <div className="border-t border-[color:var(--color-ink)]/10 pt-8">
+      <div className="border-t border-[color:var(--ink)]/10 pt-8">
         <MarkdownRenderer
           content={artifact.body}
-          className="text-[color:var(--color-ink)]"
+          className="text-[color:var(--ink)]"
         />
       </div>
     </section>

@@ -42,7 +42,7 @@ export function RadarChart({ scores, size = 280 }: RadarChartProps) {
           key={level}
           points={polygonPoints(() => (level / 100) * radius)}
           fill="none"
-          stroke="var(--color-ink)"
+          stroke="var(--ink)"
           strokeOpacity={0.08}
           strokeWidth={1}
         />
@@ -59,7 +59,7 @@ export function RadarChart({ scores, size = 280 }: RadarChartProps) {
             y1={cy}
             x2={x}
             y2={y}
-            stroke="var(--color-ink)"
+            stroke="var(--ink)"
             strokeOpacity={0.08}
             strokeWidth={1}
           />
@@ -104,7 +104,7 @@ export function RadarChart({ scores, size = 280 }: RadarChartProps) {
             y={y}
             textAnchor={isLeft ? 'end' : isRight ? 'start' : 'middle'}
             dominantBaseline="middle"
-            fill="var(--color-ink)"
+            fill="var(--ink)"
             fillOpacity={0.7}
             fontSize={10}
             fontFamily="var(--font-serif-sc)"

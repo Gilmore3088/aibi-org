@@ -76,7 +76,7 @@ export function ROICalculatorBody({
   );
 
   return (
-    <div className="border border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)] p-8 md:p-10">
+    <div className="border border-[color:var(--ink)]/10 bg-[color:#FFFFFF] p-8 md:p-10">
       <div className="space-y-6">
         <Slider
           label="Full-time employees"
@@ -116,14 +116,14 @@ export function ROICalculatorBody({
         />
       </div>
 
-      <div className="mt-10 pt-8 border-t border-[color:var(--color-ink)]/10">
-        <p className="font-serif-sc text-[11px] uppercase tracking-[0.15em] text-[color:var(--color-ink)]/70 mb-3">
+      <div className="mt-10 pt-8 border-t border-[color:var(--ink)]/10">
+        <p className="font-serif-sc text-[11px] uppercase tracking-[0.15em] text-[color:var(--ink)]/70 mb-3">
           Estimated annual labor hours recaptured
         </p>
         <p className="font-mono text-5xl md:text-6xl text-[color:var(--gold)] leading-none tabular-nums">
           {formatCurrency(result.mid)}
         </p>
-        <p className="font-mono text-xs text-[color:var(--color-ink)]/70 mt-3 leading-snug">
+        <p className="font-mono text-xs text-[color:var(--ink)]/70 mt-3 leading-snug">
           Range: {formatCurrency(result.low)} &ndash; {formatCurrency(result.high)} &middot;{' '}
           {formatNumber(result.hoursPerYear)} hours/year &middot;{' '}
           ~{result.payrollRecaptured}% of payroll
@@ -137,7 +137,7 @@ export function ROICalculatorBody({
               ? () => trackBriefingBooked({ source: briefingSource })
               : undefined
           }
-          className="mt-6 inline-block px-6 py-3 bg-[color:var(--gold)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] active:scale-[0.98] transition-all"
+          className="mt-6 inline-block px-6 py-3 bg-[color:var(--gold)] text-[color:var(--cream)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] active:scale-[0.98] transition-all"
         >
           {ctaLabel}
         </a>
@@ -160,10 +160,10 @@ function Slider({ label, value, min, max, step, onChange, display }: SliderProps
   return (
     <div>
       <div className="flex items-baseline justify-between mb-2">
-        <label className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70">
+        <label className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--ink)]/70">
           {label}
         </label>
-        <span className="font-mono text-base text-[color:var(--color-ink)]">
+        <span className="font-mono text-base text-[color:var(--ink)]">
           {display}
         </span>
       </div>

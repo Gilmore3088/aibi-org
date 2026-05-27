@@ -45,10 +45,10 @@ export default function TheSkillNotThePromptArticle() {
           <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--gold)] mb-4">
             Foundation Guide &middot; April 2026
           </p>
-          <h1 className="font-serif text-5xl md:text-6xl text-[color:var(--color-ink)] leading-[1.05] mb-6">
+          <h1 className="font-serif text-5xl md:text-6xl text-[color:var(--ink)] leading-[1.05] mb-6">
             The skill, not the prompt.
           </h1>
-          <p className="text-xl text-[color:var(--color-ink)]/75 leading-relaxed">
+          <p className="text-xl text-[color:var(--ink)]/75 leading-relaxed">
             Every AI training program for bankers eventually teaches
             prompting. Almost none of them teach the thing that actually
             makes AI useful at work: the skill. The distinction sounds
@@ -57,8 +57,8 @@ export default function TheSkillNotThePromptArticle() {
           </p>
         </header>
 
-        <section className="space-y-6 text-[color:var(--color-ink)]/85 leading-relaxed text-lg">
-          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] pt-6">
+        <section className="space-y-6 text-[color:var(--ink)]/85 leading-relaxed text-lg">
+          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] pt-6">
             What a prompt is, and why it is not enough.
           </h2>
           <p>
@@ -86,7 +86,7 @@ export default function TheSkillNotThePromptArticle() {
             a skill my entire department can use?&rdquo;
           </p>
 
-          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] pt-6">
+          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] pt-6">
             What a skill is.
           </h2>
           <p>
@@ -132,7 +132,7 @@ export default function TheSkillNotThePromptArticle() {
             was designed to enforce.
           </p>
 
-          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] pt-6">
+          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] pt-6">
             The five components of a banking skill.
           </h2>
           <p>
@@ -148,25 +148,25 @@ export default function TheSkillNotThePromptArticle() {
           {FIVE_COMPONENTS.map((c) => (
             <div
               key={c.label}
-              className="border border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)] p-6"
+              className="border border-[color:var(--ink)]/10 bg-[color:#FFFFFF] p-6"
             >
               <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
                 {c.label}
               </p>
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
-                  <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-[color:var(--color-ink)]/50 mb-2">
+                  <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-[color:var(--ink)]/50 mb-2">
                     Mediocre
                   </p>
-                  <p className="font-serif text-base text-[color:var(--color-ink)]/70 italic leading-relaxed">
+                  <p className="font-serif text-base text-[color:var(--ink)]/70 italic leading-relaxed">
                     {c.bad}
                   </p>
                 </div>
                 <div>
-                  <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-[color:var(--color-ink)]/50 mb-2">
+                  <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-[color:var(--ink)]/50 mb-2">
                     Institution-grade
                   </p>
-                  <p className="text-sm text-[color:var(--color-ink)] leading-relaxed">
+                  <p className="text-sm text-[color:var(--ink)] leading-relaxed">
                     {c.good}
                   </p>
                 </div>
@@ -175,8 +175,8 @@ export default function TheSkillNotThePromptArticle() {
           ))}
         </div>
 
-        <section className="space-y-6 text-[color:var(--color-ink)]/85 leading-relaxed text-lg">
-          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] pt-6">
+        <section className="space-y-6 text-[color:var(--ink)]/85 leading-relaxed text-lg">
+          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] pt-6">
             The arithmetic of skills.
           </h2>
           <p>
@@ -207,7 +207,7 @@ export default function TheSkillNotThePromptArticle() {
             repeat &mdash; and build skills for them.
           </p>
 
-          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] pt-6">
+          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] pt-6">
             Skills are portable and institutional.
           </h2>
           <p>
@@ -242,7 +242,7 @@ export default function TheSkillNotThePromptArticle() {
             The banker who builds the skill teaches everyone who uses it.
           </p>
 
-          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] pt-6">
+          <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] pt-6">
             Where to start.
           </h2>
           <p>
@@ -276,29 +276,29 @@ export default function TheSkillNotThePromptArticle() {
           </p>
         </section>
 
-        <aside className="mt-16 bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-8 md:p-10 text-center">
+        <aside className="mt-16 bg-[color:#FFFFFF] border border-[color:var(--ink)]/10 rounded-[3px] p-8 md:p-10 text-center">
           <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
             AiBI-Foundation Certification
           </p>
-          <h3 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] mb-4">
+          <h3 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] mb-4">
             Build your first institutional skill in Module&nbsp;7.
           </h3>
-          <p className="text-[color:var(--color-ink)]/75 max-w-xl mx-auto mb-6 leading-relaxed">
+          <p className="text-[color:var(--ink)]/75 max-w-xl mx-auto mb-6 leading-relaxed">
             The AiBI-Foundation certification covers the full five-component
             skill anatomy, the RTFC Framework, and a guided skill-builder that
             produces a deployable Markdown file in 30 minutes. Twelve pre-built
             skill templates across four banking roles are included.
           </p>
           <Link
-            href="/courses"
-            className="inline-block px-8 py-4 bg-[color:var(--gold)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] active:scale-[0.98] transition-all"
+            href="/education"
+            className="inline-block px-8 py-4 bg-[color:var(--gold)] text-[color:var(--cream)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] active:scale-[0.98] transition-all"
           >
             View the AiBI-Foundation Certification
           </Link>
         </aside>
 
-        <footer className="mt-16 pt-8 border-t border-[color:var(--color-ink)]/10">
-          <p className="font-mono text-xs text-[color:var(--color-ink)]/70 leading-relaxed">
+        <footer className="mt-16 pt-8 border-t border-[color:var(--ink)]/10">
+          <p className="font-mono text-xs text-[color:var(--ink)]/70 leading-relaxed">
             <strong>Sources:</strong> AiBI-Foundation curriculum, Modules 6
             and 7: Anatomy of a Skill and Write Your First Skill. Getting Started
             in AI, Jack Henry &amp; Associates, 2025, citing Gartner Peer

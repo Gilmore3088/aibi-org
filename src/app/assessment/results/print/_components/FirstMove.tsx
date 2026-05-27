@@ -18,11 +18,11 @@ export function FirstMove({ focusGapId }: FirstMoveProps) {
       </h2>
       <p
         style={{
-          fontFamily: 'var(--font-mono)',
+          fontFamily: 'ui-monospace, "SF Mono", Menlo, Consolas, monospace',
           fontSize: '9pt',
           letterSpacing: '0.18em',
           textTransform: 'uppercase',
-          color: 'var(--color-slate)',
+          color: 'var(--slate-600)',
           marginTop: '0.15in',
         }}
       >
@@ -32,18 +32,18 @@ export function FirstMove({ focusGapId }: FirstMoveProps) {
       <div
         style={{
           marginTop: '0.4in',
-          background: 'var(--color-parch)',
-          border: '0.5pt solid var(--color-ink)',
+          background: '#FFFFFF',
+          border: '0.5pt solid var(--ink)',
           padding: '0.3in',
         }}
       >
         <p
           style={{
-            fontFamily: 'var(--font-serif-sc)',
+            fontFamily: 'Georgia, "Times New Roman", serif',
             fontSize: '9pt',
             letterSpacing: '0.18em',
             textTransform: 'uppercase',
-            color: 'var(--color-ink)',
+            color: 'var(--ink)',
             opacity: 0.6,
             margin: 0,
           }}
@@ -61,17 +61,17 @@ export function FirstMove({ focusGapId }: FirstMoveProps) {
         <div
           style={{
             marginTop: '0.3in',
-            borderLeft: '2pt solid var(--color-ink)',
+            borderLeft: '2pt solid var(--ink)',
             paddingLeft: '0.25in',
           }}
         >
           <p
             style={{
-              fontFamily: 'var(--font-serif-sc)',
+              fontFamily: 'Georgia, "Times New Roman", serif',
               fontSize: '9pt',
               letterSpacing: '0.18em',
               textTransform: 'uppercase',
-              color: 'var(--color-ink)',
+              color: 'var(--ink)',
               opacity: 0.6,
               margin: 0,
             }}
@@ -86,11 +86,11 @@ export function FirstMove({ focusGapId }: FirstMoveProps) {
         <div style={{ marginTop: '0.3in' }}>
           <p
             style={{
-              fontFamily: 'var(--font-serif-sc)',
+              fontFamily: 'Georgia, "Times New Roman", serif',
               fontSize: '9pt',
               letterSpacing: '0.18em',
               textTransform: 'uppercase',
-              color: 'var(--color-ink)',
+              color: 'var(--ink)',
               opacity: 0.6,
               margin: 0,
             }}
@@ -110,7 +110,7 @@ export function FirstMove({ focusGapId }: FirstMoveProps) {
           style={{
             marginTop: '0.4in',
             paddingTop: '0.2in',
-            borderTop: '0.25pt solid var(--color-ink)',
+            borderTop: '0.25pt solid var(--ink)',
             display: 'grid',
             gridTemplateColumns: 'repeat(3, 1fr)',
             gap: '0.2in',
@@ -125,11 +125,11 @@ export function FirstMove({ focusGapId }: FirstMoveProps) {
             <div key={item.label}>
               <dt
                 style={{
-                  fontFamily: 'var(--font-mono)',
+                  fontFamily: 'ui-monospace, "SF Mono", Menlo, Consolas, monospace',
                   fontSize: '8pt',
                   letterSpacing: '0.18em',
                   textTransform: 'uppercase',
-                  color: 'var(--color-slate)',
+                  color: 'var(--slate-600)',
                   margin: 0,
                 }}
               >

@@ -16,7 +16,7 @@ export function PrintButton() {
       type="button"
       onClick={handlePrint}
       data-print-hide="true"
-      className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-ink)]/70 hover:text-[color:var(--gold)] transition-colors border-b border-[color:var(--color-ink)]/30 hover:border-[color:var(--gold)] pb-1"
+      className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--ink)]/70 hover:text-[color:var(--gold)] transition-colors border-b border-[color:var(--ink)]/30 hover:border-[color:var(--gold)] pb-1"
       aria-label="Download your results as a PDF"
     >
       Download as PDF

@@ -9,7 +9,7 @@ interface MarkdownRendererProps {
 
 function parseInline(text: string): string {
   return text
-    .replace(/`([^`]+)`/g, '<code class="font-mono text-[0.85em] bg-[color:var(--color-parch-dark)] px-1 py-0.5 rounded-sm">$1</code>')
+    .replace(/`([^`]+)`/g, '<code class="font-mono text-[0.85em] bg-[color:var(--cream-2)] px-1 py-0.5 rounded-sm">$1</code>')
     .replace(/\*\*([^*]+)\*\*/g, '<strong class="font-semibold">$1</strong>')
     .replace(/\*([^*]+)\*/g, '<em class="font-serif italic">$1</em>');
 }
@@ -22,19 +22,19 @@ function renderBlock(block: string): string {
   if (trimmed.startsWith('> ')) {
     const quoteLines = trimmed.split('\n').map((l) => l.replace(/^>\s?/, '').trim());
     const quoteHtml = quoteLines.map((l) => parseInline(l)).join('<br/>');
-    return `<blockquote class="my-6 border-l-[3px] border-[color:var(--gold)] bg-[color:var(--color-parch)] px-6 py-5 rounded-r-[2px]"><p class="font-serif italic text-base text-[color:var(--color-ink)] leading-relaxed">${quoteHtml}</p></blockquote>`;
+    return `<blockquote class="my-6 border-l-[3px] border-[color:var(--gold)] bg-[color:#FFFFFF] px-6 py-5 rounded-r-[2px]"><p class="font-serif italic text-base text-[color:var(--ink)] leading-relaxed">${quoteHtml}</p></blockquote>`;
   }
 
   // Heading: ### Heading Text
   if (trimmed.startsWith('### ')) {
     const text = parseInline(trimmed.slice(4));
-    return `<h3 class="font-serif text-xl font-bold text-[color:var(--color-ink)] mb-3 mt-8">${text}</h3>`;
+    return `<h3 class="font-serif text-xl font-bold text-[color:var(--ink)] mb-3 mt-8">${text}</h3>`;
   }
 
   // Heading: ## Heading Text
   if (trimmed.startsWith('## ')) {
     const text = parseInline(trimmed.slice(3));
-    return `<h2 class="font-serif text-2xl font-bold text-[color:var(--color-ink)] mb-3 mt-8">${text}</h2>`;
+    return `<h2 class="font-serif text-2xl font-bold text-[color:var(--ink)] mb-3 mt-8">${text}</h2>`;
   }
 
   const lines = trimmed.split('\n');
@@ -44,7 +44,7 @@ function renderBlock(block: string): string {
     const items = lines
       .map((l) => `<li class="mb-2 pl-1">${parseInline(l.trim().replace(/^\d+\.\s/, ''))}</li>`)
       .join('');
-    return `<ol class="list-decimal pl-5 mb-5 text-[color:var(--color-ink)] space-y-1">${items}</ol>`;
+    return `<ol class="list-decimal pl-5 mb-5 text-[color:var(--ink)] space-y-1">${items}</ol>`;
   }
 
   // Unordered list block: lines starting with "- "
@@ -52,7 +52,7 @@ function renderBlock(block: string): string {
     const items = lines
       .map((l) => `<li class="mb-2 pl-1">${parseInline(l.trim().slice(2))}</li>`)
       .join('');
-    return `<ul class="list-disc pl-5 mb-5 text-[color:var(--color-ink)] space-y-1">${items}</ul>`;
+    return `<ul class="list-disc pl-5 mb-5 text-[color:var(--ink)] space-y-1">${items}</ul>`;
   }
 
   // Mixed block: some lines may be list items, some prose
@@ -72,22 +72,22 @@ function renderBlock(block: string): string {
       } else {
         if (listItems.length > 0) {
           const listClass = listType === 'ol' ? 'list-decimal' : 'list-disc';
-          parts.push(`<${listType} class="${listClass} pl-5 mb-5 text-[color:var(--color-ink)] space-y-1">${listItems.join('')}</${listType}>`);
+          parts.push(`<${listType} class="${listClass} pl-5 mb-5 text-[color:var(--ink)] space-y-1">${listItems.join('')}</${listType}>`);
           listItems = [];
         }
         if (t) {
           // Bold-only line as a visual subheader
           if (/^\*\*[^*]+\*\*:?$/.test(t)) {
-            parts.push(`<p class="mb-2 mt-6 font-serif text-lg font-semibold text-[color:var(--color-ink)]">${parseInline(t)}</p>`);
+            parts.push(`<p class="mb-2 mt-6 font-serif text-lg font-semibold text-[color:var(--ink)]">${parseInline(t)}</p>`);
           } else {
-            parts.push(`<p class="mb-4 text-[color:var(--color-ink)] leading-relaxed">${parseInline(t)}</p>`);
+            parts.push(`<p class="mb-4 text-[color:var(--ink)] leading-relaxed">${parseInline(t)}</p>`);
           }
         }
       }
     }
     if (listItems.length > 0) {
       const listClass = listType === 'ol' ? 'list-decimal' : 'list-disc';
-      parts.push(`<${listType} class="${listClass} pl-5 mb-5 text-[color:var(--color-ink)] space-y-1">${listItems.join('')}</${listType}>`);
+      parts.push(`<${listType} class="${listClass} pl-5 mb-5 text-[color:var(--ink)] space-y-1">${listItems.join('')}</${listType}>`);
     }
     return parts.join('');
   }
@@ -95,11 +95,11 @@ function renderBlock(block: string): string {
   // Bold-only paragraph as visual subheader (e.g., "**Why this matters:**")
   const singleLine = lines.map((l) => l.trim()).join(' ');
   if (/^\*\*[^*]+\*\*:?$/.test(singleLine)) {
-    return `<p class="mb-2 mt-6 font-serif text-lg font-semibold text-[color:var(--color-ink)]">${parseInline(singleLine)}</p>`;
+    return `<p class="mb-2 mt-6 font-serif text-lg font-semibold text-[color:var(--ink)]">${parseInline(singleLine)}</p>`;
   }
 
   // Default: paragraph
-  return `<p class="mb-4 text-[color:var(--color-ink)] leading-relaxed">${parseInline(singleLine)}</p>`;
+  return `<p class="mb-4 text-[color:var(--ink)] leading-relaxed">${parseInline(singleLine)}</p>`;
 }
 
 export function MarkdownRenderer({ content, className }: MarkdownRendererProps) {
@@ -108,7 +108,7 @@ export function MarkdownRenderer({ content, className }: MarkdownRendererProps) 
 
   return (
     <div
-      className={`prose-aibi text-sm leading-relaxed text-[color:var(--color-ink)] ${className ?? ''}`}
+      className={`prose-aibi text-sm leading-relaxed text-[color:var(--ink)] ${className ?? ''}`}
       dangerouslySetInnerHTML={{ __html: html }}
     />
   );

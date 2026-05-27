@@ -34,7 +34,7 @@ export function renderInline(text: string): ReactNode[] {
       parts.push(
         <code
           key={parts.length}
-          className="rounded-[2px] bg-[color:var(--color-parch)] px-1 py-0.5 font-mono text-xs"
+          className="rounded-[2px] bg-[color:#FFFFFF] px-1 py-0.5 font-mono text-xs"
         >
           {match[4]}
         </code>,
@@ -81,10 +81,10 @@ export function renderMarkdown(text: string): ReactNode[] {
       nodes.push(
         <pre
           key={nodes.length}
-          className="my-2 overflow-x-auto rounded-[2px] bg-[color:var(--color-parch)] p-3 text-xs font-mono"
+          className="my-2 overflow-x-auto rounded-[2px] bg-[color:#FFFFFF] p-3 text-xs font-mono"
         >
           {lang && (
-            <span className="mb-1 block text-[9px] uppercase tracking-[1.2px] text-[color:var(--color-slate)]">
+            <span className="mb-1 block text-[9px] uppercase tracking-[1.2px] text-[color:var(--slate-600)]">
               {lang}
             </span>
           )}
@@ -120,7 +120,7 @@ export function renderMarkdown(text: string): ReactNode[] {
                 {headerCells.map((cell, ci) => (
                   <th
                     key={ci}
-                    className="border border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)] px-2 py-1 text-left font-sans text-xs font-semibold"
+                    className="border border-[color:var(--ink)]/10 bg-[color:#FFFFFF] px-2 py-1 text-left font-sans text-xs font-semibold"
                   >
                     {cell}
                   </th>
@@ -135,7 +135,7 @@ export function renderMarkdown(text: string): ReactNode[] {
                     return (
                       <td
                         key={ci}
-                        className={`border border-[color:var(--color-ink)]/10 px-2 py-1 text-xs ${
+                        className={`border border-[color:var(--ink)]/10 px-2 py-1 text-xs ${
                           isNumeric ? 'font-mono tabular-nums' : 'font-sans'
                         }`}
                       >
@@ -161,7 +161,7 @@ export function renderMarkdown(text: string): ReactNode[] {
       nodes.push(
         <p
           key={nodes.length}
-          className={`${sizes[level - 1]} font-serif font-semibold text-[color:var(--color-ink)] mt-3 mb-1`}
+          className={`${sizes[level - 1]} font-serif font-semibold text-[color:var(--ink)] mt-3 mb-1`}
         >
           {renderInline(content)}
         </p>,

@@ -60,14 +60,14 @@ export function InquiryForm() {
 
   if (status === 'success') {
     return (
-      <div className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-10 text-center">
+      <div className="bg-[color:#FFFFFF] border border-[color:var(--ink)]/10 rounded-[3px] p-10 text-center">
         <p className="font-mono text-xs uppercase tracking-widest text-[color:var(--ink-2)] mb-3">
           Inquiry received
         </p>
-        <h3 className="font-serif text-3xl text-[color:var(--color-ink)] mb-4">
+        <h3 className="font-serif text-3xl text-[color:var(--ink)] mb-4">
           Thank you. We will be in touch within two business days.
         </h3>
-        <p className="text-[color:var(--color-ink)]/70 leading-relaxed">
+        <p className="text-[color:var(--ink)]/70 leading-relaxed">
           We will reach out to discuss cohort timing, confirm the right track
           for your team, and walk you through what the engagement looks like.
         </p>
@@ -76,14 +76,14 @@ export function InquiryForm() {
   }
 
   return (
-    <div className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/10 rounded-[3px] p-8 md:p-10">
+    <div className="bg-[color:#FFFFFF] border border-[color:var(--ink)]/10 rounded-[3px] p-8 md:p-10">
       <p className="font-mono text-xs uppercase tracking-widest text-[color:var(--gold)] mb-3">
         Request cohort information
       </p>
-      <h3 className="font-serif text-3xl text-[color:var(--color-ink)] mb-4">
+      <h3 className="font-serif text-3xl text-[color:var(--ink)] mb-4">
         Tell us about your institution.
       </h3>
-      <p className="text-[color:var(--color-ink)]/70 mb-6 leading-relaxed">
+      <p className="text-[color:var(--ink)]/70 mb-6 leading-relaxed">
         Phase 1 enrollments are handled by inquiry so we can confirm the right
         track for your team and walk you through cohort timing.
       </p>
@@ -91,7 +91,7 @@ export function InquiryForm() {
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid md:grid-cols-2 gap-4">
           <label className="block">
-            <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-ink)]/70">
+            <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ink)]/70">
               Your name
             </span>
             <input
@@ -99,11 +99,11 @@ export function InquiryForm() {
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="mt-1 w-full px-4 py-3 border border-[color:var(--color-ink)]/20 rounded-[2px] bg-[color:var(--color-linen)] text-[color:var(--color-ink)] font-sans focus:outline-none focus:border-[color:var(--gold)]"
+              className="mt-1 w-full px-4 py-3 border border-[color:var(--ink)]/20 rounded-[2px] bg-[color:var(--cream)] text-[color:var(--ink)] font-sans focus:outline-none focus:border-[color:var(--gold)]"
             />
           </label>
           <label className="block">
-            <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-ink)]/70">
+            <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ink)]/70">
               Email
             </span>
             <input
@@ -111,12 +111,12 @@ export function InquiryForm() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 w-full px-4 py-3 border border-[color:var(--color-ink)]/20 rounded-[2px] bg-[color:var(--color-linen)] text-[color:var(--color-ink)] font-sans focus:outline-none focus:border-[color:var(--gold)]"
+              className="mt-1 w-full px-4 py-3 border border-[color:var(--ink)]/20 rounded-[2px] bg-[color:var(--cream)] text-[color:var(--ink)] font-sans focus:outline-none focus:border-[color:var(--gold)]"
             />
           </label>
         </div>
         <label className="block">
-          <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-ink)]/70">
+          <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ink)]/70">
             Institution
           </span>
           <input
@@ -124,18 +124,18 @@ export function InquiryForm() {
             required
             value={institution}
             onChange={(e) => setInstitution(e.target.value)}
-            className="mt-1 w-full px-4 py-3 border border-[color:var(--color-ink)]/20 rounded-[2px] bg-[color:var(--color-linen)] text-[color:var(--color-ink)] font-sans focus:outline-none focus:border-[color:var(--gold)]"
+            className="mt-1 w-full px-4 py-3 border border-[color:var(--ink)]/20 rounded-[2px] bg-[color:var(--cream)] text-[color:var(--ink)] font-sans focus:outline-none focus:border-[color:var(--gold)]"
           />
         </label>
         <label className="block">
-          <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-ink)]/70">
+          <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ink)]/70">
             Interested in
           </span>
           <select
             value={track}
             onChange={(e) => setTrack(e.target.value as (typeof TRACKS)[number])}
             aria-label="Certification track"
-            className="mt-1 w-full px-4 py-3 border border-[color:var(--color-ink)]/20 rounded-[2px] bg-[color:var(--color-linen)] text-[color:var(--color-ink)] font-sans focus:outline-none focus:border-[color:var(--gold)]"
+            className="mt-1 w-full px-4 py-3 border border-[color:var(--ink)]/20 rounded-[2px] bg-[color:var(--cream)] text-[color:var(--ink)] font-sans focus:outline-none focus:border-[color:var(--gold)]"
           >
             {TRACKS.map((t) => (
               <option key={t} value={t}>
@@ -145,25 +145,25 @@ export function InquiryForm() {
           </select>
         </label>
         <label className="block">
-          <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-ink)]/70">
+          <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ink)]/70">
             Anything else we should know (optional)
           </span>
           <textarea
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             rows={4}
-            className="mt-1 w-full px-4 py-3 border border-[color:var(--color-ink)]/20 rounded-[2px] bg-[color:var(--color-linen)] text-[color:var(--color-ink)] font-sans focus:outline-none focus:border-[color:var(--gold)] resize-none"
+            className="mt-1 w-full px-4 py-3 border border-[color:var(--ink)]/20 rounded-[2px] bg-[color:var(--cream)] text-[color:var(--ink)] font-sans focus:outline-none focus:border-[color:var(--gold)] resize-none"
           />
         </label>
         <button
           type="submit"
           disabled={status === 'submitting'}
-          className="w-full px-6 py-3 bg-[color:var(--gold)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] active:scale-[0.98] transition-all disabled:opacity-60"
+          className="w-full px-6 py-3 bg-[color:var(--gold)] text-[color:var(--cream)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] active:scale-[0.98] transition-all disabled:opacity-60"
         >
           {status === 'submitting' ? 'Sending…' : 'Submit inquiry'}
         </button>
         {message && status === 'error' && (
-          <p className="text-sm text-[color:var(--color-error)]" role="alert">
+          <p className="text-sm text-[color:#9b2226]" role="alert">
             {message}
           </p>
         )}

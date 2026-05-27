@@ -55,16 +55,16 @@ export async function HomeContextStrip() {
     const completedCount = enrollment.completed_modules?.length ?? 0;
     return (
       <ContextBand>
-        <p className="text-sm text-[color:var(--color-slate)]">
+        <p className="text-sm text-[color:var(--slate-600)]">
           Welcome back. You&apos;re on{' '}
-          <span className="text-[color:var(--color-ink)]">
+          <span className="text-[color:var(--ink)]">
             Module {enrollment.current_module} of {TOTAL_FOUNDATION_PROGRAM_MODULES}
           </span>{' '}
           ({completedCount} complete).
         </p>
         <Link
           href={`/courses/foundation/program/${enrollment.current_module}`}
-          className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--gold)] hover:text-[color:var(--color-ink)]"
+          className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--gold)] hover:text-[color:var(--ink)]"
         >
           Resume course →
         </Link>
@@ -90,9 +90,9 @@ export async function HomeContextStrip() {
       profile.readiness_max_score ?? (Array.isArray(answers) && answers.length === 12 ? 48 : 32);
     return (
       <ContextBand>
-        <p className="text-sm text-[color:var(--color-slate)]">
+        <p className="text-sm text-[color:var(--slate-600)]">
           Welcome back. Your readiness:{' '}
-          <span className="text-[color:var(--color-ink)]">{profile.readiness_tier_label}</span>{' '}
+          <span className="text-[color:var(--ink)]">{profile.readiness_tier_label}</span>{' '}
           <span className="font-mono tabular-nums">
             ({profile.readiness_score}/{maxScore})
           </span>
@@ -100,7 +100,7 @@ export async function HomeContextStrip() {
         </p>
         <Link
           href="/courses/foundation/program"
-          className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--gold)] hover:text-[color:var(--color-ink)]"
+          className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--gold)] hover:text-[color:var(--ink)]"
         >
           Explore the AiBI-Foundation course →
         </Link>
@@ -116,13 +116,13 @@ export async function HomeContextStrip() {
 
   return (
     <ContextBand>
-      <p className="text-sm text-[color:var(--color-slate)]">
-        Welcome back, <span className="text-[color:var(--color-ink)]">{displayName}</span>.
+      <p className="text-sm text-[color:var(--slate-600)]">
+        Welcome back, <span className="text-[color:var(--ink)]">{displayName}</span>.
         Take the readiness assessment to see your starting point.
       </p>
       <Link
         href="/assessment/start"
-        className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--gold)] hover:text-[color:var(--color-ink)]"
+        className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--gold)] hover:text-[color:var(--ink)]"
       >
         Take the assessment →
       </Link>
@@ -132,7 +132,7 @@ export async function HomeContextStrip() {
 
 function ContextBand({ children }: { readonly children: React.ReactNode }) {
   return (
-    <div className="border-b border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)]">
+    <div className="border-b border-[color:var(--ink)]/10 bg-[color:#FFFFFF]">
       <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-6 py-3">
         {children}
       </div>

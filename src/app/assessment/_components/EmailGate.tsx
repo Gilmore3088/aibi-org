@@ -178,14 +178,14 @@ export function EmailGate({
 
   return (
     <div className="w-full max-w-5xl mx-auto">
-      <div className="grid lg:grid-cols-[1fr_1fr] gap-0 border border-[color:var(--color-ink)]/10 rounded-[3px] overflow-hidden">
+      <div className="grid lg:grid-cols-[1fr_1fr] gap-0 border border-[color:var(--ink)]/10 rounded-[3px] overflow-hidden">
         <DeliverablePanel />
 
-        <div className="bg-[color:var(--color-parch)] p-8 md:p-10 lg:p-12">
+        <div className="bg-[color:#FFFFFF] p-8 md:p-10 lg:p-12">
           <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
             See your full results
           </p>
-          <h3 className="font-serif text-3xl leading-tight text-[color:var(--color-ink)]">
+          <h3 className="font-serif text-3xl leading-tight text-[color:var(--ink)]">
             Where should we send your breakdown?
           </h3>
 
@@ -212,7 +212,7 @@ export function EmailGate({
                     setMessage(null);
                   }
                 }}
-                className="w-full px-4 py-3 border border-[color:var(--color-ink)]/20 rounded-[2px] bg-[color:var(--color-linen)] text-[color:var(--color-ink)] font-sans text-base focus:outline-none focus:border-[color:var(--gold)]"
+                className="w-full px-4 py-3 border border-[color:var(--ink)]/20 rounded-[2px] bg-[color:var(--cream)] text-[color:var(--ink)] font-sans text-base focus:outline-none focus:border-[color:var(--gold)]"
               />
             </FormField>
 
@@ -229,7 +229,7 @@ export function EmailGate({
                 placeholder="Sarah"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
-                className="w-full px-4 py-3 border border-[color:var(--color-ink)]/20 rounded-[2px] bg-[color:var(--color-linen)] text-[color:var(--color-ink)] font-sans text-base focus:outline-none focus:border-[color:var(--gold)]"
+                className="w-full px-4 py-3 border border-[color:var(--ink)]/20 rounded-[2px] bg-[color:var(--cream)] text-[color:var(--ink)] font-sans text-base focus:outline-none focus:border-[color:var(--gold)]"
               />
             </FormField>
 
@@ -246,11 +246,11 @@ export function EmailGate({
                 placeholder="First Federal Credit Union"
                 value={institutionName}
                 onChange={(e) => setInstitutionName(e.target.value)}
-                className="w-full px-4 py-3 border border-[color:var(--color-ink)]/20 rounded-[2px] bg-[color:var(--color-linen)] text-[color:var(--color-ink)] font-sans text-base focus:outline-none focus:border-[color:var(--gold)]"
+                className="w-full px-4 py-3 border border-[color:var(--ink)]/20 rounded-[2px] bg-[color:var(--cream)] text-[color:var(--ink)] font-sans text-base focus:outline-none focus:border-[color:var(--gold)]"
               />
             </FormField>
 
-            <label className="flex gap-3 cursor-pointer text-sm text-[color:var(--color-ink)]/80 leading-relaxed">
+            <label className="flex gap-3 cursor-pointer text-sm text-[color:var(--ink)]/80 leading-relaxed">
               <input
                 type="checkbox"
                 checked={marketingOptIn}
@@ -259,7 +259,7 @@ export function EmailGate({
               />
               <span>
                 Also subscribe me to{' '}
-                <span className="text-[color:var(--color-ink)]">The AI Banking Brief</span>
+                <span className="text-[color:var(--ink)]">The AI Banking Brief</span>
                 {' '}— twice-monthly research notes for community-bank executives. Unsubscribe anytime.
               </span>
             </label>
@@ -267,7 +267,7 @@ export function EmailGate({
             <button
               type="submit"
               disabled={status === 'submitting'}
-              className="w-full px-6 py-3 bg-[color:var(--gold)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] active:scale-[0.98] transition-all disabled:opacity-60"
+              className="w-full px-6 py-3 bg-[color:var(--gold)] text-[color:var(--cream)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] active:scale-[0.98] transition-all disabled:opacity-60"
             >
               {status === 'submitting' ? 'Sending…' : 'Show my full results'}
             </button>
@@ -283,23 +283,23 @@ export function EmailGate({
 // Left column — visual proof of what they're getting.
 function DeliverablePanel() {
   return (
-    <div className="bg-[color:var(--color-linen)] p-8 md:p-10 lg:p-12 border-b lg:border-b-0 lg:border-r border-[color:var(--color-ink)]/10">
+    <div className="bg-[color:var(--cream)] p-8 md:p-10 lg:p-12 border-b lg:border-b-0 lg:border-r border-[color:var(--ink)]/10">
       <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
         What you get
       </p>
-      <h3 className="font-serif text-3xl leading-tight text-[color:var(--color-ink)]">
+      <h3 className="font-serif text-3xl leading-tight text-[color:var(--ink)]">
         A working diagnostic, not a teaser.
       </h3>
 
       <div
-        className="mt-6 border border-[color:var(--color-ink)]/10 bg-[color:var(--color-parch)] p-4 rounded-[2px]"
+        className="mt-6 border border-[color:var(--ink)]/10 bg-[color:#FFFFFF] p-4 rounded-[2px]"
         aria-hidden="true"
       >
         <div className="flex items-baseline justify-between mb-3">
-          <p className="font-serif-sc text-[10px] uppercase tracking-[0.18em] text-[color:var(--color-slate)]">
+          <p className="font-serif-sc text-[10px] uppercase tracking-[0.18em] text-[color:var(--slate-600)]">
             Readiness breakdown
           </p>
-          <p className="font-mono text-[10px] tabular-nums text-[color:var(--color-slate)]">
+          <p className="font-mono text-[10px] tabular-nums text-[color:var(--slate-600)]">
             8 dimensions
           </p>
         </div>
@@ -315,10 +315,10 @@ function DeliverablePanel() {
             ['Roadmap', 0.30],
           ] as const).map(([label, value]) => (
             <div key={label} className="flex items-center gap-3">
-              <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)] w-20 shrink-0">
+              <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--slate-600)] w-20 shrink-0">
                 {label}
               </span>
-              <div className="flex-1 h-1.5 bg-[color:var(--color-ink)]/10 rounded-sm overflow-hidden">
+              <div className="flex-1 h-1.5 bg-[color:var(--ink)]/10 rounded-sm overflow-hidden">
                 <div
                   className="h-full bg-[color:var(--gold)]"
                   style={{ width: `${value * 100}%` }}
@@ -327,7 +327,7 @@ function DeliverablePanel() {
             </div>
           ))}
         </div>
-        <p className="mt-3 font-mono text-[9px] uppercase tracking-widest text-[color:var(--color-slate)]">
+        <p className="mt-3 font-mono text-[9px] uppercase tracking-widest text-[color:var(--slate-600)]">
           Sample only — yours will reflect your actual answers
         </p>
       </div>
@@ -341,8 +341,8 @@ function DeliverablePanel() {
           <li key={title} className="flex gap-3">
             <span className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--gold)] shrink-0" />
             <div>
-              <p className="font-serif text-base text-[color:var(--color-ink)]">{title}</p>
-              <p className="text-sm text-[color:var(--color-slate)] leading-relaxed">{body}</p>
+              <p className="font-serif text-base text-[color:var(--ink)]">{title}</p>
+              <p className="text-sm text-[color:var(--slate-600)] leading-relaxed">{body}</p>
             </div>
           </li>
         ))}
@@ -363,7 +363,7 @@ function TrustStrip() {
           <p className="font-serif-sc text-[10px] uppercase tracking-[0.18em] text-[color:var(--gold)]">
             {title}
           </p>
-          <p className="mt-1 text-xs text-[color:var(--color-slate)] leading-relaxed">{body}</p>
+          <p className="mt-1 text-xs text-[color:var(--slate-600)] leading-relaxed">{body}</p>
         </div>
       ))}
     </div>
@@ -390,20 +390,20 @@ function FormField({
       <div className="flex items-baseline justify-between gap-3">
         <label
           htmlFor={id}
-          className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-slate)]"
+          className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--slate-600)]"
         >
           {label}
           {required && <span className="ml-1 text-[color:var(--gold)]">*</span>}
         </label>
         {hint && !error && (
-          <span className="text-xs text-[color:var(--color-slate)]/80">{hint}</span>
+          <span className="text-xs text-[color:var(--slate-600)]/80">{hint}</span>
         )}
       </div>
       <div className="mt-1.5">{children}</div>
       {error && (
         <p
           id={`${id}-error`}
-          className="mt-1.5 text-xs text-[color:var(--color-error)] flex items-start gap-1.5"
+          className="mt-1.5 text-xs text-[color:#9b2226] flex items-start gap-1.5"
           role="alert"
         >
           <span aria-hidden="true" className="font-mono leading-tight">!</span>

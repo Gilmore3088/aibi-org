@@ -44,7 +44,7 @@ export function ScoreRing({ score, minScore, maxScore, colorVar, label }: ScoreR
             cy={SIZE / 2}
             r={RADIUS}
             fill="none"
-            stroke="var(--color-ink)"
+            stroke="var(--ink)"
             strokeOpacity={0.08}
             strokeWidth={STROKE}
           />
@@ -64,10 +64,10 @@ export function ScoreRing({ score, minScore, maxScore, colorVar, label }: ScoreR
           />
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="font-mono text-6xl text-[color:var(--color-ink)] leading-none tabular-nums">
+          <span className="font-mono text-6xl text-[color:var(--ink)] leading-none tabular-nums">
             {score}
           </span>
-          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-slate)] mt-3">
+          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--slate-600)] mt-3">
             out of {maxScore}
           </span>
         </div>

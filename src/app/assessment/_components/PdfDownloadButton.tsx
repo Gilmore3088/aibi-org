@@ -113,20 +113,20 @@ export function PdfDownloadButton({ profileId, email }: PdfDownloadButtonProps) 
     <>
       <div className="mt-12 text-center" data-print-hide="true">
         {state.kind === 'warming' && (
-          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/55">
+          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[color:var(--ink)]/55">
             Preparing your brief&hellip;
           </p>
         )}
         {state.kind === 'ready' && (
           <button
             onClick={handleDownload}
-            className="px-6 py-3 bg-[color:var(--gold)] text-[color:var(--color-linen)] font-sans text-[12px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] transition-colors"
+            className="px-6 py-3 bg-[color:var(--gold)] text-[color:var(--cream)] font-sans text-[12px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] transition-colors"
           >
             Download PDF
           </button>
         )}
         {state.kind === 'downloading' && (
-          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/55">
+          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[color:var(--ink)]/55">
             Downloading&hellip;
           </p>
         )}
@@ -136,7 +136,7 @@ export function PdfDownloadButton({ profileId, email }: PdfDownloadButtonProps) 
           </p>
         )}
         {state.kind === 'error' && (
-          <p className="font-mono text-[10px] text-[color:var(--color-error)]">
+          <p className="font-mono text-[10px] text-[color:#9b2226]">
             Could not prepare PDF: {state.message}
           </p>
         )}

@@ -41,7 +41,7 @@ New review     → docs/reviews/<scope>-audit-YYYY-MM-DD.md
 New idea seed  → Plans/_ideas/<slug>.md  (low-ceremony, gitignored)
 ```
 
-**Assessment content lives in `content/assessments/<version>/`** — each version is a folder (questions, scoring, copy) so content can iterate without touching component code. Current version: **`v2`** (48-question pool, eight readiness dimensions, 12–48 scoring range for the free rotation and 48–192 raw for the In-Depth full 48). See spec v2 §6.
+**Assessment content lives in `content/assessments/<version>/`** — each version is a folder (questions, scoring, copy) so content can iterate without touching component code. **Free-funnel current version: `v3`** (12 flat questions, twelve readiness dimensions, 12–48 score range). **In-Depth ($99) and Foundation post-assessment remain on `v2`** (48-question pool, eight dimensions, 48–192 raw). See `content/assessments/v3/` and the 2026-05-27 DECISIONS entry.
 
 ---
 
@@ -234,7 +234,7 @@ SKIP_PDF_GENERATION=true
 SKIP_SUPABASE_PROFILES=true
 SKIP_ENROLLMENT_GATE=true
 SKIP_CRON_AUTH=true                    # SECURITY: bypasses CRON_SECRET — must NEVER be true in Production
-COMING_SOON=true                       # coming-soon gate toggle
+# COMING_SOON removed 2026-05-27 — coming-soon gate fully evicted from code. Safe to delete from Vercel.
 
 # Optional preview-only auth bypass. The helper at
 # src/lib/auth/previewBypass.ts already auto-fires when Supabase isn't
@@ -316,7 +316,7 @@ Must work on mobile in under 3 minutes. One question per view on mobile. Score r
 
 ```typescript
 interface AssessmentState {
-  currentQuestion: number;     // 0–7
+  currentQuestion: number;     // 0–11 (v3 has 12 questions; v2 had 8)
   answers: number[];           // scores 1–4 per question
   phase: 'questions' | 'score' | 'results';
   email: string;
@@ -327,14 +327,16 @@ interface AssessmentState {
 ### Scoring Logic
 
 ```typescript
-// Score range is 8–32 (8 questions × 1–4 points each)
-const getTier = (total: number) => {
-  if (total >= 28) return { label: 'Ready to Scale',    color: 'var(--color-sage)' };         // 28–32
-  if (total >= 22) return { label: 'Building Momentum', color: 'var(--color-terra-light)' };  // 22–27
-  if (total >= 15) return { label: 'Early Stage',       color: 'var(--color-terra)' };        // 15–21
-  return               { label: 'Starting Point',       color: 'var(--color-error)' };        // 8–14
+// v3 score range is 12–48 (12 questions × 1–4 points each).
+// Tier ids unchanged from v2 so downstream consumers (sequences, dashboards) keep working.
+const getTierV3 = (total: number) => {
+  if (total >= 41) return { id: 'ready-to-scale',     label: 'Ready to Scale',     colorVar: 'var(--ink)' };     // 41–48
+  if (total >= 33) return { id: 'building-momentum',  label: 'Building Momentum',  colorVar: 'var(--gold)' };    // 33–40
+  if (total >= 23) return { id: 'early-stage',        label: 'Early Stage',        colorVar: 'var(--gold)' };    // 23–32
+  return                  { id: 'starting-point',    label: 'Starting Point',     colorVar: 'var(--ink)' };     // 12–22
 };
-// NEVER hardcode hex values — always reference CSS variables
+// Mockup palette: --ink (navy), --gold, --cream, --slate-{400..600}, --emerald-700.
+// Never hardcode hex outside of tokens-mockup.css; never use legacy --color-* names.
 ```
 
 ### Critical UX Rule
@@ -444,15 +446,15 @@ HubSpot calls without an explicit decision.
 Course delivery is in-house — no third-party LMS, no Zapier, no Kajabi
 (decision 2026-05-05). Existing pieces in `src/lib/lms/`,
 `src/lib/course-harness/`, `src/lib/certificates/`. Course content lives
-in `public/AiBI-P/` HTML mockups + `src/app/courses/`. The chain:
+in `content/courses/foundation-program/module-{1..12}.ts` + `src/app/courses/foundation/program/`. The chain:
 
 ```
 Stripe payment.success webhook
   → /api/webhooks/stripe (verify signature)
   → Insert row into Supabase `course_enrollments`
-  → Tag ConvertKit contact (for welcome / drip sequence)
+  → Tag MailerLite contact (welcome group / drip sequence)
   → User logs in with their existing Supabase Auth account
-  → /courses/aibi-p reads `course_enrollments` to gate access
+  → /courses/foundation/program reads `course_enrollments` to gate access
 ```
 
 No external user provisioning, no automation glue. Single auth surface
@@ -546,14 +548,16 @@ Never write "AiBI helps..." or "the AiBI approach..." in body copy. Use
 
 ### Color Variables — Never Hardcode Hex
 
-**Three systems coexist during migration (2026-05-26 → end-of-sprint).**
-The mockup system replaces Ledger as the target. Ledger replaced
-Terra/Sage/Cobalt. As surfaces migrate, layers below the target are dropped
-file by file. When the redesign sprint completes, both `tokens.css` and
-`tokens-ledger.css` are deleted and `tokens-mockup.css` is renamed to take
-their place. See the 2026-05-26 DECISIONS.md entry for the rationale.
+**Mockup is the single design system as of 2026-05-27.** Ledger was fully
+evicted from every rendering surface in `src/app/`, `src/components/`, and
+`src/lib/` (PRs #291 + #292 + #293). `src/styles/tokens-ledger.css` is
+deleted. `src/components/ledger/` is deleted. `src/styles/tokens.css` still
+exists as a thin compatibility shim mapping legacy `--color-*` alias names
+to mockup hex literals — its consumers will be migrated and the file
+deleted in a follow-up after PR #289 + #291 + #292 + #293 merge to main.
+See the 2026-05-27 DECISIONS entry.
 
-**Mockup (target — use for all new and migrated work):**
+**Mockup tokens (canonical):**
 
 Defined in `src/styles/tokens-mockup.css`. Source of truth:
 `public/sketches/_mockup.css` + per-page sketches in `public/sketches/`.
@@ -586,20 +590,14 @@ Defined in `src/styles/tokens-mockup.css`. Source of truth:
 --emerald-800: #065F46
 ```
 
-**Ledger (legacy — do not use for new work; remove from migrated surfaces):**
-Tokens in `src/styles/tokens-ledger.css`. Old palette: `--ledger-ink #0E1B2D`,
-`--ledger-accent #7C5814` (darkened gold), `--ledger-bg #ECE9DF` (linen),
-`--ledger-paper #F4F1E7`, etc. Retained while LMS interior and
-sub-routes still reference them; sweep when the surface is ported.
-
-**Legacy Terra/Sage/Cobalt (dead — keep out of new work):**
-`--color-terra #b5512e`, `--color-sage #4a6741`, `--color-cobalt #2d4a7a`,
-etc. Removed from migrated surfaces.
-
 **Pillar color discipline is retired.** The mockup system uses one accent
 (gold) for emphasis only. The 4-pillar curriculum structure
 (Awareness · Understanding · Creation · Application) in the LMS
 remains as a content frame but does not carry a visual grammar.
+
+**Deleted (do not reintroduce):**
+- `--ledger-*` tokens — Ledger design system, evicted 2026-05-27
+- `--color-terra` / `--color-sage` / `--color-cobalt` / `--color-amber` — pillar palette, retired 2026-05-26
 
 ---
 
@@ -649,7 +647,7 @@ The post-conference email goes out when ALL items are checked:
 
 - [ ] AIBankingInstitute.com DNS live, SSL active *(domains registered ✓)*
 - [ ] Home page rendering correctly desktop + mobile
-- [ ] Assessment: 8 questions functional, scoring correct
+- [ ] Assessment: 12 questions functional, scoring correct (v3)
 - [ ] Assessment: **email captured before any score is visible; full report (score + tier + dimension breakdown + starter artifact) renders inline immediately after email submit** (reverses 2026-04-27 decision — see 2026-05-18 DECISIONS.md entry)
 - [ ] Assessment: sessionStorage persistence working (test by refreshing mid-assessment on iPhone)
 - [ ] Assessment: /api/capture-email with rate limiting active
@@ -785,9 +783,9 @@ The shared chrome lives in `public/sketches/_mockup.css`. The
 React-ported tokens live in `src/styles/tokens-mockup.css`.
 
 The 2026-05-09 Ledger refresh was retired on 2026-05-26 in favor of
-this mockup system. See DECISIONS.md for the shift rationale. Ledger
-references in not-yet-migrated surfaces (LMS interior, dashboard
-internals) are temporary and removed as each surface ports.
+this mockup system, then fully evicted from every rendering surface on
+2026-05-27 (PRs #291 + #292 + #293). See DECISIONS.md for the timeline.
+Mockup is the single design system.
 
 **Aesthetic:** Modern editorial-meets-software. Dark navy hero with a
 warm cream page, brighter gold as a focused accent, rounded card-based
@@ -813,9 +811,11 @@ no terra, no sage — old pillar discipline is gone.
 400/500/600/700/800. Font fallback chain
 `"Inter", ui-sans-serif, system-ui, -apple-system, "Helvetica Neue",
 Arial, sans-serif` already wired in `_mockup.css` and `tokens-mockup.css`.
-Newsreader, Geist, and JetBrains Mono from the Ledger era are retained
-on un-ported surfaces during migration but new work uses Inter only.
-Italics remain retired site-wide (`*{font-style:normal!important}` in
+Newsreader, Geist, and JetBrains Mono are still loaded in `layout.tsx`
+because the legacy `--font-serif` / `--font-mono` aliases in `tokens.css`
+remain — the print-results PDF route is the main remaining consumer.
+Those font loads can be dropped once `tokens.css` is deleted. Italics
+remain retired site-wide (`*{font-style:normal!important}` in
 `base.css`); emphasis carried by weight (600/700) and color.
 
 **Design principles:**

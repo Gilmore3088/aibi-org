@@ -33,14 +33,14 @@ function ItemRow({
         className="flex items-center gap-3 px-6 py-2.5 opacity-40 cursor-not-allowed"
         aria-label={`${item.title} — locked`}
       >
-        <span className="font-mono text-[10px] w-5 text-[color:var(--color-slate)]">
+        <span className="font-mono text-[10px] w-5 text-[color:var(--slate-600)]">
           {formattedNumber}
         </span>
-        <span className="font-serif text-xs text-[color:var(--color-ink)] flex-1 leading-tight">
+        <span className="font-serif text-xs text-[color:var(--ink)] flex-1 leading-tight">
           {item.title}
         </span>
         <svg
-          className="w-3 h-3 text-[color:var(--color-dust)] shrink-0"
+          className="w-3 h-3 text-[color:var(--slate-400)] shrink-0"
           fill="currentColor"
           viewBox="0 0 20 20"
           aria-hidden="true"
@@ -61,13 +61,13 @@ function ItemRow({
         className="flex items-center gap-3 px-6 py-2.5 opacity-40 cursor-not-allowed"
         aria-label={`${item.title} — coming soon`}
       >
-        <span className="font-mono text-[10px] w-5 text-[color:var(--color-slate)]">
+        <span className="font-mono text-[10px] w-5 text-[color:var(--slate-600)]">
           {formattedNumber}
         </span>
-        <span className="font-serif text-xs text-[color:var(--color-ink)] flex-1 leading-tight">
+        <span className="font-serif text-xs text-[color:var(--ink)] flex-1 leading-tight">
           {item.title}
         </span>
-        <span className="font-mono text-[8px] uppercase tracking-widest text-[color:var(--color-slate)] shrink-0">
+        <span className="font-mono text-[8px] uppercase tracking-widest text-[color:var(--slate-600)] shrink-0">
           Soon
         </span>
       </div>
@@ -79,7 +79,7 @@ function ItemRow({
       <Link
         href={item.href}
         onClick={onClose}
-        className="flex items-center gap-3 px-6 py-2.5 bg-[color:var(--color-parch-dark)] font-bold transition-colors"
+        className="flex items-center gap-3 px-6 py-2.5 bg-[color:var(--cream-2)] font-bold transition-colors"
         aria-current="page"
       >
         <span
@@ -100,12 +100,12 @@ function ItemRow({
     <Link
       href={item.href}
       onClick={onClose}
-      className="flex items-center gap-3 px-6 py-2.5 hover:bg-[color:var(--color-parch)] transition-colors"
+      className="flex items-center gap-3 px-6 py-2.5 hover:bg-[color:#FFFFFF] transition-colors"
     >
-      <span className="font-mono text-[10px] w-5 text-[color:var(--color-slate)]">
+      <span className="font-mono text-[10px] w-5 text-[color:var(--slate-600)]">
         {formattedNumber}
       </span>
-      <span className="font-serif text-xs text-[color:var(--color-ink)] flex-1 leading-tight">
+      <span className="font-serif text-xs text-[color:var(--ink)] flex-1 leading-tight">
         {item.title}
       </span>
       <svg
@@ -161,8 +161,8 @@ export function CourseMobileDrawer({ view }: CourseMobileDrawerProps) {
       {/* Hamburger trigger — visible only below lg */}
       <button
         onClick={() => setIsOpen(true)}
-        className="lg:hidden p-2.5 min-h-[44px] min-w-[44px] flex items-center justify-center text-[color:var(--color-ink)] transition-colors"
-        style={{ color: 'var(--color-ink)' }}
+        className="lg:hidden p-2.5 min-h-[44px] min-w-[44px] flex items-center justify-center text-[color:var(--ink)] transition-colors"
+        style={{ color: 'var(--ink)' }}
         aria-label="Open course navigation"
         aria-expanded={isOpen}
         aria-controls="mobile-course-nav"
@@ -186,7 +186,7 @@ export function CourseMobileDrawer({ view }: CourseMobileDrawerProps) {
       {/* Backdrop overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-[color:var(--color-ink)]/40 z-50 lg:hidden"
+          className="fixed inset-0 bg-[color:var(--ink)]/40 z-50 lg:hidden"
           onClick={close}
           aria-hidden="true"
         />
@@ -198,7 +198,7 @@ export function CourseMobileDrawer({ view }: CourseMobileDrawerProps) {
         role="dialog"
         aria-modal="true"
         aria-label="Course navigation"
-        className={`fixed left-0 top-0 h-full w-72 bg-[color:var(--color-linen)] z-50 flex flex-col lg:hidden transition-transform duration-300 ease-in-out ${
+        className={`fixed left-0 top-0 h-full w-72 bg-[color:var(--cream)] z-50 flex flex-col lg:hidden transition-transform duration-300 ease-in-out ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
@@ -214,13 +214,13 @@ export function CourseMobileDrawer({ view }: CourseMobileDrawerProps) {
             >
               Ai
             </div>
-            <div className="text-[color:var(--color-ink)] font-bold text-sm font-serif leading-tight">
+            <div className="text-[color:var(--ink)] font-bold text-sm font-serif leading-tight">
               {config.brand.wordmark}
             </div>
           </div>
           <button
             onClick={close}
-            className="p-1 text-[color:var(--color-slate)] transition-colors"
+            className="p-1 text-[color:var(--slate-600)] transition-colors"
             aria-label="Close course navigation"
           >
             <svg
@@ -274,7 +274,7 @@ export function CourseMobileDrawer({ view }: CourseMobileDrawerProps) {
           <Link
             href={resumeHref}
             onClick={close}
-            className="w-full py-3 px-4 rounded-sm font-bold transition-colors flex items-center justify-center gap-2 text-[10px] uppercase tracking-widest font-mono text-[color:var(--color-linen)]"
+            className="w-full py-3 px-4 rounded-sm font-bold transition-colors flex items-center justify-center gap-2 text-[10px] uppercase tracking-widest font-mono text-[color:var(--cream)]"
             style={{ backgroundColor: accent }}
           >
             Resume
@@ -297,8 +297,8 @@ export function CourseMobileDrawer({ view }: CourseMobileDrawerProps) {
               key={link.href}
               href={link.href}
               onClick={close}
-              className="w-full flex items-center justify-center gap-2 py-2 px-4 rounded-sm transition-colors text-[10px] uppercase tracking-widest font-mono hover:bg-[color:var(--color-parch)]"
-              style={{ color: 'var(--color-ink)', opacity: 0.6 }}
+              className="w-full flex items-center justify-center gap-2 py-2 px-4 rounded-sm transition-colors text-[10px] uppercase tracking-widest font-mono hover:bg-[color:#FFFFFF]"
+              style={{ color: 'var(--ink)', opacity: 0.6 }}
             >
               {link.label}
             </Link>
