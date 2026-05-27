@@ -233,6 +233,10 @@ ${DIMENSIONS.map((d) => `- **${d.label}** — ${d.score}/100. ${d.note}`).join('
               <Button variant="gold" size="lg" href="/assessment">
                 Take the assessment <ArrowR className="mk-ic" />
               </Button>
+              <Button variant="ghost-dark" size="lg" href="/downloads/sample-readiness-report.pdf">
+                <DownloadIcon className="mk-ic" />
+                Download sample (PDF)
+              </Button>
               <Button variant="ghost-dark" size="lg" onClick={downloadSummary}>
                 <DownloadIcon className="mk-ic" />
                 {downloaded ? 'Downloaded' : 'Download sample (.md)'}

@@ -47,11 +47,11 @@ export interface CertificateDocumentProps {
 }
 
 // Brand constants (CLAUDE.md — never hardcode hex, but react-pdf requires literals)
-const TERRA = '#b5512e';
-const TERRA_BORDER = 'rgba(154,64,40,0.2)';
-const TERRA_BORDER_INNER = 'rgba(154,64,40,0.1)';
-const PARCH = '#f5f0e6';
-const INK = '#1e1a14';
+const TERRA = '#C8A24A';
+const TERRA_BORDER = 'rgba(200,162,74,0.25)';
+const TERRA_BORDER_INNER = 'rgba(200,162,74,0.12)';
+const PARCH = '#F7F3EA';
+const INK = '#071A2F';
 const PRIMARY = '#9a4028';
 const MUTED = '#8a7060';
 
