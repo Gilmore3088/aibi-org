@@ -7,13 +7,13 @@ import { useAssessmentV2, QUESTIONS_PER_SESSION } from '../_lib/useAssessmentV2'
 import { ProgressBar } from '../_components/ProgressBar';
 import { EmailGate } from '../_components/EmailGate';
 
-// ResultsViewV2 is a ~25 KB source component (drags in PdfDownloadButton +
+// ResultsViewV3 is a ~25 KB source component (drags in PdfDownloadButton +
 // SignupModal + result-rendering helpers). It only renders after the user
 // completes questions AND captures email. Defer the chunk until then so
 // the initial page bundle stays light — the user has spent ~2 minutes
 // answering questions by the time this is needed.
-const ResultsViewV2 = dynamic(
-  () => import('../_components/ResultsViewV2').then((mod) => mod.ResultsViewV2),
+const ResultsViewV3 = dynamic(
+  () => import('../_components/ResultsViewV3').then((mod) => mod.ResultsViewV3),
   { ssr: false },
 );
 
@@ -273,7 +273,7 @@ export default function AssessmentPage() {
                       tierId={state.tier.id}
                       tierLabel={state.tier.label}
                       answers={state.answers}
-                      version="v2"
+                      version="v3"
                       maxScore={48}
                       dimensionBreakdown={breakdown}
                       onCaptured={(email, extras) => {
@@ -317,7 +317,7 @@ export default function AssessmentPage() {
                   </p>
                 </aside>
               )}
-              <ResultsViewV2
+              <ResultsViewV3
                 score={state.totalScore}
                 tier={state.tier}
                 dimensionBreakdown={state.getDimensionBreakdown()}

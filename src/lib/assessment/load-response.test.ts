@@ -121,7 +121,12 @@ describe('loadAssessmentResponse', () => {
     expect(result?.maxScore).toBe(48);
     expect(result?.tierId).toBe('building-momentum');
     expect(result?.tier.id).toBe('building-momentum');
-    expect(result?.dimensionBreakdown['current-ai-usage'].score).toBe(6);
+    // v2 dimension keys (test fixture is a v2 row)
+    if (result?.version === 'v2' || result?.version === 'v1') {
+      expect(result.dimensionBreakdown['current-ai-usage'].score).toBe(6);
+    } else {
+      throw new Error('Expected v2-shaped response');
+    }
     expect(result?.readinessAt).toBe('2026-05-04T12:00:00.000Z');
   });
 
