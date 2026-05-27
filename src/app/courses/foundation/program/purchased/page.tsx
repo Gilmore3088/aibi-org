@@ -71,7 +71,7 @@ export default async function AiBIPurchasedPage({
   return (
     <main
       style={{
-        background: 'var(--ledger-bg)',
+        background: 'var(--cream)',
         minHeight: '70vh',
         padding: '56px 24px',
       }}
@@ -87,42 +87,36 @@ export default async function AiBIPurchasedPage({
         >
           <span
             style={{
-              fontFamily: 'var(--ledger-mono)',
-              fontSize: 10.5,
-              letterSpacing: '0.22em',
+              fontSize: 11,
+              fontWeight: 600,
+              letterSpacing: '0.2em',
               textTransform: 'uppercase',
-              color: 'var(--ledger-accent)',
+              color: 'var(--gold-deep)',
             }}
           >
             Enrollment confirmed
           </span>
-          <span style={{ flex: 1, height: 1, background: 'var(--ledger-rule)' }} />
+          <span style={{ flex: 1, height: 1, background: 'var(--ink-a10)' }} />
         </div>
 
         <h1
           style={{
-            fontFamily: 'var(--ledger-serif)',
-            fontWeight: 500,
+            fontWeight: 700,
             fontSize: 'clamp(40px, 5.2vw, 60px)',
-            lineHeight: 1.02,
+            lineHeight: 1.04,
             letterSpacing: '-0.03em',
             margin: '0 0 16px',
-            color: 'var(--ledger-ink)',
+            color: 'var(--ink)',
           }}
         >
-          Welcome to{' '}
-          <em style={{ color: 'var(--ledger-accent)', fontStyle: 'normal', fontWeight: 500 }}>
-            AiBI-Foundation.
-          </em>
+          Welcome to AiBI-Foundation.
         </h1>
 
         <p
           style={{
-            fontFamily: 'var(--ledger-serif)',
-            fontStyle: 'italic',
-            fontSize: 20,
+            fontSize: 19,
             lineHeight: 1.45,
-            color: 'var(--ledger-ink-2)',
+            color: 'var(--slate-600)',
             margin: '0 0 32px',
             maxWidth: '60ch',
           }}
@@ -133,20 +127,21 @@ export default async function AiBIPurchasedPage({
 
         <section
           style={{
-            border: '1px solid var(--ledger-rule)',
-            background: 'var(--ledger-parch)',
-            borderRadius: 3,
+            border: '1px solid var(--ink-a10)',
+            background: 'var(--cream-2)',
+            borderRadius: 24,
             padding: '24px 26px',
             marginBottom: 40,
+            boxShadow: 'var(--shadow-soft)',
           }}
         >
           <p
             style={{
-              fontFamily: 'var(--ledger-mono)',
-              fontSize: 10.5,
+              fontSize: 11,
+              fontWeight: 600,
               letterSpacing: '0.2em',
               textTransform: 'uppercase',
-              color: 'var(--ledger-accent)',
+              color: 'var(--gold-deep)',
               margin: '0 0 14px',
             }}
           >
@@ -167,8 +162,8 @@ export default async function AiBIPurchasedPage({
                 style={{
                   display: 'flex',
                   gap: 10,
-                  fontSize: 14.5,
-                  color: 'var(--ledger-ink-2)',
+                  fontSize: 15,
+                  color: 'var(--slate-600)',
                   lineHeight: 1.55,
                 }}
               >
@@ -178,7 +173,8 @@ export default async function AiBIPurchasedPage({
                     marginTop: 7,
                     width: 6,
                     height: 6,
-                    background: 'var(--ledger-accent)',
+                    borderRadius: 999,
+                    background: 'var(--gold)',
                     flex: 'none',
                   }}
                 />
@@ -188,13 +184,13 @@ export default async function AiBIPurchasedPage({
           </ul>
         </section>
 
-        <section style={{ borderTop: '1px solid var(--ledger-rule)', paddingTop: 28 }}>
+        <section style={{ borderTop: '1px solid var(--ink-a10)', paddingTop: 28 }}>
           {signedInEmail ? (
             <>
               <p
                 style={{
                   fontSize: 14,
-                  color: 'var(--ledger-ink-2)',
+                  color: 'var(--slate-600)',
                   margin: '0 0 18px',
                   lineHeight: 1.6,
                 }}
@@ -202,8 +198,8 @@ export default async function AiBIPurchasedPage({
                 You&rsquo;re signed in as{' '}
                 <span
                   style={{
-                    fontFamily: 'var(--ledger-mono)',
-                    color: 'var(--ledger-ink)',
+                    fontWeight: 600,
+                    color: 'var(--ink)',
                   }}
                 >
                   {signedInEmail}
@@ -211,7 +207,7 @@ export default async function AiBIPurchasedPage({
                 . Module 1 takes about 35 minutes.
               </p>
               <PrimaryButton as="a" href="/courses/foundation/program">
-                Begin Module 1 →
+                BEGIN MODULE 1 →
               </PrimaryButton>
             </>
           ) : (
@@ -219,7 +215,7 @@ export default async function AiBIPurchasedPage({
               <p
                 style={{
                   fontSize: 14,
-                  color: 'var(--ledger-ink-2)',
+                  color: 'var(--slate-600)',
                   margin: '0 0 18px',
                   lineHeight: 1.6,
                 }}
@@ -228,7 +224,7 @@ export default async function AiBIPurchasedPage({
                 account{prefillEmail ? (
                   <>
                     {' '}for{' '}
-                    <span style={{ fontFamily: 'var(--ledger-mono)', color: 'var(--ledger-ink)' }}>
+                    <span style={{ fontWeight: 600, color: 'var(--ink)' }}>
                       {prefillEmail}
                     </span>
                   </>
@@ -239,21 +235,21 @@ export default async function AiBIPurchasedPage({
                   as="a"
                   href={`/auth/signup?next=/courses/foundation/program${emailQs}`}
                 >
-                  Create my account
+                  CREATE MY ACCOUNT
                 </PrimaryButton>
                 <GhostButton
                   as="a"
                   href={`/auth/login?next=/courses/foundation/program${emailQs}`}
                 >
-                  I already have one
+                  I ALREADY HAVE ONE
                 </GhostButton>
               </div>
             </>
           )}
           <p
             style={{
-              fontSize: 12.5,
-              color: 'var(--ledger-muted)',
+              fontSize: 13,
+              color: 'var(--slate-500)',
               margin: '24px 0 0',
               lineHeight: 1.55,
             }}
@@ -262,7 +258,7 @@ export default async function AiBIPurchasedPage({
             <a
               href="mailto:hello@aibankinginstitute.com"
               style={{
-                color: 'var(--ledger-accent)',
+                color: 'var(--gold-deep)',
                 textDecoration: 'underline',
               }}
             >
@@ -275,20 +271,21 @@ export default async function AiBIPurchasedPage({
         <section
           style={{
             marginTop: 40,
-            border: '1px solid var(--ledger-rule)',
-            borderLeft: '4px solid var(--ledger-accent)',
-            background: 'var(--ledger-paper)',
-            borderRadius: 3,
+            border: '1px solid var(--ink-a10)',
+            borderLeft: '4px solid var(--gold)',
+            background: 'var(--cream-2)',
+            borderRadius: 24,
             padding: '24px 26px',
+            boxShadow: 'var(--shadow-soft)',
           }}
         >
           <p
             style={{
-              fontFamily: 'var(--ledger-mono)',
-              fontSize: 10.5,
+              fontSize: 11,
+              fontWeight: 600,
               letterSpacing: '0.2em',
               textTransform: 'uppercase',
-              color: 'var(--ledger-accent)',
+              color: 'var(--gold-deep)',
               margin: '0 0 10px',
             }}
           >
@@ -296,12 +293,11 @@ export default async function AiBIPurchasedPage({
           </p>
           <h2
             style={{
-              fontFamily: 'var(--ledger-serif)',
-              fontWeight: 500,
+              fontWeight: 700,
               fontSize: 24,
               lineHeight: 1.15,
               letterSpacing: '-0.02em',
-              color: 'var(--ledger-ink)',
+              color: 'var(--ink)',
               margin: '0 0 10px',
             }}
           >
@@ -309,9 +305,9 @@ export default async function AiBIPurchasedPage({
           </h2>
           <p
             style={{
-              fontSize: 14.5,
+              fontSize: 15,
               lineHeight: 1.6,
-              color: 'var(--ledger-ink-2)',
+              color: 'var(--slate-600)',
               margin: '0 0 18px',
               maxWidth: '60ch',
             }}
@@ -321,7 +317,7 @@ export default async function AiBIPurchasedPage({
             landing as the role kits roll out.
           </p>
           <PrimaryButton as="a" href="/dashboard/toolbox">
-            Open the Toolbox →
+            OPEN THE TOOLBOX →
           </PrimaryButton>
         </section>
       </div>

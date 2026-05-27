@@ -1,8 +1,11 @@
 'use client';
 
-// OutputExample — Collapsible card rendering one exemplary AI output
-// Shows role badge, platform badge, the output text, and quality callouts.
-// Collapsed by default; click header to expand.
+// OutputExample — collapsible card rendering one exemplary AI output.
+// Shows role + platform badge, the output text (the artifact), and quality
+// callouts. Collapsed by default. Mockup chrome: cream surface with ink type,
+// the output itself sits on the ink slab to feel like a verbatim AI response.
+// Pillar / role / platform colors retired — all badges share the slate
+// hairline treatment, identity carried by label only.
 
 import { useState } from 'react';
 import type { OutputExample } from '@content/courses/foundation-program/output-examples';
@@ -16,6 +19,41 @@ interface OutputExampleProps {
   readonly example: OutputExample;
 }
 
+const fontStack = 'Inter, ui-sans-serif, system-ui, sans-serif';
+
+const eyebrowOnInk: React.CSSProperties = {
+  fontFamily: fontStack,
+  fontSize: 10,
+  fontWeight: 700,
+  letterSpacing: '0.22em',
+  textTransform: 'uppercase',
+  color: 'var(--gold-soft)',
+};
+
+const eyebrowOnCream: React.CSSProperties = {
+  fontFamily: fontStack,
+  fontSize: 10,
+  fontWeight: 700,
+  letterSpacing: '0.22em',
+  textTransform: 'uppercase',
+  color: 'var(--gold-deep)',
+};
+
+const badge: React.CSSProperties = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  padding: '4px 10px',
+  borderRadius: 999,
+  border: '1px solid var(--ink-a15)',
+  background: 'var(--cream)',
+  color: 'var(--slate-600)',
+  fontFamily: fontStack,
+  fontSize: 10,
+  fontWeight: 600,
+  letterSpacing: '0.16em',
+  textTransform: 'uppercase',
+};
+
 export function OutputExampleCard({ example }: OutputExampleProps) {
   const [expanded, setExpanded] = useState(false);
 
@@ -24,26 +62,54 @@ export function OutputExampleCard({ example }: OutputExampleProps) {
 
   return (
     <article
-      className="border border-[color:var(--ledger-parch)] rounded-sm overflow-hidden"
       aria-label={example.title}
+      style={{
+        border: '1px solid var(--ink-a10)',
+        borderRadius: 16,
+        overflow: 'hidden',
+        background: 'var(--cream)',
+        boxShadow: 'var(--shadow-soft)',
+      }}
     >
-      {/* Collapsible header — always visible */}
       <button
         type="button"
         onClick={() => setExpanded((prev) => !prev)}
         aria-expanded={expanded}
-        className="w-full text-left bg-[color:var(--ledger-paper)] px-6 py-5 flex items-start gap-4 hover:bg-[color:var(--ledger-parch)] transition-colors focus-visible:outline-2 focus-visible:outline-[color:var(--ledger-accent)]"
+        style={{
+          width: '100%',
+          textAlign: 'left',
+          background: expanded ? 'var(--cream-2)' : 'var(--cream)',
+          padding: '18px 22px',
+          display: 'flex',
+          alignItems: 'flex-start',
+          gap: 14,
+          border: 'none',
+          cursor: 'pointer',
+          transition: 'background var(--t-fast) var(--ease)',
+        }}
       >
-        {/* Expand/collapse indicator */}
         <span
-          className="mt-1 shrink-0 w-4 h-4 flex items-center justify-center"
           aria-hidden="true"
+          style={{
+            marginTop: 6,
+            flexShrink: 0,
+            width: 16,
+            height: 16,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
         >
           <svg
-            className="w-3 h-3 text-[color:var(--ledger-accent)] transition-transform duration-200"
-            style={{ transform: expanded ? 'rotate(90deg)' : 'rotate(0deg)' }}
+            width="12"
+            height="12"
             fill="currentColor"
             viewBox="0 0 20 20"
+            style={{
+              color: 'var(--gold-deep)',
+              transform: expanded ? 'rotate(90deg)' : 'rotate(0deg)',
+              transition: 'transform var(--t-fast) var(--ease)',
+            }}
           >
             <path
               fillRule="evenodd"
@@ -53,80 +119,104 @@ export function OutputExampleCard({ example }: OutputExampleProps) {
           </svg>
         </span>
 
-        {/* Title and badges */}
-        <div className="flex-1 min-w-0">
-          <div className="flex flex-wrap items-center gap-2 mb-2">
-            {/* Role badge */}
-            <span
-              className="inline-flex items-center px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.2em] font-bold rounded-sm"
-              style={{
-                color: roleMeta.colorVar,
-                border: `1px solid ${roleMeta.colorVar}`,
-                backgroundColor: 'transparent',
-              }}
-            >
-              {roleMeta.label}
-            </span>
-
-            {/* Platform badge */}
-            <span
-              className="inline-flex items-center px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.2em] rounded-sm"
-              style={{
-                color: platformMeta.colorVar,
-                border: `1px solid ${platformMeta.colorVar}`,
-                opacity: 0.8,
-              }}
-            >
-              {platformMeta.label}
-            </span>
-
-            {/* Skill pill (if applicable) */}
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              alignItems: 'center',
+              gap: 8,
+              marginBottom: 10,
+            }}
+          >
+            <span style={badge}>{roleMeta.label}</span>
+            <span style={badge}>{platformMeta.label}</span>
             {example.skillUsed && (
-              <span className="font-mono text-[9px] text-[color:var(--ledger-muted)] truncate max-w-xs">
+              <span
+                style={{
+                  fontFamily: fontStack,
+                  fontSize: 11,
+                  color: 'var(--slate-500)',
+                  maxWidth: 320,
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}
+              >
                 {example.skillUsed}
               </span>
             )}
           </div>
 
-          <h3 className="font-serif text-base font-bold text-[color:var(--ledger-ink)] leading-snug">
+          <h3
+            style={{
+              fontFamily: fontStack,
+              fontSize: 17,
+              fontWeight: 700,
+              letterSpacing: '-0.01em',
+              color: 'var(--ink)',
+              lineHeight: 1.35,
+              margin: 0,
+            }}
+          >
             {example.title}
           </h3>
         </div>
       </button>
 
-      {/* Expandable body */}
       {expanded && (
-        <div className="bg-[color:var(--ledger-bg)]">
-          {/* The actual output — styled as an institutional memo */}
-          <div className="px-6 pt-6 pb-4">
+        <div style={{ background: 'var(--cream)' }}>
+          {/* The artifact — output rendered on ink slab to evoke a real AI surface */}
+          <div style={{ padding: '24px 24px 8px' }}>
+            <div style={{ ...eyebrowOnCream, marginBottom: 12 }}>AI output</div>
             <div
-              className="text-[10px] font-mono uppercase tracking-[0.25em] text-[color:var(--ledger-accent)] mb-3"
-              aria-hidden="true"
-            >
-              AI Output
-            </div>
-            <div
-              className="bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-parch)] rounded-sm p-5"
+              style={{
+                background: 'var(--ink)',
+                color: 'var(--cream)',
+                border: '1px solid var(--ink)',
+                borderRadius: 16,
+                padding: '22px 24px',
+                boxShadow: 'var(--shadow-soft)',
+              }}
             >
               <MarkdownRenderer content={example.outputText} />
             </div>
           </div>
 
-          {/* What makes it effective */}
-          <div className="px-6 pb-4 pt-2">
+          <div style={{ padding: '16px 24px 8px' }}>
             <div
-              className="border-l-2 border-[color:var(--ledger-accent)] pl-4 py-1"
+              style={{
+                borderLeft: '3px solid var(--gold)',
+                paddingLeft: 16,
+                paddingTop: 4,
+                paddingBottom: 4,
+              }}
             >
-              <div className="text-[10px] font-mono uppercase tracking-[0.25em] text-[color:var(--ledger-accent)] mb-3">
-                What Makes This Effective
+              <div style={{ ...eyebrowOnCream, marginBottom: 12 }}>
+                What makes this effective
               </div>
-              <ul className="space-y-3">
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: 14 }}>
                 {example.whatMakesItEffective.map((marker) => (
                   <li key={marker.heading}>
-                    <span className="font-sans font-bold text-sm text-[color:var(--ledger-ink)]">
+                    <span
+                      style={{
+                        fontFamily: fontStack,
+                        fontWeight: 700,
+                        fontSize: 14,
+                        color: 'var(--ink)',
+                      }}
+                    >
                       {marker.heading}
                     </span>
-                    <p className="font-sans text-sm text-[color:var(--ledger-ink)]/80 leading-relaxed mt-0.5">
+                    <p
+                      style={{
+                        fontFamily: fontStack,
+                        fontSize: 14,
+                        color: 'var(--slate-600)',
+                        lineHeight: 1.6,
+                        margin: '4px 0 0',
+                      }}
+                    >
                       {marker.detail}
                     </p>
                   </li>
@@ -135,21 +225,42 @@ export function OutputExampleCard({ example }: OutputExampleProps) {
             </div>
           </div>
 
-          {/* Quality markers — what the learner should notice */}
-          <div className="px-6 pb-6 pt-2">
-            <div className="bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-parch)] rounded-sm p-4">
-              <div className="text-[10px] font-mono uppercase tracking-[0.25em] text-[color:var(--ledger-muted)] mb-3">
-                What to Notice
+          <div style={{ padding: '16px 24px 24px' }}>
+            <div
+              style={{
+                background: 'var(--cream-2)',
+                border: '1px solid var(--ink-a10)',
+                borderRadius: 12,
+                padding: 18,
+              }}
+            >
+              <div style={{ ...eyebrowOnInk, color: 'var(--slate-500)', marginBottom: 12 }}>
+                What to notice
               </div>
-              <ul className="space-y-2">
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: 10 }}>
                 {example.qualityMarkers.map((marker, index) => (
                   <li
                     key={index}
-                    className="flex items-start gap-2 font-sans text-sm text-[color:var(--ledger-ink)]/80 leading-relaxed"
+                    style={{
+                      display: 'flex',
+                      alignItems: 'flex-start',
+                      gap: 10,
+                      fontFamily: fontStack,
+                      fontSize: 14,
+                      color: 'var(--ink)',
+                      lineHeight: 1.6,
+                    }}
                   >
                     <span
-                      className="shrink-0 mt-1 w-1.5 h-1.5 rounded-full bg-[color:var(--ledger-accent)]"
                       aria-hidden="true"
+                      style={{
+                        flexShrink: 0,
+                        marginTop: 8,
+                        width: 6,
+                        height: 6,
+                        borderRadius: 999,
+                        background: 'var(--gold)',
+                      }}
                     />
                     {marker}
                   </li>

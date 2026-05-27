@@ -1,7 +1,9 @@
 'use client';
 
-// LearnSection — interactive Learn tab with collapsible sections,
-// key takeaways, and reading time. Replaces the static content dump.
+// LearnSection — interactive Learn tab with collapsible sections, key
+// takeaways, and reading time. Mockup chrome: cream surface, ink type,
+// gold accent on active/eyebrow, slate metadata. Leads with the artifact —
+// the key-takeaways card surfaces what the learner walks away with.
 
 import { useState } from 'react';
 import type { Section } from '@content/courses/foundation-program';
@@ -18,22 +20,59 @@ function estimateReadingTime(content: string): number {
   return Math.max(1, Math.round(words / 200));
 }
 
+const eyebrowStyle: React.CSSProperties = {
+  fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
+  fontSize: 10,
+  fontWeight: 700,
+  letterSpacing: '0.22em',
+  textTransform: 'uppercase',
+  color: 'var(--gold-deep)',
+  margin: 0,
+};
+
 export function LearnSection({ sections, keyTakeaways }: LearnSectionProps) {
   const [openIndex, setOpenIndex] = useState(0);
 
   return (
     <div>
-      {/* Key takeaways */}
+      {/* Key takeaways — the artifact the Learn tab produces */}
       {keyTakeaways && keyTakeaways.length > 0 && (
-        <div className="mb-6 bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-ink)]/10 rounded-[3px] p-5">
-          <p className="font-serif-sc text-[10px] uppercase tracking-[0.18em] text-[color:var(--ledger-accent)] mb-3">
+        <div
+          style={{
+            marginBottom: 24,
+            background: 'var(--cream-2)',
+            border: '1px solid var(--ink-a10)',
+            borderRadius: 16,
+            padding: 24,
+          }}
+        >
+          <p style={{ ...eyebrowStyle, marginBottom: 12 }}>
             After this module
           </p>
-          <ul className="space-y-2">
+          <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: 10 }}>
             {keyTakeaways.map((item, i) => (
-              <li key={i} className="flex items-start gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-[color:var(--ledger-accent)] mt-1.5 shrink-0" aria-hidden="true" />
-                <span className="font-sans text-sm text-[color:var(--ledger-ink)]/80 leading-snug">{item}</span>
+              <li key={i} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
+                <span
+                  style={{
+                    width: 6,
+                    height: 6,
+                    borderRadius: 999,
+                    background: 'var(--gold)',
+                    marginTop: 8,
+                    flexShrink: 0,
+                  }}
+                  aria-hidden="true"
+                />
+                <span
+                  style={{
+                    fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
+                    fontSize: 15,
+                    color: 'var(--ink)',
+                    lineHeight: 1.55,
+                  }}
+                >
+                  {item}
+                </span>
               </li>
             ))}
           </ul>
@@ -41,26 +80,44 @@ export function LearnSection({ sections, keyTakeaways }: LearnSectionProps) {
       )}
 
       {/* Mini TOC */}
-      <nav className="mb-6 flex flex-wrap gap-2" aria-label="Section navigation">
-        {sections.map((section, idx) => (
-          <button
-            key={section.id}
-            type="button"
-            onClick={() => setOpenIndex(idx)}
-            className={[
-              'px-3 py-1.5 rounded-[2px] font-sans text-xs transition-all',
-              idx === openIndex
-                ? 'bg-[color:var(--ledger-accent)] text-[color:var(--ledger-bg)]'
-                : 'bg-[color:var(--ledger-paper)] text-[color:var(--ledger-ink)]/70 hover:bg-[color:var(--ledger-parch)]',
-            ].join(' ')}
-          >
-            {idx + 1}. {section.title.length > 30 ? section.title.slice(0, 30) + '...' : section.title}
-          </button>
-        ))}
+      <nav
+        aria-label="Section navigation"
+        style={{
+          marginBottom: 24,
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: 8,
+        }}
+      >
+        {sections.map((section, idx) => {
+          const active = idx === openIndex;
+          return (
+            <button
+              key={section.id}
+              type="button"
+              onClick={() => setOpenIndex(idx)}
+              style={{
+                padding: '8px 14px',
+                borderRadius: 999,
+                border: '1px solid',
+                borderColor: active ? 'var(--gold)' : 'var(--ink-a10)',
+                background: active ? 'var(--gold)' : 'var(--cream)',
+                color: active ? 'var(--ink)' : 'var(--slate-600)',
+                fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
+                fontSize: 12,
+                fontWeight: active ? 700 : 500,
+                cursor: 'pointer',
+                transition: 'background var(--t-fast) var(--ease), color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease)',
+              }}
+            >
+              {idx + 1}. {section.title.length > 30 ? section.title.slice(0, 30) + '…' : section.title}
+            </button>
+          );
+        })}
       </nav>
 
       {/* Collapsible sections */}
-      <div className="space-y-2">
+      <div style={{ display: 'grid', gap: 12 }}>
         {sections.map((section, idx) => {
           const isOpen = idx === openIndex;
           const readTime = estimateReadingTime(section.content);
@@ -72,70 +129,147 @@ export function LearnSection({ sections, keyTakeaways }: LearnSectionProps) {
           return (
             <div
               key={section.id}
-              className="border border-[color:var(--ledger-ink)]/10 rounded-[3px] overflow-hidden"
+              style={{
+                border: '1px solid var(--ink-a10)',
+                borderRadius: 16,
+                overflow: 'hidden',
+                background: 'var(--cream)',
+                boxShadow: 'var(--shadow-soft)',
+              }}
             >
-              {/* Section header — always visible */}
               <button
                 type="button"
                 onClick={() => setOpenIndex(isOpen ? -1 : idx)}
                 aria-expanded={isOpen}
-                className={[
-                  'w-full flex items-center justify-between gap-4 px-5 py-4 text-left transition-colors',
-                  isOpen
-                    ? 'bg-[color:var(--ledger-paper)]'
-                    : 'bg-[color:var(--ledger-bg)] hover:bg-[color:var(--ledger-paper)]/50',
-                ].join(' ')}
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  gap: 16,
+                  padding: '18px 22px',
+                  textAlign: 'left',
+                  background: isOpen ? 'var(--cream-2)' : 'var(--cream)',
+                  border: 'none',
+                  cursor: 'pointer',
+                  transition: 'background var(--t-fast) var(--ease)',
+                }}
               >
-                <div className="flex items-center gap-3 min-w-0">
-                  <span className="font-mono text-[10px] text-[color:var(--ledger-accent)] tabular-nums shrink-0">
+                <div style={{ display: 'flex', alignItems: 'center', gap: 14, minWidth: 0 }}>
+                  <span
+                    style={{
+                      fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
+                      fontSize: 11,
+                      fontWeight: 700,
+                      fontVariantNumeric: 'tabular-nums',
+                      color: isOpen ? 'var(--gold-deep)' : 'var(--slate-500)',
+                      flexShrink: 0,
+                    }}
+                  >
                     {String(idx + 1).padStart(2, '0')}
                   </span>
-                  <h3 className="font-serif text-lg text-[color:var(--ledger-ink)] leading-snug truncate">
+                  <h3
+                    style={{
+                      fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
+                      fontSize: 18,
+                      fontWeight: 700,
+                      letterSpacing: '-0.01em',
+                      color: 'var(--ink)',
+                      lineHeight: 1.3,
+                      margin: 0,
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                    }}
+                  >
                     {section.title}
                   </h3>
                 </div>
-                <div className="flex items-center gap-3 shrink-0">
-                  <span className="font-mono text-[9px] text-[color:var(--ledger-muted)] uppercase tracking-wider hidden sm:block">
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
+                  <span
+                    style={{
+                      fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
+                      fontSize: 10,
+                      fontWeight: 600,
+                      letterSpacing: '0.16em',
+                      textTransform: 'uppercase',
+                      color: 'var(--slate-500)',
+                    }}
+                  >
                     {totalReadTime} min read
                   </span>
                   <svg
-                    className="w-4 h-4 text-[color:var(--ledger-accent)] transition-transform duration-200"
-                    style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
+                    width="16"
+                    height="16"
+                    style={{
+                      color: 'var(--gold-deep)',
+                      transition: 'transform var(--t-fast) var(--ease)',
+                      transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                    }}
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     aria-hidden="true"
                   >
-                    <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                    <path
+                      fillRule="evenodd"
+                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                      clipRule="evenodd"
+                    />
                   </svg>
                 </div>
               </button>
 
-              {/* Section content — collapsible */}
               {isOpen && (
-                <div className="px-5 py-6 bg-[color:var(--ledger-bg)]">
+                <div style={{ padding: '22px 26px 28px', background: 'var(--cream)' }}>
                   <MarkdownRenderer content={section.content} />
 
-                  {/* Try-this callout — practical exercise tied to this section */}
                   {section.tryThis && (
                     <aside
-                      className="mt-5 border-l-2 border-[color:var(--ledger-accent)] bg-[color:var(--ledger-paper)] px-5 py-4 rounded-r-[3px]"
                       aria-label="Try this practice prompt"
+                      style={{
+                        marginTop: 20,
+                        borderLeft: '3px solid var(--gold)',
+                        background: 'var(--cream-2)',
+                        padding: '14px 20px',
+                        borderTopRightRadius: 12,
+                        borderBottomRightRadius: 12,
+                      }}
                     >
-                      <p className="font-serif-sc text-[10px] uppercase tracking-[0.2em] text-[color:var(--ledger-accent)] mb-2">
-                        Try this
-                      </p>
-                      <p className="font-sans text-sm text-[color:var(--ledger-ink)]/85 leading-relaxed">
+                      <p style={{ ...eyebrowStyle, marginBottom: 8 }}>Try this</p>
+                      <p
+                        style={{
+                          fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
+                          fontSize: 14,
+                          color: 'var(--ink)',
+                          lineHeight: 1.6,
+                          margin: 0,
+                        }}
+                      >
                         {section.tryThis}
                       </p>
                     </aside>
                   )}
 
-                  {/* Subsections */}
                   {section.subsections && section.subsections.length > 0 && (
-                    <div className="mt-6 space-y-6 border-l-2 border-[color:var(--ledger-parch)] pl-5">
+                    <div
+                      style={{
+                        marginTop: 24,
+                        borderLeft: '2px solid var(--ink-a10)',
+                        paddingLeft: 20,
+                        display: 'grid',
+                        gap: 24,
+                      }}
+                    >
                       {section.subsections.map((sub) => (
                         <div key={sub.id}>
-                          <h4 className="font-serif text-base font-semibold text-[color:var(--ledger-ink)] mb-3">
+                          <h4
+                            style={{
+                              fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
+                              fontSize: 16,
+                              fontWeight: 700,
+                              color: 'var(--ink)',
+                              marginBottom: 12,
+                            }}
+                          >
                             {sub.title}
                           </h4>
                           <MarkdownRenderer content={sub.content} />
@@ -144,27 +278,50 @@ export function LearnSection({ sections, keyTakeaways }: LearnSectionProps) {
                     </div>
                   )}
 
-                  {/* Next section prompt */}
                   {idx < sections.length - 1 && (
-                    <div className="mt-6 pt-4 border-t border-[color:var(--ledger-ink)]/10">
+                    <div
+                      style={{
+                        marginTop: 24,
+                        paddingTop: 16,
+                        borderTop: '1px solid var(--ink-a10)',
+                      }}
+                    >
                       <button
                         type="button"
                         onClick={() => setOpenIndex(idx + 1)}
-                        className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--ledger-accent)] hover:opacity-70 transition-opacity flex items-center gap-2"
+                        style={{
+                          ...eyebrowStyle,
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: 8,
+                          background: 'transparent',
+                          border: 'none',
+                          cursor: 'pointer',
+                          color: 'var(--gold-deep)',
+                        }}
                       >
                         Next: {sections[idx + 1].title}
-                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                          <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                        <svg width="12" height="12" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                          <path
+                            fillRule="evenodd"
+                            d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                            clipRule="evenodd"
+                          />
                         </svg>
                       </button>
                     </div>
                   )}
 
-                  {/* Last section — prompt to go to Practice */}
                   {idx === sections.length - 1 && (
-                    <div className="mt-6 pt-4 border-t border-[color:var(--ledger-ink)]/10">
-                      <p className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--ledger-muted)]">
-                        Reading complete. Switch to the Practice tab to try it with AI.
+                    <div
+                      style={{
+                        marginTop: 24,
+                        paddingTop: 16,
+                        borderTop: '1px solid var(--ink-a10)',
+                      }}
+                    >
+                      <p style={{ ...eyebrowStyle, color: 'var(--slate-500)' }}>
+                        Reading complete. Switch to the Try it tab to try it with AI.
                       </p>
                     </div>
                   )}
