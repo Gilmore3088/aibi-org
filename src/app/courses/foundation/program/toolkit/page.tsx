@@ -1,12 +1,7 @@
 // Personal AI Toolkit — /courses/foundation/program/toolkit
-// Server Component: reads activity responses for the learner's enrollment.
-// Dev mode: uses placeholder data matching the mock enrollment in getEnrollment.ts.
-//
-// Four sections:
-//   1. My Skills — M7 skill (.md) and M8 iterated skill (.md v1.1)
-//   2. My Artifacts — five downloadable course artifacts by module
-//   3. My Subscription Inventory — M2 survey results
-//   4. What I Automated — M9 capstone summary
+// Server Component: reads activity responses for the learner's enrollment,
+// builds a unified artifact list (skills, work products, cards, report),
+// and hands it to the client filter/sort grid.
 //
 // Design: mockup system (cream surface, ink primary, gold accent).
 // WCAG 2.1 AA; no hardcoded hex — CSS variables only.
@@ -18,76 +13,16 @@ import type { CSSProperties } from 'react';
 import { getEnrollment } from '../_lib/getEnrollment';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { CourseShellWrapper } from '@/components/lms/CourseShellWrapper';
-import { DownloadSkillButton } from './DownloadSkillButton';
-import { DownloadReportButton } from './DownloadReportButton';
 import {
   generateIteratedMarkdown,
   buildIteratedFilename,
 } from '../_components/IterationTrackerData';
 import type { ActivityResponse } from '@/types/course';
+import { ArtifactsClient, type ToolkitArtifact } from './_local/ArtifactsClient';
 
 export const metadata: Metadata = {
   title: 'My Toolkit | AiBI-Foundation',
 };
-
-// ---- Artifact definitions pulled from module data (mirrors module-*.ts entries) ----
-
-interface ArtifactMeta {
-  readonly id: string;
-  readonly title: string;
-  readonly description: string;
-  readonly format: string;
-  readonly module: number;
-  readonly moduleTitle: string;
-}
-
-const ARTIFACTS: readonly ArtifactMeta[] = [
-  {
-    id: 'regulatory-cheatsheet',
-    title: 'Regulatory Cheatsheet',
-    description:
-      'One-page PDF: five frameworks with staff-level implications (front), AIEOG vocabulary (back).',
-    format: 'PDF',
-    module: 1,
-    moduleTitle: 'Navigating the Regulatory Landscape',
-  },
-  {
-    id: 'acceptable-use-card',
-    title: 'Acceptable Use Card',
-    description:
-      'Personalized one-page reference card with your role context, permitted tools, and highest-risk guardrails. Designed to be printed and kept at workstation.',
-    format: 'PDF',
-    module: 5,
-    moduleTitle: 'Safe Use Guardrails',
-  },
-  {
-    id: 'skill-template-library',
-    title: 'Skill Template Library',
-    description:
-      '12 pre-built banking skill templates across four roles (Lending, Compliance, Operations, Marketing) with all five components filled in.',
-    format: 'PDF + MD',
-    module: 6,
-    moduleTitle: 'Anatomy of a Skill',
-  },
-  {
-    id: 'platform-feature-reference-card',
-    title: 'Platform Feature Reference Card',
-    description:
-      'Quick reference card matching your onboarding platform to its key features and top banking use cases.',
-    format: 'PDF',
-    module: 4,
-    moduleTitle: 'Platform Features Deep Dive',
-  },
-  {
-    id: 'my-first-skill',
-    title: 'My First Skill',
-    description:
-      'Your five-component banking AI skill (.md) built in Module 7, formatted for immediate deployment in ChatGPT, Claude, Gemini, or any AI platform.',
-    format: 'MD',
-    module: 7,
-    moduleTitle: 'Anatomy of a Skill — Build',
-  },
-] as const;
 
 // ---- Platform labels for subscription inventory display ----
 
@@ -176,43 +111,6 @@ const sectionCardStyle: CSSProperties = {
   boxShadow: 'var(--shadow-soft)',
 };
 
-const itemCardStyle: CSSProperties = {
-  border: '1px solid var(--ink-a10)',
-  borderRadius: 16,
-  padding: 18,
-  background: 'var(--cream)',
-};
-
-const ghostLinkStyle: CSSProperties = {
-  display: 'inline-flex',
-  alignItems: 'center',
-  gap: 6,
-  padding: '8px 14px',
-  border: '1px solid var(--ink-a10)',
-  color: 'var(--slate-500)',
-  fontSize: 11,
-  fontWeight: 600,
-  letterSpacing: '0.16em',
-  textTransform: 'uppercase',
-  borderRadius: 12,
-  textDecoration: 'none',
-};
-
-const accentLinkStyle: CSSProperties = {
-  display: 'inline-flex',
-  alignItems: 'center',
-  gap: 6,
-  padding: '8px 14px',
-  border: '1px solid var(--gold)',
-  color: 'var(--gold-deep)',
-  fontSize: 11,
-  fontWeight: 600,
-  letterSpacing: '0.16em',
-  textTransform: 'uppercase',
-  borderRadius: 12,
-  textDecoration: 'none',
-};
-
 // ---- Section card wrapper ----
 
 function SectionCard({
@@ -226,10 +124,7 @@ function SectionCard({
 }) {
   const slug = label.replace(/\s+/g, '-').toLowerCase();
   return (
-    <section
-      style={sectionCardStyle}
-      aria-labelledby={`section-${slug}`}
-    >
+    <section style={sectionCardStyle} aria-labelledby={`section-${slug}`}>
       <p style={{ ...kickerStyle, marginBottom: 4 }}>{label}</p>
       <h2
         id={`section-${slug}`}
@@ -248,14 +143,28 @@ function SectionCard({
   );
 }
 
-// ---- Empty state ----
+// ---- Headline counts ----
 
-function EmptyState({ message }: { readonly message: string }) {
-  return (
-    <p style={{ fontSize: 14, color: 'var(--slate-500)', margin: 0 }}>
-      {message}
-    </p>
-  );
+interface CountSummary {
+  readonly prompts: number;
+  readonly workProducts: number;
+  readonly cards: number;
+  readonly inventories: number;
+  readonly reports: number;
+}
+
+function buildCountLine(c: CountSummary): string {
+  const parts: string[] = [];
+  if (c.prompts > 0) parts.push(`${c.prompts} saved prompt${c.prompts === 1 ? '' : 's'}`);
+  if (c.workProducts > 0)
+    parts.push(`${c.workProducts} reviewed work product${c.workProducts === 1 ? '' : 's'}`);
+  if (c.cards > 0)
+    parts.push(`${c.cards} Acceptable Use card${c.cards === 1 ? '' : 's'}`);
+  if (c.inventories > 0)
+    parts.push(`${c.inventories} subscription inventor${c.inventories === 1 ? 'y' : 'ies'}`);
+  if (c.reports > 0)
+    parts.push(`${c.reports} transformation report${c.reports === 1 ? '' : 's'}`);
+  return parts.join(' · ');
 }
 
 // ---- Main page ----
@@ -285,14 +194,16 @@ export default async function ToolkitPage() {
     Object.assign(activityResponses, DEV_ACTIVITY_RESPONSES);
   }
 
-  // Reconstruct skill files
   const m7Response = activityResponses['7.1'];
   const m7SkillMd: string | null = m7Response?.['skill-md-content'] ?? null;
-  const m7Filename = m7SkillMd
+  const m7Title = m7SkillMd
     ? (() => {
         const match = /^# (.+?) - v1/m.exec(m7SkillMd);
-        return match ? `${match[1].trim().replace(/\s+/g, '-').slice(0, 60)}-v1.0.md` : 'Banking-AI-Skill-v1.0.md';
+        return match ? match[1].trim() : 'Banking AI Skill v1.0';
       })()
+    : 'Banking AI Skill v1.0';
+  const m7Filename = m7SkillMd
+    ? `${m7Title.replace(/\s+/g, '-').slice(0, 60)}-v1.0.md`
     : 'Banking-AI-Skill-v1.0.md';
 
   const m8Response = activityResponses['8.1'];
@@ -301,10 +212,163 @@ export default async function ToolkitPage() {
   const m8Filename = m8IteratedMd ? buildIteratedFilename(m7SkillMd ?? '') : 'Banking-AI-Skill-v1.1.md';
 
   const inventoryResponse = activityResponses['2.1'];
-
   const completedModules = enrollment.completed_modules;
-  const m7Complete = completedModules.includes(7);
-  const m8Complete = completedModules.includes(8);
+  const courseComplete = completedModules.length >= 12;
+
+  // Synthetic last-edited stamps: dev mode shows recent activity; production
+  // would replace with actual activity_responses.updated_at timestamps once
+  // they're surfaced from Supabase.
+  const now = Date.now();
+  const daysAgo = (n: number) => new Date(now - n * 86400000).toISOString();
+
+  const artifacts: ToolkitArtifact[] = [
+    // M2 inventory (treated as a saved prompt-style reference)
+    {
+      id: 'subscription-inventory',
+      title: 'Subscription Inventory',
+      description: 'Your recorded access tier for the seven major AI platforms — the baseline reference for what you can use at work and at home.',
+      type: 'inventory',
+      typeLabel: 'Inventory',
+      module: 2,
+      moduleHref: '/courses/foundation/program/2',
+      lastEditedISO: inventoryResponse ? daysAgo(18) : null,
+      available: Boolean(inventoryResponse),
+      action: inventoryResponse
+        ? { kind: 'link', href: '/courses/foundation/program/2', label: 'View / edit' }
+        : { kind: 'pending', href: '/courses/foundation/program/2' },
+    },
+    // M4 platform reference card
+    {
+      id: 'platform-feature-reference-card',
+      title: 'Platform Feature Reference Card',
+      description: 'Quick reference matching your onboarding platform to its key features and top banking use cases.',
+      type: 'card',
+      typeLabel: 'Reference card',
+      module: 4,
+      moduleHref: '/courses/foundation/program/4',
+      lastEditedISO: completedModules.includes(4) ? daysAgo(14) : null,
+      available: completedModules.includes(4),
+      action: completedModules.includes(4)
+        ? { kind: 'link', href: '/courses/foundation/program/4', label: 'Re-download' }
+        : { kind: 'pending', href: '/courses/foundation/program/4' },
+    },
+    // M5 Acceptable Use card
+    {
+      id: 'acceptable-use-card',
+      title: 'Acceptable Use Card',
+      description: 'Personalized one-page reference with your role context, permitted tools, and highest-risk guardrails. Designed to print and keep at your workstation.',
+      type: 'card',
+      typeLabel: 'Acceptable Use card',
+      module: 5,
+      moduleHref: '/courses/foundation/program/5',
+      lastEditedISO: completedModules.includes(5) ? daysAgo(12) : null,
+      available: completedModules.includes(5),
+      action: completedModules.includes(5)
+        ? { kind: 'link', href: '/courses/foundation/program/5', label: 'Re-download' }
+        : { kind: 'pending', href: '/courses/foundation/program/5' },
+    },
+    // M1 cheatsheet
+    {
+      id: 'regulatory-cheatsheet',
+      title: 'Regulatory Cheatsheet',
+      description: 'One-page PDF: five frameworks with staff-level implications (front), AIEOG vocabulary (back).',
+      type: 'card',
+      typeLabel: 'Reference card',
+      module: 1,
+      moduleHref: '/courses/foundation/program/1',
+      lastEditedISO: completedModules.includes(1) ? daysAgo(22) : null,
+      available: completedModules.includes(1),
+      action: completedModules.includes(1)
+        ? { kind: 'link', href: '/courses/foundation/program/1', label: 'Re-download' }
+        : { kind: 'pending', href: '/courses/foundation/program/1' },
+    },
+    // M6 skill library
+    {
+      id: 'skill-template-library',
+      title: 'Skill Template Library',
+      description: '12 pre-built banking skill templates across four roles (Lending, Compliance, Operations, Marketing) with all five RTFC components filled in.',
+      type: 'prompt',
+      typeLabel: 'Saved prompt',
+      module: 6,
+      moduleHref: '/courses/foundation/program/6',
+      lastEditedISO: completedModules.includes(6) ? daysAgo(8) : null,
+      available: completedModules.includes(6),
+      action: completedModules.includes(6)
+        ? { kind: 'link', href: '/courses/foundation/program/6', label: 'Re-download' }
+        : { kind: 'pending', href: '/courses/foundation/program/6' },
+    },
+    // M7 first skill
+    {
+      id: 'my-first-skill',
+      title: m7Title,
+      description: 'Your five-component RTFC banking AI skill built in Module 7. Ready to paste into ChatGPT, Claude, Gemini, or any AI platform.',
+      type: 'prompt',
+      typeLabel: 'Saved prompt',
+      module: 7,
+      moduleHref: '/courses/foundation/program/7',
+      lastEditedISO: m7SkillMd ? daysAgo(5) : null,
+      available: Boolean(m7SkillMd),
+      action: m7SkillMd
+        ? { kind: 'download-md', md: m7SkillMd, filename: m7Filename }
+        : { kind: 'pending', href: '/courses/foundation/program/7' },
+    },
+    // M8 iterated skill
+    {
+      id: 'iterated-skill',
+      title: `${m7Title.replace(/\s*v1\.0\s*$/i, '').trim()} v1.1`,
+      description: 'Stress-tested and revised version of your Module 7 skill with iteration log embedded.',
+      type: 'prompt',
+      typeLabel: 'Saved prompt',
+      module: 8,
+      moduleHref: '/courses/foundation/program/8',
+      lastEditedISO: m8IteratedMd ? daysAgo(2) : null,
+      available: Boolean(m8IteratedMd),
+      action: m8IteratedMd
+        ? { kind: 'download-md', md: m8IteratedMd, filename: m8Filename }
+        : { kind: 'pending', href: '/courses/foundation/program/8' },
+    },
+    // M9 capstone work product
+    {
+      id: 'capstone-work-product',
+      title: 'Module 9 Capstone Work Product',
+      description: 'The deliverable you produced using your iterated skill, reviewed against the five-dimension AiBI-Foundation rubric.',
+      type: 'work-product',
+      typeLabel: 'Reviewed work product',
+      module: 9,
+      moduleHref: '/courses/foundation/program/9',
+      lastEditedISO: m8Response && m7SkillMd ? daysAgo(1) : null,
+      available: Boolean(m8Response && m7SkillMd),
+      action:
+        m8Response && m7SkillMd
+          ? { kind: 'link', href: '/courses/foundation/program/submit', label: 'Submit / review' }
+          : { kind: 'pending', href: '/courses/foundation/program/9' },
+    },
+    // Transformation report
+    {
+      id: 'transformation-report',
+      title: 'AiBI-Foundation Transformation Report',
+      description: 'Five-page PDF summarising your pre/post assessment comparison, skills built, estimated annual time savings, and course completion status. The document you show your manager.',
+      type: 'report',
+      typeLabel: 'Transformation report',
+      module: 12,
+      moduleHref: '/courses/foundation/program/12',
+      lastEditedISO: courseComplete ? daysAgo(0) : null,
+      available: courseComplete,
+      action: courseComplete
+        ? { kind: 'download-report', enrollmentId: enrollment.id }
+        : { kind: 'pending', href: '/courses/foundation/program/12' },
+    },
+  ];
+
+  // Build count summary from available artifacts only
+  const counts: CountSummary = {
+    prompts: artifacts.filter((a) => a.available && a.type === 'prompt').length,
+    workProducts: artifacts.filter((a) => a.available && a.type === 'work-product').length,
+    cards: artifacts.filter((a) => a.available && a.type === 'card').length,
+    inventories: artifacts.filter((a) => a.available && a.type === 'inventory').length,
+    reports: artifacts.filter((a) => a.available && a.type === 'report').length,
+  };
+  const countLine = buildCountLine(counts);
 
   return (
     <CourseShellWrapper crumbs={['Education', 'AiBI-Foundation', 'My Toolkit']}>
@@ -317,7 +381,7 @@ export default async function ToolkitPage() {
             marginBottom: 18,
           }}
         >
-          <span style={kickerStyle}>AiBI-Foundation · Accumulated assets</span>
+          <span style={kickerStyle}>AiBI-Foundation · Saved artifacts</span>
           <span style={{ flex: 1, height: 1, background: 'var(--ink-a10)' }} />
         </div>
         <h1
@@ -336,482 +400,158 @@ export default async function ToolkitPage() {
           style={{
             fontSize: 19,
             lineHeight: 1.45,
+            color: 'var(--ink)',
+            margin: '0 0 12px',
+            maxWidth: '60ch',
+            fontWeight: 500,
+          }}
+        >
+          {countLine || 'Nothing saved yet — finish Module 3 to start building your toolkit.'}
+        </p>
+        <p
+          style={{
+            fontSize: 15,
+            lineHeight: 1.55,
             color: 'var(--slate-600)',
             margin: 0,
             maxWidth: '60ch',
           }}
         >
-          Your course assets in one place — skills, artifacts, subscription
-          inventory, and capstone summary.
+          Everything you produced during the course, in one place. Sort, filter, and re-download
+          on demand.
         </p>
       </header>
 
-      <article>
-        {/* 1 — My Skills */}
-        <SectionCard title="My skills" label="Skills">
-          <div style={{ display: 'grid', gap: 14 }}>
-            {/* M7 skill */}
-            <div style={itemCardStyle}>
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'flex-start',
-                  justifyContent: 'space-between',
-                  gap: 16,
-                  flexWrap: 'wrap',
-                }}
-              >
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <p style={{ ...kickerStyle, marginBottom: 4 }}>
-                    Module 7 — My first skill
-                  </p>
-                  <p
-                    style={{
-                      fontSize: 15,
-                      fontWeight: 600,
-                      color: 'var(--ink)',
-                      margin: '0 0 4px',
-                    }}
-                  >
-                    {m7SkillMd
-                      ? (() => {
-                          const match = /^# (.+?) - v1/m.exec(m7SkillMd);
-                          return match ? match[1].trim() : 'Banking AI Skill v1.0';
-                        })()
-                      : 'Banking AI Skill v1.0'}
-                  </p>
-                  <p style={{ fontSize: 13, color: 'var(--slate-500)', margin: 0 }}>
-                    {m7SkillMd
-                      ? 'Five-component RTFC skill built during Module 7. Ready to paste into ChatGPT, Claude, or Gemini.'
-                      : m7Complete
-                        ? 'Skill file not found in your activity responses.'
-                        : 'Complete Module 7 to build and download your first skill.'}
-                  </p>
-                </div>
-                {m7SkillMd ? (
-                  <DownloadSkillButton
-                    mdContent={m7SkillMd}
-                    filename={m7Filename}
-                    label="Download .md"
-                  />
-                ) : (
-                  <Link
-                    href="/courses/foundation/program/7"
-                    style={ghostLinkStyle}
-                    aria-label="Go to Module 7 to build your skill"
-                  >
-                    Go to Module 7
-                  </Link>
-                )}
-              </div>
-            </div>
+      <SectionCard title="Artifacts" label="All saved work">
+        <ArtifactsClient artifacts={artifacts} />
+      </SectionCard>
 
-            {/* M8 iterated skill */}
-            <div style={itemCardStyle}>
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'flex-start',
-                  justifyContent: 'space-between',
-                  gap: 16,
-                  flexWrap: 'wrap',
-                }}
-              >
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <p style={{ ...kickerStyle, marginBottom: 4 }}>
-                    Module 8 — Iterated skill
-                  </p>
-                  <p
-                    style={{
-                      fontSize: 15,
-                      fontWeight: 600,
-                      color: 'var(--ink)',
-                      margin: '0 0 4px',
-                    }}
-                  >
-                    {m8IteratedMd
-                      ? (() => {
-                          const match = /^# (.+?) - v1/m.exec(m7SkillMd ?? '');
-                          return match ? `${match[1].trim()} v1.1` : 'Banking AI Skill v1.1';
-                        })()
-                      : 'Banking AI Skill v1.1'}
-                  </p>
-                  <p style={{ fontSize: 13, color: 'var(--slate-500)', margin: 0 }}>
-                    {m8IteratedMd
-                      ? 'Stress-tested and revised version of your Module 7 skill with iteration log embedded.'
-                      : m8Complete
-                        ? 'Iterated skill unavailable — Module 7 skill file is required to generate v1.1.'
-                        : 'Complete Module 8 to test and iterate your skill.'}
-                  </p>
-                  {m8Response?.['revision-notes'] && (
-                    <p
-                      style={{
-                        fontSize: 13,
-                        color: 'var(--ink)',
-                        marginTop: 8,
-                        lineHeight: 1.55,
-                      }}
-                    >
-                      <span style={{ fontWeight: 600 }}>Revision notes: </span>
-                      {m8Response['revision-notes'].slice(0, 160)}
-                      {m8Response['revision-notes'].length > 160 ? '…' : ''}
-                    </p>
-                  )}
-                </div>
-                {m8IteratedMd ? (
-                  <DownloadSkillButton
-                    mdContent={m8IteratedMd}
-                    filename={m8Filename}
-                    label="Download .md"
-                  />
-                ) : (
-                  <Link
-                    href="/courses/foundation/program/8"
-                    style={ghostLinkStyle}
-                    aria-label="Go to Module 8 to iterate your skill"
-                  >
-                    Go to Module 8
-                  </Link>
-                )}
-              </div>
-            </div>
-          </div>
-        </SectionCard>
-
-        {/* 2 — My Artifacts */}
-        <SectionCard title="My artifacts" label="Artifacts">
-          <div style={{ display: 'grid', gap: 12 }}>
-            {ARTIFACTS.map((artifact) => {
-              const isAvailable = completedModules.includes(artifact.module);
+      {/* Subscription Inventory detail — full table view kept for reference */}
+      {inventoryResponse && (
+        <SectionCard title="Subscription inventory detail" label="Module 2 baseline">
+          <p
+            style={{
+              fontSize: 13,
+              color: 'var(--slate-500)',
+              marginBottom: 16,
+              lineHeight: 1.55,
+            }}
+          >
+            Recorded during Module 2. Update by revisiting{' '}
+            <Link
+              href="/courses/foundation/program/2"
+              style={{
+                color: 'var(--ink)',
+                textDecoration: 'underline',
+                textUnderlineOffset: 2,
+              }}
+            >
+              Module 2
+            </Link>
+            .
+          </p>
+          <div style={{ display: 'grid', gap: 0 }}>
+            {Object.entries(PLATFORM_LABELS).map(([fieldId, platformName], i, arr) => {
+              const rawValue = inventoryResponse[fieldId] ?? '';
+              const displayValue = ACCESS_LABELS[rawValue] ?? rawValue;
               return (
                 <div
-                  key={artifact.id}
+                  key={fieldId}
                   style={{
-                    ...itemCardStyle,
                     display: 'flex',
-                    alignItems: 'flex-start',
-                    justifyContent: 'space-between',
-                    gap: 16,
                     flexWrap: 'wrap',
-                    opacity: isAvailable ? 1 : 0.6,
+                    gap: 16,
+                    padding: '10px 0',
+                    borderBottom:
+                      i === arr.length - 1 ? 'none' : '1px solid var(--ink-a10)',
                   }}
                 >
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 8,
-                        flexWrap: 'wrap',
-                        marginBottom: 4,
-                      }}
-                    >
-                      <p style={kickerStyle}>Module {artifact.module}</p>
-                      <span
-                        style={{
-                          fontSize: 10,
-                          fontWeight: 600,
-                          letterSpacing: '0.16em',
-                          textTransform: 'uppercase',
-                          padding: '2px 8px',
-                          borderRadius: 999,
-                          border: '1px solid var(--gold)',
-                          color: 'var(--gold-deep)',
-                        }}
-                      >
-                        {artifact.format}
-                      </span>
-                    </div>
-                    <p
-                      style={{
-                        fontSize: 15,
-                        fontWeight: 600,
-                        color: 'var(--ink)',
-                        margin: '0 0 4px',
-                      }}
-                    >
-                      {artifact.title}
-                    </p>
-                    <p
-                      style={{
-                        fontSize: 13,
-                        color: 'var(--slate-500)',
-                        lineHeight: 1.55,
-                        margin: 0,
-                      }}
-                    >
-                      {artifact.description}
-                    </p>
-                  </div>
-                  {isAvailable ? (
-                    <Link
-                      href={`/courses/foundation/program/${artifact.module}`}
-                      style={accentLinkStyle}
-                    >
-                      Re-download
-                    </Link>
-                  ) : (
-                    <Link
-                      href={`/courses/foundation/program/${artifact.module}`}
-                      style={ghostLinkStyle}
-                      aria-label={`Go to Module ${artifact.module} to access this artifact`}
-                    >
-                      Pending
-                    </Link>
-                  )}
+                  <span
+                    style={{
+                      fontSize: 14,
+                      fontWeight: 600,
+                      color: 'var(--ink)',
+                      flex: '0 0 220px',
+                    }}
+                  >
+                    {platformName}
+                  </span>
+                  <span style={{ fontSize: 14, color: 'var(--slate-500)' }}>
+                    {displayValue || 'No selection recorded'}
+                  </span>
                 </div>
               );
             })}
           </div>
         </SectionCard>
+      )}
 
-        {/* 3 — My Subscription Inventory */}
-        <SectionCard title="My subscription inventory" label="Subscription inventory">
-          {inventoryResponse ? (
-            <div>
-              <p
-                style={{
-                  fontSize: 13,
-                  color: 'var(--slate-500)',
-                  marginBottom: 16,
-                  lineHeight: 1.55,
-                }}
-              >
-                Recorded during Module 2. Update by revisiting{' '}
-                <Link
-                  href="/courses/foundation/program/2"
-                  style={{
-                    color: 'var(--ink)',
-                    textDecoration: 'underline',
-                    textUnderlineOffset: 2,
-                  }}
-                >
-                  Module 2
-                </Link>
-                .
-              </p>
-              <div style={{ display: 'grid', gap: 0 }}>
-                {Object.entries(PLATFORM_LABELS).map(([fieldId, platformName], i, arr) => {
-                  const rawValue = inventoryResponse[fieldId] ?? '';
-                  const displayValue = ACCESS_LABELS[rawValue] ?? rawValue;
-                  return (
-                    <div
-                      key={fieldId}
-                      style={{
-                        display: 'flex',
-                        flexWrap: 'wrap',
-                        gap: 16,
-                        padding: '10px 0',
-                        borderBottom:
-                          i === arr.length - 1 ? 'none' : '1px solid var(--ink-a10)',
-                      }}
-                    >
-                      <span
-                        style={{
-                          fontSize: 14,
-                          fontWeight: 600,
-                          color: 'var(--ink)',
-                          flex: '0 0 220px',
-                        }}
-                      >
-                        {platformName}
-                      </span>
-                      <span style={{ fontSize: 14, color: 'var(--slate-500)' }}>
-                        {displayValue || 'No selection recorded'}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          ) : (
-            <EmptyState message="Complete the Subscription Inventory activity in Module 2 to see your results here." />
-          )}
-        </SectionCard>
-
-        {/* 4 — What I Automated */}
-        <SectionCard title="What I automated" label="Capstone summary">
-          {m8Response && m7SkillMd ? (
-            <div style={{ display: 'grid', gap: 16 }}>
-              <p
-                style={{
-                  fontSize: 13,
-                  color: 'var(--slate-500)',
-                  lineHeight: 1.55,
-                  margin: 0,
-                }}
-              >
-                Summary of your Module 9 capstone: the workflow you automated, the quality
-                standard your work product was built to meet, and the iteration path that
-                got you there.
-              </p>
-
-              <div
-                style={{
-                  borderLeft: '3px solid var(--gold)',
-                  paddingLeft: 14,
-                }}
-              >
-                <p style={{ ...kickerStyle, marginBottom: 4 }}>Skill used for capstone</p>
-                <p
-                  style={{
-                    fontSize: 14,
-                    color: 'var(--ink)',
-                    lineHeight: 1.55,
-                    margin: 0,
-                  }}
-                >
-                  {(() => {
-                    const match = /^# (.+?) - v1/m.exec(m7SkillMd);
-                    return match ? match[1].trim() : 'Banking AI Skill';
-                  })()}{' '}
-                  {m8Response['sharing-ladder-level'] ? (
-                    <span style={{ color: 'var(--slate-500)' }}>
-                      — Sharing level:{' '}
-                      {
-                        {
-                          personal: 'Personal sandbox',
-                          team: 'Ready for team review',
-                          institution: 'Institution-wide',
-                          'not-sure': 'Needs one more iteration',
-                        }[m8Response['sharing-ladder-level']] ?? m8Response['sharing-ladder-level']
-                      }
-                    </span>
-                  ) : null}
-                </p>
-              </div>
-
-              {m8Response['test-input-1'] && (
-                <div
-                  style={{
-                    borderLeft: '3px solid var(--gold)',
-                    paddingLeft: 14,
-                  }}
-                >
-                  <p style={{ ...kickerStyle, marginBottom: 4 }}>Tested against</p>
-                  <p
-                    style={{
-                      fontSize: 14,
-                      color: 'var(--ink)',
-                      lineHeight: 1.55,
-                      margin: 0,
-                    }}
-                  >
-                    {m8Response['test-input-1']}
-                  </p>
-                </div>
-              )}
-
-              {m8Response['revision-notes'] && (
-                <div
-                  style={{
-                    borderLeft: '3px solid var(--gold)',
-                    paddingLeft: 14,
-                  }}
-                >
-                  <p style={{ ...kickerStyle, marginBottom: 4 }}>Iteration improvements</p>
-                  <p
-                    style={{
-                      fontSize: 14,
-                      color: 'var(--ink)',
-                      lineHeight: 1.55,
-                      margin: 0,
-                    }}
-                  >
-                    {m8Response['revision-notes']}
-                  </p>
-                </div>
-              )}
-
-              <div
-                style={{
-                  borderLeft: '3px solid var(--gold)',
-                  paddingLeft: 14,
-                }}
-              >
-                <p style={{ ...kickerStyle, marginBottom: 4 }}>Quality standard met</p>
-                <p
-                  style={{
-                    fontSize: 14,
-                    color: 'var(--ink)',
-                    lineHeight: 1.55,
-                    margin: 0,
-                  }}
-                >
-                  Five-dimension AiBI-Foundation rubric: Accuracy (hard gate), Completeness,
-                  Tone, Judgment, and Skill Quality.
-                </p>
-              </div>
-
-              <div style={{ paddingTop: 4 }}>
-                <Link
-                  href="/courses/foundation/program/submit"
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: 10,
-                    padding: '12px 20px',
-                    background: 'var(--ink)',
-                    color: 'var(--cream-2)',
-                    fontSize: 11,
-                    fontWeight: 600,
-                    letterSpacing: '0.16em',
-                    textTransform: 'uppercase',
-                    borderRadius: 12,
-                    textDecoration: 'none',
-                  }}
-                >
-                  Submit work product →
-                </Link>
-              </div>
-            </div>
-          ) : (
-            <EmptyState message="Complete Modules 7 and 8 to see your capstone automation summary here." />
-          )}
-        </SectionCard>
-
-        {/* 5 — Transformation Report */}
-        <SectionCard title="Transformation report" label="Course report">
-          <div style={itemCardStyle}>
-            <div
+      {/* Capstone summary — narrative context for the Module 9 work product */}
+      {m8Response && m7SkillMd && (
+        <SectionCard title="Capstone summary" label="Module 9 narrative">
+          <div style={{ display: 'grid', gap: 16 }}>
+            <p
               style={{
-                display: 'flex',
-                alignItems: 'flex-start',
-                justifyContent: 'space-between',
-                gap: 16,
-                flexWrap: 'wrap',
+                fontSize: 13,
+                color: 'var(--slate-500)',
+                lineHeight: 1.55,
+                margin: 0,
               }}
             >
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <p style={{ ...kickerStyle, marginBottom: 4 }}>AiBI-Foundation complete</p>
-                <p
-                  style={{
-                    fontSize: 15,
-                    fontWeight: 600,
-                    color: 'var(--ink)',
-                    margin: '0 0 4px',
-                  }}
-                >
-                  AiBI-Foundation Transformation Report
-                </p>
-                <p
-                  style={{
-                    fontSize: 13,
-                    color: 'var(--slate-500)',
-                    lineHeight: 1.55,
-                    margin: 0,
-                  }}
-                >
-                  Five-page PDF summarising your pre/post assessment comparison, skills built,
-                  estimated annual time savings, quick wins logged, and course completion
-                  status. The document a learner shows their manager.
+              Summary of your Module 9 capstone: the workflow you automated, the quality
+              standard your work product was built to meet, and the iteration path that
+              got you there.
+            </p>
+
+            <div style={{ borderLeft: '3px solid var(--gold)', paddingLeft: 14 }}>
+              <p style={{ ...kickerStyle, marginBottom: 4 }}>Skill used for capstone</p>
+              <p style={{ fontSize: 14, color: 'var(--ink)', lineHeight: 1.55, margin: 0 }}>
+                {m7Title}{' '}
+                {m8Response['sharing-ladder-level'] ? (
+                  <span style={{ color: 'var(--slate-500)' }}>
+                    — Sharing level:{' '}
+                    {
+                      {
+                        personal: 'Personal sandbox',
+                        team: 'Ready for team review',
+                        institution: 'Institution-wide',
+                        'not-sure': 'Needs one more iteration',
+                      }[m8Response['sharing-ladder-level']] ?? m8Response['sharing-ladder-level']
+                    }
+                  </span>
+                ) : null}
+              </p>
+            </div>
+
+            {m8Response['test-input-1'] && (
+              <div style={{ borderLeft: '3px solid var(--gold)', paddingLeft: 14 }}>
+                <p style={{ ...kickerStyle, marginBottom: 4 }}>Tested against</p>
+                <p style={{ fontSize: 14, color: 'var(--ink)', lineHeight: 1.55, margin: 0 }}>
+                  {m8Response['test-input-1']}
                 </p>
               </div>
-              <DownloadReportButton enrollmentId={enrollment.id} />
+            )}
+
+            {m8Response['revision-notes'] && (
+              <div style={{ borderLeft: '3px solid var(--gold)', paddingLeft: 14 }}>
+                <p style={{ ...kickerStyle, marginBottom: 4 }}>Iteration improvements</p>
+                <p style={{ fontSize: 14, color: 'var(--ink)', lineHeight: 1.55, margin: 0 }}>
+                  {m8Response['revision-notes']}
+                </p>
+              </div>
+            )}
+
+            <div style={{ borderLeft: '3px solid var(--gold)', paddingLeft: 14 }}>
+              <p style={{ ...kickerStyle, marginBottom: 4 }}>Quality standard met</p>
+              <p style={{ fontSize: 14, color: 'var(--ink)', lineHeight: 1.55, margin: 0 }}>
+                Five-dimension AiBI-Foundation rubric: Accuracy (hard gate), Completeness,
+                Tone, Judgment, and Skill Quality.
+              </p>
             </div>
           </div>
         </SectionCard>
-      </article>
+      )}
+
     </CourseShellWrapper>
   );
 }
