@@ -27,7 +27,7 @@ export const advisoryTiers: readonly AdvisoryTier[] = [
       'Institutions running their first Foundations cohort that want structured application support.',
     format: 'Weekly coaching, async review, one documented use case at the end.',
     duration: '4 – 6 weeks',
-    accent: 'var(--color-terra)',
+    accent: 'var(--gold)',
   },
   {
     id: 'program',
@@ -40,7 +40,7 @@ export const advisoryTiers: readonly AdvisoryTier[] = [
       'Institutions that have certified a department and want to turn learning into a live roadmap.',
     format: 'Bi-weekly coaching, roadmap review, documented handoff to the department owner.',
     duration: '6 – 10 weeks',
-    accent: 'var(--color-cobalt)',
+    accent: 'var(--gold)',
   },
   {
     id: 'leadership',
@@ -53,6 +53,6 @@ export const advisoryTiers: readonly AdvisoryTier[] = [
       'Institutions with a Leader-credentialed executive who wants a thought partner, not a replacement.',
     format: 'Monthly executive coaching, async strategic review, quarterly alignment with the board.',
     duration: 'Monthly, ongoing',
-    accent: 'var(--color-sage)',
+    accent: 'var(--gold)',
   },
 ];
