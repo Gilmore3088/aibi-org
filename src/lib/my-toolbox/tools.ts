@@ -1035,3 +1035,67 @@ ASKS
 };
 
 export type ToolKey = keyof typeof TOOLS;
+
+// ============================================================================
+// Role-tagged view onto the TOOLS map.
+//
+// The existing tools above were authored as the BSA-officer reference set
+// (#181, #182). The 14 new tools landed for #184 live in tools-184-draft.ts
+// and explicitly carry a `role` field. To support the role-switcher filter
+// without disturbing the existing BSA tooling, legacy tools are mapped to
+// the 'bsa' role and new tools come pre-tagged from the draft module.
+// ============================================================================
+
+import { DRAFT_TOOLS_184, type DraftToolData, type ToolRole } from './tools-184-draft';
+export { DRAFT_TOOLS_184 };
+export type { ToolRole, DraftToolData };
+
+const LEGACY_BSA_ROLES: Record<ToolKey, ToolRole> = {
+  sar: 'bsa',
+  tone: 'bsa',
+  builder: 'bsa',
+  kit: 'bsa',
+  pasttense: 'bsa',
+  creditmemo: 'bsa',
+  extract: 'bsa',
+  tprm: 'bsa',
+  tensecheck: 'bsa',
+  trend: 'bsa',
+  reviewer: 'bsa',
+  board: 'bsa',
+};
+
+/**
+ * Returns the role tag for any tool key — legacy or draft. Used by the
+ * role-switcher filter in the toolbox UI.
+ */
+export function roleForToolKey(key: string): ToolRole | undefined {
+  if (key in LEGACY_BSA_ROLES) return LEGACY_BSA_ROLES[key as ToolKey];
+  const draft = DRAFT_TOOLS_184[key];
+  return draft?.role;
+}
+
+/**
+ * Returns the set of tool keys visible for a given role. Used by the
+ * role-switcher to filter the shelf, the grid, and the kit row.
+ */
+export function toolKeysForRole(role: ToolRole): readonly string[] {
+  const legacy = (Object.keys(LEGACY_BSA_ROLES) as ToolKey[]).filter(
+    (k) => LEGACY_BSA_ROLES[k] === role,
+  );
+  const drafts = Object.keys(DRAFT_TOOLS_184).filter(
+    (k) => DRAFT_TOOLS_184[k].role === role,
+  );
+  return [...legacy, ...drafts];
+}
+
+/**
+ * All tools merged into a single addressable map (legacy + draft).
+ * Consumers that need full coverage (e.g. /playground?tool=<key>)
+ * read from here. Existing consumers reading TOOLS continue to work
+ * unchanged — TOOLS still contains the legacy set.
+ */
+export const ALL_TOOLS: Record<string, ToolData> = {
+  ...TOOLS,
+  ...DRAFT_TOOLS_184,
+};
