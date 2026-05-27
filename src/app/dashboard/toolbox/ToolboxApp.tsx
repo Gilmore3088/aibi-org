@@ -22,14 +22,21 @@ import { ToolboxHomeV5 } from './_components/ToolboxHomeV5';
 import { useUsage } from './_components/UsageMeter';
 
 type TabId = 'guide' | 'library' | 'build' | 'playground' | 'toolbox';
+export type ToolboxTier = 'full' | 'starter';
 
-const TABS: readonly { id: TabId; label: string }[] = [
-  { id: 'guide', label: 'Start Here' },
-  { id: 'library', label: 'Library' },
-  { id: 'build', label: 'Build' },
-  { id: 'playground', label: 'Playground' },
-  { id: 'toolbox', label: 'My Toolbox' },
+// All tabs in canonical order. Per #219, Starter-tier (In-Depth Assessment
+// buyers) only sees the read-only tabs — Build + Playground are hidden.
+const ALL_TABS: readonly { id: TabId; label: string; tiers: readonly ToolboxTier[] }[] = [
+  { id: 'guide', label: 'Start Here', tiers: ['full', 'starter'] },
+  { id: 'library', label: 'Library', tiers: ['full', 'starter'] },
+  { id: 'build', label: 'Build', tiers: ['full'] },
+  { id: 'playground', label: 'Playground', tiers: ['full'] },
+  { id: 'toolbox', label: 'My Toolbox', tiers: ['full', 'starter'] },
 ];
+
+function tabsForTier(tier: ToolboxTier): readonly { id: TabId; label: string }[] {
+  return ALL_TABS.filter((t) => t.tiers.includes(tier)).map(({ id, label }) => ({ id, label }));
+}
 
 const EMPTY_WORKFLOW_SKILL: ToolboxWorkflowSkill = {
   kind: 'workflow',
@@ -112,12 +119,26 @@ function slugFromCommand(cmd: string): string {
   return cmd.replace(/^\//, '').replace(/[^a-z0-9-]+/gi, '-').toLowerCase() || 'skill';
 }
 
-export function ToolboxApp() {
+interface ToolboxAppProps {
+  /**
+   * Entitlement tier resolved on the server (#219). Defaults to 'full' so
+   * existing callers + tests that don't pass the prop yet behave exactly
+   * as before. Starter-tier (In-Depth buyers) hides Build + Playground
+   * tabs; mutating API endpoints are gated server-side regardless.
+   */
+  readonly tier?: ToolboxTier;
+}
+
+export function ToolboxApp({ tier = 'full' }: ToolboxAppProps = {}) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const currentTab = (searchParams.get('tab') as TabId | null) ?? 'guide';
-  const safeTab = TABS.some((tab) => tab.id === currentTab) ? currentTab : 'guide';
+  const tabsForActiveTier = tabsForTier(tier);
+  // If the URL points at a tab this tier can't see (e.g. ?tab=playground
+  // on a Starter user), collapse back to 'guide' rather than rendering a
+  // tab the user shouldn't reach.
+  const safeTab = tabsForActiveTier.some((tab) => tab.id === currentTab) ? currentTab : 'guide';
 
   const [skills, setSkills] = useState<ToolboxSkill[]>([]);
   const [librarySlugMap, setLibrarySlugMap] = useState<Record<string, string>>({});
@@ -418,7 +439,7 @@ export function ToolboxApp() {
   return (
     <div className="mx-auto max-w-7xl px-6 py-6 lg:px-10">
       <nav className="sticky top-[81px] z-30 -mx-6 mb-8 flex items-center gap-1 overflow-x-auto border-b border-[color:var(--ink)]/10 bg-[color:var(--cream)] px-6 lg:-mx-10 lg:px-10" aria-label="Toolbox sections">
-        {TABS.map((tab) => (
+        {tabsForActiveTier.map((tab) => (
           <Link
             key={tab.id}
             href={`/dashboard/toolbox?tab=${tab.id}`}

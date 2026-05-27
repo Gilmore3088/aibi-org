@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
-import { getPaidToolboxAccess } from '@/lib/toolbox/access';
+import { canBuildOrRun, getPaidToolboxAccess } from '@/lib/toolbox/access';
 import type { ToolboxSkill } from '@/lib/toolbox/types';
 import { validateSkill } from './validateSkill';
 
@@ -69,6 +69,13 @@ export async function GET(): Promise<NextResponse> {
 export async function POST(request: Request): Promise<NextResponse> {
   const access = await getPaidToolboxAccess();
   if (!access) return NextResponse.json({ error: 'Paid access required.' }, { status: 403 });
+  // Starter-tier guard (#219): creating a skill requires the Foundation tier.
+  if (!canBuildOrRun(access)) {
+    return NextResponse.json(
+      { error: 'Creating a skill requires the AiBI-Foundation tier.' },
+      { status: 403 },
+    );
+  }
   if (!isSupabaseConfigured()) {
     return NextResponse.json({ error: 'Server-side Toolbox storage is not configured.' }, { status: 503 });
   }
