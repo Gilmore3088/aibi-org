@@ -179,14 +179,27 @@ export default function CoursesIndexPage() {
               .
             </p>
           </div>
-
-          <CoursePreview
-            activeModule={activeModule}
-            setActiveModule={setActiveModule}
-            ActiveIcon={ActiveIcon}
-          />
         </div>
       </section>
+
+      {/* COURSE PREVIEW — standalone section below the hero */}
+      <Section variant="std" surface="white">
+        <SectionHead
+          kicker="Course preview"
+          heading={<>Prompt → Skill → Workflow.</>}
+          lede={
+            <>
+              Pick a module on the left to see the learning visual on the right. Each module
+              ends with an artifact the learner keeps.
+            </>
+          }
+        />
+        <CoursePreview
+          activeModule={activeModule}
+          setActiveModule={setActiveModule}
+          ActiveIcon={ActiveIcon}
+        />
+      </Section>
 
       {/* WHAT LEARNERS BUILD — 4 cards */}
       <Section variant="std" surface="white">
