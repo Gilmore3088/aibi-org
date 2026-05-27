@@ -2,6 +2,7 @@
 
 // SkillFileUpload — File input with presign → PUT upload pattern.
 // Emits the storage path on successful upload via onUploaded callback.
+// Mockup chrome: ink type, gold accent, slate metadata, emerald confirmation.
 
 import React, { useState, useCallback } from 'react';
 
@@ -80,14 +81,14 @@ export function SkillFileUpload({
     <div className="mb-6">
       <label
         htmlFor="skill-file"
-        className="block font-sans text-sm font-semibold text-[color:var(--ledger-ink)] mb-1"
+        className="block font-sans text-sm font-semibold text-[color:var(--ink)] mb-1"
       >
         Skill File (.md or .txt)
-        <span className="ml-1 text-[color:var(--ledger-weak)] text-xs" aria-label="required">
+        <span className="ml-1 text-red-700 text-xs" aria-label="required">
           *
         </span>
       </label>
-      <p className="font-sans text-xs text-[color:var(--ledger-muted)] mb-2">
+      <p className="font-sans text-xs text-[color:var(--slate-600)] mb-2">
         Upload the completed skill template you built during the course.
       </p>
 
@@ -99,22 +100,22 @@ export function SkillFileUpload({
         disabled={uploadStatus === 'uploading'}
         aria-describedby={error ? 'skill-file-error' : 'skill-file-hint'}
         aria-invalid={Boolean(error)}
-        className="block w-full text-sm font-sans text-[color:var(--ledger-ink)] file:mr-4 file:py-2 file:px-4 file:rounded-sm file:border file:border-[color:var(--ledger-accent)] file:text-[11px] file:font-mono file:uppercase file:tracking-widest file:text-[color:var(--ledger-accent)] file:bg-transparent hover:file:bg-[color:var(--ledger-accent)] hover:file:text-[color:var(--ledger-bg)] file:cursor-pointer file:transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-2 rounded-sm"
+        className="block w-full rounded-xl text-sm font-sans text-[color:var(--ink)] file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border file:border-[color:var(--ink-a10)] file:text-[11px] file:font-sans file:font-bold file:uppercase file:tracking-[0.22em] file:text-[color:var(--ink)] file:bg-[color:var(--cream-2)] hover:file:bg-[color:var(--ink)] hover:file:text-[color:var(--gold-soft)] hover:file:border-[color:var(--ink)] file:cursor-pointer file:transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:ring-offset-2"
       />
 
-      <p id="skill-file-hint" className="mt-1 text-[11px] font-mono text-[color:var(--ledger-muted)]">
+      <p id="skill-file-hint" className="mt-1 font-sans text-[11px] text-[color:var(--slate-500)]">
         Accepted formats: .md, .txt
       </p>
 
       {uploadStatus === 'uploading' && (
-        <p className="mt-2 text-[11px] font-mono text-[color:var(--ledger-muted)]" aria-live="polite">
+        <p className="mt-2 font-sans text-[11px] text-[color:var(--slate-500)]" aria-live="polite">
           Uploading{uploadedFilename ? ` ${uploadedFilename}` : ''}…
         </p>
       )}
 
       {uploadStatus === 'uploaded' && uploadedFilename && (
         <p
-          className="mt-2 text-[11px] font-mono text-[color:var(--ledger-accent-2)]"
+          className="mt-2 font-sans text-[11px] font-semibold text-[color:var(--emerald-700)]"
           aria-live="polite"
         >
           Uploaded: {uploadedFilename}
@@ -124,7 +125,7 @@ export function SkillFileUpload({
       {uploadStatus === 'error' && error && (
         <p
           id="skill-file-error"
-          className="mt-1 text-[color:var(--ledger-weak)] font-mono text-xs"
+          className="mt-1 font-sans text-xs text-red-700"
           role="alert"
         >
           Error: {error}

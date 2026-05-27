@@ -2,6 +2,7 @@
 
 // SkillBuilderPanels — RTFCPanel, StarterSelector, FormField, ReadOnlyView
 // sub-components extracted from SkillBuilder.tsx.
+// Mockup chrome: cream surface, ink type, gold accent on emphasis, slate metadata.
 
 import type { SkillStarter } from '../_lib/skillBuilderData';
 import { FORMAT_OPTIONS } from '../_lib/skillBuilderData';
@@ -41,16 +42,17 @@ const RTFC_COMPONENTS = [
   },
 ] as const;
 
+const eyebrowClass =
+  'font-sans text-[10px] font-bold uppercase tracking-[0.22em] text-[color:var(--gold-deep)]';
+
 export function RTFCPanel() {
   return (
-    <div className="bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-parch)] rounded-sm p-6 h-full">
-      <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent)] mb-3">
-        RTFC Framework
-      </p>
-      <h3 className="font-serif text-lg font-bold text-[color:var(--ledger-ink)] mb-1 leading-snug">
+    <div className="h-full rounded-2xl border border-[color:var(--ink-a10)] bg-[color:var(--cream-2)] p-6">
+      <p className={`${eyebrowClass} mb-3`}>RTFC Framework</p>
+      <h3 className="font-sans text-lg font-bold leading-snug text-[color:var(--ink)] mb-1">
         The Four Components of a Banking AI Skill
       </h3>
-      <p className="text-xs font-sans text-[color:var(--ledger-muted)] mb-6 leading-relaxed">
+      <p className="font-sans text-xs leading-relaxed text-[color:var(--slate-600)] mb-6">
         Every field in the builder maps to a component of the RTFC Framework. Completing all four
         produces a skill file you can deploy immediately in any AI platform.
       </p>
@@ -59,17 +61,16 @@ export function RTFCPanel() {
         {RTFC_COMPONENTS.map((item) => (
           <div key={item.letter} className="flex gap-3">
             <div
-              className="flex-shrink-0 w-8 h-8 rounded-sm flex items-center justify-center font-mono text-sm font-bold text-[color:var(--ledger-bg)] transition-colors"
-              style={{ backgroundColor: 'var(--ledger-accent)' }}
+              className="flex-shrink-0 w-8 h-8 rounded-xl flex items-center justify-center font-sans text-sm font-bold text-[color:var(--ink)] bg-[color:var(--gold)]"
               aria-hidden="true"
             >
               {item.letter}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="font-sans text-sm font-semibold text-[color:var(--ledger-ink)] mb-1">
+              <p className="font-sans text-sm font-semibold text-[color:var(--ink)] mb-1">
                 {item.label}
               </p>
-              <p className="text-xs font-sans text-[color:var(--ledger-muted)] leading-relaxed">
+              <p className="font-sans text-xs leading-relaxed text-[color:var(--slate-600)]">
                 {item.description}
               </p>
             </div>
@@ -77,8 +78,8 @@ export function RTFCPanel() {
         ))}
       </div>
 
-      <div className="mt-6 pt-4 border-t border-[color:var(--ledger-parch)]">
-        <p className="text-xs font-sans text-[color:var(--ledger-muted)] leading-relaxed">
+      <div className="mt-6 pt-4 border-t border-[color:var(--ink-a10)]">
+        <p className="font-sans text-xs leading-relaxed text-[color:var(--slate-600)]">
           Context is embedded in your Role field. Adding institutional context directly to the Role
           definition produces a more coherent skill than separating it into a dedicated Context field.
         </p>
@@ -95,34 +96,37 @@ interface StarterSelectorProps {
 
 export function StarterSelector({ starters, selectedId, onSelect }: StarterSelectorProps) {
   return (
-    <div className="mb-6 p-4 bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-parch)] rounded-sm">
-      <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] mb-2">
+    <div className="mb-6 rounded-2xl border border-[color:var(--ink-a10)] bg-[color:var(--cream-2)] p-4">
+      <p className="font-sans text-[10px] font-bold uppercase tracking-[0.22em] text-[color:var(--slate-500)] mb-2">
         Skill Starters
       </p>
-      <p className="text-xs font-sans text-[color:var(--ledger-muted)] mb-3 leading-relaxed">
+      <p className="font-sans text-xs leading-relaxed text-[color:var(--slate-600)] mb-3">
         Select a pre-built skill for your role to auto-fill all fields. Edit freely once loaded.
       </p>
       <div className="flex flex-wrap gap-2" role="group" aria-label="Skill starter options">
-        {starters.map((starter) => (
-          <button
-            key={starter.id}
-            type="button"
-            onClick={() => onSelect(selectedId === starter.id ? null : starter)}
-            className={`px-3 py-1.5 text-[11px] font-mono rounded-sm border transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-1 ${
-              selectedId === starter.id
-                ? 'bg-[color:var(--ledger-accent)] text-[color:var(--ledger-bg)] border-[color:var(--ledger-accent)]'
-                : 'bg-white text-[color:var(--ledger-ink)] border-[color:var(--ledger-parch)] hover:border-[color:var(--ledger-accent)] hover:text-[color:var(--ledger-accent)]'
-            }`}
-            aria-pressed={selectedId === starter.id}
-          >
-            {starter.name}
-          </button>
-        ))}
+        {starters.map((starter) => {
+          const active = selectedId === starter.id;
+          return (
+            <button
+              key={starter.id}
+              type="button"
+              onClick={() => onSelect(active ? null : starter)}
+              className={`px-3 py-1.5 text-[11px] font-sans font-semibold uppercase tracking-[0.16em] rounded-full border transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:ring-offset-1 ${
+                active
+                  ? 'bg-[color:var(--gold)] text-[color:var(--ink)] border-[color:var(--gold)]'
+                  : 'bg-white text-[color:var(--ink)] border-[color:var(--ink-a10)] hover:border-[color:var(--gold)] hover:text-[color:var(--gold-deep)]'
+              }`}
+              aria-pressed={active}
+            >
+              {starter.name}
+            </button>
+          );
+        })}
         {selectedId && (
           <button
             type="button"
             onClick={() => onSelect(null)}
-            className="px-3 py-1.5 text-[11px] font-mono rounded-sm border border-[color:var(--ledger-parch)] text-[color:var(--ledger-muted)] hover:text-[color:var(--ledger-ink)] transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-1"
+            className="px-3 py-1.5 text-[11px] font-sans font-semibold uppercase tracking-[0.16em] rounded-full border border-[color:var(--ink-a10)] text-[color:var(--slate-500)] hover:text-[color:var(--ink)] transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:ring-offset-1"
             aria-label="Clear starter selection"
           >
             Clear
@@ -162,19 +166,17 @@ export function FormField({
   const hasError = Boolean(error);
 
   const baseClass =
-    'w-full border rounded-sm px-3 py-2 text-sm font-sans bg-white text-[color:var(--ledger-ink)] placeholder:text-[color:var(--ledger-soft)] focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] transition-shadow';
-  const borderClass = hasError
-    ? 'border-[color:var(--ledger-weak)]'
-    : 'border-[color:var(--ledger-parch)]';
+    'w-full rounded-xl border px-3 py-2 text-sm font-sans bg-white text-[color:var(--ink)] placeholder:text-[color:var(--slate-400)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] transition-shadow';
+  const borderClass = hasError ? 'border-red-700' : 'border-[color:var(--ink-a10)]';
 
   return (
     <div className="mb-5">
       <label
         htmlFor={id}
-        className="block font-sans text-sm font-semibold text-[color:var(--ledger-ink)] mb-1"
+        className="block font-sans text-sm font-semibold text-[color:var(--ink)] mb-1"
       >
         {label}
-        <span className="ml-1 text-[color:var(--ledger-weak)] text-xs" aria-label="required">
+        <span className="ml-1 text-red-700 text-xs" aria-label="required">
           *
         </span>
       </label>
@@ -226,22 +228,18 @@ export function FormField({
       )}
 
       {hasError && (
-        <p
-          id={errorId}
-          className="mt-1 text-[color:var(--ledger-weak)] font-mono text-xs"
-          role="alert"
-        >
+        <p id={errorId} className="mt-1 font-sans text-xs text-red-700" role="alert">
           Error: {error}
         </p>
       )}
 
       {type === 'textarea' && minLength && (
-        <p id={hintId} className="mt-1 text-[11px] font-mono text-[color:var(--ledger-muted)]">
+        <p id={hintId} className="mt-1 font-sans text-[11px] text-[color:var(--slate-500)]">
           {value.length}/{minLength} characters
         </p>
       )}
       {type !== 'textarea' && type !== 'select' && minLength && (
-        <p id={hintId} className="mt-1 text-[11px] font-mono text-[color:var(--ledger-muted)]">
+        <p id={hintId} className="mt-1 font-sans text-[11px] text-[color:var(--slate-500)]">
           Minimum {minLength} characters
         </p>
       )}
@@ -271,12 +269,12 @@ export function ReadOnlyView({ values }: ReadOnlyViewProps) {
     <div className="space-y-4">
       {fields.map((field) => (
         <div key={field.label}>
-          <p className="font-sans text-sm font-semibold text-[color:var(--ledger-ink)] mb-1">
+          <p className="font-sans text-sm font-semibold text-[color:var(--ink)] mb-1">
             {field.label}
           </p>
-          <div className="w-full border border-[color:var(--ledger-parch)] rounded-sm px-3 py-2 text-sm font-sans bg-[color:var(--ledger-paper)] text-[color:var(--ledger-ink)] min-h-[40px] whitespace-pre-wrap">
+          <div className="w-full rounded-xl border border-[color:var(--ink-a10)] bg-[color:var(--cream-2)] px-3 py-2 text-sm font-sans text-[color:var(--ink)] min-h-[40px] whitespace-pre-wrap">
             {field.value || (
-              <span className="text-[color:var(--ledger-muted)]">No response</span>
+              <span className="text-[color:var(--slate-500)]">No response</span>
             )}
           </div>
         </div>
@@ -284,4 +282,3 @@ export function ReadOnlyView({ values }: ReadOnlyViewProps) {
     </div>
   );
 }
-
