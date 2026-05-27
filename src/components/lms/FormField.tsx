@@ -5,8 +5,7 @@
 // message, and hint line. The input itself is supplied as children so callers
 // can choose <input>, <textarea>, <select>, or a custom control.
 //
-// Returns mockup-token input styles. Was previously named `ledgerInputStyle`
-// during the Ledger era; renamed to `mockupInputStyle` 2026-05-27.
+// Returns mockup-token input styles via `mockupInputStyle`.
 
 import type { CSSProperties, ReactNode } from 'react';
 
