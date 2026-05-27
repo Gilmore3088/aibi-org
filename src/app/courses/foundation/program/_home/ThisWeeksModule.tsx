@@ -83,7 +83,7 @@ function StateMark({ state }: { readonly state: SubTaskState }) {
           height: 14,
           borderRadius: 999,
           background: 'var(--gold)',
-          boxShadow: '0 0 0 4px rgba(200, 162, 74, 0.18)',
+          boxShadow: '0 0 0 4px var(--gold-a20)',
         }}
       />
     );
@@ -139,7 +139,7 @@ export function ThisWeeksModule({ currentModule, isCompleted }: ThisWeeksModuleP
             alignItems: 'center',
             padding: '6px 14px',
             borderRadius: 999,
-            background: 'rgba(200, 162, 74, 0.18)',
+            background: 'var(--gold-a20)',
             color: 'var(--gold-soft)',
             fontSize: 11,
             fontWeight: 700,

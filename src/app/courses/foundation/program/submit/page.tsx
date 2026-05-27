@@ -39,11 +39,22 @@ function allModulesComplete(completedModules: readonly number[]): boolean {
 }
 
 const kicker = {
+  display: 'inline-flex' as const,
+  alignItems: 'center' as const,
+  padding: '6px 14px',
+  borderRadius: 999,
+  background: 'var(--gold-a10)',
   fontSize: 11,
-  fontWeight: 600,
-  letterSpacing: '0.2em',
+  fontWeight: 700,
+  letterSpacing: '0.18em',
   textTransform: 'uppercase' as const,
   color: 'var(--gold-deep)',
+};
+
+const kickerApproved = {
+  ...kicker,
+  background: 'var(--emerald-50)',
+  color: 'var(--emerald-700)',
 };
 
 const statusPanel = {
@@ -106,7 +117,7 @@ export default async function SubmitPage() {
       <article>
         {!modulesComplete && (
           <div style={statusPanel}>
-            <p style={{ ...kicker, margin: '0 0 8px' }}>Course incomplete</p>
+            <span style={{ ...kicker, marginBottom: 12 }}>Course incomplete</span>
             <p
               style={{
                 fontSize: 16,
@@ -126,7 +137,7 @@ export default async function SubmitPage() {
         {modulesComplete && submission &&
           (status === 'pending' || status === 'resubmitted') && (
           <div style={statusPanel}>
-            <p style={{ ...kicker, margin: '0 0 8px' }}>Your work is in review</p>
+            <span style={{ ...kicker, marginBottom: 12 }}>Your work is in review</span>
             <p
               style={{
                 fontSize: 16,
@@ -164,15 +175,9 @@ export default async function SubmitPage() {
               borderLeftColor: 'var(--emerald-700)',
             }}
           >
-            <p
-              style={{
-                ...kicker,
-                color: 'var(--emerald-700)',
-                margin: '0 0 8px',
-              }}
-            >
+            <span style={{ ...kickerApproved, marginBottom: 12 }}>
               Approved
-            </p>
+            </span>
             <p
               style={{
                 fontSize: 16,

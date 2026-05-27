@@ -70,11 +70,11 @@ const ARTIFACTS: readonly Artifact[] = [
     description: 'A real artifact — email, summary, or script — submitted, reviewed, and marked up against the rubric.',
     preview: (
       <div style={{ fontSize: 13, color: 'var(--ink)', lineHeight: 1.55 }}>
-        <span style={{ background: 'rgba(200, 162, 74, 0.22)', padding: '0 2px' }}>
+        <span style={{ background: 'var(--gold-a20)', padding: '0 2px' }}>
           The proposed line was approved
         </span>{' '}
         last Tuesday subject to a covenant on{' '}
-        <span style={{ background: 'rgba(200, 162, 74, 0.22)', padding: '0 2px' }}>
+        <span style={{ background: 'var(--gold-a20)', padding: '0 2px' }}>
           monthly DSCR reporting
         </span>
         .

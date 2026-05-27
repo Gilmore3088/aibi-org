@@ -130,7 +130,7 @@ export function LetterTemplatePreview({
             alignItems: 'center',
             padding: '6px 14px',
             borderRadius: 999,
-            background: 'rgba(200, 162, 74, 0.18)',
+            background: 'var(--gold-a20)',
             color: 'var(--gold-soft)',
             fontSize: 11,
             fontWeight: 700,

@@ -26,7 +26,7 @@ import { getEnrollment } from '@/app/courses/foundation/program/_lib/getEnrollme
 import { isSupabaseConfigured } from '@/lib/supabase/client';
 import { EnrollButton } from './EnrollButton';
 import { foundationCourseConfig } from '@content/courses/foundation-program';
-import { CourseShell, LMSTopBar, PrimaryButton, toLMSModules, type LMSModule } from '@/components/lms';
+import { CourseShell, LMSTopBar, toLMSModules, type LMSModule } from '@/components/lms';
 import { PurchaseFAQ } from './_components/PurchaseFAQ';
 import { SavedPromptCard } from './_components/SavedPromptCard';
 import { SampleWeek } from './_components/SampleWeek';
@@ -86,84 +86,109 @@ export default async function PurchasePage() {
         current={currentModule}
       >
         <LMSTopBar crumbs={['Education', 'AiBI-Foundation', 'Enroll']} />
-        <div style={{ maxWidth: 720, margin: '0 auto', padding: '64px 36px' }}>
-          <span
+        <div style={{ maxWidth: 880, margin: '0 auto', padding: '48px 36px 80px' }}>
+          <section
             style={{
-              display: 'inline-block',
-              padding: '8px 16px',
-              borderRadius: 999,
-              border: '1px solid var(--gold-a40)',
-              background: 'var(--gold-a10)',
-              color: 'var(--gold-deep)',
-              fontFamily: INTER_STACK,
-              fontSize: 13,
-              fontWeight: 600,
-              letterSpacing: '0.04em',
-              marginBottom: 20,
+              background: 'var(--ink)',
+              color: '#fff',
+              padding: 'clamp(36px, 5vw, 56px) clamp(28px, 4vw, 48px)',
+              borderRadius: 32,
+              boxShadow: 'var(--shadow-hero)',
             }}
           >
-            Already enrolled
-          </span>
-          <h1
-            style={{
-              fontFamily: INTER_STACK,
-              fontWeight: 700,
-              fontSize: 'clamp(36px, 4.5vw, 52px)',
-              lineHeight: 1.05,
-              letterSpacing: '-0.025em',
-              margin: '0 0 16px',
-              color: 'var(--ink)',
-            }}
-          >
-            You&rsquo;re in the{' '}
-            <span style={{ color: 'var(--gold-deep)', fontWeight: 700 }}>
-              AiBI-Foundation
-            </span>{' '}
-            program.
-          </h1>
-          <p
-            style={{
-              fontFamily: INTER_STACK,
-              fontSize: 18,
-              lineHeight: 1.55,
-              color: 'var(--slate-600)',
-              margin: '0 0 32px',
-              maxWidth: '60ch',
-            }}
-          >
-            Your enrollment is active and your access is permanent. Pick up
-            where you left off, or jump back to the course overview.
-          </p>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
-            <PrimaryButton
-              as="a"
-              href={`/courses/foundation/program/${currentModule}`}
-            >
-              Continue the course →
-            </PrimaryButton>
-            <Link
-              href="/dashboard"
+            <span
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: 8,
-                background: 'transparent',
-                color: 'var(--ink)',
-                border: '1px solid var(--ink-a10)',
-                padding: '12px 22px',
-                borderRadius: 12,
-                cursor: 'pointer',
+                padding: '6px 14px',
+                borderRadius: 999,
+                background: 'var(--gold-a20)',
+                color: 'var(--gold-soft)',
                 fontFamily: INTER_STACK,
-                fontSize: 13,
-                letterSpacing: '0.12em',
-                textTransform: 'uppercase',
+                fontSize: 11,
                 fontWeight: 700,
-                textDecoration: 'none',
+                letterSpacing: '0.18em',
+                textTransform: 'uppercase',
+                marginBottom: 22,
               }}
             >
-              Go to dashboard
-            </Link>
-          </div>
+              Already enrolled
+            </span>
+            <h1
+              style={{
+                fontFamily: INTER_STACK,
+                fontWeight: 700,
+                fontSize: 'clamp(36px, 4.5vw, 52px)',
+                lineHeight: 1.04,
+                letterSpacing: '-0.028em',
+                margin: '0 0 18px',
+                color: '#fff',
+              }}
+            >
+              You&rsquo;re in the{' '}
+              <span style={{ color: 'var(--gold)', fontWeight: 700 }}>
+                AiBI-Foundation
+              </span>{' '}
+              program.
+            </h1>
+            <p
+              style={{
+                fontFamily: INTER_STACK,
+                fontSize: 17,
+                lineHeight: 1.55,
+                color: 'var(--on-dark-80)',
+                margin: '0 0 28px',
+                maxWidth: '58ch',
+              }}
+            >
+              Your enrollment is active and your access is permanent. Pick up
+              where you left off, or jump back to the course overview.
+            </p>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
+              <Link
+                href={`/courses/foundation/program/${currentModule}`}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 10,
+                  background: 'var(--gold)',
+                  color: 'var(--ink)',
+                  padding: '14px 26px',
+                  borderRadius: 12,
+                  fontFamily: INTER_STACK,
+                  fontSize: 13,
+                  fontWeight: 700,
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  textDecoration: 'none',
+                }}
+              >
+                Continue the course →
+              </Link>
+              <Link
+                href="/dashboard"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 8,
+                  background: 'transparent',
+                  color: 'var(--on-dark-80)',
+                  border: '1px solid var(--on-dark-20)',
+                  padding: '12px 22px',
+                  borderRadius: 12,
+                  cursor: 'pointer',
+                  fontFamily: INTER_STACK,
+                  fontSize: 13,
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  fontWeight: 700,
+                  textDecoration: 'none',
+                }}
+              >
+                Go to dashboard
+              </Link>
+            </div>
+          </section>
         </div>
       </CourseShell>
     );
