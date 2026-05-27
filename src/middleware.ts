@@ -1,12 +1,14 @@
-// Middleware — three responsibilities:
-//   1. (When COMING_SOON=true) Rewrite all public routes to /coming-soon.
-//   2. Refresh the Supabase auth session on every request (keeps cookies in sync).
-//   3. Forward the request pathname as x-pathname so Server Component layouts
+// Middleware — two responsibilities:
+//   1. Refresh the Supabase auth session on every request (keeps cookies in sync).
+//   2. Forward the request pathname as x-pathname so Server Component layouts
 //      can read the current path without receiving it as a prop.
 //
 // The Supabase session refresh MUST happen in middleware so that the Server
 // Components that run after it can rely on an up-to-date session.
 // See: https://supabase.com/docs/guides/auth/server-side/nextjs
+//
+// The coming-soon takedown gate was removed 2026-05-27 after the site
+// launched. The COMING_SOON env var is now inert; safe to delete from Vercel.
 
 import { type NextRequest, NextResponse } from 'next/server';
 import { createServerClient } from '@supabase/ssr';
@@ -14,73 +16,7 @@ import { createServerClient } from '@supabase/ssr';
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-// Coming-soon takedown — controlled by the COMING_SOON env var.
-//   COMING_SOON=true  → rewrite every public route to /coming-soon
-//   COMING_SOON unset/false → real site is live, no rewrite happens
-//
-// To LAUNCH (turn the real site back on): set COMING_SOON=false in the
-// Vercel env vars (or delete the variable entirely) and redeploy.
-// No code change required.
-//
-// Bypass list is intentionally minimal — only the prefixes that MUST keep
-// working while the public site is dark:
-//   /api          — Stripe webhooks, capture-email, etc. cannot break.
-//   /auth         — operator login. Without this you cannot sign in.
-//   /coming-soon  — destination itself; do not rewrite onto itself.
-//   _next, static — implicitly bypassed via the matcher below.
-const COMING_SOON_MODE = process.env.COMING_SOON === 'true';
-const COMING_SOON_PATH = '/coming-soon';
-const COMING_SOON_BYPASS_PREFIXES: readonly string[] = [
-  '/api',
-  '/auth',
-  '/coming-soon',
-  '/assessment',
-  '/results',
-  '/verify',
-  '/education',
-  '/for-institutions',
-  '/courses',
-  '/dashboard',
-  '/research',
-  '/sketches',
-];
-
-// Exact paths that must always render their real content even in coming-soon
-// mode. Crawler infrastructure: /robots.txt and /sitemap.xml tell search
-// engines what to index — rewriting them to the placeholder HTML breaks SEO
-// while the takedown is up.
-const COMING_SOON_BYPASS_EXACT: readonly string[] = [
-  '/robots.txt',
-  '/sitemap.xml',
-  '/icon.svg',
-  '/apple-icon.svg',
-];
-
 export async function middleware(request: NextRequest): Promise<NextResponse> {
-  const { pathname } = request.nextUrl;
-
-  // Coming-soon mode: rewrite every public route to /coming-soon.
-  // The browser URL stays the same; the visitor sees the placeholder.
-  if (COMING_SOON_MODE) {
-    // Special-case the root: prefix-matching against '/' would match every
-    // path. Allow exactly '/' through so the homepage redesign is visible
-    // alongside the rest of the bypass list.
-    const isRoot = pathname === '/';
-    const isBypassed =
-      isRoot ||
-      COMING_SOON_BYPASS_EXACT.includes(pathname) ||
-      COMING_SOON_BYPASS_PREFIXES.some(
-        (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
-      );
-    if (!isBypassed) {
-      const rewriteUrl = request.nextUrl.clone();
-      rewriteUrl.pathname = COMING_SOON_PATH;
-      const rewriteResponse = NextResponse.rewrite(rewriteUrl);
-      rewriteResponse.headers.set('x-pathname', COMING_SOON_PATH);
-      return rewriteResponse;
-    }
-  }
-
   // Start with a mutable response so we can write cookies onto it.
   let response = NextResponse.next({
     request: { headers: request.headers },

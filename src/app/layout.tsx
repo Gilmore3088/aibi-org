@@ -45,7 +45,6 @@ const CHROMELESS_PATHS: readonly string[] = [
   '/ai-use-disclaimer',
 
   // Pre-existing chromeless routes (own brand lockup or no chrome by design)
-  '/coming-soon',
   '/design-system',
   // /courses/foundation/program and /auth intentionally NOT chromeless —
   // both need the global SiteNav. /auth surfaces drop the LedgerSurface
