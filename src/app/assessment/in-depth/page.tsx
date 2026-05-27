@@ -9,18 +9,25 @@
 // at 10+ by email request. Self-serve team checkout is deferred — the
 // in-depth checkout route returns 503 for mode='institution' and nudges
 // buyers to email hello@aibankinginstitute.com.
+//
+// In-Depth remains on assessment v2 (48 questions, 8 dimensions) per
+// CLAUDE.md. The free funnel moved to v3 (12 questions, 12 dimensions);
+// the In-Depth keeps 8 dimensions, so any "eight dimensions" copy on this
+// page is correct.
 
-import type { Metadata } from "next";
-import Link from "next/link";
-import { cookies } from "next/headers";
-import { createServerClient as ssrCreateServerClient } from "@supabase/ssr";
-import { MarketingPage } from "@/components/system/templates";
-import { Section } from "@/components/system";
-import { isSupabaseConfigured } from "@/lib/supabase/client";
-import { BRAND } from "@content/copy";
-import { PurchaseButton } from "./_components/PurchaseButton";
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import { cookies } from 'next/headers';
+import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
+import { SiteHeader } from '@/components/mockup';
+import { isSupabaseConfigured } from '@/lib/supabase/client';
+import { BRAND } from '@content/copy';
+import { PurchaseButton } from './_components/PurchaseButton';
 
-export const dynamic = "force-dynamic";
+export const dynamic = 'force-dynamic';
+
+const INTER_STACK =
+  'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
 
 async function getSignedInEmail(): Promise<string | null> {
   if (!isSupabaseConfigured()) return null;
@@ -45,9 +52,9 @@ async function getSignedInEmail(): Promise<string | null> {
 
 export const metadata: Metadata = {
   alternates: { canonical: '/assessment/in-depth' },
-  title: "In-Depth Assessment | The AI Banking Institute",
+  title: 'In-Depth Assessment | The AI Banking Institute',
   description:
-    "A 48-question, eight-dimension diagnostic for community banks and credit unions. Individual report plus an anonymized aggregate dashboard for institution leaders.",
+    'A 48-question, eight-dimension diagnostic for community banks and credit unions. Individual report plus an anonymized aggregate dashboard for institution leaders.',
 };
 
 interface InDepthAssessmentPageProps {
@@ -61,266 +68,676 @@ const COMPARE_ROWS: ReadonlyArray<{
   readonly free: string;
   readonly inDepth: string;
 }> = [
-  { label: "Questions", free: "12", inDepth: "48" },
-  { label: "Time", free: "3 minutes", inDepth: "20 minutes" },
-  { label: "Output", free: "Score + tier", inDepth: "Full written report" },
-  { label: "Eight readiness dimensions", free: "Headline only", inDepth: "Each scored, each explained" },
-  { label: "Peer-band comparison", free: "—", inDepth: "Yes — vs banks your size" },
-  { label: "Ninety-day playbook", free: "—", inDepth: "Keyed to your weakest dimension" },
-  { label: "Institution rollup dashboard", free: "—", inDepth: "Anonymized aggregate for leaders" },
-  { label: "Free retake", free: "Anytime", inDepth: "One within twelve months" },
+  { label: 'Questions', free: '12', inDepth: '48' },
+  { label: 'Time', free: '3 minutes', inDepth: '20 minutes' },
+  { label: 'Output', free: 'Score + tier', inDepth: 'Full written report' },
+  { label: 'Eight readiness dimensions', free: 'Headline only', inDepth: 'Each scored, each explained' },
+  { label: 'Peer-band comparison', free: '—', inDepth: 'Yes — vs banks your size' },
+  { label: 'Ninety-day playbook', free: '—', inDepth: 'Keyed to your weakest dimension' },
+  { label: 'Institution rollup dashboard', free: '—', inDepth: 'Anonymized aggregate for leaders' },
+  { label: 'Free retake', free: 'Anytime', inDepth: 'One within twelve months' },
 ];
+
+const KICKER: React.CSSProperties = {
+  fontFamily: INTER_STACK,
+  display: 'inline-flex',
+  alignItems: 'center',
+  padding: '6px 14px',
+  borderRadius: 999,
+  fontSize: 11,
+  fontWeight: 700,
+  letterSpacing: '0.18em',
+  textTransform: 'uppercase',
+};
+
+const KICKER_GOLD_ON_DARK: React.CSSProperties = {
+  ...KICKER,
+  background: 'var(--gold-a20)',
+  color: 'var(--gold-soft)',
+};
+
+const KICKER_GOLD_ON_LIGHT: React.CSSProperties = {
+  ...KICKER,
+  background: 'var(--gold-a10)',
+  color: 'var(--gold-deep)',
+};
 
 export default async function InDepthAssessmentPage({
   searchParams,
 }: InDepthAssessmentPageProps) {
-  const noPurchase = searchParams?.reason === "no-purchase";
+  const noPurchase = searchParams?.reason === 'no-purchase';
   const signedInEmail = await getSignedInEmail();
 
   return (
-    <MarketingPage
-      hero={{
-        eyebrow: "In-Depth Assessment",
-        title: (
-          <>
-            The <span className="text-gold">board-ready</span> diagnostic for your
-            institution.
-          </>
-        ),
-        lede: (
-          <span>
-            Forty-eight questions. Twenty minutes. Eight readiness dimensions.
-            A written report you can take to your board on Monday.
-          </span>
-        ),
-        payload: (
-          <div className="flex flex-wrap items-center gap-s6">
-            <PurchaseButton
-              userEmail={signedInEmail ?? undefined}
-              label="PURCHASE IN-DEPTH · $99"
-              pendingLabel="Starting checkout…"
-              size="hero"
-            />
-            <a
-              href="#compare"
-              className="font-mono text-mono-sm uppercase tracking-widest text-ink border-b border-ink hover:text-gold hover:border-gold"
+    <div className="mockup-scope">
+      <SiteHeader activePath="/assessment/in-depth" />
+      <main style={{ background: 'var(--cream)', fontFamily: INTER_STACK }}>
+        {/* HERO — dark navy marquee */}
+        <section style={{ padding: '64px 0 80px' }}>
+          <div className="mk-container">
+            <div
+              style={{
+                background: 'var(--ink)',
+                color: '#fff',
+                borderRadius: 32,
+                padding: 'clamp(36px, 5vw, 56px) clamp(28px, 4vw, 48px)',
+                boxShadow: 'var(--shadow-hero)',
+              }}
             >
-              COMPARE WITH THE FREE SCAN →
-            </a>
-          </div>
-        ),
-        divider: "hairline",
-      }}
-    >
-      {noPurchase && (
-        <Section variant="parch" padding="default" divider="none">
-          <div
-            role="status"
-            className="mx-auto max-w-default border border-gold/30 bg-gold/5 px-s6 py-s5 rounded-sharp"
-          >
-            <p className="font-mono text-mono-sm uppercase tracking-widest text-gold mb-s2">
-              Purchase required
-            </p>
-            <p className="text-body-md text-ink leading-relaxed">
-              The forty-eight-question In-Depth Assessment is paid. Purchase a
-              seat below to open it. Already paid? Make sure you are signed
-              in with the same email you used at checkout.
-            </p>
-          </div>
-        </Section>
-      )}
-
-      {/* COMPARE + BUY — single surface. Free column is the quiet alternative;
-          In-Depth column is the gold-trimmed recommended path with the
-          deliverables, pricing, and CTA all stacked inside it. */}
-      <Section id="compare" variant="linen" padding="default" divider="none">
-        <div className="max-w-default mx-auto">
-          <p className="font-mono text-label-md uppercase tracking-widest text-gold mb-s3">
-            Two ways in
-          </p>
-          <h2 className="text-display-sm md:text-display-md text-ink leading-[1.05] tracking-tight mb-s4 max-w-[22ch] font-bold">
-            Curious, or <span className="text-gold">deciding</span>?
-          </h2>
-          <p className="text-body-lg text-ink/75 max-w-[52ch] mb-s10">
-            The free scan tells you roughly where you stand. The In-Depth
-            tells you what to do about it — and gives you a document to hand
-            your CEO, your board, or your examiner.
-          </p>
-
-          <div id="purchase" className="grid lg:grid-cols-[1fr_1.35fr] gap-s5 items-stretch">
-            {/* FREE — the curious browser */}
-            <article className="border border-hairline bg-paper p-s7 md:p-s8 flex flex-col">
-              <p className="font-mono text-mono-xs uppercase tracking-widest text-slate mb-s3">
-                For the curious
-              </p>
-              <h3 className="text-h2 text-ink leading-tight mb-s2 font-bold">
-                Free Readiness Scan
-              </h3>
-              <p className="text-body-md text-ink/75 mb-s5 max-w-[34ch]">
-                Twelve questions. Three minutes. A score and a tier — enough
-                to know which conversation to start at your bank.
-              </p>
-              <p className="font-mono text-display-sm tabular-nums text-ink leading-none mb-s5 font-bold">
-                Free
-              </p>
-              <Link
-                href="/assessment"
-                className="inline-flex items-center justify-center px-s5 py-s3 border border-ink text-ink font-mono text-mono-sm uppercase tracking-widest hover:bg-ink hover:text-linen transition-colors rounded-sharp text-center"
-              >
-                TAKE THE FREE SCAN →
-              </Link>
-              <p className="font-mono text-mono-xs uppercase tracking-wider text-slate mt-s4">
-                No account required
-              </p>
-            </article>
-
-            {/* IN-DEPTH — recommended, gold-bordered, fully loaded */}
-            <article className="relative border-2 border-gold bg-paper p-s7 md:p-s8 flex flex-col shadow-[0_18px_44px_-32px_rgba(14,27,45,0.32)]">
-              <span className="absolute -top-[14px] left-s6 bg-gold text-linen font-mono text-mono-xs uppercase tracking-widest px-s3 py-s1 rounded-sharp">
-                Recommended
+              <span style={{ ...KICKER_GOLD_ON_DARK, marginBottom: 22 }}>
+                In-Depth Assessment · $99 · Board-ready
               </span>
-              <p className="font-mono text-mono-xs uppercase tracking-widest text-gold mb-s3">
-                For decision-makers
-              </p>
-              <h3 className="text-h2 text-ink leading-tight mb-s2 font-bold">
-                In-Depth Assessment
-              </h3>
-              <p className="text-body-md text-ink/80 mb-s5 max-w-[42ch]">
-                Forty-eight questions across eight dimensions. A written
-                report with peer-band comparison and a ninety-day playbook
-                keyed to your weakest area.
-              </p>
-
-              <div className="flex items-baseline gap-s4 mb-s5">
-                <p className="font-mono text-display-md tabular-nums text-ink leading-none font-bold">
-                  $99
-                </p>
-                <p className="font-mono text-mono-xs uppercase tracking-widest text-slate">
-                  per individual
-                  <br />
-                  <span className="text-ink/60">
-                    $79/seat at 10+ · by request
-                  </span>
-                </p>
-              </div>
-
-              <PurchaseButton userEmail={signedInEmail ?? undefined} />
-
-              <p className="font-mono text-mono-xs uppercase tracking-wider text-slate mt-s4">
-                Pay once · Report in 20 min · One free retake within 12 months
-              </p>
-
-              <div className="mt-s7 pt-s5 border-t border-hairline">
-                <p className="font-mono text-mono-xs uppercase tracking-widest text-gold mb-s4">
-                  What&apos;s in the report
-                </p>
-                <ul className="space-y-s3">
-                  {[
-                    "Forty-eight questions across eight readiness dimensions",
-                    "A full individual report with peer-band comparison",
-                    "A starting playbook keyed to your lowest-scoring dimensions",
-                    "Anonymized aggregate dashboard for institution leaders",
-                  ].map((item) => (
-                    <li
-                      key={item}
-                      className="grid grid-cols-[1.25rem_1fr] gap-s2 items-start text-body-md text-ink leading-snug"
-                    >
-                      <span aria-hidden="true" className="text-gold pt-[2px]">
-                        —
-                      </span>
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </article>
-          </div>
-        </div>
-      </Section>
-
-      {/* DETAILED COMPARE — side-by-side comparison table */}
-      <Section variant="parch" padding="default" divider="none">
-        <div className="max-w-default mx-auto">
-          <p className="font-mono text-label-md uppercase tracking-widest text-gold mb-s3">
-            What you get, line by line
-          </p>
-          <h2 className="text-h1 text-ink leading-tight tracking-tight mb-s8 max-w-[22ch] font-bold">
-            Free vs. <span className="text-gold">In-Depth.</span>
-          </h2>
-
-          <div className="border border-hairline bg-paper">
-            <div className="grid grid-cols-[1.4fr_1fr_1.2fr] border-b-2 border-ink">
-              <div className="p-s5"></div>
-              <div className="p-s5 border-l border-hairline">
-                <p className="font-mono text-mono-xs uppercase tracking-widest text-slate">
-                  Free
-                </p>
-                <p className="text-h3 text-ink mt-s1 font-semibold">Readiness Scan</p>
-              </div>
-              <div className="p-s5 border-l border-hairline bg-gold/5">
-                <p className="font-mono text-mono-xs uppercase tracking-widest text-gold">
-                  $99 · Recommended
-                </p>
-                <p className="text-h3 text-ink mt-s1 font-semibold">
-                  In-Depth <span className="text-gold">Assessment</span>
-                </p>
-              </div>
-            </div>
-
-            {COMPARE_ROWS.map((row, idx) => (
-              <div
-                key={row.label}
-                className={`grid grid-cols-[1.4fr_1fr_1.2fr] ${
-                  idx < COMPARE_ROWS.length - 1 ? "border-b border-hairline" : ""
-                }`}
+              <h1
+                style={{
+                  fontFamily: INTER_STACK,
+                  fontWeight: 700,
+                  fontSize: 'clamp(36px, 4.5vw, 60px)',
+                  lineHeight: 1.03,
+                  letterSpacing: '-0.028em',
+                  margin: '0 0 22px',
+                  color: '#fff',
+                  maxWidth: '20ch',
+                }}
               >
-                <div className="p-s5 font-mono text-mono-sm uppercase tracking-widest text-ink/80">
-                  {row.label}
-                </div>
-                <div className="p-s5 border-l border-hairline text-body-md text-ink/70">
-                  {row.free}
-                </div>
-                <div className="p-s5 border-l border-hairline bg-gold/5 text-body-md text-ink">
-                  {row.inDepth}
-                </div>
-              </div>
-            ))}
-
-            <div className="grid grid-cols-[1.4fr_1fr_1.2fr] border-t-2 border-ink">
-              <div className="p-s5"></div>
-              <div className="p-s5 border-l border-hairline">
-                <Link
-                  href="/assessment"
-                  className="font-mono text-mono-sm uppercase tracking-widest text-ink border-b border-ink hover:text-gold hover:border-gold"
-                >
-                  TAKE THE FREE SCAN →
-                </Link>
-              </div>
-              <div className="p-s5 border-l border-hairline bg-gold/5">
+                The{' '}
+                <span style={{ color: 'var(--gold)' }}>board-ready</span>{' '}
+                diagnostic for your institution.
+              </h1>
+              <p
+                style={{
+                  fontFamily: INTER_STACK,
+                  fontSize: 18,
+                  lineHeight: 1.55,
+                  color: 'var(--on-dark-80)',
+                  margin: '0 0 32px',
+                  maxWidth: '56ch',
+                }}
+              >
+                Forty-eight questions. Twenty minutes. Eight readiness dimensions.
+                A written report you can take to your board on Monday.
+              </p>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, alignItems: 'center' }}>
                 <PurchaseButton
                   userEmail={signedInEmail ?? undefined}
-                  label="PURCHASE IN-DEPTH · $99"
+                  label="Purchase In-Depth · $99"
                   pendingLabel="Starting checkout…"
-                  size="compact"
+                  size="hero"
                 />
+                <a
+                  href="#compare"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 8,
+                    color: 'var(--gold-soft)',
+                    fontFamily: INTER_STACK,
+                    fontSize: 13,
+                    fontWeight: 700,
+                    letterSpacing: '0.14em',
+                    textTransform: 'uppercase',
+                    textDecoration: 'none',
+                    borderBottom: '1px solid var(--gold-a40)',
+                    paddingBottom: 2,
+                  }}
+                >
+                  Compare with the free scan →
+                </a>
               </div>
             </div>
           </div>
+        </section>
 
-          <p className="text-body-md text-ink/75 mt-s6 max-w-[60ch]">
-            Want your whole team to benefit? Per-seat pricing of $79/seat opens
-            at ten or more. Email{" "}
-            <a
-              href={`mailto:${BRAND.emails.contact}?subject=In-Depth%20Assessment%20%E2%80%94%2010%2B%20seats`}
-              className="text-gold border-b border-gold hover:text-gold-2 hover:border-gold-2"
+        {noPurchase && (
+          <section style={{ padding: '0 0 32px' }}>
+            <div className="mk-container">
+              <div
+                role="status"
+                style={{
+                  maxWidth: 880,
+                  margin: '0 auto',
+                  background: '#fff',
+                  border: '1px solid var(--gold-a40)',
+                  borderLeft: '4px solid var(--gold)',
+                  padding: '20px 24px',
+                  borderRadius: 16,
+                  boxShadow: 'var(--shadow-soft)',
+                }}
+              >
+                <span style={{ ...KICKER_GOLD_ON_LIGHT, marginBottom: 10 }}>
+                  Purchase required
+                </span>
+                <p
+                  style={{
+                    margin: '10px 0 0',
+                    fontFamily: INTER_STACK,
+                    fontSize: 15,
+                    lineHeight: 1.55,
+                    color: 'var(--ink)',
+                  }}
+                >
+                  The forty-eight-question In-Depth Assessment is paid. Purchase a
+                  seat below to open it. Already paid? Make sure you are signed
+                  in with the same email you used at checkout.
+                </p>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* COMPARE + BUY — two product cards, In-Depth recommended */}
+        <section id="compare" style={{ padding: '32px 0 64px' }}>
+          <div className="mk-container">
+            <div style={{ maxWidth: 880, margin: '0 auto 48px' }}>
+              <span style={{ ...KICKER_GOLD_ON_LIGHT, marginBottom: 14 }}>
+                Two ways in
+              </span>
+              <h2
+                style={{
+                  fontFamily: INTER_STACK,
+                  fontSize: 'clamp(28px, 3.4vw, 44px)',
+                  fontWeight: 700,
+                  lineHeight: 1.08,
+                  letterSpacing: '-0.02em',
+                  color: 'var(--ink)',
+                  margin: '14px 0 16px',
+                  maxWidth: '22ch',
+                }}
+              >
+                Curious, or{' '}
+                <span style={{ color: 'var(--gold-deep)' }}>deciding</span>?
+              </h2>
+              <p
+                style={{
+                  fontFamily: INTER_STACK,
+                  fontSize: 17,
+                  lineHeight: 1.55,
+                  color: 'var(--slate-600)',
+                  margin: 0,
+                  maxWidth: '52ch',
+                }}
+              >
+                The free scan tells you roughly where you stand. The In-Depth
+                tells you what to do about it — and gives you a document to hand
+                your CEO, your board, or your examiner.
+              </p>
+            </div>
+
+            <div
+              id="purchase"
+              style={{
+                display: 'grid',
+                gridTemplateColumns: '1fr',
+                gap: 24,
+                alignItems: 'stretch',
+              }}
+              className="mk-in-depth-grid"
             >
-              {BRAND.emails.contact}
-            </a>{" "}
-            to set it up.
-          </p>
-        </div>
-      </Section>
+              {/* FREE — the curious browser */}
+              <article
+                style={{
+                  border: '1px solid var(--ink-a10)',
+                  background: '#fff',
+                  borderRadius: 24,
+                  padding: 'clamp(28px, 3.4vw, 40px)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  boxShadow: 'var(--shadow-soft)',
+                }}
+              >
+                <span style={{ ...KICKER_GOLD_ON_LIGHT, marginBottom: 16, alignSelf: 'flex-start' }}>
+                  For the curious
+                </span>
+                <h3
+                  style={{
+                    fontFamily: INTER_STACK,
+                    fontSize: 28,
+                    fontWeight: 700,
+                    lineHeight: 1.2,
+                    letterSpacing: '-0.015em',
+                    color: 'var(--ink)',
+                    margin: '0 0 10px',
+                  }}
+                >
+                  Free Readiness Scan
+                </h3>
+                <p
+                  style={{
+                    fontFamily: INTER_STACK,
+                    fontSize: 15,
+                    lineHeight: 1.55,
+                    color: 'var(--slate-600)',
+                    margin: '0 0 24px',
+                    maxWidth: '34ch',
+                  }}
+                >
+                  Twelve questions. Three minutes. A score and a tier — enough
+                  to know which conversation to start at your bank.
+                </p>
+                <p
+                  style={{
+                    fontFamily: INTER_STACK,
+                    fontSize: 36,
+                    fontWeight: 700,
+                    color: 'var(--ink)',
+                    lineHeight: 1,
+                    margin: '0 0 24px',
+                  }}
+                >
+                  Free
+                </p>
+                <Link
+                  href="/assessment/take"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: '14px 22px',
+                    borderRadius: 12,
+                    border: '1px solid var(--ink)',
+                    color: 'var(--ink)',
+                    fontFamily: INTER_STACK,
+                    fontSize: 13,
+                    fontWeight: 700,
+                    letterSpacing: '0.12em',
+                    textTransform: 'uppercase',
+                    textDecoration: 'none',
+                  }}
+                >
+                  Take the free scan →
+                </Link>
+                <p
+                  style={{
+                    fontFamily: INTER_STACK,
+                    fontSize: 11,
+                    fontWeight: 600,
+                    letterSpacing: '0.16em',
+                    textTransform: 'uppercase',
+                    color: 'var(--slate-500)',
+                    margin: '14px 0 0',
+                  }}
+                >
+                  No account required
+                </p>
+              </article>
 
-    </MarketingPage>
+              {/* IN-DEPTH — recommended, gold-bordered */}
+              <article
+                style={{
+                  position: 'relative',
+                  border: '2px solid var(--gold)',
+                  background: '#fff',
+                  borderRadius: 24,
+                  padding: 'clamp(28px, 3.4vw, 40px)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  boxShadow: 'var(--shadow-feature)',
+                }}
+              >
+                <span
+                  style={{
+                    position: 'absolute',
+                    top: -14,
+                    left: 24,
+                    background: 'var(--gold)',
+                    color: 'var(--ink)',
+                    fontFamily: INTER_STACK,
+                    fontSize: 11,
+                    fontWeight: 700,
+                    letterSpacing: '0.16em',
+                    textTransform: 'uppercase',
+                    padding: '4px 12px',
+                    borderRadius: 999,
+                  }}
+                >
+                  Recommended
+                </span>
+                <span style={{ ...KICKER_GOLD_ON_LIGHT, marginBottom: 16, alignSelf: 'flex-start' }}>
+                  For decision-makers
+                </span>
+                <h3
+                  style={{
+                    fontFamily: INTER_STACK,
+                    fontSize: 28,
+                    fontWeight: 700,
+                    lineHeight: 1.2,
+                    letterSpacing: '-0.015em',
+                    color: 'var(--ink)',
+                    margin: '0 0 10px',
+                  }}
+                >
+                  In-Depth Assessment
+                </h3>
+                <p
+                  style={{
+                    fontFamily: INTER_STACK,
+                    fontSize: 15,
+                    lineHeight: 1.55,
+                    color: 'var(--slate-600)',
+                    margin: '0 0 24px',
+                    maxWidth: '42ch',
+                  }}
+                >
+                  Forty-eight questions across eight dimensions. A written
+                  report with peer-band comparison and a ninety-day playbook
+                  keyed to your weakest area.
+                </p>
+
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: 14, marginBottom: 24 }}>
+                  <p
+                    style={{
+                      fontFamily: INTER_STACK,
+                      fontSize: 52,
+                      fontWeight: 700,
+                      color: 'var(--ink)',
+                      lineHeight: 1,
+                      margin: 0,
+                    }}
+                  >
+                    $99
+                  </p>
+                  <p
+                    style={{
+                      fontFamily: INTER_STACK,
+                      fontSize: 12,
+                      fontWeight: 600,
+                      letterSpacing: '0.04em',
+                      color: 'var(--slate-500)',
+                      margin: 0,
+                      lineHeight: 1.5,
+                    }}
+                  >
+                    per individual
+                    <br />
+                    <span style={{ color: 'var(--slate-500)' }}>
+                      $79/seat at 10+ · by request
+                    </span>
+                  </p>
+                </div>
+
+                <PurchaseButton userEmail={signedInEmail ?? undefined} />
+
+                <p
+                  style={{
+                    fontFamily: INTER_STACK,
+                    fontSize: 11,
+                    fontWeight: 600,
+                    letterSpacing: '0.16em',
+                    textTransform: 'uppercase',
+                    color: 'var(--slate-500)',
+                    margin: '14px 0 0',
+                  }}
+                >
+                  Pay once · Report in 20 min · One free retake within 12 months
+                </p>
+
+                <div
+                  style={{
+                    marginTop: 32,
+                    paddingTop: 24,
+                    borderTop: '1px solid var(--ink-a10)',
+                  }}
+                >
+                  <span style={{ ...KICKER_GOLD_ON_LIGHT, marginBottom: 16, display: 'inline-flex' }}>
+                    What&apos;s in the report
+                  </span>
+                  <ul style={{ listStyle: 'none', margin: '14px 0 0', padding: 0, display: 'grid', gap: 12 }}>
+                    {[
+                      'Forty-eight questions across eight readiness dimensions',
+                      'A full individual report with peer-band comparison',
+                      'A starting playbook keyed to your lowest-scoring dimensions',
+                      'Anonymized aggregate dashboard for institution leaders',
+                    ].map((item) => (
+                      <li
+                        key={item}
+                        style={{
+                          display: 'grid',
+                          gridTemplateColumns: '20px 1fr',
+                          gap: 10,
+                          fontFamily: INTER_STACK,
+                          fontSize: 14,
+                          lineHeight: 1.5,
+                          color: 'var(--ink)',
+                        }}
+                      >
+                        <span
+                          aria-hidden="true"
+                          style={{
+                            color: 'var(--gold-deep)',
+                            paddingTop: 2,
+                            fontWeight: 700,
+                          }}
+                        >
+                          —
+                        </span>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        {/* DETAILED COMPARE TABLE */}
+        <section style={{ padding: '64px 0 96px', background: 'var(--cream-2)', borderTop: '1px solid var(--ink-a10)' }}>
+          <div className="mk-container">
+            <div style={{ maxWidth: 720, margin: '0 auto 36px' }}>
+              <span style={{ ...KICKER_GOLD_ON_LIGHT, marginBottom: 14 }}>
+                What you get, line by line
+              </span>
+              <h2
+                style={{
+                  fontFamily: INTER_STACK,
+                  fontSize: 'clamp(28px, 3.4vw, 44px)',
+                  fontWeight: 700,
+                  lineHeight: 1.08,
+                  letterSpacing: '-0.02em',
+                  color: 'var(--ink)',
+                  margin: '14px 0 0',
+                  maxWidth: '20ch',
+                }}
+              >
+                Free vs.{' '}
+                <span style={{ color: 'var(--gold-deep)' }}>In-Depth.</span>
+              </h2>
+            </div>
+
+            <div
+              style={{
+                border: '1px solid var(--ink-a10)',
+                background: '#fff',
+                borderRadius: 20,
+                overflow: 'hidden',
+                boxShadow: 'var(--shadow-soft)',
+              }}
+            >
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: '1.4fr 1fr 1.2fr',
+                  borderBottom: '2px solid var(--ink)',
+                }}
+              >
+                <div style={{ padding: 20 }} />
+                <div style={{ padding: 20, borderLeft: '1px solid var(--ink-a10)' }}>
+                  <p
+                    style={{
+                      fontFamily: INTER_STACK,
+                      fontSize: 11,
+                      fontWeight: 700,
+                      letterSpacing: '0.16em',
+                      textTransform: 'uppercase',
+                      color: 'var(--slate-500)',
+                      margin: 0,
+                    }}
+                  >
+                    Free
+                  </p>
+                  <p
+                    style={{
+                      fontFamily: INTER_STACK,
+                      fontSize: 18,
+                      fontWeight: 600,
+                      color: 'var(--ink)',
+                      margin: '4px 0 0',
+                    }}
+                  >
+                    Readiness Scan
+                  </p>
+                </div>
+                <div
+                  style={{
+                    padding: 20,
+                    borderLeft: '1px solid var(--ink-a10)',
+                    background: 'var(--gold-a10)',
+                  }}
+                >
+                  <p
+                    style={{
+                      fontFamily: INTER_STACK,
+                      fontSize: 11,
+                      fontWeight: 700,
+                      letterSpacing: '0.16em',
+                      textTransform: 'uppercase',
+                      color: 'var(--gold-deep)',
+                      margin: 0,
+                    }}
+                  >
+                    $99 · Recommended
+                  </p>
+                  <p
+                    style={{
+                      fontFamily: INTER_STACK,
+                      fontSize: 18,
+                      fontWeight: 600,
+                      color: 'var(--ink)',
+                      margin: '4px 0 0',
+                    }}
+                  >
+                    In-Depth <span style={{ color: 'var(--gold-deep)' }}>Assessment</span>
+                  </p>
+                </div>
+              </div>
+
+              {COMPARE_ROWS.map((row, idx) => (
+                <div
+                  key={row.label}
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: '1.4fr 1fr 1.2fr',
+                    borderBottom: idx < COMPARE_ROWS.length - 1 ? '1px solid var(--ink-a10)' : 'none',
+                  }}
+                >
+                  <div
+                    style={{
+                      padding: 20,
+                      fontFamily: INTER_STACK,
+                      fontSize: 12,
+                      fontWeight: 700,
+                      letterSpacing: '0.14em',
+                      textTransform: 'uppercase',
+                      color: 'var(--ink)',
+                    }}
+                  >
+                    {row.label}
+                  </div>
+                  <div
+                    style={{
+                      padding: 20,
+                      borderLeft: '1px solid var(--ink-a10)',
+                      fontFamily: INTER_STACK,
+                      fontSize: 15,
+                      color: 'var(--slate-600)',
+                    }}
+                  >
+                    {row.free}
+                  </div>
+                  <div
+                    style={{
+                      padding: 20,
+                      borderLeft: '1px solid var(--ink-a10)',
+                      background: 'var(--gold-a10)',
+                      fontFamily: INTER_STACK,
+                      fontSize: 15,
+                      color: 'var(--ink)',
+                    }}
+                  >
+                    {row.inDepth}
+                  </div>
+                </div>
+              ))}
+
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: '1.4fr 1fr 1.2fr',
+                  borderTop: '2px solid var(--ink)',
+                }}
+              >
+                <div style={{ padding: 20 }} />
+                <div style={{ padding: 20, borderLeft: '1px solid var(--ink-a10)' }}>
+                  <Link
+                    href="/assessment/take"
+                    style={{
+                      fontFamily: INTER_STACK,
+                      fontSize: 12,
+                      fontWeight: 700,
+                      letterSpacing: '0.14em',
+                      textTransform: 'uppercase',
+                      color: 'var(--ink)',
+                      textDecoration: 'none',
+                      borderBottom: '1px solid var(--ink)',
+                      paddingBottom: 2,
+                    }}
+                  >
+                    Take the free scan →
+                  </Link>
+                </div>
+                <div
+                  style={{
+                    padding: 20,
+                    borderLeft: '1px solid var(--ink-a10)',
+                    background: 'var(--gold-a10)',
+                  }}
+                >
+                  <PurchaseButton
+                    userEmail={signedInEmail ?? undefined}
+                    label="Purchase In-Depth · $99"
+                    pendingLabel="Starting checkout…"
+                    size="compact"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <p
+              style={{
+                fontFamily: INTER_STACK,
+                fontSize: 14,
+                lineHeight: 1.6,
+                color: 'var(--slate-600)',
+                margin: '24px 0 0',
+                maxWidth: '60ch',
+              }}
+            >
+              Want your whole team to benefit? Per-seat pricing of $79/seat opens
+              at ten or more. Email{' '}
+              <a
+                href={`mailto:${BRAND.emails.contact}?subject=In-Depth%20Assessment%20%E2%80%94%2010%2B%20seats`}
+                style={{
+                  color: 'var(--gold-deep)',
+                  fontWeight: 600,
+                  textDecoration: 'underline',
+                }}
+              >
+                {BRAND.emails.contact}
+              </a>{' '}
+              to set it up.
+            </p>
+          </div>
+        </section>
+      </main>
+    </div>
   );
 }
