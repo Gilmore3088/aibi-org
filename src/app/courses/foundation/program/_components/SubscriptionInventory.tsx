@@ -5,6 +5,8 @@
 // On mobile (390px), each platform stacks vertically for readability.
 // A11Y-01: keyboard accessible radio groups. A11Y-02: text error messages (not color-only).
 // After successful submit, renders in read-only mode.
+//
+// Ported to mockup design system 2026-05-27 (Inter, ink/cream/gold).
 
 import React, { useState, useCallback } from 'react';
 import type { Activity } from '@content/courses/foundation-program';
@@ -25,7 +27,6 @@ interface InventoryState {
   validationError: string | null;
 }
 
-// Map field ID -> display label for the column headers and row labels
 const PLATFORM_LABELS: Record<string, string> = {
   'chatgpt-access':       'ChatGPT (OpenAI)',
   'claude-access':        'Claude (Anthropic)',
@@ -38,7 +39,6 @@ const PLATFORM_LABELS: Record<string, string> = {
 
 function getAccessLabel(fieldId: string, value: string): string {
   const field = fieldId;
-  // For display in read-only mode, map value back to human-readable label
   if (field === 'copilot-access') {
     const labels: Record<string, string> = {
       'institutional':    'Institutional license (IT-provisioned)',
@@ -58,6 +58,15 @@ function getAccessLabel(fieldId: string, value: string): string {
   };
   return labels[value] ?? value;
 }
+
+const KICKER: React.CSSProperties = {
+  fontSize: 10,
+  fontWeight: 600,
+  letterSpacing: '0.22em',
+  textTransform: 'uppercase',
+};
+
+const ERROR_RED = '#B91C1C';
 
 export function SubscriptionInventory({
   activity,
@@ -89,7 +98,6 @@ export function SubscriptionInventory({
     async (e: React.FormEvent) => {
       e.preventDefault();
 
-      // Validate all fields have a selection
       const missingFields = activity.fields.filter(
         (f) => !state.selections[f.id],
       );
@@ -150,78 +158,148 @@ export function SubscriptionInventory({
 
   return (
     <div
-      className="border border-[color:var(--ledger-parch)] border-l-4 rounded-sm p-6 bg-white/40 mb-8"
-      style={{ borderLeftColor: 'var(--ledger-accent)' }}
+      style={{
+        background: '#FFFFFF',
+        border: '1px solid var(--ink-a10)',
+        borderLeft: '4px solid var(--gold)',
+        borderRadius: 'var(--r-lg)',
+        padding: 24,
+        marginBottom: 32,
+        boxShadow: 'var(--shadow-soft)',
+      }}
     >
       {/* Activity header */}
-      <div className="mb-5">
-        <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent)] mb-1">
+      <div style={{ marginBottom: 20 }}>
+        <p style={{ ...KICKER, color: 'var(--gold-deep)', margin: '0 0 4px' }}>
           Activity {activity.id}
         </p>
-        <div className="flex items-start justify-between gap-4">
-          <h3 className="font-serif text-xl font-bold text-[color:var(--ledger-ink)] mb-2">
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'flex-start',
+            justifyContent: 'space-between',
+            gap: 16,
+          }}
+        >
+          <h3
+            style={{
+              fontSize: 20,
+              fontWeight: 700,
+              color: 'var(--ink)',
+              letterSpacing: '-0.01em',
+              margin: '0 0 8px',
+            }}
+          >
             {activity.title}
           </h3>
           {state.submitted && (
-            <span className="shrink-0 inline-flex items-center gap-1 px-2 py-0.5 bg-[color:var(--ledger-accent-2)]/10 border border-[color:var(--ledger-accent-2)] rounded-sm font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent-2)]">
+            <span
+              style={{
+                flexShrink: 0,
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 4,
+                padding: '2px 8px',
+                background: 'var(--emerald-50)',
+                border: '1px solid var(--emerald-700)',
+                borderRadius: 999,
+                ...KICKER,
+                color: 'var(--emerald-700)',
+              }}
+            >
               Submitted
             </span>
           )}
         </div>
-        <p className="text-sm font-sans text-[color:var(--ledger-muted)] leading-relaxed">
+        <p style={{ fontSize: 14, color: 'var(--slate-600)', lineHeight: 1.6, margin: 0 }}>
           {activity.description}
         </p>
       </div>
 
       {state.submitted ? (
-        // Read-only display after submission
-        <div className="space-y-4">
-          {activity.fields.map((field) => {
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          {activity.fields.map((field, idx) => {
             const value = state.selections[field.id] ?? '';
             const selectedOption = field.options?.find((o) => o.value === value);
+            const isLast = idx === activity.fields.length - 1;
             return (
               <div
                 key={field.id}
-                className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 py-3 border-b border-[color:var(--ledger-parch)] last:border-0"
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 4,
+                  padding: '12px 0',
+                  borderBottom: isLast ? 'none' : '1px solid var(--ink-a10)',
+                }}
               >
-                <span className="font-sans text-sm font-semibold text-[color:var(--ledger-ink)] sm:w-52 shrink-0">
+                <span
+                  style={{
+                    fontSize: 14,
+                    fontWeight: 600,
+                    color: 'var(--ink)',
+                  }}
+                >
                   {PLATFORM_LABELS[field.id] ?? field.label}
                 </span>
-                <span className="font-sans text-sm text-[color:var(--ledger-muted)]">
-                  {selectedOption?.label ?? getAccessLabel(field.id, value) ?? (
-                    <em>No selection</em>
-                  )}
+                <span style={{ fontSize: 14, color: 'var(--slate-600)' }}>
+                  {selectedOption?.label ?? getAccessLabel(field.id, value) ?? 'No selection'}
                 </span>
               </div>
             );
           })}
         </div>
       ) : (
-        // Interactive radio grid
         <form onSubmit={handleSubmit} noValidate>
-          <div className="space-y-6">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
             {activity.fields.map((field) => (
-              <fieldset key={field.id} className="border-0 m-0 p-0">
-                <legend className="font-sans text-sm font-semibold text-[color:var(--ledger-ink)] mb-2">
+              <fieldset
+                key={field.id}
+                style={{ border: 0, margin: 0, padding: 0 }}
+              >
+                <legend
+                  style={{
+                    fontSize: 14,
+                    fontWeight: 600,
+                    color: 'var(--ink)',
+                    marginBottom: 8,
+                    padding: 0,
+                  }}
+                >
                   {PLATFORM_LABELS[field.id] ?? field.label}
-                  <span className="ml-1 text-[color:var(--ledger-weak)] text-xs" aria-label="required">
+                  <span
+                    style={{ marginLeft: 4, color: ERROR_RED, fontSize: 12 }}
+                    aria-label="required"
+                  >
                     *
                   </span>
                 </legend>
 
-                {/* Options — wrap on mobile, row on sm+ */}
-                <div className="flex flex-col sm:flex-row sm:flex-wrap gap-2 sm:gap-4">
+                <div
+                  style={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: 10,
+                  }}
+                >
                   {(field.options ?? []).map((opt) => {
                     const isSelected = state.selections[field.id] === opt.value;
                     return (
                       <label
                         key={opt.value}
-                        className={[
-                          'flex items-center gap-2 cursor-pointer px-3 py-2 rounded-sm border transition-colors',
-                          isSelected
-                            ? 'border-[color:var(--ledger-accent)] bg-[color:var(--ledger-accent)]/5'
-                            : 'border-[color:var(--ledger-parch)] hover:border-[color:var(--ledger-accent)]/40',
-                        ].join(' ')}
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: 8,
+                          cursor: 'pointer',
+                          padding: '8px 12px',
+                          borderRadius: 'var(--r-md)',
+                          border: `1px solid ${
+                            isSelected ? 'var(--gold)' : 'var(--ink-a10)'
+                          }`,
+                          background: isSelected ? 'var(--gold-a10)' : '#FFFFFF',
+                          transition: 'border-color .12s, background .12s',
+                        }}
                       >
                         <input
                           type="radio"
@@ -229,10 +307,14 @@ export function SubscriptionInventory({
                           value={opt.value}
                           checked={isSelected}
                           onChange={() => handleSelect(field.id, opt.value)}
-                          className="w-4 h-4 accent-[color:var(--ledger-accent)] focus:ring-2 focus:ring-[color:var(--ledger-accent)]"
+                          style={{
+                            width: 16,
+                            height: 16,
+                            accentColor: 'var(--gold)',
+                          }}
                           aria-label={`${PLATFORM_LABELS[field.id] ?? field.label}: ${opt.label}`}
                         />
-                        <span className="text-sm font-sans text-[color:var(--ledger-ink)]">
+                        <span style={{ fontSize: 14, color: 'var(--ink)' }}>
                           {opt.label}
                         </span>
                       </label>
@@ -245,7 +327,15 @@ export function SubscriptionInventory({
 
           {state.validationError && (
             <p
-              className="mt-4 text-sm font-sans text-[color:var(--ledger-weak)] bg-[color:var(--ledger-weak)]/5 border border-[color:var(--ledger-weak)]/20 rounded-sm px-3 py-2"
+              style={{
+                marginTop: 16,
+                fontSize: 14,
+                color: ERROR_RED,
+                background: '#FEF2F2',
+                border: `1px solid ${ERROR_RED}33`,
+                borderRadius: 'var(--r-md)',
+                padding: '8px 12px',
+              }}
               role="alert"
             >
               Error: {state.validationError}
@@ -254,21 +344,47 @@ export function SubscriptionInventory({
 
           {state.serverError && (
             <p
-              className="mt-4 text-sm font-sans text-[color:var(--ledger-weak)] bg-[color:var(--ledger-weak)]/5 border border-[color:var(--ledger-weak)]/20 rounded-sm px-3 py-2"
+              style={{
+                marginTop: 16,
+                fontSize: 14,
+                color: ERROR_RED,
+                background: '#FEF2F2',
+                border: `1px solid ${ERROR_RED}33`,
+                borderRadius: 'var(--r-md)',
+                padding: '8px 12px',
+              }}
               role="alert"
             >
               Error: {state.serverError}
             </p>
           )}
 
-          <div className="mt-6 pt-4 border-t border-[color:var(--ledger-parch)]">
+          <div
+            style={{
+              marginTop: 24,
+              paddingTop: 16,
+              borderTop: '1px solid var(--ink-a10)',
+            }}
+          >
             <button
               type="submit"
               disabled={state.submitting}
-              className="px-6 py-2.5 bg-[color:var(--ledger-accent)] hover:bg-[color:var(--ledger-accent-light)] disabled:bg-[color:var(--ledger-parch)] disabled:text-[color:var(--ledger-soft)] text-[color:var(--ledger-bg)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-2"
-              aria-label={state.submitting ? 'Submitting inventory…' : 'Submit inventory'}
+              style={{
+                padding: '12px 24px',
+                background: state.submitting ? 'var(--slate-400)' : 'var(--ink)',
+                color: '#FFFFFF',
+                fontSize: 11,
+                fontWeight: 700,
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                borderRadius: 'var(--r-md)',
+                border: 'none',
+                cursor: state.submitting ? 'not-allowed' : 'pointer',
+                opacity: state.submitting ? 0.7 : 1,
+              }}
+              aria-label={state.submitting ? 'Submitting inventory' : 'Submit inventory'}
             >
-              {state.submitting ? 'Submitting…' : 'Submit Inventory'}
+              {state.submitting ? 'Submitting...' : 'Submit Inventory'}
             </button>
           </div>
         </form>
