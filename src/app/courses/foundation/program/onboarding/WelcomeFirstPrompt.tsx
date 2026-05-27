@@ -6,12 +6,20 @@
 // the next ten minutes of attention with one tangible result.
 //
 // Audit ref: H12 — onboarding was a survey-first wall. Value before form.
+//
+// 2026-05-27: ported to mockup design system (Inter, ink/cream/gold).
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react';
 
 interface WelcomeFirstPromptProps {
   readonly onContinue: () => void;
 }
+
+const INTER_STACK =
+  'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
+
+const MONO_STACK =
+  'ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace';
 
 const SAMPLE_INPUT = `Hi all - just a heads up, the kiosk thing in the lobby for the new account application
 flow has been kind of buggy lately, multiple ppl have flagged it, IT is aware but no fix
@@ -28,6 +36,47 @@ disclaimers, no explanations.`;
 const USER_PROMPT_PREFIX =
   'Please rewrite this internal staff email into a clear, professional bank-internal note. ' +
   'Keep it under 100 words. Original message:\n\n';
+
+const eyebrowStyle: CSSProperties = {
+  fontFamily: INTER_STACK,
+  fontSize: 11,
+  fontWeight: 700,
+  letterSpacing: '0.22em',
+  textTransform: 'uppercase',
+  color: 'var(--gold-deep)',
+  margin: 0,
+};
+
+const primaryButtonStyle: CSSProperties = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: 10,
+  padding: '14px 32px',
+  borderRadius: 12,
+  background: 'var(--ink)',
+  color: 'var(--cream)',
+  fontFamily: INTER_STACK,
+  fontSize: 12,
+  fontWeight: 700,
+  letterSpacing: '0.16em',
+  textTransform: 'uppercase',
+  border: '1px solid var(--ink)',
+  cursor: 'pointer',
+  transition: 'background var(--t-fast) var(--ease)',
+};
+
+const linkButtonStyle: CSSProperties = {
+  fontFamily: INTER_STACK,
+  fontSize: 11,
+  fontWeight: 700,
+  letterSpacing: '0.18em',
+  textTransform: 'uppercase',
+  color: 'var(--slate-500)',
+  background: 'transparent',
+  border: 'none',
+  cursor: 'pointer',
+  padding: '8px 4px',
+};
 
 export function WelcomeFirstPrompt({ onContinue }: WelcomeFirstPromptProps) {
   const [phase, setPhase] = useState<'idle' | 'streaming' | 'done' | 'error'>('idle');
@@ -89,37 +138,74 @@ export function WelcomeFirstPrompt({ onContinue }: WelcomeFirstPromptProps) {
   }, [phase]);
 
   return (
-    <main className="min-h-screen bg-[color:var(--ledger-bg)] px-6 py-12 md:py-20">
+    <main
+      style={{ background: 'var(--cream)', minHeight: '100vh' }}
+      className="px-6 py-12 md:py-20"
+    >
       <div className="max-w-3xl mx-auto">
-        <p className="font-serif-sc text-xs uppercase tracking-[0.22em] text-[color:var(--ledger-accent)] mb-3">
+        <p style={{ ...eyebrowStyle, marginBottom: 14 }}>
           Your first AI win — under 90 seconds
         </p>
-        <h1 className="font-serif text-4xl md:text-5xl text-[color:var(--ledger-ink)] leading-tight mb-5">
+        <h1
+          style={{
+            fontFamily: INTER_STACK,
+            fontSize: 44,
+            fontWeight: 800,
+            lineHeight: 1.05,
+            letterSpacing: '-0.02em',
+            color: 'var(--ink)',
+            margin: 0,
+            marginBottom: 18,
+          }}
+          className="md:text-5xl"
+        >
           Before the survey, see what AI can do for you.
         </h1>
-        <p className="text-base md:text-lg text-[color:var(--ledger-ink)]/75 leading-relaxed mb-10 max-w-2xl">
+        <p
+          style={{
+            fontFamily: INTER_STACK,
+            fontSize: 16,
+            fontWeight: 400,
+            lineHeight: 1.6,
+            color: 'var(--slate-600)',
+            margin: 0,
+            marginBottom: 36,
+            maxWidth: 640,
+          }}
+        >
           Below is a real internal email a banker might write in a hurry. Click the
           button to ask AI to rewrite it. The output you get is yours — copy it,
           tweak it, send it. This is the kind of small, daily win the rest of the
           course is built around.
         </p>
 
-        <section className="border border-[color:var(--ledger-ink)]/10 bg-[color:var(--ledger-paper)] rounded-[3px] p-6 md:p-8 mb-8">
-          <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--ledger-ink)]/60 mb-3">
-            The original email
-          </p>
-          <pre className="font-mono text-sm text-[color:var(--ledger-ink)] leading-relaxed whitespace-pre-wrap">
+        <section
+          style={{
+            padding: 28,
+            borderRadius: 16,
+            background: 'var(--cream-2)',
+            border: '1px solid var(--ink-a10)',
+            marginBottom: 28,
+          }}
+        >
+          <p style={{ ...eyebrowStyle, marginBottom: 12 }}>The original email</p>
+          <pre
+            style={{
+              fontFamily: MONO_STACK,
+              fontSize: 13,
+              color: 'var(--ink)',
+              lineHeight: 1.6,
+              whiteSpace: 'pre-wrap',
+              margin: 0,
+            }}
+          >
             {SAMPLE_INPUT}
           </pre>
         </section>
 
         {phase === 'idle' && (
           <div className="flex justify-center">
-            <button
-              type="button"
-              onClick={runPrompt}
-              className="inline-block px-10 py-4 bg-[color:var(--ledger-accent)] text-[color:var(--ledger-bg)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--ledger-accent-light)] active:scale-[0.98] transition-all"
-            >
+            <button type="button" onClick={runPrompt} style={primaryButtonStyle}>
               Try this with AI
             </button>
           </div>
@@ -128,24 +214,55 @@ export function WelcomeFirstPrompt({ onContinue }: WelcomeFirstPromptProps) {
         {phase !== 'idle' && (
           <section
             ref={outputRef}
-            className="border border-[color:var(--ledger-accent)]/30 bg-[color:var(--ledger-bg)] rounded-[3px] p-6 md:p-8 mb-8"
+            style={{
+              padding: 28,
+              borderRadius: 16,
+              background: '#FFFFFF',
+              border: '1px solid var(--gold)',
+              boxShadow: 'var(--shadow-soft)',
+              marginBottom: 28,
+            }}
             aria-live="polite"
           >
-            <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--ledger-accent)] mb-3">
-              The AI rewrite
-            </p>
+            <p style={{ ...eyebrowStyle, marginBottom: 12 }}>The AI rewrite</p>
             {phase === 'streaming' && output.length === 0 && (
-              <p className="font-mono text-sm text-[color:var(--ledger-muted)]">
+              <p
+                style={{
+                  fontFamily: MONO_STACK,
+                  fontSize: 13,
+                  color: 'var(--slate-500)',
+                  margin: 0,
+                }}
+              >
                 AI is thinking…
               </p>
             )}
             {output.length > 0 && (
-              <pre className="font-mono text-sm text-[color:var(--ledger-ink)] leading-relaxed whitespace-pre-wrap">
+              <pre
+                style={{
+                  fontFamily: MONO_STACK,
+                  fontSize: 13,
+                  color: 'var(--ink)',
+                  lineHeight: 1.6,
+                  whiteSpace: 'pre-wrap',
+                  margin: 0,
+                }}
+              >
                 {output}
               </pre>
             )}
             {phase === 'error' && errorMessage && (
-              <p className="font-mono text-sm text-[color:var(--ledger-weak)] mt-3" role="alert">
+              <p
+                style={{
+                  fontFamily: INTER_STACK,
+                  fontSize: 13,
+                  fontWeight: 600,
+                  color: 'var(--gold-deep)',
+                  marginTop: 12,
+                  margin: 0,
+                }}
+                role="alert"
+              >
                 {errorMessage}
               </p>
             )}
@@ -153,8 +270,19 @@ export function WelcomeFirstPrompt({ onContinue }: WelcomeFirstPromptProps) {
         )}
 
         {phase === 'done' && (
-          <div className="text-center space-y-5">
-            <p className="font-serif text-2xl text-[color:var(--ledger-ink)] leading-tight max-w-2xl mx-auto">
+          <div className="text-center" style={{ display: 'flex', flexDirection: 'column', gap: 22, alignItems: 'center' }}>
+            <p
+              style={{
+                fontFamily: INTER_STACK,
+                fontSize: 22,
+                fontWeight: 600,
+                lineHeight: 1.35,
+                letterSpacing: '-0.01em',
+                color: 'var(--ink)',
+                maxWidth: 640,
+                margin: 0,
+              }}
+            >
               That is the floor. Every module from here gives you one of these — a
               specific banker workflow you can use the day you learn it.
             </p>
@@ -162,7 +290,7 @@ export function WelcomeFirstPrompt({ onContinue }: WelcomeFirstPromptProps) {
               ref={continueRef}
               type="button"
               onClick={onContinue}
-              className="inline-block px-10 py-4 bg-[color:var(--ledger-accent)] text-[color:var(--ledger-bg)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--ledger-accent-light)] active:scale-[0.98] transition-all"
+              style={primaryButtonStyle}
             >
               Continue to your onboarding survey →
             </button>
@@ -170,24 +298,24 @@ export function WelcomeFirstPrompt({ onContinue }: WelcomeFirstPromptProps) {
         )}
 
         {phase === 'error' && (
-          <div className="text-center space-y-4">
-            <p className="text-sm text-[color:var(--ledger-ink)]/70 max-w-md mx-auto">
+          <div className="text-center" style={{ display: 'flex', flexDirection: 'column', gap: 18, alignItems: 'center' }}>
+            <p
+              style={{
+                fontFamily: INTER_STACK,
+                fontSize: 14,
+                color: 'var(--slate-600)',
+                maxWidth: 480,
+                margin: 0,
+              }}
+            >
               The AI sandbox didn&rsquo;t respond this time. Try again, or skip
               the welcome and continue to your survey.
             </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-              <button
-                type="button"
-                onClick={runPrompt}
-                className="inline-block px-8 py-3 bg-[color:var(--ledger-accent)] text-[color:var(--ledger-bg)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--ledger-accent-light)] active:scale-[0.98] transition-all"
-              >
+            <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center', gap: 14 }}>
+              <button type="button" onClick={runPrompt} style={primaryButtonStyle}>
                 Try again
               </button>
-              <button
-                type="button"
-                onClick={onContinue}
-                className="font-serif-sc text-xs uppercase tracking-[0.18em] text-[color:var(--ledger-ink)]/70 hover:text-[color:var(--ledger-accent)] transition-colors"
-              >
+              <button type="button" onClick={onContinue} style={linkButtonStyle}>
                 Skip to survey →
               </button>
             </div>
@@ -195,12 +323,8 @@ export function WelcomeFirstPrompt({ onContinue }: WelcomeFirstPromptProps) {
         )}
 
         {phase === 'idle' && (
-          <p className="text-center text-xs text-[color:var(--ledger-muted)] mt-6">
-            <button
-              type="button"
-              onClick={onContinue}
-              className="font-serif-sc uppercase tracking-[0.18em] text-[color:var(--ledger-ink)]/55 hover:text-[color:var(--ledger-accent)] transition-colors"
-            >
+          <p className="text-center" style={{ marginTop: 22 }}>
+            <button type="button" onClick={onContinue} style={linkButtonStyle}>
               Skip welcome and go to survey →
             </button>
           </p>
