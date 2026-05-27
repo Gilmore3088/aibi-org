@@ -49,12 +49,6 @@ const CheckIcon = (p: IconProps) => (
     <polyline points="20 6 9 17 4 12" />
   </svg>
 );
-const PlayCircleIcon = (p: IconProps) => (
-  <svg {...sw(p)}>
-    <circle cx="12" cy="12" r="10" />
-    <polygon points="10 8 16 12 10 16 10 8" />
-  </svg>
-);
 
 // Dimension icons (8)
 const ShieldIcon = (p: IconProps) => <svg {...sw(p)}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>;
@@ -502,37 +496,6 @@ export default function AssessmentLandingPage() {
               <p>{desc}</p>
             </div>
           ))}
-        </div>
-      </Section>
-
-      {/* FLOW */}
-      <Section variant="std">
-        <SectionHead
-          kicker="How it works"
-          heading={<>How the free assessment works.</>}
-        />
-        <div className="mk-flow">
-          <div className="mk-head">
-            <div>
-              <div className="mk-k">Assessment</div>
-              <div className="mk-t">Four steps · Three minutes</div>
-            </div>
-            <PlayCircleIcon size={32} />
-          </div>
-          <div className="mk-steps">
-            {[
-              { n: 'Step 1', t: 'Answer 12 questions', d: 'Multiple choice, one screen each on mobile.' },
-              { n: 'Step 2', t: 'Enter work email', d: 'One field. Never sold, never shared.' },
-              { n: 'Step 3', t: 'See your report inline', d: 'Score, tier, top gap, dimension breakdown, starter artifact.' },
-              { n: 'Step 4', t: 'Upgrade if needed', d: 'The $99 In-Depth opens the full 8-dimension report and plan.' },
-            ].map((s) => (
-              <div key={s.n}>
-                <div className="mk-n">{s.n}</div>
-                <div className="mk-t">{s.t}</div>
-                <div className="mk-d">{s.d}</div>
-              </div>
-            ))}
-          </div>
         </div>
       </Section>
 
