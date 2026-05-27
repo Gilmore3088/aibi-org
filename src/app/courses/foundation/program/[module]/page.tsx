@@ -1,9 +1,13 @@
 // Dynamic module page — /courses/foundation/program/[module]
 //
-// LMS reskin (PR 2 of 7): wraps the module surface in the Ledger-styled
-// <CourseShell> + <LMSTopBar> primitives introduced in PR #52. The tab
-// content (Learn / Practice / Apply) and all activity-routing behavior
-// are preserved unchanged — only the surrounding chrome is reskinned.
+// LMS reskin (Wave 1, 2026-05-27): ported the per-module surface to the
+// mockup design system (Inter, navy --ink, gold --gold accent, cream
+// surface, mockup radii + shadows). The CourseShell + LMSTopBar chrome
+// is retained from Ledger for now (other Wave-1 agents own those
+// shells); the page-level header, loop ribbon, and Banking Boundary
+// section are restyled at the page level. The Tabbed body keeps its
+// structural role (Learn it / Try it / Use it / Save it) and gets the
+// mockup gold accent passed through to its existing accentColor prop.
 //
 // Server Component: all content read from typed files at build time.
 // T-02-03: parseInt + getModuleByNumber + notFound() guards invalid params.
@@ -54,6 +58,27 @@ import {
 interface ModulePageParams {
   readonly params: { module: string };
 }
+
+// Mockup-system shared text styles — kept in module scope so this file
+// stays self-contained (no shared LMS components touched in Wave 1).
+const MOCKUP_FONT = 'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
+
+const KICKER_STYLE: React.CSSProperties = {
+  fontFamily: MOCKUP_FONT,
+  fontSize: 11,
+  fontWeight: 700,
+  letterSpacing: '0.18em',
+  textTransform: 'uppercase',
+  color: 'var(--gold-deep)',
+};
+
+const META_STYLE: React.CSSProperties = {
+  fontFamily: MOCKUP_FONT,
+  fontSize: 12,
+  fontWeight: 500,
+  letterSpacing: '0.04em',
+  color: 'var(--slate-500)',
+};
 
 export function generateStaticParams() {
   return modules.map((m) => ({ module: String(m.number) }));
@@ -134,6 +159,19 @@ export default async function ModulePage({ params }: ModulePageParams) {
   const titleMain = titleParts[0];
   const titleTail = titleParts.length > 1 ? titleParts.slice(1).join(' — ') : null;
 
+  const statusLabel =
+    status === 'current'
+      ? 'In progress'
+      : status === 'completed'
+        ? 'Completed'
+        : 'Locked';
+  const statusColor =
+    status === 'current'
+      ? 'var(--gold-deep)'
+      : status === 'completed'
+        ? 'var(--emerald-700)'
+        : 'var(--slate-500)';
+
   return (
     <CourseShell
       modules={lmsModules}
@@ -146,11 +184,11 @@ export default async function ModulePage({ params }: ModulePageParams) {
           <Link
             href="/courses/foundation/program"
             style={{
-              fontFamily: 'var(--ledger-mono)',
-              fontSize: 10.5,
-              letterSpacing: '0.16em',
-              textTransform: 'uppercase',
-              color: 'var(--ledger-muted)',
+              fontFamily: MOCKUP_FONT,
+              fontSize: 12,
+              fontWeight: 600,
+              letterSpacing: '0.04em',
+              color: 'var(--slate-600)',
               textDecoration: 'none',
             }}
           >
@@ -159,238 +197,245 @@ export default async function ModulePage({ params }: ModulePageParams) {
         }
       />
 
-      <div style={{ maxWidth: 1180, margin: '0 auto', padding: '36px 36px 24px' }}>
-        {/* Module header */}
-        <header>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 18,
-              marginBottom: 18,
-              flexWrap: 'wrap',
-            }}
-          >
-            <PillarTag pillarId={pillarId} />
-            <span
+      {/* Page surface — cream background extends through the module body. */}
+      <div
+        style={{
+          background: 'var(--cream)',
+          fontFamily: MOCKUP_FONT,
+          color: 'var(--ink)',
+        }}
+      >
+        <div style={{ maxWidth: 1180, margin: '0 auto', padding: '40px 36px 24px' }}>
+          {/* Module header */}
+          <header>
+            <div
               style={{
-                fontFamily: 'var(--ledger-mono)',
-                fontSize: 10,
-                letterSpacing: '0.18em',
-                textTransform: 'uppercase',
-                color: 'var(--ledger-muted)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 18,
+                marginBottom: 20,
+                flexWrap: 'wrap',
               }}
             >
-              Module {String(mod.number).padStart(2, '0')} · {mod.estimatedMinutes} min
-            </span>
-            <span style={{ flex: 1, height: 1, background: 'var(--ledger-rule)' }} />
-            <ProgressDot status={status} />
-            <span
+              <PillarTag pillarId={pillarId} />
+              <span style={META_STYLE}>
+                Module {String(mod.number).padStart(2, '0')} · {mod.estimatedMinutes} min
+              </span>
+              <span style={{ flex: 1, height: 1, background: 'var(--ink-a10)' }} />
+              <ProgressDot status={status} />
+              <span
+                style={{
+                  ...META_STYLE,
+                  color: statusColor,
+                  fontWeight: 600,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.14em',
+                  fontSize: 11,
+                }}
+              >
+                {statusLabel}
+              </span>
+            </div>
+
+            <h1
               style={{
-                fontFamily: 'var(--ledger-mono)',
-                fontSize: 10,
-                letterSpacing: '0.16em',
-                textTransform: 'uppercase',
-                color: status === 'current' ? 'var(--ledger-accent)' : 'var(--ledger-muted)',
+                fontFamily: MOCKUP_FONT,
+                fontWeight: 700,
+                fontSize: 'clamp(36px, 4.8vw, 54px)',
+                lineHeight: 1.06,
+                letterSpacing: '-0.02em',
+                margin: '0 0 14px',
+                color: 'var(--ink)',
               }}
             >
-              {status === 'current'
-                ? 'In progress'
-                : status === 'completed'
-                  ? 'Completed'
-                  : 'Locked'}
-            </span>
-          </div>
-
-          <h1
-            style={{
-              fontFamily: 'var(--ledger-serif)',
-              fontWeight: 500,
-              fontSize: 'clamp(38px, 5vw, 58px)',
-              lineHeight: 1.05,
-              letterSpacing: '-0.025em',
-              margin: '0 0 12px',
-              color: 'var(--ledger-ink)',
-            }}
-          >
-            {titleMain}
-            {titleTail && (
-              <em
-                style={{
-                  color: 'var(--ledger-accent)',
-                  fontStyle: 'italic',
-                  fontWeight: 400,
-                }}
-              >
-                {' — '}
-                {titleTail}
-              </em>
-            )}
-          </h1>
-
-          <p
-            style={{
-              fontFamily: 'var(--ledger-serif)',
-              fontStyle: 'italic',
-              fontSize: 19,
-              lineHeight: 1.45,
-              color: 'var(--ledger-ink-2)',
-              margin: '0 0 14px',
-              maxWidth: '72ch',
-            }}
-          >
-            {goalLine}
-          </p>
-
-          <p
-            style={{
-              color: 'var(--ledger-slate)',
-              fontSize: 13,
-              fontFamily: 'var(--ledger-mono)',
-              letterSpacing: '0.04em',
-              margin: 0,
-              paddingTop: 14,
-              borderTop: '1px solid var(--ledger-rule)',
-            }}
-          >
-            You walk away with:{' '}
-            <span style={{ color: 'var(--ledger-ink)', fontWeight: 600 }}>
-              {mod.keyOutput}
-            </span>
-          </p>
-
-          {/*
-            Canonical module loop indicator (issue #104 §6). Always shows the
-            same four steps so the learner can see the shape of the work at
-            a glance and never has to wonder "what next" (issue #104 §4).
-            The first three steps are mapped to the Learn / Practice / Apply
-            tabs below; the fourth step ("Save it.") is the artifact-save
-            action that lives inside the Apply tab — not a separate tab.
-          */}
-          <ol
-            aria-label="Module loop"
-            style={{
-              listStyle: 'none',
-              padding: 0,
-              margin: '20px 0 0',
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: 0,
-              borderTop: '1px solid var(--ledger-rule)',
-              paddingTop: 14,
-            }}
-          >
-            {[
-              { n: '01', label: 'Learn it.' },
-              { n: '02', label: 'Try it.' },
-              { n: '03', label: 'Use it.' },
-              { n: '04', label: 'Save it.' },
-            ].map((step, idx, arr) => (
-              <li
-                key={step.n}
-                style={{
-                  display: 'flex',
-                  alignItems: 'baseline',
-                  gap: 8,
-                  paddingRight: idx === arr.length - 1 ? 0 : 18,
-                  marginRight: idx === arr.length - 1 ? 0 : 18,
-                  borderRight: idx === arr.length - 1
-                    ? 'none'
-                    : '1px solid var(--ledger-rule)',
-                }}
-              >
+              {titleMain}
+              {titleTail && (
                 <span
                   style={{
-                    fontFamily: 'var(--ledger-mono)',
-                    fontSize: 10,
-                    color: 'var(--ledger-muted)',
-                    letterSpacing: '0.16em',
+                    color: 'var(--gold-deep)',
+                    fontWeight: 600,
                   }}
                 >
-                  {step.n}
+                  {' — '}
+                  {titleTail}
                 </span>
-                <span
-                  style={{
-                    fontFamily: 'var(--ledger-serif)',
-                    fontSize: 14,
-                    color: 'var(--ledger-ink)',
-                  }}
-                >
-                  {step.label}
-                </span>
-              </li>
-            ))}
-          </ol>
-        </header>
-      </div>
+              )}
+            </h1>
 
-      {/* Tabbed content (Learn / Practice / Apply) — behavior preserved */}
-      <article style={{ maxWidth: 1180, margin: '0 auto', padding: '4px 36px 80px' }}>
-        <Tabbed
-          storagePrefix="foundations-m"
-          legacyStoragePrefix="aibi-p-m"
-          moduleNumber={moduleNum}
-          accentColor="var(--ledger-accent)"
-          learnContent={
-            <>
-              <LearnSection
-                sections={expandedModule?.sections ?? []}
-                keyTakeaways={expandedModule?.takeaways}
+            <p
+              style={{
+                fontFamily: MOCKUP_FONT,
+                fontSize: 19,
+                lineHeight: 1.5,
+                color: 'var(--slate-600)',
+                margin: '0 0 18px',
+                maxWidth: '72ch',
+                fontWeight: 400,
+              }}
+            >
+              {goalLine}
+            </p>
+
+            {/* Artifact-forward callout — the practical thing this module produces. */}
+            <div
+              style={{
+                marginTop: 6,
+                padding: '18px 22px',
+                background: 'white',
+                border: '1px solid var(--ink-a10)',
+                borderRadius: 'var(--r-lg, 16px)',
+                boxShadow: 'var(--shadow-soft)',
+                display: 'flex',
+                gap: 16,
+                alignItems: 'flex-start',
+                flexWrap: 'wrap',
+              }}
+            >
+              <span style={KICKER_STYLE}>You walk away with</span>
+              <span
+                style={{
+                  fontSize: 15,
+                  fontWeight: 600,
+                  color: 'var(--ink)',
+                  flex: '1 1 320px',
+                  lineHeight: 1.5,
+                }}
+              >
+                {mod.keyOutput}
+              </span>
+            </div>
+
+            {/*
+              Canonical module loop indicator (issue #104 §6). Four steps,
+              mockup-styled as a numbered ribbon of pcards.
+            */}
+            <ol
+              aria-label="Module loop"
+              style={{
+                listStyle: 'none',
+                padding: 0,
+                margin: '22px 0 0',
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+                gap: 12,
+              }}
+            >
+              {[
+                { n: '01', label: 'Learn it.' },
+                { n: '02', label: 'Try it.' },
+                { n: '03', label: 'Use it.' },
+                { n: '04', label: 'Save it.' },
+              ].map((step) => (
+                <li
+                  key={step.n}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'baseline',
+                    gap: 10,
+                    padding: '12px 14px',
+                    background: 'var(--cream-2)',
+                    border: '1px solid var(--ink-a10)',
+                    borderRadius: 'var(--r-md, 12px)',
+                  }}
+                >
+                  <span
+                    style={{
+                      fontFamily: MOCKUP_FONT,
+                      fontSize: 11,
+                      fontWeight: 700,
+                      color: 'var(--gold-deep)',
+                      letterSpacing: '0.14em',
+                    }}
+                  >
+                    {step.n}
+                  </span>
+                  <span
+                    style={{
+                      fontFamily: MOCKUP_FONT,
+                      fontSize: 14,
+                      fontWeight: 600,
+                      color: 'var(--ink)',
+                    }}
+                  >
+                    {step.label}
+                  </span>
+                </li>
+              ))}
+            </ol>
+          </header>
+        </div>
+
+        {/* Tabbed content (Learn / Practice / Apply) — behavior preserved.
+            Mockup gold accent is passed through the existing accentColor prop;
+            the inner tab chrome lives in shared CourseTabs (out of scope for
+            this pass). */}
+        <article style={{ maxWidth: 1180, margin: '0 auto', padding: '4px 36px 80px' }}>
+          <Tabbed
+            storagePrefix="foundations-m"
+            legacyStoragePrefix="aibi-p-m"
+            moduleNumber={moduleNum}
+            accentColor="var(--gold)"
+            learnContent={
+              <>
+                <LearnSection
+                  sections={expandedModule?.sections ?? []}
+                  keyTakeaways={expandedModule?.takeaways}
+                  moduleNumber={moduleNum}
+                />
+                <BankingBoundary moduleNumber={moduleNum} />
+                {moduleTables && moduleTables.length > 0 && (
+                  <div style={{ marginTop: 24 }}>
+                    {moduleTables.map((table) => (
+                      <ContentTable key={table.id} table={table} />
+                    ))}
+                  </div>
+                )}
+              </>
+            }
+            practiceContent={
+              <>
+                {SANDBOX_CONFIGS[moduleNum] && (
+                  <AIPracticeSandbox
+                    moduleId={`aibi-p-module-${moduleNum}`}
+                    product="foundation"
+                    sandboxConfig={SANDBOX_CONFIGS[moduleNum]!}
+                  />
+                )}
+                {moduleNum === 3 && (
+                  <MiniTutorialList
+                    tutorials={M3_TUTORIALS}
+                    heading="First-try tutorials"
+                    intro="Step-by-step walkthroughs for your first real banking task on each platform. Pick the one that matches what you already have access to."
+                  />
+                )}
+                {moduleNum === 7 && (
+                  <MiniTutorialList
+                    tutorials={M7_TUTORIALS}
+                    heading="Skill-builder tutorials"
+                    intro="Worked examples of the anatomy-of-a-skill pattern applied to common banking workflows. Open the platform you use, copy the prompt, work through the steps."
+                  />
+                )}
+              </>
+            }
+            applyContent={
+              <ModuleContentClient
+                activities={moduleActivities}
+                enrollmentId={enrollment.id}
                 moduleNumber={moduleNum}
+                existingResponses={existingResponses}
+                isLastModule={isLastModule}
+                isAlreadyCompleted={isAlreadyCompleted}
+                tables={moduleTables}
+                learnerRole={
+                  enrollment.onboarding_answers
+                    ? getRoleSpotlight(enrollment.onboarding_answers)
+                    : 'other'
+                }
               />
-              <BankingBoundary moduleNumber={moduleNum} />
-              {moduleTables && moduleTables.length > 0 && (
-                <div style={{ marginTop: 24 }}>
-                  {moduleTables.map((table) => (
-                    <ContentTable key={table.id} table={table} />
-                  ))}
-                </div>
-              )}
-            </>
-          }
-          practiceContent={
-            <>
-              {SANDBOX_CONFIGS[moduleNum] && (
-                <AIPracticeSandbox
-                  moduleId={`aibi-p-module-${moduleNum}`}
-                  product="foundation"
-                  sandboxConfig={SANDBOX_CONFIGS[moduleNum]!}
-                />
-              )}
-              {moduleNum === 3 && (
-                <MiniTutorialList
-                  tutorials={M3_TUTORIALS}
-                  heading="First-try tutorials"
-                  intro="Step-by-step walkthroughs for your first real banking task on each platform. Pick the one that matches what you already have access to."
-                />
-              )}
-              {moduleNum === 7 && (
-                <MiniTutorialList
-                  tutorials={M7_TUTORIALS}
-                  heading="Skill-builder tutorials"
-                  intro="Worked examples of the anatomy-of-a-skill pattern applied to common banking workflows. Open the platform you use, copy the prompt, work through the steps."
-                />
-              )}
-            </>
-          }
-          applyContent={
-            <ModuleContentClient
-              activities={moduleActivities}
-              enrollmentId={enrollment.id}
-              moduleNumber={moduleNum}
-              existingResponses={existingResponses}
-              isLastModule={isLastModule}
-              isAlreadyCompleted={isAlreadyCompleted}
-              tables={moduleTables}
-              learnerRole={
-                enrollment.onboarding_answers
-                  ? getRoleSpotlight(enrollment.onboarding_answers)
-                  : 'other'
-              }
-            />
-          }
-        />
-      </article>
+            }
+          />
+        </article>
+      </div>
     </CourseShell>
   );
 }
@@ -433,20 +478,18 @@ function BankingBoundary({ moduleNumber }: { readonly moduleNumber: number }) {
     <section
       style={{
         marginTop: 32,
-        border: '1px solid var(--ledger-rule)',
-        borderRadius: 3,
-        background: 'var(--ledger-parch)',
-        padding: 24,
+        border: '1px solid var(--ink-a10)',
+        borderRadius: 'var(--r-xl, 24px)',
+        background: 'white',
+        boxShadow: 'var(--shadow-soft)',
+        padding: 28,
+        fontFamily: MOCKUP_FONT,
       }}
     >
       <p
         style={{
-          fontFamily: 'var(--ledger-mono)',
-          fontSize: 10.5,
-          letterSpacing: '0.2em',
-          textTransform: 'uppercase',
-          color: 'var(--ledger-accent)',
-          margin: '0 0 14px',
+          ...KICKER_STYLE,
+          margin: '0 0 16px',
         }}
       >
         Banking Boundary
@@ -455,28 +498,30 @@ function BankingBoundary({ moduleNumber }: { readonly moduleNumber: number }) {
         style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-          gap: 20,
+          gap: 22,
         }}
       >
         {boundary.map(([title, body]) => (
           <div key={title}>
             <h2
               style={{
-                fontFamily: 'var(--ledger-serif)',
-                fontSize: 18,
-                fontWeight: 500,
-                color: 'var(--ledger-ink)',
+                fontFamily: MOCKUP_FONT,
+                fontSize: 16,
+                fontWeight: 700,
+                color: 'var(--ink)',
                 margin: '0 0 6px',
+                letterSpacing: '-0.005em',
               }}
             >
               {title}
             </h2>
             <p
               style={{
-                fontSize: 13.5,
-                color: 'var(--ledger-slate)',
+                fontSize: 14,
+                color: 'var(--slate-600)',
                 lineHeight: 1.55,
                 margin: 0,
+                fontWeight: 400,
               }}
             >
               {body}
