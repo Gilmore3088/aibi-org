@@ -47,13 +47,6 @@ const CheckSquareIcon = (p: IconProps) => (
     <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
   </svg>
 );
-const BarsIcon = (p: IconProps) => (
-  <svg {...sw(p)}>
-    <line x1="12" y1="20" x2="12" y2="10" />
-    <line x1="18" y1="20" x2="18" y2="4" />
-    <line x1="6" y1="20" x2="6" y2="16" />
-  </svg>
-);
 const LayersIcon = (p: IconProps) => (
   <svg {...sw(p)}>
     <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
