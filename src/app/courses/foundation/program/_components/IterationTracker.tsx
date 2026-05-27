@@ -142,36 +142,36 @@ export function IterationTracker({
 
   return (
     <div
-      className="border border-[color:var(--ledger-parch)] border-l-4 rounded-sm overflow-hidden bg-white/40 mb-8"
-      style={{ borderLeftColor: 'var(--ledger-accent)' }}
+      className="border border-[color:var(--ink-a10)] border-l-4 rounded-2xl overflow-hidden bg-[color:var(--cream)] shadow-[var(--shadow-soft)] mb-8"
+      style={{ borderLeftColor: 'var(--gold)' }}
     >
       <div className="px-6 pt-6 pb-5">
-        <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent)] mb-1">
+        <p className="font-sans text-[10px] font-bold uppercase tracking-widest text-[color:var(--gold-deep)] mb-1">
           Activity {activity.id}
         </p>
         <div className="flex items-start justify-between gap-4">
-          <h3 className="font-serif text-xl font-bold text-[color:var(--ledger-ink)] mb-2">{activity.title}</h3>
+          <h3 className="font-sans text-xl font-bold tracking-tight text-[color:var(--ink)] mb-2">{activity.title}</h3>
           {state.submitted && (
-            <span className="shrink-0 inline-flex items-center gap-1 px-2 py-0.5 bg-[color:var(--ledger-accent-2)]/10 border border-[color:var(--ledger-accent-2)] rounded-sm font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent-2)]">
+            <span className="shrink-0 inline-flex items-center gap-1 px-2 py-0.5 bg-[color:var(--emerald-50)] border border-[color:var(--emerald-700)] rounded-full font-sans text-[10px] font-bold uppercase tracking-widest text-[color:var(--emerald-700)]">
               Submitted
             </span>
           )}
         </div>
-        <p className="text-sm font-sans text-[color:var(--ledger-muted)] leading-relaxed">{activity.description}</p>
+        <p className="text-sm font-sans text-[color:var(--slate-600)] leading-relaxed">{activity.description}</p>
       </div>
 
-      <div className="border-t border-[color:var(--ledger-parch)] px-6 py-6">
+      <div className="border-t border-[color:var(--ink-a10)] px-6 py-6">
         {!state.submitted && (
-          <div className="mb-6 p-4 bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-parch)] rounded-sm">
-            <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] mb-1">Before you begin</p>
+          <div className="mb-6 p-4 bg-[color:var(--cream-2)] border border-[color:var(--ink-a10)] rounded-xl">
+            <p className="font-sans text-[10px] font-bold uppercase tracking-widest text-[color:var(--gold-deep)] mb-1">Before you begin</p>
             {state.skillLoading ? (
-              <p className="text-sm font-sans text-[color:var(--ledger-muted)]">Loading your Module 7 skill...</p>
+              <p className="text-sm font-sans text-[color:var(--slate-600)]">Loading your Module 7 skill...</p>
             ) : state.originalSkillMd ? (
-              <p className="text-sm font-sans text-[color:var(--ledger-muted)] leading-relaxed">
+              <p className="text-sm font-sans text-[color:var(--slate-600)] leading-relaxed">
                 Your Module 7 skill file has been loaded. After submitting, an updated version (.md v1.1) with your iteration notes will download automatically.
               </p>
             ) : (
-              <p className="text-sm font-sans text-[color:var(--ledger-muted)] leading-relaxed">
+              <p className="text-sm font-sans text-[color:var(--slate-600)] leading-relaxed">
                 Open your Module 7 skill .md file alongside this activity for reference. Your iteration notes will be saved. To export an updated skill file, apply the changes you document below to your Module 7 .md file manually.
               </p>
             )}
@@ -181,16 +181,16 @@ export function IterationTracker({
         {state.submitted ? (
           <div ref={successRef} tabIndex={-1} aria-live="polite" aria-label="Iteration Tracker submitted successfully">
             {STEPS.map((step) => (
-              <div key={step.id} className="mb-8 pl-4 border-l-2 border-[color:var(--ledger-parch)]">
+              <div key={step.id} className="mb-8 pl-4 border-l-2 border-[color:var(--ink-a10)]">
                 <StepHeader number={step.number} label={step.label} description={step.description} />
                 {getFieldsForStep(step.fieldIds).map((field) => (
                   <ReadOnlyField key={field.id} field={field} value={state.values[field.id] ?? ''} />
                 ))}
               </div>
             ))}
-            <div className="mt-4 pt-4 border-t border-[color:var(--ledger-parch)]">
-              <p className="text-xs font-mono text-[color:var(--ledger-muted)] uppercase tracking-widest mb-2">Iteration complete</p>
-              <p className="text-sm font-sans text-[color:var(--ledger-muted)] leading-relaxed">
+            <div className="mt-4 pt-4 border-t border-[color:var(--ink-a10)]">
+              <p className="text-[10px] font-sans font-bold text-[color:var(--gold-deep)] uppercase tracking-widest mb-2">Iteration complete</p>
+              <p className="text-sm font-sans text-[color:var(--slate-600)] leading-relaxed">
                 Your iteration notes have been saved. If your Module 7 skill file was available, an updated .md file (v1.1) was downloaded with your revision notes prepended. Otherwise, apply the changes documented above to your Module 7 .md file manually.
               </p>
             </div>
@@ -198,7 +198,7 @@ export function IterationTracker({
         ) : (
           <form onSubmit={handleSubmit} noValidate aria-label="Iteration Tracker form">
             {STEPS.map((step) => (
-              <div key={step.id} className="mb-8 pl-4 border-l-2 border-[color:var(--ledger-parch)]">
+              <div key={step.id} className="mb-8 pl-4 border-l-2 border-[color:var(--ink-a10)]">
                 <StepHeader number={step.number} label={step.label} description={step.description} />
                 {getFieldsForStep(step.fieldIds).map((field) => (
                   <InteractiveField key={field.id} field={field} value={state.values[field.id] ?? ''} error={state.errors[field.id]} onChange={handleChange} />
@@ -206,21 +206,21 @@ export function IterationTracker({
               </div>
             ))}
             {state.serverError && (
-              <p className="mt-3 mb-3 text-sm font-sans text-[color:var(--ledger-weak)] bg-[color:var(--ledger-weak)]/5 border border-[color:var(--ledger-weak)]/20 rounded-sm px-3 py-2" role="alert">
+              <p className="mt-3 mb-3 text-sm font-sans text-[color:var(--ink)] bg-[color:var(--cream-2)] border-l-2 border-[color:var(--gold-deep)] rounded-r-lg px-3 py-2" role="alert">
                 {state.serverError}
               </p>
             )}
-            <div className="mt-4 pt-4 border-t border-[color:var(--ledger-parch)]">
-              <p className="text-xs font-sans text-[color:var(--ledger-muted)] mb-3 leading-relaxed">
+            <div className="mt-4 pt-4 border-t border-[color:var(--ink-a10)]">
+              <p className="text-xs font-sans text-[color:var(--slate-600)] mb-3 leading-relaxed">
                 Submitting will save your iteration notes.{state.originalSkillMd ? ' An updated .md file (v1.1) with your revision notes will also download automatically.' : ''}
               </p>
               <button
                 type="submit"
                 disabled={state.submitting}
-                className="px-6 py-2.5 bg-[color:var(--ledger-accent)] hover:bg-[color:var(--ledger-accent-light)] disabled:bg-[color:var(--ledger-parch)] disabled:text-[color:var(--ledger-soft)] text-[color:var(--ledger-bg)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-2"
+                className="px-6 py-2.5 bg-[color:var(--ink)] hover:bg-[color:var(--ink-2)] disabled:bg-[color:var(--slate-200)] disabled:text-[color:var(--slate-500)] text-[color:var(--cream)] text-[11px] font-sans font-bold uppercase tracking-widest rounded-xl transition-colors disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:ring-offset-2"
                 aria-label={state.submitting ? 'Saving iteration notes…' : 'Save iteration notes'}
               >
-                {state.submitting ? 'Saving…' : 'Save Iteration Notes'}
+                {state.submitting ? 'SAVING…' : 'SAVE ITERATION NOTES'}
               </button>
             </div>
           </form>

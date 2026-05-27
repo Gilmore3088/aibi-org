@@ -1,7 +1,7 @@
 'use client';
 
 // Shared activity field renderers used by ActivityForm and
-// AcceptableUseCardForm. Both consume the Ledger <FormField> wrapper +
+// AcceptableUseCardForm. Both consume the shared <FormField> wrapper +
 // ledgerInputStyle so every activity form looks and behaves identically
 // (radio / select / textarea / text), with consistent label, error, and
 // hint treatment plus A11Y wiring.
@@ -10,16 +10,19 @@ import type { CSSProperties } from 'react';
 import type { ActivityField } from '@content/courses/foundation-program';
 import { FormField, ledgerInputStyle } from '@/components/lms';
 
+const INTER_STACK = 'Inter, ui-sans-serif, system-ui, sans-serif';
+const MONO_STACK = 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace';
+
 const readOnlyValueStyle: CSSProperties = {
   width: '100%',
   boxSizing: 'border-box',
   padding: '10px 12px',
-  borderRadius: 2,
-  border: '1px solid var(--ledger-rule)',
-  background: 'var(--ledger-parch)',
-  fontFamily: 'var(--ledger-sans)',
+  borderRadius: 8,
+  border: '1px solid var(--ink-a10)',
+  background: 'var(--cream-2)',
+  fontFamily: INTER_STACK,
   fontSize: 13.5,
-  color: 'var(--ledger-ink)',
+  color: 'var(--ink)',
   minHeight: 36,
   whiteSpace: 'pre-wrap',
   overflowWrap: 'anywhere',
@@ -43,9 +46,9 @@ export function ActivityReadOnlyField({
                 display: 'flex',
                 alignItems: 'center',
                 gap: 8,
-                fontFamily: 'var(--ledger-sans)',
+                fontFamily: INTER_STACK,
                 fontSize: 13.5,
-                color: 'var(--ledger-ink)',
+                color: 'var(--ink)',
               }}
             >
               <input
@@ -75,13 +78,12 @@ export function ActivityReadOnlyField({
         style={{
           ...readOnlyValueStyle,
           minHeight: field.type === 'textarea' ? 80 : 36,
-          fontFamily:
-            field.type === 'textarea' ? 'var(--ledger-mono)' : 'var(--ledger-sans)',
+          fontFamily: field.type === 'textarea' ? MONO_STACK : INTER_STACK,
           fontSize: field.type === 'textarea' ? 12.5 : 13.5,
         }}
       >
         {display || (
-          <span style={{ color: 'var(--ledger-muted)' }}>No response</span>
+          <span style={{ color: 'var(--slate-500)' }}>No response</span>
         )}
       </div>
     </FormField>
@@ -119,9 +121,9 @@ export function ActivityInteractiveField({
                 alignItems: 'center',
                 gap: 8,
                 cursor: 'pointer',
-                fontFamily: 'var(--ledger-sans)',
+                fontFamily: INTER_STACK,
                 fontSize: 13.5,
-                color: 'var(--ledger-ink)',
+                color: 'var(--ink)',
               }}
             >
               <input
