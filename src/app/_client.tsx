@@ -71,15 +71,6 @@ const ToolboxStackIcon = (p: IconProps) => (
 
 // ---------- Static data ----------
 
-const TRUST_AUDIENCE = [
-  'Community banks',
-  'Credit unions',
-  'Compliance teams',
-  'Retail & branch',
-  'Operations',
-  'Marketing',
-] as const;
-
 const VALUE_PATH: { step: string; title: string; body: string; icon: (p: IconProps) => JSX.Element }[] = [
   { step: 'Assess', title: 'Find readiness gaps', body: 'Twelve questions, three minutes. Score, tier, and a starter artifact.', icon: CheckSquareIcon },
   { step: 'Train', title: 'Learn by role', body: 'Foundation Course modules that map to compliance, retail, ops, and marketing work.', icon: LayersIcon },
@@ -109,10 +100,10 @@ export default function HomePage() {
               Assess readiness, train by role, practice safely, and build reusable prompts, skills, SOPs, and review checklists.
             </p>
             <div className="mk-ctas">
-              <Button variant="gold" size="lg" href="/assessment">
+              <Button variant="gold" size="lg" href="/assessment/take">
                 Get my AI readiness score <ArrowGlyph />
               </Button>
-              <Button variant="ghost-dark" size="lg" href="/courses/foundation">
+              <Button variant="ghost-dark" size="lg" href="/courses">
                 See what learners build
               </Button>
             </div>
@@ -120,17 +111,6 @@ export default function HomePage() {
           <HeroReportCard />
         </div>
       </section>
-
-      <div className="mk-trust-strip" aria-label="Built for">
-        <div className="mk-container">
-          <span className="mk-trust-label">Built for</span>
-          <ul className="mk-trust-list">
-            {TRUST_AUDIENCE.map((a) => (
-              <li key={a}>{a}</li>
-            ))}
-          </ul>
-        </div>
-      </div>
 
       <Section variant="std" surface="white">
         <SectionHead
@@ -162,9 +142,8 @@ export default function HomePage() {
 
       <CtaBand
         heading={<>Start with readiness. Leave with reviewed workflows.</>}
-        body={<>Three minutes to a score, tier, and starter artifact. No software seats, no vendor lock-in.</>}
         actions={[
-          { label: 'Get my AI readiness score', href: '/assessment', variant: 'gold' },
+          { label: 'Get my AI readiness score', href: '/assessment/take', variant: 'gold' },
           { label: 'See what learners build', href: '/courses/foundation', variant: 'ghost-dark' },
         ]}
       />

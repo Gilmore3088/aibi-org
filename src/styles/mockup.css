@@ -348,6 +348,20 @@ section.mk-std { padding: 56px 0; }
   gap: 12px;
   justify-content: center;
 }
+/* Enlarge the gold CTA inside cta-band — true bottom-of-page conversion button */
+.mk-cta-actions .mk-btn-gold {
+  height: 64px;
+  padding: 0 32px;
+  font-size: 18px;
+  font-weight: 700;
+  border-radius: var(--r-md);
+  letter-spacing: -0.005em;
+}
+.mk-cta-actions .mk-btn-gold:hover { transform: translateY(-2px); }
+.mk-cta-actions .mk-btn-ghost-dark {
+  height: 48px;
+  font-size: 15px;
+}
 
 /* ============================================================
    Sketch ribbon (development only)
@@ -1272,6 +1286,81 @@ section.mk-std { padding: 56px 0; }
 }
 .mk-curr-bonus .mk-curr-title { color: #fff; }
 .mk-curr-bonus .mk-curr-meta { color: rgba(255,255,255,0.62); }
+
+/* ============================================================
+   Mockup site footer (2026-05-26)
+   ============================================================ */
+.mk-footer {
+  background: var(--ink); color: #fff;
+  padding: 64px 0 32px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  margin-top: 64px;
+}
+.mk-footer-top {
+  display: grid; gap: 48px; grid-template-columns: 1fr;
+}
+@media (min-width: 900px) { .mk-footer-top { grid-template-columns: 1.1fr 1.9fr; gap: 64px; } }
+.mk-footer-brand .mk-brand {
+  display: inline-flex; align-items: center; gap: 12px;
+  color: #fff; text-decoration: none;
+}
+.mk-footer-brand .mk-seal {
+  width: 36px; height: 36px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: var(--r-md);
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--gold);
+}
+.mk-footer-brand .mk-wm-1 {
+  font-size: 14px; font-weight: 700; letter-spacing: -0.005em;
+}
+.mk-footer-tag {
+  margin-top: 16px; max-width: 360px;
+  font-size: 13px; line-height: 1.55;
+  color: rgba(255,255,255,0.62);
+}
+.mk-footer-nav {
+  display: grid; gap: 32px;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 560px) { .mk-footer-nav { grid-template-columns: repeat(3, 1fr); } }
+.mk-footer-col h2 {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--gold-soft);
+  margin: 0 0 16px;
+}
+.mk-footer-col ul { list-style: none; padding: 0; margin: 0; }
+.mk-footer-col li { padding: 6px 0; }
+.mk-footer-col a {
+  color: rgba(255,255,255,0.82); text-decoration: none;
+  font-size: 14px; font-weight: 500;
+  transition: color 120ms;
+}
+.mk-footer-col a:hover { color: var(--gold); }
+.mk-footer-bottom {
+  margin-top: 56px; padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,0.10);
+  display: flex; flex-direction: column; gap: 12px;
+  align-items: flex-start;
+}
+@media (min-width: 720px) {
+  .mk-footer-bottom { flex-direction: row; justify-content: space-between; align-items: center; gap: 24px; }
+}
+.mk-footer-bottom p {
+  font-size: 12px; color: rgba(255,255,255,0.52);
+  margin: 0;
+}
+.mk-footer-legal {
+  list-style: none; padding: 0; margin: 0;
+  display: flex; gap: 24px; flex-wrap: wrap;
+}
+.mk-footer-legal a {
+  font-size: 12px; color: rgba(255,255,255,0.62);
+  text-decoration: none; font-weight: 500;
+  transition: color 120ms;
+}
+.mk-footer-legal a:hover { color: var(--gold); }
 
 /* ============================================================
    /assessment/take — assessment runner page (2026-05-26)
