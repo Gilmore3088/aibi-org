@@ -3,24 +3,35 @@ import { ImageResponse } from 'next/og';
 // Open Graph image — 1200×630, served at /opengraph-image (Next.js convention).
 // Rendered via @vercel/og at the edge so it has zero static asset size.
 //
-// Ledger palette (matches src/styles/tokens-ledger.css):
-//   --ledger-bg     #ECE9DF (linen)
-//   --ledger-paper  #F4F1E7
-//   --ledger-ink    #0E1B2D
-//   --ledger-accent #7C5814 (gold)
-//   --ledger-muted  #5C6B82
+// Mockup palette (matches src/styles/tokens-mockup.css):
+//   --ink     #071A2F  (primary dark)
+//   --cream   #F7F3EA  (page surface)
+//   --gold    #C8A24A  (single accent)
 //
 // Rules:
-//   - Wordmark only (no circular seal — retired 2026-05-09).
-//   - Newsreader fallback to Georgia at edge runtime (no custom font load
-//     to keep cold-start cheap).
+//   - Two-line wordmark + thin gold rule.
+//   - Inter via system fallback at edge runtime (no custom font load to
+//     keep cold-start cheap). Satori falls back to system-ui where Inter
+//     isn't preloaded.
 //   - Drop the retired "A-B-C of AI Banking" tagline.
 //   - Tagline "Turning Bankers into Builders" stays.
+//   - No italics (italics retired site-wide).
+//   - Dark navy background, cream + gold accents — matches the mockup
+//     hero card aesthetic.
 
 export const runtime = 'edge';
 export const alt = 'The AI Banking Institute — Turning Bankers into Builders';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
+
+const INK = '#071A2F';
+const CREAM = '#F7F3EA';
+const GOLD = '#C8A24A';
+const GOLD_SOFT = '#E6D39B';
+const ON_DARK_70 = 'rgba(255, 255, 255, 0.70)';
+
+const INTER_STACK =
+  'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
 
 export default async function OpengraphImage() {
   return new ImageResponse(
@@ -33,64 +44,97 @@ export default async function OpengraphImage() {
           flexDirection: 'column',
           justifyContent: 'space-between',
           padding: '72px 84px',
-          background: '#ECE9DF',
-          color: '#0E1B2D',
-          fontFamily: 'Georgia, "Newsreader", serif',
+          background: INK,
+          color: CREAM,
+          fontFamily: INTER_STACK,
         }}
       >
-        {/* Top: two-line wordmark + thin gold rule */}
+        {/* Top: two-line wordmark with gold seal accent */}
         <div
           style={{
             display: 'flex',
-            flexDirection: 'column',
-            gap: 4,
+            alignItems: 'center',
+            gap: 16,
           }}
         >
           <div
             style={{
-              fontFamily: 'system-ui, "Geist", -apple-system, sans-serif',
-              fontWeight: 700,
-              fontSize: 28,
+              width: 48,
+              height: 48,
+              borderRadius: 12,
+              background: GOLD,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: INK,
+              fontWeight: 800,
+              fontSize: 22,
               letterSpacing: 0,
-              textTransform: 'uppercase',
-              lineHeight: 1,
-              color: '#0E1B2D',
             }}
           >
-            THE AI BANKING
+            Ai
           </div>
           <div
             style={{
-              fontFamily: 'system-ui, "Geist", -apple-system, sans-serif',
-              fontWeight: 700,
-              fontSize: 28,
-              letterSpacing: 0,
-              textTransform: 'uppercase',
-              lineHeight: 1,
-              color: '#8C95A8',
+              display: 'flex',
+              flexDirection: 'column',
             }}
           >
-            INSTITUTE
+            <div
+              style={{
+                fontFamily: INTER_STACK,
+                fontWeight: 600,
+                fontSize: 22,
+                letterSpacing: 0,
+                lineHeight: 1.1,
+                color: CREAM,
+              }}
+            >
+              The AI Banking Institute
+            </div>
+            <div
+              style={{
+                fontFamily: INTER_STACK,
+                fontWeight: 400,
+                fontSize: 16,
+                lineHeight: 1.2,
+                color: ON_DARK_70,
+              }}
+            >
+              Regulated Intelligence
+            </div>
           </div>
         </div>
 
-        {/* Middle: big serif statement with italic gold accent */}
+        {/* Middle: editorial statement, gold accent on payoff word */}
         <div
           style={{
             display: 'flex',
             flexDirection: 'column',
-            gap: 24,
+            gap: 16,
           }}
         >
           <div
             style={{
-              fontFamily: 'Georgia, "Newsreader", serif',
-              fontWeight: 500,
+              fontFamily: INTER_STACK,
+              fontWeight: 400,
+              fontSize: 18,
+              letterSpacing: '0.22em',
+              textTransform: 'uppercase',
+              color: GOLD_SOFT,
+            }}
+          >
+            AI proficiency for community banks &amp; credit unions
+          </div>
+          <div
+            style={{
+              fontFamily: INTER_STACK,
+              fontWeight: 700,
               fontSize: 104,
               lineHeight: 1.0,
               letterSpacing: '-0.025em',
-              color: '#0E1B2D',
-              maxWidth: '88%',
+              color: CREAM,
+              maxWidth: '92%',
               display: 'flex',
               flexDirection: 'column',
             }}
@@ -98,34 +142,43 @@ export default async function OpengraphImage() {
             <span>Turning Bankers</span>
             <span>
               into{' '}
-              <span
-                style={{
-                  fontStyle: 'italic',
-                  color: '#7C5814',
-                }}
-              >
-                Builders.
-              </span>
+              <span style={{ color: GOLD }}>Builders.</span>
             </span>
           </div>
         </div>
 
-        {/* Bottom: kicker + domain */}
+        {/* Bottom: gold rule + domain */}
         <div
           style={{
             display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            fontFamily: 'ui-monospace, "JetBrains Mono", Menlo, monospace',
-            fontSize: 18,
-            letterSpacing: '0.18em',
-            textTransform: 'uppercase',
+            flexDirection: 'column',
+            gap: 18,
           }}
         >
-          <span style={{ color: '#5C6B82' }}>
-            AI proficiency for community banks &amp; credit unions
-          </span>
-          <span style={{ color: '#7C5814' }}>aibankinginstitute.com</span>
+          <div
+            style={{
+              width: 96,
+              height: 2,
+              background: GOLD,
+            }}
+          />
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              fontFamily: INTER_STACK,
+              fontSize: 16,
+              fontWeight: 600,
+              letterSpacing: '0.18em',
+              textTransform: 'uppercase',
+            }}
+          >
+            <span style={{ color: ON_DARK_70 }}>
+              SR 11-7 &middot; TPRM &middot; ECOA / Reg B aligned
+            </span>
+            <span style={{ color: GOLD }}>aibankinginstitute.com</span>
+          </div>
         </div>
       </div>
     ),

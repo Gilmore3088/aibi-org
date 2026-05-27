@@ -16,20 +16,51 @@ export default function ErrorPage({
   }, [error]);
 
   return (
-    <main className="min-h-[60vh] flex items-center justify-center px-6 py-24">
+    <main
+      className="min-h-[60vh] flex items-center justify-center px-6 py-24"
+      style={{
+        background: 'var(--cream)',
+        fontFamily:
+          'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif',
+      }}
+    >
       <div className="max-w-xl text-center space-y-6">
-        <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--ledger-weak)]">
+        <p
+          className="text-xs uppercase"
+          style={{
+            color: 'var(--gold-deep)',
+            fontWeight: 600,
+            letterSpacing: '0.2em',
+          }}
+        >
           Something went wrong
         </p>
-        <h1 className="font-serif text-5xl text-[color:var(--ledger-ink)] leading-tight">
+        <h1
+          className="text-5xl leading-tight"
+          style={{
+            color: 'var(--ink)',
+            fontWeight: 700,
+            letterSpacing: '-0.02em',
+          }}
+        >
           We hit an unexpected error.
         </h1>
-        <p className="text-lg text-[color:var(--ledger-ink)]/70 leading-relaxed">
+        <p
+          className="text-lg leading-relaxed"
+          style={{ color: 'var(--slate-600)' }}
+        >
           Our end, not yours. The issue has been logged. Try reloading the page,
           or return to the home page and take the free assessment.
         </p>
         {error.digest && (
-          <p className="font-mono text-xs text-[color:var(--ledger-muted)]">
+          <p
+            className="text-xs"
+            style={{
+              color: 'var(--slate-500)',
+              fontFamily:
+                'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
+            }}
+          >
             Reference: {error.digest}
           </p>
         )}
@@ -37,15 +68,29 @@ export default function ErrorPage({
           <button
             type="button"
             onClick={reset}
-            className="inline-block px-8 py-4 bg-[color:var(--ledger-accent)] text-[color:var(--ledger-bg)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--ledger-accent-light)] active:scale-[0.98] transition-all"
+            className="inline-block px-8 py-4 text-[11px] uppercase transition-all active:scale-[0.98]"
+            style={{
+              background: 'var(--ink)',
+              color: 'var(--cream)',
+              fontWeight: 600,
+              letterSpacing: '1.2px',
+              borderRadius: '12px',
+            }}
           >
-            Try again
+            TRY AGAIN
           </button>
           <Link
             href="/"
-            className="inline-block px-8 py-4 border border-[color:var(--ledger-ink)]/30 text-[color:var(--ledger-ink)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:border-[color:var(--ledger-accent)] hover:text-[color:var(--ledger-accent)] transition-colors"
+            className="inline-block px-8 py-4 text-[11px] uppercase transition-colors"
+            style={{
+              border: '1px solid var(--ink-a15)',
+              color: 'var(--ink)',
+              fontWeight: 600,
+              letterSpacing: '1.2px',
+              borderRadius: '12px',
+            }}
           >
-            Back to home
+            BACK TO HOME
           </Link>
         </div>
       </div>
