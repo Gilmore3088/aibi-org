@@ -83,38 +83,41 @@ export default async function DashboardAssessmentsPage() {
   const indepth = (indepthResult.data ?? []) as InDepthEnrollmentRow[];
 
   return (
-    <main style={{ maxWidth: 880, margin: '0 auto', padding: '48px 24px 80px' }}>
+    <main
+      className="mockup-scope"
+      style={{ maxWidth: 880, margin: '0 auto', padding: '48px 24px 80px' }}
+    >
       <p
         style={{
-          fontFamily: 'var(--ledger-mono)',
           fontSize: 11,
-          letterSpacing: '0.18em',
+          fontWeight: 700,
+          letterSpacing: '0.22em',
           textTransform: 'uppercase',
-          color: 'var(--ledger-accent)',
-          margin: '0 0 8px',
+          color: 'var(--gold-deep)',
+          margin: '0 0 12px',
         }}
       >
         Your assessments
       </p>
       <h1
         style={{
-          fontFamily: 'var(--ledger-serif)',
           fontSize: 'clamp(36px, 4vw, 52px)',
+          fontWeight: 600,
           lineHeight: 1.05,
           letterSpacing: '-0.02em',
-          margin: '0 0 8px',
-          color: 'var(--ledger-ink)',
+          margin: '0 0 12px',
+          color: 'var(--ink)',
         }}
       >
         Assessment history
       </h1>
       <p
         style={{
-          fontFamily: 'var(--ledger-serif)',
-          fontStyle: 'italic',
           fontSize: 17,
-          color: 'var(--ledger-ink-2)',
-          margin: '0 0 32px',
+          lineHeight: 1.55,
+          color: 'var(--slate-600)',
+          margin: '0 0 40px',
+          maxWidth: '60ch',
         }}
       >
         Every readiness assessment you have taken or purchased, with links
@@ -124,22 +127,25 @@ export default async function DashboardAssessmentsPage() {
       <section style={{ marginBottom: 40 }}>
         <h2
           style={{
-            fontFamily: 'var(--ledger-mono)',
             fontSize: 11,
-            letterSpacing: '0.18em',
+            fontWeight: 700,
+            letterSpacing: '0.22em',
             textTransform: 'uppercase',
-            color: 'var(--ledger-muted)',
-            borderBottom: '1px solid var(--ledger-rule)',
-            paddingBottom: 10,
+            color: 'var(--slate-500)',
+            borderBottom: '1px solid var(--ink-a10)',
+            paddingBottom: 12,
             margin: '0 0 16px',
           }}
         >
           Free readiness checks · {free.length}
         </h2>
         {free.length === 0 ? (
-          <p style={{ color: 'var(--ledger-muted)', fontSize: 14 }}>
+          <p style={{ color: 'var(--slate-600)', fontSize: 14 }}>
             You have not completed the free readiness check yet.{' '}
-            <Link href="/assessment/start" style={{ color: 'var(--ledger-accent)' }}>
+            <Link
+              href="/assessment/start"
+              style={{ color: 'var(--gold-deep)', fontWeight: 600 }}
+            >
               Take it now →
             </Link>
           </p>
@@ -153,28 +159,27 @@ export default async function DashboardAssessmentsPage() {
                   gridTemplateColumns: '1fr auto auto auto',
                   alignItems: 'baseline',
                   gap: 16,
-                  padding: '12px 0',
-                  borderBottom: '1px solid var(--ledger-rule)',
+                  padding: '14px 0',
+                  borderBottom: '1px solid var(--ink-a10)',
                 }}
               >
-                <span style={{ fontFamily: 'var(--ledger-serif)', color: 'var(--ledger-ink)' }}>
+                <span style={{ color: 'var(--ink)', fontWeight: 500 }}>
                   Readiness check
                 </span>
                 <span
                   style={{
-                    fontFamily: 'var(--ledger-mono)',
                     fontSize: 12,
-                    color: 'var(--ledger-muted)',
+                    color: 'var(--slate-500)',
                   }}
                 >
                   {new Date(row.created_at).toLocaleDateString()}
                 </span>
                 <span
                   style={{
-                    fontFamily: 'var(--ledger-mono)',
-                    fontSize: 12,
+                    fontSize: 13,
+                    fontWeight: 600,
                     fontVariantNumeric: 'tabular-nums',
-                    color: 'var(--ledger-ink)',
+                    color: 'var(--ink)',
                   }}
                 >
                   {row.score}
@@ -182,14 +187,14 @@ export default async function DashboardAssessmentsPage() {
                 <Link
                   href={`/results/${row.id}`}
                   style={{
-                    fontFamily: 'var(--ledger-mono)',
                     fontSize: 11,
-                    letterSpacing: '0.16em',
+                    fontWeight: 700,
+                    letterSpacing: '0.18em',
                     textTransform: 'uppercase',
-                    color: 'var(--ledger-accent)',
+                    color: 'var(--gold-deep)',
                   }}
                 >
-                  View →
+                  VIEW →
                 </Link>
               </li>
             ))}
@@ -200,22 +205,25 @@ export default async function DashboardAssessmentsPage() {
       <section>
         <h2
           style={{
-            fontFamily: 'var(--ledger-mono)',
             fontSize: 11,
-            letterSpacing: '0.18em',
+            fontWeight: 700,
+            letterSpacing: '0.22em',
             textTransform: 'uppercase',
-            color: 'var(--ledger-muted)',
-            borderBottom: '1px solid var(--ledger-rule)',
-            paddingBottom: 10,
+            color: 'var(--slate-500)',
+            borderBottom: '1px solid var(--ink-a10)',
+            paddingBottom: 12,
             margin: '0 0 16px',
           }}
         >
           In-Depth Assessments · {indepth.length}
         </h2>
         {indepth.length === 0 ? (
-          <p style={{ color: 'var(--ledger-muted)', fontSize: 14 }}>
+          <p style={{ color: 'var(--slate-600)', fontSize: 14 }}>
             You have not purchased an In-Depth Assessment.{' '}
-            <Link href="/assessment/in-depth" style={{ color: 'var(--ledger-accent)' }}>
+            <Link
+              href="/assessment/in-depth"
+              style={{ color: 'var(--gold-deep)', fontWeight: 600 }}
+            >
               Learn more →
             </Link>
           </p>
@@ -229,18 +237,17 @@ export default async function DashboardAssessmentsPage() {
                   gridTemplateColumns: '1fr auto auto',
                   alignItems: 'baseline',
                   gap: 16,
-                  padding: '12px 0',
-                  borderBottom: '1px solid var(--ledger-rule)',
+                  padding: '14px 0',
+                  borderBottom: '1px solid var(--ink-a10)',
                 }}
               >
-                <span style={{ fontFamily: 'var(--ledger-serif)', color: 'var(--ledger-ink)' }}>
+                <span style={{ color: 'var(--ink)', fontWeight: 500 }}>
                   In-Depth Assessment
                 </span>
                 <span
                   style={{
-                    fontFamily: 'var(--ledger-mono)',
                     fontSize: 12,
-                    color: 'var(--ledger-muted)',
+                    color: 'var(--slate-500)',
                   }}
                 >
                   {new Date(row.enrolled_at).toLocaleDateString()}
@@ -248,14 +255,14 @@ export default async function DashboardAssessmentsPage() {
                 <Link
                   href="/assessment/in-depth/take"
                   style={{
-                    fontFamily: 'var(--ledger-mono)',
                     fontSize: 11,
-                    letterSpacing: '0.16em',
+                    fontWeight: 700,
+                    letterSpacing: '0.18em',
                     textTransform: 'uppercase',
-                    color: 'var(--ledger-accent)',
+                    color: 'var(--gold-deep)',
                   }}
                 >
-                  Continue →
+                  CONTINUE →
                 </Link>
               </li>
             ))}
