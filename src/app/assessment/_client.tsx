@@ -230,23 +230,27 @@ export default function AssessmentLandingPage() {
         <div className="mk-container mk-hero-inner">
           <div>
             <EyebrowChip icon={<GaugeIcon className="mk-ic" />}>
-              Free AI Readiness Assessment
+              In-Depth AI Maturity Assessment · $99
             </EyebrowChip>
-            <h1>Get your AI readiness score in 3 minutes.</h1>
+            <h1>Measure your AI maturity across 8 dimensions.</h1>
             <p className="mk-lede">
-              See your score, maturity tier, top gap, and recommended next step — no sales call
-              required.
+              Forty-eight questions, twenty minutes. Score, role-specific action plan, and a
+              reviewer-ready PDF report. Anonymized team rollup included.
             </p>
             <div className="mk-ctas">
-              <Button variant="gold" size="lg" href="/assessment/take">
-                Start free assessment <ArrowR className="mk-ic" />
+              <Button variant="gold" size="lg" href="/assessment/in-depth">
+                Start maturity assessment <ArrowR className="mk-ic" />
               </Button>
               <Button variant="ghost-dark" size="lg" href="#mini-quiz">
                 See sample report
               </Button>
             </div>
             <p className="mk-hero-foot">
-              Upgrade later for the full 8-dimension report.
+              Not ready?{' '}
+              <a href="/assessment/take" className="mk-hero-foot-link">
+                Take the free readiness assessment here
+              </a>
+              .
             </p>
           </div>
 

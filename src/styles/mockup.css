@@ -2730,6 +2730,15 @@ section.mk-std { padding: 56px 0; }
   font-size: 13px; font-weight: 500;
   color: rgba(255,255,255,0.62);
 }
+.mk-hero-foot-link {
+  color: var(--gold); font-weight: 600;
+  border-bottom: 1px solid rgba(200, 162, 74, 0.40);
+  padding-bottom: 1px;
+  transition: color 120ms, border-color 120ms;
+}
+.mk-hero-foot-link:hover {
+  color: var(--gold-2); border-bottom-color: var(--gold);
+}
 
 /* Compact 8-dim grid — kill the scale bars, tighten text */
 .mk-dims-compact .mk-dcard .mk-scale { display: none; }
