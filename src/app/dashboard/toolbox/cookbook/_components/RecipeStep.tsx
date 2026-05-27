@@ -74,51 +74,56 @@ export function RecipeStep({ index, recipeSlug, step, librarySkillId }: Props) {
 
   const buttonLabel =
     state === 'saving'
-      ? 'Saving…'
+      ? 'SAVING…'
       : state === 'saved'
-        ? 'Saved to Toolbox'
+        ? 'SAVED TO TOOLBOX'
         : state === 'error'
-          ? 'Save failed'
-          : 'Save to my Toolbox';
+          ? 'SAVE FAILED'
+          : 'SAVE TO MY TOOLBOX';
+
+  const buttonClass =
+    state === 'saved'
+      ? 'rounded-[12px] bg-[color:var(--emerald-700)] px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[1.2px] text-white disabled:opacity-60'
+      : 'rounded-[12px] bg-[color:var(--ink)] px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[1.2px] text-white transition-colors hover:bg-[color:var(--ink-2)] disabled:opacity-60';
 
   return (
-    <article className="border border-[color:var(--ledger-ink)]/15 bg-[color:var(--ledger-paper)] p-6">
-      <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--ledger-accent)]">
+    <article className="rounded-[24px] border border-[color:var(--ink-a15)] bg-white p-6 shadow-[var(--shadow-soft)]">
+      <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
         Step {index} · {snap.kind ? snap.name ?? step.skill_slug : step.skill_slug}
       </p>
-      <p className="mt-3 leading-relaxed text-[color:var(--ledger-ink)]">{step.narrative}</p>
+      <p className="mt-3 text-base leading-relaxed text-[color:var(--ink)]">{step.narrative}</p>
 
-      <section className="mt-5 border-t border-[color:var(--ledger-ink)]/10 pt-5">
+      <section className="mt-5 border-t border-[color:var(--ink-a10)] pt-5">
         {snap.kind === 'template' && (
           <>
-            <h3 className="font-serif-sc text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)]">
+            <h3 className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[color:var(--slate-500)]">
               System prompt
             </h3>
-            <pre className="mt-2 whitespace-pre-wrap break-words font-mono text-[12px] leading-relaxed text-[color:var(--ledger-ink)]">
+            <pre className="mt-2 whitespace-pre-wrap break-words rounded-[12px] bg-[color:var(--cream)] p-3 font-mono text-[12px] leading-relaxed text-[color:var(--ink)]">
               {snap.systemPrompt}
             </pre>
-            <h3 className="mt-4 font-serif-sc text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)]">
+            <h3 className="mt-4 text-[10px] font-semibold uppercase tracking-[0.18em] text-[color:var(--slate-500)]">
               User template
             </h3>
-            <pre className="mt-2 whitespace-pre-wrap break-words font-mono text-[12px] leading-relaxed text-[color:var(--ledger-ink)]">
+            <pre className="mt-2 whitespace-pre-wrap break-words rounded-[12px] bg-[color:var(--cream)] p-3 font-mono text-[12px] leading-relaxed text-[color:var(--ink)]">
               {snap.userPromptTemplate}
             </pre>
           </>
         )}
         {snap.kind === 'workflow' && (
           <>
-            <h3 className="font-serif-sc text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)]">
+            <h3 className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[color:var(--slate-500)]">
               Purpose
             </h3>
-            <p className="mt-2 text-[13px] leading-relaxed text-[color:var(--ledger-ink)]">
+            <p className="mt-2 text-[13px] leading-relaxed text-[color:var(--ink)]">
               {snap.purpose}
             </p>
             {snap.steps && snap.steps.length > 0 ? (
               <>
-                <h3 className="mt-4 font-serif-sc text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)]">
+                <h3 className="mt-4 text-[10px] font-semibold uppercase tracking-[0.18em] text-[color:var(--slate-500)]">
                   Steps
                 </h3>
-                <ol className="mt-2 list-decimal pl-5 text-[13px] text-[color:var(--ledger-ink)]">
+                <ol className="mt-2 list-decimal space-y-1 pl-5 text-[13px] leading-relaxed text-[color:var(--ink)]">
                   {snap.steps.map((s, i) => (
                     <li key={i}>{s}</li>
                   ))}
@@ -127,10 +132,10 @@ export function RecipeStep({ index, recipeSlug, step, librarySkillId }: Props) {
             ) : null}
             {snap.guardrails && snap.guardrails.length > 0 ? (
               <>
-                <h3 className="mt-4 font-serif-sc text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)]">
+                <h3 className="mt-4 text-[10px] font-semibold uppercase tracking-[0.18em] text-[color:var(--slate-500)]">
                   Guardrails
                 </h3>
-                <ul className="mt-2 list-disc pl-5 text-[13px] text-[color:var(--ledger-ink)]">
+                <ul className="mt-2 list-disc space-y-1 pl-5 text-[13px] leading-relaxed text-[color:var(--ink)]">
                   {snap.guardrails.map((g, i) => (
                     <li key={i}>{g}</li>
                   ))}
@@ -142,8 +147,8 @@ export function RecipeStep({ index, recipeSlug, step, librarySkillId }: Props) {
       </section>
 
       {step.notes ? (
-        <p className="mt-5 border-l-4 border-[color:var(--ledger-accent)] pl-4 text-sm text-[color:var(--ledger-muted)]">
-          <strong>Note:</strong> {step.notes}
+        <p className="mt-5 rounded-[12px] border-l-4 border-[color:var(--gold)] bg-[color:var(--cream-2)] py-3 pl-4 pr-4 text-sm text-[color:var(--slate-600)]">
+          <strong className="font-semibold text-[color:var(--ink)]">Note:</strong> {step.notes}
         </p>
       ) : null}
 
@@ -151,8 +156,8 @@ export function RecipeStep({ index, recipeSlug, step, librarySkillId }: Props) {
         <button
           type="button"
           onClick={handleSave}
-          disabled={!librarySkillId || state === 'saving'}
-          className="bg-[color:var(--ledger-accent)] px-4 py-2 font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-bg)] disabled:opacity-50"
+          disabled={!librarySkillId || state === 'saving' || state === 'saved'}
+          className={buttonClass}
         >
           {buttonLabel}
         </button>
