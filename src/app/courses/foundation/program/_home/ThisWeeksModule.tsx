@@ -1,0 +1,266 @@
+// ThisWeeksModule — the current module with its three sub-tasks
+// (Learn it / Try it / Use it) and each task's completion state +
+// time estimate.
+//
+// Audit §2 item 3. The Foundation module data shape doesn't expose
+// per-sub-task completion yet, so the three rows are derived from
+// the module's total minute budget (split 25/40/35 — a reasonable
+// approximation of the Takeaway/Sandbox/Submit pacing). When the
+// sub-task tracking lands in Supabase the row state swaps in.
+
+import Link from 'next/link';
+import type { LMSModule } from '@/components/lms';
+
+const FONT_INTER =
+  'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
+
+interface ThisWeeksModuleProps {
+  readonly currentModule: LMSModule;
+  readonly isCompleted: boolean;
+}
+
+type SubTaskState = 'done' | 'in-progress' | 'pending';
+
+interface SubTask {
+  readonly label: string;
+  readonly description: string;
+  readonly minutes: number;
+  readonly state: SubTaskState;
+}
+
+function buildSubTasks(mod: LMSModule, isCompleted: boolean): readonly SubTask[] {
+  const total = mod.mins;
+  const learnMin = Math.max(8, Math.round(total * 0.25));
+  const tryMin = Math.max(10, Math.round(total * 0.4));
+  const useMin = Math.max(8, total - learnMin - tryMin);
+
+  if (isCompleted) {
+    return [
+      { label: 'Learn it', description: 'Key takeaway', minutes: learnMin, state: 'done' },
+      { label: 'Try it', description: 'Sandbox scenario', minutes: tryMin, state: 'done' },
+      { label: 'Use it', description: 'Submit your work', minutes: useMin, state: 'done' },
+    ];
+  }
+
+  // TODO: wire real sub-task completion state from Supabase activity log.
+  // Placeholder — assume the learner is partway through "Try it".
+  return [
+    { label: 'Learn it', description: 'Key takeaway', minutes: learnMin, state: 'done' },
+    { label: 'Try it', description: 'Sandbox scenario', minutes: tryMin, state: 'in-progress' },
+    { label: 'Use it', description: 'Submit your work', minutes: useMin, state: 'pending' },
+  ];
+}
+
+function StateMark({ state }: { readonly state: SubTaskState }) {
+  if (state === 'done') {
+    return (
+      <span
+        aria-label="Completed"
+        style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: 22,
+          height: 22,
+          borderRadius: 999,
+          background: 'var(--emerald-700)',
+          color: 'var(--cream)',
+          fontSize: 13,
+          fontWeight: 700,
+        }}
+      >
+        ✓
+      </span>
+    );
+  }
+  if (state === 'in-progress') {
+    return (
+      <span
+        aria-label="In progress"
+        style={{
+          display: 'inline-block',
+          width: 14,
+          height: 14,
+          borderRadius: 999,
+          background: 'var(--gold)',
+          boxShadow: '0 0 0 4px rgba(200, 162, 74, 0.18)',
+        }}
+      />
+    );
+  }
+  return (
+    <span
+      aria-label="Pending"
+      style={{
+        display: 'inline-block',
+        width: 14,
+        height: 14,
+        borderRadius: 999,
+        border: '1.5px solid var(--slate-400)',
+        background: 'transparent',
+      }}
+    />
+  );
+}
+
+export function ThisWeeksModule({ currentModule, isCompleted }: ThisWeeksModuleProps) {
+  const tasks = buildSubTasks(currentModule, isCompleted);
+  const href = `/courses/foundation/program/${currentModule.num}`;
+
+  return (
+    <section
+      style={{
+        marginBottom: 40,
+        background: '#FFFFFF',
+        border: '1px solid var(--slate-200)',
+        borderRadius: 24,
+        padding: 'clamp(24px, 3vw, 32px)',
+        boxShadow: 'var(--shadow-soft)',
+        fontFamily: FONT_INTER,
+      }}
+      aria-labelledby="this-weeks-heading"
+    >
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'baseline',
+          justifyContent: 'space-between',
+          gap: 16,
+          marginBottom: 6,
+          flexWrap: 'wrap',
+        }}
+      >
+        <span
+          style={{
+            fontSize: 10.5,
+            fontWeight: 700,
+            letterSpacing: '0.2em',
+            textTransform: 'uppercase',
+            color: 'var(--gold-deep)',
+          }}
+        >
+          This module
+        </span>
+        <span
+          style={{
+            fontSize: 11,
+            fontWeight: 700,
+            letterSpacing: '0.16em',
+            textTransform: 'uppercase',
+            color: 'var(--slate-500)',
+          }}
+        >
+          Module {String(currentModule.num).padStart(2, '0')} &middot; {currentModule.mins} min
+        </span>
+      </div>
+      <h2
+        id="this-weeks-heading"
+        style={{
+          margin: '4px 0 6px',
+          fontSize: 24,
+          fontWeight: 700,
+          letterSpacing: '-0.01em',
+          color: 'var(--ink)',
+          lineHeight: 1.2,
+        }}
+      >
+        {currentModule.title}
+      </h2>
+      <p
+        style={{
+          margin: '0 0 24px',
+          fontSize: 14,
+          lineHeight: 1.55,
+          color: 'var(--slate-600)',
+          maxWidth: '62ch',
+        }}
+      >
+        {currentModule.goal}
+      </p>
+
+      <ol
+        style={{
+          listStyle: 'none',
+          margin: 0,
+          padding: 0,
+          display: 'grid',
+          gap: 10,
+        }}
+      >
+        {tasks.map((task) => (
+          <li
+            key={task.label}
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'auto 1fr auto',
+              alignItems: 'center',
+              gap: 16,
+              padding: '14px 16px',
+              borderRadius: 16,
+              background: task.state === 'done' ? 'var(--cream)' : 'var(--cream-2)',
+              border: '1px solid var(--slate-200)',
+            }}
+          >
+            <StateMark state={task.state} />
+            <div>
+              <div
+                style={{
+                  fontSize: 14,
+                  fontWeight: 700,
+                  color: 'var(--ink)',
+                  letterSpacing: '-0.005em',
+                }}
+              >
+                {task.label}
+              </div>
+              <div
+                style={{
+                  fontSize: 13,
+                  color: 'var(--slate-600)',
+                  marginTop: 2,
+                }}
+              >
+                {task.description}
+              </div>
+            </div>
+            <span
+              style={{
+                fontSize: 11,
+                fontWeight: 700,
+                letterSpacing: '0.14em',
+                textTransform: 'uppercase',
+                color: 'var(--slate-500)',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {task.minutes} min
+            </span>
+          </li>
+        ))}
+      </ol>
+
+      <div style={{ marginTop: 24 }}>
+        <Link
+          href={href}
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 8,
+            padding: '12px 18px',
+            borderRadius: 12,
+            background: 'var(--ink)',
+            color: 'var(--cream)',
+            fontSize: 12,
+            fontWeight: 700,
+            letterSpacing: '0.16em',
+            textTransform: 'uppercase',
+            textDecoration: 'none',
+          }}
+        >
+          Open module
+          <span aria-hidden="true" style={{ fontWeight: 600, letterSpacing: 0 }}>→</span>
+        </Link>
+      </div>
+    </section>
+  );
+}
