@@ -143,13 +143,13 @@ export function InDepthRunner(): React.ReactElement {
       <main className="min-h-screen">
         <ProgressBar progress={0} />
         <div className="px-6 py-12 md:py-16 max-w-4xl mx-auto">
-          <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-[color:var(--gold)] mb-3 font-semibold">
+          <p className="text-[11px] uppercase tracking-[0.22em] text-[color:var(--gold)] mb-3 font-semibold">
             Before we begin
           </p>
-          <h1 className="font-serif text-3xl md:text-5xl text-[color:var(--ink)] leading-[1.02] tracking-tight">
+          <h1 className="text-3xl md:text-5xl text-[color:var(--ink)] leading-[1.02] tracking-tight">
             Which seat are you reading <em className="text-[color:var(--gold)]">from?</em>
           </h1>
-          <p className="font-serif italic text-lg text-[color:var(--ink)]/75 mt-4 leading-relaxed max-w-[58ch]">
+          <p className="italic text-lg text-[color:var(--ink)]/75 mt-4 leading-relaxed max-w-[58ch]">
             Your Briefing will be framed for your seat. Optional &mdash; skip and you&apos;ll still get the full diagnosis.
           </p>
 
@@ -162,7 +162,7 @@ export function InDepthRunner(): React.ReactElement {
                 return (
                   <label
                     key={id}
-                    className={`relative block border-2 rounded-[3px] p-5 cursor-pointer transition-all ${
+                    className={`relative block border-2 rounded-2xl p-5 cursor-pointer transition-all ${
                       selected
                         ? 'border-[color:var(--gold)] bg-[color:var(--gold)]/[0.04] shadow-[0_8px_22px_-18px_rgba(14,27,45,0.30)]'
                         : 'border-[color:var(--ink)]/12 hover:border-[color:var(--ink)]/35 hover:bg-[color:#FFFFFF]/40'
@@ -177,7 +177,7 @@ export function InDepthRunner(): React.ReactElement {
                       className="sr-only"
                     />
                     <div className="flex items-start gap-4">
-                      <div className={`flex-none w-10 h-10 grid place-items-center rounded-[2px] transition-colors ${
+                      <div className={`flex-none w-10 h-10 grid place-items-center rounded-xl transition-colors ${
                         selected
                           ? 'bg-[color:var(--gold)] text-[color:var(--cream)]'
                           : 'bg-[color:#FFFFFF] text-[color:var(--ink)]/80'
@@ -185,7 +185,7 @@ export function InDepthRunner(): React.ReactElement {
                         <RoleIcon id={id} />
                       </div>
                       <div className="min-w-0 flex-1">
-                        <span className="font-serif text-lg text-[color:var(--ink)] leading-tight block">
+                        <span className="text-lg text-[color:var(--ink)] leading-tight block">
                           {meta.label}
                         </span>
                         <span className="block text-sm text-[color:var(--ink)]/70 mt-1.5 leading-snug">
@@ -209,14 +209,14 @@ export function InDepthRunner(): React.ReactElement {
               type="button"
               onClick={() => commitRolePick(role)}
               disabled={role === null}
-              className="font-mono text-[11px] uppercase tracking-[0.18em] font-semibold px-8 py-4 bg-[color:var(--gold)] text-[color:var(--cream)] rounded-[1px] disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[color:var(--gold-2)] transition-colors"
+              className="text-[11px] uppercase tracking-[0.18em] font-semibold px-8 py-4 bg-[color:var(--gold)] text-[color:var(--cream)] rounded-[1px] disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[color:var(--gold-2)] transition-colors"
             >
               Begin assessment →
             </button>
             <button
               type="button"
               onClick={() => commitRolePick(null)}
-              className="font-mono text-[11px] uppercase tracking-[0.18em] text-[color:var(--ink)]/60 hover:text-[color:var(--ink)] border-b border-[color:var(--ink)]/30 hover:border-[color:var(--ink)] pb-0.5"
+              className="text-[11px] uppercase tracking-[0.18em] text-[color:var(--ink)]/60 hover:text-[color:var(--ink)] border-b border-[color:var(--ink)]/30 hover:border-[color:var(--ink)] pb-0.5"
             >
               Skip for now
             </button>
@@ -246,7 +246,7 @@ export function InDepthRunner(): React.ReactElement {
         {state.phase === 'score' && state.tier && (
           <div className="max-w-3xl mx-auto space-y-10">
             <div className="flex flex-col items-center text-center">
-              <p className="font-mono text-xs uppercase tracking-widest text-[color:var(--ink)]/70 mb-6">
+              <p className="text-xs uppercase tracking-widest text-[color:var(--ink)]/70 mb-6">
                 Your In-Depth Readiness Score
               </p>
               <ScoreRing
@@ -259,7 +259,7 @@ export function InDepthRunner(): React.ReactElement {
               <h2
                 ref={scoreHeadingRef}
                 tabIndex={-1}
-                className="font-serif text-3xl md:text-4xl mt-8 max-w-xl text-[color:var(--ink)] focus:outline-none"
+                className="text-3xl md:text-4xl mt-8 max-w-xl text-[color:var(--ink)] focus:outline-none"
               >
                 {state.tier.headline}
               </h2>
@@ -270,7 +270,7 @@ export function InDepthRunner(): React.ReactElement {
 
             <div className="text-center">
               {submit.kind === 'submitting' && (
-                <p className="font-mono text-xs uppercase tracking-widest text-[color:var(--ink)]/70">
+                <p className="text-xs uppercase tracking-widest text-[color:var(--ink)]/70">
                   Saving your full breakdown&hellip;
                 </p>
               )}
@@ -287,7 +287,7 @@ export function InDepthRunner(): React.ReactElement {
                       // Re-trigger via a no-op state change.
                       state.advanceToResults();
                     }}
-                    className="font-mono text-xs uppercase tracking-widest text-[color:var(--gold)] hover:opacity-80"
+                    className="text-xs uppercase tracking-widest text-[color:var(--gold)] hover:opacity-80"
                   >
                     Retry
                   </button>
