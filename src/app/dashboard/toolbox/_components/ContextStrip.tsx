@@ -19,17 +19,17 @@ export function ContextStrip() {
   const lastUsed = skills[0];
 
   return (
-    <div className="border-t border-[color:var(--ledger-ink)]/10 bg-[color:var(--ledger-paper)]">
+    <div className="border-t border-[color:var(--ink-a10)] bg-[color:var(--cream)]">
       <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-6 py-3 lg:px-10">
-        <p className="text-sm text-[color:var(--ledger-muted)]">
+        <p className="text-sm text-[color:var(--slate-600)]">
           Welcome back. You have{' '}
-          <span className="font-mono tabular-nums text-[color:var(--ledger-ink)]">{skills.length}</span>{' '}
-          saved playbook{skills.length === 1 ? '' : 's'}. Most recent:{' '}
-          <span className="text-[color:var(--ledger-ink)]">{lastUsed.name}</span>.
+          <span className="tabular-nums font-semibold text-[color:var(--ink)]">{skills.length}</span>{' '}
+          saved prompt{skills.length === 1 ? '' : 's'}. Most recent:{' '}
+          <span className="font-semibold text-[color:var(--ink)]">{lastUsed.name}</span>.
         </p>
         <Link
           href="/dashboard/toolbox?tab=toolbox"
-          className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent)] hover:text-[color:var(--ledger-ink)]"
+          className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[color:var(--gold-deep)] hover:text-[color:var(--ink)]"
         >
           Continue →
         </Link>

@@ -39,9 +39,6 @@ function resolveTarget(
       href: `/courses/foundation/program/${moduleNumber}`,
     };
   }
-  // Cookbook branch must precede the library branch: a cookbook source_ref
-  // (`cookbook:<slug>#step-<n>`) is not library-prefixed, but keeping this
-  // ordering explicit prevents a future edit from reversing it.
   const cookbookMatch = COOKBOOK_REF_PATTERN.exec(sourceRef);
   if (cookbookMatch) {
     const [, slug, step] = cookbookMatch;
@@ -75,7 +72,7 @@ export function SourceBacklink({
   return (
     <Link
       href={target.href}
-      className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] hover:text-[color:var(--ledger-accent)]"
+      className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[color:var(--slate-500)] hover:text-[color:var(--gold-deep)]"
     >
       {target.label}
     </Link>
