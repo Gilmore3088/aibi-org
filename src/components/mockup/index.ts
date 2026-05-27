@@ -11,6 +11,8 @@ export type { ButtonProps } from './Button';
 export { SiteHeader } from './SiteHeader';
 export type { SiteHeaderProps } from './SiteHeader';
 
+export { SiteFooter as MockupSiteFooter } from './SiteFooter';
+
 export { Section, SectionHead } from './Section';
 export type { SectionProps, SectionHeadProps } from './Section';
 

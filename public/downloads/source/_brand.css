@@ -1,0 +1,253 @@
+/* AiBI mockup-system brand shell — print + screen */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --ink: #071A2F;
+  --ink-2: #0B2745;
+  --gold: #C8A24A;
+  --gold-2: #D8B867;
+  --gold-soft: #E6D39B;
+  --gold-deep: #9A7A2F;
+  --cream: #F7F3EA;
+  --cream-2: #EFE7D7;
+  --slate-50: #F8FAFC;
+  --slate-100: #F1F5F9;
+  --slate-200: #E2E8F0;
+  --slate-400: #94A3B8;
+  --slate-500: #64748B;
+  --slate-600: #475569;
+  --emerald-700: #047857;
+  --shadow-soft: 0 1px 2px rgba(0,0,0,.06);
+  --shadow-feature: 0 24px 40px -20px rgba(0,0,0,.20);
+  --shadow-hero: 0 30px 60px -20px rgba(0,0,0,.45);
+}
+
+* { box-sizing: border-box; font-style: normal; }
+html, body {
+  margin: 0; padding: 0;
+  font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  color: var(--ink);
+  background: #ffffff;
+  font-size: 11pt;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Default body page — top/right/bottom/left margins reserved so EVERY printed
+   page (including overflow pages of long sections) gets uniform breathing room. */
+@page {
+  size: Letter;
+  margin: 0.7in 0.75in 0.55in 0.75in;
+  @bottom-left {
+    content: "The AI Banking Institute · Turning Bankers into Builders";
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    font-size: 8pt;
+    font-weight: 600;
+    color: #475569;
+  }
+  @bottom-right {
+    content: counter(page) " / " counter(pages);
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    font-size: 8pt;
+    font-weight: 700;
+    color: #475569;
+    letter-spacing: 0.5px;
+  }
+}
+/* Cover page = full-bleed, no footer counter */
+@page cover { margin: 0; @bottom-left { content: ""; } @bottom-right { content: ""; } }
+.cover { page: cover; }
+/* Hide legacy per-section footers — the @page counter replaces them */
+.page-footer { display: none !important; }
+
+/* .page sections rely on @page margins for top/bottom/horizontal — no own padding. */
+.page {
+  background: #ffffff;
+  page-break-after: always;
+  position: relative;
+  /* Defensive: avoid orphaned headings at the bottom of an overflow page */
+  orphans: 3;
+  widows: 3;
+}
+.page:last-child { page-break-after: auto; }
+/* Keep section-leading elements with the content that follows them on overflow pages */
+.page .section-kicker,
+.page h2,
+.page h3,
+.page .play-head { page-break-after: avoid; break-after: avoid; }
+.page .callout,
+.page .principle,
+.page .role-card,
+.page .threat,
+.page .tier,
+.page .risk-band,
+.page .card { page-break-inside: avoid; break-inside: avoid; }
+/* Tables may break — but keep header repeating on new pages */
+.page table { break-inside: auto; }
+.page thead { display: table-header-group; }
+.page tr { page-break-inside: avoid; break-inside: avoid; }
+/* Prompt blocks can be long — allow them to break across pages cleanly
+   rather than orphaning a half page of whitespace before them. */
+.page .prompt { break-inside: auto; }
+
+/* Clean rounded shapes — no soft drop-shadow rectangles behind rounded cards.
+   Borders carry the definition; surfaces sit flat on white. */
+.card, .callout, .role-card, .threat, .tier, .risk-band,
+.two-col .card, .assistant-card, .prompt, .principle,
+table { box-shadow: none !important; }
+
+/* Section kickers, play-heads, and h2 stay with the heading/content that follows */
+.page .section-kicker,
+.page .play-head,
+.page h2 { page-break-after: avoid; break-after: avoid; }
+
+/* h3 only weakly anchors — avoid stranding alone at page bottom */
+.page h3 { page-break-after: avoid; break-after: avoid; }
+
+/* Allow side-by-side card pairs to stay together when they reasonably can */
+.page .two-col,
+.page .vs { page-break-inside: avoid; break-inside: avoid; }
+
+/* Hr is a divider — let it break around naturally; don't form glue chains. */
+.page hr { page-break-after: auto; break-after: auto; page-break-before: auto; break-before: auto; }
+
+/* Lists keep at least two lines together (looser to avoid forced overflow) */
+.page ol, .page ul { orphans: 2; widows: 2; }
+
+/* Play metrics tail — must stay with the prompt block above it.
+   If they together don't fit, both push to next page cleanly. */
+.page .play-meta { page-break-before: avoid; break-before: avoid; page-break-inside: avoid; break-inside: avoid; }
+
+/* Cover */
+.cover {
+  background: var(--ink);
+  color: #fff;
+  padding: 0.9in 0.85in;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  page-break-after: always;
+  width: 8.5in;
+  min-height: 11in;
+}
+.cover .kicker {
+  font-size: 9pt; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--gold-soft); font-weight: 600;
+}
+.cover h1 {
+  font-size: 44pt; line-height: 1.04; margin: 18pt 0 14pt;
+  font-weight: 700; letter-spacing: -0.5px;
+}
+.cover .lede {
+  font-size: 13pt; line-height: 1.55; color: #D8E0EA;
+  max-width: 5.6in;
+}
+.cover .seal {
+  display: flex; align-items: center; gap: 12pt; margin-bottom: 0;
+}
+.cover .seal-mark {
+  width: 44pt; height: 44pt; border-radius: 8pt;
+  background: var(--gold); color: var(--ink);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 17pt; letter-spacing: -1px;
+}
+.cover .seal-text { line-height: 1.2; }
+.cover .seal-name { font-size: 12pt; font-weight: 700; }
+.cover .seal-tag { font-size: 9pt; color: var(--slate-200); font-weight: 400; }
+.cover .footer-row {
+  display: flex; justify-content: space-between; align-items: flex-end;
+  font-size: 9pt; color: var(--slate-200);
+}
+
+/* Body pages */
+.page h2 {
+  font-size: 22pt; font-weight: 700; color: var(--ink);
+  margin: 0 0 6pt; letter-spacing: -0.3px;
+}
+.page .section-kicker {
+  font-size: 8.5pt; letter-spacing: 1.8px; text-transform: uppercase;
+  color: var(--gold-deep); font-weight: 600; margin-bottom: 14pt;
+}
+.page h3 {
+  font-size: 13pt; font-weight: 700; color: var(--ink);
+  margin: 18pt 0 6pt;
+}
+.page h4 {
+  font-size: 10.5pt; font-weight: 700; color: var(--ink-2);
+  margin: 12pt 0 4pt; letter-spacing: 0.2px;
+}
+.page p { margin: 6pt 0; color: var(--slate-600); }
+.page strong { color: var(--ink); font-weight: 600; }
+.page ul, .page ol { margin: 6pt 0 10pt 18pt; padding: 0; }
+.page li { margin: 4pt 0; color: var(--slate-600); }
+
+.callout {
+  background: #fff; border: 1px solid var(--slate-200);
+  border-left: 3pt solid var(--gold);
+  border-radius: 12pt; padding: 14pt 16pt; margin: 14pt 0;
+  box-shadow: var(--shadow-soft);
+}
+.callout .label {
+  font-size: 8pt; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--gold-deep); font-weight: 700; margin-bottom: 4pt;
+}
+
+.card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12pt; margin: 12pt 0; }
+.card {
+  background: #fff; border: 1px solid var(--slate-200);
+  border-radius: 16pt; padding: 14pt 16pt;
+  box-shadow: var(--shadow-soft);
+}
+.card .num {
+  font-size: 9pt; font-weight: 700; color: var(--gold-deep);
+  letter-spacing: 1.5px; text-transform: uppercase;
+}
+.card h4 { margin-top: 4pt; }
+
+table { width: 100%; border-collapse: collapse; margin: 10pt 0; font-size: 10pt; }
+th, td { text-align: left; padding: 8pt 10pt; border-bottom: 1px solid var(--slate-200); }
+th {
+  background: var(--cream-2); color: var(--ink);
+  font-weight: 700; font-size: 9pt; letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+td { color: var(--slate-600); vertical-align: top; }
+td strong { color: var(--ink); }
+
+.pill {
+  display: inline-block; font-size: 8pt; font-weight: 700;
+  padding: 2pt 8pt; border-radius: 999px; letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.pill-green { background: #D1FAE5; color: var(--emerald-700); }
+.pill-yellow { background: #FEF3C7; color: #92400E; }
+.pill-red { background: #FEE2E2; color: #991B1B; }
+.pill-gold { background: var(--gold-soft); color: var(--gold-deep); }
+
+.page-footer {
+  position: absolute; left: 0.75in; right: 0.75in; bottom: 0.4in;
+  display: flex; justify-content: space-between;
+  font-size: 8pt; color: var(--slate-500); letter-spacing: 0.5px;
+}
+.page-footer .brand { font-weight: 600; color: var(--ink); }
+
+/* Inline footnotes */
+.cite {
+  font-size: 8pt; color: var(--slate-500); margin-top: 10pt;
+  font-style: normal; line-height: 1.5;
+}
+
+/* Risk band — for red/yellow/green */
+.risk-band { border-radius: 16pt; padding: 14pt 16pt; margin: 10pt 0; border: 1px solid var(--slate-200); background: #fff; box-shadow: var(--shadow-soft); }
+.risk-band .head { display: flex; align-items: center; gap: 10pt; margin-bottom: 6pt; }
+.risk-band .dot { width: 14pt; height: 14pt; border-radius: 999px; }
+.risk-band.green .dot { background: #10B981; }
+.risk-band.yellow .dot { background: #F59E0B; }
+.risk-band.red .dot { background: #DC2626; }
+.risk-band h4 { margin: 0; font-size: 12pt; }
+.risk-band .note { font-size: 9pt; color: var(--slate-500); }
+
+@media print {
+  body { background: #fff; }
+  .page, .cover { box-shadow: none; }
+}

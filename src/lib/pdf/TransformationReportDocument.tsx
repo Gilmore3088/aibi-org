@@ -53,16 +53,16 @@ export interface TransformationReportProps {
 }
 
 // Brand constants (react-pdf requires literal hex values)
-const TERRA = '#b5512e';
-const TERRA_PALE = '#f0c4ab';
-const PARCH = '#f5f0e6';
+const TERRA = '#C8A24A';
+const TERRA_PALE = '#E6D39B';
+const PARCH = '#F7F3EA';
 const LINEN = '#f9f6f0';
-const INK = '#1e1a14';
+const INK = '#071A2F';
 const MUTED = '#8a7060';
-const BORDER = '#d9cfc0';
+const BORDER = '#E2E8F0';
 const WHITE = '#ffffff';
-const SAGE = '#4a6741';
-const ERROR_RED = '#9b2226';
+const SAGE = '#047857';
+const ERROR_RED = '#991B1B';
 
 const FOOTER_TEXT = 'The AI Banking Institute  |  AIBankingInstitute.com  |  Confidential';
 

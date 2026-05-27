@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Platform Feature Reference Card — The AI Banking Institute</title>
+<link rel="stylesheet" href="_brand.css">
+<style>
+  .page h2 { font-size: 20pt; }
+  .page h3 { font-size: 12pt; margin: 10pt 0 4pt; }
+  .page p, .page li, .page td { font-size: 8.5pt; line-height: 1.5; }
+  table { font-size: 8pt; border: 1px solid var(--slate-200); border-radius: 12pt; }
+  th { font-size: 7.5pt; background: var(--cream-2); color: var(--ink); }
+  th, td { padding: 6pt 7pt; vertical-align: top; }
+  .matrix th, .matrix td { font-size: 7.5pt; }
+  .matrix th:first-child, .matrix td:first-child { font-weight: 600; color: var(--ink); width: 13%; }
+  .matrix td:last-child { background: var(--cream-2); color: var(--gold-deep); font-weight: 500; }
+  .data-tier { background: var(--cream-2); border-left: 3pt solid var(--gold); padding: 10pt 14pt; border-radius: 8pt; margin: 12pt 0; font-size: 9pt; }
+  .data-tier strong { color: var(--gold-deep); }
+  .tier-list { margin: 6pt 0 0 0; padding: 0; list-style: none; }
+  .tier-list li { margin: 4pt 0; font-size: 9pt; padding-left: 22pt; position: relative; }
+  .tier-list li::before { position: absolute; left: 0; font-weight: 700; font-size: 8pt; padding: 2pt 6pt; border-radius: 999px; line-height: 1; }
+  .tier-list li.t1::before { content: "T1"; background: #D1FAE5; color: var(--emerald-700); }
+  .tier-list li.t2::before { content: "T2"; background: #FEF3C7; color: #92400E; }
+  .tier-list li.t3::before { content: "T3"; background: #FEE2E2; color: #991B1B; }
+</style>
+</head>
+<body>
+
+<section class="cover">
+  <div class="seal">
+    <div class="seal-mark">A</div>
+    <div class="seal-text">
+      <div class="seal-name">The AI Banking Institute</div>
+      <div class="seal-tag">Turning Bankers into Builders</div>
+    </div>
+  </div>
+  <div>
+    <div class="kicker">Foundations · Module 4 reference · v2.0</div>
+    <h1>Platform Feature Reference Card</h1>
+    <p class="lede">Six AI platforms · eight key features · banking use cases. The reference card a banker can use to pick the right tool for the job — without crossing a data boundary.</p>
+  </div>
+  <div class="footer-row">
+    <div>The AI Banking Institute · 2026</div>
+    <div>AIBankingInstitute.com</div>
+  </div>
+</section>
+
+<section class="page">
+  <div class="section-kicker">Feature comparison matrix</div>
+  <h2>Six AI platforms compared on eight banking-critical features</h2>
+  <p>Features marked "(Plus)", "(Pro)", or "(Advanced)" require a paid subscription. Free-tier capabilities vary and change frequently — verify current availability before recommending to staff or budget committees.</p>
+
+  <table class="matrix">
+    <thead>
+      <tr>
+        <th>Feature</th>
+        <th>ChatGPT</th>
+        <th>Claude</th>
+        <th>M365 Copilot</th>
+        <th>Gemini</th>
+        <th>NotebookLM</th>
+        <th>Perplexity</th>
+        <th>Best banking use</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Deep Research &amp; Web Search</td>
+        <td>Deep Research mode (Plus)</td>
+        <td>Limited — no live web by default</td>
+        <td>Bing-grounded in some contexts</td>
+        <td>Google Search grounded (free + Advanced)</td>
+        <td>Not available</td>
+        <td>Native — all searches cited &amp; web-grounded</td>
+        <td>Regulatory research, market intelligence, competitive analysis</td>
+      </tr>
+      <tr>
+        <td>File Analysis</td>
+        <td>PDFs, Excel, Word, images (Plus)</td>
+        <td>PDFs &amp; documents (Pro)</td>
+        <td>Native SharePoint &amp; OneDrive access</td>
+        <td>File upload (Gemini Advanced)</td>
+        <td>Upload sources — semantic querying</td>
+        <td>Limited file analysis</td>
+        <td>Loan doc QC, policy analysis, financial statement review</td>
+      </tr>
+      <tr>
+        <td>Custom Instructions &amp; Persistent Context</td>
+        <td>Custom Instructions + Projects (Plus)</td>
+        <td>System prompts in Projects (Pro)</td>
+        <td>Not configurable at staff level</td>
+        <td>Gems — custom instruction sets (Adv.)</td>
+        <td>Per-Notebook instructions</td>
+        <td>Spaces with custom instructions (Pro)</td>
+        <td>Persistent role context, brand voice, compliance guardrails</td>
+      </tr>
+      <tr>
+        <td>Long Context Window</td>
+        <td>128K tokens (Plus)</td>
+        <td>200K tokens — industry-leading (Pro)</td>
+        <td>Limited to specific document context</td>
+        <td>1M tokens (Advanced)</td>
+        <td>Up to ~500K words across sources</td>
+        <td>Standard context window</td>
+        <td>Lengthy regulatory docs, multi-file analysis, full policy review</td>
+      </tr>
+      <tr>
+        <td>Voice Mode</td>
+        <td>Advanced Voice Mode (Plus)</td>
+        <td>Not available</td>
+        <td>Teams integration (transcription + summary)</td>
+        <td>Available on mobile (free)</td>
+        <td>Audio overview generation (async)</td>
+        <td>Not available</td>
+        <td>Hands-free drafting, meeting transcription, on-the-go research</td>
+      </tr>
+      <tr>
+        <td>Image Generation</td>
+        <td>DALL-E 3 (Plus)</td>
+        <td>Not available</td>
+        <td>Designer integration for image gen</td>
+        <td>Imagen 3 (Advanced)</td>
+        <td>Not available</td>
+        <td>Not available</td>
+        <td>Marketing mockups, presentation graphics, training visuals</td>
+      </tr>
+      <tr>
+        <td>Workspace Integration</td>
+        <td>GPT connectors (beta)</td>
+        <td>Limited integrations</td>
+        <td>Native Outlook, Teams, Word, Excel, SharePoint</td>
+        <td>Native Google Workspace integration</td>
+        <td>Google Drive integration</td>
+        <td>Limited integrations</td>
+        <td>Email drafting, meeting summaries, document creation in-workflow</td>
+      </tr>
+      <tr>
+        <td>Code &amp; Data Analysis</td>
+        <td>Code Interpreter &amp; Adv. Data Analysis (Plus)</td>
+        <td>Strong code analysis (Pro)</td>
+        <td>Excel Copilot for spreadsheet analysis</td>
+        <td>Code execution available (Advanced)</td>
+        <td>Not available</td>
+        <td>Limited</td>
+        <td>Loan data analysis, charts, Excel automation, variance reports</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="data-tier">
+    <strong>Data classification reminder.</strong> Before uploading any document, classify:
+    <ul class="tier-list">
+      <li class="t1">Public — any approved platform permitted.</li>
+      <li class="t2">Internal Only — enterprise-licensed tools only (M365 Copilot, Google Workspace).</li>
+      <li class="t3">Restricted / PII — prohibited in all AI tools, including enterprise platforms.</li>
+    </ul>
+    When in doubt, classify up. See Foundations Module 5 — Safe Use Guardrails.
+  </div>
+</section>
+
+<section class="page">
+  <div class="section-kicker">Role-specific platform guide</div>
+  <h2>Recommended setup by department</h2>
+  <p>The platform that fits a department depends on what they do every day. Three priority features and one or two platforms per role — the rest is preference.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Department</th>
+        <th>Priority features</th>
+        <th>Recommended platform</th>
+        <th>Example use case</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Lending</strong></td>
+        <td>File Analysis · Deep Research · Custom Instructions</td>
+        <td>ChatGPT Plus + Perplexity</td>
+        <td>Upload a loan package to ChatGPT to flag missing docs; use Perplexity to research borrower industry and recent regulatory updates.</td>
+      </tr>
+      <tr>
+        <td><strong>Compliance</strong></td>
+        <td>Long Context · Deep Research · File Analysis</td>
+        <td>Claude Pro + NotebookLM</td>
+        <td>Load full SR 11-7 and Reg B documents into NotebookLM; use Claude for adverse-action language review against approved templates.</td>
+      </tr>
+      <tr>
+        <td><strong>Retail / Branch</strong></td>
+        <td>Voice Mode · Custom Instructions · Workspace Integration</td>
+        <td>M365 Copilot (enterprise) or ChatGPT Plus</td>
+        <td>Transcribe and summarize customer meetings; draft follow-up emails using approved templates and placeholders.</td>
+      </tr>
+      <tr>
+        <td><strong>Marketing</strong></td>
+        <td>Custom Instructions · Image Generation · File Analysis</td>
+        <td>ChatGPT Plus + Gemini Advanced</td>
+        <td>Maintain brand voice in Custom Instructions; generate campaign mockups with DALL-E and Imagen; refine copy against compliance disclosures.</td>
+      </tr>
+      <tr>
+        <td><strong>BSA / AML</strong></td>
+        <td>Approved enterprise environment only · Long Context · Custom Instructions</td>
+        <td>Approved enterprise AI (no public tools)</td>
+        <td>Draft SAR narratives from analyst notes; structure CDD baselines; never input customer-specific data into public AI.</td>
+      </tr>
+      <tr>
+        <td><strong>IT / InfoSec</strong></td>
+        <td>Code &amp; Data Analysis · Workspace Integration · Deep Research</td>
+        <td>Claude Pro + M365 Copilot</td>
+        <td>Vendor security questionnaire review; code review for internal scripts; CVE / threat research with cited sources.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>The platform-agnostic discipline</h3>
+  <p>Whichever tool you choose, the rules are the same: <strong>strip the specifics, ask clearly, fact-check outputs, escalate risky decisions.</strong> The platform changes the buttons. It does not change the responsibility.</p>
+
+  <div class="cite">
+    Sources: AiBI Foundations curriculum, Module 4 — Platform Features Deep Dive; AIEOG AI Lexicon (US Treasury / FBIIC / FSSCC, February 2026). Platform capabilities current as of v2.0 publication; verify before recommending to staff.
+  </div>
+</section>
+
+</body>
+</html>

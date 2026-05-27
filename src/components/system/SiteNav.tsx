@@ -29,7 +29,7 @@ export interface NavLink {
 }
 
 const NAV_LINKS: readonly NavLink[] = [
-  { href: "/education", label: "Education" },
+  { href: "/courses", label: "Course" },
   { href: "/for-institutions", label: "For Institutions" },
   { href: "/research", label: "Research" },
   { href: "/about", label: "About" },

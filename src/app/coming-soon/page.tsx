@@ -14,31 +14,8 @@ export const metadata: Metadata = {
 
 export default function ComingSoonPage() {
   return (
-    <main
-      style={{
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: '#ECE9DF',
-        color: '#0E1B2D',
-        padding: '2rem',
-        textAlign: 'center',
-      }}
-    >
-      <p
-        style={{
-          fontFamily: '"Cormorant Garamond", Georgia, serif',
-          fontWeight: 500,
-          fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
-          lineHeight: 1.3,
-          maxWidth: '40rem',
-          margin: 0,
-          letterSpacing: '-0.005em',
-        }}
-      >
-        We will be helping you with all the AI noise soon.
-      </p>
+    <main className="mockup-scope mk-coming-soon">
+      <p>We will be helping you with all the AI noise soon.</p>
     </main>
   );
 }

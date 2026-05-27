@@ -1,0 +1,798 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Lending Leader's AI-Native Playbook — The AI Banking Institute</title>
+<link rel="stylesheet" href="_brand.css">
+<style>
+  .page { padding-bottom: 0.95in; }
+  .page h2 { font-size: 20pt; }
+  .page h3 { font-size: 12pt; margin: 10pt 0 4pt; }
+  .page h4 { font-size: 10.5pt; margin: 8pt 0 4pt; }
+  .page p, .page li { font-size: 10pt; line-height: 1.55; }
+  .toc { background:#fff; border:1px solid var(--slate-200); border-radius:14pt; padding:14pt 18pt; box-shadow:var(--shadow-soft); margin: 8pt 0 14pt; }
+  .toc ol { columns: 2; column-gap: 22pt; margin: 4pt 0 0 18pt; }
+  .toc li { margin: 2pt 0; font-size: 10pt; }
+  .play-head { background: var(--ink); color:#fff; border-radius: 14pt; padding: 10pt 14pt; margin: 10pt 0 8pt; }
+  .play-head .num { font-size: 8.5pt; letter-spacing: 2px; text-transform: uppercase; color: var(--gold-soft); font-weight: 700; }
+  .play-head h2 { color:#fff; margin: 3pt 0 0; font-size: 16pt; }
+  .play-head .sub { color: #D8E0EA; font-size: 10pt; margin-top: 3pt; }
+  .principle { background: var(--cream-2); border-radius: 12pt; padding: 12pt 16pt; font-weight: 600; color: var(--ink); margin: 12pt 0; border-left: 3pt solid var(--gold); font-size: 11pt; }
+  .prompt {
+    background: var(--ink); color: #E9EEF6;
+    border-radius: 10pt; padding: 11pt 14pt; margin: 8pt 0;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 8.5pt; line-height: 1.5; white-space: pre-wrap;
+  }
+  .prompt .label { display:block; font-size:8pt; letter-spacing:1.5px; text-transform:uppercase; color:var(--gold-soft); font-weight:700; margin-bottom: 6pt; font-family: 'Inter', sans-serif; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12pt; margin: 10pt 0; }
+  .two-col .card { background: #fff; border:1px solid var(--slate-200); border-radius: 12pt; padding: 12pt 14pt; box-shadow: var(--shadow-soft); }
+  .two-col .card h4 { margin-top: 0; }
+  .two-col .card ul { margin: 4pt 0 0 16pt; }
+  .two-col .card li { font-size: 9.5pt; }
+  table { font-size: 9.5pt; }
+  th { font-size: 8.5pt; }
+  .small-checklist li { font-size: 10pt; margin: 3pt 0; list-style: none; padding-left: 18pt; position: relative; }
+  .small-checklist li::before { content: "☐"; position: absolute; left: 0; color: var(--gold-deep); font-weight: 700; }
+  .role-card {
+    background: #fff; border:1px solid var(--slate-200); border-radius:14pt;
+    padding: 12pt 16pt; margin: 8pt 0; box-shadow: var(--shadow-soft);
+  }
+  .role-card .agent {
+    font-size: 8pt; letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--gold-deep); font-weight: 700;
+  }
+  .role-card h4 { margin: 4pt 0 6pt; font-size: 11.5pt; }
+  .vs {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12pt; margin: 12pt 0;
+  }
+  .vs .col {
+    background: #fff; border:1px solid var(--slate-200); border-radius: 12pt;
+    padding: 14pt 16pt; box-shadow: var(--shadow-soft);
+  }
+  .vs .col.bad { border-left: 3pt solid #DC2626; }
+  .vs .col.good { border-left: 3pt solid var(--emerald-700); }
+  .vs .label {
+    font-size: 8pt; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700;
+    margin-bottom: 6pt;
+  }
+  .vs .bad .label { color: #991B1B; }
+  .vs .good .label { color: var(--emerald-700); }
+  .play-meta { font-size: 9pt; line-height: 1.5; margin: 10pt 0 4pt; color: var(--slate-600); border-top: 1px solid var(--slate-200); padding-top: 6pt; }
+  .play-meta strong { color: var(--ink-2); }
+</style>
+</head>
+<body>
+
+<section class="cover">
+  <div class="seal">
+    <div class="seal-mark">A</div>
+    <div class="seal-text">
+      <div class="seal-name">The AI Banking Institute</div>
+      <div class="seal-tag">Turning Bankers into Builders</div>
+    </div>
+  </div>
+  <div>
+    <div class="kicker">Role playbook · Lending · v2.0</div>
+    <h1>The Lending Leader's AI-Native Playbook</h1>
+    <p class="lede">Defensible decisions, faster — without turning credit into a black box. A practical operating playbook for lending leaders, credit officers, compliance partners, underwriters, and risk teams using AI to improve lending workflows while preserving explainability, fair-lending controls, file traceability, and human accountability.</p>
+  </div>
+  <div class="footer-row">
+    <div>The AI Banking Institute · 2026</div>
+    <div>AIBankingInstitute.com</div>
+  </div>
+</section>
+
+<!-- Section 1 -->
+<section class="page">
+  <div class="section-kicker">Section 1 · Executive snapshot</div>
+  <h2>The operating principle</h2>
+  <div class="principle">AI prepares the workbench. The human underwriter owns the decision. The file proves the reason.</div>
+  <p>AI can extract, summarize, compare, calculate, draft, and organize. It cannot become the unreviewed decision-maker in a credit workflow.</p>
+
+  <div class="toc">
+    <div class="section-kicker" style="margin-top:0;">What's inside</div>
+    <ol>
+      <li>Executive snapshot</li>
+      <li>Why lending is different</li>
+      <li>The AI-native lending operating model</li>
+      <li>Prepare vs. decide matrix</li>
+      <li>Modern AI lending architecture</li>
+      <li>Alternative data guardrails</li>
+      <li>Explainability &amp; adverse action</li>
+      <li>Fair lending &amp; algorithmic bias controls</li>
+      <li>Model risk &amp; continuous monitoring</li>
+      <li>Human-in-the-loop &amp; fallbacks</li>
+      <li>Five lending plays</li>
+      <li>Copy-paste templates</li>
+      <li>30-day lending pilot plan</li>
+      <li>Measurement model</li>
+      <li>What good looks like</li>
+      <li>Recommended AiBI path</li>
+      <li>Final operating principle</li>
+    </ol>
+  </div>
+
+  <h3>Who this is for</h3>
+  <ul>
+    <li>Chief Lending Officers, Credit Officers, Loan Operations leaders.</li>
+    <li>Underwriters.</li>
+    <li>Fair Lending / CRA / Compliance teams.</li>
+    <li>Model risk management partners.</li>
+    <li>Credit administration teams.</li>
+    <li>AI governance committees.</li>
+    <li>Executives evaluating AI-assisted lending workflows.</li>
+  </ul>
+
+  <h3>The core problem</h3>
+  <p>Lending is the highest-stakes AI lane in community banking. A weak AI workflow in marketing may create awkward copy. A weak AI workflow in lending can create regulatory exposure, borrower harm, fair-lending risk, adverse-action failures, model risk issues, and examiner scrutiny.</p>
+  <p>The opportunity is real. Lending workflows are full of repetitive, document-heavy, language-heavy, calculation-heavy work: collecting and summarizing financial documents, organizing credit memos, reviewing loan files for missing information, drafting internal narratives, preparing borrower-friendly explanations, comparing policy requirements, checking fair-lending language, and building decision packet indexes. But the control requirement is stricter than almost anywhere else.</p>
+
+  <h3>The opportunity</h3>
+  <p>A safe AI lending program can help teams reduce document-review friction; improve credit memo consistency; create clearer decline explanations; standardize decision packet documentation; catch weak or generic adverse-action language; identify fair-lending language concerns before finalization; improve coaching and underwriting quality; and reduce rework between lending, credit, and compliance.</p>
+</section>
+
+<!-- Section 2 -->
+<section class="page">
+  <div class="section-kicker">Section 2 · Why lending is different</div>
+  <h2>Where AI mistakes become regulator letters</h2>
+  <p>The Equal Credit Opportunity Act and Regulation B require that adverse-action notices provide specific, accurate principal reasons for the action. The reasons must be grounded in the file, not invented by a model and not hidden inside a black-box recommendation.</p>
+
+  <h3>The black-box excuse is over</h3>
+  <p>If a creditor uses a complex algorithm, AI system, or machine learning model in a credit decision, the institution still has to provide the applicant with specific reasons for adverse action.</p>
+  <div class="principle">If the bank cannot explain the reason, the bank cannot safely use the system to support the decision.</div>
+
+  <div class="callout">
+    <div class="label">Red line</div>
+    <p>No AI system writes, sends, or finalizes an adverse-action notice without documented human review. No AI system independently approves, denies, ranks, prices, or recommends credit action without model risk, fair lending, compliance, and human decision controls. Anything that bears on a credit decision must be traceable to the file.</p>
+  </div>
+
+  <hr style="border:none; border-top:1px solid var(--slate-200); margin: 14pt 0;">
+
+  <div class="section-kicker">Section 3 · Operating model</div>
+  <h2>The lending workbench, not the lending oracle</h2>
+  <p>A modern AI lending workflow should not be one giant model asked to "underwrite the borrower." That is the wrong architecture. A safer pattern is a <strong>governed lending workbench</strong>: specialized AI components assist with bounded tasks, and a human underwriter remains accountable for the final decision.</p>
+
+  <h3>Six layers</h3>
+  <ul>
+    <li><strong>Layer 1 · Data boundary.</strong> Define exactly what data can be used, where, and by whom (public product info, internal lending policy, redacted file notes, customer NPI/PII, credit-bureau data, income/employment, tax returns &amp; bank statements, protected-class proxy-risk data, final credit decision records).</li>
+    <li><strong>Layer 2 · Task-specific AI assistance.</strong> Extracting fields, summarizing redacted notes, organizing credit memo sections, drafting borrower-friendly explanations, checking language clarity, highlighting missing information, preparing index of file evidence.</li>
+    <li><strong>Layer 3 · Policy and eligibility checks.</strong> AI may compare file facts against policy, but the system must not silently decide eligibility. Checks must be traceable, source-linked, reviewed, flagged when uncertain, and retained.</li>
+    <li><strong>Layer 4 · Human decision gate.</strong> A qualified human underwriter, credit officer, or authorized decision-maker makes the final approval, denial, counteroffer, or condition decision.</li>
+    <li><strong>Layer 5 · Explainability and evidence.</strong> Every adverse decision must be supported by specific principal reasons grounded in the file. Retain file source, principal reasons, reviewer sign-off, AI draft if used, human edits, final adverse-action language, fair-lending review result.</li>
+    <li><strong>Layer 6 · Monitoring and validation.</strong> If AI or models are used in credit-related workflows, monitoring must be risk-based and ongoing — performance stability, overrides, drift indicators, adverse-action reason patterns, protected-class impact testing where applicable, exception rates, data quality, vendor changes.</li>
+  </ul>
+</section>
+
+<!-- Section 4 -->
+<section class="page">
+  <div class="section-kicker">Section 4 · Prepare vs. decide</div>
+  <h2>What AI can prepare and what humans must decide</h2>
+
+  <table>
+    <thead><tr><th>Workflow</th><th>AI can prepare</th><th>Human must decide</th><th>Evidence retained</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Document review</strong></td><td>Extract fields, summarize missing items</td><td>Whether file is complete</td><td>Source docs, extraction output, reviewer</td></tr>
+      <tr><td><strong>Credit memo</strong></td><td>Draft structure, summarize facts, organize exhibits</td><td>Final credit narrative</td><td>Draft, reviewer edits, final memo</td></tr>
+      <tr><td><strong>Policy comparison</strong></td><td>Flag where file appears to meet or miss policy</td><td>Whether exception or approval is warranted</td><td>Policy source, file facts, reviewer decision</td></tr>
+      <tr><td><strong>Adverse action</strong></td><td>Draft language from human-provided principal reasons</td><td>Final reasons and final notice</td><td>Principal reasons, source file, reviewer, final notice</td></tr>
+      <tr><td><strong>Fair-lending pre-check</strong></td><td>Flag potentially problematic phrases or proxy-risk language</td><td>Whether language or process creates fair-lending concern</td><td>Output, reviewer, final disposition</td></tr>
+      <tr><td><strong>Risk calculations</strong></td><td>Calculate ratios or summarize model output</td><td>Whether model result is relied on</td><td>Data source, calculation, validation status</td></tr>
+      <tr><td><strong>Decision packet</strong></td><td>Create index and assemble references</td><td>Whether packet is accurate and complete</td><td>Index, source references, reviewer sign-off</td></tr>
+      <tr><td><strong>Borrower summary</strong></td><td>Draft plain-English explanation after decision</td><td>Final communication and relationship handling</td><td>Approved letter, call script, reviewer</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- Section 5 -->
+<section class="page">
+  <div class="section-kicker">Section 5 · Modern AI lending architecture</div>
+  <h2>Multi-agent lending workbench</h2>
+  <p>A lending workflow may use specialized AI agents or services, each with a narrow job. The safest pattern is <strong>not</strong> "one AI underwriter." The safer pattern is: one agent extracts, one agent checks policy, one agent summarizes risk, one agent drafts the memo, one orchestrator organizes the packet, one human underwriter decides.</p>
+
+  <div class="role-card">
+    <div class="agent">Document Agent</div>
+    <h4>Extracts and structures information from application PDFs, tax returns, bank statements, financial statements, or borrower-provided documents.</h4>
+    <p><strong>Controls:</strong> approved environment only · source document references · confidence flag · human verification of extracted values.</p>
+  </div>
+
+  <div class="role-card">
+    <div class="agent">Policy Agent</div>
+    <h4>Compares file information against lending policy.</h4>
+    <p><strong>Controls:</strong> cites policy section · flags uncertainty · cannot approve exceptions · cannot make final eligibility decision.</p>
+  </div>
+
+  <div class="role-card">
+    <div class="agent">Fraud / Anomaly Agent</div>
+    <h4>Flags inconsistencies, missing information, mismatched names, unusual document patterns, or potential fraud indicators.</h4>
+    <p><strong>Controls:</strong> cannot accuse borrower · cannot close investigation · routes issues to human review.</p>
+  </div>
+
+</section>
+
+<section class="page">
+  <div class="section-kicker">Section 5 · Multi-agent lending architecture · continued</div>
+  <h2>Specialized agents · risk and orchestration</h2>
+
+  <div class="role-card">
+    <div class="agent">Risk Calculation Agent</div>
+    <h4>Computes or summarizes ratios and model outputs.</h4>
+    <p><strong>Controls:</strong> source data traceability · calculation review · model validation status · no unreviewed decisioning.</p>
+  </div>
+
+  <div class="role-card">
+    <div class="agent">Orchestrator Agent</div>
+    <h4>Assembles the work product into a draft credit proposal or decision packet.</h4>
+    <p><strong>Controls:</strong> cannot approve, deny, or send notices · must show source references · routes to human underwriter · logs evidence.</p>
+  </div>
+</section>
+
+<!-- Section 6 -->
+<section class="page">
+  <div class="section-kicker">Section 6 · Alternative data guardrails</div>
+  <h2>Useful, high-risk, and the in-between</h2>
+  <p>Alternative data can expand access to credit, but it can also create fairness, privacy, explainability, and proxy-discrimination risk.</p>
+
+  <div class="two-col">
+    <div class="card">
+      <h4>Potentially useful when properly governed</h4>
+      <ul>
+        <li>Cash-flow data.</li>
+        <li>Rent payment history.</li>
+        <li>Utility payment history.</li>
+        <li>Verified income trends.</li>
+        <li>Deposit account behavior.</li>
+        <li>Business revenue consistency.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>High-risk or generally problematic</h4>
+      <ul>
+        <li>Social media profiles.</li>
+        <li>Education background.</li>
+        <li>Location or neighborhood proxies.</li>
+        <li>Browsing behavior.</li>
+        <li>Device metadata.</li>
+        <li>Non-transparent third-party scores.</li>
+        <li>Variables that may proxy protected-class characteristics.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Alternative data review checklist</h3>
+  <ul class="small-checklist">
+    <li>The data has independent predictive value.</li>
+    <li>The data is permitted by policy and law.</li>
+    <li>The data source is reliable and documented.</li>
+    <li>The data is explainable to the applicant if it contributes to adverse action.</li>
+    <li>The data is tested for disparate impact or proxy risk.</li>
+    <li>The data is subject to model-risk review if used in a decisioning model.</li>
+    <li>Human review and override are documented.</li>
+  </ul>
+
+  <hr style="border:none; border-top:1px solid var(--slate-200); margin: 14pt 0;">
+
+  <div class="section-kicker">Section 7 · Explainability &amp; adverse action</div>
+  <h2>Required adverse-action workflow</h2>
+  <ol>
+    <li>Human underwriter identifies the actual principal reasons from the file.</li>
+    <li>AI may draft clearer wording using only those reasons.</li>
+    <li>Human reviewer compares every AI-generated sentence to the source file.</li>
+    <li>Unsupported, vague, or invented language is removed.</li>
+    <li>Final notice uses approved language and accurate principal reasons.</li>
+    <li>Evidence is retained.</li>
+  </ol>
+
+  <div class="vs">
+    <div class="col bad">
+      <div class="label">Prohibited pattern</div>
+      <p style="font-family: ui-monospace, Menlo, monospace; font-size: 9.5pt; color: var(--ink);">"Why should this borrower be denied?"</p>
+    </div>
+    <div class="col good">
+      <div class="label">Approved pattern</div>
+      <p style="font-family: ui-monospace, Menlo, monospace; font-size: 9.5pt; color: var(--ink);">"Using only the underwriter-provided principal reasons below, draft clear adverse-action language. Do not add reasons. Do not infer facts. Flag any reason that is vague or unsupported."</p>
+    </div>
+  </div>
+</section>
+
+<!-- Section 8 + 9 -->
+<section class="page">
+  <div class="section-kicker">Section 8 · Fair lending &amp; algorithmic bias</div>
+  <h2>What can go wrong</h2>
+  <ul>
+    <li>Historical bias is learned by the model.</li>
+    <li>Neutral variables act as proxies for protected-class characteristics.</li>
+    <li>Alternative data creates digital redlining risk.</li>
+    <li>Model outputs are accepted without human challenge.</li>
+    <li>Adverse-action reasons become vague or generic.</li>
+    <li>Protected-class impact is not monitored.</li>
+  </ul>
+
+  <h3>Testing approach</h3>
+  <p>Depending on the model and workflow, fair-lending testing may include disparate impact analysis, comparative file review, marginal effects analysis, conditional marginal effects testing, proxy-variable review, adverse-action reason distribution review, override pattern analysis, exception rate review, and protected-class impact monitoring where legally and operationally appropriate.</p>
+
+  <div class="principle">If a variable cannot be explained, defended, tested, and translated into a specific principal reason when relevant, it should not drive an adverse action.</div>
+
+  <hr style="border:none; border-top:1px solid var(--slate-200); margin: 14pt 0;">
+
+  <div class="section-kicker">Section 9 · Model risk &amp; continuous monitoring</div>
+  <h2>What to monitor</h2>
+  <div class="two-col">
+    <div class="card">
+      <h4>Signals to track</h4>
+      <ul>
+        <li>Population stability.</li>
+        <li>Input data quality.</li>
+        <li>Model performance.</li>
+        <li>Override frequency.</li>
+        <li>Exception rates.</li>
+        <li>Adverse-action reason distribution.</li>
+        <li>Approval / denial pattern changes.</li>
+        <li>Drift indicators.</li>
+        <li>Vendor model updates.</li>
+        <li>Data source changes.</li>
+        <li>Complaint trends.</li>
+        <li>Fair-lending review signals.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Possible monitoring tools</h4>
+      <ul>
+        <li>Population Stability Index (PSI).</li>
+        <li>Challenger models.</li>
+        <li>Champion / challenger comparison.</li>
+        <li>Back-testing.</li>
+        <li>Benchmark review.</li>
+        <li>Override testing.</li>
+        <li>Sample file review.</li>
+        <li>Outcome monitoring.</li>
+        <li>Adverse-action reason audits.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Important qualification</h3>
+  <p>Not every AI-assisted lending workflow requires the same model validation machinery. A prompt used to rewrite a human-provided plain-English explanation is not the same risk as a model that scores applications. Controls should be proportional to whether the tool influences a decision, processes customer data, creates customer-facing output, can affect terms / pricing / approval / denial / conditions, and whether the output becomes a retained business record.</p>
+</section>
+
+<!-- Section 10 -->
+<section class="page">
+  <div class="section-kicker">Section 10 · Human-in-the-loop &amp; fallbacks</div>
+  <h2>Where AI stops</h2>
+
+  <h3>Human-in-the-loop means</h3>
+  <p>A qualified human understands the workflow, has authority to approve or reject the output, compares the AI output to source evidence, can override the AI, signs off on final use, and is accountable for the decision.</p>
+
+  <h3>Required human gates — review before</h3>
+  <ul>
+    <li>Loan approval.</li>
+    <li>Loan denial.</li>
+    <li>Counteroffer.</li>
+    <li>Adverse-action notice.</li>
+    <li>Credit memo finalization.</li>
+    <li>Exception approval.</li>
+    <li>Pricing decision.</li>
+    <li>Condition removal.</li>
+    <li>Customer-facing explanation.</li>
+    <li>Regulatory or examiner response.</li>
+  </ul>
+
+  <h3>Deterministic fallback — route to a human when</h3>
+  <ul>
+    <li>Confidence is below threshold.</li>
+    <li>Source document is missing.</li>
+    <li>Model output conflicts with file evidence.</li>
+    <li>Protected-class proxy risk is flagged.</li>
+    <li>Adverse-action reason is vague.</li>
+    <li>Fraud signal appears.</li>
+    <li>Policy exception is needed.</li>
+    <li>Customer-facing language is generated.</li>
+    <li>The AI cannot cite a source.</li>
+  </ul>
+</section>
+
+<!-- Plays -->
+<section class="page">
+  <div class="section-kicker">Section 11 · Five lending plays</div>
+  <div class="play-head">
+    <div class="num">Play 1</div>
+    <h2>Adverse-action language tuning</h2>
+    <div class="sub">Make adverse-action language clearer without losing file-specific principal reasons.</div>
+  </div>
+
+  <h3>Why it matters</h3>
+  <p>Underwriters often identify the right reasons but struggle to translate them into clear, borrower-facing language. AI can help polish the language. It cannot create the reason.</p>
+
+  <div class="two-col">
+    <div class="card">
+      <h4>Approved inputs</h4>
+      <ul>
+        <li>Human-provided principal reasons.</li>
+        <li>Approved adverse-action template.</li>
+        <li>Redacted file references.</li>
+        <li>Product type.</li>
+        <li>Reviewer instructions.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Prohibited inputs</h4>
+      <ul>
+        <li>Unredacted customer identifiers in public tools.</li>
+        <li>Full credit file in public tools.</li>
+        <li>Protected-class information.</li>
+        <li>Unsupported reasons.</li>
+        <li>Model output with no file source.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="prompt"><span class="label">Prompt template · Adverse-action language</span>You are assisting a human underwriter with draft adverse-action language.
+
+Use only the principal reasons provided below. Do not add reasons. Do not infer facts. Do not make the decision. If a reason is vague or unsupported, flag it as [VERIFY].
+
+Output:
+  1. Clear borrower-facing language
+  2. Source reason used
+  3. Any unsupported or vague reason flagged [VERIFY]
+  4. Reviewer checklist
+
+Principal reasons from the file:
+[INSERT HUMAN-PROVIDED REASONS]
+
+Approved template language:
+[INSERT TEMPLATE]</div>
+
+  <p class="play-meta"><strong>Output:</strong> draft language · reason traceability · verify flags · reviewer checklist. <strong>Review:</strong> underwriter and compliance reviewer compare the language to the file. <strong>Evidence:</strong> principal reasons · draft AI language · human edits · final adverse-action notice · reviewer sign-off. <strong>Metrics:</strong> minutes saved per declined application · unsupported AI phrases removed · reviewer correction rate · adverse-action exception findings.</p>
+</section>
+
+<section class="page">
+  <div class="play-head">
+    <div class="num">Play 2</div>
+    <h2>Borrower-friendly decline summary</h2>
+    <div class="sub">Plain-English borrower conversation summary after adverse-action language has been approved.</div>
+  </div>
+
+  <h3>Why it matters</h3>
+  <p>The regulatory notice satisfies the legal requirement. The borrower conversation affects the relationship, complaint risk, and future application quality.</p>
+
+  <div class="two-col">
+    <div class="card">
+      <h4>Approved inputs</h4>
+      <ul>
+        <li>Approved adverse-action reasons.</li>
+        <li>Product type.</li>
+        <li>General next-step guidance.</li>
+        <li>Relationship banker tone guidance.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Prohibited inputs</h4>
+      <ul>
+        <li>New reasons not in the notice.</li>
+        <li>Promises of future approval.</li>
+        <li>Unapproved credit counseling.</li>
+        <li>Sensitive file detail beyond the approved explanation.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="prompt"><span class="label">Prompt template · Borrower decline conversation</span>Using only the approved adverse-action reasons below, draft a plain-English conversation guide for the loan officer.
+
+Do not add reasons. Do not promise approval. Do not provide legal or credit counseling. Keep the tone respectful and specific.
+
+Output:
+  1. Short opening
+  2. Plain-English explanation
+  3. What the borrower can ask about
+  4. What the loan officer should not say
+  5. Escalation note
+
+Approved reasons:
+[INSERT APPROVED REASONS]</div>
+
+  <p class="play-meta"><strong>Output:</strong> call guide · do / do-not-say list · escalation note. <strong>Review:</strong> loan officer and compliance approve before use. <strong>Evidence:</strong> approved notice · conversation script · reviewer approval. <strong>Metrics:</strong> complaint rate · borrower follow-up quality · loan officer confidence · call prep time saved.</p>
+</section>
+
+<section class="page">
+  <div class="play-head">
+    <div class="num">Play 3</div>
+    <h2>Fair-lending pre-check</h2>
+    <div class="sub">AI as a second reader to flag potentially problematic language before the packet is final.</div>
+  </div>
+
+  <h3>Why it matters</h3>
+  <p>Fair-lending issues are often easier to prevent than fix after the fact.</p>
+
+  <div class="two-col">
+    <div class="card">
+      <h4>Approved inputs</h4>
+      <ul>
+        <li>Redacted underwriting notes.</li>
+        <li>Draft adverse-action language.</li>
+        <li>Approved policy excerpts.</li>
+        <li>Phrase lists.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Prohibited inputs</h4>
+      <ul>
+        <li>Protected-class information.</li>
+        <li>Unredacted customer file data in public tools.</li>
+        <li>Unsupported model explanations.</li>
+        <li>Final decision without review.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="prompt"><span class="label">Prompt template · Fair-lending language screen</span>You are reviewing draft lending language for potential fair-lending concerns.
+
+Identify language that could be vague, generic, unsupported by file facts, or potentially interpreted as proxying for a protected-class concern.
+
+Do not make a legal determination. Do not certify compliance.
+
+Output:
+  1. Phrase to review
+  2. Why it may be concerning
+  3. Suggested neutral alternative
+  4. Whether file support is needed
+  5. Escalation recommendation
+
+Draft language:
+[INSERT REDACTED DRAFT]</div>
+
+  <p class="play-meta"><strong>Output:</strong> phrase screen · neutral wording suggestions · escalation flags. <strong>Review:</strong> compliance owns the final interpretation. <strong>Evidence:</strong> draft language · AI screen · compliance decision · final language. <strong>Metrics:</strong> problematic phrases flagged · compliance edits per packet · first-pass approval rate · training opportunities identified.</p>
+</section>
+
+<section class="page">
+  <div class="play-head">
+    <div class="num">Play 4</div>
+    <h2>Examiner-ready decision packet index</h2>
+    <div class="sub">Organize the credit decision packet into a one-page index that points to source evidence.</div>
+  </div>
+
+  <h3>Why it matters</h3>
+  <p>Examiners are not impressed by document volume. They are impressed by clarity, traceability, and source evidence.</p>
+
+  <div class="prompt"><span class="label">Prompt template · Decision packet index</span>Create a one-page decision packet index using only the source list and summaries below.
+
+Do not create new evidence. Do not make a credit decision. Point to source documents that already exist.
+
+Output:
+  1. Decision summary
+  2. Source document index
+  3. Principal reasons and file support
+  4. Reviewers and sign-off
+  5. Open items
+  6. Retention note
+
+Source list:
+[INSERT SOURCE LIST]
+
+Decision summary:
+[INSERT HUMAN-APPROVED SUMMARY]</div>
+
+  <p class="play-meta"><strong>Output:</strong> decision packet index · source map · open item list. <strong>Review:</strong> credit administration and compliance. <strong>Evidence:</strong> source list · draft index · final index · reviewer sign-off. <strong>Metrics:</strong> decision packet review time · missing document exceptions · examiner / audit follow-up requests · rework reduction.</p>
+
+  <hr style="border:none; border-top:1px solid var(--slate-200); margin: 14pt 0;">
+
+  <div class="play-head">
+    <div class="num">Play 5</div>
+    <h2>Lending language coaching guide</h2>
+    <div class="sub">One-page guide of language that holds up vs. language that does not.</div>
+  </div>
+
+  <h3>Why it matters</h3>
+  <p>The same language issues appear repeatedly across loan officers, underwriters, and branches. AI can help cluster examples, but lending leadership owns the final coaching standard.</p>
+
+  <div class="prompt"><span class="label">Prompt template · Lending language coaching</span>Review these anonymized lending language examples.
+
+Cluster them into:
+  1. Clear and file-specific
+  2. Too generic
+  3. Potential proxy concern
+  4. Missing source support
+  5. Better alternative language
+
+Do not make a legal determination. The lending lead and compliance reviewer will curate final examples.
+
+Examples:
+[INSERT ANONYMIZED LANGUAGE]</div>
+
+  <p class="play-meta"><strong>Output:</strong> coaching guide draft · phrase clusters · better-language examples · review flags. <strong>Review:</strong> lending lead and compliance approve. <strong>Evidence:</strong> anonymized examples · AI cluster output · curated final guide · approval date. <strong>Metrics:</strong> coaching guide adoption · fewer repeated language issues · faster new-lender onboarding · compliance review improvement.</p>
+</section>
+
+<!-- Section 12 templates -->
+<section class="page">
+  <div class="section-kicker">Section 12 · Copy-paste templates</div>
+  <h2>Five reusable lending artifacts</h2>
+
+  <h3>Template 1 · AI lending use-case intake form</h3>
+  <table>
+    <thead><tr><th>Field</th><th>Response</th></tr></thead>
+    <tbody>
+      <tr><td>Use case name</td><td></td></tr>
+      <tr><td>Lending workflow affected</td><td></td></tr>
+      <tr><td>Business purpose</td><td></td></tr>
+      <tr><td>Proposed tool</td><td></td></tr>
+      <tr><td>User role</td><td></td></tr>
+      <tr><td>Input data class</td><td></td></tr>
+      <tr><td>Output type</td><td></td></tr>
+      <tr><td>Does it influence approval, denial, pricing, or terms?</td><td>Yes / No</td></tr>
+      <tr><td>Customer-facing output?</td><td>Yes / No</td></tr>
+      <tr><td>Adverse action involved?</td><td>Yes / No</td></tr>
+      <tr><td>Model risk review required?</td><td>Yes / No / TBD</td></tr>
+      <tr><td>Fair-lending review required?</td><td>Yes / No / TBD</td></tr>
+      <tr><td>Human reviewer</td><td></td></tr>
+      <tr><td>Approval checkpoint</td><td></td></tr>
+      <tr><td>Retention location</td><td></td></tr>
+      <tr><td>Risk tier</td><td>Green / Yellow / Red</td></tr>
+      <tr><td><strong>Decision</strong></td><td>Approved / Conditional / Rejected</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Template 2 · Principal reason traceability table</h3>
+  <table>
+    <thead><tr><th>Principal reason</th><th>File source</th><th>AI draft sentence</th><th>Human reviewer edit</th><th>Final language</th></tr></thead>
+    <tbody><tr><td></td><td></td><td></td><td></td><td></td></tr></tbody>
+  </table>
+</section>
+
+<section class="page">
+  <h3>Template 3 · Fair-lending phrase screen</h3>
+  <table>
+    <thead><tr><th>Phrase</th><th>Concern</th><th>Source support needed?</th><th>Suggested neutral language</th><th>Reviewer decision</th></tr></thead>
+    <tbody><tr><td></td><td></td><td></td><td></td><td></td></tr></tbody>
+  </table>
+
+  <h3>Template 4 · Decision packet index</h3>
+  <table>
+    <thead><tr><th>Packet section</th><th>Source document</th><th>Owner</th><th>Status</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>Application snapshot</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>Underwriting summary</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>Principal reasons</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>Adverse-action notice</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>Fair-lending review</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>Reviewer sign-off</td><td></td><td></td><td></td><td></td></tr>
+    </tbody>
+  </table>
+
+</section>
+
+<section class="page">
+  <div class="section-kicker">Section 12 · Copy-paste templates · continued</div>
+  <h2>Template 5 · Lending AI evidence packet</h2>
+  
+  <p>For each AI-supported lending workflow, retain:</p>
+  <ul class="small-checklist">
+    <li>Use-case intake form.</li>
+    <li>Tool approval status.</li>
+    <li>Data classification.</li>
+    <li>Prompt or instruction.</li>
+    <li>Source material description.</li>
+    <li>AI output.</li>
+    <li>Human reviewer.</li>
+    <li>Reviewer changes.</li>
+    <li>Principal reason traceability table, if adverse action is involved.</li>
+    <li>Final approved output.</li>
+    <li>Approval date.</li>
+    <li>Retention location.</li>
+    <li>Next review date.</li>
+  </ul>
+</section>
+
+<!-- 30 day path -->
+<section class="page">
+  <div class="section-kicker">Section 13 · 30-day lending pilot plan</div>
+  <h2>Select, run, screen, decide</h2>
+
+  <h3>Week 1 — select and control the pilot</h3>
+  <p><strong>Outcomes:</strong> approved tool selected; lending and compliance agree on red lines; Safe AI Use Checklist distributed to lending team; first use case selected; human reviewer named.<br>
+  <strong>Recommended first use case:</strong> adverse-action language tuning with human-provided principal reasons — or decision packet index creation.<br>
+  <strong>Artifacts:</strong> AI lending use-case intake form · approved prompt · review checklist.</p>
+
+  <h3>Week 2 — run five controlled files</h3>
+  <p><strong>Outcomes:</strong> pilot run on five declined applications or five redacted sample files; underwriter time logged; reviewer corrections tracked; unsupported AI language removed.<br>
+  <strong>Artifacts:</strong> principal reason traceability table · AI draft output · reviewer edits.</p>
+
+  <h3>Week 3 — add fair-lending screen and packet index</h3>
+  <p><strong>Outcomes:</strong> fair-lending phrase screen added; first decision packet index produced; compliance reviews pilot outputs.<br>
+  <strong>Artifacts:</strong> fair-lending phrase screen · decision packet index · evidence packet.</p>
+
+  <h3>Week 4 — decide whether to scale</h3>
+  <p><strong>Outcomes:</strong> lending lead and compliance review pilot; time saved and quality reviewed; go / revise / stop decision made; training needs identified.<br>
+  <strong>Artifacts:</strong> 30-day lending AI pilot summary · approved workflow SOP · next-step plan.</p>
+
+  <hr style="border:none; border-top:1px solid var(--slate-200); margin: 14pt 0;">
+
+  <div class="section-kicker">Section 14 · Measurement model</div>
+  <h2>Productivity, quality, risk, adoption</h2>
+  <div class="two-col">
+    <div class="card">
+      <h4>Productivity</h4>
+      <ul>
+        <li>Minutes saved per file.</li>
+        <li>Minutes saved per decline.</li>
+        <li>Credit memo drafting time.</li>
+        <li>Decision packet assembly time.</li>
+        <li>Review turnaround time.</li>
+      </ul>
+      <h4 style="margin-top: 10pt;">Quality</h4>
+      <ul>
+        <li>Reviewer correction rate.</li>
+        <li>Unsupported AI phrases removed.</li>
+        <li>Missing document exceptions.</li>
+        <li>Fair-lending flags.</li>
+        <li>First-pass compliance approval rate.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Risk</h4>
+      <ul>
+        <li>Adverse-action exceptions.</li>
+        <li>Model / tool incidents.</li>
+        <li>Override rate.</li>
+        <li>Customer complaints.</li>
+        <li>Disparate impact signals.</li>
+        <li>Source traceability completeness.</li>
+      </ul>
+      <h4 style="margin-top: 10pt;">Adoption</h4>
+      <ul>
+        <li>Underwriters trained.</li>
+        <li>Prompts reused.</li>
+        <li>Decision packets indexed.</li>
+        <li>Coaching guide adoption.</li>
+        <li>Weekly usage of approved workflow.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- Closing -->
+<section class="page">
+  <div class="section-kicker">Section 15 · What good looks like</div>
+  <h2>Ten questions the lending team can answer at day 30</h2>
+  <ol>
+    <li>Which lending AI use cases are allowed?</li>
+    <li>Which are prohibited?</li>
+    <li>Which tool is approved?</li>
+    <li>What data may be entered?</li>
+    <li>Who reviews AI output?</li>
+    <li>How are principal reasons traced to the file?</li>
+    <li>What happens when AI output is unsupported?</li>
+    <li>Where is the final evidence packet retained?</li>
+    <li>What metric proves value?</li>
+    <li>What must be reviewed before scale?</li>
+  </ol>
+
+  <div class="principle">The goal is not AI underwriting. The goal is AI-assisted lending operations that are faster, clearer, more consistent, explainable, reviewed, traceable, fair-lending aware, and file-supported.</div>
+
+  <hr style="border:none; border-top:1px solid var(--slate-200); margin: 14pt 0;">
+
+  <div class="section-kicker">Section 16 · Recommended AiBI path</div>
+  <h2>From assessment to operating rhythm</h2>
+  <ol>
+    <li>Take the AI Readiness Assessment.</li>
+    <li>Assign lending, credit, and compliance leads to the Foundation Course.</li>
+    <li>Complete the Red / Yellow / Green Use Card and Safe AI Use Checklist.</li>
+    <li>Build the Lending AI Use-Case Intake Form.</li>
+    <li>Run the adverse-action language sandbox using fictional or redacted data.</li>
+    <li>Build the Principal Reason Traceability Table.</li>
+    <li>Save the lending workflow SOP to the Toolbox.</li>
+    <li>Reassess after 90 days.</li>
+  </ol>
+
+  <hr style="border:none; border-top:1px solid var(--slate-200); margin: 14pt 0;">
+
+  <div class="section-kicker">Section 17 · Final operating principle</div>
+  <h2>Faster lending, never less explainable</h2>
+  <p>AI can make lending faster. But lending cannot become less explainable. The lending team still owns the decision. Compliance still owns the review. The file still owns the reason.</p>
+  <div class="principle">AI prepares. Humans decide. The file proves.</div>
+
+  <div class="cite">
+    Sources: ECOA / Regulation B; CFPB Circular 2022-03 on adverse action and complex algorithms; SR 11-7 (Federal Reserve model risk management); Interagency Third-Party Risk Management Guidance; AIEOG AI Lexicon (US Treasury / FBIIC / FSSCC, February 2026); GAO-25-107197 (May 2025); AiBI Foundations curriculum.
+  </div>
+</section>
+
+</body>
+</html>

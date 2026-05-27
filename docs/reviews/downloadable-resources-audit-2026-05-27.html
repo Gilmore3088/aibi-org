@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Downloadable Resources Audit — AiBI — 2026-05-27 (rev 3)</title>
+<link rel="stylesheet" href="../../public/downloads/source/_brand.css">
+<style>
+  body { padding: 32pt 48pt 80pt; max-width: 9.8in; margin: 0 auto; background: #fff; }
+  header.audit-head { display: flex; align-items: flex-start; justify-content: space-between; padding-bottom: 18pt; border-bottom: 2pt solid var(--ink); margin-bottom: 24pt; }
+  header.audit-head .seal { display: flex; align-items: center; gap: 12pt; }
+  header.audit-head .seal-mark { width: 44pt; height: 44pt; border-radius: 8pt; background: var(--ink); color: var(--gold); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:17pt; }
+  header.audit-head .seal-name { font-weight: 700; font-size: 13pt; }
+  header.audit-head .seal-tag { color: var(--slate-500); font-size: 9pt; }
+  header.audit-head .meta { text-align: right; font-size: 9pt; color: var(--slate-500); }
+  header.audit-head .meta .doc-id { color: var(--gold-deep); font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; }
+  h1.title { font-size: 30pt; line-height: 1.06; margin: 6pt 0; font-weight: 800; letter-spacing: -0.5px; }
+  .lede { font-size: 13pt; color: var(--slate-600); max-width: 7.4in; margin: 0 0 28pt; }
+  h2 { font-size: 18pt; font-weight: 700; margin: 28pt 0 8pt; letter-spacing: -0.2px; }
+  .kicker { font-size: 8.5pt; letter-spacing: 2px; text-transform: uppercase; color: var(--gold-deep); font-weight: 700; margin-top: 16pt; }
+  .stat-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10pt; margin: 14pt 0 22pt; }
+  .stat { background: #fff; border: 1px solid var(--slate-200); border-radius: 14pt; padding: 12pt 14pt; }
+  .stat .n { font-size: 26pt; font-weight: 800; color: var(--ink); line-height: 1; letter-spacing: -1px; }
+  .stat .l { font-size: 8.5pt; color: var(--slate-500); margin-top: 6pt; text-transform: uppercase; letter-spacing: 1px; }
+  table { width: 100%; border-collapse: collapse; margin: 10pt 0 24pt; font-size: 9.5pt; background:#fff; border-radius:14pt; overflow:hidden; border: 1px solid var(--slate-200); }
+  th, td { text-align: left; padding: 8pt 11pt; border-bottom: 1px solid var(--slate-200); vertical-align: top; }
+  th { background: var(--cream-2); font-weight: 700; font-size: 8.5pt; text-transform: uppercase; letter-spacing: 0.5px; color: var(--ink); }
+  td { color: var(--slate-600); }
+  td strong { color: var(--ink); }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8.5pt; background: var(--slate-100); padding: 1pt 4pt; border-radius: 4pt; color: var(--ink-2); }
+  .pill { display:inline-block; font-size:8pt; font-weight:700; padding:2pt 8pt; border-radius:999px; letter-spacing:0.5px; text-transform:uppercase; white-space: nowrap; }
+  .pill-green { background:#D1FAE5; color:var(--emerald-700); }
+  .pill-yellow { background:#FEF3C7; color:#92400E; }
+  .pill-red { background:#FEE2E2; color:#991B1B; }
+  .pill-gold { background:var(--gold-soft); color:var(--gold-deep); }
+  .pill-slate { background: var(--slate-100); color: var(--slate-600); }
+  .pill-built { background: var(--ink); color: #fff; }
+  .recs { background: var(--ink); color: #fff; padding: 26pt 28pt; border-radius: 16pt; margin: 24pt 0; }
+  .recs h2 { color: #fff; margin-top: 0; }
+  .recs ol { padding-left: 18pt; }
+  .recs li { margin: 6pt 0; color: #D8E0EA; }
+  .recs strong { color: var(--gold-soft); }
+  .legend { display: flex; gap: 16pt; margin: 8pt 0 16pt; flex-wrap: wrap; font-size: 9pt; color: var(--slate-500); }
+  .note { background: #fff; border-left: 3pt solid var(--gold); padding: 12pt 14pt; border-radius: 8pt; margin: 14pt 0; font-size: 10pt; }
+  .note .label { font-size: 8pt; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold-deep); font-weight: 700; margin-bottom: 4pt; }
+  footer { margin-top: 36pt; padding-top: 14pt; border-top: 1px solid var(--slate-200); font-size: 8.5pt; color: var(--slate-500); display: flex; justify-content: space-between; }
+</style>
+</head>
+<body>
+
+<header class="audit-head">
+  <div class="seal">
+    <div class="seal-mark">A</div>
+    <div>
+      <div class="seal-name">The AI Banking Institute</div>
+      <div class="seal-tag">Turning Bankers into Builders</div>
+    </div>
+  </div>
+  <div class="meta">
+    <div class="doc-id">Resource Audit · 2026-05-27 · rev 3</div>
+    <div>Reviewer: Content Lead · Copy Lead · Banking Ops · CMO</div>
+    <div>State: v2 playbooks shipped, UI wired, Ledger PDFs re-skinned</div>
+  </div>
+</header>
+
+<h1 class="title">Downloadable Resources Audit &amp; Gap Analysis — Rev 3</h1>
+<p class="lede">Current state of every customer-facing downloadable across the AiBI website after the v2 playbook expansion, UI wiring, and Ledger-era PDF re-skin. What's shipped, what's wired, what remains.</p>
+
+<div class="stat-row">
+  <div class="stat"><div class="n">11</div><div class="l">Branded PDFs shipped</div></div>
+  <div class="stat"><div class="n">245</div><div class="l">Total PDF pages</div></div>
+  <div class="stat"><div class="n">5</div><div class="l">Ledger PDFs re-skinned</div></div>
+  <div class="stat"><div class="n">100%</div><div class="l">UI surfaces wired</div></div>
+  <div class="stat"><div class="n">2</div><div class="l">Items deferred</div></div>
+</div>
+
+<div class="note">
+  <div class="label">What changed since rev 2</div>
+  <p style="margin: 0;">All six role playbooks expanded v1 → v2 (avg 5p → 27p) with operating principles, prepare-vs-decide matrices, R/Y/G tiering, plays with prompt templates, copy-paste templates, 30-day paths, measurement models. Prompt Strategy Cheat Sheet expanded v1 → v2 (2p → 20p). In-Depth Playbook expanded v1 → v2 (5p → 17p). Page-break orphans hunted down across all PDFs. Ledger-era react-pdf docs re-skinned to mockup tokens. All 11 PDFs wired into UI surfaces (`/playbooks/[role]`, `/security`, `/results/sample`, In-Depth purchased page, Foundations M3/M9 artifact registry).</p>
+</div>
+
+<h2>1 — Inventory: every branded PDF in <code>public/downloads/</code></h2>
+
+<table>
+  <thead><tr><th>File</th><th>Pages</th><th>Size</th><th>Status</th><th>Wired surface</th></tr></thead>
+  <tbody>
+    <tr><td><code>compliance-playbook.pdf</code></td><td>25</td><td>796K</td><td><span class="pill pill-green">v2 shipped</span></td><td>/playbooks/compliance</td></tr>
+    <tr><td><code>retail-playbook.pdf</code></td><td>25</td><td>840K</td><td><span class="pill pill-green">v2 shipped · zero orphans</span></td><td>/playbooks/retail</td></tr>
+    <tr><td><code>marketing-playbook.pdf</code></td><td>26</td><td>828K</td><td><span class="pill pill-green">v2 shipped</span></td><td>/playbooks/marketing</td></tr>
+    <tr><td><code>lending-playbook.pdf</code></td><td>27</td><td>848K</td><td><span class="pill pill-green">v2 shipped</span></td><td>/playbooks/lending</td></tr>
+    <tr><td><code>bsa-aml-playbook.pdf</code></td><td>29</td><td>856K</td><td><span class="pill pill-green">v2 shipped</span></td><td>/playbooks/bsa-aml</td></tr>
+    <tr><td><code>infosec-playbook.pdf</code></td><td>34</td><td>908K</td><td><span class="pill pill-green">v2 shipped</span></td><td>/playbooks/infosec</td></tr>
+    <tr><td><code>in-depth-playbook.pdf</code></td><td>17</td><td>724K</td><td><span class="pill pill-built">v2 rebuilt</span></td><td>/assessment/in-depth/purchased</td></tr>
+    <tr><td><code>prompt-strategy-cheat-sheet.pdf</code></td><td>20</td><td>712K</td><td><span class="pill pill-green">v2 shipped · zero orphans</span></td><td>Foundations M3 artifact</td></tr>
+    <tr><td><code>safe-ai-use-checklist.pdf</code></td><td>4</td><td>368K</td><td><span class="pill pill-green">v2 shipped</span></td><td>/security + Foundations M9</td></tr>
+    <tr><td><code>red-yellow-green-use-card.pdf</code></td><td>3</td><td>280K</td><td><span class="pill pill-green">v2 shipped</span></td><td>/security + Foundations M9</td></tr>
+    <tr><td><code>sample-readiness-report.pdf</code></td><td>4</td><td>420K</td><td><span class="pill pill-green">v2 shipped</span></td><td>/results/sample</td></tr>
+  </tbody>
+</table>
+
+<h2>2 — API-generated PDFs (server-side react-pdf)</h2>
+
+<table>
+  <thead><tr><th>Route</th><th>Brand</th><th>Audience</th><th>Status</th></tr></thead>
+  <tbody>
+    <tr><td><code>/api/guides/safe-ai-use</code></td><td>Mockup (re-skinned)</td><td>Prospect (post email gate)</td><td><span class="pill pill-built">Re-skinned this rev</span></td></tr>
+    <tr><td><code>/api/courses/generate-certificate</code></td><td>Mockup (re-skinned)</td><td>Customer (course completion)</td><td><span class="pill pill-built">Re-skinned this rev</span></td></tr>
+    <tr><td><code>/api/courses/generate-transformation-report</code></td><td>Mockup (re-skinned)</td><td>Customer (course completion)</td><td><span class="pill pill-built">Re-skinned this rev</span></td></tr>
+    <tr><td><code>/api/courses/generate-acceptable-use-card</code></td><td>Mockup (re-skinned)</td><td>Customer (Module 9)</td><td><span class="pill pill-built">Re-skinned this rev</span></td></tr>
+    <tr><td><code>/api/courses/artifacts/skill-template-library</code></td><td>Mockup (re-skinned)</td><td>Customer (Module 6)</td><td><span class="pill pill-built">Re-skinned this rev</span></td></tr>
+    <tr><td><code>/api/courses/generate-module-artifact</code></td><td>Markdown (no brand)</td><td>Customer (M1 – M12)</td><td><span class="pill pill-green">Live, 12 artifacts</span></td></tr>
+    <tr><td><code>/api/prompt-cards/download</code></td><td>Mockup</td><td>Customer (saved cards)</td><td><span class="pill pill-green">Live</span></td></tr>
+    <tr><td><code>/api/assessment/pdf/*</code></td><td>Mockup</td><td>Lead (post assessment)</td><td><span class="pill pill-green">Live</span></td></tr>
+  </tbody>
+</table>
+
+<h2>3 — UI wiring (how customers find the PDFs)</h2>
+
+<table>
+  <thead><tr><th>Surface</th><th>What it now links</th><th>Status</th></tr></thead>
+  <tbody>
+    <tr><td><code>/playbooks/[role]</code> hero CTA</td><td>"Download Playbook (PDF)" button → <code>/downloads/{role}-playbook.pdf</code></td><td><span class="pill pill-built">Wired this rev</span></td></tr>
+    <tr><td><code>/security</code> aside</td><td>Safe AI Use Guide (gated) + Checklist + R/Y/G Card (direct download)</td><td><span class="pill pill-built">Wired this rev</span></td></tr>
+    <tr><td><code>/results/sample</code> CTA</td><td>Branded sample report PDF + legacy .md blob</td><td><span class="pill pill-built">Wired this rev</span></td></tr>
+    <tr><td><code>/assessment/in-depth/purchased</code></td><td>"Your First AI Win — 90-day playbook (PDF)" companion link</td><td><span class="pill pill-built">Wired this rev</span></td></tr>
+    <tr><td>Foundations Module 3 artifact</td><td><code>downloadHref</code> updated to <code>/downloads/prompt-strategy-cheat-sheet.pdf</code></td><td><span class="pill pill-built">Wired this rev</span></td></tr>
+    <tr><td>Foundations Module 9 artifacts</td><td>safe-ai-use-checklist + red-yellow-green-use-card now point to <code>/downloads/*.pdf</code> (not the legacy .md)</td><td><span class="pill pill-built">Wired this rev</span></td></tr>
+  </tbody>
+</table>
+
+<h2>4 — Three-expert workflow applied to every v2 artifact</h2>
+
+<div class="recs">
+  <h2>Each playbook passed through the same chain</h2>
+  <ol>
+    <li><strong>Content Lead</strong> — concrete, specific, on-voice. No banned words. No italics. Sentence-case headings. Active voice.</li>
+    <li><strong>Copy Lead</strong> — Every-style tightening. Scannable structure. No exclamation points. Ledes under 25 words. Bullets parallel.</li>
+    <li><strong>Banking Operations Consultant</strong> — citations verified: SR 11-7, Interagency TPRM, ECOA / Reg B, GLBA / Reg P, 31 CFR 1020.320, AIEOG AI Lexicon (Feb 2026), GAO-25-107197, FDIC Q4 2024, Gartner via Jack Henry (2025), CFPB Circular 2022-03, OWASP Top 10 for LLM Apps, NIST AI RMF. Red lines flagged. No unsourced statistics.</li>
+    <li><strong>CMO</strong> — Mockup brand shell. Ink <code>#071A2F</code>, gold <code>#C8A24A</code>, cream <code>#F7F3EA</code>, Inter, single accent, no decorative shadows, seal lockup, citation footer on every doc.</li>
+  </ol>
+</div>
+
+<h2>5 — Legacy artifacts &amp; remaining gaps</h2>
+
+<table>
+  <thead><tr><th>Item</th><th>Severity</th><th>Recommendation</th></tr></thead>
+  <tbody>
+    <tr><td><code>/public/artifacts/regulatory-cheatsheet.pdf</code> (pre-Ledger, 32K)</td><td>Low</td><td>Rebrand to mockup or archive. Currently orphan, unsurfaced. <span class="pill pill-yellow">Pending</span></td></tr>
+    <tr><td><code>/public/artifacts/platform-feature-reference-card.pdf</code> (pre-Ledger, 39K)</td><td>Low</td><td>Rebrand to mockup or archive. Currently orphan, unsurfaced. <span class="pill pill-yellow">Pending</span></td></tr>
+    <tr><td><code>/public/artifacts/safe-ai-use-checklist.md</code></td><td>Low</td><td>Superseded by branded PDF; safe to delete now that artifact registry no longer points to it. <span class="pill pill-yellow">Pending</span></td></tr>
+    <tr><td><code>/public/artifacts/red-yellow-green-use-card.md</code></td><td>Low</td><td>Same — superseded; safe to delete. <span class="pill pill-yellow">Pending</span></td></tr>
+    <tr><td>Brief article PDF exports</td><td>Low</td><td>6 published articles at <code>/research/[slug]</code> — web-only. Not promised as downloads. <span class="pill pill-slate">Out of scope</span></td></tr>
+    <tr><td>In-Depth Briefing PDF endpoint</td><td>Med</td><td>Currently print-to-PDF only at <code>/assessment/in-depth/results/[id]</code>. Build a dedicated react-pdf route for parity with other fulfillment. <span class="pill pill-red">Deferred</span></td></tr>
+    <tr><td>Institutional roster reporting</td><td>Med</td><td>Aggregate endpoint deferred per DECISIONS.md. <span class="pill pill-red">Deferred</span></td></tr>
+    <tr><td>AiBI-S / AiBI-L materials</td><td>n/a</td><td>Waitlist only per DECISIONS.md. <span class="pill pill-slate">Out of scope</span></td></tr>
+  </tbody>
+</table>
+
+<h2>6 — Final deliverable count</h2>
+
+<div class="stat-row" style="grid-template-columns: repeat(3, 1fr);">
+  <div class="stat"><div class="n">11</div><div class="l">Branded PDFs · 245p total</div></div>
+  <div class="stat"><div class="n">5</div><div class="l">API PDFs · re-skinned</div></div>
+  <div class="stat"><div class="n">6</div><div class="l">UI surfaces · wired</div></div>
+</div>
+
+<footer>
+  <div>The AI Banking Institute · Turning Bankers into Builders · AIBankingInstitute.com</div>
+  <div>Audit · 2026-05-27 · rev 3 · v2 playbooks shipped + wired + branded</div>
+</footer>
+
+</body>
+</html>

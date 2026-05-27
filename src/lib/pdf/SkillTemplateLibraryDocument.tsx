@@ -1,20 +1,20 @@
 // SkillTemplateLibraryDocument — React PDF document component for the Skill Template Library artifact.
 // Rendered server-side via @react-pdf/renderer renderToBuffer().
 // Static artifact — not personalized. Contains all five banking AI skill templates.
-// Brand system: terracotta (#b5512e), parchment (#f5f0e6), ink (#1e1a14).
+// Brand system: mockup tokens — ink (#071A2F), gold (#C8A24A), cream (#F7F3EA).
 // Must NOT be imported in Client Components — PDF renderer is server-only.
 
 import React from 'react';
 import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
 
 // Brand constants
-const TERRA = '#b5512e';
-const PARCH = '#f5f0e6';
-const INK = '#1e1a14';
-const SAGE = '#4a6741';
+const TERRA = '#C8A24A';
+const PARCH = '#F7F3EA';
+const INK = '#071A2F';
+const SAGE = '#047857';
 const WHITE = '#ffffff';
-const BORDER = '#d9cfc0';
-const COBALT = '#2d4a7a';
+const BORDER = '#E2E8F0';
+const COBALT = '#071A2F';
 
 const styles = StyleSheet.create({
   page: {

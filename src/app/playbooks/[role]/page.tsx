@@ -61,8 +61,8 @@ export default async function PlaybookPage({ params }: { params: Promise<{ role:
               <Button variant="gold" size="lg" href="/courses/foundation">
                 Start {data.eyebrow.split(' ')[0]} Path <ArrowR className="mk-ic" />
               </Button>
-              <Button variant="ghost-dark" size="lg" href="/my-toolbox">
-                Preview Artifacts
+              <Button variant="ghost-dark" size="lg" href={`/downloads/${role}-playbook.pdf`}>
+                Download Playbook (PDF)
               </Button>
             </div>
           </div>
