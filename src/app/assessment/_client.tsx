@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   SiteHeader,
   Section,
@@ -49,10 +49,10 @@ const CheckIcon = (p: IconProps) => (
     <polyline points="20 6 9 17 4 12" />
   </svg>
 );
-const ResetIcon = (p: IconProps) => (
+const PauseIcon = (p: IconProps) => (
   <svg {...sw(p)}>
-    <polyline points="1 4 1 10 7 10" />
-    <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
+    <rect x="6" y="4" width="4" height="16" />
+    <rect x="14" y="4" width="4" height="16" />
   </svg>
 );
 const PlayCircleIcon = (p: IconProps) => (
@@ -190,9 +190,46 @@ function tierFor(score: number) {
 
 // ---------- Page ----------
 
+// Pre-selected answers for the auto-demo. With all 3s plus baseline,
+// produces ~66 / Building Momentum — believable mid-range demo.
+const DEMO_ANSWERS = [3, 3, 3, 3] as const;
+
+type DemoPhase = 'question' | 'highlight' | 'score';
+
+const PHASE_MS: Record<DemoPhase, number> = {
+  question: 1800,
+  highlight: 1500,
+  score: 1700,
+};
+
 export default function AssessmentLandingPage() {
   const [qIdx, setQIdx] = useState(0);
+  const [phase, setPhase] = useState<DemoPhase>('question');
   const [dimScores, setDimScores] = useState<Partial<Record<Dim, number>>>({});
+  const [paused, setPaused] = useState(false);
+
+  // Auto-cycle through the demo. Hover pauses; mouse-leave resumes.
+  useEffect(() => {
+    if (paused) return;
+    const t = setTimeout(() => {
+      if (phase === 'question') {
+        setPhase('highlight');
+        return;
+      }
+      if (phase === 'highlight') {
+        const q = QUIZ[qIdx];
+        setDimScores((prev) => ({ ...prev, [q.dim as Dim]: DEMO_ANSWERS[qIdx] }));
+        setPhase('score');
+        return;
+      }
+      // phase === 'score': advance or loop
+      const next = (qIdx + 1) % QUIZ.length;
+      if (next === 0) setDimScores({});
+      setQIdx(next);
+      setPhase('question');
+    }, PHASE_MS[phase]);
+    return () => clearTimeout(t);
+  }, [phase, qIdx, paused]);
 
   function computeScore() {
     const all = ALL_DIMS.map((d) => dimScores[d] ?? BASELINE[d] ?? 0);
@@ -202,20 +239,17 @@ export default function AssessmentLandingPage() {
     return Math.round((avg / 4) * 100);
   }
 
-  function choose(val: number) {
-    const q = QUIZ[qIdx];
-    setDimScores((prev) => ({ ...prev, [q.dim as Dim]: val }));
-    setTimeout(() => setQIdx((i) => i + 1), 380);
-  }
-
-  function reset() {
-    setQIdx(0);
-    setDimScores({});
-  }
-
   const score = computeScore();
   const tier = score === null ? null : tierFor(score);
-  const isDone = qIdx >= QUIZ.length;
+  const autoVal = DEMO_ANSWERS[qIdx];
+  const showHighlight = phase === 'highlight' || phase === 'score';
+  const statusLabel = paused
+    ? 'Paused — move away to resume'
+    : phase === 'question'
+      ? 'Reading question…'
+      : phase === 'highlight'
+        ? 'Selecting an answer…'
+        : 'Updating score…';
 
   return (
     <div className="mockup-scope">
@@ -284,21 +318,27 @@ export default function AssessmentLandingPage() {
         </div>
       </section>
 
-      {/* LIVE MINI-QUIZ */}
+      {/* AUTO-DEMO */}
       <Section variant="std" surface="white" id="mini-quiz">
         <SectionHead
-          kicker="Try a sample question"
-          heading={<>See how your score changes before starting the full assessment.</>}
+          kicker="See it in action"
+          heading={<>Watch how the assessment scores you.</>}
           lede={
             <>
-              Answer four sample questions. Your live score builds as you click — nothing saved,
-              nothing emailed.
+              A 20-second tour: four questions reveal, answers auto-select, your score builds
+              live. Hover the card to pause.
             </>
           }
         />
 
         <div className="mk-quiz">
-          <div className="mk-quiz-card">
+          <div
+            className="mk-quiz-card"
+            onMouseEnter={() => setPaused(true)}
+            onMouseLeave={() => setPaused(false)}
+            onFocus={() => setPaused(true)}
+            onBlur={() => setPaused(false)}
+          >
             <div className="mk-quiz-progress">
               <div className="mk-qp-dots">
                 {QUIZ.map((_, i) => (
@@ -309,62 +349,38 @@ export default function AssessmentLandingPage() {
                 ))}
               </div>
               <div className="mk-qp-meta">
-                {isDone ? 'Complete' : `Question ${qIdx + 1}`} of {QUIZ.length}
+                Question {qIdx + 1} of {QUIZ.length} · {paused ? 'Paused' : 'Auto-playing'}
               </div>
             </div>
 
-            <div>
-              {!isDone ? (
-                <div className="mk-quiz-q">
-                  <div className="mk-k">Dimension · {QUIZ[qIdx].dim}</div>
-                  <h3>{QUIZ[qIdx].q}</h3>
-                  <div className="mk-quiz-answers">
-                    {QUIZ[qIdx].answers.map(([txt, val]) => (
-                      <button
-                        key={String(val)}
-                        type="button"
-                        onClick={() => choose(val)}
-                        className={dimScores[QUIZ[qIdx].dim as Dim] === val ? 'is-chosen' : ''}
-                      >
-                        <span className="mk-dot" />
-                        {txt}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              ) : (
-                <div className="mk-quiz-q">
-                  <div className="mk-k">Sample complete · 4 of 8 dimensions touched</div>
-                  <h3>
-                    You're at <span style={{ color: 'var(--gold-deep)' }}>{score}</span> on this
-                    sample. Tier: <strong>{tier?.label}</strong>.
-                  </h3>
-                  <p style={{ color: 'var(--slate-600)', fontSize: 15, margin: '0 0 16px', maxWidth: '50ch' }}>
-                    The full free assessment asks 12 questions covering all 8 dimensions and
-                    includes your weakest area + a starter artifact.
-                  </p>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginTop: 8 }}>
-                    <Button variant="ink" size="lg" href="/assessment/take">
-                      See Your Full Results <ArrowR className="mk-ic" />
-                    </Button>
-                    <Button variant="ghost-light" size="lg" href="/assessment/in-depth">
-                      Or jump to In-Depth · $99
-                    </Button>
-                  </div>
-                </div>
-              )}
+            <div key={`${qIdx}-${phase}`} className="mk-quiz-q is-animated">
+              <div className="mk-k">Dimension · {QUIZ[qIdx].dim}</div>
+              <h3>{QUIZ[qIdx].q}</h3>
+              <div className="mk-quiz-answers">
+                {QUIZ[qIdx].answers.map(([txt, val]) => {
+                  const isAuto = showHighlight && val === autoVal;
+                  return (
+                    <div
+                      key={String(val)}
+                      className={`mk-quiz-answer${isAuto ? ' is-auto' : ''}`}
+                      aria-current={isAuto ? 'true' : undefined}
+                    >
+                      <span className="mk-dot" />
+                      {txt}
+                    </div>
+                  );
+                })}
+              </div>
             </div>
 
             <div className="mk-quiz-foot">
-              <Button variant="ghost-light" onClick={reset}>
-                <ResetIcon className="mk-ic" />
-                Reset
+              <span className="mk-quiz-status">
+                <PauseIcon size={14} />
+                {statusLabel}
+              </span>
+              <Button variant="gold" size="lg" href="/assessment/take">
+                Take the real assessment <ArrowR className="mk-ic" />
               </Button>
-              {isDone && (
-                <Button variant="gold" size="lg" href="/assessment/take">
-                  Take the full 12-question Free Assessment <ArrowR className="mk-ic" />
-                </Button>
-              )}
             </div>
           </div>
 
