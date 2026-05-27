@@ -238,7 +238,7 @@ export default async function InDepthAssessmentPage({
         </div>
       </Section>
 
-      {/* DETAILED COMPARE — side-by-side ledger table */}
+      {/* DETAILED COMPARE — side-by-side comparison table */}
       <Section variant="parch" padding="default" divider="none">
         <div className="max-w-default mx-auto">
           <p className="font-mono text-label-md uppercase tracking-widest text-gold mb-s3">

@@ -23,17 +23,17 @@
    * Mockup palette aliases live in tokens-mockup.css.
    * ---------------------------------------------------------------------- */
 
-  /* ---- Color · Surfaces (REMAPPED to Ledger) ------------------------- */
-  --color-linen:        var(--ledger-bg,           #ECE9DF);  /* was #f9f6f0 */
-  --color-parch:        var(--ledger-paper,        #F4F1E7);  /* was #f5f0e6 */
-  --color-parch-dark:   var(--ledger-parch,        #E4E0D2);  /* was #ede6d8 */
-  --color-ink:          var(--ledger-ink,          #0E1B2D);  /* was #1e1a14 (warm) */
+  /* ---- Color · Surfaces (REMAPPED to mockup) ------------------------- */
+  --color-linen:        #F7F3EA;  /* mockup --cream (was Ledger #ECE9DF, original #f9f6f0) */
+  --color-parch:        #FFFFFF;  /* mockup white surface (was Ledger #F4F1E7) */
+  --color-parch-dark:   #EFE7D7;  /* mockup --cream-2 (was Ledger #E4E0D2) */
+  --color-ink:          #071A2F;  /* mockup --ink (was Ledger #0E1B2D) */
 
-  /* ---- Color · Text (REMAPPED to Ledger) ----------------------------- */
-  --color-slate:        var(--ledger-slate, #4F5C6E);  /* was #6b6355 */
-  --color-dust:         var(--ledger-soft,         #8C95A8);  /* was #9b9085 */
-  --color-bone:         var(--ledger-paper,        #F4F1E7);  /* was #e8dec8 */
-  --color-cream:        var(--ledger-tape,         #F1E9D0);  /* was #c9b889 */
+  /* ---- Color · Text (REMAPPED to mockup) ----------------------------- */
+  --color-slate:        #475569;  /* mockup --slate-600 (was Ledger #4F5C6E) */
+  --color-dust:         #94A3B8;  /* mockup --slate-400 (was Ledger #8C95A8) */
+  --color-bone:         #FFFFFF;  /* mockup white surface (was Ledger #F4F1E7) */
+  --color-cream:        #EFE7D7;  /* mockup --cream-2 (was Ledger #F1E9D0) */
 
   /* ---- Color · Semantic ----------------------------------------------- */
   --color-error:        #9b2226;
@@ -130,7 +130,7 @@
   --z-skip:             100;
 
   /* ---- Focus --------------------------------------------------------- */
-  --focus-ring:         2px solid var(--ledger-accent);
+  --focus-ring:         2px solid var(--gold, #C8A24A);
   --focus-offset:       2px;
 }
 

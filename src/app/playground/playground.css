@@ -4,17 +4,14 @@
  * Wrapper: .pg-page
  */
 
-.pg-page {/* Mockup brand tokens (2026-05-27). Replaces Ledger palette so scope-css.mjs
-       reruns produce mockup-correct CSS. Old values preserved here for diff:
-       --ink was #0E1B2D (Ledger navy reading as blue); --terra was #B5862A. */
-    
-    --bg:#EFE7D7; --paper:#FFFFFF; --parch:#F7F3EA; --tape:#F7F3EA;
-    --ink:#071A2F; --ink-2:#0B2745; --muted:#64748B; --soft:#94A3B8;
-    --terra:#C8A24A; --terra-2:#9A7A2F; --weak:#991B1B;
-    --green:#047857; --navy:#071A2F; --plum:#5E3B6E;
-    --rule:#E2E8F0; --rule-strong:#CBD5E1;
-    --serif:'Inter','Geist',system-ui,sans-serif;
-    --sans:'Inter','Geist',system-ui,sans-serif;
+.pg-page {
+    --bg:#ECE9DF; --paper:#F4F1E7; --parch:#E4E0D2; --tape:#F1E9D0;
+    --ink:#0E1B2D; --ink-2:#1F2A3F; --muted:#5C6B82; --soft:#8C95A8;
+    --terra:#C8A24A; --terra-2:#8E6620; --weak:#8E3B2A;
+    --green:#1F8A5B; --navy:#1E3A5F; --plum:#5E3B6E;
+    --rule:#D5D1C2; --rule-strong:#B9B4A0;
+    --serif: var(--font-newsreader-hero), var(--font-newsreader-heavy), Georgia, serif;
+    --sans: var(--font-geist-sans), -apple-system, system-ui, sans-serif;
     --mono: var(--font-jetbrains-mono), ui-monospace, monospace;
     --maxw:1480px;
   
@@ -330,7 +327,7 @@
 .pg-page .mp-dot.opus { background:#D97757 
 }
 
-.pg-page .mp-dot.sonnet { background:#B5862A 
+.pg-page .mp-dot.sonnet { background:#C8A24A
 }
 
 .pg-page .mp-dot.haiku { background:#E5C29A 
@@ -448,7 +445,7 @@
 .pg-page .flag.ok { background:rgba(31,138,91,0.12); color:var(--green) 
 }
 
-.pg-page .flag.warn { background:rgba(181,134,42,0.18); color:var(--terra-2) 
+.pg-page .flag.warn { background:rgba(200,162,74,0.18); color:var(--terra-2)
 }
 
 .pg-page .flag.bad { background:rgba(142,59,42,0.15); color:var(--weak) 

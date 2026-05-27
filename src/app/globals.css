@@ -1,20 +1,16 @@
 /* AiBI global stylesheet — modular composition.
  *
  * Token contract:    docs/superpowers/design-system/03-tokens.md
- * Token CSS source:  src/styles/tokens.css
+ * Canonical tokens:  src/styles/tokens-mockup.css (2026-05-27)
+ * Legacy aliases:    src/styles/tokens.css (remaps --color-* → mockup hex)
  * Base styles:       src/styles/base.css
  * Print styles:      src/styles/print.css
  *
- * This file is the only entry point that Next.js loads. It imports the
- * modular pieces above plus the Tailwind directives.
- *
- * tokens-ledger.css is the new (2026-05-09) brand-refresh token layer.
- * It coexists with tokens.css during migration. See
- * docs/brand-refresh-2026-05-09/ for the canonical Design System.
+ * tokens-ledger.css was deleted 2026-05-27 after the Ledger design system
+ * was evicted from every rendering surface in the app.
  */
 
 @import "../styles/tokens.css";
-@import "../styles/tokens-ledger.css";
 @import "../styles/tokens-mockup.css";
 @import "../styles/base.css";
 @import "../styles/print.css";

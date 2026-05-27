@@ -20,7 +20,7 @@ export const exampleCourseConfig: CourseConfig = {
     name: 'Example Course',
     shortCode: 'Example',
     wordmark: 'EXAMPLE',
-    accentColorVar: 'var(--ledger-accent)',
+    accentColorVar: 'var(--gold)',
   },
   terminology: {
     itemLabel: 'Module',
