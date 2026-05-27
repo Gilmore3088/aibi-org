@@ -5,6 +5,7 @@ import { NextResponse } from 'next/server';
 import { sendInquiryAck } from '@/lib/resend';
 import { ensureAuthUser } from '@/lib/supabase/auth-admin';
 import { rateLimitOrFail, getRequestIp } from '@/lib/api/rate-limit';
+import { subscribeToPlaybookForm } from '@/lib/mailerlite';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -74,6 +75,21 @@ export async function POST(request: Request) {
     institution: body.institution,
     track: body.track || 'AiBI',
   }).catch((err) => console.warn('[inquiry] resend skip', err));
+
+  // Playbook PDF requests route to the playbook MailerLite group with
+  // role stored as a custom field so per-role segments can fan out.
+  // Track is "{role}-playbook" e.g. "compliance-playbook".
+  if (body.type === 'playbook-request') {
+    const role = body.track.replace(/-playbook$/, '');
+    if (role.length > 0) {
+      subscribeToPlaybookForm({
+        email: body.email,
+        firstName: body.name.split(' ')[0] ?? body.name,
+        role,
+        institution: body.institution,
+      }).catch((err) => console.warn('[inquiry] mailerlite skip', err));
+    }
+  }
 
   return NextResponse.json({ ok: true });
 }

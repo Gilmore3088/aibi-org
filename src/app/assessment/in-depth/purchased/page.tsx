@@ -156,16 +156,6 @@ export default async function InDepthPurchasedPage({
               </li>
             ))}
           </ul>
-
-          <p className="mt-5 text-xs text-[color:var(--color-ink)]/60">
-            Companion artifact:{' '}
-            <a
-              href="/downloads/in-depth-playbook.pdf"
-              className="underline hover:text-[color:var(--gold)] transition-colors"
-            >
-              Your First AI Win — a 90-day playbook (PDF)
-            </a>
-          </p>
         </section>
 
         <section

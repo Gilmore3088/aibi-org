@@ -157,8 +157,10 @@ export async function getProfileByEmail(email: string): Promise<UserProfileRow |
           answers: row.readiness_answers as number[],
           completedAt: row.readiness_at,
           ...(typeof row.readiness_version === 'string' &&
-          (row.readiness_version === 'v1' || row.readiness_version === 'v2')
-            ? { version: row.readiness_version as 'v1' | 'v2' }
+          (row.readiness_version === 'v1' ||
+            row.readiness_version === 'v2' ||
+            row.readiness_version === 'v3')
+            ? { version: row.readiness_version as 'v1' | 'v2' | 'v3' }
             : {}),
           ...(typeof row.readiness_max_score === 'number'
             ? { maxScore: row.readiness_max_score }

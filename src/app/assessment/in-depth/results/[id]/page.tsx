@@ -35,6 +35,9 @@ export default async function InDepthResultsPage({ params }: PageProps) {
 
   const response = await loadAssessmentResponse(id);
   if (!response) notFound();
+  // In-Depth always persists as v2 (maxScore=192). v3 rows would be free
+  // funnel and shouldn't reach this route, but narrow defensively.
+  if (response.version === 'v3') notFound();
 
   return (
     <InDepthBriefingView

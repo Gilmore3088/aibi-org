@@ -86,7 +86,7 @@ function isValidPayload(p: CapturePayload): p is {
   tier: string;
   tierLabel: string;
   answers: number[];
-  version?: 'v1' | 'v2';
+  version?: 'v1' | 'v2' | 'v3';
   maxScore?: number;
   dimensionBreakdown?: DimensionBreakdown;
   firstName?: string;
