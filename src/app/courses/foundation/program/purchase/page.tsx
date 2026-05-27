@@ -1,12 +1,19 @@
-// /courses/foundation/program/purchase — Enrollment landing page (LMS reskin)
+// /courses/foundation/program/purchase — Enrollment landing page.
 //
 // Server Component. Wrapped in <CourseShell> so the page renders with
-// the new LMS chrome (wordmark sidebar + pillar-grouped module list,
+// the LMS chrome (wordmark sidebar + pillar-grouped module list,
 // shown locked for non-enrolled visitors). Already-enrolled users see
 // a centered "you're in" confirmation instead.
 //
 // Redirect target for non-enrolled users attempting to access module
 // pages (SHELL-12).
+//
+// 2026-05-27: Ported to the mockup design system. Hero H1 set to the
+// canonical "AiBI-Foundation." credential token; the "credential your
+// examiner respects" line is restored as the primary lede. Italics are
+// removed (global `*{font-style:normal!important}` was masking them
+// anyway); emphasis is carried by weight + color. Card surfaces use
+// mockup radii (16/24/28) and the three approved shadow levels.
 
 import type { Metadata } from 'next';
 import Link from 'next/link';
@@ -24,7 +31,7 @@ import { FinalCTA } from './_components/FinalCTA';
 export const metadata: Metadata = {
   title: 'Enroll in AiBI-Foundation | The AI Banking Institute',
   description:
-    'Enroll in the AiBI-Foundation course. Twelve modules, practical artifacts, and the AiBI-Foundation credential upon completion.',
+    'Enroll in the AiBI-Foundation course. Twelve modules, practical artifacts, and the AiBI-Foundation credential your examiner respects.',
 };
 
 const LEARNER_OUTCOMES = [
@@ -55,6 +62,19 @@ const REQUIRED_OUTPUTS = [
       'A reviewed work product package that demonstrates safe, practical AI use.',
   },
 ] as const;
+
+const LIFETIME_INCLUDES = [
+  'All twelve course modules — Learn, Practice, Apply',
+  'Hands-on practice reps and reviewed-work submissions',
+  'Artifact templates you keep and reuse at your desk',
+  'Searchable prompt library and saved-prompts toolbox',
+  'Learner dashboard, progress, and resume-anywhere',
+  'AiBI-Foundation certificate on completion',
+] as const;
+
+// Shared mockup-token style tokens used throughout this page.
+const INTER_STACK =
+  'var(--font-inter, Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif)';
 
 async function getUserEmail(): Promise<string | null> {
   if (!isSupabaseConfigured()) return null;
@@ -88,9 +108,9 @@ export default async function PurchasePage() {
   const totalModules = lmsModules.length;
   const totalMinutes = FOUNDATION_TOTAL_MINUTES;
 
-  // Already-enrolled state — keep the dedicated "you're in" surface,
-  // but render it inside the new LMS shell so the wordmark + sidebar
-  // are present and clicking a module navigates correctly.
+  // Already-enrolled — keep the dedicated "you're in" surface,
+  // rendered inside the LMS shell so the wordmark + sidebar are
+  // present and clicking a module navigates correctly.
   if (enrollment) {
     const completedModules = enrollment.completed_modules ?? [];
     const currentModule = enrollment.current_module ?? 1;
@@ -100,26 +120,29 @@ export default async function PurchasePage() {
         completed={completedModules}
         current={currentModule}
       >
-        <LMSTopBar
-          crumbs={['Education', 'AiBI-Foundation', 'Enroll']}
-        />
+        <LMSTopBar crumbs={['Education', 'AiBI-Foundation', 'Enroll']} />
         <div style={{ maxWidth: 720, margin: '0 auto', padding: '64px 36px' }}>
-          <div
+          <span
             style={{
-              fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-              fontSize: 10.5,
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
-              color: 'var(--gold)',
-              marginBottom: 14,
+              display: 'inline-block',
+              padding: '8px 16px',
+              borderRadius: 999,
+              border: '1px solid var(--gold-a40)',
+              background: 'var(--gold-a10)',
+              color: 'var(--gold-deep)',
+              fontFamily: INTER_STACK,
+              fontSize: 13,
+              fontWeight: 600,
+              letterSpacing: '0.04em',
+              marginBottom: 20,
             }}
           >
             Already enrolled
-          </div>
+          </span>
           <h1
             style={{
-              fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
-              fontWeight: 500,
+              fontFamily: INTER_STACK,
+              fontWeight: 700,
               fontSize: 'clamp(36px, 4.5vw, 52px)',
               lineHeight: 1.05,
               letterSpacing: '-0.025em',
@@ -128,17 +151,17 @@ export default async function PurchasePage() {
             }}
           >
             You&rsquo;re in the{' '}
-            <em style={{ color: 'var(--gold)', fontStyle: 'normal' }}>
+            <span style={{ color: 'var(--gold-deep)', fontWeight: 700 }}>
               AiBI-Foundation
-            </em>{' '}
+            </span>{' '}
             program.
           </h1>
           <p
             style={{
-              fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
-                            fontSize: 18,
-              lineHeight: 1.5,
-              color: 'var(--ink-2)',
+              fontFamily: INTER_STACK,
+              fontSize: 18,
+              lineHeight: 1.55,
+              color: 'var(--slate-600)',
               margin: '0 0 32px',
               maxWidth: '60ch',
             }}
@@ -162,14 +185,14 @@ export default async function PurchasePage() {
                 background: 'transparent',
                 color: 'var(--ink)',
                 border: '1px solid var(--ink-a10)',
-                padding: '12px 18px',
-                borderRadius: 2,
+                padding: '12px 22px',
+                borderRadius: 12,
                 cursor: 'pointer',
-                fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-                fontSize: 11,
-                letterSpacing: '0.16em',
+                fontFamily: INTER_STACK,
+                fontSize: 13,
+                letterSpacing: '0.12em',
                 textTransform: 'uppercase',
-                fontWeight: 600,
+                fontWeight: 700,
                 textDecoration: 'none',
               }}
             >
@@ -181,7 +204,7 @@ export default async function PurchasePage() {
     );
   }
 
-  // Non-enrolled — full marketing/enroll surface in the Ledger pattern.
+  // Non-enrolled — full marketing/enroll surface in the mockup pattern.
   // Sidebar shows all 12 modules locked (current=0, completed=[]); the
   // visual effect is "here's what you get when you enroll".
   return (
@@ -191,11 +214,11 @@ export default async function PurchasePage() {
         right={
           <span
             style={{
-              fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-              fontSize: 10.5,
-              letterSpacing: '0.16em',
-              textTransform: 'uppercase',
+              fontFamily: INTER_STACK,
+              fontSize: 12,
+              letterSpacing: '0.08em',
               color: 'var(--slate-500)',
+              fontWeight: 500,
             }}
           >
             Not yet enrolled
@@ -203,259 +226,284 @@ export default async function PurchasePage() {
         }
       />
 
-      <div style={{ maxWidth: 1080, margin: '0 auto', padding: '40px 36px 80px' }}>
-        {/* Hero */}
-        <section style={{ marginBottom: 48 }}>
-          <div
+      <div style={{ maxWidth: 1080, margin: '0 auto', padding: '48px 36px 80px' }}>
+        {/* Hero — dark navy card with pill eyebrow, large headline, and
+            the restored "credential your examiner respects" lede. */}
+        <section
+          style={{
+            marginBottom: 40,
+            background: 'var(--ink)',
+            color: 'var(--cream-2)',
+            padding: '56px 48px',
+            borderRadius: 32,
+            boxShadow: 'var(--shadow-hero)',
+            position: 'relative',
+            overflow: 'hidden',
+          }}
+        >
+          <span
             style={{
-              display: 'flex',
+              display: 'inline-flex',
               alignItems: 'center',
-              gap: 14,
+              gap: 8,
+              padding: '8px 16px',
+              borderRadius: 999,
+              border: '1px solid var(--gold-a40)',
+              background: 'var(--gold-a10)',
+              color: 'var(--gold-soft)',
+              fontFamily: INTER_STACK,
+              fontSize: 13,
+              fontWeight: 600,
+              letterSpacing: '0.04em',
               marginBottom: 24,
             }}
           >
-            <span
-              style={{
-                fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-                fontSize: 10.5,
-                letterSpacing: '0.2em',
-                textTransform: 'uppercase',
-                color: 'var(--gold)',
-              }}
-            >
-              Enroll · AiBI-Foundation
-            </span>
-            <span style={{ flex: 1, height: 1, background: 'var(--ink-a10)' }} />
-          </div>
+            Enroll · AiBI-Foundation
+          </span>
 
           <h1
             style={{
-              fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
-              fontWeight: 500,
-              fontSize: 'clamp(46px, 6vw, 76px)',
+              fontFamily: INTER_STACK,
+              fontWeight: 700,
+              fontSize: 'clamp(48px, 6.2vw, 80px)',
               lineHeight: 0.98,
               letterSpacing: '-0.035em',
-              margin: '0 0 18px',
-              color: 'var(--ink)',
+              margin: '0 0 20px',
+              color: '#fff',
             }}
           >
             AiBI-
-            <em style={{ color: 'var(--gold)', fontStyle: 'normal', fontWeight: 500 }}>
+            <span style={{ color: 'var(--gold)', fontWeight: 700 }}>
               Foundation.
-            </em>
+            </span>
           </h1>
+
           <p
             style={{
-              fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
-              fontSize: 18,
-              lineHeight: 1.5,
-              color: 'var(--gold)',
-              margin: '0 0 12px',
-              maxWidth: '60ch',
+              fontFamily: INTER_STACK,
+              fontSize: 22,
+              lineHeight: 1.35,
+              color: 'var(--gold-soft)',
+              margin: '0 0 16px',
+              maxWidth: '38ch',
               fontWeight: 600,
             }}
           >
-            The credential your examiner respects.
+            Earn the credential your examiner respects.
           </p>
+
           <p
             style={{
-              fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
-                            fontSize: 22,
-              lineHeight: 1.4,
-              color: 'var(--ink-2)',
-              margin: '0 0 12px',
+              fontFamily: INTER_STACK,
+              fontSize: 19,
+              lineHeight: 1.55,
+              color: 'rgba(247, 243, 234, 0.82)',
+              margin: 0,
               maxWidth: '60ch',
             }}
           >
             {foundationCourseConfig.promise}
           </p>
+        </section>
 
-          {/* Enroll strip — ink card with price + EnrollButton */}
-          <div
-            id="enroll"
-            style={{
-              marginTop: 32,
-              display: 'grid',
-              gridTemplateColumns: 'auto 1fr auto',
-              gap: 24,
-              alignItems: 'center',
-              background: 'var(--ink)',
-              color: 'var(--cream-2)',
-              padding: '22px 26px',
-              borderRadius: 2,
-              scrollMarginTop: 80,
-            }}
-          >
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+        {/* Enroll strip — separate cream card. Price + EnrollButton.
+            Anchored for the FinalCTA link. */}
+        <section
+          id="enroll"
+          style={{
+            marginBottom: 40,
+            display: 'grid',
+            gridTemplateColumns: '1fr auto',
+            gap: 32,
+            alignItems: 'center',
+            background: '#fff',
+            color: 'var(--ink)',
+            padding: '28px 32px',
+            borderRadius: 24,
+            border: '1px solid var(--ink-a10)',
+            boxShadow: 'var(--shadow-feature)',
+            scrollMarginTop: 80,
+          }}
+        >
+          <div>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'baseline',
+                gap: 14,
+                flexWrap: 'wrap',
+              }}
+            >
               <span
                 style={{
-                  fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-                  fontSize: 10,
-                  letterSpacing: '0.2em',
-                  textTransform: 'uppercase',
-                  color: 'rgba(244, 241, 231, 0.6)',
-                }}
-              >
-                Per seat
-              </span>
-              <span
-                style={{
-                  fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-                  fontSize: 11,
-                  letterSpacing: '0.16em',
-                  color: 'var(--gold)',
-                }}
-              >
-                $199 at 10+ seats
-              </span>
-            </div>
-            <div>
-              <h2
-                style={{
-                  fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
-                  fontWeight: 500,
-                  fontSize: 32,
-                  lineHeight: 1.1,
+                  fontFamily: INTER_STACK,
+                  fontWeight: 700,
+                  fontSize: 40,
                   letterSpacing: '-0.02em',
-                  margin: 0,
+                  lineHeight: 1,
+                  color: 'var(--ink)',
                 }}
               >
                 $295
-              </h2>
-              <p
+              </span>
+              <span
                 style={{
-                  margin: '4px 0 0',
+                  fontFamily: INTER_STACK,
                   fontSize: 13,
-                  color: 'rgba(244, 241, 231, 0.72)',
-                  lineHeight: 1.5,
-                  maxWidth: '52ch',
+                  fontWeight: 600,
+                  color: 'var(--gold-deep)',
+                  letterSpacing: '0.04em',
                 }}
               >
-                One-time payment. Lifetime access. Stripe checkout.
-              </p>
+                $199 per seat at 10+
+              </span>
             </div>
-            <EnrollButton userEmail={userEmail ?? undefined} />
+            <p
+              style={{
+                margin: '8px 0 0',
+                fontFamily: INTER_STACK,
+                fontSize: 14,
+                color: 'var(--slate-600)',
+                lineHeight: 1.5,
+                maxWidth: '52ch',
+              }}
+            >
+              One-time payment. Lifetime access. Stripe checkout — no account
+              required to enroll.
+            </p>
           </div>
-
-          {/* Stats row */}
-          <div
-            style={{
-              marginTop: 18,
-              display: 'grid',
-              gridTemplateColumns: 'repeat(4, 1fr)',
-              borderTop: '1px solid var(--ink-a10)',
-              borderBottom: '1px solid var(--ink-a10)',
-            }}
-          >
-            {[
-              { k: 'Modules', v: String(totalModules), sub: 'foundation curriculum' },
-              { k: 'Time committed', v: `${totalMinutes}m`, sub: 'across all modules' },
-              {
-                k: 'Format',
-                v: 'Self-paced',
-                sub: 'on your schedule',
-              },
-              {
-                k: 'Credential',
-                v: 'Certificate',
-                sub: 'on completion',
-              },
-            ].map((r, i) => (
-              <div
-                key={r.k}
-                style={{
-                  padding: '18px 22px',
-                  borderRight: i < 3 ? '1px solid var(--ink-a10)' : 'none',
-                }}
-              >
-                <div
-                  style={{
-                    fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-                    fontSize: 9.5,
-                    letterSpacing: '0.2em',
-                    textTransform: 'uppercase',
-                    color: 'var(--slate-500)',
-                  }}
-                >
-                  {r.k}
-                </div>
-                <div
-                  style={{
-                    fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
-                    fontWeight: 500,
-                    fontSize: 28,
-                    letterSpacing: '-0.02em',
-                    lineHeight: 1,
-                    marginTop: 6,
-                    color: 'var(--ink)',
-                  }}
-                >
-                  {r.v}
-                </div>
-                <div style={{ fontSize: 12, color: 'var(--slate-600)', marginTop: 4 }}>
-                  {r.sub}
-                </div>
-              </div>
-            ))}
-          </div>
+          <EnrollButton userEmail={userEmail ?? undefined} />
         </section>
 
-        {/* What you'll do + Required outputs — same pattern as overview */}
+        {/* Stats row — four KPI cells on a cream surface. */}
+        <section
+          style={{
+            marginBottom: 56,
+            display: 'grid',
+            gridTemplateColumns: 'repeat(4, 1fr)',
+            gap: 0,
+            background: 'var(--cream-2)',
+            border: '1px solid var(--ink-a10)',
+            borderRadius: 24,
+            overflow: 'hidden',
+          }}
+        >
+          {[
+            { k: 'Modules', v: String(totalModules), sub: 'foundation curriculum' },
+            { k: 'Time committed', v: `${totalMinutes}m`, sub: 'across all modules' },
+            { k: 'Format', v: 'Self-paced', sub: 'on your schedule' },
+            { k: 'Credential', v: 'Certificate', sub: 'on completion' },
+          ].map((r, i) => (
+            <div
+              key={r.k}
+              style={{
+                padding: '22px 24px',
+                borderRight: i < 3 ? '1px solid var(--ink-a10)' : 'none',
+              }}
+            >
+              <div
+                style={{
+                  fontFamily: INTER_STACK,
+                  fontSize: 12,
+                  letterSpacing: '0.06em',
+                  textTransform: 'uppercase',
+                  color: 'var(--slate-500)',
+                  fontWeight: 600,
+                }}
+              >
+                {r.k}
+              </div>
+              <div
+                style={{
+                  fontFamily: INTER_STACK,
+                  fontWeight: 700,
+                  fontSize: 30,
+                  letterSpacing: '-0.02em',
+                  lineHeight: 1,
+                  marginTop: 8,
+                  color: 'var(--ink)',
+                }}
+              >
+                {r.v}
+              </div>
+              <div
+                style={{
+                  fontFamily: INTER_STACK,
+                  fontSize: 13,
+                  color: 'var(--slate-600)',
+                  marginTop: 6,
+                  lineHeight: 1.4,
+                }}
+              >
+                {r.sub}
+              </div>
+            </div>
+          ))}
+        </section>
+
+        {/* What you'll be able to do + Required outputs */}
         <section
           style={{
             display: 'grid',
             gridTemplateColumns: '1fr 0.85fr',
-            gap: 28,
+            gap: 24,
             marginBottom: 56,
           }}
         >
           <div
             style={{
               border: '1px solid var(--ink-a10)',
-              padding: 26,
-              background: 'var(--cream-2)',
-              borderRadius: 3,
+              padding: '28px 30px',
+              background: '#fff',
+              borderRadius: 24,
+              boxShadow: 'var(--shadow-soft)',
             }}
           >
-            <div
+            <span
               style={{
-                fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-                fontSize: 10.5,
-                letterSpacing: '0.2em',
+                display: 'inline-block',
+                fontFamily: INTER_STACK,
+                fontSize: 12,
+                letterSpacing: '0.08em',
                 textTransform: 'uppercase',
-                color: 'var(--gold)',
-                marginBottom: 14,
+                color: 'var(--gold-deep)',
+                fontWeight: 700,
+                marginBottom: 18,
               }}
             >
               What you will be able to do
-            </div>
+            </span>
             <ul
               style={{
                 margin: 0,
                 padding: 0,
                 listStyle: 'none',
                 display: 'grid',
-                gap: 10,
+                gap: 12,
               }}
             >
               {LEARNER_OUTCOMES.map((outcome) => (
                 <li
                   key={outcome}
                   style={{
-                    display: 'flex',
-                    gap: 10,
-                    fontSize: 14,
-                    color: 'var(--ink-2)',
+                    display: 'grid',
+                    gridTemplateColumns: '10px 1fr',
+                    gap: 12,
+                    fontFamily: INTER_STACK,
+                    fontSize: 15,
+                    color: 'var(--ink)',
                     lineHeight: 1.5,
+                    alignItems: 'start',
                   }}
                 >
                   <span
+                    aria-hidden="true"
                     style={{
-                      marginTop: 7,
+                      marginTop: 8,
                       width: 6,
                       height: 6,
+                      borderRadius: 999,
                       background: 'var(--gold)',
-                      flex: 'none',
                     }}
                   />
                   {outcome}
@@ -467,41 +515,47 @@ export default async function PurchasePage() {
           <div
             style={{
               border: '1px solid var(--ink-a10)',
-              padding: 26,
+              padding: '28px 30px',
               background: 'var(--cream-2)',
-              borderRadius: 3,
+              borderRadius: 24,
+              boxShadow: 'var(--shadow-soft)',
             }}
           >
-            <div
+            <span
               style={{
-                fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-                fontSize: 10.5,
-                letterSpacing: '0.2em',
+                display: 'inline-block',
+                fontFamily: INTER_STACK,
+                fontSize: 12,
+                letterSpacing: '0.08em',
                 textTransform: 'uppercase',
-                color: 'var(--gold)',
-                marginBottom: 14,
+                color: 'var(--gold-deep)',
+                fontWeight: 700,
+                marginBottom: 18,
               }}
             >
               Required outputs
-            </div>
-            <div style={{ display: 'grid', gap: 14 }}>
+            </span>
+            <div style={{ display: 'grid', gap: 16 }}>
               {REQUIRED_OUTPUTS.map((r) => (
                 <div key={r.title}>
                   <div
                     style={{
-                      fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
+                      fontFamily: INTER_STACK,
                       fontSize: 16,
-                      fontWeight: 500,
+                      fontWeight: 700,
                       color: 'var(--ink)',
+                      lineHeight: 1.3,
                     }}
                   >
                     {r.title}
                   </div>
                   <div
                     style={{
-                      fontSize: 12.5,
+                      fontFamily: INTER_STACK,
+                      fontSize: 13.5,
                       color: 'var(--slate-600)',
                       lineHeight: 1.5,
+                      marginTop: 4,
                     }}
                   >
                     {r.description}
@@ -515,34 +569,37 @@ export default async function PurchasePage() {
         {/* Lifetime access — what is included */}
         <section
           style={{
-            background: 'var(--cream-2)',
-            padding: '28px 32px',
+            background: '#fff',
+            padding: '32px 36px',
             border: '1px solid var(--ink-a10)',
-            borderRadius: 3,
+            borderRadius: 24,
+            boxShadow: 'var(--shadow-soft)',
             display: 'grid',
             gridTemplateColumns: '0.8fr 1.2fr',
-            gap: 24,
+            gap: 32,
             marginBottom: 24,
           }}
         >
           <div>
-            <div
+            <span
               style={{
-                fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-                fontSize: 10.5,
-                letterSpacing: '0.2em',
+                display: 'inline-block',
+                fontFamily: INTER_STACK,
+                fontSize: 12,
+                letterSpacing: '0.08em',
                 textTransform: 'uppercase',
-                color: 'var(--gold)',
-                marginBottom: 10,
+                color: 'var(--gold-deep)',
+                fontWeight: 700,
+                marginBottom: 14,
               }}
             >
               Lifetime access
-            </div>
+            </span>
             <h2
               style={{
-                fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
-                fontWeight: 500,
-                fontSize: 26,
+                fontFamily: INTER_STACK,
+                fontWeight: 700,
+                fontSize: 28,
                 letterSpacing: '-0.02em',
                 margin: 0,
                 color: 'var(--ink)',
@@ -553,10 +610,11 @@ export default async function PurchasePage() {
             </h2>
             <p
               style={{
-                fontSize: 13.5,
+                fontFamily: INTER_STACK,
+                fontSize: 14,
                 color: 'var(--slate-600)',
                 lineHeight: 1.6,
-                margin: '10px 0 0',
+                margin: '12px 0 0',
               }}
             >
               Future updates to modules, artifacts, and the prompt library are
@@ -570,25 +628,19 @@ export default async function PurchasePage() {
               listStyle: 'none',
               display: 'grid',
               gridTemplateColumns: '1fr 1fr',
-              gap: 12,
+              gap: 14,
             }}
           >
-            {[
-              'All twelve course modules — Learn, Practice, Apply',
-              'Hands-on practice reps and reviewed-work submissions',
-              'Artifact templates you keep and reuse at your desk',
-              'Searchable prompt library and saved-prompts toolbox',
-              'Learner dashboard, progress, and resume-anywhere',
-              'AiBI-Foundation certificate on completion',
-            ].map((item) => (
+            {LIFETIME_INCLUDES.map((item) => (
               <li
                 key={item}
                 style={{
                   display: 'grid',
                   gridTemplateColumns: '10px 1fr',
-                  gap: 10,
-                  fontSize: 13.5,
-                  color: 'var(--ink-2)',
+                  gap: 12,
+                  fontFamily: INTER_STACK,
+                  fontSize: 14,
+                  color: 'var(--ink)',
                   lineHeight: 1.5,
                   alignItems: 'start',
                 }}
@@ -596,9 +648,10 @@ export default async function PurchasePage() {
                 <span
                   aria-hidden="true"
                   style={{
-                    marginTop: 7,
+                    marginTop: 8,
                     width: 6,
                     height: 6,
+                    borderRadius: 999,
                     background: 'var(--gold)',
                   }}
                 />
@@ -608,8 +661,7 @@ export default async function PurchasePage() {
           </ul>
         </section>
 
-        {/* Curriculum — pillar-grouped module list (added 2026-05-26 from
-            the /courses/foundation-preview prototype) */}
+        {/* Curriculum — pillar-grouped module list */}
         <CurriculumByPillar />
 
         {/* FAQ accordion */}

@@ -1,25 +1,126 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, type CSSProperties, type ReactNode } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 
 import { signUp, sanitizeNext } from '@/lib/supabase/auth';
-import {
-  LedgerAlert,
-  LedgerButton,
-  LedgerCard,
-  LedgerEyebrow,
-  LedgerField,
-  LedgerH1,
-  LedgerSurface,
-} from '@/components/ledger';
 
 const MIN_PASSWORD_LENGTH = 8;
 
 // Lenient email-shaped check just to avoid pre-filling random garbage from
 // a crafted URL. The form's own type="email" validation is the real gate.
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+// ── Shared inline styles (mockup tokens) ─────────────────────────────────────
+
+const cardStyle: CSSProperties = {
+  width: '100%',
+  maxWidth: 440,
+  background: '#fff',
+  borderRadius: 24,
+  border: '1px solid var(--slate-200)',
+  boxShadow: 'var(--shadow-feature)',
+  padding: 32,
+};
+
+const eyebrowStyle: CSSProperties = {
+  fontSize: 11,
+  fontWeight: 700,
+  letterSpacing: '0.16em',
+  textTransform: 'uppercase',
+  color: 'var(--gold-deep)',
+  margin: 0,
+};
+
+const h1Style: CSSProperties = {
+  fontSize: 32,
+  fontWeight: 700,
+  lineHeight: 1.1,
+  letterSpacing: '-0.02em',
+  color: 'var(--ink)',
+  margin: '6px 0 0',
+};
+
+const labelStyle: CSSProperties = {
+  fontSize: 12,
+  fontWeight: 600,
+  letterSpacing: '0.02em',
+  color: 'var(--slate-600)',
+  display: 'block',
+  marginBottom: 6,
+};
+
+const inputStyle: CSSProperties = {
+  width: '100%',
+  height: 44,
+  padding: '0 14px',
+  borderRadius: 12,
+  border: '1px solid var(--slate-200)',
+  background: '#fff',
+  color: 'var(--ink)',
+  fontSize: 15,
+  fontFamily: 'inherit',
+  outline: 'none',
+};
+
+const primaryBtnStyle: CSSProperties = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: 8,
+  width: '100%',
+  height: 48,
+  borderRadius: 12,
+  background: 'var(--gold)',
+  color: 'var(--ink)',
+  fontSize: 13,
+  fontWeight: 700,
+  letterSpacing: '0.08em',
+  textTransform: 'uppercase',
+  border: 'none',
+  cursor: 'pointer',
+  fontFamily: 'inherit',
+  marginTop: 4,
+};
+
+const alertStyle: CSSProperties = {
+  borderRadius: 12,
+  border: '1px solid rgba(180, 60, 50, 0.35)',
+  background: 'rgba(180, 60, 50, 0.06)',
+  color: '#7A1F18',
+  padding: '10px 14px',
+  fontSize: 14,
+  lineHeight: 1.45,
+};
+
+const linkStyle: CSSProperties = {
+  color: 'var(--gold-deep)',
+  fontWeight: 600,
+  textDecoration: 'underline',
+  textUnderlineOffset: 3,
+};
+
+const footerStyle: CSSProperties = {
+  textAlign: 'center',
+  fontSize: 14,
+  color: 'var(--slate-600)',
+  margin: 0,
+};
+
+function Field({
+  label,
+  ...rest
+}: React.InputHTMLAttributes<HTMLInputElement> & { label: ReactNode }) {
+  return (
+    <div style={{ marginBottom: 14 }}>
+      <label htmlFor={rest.name} style={labelStyle}>
+        {label}
+      </label>
+      <input id={rest.name} style={inputStyle} {...rest} />
+    </div>
+  );
+}
 
 export default function SignupPage() {
   const searchParams = useSearchParams();
@@ -84,147 +185,144 @@ export default function SignupPage() {
 
   if (done) {
     return (
-      <LedgerSurface showHeader={false}>
-        <div style={{ width: '100%', maxWidth: 440, display: 'flex', flexDirection: 'column', gap: 24 }}>
-          <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <LedgerEyebrow>Account created</LedgerEyebrow>
-            <LedgerH1>Check your <em>inbox.</em></LedgerH1>
-          </div>
-          <LedgerCard variant="strong">
-            <p style={{ margin: 0, fontFamily: 'var(--serif)', fontSize: 18, lineHeight: 1.5, color: 'var(--ink-2)', textAlign: 'center' }}>
-              We sent a confirmation link to your email. Click it to activate your account.
-            </p>
-            <p style={{ margin: '12px 0 0', fontFamily: 'var(--mono)', fontSize: 10.5, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--muted)', textAlign: 'center' }}>
-              The link expires in 24 hours · check spam if you don&apos;t see it
-            </p>
-          </LedgerCard>
-          <p style={{ textAlign: 'center', fontFamily: 'var(--serif)', fontSize: 15, color: 'var(--ink-2)', margin: 0 }}>
-            Already confirmed?{' '}
-            <Link href="/auth/login" className="ledger-link">
-              Sign in
-            </Link>
+      <div style={{ width: '100%', maxWidth: 440, display: 'flex', flexDirection: 'column', gap: 20 }}>
+        <div style={{ textAlign: 'center' }}>
+          <p style={eyebrowStyle}>Account created</p>
+          <h1 style={h1Style}>Check your inbox.</h1>
+        </div>
+        <div style={cardStyle}>
+          <p style={{ margin: 0, fontSize: 16, lineHeight: 1.5, color: 'var(--ink)', textAlign: 'center' }}>
+            We sent a confirmation link to your email. Click it to activate your account.
+          </p>
+          <p
+            style={{
+              margin: '12px 0 0',
+              fontSize: 11,
+              letterSpacing: '0.16em',
+              textTransform: 'uppercase',
+              color: 'var(--slate-500)',
+              fontWeight: 600,
+              textAlign: 'center',
+            }}
+          >
+            The link expires in 24 hours · check spam if you don&apos;t see it
           </p>
         </div>
-      </LedgerSurface>
-    );
-  }
-
-  return (
-    <LedgerSurface showHeader={false}>
-      <div style={{ width: '100%', maxWidth: 440, display: 'flex', flexDirection: 'column', gap: 24 }}>
-        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', gap: 8 }}>
-          <LedgerEyebrow>Create account</LedgerEyebrow>
-          <LedgerH1>Start <em>here.</em></LedgerH1>
-        </div>
-
-        <LedgerCard variant="strong">
-          {error && (
-            <div style={{ marginBottom: 18 }}>
-              <LedgerAlert variant="error">{error}</LedgerAlert>
-            </div>
-          )}
-
-          <form onSubmit={handleSubmit} noValidate style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-            <LedgerField
-              label="Full name"
-              name="fullName"
-              type="text"
-              autoComplete="name"
-              required
-              placeholder="Jane Doe"
-            />
-            <LedgerField
-              label="Email"
-              name="email"
-              type="email"
-              autoComplete="email"
-              required
-              placeholder="you@yourbank.com"
-              defaultValue={prefillEmail}
-            />
-            <LedgerField
-              label={
-                <>
-                  Institution{' '}
-                  <span style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', textTransform: 'none', letterSpacing: 0, color: 'var(--soft)', fontWeight: 400 }}>
-                    (optional)
-                  </span>
-                </>
-              }
-              name="institutionName"
-              type="text"
-              autoComplete="organization"
-              placeholder="First Community Bank"
-            />
-            <LedgerField
-              label="Password"
-              name="password"
-              type="password"
-              autoComplete="new-password"
-              required
-              minLength={MIN_PASSWORD_LENGTH}
-              placeholder={`${MIN_PASSWORD_LENGTH}+ characters`}
-            />
-            <LedgerField
-              label="Confirm password"
-              name="confirmPassword"
-              type="password"
-              autoComplete="new-password"
-              required
-              placeholder="••••••••"
-            />
-
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10, paddingTop: 6, marginBottom: 14 }}>
-              <input
-                id="terms"
-                name="terms"
-                type="checkbox"
-                required
-                style={{
-                  marginTop: 3,
-                  width: 14,
-                  height: 14,
-                  accentColor: 'var(--terra)',
-                  borderRadius: 2,
-                  flexShrink: 0,
-                }}
-              />
-              <label
-                htmlFor="terms"
-                style={{
-                  fontFamily: 'var(--serif)',
-                  fontSize: 14,
-                  lineHeight: 1.45,
-                  color: 'var(--ink-2)',
-                }}
-              >
-                I agree to the{' '}
-                <Link href="/terms" className="ledger-link">
-                  Terms of Service
-                </Link>{' '}
-                and{' '}
-                <Link href="/privacy" className="ledger-link">
-                  Privacy Policy
-                </Link>
-              </label>
-            </div>
-
-            <LedgerButton type="submit" variant="primary" block disabled={pending}>
-              {pending ? 'Creating account…' : 'Create account'}
-            </LedgerButton>
-          </form>
-        </LedgerCard>
-
-        <p style={{ textAlign: 'center', fontFamily: 'var(--serif)', fontSize: 15, color: 'var(--ink-2)', margin: 0 }}>
-          Already have an account?{' '}
-          <Link
-            href={`/auth/login${redirectTo !== '/dashboard' ? `?next=${encodeURIComponent(redirectTo)}` : ''}`}
-            className="ledger-link"
-          >
+        <p style={footerStyle}>
+          Already confirmed?{' '}
+          <Link href="/auth/login" style={linkStyle}>
             Sign in
           </Link>
         </p>
       </div>
-    </LedgerSurface>
+    );
+  }
+
+  return (
+    <div style={{ width: '100%', maxWidth: 440, display: 'flex', flexDirection: 'column', gap: 20 }}>
+      <div style={{ textAlign: 'center' }}>
+        <p style={eyebrowStyle}>Create account</p>
+        <h1 style={h1Style}>Start here.</h1>
+      </div>
+
+      <div style={cardStyle}>
+        {error && (
+          <div role="alert" style={{ ...alertStyle, marginBottom: 16 }}>
+            {error}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} noValidate>
+          <Field
+            label="Full name"
+            name="fullName"
+            type="text"
+            autoComplete="name"
+            required
+            placeholder="Jane Doe"
+          />
+          <Field
+            label="Email"
+            name="email"
+            type="email"
+            autoComplete="email"
+            required
+            placeholder="you@yourbank.com"
+            defaultValue={prefillEmail}
+          />
+          <Field
+            label={
+              <>
+                Institution{' '}
+                <span style={{ fontWeight: 400, color: 'var(--slate-500)', textTransform: 'none', letterSpacing: 0 }}>
+                  (optional)
+                </span>
+              </>
+            }
+            name="institutionName"
+            type="text"
+            autoComplete="organization"
+            placeholder="First Community Bank"
+          />
+          <Field
+            label="Password"
+            name="password"
+            type="password"
+            autoComplete="new-password"
+            required
+            minLength={MIN_PASSWORD_LENGTH}
+            placeholder={`${MIN_PASSWORD_LENGTH}+ characters`}
+          />
+          <Field
+            label="Confirm password"
+            name="confirmPassword"
+            type="password"
+            autoComplete="new-password"
+            required
+            placeholder="••••••••"
+          />
+
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10, paddingTop: 4, marginBottom: 16 }}>
+            <input
+              id="terms"
+              name="terms"
+              type="checkbox"
+              required
+              style={{
+                marginTop: 3,
+                width: 14,
+                height: 14,
+                accentColor: 'var(--gold)',
+                flexShrink: 0,
+              }}
+            />
+            <label htmlFor="terms" style={{ fontSize: 13, lineHeight: 1.45, color: 'var(--slate-600)' }}>
+              I agree to the{' '}
+              <Link href="/terms" style={linkStyle}>
+                Terms of Service
+              </Link>{' '}
+              and{' '}
+              <Link href="/privacy" style={linkStyle}>
+                Privacy Policy
+              </Link>
+            </label>
+          </div>
+
+          <button type="submit" style={primaryBtnStyle} disabled={pending}>
+            {pending ? 'CREATING ACCOUNT…' : 'CREATE ACCOUNT'}
+          </button>
+        </form>
+      </div>
+
+      <p style={footerStyle}>
+        Already have an account?{' '}
+        <Link
+          href={`/auth/login${redirectTo !== '/dashboard' ? `?next=${encodeURIComponent(redirectTo)}` : ''}`}
+          style={linkStyle}
+        >
+          Sign in
+        </Link>
+      </p>
+    </div>
   );
 }

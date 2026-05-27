@@ -248,15 +248,15 @@ export function ToolboxHomeV5({
 
   return (
     <>
-      <section className="mx-auto max-w-[1180px] px-7 pb-16 pt-10 text-[color:var(--ledger-ink)]">
+      <section className="mx-auto max-w-[1180px] px-7 pb-16 pt-10 text-[color:var(--ink)]">
         {/* ROLE + H1 */}
         <header className="pb-6">
-          <p className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-[color:var(--ledger-muted)]">
-            <span className="mr-2 inline-block h-1.5 w-1.5 rounded-full bg-[color:var(--ledger-accent)] align-middle" />
+          <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-[color:var(--slate-500)]">
+            <span className="mr-2 inline-block h-1.5 w-1.5 rounded-full bg-[color:var(--gold-deep)] align-middle" />
             Your desk · Foundation tier
           </p>
-          <h1 className="mt-4 font-serif text-[64px] leading-[0.95] tracking-[-0.035em] text-[color:var(--ledger-ink)] md:text-[88px]">
-            Your <em className="italic text-[color:var(--ledger-accent)]">toolbox.</em>
+          <h1 className="mt-4 text-[64px] leading-[0.95] tracking-[-0.035em] text-[color:var(--ink)] md:text-[88px]">
+            Your <em className="text-[color:var(--gold-deep)]">toolbox.</em>
           </h1>
         </header>
 
@@ -266,10 +266,10 @@ export function ToolboxHomeV5({
 
         {/* ASK BAR */}
         <form
-          className="mt-6 flex items-stretch border border-[color:var(--ledger-ink)] bg-[color:var(--ledger-paper-warm)]"
+          className="mt-6 flex items-stretch border border-[color:var(--ink)] bg-[color:var(--cream)]"
           onSubmit={(e) => e.preventDefault()}
         >
-          <span className="grid place-items-center px-5 text-[color:var(--ledger-accent)]" aria-hidden>
+          <span className="grid place-items-center px-5 text-[color:var(--gold-deep)]" aria-hidden>
             <SearchIcon />
           </span>
           <input
@@ -277,12 +277,12 @@ export function ToolboxHomeV5({
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Ask your toolbox — find by name, command, or purpose…"
-            className="flex-1 bg-transparent py-4 font-serif text-lg tracking-[-0.01em] text-[color:var(--ledger-ink)] outline-none placeholder:italic placeholder:text-[color:var(--ledger-muted)]"
+            className="flex-1 bg-transparent py-4 text-lg tracking-[-0.01em] text-[color:var(--ink)] outline-none placeholder:placeholder:text-[color:var(--slate-500)]"
             aria-label="Search toolbox"
           />
           <button
             type="submit"
-            className="grid place-items-center bg-[color:var(--ledger-ink)] px-5 text-[color:var(--ledger-paper-warm)] transition-colors hover:bg-[color:var(--ledger-accent)]"
+            className="grid place-items-center bg-[color:var(--ink)] px-5 text-[color:var(--cream)] transition-colors hover:bg-[color:var(--gold-deep)]"
             aria-label="Search"
           >
             <ArrowRightIcon />
@@ -299,7 +299,7 @@ export function ToolboxHomeV5({
         {/* STARTER KITS */}
         <SectionHeader
           eyebrow="Starter kits"
-          headline={<>Pick a <em className="italic text-[color:var(--ledger-accent)]">role.</em> Adopt a desk.</>}
+          headline={<>Pick a <em className="text-[color:var(--gold-deep)]">role.</em> Adopt a desk.</>}
           right="4 curated · BSA shipped, 3 awaiting SME sign-off"
         />
         <KitGrid
@@ -315,7 +315,7 @@ export function ToolboxHomeV5({
           <>
             <SectionHeader
               eyebrow="Pinned"
-              headline={<>On your <em className="italic text-[color:var(--ledger-accent)]">shelf.</em></>}
+              headline={<>On your <em className="text-[color:var(--gold-deep)]">shelf.</em></>}
               right={`${pinnedTiles.length} pinned`}
             />
             <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -340,12 +340,12 @@ export function ToolboxHomeV5({
           <>
             <SectionHeader
               eyebrow={`${gridTiles.length} ${gridTiles.length === 1 ? 'skill' : 'skills'}`}
-              headline={<>All your <em className="italic text-[color:var(--ledger-accent)]">assets.</em></>}
+              headline={<>All your <em className="text-[color:var(--gold-deep)]">assets.</em></>}
               right={
                 <button
                   type="button"
                   onClick={onBuild}
-                  className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--ledger-accent)] hover:text-[color:var(--ledger-accent-light)]"
+                  className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--gold-deep)] hover:text-[color:var(--gold)]"
                 >
                   + New skill
                 </button>
@@ -366,7 +366,7 @@ export function ToolboxHomeV5({
               ))}
             </div>
             {gridTiles.length === 0 && pinnedTiles.length === 0 && (
-              <p className="mt-8 text-center font-serif italic text-[color:var(--ledger-muted)]">
+              <p className="mt-8 text-center text-[color:var(--slate-500)]">
                 Nothing matches that filter. Try clearing the type or the search.
               </p>
             )}
@@ -393,7 +393,7 @@ export function ToolboxHomeV5({
       {toast && (
         <div
           role="status"
-          className="fixed bottom-6 left-1/2 z-[60] -translate-x-1/2 bg-[color:var(--ledger-ink)] px-5 py-3 font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-[color:var(--ledger-paper-warm)] border border-[color:var(--ledger-ink)]"
+          className="fixed bottom-6 left-1/2 z-[60] -translate-x-1/2 bg-[color:var(--ink)] px-5 py-3 text-[11px] font-bold uppercase tracking-[0.16em] text-[color:var(--cream)] border border-[color:var(--ink)]"
         >
           {toast}
         </div>
@@ -406,7 +406,7 @@ export function ToolboxHomeV5({
 
 function Stats({ stats }: { readonly stats: { total: number; newCount: number; staleCount: number; keptPct: number | null } }): JSX.Element {
   return (
-    <div className="grid grid-cols-2 border border-[color:var(--ledger-rule-strong)] bg-[color:var(--ledger-paper-warm)] sm:grid-cols-4">
+    <div className="grid grid-cols-2 border border-[color:var(--ink-a15)] bg-[color:var(--cream)] sm:grid-cols-4">
       <StatCell value={String(stats.total)} label="In your toolbox" />
       <StatCell value={String(stats.newCount)} label="New this week" tone={stats.newCount > 0 ? 'good' : 'neutral'} />
       <StatCell value={String(stats.staleCount)} label="Stale (30d+)" tone={stats.staleCount > 0 ? 'weak' : 'neutral'} />
@@ -417,13 +417,13 @@ function Stats({ stats }: { readonly stats: { total: number; newCount: number; s
 
 function StatCell({ value, label, tone = 'neutral' }: { value: string; label: string; tone?: 'neutral' | 'good' | 'weak' }): JSX.Element {
   const toneColor =
-    tone === 'good' ? 'text-[color:var(--ledger-accent-2)]'
-    : tone === 'weak' ? 'text-[color:var(--ledger-weak)]'
-    : 'text-[color:var(--ledger-ink)]';
+    tone === 'good' ? 'text-[color:var(--gold-deep)]'
+    : tone === 'weak' ? 'text-[color:var(--ink)]'
+    : 'text-[color:var(--ink)]';
   return (
-    <div className="flex flex-col gap-1.5 border-r border-[color:var(--ledger-rule)] px-6 py-5 last:border-r-0">
-      <div className={`font-serif text-4xl leading-none tracking-[-0.025em] ${toneColor}`}>{value}</div>
-      <div className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-[color:var(--ledger-muted)]">{label}</div>
+    <div className="flex flex-col gap-1.5 border-r border-[color:var(--ink-a10)] px-6 py-5 last:border-r-0">
+      <div className={`text-4xl leading-none tracking-[-0.025em] ${toneColor}`}>{value}</div>
+      <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-[color:var(--slate-500)]">{label}</div>
     </div>
   );
 }
@@ -454,17 +454,17 @@ function TypeFilter({
             onClick={() => onSelect(isActive ? null : it.key)}
             className={`flex items-center gap-4 border px-4 py-3.5 text-left transition-colors ${
               isActive
-                ? 'border-[color:var(--ledger-ink)] bg-[color:var(--ledger-ink)] text-[color:var(--ledger-paper-warm)]'
-                : 'border-[color:var(--ledger-rule)] bg-[color:var(--ledger-paper-warm)] hover:border-[color:var(--ledger-ink-2)]'
+                ? 'border-[color:var(--ink)] bg-[color:var(--ink)] text-[color:var(--cream)]'
+                : 'border-[color:var(--ink-a10)] bg-[color:var(--cream)] hover:border-[color:var(--slate-600)]'
             }`}
             aria-pressed={isActive}
           >
-            <div className="grid h-8 w-8 flex-shrink-0 place-items-center border border-[color:var(--ledger-rule)] bg-[color:var(--ledger-bg)]">
+            <div className="grid h-8 w-8 flex-shrink-0 place-items-center border border-[color:var(--ink-a10)] bg-[color:var(--cream)]">
               <DocIcon />
             </div>
             <div className="flex flex-col gap-1">
-              <span className={`font-mono text-[9.5px] font-bold uppercase tracking-[0.2em] ${isActive ? 'text-[color:rgba(244,241,231,0.7)]' : 'text-[color:var(--ledger-muted)]'}`}>{it.label}</span>
-              <span className={`font-serif text-2xl leading-none tracking-[-0.02em] ${isActive ? 'text-[color:var(--ledger-paper-warm)]' : 'text-[color:var(--ledger-ink)]'}`}>{counts[it.key]}</span>
+              <span className={`text-[9.5px] font-bold uppercase tracking-[0.2em] ${isActive ? 'text-[color:rgba(244,241,231,0.7)]' : 'text-[color:var(--slate-500)]'}`}>{it.label}</span>
+              <span className={`text-2xl leading-none tracking-[-0.02em] ${isActive ? 'text-[color:var(--cream)]' : 'text-[color:var(--ink)]'}`}>{counts[it.key]}</span>
             </div>
           </button>
         );
@@ -483,11 +483,11 @@ function SectionHeader({
   readonly right?: ReactNode;
 }): JSX.Element {
   return (
-    <div className="mt-11 flex items-baseline gap-4 border-b border-[color:var(--ledger-rule-strong)] pb-3">
-      <span className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-[color:var(--ledger-accent)]">{eyebrow}</span>
-      <h2 className="font-serif text-3xl leading-none tracking-[-0.025em] text-[color:var(--ledger-ink)]">{headline}</h2>
+    <div className="mt-11 flex items-baseline gap-4 border-b border-[color:var(--ink-a15)] pb-3">
+      <span className="text-[10px] font-bold uppercase tracking-[0.22em] text-[color:var(--gold-deep)]">{eyebrow}</span>
+      <h2 className="text-3xl leading-none tracking-[-0.025em] text-[color:var(--ink)]">{headline}</h2>
       {right !== undefined && (
-        <span className="ml-auto font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-[color:var(--ledger-muted)]">{right}</span>
+        <span className="ml-auto text-[10px] font-semibold uppercase tracking-[0.14em] text-[color:var(--slate-500)]">{right}</span>
       )}
     </div>
   );
@@ -528,24 +528,24 @@ function ShippedKitCard({
 }): JSX.Element {
   return (
     <article
-      className="flex cursor-pointer flex-col border border-[color:var(--ledger-rule-strong)] bg-[color:var(--ledger-paper-warm)] transition-all hover:-translate-y-0.5 hover:border-[color:var(--ledger-ink)]"
+      className="flex cursor-pointer flex-col border border-[color:var(--ink-a15)] bg-[color:var(--cream)] transition-all hover:-translate-y-0.5 hover:border-[color:var(--ink)]"
       onClick={() => onAdopt(kit)}
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onAdopt(kit); } }}
       role="button"
       tabIndex={0}
       aria-label={`Adopt ${kit.role} starter kit`}
     >
-      <div className="flex flex-col gap-1.5 border-b border-[color:var(--ledger-rule)] px-4 py-3.5">
-        <div className="flex items-center justify-between font-mono text-[9px] font-bold uppercase tracking-[0.22em] text-[color:var(--ledger-accent)]">
+      <div className="flex flex-col gap-1.5 border-b border-[color:var(--ink-a10)] px-4 py-3.5">
+        <div className="flex items-center justify-between text-[9px] font-bold uppercase tracking-[0.22em] text-[color:var(--gold-deep)]">
           <span>{kit.role}</span>
-          <span className="bg-[color:var(--ledger-accent)] px-1.5 py-0.5 text-[8px] tracking-[0.2em] text-[color:var(--ledger-paper-warm)]">✓ Live</span>
+          <span className="bg-[color:var(--gold-deep)] px-1.5 py-0.5 text-[8px] tracking-[0.2em] text-[color:var(--cream)]">✓ Live</span>
         </div>
-        <h3 className="font-serif text-xl leading-tight tracking-[-0.02em] text-[color:var(--ledger-ink)]">{kit.headline}</h3>
-        <p className="mt-0.5 font-serif text-[13px] italic leading-snug text-[color:var(--ledger-muted)]">{kit.description}</p>
+        <h3 className="text-xl leading-tight tracking-[-0.02em] text-[color:var(--ink)]">{kit.headline}</h3>
+        <p className="mt-0.5 text-[13px] leading-snug text-[color:var(--slate-500)]">{kit.description}</p>
       </div>
-      <div className="flex items-center gap-3 border-t border-dashed border-[color:var(--ledger-rule)] bg-[color:var(--ledger-paper-warm)] px-4 py-3 font-mono text-[9.5px] font-semibold uppercase tracking-[0.12em] text-[color:var(--ledger-muted)]">
-        <span><b className="font-bold text-[color:var(--ledger-ink-2)]">{kit.toolCount}</b> tools</span>
-        <span className="ml-auto font-bold tracking-[0.18em] text-[color:var(--ledger-accent-2)]">In your toolbox ✓</span>
+      <div className="flex items-center gap-3 border-t border-dashed border-[color:var(--ink-a10)] bg-[color:var(--cream)] px-4 py-3 text-[9.5px] font-semibold uppercase tracking-[0.12em] text-[color:var(--slate-500)]">
+        <span><b className="font-bold text-[color:var(--slate-600)]">{kit.toolCount}</b> tools</span>
+        <span className="ml-auto font-bold tracking-[0.18em] text-[color:var(--gold-deep)]">In your toolbox ✓</span>
       </div>
     </article>
   );
@@ -559,23 +559,23 @@ function ComingSoonKitCard({
   readonly onNotify: (kit: KitCard) => void;
 }): JSX.Element {
   return (
-    <article className="flex flex-col border border-[color:var(--ledger-rule)] bg-[color:var(--ledger-parch)]">
-      <div className="flex flex-col gap-1.5 border-b border-[color:var(--ledger-rule)] px-4 py-3.5">
-        <div className="flex items-center justify-between font-mono text-[9px] font-bold uppercase tracking-[0.22em] text-[color:var(--ledger-muted)]">
+    <article className="flex flex-col border border-[color:var(--ink-a10)] bg-[color:var(--cream-2)]">
+      <div className="flex flex-col gap-1.5 border-b border-[color:var(--ink-a10)] px-4 py-3.5">
+        <div className="flex items-center justify-between text-[9px] font-bold uppercase tracking-[0.22em] text-[color:var(--slate-500)]">
           <span>{kit.role}</span>
-          <span className="border border-[color:var(--ledger-rule-strong)] px-1.5 py-0.5 text-[8px] tracking-[0.2em] text-[color:var(--ledger-muted)]">
+          <span className="border border-[color:var(--ink-a15)] px-1.5 py-0.5 text-[8px] tracking-[0.2em] text-[color:var(--slate-500)]">
             In review
           </span>
         </div>
-        <h3 className="font-serif text-xl leading-tight tracking-[-0.02em] text-[color:var(--ledger-ink-2)]">{kit.headline}</h3>
-        <p className="mt-0.5 font-serif text-[13px] italic leading-snug text-[color:var(--ledger-muted)]">{kit.description}</p>
+        <h3 className="text-xl leading-tight tracking-[-0.02em] text-[color:var(--slate-600)]">{kit.headline}</h3>
+        <p className="mt-0.5 text-[13px] leading-snug text-[color:var(--slate-500)]">{kit.description}</p>
       </div>
-      <div className="flex items-center gap-3 border-t border-dashed border-[color:var(--ledger-rule)] px-4 py-3 font-mono text-[9.5px] font-semibold uppercase tracking-[0.12em] text-[color:var(--ledger-muted)]">
-        <span><b className="font-bold text-[color:var(--ledger-ink-2)]">{kit.toolCount}</b> prompts in SME review</span>
+      <div className="flex items-center gap-3 border-t border-dashed border-[color:var(--ink-a10)] px-4 py-3 text-[9.5px] font-semibold uppercase tracking-[0.12em] text-[color:var(--slate-500)]">
+        <span><b className="font-bold text-[color:var(--slate-600)]">{kit.toolCount}</b> prompts in SME review</span>
         <button
           type="button"
           onClick={() => onNotify(kit)}
-          className="ml-auto font-bold tracking-[0.18em] text-[color:var(--ledger-accent)] underline-offset-2 transition-colors hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-ledger-accent"
+          className="ml-auto font-bold tracking-[0.18em] text-[color:var(--gold-deep)] underline-offset-2 transition-colors hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)]"
         >
           Notify me →
         </button>
@@ -586,9 +586,9 @@ function ComingSoonKitCard({
 
 function SharedWithYouEmpty(): JSX.Element {
   return (
-    <div className="mt-8 border border-[color:var(--ledger-accent)]/30 bg-[color:var(--ledger-accent)]/[0.06] px-6 py-5">
-      <p className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-[color:var(--ledger-accent)]">Shared with you</p>
-      <p className="mt-3 font-serif text-base leading-relaxed text-[color:var(--ledger-ink-2)]">
+    <div className="mt-8 border border-[color:var(--gold-deep)]/30 bg-[color:var(--gold-deep)]/[0.06] px-6 py-5">
+      <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-[color:var(--gold-deep)]">Shared with you</p>
+      <p className="mt-3 text-base leading-relaxed text-[color:var(--slate-600)]">
         Colleague-to-colleague tool sharing is on the roadmap. The institution membership model and the share-link table both land in a follow-up issue. For now, share skills via Markdown export (the drawer download button).
       </p>
     </div>
@@ -614,18 +614,18 @@ function Tile({
 }): JSX.Element {
   const desc = skill.desc || (isWorkflowSkill(skill) ? skill.purpose : '');
   const accentClass =
-    type === 'prompt' ? 'before:bg-[color:var(--ledger-accent)]'
-    : type === 'skill' ? 'before:bg-[color:var(--ledger-ink-2)]'
-    : type === 'agent' ? 'before:bg-[color:var(--ledger-accent-2)]'
-    : 'before:bg-[color:var(--ledger-weak)]';
+    type === 'prompt' ? 'before:bg-[color:var(--gold-deep)]'
+    : type === 'skill' ? 'before:bg-[color:var(--slate-600)]'
+    : type === 'agent' ? 'before:bg-[color:var(--gold-deep)]'
+    : 'before:bg-[color:var(--ink)]';
   const tagColor =
-    type === 'prompt' ? 'text-[color:var(--ledger-accent)]'
-    : type === 'skill' ? 'text-[color:var(--ledger-ink-2)]'
-    : type === 'agent' ? 'text-[color:var(--ledger-accent-2)]'
-    : 'text-[color:var(--ledger-weak)]';
+    type === 'prompt' ? 'text-[color:var(--gold-deep)]'
+    : type === 'skill' ? 'text-[color:var(--slate-600)]'
+    : type === 'agent' ? 'text-[color:var(--gold-deep)]'
+    : 'text-[color:var(--ink)]';
   return (
     <article
-      className={`group relative flex cursor-pointer flex-col border border-[color:var(--ledger-rule)] bg-[color:var(--ledger-paper-warm)] transition-all hover:-translate-y-0.5 hover:border-[color:var(--ledger-ink)]`}
+      className={`group relative flex cursor-pointer flex-col border border-[color:var(--ink-a10)] bg-[color:var(--cream)] transition-all hover:-translate-y-0.5 hover:border-[color:var(--ink)]`}
       onClick={onOpen}
       onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); onOpen(); } }}
       role="button"
@@ -633,45 +633,45 @@ function Tile({
       aria-label={`Open ${skill.name}`}
     >
       {/* Doc preview region */}
-      <div className={`relative flex h-[140px] flex-col gap-1.5 overflow-hidden border-b border-[color:var(--ledger-rule)] bg-[color:#FBF8EE] px-4 pt-3.5 pb-3 before:absolute before:inset-y-0 before:left-0 before:w-[3px] ${accentClass}`}>
+      <div className={`relative flex h-[140px] flex-col gap-1.5 overflow-hidden border-b border-[color:var(--ink-a10)] bg-[color:#FBF8EE] px-4 pt-3.5 pb-3 before:absolute before:inset-y-0 before:left-0 before:w-[3px] ${accentClass}`}>
         <div className="flex items-baseline justify-between">
-          <span className={`font-mono text-[8px] font-bold uppercase tracking-[0.22em] ${tagColor}`}>
+          <span className={`text-[8px] font-bold uppercase tracking-[0.22em] ${tagColor}`}>
             {skill.cmd || TILE_LABELS[type]}
           </span>
-          <span className="font-mono text-[8px] font-bold uppercase tracking-[0.22em] text-[color:var(--ledger-muted)]">
+          <span className="text-[8px] font-bold uppercase tracking-[0.22em] text-[color:var(--slate-500)]">
             {skill.maturity || 'draft'}
           </span>
         </div>
-        <div className="font-serif text-[13px] italic font-medium leading-tight tracking-[-0.01em] text-[color:var(--ledger-ink)]">
+        <div className="text-[13px] font-medium leading-tight tracking-[-0.01em] text-[color:var(--ink)]">
           {plain(skill.name)}
         </div>
         {desc && (
-          <p className="line-clamp-3 font-serif text-[11.5px] leading-snug text-[color:var(--ledger-muted)]">{desc}</p>
+          <p className="line-clamp-3 text-[11.5px] leading-snug text-[color:var(--slate-500)]">{desc}</p>
         )}
         {pinned && (
-          <span aria-hidden className="pointer-events-none absolute right-2 top-2 text-sm leading-none text-[color:var(--ledger-accent)]">★</span>
+          <span aria-hidden className="pointer-events-none absolute right-2 top-2 text-sm leading-none text-[color:var(--gold-deep)]">★</span>
         )}
       </div>
 
       {/* Meta footer */}
-      <div className="flex flex-col gap-2 bg-[color:var(--ledger-paper-warm)] px-4 pb-3 pt-3">
-        <span className={`font-mono text-[8.5px] font-bold uppercase tracking-[0.22em] ${tagColor}`}>{TILE_LABELS[type]}</span>
-        <h3 className="font-serif text-[17px] leading-snug tracking-[-0.015em] text-[color:var(--ledger-ink)]">{plain(skill.name)}</h3>
+      <div className="flex flex-col gap-2 bg-[color:var(--cream)] px-4 pb-3 pt-3">
+        <span className={`text-[8.5px] font-bold uppercase tracking-[0.22em] ${tagColor}`}>{TILE_LABELS[type]}</span>
+        <h3 className="text-[17px] leading-snug tracking-[-0.015em] text-[color:var(--ink)]">{plain(skill.name)}</h3>
         <div className="mt-1">
           <SourceBacklink source={skill.source} sourceRef={skill.sourceRef} librarySlugMap={librarySlugMap} />
         </div>
-        <div className="mt-2 flex items-center gap-2 border-t border-dashed border-[color:var(--ledger-rule)] pt-2">
+        <div className="mt-2 flex items-center gap-2 border-t border-dashed border-[color:var(--ink-a10)] pt-2">
           <button
             type="button"
             onClick={(e) => { e.stopPropagation(); onRun(); }}
-            className="font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-[color:var(--ledger-accent)] hover:text-[color:var(--ledger-accent-light)]"
+            className="text-[10px] font-bold uppercase tracking-[0.16em] text-[color:var(--gold-deep)] hover:text-[color:var(--gold)]"
           >
             ▶ Run
           </button>
           <button
             type="button"
             onClick={(e) => { e.stopPropagation(); onTogglePin(); }}
-            className="ml-auto text-base leading-none text-[color:var(--ledger-accent)] transition-opacity hover:opacity-70"
+            className="ml-auto text-base leading-none text-[color:var(--gold-deep)] transition-opacity hover:opacity-70"
             aria-label={pinned ? 'Unpin' : 'Pin to shelf'}
             aria-pressed={pinned}
           >
@@ -711,23 +711,23 @@ function Drawer({
   return (
     <>
       <div
-        className="fixed inset-0 z-50 bg-[color:var(--ledger-ink)]/45"
+        className="fixed inset-0 z-50 bg-[color:var(--ink)]/45"
         onClick={onClose}
         aria-hidden
       />
       <aside
-        className="fixed inset-y-0 right-0 z-[51] w-[640px] max-w-[96vw] overflow-y-auto bg-[color:var(--ledger-bg)] border-l border-[color:var(--ledger-rule-strong)]"
+        className="fixed inset-y-0 right-0 z-[51] w-[640px] max-w-[96vw] overflow-y-auto bg-[color:var(--cream)] border-l border-[color:var(--ink-a15)]"
         role="dialog"
         aria-label={`Skill detail: ${skill.name}`}
       >
-        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-[color:var(--ledger-rule)] bg-[color:var(--ledger-bg)] px-7 py-4">
-          <span className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-[color:var(--ledger-accent)]">
+        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-[color:var(--ink-a10)] bg-[color:var(--cream)] px-7 py-4">
+          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
             {(skill.cmd || skill.maturity || 'skill')} · {skill.version || 'v1'}
           </span>
           <button
             type="button"
             onClick={onClose}
-            className="cursor-pointer text-base leading-none text-[color:var(--ledger-soft)] hover:text-[color:var(--ledger-ink)]"
+            className="cursor-pointer text-base leading-none text-[color:var(--slate-400)] hover:text-[color:var(--ink)]"
             aria-label="Close drawer"
           >
             ✕
@@ -735,16 +735,16 @@ function Drawer({
         </div>
         <div className="px-7 pb-12 pt-7">
           {/* Document preview */}
-          <div className="relative mb-6 border border-[color:var(--ledger-rule-strong)] bg-[color:#FBF8EE] px-6 py-6 shadow before:absolute before:inset-y-0 before:left-0 before:w-[3px] before:bg-[color:var(--ledger-accent)]">
-            <div className="flex items-baseline justify-between border-b-2 border-[color:var(--ledger-ink)] pb-3 font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-[color:var(--ledger-muted)]">
+          <div className="relative mb-6 border border-[color:var(--ink-a15)] bg-[color:#FBF8EE] px-6 py-6 shadow before:absolute before:inset-y-0 before:left-0 before:w-[3px] before:bg-[color:var(--gold-deep)]">
+            <div className="flex items-baseline justify-between border-b-2 border-[color:var(--ink)] pb-3 text-[10px] font-bold uppercase tracking-[0.2em] text-[color:var(--slate-500)]">
               <span>{skill.cmd || skill.maturity}</span>
               <span>{skill.modified ? `Edited ${formatRelativeDate(skill.modified)}` : ''}</span>
             </div>
-            <h2 className="mt-4 font-serif text-3xl leading-tight tracking-[-0.025em] text-[color:var(--ledger-ink)]">
+            <h2 className="mt-4 text-3xl leading-tight tracking-[-0.025em] text-[color:var(--ink)]">
               {plain(skill.name)}
             </h2>
             {skill.desc && (
-              <p className="mt-3 font-serif text-[15px] leading-relaxed text-[color:var(--ledger-ink-2)]">{skill.desc}</p>
+              <p className="mt-3 text-[15px] leading-relaxed text-[color:var(--slate-600)]">{skill.desc}</p>
             )}
             <div className="mt-4">
               <SourceBacklink source={skill.source} sourceRef={skill.sourceRef} librarySlugMap={librarySlugMap} />
@@ -756,21 +756,21 @@ function Drawer({
             <button
               type="button"
               onClick={onRun}
-              className="flex flex-1 items-center justify-center gap-2 bg-[color:var(--ledger-ink)] px-5 py-3.5 font-mono text-[10.5px] font-bold uppercase tracking-[0.18em] text-[color:var(--ledger-paper-warm)] transition-colors hover:bg-[color:var(--ledger-accent)]"
+              className="flex flex-1 items-center justify-center gap-2 bg-[color:var(--ink)] px-5 py-3.5 text-[10.5px] font-bold uppercase tracking-[0.18em] text-[color:var(--cream)] transition-colors hover:bg-[color:var(--gold-deep)]"
             >
               ▶ Run in Playground
             </button>
             <button
               type="button"
               onClick={onEdit}
-              className="border border-[color:var(--ledger-rule-strong)] bg-[color:var(--ledger-paper-warm)] px-4 py-3.5 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-[color:var(--ledger-ink-2)] transition-colors hover:border-[color:var(--ledger-ink)]"
+              className="border border-[color:var(--ink-a15)] bg-[color:var(--cream)] px-4 py-3.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[color:var(--slate-600)] transition-colors hover:border-[color:var(--ink)]"
             >
               Edit
             </button>
             <button
               type="button"
               onClick={onExport}
-              className="border border-[color:var(--ledger-rule-strong)] bg-[color:var(--ledger-paper-warm)] px-4 py-3.5 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-[color:var(--ledger-ink-2)] transition-colors hover:border-[color:var(--ledger-ink)]"
+              className="border border-[color:var(--ink-a15)] bg-[color:var(--cream)] px-4 py-3.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[color:var(--slate-600)] transition-colors hover:border-[color:var(--ink)]"
             >
               Export
             </button>
@@ -779,7 +779,7 @@ function Drawer({
               onClick={() => {
                 if (window.confirm(`Delete "${plain(skill.name)}"? This cannot be undone.`)) onDelete();
               }}
-              className="border border-[color:var(--ledger-weak)]/40 bg-[color:var(--ledger-paper-warm)] px-4 py-3.5 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-[color:var(--ledger-weak)] transition-colors hover:border-[color:var(--ledger-weak)]"
+              className="border border-[color:var(--ink)]/40 bg-[color:var(--cream)] px-4 py-3.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[color:var(--ink)] transition-colors hover:border-[color:var(--ink)]"
             >
               Delete
             </button>
@@ -787,11 +787,11 @@ function Drawer({
 
           {/* Body */}
           {body && (
-            <section className="mt-7 border-t border-[color:var(--ledger-rule)] pt-5">
-              <div className="mb-3 font-mono text-[9.5px] font-bold uppercase tracking-[0.22em] text-[color:var(--ledger-accent)]">
+            <section className="mt-7 border-t border-[color:var(--ink-a10)] pt-5">
+              <div className="mb-3 text-[9.5px] font-bold uppercase tracking-[0.22em] text-[color:var(--gold-deep)]">
                 {isWorkflowSkill(skill) ? 'Workflow definition' : 'Prompt body'}
               </div>
-              <pre className="whitespace-pre-wrap border border-[color:var(--ledger-rule)] bg-[color:var(--ledger-parch)] px-5 py-4 font-mono text-[12.5px] leading-relaxed text-[color:var(--ledger-ink-2)]">
+              <pre className="whitespace-pre-wrap border border-[color:var(--ink-a10)] bg-[color:var(--cream-2)] px-5 py-4 text-[12.5px] leading-relaxed text-[color:var(--slate-600)]">
                 {body}
               </pre>
             </section>
@@ -804,11 +804,11 @@ function Drawer({
 
 function EmptyState({ onBrowse, onBuild }: { readonly onBrowse: () => void; readonly onBuild: () => void }): JSX.Element {
   return (
-    <section className="mx-auto mt-16 max-w-2xl border border-[color:var(--ledger-rule-strong)] bg-[color:var(--ledger-paper-warm)] px-8 py-16 text-center">
-      <h2 className="font-serif text-4xl tracking-[-0.025em] text-[color:var(--ledger-ink)]">
-        Your toolbox is <em className="italic text-[color:var(--ledger-accent)]">empty.</em>
+    <section className="mx-auto mt-16 max-w-2xl border border-[color:var(--ink-a15)] bg-[color:var(--cream)] px-8 py-16 text-center">
+      <h2 className="text-4xl tracking-[-0.025em] text-[color:var(--ink)]">
+        Your toolbox is <em className="text-[color:var(--gold-deep)]">empty.</em>
       </h2>
-      <p className="mt-3 font-serif text-base leading-relaxed text-[color:var(--ledger-muted)]">
+      <p className="mt-3 text-base leading-relaxed text-[color:var(--slate-500)]">
         Pick up any prompt from the Library — your saved copies live here,
         ready to re-run.
       </p>
@@ -816,14 +816,14 @@ function EmptyState({ onBrowse, onBuild }: { readonly onBrowse: () => void; read
         <button
           type="button"
           onClick={onBrowse}
-          className="bg-[color:var(--ledger-ink)] px-5 py-3 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--ledger-paper-warm)] transition-colors hover:bg-[color:var(--ledger-accent)]"
+          className="bg-[color:var(--ink)] px-5 py-3 text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--cream)] transition-colors hover:bg-[color:var(--gold-deep)]"
         >
           Browse Library →
         </button>
         <button
           type="button"
           onClick={onBuild}
-          className="border border-[color:var(--ledger-rule-strong)] px-5 py-3 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--ledger-ink)] transition-colors hover:border-[color:var(--ledger-ink)]"
+          className="border border-[color:var(--ink-a15)] px-5 py-3 text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--ink)] transition-colors hover:border-[color:var(--ink)]"
         >
           Build from scratch
         </button>

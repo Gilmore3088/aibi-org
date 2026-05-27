@@ -42,11 +42,35 @@ export function ArtifactStatusPanel({ artifactId }: ArtifactStatusPanelProps) {
   if (!status) return null;
 
   return (
-    <article className="border border-[color:var(--ledger-ink)]/10 rounded-[3px] bg-[color:var(--ledger-paper)] p-5">
-      <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--ledger-accent)] mb-2">
+    <article
+      style={{
+        border: '1px solid var(--ink-a10)',
+        borderRadius: 16,
+        background: 'var(--cream-2)',
+        padding: 20,
+        boxShadow: 'var(--shadow-soft)',
+      }}
+    >
+      <p
+        style={{
+          fontSize: 11,
+          fontWeight: 600,
+          letterSpacing: '0.2em',
+          textTransform: 'uppercase',
+          color: 'var(--gold-deep)',
+          margin: '0 0 8px',
+        }}
+      >
         Completion status
       </p>
-      <p className="text-sm text-[color:var(--ledger-muted)] leading-relaxed">
+      <p
+        style={{
+          fontSize: 14,
+          color: 'var(--slate-600)',
+          lineHeight: 1.55,
+          margin: 0,
+        }}
+      >
         {formatStatus(status)}
       </p>
     </article>

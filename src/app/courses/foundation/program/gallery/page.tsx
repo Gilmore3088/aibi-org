@@ -4,7 +4,7 @@
 
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
-import { CourseShellWrapper } from "@/components/lms/CourseShellWrapper";
+import { CourseShellWrapper } from '@/components/lms/CourseShellWrapper';
 import { OutputGalleryClient } from './OutputGalleryClient';
 import { getEnrollment } from '../_lib/getEnrollment';
 
@@ -12,6 +12,31 @@ export const metadata: Metadata = {
   title: 'Output Gallery | AiBI-Foundation | The AI Banking Institute',
   description:
     'See what excellent AI outputs look like in every banking department. Role-specific examples from lending, operations, compliance, finance, marketing, and IT. Part of the AiBI-Foundation course.',
+};
+
+const kickerStyle = {
+  fontSize: 11,
+  fontWeight: 600,
+  letterSpacing: '0.18em',
+  textTransform: 'uppercase' as const,
+  color: 'var(--gold-deep)',
+};
+
+const headlineStyle = {
+  fontWeight: 700,
+  fontSize: 'clamp(36px, 4.6vw, 56px)',
+  lineHeight: 1.05,
+  letterSpacing: '-0.025em',
+  margin: '0 0 16px',
+  color: 'var(--ink)',
+};
+
+const ledeStyle = {
+  fontSize: 19,
+  lineHeight: 1.45,
+  color: 'var(--slate-600)',
+  margin: '0 0 12px',
+  maxWidth: '60ch',
 };
 
 export default async function OutputGalleryPage() {
@@ -31,54 +56,19 @@ export default async function OutputGalleryPage() {
             marginBottom: 18,
           }}
         >
-          <span
-            style={{
-              fontFamily: 'var(--ledger-mono)',
-              fontSize: 10.5,
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
-              color: 'var(--ledger-accent)',
-            }}
-          >
-            Reference · Exemplary Outputs
-          </span>
-          <span style={{ flex: 1, height: 1, background: 'var(--ledger-rule)' }} />
+          <span style={kickerStyle}>Reference · Exemplary Outputs</span>
+          <span style={{ flex: 1, height: 1, background: 'var(--ink-a10)' }} />
         </div>
 
-        <h1
-          style={{
-            fontFamily: 'var(--ledger-serif)',
-            fontWeight: 500,
-            fontSize: 'clamp(40px, 5vw, 60px)',
-            lineHeight: 1.02,
-            letterSpacing: '-0.03em',
-            margin: '0 0 18px',
-            color: 'var(--ledger-ink)',
-          }}
-        >
-          Output{' '}
-          <em style={{ color: 'var(--ledger-accent)', fontStyle: 'normal', fontWeight: 500 }}>
-            Gallery.
-          </em>
-        </h1>
+        <h1 style={headlineStyle}>Output gallery</h1>
 
-        <p
-          style={{
-            fontFamily: 'var(--ledger-serif)',
-            fontStyle: 'italic',
-            fontSize: 20,
-            lineHeight: 1.45,
-            color: 'var(--ledger-ink-2)',
-            margin: '0 0 12px',
-            maxWidth: '60ch',
-          }}
-        >
+        <p style={ledeStyle}>
           Excellence is recognizable before you can describe it.
         </p>
         <p
           style={{
-            color: 'var(--ledger-slate)',
-            fontSize: 14.5,
+            color: 'var(--slate-600)',
+            fontSize: 15,
             lineHeight: 1.6,
             margin: '0 0 12px',
             maxWidth: '64ch',
@@ -96,7 +86,7 @@ export default async function OutputGalleryPage() {
           aria-label="How to use this gallery"
           style={{
             marginTop: 18,
-            borderLeft: '2px solid var(--ledger-accent)',
+            borderLeft: '3px solid var(--gold)',
             paddingLeft: 14,
             paddingTop: 4,
             paddingBottom: 4,
@@ -105,12 +95,12 @@ export default async function OutputGalleryPage() {
           <p
             style={{
               fontSize: 14,
-              color: 'var(--ledger-ink-2)',
+              color: 'var(--slate-600)',
               lineHeight: 1.6,
               margin: 0,
             }}
           >
-            <strong style={{ color: 'var(--ledger-ink)' }}>How to use this gallery:</strong>{' '}
+            <strong style={{ color: 'var(--ink)' }}>How to use this gallery:</strong>{' '}
             Filter to your role, expand an example, and read the &ldquo;What Makes This
             Effective&rdquo; section before producing your own output. Then compare.
           </p>

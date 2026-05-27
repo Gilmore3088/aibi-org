@@ -2,6 +2,7 @@
 
 // SkillSubmittedPanel — success state for SkillBuilder after skill submission.
 // Shows the ReadOnlyView of saved values plus a re-download button.
+// Mockup chrome: emerald success accent, cream-2 confirmation surface.
 
 import type { RefObject } from 'react';
 import { ReadOnlyView } from './SkillBuilderPanels';
@@ -36,12 +37,12 @@ interface SkillSubmittedPanelProps {
 export function SkillSubmittedPanel({ values, successRef, onRedownload }: SkillSubmittedPanelProps) {
   return (
     <div ref={successRef} tabIndex={-1} className="focus:outline-none">
-      <div className="mb-5 p-4 bg-[color:var(--ledger-accent-2)]/10 border border-[color:var(--ledger-accent-2)] rounded-sm flex items-start justify-between gap-4">
+      <div className="mb-5 flex items-start justify-between gap-4 rounded-2xl border border-[color:var(--emerald-700)] bg-white p-4">
         <div>
-          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent-2)] mb-1">
+          <p className="font-sans text-[10px] font-bold uppercase tracking-[0.22em] text-[color:var(--emerald-700)] mb-1">
             Skill Saved
           </p>
-          <p className="text-sm font-sans text-[color:var(--ledger-ink)] leading-relaxed">
+          <p className="font-sans text-sm leading-relaxed text-[color:var(--ink)]">
             Your skill file has been saved and downloaded. Use the button below to re-download at any
             time.
           </p>
@@ -49,11 +50,11 @@ export function SkillSubmittedPanel({ values, successRef, onRedownload }: SkillS
         <button
           type="button"
           onClick={onRedownload}
-          className="shrink-0 flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-mono rounded-sm border border-[color:var(--ledger-accent-2)] text-[color:var(--ledger-accent-2)] hover:bg-[color:var(--ledger-accent-2)]/10 transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent-2)] focus:ring-offset-1"
+          className="shrink-0 inline-flex items-center gap-1.5 rounded-xl border border-[color:var(--emerald-700)] px-3 py-1.5 font-sans text-[11px] font-bold uppercase tracking-[0.16em] text-[color:var(--emerald-700)] hover:bg-[color:var(--emerald-50)] transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--emerald-700)] focus:ring-offset-1"
           aria-label="Re-download skill file"
         >
           <DownloadIcon />
-          Re-download .md
+          RE-DOWNLOAD .MD
         </button>
       </div>
       <ReadOnlyView values={values} />

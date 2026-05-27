@@ -1,24 +1,26 @@
-// Line-art Ledger marks for the product ladder. Matches the editorial
+// Line-art product marks for the product ladder. Matches the editorial
 // style introduced on /research (1.6 stroke, ink primary, gold accent fill
 // on key shapes, square viewBox). Used on marketing tiles where a tile is
 // the visual unit and a small mark differentiates it without illustration.
+//
+// 2026-05-27: Ported to the mockup design system. Stroke and paper fall
+// back to literal hex because SVG presentation attributes (stroke, fill)
+// do not resolve CSS var() across all browsers, but gold accents use
+// CSS variables so the system can retune the accent without a code change.
+// Keep in sync with src/styles/tokens-mockup.css:
+//   STROKE     ↔ --ink (#071A2F)
+//   GOLD       ↔ --gold
+//   GOLD_FILL  ↔ --gold-a20
+//   GOLD_SOFT  ↔ --gold-a10
+//   PAPER      ↔ --cream (#F7F3EA, magnifier lens fill below)
 
 import type { ReactElement } from 'react';
 
-// These constants mirror Ledger tokens. They are duplicated as literals
-// because SVG presentation attributes (stroke, fill) do not resolve CSS
-// var() across browsers — only inline style props do, and converting
-// every SVG attribute to style is high churn for low benefit. Keep in
-// sync with src/styles/tokens-ledger.css:
-//   STROKE    ↔ --ledger-ink
-//   GOLD      ↔ --ledger-accent
-//   GOLD_*    ↔ rgba derivations of --ledger-accent
-//   PAPER     ↔ --ledger-paper (used as magnifier lens fill below)
-const STROKE = '#0E1B2D';      // --ledger-ink
-const GOLD = 'var(--ledger-accent)';        // --ledger-accent
-const GOLD_FILL = 'var(--ledger-accent-a18)';
-const GOLD_SOFT = 'var(--ledger-accent-a10)';
-const PAPER = '#F4F1E7';       // --ledger-paper
+const STROKE = '#071A2F';       // --ink
+const GOLD = 'var(--gold)';
+const GOLD_FILL = 'var(--gold-a20)';
+const GOLD_SOFT = 'var(--gold-a10)';
+const PAPER = '#F7F3EA';        // --cream
 
 export type ProductMarkKind =
   | 'assessment-free'

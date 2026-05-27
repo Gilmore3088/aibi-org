@@ -21,7 +21,7 @@ export interface CourseBrand {
   readonly name: string;            // 'AiBI-Foundation' | 'Banking AI Specialist'
   readonly shortCode: string;       // 'AiBI-Foundation' | 'AiBI-S'
   readonly wordmark: string;        // displayed in sidebar (may equal shortCode)
-  readonly accentColorVar: string;  // 'var(--ledger-accent)' | 'var(--ledger-accent-2)'
+  readonly accentColorVar: string;  // 'var(--gold)' | 'var(--ink)' (was Ledger; now mockup)
 }
 
 export interface CourseTerminology {

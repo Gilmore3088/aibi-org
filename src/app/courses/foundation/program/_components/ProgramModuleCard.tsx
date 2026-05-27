@@ -5,6 +5,9 @@ import Link from 'next/link';
 import { ProgressDot, getModuleStatus, type LMSModule } from '@/components/lms';
 import type { ExpandedModule } from '@content/courses/foundation-program';
 
+const FONT_INTER =
+  'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
+
 interface ProgramModuleCardProps {
   readonly module: LMSModule;
   readonly expanded: ExpandedModule | undefined;
@@ -24,18 +27,20 @@ export function ProgramModuleCard({
 
   const cardStyle: React.CSSProperties = {
     textAlign: 'left',
-    background: 'var(--ledger-paper)',
-    border: '1px solid var(--ledger-rule)',
-    borderRadius: 3,
+    background: '#FFFFFF',
+    border: '1px solid var(--ink-a10)',
+    borderRadius: 16,
     padding: '18px 22px',
     display: 'grid',
     gridTemplateColumns: '24px 56px 1fr auto auto',
     gap: 18,
     alignItems: 'center',
     opacity: locked ? 0.55 : 1,
-    transition: 'border-color .15s, background .15s',
+    transition: 'border-color .15s, background .15s, box-shadow .15s',
     textDecoration: 'none',
     color: 'inherit',
+    fontFamily: FONT_INTER,
+    boxShadow: locked ? 'none' : 'var(--shadow-soft)',
   };
 
   const interior = (
@@ -43,10 +48,12 @@ export function ProgramModuleCard({
       <ProgressDot status={status} size={11} />
       <span
         style={{
-          fontFamily: 'var(--ledger-mono)',
+          fontFamily: FONT_INTER,
           fontSize: 11,
-          color: 'var(--ledger-muted)',
-          letterSpacing: '0.06em',
+          fontWeight: 700,
+          color: 'var(--slate-500)',
+          letterSpacing: '0.14em',
+          textTransform: 'uppercase',
         }}
       >
         M{String(mod.num).padStart(2, '0')}
@@ -54,23 +61,21 @@ export function ProgramModuleCard({
       <div>
         <div
           style={{
-            fontFamily: 'var(--ledger-serif)',
-            fontSize: 19,
-            fontWeight: 500,
+            fontFamily: FONT_INTER,
+            fontSize: 18,
+            fontWeight: 700,
             letterSpacing: '-0.01em',
-            color:
-              status === 'current'
-                ? 'var(--ledger-accent)'
-                : 'var(--ledger-ink)',
+            color: status === 'current' ? 'var(--gold-deep)' : 'var(--ink)',
           }}
         >
           {mod.title}
         </div>
         <div
           style={{
+            fontFamily: FONT_INTER,
             fontSize: 13,
-            color: 'var(--ledger-slate)',
-            marginTop: 3,
+            color: 'var(--slate-600)',
+            marginTop: 4,
             lineHeight: 1.5,
           }}
         >
@@ -79,23 +84,23 @@ export function ProgramModuleCard({
       </div>
       <span
         style={{
-          fontFamily: 'var(--ledger-mono)',
-          fontSize: 10,
-          letterSpacing: '0.14em',
+          fontFamily: FONT_INTER,
+          fontSize: 10.5,
+          fontWeight: 700,
+          letterSpacing: '0.16em',
           textTransform: 'uppercase',
-          color: 'var(--ledger-muted)',
+          color: 'var(--slate-500)',
         }}
       >
         {mod.mins} min
       </span>
       <span
+        aria-hidden="true"
         style={{
-          fontFamily: 'var(--ledger-serif)',
-          fontStyle: 'italic',
+          fontFamily: FONT_INTER,
           fontSize: 18,
-          color: locked
-            ? 'var(--ledger-rule-strong)'
-            : 'var(--ledger-ink)',
+          fontWeight: 600,
+          color: locked ? 'var(--slate-400)' : 'var(--ink)',
         }}
       >
         {locked ? '·' : '→'}

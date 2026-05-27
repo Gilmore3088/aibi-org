@@ -46,18 +46,18 @@ export default async function ArtifactDetailPage({ params }: ArtifactPageProps) 
     >
       <header
         style={{
-          borderBottom: '1px solid var(--ledger-rule)',
+          borderBottom: '1px solid var(--ink-a10)',
           paddingBottom: 28,
           marginBottom: 32,
         }}
       >
         <p
           style={{
-            fontFamily: 'var(--ledger-mono)',
-            fontSize: 10.5,
+            fontSize: 11,
+            fontWeight: 600,
             letterSpacing: '0.2em',
             textTransform: 'uppercase',
-            color: 'var(--ledger-accent)',
+            color: 'var(--gold-deep)',
             margin: '0 0 12px',
           }}
         >
@@ -65,13 +65,12 @@ export default async function ArtifactDetailPage({ params }: ArtifactPageProps) 
         </p>
         <h1
           style={{
-            fontFamily: 'var(--ledger-serif)',
-            fontWeight: 500,
-            fontSize: 'clamp(34px, 4vw, 48px)',
-            lineHeight: 1.05,
+            fontWeight: 700,
+            fontSize: 'clamp(32px, 4vw, 46px)',
+            lineHeight: 1.08,
             letterSpacing: '-0.025em',
             margin: '0 0 16px',
-            color: 'var(--ledger-ink)',
+            color: 'var(--ink)',
           }}
         >
           {artifact.title}
@@ -79,7 +78,7 @@ export default async function ArtifactDetailPage({ params }: ArtifactPageProps) 
         <p
           style={{
             fontSize: 16,
-            color: 'var(--ledger-ink-2)',
+            color: 'var(--slate-600)',
             lineHeight: 1.6,
             margin: 0,
             maxWidth: '60ch',
@@ -112,15 +111,15 @@ export default async function ArtifactDetailPage({ params }: ArtifactPageProps) 
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
         {artifact.downloadHref ? (
           <PrimaryButton as="a" href={artifact.downloadHref}>
-            Download
+            DOWNLOAD
           </PrimaryButton>
         ) : (
           <PrimaryButton as="a" href={`/practice/${artifact.sourceActivityId}`}>
-            Open source activity
+            OPEN SOURCE ACTIVITY
           </PrimaryButton>
         )}
         <GhostButton as="a" href="/courses/foundation/program/gallery">
-          Browse gallery
+          BROWSE GALLERY
         </GhostButton>
         <Link
           href="/dashboard"
@@ -128,15 +127,15 @@ export default async function ArtifactDetailPage({ params }: ArtifactPageProps) 
             display: 'inline-flex',
             alignItems: 'center',
             padding: '12px 18px',
-            fontFamily: 'var(--ledger-mono)',
             fontSize: 11,
+            fontWeight: 600,
             letterSpacing: '0.16em',
             textTransform: 'uppercase',
-            color: 'var(--ledger-muted)',
+            color: 'var(--slate-500)',
             textDecoration: 'none',
           }}
         >
-          Dashboard ↗
+          DASHBOARD ↗
         </Link>
       </div>
     </CourseShellWrapper>
@@ -153,19 +152,20 @@ function DetailBlock({
   return (
     <article
       style={{
-        border: '1px solid var(--ledger-rule)',
-        borderRadius: 3,
-        background: 'var(--ledger-parch)',
+        border: '1px solid var(--ink-a10)',
+        borderRadius: 16,
+        background: 'var(--cream-2)',
         padding: 18,
+        boxShadow: 'var(--shadow-soft)',
       }}
     >
       <p
         style={{
-          fontFamily: 'var(--ledger-mono)',
           fontSize: 10,
+          fontWeight: 600,
           letterSpacing: '0.2em',
           textTransform: 'uppercase',
-          color: 'var(--ledger-accent)',
+          color: 'var(--gold-deep)',
           margin: '0 0 8px',
         }}
       >
@@ -174,7 +174,7 @@ function DetailBlock({
       <p
         style={{
           fontSize: 13,
-          color: 'var(--ledger-slate)',
+          color: 'var(--slate-600)',
           lineHeight: 1.55,
           margin: 0,
         }}

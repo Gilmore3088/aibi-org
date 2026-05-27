@@ -1,6 +1,8 @@
 // DrillReadOnlyReview — Score summary and per-scenario annotations
 // shown after a ClassificationDrill is completed or already submitted.
+// Ported to mockup tokens 2026-05-27.
 
+import type React from 'react';
 import { CheckIcon, XIcon, ClockIcon } from './DrillIcons';
 
 interface DrillScenario {
@@ -37,6 +39,29 @@ interface DrillReadOnlyReviewProps {
   readonly score: number;
 }
 
+const INTER_STACK = 'Inter, ui-sans-serif, system-ui, sans-serif';
+
+const eyebrowStyle: React.CSSProperties = {
+  fontFamily: INTER_STACK,
+  fontSize: 10,
+  fontWeight: 700,
+  letterSpacing: '0.22em',
+  textTransform: 'uppercase',
+  margin: 0,
+};
+
+// Amber (Tailwind 400/600/50) is retained for the "time expired" neutral
+// state — emerald is reserved for success, and the mockup system doesn't
+// define an in-progress/warning token. This is a contained exception, not
+// a new palette.
+const AMBER_BORDER = 'rgba(251, 191, 36, 0.4)';
+const AMBER_BG = '#FFFBEB';
+const AMBER_TEXT = '#B45309';
+
+const INCORRECT_BORDER = 'rgba(185, 28, 28, 0.3)';
+const INCORRECT_BG = '#FEF2F2';
+const INCORRECT_TEXT = '#B91C1C';
+
 export function DrillReadOnlyReview({
   scenarios,
   answers,
@@ -64,20 +89,51 @@ export function DrillReadOnlyReview({
   }
 
   return (
-    <div className="space-y-6">
+    <div style={{ display: 'grid', gap: 24 }}>
       {/* Score summary */}
-      <div className="text-center py-6 bg-[color:var(--ledger-paper)] rounded-sm">
-        <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] mb-1">
-          Drill Score
+      <div
+        style={{
+          textAlign: 'center',
+          padding: '28px 16px',
+          background: 'var(--ink)',
+          color: 'var(--cream)',
+          borderRadius: 24,
+          boxShadow: 'var(--shadow-feature)',
+        }}
+      >
+        <p style={{ ...eyebrowStyle, color: 'var(--gold-soft)', marginBottom: 8 }}>
+          Drill score
         </p>
-        <p className="font-serif text-5xl font-bold text-[color:var(--ledger-ink)]">
+        <p
+          style={{
+            fontFamily: INTER_STACK,
+            fontSize: 56,
+            fontWeight: 800,
+            letterSpacing: '-0.02em',
+            color: 'var(--cream)',
+            margin: 0,
+            lineHeight: 1,
+            fontVariantNumeric: 'tabular-nums',
+          }}
+        >
           {score}/{answers.length}
         </p>
-        <p className="font-mono text-sm text-[color:var(--ledger-muted)] mt-1">{pct}% correct</p>
+        <p
+          style={{
+            fontFamily: INTER_STACK,
+            fontSize: 14,
+            fontWeight: 600,
+            color: 'var(--on-dark-70)',
+            margin: '8px 0 0 0',
+            fontVariantNumeric: 'tabular-nums',
+          }}
+        >
+          {pct}% correct
+        </p>
       </div>
 
       {/* Tier breakdown */}
-      <div className="grid grid-cols-3 gap-3">
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
         {[
           { label: 'Tier 1 — Public', ...tier1 },
           { label: 'Tier 2 — Internal', ...tier2 },
@@ -85,12 +141,34 @@ export function DrillReadOnlyReview({
         ].map((t) => (
           <div
             key={t.label}
-            className="text-center py-3 px-2 bg-[color:var(--ledger-paper)] rounded-sm border border-[color:var(--ledger-parch)]"
+            style={{
+              textAlign: 'center',
+              padding: '14px 8px',
+              background: 'var(--cream-2)',
+              borderRadius: 16,
+              border: '1px solid var(--ink-a10)',
+            }}
           >
-            <p className="font-mono text-[10px] text-[color:var(--ledger-muted)] mb-1 leading-tight">
+            <p
+              style={{
+                ...eyebrowStyle,
+                color: 'var(--slate-500)',
+                marginBottom: 6,
+                lineHeight: 1.3,
+              }}
+            >
               {t.label}
             </p>
-            <p className="font-mono text-xl font-bold text-[color:var(--ledger-ink)]">
+            <p
+              style={{
+                fontFamily: INTER_STACK,
+                fontSize: 20,
+                fontWeight: 700,
+                color: 'var(--ink)',
+                margin: 0,
+                fontVariantNumeric: 'tabular-nums',
+              }}
+            >
               {t.correct}/{t.total}
             </p>
           </div>
@@ -98,7 +176,7 @@ export function DrillReadOnlyReview({
       </div>
 
       {/* Per-scenario annotations */}
-      <div className="space-y-3">
+      <div style={{ display: 'grid', gap: 12 }}>
         {answers.map((a, i) => {
           const sc = scenarios[a.scenarioIndex];
           if (!sc) return null;
@@ -106,28 +184,48 @@ export function DrillReadOnlyReview({
           const isCorrect = a.selected === correctValue;
           const isTimeout = a.selected === 'no-answer' || a.selected === null;
 
+          const borderColor = isCorrect
+            ? 'var(--emerald-700)'
+            : isTimeout
+              ? AMBER_BORDER
+              : INCORRECT_BORDER;
+          const background = isCorrect
+            ? 'var(--emerald-50)'
+            : isTimeout
+              ? AMBER_BG
+              : INCORRECT_BG;
+          const accentText = isCorrect
+            ? 'var(--emerald-800)'
+            : isTimeout
+              ? AMBER_TEXT
+              : INCORRECT_TEXT;
+
           return (
             <div
               key={i}
-              className={[
-                'p-4 rounded-sm border',
-                isCorrect
-                  ? 'border-[color:var(--ledger-accent-2)]/40 bg-[color:var(--ledger-accent-2)]/5'
-                  : isTimeout
-                    ? 'border-amber-400/40 bg-amber-50'
-                    : 'border-[color:var(--ledger-weak)]/30 bg-[color:var(--ledger-weak)]/5',
-              ].join(' ')}
+              style={{
+                padding: 16,
+                borderRadius: 16,
+                border: '1px solid',
+                borderColor,
+                background,
+              }}
             >
-              <div className="flex items-start gap-3">
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
                 <div
-                  className={[
-                    'mt-0.5 shrink-0 flex items-center gap-1 font-mono text-[10px] uppercase tracking-widest',
-                    isCorrect
-                      ? 'text-[color:var(--ledger-accent-2)]'
-                      : isTimeout
-                        ? 'text-amber-600'
-                        : 'text-[color:var(--ledger-weak)]',
-                  ].join(' ')}
+                  style={{
+                    marginTop: 2,
+                    flexShrink: 0,
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 6,
+                    fontFamily: INTER_STACK,
+                    fontSize: 10,
+                    fontWeight: 700,
+                    letterSpacing: '0.22em',
+                    textTransform: 'uppercase',
+                    color: accentText,
+                  }}
                 >
                   {isCorrect ? (
                     <>
@@ -146,30 +244,76 @@ export function DrillReadOnlyReview({
                     </>
                   )}
                 </div>
-                <p className="text-[10px] font-mono text-[color:var(--ledger-muted)] leading-tight">
+                <p
+                  style={{
+                    ...eyebrowStyle,
+                    color: 'var(--slate-500)',
+                    lineHeight: 1.3,
+                  }}
+                >
                   Scenario {a.scenarioIndex + 1} of {answers.length}
                 </p>
               </div>
 
-              <p className="mt-2 text-sm font-sans text-[color:var(--ledger-ink)] leading-relaxed">
+              <p
+                style={{
+                  marginTop: 10,
+                  fontFamily: INTER_STACK,
+                  fontSize: 14,
+                  color: 'var(--ink)',
+                  lineHeight: 1.6,
+                  marginBottom: 0,
+                }}
+              >
                 {sc.scenario}
               </p>
 
               {!isCorrect && (
-                <div className="mt-3 pt-3 border-t border-current/10 space-y-1">
-                  <p className="text-xs font-mono text-[color:var(--ledger-muted)]">
+                <div
+                  style={{
+                    marginTop: 14,
+                    paddingTop: 12,
+                    borderTop: '1px solid var(--ink-a10)',
+                    display: 'grid',
+                    gap: 4,
+                  }}
+                >
+                  <p
+                    style={{
+                      fontFamily: INTER_STACK,
+                      fontSize: 12,
+                      color: 'var(--slate-600)',
+                      margin: 0,
+                    }}
+                  >
                     Your answer:{' '}
-                    <span className="text-[color:var(--ledger-ink)]">
+                    <span style={{ color: 'var(--ink)', fontWeight: 600 }}>
                       {valueToLabel(a.selected)}
                     </span>
                   </p>
-                  <p className="text-xs font-mono text-[color:var(--ledger-muted)]">
+                  <p
+                    style={{
+                      fontFamily: INTER_STACK,
+                      fontSize: 12,
+                      color: 'var(--slate-600)',
+                      margin: 0,
+                    }}
+                  >
                     Correct answer:{' '}
-                    <span className="font-semibold text-[color:var(--ledger-ink)]">
+                    <span style={{ color: 'var(--ink)', fontWeight: 700 }}>
                       {valueToLabel(correctValue)}
                     </span>
                   </p>
-                  <p className="text-xs font-sans text-[color:var(--ledger-muted)] mt-2">
+                  <p
+                    style={{
+                      marginTop: 6,
+                      fontFamily: INTER_STACK,
+                      fontSize: 13,
+                      color: 'var(--slate-600)',
+                      lineHeight: 1.55,
+                      margin: '6px 0 0 0',
+                    }}
+                  >
                     {sc.reasoning}
                   </p>
                 </div>

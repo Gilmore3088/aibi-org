@@ -84,17 +84,17 @@ export function ModuleContentClient({
 
       {/* Activity-less module completion (e.g. M9) */}
       {hasNoActivities && !moduleComplete && (
-        <div className="mt-8 pt-6 border-t border-[color:var(--ledger-parch)]">
-          <p className="text-sm font-sans text-[color:var(--ledger-muted)] mb-4 leading-relaxed">
+        <div className="mt-8 pt-6 border-t border-[color:var(--ink-a10)]">
+          <p className="text-sm text-[color:var(--slate-600)] mb-4 leading-relaxed">
             You have reviewed all content in this module. Mark it complete to continue.
           </p>
           <button
             type="button"
             onClick={handleMarkComplete}
             disabled={saving}
-            className="px-6 py-2.5 bg-[color:var(--ledger-accent)] hover:bg-[color:var(--ledger-accent-light)] disabled:bg-[color:var(--ledger-parch)] disabled:text-[color:var(--ledger-soft)] text-[color:var(--ledger-bg)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-2"
+            className="px-6 py-2.5 bg-[color:var(--ink)] hover:bg-[color:var(--ink-2)] disabled:bg-[color:var(--slate-200)] disabled:text-[color:var(--slate-500)] text-[color:var(--cream)] text-[11px] font-semibold uppercase tracking-[0.16em] rounded-xl transition-colors disabled:cursor-not-allowed focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--cream)]"
           >
-            {saving ? 'Saving…' : isLastModule ? 'Complete Course' : 'Mark Module Complete'}
+            {saving ? 'SAVING…' : isLastModule ? 'COMPLETE COURSE' : 'MARK MODULE COMPLETE'}
           </button>
         </div>
       )}

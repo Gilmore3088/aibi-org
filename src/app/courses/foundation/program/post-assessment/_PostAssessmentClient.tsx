@@ -218,10 +218,26 @@ export function PostAssessmentClient({ enrollmentId }: PostAssessmentClientProps
           <div>
             {/* Context header */}
             <div className="max-w-2xl mx-auto mb-10">
-              <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent)] mb-2">
-                AiBI-Foundation · Measure Your Growth
+              <p
+                style={{
+                  fontSize: 11,
+                  fontWeight: 600,
+                  letterSpacing: '0.2em',
+                  textTransform: 'uppercase',
+                  color: 'var(--gold-deep)',
+                  margin: '0 0 8px',
+                }}
+              >
+                AiBI-Foundation · Measure your growth
               </p>
-              <p className="font-sans text-sm text-[color:var(--ledger-muted)] leading-relaxed">
+              <p
+                style={{
+                  fontSize: 14,
+                  color: 'var(--slate-600)',
+                  lineHeight: 1.6,
+                  margin: 0,
+                }}
+              >
                 You have completed all 12 modules. Answer these questions honestly —
                 the same way you did before the course. The comparison shows your transformation.
               </p>
@@ -241,8 +257,17 @@ export function PostAssessmentClient({ enrollmentId }: PostAssessmentClientProps
         {phase === 'score' && isComplete && (
           <div className="max-w-3xl mx-auto space-y-10">
             <div className="flex flex-col items-center text-center">
-              <p className="font-mono text-xs uppercase tracking-widest text-[color:var(--ledger-ink)]/70 mb-6">
-                Post-Course Score
+              <p
+                style={{
+                  fontSize: 11,
+                  fontWeight: 600,
+                  letterSpacing: '0.2em',
+                  textTransform: 'uppercase',
+                  color: 'var(--gold-deep)',
+                  margin: '0 0 24px',
+                }}
+              >
+                Post-course score
               </p>
               <ScoreRing
                 score={totalScore}
@@ -251,13 +276,32 @@ export function PostAssessmentClient({ enrollmentId }: PostAssessmentClientProps
                 colorVar={getTierV2(totalScore).colorVar}
                 label={getTierV2(totalScore).label}
               />
-              <h2 className="font-serif text-3xl md:text-4xl text-center mt-8 max-w-xl text-[color:var(--ledger-ink)]">
+              <h2
+                style={{
+                  fontWeight: 700,
+                  fontSize: 'clamp(28px, 3.6vw, 40px)',
+                  lineHeight: 1.1,
+                  letterSpacing: '-0.02em',
+                  color: 'var(--ink)',
+                  textAlign: 'center',
+                  marginTop: 32,
+                  maxWidth: '36rem',
+                }}
+              >
                 {getTierV2(totalScore).headline}
               </h2>
               {preData?.score && (
-                <p className="font-sans text-base text-[color:var(--ledger-ink)]/70 mt-4">
+                <p
+                  style={{
+                    fontSize: 15,
+                    color: 'var(--slate-600)',
+                    marginTop: 16,
+                  }}
+                >
                   Before the course: score{' '}
-                  <span className="font-mono tabular-nums">{preData.score}</span>
+                  <span style={{ fontVariantNumeric: 'tabular-nums', fontWeight: 600, color: 'var(--ink)' }}>
+                    {preData.score}
+                  </span>
                   {' '}({preData.tierLabel})
                 </p>
               )}
@@ -267,9 +311,24 @@ export function PostAssessmentClient({ enrollmentId }: PostAssessmentClientProps
               <button
                 type="button"
                 onClick={handleViewResults}
-                className="inline-flex items-center gap-2 px-8 py-4 bg-[color:var(--ledger-accent)] hover:bg-[color:var(--ledger-accent-light)] text-[color:var(--ledger-bg)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-2"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 8,
+                  padding: '14px 28px',
+                  background: 'var(--ink)',
+                  color: 'var(--cream-2)',
+                  fontSize: 11,
+                  fontWeight: 600,
+                  letterSpacing: '0.18em',
+                  textTransform: 'uppercase',
+                  borderRadius: 12,
+                  border: 'none',
+                  cursor: 'pointer',
+                  transition: 'background-color var(--t-fast) var(--ease)',
+                }}
               >
-                View Full Comparison
+                VIEW FULL COMPARISON
               </button>
             </div>
           </div>
@@ -279,22 +338,43 @@ export function PostAssessmentClient({ enrollmentId }: PostAssessmentClientProps
         {phase === 'results' && postTier && (
           <div className="max-w-3xl mx-auto space-y-8">
             <div>
-              <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent)] mb-2">
-                AiBI-Foundation · Measure Your Growth
+              <p
+                style={{
+                  fontSize: 11,
+                  fontWeight: 600,
+                  letterSpacing: '0.2em',
+                  textTransform: 'uppercase',
+                  color: 'var(--gold-deep)',
+                  margin: '0 0 8px',
+                }}
+              >
+                AiBI-Foundation · Measure your growth
               </p>
-              <h1 className="font-serif text-4xl sm:text-5xl font-bold text-[color:var(--ledger-ink)] leading-tight">
-                Your Transformation
+              <h1
+                style={{
+                  fontWeight: 700,
+                  fontSize: 'clamp(36px, 4.6vw, 56px)',
+                  lineHeight: 1.05,
+                  letterSpacing: '-0.025em',
+                  color: 'var(--ink)',
+                  margin: 0,
+                }}
+              >
+                Your transformation
               </h1>
             </div>
 
             {saving && (
-              <p className="font-mono text-xs text-[color:var(--ledger-muted)]" aria-live="polite">
+              <p
+                style={{ fontSize: 13, color: 'var(--slate-500)', margin: 0 }}
+                aria-live="polite"
+              >
                 Saving your result...
               </p>
             )}
             {saveError && (
               <p
-                className="font-mono text-xs text-[color:var(--ledger-weak)]"
+                style={{ fontSize: 13, color: 'var(--ink)', margin: 0, fontWeight: 600 }}
                 role="alert"
                 aria-live="assertive"
               >

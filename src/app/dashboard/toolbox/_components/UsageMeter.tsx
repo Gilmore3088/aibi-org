@@ -14,21 +14,31 @@ export function UsageMeter({ todayCents, dailyCapCents }: { todayCents: number; 
   const fillPct = Math.min(100, Math.round(ratio * 100));
 
   const fillColor =
-    state === 'blocked' ? 'bg-[var(--ledger-weak)]' :
-    state === 'warning' ? 'bg-[var(--ledger-accent)]' :
-    'bg-[var(--ledger-accent)]';
+    state === 'blocked' ? 'bg-[color:var(--slate-400)]' :
+    state === 'warning' ? 'bg-[color:var(--gold)]' :
+    'bg-[color:var(--gold)]';
 
   return (
     <div className="flex flex-col gap-1 text-sm">
       <div className="flex items-center justify-between">
-        <span className="font-mono tabular-nums">
+        <span className="font-medium tabular-nums text-[color:var(--ink)]">
           {formatDollars(todayCents)} / {formatDollars(dailyCapCents)} today
         </span>
-        {state === 'warning' && <span className="text-[var(--ledger-accent)]">Approaching daily cap</span>}
-        {state === 'blocked' && <span className="text-[var(--ledger-weak)]">Daily cap reached. Resets at UTC midnight.</span>}
+        {state === 'warning' && (
+          <span className="text-[color:var(--gold-deep)]">Approaching daily cap</span>
+        )}
+        {state === 'blocked' && (
+          <span className="text-[color:var(--slate-500)]">Daily cap reached. Resets at UTC midnight.</span>
+        )}
       </div>
-      <div role="progressbar" data-state={state} aria-valuenow={fillPct} aria-valuemin={0} aria-valuemax={100}
-           className="h-1 w-full bg-ink/10 rounded">
+      <div
+        role="progressbar"
+        data-state={state}
+        aria-valuenow={fillPct}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        className="h-1 w-full rounded bg-[color:var(--ink-a10)]"
+      >
         <div className={`h-1 rounded ${fillColor}`} style={{ width: `${fillPct}%` }} />
       </div>
     </div>

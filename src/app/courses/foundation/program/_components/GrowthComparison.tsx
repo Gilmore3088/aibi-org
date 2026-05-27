@@ -2,7 +2,9 @@
 
 // GrowthComparison — dimension-by-dimension pre/post score delta visualization.
 // Renders 8 dimension bars showing pre-score, post-score, and improvement.
-// Uses CSS variables only. All numbers in DM Mono. Institutional tone.
+//
+// Ported to mockup design system 2026-05-27 (Inter, ink/cream/gold,
+// tabular-nums for numerics).
 
 import type { Dimension } from '@content/assessments/v2/types';
 import { DIMENSION_LABELS } from '@content/assessments/v2/types';
@@ -25,6 +27,14 @@ interface GrowthComparisonProps {
 }
 
 const TIER_ORDER = ['starting-point', 'early-stage', 'building-momentum', 'ready-to-scale'];
+
+const TNUM: React.CSSProperties = { fontVariantNumeric: 'tabular-nums' };
+const KICKER: React.CSSProperties = {
+  fontSize: 10,
+  fontWeight: 600,
+  letterSpacing: '0.22em',
+  textTransform: 'uppercase',
+};
 
 function tierProgressed(preTierId: string | null, postTierId: string): boolean {
   if (!preTierId) return false;
@@ -56,12 +66,23 @@ function DimensionBar({ dimension, delta }: DimensionBarProps) {
   const improvementLabel = formatImprovement(preScore, postScore);
 
   return (
-    <div className="py-4 border-b border-[color:var(--ledger-ink)]/8 last:border-b-0">
-      <div className="flex items-center justify-between mb-2">
-        <span className="font-sans text-sm text-[color:var(--ledger-ink)]">{label}</span>
+    <div style={{ padding: '16px 0', borderBottom: '1px solid var(--ink-a10)' }}>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginBottom: 8,
+        }}
+      >
+        <span style={{ fontSize: 14, color: 'var(--ink)' }}>{label}</span>
         <span
-          className="font-mono text-xs tabular-nums"
-          style={{ color: improved ? 'var(--ledger-accent)' : 'var(--ledger-muted)' }}
+          style={{
+            ...TNUM,
+            fontSize: 12,
+            fontWeight: 600,
+            color: improved ? 'var(--gold-deep)' : 'var(--slate-500)',
+          }}
           aria-label={`${improvementLabel} points`}
         >
           {improvementLabel}
@@ -69,34 +90,49 @@ function DimensionBar({ dimension, delta }: DimensionBarProps) {
       </div>
 
       <div
-        className="relative h-2 rounded-full overflow-hidden bg-[color:var(--ledger-ink)]/8"
+        style={{
+          position: 'relative',
+          height: 8,
+          borderRadius: 999,
+          overflow: 'hidden',
+          background: 'var(--ink-a10)',
+        }}
         role="img"
         aria-label={`${label}: pre ${preScore ?? 0}, post ${postScore} out of ${maxScore}`}
       >
-        {/* Pre-score bar (ghost) */}
         {preScore !== null && (
           <div
-            className="absolute top-0 left-0 h-full rounded-full bg-[color:var(--ledger-ink)]/20"
-            style={{ width: `${prePct}%` }}
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              height: '100%',
+              borderRadius: 999,
+              background: 'var(--slate-400)',
+              width: `${prePct}%`,
+            }}
             aria-hidden="true"
           />
         )}
-        {/* Post-score bar */}
         <div
-          className="absolute top-0 left-0 h-full rounded-full transition-all duration-700 ease-out"
           style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            height: '100%',
+            borderRadius: 999,
+            transition: 'width 700ms cubic-bezier(0.4, 0, 0.2, 1)',
             width: `${postPct}%`,
-            backgroundColor: improved ? 'var(--ledger-accent)' : 'var(--ledger-soft)',
+            background: improved ? 'var(--gold)' : 'var(--slate-500)',
           }}
           aria-hidden="true"
         />
       </div>
 
-      <div className="flex items-center justify-between mt-1">
-        <span className="font-mono text-[10px] tabular-nums text-[color:var(--ledger-muted)]">
+      <div style={{ marginTop: 4 }}>
+        <span style={{ ...TNUM, fontSize: 10, color: 'var(--slate-500)' }}>
           {preScore !== null ? `${preScore} → ` : ''}
-          <span style={{ color: 'var(--ledger-ink)' }}>{postScore}</span>
-          {' '}/ {maxScore}
+          <span style={{ color: 'var(--ink)' }}>{postScore}</span> / {maxScore}
         </span>
       </div>
     </div>
@@ -128,17 +164,30 @@ export function GrowthComparison({
 
   return (
     <section
-      className="bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-ink)]/10 rounded-sm p-6 sm:p-8"
+      style={{
+        background: 'var(--cream)',
+        border: '1px solid var(--ink-a10)',
+        borderRadius: 'var(--r-lg)',
+        padding: 'clamp(24px, 4vw, 32px)',
+        boxShadow: 'var(--shadow-soft)',
+      }}
       aria-labelledby="growth-heading"
     >
       {/* Header */}
-      <div className="mb-8">
-        <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent)] mb-2">
+      <div style={{ marginBottom: 32 }}>
+        <p style={{ ...KICKER, color: 'var(--gold-deep)', margin: '0 0 8px' }}>
           Measure Your Growth
         </p>
         <h2
           id="growth-heading"
-          className="font-serif text-2xl sm:text-3xl font-bold text-[color:var(--ledger-ink)] leading-tight mb-3"
+          style={{
+            fontSize: 'clamp(24px, 3vw, 32px)',
+            fontWeight: 700,
+            letterSpacing: '-0.015em',
+            color: 'var(--ink)',
+            lineHeight: 1.15,
+            margin: '0 0 12px',
+          }}
         >
           {headline}
         </h2>
@@ -146,34 +195,31 @@ export function GrowthComparison({
         {/* Tier change callout */}
         {moved && preTierLabel && (
           <div
-            className="inline-flex items-center gap-3 px-4 py-2 border rounded-sm mt-2"
             style={{
-              borderColor: postTierColorVar,
-              backgroundColor: 'var(--ledger-bg)',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 12,
+              padding: '8px 16px',
+              border: `1px solid ${postTierColorVar}`,
+              background: '#FFFFFF',
+              borderRadius: 'var(--r-md)',
+              marginTop: 8,
             }}
             role="status"
             aria-label={`Tier advanced from ${preTierLabel} to ${postTierLabel}`}
           >
-            <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)]">
-              {preTierLabel}
-            </span>
-            <span className="font-mono text-[10px] text-[color:var(--ledger-muted)]" aria-hidden="true">
+            <span style={{ ...KICKER, color: 'var(--slate-500)' }}>{preTierLabel}</span>
+            <span style={{ fontSize: 12, color: 'var(--slate-500)' }} aria-hidden="true">
               →
             </span>
-            <span
-              className="font-mono text-[10px] uppercase tracking-widest font-semibold"
-              style={{ color: postTierColorVar }}
-            >
+            <span style={{ ...KICKER, color: postTierColorVar, fontWeight: 700 }}>
               {postTierLabel}
             </span>
           </div>
         )}
 
         {!moved && (
-          <p
-            className="font-mono text-[10px] uppercase tracking-widest mt-2"
-            style={{ color: postTierColorVar }}
-          >
+          <p style={{ ...KICKER, color: postTierColorVar, margin: '8px 0 0' }}>
             {postTierLabel}
           </p>
         )}
@@ -181,23 +227,50 @@ export function GrowthComparison({
 
       {/* Score totals */}
       {preScore !== null && (
-        <div className="grid grid-cols-2 gap-4 mb-8 p-4 bg-[color:var(--ledger-bg)] border border-[color:var(--ledger-ink)]/8 rounded-sm">
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+            gap: 16,
+            marginBottom: 32,
+            padding: 16,
+            background: '#FFFFFF',
+            border: '1px solid var(--ink-a10)',
+            borderRadius: 'var(--r-md)',
+          }}
+        >
           <div>
-            <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] mb-1">
+            <p style={{ ...KICKER, color: 'var(--slate-500)', margin: '0 0 4px' }}>
               Before Course
             </p>
-            <p className="font-mono text-3xl tabular-nums text-[color:var(--ledger-soft)]">
+            <p
+              style={{
+                ...TNUM,
+                fontSize: 28,
+                fontWeight: 700,
+                color: 'var(--slate-500)',
+                margin: 0,
+              }}
+            >
               {preScore}
-              <span className="text-base font-normal"> / 48</span>
+              <span style={{ fontSize: 14, fontWeight: 400 }}> / 48</span>
             </p>
           </div>
           <div>
-            <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent)] mb-1">
+            <p style={{ ...KICKER, color: 'var(--gold-deep)', margin: '0 0 4px' }}>
               After Course
             </p>
-            <p className="font-mono text-3xl tabular-nums text-[color:var(--ledger-accent)]">
+            <p
+              style={{
+                ...TNUM,
+                fontSize: 28,
+                fontWeight: 700,
+                color: 'var(--gold-deep)',
+                margin: 0,
+              }}
+            >
               {postScore}
-              <span className="text-base font-normal"> / 48</span>
+              <span style={{ fontSize: 14, fontWeight: 400 }}> / 48</span>
             </p>
           </div>
         </div>
@@ -206,7 +279,7 @@ export function GrowthComparison({
       {/* Dimension breakdown */}
       {sortedDimensions.length > 0 && (
         <div>
-          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] mb-4">
+          <p style={{ ...KICKER, color: 'var(--slate-500)', margin: '0 0 16px' }}>
             By Dimension
           </p>
           <div>
@@ -215,7 +288,14 @@ export function GrowthComparison({
             ))}
           </div>
           {preScore !== null && (
-            <p className="font-sans text-xs text-[color:var(--ledger-muted)] mt-4 leading-relaxed">
+            <p
+              style={{
+                fontSize: 12,
+                color: 'var(--slate-500)',
+                lineHeight: 1.55,
+                marginTop: 16,
+              }}
+            >
               Ghost bars reflect your pre-course scores. Solid bars are post-course.
               Each session draws from different questions, so per-dimension scores
               reflect the questions served in that session.

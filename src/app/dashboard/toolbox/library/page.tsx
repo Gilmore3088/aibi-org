@@ -9,19 +9,12 @@ import Link from 'next/link';
 import { getPaidToolboxAccess } from '@/lib/toolbox/access';
 import { listLibrarySkills } from '@/lib/toolbox/library';
 import { Paywall } from '../_components/Paywall';
-import type { ToolboxKind, ToolboxPillar } from '@/lib/toolbox/types';
+import type { ToolboxKind } from '@/lib/toolbox/types';
 
 export const metadata: Metadata = {
   title: 'Toolbox Library | The AI Banking Institute',
   description:
-    'Starter banking AI skills harvested from the AiBI curriculum. Fork any skill into your personal Toolbox to edit and run.',
-};
-
-const PILLAR_LABEL: Record<ToolboxPillar, string> = { A: 'Accessible', B: 'Boundary-Safe', C: 'Capable' };
-const PILLAR_COLOR: Record<ToolboxPillar, string> = {
-  A: 'var(--ledger-accent)',
-  B: 'var(--ledger-accent-2)',
-  C: 'var(--ledger-accent)',
+    'Banker-vetted prompts and skills from the AiBI curriculum. Fork any one into your personal Toolbox to edit and run.',
 };
 
 interface SearchParams {
@@ -51,36 +44,40 @@ export default async function LibraryPage({
   const categories = Array.from(new Set(skills.map((s) => s.category))).sort();
 
   return (
-    <main className="min-h-screen bg-[color:var(--ledger-bg)]">
-      <div className="border-b border-[color:var(--ledger-ink)]/10 bg-[color:var(--ledger-paper)]">
-        <div className="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-6 lg:flex-row lg:items-end lg:justify-between lg:px-10">
+    <main className="min-h-screen bg-[color:var(--cream)]">
+      <div className="border-b border-[color:var(--ink-a10)] bg-white">
+        <div className="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-8 lg:flex-row lg:items-end lg:justify-between lg:px-10">
           <div>
-            <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--ledger-accent)]">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
               Toolbox · Library
             </p>
-            <h1 className="mt-2 font-serif text-4xl leading-tight text-[color:var(--ledger-ink)] md:text-5xl">
+            <h1 className="mt-2 text-4xl font-bold leading-tight text-[color:var(--ink)] md:text-5xl">
               Library
             </h1>
-            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[color:var(--ledger-muted)]">
-              Starter skills harvested from the AiBI curriculum. Fork any skill into your personal Toolbox to edit and run.
+            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[color:var(--slate-600)]">
+              Banker-vetted prompts and skills. Fork any one into your personal
+              Toolbox to edit and run against your own scenarios.
             </p>
           </div>
           <Link
             href="/dashboard/toolbox"
-            className="inline-flex w-fit items-center border border-[color:var(--ledger-ink)]/20 px-4 py-2 font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-ink)] transition-colors hover:border-[color:var(--ledger-accent)] hover:text-[color:var(--ledger-accent)]"
+            className="inline-flex w-fit items-center rounded-[12px] border border-[color:var(--ink-a15)] bg-white px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[color:var(--ink)] transition-colors hover:border-[color:var(--ink)]"
           >
-            Back to Toolbox
+            BACK TO TOOLBOX
           </Link>
         </div>
       </div>
 
-      <div className="mx-auto max-w-7xl px-6 py-8 lg:px-10">
+      <div className="mx-auto max-w-7xl px-6 py-10 lg:px-10">
         <FilterBar category={category} kind={kind} categories={categories} />
 
         {skills.length === 0 ? (
-          <p className="mt-12 text-sm text-[color:var(--ledger-muted)]">
+          <p className="mt-12 text-sm text-[color:var(--slate-600)]">
             No skills match the current filters.{' '}
-            <Link href="/dashboard/toolbox/library" className="underline">
+            <Link
+              href="/dashboard/toolbox/library"
+              className="font-semibold text-[color:var(--ink)] underline underline-offset-4 hover:text-[color:var(--gold-deep)]"
+            >
               Clear filters
             </Link>
             .
@@ -91,28 +88,21 @@ export default async function LibraryPage({
               <li key={s.id}>
                 <Link
                   href={`/dashboard/toolbox/library/${s.slug}`}
-                  className="block h-full border border-[color:var(--ledger-ink)]/15 bg-white p-5 transition-colors hover:border-[color:var(--ledger-accent)]"
+                  className="block h-full rounded-[24px] border border-[color:var(--ink-a15)] bg-white p-6 shadow-[var(--shadow-soft)] transition-all hover:-translate-y-1 hover:border-[color:var(--ink)] hover:shadow-[var(--shadow-feature)]"
                 >
-                  <div className="flex items-center gap-2">
-                    <span
-                      className="inline-block h-2 w-2 rounded-full"
-                      style={{ backgroundColor: PILLAR_COLOR[s.pillar] }}
-                      aria-label={`Pillar ${s.pillar} (${PILLAR_LABEL[s.pillar]})`}
-                    />
-                    <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)]">
-                      {s.category} · {s.complexity ?? 'intermediate'}
-                    </span>
-                  </div>
-                  <h2 className="mt-2 font-serif text-xl text-[color:var(--ledger-ink)]">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[color:var(--slate-500)]">
+                    {s.category} · {s.complexity ?? 'intermediate'}
+                  </p>
+                  <h2 className="mt-2 text-xl font-bold leading-snug text-[color:var(--ink)]">
                     {s.title}
                   </h2>
                   {s.description && (
-                    <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-[color:var(--ledger-muted)]">
+                    <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-[color:var(--slate-600)]">
                       {s.description}
                     </p>
                   )}
-                  <p className="mt-4 font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent)]">
-                    Open →
+                  <p className="mt-5 text-[10px] font-semibold uppercase tracking-[0.18em] text-[color:var(--gold-deep)]">
+                    OPEN →
                   </p>
                 </Link>
               </li>
@@ -134,9 +124,9 @@ function FilterBar({
   categories: string[];
 }) {
   const baseClass =
-    'border border-[color:var(--ledger-ink)]/15 px-3 py-1.5 font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-ink)] transition-colors hover:border-[color:var(--ledger-accent)]';
+    'rounded-[999px] border border-[color:var(--ink-a15)] bg-white px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-[color:var(--ink)] transition-colors hover:border-[color:var(--ink)]';
   const activeClass =
-    'border border-[color:var(--ledger-accent)] px-3 py-1.5 font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent)]';
+    'rounded-[999px] border border-[color:var(--ink)] bg-[color:var(--ink)] px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-white';
 
   const buildHref = (params: Partial<SearchParams>) => {
     const next = new URLSearchParams();
@@ -148,17 +138,25 @@ function FilterBar({
   };
 
   return (
-    <div className="flex flex-wrap items-center gap-x-6 gap-y-3 border-b border-[color:var(--ledger-ink)]/10 pb-6">
+    <div className="flex flex-wrap items-center gap-x-6 gap-y-3 border-b border-[color:var(--ink-a10)] pb-6">
       <FilterGroup label="Category">
         {categories.map((c) => (
-          <Link key={c} href={buildHref({ category: category === c ? undefined : c })} className={category === c ? activeClass : baseClass}>
+          <Link
+            key={c}
+            href={buildHref({ category: category === c ? undefined : c })}
+            className={category === c ? activeClass : baseClass}
+          >
             {c}
           </Link>
         ))}
       </FilterGroup>
       <FilterGroup label="Kind">
         {(['workflow', 'template'] as const).map((k) => (
-          <Link key={k} href={buildHref({ kind: kind === k ? undefined : k })} className={kind === k ? activeClass : baseClass}>
+          <Link
+            key={k}
+            href={buildHref({ kind: kind === k ? undefined : k })}
+            className={kind === k ? activeClass : baseClass}
+          >
             {k}
           </Link>
         ))}
@@ -170,7 +168,7 @@ function FilterBar({
 function FilterGroup({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="flex flex-wrap items-center gap-2">
-      <span className="font-serif-sc text-[10px] uppercase tracking-[0.2em] text-[color:var(--ledger-muted)]">
+      <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[color:var(--slate-500)]">
         {label}
       </span>
       {children}

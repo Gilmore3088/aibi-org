@@ -69,11 +69,13 @@ export default async function CourseOverviewPage() {
         right={
           <span
             style={{
-              fontFamily: 'var(--ledger-mono)',
-              fontSize: 10.5,
-              letterSpacing: '0.16em',
+              fontFamily:
+                'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif',
+              fontWeight: 600,
+              fontSize: 11,
+              letterSpacing: '0.14em',
               textTransform: 'uppercase',
-              color: 'var(--ledger-muted)',
+              color: 'var(--slate-500)',
             }}
           >
             {completedCount}/{totalModules} complete
@@ -81,8 +83,14 @@ export default async function CourseOverviewPage() {
         }
       />
 
-      <div style={{ maxWidth: 1080, margin: '0 auto', padding: '40px 36px 80px' }}>
-        <section style={{ marginBottom: 56 }}>
+      <div
+        style={{
+          maxWidth: 1120,
+          margin: '0 auto',
+          padding: 'clamp(32px, 5vw, 56px) clamp(20px, 4vw, 40px) 96px',
+        }}
+      >
+        <section style={{ marginBottom: 64 }}>
           <HeroIntro
             completedCount={completedCount}
             promise={foundationCourseConfig.promise}

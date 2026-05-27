@@ -7,6 +7,9 @@ import Link from 'next/link';
 import type { RolePath } from '@content/courses/foundation-program/role-paths';
 import { PLATFORM_META } from '@content/courses/foundation-program';
 
+const FONT_INTER =
+  'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
+
 interface RolePathCardProps {
   readonly rolePath: RolePath;
 }
@@ -57,22 +60,45 @@ function ToolRow({
   const icon = PLATFORM_ICONS[platform] ?? PLATFORM_ICONS['chatgpt'];
 
   return (
-    <div className="flex items-start gap-4 py-4" style={{ borderTop: index === 0 ? 'none' : '1px solid rgba(181,81,46,0.08)' }}>
+    <div
+      className="flex items-start gap-4 py-4"
+      style={{
+        borderTop: index === 0 ? 'none' : '1px solid var(--ink-a10)',
+        fontFamily: FONT_INTER,
+      }}
+    >
       <div
-        className="flex-shrink-0 w-8 h-8 rounded-sm flex items-center justify-center"
-        style={{ backgroundColor: 'var(--ledger-paper)', border: '1px solid rgba(181,81,46,0.15)', color: meta?.colorVar ?? 'var(--ledger-accent)' }}
+        className="flex-shrink-0 w-9 h-9 flex items-center justify-center"
+        style={{
+          backgroundColor: '#FFFFFF',
+          border: '1px solid var(--ink-a10)',
+          borderRadius: 12,
+          color: 'var(--gold-deep)',
+        }}
         aria-hidden="true"
       >
         {icon}
       </div>
       <div className="min-w-0">
         <p
-          className="font-mono text-[10px] uppercase tracking-[0.15em] font-bold mb-1"
-          style={{ color: meta?.colorVar ?? 'var(--ledger-accent)' }}
+          className="text-[10px] uppercase mb-1"
+          style={{
+            fontFamily: FONT_INTER,
+            fontWeight: 700,
+            letterSpacing: '0.2em',
+            color: 'var(--gold-deep)',
+          }}
         >
           {meta?.label ?? platform}
         </p>
-        <p className="text-xs leading-relaxed" style={{ color: 'var(--ledger-muted)' }}>
+        <p
+          className="text-xs leading-relaxed"
+          style={{
+            fontFamily: FONT_INTER,
+            color: 'var(--slate-600)',
+            lineHeight: 1.55,
+          }}
+        >
           {rationale}
         </p>
       </div>
@@ -82,15 +108,28 @@ function ToolRow({
 
 function QuickWinItem({ text, index }: { text: string; index: number }) {
   return (
-    <li className="flex items-start gap-3">
+    <li className="flex items-start gap-3" style={{ fontFamily: FONT_INTER }}>
       <span
-        className="flex-shrink-0 font-mono text-[10px] font-bold mt-0.5 w-5 h-5 rounded-sm flex items-center justify-center"
-        style={{ backgroundColor: 'var(--ledger-accent)', color: 'var(--ledger-bg)' }}
+        className="flex-shrink-0 text-[10px] mt-0.5 w-5 h-5 flex items-center justify-center"
+        style={{
+          backgroundColor: 'var(--gold)',
+          color: 'var(--ink)',
+          fontFamily: FONT_INTER,
+          fontWeight: 700,
+          borderRadius: 8,
+        }}
         aria-hidden="true"
       >
         {index + 1}
       </span>
-      <span className="text-xs leading-relaxed" style={{ color: 'var(--ledger-muted)' }}>
+      <span
+        className="text-xs leading-relaxed"
+        style={{
+          fontFamily: FONT_INTER,
+          color: 'var(--slate-600)',
+          lineHeight: 1.55,
+        }}
+      >
         {text}
       </span>
     </li>
@@ -105,53 +144,95 @@ export function RolePathCard({ rolePath }: RolePathCardProps) {
   return (
     <section
       aria-labelledby="role-path-heading"
-      className="mb-24 rounded-sm overflow-hidden"
-      style={{ border: '1px solid rgba(181,81,46,0.15)' }}
+      className="mb-24 overflow-hidden"
+      style={{
+        border: '1px solid var(--ink-a10)',
+        borderRadius: 28,
+        boxShadow: 'var(--shadow-feature)',
+        fontFamily: FONT_INTER,
+      }}
     >
-      {/* Header band */}
+      {/* Header band — dark navy with gold eyebrow */}
       <div
         className="px-8 py-6 flex items-center justify-between"
-        style={{ backgroundColor: 'var(--ledger-accent)', color: 'var(--ledger-bg)' }}
+        style={{
+          backgroundColor: 'var(--ink)',
+          color: 'var(--cream)',
+        }}
       >
         <div>
-          <p className="font-mono text-[10px] uppercase tracking-[0.3em] mb-1 opacity-70">
-            Your Recommended Focus
+          <p
+            className="text-[10px] uppercase mb-2"
+            style={{
+              fontFamily: FONT_INTER,
+              fontWeight: 700,
+              letterSpacing: '0.3em',
+              color: 'var(--gold-soft)',
+            }}
+          >
+            Your recommended focus
           </p>
           <h2
             id="role-path-heading"
-            className="font-serif text-2xl font-bold"
+            className="text-2xl"
+            style={{
+              fontFamily: FONT_INTER,
+              fontWeight: 700,
+              letterSpacing: '-0.02em',
+              color: 'var(--cream)',
+            }}
           >
-            {rolePath.label} Path
+            {rolePath.label} path
           </h2>
         </div>
         <div
-          className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-sm"
-          style={{ backgroundColor: 'rgba(245,240,230,0.15)', border: '1px solid rgba(245,240,230,0.2)' }}
+          className="hidden sm:flex items-center gap-2 px-3 py-1.5"
+          style={{
+            backgroundColor: 'var(--on-dark-08)',
+            border: '1px solid var(--on-dark-20)',
+            borderRadius: 999,
+          }}
           aria-hidden="true"
         >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: 'var(--gold-soft)' }}>
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
           </svg>
-          <span className="font-mono text-[10px] uppercase tracking-wider">Personalized</span>
+          <span
+            className="text-[10px] uppercase"
+            style={{
+              fontFamily: FONT_INTER,
+              fontWeight: 700,
+              letterSpacing: '0.16em',
+              color: 'var(--on-dark-80)',
+            }}
+          >
+            Personalized
+          </span>
         </div>
       </div>
 
       {/* Body — two columns on md+ */}
       <div
-        className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x"
+        className="grid grid-cols-1 md:grid-cols-2"
         style={{
-          backgroundColor: 'var(--ledger-bg)',
-          '--tw-divide-color': 'rgba(181,81,46,0.1)',
-          divideColor: 'rgba(181,81,46,0.1)',
-        } as React.CSSProperties}
+          backgroundColor: 'var(--cream)',
+        }}
       >
         {/* Left: top tools */}
-        <div className="p-8">
+        <div
+          className="p-8"
+          style={{ borderRight: '1px solid var(--ink-a10)' }}
+        >
           <h3
-            className="font-mono text-[10px] uppercase tracking-[0.2em] mb-4"
-            style={{ color: 'var(--ledger-muted)' }}
+            className="text-[10px] uppercase mb-4"
+            style={{
+              fontFamily: FONT_INTER,
+              fontWeight: 700,
+              letterSpacing: '0.2em',
+              color: 'var(--slate-500)',
+            }}
           >
-            Top 3 Tools for {rolePath.label}
+            Top 3 tools for {rolePath.label.toLowerCase()}
           </h3>
           <div>
             {rolePath.recommendedTools.slice(0, 3).map((tool, i) => (
@@ -166,39 +247,66 @@ export function RolePathCard({ rolePath }: RolePathCardProps) {
         </div>
 
         {/* Right: start here + quick wins */}
-        <div className="p-8 flex flex-col gap-8">
+        <div
+          className="p-8 flex flex-col gap-8"
+          style={{ borderTop: '1px solid var(--ink-a10)' }}
+        >
           {/* Start Here */}
           <div>
             <h3
-              className="font-mono text-[10px] uppercase tracking-[0.2em] mb-4"
-              style={{ color: 'var(--ledger-muted)' }}
+              className="text-[10px] uppercase mb-4"
+              style={{
+                fontFamily: FONT_INTER,
+                fontWeight: 700,
+                letterSpacing: '0.2em',
+                color: 'var(--slate-500)',
+              }}
             >
-              Start Here
+              Start here
             </h3>
             <Link
               href={`/courses/foundation/program/${rolePath.startHereModule}`}
-              className="group block rounded-sm p-5 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ledger-accent"
+              className="group block p-5 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
               style={{
-                backgroundColor: 'var(--ledger-paper)',
-                border: '1px solid rgba(181,81,46,0.12)',
+                backgroundColor: '#FFFFFF',
+                border: '1px solid var(--ink-a10)',
+                borderRadius: 16,
+                boxShadow: 'var(--shadow-soft)',
               }}
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
                   <p
-                    className="font-mono text-[9px] uppercase tracking-[0.2em] mb-1"
-                    style={{ color: 'var(--ledger-accent)' }}
+                    className="text-[10px] uppercase mb-1.5"
+                    style={{
+                      fontFamily: FONT_INTER,
+                      fontWeight: 700,
+                      letterSpacing: '0.2em',
+                      color: 'var(--gold-deep)',
+                    }}
                   >
-                    Module {rolePath.startHereModule} — Highest Value for {rolePath.label}
+                    Module {rolePath.startHereModule} — highest value for {rolePath.label.toLowerCase()}
                   </p>
                   <p
-                    className="font-serif text-base font-bold mb-2"
-                    style={{ color: 'var(--ledger-ink)' }}
+                    className="text-base mb-2"
+                    style={{
+                      fontFamily: FONT_INTER,
+                      fontWeight: 700,
+                      color: 'var(--ink)',
+                      letterSpacing: '-0.01em',
+                    }}
                   >
                     {startHereModule?.title}
                   </p>
                   {startHereModule && (
-                    <p className="text-xs leading-relaxed" style={{ color: 'var(--ledger-muted)' }}>
+                    <p
+                      className="text-xs leading-relaxed"
+                      style={{
+                        fontFamily: FONT_INTER,
+                        color: 'var(--slate-600)',
+                        lineHeight: 1.55,
+                      }}
+                    >
                       Focus: {startHereModule.focusSection}
                     </p>
                   )}
@@ -208,7 +316,7 @@ export function RolePathCard({ rolePath }: RolePathCardProps) {
                   fill="currentColor"
                   viewBox="0 0 20 20"
                   aria-hidden="true"
-                  style={{ color: 'var(--ledger-accent)' }}
+                  style={{ color: 'var(--gold-deep)' }}
                 >
                   <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
                 </svg>
@@ -219,10 +327,15 @@ export function RolePathCard({ rolePath }: RolePathCardProps) {
           {/* Quick wins */}
           <div>
             <h3
-              className="font-mono text-[10px] uppercase tracking-[0.2em] mb-4"
-              style={{ color: 'var(--ledger-muted)' }}
+              className="text-[10px] uppercase mb-4"
+              style={{
+                fontFamily: FONT_INTER,
+                fontWeight: 700,
+                letterSpacing: '0.2em',
+                color: 'var(--slate-500)',
+              }}
             >
-              3 Quick Wins for {rolePath.label}
+              3 quick wins for {rolePath.label.toLowerCase()}
             </h3>
             <ol className="space-y-3" aria-label={`Quick wins for ${rolePath.label} learners`}>
               {rolePath.quickWins.map((win, i) => (
@@ -236,7 +349,10 @@ export function RolePathCard({ rolePath }: RolePathCardProps) {
       {/* Peer benchmark footer */}
       <div
         className="px-8 py-4 flex items-center gap-3"
-        style={{ backgroundColor: 'var(--ledger-paper)', borderTop: '1px solid rgba(181,81,46,0.1)' }}
+        style={{
+          backgroundColor: 'var(--cream-2)',
+          borderTop: '1px solid var(--ink-a10)',
+        }}
       >
         <svg
           className="flex-shrink-0 w-4 h-4"
@@ -244,11 +360,18 @@ export function RolePathCard({ rolePath }: RolePathCardProps) {
           stroke="currentColor"
           viewBox="0 0 24 24"
           aria-hidden="true"
-          style={{ color: 'var(--ledger-accent)' }}
+          style={{ color: 'var(--gold-deep)' }}
         >
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
         </svg>
-        <p className="text-xs" style={{ color: 'var(--ledger-muted)' }}>
+        <p
+          className="text-xs"
+          style={{
+            fontFamily: FONT_INTER,
+            color: 'var(--slate-600)',
+            lineHeight: 1.55,
+          }}
+        >
           {rolePath.peerBenchmark}
         </p>
       </div>

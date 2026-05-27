@@ -4,6 +4,10 @@
 // Displays: Getting Started, Free vs Paid, Banking Use Cases, Custom Instructions,
 // Data Safety, and Pro Tips.
 // Banking use case prompts appear in monospace copy-paste boxes (PromptCard pattern).
+//
+// Ported to mockup design system 2026-05-27 (Inter, ink/cream/gold). The
+// `colorVar` from guide data is preserved as a per-platform accent on the
+// platform badge and accordion underlines.
 
 import { useState, useCallback } from 'react';
 import type { ToolGuide as ToolGuideData } from '@content/courses/foundation-program/tool-guides';
@@ -14,13 +18,23 @@ interface ToolGuideProps {
 
 const COPY_RESET_MS = 2000;
 
+const KICKER: React.CSSProperties = {
+  fontSize: 10,
+  fontWeight: 600,
+  letterSpacing: '0.22em',
+  textTransform: 'uppercase',
+};
+
+const MONO_STACK =
+  'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace';
+
 // ---------------------------------------------------------------------------
 // Reusable sub-components
 // ---------------------------------------------------------------------------
 
 function SectionLabel({ children }: { readonly children: React.ReactNode }) {
   return (
-    <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] mb-1">
+    <p style={{ ...KICKER, color: 'var(--slate-500)', margin: '0 0 4px' }}>
       {children}
     </p>
   );
@@ -42,22 +56,44 @@ function AccordionSection({
   const toggle = useCallback(() => setOpen((prev) => !prev), []);
 
   return (
-    <div className="border border-[color:var(--ledger-parch)] rounded-sm overflow-hidden">
+    <div
+      style={{
+        border: '1px solid var(--ink-a10)',
+        borderRadius: 'var(--r-md)',
+        overflow: 'hidden',
+        background: '#FFFFFF',
+      }}
+    >
       <button
         type="button"
         onClick={toggle}
-        className="w-full flex items-center justify-between px-5 py-4 bg-[color:var(--ledger-paper)] hover:bg-[color:var(--ledger-parch)] transition-colors focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[color:var(--ledger-accent)]"
+        style={{
+          width: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '14px 20px',
+          background: open ? 'var(--cream)' : '#FFFFFF',
+          border: 'none',
+          cursor: 'pointer',
+          transition: 'background .12s',
+        }}
         aria-expanded={open}
       >
         <span
-          className="font-serif text-base font-bold text-[color:var(--ledger-ink)]"
-          style={{ borderBottom: open ? `2px solid ${accentVar}` : 'none', paddingBottom: open ? '1px' : '0' }}
+          style={{
+            fontSize: 15,
+            fontWeight: 700,
+            color: 'var(--ink)',
+            borderBottom: open ? `2px solid ${accentVar}` : 'none',
+            paddingBottom: open ? 1 : 0,
+            textAlign: 'left',
+          }}
         >
           {title}
         </span>
         <span
-          className="font-mono text-[10px] uppercase tracking-widest shrink-0 ml-4"
-          style={{ color: accentVar }}
+          style={{ ...KICKER, color: accentVar, marginLeft: 16, flexShrink: 0 }}
           aria-hidden="true"
         >
           {open ? 'Close' : 'Open'}
@@ -65,7 +101,16 @@ function AccordionSection({
       </button>
 
       {open && (
-        <div className="px-5 py-5 bg-[color:var(--ledger-bg)] space-y-4 border-t border-[color:var(--ledger-parch)]">
+        <div
+          style={{
+            padding: 20,
+            background: 'var(--cream)',
+            borderTop: '1px solid var(--ink-a10)',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 16,
+          }}
+        >
           {children}
         </div>
       )}
@@ -90,9 +135,6 @@ function CopyablePrompt({ text }: { readonly text: string }) {
       }
     }
 
-    // Legacy fallback for non-secure contexts and older browsers.
-    // execCommand is deprecated but remains the only synchronous copy path
-    // when navigator.clipboard isn't available.
     const textarea = document.createElement('textarea');
     textarea.value = text;
     textarea.setAttribute('readonly', '');
@@ -115,23 +157,50 @@ function CopyablePrompt({ text }: { readonly text: string }) {
   const failed = status === 'failed';
 
   return (
-    <div className="relative">
-      <div className="bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-parch)] rounded-sm p-4 pr-16">
-        <pre className="font-mono text-[13px] leading-relaxed text-[color:var(--ledger-ink)] whitespace-pre-wrap break-words">
+    <div style={{ position: 'relative' }}>
+      <div
+        style={{
+          background: '#FFFFFF',
+          border: '1px solid var(--ink-a10)',
+          borderRadius: 'var(--r-md)',
+          padding: '16px 80px 16px 16px',
+        }}
+      >
+        <pre
+          style={{
+            fontFamily: MONO_STACK,
+            fontSize: 13,
+            lineHeight: 1.6,
+            color: 'var(--ink)',
+            whiteSpace: 'pre-wrap',
+            wordBreak: 'break-word',
+            margin: 0,
+          }}
+        >
           {text}
         </pre>
       </div>
       <button
         type="button"
         onClick={handleCopy}
-        className="absolute top-2 right-2 px-3 py-1.5 text-[10px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-1"
         style={{
-          backgroundColor: failed
-            ? 'var(--ledger-weak)'
+          position: 'absolute',
+          top: 8,
+          right: 8,
+          padding: '6px 12px',
+          fontSize: 10,
+          fontWeight: 700,
+          letterSpacing: '0.12em',
+          textTransform: 'uppercase',
+          borderRadius: 'var(--r-sm)',
+          border: 'none',
+          cursor: 'pointer',
+          background: failed
+            ? '#B91C1C'
             : copied
-              ? 'var(--ledger-accent-light)'
-              : 'var(--ledger-accent)',
-          color: 'var(--ledger-bg)',
+              ? 'var(--emerald-700)'
+              : 'var(--ink)',
+          color: '#FFFFFF',
         }}
         aria-live="polite"
         aria-label={
@@ -154,16 +223,41 @@ function CopyablePrompt({ text }: { readonly text: string }) {
 
 export function ToolGuide({ guide }: ToolGuideProps) {
   return (
-    <article className="space-y-3" aria-label={`${guide.platformLabel} guide`}>
-
+    <article
+      style={{ display: 'flex', flexDirection: 'column', gap: 12 }}
+      aria-label={`${guide.platformLabel} guide`}
+    >
       {/* Platform header */}
-      <div className="bg-[color:var(--ledger-paper)] border border-[color:var(--ledger-parch)] rounded-sm p-6">
-        <div className="flex items-start justify-between gap-4 flex-wrap">
-          <div className="space-y-2">
-            <div className="flex items-center gap-3">
+      <div
+        style={{
+          background: '#FFFFFF',
+          border: '1px solid var(--ink-a10)',
+          borderRadius: 'var(--r-lg)',
+          padding: 24,
+          boxShadow: 'var(--shadow-soft)',
+        }}
+      >
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'flex-start',
+            justifyContent: 'space-between',
+            gap: 16,
+            flexWrap: 'wrap',
+          }}
+        >
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
               <span
-                className="inline-flex items-center px-3 py-1 text-[10px] font-mono uppercase tracking-widest rounded-sm text-[color:var(--ledger-bg)]"
-                style={{ backgroundColor: guide.colorVar }}
+                style={{
+                  ...KICKER,
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  padding: '4px 12px',
+                  borderRadius: 999,
+                  background: guide.colorVar,
+                  color: '#FFFFFF',
+                }}
               >
                 {guide.platformLabel}
               </span>
@@ -171,12 +265,25 @@ export function ToolGuide({ guide }: ToolGuideProps) {
                 href={guide.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] hover:text-[color:var(--ledger-accent)] transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-1 rounded-sm"
+                style={{
+                  ...KICKER,
+                  color: 'var(--slate-500)',
+                  textDecoration: 'none',
+                }}
               >
                 {guide.url.replace(/^https?:\/\//, '')} ↗
               </a>
             </div>
-            <p className="font-serif text-base italic text-[color:var(--ledger-ink)] leading-snug max-w-2xl">
+            <p
+              style={{
+                fontSize: 16,
+                color: 'var(--ink)',
+                fontWeight: 500,
+                lineHeight: 1.4,
+                maxWidth: '60ch',
+                margin: 0,
+              }}
+            >
               {guide.tagline}
             </p>
           </div>
@@ -189,27 +296,39 @@ export function ToolGuide({ guide }: ToolGuideProps) {
         accentVar={guide.colorVar}
         defaultOpen
       >
-        <ol className="space-y-2 list-none">
+        <ol style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 8 }}>
           {guide.gettingStarted.steps.map((step, i) => (
-            <li key={i} className="flex gap-3">
+            <li key={i} style={{ display: 'flex', gap: 12 }}>
               <span
-                className="font-mono text-[11px] shrink-0 mt-0.5 w-5 text-right"
-                style={{ color: guide.colorVar }}
+                style={{
+                  fontFamily: MONO_STACK,
+                  fontSize: 11,
+                  flexShrink: 0,
+                  marginTop: 2,
+                  width: 20,
+                  textAlign: 'right',
+                  color: guide.colorVar,
+                }}
                 aria-hidden="true"
               >
                 {i + 1}.
               </span>
-              <span className="font-sans text-sm text-[color:var(--ledger-ink)] leading-relaxed">
+              <span style={{ fontSize: 14, color: 'var(--ink)', lineHeight: 1.6 }}>
                 {step}
               </span>
             </li>
           ))}
         </ol>
         <div
-          className="mt-4 p-4 border-l-4 rounded-sm bg-[color:var(--ledger-paper)]"
-          style={{ borderColor: guide.colorVar }}
+          style={{
+            marginTop: 8,
+            padding: 16,
+            borderLeft: `4px solid ${guide.colorVar}`,
+            borderRadius: 'var(--r-md)',
+            background: '#FFFFFF',
+          }}
         >
-          <p className="font-sans text-sm text-[color:var(--ledger-ink)] leading-relaxed">
+          <p style={{ fontSize: 14, color: 'var(--ink)', lineHeight: 1.6, margin: 0 }}>
             {guide.gettingStarted.firstSessionNote}
           </p>
         </div>
@@ -217,40 +336,65 @@ export function ToolGuide({ guide }: ToolGuideProps) {
 
       {/* Free vs Paid */}
       <AccordionSection title="Free vs. Paid" accentVar={guide.colorVar}>
-        <div className="space-y-4">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           {guide.pricing.map((tier) => (
             <div
               key={tier.tierName}
-              className="border border-[color:var(--ledger-parch)] rounded-sm p-4 bg-[color:var(--ledger-paper)]"
+              style={{
+                border: '1px solid var(--ink-a10)',
+                borderRadius: 'var(--r-md)',
+                padding: 16,
+                background: '#FFFFFF',
+              }}
             >
-              <div className="flex items-center gap-3 mb-3">
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
                 <span
-                  className="font-mono text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-sm text-[color:var(--ledger-bg)]"
-                  style={{ backgroundColor: guide.colorVar }}
+                  style={{
+                    ...KICKER,
+                    padding: '2px 8px',
+                    borderRadius: 999,
+                    background: guide.colorVar,
+                    color: '#FFFFFF',
+                  }}
                 >
                   {tier.tierName}
                 </span>
-                <span className="font-mono text-sm text-[color:var(--ledger-ink)]">
+                <span style={{ fontFamily: MONO_STACK, fontSize: 14, color: 'var(--ink)' }}>
                   {tier.cost}
                 </span>
               </div>
-              <ul className="space-y-1 mb-3">
+              <ul
+                style={{
+                  listStyle: 'none',
+                  padding: 0,
+                  margin: '0 0 12px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 4,
+                }}
+              >
                 {tier.keyLimits.map((limit, i) => (
-                  <li key={i} className="flex items-start gap-2">
+                  <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
                     <span
-                      className="mt-1.5 w-1 h-1 rounded-full shrink-0"
-                      style={{ backgroundColor: guide.colorVar }}
+                      style={{
+                        marginTop: 7,
+                        width: 4,
+                        height: 4,
+                        borderRadius: '50%',
+                        background: guide.colorVar,
+                        flexShrink: 0,
+                      }}
                       aria-hidden="true"
                     />
-                    <span className="font-sans text-sm text-[color:var(--ledger-ink)] leading-relaxed">
+                    <span style={{ fontSize: 14, color: 'var(--ink)', lineHeight: 1.6 }}>
                       {limit}
                     </span>
                   </li>
                 ))}
               </ul>
-              <div className="pt-3 border-t border-[color:var(--ledger-parch)]">
+              <div style={{ paddingTop: 12, borderTop: '1px solid var(--ink-a10)' }}>
                 <SectionLabel>Banking verdict</SectionLabel>
-                <p className="font-sans text-sm text-[color:var(--ledger-ink)] leading-relaxed">
+                <p style={{ fontSize: 14, color: 'var(--ink)', lineHeight: 1.6, margin: 0 }}>
                   {tier.bankingVerdict}
                 </p>
               </div>
@@ -261,31 +405,52 @@ export function ToolGuide({ guide }: ToolGuideProps) {
 
       {/* Banking Use Cases */}
       <AccordionSection title="5 Banking Use Cases" accentVar={guide.colorVar}>
-        <div className="space-y-5">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
           {guide.bankingUseCases.map((useCase) => (
             <div
               key={useCase.number}
-              className="border border-[color:var(--ledger-parch)] rounded-sm p-4 bg-[color:var(--ledger-paper)] space-y-3"
+              style={{
+                border: '1px solid var(--ink-a10)',
+                borderRadius: 'var(--r-md)',
+                padding: 16,
+                background: '#FFFFFF',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 12,
+              }}
             >
-              <div className="flex items-start gap-3">
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
                 <span
-                  className="font-mono text-[11px] shrink-0 mt-0.5"
-                  style={{ color: guide.colorVar }}
+                  style={{
+                    fontFamily: MONO_STACK,
+                    fontSize: 11,
+                    flexShrink: 0,
+                    marginTop: 2,
+                    color: guide.colorVar,
+                  }}
                   aria-hidden="true"
                 >
                   {useCase.number}.
                 </span>
-                <h3 className="font-serif text-base font-bold text-[color:var(--ledger-ink)] leading-snug">
+                <h3
+                  style={{
+                    fontSize: 15,
+                    fontWeight: 700,
+                    color: 'var(--ink)',
+                    lineHeight: 1.4,
+                    margin: 0,
+                  }}
+                >
                   {useCase.title}
                 </h3>
               </div>
-              <div className="space-y-1">
+              <div>
                 <SectionLabel>Prompt — copy and paste</SectionLabel>
                 <CopyablePrompt text={useCase.prompt} />
               </div>
-              <div className="space-y-1">
+              <div>
                 <SectionLabel>What you will get</SectionLabel>
-                <p className="font-sans text-sm text-[color:var(--ledger-ink)] leading-relaxed">
+                <p style={{ fontSize: 14, color: 'var(--ink)', lineHeight: 1.6, margin: 0 }}>
                   {useCase.expectedOutput}
                 </p>
               </div>
@@ -296,24 +461,24 @@ export function ToolGuide({ guide }: ToolGuideProps) {
 
       {/* Custom Instructions */}
       <AccordionSection title="Custom Instructions" accentVar={guide.colorVar}>
-        <div className="space-y-4">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           {guide.customInstructions.available ? (
             <>
               <div>
                 <SectionLabel>How to configure</SectionLabel>
-                <p className="font-sans text-sm text-[color:var(--ledger-ink)] leading-relaxed">
+                <p style={{ fontSize: 14, color: 'var(--ink)', lineHeight: 1.6, margin: 0 }}>
                   {guide.customInstructions.howTo}
                 </p>
               </div>
               {guide.customInstructions.bankingExample && (
-                <div className="space-y-1">
+                <div>
                   <SectionLabel>Banking example</SectionLabel>
                   <CopyablePrompt text={guide.customInstructions.bankingExample} />
                 </div>
               )}
             </>
           ) : (
-            <p className="font-sans text-sm text-[color:var(--ledger-muted)]">
+            <p style={{ fontSize: 14, color: 'var(--slate-500)', margin: 0 }}>
               Custom instructions are not available on this platform.
             </p>
           )}
@@ -322,32 +487,57 @@ export function ToolGuide({ guide }: ToolGuideProps) {
 
       {/* Data Safety */}
       <AccordionSection title="Data Safety for Banking Use" accentVar={guide.colorVar}>
-        <div className="space-y-4">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           <div
-            className="p-4 border-l-4 rounded-sm bg-[color:var(--ledger-paper)]"
-            style={{ borderColor: guide.colorVar }}
+            style={{
+              padding: 16,
+              borderLeft: `4px solid ${guide.colorVar}`,
+              borderRadius: 'var(--r-md)',
+              background: '#FFFFFF',
+            }}
           >
-            <p className="font-sans text-sm font-semibold text-[color:var(--ledger-ink)] leading-relaxed">
+            <p
+              style={{
+                fontSize: 14,
+                fontWeight: 600,
+                color: 'var(--ink)',
+                lineHeight: 1.6,
+                margin: 0,
+              }}
+            >
               {guide.dataSafety.summary}
             </p>
           </div>
-          <ul className="space-y-2">
+          <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 8 }}>
             {guide.dataSafety.details.map((detail, i) => (
-              <li key={i} className="flex items-start gap-2">
+              <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
                 <span
-                  className="mt-1.5 w-1 h-1 rounded-full shrink-0"
-                  style={{ backgroundColor: guide.colorVar }}
+                  style={{
+                    marginTop: 7,
+                    width: 4,
+                    height: 4,
+                    borderRadius: '50%',
+                    background: guide.colorVar,
+                    flexShrink: 0,
+                  }}
                   aria-hidden="true"
                 />
-                <span className="font-sans text-sm text-[color:var(--ledger-ink)] leading-relaxed">
+                <span style={{ fontSize: 14, color: 'var(--ink)', lineHeight: 1.6 }}>
                   {detail}
                 </span>
               </li>
             ))}
           </ul>
-          <div className="border border-[color:var(--ledger-parch)] rounded-sm p-4 bg-[color:var(--ledger-paper)]">
+          <div
+            style={{
+              border: '1px solid var(--ink-a10)',
+              borderRadius: 'var(--r-md)',
+              padding: 16,
+              background: '#FFFFFF',
+            }}
+          >
             <SectionLabel>Banking verdict</SectionLabel>
-            <p className="font-sans text-sm text-[color:var(--ledger-ink)] leading-relaxed">
+            <p style={{ fontSize: 14, color: 'var(--ink)', lineHeight: 1.6, margin: 0 }}>
               {guide.dataSafety.bankingVerdict}
             </p>
           </div>
@@ -356,24 +546,37 @@ export function ToolGuide({ guide }: ToolGuideProps) {
 
       {/* Pro Tips */}
       <AccordionSection title="5 Pro Tips" accentVar={guide.colorVar}>
-        <ol className="space-y-4 list-none">
+        <ol style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 16 }}>
           {guide.proTips.map((tip) => (
-            <li key={tip.number} className="flex gap-4">
+            <li key={tip.number} style={{ display: 'flex', gap: 16 }}>
               <span
-                className="font-mono text-lg font-bold shrink-0 leading-tight"
-                style={{ color: guide.colorVar }}
+                style={{
+                  fontFamily: MONO_STACK,
+                  fontSize: 18,
+                  fontWeight: 700,
+                  flexShrink: 0,
+                  lineHeight: 1.2,
+                  color: guide.colorVar,
+                }}
                 aria-hidden="true"
               >
                 {tip.number}
               </span>
-              <p className="font-sans text-sm text-[color:var(--ledger-ink)] leading-relaxed pt-0.5">
+              <p
+                style={{
+                  fontSize: 14,
+                  color: 'var(--ink)',
+                  lineHeight: 1.6,
+                  paddingTop: 2,
+                  margin: 0,
+                }}
+              >
                 {tip.tip}
               </p>
             </li>
           ))}
         </ol>
       </AccordionSection>
-
     </article>
   );
 }

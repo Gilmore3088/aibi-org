@@ -3,11 +3,8 @@
 /**
  * QuestionCard — single-question chrome for /assessment.
  *
- * Rebuilt on the design-2.0 token system. Editorial treatment with mono
- * "NN / NN" question counter, dimension label, serif display prompt,
- * and hairline-ruled answer rows. The internal point value (1–4) is
- * not surfaced in the UI — answers are differentiated by label only,
- * not by visible score.
+ * Ported to the mockup design system (2026-05-27). Inter typography, navy
+ * ink + gold accent, sentence-case headlines, UPPER mono labels.
  *
  * UX preserved verbatim:
  *   - Auto-advance on option click (no separate Continue button)
@@ -74,35 +71,62 @@ export function QuestionCard({
   }
 
   return (
-    <div className="w-full max-w-3xl mx-auto">
-      {/* Editorial header — NN / NN · DIMENSION */}
-      <div className="flex items-baseline justify-between mb-s8">
-        <p className="font-mono text-mono-sm tabular-nums uppercase tracking-wider text-slate">
-          <span className="text-gold">
+    <div
+      className="w-full max-w-3xl mx-auto"
+      style={{ fontFamily: "Inter, ui-sans-serif, system-ui, sans-serif" }}
+    >
+      {/* Header — NN / NN · DIMENSION */}
+      <div className="flex items-baseline justify-between mb-8">
+        <p
+          className="tabular-nums uppercase"
+          style={{
+            fontSize: 12,
+            fontWeight: 700,
+            letterSpacing: "0.18em",
+            color: "var(--slate-500)",
+          }}
+        >
+          <span style={{ color: "var(--gold-deep)" }}>
             {String(questionNumber).padStart(2, "0")}
           </span>
-          <span className="mx-s2 text-slate">/</span>
+          <span style={{ margin: "0 6px", color: "var(--slate-400)" }}>/</span>
           <span>{String(totalQuestions).padStart(2, "0")}</span>
         </p>
-        <p className="font-serif-sc text-label-md uppercase tracking-widest text-gold">
+        <p
+          className="uppercase"
+          style={{
+            fontSize: 12,
+            fontWeight: 700,
+            letterSpacing: "0.18em",
+            color: "var(--gold-deep)",
+          }}
+        >
           {question.dimension}
         </p>
       </div>
 
-      {/* Big editorial prompt */}
+      {/* Prompt */}
       <h2
         ref={promptRef}
         tabIndex={-1}
-        className="font-serif text-display-sm md:text-display-md text-ink leading-tight tracking-tightish mb-s10 focus:outline-none"
+        className="focus:outline-none"
+        style={{
+          fontSize: "clamp(28px, 4vw, 40px)",
+          fontWeight: 700,
+          lineHeight: 1.15,
+          letterSpacing: "-0.02em",
+          color: "var(--ink)",
+          marginBottom: 40,
+        }}
       >
         {question.prompt}
       </h2>
 
-      {/* Hairline-ruled answer list */}
+      {/* Answer list */}
       <div
         role="radiogroup"
         aria-label={question.prompt}
-        className="border-t border-strong"
+        style={{ borderTop: "1px solid var(--ink-a15)" }}
       >
         {question.options.map((option, idx) => {
           const selected = selectedPoints === option.points;
@@ -128,51 +152,91 @@ export function QuestionCard({
               aria-checked={selected}
               aria-label={`${option.label}${selected ? " (selected)" : ""}`}
               className={cn(
-                "w-full text-left grid grid-cols-[1fr_28px] gap-s4 items-baseline",
-                "px-s4 py-s4 border-b border-hairline transition-colors duration-fast",
-                "focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--ledger-accent)] focus-visible:outline-offset-[-2px]",
-                selected
-                  ? "bg-parch"
-                  : "hover:bg-parch/60"
+                "w-full text-left grid grid-cols-[1fr_28px] gap-4 items-center",
+                "transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px]",
               )}
+              style={{
+                padding: "20px 16px",
+                borderBottom: "1px solid var(--ink-a10)",
+                background: selected ? "var(--cream-2)" : "transparent",
+                outlineColor: "var(--gold)",
+                transitionDuration: "120ms",
+              }}
+              onMouseEnter={(e) => {
+                if (!selected) e.currentTarget.style.background = "var(--cream)";
+              }}
+              onMouseLeave={(e) => {
+                if (!selected) e.currentTarget.style.background = "transparent";
+              }}
             >
-              <span className="font-serif text-body-lg md:text-display-xs leading-snug text-ink">
+              <span
+                style={{
+                  fontSize: 18,
+                  fontWeight: 500,
+                  lineHeight: 1.4,
+                  color: "var(--ink)",
+                }}
+              >
                 {option.label}
               </span>
               <span
                 aria-hidden="true"
-                className={cn(
-                  "self-center w-[14px] h-[14px] rounded-full border transition-colors duration-fast",
-                  selected ? "border-gold" : "border-hairline"
-                )}
-                style={
-                  selected
-                    ? {
-                        background: "var(--gold)",
-                        boxShadow: "inset 0 0 0 3px var(--color-parch)",
-                      }
-                    : undefined
-                }
+                style={{
+                  display: "inline-block",
+                  width: 16,
+                  height: 16,
+                  borderRadius: 999,
+                  border: selected
+                    ? "1px solid var(--gold)"
+                    : "1px solid var(--ink-a15)",
+                  background: selected ? "var(--gold)" : "transparent",
+                  boxShadow: selected ? "inset 0 0 0 3px #fff" : undefined,
+                  justifySelf: "end",
+                  transition: "border-color 120ms, background 120ms",
+                }}
               />
             </button>
           );
         })}
       </div>
 
-      {/* Footer row */}
-      <div className="flex items-center justify-between mt-s8 text-mono-sm">
+      {/* Footer */}
+      <div
+        className="flex items-center justify-between"
+        style={{ marginTop: 32 }}
+      >
         {canGoBack && onBack ? (
           <button
             type="button"
             onClick={onBack}
-            className="font-sans text-body-sm text-slate hover:text-gold transition-colors duration-fast"
+            className="transition-colors"
+            style={{
+              fontSize: 14,
+              fontWeight: 500,
+              color: "var(--slate-600)",
+              transitionDuration: "120ms",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = "var(--gold-deep)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = "var(--slate-600)";
+            }}
           >
             ← Back to question {String(questionNumber - 1).padStart(2, "0")}
           </button>
         ) : (
           <span />
         )}
-        <span className="font-mono text-label-md uppercase tracking-widest text-slate">
+        <span
+          className="uppercase"
+          style={{
+            fontSize: 11,
+            fontWeight: 700,
+            letterSpacing: "0.18em",
+            color: "var(--slate-500)",
+          }}
+        >
           Tap an answer to continue
         </span>
       </div>

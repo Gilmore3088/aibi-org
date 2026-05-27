@@ -12,6 +12,9 @@ import {
 } from '@content/courses/foundation-program';
 import { ProgramModuleCard } from './ProgramModuleCard';
 
+const FONT_INTER =
+  'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
+
 interface CourseStructureProps {
   readonly lmsModules: readonly LMSModule[];
   readonly completedModules: readonly number[];
@@ -28,10 +31,11 @@ export function CourseStructure({
   return (
     <section
       style={{
-        background: 'var(--ledger-parch)',
-        padding: '34px 36px',
-        border: '1px solid var(--ledger-rule)',
-        borderRadius: 3,
+        background: 'var(--cream-2)',
+        padding: '36px 36px',
+        border: '1px solid var(--ink-a10)',
+        borderRadius: 28,
+        fontFamily: FONT_INTER,
       }}
     >
       <div
@@ -39,30 +43,31 @@ export function CourseStructure({
           display: 'flex',
           alignItems: 'baseline',
           justifyContent: 'space-between',
-          marginBottom: 8,
+          marginBottom: 10,
           flexWrap: 'wrap',
           gap: 12,
         }}
       >
         <h2
           style={{
-            fontFamily: 'var(--ledger-serif)',
-            fontWeight: 500,
+            fontFamily: FONT_INTER,
+            fontWeight: 700,
             fontSize: 32,
             letterSpacing: '-0.02em',
             margin: 0,
-            color: 'var(--ledger-ink)',
+            color: 'var(--ink)',
           }}
         >
           Course structure
         </h2>
         <span
           style={{
-            fontFamily: 'var(--ledger-mono)',
-            fontSize: 10.5,
-            letterSpacing: '0.16em',
+            fontFamily: FONT_INTER,
+            fontSize: 11,
+            fontWeight: 700,
+            letterSpacing: '0.18em',
             textTransform: 'uppercase',
-            color: 'var(--ledger-muted)',
+            color: 'var(--slate-500)',
           }}
         >
           {totalModules} modules &middot; self-paced
@@ -70,8 +75,10 @@ export function CourseStructure({
       </div>
       <p
         style={{
-          color: 'var(--ledger-slate)',
+          fontFamily: FONT_INTER,
+          color: 'var(--slate-600)',
           fontSize: 14,
+          lineHeight: 1.55,
           maxWidth: '58ch',
           margin: '0 0 28px',
         }}
@@ -93,19 +100,20 @@ export function CourseStructure({
                 alignItems: 'baseline',
                 gap: 14,
                 marginBottom: 14,
-                paddingBottom: 8,
-                borderBottom: '1px solid var(--ledger-rule)',
+                paddingBottom: 10,
+                borderBottom: '1px solid var(--ink-a10)',
                 flexWrap: 'wrap',
               }}
             >
               <PillarTag pillarId={pillar.id} size="lg" />
               <span
                 style={{
-                  fontFamily: 'var(--ledger-mono)',
-                  fontSize: 10,
+                  fontFamily: FONT_INTER,
+                  fontSize: 10.5,
+                  fontWeight: 700,
                   letterSpacing: '0.18em',
                   textTransform: 'uppercase',
-                  color: 'var(--ledger-muted)',
+                  color: 'var(--slate-500)',
                 }}
               >
                 {pillarMods.length} modules &middot; {totalPillarMin} min

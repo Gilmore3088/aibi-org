@@ -5,6 +5,7 @@
 // On submission, calls /api/courses/submit-activity.
 // On completion, shows the Skill Template Library download (PDF + five .md templates).
 //
+// Mockup chrome: cream surface, ink type, gold accent on emphasis, slate metadata.
 // A11Y-01: keyboard accessible (focus rings, focus managed to success region on submit).
 // A11Y-02: error messages prefixed with "Error:" (not color-only).
 // A11Y-05: artifact download uses plain <a href> anchors (no JS required).
@@ -161,35 +162,35 @@ export function SkillDiagnosis({
 
   return (
     <div
-      className="border border-[color:var(--ledger-parch)] border-l-4 rounded-sm p-6 bg-white/40 mb-8"
-      style={{ borderLeftColor: 'var(--ledger-accent)' }}
+      className="mb-8 rounded-3xl border border-[color:var(--ink-a10)] border-l-4 bg-[color:var(--cream)] p-6 shadow-[var(--shadow-soft)]"
+      style={{ borderLeftColor: 'var(--gold)' }}
     >
       {/* Activity header */}
       <div className="mb-5">
-        <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent)] mb-1">
+        <p className="font-sans text-[10px] font-bold uppercase tracking-[0.22em] text-[color:var(--gold-deep)] mb-1">
           Activity {activity.id}
         </p>
         <div className="flex items-start justify-between gap-4">
-          <h3 className="font-serif text-xl font-bold text-[color:var(--ledger-ink)] mb-2">
+          <h3 className="font-sans text-xl font-bold text-[color:var(--ink)] mb-2">
             {activity.title}
           </h3>
           {state.submitted && (
-            <span className="shrink-0 inline-flex items-center gap-1 px-2 py-0.5 bg-[color:var(--ledger-accent-2)]/10 border border-[color:var(--ledger-accent-2)] rounded-sm font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent-2)]">
+            <span className="shrink-0 inline-flex items-center gap-1 rounded-full border border-[color:var(--emerald-700)] bg-white px-2.5 py-0.5 font-sans text-[10px] font-bold uppercase tracking-[0.22em] text-[color:var(--emerald-700)]">
               Submitted
             </span>
           )}
         </div>
-        <p className="text-sm font-sans text-[color:var(--ledger-muted)] leading-relaxed">
+        <p className="font-sans text-sm leading-relaxed text-[color:var(--slate-600)]">
           {activity.description}
         </p>
       </div>
 
       {/* Weak prompt callout */}
-      <div className="mb-6 rounded-sm border border-[color:var(--ledger-parch)] bg-[color:var(--ledger-paper)] px-5 py-4">
-        <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] mb-2">
+      <div className="mb-6 rounded-2xl border border-[color:var(--ink-a10)] bg-[color:var(--cream-2)] px-5 py-4">
+        <p className="font-sans text-[10px] font-bold uppercase tracking-[0.22em] text-[color:var(--slate-500)] mb-2">
           The prompt to evaluate
         </p>
-        <blockquote className="font-serif text-[17px] text-[color:var(--ledger-ink)] leading-relaxed italic border-l-2 border-[color:var(--ledger-accent)] pl-4">
+        <blockquote className="border-l-2 border-[color:var(--gold)] pl-4 font-sans text-[17px] font-semibold leading-relaxed text-[color:var(--ink)]">
           {WEAK_PROMPT}
         </blockquote>
       </div>
@@ -204,20 +205,20 @@ export function SkillDiagnosis({
           className="space-y-4"
         >
           <div>
-            <p className="font-sans text-sm font-semibold text-[color:var(--ledger-ink)] mb-1">
+            <p className="font-sans text-sm font-semibold text-[color:var(--ink)] mb-1">
               {missingComponentField?.label ?? 'Missing component selected'}
             </p>
-            <div className="w-full border border-[color:var(--ledger-parch)] rounded-sm px-3 py-2 text-sm font-sans bg-[color:var(--ledger-paper)] text-[color:var(--ledger-ink)]">
-              {selectedOption || <span className="text-[color:var(--ledger-muted)]">No response</span>}
+            <div className="w-full rounded-xl border border-[color:var(--ink-a10)] bg-[color:var(--cream-2)] px-3 py-2 font-sans text-sm text-[color:var(--ink)]">
+              {selectedOption || <span className="text-[color:var(--slate-500)]">No response</span>}
             </div>
           </div>
           <div>
-            <p className="font-sans text-sm font-semibold text-[color:var(--ledger-ink)] mb-1">
+            <p className="font-sans text-sm font-semibold text-[color:var(--ink)] mb-1">
               {improvedSkillField?.label ?? 'Improved skill'}
             </p>
-            <div className="w-full border border-[color:var(--ledger-parch)] rounded-sm px-3 py-2 text-sm font-sans bg-[color:var(--ledger-paper)] text-[color:var(--ledger-ink)] min-h-[80px] whitespace-pre-wrap">
+            <div className="w-full rounded-xl border border-[color:var(--ink-a10)] bg-[color:var(--cream-2)] px-3 py-2 font-sans text-sm text-[color:var(--ink)] min-h-[80px] whitespace-pre-wrap">
               {state.improvedSkill || (
-                <span className="text-[color:var(--ledger-muted)]">No response</span>
+                <span className="text-[color:var(--slate-500)]">No response</span>
               )}
             </div>
           </div>
@@ -228,10 +229,10 @@ export function SkillDiagnosis({
           <div className="mb-5">
             <label
               htmlFor="missing-components"
-              className="block font-sans text-sm font-semibold text-[color:var(--ledger-ink)] mb-1"
+              className="block font-sans text-sm font-semibold text-[color:var(--ink)] mb-1"
             >
               {missingComponentField?.label ?? 'Which component is most critically missing?'}
-              <span className="ml-1 text-[color:var(--ledger-weak)] text-xs" aria-label="required">
+              <span className="ml-1 text-red-700 text-xs" aria-label="required">
                 *
               </span>
             </label>
@@ -247,10 +248,10 @@ export function SkillDiagnosis({
                   serverError: null,
                 }))
               }
-              className={`w-full border rounded-sm px-3 py-2 text-sm font-sans bg-white text-[color:var(--ledger-ink)] placeholder:text-[color:var(--ledger-soft)] focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] transition-shadow ${
+              className={`w-full rounded-xl border px-3 py-2 font-sans text-sm bg-white text-[color:var(--ink)] placeholder:text-[color:var(--slate-400)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] transition-shadow ${
                 state.errors['missing-components']
-                  ? 'border-[color:var(--ledger-weak)]'
-                  : 'border-[color:var(--ledger-parch)]'
+                  ? 'border-red-700'
+                  : 'border-[color:var(--ink-a10)]'
               }`}
               aria-required="true"
               aria-invalid={Boolean(state.errors['missing-components'])}
@@ -268,7 +269,7 @@ export function SkillDiagnosis({
             {state.errors['missing-components'] && (
               <p
                 id="missing-components-error"
-                className="mt-1 text-[color:var(--ledger-weak)] font-mono text-xs"
+                className="mt-1 font-sans text-xs text-red-700"
                 role="alert"
               >
                 Error: {state.errors['missing-components']}
@@ -280,10 +281,10 @@ export function SkillDiagnosis({
           <div className="mb-5">
             <label
               htmlFor="improved-skill"
-              className="block font-sans text-sm font-semibold text-[color:var(--ledger-ink)] mb-1"
+              className="block font-sans text-sm font-semibold text-[color:var(--ink)] mb-1"
             >
               {improvedSkillField?.label ?? 'Write an improved version of this skill'}
-              <span className="ml-1 text-[color:var(--ledger-weak)] text-xs" aria-label="required">
+              <span className="ml-1 text-red-700 text-xs" aria-label="required">
                 *
               </span>
             </label>
@@ -301,10 +302,10 @@ export function SkillDiagnosis({
                   serverError: null,
                 }))
               }
-              className={`w-full border rounded-sm px-3 py-2 text-sm font-sans bg-white text-[color:var(--ledger-ink)] placeholder:text-[color:var(--ledger-soft)] focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] transition-shadow resize-y ${
+              className={`w-full rounded-xl border px-3 py-2 font-sans text-sm bg-white text-[color:var(--ink)] placeholder:text-[color:var(--slate-400)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] transition-shadow resize-y ${
                 state.errors['improved-skill']
-                  ? 'border-[color:var(--ledger-weak)]'
-                  : 'border-[color:var(--ledger-parch)]'
+                  ? 'border-red-700'
+                  : 'border-[color:var(--ink-a10)]'
               }`}
               aria-required="true"
               aria-invalid={Boolean(state.errors['improved-skill'])}
@@ -318,34 +319,34 @@ export function SkillDiagnosis({
             {state.errors['improved-skill'] && (
               <p
                 id="improved-skill-error"
-                className="mt-1 text-[color:var(--ledger-weak)] font-mono text-xs"
+                className="mt-1 font-sans text-xs text-red-700"
                 role="alert"
               >
                 Error: {state.errors['improved-skill']}
               </p>
             )}
-            <p id="improved-skill-hint" className="mt-1 text-[11px] font-mono text-[color:var(--ledger-muted)]">
+            <p id="improved-skill-hint" className="mt-1 font-sans text-[11px] text-[color:var(--slate-500)]">
               {state.improvedSkill.length}/{MIN_LENGTH} characters
             </p>
           </div>
 
           {state.serverError && (
             <p
-              className="mt-3 mb-3 text-sm font-sans text-[color:var(--ledger-weak)] bg-[color:var(--ledger-weak)]/5 border border-[color:var(--ledger-weak)]/20 rounded-sm px-3 py-2"
+              className="mt-3 mb-3 rounded-xl border border-red-200 bg-red-50 px-3 py-2 font-sans text-sm text-red-700"
               role="alert"
             >
               {state.serverError}
             </p>
           )}
 
-          <div className="mt-4 pt-4 border-t border-[color:var(--ledger-parch)]">
+          <div className="mt-4 pt-4 border-t border-[color:var(--ink-a10)]">
             <button
               type="submit"
               disabled={state.submitting}
-              className="px-6 py-2.5 bg-[color:var(--ledger-accent)] hover:bg-[color:var(--ledger-accent-light)] disabled:bg-[color:var(--ledger-parch)] disabled:text-[color:var(--ledger-soft)] text-[color:var(--ledger-bg)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-2"
-              aria-label={state.submitting ? 'Submitting activity…' : 'Submit activity'}
+              className="px-6 py-2.5 rounded-xl bg-[color:var(--ink)] hover:bg-[color:var(--ink-2)] disabled:bg-[color:var(--slate-200)] disabled:text-[color:var(--slate-500)] text-[color:var(--gold-soft)] hover:text-[color:var(--gold)] text-[11px] font-sans font-bold uppercase tracking-[0.22em] transition-colors disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:ring-offset-2"
+              aria-label={state.submitting ? 'Submitting activity' : 'Submit activity'}
             >
-              {state.submitting ? 'Submitting…' : 'Submit Activity'}
+              {state.submitting ? 'SUBMITTING' : 'SUBMIT ACTIVITY'}
             </button>
           </div>
         </form>
@@ -353,14 +354,14 @@ export function SkillDiagnosis({
 
       {/* Artifact downloads — shown after successful submission */}
       {state.submitted && (
-        <div className="mt-6 pt-5 border-t border-[color:var(--ledger-parch)]">
-          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] mb-1">
+        <div className="mt-6 pt-5 border-t border-[color:var(--ink-a10)]">
+          <p className="font-sans text-[10px] font-bold uppercase tracking-[0.22em] text-[color:var(--gold-deep)] mb-1">
             Your artifact is ready
           </p>
-          <h4 className="font-serif text-base font-bold text-[color:var(--ledger-ink)] mb-1">
+          <h4 className="font-sans text-base font-bold text-[color:var(--ink)] mb-1">
             Skill Template Library
           </h4>
-          <p className="text-sm font-sans text-[color:var(--ledger-muted)] mb-4 leading-relaxed">
+          <p className="font-sans text-sm leading-relaxed text-[color:var(--slate-600)] mb-4">
             Five institution-grade banking AI skills across Operations, Compliance, Lending, and
             Marketing — formatted for immediate deployment in ChatGPT, Claude, or Gemini.
           </p>
@@ -369,17 +370,17 @@ export function SkillDiagnosis({
             {/* PDF download */}
             <a
               href="/api/courses/artifacts/skill-template-library"
-              className="inline-flex items-center gap-2 px-5 py-2 bg-[color:var(--ledger-accent)] hover:bg-[color:var(--ledger-accent-light)] text-[color:var(--ledger-bg)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-2"
+              className="inline-flex items-center gap-2 rounded-xl bg-[color:var(--ink)] hover:bg-[color:var(--ink-2)] px-5 py-2 font-sans text-[11px] font-bold uppercase tracking-[0.22em] text-[color:var(--gold-soft)] hover:text-[color:var(--gold)] transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:ring-offset-2"
               aria-label="Download Skill Template Library PDF"
             >
               <DownloadIcon />
-              Download PDF
+              DOWNLOAD PDF
             </a>
           </div>
 
           {/* Individual .md template links */}
           <div className="mt-5">
-            <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] mb-3">
+            <p className="font-sans text-[10px] font-bold uppercase tracking-[0.22em] text-[color:var(--slate-500)] mb-3">
               Individual skill templates (.md)
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
@@ -388,7 +389,7 @@ export function SkillDiagnosis({
                   key={file.name}
                   href={`/artifacts/skill-templates/${file.name}`}
                   download={file.name}
-                  className="inline-flex items-center gap-2 px-4 py-2 border border-[color:var(--ledger-accent)] text-[color:var(--ledger-accent)] hover:bg-[color:var(--ledger-accent)] hover:text-[color:var(--ledger-bg)] text-[11px] font-mono rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-2"
+                  className="inline-flex items-center gap-2 rounded-xl border border-[color:var(--ink-a10)] bg-white px-4 py-2 font-sans text-[11px] font-semibold text-[color:var(--ink)] hover:border-[color:var(--gold)] hover:text-[color:var(--gold-deep)] transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:ring-offset-2"
                   aria-label={`Download ${file.label} skill template`}
                 >
                   <DownloadIcon />

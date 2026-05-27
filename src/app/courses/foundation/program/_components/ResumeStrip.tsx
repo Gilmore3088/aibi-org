@@ -4,13 +4,16 @@
 import { PrimaryButton } from '@/components/lms';
 import type { LMSModule } from '@/components/lms';
 
+const FONT_INTER =
+  'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
+
 interface ResumeStripProps {
   readonly currentModule: LMSModule;
   readonly completedCount: number;
 }
 
 export function ResumeStrip({ currentModule, completedCount }: ResumeStripProps) {
-  const verb = completedCount > 0 ? 'Resume' : 'Start';
+  const verb = completedCount > 0 ? 'RESUME' : 'START';
   const label = completedCount > 0 ? 'Currently on' : 'Start with';
 
   return (
@@ -21,30 +24,35 @@ export function ResumeStrip({ currentModule, completedCount }: ResumeStripProps)
         gridTemplateColumns: 'auto 1fr auto',
         gap: 24,
         alignItems: 'center',
-        background: 'var(--ledger-ink)',
-        color: 'var(--ledger-paper)',
-        padding: '22px 26px',
-        borderRadius: 2,
+        background: 'var(--ink)',
+        color: 'var(--cream)',
+        padding: '24px 28px',
+        borderRadius: 24,
+        boxShadow: 'var(--shadow-feature)',
+        fontFamily: FONT_INTER,
       }}
     >
       <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
         <span
           style={{
-            fontFamily: 'var(--ledger-mono)',
-            fontSize: 10,
+            fontFamily: FONT_INTER,
+            fontSize: 10.5,
+            fontWeight: 700,
             letterSpacing: '0.2em',
             textTransform: 'uppercase',
-            color: 'rgba(244,241,231,0.6)',
+            color: 'var(--on-dark-65)',
           }}
         >
           {label}
         </span>
         <span
           style={{
-            fontFamily: 'var(--ledger-mono)',
+            fontFamily: FONT_INTER,
             fontSize: 11,
+            fontWeight: 600,
             letterSpacing: '0.16em',
-            color: 'var(--ledger-accent-light)',
+            color: 'var(--gold-soft)',
+            textTransform: 'uppercase',
           }}
         >
           Module {String(currentModule.num).padStart(2, '0')} &middot;{' '}
@@ -54,22 +62,23 @@ export function ResumeStrip({ currentModule, completedCount }: ResumeStripProps)
       <div>
         <h2
           style={{
-            fontFamily: 'var(--ledger-serif)',
-            fontWeight: 500,
+            fontFamily: FONT_INTER,
+            fontWeight: 700,
             fontSize: 26,
-            lineHeight: 1.1,
+            lineHeight: 1.15,
             letterSpacing: '-0.02em',
             margin: 0,
-            color: 'var(--ledger-paper)',
+            color: 'var(--cream)',
           }}
         >
           {currentModule.title}
         </h2>
         <p
           style={{
-            margin: '4px 0 0',
-            fontSize: 13,
-            color: 'rgba(244,241,231,0.72)',
+            margin: '6px 0 0',
+            fontFamily: FONT_INTER,
+            fontSize: 14,
+            color: 'var(--on-dark-70)',
             lineHeight: 1.5,
             maxWidth: '62ch',
           }}
@@ -81,19 +90,22 @@ export function ResumeStrip({ currentModule, completedCount }: ResumeStripProps)
         as="a"
         href={`/courses/foundation/program/${currentModule.num}`}
         style={{
-          background: 'var(--ledger-accent)',
-          color: 'var(--ledger-paper)',
+          background: 'var(--gold)',
+          color: 'var(--ink)',
+          borderRadius: 12,
+          fontFamily: FONT_INTER,
         }}
       >
         {verb}{' '}
         <span
           style={{
-            fontFamily: 'var(--ledger-serif)',
-            fontStyle: 'italic',
-            textTransform: 'none',
+            fontFamily: FONT_INTER,
+            fontWeight: 600,
             letterSpacing: 0,
             fontSize: 14,
+            textTransform: 'none',
           }}
+          aria-hidden="true"
         >
           →
         </span>

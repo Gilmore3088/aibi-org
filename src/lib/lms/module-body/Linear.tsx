@@ -38,7 +38,7 @@ export function Linear({
   storagePrefix,
   moduleId,
   steps,
-  accentColor = 'var(--ledger-accent)',
+  accentColor = 'var(--gold)',
   gatedAt,
   onStepChange,
 }: LinearProps) {
@@ -78,7 +78,7 @@ export function Linear({
             padding: 0,
             margin: 0,
             listStyle: 'none',
-            borderBottom: '1px solid var(--ledger-rule)',
+            borderBottom: '1px solid var(--ink-a10)',
           }}
         >
           {steps.map((step, i) => {
@@ -102,24 +102,25 @@ export function Linear({
                       : '2px solid transparent',
                     cursor: isReachable ? 'pointer' : 'not-allowed',
                     opacity: isReachable ? 1 : 0.4,
-                    fontFamily: 'var(--ledger-sans)',
+                    fontFamily: '"Inter", ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif',
                     fontSize: 13,
                     textAlign: 'left',
                     color: isActive
-                      ? 'var(--ledger-ink)'
+                      ? 'var(--ink)'
                       : isPast
-                        ? 'var(--ledger-ink-2)'
-                        : 'var(--ledger-muted)',
+                        ? 'var(--ink-2)'
+                        : 'var(--slate-500)',
                   }}
                 >
                   <span
                     style={{
                       display: 'block',
-                      fontFamily: 'var(--ledger-mono)',
+                      fontFamily: '"Inter", ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif',
                       fontSize: 10,
                       letterSpacing: '0.16em',
                       textTransform: 'uppercase',
-                      color: 'var(--ledger-muted)',
+                      color: 'var(--slate-500)',
+                      fontWeight: 600,
                       marginBottom: 6,
                     }}
                   >
@@ -132,7 +133,7 @@ export function Linear({
                       style={{
                         display: 'block',
                         fontSize: 12,
-                        color: 'var(--ledger-muted)',
+                        color: 'var(--slate-500)',
                         marginTop: 2,
                       }}
                     >

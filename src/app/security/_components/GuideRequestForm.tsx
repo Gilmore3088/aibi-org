@@ -1,9 +1,67 @@
 'use client';
 
-import { useState, type FormEvent } from 'react';
+// GuideRequestForm — email-capture form for the Safe AI Use guide.
+//
+// 2026-05-27: Ported to the mockup design system. Sits on a dark navy
+// section, so inputs use on-dark borders, cream input fill, and the
+// gold CTA. Voice is matter-of-fact — no "powered by" marketing.
+
+import { useState, type CSSProperties, type FormEvent } from 'react';
 
 type Status = 'idle' | 'submitting' | 'success' | 'error';
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const INTER_STACK =
+  'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
+
+const kickerStyle: CSSProperties = {
+  fontFamily: INTER_STACK,
+  fontSize: 11,
+  fontWeight: 700,
+  letterSpacing: '0.2em',
+  textTransform: 'uppercase',
+  color: 'var(--gold-soft)',
+};
+
+const labelStyle: CSSProperties = {
+  display: 'block',
+  fontFamily: INTER_STACK,
+  fontSize: 11,
+  fontWeight: 700,
+  letterSpacing: '0.16em',
+  textTransform: 'uppercase',
+  color: 'var(--on-dark-70)',
+  marginBottom: 6,
+};
+
+const inputStyle: CSSProperties = {
+  width: '100%',
+  padding: '12px 14px',
+  borderRadius: 12,
+  border: '1px solid var(--on-dark-20)',
+  background: 'var(--on-dark-08)',
+  color: 'var(--cream)',
+  fontFamily: INTER_STACK,
+  fontSize: 14.5,
+  fontWeight: 500,
+  outline: 'none',
+};
+
+const submitButtonStyle: CSSProperties = {
+  width: '100%',
+  padding: '14px 22px',
+  background: 'var(--gold)',
+  color: 'var(--ink)',
+  fontFamily: INTER_STACK,
+  fontSize: 12,
+  fontWeight: 700,
+  textTransform: 'uppercase',
+  letterSpacing: '0.14em',
+  borderRadius: 12,
+  border: 'none',
+  cursor: 'pointer',
+  transition: 'background 120ms cubic-bezier(0.4, 0, 0.2, 1)',
+};
 
 export function GuideRequestForm() {
   const [name, setName] = useState('');
@@ -63,77 +121,113 @@ export function GuideRequestForm() {
 
   if (status === 'success') {
     return (
-      <div className="border border-[color:var(--ledger-bg)]/30 bg-[color:var(--ledger-bg)]/10 p-8 text-center">
-        <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--ledger-tape)] mb-3">
-          Downloading now
-        </p>
-        <h3 className="font-serif text-3xl text-[color:var(--ledger-bg)] mb-3">
+      <div
+        style={{
+          border: '1px solid var(--on-dark-20)',
+          background: 'var(--on-dark-08)',
+          padding: 32,
+          borderRadius: 24,
+          textAlign: 'center',
+        }}
+      >
+        <p style={{ ...kickerStyle, margin: '0 0 12px' }}>Downloading now</p>
+        <h3
+          style={{
+            fontFamily: INTER_STACK,
+            fontWeight: 700,
+            fontSize: 28,
+            letterSpacing: '-0.02em',
+            margin: '0 0 12px',
+            color: 'var(--cream)',
+          }}
+        >
           Your guide is ready.
         </h3>
-        <p className="text-[color:var(--ledger-bg)]/80 leading-relaxed mb-4">
+        <p
+          style={{
+            fontFamily: INTER_STACK,
+            fontSize: 15,
+            fontWeight: 400,
+            lineHeight: 1.6,
+            color: 'var(--on-dark-80)',
+            margin: '0 0 18px',
+          }}
+        >
           The Safe AI Use Guide should be downloading now. If it did not
           start automatically, use the button below.
         </p>
         <button
           type="button"
           onClick={triggerPdfDownload}
-          className="inline-block px-6 py-3 bg-[color:var(--ledger-accent)] text-[color:var(--ledger-bg)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--ledger-accent-light)] active:scale-[0.98] transition-all"
+          style={{ ...submitButtonStyle, width: 'auto', padding: '12px 22px' }}
         >
-          Download guide
+          DOWNLOAD GUIDE
         </button>
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="grid md:grid-cols-2 gap-4">
-        <label className="block">
-          <span className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--ledger-bg)]/70">
-            Your name
-          </span>
+    <form
+      onSubmit={handleSubmit}
+      style={{ display: 'flex', flexDirection: 'column', gap: 16 }}
+    >
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+          gap: 16,
+        }}
+      >
+        <label style={{ display: 'block' }}>
+          <span style={labelStyle}>Your name</span>
           <input
             type="text"
             required
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="mt-1 w-full px-4 py-3 border border-[color:var(--ledger-bg)]/30 rounded-[2px] bg-transparent text-[color:var(--ledger-bg)] font-sans focus:outline-none focus:border-[color:var(--ledger-tape)]"
+            style={inputStyle}
           />
         </label>
-        <label className="block">
-          <span className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--ledger-bg)]/70">
-            Work email
-          </span>
+        <label style={{ display: 'block' }}>
+          <span style={labelStyle}>Work email</span>
           <input
             type="email"
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="mt-1 w-full px-4 py-3 border border-[color:var(--ledger-bg)]/30 rounded-[2px] bg-transparent text-[color:var(--ledger-bg)] font-sans focus:outline-none focus:border-[color:var(--ledger-tape)]"
+            style={inputStyle}
           />
         </label>
       </div>
-      <label className="block">
-        <span className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--ledger-bg)]/70">
-          Institution
-        </span>
+      <label style={{ display: 'block' }}>
+        <span style={labelStyle}>Institution</span>
         <input
           type="text"
           required
           value={institution}
           onChange={(e) => setInstitution(e.target.value)}
-          className="mt-1 w-full px-4 py-3 border border-[color:var(--ledger-bg)]/30 rounded-[2px] bg-transparent text-[color:var(--ledger-bg)] font-sans focus:outline-none focus:border-[color:var(--ledger-tape)]"
+          style={inputStyle}
         />
       </label>
       <button
         type="submit"
         disabled={status === 'submitting'}
-        className="w-full px-6 py-3 bg-[color:var(--ledger-accent)] text-[color:var(--ledger-bg)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--ledger-accent-light)] active:scale-[0.98] transition-all disabled:opacity-60"
+        style={{ ...submitButtonStyle, opacity: status === 'submitting' ? 0.6 : 1 }}
       >
-        {status === 'submitting' ? 'Sending guide…' : 'Email me the guide'}
+        {status === 'submitting' ? 'SENDING GUIDE…' : 'EMAIL ME THE GUIDE'}
       </button>
       {message && status === 'error' && (
-        <p className="text-sm text-[color:var(--ledger-tape)]" role="alert">
+        <p
+          role="alert"
+          style={{
+            fontFamily: INTER_STACK,
+            fontSize: 13,
+            fontWeight: 600,
+            color: 'var(--gold-soft)',
+            margin: 0,
+          }}
+        >
           {message}
         </p>
       )}

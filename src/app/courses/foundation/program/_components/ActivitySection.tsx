@@ -132,7 +132,7 @@ export function ActivitySection({
 
   return (
     <div className="mt-8">
-      <h2 className="font-serif text-2xl font-bold text-[color:var(--ledger-ink)] mb-6">
+      <h2 className="font-sans text-2xl font-bold tracking-tight text-[color:var(--ink)] mb-6">
         Activities
       </h2>
 
@@ -201,7 +201,7 @@ export function ActivitySection({
           // Drill scenarios must be present
           if (drillScenarios.length === 0) {
             return (
-              <p key={activity.id} className="text-sm text-[color:var(--ledger-muted)]">
+              <p key={activity.id} className="text-sm text-[color:var(--slate-500)]">
                 Classification drill scenarios not available.
               </p>
             );
@@ -250,16 +250,16 @@ export function ActivitySection({
 
       {/* Progress save — only show when all activities are done */}
       {allSubmitted && !progressSaved && (
-        <div className="mt-6 pt-6 border-t border-[color:var(--ledger-parch)]">
-          <p className="text-sm font-sans text-[color:var(--ledger-muted)] mb-4">
+        <div className="mt-6 pt-6 border-t border-[color:var(--ink-a10)]">
+          <p className="text-sm font-sans text-[color:var(--slate-600)] mb-4">
             All activities complete. Mark this module as done to continue.
           </p>
           <button
             type="button"
             onClick={handleSaveProgress}
-            className="px-6 py-2.5 bg-[color:var(--ledger-accent)] hover:bg-[color:var(--ledger-accent-light)] text-[color:var(--ledger-bg)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-2"
+            className="px-6 py-2.5 bg-[color:var(--ink)] hover:bg-[color:var(--ink-2)] text-[color:var(--cream)] text-[11px] font-sans font-bold uppercase tracking-widest rounded-xl transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:ring-offset-2"
           >
-            {isLastModule ? 'Complete Course' : 'Complete Module'}
+            {isLastModule ? 'COMPLETE COURSE' : 'COMPLETE MODULE'}
           </button>
         </div>
       )}
