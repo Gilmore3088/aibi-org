@@ -34,9 +34,6 @@ const WorkflowIcon = (p: IconProps) => (<svg {...sw(p)}><rect x="3" y="3" width=
 const FileIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>);
 const SparklesIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M12 2l1.5 4.5L18 8l-4.5 1.5L12 14l-1.5-4.5L6 8l4.5-1.5z" /><path d="M5 17l.7 2.3L8 20l-2.3.7L5 23l-.7-2.3L2 20l2.3-.7z" /></svg>);
 const ClipboardIcon = (p: IconProps) => (<svg {...sw(p)}><rect x="8" y="3" width="8" height="4" rx="1" /><path d="M16 5h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h2" /><polyline points="9 14 11 16 15 12" /></svg>);
-const PlayCircleIcon = (p: IconProps) => (<svg {...sw(p)}><circle cx="12" cy="12" r="10" /><polygon points="10 8 16 12 10 16 10 8" /></svg>);
-const FlaskIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M10 2v7.31" /><path d="M14 9.3V2" /><path d="M8.5 2h7" /><path d="M14 9.3a6.5 6.5 0 1 1-4 0" /></svg>);
-const Layers3Icon = (p: IconProps) => (<svg {...sw(p)}><path d="M12 2L2 7l10 5 10-5z" /><path d="M2 12l10 5 10-5" /><path d="M2 17l10 5 10-5" /></svg>);
 const ShieldIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>);
 const CheckCircleIcon = (p: IconProps) => (<svg {...sw(p)}><circle cx="12" cy="12" r="10" /><polyline points="9 12 12 15 16 10" /></svg>);
 const ArrowR = (p: IconProps) => (<svg {...sw(p)}><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>);
@@ -118,13 +115,6 @@ const ARTIFACTS: { title: string; desc: string; icon: (p: IconProps) => JSX.Elem
   },
 ];
 
-const LESSON_FLOW: { step: string; title: string; desc: string; icon: (p: IconProps) => JSX.Element }[] = [
-  { step: '01', title: 'Watch', desc: 'Short concept lesson with banking-specific examples.', icon: PlayCircleIcon },
-  { step: '02', title: 'Practice', desc: 'Run a sandbox scenario with safe sample data.', icon: FlaskIcon },
-  { step: '03', title: 'Build', desc: 'Create a reusable work product.', icon: Layers3Icon },
-  { step: '04', title: 'Review', desc: 'Apply the human approval checklist.', icon: ShieldIcon },
-];
-
 const PRICING_BULLETS = [
   'Self-paced course',
   'Sandbox practice',
@@ -184,6 +174,7 @@ export default function CoursesIndexPage() {
 
       {/* COURSE PREVIEW — standalone section below the hero */}
       <Section variant="std" surface="white">
+        <div id="curriculum" />
         <SectionHead
           kicker="Course preview"
           heading={<>Prompt → Skill → Workflow.</>}
@@ -224,71 +215,6 @@ export default function CoursesIndexPage() {
                 <h3>{art.title}</h3>
                 <p>{art.desc}</p>
               </div>
-            );
-          })}
-        </div>
-      </Section>
-
-      {/* INSIDE ONE LESSON — 4-step row */}
-      <Section variant="std">
-        <SectionHead
-          kicker="Inside one lesson"
-          heading={<>Watch → Practice → Build → Review.</>}
-          lede={
-            <>
-              The course experience makes the learning model obvious before someone enrolls.
-            </>
-          }
-        />
-        <div className="mk-flow4">
-          {LESSON_FLOW.map(({ step, title, desc, icon: Icon }) => (
-            <div key={step} className="mk-flow4-card">
-              <div className="mk-flow4-top">
-                <span className="mk-pic-ink-gold">
-                  <Icon size={20} />
-                </span>
-                <span className="mk-flow4-step">{step}</span>
-              </div>
-              <h3>{title}</h3>
-              <p>{desc}</p>
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      {/* CURRICULUM — 5 module cards */}
-      <Section variant="std" surface="white">
-        <div id="curriculum" />
-        <SectionHead
-          kicker="Curriculum snapshot"
-          heading={<>Five modules. One practical progression.</>}
-          lede={
-            <>
-              Prompt foundations lead to skills, workflows, and agent-readiness concepts.
-            </>
-          }
-        />
-        <div className="mk-curr5">
-          {MODULES.map((mod, i) => {
-            const Icon = mod.icon;
-            const isActive = activeModule.title === mod.title;
-            return (
-              <button
-                key={mod.title}
-                type="button"
-                onClick={() => setActiveModule(mod)}
-                className={`mk-curr5-card${isActive ? ' is-active' : ''}`}
-              >
-                <div className="mk-curr5-top">
-                  <span className="mk-pic-ink-gold">
-                    <Icon size={20} />
-                  </span>
-                  <span className="mk-curr5-num">0{i + 1}</span>
-                </div>
-                <h3>{mod.title}</h3>
-                <p className="mk-curr5-meta">{mod.lessons} · {mod.time}</p>
-                <p className="mk-curr5-desc">{mod.desc}</p>
-              </button>
             );
           })}
         </div>
